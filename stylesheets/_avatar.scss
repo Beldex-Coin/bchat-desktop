@@ -1,0 +1,99 @@
+// Module: Avatar
+$borderAvatarColor: unquote(
+  '#00000059'
+); // search for references on ts TODO: make this exposed on ts
+
+.module-avatar {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  img {
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid $borderAvatarColor;
+  }
+}
+
+.module-avatar__icon-closed .module-avatar--28,
+.module-avatar--28 {
+  height: 28px;
+  width: 28px;
+
+  img {
+    height: 28px;
+    width: 28px;
+  }
+}
+
+.module-avatar__icon-closed .module-avatar--36,
+.module-avatar--36 {
+  height: 36px;
+  width: 36px;
+
+  img {
+    height: 36px;
+    width: 36px;
+  }
+}
+
+.module-avatar__icon-closed .module-avatar--48,
+.module-avatar--48 {
+  height: 48px;
+  width: 48px;
+
+  img {
+    height: 48px;
+    width: 48px;
+  }
+}
+
+.module-avatar__icon-closed .module-avatar--64,
+.module-avatar--64 {
+  height: 64px;
+  width: 64px;
+
+  img {
+    height: 64px;
+    width: 64px;
+  }
+}
+
+.module-avatar__icon-closed .module-avatar--80,
+.module-avatar--80 {
+  height: 85px;
+  width: 85px;
+
+  img {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.module-avatar--300 {
+  height: 300px;
+  width: 300px;
+
+  img {
+    height: 300px;
+    width: 300px;
+  }
+}
+
+.module-avatar__icon-closed {
+  .module-avatar:last-child {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+  }
+}
+
+.module-avatar-clickable {
+  transition: $bchat-transition-duration;
+  cursor: pointer;
+  &:hover {
+    filter: grayscale(0.7);
+  }
+}

@@ -1,0 +1,50 @@
+node_modules
+.parcel-cache
+.sass-cache
+.eslintcache
+stylesheets/*.css.map
+/dist
+.DS_Store
+config/local.json
+config/local-*.json
+*.provisionprofile
+release/
+/dev-app-update.yml
+*.sublime*
+sql/
+
+# generated files
+stylesheets/*.css
+
+# React / TypeScript
+ts/**/*.js
+ts/protobuf/*.d.ts
+ts/**/*.js.map
+test/ts/**/*.js.map
+test/ts/**/*.js
+ts/test/automation/**/*.js
+ts/test/automation/**/*.js.map
+
+
+# Swapfiles
+**/*.swp
+
+# Ctags
+tags
+
+proxy.key
+proxy.pub
+
+*.tsbuildinfo
+yarn-error.log
+
+# editor
+.vscode/
+
+
+playwright.config.js
+*.js.map
+ts/node/**/*.d.ts
+ts/node/**/*.d.ts.map
+
+test-results/

@@ -1,0 +1,11 @@
+build/**
+components/**
+dist/**
+mnemonic_languages/**
+
+# TypeScript generated files
+ts/**/*.js
+**/ts/**/*.js
+
+playwright.config.js
+preload.js

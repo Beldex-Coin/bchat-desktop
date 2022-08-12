@@ -1,0 +1,245 @@
+// //////////////////////////////////////////////
+// /////////////////// Fonts ////////////////////
+// //////////////////////////////////////////////
+
+$bchat-font-default: 'Roboto';
+$bchat-font-poppins-bold: 'Poppins';
+$bchat-font-mono: 'SpaceMono';
+$bchat-font-poppin-semibold:"poppin-semibold";
+$bchat-font-poppin-light:"poppin-light";
+$bchat-font-poppin-medium:"poppin-medium";
+$bchat-font-poppin-regular:"poppin-regular";
+
+@font-face {
+  font-family: $bchat-font-mono;
+  src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
+}
+
+// Roboto is an open replacement for $bchat-font-default
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Roboto-Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 300;
+}
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Roboto-BoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+// Accented font
+@font-face {
+  font-family: $bchat-font-poppins-bold;
+  src: url('../fonts/Poppins-Bold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: bold;
+}
+@font-face {
+  font-family: $bchat-font-poppin-semibold;
+  src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+  line-height: 1.4rem;
+}
+
+@font-face {
+  font-family: $bchat-font-poppin-light;
+  src: url('../fonts/Poppins-Light.ttf') format('truetype');
+  line-height: 1.4rem;
+}
+
+@font-face {
+  font-family: $bchat-font-poppin-regular;
+  src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+  line-height: 1.4rem;
+}
+
+@font-face {
+  font-family: $bchat-font-poppin-medium;
+  src: url('../fonts/Poppins-Medium.ttf') format('truetype');
+  line-height: 1.4rem;
+}
+// //////////////////////////////////////////////
+// ////////////////// Colors ////////////////////
+// //////////////////////////////////////////////
+
+// Brand
+$bchat-color-green: #00B504;
+
+// Shades
+$bchat-shade-1: #0c0c0c;
+$bchat-shade-1-alt: #0f1011;
+$bchat-shade-2: #161616;
+$bchat-shade-3: #191818;
+$bchat-shade-4: #1b1b1b;
+$bchat-shade-5: #222325;
+$bchat-shade-6: #232323;
+$bchat-shade-6-alt: #2c2c2c;
+$bchat-shade-7: #2e2e2e;
+$bchat-shade-8: #2f2f2f;
+$bchat-shade-9: #313131;
+$bchat-shade-10: #3e3e3e;
+$bchat-shade-11: #3f3f3f;
+$bchat-shade-12: #3f4146;
+$bchat-shade-13: #474646;
+$bchat-shade-14: #535865;
+$bchat-shade-15: #5b6c72;
+$bchat-shade-16: #979797;
+$bchat-shade-17: #a0a0a0;
+$bchat-shade-18: #141414;
+
+$bchat-opaque-dark-1: rgba(0, 0, 0, 0.25);
+$bchat-opaque-dark-2: rgba(0, 0, 0, 0.37);
+$bchat-opaque-dark-3: rgba(0, 0, 0, 0.5);
+
+$bchat-color-white: #fff;
+$bchat-color-light-grey: #a0a0a0;
+$bchat-color-dark-grey: #353535;
+$bchat-color-black: #000;
+
+// Semantic Colors
+$bchat-color-info: $bchat-shade-10;
+$bchat-color-success: #159B24;
+$bchat-color-error: #edd422;
+$bchat-color-warning: $bchat-shade-17;
+$bchat-color-warning-alt: #ff9d00;
+$bchat-color-danger: #ff453a;
+$bchat-color-danger-alt: #ff4538;
+$bchat-color-primary: $bchat-shade-13;
+$bchat-color-secondary: $bchat-shade-6;
+
+// Toast Colors 
+$toast-color-success: linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8));
+$toast-color-error: linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8));
+
+
+// Opacity and Shadow
+$bchat-shadow-opacity: 0.15;
+$bchat-overlay-opacity: 0.3;
+
+// //////////////////////////////////////////////
+// /////////////////// Text /////////////////////
+// //////////////////////////////////////////////
+
+// Sizing
+$bchat-font-xs: 11px;
+$bchat-font-sm: 13px;
+$bchat-font-md: 14px;
+$bchat-font-lg: 18px;
+$bchat-font-xl: 24px;
+
+$bchat-font-h1: 30px;
+$bchat-font-h2: 24px;
+$bchat-font-h3: 20px;
+$bchat-font-h4: 16px;
+
+// Button
+
+$bchat-button-color: #00A803;
+
+// Mixins
+@mixin fontAccentBold {
+  font-weight: bold;
+  font-family: $bchat-font-poppins-bold;
+}
+
+@mixin text-highlight($color) {
+  background-color: $color;
+  padding: $bchat-margin-xs $bchat-margin-sm;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+@mixin bchat-color-subtle($color) {
+  color: subtle($color);
+}
+
+@mixin pulse-color($color, $duration, $repetition) {
+  animation: pulseColor $duration $repetition;
+
+  @keyframes pulseColor {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba($color, 0.7);
+    }
+
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba($color, 0);
+    }
+
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba($color, 0);
+    }
+  }
+}
+
+$bchat-subtle-factor: 0.6;
+
+@function subtle($color) {
+  @return rgba($color, $bchat-subtle-factor);
+}
+
+// //////////////////////////////////////////////
+// ////////////////// Sizing ////////////////////
+// //////////////////////////////////////////////
+
+// Default Components
+$bchat-search-input-height: 34px;
+$main-view-header-height: 63px;
+$bchat-left-pane-width: 300px;
+
+// Various Components
+$bchat-modal-size-sm: 220px;
+$bchat-modal-size-md: 400px;
+$bchat-modal-size-lg: 650px;
+
+$bchat_message-container-border-radius: 13px;
+
+// Spacing
+$bchat-margin-xs: 5px;
+$bchat-margin-sm: 10px;
+$bchat-margin-md: 15px;
+$bchat-margin-lg: 20px;
+
+// Animations
+$bchat-transition-duration: 0.25s;
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// //////////////////////////////////////////////
+// ///////////////// Various ////////////////////
+// //////////////////////////////////////////////
+
+$composition-container-height: 60px;
+
+ //////////////////////////////////////////////
+// ///////////////// placeholder ////////////////////
+// //////////////////////////////////////////////
+
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {@content}
+  :-moz-placeholder           {@content}
+  ::-moz-placeholder          {@content}
+  :-ms-input-placeholder      {@content}  
+}
+

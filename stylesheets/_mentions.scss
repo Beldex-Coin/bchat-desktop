@@ -1,0 +1,43 @@
+// used for the list after adding a `@` in the compose text input
+.contact-selection-list {
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 4px;
+
+  .check-mark {
+    float: right;
+    text-align: center;
+    color: darkslategrey;
+    margin: 4px;
+    min-width: 20px;
+  }
+}
+
+.member-list-container {
+  margin: 0;
+  padding: 0;
+
+  max-height: 240px;
+  overflow-y: scroll;
+
+  .check-mark {
+    display: none;
+  }
+}
+
+.mention-profile-name {
+  border-radius: 4px;
+  margin: 2px;
+  padding: 2px;
+  user-select: none;
+  font-weight: bold;
+}
+
+.mention-profile-name-us {
+  background-color: rgba(255, 197, 50, 1);
+  color: black;
+}
+
+.module-conversation-list-item--mentioned-us {
+  border-left: 4px solid $bchat-color-green !important;
+}

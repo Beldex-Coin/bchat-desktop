@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="Group_415" data-name="Group 415" transform="translate(-311 -139.75)">
+    <path id="icons8-user" d="M12.169,3A4.456,4.456,0,0,0,7.713,7.456V8.2a4.456,4.456,0,0,0,8.912,0V7.456A4.456,4.456,0,0,0,12.169,3Zm0,11.882c-2.975,0-6.792,1.609-7.891,3.037a1.349,1.349,0,0,0,1.081,2.161H18.979A1.349,1.349,0,0,0,20.06,17.92C18.961,16.492,15.143,14.882,12.167,14.882Z" transform="translate(313.529 143.157)" fill="#fff"/>
+    <g id="Rectangle_241" data-name="Rectangle 241" transform="translate(311 139.75)" fill="none" stroke="#fff" stroke-width="1">
+      <rect width="30" height="30" rx="6" stroke="none"/>
+      <rect x="0.5" y="0.5" width="29" height="29" rx="5.5" fill="none"/>
+    </g>
+  </g>
+</svg>

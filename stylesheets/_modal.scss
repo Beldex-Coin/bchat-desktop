@@ -1,0 +1,389 @@
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0 20px;
+  z-index: 100;
+  overflow-y: auto;
+
+  .content {
+    position: relative;
+    max-width: 350px;
+    margin: 100px auto;
+    padding: 1em;
+    background-color: $color-white;
+    border-radius: $border-radius;
+    overflow: auto;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* remove scroll bars */
+.loki-dialog .add-moderators-dialog .content {
+  padding: 1.1em;
+}
+
+.bchat-modal {
+  .contact-selection-list {
+    width: 100%;
+    min-width: 300px;
+  }
+}
+
+.create-group-dialog,
+.add-moderators-dialog,
+.remove-moderators-dialog,
+.invite-friends-dialog {
+  .content {
+    max-width: 100% !important;
+  }
+  .contact-selection-list {
+    width: 100%;
+  }
+
+  .buttons {
+    margin: 8px;
+  }
+
+  .group-name {
+    font-size: larger;
+  }
+
+  .titleText {
+    font-size: large;
+    text-align: center;
+  }
+
+  .no-contacts {
+    text-align: center;
+  }
+
+  .hidden {
+    display: none;
+  }
+}
+
+.create-group-dialog,
+.add-moderators-dialog,
+.remove-moderators-dialog,
+.edit-profile-dialog {
+  .error-message {
+    text-align: center;
+    color: red;
+    display: block;
+    user-select: none;
+  }
+
+  .error-faded {
+    opacity: 0;
+    margin-top: -5px;
+    transition: all 100ms linear;
+  }
+
+  .error-shown {
+    opacity: 1;
+    transition: all 250ms linear;
+  }
+}
+
+.loki-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    max-width: 75%;
+    min-width: 60%;
+    padding: 1em;
+    background: white;
+    border-radius: $border-radius;
+    overflow: auto;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  button {
+    float: right;
+    margin-inline-start: 10px;
+    background-color: $color-loki-green;
+    border-radius: 100px;
+    padding: 5px 15px;
+    border: 1px solid $color-loki-green;
+    color: white;
+    outline: none;
+    user-select: none;
+
+    &:hover,
+    &:disabled {
+      background-color: $color-loki-green-dark;
+      border-color: $color-loki-green-dark;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 0;
+    outline: none;
+    border-radius: 4px;
+    background-color: $color-loki-light-gray;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  h4 {
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+}
+
+.nickname-dialog {
+  .message {
+    font-style: italic;
+    color: $grey;
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.seed-dialog {
+  .title {
+    font-weight: bold;
+  }
+
+  .fields {
+    margin-top: 20px;
+  }
+
+  .seed {
+    padding: 20px 0;
+    font-style: oblique;
+  }
+
+  .qr-image {
+    transition: $bchat-transition-duration;
+    opacity: 10%;
+    &:hover {
+      opacity: 100%;
+    }
+  }
+}
+
+.loki-dialog {
+  & ~ .index.inbox {
+    // filter: blur(2px); // FIXME enable back once modals are moved to react
+    // currently it cause an issues with toast being on the foreground when a modal is shown
+    transition: filter 0.1s;
+  }
+
+  input {
+    background-color: var(--color-input-background);
+    color: var(--color-text);
+    border: var(--border-bchat);
+  }
+}
+
+.nickname-dialog {
+  .message {
+    color: $color-light-35;
+  }
+}
+
+.edit-profile-dialog {
+  .bchat-modal__header__title {
+    font-size: $bchat-font-lg;
+  }
+
+  .bchat-modal {
+    width: $bchat-modal-size-md;
+
+    &__header {
+      height: 68.45px;
+    }
+  }
+
+  .avatar-center-inner {
+    position: relative;
+
+    .module-avatar {
+      box-shadow: 0px 0px 13px 0.5px var(--color-bchat-shadow);
+    }
+
+    .qr-view-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: -3px;
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      background-color: $bchat-color-white;
+      transition: $bchat-transition-duration;
+
+      &:hover {
+        filter: brightness(90%);
+      }
+
+      .bchat-icon-button {
+        opacity: 1;
+      }
+    }
+  }
+
+  .bchat-id-section {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+
+    .panel-text-divider {
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    &-display {
+      user-select: text;
+      text-align: center;
+      word-break: break-all;
+      font-size: $bchat-font-md;
+      // padding: 0px $bchat-margin-lg;
+      background-color: #3A3A4E;
+      border-radius: 10px;
+      padding: 10px 10px 10px 14px;
+      font-family: $bchat-font-default;
+      font-weight: 100;
+      color: #0BB70F;
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      width: 100%;
+      min-height: 60px;
+
+      font-size: $bchat-font-md;
+      // padding: 0px $bchat-margin-sm;
+    }
+
+    &-display-icon {
+      background:url('/images/bchat/copy_icon.svg');
+      background-repeat: no-repeat;
+      width: "40px";
+      height: "40px";
+      position: 'relative';
+      background-color:'#353543';
+      background-size:"16px";
+      border-radius:"30px";
+      background-position:"center";
+      cursor:'pointer';
+    }
+
+    .bchat-button {
+      width: 148px;
+    }
+  }
+
+  .profile-name {
+    display: flex;
+    justify-content: center;
+    margin-top: $bchat-margin-sm;
+
+    input {
+      height: 38px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: $bchat-font-md;
+      background: var(--color-input-background);
+      color: var(--color-text);
+      border: var(--border-bchat);
+    }
+
+    &-uneditable {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: $bchat-font-poppin-semibold;
+
+      p {
+        font-size: $bchat-font-h4;
+        padding: 0px $bchat-margin-sm;
+        margin-left: 33px;
+      }
+
+      .bchat-icon-button {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+.onion-status-dialog {
+  .bchat-modal__header__title {
+    font-size: $bchat-font-lg;
+  }
+
+  .bchat-modal {
+    width: $bchat-modal-size-md;
+
+    &__header {
+      height: 68.45px;
+    }
+  }
+
+  .bchat-modal__body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    line-height: 1.5em;
+
+    .onionDescriptionContainer {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .onionPath {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: 2em auto;
+
+      .dotContainer:not(:last-child) {
+        padding-bottom: 2em;
+      }
+
+      .dotContainer {
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        p {
+          margin-bottom: 0 !important;
+          margin-top: 0;
+          margin-left: 2em;
+          text-align: left;
+        }
+
+        .dot {
+          height: 15px;
+          width: 15px;
+          border-radius: 50%;
+          display: inline-block;
+        }
+      }
+    }
+
+    .lineContainer {
+      height: 50px;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="51" height="51" viewBox="0 0 51 51">
+  <defs>
+    <filter id="Ellipse_118" x="0" y="0" width="51" height="51" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#15151c"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="camera" transform="translate(-1232 -415)">
+    <g transform="matrix(1, 0, 0, 1, 1232, 415)" filter="url(#Ellipse_118)">
+      <circle id="Ellipse_118-2" data-name="Ellipse 118" cx="16.5" cy="16.5" r="16.5" transform="translate(9 9)" fill="#22222e"/>
+    </g>
+    <path id="icons8-camera" d="M11.588,2,7.162,2,5.809,3.475H3.475A1.48,1.48,0,0,0,2,4.95V13.8a1.48,1.48,0,0,0,1.475,1.475h11.8A1.48,1.48,0,0,0,16.753,13.8V4.95a1.48,1.48,0,0,0-1.475-1.475H12.949Zm-.647,1.475L12.3,4.95h2.975V13.8H3.475V4.95H6.457L7.812,3.476ZM9.376,5.688a3.688,3.688,0,1,0,3.688,3.688A3.689,3.689,0,0,0,9.376,5.688Zm0,1.475A2.213,2.213,0,1,1,7.163,9.376,2.213,2.213,0,0,1,9.376,7.163Z" transform="translate(1248.068 431.806)" fill="#d0d0d0"/>
+  </g>
+</svg>

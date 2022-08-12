@@ -1,0 +1,284 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background-color: white;
+}
+
+body {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: $bchat-font-poppin-regular;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+// scrollbars
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-bar-thumb);
+  border: solid 2px var(--color-text-opposite);
+
+  &:hover {
+    background: $color-light-45;
+  }
+}
+::-webkit-scrollbar-track {
+  background: var(--color-scroll-bar-track);
+}
+
+audio {
+  max-width: 100%;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: ' ';
+}
+.clearfix:after {
+  clear: both;
+}
+
+.hide {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+  font-size: inherit;
+
+  &[disabled='disabled'] {
+    &,
+    &:hover {
+      opacity: 0.5;
+      box-shadow: none;
+      cursor: default;
+    }
+  }
+}
+button.grey {
+  border-radius: $border-radius;
+  border: solid 1px #ccc;
+  cursor: pointer;
+  margin: 1em auto;
+  padding: 1em;
+  font-family: inherit;
+  color: $grey;
+  background: $grey_l;
+  box-shadow: 0 0 10px -5px rgba($grey, 0.5);
+
+  &:hover {
+    box-shadow: 0 0 10px -3px rgba($grey, 0.7);
+  }
+
+  &[disabled='disabled'] {
+    &,
+    &:hover {
+      opacity: 0.5;
+      box-shadow: none;
+      cursor: default;
+    }
+  }
+}
+
+a {
+  cursor: pointer;
+  user-select: text;
+}
+
+.file-input {
+  position: relative;
+  .choose-file {
+    cursor: pointer;
+  }
+
+  input[type='file'] {
+    // Must be displayed in order to programmatically
+    // insert file paths)
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: -100;
+  }
+}
+
+.new-group-update {
+  .summary {
+    margin: 10px;
+  }
+
+  .members .contact {
+    box-shadow: none;
+    border-bottom: 1px solid #eee;
+    .last-message,
+    .last-timestamp {
+      display: none;
+    }
+  }
+}
+
+$unread-badge-size: 21px;
+
+.banner {
+  z-index: 100;
+
+  // what's the right color?
+  background-color: $blue_l;
+  color: black;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  left: 30px;
+
+  padding: 5px 25px 5px 10px;
+
+  text-align: center;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  .warning {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    @include color-svg('../images/warning.svg', black);
+  }
+
+  .dismiss {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+
+    height: 23px;
+    width: 23px;
+    @include color-svg('../images/x.svg', black);
+  }
+}
+
+$loading-height: 16px;
+
+.loading {
+  position: relative;
+  &::before {
+    display: block;
+    margin: 0px auto;
+    content: ' ';
+    height: $loading-height;
+    width: $loading-height;
+    border-radius: 2 * $loading-height;
+    border: solid 3px;
+    border-color: $blue_l $blue_l $grey_l $grey_l !important;
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.x {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  background: $grey;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    @include color-svg('../images/x.svg', white);
+  }
+}
+
+@keyframes loading {
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.app-loading-screen {
+  z-index: 99;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  // force this to black, to stay consistent with the password prompt being in dark mode too.
+  background-color: black;
+
+  .content {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    text-align: center;
+    width: 250px;
+  }
+  .container {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    width: 78px;
+    height: 22px;
+  }
+  .message {
+    -webkit-user-select: text;
+    max-width: 35em;
+  }
+
+  .dot {
+    width: 14px;
+    height: 14px;
+    border: 3px solid $color-white;
+    border-radius: 50%;
+    float: left;
+    margin: 0 6px;
+    transform: scale(0);
+
+    animation: loading 1500ms ease infinite 0ms;
+    &:nth-child(2) {
+      animation: loading 1500ms ease infinite 333ms;
+    }
+    &:nth-child(3) {
+      animation: loading 1500ms ease infinite 666ms;
+    }
+  }
+  .bchat-text-logo {
+    filter: brightness(0) saturate(100%);
+  }
+}
+
+//yellow border fix
+.inbox:focus {
+  outline: none;
+}
+
+.inbox {
+  position: relative;
+}

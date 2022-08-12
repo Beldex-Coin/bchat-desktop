@@ -1,0 +1,88 @@
+.message-detail-wrapper {
+  height: calc(100% - 48px);
+  width: 100%;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.public-chat-message-wrapper {
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+}
+
+.group-invitation-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-invitation {
+  background: var(--color-received-message-background);
+
+  &.invitation-outgoing {
+    background: var(--color-sent-message-background);
+    align-self: flex-end;
+  }
+
+  display: inline-block;
+  margin: 4px 16px;
+  padding: 4px;
+
+  border-radius: 15px;
+
+  align-self: flex-start;
+
+  box-shadow: none;
+
+  .title {
+    margin: 6px;
+    color: darkslategray;
+    font-variant-caps: all-small-caps;
+    user-select: none;
+  }
+
+  .contents {
+    display: flex;
+    align-items: center;
+    margin: 6px;
+
+    .invite-group-avatar {
+      height: 48px;
+      width: 48px;
+    }
+
+    .group-details {
+      display: inline-flex;
+      flex-direction: column;
+
+      padding: 0px 12px;
+      .group-name {
+        font-weight: bold;
+        font-size: 18px;
+      }
+    }
+
+    .bchat-icon-button {
+      background-color: var(--color-accent);
+      box-shadow: none;
+
+      filter: brightness(1.05);
+      svg path {
+        transition: $bchat-transition-duration;
+        opacity: 0.6;
+        fill: var(--color-text-opposite);
+      }
+    }
+  }
+}
+
+.group-invitation {
+  .group-details {
+    color: var(--color-received-message-text);
+  }
+}
+
+.group-invitation.invitation-outgoing {
+  .group-details {
+    color: var(--color-sent-message-text);
+  }
+}

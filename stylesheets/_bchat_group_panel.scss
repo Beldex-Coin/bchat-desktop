@@ -1,0 +1,192 @@
+.group-settings {
+  display: flex;
+  flex-direction: column;
+  height: 93vh;
+  width: -webkit-fill-available;
+  // background: var(--color-cell-background);
+  background: #181821;
+  border-left: var(--border-bchat);
+
+  align-items: center;
+
+  &-header {
+    margin-top: $bchat-margin-lg;
+    margin-inline-start: $bchat-margin-sm;
+    margin-inline-end: $bchat-margin-sm;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+
+    &-avatarBox
+    {
+      width: 86%;
+    text-align: center;
+    padding-left: 17%;
+
+    p{
+      font-family:$bchat-font-poppin-semibold;
+      font-size: 24px;
+      margin: 0;
+    }
+    }
+
+    &-chatIdBox
+    {
+      text-align: center;
+      p{
+        font-family:$bchat-font-poppin-medium;
+        font-size: 18px;
+        margin-top:30px;
+        margin-bottom: 0;
+      }
+      div{
+        width: 85%;
+        margin: 0 auto;
+        color: #159b24;
+      }
+    }
+    
+    &-closeBox
+    {
+      margin-left: 10px;
+    cursor: pointer;
+    width: 20%;
+    display: flex;
+    justify-content: end;
+    }
+    .module-avatar {
+      margin: auto;
+    }
+  }
+
+  
+
+  h2 {
+    word-break: break-word;
+  }
+
+  .description {
+    margin: $bchat-margin-md 0;
+    min-height: 4rem;
+    width: inherit;
+    color: var(--color-text);
+    background: var(--color-cell-background);
+    border: var(--border-bchat);
+
+    text-align: center;
+    display: none;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    font-size: 0.8rem;
+    color: var(--color-text);
+    // background: var(--color-cell-background);
+    background: #181821;
+    // border-top: var(--border-bchat);
+    border-top:2px solid #262631;
+    border-bottom:2px solid #262631;
+    // border-bottom: var(--border-bchat);
+
+    width: -webkit-fill-available;
+    padding: 0 $bchat-margin-md;
+    transition: $bchat-transition-duration;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-clickable-hovered);
+    }
+  }
+
+  // no double border (top and bottom) between two elements
+  &-item + &-item {
+    border-top: none;
+  }
+
+  // bottom button
+  .bchat-button.square-outline.danger {
+    margin-top: auto;
+    width: 100%;
+    border: none;
+    height: $composition-container-height;
+    flex-shrink: 0;
+    align-items: center;
+    border: none;
+    border-top: var(--border-bchat);
+  }
+
+  .module-empty-state {
+    text-align: center;
+  }
+
+  .module-attachment-section__items {
+    &-media {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
+
+    &-documents {
+      width: 100%;
+    }
+  }
+
+  .module-media {
+    &-gallery {
+      &__tab-container {
+        padding-top: 1rem;
+      }
+
+      &__tab {
+        color: var(--color-text);
+
+        font-weight: bold;
+        font-size: 0.9rem;
+        padding: 0.6rem;
+        opacity: 0.8;
+
+        &--active {
+          border-bottom: none;
+          opacity: 1;
+
+          &:after {
+            content: ''; /* This is necessary for the pseudo element to work. */
+            display: block;
+            margin: 0 auto;
+            width: 70%;
+            padding-top: 0.5rem;
+            border-bottom: var(--border-unread);
+          }
+        }
+      }
+
+      &__content {
+        padding: $bchat-margin-xs;
+        margin-bottom: 1vh;
+
+        .module-media-grid-item__image,
+        .module-media-grid-item {
+          height: calc(
+            22vw / 4
+          ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
+          width: calc(
+            22vw / 4
+          ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
+          margin: auto;
+        }
+      }
+    }
+  }
+}
+
+.conversation-content {
+  display: flex;
+  height: inherit;
+
+  &-left {
+    flex-grow: 1;
+  }
+}
