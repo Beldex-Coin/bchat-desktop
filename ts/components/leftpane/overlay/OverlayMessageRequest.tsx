@@ -107,6 +107,7 @@ export const OverlayMessageRequest = (props:any) => {
         <>
           <VerifyScreen />
           <SpacerLG />
+          <div className='buttonBox '>
           <BchatButton
             buttonColor={BchatButtonColor.Danger}
             buttonType={BchatButtonType.BrandOutline}
@@ -115,6 +116,7 @@ export const OverlayMessageRequest = (props:any) => {
               handleClearAllRequestsClick(messageRequests);
             }}
           />
+          </div>
         </>
       ) : (
         <>

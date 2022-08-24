@@ -233,7 +233,7 @@ $loading-height: 16px;
   align-items: center;
   user-select: none;
   // force this to black, to stay consistent with the password prompt being in dark mode too.
-  background-color: black;
+  background-color: var(--color-body-bg);
 
   .content {
     margin-inline-start: auto;
