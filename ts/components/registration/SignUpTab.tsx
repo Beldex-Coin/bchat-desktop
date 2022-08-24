@@ -105,7 +105,6 @@ export const SignUpTab = (props:any) => {
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
 
   useEffect(() => {
-    console.log("slksskl")
   //  void generateMnemonicAndKeyPairCreate();
     if (signUpMode === SignUpMode.BchatIDShown) {
       window.bchat.setNewBchatID(hexGeneratedPubKey);
