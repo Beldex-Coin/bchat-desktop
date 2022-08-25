@@ -8,7 +8,7 @@ const warning = '#e7b100';
 const destructive = '#ff453a';
 const accentLightTheme = '#159B24';
 const accentDarkTheme = '#2879FB';
-const borderLightThemeColor = '#f1f1f1';
+// const borderLightThemeColor = '#f1f1f1';
 // const borderDarkThemeColor = '#ffffff0F';
 const baseColor="#00A803";
 const greyColor="#2D2D3B";
@@ -91,7 +91,10 @@ const darkEmptyChatImg=`url("../images/bchat/emptyMessage.svg")`;
 const darkBgDoodle=`url("../images/bchat/doodle_white.svg")`;
 const darkChatIcons="white";
 const darkComposeMsgInput="#3F3C4B";
-const darkDayNight=`url("../images/bchat/light_theme .svg")`
+const darkDayNight=`url("../images/bchat/light_theme .svg")`;
+
+const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
+const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -266,6 +269,9 @@ export const switchHtmlToDarkTheme = () => {
     '--image-DayNight',
     darkDayNight
   );
+  document.documentElement.style.setProperty('--color-toast-success', darkToastSuccessMessage);
+  document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
+
   document.documentElement.style.setProperty(
     '--image-EmptyChatImg',
     darkEmptyChatImg
@@ -292,7 +298,7 @@ const lightColorBchatShadow = `0 0 4px 0 #00000029`;
 const lightColorComposeViewBg = '#efefef';
 const lightColorSentMessageBg = "#2879FB";
 const lightColorClickableHovered = '#eaeaea';
-const lightColorBchatBorderColor = borderLightThemeColor;
+// const lightColorBchatBorderColor = borderLightThemeColor;
 const lightColorBchatBorder = `2px solid #E3E3E3 `;
 const lightColorRecoveryPhraseBannerBg = white;
 const lightColorPillDivider = `${black}1A`;
@@ -335,10 +341,10 @@ const lightColorBg=white;
 const lightSmModalBg="#F4F4F4";
 const lightCancelBtnBg="#E8E8E8";
 const lightInboxBgColor="#FCFCFC";
-const lightHintMessageText="black";
-const lightTextAreaColor="black";
+// const lightHintMessageText="black";
+// const lightTextAreaColor="black";
 const lightComposeMsgBg="#EEEEEE";
-const lightComposeMsgIconBG="#2879fb";
+// const lightComposeMsgIconBG="#2879fb";
 const lightSettingIndication="#F8F8F8";
 const lightSinginTextColor='#128B17';
 const lightHintColor=lightGreyColor;
@@ -355,6 +361,10 @@ const lightToggleOff="#C6C6C6"
 const lightClearBtn='#fff'
 
 const lightProfileBgColor="#F8F8F8";
+
+// Toast Colors 
+const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
+const lightToastErrorMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)";
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -518,6 +528,9 @@ export const switchHtmlToLightTheme = () => {
     '--color-clearBtn',
     lightClearBtn
   );
+  document.documentElement.style.setProperty('--color-toast-success', lightToastSuccessMessage);
+  document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
+
   document.documentElement.style.setProperty(
     '--image-DayNight',
     lightDayNight
@@ -554,77 +567,79 @@ export const BchatGlobalStyles = createGlobalStyle`
     /* ANIMATIONS */
     --default-duration: '0.25s';
     /* FILTERS */
-    --filter-bchat-text: ${lightFilterBchatText};
+    --filter-bchat-text: ${darkFilterBchatText};
     /* BORDERS */
-    --border-unread: ${lightUnreadBorder};
-    --border-bchat:  ${lightColorBchatBorder};
+    --border-unread: ${darkUnreadBorder};
+    --border-bchat:  ${darkColorBchatBorder};
 
     /* COLORS NOT CHANGING BETWEEN THEMES */
     --color-body-bg:${white};
     --color-warning:  ${warning};
     --color-destructive:  ${destructive};
     /* COLORS */
-    --color-accent: ${lightColorAccent};
-    --color-accent-button:  ${lightColorAccentButton};
+    --color-accent: ${darkColorAccent};
+    --color-accent-button:  ${darkColorAccentButton};
     
-    --color-text:  ${lightColorText};
-    --color-text-subtle:  ${lightColorTextSubtle};
-    --color-text-accent:  ${lightColorTextAccent};
-    --color-text-opposite:  ${lightColorTextOpposite};
-    --color-text-signIn:${lightSinginTextColor};
-    --color-Bchat-hint: ${lightGreyColor};
-    --color-bchat-shadow: ${lightColorBchatShadow};
-    --color-compose-view-button-background: ${lightColorComposeViewBg};
-    --color-sent-message-background:  ${lightColorSentMessageBg};
+    --color-text:  ${darkColorText};
+    --color-text-subtle:  ${darkColorTextSubtle};
+    --color-text-accent:  ${darkColorTextAccent};
+    --color-text-opposite:  ${darkColorTextOpposite};
+    --color-text-signIn:${darkSinginTextColor};
+    --color-Bchat-hint: ${darkHintColor};
+    --color-bchat-shadow: ${darkColorBchatShadow};
+    --color-compose-view-button-background: ${darkColorComposeViewBg};
+    --color-sent-message-background:  ${darkColorSentMessageBg};
     --color-sent-message-text:  ${darkColorSentMessageText};
-    --color-clickable-hovered: ${lightColorClickableHovered};
-    --color-bchat-border:  ${lightColorBchatBorderColor};
-    --color-recovery-phrase-banner-background: ${lightColorRecoveryPhraseBannerBg};
-    --color-pill-divider:  ${lightColorPillDivider};
-    --color-last-seen-indicator: ${lightColorLastSeenIndicator};
-    --color-quote-bottom-bar-background:  ${lightColorQuoteBottomBarBg};
-    --color-cell-background: ${lightColorCellBackground};
-    --color-pill-divider-text:  ${lightColorPillDividerText};
-    --color-input-background: ${lightInputBackground};
-    --color-scroll-bar-thumb: ${lightScrollbarThumb};
-    --color-scroll-bar-track: ${lightScrollbarTrack};
-    --color-fake-chat-bubble-background: ${lightFakeChatBubbleBg};
-    --color-inbox-background: ${lightInboxBackground};
-    --color-left-pane-overlay-background: ${lightLeftPaneOverlayBg};
-    --color-conversation-item-selected: ${lightConversationItemSelected};
-    --color-conversation-item-has-unread: ${lightConversationItemHasUnread};
-    --color-conversation-list: ${lightConversationList};
-    --color-text-highlight: ${lightTextHighlight};
-    --color-foreground-primary: ${lightForegroundPrimary};
-    --color-background-primary: ${lightBackgroundPrimary};
-    --color-button-green: ${lightButtonGreen};
-    --color-modal-background: ${lightModalBackground};
+    --color-clickable-hovered: ${darkColorClickableHovered};
+    --color-bchat-border:  ${darkColorBchatBorder};
+    --color-recovery-phrase-banner-background: ${darkColorRecoveryPhraseBannerBg};
+    --color-pill-divider:  ${darkColorPillDivider};
+    --color-last-seen-indicator: ${darkColorLastSeenIndicator};
+    --color-quote-bottom-bar-background:  ${darkColorQuoteBottomBarBg};
+    --color-cell-background: ${darkColorCellBackground};
+    --color-pill-divider-text:  ${darkColorPillDividerText};
+    --color-input-background: ${darkInputBackground};
+    --color-scroll-bar-thumb: ${darkScrollbarThumb};
+    --color-scroll-bar-track: ${darkScrollbarTrack};
+    --color-fake-chat-bubble-background: ${darkFakeChatBubbleBg};
+    --color-inbox-background: ${darkInboxBackground};
+    --color-left-pane-overlay-background: ${darkLeftPaneOverlayBg};
+    --color-conversation-item-selected: ${darkConversationItemSelected};
+    --color-conversation-item-has-unread: ${darkConversationItemHasUnread};
+    --color-conversation-list: ${darkConversationList};
+    --color-text-highlight: ${darkTextHighlight};
+    --color-foreground-primary: ${darkForegroundPrimary};
+    --color-background-primary: ${darkBackgroundPrimary};
+    --color-button-green: ${darkButtonGreen};
+    --color-modal-background: ${darkModalBackground};
   
 
     
-    --color-smModal-bg:${lightSmModalBg};
-    --color-cancelBtn-bg:${lightCancelBtnBg};
-    --color-inboxBgColor:${lightInboxBgColor};
-    --color-borderBottomColor:${lightBorderBottomColor};
-    --color-HintMessageText:${lightHintMessageText};
-    --color-TextAreaColor:${lightTextAreaColor};
-    --color-composeMsgBg:${lightComposeMsgBg};
-    --color-composeMsgInput:${lightComposeMsgInput}
-    --color-composeMsgIconBG:${lightComposeMsgIconBG};
-    --color-composeMsgRecordIcon:${lightcomposeMsgRecordIcon}
-    --color-settingIndication:${lightSettingIndication};
-    --color-copyIcon:${lightCopyIcon};
-    --color-chatHeader:${lightChatHeader};
-    --color-chatIcons:${lightChatIcons};
-    --color-toggleOff:${lightToggleOff};
-    --color-clearBtn:${lightClearBtn};
+    --color-smModal-bg:${darkSmModalBg};
+    --color-cancelBtn-bg:${darkCancelBtnBg};
+    --color-inboxBgColor:${darkInboxBgColor};
+    --color-borderBottomColor:${darkBorderBottomColor};
+    --color-HintMessageText:${darkHintMessage};
+    --color-TextAreaColor:${darkTextAreaColor};
+    --color-composeMsgBg:${darkComposeMsgBg};
+    --color-composeMsgInput:${darkComposeMsgInput}
+    --color-composeMsgIconBG:${darkComposeMsgIconBG};
+    --color-composeMsgRecordIcon:${darkcomposeMsgRecordIcon}
+    --color-settingIndication:${darkSettingIndication};
+    --color-copyIcon:${darkCopyIcon};
+    --color-chatHeader:${darkChatHeader};
+    --color-chatIcons:${darkChatIcons};
+    --color-toggleOff:${darkToggleOff};
+    --color-clearBtn:${darkClearBtn};
 
-    --color-profile: ${lightProfileBgColor};
+    --color-profile: ${darkProfileBgColor};
 
-   
-    --image-EmptyChatImg:${lightEmptyChatImg};
-    --image-BgDoodle:${lightBgDoodle};
-    --image-DayNight:${lightDayNight};
+    --color-toast-success:${darkToastSuccessMessage};
+    --color-toast-error:${darkToastErrorMessage};
+
+    --image-EmptyChatImg:${darkEmptyChatImg};
+    --image-BgDoodle:${darkBgDoodle};
+    --image-DayNight:${darkDayNight};
 
 
 
