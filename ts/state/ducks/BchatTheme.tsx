@@ -573,7 +573,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --border-bchat:  ${darkColorBchatBorder};
 
     /* COLORS NOT CHANGING BETWEEN THEMES */
-    --color-body-bg:${white};
+    --color-body-bg:${black};
     --color-warning:  ${warning};
     --color-destructive:  ${destructive};
     /* COLORS */

@@ -61,7 +61,7 @@ export const GoBackMainMenuButton = (props:any) => {
       iconType="chevron"
       iconRotation={90}
       iconPadding="5px"
-      iconColor={window.Events.getThemeSetting()=== 'dark' ? 'white' : 'black'}
+      // iconColor={window.Events.getThemeSetting()=== 'dark' ? 'white' : 'black'}
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
         setSignInMode(SignInMode.Default);
