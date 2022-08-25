@@ -60,7 +60,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsMenuBar);
 const isdark =window.Events.getThemeSetting() === "dark"? true : false;
-console.log('dark is true ::',window.Events.getThemeSetting());
+// console.log('dark is true ::',window.Events.getThemeSetting());
 
     const isSpellCheckActive =
       window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined

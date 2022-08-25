@@ -221,11 +221,13 @@ export const UpdateGroupMembersDialog = (props: Props) => {
   const showNoMembersMessage = existingMembers.length === 0;
   const okText = window.i18n('ok');
   const cancelText = window.i18n('cancel');
-  const titleText = window.i18n('updateGroupDialogTitle', [convoProps.name || '']);
+  // const titleText = window.i18n('updateGroupDialogTitle', [convoProps.name || '']);
+  const titleText = "Add Members";
+
 
   return (
     <BchatWrapperModal title={titleText} onClose={closeDialog}>
-      <div className="group-member-list__selection">
+      <div className="group-member-list__selection" style={{paddingTop:"10px"}}>
         <ClassicMemberList
           convoId={conversationId}
           onSelect={onAdd}
@@ -239,7 +241,7 @@ export const UpdateGroupMembersDialog = (props: Props) => {
       <SpacerLG />
 
       <div className="bchat-modal__button-group">
-        <BchatButton text={cancelText} onClick={closeDialog} />
+        <BchatButton text={cancelText} onClick={closeDialog} buttonColor={BchatButtonColor.White}/>
         {weAreAdmin && (
           <BchatButton text={okText} onClick={onClickOK} buttonColor={BchatButtonColor.Green} />
         )}

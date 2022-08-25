@@ -25,7 +25,8 @@ test/ts/**/*.js
 ts/test/automation/**/*.js
 ts/test/automation/**/*.js.map
 
-
+#wallet
+wallet
 # Swapfiles
 **/*.swp
 

@@ -73,7 +73,7 @@ export const UserDetailsDialog = (props: Props) => {
         <BchatButton
           text={window.i18n('editMenuCopy')}
           buttonType={BchatButtonType.Default}
-          buttonColor={BchatButtonColor.Primary}
+          buttonColor={BchatButtonColor.White}
           onClick={() => {
             copyToClipboard(props.conversationId);
             ToastUtils.pushCopiedToClipBoard();

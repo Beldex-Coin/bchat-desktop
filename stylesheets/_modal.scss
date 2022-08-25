@@ -30,6 +30,7 @@
   .contact-selection-list {
     width: 100%;
     min-width: 300px;
+    box-shadow:var( --color-bchat-shadow);
   }
 }
 
@@ -184,11 +185,16 @@
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
   }
-
+  .groupNameBox
+  {
+    display: flex;
+    border-bottom: var(--border-bchat);
+  }
   input {
-    background-color: var(--color-input-background);
+    background-color: var(--color-smModal-bg);
     color: var(--color-text);
-    border: var(--border-bchat);
+    border-bottom: 0;
+    margin: 0;
   }
 }
 
@@ -258,7 +264,7 @@
       word-break: break-all;
       font-size: $bchat-font-md;
       // padding: 0px $bchat-margin-lg;
-      background-color: #3A3A4E;
+      background-color: var(--color-composeMsgInput);
       border-radius: 10px;
       padding: 10px 10px 10px 14px;
       font-family: $bchat-font-default;
@@ -276,16 +282,16 @@
     }
 
     &-display-icon {
-      background:url('/images/bchat/copy_icon.svg');
+      background:url('../images/bchat/copy_icon.svg');
       background-repeat: no-repeat;
-      width: "40px";
-      height: "40px";
-      position: 'relative';
-      background-color:'#353543';
-      background-size:"16px";
-      border-radius:"30px";
-      background-position:"center";
-      cursor:'pointer';
+      width: 40px;
+      height: 40px;
+      position: relative;
+      background-color:var(--color-composeMsgInput);
+      background-size:16px;
+      border-radius:30px;
+      background-position:center;
+      cursor:pointer;
     }
 
     .bchat-button {
@@ -319,7 +325,13 @@
         padding: 0px $bchat-margin-sm;
         margin-left: 33px;
       }
-
+      .qr-icon-btn {
+        width: 30px;
+        height: 30px;
+        left: 103px;
+        position: relative;
+        cursor: pointer;
+      }
       .bchat-icon-button {
         padding: 0px;
       }

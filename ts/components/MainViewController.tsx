@@ -6,6 +6,8 @@ import { VALIDATION } from '../bchat/constants';
 
 export class MessageView extends React.Component {
   public render() {
+      console.log("window.Events.getThemeSetting()",window.Events.getThemeSetting())
+  
     return (
       <div className="conversation placeholder">
         <div className="conversation-header" />
@@ -16,11 +18,15 @@ export class MessageView extends React.Component {
               className="bchat-brand-logo"
               alt="full-brand-logo"
             />*/}
-            <img
+            <div  className="bchat-text-logo">
+           
+
+            </div>
+            {/* <img
               src={`images/bchat/${window.Events.getThemeSetting()==='dark'?'emptyMessage.svg':"emptyMessageWhite.svg"}`}
               className="bchat-text-logo"
               alt="full-brand-logo"
-            /> 
+            />  */}
            <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
           </div>
         </div>

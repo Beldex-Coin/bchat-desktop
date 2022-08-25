@@ -161,7 +161,7 @@ export const ConversationListItemHeaderItem = () => {
         @
       </MentionAtSymbol>
     ) : null;
-    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount}</p>;
+    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount>99?"99+":unreadCount}</p>;
   }
 
   return (

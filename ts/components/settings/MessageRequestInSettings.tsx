@@ -178,7 +178,7 @@ const MessageRequestListSetting = (props: Props) => {
        
        
         <Portal>
-            {console.log("triggerIdMemoConversationListItemContextMenu",triggerId)}
+           
             
           <MemoConversationListItemContextMenu triggerId={triggerId} />
         </Portal>

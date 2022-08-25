@@ -10,8 +10,8 @@ type Props = {
 };
 
 export const AdminLeaveClosedGroupDialog = (props: Props) => {
-  const convo = getConversationController().get(props.conversationId);
-  const titleText = `${window.i18n('leaveGroup')} ${convo.getName()}`;
+  // const convo = getConversationController().get(props.conversationId);
+  const titleText = `${window.i18n('leaveGroup')} ?`;
   const warningAsAdmin = `${window.i18n('leaveGroupConfirmationAdmin')}`;
   const okText = window.i18n('leaveAndRemoveForEveryone');
   const cancelText = window.i18n('cancel');
@@ -34,10 +34,10 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
   return (
     <BchatWrapperModal title={titleText} onClose={closeDialog}>
       <SpacerLG />
-      <p>{warningAsAdmin}</p>
+      <p style={{width:"310px",color:'#6A6A77'}}>{warningAsAdmin}</p>
 
       <div className="bchat-modal__button-group">
-        <BchatButton text={cancelText} onClick={closeDialog} />
+        <BchatButton text={cancelText} onClick={closeDialog} buttonColor={BchatButtonColor.White}/>
         <BchatButton text={okText} onClick={onClickOK} buttonColor={BchatButtonColor.Danger} />
       </div>
     </BchatWrapperModal>

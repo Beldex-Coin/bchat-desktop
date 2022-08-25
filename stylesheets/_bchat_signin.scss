@@ -11,6 +11,12 @@
   .registration-inputfields {
     background-color: #128B17;
   }
+  &_conversation-doodle
+  {
+    background-image:var(--image-BgDoodle);
+    width:100%;
+    height:100%;
+  }
   &-content {
     .bchat-button.brand-outline.brand.green:hover {
       // background-color: var(--color-accent);

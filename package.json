@@ -167,6 +167,7 @@
     "@types/react-redux": "7.1.9",
     "@types/react-virtualized": "9.18.12",
     "@types/redux-logger": "3.0.7",
+    "@types/request-promise": "^4.1.48",
     "@types/rimraf": "2.0.2",
     "@types/semver": "5.5.0",
     "@types/sinon": "9.0.4",

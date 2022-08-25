@@ -387,6 +387,8 @@
 .module-message-detail__label {
   font-weight: 300;
   padding-inline-end: 5px;
+  font-family: $bchat-font-poppin-semibold;
+  font-size: 16px;
 }
 
 .module-message-detail__delete-button-container {
@@ -639,6 +641,7 @@
   padding-bottom: 8px;
   padding-inline-start: 16px;
   align-items: center;
+  border-bottom: var(--color-bchat-border);
 
   cursor: pointer;
 

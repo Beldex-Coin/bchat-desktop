@@ -87,10 +87,10 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
     }
     else{
-      return <div style={{marginLeft:"20px",color:"white"}}>
+      return <div className='module-left-pane__header_gearIcon'>
          <BchatIcon  
          iconType={"gear"}
-         iconColor={"#fff"}
+        //  iconColor={"#fff"}
          iconSize={"large"}
          />
      </div>
@@ -118,15 +118,15 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 function Moon ()
 {
   if (SectionType.Settings !==focusedSection) {
-    return <div style={{marginRight:"10px"}}>
- <BchatIconButton
+    return <div style={{marginRight:"10px"}} className='dayAndNightIcon'  onClick={handleClick} >
+ {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
   dataTestId="theme-section"
   iconColor={undefined}
   onClick={handleClick}
  
-/>
+/> */}
     </div>
    
   }
@@ -150,7 +150,10 @@ function Moon ()
           />
         )}
        
-        {verifyScreens()}
+       <div className=''>
+       {verifyScreens()}
+       </div>
+        
        
        <div className='module-left-pane__header__title'>
        {label}

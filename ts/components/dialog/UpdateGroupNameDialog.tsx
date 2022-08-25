@@ -13,6 +13,7 @@ import { initiateOpenGroupUpdate } from '../../bchat/group/open-group';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 
+
 type Props = {
   conversationId: string;
 };
@@ -109,6 +110,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         <SpacerMD />
 
         {isAdmin ? (
+          <div className='groupNameBox'>
           <input
             type="text"
             className="profile-name-input"
@@ -121,10 +123,11 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
             autoFocus={true}
             data-testid="group-name-input"
           />
+          <span style={{color:"red",cursor:"pointer",fontSize:"18px"}} onClick={()=>this.setState({groupName:""})}>x</span> </div>
         ) : null}
 
         <div className="bchat-modal__button-group">
-          <BchatButton text={cancelText} onClick={this.closeDialog} />
+          <BchatButton text={cancelText} onClick={this.closeDialog} buttonColor={BchatButtonColor.White} />
 
           <BchatButton
             text={okText}

@@ -5,6 +5,7 @@ $onionPathLineColor: rgba(#7a7a7a, 0.6);
 }
 .subtle {
   opacity: $bchat-subtle-factor;
+  width: 207px;
 }
 
 .soft {
@@ -106,7 +107,7 @@ textarea {
 
     &:not(.disabled):hover {
       // background: var(--color-clickable-hovered);
-      opacity: 0.6;
+      opacity: 0.8;
     }
 
     &.green,
@@ -131,6 +132,7 @@ textarea {
 
     &.white {
       color: var(--color-text);
+      background-color: var(--color-cancelBtn-bg);
     }
     &.primary {
       background-color: var(--color-background-primary);
@@ -151,8 +153,8 @@ textarea {
     }
     &.danger {
       // background-color: $bchat-color-danger;
-      background-color: #1F1F29;
-      color:red;
+      background-color: #E22B2B;
+      color: #FFFFFF;
 
       
     }
@@ -187,7 +189,7 @@ textarea {
     }
     &.danger {
       @include transparent-background($bchat-color-danger);
-      background-color: #1F1F29;
+      
     }
     &.warning {
       @include transparent-background($bchat-color-warning-alt);
@@ -273,7 +275,7 @@ textarea {
   display: inline-block;
   position: relative;
   transform: translateZ(0);
-  color: white;
+   color: white;
 
  
   &:hover {  
@@ -416,6 +418,7 @@ label {
   background: var($toast-color-success);
   font-family: $bchat-font-poppin-medium;
 
+
   // background: linear-gradient(--color-cell-background);
 
   color: var(--color-text);
@@ -435,16 +438,16 @@ label {
     border-radius: 15px;
   }
   &--success {
-    @include set-toast-theme($toast-color-success);
+    @include set-toast-theme(var(--color-toast-success));
   }
   &--info {
-    @include set-toast-theme($toast-color-success);
+    @include set-toast-theme(var(--color-toast-success));
   }
   &--warning {
-    @include set-toast-theme($toast-color-error);
+    @include set-toast-theme(var(--color-toast-error));
   }
   &--error {
-    @include set-toast-theme($toast-color-error);
+    @include set-toast-theme(var(--color-toast-error));
   }
 
   .Toastify__progress-bar {
@@ -461,7 +464,7 @@ label {
   max-height: 70vh;
   max-width: calc(min(70vw, 800px));
   font-family: $bchat-font-default;
-  background-color: var(--color-profile);
+  background-color: var(--color-smModal-bg);
   color: var(--color-text);
   border: var(--border-bchat);
   box-shadow: var(--color-bchat-shadow);
@@ -477,12 +480,13 @@ label {
     align-items: center;
 
     padding: $bchat-margin-lg;
+    padding-bottom: 0px;
 
-    font-family: $bchat-font-default;
+    font-family: $bchat-font-poppins-bold;
     text-align: center;
     line-height: 18px;
     font-size: $bchat-font-md;
-    font-weight: 700;
+    font-weight:bold;
 
     &.reverse {
       flex-direction: row-reverse;
@@ -501,6 +505,10 @@ label {
     &__icons,
     &__close {
       width: 60px;
+      .bchat-icon-button
+      {
+       color: var(--color-text); 
+      }
     }
     &__icons {
       float: right;
@@ -567,7 +575,7 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #444455;
+    background-color:var(--color-input-background);
     padding: 11px 25px;
     border-radius: 7px;
     .bchat-button {
@@ -580,7 +588,13 @@ label {
 
       .bchat-button {
         margin: $bchat-margin-xs;
+
+        .default.white{
+          background-color:var(--color-input-background); 
+        }
+        
       }
+      
     }
   }
   &__button-group:hover
@@ -640,21 +654,22 @@ label {
 }
 
 .bchat-toggle {
-  width: 45px;
+  width: 50px;
   height: 22px;
   /* border: 1.5px solid #e5e5ea; */
   border-radius: 11px;
   position: relative;
   cursor: pointer;
-  background-color: #000;
+  background-color:var(--color-toggleOff);
+  box-shadow: var(--color-bchat-shadow);
   .knob {
     position: absolute;
-    top: -5px;
+    top: -2px;
     left: -2.5px;
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     border-radius: 28px;
-    background-color: $bchat-color-white;
+    background-color:#ECECEC;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.05), 0 3px 1px 0 rgba(0, 0, 0, 0.05),
       0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -669,6 +684,7 @@ label {
     .knob {
       transform: translateX(20px);
       background-color: $bchat-color-green;
+      left:10px;
 
     }
   }
@@ -723,7 +739,7 @@ label {
     font-size: $bchat-font-sm;
 
     color: var(--color-text);
-    background: #181821;
+    background: var(--color-composeMsgInput);
     // background: var(--color-cell-background);
 
     &:hover {
@@ -823,13 +839,13 @@ label {
   justify-content: center;
   border-radius: 6px;
   // margin-bottom: 45px;
-  width: 24%;
+  width: 50%;
 
   // background: white;
   padding: 0.2rem;
   svg {
-    width: 80px !important;
-    height: 80px !important;
+    width: 200px !important;
+    height: 149px !important;
     // border-radius: 6px;
     // padding: $bchat-margin-xs;
     // background-color: $bchat-color-white;
@@ -917,6 +933,9 @@ label {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 15px;
+    height: 100%;
+    
+
   }
 
   &-header {
@@ -944,10 +963,11 @@ label {
   &-item {
     font-size: $bchat-font-md;
     padding: $bchat-margin-lg;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     border-radius:10px;
     background: var(--color-settingIndication);
     color: var(--color-text);
+    // box-shadow: var(--color-bchat-shadow);
    
     &.inline {
       display: flex;
@@ -989,6 +1009,10 @@ label {
       .bchat-toggle {
         transition: $bchat-transition-duration;
       }
+      .active
+      {
+        background-color: var(--color-inbox-background);
+      }
     }
     &__dropdownValue {
       width: 78px;
@@ -1017,6 +1041,7 @@ label {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
+    background-color: var(--color-inbox-background);
   }
 
   &__version-info {
@@ -1410,6 +1435,9 @@ input {
   display: flex;
   justify-content: space-between;
   transition: $bchat-transition-duration;
+  // border:var(--color-bchat-border);
+  border-bottom:var(--color-bchat-border) ;
+  
 
   &:not(:last-child) {
     border-bottom: var(--border-bchat);
@@ -1426,7 +1454,7 @@ input {
   &__checkmark {
     width: 20px;
     height: 20px;
-    border: 1px solid white;
+    border: 1px solid var(--color-text);
     border-radius: 10px;
     margin: auto 0;
     padding: 2px;

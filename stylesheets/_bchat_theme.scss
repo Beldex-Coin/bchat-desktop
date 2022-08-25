@@ -4,7 +4,7 @@
 }
 .module-conversation-header {
   // background: var(--color-cell-background);
-  background-color: black;
+  background-color: var(--color-chatHeader);
 }
 
 .module-message {
@@ -35,6 +35,8 @@
   &__container--incoming {
     &--opaque {
       background: var(--color-received-message-background);
+      box-shadow: 0px 3px 5px 0px #00000029;
+      
     }
 
     &--transparent {
@@ -63,6 +65,8 @@
       align-items: center;
      
 
+     
+
       svg {
         margin-right: $bchat-margin-xs;
       }
@@ -84,6 +88,8 @@
     padding: 5px;
     &--opaque {
       background: var(--color-sent-message-background);
+      box-shadow: 0px 3px 5px 0px #00000029;
+
     }
 
     &--transparent {
@@ -124,7 +130,8 @@
     display: flex;
     width: 100%;
     align-items: center;
-    height: 68px;
+    // height: 68px;
+     padding-right: 10px;
 
   }
   .checkedCircle,.isSelected{
@@ -139,16 +146,16 @@
   }
   .checkedCircle
       {
-        border: 1px solid white;
+        border: 2px solid var(--color-text);
       }
   &.message-selected {
     background-color: rgba(40, 121, 251, .3);
     
-    .isSelected{
+    // .isSelected{
       
-      border: 1px solid rgba(17, 193, 25, 1);
+    //  border: 1px solid rgba(17, 193, 25, 1);
   
-    }
+    // }
 
     .module-message {
       &__container {

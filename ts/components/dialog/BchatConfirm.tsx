@@ -43,7 +43,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     message = '',
     messageSub = '',
     okTheme = BchatButtonColor.Primary,
-    closeTheme = BchatButtonColor.Primary,
+    closeTheme = BchatButtonColor.White,
     onClickOk,
     onClickClose,
     hideCancel = false,
@@ -125,14 +125,9 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
         <BchatSpinner loading={isLoading} />
       </div>
-
+  
       <div className="bchat-modal__button-group">
-        <BchatButton
-          text={okText}
-          buttonColor={okTheme}
-          onClick={onClickOkHandler}
-          dataTestId="Bchat-confirm-ok-button"
-        />
+       
         {!hideCancel && (
           <BchatButton
             text={cancelText}
@@ -141,6 +136,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             dataTestId="Bchat-confirm-cancel-button"
           />
         )}
+         <BchatButton
+          text={okText}
+          buttonColor={okTheme}
+          onClick={onClickOkHandler}
+          dataTestId="Bchat-confirm-ok-button"
+        />
       </div>
     </BchatWrapperModal>
   );
