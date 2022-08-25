@@ -63,7 +63,7 @@ $bchat-compose-margin: 20px;
     &__unread-count {
       // color: var(--color-text);
       /* background: var(--color-clickable-hovered); */
-      color: white;
+      color:white;
       background-color: #128B17;
       position: relative;
       // font-weight: 700 !important;
@@ -152,10 +152,11 @@ $bchat-compose-margin: 20px;
       font-family: $bchat-font-poppin-semibold;
       font-size: 22px;
     }
-
-    &_gearIcon {
-      svg {
-        color: var(--color-text);
+    &_gearIcon
+    {
+      svg
+      {
+        color:var(--color-text);
       }
     }
 
@@ -271,18 +272,15 @@ $bchat-compose-margin: 20px;
       padding: 0 0;
       text-align: center;
 
-      .bchat-button.brand-outline.danger {
+      .bchat-button.brand-outline.danger
+      {
         width: 79%;
-        height: 42px;
-        margin: 18px auto;
-        background-color: var(--color-clearBtn);
-      }
+    height: 42px;
+    margin: 14px auto;
 
-      .bchat-button.brand-outline.danger:hover {
-        opacity: 0.8px;
-        color: red;
       }
     }
+
 
     .nextButton {
       width: 79%;
@@ -575,7 +573,7 @@ $bchat-compose-margin: 20px;
       flex-grow: 1;
       background-color: var(--color-clearBtn);
       height: 45px;
-      border: none;
+      border:none;
     }
 
     .bchat-button {
@@ -592,7 +590,7 @@ $bchat-compose-margin: 20px;
       color: red;
       font-family: $bchat-font-poppin-semibold;
 
-
+      
     }
   }
 

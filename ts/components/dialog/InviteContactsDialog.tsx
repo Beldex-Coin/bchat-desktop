@@ -177,7 +177,7 @@ const InviteContactsDialogInner = (props: Props) => {
       <SpacerLG />
 
       <div className="bchat-modal__button-group">
-        <BchatButton text={cancelText} onClick={closeDialog} />
+        <BchatButton text={cancelText} onClick={closeDialog}  buttonColor={BchatButtonColor.White}/>
         <BchatButton
           text={okText}
           disabled={!hasContacts}

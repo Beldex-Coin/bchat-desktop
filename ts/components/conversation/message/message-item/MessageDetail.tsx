@@ -105,7 +105,8 @@ export const MessageDetail = () => {
     <div className="message-detail-wrapper">
       <div className="module-message-detail">
         <div className="module-message-detail__message-container">
-          <Message messageId={messageId} isDetailView={true} />
+          <h2>More Informations</h2>
+          <Message messageId={messageId} isDetailView={false} />
         </div>
         <table className="module-message-detail__info">
           <tbody>
@@ -120,15 +121,18 @@ export const MessageDetail = () => {
             ))}
             <tr>
               <td className="module-message-detail__label">{i18n('sent')}</td>
-              <td>
-                {moment(sentAt).format('LLLL')} <span>({sentAt})</span>
+              <td className="module-message-detail__label" style={{paddingLeft:'10px'}}>
+                {moment(sentAt).format('LLLL')} 
+                
+                {/* <span>({sentAt})</span> */}
               </td>
             </tr>
             {receivedAt ? (
               <tr>
                 <td className="module-message-detail__label">{i18n('received')}</td>
-                <td>
-                  {moment(receivedAt).format('LLLL')} <span>({receivedAt})</span>
+                <td className="module-message-detail__label" style={{paddingLeft:'10px'}}>
+                  {moment(receivedAt).format('LLLL')} 
+                  {/* <span>({receivedAt})</span> */}
                 </td>
               </tr>
             ) : null}

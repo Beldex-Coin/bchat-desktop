@@ -80,7 +80,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const viewDefault = this.state.mode === 'default';
     const viewEdit = this.state.mode === 'edit';
     const viewQR = this.state.mode === 'qr';
-    console.log("viewDefault:",viewDefault,viewEdit,viewQR)
+    // console.log("viewDefault:",viewDefault,viewEdit,viewQR)
     const bchatID = UserUtils.getOurPubKeyStrFromCache();
     const backButton =
       viewEdit || viewQR
@@ -306,8 +306,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   }
 
   private renderAddressView (props:any) {
-    let walletAdderess=localStorage.getItem("userAddress");
-
+   let walletAddress=localStorage.getItem("userAddress");
     return(
       <div>
         <p style={{fontFamily:'poppin-semibold',fontSize:'12px'}}>BChat ID</p>
@@ -331,8 +330,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
             <p style={{fontFamily:'poppin-semibold',fontSize:'12px'}}>Beldex Address</p>
             <div className='bchat-id-section-display'>
-              <div style={{width:'80%',fontFamily:'poppin-medium',fontSize:'12px'}}>{walletAdderess}</div>
-              <div  onClick={()=>copyBchatID(walletAdderess)} 
+              <div style={{width:'80%',fontFamily:'poppin-medium',fontSize:'12px'}}>{walletAddress}</div>
+              <div  onClick={()=>copyBchatID(walletAddress)} 
               // style={{
               //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
               //  width: "40px",
@@ -466,7 +465,7 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
 
 
 
-function copyBchatID(bchatID:any) {
+function copyBchatID(bchatID: any) {
   window.clipboard.writeText(bchatID);
   ToastUtils.pushCopiedToClipBoard();
 }

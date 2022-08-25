@@ -258,7 +258,7 @@
   "leaveGroup": "සමූහය හැරයන්න",
   "leaveAndRemoveForEveryone": "සමූහය හැරයන්න සහ සැවොම ඉවත් කරන්න",
   "leaveGroupConfirmation": "ඔබට මෙම සමූහය හැරයාමට අවශ්‍ය බව විශ්වාසද?",
-  "leaveGroupConfirmationAdmin": "As you are the admin of this group, if you leave it it will be removed for every current members. Are you sure you want to leave this group?",
+  "leaveGroupConfirmationAdmin": "Because you are the creator of this group. it will be deleted for everyone. This cannot be undone.?",
   "cannotRemoveCreatorFromGroup": "මෙම පරිශීලක ඉවත් කළ නොහැකිිය",
   "cannotRemoveCreatorFromGroupDesc": "You cannot remove this user as they are the creator of the group.",
   "noContactsForGroup": "ඔබට තවම කිසිම සබඳතාවක් නැත",

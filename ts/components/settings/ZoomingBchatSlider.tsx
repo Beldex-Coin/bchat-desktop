@@ -37,25 +37,27 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     forceUpdate();
   };
  
-  console.log("currentValueFromSettings",currentValueFromSettings);
+  // console.log("currentValueFromSettings",currentValueFromSettings);
   
   
   const customStyles = {
     option: (provided:any, state:any) => ({
       ...provided,
       // borderBottom: '1px dotted pink',
-      color: state.isSelected ? '#128b17' : 'white',
-    
+      // color: state.isSelected ? '#128b17' : 'var(--color-text)',
+      color: state.isSelected ? 'var(--color-text)' : 'var(--color-text)',
+
       textAlign:'center',
       padding:"10 2",
-
+      
     }),
+
    
     singleValue: (provided:any, state:any) => ({
       ...provided,
       opacity : state.isDisabled ? 0.5 : 1,
       transition : 'opacity 300ms',
-      color:"white",
+      color:"var(--color-text)",
       
   
      
@@ -66,7 +68,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         }),
     control:(provided:any) => ({
       ...provided,
-      backgroundColor:"#3A3A4E",
+      backgroundColor:"var(--color-inboxBgColor)",
       border:"none",
       outline:"none",
       width:"90px" 
@@ -77,7 +79,8 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     }),
     menu:(provided:any,) => ({
       ...provided,
-      backgroundColor:"#3A3A4E",
+      backgroundColor:"var(--color-inboxBgColor)",
+      zIndex:10000
     }),
   }
   

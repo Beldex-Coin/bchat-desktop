@@ -258,7 +258,7 @@
   "leaveGroup": "離開群組",
   "leaveAndRemoveForEveryone": "離開群組並爲所有人移除",
   "leaveGroupConfirmation": "您確定要離開此群組？",
-  "leaveGroupConfirmationAdmin": "As you are the admin of this group, if you leave it it will be removed for every current members. Are you sure you want to leave this group?",
+  "leaveGroupConfirmationAdmin": "Because you are the creator of this group. it will be deleted for everyone. This cannot be undone.?",
   "cannotRemoveCreatorFromGroup": "不能移除該用戶",
   "cannotRemoveCreatorFromGroupDesc": "您不能從群組中移除群組創建者。",
   "noContactsForGroup": "您尚未添加聯絡人",

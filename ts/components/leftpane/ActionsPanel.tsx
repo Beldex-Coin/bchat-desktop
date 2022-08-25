@@ -152,7 +152,7 @@ const Section = (props: { type: SectionType }) => {
                 iconSize="large"
                 dataTestId="message-section"
                 iconType={'chatBubble'}
-                iconColor={undefined}
+                // iconColor={undefined}
                 notificationCount={unreadToShow}
                 onClick={handleClick}
                 isSelected={isSelected}
@@ -178,7 +178,7 @@ const Section = (props: { type: SectionType }) => {
           iconSize="large"
           dataTestId="settings-section"
           iconType={'closedgroup'}
-          iconColor={undefined}
+          // iconColor={undefined}
           notificationCount={unreadToShow}
           onClick={handleClick}
           isSelected={isSelected}
@@ -192,7 +192,7 @@ const Section = (props: { type: SectionType }) => {
             iconSize="large"
             dataTestId="settings-section"
             iconType={'opengroup'}
-            iconColor={undefined}
+            // iconColor={undefined}
             notificationCount={unreadToShow}
             onClick={handleClick}
             isSelected={isSelected}
@@ -208,7 +208,7 @@ const Section = (props: { type: SectionType }) => {
           iconSize="large"
           dataTestId="settings-section"
           iconType={'gear'}
-          iconColor={undefined}
+          // iconColor={undefined}
           notificationCount={unreadToShow}
           onClick={handleClick}
           isSelected={isSelected}

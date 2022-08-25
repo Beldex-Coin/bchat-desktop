@@ -30,7 +30,7 @@
   .contact-selection-list {
     width: 100%;
     min-width: 300px;
-    box-shadow: var(--color-bchat-shadow);
+    box-shadow:var( --color-bchat-shadow);
   }
 }
 
@@ -41,7 +41,6 @@
   .content {
     max-width: 100% !important;
   }
-
   .contact-selection-list {
     width: 100%;
   }
@@ -174,7 +173,6 @@
   .qr-image {
     transition: $bchat-transition-duration;
     opacity: 10%;
-
     &:hover {
       opacity: 100%;
     }
@@ -182,17 +180,16 @@
 }
 
 .loki-dialog {
-  &~.index.inbox {
+  & ~ .index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
   }
-
-  .groupNameBox {
+  .groupNameBox
+  {
     display: flex;
     border-bottom: var(--border-bchat);
   }
-
   input {
     background-color: var(--color-smModal-bg);
     color: var(--color-text);
@@ -273,7 +270,7 @@
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0BB70F;
-      display: flex;
+      display:flex;
       justify-content: space-between;
       align-items: center;
       flex-direction: row;
@@ -285,16 +282,16 @@
     }
 
     &-display-icon {
-      background: url('../images/bchat/copy_icon.svg');
+      background:url('../images/bchat/copy_icon.svg');
       background-repeat: no-repeat;
       width: 40px;
       height: 40px;
       position: relative;
-      background-color: var(--color-composeMsgInput);
-      background-size: 16px;
-      border-radius: 30px;
-      background-position: center;
-      cursor: pointer;
+      background-color:var(--color-composeMsgInput);
+      background-size:16px;
+      border-radius:30px;
+      background-position:center;
+      cursor:pointer;
     }
 
     .bchat-button {
@@ -328,7 +325,6 @@
         padding: 0px $bchat-margin-sm;
         margin-left: 33px;
       }
-
       .qr-icon-btn {
         width: 30px;
         height: 30px;
@@ -336,7 +332,6 @@
         position: relative;
         cursor: pointer;
       }
-
       .bchat-icon-button {
         padding: 0px;
       }

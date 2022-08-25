@@ -8,9 +8,10 @@ import _ from 'lodash';
 import { removeMessage } from '../../../../data/data';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { getConversationController } from '../../../../bchat/conversations';
-import { messageExpired, 
+import {
+  messageExpired,
   toggleSelectedMessageId
- } from '../../../../state/ducks/conversations';
+} from '../../../../state/ducks/conversations';
 import {
   getGenericReadableMessageSelectorProps,
   getIsMessageSelected,
@@ -109,7 +110,7 @@ export const GenericReadableMessage = (props: Props) => {
   const msgProps = useSelector(state =>
     getGenericReadableMessageSelectorProps(state as any, props.messageId)
   );
-  const isSelectionMode = useSelector(isMessageSelectionMode);  
+  const isSelectionMode = useSelector(isMessageSelectionMode);
 
 
   const expiringProps: ExpiringProps = {
@@ -162,13 +163,13 @@ export const GenericReadableMessage = (props: Props) => {
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
-  
+
   const onSelect = useCallback((messageId) => {
-    console.log("onSelect",isSelectionMode,messageId);
-    
+    console.log("onSelect", isSelectionMode, messageId);
+
     //  if(isSelectionMode)
     //  {
-      dispatch(toggleSelectedMessageId(messageId));
+    dispatch(toggleSelectedMessageId(messageId));
     //  }
   }, [messageId]);
 
@@ -186,34 +187,35 @@ export const GenericReadableMessage = (props: Props) => {
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
     >
-      
+
       {/* <SelectionDiv onClick={()=>isSelectionMode&&onSelect(messageId)}> */}
-      <div className='message-box' onClick={()=>isSelectionMode&&onSelect(messageId)} >
-      <div className={classNames( isSelectionMode&&!selected&&'checkedCircle')} onClick={()=>onSelect(messageId)} >
-        {selected&&<div className='isSelected'><BchatIcon iconType="check" iconColor={'rgba(17, 193, 25, 1)'} iconSize={15} /></div>}
-      </div>
-      <MessageAvatar messageId={messageId} />
-      {expirationLength && expirationTimestamp && (
-        <ExpireTimer
-          isCorrectSide={!isIncoming}
-          expirationLength={expirationLength}
-          expirationTimestamp={expirationTimestamp}
+      <div className='message-box' onClick={() => isSelectionMode && onSelect(messageId)} >
+        <div className={classNames(isSelectionMode && !selected && 'checkedCircle')} onClick={() => onSelect(messageId)} >
+          {selected && <div className='isSelected'><BchatIcon iconType="check" iconColor={'#11c119'} iconSize={23} /></div>}
+        </div>
+        {/* <BchatIcon iconType="check" iconColor={'rgba(17, 193, 25, 1)'} iconSize={17} /> */}
+        <MessageAvatar messageId={messageId} />
+        {expirationLength && expirationTimestamp && (
+          <ExpireTimer
+            isCorrectSide={!isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        )}
+        <MessageContentWithStatuses
+          ctxMenuID={props.ctxMenuID}
+          messageId={messageId}
+          isDetailView={isDetailView}
+          dataTestId={`message-content-${messageId}`}
         />
-      )}
-      <MessageContentWithStatuses
-        ctxMenuID={props.ctxMenuID}
-        messageId={messageId}
-        isDetailView={isDetailView}
-        dataTestId={`message-content-${messageId}`}
-      />
-      {expirationLength && expirationTimestamp && (
-        <ExpireTimer
-          isCorrectSide={isIncoming}
-          expirationLength={expirationLength}
-          expirationTimestamp={expirationTimestamp}
-        />
-      )}
-      {/* </SelectionDiv> */}
+        {expirationLength && expirationTimestamp && (
+          <ExpireTimer
+            isCorrectSide={isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        )}
+        {/* </SelectionDiv> */}
       </div>
     </ReadableMessage>
   );

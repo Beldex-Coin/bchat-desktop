@@ -18,7 +18,7 @@ export function pushToastWarning(id: string, title: string, description?: string
   console.log("TOAST:WARN",id,title,description)
   toast.warning(
     <BchatToast title={title} description={description} type={BchatToastType.Warning} />,
-    { toastId: id, updateId: id }
+    { toastId: id, updateId: id ,autoClose:100000000000}
   );
 }
 

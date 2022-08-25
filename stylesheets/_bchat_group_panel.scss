@@ -3,8 +3,8 @@
   flex-direction: column;
   height: 93vh;
   width: -webkit-fill-available;
-  // background: var(--color-cell-background);
-  background: #181821;
+  background: var(--color-cell-background);
+  // background: #181821;
   border-left: var(--border-bchat);
 
   align-items: center;
@@ -84,11 +84,10 @@
     min-height: 3rem;
     font-size: 0.8rem;
     color: var(--color-text);
-    // background: var(--color-cell-background);
-    background: #181821;
+    background: var(--color-cell-background);
+    // background: #181821;
     // border-top: var(--border-bchat);
-    border-top:2px solid #262631;
-    border-bottom:2px solid #262631;
+    border-bottom: var(--color-bchat-border);
     // border-bottom: var(--border-bchat);
 
     width: -webkit-fill-available;
@@ -116,6 +115,7 @@
     align-items: center;
     border: none;
     border-top: var(--border-bchat);
+    background-color: var(--color-composeMsgInput);
   }
 
   .module-empty-state {

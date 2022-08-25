@@ -149,7 +149,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
       }}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize="huge" />
+      <BchatIconButton iconType="ellipses" iconSize="huge"  />
     </div>
   );
 };

@@ -27,7 +27,7 @@ const StyledPillContainerHoverable = styled.div<PillContainerProps>`
 
 const StyledPillInner = styled.div<PillContainerProps>`
   
-  background: #343240;
+  background:var(--color-inboxBgColor);
   display: flex;
   flex-direction: 'row';
   flex-grow: 1;

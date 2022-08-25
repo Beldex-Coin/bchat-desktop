@@ -142,6 +142,8 @@ export const ReadableMessage = (props: ReadableMessageProps) => {
       ) {
         if (shouldMarkReadWhenVisible) {
           const found = await getMessageById(messageId);
+         
+          
 
           if (found && Boolean(found.get('unread'))) {
             const foundReceivedAt = found.get('received_at');

@@ -4,22 +4,12 @@ import path from 'path';
 import os from 'os';
 import { default as insecureNodeFetch } from 'node-fetch';
 import { HTTPError } from '../bchat/utils/errors';
-// import portscanner from 'portscanner';
-// import killport from 'kill-port';
+import request from 'request-promise';
+import portscanner from 'portscanner'; 
+import { kill } from 'cross-port-killer';
+
 export const startWalletRpc = async() => {
   try{
-
-    // if (os.platform() === "win32") {
-    //   configDir = "C:\\ProgramData\\beldex";
-    //   legacyLokiConfigDir = "C:\\ProgramData\\beldex\\";
-    //   this.wallet_dir = `${os.homedir()}\\Documents\\Beldex`;
-    // } else {
-    //   configDir = path.join(os.homedir(), ".beldex");
-    //   legacyLokiConfigDir = path.join(os.homedir(), ".beldex/");
-    //   this.wallet_dir = path.join(os.homedir(), "Beldex");
-    // }
-  console.log("uuntu:", process.platform,os.homedir())
-  console.log("version:", process.env.NODE_ENV)
   let walletDir:string;
   if (os.platform() === "win32") {
       walletDir =`${os.homedir()}\\Documents\\Beldex`;
@@ -27,46 +17,49 @@ export const startWalletRpc = async() => {
       walletDir = path.join(os.homedir(), "Beldex");
   }
 
-  //  await fixPath();
-  console.log("uuntu:", process.platform)
-  console.log("product Mode::", process.env.NODE_ENV)
-
-  const rpcExecutable =
-    process.platform === "linux" ? "/beldex-wallet-rpc-ubuntu" : "/beldex-wallet-rpc-darwin";
-  console.log("rpcExecutable:", rpcExecutable)
-  console.log("currentPath:",__dirname)
-  console.log("pathsss:", path.join(__dirname, '../../bin'))
-
-  // eslint-disable-next-line no-undef
+  const rpcExecutable = process.platform === "linux" ? "/beldex-wallet-rpc-ubuntu": process.platform ==="win32"
+    ? "/beldex-wallet-rpc-windows" : "/beldex-wallet-rpc-darwin";
   let __ryo_bin:string;
   if(process.env.NODE_ENV=='production'){
    __ryo_bin = path.join(__dirname, '../../../bin');  //production
   }else{
     __ryo_bin = path.join(__dirname, '../../bin');     //dev
   }
-  console.log("__ryo:", __ryo_bin);
   const rpcPath =await path.join(__ryo_bin, rpcExecutable);
-  console.log("rpcPath:",rpcPath)
-
-  console.log("walletDir:", walletDir)
   if (!fs.existsSync(rpcPath)) {
-    console.log("NOooo")
+    console.log("NOO")
   }else{
     console.log("YES")
   }
   if (!fs.existsSync(walletDir)) {
-    console.log("NOooo")
+    console.log("NOO")
     fs.mkdirpSync(walletDir);
   }else{
     console.log("YES")
   }
+  portscanner
+          .checkPortStatus(64371, '127.0.0.1')
+          .catch(() => "closed")
+          .then(async(status) => {
+            console.log("Status:",status)
+            if (status === "closed") {
+              await walletRpc(rpcPath,walletDir);
+}
+else{
+  kill(64371).then().catch(err => {throw new HTTPError('wallet_rpc_port', err) } )
+ await walletRpc(rpcPath,walletDir);
+}});
+}catch(e){
+  console.log('exception during wallet-rpc:', e);
+  }
+}
 
+async function walletRpc(rpcPath:string,walletDir:string){
   let wallet =  await ChildProcess.spawn(
     rpcPath,
     [
-      // '--rpc-login','test:test',
-      '--disable-rpc-login',
-      '--rpc-bind-port', '22026',
+      '--rpc-login','test:test',
+      '--rpc-bind-port', '64371',
       '--daemon-address', 'explorer.beldex.io:19091',
       '--rpc-bind-ip', '127.0.0.1',
       '--log-level', '0',
@@ -86,45 +79,71 @@ export const startWalletRpc = async() => {
       console.log("Failed to start wallet RPC");
     }
   });
-}catch(e){
-  console.log('exception during wallet-rpc:', e);
-  }
 }
+
+async function createWallet(filename:string, password:string, language:string,method:string) {
+  let options = {
+    uri :`http://localhost:64371/json_rpc`,
+    method: "POST",
+    json: {
+      jsonrpc: "2.0",
+      id: "0",
+      method: method,
+      params :{
+        filename ,
+        language  ,
+        password
+      }
+    },
+    auth: {
+      user: "test",
+      pass: "test",
+      sendImmediately: false
+    },
+    timeout:0
+  };
+const requestData:any = await request(options);
+console.log("Wallet",JSON.stringify(requestData))
+return requestData;
+}
+
 
   export async function  generateMnemonic() :Promise<any> {
   try{
-    const walletName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 7);
-    console.log("walletName:", walletName)
-    const createWallet = await walletRPC("create_wallet", {
-      name: walletName,
-      language: 'English',
-      password: ''
-    });
-    console.log("CREATE_WALLET:",createWallet)
-    let key_path = path.join(
-      `${process.cwd()}/wallet`,
-      walletName + ".keys"
-    );
-    let getAddress;
-    if (!fs.existsSync(key_path)) {
-      getAddress = (await restoreWallet(walletName, createWallet.key));
-    } else {
-      getAddress = await walletRPC("get_address");
-    }
+   const walletName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 7);
+   console.log("walletname:",walletName)
+   await createWallet(walletName, '', 'English',"create_wallet");
+    // const createWallet = await walletRPC("create_wallet", {
+    //   name: walletName,
+    //   language: 'English',
+    //   password: ''
+    // });
+    // console.log("CREATE_WALLET:",createWallet)
+    // let key_path = path.join(
+    //   `${process.cwd()}/wallet`,
+    //   walletName + ".keys"
+    // );
+    let getAddress = await walletRPC("get_address");
+    // if (!fs.existsSync(key_path)) {
+    //   getAddress = (await restoreWallet(walletName, createWallet.key));
+    // } else {
+      // getAddress = await walletRPC("get_address");
+    // }
+    let mnemonic=await walletRPC("query_key", { key_type: "mnemonic" });
     let spend_key=await walletRPC("query_key", { key_type: "spend_key" });
     let view_key=await walletRPC("query_key", { key_type: "view_key" });
     localStorage.setItem("spend_key",JSON.stringify(spend_key));
     localStorage.setItem("view_key",JSON.stringify(view_key));
     localStorage.setItem("userAddress",getAddress.address);
-    let address_txt_path = path.join(
-      `${process.cwd()}/wallet`,
-      walletName + ".address.txt"
-    );
-    if (!fs.existsSync(address_txt_path)) {
-      fs.writeFile(address_txt_path, getAddress.address, "utf8", () => {
-      });
-    }
-    return createWallet.key;
+    // let address_txt_path = path.join(
+    //   `${process.cwd()}/wallet`,
+    //   walletName + ".address.txt"
+    // );
+    // if (!fs.existsSync(address_txt_path)) {
+    //   fs.writeFile(address_txt_path, getAddress.address, "utf8", () => {
+    //   });
+    // }
+    return mnemonic.key;
  }catch(e){
   console.log('exception during wallet-rpc:', e);
   }
@@ -132,7 +151,7 @@ export const startWalletRpc = async() => {
 
 export const walletRPC = async (method: string, params = {}) => {
   try{
-  const url = "http://localhost:22026/json_rpc";
+  const url = "http://localhost:64371/json_rpc";
   const fetchOptions = {
     method: "POST"
     , "body": JSON.stringify({
@@ -145,12 +164,11 @@ export const walletRPC = async (method: string, params = {}) => {
       'Authorization': 'Basic ' + btoa('test:test')
     }
   };
-  const response = await insecureNodeFetch(url, fetchOptions);
+ const response = await insecureNodeFetch(url, fetchOptions);
   if (!response.ok) {
     throw new HTTPError('wallet_rpc error', response);
   }
   let result = await response.json();
-  console.log("result:",result)
   return result.result;
 }catch(e){
   console.log('exception during wallet-rpc:', e);

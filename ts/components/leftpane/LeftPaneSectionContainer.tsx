@@ -10,18 +10,29 @@ export const LeftPaneSectionContainer = styled.div`
   background-color:#128B17;
   padding:6px 0; 
 
-  .icon-box
+  .icon-box .bchat-icon-button
   {
     padding: 10px;
     margin: 3px 24px;
     border-radius: 20px;
-    color: white;
+  }
+  .icon-box svg:hover
+  {
+    color:#159B24;
   }
   .isSelected-icon-box {
     padding: 10px;
     margin: 3px 24px;
-    border-radius: 20px;
+    border-radius: 34px;
     background-color: white;
+    
+  }
+  .icon-box .bchat-icon-button:hover 
+  {
+    background-color: white;
+    color:#159B24;
+    border-radius: 34px;
+
   }
 
   .module-avatar {
