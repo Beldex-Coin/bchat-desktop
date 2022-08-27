@@ -597,10 +597,10 @@ label {
       
     }
   }
-  &__button-group:hover
-  {
-    opacity: .6;
-  }
+  // &__button-group:hover
+  // {
+  //   opacity: .6;
+  // }
 
   &__text-highlight {
     // @include text-highlight($bchat-color-green);
@@ -639,6 +639,7 @@ label {
       // margin-top: 30px;
       // margin-bottom: 30px;
       text-align: center;
+      margin-top: 10px;
     }
   }
 

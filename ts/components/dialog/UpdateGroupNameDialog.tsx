@@ -177,12 +177,17 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
 
   private onGroupNameChanged(event: any) {
     const groupName = event.target.value;
-    this.setState(state => {
-      return {
-        ...state,
-        groupName,
-      };
-    });
+
+    if(groupName.length<=26)
+    {
+      this.setState(state => {
+        return {
+          ...state,
+          groupName,
+        };
+      });
+    }
+    
   }
 
   private renderAvatar() {

@@ -246,7 +246,7 @@ $bchat-compose-margin: 20px;
     &-open {
       &hint-message {
         width: 90%;
-        margin: 10px  auto 0px;
+        margin: 10px auto 0px;
         font-size: 12px;
         color: #6E6E84;
         padding-right: 69px;
@@ -272,7 +272,7 @@ $bchat-compose-margin: 20px;
       padding: 0 0;
       text-align: center;
       margin: 0 auto;
-      
+
 
       .bchat-button.brand-outline.danger {
         width: 79%;
@@ -352,7 +352,7 @@ $bchat-compose-margin: 20px;
     .bchat-description-long {
       font-size: $bchat-font-sm;
       line-height: $bchat-font-h3;
-      margin: 0px 20px;
+      margin: 10px 20px 0;
       font-family: $bchat-font-default;
       color: var(--color-HintMessageText)
     }
