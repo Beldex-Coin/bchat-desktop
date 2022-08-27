@@ -15,6 +15,7 @@ export const LeftPaneSectionContainer = styled.div`
     padding: 10px;
     margin: 3px 24px;
     border-radius: 20px;
+    color:#fff;
   }
   .icon-box svg:hover
   {

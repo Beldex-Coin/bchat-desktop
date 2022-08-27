@@ -122,7 +122,7 @@ const acceptOpenGroupInvitationV2 = (completeUrl: string, roomName?: string) => 
 };
 
 /**
- * Accepts a v2 url open group invitation (with pubkey) or just log an error
+ * Accepts a v2 url Social group invitation (with pubkey) or just log an error
  */
 export const acceptOpenGroupInvitation = (completeUrl: string, roomName?: string) => {
   if (completeUrl.match(openGroupV2CompleteURLRegex)) {

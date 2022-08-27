@@ -32,7 +32,11 @@ export const BchatIdEditable = (props: Props) => {
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     if (editable && onChange) {
       const eventValue = e.target.value?.replace(/(\r\n|\n|\r)/gm, '');
-      onChange(eventValue);
+      if(eventValue.length<=26)
+      {
+        onChange(eventValue);
+      }
+     
     }
   }
 

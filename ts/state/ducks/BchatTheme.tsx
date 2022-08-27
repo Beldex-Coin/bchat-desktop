@@ -3,7 +3,7 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 const white = '#F2F2F2';
-const black = '#1C1C26';
+const black = '#22232E';
 const warning = '#e7b100';
 const destructive = '#ff453a';
 const accentLightTheme = '#159B24';
@@ -48,7 +48,7 @@ const darkScrollbarThumb = '#474646';
 const darkScrollbarTrack = '#1C1C26';
 const darkFakeChatBubbleBg = '#212121';
 
-const darkInboxBackground = '#1C1C26';
+const darkInboxBackground = black;
 const darkLeftPaneOverlayBg = darkInboxBackground;
 const darkConversationItemSelected = '#37374A';
 const darkConversationItemHasUnread = '#39394A';
@@ -68,7 +68,7 @@ const darkMessageRequestBannerIcon = '#adadad';
 const darkcomposeMsgRecordIcon ="#85858F";
 
 // for bchat
-const darkColorBg="black"
+const darkColorBg=black;
 // const darkunreadBg="#39394A";
 const darkBorderBottomColor="#1A1A24"
 const darkInboxBgColor="#353543";
@@ -98,6 +98,7 @@ const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(
 
 
 export const switchHtmlToDarkTheme = () => {
+
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
   document.documentElement.style.setProperty('--color-profile', darkProfileBgColor);
   document.documentElement.style.setProperty('--color-accent', darkColorAccent);
@@ -271,6 +272,7 @@ export const switchHtmlToDarkTheme = () => {
   );
   document.documentElement.style.setProperty('--color-toast-success', darkToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
+  document.documentElement.style.setProperty('--color-caret',lightColorCellBackground);
 
   document.documentElement.style.setProperty(
     '--image-EmptyChatImg',
@@ -367,6 +369,9 @@ const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F
 const lightToastErrorMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)";
 
 export const switchHtmlToLightTheme = () => {
+
+// console.log("switchHtmlToLightTheme:");
+
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
   document.documentElement.style.setProperty('--color-profile', lightProfileBgColor);
   document.documentElement.style.setProperty('--color-accent', lightColorAccent);
@@ -530,6 +535,8 @@ export const switchHtmlToLightTheme = () => {
   );
   document.documentElement.style.setProperty('--color-toast-success', lightToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
+  document.documentElement.style.setProperty('--color-caret',darkColorCellBackground);
+
 
   document.documentElement.style.setProperty(
     '--image-DayNight',
@@ -636,6 +643,7 @@ export const BchatGlobalStyles = createGlobalStyle`
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
+    --color-caret:${white}
 
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};

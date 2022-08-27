@@ -235,7 +235,7 @@ export const SignUpTab = (props:any) => {
   if(displayAddressScreen){
    return (
     <>
-        {!localStorage.getItem("userAddress") && <LoaderGif /> } 
+        {!localStorage.getItem("userAddress") || !hexGeneratedPubKey?<LoaderGif />:null } 
        <DisplayIdAndAddress nextFunc={()=>{setAddressScreen(false)}} pubKey={hexGeneratedPubKey} walletAddress={localStorage.getItem("userAddress")} assentAndGoBack={()=>{props.assent(true);clickGoBack()}} />
     </>
   );

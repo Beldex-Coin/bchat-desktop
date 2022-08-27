@@ -52,7 +52,7 @@ export const DisplaySeed = (props: any) => (
         
 
         <BchatButton
-            onClick={props.recoveryPhrase? props.onNext:null}
+            onClick={ props.onNext}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Green}
             text={window.i18n('next')}

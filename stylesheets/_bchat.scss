@@ -31,7 +31,7 @@ $onionPathLineColor: rgba(#7a7a7a, 0.6);
 input,
 textarea {
   // caret-color: var(--color-text) !important;
-  caret-color: white !important;
+  caret-color: var(--color-caret) !important;
 
 }
 
@@ -275,7 +275,7 @@ textarea {
   display: inline-block;
   position: relative;
   transform: translateZ(0);
-   color: white;
+  //  color: white;
 
  
   &:hover {  
@@ -575,7 +575,7 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color:var(--color-input-background);
+    // background-color:var(--color-input-background);
     padding: 11px 25px;
     border-radius: 7px;
     .bchat-button {

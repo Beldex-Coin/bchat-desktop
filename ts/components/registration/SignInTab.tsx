@@ -80,7 +80,7 @@ const SignInContinueButton = (props: {
   }
   return (
     <ContinueYourBchatButton
-    handleContinueYourBchatClick={props.handleContinueYourBchatClick}
+      handleContinueYourBchatClick={props.handleContinueYourBchatClick}
       disabled={props.disabled}
     />
   );
@@ -103,7 +103,7 @@ const SignInButtons = (props: {
   );
 };
 
-export const SignInTab = (props:any) => {
+export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
 
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
@@ -129,7 +129,7 @@ export const SignInTab = (props:any) => {
   const displayNameOK = (isRecovery && !displayNameError && !!displayName) || isLinking;
 
   // Seed is mandatory no matter which mode
-  const seedOK = (blockheight && !recoveryPhraseError)||(restoreDate && !recoveryPhraseError);
+  const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
   const activateContinueButton = seedOK && displayNameOK && !loading;
 
   const continueYourBchat = async () => {
@@ -149,39 +149,46 @@ export const SignInTab = (props:any) => {
 
   const clickGoBack = () => {
     setScreenName(false);
-    }
+  }
 
-  async function assignSeed()
-  {
-   const recoverySeed = clipboard.readText();
-   setRecoveryPhrase(recoverySeed); 
+  async function assignSeed() {
+    const recoverySeed = clipboard.readText();
+    setRecoveryPhrase(recoverySeed);
   }
 
   const seedValidation = () => {
-    try{
-      mn_decode(recoveryPhrase, 'english');
-      setScreenName(true)    
-    }catch(e){
-    setScreenName(false)
-    ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
-    window?.log?.warn('exception during registration:', e);
+    if (!recoveryPhrase) {
+      // console.log("recoveryPhrase",recoveryPhrase);
+      ToastUtils.pushToastError('registrationError', `Error: Please enter the seed`);
     }
+    else {
+      try {
+        mn_decode(recoveryPhrase, 'english');
+        setScreenName(true)
+      } catch (e) {
+        setScreenName(false)
+        ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
+        window?.log?.warn('exception during registration:', e);
+      }
+
+    }
+
   }
 
   if (signInMode !== SignInMode.Default && !screenName) {
 
     return <>
-      <div className='bchat-registration__backbutton'> 
-        <GoBackMainMenuButton assent={()=>props.assent(true)} />
+      <div className='bchat-registration__backbutton'>
+        <GoBackMainMenuButton assent={() => props.assent(true)} />
       </div>
       <DisplaySeed
-      iconfunc={()=>assignSeed()}
-      assignRecoveryPhase={(seed: string) => {
-              setRecoveryPhrase(seed);
-              setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
-            }}
-      onNext={() => {seedValidation()}} 
-      recoveryPhrase={recoveryPhrase} 
+        iconfunc={() => assignSeed()}
+        assignRecoveryPhase={(seed: string) => {
+          setRecoveryPhrase(seed);
+          setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
+        }}
+        onNext={() => { seedValidation() }}
+        recoveryPhrase={recoveryPhrase}
       />
     </>
 
@@ -197,16 +204,17 @@ export const SignInTab = (props:any) => {
   //   </div>
   //  )
   // }
-  
+
   return (
     <div className="bchat-registration__content">
       {screenName && (
         <>
-          <div className='bchat-registration__backbutton' style={{left:'52px'}}>
-          <GoBackMainMenuButton assent={()=>{
-            props.assent(true);
-            clickGoBack()}}
-          />
+          <div className='bchat-registration__backbutton' style={{ left: '52px' }}>
+            <GoBackMainMenuButton assent={() => {
+              props.assent(true);
+              clickGoBack()
+            }}
+            />
           </div>
           <div className='bchat-registration-header'>{window.i18n('restoreFromSeed')}</div>
           <BchatInput
@@ -220,7 +228,8 @@ export const SignInTab = (props:any) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
               setDisplayName(sanitizedName);
-              setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);}}
+              setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
+            }}
             onEnterPressed={props.handlePressEnter}
             inputDataTestId="display-name-input"
           />
@@ -235,17 +244,17 @@ export const SignInTab = (props:any) => {
               maxLength={10}
               onValueChanged={(e) => {
                 let checkHeight = /^[\d ]*$/.test(e);
-              if(!checkHeight)
-                return;
-              setBlockheight(e); 
-          }}
+                if (!checkHeight)
+                  return;
+                setBlockheight(e);
+              }}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
             />
 
           </div>
           <div className='bchat-restore-seed-or'> OR </div>
-          <div style={{marginBottom:"56px"}} >
+          <div style={{ marginBottom: "56px" }} >
             <p className='bchat-restore-seed-textbox-message'>If you dont know the restore Date, you can skip it.</p>
 
             <BchatInput
@@ -259,12 +268,12 @@ export const SignInTab = (props:any) => {
               inputDataTestId="display-name-input"
             />
           </div>
-          <div style={{width:'75%',marginLeft:'57px'}}>
-          <SignInContinueButton
-            signInMode={signInMode}
-            handleContinueYourBchatClick={continueYourBchat}
-            disabled={!activateContinueButton}
-          />
+          <div style={{ width: '75%', marginLeft: '57px' }}>
+            <SignInContinueButton
+              signInMode={signInMode}
+              handleContinueYourBchatClick={continueYourBchat}
+              disabled={!activateContinueButton}
+            />
           </div>
         </>
       )}

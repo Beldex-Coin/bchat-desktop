@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ToastUtils } from '../bchat/utils';
+import { ToastUtils } from '../bchat/utils'; 
 import { createClosedGroup as createClosedGroupV2 } from '../receiver/closedGroups';
 import { VALIDATION } from '../bchat/constants';
 
 export class MessageView extends React.Component {
   public render() {
-      console.log("window.Events.getThemeSetting()",window.Events.getThemeSetting())
+      // console.log("window.Events.getThemeSetting()",window.Events.getThemeSetting())
   
     return (
       <div className="conversation placeholder">

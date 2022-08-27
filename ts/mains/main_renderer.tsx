@@ -122,8 +122,8 @@ Storage.onready(async () => {
 
   // These make key operations available to IPC handlers created in preload.js
   window.Events = {
-    getThemeSetting: () => Storage.get('theme-setting', 'light'),
-    setThemeSetting: async (value: any) => {
+    getThemeSetting: () => Storage.get('theme-setting', 'dark'),
+    setThemeSetting: async (value: any) => { 
       await Storage.put('theme-setting', value);
     },
     getHideMenuBar: () => Storage.get('hide-menu-bar'),
@@ -163,7 +163,8 @@ Storage.onready(async () => {
   }
 
   const themeSetting = window.Events.getThemeSetting();
-  console.log("themeSetting ",themeSetting);
+  
+  // console.log("themeSetting ",themeSetting);
 
   
   

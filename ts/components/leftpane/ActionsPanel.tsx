@@ -249,6 +249,10 @@ const fetchReleaseFromFileServerInterval = 1000 * 60; // try to fetch the latest
 
 const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
+  // const theme = 'dark';
+
+  console.log('themeActionPenal',theme); 
+  
   window.setTheme(theme);
   if (theme === 'dark') {
     switchHtmlToDarkTheme();

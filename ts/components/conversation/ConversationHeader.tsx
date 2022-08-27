@@ -387,8 +387,10 @@ export const ConversationHeaderWithDetails = () => {
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <CallButton />
-           
+            <div style={{marginTop:"10px"}}>  
+               <CallButton />
+            </div>
+
           </Flex>
         {/* )} */}
         </div> 
