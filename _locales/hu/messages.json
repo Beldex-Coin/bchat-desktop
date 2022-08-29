@@ -350,7 +350,7 @@
   "linkDevice": "Eszköz társítása",
   "restoreUsingRecoveryPhrase": "Fiókod visszaállítása",
   "or": "vagy",
-  "ByUsingThisService...": "By using this service, you agree to our <a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a> and <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
+  "ByUsingThisService...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Üdvözöl a BChat",
   "newBchat": "Új beszélgetés",

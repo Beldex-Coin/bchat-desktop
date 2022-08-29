@@ -350,7 +350,7 @@
   "linkDevice": "Susieti įrenginį",
   "restoreUsingRecoveryPhrase": "Restore your account",
   "or": "or",
-  "ByUsingThisService...": "By using this service, you agree to our <a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a> and <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
+  "ByUsingThisService...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Welcome to your BChat",
   "newBchat": "New BChat",

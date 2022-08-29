@@ -44,11 +44,12 @@
           padding: 2px 0px 14px 0;
         }
         .title2 {
-          font-size: 14px;
+          font-size: 13px;
           padding: 7px 0px 8px 0px;
           line-height: 17px;
           text-align: center;
-          color:var(--color-Bchat-hint);
+          // color:var(--color-Bchat-hint);
+          color: #FFFFFF;
           font-family: $bchat-font-poppin-regular;
         }
       }
@@ -394,7 +395,7 @@
   &-terms-conditions-agreement {
     // padding-top: $bchat-margin-md;
     padding-left: 12px;
-    @include bchat-color-subtle(var(--color-text));
+    @include bchat-color-subtle(var(white));
     text-align: center;
     font-size: 12px;
     // font-family: $bchat-font-poppins-bold;
@@ -403,8 +404,10 @@
     a {
       white-space: nowrap;
       text-decoration: none;
-      font-family: $bchat-font-poppins-bold;
-      @include bchat-color-subtle(var(--color-text));
+      font-family: $bchat-font-poppin-regular;
+      color: white;
+      opacity: 0.8;
+      // @include bchat-color-subtle(var(--color-text));
       // @include bchat-color-subtle(white);
 
       // transition: $bchat-transition-duration;

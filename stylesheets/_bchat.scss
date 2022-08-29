@@ -177,8 +177,8 @@ textarea {
       color:white;
     }
     &.white {
-      @include transparent-background(var(--color-text-signIn));
-      background-color:var(--color-body-bg);
+      @include transparent-background(var(--color-text));
+      // background-color:var(--color-body-bg);
       box-shadow: 0px 0px 6px 0px #19192424;
     }
     &.primary {
