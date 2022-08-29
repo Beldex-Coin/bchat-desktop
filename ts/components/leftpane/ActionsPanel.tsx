@@ -66,19 +66,19 @@ import classNames from 'classnames';
 // state/ducks/section.tsx
 
 const Section = (props: { type: SectionType }) => {
-// const Section = (props:any) => {
+  // const Section = (props:any) => {
 
   const ourNumber = useSelector(getOurNumber);
   const unreadMessageCount = useSelector(getUnreadMessageCount);
   const dispatch = useDispatch();
-        const { type} = props;
+  const { type } = props;
 
   const focusedSection = useSelector(getFocusedSection);
-  const isSelected =focusedSection  === props.type;
-  
+  const isSelected = focusedSection === props.type;
+
   const handleClick = () => {
-  
-    
+
+
     /* tslint:disable:no-void-expression */
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
@@ -94,26 +94,26 @@ const Section = (props: { type: SectionType }) => {
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
-    } 
+    }
     // else if (type === SectionType.PathIndicator) {
     //   // Show Path Indicator Modal
     //   dispatch(onionPathModal({}));
     // } 
     else if (type === SectionType.Closedgroup) {
       // Show Path Indicator Modal
-      
+
       dispatch(showLeftPaneSection(1));
       dispatch(setOverlayMode('closed-group'))
-    } 
+    }
     else if (type === SectionType.Opengroup) {
       // Show Path Indicator Modal
-     
+
       dispatch(showLeftPaneSection(2));
 
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
-    } 
-   
+    }
+
     else {
       // message section
       dispatch(clearSearch());
@@ -129,7 +129,7 @@ const Section = (props: { type: SectionType }) => {
   //   console.log('indicator',params);
   // }
 
-  
+
 
   if (type === SectionType.Profile) {
     return (
@@ -148,16 +148,21 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Message:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-              <BchatIconButton
-                iconSize="large"
-                dataTestId="message-section"
-                iconType={'chatBubble'}
-                // iconColor={undefined}
-                notificationCount={unreadToShow}
-                onClick={handleClick}
-                isSelected={isSelected}
-              />
-       </div>
+          <BchatIconButton
+            iconSize="large"
+            dataTestId="message-section"
+            iconType={'chatBubble'}
+            // iconColor={undefined}
+            // notificationCount={unreadToShow}
+            onClick={handleClick}
+            isSelected={isSelected}
+          />
+          <div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
+            position: "absolute",
+            top: "-1px",
+            left: "10px",
+          }}>+</span></span>}</div>
+        </div>
       );
     // case SectionType.Contact:
     //   return (
@@ -173,21 +178,21 @@ const Section = (props: { type: SectionType }) => {
     //   );
     case SectionType.Closedgroup:
       return (
-        <div  className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-        <BchatIconButton
-          iconSize="large"
-          dataTestId="settings-section"
-          iconType={'closedgroup'}
-          // iconColor={undefined}
-          notificationCount={unreadToShow}
-          onClick={handleClick}
-          isSelected={isSelected}
-        />
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+          <BchatIconButton
+            iconSize="large"
+            dataTestId="settings-section"
+            iconType={'closedgroup'}
+            // iconColor={undefined}
+            notificationCount={unreadToShow}
+            onClick={handleClick}
+            isSelected={isSelected}
+          />
         </div>
       );
-      case SectionType.Opengroup:
-        return (
-          <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+    case SectionType.Opengroup:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -196,24 +201,24 @@ const Section = (props: { type: SectionType }) => {
             notificationCount={unreadToShow}
             onClick={handleClick}
             isSelected={isSelected}
-            
+
           />
-          </div>
-        );
-       
-          case SectionType.Settings:
+        </div>
+      );
+
+    case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-        <BchatIconButton
-          iconSize="large"
-          dataTestId="settings-section"
-          iconType={'gear'}
-          // iconColor={undefined}
-          notificationCount={unreadToShow}
-          onClick={handleClick}
-          isSelected={isSelected}
-        />
-         </div>
+          <BchatIconButton
+            iconSize="large"
+            dataTestId="settings-section"
+            iconType={'gear'}
+            // iconColor={undefined}
+            notificationCount={unreadToShow}
+            onClick={handleClick}
+            isSelected={isSelected}
+          />
+        </div>
       );
     // case SectionType.PathIndicator:
     //   return (
@@ -233,7 +238,7 @@ const Section = (props: { type: SectionType }) => {
           iconColor={undefined}
           notificationCount={unreadToShow}
           onClick={handleClick}
-          
+
         />
       );
   }
@@ -251,8 +256,8 @@ const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
   // const theme = 'dark';
 
-  console.log('themeActionPenal',theme); 
-  
+  console.log('themeActionPenal', theme);
+
   window.setTheme(theme);
   if (theme === 'dark') {
     switchHtmlToDarkTheme();
@@ -260,7 +265,7 @@ const setupTheme = () => {
     switchHtmlToLightTheme();
   }
 
-  
+
   const newThemeObject = theme === 'dark' ? 'dark' : 'light';
   window?.inboxStore?.dispatch(applyTheme(newThemeObject));
 };
@@ -448,30 +453,30 @@ export const ActionsPanel = () => {
   }, DURATION.DAYS * 1);
 
   return (
-    
+
     <>
       <ModalContainer />
 
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
         {/* <Section type={SectionType.Profile} /> */}
-        
-        <Section type={SectionType.Message}  />
-        
-       
+
+        <Section type={SectionType.Message} />
+
+
         {/* <Section type={SectionType.Contact} /> */}
-        
-        <Section type={SectionType.Closedgroup}  />
-        
+
+        <Section type={SectionType.Closedgroup} />
+
         <Section type={SectionType.Opengroup} />
-        
-        
+
+
         <Section type={SectionType.Settings} />
-        
-      
+
+
 
         <BchatToastContainer />
-    
+
         {/* <Section type={SectionType.PathIndicator} /> */}
         {/* <Section type={SectionType.Moon} /> */}
       </LeftPaneSectionContainer>

@@ -229,7 +229,7 @@ export const InConversationCallContainer = () => {
           isAudioOutputMuted={isAudioOutputMuted}
           localStreamVideoIsMuted={localStreamVideoIsMuted}
           remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-          isFullScreen={false}
+          isFullScreen={isInFullScreen}
         />
       </RelativeCallWindow>
     </InConvoCallWindow>

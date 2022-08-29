@@ -28,6 +28,29 @@ export const LeftPaneSectionContainer = styled.div`
     background-color: white;
     
   }
+  .unreadCountChatIcon
+  {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    bottom: 33px;
+    left: 51px;
+    padding: 7px;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-default);
+    border-radius: 50%;
+    font-weight: 700;
+    background: var(--color-destructive);
+    transition: var(--default-duration);
+    opacity: 1;
+    text-align: center;
+    color: white;
+  }
+
   .icon-box .bchat-icon-button:hover 
   {
     background-color: white;

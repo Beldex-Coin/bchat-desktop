@@ -228,7 +228,7 @@ window.Signal = data.initData();
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
   // tslint:disable-next-line: no-empty
-  window.nodeSetImmediate(() => {});
+  window.nodeSetImmediate(() => { });
 }, 1000);
 
 window.React = require('react');
@@ -240,12 +240,15 @@ window.getSeedNodeList = () =>
   window.bchatFeatureFlags.useTestNet
     ? ['http://public.loki.foundation:38157']
     : [
-        // 'https://storage.seed1.loki.network:4433/',
-        // 'https://storage.seed3.loki.network:4433/',
-        // 'https://public.loki.foundation:4433/',
-        'http://15.188.30.57:19095'
-        // "https://mainnet.beldex.io:29095"
-      ];
+      // 'https://storage.seed1.loki.network:4433/',
+      // 'https://storage.seed3.loki.network:4433/',
+      // 'https://public.loki.foundation:4433/',
+      'http://15.188.30.57:19095',
+      // 'https://publicnode5.rpcnode.stream:443',
+      // 'https://publicnode1.rpcnode.stream:443',
+      // 'https://publicnode2.rpcnode.stream:443'
+      // "https://mainnet.beldex.io:29095"
+    ];
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);

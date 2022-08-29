@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { getCallIsInFullScreen } from '../state/selectors/call';
 
 type SplitViewProps = {
   top: React.ReactElement;
@@ -78,6 +80,9 @@ export const SplitViewContainer: React.FunctionComponent<SplitViewProps> = ({
   const splitPaneRef = useRef<HTMLDivElement | null>(null);
   const dividerRef = useRef<HTMLDivElement | null>(null);
 
+  const isInFullScreen:boolean = useSelector(getCallIsInFullScreen);
+
+
   function onMouseDown(e: any) {
     setSeparatorYPosition(e.clientY);
     setDragging(true);
@@ -126,14 +131,14 @@ export const SplitViewContainer: React.FunctionComponent<SplitViewProps> = ({
 
   return (
     <SlyledSplitView ref={splitPaneRef}>
-      {!disableTop && (
+      {!disableTop && !isInFullScreen? (
         <TopSplitViewPanel topHeight={topHeight} setTopHeight={setTopHeight}>
           {top}
           <Divider ref={dividerRef} onMouseDown={onMouseDown}>
             <DividerHandle />
           </Divider>
         </TopSplitViewPanel>
-      )}
+      ):null}
       {bottom}
     </SlyledSplitView>
   );

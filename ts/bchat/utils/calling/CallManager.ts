@@ -149,16 +149,16 @@ const iceServersFullArray = [
     username: 'test',
     credential: 'test@123',
   },
-  {
-    urls: 'tturn:turn.call4.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
-  {
-    urls: 'turn:turn.call5.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
+  // {
+  //   urls: 'tturn:turn.call4.beldex.io',
+  //   username: 'test',
+  //   credential: 'test@123',
+  // },
+  // {
+  //   urls: 'turn:turn.call5.beldex.io',
+  //   username: 'test',
+  //   credential: 'test@123',
+  // },
   // {
   //   urls: 'turn:turn.call.beldex.io',
   //   username: 'test',

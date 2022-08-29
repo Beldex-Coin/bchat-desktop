@@ -5,11 +5,11 @@ import moment from 'moment';
 import { Message } from './Message';
 import { useSelector } from 'react-redux';
 import { Avatar, AvatarSize } from '../../../avatar/Avatar';
-import { deleteMessagesById } from '../../../../interactions/conversations/unsendingInteractions';
+// import { deleteMessagesById } from '../../../../interactions/conversations/unsendingInteractions';
 import { ContactPropsMessageDetail } from '../../../../state/ducks/conversations';
 import {
   getMessageDetailsViewProps,
-  getMessageIsDeletable,
+  // getMessageIsDeletable,
 } from '../../../../state/selectors/conversations';
 import { ContactName } from '../../ContactName';
 
@@ -19,22 +19,22 @@ const AvatarItem = (props: { pubkey: string }) => {
   return <Avatar size={AvatarSize.S} pubkey={pubkey} />;
 };
 
-const DeleteButtonItem = (props: { messageId: string; convoId: string; isDeletable: boolean }) => {
-  const { i18n } = window;
+// const DeleteButtonItem = (props: { messageId: string; convoId: string; isDeletable: boolean }) => {
+//   const { i18n } = window;
 
-  return props.isDeletable ? (
-    <div className="module-message-detail__delete-button-container">
-      <button
-        onClick={async () => {
-          await deleteMessagesById([props.messageId], props.convoId);
-        }}
-        className="module-message-detail__delete-button"
-      >
-        {i18n('delete')}
-      </button>
-    </div>
-  ) : null;
-};
+//   return props.isDeletable ? (
+//     <div className="module-message-detail__delete-button-container">
+//       <button
+//         onClick={async () => {
+//           await deleteMessagesById([props.messageId], props.convoId);
+//         }}
+//         className="module-message-detail__delete-button"
+//       >
+//         {i18n('delete')}
+//       </button>
+//     </div>
+//   ) : null;
+// };
 
 const ContactsItem = (props: { contacts: Array<ContactPropsMessageDetail> }) => {
   const { contacts } = props;
@@ -92,14 +92,16 @@ export const MessageDetail = () => {
   const { i18n } = window;
 
   const messageDetailProps = useSelector(getMessageDetailsViewProps);
-  const isDeletable = useSelector(state =>
-    getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
-  );
+  // const isDeletable = useSelector(state =>
+  //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
+  // );
   if (!messageDetailProps) {
     return null;
   }
 
-  const { errors, receivedAt, sentAt, convoId, direction, messageId } = messageDetailProps;
+  const { errors, receivedAt, sentAt,
+    //  convoId, 
+     direction, messageId } = messageDetailProps;
 
   return (
     <div className="message-detail-wrapper">
@@ -144,7 +146,7 @@ export const MessageDetail = () => {
           </tbody>
         </table>
         <ContactsItem contacts={messageDetailProps.contacts} />
-        <DeleteButtonItem convoId={convoId} messageId={messageId} isDeletable={isDeletable} />
+        {/* <DeleteButtonItem convoId={convoId} messageId={messageId} isDeletable={isDeletable} /> */}
       </div>
     </div>
   );
