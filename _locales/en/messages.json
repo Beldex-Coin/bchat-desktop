@@ -204,6 +204,7 @@
   "invalidNumberError": "Invalid BChat ID or BNS Name",
   "failedResolveOns": "Failed to resolve ONS name",
   "autoUpdateSettingTitle": "Auto Update",
+  
   "autoUpdateSettingDescription": "Automatically check for updates on startup",
   "autoUpdateNewVersionTitle": "BChat update available",
   "autoUpdateNewVersionMessage": "There is a new version of BChat available.",
