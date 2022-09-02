@@ -167,7 +167,7 @@ export const SignUpTab = (props:any) => {
       generatedRecoveryPhrase: generatedRecoveryPhrase,
     });
   };
-  const LoaderGif = () => {
+   const LoaderGif = () => {
     return<div  className="bchat-registration-loadingGif">
     <div  style={{background:"url(images/bchat/Load_animation.gif) no-repeat",width: "151px",height: "128px",margin: "0 auto"}}>
     </div>

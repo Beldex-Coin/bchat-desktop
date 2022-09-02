@@ -43,9 +43,10 @@ export const DisplaySeed = (props: any) => (
             <div className='bchat-registration-header'>{window.i18n('restoreFromSeed')}</div>
             <div className='bchat-restore-seed-text-box'>
                 <ClearIcon removeRecoveryPhrase={()=>props.assignRecoveryPhase("")}></ClearIcon> 
-                <textarea className='bchat-restore-seed-text-area' rows={4} cols={33} name="text" onPaste={handlePaste} value={props.recoveryPhrase} placeholder="Enter your recovery seed to restore your account" 
+                <textarea className='bchat-restore-seed-text-area'  cols={33} name="text" onPaste={handlePaste} value={props.recoveryPhrase} placeholder="Enter your recovery seed to restore your account" 
                 onChange={(e)=>props.assignRecoveryPhase(e.target.value)}
                  ></textarea>
+                
             </div>
             <div>{<Icons icon={"paste"} iconfunc={props.iconfunc} /> }</div>            
         </>

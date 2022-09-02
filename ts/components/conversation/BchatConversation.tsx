@@ -54,6 +54,7 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 import { BchatRightPanelWithDetails } from './BchatRightPanel';
+
 // import { isRightPanelShowing } from '../../state/selectors/conversations';
 // tslint:disable: jsx-curly-spacing
 
@@ -227,6 +228,7 @@ export class BchatConversation extends React.Component<Props, State> {
 
     const selectionMode = selectedMessages.length > 0;
     // console.log('selectionMode selectionMode ::',selectionMode);
+     
     
 
     return (
@@ -278,6 +280,7 @@ export class BchatConversation extends React.Component<Props, State> {
         </div> 
         <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
+         
         >
           <BchatRightPanelWithDetails />
         </div>
@@ -600,3 +603,5 @@ const renderImagePreview = async (contentType: string, file: File, fileName: str
     thumbnail: null,
   };
 };
+
+

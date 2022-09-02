@@ -204,8 +204,8 @@ export async function decryptWithBchatProtocol(
   const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0,97));
 
   //  sender wallet Address
-  console.log("beldexFinalAddress",beldexFinalAddress);
-  console.log("beldexFinalAddressandplainText::",new TextDecoder().decode(plaintextWithMetadata.subarray(0, plainTextEnd)));
+  // console.log("beldexFinalAddress",beldexFinalAddress);
+  // console.log("beldexFinalAddressandplainText::",new TextDecoder().decode(plaintextWithMetadata.subarray(0, plainTextEnd)));
   
   localStorage.setItem("senderWalletAddress", beldexFinalAddress);
   const message = plaintextWithMetadata.subarray(97, plainTextEnd)

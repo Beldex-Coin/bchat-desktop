@@ -300,12 +300,43 @@
       width: 148px;
     }
   }
+   
+  &-modalLoader
+  {
+    position: absolute;
+    width: 21.7%;
+    height: 62.5%;
+    top: 18.9%;
+    background-color: #0000009e;
+    border-radius: 25px;
+    z-index: 99;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+  }
 
   .profile-name {
     display: flex;
-    justify-content: center;
     margin-top: $bchat-margin-sm;
+    justify-content: space-between;
+    width: 100%;
 
+    
+    .inputBox
+    {
+      display: flex;
+    /* width: 134px; */
+    padding-left: 73px;
+
+    }
+    .saveIcon
+    {
+      width: 35px;
+      color:var(--color-accent);
+      cursor: pointer;
+    
+    }
     input {
       height: 38px;
       border-radius: 5px;
@@ -319,8 +350,11 @@
     &-uneditable {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
+      width: 100%;
       font-family: $bchat-font-poppin-semibold;
+      
+    
 
       p {
         font-size: $bchat-font-h4;
@@ -330,7 +364,7 @@
       .qr-icon-btn {
         width: 30px;
         height: 30px;
-        left: 103px;
+        // left: 103px;
         position: relative;
         cursor: pointer;
       }

@@ -222,7 +222,7 @@ export const UpdateGroupMembersDialog = (props: Props) => {
   const okText = window.i18n('ok');
   const cancelText = window.i18n('cancel');
   // const titleText = window.i18n('updateGroupDialogTitle', [convoProps.name || '']);
-  const titleText = "Add Members";
+  const titleText = "Group Members";
 
 
   return (

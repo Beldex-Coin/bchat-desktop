@@ -1,8 +1,9 @@
 .group-settings {
   display: flex;
   flex-direction: column;
-  height: 93vh;
-  width: -webkit-fill-available;
+  height: 87vh;
+  // width: -webkit-fill-available;
+  width: 25vw;
   background: var(--color-cell-background);
   // background: #181821;
   border-left: var(--border-bchat);
@@ -108,7 +109,8 @@
   // bottom button
   .bchat-button.square-outline.danger {
     margin-top: auto;
-    width: 100%;
+    margin-bottom: 15px;
+    width: 80%;
     border: none;
     height: $composition-container-height;
     flex-shrink: 0;

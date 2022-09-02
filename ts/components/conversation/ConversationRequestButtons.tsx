@@ -67,7 +67,7 @@ export const ConversationMessageRequestButtons = () => {
         <BchatButton
           buttonColor={BchatButtonColor.Danger}
           buttonType={BchatButtonType.Default}
-          text={window.i18n('blocked')}
+          text={window.i18n('decline')}
           onClick={handleDeclineConversationRequest}
           dataTestId="decline-message-request"
         />

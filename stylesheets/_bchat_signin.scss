@@ -253,7 +253,7 @@
     &-text-box {
       background-color: var(--color-inboxBgColor);
       width: 100%;
-      min-height: 60px;
+      // min-height: 60px;
       border-radius: 13px;
       text-align: center;
       color: #0BB70F;
@@ -266,6 +266,8 @@
      resize: none;
      text-align: center;
      padding: 15px;
+     min-height: 150px;
+     overflow-y: hidden;
     }
 
     ::placeholder {
@@ -357,7 +359,8 @@
       outline: 0;
       height: 50px;
       width: 75%;
-      background: var(--color-body-bg);
+      background-color: #353543;
+      // background: var(--color-body-bg);
       // background: transparent;
       // color: var(--color-text);
       color: #0BB70F;

@@ -576,8 +576,11 @@ label {
     align-items: center;
     justify-content: center;
     // background-color:var(--color-input-background);
+    background-color: var(--color-composeMsgInput);
     padding: 11px 25px;
     border-radius: 7px;
+    cursor: pointer;
+    
     .bchat-button {
       margin: $bchat-margin-xs;
     }

@@ -205,7 +205,10 @@ export const BchatRightPanelWithDetails = () => {
     weAreAdmin,
     isBlocked,
     isGroup,
+    isPrivate,
   } = selectedConversation;
+ 
+  
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
   const commonNoShow = isKickedFromGroup || left || isBlocked;
   const hasDisappearingMessages = !isPublic && !commonNoShow;
@@ -233,6 +236,8 @@ export const BchatRightPanelWithDetails = () => {
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
   const showUpdateGroupMembersButton = !isPublic && isGroup && !commonNoShow;
 
+  // console.log("isPublic ::",isPublic);
+  
   const deleteConvoAction = isPublic
     ? () => {
       deleteAllMessagesByConvoIdWithConfirmation(id);
@@ -243,7 +248,7 @@ export const BchatRightPanelWithDetails = () => {
   return (
     <div className="group-settings">
       <HeaderItem />
-      {!showUpdateGroupNameButton && <div className='group-settings-header-chatIdBox'>
+      {isPrivate &&<div className='group-settings-header-chatIdBox'>
         <p>Bchat ID:</p>
         <div>{id}</div>
       </div>}
@@ -263,7 +268,7 @@ export const BchatRightPanelWithDetails = () => {
       {showMemberCount && (
         <>
           <SpacerLG />
-          <div role="button" className="subtle">
+          <div role="button" className="subtle"  style={{textAlign:'center'}}>
             {window.i18n('members', [`${subscriberCount}`])}
           </div>
           <SpacerLG />

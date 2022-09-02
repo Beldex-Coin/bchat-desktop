@@ -23,9 +23,12 @@ export const BchatNicknameDialog = (props: Props) => {
    * entered nickname value as the nickname.
    */
   const onNicknameInput = async (event: any) => {
+
     if (event.key === 'Enter') {
       await saveNickname();
-    } else {
+    } else if (event.target.value.length <= 26) 
+    {
+      // console.log("nickname ::",event.target.value.length );
       const currentNicknameEntered = event.target.value;
       setNickname(currentNicknameEntered);
     }
@@ -63,8 +66,12 @@ export const BchatNicknameDialog = (props: Props) => {
         autoFocus={true}
         type="nickname"
         id="nickname-modal-input"
+        value={nickname}
         placeholder={window.i18n('nicknamePlaceholder')}
-        onKeyUp={e => {
+        // onKeyUp={e => {
+        //   void onNicknameInput(_.cloneDeep(e));
+        // }}
+        onChange={e => {
           void onNicknameInput(_.cloneDeep(e));
         }}
       />

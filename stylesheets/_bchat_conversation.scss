@@ -42,7 +42,8 @@
 
   transform: translateX(-600%);
   will-change: transform;
-  width: 25vw;
+  // width: 25vw;
+  width: 100%;
   z-index: 5;
 
   &.show {
