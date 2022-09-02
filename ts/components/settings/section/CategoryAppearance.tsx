@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
+import os from 'os';
 import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
 import { SettingsKey } from '../../../data/settings-key';
 import { ToastUtils } from '../../../bchat/utils';
@@ -12,7 +13,7 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 // import { isHideMenuBarSupported } from '../../../types/Settings';
 import { BchatButtonColor } from '../../basic/BchatButton';
 
-import {BchatToggleWithDescription } from '../BchatSettingListItem';
+import { BchatToggleWithDescription } from '../BchatSettingListItem';
 
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 
@@ -59,8 +60,8 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsMenuBar);
-const isdark =window.Events.getThemeSetting() === "dark"? true : false;
-// console.log('dark is true ::',window.Events.getThemeSetting());
+    const isdark = window.Events.getThemeSetting() === "dark" ? true : false;
+    // console.log('dark is true ::',window.Events.getThemeSetting());
 
     const isSpellCheckActive =
       window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
@@ -70,21 +71,20 @@ const isdark =window.Events.getThemeSetting() === "dark"? true : false;
     const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
     const isStartInTrayActive = Boolean(window.getSettingValue(SettingsKey.settingsStartInTray));
 
-    function handleClick()
-    {
+    function handleClick() {
       const themeFromSettings = window.Events.getThemeSetting();
-        const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
-        window.setTheme(updatedTheme);
-        if (updatedTheme === 'dark') {
-          switchHtmlToDarkTheme();
-        } else {
-          switchHtmlToLightTheme();
-        }
+      const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+      window.setTheme(updatedTheme);
+      if (updatedTheme === 'dark') {
+        switchHtmlToDarkTheme();
+      } else {
+        switchHtmlToLightTheme();
+      }
     }
 
     return (
       <>
-       {/* this function used for hide the menubar */}
+        {/* this function used for hide the menubar */}
         {/* {isHideMenuBarSupported() && (
           <BchatToggleWithDescription
             onClickToggle={() => {
@@ -100,7 +100,7 @@ const isdark =window.Events.getThemeSetting() === "dark"? true : false;
         <BchatToggleWithDescription
           onClickToggle={() => {
             handleClick()
-            
+
             forceUpdate();
           }}
           // title={window.i18n('spellCheckTitle')}
@@ -129,16 +129,19 @@ const isdark =window.Events.getThemeSetting() === "dark"? true : false;
           description={window.i18n('linkPreviewDescription')}
           active={isLinkPreviewsOn}
         />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleStartInTray();
-            forceUpdate();
-          }}
-          title={window.i18n('startInTrayTitle')}
-          // description={window.i18n('startInTrayDescription')}
-          description={"BChat continues running in the background when you close the window"}
-          active={isStartInTrayActive}
-        />
+        {os.platform() !== "darwin" &&
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleStartInTray();
+              forceUpdate();
+            }}
+            title={window.i18n('startInTrayTitle')}
+            // description={window.i18n('startInTrayDescription')}
+            description={"BChat continues running in the background when you close the window"}
+            active={isStartInTrayActive}
+          />
+        }
+
         <BchatToggleWithDescription
           onClickToggle={() => {
             dispatch(toggleAudioAutoplay());
@@ -148,7 +151,7 @@ const isdark =window.Events.getThemeSetting() === "dark"? true : false;
           description={window.i18n('audioMessageAutoplayDescription')}
           active={audioAutoPlay}
         />
-        
+
 
         <ZoomingBchatSlider />
         {/* <BchatSettingButtonItem
@@ -159,7 +162,7 @@ const isdark =window.Events.getThemeSetting() === "dark"? true : false;
         /> */}
 
         {/* for message transtaled bchat site */}
-        
+
         {/* <BchatSettingButtonItem
           title={window.i18n('helpUsTranslateBchat')}
           onClick={() => void shell.openExternal('https://crowdin.com/project/bchat-desktop/')}

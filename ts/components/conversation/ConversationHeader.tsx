@@ -145,7 +145,13 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         contextMenu.show({
           id: props.triggerId,
           event: e,
+          position: {
+            x: 1750,
+            y: 40,
+          },
         });
+        console.log('e context menu::',e);
+        
       }}
       data-testid="three-dots-conversation-options"
     >
