@@ -47,7 +47,8 @@
     // border-bottom-right-radius: $message-container-border-radius;
     // border-top-left-radius: 5px;
     // border-bottom-left-radius: 5px;
-    border-radius: 8px;
+    border-radius: 15px;
+    border-top-left-radius: 0px;
     padding: 5px;
 
     // &--first-of-series {
@@ -84,14 +85,15 @@
 
     // border-top-right-radius: 5px;
     // border-bottom-right-radius: 5px;
-    border-radius: 8px;
+    border-radius: 15px;
+    border-top-right-radius: 0px;
     padding: 5px;
     &--opaque {
       background: var(--color-sent-message-background);
       box-shadow: 0px 3px 5px 0px #00000029;
 
     }
-
+    
     &--transparent {
       background: none;
     }
@@ -113,6 +115,19 @@
       }
     }
   }
+  // &__container--outgoing::after
+  //   {
+  //     content: "qiwie";
+  //     color:#2879FB;
+  //     position: absolute;
+  //     right: 0px;
+  //     top: -15px;
+  //     border-top: none;
+  //     border-left: 15px solid transparent;
+  //     border-bottom: 15px solid #2879FB;
+  //   }
+
+ 
 }
 
 .bchat-message-wrapper {

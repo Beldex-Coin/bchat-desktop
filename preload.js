@@ -27,7 +27,7 @@ window.getNodeVersion = () => configAny.node_version;
 window.bchatFeatureFlags = {
   useOnionRequests: true,
   useTestNet: Boolean(
-    process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('testnet')
+    process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('mainnet')
   ),
 };
 
@@ -235,18 +235,21 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
-
+console.log("window.bchatFeatureFlags.useTestNet",window.bchatFeatureFlags.useTestNet);
 window.getSeedNodeList = () =>
   window.bchatFeatureFlags.useTestNet
     ? ['http://public.loki.foundation:38157']
     : [
       // 'https://storage.seed1.loki.network:4433/',
       // 'https://storage.seed3.loki.network:4433/',
-      // 'https://public.loki.foundation:4433/',
-      'http://15.188.30.57:19095',
-      // 'https://publicnode5.rpcnode.stream:443',
-      // 'https://publicnode1.rpcnode.stream:443',
-      // 'https://publicnode2.rpcnode.stream:443'
+     // 'https://public.loki.foundation:4433/',
+      // test net Id
+      // 'http://15.188.30.57:19095',
+      
+       'https://publicnode1.rpcnode.stream:443',
+      // 'https://62.171.132.110:29090'
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
       // "https://mainnet.beldex.io:29095"
     ];
 

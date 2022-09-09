@@ -699,7 +699,7 @@ export async function getMessagesWithFileAttachments(
   return channels.getMessagesWithFileAttachments(conversationId, limit);
 }
 
-export const SNODE_POOL_ITEM_ID = 'SNODE_POOL_ITEM_ID';
+export const SNODE_POOL_ITEM_ID = 'MNODE_POOL_ITEM_ID';
 
 export async function getSnodePoolFromDb(): Promise<Array<Snode> | null> {
   // this is currently all stored as a big string as we don't really need to do anything with them (no filtering or anything)
