@@ -462,4 +462,7 @@ export type LocalizerKeys =
   | 'signIn'
   | 'restore'
   | 'restoreFromSeed'
-  | 'hops';
+  | 'hops'
+  | 'profileBchatID'
+  | 'profileBeldexAddres'
+  | 'scanQr'; 

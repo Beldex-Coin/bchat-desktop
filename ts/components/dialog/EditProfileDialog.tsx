@@ -202,7 +202,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               justifyContent: 'center',
               backgroundSize: '32px',
               top: '56px',
-              right: '34px',
+              right: '20px',
               alignItems: 'center',
               //  backgroundColor:"#353543",
               //  borderRadius:"30px",
@@ -349,9 +349,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
     let walletAddress = localStorage.getItem("userAddress");
     return (
       <div>
-        <p style={{ fontFamily: 'poppin-semibold', fontSize: '12px' }}>BChat ID</p>
+        <p className='profile-header'>{window.i18n('profileBchatID')}</p>
         <div className='bchat-id-section-display'>
-          <div style={{ width: '80%', fontFamily: 'poppin-medium', fontSize: '12px' }}>{props.bchatID}</div>
+          <div className='profile-value'>{props.bchatID}</div>
           <div onClick={() => copyBchatID(props.bchatID)}
             className="bchat-id-section-display-icon"
           // style={{
@@ -368,9 +368,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
           ></div>
         </div>
 
-        <p style={{ fontFamily: 'poppin-semibold', fontSize: '12px' }}>Beldex Address</p>
+        <p className='profile-header'>{window.i18n('profileBeldexAddres')}</p>
         <div className='bchat-id-section-display'>
-          <div style={{ width: '80%', fontFamily: 'poppin-medium', fontSize: '12px' }}>{walletAddress}</div>
+          <div className='profile-value'>{walletAddress}</div>
           <div onClick={() => copyBchatID(walletAddress)}
             // style={{
             //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
@@ -391,9 +391,10 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
   private renderQrView(props: any) {
     return (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <div className='qr-box-view'>
+        <img src='images/bchat/Bchat_logo_QR.svg' className='qr-center-icon'></img>
         <QRView bchatID={props.bchatID} />
-        <p>Scan QR Code</p>
+        <p>{window.i18n('scanQr')}</p>
       </div>
     )
 
