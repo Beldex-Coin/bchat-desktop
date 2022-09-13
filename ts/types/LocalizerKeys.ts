@@ -465,4 +465,6 @@ export type LocalizerKeys =
   | 'hops'
   | 'profileBchatID'
   | 'profileBeldexAddres'
-  | 'scanQr'; 
+  | 'scanQr'
+  | 'emptyChatScreen'
+  | 'noContactsYet'; 

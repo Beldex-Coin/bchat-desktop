@@ -65,13 +65,13 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     }
 
     const length = conversations.length;
-
     const listKey = 0;
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
     const list = (
       <div className="module-left-pane__list" key={listKey}>
+        {length==0?<h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>:null}
         <AutoSizer>
           {({ height, width }) => (
             <List

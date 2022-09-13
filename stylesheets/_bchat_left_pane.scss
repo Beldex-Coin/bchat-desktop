@@ -143,6 +143,7 @@ $bchat-compose-margin: 20px;
     margin-bottom: 7px;
     transition: $bchat-transition-duration;
     box-shadow: 0px 0px 5px 0px #00000029;
+    // background-color: #F2F2F2;
 
 
     &__title {
@@ -205,7 +206,8 @@ $bchat-compose-margin: 20px;
 
   &__subHeader {
     text-align: center;
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-poppin-medium;
+    font-size: $bchat-font-h4;
   }
 
   &-overlay {
@@ -385,15 +387,13 @@ $bchat-compose-margin: 20px;
     }
   }
 }
-
 .module-conversations-list-content {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   transition: none;
-
-  background: var(--color-inbox-background);
+  background: var(--color-left-pane-overlay-background);
 
 
   .left-pane-contact-bottom-buttons .bchat-button {
@@ -483,7 +483,7 @@ $bchat-compose-margin: 20px;
     /* color: #fff; */
     color: #4E4E5F;
     font-size: 24px;
-
+    text-align: center;
 
   }
 
