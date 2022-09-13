@@ -146,7 +146,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           id: props.triggerId,
           event: e,
           position: {
-            x: 1750,
+            x: 1600,
             y: 40,
           },
         });

@@ -9,6 +9,7 @@ import * as Data from '../../../data/data';
 import pRetry from 'p-retry';
 import { SeedNodeAPI } from '.';
 import { allowOnlyOneAtATime } from '../../utils/Promise';
+// import { callapi } from '../../../testHttps/httpsValid';
 
 // tslint:disable: function-name
 
@@ -58,20 +59,24 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
   let certContent = '';
   let pubkey256 = '';
   let cert256 = '';
+
   if (!isSsl) {
     return undefined;
   }
+
 
   switch (seedNodeHost) {
 
 
     case 'publicnode1.rpcnode.stream':
       certContent = Buffer.from(storageSeed1Crt, 'utf-8').toString();
-      // certContent =storageSeed1Crt;
-
-      pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
+      pubkey256 =
+        // 'jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0='
+        'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
       cert256 =
         '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F'
+      // '67:AD:D1:16:6B:02:0A:E6:1B:8F:5F:C9:68:13:C0:4C:2A:A5:89:96:07:96:86:55:72:A3:C7:E7:37:61:3D:FD'
+
       break;
 
     case 'publicnode2.rpcnode.stream':
@@ -89,32 +94,10 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
 
       break;
 
-
-
-    // case 'storage.seed1.loki.network':
-    //   certContent = Buffer.from(storageSeed1Crt, 'utf-8').toString();
-    //   pubkey256 = 'JOsnIcAanVbgECNA8lHtC8f/cqN9m8EP7jKT6XCjeL8=';
-    //   cert256 =
-    //     '6E:2B:AC:F3:6E:C1:FF:FF:24:F3:CA:92:C6:94:81:B4:82:43:DF:C7:C6:03:98:B8:F5:6B:7D:30:7B:16:C1:CB';
-    //   break;
-    // case 'storage.seed3.loki.network':
-    //   certContent = Buffer.from(storageSeed3Crt, 'utf-8').toString();
-    //   pubkey256 = 'mMmZD3lG4Fi7nTC/EWzRVaU3bbCLsH6Ds2FHSTpo0Rk=';
-    //   cert256 =
-    //     '24:13:4C:0A:03:D8:42:A6:09:DE:35:76:F4:BD:FB:11:60:DB:F9:88:9F:98:46:B7:60:A6:60:0C:4C:CF:60:72';
-
-    //   break;
-    // case 'public.loki.foundation':
-    //   certContent = Buffer.from(publicLokiFoundationCtr, 'utf-8').toString();
-    //   pubkey256 = 'W+Zv52qlcm1BbdpJzFwxZrE7kfmEboq7h3Dp/+Q3RPg=';
-    //   cert256 =
-    //     '40:E4:67:7D:18:6B:4D:08:8D:E9:D5:47:52:25:B8:28:E0:D3:63:99:9B:38:46:7D:92:19:5B:61:B9:AE:0E:EA';
-    //      break;
-
-
     default:
       throw new Error(`Unknown seed node: ${seedNodeHost}`);
   }
+
 
   // tslint:disable: non-literal-fs-path
   // read the cert each time. We only run this request once for each seed node nevertheless.
@@ -123,22 +106,18 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
     ca: certContent,
     // we have to reject them, otherwise our errors returned in the checkServerIdentity are simply not making the call fail.
     // so in production, rejectUnauthorized must be true.
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
     keepAlive: false,
     checkServerIdentity: (host: string, cert: any) => {
       // Make sure the certificate is issued to the host we are connected to
       const err = tls.checkServerIdentity(host, cert);
 
       if (err) {
-        console.log("err::", err);
-
         return err;
       }
       // console.log("cert.pubkey before if ",cert.pubkey);
       // Pin the public key, similar to HPKP pin-sha25 pinning
       if (sha256(cert.pubkey) !== pubkey256) {
-        console.log("cert.pubkey if ", cert.pubkey);
-
         const msg =
           'Certificate verification error: ' +
           `The public key of '${cert.subject.CN}' ` +
@@ -146,6 +125,7 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
         return new Error(msg);
       }
 
+      console.log('test3', cert.pubkey);
       // Pin the exact certificate, rather than the pub key
       if (cert.fingerprint256 !== cert256) {
         const msg =
@@ -257,6 +237,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
   // for individual nodes (needed for guard nodes);  this way
   // we get all active nodes
   window?.log?.info(`getSnodesFromSeedUrl starting with ${urlObj.href}`);
+  // callapi()
 
   const params = {
     active_only: true,
@@ -282,6 +263,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
     urlObj.hostname,
     urlObj.protocol !== Constants.PROTOCOLS.HTTP
   );
+  console.log(sslAgent);
 
   const fetchOptions = {
     method: 'POST',

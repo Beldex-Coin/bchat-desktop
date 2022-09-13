@@ -284,9 +284,8 @@
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
       "target": [
-        "deb",
-        "rpm",
-        "freebsd"
+        "deb"
+       
       ],
       "icon": "build/bchat.icns"
     },

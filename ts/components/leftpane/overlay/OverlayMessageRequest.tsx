@@ -133,6 +133,7 @@ export const OverlayMessageRequest = (props:any) => {
 const MessageRequestListPlaceholder = styled.div`
   color: var(--color-text);
   margin-bottom: auto;
+  text-align:center;
 `;
 
 const MessageRequestListContainer = styled.div`
