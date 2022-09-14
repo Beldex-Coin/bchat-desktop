@@ -1377,10 +1377,9 @@
 }
 
 .module-left-pane__empty_contact {
-  position: absolute;
-  left: 122px;
-  top: 275px;
+ 
   font-family: $bchat-font-poppin-medium;
   font-size: 15px;
-  color:"#646474"
+  color: var(--color-disableText);
+  margin: 10px 0 0 0 ;
 }

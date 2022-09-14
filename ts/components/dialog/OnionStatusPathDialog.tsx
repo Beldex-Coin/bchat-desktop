@@ -169,7 +169,7 @@ export const ActionPanelOnionStatusLight = (props: {
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';
-  const green = 'var(--color-accent)';
+  const green ='#1BB51E';
   const orange = 'var(--color-warning)';
 
 

@@ -71,13 +71,14 @@ export const BchatNicknameDialog = (props: Props) => {
         // onKeyUp={e => {
         //   void onNicknameInput(_.cloneDeep(e));
         // }}
+        style={{borderBottom:"1px solid"}}
         onChange={e => {
           void onNicknameInput(_.cloneDeep(e));
         }}
       />
 
       <div className="bchat-modal__button-group">
-        <BchatButton text={window.i18n('cancel')} onClick={onClickClose} />
+        <BchatButton text={window.i18n('cancel')} onClick={onClickClose} buttonColor={BchatButtonColor.White}/>
         <BchatButton
           text={window.i18n('ok')}
           onClick={saveNickname}

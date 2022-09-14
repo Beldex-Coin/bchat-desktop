@@ -3,6 +3,7 @@ $onionPathLineColor: rgba(#7a7a7a, 0.6);
 #root {
   height: 100%;
 }
+
 .subtle {
   opacity: $bchat-subtle-factor;
   width: 207px;
@@ -52,10 +53,12 @@ textarea {
 .shadowed {
   opacity: $bchat-shadow-opacity;
 }
+
 .overlayed {
   opacity: $bchat-overlay-opacity;
   pointer-events: none;
 }
+
 .overlay {
   display: flex !important;
   z-index: 1;
@@ -68,7 +71,7 @@ textarea {
   position: relative;
 }
 
-.button-group > div {
+.button-group>div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
@@ -127,13 +130,14 @@ textarea {
       // background-color:var(--color-button-green) ;
       background-image: linear-gradient(180deg, #00A803, #007E02);
       color: var(--color-text-opposite);
-      font-family:$bchat-font-poppin-semibold;
+      font-family: $bchat-font-poppin-semibold;
     }
 
     &.white {
       color: var(--color-text);
       background-color: var(--color-cancelBtn-bg);
     }
+
     &.primary {
       background-color: var(--color-background-primary);
       color: white;
@@ -143,24 +147,29 @@ textarea {
         fill: var(--color-foreground-primary);
       }
     }
+
     &.secondary {
       background-color: $bchat-color-secondary;
     }
+
     &.success {
       // background-color: $bchat-color-success;
       background-color: #1F1F29;
-      color:white;
+      color: white;
     }
+
     &.danger {
       // background-color: $bchat-color-danger;
       background-color: #E22B2B;
       color: #FFFFFF;
 
-      
+
     }
+
     &.danger-alt {
       background-color: $bchat-color-danger-alt;
     }
+
     &.warning {
       background-color: $bchat-color-warning;
     }
@@ -174,26 +183,32 @@ textarea {
     &.green {
       @include transparent-background(var(--color-button-green));
       background-image: linear-gradient(180deg, #00A803, #007E02);
-      color:white;
+      color: white;
     }
+
     &.white {
       @include transparent-background(var(--color-text));
       // background-color:var(--color-body-bg);
       box-shadow: 0px 0px 6px 0px #19192424;
     }
+
     &.primary {
       @include transparent-background($bchat-color-primary);
     }
+
     &.secondary {
       @include transparent-background($bchat-color-secondary);
     }
+
     &.danger {
       @include transparent-background($bchat-color-danger);
-      
+
     }
+
     &.warning {
       @include transparent-background($bchat-color-warning-alt);
     }
+
     &.warning,
     &.danger,
     &.secondary,
@@ -242,7 +257,7 @@ textarea {
     font-family: $bchat-font-poppin-semibold;
   }
 
-  & > *:hover:not(svg) {
+  &>*:hover:not(svg) {
     filter: brightness(80%);
   }
 }
@@ -253,18 +268,23 @@ textarea {
   width: 100%;
   border-radius: 2px;
   text-align: center;
+
   &.primary {
     background-color: $bchat-color-primary;
   }
+
   &.secondary {
     background-color: $bchat-color-secondary;
   }
+
   &.success {
     background-color: $bchat-color-success;
   }
+
   &.danger {
     background-color: $bchat-color-danger;
   }
+
   &.warning {
     background-color: $bchat-color-warning-alt;
   }
@@ -277,12 +297,13 @@ textarea {
   transform: translateZ(0);
   //  color: white;
 
- 
-  &:hover {  
+
+  &:hover {
     color: #159B24;
     // padding: 5px;
 
   }
+
   transition: opacity $bchat-transition-duration;
 
   &.no-opacity {
@@ -322,12 +343,14 @@ textarea {
 
 .module-conversation-header__title {
   flex-direction: column;
-  
-  
+
+
 }
+
 .module-conversation-header__title-flex {
   flex-direction: row;
 }
+
 .module-conversation__user__profile-name,
 .module-message__author__profile-name {
   font-style: normal;
@@ -345,7 +368,8 @@ textarea {
   margin-inline-end: auto;
   margin-top: 10px;
 }
-.module-message--incoming::after{
+
+.module-message--incoming::after {
   content: " ";
   position: absolute;
   left: 0;
@@ -353,12 +377,14 @@ textarea {
   border-right: 15px solid transparent;
   border-bottom: 15px solid var(--color-received-message-background);
 }
+
 .module-message--outgoing {
   margin-inline-end: 0;
   margin-inline-start: auto;
   margin-top: 10px;
 }
-.module-message--outgoing::after{
+
+.module-message--outgoing::after {
   content: " ";
   position: absolute;
   right: 17px;
@@ -366,6 +392,7 @@ textarea {
   border-left: 15px solid transparent;
   border-bottom: 15px solid #2879FB;
 }
+
 pre {
   backdrop-filter: brightness(0.8);
   padding: $bchat-margin-xs;
@@ -380,9 +407,11 @@ pre {
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
 }
+
 label {
   user-select: none;
 }
+
 .module-message__attachment-container {
   // Entirely to ensure that images are centered if they aren't full width of bubble
   text-align: center;
@@ -445,24 +474,29 @@ label {
     padding: 1px 5px 3px 6px;
     background-color: #3F3C4B;
     border-radius: 24px;
-    margin-top:11px;
+    margin-top: 11px;
     margin-right: 8px;
-    
+
   }
+
   @mixin set-toast-theme($color) {
     border: 1x solid #919191 !important;
     background: $color;
     border-radius: 15px;
   }
+
   &--success {
     @include set-toast-theme(var(--color-toast-success));
   }
+
   &--info {
     @include set-toast-theme(var(--color-toast-success));
   }
+
   &--warning {
     @include set-toast-theme(var(--color-toast-error));
   }
+
   &--error {
     @include set-toast-theme(var(--color-toast-error));
   }
@@ -503,16 +537,16 @@ label {
     text-align: center;
     line-height: 18px;
     font-size: $bchat-font-md;
-    font-weight:bold;
+    font-weight: bold;
 
     &.reverse {
       flex-direction: row-reverse;
 
-      .bchat-modal__header__close > div {
+      .bchat-modal__header__close>div {
         float: right;
       }
 
-      .bchat-modal__header__icons > div {
+      .bchat-modal__header__icons>div {
         float: left;
         padding-inline-start: 0px;
         padding-inline-end: 10px;
@@ -522,20 +556,23 @@ label {
     &__icons,
     &__close {
       width: 60px;
-      .bchat-icon-button
-      {
-       color: var(--color-text); 
+
+      .bchat-icon-button {
+        color: var(--color-text);
       }
     }
+
     &__icons {
       float: right;
     }
-    &__close > div {
+
+    &__close>div {
       float: left;
       padding: $bchat-margin-xs;
       margin: 0px;
     }
-    &__icons > div {
+
+    &__icons>div {
       float: right;
       padding-inline-start: 10px;
     }
@@ -563,8 +600,8 @@ label {
     overflow-y: auto;
     width: 100%;
   }
-  &__box
-  {
+
+  &__box {
     background-color: var(--color-settingIndication);
     width: 49%;
     display: flex;
@@ -575,29 +612,30 @@ label {
     border-radius: 15px;
     padding: 0 6%;
   }
+
   &__centered {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
     // to allow new lines
     white-space: pre-wrap;
   }
-  &__description
-  {
+
+  &__description {
     font-family: $bchat-font-poppin-semibold;
   }
-  
 
-  &__button-group { 
+
+  &__button-group {
     display: flex;
     align-items: center;
     justify-content: center;
     // background-color:var(--color-input-background);
-    background-color: var(--color-composeMsgInput);
+    // background-color: var(--color-composeMsgInput);
     padding: 11px 25px;
     border-radius: 7px;
     cursor: pointer;
-    
+
     .bchat-button {
       margin: $bchat-margin-xs;
     }
@@ -605,18 +643,20 @@ label {
     &__center {
       display: flex;
       justify-content: center;
+      margin-bottom: 18px;
 
       .bchat-button {
         margin: $bchat-margin-xs;
 
-        .default.white{
-          background-color:var(--color-input-background); 
+        .default.white {
+          background-color: var(--color-input-background);
         }
-        
+
       }
-      
+
     }
   }
+
   // &__button-group:hover
   // {
   //   opacity: .6;
@@ -625,22 +665,22 @@ label {
   &__text-highlight {
     // @include text-highlight($bchat-color-green);
     font-family: $bchat-font-poppin-medium;
-    font-size:$bchat-font-md;
+    font-size: $bchat-font-md;
     color: #00E506;
   }
 
-  &-recovery-key
-  {
-    background-color:var( --color-settingIndication);
+  &-recovery-key {
+    background-color: var(--color-settingIndication);
     padding: 27px;
     border-radius: 10px;
     margin-bottom: 2px;
 
-    &-title{
+    &-title {
       font-size: $bchat-font-h3;
-     font-family: $bchat-font-poppin-semibold;
+      font-family: $bchat-font-poppin-semibold;
     }
-    &-description{
+
+    &-description {
       margin-top: $bchat-margin-xs;
       font-family: $bchat-font-poppin-medium;
     }
@@ -660,6 +700,50 @@ label {
       // margin-bottom: 30px;
       text-align: center;
       margin-top: 10px;
+
+      &-display {
+        user-select: text;
+        text-align: center;
+        word-break: break-all;
+        font-size: $bchat-font-md;
+        // padding: 0px $bchat-margin-lg;
+        // background-color: var(--color-composeMsgInput);
+        background-color: var(--color-background-primary);
+        border-radius: 10px;
+        padding: 10px 10px 10px 14px;
+        font-family: $bchat-font-default;
+        font-weight: 100;
+        color: #0BB70F;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        min-height: 60px;
+        box-shadow: var(--color-bchat-shadow);
+
+        font-size: $bchat-font-md;
+        // padding: 0px $bchat-margin-sm;
+        margin: 17px 0px 0;
+      }
+
+      &-display-icon {
+        // background:url('../images/bchat/copy_icon.svg');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // background-repeat: no-repeat;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        // background-color: var(--color-composeMsgInput);
+        background-color: var(--color-copyIconBg);
+        background-size: 16px;
+        border-radius: 30px;
+        background-position: center;
+        cursor: pointer;
+        color: var(--color-copyIcon);
+      }
     }
   }
 
@@ -681,8 +765,9 @@ label {
   border-radius: 11px;
   position: relative;
   cursor: pointer;
-  background-color:var(--color-toggleOff);
+  background-color: var(--color-toggleOff);
   box-shadow: var(--color-bchat-shadow);
+
   .knob {
     position: absolute;
     top: -2px;
@@ -690,7 +775,7 @@ label {
     height: 25px;
     width: 25px;
     border-radius: 28px;
-    background-color:#ECECEC;
+    background-color: #ECECEC;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.05), 0 3px 1px 0 rgba(0, 0, 0, 0.05),
       0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -705,7 +790,7 @@ label {
     .knob {
       transform: translateX(20px);
       background-color: $bchat-color-green;
-      left:10px;
+      left: 10px;
 
     }
   }
@@ -725,13 +810,13 @@ label {
     background: var(--color-cell-background);
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     color: '#fff';
 
   }
+
   .react-contexify__item__content {
     transition: $bchat-transition-duration;
     color: var(--color-text);
@@ -799,6 +884,7 @@ label {
     &:first-child {
       border-top: var(--border-bchat);
     }
+
     &:last-child {
       border-top: var(--border-bchat);
     }
@@ -810,6 +896,7 @@ label {
     .bchat-icon {
       margin-inline-start: 6px;
     }
+
     .item-content {
       margin-inline-start: 6px;
     }
@@ -864,6 +951,7 @@ label {
 
   // background: white;
   padding: 0.2rem;
+
   svg {
     width: 200px !important;
     height: 149px !important;
@@ -883,17 +971,20 @@ label {
 }
 
 .qr-center-icon {
-   position: absolute;
-   top: 60px;
+  position: absolute;
+  top: 60px;
 }
+
 .profile-header {
   font-family: $bchat-font-poppin-semibold;
-   font-size: 12px;
+  font-size: 12px;
 }
+
 .profile-value {
-  width: 80%;
+  width: 86%;
   font-family: $bchat-font-poppin-medium;
   font-size: 12px;
+
 }
 
 .conversation-loader {
@@ -902,18 +993,19 @@ label {
   left: 50%;
   margin: -40px 0 0 -40px;
 
-  & > div {
+  &>div {
     display: block;
   }
 }
 
 .bchat-loader {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
-  background-image: url("image/bchat/Load_animation.gif");
 
 
   // div {
@@ -978,9 +1070,34 @@ label {
     overflow-x: hidden;
     padding: 15px;
     height: 100%;
-    
+
+    .noBlockedContacts {
+      width: 100%;
+      // height: 60px;
+      // background-color: var(--color-left-pane-overlay-background);
+      text-align: center;
+      margin: 0 auto;
+      font-family: 'poppin-semibold';
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: var(--color-disableText);
+
+      .noBlockedContacts-img {
+        width: 500px;
+        height: 337px;
+        background-image: var(--image-BlockedContact);
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 16%;
+      }
+    }
+
 
   }
+
+
 
   &-header {
     display: flex;
@@ -988,7 +1105,8 @@ label {
     justify-content: center;
     align-items: center;
     height: $main-view-header-height;
-    background: var(--color-cell-background);
+    // background: var(--color-cell-background);
+    background-color: var(--color-chatHeader);
 
     &-title {
       line-height: $main-view-header-height;
@@ -1008,11 +1126,11 @@ label {
     font-size: $bchat-font-md;
     padding: $bchat-margin-lg;
     margin-bottom: 4px;
-    border-radius:10px;
+    border-radius: 10px;
     background: var(--color-settingIndication);
     color: var(--color-text);
     // box-shadow: var(--color-bchat-shadow);
-   
+
     &.inline {
       display: flex;
       align-items: center;
@@ -1023,10 +1141,9 @@ label {
       padding-inline-end: $bchat-margin-lg;
     }
 
-    &__dFlex
-    {
+    &__dFlex {
       display: flex;
-    align-items: center;
+      align-items: center;
     }
 
     &__title {
@@ -1037,7 +1154,7 @@ label {
     }
 
     &__description {
-      font-family:  $bchat-font-poppin-regular;
+      font-family: $bchat-font-poppin-regular;
       font-size: $bchat-font-sm;
       font-weight: 100;
       max-width: 700px;
@@ -1049,15 +1166,17 @@ label {
         @include bchat-color-subtle(var(--color-text));
       }
     }
+
     &__selection {
       .bchat-toggle {
         transition: $bchat-transition-duration;
       }
-      .active
-      {
+
+      .active {
         background-color: var(--color-inbox-background);
       }
     }
+
     &__dropdownValue {
       width: 78px;
       height: 40px;
@@ -1067,16 +1186,15 @@ label {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      
-     
+
+
     }
-    
-    .react-select-container
-    {
+
+    .react-select-container {
       background-color: #128B17;
 
     }
-   
+
   }
 
   &-view {
@@ -1149,40 +1267,38 @@ label {
       }
     }
   }
-  &-messageRequest
-  {
-    &-list-item
-    {
+
+  &-messageRequest {
+    &-list-item {
       display: flex;
       flex-direction: row;
       padding-inline-end: 16px;
       padding: 10px 0;
       padding-inline-start: 16px;
       align-items: center;
-      background-color:var(--color-settingIndication);
+      background-color: var(--color-settingIndication);
       margin-bottom: 2px;
       border-radius: 10px;
-      
+
     }
-    &-profileName
-    {
+
+    &-profileName {
       font-family: $bchat-font-poppin-semibold;
       font-size: $bchat-font-lg;
     }
 
-    &-acceptButton
-    {
-     background-color: $bchat-button-color;
-     color:white;
-     padding: 8px 25px;
-    border-radius: 8px;
-    font-family: $bchat-font-poppin-semibold;
-    margin-right: 20px;
-    cursor: pointer;
+    &-acceptButton {
+      background-color: $bchat-button-color;
+      color: white;
+      padding: 8px 25px;
+      border-radius: 8px;
+      font-family: $bchat-font-poppin-semibold;
+      margin-right: 20px;
+      cursor: pointer;
     }
   }
-  &-recovery-seed
-  {
+
+  &-recovery-seed {
     display: flex;
     flex-direction: column;
     width: 30%;
@@ -1190,34 +1306,33 @@ label {
     margin: 0 auto;
     height: 81vh;
     justify-content: center;
-     &-danger
-     {
+
+    &-danger {
       width: 100px;
       margin: 0 AUTO;
-     }
-     &-bold
-     {
-      font-family: $bchat-font-poppins-bold;
-      font-size:24px;
-      margin-bottom: 0px;
-     }
-     &-red
-     {
-      font-family: $bchat-font-poppin-medium;
-      color:red;
-      margin-bottom: 0px;
-     }
-    
-     &-note
-     {
-      font-family: $bchat-font-poppin-semibold;
-     }
-     &-button
-     {
-     width: 70%;
-     margin: 0 auto;
+    }
 
-     }
+    &-bold {
+      font-family: $bchat-font-poppins-bold;
+      font-size: 24px;
+      margin-bottom: 0px;
+    }
+
+    &-red {
+      font-family: $bchat-font-poppin-medium;
+      color: red;
+      margin-bottom: 0px;
+    }
+
+    &-note {
+      font-family: $bchat-font-poppin-semibold;
+    }
+
+    &-button {
+      width: 70%;
+      margin: 0 auto;
+
+    }
 
   }
 }
@@ -1238,7 +1353,7 @@ label {
 }
 
 .messages li {
-  transition: $bchat-transition-duration !important;
+  transition: $bchat-transition-duration  !important;
 }
 
 .bchat-radio-group fieldset {
@@ -1276,11 +1391,11 @@ label {
     transition: $bchat-transition-duration;
   }
 
-  input:hover + label:before {
+  input:hover+label:before {
     background: var(--color-accent);
   }
 
-  input:checked + label:before {
+  input:checked+label:before {
     background: var(--color-accent);
   }
 }
@@ -1292,6 +1407,7 @@ label {
     width: 30vh;
   }
 }
+
 .bchat-id-editable textarea {
   resize: none;
   overflow: hidden;
@@ -1330,10 +1446,10 @@ input {
 
 .onion__description {
   width: 62%;
-    margin: 0 auto;
-    font-family: $bchat-font-poppin-semibold;
-    text-align: center;
-    font-size:$bchat-font-lg;
+  margin: 0 auto;
+  font-family: $bchat-font-poppin-semibold;
+  text-align: center;
+  font-size: $bchat-font-lg;
 }
 
 .onion__node-list {
@@ -1359,17 +1475,18 @@ input {
     }
 
     .bchat-icon-button {
-      margin: $bchat-margin-sm !important;
+      margin: $bchat-margin-sm  !important;
     }
   }
 
   .onion__node-list-lights {
     position: relative;
   }
+
   .onion__node__country {
     margin: $bchat-margin-lg;
     min-width: 150px;
-    font-size:$bchat-font-lg;
+    font-size: $bchat-font-lg;
     font-family: $bchat-font-poppin-regular;
   }
 
@@ -1430,7 +1547,7 @@ input {
     max-height: 400px;
     overflow-y: auto;
     // border: var(--border-bchat);
-    border-bottom: var(--border-bchat);
+    // border-bottom: var(--border-bchat);
   }
 
   &__selection {
@@ -1461,7 +1578,7 @@ input {
     }
 
     &-disabled {
-      border: 1px solid $bchat-color-dark-grey !important;
+      border: 1px solid $bchat-color-dark-grey  !important;
     }
   }
 }
@@ -1480,8 +1597,8 @@ input {
   justify-content: space-between;
   transition: $bchat-transition-duration;
   // border:var(--color-bchat-border);
-  border-bottom:var(--color-bchat-border) ;
-  
+  border-bottom: var(--color-bchat-border);
+
 
   &:not(:last-child) {
     border-bottom: var(--border-bchat);
@@ -1508,6 +1625,7 @@ input {
     &.selected {
       opacity: 1;
       border: 2px solid green;
+
       svg {
         fill: var(--color-accent) !important;
       }
@@ -1519,7 +1637,7 @@ input {
     display: flex;
     align-items: center;
   }
-  
+
 
 
   &__name {
@@ -1528,12 +1646,13 @@ input {
     margin-inline-end: $bchat-margin-md;
     font-family: $bchat-font-poppin-medium;
   }
+
   &__pubkey {
     margin-inline-start: 5px;
     opacity: 0.8;
   }
 
-  &__avatar > div {
+  &__avatar>div {
     margin-bottom: 0px !important;
   }
 }
@@ -1552,6 +1671,7 @@ input {
   padding: $bchat-margin-xs;
   opacity: 0.6;
   transition: none;
+
   &:hover {
     opacity: 1;
   }

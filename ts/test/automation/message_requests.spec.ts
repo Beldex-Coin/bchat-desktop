@@ -31,7 +31,7 @@ test.describe('Message requests', () => {
       'readable-message',
       `You have accepted ${userA.userName}'s message request`
     );
-    await waitForMatchingText(windowB, 'No pending message requests');
+    await waitForMatchingText(windowB, 'No Message Requests Yet!');
   });
   test('Message request rejection', async () => {
     const windowLoggedIn = await openAppsAndNewUsers(2);
@@ -51,6 +51,6 @@ test.describe('Message requests', () => {
     await clickOnTestIdWithText(windowB, 'bchat-confirm-ok-button', 'Decline');
     // Check config message of message request acceptance
     await waitForTestIdWithText(windowB, 'bchat-toast', 'Blocked');
-    await waitForMatchingText(windowB, 'No pending message requests');
+    await waitForMatchingText(windowB, 'No Message Requests Yet!');
   });
 });

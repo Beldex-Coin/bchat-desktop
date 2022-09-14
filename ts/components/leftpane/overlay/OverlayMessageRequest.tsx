@@ -122,7 +122,13 @@ export const OverlayMessageRequest = (props:any) => {
         <>
           <SpacerLG />
           <MessageRequestListPlaceholder>
-            {window.i18n('noMessageRequestsPending')}
+           <div className='bchat-noMsgRequest'>
+
+           </div>
+           <div>
+           {window.i18n('noMessageRequestsPending')}
+           </div>
+            {/* {window.i18n('noMessageRequestsPending')} */}
           </MessageRequestListPlaceholder>
         </>
       )}
@@ -131,9 +137,11 @@ export const OverlayMessageRequest = (props:any) => {
 };
 
 const MessageRequestListPlaceholder = styled.div`
-  color: var(--color-text);
+  color:var(--color-disableText);
   margin-bottom: auto;
   text-align:center;
+  margin-bottom: 20px;
+  font-family: 'poppin-semibold';
 `;
 
 const MessageRequestListContainer = styled.div`

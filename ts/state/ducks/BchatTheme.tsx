@@ -10,11 +10,11 @@ const accentLightTheme = '#159B24';
 const accentDarkTheme = '#2879FB';
 // const borderLightThemeColor = '#f1f1f1';
 // const borderDarkThemeColor = '#ffffff0F';
-const baseColor="#00A803";
-const greyColor="#2D2D3B";
-const lightGreyColor ="#646474";
+const baseColor = "#00A803";
+const greyColor = "#2D2D3B";
+const lightGreyColor = "#646474";
 
- 
+
 
 // DARK COLORS
 const darkColorAccent = baseColor;
@@ -57,7 +57,7 @@ const darkConversationList = '#1C1C26';
 const darkTextHighlight = `${white}88`;
 const darkForegroundPrimary = white;
 const darkBackgroundPrimary = '#3A3A4E';
-const darkButtonGreen =baseColor;
+const darkButtonGreen = baseColor;
 const darkModalBackground = '#101011';
 
 const grey67 = '#434343';
@@ -65,37 +65,40 @@ const darkMessageRequestBannerBackground = darkConversationItemHasUnread;
 const darkMessageRequestBannerIconBackground = grey67;
 const darkMessageRequestBannerUnreadBackground = grey67;
 const darkMessageRequestBannerIcon = '#adadad';
-const darkcomposeMsgRecordIcon ="#85858F";
+const darkcomposeMsgRecordIcon = "#85858F";
 
 // for bchat
-const darkColorBg=black;
+const darkColorBg = black;
 // const darkunreadBg="#39394A";
-const darkBorderBottomColor="#1A1A24"
-const darkInboxBgColor="#353543";
-const darkHintMessage="#7B7B86";
-const darkTextAreaColor="#0BB70F"; 
-const darkComposeMsgBg="#2B2B38";
-const darkComposeMsgIconBG="#2879FB"
-const darkSettingIndication=greyColor
-const darkProfileBgColor="#2A2A3B";
-const darkSinginTextColor='#128B17';
-const darkHintColor=lightGreyColor;
-const darkCopyIcon="#fff"
-const darkChatHeader="black";
-const darkToggleOff='#000';
-const darkClearBtn="#3D3D4D";
-const darkSmModalBg="#2A2A3B";
-const darkCancelBtnBg="#3D3D4E"
-
-const darkEmptyChatImg=`url("../images/bchat/emptyMessage.svg")`;
-const darkBgDoodle=`url("../images/bchat/doodle_white.svg")`;
-const darkChatIcons="white";
-const darkComposeMsgInput="#3F3C4B";
-const darkDayNight=`url("../images/bchat/light_theme .svg")`;
-
+const darkBorderBottomColor = "#1A1A24"
+const darkInboxBgColor = "#353543";
+const darkHintMessage = "#7B7B86";
+const darkTextAreaColor = "#0BB70F";
+const darkComposeMsgBg = "#2B2B38";
+const darkComposeMsgIconBG = "#2879FB"
+const darkSettingIndication = greyColor
+const darkProfileBgColor = "#2A2A3B";
+const darkSinginTextColor = '#128B17';
+const darkHintColor = lightGreyColor;
+const darkCopyIcon = "#fff";
+const darkCopyIconBg="#353543";
+const darkChatHeader = "black";
+const darkToggleOff = '#000';
+const darkClearBtn = "#3D3D4D";
+const darkSmModalBg = "#2A2A3B";
+const darkCancelBtnBg = "#3D3D4E";
+const darkDisableText="#545469";
+const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
+const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
+const darkChatIcons = "white";
+const darkComposeMsgInput = "#3F3C4B";
+const darkDayNight = `url("../images/bchat/light_theme .svg")`;
+const darkMsgReqImg =`url("../images/bchat/no_message_request_dark_theme.svg")`;
+const darkBlockedContact=`url("../images/bchat/no_blocked_contacts_dark_theme.svg")`;
+const darkAddContact=`url("../images/bchat/add_contact.svg")`;
 const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
-
+const darkLeftpaneSetting = "#1C1C26"
 
 export const switchHtmlToDarkTheme = () => {
 
@@ -103,7 +106,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-profile', darkProfileBgColor);
   document.documentElement.style.setProperty('--color-accent', darkColorAccent);
   document.documentElement.style.setProperty('--color-accent-button', darkColorAccentButton);
-  document.documentElement.style.setProperty('--color-text', darkColorText); 
+  document.documentElement.style.setProperty('--color-text', darkColorText);
   document.documentElement.style.setProperty('--color-text-menu-highlighted', lightColorText);
   document.documentElement.style.setProperty('--color-text-subtle', darkColorTextSubtle);
   document.documentElement.style.setProperty('--color-text-accent', darkColorTextAccent);
@@ -112,6 +115,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-bchat-shadow', darkColorBchatShadow);
   document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
   document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
+  document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
     darkColorComposeViewBg
@@ -175,7 +179,6 @@ export const switchHtmlToDarkTheme = () => {
     darkConversationItemHasUnread
   );
   document.documentElement.style.setProperty('--color-conversation-list', darkConversationList);
-
   document.documentElement.style.setProperty('--color-text-highlight', darkTextHighlight);
   document.documentElement.style.setProperty('--color-foreground-primary', darkForegroundPrimary);
   document.documentElement.style.setProperty('--color-background-primary', darkBackgroundPrimary);
@@ -216,7 +219,7 @@ export const switchHtmlToDarkTheme = () => {
     '--color-HintMessageText',
     darkHintMessage
   );
-  
+
   document.documentElement.style.setProperty(
     '--color-TextAreaColor',
     darkTextAreaColor
@@ -229,7 +232,7 @@ export const switchHtmlToDarkTheme = () => {
     '--color-composeMsgInput',
     darkComposeMsgInput
   );
-  
+
   document.documentElement.style.setProperty(
     '--color-composeMsgIconBG',
     darkComposeMsgIconBG
@@ -259,6 +262,10 @@ export const switchHtmlToDarkTheme = () => {
     darkcomposeMsgRecordIcon
   );
   document.documentElement.style.setProperty(
+    '--color-leftpaneSetting',
+    darkLeftpaneSetting
+  );
+  document.documentElement.style.setProperty(
     '--color-toggleOff',
     darkToggleOff
   );
@@ -267,12 +274,16 @@ export const switchHtmlToDarkTheme = () => {
     darkClearBtn
   );
   document.documentElement.style.setProperty(
-    '--image-DayNight',
-    darkDayNight
+    '--color-clearBtn',
+    darkClearBtn
+  );
+  document.documentElement.style.setProperty(
+    '--color-disableText',
+    darkDisableText
   );
   document.documentElement.style.setProperty('--color-toast-success', darkToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
-  document.documentElement.style.setProperty('--color-caret',lightColorCellBackground);
+  document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
 
   document.documentElement.style.setProperty(
     '--image-EmptyChatImg',
@@ -282,15 +293,25 @@ export const switchHtmlToDarkTheme = () => {
     '--image-BgDoodle',
     darkBgDoodle
   );
+  document.documentElement.style.setProperty(
+    '--image-MsgReq',
+    darkMsgReqImg
+  );
+  document.documentElement.style.setProperty(
+    '--image-BlockedContact',
+    darkBlockedContact
+  );
+  document.documentElement.style.setProperty(
+    '--image-AddContact',
+    darkAddContact
+  );
 
 
- 
- 
-  
+
 };
 
 // LIGHT COLORS
-const lightColorAccent ="#128b17";
+const lightColorAccent = "#128b17";
 const lightColorAccentButton = black;
 const lightColorText = '#222222';
 const lightColorTextOpposite = white;
@@ -306,7 +327,7 @@ const lightColorRecoveryPhraseBannerBg = white;
 const lightColorPillDivider = `${black}1A`;
 const lightColorLastSeenIndicator = black;
 const lightColorQuoteBottomBarBg = '#f0f0f0';
-const lightColorCellBackground = '#F8F8F8';
+const lightColorCellBackground = '#EEEEEE';
 const lightColorReceivedMessageBg = '#f5f5f5';
 const lightColorReceivedMessageText = black;
 
@@ -320,7 +341,7 @@ const lightScrollbarThumb = '#474646';
 const lightScrollbarTrack = '#fcfcfc';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
-const lightInboxBackground = '#FFFFFF';
+const lightInboxBackground = '#F8F8F8';
 const lightLeftPaneOverlayBg = '#EDEDED';
 const lightConversationItemSelected = '#fff';
 const lightConversationItemHasUnread = '#EDEDED';
@@ -328,7 +349,8 @@ const lightConversationList = '#f9f9f9';
 
 const lightTextHighlight = `${black}88`;
 const lightForegroundPrimary = white;
-const lightBackgroundPrimary = '#272726';
+// const lightBackgroundPrimary = '#272726';
+const lightBackgroundPrimary='#F8F8F8';
 const lightButtonGreen = '#FFFFFF';
 const lightModalBackground = '#fcfcfc';
 
@@ -338,31 +360,37 @@ const lightMessageRequestBannerUnreadBackground = lightColorClickableHovered;
 const lightMessageRequestBannerIcon = white;
 
 // for bchat
-const lightColorBg=white; 
+const lightColorBg = white;
 // const lightunreadBg="#EDEDED";
-const lightSmModalBg="#F4F4F4";
-const lightCancelBtnBg="#E8E8E8";
-const lightInboxBgColor="#FCFCFC";
+const lightSmModalBg = "#F4F4F4";
+const lightCancelBtnBg = "#E8E8E8";
+const lightInboxBgColor = "#FCFCFC";
 // const lightHintMessageText="black";
 // const lightTextAreaColor="black";
-const lightComposeMsgBg="#EEEEEE";
+const lightComposeMsgBg = "#EEEEEE";
 // const lightComposeMsgIconBG="#2879fb";
-const lightSettingIndication="#F8F8F8";
-const lightSinginTextColor='#128B17';
-const lightHintColor=lightGreyColor;
-const lightCopyIcon='#0BB70F';
-const lightEmptyChatImg=`url("../images/bchat/emptyMessageWhite.svg")`;
-const lightBgDoodle=`url("../images/bchat/doodle_dark.svg")`;
-const lightChatHeader='#EEEEEE';
-const lightChatIcons="black";
-const lightComposeMsgInput="#EAEAEA";
-const lightcomposeMsgRecordIcon="#85858F";
-const lightDayNight=`url("../images/bchat/moon.svg")`;
-const lightBorderBottomColor='#E3E3E3';
-const lightToggleOff="#C6C6C6"
-const lightClearBtn='#fff'
+const lightSettingIndication = "#F2F2F2";
+const lightSinginTextColor = '#128B17';
+const lightHintColor = lightGreyColor;
+const lightCopyIcon = '#0BB70F';
+const lightCopyIconBg="#EFEFEF";
 
-const lightProfileBgColor="#F8F8F8";
+const lightEmptyChatImg = `url("../images/bchat/emptyMessageWhite.svg")`;
+const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
+const lightMsgReqImg=`url("../images/bchat/no_message_request.svg")`;
+const lightBlockedContact=`url("../images/bchat/no_blocked_contacts.svg")`;
+const lightAddContact=`url("../images/bchat/add_contact_white_theme.svg")`;
+const lightChatHeader = '#EEEEEE';
+const lightChatIcons = "black";
+const lightComposeMsgInput = "#EAEAEA";
+const lightcomposeMsgRecordIcon = "#85858F";
+const lightDayNight = `url("../images/bchat/moon.svg")`;
+const lightBorderBottomColor = '#E3E3E3';
+const lightToggleOff = "#C6C6C6"
+const lightClearBtn = '#fff'
+const lightLeftpaneSetting = '#f4f4f4';
+const  ligntDisableText='#B9BABF';
+const lightProfileBgColor = "#F8F8F8";
 
 // Toast Colors 
 const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
@@ -370,7 +398,7 @@ const lightToastErrorMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF
 
 export const switchHtmlToLightTheme = () => {
 
-// console.log("switchHtmlToLightTheme:");
+  // console.log("switchHtmlToLightTheme:");
 
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
   document.documentElement.style.setProperty('--color-profile', lightProfileBgColor);
@@ -385,6 +413,11 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', lightColorBchatShadow);
   document.documentElement.style.setProperty('--color-copyIcon', lightCopyIcon);
+  document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
+  document.documentElement.style.setProperty(
+    '--color-disableText',
+    ligntDisableText
+  );
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
     lightColorComposeViewBg
@@ -476,7 +509,7 @@ export const switchHtmlToLightTheme = () => {
     '--color-request-banner-icon',
     lightMessageRequestBannerIcon
   );
- 
+
   document.documentElement.style.setProperty(
     '--color-settingIndication',
     lightSettingIndication
@@ -526,6 +559,10 @@ export const switchHtmlToLightTheme = () => {
     lightChatIcons
   );
   document.documentElement.style.setProperty(
+    '--color-leftpaneSetting',
+    lightLeftpaneSetting
+  );
+  document.documentElement.style.setProperty(
     '--color-toggleOff',
     lightToggleOff
   );
@@ -535,7 +572,7 @@ export const switchHtmlToLightTheme = () => {
   );
   document.documentElement.style.setProperty('--color-toast-success', lightToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
-  document.documentElement.style.setProperty('--color-caret',darkColorCellBackground);
+  document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
 
 
   document.documentElement.style.setProperty(
@@ -550,7 +587,18 @@ export const switchHtmlToLightTheme = () => {
     '--image-BgDoodle',
     lightBgDoodle
   );
- 
+  document.documentElement.style.setProperty(
+    '--image-MsgReq',
+    lightMsgReqImg
+  );
+  document.documentElement.style.setProperty(
+    '--image-BlockedContact',
+    lightBlockedContact
+  );
+  document.documentElement.style.setProperty(
+    '--image-AddContact',
+    lightAddContact
+  );
 
 };
 
@@ -634,21 +682,28 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-composeMsgRecordIcon:${darkcomposeMsgRecordIcon}
     --color-settingIndication:${darkSettingIndication};
     --color-copyIcon:${darkCopyIcon};
+    --color-copyIconBg:${darkCopyIconBg};
     --color-chatHeader:${darkChatHeader};
     --color-chatIcons:${darkChatIcons};
     --color-toggleOff:${darkToggleOff};
     --color-clearBtn:${darkClearBtn};
+    
+    --color-leftpaneSetting:${darkLeftpaneSetting};
+
+    --color-disableText:${darkDisableText};
 
     --color-profile: ${darkProfileBgColor};
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
     --color-caret:${white}
-
+    
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};
     --image-DayNight:${darkDayNight};
-
+    --image-MsgReq:${darkMsgReqImg};
+    --image-BlockedContact:${darkBlockedContact};
+    --image-AddContact:${darkAddContact}
 
 
 

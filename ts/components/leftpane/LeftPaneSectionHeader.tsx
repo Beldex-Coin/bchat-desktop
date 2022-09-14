@@ -7,15 +7,17 @@ import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
 import { Flex } from '../basic/Flex';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
 import { SectionType, setOverlayMode } from '../../state/ducks/section';
-import { BchatButton, 
+import {
+  BchatButton,
   // BchatButtonColor,
-   BchatButtonType } from '../basic/BchatButton';
+  BchatButtonType
+} from '../basic/BchatButton';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
-import {  editProfileModal} from '../../state/ducks/modalDialog';
+import { editProfileModal } from '../../state/ducks/modalDialog';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
@@ -33,7 +35,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
-  const bChatId=useSelector(getOurNumber)
+  const bChatId = useSelector(getOurNumber)
   const dispatch = useDispatch();
 
   let label: string | undefined;
@@ -51,7 +53,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
       label = window.i18n('settingsHeader');
       break;
     case SectionType.Message:
-      
+
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')
         // : window.i18n('messagesHeader');
@@ -60,66 +62,63 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
       break;
     default:
-      label='BChat'
+      label = 'BChat'
   }
 
-  function handleClick()
-  {
+  function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
-      const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
-      window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+    const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+    window.setTheme(updatedTheme);
+    if (updatedTheme === 'dark') {
+      switchHtmlToDarkTheme();
+    } else {
+      switchHtmlToLightTheme();
+    }
   }
 
   function verifyScreens() {
-    if (SectionType.Settings!==focusedSection) {
-      return  <Avatar
+    if (SectionType.Settings !== focusedSection) {
+      return <Avatar
         size={AvatarSize.M}
-      
-      onAvatarClick={()=>dispatch(editProfileModal({}))}
+
+        onAvatarClick={() => dispatch(editProfileModal({}))}
         pubkey={bChatId}
         dataTestId="leftpane-primary-avatar"
       />
 
     }
-    else{
+    else {
       return <div className='module-left-pane__header_gearIcon'>
-         <BchatIcon  
-         iconType={"gear"}
-        //  iconColor={"#fff"}
-         iconSize={"large"}
-         />
-     </div>
-       
+        <BchatIcon
+          iconType={"gear"}
+          //  iconColor={"#fff"}
+          iconSize={"large"}
+        />
+      </div>
+
     }
-    
+
   }
 
-  const IsOnline=()=>{
-    if (SectionType.Settings!==focusedSection) {
-      return <div style={{margin:"0 15px",width:'20px'}}> 
-      <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
-        throw new Error('Function not implemented.');
-      } } id={''}/>
+  const IsOnline = () => {
+    if (SectionType.Settings !== focusedSection) {
+      return <div style={{ margin: "0 15px", width: '20px' }}>
+        <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
+          throw new Error('Function not implemented.');
+        }} id={''} />
       </div>
     }
-    else
-    {
+    else {
       return null
     }
   }
 
-   
 
-function Moon ()
-{
-  if (SectionType.Settings !==focusedSection) {
-    return <div style={{marginRight:"10px"}} className='dayAndNightIcon'  onClick={handleClick} >
- {/* <BchatIconButton
+
+  function Moon() {
+    if (SectionType.Settings !== focusedSection) {
+      return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} >
+        {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
   dataTestId="theme-section"
@@ -127,17 +126,17 @@ function Moon ()
   onClick={handleClick}
  
 /> */}
-    </div>
-   
+      </div>
+
+    }
+    else {
+      return null;
+    }
   }
-  else{
-    return null;
-  }
-}
 
   return (
     <Flex flexDirection="column">
-      <div className="module-left-pane__header"> 
+      <div className="module-left-pane__header" style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}>
         {showBackButton && (
           <BchatIconButton
             onClick={() => {
@@ -149,24 +148,24 @@ function Moon ()
             margin="0 0 var(--margins-xs) var(--margins-xs)"
           />
         )}
-       
-       <div className=''>
-       {verifyScreens()}
-       </div>
-        
-       
-       <div className='module-left-pane__header__title'>
-       {label}
-       </div>
+
+        <div className=''>
+          {verifyScreens()}
+        </div>
+
+
+        <div className='module-left-pane__header__title'>
+          {label}
+        </div>
         {/* <SectionTitle></SectionTitle>           */}
-          <IsOnline />
-          <Moon /> 
-         
+        <IsOnline />
+        <Moon />
+
         {isMessageSection && !isMessageRequestOverlay && (
-          <div onClick={props.buttonClicked} style={{cursor:"pointer"}}>
-            <img src={"images/bchat/addButton.svg"}  style={{width:"35px"}} />
-            
-          {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
+          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }}>
+            <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
+
+            {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
             <BchatIcon iconType="plus" iconSize="small" iconColor="white" />
           </BchatButton> */}
           </div>

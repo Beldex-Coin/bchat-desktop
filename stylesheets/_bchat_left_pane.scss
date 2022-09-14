@@ -162,10 +162,12 @@ $bchat-compose-margin: 20px;
 
     .dayAndNightIcon {
       background-image: var(--image-DayNight);
-      width: 25px;
-      height: 25px;
+      width: 23px;
+      height: 23px;
       background-size: contain;
       cursor: pointer;
+      background-repeat: no-repeat;
+      margin-top: 1px;
     }
 
 
@@ -194,6 +196,8 @@ $bchat-compose-margin: 20px;
 
   &__list {
     height: -webkit-fill-available;
+
+   
   }
 
   &__chatHeader {
@@ -211,7 +215,7 @@ $bchat-compose-margin: 20px;
   }
 
   &-overlay {
-    background: var(--color-left-pane-overlay-background);
+    // background: var(--color-left-pane-overlay-background);
 
     display: flex;
     flex-direction: column;
@@ -385,8 +389,21 @@ $bchat-compose-margin: 20px;
       margin-bottom: 3rem;
       flex-shrink: 0;
     }
+
+    .bchat-noMsgRequest {
+      display: flex;
+      width: 500px;
+      height: 363px;
+      background-image: var(--image-MsgReq);
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin: auto;
+      margin-top: 17%;
+      color: var(--color-disableText);
+    }
   }
 }
+
 .module-conversations-list-content {
   overflow-x: hidden;
   display: flex;
@@ -394,6 +411,17 @@ $bchat-compose-margin: 20px;
   flex-grow: 1;
   transition: none;
   background: var(--color-left-pane-overlay-background);
+
+  .addContactImg
+  {
+    width: 111px;
+    height: 103px;
+    background-image: var(--image-AddContact);
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* text-align: center; */
+    margin: 137px auto 0;
+  }
 
 
   .left-pane-contact-bottom-buttons .bchat-button {
@@ -489,8 +517,8 @@ $bchat-compose-margin: 20px;
 
   .bchat-text-logo {
     margin-top: 12px;
-    width: 651px;
-    height: 404px;
+    width: 615px;
+    height: 350px;
     // filter: var(--filter-bchat-text);
     background-image: var(--image-EmptyChatImg);
     background-repeat: no-repeat;
@@ -603,6 +631,7 @@ $bchat-compose-margin: 20px;
     display: flex;
     flex-direction: column;
     flex: 1;
+    background-color: var(--color-leftpaneSetting);
   }
 
   &-category-list-item {

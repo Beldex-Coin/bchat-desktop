@@ -377,7 +377,7 @@
   "invalidGroupNameTooLong": "Пожалуйста, введите более короткое имя группы",
   "pickClosedGroupMember": "Пожалуйста, выберите как минимум 1 участников группы",
   "closedGroupMaxSize": "В закрытой группе не может быть больше 100 участников",
-  "noBlockedContacts": "No blocked contacts",
+  "noBlockedContacts": "No blocked contacts Yet!",
   "userAddedToModerators": "User added to moderator list",
   "userRemovedFromModerators": "User removed from moderator list",
   "orJoinOneOfThese": "Or join one of these...",

@@ -46,7 +46,7 @@ export const Icons = (props:any)=>
     // right: (props.icon=='paste')?'106px':'135px',
     cursor:'pointer',
     marginTop:'207px',
-    marginLeft:'50px',
+    marginLeft:'35px',
     color:'var(--color-copyIcon)',
     display: "flex",
     alignItems: "center",

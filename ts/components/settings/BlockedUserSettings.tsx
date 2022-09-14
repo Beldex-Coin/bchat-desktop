@@ -5,20 +5,28 @@ import { getConversationController } from '../../bchat/conversations';
 import { getBlockedPubkeys } from '../../state/selectors/conversations';
 import { BchatButtonColor } from '../basic/BchatButton';
 
-import { BchatSettingButtonItem, BchatSettingsItemWrapper } from './BchatSettingListItem';
+import { BchatSettingButtonItem, 
+  // BchatSettingsItemWrapper 
+} from './BchatSettingListItem';
 
 export const BlockedUserSettings = () => {
   const blockedNumbers = useSelector(getBlockedPubkeys);
 
   if (!blockedNumbers || blockedNumbers.length === 0) {
     return (
-      <BchatSettingsItemWrapper
-        inline={true}
-        description={window.i18n('noBlockedContacts')}
-        title={''}
-      >
-        {' '}
-      </BchatSettingsItemWrapper>
+      // <BchatSettingsItemWrapper
+      //   inline={true}
+      //   description={window.i18n('noBlockedContacts')}
+      //   title={''}
+      // >
+      //   {' '}
+      // </BchatSettingsItemWrapper>
+      <div className='noBlockedContacts'>
+        <div className='noBlockedContacts-img'>
+
+        </div>
+        {window.i18n('noBlockedContacts')}
+      </div>
     );
   }
   const blockedEntries = blockedNumbers.map(blockedEntry => {

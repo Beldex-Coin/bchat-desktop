@@ -30,7 +30,7 @@
   .contact-selection-list {
     width: 100%;
     min-width: 300px;
-    box-shadow:var( --color-bchat-shadow);
+    box-shadow: var(--color-bchat-shadow);
   }
 }
 
@@ -41,6 +41,7 @@
   .content {
     max-width: 100% !important;
   }
+
   .contact-selection-list {
     width: 100%;
   }
@@ -173,6 +174,7 @@
   .qr-image {
     transition: $bchat-transition-duration;
     opacity: 10%;
+
     &:hover {
       opacity: 100%;
     }
@@ -180,22 +182,23 @@
 }
 
 .loki-dialog {
-  & ~ .index.inbox {
+  &~.index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
   }
-  .groupNameBox
-  {
+
+  .groupNameBox {
     display: flex;
     border-bottom: var(--border-bchat);
   }
+
   input {
     background-color: var(--color-smModal-bg);
     color: var(--color-text);
     border-bottom: 0;
     margin: 0;
-    box-shadow: var(--color-bchat-shadow);
+    // box-shadow: var(--color-bchat-shadow);
 
   }
 }
@@ -267,43 +270,55 @@
       word-break: break-all;
       font-size: $bchat-font-md;
       // padding: 0px $bchat-margin-lg;
-      background-color: var(--color-composeMsgInput);
+      // background-color: var(--color-composeMsgInput);
+      background-color: var(--color-background-primary);
       border-radius: 10px;
       padding: 10px 10px 10px 14px;
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0BB70F;
-      display:flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
       flex-direction: row;
       width: 100%;
       min-height: 60px;
+      box-shadow: var(--color-bchat-shadow);
 
       font-size: $bchat-font-md;
       // padding: 0px $bchat-margin-sm;
+      .profile-value {
+        width: 86%;
+        font-family: $bchat-font-poppin-medium;
+        font-size: 12px;
+        
+      }
     }
 
     &-display-icon {
-      background:url('../images/bchat/copy_icon.svg');
-      background-repeat: no-repeat;
+      // background:url('../images/bchat/copy_icon.svg');
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // background-repeat: no-repeat;
       width: 40px;
       height: 40px;
       position: relative;
-      background-color:var(--color-composeMsgInput);
-      background-size:16px;
-      border-radius:30px;
-      background-position:center;
-      cursor:pointer;
+      // background-color: var(--color-composeMsgInput);
+      background-color: var(--color-copyIconBg);
+      background-size: 16px;
+      border-radius: 30px;
+      background-position: center;
+      cursor: pointer;
+      color:var(--color-copyIcon);
     }
 
     .bchat-button {
       width: 148px;
     }
   }
-   
-  &-modalLoader
-  {
+
+  &-modalLoader {
     position: absolute;
     width: 400px;
     height: 445px;
@@ -323,21 +338,21 @@
     justify-content: space-between;
     width: 100%;
 
-    
-    .inputBox
-    {
+
+    .inputBox {
       display: flex;
-    /* width: 134px; */
-    padding-left: 73px;
+      /* width: 134px; */
+      padding-left: 73px;
 
     }
-    .saveIcon
-    {
+
+    .saveIcon {
       width: 35px;
-      color:var(--color-accent);
+      color: var(--color-accent);
       cursor: pointer;
-    
+
     }
+
     input {
       height: 38px;
       border-radius: 5px;
@@ -354,14 +369,15 @@
       justify-content: space-around;
       width: 100%;
       font-family: $bchat-font-poppin-semibold;
-      
-    
+
+
 
       p {
-        font-size: $bchat-font-h4;
+        font-size: 20px;
         padding: 0px $bchat-margin-sm;
         margin-left: 33px;
       }
+
       .qr-icon-btn {
         width: 30px;
         height: 30px;
@@ -369,6 +385,7 @@
         position: relative;
         cursor: pointer;
       }
+
       .bchat-icon-button {
         padding: 0px;
       }

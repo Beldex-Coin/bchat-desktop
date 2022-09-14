@@ -21,7 +21,7 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 // import { resetConversationExternal } from '../../state/ducks/conversations';
 // import { BchatIconType } from '../icon';
 
- import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -265,12 +265,12 @@ const LeftPaneSettingsCategoryRow = (
         style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
-           <span style={{padding:"0 10px"}}> <ActionPanelOnionStatusLight
-          dataTestId="onion-status-section"
-          handleClick={()=>{}}
-           isSelected={false}
-           id={'onion-path-indicator-led-id'}
-         /></span>
+          <span style={{ padding: "0 10px" }}> <ActionPanelOnionStatusLight
+            dataTestId="onion-status-section"
+            handleClick={() => { }}
+            isSelected={false}
+            id={'onion-path-indicator-led-id'}
+          /></span>
           <span className="left-pane-setting-category-list-item-span">Hops</span>
         </div>
         <div>
@@ -286,7 +286,7 @@ const LeftPaneSettingsCategoryRow = (
 
 const LeftPaneSettingsCategories = () => {
   // const categories = getCategories();
-  
+
 
 
   return (
@@ -336,7 +336,7 @@ export const LeftPaneSettingSection = () => {
       <LeftPaneSectionHeader />
       <div className="left-pane-setting-content">
         <LeftPaneSettingsCategories />
-        <span className="text-selectable" style={{ color: "#797984", marginLeft: '20px' }}>Bchat v1.0</span>
+        <span className="text-selectable" style={{ color: "#797984", marginLeft: '20px' }}>Bchat {window.getVersion()}</span>
 
         <LeftPaneBottomButtons />
       </div>

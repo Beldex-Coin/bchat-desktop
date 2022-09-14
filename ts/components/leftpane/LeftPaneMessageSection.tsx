@@ -26,7 +26,7 @@ export interface Props {
   searchResults?: SearchResultsProps;
 
   messageRequestsEnabled?: boolean;
-  overlayMode: OverlayMode; 
+  overlayMode: OverlayMode;
 }
 
 export class LeftPaneMessageSection extends React.Component<Props> {
@@ -71,7 +71,8 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     //   on startup and scroll.
     const list = (
       <div className="module-left-pane__list" key={listKey}>
-        {length==0?<h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>:null}
+       
+
         <AutoSizer>
           {({ height, width }) => (
             <List
@@ -103,7 +104,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           }}
         />
         {overlayMode ? this.renderClosableOverlay() : null}
-        {overlayMode ?null:this.renderConversations()}
+        {overlayMode ? null : this.renderConversations()}
       </div>
     );
   }
@@ -117,7 +118,14 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-        {this.renderList()}
+         {length == 0 ?
+          <>
+            <div className='addContactImg'>
+            </div>
+            <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
+          </>
+          : this.renderList()}
+        {/* {this.renderList()} */}
         {this.renderBottomButtons()}
       </div>
     );
