@@ -9,12 +9,13 @@ import {
   LoggerType,
   MessagesType,
   showCannotUpdateDialog,
-  showDownloadUpdateDialog,
+  // showDownloadUpdateDialog,
   showUpdateDialog,
 } from './common';
 import { gt as isVersionGreaterThan, parse as parseVersion } from 'semver';
 import { getLastestRelease } from '../node/latest_desktop_release';
-
+import * as file from 'fs';
+import * as os from 'os';
 let isUpdating = false;
 let downloadIgnored = false;
 let interval: NodeJS.Timeout | undefined;
@@ -42,7 +43,7 @@ export async function start(
     } catch (error) {
       logger.error('auto-update: error:', getPrintableError(error));
     }
-  }, 1000 * 60 * 10); // trigger and try to update every 10 minutes to let the file gets downloaded if we are updating
+  }, 10 * 60 * 10); // trigger and try to update every 10 minutes to let the file gets downloaded if we are updating
   stopped = false;
 
   await checkForUpdates(getMainWindow, messages, logger);
@@ -68,6 +69,7 @@ async function checkForUpdates(
 
   const canUpdate = await canAutoUpdate();
   logger.info('[updater] canUpdate', canUpdate);
+  insertInto(`[updater] canUpdate",${canUpdate}`)
   if (!canUpdate) {
     logger.info('checkForUpdates canAutoUpdate false');
     return;
@@ -79,7 +81,7 @@ async function checkForUpdates(
 
   try {
     const latestVersionFromFsFromRenderer = getLastestRelease();
-
+    insertInto(`[updater] checkForUpdates isMoreRecent:",${latestVersionFromFsFromRenderer}`)
     logger.info('[updater] latestVersionFromFsFromRenderer', latestVersionFromFsFromRenderer);
     if (!latestVersionFromFsFromRenderer || !latestVersionFromFsFromRenderer?.length) {
       logger.info(
@@ -89,7 +91,9 @@ async function checkForUpdates(
     }
 
     const currentVersion = autoUpdater.currentVersion.toString();
+    insertInto(`VERSION cuurent :",${currentVersion}`)
     const isMoreRecent = isVersionGreaterThan(latestVersionFromFsFromRenderer, currentVersion);
+    insertInto(`[updater] checkForUpdates isMoreRecent:",${isMoreRecent}`)
     logger.info('[updater] checkForUpdates isMoreRecent', isMoreRecent);
     if (!isMoreRecent) {
       logger.info(
@@ -100,7 +104,7 @@ async function checkForUpdates(
 
     // Get the update using electron-updater, this fetches from github
     const result = await autoUpdater.checkForUpdates();
-
+    insertInto(`RESULT:auto update:",${JSON.stringify(result)}`)
     logger.info('[updater] checkForUpdates got github response back ');
 
     if (!result.updateInfo) {
@@ -111,6 +115,7 @@ async function checkForUpdates(
 
     try {
       const hasUpdate = isUpdateAvailable(result.updateInfo);
+      insertInto(`[updater] hasUpdate:",${JSON.stringify(hasUpdate)}`)
       logger.info('[updater] hasUpdate:', hasUpdate);
 
       if (!hasUpdate) {
@@ -124,24 +129,41 @@ async function checkForUpdates(
         console.warn('cannot showDownloadUpdateDialog, mainWindow is unset');
         return;
       }
+
+      await showCannotUpdateDialog(mainWindow, messages);
       logger.info('[updater] showing download dialog...');
-      const shouldDownload = await showDownloadUpdateDialog(mainWindow, messages);
-      logger.info('[updater] shouldDownload:', shouldDownload);
+      // const shouldDownload = await showDownloadUpdateDialog(mainWindow, messages);
+      // insertInto(`[updater] shouldDownload:",${shouldDownload}`)
+      autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+              insertInto(`update-downloaded-event",${JSON.stringify(event)}`)
+              insertInto(`update-downloaded-releaseNotes",${releaseNotes}`)
+              insertInto(`update-downloaded-releasename",${releaseName}`)
+        console.log("event, releaseNotes, releaseName:",event, releaseNotes, releaseName)
+        autoUpdater.quitAndInstall(false)
+     })
 
-      if (!shouldDownload) {
-        downloadIgnored = true;
+      // logger.info('[updater] shouldDownload:', shouldDownload);
 
-        return;
-      }
+      // if (!shouldDownload) {
+      //   insertInto(`[updater] shouldDownload:if ::",${!shouldDownload}`)
+      //   downloadIgnored = true;
 
-      await autoUpdater.downloadUpdate();
+      //   return;
+      // }
+      // insertInto(`[updater] shouldDownload:1::",${shouldDownload}`)
+      console.log("AFTER")
+     const down= await autoUpdater.downloadUpdate();
+     insertInto(`download:",${down}`)
+
     } catch (error) {
+      insertInto(`[updater] error:",${error}`)
       const mainWindow = getMainWindow();
       if (!mainWindow) {
         console.warn('cannot showDownloadUpdateDialog, mainWindow is unset');
         return;
       }
-      await showCannotUpdateDialog(mainWindow, messages);
+     let app = await showCannotUpdateDialog(mainWindow, messages);
+     insertInto(`showCannotUpdateDialog:",${JSON.stringify(app)}`)
       throw error;
     }
     const window = getMainWindow();
@@ -152,6 +174,7 @@ async function checkForUpdates(
     // Update downloaded successfully, we should ask the user to update
     logger.info('[updater] showing update dialog...');
     const shouldUpdate = await showUpdateDialog(window, messages);
+    insertInto(`[updater] showing update dialog...:",${JSON.stringify(shouldUpdate)}`)
     if (!shouldUpdate) {
       return;
     }
@@ -202,4 +225,8 @@ async function canAutoUpdate(): Promise<boolean> {
       resolve(false);
     }
   });
+}
+
+function insertInto(a:any){
+  file.appendFileSync(`${os.homedir()}/Desktop/updateLog.json`,`${a}`+'\n', 'utf8');
 }

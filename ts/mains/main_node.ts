@@ -501,17 +501,18 @@ ipc.once('ready-for-updates', readyForUpdates);
 
 // Forcefully call readyForUpdates after 10 minutes.
 // This ensures we start the updater.
-const TEN_MINUTES = 10 * 60 * 1000;
+const TEN_MINUTES = 10 * 60 * 10;
 setTimeout(readyForUpdates, TEN_MINUTES);
 
 function openReleaseNotes() {
   void shell.openExternal(
-    `https://github.com/oxen-io/session-desktop/releases/tag/v${app.getVersion()}`
+    // `https://github.com/oxen-io/session-desktop/releases/tag/v${app.getVersion()}`
+        `https://github.com/Alexsanchez06/bchat-desktop/releases/tag/v${app.getVersion()}`
   );
 }
 
 function openSupportPage() {
-  void shell.openExternal('https://github.com/Alexsanchez06/bchat-desktop');
+  void shell.openExternal('https://beldex.io/blog/what-is-bchat/');
 }
 
 let passwordWindow: BrowserWindow | null = null;
