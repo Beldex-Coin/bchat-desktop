@@ -82,6 +82,7 @@ const darkSinginTextColor = '#128B17';
 const darkHintColor = lightGreyColor;
 const darkCopyIcon = "#fff";
 const darkCopyIconBg="#353543";
+const darkCopyModalbtn='#444455';
 const darkChatHeader = "black";
 const darkToggleOff = '#000';
 const darkClearBtn = "#3D3D4D";
@@ -116,6 +117,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
   document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
   document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
+  document.documentElement.style.setProperty('--color-copyModalbtn', darkCopyModalbtn);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
     darkColorComposeViewBg
@@ -286,6 +288,10 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
 
   document.documentElement.style.setProperty(
+    '--image-DayNight',
+    darkDayNight
+  );
+  document.documentElement.style.setProperty(
     '--image-EmptyChatImg',
     darkEmptyChatImg
   );
@@ -374,6 +380,8 @@ const lightSinginTextColor = '#128B17';
 const lightHintColor = lightGreyColor;
 const lightCopyIcon = '#0BB70F';
 const lightCopyIconBg="#EFEFEF";
+const lightCopyModalbtn="#F8F8F8";
+
 
 const lightEmptyChatImg = `url("../images/bchat/emptyMessageWhite.svg")`;
 const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
@@ -414,6 +422,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-bchat-shadow', lightColorBchatShadow);
   document.documentElement.style.setProperty('--color-copyIcon', lightCopyIcon);
   document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
+  document.documentElement.style.setProperty('--color-copyModalbtn', lightCopyModalbtn);
   document.documentElement.style.setProperty(
     '--color-disableText',
     ligntDisableText
@@ -683,6 +692,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-settingIndication:${darkSettingIndication};
     --color-copyIcon:${darkCopyIcon};
     --color-copyIconBg:${darkCopyIconBg};
+    --color-copyModalbtn:${darkCopyModalbtn}
     --color-chatHeader:${darkChatHeader};
     --color-chatIcons:${darkChatIcons};
     --color-toggleOff:${darkToggleOff};

@@ -140,7 +140,7 @@ textarea {
 
     &.primary {
       background-color: var(--color-background-primary);
-      color: white;
+      color: var(--color-text);
       border-radius: 10px;
 
       .bchat-icon {
@@ -636,6 +636,18 @@ label {
     border-radius: 7px;
     cursor: pointer;
 
+    .copyIconBtn {
+      display: flex;  
+      background-color:var(--color-copyModalbtn);
+      width: 116px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      box-shadow: var(--color-bchat-shadow);
+    }
+
+
     .bchat-button {
       margin: $bchat-margin-xs;
     }
@@ -666,7 +678,7 @@ label {
     // @include text-highlight($bchat-color-green);
     font-family: $bchat-font-poppin-medium;
     font-size: $bchat-font-md;
-    color: #00E506;
+    color: #128B17;
   }
 
   &-recovery-key {
@@ -1578,7 +1590,9 @@ input {
     }
 
     &-disabled {
-      border: 1px solid $bchat-color-dark-grey  !important;
+      // border: 1px solid $bchat-color-dark-grey  !important;
+      border: 1px solid $bchat-color-dark-grey ;
+
     }
   }
 }

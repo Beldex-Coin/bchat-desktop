@@ -66,6 +66,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
     const length = conversations.length;
     const listKey = 0;
+    
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
@@ -110,6 +111,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   public renderConversations() {
+    const { conversations } = this.props;
     return (
       <div className="module-conversations-list-content">
         <BchatSearchInput />
@@ -118,11 +120,14 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-         {length == 0 ?
+         {!conversations||conversations.length===0?
           <>
             <div className='addContactImg'>
             </div>
             <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
+            <div style={{display: "flex"}}>
+              <button className='nextButton' onClick={()=>window.inboxStore?.dispatch(setOverlayMode('message'))}>Add Contacts + </button>
+            </div>
           </>
           : this.renderList()}
         {/* {this.renderList()} */}

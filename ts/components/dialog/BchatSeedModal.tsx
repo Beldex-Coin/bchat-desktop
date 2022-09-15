@@ -103,12 +103,12 @@ const Seed = (props: SeedProps) => {
       onClickCopy();
     }
     dispatch(recoveryPhraseModal(null));
-  }; 
+  };
 
   return (
-    <div className="bchat-modal__box"> 
+    <div className="bchat-modal__box">
       <div className="bchat-modal__centered text-center ">
-        <p className="bchat-modal__description">{i18n('recoveryPhrase')}</p>
+        <p className="bchat-modal__description" style={{fontSize:'22px'}}>{i18n('recoveryPhrase')}</p>
         <SpacerXS />
 
         <i data-testid="recovery-phrase-seed-modal" className="bchat-modal__text-highlight">
@@ -117,16 +117,17 @@ const Seed = (props: SeedProps) => {
       </div>
       <SpacerLG />
       <div className="bchat-modal__button-group">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18.151 18.151">
-  <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" fill="#fff"/>
-    </svg>
-    <div  role="button"   
-    style={{marginLeft:"5px"}}
-     onClick={() => {copyRecoveryPhrase(recoveryPhrase);}}
-     >
-      copy
-    </div>
+        <div className='copyIconBtn'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18.151 18.151">
+            <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)"  />
+          </svg>
+          <div role="button"
+            style={{ marginLeft: "5px" }}
+            onClick={() => { copyRecoveryPhrase(recoveryPhrase); }}
+          >
+            copy
+          </div>
+        </div>
         {/* <BchatButton
           text={i18n('editMenuCopy')}
           buttonColor={BchatButtonColor.Green}
@@ -146,7 +147,7 @@ const Seed = (props: SeedProps) => {
 interface ModalInnerProps {
   onClickOk?: () => any;
 }
- 
+
 const BchatSeedModalInner = (props: ModalInnerProps) => {
   const { onClickOk } = props;
   const [loadingPassword, setLoadingPassword] = useState(true);

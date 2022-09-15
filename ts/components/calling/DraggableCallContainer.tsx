@@ -8,7 +8,7 @@ import { getHasOngoingCall, getHasOngoingCallWith } from '../../state/selectors/
 import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
-import { VideoLoadingSpinner } from './InConversationCallContainer';
+// import { VideoLoadingSpinner } from './InConversationCallContainer';
 import { getSection } from '../../state/selectors/section';
 import { SectionType } from '../../state/ducks/section';
 
@@ -131,7 +131,7 @@ export const DraggableCallContainer = () => {
     >
       <DraggableCallWindow className="dragHandle">
         <DraggableCallWindowInner>
-          <VideoLoadingSpinner fullWidth={true} />
+          {/* <VideoLoadingSpinner fullWidth={true} /> */}
           <StyledDraggableVideoElement
             ref={videoRefRemote}
             autoPlay={true}

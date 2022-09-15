@@ -197,7 +197,7 @@ $bchat-compose-margin: 20px;
   &__list {
     height: -webkit-fill-available;
 
-   
+
   }
 
   &__chatHeader {
@@ -293,7 +293,7 @@ $bchat-compose-margin: 20px;
 
     .nextButton {
       width: 79%;
-      height: 42px;
+      height: 50px;
       border: none;
       border-radius: 10px;
       color: #fff;
@@ -412,15 +412,14 @@ $bchat-compose-margin: 20px;
   transition: none;
   background: var(--color-left-pane-overlay-background);
 
-  .addContactImg
-  {
+  .addContactImg {
     width: 111px;
     height: 103px;
     background-image: var(--image-AddContact);
     background-repeat: no-repeat;
     background-size: contain;
     /* text-align: center; */
-    margin: 137px auto 0;
+    margin: 68% auto 0;
   }
 
 
@@ -428,6 +427,17 @@ $bchat-compose-margin: 20px;
     vertical-align: middle;
     white-space: normal;
     text-align: center;
+  }
+  .nextButton {
+    width: 79%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: $bchat-font-poppin-semibold;
+    background-image: linear-gradient(180deg, #00A803, #007E02);
+    margin: 15px auto;
+
   }
 }
 
@@ -496,8 +506,7 @@ $bchat-compose-margin: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: auto;
-
+  justify-content: center;
 
   // for bchat style
 

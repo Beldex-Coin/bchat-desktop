@@ -195,7 +195,7 @@ export const InConversationCallContainer = () => {
         <ConnectingLabel />
         <DurationLabel />
         <VideoContainer>
-          <VideoLoadingSpinner fullWidth={false} />
+          {/* <VideoLoadingSpinner fullWidth={false} /> */}
           <StyledVideoElement
             ref={videoRefRemote}
             autoPlay={true}
