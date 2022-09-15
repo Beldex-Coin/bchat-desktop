@@ -19,7 +19,7 @@ export class MessageView extends React.Component {
               alt="full-brand-logo"
             />*/}
             <div  className="bchat-text-logo">
-           
+            <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
 
             </div>
             {/* <img
@@ -27,7 +27,6 @@ export class MessageView extends React.Component {
               className="bchat-text-logo"
               alt="full-brand-logo"
             />  */}
-           <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
           </div>
         </div>
       </div>

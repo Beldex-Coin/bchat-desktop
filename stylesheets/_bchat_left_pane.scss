@@ -251,12 +251,13 @@ $bchat-compose-margin: 20px;
 
     &-open {
       &hint-message {
-        width: 90%;
+        width: 100%;
         margin: 10px auto 0px;
-        font-size: 12px;
+        font-size: 14px;
         color: #6E6E84;
-        padding-right: 69px;
+        padding: 15px 34px 15px 20px;
         font-family: $bchat-font-poppin-regular;
+        line-height: 1.8;
       }
 
       &-title {
@@ -525,13 +526,20 @@ $bchat-compose-margin: 20px;
   }
 
   .bchat-text-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     margin-top: 12px;
-    width: 615px;
-    height: 350px;
+    width: 668px;
+    // max-width: 615px;
+    height: 570px;
     // filter: var(--filter-bchat-text);
     background-image: var(--image-EmptyChatImg);
     background-repeat: no-repeat;
     transition: 0s;
+    background-position: center;
+    background-size: 75%;
 
     .path {
       fill: red;

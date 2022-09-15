@@ -311,7 +311,13 @@
       background-position: center;
       cursor: pointer;
       color:var(--color-copyIcon);
+
+      &:hover {
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
+    
 
     .bchat-button {
       width: 148px;
