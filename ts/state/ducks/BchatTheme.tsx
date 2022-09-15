@@ -86,7 +86,10 @@ const darkCopyModalbtn='#444455';
 const darkChatHeader = "black";
 const darkToggleOff = '#000';
 const darkClearBtn = "#3D3D4D";
+const darkLeaveGrpBtn="#20202F";
 const darkSmModalBg = "#2A2A3B";
+const darkOverlayBg="#1C1C26";
+const darkleftHeaderBg="#1C1C26";
 const darkCancelBtnBg = "#3D3D4E";
 const darkDisableText="#545469";
 const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
@@ -210,6 +213,14 @@ export const switchHtmlToDarkTheme = () => {
   //   darkunreadBg
   // );
   document.documentElement.style.setProperty(
+    '--color-overlayBg',
+    darkOverlayBg
+  );
+  document.documentElement.style.setProperty(
+    '--color-leaveGrpBtn',
+    darkLeaveGrpBtn
+  );
+  document.documentElement.style.setProperty(
     '--color-borderBottomColor',
     darkBorderBottomColor
   );
@@ -225,6 +236,10 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty(
     '--color-TextAreaColor',
     darkTextAreaColor
+  );
+  document.documentElement.style.setProperty(
+    '--color-leftHeaderBg',
+    darkleftHeaderBg
   );
   document.documentElement.style.setProperty(
     '--color-composeMsgBg',
@@ -382,6 +397,10 @@ const lightCopyIcon = '#0BB70F';
 const lightCopyIconBg="#EFEFEF";
 const lightCopyModalbtn="#F8F8F8";
 
+const lightOverlayBg="#EDEDED";
+const lightleftHeaderBg="#F2F2F2";
+const lightLeaveGrpBtn="#F2F2F2";
+
 
 const lightEmptyChatImg = `url("../images/bchat/emptyMessageWhite.svg")`;
 const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
@@ -432,6 +451,10 @@ export const switchHtmlToLightTheme = () => {
     lightColorComposeViewBg
   );
   document.documentElement.style.setProperty(
+    '--color-leaveGrpBtn',
+    lightLeaveGrpBtn
+  );
+  document.documentElement.style.setProperty(
     '--color-sent-message-background',
     lightColorSentMessageBg
   );
@@ -445,6 +468,10 @@ export const switchHtmlToLightTheme = () => {
   //   '--color-bchat-border',
   //   lightColorBchatBorderColor
   // );
+  document.documentElement.style.setProperty(
+    '--color-overlayBg',
+    lightOverlayBg
+  );
   document.documentElement.style.setProperty(
     '--color-recovery-phrase-banner-background',
     lightColorRecoveryPhraseBannerBg
@@ -528,6 +555,10 @@ export const switchHtmlToLightTheme = () => {
   //   lightunreadBg
   // );
   document.documentElement.style.setProperty(
+    '--color-leftHeaderBg',
+    lightleftHeaderBg
+  );
+  document.documentElement.style.setProperty(
     '--color-borderBottomColor',
     lightBorderBottomColor
   );
@@ -575,6 +606,7 @@ export const switchHtmlToLightTheme = () => {
     '--color-toggleOff',
     lightToggleOff
   );
+  
   document.documentElement.style.setProperty(
     '--color-clearBtn',
     lightClearBtn
@@ -676,7 +708,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-background-primary: ${darkBackgroundPrimary};
     --color-button-green: ${darkButtonGreen};
     --color-modal-background: ${darkModalBackground};
-  
+    --color-overlayBg:${darkOverlayBg};
+    --color-leftHeaderBg:${darkleftHeaderBg};
+    --color-leaveGrpBtn:${darkLeaveGrpBtn}
 
     
     --color-smModal-bg:${darkSmModalBg};

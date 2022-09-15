@@ -117,7 +117,8 @@ $bchat-compose-margin: 20px;
   position: relative;
   height: 100vh;
   flex-shrink: 0;
-  background: var(--color-inbox-background);
+  // background: var(--color-inbox-background);
+  background-color: var(--color-overlayBg);
 
 
   @include placeholder {
@@ -143,6 +144,7 @@ $bchat-compose-margin: 20px;
     margin-bottom: 7px;
     transition: $bchat-transition-duration;
     box-shadow: 0px 0px 5px 0px #00000029;
+    background-color: var(--color-leftHeaderBg);
     // background-color: #F2F2F2;
 
 
@@ -393,8 +395,8 @@ $bchat-compose-margin: 20px;
 
     .bchat-noMsgRequest {
       display: flex;
-      width: 500px;
-      height: 363px;
+      width: 27vw;
+      height: 27vh;
       background-image: var(--image-MsgReq);
       background-repeat: no-repeat;
       background-size: contain;
@@ -429,6 +431,7 @@ $bchat-compose-margin: 20px;
     white-space: normal;
     text-align: center;
   }
+
   .nextButton {
     width: 79%;
     height: 50px;

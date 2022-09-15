@@ -1,7 +1,7 @@
 .group-settings {
   display: flex;
   flex-direction: column;
-  height: 87vh;
+  height: 93vh;
   // width: -webkit-fill-available;
   width: 25vw;
   background: var(--color-cell-background);
@@ -110,14 +110,15 @@
   .bchat-button.square-outline.danger {
     margin-top: auto;
     margin-bottom: 15px;
-    width: 80%;
+    width: 100%;
     border: none;
     height: $composition-container-height;
     flex-shrink: 0;
     align-items: center;
     border: none;
     border-top: var(--border-bchat);
-    background-color: var(--color-composeMsgInput);
+    // background-color: var(--color-composeMsgInput);
+    background-color: var(--color-leaveGrpBtn);
   }
 
   .module-empty-state {
