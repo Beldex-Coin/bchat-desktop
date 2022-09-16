@@ -22,15 +22,27 @@ import {
 import { updateConfirmModal } from '../../../state/ducks/modalDialog';
 import { MemoMessageRequestListSetting } from '../../settings/MessageRequestInSettings';
 
-export const OverlayMessageRequest = (props:any) => {
+export const OverlayMessageRequest = (props: any) => {
   useKey('Escape', closeOverlay);
   const dispatch = useDispatch();
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
   }
+
+  // useEffect(() => {
+  //   if(convoRequestCount>0&&!props.settings)
+  //   {
+  //     closeOverlay(); 
+  //   }
+  // },[]
+  // )
+
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);
+
+  console.log('messageRequests::', convoRequestCount, messageRequests, selectedConversation);
+
 
   const buttonText = window.i18n('clearAll');
 
@@ -90,13 +102,12 @@ export const OverlayMessageRequest = (props:any) => {
       })
     );
   }
-  const VerifyScreen=()=>{
-    if(props.settings)
-    {
-     return <MessageRequestListForSetting />
+  const VerifyScreen = () => {
+    if (props.settings) {
+      return <MessageRequestListForSetting />
     }
-    else{
-      return  <MessageRequestList   />
+    else {
+      return <MessageRequestList  />
     }
 
   }
@@ -108,26 +119,32 @@ export const OverlayMessageRequest = (props:any) => {
           <VerifyScreen />
           <SpacerLG />
           <div className='buttonBox '>
-          <BchatButton
-            buttonColor={BchatButtonColor.Danger}
-            buttonType={BchatButtonType.BrandOutline}
-            text={buttonText}
-            onClick={() => {
-              handleClearAllRequestsClick(messageRequests);
-            }}
-          />
+            <BchatButton
+              buttonColor={BchatButtonColor.Danger}
+              buttonType={BchatButtonType.BrandOutline}
+              text={buttonText}
+              onClick={() => {
+                handleClearAllRequestsClick(messageRequests);
+              }}
+            />
           </div>
         </>
       ) : (
         <>
           <SpacerLG />
           <MessageRequestListPlaceholder>
-           <div className='bchat-noMsgRequest'>
+            <div className='bchat-noMsgRequest-box'>
+              <div style={{ height: "25%" }}></div>
+              <div className='bchat-noMsgRequest'>
 
-           </div>
-           <div>
-           {window.i18n('noMessageRequestsPending')}
-           </div>
+
+              </div>
+              <div>
+                {window.i18n('noMessageRequestsPending')}
+              </div>
+
+            </div>
+
             {/* {window.i18n('noMessageRequestsPending')} */}
           </MessageRequestListPlaceholder>
         </>
@@ -156,6 +173,7 @@ const MessageRequestListContainer = styled.div`
  */
 const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
+
   return (
     <MessageRequestListContainer>
       {conversationRequests.map(conversation => {
