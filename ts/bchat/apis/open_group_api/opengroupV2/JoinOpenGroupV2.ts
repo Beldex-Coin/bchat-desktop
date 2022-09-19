@@ -118,7 +118,7 @@ export async function joinOpenGroupV2WithUIEvents(
     const parsedRoom = parseOpenGroupV2(completeUrl);
     if (!parsedRoom) {
       if (showToasts) {
-        ToastUtils.pushToastError('connectToServer', window.i18n('invalidOpenGroupUrl'));
+        ToastUtils.pushToastError('connectToServer', window.i18n('invalidSocialGroupUrl'));
       }
       return false;
     }

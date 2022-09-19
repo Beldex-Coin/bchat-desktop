@@ -121,7 +121,7 @@ export async function handleClosedGroupControlMessage(
       );
       return;
     }
-    await handleNewClosedGroup(envelope, groupUpdate);
+    await handleNewSecretGroup(envelope, groupUpdate);
     return;
   }
 
@@ -202,7 +202,7 @@ function sanityCheckNewGroup(
   return true;
 }
 
-export async function handleNewClosedGroup(
+export async function handleNewSecretGroup(
   envelope: EnvelopePlus,
   groupUpdate: SignalService.DataMessage.ClosedGroupControlMessage
 ) {
@@ -1024,13 +1024,13 @@ async function sendToGroupMembers(
     if (isRetry) {
       const invitesTitle =
         inviteResults.length > 1
-          ? window.i18n('closedGroupInviteSuccessTitlePlural')
-          : window.i18n('closedGroupInviteSuccessTitle');
+          ? window.i18n('secretGroupInviteSuccessTitlePlural')
+          : window.i18n('secretGroupInviteSuccessTitle');
 
       window.inboxStore?.dispatch(
         updateConfirmModal({
           title: invitesTitle,
-          message: window.i18n('closedGroupInviteSuccessMessage'),
+          message: window.i18n('secretGroupInviteSuccessMessage'),
           hideCancel: true,
         })
       );
@@ -1043,13 +1043,13 @@ async function sendToGroupMembers(
       updateConfirmModal({
         title:
           inviteResults.length > 1
-            ? window.i18n('closedGroupInviteFailTitlePlural')
-            : window.i18n('closedGroupInviteFailTitle'),
+            ? window.i18n('secretGroupInviteFailTitlePlural')
+            : window.i18n('secretGroupInviteFailTitle'),
         message:
           inviteResults.length > 1
-            ? window.i18n('closedGroupInviteFailMessagePlural')
-            : window.i18n('closedGroupInviteFailMessage'),
-        okText: window.i18n('closedGroupInviteOkText'),
+            ? window.i18n('secretGroupInviteFailMessagePlural')
+            : window.i18n('secretGroupInviteFailMessage'),
+        okText: window.i18n('secretGroupInviteOkText'),
         onClickOk: async () => {
           const membersToResend: Array<string> = new Array<string>();
           inviteResults.forEach((result, index) => {

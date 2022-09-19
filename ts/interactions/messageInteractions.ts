@@ -102,15 +102,15 @@ export async function addSenderAsModerator(sender: string, convoId: string) {
   }
 }
 
-const acceptOpenGroupInvitationV2 = (completeUrl: string, roomName?: string) => {
+const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) => {
   const onClickClose = () => {
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
 
   window.inboxStore?.dispatch(
     updateConfirmModal({
-      title: window.i18n('joinOpenGroupAfterInvitationConfirmationTitle', [roomName || 'Unknown']),
-      message: window.i18n('joinOpenGroupAfterInvitationConfirmationDesc', [roomName || 'Unknown']),
+      title: window.i18n('joinSocialGroupAfterInvitationConfirmationTitle', [roomName || 'Unknown']),
+      message: window.i18n('joinSocialGroupAfterInvitationConfirmationDesc', [roomName || 'Unknown']),
       onClickOk: async () => {
         await joinOpenGroupV2WithUIEvents(completeUrl, true, false);
       },
@@ -126,7 +126,7 @@ const acceptOpenGroupInvitationV2 = (completeUrl: string, roomName?: string) => 
  */
 export const acceptOpenGroupInvitation = (completeUrl: string, roomName?: string) => {
   if (completeUrl.match(openGroupV2CompleteURLRegex)) {
-    acceptOpenGroupInvitationV2(completeUrl, roomName);
+    acceptSocialGroupInvitationV2(completeUrl, roomName);
   } else {
     window?.log?.warn('Invalid opengroup url:', completeUrl);
   }

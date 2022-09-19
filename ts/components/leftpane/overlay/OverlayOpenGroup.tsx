@@ -15,13 +15,13 @@ import { ToastUtils } from '../../../bchat/utils';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
 
-async function joinOpenGroup(serverUrl: string) {
+async function joinSocialGroup(serverUrl: string) {
   // guess if this is an open
   if (serverUrl.match(openGroupV2CompleteURLRegex)) {
     const groupCreated = await joinOpenGroupV2WithUIEvents(serverUrl, true, false);    
     return groupCreated;
   } else {
-    ToastUtils.pushToastError('invalidOpenGroupUrl', window.i18n('invalidOpenGroupUrl'));
+    ToastUtils.pushToastError('invalidSocialGroupUrl', window.i18n('invalidSocialGroupUrl'));
     window.log.warn('Invalid opengroupv2 url');
     return false;
   }
@@ -44,7 +44,7 @@ export const OverlayOpenGroup = () => {
         return;
       }
       setLoading(true);
-      const groupCreated = await joinOpenGroup(groupUrl);
+      const groupCreated = await joinSocialGroup(groupUrl);
       if (groupCreated) {
         closeOverlay();
         
@@ -60,10 +60,10 @@ export const OverlayOpenGroup = () => {
   // FIXME autofocus inputref on mount
   useKey('Escape', closeOverlay);
 
-  const title = window.i18n('joinOpenGroup');
+  const title = window.i18n('joinSocialGroup');
   const buttonText = window.i18n('next');
-  const subtitle = window.i18n('openGroupURL');
-  const placeholder = window.i18n('enterAnOpenGroupURL');
+  const subtitle = window.i18n('openSocialURL');
+  const placeholder = window.i18n('enterAnSocialGroupURL');
 
   return (
     <div className="module-left-pane-overlay">

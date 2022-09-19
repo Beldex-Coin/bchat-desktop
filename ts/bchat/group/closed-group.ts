@@ -381,7 +381,7 @@ async function sendAddedMembers(
   await getMessageQueue().sendToGroup(closedGroupControlMessage);
 
   // Send closed group update messages to any new members individually
-  const newClosedGroupUpdate = new ClosedGroupNewMessage({
+  const newSecretGroupUpdate = new ClosedGroupNewMessage({
     timestamp: Date.now(),
     name: groupName,
     groupId,
@@ -395,7 +395,7 @@ async function sendAddedMembers(
   const promises = addedMembers.map(async m => {
     await getConversationController().getOrCreateAndWait(m, ConversationTypeEnum.PRIVATE);
     const memberPubKey = PubKey.cast(m);
-    await getMessageQueue().sendToPubKey(memberPubKey, newClosedGroupUpdate);
+    await getMessageQueue().sendToPubKey(memberPubKey, newSecretGroupUpdate);
   });
   await Promise.all(promises);
 }

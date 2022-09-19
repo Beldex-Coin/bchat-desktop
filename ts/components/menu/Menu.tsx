@@ -402,7 +402,7 @@ export const CopyMenuItem = (): JSX.Element | null => {
   const isPrivate = useIsPrivate(convoId);
 
   if (showCopyId(isPublic, isPrivate)) {
-    const copyIdLabel = isPublic ? window.i18n('copyOpenGroupURL') : window.i18n('copyBchatID');
+    const copyIdLabel = isPublic ? window.i18n('copySocialGroupURL') : window.i18n('copyBchatID');
     return <Item onClick={() => copyPublicKeyByConvoId(convoId)}>{copyIdLabel}</Item>;
   }
   return null;

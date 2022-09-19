@@ -13,7 +13,7 @@ import { toHex } from '../bchat/utils/String';
 import { configurationMessageReceived, trigger } from '../shims/events';
 import { BlockedNumberController } from '../util';
 import { removeFromCache } from './cache';
-import { handleNewClosedGroup } from './closedGroups';
+import { handleNewSecretGroup } from './closedGroups';
 import { EnvelopePlus } from './types';
 import { ConversationInteraction } from '../interactions';
 import { getLastProfileUpdateTimestamp, setLastProfileUpdateTimestamp } from '../util/storage';
@@ -126,8 +126,8 @@ const handleClosedGroupsFromConfig = async (
       });
       try {
         // TODO we should not drop the envelope from cache as long as we are still handling a new closed group from that same envelope
-        // check the removeFromCache inside handleNewClosedGroup()
-        await handleNewClosedGroup(envelope, groupUpdate);
+        // check the removeFromCache inside handleNewSecretGroup()
+        await handleNewSecretGroup(envelope, groupUpdate);
       } catch (e) {
         window?.log?.warn('failed to handle  a new closed group from configuration message');
       }

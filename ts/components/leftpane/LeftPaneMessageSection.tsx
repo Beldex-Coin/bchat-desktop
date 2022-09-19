@@ -155,13 +155,13 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   private renderBottomButtons(): JSX.Element {
-    // const joinOpenGroup = window.i18n('joinOpenGroup');
-    // const newClosedGroup = window.i18n('newClosedGroup');
+    // const joinSocialGroup = window.i18n('joinSocialGroup');
+    // const newSecretGroup = window.i18n('newSecretGroup');
 
     return (
       <div className="left-pane-contact-bottom-buttons">
         {/* <BchatButton
-          // text={joinOpenGroup}
+          // text={joinSocialGroup}
           icon={true}
           buttonType={BchatButtonType.SquareOutline}
           buttonColor={BchatButtonColor.Green}
@@ -176,7 +176,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           icon={true}
           style={{background: "url(images/bchat/socialgroup.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
 
-          // text={newClosedGroup}
+          // text={newSecretGroup}
           buttonType={BchatButtonType.SquareOutline}
           buttonColor={BchatButtonColor.White}
           onClick={() => {

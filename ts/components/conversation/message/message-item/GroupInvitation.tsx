@@ -12,7 +12,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
   if (props.direction === 'outgoing') {
     classes.push('invitation-outgoing');
   }
-  const openGroupInvitation = window.i18n('openGroupInvitation');
+  const socialGroupInvitation = window.i18n('socialGroupInvitation');
 
   return (
     <ReadableMessage
@@ -34,7 +34,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
             />
             <span className="group-details">
               <span className="group-name">{props.serverName}</span>
-              <span className="group-type">{openGroupInvitation}</span>
+              <span className="group-type">{socialGroupInvitation}</span>
               <span className="group-address">{props.url}</span>
             </span>
           </div>

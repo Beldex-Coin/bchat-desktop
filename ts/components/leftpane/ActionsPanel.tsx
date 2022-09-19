@@ -386,9 +386,9 @@ async function askEnablingOpengroupPruningIfNeeded() {
         onClickCancel: async () => {
           await setSettingsAndCloseDialog(false);
         },
-        title: window.i18n('pruningOpengroupDialogTitle'),
-        message: window.i18n('pruningOpengroupDialogMessage'),
-        messageSub: window.i18n('pruningOpengroupDialogSubMessage'),
+        title: window.i18n('pruningSocialgroupDialogTitle'),
+        message: window.i18n('pruningSocialgroupDialogMessage'),
+        messageSub: window.i18n('pruningSocialgroupDialogSubMessage'),
         okText: window.i18n('enable'),
         cancelText: window.i18n('keepDisabled'),
       })

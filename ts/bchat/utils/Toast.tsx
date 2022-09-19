@@ -202,7 +202,7 @@ export function pushOriginalNotFound() {
 }
 
 export function pushTooManyMembers() {
-  pushToastError('tooManyMembers', window.i18n('closedGroupMaxSize'));
+  pushToastError('tooManyMembers', window.i18n('secretGroupMaxSize'));
 }
 
 export function pushMessageRequestPending() {

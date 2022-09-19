@@ -66,10 +66,10 @@ export const OverlayClosedGroup = () => {
 
   useKey('Escape', closeOverlay);
 
-  const title = window.i18n('newClosedGroup');
+  const title = window.i18n('newSecretGroup');
   // const buttonText = window.i18n('done');
-  const subtitle = window.i18n('createClosedGroupNamePrompt');
-  const placeholder = window.i18n('createClosedGroupPlaceholder');
+  const subtitle = window.i18n('createSecretGroupNamePrompt');
+  const placeholder = window.i18n('createSecretGroupPlaceholder');
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
 

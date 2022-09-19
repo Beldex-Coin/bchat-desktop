@@ -1264,7 +1264,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return window.i18n('incomingError');
     }
     if (this.isGroupInvitation()) {
-      return `😎 ${window.i18n('openGroupInvitation')}`;
+      return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
 
     if (this.isDataExtractionNotification()) {

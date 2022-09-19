@@ -59,10 +59,10 @@ async function createClosedGroup(
   // the same is valid with groups count < 1
 
   if (groupMemberIds.length < 1) {
-    ToastUtils.pushToastError('pickClosedGroupMember', window.i18n('pickClosedGroupMember'));
+    ToastUtils.pushToastError('pickSecretGroupMember', window.i18n('pickSecretGroupMember'));
     return false;
   } else if (groupMemberIds.length >= VALIDATION.CLOSED_GROUP_SIZE_LIMIT) {
-    ToastUtils.pushToastError('closedGroupMaxSize', window.i18n('closedGroupMaxSize'));
+    ToastUtils.pushToastError('secretGroupMaxSize', window.i18n('secretGroupMaxSize'));
     return false;
   }
 

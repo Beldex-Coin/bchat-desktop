@@ -51,7 +51,7 @@ const darkFakeChatBubbleBg = '#212121';
 
 const darkInboxBackground = darkScrollbarTrack;
 const darkLeftPaneOverlayBg = darkInboxBackground;
-const darkConversationItemSelected = '#37374A';
+const darkConversationItemSelected = '#303041';
 const darkConversationItemHasUnread = '#39394A';
 const darkConversationList = darkScrollbarTrack;
 
@@ -105,7 +105,7 @@ const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 const darkLeftpaneSetting = darkScrollbarTrack;
 // const buttonColor = "red";
-const buttonColor = "linear-gradient(to bottom , #13B71A, #129317)";
+const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -329,7 +329,7 @@ export const switchHtmlToDarkTheme = () => {
 // LIGHT COLORS
 const lightColorAccent = "#128b17";
 const lightColorAccentButton = black;
-const lightColorText = '#222222';
+const lightColorText = '#181818';
 const lightColorTextOpposite = white;
 const lightColorTextSubtle = `${black}99`;
 const lightColorTextAccent = accentLightTheme;
@@ -749,9 +749,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-DayNight:${darkDayNight};
     --image-MsgReq:${darkMsgReqImg};
     --image-BlockedContact:${darkBlockedContact};
-    --image-AddContact:${darkAddContact}
-
-
+    --image-AddContact:${darkAddContact};
+    --button-color:${buttonColor};
 
   };
 `;
