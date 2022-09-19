@@ -102,7 +102,7 @@ const ConversationRequestBanner = styled.div`
   padding: var(--margins-lg);
   gap: var(--margins-lg);
   font-size: 22px;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--color-MsgReqModal-bg);
   text-align: center;
   font-family: 'poppin-semibold';
 

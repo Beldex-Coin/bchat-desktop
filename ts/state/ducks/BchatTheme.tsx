@@ -89,12 +89,14 @@ const darkToggleOff = '#000';
 const darkClearBtn = "#3D3D4D";
 const darkLeaveGrpBtn="#20202F";
 const darkSmModalBg = "#2A2A3B";
+const darkMsgReqModalBg="rgba(0,0,0,0.4)";
 const darkOverlayBg="#1C1C26";
 const darkleftHeaderBg="#1C1C26";
 const darkCancelBtnBg = "#3D3D4E";
 const darkDisableText="#545469";
 const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
 const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
+const darkEmptyContact=`url("../images/bchat/no_con_scrt_grp_dark_theme.svg")`;
 const darkChatIcons = "white";
 const darkComposeMsgInput = "#3F3C4B";
 const darkDayNight = `url("../images/bchat/light_theme .svg")`;
@@ -248,6 +250,10 @@ export const switchHtmlToDarkTheme = () => {
     darkSmModalBg
   );
   document.documentElement.style.setProperty(
+    '--color-MsgReqModal-bg',
+    darkMsgReqModalBg
+  );
+  document.documentElement.style.setProperty(
     '--color-cancelBtn-bg',
     darkCancelBtnBg
   );
@@ -316,6 +322,10 @@ export const switchHtmlToDarkTheme = () => {
     darkAddContact
   );
   document.documentElement.style.setProperty(
+    '--image-EmptyContact',
+    darkEmptyContact
+  );
+  document.documentElement.style.setProperty(
     '--green-color',
     greenColor
   );
@@ -342,7 +352,7 @@ const lightColorBchatBorder = `2px solid #E3E3E3 `;
 const lightColorRecoveryPhraseBannerBg = white;
 const lightColorPillDivider = `${black}1A`;
 const lightColorLastSeenIndicator = black;
-const lightColorQuoteBottomBarBg = '#f0f0f0';
+const lightColorQuoteBottomBarBg = '#f8f8f8';
 const lightColorCellBackground = '#EEEEEE';
 const lightColorReceivedMessageBg = '#f5f5f5';
 const lightColorReceivedMessageText = black;
@@ -378,6 +388,7 @@ const lightMessageRequestBannerIcon = white;
 // for bchat
 const lightColorBg = white;
 // const lightunreadBg="#EDEDED";
+const lightMsgReqModalBg="rgba(230,230,230,0.4)"
 const lightSmModalBg = "#F4F4F4";
 const lightCancelBtnBg = "#E8E8E8";
 const lightInboxBgColor = "#FCFCFC";
@@ -402,6 +413,7 @@ const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
 const lightMsgReqImg=`url("../images/bchat/no_message_request.svg")`;
 const lightBlockedContact=`url("../images/bchat/no_blocked_contacts.svg")`;
 const lightAddContact=`url("../images/bchat/add_contact_white_theme.svg")`;
+const lightEmptyContact=`url("../images/bchat/no_contact_scrt_grp.svg")`;
 const lightChatHeader = '#EEEEEE';
 const lightChatIcons = "black";
 const lightComposeMsgInput = "#EAEAEA";
@@ -578,6 +590,10 @@ export const switchHtmlToLightTheme = () => {
     lightcomposeMsgRecordIcon
   );
   document.documentElement.style.setProperty(
+    '--color-MsgReqModal-bg',
+    lightMsgReqModalBg
+  );
+  document.documentElement.style.setProperty(
     '--color-smModal-bg',
     lightSmModalBg
   );
@@ -634,6 +650,10 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty(
     '--image-AddContact',
     lightAddContact
+  );
+  document.documentElement.style.setProperty(
+    '--image-EmptyContact',
+    lightEmptyContact
   );
   document.documentElement.style.setProperty(
     '--green-color',
@@ -714,7 +734,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-leftHeaderBg:${darkleftHeaderBg};
     --color-leaveGrpBtn:${darkLeaveGrpBtn}
 
-    
+    --color-MsgReqModal-bg:${darkMsgReqModalBg};
     --color-smModal-bg:${darkSmModalBg};
     --color-cancelBtn-bg:${darkCancelBtnBg};
     --color-inboxBgColor:${darkInboxBgColor};
@@ -733,6 +753,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-chatIcons:${darkChatIcons};
     --color-toggleOff:${darkToggleOff};
     --color-clearBtn:${darkClearBtn};
+    --color-button:${buttonColor};
     
     --color-leftpaneSetting:${darkLeftpaneSetting};
 
@@ -749,8 +770,11 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-DayNight:${darkDayNight};
     --image-MsgReq:${darkMsgReqImg};
     --image-BlockedContact:${darkBlockedContact};
-    --image-AddContact:${darkAddContact};
-    --button-color:${buttonColor};
+    --image-AddContact:${darkAddContact}
+    --image-EmptyContact:${darkEmptyContact}
+    
+
+
 
   };
 `;

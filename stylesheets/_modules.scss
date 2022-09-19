@@ -231,6 +231,7 @@
 }
 .module-conversation__user,
 .module-message__author {
+  text-align: start;
   margin-top: $bchat-margin-sm;
   margin-bottom: $bchat-margin-xs;
   font-size: 13px;

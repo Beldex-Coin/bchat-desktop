@@ -49,8 +49,8 @@ const StyledUnreadCounter = styled.div`
   border-radius: var(--margins-sm);
   background-color: var(--color-request-banner-unread-background);
   margin-left: 10px;
-  min-width: 20px;
-  height: 20px;
+  min-width: 23px;
+  height: 22px;
   line-height: 25px;
   display: flex;
   flex-direction: row;

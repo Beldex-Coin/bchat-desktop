@@ -26,7 +26,7 @@ const TimestampContainerNotListItem = styled.div`
 
 const TimestampContainerListItem = styled(TimestampContainerNotListItem)`
   flex-shrink: 0;
-  margin-inline-start: 6px;
+  margin-inline-start: 0px;
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

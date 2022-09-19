@@ -34,7 +34,7 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
   return (
     <BchatWrapperModal title={titleText} onClose={closeDialog}>
       <SpacerLG />
-      <p style={{width:"310px",color:'#6A6A77'}}>{warningAsAdmin}</p>
+      <p style={{maxWidth:"450px",color:'#6A6A77',marginTop:0}}>{warningAsAdmin}</p>
 
       <div className="bchat-modal__button-group">
         <BchatButton text={cancelText} onClick={closeDialog} buttonColor={BchatButtonColor.White}/>

@@ -656,7 +656,7 @@ label {
 
     .bchat-button {
       margin: $bchat-margin-xs;
-      width: 88px;
+      min-width: 88px;
       height: 28px;
     }
 
@@ -721,7 +721,7 @@ label {
       text-align: center;
       margin-top: 8px;
       font-family: $bchat-font-poppin-regular;
-      font-size: $bchat-font-sm;
+      font-size: 14px;
 
       &-display {
         user-select: text;
@@ -1571,6 +1571,7 @@ input {
     width: 100%;
     max-height: 400px;
     overflow-y: auto;
+    margin: auto 0 auto 0;
     // border: var(--border-bchat);
     // border-bottom: var(--border-bchat);
   }
@@ -1583,10 +1584,20 @@ input {
 
   &__no-contacts {
     font-family: $bchat-font-poppin-medium;
-    background: var(--color-cell-background);
+    // background: var(--color-cell-background);
 
     text-align: center;
     padding: 20px;
+  }
+  &__addImg
+  {
+    width: 111px;
+    height: 103px;
+    background-image: var(--image-EmptyContact);
+    background-repeat: no-repeat;
+    background-size: contain;
+    /* text-align: center; */
+    margin: 0 auto;
   }
 }
 

@@ -91,6 +91,7 @@ $bchat-compose-margin: 20px;
 
     &__message__text {
       color: $bchat-shade-17;
+      text-align: left;
 
       &--has-unread {
         color: var(--color-text);
@@ -396,7 +397,7 @@ $bchat-compose-margin: 20px;
     .bchat-noMsgRequest-box {
       width: 100%;
       height: 81vh;
-     
+
     }
 
     .bchat-noMsgRequest {
@@ -423,6 +424,13 @@ $bchat-compose-margin: 20px;
   background: var(--color-left-pane-overlay-background);
   text-align: center;
   justify-content: center;
+
+  .bchatEmptyScrBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
 
   .addContactImg {
     width: 111px;
@@ -452,6 +460,8 @@ $bchat-compose-margin: 20px;
     margin: 15px auto;
 
   }
+
+
 }
 
 .bchat-left-pane-section-content {
