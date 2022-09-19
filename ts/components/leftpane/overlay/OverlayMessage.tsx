@@ -34,11 +34,10 @@ const ourNumber = useSelector(getOurNumber);
   // const title = window.i18n('newBchat');
   const buttonText = window.i18n('next');
   // const descriptionLong = window.i18n('usersCanShareTheir...');
-  const descriptionLong = "Share your BChat ID with your friends. You can find your BChat ID below."
+  const descriptionLong = window.i18n('shareBchatIdDiscription')
 
   // const subtitle = window.i18n('enterBchatIDOrONSName');
-  // const placeholder = window.i18n('enterBchatIDOfRecipient');
-  const placeholder = "Enter BChat ID";
+  const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {
     // console.log("pubkeyOrOns",pubkeyOrOns);
@@ -96,8 +95,8 @@ const ourNumber = useSelector(getOurNumber);
   return (
     <div className="module-left-pane-overlay">
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
-      <p className='module-left-pane__chatHeader'>Start New Chat</p>
-      <p className="module-left-pane__subHeader" >Enter BChat ID</p>
+      <p className='module-left-pane__chatHeader'>{window.i18n('startConversation')}</p>
+      <p className="module-left-pane__subHeader" >{placeholder}</p>
       <BchatIdEditable
         editable={!loading}
         placeholder={placeholder}
@@ -109,7 +108,7 @@ const ourNumber = useSelector(getOurNumber);
 
       <div className="bchat-description-long">{descriptionLong}</div>
 
-      <p className="module-left-pane__subHeader">BChat ID</p>
+      <p className="module-left-pane__subHeader">{window.i18n('BchatID')}</p>
       <BchatIdEditable
         // editable={!loading}
         value={ourNumber}

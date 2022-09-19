@@ -6,7 +6,7 @@ $onionPathLineColor: rgba(#7a7a7a, 0.6);
 
 .subtle {
   opacity: $bchat-subtle-factor;
-  width: 207px;
+  width: 290px;
 }
 
 .soft {
@@ -128,7 +128,7 @@ textarea {
     &.green {
       // background-color: var(--color-accent-button);
       // background-color:var(--color-button-green) ;
-      background-image: linear-gradient(180deg, #00A803, #007E02);
+      background-image: var(--button-color);
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
     }
@@ -182,7 +182,7 @@ textarea {
 
     &.green {
       @include transparent-background(var(--color-button-green));
-      background-image: linear-gradient(180deg, #00A803, #007E02);
+      background-image: var(--button-color);
       color: white;
     }
 
@@ -461,7 +461,7 @@ label {
 }
 
 .Toastify__toast {
-  background: var($toast-color-success);
+  background: var(--color-toast-success);
   font-family: $bchat-font-poppin-medium;
 
 
@@ -510,7 +510,7 @@ label {
   animation: fadein $bchat-transition-duration;
   z-index: 150;
   min-width: 300px;
-  border-radius: 25px;
+  border-radius: 18px;
   box-sizing: border-box;
   max-height: 70vh;
   max-width: calc(min(70vw, 800px));
@@ -632,7 +632,7 @@ label {
     justify-content: center;
     // background-color:var(--color-input-background);
     // background-color: var(--color-composeMsgInput);
-    padding: 11px 25px;
+    padding: 7px 25px 15px;
     border-radius: 7px;
     cursor: pointer;
 
@@ -645,11 +645,19 @@ label {
       align-items: center;
       border-radius: 5px;
       box-shadow: var(--color-bchat-shadow);
+      
+      &:hover {
+        transform: scale(1);
+        color: #1ced23;
+      }
+      
     }
 
 
     .bchat-button {
       margin: $bchat-margin-xs;
+      width: 88px;
+      height: 28px;
     }
 
     &__center {
@@ -711,7 +719,9 @@ label {
       // margin-top: 30px;
       // margin-bottom: 30px;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 8px;
+      font-family: $bchat-font-poppin-regular;
+      font-size: $bchat-font-sm;
 
       &-display {
         user-select: text;
@@ -766,7 +776,7 @@ label {
 
   &-sub-message {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 5px;
   }
 }
 
@@ -985,8 +995,8 @@ label {
 .qr-center-icon {
   position: absolute;
   top: 60px;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
 }
 
 .profile-header {
@@ -1315,7 +1325,7 @@ label {
   &-recovery-seed {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 53%;
     text-align: center;
     margin: 0 auto;
     height: 81vh;
@@ -1340,10 +1350,11 @@ label {
 
     &-note {
       font-family: $bchat-font-poppin-semibold;
+      margin : 0px 0px 25px;
     }
 
     &-button {
-      width: 70%;
+      width: 62%;
       margin: 0 auto;
 
     }

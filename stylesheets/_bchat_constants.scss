@@ -4,7 +4,7 @@
 
 
 
-$bchat-font-default: 'Roboto';
+$bchat-font-default: 'poppin-medium';
 $bchat-font-poppins-bold: 'Poppins';
 $bchat-font-mono: 'SpaceMono';
 $bchat-font-poppin-semibold:"poppin-semibold";
@@ -119,10 +119,6 @@ $bchat-color-danger: #ff453a;
 $bchat-color-danger-alt: #ff4538;
 $bchat-color-primary: $bchat-shade-13;
 $bchat-color-secondary: $bchat-shade-6;
-
-// Toast Colors 
-$toast-color-success: linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8));
-$toast-color-error: linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8));
 
 
 // Opacity and Shadow

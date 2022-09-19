@@ -7,7 +7,7 @@ export const LeftPaneSectionContainer = styled.div`
   align-items: center;
   border-right: var(--border-bchat);
   overflow-y: hidden;
-  background-color:#128B17;
+  background-color: var(--green-color);
   padding:6px 0; 
 
   .icon-box .bchat-icon-button

@@ -347,7 +347,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     let walletAddress = localStorage.getItem("userAddress");
     return (
       <div>
-        <p className='profile-header'>{window.i18n('profileBchatID')}</p>
+        <p className='profile-header'>{window.i18n('BchatID')}</p>
         <div className='bchat-id-section-display'>
           <div className='profile-value'>{props.bchatID}</div>
           <div onClick={() => copyBchatID(props.bchatID)}

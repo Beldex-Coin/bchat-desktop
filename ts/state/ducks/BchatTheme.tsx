@@ -13,6 +13,7 @@ const accentDarkTheme = '#2879FB';
 const baseColor = "#00A803";
 const greyColor = "#2D2D3B";
 const lightGreyColor = "#646474";
+const greenColor = "#16A51C";
 
 
 
@@ -48,11 +49,11 @@ const darkScrollbarThumb = '#474646';
 const darkScrollbarTrack = '#1C1C26';
 const darkFakeChatBubbleBg = '#212121';
 
-const darkInboxBackground = black;
+const darkInboxBackground = darkScrollbarTrack;
 const darkLeftPaneOverlayBg = darkInboxBackground;
 const darkConversationItemSelected = '#37374A';
 const darkConversationItemHasUnread = '#39394A';
-const darkConversationList = '#1C1C26';
+const darkConversationList = darkScrollbarTrack;
 
 const darkTextHighlight = `${white}88`;
 const darkForegroundPrimary = white;
@@ -102,7 +103,10 @@ const darkBlockedContact=`url("../images/bchat/no_blocked_contacts_dark_theme.sv
 const darkAddContact=`url("../images/bchat/add_contact.svg")`;
 const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
-const darkLeftpaneSetting = "#1C1C26"
+const darkLeftpaneSetting = darkScrollbarTrack;
+// const buttonColor = "red";
+const buttonColor = "linear-gradient(to bottom , #13B71A, #129317)";
+
 
 export const switchHtmlToDarkTheme = () => {
 
@@ -121,30 +125,15 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
   document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', darkCopyModalbtn);
-  document.documentElement.style.setProperty(
-    '--color-compose-view-button-background',
-    darkColorComposeViewBg
-  );
-  document.documentElement.style.setProperty(
-    '--color-sent-message-background',
-    darkColorSentMessageBg
-  );
+  document.documentElement.style.setProperty('--color-compose-view-button-background',darkColorComposeViewBg);
+  document.documentElement.style.setProperty('--color-sent-message-background',darkColorSentMessageBg);
   document.documentElement.style.setProperty('--color-sent-message-text', darkColorSentMessageText);
-  document.documentElement.style.setProperty(
-    '--color-clickable-hovered',
-    darkColorClickableHovered
-  );
+  document.documentElement.style.setProperty('--color-clickable-hovered',darkColorClickableHovered);
   document.documentElement.style.setProperty('--color-bchat-border', darkColorBchatBorder);
   // document.documentElement.style.setProperty('--color-bchat-border', darkColorBchatBorderColor);
-  document.documentElement.style.setProperty(
-    '--color-recovery-phrase-banner-background',
-    darkColorRecoveryPhraseBannerBg
-  );
+  document.documentElement.style.setProperty('--color-recovery-phrase-banner-background',darkColorRecoveryPhraseBannerBg);
   document.documentElement.style.setProperty('--color-pill-divider', darkColorPillDivider);
-  document.documentElement.style.setProperty(
-    '--color-last-seen-indicator',
-    darkColorLastSeenIndicator
-  );
+  document.documentElement.style.setProperty('--color-last-seen-indicator',darkColorLastSeenIndicator);
   document.documentElement.style.setProperty(
     '--color-quote-bottom-bar-background',
     darkColorQuoteBottomBarBg
@@ -326,8 +315,14 @@ export const switchHtmlToDarkTheme = () => {
     '--image-AddContact',
     darkAddContact
   );
-
-
+  document.documentElement.style.setProperty(
+    '--green-color',
+    greenColor
+  );
+  document.documentElement.style.setProperty(
+    '--button-color',
+    buttonColor
+  );
 
 };
 
@@ -640,7 +635,14 @@ export const switchHtmlToLightTheme = () => {
     '--image-AddContact',
     lightAddContact
   );
-
+  document.documentElement.style.setProperty(
+    '--green-color',
+    greenColor
+  );
+  document.documentElement.style.setProperty(
+    '--button-color',
+    buttonColor
+  );
 };
 
 // default to light theme
