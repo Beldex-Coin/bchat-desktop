@@ -4,7 +4,6 @@ import { BchatIcon, BchatIconType } from '../../../../icon';
 
 const NotificationBubbleFlex = styled.div`
   display: flex;
-  background: var(--color-fake-chat-bubble-background);
   color: var(--color-text);
   width: 90%;
   max-width: 700px;

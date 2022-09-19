@@ -17,7 +17,9 @@ const ChangeItemJoined = (added: Array<string>): string => {
   }
   const names = useConversationsUsernameWithQuoteOrFullPubkey(added);
   const joinKey = added.length > 1 ? 'multipleJoinedTheGroup' : 'joinedTheGroup';
-  return window.i18n(joinKey, [names.join(', ')]);
+
+  // return window.i18n(joinKey, [names.join(', ')]);
+  return added.length > 1 ? window.i18n(joinKey, [names.join(', ')]) : window.i18n(joinKey, [names.join('')]);
 };
 
 const ChangeItemKicked = (kicked: Array<string>): string => {
@@ -80,7 +82,9 @@ export const GroupUpdateMessage = (props: PropsForGroupUpdate) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
-      <NotificationBubble notificationText={ChangeItem(change)} iconType="users" />
+      <NotificationBubble notificationText={ChangeItem(change)} 
+      // iconType="users" 
+      />
     </ReadableMessage>
   );
 };

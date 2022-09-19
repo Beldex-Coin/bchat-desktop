@@ -53,7 +53,7 @@ export function useConversationsUsernameWithQuoteOrFullPubkey(pubkeys: Array<str
       }
       const convo = state.conversations.conversationLookup[pubkey];
       const nameGot = convo?.profileName || convo?.name;
-      return nameGot?.length ? `"${nameGot}"` : pubkey;
+      return nameGot?.length ? `${nameGot}` : pubkey;
     });
   });
 }
