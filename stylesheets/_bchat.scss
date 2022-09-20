@@ -128,7 +128,7 @@ textarea {
     &.green {
       // background-color: var(--color-accent-button);
       // background-color:var(--color-button-green) ;
-      background-image: var(--button-color);
+      background-image: var(--color-button);
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
     }
@@ -182,7 +182,7 @@ textarea {
 
     &.green {
       @include transparent-background(var(--color-button-green));
-      background-image: var(--button-color);
+      background-image: var(--color-button);
       color: white;
     }
 
@@ -1569,9 +1569,9 @@ input {
   &__container {
     padding: 2px 0px;
     width: 100%;
-    max-height: 400px;
+    // max-height: 400px;
     overflow-y: auto;
-    margin: auto 0 auto 0;
+    // margin: auto 0 auto 0;
     // border: var(--border-bchat);
     // border-bottom: var(--border-bchat);
   }
@@ -1585,9 +1585,9 @@ input {
   &__no-contacts {
     font-family: $bchat-font-poppin-medium;
     // background: var(--color-cell-background);
-
     text-align: center;
     padding: 20px;
+    margin: 70% 0 0 0;
   }
   &__addImg
   {
