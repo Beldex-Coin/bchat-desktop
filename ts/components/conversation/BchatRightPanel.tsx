@@ -213,13 +213,15 @@ export const BchatRightPanelWithDetails = () => {
   const commonNoShow = isKickedFromGroup || left || isBlocked;
   const hasDisappearingMessages = !isPublic && !commonNoShow;
   const leaveGroupString = isPublic
-    ? window.i18n('leaveGroup')
+    ? window.i18n('deleteMessages')
     : isKickedFromGroup
       ? window.i18n('youGotKickedFromGroup')
       : left
         ? window.i18n('youLeftTheGroup')
         : window.i18n('leaveGroup');
-
+  console.log("isPublic:",isPublic)  
+  console.log("isKickedFromGroup:",isKickedFromGroup)    
+  console.log("LEAVE GRP:",leaveGroupString)
   const timerOptions = useSelector(getTimerOptions).timerOptions;
 
   const disappearingMessagesOptions = timerOptions.map(option => {

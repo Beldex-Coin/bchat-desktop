@@ -20,22 +20,18 @@ body {
 // scrollbars
 ::-webkit-scrollbar {
   width: 7px;
-  height: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
-  // background: var(--color-scroll-bar-thumb);
-  background: #D5D5D8;
-  // border: solid 2px var(--color-text-opposite);
+  background: var(--color-scroll-bar-thumb);
   border-radius: 10px;
 
-  // &:hover {
-  //   background: $color-light-45;
-  // }
+  &:hover {
+    background: $color-light-45;
+  }
 }
 ::-webkit-scrollbar-track {
-  // background: var(--color-scroll-bar-track);
-  background: #D5D5D8;
+  border-radius: 10px;
 }
 
 audio {

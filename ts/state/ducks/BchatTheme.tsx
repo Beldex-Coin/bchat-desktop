@@ -45,7 +45,7 @@ const darkInputBackground = darkColorCellBackground;
 const darkFilterBchatText = 'none';
 const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
 
-const darkScrollbarThumb = '#474646';
+const darkScrollbarThumb = '#504D5D';
 const darkScrollbarTrack = '#1C1C26';
 const darkFakeChatBubbleBg = '#212121';
 
@@ -363,7 +363,7 @@ const lightInputBackground = '#efefef';
 const lightFilterBchatText = 'brightness(0) saturate(100%)';
 const lightUnreadBorder = `4px solid ${accentLightTheme}`;
 
-const lightScrollbarThumb = '#474646';
+const lightScrollbarThumb = '#D5D5D8';
 const lightScrollbarTrack = '#fcfcfc';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
