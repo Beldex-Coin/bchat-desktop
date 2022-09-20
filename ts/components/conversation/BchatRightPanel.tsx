@@ -219,10 +219,8 @@ export const BchatRightPanelWithDetails = () => {
       : left
         ? window.i18n('youLeftTheGroup')
         : window.i18n('leaveGroup');
-  console.log("isPublic:",isPublic)  
-  console.log("isKickedFromGroup:",isKickedFromGroup)    
-  console.log("LEAVE GRP:",leaveGroupString)
-  const timerOptions = useSelector(getTimerOptions).timerOptions;
+
+ const timerOptions = useSelector(getTimerOptions).timerOptions;
 
   const disappearingMessagesOptions = timerOptions.map(option => {
     return {
