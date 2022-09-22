@@ -19,6 +19,7 @@ import { BchatInput } from '../basic/BchatInput';
 import { DisplaySeed } from './DisplaySeed';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
+import { WalletPassword } from './WalletPass';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron')
 
@@ -106,6 +107,9 @@ const SignInButtons = (props: {
 export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
 
+  const [password,setPassword]=useState('');
+  const [repassword,setRepassword]=useState("");
+
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
   const [recoveryPhraseError, setRecoveryPhraseError] = useState(undefined as string | undefined);
   const [displayName, setDisplayName] = useState('');
@@ -116,7 +120,7 @@ export const SignInTab = (props: any) => {
   const isRecovery = signInMode === SignInMode.UsingRecoveryPhrase;
   const isLinking = signInMode === SignInMode.LinkDevice;
   // const showTermsAndConditions = signInMode !== SignInMode.Default;
-  const [screenName, setScreenName] = useState(false)
+  const [screenName, setScreenName] = useState(1);
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
 
@@ -136,6 +140,7 @@ export const SignInTab = (props: any) => {
     if (isRecovery) {
       await signInWithRecovery({
         displayName,
+        password,
         userRecoveryPhrase: recoveryPhrase,
       });
     } else if (isLinking) {
@@ -148,7 +153,7 @@ export const SignInTab = (props: any) => {
   };
 
   const clickGoBack = () => {
-    setScreenName(false);
+    setScreenName(0);
   }
 
   async function assignSeed() {
@@ -164,9 +169,9 @@ export const SignInTab = (props: any) => {
     else {
       try {
         mn_decode(recoveryPhrase, 'english');
-        setScreenName(true)
+        setScreenName(2)
       } catch (e) {
-        setScreenName(false)
+        setScreenName(1)
         ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
         window?.log?.warn('exception during registration:', e);
       }
@@ -175,7 +180,7 @@ export const SignInTab = (props: any) => {
 
   }
 
-  if (signInMode !== SignInMode.Default && !screenName) {
+  if (signInMode !== SignInMode.Default && screenName===1) {
 
     return <>
       <div className='bchat-registration__backbutton'>
@@ -193,6 +198,17 @@ export const SignInTab = (props: any) => {
     </>
 
   }
+ 
+  if(screenName===2)
+  {
+    return  <WalletPassword 
+    password={password}
+    repassword={repassword}
+    setPassword={(e:any)=>setPassword(e)}  
+    setRepassword={(e:any)=>setRepassword(e)}
+    submit={()=>{setScreenName(3)}}
+    />
+  }
 
   // if(signInMode == SignInMode.UsingRecoveryPhrase){
   //  return( <div className="bchat-registration__content">
@@ -207,7 +223,7 @@ export const SignInTab = (props: any) => {
 
   return (
     <div className="bchat-registration__content">
-      {screenName && (
+      {screenName===3 && (
         <>
           <div className='bchat-registration__backbutton' style={{ left: '52px' }}>
             <GoBackMainMenuButton assent={() => {

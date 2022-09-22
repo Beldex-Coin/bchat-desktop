@@ -40,7 +40,7 @@ export const OverlayMessageRequest = (props: any) => {
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);
-
+  const {leftPane}=props
   console.log('messageRequests::', convoRequestCount, messageRequests, selectedConversation);
 
 
@@ -134,10 +134,8 @@ export const OverlayMessageRequest = (props: any) => {
           <SpacerLG />
           <MessageRequestListPlaceholder>
             <div className='bchat-noMsgRequest-box'>
-              <div style={{ height: "25%" }}></div>
-              <div className='bchat-noMsgRequest'>
-
-
+              <div></div>
+              <div className={leftPane?'bchat-noMsgRequest-leftPane':'bchat-noMsgRequest'}>
               </div>
               <div>
                 {window.i18n('noMessageRequestsPending')}

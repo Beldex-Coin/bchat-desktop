@@ -159,7 +159,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       case 'message':
         return <OverlayMessage />;
       case 'message-requests':
-        return <OverlayMessageRequest />;
+        return <OverlayMessageRequest  leftPane={true}/>;
       default:
         return null;
     }

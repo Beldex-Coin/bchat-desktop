@@ -153,9 +153,10 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         console.log('e context menu::',e);
         
       }}
+      style={{marginTop:'10px'}}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize="huge"  />
+      <BchatIconButton iconType="ellipses" iconSize={35}  />
     </div>
   );
 };

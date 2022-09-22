@@ -93,6 +93,33 @@
       .bchat-button {
         width: 100%;
       }
+      &-walletHintText
+      {
+        margin: 0;
+        margin-left: 59px;
+        margin-bottom: 24px;
+       color: var(--color-text);
+
+      }
+     .warning-notes
+     {
+      color:#C1C1C1;
+      font-family:$bchat-font-poppin-regular;
+      font-size: 10px;
+      width: 110%;
+      margin-left: 5px;
+      margin-top: 90px;
+      span{
+        color:#F23333;
+      }
+      strong
+      {
+        font-size: 12px;
+       font-family:$bchat-font-poppin-semibold;
+      }
+      
+     }
+
     }
 
     &__content {
@@ -119,7 +146,7 @@
       // color: white;
       font-family: $bchat-font-poppins-bold;
       font-weight: bold;
-      padding: 30px 50px !important;
+      padding: 0px 50px !important;
       font-size: 20px;
       font-weight: bold;
       line-height: 26px;
@@ -420,9 +447,9 @@
 
     .bchat-icon-button {
       position: absolute;
-      top: 50%;
+      top: 67%;
       transform: translateY(-50%);
-      right: 0px;
+      right: 27px;
     }
   }
 

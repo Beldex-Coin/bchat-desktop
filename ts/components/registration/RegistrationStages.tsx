@@ -90,9 +90,10 @@ export async function signUp(signUpDetails: {
  */
 export async function signInWithRecovery(signInDetails: {
   displayName: string;
+  password:string;
   userRecoveryPhrase: string;
 }) {
-  const { displayName, userRecoveryPhrase } = signInDetails;
+  const { displayName,password, userRecoveryPhrase } = signInDetails;
   window?.log?.info('RESTORING FROM SEED');
   const trimName = displayNameIsValid(displayName);
   // shows toast to user about the error
@@ -101,7 +102,7 @@ export async function signInWithRecovery(signInDetails: {
   }
 
   try {
-    const wallet = await restoreWallet(displayName, userRecoveryPhrase);
+    const wallet = await restoreWallet(displayName,password, userRecoveryPhrase);
     localStorage.setItem("userAddress",wallet.address);
     await resetRegistration();
 

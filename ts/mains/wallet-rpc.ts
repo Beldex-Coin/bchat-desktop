@@ -55,6 +55,8 @@ else{
 }
 
 async function walletRpc(rpcPath:string,walletDir:string){
+  console.log('walletDir ::',walletDir);
+  
   let wallet =  await ChildProcess.spawn(
     rpcPath,
     [
@@ -108,11 +110,15 @@ return requestData;
 }
 
 
-  export async function  generateMnemonic() :Promise<any> {
+  export async function  generateMnemonic(props:any) :Promise<any> {
   try{
-   const walletName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 7);
+  //  const walletName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 7);
+  const walletName=props.displayName;
+  const password=props.password;
    console.log("walletname:",walletName)
-   await createWallet(walletName, '', 'English',"create_wallet");
+   console.log("props.password",password);
+   
+   await createWallet(walletName,password, 'English',"create_wallet");
     // const createWallet = await walletRPC("create_wallet", {
     //   name: walletName,
     //   language: 'English',
@@ -191,7 +197,7 @@ export const getLatestHeight = async () => {
   }
 }
 
-export const restoreWallet = async (displayName: string, userRecoveryPhrase: string) => {
+export const restoreWallet = async (displayName: string,password:string, userRecoveryPhrase: string) => {
   try{
 console.log("restore:",displayName,userRecoveryPhrase)
   console.log("height:", await getLatestHeight())
@@ -199,7 +205,7 @@ console.log("restore:",displayName,userRecoveryPhrase)
   const restoreWallet = await walletRPC("restore_deterministic_wallet", {
     restore_height: await getLatestHeight(),
     filename: displayName,
-    password: "",
+    password: password,
     seed: userRecoveryPhrase
   });
   return restoreWallet;

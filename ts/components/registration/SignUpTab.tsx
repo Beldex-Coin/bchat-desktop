@@ -8,11 +8,14 @@ import { RegistrationContext, RegistrationPhase, signUp } from './RegistrationSt
 import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
 // import { TermsAndConditions } from './TermsAndConditions';
-import {DisplayIdAndAddress ,ShowRecoveryPhase} from "./ShowIdAndAddress";
+import {
+  DisplayIdAndAddress ,
+  ShowRecoveryPhase} from "./ShowIdAndAddress";
 import { StringUtils, ToastUtils } from '../../bchat/utils';
 import { generateMnemonic } from '../../mains/wallet-rpc';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
+import { WalletPassword } from './WalletPass';
 // import { DisplaySeed } from './DisplaySeed';
 const { clipboard } = require('electron')
 
@@ -99,8 +102,10 @@ export const SignUpTab = (props:any) => {
   } = useContext(RegistrationContext);
   const [displayName, setDisplayName] = useState('');
   const [displayNameError, setDisplayNameError] = useState<undefined | string>('');
-  const [displayNameScreen,setDisplayNameScreen]=useState(true);
-  const [displayAddressScreen,setAddressScreen] = useState(true);
+  const [displayNameScreen,setDisplayNameScreen]=useState(0);
+  const [password,setPassword]=useState('');
+  const [repassword,setRepassword]=useState("");
+  // const [displayAddressScreen,setAddressScreen] = useState(true);
   const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
 
@@ -111,11 +116,11 @@ export const SignUpTab = (props:any) => {
     }
   }, [signUpMode]);
 
-  const generateMnemonicAndKeyPairCreate = async () => {
+  const generateMnemonicAndKeyPairCreate = async (props:any) => {
     if (generatedRecoveryPhrase === '') {
 
       // await startWalletRpc();
-      const mnemonic = await generateMnemonic();
+      const mnemonic = await generateMnemonic(props);
       let seedHex = mn_decode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;
@@ -176,8 +181,8 @@ export const SignUpTab = (props:any) => {
  const clickGoBack = () => {
   console.log("goback")
     setDisplayName('')
-    setDisplayNameScreen(true);
-    setAddressScreen(true);
+    setDisplayNameScreen(0);
+    // setAddressScreen(true);
 
   }
   const verifyUserName = () => {
@@ -185,12 +190,40 @@ export const SignUpTab = (props:any) => {
     window?.log?.warn('invalid trimmed name for registration');
     ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
    }else{
-    void generateMnemonicAndKeyPairCreate();
-    setDisplayNameScreen(false);
+    setDisplayNameScreen(1);
    }
   }
 
-  if(displayNameScreen)
+  const passValid=()=>
+  {
+    if(password===repassword)
+    {
+      const walletData={displayName,password}
+      void generateMnemonicAndKeyPairCreate(walletData);
+     setDisplayNameScreen(2);
+     setRepassword("")
+     setPassword("")
+    }
+    else
+    {
+     window?.log?.warn('invalid password');
+     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' );
+    }
+  }
+
+  if(displayNameScreen===1)
+  {
+    console.log('displayNameScreen',displayNameScreen);
+      return <WalletPassword 
+      password={password}
+      repassword={repassword}
+      setPassword={(e:any)=>setPassword(e)}  
+      setRepassword={(e:any)=>setRepassword(e)}
+      submit={()=>{passValid()}}
+      />
+  }
+
+  if(displayNameScreen===0)
   {
     return (
     <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
@@ -228,18 +261,21 @@ export const SignUpTab = (props:any) => {
     </div>
     );
   }
+
+ 
   
   const handlePaste = () => {
     clipboard.writeText(generatedRecoveryPhrase,'clipboard');
   };
-  if(displayAddressScreen){
+  if(displayNameScreen===2){
    return (
     <>
         {!localStorage.getItem("userAddress") || !hexGeneratedPubKey?<LoaderGif />:null } 
-       <DisplayIdAndAddress nextFunc={()=>{setAddressScreen(false)}} pubKey={hexGeneratedPubKey} walletAddress={localStorage.getItem("userAddress")} assentAndGoBack={()=>{props.assent(true);clickGoBack()}} />
+       <DisplayIdAndAddress nextFunc={()=>{setDisplayNameScreen(3)}} pubKey={hexGeneratedPubKey} walletAddress={localStorage.getItem("userAddress")} assentAndGoBack={()=>{props.assent(true);clickGoBack()}} />
     </>
   );
   }
+
   return (
     
   <>

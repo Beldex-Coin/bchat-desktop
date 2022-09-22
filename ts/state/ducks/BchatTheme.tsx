@@ -84,7 +84,7 @@ const darkHintColor = lightGreyColor;
 const darkCopyIcon = "#fff";
 const darkCopyIconBg="#353543";
 const darkCopyModalbtn='#444455';
-const darkChatHeader = "black";
+const darkChatHeader = "#1c1c26";
 const darkToggleOff = '#000';
 const darkClearBtn = "#3D3D4D";
 const darkLeaveGrpBtn="#20202F";
@@ -106,6 +106,7 @@ const darkAddContact=`url("../images/bchat/add_contact.svg")`;
 const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 const darkLeftpaneSetting = darkScrollbarTrack;
+const darkRightpaneSetting='#16161D'
 // const buttonColor = "red";
 const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 
@@ -278,6 +279,10 @@ export const switchHtmlToDarkTheme = () => {
     darkLeftpaneSetting
   );
   document.documentElement.style.setProperty(
+    '--color-rightpaneSetting',
+    darkRightpaneSetting
+  );
+  document.documentElement.style.setProperty(
     '--color-toggleOff',
     darkToggleOff
   );
@@ -423,6 +428,7 @@ const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = "#C6C6C6"
 const lightClearBtn = '#fff'
 const lightLeftpaneSetting = '#f4f4f4';
+const lightRightpaneSetting="#f8f8f8"
 const  ligntDisableText='#B9BABF';
 const lightProfileBgColor = "#F8F8F8";
 
@@ -556,6 +562,10 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty(
     '--color-settingIndication',
     lightSettingIndication
+  );
+  document.documentElement.style.setProperty(
+    '--color-rightpaneSetting',
+    lightRightpaneSetting
   );
   // document.documentElement.style.setProperty(
   //   '--color-unreadBg',
@@ -756,7 +766,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-button:${buttonColor};
     
     --color-leftpaneSetting:${darkLeftpaneSetting};
-
+    --color-rightpaneSetting:${darkRightpaneSetting}
     --color-disableText:${darkDisableText};
 
     --color-profile: ${darkProfileBgColor};

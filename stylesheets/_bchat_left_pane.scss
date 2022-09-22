@@ -397,19 +397,35 @@ $bchat-compose-margin: 20px;
     .bchat-noMsgRequest-box {
       width: 100%;
       height: 81vh;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
 
     }
 
     .bchat-noMsgRequest {
       display: flex;
-      width: 507px;
-      height: 43%;
+      width: 500px;
+      height: 337px;
       align-items: center;
       background-image: var(--image-MsgReq);
       background-repeat: no-repeat;
       color: var(--color-disableText);
       justify-content: center;
-      background-size: cover;
+      background-size: 100% 100%;
+      margin: 0 auto;
+    }
+   .bchat-noMsgRequest-leftPane
+    {
+      display: flex;
+      width: 291px;
+      height: 221px;
+      align-items: center;
+      background-image: var(--image-MsgReq);
+      background-repeat: no-repeat;
+      color: var(--color-disableText);
+      justify-content: center;
+      background-size: 100% 100%;
       margin: 0 auto;
     }
   }
