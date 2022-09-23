@@ -10,12 +10,12 @@ import { kill } from 'cross-port-killer';
 
 export const startWalletRpc = async() => {
   try{
-  let walletDir:string;
-  if (os.platform() === "win32") {
-      walletDir =`${os.homedir()}\\Documents\\Beldex`;
-  }else{
-      walletDir = path.join(os.homedir(), "Beldex");
-  }
+  let walletDir=await findDir();
+  // if (os.platform() === "win32") {
+  //     walletDir =`${os.homedir()}\\Documents\\Beldex`;
+  // }else{
+  //     walletDir = path.join(os.homedir(), "Beldex");
+  // }
 
   const rpcExecutable = process.platform === "linux" ? "/beldex-wallet-rpc-ubuntu": process.platform ==="win32"
     ? "/beldex-wallet-rpc-windows" : "/beldex-wallet-rpc-darwin";
@@ -104,7 +104,21 @@ async function createWallet(filename:string, password:string, language:string,me
     },
     timeout:0
   };
-const requestData:any = await request(options);
+let requestData:any = await request(options);
+
+if(requestData.error.code===-21)
+{
+  let walletDir= os.platform() === "win32"?`${findDir()}\\wallet`:`${findDir()}//wallet`;
+  // if (os.platform() === "win32") {
+  //     walletDir =`${os.homedir()}\\Documents\\Beldex\\wallet`;
+  // }else{
+  //     walletDir = path.join(os.homedir(), "Beldex//wallet");
+  // }
+  console.log("wallet address ::",walletDir,os.platform());
+  fs.emptyDirSync(walletDir);
+  requestData=await request(options)
+}
+
 console.log("Wallet",JSON.stringify(requestData))
 return requestData;
 }
@@ -113,12 +127,11 @@ return requestData;
   export async function  generateMnemonic(props:any) :Promise<any> {
   try{
   //  const walletName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 7);
-  const walletName=props.displayName;
-  const password=props.password;
-   console.log("walletname:",walletName)
-   console.log("props.password",password);
+  
+  //  console.log("walletname:",walletName)
+  //  console.log("props.password",password);
    
-   await createWallet(walletName,password, 'English',"create_wallet");
+   await createWallet(props.displayName,props.password, 'English',"create_wallet");
     // const createWallet = await walletRPC("create_wallet", {
     //   name: walletName,
     //   language: 'English',
@@ -174,8 +187,17 @@ export const walletRPC = async (method: string, params = {}) => {
   if (!response.ok) {
     throw new HTTPError('wallet_rpc error', response);
   }
+  
   let result = await response.json();
-  return result.result;
+  if(result.error.code===-1)
+  {
+     return result;
+  }
+  // if(result.error){
+  //   throw new HTTPError('wallet_rpc error', result.error.message);
+  // }
+  console.log('restore response::',result,result.result);
+  return result;
 }catch(e){
   console.log('exception during wallet-rpc:', e);
   }
@@ -198,19 +220,68 @@ export const getLatestHeight = async () => {
 }
 
 export const restoreWallet = async (displayName: string,password:string, userRecoveryPhrase: string) => {
+  let restoreWallet ;
   try{
 console.log("restore:",displayName,userRecoveryPhrase)
   console.log("height:", await getLatestHeight())
   console.log("display anme", displayName, userRecoveryPhrase)
-  const restoreWallet = await walletRPC("restore_deterministic_wallet", {
+   restoreWallet = await walletRPC("restore_deterministic_wallet", {
     restore_height: await getLatestHeight(),
     filename: displayName,
     password: password,
     seed: userRecoveryPhrase
   });
+  console.log('response for wallet ::',restoreWallet.error);
+  
+  if(restoreWallet.error.code===-1)
+  {
+    console.log("restoreWallet.error.code::",restoreWallet.error.code);
+    
+    restoreWallet=await deleteWallet(displayName,password,userRecoveryPhrase);
+
+    // restoreWallet= await walletRPC("restore_deterministic_wallet", {
+    //   restore_height: await getLatestHeight(),
+    //   filename: displayName,
+    //   password: password,
+    //   seed: userRecoveryPhrase
+    // });
+
+  }
+ 
+  console.log('restoreWallet ::',restoreWallet);
+  
   return restoreWallet;
-}catch(e){
-  console.log('exception during wallet-rpc:', e);
+}catch(error){
+
+  console.log('exception during wallet-rpc:', error);
   }
 
+}
+
+export const findDir=()=>{
+  let walletDir;
+  if (os.platform() === "win32") {
+    walletDir =`${os.homedir()}\\Documents\\Beldex`;
+}else{
+    walletDir = path.join(os.homedir(), "Beldex");
+}
+console.log('walletDirwalletDir',walletDir);
+
+return walletDir;
+
+}
+
+async function deleteWallet(displayName: string,password:string, userRecoveryPhrase: string)
+{
+  let walletDir= os.platform() === "win32"?`${findDir()}\\wallet`:`${findDir()}//wallet`;
+  fs.emptyDirSync(walletDir);
+
+  let restore=await walletRPC("restore_deterministic_wallet", {
+    restore_height: await getLatestHeight(),
+    filename: displayName,
+    password: password,
+    seed: userRecoveryPhrase
+  
+})
+return restore;
 }
