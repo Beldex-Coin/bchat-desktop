@@ -76,7 +76,7 @@ async function lokiFetch({
     const response = await insecureNodeFetch(url, fetchOptions);
 
     if (!response.ok) {
-      throw new HTTPError('Loki_rpc error', response);
+      throw new HTTPError('beldex_rpc error', response);
     }
     const result = await response.text();
 

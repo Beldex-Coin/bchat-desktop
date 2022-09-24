@@ -430,7 +430,7 @@ async function createWindow() {
   // Note: We do most of our shutdown logic here because all windows are closed by
   //   Electron before the app quits.
   mainWindow.on('close', async e => {
-    kill(64371).then().catch(err => {throw new HTTPError('wallet_rpc_port', err) } )
+    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     console.log('close event', {
       readyForShutdown: mainWindow ? readyForShutdown : null,
       shouldQuit: windowShouldQuit(),

@@ -13,19 +13,19 @@ export const BchatSettingRecoveryKey=()=>
     let data=[
         {
             title:"View Key (public):",
-            key:viewKey.pubkey
+            key:viewKey.result.pubkey
         },
         {
             title:"View Key (private):",
-            key:viewKey.key
+            key:viewKey.result.key
         },
         {
             title:"Spend Key (public):",
-            key:spendKey.pubkey
+            key:spendKey.result.pubkey
         },
         {
             title:"Spend Key (private):",
-            key:spendKey.key
+            key:spendKey.result.key
         }]
 
     
