@@ -109,6 +109,7 @@ const darkLeftpaneSetting = darkScrollbarTrack;
 const darkRightpaneSetting='#16161D'
 // const buttonColor = "red";
 const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
+const darkAudioRecord = "#3F3C4B";
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -338,7 +339,10 @@ export const switchHtmlToDarkTheme = () => {
     '--button-color',
     buttonColor
   );
-
+  document.documentElement.style.setProperty(
+    '--color-audio-record',
+    darkAudioRecord
+  );
 };
 
 // LIGHT COLORS
@@ -431,6 +435,7 @@ const lightLeftpaneSetting = '#f4f4f4';
 const lightRightpaneSetting="#f8f8f8"
 const  ligntDisableText='#B9BABF';
 const lightProfileBgColor = "#F8F8F8";
+const whiteAudioRecord = "#dcdbdb";
 
 // Toast Colors 
 const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
@@ -673,13 +678,17 @@ export const switchHtmlToLightTheme = () => {
     '--button-color',
     buttonColor
   );
+  document.documentElement.style.setProperty(
+    '--color-audio-record',
+    whiteAudioRecord
+  );
 };
 
 // default to light theme
 export const BchatGlobalStyles = createGlobalStyle`
   html {
     /* FONTS */
-    --font-default:  'Roboto';
+    --font-default:  'poppin-medium';
     --font-font-accent:  'Loor';
     --font-font-mono:  'SpaceMono';
     --font-size-xs:  11px;
@@ -782,6 +791,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-BlockedContact:${darkBlockedContact};
     --image-AddContact:${darkAddContact}
     --image-EmptyContact:${darkEmptyContact}
+    --color-audio-record:${darkAudioRecord}
     
 
 
