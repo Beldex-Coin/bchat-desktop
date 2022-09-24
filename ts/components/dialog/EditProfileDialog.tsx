@@ -25,6 +25,7 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
+import styled from 'styled-components';
 // import { Icons } from '../registration/DisplaySeed';
 
 interface State {
@@ -96,50 +97,55 @@ export class EditProfileDialog extends React.Component<{}, State> {
         : undefined;
 
     return (
-      <div className="edit-profile-dialog" data-testid="edit-profile-dialog">
-
-
-        <BchatWrapperModal
-          title={i18n('editProfileModalTitle')}
-          onClose={this.closeDialog}
-          showHeader={false}
-          headerIconButtons={backButton}
-          showExitIcon={true}
-        >
-          {this.state.loading &&
+      <div>
+        {this.state.loading &&
+          <Loader>
             <div className='edit-profile-dialog-modalLoader'>
               <img src={"images/bchat/Load_animation.gif"} style={{ width: "150px", height: '150px' }} />
             </div>
-          }
+          </Loader>
+
+        }
+
+        <div className="edit-profile-dialog" data-testid="edit-profile-dialog">
 
 
-          <div style={{ position: 'relative', marginLeft: '350px', marginTop: '12px' }}>
+          <BchatWrapperModal
+            title={i18n('editProfileModalTitle')}
+            onClose={this.closeDialog}
+            showHeader={false}
+            headerIconButtons={backButton}
+            showExitIcon={true}
+          >
 
 
-            <BchatIconButton
-              iconType="exit"
-              iconSize="tiny"
-              onClick={this.closeDialog}
-              dataTestId="modal-close-button"
-            />
-          </div>
-
-          {/* <SpacerMD /> */}
+            <div style={{ position: 'relative', marginLeft: '350px', marginTop: '12px' }}>
 
 
-          {/* {viewQR && <QRView bchatID={bchatID} />} */}
-          {(viewDefault || viewQR) && this.renderDefaultView()}
-          {viewEdit && this.renderEditView()}
-          {/* { this.renderAddressView({bchatID})} */}
+              <BchatIconButton
+                iconType="exit"
+                iconSize="tiny"
+                onClick={this.closeDialog}
+                dataTestId="modal-close-button"
+              />
+            </div>
 
-          <div className="bchat-id-section">
-            <PillDivider />
-            {!viewQR ? (this.renderAddressView({ bchatID })) : (this.renderQrView({ bchatID }))}
-
-            <SpacerLG />
+            {/* <SpacerMD /> */}
 
 
-            {/* {viewDefault || viewQR ? (
+            {/* {viewQR && <QRView bchatID={bchatID} />} */}
+            {(viewDefault || viewQR) && this.renderDefaultView()}
+            {viewEdit && this.renderEditView()}
+            {/* { this.renderAddressView({bchatID})} */}
+
+            <div className="bchat-id-section">
+              <PillDivider />
+              {!viewQR ? (this.renderAddressView({ bchatID })) : (this.renderQrView({ bchatID }))}
+
+              <SpacerLG />
+
+
+              {/* {viewDefault || viewQR ? (
               <BchatButton
                 text={window.i18n('editMenuCopy')}
                 buttonType={BchatButtonType.BrandOutline}
@@ -161,7 +167,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 />
               )
             )} */}
-            {/* {viewEdit && (
+              {/* {viewEdit && (
               !this.state.loading && (
                 <BchatButton
                   text={window.i18n('save')}
@@ -173,10 +179,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 />
               ))} */}
 
-            <SpacerLG />
-          </div>
+              <SpacerLG />
+            </div>
 
-        </BchatWrapperModal>
+          </BchatWrapperModal>
+        </div>
       </div>
     );
   }
@@ -293,9 +300,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <svg xmlns="http://www.w3.org/2000/svg" width="29.313" height="29.313" viewBox="0 0 29.313 29.313">
                 <path id="icons8-qr_code" d="M4.141,1A3.152,3.152,0,0,0,1,4.141V8.328a3.152,3.152,0,0,0,3.141,3.141H5.187v2.094H7.281V11.469H8.328a3.152,3.152,0,0,0,3.141-3.141V4.141A3.152,3.152,0,0,0,8.328,1ZM7.281,13.563v2.094H9.375V13.563Zm0,2.094H5.187V17.75H7.281Zm-2.094,0V13.563H3.094v2.094ZM22.984,1a3.152,3.152,0,0,0-3.141,3.141V8.328a3.152,3.152,0,0,0,3.141,3.141h1.047v2.094h2.094V11.469h1.047a3.152,3.152,0,0,0,3.141-3.141V4.141A3.152,3.152,0,0,0,27.172,1Zm3.141,12.563v2.094h2.094V13.563Zm0,2.094H24.031V17.75h2.094Zm0,2.094v2.094h2.094V17.75Zm0,2.094H24.031v2.094h2.094Zm-2.094,0V17.75H21.938v2.094ZM4.141,3.094H8.328A1.033,1.033,0,0,1,9.375,4.141V8.328A1.033,1.033,0,0,1,8.328,9.375H4.141A1.033,1.033,0,0,1,3.094,8.328V4.141A1.033,1.033,0,0,1,4.141,3.094Zm11.516,0V5.187H13.563V7.281h2.094V9.375H17.75V3.094Zm7.328,0h4.188a1.033,1.033,0,0,1,1.047,1.047V8.328a1.033,1.033,0,0,1-1.047,1.047H22.984a1.033,1.033,0,0,1-1.047-1.047V4.141A1.033,1.033,0,0,1,22.984,3.094ZM5.187,5.187V7.281H7.281V5.187Zm18.844,0V7.281h2.094V5.187ZM11.469,11.469v2.094H17.75v2.094h2.094V11.469Zm2.094,4.187V17.75H11.469v2.094h8.375V17.75H15.656V15.656ZM4.141,19.844A3.152,3.152,0,0,0,1,22.984v4.188a3.152,3.152,0,0,0,3.141,3.141H8.328a3.152,3.152,0,0,0,3.141-3.141V22.984a3.152,3.152,0,0,0-3.141-3.141Zm0,2.094H8.328a1.033,1.033,0,0,1,1.047,1.047v4.188a1.033,1.033,0,0,1-1.047,1.047H4.141a1.033,1.033,0,0,1-1.047-1.047V22.984A1.033,1.033,0,0,1,4.141,21.938Zm9.422,0v6.281h2.094V21.938ZM5.187,24.031v2.094H7.281V24.031Zm14.656,0v2.094h2.094V24.031Zm2.094,2.094v2.094h2.094V26.125Zm2.094,0h2.094V24.031H24.031Zm2.094,0v2.094h2.094V26.125Z" transform="translate(-1 -1)" />
               </svg>
-              :<svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 22.646 22.646">
-              <path id="icons8-copybook" d="M10.065,5A3.291,3.291,0,0,0,6.788,8.278v.894H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V8.278a1.477,1.477,0,0,1,1.49-1.49H23.176a1.477,1.477,0,0,1,1.49,1.49v.449a.894.894,0,0,0,0,.29V12.3a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0-.008.229,1.472,1.472,0,0,1-1.482,1.407H10.065a1.477,1.477,0,0,1-1.49-1.49v-.894h.894a.894.894,0,1,0,0-1.788H8.576V20.494H6.788v1.192H5.894a.894.894,0,1,0,0,1.788h.894v.894a3.291,3.291,0,0,0,3.278,3.278H23.176a3.293,3.293,0,0,0,3.154-2.4,1.5,1.5,0,0,0,1.315-1.472V21.388a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V15.429a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V9.47A1.506,1.506,0,0,0,26.44,8.009,3.291,3.291,0,0,0,23.176,5Zm2.98,4.172a.894.894,0,0,0-.894.894v4.172a.894.894,0,0,0,.894.894h7.747a.894.894,0,0,0,.894-.894V10.065a.894.894,0,0,0-.894-.894Zm.894,1.788H19.9v2.384H13.939ZM6.788,12.151v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V12.151Zm0,4.172v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V16.323Z" transform="translate(-5 -5)" />
-            </svg>}
+              : <svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 22.646 22.646">
+                <path id="icons8-copybook" d="M10.065,5A3.291,3.291,0,0,0,6.788,8.278v.894H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V8.278a1.477,1.477,0,0,1,1.49-1.49H23.176a1.477,1.477,0,0,1,1.49,1.49v.449a.894.894,0,0,0,0,.29V12.3a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0-.008.229,1.472,1.472,0,0,1-1.482,1.407H10.065a1.477,1.477,0,0,1-1.49-1.49v-.894h.894a.894.894,0,1,0,0-1.788H8.576V20.494H6.788v1.192H5.894a.894.894,0,1,0,0,1.788h.894v.894a3.291,3.291,0,0,0,3.278,3.278H23.176a3.293,3.293,0,0,0,3.154-2.4,1.5,1.5,0,0,0,1.315-1.472V21.388a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V15.429a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V9.47A1.506,1.506,0,0,0,26.44,8.009,3.291,3.291,0,0,0,23.176,5Zm2.98,4.172a.894.894,0,0,0-.894.894v4.172a.894.894,0,0,0,.894.894h7.747a.894.894,0,0,0,.894-.894V10.065a.894.894,0,0,0-.894-.894Zm.894,1.788H19.9v2.384H13.939ZM6.788,12.151v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V12.151Zm0,4.172v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V16.323Z" transform="translate(-5 -5)" />
+              </svg>}
 
             {/* <BchatIconButton iconType="qr" iconSize="small" iconColor={'white'} /> */}
           </div>
@@ -366,14 +373,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
           //  }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
-              <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)"  />
+              <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
             </svg>
           </div>
         </div>
 
         <p className='profile-header'>{window.i18n('profileBeldexAddres')}</p>
         <div className='bchat-id-section-display'>
-          <div className='profile-value' style={{color: '#1782FF'}}>{walletAddress}</div>
+          <div className='profile-value' style={{ color: '#1782FF' }}>{walletAddress}</div>
           <div onClick={() => copyBchatID(walletAddress)}
             // style={{
             //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
@@ -387,8 +394,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
             //  }}
             className="bchat-id-section-display-icon"
           >
-             <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
-              <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)"  />
+            <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
+              <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
             </svg>
           </div>
         </div>
@@ -511,6 +518,19 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
   await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
 }
 
+const Loader = styled.div`
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    /* width: 100%; */
+    width: 100Vw;
+    height: 100%;
+    align-items: center;
+    z-index: 101;
+
+   
+`
 
 
 function copyBchatID(bchatID: any) {
