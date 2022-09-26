@@ -685,7 +685,7 @@ label {
   &__text-highlight {
     // @include text-highlight($bchat-color-green);
     font-family: $bchat-font-poppin-medium;
-    font-size: $bchat-font-md;
+    font-size: $bchat-font-lg;
     color: #128B17;
   }
 
@@ -995,8 +995,8 @@ label {
 .qr-center-icon {
   position: absolute;
   top: 60px;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
 }
 
 .profile-header {

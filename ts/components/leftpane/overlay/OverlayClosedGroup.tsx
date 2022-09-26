@@ -72,33 +72,33 @@ export const OverlayClosedGroup = () => {
   const placeholder = window.i18n('createSecretGroupPlaceholder');
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
-  console.log('noContactsForClosedGroup', noContactsForClosedGroup);
+  // console.log('noContactsForClosedGroup', noContactsForClosedGroup);
 
-  const ClosedGrpHeader = () => {
-    if (!noContactsForClosedGroup) {
-      return (<>
+  // const ClosedGrpHeader = () => {
+  //   if (!noContactsForClosedGroup) {
+  //     return (<>
 
-        <div className='module-left-pane-overlay-closed--subHeader'>
-          {subtitle}
-        </div>
-        <div className="create-group-name-input">
-          <BchatIdEditable
-            editable={!noContactsForClosedGroup}
-            placeholder={placeholder}
-            value={groupName}
-            isGroup={true}
-            maxLength={100}
-            onChange={setGroupName}
-            onPressEnter={onEnterPressed}
-            dataTestId="new-closed-group-name"
-          />
-        </div></>)
-    }
-    else {
-      return <></>
-    }
+  //       <div className='module-left-pane-overlay-closed--subHeader'>
+  //         {subtitle}
+  //       </div>
+  //       <div className="create-group-name-input">
+  //         <BchatIdEditable
+  //           editable={!noContactsForClosedGroup}
+  //           placeholder={placeholder}
+  //           value={groupName}
+  //           isGroup={true}
+  //           maxLength={100}
+  //           onChange={setGroupName}
+  //           onPressEnter={onEnterPressed}
+  //           dataTestId="new-closed-group-name"
+  //         />
+  //       </div></>)
+  //   }
+  //   else {
+  //     return <></>
+  //   }
 
-  }
+  // }
   function addContact() {
     dispatch(showLeftPaneSection(0));
     window.inboxStore?.dispatch(setOverlayMode('message'));
@@ -114,7 +114,25 @@ export const OverlayClosedGroup = () => {
         {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
         <LeftPaneSectionHeader />
         <div className='module-left-pane-overlay-closed--header'>{title}</div>
-        <ClosedGrpHeader />
+        {/* <ClosedGrpHeader /> */}
+        {!noContactsForClosedGroup &&
+          <>
+          <div className='module-left-pane-overlay-closed--subHeader'>
+            {subtitle}
+          </div>
+          <div className="create-group-name-input">
+            <BchatIdEditable
+              editable={!noContactsForClosedGroup}
+              placeholder={placeholder}
+              value={groupName}
+              isGroup={true}
+              maxLength={100}
+              onChange={setGroupName}
+              onPressEnter={onEnterPressed}
+              dataTestId="new-closed-group-name"
+            />
+          </div></>
+        }
 
         <BchatSpinner loading={loading} />
 

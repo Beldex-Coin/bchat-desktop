@@ -252,7 +252,7 @@ export const BchatRightPanelWithDetails = () => {
         <p>Bchat ID:</p>
         <div>{id}</div>
       </div>}
-      <div style={{ display: "flex" }}>
+      <div className='group-settings-nameEditBox'>
         <h2 data-testid="right-panel-group-name">{name}</h2>
         {showUpdateGroupNameButton && <BchatIconButton
           iconType="pencil"
@@ -363,6 +363,7 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
+        <div style={{marginBottom:'14px',width:'100%'}}>
         <BchatButton
           text={leaveGroupString}
           buttonColor={BchatButtonColor.Danger}
@@ -370,6 +371,7 @@ export const BchatRightPanelWithDetails = () => {
           buttonType={BchatButtonType.SquareOutline}
           onClick={deleteConvoAction}
         />
+        </div>
       )}
     </div>
   );

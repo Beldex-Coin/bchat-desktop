@@ -1,7 +1,7 @@
 .group-settings {
   display: flex;
   flex-direction: column;
-  height: 84vh;
+  height: 94vh;
   // width: -webkit-fill-available;
   width: 25vw;
   background: var(--color-cell-background);
@@ -59,6 +59,15 @@
     .module-avatar {
       margin: auto;
     }
+  }
+
+  &-nameEditBox
+  {
+   display: flex;
+
+   h2{
+    margin-right: 5px;
+   }
   }
 
   
