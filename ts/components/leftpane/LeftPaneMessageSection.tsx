@@ -20,6 +20,7 @@ import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
 
+
 export interface Props {
   contacts: Array<ReduxConversationType>;
   conversations?: Array<ConversationListItemProps>;
@@ -27,6 +28,7 @@ export interface Props {
 
   messageRequestsEnabled?: boolean;
   overlayMode: OverlayMode;
+  directContact:any;
 }
 
 export class LeftPaneMessageSection extends React.Component<Props> {
@@ -54,8 +56,9 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   };
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
-    const { conversations, searchResults } = this.props;
-
+    const { conversations, searchResults,contacts } = this.props;
+    console.log("searchResults ::",searchResults,contacts);
+    
     if (searchResults) {
       return <SearchResults {...searchResults} />;
     }
@@ -118,20 +121,28 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   public renderConversations() {
-    const { conversations } = this.props;
-    console.log('conversations conversations', conversations);
+    const { 
+      // conversations ,
+      // searchResults,
+      // contacts,
+      directContact} = this.props;
+      
+    // console.log('conversations conversations', conversations,contacts,"data",searchResults,"getDirectContacts::",directContact);
 
     return (
       <div className="module-conversations-list-content">
-        {!conversations || conversations.length === 0 ? null :
+        {/* {!conversations || conversations.length === 0 ? null : */}
+      {directContact.length!==0 &&
           <BchatSearchInput />
-        }
+      }
+        {/* } */}
         <MessageRequestsBanner
           handleOnClick={() => {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-        {!conversations || conversations.length === 0 ?
+          {/* {!conversations || conversations.length === 0 || searchResults ? */}
+          {directContact.length===0 ?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>
             </div>

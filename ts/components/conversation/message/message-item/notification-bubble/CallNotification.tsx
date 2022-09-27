@@ -20,7 +20,7 @@ type StyleType = Record<
 const style: StyleType = {
   'missed-call': {
     notificationTextKey: 'callMissed',
-    iconType: 'callMissed',
+    iconType: 'callMissed', 
     iconColor: 'var(--color-destructive)',
   },
   'started-call': {

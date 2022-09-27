@@ -363,7 +363,7 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <div style={{marginBottom:'14px',width:'100%'}}>
+        <div style={{marginBottom:'14px',width:'90%',overflow:'hidden',borderRadius:'12px'}}>
         <BchatButton
           text={leaveGroupString}
           buttonColor={BchatButtonColor.Danger}

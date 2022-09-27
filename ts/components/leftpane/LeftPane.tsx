@@ -15,6 +15,8 @@ import { LeftPaneSettingSection } from './LeftPaneSettingSection';
 import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
 import {OverlayClosedGroup} from './overlay/OverlayClosedGroup';
 
+import { getDirectContacts } from '../../state/selectors/conversations';
+
 
 
 
@@ -39,6 +41,7 @@ const InnerLeftPaneMessageSection = () => {
   const lists = showSearch ? undefined : useSelector(getLeftPaneLists);
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
+  const directContact=useSelector(getDirectContacts)
   
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -48,6 +51,8 @@ const InnerLeftPaneMessageSection = () => {
       searchResults={searchResults}
       messageRequestsEnabled={messageRequestsEnabled}
       overlayMode={overlayMode}
+      directContact={directContact}
+
     />
   );
 };
