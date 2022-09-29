@@ -10,7 +10,7 @@ import { SyncUtils, ToastUtils, UserUtils } from '../../bchat/utils';
 import { ConversationModel, ConversationTypeEnum } from '../../models/conversation';
 
 import { getConversationController } from '../../bchat/conversations';
-import { SpacerLG } from '../basic/Text';
+// import { SpacerLG } from '../basic/Text';
 import autoBind from 'auto-bind';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
@@ -142,7 +142,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <PillDivider />
               {!viewQR ? (this.renderAddressView({ bchatID })) : (this.renderQrView({ bchatID }))}
 
-              <SpacerLG />
+              {/* <SpacerLG /> */}
 
 
               {/* {viewDefault || viewQR ? (
@@ -179,7 +179,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 />
               ))} */}
 
-              <SpacerLG />
+              {/* <SpacerLG /> */}
             </div>
 
           </BchatWrapperModal>
@@ -379,7 +379,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         </div>
 
         <p className='profile-header'>{window.i18n('profileBeldexAddres')}</p>
-        <div className='bchat-id-section-display'>
+        <div className='bchat-id-section-display' style={{marginBottom:"37px"}}>
           <div className='profile-value' style={{ color: '#1782FF' }}>{walletAddress}</div>
           <div onClick={() => copyBchatID(walletAddress)}
             // style={{
