@@ -99,9 +99,7 @@ async function createWallet(filename:string, password:string, language:string,me
     },
     timeout:0
   };
-  console.log("CREATE WALLET")
 let requestData:any = await request(options);
-console.log("REQUEST DATA:",requestData)
 
 if(requestData.hasOwnProperty('error'))
 {

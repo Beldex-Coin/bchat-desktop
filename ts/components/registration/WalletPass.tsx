@@ -31,7 +31,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
     //   onEnterPressed={props.handlePressEnter}
     //   inputDataTestId="recovery-phrase-input"
     />
-    <div style={{height:'49px'}}></div>
+    <div style={{height:'55px'}}></div>
      <BchatInput
       label={"Re-Enter Password"}
       type="password"
@@ -43,7 +43,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
     //   onEnterPressed={props.handlePressEnter}
     //   inputDataTestId="recovery-phrase-input"
     />
- <div style={{height:'41px'}}></div>
+ <div style={{height:'50px'}}></div>
  <div style={{width:'75%',margin:'auto'}}>
  <BchatButton
         onClick={()=>props.submit()}

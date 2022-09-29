@@ -539,6 +539,7 @@ async function showPasswordWindow() {
       preload: path.join(getAppRootPath(), 'password_preload.js'),
       nativeWindowOpen: true,
     },
+    // icon: path.join(getAppRootPath(), './build/bchat.icns')
     // don't setup icon, the executable one will be used by default
   };
 

@@ -283,14 +283,9 @@
         "StartupWMClass": "Bchat"
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
-      "target": [
-        "deb",
-         "rpm",
-        "freebsd"
-      
-      ],
-      "icon": "build/bchat.icns"
-    },
+      "target": 
+        ["deb"]
+          },
     "asarUnpack": [
       "node_modules/better-sqlite3/build/Release/better_sqlite3.node",
       "ts/mains/main_node.js"
@@ -324,6 +319,7 @@
       "js/views/standalone_registration_view.js",
       "preload.js",
       "about_preload.js",
+      "icons/*",
       "settings_preload.js",
       "debug_log_preload.js",
       "password_preload.js",
