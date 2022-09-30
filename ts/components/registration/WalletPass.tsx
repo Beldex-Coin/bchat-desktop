@@ -5,8 +5,8 @@ import { Flex } from "../basic/Flex"
 
 import { GoBackMainMenuButton } from "./SignUpTab"
 
- export const WalletPassword=(props:any)=>
-{
+ export const WalletPassword=(props:any)=>{
+  
   return(
     <div>
          <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
@@ -28,6 +28,8 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       placeholder={"Enter Password"}
       enableShowHide={true}
       onValueChanged={props.setPassword}
+      maxLength={6}
+      
     //   onEnterPressed={props.handlePressEnter}
     //   inputDataTestId="recovery-phrase-input"
     />
@@ -40,6 +42,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       placeholder={"Re-Enter Password"}
       enableShowHide={true}
       onValueChanged={props.setRepassword}
+      maxLength={6}
     //   onEnterPressed={props.handlePressEnter}
     //   inputDataTestId="recovery-phrase-input"
     />

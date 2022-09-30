@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const LeftPaneSectionContainer = styled.div`
   width: 100%;
+  height: 8%;
   display: flex;
   flex-direction:row;
   align-items: center;

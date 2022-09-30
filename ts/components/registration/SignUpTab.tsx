@@ -196,18 +196,23 @@ export const SignUpTab = (props:any) => {
 
   const passValid=()=>
   {
-    if(password===repassword)
+    if (!password||!repassword) {
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !' );
+       
+     }
+    else if (password!==repassword)
+    {
+      window?.log?.warn('invalid password');
+     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' ); 
+    }
+    else
     {
       const walletData={displayName,password}
       void generateMnemonicAndKeyPairCreate(walletData);
      setDisplayNameScreen(2);
      setRepassword("")
      setPassword("")
-    }
-    else
-    {
-     window?.log?.warn('invalid password');
-     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' );
+    
     }
   }
 

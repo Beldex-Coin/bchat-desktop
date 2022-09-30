@@ -230,7 +230,8 @@ export const DeleteContactMenuItem = () => {
         updateConfirmModal({
           title: menuItemText,
           message: isPrivate
-            ? window.i18n('deleteContactConfirmation')
+            ?"Permanently delete the Contact?"
+            // ? window.i18n('deleteContactConfirmation')
             : window.i18n('leaveGroupConfirmation'),
           onClickClose,
           okTheme: BchatButtonColor.Danger,

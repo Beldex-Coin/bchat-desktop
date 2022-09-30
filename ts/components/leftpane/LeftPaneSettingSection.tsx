@@ -287,7 +287,10 @@ const LeftPaneSettingsCategoryRow = (
 const LeftPaneSettingsCategories = () => {
   // const categories = getCategories();
 
-
+   if(0)
+   {
+    LeftPaneSettingsCategoryRow
+   }
 
   return (
     <div className="module-left-pane__list" key={0}>
@@ -331,8 +334,12 @@ const LeftPaneBottomButtons = () => {
 };
 
 export const LeftPaneSettingSection = () => {
+  if(0)
+  {
+    LeftPaneBottomButtons
+  }
   return (
-    <div className="left-pane-setting-section">
+    <div className="left-pane-setting-section" style={{height: '92%', overflowY: 'auto'}}>
       <LeftPaneSectionHeader />
       <div className="left-pane-setting-content">
         <LeftPaneSettingsCategories />
