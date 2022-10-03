@@ -3167,7 +3167,7 @@ function remove05PrefixFromStringIfNeeded(str: string) {
 }
 
 function updateExistingClosedGroupV1ToClosedGroupV2(db: BetterSqlite3.Database) {
-  // the migration is called only once, so all current groups not being open groups are v1 closed group.
+  // the migration is called only once, so all current groups not being Social groups are v1 closed group.
   const allClosedGroupV1 = getAllClosedGroupConversations(db) || [];
 
   allClosedGroupV1.forEach(groupV1 => {
@@ -3795,7 +3795,7 @@ export const sqlNode = {
   addClosedGroupEncryptionKeyPair,
   removeAllClosedGroupEncryptionKeyPairs,
 
-  // open group v2
+  // Social group v2
   getV2OpenGroupRoom,
   saveV2OpenGroupRoom,
   getAllV2OpenGroupRooms,

@@ -218,7 +218,6 @@ export const SignUpTab = (props:any) => {
 
   if(displayNameScreen===1)
   {
-    console.log('displayNameScreen',displayNameScreen);
       return <WalletPassword 
       password={password}
       repassword={repassword}

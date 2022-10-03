@@ -120,7 +120,7 @@ export const reducer = (
       //  console.log('castedPayload',castedPayload,SectionType.Settings,type);
 
       if (castedPayload !== SectionType.Settings) {
-        console.log('castedPayload',castedPayload,SectionType.Settings,type);
+        // console.log('castedPayload',castedPayload,SectionType.Settings,type);
 
         return {
           ...state,

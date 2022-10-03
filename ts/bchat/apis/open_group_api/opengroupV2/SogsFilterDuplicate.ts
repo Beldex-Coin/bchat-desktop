@@ -6,7 +6,7 @@ export const filterDuplicatesFromDbAndIncoming = async (
   newMessages: Array<OpenGroupMessageV2>
 ): Promise<Array<OpenGroupMessageV2>> => {
   const start = Date.now();
-  // open group messages are deduplicated by sender and serverTimestamp only.
+  // Social group messages are deduplicated by sender and serverTimestamp only.
   // first make sure that the incoming messages have no duplicates:
   const filtered = _.uniqWith(newMessages, (a, b) => {
     return (

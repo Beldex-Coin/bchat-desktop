@@ -77,7 +77,7 @@ export const BanOrUnBanUserDialog = (props: {
       : undefined;
 
   /**
-   * Ban or Unban a user from an open group
+   * Ban or Unban a user from an Social group
    * @param deleteAll Delete all messages for that user in the group (only works with ban)
    */
   const banOrUnBanUser = async (deleteAll: boolean = false) => {

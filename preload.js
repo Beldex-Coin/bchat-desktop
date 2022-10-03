@@ -241,7 +241,9 @@ window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
     ? [
       'https://publicnode1.rpcnode.stream:443',
-      // 'http://15.188.30.57:19095',
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
+            // 'http://15.188.30.57:19095',
     ]
     : [
 

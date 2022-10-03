@@ -93,7 +93,7 @@ function showChangeNickname(isMe: boolean, isPrivate: boolean, isRequest: boolea
   return !isMe && isPrivate && !isRequest;
 }
 
-// we want to show the copyId for open groups and private chats only
+// we want to show the copyId for Social groups and private chats only
 function showCopyId(isPublic: boolean, isPrivate: boolean): boolean {
   return isPrivate || isPublic;
 }

@@ -63,7 +63,7 @@ export const parseMessages = async (
           !opengroupv2Message.base64EncodedData ||
           !opengroupv2Message.base64EncodedSignature
         ) {
-          window?.log?.warn('invalid open group message received');
+          window?.log?.warn('invalid Social group message received');
           return null;
         }
         const sender = PubKey.cast(opengroupv2Message.sender).withoutPrefix();

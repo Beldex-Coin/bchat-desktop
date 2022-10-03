@@ -660,7 +660,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       if (this.isPublic() && !this.isOpenGroupV2()) {
         throw new Error('Only opengroupv2 are supported now');
       }
-      // an OpenGroupV2 message is just a visible message
+      // an SocialGroupV2 message is just a visible message
       const chatMessageParams: VisibleMessageParams = {
         body: uploads.body,
         identifier: id,
@@ -1344,7 +1344,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public hasMember(pubkey: string) {
     return _.includes(this.get('members'), pubkey);
   }
-  // returns true if this is a closed/medium or open group
+  // returns true if this is a closed/medium or Social group
   public isGroup() {
     return this.get('type') === ConversationTypeEnum.GROUP;
   }

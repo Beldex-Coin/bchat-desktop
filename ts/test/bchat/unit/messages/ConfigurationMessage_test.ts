@@ -23,7 +23,7 @@ describe('ConfigurationMessage', () => {
     expect(() => new ConfigurationMessage(params)).to.throw('closed group must be set');
   });
 
-  it('throw if open group is not set', () => {
+  it('throw if Social group is not set', () => {
     const activeOpenGroups = null as any;
     const params = {
       activeClosedGroups: [],
@@ -32,7 +32,7 @@ describe('ConfigurationMessage', () => {
       displayName: 'displayName',
       contacts: [],
     };
-    expect(() => new ConfigurationMessage(params)).to.throw('open group must be set');
+    expect(() => new ConfigurationMessage(params)).to.throw('Social group must be set');
   });
 
   it('throw if display name is not set', () => {

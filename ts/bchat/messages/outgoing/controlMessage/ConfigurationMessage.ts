@@ -38,7 +38,7 @@ export class ConfigurationMessage extends ContentMessage {
     }
 
     if (!this.activeOpenGroups) {
-      throw new Error('open group must be set');
+      throw new Error('Social group must be set');
     }
 
     if (!this.displayName || !this.displayName?.length) {

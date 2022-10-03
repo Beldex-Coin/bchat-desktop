@@ -100,7 +100,7 @@ export const forceSyncConfigurationNowIfNeeded = async (waitForMessageSent = fal
 const getActiveOpenGroupV2CompleteUrls = async (
   convos: Array<ConversationModel>
 ): Promise<Array<string>> => {
-  // Filter open groups v2
+  // Filter Social groups v2
   const openGroupsV2ConvoIds = convos
     .filter(c => !!c.get('active_at') && c.isOpenGroupV2() && !c.get('left'))
     .map(c => c.id) as Array<string>;

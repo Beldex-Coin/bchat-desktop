@@ -137,7 +137,7 @@ async function buildOnionCtxs(
         target,
         method: 'POST',
       };
-      // FIXME http open groups v2 are not working
+      // FIXME http Social groups v2 are not working
       // tslint:disable-next-line: no-http-string
       if (finalRelayOptions?.protocol === 'http') {
         dest.protocol = finalRelayOptions.protocol;

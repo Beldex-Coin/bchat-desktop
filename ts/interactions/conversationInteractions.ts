@@ -64,7 +64,7 @@ export const getCompleteUrlForV2ConvoId = async (convoId: string) => {
 
 export async function copyPublicKeyByConvoId(convoId: string) {
   if (convoId.match(openGroupPrefixRegex)) {
-    // open group v1 or v2
+    // Social group v1 or v2
     if (convoId.match(openGroupV2ConversationIdRegex)) {
       // this is a v2 group, just build the url
       const completeUrl = await getCompleteUrlForV2ConvoId(convoId);

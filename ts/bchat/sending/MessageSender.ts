@@ -265,10 +265,10 @@ function wrapEnvelope(envelope: SignalService.Envelope): Uint8Array {
   return SignalService.WebSocketMessage.encode(websocket).finish();
 }
 
-// ================ Open Group ================
+// ================ Social Group ================
 /**
- * Send a message to an open group v2.
- * @param message The open group message.
+ * Send a message to an Social group v2.
+ * @param message The Social group message.
  */
 export async function sendToOpenGroupV2(
   rawMessage: OpenGroupVisibleMessage,

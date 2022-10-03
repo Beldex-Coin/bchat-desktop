@@ -194,16 +194,16 @@ export class ConversationController {
 
     // Closed/Medium group leaving
     if (conversation.isClosedGroup()) {
-      window.log.info(`deleteContact ClosedGroup case: ${id}`);
+      window.log.info(`deleteContact SecretGroup case: ${id}`);
       await conversation.leaveClosedGroup();
-      // open group v2
+      // Social group v2
     } else if (conversation.isOpenGroupV2()) {
-      window?.log?.info('leaving open group v2', conversation.id);
+      window?.log?.info('leaving Social group v2', conversation.id);
       const roomInfos = await getV2OpenGroupRoom(conversation.id);
       if (roomInfos) {
         getOpenGroupManager().removeRoomFromPolledRooms(roomInfos);
 
-        // remove the roomInfos locally for this open group room
+        // remove the roomInfos locally for this Social group room
         try {
           await removeV2OpenGroupRoom(conversation.id);
         } catch (e) {

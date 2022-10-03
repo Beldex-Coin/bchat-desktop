@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Toggle system menu bar visibility",
   "startConversation": "නව සම්භාෂණයක් අරඹන්න",
   "invalidNumberError": "Invalid BChat ID or BNS Name",
-  "failedResolveOns": "Failed to resolve ONS name",
+  "failedResolveOns": "Failed to resolve BNS name",
   "successUnlinked": "Your device was unlinked successfully",
   "autoUpdateSettingTitle": "ස්වයං යාවත්කාලය",
   "autoUpdateSettingDescription": "Automatically check for updates on startup",

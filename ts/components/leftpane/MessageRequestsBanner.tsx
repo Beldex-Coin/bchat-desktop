@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getUnreadConversationRequests } from '../../state/selectors/conversations';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
-import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
+import {  BchatIconSize, BchatIconType } from '../icon';
 import { MemoMessageRequestBannerContextMenu } from '../menu/MessageRequestBannerContextMenu';
 
 const StyledMessageRequestBanner = styled.div`
-  height: 64px;
+  height: 74px;
   width: 100%;
   // max-width: 300px;
   display: flex;
@@ -31,7 +31,6 @@ const StyledMessageRequestBannerHeader = styled.span`
   font-weight: bold;
   font-size: 15px;
   color: var(--color-text-subtle);
-  padding-left: var(--margins-xs);
   margin-inline-start: 12px;
   line-height: 18px;
   overflow-x: hidden;
@@ -47,10 +46,12 @@ const StyledCircleIcon = styled.div`
 const StyledUnreadCounter = styled.div`
   font-weight: bold;
   border-radius: var(--margins-sm);
+  font-size: var(--font-size-xs);
+  border: black solid 1px;
   background-color: var(--color-request-banner-unread-background);
-  margin-left: 10px;
-  min-width: 23px;
-  height: 22px;
+  margin-left: 40px;
+  min-width: 22px;
+  height: 20px;
   line-height: 25px;
   display: flex;
   flex-direction: row;
@@ -61,8 +62,8 @@ const StyledUnreadCounter = styled.div`
 
 const StyledGridContainer = styled.div`
   display: flex;
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   align-items: center;
   border-radius: 50%;
   justify-content: center;
@@ -71,15 +72,32 @@ const StyledGridContainer = styled.div`
 
 export const CirclularIcon = (props: { iconType: BchatIconType; iconSize: BchatIconSize }) => {
   const { iconSize, iconType } = props;
+  console.log(iconSize,iconType)
 
   return (
     <StyledCircleIcon>
       <StyledGridContainer>
-        <BchatIcon
+        
+        {/* <BchatIcon
           iconType={iconType}
           iconSize={iconSize}
           iconColor="var(--color-request-banner-icon)"
-        />
+        /> */}
+        <div style={{background: `url(images/bchat/message_request.svg) no-repeat`,
+              width: "30px",
+              height: "34px",
+              //  left:'103px',
+              position: 'relative',
+              // justifyContent: 'center',
+              // backgroundSize: '32px',
+              top: '8px',
+              left: '6px',
+              // alignItems: 'center',
+              //  backgroundColor:"#353543",
+              //  borderRadius:"30px",
+              //  backgroundPosition:"center",
+              // cursor: 'pointer'
+              }}></div>
       </StyledGridContainer>
     </StyledCircleIcon>
   );

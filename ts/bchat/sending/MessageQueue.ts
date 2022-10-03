@@ -67,8 +67,8 @@ export class MessageQueue {
     message: OpenGroupVisibleMessage,
     roomInfos: OpenGroupRequestCommonType
   ) {
-    // No queue needed for Open Groups v2; send directly
-    const error = new Error('Failed to send message to open group.');
+    // No queue needed for Social Groups v2; send directly
+    const error = new Error('Failed to send message to Social group.');
 
     try {
       const { sentTimestamp, serverId } = await MessageSender.sendToOpenGroupV2(message, roomInfos);
@@ -80,7 +80,7 @@ export class MessageQueue {
         serverTimestamp: sentTimestamp,
       });
     } catch (e) {
-      window?.log?.warn(`Failed to send message to open group: ${roomInfos}`, e);
+      window?.log?.warn(`Failed to send message to Social group: ${roomInfos}`, e);
       void MessageSentHandler.handleMessageSentFailure(message, e || error);
     }
   }

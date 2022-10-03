@@ -132,7 +132,7 @@ export async function autoScaleAvatarBlob(file: File) {
 }
 
 /**
- * Shows the system file picker for images, scale the image down for avatar/opengroup measurements and return the blob objectURL on success
+ * Shows the system file picker for images, scale the image down for avatar/socialgroup measurements and return the blob objectURL on success
  */
 export async function pickFileForAvatar(): Promise<string | null> {
   if (process.env.NODE_APP_INSTANCE?.includes('test-integration')) {

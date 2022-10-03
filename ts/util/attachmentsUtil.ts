@@ -29,7 +29,7 @@ import { perfEnd, perfStart } from '../bchat/utils/Performance';
  *
  * 9. Once all attachments are written to the attachments folder, we grab the data from those files directly before sending them. This is done in uploadData() with loadAttachmentsData().
  *
- * 10. We use the grabbed data for upload of the attachments, get an url for each of them and send the url with the attachments details to the user/opengroup/closed group
+ * 10. We use the grabbed data for upload of the attachments, get an url for each of them and send the url with the attachments details to the user/socialgroup/closed group
  */
 
 export interface MaxScaleSize {
@@ -54,7 +54,7 @@ export async function autoScaleForAvatar<T extends { contentType: string; blob: 
     maxSize: 1000 * 1024,
   };
 
-  // we can only upload jpeg, gif, or png as avatar/opengroup
+  // we can only upload jpeg, gif, or png as avatar/socialgroup
 
   if (
     attachment.contentType !== IMAGE_PNG &&

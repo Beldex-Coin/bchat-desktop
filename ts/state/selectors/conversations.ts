@@ -410,7 +410,7 @@ export const _getSortedConversations = (
       };
     }
 
-    // Add Open Group to list as soon as the name has been set
+    // Add Social Group to list as soon as the name has been set
     if (conversation.isPublic && (!conversation.name || conversation.name === 'Unknown group')) {
       continue;
     }

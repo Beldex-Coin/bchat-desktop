@@ -257,7 +257,7 @@ async function sendOpenGroupV2RequestCompactPoll(
 
   const statusCode = parseStatusCodeFromOnionRequest(res);
   if (!statusCode) {
-    window?.log?.warn('sendOpenGroupV2RequestCompactPoll Got unknown status code; res:', res);
+    window?.log?.warn('sendSocialGroupV2RequestCompactPoll Got unknown status code; res:', res);
     return null;
   }
 

@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Menüsor megjelenítés ki/be",
   "startConversation": "Új beszélgetés megkezdése…",
   "invalidNumberError": "Érvénytelen telefonszám",
-  "failedResolveOns": "Failed to resolve ONS name",
+  "failedResolveOns": "Failed to resolve BNS name",
   "successUnlinked": "Az eszközöd sikeresen leválasztva",
   "autoUpdateSettingTitle": "Automatikus frissítés",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

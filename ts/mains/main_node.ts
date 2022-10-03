@@ -506,8 +506,7 @@ setTimeout(readyForUpdates, TEN_MINUTES);
 
 function openReleaseNotes() {
   void shell.openExternal(
-    // `https://github.com/oxen-io/session-desktop/releases/tag/v${app.getVersion()}`
-        `https://github.com/Alexsanchez06/bchat-desktop/releases/tag/v${app.getVersion()}`
+        `https://github.com/Beldex-Coin/bchat-desktop/releases/tag/v${app.getVersion()}`
   );
 }
 

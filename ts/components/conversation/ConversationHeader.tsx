@@ -62,7 +62,7 @@ export type ConversationHeaderProps = {
   weAreAdmin: boolean;
 
   // We might not always have the full list of members,
-  // e.g. for open groups where we could have thousands
+  // e.g. for Social groups where we could have thousands
   // of members. We'll keep this for now (for closed chats)
   members: Array<any>;
 
@@ -153,7 +153,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         console.log('e context menu::',e);
         
       }}
-      style={{marginTop:'10px'}}
+      style={{marginTop:'8px'}}
       data-testid="three-dots-conversation-options"
     >
       <BchatIconButton iconType="ellipses" iconSize={35}  />

@@ -21,7 +21,7 @@ export function banUser(userToBan: string, conversationId: string) {
     return;
   }
   if (!isOpenGroupV2(conversationId)) {
-    window.log.warn(`Conversation ${conversationId} is not an open group`);
+    window.log.warn(`Conversation ${conversationId} is not an Social group`);
     ToastUtils.pushUserBanFailure();
 
     return;
@@ -33,8 +33,8 @@ export function banUser(userToBan: string, conversationId: string) {
 }
 
 /**
- * There is no way to unban on an opengroupv1 server.
- * This function only works for opengroupv2 server
+ * There is no way to unban on an socialgroupv1 server.
+ * This function only works for socialgroupv2 server
  */
 export function unbanUser(userToUnBan: string, conversationId: string) {
   let pubKeyToUnban: PubKey;
@@ -46,7 +46,7 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
     return;
   }
   if (!isOpenGroupV2(conversationId)) {
-    window.log.warn(`Conversation ${conversationId} is not an open group`);
+    window.log.warn(`Conversation ${conversationId} is not an Social group`);
     ToastUtils.pushUserUnbanFailure();
 
     return;

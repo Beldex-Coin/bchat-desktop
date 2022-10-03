@@ -40,9 +40,7 @@ export const OverlayMessageRequest = (props: any) => {
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);
-  const {leftPane}=props
-  console.log('messageRequests::', convoRequestCount, messageRequests, selectedConversation);
-
+  const {leftPane}=props;
 
   const buttonText = window.i18n('clearAll');
 

@@ -105,7 +105,7 @@ if(requestData.hasOwnProperty('error'))
 {
   if(requestData.error.code=== -21){
     let walletDir= os.platform() === "win32"?`${findDir()}\\wallet`:`${findDir()}//wallet`;
-    console.log("wallet address ::",walletDir,os.platform());
+    // console.log("wallet address ::",walletDir,os.platform());
     fs.emptyDirSync(walletDir);
     requestData=await request(options);
   }
@@ -167,7 +167,6 @@ export const walletRPC = async (method: string, params = {}) => {
     if(result.error.code=== -1)
      return result;
   }
-  console.log('restore response::',result,result.result);
   return result;
 }catch(e){
   throw new HTTPError('exception during wallet-rpc:',e);

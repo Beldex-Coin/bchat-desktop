@@ -61,9 +61,9 @@ const darkBackgroundPrimary = '#3A3A4E';
 const darkButtonGreen = baseColor;
 const darkModalBackground = '#101011';
 
-const grey67 = '#434343';
+const grey67 = '#1BB51E';
 const darkMessageRequestBannerBackground = darkConversationItemHasUnread;
-const darkMessageRequestBannerIconBackground = grey67;
+const darkMessageRequestBannerIconBackground = '#2879FB';
 const darkMessageRequestBannerUnreadBackground = grey67;
 const darkMessageRequestBannerIcon = '#adadad';
 const darkcomposeMsgRecordIcon = "#85858F";
@@ -390,8 +390,8 @@ const lightButtonGreen = '#FFFFFF';
 const lightModalBackground = '#fcfcfc';
 
 const lightMessageRequestBannerBackground = lightColorQuoteBottomBarBg;
-const lightMessageRequestBannerIconBackground = '#585858';
-const lightMessageRequestBannerUnreadBackground = lightColorClickableHovered;
+const lightMessageRequestBannerIconBackground = '#2879FB';
+const lightMessageRequestBannerUnreadBackground = '#006004';
 const lightMessageRequestBannerIcon = white;
 
 // for bchat

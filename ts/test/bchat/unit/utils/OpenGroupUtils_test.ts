@@ -11,7 +11,7 @@ import {
 chai.use(chaiAsPromised as any);
 
 // tslint:disable: no-http-string
-describe('OpenGroupUtils', () => {
+describe('SocialGroupUtils', () => {
   describe('prefixify', () => {
     it('should just return if http:// is as prefix', () => {
       expect(prefixify('http://plop.com')).to.be.equal('http://plop.com');
@@ -43,7 +43,7 @@ describe('OpenGroupUtils', () => {
     });
   });
 
-  describe('getOpenGroupV2ConversationId', () => {
+  describe('getSocialGroupV2ConversationId', () => {
     describe('throws if roomId is not valid', () => {
       it('throws if roomId is too long 64 ', () => {
         expect(() => {
@@ -51,18 +51,18 @@ describe('OpenGroupUtils', () => {
             'http://plop.com',
             '012345678901234567890#1234567!89012345678901234567890123456789fg01234'
           );
-        }).to.throw('getOpenGroupV2ConversationId: Invalid roomId');
+        }).to.throw('getSocialGroupV2ConversationId: Invalid roomId');
       });
 
       it('throws if roomId is too short ', () => {
         expect(() => {
           getOpenGroupV2ConversationId('http://plop.com', '');
-        }).to.throw('getOpenGroupV2ConversationId: Invalid roomId');
+        }).to.throw('getSocialGroupV2ConversationId: Invalid roomId');
       });
       it('throws if roomId is has forbidden chars ', () => {
         expect(() => {
           getOpenGroupV2ConversationId('http://plop.com', '1&%^%');
-        }).to.throw('getOpenGroupV2ConversationId: Invalid roomId');
+        }).to.throw('getSocialGroupV2ConversationId: Invalid roomId');
       });
     });
 

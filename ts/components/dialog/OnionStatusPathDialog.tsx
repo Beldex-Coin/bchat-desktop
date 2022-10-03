@@ -72,9 +72,8 @@ const OnionPathModalInner = () => {
     <>
      <Flex container={true} flexDirection="column" alignItems="center" height="70vh" justifyContent='center'>
       <p className="onion__description">
-        {/* {window.i18n('onionPathIndicatorDescription')} */}
-        Bchat hides your IP by bouncing your messages through several Service Nodes in Bchat's decentralized network. These are the countries your connection is currently being bounced through:
-        </p>
+        {window.i18n('onionPathIndicatorDescription')}
+       </p>
       <div className="onion__node-list">
         <Flex container={true}>
           <div className="onion__node-list-lights">

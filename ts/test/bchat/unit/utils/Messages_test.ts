@@ -243,8 +243,8 @@ describe('Message Utils', () => {
       Sinon.restore();
     });
 
-    // it('filter out non active open groups', async () => {
-    //   // override the first open group and make it inactive
+    // it('filter out non active Social groups', async () => {
+    //   // override the first Social group and make it inactive
     //   (mockValidOpenGroup as any).attributes.active_at = undefined;
 
     //   convos.push(

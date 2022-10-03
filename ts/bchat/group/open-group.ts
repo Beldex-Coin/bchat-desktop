@@ -11,7 +11,7 @@ import { fromArrayBufferToBase64 } from '../utils/String';
 export type OpenGroupUpdateAvatar = { objectUrl: string | null };
 
 /**
- * This function is only called when the local user makes a change to an open group.
+ * This function is only called when the local user makes a change to an Social group.
  * So this function is not called on group updates from the network, even from another of our devices.
  *
  */

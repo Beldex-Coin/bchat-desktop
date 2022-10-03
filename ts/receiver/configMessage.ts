@@ -80,8 +80,8 @@ async function handleGroupsAndContactsFromConfigMessage(
 }
 
 /**
- * Trigger a join for all open groups we are not already in.
- * @param openGroups string array of open group urls
+ * Trigger a join for all Social groups we are not already in.
+ * @param openGroups string array of Social group urls
  */
 const handleOpenGroupsFromConfig = (openGroups: Array<string>) => {
   const numberOpenGroup = openGroups?.length || 0;
@@ -103,7 +103,7 @@ const handleOpenGroupsFromConfig = (openGroups: Array<string>) => {
 
 /**
  * Trigger a join for all closed groups which doesn't exist yet
- * @param openGroups string array of open group urls
+ * @param openGroups string array of Social group urls
  */
 const handleClosedGroupsFromConfig = async (
   closedGroups: Array<SignalService.ConfigurationMessage.IClosedGroup>,
