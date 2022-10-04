@@ -242,8 +242,6 @@
 
     &:hover {
       opacity: 0.7;
-
-
     }
 
   }
@@ -403,8 +401,8 @@
     /* padding: 8px; */
     cursor: pointer;
     animation: fadein 0.25s;
-    width: 50px;
-    height: 48px;
+    width: 47px;
+    height: 46px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -437,6 +435,9 @@
 
   }
 
+  &:hover {
+    opacity: 0.7;
+  }
 
 }
 

@@ -111,8 +111,6 @@ const HeaderItem = () => {
   if (!selectedConversation) {
     return null;
   }
-  console.log('selectedConversation :: ', selectedConversation);
-
   const { id,
     //  isGroup, isKickedFromGroup, isBlocked, left,
     profileName } = selectedConversation;

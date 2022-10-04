@@ -338,7 +338,7 @@
     width: 100%;
     overflow: hidden !important;
     text-overflow: ellipsis;
-    padding-top: 10px;
+    padding-top: 17px;
   }
 }
 
@@ -1049,6 +1049,7 @@
   padding-inline-end: 16px;
   overflow-x: scroll;
   max-height: 142px;
+  background-color: var(--color-received-message-background);
   white-space: nowrap;
   overflow-y: hidden;
   margin-bottom: 6px;
@@ -1294,8 +1295,8 @@
   position: relative;
   display: flex;
   flex-direction: row;
+  background-color: var(--color-conversation-item-selected);
   align-items: flex-start;
-
   min-height: 65px;
   margin: $bchat-margin-xs;
 }
@@ -1326,7 +1327,7 @@
   font-weight: 300;
   font-size: 14px;
   line-height: 18px;
-
+  color: var(--color-received-message-text);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;

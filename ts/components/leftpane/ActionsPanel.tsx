@@ -143,7 +143,6 @@ const Section = (props: { type: SectionType }) => {
   }
 
   const unreadToShow = type === SectionType.Message ? unreadMessageCount : undefined;
-
   switch (type) {
     case SectionType.Message:
       return (
@@ -157,11 +156,16 @@ const Section = (props: { type: SectionType }) => {
             onClick={handleClick}
             isSelected={isSelected}
           />
-          <div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
+          {unreadMessageCount !== 0 ?<div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
             position: "absolute",
             top: "-1px",
             left: "10px",
-          }}>+</span></span>}</div>
+          }}>+</span></span>}</div> : null}
+          {/* <div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
+            position: "absolute",
+            top: "-1px",
+            left: "10px",
+          }}>+</span></span>}</div> */}
         </div>
       );
     // case SectionType.Contact:

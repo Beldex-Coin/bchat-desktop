@@ -56,8 +56,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   };
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
-    const { conversations, searchResults,contacts } = this.props;
-    console.log("searchResults ::",searchResults,contacts);
+    const { conversations, searchResults } = this.props;
     
     if (searchResults) {
       return <SearchResults {...searchResults} />;

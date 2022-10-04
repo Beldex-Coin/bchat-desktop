@@ -241,7 +241,7 @@ const CallButton = () => {
       iconType="phone"
       iconSize="large"
       iconPadding="2px"
-      margin="0 10px 0 0"
+      margin="0 25px 0 0"
       onClick={() => {
         void callRecipient(selectedConvoKey, canCall);
       }}
