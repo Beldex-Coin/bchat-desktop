@@ -152,9 +152,9 @@ export const SignInTab = (props: any) => {
     }
   };
 
-  const clickGoBack = () => {
-    setScreenName(0);
-  }
+  // const clickGoBack = () => {
+  //   setScreenName(0);
+  // }
 
   async function assignSeed() {
     const recoverySeed = clipboard.readText();
@@ -184,7 +184,7 @@ export const SignInTab = (props: any) => {
 
     return <>
       <div className='bchat-registration__backbutton'>
-        <GoBackMainMenuButton assent={() => props.assent(true)} />
+        <GoBackMainMenuButton assent={() => {props.assent(true); setScreenName(1);}} />
       </div>
       <DisplaySeed
         iconfunc={() => assignSeed()}
@@ -206,6 +206,7 @@ export const SignInTab = (props: any) => {
     repassword={repassword}
     setPassword={(e:any)=>setPassword(e)}  
     setRepassword={(e:any)=>setRepassword(e)}
+    backArrow={()=>{setScreenName(1);setPassword("");setRepassword(""),props.assent(true);}}
     submit={()=>{setScreenName(3)}}
     />
   }
@@ -228,7 +229,9 @@ export const SignInTab = (props: any) => {
           <div className='bchat-registration__backbutton' style={{ left: '52px' }}>
             <GoBackMainMenuButton assent={() => {
               props.assent(true);
-              clickGoBack()
+              setScreenName(1);
+              setPassword("");
+              setRepassword("");
             }}
             />
           </div>

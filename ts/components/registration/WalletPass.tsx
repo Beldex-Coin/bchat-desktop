@@ -13,7 +13,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 51px'>
         <div className='bchat-registration-goback-icon'>
         {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
-        <GoBackMainMenuButton />
+        <GoBackMainMenuButton assent={props.backArrow}/>
         </div>
         <Flex className="bchat-registration__welcome-bchat">
         Wallet Password

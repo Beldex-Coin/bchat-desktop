@@ -77,6 +77,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
           <input
             type="password"
             id="password-modal-input"
+            style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
             ref={input => {
               this.passportInput = input;
             }}
@@ -88,6 +89,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
             <input
               type="password"
               id="password-modal-input-confirm"
+              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
               placeholder={placeholders[1]}
               onKeyUp={this.onPasswordConfirmInput}
               data-testid="password-input-confirm"
@@ -97,6 +99,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
             <input
               type="password"
               id="password-modal-input-reconfirm"
+              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
               placeholder={placeholders[2]}
               onKeyUp={this.onPasswordRetypeInput}
               data-testid="password-input-reconfirm"
@@ -136,7 +139,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
       <>
         {message && (
           <>
-            <div className="bchat-label warning">{message}</div>
+            <div className="bchat-label warningBg">{message}</div>
             <SpacerLG />
           </>
         )}

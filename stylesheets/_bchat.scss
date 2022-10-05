@@ -288,6 +288,13 @@ textarea {
   &.warning {
     background-color: $bchat-color-warning-alt;
   }
+
+  &.warningBg
+  {
+    background-color: #2879FB;
+    font-size: 12px;
+    font-family: $bchat-font-poppin-regular;
+  }
 }
 
 .bchat-icon-button {
@@ -687,6 +694,7 @@ label {
     font-family: $bchat-font-poppin-medium;
     font-size: $bchat-font-lg;
     color: var(--color-seed);
+    font-style: normal;
   }
 
   &-recovery-key {

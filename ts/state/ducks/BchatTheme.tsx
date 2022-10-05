@@ -106,6 +106,7 @@ const darkAddContact=`url("../images/bchat/add_contact.svg")`;
 const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 const darkLeftpaneSetting = darkScrollbarTrack;
+const darkPasswordBorderBottom="#444455";
 const darkRightpaneSetting='#16161D'
 // const buttonColor = "red";
 const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
@@ -282,6 +283,10 @@ export const switchHtmlToDarkTheme = () => {
     darkLeftpaneSetting
   );
   document.documentElement.style.setProperty(
+    '--color-password-borderBottom',
+    darkPasswordBorderBottom
+  );
+  document.documentElement.style.setProperty(
     '--color-rightpaneSetting',
     darkRightpaneSetting
   );
@@ -438,6 +443,7 @@ const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = "#C6C6C6"
 const lightClearBtn = '#fff'
 const lightLeftpaneSetting = '#f4f4f4';
+const lightPasswordBorderBottom="#D5D5D5";
 const lightRightpaneSetting="#f8f8f8"
 const  ligntDisableText='#B9BABF';
 const lightProfileBgColor = "#F8F8F8";
@@ -638,6 +644,10 @@ export const switchHtmlToLightTheme = () => {
     lightLeftpaneSetting
   );
   document.documentElement.style.setProperty(
+    '--color-password-borderBottom',
+    lightPasswordBorderBottom
+  );
+  document.documentElement.style.setProperty(
     '--color-toggleOff',
     lightToggleOff
   );
@@ -790,6 +800,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-leftpaneSetting:${darkLeftpaneSetting};
     --color-rightpaneSetting:${darkRightpaneSetting}
     --color-disableText:${darkDisableText};
+    --color-password-borderBottom:${darkPasswordBorderBottom}
 
     --color-profile: ${darkProfileBgColor};
 

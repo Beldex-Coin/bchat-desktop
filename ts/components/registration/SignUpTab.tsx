@@ -223,6 +223,7 @@ export const SignUpTab = (props:any) => {
       repassword={repassword}
       setPassword={(e:any)=>setPassword(e)}  
       setRepassword={(e:any)=>setRepassword(e)}
+      backArrow={()=>{props.assent(true);clickGoBack();setRepassword(""),setRepassword("")}}
       submit={()=>{passValid()}}
       />
   }

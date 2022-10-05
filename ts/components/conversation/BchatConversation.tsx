@@ -230,11 +230,17 @@ export class BchatConversation extends React.Component<Props, State> {
    
   //  );
    
-    if (!selectedConversation || !messagesProps  || !selectedConversation.activeAt ) {
+  console.log('selectedConversation ::',selectedConversation);
+  
+  
+  
+    // if (!selectedConversation || !messagesProps || !selectedConversation.activeAt) {
+    if (!selectedConversation || !messagesProps) {
+
       // return an empty message view
       return <MessageView />;
     }
-    
+   
     const selectionMode = selectedMessages.length > 0;
     // console.log('selectionMode selectionMode ::',selectionMode);
      

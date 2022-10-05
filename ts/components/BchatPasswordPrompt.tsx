@@ -79,7 +79,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
         {this.state.error && (
           <>
             {showResetElements ? (
-              <div className="bchat-label warning">{window.i18n('maxPasswordAttempts')}</div>
+              <div className="bchat-label warningBg">{window.i18n('maxPasswordAttempts')}</div>
             ) : (
               <div className="bchat-label primary">{this.state.error}</div>
             )}
