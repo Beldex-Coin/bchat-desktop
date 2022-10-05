@@ -205,7 +205,7 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     const targetNode = await getRandomSnode();
     const result = await snodeRpc({ method: 'beldexd_request', params, targetNode });
     if (!result || result.status !== 200 || !result.body) {
-      throw new Error('ONSresolve:Failed to resolve ONS');
+      throw new Error('ONSresolve:Failed to resolve BNS');
     }
     let parsedBody;
 
@@ -213,8 +213,8 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
       parsedBody = JSON.parse(result.body);
       handleTimestampOffset('bns_resolve', parsedBody.t);
     } catch (e) {
-      window?.log?.warn('ONSresolve: failed to parse ons result body', result.body);
-      throw new Error('ONSresolve: json ONS resovle');
+      window?.log?.warn('ONSresolve: failed to parse bns result body', result.body);
+      throw new Error('ONSresolve: json BNS resovle');
     }
     const intermediate = parsedBody?.result;
 

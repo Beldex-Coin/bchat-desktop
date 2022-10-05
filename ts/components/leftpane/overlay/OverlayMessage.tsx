@@ -40,7 +40,7 @@ const ourNumber = useSelector(getOurNumber);
   const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {
-    // console.log("pubkeyOrOns",pubkeyOrOns);
+    console.log("pubkeyOrOns",pubkeyOrOns);
     
     if ((!pubkeyOrOns && !pubkeyOrOns.length) || !pubkeyOrOns.trim().length) {
       // console.log("newchat if statement1 ::",pubkeyOrOns);
@@ -48,7 +48,7 @@ const ourNumber = useSelector(getOurNumber);
       return;
     }
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-
+    console.log("PubKey.validateWithError(pubkeyorOnsTrimmed):",PubKey.validateWithError(pubkeyorOnsTrimmed))
     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
       // console.log("newchat if statement2");
       // this is a pubkey
@@ -62,7 +62,7 @@ const ourNumber = useSelector(getOurNumber);
     } else {
       // console.log("newchat else statement");
       
-      // this might be an ONS, validate the regex first
+      // this might be an BNS, validate the regex first
       const mightBeOnsName = new RegExp(onsNameRegex, 'g').test(pubkeyorOnsTrimmed);
       if (!mightBeOnsName) {
         ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError'));
