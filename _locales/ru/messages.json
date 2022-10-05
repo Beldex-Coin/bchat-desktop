@@ -270,7 +270,7 @@
   "editGroupName": "Редактировать название группы",
   "updateGroupDialogTitle": "Обновляем $name$...",
   "showRecoveryPhrase": "Секретная фраза",
-  "yourBchatID": "Ваш Bchat ID",
+  "yourBchatID": "Ваш BChat ID",
   "setAccountPasswordTitle": "Установить пароль",
   "setAccountPasswordDescription": "Установить пароль для разблокирования BChat. Вы продолжите получать уведомления о новых сообщениях когда приложение заблокированно. Содержание уведомлений можно поменять в настройках уведомлений.",
   "changeAccountPasswordTitle": "Изменить пароль",

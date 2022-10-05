@@ -247,7 +247,7 @@ export const BchatRightPanelWithDetails = () => {
     <div className="group-settings">
       <HeaderItem />
       {isPrivate &&<div className='group-settings-header-chatIdBox'>
-        <p>Bchat ID:</p>
+        <p>BChat ID:</p>
         <div>{id}</div>
       </div>}
       <div className='group-settings-nameEditBox'>

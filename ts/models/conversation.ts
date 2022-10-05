@@ -1757,7 +1757,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     };
     const typingMessage = new TypingMessage(typingParams);
 
-    // send the message to a single recipient if this is a Bchat
+    // send the message to a single recipient if this is a BChat
     const device = new PubKey(recipientId);
     getMessageQueue()
       .sendToPubKey(device, typingMessage)

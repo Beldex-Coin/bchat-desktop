@@ -274,7 +274,7 @@ const setupTheme = () => {
   window?.inboxStore?.dispatch(applyTheme(newThemeObject));
 };
 
-// Do this only if we created a new Bchat ID, or if we already received the initial configuration message
+// Do this only if we created a new BChat ID, or if we already received the initial configuration message
 const triggerSyncIfNeeded = async () => {
   await getConversationController()
     .get(UserUtils.getOurPubKeyStrFromCache())

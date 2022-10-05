@@ -470,5 +470,6 @@
   "clearAllConfirmationTitle": "Clear All Message Requests",
   "clearAllConfirmationBody": "Are you sure you want to clear all message requests?",
   "hideBanner": "Hide",
-  "openMessageRequestInboxDescription": "View your Message Request inbox"
+  "openMessageRequestInboxDescription": "View your Message Request inbox",
+  "BChat":"BChat"
 }

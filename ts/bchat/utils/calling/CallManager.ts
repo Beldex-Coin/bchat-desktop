@@ -125,7 +125,7 @@ let isSettingRemoteAnswerPending = false;
 let lastOutgoingOfferTimestamp = -Infinity;
 
 /**
- * This array holds all of the ice servers Bchat can contact.
+ * This array holds all of the ice servers BChat can contact.
  * They are all contacted at the same time, so before triggering the request, we get only a subset of those, randomly
  */
 const iceServersFullArray = [
@@ -820,7 +820,7 @@ export async function USER_acceptIncomingCallRequest(fromSender: string) {
       new RTCSessionDescription({ sdp: sdps[0], type: 'offer' })
     );
   } catch (e) {
-    window.log?.error(`Error setting RTC Bchat Description ${e}`);
+    window.log?.error(`Error setting RTC BChat Description ${e}`);
   }
 
   const lastCandidatesFromSender = findLastMessageTypeFromSender(

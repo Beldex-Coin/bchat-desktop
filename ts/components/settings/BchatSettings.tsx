@@ -63,7 +63,7 @@ interface State {
 //       <span className="text-selectable">v{window.versionInfo.version}</span>
 //       <span>
 //         {/* <BchatIconButton iconSize="medium" iconType="oxen" onClick={openOxenWebsite} /> */}
-//         <div role="button" onClick={openBeldexWebsite}>Bchat</div>
+//         <div role="button" onClick={openBeldexWebsite}>BChat</div>
 //       </span>
 //       <span className="text-selectable">{window.versionInfo.commitHash}</span>
 //     </div>

@@ -468,4 +468,5 @@ export type LocalizerKeys =
   | 'profileBeldexAddres'
   | 'scanQr'
   | 'emptyChatScreen'
-  | 'noContactsYet'; 
+  | 'noContactsYet'
+  | 'BChat'; 

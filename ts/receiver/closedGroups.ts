@@ -295,7 +295,7 @@ export async function handleNewSecretGroup(
   await ClosedGroup.addUpdateMessage(
     convo,
     { newName: name, joiningMembers: members },
-    envelope.senderIdentity || envelope.source, // new group message are coming as Bchat messages
+    envelope.senderIdentity || envelope.source, // new group message are coming as BChat messages
     envelopeTimestamp
   );
 

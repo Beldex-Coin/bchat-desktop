@@ -270,7 +270,7 @@
   "editGroupName": "Edit group name",
   "updateGroupDialogTitle": "Updating $name$...",
   "showRecoveryPhrase": "Recovery Phrase",
-  "yourBchatID": "Your Bchat ID",
+  "yourBchatID": "Your BChat ID",
   "setAccountPasswordTitle": "Set Account Password",
   "setAccountPasswordDescription": "Require password to unlock BChat’s screen. You can still receive message notifications while Screen Lock is enabled. BChat’s notification settings allow you to customize information that is displayed",
   "changeAccountPasswordTitle": "Change Account Password",

@@ -257,8 +257,8 @@
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "extendInfo": {
-        "NSCameraUsageDescription": "Bchat requires camera access to record video.",
-        "NSMicrophoneUsageDescription": "Bchat requires microphone access to record audio."
+        "NSCameraUsageDescription": "BChat requires camera access to record video.",
+        "NSMicrophoneUsageDescription": "BChat requires microphone access to record audio."
       }
     },
     "dmg": {
@@ -281,7 +281,7 @@
     "linux": {
       "category": "Network",
       "desktop": {
-        "StartupWMClass": "Bchat"
+        "StartupWMClass": "BChat"
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
       "target": 

@@ -76,7 +76,7 @@ export async function signInWithRecovery(
  */
 export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: string) {
   if (!mnemonic) {
-    throw new Error('Bchat always needs a mnemonic. Either generated or given by the user');
+    throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
   }
   if (!mnemonicLanguage) {
     throw new Error('We always needs a mnemonicLanguage');
@@ -104,7 +104,7 @@ export async function registerSingleDevice(
   profileName: string
 ) {
   if (!generatedMnemonic) {
-    throw new Error('Bchat always needs a mnemonic. Either generated or given by the user');
+    throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
   }
   if (!profileName) {
     throw new Error('We always needs a profileName');

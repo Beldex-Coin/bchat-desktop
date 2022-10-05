@@ -28,7 +28,7 @@ export const createGroup = async (groupName: string) => {
   // Focus screen on window C to allow user C to become contact
   await clickOnTestIdWithText(windowC, 'messages-container');
   // wait for user C to be contact before moving to create group
-  // Create group with existing contact and Bchat ID (of non-contact)
+  // Create group with existing contact and BChat ID (of non-contact)
   // Click new closed group tab
   await clickOnMatchingText(windowA, 'New Closed Group');
   // Enter group name

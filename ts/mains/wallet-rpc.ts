@@ -126,14 +126,16 @@ return requestData;
    await createWallet(props.displayName,props.password, 'English',"create_wallet");
 
     let getAddress = await walletRPC("get_address");
-
     let mnemonic=await walletRPC("query_key", { key_type: "mnemonic" });
-    let spend_key=await walletRPC("query_key", { key_type: "spend_key" });
-    let view_key=await walletRPC("query_key", { key_type: "view_key" });
-
-    localStorage.setItem("spend_key",JSON.stringify(spend_key));
-    localStorage.setItem("view_key",JSON.stringify(view_key));
     localStorage.setItem("userAddress",getAddress.result.address);
+
+    // View key and Spend key
+
+    // let spend_key=await walletRPC("query_key", { key_type: "spend_key" });
+    // let view_key=await walletRPC("query_key", { key_type: "view_key" });
+    // localStorage.setItem("spend_key",JSON.stringify(spend_key));
+    // localStorage.setItem("view_key",JSON.stringify(view_key));
+
     kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     return mnemonic.result.key;
  }catch(e){
@@ -199,7 +201,6 @@ export const restoreWallet = async (displayName: string,password:string, userRec
     password: password,
     seed: userRecoveryPhrase
   });
-  console.log('response for wallet ::',restoreWallet.error);
   
   if(restoreWallet.hasOwnProperty('error'))
   {
@@ -207,9 +208,9 @@ export const restoreWallet = async (displayName: string,password:string, userRec
     console.log("restoreWallet.error.code::",restoreWallet.error.code);
     restoreWallet=await deleteWallet(displayName,password,userRecoveryPhrase);
   }
- 
-  console.log('restoreWallet ::',restoreWallet);
-  
+  if(restoreWallet.hasOwnProperty('result')){
+    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+  }
   return restoreWallet;
 }catch(error){
   throw new HTTPError('exception during wallet-rpc:',error);

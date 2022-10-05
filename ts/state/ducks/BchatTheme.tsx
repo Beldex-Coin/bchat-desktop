@@ -111,6 +111,8 @@ const darkRightpaneSetting='#16161D'
 const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 const darkAudioRecord = "#3F3C4B";
 
+// Seed color
+const darkSeedColor = "#00E506";
 
 export const switchHtmlToDarkTheme = () => {
 
@@ -343,6 +345,10 @@ export const switchHtmlToDarkTheme = () => {
     '--color-audio-record',
     darkAudioRecord
   );
+  document.documentElement.style.setProperty(
+    '--color-seed',
+    darkSeedColor
+  );
 };
 
 // LIGHT COLORS
@@ -440,6 +446,9 @@ const whiteAudioRecord = "#dcdbdb";
 // Toast Colors 
 const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
 const lightToastErrorMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)";
+
+// Seed color
+const whiteSeedColor = "#128B17";
 
 export const switchHtmlToLightTheme = () => {
 
@@ -682,6 +691,10 @@ export const switchHtmlToLightTheme = () => {
     '--color-audio-record',
     whiteAudioRecord
   );
+  document.documentElement.style.setProperty(
+    '--color-seed',
+    whiteSeedColor
+  );
 };
 
 // default to light theme
@@ -792,9 +805,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-AddContact:${darkAddContact}
     --image-EmptyContact:${darkEmptyContact}
     --color-audio-record:${darkAudioRecord}
-    
-
-
+    '--color-seed':${darkSeedColor}
 
   };
 `;
