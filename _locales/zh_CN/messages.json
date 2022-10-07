@@ -356,7 +356,7 @@
   "newBchat": "新建私人聊天",
   "searchFor...": "搜索对话内容或联系人",
   "enterBchatID": "输入BChat ID",
-  "enterBchatIDOfRecipient": "输入对方的BChat ID 或者 ONS 名称",
+  "enterBchatIDOfRecipient": "输入对方的BChat ID 或者 BNS 名称",
   "usersCanShareTheir...": "用户可以通过进入帐号设置并点击\"共享BChat ID\"来分享自己的BChat ID，或通过共享其二维码来分享其BChat ID。",
   "message": "消息",
   "appearanceSettingsTitle": "外观",

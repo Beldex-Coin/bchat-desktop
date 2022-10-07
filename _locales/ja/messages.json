@@ -35,7 +35,7 @@
   "socialGroupInvitation": "公開グループからの招待",
   "joinSocialGroupAfterInvitationConfirmationTitle": "$roomName$に参加しますか？",
   "joinSocialGroupAfterInvitationConfirmationDesc": "$roomName$の公開グループに参加しますか？",
-  "enterBchatIDOrONSName": "BChat ID か ONS 名を入力してください",
+  "enterBchatIDOrONSName": "BChat ID か BNS 名を入力してください",
   "loading": "読込中...",
   "optimizingApplication": "アプリケーションを最適化しています...",
   "done": "完了",

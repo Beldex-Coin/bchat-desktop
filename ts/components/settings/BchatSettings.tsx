@@ -86,17 +86,20 @@ export const PasswordLock = ({
           id="password-lock-input"
           defaultValue=""
           placeholder="Password"
+          style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
+
           data-testid="password-lock-input"
         />
 
-        {pwdLockError && <div className="bchat-label warning">{pwdLockError}</div>}
-
+        {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>}
+       <div className="confirm-Button">
         <BchatButton
           buttonType={BchatButtonType.BrandOutline}
           buttonColor={BchatButtonColor.Green}
           text={window.i18n('ok')}
           onClick={validatePasswordLock}
         />
+        </div>
       </div>
     </div>
   );

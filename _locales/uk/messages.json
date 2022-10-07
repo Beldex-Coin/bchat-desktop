@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Відкрити запрошення до групи",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Приєднатись до $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Ви впевнені, що хочете приєднатись до відкритої групи $roomName$?",
-  "enterBchatIDOrONSName": "Введіть ID сесії або ім'я ONS",
+  "enterBchatIDOrONSName": "Введіть ID сесії або ім'я BNS",
   "loading": "Оновлення…",
   "optimizingApplication": "Оптимізація програми...",
   "done": "Готово",

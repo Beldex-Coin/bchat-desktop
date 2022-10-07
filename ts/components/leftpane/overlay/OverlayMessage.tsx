@@ -72,7 +72,7 @@ const ourNumber = useSelector(getOurNumber);
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
-          throw new Error('Got a resolved ONS but the returned entry is not a vlaid bchatID');
+          throw new Error('Got a resolved BNS but the returned entry is not a vlaid bchatID');
         }
         // this is a pubkey
         await getConversationController().getOrCreateAndWait(

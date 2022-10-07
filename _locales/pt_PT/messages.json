@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Alternar a visibilidade da barra de menu do sistema",
   "startConversation": "Iniciar uma nova conversa…",
   "invalidNumberError": "Número inválido",
-  "failedResolveOns": "Falha ao resolver o nome do ONS",
+  "failedResolveOns": "Falha ao resolver o nome do BNS",
   "successUnlinked": "Seu dispositivo foi desvinculado com sucesso",
   "autoUpdateSettingTitle": "Atualização Automática",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

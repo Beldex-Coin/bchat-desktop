@@ -35,7 +35,7 @@
   "socialGroupInvitation": "ღია ჯგუფის მოწვევა",
   "joinSocialGroupAfterInvitationConfirmationTitle": "შევიდეთ $roomName$-ში?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "დარწმუნებული ხართ, რომ ღია ჯგუფ $roomName$-ში შესვლა გსურთ?",
-  "enterBchatIDOrONSName": "მიუთითეთ BChat ID ან ONS სახელი",
+  "enterBchatIDOrONSName": "მიუთითეთ BChat ID ან BNS სახელი",
   "loading": "იტვირთება...",
   "optimizingApplication": "აპლიკაციის ოპტიმიზირება...",
   "done": "შესრულებულია",

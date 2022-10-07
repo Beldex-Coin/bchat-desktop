@@ -1297,6 +1297,18 @@ label {
         letter-spacing: 5px;
         font-family: $bchat-font-default;
       }
+      .confirm-Button
+      {
+        .bchat-button.brand {
+          min-width: 165px;
+          height: 40px;
+          align-items: center;
+          padding: 0px 20px;
+          font-size: 14px;
+          font-family: "Poppins";
+          border-radius: 13px;
+      }
+      }
     }
   }
 
