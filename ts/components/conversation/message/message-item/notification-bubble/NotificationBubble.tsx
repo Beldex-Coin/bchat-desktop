@@ -22,22 +22,23 @@ const NotificationBubbleText = styled.div`
 
 const NotificationBubbleIconContainer = styled.div`
   margin: auto 10px;
-  width: 15px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 `;
 
 export const NotificationBubble = (props: {
   notificationText: string;
   iconType?: BchatIconType;
   iconColor?: string;
+  bgColor?:string;
 }) => {
-  const { notificationText, iconType, iconColor } = props;
+  const { notificationText, iconType, iconColor,bgColor } = props;
   return (
     <NotificationBubbleFlex>
       {iconType && (
-        <NotificationBubbleIconContainer>
+        <NotificationBubbleIconContainer style={{backgroundColor:bgColor}}>
           <BchatIcon
-            iconSize="small"
+            iconSize="medium"
             iconType={iconType}
             iconColor={iconColor}
             iconPadding="auto 10px"
@@ -45,7 +46,7 @@ export const NotificationBubble = (props: {
         </NotificationBubbleIconContainer>
       )}
       <NotificationBubbleText>{notificationText}</NotificationBubbleText>
-      {iconType && <NotificationBubbleIconContainer />}
+      {/* {iconType && <NotificationBubbleIconContainer />} */}
     </NotificationBubbleFlex>
   );
 };

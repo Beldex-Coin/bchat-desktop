@@ -14,24 +14,29 @@ import { NotificationBubble } from './NotificationBubble';
 
 type StyleType = Record<
   CallNotificationType,
-  { notificationTextKey: LocalizerKeys; iconType: BchatIconType; iconColor: string }
+  { notificationTextKey: LocalizerKeys; iconType: BchatIconType; iconColor: string;bgColor:string }
 >;
 
 const style: StyleType = {
   'missed-call': {
     notificationTextKey: 'callMissed',
     iconType: 'callMissed', 
-    iconColor: 'var(--color-destructive)',
+    iconColor:'var(--color-destructive)' ,
+    bgColor:'transparent',
+    
   },
   'started-call': {
     notificationTextKey: 'startedACall',
     iconType: 'callOutgoing',
-    iconColor: 'inherit',
+    iconColor: '#136ef8',
+    bgColor:'transparent',
+    
   },
   'answered-a-call': {
     notificationTextKey: 'answeredACall',
     iconType: 'callIncoming',
-    iconColor: 'inherit',
+    iconColor: '#136ef8',
+    bgColor:'transparent',
   },
 };
 
@@ -52,6 +57,8 @@ export const CallNotification = (props: PropsForCallNotification) => {
   }
   const iconType = styleItem.iconType;
   const iconColor = styleItem.iconColor;
+  const bgColor=styleItem.bgColor;
+  
 
   return (
     <ReadableMessage
@@ -63,6 +70,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
       <NotificationBubble
         notificationText={notificationText}
         iconType={iconType}
+        bgColor={bgColor}
         iconColor={iconColor}
       />
     </ReadableMessage>
