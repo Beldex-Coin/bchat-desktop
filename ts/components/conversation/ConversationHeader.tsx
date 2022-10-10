@@ -146,11 +146,10 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           id: props.triggerId,
           event: e,
           position: {
-            x: 1600,
-            y: 40,
+            x: 1150,
+            y:   55,
           },
         });
-        console.log('e context menu::',e);
         
       }}
       style={{marginTop:'8px'}}
