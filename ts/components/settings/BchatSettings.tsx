@@ -20,6 +20,7 @@ import { BchatRecoverySeed } from "./BchatRecoverySeed"
 // import {BchatSettingRecoveryKey} from "./BchatSettingRecoveryKey"
 import {OverlayMessageRequest} from "../leftpane/overlay/OverlayMessageRequest"
 import {BchatOnionPathScreen} from "./BchatOnionPathScreen"
+import { ToastUtils } from '../../bchat/utils';
 
 export function getMediaPermissionsSettings() {
   return window.getSettingValue('media-permissions');
@@ -204,6 +205,10 @@ export const PasswordLock = ({
     // Check if the password matches the hash we have stored
     const hash = await getPasswordHash();
     if (hash && !matchesHash(enteredPassword, hash)) {
+      ToastUtils.pushToastError(
+        'invalidPassword',
+        window.i18n('invalidPassword'),
+      );
       this.setState({
         pwdLockError: window.i18n('invalidPassword'),
       });

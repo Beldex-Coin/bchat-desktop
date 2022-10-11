@@ -7,6 +7,7 @@ import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 import { Constants } from '../bchat';
 import { BchatSpinner } from './basic/BchatSpinner';
+import { ToastUtils } from '../bchat/utils';
 
 interface State {
   error: string;
@@ -41,7 +42,14 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
 
   public render() {
     const showResetElements = this.state.errorCount >= MAX_LOGIN_TRIES;
-
+    let checkError:any = this.state.error;
+    if(checkError){
+      console.log("error")
+      ToastUtils.pushToastError(
+      'invalidPassword',
+      window.i18n('invalidPassword'),
+    );
+    }
     const wrapperClass = this.state.clearDataView
       ? 'clear-data-wrapper'
       : 'password-prompt-wrapper';

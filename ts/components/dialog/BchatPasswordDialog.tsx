@@ -231,6 +231,10 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // We don't validate oldPassword on change: this is validate on the validatePasswordHash below
     const isValidWithStoredInDB = Boolean(await this.validatePasswordHash(oldPassword));
     if (!isValidWithStoredInDB) {
+      ToastUtils.pushToastError(
+        'removePasswordInvalid',
+        window.i18n('removePasswordInvalid'),
+      );
       this.setState({
         error: window.i18n('removePasswordInvalid'),
       });
