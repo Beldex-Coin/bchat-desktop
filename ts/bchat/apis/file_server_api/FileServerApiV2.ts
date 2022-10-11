@@ -10,15 +10,15 @@ import { parseStatusCodeFromOnionRequest } from '../open_group_api/opengroupV2/O
 // export const fileServerV2URL = 'http://13.233.252.86';
 
   // export const fileServerV2PubKey =
-  //   '51a8cd2e8a2c7e012d2ed4e0a24b5ed26f6f4f5b89e0d9d9c8856a5fd7140314';
+    //   '51a8cd2e8a2c7e012d2ed4e0a24b5ed26f6f4f5b89e0d9d9c8856a5fd7140314';
 
 
   // mainet file server
 
-export const fileServerV2URL = 'http://fs1.rpcnode.stream/';
+ export const fileServerV2URL = 'http://fs1.rpcnode.stream';
 
-export const fileServerV2PubKey =
-  'f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c';
+ export const fileServerV2PubKey =
+   'f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c';
 
 export type FileServerV2Request = {
   method: 'GET' | 'POST' | 'DELETE' | 'PUT';
@@ -87,7 +87,6 @@ export const downloadFileFromFSv2 = async (
     window?.log?.warn('Empty url to download for file v2');
     return null;
   }
-
   const newCompleteUrlPrefix = `${fileServerV2URL}/${FILES_ENDPOINT}/`;
 
   if (fileIdOrCompleteUrl.startsWith(newCompleteUrlPrefix)) {
@@ -169,7 +168,7 @@ export const getLatestDesktopReleaseFileToFsV2 = async (): Promise<string | null
   };
 
   const result = await sendApiV2Request(request);
-  console.log("FILE_SERVER_LATEST_VERSION:",result)
+   console.log("FILE_SERVER_LATEST_VERSION:",result)
   const statusCode = parseStatusCodeFromOnionRequest(result);
   if (statusCode !== 200) {
     return null;
