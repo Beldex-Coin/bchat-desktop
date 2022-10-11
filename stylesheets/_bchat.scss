@@ -376,14 +376,6 @@ textarea {
   margin-top: 10px;
 }
 
-.module-message--incoming::after {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: -12px;
-  border-right: 15px solid transparent;
-  border-bottom: 15px solid var(--color-received-message-background);
-}
 
 .module-message--outgoing {
   margin-inline-end: 0;
@@ -391,14 +383,14 @@ textarea {
   margin-top: 10px;
 }
 
-.module-message--outgoing::after {
-  content: " ";
-  position: absolute;
-  right: 17px;
-  top: -12px;
-  border-left: 15px solid transparent;
-  border-bottom: 15px solid #2879FB;
-}
+//.module-message--outgoing::after {
+//  content: " ";
+ // position: absolute;
+  //right: 17px;
+  //top: -12px;
+ // border-left: 15px solid transparent;
+  //border-bottom: 15px solid #2879FB;
+//}
 
 pre {
   backdrop-filter: brightness(0.8);

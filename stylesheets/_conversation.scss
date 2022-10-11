@@ -23,14 +23,7 @@
     align-self: flex-end;
     margin-right: 26px;
   }
-  ::after{
-    content: " ";
-    position: absolute;
-    right: 26px;
-    top: 262px;
-    border-left: 26px solid transparent;
-    border-bottom: 27px solid #2879FB;
-   }
+  
 
   display: inline-block;
   margin: 4px 16px;
