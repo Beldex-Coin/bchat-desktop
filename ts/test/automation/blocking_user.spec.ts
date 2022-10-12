@@ -36,7 +36,7 @@ test('Block User', async () => {
   // Click on settings tab
   await clickOnTestIdWithText(windowA, 'settings-section');
   // Navigate to blocked users tab'
-  await clickOnMatchingText(windowA, 'Blocked contacts');
+  await clickOnMatchingText(windowA, 'Blocked Contacts');
   // Check for user B's name
   const blockedContact = windowA.locator('.bchat-settings-item__title');
 

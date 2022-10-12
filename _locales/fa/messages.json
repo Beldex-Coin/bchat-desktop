@@ -35,7 +35,7 @@
   "socialGroupInvitation": "بازکردن دسترسی ارسال دعوت نامه گروه",
   "joinSocialGroupAfterInvitationConfirmationTitle": "جوین شدن به $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "آیا اطمینان دارید که می‌خواهید به گروه باز $roomName$ جوین شوید؟",
-  "enterBchatIDOrONSName": "شماره سیزن نامعتبر",
+  "enterBchatIDOrBNSName": "شماره سیزن نامعتبر",
   "loading": "در حال بارگذاری...",
   "optimizingApplication": "بهینه سازی برنامه...",
   "done": "انجام شد",

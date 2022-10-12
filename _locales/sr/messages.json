@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Pozivnica za otvorenu grupu",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Pridruži se $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Da li ste li sigurni da želite da se pridružite otvorenoj grupi $roomName$?",
-  "enterBchatIDOrONSName": "Unesite ID sesije ili naziv BNS -a",
+  "enterBchatIDOrBNSName": "Unesite ID sesije ili naziv BNS -a",
   "loading": "Učitavanje...",
   "optimizingApplication": "Optimizovanje aplikacije...",
   "done": "Završeno",

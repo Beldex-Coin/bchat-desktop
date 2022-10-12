@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Apri invito di gruppo",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Unirsi a $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Sei sicuro di voler unirti al gruppo aperto $roomName$?",
-  "enterBchatIDOrONSName": "Inserisci BChat ID o nome BNS",
+  "enterBchatIDOrBNSName": "Inserisci BChat ID o nome BNS",
   "loading": "Caricamento...",
   "optimizingApplication": "Ottimizzazione applicazione...",
   "done": "Fatto",

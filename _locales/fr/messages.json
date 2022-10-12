@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Invitation à un groupe public",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Rejoindre $roomName$ ?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Êtes-vous sûr de vouloir rejoindre le groupe public $roomName$ ?",
-  "enterBchatIDOrONSName": "Entrer un BChat ID ou un nom BNS",
+  "enterBchatIDOrBNSName": "Entrer un BChat ID ou un nom BNS",
   "loading": "Chargement…",
   "optimizingApplication": "Optimisation de l’application…",
   "done": "Terminer",

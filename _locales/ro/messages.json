@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Deschide invitația de grup",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Alăturaţi-vă $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Sunteți sigur că doriți să vă alăturați grupului deschis $roomName$?",
-  "enterBchatIDOrONSName": "Introdu ID sesiune sau nume BNS",
+  "enterBchatIDOrBNSName": "Introdu ID sesiune sau nume BNS",
   "loading": "Se încarcă...",
   "optimizingApplication": "Se optimizează aplicația...",
   "done": "Gata",

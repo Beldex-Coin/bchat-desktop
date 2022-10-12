@@ -35,7 +35,7 @@
   "socialGroupInvitation": "සමූහ ඇරයුම විවෘතකරන්න",
   "joinSocialGroupAfterInvitationConfirmationTitle": "$roomName$ ට එක්වනවාද?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "ඔබට $roomName$ විවෘත සමූහයට එක්වීමට අවශ්‍ය බව විශ්වාසද?",
-  "enterBchatIDOrONSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
   "loading": "පූරණය වෙමින්…",
   "optimizingApplication": "Optimizing application...",
   "done": "Done",

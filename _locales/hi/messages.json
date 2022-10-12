@@ -35,7 +35,7 @@
   "socialGroupInvitation": "ग्रुप आमंत्रण खोलें",
   "joinSocialGroupAfterInvitationConfirmationTitle": "$roomName$ से जुड़ें?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "क्या आप $roomName$ open ग्रुप से जुड़ना चाहते हैं?",
-  "enterBchatIDOrONSName": "BChat आईडी या ओएनएस नाम दर्ज करें",
+  "enterBchatIDOrBNSName": "BChat आईडी या ओएनएस नाम दर्ज करें",
   "loading": "लोड हो रहा है",
   "optimizingApplication": "Optimizing application...",
   "done": "पूरा हुआ",

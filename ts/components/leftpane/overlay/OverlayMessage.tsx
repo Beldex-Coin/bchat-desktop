@@ -36,7 +36,7 @@ const ourNumber = useSelector(getOurNumber);
   // const descriptionLong = window.i18n('usersCanShareTheir...');
   const descriptionLong = window.i18n('shareBchatIdDiscription')
 
-  // const subtitle = window.i18n('enterBchatIDOrONSName');
+  // const subtitle = window.i18n('enterBchatIDOrBNSName');
   const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {

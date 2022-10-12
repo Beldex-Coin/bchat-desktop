@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Invitasjon til åpen gruppe",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Bli med i $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Er du sikker på at du vil bli med i den åpne gruppen $roomName$?",
-  "enterBchatIDOrONSName": "Angi BChat-ID eller BNS-navn",
+  "enterBchatIDOrBNSName": "Angi BChat-ID eller BNS-navn",
   "loading": "Laster...",
   "optimizingApplication": "Optimerer applikasjonen...",
   "done": "Ferdig",

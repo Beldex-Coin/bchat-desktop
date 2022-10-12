@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Öppen gruppinbjudan",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Gå med i $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Är du säker på att du vill gå med i $roomName$s öppna grupp?",
-  "enterBchatIDOrONSName": "Ange BChats-ID eller BNS-namn",
+  "enterBchatIDOrBNSName": "Ange BChats-ID eller BNS-namn",
   "loading": "Läser in...",
   "optimizingApplication": "Optimerar applikationen...",
   "done": "Slutfört",

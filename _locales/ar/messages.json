@@ -35,7 +35,7 @@
   "socialGroupInvitation": "دعوة المجموعة المفتوحة",
   "joinSocialGroupAfterInvitationConfirmationTitle": "انضَم إلى $roomName$؟",
   "joinSocialGroupAfterInvitationConfirmationDesc": "هل أنت متأكد من أنك تريد الانضمام إلى المجموعة المفتوحة $roomName$؟",
-  "enterBchatIDOrONSName": "أدخل عنوان التعريف أو اسم BNS",
+  "enterBchatIDOrBNSName": "أدخل عنوان التعريف أو اسم BNS",
   "loading": "جاري التحميل",
   "optimizingApplication": "تحسين التطبيق...",
   "done": "تم",

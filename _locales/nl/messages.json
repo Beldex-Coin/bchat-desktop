@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Social group uitnodiging",
   "joinSocialGroupAfterInvitationConfirmationTitle": "groepnaam\n",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Weet je zeker dat je lid wilt worden van de $roomName$ open groep?",
-  "enterBchatIDOrONSName": "Voer Sessie ID of BNS naam in",
+  "enterBchatIDOrBNSName": "Voer Sessie ID of BNS naam in",
   "loading": "Bezig met laden…",
   "optimizingApplication": "Toepassing aan het optimaliseren…",
   "done": "Gereed",

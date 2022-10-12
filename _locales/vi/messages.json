@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Social group invitation",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
-  "enterBchatIDOrONSName": "Nhập BChat ID hoặc tên OSN",
+  "enterBchatIDOrBNSName": "Nhập BChat ID hoặc tên OSN",
   "loading": "Loading...",
   "optimizingApplication": "Đang tối ưu hóa ứng dụng...",
   "done": "Done",

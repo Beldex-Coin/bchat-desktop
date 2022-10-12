@@ -35,7 +35,7 @@
   "socialGroupInvitation": "公开群组邀请",
   "joinSocialGroupAfterInvitationConfirmationTitle": "加入 $roomName$ 吗？",
   "joinSocialGroupAfterInvitationConfirmationDesc": "您确定要加入公开群组 $roomName$ 吗？",
-  "enterBchatIDOrONSName": "输入BChat ID或ONS名称",
+  "enterBchatIDOrBNSName": "输入BChat ID或ONS名称",
   "loading": "加载中...",
   "optimizingApplication": "正在优化程序...",
   "done": "完成",

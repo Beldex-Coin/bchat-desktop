@@ -375,7 +375,7 @@ export type LocalizerKeys =
   | 'deleteForEveryone'
   | 'createBchatID'
   | 'multipleLeftTheGroup'
-  | 'enterBchatIDOrONSName'
+  | 'enterBchatIDOrBNSName'
   | 'quoteThumbnailAlt'
   | 'timerOption_1_week'
   | 'deleteContactConfirmation'

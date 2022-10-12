@@ -35,7 +35,7 @@
   "openGroupInvitation": "打開群組邀請",
   "joinSocialGroupAfterInvitationConfirmationTitle": "加入 $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "您確定要加入 $roomName$ 公開群組嗎？",
-  "enterBchatIDOrONSName": "請輸入您的 ID 或 BNS 的名稱",
+  "enterBchatIDOrBNSName": "請輸入您的 ID 或 BNS 的名稱",
   "loading": "載入中...",
   "optimizingApplication": "正在最佳化應用程式...",
   "done": "完成",

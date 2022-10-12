@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Приглашение в открытую группу",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Присоединиться к $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Вы уверен, что хотите присоединиться к открытой группе $roomName$?",
-  "enterBchatIDOrONSName": "Введите BChat ID или BNS имя",
+  "enterBchatIDOrBNSName": "Введите BChat ID или BNS имя",
   "loading": "Загружается...",
   "optimizingApplication": "Оптимизация приложения...",
   "done": "Готово",

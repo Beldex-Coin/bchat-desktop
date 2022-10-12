@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Social group invitation",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Připojit se k $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ social group?",
-  "enterBchatIDOrONSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
   "loading": "Nahrávání...",
   "optimizingApplication": "Optimalizace aplikace...",
   "done": "Done",

@@ -35,7 +35,7 @@
   "socialGroupInvitation": "그룹 초대 받기",
   "joinSocialGroupAfterInvitationConfirmationTitle": "$roomName$에 가입하시겠습니까?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
-  "enterBchatIDOrONSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
   "loading": "불러오는 중",
   "optimizingApplication": "Optimizing application...",
   "done": "완료",
