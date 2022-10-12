@@ -35,7 +35,7 @@ const getRealPath = pify(fs.realpath);
 
 // FIXME Hardcoding appId to prevent build failures on release.
 // const appUserModelId = packageJson.build.appId;
-const appUserModelId = 'com.loki-project.messenger-desktop';
+const appUserModelId = 'com.beldex-project.messenger-desktop';
 console.log('Set Windows Application User Model ID (AUMID)', {
   appUserModelId,
 });

@@ -87,7 +87,7 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
 
       break;
     case 'publicnode3.rpcnode.stream':
-      certContent = Buffer.from(publicLokiFoundationCtr, 'utf-8').toString();
+      certContent = Buffer.from(publicBeldexFoundationCtr, 'utf-8').toString();
       pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
       cert256 =
         '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F';
@@ -166,7 +166,7 @@ async function getSnodeListFromSeednode(seedNodes: Array<string>): Promise<Array
     async () => {
       window?.log?.info('getSnodeListFromSeednode starting...');
       if (!seedNodes.length) {
-        window?.log?.info('loki_snode_api::getSnodeListFromSeednode - seedNodes are empty');
+        window?.log?.info('beldex_mnode_api::getSnodeListFromSeednode - seedNodes are empty');
         throw new Error('getSnodeListFromSeednode - seedNodes are empty');
       }
       // do not try/catch, we do want exception to bubble up so pRetry, well, retries
@@ -201,14 +201,14 @@ export async function TEST_fetchSnodePoolFromSeedNodeRetryable(
   window?.log?.info('fetchSnodePoolFromSeedNodeRetryable starting...');
 
   if (!seedNodes.length) {
-    window?.log?.info('loki_snode_api::fetchSnodePoolFromSeedNodeRetryable - seedNodes are empty');
+    window?.log?.info('beldex_mnode_api::fetchSnodePoolFromSeedNodeRetryable - seedNodes are empty');
     throw new Error('fetchSnodePoolFromSeedNodeRetryable: Seed nodes are empty');
   }
 
   const seedNodeUrl = _.sample(seedNodes);
   if (!seedNodeUrl) {
     window?.log?.warn(
-      'loki_snode_api::fetchSnodePoolFromSeedNodeRetryable - Could not select random snodes from',
+      'beldex_mnode_api::fetchSnodePoolFromSeedNodeRetryable - Could not select random snodes from',
       seedNodes
     );
     throw new Error('fetchSnodePoolFromSeedNodeRetryable: Seed nodes are empty #2');
@@ -219,7 +219,7 @@ export async function TEST_fetchSnodePoolFromSeedNodeRetryable(
   const snodes = await getSnodesFromSeedUrl(tryUrl);
   if (snodes.length === 0) {
     window?.log?.warn(
-      `loki_snode_api::fetchSnodePoolFromSeedNodeRetryable - ${seedNodeUrl} did not return any snodes`
+      `beldex_mnode_api::fetchSnodePoolFromSeedNodeRetryable - ${seedNodeUrl} did not return any snodes`
     );
     throw new Error(`Failed to contact seed node: ${seedNodeUrl}`);
   }
@@ -286,7 +286,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
 
   if (response.status !== 200) {
     window?.log?.error(
-      `loki_snode_api:::getSnodesFromSeedUrl - invalid response from seed ${urlObj.toString()}:`,
+      `beldex_mnode_api:::getSnodesFromSeedUrl - invalid response from seed ${urlObj.toString()}:`,
       response
     );
     throw new Error(
@@ -305,7 +305,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
 
     if (!result) {
       window?.log?.error(
-        `loki_snode_api:::getSnodesFromSeedUrl - invalid result from seed ${urlObj.toString()}:`,
+        `beldex_mnode_api:::getSnodesFromSeedUrl - invalid result from seed ${urlObj.toString()}:`,
         response
       );
       throw new Error(`getSnodesFromSeedUrl: json.result is empty from ${urlObj.href}`);
@@ -393,7 +393,7 @@ Dfvp7OOGAN6dEOM4+qR9sdjoSYKEBpsr6GtPAQw4dy753ec5
 -----END CERTIFICATE-----
 `;
 
-const publicLokiFoundationCtr = `-----BEGIN CERTIFICATE-----
+const publicBeldexFoundationCtr = `-----BEGIN CERTIFICATE-----
 MIIFYDCCBEigAwIBAgIQQAF3ITfU6UK47naqPGQKtzANBgkqhkiG9w0BAQsFADA/
 MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT
 DkRTVCBSb290IENBIFgzMB4XDTIxMDEyMDE5MTQwM1oXDTI0MDkzMDE4MTQwM1ow

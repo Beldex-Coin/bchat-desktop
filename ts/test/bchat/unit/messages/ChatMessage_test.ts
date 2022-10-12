@@ -45,14 +45,14 @@ describe('VisibleMessage', () => {
   it('can create message with a full loki profile', () => {
     const profileKey = new TextEncoder().encode('profileKey');
 
-    const lokiProfile = {
+    const bchatProfile = {
       displayName: 'displayName',
       avatarPointer: 'avatarPointer',
       profileKey,
     };
     const message = new VisibleMessage({
       timestamp: Date.now(),
-      lokiProfile: lokiProfile,
+      lokiProfile: bchatProfile,
     });
     const plainText = message.plainTextBuffer();
     const decoded = SignalService.Content.decode(plainText);

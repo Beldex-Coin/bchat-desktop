@@ -30,11 +30,11 @@ async function handleOurProfileUpdate(
     );
     const { profileKey, profilePicture, displayName } = configMessage;
 
-    const lokiProfile = {
+    const bchatProfile = {
       displayName,
       profilePicture,
     };
-    await updateOurProfileSync(lokiProfile, profileKey);
+    await updateOurProfileSync(bchatProfile, profileKey);
     await setLastProfileUpdateTimestamp(_.toNumber(sentAt));
     // do not trigger a signin by linking if the display name is empty
     if (displayName) {

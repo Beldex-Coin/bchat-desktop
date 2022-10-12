@@ -214,12 +214,12 @@ describe('Message Utils', () => {
     // let convos: Array<ConversationModel>;
     // const mockValidOpenGroup = new MockConversation({
     //   type: ConversationTypeEnum.GROUP,
-    //   id: `${openGroupPrefix}1@chat-dev.lokinet.org`,
+    //   id: `${openGroupPrefix}1@chat-dev.beldexnet.org`,
     // });
 
     // const mockValidOpenGroup2 = new MockConversation({
     //   type: ConversationTypeEnum.GROUP,
-    //   id: `${openGroupPrefix}1@chat-dev2.lokinet.org`,
+    //   id: `${openGroupPrefix}1@chat-dev2.beldexnet.org`,
     // });
 
     // const mockValidClosedGroup = new MockConversation({
@@ -257,7 +257,7 @@ describe('Message Utils', () => {
 
     //   const configMessage = await getCurrentConfigurationMessage(convos);
     //   expect(configMessage.activeOpenGroups.length).to.equal(1);
-    //   expect(configMessage.activeOpenGroups[0]).to.equal('chat-dev2.lokinet.org');
+    //   expect(configMessage.activeOpenGroups[0]).to.equal('chat-dev2.beldexnet.org');
     // });
   });
 });
