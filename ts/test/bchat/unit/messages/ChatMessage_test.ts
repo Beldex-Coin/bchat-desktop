@@ -42,7 +42,7 @@ describe('VisibleMessage', () => {
     expect(decoded.dataMessage).to.have.deep.property('expireTimer', 3600);
   });
 
-  it('can create message with a full loki profile', () => {
+  it('can create message with a full bchat profile', () => {
     const profileKey = new TextEncoder().encode('profileKey');
 
     const bchatProfile = {

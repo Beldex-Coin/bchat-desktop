@@ -1191,7 +1191,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (this.get('nickname') === trimmed) {
       return;
     }
-    // make sure to save the lokiDisplayName as name in the db. so a search of conversation returns it.
+    // make sure to save the bchatDisplayName as name in the db. so a search of conversation returns it.
     // (we look for matches in name too)
     const realUserName = this.getBchatProfile()?.displayName;
 
@@ -1392,7 +1392,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   /**
-   * For a private convo, returns the loki profilename if set, or a shortened
+   * For a private convo, returns the bchat profilename if set, or a shortened
    * version of the contact pubkey.
    * Throws an error if called on a group convo.
    *
@@ -1413,7 +1413,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   /**
-   * For a private convo, returns the loki profilename if set, or a full length
+   * For a private convo, returns the bchat profilename if set, or a full length
    * version of the contact pubkey.
    * Throws an error if called on a group convo.
    */

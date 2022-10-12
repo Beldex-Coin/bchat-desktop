@@ -57,7 +57,7 @@ describe('MessageSender', () => {
         expect(bchatMessageAPISendStub.callCount).to.equal(0);
       });
 
-      it('should only call lokiMessageAPI once if no errors occured', async () => {
+      it('should only call bchatMessageAPI once if no errors occured', async () => {
         await MessageSender.send(rawMessage, 3, 10);
         expect(bchatMessageAPISendStub.callCount).to.equal(1);
       });
@@ -90,7 +90,7 @@ describe('MessageSender', () => {
         }));
       });
 
-      it('should pass the correct values to lokiMessageAPI', async () => {
+      it('should pass the correct values to bchatMessageAPI', async () => {
         const device = TestUtils.generateFakePubKey();
         const visibleMessage = TestUtils.generateVisibleMessage();
 

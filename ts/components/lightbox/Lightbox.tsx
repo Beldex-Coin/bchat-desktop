@@ -259,7 +259,7 @@ export const LightboxObject = ({
   }
 
   // tslint:disable-next-line no-console
-  console.log('Lightbox: Unexpected content type', { contentType });
+  // console.log('Lightbox: Unexpected content type', { contentType });
 
   return <Icon onClick={onObjectClick} url="images/file.svg" />;
 };

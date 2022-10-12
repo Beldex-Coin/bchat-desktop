@@ -368,7 +368,7 @@ export async function getMessageById(
     message.skipTimerInit = skipTimerInit;
   }
   let data:any={id:message.conversationId,walletAddress:message.walletAddress}
-  console.log('getMessageById',data);
+  // console.log('getMessageById',data);
   updateWalletAddressInConversation(data)
 
   return new MessageModel(message);
@@ -389,7 +389,7 @@ export async function getMessageBySenderAndSentAt({
   if (!messages || !messages.length) {
     return null;
   }
-console.log("messages getMessageBySenderAndSentAt",messages);
+// console.log("messages getMessageBySenderAndSentAt",messages);
 
   return new MessageModel(messages[0]);
 }

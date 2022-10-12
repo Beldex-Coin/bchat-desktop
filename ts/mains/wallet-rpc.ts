@@ -22,15 +22,15 @@ export const startWalletRpc = async() => {
   }
   const rpcPath =await path.join(__ryo_bin, rpcExecutable);
   if (!fs.existsSync(rpcPath)) {
-    console.log("NOO")
+    // console.log("NOO")
   }else{
-    console.log("YES")
+    // console.log("YES")
   }
   if (!fs.existsSync(walletDir)) {
-    console.log("NOO")
+    // console.log("NOO")
     fs.mkdirpSync(walletDir);
   }else{
-    console.log("YES")
+    // console.log("YES")
   }
   portscanner
           .checkPortStatus(64371, '127.0.0.1')
@@ -71,7 +71,7 @@ async function walletRpc(rpcPath:string,walletDir:string){
   wallet.stdout.on("close", (code: any) => {
     process.stderr.write(`Wallet: exited with code ${code} \n`);
     if (code === null) {
-      console.log("Failed to start wallet RPC");
+      // console.log("Failed to start wallet RPC");
     }
   });
 }
@@ -112,7 +112,7 @@ if(requestData.hasOwnProperty('error'))
 return requestData;
   }
   catch(err){
-    console.log("ERR:",err)
+    // console.log("ERR:",err)
   }
 }
 
@@ -201,7 +201,6 @@ export const restoreWallet = async (displayName: string,password:string, userRec
   if(restoreWallet.hasOwnProperty('error'))
   {
     if(restoreWallet.error.code === -1)
-    console.log("restoreWallet.error.code::",restoreWallet.error.code);
     restoreWallet=await deleteWallet(displayName,password,userRecoveryPhrase);
   }
   if(restoreWallet.hasOwnProperty('result')){
@@ -221,7 +220,7 @@ export const findDir = ()=>{
 }else{
     walletDir = path.join(os.homedir(), "Beldex");
 }
-console.log('walletDirwalletDir',walletDir);
+// console.log('walletDirwalletDir',walletDir);
 
 return walletDir;
 

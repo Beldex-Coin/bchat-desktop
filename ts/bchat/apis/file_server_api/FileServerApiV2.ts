@@ -169,7 +169,7 @@ export const getLatestDesktopReleaseFileToFsV2 = async (): Promise<string | null
   };
 
   const result = await sendApiV2Request(request);
-   console.log("FILE_SERVER_LATEST_VERSION:",result)
+  //  console.log("FILE_SERVER_LATEST_VERSION:",result)
   const statusCode = parseStatusCodeFromOnionRequest(result);
   if (statusCode !== 200) {
     return null;

@@ -13,7 +13,7 @@ export async function start(
   logger?: LoggerType | null
 ) {
 
-  console.log("update 1")
+  // console.log("update 1")
   if (initialized) {
     throw new Error('updater/start: Updates have already been initialized!');
   }

@@ -274,7 +274,7 @@ export class BchatRecording extends React.Component<Props, State> {
    * Sends the recorded voice message
    */
   private async onSendVoiceMessage() {
-console.log("onSendVoiceMessage");
+// console.log("onSendVoiceMessage");
 
     if (!this.audioBlobMp3 || !this.audioBlobMp3.size) {
       window?.log?.info('Empty audio blob');

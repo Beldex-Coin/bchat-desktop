@@ -402,7 +402,7 @@ const lightModalBackground = '#fcfcfc';
 
 const lightMessageRequestBannerBackground = lightColorQuoteBottomBarBg;
 const lightMessageRequestBannerIconBackground = '#2879FB';
-const lightMessageRequestBannerUnreadBackground = '#006004';
+const lightMessageRequestBannerUnreadBackground = greenColor;
 const lightMessageRequestBannerIcon = white;
 
 // for bchat

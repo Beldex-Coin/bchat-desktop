@@ -40,7 +40,7 @@ const ourNumber = useSelector(getOurNumber);
   const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {
-    console.log("pubkeyOrOns",pubkeyOrOns);
+    // console.log("pubkeyOrOns",pubkeyOrOns);
     
     if ((!pubkeyOrOns && !pubkeyOrOns.length) || !pubkeyOrOns.trim().length) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
