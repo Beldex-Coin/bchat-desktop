@@ -339,14 +339,13 @@ export const LeftPaneSettingSection = () => {
     LeftPaneBottomButtons
   }
   return (
-    <div className="left-pane-setting-section" style={{height: '92%', overflowY: 'auto'}}>
+    <div className="left-pane-setting-section">
       <LeftPaneSectionHeader />
       <div className="left-pane-setting-content">
         <LeftPaneSettingsCategories />
-        <span className="text-selectable" style={{ color: "#797984", marginLeft: '20px',marginTop:"27px" }}>{window.i18n('BChat')} {window.getVersion()}</span>
-
-        <LeftPaneBottomButtons />
       </div>
+      <span className="text-selectable" style={{ color: "#797984", marginLeft: '20px',marginTop:"27px" }}>{window.i18n('BChat')} V{window.getVersion()}</span>
+        <LeftPaneBottomButtons />
     </div>
   );
 };

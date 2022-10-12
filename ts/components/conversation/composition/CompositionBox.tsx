@@ -119,7 +119,8 @@ const sendMessageStyle = {
   },
   input: {
     overflow: 'auto',
-    maxHeight: '50vh',
+    // maxHeight: '50vh',
+    maxHeight: '40px',
     wordBreak: 'break-word',
     padding: '0px',
     margin: '0px',
@@ -130,7 +131,9 @@ const sendMessageStyle = {
     maxHeight: '50vh',
   },
   flexGrow: 1,
-  minHeight: '24px',
+
+  maxHeight: '40px',
+  // minHeight: '24px',
   width: '100%',
   ...styleForCompositionBoxSuggestions,
 };

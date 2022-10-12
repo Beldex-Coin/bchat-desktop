@@ -134,7 +134,9 @@ export const SignInTab = (props: any) => {
 
   // Seed is mandatory no matter which mode
   const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
-  const activateContinueButton = seedOK && displayNameOK && !loading;
+  console.log(seedOK);
+  
+  const activateContinueButton =  displayNameOK && !loading;
 
   const continueYourBchat = async () => {
     if (isRecovery) {
@@ -151,6 +153,23 @@ export const SignInTab = (props: any) => {
       setIsLoading(false);
     }
   };
+
+  const passValid=()=>
+  {
+    if (!password||!repassword) {
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !' );
+       
+     }
+    else if (password!==repassword)
+    {
+      window?.log?.warn('invalid password');
+     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' ); 
+    }
+    else
+    {
+      setScreenName(3)
+    }
+  }
 
   // const clickGoBack = () => {
   //   setScreenName(0);
@@ -207,7 +226,7 @@ export const SignInTab = (props: any) => {
     setPassword={(e:any)=>setPassword(e)}  
     setRepassword={(e:any)=>setRepassword(e)}
     backArrow={()=>{setScreenName(1);setPassword("");setRepassword(""),props.assent(true);}}
-    submit={()=>{setScreenName(3)}}
+    submit={passValid}
     />
   }
 

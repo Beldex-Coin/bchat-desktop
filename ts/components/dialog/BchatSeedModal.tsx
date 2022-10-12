@@ -1,86 +1,86 @@
 import React, { useEffect, useState } from 'react';
 
 import { ToastUtils } from '../../bchat/utils';
-import { matchesHash } from '../../util/passwordUtils';
-import { getPasswordHash } from '../../data/data';
+// import { matchesHash } from '../../util/passwordUtils';
+// import { getPasswordHash } from '../../data/data';
 // import { QRCode } from 'react-qr-svg';
 // import { mn_decode } from '../../Bchat/crypto/mnemonic';
 import { SpacerLG, SpacerSM, SpacerXS } from '../basic/Text';
 import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
 import { useDispatch } from 'react-redux';
-import { BchatButton } from '../basic/BchatButton';
+// import { BchatButton } from '../basic/BchatButton';
 
 // import { BchatWrapperModal } from '../BchatWrapperModal';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 
 // import { BchatIcon } from '../icon';
 
-interface PasswordProps {
-  setPasswordValid: (val: boolean) => any;
-  passwordHash: string;
-}
+// interface PasswordProps {
+//   setPasswordValid: (val: boolean) => any;
+//   passwordHash: string;
+// }
 
-const Password = (props: PasswordProps) => {
-  const { setPasswordValid, passwordHash } = props;
-  const i18n = window.i18n;
-  const [error, setError] = useState('');
-  const dispatch = useDispatch();
+// const Password = (props: PasswordProps) => {
+//   const { setPasswordValid, passwordHash } = props;
+//   const i18n = window.i18n;
+//   const [error, setError] = useState('');
+//   const dispatch = useDispatch();
 
-  const onClose = () => dispatch(recoveryPhraseModal(null));
+//   const onClose = () => dispatch(recoveryPhraseModal(null));
 
-  const confirmPassword = () => {
-    const passwordValue = (document.getElementById('seed-input-password') as any)?.value;
-    const isPasswordValid = matchesHash(passwordValue as string, passwordHash);
+//   const confirmPassword = () => {
+//     const passwordValue = (document.getElementById('seed-input-password') as any)?.value;
+//     const isPasswordValid = matchesHash(passwordValue as string, passwordHash);
 
-    if (!passwordValue) {
-      setError('noGivenPassword');
-      return false;
-    }
+//     if (!passwordValue) {
+//       setError('noGivenPassword');
+//       return false;
+//     }
 
-    if (passwordHash && !isPasswordValid) {
-      setError('invalidPassword');
-      return false;
-    }
+//     if (passwordHash && !isPasswordValid) {
+//       setError('invalidPassword');
+//       return false;
+//     }
 
-    setPasswordValid(true);
-    setError('');
+//     setPasswordValid(true);
+//     setError('');
 
-    window.removeEventListener('keyup', onEnter);
-    return true;
-  };
+//     window.removeEventListener('keyup', onEnter);
+//     return true;
+//   };
 
-  const onEnter = (event: any) => {
-    if (event.key === 'Enter') {
-      confirmPassword();
-    }
-  };
+//   const onEnter = (event: any) => {
+//     if (event.key === 'Enter') {
+//       confirmPassword();
+//     }
+//   };
 
-  return (
-    <>
-      <p>{i18n('showRecoveryPhrasePasswordRequest')}</p>
-      <input
-        type="password"
-        id="seed-input-password"
-        placeholder={i18n('password')}
-        onKeyUp={onEnter}
-      />
+//   return (
+//     <>
+//       <p>{i18n('showRecoveryPhrasePasswordRequest')}</p>
+//       <input
+//         type="password"
+//         id="seed-input-password"
+//         placeholder={i18n('password')}
+//         onKeyUp={onEnter}
+//       />
 
-      {error && (
-        <>
-          <SpacerXS />
-          <div className="bchat-label danger">{error}</div>
-        </>
-      )}
+//       {error && (
+//         <>
+//           <SpacerXS />
+//           <div className="bchat-label danger">{error}</div>
+//         </>
+//       )}
 
-      <SpacerLG />
+//       <SpacerLG />
 
-      <div className="bchat-modal__button-group">
-        <BchatButton text={i18n('cancel')} onClick={onClose} />
-        <BchatButton text={i18n('ok')} onClick={confirmPassword} />
-      </div>
-    </>
-  );
-};
+//       <div className="bchat-modal__button-group">
+//         <BchatButton text={i18n('cancel')} onClick={onClose} />
+//         <BchatButton text={i18n('ok')} onClick={confirmPassword} />
+//       </div>
+//     </>
+//   );
+// };
 
 interface SeedProps {
   recoveryPhrase: string;
@@ -153,9 +153,11 @@ const BchatSeedModalInner = (props: ModalInnerProps) => {
   const [loadingPassword, setLoadingPassword] = useState(true);
   const [loadingSeed, setLoadingSeed] = useState(true);
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
-  const [hasPassword, setHasPassword] = useState<null | boolean>(null);
-  const [passwordValid, setPasswordValid] = useState(false);
-  const [passwordHash, setPasswordHash] = useState('');
+
+  // const [hasPassword, setHasPassword] = useState<null | boolean>(null);
+  // const [passwordValid, setPasswordValid] = useState(false);
+  // const [passwordHash, setPasswordHash] = useState('');
+
   // const dispatch = useDispatch();
 
   useEffect(() => {
@@ -173,9 +175,9 @@ const BchatSeedModalInner = (props: ModalInnerProps) => {
       return;
     }
 
-    const hash = await getPasswordHash();
-    setHasPassword(!!hash);
-    setPasswordHash(hash || '');
+    // const hash = await getPasswordHash();
+    // setHasPassword(!!hash);
+    // setPasswordHash(hash || '');
     setLoadingPassword(false);
   };
 
@@ -201,11 +203,12 @@ const BchatSeedModalInner = (props: ModalInnerProps) => {
         <>
           <SpacerSM />
 
-          {hasPassword && !passwordValid ? (
+          {/* {hasPassword && !passwordValid ? (
             <Password passwordHash={passwordHash} setPasswordValid={setPasswordValid} />
-          ) : (
+          ) : ( */}
             <Seed recoveryPhrase={recoveryPhrase} onClickCopy={onClickOk} />
-          )}</>
+          {/* )} */}
+          </>
         // </BchatWrapperModal>
       )}
     </>

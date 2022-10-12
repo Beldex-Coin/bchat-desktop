@@ -54,19 +54,19 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 export const SendMessageButton = (props: { onClick: () => void }) => {
   return (
     <div className="send-message-button" onClick={props.onClick}>
-      <div className='sendBox' role="button">
+      {/* <div className='sendBox' role="button">
 
-      </div>
-      {/* <BchatIconButton
+      </div> */}
+      <BchatIconButton
         iconType="send"
-        backgroundColor={'var(--color-compose-view-button-background)'}
+        // backgroundColor={'var(--color-compose-view-button-background)'}
         iconSize={'huge2'}
-        iconRotation={90}
+        iconRotation={321}
         borderRadius="300px"
-        iconPadding="6px"
-        
+        iconPadding="4px"
+        onClick={props.onClick}
         dataTestId="send-message-button"
-      /> */}
+      />
     </div>
   );
 };
