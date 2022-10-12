@@ -1193,7 +1193,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     // make sure to save the lokiDisplayName as name in the db. so a search of conversation returns it.
     // (we look for matches in name too)
-    const realUserName = this.getLokiProfile()?.displayName;
+    const realUserName = this.getBchatProfile()?.displayName;
 
     if (!trimmed || !trimmed.length) {
       this.set({ nickname: undefined, name: realUserName });
@@ -1205,7 +1205,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     await this.updateProfileName();
   }
-  public async setLokiProfile(newProfile: {
+  public async setBchatProfile(newProfile: {
     displayName?: string | null;
     avatar?: string;
     avatarHash?: string;
@@ -1216,7 +1216,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
 
     // a user cannot remove an avatar. Only change it
-    // if you change this behavior, double check all setLokiProfile calls (especially the one in EditProfileDialog)
+    // if you change this behavior, double check all setBchatProfile calls (especially the one in EditProfileDialog)
     if (newProfile.avatar) {
       await this.setProfileAvatar({ path: newProfile.avatar }, newProfile.avatarHash);
     }
@@ -1226,12 +1226,12 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async updateProfileName() {
     // Prioritise nickname over the profile display name
     const nickname = this.getNickname();
-    const displayName = this.getLokiProfile()?.displayName;
+    const displayName = this.getBchatProfile()?.displayName;
 
     const profileName = nickname || displayName || null;
     await this.setProfileName(profileName);
   }
-  public getLokiProfile() {
+  public getBchatProfile() {
     return this.get('profile');
   }
   public getNickname() {

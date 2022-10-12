@@ -603,7 +603,7 @@
 
   height: 36px;
   width: 36px;
-  @include color-svg('../images/play.svg', $color-loki-green);
+  @include color-svg('../images/play.svg', $color-bchat-green);
 }
 
 .module-media-grid-item__icon-video {
@@ -657,7 +657,7 @@
 
 .module-conversation-list-item__unread-count {
   color: $color-white;
-  background-color: $color-loki-green;
+  background-color: $color-bchat-green;
   text-align: center;
 
   padding-top: 1px;
@@ -879,7 +879,7 @@
 
   height: 36px;
   width: 36px;
-  @include color-svg('../images/play.svg', $color-loki-green);
+  @include color-svg('../images/play.svg', $color-bchat-green);
 }
 
 .module-image__text-container {

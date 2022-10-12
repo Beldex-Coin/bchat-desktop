@@ -654,7 +654,6 @@ export const sendOnionRequestHandlingSnodeEject = async ({
     });
 
     response = result.response;
-    // console.log("RESPONSE:",response)
     if (
       !_.isEmpty(finalRelayOptions) &&
       response.status === 502 &&
@@ -829,7 +828,7 @@ export function getPathString(pathObjArr: Array<{ ip: string; port: number }>): 
 /**
  * If the fetch throws a retryable error we retry this call with a new path at most 3 times. If another error happens, we return it. If we have a result we just return it.
  */
-export async function lokiOnionFetch({
+export async function bchatOnionFetch({
   targetNode,
   associatedWith,
   body,

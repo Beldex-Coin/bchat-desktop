@@ -206,10 +206,6 @@ export async function saveConversation(data: ReduxConversationType): Promise<voi
 
 export async function getConversationById(id: string): Promise<ConversationModel | undefined> {
   const data = await channels.getConversationById(id);
-
-  console.log("id",id);
-console.log("CONVERSATIONS_TABLE",data);
-
   
   if (data) {
     return new ConversationModel(data);

@@ -170,7 +170,7 @@
   }
 
   .module-message__video-overlay__play-icon {
-    @include color-svg('../images/play.svg', $color-loki-green);
+    @include color-svg('../images/play.svg', $color-bchat-green);
   }
 
   .module-message__broken-video-screenshot {
@@ -231,7 +231,7 @@
   }
 
   .module-media-gallery__tab--active {
-    border-bottom: 2px solid $color-loki-green;
+    border-bottom: 2px solid $color-bchat-green;
   }
 
   // Module: Document List Item
@@ -275,7 +275,7 @@
 
   .module-conversation-list-item__unread-count {
     color: $color-white;
-    background-color: $color-loki-green;
+    background-color: $color-bchat-green;
     box-shadow: 0px 0px 0px 1px $color-dark-85;
   }
 

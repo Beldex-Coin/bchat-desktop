@@ -74,8 +74,7 @@ export const BchatToast = (props: Props) => {
         toastIcon = 'info';
     }
   }
-  console.log("BCHATTOASTTYPE:",toastIcon)
-
+  
   return (
     // tslint:disable-next-line: use-simple-attributes
     <Flex

@@ -422,7 +422,7 @@ export async function storeOnNode(
   params: SendParams
 ): Promise<string | null | boolean> {
   try {
-    // no retry here. If an issue is with the path this is handled in lokiOnionFetch
+    // no retry here. If an issue is with the path this is handled in bchatOnionFetch
     // if there is an issue with the targetNode, we still send a few times this request to a few snodes in // already so it's handled
     const result = await snodeRpc({
       method: 'store',

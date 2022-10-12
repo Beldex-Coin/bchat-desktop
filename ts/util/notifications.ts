@@ -209,7 +209,6 @@ function update() {
   }
 
   window.drawAttention();
-  console.log('iconUrl',iconUrl);
   lastNotificationDisplayed = new Notification(title || '', {
     body: window.platform === 'linux' ? filter(message) : message,
     icon: iconUrl,

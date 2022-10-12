@@ -54,19 +54,19 @@
 }
 
 .module-quote__icon-container__icon--file {
-  @include color-svg('../images/file.svg', $color-loki-green);
+  @include color-svg('../images/file.svg', $color-bchat-green);
 }
 .module-quote__icon-container__icon--image {
-  @include color-svg('../images/image.svg', $color-loki-green);
+  @include color-svg('../images/image.svg', $color-bchat-green);
 }
 .module-quote__icon-container__icon--microphone {
-  @include color-svg('../images/microphone.svg', $color-loki-green);
+  @include color-svg('../images/microphone.svg', $color-bchat-green);
 }
 .module-quote__icon-container__icon--play {
-  @include color-svg('../images/play.svg', $color-loki-green);
+  @include color-svg('../images/play.svg', $color-bchat-green);
 }
 .module-quote__icon-container__icon--movie {
-  @include color-svg('../images/movie.svg', $color-loki-green);
+  @include color-svg('../images/movie.svg', $color-bchat-green);
 }
 
 .module-quote__generic-file__text {
@@ -207,19 +207,19 @@
   height: 24px;
 
   &--file {
-    @include color-svg('../images/file.svg', $color-loki-green);
+    @include color-svg('../images/file.svg', $color-bchat-green);
   }
   &--image {
-    @include color-svg('../images/image.svg', $color-loki-green);
+    @include color-svg('../images/image.svg', $color-bchat-green);
   }
   &--microphone {
-    @include color-svg('../images/microphone.svg', $color-loki-green);
+    @include color-svg('../images/microphone.svg', $color-bchat-green);
   }
   &--play {
-    @include color-svg('../images/play.svg', $color-loki-green);
+    @include color-svg('../images/play.svg', $color-bchat-green);
   }
   &--movie {
-    @include color-svg('../images/movie.svg', $color-loki-green);
+    @include color-svg('../images/movie.svg', $color-bchat-green);
   }
 }
 

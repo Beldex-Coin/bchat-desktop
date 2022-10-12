@@ -143,7 +143,7 @@ async function createOrUpdateProfile(
     conversation.id,
     ConversationTypeEnum.PRIVATE
   );
-  await conv.setLokiProfile(newProfile);
+  await conv.setBchatProfile(newProfile);
   if (changes) {
     await conv.commit();
   }

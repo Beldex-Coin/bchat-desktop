@@ -89,7 +89,7 @@ export function getOurProfile(): LokiProfile | undefined {
     const profileKeyAsBytes = ourProfileKeyHex ? fromHexToArray(ourProfileKeyHex) : null;
 
     const avatarPointer = ourConversation.get('avatarPointer');
-    const { displayName } = ourConversation.getLokiProfile();
+    const { displayName } = ourConversation.getBchatProfile();
     return {
       displayName,
       avatarPointer,

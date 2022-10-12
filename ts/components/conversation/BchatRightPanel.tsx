@@ -233,8 +233,6 @@ export const BchatRightPanelWithDetails = () => {
     isGroup && (!isPublic || (isPublic && weAreAdmin)) && !commonNoShow;
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
   const showUpdateGroupMembersButton = !isPublic && isGroup && !commonNoShow;
-
-  // console.log("isPublic ::",isPublic);
   
   const deleteConvoAction = isPublic
     ? () => {

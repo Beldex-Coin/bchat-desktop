@@ -182,7 +182,7 @@ async function registrationDone(ourPubkey: string, displayName: string) {
     ourPubkey,
     ConversationTypeEnum.PRIVATE
   );
-  await conversation.setLokiProfile({ displayName });
+  await conversation.setBchatProfile({ displayName });
   await conversation.setIsApproved(true);
   await conversation.setDidApproveMe(true);
 

@@ -454,7 +454,7 @@ export async function uploadOurAvatar(newAvatarDecrypted?: ArrayBuffer) {
   ourConvo.set({ profileKey: toHex(profileKey) });
   // Replace our temporary image with the attachment pointer from the server:
   // this commits already
-  await ourConvo.setLokiProfile({
+  await ourConvo.setBchatProfile({
     avatar: upgraded.path,
     displayName,
   });

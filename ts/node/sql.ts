@@ -1284,7 +1284,7 @@ function updateToLokiSchemaVersion20(currentVersion: number, db: BetterSqlite3.D
 
       // obj.profile.displayName is the display as this user set it.
       if (obj?.nickname?.length && obj?.profile?.displayName?.length) {
-        // this one has a nickname set, but name is unset, set it to the displayName in the lokiProfile if it's exisitng
+        // this one has a nickname set, but name is unset, set it to the displayName in the bchatProfile if it's exisitng
         obj.name = obj.profile.displayName;
         updateConversation(obj, db);
       }

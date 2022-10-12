@@ -28,7 +28,6 @@ export const BchatNicknameDialog = (props: Props) => {
       await saveNickname();
     } else if (event.target.value.length <= 26) 
     {
-      // console.log("nickname ::",event.target.value.length );
       const currentNicknameEntered = event.target.value;
       setNickname(currentNicknameEntered);
     }

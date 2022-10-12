@@ -458,8 +458,6 @@ const whiteSeedColor = "#128B17";
 
 export const switchHtmlToLightTheme = () => {
 
-  // console.log("switchHtmlToLightTheme:");
-
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
   document.documentElement.style.setProperty('--color-profile', lightProfileBgColor);
   document.documentElement.style.setProperty('--color-accent', lightColorAccent);

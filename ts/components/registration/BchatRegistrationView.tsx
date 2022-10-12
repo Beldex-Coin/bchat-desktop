@@ -12,7 +12,6 @@ export const BchatRegistrationView = () => {
   React.useEffect(() => { 
     void setSignInByLinking(false);
   }, []);
-  // console.log('window.Events.getThemeSetting()',window.Events.getThemeSetting());
   
   return (
     <div className="bchat-fullscreen">

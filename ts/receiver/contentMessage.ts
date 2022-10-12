@@ -141,7 +141,6 @@ export async function decryptWithBchatProtocol(
 ): Promise<ArrayBuffer> {
   perfStart(`decryptWithBchatProtocol-${envelope.id}`);
 
-  // console.log("ciphertextObj:",new TextDecoder().decode(ciphertextObj));
   
   const recipientX25519PrivateKey = x25519KeyPair.privateKeyData;
   const hex = toHex(new Uint8Array(x25519KeyPair.publicKeyData));
@@ -203,10 +202,7 @@ export async function decryptWithBchatProtocol(
 
   const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0,97));
 
-  //  sender wallet Address
-  // console.log("beldexFinalAddress",beldexFinalAddress);
-  // console.log("beldexFinalAddressandplainText::",new TextDecoder().decode(plaintextWithMetadata.subarray(0, plainTextEnd)));
-  
+  //  sender wallet Address  
   localStorage.setItem("senderWalletAddress", beldexFinalAddress);
   const message = plaintextWithMetadata.subarray(97, plainTextEnd)
    return message;

@@ -235,7 +235,6 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
-console.log("window.bchatFeatureFlags.useTestNet", window.bchatFeatureFlags.useTestNet);
 window.getSeedNodeList = () =>
   // window.bchatFeatureFlags.useTestNet
   process.env.NODE_ENV == 'development'

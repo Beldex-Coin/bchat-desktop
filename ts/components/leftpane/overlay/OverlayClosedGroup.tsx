@@ -53,7 +53,6 @@ export const OverlayClosedGroup = () => {
     }
     setLoading(true);
     const groupCreated = await MainViewController.createClosedGroup(groupName, selectedMemberIds);
-    console.log('groupCreated ', groupCreated);
 
     if (groupCreated) {
       closeOverlay();
@@ -72,7 +71,6 @@ export const OverlayClosedGroup = () => {
   const placeholder = window.i18n('createSecretGroupPlaceholder');
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
-  // console.log('noContactsForClosedGroup', noContactsForClosedGroup);
 
   // const ClosedGrpHeader = () => {
   //   if (!noContactsForClosedGroup) {

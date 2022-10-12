@@ -43,14 +43,11 @@ const ourNumber = useSelector(getOurNumber);
     console.log("pubkeyOrOns",pubkeyOrOns);
     
     if ((!pubkeyOrOns && !pubkeyOrOns.length) || !pubkeyOrOns.trim().length) {
-      // console.log("newchat if statement1 ::",pubkeyOrOns);
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-    console.log("PubKey.validateWithError(pubkeyorOnsTrimmed):",PubKey.validateWithError(pubkeyorOnsTrimmed))
     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
-      // console.log("newchat if statement2");
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
         pubkeyorOnsTrimmed,
@@ -60,7 +57,6 @@ const ourNumber = useSelector(getOurNumber);
       await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
       closeOverlay();
     } else {
-      // console.log("newchat else statement");
       
       // this might be an BNS, validate the regex first
       const mightBeOnsName = new RegExp(onsNameRegex, 'g').test(pubkeyorOnsTrimmed);

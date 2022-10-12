@@ -36,9 +36,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     window.updateZoomFactor();
     forceUpdate();
   };
- 
-  // console.log("currentValueFromSettings",currentValueFromSettings);
-  
+   
   
   const customStyles = {
     option: (provided:any, state:any) => ({

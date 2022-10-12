@@ -59,7 +59,7 @@ export async function initiateOpenGroupUpdate(
         contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.
       });
       const newHash = sha256(fromArrayBufferToBase64(downloaded.buffer));
-      await convo.setLokiProfile({
+      await convo.setBchatProfile({
         displayName: groupName || convo.get('name') || 'Unknown',
         avatar: upgraded.path,
         avatarHash: newHash,

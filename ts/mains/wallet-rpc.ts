@@ -36,7 +36,6 @@ export const startWalletRpc = async() => {
           .checkPortStatus(64371, '127.0.0.1')
           .catch(() => "closed")
           .then(async(status) => {
-            console.log("Status:",status)
             if (status === "closed") {
               await walletRpc(rpcPath,walletDir);
 }
@@ -105,14 +104,11 @@ if(requestData.hasOwnProperty('error'))
 {
   if(requestData.error.code=== -21){
     let walletDir= os.platform() === "win32"?`${findDir()}\\wallet`:`${findDir()}//wallet`;
-    // console.log("wallet address ::",walletDir,os.platform());
     fs.emptyDirSync(walletDir);
     requestData=await request(options);
   }
   
 }
-
-console.log("Wallet",JSON.stringify(requestData))
 return requestData;
   }
   catch(err){

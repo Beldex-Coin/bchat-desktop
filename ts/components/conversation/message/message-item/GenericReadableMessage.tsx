@@ -165,7 +165,6 @@ export const GenericReadableMessage = (props: Props) => {
   const isIncoming = direction === 'incoming';
 
   const onSelect = useCallback((messageId) => {
-    console.log("onSelect", isSelectionMode, messageId);
 
     //  if(isSelectionMode)
     //  {

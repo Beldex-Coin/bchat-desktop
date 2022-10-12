@@ -57,7 +57,6 @@ export const uploadFileToFsV2 = async (
   };
 
   const result = await sendApiV2Request(request);
-  console.log('result imgage',result)
   const statusCode = parseStatusCodeFromOnionRequest(result);
   if (statusCode !== 200) {
     return null;
@@ -69,7 +68,6 @@ export const uploadFileToFsV2 = async (
     return null;
   }
   const fileUrl = `${fileServerV2URL}/${FILES_ENDPOINT}/${fileId}`;
-  console.log('filurl image',fileUrl);
   
   return {
     fileId: fileId,

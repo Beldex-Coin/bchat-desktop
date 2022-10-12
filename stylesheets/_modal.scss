@@ -22,7 +22,7 @@
 }
 
 /* remove scroll bars */
-.loki-dialog .add-moderators-dialog .content {
+.bchat-dialog .add-moderators-dialog .content {
   padding: 1.1em;
 }
 
@@ -91,7 +91,7 @@
   }
 }
 
-.loki-dialog {
+.bchat-dialog {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,18 +109,18 @@
   button {
     float: right;
     margin-inline-start: 10px;
-    background-color: $color-loki-green;
+    background-color: $color-bchat-green;
     border-radius: 100px;
     padding: 5px 15px;
-    border: 1px solid $color-loki-green;
+    border: 1px solid $color-bchat-green;
     color: white;
     outline: none;
     user-select: none;
 
     &:hover,
     &:disabled {
-      background-color: $color-loki-green-dark;
-      border-color: $color-loki-green-dark;
+      background-color: $color-bchat-green-dark;
+      border-color: $color-bchat-green-dark;
     }
 
     &:disabled {
@@ -135,7 +135,7 @@
     border: 0;
     outline: none;
     border-radius: 4px;
-    background-color: $color-loki-light-gray;
+    background-color: $color-bchat-light-gray;
 
     &:focus {
       outline: none;
@@ -181,7 +181,7 @@
   }
 }
 
-.loki-dialog {
+.bchat-dialog {
   &~.index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown

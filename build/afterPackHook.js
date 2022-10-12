@@ -17,7 +17,6 @@ module.exports = async function(context) {
     context.targets.map(target => target.name)
   );
 
-  console.log('AppImage', isAppImage);
 
   if (!isAppImage) {
     console.log('afterPack hook not triggered as this is not an appImage build');

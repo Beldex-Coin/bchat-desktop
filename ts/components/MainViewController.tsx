@@ -6,7 +6,6 @@ import { VALIDATION } from '../bchat/constants';
 
 export class MessageView extends React.Component {
   public render() {
-      // console.log("window.Events.getThemeSetting()",window.Events.getThemeSetting())
   
     return (
       <div className="conversation placeholder">

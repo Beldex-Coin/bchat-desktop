@@ -221,19 +221,12 @@ export class BchatConversation extends React.Component<Props, State> {
       lightBoxOptions,
     } = this.props;
 
-  //  console.log("lightBoxOptions::",isRightPanelShowing,"selectedConversation :: ",  selectedConversation,
   //  'messagesProps ::',messagesProps,
   //  "showMessageDetails ::",showMessageDetails,
   //  "selectedMessages::",selectedMessages,
   //  "isRightPanelShowing ::",isRightPanelShowing,
-   
-   
   //  );
-   
-  console.log('selectedConversation ::',selectedConversation);
-  
-  
-  
+    
     // if (!selectedConversation || !messagesProps || !selectedConversation.activeAt) {
     if (!selectedConversation || !messagesProps) {
 
@@ -242,7 +235,6 @@ export class BchatConversation extends React.Component<Props, State> {
     }
    
     const selectionMode = selectedMessages.length > 0;
-    // console.log('selectionMode selectionMode ::',selectionMode);
      
     return (
       <BchatTheme>

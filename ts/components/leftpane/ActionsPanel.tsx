@@ -125,8 +125,6 @@ const Section = (props: { type: SectionType }) => {
   // function indicator(params:any) {
   //   setOpacity(params)
   //   handleClick()
-
-  //   console.log('indicator',params);
   // }
 
 
@@ -259,8 +257,6 @@ const fetchReleaseFromFileServerInterval = 1000 * 60; // try to fetch the latest
 const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
   // const theme = 'dark';
-
-  console.log('themeActionPenal', theme);
 
   window.setTheme(theme);
   if (theme === 'dark') {

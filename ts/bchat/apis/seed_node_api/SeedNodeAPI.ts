@@ -35,8 +35,6 @@ export async function fetchSnodePoolFromSeedNodeWithRetries(
       pubkey_x25519: snode.pubkey_x25519,
       pubkey_ed25519: snode.pubkey_ed25519,
     }));
-    console.log("fetchSnodePool", fetchSnodePool);
-
 
     window?.log?.info(
       'SeedNodeAPI::fetchSnodePoolFromSeedNodeWithRetries - Refreshed random snode pool with',
@@ -115,7 +113,6 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
       if (err) {
         return err;
       }
-      // console.log("cert.pubkey before if ",cert.pubkey);
       // Pin the public key, similar to HPKP pin-sha25 pinning
       if (sha256(cert.pubkey) !== pubkey256) {
         const msg =
@@ -125,7 +122,6 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
         return new Error(msg);
       }
 
-      console.log('test3', cert.pubkey);
       // Pin the exact certificate, rather than the pub key
       if (cert.fingerprint256 !== cert256) {
         const msg =
@@ -263,7 +259,6 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
     urlObj.hostname,
     urlObj.protocol !== Constants.PROTOCOLS.HTTP
   );
-  console.log(sslAgent);
 
   const fetchOptions = {
     method: 'POST',
@@ -276,13 +271,9 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
     agent: sslAgent,
   };
   window?.log?.info('insecureNodeFetch => plaintext for getSnodesFromSeedUrl');
-  console.log('insecureNodeFetch', url, fetchOptions);
 
 
   const response = await insecureNodeFetch(url, fetchOptions);
-
-  console.log('response Json', response);
-
 
   if (response.status !== 200) {
     window?.log?.error(

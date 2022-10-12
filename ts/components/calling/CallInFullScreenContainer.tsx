@@ -39,7 +39,6 @@ export const CallInFullScreenContainer = () => {
   const dispatch = useDispatch();
   const ongoingCallWithFocused = useSelector(getHasOngoingCallWithFocusedConvo);
   const hasOngoingCallFullScreen = useSelector(getCallIsInFullScreen);
-console.log("hasOngoingCallFullScreen::",hasOngoingCallFullScreen);
 
   const {
     remoteStream,

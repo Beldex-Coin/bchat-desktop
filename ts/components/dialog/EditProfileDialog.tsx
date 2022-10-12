@@ -509,7 +509,7 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
     return;
   }
   // do not update the avatar if it did not change
-  await conversation.setLokiProfile({
+  await conversation.setBchatProfile({
     displayName: newName,
   });
   // might be good to not trigger a sync if the name did not change

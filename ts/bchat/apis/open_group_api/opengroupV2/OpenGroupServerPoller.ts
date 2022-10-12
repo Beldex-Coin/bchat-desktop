@@ -507,7 +507,7 @@ const handleBase64AvatarUpdate = async (
           contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.          // url: `${serverUrl}/${res.roomId}`,
         });
         // update the hash on the conversationModel
-        await convo.setLokiProfile({
+        await convo.setBchatProfile({
           displayName: convo.getName() || window.i18n('unknown'),
           avatar: upgradedAttachment.path,
           avatarHash: newHash,

@@ -82,7 +82,6 @@ export async function encryptUsingBchatProtocol(
 
   // const walletAddress="bxdis3VF318i2QDjvqwoG9GyfP4sVjTvwZyf1JGLNFyTJ8fbtBgzW6ieyKnpbMw5bU9dggbAiznaPGay96WAmx1Z2B32B86PE";
   let walletAddress :any = localStorage.getItem("userAddress");
-  console.log("walletAddress", walletAddress);
 
   let utf8Encode = new TextEncoder();
 

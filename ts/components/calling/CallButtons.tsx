@@ -179,7 +179,6 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
   const dispatch = useDispatch();
 
   const showInFullScreen = () => {
-    console.log('isFullScreen:::',isFullScreen);
     
     if (isFullScreen) {
       dispatch(setFullScreenCall(false));

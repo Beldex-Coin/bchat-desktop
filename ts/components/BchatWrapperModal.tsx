@@ -73,7 +73,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
 
   return (
     <div
-      className={classNames('loki-dialog modal', additionalClassName ? additionalClassName : null)}
+      className={classNames('bchat-dialog modal', additionalClassName ? additionalClassName : null)}
     >
       <div className="bchat-confirm-wrapper">
         <div ref={modalRef} className="bchat-modal">

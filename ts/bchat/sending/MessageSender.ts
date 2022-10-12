@@ -171,7 +171,7 @@ export async function sendMessageToSnode(
 
   let successfulSendHash: string | undefined;
   const promises = usedNodes.map(async usedNode => {
-    // No pRetry here as if this is a bad path it will be handled and retried in lokiOnionFetch.
+    // No pRetry here as if this is a bad path it will be handled and retried in bchatOnionFetch.
     // the only case we could care about a retry would be when the usedNode is not correct,
     // but considering we trigger this request with a few snode in //, this should be fine.
     const successfulSend = await storeOnNode(usedNode, params);
@@ -202,7 +202,7 @@ export async function sendMessageToSnode(
   } catch (e) {
     const snodeStr = snode ? `${snode.ip}:${snode.port}` : 'null';
     window?.log?.warn(
-      `loki_message:::sendMessage - ${e.code} ${e.message} to ${pubKey} via snode:${snodeStr}`
+      `bchat_message:::sendMessage - ${e.code} ${e.message} to ${pubKey} via snode:${snodeStr}`
     );
     throw e;
   }
@@ -220,7 +220,7 @@ export async function sendMessageToSnode(
   }
 
   window?.log?.info(
-    `loki_message:::sendMessage - Successfully stored message to ${ed25519Str(pubKey)} via ${
+    `bchat_message:::sendMessage - Successfully stored message to ${ed25519Str(pubKey)} via ${
       snode.ip
     }:${snode.port}`
   );

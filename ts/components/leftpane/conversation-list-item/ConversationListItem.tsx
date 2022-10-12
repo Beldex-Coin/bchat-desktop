@@ -104,7 +104,6 @@ const ConversationListItem = (props: Props) => {
     };
   }
   const convoProps = useHeaderItemProps(conversationId);
-  // console.log('convoProps:',convoProps);
   
   const activeAt=convoProps?.activeAt;
   const key = `conversation-item-${conversationId}`;

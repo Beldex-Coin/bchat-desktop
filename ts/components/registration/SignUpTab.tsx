@@ -179,7 +179,6 @@ export const SignUpTab = (props:any) => {
     </div>
   }
  const clickGoBack = () => {
-  console.log("goback")
     setDisplayName('')
     setDisplayNameScreen(0);
     // setAddressScreen(true);

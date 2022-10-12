@@ -44,7 +44,6 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const showResetElements = this.state.errorCount >= MAX_LOGIN_TRIES;
     let checkError:any = this.state.error;
     if(checkError){
-      console.log("error")
       ToastUtils.pushToastError(
       'invalidPassword',
       window.i18n('invalidPassword'),

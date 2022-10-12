@@ -126,8 +126,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       // contacts,
       directContact} = this.props;
       
-    // console.log('conversations conversations', conversations,contacts,"data",searchResults,"getDirectContacts::",directContact);
-
     return (
       <div className="module-conversations-list-content">
         {/* {!conversations || conversations.length === 0 ? null : */}

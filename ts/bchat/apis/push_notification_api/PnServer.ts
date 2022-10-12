@@ -52,7 +52,6 @@ const serverRequest = async (
 
   try {
     const onionResponse = await sendViaOnionToNonSnode(pnServerPubkeyHex, url, fetchOptions);
-    console.log("pn-server:",onionResponse)
     if (
       !onionResponse ||
       !onionResponse.result ||

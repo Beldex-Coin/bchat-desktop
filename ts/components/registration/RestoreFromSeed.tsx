@@ -27,8 +27,6 @@
 // };
 
 // const seedValidation = (props:any) =>{
-//   console.log("props:seedValidation",props)
-//   // console.log("props:seedValidation:seed",seed)
 
 // }
 
@@ -52,7 +50,6 @@
 //           // onSeedChanged={props.onSeedChanged as any}
 //           onSeedChanged={(seed: string) => {
 
-//             console.log("seed:",seed)
 //             props.setSeed(seed)
 //             // setSeed(seed)
 //           }}
