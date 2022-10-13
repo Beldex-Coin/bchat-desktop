@@ -72,7 +72,7 @@ interface State {
 // };
 
 export const PasswordLock = ({
-  pwdLockError,
+  // pwdLockError,
   validatePasswordLock,
 }: {
   pwdLockError: string | null;
@@ -86,13 +86,13 @@ export const PasswordLock = ({
           type="password"
           id="password-lock-input"
           defaultValue=""
-          placeholder="Password"
+          placeholder=""
           style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
 
           data-testid="password-lock-input"
         />
 
-        {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>}
+        {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
        <div className="confirm-Button">
         <BchatButton
           buttonType={BchatButtonType.BrandOutline}

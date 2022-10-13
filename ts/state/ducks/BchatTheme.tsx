@@ -793,7 +793,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-chatIcons:${darkChatIcons};
     --color-toggleOff:${darkToggleOff};
     --color-clearBtn:${darkClearBtn};
-    --color-button:${buttonColor};
+    --button-color:${buttonColor};
     
     --color-leftpaneSetting:${darkLeftpaneSetting};
     --color-rightpaneSetting:${darkRightpaneSetting}
@@ -815,7 +815,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-EmptyContact:${darkEmptyContact}
     --color-audio-record:${darkAudioRecord}
     '--color-seed':${darkSeedColor}
-
   };
 `;
 

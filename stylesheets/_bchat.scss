@@ -126,9 +126,7 @@ textarea {
     }
 
     &.green {
-      // background-color: var(--color-accent-button);
-      // background-color:var(--color-button-green) ;
-      background-image: var(--color-button);
+      background-image: var(--button-color);
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
     }
@@ -182,7 +180,7 @@ textarea {
 
     &.green {
       @include transparent-background(var(--color-button-green));
-      background-image: var(--color-button);
+      background-image: var(--button-color);
       color: white;
     }
 
@@ -1299,6 +1297,7 @@ label {
           font-size: 14px;
           font-family: "Poppins";
           border-radius: 13px;
+          background-image: var(--button-color);
       }
       }
     }

@@ -5,9 +5,8 @@ import { BchatIcon } from './icon';
 import { withTheme } from 'styled-components';
 import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
-import { Constants } from '../bchat';
+// import { Constants } from '../bchat';
 import { BchatSpinner } from './basic/BchatSpinner';
-import { ToastUtils } from '../bchat/utils';
 
 interface State {
   error: string;
@@ -43,11 +42,9 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   public render() {
     const showResetElements = this.state.errorCount >= MAX_LOGIN_TRIES;
     let checkError:any = this.state.error;
+    console.log("checkError:",checkError)
     if(checkError){
-      ToastUtils.pushToastError(
-      'invalidPassword',
-      window.i18n('invalidPassword'),
-    );
+      console.log("checkErrorr:try:",checkError)
     }
     const wrapperClass = this.state.clearDataView
       ? 'clear-data-wrapper'
@@ -79,7 +76,9 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const infoIcon = this.state.clearDataView ? (
       <BchatIcon iconType="warning" iconSize={35} iconColor="#ce0000" />
     ) : (
-      <BchatIcon iconType="lock" iconSize={35} iconColor={Constants.UI.COLORS.GREEN} />
+      <BchatIcon iconType="lock" iconSize={35} 
+      // iconColor={Constants.UI.COLORS.GREEN} 
+      />
     );
     const errorSection = !this.state.clearDataView && (
       <div className="password-prompt-error-section">
@@ -171,19 +170,21 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
         {showResetElements && (
           <>
             <BchatButton
-              text="Reset Database"
+              text={window.i18n('resetDatabase')}
               buttonType={BchatButtonType.BrandOutline}
-              buttonColor={BchatButtonColor.Danger}
+              buttonColor={BchatButtonColor.White}
               onClick={this.initClearDataView}
             />
           </>
         )}
+        <div className="unlock-button">
         <BchatButton
           text={window.i18n('unlock')}
           buttonType={BchatButtonType.BrandOutline}
           buttonColor={BchatButtonColor.Green}
           onClick={this.initLogin}
         />
+        </div>
       </div>
     );
   }

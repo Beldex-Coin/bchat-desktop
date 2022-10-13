@@ -3,6 +3,7 @@ export type LocalizerKeys =
   | 'newSecretGroup'
   | 'userUnbanFailed'
   | 'changePassword'
+  | 'resetDatabase'
   | 'saved'
   | 'startedACall'
   | 'mainMenuWindow'

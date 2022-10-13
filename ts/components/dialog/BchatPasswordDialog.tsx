@@ -3,7 +3,7 @@ import React from 'react';
 import { missingCaseError } from '../../util';
 import { ToastUtils } from '../../bchat/utils';
 import { getPasswordHash } from '../../data/data';
-import { SpacerLG, SpacerSM } from '../basic/Text';
+import {  SpacerSM } from '../basic/Text';
 import autoBind from 'auto-bind';
 import { bchatPassword } from '../../state/ducks/modalDialog';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
@@ -108,7 +108,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
         </div>
 
         <SpacerSM />
-        {this.showError()}
+        {/* {this.showError()} */}
 
         <div className="bchat-modal__button-group">
           <BchatButton text={window.i18n('cancel')} onClick={this.closeDialog} />
@@ -132,20 +132,20 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     return true;
   }
 
-  private showError() {
-    const message = this.state.error;
+  // private showError() {
+  //   const message = this.state.error;
 
-    return (
-      <>
-        {message && (
-          <>
-            <div className="bchat-label warningBg">{message}</div>
-            <SpacerLG />
-          </>
-        )}
-      </>
-    );
-  }
+  //   return (
+  //     <>
+  //       {message && (
+  //         <>
+  //           <div className="bchat-label warningBg">{message}</div>
+  //           <SpacerLG />
+  //         </>
+  //       )}
+  //     </>
+  //   );
+  // }
 
   /**
    * Returns false and set the state error field in the input is not a valid password
@@ -155,6 +155,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // if user did not fill the first password field, we can't do anything
     const errorFirstInput = validatePassword(firstPassword);
     if (errorFirstInput !== null) {
+      ToastUtils.pushToastError('validatePassword',errorFirstInput);
       this.setState({
         error: errorFirstInput,
       });
@@ -171,6 +172,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // no need to validate second password. we just need to check that enteredPassword is valid, and that both password matches
 
     if (enteredPassword !== enteredPasswordConfirm) {
+      ToastUtils.pushToastError('setPasswordInvalid', window.i18n('setPasswordInvalid'));
       this.setState({
         error: window.i18n('setPasswordInvalid'),
       });
@@ -195,12 +197,14 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
   ) {
     // We don't validate oldPassword on change: this is validate on the validatePasswordHash below
     // we only validate the newPassword here
+    console.log("this.validatePassword(newPassword):",this.validatePassword(newPassword));
     if (!this.validatePassword(newPassword)) {
       return;
     }
 
     // Check the retyped password matches the new password
     if (newPassword !== newConfirmedPassword) {
+      ToastUtils.pushToastError('passwordsDoNotMatch', window.i18n('passwordsDoNotMatch'));
       this.setState({
         error: window.i18n('passwordsDoNotMatch'),
       });
