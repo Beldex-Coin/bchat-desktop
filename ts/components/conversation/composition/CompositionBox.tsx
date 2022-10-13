@@ -816,7 +816,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     // Verify message length
     const msgLen = messagePlaintext?.length || 0;
-    if (msgLen === 0 && this.props.stagedAttachments?.length === 0) {
+    if (msgLen === 0 && this.props.stagedAttachments?.length === 0  ) {
+      ToastUtils.pushMessageBodyMissing();
+      return;
+    }
+   
+    
+    if (messagePlaintext.trim().length === 0) {
+
       ToastUtils.pushMessageBodyMissing();
       return;
     }

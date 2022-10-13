@@ -214,7 +214,15 @@ export const SignUpTab = (props:any) => {
     
     }
   }
-
+   const goback=()=>{
+    props.assent(true);
+    clickGoBack();
+    if(displayNameScreen===1)
+    {
+      setPassword("");
+      setRepassword("");
+    }
+   }
   if(displayNameScreen===1)
   {
       return <WalletPassword 
@@ -222,8 +230,8 @@ export const SignUpTab = (props:any) => {
       repassword={repassword}
       setPassword={(e:any)=>setPassword(e)}  
       setRepassword={(e:any)=>setRepassword(e)}
-      backArrow={()=>{props.assent(true);clickGoBack();setRepassword(""),setRepassword("")}}
-      submit={()=>{passValid()}}
+      backArrow={goback}
+      submit={passValid}
       />
   }
 
@@ -234,7 +242,7 @@ export const SignUpTab = (props:any) => {
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 65px'>
         <div className='bchat-registration-goback-icon'>
         {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
-        <GoBackMainMenuButton assent={()=>{props.assent(true);clickGoBack()}} />
+        <GoBackMainMenuButton assent={goback} />
         </div>
         <Flex className="bchat-registration__welcome-bchat">
           {window.i18n('welcomeToYourBchat')}

@@ -266,7 +266,7 @@
     },
     "win": {
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
-      "publisherName": "Oxen Labs",
+      "publisherName": "Beldex team",
       "verifyUpdateCodeSignature": false,
       "icon": "build/bchat.ico",
       "target": [
