@@ -266,7 +266,7 @@
   "failedToRemoveFromModerator": "Failed to remove user from the moderator list",
   "copyMessage": "Copy message text",
   "selectMessage": "Select message",
-  "editGroup": "Edit group",
+  "editGroup": "Edit Group",
   "editGroupName": "Edit group name",
   "updateGroupDialogTitle": "Updating $name$...",
   "showRecoveryPhrase": "Recovery Phrase",

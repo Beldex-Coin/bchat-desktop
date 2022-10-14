@@ -60,6 +60,7 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
       <BchatIconButton
         iconType="send"
         // backgroundColor={'var(--color-compose-view-button-background)'}
+        iconColor='#fff'
         iconSize={'huge2'}
         iconRotation={321}
         borderRadius="300px"

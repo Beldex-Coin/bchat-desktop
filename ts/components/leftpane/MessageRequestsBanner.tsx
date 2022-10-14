@@ -44,10 +44,10 @@ const StyledCircleIcon = styled.div`
 `;
 
 const StyledUnreadCounter = styled.div`
+  color:#fff;
   font-weight: bold;
   border-radius: var(--margins-sm);
   font-size: var(--font-size-xs);
-  border: black solid 1px;
   background-color: var(--color-request-banner-unread-background);
   margin-left: 40px;
   min-width: 22px;

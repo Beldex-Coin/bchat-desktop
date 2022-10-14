@@ -764,6 +764,11 @@ label {
         cursor: pointer;
         color: var(--color-copyIcon);
       }
+      &-display-icon:hover
+      {
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
   }
 

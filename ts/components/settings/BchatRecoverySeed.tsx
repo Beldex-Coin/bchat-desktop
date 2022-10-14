@@ -27,7 +27,7 @@ export const BchatRecoverySeed = () =>
              <p className="bchat-settings-recovery-seed-note">Are you sure you want to access your seed?</p>
              <div className='bchat-settings-recovery-seed-button'>
              <BchatButton
-              text={"Yes, I am Sure!"}
+              text={"Yes, I am sure!"}
               onClick={()=>setVerify(true)}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}

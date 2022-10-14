@@ -394,7 +394,7 @@
   "notificationForConvo": "දැනුම්දීම්",
   "notificationForConvo_all": "සියල්ල",
   "notificationForConvo_disabled": "අබල කර ඇත",
-  "notificationForConvo_mentions_only": "Mentions only",
+  "notificationForConvo_mentions_only": "Mentions Only",
   "onionPathIndicatorTitle": "Path",
   "onionPathIndicatorDescription": "BChat hides your IP by bouncing your messages through several Service Nodes in BChat's decentralized network. These are the countries your connection is currently being bounced through:",
   "unknownCountry": "නොදන්නා රටකි",

@@ -67,9 +67,9 @@ export const BchatNicknameDialog = (props: Props) => {
         id="nickname-modal-input"
         value={nickname}
         placeholder={window.i18n('nicknamePlaceholder')}
-        // onKeyUp={e => {
-        //   void onNicknameInput(_.cloneDeep(e));
-        // }}
+        onKeyUp={e => {
+          void onNicknameInput(_.cloneDeep(e));
+        }}
         style={{borderBottom:"1px solid"}}
         onChange={e => {
           void onNicknameInput(_.cloneDeep(e));
