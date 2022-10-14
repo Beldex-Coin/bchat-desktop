@@ -76,7 +76,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const infoIcon = this.state.clearDataView ? (
       <BchatIcon iconType="warning" iconSize={35} iconColor="#ce0000" />
     ) : (
-      <BchatIcon iconType="lock" iconSize={35} 
+      <BchatIcon iconType="lock" iconSize={30} 
       // iconColor={Constants.UI.COLORS.GREEN} 
       />
     );

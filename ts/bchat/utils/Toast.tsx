@@ -7,6 +7,7 @@ import { SectionType, showLeftPaneSection, showSettingsSection } from '../../sta
 
 // if you push a toast manually with toast...() be sure to set the type attribute of the BchatToast component
 export function pushToastError(id: string, title: string, description?: string) {
+  console.log("Er?:")
   toast.error(
     <BchatToast title={title} description={description} type={BchatToastType.Error} />,
     { toastId: id, updateId: id }
@@ -16,7 +17,7 @@ export function pushToastError(id: string, title: string, description?: string) 
 export function pushToastWarning(id: string, title: string, description?: string) {
   toast.warning(
     <BchatToast title={title} description={description} type={BchatToastType.Warning} />,
-    { toastId: id, updateId: id ,autoClose:100000000000}
+    { toastId: id, updateId: id }
   );
 }
 
@@ -51,7 +52,7 @@ export function pushToastSuccess(
       type={BchatToastType.Success}
       icon={icon}
     />,
-    { toastId: id, updateId: id }
+    { toastId: id, updateId: id ,autoClose:100000000000}
   );
 }
 

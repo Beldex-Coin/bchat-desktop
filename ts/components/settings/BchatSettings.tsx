@@ -88,7 +88,6 @@ export const PasswordLock = ({
           defaultValue=""
           placeholder=""
           style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
-
           data-testid="password-lock-input"
         />
 

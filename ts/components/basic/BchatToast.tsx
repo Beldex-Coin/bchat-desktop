@@ -48,7 +48,7 @@ export const BchatToast = (props: Props) => {
   const { title, description, type, icon } = props;
 
   const toastDesc = description ? description : '';
-  const toastIconSize = toastDesc ? 'huge' : 'medium';
+  const toastIconSize = toastDesc ? 'huge' : 'large';
 
   // Set a custom icon or allow the theme to define the icon
   let toastIcon = icon || undefined;
@@ -69,6 +69,7 @@ export const BchatToast = (props: Props) => {
         break;
       case BchatToastType.Warning:
         toastIcon = 'warning';
+        toastColor = '#ff3c3c'
         break;
       default:
         toastIcon = 'info';
