@@ -17,4 +17,5 @@ export const getShowRecoveryPhrasePrompt = createSelector(
 export const getHideMessageRequestBanner = createSelector(
   getUserConfig,
   (state: UserConfigState): boolean => state.hideMessageRequests
+  
 );

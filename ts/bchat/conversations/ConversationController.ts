@@ -82,9 +82,16 @@ export class ConversationController {
     if (!this._initialFetchComplete) {
       throw new Error('getConversationController().get() needs complete initial fetch');
     }
+    
 
     let conversation = this.conversations.get(id);
     if (conversation) {
+      // console.log('conversation ::',conversation.attributes);
+      // console.log("time", Date.now());
+      // conversation.set({
+      //   active_at: Date.now(),
+      // });
+      
       return conversation;
     }
 
@@ -222,12 +229,18 @@ export class ConversationController {
     // so conversation still exists (useful for medium groups members or opengroups) but is not shown on the UI
     if (conversation.isPrivate()) {
       window.log.info(`deleteContact isPrivate, marking as inactive: ${id}`);
+    
+      // conversation.set({
+      //   active_at: undefined,
+      //   // active_at:2022,
+      //   isApproved: false,
+      //   // Deleled:"yes"
 
-      conversation.set({
-        active_at: undefined,
-        isApproved: false,
-      });
-      await conversation.commit();
+      // });
+      // await conversation.commit();
+      await removeConversation(id);
+      this.conversations.remove(conversation);
+      window.inboxStore?.dispatch(conversationActions.conversationRemoved(conversation.id));
     } else {
       window.log.info(`deleteContact !isPrivate, removing convo from DB: ${id}`);
 
@@ -235,6 +248,8 @@ export class ConversationController {
       window.log.info(`deleteContact !isPrivate, convo removed from DB: ${id}`);
 
       this.conversations.remove(conversation);
+      // this.conversations.remove(id);
+      
       if (window?.inboxStore) {
         window.inboxStore?.dispatch(
           conversationActions.conversationChanged({

@@ -319,7 +319,7 @@ export function showChangeNickNameByConvoId(conversationId: string) {
 
 export async function deleteAllMessagesByConvoIdNoConfirmation(conversationId: string) {
   const conversation = getConversationController().get(conversationId);
-  await removeAllMessagesInConversation(conversationId);
+  // await removeAllMessagesInConversation(conversationId);
   window.inboxStore?.dispatch(conversationReset(conversationId));
 
   // destroy message keeps the active timestamp set so the
@@ -327,11 +327,13 @@ export async function deleteAllMessagesByConvoIdNoConfirmation(conversationId: s
   conversation.set({
     lastMessage: null,
     unreadCount: 0,
-    mentionedUs: false,
-    isApproved: false,
+    // mentionedUs: false,
+    // isApproved: false,
   });
 
   await conversation.commit();
+  await removeAllMessagesInConversation(conversationId);
+
 }
 
 export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: string) {

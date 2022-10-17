@@ -227,7 +227,8 @@ export async function updateWalletAddressInConversation(data: ReduxConversationT
 
 export async function removeConversation(id: string): Promise<void> {
   const existing = await getConversationById(id);
-
+  console.log('existing ::',existing);
+  
   // Note: It's important to have a fully database-hydrated model to delete here because
   //   it needs to delete all associated on-disk files along with the database delete.
   if (existing) {

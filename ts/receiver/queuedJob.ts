@@ -6,12 +6,14 @@ import _ from 'lodash';
 import { getConversationController } from '../bchat/conversations';
 import { ConversationModel, ConversationTypeEnum } from '../models/conversation';
 import { MessageModel, sliceQuoteText } from '../models/message';
-import { getMessageCountByType, getMessagesBySentAt } from '../../ts/data/data';
+import {
+  //  getMessageCountByType, 
+   getMessagesBySentAt } from '../../ts/data/data';
 
 import { SignalService } from '../protobuf';
 import { UserUtils } from '../bchat/utils';
-import { showMessageRequestBanner } from '../state/ducks/userConfig';
-import { MessageDirection } from '../models/messageType';
+// import { showMessageRequestBanner } from '../state/ducks/userConfig';
+// import { MessageDirection } from '../models/messageType';
 import { LinkPreviews } from '../util/linkPreviews';
 import { GoogleChrome } from '../util';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
@@ -243,18 +245,18 @@ async function handleRegularMessage(
   if (type === 'incoming') {
     if (conversation.isPrivate()) {
       updateReadStatus(message);
-      const incomingMessageCount = await getMessageCountByType(
-        conversation.id,
-        MessageDirection.incoming
-      );
-      const isFirstRequestMessage = incomingMessageCount < 2;
-      if (
-        conversation.isIncomingRequest() &&
-        isFirstRequestMessage &&
-        window.inboxStore?.getState().userConfig.hideMessageRequests
-      ) {
-        window.inboxStore?.dispatch(showMessageRequestBanner());
-      }
+      // const incomingMessageCount = await getMessageCountByType(
+      //   conversation.id,
+      //   MessageDirection.incoming
+      // );
+      // const isFirstRequestMessage = incomingMessageCount < 2;
+      // if (
+      //   conversation.isIncomingRequest() &&
+      //   isFirstRequestMessage &&
+      //   window.inboxStore?.getState().userConfig.hideMessageRequests
+      // ) {
+      //   window.inboxStore?.dispatch(showMessageRequestBanner());
+      // }
 
       // For edge case when messaging a client that's unable to explicitly send request approvals
       if (conversation.isOutgoingRequest()) {

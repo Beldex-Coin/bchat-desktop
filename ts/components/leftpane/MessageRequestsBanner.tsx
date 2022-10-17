@@ -110,7 +110,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
   const hideRequestBanner = useSelector(getHideMessageRequestBanner); 
 
-  console.log("hideRequestBanner :: ",hideRequestBanner,"    conversationRequestsUnread:: ",conversationRequestsUnread);
+  // console.log("hideRequestBanner :: ",hideRequestBanner,"    conversationRequestsUnread:: ",conversationRequestsUnread);
 
   if (hideRequestBanner || !conversationRequestsUnread ) {
     return null;
