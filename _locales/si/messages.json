@@ -310,7 +310,7 @@
   "connectingToServer": "සම්බන්ධ වෙමින්...",
   "connectToServerSuccess": "විවෘත සමූහයට සාර්ථකව සම්බන්ධ විය",
   "setPasswordFail": "මුරපදය සැකසීමට අසමත් විය",
-  "passwordLengthError": "Password must be between 6 and 64 characters long",
+  "passwordLengthError": "Password must be between 4 and 26 characters long",
   "passwordTypeError": "Password must be a string",
   "passwordCharacterError": "Password must only contain letters, numbers and symbols",
   "remove": "ඉවත් කරන්න",

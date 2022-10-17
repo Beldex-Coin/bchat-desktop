@@ -310,7 +310,7 @@
   "connectingToServer": "Connecting...",
   "connectToServerSuccess": "Successfully connected to social group",
   "setPasswordFail": "Failed to set password",
-  "passwordLengthError": "Password must be between 6 and 64 characters long",
+  "passwordLengthError": "Password must be between 4 and 26 characters long",
   "passwordTypeError": "Password must be a string",
   "passwordCharacterError": "Password must only contain letters, numbers and symbols",
   "remove": "Remove",

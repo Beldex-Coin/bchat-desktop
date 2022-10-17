@@ -23,7 +23,7 @@ export const BchatRecoverySeed = () =>
              <img  src="images/bchat/warning.svg"   className="bchat-settings-recovery-seed-danger "/>
              <p className="bchat-settings-recovery-seed-bold">IMPORTANT</p>
              <p className="bchat-settings-recovery-seed-red">Never Give your Seed to Anyone!</p>
-             <p className="bchat-settings-recovery-seed-para">Never input your Seeds into any software or website other than the official beldex wallet or bchat directly from the play store, the beldex website or the beldex GitHub.</p>
+             <p className="bchat-settings-recovery-seed-para">Never input your Seeds into any software or website other than the official beldex wallet or BChat directly from the play store, the beldex website or the beldex GitHub.</p>
              <p className="bchat-settings-recovery-seed-note">Are you sure you want to access your seed?</p>
              <div className='bchat-settings-recovery-seed-button'>
              <BchatButton

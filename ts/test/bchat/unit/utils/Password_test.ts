@@ -60,7 +60,7 @@ describe('Password Util', () => {
       invalid.forEach(pass => {
         assert.strictEqual(
           PasswordUtil.validatePassword(pass),
-          'Password must be between 6 and 64 characters long'
+          'Password must be between 4 and 26 characters long'
         );
       });
     });
