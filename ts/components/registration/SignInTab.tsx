@@ -12,7 +12,6 @@ import {
   signInWithRecovery,
 } from './RegistrationStages';
 // import { RegistrationUserDetails } from './RegistrationUserDetails';
-// import { RestoreSeedInput } from './RestoreFromSeed';
 import { GoBackMainMenuButton } from './SignUpTab';
 // import { TermsAndConditions } from './TermsAndConditions';
 import { BchatInput } from '../basic/BchatInput';

@@ -3,6 +3,18 @@ import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { GoBackMainMenuButton } from './SignUpTab';
+import useKey from 'react-use/lib/useKey';
+
+
+export const gotoNextPage = (props: any) => {
+  if (props.pubKey && props.walletAddress) {
+    useKey((event: KeyboardEvent) => {
+      return event.key === 'Enter';
+    },props.nextFunc);
+  }
+
+
+}
 
 
 export const DisplayIdAndAddress= (props:any) => (
@@ -24,7 +36,7 @@ export const DisplayIdAndAddress= (props:any) => (
         <p className='bchat-registration-welcome-screen-chat-content'>{window.i18n('beldexAddressConnection')}</p>
        </div>
        <BchatButton
-        onClick={props.nextFunc}
+        onClick={gotoNextPage(props)}
         buttonType={BchatButtonType.Brand}
         buttonColor={BchatButtonColor.Green}
         text={window.i18n('next')}

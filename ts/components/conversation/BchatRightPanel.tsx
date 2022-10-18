@@ -324,7 +324,7 @@ export const BchatRightPanelWithDetails = () => {
             </svg>
           </div>
           {/* {window.i18n('groupMembers')} */}
-          Add Member
+           {window.i18n('addingContacts')}
         </div>
       )}
 

@@ -55,7 +55,7 @@ const ChangeItemLeft = (left: Array<string>): string => {
 const ChangeItem = (change: PropsForGroupUpdateType): string => {
   switch (change.type) {
     case 'name':
-      return window.i18n('titleIsNow', [change.newName || '']);
+      return window.i18n('titleIsNow', [change.newName || '']); 
     case 'add':
       return ChangeItemJoined(change.added);
 

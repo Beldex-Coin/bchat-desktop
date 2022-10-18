@@ -192,26 +192,27 @@ export const PasswordLock = ({
     const enteredPassword = String(
       (document.getElementById('password-lock-input') as HTMLInputElement)?.value
     );
-
     if (!enteredPassword) {
       this.setState({
         pwdLockError: window.i18n('noGivenPassword'),
       });
-
+      ToastUtils.pushToastError(
+        'emptyPassword',
+        window.i18n('emptyPassword'),
+      );
       return false;
     }
 
     // Check if the password matches the hash we have stored
     const hash = await getPasswordHash();
     if (hash && !matchesHash(enteredPassword, hash)) {
+      this.setState({
+        pwdLockError: window.i18n('invalidPassword'),
+      });
       ToastUtils.pushToastError(
         'invalidPassword',
         window.i18n('invalidPassword'),
       );
-      this.setState({
-        pwdLockError: window.i18n('invalidPassword'),
-      });
-
       return false;
     }
 

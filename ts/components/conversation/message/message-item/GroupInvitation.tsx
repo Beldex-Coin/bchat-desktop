@@ -23,14 +23,12 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
     >
       <div className="group-invitation-container" id={`msg-${props.messageId}`}>
         <div className={classNames(classes)}>
-          <div className="contents">
+          <div className="contents"
+            onClick={() => { acceptOpenGroupInvitation(props.acceptUrl, props.serverName)}}>
             <BchatIconButton
               iconType="plus"
               iconColor={'var(--color-accent)'}
               iconSize={'large'}
-              onClick={() => {
-                acceptOpenGroupInvitation(props.acceptUrl, props.serverName);
-              }}
             />
             <span className="group-details">
               <span className="group-name">{props.serverName}</span>

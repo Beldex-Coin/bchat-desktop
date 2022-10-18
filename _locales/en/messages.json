@@ -224,6 +224,7 @@
   "multipleLeftTheGroup": "$name$ left the group",
   "updatedTheGroup": "Group updated",
   "titleIsNow": "Group name is now '$name$'.",
+  "emptyPassword":"Please Enter the password.",
   "joinedTheGroup": "$name$ joined the group.",
   "multipleJoinedTheGroup": "$name$ joined the group.",
   "kickedFromTheGroup": "$name$ was removed from the group.",

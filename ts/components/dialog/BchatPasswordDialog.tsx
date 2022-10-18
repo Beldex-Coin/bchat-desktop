@@ -84,6 +84,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
             placeholder={placeholders[0]}
             onKeyUp={this.onPasswordInput}
             data-testid="password-input"
+            maxLength={26}
           />
           {passwordAction !== 'remove' && (
             <input
@@ -93,6 +94,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               placeholder={placeholders[1]}
               onKeyUp={this.onPasswordConfirmInput}
               data-testid="password-input-confirm"
+              maxLength={26}
             />
           )}
           {passwordAction === 'change' && (
@@ -103,6 +105,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               placeholder={placeholders[2]}
               onKeyUp={this.onPasswordRetypeInput}
               data-testid="password-input-reconfirm"
+              maxLength={26}
             />
           )}
         </div>
@@ -246,7 +249,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     }
     await window.setPassword(null, oldPassword);
 
-    ToastUtils.pushToastWarning(
+    ToastUtils.pushToastSuccess(
       'setPasswordSuccessToast',
       window.i18n('removePasswordTitle'),
       window.i18n('removePasswordToastDescription')

@@ -439,6 +439,7 @@ export type LocalizerKeys =
   | 'trimDatabaseDescription'
   | 'showUserDetails'
   | 'titleIsNow'
+  | 'emptyPassword'
   | 'removePasswordToastDescription'
   | 'recoveryPhrase'
   | 'recoveryKey'

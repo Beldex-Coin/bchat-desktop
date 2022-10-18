@@ -191,6 +191,10 @@ export const UpdateGroupMembersDialog = (props: Props) => {
     return event.key === 'Esc' || event.key === 'Escape';
   }, closeDialog);
 
+  useKey((event: KeyboardEvent) => {
+    return event.key === 'Enter';
+  }, onClickOK);
+
   const onAdd = (member: string) => {
     if (!weAreAdmin) {
       ToastUtils.pushOnlyAdminCanRemove();

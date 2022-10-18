@@ -31,6 +31,8 @@ export const OverlayMessage = () => {
 const ourNumber = useSelector(getOurNumber);
 
 
+useKey('Enter', handleMessageButtonClick);
+
   // const title = window.i18n('newBchat');
   const buttonText = window.i18n('next');
   // const descriptionLong = window.i18n('usersCanShareTheir...');
@@ -40,7 +42,6 @@ const ourNumber = useSelector(getOurNumber);
   const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {
-    // console.log("pubkeyOrOns",pubkeyOrOns);
     
     if ((!pubkeyOrOns && !pubkeyOrOns.length) || !pubkeyOrOns.trim().length) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name

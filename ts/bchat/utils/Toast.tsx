@@ -52,7 +52,7 @@ export function pushToastSuccess(
       type={BchatToastType.Success}
       icon={icon}
     />,
-    { toastId: id, updateId: id ,autoClose:100000000000}
+    { toastId: id, updateId: id }
   );
 }
 

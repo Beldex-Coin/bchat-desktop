@@ -6,6 +6,7 @@ import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { useKey } from 'react-use';
 
 export interface BchatConfirmDialogProps {
   message?: string;
@@ -98,6 +99,10 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
+
+  useKey((event: KeyboardEvent) => {
+    return event.key === 'Enter';
+  },onClickOkHandler);
 
   return (
     <BchatWrapperModal

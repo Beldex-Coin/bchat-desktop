@@ -140,6 +140,7 @@ textarea {
       background-color: var(--color-background-primary);
       color: var(--color-text);
       border-radius: 10px;
+      background-image: var(--button-color);
 
       .bchat-icon {
         fill: var(--color-foreground-primary);
@@ -702,6 +703,10 @@ label {
       margin-top: $bchat-margin-xs;
       font-family: $bchat-font-poppin-medium;
     }
+  }
+
+  &__input-group {
+    width: 87%;
   }
 }
 

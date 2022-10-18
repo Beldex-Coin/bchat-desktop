@@ -96,7 +96,7 @@ export const BchatInput = (props: Props) => {
         onBlur={updateInputValue}
         onKeyPress={event => {
           if (event.key === 'Enter' && props.onEnterPressed) {
-            props.onEnterPressed();
+            props.onEnterPressed(); 
           }
         }}
       />

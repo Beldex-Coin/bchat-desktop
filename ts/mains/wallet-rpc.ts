@@ -122,7 +122,7 @@ return requestData;
    await createWallet(props.displayName,props.password, 'English',"create_wallet");
 
     let getAddress = await walletRPC("get_address");
-    let mnemonic=await walletRPC("query_key", { key_type: "mnemonic" });
+    let mnemonic = await walletRPC("query_key", { key_type: "mnemonic" });
     localStorage.setItem("userAddress",getAddress.result.address);
 
     // View key and Spend key

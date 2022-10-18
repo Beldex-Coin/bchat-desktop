@@ -74,6 +74,10 @@
         fill: var(--color-text-opposite);
       }
     }
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
  
 }
