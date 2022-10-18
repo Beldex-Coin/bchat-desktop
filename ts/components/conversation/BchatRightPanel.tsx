@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import _ from 'lodash';
 // tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
@@ -359,7 +359,15 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <div style={{marginBottom:'14px',width:'90%',overflow:'hidden',borderRadius:'12px'}}>
+        <div style={{ marginBottom: '14px', width: '90%', overflow: 'hidden', borderRadius: '12px' }}>
+          <div style={{
+            position: 'absolute',
+            top: '86.5%',
+            left:'8%'
+          }}>
+            
+            <BchatIcon iconType="leaveGroup" iconSize="small" iconColor='#fc222f' iconRotation={180}/>
+          </div>
         <BchatButton
           text={leaveGroupString}
           buttonColor={BchatButtonColor.Danger}

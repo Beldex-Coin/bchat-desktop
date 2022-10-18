@@ -123,15 +123,22 @@ export class BchatRecording extends React.Component<Props, State> {
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
         <div className="bchat-recording-box">
-        <div className="bchat-recording--actions">
 
-        {isRecording ? (
+        {hasRecording && !isRecording ? (
+          <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
+            {displayTimeString + remainingTimeString}
+            </div>
+          ) : null}
+        <div className="bchat-recording--actions">
+          
+
+         {isRecording ? (
           <div className={classNames('bchat-recording--timer')}>
              <div className="bchat-recording--timer-light" />
             {displayTimeString}
            
           </div>
-        ) : null}
+         ) : null}
 
 
 
@@ -140,16 +147,17 @@ export class BchatRecording extends React.Component<Props, State> {
           
            
             {actionPauseAudio && (
-              <BchatIconButton iconType="pause" iconSize="medium" onClick={actionPauseFn} />
+              <BchatIconButton iconType="pause" iconSize="medium" onClick={actionPauseFn} iconColor="#277AFB"/>
             )}
             {hasRecordingAndPaused && (
-              <BchatIconButton iconType="play" iconSize="medium" onClick={this.playAudio} />
+              <BchatIconButton iconType="play" iconSize="medium" onClick={this.playAudio} iconColor="#277AFB" />
             )}
             {hasRecording && (
               <BchatIconButton
                 iconType="delete"
                 iconSize="medium"
                 onClick={this.onDeleteVoiceMessage}
+                iconColor="#E22A2B"
               />
             )}
           </StyledFlexWrapper>
@@ -157,11 +165,11 @@ export class BchatRecording extends React.Component<Props, State> {
           {actionDefault && <BchatIconButton iconType="microphone" iconSize={'huge'} />}
         </div>
 
-        {hasRecording && !isRecording ? (
+        {/* {hasRecording && !isRecording ? (
           <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
             {displayTimeString + remainingTimeString}
           </div>
-        ) : null}
+        ) : null} */}
 
          {isRecording && (
               <BchatIconButton

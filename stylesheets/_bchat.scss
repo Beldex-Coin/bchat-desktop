@@ -140,7 +140,7 @@ textarea {
       background-color: var(--color-background-primary);
       color: var(--color-text);
       border-radius: 10px;
-      background-image: var(--button-color);
+      // background-image: var(--button-color);
 
       .bchat-icon {
         fill: var(--color-foreground-primary);
@@ -1015,7 +1015,7 @@ label {
 .profile-value {
   width: 86%;
   font-family: $bchat-font-poppin-medium;
-  font-size: 12px;
+  font-size: 14px;
 
 }
 

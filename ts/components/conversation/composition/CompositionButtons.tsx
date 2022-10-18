@@ -61,7 +61,7 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
         iconType="send"
         // backgroundColor={'var(--color-compose-view-button-background)'}
         iconColor='#fff'
-        iconSize={'huge2'}
+        iconSize={'huge'}
         iconRotation={321}
         borderRadius="300px"
         iconPadding="4px"

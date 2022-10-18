@@ -407,7 +407,7 @@
     justify-content: center;
     align-items: center;
   animation: fadein $bchat-transition-duration;
-  padding-left: 20px;
+  padding-left: 15px;
 
   &---scale {
     animation: scaling 2s ease-in-out;
@@ -457,7 +457,7 @@
   &-box {
     padding: 10px;
     display: flex;
-    width: 94%;
+    width: 93%;
     background-color: var(--color-composeMsgInput);
     margin-left: 13px;
     height: 47px;
@@ -473,6 +473,7 @@
     width: $actions-element-size;
     height: $actions-element-size;
     border-radius: 50%;
+    margin-right: 50px;
 
     .bchat-button {
       animation: fadein $bchat-transition-duration;
@@ -549,7 +550,7 @@
       animation: fadein $bchat-transition-duration;
 
       @media (-webkit-min-device-pixel-ratio: 1.6) {
-        margin-left: auto;
+        // margin-left: auto;
       }
     }
 

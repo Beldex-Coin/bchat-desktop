@@ -3,21 +3,22 @@ import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { GoBackMainMenuButton } from './SignUpTab';
-import useKey from 'react-use/lib/useKey';
+// import useKey from 'react-use/lib/useKey';
 
 
-export const gotoNextPage = (props: any) => {
-  if (props.pubKey && props.walletAddress) {
-    useKey((event: KeyboardEvent) => {
-      return event.key === 'Enter';
-    },props.nextFunc);
-  }
+// export const gotoNextPage = (props: any) => {
+//   if (props.pubKey && props.walletAddress) {
+//     useKey((event: KeyboardEvent) => {
+//       return event.key === 'Enter';
+//     },props.nextFunc);
+//   }
 
 
-}
+// }
 
 
-export const DisplayIdAndAddress= (props:any) => (
+export const DisplayIdAndAddress = (props: any) =>
+(
     <div className='bchat-registration-welcome-screen-container'>
         <div className='bchat-registration-welcome-screen-goback'>
           <GoBackMainMenuButton assent={()=>{props.assentAndGoBack()}} />
@@ -36,7 +37,7 @@ export const DisplayIdAndAddress= (props:any) => (
         <p className='bchat-registration-welcome-screen-chat-content'>{window.i18n('beldexAddressConnection')}</p>
        </div>
        <BchatButton
-        onClick={gotoNextPage(props)}
+        onClick={props.nextFunc}
         buttonType={BchatButtonType.Brand}
         buttonColor={BchatButtonColor.Green}
         text={window.i18n('next')}
@@ -47,15 +48,12 @@ export const DisplayIdAndAddress= (props:any) => (
 
 export const Icons = (props:any)=>
 <div onClick={()=>props.iconfunc()} style={{
-    // background:`url(images/bchat/${props.icon}.svg) no-repeat`,
      width: "40px",
     height: "40px",
     backgroundColor:'var(--color-inboxBgColor)',
     backgroundSize:"16px",
     borderRadius:"35px",
     backgroundPosition:"center",
-    // top: (props.icon=='paste')?'327px':"365px",  //377
-    // right: (props.icon=='paste')?'106px':'135px',
     cursor:'pointer',
     marginTop:'207px',
     marginLeft:'35px',
