@@ -20,7 +20,9 @@ export const AudioPlayerWithEncryptedFile = (props: {
 }) => {
   const { messageId, contentType, src } = props;
   const dispatch = useDispatch();
-  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [playbackSpeed, 
+    setPlaybackSpeed
+  ] = useState(1.0);
   const { urlToLoad } = useEncryptedFileFetch(src, contentType, false);
   const player = useRef<H5AudioPlayer | null>(null);
 
@@ -83,6 +85,9 @@ export const AudioPlayerWithEncryptedFile = (props: {
       triggerPlayNextMessageIfNeeded(messageId);
     }
   };
+ 
+  console.log(onEnded);
+  
 
   return (
     <H5AudioPlayer
@@ -98,6 +103,14 @@ export const AudioPlayerWithEncryptedFile = (props: {
       listenInterval={100}
       onEnded={onEnded}
       ref={player}
+      customProgressBarSection={
+          [
+            RHAP_UI.PROGRESS_BAR,
+            RHAP_UI.CURRENT_TIME,
+            <div>/</div>,
+            RHAP_UI.DURATION
+          ]
+        }
       customControlsSection={[
         RHAP_UI.MAIN_CONTROLS,
         <div className="speedButton" key="togglePlaybackSpeed">
@@ -111,6 +124,8 @@ export const AudioPlayerWithEncryptedFile = (props: {
           />
         </div>,
       ]}
+
+     
       customIcons={{
         play: (
           <BchatIcon iconType="play" iconSize="small" iconColor={'var(--color-text-subtle)'} />
@@ -119,6 +134,19 @@ export const AudioPlayerWithEncryptedFile = (props: {
           <BchatIcon iconType="pause" iconSize="small" iconColor={'var(--color-text-subtle)'} />
         ),
       }}
+    
     />
+
+  //   <H5AudioPlayer
+  //   src={urlToLoad}
+  // customProgressBarSection={
+  //   [
+  //     RHAP_UI.PROGRESS_BAR,
+  //     RHAP_UI.CURRENT_TIME,
+  //     <div>/</div>,
+  //     RHAP_UI.DURATION
+  //   ]
+  // }
+// />
   );
 };

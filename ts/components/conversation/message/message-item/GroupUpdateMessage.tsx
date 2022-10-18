@@ -74,7 +74,7 @@ const ChangeItem = (change: PropsForGroupUpdateType): string => {
 
 export const GroupUpdateMessage = (props: PropsForGroupUpdate) => {
   const { change, messageId, receivedAt, isUnread } = props;
-
+ 
   return (
     <ReadableMessage
       messageId={messageId}

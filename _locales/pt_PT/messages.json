@@ -147,7 +147,7 @@
   "tookAScreenshot": "$name$ took a screenshot",
   "savedTheFile": "Media saved by $name$",
   "linkPreviewsTitle": "Send Link Previews",
-  "linkPreviewDescription": "Previews are supported for most urls",
+  "linkPreviewDescription": "Previews are supported for Imgur,Instagram,Pinterest,Reddit and YouTube links",
   "linkPreviewsConfirmMessage": "Você não terá proteção total de metadados ao enviar visualizações de links.",
   "mediaPermissionsTitle": "Microfone",
   "mediaPermissionsDescription": "Permitir acesso ao microfone",

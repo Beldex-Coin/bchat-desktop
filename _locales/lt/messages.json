@@ -147,7 +147,7 @@
   "tookAScreenshot": "$name$ padarė ekrano kopiją",
   "savedTheFile": "$name$ įsirašė mediją",
   "linkPreviewsTitle": "Siųsti nuorodų peržiūras",
-  "linkPreviewDescription": "Previews are supported for most urls",
+  "linkPreviewDescription": "Previews are supported for Imgur,Instagram,Pinterest,Reddit and YouTube links",
   "linkPreviewsConfirmMessage": "You will not have full metadata protection when sending link previews.",
   "mediaPermissionsTitle": "Microphone",
   "mediaPermissionsDescription": "Allow access to microphone",

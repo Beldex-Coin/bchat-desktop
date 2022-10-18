@@ -138,6 +138,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   if (showBackButton) {
     return null;
   }
+  let  width = window.innerWidth;
   return (
     <div
       role="button"
@@ -146,7 +147,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           id: props.triggerId,
           event: e,
           position: {
-            x: 1150,
+            x: width-300,
             y:   55,
           },
         });
@@ -155,7 +156,8 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
       style={{marginTop:'8px'}}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize={35}  />
+      
+      <BchatIconButton iconType="ellipses" iconSize={35} />
     </div>
   );
 };
@@ -240,7 +242,7 @@ const CallButton = () => {
       iconType="phone"
       iconSize="large"
       iconPadding="2px"
-      margin="0 25px 0 0"
+      margin="0 10px 0 0"
       onClick={() => {
         void callRecipient(selectedConvoKey, canCall);
       }}

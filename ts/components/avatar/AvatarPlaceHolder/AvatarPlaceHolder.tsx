@@ -75,7 +75,7 @@ export const AvatarPlaceHolder = (props: Props) => {
 
   const diameterWithoutBorder = diameter - 2;
   const viewBox = `0 0 ${diameter} ${diameter}`;
-  const r = diameter / 2;
+  // const r = diameter / 2;
   const rWithoutBorder = diameterWithoutBorder / 2;
 
   if (loading || !hash) {
@@ -83,7 +83,16 @@ export const AvatarPlaceHolder = (props: Props) => {
     return (
       <svg viewBox={viewBox}>
         <g id="UrTavla">
-          <circle
+        <rect
+          rx={10}
+          ry={10}
+          r={rWithoutBorder}
+          fill="#d2d2d3"
+          style={{width:'100%',height:"100%"}}
+          stroke={avatarBorderColor}
+          strokeWidth="1"
+        />
+          {/* <circle
             cx={r}
             cy={r}
             r={rWithoutBorder}
@@ -91,7 +100,7 @@ export const AvatarPlaceHolder = (props: Props) => {
             shapeRendering="geometricPrecision"
             stroke={avatarBorderColor}
             strokeWidth="1"
-          />
+          /> */}
         </g>
       </svg>
     );
@@ -104,11 +113,12 @@ export const AvatarPlaceHolder = (props: Props) => {
   const bgColorIndex = hash % avatarPlaceholderColors.length;
 
   const bgColor = avatarPlaceholderColors[bgColorIndex];
+// console.log(bgColor);
 
   return (
     <svg viewBox={viewBox}>
       <g id="UrTavla">
-        <circle
+        {/* <circle
           cx={r}
           cy={r}
           r={rWithoutBorder}
@@ -116,7 +126,18 @@ export const AvatarPlaceHolder = (props: Props) => {
           shapeRendering="geometricPrecision"
           stroke={avatarBorderColor}
           strokeWidth="1"
+        /> */}
+        <rect
+          rx={10}
+          ry={10}
+          r={rWithoutBorder}
+          fill={bgColor}
+          style={{width:'100%',height:"100%"}}
+          stroke={avatarBorderColor}
+          strokeWidth="1"
         />
+        {/* <rect x="50" y="20" rx="20" ry="20" width="150" height="150" style={{fill:'red',stroke:'black',strokeWidth:5,opacity:0.5}} /> */}
+        {/* <rect x="120" width="100" height="100" rx="15"  fill='#fff' /> */}
         <text
           fontSize={fontSize}
           x="50%"

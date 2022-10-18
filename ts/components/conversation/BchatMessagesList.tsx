@@ -101,7 +101,7 @@ export const BchatMessagesList = (props: {
             />
           ) : null;
         if (messageProps.message?.messageType === 'group-notification') {
-          const msgProps = messageProps.message.props as PropsForGroupUpdate;
+          const msgProps = messageProps.message.props as PropsForGroupUpdate;          
           return [<GroupUpdateMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
 

@@ -598,7 +598,8 @@ $rhap_font-family: inherit !default;
 }
 
 .rhap_total-time {
-  display: none;
+  // display: none;
+  display: block;
 }
 
 .rhap_current-time {
