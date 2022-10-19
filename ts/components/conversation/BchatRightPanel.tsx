@@ -24,7 +24,7 @@ import { getSelectedConversation, isRightPanelShowing } from '../../state/select
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+// import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
@@ -359,22 +359,21 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <div style={{ marginBottom: '14px', width: '90%', overflow: 'hidden', borderRadius: '12px' }}>
-          <div style={{
-            position: 'absolute',
-            top: '86.5%',
-            left:'8%'
-          }}>
+        <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}>
+          <div className='group-settings__leaveBtn'>
             
-            <BchatIcon iconType="leaveGroup" iconSize="small" iconColor='#fc222f' iconRotation={180}/>
+            <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
+            <div  onClick={deleteConvoAction} style={{marginLeft:'5px'}}>
+           { leaveGroupString}
+              </div>
           </div>
-        <BchatButton
+        {/* <BchatButton
           text={leaveGroupString}
           buttonColor={BchatButtonColor.Danger}
           disabled={isKickedFromGroup || left}
           buttonType={BchatButtonType.SquareOutline}
           onClick={deleteConvoAction}
-        />
+        /> */}
         </div>
       )}
     </div>
