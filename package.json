@@ -116,6 +116,7 @@
     "react-redux": "7.2.1",
     "react-select": "^5.4.0",
     "react-toastify": "^6.0.9",
+    "react-tooltip": "^4.4.2",
     "react-use": "^17.2.1",
     "react-virtualized": "9.22.3",
     "read-last-lines-ts": "^1.2.1",
@@ -284,9 +285,13 @@
         "StartupWMClass": "BChat"
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
-      "target": 
-        ["deb", "rpm", "freebsd","AppImage"]
-          },
+      "target": [
+        "deb",
+        "rpm",
+        "freebsd",
+        "AppImage"
+      ]
+    },
     "asarUnpack": [
       "node_modules/better-sqlite3/build/Release/better_sqlite3.node",
       "ts/mains/main_node.js"

@@ -62,6 +62,7 @@ import { Storage } from '../../util/storage';
 import { SettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 
+import ReactTooltip from 'react-tooltip';
 
 // state/ducks/section.tsx
 
@@ -144,7 +145,8 @@ const Section = (props: { type: SectionType }) => {
   switch (type) {
     case SectionType.Message:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  data-tip="Chat"  >
+
           <BchatIconButton
             iconSize="large"
             dataTestId="message-section"
@@ -180,7 +182,7 @@ const Section = (props: { type: SectionType }) => {
     //   );
     case SectionType.Closedgroup:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Closed Group" >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -194,7 +196,7 @@ const Section = (props: { type: SectionType }) => {
       );
     case SectionType.Opengroup:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Open Group" >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -210,7 +212,7 @@ const Section = (props: { type: SectionType }) => {
 
     case SectionType.Settings:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Settings" >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -474,7 +476,7 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Settings} />
 
 
-
+        <ReactTooltip  className="tooltipDesign"   />
         <BchatToastContainer />
 
         {/* <Section type={SectionType.PathIndicator} /> */}

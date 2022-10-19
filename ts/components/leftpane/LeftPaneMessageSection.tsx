@@ -121,10 +121,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
   public renderConversations() {
     const { 
-      // conversations ,
+      conversations ,
       // searchResults,
       // contacts,
       directContact} = this.props;
+      // console.log("conversations,contacts ::",conversations?.length,contacts);
+      
       
     return (
       <div className="module-conversations-list-content">
@@ -139,7 +141,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           }}
         />
           {/* {!conversations || conversations.length === 0 || searchResults ? */}
-          {directContact.length===0 ?
+          {directContact.length===0 && conversations?.length===0?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>
             </div>

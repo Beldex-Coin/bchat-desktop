@@ -65,7 +65,20 @@ export const LeftPaneSectionContainer = styled.div`
     display: flex;
     align-items: center;
   }
+   .tooltipDesign{
+    background-color:#ffffff38 !important;
+    padding: 1px 6px !important;
+    color:black;
 
+   &.place-top {
+ &:after {
+ border-top-color: #ffffff38 !important;
+ border-top-style: solid !important;
+ border-top-width: 6px !important;
+ }
+ }
+   }
+  
   // this is not ideal but it seems that nth-0last-child does not work
   #onion-path-indicator-led-id {
     margin: auto auto 0px auto;
