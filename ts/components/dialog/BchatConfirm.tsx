@@ -56,9 +56,14 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     closeAfterInput = true,
   } = props;
 
+  
+  
   const [isLoading, setIsLoading] = useState(false);
 
-  const okText = props.okText || window.i18n('ok');
+  // const okText = props.okText || window.i18n('ok');
+  const deletebtn="Delete"===title.slice(0,6)?"Delete":null;
+  const okText =deletebtn || props.okText || window.i18n('ok');
+
   const cancelText = props.cancelText || window.i18n('cancel');
   const showHeader = !!props.title;
 

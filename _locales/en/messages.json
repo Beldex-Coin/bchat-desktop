@@ -288,7 +288,7 @@
   "changePasswordTitle": "Changed Password",
   "removePasswordTitle": "Removed Password",
   "setPasswordToastDescription": "Your password has been set. Please keep it safe.",
-  "changePasswordToastDescription": "Your password has been changed. Please keep it safe.",
+  "changePasswordToastDescription": "Your password has been changed Successfully!. Please keep it safe.",
   "removePasswordToastDescription": "You have removed your password.",
   "publicChatExists": "You are already connected to this social group",
   "connectToServerFail": "Couldn't join group",
