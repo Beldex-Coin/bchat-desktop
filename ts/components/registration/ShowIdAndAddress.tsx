@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
+import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { GoBackMainMenuButton } from './SignUpTab';
 // import useKey from 'react-use/lib/useKey';
 
@@ -47,21 +48,7 @@ export const DisplayIdAndAddress = (props: any) =>
 );
 
 export const Icons = (props:any)=>
-<div onClick={()=>props.iconfunc()} style={{
-     width: "40px",
-    height: "40px",
-    backgroundColor:'var(--color-inboxBgColor)',
-    backgroundSize:"16px",
-    borderRadius:"35px",
-    backgroundPosition:"center",
-    cursor:'pointer',
-    marginTop:'207px',
-    marginLeft:'35px',
-    color:'var(--color-copyIcon)',
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-}}>
+<div onClick={()=>props.iconfunc()}  data-tip="Copy" className='iconBox'>
   <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
   <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
 </svg>
@@ -122,10 +109,11 @@ export const ShowRecoveryPhase= (props:any) => {
             alignItems="center"
             flexDirection="row"
             height="100%"
-            width='10%'>
-          <Icons icon={"copy_icon"} iconfunc={()=>{props.copySeed(props.mnemonic),setSeedCopied(true),pushUserCopySuccess()}}/>
+            width='10%'> 
+          <Icons icon={"copy_icon"} iconfunc={()=>{props.copySeed(props.mnemonic),setSeedCopied(true),pushUserCopySuccess()}} />
         </Flex> 
       </Flex>
+      <BchatToolTip />
       </div>
 
 

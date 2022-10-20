@@ -207,6 +207,27 @@
       width: 75%;
       margin: 0 auto;
       text-align: center;
+
+      .iconBox
+      {
+        width: 40px;
+        height: 40px;
+        background-color:var(--color-inboxBgColor);
+        background-size:16px;
+        border-radius:35px;
+        background-position:center;
+        cursor:pointer;
+        margin-top:207px;
+        margin-Left:35px;
+        color:var(--color-copyIcon);
+        display: flex;
+        align-items:center;
+        justify-content: center;
+      }
+      .iconBox:hover{
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
 
     &-welcome-screen-goback {
@@ -325,6 +346,12 @@
       align-items: center;
       margin-left: 1.5vw;
       position: relative;
+
+      .paste-icon:hover
+      {
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
 
     &-icon {

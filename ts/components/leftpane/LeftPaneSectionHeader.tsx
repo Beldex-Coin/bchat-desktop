@@ -21,6 +21,7 @@ import { editProfileModal } from '../../state/ducks/modalDialog';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+import { BchatToolTip } from './ActionsPanel';
 
 
 
@@ -102,7 +103,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   const IsOnline = () => {
     if (SectionType.Settings !== focusedSection) {
-      return <div style={{ margin: "0 15px", width: '20px' }}>
+      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Status">
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
         }} id={''} />
@@ -117,7 +118,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   function Moon() {
     // if (SectionType.Settings !== focusedSection) {
-      return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} >
+      return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" >
         {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
@@ -162,7 +163,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <Moon />
 
         {isMessageSection && !isMessageRequestOverlay && (
-          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }}>
+          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts">
             <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
 
             {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
@@ -171,6 +172,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           </div>
         )}
       </div>
+      <BchatToolTip />
       {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>
   );

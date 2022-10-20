@@ -1,9 +1,10 @@
 import React from 'react';
 // import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 export const Icons = (props: any) =>
-    <div onClick={() => props.iconfunc()} style={{
+    <div onClick={() => props.iconfunc()} className='paste-icon' style={{
         background: `url(images/bchat/${props.icon}.svg) no-repeat`,
         width: "40px",
         height: "40px",
@@ -16,10 +17,11 @@ export const Icons = (props: any) =>
         top: '-92px',
         position: 'absolute',
         cursor: 'pointer'
-    }}></div>
+    }} ></div>
 
 export const ClearIcon = (props: any) => (
     <div onClick={() => props.removeRecoveryPhrase()}
+    data-tip="Paste"
         style={{
             background: `url(images/bchat/clear.svg) no-repeat`,
             width: "10px",
@@ -50,7 +52,7 @@ export const DisplaySeed = (props: any) => (
                     ></textarea>
 
                 </div>
-                <div className='bchat-restore-seed-icon-box'>{<Icons icon={"paste"} iconfunc={props.iconfunc} />}</div>
+                <div className='bchat-restore-seed-icon-box' data-tip="Paste">{<Icons icon={"paste"} iconfunc={props.iconfunc} />}</div>
             </div>
         </>
 
@@ -63,5 +65,6 @@ export const DisplaySeed = (props: any) => (
             // disabled={!enableCompleteSignUp}
             />
         </div>
+        <BchatToolTip />
     </div>
 );

@@ -643,14 +643,11 @@ label {
       align-items: center;
       border-radius: 5px;
       box-shadow: var(--color-bchat-shadow);
-      
-      &:hover {
-        transform: scale(1);
-        color: #1ced23;
-      }
-      
     }
-
+    .copyIconBtn:hover {
+      transform: scale(1.1);
+      color: #1ced23;
+    }
 
     .bchat-button {
       margin: $bchat-margin-xs;

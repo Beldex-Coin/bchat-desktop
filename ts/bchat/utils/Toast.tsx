@@ -126,7 +126,7 @@ export function pushUserUnbanSuccess() {
 
 export function  pushUserCopySuccess()
 {
-  pushToastSuccess('copied', "Copied Successfully");
+  pushToastSuccess('copied', "Copied to clipboard");
 }
 
 export function pushUserUnbanFailure() {

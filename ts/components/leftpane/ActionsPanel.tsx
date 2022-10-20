@@ -400,6 +400,8 @@ async function askEnablingOpengroupPruningIfNeeded() {
   // otherwise nothing to do. the settings is already on or off, but as expected by the user
 }
 
+export const BchatToolTip=()=><ReactTooltip  className="tooltipDesign" delayShow={500} />
+
 /**
  * ActionsPanel is the far left banner (not the left pane).
  * The panel with buttons to switch between the message/contact/settings/theme views
@@ -476,7 +478,7 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Settings} />
 
 
-        <ReactTooltip  className="tooltipDesign"   />
+        <BchatToolTip />
         <BchatToastContainer />
 
         {/* <Section type={SectionType.PathIndicator} /> */}

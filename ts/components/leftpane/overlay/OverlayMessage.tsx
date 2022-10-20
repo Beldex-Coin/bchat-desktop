@@ -10,7 +10,7 @@ import { setOverlayMode } from '../../../state/ducks/section';
 import { PubKey } from '../../../bchat/types';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
-import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
+ import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
@@ -43,12 +43,15 @@ useKey('Enter', handleMessageButtonClick);
 
   async function handleMessageButtonClick() {
     
-    if ((!pubkeyOrOns && !pubkeyOrOns.length) || !pubkeyOrOns.trim().length) {
+    if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
+      console.log("test1");
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
+      console.log("test2");
+     
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
         pubkeyorOnsTrimmed,
@@ -61,15 +64,20 @@ useKey('Enter', handleMessageButtonClick);
       
       // this might be an BNS, validate the regex first
       const mightBeOnsName = new RegExp(onsNameRegex, 'g').test(pubkeyorOnsTrimmed);
-      if (!mightBeOnsName) {
-        ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError'));
-        return;
-      }
+      console.log("mightBeOnsName ::",mightBeOnsName);
+      
+      // if (!mightBeOnsName) {
+      //   ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError'));
+      //   console.log("test3")
+      //   return;
+      // }
+      console.log("test4");
+      
       setLoading(true);
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
-          throw new Error('Got a resolved BNS but the returned entry is not a vlaid bchatID');
+          throw new Error('Got a resolved BNS but the returned entry is not a valid bchatID');
         }
         // this is a pubkey
         await getConversationController().getOrCreateAndWait(
@@ -82,7 +90,9 @@ useKey('Enter', handleMessageButtonClick);
         closeOverlay();
       } catch (e) {
         window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
-        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
+        console.log("test5");
+      
+        // ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
       } finally {
         setLoading(false);
       }
@@ -99,6 +109,7 @@ useKey('Enter', handleMessageButtonClick);
         placeholder={placeholder}
         onChange={setPubkeyOrOns}
         dataTestId="new-bchat-conversation"
+        onPressEnter={handleMessageButtonClick}
       />
 
       <BchatSpinner loading={loading} />

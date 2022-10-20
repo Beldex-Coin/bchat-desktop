@@ -1,0 +1,12 @@
+2022-08-03 07:41:34.012	     0x11097c600	INFO	logging	contrib/epee/src/mlog.cpp:263	New log categories: *:WARNING,net:FATAL,net.http:FATAL,net.p2p:FATAL,net.cn:FATAL,global:INFO,verify:FATAL,serialization:FATAL,logging:INFO,msgwriter:INFO
+2022-08-03 07:41:34.012	     0x11097c600	INFO	logging	contrib/epee/src/mlog.cpp:263	New log categories: *:WARNING,net:FATAL,net.http:FATAL,net.p2p:FATAL,net.cn:FATAL,global:INFO,verify:FATAL,serialization:FATAL,logging:INFO,msgwriter:INFO
+2022-08-03 07:41:34.014	     0x11097c600	ERROR	wallet.rpc	src/wallet/wallet_rpc_server.cpp:3550	Wallet initialization failed: Must specify --wallet-file or --generate-from-json or --wallet-dir
+2022-08-03 07:42:04.850	     0x11240d600	INFO	logging	contrib/epee/src/mlog.cpp:263	New log categories: *:WARNING,net:FATAL,net.http:FATAL,net.p2p:FATAL,net.cn:FATAL,global:INFO,verify:FATAL,serialization:FATAL,logging:INFO,msgwriter:INFO
+2022-08-03 07:42:04.850	     0x11240d600	INFO	logging	contrib/epee/src/mlog.cpp:263	New log categories: *:WARNING,net:FATAL,net.http:FATAL,net.p2p:FATAL,net.cn:FATAL,global:INFO,verify:FATAL,serialization:FATAL,logging:INFO,msgwriter:INFO
+2022-08-03 07:42:04.851	     0x11240d600	WARNING	wallet.rpc	src/wallet/wallet_rpc_server.cpp:3563	Starting wallet RPC server
+2022-08-03 07:42:05.925	     0x11240d600	WARNING	wallet.rpc	src/wallet/wallet_rpc_server.cpp:3559	Shutting down...
+2022-08-03 07:42:06.124	     0x11240d600	INFO	global	src/wallet/wallet_rpc_server.cpp:412	Stopping wallet rpc server
+2022-08-03 07:42:06.159	     0x11240d600	WARNING	wallet.rpc	src/wallet/wallet_rpc_server.cpp:3559	Shutting down...
+2022-08-03 07:42:08.857	     0x11240d600	INFO	global	src/wallet/wallet_rpc_server.cpp:424	Storing wallet...
+2022-08-03 07:42:08.857	     0x11240d600	INFO	global	src/wallet/wallet_rpc_server.cpp:427	Wallet stopped.
+2022-08-03 07:42:08.857	     0x11240d600	WARNING	wallet.rpc	src/wallet/wallet_rpc_server.cpp:3573	Stopped wallet RPC server

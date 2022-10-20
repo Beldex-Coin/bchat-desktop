@@ -267,7 +267,9 @@ export const SignInTab = (props: any) => {
               setDisplayName(sanitizedName);
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
-            onEnterPressed={props.handlePressEnter}
+            // onEnterPressed={props.handlePressEnter}
+            onEnterPressed={continueYourBchat}
+
             inputDataTestId="display-name-input"
           />
           <div>
@@ -303,6 +305,7 @@ export const SignInTab = (props: any) => {
               onValueChanged={(e) => setRestoreDate(e)}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
+
             />
           </div>
           <div style={{ width: '75%', marginLeft: '57px' }}>
