@@ -371,7 +371,7 @@
   "createSecretGroupNamePrompt": "Csoport neve",
   "createSecretGroupPlaceholder": "Enter a secret group name",
   "openSocialURL": "Social Group URL",
-  "enterAnSocialGroupURL": "Enter an social group URL",
+  "enterAnSocialGroupURL": "Enter a social group URL",
   "next": "Tovább",
   "invalidGroupNameTooShort": "Add meg a csoport nevét",
   "invalidGroupNameTooLong": "Please enter a shorter group name",

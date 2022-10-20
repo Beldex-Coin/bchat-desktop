@@ -132,7 +132,7 @@ return requestData;
     // localStorage.setItem("spend_key",JSON.stringify(spend_key));
     // localStorage.setItem("view_key",JSON.stringify(view_key));
 
-    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+    // kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     return mnemonic.result.key;
  }catch(e){
   console.log('exception during wallet-rpc:', e);
@@ -203,9 +203,9 @@ export const restoreWallet = async (displayName: string,password:string, userRec
     if(restoreWallet.error.code === -1)
     restoreWallet=await deleteWallet(displayName,password,userRecoveryPhrase);
   }
-  if(restoreWallet.hasOwnProperty('result')){
-    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
-  }
+  // if(restoreWallet.hasOwnProperty('result')){
+  //   kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+  // }
   return restoreWallet;
 }catch(error){
   throw new HTTPError('exception during wallet-rpc:',error);

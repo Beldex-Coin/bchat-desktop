@@ -131,7 +131,6 @@ export class BchatRecording extends React.Component<Props, State> {
           ) : null}
         <div className="bchat-recording--actions">
           
-
          {isRecording ? (
           <div className={classNames('bchat-recording--timer')}>
              <div className="bchat-recording--timer-light" />

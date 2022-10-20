@@ -93,7 +93,7 @@ useKey('Enter', handleMessageButtonClick);
     <div className="module-left-pane-overlay">
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
       <p className='module-left-pane__chatHeader'>{window.i18n('startConversation')}</p>
-      <p className="module-left-pane__subHeader" >{placeholder}</p>
+      <p className="module-left-pane__subHeader" >{window.i18n('BchatID')}</p>
       <BchatIdEditable
         editable={!loading}
         placeholder={placeholder}

@@ -125,7 +125,7 @@ export async function joinOpenGroupV2WithUIEvents(
     const conversationID = getOpenGroupV2ConversationId(parsedRoom.serverUrl, parsedRoom.roomId);
     if (getConversationController().get(conversationID)) {
       if (showToasts) {
-        ToastUtils.pushToastError('publicChatExists', window.i18n('publicChatExists'));
+        ToastUtils.pushToastWarning('publicChatExists', window.i18n('publicChatExists'));
       }
       return false;
     }

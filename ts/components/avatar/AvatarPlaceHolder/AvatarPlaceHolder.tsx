@@ -88,7 +88,7 @@ export const AvatarPlaceHolder = (props: Props) => {
           ry={10}
           r={rWithoutBorder}
           fill="#d2d2d3"
-          style={{width:'100%',height:"100%"}}
+          style={{width:'90%',height:'90%'}}
           stroke={avatarBorderColor}
           strokeWidth="1"
         />
@@ -132,7 +132,7 @@ export const AvatarPlaceHolder = (props: Props) => {
           ry={10}
           r={rWithoutBorder}
           fill={bgColor}
-          style={{width:'100%',height:"100%"}}
+          style={{width:'90%',height:"90%"}}
           stroke={avatarBorderColor}
           strokeWidth="1"
         />
@@ -140,8 +140,8 @@ export const AvatarPlaceHolder = (props: Props) => {
         {/* <rect x="120" width="100" height="100" rx="15"  fill='#fff' /> */}
         <text
           fontSize={fontSize}
-          x="50%"
-          y="50%"
+          x="45%"
+          y="45%"
           fill="white"
           textAnchor="middle"
           stroke="white"

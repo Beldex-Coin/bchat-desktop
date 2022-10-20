@@ -43,7 +43,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     title = '',
     message = '',
     messageSub = '',
-    okTheme = BchatButtonColor.Primary,
+    // okTheme = BchatButtonColor.Primary,
     closeTheme = BchatButtonColor.White,
     onClickOk,
     onClickClose,
@@ -148,7 +148,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         )}
          <BchatButton
           text={okText}
-          buttonColor={okTheme}
+          buttonColor={BchatButtonColor.Green}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
         />

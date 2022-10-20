@@ -99,7 +99,7 @@ export function pushMessageBodyMissing() {
 }
 
 export function pushCopiedToClipBoard() {
-  pushToastInfo('copiedToClipboard', window.i18n('copiedToClipboard'));
+  pushToastSuccess('copiedToClipboard', window.i18n('copiedToClipboard'));
 }
 
 export function pushRestartNeeded() {
