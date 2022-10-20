@@ -66,13 +66,13 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
   }
    .tooltipDesign{
-    background-color:#ffffff38 !important;
+    background-color:#ffffff03 !important;
     padding: 1px 6px !important;
-    color:black;
+    color: var(--color-text);
 
    &.place-top {
  &:after {
- border-top-color: #ffffff38 !important;
+ border-top-color: #ffffff03 !important;
  border-top-style: solid !important;
  border-top-width: 6px !important;
  }
