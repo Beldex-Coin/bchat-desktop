@@ -133,7 +133,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
             }}
             title={window.i18n('startInTrayTitle')}
             // description={window.i18n('startInTrayDescription')}
-            description={"BChat continues running in the background when you close the window"}
+            description={"After closing the window, BChat runs in the background"}
             active={isStartInTrayActive}
           />
         }

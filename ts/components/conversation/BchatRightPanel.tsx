@@ -213,7 +213,7 @@ export const BchatRightPanelWithDetails = () => {
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-      ? window.i18n('youGotKickedFromGroup')
+      ? window.i18n('youGotKickedFromGroup') 
       : left
         ? window.i18n('youLeftTheGroup')
         : window.i18n('leaveGroup');
@@ -359,11 +359,17 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}>
-          <div className='group-settings__leaveBtn'>
-            
-            <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
-            <div  onClick={deleteConvoAction} style={{marginLeft:'5px'}}>
+        <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
+          <div className='group-settings__leaveBtn'  >
+          {isPublic ?  <BchatIcon
+                iconType="delete"
+                iconSize="tiny"
+                iconColor="#E22A2B"
+              />
+              :
+              <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
+              }
+            <div  style={{marginLeft:'5px'}}>
            { leaveGroupString}
               </div>
           </div>

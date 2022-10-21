@@ -286,7 +286,7 @@ $loading-height: 16px;
 .tooltipDesign{
   background-color:#ffffff03 !important;
   padding: 1px 6px !important;
-  color: var(--color-text);
+  color: var(--color-text)  !important;
     &.place-top {
       &:after {
       border-top-color: #ffffff03 !important;
