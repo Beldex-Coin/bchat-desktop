@@ -172,6 +172,7 @@ export type LocalizerKeys =
   | 'readReceiptSettingTitle'
   | 'copyBchatID'
   | 'timerOption_0_seconds'
+  | 'themeTitle'
   | 'zoomFactorSettingTitle'
   | 'unableToCall'
   | 'callMissedTitle'

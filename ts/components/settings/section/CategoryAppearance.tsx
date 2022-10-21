@@ -99,7 +99,6 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
         <BchatToggleWithDescription
           onClickToggle={() => {
             handleClick()
-
             forceUpdate();
           }}
           // title={window.i18n('spellCheckTitle')}
@@ -108,17 +107,15 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           // description={window.i18n('spellCheckDescription')}
           active={isdark}
         />
-
         <BchatToggleWithDescription
           onClickToggle={() => {
-            window.toggleSpellCheck();
+            dispatch(toggleAudioAutoplay());
             forceUpdate();
           }}
-          title={window.i18n('spellCheckTitle')}
-          description={window.i18n('spellCheckDescription')}
-          active={isSpellCheckActive}
+          title={window.i18n('audioMessageAutoplayTitle')}
+          description={window.i18n('audioMessageAutoplayDescription')}
+          active={audioAutoPlay}
         />
-
         <BchatToggleWithDescription
           onClickToggle={async () => {
             await toggleLinkPreviews();
@@ -140,18 +137,15 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
             active={isStartInTrayActive}
           />
         }
-
         <BchatToggleWithDescription
           onClickToggle={() => {
-            dispatch(toggleAudioAutoplay());
+            window.toggleSpellCheck();
             forceUpdate();
           }}
-          title={window.i18n('audioMessageAutoplayTitle')}
-          description={window.i18n('audioMessageAutoplayDescription')}
-          active={audioAutoPlay}
+          title={window.i18n('spellCheckTitle')}
+          description={window.i18n('spellCheckDescription')}
+          active={isSpellCheckActive}
         />
-
-
         <ZoomingBchatSlider />
         {/* <BchatSettingButtonItem
           title={window.i18n('surveyTitle')}

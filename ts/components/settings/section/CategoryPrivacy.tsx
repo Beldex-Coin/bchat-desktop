@@ -76,6 +76,17 @@ export const SettingsCategoryPrivacy = (props: {
     return (
       <>
         <BchatToggleWithDescription
+          onClickToggle={() => {
+            const old = Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator));
+            window.setSettingValue(SettingsKey.settingsTypingIndicator, !old);
+            forceUpdate();
+          }}
+          title={window.i18n('typingIndicatorsSettingTitle')}
+          // description={window.i18n('typingIndicatorsSettingDescription')}
+          description={window.i18n('typingIndicatorsSettingDescription')}
+          active={Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator))}
+        />
+        <BchatToggleWithDescription
           onClickToggle={async () => {
             await window.toggleMediaPermissions();
             forceUpdate();
@@ -93,7 +104,14 @@ export const SettingsCategoryPrivacy = (props: {
           description={window.i18n('callMediaPermissionsDescription')}
           active={Boolean(window.getCallMediaPermissions())}
         />
-
+        <BchatToggleWithDescription
+          onClickToggle={() => {
+            dispatch(toggleMessageRequests());
+          }}
+          title={window.i18n('hideRequestBanner')}
+          description={window.i18n('hideRequestBannerDescription')}
+          active={useSelector(getHideMessageRequestBanner)}
+        />
         <BchatToggleWithDescription
           onClickToggle={() => {
             const old = Boolean(window.getSettingValue(SettingsKey.settingsReadReceipt));
@@ -102,20 +120,18 @@ export const SettingsCategoryPrivacy = (props: {
           }}
           title={window.i18n('readReceiptSettingTitle')}
           // description={window.i18n('readReceiptSettingDescription')}
-          description={"See and share when messages have been read (enables read receipts in all chat)."}
+          description={window.i18n('readReceiptSettingDescription')}
 
           active={window.getSettingValue(SettingsKey.settingsReadReceipt)}
         />
         <BchatToggleWithDescription
-          onClickToggle={() => {
-            const old = Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator));
-            window.setSettingValue(SettingsKey.settingsTypingIndicator, !old);
+          onClickToggle={async () => {
+            await toggleOpengroupPruning();
             forceUpdate();
           }}
-          title={window.i18n('typingIndicatorsSettingTitle')}
-          // description={window.i18n('typingIndicatorsSettingDescription')}
-          description={"See and share when messages are being typed (applies to all chat)."}
-          active={Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator))}
+          title={window.i18n('pruneSettingTitle')}
+          description={window.i18n('pruneSettingDescription')}
+          active={isOpengroupPruningEnabled}
         />
         <BchatToggleWithDescription
           onClickToggle={() => {
@@ -127,28 +143,11 @@ export const SettingsCategoryPrivacy = (props: {
           description={window.i18n('autoUpdateSettingDescription')}
           active={Boolean(window.getSettingValue(SettingsKey.settingsAutoUpdate))}
         />
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            dispatch(toggleMessageRequests());
-          }}
-          title={window.i18n('hideRequestBanner')}
-          description={window.i18n('hideRequestBannerDescription')}
-          active={useSelector(getHideMessageRequestBanner)}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleOpengroupPruning();
-            forceUpdate();
-          }}
-          title={window.i18n('pruneSettingTitle')}
-          description={window.i18n('pruneSettingDescription')}
-          active={isOpengroupPruningEnabled}
-        />
         {!props.hasPassword && (
           <BchatSettingButtonItem
             title={window.i18n('setAccountPasswordTitle')}
             // description={window.i18n('setAccountPasswordDescription')}
-            description={"Require password to unlock BChat’s screen. you can still receive message notifications while screen lock is enabled. BChat’s notification settings allow you to customize information that is displayed"}
+            description={window.i18n('setAccountPasswordDescription')}
 
             onClick={() => {
               displayPasswordModal('set', props.onPasswordUpdated);

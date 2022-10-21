@@ -305,6 +305,10 @@ $bchat-compose-margin: 20px;
       background-image: var(--button-color);
       margin: 15px auto;
 
+      &:hover {
+        opacity: 0.7;
+      }
+
     }
 
     .bchat-icon .exit {
@@ -475,6 +479,10 @@ $bchat-compose-margin: 20px;
     font-family: $bchat-font-poppin-semibold;
     background-image: var(--button-color);
     margin: 15px auto;
+
+    &:hover {
+      opacity: 0.7;
+    }
 
   }
 

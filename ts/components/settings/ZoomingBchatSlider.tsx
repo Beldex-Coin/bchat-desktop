@@ -39,7 +39,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
    
   
   const customStyles = {
-    option: (provided:any, state:any) => ({
+    option: (provided: any, state: any) => ({
       ...provided,
       // borderBottom: '1px dotted pink',
       // color: state.isSelected ? '#128b17' : 'var(--color-text)',
@@ -77,7 +77,8 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     }),
     menu:(provided:any,) => ({
       ...provided,
-      backgroundColor:"var(--color-inboxBgColor)",
+      // backgroundColor:"var(--color-inboxBgColor)",
+      backgroundColor:"red",
       zIndex:10000
     }),
   }
