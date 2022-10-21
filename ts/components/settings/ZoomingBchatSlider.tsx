@@ -77,8 +77,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     }),
     menu:(provided:any,) => ({
       ...provided,
-      // backgroundColor:"var(--color-inboxBgColor)",
-      backgroundColor:"red",
+      backgroundColor:"var(--color-inboxBgColor)",
       zIndex:10000
     }),
   }
