@@ -145,8 +145,8 @@ const Section = (props: { type: SectionType }) => {
   switch (type) {
     case SectionType.Message:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  data-tip="Chat"  >
-
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}    >
+          <div data-tip="Chat" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="message-section"
@@ -156,6 +156,7 @@ const Section = (props: { type: SectionType }) => {
             onClick={handleClick}
             isSelected={isSelected}
           />
+          </div>
           {unreadMessageCount !== 0 ?<div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
             position: "absolute",
             top: "-1px",
@@ -166,6 +167,7 @@ const Section = (props: { type: SectionType }) => {
             top: "-1px",
             left: "10px",
           }}>+</span></span>}</div> */}
+        
         </div>
       );
     // case SectionType.Contact:
@@ -182,7 +184,8 @@ const Section = (props: { type: SectionType }) => {
     //   );
     case SectionType.Closedgroup:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Closed Group" >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+          <div data-tip="Closed Group" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -192,11 +195,13 @@ const Section = (props: { type: SectionType }) => {
             onClick={handleClick}
             isSelected={isSelected}
           />
+          </div>
         </div>
       );
     case SectionType.Opengroup:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Open Group" >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
+          <div data-tip="Open Group" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -207,12 +212,14 @@ const Section = (props: { type: SectionType }) => {
             isSelected={isSelected}
 
           />
+          </div>
         </div>
       );
 
     case SectionType.Settings:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} data-tip="Settings" >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
+          <div data-tip="Settings" className='btnView' >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -222,6 +229,7 @@ const Section = (props: { type: SectionType }) => {
             onClick={handleClick}
             isSelected={isSelected}
           />
+          </div>
         </div>
       );
     // case SectionType.PathIndicator:
@@ -400,7 +408,7 @@ async function askEnablingOpengroupPruningIfNeeded() {
   // otherwise nothing to do. the settings is already on or off, but as expected by the user
 }
 
-export const BchatToolTip=()=><ReactTooltip  className="tooltipDesign" delayShow={500} />
+export const BchatToolTip=(props:any)=><ReactTooltip  className="tooltipDesign" delayShow={500} place={props.place} effect={props.effect} />
 
 /**
  * ActionsPanel is the far left banner (not the left pane).
@@ -478,7 +486,7 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Settings} />
 
 
-        <BchatToolTip />
+        <BchatToolTip  place="top"  effect="solid"/>
         <BchatToastContainer />
 
         {/* <Section type={SectionType.PathIndicator} /> */}

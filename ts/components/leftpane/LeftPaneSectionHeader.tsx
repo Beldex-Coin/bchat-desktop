@@ -25,6 +25,7 @@ import { BchatToolTip } from './ActionsPanel';
 
 
 
+
 // const SectionTitle = styled.h1`
 //   padding: 0 var(--margins-sm);
 //   flex-grow: 1;
@@ -45,6 +46,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   const isMessageRequestOverlay = overlayMode === 'message-requests';
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
+
+ 
 
   switch (focusedSection) {
     case SectionType.Contact:
@@ -102,8 +105,9 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   }
 
   const IsOnline = () => {
+    
     if (SectionType.Settings !== focusedSection) {
-      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Status">
+      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops">
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
         }} id={''} />
@@ -118,8 +122,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   function Moon() {
     // if (SectionType.Settings !== focusedSection) {
-      return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" >
-        {/* <BchatIconButton
+    return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" >
+      {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
   dataTestId="theme-section"
@@ -127,7 +131,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   onClick={handleClick}
  
 /> */}
-      </div>
+    </div>
 
     // }
     // else {
@@ -172,7 +176,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           </div>
         )}
       </div>
-      <BchatToolTip />
+      <BchatToolTip place="bottom" effect="solid" />
       {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>
   );

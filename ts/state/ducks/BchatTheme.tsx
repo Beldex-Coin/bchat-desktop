@@ -449,6 +449,7 @@ const  ligntDisableText='#B9BABF';
 const lightProfileBgColor = "#F8F8F8";
 const whiteAudioRecord = "#dcdbdb";
 
+
 // Toast Colors 
 const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
 const lightToastErrorMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)";
@@ -799,22 +800,26 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-rightpaneSetting:${darkRightpaneSetting}
     --color-disableText:${darkDisableText};
     --color-password-borderBottom:${darkPasswordBorderBottom}
-
+    --color-audio-record:${darkAudioRecord};
+    --color-seed:${darkSeedColor};
+   
     --color-profile: ${darkProfileBgColor};
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
-    --color-caret:${white}
+    --color-caret:${white};
+   
+
     
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};
     --image-DayNight:${darkDayNight};
     --image-MsgReq:${darkMsgReqImg};
     --image-BlockedContact:${darkBlockedContact};
-    --image-AddContact:${darkAddContact}
-    --image-EmptyContact:${darkEmptyContact}
-    --color-audio-record:${darkAudioRecord}
-    '--color-seed':${darkSeedColor}
+    --image-AddContact:${darkAddContact};
+    --image-EmptyContact:${darkEmptyContact};
+   
+
   };
 `;
 

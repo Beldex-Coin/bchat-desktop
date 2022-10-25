@@ -2,33 +2,45 @@ import styled from 'styled-components';
 
 export const LeftPaneSectionContainer = styled.div`
   width: 100%;
-  height: 8%;
+  height: 60px;
   display: flex;
   flex-direction:row;
   align-items: center;
+  
   border-right: var(--border-bchat);
   overflow-y: hidden;
   background-color: var(--green-color);
   padding:6px 0; 
 
-  .icon-box .bchat-icon-button
-  {
-    padding: 10px;
-    margin: 3px 24px;
-    border-radius: 20px;
-    color:#fff;
+  .isSelected-icon-box .btnView,.icon-box .btnView{
+    border-radius: 66px;
+    width: 48%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    cursor:pointer;
+
   }
-  .icon-box svg:hover
+  .icon-box .btnView:hover
   {
+    background-color:white;
     color:#159B24;
   }
-  .isSelected-icon-box {
-    padding: 10px;
-    margin: 3px 24px;
-    border-radius: 34px;
-    background-color: white;
-    
+
+  .isSelected-icon-box,.icon-box  {
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .isSelected-icon-box .btnView {
+    background-color: white;
+    color:#159B24;
+  }
+
   .unreadCountChatIcon
   {
     position: absolute;
@@ -52,13 +64,13 @@ export const LeftPaneSectionContainer = styled.div`
     color: white;
   }
 
-  .icon-box .bchat-icon-button:hover 
-  {
-    background-color: white;
-    color:#159B24;
-    border-radius: 34px;
+  // .icon-box .bchat-icon-button:hover 
+  // {
+  //   background-color: white;
+  //   color:#159B24;
+  //   border-radius: 34px;
 
-  }
+  // }
 
   .module-avatar {
     height: 80px;

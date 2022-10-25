@@ -113,7 +113,7 @@ export const ShowRecoveryPhase= (props:any) => {
           <Icons icon={"copy_icon"} iconfunc={()=>{props.copySeed(props.mnemonic),setSeedCopied(true),pushUserCopySuccess()}} />
         </Flex> 
       </Flex>
-      <BchatToolTip />
+      <BchatToolTip place="top"  effect="solid"/>
       </div>
 
 

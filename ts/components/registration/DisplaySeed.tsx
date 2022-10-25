@@ -66,6 +66,6 @@ export const DisplaySeed = (props: any) => (
             // disabled={!enableCompleteSignUp}
             />
         </div>
-        <BchatToolTip />
+        <BchatToolTip place="top"  effect="solid"/>
     </div>
 );
