@@ -21,7 +21,8 @@ export const Icons = (props: any) =>
 
 export const ClearIcon = (props: any) => (
     <div onClick={() => props.removeRecoveryPhrase()}
-    data-tip="Paste"
+        data-tip="Clear"
+        className='paste-icon'
         style={{
             background: `url(images/bchat/clear.svg) no-repeat`,
             width: "10px",
