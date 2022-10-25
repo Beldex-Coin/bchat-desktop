@@ -35,7 +35,7 @@ export const BchatRegistrationView = () => {
             >
               {/* <div className="bchat-content-logo" 
               style={{backgroundImage:"url(images/bchat/BChat_image.svg)",width:400,height:370}} /> */}
-            <img src='images/bchat/BChat_image.svg' width={330} height={370}></img>
+            <img src='images/bchat/BChat_image.svg' width={400} height={370}></img>
            </Flex>
           
            <Flex

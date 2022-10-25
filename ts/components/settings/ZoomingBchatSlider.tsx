@@ -44,7 +44,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
       // borderBottom: '1px dotted pink',
       // color: state.isSelected ? '#128b17' : 'var(--color-text)',
       color: state.isSelected ? 'var(--color-text)' : 'var(--color-text)',
-
+      backgroundColor: state.isFocused ?"#00B504":null,
       textAlign:'center',
       padding:"10 2",
       

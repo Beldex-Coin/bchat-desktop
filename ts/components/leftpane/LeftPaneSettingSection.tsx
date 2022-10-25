@@ -212,7 +212,7 @@ const LeftPaneSettingsCategoryRow = (
               <path id="recovery_seed" d="M20.465,3.184H15.9a3.255,3.255,0,0,0-6.147,0H5.184A2.182,2.182,0,0,0,3,5.366V20.648a2.182,2.182,0,0,0,2.184,2.184H20.465a2.182,2.182,0,0,0,2.184-2.184V5.366a2.182,2.182,0,0,0-2.184-2.182Zm-7.641,0a1.091,1.091,0,1,1-1.091,1.091A1.091,1.091,0,0,1,12.824,3.184Zm4.366,7.641H13.915v7.641H11.733V10.824H8.458V8.641h8.733Z" transform="translate(-3 -1)" />
             </svg>
           </i>
-          <span className="left-pane-setting-category-list-item-span">Recovery Seed</span>
+          <span className="left-pane-setting-category-list-item-span">{window.i18n('showRecoveryPhrase')}</span>
         </div>
         <div>
           {BchatSettingCategory.RecoverySeed === focusedSettingsSection && (
