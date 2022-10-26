@@ -118,7 +118,7 @@ const Seed = (props: SeedProps) => {
       </div>
       <SpacerLG />
       <div className="bchat-modal__button-group">
-        <div className='copyIconBtn' onClick={() => { copyRecoveryPhrase(recoveryPhrase); }} data-tip="Copy">
+        <div className='copyIconBtn' onClick={() => { copyRecoveryPhrase(recoveryPhrase); }} data-tip="Copy" data-place="right">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18.151 18.151">
             <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
           </svg>
@@ -135,7 +135,7 @@ const Seed = (props: SeedProps) => {
         /> */}
       </div>
       <SpacerLG />
-      <BchatToolTip place="top" effect="solid" />
+      <BchatToolTip effect="solid" />
       {/* <div className="qr-image">
         <QRCode value={hexEncodedSeed} bgColor={bgColor} fgColor={fgColor} level="L" />
       </div> */}

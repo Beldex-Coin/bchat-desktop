@@ -146,7 +146,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Message:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}    >
-          <div data-tip="Chat" className='btnView'>
+          <div data-tip="Chat" data-place="top" data-offset="{'right':27}" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="message-section"
@@ -185,7 +185,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Closedgroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-          <div data-tip="Closed Group" className='btnView'>
+          <div data-tip="Closed Group" data-place="top" data-offset="{'right':54}" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -201,7 +201,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Opengroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-          <div data-tip="Open Group" className='btnView'>
+          <div data-tip="Open Group" data-place="top" data-offset="{'right':50}" className='btnView'>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -219,7 +219,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
-          <div data-tip="Settings" className='btnView' >
+          <div data-tip="Settings" data-place="top" data-offset="{'right':35}" className='btnView' >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
@@ -408,7 +408,8 @@ async function askEnablingOpengroupPruningIfNeeded() {
   // otherwise nothing to do. the settings is already on or off, but as expected by the user
 }
 
-export const BchatToolTip=(props:any)=><ReactTooltip  className="tooltipDesign" delayShow={500} place={props.place} effect={props.effect} />
+export const BchatToolTip = (props: any) =>
+  <ReactTooltip className="tooltipDesign" delayShow={500} place={props.place} effect={props.effect} />
 
 /**
  * ActionsPanel is the far left banner (not the left pane).
@@ -486,7 +487,7 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Settings} />
 
 
-        <BchatToolTip  place="top"  effect="solid"/>
+        <BchatToolTip effect="solid"/>
         <BchatToastContainer />
 
         {/* <Section type={SectionType.PathIndicator} /> */}

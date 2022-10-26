@@ -107,7 +107,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   const IsOnline = () => {
     
     if (SectionType.Settings !== focusedSection) {
-      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops">
+      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
         }} id={''} />
@@ -122,7 +122,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   function Moon() {
     // if (SectionType.Settings !== focusedSection) {
-    return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" >
+    return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" data-offset="{'right':43}" data-place="bottom" >
       {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
@@ -167,7 +167,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <Moon />
 
         {isMessageSection && !isMessageRequestOverlay && (
-          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts">
+          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts" data-offset="{'right':60}" data-place="bottom">
             <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
 
             {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
@@ -176,7 +176,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           </div>
         )}
       </div>
-      <BchatToolTip place="bottom" effect="solid" />
+      <BchatToolTip effect="solid" />
       {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>
   );

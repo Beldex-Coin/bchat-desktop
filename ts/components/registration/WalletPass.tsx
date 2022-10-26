@@ -2,6 +2,7 @@ import React from "react"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { BchatInput } from "../basic/BchatInput"
 import { Flex } from "../basic/Flex"
+import {  } from "../leftpane/ActionsPanel"
 
 import { GoBackMainMenuButton } from "./SignUpTab"
 
@@ -11,9 +12,15 @@ import { GoBackMainMenuButton } from "./SignUpTab"
     <div>
          <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 51px'>
-        <div className='bchat-registration-goback-icon'>
+          <div className='bchat-registration-goback-icon'
+                        // data-tip="Back"
+                        // data-place="right"
+                        // data-offset="{'top':30,'left':15}"
+            
+          >
         {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
-        <GoBackMainMenuButton assent={props.backArrow}/>
+            <GoBackMainMenuButton assent={props.backArrow} />
+            {/* <BchatToolTip  effect="solid"/> */}
         </div>
         <Flex className="bchat-registration__welcome-bchat">
         Wallet Password

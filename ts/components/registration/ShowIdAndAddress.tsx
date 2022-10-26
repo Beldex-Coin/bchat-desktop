@@ -48,7 +48,7 @@ export const DisplayIdAndAddress = (props: any) =>
 );
 
 export const Icons = (props:any)=>
-<div onClick={()=>props.iconfunc()}  data-tip="Copy" className='iconBox'>
+<div onClick={()=>props.iconfunc()}  data-tip="Copy" data-place="right" data-offset="{'top':30,'left':15}" className='iconBox'>
   <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
   <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
 </svg>
@@ -113,7 +113,7 @@ export const ShowRecoveryPhase= (props:any) => {
           <Icons icon={"copy_icon"} iconfunc={()=>{props.copySeed(props.mnemonic),setSeedCopied(true),pushUserCopySuccess()}} />
         </Flex> 
       </Flex>
-      <BchatToolTip place="top"  effect="solid"/>
+      <BchatToolTip  effect="solid"/>
       </div>
 
 

@@ -26,6 +26,7 @@ import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import styled from 'styled-components';
+import { BchatToolTip } from '../leftpane/ActionsPanel';
 // import { Icons } from '../registration/DisplaySeed';
 
 interface State {
@@ -200,7 +201,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               // onClick={this.fireInputEvent}
               data-testid="image-upload-section"
             />
-            <div style={{
+            <div data-tip="Edit" data-place="right" data-offset="{'top':15,'left':10}" style={{
               background: `url(images/bchat/camera.svg) no-repeat`,
               width: "30px",
               height: "30px",
@@ -228,6 +229,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               {/* <BchatIconButton iconType="profileCamera" iconSize="medium" */}
               {/* //  iconColor={'black'}  */}
               {/* /> */}
+              <BchatToolTip place="top" effect="solid" />
             </div>
           </div>
         </div>
@@ -261,7 +263,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             display: 'flex',
             width: '86%',
             justifyContent: 'center'
-          }}>
+            }}>
             <p data-testid="your-profile-name">{name}</p>
             <BchatIconButton
               iconType="pencil"
@@ -272,7 +274,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
               }}
               dataTestId="edit-profile-icon"
             />
-
           </div>
 
 
@@ -359,6 +360,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
           <div className='profile-value'>{props.bchatID}</div>
           <div onClick={() => copyBchatID(props.bchatID)}
             className="bchat-id-section-display-icon"
+            data-tip="Copy"
+            data-place="right"
+            data-offset="{'top':17}"
 
           // style={{
           //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
@@ -382,6 +386,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
         <div className='bchat-id-section-display' style={{marginBottom:"37px"}}>
           <div className='profile-value' style={{ color: '#1782FF' }}>{walletAddress}</div>
           <div onClick={() => copyBchatID(walletAddress)}
+            data-tip="Copy"
+            data-place="right"
+            data-offset="{'top':17}"
             // style={{
             //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
             //  width: "40px",
@@ -399,6 +406,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             </svg>
           </div>
         </div>
+        <BchatToolTip effect="solid" />
       </div>
     )
   }

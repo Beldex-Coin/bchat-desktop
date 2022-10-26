@@ -244,7 +244,11 @@ export const SignInTab = (props: any) => {
     <div className="bchat-registration__content">
       {screenName===3 && (
         <>
-          <div className='bchat-registration__backbutton' style={{ left: '52px' }}>
+          <div className='bchat-registration__backbutton'
+            // data-tip="Back"
+            // data-place="right"
+            // data-offset="{top:10}"
+            style={{ left: '52px' }}>
             <GoBackMainMenuButton assent={() => {
               props.assent(true);
               setScreenName(1);

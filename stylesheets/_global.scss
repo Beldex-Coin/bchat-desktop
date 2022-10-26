@@ -292,20 +292,12 @@ $loading-height: 16px;
     &.place-top,&.place-bottom {
       &:after {
         border: none !important;
-      // border-top-color: #ffffff00 !important;
-      // border-top-style: solid !important;
-      // border-top-width: 6px !important;
       }
     }
     &.place-right {
-       display: none;
+      //  display: none;
+      &:after {
+        border: none !important;
+      }
     }
-    // &.place-bottom {
-    //   &:after {
-    //     border: none !important;
-    //   // border-top-color: #ffffff00 !important;
-    //   // border-top-style: solid !important;
-    //   // border-top-width: 6px !important;
-    //   }
-    // }
  }

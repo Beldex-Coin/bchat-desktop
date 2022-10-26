@@ -240,9 +240,15 @@ export const SignUpTab = (props:any) => {
     return (
     <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 65px'>
-        <div className='bchat-registration-goback-icon'>
+          <div className='bchat-registration-goback-icon'
+            //           data-tip="Back"
+            //           data-place="right"
+            // data-offset="{'top':30,'left':15}"
+          >
         {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
-        <GoBackMainMenuButton assent={goback} />
+            <GoBackMainMenuButton assent={goback} />
+            {/* <BchatToolTip  effect="solid"/> */}
+
         </div>
         <Flex className="bchat-registration__welcome-bchat">
           {window.i18n('welcomeToYourBchat')}
