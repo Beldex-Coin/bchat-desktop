@@ -4,9 +4,10 @@ import { BchatIcon, BchatIconType } from '../../../../icon';
 
 const NotificationBubbleFlex = styled.div`
   display: flex;
+  background-color: #34323f75;
   color: var(--color-text);
   width: 90%;
-  max-width: 700px;
+  max-width: 350px;
   margin: 10px auto;
   padding: 5px 10px;
   border-radius: 16px;
@@ -17,7 +18,7 @@ const NotificationBubbleFlex = styled.div`
 
 const NotificationBubbleText = styled.div`
   color: inherit;
-  margin: auto auto;
+  margin-left: 45px;
 `;
 
 const NotificationBubbleIconContainer = styled.div`

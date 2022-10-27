@@ -18,7 +18,7 @@ import {
   NotificationForConvoMenuItem,
   PinConversationMenuItem,
   RemoveModeratorsMenuItem,
-  ShowUserDetailsMenuItem,
+  // ShowUserDetailsMenuItem,
   UnbanMenuItem,
   UpdateGroupNameMenuItem,
 } from './Menu';
@@ -61,7 +61,7 @@ export const ConversationHeaderMenu = (props: PropsConversationHeaderMenu) => {
         <LeaveGroupMenuItem />
         <InviteContactMenuItem />
         <DeleteContactMenuItem />
-        <ShowUserDetailsMenuItem />
+        {/* <ShowUserDetailsMenuItem /> */}
       </Menu>
     </ContextConversationId.Provider>
   );

@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  useAvatarPath,
-  useConversationUsername,
+  // useAvatarPath,
+  // useConversationUsername,
   useHasNickname,
   useIsBlocked,
   useIsKickedFromGroup,
@@ -44,7 +44,7 @@ import { ToastUtils } from '../../bchat/utils';
 import {
   changeNickNameModal,
   updateConfirmModal,
-  updateUserDetailsModal,
+  // updateUserDetailsModal,
 } from '../../state/ducks/modalDialog';
 import { SectionType } from '../../state/ducks/section';
 import { hideMessageRequestBanner } from '../../state/ducks/userConfig';
@@ -269,33 +269,33 @@ export const LeaveGroupMenuItem = () => {
   return null;
 };
 
-export const ShowUserDetailsMenuItem = () => {
-  const dispatch = useDispatch();
-  const convoId = useContext(ContextConversationId);
-  const isPrivate = useIsPrivate(convoId);
-  const avatarPath = useAvatarPath(convoId);
-  const userName = useConversationUsername(convoId) || convoId;
+// export const ShowUserDetailsMenuItem = () => {
+//   const dispatch = useDispatch();
+//   const convoId = useContext(ContextConversationId);
+//   const isPrivate = useIsPrivate(convoId);
+//   const avatarPath = useAvatarPath(convoId);
+//   const userName = useConversationUsername(convoId) || convoId;
 
-  if (isPrivate) {
-    return (
-      <Item
-        onClick={() => {
-          dispatch(
-            updateUserDetailsModal({
-              conversationId: convoId,
-              userName,
-              authorAvatarPath: avatarPath,
-            })
-          );
-        }}
-      >
-        {window.i18n('showUserDetails')}
-      </Item>
-    );
-  }
+//   if (isPrivate) {
+//     return (
+//       <Item
+//         onClick={() => {
+//           dispatch(
+//             updateUserDetailsModal({
+//               conversationId: convoId,
+//               userName,
+//               authorAvatarPath: avatarPath,
+//             })
+//           );
+//         }}
+//       >
+//         {window.i18n('showUserDetails')}
+//       </Item>
+//     );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 export const UpdateGroupNameMenuItem = () => {
   const convoId = useContext(ContextConversationId);
