@@ -1,4 +1,4 @@
-$onionPathLineColor: rgba(#7a7a7a, 0.6);
+$onionPathLineColor: #D1D1D1;
 
 #root {
   height: 100%;
@@ -1493,7 +1493,7 @@ input {
 
 .onion__description {
   width: 62%;
-  margin: 0 auto;
+  // margin: 0 auto;
   font-family: $bchat-font-poppin-semibold;
   text-align: center;
   font-size: $bchat-font-lg;
@@ -1533,7 +1533,7 @@ input {
   .onion__node__country {
     margin: $bchat-margin-lg;
     min-width: 150px;
-    font-size: $bchat-font-lg;
+    font-size: 16px;
     font-family: $bchat-font-poppin-regular;
   }
 

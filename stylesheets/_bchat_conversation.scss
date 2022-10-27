@@ -207,7 +207,7 @@
   z-index: 1;
 
   .bchat-icon-button {
-    margin-right: $bchat-margin-sm;
+    // margin-right: $bchat-margin-sm;
 
     display: flex;
     justify-content: center;
@@ -260,7 +260,7 @@
     background-color: inherit;
     margin-left: 27px;
     background:var(--color-composeMsgInput);
-    margin: 7px 13px;
+    margin: 5px 13px;
     border-radius: 10px;
     padding-left: 20px;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
@@ -409,7 +409,7 @@
     justify-content: center;
     align-items: center;
   animation: fadein $bchat-transition-duration;
-  padding-left: 15px;
+  // padding-left: 15px;
 
   &---scale {
     animation: scaling 2s ease-in-out;

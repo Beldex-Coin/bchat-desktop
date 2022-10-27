@@ -55,7 +55,9 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 
 export const SendMessageButton = (props: { onClick: () => void }) => {
   return (
-    <div className="send-message-button" onClick={props.onClick}>
+    <div className="send-message-button"
+      // style={{ paddingLeft: props.padding }}
+      onClick={props.onClick}>
       {/* <div className='sendBox' role="button">
 
       </div> */}
@@ -66,7 +68,7 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
         iconSize={'huge'}
         iconRotation={321}
         borderRadius="300px"
-        iconPadding="4px"
+        iconPadding="5px 0 0 5px"
         onClick={props.onClick}
         dataTestId="send-message-button"
       />

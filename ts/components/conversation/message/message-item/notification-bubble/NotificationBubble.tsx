@@ -10,14 +10,14 @@ const NotificationBubbleFlex = styled.div`
   max-width: 350px;
   margin: 10px auto;
   padding: 5px 10px;
-  border-radius: 16px;
+  border-radius: 12px;
   word-break: break-word;
   text-align: center;
   align-items: center;
 `;
 
 const NotificationBubbleText = styled.div`
-  color: inherit;
+  color: #ffffffc4;
   margin-left: 45px;
 `;
 
