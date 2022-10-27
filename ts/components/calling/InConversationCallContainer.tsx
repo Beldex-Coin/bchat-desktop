@@ -34,7 +34,7 @@ const InConvoCallWindow = styled.div`
   padding: 1rem;
   display: flex;
 
-  background-color: hsl(0, 0%, 15.7%);
+  background-color: var(--color-inbox-background);
 
   flex-shrink: 1;
   min-height: 80px;

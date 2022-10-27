@@ -14,6 +14,7 @@ import { openGroupV2CompleteURLRegex } from '../../../bchat/apis/open_group_api/
 import { ToastUtils } from '../../../bchat/utils';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
+import styled from 'styled-components';
 
 async function joinSocialGroup(serverUrl: string) {
   // guess if this is an open
@@ -26,7 +27,10 @@ async function joinSocialGroup(serverUrl: string) {
     return false;
   }
 }
-
+const ScrollView=styled.div`
+    height: 90%;
+    overflow-y: scroll;
+`
 export const OverlayOpenGroup = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -70,8 +74,8 @@ export const OverlayOpenGroup = () => {
       <div className="module-left-pane-overlay">
       {/* <OverlayHeader title={title} subtitle={subtitle}  hideExit={true}/> */}
       <LeftPaneSectionHeader />
-
-      <div className='module-left-pane-overlay-closed--header'>{title}</div>
+     <ScrollView>     
+       <div className='module-left-pane-overlay-closed--header'>{title}</div>
       <div className='module-left-pane-overlay-closed--subHeader'>
       {subtitle}
       </div>
@@ -100,7 +104,10 @@ export const OverlayOpenGroup = () => {
         text={buttonText}
         
       /> */}
+    </ScrollView>
     </div>
+
+
     <div className='buttonBox'>
     <button 
       className='nextButton'

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
@@ -119,6 +119,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       {!showHeader && <SpacerLG />}
 
       <div className="bchat-modal__centered">
+      <SpacerMD />
         {bchatIcon && iconSize && (
           <>
             <BchatIcon iconType={bchatIcon} iconSize={iconSize} />
@@ -148,7 +149,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         )}
          <BchatButton
           text={okText}
-          buttonColor={BchatButtonColor.Green}
+          // buttonColor={BchatButtonColor.Green}
+          buttonColor={okText==='Delete'?BchatButtonColor.Danger:BchatButtonColor.Green}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
         />

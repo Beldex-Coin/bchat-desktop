@@ -146,14 +146,13 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Message:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}    >
-          <div data-tip="Chat" data-place="top" data-offset="{'right':27}" className='btnView'>
+          <div data-tip="Chat" data-place="top" data-offset="{'right':27}" className='btnView'  onClick={handleClick}>
           <BchatIconButton
             iconSize="large"
             dataTestId="message-section"
             iconType={'chatBubble'}
             // iconColor={undefined}
             // notificationCount={unreadToShow}
-            onClick={handleClick}
             isSelected={isSelected}
           />
           </div>
@@ -185,14 +184,13 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Closedgroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-          <div data-tip="Closed Group" data-place="top" data-offset="{'right':54}" className='btnView'>
+          <div data-tip="Secret Group" data-place="top" data-offset="{'right':54}" className='btnView' onClick={handleClick}>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
             iconType={'closedgroup'}
             // iconColor={undefined}
             notificationCount={unreadToShow}
-            onClick={handleClick}
             isSelected={isSelected}
           />
           </div>
@@ -201,14 +199,13 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Opengroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
-          <div data-tip="Open Group" data-place="top" data-offset="{'right':50}" className='btnView'>
+          <div data-tip="Social Group" data-place="top" data-offset="{'right':50}" className='btnView' onClick={handleClick}>
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
             iconType={'opengroup'}
             // iconColor={undefined}
             notificationCount={unreadToShow}
-            onClick={handleClick}
             isSelected={isSelected}
 
           />
@@ -219,14 +216,13 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
-          <div data-tip="Settings" data-place="top" data-offset="{'right':35}" className='btnView' >
+          <div data-tip="Settings" data-place="top" data-offset="{'right':35}" className='btnView' onClick={handleClick} >
           <BchatIconButton
             iconSize="large"
             dataTestId="settings-section"
             iconType={'gear'}
             // iconColor={undefined}
             notificationCount={unreadToShow}
-            onClick={handleClick}
             isSelected={isSelected}
           />
           </div>

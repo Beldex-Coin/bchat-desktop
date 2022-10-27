@@ -14,7 +14,10 @@ export class EmptyState extends React.Component<Props> {
     return <div className="module-empty-state">
       {/* {label==="No media"? */}
       <div>
-    <img src={'images/bchat/no_media.svg'}  style={{width:"70%",height:"60%"}}/>
+    {/* <img src={'images/bchat/no_media.svg'}  style={{width:"70%",height:"60%"}}/> */}
+    <div className='noMediaImg'>
+
+    </div>
     <p style={{textAlign:'center'}}>{label}</p>
     </div>
     {/* :label } */}

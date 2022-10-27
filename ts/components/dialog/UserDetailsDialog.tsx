@@ -10,7 +10,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { updateUserDetailsModal } from '../../state/ducks/modalDialog';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+// import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatIdEditable } from '../basic/BchatIdEditable';
 import { SpacerLG } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -106,12 +106,12 @@ export const UserDetailsDialog = (props: Props) => {
             ToastUtils.pushCopiedToClipBoard();
           }}
         /> */}
-        <BchatButton
+        {/* <BchatButton
           text={window.i18n('startConversation')}
           buttonType={BchatButtonType.Default}
           buttonColor={BchatButtonColor.Green}
           onClick={onClickStartConversation}
-        />
+        /> */}
       </div>
       </div>
     </BchatWrapperModal>

@@ -555,8 +555,9 @@
   width: 94px;
   cursor: pointer;
   background-color: $color-light-10;
-  margin-inline-end: 4px;
-  margin-bottom: 4px;
+  margin-inline-end: 8px;
+  margin-bottom: 8px;
+  margin-left: 8%;
   position: relative;
 }
 
@@ -624,6 +625,16 @@
   flex-grow: 1;
   font-size: 28px;
   color: $color-light-45;
+
+  .noMediaImg
+  {
+    width: 159px;
+    height: 129px;
+    background-image: var(--image-NoMedia);
+    background-position: center;
+    background-size: 100% 93%;
+    background-repeat: no-repeat;
+  }
 
   p {
     font-family: $bchat-font-poppin-semibold;

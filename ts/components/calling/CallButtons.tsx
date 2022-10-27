@@ -318,11 +318,11 @@ const handleSpeakerToggle = async (
   }
 };
 
-const StyledCallWindowControls = styled.div<{ makeVisible: boolean }>`
+const StyledCallWindowControls = styled.div<{ makeVisible: boolean,isFullScreen:boolean }>`
   position: absolute;
 
   bottom: 0px;
-  width: 100%;
+  width: ${props => (props.isFullScreen ? "100vw" :'100%')};
   height: 100%;
   align-items: flex-end;
   padding: 10px;
@@ -377,8 +377,12 @@ export const CallWindowControls = ({
       document.removeEventListener('mouseleave', setMakeVisibleFalse);
     };
   }, [isFullScreen]);
+  console.log(makeVisible);
+  
   return (
-    <StyledCallWindowControls makeVisible={makeVisible}>
+    // <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
+    <StyledCallWindowControls makeVisible={true} isFullScreen={isFullScreen}>
+
       {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
 
       <VideoInputButton

@@ -103,6 +103,8 @@ const darkDayNight = `url("../images/bchat/light_theme .svg")`;
 const darkMsgReqImg =`url("../images/bchat/no_message_request_dark_theme.svg")`;
 const darkBlockedContact=`url("../images/bchat/no_blocked_contacts_dark_theme.svg")`;
 const darkAddContact=`url("../images/bchat/add_contact.svg")`;
+const darkNoMedia=`url("../images/bchat/no_mediaDarkTheme.svg")`;
+
 const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))";
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 const darkLeftpaneSetting = darkScrollbarTrack;
@@ -339,6 +341,10 @@ export const switchHtmlToDarkTheme = () => {
     darkEmptyContact
   );
   document.documentElement.style.setProperty(
+    '--image-NoMedia',
+    darkNoMedia
+  );
+  document.documentElement.style.setProperty(
     '--green-color',
     greenColor
   );
@@ -434,6 +440,7 @@ const lightMsgReqImg=`url("../images/bchat/no_message_request.svg")`;
 const lightBlockedContact=`url("../images/bchat/no_blocked_contacts.svg")`;
 const lightAddContact=`url("../images/bchat/add_contact_white_theme.svg")`;
 const lightEmptyContact=`url("../images/bchat/no_contact_scrt_grp.svg")`;
+const lightNoMedia=`url("../images/bchat/no_mediaWhiteTheme.svg")`
 const lightChatHeader = '#EEEEEE';
 const lightChatIcons = "black";
 const lightComposeMsgInput = "#EAEAEA";
@@ -689,6 +696,10 @@ export const switchHtmlToLightTheme = () => {
     lightEmptyContact
   );
   document.documentElement.style.setProperty(
+    '--image-NoMedia',
+    lightNoMedia
+  );
+  document.documentElement.style.setProperty(
     '--green-color',
     greenColor
   );
@@ -818,6 +829,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-BlockedContact:${darkBlockedContact};
     --image-AddContact:${darkAddContact};
     --image-EmptyContact:${darkEmptyContact};
+    --image-NoMedia:${darkNoMedia};
    
 
   };

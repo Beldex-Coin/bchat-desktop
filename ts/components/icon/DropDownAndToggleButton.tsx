@@ -12,12 +12,13 @@ type SProps = {
 };
 
 const StyledRoundedButton = styled.div<{ isMuted: boolean }>`
-  background-color: ${props => (props.isMuted ? 'hsl(0,0%,40%)' : 'white')};
-  color: ${props => (props.isMuted ? 'white' : 'black')};
+  background-color: ${props => (props.isMuted ? '#ffffff' : '#ffffff')};
+  color: ${props => (props.isMuted ? '#ff0000' : '#128b17')};
   border-radius: 50%;
   cursor: pointer;
-
+  border:1px solid #e6e6e6
   transition-duration: 0.25s;
+  border:var(--bchat-border);
   &:hover {
     opacity: 1;
   }
@@ -28,9 +29,12 @@ const StyledContainer = styled(StyledRoundedButton)`
   height: 60px;
   margin: 10px;
 
-  opacity: 0.4;
-  &:hover {
-    opacity: 1;
+  // opacity: 0.4;
+  opacity: 1;
+  &:hover { 
+    // opacity: 1;
+    opacity: 0.4;
+    tranform:scale(1.1);
   }
 `;
 
@@ -44,7 +48,7 @@ const StyledArrowIcon = styled(StyledRoundedButton)`
   position: relative;
   top: -35%;
   right: -65%;
-  box-shadow: 0 0 4px 0 #b4b4b4;
+  box-shadow: 0 0 4px 0 #f8f8f8;
 `;
 
 const CameraIcon = (

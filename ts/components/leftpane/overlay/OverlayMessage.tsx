@@ -12,7 +12,7 @@ import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
  import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
 import { getConversationController } from '../../../bchat/conversations';
-import { ToastUtils } from '../../../bchat/utils';
+// import { ToastUtils } from '../../../bchat/utils';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
 import useKey from 'react-use/lib/useKey';
 
@@ -42,14 +42,15 @@ useKey('Enter', handleMessageButtonClick);
   const placeholder = window.i18n('enterBchatID');
 
   async function handleMessageButtonClick() {
-    
-    if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
-      console.log("test1");
-      ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
-      return;
-    }
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-    if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
+  console.log('pubkeyorOnsTrimmed :: ',pubkeyorOnsTrimmed,'pubkeyOrOns ::',pubkeyOrOns);
+  
+    // if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
+    //   console.log("test1");
+    //   ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
+    //   return;
+    // }
+     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
       console.log("test2");
      
       // this is a pubkey
@@ -124,7 +125,7 @@ useKey('Enter', handleMessageButtonClick);
         dataTestId="new-bchat-conversation"
       />
 
-     <button className='nextButton'  onClick={handleMessageButtonClick}>{buttonText}</button>
+     <button className='nextButton'  onClick={()=>handleMessageButtonClick}>{buttonText}</button>
       {/* <BchatButton
         buttonColor={BchatButtonColor.Green}
         buttonType={BchatButtonType.BrandOutline}

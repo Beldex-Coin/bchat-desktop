@@ -34,6 +34,8 @@ export const BchatIdEditable = (props: Props) => {
       const eventValue = e.target.value?.replace(/(\r\n|\n|\r)/gm, '');
       // if(eventValue.length<=26)
       // {
+        console.log('eventValue ::',eventValue);
+        
         onChange(eventValue);
       // }
      

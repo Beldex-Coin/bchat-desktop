@@ -10,6 +10,7 @@ import { getHasIncomingCall, getHasIncomingCallFrom } from '../../state/selector
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { SpacerLG } from '../basic/Text';
 
 export const CallWindow = styled.div`
   position: absolute;
@@ -25,7 +26,7 @@ export const CallWindow = styled.div`
 `;
 
 const IncomingCallAvatarContainer = styled.div`
-  padding: 0 0 2rem 0;
+  padding: 0 0 1rem 0;
 `;
 
 export const IncomingCallDialog = () => {
@@ -76,6 +77,7 @@ export const IncomingCallDialog = () => {
     return (
       <BchatWrapperModal title={window.i18n('incomingCallFrom', [from || 'unknown'])}>
         <IncomingCallAvatarContainer>
+          <SpacerLG />
           <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
         </IncomingCallAvatarContainer>
         <div className="bchat-modal__button-group">
