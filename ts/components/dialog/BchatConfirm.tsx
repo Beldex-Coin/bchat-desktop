@@ -61,7 +61,10 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // const okText = props.okText || window.i18n('ok');
+  console.log("props.okText ::",props.okText);
+  
   const deletebtn="Delete"===title.slice(0,6)?"Delete":null;
+  
   const okText =deletebtn || props.okText || window.i18n('ok');
 
   const cancelText = props.cancelText || window.i18n('cancel');

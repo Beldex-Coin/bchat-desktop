@@ -110,7 +110,7 @@ useKey('Enter', handleMessageButtonClick);
         placeholder={placeholder}
         onChange={setPubkeyOrOns}
         dataTestId="new-bchat-conversation"
-        onPressEnter={handleMessageButtonClick}
+        // onPressEnter={handleMessageButtonClick}
       />
 
       <BchatSpinner loading={loading} />
@@ -125,7 +125,7 @@ useKey('Enter', handleMessageButtonClick);
         dataTestId="new-bchat-conversation"
       />
 
-     <button className='nextButton'  onClick={()=>handleMessageButtonClick}>{buttonText}</button>
+     <button className='nextButton'  onClick={handleMessageButtonClick}>{buttonText}</button>
       {/* <BchatButton
         buttonColor={BchatButtonColor.Green}
         buttonType={BchatButtonType.BrandOutline}

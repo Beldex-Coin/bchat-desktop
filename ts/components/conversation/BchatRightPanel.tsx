@@ -212,6 +212,7 @@ export const BchatRightPanelWithDetails = () => {
   const hasDisappearingMessages = !isPublic && !commonNoShow;
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
+    // ? window.i18n('leaveGroup')
     : isKickedFromGroup
       ? window.i18n('youGotKickedFromGroup') 
       : left
@@ -361,14 +362,14 @@ export const BchatRightPanelWithDetails = () => {
         // tslint:disable-next-line: use-simple-attributes
         <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
           <div className='group-settings__leaveBtn'  >
-          {isPublic ?  <BchatIcon
+          {/* {isPublic ?  <BchatIcon
                 iconType="delete"
                 iconSize="tiny"
                 iconColor="#E22A2B"
               />
-              :
+              : */}
               <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
-              }
+              {/* } */}
             <div  style={{marginLeft:'5px'}}>
            { leaveGroupString}
               </div>

@@ -377,11 +377,11 @@ export const CallWindowControls = ({
       document.removeEventListener('mouseleave', setMakeVisibleFalse);
     };
   }, [isFullScreen]);
-  console.log(makeVisible);
+  // console.log(makeVisible);
   
   return (
-    // <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
-    <StyledCallWindowControls makeVisible={true} isFullScreen={isFullScreen}>
+    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
+     {/* <StyledCallWindowControls makeVisible={true} isFullScreen={isFullScreen}> */}
 
       {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
 

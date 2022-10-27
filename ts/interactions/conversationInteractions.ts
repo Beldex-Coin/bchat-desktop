@@ -353,6 +353,7 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       onClickOk,
       okTheme: BchatButtonColor.Danger,
       onClickClose,
+      okText:window.i18n('leaveGroup')
     })
   );
 }
