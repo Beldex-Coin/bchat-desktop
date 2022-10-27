@@ -4,7 +4,7 @@ import { BchatIcon, BchatIconType } from '../../../../icon';
 
 const NotificationBubbleFlex = styled.div`
   display: flex;
-  background-color: #34323f75;
+  background-color: var(--message-bubbles-received-background-color);
   color: var(--color-text);
   width: 90%;
   max-width: 350px;
@@ -17,7 +17,7 @@ const NotificationBubbleFlex = styled.div`
 `;
 
 const NotificationBubbleText = styled.div`
-  color: #ffffffc4;
+  color: var(--color-text);
   margin-left: 45px;
 `;
 

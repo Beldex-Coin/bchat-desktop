@@ -16,7 +16,6 @@ const lightGreyColor = "#646474";
 const greenColor = "#16A51C";
 
 
-
 // DARK COLORS
 const darkColorAccent = baseColor;
 const darkColorAccentButton = accentDarkTheme;
@@ -109,7 +108,9 @@ const darkToastSuccessMessage = "linear-gradient(to right,rgba(12, 43, 18, 0.8),
 const darkToastErrorMessage = "linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))";
 const darkLeftpaneSetting = darkScrollbarTrack;
 const darkPasswordBorderBottom="#444455";
-const darkRightpaneSetting='#16161D'
+const darkRightpaneSetting = '#16161D';
+const darkbubbleReceivedBg = "#34323f75";
+
 // const buttonColor = "red";
 const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 const darkAudioRecord = "#3F3C4B";
@@ -360,6 +361,10 @@ export const switchHtmlToDarkTheme = () => {
     '--color-seed',
     darkSeedColor
   );
+  document.documentElement.style.setProperty(
+    '--message-bubbles-received-background-color',
+    darkbubbleReceivedBg
+  );
 };
 
 // LIGHT COLORS
@@ -455,7 +460,7 @@ const lightRightpaneSetting="#f8f8f8"
 const  ligntDisableText='#B9BABF';
 const lightProfileBgColor = "#F8F8F8";
 const whiteAudioRecord = "#dcdbdb";
-
+const whiteBubbleReceivedBg = "#eaeaea";
 
 // Toast Colors 
 const lightToastSuccessMessage = "linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)";
@@ -715,6 +720,10 @@ export const switchHtmlToLightTheme = () => {
     '--color-seed',
     whiteSeedColor
   );
+  document.documentElement.style.setProperty(
+    '--message-bubbles-received-background-color',
+    whiteBubbleReceivedBg
+  );
 };
 
 // default to light theme
@@ -830,6 +839,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-AddContact:${darkAddContact};
     --image-EmptyContact:${darkEmptyContact};
     --image-NoMedia:${darkNoMedia};
+    --message-bubbles-received-background-color:${darkbubbleReceivedBg}
    
 
   };
