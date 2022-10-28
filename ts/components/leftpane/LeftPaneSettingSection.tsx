@@ -205,7 +205,7 @@ const LeftPaneSettingsCategoryRow = (
         role="link"
         onClick={() => { dispatch(showSettingsSection(BchatSettingCategory.RecoverySeed)); }}
         style={{ marginTop: '15px' }}
-      >
+       >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
             <svg xmlns="http://www.w3.org/2000/svg" width="19.648" height="21.832" viewBox="0 0 19.648 21.832">

@@ -340,7 +340,7 @@
   "getStarted": "Get started",
   "createBchatID": "Create BChat ID",
   "recoveryPhrase": "Recovery Phrase",
-  "enterRecoveryPhrase": "Enter your recovery phrase",
+  "enterRecoveryPhrase": "Enter your recovery seed",
   "displayName": "Display Name",
   "anonymous": "Anonymous",
   "removeResidueMembers": "Clicking ok will also remove those members as they left the group.",

@@ -10,6 +10,7 @@ import { MemoMessageRequestBannerContextMenu } from '../menu/MessageRequestBanne
 
 const StyledMessageRequestBanner = styled.div`
   height: 74px;
+  margin-bottom: 1px;
   width: 100%;
   // max-width: 300px;
   display: flex;
