@@ -105,12 +105,10 @@ export const OverlayClosedGroup = () => {
 
   return (
     <div className="module-left-pane-overlay" >
-      <div className="module-left-pane-overlay">
-
-
-
+       <LeftPaneSectionHeader />
+      <div style={{height:'calc(100% - 222px)', overflowY: "auto"}} >
         {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
-        <LeftPaneSectionHeader />
+        {/* <LeftPaneSectionHeader /> */}
         <div className='module-left-pane-overlay-closed--header'>{title}</div>
         {/* <ClosedGrpHeader /> */}
         {!noContactsForClosedGroup &&

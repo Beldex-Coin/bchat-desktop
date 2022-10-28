@@ -278,12 +278,13 @@ $bchat-compose-margin: 20px;
     .buttonBox {
       // width: 100%;
       width: 378px;
-      // background-color: var(--color-inboxBgColor);
+      background-color: var(--color-overlayBg);
       padding: 0 0;
       text-align: center;
-      margin: 0 auto;
-
-
+      margin: 5px auto;
+      z-index: 1;
+      padding-top: 10px;
+      
       .bchat-button.brand-outline.danger {
         width: 79%;
         height: 42px;
@@ -696,7 +697,8 @@ $bchat-compose-margin: 20px;
     flex-direction: column;
     // flex: 1;
     background-color: var(--color-leftpaneSetting);
-    height: 92%;
+    // height: 93%;
+    height: calc(100% - 63px);
     overflow-y: auto;
   }
 

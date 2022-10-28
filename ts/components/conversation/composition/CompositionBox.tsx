@@ -115,7 +115,7 @@ interface State {
 
 const sendMessageStyle = {
   control: {
-    wordBreak: 'break-all',
+    // wordBreak: 'break-all',
   },
   input: {
     overflow: 'auto',

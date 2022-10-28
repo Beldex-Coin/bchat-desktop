@@ -71,7 +71,10 @@ export const OverlayOpenGroup = () => {
 
   return (
     <div className="module-left-pane-overlay">
-      <div className="module-left-pane-overlay">
+      {/* <div className="module-left-pane-overlay"> */}
+      <div style={{
+    height: 'calc(100% - 153px)'}} >
+
       {/* <OverlayHeader title={title} subtitle={subtitle}  hideExit={true}/> */}
       <LeftPaneSectionHeader />
      <ScrollView>     

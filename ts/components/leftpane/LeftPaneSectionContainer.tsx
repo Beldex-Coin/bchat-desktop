@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const LeftPaneSectionContainer = styled.div`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 60px;
   display: flex;
@@ -11,6 +13,7 @@ export const LeftPaneSectionContainer = styled.div`
   overflow-y: hidden;
   background-color: var(--green-color);
   padding:6px 0; 
+  z-index:2;
 
   .isSelected-icon-box .btnView,.icon-box .btnView{
     border-radius: 66px;

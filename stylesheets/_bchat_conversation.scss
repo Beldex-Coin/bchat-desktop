@@ -250,6 +250,7 @@
 
 
   .send-message-input {
+    width: 100%;
     cursor: text;
     display: flex;
     align-items: center;
@@ -288,7 +289,7 @@
       outline: none;
       border: none;
       font-size: 14px;
-      line-height: $bchat-font-h2;
+      line-height: $bchat-font-h3;
       letter-spacing: 0.5px;
     }
 
