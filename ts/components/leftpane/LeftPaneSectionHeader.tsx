@@ -22,6 +22,8 @@ import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
+import { applyTheme } from '../../state/ducks/theme';
+// import ReactTooltip from 'react-tooltip';
 
 
 
@@ -73,6 +75,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     const themeFromSettings = window.Events.getThemeSetting();
     const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
     window.setTheme(updatedTheme);
+    dispatch(applyTheme(updatedTheme));
+
     if (updatedTheme === 'dark') {
       switchHtmlToDarkTheme();
     } else {
@@ -107,7 +111,9 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   const IsOnline = () => {
     
     if (SectionType.Settings !== focusedSection) {
-      return <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
+      return     <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
+
+         {/* <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom"></div> */}
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
         }} id={''} />
@@ -176,6 +182,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           </div>
         )}
       </div>
+  {/* <ReactTooltip className="tooltipDesign"   effect="solid" /> */}
+
       <BchatToolTip effect="solid" />
       {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>

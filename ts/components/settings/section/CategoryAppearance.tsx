@@ -1,6 +1,6 @@
 // import { ipcRenderer, shell } from 'electron';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
 import os from 'os';
@@ -18,6 +18,10 @@ import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
+import { applyTheme } from '../../../state/ducks/theme';
+
+// import { reducer as theme} from '../../../state/ducks/theme';
+
 
 async function toggleLinkPreviews() {
   const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
@@ -54,14 +58,17 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
-
+  const darktheme=useSelector((state:any)=>state.theme)
+  // console.log("darktheme ::",darktheme);
+  
+  
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsMenuBar);
-    const isdark = window.Events.getThemeSetting() === "dark" ? true : false;
-
+    const isdark = darktheme === "dark" ? true : false;
+    
     const isSpellCheckActive =
       window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
         ? true
@@ -73,6 +80,9 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
     function handleClick() {
       const themeFromSettings = window.Events.getThemeSetting();
       const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+      // console.log("theme reducer",darktheme,"store,");
+      dispatch(applyTheme(updatedTheme));
+      
       window.setTheme(updatedTheme);
       if (updatedTheme === 'dark') {
         switchHtmlToDarkTheme();

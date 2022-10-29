@@ -120,15 +120,18 @@ const sendMessageStyle = {
   input: {
     overflow: 'auto',
     // maxHeight: '50vh',
-    maxHeight: '40px',
+    maxHeight: '60px',
     wordBreak: 'break-word',
     padding: '0px',
     margin: '0px',
+    // height:'40px'
   },
   highlighter: {
     boxSizing: 'border-box',
     overflow: 'hidden',
-    maxHeight: '50vh',
+    // maxHeight: '50vh',
+    
+    maxHeight:'40px'
   },
   flexGrow: 1,
 

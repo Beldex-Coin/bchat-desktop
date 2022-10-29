@@ -186,7 +186,7 @@ export const ActionPanelOnionStatusLight = (props: {
   `
 
   return (
-    <OuterCircle>
+    <OuterCircle data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
     <BchatIconButton
       iconSize={'small'}
       iconType="circle"
