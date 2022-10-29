@@ -142,7 +142,7 @@ export const PasswordLock = ({
   }
 
   /* tslint:disable-next-line:max-func-body-length */
-  public renderSettingInCategory() {
+  public renderSettingInCategory(passwordLock: any) {
     const { category } = this.props;
 
     if (this.state.hasPassword === null) {
@@ -159,7 +159,14 @@ export const PasswordLock = ({
       return <SettingsCategoryAppearance hasPassword={this.state.hasPassword} />;
     }
     if (category === BchatSettingCategory.RecoverySeed) {
-      return <BchatRecoverySeed  />;
+      if (passwordLock) {
+       return <PasswordLock
+          pwdLockError={this.state.pwdLockError}
+          validatePasswordLock={this.validatePasswordLock}
+        />
+      } else {
+        return <BchatRecoverySeed />
+      }
     }
 
     // if (category === BchatSettingCategory.RecoveryKey) {
@@ -250,16 +257,20 @@ export const PasswordLock = ({
         <SettingsHeader category={category} categoryTitle={window.i18n(categoryLocalized)} />
 
         <div className="bchat-settings-view">
-          {shouldRenderPasswordLock ? (
+          {/* {shouldRenderPasswordLock ? (
             <PasswordLock
               pwdLockError={this.state.pwdLockError}
               validatePasswordLock={this.validatePasswordLock}
             />
           ) : (
             <div ref={this.settingsViewRef} className="bchat-settings-list">
-              {this.renderSettingInCategory()}
+              {this.renderSettingInCategory(shouldRenderPasswordLock)}
             </div>
-          )}
+          )} */}
+
+           <div ref={this.settingsViewRef} className="bchat-settings-list">
+              {this.renderSettingInCategory(shouldRenderPasswordLock)}
+            </div>
           {/* <BchatInfo /> */}
         </div>
       </div>
