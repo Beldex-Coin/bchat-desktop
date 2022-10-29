@@ -398,7 +398,7 @@ const lightScrollbarThumb = '#D5D5D8';
 const lightScrollbarTrack = '#fcfcfc';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
-const lightInboxBackground = '#F8F8F8';
+const lightInboxBackground = '#EDEDED';
 const lightLeftPaneOverlayBg = '#EDEDED';
 const lightConversationItemSelected = '#fff';
 const lightConversationItemHasUnread = '#EDEDED';

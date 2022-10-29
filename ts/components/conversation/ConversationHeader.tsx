@@ -153,7 +153,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         });
         
       }}
-      style={{marginTop:'8px'}}
+      style={{marginTop:'7px'}}
       data-testid="three-dots-conversation-options"
     >
       
@@ -240,7 +240,8 @@ const CallButton = () => {
   return (
     <BchatIconButton
       iconType="phone"
-      iconSize="large"
+      iconRotation={270}
+      iconSize="medium"
       iconPadding="2px"
       margin="0 10px 0 0"
       onClick={() => {

@@ -195,7 +195,7 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
       backgroundColor="white"
       borderRadius="50%"
       onClick={showInFullScreen}
-      iconColor="black"
+      iconColor="#2879F9"
       margin="10px"
     />
   );
@@ -216,10 +216,10 @@ export const HangUpButton = () => {
       iconSize={60}
       iconPadding="20px"
       iconType="hangup"
-      backgroundColor="white"
+      backgroundColor="#FC3B3B"
       borderRadius="50%"
       onClick={handleEndCall}
-      iconColor="red"
+      iconColor="#FFFFFF"
       margin="10px"
     />
   );
