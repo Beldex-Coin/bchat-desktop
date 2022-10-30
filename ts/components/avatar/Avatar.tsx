@@ -11,7 +11,7 @@ import { AvatarPlaceHolder } from './AvatarPlaceHolder/AvatarPlaceHolder';
 import { ClosedGroupAvatar } from './AvatarPlaceHolder/ClosedGroupAvatar';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
 import styled from 'styled-components';
-import { BchatIcon } from '../icon';
+// import { BchatIcon } from '../icon';
 
 export enum AvatarSize {
   XS = 28,
@@ -45,6 +45,7 @@ const CrownWrapper = styled.div`
   display: flex;
   bottom: 0%;
   right: 12%;
+  top: 24px;
   height: 20px;
   width: 20px;
   transform: translate(25%, 25%);
@@ -60,7 +61,9 @@ const CrownWrapper = styled.div`
 export const CrownIcon = () => {
   return (
     <CrownWrapper>
-      <BchatIcon iconSize={'small'} iconType="crown" iconPadding="1px 0 0 0 " />
+      {/* <BchatIcon iconSize={'small'} iconType="crown" iconPadding="1px 0 0 0 " /> */}
+      <img src='images/bchat/Crown.svg' width={"65%"} height={"75%"} ></img>
+
     </CrownWrapper>
   );
 };

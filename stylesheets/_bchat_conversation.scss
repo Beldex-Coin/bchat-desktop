@@ -487,6 +487,7 @@
       border-radius: 50%;
       width: $actions-element-size;
       height: $actions-element-size;
+      margin-right: var(--margins-sm);
 
       .play {
         margin-left: 4px;
