@@ -17,6 +17,7 @@ import { openConversationWithMessages } from '../../../state/ducks/conversations
 import useKey from 'react-use/lib/useKey';
 
 import { getOurNumber } from '../../../state/selectors/user';
+import { ToastUtils } from '../../../bchat/utils';
 
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
@@ -28,11 +29,7 @@ export const OverlayMessage = () => {
   useKey('Escape', closeOverlay);
   const [pubkeyOrOns, setPubkeyOrOns] = useState('');
   const [loading, setLoading] = useState(false);
-const ourNumber = useSelector(getOurNumber);
-
-
-useKey('Enter', handleMessageButtonClick);
-
+  const ourNumber = useSelector(getOurNumber);
   // const title = window.i18n('newBchat');
   const buttonText = window.i18n('next');
   // const descriptionLong = window.i18n('usersCanShareTheir...');
@@ -43,15 +40,12 @@ useKey('Enter', handleMessageButtonClick);
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-  console.log('pubkeyorOnsTrimmed :: ',pubkeyorOnsTrimmed,'pubkeyOrOns ::',pubkeyOrOns);
   
-    // if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
-    //   console.log("test1");
-    //   ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
-    //   return;
-    // }
+    if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
+      ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
+      return;
+    }
      if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
-      console.log("test2");
      
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
@@ -72,7 +66,6 @@ useKey('Enter', handleMessageButtonClick);
       //   console.log("test3")
       //   return;
       // }
-      console.log("test4");
       
       setLoading(true);
       try {
@@ -91,7 +84,6 @@ useKey('Enter', handleMessageButtonClick);
         closeOverlay();
       } catch (e) {
         window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
-        console.log("test5");
       
         // ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
       } finally {
