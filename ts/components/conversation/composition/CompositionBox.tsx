@@ -21,7 +21,6 @@ import {
   AddStagedAttachmentButton,
   SendMessageButton,
   StartRecordingButton,
-  // ToggleEmojiButton,
 } from './CompositionButtons';
 import { AttachmentType } from '../../../types/Attachment';
 import { connect } from 'react-redux';
@@ -115,28 +114,22 @@ interface State {
 
 const sendMessageStyle = {
   control: {
-    // wordBreak: 'break-all',
   },
   input: {
     overflow: 'auto',
-    // maxHeight: '50vh',
     maxHeight: '60px',
     wordBreak: 'break-word',
     padding: '0px',
     margin: '0px',
-    // height:'40px'
   },
   highlighter: {
     boxSizing: 'border-box',
     overflow: 'hidden',
-    // maxHeight: '50vh',
-    
-    maxHeight:'40px'
+     maxHeight:'40px'
   },
   flexGrow: 1,
 
   maxHeight: '40px',
-  // minHeight: '24px',
   width: '100%',
   ...styleForCompositionBoxSuggestions,
 };
@@ -265,7 +258,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   public render() {
-    // const { showRecordingView } = this.state;
 
     return (
       <Flex flexDirection="column">
@@ -273,7 +265,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
         {this.renderStagedLinkPreview()}
         {this.renderAttachmentsStaged()}
         <div className="composition-container">
-          {/* {showRecordingView ? this.renderRecordingView() : this.renderCompositionView()} */}
           {this.renderCompositionView()}
         </div>
       </Flex>
@@ -392,9 +383,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
            {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
       
         </div>
-        {/* {typingEnabled && (
-          <ToggleEmojiButton ref={this.emojiPanelButton} onClick={this.toggleEmojiPanel} />
-        )} */}
           <SendMessageButton onClick={this.onSendMessage} />
       </>}
         {typingEnabled && (

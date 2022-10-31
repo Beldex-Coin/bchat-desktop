@@ -1,8 +1,6 @@
 import React from 'react';
-// import { AccentText } from './AccentText';
 
 import { RegistrationStages } from './RegistrationStages';
-// import { BchatIcon } from '../icon';
 import { BchatToastContainer } from '../BchatToastContainer';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { Flex } from '../basic/Flex';
@@ -33,8 +31,6 @@ export const BchatRegistrationView = () => {
             width='40%'
             justifyContent="center"
             >
-              {/* <div className="bchat-content-logo" 
-              style={{backgroundImage:"url(images/bchat/BChat_image.svg)",width:400,height:370}} /> */}
             <img src='images/bchat/BChat_image.svg' width={"80%"} height={"100%"}></img>
            </Flex>
           
@@ -48,9 +44,6 @@ export const BchatRegistrationView = () => {
           >
             <Flex container={true} margin="auto" alignItems="center" flexDirection="column">
               <BchatToastContainer />
-              {/* <BchatIcon iconSize={150} iconType="brand" /> */}
-
-              {/* <AccentText /> */}
               <RegistrationStages />
             </Flex>
           </Flex>

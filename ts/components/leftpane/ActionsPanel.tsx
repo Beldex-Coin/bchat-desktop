@@ -32,7 +32,6 @@ import { DURATION } from '../../bchat/constants';
 import { conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
 import {
   editProfileModal,
-  // onionPathModal,
   updateConfirmModal,
 } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
@@ -41,7 +40,6 @@ import { debounce, isEmpty, isString } from 'lodash';
 
 // tslint:disable-next-line: no-import-side-effect no-submodule-imports
 
-// import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/ApiUtil';
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
@@ -64,10 +62,7 @@ import classNames from 'classnames';
 
 import ReactTooltip from 'react-tooltip';
 
-// state/ducks/section.tsx
-
 const Section = (props: { type: SectionType }) => {
-  // const Section = (props:any) => {
 
   const ourNumber = useSelector(getOurNumber);
   const unreadMessageCount = useSelector(getUnreadMessageCount);
@@ -96,10 +91,6 @@ const Section = (props: { type: SectionType }) => {
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
     }
-    // else if (type === SectionType.PathIndicator) {
-    //   // Show Path Indicator Modal
-    //   dispatch(onionPathModal({}));
-    // } 
     else if (type === SectionType.Closedgroup) {
       // Show Path Indicator Modal
 
@@ -122,11 +113,6 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode(undefined));
     }
   };
-
-  // function indicator(params:any) {
-  //   setOpacity(params)
-  //   handleClick()
-  // }
 
 
 
@@ -151,8 +137,6 @@ const Section = (props: { type: SectionType }) => {
             iconSize="large"
             dataTestId="message-section"
             iconType={'chatBubble'}
-            // iconColor={undefined}
-            // notificationCount={unreadToShow}
             isSelected={isSelected}
           />
           </div>
@@ -160,27 +144,9 @@ const Section = (props: { type: SectionType }) => {
             position: "absolute",
             top: "-1px",
             left: "10px",
-          }}>+</span></span>}</div> : null}
-          {/* <div className='unreadCountChatIcon' >{unreadMessageCount <= 9 ? unreadToShow : <span style={{marginLeft:"-5px"}}>9<span style={{
-            position: "absolute",
-            top: "-1px",
-            left: "10px",
-          }}>+</span></span>}</div> */}
-        
+          }}>+</span></span>}</div> : null}        
         </div>
       );
-    // case SectionType.Contact:
-    //   return (
-    //     <BchatIconButton
-    //       iconSize="large"
-    //       dataTestId="contact-section"
-    //       iconType={'users'}
-    //       iconColor={undefined}
-    //       notificationCount={unreadToShow}
-    //       onClick={handleClick}
-    //       isSelected={type===}
-    //     />
-    //   );
     case SectionType.Closedgroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}  >
@@ -189,7 +155,6 @@ const Section = (props: { type: SectionType }) => {
             iconSize="large"
             dataTestId="settings-section"
             iconType={'closedgroup'}
-            // iconColor={undefined}
             notificationCount={unreadToShow}
             isSelected={isSelected}
           />
@@ -204,7 +169,6 @@ const Section = (props: { type: SectionType }) => {
             iconSize="large"
             dataTestId="settings-section"
             iconType={'opengroup'}
-            // iconColor={undefined}
             notificationCount={unreadToShow}
             isSelected={isSelected}
 
@@ -221,22 +185,12 @@ const Section = (props: { type: SectionType }) => {
             iconSize="large"
             dataTestId="settings-section"
             iconType={'gear'}
-            // iconColor={undefined}
             notificationCount={unreadToShow}
             isSelected={isSelected}
           />
           </div>
         </div>
       );
-    // case SectionType.PathIndicator:
-    //   return (
-    //     <ActionPanelOnionStatusLight
-    //       dataTestId="onion-status-section"
-    //       handleClick={handleClick}
-    //       isSelected={isSelected}
-    //       id={'onion-path-indicator-led-id'}
-    //     />
-    //   );
     default:
       return (
         <BchatIconButton
@@ -262,7 +216,6 @@ const fetchReleaseFromFileServerInterval = 1000 * 60; // try to fetch the latest
 
 const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
-  // const theme = 'dark';
 
   window.setTheme(theme);
   if (theme === 'dark') {
@@ -468,12 +421,8 @@ export const ActionsPanel = () => {
 
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
-        {/* <Section type={SectionType.Profile} /> */}
 
         <Section type={SectionType.Message} />
-
-
-        {/* <Section type={SectionType.Contact} /> */}
 
         <Section type={SectionType.Closedgroup} />
 
@@ -486,8 +435,6 @@ export const ActionsPanel = () => {
         <BchatToolTip effect="solid"/>
         <BchatToastContainer />
 
-        {/* <Section type={SectionType.PathIndicator} /> */}
-        {/* <Section type={SectionType.Moon} /> */}
       </LeftPaneSectionContainer>
     </>
   );

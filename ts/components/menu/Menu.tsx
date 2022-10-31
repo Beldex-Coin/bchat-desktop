@@ -3,8 +3,6 @@ import React, { useContext } from 'react';
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  // useAvatarPath,
-  // useConversationUsername,
   useHasNickname,
   useIsBlocked,
   useIsKickedFromGroup,
@@ -36,7 +34,6 @@ import {
   unblockConvoById,
 } from '../../interactions/conversationInteractions';
 import {
-  // ConversationCollection,
   ConversationNotificationSetting,
   ConversationNotificationSettingType,
 } from '../../models/conversation';
@@ -45,7 +42,6 @@ import { ToastUtils } from '../../bchat/utils';
 import {
   changeNickNameModal,
   updateConfirmModal,
-  // updateUserDetailsModal,
 } from '../../state/ducks/modalDialog';
 import { SectionType } from '../../state/ducks/section';
 import { hideMessageRequestBanner } from '../../state/ducks/userConfig';
@@ -56,7 +52,6 @@ import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { ContextConversationId } from '../leftpane/conversation-list-item/ConversationListItem';
 import { getOurNumber } from '../../state/selectors/user';
-// import { removeConversation } from '../../data/data';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -214,10 +209,6 @@ export const DeleteContactMenuItem = () => {
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
   const ourNumber = useSelector(getOurNumber);
-  // console.log( 'message Id :: ',ourNumber,"convoId ::",convoId);
-  // const converstion=new ConversationCollection;
-  // const converstionIdData=converstion.get(convoId);
-  
 
   if (showDeleteContact(!isPrivate, isPublic, isLeft, isKickedFromGroup, isRequest)) {
     let menuItemText: string;
@@ -264,33 +255,6 @@ export const DeleteContactMenuItem = () => {
       dispatch(
         updateConfirmModal(ourNumber===convoId?notetoSelf:contactDelete))
 
-      // dispatch(
-      //   updateConfirmModal({
-      //     title: menuItemText,
-      //     message: isPrivate
-      //       ?"Permanently delete the Contact?"
-      //       // ? window.i18n('deleteContactConfirmation')
-      //       : window.i18n('leaveGroupConfirmation'),
-      //     onClickClose,
-      //     okTheme: BchatButtonColor.Danger,
-      //     onClickOk: async () => {  
-
-      //       // await getConversationController().deleteContact(convoId);
-      //       converstionIdData.set({
-      //       active_at: undefined,
-      //   // active_at:2022,
-      //       isApproved: false,
-      //   // Deleled:"yes"
-
-      //       });
-      //     await converstionIdData.commit();
-      //     await removeConversation(convoId);
-      //     converstion.remove(converstionIdData);
-
-           
-      //     },
-      //   })
-      // );
     };
 
     return <Item onClick={showConfirmationModal}>{menuItemText}</Item>;
@@ -320,33 +284,6 @@ export const LeaveGroupMenuItem = () => {
   return null;
 };
 
-// export const ShowUserDetailsMenuItem = () => {
-//   const dispatch = useDispatch();
-//   const convoId = useContext(ContextConversationId);
-//   const isPrivate = useIsPrivate(convoId);
-//   const avatarPath = useAvatarPath(convoId);
-//   const userName = useConversationUsername(convoId) || convoId;
-
-//   if (isPrivate) {
-//     return (
-//       <Item
-//         onClick={() => {
-//           dispatch(
-//             updateUserDetailsModal({
-//               conversationId: convoId,
-//               userName,
-//               authorAvatarPath: avatarPath,
-//             })
-//           );
-//         }}
-//       >
-//         {window.i18n('showUserDetails')}
-//       </Item>
-//     );
-//   }
-
-//   return null;
-// };
 
 export const UpdateGroupNameMenuItem = () => {
   const convoId = useContext(ContextConversationId);
@@ -490,13 +427,11 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
       isRequest
     )
   ) {
-    // const isRtlMode = isRtlBody();
 
     return (
       // Remove the && false to make context menu work with RTL support
       <Submenu
         label={window.i18n('disappearingMessages')}
-        // rtl={isRtlMode && false}
       >
         {timerOptions.map(item => (
           <Item
@@ -526,7 +461,6 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   if (
     showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest)
   ) {
-    // const isRtlMode = isRtlBody();'
 
     // exclude mentions_only settings for private chats as this does not make much sense
     const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>
@@ -546,7 +480,6 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
       // Remove the && false to make context menu work with RTL support
       <Submenu
         label={window.i18n('notificationForConvo') as any}
-        // rtl={isRtlMode && false}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;

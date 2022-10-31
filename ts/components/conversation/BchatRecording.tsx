@@ -163,13 +163,6 @@ export class BchatRecording extends React.Component<Props, State> {
 
           {actionDefault && <BchatIconButton iconType="microphone" iconSize={'huge'} />}
         </div>
-
-        {/* {hasRecording && !isRecording ? (
-          <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
-            {displayTimeString + remainingTimeString}
-          </div>
-        ) : null} */}
-
          {isRecording && (
               <BchatIconButton
               iconType="stop"
@@ -180,23 +173,13 @@ export class BchatRecording extends React.Component<Props, State> {
             )}
         
         </div>
-        {/* {!isRecording && ( */}
           <div
             className={classNames( 
               'send-message-button',
-              // hasRecording && 'send-message-button---scale'
             )}
           >
-            
             {!isRecording ? <SendMessageButton   onClick={this.onSendVoiceMessage}/> :<SendMessageButton   onClick={()=>{}}/>}
-            {/* <BchatIconButton
-              iconType="send"
-              iconSize={'large'}
-              iconRotation={0}
-              
-            /> */}
           </div>
-        {/* )} */}
       </div>
     );
   }
@@ -281,8 +264,6 @@ export class BchatRecording extends React.Component<Props, State> {
    * Sends the recorded voice message
    */
   private async onSendVoiceMessage() {
-// console.log("onSendVoiceMessage");
-
     if (!this.audioBlobMp3 || !this.audioBlobMp3.size) {
       window?.log?.info('Empty audio blob');
       return;

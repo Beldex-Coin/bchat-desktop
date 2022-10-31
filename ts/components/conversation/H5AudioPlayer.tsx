@@ -136,17 +136,5 @@ export const AudioPlayerWithEncryptedFile = (props: {
       }}
     
     />
-
-  //   <H5AudioPlayer
-  //   src={urlToLoad}
-  // customProgressBarSection={
-  //   [
-  //     RHAP_UI.PROGRESS_BAR,
-  //     RHAP_UI.CURRENT_TIME,
-  //     <div>/</div>,
-  //     RHAP_UI.DURATION
-  //   ]
-  // }
-// />
   );
 };

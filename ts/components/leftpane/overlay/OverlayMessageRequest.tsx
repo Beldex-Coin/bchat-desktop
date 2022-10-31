@@ -29,14 +29,6 @@ export const OverlayMessageRequest = (props: any) => {
     dispatch(setOverlayMode(undefined));
   }
 
-  // useEffect(() => {
-  //   if(convoRequestCount>0&&!props.settings)
-  //   {
-  //     closeOverlay(); 
-  //   }
-  // },[]
-  // )
-
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);

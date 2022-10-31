@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react';
-// import classNames from 'classnames';
 import { QRCode } from 'react-qr-svg';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
@@ -10,15 +9,9 @@ import { SyncUtils, ToastUtils, UserUtils } from '../../bchat/utils';
 import { ConversationModel, ConversationTypeEnum } from '../../models/conversation';
 
 import { getConversationController } from '../../bchat/conversations';
-// import { SpacerLG } from '../basic/Text';
 import autoBind from 'auto-bind';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
-// import { BchatButton
-//   , BchatButtonColor, 
-//   BchatButtonType 
-// } from '../basic/BchatButton';
-// import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIconButton } from '../icon';
 import { MAX_USERNAME_LENGTH } from '../registration/RegistrationStages';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -27,7 +20,6 @@ import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import styled from 'styled-components';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
-// import { Icons } from '../registration/DisplaySeed';
 
 interface State {
   profileName: string;
@@ -82,7 +74,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const viewDefault = this.state.mode === 'default';
     const viewEdit = this.state.mode === 'edit';
     const viewQR = this.state.mode === 'qr';
-    // console.log("viewDefault:",viewDefault,viewEdit,viewQR)
     const bchatID = UserUtils.getOurPubKeyStrFromCache();
     const backButton =
       viewEdit || viewQR
@@ -131,56 +122,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
               />
             </div>
 
-            {/* <SpacerMD /> */}
-
-
-            {/* {viewQR && <QRView bchatID={bchatID} />} */}
             {(viewDefault || viewQR) && this.renderDefaultView()}
             {viewEdit && this.renderEditView()}
-            {/* { this.renderAddressView({bchatID})} */}
 
             <div className="bchat-id-section">
               <PillDivider />
               {!viewQR ? (this.renderAddressView({ bchatID })) : (this.renderQrView({ bchatID }))}
-
-              {/* <SpacerLG /> */}
-
-
-              {/* {viewDefault || viewQR ? (
-              <BchatButton
-                text={window.i18n('editMenuCopy')}
-                buttonType={BchatButtonType.BrandOutline}
-                buttonColor={BchatButtonColor.Green}
-                onClick={() => {
-                  copyBchatID(bchatID);
-                }}
-                dataTestId="copy-button-profile-update"
-              />
-            ) : (
-              !this.state.loading && (
-                <BchatButton
-                  text={window.i18n('save')}
-                  buttonType={BchatButtonType.BrandOutline}
-                  buttonColor={BchatButtonColor.Green}
-                  onClick={this.onClickOK}
-                  disabled={this.state.loading}
-                  dataTestId="save-button-profile-update"
-                />
-              )
-            )} */}
-              {/* {viewEdit && (
-              !this.state.loading && (
-                <BchatButton
-                  text={window.i18n('save')}
-                  buttonType={BchatButtonType.BrandOutline}
-                  buttonColor={BchatButtonColor.Green}
-                  onClick={this.onClickOK}
-                  disabled={this.state.loading}
-                  dataTestId="save-button-profile-update"
-                />
-              ))} */}
-
-              {/* <SpacerLG /> */}
             </div>
 
           </BchatWrapperModal>
@@ -198,37 +145,24 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <div
               className="image-upload-section"
               role="button"
-              // onClick={this.fireInputEvent}
               data-testid="image-upload-section"
             />
             <div data-tip="Edit" data-place="right" data-offset="{'top':15,'left':10}" style={{
               background: `url(images/bchat/camera.svg) no-repeat`,
               width: "30px",
               height: "30px",
-              //  left:'103px',
               position: 'relative',
               justifyContent: 'center',
               backgroundSize: '32px',
               top: '56px',
               right: '20px',
               alignItems: 'center',
-              //  backgroundColor:"#353543",
-              //  borderRadius:"30px",
-              //  backgroundPosition:"center",
               cursor: 'pointer'
             }}
-              // className="qr-view-button"
-              // onClick={() => {
-              // this.setState(state => ({ ...state, mode: 'qr' }));
-              // this.fireInputEvent
-              // }}
               onClick={this.fireInputEvent}
               role="button"
               data-testid="image-upload-section"
             >
-              {/* <BchatIconButton iconType="profileCamera" iconSize="medium" */}
-              {/* //  iconColor={'black'}  */}
-              {/* /> */}
               <BchatToolTip place="top" effect="solid" />
             </div>
           </div>
@@ -280,16 +214,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
           <div
             className='qr-icon-btn'
-            // className="qr-view-button"
             style={{
-              //  background:`url(images/bchat/${SwicthContact}.svg) no-repeat`,
-              //  width: "30px",
-              //  height: "30px",
-              //  left:'103px',
-              //  position:'relative',
-              //  backgroundColor:"#353543",
-              //  borderRadius:"30px",
-              //  backgroundPosition:"center",
               cursor: 'pointer'
             }}
             onClick={() => {
@@ -304,8 +229,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
               : <svg xmlns="http://www.w3.org/2000/svg" width="29" height="30" viewBox="0 0 22.646 22.646">
                 <path id="icons8-copybook" d="M10.065,5A3.291,3.291,0,0,0,6.788,8.278v.894H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V8.278a1.477,1.477,0,0,1,1.49-1.49H23.176a1.477,1.477,0,0,1,1.49,1.49v.449a.894.894,0,0,0,0,.29V12.3a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0,0,.29v2.094a.894.894,0,0,0,0,.29v3.286a.894.894,0,0,0-.008.229,1.472,1.472,0,0,1-1.482,1.407H10.065a1.477,1.477,0,0,1-1.49-1.49v-.894h.894a.894.894,0,1,0,0-1.788H8.576V20.494H6.788v1.192H5.894a.894.894,0,1,0,0,1.788h.894v.894a3.291,3.291,0,0,0,3.278,3.278H23.176a3.293,3.293,0,0,0,3.154-2.4,1.5,1.5,0,0,0,1.315-1.472V21.388a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V15.429a1.508,1.508,0,0,0-1.192-1.46v-.656a1.508,1.508,0,0,0,1.192-1.46V9.47A1.506,1.506,0,0,0,26.44,8.009,3.291,3.291,0,0,0,23.176,5Zm2.98,4.172a.894.894,0,0,0-.894.894v4.172a.894.894,0,0,0,.894.894h7.747a.894.894,0,0,0,.894-.894V10.065a.894.894,0,0,0-.894-.894Zm.894,1.788H19.9v2.384H13.939ZM6.788,12.151v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V12.151Zm0,4.172v1.192H5.894a.894.894,0,1,0,0,1.788H9.469a.894.894,0,1,0,0-1.788H8.576V16.323Z" transform="translate(-5 -5)" />
               </svg>}
-
-            {/* <BchatIconButton iconType="qr" iconSize="small" iconColor={'white'} /> */}
           </div>
         </div>
 
@@ -319,12 +242,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
     return (
       <>
         {this.renderProfileHeader()}
-        {/* <BchatSpinner 
-            // loading={this.state.loading}
-            loading={true}
-            
-            /> */}
-
         <div className="profile-name">
           <div className="inputBox">
             <input
@@ -363,18 +280,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-tip="Copy"
             data-place="right"
             data-offset="{'top':17}"
-
-          // style={{
-          //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
-          //  width: "40px",
-          //  height: "40px",
-          //  position: 'relative',
-          //  backgroundColor:"#353543",
-          //  borderRadius:"30px",
-          //  backgroundSize:'13px',
-          //  backgroundPosition:"center",
-          //  cursor:'pointer'
-          //  }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
               <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
@@ -389,16 +294,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-tip="Copy"
             data-place="right"
             data-offset="{'top':17}"
-            // style={{
-            //  background:`url(images/bchat/copy_icon.svg) no-repeat`,
-            //  width: "40px",
-            //  height: "40px",
-            //  backgroundColor:"#353543",
-            //  backgroundSize:'13px',
-            //  borderRadius:"30px",
-            //  backgroundPosition:"center",
-            //  cursor:'pointer'
-            //  }}
             className="bchat-id-section-display-icon"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">

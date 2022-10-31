@@ -31,7 +31,6 @@ export const BchatRecoverySeed = () =>
               onClick={()=>setVerify(true)}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}
-            //   disabled={!caption}
             />
              </div>
              

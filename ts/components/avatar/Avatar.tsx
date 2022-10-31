@@ -11,7 +11,6 @@ import { AvatarPlaceHolder } from './AvatarPlaceHolder/AvatarPlaceHolder';
 import { ClosedGroupAvatar } from './AvatarPlaceHolder/ClosedGroupAvatar';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
 import styled from 'styled-components';
-// import { BchatIcon } from '../icon';
 
 export enum AvatarSize {
   XS = 28,

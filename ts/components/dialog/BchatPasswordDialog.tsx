@@ -59,8 +59,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
           ]
         : [window.i18n('enterPassword'), window.i18n('confirmPassword')];
 
-    const confirmButtonColor =
-      passwordAction === 'remove' ? BchatButtonColor.Danger : BchatButtonColor.Green;
+    const confirmButtonColor = BchatButtonColor.Green;
     // do this separately so typescript's compiler likes it
     const localizedKeyAction: LocalizerKeys =
       passwordAction === 'change'
@@ -111,7 +110,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
         </div>
 
         <SpacerSM />
-        {/* {this.showError()} */}
 
         <div className="bchat-modal__button-group">
           <BchatButton text={window.i18n('cancel')} onClick={this.closeDialog} />
@@ -134,21 +132,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
     return true;
   }
-
-  // private showError() {
-  //   const message = this.state.error;
-
-  //   return (
-  //     <>
-  //       {message && (
-  //         <>
-  //           <div className="bchat-label warningBg">{message}</div>
-  //           <SpacerLG />
-  //         </>
-  //       )}
-  //     </>
-  //   );
-  // }
 
   /**
    * Returns false and set the state error field in the input is not a valid password

@@ -1,15 +1,10 @@
 import React from 'react';
-
-// import { shell } from 'electron';
-
-// import { useDispatch, useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 
 import ip2country from 'ip2country';
 import countryLookup from 'country-code-lookup';
 import { Snode } from '../../data/data';
-// import { onionPathModal } from '../../state/ducks/modalDialog';
 import {
   getFirstOnionPath,
   getFirstOnionPathLength,
@@ -204,21 +199,7 @@ export const ActionPanelOnionStatusLight = (props: {
 };
 
 export const OnionPathModal = () => {
-  // const onConfirm = () => {
-  //   void shell.openExternal('https://bchat.beldex.io/faq/#onion-routing');
-  // };
-  // const dispatch = useDispatch();
   return (
-    // tslint:disable-next-line: use-simple-attributes
-    // <BchatWrapperModal
-    //   title={window.i18n('onionPathIndicatorTitle')}
-    //   confirmText={window.i18n('learnMore')}
-    //   cancelText={window.i18n('cancel')}
-    //   onConfirm={onConfirm}
-    //   onClose={() => dispatch(onionPathModal(null))}
-    //   showExitIcon={true}
-    // >
       <OnionPathModalInner />
-    // </BchatWrapperModal>
   );
 };

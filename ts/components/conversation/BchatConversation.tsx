@@ -54,8 +54,6 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 import { BchatRightPanelWithDetails } from './BchatRightPanel';
-
-// import { isRightPanelShowing } from '../../state/selectors/conversations';
 // tslint:disable: jsx-curly-spacing
 
 interface State {
@@ -220,14 +218,7 @@ export class BchatConversation extends React.Component<Props, State> {
       isRightPanelShowing,
       lightBoxOptions,
     } = this.props;
-
-  //  'messagesProps ::',messagesProps,
-  //  "showMessageDetails ::",showMessageDetails,
-  //  "selectedMessages::",selectedMessages,
-  //  "isRightPanelShowing ::",isRightPanelShowing,
-  //  );
     
-    // if (!selectedConversation || !messagesProps || !selectedConversation.activeAt) {
     if (!selectedConversation || !messagesProps) {
 
       // return an empty message view
@@ -250,10 +241,6 @@ export class BchatConversation extends React.Component<Props, State> {
           role="navigation"
          >
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
-          {/* <div className={classNames('conversation-info-panel',  'show')}> */}
-
-            
-
             <MessageDetail />
           </div>
           {lightBoxOptions?.media && this.renderLightBox(lightBoxOptions)}

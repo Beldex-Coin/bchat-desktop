@@ -31,14 +31,8 @@ export const BchatIdEditable = (props: Props) => {
   useFocusMount(inputRef, editable);
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     if (editable && onChange) {
-      const eventValue = e.target.value?.replace(/(\r\n|\n|\r)/gm, '');
-      // if(eventValue.length<=26)
-      // {
-        console.log('eventValue ::',eventValue);
-        
-        onChange(eventValue);
-      // }
-     
+      const eventValue = e.target.value?.replace(/(\r\n|\n|\r)/gm, '');        
+        onChange(eventValue);     
     }
   }
 

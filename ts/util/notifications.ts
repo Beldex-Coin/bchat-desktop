@@ -45,7 +45,6 @@ const debouncedUpdate = _.debounce(update, 2000);
 const fastUpdate = update;
 
 function clear() {
-  // window.log.info('Remove all notifications');
   currentNotifications = [];
   debouncedUpdate();
 }
@@ -122,13 +121,6 @@ function update() {
     numNotifications,
     userSetting,
   });
-
-  // window.log.info(
-  //   'Update notifications:',
-  //   Object.assign({}, status, {
-  //     isNotificationGroupingSupported,
-  //   })
-  // );
 
   if (status.type !== 'ok') {
     if (status.shouldClearNotifications) {
@@ -228,7 +220,6 @@ function getUserSetting() {
   return (Storage.get('notification-setting') as UserSetting) || SettingNames.MESSAGE;
 }
 function onRemove() {
-  // window.log.info('Remove notification');
   debouncedUpdate();
 }
 

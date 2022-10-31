@@ -12,20 +12,9 @@ export class MessageView extends React.Component {
         <div className="conversation-header" />
         <div className="container">
           <div className="content bchat-full-logo">
-            {/* <img
-              src="images/bchat/brand.svg"
-              className="bchat-brand-logo"
-              alt="full-brand-logo"
-            />*/}
             <div  className="bchat-text-logo">
             <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
-
             </div>
-            {/* <img
-              src={`images/bchat/${window.Events.getThemeSetting()==='dark'?'emptyMessage.svg':"emptyMessageWhite.svg"}`}
-              className="bchat-text-logo"
-              alt="full-brand-logo"
-            />  */}
           </div>
         </div>
       </div>

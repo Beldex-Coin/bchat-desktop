@@ -12,15 +12,8 @@ import { GoBackMainMenuButton } from "./SignUpTab"
     <div>
          <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 51px'>
-          <div className='bchat-registration-goback-icon'
-                        // data-tip="Back"
-                        // data-place="right"
-                        // data-offset="{'top':30,'left':15}"
-            
-          >
-        {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
+          <div className='bchat-registration-goback-icon'>
             <GoBackMainMenuButton assent={props.backArrow} />
-            {/* <BchatToolTip  effect="solid"/> */}
         </div>
         <Flex className="bchat-registration__welcome-bchat">
         Wallet Password
@@ -36,9 +29,6 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       enableShowHide={true}
       onValueChanged={props.setPassword}
       maxLength={6}
-      
-    //   onEnterPressed={props.handlePressEnter}
-    //   inputDataTestId="recovery-phrase-input"
     />
     <div style={{height:'55px'}}></div>
      <BchatInput
@@ -50,8 +40,6 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       enableShowHide={true}
       onValueChanged={props.setRepassword}
       maxLength={6}
-    //   onEnterPressed={props.handlePressEnter}
-    //   inputDataTestId="recovery-phrase-input"
     />
  <div style={{height:'50px'}}></div>
  <div style={{width:'75%',margin:'auto'}}>
@@ -60,8 +48,6 @@ import { GoBackMainMenuButton } from "./SignUpTab"
         buttonType={BchatButtonType.Brand}
         buttonColor={BchatButtonColor.Green}
         text={window.i18n('continue')}
-
-        // disabled={!enableCompleteSignUp}
       />
   </div>
 

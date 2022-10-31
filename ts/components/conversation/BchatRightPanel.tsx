@@ -24,7 +24,6 @@ import { getSelectedConversation, isRightPanelShowing } from '../../state/select
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-// import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
@@ -80,9 +79,6 @@ async function getMediaGalleryProps(
   const documents = rawDocuments.map(attributes => {
     // this is to not fail if the attachment is invalid (could be a Long Attachment type which is not supported)
     if (!attributes.attachments?.length) {
-      // window?.log?.info(
-      //   'Got a message with an empty list of attachment. Skipping...'
-      // );
       return null;
     }
     const attachment = attributes.attachments[0];
@@ -112,24 +108,11 @@ const HeaderItem = () => {
     return null;
   }
   const { id,
-    //  isGroup, isKickedFromGroup, isBlocked, left,
     profileName } = selectedConversation;
 
-  // const showInviteContacts = isGroup && !isKickedFromGroup && !isBlocked && !left;
 
   return (
     <div className="group-settings-header">
-
-      {/* <BchatIconButton
-        iconType="chevron"
-        iconSize="medium"
-        // iconRotation={270}
-        iconColor={'#fff'}
-        onClick={() => {
-          dispatch(closeRightPanel());
-        }}
-        dataTestId="back-button-conversation-options"
-      /> */}
       <div className='group-settings-header-avatarBox'>
         <Avatar size={AvatarSize.XL} pubkey={id} />
         <p>{profileName}</p>
@@ -212,7 +195,6 @@ export const BchatRightPanelWithDetails = () => {
   const hasDisappearingMessages = !isPublic && !commonNoShow;
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
-    // ? window.i18n('leaveGroup')
     : isKickedFromGroup
       ? window.i18n('youGotKickedFromGroup') 
       : left
@@ -271,17 +253,6 @@ export const BchatRightPanelWithDetails = () => {
           <SpacerLG />
         </>
       )}
-      {/* {showUpdateGroupNameButton && (
-        <div
-          className="group-settings-item"
-          role="button"
-          onClick={async () => {
-            await showUpdateGroupNameByConvoId(id);
-          }}
-        >
-          {isPublic ? window.i18n('editGroup') : window.i18n('editGroupName')}
-        </div>
-      )} */}
       {showAddRemoveModeratorsButton && (
         <>
           <div
@@ -324,7 +295,6 @@ export const BchatRightPanelWithDetails = () => {
               <path id="add_member" data-name="add member" d="M9.595,2a5.318,5.318,0,0,0-2.967,9.731A7.617,7.617,0,0,0,2,18.709H3.519a6.065,6.065,0,0,1,6.076-6.076,6,6,0,0,1,2.872.736,6.169,6.169,0,1,0,1.163-1.092,7.7,7.7,0,0,0-1.068-.546A5.318,5.318,0,0,0,9.595,2Zm0,1.519a3.8,3.8,0,1,1-3.8,3.8A3.786,3.786,0,0,1,9.595,3.519Zm7.595,9.114a4.557,4.557,0,1,1-4.557,4.557A4.547,4.547,0,0,1,17.19,12.633Zm-.759,1.519V16.43H14.152v1.519H16.43v2.278h1.519V17.949h2.278V16.43H17.949V14.152Z" transform="translate(-2 -2)" fill="#128b17" />
             </svg>
           </div>
-          {/* {window.i18n('groupMembers')} */}
            {window.i18n('addingContacts')}
         </div>
       )}
@@ -362,25 +332,12 @@ export const BchatRightPanelWithDetails = () => {
         // tslint:disable-next-line: use-simple-attributes
         <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
           <div className='group-settings__leaveBtn'  >
-          {/* {isPublic ?  <BchatIcon
-                iconType="delete"
-                iconSize="tiny"
-                iconColor="#E22A2B"
-              />
-              : */}
               <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
               {/* } */}
             <div  style={{marginLeft:'5px'}}>
            { leaveGroupString}
               </div>
           </div>
-        {/* <BchatButton
-          text={leaveGroupString}
-          buttonColor={BchatButtonColor.Danger}
-          disabled={isKickedFromGroup || left}
-          buttonType={BchatButtonType.SquareOutline}
-          onClick={deleteConvoAction}
-        /> */}
         </div>
       )}
     </div>

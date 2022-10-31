@@ -33,7 +33,6 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
     margin,
     id,
     dataTestId,
-    // style
   } = props;
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (props.onClick) {
@@ -44,9 +43,7 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
 
   return (
     <div
-      className={classNames('bchat-icon-button', iconSize, isSelected ? 'no-opacity' : '')}
-      // className={classNames('bchat-icon-button', iconSize,)}
-     
+      className={classNames('bchat-icon-button', iconSize, isSelected ? 'no-opacity' : '')}     
       role="button"
       ref={ref}
       id={id}

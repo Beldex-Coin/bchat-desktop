@@ -4,18 +4,6 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import { Flex } from '../basic/Flex';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { GoBackMainMenuButton } from './SignUpTab';
-// import useKey from 'react-use/lib/useKey';
-
-
-// export const gotoNextPage = (props: any) => {
-//   if (props.pubKey && props.walletAddress) {
-//     useKey((event: KeyboardEvent) => {
-//       return event.key === 'Enter';
-//     },props.nextFunc);
-//   }
-
-
-// }
 
 
 export const DisplayIdAndAddress = (props: any) =>
@@ -57,28 +45,6 @@ export const Icons = (props:any)=>
 
 export const ShowRecoveryPhase= (props:any) => {
   const [seedCopied,setSeedCopied] = useState(false);
-  // return(
-  //     <div className='bchat-registration-welcome-screen-container'>
-  //      <div className='bchat-registration-welcome-screen-goback'>
-  //       <GoBackMainMenuButton assent={()=>{props.assentAndGoBack()}} />
-  //      </div>
-  //       <h1 className="bchat-head">{window.i18n('recoveryPhrase')}</h1>
-  //       <h5 style={{color:"white",fontFamily:"poppin-regular"}}><span style={{color:"#F23333"}}>Note :</span> {window.i18n('saveYourRecoveryPhrase')}
-  //       <br/><span style={{fontFamily:"poppin-semibold"}}>{window.i18n('copyToContinueRecovery')}</span></h5>
-  //       <div className='bchat-registration-recovery-phrase'>
-  //         <textarea className='bchat-registration-recovery-phrase-textarea' rows={4} cols={60} name="text" value={props.mnemonic} placeholder="Enter your recovery seed to restore your account" ></textarea>
-  //         {<Icons icon={"copy_icon"} iconfunc={()=>{props.copySeed(props.mnemonic),setSeedCopied(true)}}/> }
-  //        </div> 
-  //       {/* <div>
-  //       </div >             */}
-  //      <BchatButton 
-  //       onClick={props.nextFunc}
-  //       buttonType={BchatButtonType.Brand}
-  //       buttonColor={BchatButtonColor.Green}
-  //       text={window.i18n('continue')}
-  //       disabled={!seedCopied}/>
-  //     </div>
-  // );
   return(
      <div className='bchat-registration-welcome-screen-container' style={{width:'80%',marginLeft:'85px'}}>
       <Flex  flexDirection="row" container={true} height="100%">

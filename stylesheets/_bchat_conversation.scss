@@ -448,7 +448,6 @@
 
 .bchat-recording {
   height: $composition-container-height;
-  // height: 38px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -460,7 +459,12 @@
   &-box {
     padding: 10px;
     display: flex;
+<<<<<<< Updated upstream
     width: 91%;
+=======
+    width: 100%;
+    margin-right: 12px;
+>>>>>>> Stashed changes
     background-color: var(--color-composeMsgInput);
     margin-left: 13px;
     height: 47px;
@@ -554,7 +558,6 @@
       animation: fadein $bchat-transition-duration;
 
       @media (-webkit-min-device-pixel-ratio: 1.6) {
-        // margin-left: auto;
       }
     }
 
@@ -603,7 +606,6 @@ $rhap_font-family: inherit !default;
 }
 
 .rhap_total-time {
-  // display: none;
   display: block;
 }
 

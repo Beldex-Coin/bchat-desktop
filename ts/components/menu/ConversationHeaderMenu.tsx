@@ -18,7 +18,6 @@ import {
   NotificationForConvoMenuItem,
   PinConversationMenuItem,
   RemoveModeratorsMenuItem,
-  // ShowUserDetailsMenuItem,
   UnbanMenuItem,
   UpdateGroupNameMenuItem,
 } from './Menu';

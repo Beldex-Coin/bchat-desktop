@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { BchatJoinableRooms } from './BchatJoinableDefaultRooms';
-
-// import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
-// import { OverlayHeader } from './OverlayHeader';
 import { useDispatch } from 'react-redux';
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { joinOpenGroupV2WithUIEvents } from '../../../bchat/apis/open_group_api/opengroupV2/JoinOpenGroupV2';
@@ -71,11 +68,9 @@ export const OverlayOpenGroup = () => {
 
   return (
     <div className="module-left-pane-overlay">
-      {/* <div className="module-left-pane-overlay"> */}
       <div style={{
     height: 'calc(100% - 153px)'}} >
 
-      {/* <OverlayHeader title={title} subtitle={subtitle}  hideExit={true}/> */}
       <LeftPaneSectionHeader />
      <ScrollView>     
        <div className='module-left-pane-overlay-closed--header'>{title}</div>
@@ -100,13 +95,6 @@ export const OverlayOpenGroup = () => {
 
       <BchatSpinner loading={loading} />
       <BchatJoinableRooms onRoomClicked={closeOverlay} />
-      
-      {/* <BchatButton
-        buttonColor={BchatButtonColor.Green}
-        buttonType={BchatButtonType.BrandOutline}
-        text={buttonText}
-        
-      /> */}
     </ScrollView>
     </div>
 
