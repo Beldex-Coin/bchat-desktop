@@ -73,10 +73,10 @@ export const AvatarPlaceHolder = (props: Props) => {
 
   const { hash, loading } = useHashBasedOnPubkey(pubkey);
 
-  const diameterWithoutBorder = diameter - 2;
+  // const diameterWithoutBorder = diameter - 2;
   const viewBox = `0 0 ${diameter} ${diameter}`;
   // const r = diameter / 2;
-  const rWithoutBorder = diameterWithoutBorder / 2;
+  // const rWithoutBorder = diameterWithoutBorder / 2;
 
   if (loading || !hash) {
     // return grey circle
@@ -86,9 +86,11 @@ export const AvatarPlaceHolder = (props: Props) => {
         <rect
           rx={10}
           ry={10}
-          r={rWithoutBorder}
+          // r={rWithoutBorder}
           fill="#d2d2d3"
-          style={{width:'90%',height:'90%'}}
+          width={diameter}
+          height={diameter}
+          // style={{width:'90%',height:'90%'}}
           stroke={avatarBorderColor}
           strokeWidth="1"
         />
@@ -130,9 +132,10 @@ export const AvatarPlaceHolder = (props: Props) => {
         <rect
           rx={10}
           ry={10}
-          r={rWithoutBorder}
+          width={diameter}
+          height={diameter}
+          // r={rWithoutBorder}
           fill={bgColor}
-          style={{width:'90%',height:"90%"}}
           stroke={avatarBorderColor}
           strokeWidth="1"
         />
@@ -140,8 +143,8 @@ export const AvatarPlaceHolder = (props: Props) => {
         {/* <rect x="120" width="100" height="100" rx="15"  fill='#fff' /> */}
         <text
           fontSize={fontSize}
-          x="45%"
-          y="45%"
+          x="50%"
+          y="50%"
           fill="white"
           textAnchor="middle"
           stroke="white"
