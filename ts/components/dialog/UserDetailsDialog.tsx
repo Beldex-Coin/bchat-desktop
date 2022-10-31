@@ -58,7 +58,7 @@ export const UserDetailsDialog = (props: Props) => {
 
   return (
     <BchatWrapperModal title={props.userName} onClose={closeDialog} showExitIcon={true}>
-      <div style={{width:'410px'}}>
+      <div style={{width:'410px',paddingLeft:'20px'}}>
       <div className="avatar-center">
         <div className="avatar-center-inner">
           <Avatar

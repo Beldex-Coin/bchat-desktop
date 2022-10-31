@@ -263,6 +263,7 @@
   "changeAccountPasswordDescription": "Change your password",
   "removeAccountPasswordTitle": "Remove Account Password",
   "removeAccountPasswordDescription": "Remove the password associated with your account",
+  "oldPasswordAndNewPasswordSame":"Please enter a password that you have not used before.",
   "enterPassword": "Please enter your password",
   "confirmPassword": "Confirm password",
   "showRecoveryPhrasePasswordRequest": "Please enter your password",

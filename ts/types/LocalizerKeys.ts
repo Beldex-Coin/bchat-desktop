@@ -239,6 +239,7 @@ export type LocalizerKeys =
   | 'cannotMixImageAndNonImageAttachments'
   | 'viewMenuToggleFullScreen'
   | 'goToSupportPage'
+  | 'oldPasswordAndNewPasswordSame'
   | 'passwordsDoNotMatch'
   | 'createSecretGroupNamePrompt'
   | 'pruningSocialgroupDialogMessage'

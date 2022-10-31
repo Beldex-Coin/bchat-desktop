@@ -288,6 +288,7 @@
   "unlock": "Открыть",
   "password": "Password",
   "setPassword": "Set Password",
+  "oldPasswordAndNewPasswordSame":"Please enter a password that you have not used before.",
   "changePassword": "Change Password",
   "removePassword": "Remove Password",
   "maxPasswordAttempts": "Invalid Password. Would you like to reset the database?",

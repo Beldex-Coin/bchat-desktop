@@ -200,12 +200,20 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
   ) {
     // We don't validate oldPassword on change: this is validate on the validatePasswordHash below
     // we only validate the newPassword here
-    console.log("this.validatePassword(newPassword):",this.validatePassword(newPassword));
     if (!this.validatePassword(newPassword)) {
       return;
     }
 
     // Check the retyped password matches the new password
+
+    if ((oldPassword === newPassword) || (oldPassword === newConfirmedPassword)) {
+      ToastUtils.pushToastError('oldPasswordAndNewPasswordSame', window.i18n('oldPasswordAndNewPasswordSame'));
+      this.setState({
+        error: window.i18n('oldPasswordAndNewPasswordSame'),
+      });
+      return;
+    }
+
     if (newPassword !== newConfirmedPassword) {
       ToastUtils.pushToastError('passwordsDoNotMatch', window.i18n('passwordsDoNotMatch'));
       this.setState({

@@ -67,6 +67,8 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
         type="password"
         defaultValue=""
         placeholder={' '}
+        minLength={4}
+        maxLength={26}
         onKeyUp={this.onKeyUp}
         ref={input => {
           this.inputRef = input;

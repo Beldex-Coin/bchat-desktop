@@ -29,7 +29,7 @@ async function toggleLinkPreviews() {
   if (!newValue) {
     await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
   } else {
-    window.inboxStore?.dispatch(
+   window.inboxStore?.dispatch(
       updateConfirmModal({
         title: window.i18n('linkPreviewsTitle'),
         message: window.i18n('linkPreviewsConfirmMessage'),
