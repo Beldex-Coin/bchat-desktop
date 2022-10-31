@@ -36,6 +36,7 @@ import {
   unblockConvoById,
 } from '../../interactions/conversationInteractions';
 import {
+  // ConversationCollection,
   ConversationNotificationSetting,
   ConversationNotificationSettingType,
 } from '../../models/conversation';
@@ -54,6 +55,8 @@ import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { ContextConversationId } from '../leftpane/conversation-list-item/ConversationListItem';
+import { getOurNumber } from '../../state/selectors/user';
+// import { removeConversation } from '../../data/data';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -210,6 +213,11 @@ export const DeleteContactMenuItem = () => {
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
+  const ourNumber = useSelector(getOurNumber);
+  // console.log( 'message Id :: ',ourNumber,"convoId ::",convoId);
+  // const converstion=new ConversationCollection;
+  // const converstionIdData=converstion.get(convoId);
+  
 
   if (showDeleteContact(!isPrivate, isPublic, isLeft, isKickedFromGroup, isRequest)) {
     let menuItemText: string;
@@ -226,20 +234,63 @@ export const DeleteContactMenuItem = () => {
     };
 
     const showConfirmationModal = () => {
-      dispatch(
-        updateConfirmModal({
-          title: menuItemText,
+
+      let notetoSelf={
+        title: menuItemText,
+        message:"This chat is for your self reference.So can't be deleted.",
+        onClickClose,
+        okTheme: BchatButtonColor.Green,
+        onClickOk: async () => {
+          onClickClose
+        },
+        okText:"ok",
+        hideCancel: true,
+
+      }
+
+      let contactDelete={
+        title: menuItemText,
           message: isPrivate
             ?"Permanently delete the Contact?"
             // ? window.i18n('deleteContactConfirmation')
             : window.i18n('leaveGroupConfirmation'),
           onClickClose,
           okTheme: BchatButtonColor.Danger,
-          onClickOk: async () => {
-            await getConversationController().deleteContact(convoId);
+          onClickOk: async () => {  
+            await getConversationController().deleteContact(convoId);           
           },
-        })
-      );
+          okText:menuItemText.slice(0,5)==='Leave'?"Leave":"Delete"
+        }
+      dispatch(
+        updateConfirmModal(ourNumber===convoId?notetoSelf:contactDelete))
+
+      // dispatch(
+      //   updateConfirmModal({
+      //     title: menuItemText,
+      //     message: isPrivate
+      //       ?"Permanently delete the Contact?"
+      //       // ? window.i18n('deleteContactConfirmation')
+      //       : window.i18n('leaveGroupConfirmation'),
+      //     onClickClose,
+      //     okTheme: BchatButtonColor.Danger,
+      //     onClickOk: async () => {  
+
+      //       // await getConversationController().deleteContact(convoId);
+      //       converstionIdData.set({
+      //       active_at: undefined,
+      //   // active_at:2022,
+      //       isApproved: false,
+      //   // Deleled:"yes"
+
+      //       });
+      //     await converstionIdData.commit();
+      //     await removeConversation(convoId);
+      //     converstion.remove(converstionIdData);
+
+           
+      //     },
+      //   })
+      // );
     };
 
     return <Item onClick={showConfirmationModal}>{menuItemText}</Item>;

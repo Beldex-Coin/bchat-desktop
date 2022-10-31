@@ -32,7 +32,7 @@
   "socialGroupInvitation": "Social group invitation",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ social group?",
-  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "Enter BChat ID",
   "BchatID":"BChat ID",
   "scanQr":"Scan QR Code",
   "emptyChatScreen":"Much empty. Such wow.<br></br> Get some friends to BChat!",
@@ -207,7 +207,7 @@
   "hideMenuBarDescription": "Toggle system menu bar visibility",
   "startConversation": "Start New Chat",
   "shareBchatIdDiscription": "Share your BChat ID with your friends. You can find your BChat ID below.",
-  "invalidNumberError": "Invalid BChat ID",
+  "invalidNumberError": "Invalid BChat ID or BNS Name",
   "failedResolveOns": "Failed to resolve BNS name",
   "autoUpdateSettingTitle": "Auto Update",
   

@@ -214,7 +214,7 @@ export class ConversationController {
         try {
           await removeV2OpenGroupRoom(conversation.id);
         } catch (e) {
-          window?.log?.info('removeV2OpenGroupRoom failed:', e);
+          window?.log?.info('removeV2OpenGroupRoom failed:', e); 
         }
       }
     }

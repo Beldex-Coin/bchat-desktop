@@ -60,12 +60,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
   
   const [isLoading, setIsLoading] = useState(false);
 
-  // const okText = props.okText || window.i18n('ok');
-  console.log("props.okText ::",props.okText);
+  const okText = props.okText || window.i18n('ok');
+  // console.log("props.okText ::",props.okText);
   
-  const deletebtn="Delete"===title.slice(0,6)?"Delete":null;
+  // const deletebtn="Delete"===title.slice(0,6)?"Delete":null;
   
-  const okText =deletebtn || props.okText || window.i18n('ok');
+  // const okText =deletebtn || props.okText || window.i18n('ok');
 
   const cancelText = props.cancelText || window.i18n('cancel');
   const showHeader = !!props.title;
@@ -152,8 +152,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         )}
          <BchatButton
           text={okText}
-          // buttonColor={BchatButtonColor.Green}
-          buttonColor={okText==='Delete'?BchatButtonColor.Danger:BchatButtonColor.Green}
+          buttonColor={props.okTheme}
+          // buttonColor={okText==='Delete'?BchatButtonColor.Danger:BchatButtonColor.Green}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
         />
