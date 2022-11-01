@@ -4,7 +4,7 @@ node_modules
 .eslintcache
 stylesheets/*.css.map
 /dist
-/bin
+/bin/*
 .DS_Store
 config/local.json
 config/local-*.json
