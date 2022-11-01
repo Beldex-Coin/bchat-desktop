@@ -100,7 +100,7 @@ export const forceSyncConfigurationNowIfNeeded = async (waitForMessageSent = fal
 const getActiveOpenGroupV2CompleteUrls = async (
   convos: Array<ConversationModel>
 ): Promise<Array<string>> => {
-  // Filter open groups v2
+  // Filter Social groups v2
   const openGroupsV2ConvoIds = convos
     .filter(c => !!c.get('active_at') && c.isOpenGroupV2() && !c.get('left'))
     .map(c => c.id) as Array<string>;
@@ -160,7 +160,7 @@ const getValidClosedGroups = async (convos: Array<ConversationModel>) => {
 const getValidContacts = (convos: Array<ConversationModel>) => {
   // Filter contacts
   const contactsModels = convos.filter(
-    c => !!c.get('active_at') && c.getLokiProfile()?.displayName && c.isPrivate()
+    c => !!c.get('active_at') && c.getBchatProfile()?.displayName && c.isPrivate()
   );
 
   const contacts = contactsModels.map(c => {
@@ -193,7 +193,7 @@ const getValidContacts = (convos: Array<ConversationModel>) => {
 
       return new ConfigurationMessageContact({
         publicKey: c.id as string,
-        displayName: c.getLokiProfile()?.displayName,
+        displayName: c.getBchatProfile()?.displayName,
         profilePictureURL: c.get('avatarPointer'),
         profileKey: !profileKeyForContact?.length ? undefined : profileKeyForContact,
         isApproved: c.isApproved(),
@@ -229,7 +229,7 @@ export const getCurrentConfigurationMessage = async (
   const profileKey = ourProfileKeyHex ? fromHexToArray(ourProfileKeyHex) : undefined;
 
   const profilePicture = ourConvo?.get('avatarPointer') || undefined;
-  const displayName = ourConvo?.getLokiProfile()?.displayName || undefined;
+  const displayName = ourConvo?.getBchatProfile()?.displayName || undefined;
 
   const activeOpenGroups = [...opengroupV2CompleteUrls];
 

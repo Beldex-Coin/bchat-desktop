@@ -36,18 +36,20 @@
   position: absolute;
   height: 100%;
   // right: 0vw;
-  top:67px;
-  left: 381px;
+  top:64px;
+  left: 387px;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(-200%);
+
+  transform: translateX(-600%);
   will-change: transform;
-  width: 25vw;
+  // width: 25vw;
+  width: 100%;
   z-index: 5;
 
   &.show {
     transform: none;
     transition: transform 0.3s ease-in-out;
-    z-index: 2;
+    z-index: 3;
   }
 }
 
@@ -58,6 +60,11 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    
+    svg
+    {
+       color:var(--color-chatIcons);
+    }
   }
 
   .message-selection-overlay {
@@ -71,6 +78,7 @@
     justify-content: space-between;
     height: $main-view-header-height;
     background: var(--color-cell-background);
+    z-index: 93;
 
     .close-button {
       float: left;
@@ -79,13 +87,15 @@
 
     .bchat-button.default.danger {
       display: flex;
-      border-radius: 22px;
+      border-radius: 10px;
+      background-color: var(--color-inboxBgColor);
+      color: red;
     }
     .bchat-button.default.red {
       display: flex;
       color: #ffffff;
       background-color: red;
-      border-radius: 22px;
+      border-radius: 10px;
 
     }
     
@@ -102,24 +112,27 @@
   }
 }
 
-.bchat-conversation-Bg {
-  background-image: url('images/doodle_white.svg');
-}
 
 .bchat-conversation {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   max-width: calc(100vw - 380px);
+  background: var(--image-BgDoodle);
+  // background-repeat: no-repeat;
+  // background-position: center;
+  background-size: 100%;
+
   // height: 90.1;
-  background-image: url("../images/bchat/doodle_white.svg");
+  // background-image: url("../images/bchat/doodle_white.svg");
 
 
-  // .bchat-conversation-doodle
-  // {
-  //   background-color: beige;
-  //  height: 100%;
-  // }
+  .bchat-conversation-doodle
+  {
+    background-image:var(--image-BgDoodle);
+    width:"100%";
+    height:"100%";
+  }
 
   // selection for transparent device chat menu
   
@@ -194,18 +207,20 @@
   z-index: 1;
 
   .bchat-icon-button {
-    margin-right: $bchat-margin-sm;
+    // margin-right: $bchat-margin-sm;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0.7;
+    // opacity: 0.7;
 
     &:hover {
       opacity: 1;
       filter: brightness(0.9);
+      
       transition: $bchat-transition-duration;
     }
+    
 
     .send {
       padding: $bchat-margin-xs;
@@ -229,14 +244,13 @@
 
     &:hover {
       opacity: 0.7;
-
-
     }
 
   }
 
 
   .send-message-input {
+    width: 80%;
     cursor: text;
     display: flex;
     align-items: center;
@@ -246,10 +260,15 @@
     z-index: 1;
     background-color: inherit;
     margin-left: 27px;
-    background: #3F3C4B;
-    margin: 7px 13px;
+    background:var(--color-composeMsgInput);
+    margin: 5px 13px;
     border-radius: 10px;
     padding-left: 20px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+
+    svg{
+      color:var(--color-composeMsgRecordIcon);
+    }
 
     ul {
       max-height: 70vh;
@@ -270,7 +289,7 @@
       outline: none;
       border: none;
       font-size: 14px;
-      line-height: $bchat-font-h2;
+      line-height: $bchat-font-h3;
       letter-spacing: 0.5px;
     }
 
@@ -385,12 +404,13 @@
     /* padding: 8px; */
     cursor: pointer;
     animation: fadein 0.25s;
-    width: 57px;
-    height: 53px;
+    width: 47px;
+    height: 46px;
     display: flex;
     justify-content: center;
     align-items: center;
   animation: fadein $bchat-transition-duration;
+  // padding-left: 15px;
 
   &---scale {
     animation: scaling 2s ease-in-out;
@@ -415,17 +435,19 @@
     width: 25px;
     height: 30px;
     background-size: cover;
-    margin-left: 3px;
+    margin-bottom: 3px;
 
   }
 
+  &:hover {
+    opacity: 0.7;
+  }
 
 }
 
 
 .bchat-recording {
   height: $composition-container-height;
-  // height: 38px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -437,8 +459,9 @@
   &-box {
     padding: 10px;
     display: flex;
-    width: 94%;
-    background-color: #3F3C4B;
+    width: 100%;
+    margin-right: 12px;
+    background-color: var(--color-composeMsgInput);
     margin-left: 13px;
     height: 47px;
     border-radius: 13px;
@@ -453,6 +476,7 @@
     width: $actions-element-size;
     height: $actions-element-size;
     border-radius: 50%;
+    margin-right: 50px;
 
     .bchat-button {
       animation: fadein $bchat-transition-duration;
@@ -463,6 +487,7 @@
       border-radius: 50%;
       width: $actions-element-size;
       height: $actions-element-size;
+      margin-right: var(--margins-sm);
 
       .play {
         margin-left: 4px;
@@ -529,7 +554,6 @@
       animation: fadein $bchat-transition-duration;
 
       @media (-webkit-min-device-pixel-ratio: 1.6) {
-        margin-left: auto;
       }
     }
 
@@ -578,11 +602,11 @@ $rhap_font-family: inherit !default;
 }
 
 .rhap_total-time {
-  display: none;
+  display: block;
 }
 
 .rhap_current-time {
-  margin: 0 5px 0 4px;
+  margin: 0 0px 0 10px;
   flex-shrink: 0;
 }
 

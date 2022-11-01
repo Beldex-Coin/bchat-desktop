@@ -179,6 +179,7 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
   const dispatch = useDispatch();
 
   const showInFullScreen = () => {
+    
     if (isFullScreen) {
       dispatch(setFullScreenCall(false));
     } else {
@@ -194,7 +195,7 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
       backgroundColor="white"
       borderRadius="50%"
       onClick={showInFullScreen}
-      iconColor="black"
+      iconColor="#2879F9"
       margin="10px"
     />
   );
@@ -215,10 +216,10 @@ export const HangUpButton = () => {
       iconSize={60}
       iconPadding="20px"
       iconType="hangup"
-      backgroundColor="white"
+      backgroundColor="#FC3B3B"
       borderRadius="50%"
       onClick={handleEndCall}
-      iconColor="red"
+      iconColor="#FFFFFF"
       margin="10px"
     />
   );
@@ -317,11 +318,11 @@ const handleSpeakerToggle = async (
   }
 };
 
-const StyledCallWindowControls = styled.div<{ makeVisible: boolean }>`
+const StyledCallWindowControls = styled.div<{ makeVisible: boolean,isFullScreen:boolean }>`
   position: absolute;
 
   bottom: 0px;
-  width: 100%;
+  width: ${props => (props.isFullScreen ? "100vw" :'100%')};
   height: 100%;
   align-items: flex-end;
   padding: 10px;
@@ -376,8 +377,10 @@ export const CallWindowControls = ({
       document.removeEventListener('mouseleave', setMakeVisibleFalse);
     };
   }, [isFullScreen]);
+  
   return (
-    <StyledCallWindowControls makeVisible={makeVisible}>
+    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
+
       {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
 
       <VideoInputButton

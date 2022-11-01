@@ -214,12 +214,12 @@ describe('Message Utils', () => {
     // let convos: Array<ConversationModel>;
     // const mockValidOpenGroup = new MockConversation({
     //   type: ConversationTypeEnum.GROUP,
-    //   id: `${openGroupPrefix}1@chat-dev.lokinet.org`,
+    //   id: `${openGroupPrefix}1@chat-dev.beldexnet.org`,
     // });
 
     // const mockValidOpenGroup2 = new MockConversation({
     //   type: ConversationTypeEnum.GROUP,
-    //   id: `${openGroupPrefix}1@chat-dev2.lokinet.org`,
+    //   id: `${openGroupPrefix}1@chat-dev2.beldexnet.org`,
     // });
 
     // const mockValidClosedGroup = new MockConversation({
@@ -243,8 +243,8 @@ describe('Message Utils', () => {
       Sinon.restore();
     });
 
-    // it('filter out non active open groups', async () => {
-    //   // override the first open group and make it inactive
+    // it('filter out non active Social groups', async () => {
+    //   // override the first Social group and make it inactive
     //   (mockValidOpenGroup as any).attributes.active_at = undefined;
 
     //   convos.push(
@@ -257,7 +257,7 @@ describe('Message Utils', () => {
 
     //   const configMessage = await getCurrentConfigurationMessage(convos);
     //   expect(configMessage.activeOpenGroups.length).to.equal(1);
-    //   expect(configMessage.activeOpenGroups[0]).to.equal('chat-dev2.lokinet.org');
+    //   expect(configMessage.activeOpenGroups[0]).to.equal('chat-dev2.beldexnet.org');
     // });
   });
 });

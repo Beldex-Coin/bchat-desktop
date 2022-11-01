@@ -3,7 +3,7 @@ import React from 'react';
 import { missingCaseError } from '../../util';
 import { ToastUtils } from '../../bchat/utils';
 import { getPasswordHash } from '../../data/data';
-import { SpacerLG, SpacerSM } from '../basic/Text';
+import {  SpacerSM } from '../basic/Text';
 import autoBind from 'auto-bind';
 import { bchatPassword } from '../../state/ducks/modalDialog';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
@@ -59,8 +59,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
           ]
         : [window.i18n('enterPassword'), window.i18n('confirmPassword')];
 
-    const confirmButtonColor =
-      passwordAction === 'remove' ? BchatButtonColor.Danger : BchatButtonColor.Green;
+    const confirmButtonColor = BchatButtonColor.Green;
     // do this separately so typescript's compiler likes it
     const localizedKeyAction: LocalizerKeys =
       passwordAction === 'change'
@@ -77,35 +76,40 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
           <input
             type="password"
             id="password-modal-input"
+            style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
             ref={input => {
               this.passportInput = input;
             }}
             placeholder={placeholders[0]}
             onKeyUp={this.onPasswordInput}
             data-testid="password-input"
+            maxLength={26}
           />
           {passwordAction !== 'remove' && (
             <input
               type="password"
               id="password-modal-input-confirm"
+              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
               placeholder={placeholders[1]}
               onKeyUp={this.onPasswordConfirmInput}
               data-testid="password-input-confirm"
+              maxLength={26}
             />
           )}
           {passwordAction === 'change' && (
             <input
               type="password"
               id="password-modal-input-reconfirm"
+              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
               placeholder={placeholders[2]}
               onKeyUp={this.onPasswordRetypeInput}
               data-testid="password-input-reconfirm"
+              maxLength={26}
             />
           )}
         </div>
 
         <SpacerSM />
-        {this.showError()}
 
         <div className="bchat-modal__button-group">
           <BchatButton text={window.i18n('cancel')} onClick={this.closeDialog} />
@@ -129,21 +133,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     return true;
   }
 
-  private showError() {
-    const message = this.state.error;
-
-    return (
-      <>
-        {message && (
-          <>
-            <div className="bchat-label warning">{message}</div>
-            <SpacerLG />
-          </>
-        )}
-      </>
-    );
-  }
-
   /**
    * Returns false and set the state error field in the input is not a valid password
    * or returns true
@@ -152,6 +141,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // if user did not fill the first password field, we can't do anything
     const errorFirstInput = validatePassword(firstPassword);
     if (errorFirstInput !== null) {
+      ToastUtils.pushToastError('validatePassword',errorFirstInput);
       this.setState({
         error: errorFirstInput,
       });
@@ -168,6 +158,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // no need to validate second password. we just need to check that enteredPassword is valid, and that both password matches
 
     if (enteredPassword !== enteredPasswordConfirm) {
+      ToastUtils.pushToastError('setPasswordInvalid', window.i18n('setPasswordInvalid'));
       this.setState({
         error: window.i18n('setPasswordInvalid'),
       });
@@ -197,7 +188,17 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     }
 
     // Check the retyped password matches the new password
+
+    if ((oldPassword === newPassword) || (oldPassword === newConfirmedPassword)) {
+      ToastUtils.pushToastError('oldPasswordAndNewPasswordSame', window.i18n('oldPasswordAndNewPasswordSame'));
+      this.setState({
+        error: window.i18n('oldPasswordAndNewPasswordSame'),
+      });
+      return;
+    }
+
     if (newPassword !== newConfirmedPassword) {
+      ToastUtils.pushToastError('passwordsDoNotMatch', window.i18n('passwordsDoNotMatch'));
       this.setState({
         error: window.i18n('passwordsDoNotMatch'),
       });
@@ -228,6 +229,10 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // We don't validate oldPassword on change: this is validate on the validatePasswordHash below
     const isValidWithStoredInDB = Boolean(await this.validatePasswordHash(oldPassword));
     if (!isValidWithStoredInDB) {
+      ToastUtils.pushToastError(
+        'removePasswordInvalid',
+        window.i18n('removePasswordInvalid'),
+      );
       this.setState({
         error: window.i18n('removePasswordInvalid'),
       });
@@ -235,7 +240,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     }
     await window.setPassword(null, oldPassword);
 
-    ToastUtils.pushToastWarning(
+    ToastUtils.pushToastSuccess(
       'setPasswordSuccessToast',
       window.i18n('removePasswordTitle'),
       window.i18n('removePasswordToastDescription')

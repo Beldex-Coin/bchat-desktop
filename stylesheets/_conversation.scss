@@ -21,7 +21,9 @@
   &.invitation-outgoing {
     background: var(--color-sent-message-background);
     align-self: flex-end;
+    margin-right: 26px;
   }
+  
 
   display: inline-block;
   margin: 4px 16px;
@@ -72,7 +74,12 @@
         fill: var(--color-text-opposite);
       }
     }
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
+ 
 }
 
 .group-invitation {

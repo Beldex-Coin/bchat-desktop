@@ -12,13 +12,13 @@ import {
   signInWithRecovery,
 } from './RegistrationStages';
 // import { RegistrationUserDetails } from './RegistrationUserDetails';
-// import { RestoreSeedInput } from './RestoreFromSeed';
 import { GoBackMainMenuButton } from './SignUpTab';
 // import { TermsAndConditions } from './TermsAndConditions';
 import { BchatInput } from '../basic/BchatInput';
 import { DisplaySeed } from './DisplaySeed';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
+import { WalletPassword } from './WalletPass';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron')
 
@@ -80,7 +80,7 @@ const SignInContinueButton = (props: {
   }
   return (
     <ContinueYourBchatButton
-    handleContinueYourBchatClick={props.handleContinueYourBchatClick}
+      handleContinueYourBchatClick={props.handleContinueYourBchatClick}
       disabled={props.disabled}
     />
   );
@@ -103,8 +103,11 @@ const SignInButtons = (props: {
   );
 };
 
-export const SignInTab = (props:any) => {
+export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
+
+  const [password,setPassword]=useState('');
+  const [repassword,setRepassword]=useState("");
 
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
   const [recoveryPhraseError, setRecoveryPhraseError] = useState(undefined as string | undefined);
@@ -116,7 +119,7 @@ export const SignInTab = (props:any) => {
   const isRecovery = signInMode === SignInMode.UsingRecoveryPhrase;
   const isLinking = signInMode === SignInMode.LinkDevice;
   // const showTermsAndConditions = signInMode !== SignInMode.Default;
-  const [screenName, setScreenName] = useState(false)
+  const [screenName, setScreenName] = useState(1);
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
 
@@ -129,13 +132,16 @@ export const SignInTab = (props:any) => {
   const displayNameOK = (isRecovery && !displayNameError && !!displayName) || isLinking;
 
   // Seed is mandatory no matter which mode
-  const seedOK = (blockheight && !recoveryPhraseError)||(restoreDate && !recoveryPhraseError);
-  const activateContinueButton = seedOK && displayNameOK && !loading;
+  const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
+  console.log(seedOK);
+  
+  const activateContinueButton =  displayNameOK && !loading;
 
   const continueYourBchat = async () => {
     if (isRecovery) {
       await signInWithRecovery({
         displayName,
+        password,
         userRecoveryPhrase: recoveryPhrase,
       });
     } else if (isLinking) {
@@ -147,44 +153,80 @@ export const SignInTab = (props:any) => {
     }
   };
 
-  const clickGoBack = () => {
-    setScreenName(false);
-    }
-
-  async function assignSeed()
+  const passValid=()=>
   {
-   const recoverySeed = clipboard.readText();
-   setRecoveryPhrase(recoverySeed); 
+    if (!password||!repassword) {
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !' );
+       
+     }
+    else if (password!==repassword)
+    {
+      window?.log?.warn('invalid password');
+     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' ); 
+    }
+    else
+    {
+      setScreenName(3)
+    }
+  }
+
+  // const clickGoBack = () => {
+  //   setScreenName(0);
+  // }
+
+  async function assignSeed() {
+    const recoverySeed = clipboard.readText();
+    setRecoveryPhrase(recoverySeed);
   }
 
   const seedValidation = () => {
-    try{
-      mn_decode(recoveryPhrase, 'english');
-      setScreenName(true)    
-    }catch(e){
-    setScreenName(false)
-    ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
-    window?.log?.warn('exception during registration:', e);
+    if (!recoveryPhrase) {
+      // console.log("recoveryPhrase",recoveryPhrase);
+      ToastUtils.pushToastError('registrationError', `Error: Please enter the seed`);
     }
+    else {
+      try {
+        mn_decode(recoveryPhrase, 'english');
+        setScreenName(2)
+      } catch (e) {
+        setScreenName(1)
+        ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
+        window?.log?.warn('exception during registration:', e);
+      }
+
+    }
+
   }
 
-  if (signInMode !== SignInMode.Default && !screenName) {
+  if (signInMode !== SignInMode.Default && screenName===1) {
 
     return <>
-      <div className='bchat-registration__backbutton'> 
-        <GoBackMainMenuButton assent={()=>props.assent(true)} />
+      <div className='bchat-registration__backbutton'>
+        <GoBackMainMenuButton assent={() => {props.assent(true); setScreenName(1);}} />
       </div>
       <DisplaySeed
-      iconfunc={()=>assignSeed()}
-      assignRecoveryPhase={(seed: string) => {
-              setRecoveryPhrase(seed);
-              setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
-            }}
-      onNext={() => {seedValidation()}} 
-      recoveryPhrase={recoveryPhrase} 
+        iconfunc={() => assignSeed()}
+        assignRecoveryPhase={(seed: string) => {
+          setRecoveryPhrase(seed);
+          setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
+        }}
+        onNext={() => { seedValidation() }}
+        recoveryPhrase={recoveryPhrase}
       />
     </>
 
+  }
+ 
+  if(screenName===2)
+  {
+    return  <WalletPassword 
+    password={password}
+    repassword={repassword}
+    setPassword={(e:any)=>setPassword(e)}  
+    setRepassword={(e:any)=>setRepassword(e)}
+    backArrow={()=>{setScreenName(1);setPassword("");setRepassword(""),props.assent(true);}}
+    submit={passValid}
+    />
   }
 
   // if(signInMode == SignInMode.UsingRecoveryPhrase){
@@ -197,16 +239,23 @@ export const SignInTab = (props:any) => {
   //   </div>
   //  )
   // }
-  
+
   return (
     <div className="bchat-registration__content">
-      {screenName && (
+      {screenName===3 && (
         <>
-          <div className='bchat-registration__backbutton' style={{left:'52px'}}>
-          <GoBackMainMenuButton assent={()=>{
-            props.assent(true);
-            clickGoBack()}}
-          />
+          <div className='bchat-registration__backbutton'
+            // data-tip="Back"
+            // data-place="right"
+            // data-offset="{top:10}"
+            style={{ left: '52px' }}>
+            <GoBackMainMenuButton assent={() => {
+              props.assent(true);
+              setScreenName(1);
+              setPassword("");
+              setRepassword("");
+            }}
+            />
           </div>
           <div className='bchat-registration-header'>{window.i18n('restoreFromSeed')}</div>
           <BchatInput
@@ -220,8 +269,11 @@ export const SignInTab = (props:any) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
               setDisplayName(sanitizedName);
-              setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);}}
-            onEnterPressed={props.handlePressEnter}
+              setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
+            }}
+            // onEnterPressed={props.handlePressEnter}
+            onEnterPressed={continueYourBchat}
+
             inputDataTestId="display-name-input"
           />
           <div>
@@ -235,17 +287,17 @@ export const SignInTab = (props:any) => {
               maxLength={10}
               onValueChanged={(e) => {
                 let checkHeight = /^[\d ]*$/.test(e);
-              if(!checkHeight)
-                return;
-              setBlockheight(e); 
-          }}
+                if (!checkHeight)
+                  return;
+                setBlockheight(e);
+              }}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
             />
 
           </div>
           <div className='bchat-restore-seed-or'> OR </div>
-          <div style={{marginBottom:"56px"}} >
+          <div style={{ marginBottom: "56px" }} >
             <p className='bchat-restore-seed-textbox-message'>If you dont know the restore Date, you can skip it.</p>
 
             <BchatInput
@@ -257,14 +309,15 @@ export const SignInTab = (props:any) => {
               onValueChanged={(e) => setRestoreDate(e)}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
+
             />
           </div>
-          <div style={{width:'75%',marginLeft:'57px'}}>
-          <SignInContinueButton
-            signInMode={signInMode}
-            handleContinueYourBchatClick={continueYourBchat}
-            disabled={!activateContinueButton}
-          />
+          <div style={{ width: '75%', marginLeft: '57px' }}>
+            <SignInContinueButton
+              signInMode={signInMode}
+              handleContinueYourBchatClick={continueYourBchat}
+              disabled={!activateContinueButton}
+            />
           </div>
         </>
       )}

@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { fromHex, sanitizeBchatUsername } from '../../bchat/utils/String';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-// import { BchatIdEditable } from '../basic/BchatIdEditable';
 import { BchatIconButton } from '../icon';
 import { RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
 import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
-// import { TermsAndConditions } from './TermsAndConditions';
-import {DisplayIdAndAddress ,ShowRecoveryPhase} from "./ShowIdAndAddress";
+import {
+  DisplayIdAndAddress ,
+  ShowRecoveryPhase} from "./ShowIdAndAddress";
 import { StringUtils, ToastUtils } from '../../bchat/utils';
 import { generateMnemonic } from '../../mains/wallet-rpc';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
-// import { DisplaySeed } from './DisplaySeed';
+import { WalletPassword } from './WalletPass';
 const { clipboard } = require('electron')
 
 export enum SignUpMode {
@@ -34,17 +34,6 @@ const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
   );
 };
 
-// const ContinueSignUpButton = ({ continueSignUp }: { continueSignUp: any }) => {
-//   return (
-//     <BchatButton
-//       onClick={continueSignUp}
-//       buttonType={BchatButtonType.Brand}
-//       buttonColor={BchatButtonColor.Green}
-//       text={window.i18n('continue')}
-//     />
-//   );
-// };
-
 const SignUpDefault = (props: { createBchatID: () => void }) => {
   return (
     <div className="bchat-registration__content">
@@ -61,7 +50,6 @@ export const GoBackMainMenuButton = (props:any) => {
       iconType="chevron"
       iconRotation={90}
       iconPadding="5px"
-      iconColor={window.Events.getThemeSetting()=== 'dark' ? 'white' : 'black'}
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
         setSignInMode(SignInMode.Default);
@@ -72,51 +60,30 @@ export const GoBackMainMenuButton = (props:any) => {
     />
   );
 };
-// const SignUpBchatIDShown = (props: { continueSignUp: () => void }) => {
-//   return (
-//     <div className="bchat-registration__content">
-//       <Flex flexDirection="row" container={true} alignItems="center">
-//         <GoBackMainMenuButton />
-
-//         <div className="bchat-registration__unique-bchat-id">
-//           {window.i18n('yourUniqueBchatID')}
-//         </div>
-//       </Flex>
-//       <BchatIdEditable editable={false} placeholder={undefined} dataTestId="bchat-id-signup" />
-//       <div className="bchat-description-long">{window.i18n('allUsersAreRandomly...')}</div>
-//       <ContinueSignUpButton continueSignUp={props.continueSignUp} />
-//     </div>
-//   );
-// };
 
 export const SignUpTab = (props:any) => {
   const {
     signUpMode,
     setRegistrationPhase,
-    // generatedRecoveryPhrase,
-    // hexGeneratedPubKey,
     setSignUpMode,
   } = useContext(RegistrationContext);
   const [displayName, setDisplayName] = useState('');
   const [displayNameError, setDisplayNameError] = useState<undefined | string>('');
-  const [displayNameScreen,setDisplayNameScreen]=useState(true);
-  const [displayAddressScreen,setAddressScreen] = useState(true);
+  const [displayNameScreen,setDisplayNameScreen]=useState(0);
+  const [password,setPassword]=useState('');
+  const [repassword,setRepassword]=useState("");
   const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
 
   useEffect(() => {
-    console.log("slksskl")
-  //  void generateMnemonicAndKeyPairCreate();
     if (signUpMode === SignUpMode.BchatIDShown) {
       window.bchat.setNewBchatID(hexGeneratedPubKey);
     }
   }, [signUpMode]);
 
-  const generateMnemonicAndKeyPairCreate = async () => {
+  const generateMnemonicAndKeyPairCreate = async (props:any) => {
     if (generatedRecoveryPhrase === '') {
-
-      // await startWalletRpc();
-      const mnemonic = await generateMnemonic();
+      const mnemonic = await generateMnemonic(props);
       let seedHex = mn_decode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;
@@ -137,7 +104,6 @@ export const SignUpTab = (props:any) => {
     return (
       <SignUpDefault
         createBchatID={() => {
-          // setSignUpMode(SignUpMode.BchatIDShown);
           setRegistrationPhase(RegistrationPhase.SignUp);
           setSignUpMode(SignUpMode.EnterDetails);
           props.assent(false)
@@ -145,16 +111,6 @@ export const SignUpTab = (props:any) => {
       />
     );
   }
-
-  // if (signUpMode === SignUpMode.BchatIDShown) {
-  //   return (
-  //     <SignUpBchatIDShown
-  //       continueSignUp={() => {
-  //         setSignUpMode(SignUpMode.EnterDetails);
-  //       }}
-  //     />
-  //   );
-  // }
 
   // can only be the EnterDetails step
 
@@ -168,37 +124,74 @@ export const SignUpTab = (props:any) => {
       generatedRecoveryPhrase: generatedRecoveryPhrase,
     });
   };
-  const LoaderGif = () => {
+   const LoaderGif = () => {
     return<div  className="bchat-registration-loadingGif">
     <div  style={{background:"url(images/bchat/Load_animation.gif) no-repeat",width: "151px",height: "128px",margin: "0 auto"}}>
     </div>
     </div>
   }
  const clickGoBack = () => {
-  console.log("goback")
     setDisplayName('')
-    setDisplayNameScreen(true);
-    setAddressScreen(true);
-
+    setDisplayNameScreen(0);
   }
   const verifyUserName = () => {
    if (!displayName) {
     window?.log?.warn('invalid trimmed name for registration');
     ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
    }else{
-    void generateMnemonicAndKeyPairCreate();
-    setDisplayNameScreen(false);
+    setDisplayNameScreen(1);
    }
   }
 
-  if(displayNameScreen)
+  const passValid=()=>
+  {
+    if (!password||!repassword) {
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !' );
+       
+     }
+    else if (password!==repassword)
+    {
+      window?.log?.warn('invalid password');
+     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' ); 
+    }
+    else
+    {
+      const walletData={displayName,password}
+      void generateMnemonicAndKeyPairCreate(walletData);
+     setDisplayNameScreen(2);
+     setRepassword("")
+     setPassword("")
+    
+    }
+  }
+   const goback=()=>{
+    props.assent(true);
+    clickGoBack();
+    if(displayNameScreen===1)
+    {
+      setPassword("");
+      setRepassword("");
+    }
+   }
+  if(displayNameScreen===1)
+  {
+      return <WalletPassword 
+      password={password}
+      repassword={repassword}
+      setPassword={(e:any)=>setPassword(e)}  
+      setRepassword={(e:any)=>setRepassword(e)}
+      backArrow={goback}
+      submit={passValid}
+      />
+  }
+
+  if(displayNameScreen===0)
   {
     return (
     <div className="bchat-registration__content" style={{paddingTop:'0px'}}>
       <Flex flexDirection="row" container={true} alignItems="center" padding="14px 0px" margin='0px 0px 0px 65px'>
-        <div className='bchat-registration-goback-icon'>
-        {/* style={{ position: 'relative', color: 'white', top: '0px',left:"0px" }} */}
-        <GoBackMainMenuButton assent={()=>{props.assent(true);clickGoBack()}} />
+          <div className='bchat-registration-goback-icon' >
+            <GoBackMainMenuButton assent={goback} />
         </div>
         <Flex className="bchat-registration__welcome-bchat">
           {window.i18n('welcomeToYourBchat')}
@@ -223,24 +216,26 @@ export const SignUpTab = (props:any) => {
         buttonType={BchatButtonType.Brand}
         buttonColor={BchatButtonColor.Green}
         text={window.i18n('getStarted')}
-        // disabled={!enableCompleteSignUp}
       />
       </div>
     </div>
     );
   }
+
+ 
   
   const handlePaste = () => {
     clipboard.writeText(generatedRecoveryPhrase,'clipboard');
   };
-  if(displayAddressScreen){
+  if(displayNameScreen===2){
    return (
     <>
-        {!localStorage.getItem("userAddress") && <LoaderGif /> } 
-       <DisplayIdAndAddress nextFunc={()=>{setAddressScreen(false)}} pubKey={hexGeneratedPubKey} walletAddress={localStorage.getItem("userAddress")} assentAndGoBack={()=>{props.assent(true);clickGoBack()}} />
+        {!localStorage.getItem("userAddress") || !hexGeneratedPubKey?<LoaderGif />:null } 
+       <DisplayIdAndAddress nextFunc={()=>{setDisplayNameScreen(3)}} pubKey={hexGeneratedPubKey} walletAddress={localStorage.getItem("userAddress")} assentAndGoBack={()=>{props.assent(true);clickGoBack()}} />
     </>
   );
   }
+
   return (
     
   <>

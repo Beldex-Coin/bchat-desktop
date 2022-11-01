@@ -22,15 +22,17 @@ import {
 import { updateConfirmModal } from '../../../state/ducks/modalDialog';
 import { MemoMessageRequestListSetting } from '../../settings/MessageRequestInSettings';
 
-export const OverlayMessageRequest = (props:any) => {
+export const OverlayMessageRequest = (props: any) => {
   useKey('Escape', closeOverlay);
   const dispatch = useDispatch();
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
   }
+
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);
+  const {leftPane}=props;
 
   const buttonText = window.i18n('clearAll');
 
@@ -90,13 +92,12 @@ export const OverlayMessageRequest = (props:any) => {
       })
     );
   }
-  const VerifyScreen=()=>{
-    if(props.settings)
-    {
-     return <MessageRequestListForSetting />
+  const VerifyScreen = () => {
+    if (props.settings) {
+      return <MessageRequestListForSetting />
     }
-    else{
-      return  <MessageRequestList   />
+    else {
+      return <MessageRequestList  />
     }
 
   }
@@ -107,20 +108,32 @@ export const OverlayMessageRequest = (props:any) => {
         <>
           <VerifyScreen />
           <SpacerLG />
-          <BchatButton
-            buttonColor={BchatButtonColor.Danger}
-            buttonType={BchatButtonType.BrandOutline}
-            text={buttonText}
-            onClick={() => {
-              handleClearAllRequestsClick(messageRequests);
-            }}
-          />
+          <div className='buttonBox '>
+            <BchatButton
+              buttonColor={BchatButtonColor.Danger}
+              buttonType={BchatButtonType.BrandOutline}
+              text={buttonText}
+              onClick={() => {
+                handleClearAllRequestsClick(messageRequests);
+              }}
+            />
+          </div>
         </>
       ) : (
         <>
           <SpacerLG />
           <MessageRequestListPlaceholder>
-            {window.i18n('noMessageRequestsPending')}
+            <div className='bchat-noMsgRequest-box'>
+              <div></div>
+              <div className={leftPane?'bchat-noMsgRequest-leftPane':'bchat-noMsgRequest'}>
+              </div>
+              <div>
+                {window.i18n('noMessageRequestsPending')}
+              </div>
+
+            </div>
+
+            {/* {window.i18n('noMessageRequestsPending')} */}
           </MessageRequestListPlaceholder>
         </>
       )}
@@ -129,8 +142,11 @@ export const OverlayMessageRequest = (props:any) => {
 };
 
 const MessageRequestListPlaceholder = styled.div`
-  color: var(--color-text);
+  color:var(--color-disableText);
   margin-bottom: auto;
+  text-align:center;
+  margin-bottom: 20px;
+  font-family: 'poppin-semibold';
 `;
 
 const MessageRequestListContainer = styled.div`
@@ -145,6 +161,8 @@ const MessageRequestListContainer = styled.div`
  */
 const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
+console.log("conversationRequests :: ",conversationRequests);
+
   return (
     <MessageRequestListContainer>
       {conversationRequests.map(conversation => {

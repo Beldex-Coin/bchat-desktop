@@ -1,8 +1,9 @@
 // import { ipcRenderer, shell } from 'electron';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
+import os from 'os';
 import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
 import { SettingsKey } from '../../../data/settings-key';
 import { ToastUtils } from '../../../bchat/utils';
@@ -12,11 +13,15 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 // import { isHideMenuBarSupported } from '../../../types/Settings';
 import { BchatButtonColor } from '../../basic/BchatButton';
 
-import {BchatToggleWithDescription } from '../BchatSettingListItem';
+import { BchatToggleWithDescription } from '../BchatSettingListItem';
 
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
+import { applyTheme } from '../../../state/ducks/theme';
+
+// import { reducer as theme} from '../../../state/ducks/theme';
+
 
 async function toggleLinkPreviews() {
   const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
@@ -24,7 +29,7 @@ async function toggleLinkPreviews() {
   if (!newValue) {
     await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
   } else {
-    window.inboxStore?.dispatch(
+   window.inboxStore?.dispatch(
       updateConfirmModal({
         title: window.i18n('linkPreviewsTitle'),
         message: window.i18n('linkPreviewsConfirmMessage'),
@@ -53,15 +58,17 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
-
+  const darktheme=useSelector((state:any)=>state.theme)
+  // console.log("darktheme ::",darktheme);
+  
+  
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsMenuBar);
-const isdark =window.Events.getThemeSetting() === "dark"? true : false;
-console.log('dark is true ::',window.Events.getThemeSetting());
-
+    const isdark = darktheme === "dark" ? true : false;
+    
     const isSpellCheckActive =
       window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
         ? true
@@ -70,21 +77,23 @@ console.log('dark is true ::',window.Events.getThemeSetting());
     const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
     const isStartInTrayActive = Boolean(window.getSettingValue(SettingsKey.settingsStartInTray));
 
-    function handleClick()
-    {
+    function handleClick() {
       const themeFromSettings = window.Events.getThemeSetting();
-        const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
-        window.setTheme(updatedTheme);
-        if (updatedTheme === 'dark') {
-          switchHtmlToDarkTheme();
-        } else {
-          switchHtmlToLightTheme();
-        }
+      const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+      // console.log("theme reducer",darktheme,"store,");
+      dispatch(applyTheme(updatedTheme));
+      
+      window.setTheme(updatedTheme);
+      if (updatedTheme === 'dark') {
+        switchHtmlToDarkTheme();
+      } else {
+        switchHtmlToLightTheme();
+      }
     }
 
     return (
       <>
-       {/* this function used for hide the menubar */}
+        {/* this function used for hide the menubar */}
         {/* {isHideMenuBarSupported() && (
           <BchatToggleWithDescription
             onClickToggle={() => {
@@ -100,7 +109,6 @@ console.log('dark is true ::',window.Events.getThemeSetting());
         <BchatToggleWithDescription
           onClickToggle={() => {
             handleClick()
-            
             forceUpdate();
           }}
           // title={window.i18n('spellCheckTitle')}
@@ -108,36 +116,6 @@ console.log('dark is true ::',window.Events.getThemeSetting());
 
           // description={window.i18n('spellCheckDescription')}
           active={isdark}
-        />
-
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            window.toggleSpellCheck();
-            forceUpdate();
-          }}
-          title={window.i18n('spellCheckTitle')}
-          description={window.i18n('spellCheckDescription')}
-          active={isSpellCheckActive}
-        />
-
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleLinkPreviews();
-            forceUpdate();
-          }}
-          title={window.i18n('linkPreviewsTitle')}
-          description={window.i18n('linkPreviewDescription')}
-          active={isLinkPreviewsOn}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleStartInTray();
-            forceUpdate();
-          }}
-          title={window.i18n('startInTrayTitle')}
-          // description={window.i18n('startInTrayDescription')}
-          description={"BChat continues running in the background when you close the window"}
-          active={isStartInTrayActive}
         />
         <BchatToggleWithDescription
           onClickToggle={() => {
@@ -148,8 +126,36 @@ console.log('dark is true ::',window.Events.getThemeSetting());
           description={window.i18n('audioMessageAutoplayDescription')}
           active={audioAutoPlay}
         />
-        
-
+        <BchatToggleWithDescription
+          onClickToggle={async () => {
+            await toggleLinkPreviews();
+            forceUpdate();
+          }}
+          title={window.i18n('linkPreviewsTitle')}
+          description={window.i18n('linkPreviewDescription')}
+          active={isLinkPreviewsOn}
+        />
+        {os.platform() !== "darwin" &&
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleStartInTray();
+              forceUpdate();
+            }}
+            title={window.i18n('startInTrayTitle')}
+            // description={window.i18n('startInTrayDescription')}
+            description={"After closing the window, BChat runs in the background"}
+            active={isStartInTrayActive}
+          />
+        }
+        <BchatToggleWithDescription
+          onClickToggle={() => {
+            window.toggleSpellCheck();
+            forceUpdate();
+          }}
+          title={window.i18n('spellCheckTitle')}
+          description={window.i18n('spellCheckDescription')}
+          active={isSpellCheckActive}
+        />
         <ZoomingBchatSlider />
         {/* <BchatSettingButtonItem
           title={window.i18n('surveyTitle')}
@@ -159,7 +165,7 @@ console.log('dark is true ::',window.Events.getThemeSetting());
         /> */}
 
         {/* for message transtaled bchat site */}
-        
+
         {/* <BchatSettingButtonItem
           title={window.i18n('helpUsTranslateBchat')}
           onClick={() => void shell.openExternal('https://crowdin.com/project/bchat-desktop/')}

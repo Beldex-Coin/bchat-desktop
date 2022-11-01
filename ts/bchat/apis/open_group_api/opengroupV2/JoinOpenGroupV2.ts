@@ -40,13 +40,13 @@ export function parseOpenGroupV2(urlWithPubkey: string): OpenGroupV2Room | undef
 }
 
 /**
- * Join an open group using the v2 logic.
+ * Join an Social group using the v2 logic.
  *
  * If you only have an string with all details in it, use parseOpenGroupV2() to extract and check the URL is valid
  *
  * @param server The server URL to join, defaults to https if protocol is not set
  * @param room The room id to join
- * @param publicKey The server publicKey. It comes from the joining link. (or is already here for the default open group server)
+ * @param publicKey The server publicKey. It comes from the joining link. (or is already here for the default Social group server)
  */
 async function joinOpenGroupV2(room: OpenGroupV2Room, fromConfigMessage: boolean): Promise<void> {
   if (!room.serverUrl || !room.roomId || room.roomId.length < 2 || !room.serverPublicKey) {
@@ -67,7 +67,7 @@ async function joinOpenGroupV2(room: OpenGroupV2Room, fromConfigMessage: boolean
     return;
   } else if (existingConvo) {
     // we already have a convo associated with it. Remove everything related to it so we start fresh
-    window?.log?.warn('leaving before rejoining open group v2 room', conversationId);
+    window?.log?.warn('leaving before rejoining Social group v2 room', conversationId);
     await getConversationController().deleteContact(conversationId);
   }
 
@@ -79,7 +79,7 @@ async function joinOpenGroupV2(room: OpenGroupV2Room, fromConfigMessage: boolean
     );
 
     if (!conversation) {
-      window?.log?.warn('Failed to join open group v2');
+      window?.log?.warn('Failed to join Social group v2');
       throw new Error(window.i18n('connectToServerFail'));
     }
 
@@ -89,7 +89,7 @@ async function joinOpenGroupV2(room: OpenGroupV2Room, fromConfigMessage: boolean
       await forceSyncConfigurationNowIfNeeded();
     }
   } catch (e) {
-    window?.log?.error('Could not join open group v2', e.message);
+    window?.log?.error('Could not join Social group v2', e.message);
     throw e;
   }
 }
@@ -102,7 +102,7 @@ async function joinOpenGroupV2(room: OpenGroupV2Room, fromConfigMessage: boolean
  *
  * Basically,
  *  - user invitation click => uicallback set
- *  - user join manually from the join open group field => uicallback set
+ *  - user join manually from the join Social group field => uicallback set
  *  - joining from a sync message => no uicallback
  *
  *
@@ -118,14 +118,14 @@ export async function joinOpenGroupV2WithUIEvents(
     const parsedRoom = parseOpenGroupV2(completeUrl);
     if (!parsedRoom) {
       if (showToasts) {
-        ToastUtils.pushToastError('connectToServer', window.i18n('invalidOpenGroupUrl'));
+        ToastUtils.pushToastError('connectToServer', window.i18n('invalidSocialGroupUrl'));
       }
       return false;
     }
     const conversationID = getOpenGroupV2ConversationId(parsedRoom.serverUrl, parsedRoom.roomId);
     if (getConversationController().get(conversationID)) {
       if (showToasts) {
-        ToastUtils.pushToastError('publicChatExists', window.i18n('publicChatExists'));
+        ToastUtils.pushToastWarning('publicChatExists', window.i18n('publicChatExists'));
       }
       return false;
     }
@@ -155,7 +155,7 @@ export async function joinOpenGroupV2WithUIEvents(
       }
     }
   } catch (error) {
-    window?.log?.warn('got error while joining open group:', error.message);
+    window?.log?.warn('got error while joining Social group:', error.message);
     if (showToasts) {
       ToastUtils.pushToastError('connectToServerFail', window.i18n('connectToServerFail'));
     }

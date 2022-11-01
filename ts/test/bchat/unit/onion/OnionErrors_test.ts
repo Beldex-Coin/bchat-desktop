@@ -394,7 +394,7 @@ describe('OnionPathsErrors', () => {
    * processOnionResponse OXEN SERVER ERROR
    */
   describe('processOnionResponse - OXEN_SERVER_ERROR', () => {
-    // open group server v2 only talkes onion routing request. So errors can only happen at destination
+    // Social group server v2 only talkes onion routing request. So errors can only happen at destination
     it('throws a non-retryable error on oxen server errors on destination', async () => {
       const targetNode = otherNodesPubkeys[0];
 
@@ -428,7 +428,7 @@ describe('OnionPathsErrors', () => {
    * processOnionResponse OXEN SERVER ERROR
    */
   describe('processOnionResponse - 502 - node not found', () => {
-    // open group server v2 only talkes onion routing request. So errors can only happen at destination
+    // Social group server v2 only talkes onion routing request. So errors can only happen at destination
     it('throws a retryable error on 502 on intermediate snode', async () => {
       const targetNode = otherNodesPubkeys[0];
       const failingSnode = oldOnionPaths[0][1];

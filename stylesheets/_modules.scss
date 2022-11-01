@@ -231,6 +231,7 @@
 }
 .module-conversation__user,
 .module-message__author {
+  text-align: start;
   margin-top: $bchat-margin-sm;
   margin-bottom: $bchat-margin-xs;
   font-size: 13px;
@@ -313,7 +314,7 @@
 }
 
 .module-conversation-header__title {
-  margin: 0px 20px;
+  margin: 0px 0px 0px 20px;
 
   min-width: 0;
   font-size: 16px;
@@ -337,7 +338,7 @@
     width: 100%;
     overflow: hidden !important;
     text-overflow: ellipsis;
-    padding-top: 10px;
+    padding-top: 17px;
   }
 }
 
@@ -346,8 +347,9 @@
   flex-direction: row;
   align-items: center;
   padding-inline-start: 8px;
-  padding-inline-end: 8px;
+  padding-inline-end: 18px;
   flex-shrink: 0;
+  margin-top: 9px;
 }
 
 .module-conversation-header__expiration__clock-icon {
@@ -387,6 +389,8 @@
 .module-message-detail__label {
   font-weight: 300;
   padding-inline-end: 5px;
+  font-family: $bchat-font-poppin-semibold;
+  font-size: 16px;
 }
 
 .module-message-detail__delete-button-container {
@@ -551,8 +555,9 @@
   width: 94px;
   cursor: pointer;
   background-color: $color-light-10;
-  margin-inline-end: 4px;
-  margin-bottom: 4px;
+  margin-inline-end: 8px;
+  margin-bottom: 8px;
+  margin-left: 8%;
   position: relative;
 }
 
@@ -600,7 +605,7 @@
 
   height: 36px;
   width: 36px;
-  @include color-svg('../images/play.svg', $color-loki-green);
+  @include color-svg('../images/play.svg', $color-bchat-green);
 }
 
 .module-media-grid-item__icon-video {
@@ -621,6 +626,16 @@
   font-size: 28px;
   color: $color-light-45;
 
+  .noMediaImg
+  {
+    width: 159px;
+    height: 129px;
+    background-image: var(--image-NoMedia);
+    background-position: center;
+    background-size: 100% 93%;
+    background-repeat: no-repeat;
+  }
+
   p {
     font-family: $bchat-font-poppin-semibold;
     color:#646474;
@@ -639,6 +654,7 @@
   padding-bottom: 8px;
   padding-inline-start: 16px;
   align-items: center;
+  border-bottom: var(--color-bchat-border);
 
   cursor: pointer;
 
@@ -653,7 +669,7 @@
 
 .module-conversation-list-item__unread-count {
   color: $color-white;
-  background-color: $color-loki-green;
+  background-color: $color-bchat-green;
   text-align: center;
 
   padding-top: 1px;
@@ -875,7 +891,7 @@
 
   height: 36px;
   width: 36px;
-  @include color-svg('../images/play.svg', $color-loki-green);
+  @include color-svg('../images/play.svg', $color-bchat-green);
 }
 
 .module-image__text-container {
@@ -904,6 +920,8 @@
   height: 16px;
   z-index: 2;
   background-image: url('../images/x-shadow-16.svg');
+  background-color: #2879fbc2;
+    border-radius: 10px;
 }
 
 // Module: Image Grid
@@ -1045,6 +1063,7 @@
   padding-inline-end: 16px;
   overflow-x: scroll;
   max-height: 142px;
+  background-color: var(--color-received-message-background);
   white-space: nowrap;
   overflow-y: hidden;
   margin-bottom: 6px;
@@ -1290,8 +1309,8 @@
   position: relative;
   display: flex;
   flex-direction: row;
+  background-color: var(--color-conversation-item-selected);
   align-items: flex-start;
-
   min-height: 65px;
   margin: $bchat-margin-xs;
 }
@@ -1322,7 +1341,7 @@
   font-weight: 300;
   font-size: 14px;
   line-height: 18px;
-
+  color: var(--color-received-message-text);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1371,4 +1390,12 @@
 
 .module-left-pane__virtual-list {
   outline: none;
+}
+
+.module-left-pane__empty_contact {
+ 
+  font-family: $bchat-font-poppin-medium;
+  font-size: 15px;
+  color: var(--color-disableText);
+  margin: 10px 0 0 0 ;
 }

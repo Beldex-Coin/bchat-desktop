@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { useKey } from 'react-use';
 
 export interface BchatConfirmDialogProps {
   message?: string;
@@ -42,8 +43,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     title = '',
     message = '',
     messageSub = '',
-    okTheme = BchatButtonColor.Primary,
-    closeTheme = BchatButtonColor.Primary,
+    closeTheme = BchatButtonColor.White,
     onClickOk,
     onClickClose,
     hideCancel = false,
@@ -55,9 +55,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     closeAfterInput = true,
   } = props;
 
+  
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const okText = props.okText || window.i18n('ok');
+
   const cancelText = props.cancelText || window.i18n('cancel');
   const showHeader = !!props.title;
 
@@ -99,6 +102,10 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
 
+  useKey((event: KeyboardEvent) => {
+    return event.key === 'Enter';
+  },onClickOkHandler);
+
   return (
     <BchatWrapperModal
       title={title}
@@ -109,6 +116,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       {!showHeader && <SpacerLG />}
 
       <div className="bchat-modal__centered">
+      <SpacerMD />
         {bchatIcon && iconSize && (
           <>
             <BchatIcon iconType={bchatIcon} iconSize={iconSize} />
@@ -125,14 +133,9 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
         <BchatSpinner loading={isLoading} />
       </div>
-
+  
       <div className="bchat-modal__button-group">
-        <BchatButton
-          text={okText}
-          buttonColor={okTheme}
-          onClick={onClickOkHandler}
-          dataTestId="Bchat-confirm-ok-button"
-        />
+       
         {!hideCancel && (
           <BchatButton
             text={cancelText}
@@ -141,6 +144,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             dataTestId="Bchat-confirm-cancel-button"
           />
         )}
+         <BchatButton
+          text={okText}
+          buttonColor={props.okTheme}
+          onClick={onClickOkHandler}
+          dataTestId="Bchat-confirm-ok-button"
+        />
       </div>
     </BchatWrapperModal>
   );

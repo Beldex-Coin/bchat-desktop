@@ -62,7 +62,7 @@ export type ConversationHeaderProps = {
   weAreAdmin: boolean;
 
   // We might not always have the full list of members,
-  // e.g. for open groups where we could have thousands
+  // e.g. for Social groups where we could have thousands
   // of members. We'll keep this for now (for closed chats)
   members: Array<any>;
 
@@ -138,6 +138,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   if (showBackButton) {
     return null;
   }
+  let  width = window.innerWidth;
   return (
     <div
       role="button"
@@ -145,11 +146,18 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         contextMenu.show({
           id: props.triggerId,
           event: e,
+          position: {
+            x: width-300,
+            y:   55,
+          },
         });
+        
       }}
+      style={{marginTop:'7px'}}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize="huge" />
+      
+      <BchatIconButton iconType="ellipses" iconSize={35} />
     </div>
   );
 };
@@ -232,7 +240,8 @@ const CallButton = () => {
   return (
     <BchatIconButton
       iconType="phone"
-      iconSize="large"
+      iconRotation={270}
+      iconSize="medium"
       iconPadding="2px"
       margin="0 10px 0 0"
       onClick={() => {
@@ -387,8 +396,10 @@ export const ConversationHeaderWithDetails = () => {
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <CallButton />
-           
+            <div style={{marginTop:"10px"}}>  
+               <CallButton />
+            </div>
+
           </Flex>
         {/* )} */}
         </div> 

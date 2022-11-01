@@ -146,7 +146,7 @@ export async function requestNewAuthToken({
 
     return token;
   } catch (e) {
-    window?.log?.error('Failed to decrypt token open group v2');
+    window?.log?.error('Failed to decrypt token Social group v2');
     return null;
   }
 }

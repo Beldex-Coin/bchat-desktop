@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { getMessageCountByType } from '../../data/data';
 import {
@@ -10,11 +10,13 @@ import { MessageDirection } from '../../models/messageType';
 import { getConversationController } from '../../bchat/conversations';
 import { getSelectedConversation } from '../../state/selectors/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { setOverlayMode } from '../../state/ducks/section';
 
 export const ConversationMessageRequestButtons = () => {
   const selectedConversation = useSelector(getSelectedConversation);
   const [hasIncoming, setHasIncomingMsgs] = useState(false);
   const [incomingChecked, setIncomingChecked] = useState(false);
+  const dispatch=useDispatch();
 
   useEffect(() => {
     async function getIncomingMessages() {
@@ -48,11 +50,14 @@ export const ConversationMessageRequestButtons = () => {
   };
 
   const handleAcceptConversationRequest = async () => {
+    
     const { id } = selectedConversation;
     const convo = getConversationController().get(selectedConversation.id);
     await convo.setDidApproveMe(true);
     await convo.addOutgoingApprovalMessage(Date.now());
+    dispatch(setOverlayMode(undefined));
     await approveConvoAndSendResponse(id, true);
+   
   };
 
   if (!showMsgRequestUI) {
@@ -67,7 +72,7 @@ export const ConversationMessageRequestButtons = () => {
         <BchatButton
           buttonColor={BchatButtonColor.Danger}
           buttonType={BchatButtonType.Default}
-          text={window.i18n('blocked')}
+          text={window.i18n('decline')}
           onClick={handleDeclineConversationRequest}
           dataTestId="decline-message-request"
         />
@@ -97,7 +102,7 @@ const ConversationRequestBanner = styled.div`
   padding: var(--margins-lg);
   gap: var(--margins-lg);
   font-size: 22px;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--color-MsgReqModal-bg);
   text-align: center;
   font-family: 'poppin-semibold';
 

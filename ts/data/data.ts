@@ -206,10 +206,6 @@ export async function saveConversation(data: ReduxConversationType): Promise<voi
 
 export async function getConversationById(id: string): Promise<ConversationModel | undefined> {
   const data = await channels.getConversationById(id);
-
-  console.log("id",id);
-console.log("CONVERSATIONS_TABLE",data);
-
   
   if (data) {
     return new ConversationModel(data);
@@ -231,7 +227,8 @@ export async function updateWalletAddressInConversation(data: ReduxConversationT
 
 export async function removeConversation(id: string): Promise<void> {
   const existing = await getConversationById(id);
-
+  console.log('existing ::',existing);
+  
   // Note: It's important to have a fully database-hydrated model to delete here because
   //   it needs to delete all associated on-disk files along with the database delete.
   if (existing) {
@@ -372,7 +369,7 @@ export async function getMessageById(
     message.skipTimerInit = skipTimerInit;
   }
   let data:any={id:message.conversationId,walletAddress:message.walletAddress}
-  console.log('getMessageById',data);
+  // console.log('getMessageById',data);
   updateWalletAddressInConversation(data)
 
   return new MessageModel(message);
@@ -393,7 +390,7 @@ export async function getMessageBySenderAndSentAt({
   if (!messages || !messages.length) {
     return null;
   }
-console.log("messages getMessageBySenderAndSentAt",messages);
+// console.log("messages getMessageBySenderAndSentAt",messages);
 
   return new MessageModel(messages[0]);
 }
@@ -699,7 +696,7 @@ export async function getMessagesWithFileAttachments(
   return channels.getMessagesWithFileAttachments(conversationId, limit);
 }
 
-export const SNODE_POOL_ITEM_ID = 'SNODE_POOL_ITEM_ID';
+export const SNODE_POOL_ITEM_ID = 'MNODE_POOL_ITEM_ID';
 
 export async function getSnodePoolFromDb(): Promise<Array<Snode> | null> {
   // this is currently all stored as a big string as we don't really need to do anything with them (no filtering or anything)

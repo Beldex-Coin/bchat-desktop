@@ -11,7 +11,7 @@ import { fromArrayBufferToBase64 } from '../utils/String';
 export type OpenGroupUpdateAvatar = { objectUrl: string | null };
 
 /**
- * This function is only called when the local user makes a change to an open group.
+ * This function is only called when the local user makes a change to an Social group.
  * So this function is not called on group updates from the network, even from another of our devices.
  *
  */
@@ -59,7 +59,7 @@ export async function initiateOpenGroupUpdate(
         contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.
       });
       const newHash = sha256(fromArrayBufferToBase64(downloaded.buffer));
-      await convo.setLokiProfile({
+      await convo.setBchatProfile({
         displayName: groupName || convo.get('name') || 'Unknown',
         avatar: upgraded.path,
         avatarHash: newHash,

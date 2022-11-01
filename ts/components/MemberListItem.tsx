@@ -59,7 +59,6 @@ export const MemberListItem = (props: {
       style={
         !disableBg
           ? {
-              // backgroundColor: 'var(--color-cell-background)',
             }
           : {}
       }

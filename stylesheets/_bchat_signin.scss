@@ -1,48 +1,61 @@
 .bchat {
   &-head {
-    color:var(--color-text);
+    color: var(--color-text);
   }
+
   &-fullscreen {
     width: 100%;
     height: 100%;
     background-color: var(--color-body-bg);
     // background-color:  #524f5e;
   }
+
   .registration-inputfields {
     background-color: #128B17;
   }
+
+  &_conversation-doodle {
+    background-image: var(--image-BgDoodle);
+    width: 100%;
+    height: 100%;
+  }
+
   &-content {
     .bchat-button.brand-outline.brand.green:hover {
       // background-color: var(--color-accent);
       background-color: $bchat-button-color;
     }
-    &-left
-    {
-      background-color:var(--color-body-bg); 
+
+    &-left {
+      background-color: var(--color-body-bg);
       justify-content: center;
     }
-    &-logo{
+
+    &-logo {
       width: 400;
-      height: 500;
-      background-image: url("images/bchat/BChat_black_logo.gif");
+      height: 370;
     }
+
     &-accent {
       &-text {
         font-family: $bchat-font-poppins-bold;
+
         .title {
           font-size: 31px;
           font-weight: bold;
           line-height: 37px;
           text-align: center;
-          color:var(--color-text);
+          color: var(--color-text);
           padding: 2px 0px 14px 0;
         }
+
         .title2 {
-          font-size: 14px;
+          font-size: 13px;
           padding: 7px 0px 8px 0px;
           line-height: 17px;
           text-align: center;
-          color:var(--color-Bchat-hint);
+          // color:var(--color-Bchat-hint);
+          color: #FFFFFF;
           font-family: $bchat-font-poppin-regular;
         }
       }
@@ -70,7 +83,7 @@
     }
   }
 
-  &-registration {  
+  &-registration {
     &-container {
       display: flex;
       flex-direction: column;
@@ -79,6 +92,33 @@
       .bchat-button {
         width: 100%;
       }
+      &-walletHintText
+      {
+        margin: 0;
+        margin-left: 59px;
+        margin-bottom: 35px;
+       color: var(--color-text);
+
+      }
+     .warning-notes
+     {
+      color: #C1C1C1;
+      text-align: center;
+      font-family: "poppin-regular";
+      font-size: 12px;
+      width: 100%;
+      margin-top: 45px;
+      span{
+        color:#F23333;
+      }
+      strong
+      {
+        font-size: 12px;
+       font-family:$bchat-font-poppin-semibold;
+      }
+      
+     }
+
     }
 
     &__content {
@@ -86,6 +126,7 @@
       padding-top: 20px;
       margin-left: 26px;
     }
+
     &__content1 {
       width: 100%;
       padding-top: 20px;
@@ -104,7 +145,7 @@
       // color: white;
       font-family: $bchat-font-poppins-bold;
       font-weight: bold;
-      padding: 30px 50px !important;
+      padding: 0px 50px !important;
       font-size: 20px;
       font-weight: bold;
       line-height: 26px;
@@ -120,6 +161,7 @@
     &__entry-fields {
       margin: 0px;
       padding-bottom: 40px;
+      margin-top: 40px;
     }
 
     &__backbutton {
@@ -132,22 +174,22 @@
 
     &-header {
       text-align: center;
-      color:var(--color-text);
+      color: var(--color-text);
       font-size: 24px;
       padding-bottom: 25px;
       font-weight: 600;
       font-family: $bchat-font-poppins-bold;
     }
-    
+
     &-hr {
-      width: 75%;
+      width: 50%;
       color: #353543;
       margin-top: 37px;
     }
-    
+
     &-goback-icon {
       position: relative;
-       color: white;
+      color: white;
     }
 
     &-loadingGif {
@@ -160,11 +202,32 @@
       display: flex;
       align-items: center;
     }
-   
+
     &-welcome-screen-container {
       width: 75%;
       margin: 0 auto;
       text-align: center;
+
+      .iconBox
+      {
+        width: 40px;
+        height: 40px;
+        background-color:var(--color-inboxBgColor);
+        background-size:16px;
+        border-radius:35px;
+        background-position:center;
+        cursor:pointer;
+        margin-top:207px;
+        margin-Left:35px;
+        color:var(--color-copyIcon);
+        display: flex;
+        align-items:center;
+        justify-content: center;
+      }
+      .iconBox:hover{
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
 
     &-welcome-screen-goback {
@@ -178,12 +241,12 @@
     &-welcome-screen-back {
       padding: 20px;
       background-color: var(--color-body-bg);
-      border-radius:  10px;
+      border-radius: 10px;
       margin: 10px 0 37px;
       height: 375px;
       box-shadow: 0px 0px 6px 0px #d1d1d1;
     }
-    
+
     &-welcome-screen-chat {
       color: var(--color-text);
       font-size: 18px;
@@ -201,7 +264,7 @@
     }
 
     &-welcome-screen-chat-value {
-      background-color:var(--color-inboxBgColor);
+      background-color: var(--color-inboxBgColor);
       border-radius: 13px;
       display: flex;
       padding: 0px 15px;
@@ -218,7 +281,7 @@
       display: flex;
       width: 100%;
       height: 135px;
-        //  justifyContent: "center",
+      //  justifyContent: "center",
       font-size: 12px;
       color: #0BB70F;
       align-items: center;
@@ -243,10 +306,17 @@
       text-align: center;
     }
 
+    &-parent-box {
+      // display: flex;
+      // flex-direction: row;
+      // width: 100%;
+      margin-bottom: 47px;
+    }
+
     &-text-box {
       background-color: var(--color-inboxBgColor);
-      width: 100%;
-      min-height: 60px;
+      width: 95%;
+      // min-height: 60px;
       border-radius: 13px;
       text-align: center;
       color: #0BB70F;
@@ -254,16 +324,34 @@
     }
 
     &-text-area {
-     outline: none;
-     border: none;
-     resize: none;
-     text-align: center;
-     padding: 15px;
+      outline: none;
+      border: none;
+      resize: none;
+      text-align: center;
+      padding: 15px;
+      width: 90%;
+      min-height: 120px;
+      overflow-y: hidden;
     }
 
     ::placeholder {
       color: #77778B;
       font-family: $bchat-font-poppin-semibold;
+    }
+
+    &-icon-box {
+      display: flex;
+      width: 24vw;
+      /* background: antiquewhite; */
+      align-items: center;
+      margin-left: 1.5vw;
+      position: relative;
+
+      .paste-icon:hover
+      {
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
 
     &-icon {
@@ -276,13 +364,13 @@
       background-position: center;
       cursor: pointer;
     }
-    
+
     &-clear {
       background: url("images/bchat/clear.svg no-repeat") no-repeat;
       width: 10px;
       height: 10px;
       position: absolute;
-      top: 290px;       //350
+      top: 290px; //350
       right: 180px;
       cursor: pointer;
       background-size: cover;
@@ -300,7 +388,7 @@
       margin-top: 40px;
       text-align: center;
     }
-  }  
+  }
 
   &-input-floating-label-show-hide {
     padding-inline-end: 30px;
@@ -350,7 +438,8 @@
       outline: 0;
       height: 50px;
       width: 75%;
-      background: var(--color-body-bg);
+      background-color: #353543;
+      // background: var(--color-body-bg);
       // background: transparent;
       // color: var(--color-text);
       color: #0BB70F;
@@ -364,9 +453,15 @@
       margin-left: 58px;
       box-shadow: 0px 0px 6px 0px #19192424;
     }
-    ::placeholder
-    {
-      color:#77778B;
+
+    ::placeholder {
+      color: #77778B;
+    }
+
+    input::-webkit-calendar-picker-indicator {
+      width: 27px;
+      height: 27px;
+      color: white;
     }
 
     hr {
@@ -379,16 +474,16 @@
 
     .bchat-icon-button {
       position: absolute;
-      top: 50%;
+      top: 67%;
       transform: translateY(-50%);
-      right: 0px;
+      right: 27px;
     }
   }
 
   &-terms-conditions-agreement {
     // padding-top: $bchat-margin-md;
     padding-left: 12px;
-    @include bchat-color-subtle(var(--color-text));
+    @include bchat-color-subtle(var(white));
     text-align: center;
     font-size: 12px;
     // font-family: $bchat-font-poppins-bold;
@@ -397,8 +492,10 @@
     a {
       white-space: nowrap;
       text-decoration: none;
-      font-family: $bchat-font-poppins-bold;
-      @include bchat-color-subtle(var(--color-text));
+      font-family: $bchat-font-poppin-regular;
+      color: white;
+      opacity: 0.8;
+      // @include bchat-color-subtle(var(--color-text));
       // @include bchat-color-subtle(white);
 
       // transition: $bchat-transition-duration;
@@ -451,9 +548,9 @@
       line-height: 18px;
       text-align: center;
       overflow-wrap: break-word;
-      padding: 0px 5px 20px 5px;
+      padding: 1px 5px 20px 5px;
       display: inline-block;
-      font-family: $bchat-font-mono;
+      font-family: $bchat-font-poppin-medium;
       user-select: all;
       overflow: hidden;
       resize: none;

@@ -34,7 +34,7 @@ const InConvoCallWindow = styled.div`
   padding: 1rem;
   display: flex;
 
-  background-color: hsl(0, 0%, 15.7%);
+  background-color: var(--color-inbox-background);
 
   flex-shrink: 1;
   min-height: 80px;
@@ -68,7 +68,7 @@ const StyledCenteredLabel = styled.div`
   transform: translateX(-50%);
   height: min-content;
   white-space: nowrap;
-  color: white;
+  color: var(--color-text);
   text-shadow: 0px 0px 8px white;
   z-index: 5;
 `;
@@ -195,7 +195,7 @@ export const InConversationCallContainer = () => {
         <ConnectingLabel />
         <DurationLabel />
         <VideoContainer>
-          <VideoLoadingSpinner fullWidth={false} />
+          {/* <VideoLoadingSpinner fullWidth={false} /> */}
           <StyledVideoElement
             ref={videoRefRemote}
             autoPlay={true}
@@ -229,7 +229,7 @@ export const InConversationCallContainer = () => {
           isAudioOutputMuted={isAudioOutputMuted}
           localStreamVideoIsMuted={localStreamVideoIsMuted}
           remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-          isFullScreen={false}
+          isFullScreen={isInFullScreen}
         />
       </RelativeCallWindow>
     </InConvoCallWindow>

@@ -30,7 +30,7 @@ export const openGroupV2CompleteURLRegex = new RegExp(
 
 /**
  * Just a constant to have less `publicChat:` everywhere.
- * This is the prefix used to identify our open groups in the conversation database (v1 or v2)
+ * This is the prefix used to identify our Social groups in the conversation database (v1 or v2)
  * Note: It does already have the ':' included
  */
 export const openGroupPrefix = 'publicChat:';
@@ -45,7 +45,7 @@ export const openGroupV2ConversationIdRegex = new RegExp(
 );
 
 /**
- * This function returns a full url on an open group v2 room used for sync messages for instance.
+ * This function returns a full url on an Social group v2 room used for sync messages for instance.
  * This is basically what the QRcode encodes
  *
  */
@@ -74,7 +74,7 @@ export function prefixify(server: string, hasSSL: boolean = true): string {
 }
 
 /**
- * No sql access. Just how our open groupv2 url looks like.
+ * No sql access. Just how our Social groupv2 url looks like.
  * ServerUrl can have the protocol and port included, or not
  * @returns `${openGroupPrefix}${roomId}@${serverUrl}`
  */
@@ -103,7 +103,7 @@ export function getOpenGroupV2FromConversationId(
       roomId,
     };
   }
-  throw new Error('Not a v2 open group convo id');
+  throw new Error('Not a v2 Social group convo id');
 }
 
 /**

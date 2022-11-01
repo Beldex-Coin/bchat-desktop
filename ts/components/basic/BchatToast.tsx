@@ -23,9 +23,9 @@ type Props = {
 };
 
 const TitleDiv = styled.div`
-  font-size: var(--font-size-md);
+  font-size: 12px;
   line-height: var(--font-size-md);
-  font-family: var(--font-default);
+  font-family: poppin-medium
   color: var(--color-text);
   text-overflow: ellipsis;
 `;
@@ -48,29 +48,34 @@ export const BchatToast = (props: Props) => {
   const { title, description, type, icon } = props;
 
   const toastDesc = description ? description : '';
-  const toastIconSize = toastDesc ? 'huge' : 'medium';
+  const toastIconSize = toastDesc ? 'huge' : 'large';
 
   // Set a custom icon or allow the theme to define the icon
   let toastIcon = icon || undefined;
+  let toastColor :any;
   if (!toastIcon) {
     switch (type) {
       case BchatToastType.Info:
         toastIcon = 'info';
+        toastColor = '#2879FB';
         break;
       case BchatToastType.Success:
         toastIcon = 'check';
+        toastColor = '#17a61b'
         break;
       case BchatToastType.Error:
         toastIcon = 'error';
+        toastColor = '#FF3C3C'
         break;
       case BchatToastType.Warning:
         toastIcon = 'warning';
+        toastColor = '#ff3c3c'
         break;
       default:
         toastIcon = 'info';
     }
   }
-
+  
   return (
     // tslint:disable-next-line: use-simple-attributes
     <Flex
@@ -79,8 +84,8 @@ export const BchatToast = (props: Props) => {
       onClick={props?.onToastClick || noop}
       data-testid="bchat-toast"
     >
-      <IconDiv style={{paddingLeft:'10px',paddingRight:'8px'}}>
-        <BchatIcon iconType={toastIcon} iconSize={toastIconSize} />
+      <IconDiv style={{paddingLeft:'10px',paddingRight:'13px'}}>
+        <BchatIcon iconType={toastIcon} iconSize={toastIconSize} iconColor={toastColor}/>
       </IconDiv>
       <Flex
         container={true}

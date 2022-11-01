@@ -13,7 +13,7 @@ import { toHex } from '../bchat/utils/String';
 import { configurationMessageReceived, trigger } from '../shims/events';
 import { BlockedNumberController } from '../util';
 import { removeFromCache } from './cache';
-import { handleNewClosedGroup } from './closedGroups';
+import { handleNewSecretGroup } from './closedGroups';
 import { EnvelopePlus } from './types';
 import { ConversationInteraction } from '../interactions';
 import { getLastProfileUpdateTimestamp, setLastProfileUpdateTimestamp } from '../util/storage';
@@ -30,11 +30,11 @@ async function handleOurProfileUpdate(
     );
     const { profileKey, profilePicture, displayName } = configMessage;
 
-    const lokiProfile = {
+    const bchatProfile = {
       displayName,
       profilePicture,
     };
-    await updateOurProfileSync(lokiProfile, profileKey);
+    await updateOurProfileSync(bchatProfile, profileKey);
     await setLastProfileUpdateTimestamp(_.toNumber(sentAt));
     // do not trigger a signin by linking if the display name is empty
     if (displayName) {
@@ -80,8 +80,8 @@ async function handleGroupsAndContactsFromConfigMessage(
 }
 
 /**
- * Trigger a join for all open groups we are not already in.
- * @param openGroups string array of open group urls
+ * Trigger a join for all Social groups we are not already in.
+ * @param openGroups string array of Social group urls
  */
 const handleOpenGroupsFromConfig = (openGroups: Array<string>) => {
   const numberOpenGroup = openGroups?.length || 0;
@@ -103,7 +103,7 @@ const handleOpenGroupsFromConfig = (openGroups: Array<string>) => {
 
 /**
  * Trigger a join for all closed groups which doesn't exist yet
- * @param openGroups string array of open group urls
+ * @param openGroups string array of Social group urls
  */
 const handleClosedGroupsFromConfig = async (
   closedGroups: Array<SignalService.ConfigurationMessage.IClosedGroup>,
@@ -126,8 +126,8 @@ const handleClosedGroupsFromConfig = async (
       });
       try {
         // TODO we should not drop the envelope from cache as long as we are still handling a new closed group from that same envelope
-        // check the removeFromCache inside handleNewClosedGroup()
-        await handleNewClosedGroup(envelope, groupUpdate);
+        // check the removeFromCache inside handleNewSecretGroup()
+        await handleNewSecretGroup(envelope, groupUpdate);
       } catch (e) {
         window?.log?.warn('failed to handle  a new closed group from configuration message');
       }

@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { BchatJoinableRooms } from './BchatJoinableDefaultRooms';
-
-// import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
-// import { OverlayHeader } from './OverlayHeader';
 import { useDispatch } from 'react-redux';
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { joinOpenGroupV2WithUIEvents } from '../../../bchat/apis/open_group_api/opengroupV2/JoinOpenGroupV2';
@@ -14,19 +11,23 @@ import { openGroupV2CompleteURLRegex } from '../../../bchat/apis/open_group_api/
 import { ToastUtils } from '../../../bchat/utils';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
+import styled from 'styled-components';
 
-async function joinOpenGroup(serverUrl: string) {
+async function joinSocialGroup(serverUrl: string) {
   // guess if this is an open
   if (serverUrl.match(openGroupV2CompleteURLRegex)) {
     const groupCreated = await joinOpenGroupV2WithUIEvents(serverUrl, true, false);    
     return groupCreated;
   } else {
-    ToastUtils.pushToastError('invalidOpenGroupUrl', window.i18n('invalidOpenGroupUrl'));
+    ToastUtils.pushToastError('invalidSocialGroupUrl', window.i18n('invalidSocialGroupUrl'));
     window.log.warn('Invalid opengroupv2 url');
     return false;
   }
 }
-
+const ScrollView=styled.div`
+    height: 90%;
+    overflow-y: scroll;
+`
 export const OverlayOpenGroup = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ export const OverlayOpenGroup = () => {
         return;
       }
       setLoading(true);
-      const groupCreated = await joinOpenGroup(groupUrl);
+      const groupCreated = await joinSocialGroup(groupUrl);
       if (groupCreated) {
         closeOverlay();
         
@@ -60,18 +61,19 @@ export const OverlayOpenGroup = () => {
   // FIXME autofocus inputref on mount
   useKey('Escape', closeOverlay);
 
-  const title = window.i18n('joinOpenGroup');
+  const title = window.i18n('joinSocialGroup');
   const buttonText = window.i18n('next');
-  const subtitle = window.i18n('openGroupURL');
-  const placeholder = window.i18n('enterAnOpenGroupURL');
+  const subtitle = window.i18n('openSocialURL');
+  const placeholder = window.i18n('enterAnSocialGroupURL');
 
   return (
     <div className="module-left-pane-overlay">
-      <div className="module-left-pane-overlay">
-      {/* <OverlayHeader title={title} subtitle={subtitle}  hideExit={true}/> */}
-      <LeftPaneSectionHeader />
+      <div style={{
+    height: 'calc(100% - 153px)'}} >
 
-      <div className='module-left-pane-overlay-closed--header'>{title}</div>
+      <LeftPaneSectionHeader />
+     <ScrollView>     
+       <div className='module-left-pane-overlay-closed--header'>{title}</div>
       <div className='module-left-pane-overlay-closed--subHeader'>
       {subtitle}
       </div>
@@ -93,14 +95,10 @@ export const OverlayOpenGroup = () => {
 
       <BchatSpinner loading={loading} />
       <BchatJoinableRooms onRoomClicked={closeOverlay} />
-      
-      {/* <BchatButton
-        buttonColor={BchatButtonColor.Green}
-        buttonType={BchatButtonType.BrandOutline}
-        text={buttonText}
-        
-      /> */}
+    </ScrollView>
     </div>
+
+
     <div className='buttonBox'>
     <button 
       className='nextButton'

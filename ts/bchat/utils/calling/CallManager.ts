@@ -125,45 +125,30 @@ let isSettingRemoteAnswerPending = false;
 let lastOutgoingOfferTimestamp = -Infinity;
 
 /**
- * This array holds all of the ice servers Bchat can contact.
+ * This array holds all of the ice servers BChat can contact.
  * They are all contacted at the same time, so before triggering the request, we get only a subset of those, randomly
  */
 const iceServersFullArray = [
   {
-    urls: 'turn:turn.call.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call1.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication1.beldex.io',
+    username: 'Bchat1',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call2.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication2.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call3.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
-  {
-    urls: 'tturn:turn.call4.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
-  {
-    urls: 'turn:turn.call5.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
-  // {
-  //   urls: 'turn:turn.call.beldex.io',
-  //   username: 'test',
-  //   credential: 'test@123',
-  // },
+    urls: 'communication3.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
+  }
 ];
 
 const configuration: RTCConfiguration = {
@@ -820,7 +805,7 @@ export async function USER_acceptIncomingCallRequest(fromSender: string) {
       new RTCSessionDescription({ sdp: sdps[0], type: 'offer' })
     );
   } catch (e) {
-    window.log?.error(`Error setting RTC Bchat Description ${e}`);
+    window.log?.error(`Error setting RTC BChat Description ${e}`);
   }
 
   const lastCandidatesFromSender = findLastMessageTypeFromSender(

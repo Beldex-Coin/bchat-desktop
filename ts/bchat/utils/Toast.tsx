@@ -7,7 +7,7 @@ import { SectionType, showLeftPaneSection, showSettingsSection } from '../../sta
 
 // if you push a toast manually with toast...() be sure to set the type attribute of the BchatToast component
 export function pushToastError(id: string, title: string, description?: string) {
-  console.log("TOAST:ERROR",id,title,description)
+  console.log("Er?:")
   toast.error(
     <BchatToast title={title} description={description} type={BchatToastType.Error} />,
     { toastId: id, updateId: id }
@@ -15,7 +15,6 @@ export function pushToastError(id: string, title: string, description?: string) 
 }
 
 export function pushToastWarning(id: string, title: string, description?: string) {
-  console.log("TOAST:WARN",id,title,description)
   toast.warning(
     <BchatToast title={title} description={description} type={BchatToastType.Warning} />,
     { toastId: id, updateId: id }
@@ -100,7 +99,7 @@ export function pushMessageBodyMissing() {
 }
 
 export function pushCopiedToClipBoard() {
-  pushToastInfo('copiedToClipboard', window.i18n('copiedToClipboard'));
+  pushToastSuccess('copiedToClipboard', window.i18n('copiedToClipboard'));
 }
 
 export function pushRestartNeeded() {
@@ -127,7 +126,7 @@ export function pushUserUnbanSuccess() {
 
 export function  pushUserCopySuccess()
 {
-  pushToastSuccess('copied', "Successfully,copied!");
+  pushToastSuccess('copied', "Copied to clipboard");
 }
 
 export function pushUserUnbanFailure() {
@@ -202,7 +201,7 @@ export function pushOriginalNotFound() {
 }
 
 export function pushTooManyMembers() {
-  pushToastError('tooManyMembers', window.i18n('closedGroupMaxSize'));
+  pushToastError('tooManyMembers', window.i18n('secretGroupMaxSize'));
 }
 
 export function pushMessageRequestPending() {

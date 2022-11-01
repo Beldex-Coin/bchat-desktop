@@ -27,7 +27,7 @@ window.getNodeVersion = () => configAny.node_version;
 window.bchatFeatureFlags = {
   useOnionRequests: true,
   useTestNet: Boolean(
-    process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('testnet')
+    process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('mainnet')
   ),
 };
 
@@ -228,24 +228,29 @@ window.Signal = data.initData();
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
   // tslint:disable-next-line: no-empty
-  window.nodeSetImmediate(() => {});
+  window.nodeSetImmediate(() => { });
 }, 1000);
 
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
-
 window.getSeedNodeList = () =>
-  window.bchatFeatureFlags.useTestNet
-    ? ['http://public.loki.foundation:38157']
+  // window.bchatFeatureFlags.useTestNet
+  process.env.NODE_ENV == 'development'
+    ? [
+      'https://publicnode1.rpcnode.stream:443',
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
+            // 'http://15.188.30.57:19095',
+    ]
     : [
-        // 'https://storage.seed1.loki.network:4433/',
-        // 'https://storage.seed3.loki.network:4433/',
-        // 'https://public.loki.foundation:4433/',
-        'http://15.188.30.57:19095'
-        // "https://mainnet.beldex.io:29095"
-      ];
+
+      'https://publicnode1.rpcnode.stream:443',
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
+
+    ];
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);

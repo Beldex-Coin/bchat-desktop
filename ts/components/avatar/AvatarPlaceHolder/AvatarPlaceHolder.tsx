@@ -20,7 +20,7 @@ const sha512FromPubkey = async (pubkey: string): Promise<string> => {
 // key is the pubkey, value is the hash
 const cachedHashes = new Map<string, number>();
 
-const avatarPlaceholderColors = ['#5ff8b0', '#26cdb9', '#f3c615', '#fcac5a'];
+const avatarPlaceholderColors = ['#FF5722', '#2979FB', '#FF6663', '#009688',"#FE64A3",'#00B1FF','#673AB7','#E91E63','#9C27B0'];
 const avatarBorderColor = '#00000059';
 
 function useHashBasedOnPubkey(pubkey: string) {
@@ -73,25 +73,26 @@ export const AvatarPlaceHolder = (props: Props) => {
 
   const { hash, loading } = useHashBasedOnPubkey(pubkey);
 
-  const diameterWithoutBorder = diameter - 2;
+  // const diameterWithoutBorder = diameter - 2;
   const viewBox = `0 0 ${diameter} ${diameter}`;
-  const r = diameter / 2;
-  const rWithoutBorder = diameterWithoutBorder / 2;
+  // const r = diameter / 2;
+  // const rWithoutBorder = diameterWithoutBorder / 2;
 
   if (loading || !hash) {
-    // return grey circle
     return (
       <svg viewBox={viewBox}>
         <g id="UrTavla">
-          <circle
-            cx={r}
-            cy={r}
-            r={rWithoutBorder}
-            fill="#d2d2d3"
-            shapeRendering="geometricPrecision"
-            stroke={avatarBorderColor}
-            strokeWidth="1"
-          />
+        <rect
+          rx={10}
+          ry={10}
+          // r={rWithoutBorder}
+          fill="#d2d2d3"
+          width={diameter}
+          height={diameter}
+          // style={{width:'90%',height:'90%'}}
+          stroke={avatarBorderColor}
+          strokeWidth="1"
+        />
         </g>
       </svg>
     );
@@ -104,16 +105,18 @@ export const AvatarPlaceHolder = (props: Props) => {
   const bgColorIndex = hash % avatarPlaceholderColors.length;
 
   const bgColor = avatarPlaceholderColors[bgColorIndex];
+// console.log(bgColor);
 
   return (
     <svg viewBox={viewBox}>
       <g id="UrTavla">
-        <circle
-          cx={r}
-          cy={r}
-          r={rWithoutBorder}
+        <rect
+          rx={10}
+          ry={10}
+          width={diameter}
+          height={diameter}
+          // r={rWithoutBorder}
           fill={bgColor}
-          shapeRendering="geometricPrecision"
           stroke={avatarBorderColor}
           strokeWidth="1"
         />

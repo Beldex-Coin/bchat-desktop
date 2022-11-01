@@ -20,13 +20,15 @@ import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
 
+
 export interface Props {
   contacts: Array<ReduxConversationType>;
   conversations?: Array<ConversationListItemProps>;
   searchResults?: SearchResultsProps;
 
   messageRequestsEnabled?: boolean;
-  overlayMode: OverlayMode; 
+  overlayMode: OverlayMode;
+  directContact:any;
 }
 
 export class LeftPaneMessageSection extends React.Component<Props> {
@@ -55,7 +57,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
     const { conversations, searchResults } = this.props;
-
+    
     if (searchResults) {
       return <SearchResults {...searchResults} />;
     }
@@ -65,13 +67,15 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     }
 
     const length = conversations.length;
-
     const listKey = 0;
+
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
     const list = (
       <div className="module-left-pane__list" key={listKey}>
+
+
         <AutoSizer>
           {({ height, width }) => (
             <List
@@ -103,21 +107,51 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           }}
         />
         {overlayMode ? this.renderClosableOverlay() : null}
-        {overlayMode ?null:this.renderConversations()}
+        {overlayMode ? null :<>
+          {/* <MessageRequestsBanner
+          handleOnClick={() => {
+            window.inboxStore?.dispatch(setOverlayMode('message-requests'));
+          }}
+        /> */}
+        {this.renderConversations()}
+        </>}
       </div>
     );
   }
 
   public renderConversations() {
+    const { 
+      conversations ,
+      // searchResults,
+      // contacts,
+      directContact} = this.props;
+      // console.log("conversations,contacts ::",conversations?.length,contacts);
+      
+      
     return (
       <div className="module-conversations-list-content">
-        <BchatSearchInput />
+        {/* {!conversations || conversations.length === 0 ? null : */}
+      {directContact.length!==0 &&
+          <BchatSearchInput />
+      }
+        {/* } */}
         <MessageRequestsBanner
           handleOnClick={() => {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-        {this.renderList()}
+          {/* {!conversations || conversations.length === 0 || searchResults ? */}
+          {directContact.length===0 && conversations?.length===0?
+          <div className='bchatEmptyScrBox'>
+            <div className='addContactImg'>
+            </div>
+            <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
+            <div style={{ display: "flex" }}>
+              <button className='nextButton' onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}>Add Contacts + </button>
+            </div>
+          </div>
+          : this.renderList()}
+        {/* {this.renderList()} */}
         {this.renderBottomButtons()}
       </div>
     );
@@ -135,20 +169,20 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       case 'message':
         return <OverlayMessage />;
       case 'message-requests':
-        return <OverlayMessageRequest />;
+        return <OverlayMessageRequest  leftPane={true}/>;
       default:
         return null;
     }
   }
 
   private renderBottomButtons(): JSX.Element {
-    // const joinOpenGroup = window.i18n('joinOpenGroup');
-    // const newClosedGroup = window.i18n('newClosedGroup');
+    // const joinSocialGroup = window.i18n('joinSocialGroup');
+    // const newSecretGroup = window.i18n('newSecretGroup');
 
     return (
       <div className="left-pane-contact-bottom-buttons">
         {/* <BchatButton
-          // text={joinOpenGroup}
+          // text={joinSocialGroup}
           icon={true}
           buttonType={BchatButtonType.SquareOutline}
           buttonColor={BchatButtonColor.Green}
@@ -163,7 +197,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           icon={true}
           style={{background: "url(images/bchat/socialgroup.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
 
-          // text={newClosedGroup}
+          // text={newSecretGroup}
           buttonType={BchatButtonType.SquareOutline}
           buttonColor={BchatButtonColor.White}
           onClick={() => {

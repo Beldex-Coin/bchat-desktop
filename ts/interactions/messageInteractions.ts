@@ -21,7 +21,7 @@ export function banUser(userToBan: string, conversationId: string) {
     return;
   }
   if (!isOpenGroupV2(conversationId)) {
-    window.log.warn(`Conversation ${conversationId} is not an open group`);
+    window.log.warn(`Conversation ${conversationId} is not an Social group`);
     ToastUtils.pushUserBanFailure();
 
     return;
@@ -33,8 +33,8 @@ export function banUser(userToBan: string, conversationId: string) {
 }
 
 /**
- * There is no way to unban on an opengroupv1 server.
- * This function only works for opengroupv2 server
+ * There is no way to unban on an socialgroupv1 server.
+ * This function only works for socialgroupv2 server
  */
 export function unbanUser(userToUnBan: string, conversationId: string) {
   let pubKeyToUnban: PubKey;
@@ -46,7 +46,7 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
     return;
   }
   if (!isOpenGroupV2(conversationId)) {
-    window.log.warn(`Conversation ${conversationId} is not an open group`);
+    window.log.warn(`Conversation ${conversationId} is not an Social group`);
     ToastUtils.pushUserUnbanFailure();
 
     return;
@@ -102,15 +102,15 @@ export async function addSenderAsModerator(sender: string, convoId: string) {
   }
 }
 
-const acceptOpenGroupInvitationV2 = (completeUrl: string, roomName?: string) => {
+const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) => {
   const onClickClose = () => {
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
 
   window.inboxStore?.dispatch(
     updateConfirmModal({
-      title: window.i18n('joinOpenGroupAfterInvitationConfirmationTitle', [roomName || 'Unknown']),
-      message: window.i18n('joinOpenGroupAfterInvitationConfirmationDesc', [roomName || 'Unknown']),
+      title: window.i18n('joinSocialGroupAfterInvitationConfirmationTitle', [roomName || 'Unknown']),
+      message: window.i18n('joinSocialGroupAfterInvitationConfirmationDesc', [roomName || 'Unknown']),
       onClickOk: async () => {
         await joinOpenGroupV2WithUIEvents(completeUrl, true, false);
       },
@@ -122,11 +122,11 @@ const acceptOpenGroupInvitationV2 = (completeUrl: string, roomName?: string) => 
 };
 
 /**
- * Accepts a v2 url open group invitation (with pubkey) or just log an error
+ * Accepts a v2 url Social group invitation (with pubkey) or just log an error
  */
 export const acceptOpenGroupInvitation = (completeUrl: string, roomName?: string) => {
   if (completeUrl.match(openGroupV2CompleteURLRegex)) {
-    acceptOpenGroupInvitationV2(completeUrl, roomName);
+    acceptSocialGroupInvitationV2(completeUrl, roomName);
   } else {
     window?.log?.warn('Invalid opengroup url:', completeUrl);
   }

@@ -49,16 +49,16 @@ export interface MessageAttributes {
   sent: boolean;
 
   /**
-   * The serverId is the id on the open group server itself.
-   * Each message sent to an open group gets a serverId.
+   * The serverId is the id on the Social group server itself.
+   * Each message sent to an Social group gets a serverId.
    * This is not the id for the server, but the id ON the server.
    *
    * This field is not set for a message not on an opengroup server.
    */
   serverId?: number;
   /**
-   * This is the timestamp of that messages as it was saved by the Open group server.
-   * We rely on this one to order Open Group messages.
+   * This is the timestamp of that messages as it was saved by the Social group server.
+   * We rely on this one to order Social Group messages.
    * This field is not set for a message not on an opengroup server.
    */
   serverTimestamp?: number;

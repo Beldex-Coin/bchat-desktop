@@ -127,9 +127,7 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
     return null;
   }
 
-  const componentToRender = joinableRooms.inProgress ? (
-    <BchatSpinner loading={true} />
-  ) : (
+  const componentToRender = joinableRooms.inProgress ? ( <BchatSpinner loading={false} />) : (
     joinableRooms.rooms.map(r => {
       return (
         <BchatJoinableRoomRow

@@ -242,7 +242,7 @@ const doDeleteSelectedMessagesInSOGS = async (
   if (!ourDevicePubkey) {
     return;
   }
-  //#region open group v2 deletion
+  //#region Social group v2 deletion
   // Get our Moderator status
   const isAdmin = conversation.isAdmin(ourDevicePubkey);
 
@@ -370,7 +370,8 @@ export async function deleteMessagesById(messageIds: Array<string>, conversation
 
   window.inboxStore?.dispatch(
     updateConfirmModal({
-      title: window.i18n('deleteJustForMe'),
+      // title: window.i18n('deleteJustForMe'),
+      title:"Delete selected messages?",
       message: moreThanOne
         ? window.i18n('deleteMessagesQuestion', [messageCount.toString()])
         : window.i18n('deleteMessageQuestion'),

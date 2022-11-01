@@ -35,7 +35,7 @@ const getRealPath = pify(fs.realpath);
 
 // FIXME Hardcoding appId to prevent build failures on release.
 // const appUserModelId = packageJson.build.appId;
-const appUserModelId = 'com.loki-project.messenger-desktop';
+const appUserModelId = 'com.beldex-project.messenger-desktop';
 console.log('Set Windows Application User Model ID (AUMID)', {
   appUserModelId,
 });
@@ -79,9 +79,7 @@ import { windowMarkShouldQuit, windowShouldQuit } from '../node/window_state'; /
 import { createTemplate } from '../node/menu'; // checked - only node
 import { installFileHandler, installWebHandler } from '../node/protocol_filter'; // checked - only node
 import { installPermissionsHandler } from '../node/permissions'; // checked - only node
-// import { startWalletRpc } from './wallet-rpc'
 
-// startWalletRpc();
 let appStartInitialSpellcheckSetting = true;
 
 const enableTestIntegrationWiderWindow = true;
@@ -157,6 +155,8 @@ if (windowFromUserConfig) {
 import { load as loadLocale, LocaleMessagesWithNameType } from '../node/locale';
 import { setLastestRelease } from '../node/latest_desktop_release';
 import { getAppRootPath } from '../node/getRootPath';
+import { HTTPError } from '../bchat/utils/errors';
+import { kill } from 'cross-port-killer';
 
 // Both of these will be set after app fires the 'ready' event
 let logger: Logger | null = null;
@@ -430,6 +430,7 @@ async function createWindow() {
   // Note: We do most of our shutdown logic here because all windows are closed by
   //   Electron before the app quits.
   mainWindow.on('close', async e => {
+    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     console.log('close event', {
       readyForShutdown: mainWindow ? readyForShutdown : null,
       shouldQuit: windowShouldQuit(),
@@ -500,17 +501,17 @@ ipc.once('ready-for-updates', readyForUpdates);
 
 // Forcefully call readyForUpdates after 10 minutes.
 // This ensures we start the updater.
-const TEN_MINUTES = 10 * 60 * 1000;
+const TEN_MINUTES = 10 * 60 * 10;
 setTimeout(readyForUpdates, TEN_MINUTES);
 
 function openReleaseNotes() {
   void shell.openExternal(
-    `https://github.com/oxen-io/session-desktop/releases/tag/v${app.getVersion()}`
+        `https://github.com/Beldex-Coin/bchat-desktop/releases/tag/v${app.getVersion()}`
   );
 }
 
 function openSupportPage() {
-  void shell.openExternal('https://github.com/Alexsanchez06/bchat-desktop');
+  void shell.openExternal('https://beldex.io/blog/what-is-bchat/');
 }
 
 let passwordWindow: BrowserWindow | null = null;
@@ -537,6 +538,7 @@ async function showPasswordWindow() {
       preload: path.join(getAppRootPath(), 'password_preload.js'),
       nativeWindowOpen: true,
     },
+    // icon: path.join(getAppRootPath(), './build/bchat.icns')
     // don't setup icon, the executable one will be used by default
   };
 
@@ -1065,7 +1067,7 @@ ipc.on('set-call-media-permissions', (event, value) => {
   event.sender.send('set-success-call-media-permissions', null);
 });
 
-// Bchat - Auto updating
+// BChat - Auto updating
 ipc.on('get-auto-update-setting', event => {
   const configValue = userConfig.get('autoUpdate');
   // eslint-disable-next-line no-param-reassign

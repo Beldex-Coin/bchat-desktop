@@ -53,8 +53,7 @@ export const OverlayClosedGroup = () => {
     }
     setLoading(true);
     const groupCreated = await MainViewController.createClosedGroup(groupName, selectedMemberIds);
-    console.log('groupCreated ',groupCreated);
-    
+
     if (groupCreated) {
       closeOverlay();
       dispatch(showLeftPaneSection(0));
@@ -66,67 +65,107 @@ export const OverlayClosedGroup = () => {
 
   useKey('Escape', closeOverlay);
 
-  const title = window.i18n('newClosedGroup');
+  const title = window.i18n('newSecretGroup');
   // const buttonText = window.i18n('done');
-  const subtitle = window.i18n('createClosedGroupNamePrompt');
-  const placeholder = window.i18n('createClosedGroupPlaceholder');
+  const subtitle = window.i18n('createSecretGroupNamePrompt');
+  const placeholder = window.i18n('createSecretGroupPlaceholder');
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
 
+  // const ClosedGrpHeader = () => {
+  //   if (!noContactsForClosedGroup) {
+  //     return (<>
+
+  //       <div className='module-left-pane-overlay-closed--subHeader'>
+  //         {subtitle}
+  //       </div>
+  //       <div className="create-group-name-input">
+  //         <BchatIdEditable
+  //           editable={!noContactsForClosedGroup}
+  //           placeholder={placeholder}
+  //           value={groupName}
+  //           isGroup={true}
+  //           maxLength={100}
+  //           onChange={setGroupName}
+  //           onPressEnter={onEnterPressed}
+  //           dataTestId="new-closed-group-name"
+  //         />
+  //       </div></>)
+  //   }
+  //   else {
+  //     return <></>
+  //   }
+
+  // }
+  function addContact() {
+    dispatch(showLeftPaneSection(0));
+    window.inboxStore?.dispatch(setOverlayMode('message'));
+  }
+
+
   return (
     <div className="module-left-pane-overlay" >
-      <div className="module-left-pane-overlay">
-
-      
-
-      {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
-      <LeftPaneSectionHeader />
-      
-      <div className='module-left-pane-overlay-closed--header'>{title}</div>
-      <div className='module-left-pane-overlay-closed--subHeader'>
-      {subtitle}
-      </div>
-      <div className="create-group-name-input">
-        <BchatIdEditable
-          editable={!noContactsForClosedGroup}
-          placeholder={placeholder}
-          value={groupName}
-          isGroup={true}
-          maxLength={100}
-          onChange={setGroupName}
-          onPressEnter={onEnterPressed}
-          dataTestId="new-closed-group-name"
-        />
-      </div>
-
-      <BchatSpinner loading={loading} />
-
-      <SpacerLG />
-      <div className="group-member-list__container">
-        {noContactsForClosedGroup ? (
-          <div className="group-member-list__no-contacts">{window.i18n('noContactsForGroup')}</div>
-        ) : (
-          <div className="group-member-list__selection">
-            {privateContactsPubkeys.map((memberPubkey: string) => (
-              <MemberListItem
-                pubkey={memberPubkey}
-                isSelected={selectedMemberIds.some(m => m === memberPubkey)}
-                key={memberPubkey}
-                onSelect={selectedMember => {
-                  handleSelectMember(selectedMember);
-                }}
-                onUnselect={unselectedMember => {
-                  handleUnselectMember(unselectedMember);
-                }}
-              />
-            ))}
+       <LeftPaneSectionHeader />
+      <div style={{height:'calc(100% - 222px)', overflowY: "auto"}} >
+        {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
+        {/* <LeftPaneSectionHeader /> */}
+        <div className='module-left-pane-overlay-closed--header'>{title}</div>
+        {/* <ClosedGrpHeader /> */}
+        {!noContactsForClosedGroup &&
+          <>
+          <div className='module-left-pane-overlay-closed--subHeader'>
+            {subtitle}
           </div>
-        )}
-      </div>
+          <div className="create-group-name-input">
+            <BchatIdEditable
+              editable={!noContactsForClosedGroup}
+              placeholder={placeholder}
+              value={groupName}
+              isGroup={true}
+              maxLength={100}
+              onChange={setGroupName}
+              onPressEnter={onEnterPressed}
+              dataTestId="new-closed-group-name"
+            />
+          </div></>
+        }
 
-      <SpacerLG />
-       
-      {/* <BchatButton
+        <BchatSpinner loading={loading} />
+
+        <SpacerLG />
+        <div className="group-member-list__container">
+          {noContactsForClosedGroup ? (
+            <div className="group-member-list__no-contacts">
+              <div className='group-member-list__addImg'>
+              </div>
+              <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
+              <div style={{ display: "flex" }}>
+                <button className='nextButton' style={{ width: "90%" }} onClick={() => addContact()}>Add Contacts + </button>
+              </div>
+              {/* {window.i18n('noContactsForGroup')} */}
+            </div>
+          ) : (
+            <div className="group-member-list__selection">
+              {privateContactsPubkeys.map((memberPubkey: string) => (
+                <MemberListItem
+                  pubkey={memberPubkey}
+                  isSelected={selectedMemberIds.some(m => m === memberPubkey)}
+                  key={memberPubkey}
+                  onSelect={selectedMember => {
+                    handleSelectMember(selectedMember);
+                  }}
+                  onUnselect={unselectedMember => {
+                    handleUnselectMember(unselectedMember);
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <SpacerLG />
+
+        {/* <BchatButton
         buttonColor={BchatButtonColor.Green}
         buttonType={BchatButtonType.BrandOutline}
         text={buttonText}
@@ -134,13 +173,15 @@ export const OverlayClosedGroup = () => {
        
         dataTestId="next-button"
       /> */}
-    </div>
-    <div className='buttonBox'>
-    <button 
-      className='nextButton'
-       onClick={onEnterPressed}
-      >Create</button>
-    </div>
+      </div>
+
+      {!noContactsForClosedGroup &&
+        <div className='buttonBox'>
+          <button
+            className='nextButton'
+            onClick={onEnterPressed}
+          >Create</button>
+        </div>}
     </div>
   );
 };

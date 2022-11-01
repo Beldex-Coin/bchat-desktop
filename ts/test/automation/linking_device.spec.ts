@@ -15,7 +15,7 @@ test('linking device', async () => {
   await clickOnTestIdWithText(windowA2, 'leftpane-primary-avatar');
   // Verify Username
   await waitForTestIdWithText(windowA2, 'your-profile-name', userA.userName);
-  // Verify Bchat ID
+  // Verify BChat ID
   await waitForTestIdWithText(windowA2, 'your-bchat-id', userA.bchatid);
   // exit profile module
   await clickOnTestIdWithText(windowA2, 'modal-close-button');

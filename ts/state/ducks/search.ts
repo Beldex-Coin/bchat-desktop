@@ -74,7 +74,6 @@ async function doSearch(query: string): Promise<SearchResultsPayloadType> {
   };
   const advancedSearchOptions = getAdvancedSearchOptionsFromQuery(query);
   const processedQuery = advancedSearchOptions.query;
-  // const isAdvancedQuery = query !== processedQuery;
 
   const [discussions, messages] = await Promise.all([
     queryConversationsAndContacts(processedQuery, options),
@@ -83,17 +82,6 @@ async function doSearch(query: string): Promise<SearchResultsPayloadType> {
   const { conversations, contacts } = discussions;
   const contactsAndGroups = _.uniq([...conversations, ...contacts]);
   const filteredMessages = _.compact(messages);
-  // if (isAdvancedQuery) {
-  //   const senderFilterQuery =
-  //     advancedSearchOptions.from && advancedSearchOptions.from.length > 0
-  //       ? await queryConversationsAndContacts(advancedSearchOptions.from, options)
-  //       : undefined;
-  //   filteredMessages = advancedFilterMessages(
-  //     filteredMessages,
-  //     advancedSearchOptions,
-  //     senderFilterQuery?.contacts || []
-  //   );
-  // }
   return {
     query,
     normalizedPhoneNumber: PubKey.normalize(query),
@@ -117,36 +105,6 @@ export function updateSearchTerm(query: string): UpdateSearchTermActionType {
 }
 
 // Helper functions for search
-
-// function advancedFilterMessages(
-//   messages: Array<MessageResultProps>,
-//   filters: AdvancedSearchOptions,
-//   contacts: Array<string>
-// ): Array<MessageResultProps> {
-//   let filteredMessages = messages;
-//   if (filters.from && filters.from.length > 0) {
-//     if (filters.from === '@me') {
-//       filteredMessages = filteredMessages.filter(message => message.sent);
-//     } else {
-//       filteredMessages = [];
-//       for (const contact of contacts) {
-//         for (const message of messages) {
-//           if (message.source === contact) {
-//             filteredMessages.push(message);
-//           }
-//         }
-//       }
-//     }
-//   }
-//   if (filters.before > 0) {
-//     filteredMessages = filteredMessages.filter(message => message.received_at < filters.before);
-//   }
-//   if (filters.after > 0) {
-//     filteredMessages = filteredMessages.filter(message => message.received_at > filters.after);
-//   }
-
-//   return filteredMessages;
-// }
 
 function getUnixMillisecondsTimestamp(timestamp: string): number {
   const timestampInt = parseInt(timestamp, 10);

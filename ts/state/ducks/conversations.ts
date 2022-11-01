@@ -253,7 +253,7 @@ export interface ReduxConversationType {
   subscriberCount?: number;
   left?: boolean;
   avatarPath?: string | null; // absolute filepath to the avatar
-  groupAdmins?: Array<string>; // admins for closed groups and moderators for open groups
+  groupAdmins?: Array<string>; // admins for closed groups and moderators for Social groups
   members?: Array<string>; // members for closed groups only
   zombies?: Array<string>; // members for closed groups only
 

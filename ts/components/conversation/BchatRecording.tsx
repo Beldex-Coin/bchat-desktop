@@ -123,15 +123,21 @@ export class BchatRecording extends React.Component<Props, State> {
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
         <div className="bchat-recording-box">
-        <div className="bchat-recording--actions">
 
-        {isRecording ? (
+        {hasRecording && !isRecording ? (
+          <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
+            {displayTimeString + remainingTimeString}
+            </div>
+          ) : null}
+        <div className="bchat-recording--actions">
+          
+         {isRecording ? (
           <div className={classNames('bchat-recording--timer')}>
              <div className="bchat-recording--timer-light" />
             {displayTimeString}
            
           </div>
-        ) : null}
+         ) : null}
 
 
 
@@ -140,29 +146,23 @@ export class BchatRecording extends React.Component<Props, State> {
           
            
             {actionPauseAudio && (
-              <BchatIconButton iconType="pause" iconSize="medium" onClick={actionPauseFn} />
+              <BchatIconButton iconType="pause" iconSize="medium" onClick={actionPauseFn} iconColor="#277AFB"/>
             )}
             {hasRecordingAndPaused && (
-              <BchatIconButton iconType="play" iconSize="medium" onClick={this.playAudio} />
+              <BchatIconButton iconType="play" iconSize="medium" onClick={this.playAudio} iconColor="#277AFB" />
             )}
             {hasRecording && (
               <BchatIconButton
                 iconType="delete"
                 iconSize="medium"
                 onClick={this.onDeleteVoiceMessage}
+                iconColor="#E22A2B"
               />
             )}
           </StyledFlexWrapper>
 
           {actionDefault && <BchatIconButton iconType="microphone" iconSize={'huge'} />}
         </div>
-
-        {hasRecording && !isRecording ? (
-          <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
-            {displayTimeString + remainingTimeString}
-          </div>
-        ) : null}
-
          {isRecording && (
               <BchatIconButton
               iconType="stop"
@@ -173,23 +173,13 @@ export class BchatRecording extends React.Component<Props, State> {
             )}
         
         </div>
-        {/* {!isRecording && ( */}
           <div
             className={classNames( 
               'send-message-button',
-              // hasRecording && 'send-message-button---scale'
             )}
           >
-            
             {!isRecording ? <SendMessageButton   onClick={this.onSendVoiceMessage}/> :<SendMessageButton   onClick={()=>{}}/>}
-            {/* <BchatIconButton
-              iconType="send"
-              iconSize={'large'}
-              iconRotation={0}
-              
-            /> */}
           </div>
-        {/* )} */}
       </div>
     );
   }
@@ -274,8 +264,6 @@ export class BchatRecording extends React.Component<Props, State> {
    * Sends the recorded voice message
    */
   private async onSendVoiceMessage() {
-console.log("onSendVoiceMessage");
-
     if (!this.audioBlobMp3 || !this.audioBlobMp3.size) {
       window?.log?.info('Empty audio blob');
       return;

@@ -37,7 +37,6 @@ const Tab = ({
 
 const Sections = (props: Props & { selectedTab: TabType }) => {
   const { media, documents, selectedTab } = props;
-
   const mediaItems = selectedTab === 'media' ? media : documents;
   const type = selectedTab;
 

@@ -211,7 +211,7 @@ describe('MessageQueue', () => {
         );
       });
 
-      describe('open groupsv2', () => {
+      describe('Social groupsv2', () => {
         let sendToOpenGroupV2Stub: sinon.SinonStub;
         beforeEach(() => {
           sendToOpenGroupV2Stub = Sinon.stub(MessageSender, 'sendToOpenGroupV2').resolves(
@@ -219,7 +219,7 @@ describe('MessageQueue', () => {
           );
         });
 
-        it('can send to open group', async () => {
+        it('can send to Social group', async () => {
           const message = TestUtils.generateOpenGroupVisibleMessage();
           const roomInfos = TestUtils.generateOpenGroupV2RoomInfos();
 

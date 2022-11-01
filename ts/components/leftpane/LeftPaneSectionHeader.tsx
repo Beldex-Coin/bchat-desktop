@@ -7,18 +7,24 @@ import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
 import { Flex } from '../basic/Flex';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
 import { SectionType, setOverlayMode } from '../../state/ducks/section';
-import { BchatButton, 
+import {
+  BchatButton,
   // BchatButtonColor,
-   BchatButtonType } from '../basic/BchatButton';
+  BchatButtonType
+} from '../basic/BchatButton';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
-import {  editProfileModal} from '../../state/ducks/modalDialog';
+import { editProfileModal } from '../../state/ducks/modalDialog';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+import { BchatToolTip } from './ActionsPanel';
+import { applyTheme } from '../../state/ducks/theme';
+// import ReactTooltip from 'react-tooltip';
+
 
 
 
@@ -33,7 +39,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
-  const bChatId=useSelector(getOurNumber)
+  const bChatId = useSelector(getOurNumber)
   const dispatch = useDispatch();
 
   let label: string | undefined;
@@ -43,6 +49,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
 
+ 
+
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -51,7 +59,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
       label = window.i18n('settingsHeader');
       break;
     case SectionType.Message:
-      
+
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')
         // : window.i18n('messagesHeader');
@@ -60,84 +68,86 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
       break;
     default:
-      label='BChat'
+      label = 'BChat'
   }
 
-  function handleClick()
-  {
+  function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
-      const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
-      window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+    const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+    window.setTheme(updatedTheme);
+    dispatch(applyTheme(updatedTheme));
+
+    if (updatedTheme === 'dark') {
+      switchHtmlToDarkTheme();
+    } else {
+      switchHtmlToLightTheme();
+    }
   }
 
   function verifyScreens() {
-    if (SectionType.Settings!==focusedSection) {
-      return  <Avatar
+    if (SectionType.Settings !== focusedSection) {
+      return <Avatar
         size={AvatarSize.M}
-      
-      onAvatarClick={()=>dispatch(editProfileModal({}))}
+
+        onAvatarClick={() => dispatch(editProfileModal({}))}
         pubkey={bChatId}
         dataTestId="leftpane-primary-avatar"
       />
 
     }
-    else{
-      return <div style={{marginLeft:"20px",color:"white"}}>
-         <BchatIcon  
-         iconType={"gear"}
-         iconColor={"#fff"}
-         iconSize={"large"}
-         />
-     </div>
-       
+    else {
+      return <div className='module-left-pane__header_gearIcon'>
+        <BchatIcon
+          iconType={"gear"}
+          //  iconColor={"#fff"}
+          iconSize={"large"}
+        />
+      </div>
+
     }
-    
+
   }
 
-  const IsOnline=()=>{
-    if (SectionType.Settings!==focusedSection) {
-      return <div style={{margin:"0 15px",width:'20px'}}> 
-      <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
-        throw new Error('Function not implemented.');
-      } } id={''}/>
+  const IsOnline = () => {
+    
+    if (SectionType.Settings !== focusedSection) {
+      return     <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
+
+         {/* <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom"></div> */}
+        <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
+          throw new Error('Function not implemented.');
+        }} id={''} />
       </div>
     }
-    else
-    {
+    else {
       return null
     }
   }
 
-   
 
-function Moon ()
-{
-  if (SectionType.Settings !==focusedSection) {
-    return <div style={{marginRight:"10px"}}>
- <BchatIconButton
+
+  function Moon() {
+    // if (SectionType.Settings !== focusedSection) {
+    return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" data-offset="{'right':43}" data-place="bottom" >
+      {/* <BchatIconButton
   iconSize="large"
   iconType={'moon'}
   dataTestId="theme-section"
   iconColor={undefined}
   onClick={handleClick}
  
-/>
+/> */}
     </div>
-   
+
+    // }
+    // else {
+    //   return null;
+    // }
   }
-  else{
-    return null;
-  }
-}
 
   return (
     <Flex flexDirection="column">
-      <div className="module-left-pane__header"> 
+      <div className="module-left-pane__header" style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}>
         {showBackButton && (
           <BchatIconButton
             onClick={() => {
@@ -149,26 +159,32 @@ function Moon ()
             margin="0 0 var(--margins-xs) var(--margins-xs)"
           />
         )}
-       
-        {verifyScreens()}
-       
-       <div className='module-left-pane__header__title'>
-       {label}
-       </div>
+
+        <div className=''>
+          {verifyScreens()}
+        </div>
+
+
+        <div className='module-left-pane__header__title'>
+          {label}
+        </div>
         {/* <SectionTitle></SectionTitle>           */}
-          <IsOnline />
-          <Moon /> 
-         
+        <IsOnline />
+        <Moon />
+
         {isMessageSection && !isMessageRequestOverlay && (
-          <div onClick={props.buttonClicked} style={{cursor:"pointer"}}>
-            <img src={"images/bchat/addButton.svg"}  style={{width:"35px"}} />
-            
-          {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
+          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts" data-offset="{'right':60}" data-place="bottom">
+            <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
+
+            {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
             <BchatIcon iconType="plus" iconSize="small" iconColor="white" />
           </BchatButton> */}
           </div>
         )}
       </div>
+  {/* <ReactTooltip className="tooltipDesign"   effect="solid" /> */}
+
+      <BchatToolTip effect="solid" />
       {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>
   );

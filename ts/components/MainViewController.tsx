@@ -1,27 +1,20 @@
 import React from 'react';
 
-import { ToastUtils } from '../bchat/utils';
+import { ToastUtils } from '../bchat/utils'; 
 import { createClosedGroup as createClosedGroupV2 } from '../receiver/closedGroups';
 import { VALIDATION } from '../bchat/constants';
 
 export class MessageView extends React.Component {
   public render() {
+  
     return (
       <div className="conversation placeholder">
         <div className="conversation-header" />
         <div className="container">
           <div className="content bchat-full-logo">
-            {/* <img
-              src="images/bchat/brand.svg"
-              className="bchat-brand-logo"
-              alt="full-brand-logo"
-            />*/}
-            <img
-              src={`images/bchat/${window.Events.getThemeSetting()==='dark'?'emptyMessage.svg':"emptyMessageWhite.svg"}`}
-              className="bchat-text-logo"
-              alt="full-brand-logo"
-            /> 
-           <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
+            <div  className="bchat-text-logo">
+            <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
+            </div>
           </div>
         </div>
       </div>
@@ -54,10 +47,10 @@ async function createClosedGroup(
   // the same is valid with groups count < 1
 
   if (groupMemberIds.length < 1) {
-    ToastUtils.pushToastError('pickClosedGroupMember', window.i18n('pickClosedGroupMember'));
+    ToastUtils.pushToastError('pickSecretGroupMember', window.i18n('pickSecretGroupMember'));
     return false;
   } else if (groupMemberIds.length >= VALIDATION.CLOSED_GROUP_SIZE_LIMIT) {
-    ToastUtils.pushToastError('closedGroupMaxSize', window.i18n('closedGroupMaxSize'));
+    ToastUtils.pushToastError('secretGroupMaxSize', window.i18n('secretGroupMaxSize'));
     return false;
   }
 

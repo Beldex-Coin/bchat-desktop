@@ -102,12 +102,8 @@ const MessageRequestListSetting = (props: Props) => {
     profileName
     
   } = props;
-  console.log("props convertasion",props);
-  
-  const key = `conversation-item-${conversationId}`;
-
+    const key = `conversation-item-${conversationId}`;
   const triggerId = `${key}-ctxmenu`;
-  console.log("triggerIdctxmenu",triggerId);
   
 
 //   const openConvo = useCallback(
@@ -140,7 +136,6 @@ const MessageRequestListSetting = (props: Props) => {
         //     e.preventDefault();
         //   }}
         //   onContextMenu={e => {
-        //     console.log("triggerId",triggerId,);
         //     contextMenu.show({
         //       id: triggerId,
         //       event: e,
@@ -178,7 +173,7 @@ const MessageRequestListSetting = (props: Props) => {
        
        
         <Portal>
-            {console.log("triggerIdMemoConversationListItemContextMenu",triggerId)}
+           
             
           <MemoConversationListItemContextMenu triggerId={triggerId} />
         </Portal>

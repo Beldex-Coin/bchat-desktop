@@ -12,6 +12,8 @@ export async function start(
   messages: MessagesType,
   logger?: LoggerType | null
 ) {
+
+  // console.log("update 1")
   if (initialized) {
     throw new Error('updater/start: Updates have already been initialized!');
   }

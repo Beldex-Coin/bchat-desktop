@@ -103,7 +103,7 @@ export async function sendApiV2Request(
   if (isOpenGroupV2Request(request) && request.isAuthRequired && request.room) {
     // this call will either return the token on the db,
     // or the promise currently fetching a new token for that same room
-    // or fetch from the open group a new token for that room.
+    // or fetch from the Social group a new token for that room.
 
     if (request.forcedTokenToUse) {
       window?.log?.info('sendV2Request. Forcing token to use for room:', request.room);
@@ -116,7 +116,7 @@ export async function sendApiV2Request(
       }));
 
     if (!token) {
-      window?.log?.error('Failed to get token for open group v2');
+      window?.log?.error('Failed to get token for Social group v2');
       return null;
     }
 
@@ -302,7 +302,7 @@ export const unbanUser = async (
 };
 
 /**
- * Deletes messages on open group server
+ * Deletes messages on Social group server
  */
 export const deleteMessageByServerIds = async (
   idsToRemove: Array<number>,

@@ -29,7 +29,7 @@ export class OpenGroupManagerV2 {
   public static readonly useV2OpenGroups = false;
 
   /**
-   * The map of opengroup pollers, by serverUrl.
+   * The map of socialgroup pollers, by serverUrl.
    * A single poller polls for every room on the specified serverUrl
    */
   private readonly pollers: Map<string, OpenGroupServerPoller> = new Map();
@@ -40,11 +40,11 @@ export class OpenGroupManagerV2 {
   }
 
   /**
-   * When we get our configuration from the network, we might get a few times the same open group on two different messages.
+   * When we get our configuration from the network, we might get a few times the same Social group on two different messages.
    * If we don't do anything, we will join them multiple times.
    * Which will cause a lot of duplicate messages as they will be merged on a single conversation.
    *
-   * To avoid this issue, we allow only a single join of a specific opengroup at a time.
+   * To avoid this issue, we allow only a single join of a specific socialgroup at a time.
    */
   public async attemptConnectionV2OneAtATime(
     serverUrl: string,
@@ -128,7 +128,7 @@ export class OpenGroupManagerV2 {
           try {
             const roomConvoId = getOpenGroupV2ConversationId(infos.serverUrl, infos.roomId);
             if (!allConvos.get(roomConvoId)) {
-              // remove the roomInfos locally for this open group room
+              // remove the roomInfos locally for this Social group room
               await removeV2OpenGroupRoom(roomConvoId);
               getOpenGroupManager().removeRoomFromPolledRooms(infos);
               // no need to remove it from the ConversationController, the convo is already not there
@@ -180,7 +180,7 @@ export class OpenGroupManagerV2 {
       await saveV2OpenGroupRoom(room);
       const roomInfos = await openGroupV2GetRoomInfo({ roomId, serverUrl });
       if (!roomInfos) {
-        throw new Error('Invalid open group roomInfo result');
+        throw new Error('Invalid Social group roomInfo result');
       }
       const conversation = await getConversationController().getOrCreateAndWait(
         conversationId,
@@ -205,7 +205,7 @@ export class OpenGroupManagerV2 {
 
       return conversation;
     } catch (e) {
-      window?.log?.warn('Failed to join open group v2', e.message);
+      window?.log?.warn('Failed to join Social group v2', e.message);
       await removeV2OpenGroupRoom(conversationId);
       // throw new Error(window.i18n('connectToServerFail'));
       return undefined;

@@ -76,7 +76,7 @@ export async function signInWithRecovery(
  */
 export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: string) {
   if (!mnemonic) {
-    throw new Error('Bchat always needs a mnemonic. Either generated or given by the user');
+    throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
   }
   if (!mnemonicLanguage) {
     throw new Error('We always needs a mnemonicLanguage');
@@ -104,7 +104,7 @@ export async function registerSingleDevice(
   profileName: string
 ) {
   if (!generatedMnemonic) {
-    throw new Error('Bchat always needs a mnemonic. Either generated or given by the user');
+    throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
   }
   if (!profileName) {
     throw new Error('We always needs a profileName');
@@ -165,7 +165,7 @@ async function createAccount(identityKeyPair: any) {
   // Enable typing indicators by default
   await Storage.put(SettingsKey.settingsTypingIndicator, false);
 
-  // opengroups pruning in ON by default on new accounts, but you can change that from the settings
+  // socialgroups pruning in ON by default on new accounts, but you can change that from the settings
   await Storage.put(SettingsKey.settingsOpengroupPruning, true);
   await window.setOpengroupPruning(true);
 
@@ -182,7 +182,7 @@ async function registrationDone(ourPubkey: string, displayName: string) {
     ourPubkey,
     ConversationTypeEnum.PRIVATE
   );
-  await conversation.setLokiProfile({ displayName });
+  await conversation.setBchatProfile({ displayName });
   await conversation.setIsApproved(true);
   await conversation.setDidApproveMe(true);
 

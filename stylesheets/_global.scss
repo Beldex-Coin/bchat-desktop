@@ -19,20 +19,19 @@ body {
 
 // scrollbars
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-scroll-bar-thumb);
-  border: solid 2px var(--color-text-opposite);
+  border-radius: 10px;
 
   &:hover {
     background: $color-light-45;
   }
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-scroll-bar-track);
+  border-radius: 10px;
 }
 
 audio {
@@ -233,7 +232,8 @@ $loading-height: 16px;
   align-items: center;
   user-select: none;
   // force this to black, to stay consistent with the password prompt being in dark mode too.
-  background-color: black;
+  // background-color: var(--color-inbox-background);
+  background-color: #1C1C26;
 
   .content {
     margin-inline-start: auto;
@@ -282,3 +282,22 @@ $loading-height: 16px;
 .inbox {
   position: relative;
 }
+
+.tooltipDesign{
+  background-color: #F7F7F7 !important;
+  padding: 1px 6px !important;
+  color: black  !important;
+  border:1px solid #D9D9D9 !important;
+  font-family: $bchat-font-poppin-medium !important;
+    &.place-top,&.place-bottom {
+      &:after {
+        border: none !important;
+      }
+    }
+    &.place-right {
+      //  display: none;
+      &:after {
+        border: none !important;
+      }
+    }
+ }

@@ -22,7 +22,7 @@
 }
 
 /* remove scroll bars */
-.loki-dialog .add-moderators-dialog .content {
+.bchat-dialog .add-moderators-dialog .content {
   padding: 1.1em;
 }
 
@@ -30,6 +30,7 @@
   .contact-selection-list {
     width: 100%;
     min-width: 300px;
+    box-shadow: var(--color-bchat-shadow);
   }
 }
 
@@ -40,6 +41,7 @@
   .content {
     max-width: 100% !important;
   }
+
   .contact-selection-list {
     width: 100%;
   }
@@ -89,7 +91,7 @@
   }
 }
 
-.loki-dialog {
+.bchat-dialog {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,18 +109,18 @@
   button {
     float: right;
     margin-inline-start: 10px;
-    background-color: $color-loki-green;
+    background-color: $color-bchat-green;
     border-radius: 100px;
     padding: 5px 15px;
-    border: 1px solid $color-loki-green;
+    border: 1px solid $color-bchat-green;
     color: white;
     outline: none;
     user-select: none;
 
     &:hover,
     &:disabled {
-      background-color: $color-loki-green-dark;
-      border-color: $color-loki-green-dark;
+      background-color: $color-bchat-green-dark;
+      border-color: $color-bchat-green-dark;
     }
 
     &:disabled {
@@ -133,7 +135,7 @@
     border: 0;
     outline: none;
     border-radius: 4px;
-    background-color: $color-loki-light-gray;
+    background-color: $color-bchat-light-gray;
 
     &:focus {
       outline: none;
@@ -172,23 +174,32 @@
   .qr-image {
     transition: $bchat-transition-duration;
     opacity: 10%;
+
     &:hover {
       opacity: 100%;
     }
   }
 }
 
-.loki-dialog {
-  & ~ .index.inbox {
+.bchat-dialog {
+  &~.index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
   }
 
+  .groupNameBox {
+    display: flex;
+    border-bottom: var(--border-bchat);
+  }
+
   input {
-    background-color: var(--color-input-background);
+    background-color: var(--color-smModal-bg);
     color: var(--color-text);
-    border: var(--border-bchat);
+    border-bottom: 0;
+    margin: 0;
+    // box-shadow: var(--color-bchat-shadow);
+
   }
 }
 
@@ -215,6 +226,7 @@
     position: relative;
 
     .module-avatar {
+      left: 10px;
       box-shadow: 0px 0px 13px 0.5px var(--color-bchat-shadow);
     }
 
@@ -258,45 +270,95 @@
       word-break: break-all;
       font-size: $bchat-font-md;
       // padding: 0px $bchat-margin-lg;
-      background-color: #3A3A4E;
+      // background-color: var(--color-composeMsgInput);
+      background-color: var(--color-background-primary);
       border-radius: 10px;
       padding: 10px 10px 10px 14px;
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0BB70F;
-      display:flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
       flex-direction: row;
       width: 100%;
       min-height: 60px;
+      box-shadow: var(--color-bchat-shadow);
 
       font-size: $bchat-font-md;
       // padding: 0px $bchat-margin-sm;
+      .profile-value {
+        width: 86%;
+        font-family: $bchat-font-poppin-medium;
+        font-size: 14px;
+        
+      }
     }
 
     &-display-icon {
-      background:url('/images/bchat/copy_icon.svg');
-      background-repeat: no-repeat;
-      width: "40px";
-      height: "40px";
-      position: 'relative';
-      background-color:'#353543';
-      background-size:"16px";
-      border-radius:"30px";
-      background-position:"center";
-      cursor:'pointer';
+      // background:url('../images/bchat/copy_icon.svg');
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // background-repeat: no-repeat;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      // background-color: var(--color-composeMsgInput);
+      background-color: var(--color-copyIconBg);
+      background-size: 16px;
+      border-radius: 30px;
+      background-position: center;
+      cursor: pointer;
+      color:var(--color-copyIcon);
+
+      &:hover {
+        transform: scale(1.1);
+        color: #1ced23;
+      }
     }
+    
 
     .bchat-button {
       width: 148px;
     }
   }
 
+  &-modalLoader {
+    
+    width: 400px;
+    height: 455px;
+    // top: 22.3%;
+    background-color: #0000009e;
+    border-radius: 25px;
+    z-index: 99;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    
+
+  }
+
   .profile-name {
     display: flex;
-    justify-content: center;
     margin-top: $bchat-margin-sm;
+    justify-content: space-between;
+    width: 100%;
+
+
+    .inputBox {
+      display: flex;
+      /* width: 134px; */
+      padding-left: 73px;
+
+    }
+
+    .saveIcon {
+      width: 35px;
+      color: var(--color-accent);
+      cursor: pointer;
+
+    }
 
     input {
       height: 38px;
@@ -311,13 +373,24 @@
     &-uneditable {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
+      width: 100%;
       font-family: $bchat-font-poppin-semibold;
 
+
+
       p {
-        font-size: $bchat-font-h4;
+        font-size: 20px;
         padding: 0px $bchat-margin-sm;
         margin-left: 33px;
+      }
+
+      .qr-icon-btn {
+        width: 30px;
+        height: 30px;
+        // left: 103px;
+        position: relative;
+        cursor: pointer;
       }
 
       .bchat-icon-button {

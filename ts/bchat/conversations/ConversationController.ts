@@ -82,9 +82,16 @@ export class ConversationController {
     if (!this._initialFetchComplete) {
       throw new Error('getConversationController().get() needs complete initial fetch');
     }
+    
 
     let conversation = this.conversations.get(id);
     if (conversation) {
+      // console.log('conversation ::',conversation.attributes);
+      // console.log("time", Date.now());
+      // conversation.set({
+      //   active_at: Date.now(),
+      // });
+      
       return conversation;
     }
 
@@ -194,20 +201,20 @@ export class ConversationController {
 
     // Closed/Medium group leaving
     if (conversation.isClosedGroup()) {
-      window.log.info(`deleteContact ClosedGroup case: ${id}`);
+      window.log.info(`deleteContact SecretGroup case: ${id}`);
       await conversation.leaveClosedGroup();
-      // open group v2
+      // Social group v2
     } else if (conversation.isOpenGroupV2()) {
-      window?.log?.info('leaving open group v2', conversation.id);
+      window?.log?.info('leaving Social group v2', conversation.id);
       const roomInfos = await getV2OpenGroupRoom(conversation.id);
       if (roomInfos) {
         getOpenGroupManager().removeRoomFromPolledRooms(roomInfos);
 
-        // remove the roomInfos locally for this open group room
+        // remove the roomInfos locally for this Social group room
         try {
           await removeV2OpenGroupRoom(conversation.id);
         } catch (e) {
-          window?.log?.info('removeV2OpenGroupRoom failed:', e);
+          window?.log?.info('removeV2OpenGroupRoom failed:', e); 
         }
       }
     }
@@ -222,12 +229,18 @@ export class ConversationController {
     // so conversation still exists (useful for medium groups members or opengroups) but is not shown on the UI
     if (conversation.isPrivate()) {
       window.log.info(`deleteContact isPrivate, marking as inactive: ${id}`);
+    
+      // conversation.set({
+      //   active_at: undefined,
+      //   // active_at:2022,
+      //   isApproved: false,
+      //   // Deleled:"yes"
 
-      conversation.set({
-        active_at: undefined,
-        isApproved: false,
-      });
-      await conversation.commit();
+      // });
+      // await conversation.commit();
+      await removeConversation(id);
+      this.conversations.remove(conversation);
+      window.inboxStore?.dispatch(conversationActions.conversationRemoved(conversation.id));
     } else {
       window.log.info(`deleteContact !isPrivate, removing convo from DB: ${id}`);
 
@@ -235,6 +248,8 @@ export class ConversationController {
       window.log.info(`deleteContact !isPrivate, convo removed from DB: ${id}`);
 
       this.conversations.remove(conversation);
+      // this.conversations.remove(id);
+      
       if (window?.inboxStore) {
         window.inboxStore?.dispatch(
           conversationActions.conversationChanged({

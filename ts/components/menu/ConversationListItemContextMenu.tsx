@@ -17,7 +17,7 @@ import {
   MarkAllReadMenuItem,
   NotificationForConvoMenuItem,
   PinConversationMenuItem,
-  ShowUserDetailsMenuItem,
+  // ShowUserDetailsMenuItem,
   UnbanMenuItem,
 } from './Menu';
 
@@ -45,7 +45,7 @@ const ConversationListItemContextMenu = (props: PropsContextConversationItem) =>
       <InviteContactMenuItem />
       <DeleteContactMenuItem />
       <LeaveGroupMenuItem />
-      <ShowUserDetailsMenuItem />
+      {/* <ShowUserDetailsMenuItem /> */}
     </Menu>
   );
 };

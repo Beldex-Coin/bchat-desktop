@@ -73,7 +73,7 @@ async function encryptForRelayV2(
   ctx: DestinationContext
 ) {
   if (!destination.host && !destination.destination) {
-    window?.log?.warn('loki_rpc::encryptForRelayV2 - no destination', destination);
+    window?.log?.warn('beldex_rpc::encryptForRelayV2 - no destination', destination);
   }
 
   const reqObj = {
@@ -137,7 +137,7 @@ async function buildOnionCtxs(
         target,
         method: 'POST',
       };
-      // FIXME http open groups v2 are not working
+      // FIXME http Social groups v2 are not working
       // tslint:disable-next-line: no-http-string
       if (finalRelayOptions?.protocol === 'http') {
         dest.protocol = finalRelayOptions.protocol;
@@ -151,7 +151,7 @@ async function buildOnionCtxs(
         pubkeyHex = nodePath[i + 1].pubkey_ed25519;
         if (!pubkeyHex) {
           window?.log?.error(
-            'loki_rpc:::buildOnionGuardNodePayload - no ed25519 for',
+            'beldex_rpc:::buildOnionGuardNodePayload - no ed25519 for',
             nodePath[i + 1],
             'path node',
             i + 1
@@ -169,7 +169,7 @@ async function buildOnionCtxs(
       ctxes.push(ctx);
     } catch (e) {
       window?.log?.error(
-        'loki_rpc:::buildOnionGuardNodePayload - encryptForRelayV2 failure',
+        'beldex_rpc:::buildOnionGuardNodePayload - encryptForRelayV2 failure',
         e.code,
         e.message
       );
@@ -342,7 +342,7 @@ async function processAnyOtherErrorAtDestination(
         associatedWith,
       });
 
-      // We have to retry with another targetNode so it's not just rebuilding the path. We have to go one lever higher (lokiOnionFetch).
+      // We have to retry with another targetNode so it's not just rebuilding the path. We have to go one lever higher (beldexOnionFetch).
       // status is 502 for a node not found
       throw new pRetry.AbortError(
         `Bad Path handled. Retry this request with another targetNode. Status: ${status}`
@@ -654,7 +654,6 @@ export const sendOnionRequestHandlingSnodeEject = async ({
     });
 
     response = result.response;
-    // console.log("RESPONSE:",response)
     if (
       !_.isEmpty(finalRelayOptions) &&
       response.status === 502 &&
@@ -759,7 +758,7 @@ const sendOnionRequest = async ({
     }
   } catch (e) {
     window?.log?.error(
-      'loki_rpc::sendOnionRequest - encryptForPubKey failure [',
+      'beldex_rpc::sendOnionRequest - encryptForPubKey failure [',
       e.code,
       e.message,
       '] destination X25519',
@@ -829,7 +828,7 @@ export function getPathString(pathObjArr: Array<{ ip: string; port: number }>): 
 /**
  * If the fetch throws a retryable error we retry this call with a new path at most 3 times. If another error happens, we return it. If we have a result we just return it.
  */
-export async function lokiOnionFetch({
+export async function bchatOnionFetch({
   targetNode,
   associatedWith,
   body,

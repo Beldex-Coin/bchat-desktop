@@ -17,6 +17,8 @@ import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import kill from 'cross-port-killer';
+import { HTTPError } from '../bchat/utils/errors';
 // tslint:disable: max-classes-per-file
 
 // Globally disable drag and drop
@@ -122,8 +124,8 @@ Storage.onready(async () => {
 
   // These make key operations available to IPC handlers created in preload.js
   window.Events = {
-    getThemeSetting: () => Storage.get('theme-setting', 'light'),
-    setThemeSetting: async (value: any) => {
+    getThemeSetting: () => Storage.get('theme-setting', 'dark'),
+    setThemeSetting: async (value: any) => { 
       await Storage.put('theme-setting', value);
     },
     getHideMenuBar: () => Storage.get('hide-menu-bar'),
@@ -163,7 +165,8 @@ Storage.onready(async () => {
   }
 
   const themeSetting = window.Events.getThemeSetting();
-  console.log("themeSetting ",themeSetting);
+  
+  // console.log("themeSetting ",themeSetting);
 
   
   
@@ -400,7 +403,8 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-
+  kill(64371).then().catch(err => { throw new HTTPError('beldex_rpc_port', err) })
+  console.log("connectCount === 0 && navigator.onLine:",connectCount, navigator.onLine)
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

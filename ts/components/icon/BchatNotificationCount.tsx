@@ -10,8 +10,8 @@ const StyledCountContainer = styled.div<{ shouldRender: boolean }>`
   width: 20px;
   height: 20px;
   font-size: 18px;
-  top: -10px;
-  left: 18px;
+  top: -4px;
+  left: 17px;
   padding: 7px;
   opacity: 1;
   display: flex;

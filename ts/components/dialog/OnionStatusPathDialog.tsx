@@ -1,15 +1,10 @@
 import React from 'react';
-
-// import { shell } from 'electron';
-
-// import { useDispatch, useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 
 import ip2country from 'ip2country';
 import countryLookup from 'country-code-lookup';
 import { Snode } from '../../data/data';
-// import { onionPathModal } from '../../state/ducks/modalDialog';
 import {
   getFirstOnionPath,
   getFirstOnionPathLength,
@@ -72,9 +67,8 @@ const OnionPathModalInner = () => {
     <>
      <Flex container={true} flexDirection="column" alignItems="center" height="70vh" justifyContent='center'>
       <p className="onion__description">
-        {/* {window.i18n('onionPathIndicatorDescription')} */}
-        Bchat hides your IP by bouncing your messages through several Service Nodes in Bchat's decentralized network. These are the countries your connection is currently being bounced through:
-        </p>
+        {window.i18n('onionPathIndicatorDescription')}
+       </p>
       <div className="onion__node-list">
         <Flex container={true}>
           <div className="onion__node-list-lights">
@@ -169,7 +163,7 @@ export const ActionPanelOnionStatusLight = (props: {
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';
-  const green = 'var(--color-accent)';
+  const green ='var(--green-color)';
   const orange = 'var(--color-warning)';
 
 
@@ -187,7 +181,7 @@ export const ActionPanelOnionStatusLight = (props: {
   `
 
   return (
-    <OuterCircle>
+    <OuterCircle >
     <BchatIconButton
       iconSize={'small'}
       iconType="circle"
@@ -205,21 +199,7 @@ export const ActionPanelOnionStatusLight = (props: {
 };
 
 export const OnionPathModal = () => {
-  // const onConfirm = () => {
-  //   void shell.openExternal('https://bchat.beldex.io/faq/#onion-routing');
-  // };
-  // const dispatch = useDispatch();
   return (
-    // tslint:disable-next-line: use-simple-attributes
-    // <BchatWrapperModal
-    //   title={window.i18n('onionPathIndicatorTitle')}
-    //   confirmText={window.i18n('learnMore')}
-    //   cancelText={window.i18n('cancel')}
-    //   onConfirm={onConfirm}
-    //   onClose={() => dispatch(onionPathModal(null))}
-    //   showExitIcon={true}
-    // >
       <OnionPathModalInner />
-    // </BchatWrapperModal>
   );
 };

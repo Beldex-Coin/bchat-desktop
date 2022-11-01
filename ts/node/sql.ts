@@ -744,41 +744,41 @@ function updateSchema(db: BetterSqlite3.Database) {
     const runSchemaUpdate = SCHEMA_VERSIONS[index];
     runSchemaUpdate(schemaVersion, db);
   }
-  updateLokiSchema(db);
+  updateBchatSchema(db);
 }
 
-const LOKI_SCHEMA_VERSIONS = [
-  updateToLokiSchemaVersion1,
-  updateToLokiSchemaVersion2,
-  updateToLokiSchemaVersion3,
-  updateToLokiSchemaVersion4,
-  updateToLokiSchemaVersion5,
-  updateToLokiSchemaVersion6,
-  updateToLokiSchemaVersion7,
-  updateToLokiSchemaVersion8,
-  updateToLokiSchemaVersion9,
-  updateToLokiSchemaVersion10,
-  updateToLokiSchemaVersion11,
-  updateToLokiSchemaVersion12,
-  updateToLokiSchemaVersion13,
-  updateToLokiSchemaVersion14,
-  updateToLokiSchemaVersion15,
-  updateToLokiSchemaVersion16,
-  updateToLokiSchemaVersion17,
-  updateToLokiSchemaVersion18,
-  updateToLokiSchemaVersion19,
-  updateToLokiSchemaVersion20,
-  updateToLokiSchemaVersion21,
-  updateToLokiSchemaVersion22,
-  updateToLokiSchemaVersion23,
+const BCHAT_SCHEMA_VERSIONS = [
+  updateToBchatSchemaVersion1,
+  updateToBchatSchemaVersion2,
+  updateToBchatSchemaVersion3,
+  updateToBchatSchemaVersion4,
+  updateToBchatSchemaVersion5,
+  updateToBchatSchemaVersion6,
+  updateToBchatSchemaVersion7,
+  updateToBchatSchemaVersion8,
+  updateToBchatSchemaVersion9,
+  updateToBchatSchemaVersion10,
+  updateToBchatSchemaVersion11,
+  updateToBchatSchemaVersion12,
+  updateToBchatSchemaVersion13,
+  updateToBchatSchemaVersion14,
+  updateToBchatSchemaVersion15,
+  updateToBchatSchemaVersion16,
+  updateToBchatSchemaVersion17,
+  updateToBchatSchemaVersion18,
+  updateToBchatSchemaVersion19,
+  updateToBchatSchemaVersion20,
+  updateToBchatSchemaVersion21,
+  updateToBchatSchemaVersion22,
+  updateToBchatSchemaVersion23,
 ];
 
-function updateToLokiSchemaVersion1(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion1(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 1;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
   db.transaction(() => {
     db.exec(`
     ALTER TABLE ${MESSAGES_TABLE}
@@ -789,19 +789,19 @@ function updateToLokiSchemaVersion1(currentVersion: number, db: BetterSqlite3.Da
       token TEXT
     );
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion2(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion2(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 2;
 
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -814,19 +814,19 @@ function updateToLokiSchemaVersion2(currentVersion: number, db: BetterSqlite3.Da
       UNIQUE(primaryDevicePubKey, secondaryDevicePubKey)
     );
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion3(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion3(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 3;
 
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -835,19 +835,19 @@ function updateToLokiSchemaVersion3(currentVersion: number, db: BetterSqlite3.Da
       ed25519PubKey VARCHAR(64)
     );
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion4(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion4(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 4;
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -862,18 +862,18 @@ function updateToLokiSchemaVersion4(currentVersion: number, db: BetterSqlite3.Da
     -- Add senderIdentity field to unprocessed needed for medium size groups
     ALTER TABLE unprocessed ADD senderIdentity TEXT;
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion5(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion5(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 5;
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -883,18 +883,18 @@ function updateToLokiSchemaVersion5(currentVersion: number, db: BetterSqlite3.Da
     );
 
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion6(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion6(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 6;
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -904,18 +904,18 @@ function updateToLokiSchemaVersion6(currentVersion: number, db: BetterSqlite3.Da
     id LIKE 'rss://%';
 
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion7(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion7(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 7;
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -923,17 +923,17 @@ function updateToLokiSchemaVersion7(currentVersion: number, db: BetterSqlite3.Da
 
     DELETE FROM pairingAuthorisations;
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion8(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion8(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 8;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -941,18 +941,18 @@ function updateToLokiSchemaVersion8(currentVersion: number, db: BetterSqlite3.Da
     ALTER TABLE ${MESSAGES_TABLE}
     ADD COLUMN serverTimestamp INTEGER;
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion9(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion9(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 9;
   if (currentVersion >= targetVersion) {
     return;
   }
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
   db.transaction(() => {
     const rows = db
       .prepare(
@@ -1007,18 +1007,18 @@ function updateToLokiSchemaVersion9(currentVersion: number, db: BetterSqlite3.Da
       });
     });
 
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion10(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion10(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 10;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1030,31 +1030,31 @@ function updateToLokiSchemaVersion10(currentVersion: number, db: BetterSqlite3.D
     );
 
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion11(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion11(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 11;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     updateExistingClosedGroupV1ToClosedGroupV2(db);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion12(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion12(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 12;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1067,33 +1067,33 @@ function updateToLokiSchemaVersion12(currentVersion: number, db: BetterSqlite3.D
     );
 
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion13(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion13(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 13;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   // Clear any already deleted db entries.
   // secure_delete = ON will make sure next deleted entries are overwritten with 0 right away
   db.transaction(() => {
     db.pragma('secure_delete = ON');
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion14(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion14(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 14;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1105,17 +1105,17 @@ function updateToLokiSchemaVersion14(currentVersion: number, db: BetterSqlite3.D
     DROP TABLE IF EXISTS signedPreKeys;
     DROP TABLE IF EXISTS senderKeys;
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion15(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion15(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 15;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1124,17 +1124,17 @@ function updateToLokiSchemaVersion15(currentVersion: number, db: BetterSqlite3.D
       DROP TRIGGER messages_on_update;
     `);
 
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion16(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion16(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 16;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1155,17 +1155,17 @@ function updateToLokiSchemaVersion16(currentVersion: number, db: BetterSqlite3.D
       ) WHERE serverHash IS NOT NULL;
     `);
 
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion17(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion17(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 17;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1177,9 +1177,9 @@ function updateToLokiSchemaVersion17(currentVersion: number, db: BetterSqlite3.D
       UPDATE ${CONVERSATIONS_TABLE} SET
       json = json_remove(json, '$.moderators', '$.dataMessage', '$.accessKey', '$.profileSharing', '$.bchatRestoreSeen')
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
 function dropFtsAndTriggers(db: BetterSqlite3.Database) {
@@ -1228,12 +1228,12 @@ function rebuildFtsTable(db: BetterSqlite3.Database) {
   console.info('rebuildFtsTable built');
 }
 
-function updateToLokiSchemaVersion18(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion18(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 18;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   // Dropping all pre-existing schema relating to message searching.
   // Recreating the full text search and related triggers
@@ -1241,35 +1241,35 @@ function updateToLokiSchemaVersion18(currentVersion: number, db: BetterSqlite3.D
   db.transaction(() => {
     dropFtsAndTriggers(db);
     rebuildFtsTable(db);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion19(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion19(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 19;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
       DROP INDEX messages_schemaVersion;
       ALTER TABLE ${MESSAGES_TABLE} DROP COLUMN schemaVersion;
     `);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
 
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion20(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 20;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     // looking for all private conversations, with a nickname set
@@ -1284,22 +1284,22 @@ function updateToLokiSchemaVersion20(currentVersion: number, db: BetterSqlite3.D
 
       // obj.profile.displayName is the display as this user set it.
       if (obj?.nickname?.length && obj?.profile?.displayName?.length) {
-        // this one has a nickname set, but name is unset, set it to the displayName in the lokiProfile if it's exisitng
+        // this one has a nickname set, but name is unset, set it to the displayName in the bchatProfile if it's exisitng
         obj.name = obj.profile.displayName;
         updateConversation(obj, db);
       }
     });
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   });
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion21(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion21(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 21;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`
@@ -1326,17 +1326,17 @@ function updateToLokiSchemaVersion21(currentVersion: number, db: BetterSqlite3.D
       });
     });
 
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion22(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion22(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 22;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(`DROP INDEX messages_duplicate_check;`);
@@ -1363,17 +1363,17 @@ function updateToLokiSchemaVersion22(currentVersion: number, db: BetterSqlite3.D
         json = json_remove(json, '$.schemaVersion', '$.recipients', '$.decrypted_at', '$.sourceDevice', '$.read_by')
       `);
     rebuildFtsTable(db);
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToLokiSchemaVersion23(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion23(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 23;
   if (currentVersion >= targetVersion) {
     return;
   }
-  console.log(`updateToLokiSchemaVersion${targetVersion}: starting...`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
     db.exec(
@@ -1394,14 +1394,14 @@ function updateToLokiSchemaVersion23(currentVersion: number, db: BetterSqlite3.D
     );
     db.exec(`DROP TABLE ${LAST_HASHES_TABLE}_old;`);
 
-    writeLokiSchemaVersion(targetVersion, db);
+    writeBchatSchemaVersion(targetVersion, db);
   })();
-  console.log(`updateToLokiSchemaVersion${targetVersion}: success!`);
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function writeLokiSchemaVersion(newVersion: number, db: BetterSqlite3.Database) {
+function writeBchatSchemaVersion(newVersion: number, db: BetterSqlite3.Database) {
   db.prepare(
-    `INSERT INTO loki_schema(
+    `INSERT INTO bchat_schema(
       version
     ) values (
       $newVersion
@@ -1409,31 +1409,31 @@ function writeLokiSchemaVersion(newVersion: number, db: BetterSqlite3.Database) 
   ).run({ newVersion });
 }
 
-function updateLokiSchema(db: BetterSqlite3.Database) {
+function updateBchatSchema(db: BetterSqlite3.Database) {
   const result = db
-    .prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name='loki_schema';`)
+    .prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name='bchat_schema';`)
     .get();
 
   if (!result) {
-    createLokiSchemaTable(db);
+    createBchatSchemaTable(db);
   }
-  const lokiSchemaVersion = getLokiSchemaVersion(db);
+  const bchatSchemaVersion = getBchatSchemaVersion(db);
   console.log(
-    'updateLokiSchema:',
-    `Current loki schema version: ${lokiSchemaVersion};`,
-    `Most recent schema version: ${LOKI_SCHEMA_VERSIONS.length};`
+    'updateBchatiSchema:',
+    `Current bchat schema version: ${bchatSchemaVersion};`,
+    `Most recent schema version: ${BCHAT_SCHEMA_VERSIONS.length};`
   );
-  for (let index = 0, max = LOKI_SCHEMA_VERSIONS.length; index < max; index += 1) {
-    const runSchemaUpdate = LOKI_SCHEMA_VERSIONS[index];
-    runSchemaUpdate(lokiSchemaVersion, db);
+  for (let index = 0, max = BCHAT_SCHEMA_VERSIONS.length; index < max; index += 1) {
+    const runSchemaUpdate = BCHAT_SCHEMA_VERSIONS[index];
+    runSchemaUpdate(bchatSchemaVersion, db);
   }
 }
 
-function getLokiSchemaVersion(db: BetterSqlite3.Database) {
+function getBchatSchemaVersion(db: BetterSqlite3.Database) {
   const result = db
     .prepare(
       `
-    SELECT MAX(version) as version FROM loki_schema;
+    SELECT MAX(version) as version FROM bchat_schema;
     `
     )
     .get();
@@ -1443,14 +1443,14 @@ function getLokiSchemaVersion(db: BetterSqlite3.Database) {
   return result.version;
 }
 
-function createLokiSchemaTable(db: BetterSqlite3.Database) {
+function createBchatSchemaTable(db: BetterSqlite3.Database) {
   db.transaction(() => {
     db.exec(`
-    CREATE TABLE loki_schema(
+    CREATE TABLE bchat_schema(
       id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
       version INTEGER
     );
-    INSERT INTO loki_schema (
+    INSERT INTO bchat_schema (
       version
     ) values (
       0
@@ -3167,7 +3167,7 @@ function remove05PrefixFromStringIfNeeded(str: string) {
 }
 
 function updateExistingClosedGroupV1ToClosedGroupV2(db: BetterSqlite3.Database) {
-  // the migration is called only once, so all current groups not being open groups are v1 closed group.
+  // the migration is called only once, so all current groups not being Social groups are v1 closed group.
   const allClosedGroupV1 = getAllClosedGroupConversations(db) || [];
 
   allClosedGroupV1.forEach(groupV1 => {
@@ -3367,7 +3367,7 @@ function printDbStats() {
     'identityKeys',
     'items',
     'lastHashes',
-    'loki_schema',
+    'bchat_schema',
     'messages',
     'messages_fts',
     'messages_fts_config',
@@ -3795,7 +3795,7 @@ export const sqlNode = {
   addClosedGroupEncryptionKeyPair,
   removeAllClosedGroupEncryptionKeyPairs,
 
-  // open group v2
+  // Social group v2
   getV2OpenGroupRoom,
   saveV2OpenGroupRoom,
   getAllV2OpenGroupRooms,

@@ -4,21 +4,16 @@ import { SignInMode, SignInTab } from './SignInTab';
 import { createOrUpdateItem, removeAll } from '../../data/data';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { getConversationController } from '../../bchat/conversations';
-// import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { PromiseUtils,
-  //  StringUtils,
     ToastUtils } from '../../bchat/utils';
 import { TaskTimedOutError } from '../../bchat/utils/Promise';
 import { trigger } from '../../shims/events';
 import {
   registerSingleDevice,
-  // bchatGenerateKeyPair,
   signInByLinkingDevice,
 } from '../../util/accountManager';
-// import { fromHex } from '../../bchat/utils/String';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
 import { 
-  // generateMnemonic,
    restoreWallet } from '../../mains/wallet-rpc'
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
@@ -90,9 +85,10 @@ export async function signUp(signUpDetails: {
  */
 export async function signInWithRecovery(signInDetails: {
   displayName: string;
+  password:string;
   userRecoveryPhrase: string;
 }) {
-  const { displayName, userRecoveryPhrase } = signInDetails;
+  const { displayName,password, userRecoveryPhrase } = signInDetails;
   window?.log?.info('RESTORING FROM SEED');
   const trimName = displayNameIsValid(displayName);
   // shows toast to user about the error
@@ -101,8 +97,8 @@ export async function signInWithRecovery(signInDetails: {
   }
 
   try {
-    const wallet = await restoreWallet(displayName, userRecoveryPhrase);
-    localStorage.setItem("userAddress",wallet.address);
+    const wallet = await restoreWallet(displayName,password, userRecoveryPhrase);
+    localStorage.setItem("userAddress",wallet.result.address);
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
@@ -180,8 +176,6 @@ interface RegistrationPhaseContext {
   setRegistrationPhase: (phase: RegistrationPhase) => void;
   setSignInMode: (phase: SignInMode) => void;
   setSignUpMode: (phase: SignUpMode) => void;
-  // generatedRecoveryPhrase: string;
-  // hexGeneratedPubKey: string;
 }
 
 export const RegistrationContext = createContext<RegistrationPhaseContext>({
@@ -191,13 +185,9 @@ export const RegistrationContext = createContext<RegistrationPhaseContext>({
   setRegistrationPhase: () => undefined,
   setSignUpMode: () => undefined,
   setSignInMode: () => undefined,
-  // generatedRecoveryPhrase: '',
-  // hexGeneratedPubKey: '',
 });
 
 export const RegistrationStages = () => {
-  // const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
-  // const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
   const [registrationPhase, setRegistrationPhase] = useState(RegistrationPhase.Start);
   const [signInMode, setSignInMode] = useState(SignInMode.Default);
   const [signUpMode, setSignUpMode] = useState(SignUpMode.Default);
@@ -209,28 +199,11 @@ export const RegistrationStages = () => {
   }, []);
 
   const generateMnemonicAndKeyPairaa = async () => {
-  //   if (generatedRecoveryPhrase === '') {
 
       await startWalletRpc();
-  //     const mnemonic = await generateMnemonic();
-  //     let seedHex = mn_decode(mnemonic);
-  //     // handle shorter than 32 bytes seeds
-  //     const privKeyHexLength = 32 * 2;
-  //     if (seedHex.length !== privKeyHexLength) {
-  //       seedHex = seedHex.concat('0'.repeat(32));
-  //       seedHex = seedHex.substring(0, privKeyHexLength);
-  //     }
-  //     const seed = fromHex(seedHex);
-  //     const keyPair = await bchatGenerateKeyPair(seed);
-  //     const newHexPubKey = StringUtils.decode(keyPair.pubKey, 'hex');
-
-  //     setGeneratedRecoveryPhrase(mnemonic);
-  //     setHexGeneratedPubKey(newHexPubKey); // our 'frontend' bchatID
-  //   }
   };
   return (
     <div className="bchat-registration-container">
-    {/* <div> */}
       <RegistrationContext.Provider
         value={{
           registrationPhase,
@@ -239,8 +212,6 @@ export const RegistrationStages = () => {
           setSignInMode,
           setSignUpMode,
           setRegistrationPhase,
-          // generatedRecoveryPhrase,
-          // hexGeneratedPubKey,
         }}
       > 
         {accent &&<AccentText/>}

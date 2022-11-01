@@ -4,41 +4,42 @@ import { BchatIcon, BchatIconType } from '../../../../icon';
 
 const NotificationBubbleFlex = styled.div`
   display: flex;
-  background: var(--color-fake-chat-bubble-background);
+  background-color: var(--message-bubbles-received-background-color);
   color: var(--color-text);
   width: 90%;
-  max-width: 700px;
+  max-width: 350px;
   margin: 10px auto;
   padding: 5px 10px;
-  border-radius: 16px;
+  border-radius: 12px;
   word-break: break-word;
   text-align: center;
   align-items: center;
 `;
 
 const NotificationBubbleText = styled.div`
-  color: inherit;
-  margin: auto auto;
+  color: var(--color-text);
+  margin-left: 45px;
 `;
 
 const NotificationBubbleIconContainer = styled.div`
   margin: auto 10px;
-  width: 15px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 `;
 
 export const NotificationBubble = (props: {
   notificationText: string;
   iconType?: BchatIconType;
   iconColor?: string;
+  bgColor?:string;
 }) => {
-  const { notificationText, iconType, iconColor } = props;
+  const { notificationText, iconType, iconColor,bgColor } = props;
   return (
     <NotificationBubbleFlex>
       {iconType && (
-        <NotificationBubbleIconContainer>
+        <NotificationBubbleIconContainer style={{backgroundColor:bgColor}}>
           <BchatIcon
-            iconSize="small"
+            iconSize="medium"
             iconType={iconType}
             iconColor={iconColor}
             iconPadding="auto 10px"
@@ -46,7 +47,7 @@ export const NotificationBubble = (props: {
         </NotificationBubbleIconContainer>
       )}
       <NotificationBubbleText>{notificationText}</NotificationBubbleText>
-      {iconType && <NotificationBubbleIconContainer />}
+      {/* {iconType && <NotificationBubbleIconContainer />} */}
     </NotificationBubbleFlex>
   );
 };

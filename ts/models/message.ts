@@ -760,15 +760,15 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     let quotePromise;
     const { AttachmentFsV2Utils } = Utils;
 
-    // we want to go for the v1, if this is an OpenGroupV1 or not an open group at all
+    // we want to go for the v1, if this is an SocialGroupV1 or not an Social group at all
     if (conversation?.isOpenGroupV2()) {
       const openGroupV2 = conversation.toOpenGroupV2();
       attachmentPromise = uploadAttachmentsV2(finalAttachments, openGroupV2);
       linkPreviewPromise = uploadLinkPreviewsV2(previewWithData, openGroupV2);
       quotePromise = uploadQuoteThumbnailsV2(openGroupV2, quoteWithData);
     } else {
-      // NOTE: we want to go for the v1 if this is an OpenGroupV1 or not an open group at all
-      // because there is a fallback invoked on uploadV1() for attachments for not open groups attachments
+      // NOTE: we want to go for the v1 if this is an SocialGroupV1 or not an Social group at all
+      // because there is a fallback invoked on uploadV1() for attachments for not Social groups attachments
       attachmentPromise = AttachmentFsV2Utils.uploadAttachmentsToFsV2(finalAttachments);
       linkPreviewPromise = AttachmentFsV2Utils.uploadLinkPreviewsToFsV2(previewWithData);
       quotePromise = AttachmentFsV2Utils.uploadQuoteThumbnailsToFsV2(quoteWithData);
@@ -876,7 +876,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         return getMessageQueue().sendToPubKey(PubKey.cast(conversation.id), chatMessage);
       }
 
-      // Here, the convo is neither an open group, a private convo or ourself. It can only be a medium group.
+      // Here, the convo is neither an Social group, a private convo or ourself. It can only be a medium group.
       // For a medium group, retry send only means trigger a send again to all recipients
       // as they are all polling from the same group swarm pubkey
       if (!conversation.isMediumGroup()) {
@@ -1264,7 +1264,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return window.i18n('incomingError');
     }
     if (this.isGroupInvitation()) {
-      return `😎 ${window.i18n('openGroupInvitation')}`;
+      return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
 
     if (this.isDataExtractionNotification()) {

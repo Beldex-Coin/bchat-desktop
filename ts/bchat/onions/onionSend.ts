@@ -98,7 +98,7 @@ const initOptionsWithDefaults = (options: OnionFetchBasicOptions) => {
  *
  * A non Snode server is for instance the Push Notification server or an OpengroupV2 server.
  *
- * FIXME the type for this is not correct for open group api v2 returned values
+ * FIXME the type for this is not correct for Social group api v2 returned values
  * result is status_code and whatever the body should be
  */
 export const sendViaOnionToNonSnode = async (

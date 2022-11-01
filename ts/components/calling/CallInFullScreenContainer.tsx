@@ -21,14 +21,15 @@ const CallInFullScreenVisible = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: black;
-  border: var(--bchat-border);
+  background-color: var(--color-inbox-background);
+  // border: var(--bchat-border);
   opacity: 1;
+  width:100vw;
 `;
 
 const StyledLocalVideoElement = styled.video<{ isVideoMuted: boolean }>`
-  height: 20%;
-  width: 20%;
+  height: 30%;
+  width: 16%;
   bottom: 0;
   right: 0;
   position: absolute;
@@ -106,7 +107,7 @@ export const CallInFullScreenContainer = () => {
         isAudioOutputMuted={isAudioOutputMuted}
         localStreamVideoIsMuted={localStreamVideoIsMuted}
         remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-        isFullScreen={true}
+        isFullScreen={hasOngoingCallFullScreen}
       />
     </CallInFullScreenVisible>
   );

@@ -42,17 +42,17 @@ describe('VisibleMessage', () => {
     expect(decoded.dataMessage).to.have.deep.property('expireTimer', 3600);
   });
 
-  it('can create message with a full loki profile', () => {
+  it('can create message with a full bchat profile', () => {
     const profileKey = new TextEncoder().encode('profileKey');
 
-    const lokiProfile = {
+    const bchatProfile = {
       displayName: 'displayName',
       avatarPointer: 'avatarPointer',
       profileKey,
     };
     const message = new VisibleMessage({
       timestamp: Date.now(),
-      lokiProfile: lokiProfile,
+      lokiProfile: bchatProfile,
     });
     const plainText = message.plainTextBuffer();
     const decoded = SignalService.Content.decode(plainText);

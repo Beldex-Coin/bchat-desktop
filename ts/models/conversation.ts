@@ -660,7 +660,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       if (this.isPublic() && !this.isOpenGroupV2()) {
         throw new Error('Only opengroupv2 are supported now');
       }
-      // an OpenGroupV2 message is just a visible message
+      // an SocialGroupV2 message is just a visible message
       const chatMessageParams: VisibleMessageParams = {
         body: uploads.body,
         identifier: id,
@@ -1191,9 +1191,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (this.get('nickname') === trimmed) {
       return;
     }
-    // make sure to save the lokiDisplayName as name in the db. so a search of conversation returns it.
+    // make sure to save the bchatDisplayName as name in the db. so a search of conversation returns it.
     // (we look for matches in name too)
-    const realUserName = this.getLokiProfile()?.displayName;
+    const realUserName = this.getBchatProfile()?.displayName;
 
     if (!trimmed || !trimmed.length) {
       this.set({ nickname: undefined, name: realUserName });
@@ -1205,7 +1205,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     await this.updateProfileName();
   }
-  public async setLokiProfile(newProfile: {
+  public async setBchatProfile(newProfile: {
     displayName?: string | null;
     avatar?: string;
     avatarHash?: string;
@@ -1216,7 +1216,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
 
     // a user cannot remove an avatar. Only change it
-    // if you change this behavior, double check all setLokiProfile calls (especially the one in EditProfileDialog)
+    // if you change this behavior, double check all setBchatProfile calls (especially the one in EditProfileDialog)
     if (newProfile.avatar) {
       await this.setProfileAvatar({ path: newProfile.avatar }, newProfile.avatarHash);
     }
@@ -1226,12 +1226,12 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async updateProfileName() {
     // Prioritise nickname over the profile display name
     const nickname = this.getNickname();
-    const displayName = this.getLokiProfile()?.displayName;
+    const displayName = this.getBchatProfile()?.displayName;
 
     const profileName = nickname || displayName || null;
     await this.setProfileName(profileName);
   }
-  public getLokiProfile() {
+  public getBchatProfile() {
     return this.get('profile');
   }
   public getNickname() {
@@ -1344,7 +1344,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public hasMember(pubkey: string) {
     return _.includes(this.get('members'), pubkey);
   }
-  // returns true if this is a closed/medium or open group
+  // returns true if this is a closed/medium or Social group
   public isGroup() {
     return this.get('type') === ConversationTypeEnum.GROUP;
   }
@@ -1392,7 +1392,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   /**
-   * For a private convo, returns the loki profilename if set, or a shortened
+   * For a private convo, returns the bchat profilename if set, or a shortened
    * version of the contact pubkey.
    * Throws an error if called on a group convo.
    *
@@ -1413,7 +1413,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   /**
-   * For a private convo, returns the loki profilename if set, or a full length
+   * For a private convo, returns the bchat profilename if set, or a full length
    * version of the contact pubkey.
    * Throws an error if called on a group convo.
    */
@@ -1757,7 +1757,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     };
     const typingMessage = new TypingMessage(typingParams);
 
-    // send the message to a single recipient if this is a Bchat
+    // send the message to a single recipient if this is a BChat
     const device = new PubKey(recipientId);
     getMessageQueue()
       .sendToPubKey(device, typingMessage)

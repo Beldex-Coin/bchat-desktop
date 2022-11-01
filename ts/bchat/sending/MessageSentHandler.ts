@@ -62,7 +62,7 @@ export class MessageSentHandler {
       sentMessage.encryption === SignalService.Envelope.Type.CLOSED_GROUP_MESSAGE;
 
     // We trigger a sync message only when the message is not to one of our devices, AND
-    // the message is not for an open group (there is no sync for opengroups, each device pulls all messages), AND
+    // the message is not for an Social group (there is no sync for opengroups, each device pulls all messages), AND
     // if we did not sync or trigger a sync message for this specific message already
     const shouldTriggerSyncMessage =
       !isOurDevice &&

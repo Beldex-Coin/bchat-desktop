@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import _ from 'lodash';
 // tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
@@ -24,7 +24,6 @@ import { getSelectedConversation, isRightPanelShowing } from '../../state/select
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
@@ -80,9 +79,6 @@ async function getMediaGalleryProps(
   const documents = rawDocuments.map(attributes => {
     // this is to not fail if the attachment is invalid (could be a Long Attachment type which is not supported)
     if (!attributes.attachments?.length) {
-      // window?.log?.info(
-      //   'Got a message with an empty list of attachment. Skipping...'
-      // );
       return null;
     }
     const attachment = attributes.attachments[0];
@@ -111,27 +107,12 @@ const HeaderItem = () => {
   if (!selectedConversation) {
     return null;
   }
-  console.log('selectedConversation :: ', selectedConversation);
-
   const { id,
-    //  isGroup, isKickedFromGroup, isBlocked, left,
     profileName } = selectedConversation;
 
-  // const showInviteContacts = isGroup && !isKickedFromGroup && !isBlocked && !left;
 
   return (
     <div className="group-settings-header">
-
-      {/* <BchatIconButton
-        iconType="chevron"
-        iconSize="medium"
-        // iconRotation={270}
-        iconColor={'#fff'}
-        onClick={() => {
-          dispatch(closeRightPanel());
-        }}
-        dataTestId="back-button-conversation-options"
-      /> */}
       <div className='group-settings-header-avatarBox'>
         <Avatar size={AvatarSize.XL} pubkey={id} />
         <p>{profileName}</p>
@@ -140,7 +121,7 @@ const HeaderItem = () => {
 
       <div onClick={() => dispatch(closeRightPanel())} className="group-settings-header-closeBox">
         <svg xmlns="http://www.w3.org/2000/svg" width="17.833" height="17.822" viewBox="0 0 17.833 17.822">
-          <path id="close" d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z" transform="translate(-3.99 -3.99)" fill="#fff" />
+          <path id="close" d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z" transform="translate(-3.99 -3.99)"  />
         </svg>
 
       </div>
@@ -205,19 +186,22 @@ export const BchatRightPanelWithDetails = () => {
     weAreAdmin,
     isBlocked,
     isGroup,
+    isPrivate,
   } = selectedConversation;
+ 
+  
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
   const commonNoShow = isKickedFromGroup || left || isBlocked;
   const hasDisappearingMessages = !isPublic && !commonNoShow;
   const leaveGroupString = isPublic
-    ? window.i18n('leaveGroup')
+    ? window.i18n('deleteMessages')
     : isKickedFromGroup
-      ? window.i18n('youGotKickedFromGroup')
+      ? window.i18n('youGotKickedFromGroup') 
       : left
         ? window.i18n('youLeftTheGroup')
         : window.i18n('leaveGroup');
 
-  const timerOptions = useSelector(getTimerOptions).timerOptions;
+ const timerOptions = useSelector(getTimerOptions).timerOptions;
 
   const disappearingMessagesOptions = timerOptions.map(option => {
     return {
@@ -232,7 +216,7 @@ export const BchatRightPanelWithDetails = () => {
     isGroup && (!isPublic || (isPublic && weAreAdmin)) && !commonNoShow;
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
   const showUpdateGroupMembersButton = !isPublic && isGroup && !commonNoShow;
-
+  
   const deleteConvoAction = isPublic
     ? () => {
       deleteAllMessagesByConvoIdWithConfirmation(id);
@@ -243,11 +227,11 @@ export const BchatRightPanelWithDetails = () => {
   return (
     <div className="group-settings">
       <HeaderItem />
-      {!showUpdateGroupNameButton && <div className='group-settings-header-chatIdBox'>
-        <p>Bchat ID:</p>
+      {isPrivate &&<div className='group-settings-header-chatIdBox'>
+        <p>BChat ID:</p>
         <div>{id}</div>
       </div>}
-      <div style={{ display: "flex" }}>
+      <div className='group-settings-nameEditBox'>
         <h2 data-testid="right-panel-group-name">{name}</h2>
         {showUpdateGroupNameButton && <BchatIconButton
           iconType="pencil"
@@ -263,23 +247,12 @@ export const BchatRightPanelWithDetails = () => {
       {showMemberCount && (
         <>
           <SpacerLG />
-          <div role="button" className="subtle">
+          <div role="button" className="subtle"  style={{textAlign:'center'}}>
             {window.i18n('members', [`${subscriberCount}`])}
           </div>
           <SpacerLG />
         </>
       )}
-      {/* {showUpdateGroupNameButton && (
-        <div
-          className="group-settings-item"
-          role="button"
-          onClick={async () => {
-            await showUpdateGroupNameByConvoId(id);
-          }}
-        >
-          {isPublic ? window.i18n('editGroup') : window.i18n('editGroupName')}
-        </div>
-      )} */}
       {showAddRemoveModeratorsButton && (
         <>
           <div
@@ -322,8 +295,7 @@ export const BchatRightPanelWithDetails = () => {
               <path id="add_member" data-name="add member" d="M9.595,2a5.318,5.318,0,0,0-2.967,9.731A7.617,7.617,0,0,0,2,18.709H3.519a6.065,6.065,0,0,1,6.076-6.076,6,6,0,0,1,2.872.736,6.169,6.169,0,1,0,1.163-1.092,7.7,7.7,0,0,0-1.068-.546A5.318,5.318,0,0,0,9.595,2Zm0,1.519a3.8,3.8,0,1,1-3.8,3.8A3.786,3.786,0,0,1,9.595,3.519Zm7.595,9.114a4.557,4.557,0,1,1-4.557,4.557A4.547,4.547,0,0,1,17.19,12.633Zm-.759,1.519V16.43H14.152v1.519H16.43v2.278h1.519V17.949h2.278V16.43H17.949V14.152Z" transform="translate(-2 -2)" fill="#128b17" />
             </svg>
           </div>
-          {/* {window.i18n('groupMembers')} */}
-          Add Member
+           {window.i18n('addingContacts')}
         </div>
       )}
 
@@ -358,13 +330,15 @@ export const BchatRightPanelWithDetails = () => {
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <BchatButton
-          text={leaveGroupString}
-          buttonColor={BchatButtonColor.Danger}
-          disabled={isKickedFromGroup || left}
-          buttonType={BchatButtonType.SquareOutline}
-          onClick={deleteConvoAction}
-        />
+        <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
+          <div className='group-settings__leaveBtn'  >
+              <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
+              {/* } */}
+            <div  style={{marginLeft:'5px'}}>
+           { leaveGroupString}
+              </div>
+          </div>
+        </div>
       )}
     </div>
   );

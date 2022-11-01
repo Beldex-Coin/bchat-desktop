@@ -8,8 +8,9 @@ import { BchatIconButton } from './icon';
 const BchatScrollButtonDiv = styled.div`
   position: fixed;
   z-index: 2;
-  right: 60px;
+  right: 26px;
   animation: fadein var(--default-duration);
+  bottom: 72px;
 `;
 
 export const BchatScrollButton = (props: { onClickScrollBottom: () => void }) => {

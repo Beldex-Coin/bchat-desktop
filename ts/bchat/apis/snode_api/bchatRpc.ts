@@ -6,7 +6,7 @@ import { getStoragePubKey } from '../../types';
 
 import {
   ERROR_421_HANDLED_RETRY_REQUEST,
-  lokiOnionFetch,
+  bchatOnionFetch,
   snodeHttpsAgent,
   SnodeResponse,
 } from './onions';
@@ -21,7 +21,7 @@ interface FetchOptions {
  * A small wrapper around node-fetch which deserializes response
  * returns insecureNodeFetch response or false
  */
-async function lokiFetch({
+async function bchatFetch({
   options,
   url,
   associatedWith,
@@ -50,7 +50,7 @@ async function lokiFetch({
         ? true
         : window.bchatFeatureFlags?.useOnionRequests;
     if (useOnionRequests && targetNode) {
-      const fetchResult = await lokiOnionFetch({
+      const fetchResult = await bchatOnionFetch({
         targetNode,
         body: fetchOptions.body,
         associatedWith,
@@ -62,7 +62,7 @@ async function lokiFetch({
     }
 
     if (url.match(/https:\/\//)) {
-      // import that this does not get set in lokiFetch fetchOptions
+      // import that this does not get set in bchatFetch fetchOptions
       fetchOptions.agent = snodeHttpsAgent;
     }
 
@@ -71,12 +71,12 @@ async function lokiFetch({
       'Accept-Language': 'en-us',
     };
 
-    window?.log?.warn(`insecureNodeFetch => lokiFetch of ${url}`);
+    window?.log?.warn(`insecureNodeFetch => bchatFetch of ${url}`);
 
     const response = await insecureNodeFetch(url, fetchOptions);
 
     if (!response.ok) {
-      throw new HTTPError('Loki_rpc error', response);
+      throw new HTTPError('beldex_rpc error', response);
     }
     const result = await response.text();
 
@@ -97,7 +97,7 @@ async function lokiFetch({
 
 /**
  * This function will throw for a few reasons.
- * The loki-important ones are
+ * The BChat-important ones are
  *  -> if we try to make a request to a path which fails too many times => user will need to retry himself
  *  -> if the targetNode gets too many errors => we will need to try to do this request again with another target node
  * The
@@ -142,7 +142,7 @@ export async function snodeRpc(
     },
   };
 
-  return lokiFetch({
+  return bchatFetch({
     url,
     options: fetchOptions,
     targetNode,

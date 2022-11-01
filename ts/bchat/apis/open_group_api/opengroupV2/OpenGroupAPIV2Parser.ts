@@ -2,7 +2,7 @@ import { OpenGroupV2Info } from './ApiUtil';
 import _ from 'lodash';
 
 /**
- * An onion request to the open group api returns something like
+ * An onion request to the Social group api returns something like
  * {result: {status_code:number; whatever: somerandomtype}; }
  *
  * This utility function just extract the status code and returns it.

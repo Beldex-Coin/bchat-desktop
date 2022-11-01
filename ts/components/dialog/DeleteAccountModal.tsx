@@ -188,7 +188,7 @@ export const DeleteAccountModal = () => {
           className="bchat-confirm-main-message"
           html={window.i18n('dialogClearAllDataDeletionQuestion')}
         />
-        <SpacerLG />
+        {/* <SpacerLG /> */}
         <div className="bchat-modal__button-group">
           <BchatButton
             text={window.i18n('entireAccount')}
@@ -208,7 +208,7 @@ export const DeleteAccountModal = () => {
             disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
           />
         </div>
-        <SpacerLG />
+        {/* <SpacerLG /> */}
 
         {deleteEverythingWithNetwork && (
           <BchatHtmlRenderer
@@ -225,7 +225,7 @@ export const DeleteAccountModal = () => {
             html={window.i18n('areYouSureDeleteDeviceOnly')}
           />
         )}
-        <SpacerLG />
+        {/* <SpacerLG /> */}
 
         {(deleteDeviceOnly || deleteEverythingWithNetwork) && (
           <div className="bchat-modal__button-group">

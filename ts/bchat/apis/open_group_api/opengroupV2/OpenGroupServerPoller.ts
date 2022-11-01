@@ -30,16 +30,16 @@ const pollForRoomAvatarInterval = DURATION.DAYS * 1;
 const pollForMemberCountInterval = DURATION.MINUTES * 10;
 
 /**
- * An OpenGroupServerPollerV2 polls for everything for a particular server. We should
- * have only have one OpenGroupServerPollerV2 per opengroup polling.
+ * An socialgroupServerPollerV2 polls for everything for a particular server. We should
+ * have only have one socialgroupServerPollerV2 per socialgroup polling.
  *
- * So even if you have several rooms on the same server, you should only have one OpenGroupServerPollerV2
+ * So even if you have several rooms on the same server, you should only have one socialgroupServerPollerV2
  * for this server.
  */
 export class OpenGroupServerPoller {
   /**
-   * The server url to poll for this opengroup poller.
-   * Remember, we have one poller per opengroup poller, no matter how many rooms we have joined on this same server
+   * The server url to poll for this socialgroup poller.
+   * Remember, we have one poller per socialgroup poller, no matter how many rooms we have joined on this same server
    */
   private readonly serverUrl: string;
 
@@ -507,7 +507,7 @@ const handleBase64AvatarUpdate = async (
           contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.          // url: `${serverUrl}/${res.roomId}`,
         });
         // update the hash on the conversationModel
-        await convo.setLokiProfile({
+        await convo.setBchatProfile({
           displayName: convo.getName() || window.i18n('unknown'),
           avatar: upgradedAttachment.path,
           avatarHash: newHash,

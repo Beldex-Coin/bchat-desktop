@@ -23,7 +23,7 @@ import { StringUtils, UserUtils } from '../../utils';
 import { SnodePool } from '.';
 import { handleHardforkResult } from './hfHandling';
 
-// ONS name can have [a-zA-Z0-9_-] except that - is not allowed as start or end
+// BNS name can have [a-zA-Z0-9_-] except that - is not allowed as start or end
 // do not define a regex but rather create it on the fly to avoid https://stackoverflow.com/questions/3891641/regex-test-only-works-every-other-time
 export const onsNameRegex = '^\\w([\\w-]*[\\w])?$';
 
@@ -205,7 +205,7 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     const targetNode = await getRandomSnode();
     const result = await snodeRpc({ method: 'beldexd_request', params, targetNode });
     if (!result || result.status !== 200 || !result.body) {
-      throw new Error('ONSresolve:Failed to resolve ONS');
+      throw new Error('ONSresolve:Failed to resolve BNS');
     }
     let parsedBody;
 
@@ -213,8 +213,8 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
       parsedBody = JSON.parse(result.body);
       handleTimestampOffset('bns_resolve', parsedBody.t);
     } catch (e) {
-      window?.log?.warn('ONSresolve: failed to parse ons result body', result.body);
-      throw new Error('ONSresolve: json ONS resovle');
+      window?.log?.warn('ONSresolve: failed to parse bns result body', result.body);
+      throw new Error('ONSresolve: json BNS resovle');
     }
     const intermediate = parsedBody?.result;
 
@@ -422,7 +422,7 @@ export async function storeOnNode(
   params: SendParams
 ): Promise<string | null | boolean> {
   try {
-    // no retry here. If an issue is with the path this is handled in lokiOnionFetch
+    // no retry here. If an issue is with the path this is handled in bchatOnionFetch
     // if there is an issue with the targetNode, we still send a few times this request to a few snodes in // already so it's handled
     const result = await snodeRpc({
       method: 'store',

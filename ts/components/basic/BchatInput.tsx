@@ -44,8 +44,9 @@ const ErrorItem = (props: { error: string | undefined }) => {
   );
 };
 
-const ShowHideButton = (props: { toggleForceShow: () => void }) => {
-  return <BchatIconButton iconType="eye" iconSize="medium" onClick={props.toggleForceShow} />;
+const ShowHideButton = (props: { toggleForceShow: () => void,forceShow:boolean }) => {
+  
+    return <BchatIconButton iconType={props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
 };
 
 export const BchatInput = (props: Props) => {
@@ -95,7 +96,7 @@ export const BchatInput = (props: Props) => {
         onBlur={updateInputValue}
         onKeyPress={event => {
           if (event.key === 'Enter' && props.onEnterPressed) {
-            props.onEnterPressed();
+            props.onEnterPressed(); 
           }
         }}
       />
@@ -104,7 +105,7 @@ export const BchatInput = (props: Props) => {
         <ShowHideButton
           toggleForceShow={() => {
             setForceShow(!forceShow);
-          }}
+          }} forceShow={forceShow}
         />
       )}
     </div>

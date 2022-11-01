@@ -20,6 +20,7 @@ import { BchatRecoverySeed } from "./BchatRecoverySeed"
 // import {BchatSettingRecoveryKey} from "./BchatSettingRecoveryKey"
 import {OverlayMessageRequest} from "../leftpane/overlay/OverlayMessageRequest"
 import {BchatOnionPathScreen} from "./BchatOnionPathScreen"
+import { ToastUtils } from '../../bchat/utils';
 
 export function getMediaPermissionsSettings() {
   return window.getSettingValue('media-permissions');
@@ -63,7 +64,7 @@ interface State {
 //       <span className="text-selectable">v{window.versionInfo.version}</span>
 //       <span>
 //         {/* <BchatIconButton iconSize="medium" iconType="oxen" onClick={openOxenWebsite} /> */}
-//         <div role="button" onClick={openBeldexWebsite}>Bchat</div>
+//         <div role="button" onClick={openBeldexWebsite}>BChat</div>
 //       </span>
 //       <span className="text-selectable">{window.versionInfo.commitHash}</span>
 //     </div>
@@ -71,7 +72,7 @@ interface State {
 // };
 
 export const PasswordLock = ({
-  pwdLockError,
+  // pwdLockError,
   validatePasswordLock,
 }: {
   pwdLockError: string | null;
@@ -85,18 +86,20 @@ export const PasswordLock = ({
           type="password"
           id="password-lock-input"
           defaultValue=""
-          placeholder="Password"
+          placeholder=""
+          style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
           data-testid="password-lock-input"
         />
 
-        {pwdLockError && <div className="bchat-label warning">{pwdLockError}</div>}
-
+        {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
+       <div className="confirm-Button">
         <BchatButton
           buttonType={BchatButtonType.BrandOutline}
           buttonColor={BchatButtonColor.Green}
           text={window.i18n('ok')}
           onClick={validatePasswordLock}
         />
+        </div>
       </div>
     </div>
   );
@@ -139,7 +142,7 @@ export const PasswordLock = ({
   }
 
   /* tslint:disable-next-line:max-func-body-length */
-  public renderSettingInCategory() {
+  public renderSettingInCategory(passwordLock: any) {
     const { category } = this.props;
 
     if (this.state.hasPassword === null) {
@@ -156,7 +159,14 @@ export const PasswordLock = ({
       return <SettingsCategoryAppearance hasPassword={this.state.hasPassword} />;
     }
     if (category === BchatSettingCategory.RecoverySeed) {
-      return <BchatRecoverySeed  />;
+      if (passwordLock) {
+       return <PasswordLock
+          pwdLockError={this.state.pwdLockError}
+          validatePasswordLock={this.validatePasswordLock}
+        />
+      } else {
+        return <BchatRecoverySeed />
+      }
     }
 
     // if (category === BchatSettingCategory.RecoveryKey) {
@@ -189,12 +199,14 @@ export const PasswordLock = ({
     const enteredPassword = String(
       (document.getElementById('password-lock-input') as HTMLInputElement)?.value
     );
-
     if (!enteredPassword) {
       this.setState({
         pwdLockError: window.i18n('noGivenPassword'),
       });
-
+      ToastUtils.pushToastError(
+        'emptyPassword',
+        window.i18n('emptyPassword'),
+      );
       return false;
     }
 
@@ -204,7 +216,10 @@ export const PasswordLock = ({
       this.setState({
         pwdLockError: window.i18n('invalidPassword'),
       });
-
+      ToastUtils.pushToastError(
+        'invalidPassword',
+        window.i18n('invalidPassword'),
+      );
       return false;
     }
 
@@ -242,16 +257,20 @@ export const PasswordLock = ({
         <SettingsHeader category={category} categoryTitle={window.i18n(categoryLocalized)} />
 
         <div className="bchat-settings-view">
-          {shouldRenderPasswordLock ? (
+          {/* {shouldRenderPasswordLock ? (
             <PasswordLock
               pwdLockError={this.state.pwdLockError}
               validatePasswordLock={this.validatePasswordLock}
             />
           ) : (
             <div ref={this.settingsViewRef} className="bchat-settings-list">
-              {this.renderSettingInCategory()}
+              {this.renderSettingInCategory(shouldRenderPasswordLock)}
             </div>
-          )}
+          )} */}
+
+           <div ref={this.settingsViewRef} className="bchat-settings-list">
+              {this.renderSettingInCategory(shouldRenderPasswordLock)}
+            </div>
           {/* <BchatInfo /> */}
         </div>
       </div>

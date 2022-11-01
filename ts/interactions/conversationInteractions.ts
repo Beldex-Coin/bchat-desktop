@@ -64,7 +64,7 @@ export const getCompleteUrlForV2ConvoId = async (convoId: string) => {
 
 export async function copyPublicKeyByConvoId(convoId: string) {
   if (convoId.match(openGroupPrefixRegex)) {
-    // open group v1 or v2
+    // Social group v1 or v2
     if (convoId.match(openGroupV2ConversationIdRegex)) {
       // this is a v2 group, just build the url
       const completeUrl = await getCompleteUrlForV2ConvoId(convoId);
@@ -319,7 +319,7 @@ export function showChangeNickNameByConvoId(conversationId: string) {
 
 export async function deleteAllMessagesByConvoIdNoConfirmation(conversationId: string) {
   const conversation = getConversationController().get(conversationId);
-  await removeAllMessagesInConversation(conversationId);
+  // await removeAllMessagesInConversation(conversationId);
   window.inboxStore?.dispatch(conversationReset(conversationId));
 
   // destroy message keeps the active timestamp set so the
@@ -327,11 +327,13 @@ export async function deleteAllMessagesByConvoIdNoConfirmation(conversationId: s
   conversation.set({
     lastMessage: null,
     unreadCount: 0,
-    mentionedUs: false,
-    isApproved: false,
+    // mentionedUs: false,
+    // isApproved: false,
   });
 
   await conversation.commit();
+  await removeAllMessagesInConversation(conversationId);
+
 }
 
 export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: string) {
@@ -351,6 +353,7 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       onClickOk,
       okTheme: BchatButtonColor.Danger,
       onClickClose,
+      okText:window.i18n('leaveGroup')  
     })
   );
 }
@@ -454,7 +457,7 @@ export async function uploadOurAvatar(newAvatarDecrypted?: ArrayBuffer) {
   ourConvo.set({ profileKey: toHex(profileKey) });
   // Replace our temporary image with the attachment pointer from the server:
   // this commits already
-  await ourConvo.setLokiProfile({
+  await ourConvo.setBchatProfile({
     avatar: upgraded.path,
     displayName,
   });
