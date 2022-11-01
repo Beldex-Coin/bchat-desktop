@@ -215,6 +215,7 @@ $bchat-compose-margin: 20px;
     text-align: center;
     font-family: $bchat-font-poppin-medium;
     font-size: $bchat-font-h4;
+    margin-bottom: 10px;
   }
 
   &-overlay {
@@ -377,6 +378,7 @@ $bchat-compose-margin: 20px;
       background-color: var(--color-inboxBgColor);
       margin: 0 auto;
       border: none;
+      margin-bottom: 10px;
       box-shadow: var(--color-bchat-shadow);
 
       textarea::-webkit-inner-spin-button {

@@ -97,6 +97,8 @@ export const OverlayMessage = () => {
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
       <p className='module-left-pane__chatHeader'>{window.i18n('startConversation')}</p>
       <p className="module-left-pane__subHeader" >{window.i18n('BchatID')}</p>
+      <div className="bchat-description-long">{descriptionLong}</div>
+
       <BchatIdEditable
         editable={!loading}
         placeholder={placeholder}
@@ -107,9 +109,9 @@ export const OverlayMessage = () => {
 
       <BchatSpinner loading={loading} />
 
-      <div className="bchat-description-long">{descriptionLong}</div>
 
-      <p className="module-left-pane__subHeader">{window.i18n('BchatID')}</p>
+      <p className="module-left-pane__subHeader" style={{marginBottom:"10px"}}>Your BChat ID</p>
+      <div className="bchat-description-long">Share your BChat ID with your friends. You can find your BChat ID below</div>
       <BchatIdEditable
         // editable={!loading}
         value={ourNumber}
