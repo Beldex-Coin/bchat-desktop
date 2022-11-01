@@ -75,12 +75,8 @@ export const AvatarPlaceHolder = (props: Props) => {
 
   // const diameterWithoutBorder = diameter - 2;
   const viewBox = `0 0 ${diameter} ${diameter}`;
-<<<<<<< Updated upstream
   // const r = diameter / 2;
   // const rWithoutBorder = diameterWithoutBorder / 2;
-=======
-  const rWithoutBorder = diameterWithoutBorder / 2;
->>>>>>> Stashed changes
 
   if (loading || !hash) {
     return (

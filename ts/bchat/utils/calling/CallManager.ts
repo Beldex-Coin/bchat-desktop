@@ -130,40 +130,25 @@ let lastOutgoingOfferTimestamp = -Infinity;
  */
 const iceServersFullArray = [
   {
-    urls: 'turn:turn.call.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call1.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication1.beldex.io',
+    username: 'Bchat1',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call2.beldex.io',
-    username: 'test',
-    credential: 'test@123',
+    urls: 'communication2.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:turn.call3.beldex.io',
-    username: 'test',
-    credential: 'test@123',
-  },
-  // {
-  //   urls: 'tturn:turn.call4.beldex.io',
-  //   username: 'test',
-  //   credential: 'test@123',
-  // },
-  // {
-  //   urls: 'turn:turn.call5.beldex.io',
-  //   username: 'test',
-  //   credential: 'test@123',
-  // },
-  // {
-  //   urls: 'turn:turn.call.beldex.io',
-  //   username: 'test',
-  //   credential: 'test@123',
-  // },
+    urls: 'communication3.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
+  }
 ];
 
 const configuration: RTCConfiguration = {

@@ -420,7 +420,7 @@
   "dialogClearAllDataDeletionFailedTitle": "Datele nu au fost șterse",
   "dialogClearAllDataDeletionFailedDesc": "Datele nu au fost șterse din cauza unei erori necunoscute. Doriți să ștergeți datele doar de pe acest dispozitiv?",
   "dialogClearAllDataDeletionFailedTitleQuestion": "Do you want to delete data from just this device?",
-  "dialogClearAllDataDeletionFailedMultiple": "Data not deleted by those Service Nodes: $snodes$",
+  "dialogClearAllDataDeletionFailedMultiple": "Data not deleted by those Master Nodes: $snodes$",
   "dialogClearAllDataDeletionQuestion": "Would you like to clear only this device, or delete your entire account?",
   "deviceOnly": "Numai pe dispozitiv",
   "entireAccount": "Întreg contul",
