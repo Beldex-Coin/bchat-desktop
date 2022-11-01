@@ -28,7 +28,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       placeholder={"Enter Password"}
       enableShowHide={true}
       onValueChanged={props.setPassword}
-      maxLength={6}
+      maxLength={13}
     />
     <div style={{height:'55px'}}></div>
      <BchatInput
@@ -39,7 +39,7 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       placeholder={"Re-Enter Password"}
       enableShowHide={true}
       onValueChanged={props.setRepassword}
-      maxLength={6}
+      maxLength={13}
     />
  <div style={{height:'50px'}}></div>
  <div style={{width:'75%',margin:'auto'}}>
