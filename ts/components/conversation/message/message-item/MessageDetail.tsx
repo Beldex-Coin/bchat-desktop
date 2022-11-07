@@ -107,7 +107,7 @@ export const MessageDetail = () => {
     <div className="message-detail-wrapper">
       <div className="module-message-detail">
         <div className="module-message-detail__message-container">
-          <h2>More Informations</h2>
+          <h2>More Info</h2>
           <Message messageId={messageId} isDetailView={false} />
         </div>
         <table className="module-message-detail__info">

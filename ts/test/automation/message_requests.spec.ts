@@ -21,7 +21,7 @@ test.describe('Message requests', () => {
     await sendNewMessage(windowA, userB.bchatid, `${testMessage}${Date.now()}`);
     // Check the message request banner appears and click on it
     await clickOnTestIdWithText(windowB, 'message-request-banner');
-    // Select message request from User A
+    // Select request from User A
     await clickOnTestIdWithText(windowB, 'module-conversation__user__profile-name', userA.userName);
     // Check that using the accept button has intended use
     await clickOnTestIdWithText(windowB, 'accept-message-request');
@@ -43,7 +43,7 @@ test.describe('Message requests', () => {
     await sendNewMessage(windowA, userB.bchatid, `${testMessage}${Date.now()}`);
     // Check the message request banner appears and click on it
     await clickOnTestIdWithText(windowB, 'message-request-banner');
-    // Select message request from User A
+    // Select request from User A
     await clickOnTestIdWithText(windowB, 'module-conversation__user__profile-name', userA.userName);
     // Check that using the accept button has intended use
     await clickOnTestIdWithText(windowB, 'decline-message-request');

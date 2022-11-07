@@ -55,6 +55,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     closeAfterInput = true,
   } = props;
 
+  console.log("props.okTheme ::",props);
+  
   
   
   const [isLoading, setIsLoading] = useState(false);

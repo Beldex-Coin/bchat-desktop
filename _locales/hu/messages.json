@@ -148,7 +148,7 @@
   "savedTheFile": "$name$ lementett egy médiaelemet",
   "linkPreviewsTitle": "Hivatkozások előnézeti képének küldése",
   "linkPreviewDescription": "Az előnézetek a legtöbb linknél támogatottak",
-  "linkPreviewsConfirmMessage": "You will not have full metadata protection when sending link previews.",
+  "linkPreviewsConfirmMessage": "Enabling link previews will minimize your metadata protection. Do you still want to proceed?.",
   "mediaPermissionsTitle": "Mikrofon",
   "mediaPermissionsDescription": "Mikrofon hozzáférés engedélyezése",
   "spellCheckTitle": "Helyesírás ellenőrzése",
