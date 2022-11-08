@@ -404,7 +404,7 @@
   "linkVisitWarningTitle": "Open this link in your browser?",
   "linkVisitWarningMessage": "Are you sure you want to open $url$ in your browser?",
   "open": "Open",
-  "audioMessageAutoplayTitle": "Audio messages are autoplayed.",
+  "audioMessageAutoplayTitle": "Autoplay Audio Message.",
   "audioMessageAutoplayDescription": "Audio messages are autoplayed",
   "clickToTrustContact": "Click to download media",
   "trustThisContactDialogTitle": "Trust $name$?",

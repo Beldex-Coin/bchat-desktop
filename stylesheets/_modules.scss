@@ -625,7 +625,13 @@
   flex-grow: 1;
   font-size: 28px;
   color: $color-light-45;
-
+  
+  .parent{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+  }
   .noMediaImg
   {
     width: 159px;

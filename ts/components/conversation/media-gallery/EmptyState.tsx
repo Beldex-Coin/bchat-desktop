@@ -13,7 +13,7 @@ export class EmptyState extends React.Component<Props> {
 
     return <div className="module-empty-state">
       {/* {label==="No media have been sent in this chat"? */}
-      <div>
+      <div className='parent'>
     {/* <img src={'images/bchat/no_media.svg'}  style={{width:"70%",height:"60%"}}/> */}
     <div className='noMediaImg'>
 
