@@ -115,18 +115,18 @@ const timerOptionsDurations: Array<{
   unit: moment.DurationInputArg2;
   seconds: number;
 }> = [
-  { time: 0, unit: 'seconds' as moment.DurationInputArg2 },
-  { time: 5, unit: 'seconds' as moment.DurationInputArg2 },
-  { time: 10, unit: 'seconds' as moment.DurationInputArg2 },
-  { time: 30, unit: 'seconds' as moment.DurationInputArg2 },
-  { time: 1, unit: 'minute' as moment.DurationInputArg2 },
-  { time: 5, unit: 'minutes' as moment.DurationInputArg2 },
-  { time: 30, unit: 'minutes' as moment.DurationInputArg2 },
-  { time: 1, unit: 'hour' as moment.DurationInputArg2 },
-  { time: 6, unit: 'hours' as moment.DurationInputArg2 },
-  { time: 12, unit: 'hours' as moment.DurationInputArg2 },
-  { time: 1, unit: 'day' as moment.DurationInputArg2 },
   { time: 1, unit: 'week' as moment.DurationInputArg2 },
+  { time: 1, unit: 'day' as moment.DurationInputArg2 },
+  { time: 12, unit: 'hours' as moment.DurationInputArg2 },
+  { time: 6, unit: 'hours' as moment.DurationInputArg2 },
+  { time: 1, unit: 'hour' as moment.DurationInputArg2 },
+  { time: 30, unit: 'minutes' as moment.DurationInputArg2 },
+  { time: 5, unit: 'minutes' as moment.DurationInputArg2 },
+  { time: 1, unit: 'minute' as moment.DurationInputArg2 },
+  { time: 30, unit: 'seconds' as moment.DurationInputArg2 },
+  { time: 10, unit: 'seconds' as moment.DurationInputArg2 },
+  { time: 5, unit: 'seconds' as moment.DurationInputArg2 },
+  { time: 0, unit: 'seconds' as moment.DurationInputArg2 }, 
 ].map(o => {
   const duration = moment.duration(o.time, o.unit); // 5, 'seconds'
   return {

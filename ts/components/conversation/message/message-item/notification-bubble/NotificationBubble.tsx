@@ -7,24 +7,28 @@ const NotificationBubbleFlex = styled.div`
   background-color: var(--message-bubbles-received-background-color);
   color: var(--color-text);
   width: 90%;
-  max-width: 350px;
+  max-width: 584px;
   margin: 10px auto;
   padding: 5px 10px;
   border-radius: 12px;
   word-break: break-word;
   text-align: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const NotificationBubbleText = styled.div`
   color: var(--color-text);
-  margin-left: 45px;
+  // margin-left: 45px;
 `;
 
 const NotificationBubbleIconContainer = styled.div`
   margin: auto 10px;
   width: 30px;
   height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const NotificationBubble = (props: {
@@ -47,6 +51,7 @@ export const NotificationBubble = (props: {
         </NotificationBubbleIconContainer>
       )}
       <NotificationBubbleText>{notificationText}</NotificationBubbleText>
+      
       {/* {iconType && <NotificationBubbleIconContainer />} */}
     </NotificationBubbleFlex>
   );

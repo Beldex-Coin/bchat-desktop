@@ -103,11 +103,13 @@
      .warning-notes
      {
       color: #C1C1C1;
-      text-align: center;
+      // text-align: center;
       font-family: "poppin-regular";
       font-size: 12px;
-      width: 100%;
-      margin-top: 45px;
+      width: 92%;
+    margin-top: 45px;
+    /* display: flex; */
+    margin-left: 58px;
       span{
         color:#F23333;
       }

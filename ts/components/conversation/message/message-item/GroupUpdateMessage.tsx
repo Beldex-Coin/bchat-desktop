@@ -17,6 +17,7 @@ const ChangeItemJoined = (added: Array<string>): string => {
   }
   const names = useConversationsUsernameWithQuoteOrFullPubkey(added);
   const joinKey = added.length > 1 ? 'multipleJoinedTheGroup' : 'joinedTheGroup';
+// console.log("update grp names ::",names);
 
   // return window.i18n(joinKey, [names.join(', ')]);
   return added.length > 1 ? window.i18n(joinKey, [names.join(', ')]) : window.i18n(joinKey, [names.join('')]);

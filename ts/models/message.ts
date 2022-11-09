@@ -1240,6 +1240,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         );
 
         if (names.length > 1) {
+          console.log("names names ::",names);
+          
           messages.push(window.i18n('multipleJoinedTheGroup', [names.join(', ')]));
         } else {
           messages.push(window.i18n('joinedTheGroup', names));
