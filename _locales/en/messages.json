@@ -472,7 +472,7 @@
   "mustBeApproved": "This conversation must be accepted to use this feature",
   "youHaveANewFriendRequest": "You have a new friend request",
   "clearAllConfirmationTitle": "Clear All Message Requests",
-  "clearAllConfirmationBody": "Do you want to erase all message requests? ?",
+  "clearAllConfirmationBody": "Do you want to erase all message requests?",
   "hideBanner": "Hide",
   "openMessageRequestInboxDescription": "View your Message Request inbox",
   "BChat":"BChat"

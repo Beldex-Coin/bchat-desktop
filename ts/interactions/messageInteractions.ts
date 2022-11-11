@@ -8,6 +8,7 @@ import {
 import { getConversationController } from '../bchat/conversations';
 import { PubKey } from '../bchat/types';
 import { ToastUtils } from '../bchat/utils';
+import { BchatButtonColor } from '../components/basic/BchatButton';
 
 import { updateBanOrUnbanUserModal, updateConfirmModal } from '../state/ducks/modalDialog';
 
@@ -114,6 +115,7 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
       onClickOk: async () => {
         await joinOpenGroupV2WithUIEvents(completeUrl, true, false);
       },
+      okTheme: BchatButtonColor.Green,
 
       onClickClose,
     })

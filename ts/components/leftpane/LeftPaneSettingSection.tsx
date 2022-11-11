@@ -295,11 +295,12 @@ const LeftPaneSettingsCategoryRow = (
         style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
-          <span style={{ padding: "0 10px" }}> <ActionPanelOnionStatusLight
+          <span style={{ padding: "5px 10px" }}> <ActionPanelOnionStatusLight
             dataTestId="onion-status-section"
             handleClick={() => { }}
             isSelected={false}
             id={'onion-path-indicator-led-id'}
+            size="small"
           /></span>
           <span className="left-pane-setting-category-list-item-span">Hops</span>
         </div>
