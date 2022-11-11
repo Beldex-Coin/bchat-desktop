@@ -15,8 +15,8 @@ import { Flex } from '../basic/Flex';
 // tslint:disable-next-line: no-submodule-imports
 import useHover from 'react-use/lib/useHover';
 import { BchatSpinner } from '../basic/BchatSpinner';
-import { BchatIcon, BchatIconButton } from '../icon';
-import styled from 'styled-components';
+import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
+// import styled from 'styled-components';
 // import { BchatWrapperModal } from '../BchatWrapperModal';
 
 export type StatusLightType = {
@@ -154,8 +154,9 @@ export const ActionPanelOnionStatusLight = (props: {
   handleClick: () => void;
   dataTestId?: string;
   id: string;
+  size:BchatIconSize | number;
 }) => {
-  const { isSelected, handleClick, dataTestId, id } = props;
+  const { isSelected, handleClick, dataTestId, id,size } = props;
 
   const onionPathsCount = useSelector(getOnionPathsCount);
   const firstPathLength = useSelector(getFirstOnionPathLength);
@@ -174,16 +175,15 @@ export const ActionPanelOnionStatusLight = (props: {
     iconColor = onionPathsCount >= 2 ? green : onionPathsCount >= 1 ? orange : red;
   }
 
-  const OuterCircle=styled.div`
-    border: 2px solid ${iconColor};
-    padding: 1px 1px;
-    border-radius: 17px;
-  `
+  // const OuterCircle=styled.div`
+  //   // border: 2px solid ${iconColor};
+  //   // padding: 1px 1px;
+  //   border-radius: 17px;
+  // `
 
   return (
-    <OuterCircle >
     <BchatIconButton
-      iconSize={'small'}
+      iconSize={size}
       iconType="circle"
       iconColor={iconColor}
       onClick={handleClick}
@@ -194,7 +194,6 @@ export const ActionPanelOnionStatusLight = (props: {
       dataTestId={dataTestId}
       id={id}
     />
-    </OuterCircle>
   );
 };
 

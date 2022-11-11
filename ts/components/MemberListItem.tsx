@@ -43,6 +43,8 @@ export const MemberListItem = (props: {
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
+  console.log('memberName ::',memberName);
+  
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -65,7 +67,7 @@ export const MemberListItem = (props: {
       role="button"
       data-testid={dataTestId}
     >
-      <div className="bchat-member-item__info">
+      <div className="bchat-member-item__info" style={{width:"100%"}}>
         <span className="bchat-member-item__avatar">
           <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false} />
         </span>

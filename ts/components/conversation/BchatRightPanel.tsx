@@ -29,6 +29,7 @@ import { SpacerLG } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
 import { getAbsoluteAttachmentPath } from '../../types/MessageAttachment';
+import { useConversationUsername } from '../../hooks/useParamSelector';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -138,6 +139,7 @@ export const BchatRightPanelWithDetails = () => {
 
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
+  
 
   useEffect(() => {
     let isRunning = true;
@@ -189,6 +191,8 @@ export const BchatRightPanelWithDetails = () => {
     isPrivate,
   } = selectedConversation;
  
+  const username = String(useConversationUsername(id));
+
   
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
   const commonNoShow = isKickedFromGroup || left || isBlocked;
@@ -222,7 +226,7 @@ export const BchatRightPanelWithDetails = () => {
       deleteAllMessagesByConvoIdWithConfirmation(id);
     }
     : () => {
-      showLeaveGroupByConvoId(id);
+      showLeaveGroupByConvoId(id,username);
     };
   return (
     <div className="group-settings">
@@ -332,7 +336,10 @@ export const BchatRightPanelWithDetails = () => {
         // tslint:disable-next-line: use-simple-attributes
         <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
           <div className='group-settings__leaveBtn'  >
-              <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/>
+          
+              {/* <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/> */}
+              <BchatIcon iconType={isPublic?"delete":'leaveGroup'} iconSize="tiny" iconColor='#fc222f' iconRotation={isPublic?0:180}/>
+
               {/* } */}
             <div  style={{marginLeft:'5px'}}>
            { leaveGroupString}

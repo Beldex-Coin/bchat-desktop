@@ -23,6 +23,7 @@ import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
+import { getIsOnline } from '../../state/selectors/onions';
 // import ReactTooltip from 'react-tooltip';
 
 
@@ -109,15 +110,18 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   }
 
   const IsOnline = () => {
+    const isOnline = useSelector(getIsOnline);
+    const status=isOnline?"Online":"Offline"
+    // console.log("isOnline",isOnline,status);
     
     if (SectionType.Settings !== focusedSection) {
-      return     <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom">
+      return     <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
 
          {/* <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom"></div> */}
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
-        }} id={''} />
-      </div>
+        }} id={''} size="tiny" />
+      </Hops>
     }
     else {
       return null
@@ -279,3 +283,8 @@ const StyledBannerInner = styled.div`
     margin-top: var(--margins-sm);
   }
 `;
+const Hops=styled.div`
+position: absolute;
+    left: 47px;
+    top: 43px;
+`

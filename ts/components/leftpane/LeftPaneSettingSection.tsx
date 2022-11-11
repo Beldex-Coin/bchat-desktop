@@ -163,6 +163,36 @@ const LeftPaneSettingsCategoryRow = (
         </div>
       </div>
 
+      {/* **********************************************************Notifiaction******************************************************************* */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Notifications === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Notifications));
+        }}
+        style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: "flex", }}>
+          <i className="left-pane-setting-category-list-item-icons">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+          <path id="notification" d="M12,2a1.5,1.5,0,0,0-1.5,1.5v.7A6,6,0,0,0,6,10v6L4.465,17.156h0A1,1,0,0,0,5,19H19a1,1,0,0,0,.537-1.844L18,16V10a6,6,0,0,0-4.5-5.8V3.5A1.5,1.5,0,0,0,12,2ZM10,20a2,2,0,0,0,4,0Z" transform="translate(-4 -2)" />
+          </svg>
+
+          </i>
+          <span className="left-pane-setting-category-list-item-span">{window.i18n('notificationsSettingsTitle')}</span>
+        </div>
+        <div>
+          {BchatSettingCategory.Privacy === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
       {/* **********************************************************Blocked******************************************************************* */}
 
       <div
@@ -265,11 +295,12 @@ const LeftPaneSettingsCategoryRow = (
         style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
-          <span style={{ padding: "0 10px" }}> <ActionPanelOnionStatusLight
+          <span style={{ padding: "5px 10px" }}> <ActionPanelOnionStatusLight
             dataTestId="onion-status-section"
             handleClick={() => { }}
             isSelected={false}
             id={'onion-path-indicator-led-id'}
+            size="small"
           /></span>
           <span className="left-pane-setting-category-list-item-span">Hops</span>
         </div>

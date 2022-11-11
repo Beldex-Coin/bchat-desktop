@@ -51,6 +51,7 @@ export const OverlayMessageRequest = (props: any) => {
         title,
         message,
         onClose,
+        okTheme:BchatButtonColor.Danger,
         onClickOk: async () => {
           window?.log?.info('Blocking all conversations');
           if (!convoRequests) {

@@ -77,7 +77,7 @@ test('Disappearing Messages', async () => {
   // Click chevron to close menu
   await clickOnTestIdWithText(windowA, 'back-button-conversation-options');
   // Check config message
-  await waitForTestIdWithText(windowA, 'readable-message', 'You disabled disappearing messages.');
+  await waitForTestIdWithText(windowA, 'readable-message', 'Disappearing messages have been disabled by you.');
   // Verify message is deleted in windowB for receiver user
   // Check config message in windowB
   await waitForMatchingText(

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { ConversationNotificationSettingType } from '../../models/conversation';
 import {
   getConversationHeaderTitleProps,
-  getCurrentNotificationSettingText,
+  // getCurrentNotificationSettingText,
   getIsSelectedBlocked,
   getIsSelectedNoteToSelf,
   getIsSelectedPrivate,
@@ -33,6 +33,7 @@ import {
 import { callRecipient } from '../../interactions/conversationInteractions';
 import { getHasIncomingCall, getHasOngoingCall } from '../../state/selectors/call';
 import {
+  useConversationPropsById,
   useConversationUsername,
   useExpireTimer,
   useIsKickedFromGroup,
@@ -42,6 +43,7 @@ import { BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
+import { Timestamp } from './Timestamp';
 
 export interface TimerOption {
   name: string;
@@ -277,11 +279,14 @@ export type ConversationHeaderTitleProps = {
 
 const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
-  const notificationSetting = useSelector(getCurrentNotificationSettingText);
+  // const notificationSetting = useSelector(getCurrentNotificationSettingText);
   const isRightPanelOn = useSelector(isRightPanelShowing);
 
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
   const dispatch = useDispatch();
+  const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
+  
+  const activeAt=convoProps?.activeAt;
   if (!headerTitleProps) {
     return null;
   }
@@ -302,19 +307,29 @@ const ConversationHeaderTitle = () => {
       memberCount = members.length;
     }
   }
-
+ const SubTxt=styled.div`
+ font-size: 11px;
+ line-height: 16px;
+ letter-spacing: 0.3px;
+ // text-transform: uppercase;
+ user-select: none;
+ font-weight: 100;
+ color: var(--color-text-subtle);
+ `
   let memberCountText = '';
   if (isGroup && memberCount > 0 && !isKickedFromGroup) {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
+  
+  
 
-  const notificationSubtitle = notificationSetting
-    ? window.i18n('notificationSubtitle', [notificationSetting])
-    : null;
-  const fullTextSubtitle = memberCountText
-    ? `${memberCountText} ● ${notificationSubtitle}`
-    : `${notificationSubtitle}`;
+  // const notificationSubtitle = notificationSetting
+  //   ? window.i18n('notificationSubtitle', [notificationSetting])
+  //   : null;
+  // const fullTextSubtitle = memberCountText
+  //   ? `${memberCountText} ● ${notificationSubtitle}`
+  //   : `${notificationSubtitle}`;
 
   return (
     <div
@@ -330,10 +345,17 @@ const ConversationHeaderTitle = () => {
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName}
+        <SubTxt>
+        {isGroup?memberCountText:
+        <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
+        }
+        </SubTxt>
+       
       </span>
-      <StyledSubtitleContainer>
+
+      {/* <StyledSubtitleContainer>
         <ConversationHeaderSubtitle text={fullTextSubtitle} />
-      </StyledSubtitleContainer>
+      </StyledSubtitleContainer> */}
     </div>
   );
 };

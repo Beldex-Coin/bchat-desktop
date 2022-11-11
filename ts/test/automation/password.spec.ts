@@ -121,6 +121,6 @@ test.describe('Password checks', () => {
     // // No password entered
     await clickOnMatchingText(window, 'OK');
     // // Banner should ask for password to be entered
-    await waitForMatchingText(window, 'Please enter your password');
+    await waitForMatchingText(window, 'Kindly enter your password ');
   });
 });

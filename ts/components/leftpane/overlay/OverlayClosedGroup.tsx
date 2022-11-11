@@ -10,7 +10,9 @@ import { MemberListItem } from '../../MemberListItem';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
-import { getPrivateContactsPubkeys } from '../../../state/selectors/conversations';
+import { 
+  // getDirectContacts,
+   getPrivateContactsPubkeys } from '../../../state/selectors/conversations';
 import { SpacerLG } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
@@ -25,6 +27,10 @@ export const OverlayClosedGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
+
+  // const directContacts = useSelector(getDirectContacts);
+  // console.log("directContacts ::",directContacts);
+  
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -102,6 +108,7 @@ export const OverlayClosedGroup = () => {
     window.inboxStore?.dispatch(setOverlayMode('message'));
   }
 
+// console.log('privateContactsPubkeys',privateContactsPubkeys);
 
   return (
     <div className="module-left-pane-overlay" >

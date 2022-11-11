@@ -311,7 +311,7 @@ const doDeleteSelectedMessages = async ({
     return unsendMessagesForEveryone(conversation, selectedMessages);
   }
 
-  // delete just for me in a closed group only means delete locally
+  // Delete message for me in a closed group only means delete locally
   if (conversation.isClosedGroup()) {
     await deleteMessagesFromSwarmAndCompletelyLocally(conversation, selectedMessages);
 

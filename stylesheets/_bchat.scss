@@ -854,7 +854,13 @@ label {
   }
 
   &.react-contexify__submenu {
-    top: -28px !important; // height of an item element
+    top: 0px !important; // height of an item element
+
+    .react-contexify__item__content {
+      justify-content: center;
+    }
+  
+
   }
 
   .react-contexify__submenu-arrow {

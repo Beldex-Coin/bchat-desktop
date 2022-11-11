@@ -52,6 +52,8 @@ const StyledConversationListItemIconWrapper = styled.div`
 
 function useHeaderItemProps(conversationId: string) {
   const convoProps = useConversationPropsById(conversationId);
+  console.log();
+  
   if (!convoProps) {
     return null;
   }
