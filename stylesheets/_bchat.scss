@@ -372,14 +372,14 @@ textarea {
 .module-message--incoming {
   margin-inline-start: 0;
   margin-inline-end: auto;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 
 
 .module-message--outgoing {
   margin-inline-end: 0;
   margin-inline-start: auto;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 
 //.module-message--outgoing::after {
@@ -1043,7 +1043,7 @@ label {
   align-items: center;
   /* position: relative; */
   width: 100%;
-  height: 70%;
+  min-height: 50%;
   flex-shrink: 0;
 
 
@@ -1501,10 +1501,12 @@ input {
 .onion__description {
   width: 62%;
   // margin: 0 auto;
-  font-family: $bchat-font-poppin-semibold;
+  font-family: $bchat-font-poppin-medium;
   text-align: center;
-  font-size: $bchat-font-lg;
+  font-size: $bchat-font-h4;
+  color: #82828D;
 }
+
 
 .onion__node-list {
   display: flex;
@@ -1538,22 +1540,25 @@ input {
   }
 
   .onion__node__country {
-    margin: $bchat-margin-lg;
+    // margin: $bchat-margin-lg ;
+    margin: 11px 14px;
     min-width: 150px;
     font-size: 16px;
     font-family: $bchat-font-poppin-regular;
+    height: 50px;
   }
 
   .onion__growing-icon {
     flex-grow: 1;
     display: flex;
     align-items: center;
+    padding-bottom: 27px;
   }
 
   .onion__vertical-line {
     background: $onionPathLineColor;
     position: absolute;
-    height: calc(100% - 2 * 28px);
+    height: calc(100% - 2 * 42px);
     margin: 27px calc(100% / 2 - 1px);
     width: 1px;
   }

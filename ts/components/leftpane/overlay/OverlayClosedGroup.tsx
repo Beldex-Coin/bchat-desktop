@@ -136,10 +136,8 @@ export const OverlayClosedGroup = () => {
             />
           </div></>
         }
-
-        <BchatSpinner loading={loading} />
-
         <SpacerLG />
+      {loading?<BchatSpinner loading={loading} />:
         <div className="group-member-list__container">
           {noContactsForClosedGroup ? (
             <div className="group-member-list__no-contacts">
@@ -169,6 +167,7 @@ export const OverlayClosedGroup = () => {
             </div>
           )}
         </div>
+}
 
         <SpacerLG />
 

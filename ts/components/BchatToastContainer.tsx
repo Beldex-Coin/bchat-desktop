@@ -5,7 +5,8 @@ import styled from 'styled-components';
 const BchatToastContainerPrivate = () => {
   return (
     <WrappedToastContainer
-      position="bottom-right"
+      // position="bottom-right"
+      position='top-right'
       autoClose={5000}
       hideProgressBar={true}
       newestOnTop={true}
