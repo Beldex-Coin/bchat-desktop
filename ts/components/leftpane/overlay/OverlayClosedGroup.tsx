@@ -129,7 +129,7 @@ export const OverlayClosedGroup = () => {
               placeholder={placeholder}
               value={groupName}
               isGroup={true}
-              maxLength={100}
+              maxLength={32}
               onChange={setGroupName}
               onPressEnter={onEnterPressed}
               dataTestId="new-closed-group-name"

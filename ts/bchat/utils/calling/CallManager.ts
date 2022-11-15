@@ -149,21 +149,21 @@ let lastOutgoingOfferTimestamp = -Infinity;
     username: 'session202111',
     credential: '053c268164bc7bd7',
   },
-  {
-    urls: 'turn:hereford.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
-  },
-  {
-    urls: 'turn:holstein.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
-  },
-  {
-    urls: 'turn:brahman.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
-  },
+  // {
+  //   urls: 'turn:hereford.getsession.org',
+  //   username: 'session202111',
+  //   credential: '053c268164bc7bd7',
+  // },
+  // {
+  //   urls: 'turn:holstein.getsession.org',
+  //   username: 'session202111',
+  //   credential: '053c268164bc7bd7',
+  // },
+  // {
+  //   urls: 'turn:brahman.getsession.org',
+  //   username: 'session202111',
+  //   credential: '053c268164bc7bd7',
+  // },
 ];
 const configuration: RTCConfiguration = {
   bundlePolicy: 'max-bundle',
