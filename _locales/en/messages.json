@@ -1,4 +1,9 @@
 {
+  "amount":"Amount",
+  "priority":"Priority",
+  "contact":"Contact",
+  "address":"Address",
+  "notes":"Notes",
   "copyErrorAndQuit": "Copy error and quit",
   "unknown": "Unknown",
   "databaseError": "Database Error",
@@ -181,6 +186,7 @@
   "timerOption_12_hours": "12 hours",
   "timerOption_1_day": "1 day",
   "timerOption_1_week": "1 week",
+  "transactionDetails":"Transaction Details",
   "disappearingMessages": "Disappearing Messages",
   "changeNickname": "Change Nickname",
   "clearNickname": "Clear Nickname",

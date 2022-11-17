@@ -1363,18 +1363,23 @@ label {
     .marginRight {
       margin-right: 10px;
     }
+
+    .font-medium {
+      font-family: $bchat-font-poppin-medium;
+    }
+    .flexCenter {
+      display: flex;
+      align-items: center;
+    }
     &-header {
       display: flex;
       width: 100%;
       justify-content: space-between;
-      &-left-side {
-        display: flex;
-        &-btn-box {
-          margin-left: 10px;
-        }
-      }
+      margin-bottom: 10px;
+      &-left-side,
       &-right-side {
         display: flex;
+        align-items: center;
       }
     }
     &-button {
@@ -1383,9 +1388,9 @@ label {
       padding: 3px 14px;
     }
     &-squarBox {
-      display: flex;
+      // display: flex;
       background-color: #303041;
-      width: 40%;
+      width: 49.4%;
       border-radius: 10px;
       padding: 15px;
     }
@@ -1443,23 +1448,63 @@ label {
           font-family: 'poppin-semibold';
         }
       }
-
     }
-
-    &-copyIcon-box
-    {
+    &-myAddress-Box {
       display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    position: relative;
-    background-color: var(--color-copyIconBg);
-    background-size: 16px;
-    border-radius: 30px;
-    background-position: center;
-    cursor: pointer;
-    color: var(--color-copyIcon);
+      justify-content: space-between;
+      align-items: center;
+
+      &-content {
+        width: 90%;
+        height: 38px;
+        background-color: #1c1c26;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &-copyIcon-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        position: relative;
+        background-color: #128b17;
+        background-size: 16px;
+        border-radius: 30px;
+        background-position: center;
+        cursor: pointer;
+        color: var(--color-copyIcon);
+      }
+    }
+    &-sendForm {
+      background-color: #303041;
+      width: 100%;
+      border-radius: 10px;
+      padding: 15px;
+      &-inputBox {
+        width: 100%;
+        // height: 60px;
+        background-color: #1c1c26;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        
+       .bchat-button.brand.green
+       {
+        height: 40px;
+       }
+        input {
+          border: none;
+          outline: none;
+          width: 100%;
+         
+        }
+      }
     }
   }
 }

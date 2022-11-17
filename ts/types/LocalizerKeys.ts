@@ -1,4 +1,8 @@
 export type LocalizerKeys =
+  | 'amount'
+  |'priority'
+  |'contact'
+  |'notes'
   | 'removePassword'
   | 'newSecretGroup'
   | 'userUnbanFailed'
@@ -104,6 +108,7 @@ export type LocalizerKeys =
   | 'autoUpdateNewVersionInstructions'
   | 'appMenuUnhide'
   | 'timerOption_30_minutes_abbreviated'
+  | "transactionDetails"
   | 'pruneSettingDescription'
   | 'voiceMessage'
   | 'changePasswordTitle'
