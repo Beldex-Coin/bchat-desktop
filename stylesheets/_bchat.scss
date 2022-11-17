@@ -1,4 +1,4 @@
-$onionPathLineColor: #D1D1D1;
+$onionPathLineColor: #d1d1d1;
 
 #root {
   height: 100%;
@@ -33,7 +33,6 @@ input,
 textarea {
   // caret-color: var(--color-text) !important;
   caret-color: var(--color-caret) !important;
-
 }
 
 * {
@@ -71,7 +70,7 @@ textarea {
   position: relative;
 }
 
-.button-group>div {
+.button-group > div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
@@ -79,7 +78,7 @@ textarea {
 
 .bchat-button {
   @mixin transparent-background($textAndBorderColor) {
-    background-color: #403E4B;
+    background-color: #403e4b;
     background-repeat: no-repeat;
     overflow: hidden;
     outline: none;
@@ -153,16 +152,14 @@ textarea {
 
     &.success {
       // background-color: $bchat-color-success;
-      background-color: #1F1F29;
+      background-color: #1f1f29;
       color: white;
     }
 
     &.danger {
       // background-color: $bchat-color-danger;
-      background-color: #E22B2B;
-      color: #FFFFFF;
-
-
+      background-color: #e22b2b;
+      color: #ffffff;
     }
 
     &.danger-alt {
@@ -201,7 +198,6 @@ textarea {
 
     &.danger {
       @include transparent-background($bchat-color-danger);
-
     }
 
     &.warning {
@@ -256,7 +252,7 @@ textarea {
     font-family: $bchat-font-poppin-semibold;
   }
 
-  &>*:hover:not(svg) {
+  & > *:hover:not(svg) {
     filter: brightness(80%);
   }
 }
@@ -288,9 +284,8 @@ textarea {
     background-color: $bchat-color-warning-alt;
   }
 
-  &.warningBg
-  {
-    background-color: #2879FB;
+  &.warningBg {
+    background-color: #2879fb;
     font-size: 12px;
     font-family: $bchat-font-poppin-regular;
   }
@@ -303,17 +298,15 @@ textarea {
   transform: translateZ(0);
   //  color: white;
 
-
   &:hover {
-    color: #159B24;
+    color: #159b24;
     // padding: 5px;
-
   }
 
   transition: opacity $bchat-transition-duration;
 
   &.no-opacity {
-    color: #159B24;
+    color: #159b24;
     background: white;
   }
 }
@@ -349,8 +342,6 @@ textarea {
 
 .module-conversation-header__title {
   flex-direction: column;
-
-
 }
 
 .module-conversation-header__title-flex {
@@ -375,7 +366,6 @@ textarea {
   // margin-top: 10px;
 }
 
-
 .module-message--outgoing {
   margin-inline-end: 0;
   margin-inline-start: auto;
@@ -384,11 +374,11 @@ textarea {
 
 //.module-message--outgoing::after {
 //  content: " ";
- // position: absolute;
-  //right: 17px;
-  //top: -12px;
- // border-left: 15px solid transparent;
-  //border-bottom: 15px solid #2879FB;
+// position: absolute;
+//right: 17px;
+//top: -12px;
+// border-left: 15px solid transparent;
+//border-bottom: 15px solid #2879FB;
 //}
 
 pre {
@@ -462,7 +452,6 @@ label {
   background: var(--color-toast-success);
   font-family: $bchat-font-poppin-medium;
 
-
   // background: linear-gradient(--color-cell-background);
 
   color: var(--color-text);
@@ -470,11 +459,10 @@ label {
   .Toastify__close-button {
     color: white;
     padding: 1px 5px 3px 6px;
-    background-color: #3F3C4B;
+    background-color: #3f3c4b;
     border-radius: 24px;
     margin-top: 11px;
     margin-right: 8px;
-
   }
 
   @mixin set-toast-theme($color) {
@@ -540,11 +528,11 @@ label {
     &.reverse {
       flex-direction: row-reverse;
 
-      .bchat-modal__header__close>div {
+      .bchat-modal__header__close > div {
         float: right;
       }
 
-      .bchat-modal__header__icons>div {
+      .bchat-modal__header__icons > div {
         float: left;
         padding-inline-start: 0px;
         padding-inline-end: 10px;
@@ -564,13 +552,13 @@ label {
       float: right;
     }
 
-    &__close>div {
+    &__close > div {
       float: left;
       padding: $bchat-margin-xs;
       margin: 0px;
     }
 
-    &__icons>div {
+    &__icons > div {
       float: right;
       padding-inline-start: 10px;
     }
@@ -623,7 +611,6 @@ label {
     font-family: $bchat-font-poppin-semibold;
   }
 
-
   &__button-group {
     display: flex;
     align-items: center;
@@ -635,8 +622,8 @@ label {
     cursor: pointer;
 
     .copyIconBtn {
-      display: flex;  
-      background-color:var(--color-copyModalbtn);
+      display: flex;
+      background-color: var(--color-copyModalbtn);
       width: 116px;
       height: 40px;
       justify-content: center;
@@ -666,13 +653,11 @@ label {
         .default.white {
           background-color: var(--color-input-background);
         }
-
       }
-
     }
     // .bchat-button.default.primary
     // {
-      // background-image: var(--button-color);
+    // background-image: var(--button-color);
     // }
   }
 
@@ -739,7 +724,7 @@ label {
         padding: 10px 10px 10px 14px;
         font-family: $bchat-font-default;
         font-weight: 100;
-        color: #0BB70F;
+        color: #0bb70f;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -770,8 +755,7 @@ label {
         cursor: pointer;
         color: var(--color-copyIcon);
       }
-      &-display-icon:hover
-      {
+      &-display-icon:hover {
         transform: scale(1.1);
         color: #1ced23;
       }
@@ -806,7 +790,7 @@ label {
     height: 25px;
     width: 25px;
     border-radius: 28px;
-    background-color: #ECECEC;
+    background-color: #ececec;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.05), 0 3px 1px 0 rgba(0, 0, 0, 0.05),
       0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -822,7 +806,6 @@ label {
       transform: translateX(20px);
       background-color: $bchat-color-green;
       left: 10px;
-
     }
   }
 }
@@ -836,16 +819,15 @@ label {
   border-radius: 10px;
   font-family: $bchat-font-poppin-medium;
 
-
   .react-contexify__item {
     background: var(--color-cell-background);
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
+  .react-contexify__item:not(.react-contexify__item--disabled):hover
+    > .react-contexify__item__content {
     background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     color: '#fff';
-
   }
 
   .react-contexify__item__content {
@@ -859,8 +841,6 @@ label {
     .react-contexify__item__content {
       justify-content: center;
     }
-  
-
   }
 
   .react-contexify__submenu-arrow {
@@ -1023,7 +1003,6 @@ label {
   width: 86%;
   font-family: $bchat-font-poppin-medium;
   font-size: 14px;
-
 }
 
 .conversation-loader {
@@ -1032,7 +1011,7 @@ label {
   left: 50%;
   margin: -40px 0 0 -40px;
 
-  &>div {
+  & > div {
     display: block;
   }
 }
@@ -1045,7 +1024,6 @@ label {
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
-
 
   // div {
   //   position: absolute;
@@ -1132,11 +1110,7 @@ label {
         margin-top: 16%;
       }
     }
-
-
   }
-
-
 
   &-header {
     display: flex;
@@ -1220,20 +1194,16 @@ label {
       width: 78px;
       height: 40px;
       border-radius: 10px;
-      background-color: #3A3A4E;
+      background-color: #3a3a4e;
       padding: 6px;
       display: flex;
       align-items: center;
       justify-content: space-around;
-
-
     }
 
     .react-select-container {
-      background-color: #128B17;
-
+      background-color: #128b17;
     }
-
   }
 
   &-view {
@@ -1305,18 +1275,17 @@ label {
         letter-spacing: 5px;
         font-family: $bchat-font-default;
       }
-      .confirm-Button
-      {
+      .confirm-Button {
         .bchat-button.brand {
           min-width: 165px;
           height: 40px;
           align-items: center;
           padding: 0px 20px;
           font-size: 14px;
-          font-family: "Poppins";
+          font-family: 'Poppins';
           border-radius: 13px;
           background-image: var(--button-color);
-      }
+        }
       }
     }
   }
@@ -1332,7 +1301,6 @@ label {
       background-color: var(--color-settingIndication);
       margin-bottom: 2px;
       border-radius: 10px;
-
     }
 
     &-profileName {
@@ -1379,15 +1347,120 @@ label {
 
     &-note {
       font-family: $bchat-font-poppin-semibold;
-      margin : 0px 0px 25px;
+      margin: 0px 0px 25px;
     }
 
     &-button {
       width: 62%;
       margin: 0 auto;
+    }
+  }
+
+  .wallet {
+    .marginLeft {
+      margin-left: 10px;
+    }
+    .marginRight {
+      margin-right: 10px;
+    }
+    &-header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      &-left-side {
+        display: flex;
+        &-btn-box {
+          margin-left: 10px;
+        }
+      }
+      &-right-side {
+        display: flex;
+      }
+    }
+    &-button {
+      background-color: #444455;
+      border-radius: 50px;
+      padding: 3px 14px;
+    }
+    &-squarBox {
+      display: flex;
+      background-color: #303041;
+      width: 40%;
+      border-radius: 10px;
+      padding: 15px;
+    }
+    &-left-balance-Sec {
+      width: 55%;
+      &-balanceTxt {
+        font-size: 22px;
+        font-family: $bchat-font-poppin-semibold;
+        span {
+          color: #128b17;
+        }
+      }
+      &-realCurrencyTxt {
+        font-size: 12px;
+        color: #8f8fa2;
+      }
+    }
+    &-right-Button-Sec {
+      width: 45%;
+      &-fetch-btn {
+        background-color: #2879fb;
+        width: 100%;
+        height: 28px;
+        /* text-align: center; */
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+        font-family: 'poppin-medium';
+        font-size: 10px;
+      }
+      &-unlockbal-box {
+        background-color: #444455;
+        height: 45px;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        border-radius: 10px;
+
+        &--Text {
+          color: #eaeaea;
+          font-size: 10px;
+          width: 50%;
+          text-align: center;
+        }
+        &--verticalLine {
+          border-left: 2px solid #5c5c7b;
+          height: 27px;
+        }
+        .unBalance {
+          color: #eaeaea;
+          font-size: 16px;
+          width: 50%;
+          text-align: center;
+          font-family: 'poppin-semibold';
+        }
+      }
 
     }
 
+    &-copyIcon-box
+    {
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    background-color: var(--color-copyIconBg);
+    background-size: 16px;
+    border-radius: 30px;
+    background-position: center;
+    cursor: pointer;
+    color: var(--color-copyIcon);
+    }
   }
 }
 
@@ -1407,7 +1480,7 @@ label {
 }
 
 .messages li {
-  transition: $bchat-transition-duration  !important;
+  transition: $bchat-transition-duration !important;
 }
 
 .bchat-radio-group fieldset {
@@ -1445,11 +1518,11 @@ label {
     transition: $bchat-transition-duration;
   }
 
-  input:hover+label:before {
+  input:hover + label:before {
     background: var(--color-accent);
   }
 
-  input:checked+label:before {
+  input:checked + label:before {
     background: var(--color-accent);
   }
 }
@@ -1504,9 +1577,8 @@ input {
   font-family: $bchat-font-poppin-medium;
   text-align: center;
   font-size: $bchat-font-h4;
-  color: #82828D;
+  color: #82828d;
 }
-
 
 .onion__node-list {
   display: flex;
@@ -1531,7 +1603,7 @@ input {
     }
 
     .bchat-icon-button {
-      margin: $bchat-margin-sm  !important;
+      margin: $bchat-margin-sm !important;
     }
   }
 
@@ -1623,8 +1695,7 @@ input {
     padding: 20px;
     margin: 35% 0 0 0;
   }
-  &__addImg
-  {
+  &__addImg {
     width: 111px;
     height: 103px;
     background-image: var(--image-EmptyContact);
@@ -1649,8 +1720,7 @@ input {
 
     &-disabled {
       // border: 1px solid $bchat-color-dark-grey  !important;
-      border: 1px solid $bchat-color-dark-grey ;
-
+      border: 1px solid $bchat-color-dark-grey;
     }
   }
 }
@@ -1670,7 +1740,6 @@ input {
   transition: $bchat-transition-duration;
   // border:var(--color-bchat-border);
   border-bottom: var(--color-bchat-border);
-
 
   &:not(:last-child) {
     border-bottom: var(--border-bchat);
@@ -1710,8 +1779,6 @@ input {
     align-items: center;
   }
 
-
-
   &__name {
     font-weight: bold;
     margin-inline-start: $bchat-margin-md;
@@ -1724,7 +1791,7 @@ input {
     opacity: 0.8;
   }
 
-  &__avatar>div {
+  &__avatar > div {
     margin-bottom: 0px !important;
   }
 }

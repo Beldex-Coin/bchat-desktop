@@ -21,6 +21,7 @@ import { BchatRecoverySeed } from "./BchatRecoverySeed"
 import {OverlayMessageRequest} from "../leftpane/overlay/OverlayMessageRequest"
 import {BchatOnionPathScreen} from "./BchatOnionPathScreen"
 import { ToastUtils } from '../../bchat/utils';
+import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
 
 export function getMediaPermissionsSettings() {
   return window.getSettingValue('media-permissions');
@@ -39,7 +40,8 @@ export enum BchatSettingCategory {
   RecoverySeed="recoverySeed",
   RecoveryKey="recoveryKey",
   // ViewMessageRequest="viewMessageRequest",
-  Hops="hops"
+  Hops="hops",
+  Wallet="wallet"
 
 }
 
@@ -180,6 +182,9 @@ export const PasswordLock = ({
     if (category === BchatSettingCategory.Hops) {
       return <BchatOnionPathScreen/>;
     }    
+    if (category === BchatSettingCategory.Wallet) {
+      return <WalletMainPanel/>;
+    }    
     if (category === BchatSettingCategory.Notifications) {
       return <BchatNotificationGroupSettings hasPassword={this.state.hasPassword} />;
     }
@@ -246,6 +251,8 @@ export const PasswordLock = ({
         ? 'messageRequests'
         : category === BchatSettingCategory.Hops
         ? 'hops'
+        : category === BchatSettingCategory.Wallet
+        ? 'WalletSettingsTitle'
         : category === BchatSettingCategory.Notifications
         ? 'notificationsSettingsTitle'
         : 'privacySettingsTitle'

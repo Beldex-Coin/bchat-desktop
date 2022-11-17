@@ -293,7 +293,7 @@ const LeftPaneSettingsCategoryRow = (
           dispatch(showSettingsSection(BchatSettingCategory.Hops));
         }}
         // style={{ marginTop: '15px' }}
-      >
+       >
         <div style={{ display: "flex", }}>
           <span style={{ padding: "5px 10px" }}> <ActionPanelOnionStatusLight
             dataTestId="onion-status-section"
@@ -306,6 +306,35 @@ const LeftPaneSettingsCategoryRow = (
         </div>
         <div>
           {BchatSettingCategory.Hops === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
+      {/* *******************************************************Wallet********************************************************************** */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Wallet === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Wallet))
+        }}
+        // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: "flex", }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23.205" height="23.25" viewBox="0 0 23.205 23.25">
+              <path id="Message_request" d="M8151.968-11515.188a1.833,1.833,0,0,1-1.827-1.827v-10.959a1.833,1.833,0,0,1,1.827-1.827h12.789l3.651-3.653-.009,16.439a1.825,1.825,0,0,1-1.818,1.827Zm6.393-2.739h1.827v-1.827h-1.827Zm1.827-6.283c0,.962-1.827,2.763-1.827,3.651h1.827c0-.9,1.827-2.354,1.827-3.651a2.714,2.714,0,0,0-2.739-2.741,2.755,2.755,0,0,0-2.739,2.741h1.824a.951.951,0,0,1,.915-.915A.9.9,0,0,1,8160.188-11524.211Zm-12.32,4.126a1.663,1.663,0,0,1-1.656-1.665l-.009-14.98,3.33,3.33h11.651a1.67,1.67,0,0,1,1.665,1.665v.109h-12.476a1.832,1.832,0,0,0-1.827,1.827v9.714Z" transform="translate(-8145.703 11537.938)" stroke="rgba(0,0,0,0)" strokeWidth="1" />
+            </svg>
+          </i>
+          <span className="left-pane-setting-category-list-item-span">{window.i18n('WalletSettingsTitle')}</span>
+        </div>
+        <div>
+          {BchatSettingCategory.Wallet === focusedSettingsSection && (
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
         </div>

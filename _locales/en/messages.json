@@ -327,6 +327,7 @@
   "recoveryPhrase": "Recovery Seed",
   "recoveryKey":"Recovery Key",
   "hops":"Hops",
+  "WalletSettingsTitle":"Wallet",
   "saveYourRecoveryPhrase":"Save your recovery seed! Only your recovery seed can be used to recover your account on another device.",
   "copyToContinueRecovery":"Copy the recovery seed to continue.",
   "enterRecoveryPhrase": "Enter your recovery seed",

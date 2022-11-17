@@ -473,4 +473,6 @@ export type LocalizerKeys =
   | 'scanQr'
   | 'emptyChatScreen'
   | 'noContactsYet'
-  | 'BChat'; 
+  | 'BChat'
+  | 'WalletSettingsTitle'
+  ; 
