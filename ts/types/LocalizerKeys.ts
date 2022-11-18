@@ -1,8 +1,13 @@
 export type LocalizerKeys =
   | 'amount'
+  | 'address'
   |'priority'
   |'contact'
   |'notes'
+  | 'transactions'
+  |'filter'
+  |"filterPlaceHolder"
+  |'filterAll'
   | 'removePassword'
   | 'newSecretGroup'
   | 'userUnbanFailed'

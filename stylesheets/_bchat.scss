@@ -1085,7 +1085,8 @@ label {
   &-list {
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 15px;
+    // padding: 15px;
+    padding: 15px 15px 0 15px;
     height: 100%;
 
     .noBlockedContacts {
@@ -1375,7 +1376,7 @@ label {
       display: flex;
       width: 100%;
       justify-content: space-between;
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
       &-left-side,
       &-right-side {
         display: flex;
@@ -1385,7 +1386,8 @@ label {
     &-button {
       background-color: #444455;
       border-radius: 50px;
-      padding: 3px 14px;
+      // padding: 3px 14px;
+      padding: 10px 14px;
     }
     &-squarBox {
       // display: flex;
@@ -1394,17 +1396,22 @@ label {
       border-radius: 10px;
       padding: 15px;
     }
+    &-contentSpace {
+      height: calc(70% - 30px);
+    }
     &-left-balance-Sec {
       width: 55%;
       &-balanceTxt {
-        font-size: 22px;
+        // font-size: 22px;
+        font-size: 26px;
         font-family: $bchat-font-poppin-semibold;
         span {
           color: #128b17;
         }
       }
       &-realCurrencyTxt {
-        font-size: 12px;
+        // font-size: 12px;
+        font-size: 14px;
         color: #8f8fa2;
       }
     }
@@ -1413,7 +1420,7 @@ label {
       &-fetch-btn {
         background-color: #2879fb;
         width: 100%;
-        height: 28px;
+        height: 45px;
         /* text-align: center; */
         justify-content: center;
         display: flex;
@@ -1424,7 +1431,8 @@ label {
       }
       &-unlockbal-box {
         background-color: #444455;
-        height: 45px;
+        // height: 45px;
+        height: 60px;
         display: flex;
         /* justify-content: center; */
         align-items: center;
@@ -1456,7 +1464,8 @@ label {
 
       &-content {
         width: 90%;
-        height: 38px;
+        // height: 38px;
+        height: 50px;
         background-color: #1c1c26;
         border-radius: 10px;
         display: flex;
@@ -1468,8 +1477,10 @@ label {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 30px;
-        height: 30px;
+        // width: 30px;
+        // height: 30px;
+        width: 40px;
+        height: 40px;
         position: relative;
         background-color: #128b17;
         background-size: 16px;
@@ -1493,17 +1504,132 @@ label {
         justify-content: center;
         align-items: center;
         padding: 8px;
-        
-       .bchat-button.brand.green
-       {
-        height: 40px;
-       }
+
+        .bchat-button.brand.green {
+          height: 40px;
+        }
         input {
           border: none;
           outline: none;
           width: 100%;
-         
+          height: 40px;
         }
+      }
+      &-textArea {
+        width: 100%;
+        border: 0px;
+        height: 100px;
+        resize: none;
+        outline: none;
+      }
+      &-sendBtnBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        .bchat-button.brand.green {
+          width: 10px;
+          height: 44px;
+        }
+      }
+    }
+
+    &-syncStatus {
+      height: 30px;
+      &-statusTxt {
+        font-size: 12px;
+        &-greenTxt {
+          color: #00bf25;
+        }
+      }
+      &-statusvalue {
+        font-size: 12px;
+        color: #9393b1;
+      }
+    }
+    &-Transaction {
+      background-color: #303041;
+      /* width: 49.4%; */
+      border-radius: 10px;
+      padding: 15px;
+
+      &-filterInput {
+        width: 298px;
+        border: none;
+        outline: none;
+        height: 40px;
+        background-color: #1c1c26;
+        border-radius: 10px;
+        margin-left: 10px;
+      }
+      &-filterWithIcon {
+        background-color: #1c1c26;
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        margin-left: 20px;
+
+        input {
+          border: none;
+          outline: none;
+          width: 80%;
+          height: 100%;
+          padding-left: 20px;
+        }
+      }
+
+      &-contentBox {
+        background-color: #1c1c26;
+        padding: 15px;
+        border-radius: 10px;
+        &-sendIndicationBox {
+          display: flex;
+          width: 15%;
+          /* text-align: center; */
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          div{
+            font-size: 12px;
+            margin-top: 3px;
+          }
+        }
+        &-verticalline
+        {
+          width: 1.5px;
+          height: 100%;
+          background-color: #303041;
+        }
+        &-balanceBox
+        {
+          width: 700px;
+        margin-left: 20px;
+          &-amount
+          {
+            color: #69697C;
+            font-size: 18px;
+            font-family:$bchat-font-poppins-bold;
+          }
+        }
+        &-dateandheight
+        {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+      
+          &-month
+          {
+            font-size: 14px;
+          }
+          &-height
+          {
+            font-size: 10px;
+          }
+        }
+       
+
       }
     }
   }
