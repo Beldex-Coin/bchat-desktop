@@ -8,7 +8,13 @@ export type LocalizerKeys =
   |'filter'
   |"filterPlaceHolder"
   |'filterAll'
+  |'addressBook'
+  |'receiveBDX'
+  |'hintReceiveBDX'
   | 'removePassword'
+  |'copyAddress'
+  |'node'
+  | 'nCurrentRPCTxt'
   | 'newSecretGroup'
   | 'userUnbanFailed'
   | 'changePassword'

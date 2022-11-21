@@ -113,6 +113,7 @@
     "react-mentions": "^4.2.0",
     "react-portal": "^4.2.0",
     "react-qr-svg": "^2.2.1",
+    "react-qrcode-logo": "^2.8.0",
     "react-redux": "7.2.1",
     "react-select": "^5.4.0",
     "react-toastify": "^6.0.9",

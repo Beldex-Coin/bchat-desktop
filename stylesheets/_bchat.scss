@@ -1397,7 +1397,7 @@ label {
       padding: 15px;
     }
     &-contentSpace {
-      height: calc(70% - 30px);
+      height: calc(81vh - 30px);
     }
     &-left-balance-Sec {
       width: 55%;
@@ -1535,6 +1535,113 @@ label {
       }
     }
 
+    &-receivedForm {
+      background-color: #303041;
+      height: 58%;
+      display: flex;
+      width: 100%;
+      border-radius: 10px;
+      &-qrBox {
+       
+        // width: 210px;
+        // height: 210px;
+        padding: 15px;
+        background-color: #1C1C26;
+        border-radius: 10px;
+    
+        &-qrView
+        {
+          display: flex;
+        justify-content: center;
+        /* border-radius: 30px; */
+        width: 210px;
+        height: 210px;
+        padding: 0.2rem;
+        background-color: #fff;
+        }
+      }
+      &-rightSide
+      {
+        margin-left: 26px;
+        &-Title
+        {
+          font-size: 28px;
+          font-family: $bchat-font-poppins-bold;
+        }
+        &-label
+        {
+          color: #8F8FA2;
+          font-family: $bchat-font-poppin-regular;
+    
+        }
+        &-input
+        {
+          border: none;
+    outline: none;
+    width: 100%;
+    background-color: #1C1C26;
+    height: 50px;
+    border-radius: 10px;
+    padding-left: 20px;
+        }
+        &-btn
+        {
+          background-color: #128B17;
+          font-family: $bchat-font-poppin-semibold;
+          width: 157px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 39px;
+          border-radius: 6px;
+        }
+      }
+    }
+
+    &-addressBook {
+      &-header {
+        &-txt {
+          font-family: $bchat-font-poppin-semibold;
+          margin-left: 5px;
+        }
+      }
+      &-wholeBox {
+        height: calc(83vh - 30px);
+        &-contentBox {
+          background-color: #303041;
+          border-radius: 10px;
+          padding: 15px;
+          display: flex;
+          justify-content: space-between;
+          &-nameBtn {
+            background-color: #159b24;
+            padding: 4px 10px;
+            border-radius: 3px;
+            /* margin-bottom: 10px; */
+            font-family: 'poppin-semibold';
+          }
+
+          &-sendBtn,
+          &-copyBtn {
+            width: 100px;
+            background-color: #2879fb;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            font-family: $bchat-font-poppin-semibold;
+            cursor: pointer;
+          }
+
+          &-copyBtn {
+            background-color: #444455;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+
     &-syncStatus {
       height: 30px;
       &-statusTxt {
@@ -1553,6 +1660,8 @@ label {
       /* width: 49.4%; */
       border-radius: 10px;
       padding: 15px;
+      height: 58%;
+      overflow-y: auto;
 
       &-filterInput {
         width: 298px;
@@ -1591,45 +1700,38 @@ label {
           align-items: center;
           justify-content: center;
 
-          div{
+          div {
             font-size: 12px;
             margin-top: 3px;
           }
         }
-        &-verticalline
-        {
+        &-verticalline {
           width: 1.5px;
           height: 100%;
           background-color: #303041;
         }
-        &-balanceBox
-        {
-          width: 700px;
-        margin-left: 20px;
-          &-amount
-          {
-            color: #69697C;
+        &-balanceBox {
+          width: 580px;
+          margin-left: 20px;
+          &-amount {
+            color: #69697c;
             font-size: 18px;
-            font-family:$bchat-font-poppins-bold;
+            font-family: $bchat-font-poppins-bold;
           }
         }
-        &-dateandheight
-        {
+        &-dateandheight {
           display: flex;
           flex-direction: column;
           justify-content: center;
-      
-          &-month
-          {
+
+          &-month {
             font-size: 14px;
           }
-          &-height
-          {
+          &-height {
             font-size: 10px;
+            color: #69697c;
           }
         }
-       
-
       }
     }
   }
