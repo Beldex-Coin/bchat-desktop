@@ -236,13 +236,11 @@ window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
 window.getSeedNodeList = () =>
-  // window.bchatFeatureFlags.useTestNet
   process.env.NODE_ENV == 'development'
     ? [
       'https://publicnode1.rpcnode.stream:443',
       'https://publicnode2.rpcnode.stream:443',
       'https://publicnode3.rpcnode.stream:443',
-            // 'http://15.188.30.57:19095',
     ]
     : [
 
@@ -251,6 +249,21 @@ window.getSeedNodeList = () =>
       'https://publicnode3.rpcnode.stream:443',
 
     ];
+
+
+window.getDaemonNodeRandomlyPick = () =>{
+  const remotes = [
+    {
+      host: "38.242.196.72",
+      port: "19095"
+    },
+    {
+      host: "154.26.139.105",
+      port: "19095"
+    }
+  ];
+  return remotes[Math.floor((Math.random()*remotes.length))];
+}
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);

@@ -17,7 +17,7 @@ import {
    restoreWallet } from '../../mains/wallet-rpc'
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
-import { startWalletRpc } from '../../mains/wallet-rpc'
+import { startupWallet } from '../../mains/wallet-rpc'
 
 
 export const MAX_USERNAME_LENGTH = 26;
@@ -198,9 +198,8 @@ export const RegistrationStages = () => {
     void resetRegistration();
   }, []);
 
-  const generateMnemonicAndKeyPairaa = async () => {
-
-      await startWalletRpc();
+  const generateMnemonicAndKeyPairaa = async () => { 
+  await startupWallet();
   };
   return (
     <div className="bchat-registration-container">
