@@ -1542,51 +1542,43 @@ label {
       width: 100%;
       border-radius: 10px;
       &-qrBox {
-       
         // width: 210px;
         // height: 210px;
         padding: 15px;
-        background-color: #1C1C26;
+        background-color: #1c1c26;
         border-radius: 10px;
-    
-        &-qrView
-        {
+
+        &-qrView {
           display: flex;
-        justify-content: center;
-        /* border-radius: 30px; */
-        width: 210px;
-        height: 210px;
-        padding: 0.2rem;
-        background-color: #fff;
+          justify-content: center;
+          /* border-radius: 30px; */
+          width: 210px;
+          height: 210px;
+          padding: 0.2rem;
+          background-color: #fff;
         }
       }
-      &-rightSide
-      {
+      &-rightSide {
         margin-left: 26px;
-        &-Title
-        {
+        &-Title {
           font-size: 28px;
           font-family: $bchat-font-poppins-bold;
         }
-        &-label
-        {
-          color: #8F8FA2;
+        &-label {
+          color: #8f8fa2;
           font-family: $bchat-font-poppin-regular;
-    
         }
-        &-input
-        {
+        &-input {
           border: none;
-    outline: none;
-    width: 100%;
-    background-color: #1C1C26;
-    height: 50px;
-    border-radius: 10px;
-    padding-left: 20px;
+          outline: none;
+          width: 100%;
+          background-color: #1c1c26;
+          height: 50px;
+          border-radius: 10px;
+          padding-left: 20px;
         }
-        &-btn
-        {
-          background-color: #128B17;
+        &-btn {
+          background-color: #128b17;
           font-family: $bchat-font-poppin-semibold;
           width: 157px;
           display: flex;
@@ -1638,6 +1630,51 @@ label {
             background-color: #444455;
             margin-left: 10px;
           }
+        }
+      }
+    }
+
+    &-settings {
+      &-tabBox {
+        background-color: #2d2d3b;
+        padding: 20px;
+        border-radius: 10px;
+
+        &-disableText {
+          color: #a1a1bc;
+        }
+        &-subtle {
+          font-family: $bchat-font-poppin-semibold;
+        }
+        &-checkBox {
+          display: block;
+          border: 2px solid white;
+          width: 15px;
+          height: 15px;
+          border-radius: 3px;
+        }
+      }
+
+      &-nodeSetting
+      {
+        &-FlexBox
+        {
+          display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-outlineCircle
+    {
+      border: 2px solid #fff;
+    /* padding: 2px; */
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border-radius: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
         }
       }
     }

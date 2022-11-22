@@ -14,7 +14,13 @@ export type LocalizerKeys =
   | 'removePassword'
   |'copyAddress'
   |'node'
+  |'personal'
+  |'remoteDaemonOnly'
+  |"localDaemonOnly"
   | 'nCurrentRPCTxt'
+  |'decimals'
+  |'displayCurrency'
+  |'saveRecipientAddress'
   | 'newSecretGroup'
   | 'userUnbanFailed'
   | 'changePassword'
