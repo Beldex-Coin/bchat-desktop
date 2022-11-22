@@ -4,7 +4,7 @@ import { SpacerLG } from "../basic/Text"
 // import { AddressBook } from "./BchatWalletAddressBook"
 import { WalletBalanceSection } from "./BchatWalletBalanceSection"
 import { WalletHeader } from "./BchatWalletHeader"
-import { NodeSetting } from "./BchatWalletNodeSetting"
+// import { NodeSetting } from "./BchatWalletNodeSetting"
 import { WalletPaymentSection } from "./BchatWalletPaymentSection"
 import { ReceivedForm } from "./BchatWalletReceivedForm"
 // import { WalletSettings } from "./BchatWalletSettings"
@@ -18,9 +18,9 @@ export const WalletMainPanel = () => {
    return (
       <div className="wallet">
         
-         {/* <Dashboard /> */}
+         <Dashboard />
          {/* <AddressBook /> */}
-         <NodeSetting />
+         {/* <NodeSetting /> */}
         {/* <WalletSettings /> */}
          {/* <SyncStatusBar /> */}
       </div>

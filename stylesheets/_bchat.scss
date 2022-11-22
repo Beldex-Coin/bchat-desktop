@@ -1655,26 +1655,104 @@ label {
         }
       }
 
-      &-nodeSetting
-      {
-        &-FlexBox
-        {
+      &-nodeSetting {
+        &-contentBox {
+          background-color: #303041;
+          border-radius: 10px;
+          padding: 15px;
+        }
+        &-FlexBox {
           display: flex;
-    justify-content: center;
-    align-items: center;
+          justify-content: center;
+          align-items: center;
 
-    &-outlineCircle
-    {
-      border: 2px solid #fff;
-    /* padding: 2px; */
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    border-radius: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
+          &-outlineCircle {
+            border: 2px solid #fff;
+            /* padding: 2px; */
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            border-radius: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+
+        &-notesTxt {
+          font-family: $bchat-font-poppin-light;
+        }
+        &-dropDownHeaderTxt {
+          font-family: $bchat-font-poppin-semibold;
+          color: #20d024;
+          font-size: 16px;
+        }
+        &-horizontalLine{
+          background-color: #707070;
+          width: 100%;
+          height: 1.5px;
+          
+        }
+        &-dropDownModal
+        {
+          position: absolute;
+          background-color: #1C1C26;
+          width: 95%;
+          top: 2px;
+          padding: 19px;
+          border-radius: 10px;
+          box-shadow: 1px -1px 10px #00000074;
+      }
+      
+      
+        &-remoteContentBox {
+          display: flex;
+          align-items: center;
+          width: 45%;
+
+          &-labelTxt {
+            width: 20%;
+          }
+          &-inputBox {
+            border: none;
+            outline: none;
+            width: 80%;
+            background-color: #1c1c26;
+            height: 50px;
+            border-radius: 10px;
+            padding-left: 20px;
+            display: flex;
+            &-dropDownBtn {
+              display: flex;
+              width: 30px;
+              height: 30px;
+              background-color: #0d9e14;
+              justify-content: center;
+              align-items: center;
+              margin-top: 10px;
+              border-radius: 5px;
+            }
+            &-input {
+              border: none;
+              outline: none;
+              width: 88%;
+              background-color: #1c1c26;
+              height: 50px;
+              border-radius: 10px;
+              padding-left: 20px;
+            }
+          }
+          &-btnBox {
+            .bchat-button.default.primary,
+            .bchat-button.default.green {
+              width: 125px;
+              height: 45px;
+            }
+            .bchat-button.default.primary {
+              background-color: #2879fb;
+              margin-right: 30px;
+            }
+          }
         }
       }
     }
