@@ -4,20 +4,27 @@ import { SpacerLG } from "../basic/Text"
 // import { AddressBook } from "./BchatWalletAddressBook"
 import { WalletBalanceSection } from "./BchatWalletBalanceSection"
 import { WalletHeader } from "./BchatWalletHeader"
+// import { WalletPassword } from "./BchatWalletPassword"
 // import { NodeSetting } from "./BchatWalletNodeSetting"
 import { WalletPaymentSection } from "./BchatWalletPaymentSection"
 import { ReceivedForm } from "./BchatWalletReceivedForm"
-// import { WalletSettings } from "./BchatWalletSettings"
+//  import { WalletSettings } from "./BchatWalletSettings"
 // import { SendForm } from "./BchatWalletSendForm"
 // import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 // import { TransactionSection } from "./BchatWalletTransactionSection"
 
+export enum WalletPage
+{
+   WalletPassword="walletPassword",
+   Dashboard="dashboard",
 
+}
 export const WalletMainPanel = () => {
 
    return (
       <div className="wallet">
-        
+
+        {/* <WalletPassword /> */}
          <Dashboard />
          {/* <AddressBook /> */}
          {/* <NodeSetting /> */}

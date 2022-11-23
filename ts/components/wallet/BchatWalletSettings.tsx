@@ -2,10 +2,17 @@ import React from "react"
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerXS } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
+import { ChangePassword } from "./BchatWalletChangePassword"
+// import { WalletModal } from "./BchatWalletModal"
 
 
 export const WalletSettings = () => {
+    // let content=[window.i18n("usdCurrency"),window.i18n("audCurrency"),window.i18n("bgnCurrency")]
     return <div className="">
+            {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
+            {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
+            <ChangePassword />
+
         <Flex container={true} alignItems="center" >
             <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
             <div className="wallet-addressBook-header-txt" >
@@ -43,6 +50,7 @@ export const WalletSettings = () => {
                     <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270}  />
                 </div>
             </Flex>
+
             {/* <SpacerMD /> */}
             <Flex container={true} justifyContent='space-between'  padding="10px 0">
                 <div className="wallet-settings-tabBox-subtle">
