@@ -29,6 +29,8 @@ export type UserDetailsModalState = {
   userName: string;
 } | null;
 
+export type ChangePasswordModalState={} | null
+
 export type ModalState = {
   confirmModal: ConfirmModalState;
   inviteContactModal: InviteContactModalState;
@@ -45,6 +47,7 @@ export type ModalState = {
   adminLeaveClosedGroup: AdminLeaveClosedGroupModalState;
   bchatPasswordModal: BchatPasswordModalState;
   deleteAccountModal: DeleteAccountModalState;
+  ChangePasswordModal:ChangePasswordModalState;
 };
 
 export const initialModalState: ModalState = {
@@ -63,6 +66,7 @@ export const initialModalState: ModalState = {
   adminLeaveClosedGroup: null,
   bchatPasswordModal: null,
   deleteAccountModal: null,
+  ChangePasswordModal:null
 };
 
 const ModalSlice = createSlice({
@@ -114,6 +118,10 @@ const ModalSlice = createSlice({
     updateDeleteAccountModal(state, action: PayloadAction<DeleteAccountModalState>) {
       return { ...state, deleteAccountModal: action.payload };
     },
+    ChangePasswordModal(state,action:PayloadAction<ChangePasswordModalState>)
+    {
+      return { ...state, ChangePasswordModal: action.payload };
+    }
   },
 });
 
@@ -134,5 +142,6 @@ export const {
   bchatPassword,
   updateDeleteAccountModal,
   updateBanOrUnbanUserModal,
+  ChangePasswordModal,
 } = actions;
 export const modalReducer = reducer;

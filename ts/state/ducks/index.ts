@@ -7,6 +7,7 @@ import * as SearchDucks from './search';
 import * as SectionDucks from './section';
 import * as StagedAttachmentDucks from './stagedAttachments';
 import * as ThemeDucks from './theme';
+import * as walletFocusedDucks from "./walletSection"
 import * as TimerOptionsDucks from './timerOptions';
 import * as UserDucks from './user';
 import * as UserConfigDucks from './userConfig';
@@ -19,6 +20,7 @@ export {
   SectionDucks,
   StagedAttachmentDucks,
   ThemeDucks,
+  walletFocusedDucks,
   TimerOptionsDucks,
   UserConfigDucks,
   UserDucks,

@@ -4,6 +4,7 @@ import { reducer as search, SearchStateType } from './ducks/search';
 import { ConversationsStateType, reducer as conversations } from './ducks/conversations';
 import { reducer as user, UserStateType } from './ducks/user';
 import { reducer as theme, ThemeStateType } from './ducks/theme';
+import {reducer as walletFocused, WalletStateType  } from './ducks/walletSection'
 import { reducer as section, SectionStateType } from './ducks/section';
 import { defaultRoomReducer as defaultRooms, DefaultRoomsState } from './ducks/defaultRooms';
 import { callReducer as call, CallStateType } from './ducks/call';
@@ -30,6 +31,7 @@ export type StateType = {
   timerOptions: TimerOptionsState;
   stagedAttachments: StagedAttachmentsStateType;
   call: CallStateType;
+  walletFocused:WalletStateType
 };
 
 export const reducers = {
@@ -45,6 +47,7 @@ export const reducers = {
   timerOptions,
   stagedAttachments,
   call,
+  walletFocused
 };
 
 // Making this work would require that our reducer signature supported AnyAction, not

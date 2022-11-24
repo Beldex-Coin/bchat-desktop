@@ -1,24 +1,31 @@
 import React from "react"
+import { useDispatch } from "react-redux"
+import { ChangePasswordModal } from "../../state/ducks/modalDialog"
+import { dashboard, nodeSetting } from "../../state/ducks/walletSection"
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerXS } from "../basic/Text"
+import { ModalContainer } from "../dialog/ModalContainer"
 import { BchatIcon } from "../icon/BchatIcon"
-import { ChangePassword } from "./BchatWalletChangePassword"
+// import { ChangePassword } from "./BchatWalletChangePassword"
 // import { WalletModal } from "./BchatWalletModal"
 
 
 export const WalletSettings = () => {
+    const dispatch=useDispatch();
     // let content=[window.i18n("usdCurrency"),window.i18n("audCurrency"),window.i18n("bgnCurrency")]
     return <div className="">
             {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
             {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
-            <ChangePassword />
-
+           
+            <ModalContainer />
+       <div onClick={()=>dispatch(dashboard())} style={{cursor:'pointer'}}>
         <Flex container={true} alignItems="center" >
             <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
             <div className="wallet-addressBook-header-txt" >
                 {window.i18n('settingsHeader')}
             </div>
         </Flex>
+        </div>
         <SpacerLG />
         <div className="wallet-settings-tabBox-subtle">
             {window.i18n('node')}
@@ -29,7 +36,7 @@ export const WalletSettings = () => {
                 <div className="wallet-settings-tabBox-subtle">
                     {window.i18n("nCurrentRPCTxt")}
                 </div>
-                <div>
+                <div onClick={()=>dispatch(nodeSetting())} style={{cursor:'pointer'}}>
                    <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span> 
                     <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
                 </div>
@@ -84,7 +91,7 @@ export const WalletSettings = () => {
                 <div className="wallet-settings-tabBox-subtle">
                     {window.i18n("changePassword")}
                 </div>
-                <div>
+                <div onClick={()=>dispatch(ChangePasswordModal({}))} style={{cursor:"pointer"}}>
                    {/* <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>  */}
                     <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
                 </div>

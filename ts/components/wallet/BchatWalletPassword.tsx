@@ -1,10 +1,17 @@
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { dashboard } from "../../state/ducks/walletSection"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { SpacerLG, SpacerMD } from "../basic/Text"
 import { BchatIcon } from "../icon"
 
 export const WalletPassword = () => {
     const [value, setValue] = useState("")
+    const dispatch=useDispatch();
+    function submit()
+    {
+        dispatch(dashboard())
+    }
     return <div className="wallet-walletPassword">
         <div className="wallet-walletPassword-contentBox">
              <SpacerLG />
@@ -30,7 +37,7 @@ export const WalletPassword = () => {
                     text={window.i18n('continue')}
                     buttonType={BchatButtonType.BrandOutline}
                     buttonColor={BchatButtonColor.Green}
-                //   onClick={this.initClearDataView}
+                  onClick={()=>submit()}
                 />
             </div>
             <SpacerLG />

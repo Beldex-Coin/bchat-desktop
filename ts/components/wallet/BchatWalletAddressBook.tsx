@@ -1,17 +1,22 @@
 
 import React from "react"
+import { useDispatch } from "react-redux"
+import { dashboard } from "../../state/ducks/walletSection"
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerSM } from "../basic/Text"
 import { BchatIcon } from "../icon"
 
 export const AddressBook=()=>{
+  const dispatch=useDispatch()
     return<div className="wallet-addressBook">
-        <Flex container={true} alignItems="center" >
-          <BchatIcon  iconType="walletBackArrow" iconSize={"huge"}  />
+      <div style={{cursor:"pointer"}}>
+        <Flex container={true} alignItems="center"  onClick={()=>dispatch(dashboard())}>
+          <BchatIcon  iconType="walletBackArrow" iconSize={"huge"}   />
           <div className="wallet-addressBook-header-txt" >
           {window.i18n('addressBook')}
           </div>
         </Flex>
+        </div>
         <SpacerLG />
         <div className="wallet-addressBook-wholeBox">
          <div className="wallet-addressBook-wholeBox-contentBox">

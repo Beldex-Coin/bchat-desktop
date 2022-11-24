@@ -1,4 +1,6 @@
 import React from "react"
+import { useDispatch } from "react-redux"
+import { setting } from "../../state/ducks/walletSection"
 import { BchatButton, BchatButtonColor } from "../basic/BchatButton"
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerMD } from "../basic/Text"
@@ -6,13 +8,16 @@ import { BchatIcon } from "../icon/BchatIcon"
 
 
 export const NodeSetting = () => {
+    const dispatch=useDispatch()
     return <div>
+        <div onClick={()=> dispatch(setting())} style={{cursor:'pointer'}}>
         <Flex container={true} alignItems="center" >
             <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
             <div className="wallet-addressBook-header-txt" >
                 {window.i18n('node')}
             </div>
         </Flex>
+        </div>
         <SpacerLG />
         <section className="wallet-settings-nodeSetting-contentBox">
             <Flex container={true} alignItems="center" flexDirection="row" width="40%" justifyContent="space-between">

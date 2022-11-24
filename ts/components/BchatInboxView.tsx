@@ -29,6 +29,7 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 
 // moment does not support es-419 correctly (and cause white screen on app start)
 import moment from 'moment';
+import { initialWalletState } from '../state/ducks/walletSection';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -107,6 +108,7 @@ export class BchatInboxView extends React.Component<any, State> {
       onionPaths: initialOnionPathState,
       modals: initialModalState,
       userConfig: initialUserConfigState,
+      walletFocused:initialWalletState,
       timerOptions: {
         timerOptions,
       },

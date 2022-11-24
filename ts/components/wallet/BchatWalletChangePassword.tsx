@@ -1,5 +1,7 @@
 
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { ChangePasswordModal } from "../../state/ducks/modalDialog"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { Flex } from "../basic/Flex"
 import { SpacerMD, SpacerSM } from "../basic/Text"
@@ -10,13 +12,22 @@ import { BchatIcon } from "../icon"
 export const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const dispatch=useDispatch();
+    function onClickCancelHandler()
+    {
+        console.log("onClickCancelHandler");
+        
+    dispatch(ChangePasswordModal(null))
+    // dispatch(updateDeleteAccountModal());
+    }
     // const [confirm,setConfirm]=useState("");
     return <div>
         <BchatWrapperModal
             title={window.i18n('changePassword')}
-            //   onClose={onClickCancelHandler}
-            showExitIcon={true}
+               onClose={()=>onClickCancelHandler()}
+            showExitIcon={false}
             headerReverse={true}
+           
         >
             <div className="bchat-modal__centered" style={{width:"350px",alignItems: 'start'}}>
                 <SpacerMD />

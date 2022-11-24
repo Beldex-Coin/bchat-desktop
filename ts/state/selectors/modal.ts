@@ -18,6 +18,7 @@ import {
   UpdateGroupMembersModalState,
   UpdateGroupNameModalState,
   UserDetailsModalState,
+  ChangePasswordModalState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -97,4 +98,9 @@ export const getBchatPasswordDialog = createSelector(
 export const getDeleteAccountModalState = createSelector(
   getModal,
   (state: ModalState): DeleteAccountModalState => state.deleteAccountModal
+);
+
+export const getChangePasswordModalState = createSelector(
+  getModal,
+  (state: ModalState): ChangePasswordModalState => state.ChangePasswordModal
 );

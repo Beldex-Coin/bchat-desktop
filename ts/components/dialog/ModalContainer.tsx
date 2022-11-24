@@ -16,6 +16,7 @@ import {
   getUpdateGroupMembersModal,
   getUpdateGroupNameModal,
   getUserDetailsModal,
+  getChangePasswordModalState,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 import { InviteContactsDialog } from './InviteContactsDialog';
@@ -32,6 +33,7 @@ import { UpdateGroupMembersDialog } from './UpdateGroupMembersDialog';
 import { UpdateGroupNameDialog } from './UpdateGroupNameDialog';
 import { BchatNicknameDialog } from './BchatNicknameDialog';
 import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
+import { ChangePassword } from '../wallet/BchatWalletChangePassword';
 
 export const ModalContainer = () => {
   const confirmModalState = useSelector(getConfirmModal);
@@ -42,13 +44,14 @@ export const ModalContainer = () => {
   const updateGroupNameModalState = useSelector(getUpdateGroupNameModal);
   const userDetailsModalState = useSelector(getUserDetailsModal);
   const changeNicknameModal = useSelector(getChangeNickNameDialog);
-  const editProfileModalState = useSelector(getEditProfileDialog);
+  const editProfileModalState = useSelector(getEditProfileDialog); 
   const onionPathModalState = useSelector(getOnionPathDialog);
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
   const adminLeaveClosedGroupModalState = useSelector(getAdminLeaveClosedGroupDialog);
   const bchatPasswordModalState = useSelector(getBchatPasswordDialog);
   const deleteAccountModalState = useSelector(getDeleteAccountModalState);
   const banOrUnbanUserModalState = useSelector(getBanOrUnbanUserModalState);
+  const ChangePasswordModalState=useSelector(getChangePasswordModalState)
 
   return (
     <>
@@ -70,7 +73,8 @@ export const ModalContainer = () => {
       )}
       {bchatPasswordModalState && <BchatPasswordDialog {...bchatPasswordModalState} />}
       {deleteAccountModalState && <DeleteAccountModal {...deleteAccountModalState} />}
-      {confirmModalState && <BchatConfirm {...confirmModalState} />}
+      {confirmModalState && <BchatConfirm {...confirmModalState} />}   
+      {ChangePasswordModalState&&<ChangePassword />}
     </>
   );
 };
