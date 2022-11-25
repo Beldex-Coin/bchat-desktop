@@ -30,6 +30,10 @@ export type UserDetailsModalState = {
 } | null;
 
 export type ChangePasswordModalState={} | null
+export type walletSettingMiniModalState={
+  headerName:string,
+  content:any
+} | null
 
 export type ModalState = {
   confirmModal: ConfirmModalState;
@@ -48,6 +52,7 @@ export type ModalState = {
   bchatPasswordModal: BchatPasswordModalState;
   deleteAccountModal: DeleteAccountModalState;
   ChangePasswordModal:ChangePasswordModalState;
+  walletSettingMiniModal:walletSettingMiniModalState;
 };
 
 export const initialModalState: ModalState = {
@@ -66,7 +71,8 @@ export const initialModalState: ModalState = {
   adminLeaveClosedGroup: null,
   bchatPasswordModal: null,
   deleteAccountModal: null,
-  ChangePasswordModal:null
+  ChangePasswordModal:null,
+  walletSettingMiniModal:null
 };
 
 const ModalSlice = createSlice({
@@ -121,6 +127,10 @@ const ModalSlice = createSlice({
     ChangePasswordModal(state,action:PayloadAction<ChangePasswordModalState>)
     {
       return { ...state, ChangePasswordModal: action.payload };
+    },
+    walletSettingMiniModal(state,action:PayloadAction<walletSettingMiniModalState>)
+    {
+      return { ...state, walletSettingMiniModal: action.payload };
     }
   },
 });
@@ -143,5 +153,6 @@ export const {
   updateDeleteAccountModal,
   updateBanOrUnbanUserModal,
   ChangePasswordModal,
+  walletSettingMiniModal
 } = actions;
 export const modalReducer = reducer;

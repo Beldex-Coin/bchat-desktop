@@ -32,6 +32,7 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 import moment from 'moment';
 import { initialWalletSectionState } from '../state/ducks/walletSection';
 import { initialDaemonState } from '../state/ducks/daemon';
+import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -113,6 +114,7 @@ export class BchatInboxView extends React.Component<any, State> {
       modals: initialModalState,
       userConfig: initialUserConfigState,
       walletFocused:initialWalletSectionState,
+      walletInnerFocused:initialWalletInnerSectionState,
       timerOptions: {
         timerOptions,
       },

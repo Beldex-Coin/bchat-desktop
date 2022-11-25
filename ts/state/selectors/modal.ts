@@ -18,7 +18,8 @@ import {
   UpdateGroupMembersModalState,
   UpdateGroupNameModalState,
   UserDetailsModalState,
-  ChangePasswordModalState
+  ChangePasswordModalState,
+  walletSettingMiniModalState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -103,4 +104,8 @@ export const getDeleteAccountModalState = createSelector(
 export const getChangePasswordModalState = createSelector(
   getModal,
   (state: ModalState): ChangePasswordModalState => state.ChangePasswordModal
+);
+export const getwalletSettingMiniModalState = createSelector(
+  getModal,
+  (state: ModalState): walletSettingMiniModalState => state.walletSettingMiniModal
 );

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 // import { BchatInput } from "../basic/BchatInput"
 // import { BchatIdEditable } from "../basic/BchatIdEditable"
@@ -8,7 +8,10 @@ import { SpacerLG, } from "../basic/Text"
 
 
 export const SendForm = () => {
-
+const [amount,setAmount]=useState("0");
+const [priority,setPriority]=useState("flash");
+const [address,setAddress]=useState("b..");
+const [notes,setNotes]=useState("");
     return (
         <div className="wallet-sendForm">
             <Flex
@@ -26,7 +29,7 @@ export const SendForm = () => {
                     >
                         <span style={{ width: "20%" }}>{window.i18n('amount')}</span>
                         <div className="wallet-sendForm-inputBox">
-                            <input value="10" />
+                            <input value={amount} onChange={(e:any)=>{setAmount(e.target.value)}}  />
 
                         </div>
                     </Flex>
@@ -41,7 +44,7 @@ export const SendForm = () => {
                     >
                         <span style={{ width: "20%" }}>{window.i18n('priority')}</span>
                         <div className="wallet-sendForm-inputBox">
-                            <input value="10" />
+                            <input value={priority} onChange={(e:any)=>{setPriority(e.target.value)}} />
 
                         </div>
                     </Flex>
@@ -58,7 +61,7 @@ export const SendForm = () => {
                 >
                     <span style={{ width: "8.9%" }}>{window.i18n('address')}</span>
                     <div className="wallet-sendForm-inputBox">
-                        <input value="10" />
+                        <input value={address} onChange={(e:any)=>{setAddress(e.target.value)}}/>
                         <BchatButton
                             text={window.i18n('contact')}
                             //   onClick={this.onSave}
@@ -81,7 +84,7 @@ export const SendForm = () => {
                 >
                     <span style={{ width: "8.9%" }}>{window.i18n('notes')}</span>
                     <div className="wallet-sendForm-inputBox">
-                        <textarea value={'notes'} className="wallet-sendForm-textArea" />
+                        <textarea value={notes} onChange={(e:any)=>{setNotes(e.target.value)}} className="wallet-sendForm-textArea" />
 
 
                     </div>

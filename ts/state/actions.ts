@@ -7,6 +7,7 @@ import { actions as sections } from './ducks/section';
 import { actions as theme } from './ducks/theme';
 import { actions as modalDialog } from './ducks/modalDialog';
 import {action as wallet} from "./ducks/walletSection";
+import {action as walletInner}from "./ducks/walletInnerSection"
 
 export function mapDispatchToProps(dispatch: Dispatch): Object {
   return {
@@ -18,7 +19,8 @@ export function mapDispatchToProps(dispatch: Dispatch): Object {
         ...theme,
         ...sections,
         ...modalDialog,
-        ...wallet
+        ...wallet,
+        ...walletInner
       },
       dispatch
     ),

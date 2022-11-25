@@ -17,6 +17,7 @@ import {
   getUpdateGroupNameModal,
   getUserDetailsModal,
   getChangePasswordModalState,
+  getwalletSettingMiniModalState,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 import { InviteContactsDialog } from './InviteContactsDialog';
@@ -34,8 +35,9 @@ import { UpdateGroupNameDialog } from './UpdateGroupNameDialog';
 import { BchatNicknameDialog } from './BchatNicknameDialog';
 import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
 import { ChangePassword } from '../wallet/BchatWalletChangePassword';
+import { WalletModal } from '../wallet/BchatWalletModal';
 
-export const ModalContainer = () => {
+export const ModalContainer:any = () => {
   const confirmModalState = useSelector(getConfirmModal);
   const inviteModalState = useSelector(getInviteContactModal);
   const addModeratorsModalState = useSelector(getAddModeratorsModal);
@@ -52,6 +54,8 @@ export const ModalContainer = () => {
   const deleteAccountModalState = useSelector(getDeleteAccountModalState);
   const banOrUnbanUserModalState = useSelector(getBanOrUnbanUserModalState);
   const ChangePasswordModalState=useSelector(getChangePasswordModalState)
+  const walletSettingMiniModal=useSelector(getwalletSettingMiniModalState)
+
 
   return (
     <>
@@ -75,6 +79,7 @@ export const ModalContainer = () => {
       {deleteAccountModalState && <DeleteAccountModal {...deleteAccountModalState} />}
       {confirmModalState && <BchatConfirm {...confirmModalState} />}   
       {ChangePasswordModalState&&<ChangePassword />}
+      {walletSettingMiniModal&&<WalletModal />}
     </>
   );
 };

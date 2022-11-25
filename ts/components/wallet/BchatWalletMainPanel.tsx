@@ -11,9 +11,12 @@ import { NodeSetting } from "./BchatWalletNodeSetting"
 import { WalletPaymentSection } from "./BchatWalletPaymentSection"
 import { ReceivedForm } from "./BchatWalletReceivedForm"
 import { WalletSettings } from "./BchatWalletSettings"
-// import { SendForm } from "./BchatWalletSendForm"
- import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
-// import { TransactionSection } from "./BchatWalletTransactionSection"
+import { SendForm } from "./BchatWalletSendForm"
+import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
+import { TransactionSection } from "./BchatWalletTransactionSection"
+import { Daemon } from './daemon';
+import { Walletnew } from './wallet'
+import { startWalletRpc } from "../../mains/wallet-rpc"
 
 export enum WalletPage
 {
@@ -22,11 +25,13 @@ export enum WalletPage
    AddressBook="addressbook",
    Setting="setting",
    NodeSetting="nodeSetting",
-// import { TransactionSection } from "./BchatWalletTransactionSection"
 }
-import { Daemon } from './daemon';
-import { Walletnew } from './wallet'
-import { startWalletRpc } from "../../mains/wallet-rpc"
+export enum WalletDashboard{
+   walletSend="walletSend",
+   walletReceived="walletReceived",
+   walletTransaction="walletTransaction"
+}
+
 let wallet = new Walletnew();
 
 let daemon = new Daemon();
@@ -46,7 +51,7 @@ export const WalletMainPanel = () => {
   if(WalletPage.Dashboard===focusedsettings)
   {
       return <div className="wallet"><Dashboard />
-         <SyncStatusBar />
+         {/* <SyncStatusBar /> */}
       </div>
   }
  if(WalletPage.AddressBook===focusedsettings)
@@ -75,13 +80,14 @@ export const WalletMainPanel = () => {
          {/* <AddressBook /> */}
          {/* <NodeSetting /> */}
         {/* <WalletSettings /> */}
-         <SyncStatusBar />
+        
       </div>
    )
 }
 
 export const Dashboard=()=>
 {
+   const focusedInnersection=useSelector((state:any)=>state.walletInnerFocused)
  return(
    <>
     <WalletHeader />
@@ -89,10 +95,14 @@ export const Dashboard=()=>
          <div className="wallet-contentSpace">
           <BalanceAndsendReceiveAction />
          <SpacerLG />
+         {WalletDashboard.walletSend===focusedInnersection&&<SendForm />}
+         {WalletDashboard.walletReceived===focusedInnersection&&<ReceivedForm />}
+         {WalletDashboard.walletTransaction===focusedInnersection&&<TransactionSection />}
+
          {/* <SendForm /> */}
          {/* <TransactionSection /> */}
-         <ReceivedForm /> 
-
+          
+         <SyncStatusBar />
          </div>
    </>
  )

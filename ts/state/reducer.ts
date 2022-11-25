@@ -5,6 +5,7 @@ import { ConversationsStateType, reducer as conversations } from './ducks/conver
 import { reducer as user, UserStateType } from './ducks/user';
 import { reducer as theme, ThemeStateType } from './ducks/theme';
 import {reducer as walletFocused, WalletSectionStateType  } from './ducks/walletSection'
+import {reducer as walletInnerFocused, WalletInnerSectionStateType } from "./ducks/walletInnerSection"
 import { reducer as section, SectionStateType } from './ducks/section';
 import { defaultRoomReducer as defaultRooms, DefaultRoomsState } from './ducks/defaultRooms';
 import { callReducer as call, CallStateType } from './ducks/call';
@@ -36,6 +37,7 @@ export type StateType = {
   stagedAttachments: StagedAttachmentsStateType;
   call: CallStateType;
   walletFocused:WalletSectionStateType
+  walletInnerFocused:WalletInnerSectionStateType
 };
 
 export const reducers = {
@@ -53,7 +55,8 @@ export const reducers = {
   timerOptions,
   stagedAttachments,
   call,
-  walletFocused
+  walletFocused,
+  walletInnerFocused,
 };
 
 // Making this work would require that our reducer signature supported AnyAction, not

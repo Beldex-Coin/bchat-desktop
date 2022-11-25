@@ -125,7 +125,9 @@ textarea {
     }
 
     &.green {
-      background-image: var(--button-color);
+      // background-image: var(--button-color);
+      background-color: var(--button-color);
+
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
     }
@@ -178,7 +180,9 @@ textarea {
 
     &.green {
       @include transparent-background(var(--color-button-green));
-      background-image: var(--button-color);
+      // background-image: var(--button-color);
+      background-color: var(--button-color);
+
       color: white;
     }
 
@@ -1302,7 +1306,8 @@ label {
           font-size: 14px;
           font-family: 'Poppins';
           border-radius: 13px;
-          background-image: var(--button-color);
+          // background-image: var(--button-color);
+          background-color: var(--button-color);
         }
       }
     }
@@ -1406,7 +1411,6 @@ label {
       // padding: 3px 14px;
       padding: 10px 14px;
       cursor: pointer;
-
     }
     &-squarBox {
       // display: flex;
@@ -1556,7 +1560,9 @@ label {
         width: 40px;
         height: 40px;
         position: relative;
-        background-color: #128b17;
+        // background-color: #128b17;
+        background-color:var(--button-color);
+
         background-size: 16px;
         border-radius: 30px;
         background-position: center;
@@ -1652,7 +1658,8 @@ label {
           padding-left: 20px;
         }
         &-btn {
-          background-color: #128b17;
+          // background-color: #128b17;
+          background-color: var(--button-color);
           font-family: $bchat-font-poppin-semibold;
           width: 157px;
           display: flex;
@@ -1850,7 +1857,14 @@ label {
     }
 
     &-syncStatus {
+      position: relative;
       height: 30px;
+      // width: 66.5%;
+      bottom: 0;
+      &-absolute
+      {
+
+      }
       &-statusTxt {
         font-size: 12px;
         &-greenTxt {

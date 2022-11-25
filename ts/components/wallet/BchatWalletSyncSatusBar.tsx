@@ -9,6 +9,7 @@ export const SyncStatusBar=()=>{
     let height = useSelector((state:any)=>state.wallet.height);
     let daemonHeight = useSelector((state:any)=>state.daemon.height);
    return <div className="wallet-syncStatus">
+    <div  className="wallet-syncStatus-absolute">
      <Indicator />
     <Flex container={true} justifyContent="space-between" padding="5px 0">
     <Flex container={true} >
@@ -25,6 +26,7 @@ export const SyncStatusBar=()=>{
             </div>
         </Flex>
     </Flex>
+    </div>
     </div>
 }
 
