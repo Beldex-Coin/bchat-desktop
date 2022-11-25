@@ -7,17 +7,17 @@ import { HTTPError } from '../bchat/utils/errors';
 import request from 'request-promise';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
-const crypto = require("crypto");
-
-
+const crypto = require('crypto');
 
 export const startupWallet = async () => {
-  sendDaemonRPC('get_info');
-  return startWalletRpc();
-}
+  console.log('WALLETRPC:RPC');
+  startWalletRpc(true);
+};
 
-export const startWalletRpc = async () => {
+export const startWalletRpc = async (openDir?: Boolean) => {
   try {
+    console.log('params:::::::', openDir);
+
     let walletDir = await findDir();
 
     const rpcExecutable =
@@ -48,15 +48,17 @@ export const startWalletRpc = async () => {
       .checkPortStatus(64371, '127.0.0.1')
       .catch(() => 'closed')
       .then(async status => {
+        console.log("status:",status)
         if (status === 'closed') {
-          await walletRpc(rpcPath, walletDir);
+          await walletRpc(rpcPath, walletDir,openDir);
         } else {
           kill(64371)
             .then()
             .catch(err => {
               throw new HTTPError('beldex_rpc_port', err);
             });
-          await walletRpc(rpcPath, walletDir);
+            console.log("path va:",openDir)
+          await walletRpc(rpcPath, walletDir, openDir);
         }
       });
   } catch (e) {
@@ -64,32 +66,53 @@ export const startWalletRpc = async () => {
   }
 };
 
-async function walletRpc(rpcPath: string, walletDir: string) {
-  let currentDaemon :any =window.getDaemonNodeRandomlyPick();
+async function walletRpc(rpcPath: string, walletDir: string, openDir?: Boolean) {
+  let currentDaemon: any = window.getDaemonNodeRandomlyPick();
   const generateCredentials = await crypto.randomBytes(64 + 64);
-  let auth = generateCredentials.toString("hex");
+  let auth = generateCredentials.toString('hex');
   window.rpcUserName = auth.substr(0, 64);
   window.rpcPassword = auth.substr(64, 64);
-  let wallet = await ChildProcess.spawn(
-    rpcPath,
-    [
-      '--rpc-login',
-      `${window.rpcUserName}:${window.rpcPassword}`,
-      '--rpc-bind-port',
-      '64371',
-      '--daemon-address',
-      `${currentDaemon.host}:${currentDaemon.port}`,
-      '--rpc-bind-ip',
-      '127.0.0.1',
-      '--log-level',
-      '0',
-      '--wallet-dir',
-      `${walletDir}/wallet`,
-      '--log-file',
-      `${walletDir}/wallet-rpc.log`,
-    ],
-    { detached: true }
-  );
+  console.log("open:",openDir)
+  let option = openDir
+    ? [
+       '--testnet',
+        '--rpc-login',
+        // `${window.rpcUserName}:${window.rpcPassword}`,
+        'test:test',
+        '--rpc-bind-port',
+        '64371',
+        '--daemon-address',
+        `${currentDaemon.host}:${currentDaemon.port}`,
+        '--rpc-bind-ip',
+        '127.0.0.1',
+        '--log-level',
+        '0',
+        '--wallet-dir',
+        `${walletDir}/wallet`,
+        '--log-file',
+        `${walletDir}/wallet-rpc.log`,
+      ]
+    : [
+        '--testnet',
+        '--disable-rpc-login',
+        // `${window.rpcUserName}:${window.rpcPassword}`,
+        '--rpc-bind-port',
+        '64371',
+        '--daemon-address',
+        `${currentDaemon.host}:${currentDaemon.port}`,
+        '--rpc-bind-ip',
+        '127.0.0.1',
+        '--log-level',
+        '0',
+        '--wallet-file',
+        `${walletDir}/wallet/nowfil`,
+        '--password',
+        '11',
+        '--log-file',
+        `${walletDir}/wallet-rpc.log`,
+      ];
+      console.log("option:",option)
+  let wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
   wallet.stdout.on('data', data => {
     process.stdout.write(`Wallet: ${data}`);
   });
@@ -152,35 +175,25 @@ export async function generateMnemonic(props: any): Promise<any> {
   }
 }
 
-export const sendDaemonRPC = async(method:any, params = {}) => {
+
+export const walletheartAction =async () => {
   try {
-    let currentDaemon :any = window.getDaemonNodeRandomlyPick();
-    const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
-    console.log("DAEMON_URL:",url)
-    const fetchOptions = {
-      method: 'POST',
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: '0',
-        method: method,
-        params,
-      })
-    };
-    const response = await insecureNodeFetch(url, fetchOptions);
-    if (!response.ok) {
-      throw new HTTPError('beldex_rpc error', response);
-    }
+    console.log("wallet:")
+    // Promise.all([
+    let getAddress = await  walletRPC("getheight")
+     let getBalance = await walletRPC("getbalance", { account_index: 0 })
+     console.log("getAdd:",getAddress)
+     console.log("getBALANCE:",getBalance)
+    // ]).then( data =>{
+    //   console.log("walletheartAction?::::",data)
 
-    let result = await response.json();
+    // });
+    
+  } catch (error) {
+    throw new HTTPError('exception during wallet-rpc:', error);
 
-    if (result.hasOwnProperty('error').code === -1) {
-      if (result.error.code === -1) return result;
-    }
-    console.log("Daemon_response:",result.result.height)
-    return result;
-  } catch (e) {
-    throw new HTTPError('exception during wallet-rpc:', e);
   }
+  
 }
 
 export const walletRPC = async (method: string, params = {}) => {

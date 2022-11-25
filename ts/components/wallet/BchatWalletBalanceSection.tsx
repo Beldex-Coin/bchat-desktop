@@ -1,8 +1,10 @@
 import React from "react"
+import { useSelector } from "react-redux";
 import { SpacerMD, SpacerSM, SpacerXS } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
 
 export const WalletBalanceSection = () => {
+   const balance =useSelector((state:any)=>state.wallet.balance);
 
    return (
       <div className="wallet-squarBox">
@@ -15,8 +17,7 @@ export const WalletBalanceSection = () => {
                   <span className="marginLeft">Balance</span>
                </div>
                <SpacerSM />
-               <div className="wallet-left-balance-Sec-balanceTxt">
-                  123.358 <span className="marginRight">BDX</span>
+               <div className="wallet-left-balance-Sec-balanceTxt">{balance} <span className="marginRight">BDX</span>
                   <BchatIcon iconSize="medium" iconType="eye" />
                </div>
                <div className="wallet-left-balance-Sec-realCurrencyTxt">
@@ -34,7 +35,7 @@ export const WalletBalanceSection = () => {
                <div className="wallet-right-Button-Sec-unlockbal-box" >
                   <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
                   <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-                  <span className="unBalance">123.456</span>
+                  <span className="unBalance">{balance}</span>
                </div>
 
 

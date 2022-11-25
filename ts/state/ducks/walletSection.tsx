@@ -5,7 +5,7 @@ export const ADDRESSBOOK = "ADDRESSBOOK";
 export const SETTING = "SETTING";
 export const NODESETTING="NODESETTING";
 
-export type WalletStateType = 'walletPassword' | 'dashboard';
+export type WalletSectionStateType = 'walletPassword' | 'dashboard';
 export function password() {
     return {
         type: PASSWORD,
@@ -41,10 +41,10 @@ export function nodeSetting() {
     }
 
 }
-export const initialWalletState: WalletStateType = "walletPassword";
+export const initialWalletSectionState: WalletSectionStateType = "walletPassword";
 
 export const reducer = (
-    state: WalletStateType = initialWalletState,
+    state: WalletSectionStateType = initialWalletSectionState,
     {
         type,
         payload,

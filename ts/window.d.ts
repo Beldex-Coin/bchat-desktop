@@ -44,7 +44,8 @@ declare global {
     persistStore?: Persistor;
     restart: any;
     getSeedNodeList: () => Array<string> | undefined;
-    getDaemonNodeRandomlyPick:() => Object;
+    getDaemonNodeRandomlyPick: () => Object;
+    currentDaemon: any;
     rpcUserName: string;
     rpcPassword: string;
     setPassword: any;

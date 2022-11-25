@@ -1,10 +1,13 @@
 import React from "react"
+import { useSelector } from "react-redux";
 import styled from "styled-components"
 import { Flex } from "../basic/Flex"
 
 
 
 export const SyncStatusBar=()=>{
+    let height = useSelector((state:any)=>state.wallet.height);
+    let daemonHeight = useSelector((state:any)=>state.daemon.height);
    return <div className="wallet-syncStatus">
      <Indicator />
     <Flex container={true} justifyContent="space-between" padding="5px 0">
@@ -15,10 +18,10 @@ export const SyncStatusBar=()=>{
         </Flex>
         <Flex container={true} >
             <div style={{marginRight:"10px"}} className="wallet-syncStatus-statusvalue">
-            Remote : 1709092 
+            Remote : {daemonHeight} 
             </div>
             <div className="wallet-syncStatus-statusvalue">
-            Wallet : 1709092 / 1709092 (100.0%)
+            Wallet : {height} / {daemonHeight} (100.0%)
             </div>
         </Flex>
     </Flex>

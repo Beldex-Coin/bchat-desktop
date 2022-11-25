@@ -22,10 +22,18 @@ export enum WalletPage
    AddressBook="addressbook",
    Setting="setting",
    NodeSetting="nodeSetting",
-
-
-
+// import { TransactionSection } from "./BchatWalletTransactionSection"
 }
+import { Daemon } from './daemon';
+import { Walletnew } from './wallet'
+import { startWalletRpc } from "../../mains/wallet-rpc"
+let wallet = new Walletnew();
+
+let daemon = new Daemon();
+startWalletRpc(false);
+
+
+
 export const WalletMainPanel = () => {
   const focusedsettings=useSelector((state:any)=>state.walletFocused);
 //   console.log("focusedsettings:",focusedsettings,WalletPage.WalletPassword);
@@ -56,6 +64,10 @@ export const WalletMainPanel = () => {
       return  <div className="wallet"><NodeSetting  />
       </div>
   }
+   // walletheartAction();
+   daemon.daemonHeartbeat();
+   wallet.daemonHeartbeat();
+   
    return (
       <div className="wallet">
       
@@ -63,6 +75,7 @@ export const WalletMainPanel = () => {
          {/* <AddressBook /> */}
          {/* <NodeSetting /> */}
         {/* <WalletSettings /> */}
+         <SyncStatusBar />
       </div>
    )
 }

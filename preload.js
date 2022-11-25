@@ -265,6 +265,18 @@ window.getDaemonNodeRandomlyPick = () =>{
   return remotes[Math.floor((Math.random()*remotes.length))];
 }
 
+const remotes = [
+  {
+    host: "38.242.196.72",
+    port: "19095"
+  },
+  {
+    host: "154.26.139.105",
+    port: "19095"
+  }
+];
+window.currentDaemon = remotes[Math.floor((Math.random()*remotes.length))];
+
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);
 
