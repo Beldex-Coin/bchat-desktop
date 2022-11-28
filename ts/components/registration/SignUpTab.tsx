@@ -10,7 +10,7 @@ import {
   DisplayIdAndAddress ,
   ShowRecoveryPhase} from "./ShowIdAndAddress";
 import { StringUtils, ToastUtils } from '../../bchat/utils';
-import { generateMnemonic } from '../../mains/wallet-rpc';
+import { wallet } from '../../wallet/wallet-rpc';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
@@ -83,7 +83,7 @@ export const SignUpTab = (props:any) => {
 
   const generateMnemonicAndKeyPairCreate = async (props:any) => {
     if (generatedRecoveryPhrase === '') {
-      const mnemonic = await generateMnemonic(props);
+      const mnemonic = await wallet.generateMnemonic(props);
       let seedHex = mn_decode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;

@@ -16,12 +16,8 @@ import { TransactionSection } from "./BchatWalletTransactionSection"
 // import { SendForm } from "./BchatWalletSendForm"
  import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 // import { TransactionSection } from "./BchatWalletTransactionSection"
-import { Daemon } from './daemon';
-import { Wallet } from './wallet';
-
-
-export const wallet = new Wallet();
-export const daemon = new Daemon();
+import { daemon } from '../../wallet/daemon-rpc';
+import { wallet } from '../../wallet/wallet-rpc';
 
 
 export enum WalletPage

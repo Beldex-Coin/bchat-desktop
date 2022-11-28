@@ -5,7 +5,7 @@ import { dashboard } from "../../state/ducks/walletSection"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { SpacerLG, SpacerMD } from "../basic/Text"
 import { BchatIcon } from "../icon"
-import { wallet } from './BchatWalletMainPanel'
+import { wallet } from '../../wallet/wallet-rpc'
 
 export const WalletPassword = () => {
     const [password, setValue] = useState("")
@@ -18,7 +18,7 @@ export const WalletPassword = () => {
         console.log("profileName:", profileName)
 
         console.log("valueeee:", password)
-        let openWallet = await wallet.walletRPC("open_wallet", {
+        let openWallet = await wallet.sendRPC("open_wallet", {
             filename: profileName,
             password
         });

@@ -6,8 +6,8 @@
 // const nodeQueue = require("node-request-queue");
 const http = require('http');
 import { default as insecureNodeFetch } from 'node-fetch';
-import { HTTPError } from '../../bchat/utils/errors';
-import { updateDaemon } from '../../state/ducks/daemon';
+import { HTTPError } from '../bchat/utils/errors';
+import { updateDaemon } from '../state/ducks/daemon';
 import { useDispatch } from 'react-redux';
 
 // const os = require("os");
@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 // const crypto = require("crypto");
 // const portscanner = require("portscanner");
 
-export class Daemon {
+class Daemon {
   data_dir: null;
   wallet_dir: null;
   auth: never[];
@@ -72,7 +72,7 @@ export class Daemon {
   sendDaemonRPC = async (method: any, params = {}) => {
     try {
       console.log("DAEMON_NODE_CURRENT:",window.currentDaemon)
-      let currentDaemon: any = window.currentDaemon;
+      const currentDaemon: any = window.currentDaemon;
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
       const fetchOptions = {
         method: 'POST',
@@ -88,7 +88,7 @@ export class Daemon {
         throw new HTTPError('beldex_rpc error', response);
       }
 
-      let result = await response.json();
+      const result = await response.json();
       if (result.hasOwnProperty("error")) {
         return {
           method: method,
@@ -207,3 +207,5 @@ export class Daemon {
 //       }
 //     });
 //   }
+
+export const daemon = new Daemon();

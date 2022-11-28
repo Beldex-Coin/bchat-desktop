@@ -14,10 +14,10 @@ import {
 } from '../../util/accountManager';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
 import { 
-   restoreWallet } from '../../mains/wallet-rpc'
+  wallet } from '../../wallet/wallet-rpc'
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
-import { startupWallet } from '../../mains/wallet-rpc'
+// import { startWallet } from '../../mains/wallet-rpc'
 
 
 export const MAX_USERNAME_LENGTH = 26;
@@ -97,8 +97,8 @@ export async function signInWithRecovery(signInDetails: {
   }
 
   try {
-    const wallet = await restoreWallet(displayName,password, userRecoveryPhrase);
-    localStorage.setItem("userAddress",wallet.result.address);
+    const restoreWallet = await wallet.restoreWallet(displayName,password, userRecoveryPhrase);
+    localStorage.setItem("userAddress",restoreWallet.result.address);
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
@@ -199,7 +199,7 @@ export const RegistrationStages = () => {
   }, []);
 
   const generateMnemonicAndKeyPairaa = async () => { 
-  await startupWallet();
+  await wallet.startWallet();
   };
   return (
     <div className="bchat-registration-container">
