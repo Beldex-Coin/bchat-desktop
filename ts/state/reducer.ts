@@ -20,6 +20,7 @@ import {
 } from './ducks/stagedAttachments';
 import { reducer as wallet,WalletStateType } from './ducks/wallet';
 import { reducer as daemon,DaemonStateType } from './ducks/daemon';
+// import {reducer as walletConfig } from "./ducks/walletConfig"
 
 export type StateType = {
   search: SearchStateType;

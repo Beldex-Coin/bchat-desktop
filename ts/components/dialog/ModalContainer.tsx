@@ -79,7 +79,7 @@ export const ModalContainer:any = () => {
       {deleteAccountModalState && <DeleteAccountModal {...deleteAccountModalState} />}
       {confirmModalState && <BchatConfirm {...confirmModalState} />}   
       {ChangePasswordModalState&&<ChangePassword />}
-      {walletSettingMiniModal&&<WalletModal />}
+      {walletSettingMiniModal&&<WalletModal {...walletSettingMiniModal} />}
     </>
   );
 };

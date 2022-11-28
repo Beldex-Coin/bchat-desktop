@@ -33,6 +33,7 @@ export type ChangePasswordModalState={} | null
 export type walletSettingMiniModalState={
   headerName:string,
   content:any
+  onClose:any
 } | null
 
 export type ModalState = {

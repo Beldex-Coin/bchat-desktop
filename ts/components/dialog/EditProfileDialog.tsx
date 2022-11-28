@@ -436,7 +436,7 @@ const Loader = styled.div`
 `
 
 
-function copyBchatID(bchatID: any) {
+export function copyBchatID(bchatID: any) {
   window.clipboard.writeText(bchatID);
   ToastUtils.pushCopiedToClipBoard();
 }

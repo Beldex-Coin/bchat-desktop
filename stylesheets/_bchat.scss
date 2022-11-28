@@ -1693,6 +1693,11 @@ label {
             /* margin-bottom: 10px; */
             font-family: 'poppin-semibold';
           }
+          &-addresstxt
+          {
+            font-family: $bchat-font-poppin-light;
+            font-size: 12px;
+          }
 
           &-sendBtn,
           &-copyBtn {
@@ -1759,10 +1764,10 @@ label {
             align-items: center;
           }
         }
-        .bchat-modal__centered {
-          text-align: unset;
-          align-items: unset;
-        }
+        // .bchat-modal__centered {
+        //   text-align: unset;
+        //   align-items: unset;
+        // }
         &-oldpassInput,
         &-newPassInput {
           background-color: #353543;

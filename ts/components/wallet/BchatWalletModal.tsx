@@ -9,12 +9,15 @@ import { BchatWrapperModal } from "../BchatWrapperModal"
 export const WalletModal = (props:any) => {
 
     // console.log("content",props.content,props.headerName);
+
+    console.log('props.onClose',props.onClose);
+    
     
     const isSelect=1;
     return <div>
         <BchatWrapperModal
             title={props.headerName}
-            //   onClose={onClickCancelHandler}
+             onClose={props.onClose}
             showExitIcon={true}
             headerReverse={true}
         >
@@ -37,7 +40,7 @@ export const WalletModal = (props:any) => {
                 </div>
                 <SpacerMD />
                 <SpacerMD />
-                <div className="wallet-settings-modalBtnGrp">
+                {/* <div className="wallet-settings-modalBtnGrp"> */}
                 <div className="bchat-modal__button-group__center">
                     <BchatButton
                         text={window.i18n('cancel')}
@@ -56,7 +59,7 @@ export const WalletModal = (props:any) => {
 
 
                 {/* <BchatSpinner loading={isLoading} /> */}
-            </div>
+            {/* </div> */}
         </BchatWrapperModal>
         {/* <div>
             <header>{window.i18n('displayCurrency')}</header>

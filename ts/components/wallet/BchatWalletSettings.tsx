@@ -1,7 +1,8 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { ChangePasswordModal } from "../../state/ducks/modalDialog"
+import { ChangePasswordModal, walletSettingMiniModal } from "../../state/ducks/modalDialog"
 import { dashboard, nodeSetting } from "../../state/ducks/walletSection"
+
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerXS } from "../basic/Text"
 import { ModalContainer } from "../dialog/ModalContainer"
@@ -63,7 +64,9 @@ export const WalletSettings = () => {
                 <div className="wallet-settings-tabBox-subtle">
                     {window.i18n("displayCurrency")}
                 </div>
-                <div>
+                <div onClick={()=>dispatch(walletSettingMiniModal({headerName:"Currency",content:['Usd','inr','aug'],
+            onClose:()=>dispatch(walletSettingMiniModal(null))
+            }))}>
                    <span className="wallet-settings-tabBox-disableText">USD</span> 
                     <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
                 </div>
