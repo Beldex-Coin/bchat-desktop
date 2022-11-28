@@ -11,12 +11,11 @@ const crypto = require('crypto');
 
 export const startupWallet = async () => {
   console.log('WALLETRPC:RPC');
-  startWalletRpc(true);
+  startWalletRpc();
 };
 
-export const startWalletRpc = async (openDir?: Boolean) => {
+export const startWalletRpc = async () => {
   try {
-    console.log('params:::::::', openDir);
 
     let walletDir = await findDir();
 
@@ -50,15 +49,14 @@ export const startWalletRpc = async (openDir?: Boolean) => {
       .then(async status => {
         console.log("status:",status)
         if (status === 'closed') {
-          await walletRpc(rpcPath, walletDir,openDir);
+          await walletRpc(rpcPath, walletDir);
         } else {
           kill(64371)
             .then()
             .catch(err => {
               throw new HTTPError('beldex_rpc_port', err);
             });
-            console.log("path va:",openDir)
-          await walletRpc(rpcPath, walletDir, openDir);
+          await walletRpc(rpcPath, walletDir);
         }
       });
   } catch (e) {
@@ -66,19 +64,18 @@ export const startWalletRpc = async (openDir?: Boolean) => {
   }
 };
 
-async function walletRpc(rpcPath: string, walletDir: string, openDir?: Boolean) {
-  let currentDaemon: any = window.getDaemonNodeRandomlyPick();
+async function walletRpc(rpcPath: string, walletDir: string) {
+  let currentDaemon: any = window.currentDaemon;
   const generateCredentials = await crypto.randomBytes(64 + 64);
   let auth = generateCredentials.toString('hex');
   window.rpcUserName = auth.substr(0, 64);
   window.rpcPassword = auth.substr(64, 64);
-  console.log("open:",openDir)
-  let option = openDir
-    ? [
+  let option =  [
        '--testnet',
-        '--rpc-login',
+        // '--rpc-login',
+        '--disable-rpc-login',
         // `${window.rpcUserName}:${window.rpcPassword}`,
-        'test:test',
+        // 'test:test',
         '--rpc-bind-port',
         '64371',
         '--daemon-address',
@@ -91,32 +88,14 @@ async function walletRpc(rpcPath: string, walletDir: string, openDir?: Boolean) 
         `${walletDir}/wallet`,
         '--log-file',
         `${walletDir}/wallet-rpc.log`,
-      ]
-    : [
-        '--testnet',
-        '--disable-rpc-login',
-        // `${window.rpcUserName}:${window.rpcPassword}`,
-        '--rpc-bind-port',
-        '64371',
-        '--daemon-address',
-        `${currentDaemon.host}:${currentDaemon.port}`,
-        '--rpc-bind-ip',
-        '127.0.0.1',
-        '--log-level',
-        '0',
-        '--wallet-file',
-        `${walletDir}/wallet/nowfil`,
-        '--password',
-        '11',
-        '--log-file',
-        `${walletDir}/wallet-rpc.log`,
       ];
       console.log("option:",option)
   let wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
   wallet.stdout.on('data', data => {
     process.stdout.write(`Wallet: ${data}`);
   });
-  wallet.stdout.on('error', err => process.stderr.write(`Wallet: ${err}`));
+  wallet.stdout.on('error', err => {
+  process.stderr.write(`Wallet: ${err}`)});
   wallet.stdout.on('close', (code: any) => {
     process.stderr.write(`Wallet: exited with code ${code} \n`);
     if (code === null) {

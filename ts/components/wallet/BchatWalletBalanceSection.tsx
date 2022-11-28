@@ -4,7 +4,7 @@ import { SpacerMD, SpacerSM, SpacerXS } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
 
 export const WalletBalanceSection = () => {
-   const balance =useSelector((state:any)=>state.wallet.balance);
+   const balance =useSelector((state:any)=>state.wallet.balance);   
 
    return (
       <div className="wallet-squarBox">

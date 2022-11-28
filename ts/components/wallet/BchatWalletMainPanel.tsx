@@ -12,11 +12,17 @@ import { WalletPaymentSection } from "./BchatWalletPaymentSection"
 import { ReceivedForm } from "./BchatWalletReceivedForm"
 import { WalletSettings } from "./BchatWalletSettings"
 import { SendForm } from "./BchatWalletSendForm"
-import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 import { TransactionSection } from "./BchatWalletTransactionSection"
+// import { SendForm } from "./BchatWalletSendForm"
+ import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
+// import { TransactionSection } from "./BchatWalletTransactionSection"
 import { Daemon } from './daemon';
-import { Walletnew } from './wallet'
-import { startWalletRpc } from "../../mains/wallet-rpc"
+import { Wallet } from './wallet';
+
+
+export const wallet = new Wallet();
+export const daemon = new Daemon();
+
 
 export enum WalletPage
 {
@@ -31,12 +37,6 @@ export enum WalletDashboard{
    walletReceived="walletReceived",
    walletTransaction="walletTransaction"
 }
-
-let wallet = new Walletnew();
-
-let daemon = new Daemon();
-startWalletRpc(false);
-
 
 
 export const WalletMainPanel = () => {
@@ -70,8 +70,6 @@ export const WalletMainPanel = () => {
       </div>
   }
    // walletheartAction();
-   daemon.daemonHeartbeat();
-   wallet.daemonHeartbeat();
    
    return (
       <div className="wallet">
@@ -88,6 +86,8 @@ export const WalletMainPanel = () => {
 export const Dashboard=()=>
 {
    const focusedInnersection=useSelector((state:any)=>state.walletInnerFocused)
+   daemon.daemonHeartbeat();
+   wallet.daemonHeartbeat();
  return(
    <>
     <WalletHeader />

@@ -59,6 +59,7 @@ export class Daemon {
     this.heartbeat = setInterval(() => {
       //   this.heartbeatAction();
       this.sendDaemonRPC('get_info').then(data=>{
+        // if(data.hasOwnProperty("error")){
         dispatch(updateDaemon({height:data.result.height}));
       });
     }, 1000);
@@ -71,9 +72,8 @@ export class Daemon {
   sendDaemonRPC = async (method: any, params = {}) => {
     try {
       console.log("DAEMON_NODE_CURRENT:",window.currentDaemon)
-      let currentDaemon: any = window.getDaemonNodeRandomlyPick();
+      let currentDaemon: any = window.currentDaemon;
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
-      console.log('DAEMON_URL:', url);
       const fetchOptions = {
         method: 'POST',
         body: JSON.stringify({
@@ -89,11 +89,18 @@ export class Daemon {
       }
 
       let result = await response.json();
-
-      if (result.hasOwnProperty('error').code === -1) {
-        if (result.error.code === -1) return result;
+      if (result.hasOwnProperty("error")) {
+        return {
+          method: method,
+          params: params,
+          error: result.error
+        };
       }
-      return result;
+      return {
+        method: method,
+        params: params,
+        result: result.result
+      };
     } catch (e) {
       throw new HTTPError('exception during wallet-rpc:', e);
     }

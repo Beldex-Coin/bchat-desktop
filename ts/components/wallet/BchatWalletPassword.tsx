@@ -1,21 +1,39 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { pushToastError, pushToastSuccess } from "../../bchat/utils/Toast"
+import { useDispatch, useSelector } from "react-redux"
 import { dashboard } from "../../state/ducks/walletSection"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { SpacerLG, SpacerMD } from "../basic/Text"
 import { BchatIcon } from "../icon"
+import { wallet } from './BchatWalletMainPanel'
 
 export const WalletPassword = () => {
-    const [value, setValue] = useState("")
-    const dispatch=useDispatch();
-    function submit()
-    {
-        dispatch(dashboard())
+    const [password, setValue] = useState("")
+    const dispatch = useDispatch();
+    const userId = useSelector((state: any) => state.user.ourNumber);
+    const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+
+    async function submit() {
+        let profileName = UserDetails[userId].profileName;
+        console.log("profileName:", profileName)
+
+        console.log("valueeee:", password)
+        let openWallet = await wallet.walletRPC("open_wallet", {
+            filename: profileName,
+            password
+        });
+        console.log("openWallet:", openWallet)
+        if (openWallet.hasOwnProperty("error")) {
+            pushToastError("walletInvalidPassword",openWallet.error?.message );
+        } else {
+            pushToastSuccess("successPassword", "Success.");
+            dispatch(dashboard())
+        }
     }
     return <div className="wallet-walletPassword">
         <div className="wallet-walletPassword-contentBox">
-             <SpacerLG />
-             <SpacerLG />
+            <SpacerLG />
+            <SpacerLG />
             <div className="wallet-walletPassword-contentBox-walletImg">
             </div>
             <SpacerMD />
@@ -25,7 +43,7 @@ export const WalletPassword = () => {
             </div>
             <SpacerMD />
             <div className="wallet-walletPassword-contentBox-inputBox">
-                <input type={'text'} value={value} onChange={(e) => setValue(e.target.value)} />
+                <input type={'text'} value={password} onChange={(e) => setValue(e.target.value)} />
             </div>
             <SpacerMD />
             <div className="wallet-walletPassword-contentBox-forgotTxt">
@@ -37,7 +55,7 @@ export const WalletPassword = () => {
                     text={window.i18n('continue')}
                     buttonType={BchatButtonType.BrandOutline}
                     buttonColor={BchatButtonColor.Green}
-                  onClick={()=>submit()}
+                    onClick={() => submit()}
                 />
             </div>
             <SpacerLG />
