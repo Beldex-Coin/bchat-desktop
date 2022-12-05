@@ -4,7 +4,9 @@ import { SpacerMD, SpacerSM, SpacerXS } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
 
 export const WalletBalanceSection = () => {
-   const balance =useSelector((state:any)=>state.wallet.balance);   
+   const balance =useSelector((state:any)=>state.wallet.balance);  
+   let walletAddress = localStorage.getItem("userAddress");
+
 
    return (
       <div className="wallet-squarBox">
@@ -44,7 +46,7 @@ export const WalletBalanceSection = () => {
          <SpacerMD />
          <div className="wallet-myAddress-Box" >
             <div className="wallet-myAddress-Box-content">
-               bxcALKJHSakhdsadhaskdhHHHDJADHUAWas6…
+               {walletAddress}
             </div>
             <div className="wallet-myAddress-Box-copyIcon-box">
                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18.151 18.151">

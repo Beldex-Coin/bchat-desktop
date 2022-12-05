@@ -1561,7 +1561,7 @@ label {
         height: 40px;
         position: relative;
         // background-color: #128b17;
-        background-color:var(--button-color);
+        background-color: var(--button-color);
 
         background-size: 16px;
         border-radius: 30px;
@@ -1584,7 +1584,14 @@ label {
         justify-content: center;
         align-items: center;
         padding: 8px;
-
+        
+        .priortyBox
+        {
+          width: 90%;
+          height: 40px;
+          display: flex;
+          align-items: center;
+        }
         .bchat-button.brand.green {
           height: 40px;
         }
@@ -1593,6 +1600,8 @@ label {
           outline: none;
           width: 100%;
           height: 40px;
+          font-family: $bchat-font-poppin-light;
+          font-size: 12px;
         }
       }
       &-textArea {
@@ -1667,6 +1676,7 @@ label {
           align-items: center;
           height: 39px;
           border-radius: 6px;
+          cursor: pointer;
         }
       }
     }
@@ -1693,8 +1703,7 @@ label {
             /* margin-bottom: 10px; */
             font-family: 'poppin-semibold';
           }
-          &-addresstxt
-          {
+          &-addresstxt {
             font-family: $bchat-font-poppin-light;
             font-size: 12px;
           }
@@ -1791,7 +1800,7 @@ label {
           width: 100%;
           height: 1.5px;
         }
-        &-dropDownModal {
+        &-dropDownModal,&-sendDropDown {
           position: absolute;
           background-color: #1c1c26;
           width: 95%;
@@ -1803,6 +1812,25 @@ label {
           overflow: auto;
         }
 
+        &-sendDropDown
+        {
+          width: 100%;
+          top: 15px;
+          .dropDownItem
+          {
+            margin-bottom: 5px;
+            cursor:pointer;
+          }
+          .fontSemiBold
+          {
+            font-family: $bchat-font-poppin-semibold;
+          }
+          .fontRegular
+          {
+            font-family: $bchat-font-poppin-regular;
+
+          }
+        }
         &-remoteContentBox {
           display: flex;
           align-items: center;
@@ -1866,10 +1894,7 @@ label {
       height: 30px;
       // width: 66.5%;
       bottom: 0;
-      &-absolute
-      {
 
-      }
       &-statusTxt {
         font-size: 12px;
         &-greenTxt {

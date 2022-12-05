@@ -8,6 +8,8 @@ import { actions as theme } from './ducks/theme';
 import { actions as modalDialog } from './ducks/modalDialog';
 import {action as wallet} from "./ducks/walletSection";
 import {action as walletInner}from "./ducks/walletInnerSection"
+import {actions as walletConfig} from "./ducks/walletConfig"
+
 
 export function mapDispatchToProps(dispatch: Dispatch): Object {
   return {
@@ -20,7 +22,8 @@ export function mapDispatchToProps(dispatch: Dispatch): Object {
         ...sections,
         ...modalDialog,
         ...wallet,
-        ...walletInner
+        ...walletInner,
+        ...walletConfig
       },
       dispatch
     ),

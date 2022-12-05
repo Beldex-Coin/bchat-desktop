@@ -10,7 +10,7 @@
  }
  
  export const initialWalletConfigState:WalletConfigState = {
-    walletsendAddress:null,
+    walletsendAddress:'bd...',
    
  };
  
@@ -25,7 +25,7 @@
    },
  });
  
- const { actions, reducer } = walletConfigSlice;
+ export const { actions, reducer } = walletConfigSlice;
  export const {
     updateSendAddress,
  } = actions;

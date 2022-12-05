@@ -3,7 +3,8 @@ export const PASSWORD = "PASSWORD";
 export const DASHBOARD = "DASHBOARD";
 export const ADDRESSBOOK = "ADDRESSBOOK";
 export const SETTING = "SETTING";
-export const NODESETTING="NODESETTING";
+export const NODESETTING = "NODESETTING";
+export const CONTACT = "CONTACT";
 
 export type WalletSectionStateType = 'walletPassword' | 'dashboard';
 export function password() {
@@ -24,6 +25,13 @@ export function addressbook() {
     return {
         type: ADDRESSBOOK,
         payload: "addressbook"
+    }
+
+}
+export function contact() {
+    return {
+        type: CONTACT,
+        payload: "contact"
     }
 
 }
@@ -60,15 +68,17 @@ export const reducer = (
             return payload;
         case ADDRESSBOOK:
             return payload;
+        case CONTACT:
+            return payload;
         case SETTING:
             return payload;
-            case NODESETTING:
-                return payload;
+        case NODESETTING:
+            return payload;
         default:
             return state;
     }
 };
 
 export const action = {
-    password, dashboard,addressbook,setting,nodeSetting
+    password, dashboard, addressbook, setting, nodeSetting
 }
