@@ -150,8 +150,10 @@ class Wallet {
 
     const getAddress = await this.sendRPC('get_address');
     const mnemonic = await this.sendRPC('query_key', { key_type: 'mnemonic' });
+    if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
     localStorage.setItem('userAddress', getAddress.result.address);
     return mnemonic.result.key;
+    }
   } catch (e) {
     console.log('exception during wallet-rpc:', e);
   }
@@ -170,7 +172,6 @@ class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
-  
       if (restoreWallet.hasOwnProperty('error')) {
         if (restoreWallet.error.code === -1)
           restoreWallet = await this.deleteWallet(displayName, password, userRecoveryPhrase);
@@ -229,7 +230,6 @@ class Wallet {
       const getAddress = await this.sendRPC('getheight', {});
       const getBalance = await this.sendRPC('getbalance', { account_index: 0 });
       if (!getAddress.hasOwnProperty('error') && !getBalance.hasOwnProperty('error')) {
-        console.log('no error');
         const currentBalance = Number((getBalance.result.balance / 1000000000).toFixed(4));
         const currentHeight = getAddress.result.height;
         dispatch(updateBalance({ balance: currentBalance, height: currentHeight }));
@@ -255,13 +255,11 @@ class Wallet {
         timeout: timeout,
       };
       const response = await insecureNodeFetch(url, fetchOptions);
-      console.log('Response:', response);
       if (!response.ok) {
         throw new HTTPError('beldex_rpc error', response);
       }
 
       const result = await response.json();
-
       if (result.hasOwnProperty('error')) {
         return {
           method: method,

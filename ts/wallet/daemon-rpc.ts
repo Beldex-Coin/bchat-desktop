@@ -33,7 +33,7 @@ class Daemon {
   id: number | undefined;
   //   queue: any;
   agent: any;
-  dispatch :any;
+  dispatch: any;
   constructor() {
     this.data_dir = null;
     this.wallet_dir = null;
@@ -58,9 +58,10 @@ class Daemon {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(() => {
       //   this.heartbeatAction();
-      this.sendDaemonRPC('get_info').then(data=>{
-        // if(data.hasOwnProperty("error")){
-        dispatch(updateDaemon({height:data.result.height}));
+      this.sendRPC('get_info').then(data => {
+        if (!data.hasOwnProperty('error')) {
+          dispatch(updateDaemon({ height: data.result.height }));
+        }
       });
     }, 1000);
     // this.heartbeatAction(true);
@@ -69,9 +70,9 @@ class Daemon {
     throw new Error('Method not implemented.');
   }
 
-  sendDaemonRPC = async (method: any, params = {}) => {
+  sendRPC = async (method: any, params = {}) => {
     try {
-      console.log("DAEMON_NODE_CURRENT:",window.currentDaemon)
+      console.log('DAEMON_NODE_CURRENT:', window.currentDaemon);
       const currentDaemon: any = window.currentDaemon;
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
       const fetchOptions = {
@@ -87,19 +88,18 @@ class Daemon {
       if (!response.ok) {
         throw new HTTPError('beldex_rpc error', response);
       }
-
       const result = await response.json();
-      if (result.hasOwnProperty("error")) {
+      if (result.hasOwnProperty('error')) {
         return {
           method: method,
           params: params,
-          error: result.error
+          error: result.error,
         };
       }
       return {
         method: method,
         params: params,
-        result: result.result
+        result: result.result,
       };
     } catch (e) {
       throw new HTTPError('exception during wallet-rpc:', e);

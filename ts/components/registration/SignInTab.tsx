@@ -122,7 +122,8 @@ export const SignInTab = (props: any) => {
   const [screenName, setScreenName] = useState(1);
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
-
+  //  console.log("blockH:",blockheight);
+  //  console.log("blockDA:",restoreDate)
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
   // from the configuration message will be used.
@@ -138,6 +139,8 @@ export const SignInTab = (props: any) => {
   const activateContinueButton =  displayNameOK && !loading;
 
   const continueYourBchat = async () => {
+    console.log("blockH:",blockheight);
+    console.log("blockDA:",restoreDate)
     if (isRecovery) {
       await signInWithRecovery({
         displayName,

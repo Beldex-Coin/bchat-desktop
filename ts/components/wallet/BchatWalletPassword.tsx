@@ -15,14 +15,10 @@ export const WalletPassword = () => {
 
     async function submit() {
         let profileName = UserDetails[userId].profileName;
-        console.log("profileName:", profileName)
-
-        console.log("valueeee:", password)
         let openWallet = await wallet.sendRPC("open_wallet", {
             filename: profileName,
             password
         });
-        console.log("openWallet:", openWallet)
         if (openWallet.hasOwnProperty("error")) {
             pushToastError("walletInvalidPassword",openWallet.error?.message );
         } else {
