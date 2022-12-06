@@ -10,13 +10,14 @@ import { kill } from 'cross-port-killer';
 const crypto = require('crypto');
 import { updateBalance } from '../state/ducks/wallet';
 import { useDispatch } from 'react-redux';
+import { daemon } from './daemon-rpc';
+import { ToastUtils } from '../bchat/utils';
 
 class Wallet {
   heartbeat: any;
   constructor() {
     this.heartbeat = null;
   }
-  
 
   startWallet = async () => {
     try {
@@ -49,7 +50,6 @@ class Wallet {
         .checkPortStatus(64371, '127.0.0.1')
         .catch(() => 'closed')
         .then(async status => {
-          console.log("status:",status)
           if (status === 'closed') {
             await this.walletRpc(rpcPath, walletDir);
           } else {
@@ -58,7 +58,6 @@ class Wallet {
               .catch(err => {
                 throw new HTTPError('beldex_rpc_port', err);
               });
-              console.log("kjdkdjk")
             await this.walletRpc(rpcPath, walletDir);
           }
         });
@@ -67,47 +66,47 @@ class Wallet {
     }
   };
 
-
-  walletRpc = async(rpcPath: string, walletDir: string) =>{
+  walletRpc = async (rpcPath: string, walletDir: string) => {
     const currentDaemon: any = window.currentDaemon;
     const generateCredentials = await crypto.randomBytes(64 + 64);
     const auth = generateCredentials.toString('hex');
     window.rpcUserName = auth.substr(0, 64);
     window.rpcPassword = auth.substr(64, 64);
-    const option =  [
-         '--testnet',
-          // '--rpc-login',
-          '--disable-rpc-login',
-          // `${window.rpcUserName}:${window.rpcPassword}`,
-          // 'test:test',
-          '--rpc-bind-port',
-          '64371',
-          '--daemon-address',
-          `${currentDaemon.host}:${currentDaemon.port}`,
-          '--rpc-bind-ip',
-          '127.0.0.1',
-          '--log-level',
-          '0',
-          '--wallet-dir',
-          `${walletDir}/wallet`,
-          '--log-file',
-          `${walletDir}/wallet-rpc.log`,
-        ];
+    const option = [
+       '--testnet',
+      // '--rpc-login',
+      '--disable-rpc-login',
+      // `${window.rpcUserName}:${window.rpcPassword}`,
+      // 'test:test',
+      '--rpc-bind-port',
+      '64371',
+      '--daemon-address',
+      `${currentDaemon.host}:${currentDaemon.port}`,
+      '--rpc-bind-ip',
+      '127.0.0.1',
+      '--log-level',
+      '0',
+      '--wallet-dir',
+      `${walletDir}/wallet`,
+      '--log-file',
+      `${walletDir}/wallet-rpc.log`,
+    ];
     const wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
     wallet.stdout.on('data', data => {
       process.stdout.write(`Wallet: ${data}`);
     });
     wallet.stdout.on('error', err => {
-    process.stderr.write(`Wallet: ${err}`)});
+      process.stderr.write(`Wallet: ${err}`);
+    });
     wallet.stdout.on('close', (code: any) => {
       process.stderr.write(`Wallet: exited with code ${code} \n`);
       if (code === null) {
         // console.log("Failed to start wallet RPC");
       }
     });
-  }
+  };
 
-  createWallet = async(filename: string, password: string, language: string, method: string)=> {
+  createWallet = async (filename: string, password: string, language: string, method: string) => {
     try {
       const options = {
         uri: `http://localhost:64371/json_rpc`,
@@ -130,10 +129,11 @@ class Wallet {
         timeout: 0,
       };
       let requestData: any = await request(options);
-  
+
       if (requestData.hasOwnProperty('error')) {
         if (requestData.error.code === -21) {
-          let walletDir = os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+          let walletDir =
+            os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
           fs.emptyDirSync(walletDir);
           requestData = await request(options);
         }
@@ -142,49 +142,72 @@ class Wallet {
     } catch (err) {
       // console.log("ERR:",err)
     }
-  }
+  };
 
-  generateMnemonic = async(props: any): Promise<any> => {
-  try {
-    await this.createWallet(props.displayName, props.password, 'English', 'create_wallet');
+  generateMnemonic = async (props: any): Promise<any> => {
+    try {
+      await this.createWallet(props.displayName, props.password, 'English', 'create_wallet');
 
-    const getAddress = await this.sendRPC('get_address');
-    const mnemonic = await this.sendRPC('query_key', { key_type: 'mnemonic' });
-    if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
-    localStorage.setItem('userAddress', getAddress.result.address);
-    return mnemonic.result.key;
+      const getAddress = await this.sendRPC('get_address');
+      const mnemonic = await this.sendRPC('query_key', { key_type: 'mnemonic' });
+      if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
+        localStorage.setItem('userAddress', getAddress.result.address);
+        return mnemonic.result.key;
+      }
+    } catch (e) {
+      console.log('exception during wallet-rpc:', e);
     }
-  } catch (e) {
-    console.log('exception during wallet-rpc:', e);
-  }
-}
+  };
 
   restoreWallet = async (
     displayName: string,
     password: string,
-    userRecoveryPhrase: string
+    userRecoveryPhrase: string,
+    refreshDetails: any
   ) => {
     let restoreWallet;
+    let restore_height;
     try {
+      if (refreshDetails.refresh_type == 'date') {
+        //   // Convert timestamp to 00:00 and move back a day
+        //   // Core code also moved back some amount of blocks
+        restore_height = await daemon.timestampToHeight(refreshDetails.refresh_start_timestamp_or_height);
+        if (restore_height === false) {
+          ToastUtils.pushToastError(
+            'invalidRestoreDate',window.i18n('invalidRestoreDate'));
+        }
+      } else {
+         restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
+        // if the height can't be parsed just start from block 0
+        if (!restore_height) {
+          restore_height = 0;
+        }
+      }
+
       restoreWallet = await this.sendRPC('restore_deterministic_wallet', {
-        restore_height: await this.getLatestHeight(),
+        restore_height: restore_height,
         filename: displayName,
         password: password,
         seed: userRecoveryPhrase,
       });
       if (restoreWallet.hasOwnProperty('error')) {
         if (restoreWallet.error.code === -1)
-          restoreWallet = await this.deleteWallet(displayName, password, userRecoveryPhrase);
+          restoreWallet = await this.deleteWallet(
+            displayName,
+            password,
+            userRecoveryPhrase,
+            refreshDetails
+          );
       }
-      // if(restoreWallet.hasOwnProperty('result')){
-      //   kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
-      // }
+      if(restoreWallet.hasOwnProperty('result')){
+        kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+      }
       return restoreWallet;
     } catch (error) {
       throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
-  
+
   getLatestHeight = async () => {
     try {
       const response = await insecureNodeFetch('http://explorer.beldex.io:19091/get_height', {
@@ -201,15 +224,17 @@ class Wallet {
     }
   };
 
-  deleteWallet = async(
+  deleteWallet = async (
     displayName: string,
     password: string,
-    userRecoveryPhrase: string
+    userRecoveryPhrase: string,
+    refreshDetails: object
   ): Promise<any> => {
-    let walletDir = os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+    let walletDir =
+      os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
     fs.emptyDirSync(walletDir);
-    return await this.restoreWallet(displayName, password, userRecoveryPhrase);
-  }
+    return await this.restoreWallet(displayName, password, userRecoveryPhrase, refreshDetails);
+  };
 
   findDir = () => {
     let walletDir;
@@ -219,7 +244,7 @@ class Wallet {
       walletDir = path.join(os.homedir(), 'Beldex');
     }
     // console.log('walletDirwalletDir',walletDir);
-  
+
     return walletDir;
   };
 

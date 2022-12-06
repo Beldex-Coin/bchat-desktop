@@ -33,6 +33,7 @@ export type LocalizerKeys =
   |'enterAmount'
   |'forgotPassword'
   |'enterwalletPassword'
+  |'invalidRestoreDate'
   |'changewalletPassword'
   |'reEnterPassword'
   |'saveRecipientAddress'

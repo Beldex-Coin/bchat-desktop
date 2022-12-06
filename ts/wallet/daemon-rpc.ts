@@ -34,6 +34,9 @@ class Daemon {
   //   queue: any;
   agent: any;
   dispatch: any;
+  PIVOT_BLOCK_HEIGHT: number;
+  PIVOT_BLOCK_TIMESTAMP: number;
+  PIVOT_BLOCK_TIME: number;
   constructor() {
     this.data_dir = null;
     this.wallet_dir = null;
@@ -50,6 +53,9 @@ class Daemon {
     };
     this.last_height_send_time = Date.now();
     this.agent = new http.Agent({ keepAlive: true, maxSockets: 10 });
+    this.PIVOT_BLOCK_HEIGHT = 742421;
+    this.PIVOT_BLOCK_TIMESTAMP = 1639187815;
+    this.PIVOT_BLOCK_TIME = 0;
     // this.queue = new queue(1, Infinity);
   }
 
@@ -105,6 +111,70 @@ class Daemon {
       throw new HTTPError('exception during wallet-rpc:', e);
     }
   };
+
+  timestampToHeight(date: any) {
+    return new Promise((resolve, reject) => {
+
+      let timestamp = new Date(date).getTime();
+      timestamp = timestamp - (timestamp % 86400000) - 86400000;
+
+      if (timestamp > 999999999999) {
+        // We have got a JS ms timestamp, convert
+        timestamp = Math.floor(timestamp / 1000);
+      }
+      if (timestamp > this.PIVOT_BLOCK_TIMESTAMP) {
+        this.PIVOT_BLOCK_TIME = 30;
+      } else {
+        this.PIVOT_BLOCK_TIME = 120;
+      }
+      const pivot = [this.PIVOT_BLOCK_HEIGHT, this.PIVOT_BLOCK_TIMESTAMP];
+      let diff = Math.floor((timestamp - pivot[1]) / this.PIVOT_BLOCK_TIME);
+      let estimated_height = pivot[0] + diff;
+
+      if (estimated_height <= 0) {
+        return resolve(0);
+      }
+      this.sendRPC('getblockheaderbyheight', {
+        height: estimated_height,
+      }).then(data => {
+        if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
+          if (data.error.code == -2) {
+            // Too big height
+            this.sendRPC('getlastblockheader').then(data => {
+              if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
+                return reject();
+              }
+              let new_pivot = [data.result.block_header.height, data.result.block_header.timestamp];
+              // If we are within an hour that is good enough
+              // If for some reason there is a > 1h gap between blocks
+              // the recursion limit will take care of infinite loop
+              if (Math.abs(timestamp - new_pivot[1]) < 3600) {
+                return resolve(new_pivot[0]);
+              }
+
+              // Continue recursion with new pivot
+              resolve(new_pivot[0]);
+            });
+            return;
+          } else {
+            return reject();
+          }
+        }
+
+        let new_pivot = [data.result.block_header.height, data.result.block_header.timestamp];
+
+        // If we are within an hour that is good enough
+        // If for some reason there is a > 1h gap between blocks
+        // the recursion limit will take care of infinite loop
+        if (Math.abs(timestamp - new_pivot[1]) < 3600) {
+          return resolve(new_pivot[0]);
+        }
+
+        // Continue recursion with new pivot
+        resolve(new_pivot[0]);
+      });
+    });
+  }
 }
 
 // export function startHeartbeat() {

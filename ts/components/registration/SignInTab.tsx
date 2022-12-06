@@ -106,8 +106,8 @@ const SignInButtons = (props: {
 export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
 
-  const [password,setPassword]=useState('');
-  const [repassword,setRepassword]=useState("");
+  const [password, setPassword] = useState('');
+  const [repassword, setRepassword] = useState('');
 
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
   const [recoveryPhraseError, setRecoveryPhraseError] = useState(undefined as string | undefined);
@@ -122,8 +122,8 @@ export const SignInTab = (props: any) => {
   const [screenName, setScreenName] = useState(1);
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
-  //  console.log("blockH:",blockheight);
-  //  console.log("blockDA:",restoreDate)
+
+
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
   // from the configuration message will be used.
@@ -135,17 +135,19 @@ export const SignInTab = (props: any) => {
   // Seed is mandatory no matter which mode
   const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
   console.log(seedOK);
-  
-  const activateContinueButton =  displayNameOK && !loading;
+
+  const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
 
   const continueYourBchat = async () => {
-    console.log("blockH:",blockheight);
-    console.log("blockDA:",restoreDate)
     if (isRecovery) {
+      let refreshDetails = blockheight ?
+        { refresh_start_timestamp_or_height: blockheight, refresh_type: "height" }
+        : { refresh_start_timestamp_or_height: restoreDate, refresh_type: "date" };
       await signInWithRecovery({
         displayName,
         password,
         userRecoveryPhrase: recoveryPhrase,
+        refreshDetails
       });
     } else if (isLinking) {
       setIsLoading(true);
@@ -156,19 +158,16 @@ export const SignInTab = (props: any) => {
     }
   };
 
-  const passValid=()=>
-  {
-    if (!password||!repassword) {
-      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !' );
-       
-     }
-    else if (password!==repassword)
-    {
-      window?.log?.warn('invalid password');
-     ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !' ); 
+  const passValid = () => {
+    if (!password || !repassword) {
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !');
+
     }
-    else
-    {
+    else if (password !== repassword) {
+      window?.log?.warn('invalid password');
+      ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !');
+    }
+    else {
       setScreenName(3)
     }
   }
@@ -201,11 +200,11 @@ export const SignInTab = (props: any) => {
 
   }
 
-  if (signInMode !== SignInMode.Default && screenName===1) {
+  if (signInMode !== SignInMode.Default && screenName === 1) {
 
     return <>
       <div className='bchat-registration__backbutton'>
-        <GoBackMainMenuButton assent={() => {props.assent(true); setScreenName(1);}} />
+        <GoBackMainMenuButton assent={() => { props.assent(true); setScreenName(1); }} />
       </div>
       <DisplaySeed
         iconfunc={() => assignSeed()}
@@ -219,16 +218,15 @@ export const SignInTab = (props: any) => {
     </>
 
   }
- 
-  if(screenName===2)
-  {
-    return  <WalletPassword 
-    password={password}
-    repassword={repassword}
-    setPassword={(e:any)=>setPassword(e)}  
-    setRepassword={(e:any)=>setRepassword(e)}
-    backArrow={()=>{setScreenName(1);setPassword("");setRepassword(""),props.assent(true);}}
-    submit={passValid}
+
+  if (screenName === 2) {
+    return <WalletPassword
+      password={password}
+      repassword={repassword}
+      setPassword={(e: any) => setPassword(e)}
+      setRepassword={(e: any) => setRepassword(e)}
+      backArrow={() => { setScreenName(1); setPassword(""); setRepassword(""), props.assent(true); }}
+      submit={passValid}
     />
   }
 
@@ -245,7 +243,7 @@ export const SignInTab = (props: any) => {
 
   return (
     <div className="bchat-registration__content">
-      {screenName===3 && (
+      {screenName === 3 && (
         <>
           <div className='bchat-registration__backbutton'
             // data-tip="Back"
