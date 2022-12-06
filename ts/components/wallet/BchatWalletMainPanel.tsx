@@ -35,11 +35,12 @@ export enum WalletDashboard {
    walletTransaction = "walletTransaction"
 }
 
-
+ 
 export const WalletMainPanel = () => {
    const focusedsettings = useSelector((state: any) => state.walletFocused);
    const [amount, setAmount] = useState(0);
    const [priority, setPriority] = useState(window.i18n("flash"));
+   const [passScreen,setPassScreen]=useState(true);
 
    function numberOnly(e: any) {
       if (isNaN(e)) {
@@ -56,12 +57,16 @@ export const WalletMainPanel = () => {
    //       return  <div className="wallet"> <WalletPassword />
    //       </div>
    //   }
-   if (WalletPage.Dashboard === focusedsettings) {
-
-      return <div className="wallet"><Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
-         {/* <SyncStatusBar /> */}
-      </div>
+   if(passScreen)
+   {
+      return <div className="wallet"><WalletPassword  onClick={()=>{setPassScreen(!passScreen)}}/> </div>
    }
+   // if (WalletPage.Dashboard === focusedsettings) {
+
+   //    return <div className="wallet"><Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
+   //       {/* <SyncStatusBar /> */}
+   //    </div>
+   // }
    if (WalletPage.AddressBook === focusedsettings) {
       return <div className="wallet"><AddressBook name={window.i18n('addressBook')} />
       </div>
@@ -83,7 +88,11 @@ export const WalletMainPanel = () => {
    return (
       <div className="wallet">
 
-         {WalletPage.WalletPassword === focusedsettings && <WalletPassword />}
+         {WalletPage.Dashboard === focusedsettings &&
+      <Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
+         }
+
+         {/* <WalletPassword /> */}
          {/* <AddressBook /> */}
          {/* <NodeSetting /> */}
          {/* <WalletSettings /> */}

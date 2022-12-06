@@ -7,7 +7,7 @@ import { SpacerLG, SpacerMD } from "../basic/Text"
 import { BchatIcon } from "../icon"
 import { wallet } from '../../wallet/wallet-rpc'
 
-export const WalletPassword = () => {
+export const WalletPassword = (props:any) => {
     const [password, setValue] = useState("")
     const dispatch = useDispatch();
     const userId = useSelector((state: any) => state.user.ourNumber);
@@ -23,6 +23,7 @@ export const WalletPassword = () => {
             pushToastError("walletInvalidPassword",openWallet.error?.message );
         } else {
             pushToastSuccess("successPassword", "Success.");
+            props.onClick();
             dispatch(dashboard())
         }
     }

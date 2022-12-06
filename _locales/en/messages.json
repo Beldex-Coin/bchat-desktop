@@ -7,7 +7,7 @@
   "transactions":"Transactions",
   "filter":"Filter",
   "filterPlaceHolder":"Enter an ID, name, address or amount",
-  "filterAll":"all",
+ 
   "addressBook":"Address Book",
   "copyErrorAndQuit": "Copy error and quit",
   "copyAddress":"Copy Address",
@@ -24,6 +24,11 @@
   "flash":"Flash",
   "slow":"Slow",
   "test":"Test",
+  "filterAll":"All",
+  "filterIncoming":"Incoming",
+  "filterOutgoing":"Outgoing",
+  "filterPending":"Pending",
+
   "enterAmount":"Enter an Amount",
   "unknown": "Unknown",
   "receiveBDX":"Receive BDX",
