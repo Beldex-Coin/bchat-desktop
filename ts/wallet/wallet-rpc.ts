@@ -345,7 +345,7 @@ class Wallet {
     const currency = 'usd';
     const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
     const currencyValue: any = await response.json();
-    return response.ok ? balance / currencyValue[currency] : 0;
+    return response.ok ? balance * currencyValue[currency] : 0;
   };
 
   sendRPC = async (method: string, params = {}, timeout = 0) => {

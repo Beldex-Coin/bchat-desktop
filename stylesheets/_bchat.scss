@@ -1818,6 +1818,7 @@ label {
         &-sendDropDown {
           width: 100%;
           top: 15px;
+          padding: 18px;
           .dropDownItem {
             margin-bottom: 5px;
             cursor: pointer;
@@ -1925,7 +1926,8 @@ label {
       border-radius: 10px;
       padding: 15px;
       height: 58%;
-      overflow-y: auto;
+      // overflow-y: auto;
+      margin-bottom: 10px;
 
       &-filterInput {
         width: 298px;
@@ -1951,14 +1953,20 @@ label {
           text-align: center;
         }
       }
-
+      &-parentBox
+    {
+      height: 84%;
+      overflow-y: auto;
+    }
       &-contentBox {
         background-color: #1c1c26;
         padding: 15px;
         border-radius: 10px;
+        margin-bottom: 5px;
         &-sendIndicationBox {
           display: flex;
-          width: 15%;
+          // width: 15%;
+          width: 110px;
           /* text-align: center; */
           flex-direction: column;
           align-items: center;
@@ -1975,8 +1983,10 @@ label {
           background-color: #303041;
         }
         &-balanceBox {
-          width: 580px;
+          width: 750px;
           margin-left: 20px;
+          font-size: 12px;
+          font-family: $bchat-font-poppin-light;
           &-amount {
             color: #69697c;
             font-size: 18px;

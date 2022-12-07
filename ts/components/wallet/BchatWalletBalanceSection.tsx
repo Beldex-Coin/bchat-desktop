@@ -5,11 +5,13 @@ import { BchatIcon } from "../icon/BchatIcon";
 // import { walletHelper } from "./BchatWalletHelper";
 
 
+
 export const WalletBalanceSection = () => {
    let wallet = useSelector((state: any) => state.wallet);
    let walletAddress = localStorage.getItem("userAddress");
    // const balanceConv = walletHelper.currencyConversion(balance);
 
+ console.log ("walletBalance :: ",wallet)
 
    return (
       <div className="wallet-squarBox">
