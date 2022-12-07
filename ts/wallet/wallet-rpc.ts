@@ -8,19 +8,37 @@ import request from 'request-promise';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
 const crypto = require('crypto');
-import { updateBalance } from '../state/ducks/wallet';
-import { useDispatch } from 'react-redux';
+// import { updateBalance } from '../state/ducks/wallet';
+// import { useDispatch } from 'react-redux';
 import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
 
 class Wallet {
   heartbeat: any;
+  wallet_state: {
+    open: boolean;
+    name: string;
+    balance: number;
+    unlocked_balance: number;
+  };
   constructor() {
     this.heartbeat = null;
+    this.wallet_state = {
+      open: false,
+      name: '',
+      balance: 0,
+      unlocked_balance: 0,
+    };
   }
 
   startWallet = async () => {
     try {
+      const status = await this.runningStatus();
+      console.log('stat:', status);
+      if (status == true) {
+        return;
+      }
+      console.log('statuslive:', status);
       let walletDir = await this.findDir();
       const rpcExecutable =
         process.platform === 'linux'
@@ -66,6 +84,22 @@ class Wallet {
     }
   };
 
+  runningStatus = () => {
+    return portscanner
+      .checkPortStatus(64371, '127.0.0.1')
+      .catch(() => 'closed')
+      .then(
+        async (status): Promise<any> => {
+          console.log('status:', status);
+          if (status === 'closed') {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      );
+  };
+
   walletRpc = async (rpcPath: string, walletDir: string) => {
     const currentDaemon: any = window.currentDaemon;
     const generateCredentials = await crypto.randomBytes(64 + 64);
@@ -73,7 +107,7 @@ class Wallet {
     window.rpcUserName = auth.substr(0, 64);
     window.rpcPassword = auth.substr(64, 64);
     const option = [
-       '--testnet',
+      '--testnet',
       // '--rpc-login',
       '--disable-rpc-login',
       // `${window.rpcUserName}:${window.rpcPassword}`,
@@ -171,13 +205,14 @@ class Wallet {
       if (refreshDetails.refresh_type == 'date') {
         //   // Convert timestamp to 00:00 and move back a day
         //   // Core code also moved back some amount of blocks
-        restore_height = await daemon.timestampToHeight(refreshDetails.refresh_start_timestamp_or_height);
+        restore_height = await daemon.timestampToHeight(
+          refreshDetails.refresh_start_timestamp_or_height
+        );
         if (restore_height === false) {
-          ToastUtils.pushToastError(
-            'invalidRestoreDate',window.i18n('invalidRestoreDate'));
+          ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
         }
       } else {
-         restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
+        restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
         // if the height can't be parsed just start from block 0
         if (!restore_height) {
           restore_height = 0;
@@ -199,8 +234,12 @@ class Wallet {
             refreshDetails
           );
       }
-      if(restoreWallet.hasOwnProperty('result')){
-        kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+      if (restoreWallet.hasOwnProperty('result')) {
+        kill(64371)
+          .then()
+          .catch(err => {
+            throw new HTTPError('beldex_rpc_port', err);
+          });
       }
       return restoreWallet;
     } catch (error) {
@@ -243,25 +282,71 @@ class Wallet {
     } else {
       walletDir = path.join(os.homedir(), 'Beldex');
     }
-    // console.log('walletDirwalletDir',walletDir);
 
     return walletDir;
   };
 
-  daemonHeartbeat() {
-    const dispatch = useDispatch();
+  startHeartbeat() {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
-      const getAddress = await this.sendRPC('getheight', {});
-      const getBalance = await this.sendRPC('getbalance', { account_index: 0 });
-      if (!getAddress.hasOwnProperty('error') && !getBalance.hasOwnProperty('error')) {
-        const currentBalance = Number((getBalance.result.balance / 1000000000).toFixed(4));
-        const currentHeight = getAddress.result.height;
-        dispatch(updateBalance({ balance: currentBalance, height: currentHeight }));
-      }
-    }, 5000);
+      this.heartbeatAction();
+    }, 8000);
     // this.heartbeatAction(true);
   }
+  async heartbeatAction() {
+    Promise.all([
+      this.sendRPC('getheight', {}, 5000),
+      this.sendRPC('getbalance', { account_index: 0 }, 5000),
+    ]).then(async data => {
+      // const dispatch = useDispatch();
+      let wallet = {
+        info: {
+          height: 0,
+          balance: 0,
+          unlocked_balance: 0,
+          balanceConvert: 0,
+        },
+        transactions: {
+          tx_list: [],
+        },
+      };
+
+      for (let n of data) {
+        if (n.hasOwnProperty('error') || !n.hasOwnProperty('result')) {
+          // Maybe we also need to look into the other error codes it could give us
+          // Error -13: No wallet file - This occurs when you call open wallet while another wallet is still syncing
+          if (n.error && n.error.code === -13) {
+            // didError = true;
+          }
+          continue;
+        }
+
+        if (n.method == 'getheight') {
+          wallet.info.height = n.result.height;
+        } else if (n.method == 'getbalance') {
+          wallet.info.balance = n.result.balance / 1000000000;
+          wallet.info.unlocked_balance = n.result.unlocked_balance / 1000000000;
+        }
+      }
+      const balanceConversation = await this.currencyConv(wallet.info.balance);
+      console.log('balance:', balanceConversation);
+
+      // dispatch(
+      //   updateBalance({
+      //     balance: wallet.info.balance,
+      //     unlocked_balance: wallet.info.unlocked_balance,
+      //     height: wallet.info.height,
+      //     balanceConvert: balanceConversation
+      //   })
+      // );
+    });
+  }
+  currencyConv = async (balance: number) => {
+    const currency = 'usd';
+    const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
+    const currencyValue: any = await response.json();
+    return response.ok ? balance / currencyValue[currency] : 0;
+  };
 
   sendRPC = async (method: string, params = {}, timeout = 0) => {
     try {

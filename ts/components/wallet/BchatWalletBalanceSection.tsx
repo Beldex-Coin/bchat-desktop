@@ -1,16 +1,19 @@
 import React from "react"
 import { useSelector } from "react-redux";
 import { SpacerMD, SpacerSM, SpacerXS } from "../basic/Text"
-import { BchatIcon } from "../icon/BchatIcon"
+import { BchatIcon } from "../icon/BchatIcon";
+// import { walletHelper } from "./BchatWalletHelper";
+
 
 export const WalletBalanceSection = () => {
-   const balance =useSelector((state:any)=>state.wallet.balance);  
+   let wallet = useSelector((state: any) => state.wallet);
    let walletAddress = localStorage.getItem("userAddress");
+   // const balanceConv = walletHelper.currencyConversion(balance);
 
 
    return (
       <div className="wallet-squarBox">
-         <div style={{display:"flex"}}>
+         <div style={{ display: "flex" }}>
             <div className="wallet-left-balance-Sec">
                <SpacerXS />
 
@@ -19,25 +22,25 @@ export const WalletBalanceSection = () => {
                   <span className="marginLeft">Balance</span>
                </div>
                <SpacerSM />
-               <div className="wallet-left-balance-Sec-balanceTxt">{balance} <span className="marginRight">BDX</span>
+               <div className="wallet-left-balance-Sec-balanceTxt">{wallet.balance} <span className="marginRight">BDX</span>
                   <BchatIcon iconSize="medium" iconType="eye" />
                </div>
                <div className="wallet-left-balance-Sec-realCurrencyTxt">
-                  5.808888484 <span>USD</span>
+                  {wallet.balanceConvert} <span>USD</span>
                </div>
             </div>
             <div className="wallet-right-Button-Sec">
                <SpacerXS />
                <div className="wallet-right-Button-Sec-fetch-btn">
                   <BchatIcon iconSize="tiny" iconType="fetch" />
-                  <span style={{marginLeft:'2px'}}>Fetch Balance & Txn</span>
+                  <span style={{ marginLeft: '2px' }}>Fetch Balance & Txn</span>
                </div>
                <SpacerSM />
 
                <div className="wallet-right-Button-Sec-unlockbal-box" >
                   <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
                   <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-                  <span className="unBalance">{balance}</span>
+                  <span className="unBalance">{wallet.balance}</span>
                </div>
 
 

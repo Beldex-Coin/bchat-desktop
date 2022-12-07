@@ -19,6 +19,7 @@ export const WalletPassword = (props:any) => {
             filename: profileName,
             password
         });
+        console.log("open_wallet:",openWallet)
         if (openWallet.hasOwnProperty("error")) {
             pushToastError("walletInvalidPassword",openWallet.error?.message );
         } else {

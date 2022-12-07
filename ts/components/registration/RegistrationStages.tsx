@@ -17,7 +17,6 @@ import {
   wallet } from '../../wallet/wallet-rpc'
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
-// import { startWallet } from '../../mains/wallet-rpc'
 
 
 export const MAX_USERNAME_LENGTH = 26;

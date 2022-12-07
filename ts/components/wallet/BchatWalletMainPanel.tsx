@@ -103,8 +103,8 @@ export const WalletMainPanel = () => {
 
 export const Dashboard = (props: any) => {
    const focusedInnersection = useSelector((state: any) => state.walletInnerFocused)
+   wallet.startHeartbeat();
    daemon.daemonHeartbeat();
-   wallet.daemonHeartbeat();
 
    return (
       <>

@@ -39,7 +39,8 @@ export const ClearIcon = (props: any) => (
 )
 
 const handlePaste = (event: any) => {
-    console.log("EVENT_TEXT:", event.clipboardData.getData('text'));
+    event.clipboardData.getData('text')
+    // console.log("EVENT_TEXT:", );
     // pushUserCopySuccess()
 };
 

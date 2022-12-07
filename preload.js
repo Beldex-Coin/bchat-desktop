@@ -266,10 +266,10 @@ window.getDaemonNodeRandomlyPick = () =>{
 }
 
 const remotes = [
-  {
-    host: "38.242.196.72",
-    port: "19095"
-  },
+  // {
+  //   host: "38.242.196.72",
+  //   port: "19095"
+  // },
   {
     host: "154.26.139.105",
     port: "19095"

@@ -69,7 +69,7 @@ class Daemon {
           dispatch(updateDaemon({ height: data.result.height }));
         }
       });
-    }, 1000);
+    }, 30000);
     // this.heartbeatAction(true);
   }
   heartbeatAction() {
@@ -78,7 +78,7 @@ class Daemon {
 
   sendRPC = async (method: any, params = {}) => {
     try {
-      console.log('DAEMON_NODE_CURRENT:', window.currentDaemon);
+      // console.log('DAEMON_NODE_CURRENT:', window.currentDaemon);
       const currentDaemon: any = window.currentDaemon;
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
       const fetchOptions = {
