@@ -12,6 +12,7 @@ const crypto = require('crypto');
 // import { useDispatch } from 'react-redux';
 import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
+import { updateBalance } from '../state/ducks/wallet';
 
 class Wallet {
   heartbeat: any;
@@ -330,6 +331,12 @@ class Wallet {
       }
       const balanceConversation = await this.currencyConv(wallet.info.balance);
       console.log('balance:', balanceConversation);
+      window.inboxStore?.dispatch(updateBalance({
+            balance: wallet.info.balance,
+            unlocked_balance: wallet.info.unlocked_balance,
+            height: wallet.info.height,
+            balanceConvert: balanceConversation
+          }));
 
       // dispatch(
       //   updateBalance({

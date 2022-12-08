@@ -4,6 +4,7 @@ import { reducer as search, SearchStateType } from './ducks/search';
 import { ConversationsStateType, reducer as conversations } from './ducks/conversations';
 import { reducer as user, UserStateType } from './ducks/user';
 import { reducer as theme, ThemeStateType } from './ducks/theme';
+
 import {reducer as walletFocused, WalletSectionStateType  } from './ducks/walletSection'
 import {reducer as walletInnerFocused, WalletInnerSectionStateType } from "./ducks/walletInnerSection"
 import { reducer as section, SectionStateType } from './ducks/section';
@@ -37,6 +38,7 @@ export type StateType = {
   timerOptions: TimerOptionsState;
   stagedAttachments: StagedAttachmentsStateType;
   call: CallStateType;
+
   walletFocused:WalletSectionStateType
   walletInnerFocused:WalletInnerSectionStateType;
   walletConfig:WalletConfigState
