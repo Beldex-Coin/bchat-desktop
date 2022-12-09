@@ -8,3 +8,7 @@ export const getWalletSendAddress = createSelector(
     getWalletConfig,
     (state: WalletConfigState): string=> state.walletsendAddress
   );
+  export const getwalletExeCurrency = createSelector(
+    getWalletConfig,
+    (state: WalletConfigState): string=> state.walletExeCurrency
+  );

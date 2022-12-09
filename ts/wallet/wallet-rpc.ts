@@ -449,7 +449,7 @@ class Wallet {
           : filter === window.i18n('filterIncoming')
           ? false
           : true,
-      pending: filter === window.i18n('filterAll') ? true : false,
+      pending: filter === window.i18n('filterAll') ? true :filter===window.i18n("pending")?true: false,
       failed: filter === window.i18n('filterAll') ? true : false,
       pool: filter === window.i18n('filterAll') ? true : false,
     };
@@ -460,7 +460,8 @@ class Wallet {
     }
     function concateData() {
       let wallet: any = [];
-      const types = ['in', 'out', 'pending', 'failed', 'pool', 'miner', 'mnode', 'gov', 'stake'];
+      const types = ['in', 'out', 'pending', 'failed',]
+      // 'pool', 'miner', 'mnode', 'gov', 'stake'];
       types.forEach(type => {
         if (data.result.hasOwnProperty(type)) {
           wallet = wallet.concat(data.result[type]);
@@ -475,8 +476,8 @@ class Wallet {
           concateData()
         : filter === window.i18n('filterIncoming')
         ? data.result.in
-        : data.result.out;
-    console.log('concateData(data.result) ::', concateData());
+        : filter===window.i18n("pending")?data.result.pending:data.result.out;
+    // console.log('concateData(data.result) ::', concateData());
     return (combineData = combineData.sort(
       (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
     ));
@@ -497,13 +498,18 @@ class Wallet {
     };
     const data = await this.sendRPC('transfer_split', params);
     console.log('sendFunddata ::', data.result);
-    if (!data.hasOwnProperty('error')) {
-      ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
-    }else{
-      console.log("error -response from send:",data.error.message)
-      ToastUtils.pushToastError('Error fund send',data.error.message);
 
-    }
+    return data
+    // if (!data.hasOwnProperty('error')) {
+    //   ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
+    //   return data.result.tx_hash
+    // }else{
+    //   console.log("error -response from send:",data.error.message)
+    //   ToastUtils.pushToastError('Error fund send',data.error.message);
+    //   return data.result.tx_hash
+
+
+    // }
 
   };
 

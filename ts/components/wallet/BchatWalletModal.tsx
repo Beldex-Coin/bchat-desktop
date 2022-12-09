@@ -10,10 +10,10 @@ export const WalletModal = (props:any) => {
 
     // console.log("content",props.content,props.headerName);
 
-    console.log('props.onClose',props.onClose);
+    // console.log('props.onClose',props.onClose);
     
     
-    const isSelect=1;
+    // const isSelect=1;
     return <div>
         <BchatWrapperModal
             title={props.headerName}
@@ -25,11 +25,15 @@ export const WalletModal = (props:any) => {
 
 
             <div className="bchat-modal__centered">
-                <div className={classNames("bchat-modal__centered-walletModalContent",isSelect==1&&"isSelect")}>
-                    {props.content[0]}
+                <div style={{width: '100%',height: '148px',overflowY: 'auto'}}>
+                {props.content.length!==0&&props.content.map((item:any,i:any)=><>
+                    <div className={classNames("bchat-modal__centered-walletModalContent",props.currency===item&&"isSelect")} key={i} onClick={()=>{props.onClick(item)}}>
+                    {item}
                 </div>
                 <SpacerSM />
-                <div className={classNames("bchat-modal__centered-walletModalContent",isSelect==1&&"isSelect")}>
+                </>)}
+                </div>
+                {/* <div className={classNames("bchat-modal__centered-walletModalContent",isSelect==1&&"isSelect")}>
 
                     {props.content[1]}
                 </div>
@@ -37,7 +41,7 @@ export const WalletModal = (props:any) => {
                 <div className={classNames("bchat-modal__centered-walletModalContent",isSelect==1&&"isSelect")}>
 
                     {props.content[2]}
-                </div>
+                </div> */}
                 <SpacerMD />
                 <SpacerMD />
                 {/* <div className="wallet-settings-modalBtnGrp"> */}

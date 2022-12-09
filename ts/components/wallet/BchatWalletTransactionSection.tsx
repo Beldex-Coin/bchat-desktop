@@ -39,11 +39,11 @@ export const TransactionSection = () => {
         {type==='out'&&<div>{window.i18n("sent")}</div>}
         {type==='pending'&&<div>{window.i18n("pending")}</div>}
         {type==='failed'&&<div>{window.i18n("failed")}</div>}
-        {type==='pool'&&<div>{window.i18n("pool")}</div>}
+        {/* {type==='pool'&&<div>{window.i18n("pool")}</div>}
         {type==='mnode'&&<div>{window.i18n("mnode")}</div>}
         {type==='gov'&&<div>{window.i18n("gov")}</div>}
         {type==='miner'&&<div>{window.i18n("miner")}</div>}
-        {type==='stake'&&<div>{window.i18n("stake")}</div>} 
+        {type==='stake'&&<div>{window.i18n("stake")}</div>}  */}
         </>
        )
    }

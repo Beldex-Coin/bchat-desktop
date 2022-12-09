@@ -32,8 +32,10 @@ export type UserDetailsModalState = {
 export type ChangePasswordModalState={} | null
 export type walletSettingMiniModalState={
   headerName:string,
-  content:any
-  onClose:any
+  content:any,
+  onClose:any,
+  onClick:any,
+  currency:string
 } | null
 
 export type ModalState = {

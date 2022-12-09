@@ -11,6 +11,8 @@ import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { contact } from '../../state/ducks/walletSection';
 import { wallet } from '../../wallet/wallet-rpc';
+import { ToastUtils } from '../../bchat/utils';
+
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -21,9 +23,25 @@ export const SendForm = (props: any) => {
   const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
   console.log("status check:",props.amount && address)
-  function send() {
+
+  async function send() {
     console.log('AMOUNT:', props.amount);
-    wallet.sendFund(address, props.amount * 1000000000, props.priority === 'Flash' ? 0 : 1);
+   let data= await wallet.sendFund(address, props.amount * 1000000000, props.priority === 'Flash' ? 0 : 1);
+    if (!data.hasOwnProperty('error')) {
+      ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
+      props.setAmount(0);
+      props.setPriority(window.i18n('flash'))
+      setAddress("bd...")
+
+      return data.result.tx_hash
+    }else{
+      console.log("error -response from send:",data.error.message)
+      ToastUtils.pushToastError('Error fund send',data.error.message);
+      return data.result.tx_hash
+
+
+    }
+
   }
 
   return (
