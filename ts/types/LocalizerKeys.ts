@@ -13,6 +13,13 @@ export type LocalizerKeys =
   |'hintReceiveBDX'
   | 'removePassword'
   |'copyAddress'
+  |"pending"
+  |"failed"
+  |"pool"
+  |"miner"
+  |"mnode"
+  |"gov"
+  |"stake"
   |'node'
   |'personal'
   |'remoteDaemonOnly'

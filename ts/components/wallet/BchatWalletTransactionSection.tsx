@@ -19,23 +19,36 @@ export const TransactionSection = () => {
     }
     useEffect(
         () => {
-            let params = {
-                in: filter === window.i18n('filterAll') ? true : filter === window.i18n('filterIncoming') ? true : false,
-                out: filter === window.i18n('filterAll') ? true : filter === window.i18n('filterIncoming') ? false : true,
-                pending: filter === window.i18n('filterAll') ? true : false,
-                failed: filter === window.i18n('filterAll') ? true : false,
-                pool: filter === window.i18n('filterAll') ? true : false
-            }
-
-            wallet.sendRPC("get_transfers", params).then((data) => {
-                let combineData = filter === window.i18n('filterAll') ? data.result.in.concat(data.result.out) : filter === window.i18n('filterIncoming') ? data.result.in : data.result.out;
-                combineData = combineData.sort((a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp));
-                setData(combineData);
-            }).catch((e: any) => console.log(e));
-
+            getTransfer();
         }, [filter]
     )
 
+    async function getTransfer() {
+        let value: any = await wallet.getTransfer(filter)
+        // console.log("value getTransfer ::", value);
+        setData(value)
+        // setData(value)
+
+    }
+    // const types = ['in', 'out', 'pending', 'failed', 'pool', 'miner', 'mnode', 'gov', 'stake'];
+   const Indication=(props:any)=>
+   {
+    const {type}=props
+       return(<>       
+        {type==='in'&&<div>{window.i18n("received")}</div>}
+        {type==='out'&&<div>{window.i18n("sent")}</div>}
+        {type==='pending'&&<div>{window.i18n("pending")}</div>}
+        {type==='failed'&&<div>{window.i18n("failed")}</div>}
+        {type==='pool'&&<div>{window.i18n("pool")}</div>}
+        {type==='mnode'&&<div>{window.i18n("mnode")}</div>}
+        {type==='gov'&&<div>{window.i18n("gov")}</div>}
+        {type==='miner'&&<div>{window.i18n("miner")}</div>}
+        {type==='stake'&&<div>{window.i18n("stake")}</div>} 
+        </>
+       )
+   }
+
+    
     return <div className="wallet-Transaction">
 
         {/* **********************Transaction Header************************* */}
@@ -131,7 +144,7 @@ export const TransactionSection = () => {
 
         <SpacerLG />
         <div className="wallet-Transaction-parentBox" >
-            {data.map((item: any, i) =>
+            {data.length > 0 && data.map((item: any, i) =>
                 <div className="wallet-Transaction-contentBox" key={i}>
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
@@ -140,7 +153,9 @@ export const TransactionSection = () => {
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
                                 <BchatIcon iconType={item.type === 'out' ? "paySend" : "payRecieved"} iconSize={"medium"} iconColor={item.type === 'out' ? "#FC2727" : '#128b17'} />
                                 <div>
-                                    {item.type === 'out' ? window.i18n('sent') : window.i18n("received")}
+                                    {/* {item.type === 'out' ? window.i18n('sent') : window.i18n("received")} */}
+                                   
+                                    <Indication type={item.type} />
                                 </div>
                             </article>
                             <article className="wallet-Transaction-contentBox-verticalline">
@@ -164,3 +179,5 @@ export const TransactionSection = () => {
         </div>
     </div>
 }
+
+

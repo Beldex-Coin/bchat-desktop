@@ -10,6 +10,7 @@ import { Flex } from "../basic/Flex"
 import { SpacerLG, } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
 import { contact } from "../../state/ducks/walletSection";
+import { wallet } from "../../wallet/wallet-rpc";
 
 
 
@@ -21,6 +22,10 @@ export const SendForm = (props:any) => {
     const [address, setAddress] = useState(sendAddress);
     const [notes, setNotes] = useState("");
     const [dropDown,setDropDown]=useState(false);
+    function send()
+    {
+        wallet.sendFund(address,props.amount*100000000,props.priority==="Flash"?0:1)
+    }
     
     return (
         <div className="wallet-sendForm">
@@ -126,7 +131,7 @@ export const SendForm = (props:any) => {
             <div className="wallet-sendForm-sendBtnBox">
                 <BchatButton
                     text={window.i18n('sent')}
-                    //   onClick={this.onSave}
+                     onClick={()=>send()}
                     buttonType={BchatButtonType.Brand}
                     buttonColor={BchatButtonColor.Green}
                 //   disabled={!caption}
