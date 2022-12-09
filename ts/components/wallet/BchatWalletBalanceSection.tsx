@@ -42,7 +42,7 @@ export const WalletBalanceSection = () => {
                <div className="wallet-right-Button-Sec-unlockbal-box" >
                   <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
                   <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-                  <span className="unBalance">{wallet.balance}</span>
+                  <span className="unBalance">{wallet.unlocked_balance}</span>
                </div>
 
 

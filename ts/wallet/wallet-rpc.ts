@@ -411,7 +411,7 @@ class Wallet {
           wallet.info.unlocked_balance = (n.result.unlocked_balance / 1000000000).toFixed(4);
         }
       }
-      const balanceConversation:any = (await this.currencyConv(wallet.info.balance)).toFixed(4);
+      const balanceConversation: any = (await this.currencyConv(wallet.info.balance)).toFixed(4);
       console.log('balance:', balanceConversation);
       this.send('set_wallet_data', {
         info: {
@@ -480,26 +480,32 @@ class Wallet {
     return (combineData = combineData.sort(
       (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
     ));
-    ;
   };
 
-  sendFund=async(address:string,amount:number,priority:number)=>{
+  sendFund = async (address: string, amount: number, priority: number) => {
     const params = {
       destinations: [{ amount: amount, address: address }],
-      priority: priority,    // 0 flash -> important // 1 normal -> unimportant 
-      do_not_relay: true,
-      get_tx_metadata: true,
+      account_index: 0,
+      priority: priority, // 0 flash -> important // 1 normal -> unimportant
+      // do_not_relay: true,
+      // get_tx_metadata: true,
 
-      account_index:0,
-      subaddr_indices:[0],
+      // subaddr_indices: [0],
 
-      ring_size:7,
-      get_tx_key: true
+      ring_size: 7,
+      get_tx_key: true,
     };
-    const data=await this.sendRPC("transfer",params);
-    console.log("sendFunddata ::",data);
-    
-  }
+    const data = await this.sendRPC('transfer_split', params);
+    console.log('sendFunddata ::', data.result);
+    if (!data.hasOwnProperty('error')) {
+      ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
+    }else{
+      console.log("error -response from send:",data.error.message)
+      ToastUtils.pushToastError('Error fund send',data.error.message);
+
+    }
+
+  };
 
   sendRPC = async (method: string, params = {}, timeout = 0) => {
     try {
