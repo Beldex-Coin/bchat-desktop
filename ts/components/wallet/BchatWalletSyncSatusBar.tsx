@@ -2,12 +2,18 @@ import React from "react"
 import { useSelector } from "react-redux";
 import styled from "styled-components"
 import { Flex } from "../basic/Flex"
+// import { EventEmitter } from "events";
+
 
 
 
 export const SyncStatusBar = () => {
+    // const emitter = new EventEmitter();
+    // emitter.on('foo', (foo)=>console.log("foo:",foo.info.height));
     let height = useSelector((state: any) => state.wallet.height);
+    // let height = foo.info.height;
     let daemonHeight = useSelector((state: any) => state.daemon.height);
+    // console.log("daemonHeight:",daemonHeight)
     let pct: any = (height == 0 || daemonHeight == 0) ? 0 : ((100 * height) / daemonHeight).toFixed(1);
     let percentage = (pct == 100.0 && height < daemonHeight) ? 99.9 : pct;
     return <div className="wallet-syncStatus">

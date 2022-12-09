@@ -8,38 +8,48 @@ import request from 'request-promise';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
 const crypto = require('crypto');
-// import { updateBalance } from '../state/ducks/wallet';
-// import { useDispatch } from 'react-redux';
+import { WebSocket } from 'ws';
 import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
+import { SCEE } from './SCEE';
 
 class Wallet {
   heartbeat: any;
+  wss: any;
   wallet_state: {
     open: boolean;
     name: string;
     balance: number;
     unlocked_balance: number;
   };
+  scee: any;
   constructor() {
     this.heartbeat = null;
+    this.wss = null;
     this.wallet_state = {
       open: false,
       name: '',
       balance: 0,
       unlocked_balance: 0,
     };
+    this.scee = new SCEE();
   }
 
   startWallet = async () => {
     try {
-      const status = await this.runningStatus();
-      console.log('stat:', status);
+      const webSocketStatus: any = await wallet.runningStatus(12313);
+      console.log('stat-webSocketStatus---:', webSocketStatus);
+      if (!webSocketStatus == true) {
+        console.log('webSocketStatus:', webSocketStatus);
+        wallet.init();
+      }
+      const status = await this.runningStatus(64371);
+      // console.log('stat:', status);
       if (status == true) {
         return;
       }
-      console.log('statuslive:', status);
+      // console.log('statuslive:', status);
       let walletDir = await this.findDir();
       const rpcExecutable =
         process.platform === 'linux'
@@ -85,13 +95,13 @@ class Wallet {
     }
   };
 
-  runningStatus = () => {
+  runningStatus = (port: number) => {
     return portscanner
-      .checkPortStatus(64371, '127.0.0.1')
+      .checkPortStatus(port, '127.0.0.1')
       .catch(() => 'closed')
       .then(
         async (status): Promise<any> => {
-          console.log('status:', status);
+          // console.log('status:', status);
           if (status === 'closed') {
             return false;
           } else {
@@ -287,6 +297,78 @@ class Wallet {
     return walletDir;
   };
 
+  init() {
+    this.wss = new WebSocket.Server({
+      port: 12313,
+      maxPayload: Number.POSITIVE_INFINITY,
+    });
+
+    this.wss.on('connection', (ws: { on: (arg0: string, arg1: (data: any) => void) => void }) => {
+      ws.on('message', data => {
+        let a = JSON.parse(new TextDecoder().decode(data));
+        console.log('A:', a);
+        if (a.method == 'init') {
+          this.startHeartbeat();
+        }
+
+        // let decrypted_data =JSON.parse(
+        //   this.scee.decryptString(
+        //     data,
+        //     '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
+        //   )
+        // );
+        // console.log("decrypted_data:",decrypted_data)
+        // this.receive(data);
+      });
+    });
+  }
+
+  send(event: any, data: any) {
+    let message = {
+      event,
+      data,
+    };
+    // const buffer = crypto.randomBytes(64);
+    console.log('event:', event, data);
+    // let encrypted_data = this.scee.encryptString(
+    //   JSON.stringify(message),
+    //   '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
+    // );
+    let encrypted_data = JSON.stringify(message);
+    this.wss.clients.forEach(function each(client: { readyState: number; send: any }) {
+      if (client.readyState === WebSocket.OPEN) {
+        console.log('wal---sended.....:', encrypted_data);
+        client.send(encrypted_data);
+      }
+    });
+  }
+
+  async receive(data: any) {
+    let decrypted_data = await JSON.parse(
+      this.scee.decryptString(
+        data,
+        '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
+      )
+    );
+    console.log('wal---receive:', decrypted_data);
+    // route incoming request to either the daemon, wallet, or here
+    // switch (decrypted_data.module) {
+    //   case "core":
+    //     this.handle(decrypted_data);
+    //     break;
+    //   case "daemon":
+    //     if (this.daemon) {
+    //       this.daemon.handle(decrypted_data);
+    //     }
+    //     break;
+    //   case "wallet":
+    //     if (this.walletd) {
+    //       this.walletd.handle(decrypted_data);
+    //     }
+    //     break;
+    // }
+  }
+
   startHeartbeat() {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
@@ -300,7 +382,7 @@ class Wallet {
       this.sendRPC('getbalance', { account_index: 0 }, 5000),
     ]).then(async data => {
       // const dispatch = useDispatch();
-      let wallet = {
+      let wallet: any = {
         info: {
           height: 0,
           balance: 0,
@@ -325,12 +407,17 @@ class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
-          wallet.info.balance = n.result.balance / 1000000000;
-          wallet.info.unlocked_balance = n.result.unlocked_balance / 1000000000;
+          wallet.info.balance = (n.result.balance / 1000000000).toFixed(4);
+          wallet.info.unlocked_balance = (n.result.unlocked_balance / 1000000000).toFixed(4);
         }
       }
-      const balanceConversation = await this.currencyConv(wallet.info.balance);
+      const balanceConversation:any = (await this.currencyConv(wallet.info.balance)).toFixed(4);
       console.log('balance:', balanceConversation);
+      this.send('set_wallet_data', {
+        info: {
+          height: wallet.info.height,
+        },
+      });
       window.inboxStore?.dispatch(
         updateBalance({
           balance: wallet.info.balance,

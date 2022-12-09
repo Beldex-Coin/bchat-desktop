@@ -69,7 +69,7 @@ class Daemon {
           dispatch(updateDaemon({ height: data.result.height }));
         }
       });
-    }, 30000);
+    }, 3000);
     // this.heartbeatAction(true);
   }
   heartbeatAction() {

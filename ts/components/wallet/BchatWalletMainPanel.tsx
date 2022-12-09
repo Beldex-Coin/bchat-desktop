@@ -17,7 +17,8 @@ import { TransactionSection } from "./BchatWalletTransactionSection"
 import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 // import { TransactionSection } from "./BchatWalletTransactionSection"
 import { daemon } from '../../wallet/daemon-rpc';
-import { wallet } from '../../wallet/wallet-rpc';
+// import { wallet } from '../../wallet/wallet-rpc';
+// import { walletHelper } from "../../wallet/BchatWalletHelper";
 
 
 export enum WalletPage {
@@ -102,10 +103,9 @@ export const WalletMainPanel = () => {
 }
 
 export const Dashboard = (props: any) => {
-   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused)
-   wallet.startHeartbeat();
+   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
    daemon.daemonHeartbeat();
-
+   // wallet.startHeartbeat();
    return (
       <>
          <WalletHeader />

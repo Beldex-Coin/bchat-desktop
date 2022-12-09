@@ -11,7 +11,7 @@ export const WalletBalanceSection = () => {
    let walletAddress = localStorage.getItem("userAddress");
    // const balanceConv = walletHelper.currencyConversion(balance);
 
- console.log ("walletBalance :: ",wallet)
+//  console.log ("walletBalance :: ",wallet)
 
    return (
       <div className="wallet-squarBox">
