@@ -13,7 +13,6 @@ import { contact } from '../../state/ducks/walletSection';
 import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 
-
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
   const dispatch = useDispatch();
@@ -22,26 +21,28 @@ export const SendForm = (props: any) => {
   const [address, setAddress] = useState(sendAddress);
   const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
-  console.log("status check:",props.amount && address)
 
   async function send() {
-    console.log('AMOUNT:', props.amount);
-   let data:any= await wallet.sendFund(address, props.amount * 1000000000, props.priority === 'Flash' ? 0 : 1);
+    let data:any = await wallet.sendFund(
+      address,
+      props.amount * 1e9,
+      props.priority === 'Flash' ? 0 : 1
+    );
     if (!data.hasOwnProperty('error')) {
-      ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
+      ToastUtils.pushToastSuccess(
+        'successfully-sended',
+        `Successfully fund sended.Tx-hash ${data.result.tx_hash}`
+      );
       props.setAmount(0);
-      props.setPriority(window.i18n('flash'))
-      setAddress("bd...")
+      props.setPriority(window.i18n('flash'));
+      setAddress('bd...');
 
-      return data.result.tx_hash
-    }else{
-      console.log("error -response from send:",data.error.message)
-      ToastUtils.pushToastError('Error fund send',data.error.message);
-      return data.result.tx_hash
-
-
+      return data.result.tx_hash;
+    } else {
+      // console.log('error -response from send:', data.error.message);
+      ToastUtils.pushToastError('Error fund send', data.error.message);
+      return data.result.tx_hash;
     }
-
   }
 
   return (
@@ -79,7 +80,7 @@ export const SendForm = (props: any) => {
             <span style={{ width: '20%' }}>{window.i18n('priority')}</span>
             <div className="wallet-sendForm-inputBox" style={{ display: 'block' }}>
               <div className="wallet-sendForm-inputBox" style={{ padding: 0 }}>
-                <span  className="priortyBox">{props.priority}</span>
+                <span className="priortyBox">{props.priority}</span>
 
                 {/* <input value={priority} onChange={(e: any) => { setPriority(e.target.value) }}/> */}
                 <span onClick={() => setDropDown(!dropDown)} style={{ cursor: 'pointer' }}>

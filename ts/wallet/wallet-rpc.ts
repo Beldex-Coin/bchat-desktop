@@ -122,7 +122,9 @@ class Wallet {
       auth.substr(0, 64), // rpc username
       auth.substr(64, 64), // rpc password
     ];
-    console.log('this.auth::::::', this.auth);
+
+    // console.log('this.auth::::::', this.auth);
+
     this.wallet_dir = `${walletDir}/wallet`;
     const option = [
       '--testnet',
@@ -312,7 +314,9 @@ class Wallet {
     this.wss.on('connection', (ws: { on: (arg0: string, arg1: (data: any) => void) => void }) => {
       ws.on('message', data => {
         let a = JSON.parse(new TextDecoder().decode(data));
-        console.log('A:', a);
+
+        // console.log('A:', a);
+
         if (a.method == 'init') {
           this.startHeartbeat();
         }
@@ -335,7 +339,9 @@ class Wallet {
       data,
     };
     // const buffer = crypto.randomBytes(64);
-    console.log('event:', event, data);
+
+    // console.log('event:', event, data);
+
     // let encrypted_data = this.scee.encryptString(
     //   JSON.stringify(message),
     //   '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
@@ -343,20 +349,24 @@ class Wallet {
     let encrypted_data = JSON.stringify(message);
     this.wss.clients.forEach(function each(client: { readyState: number; send: any }) {
       if (client.readyState === WebSocket.OPEN) {
-        console.log('wal---sended.....:', encrypted_data);
+        // console.log('wal---sended.....:', encrypted_data);
+
         client.send(encrypted_data);
       }
     });
   }
 
   async receive(data: any) {
-    let decrypted_data = await JSON.parse(
-      this.scee.decryptString(
-        data,
-        '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
-      )
-    );
-    console.log('wal---receive:', decrypted_data);
+    console.log(data);
+    // let decrypted_data = await JSON.parse(
+    //   this.scee.decryptString(
+    //     data,
+    //     '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
+    //   )
+    // );
+
+    // console.log('wal---receive:', decrypted_data);
+
     // route incoming request to either the daemon, wallet, or here
     // switch (decrypted_data.module) {
     //   case "core":
@@ -395,7 +405,7 @@ class Wallet {
           unlocked_balance: 0,
           balanceConvert: 0,
         },
-        transactions: {
+        transacations: {
           tx_list: [],
         },
       };
@@ -413,12 +423,22 @@ class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
-          wallet.info.balance = (n.result.balance / 1000000000).toFixed(4);
-          wallet.info.unlocked_balance = (n.result.unlocked_balance / 1000000000).toFixed(4);
+          if (
+            this.wallet_state.balance == n.result.balance &&
+            this.wallet_state.unlocked_balance == n.result.unlocked_balance
+          ) {
+            continue;
+          }
+          this.wallet_state.balance = wallet.info.balance = n.result.balance;
+          this.wallet_state.unlocked_balance = wallet.info.unlocked_balance =
+            n.result.unlocked_balance;
+
+          let data: any = await this.getTransactions();
+          wallet.transacations = data.transactions;
         }
       }
-      const balanceConversation: any = (await this.currencyConv(wallet.info.balance,'usd')).toFixed(4);
-      console.log('balance:', balanceConversation);
+      console.log('wallet deta:', wallet);
+      const balanceConversation = await this.currencyConv(this.wallet_state.balance);
       this.send('set_wallet_data', {
         info: {
           height: wallet.info.height,
@@ -426,15 +446,56 @@ class Wallet {
       });
       window.inboxStore?.dispatch(
         updateBalance({
-          balance: wallet.info.balance,
-          unlocked_balance: wallet.info.unlocked_balance,
+          balance: this.wallet_state.balance,
+          unlocked_balance: this.wallet_state.unlocked_balance,
           height: wallet.info.height,
           balanceConvert: balanceConversation,
+          transacations: wallet.transacations
         })
       );
     });
   }
-  currencyConv = async (balance: number,currencyext:any) => {
+
+  getTransactions() {
+    return new Promise(resolve => {
+      this.sendRPC('get_transfers', {
+        in: true,
+        out: true,
+        pending: true,
+        failed: true,
+        pool: true,
+      }).then(data => {
+        if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
+          resolve({});
+          return;
+        }
+        let wallet = {
+          transactions: {
+            tx_list: [],
+          },
+        };
+
+        const types = ['in', 'out', 'pending', 'failed', 'pool', 'miner', 'mnode', 'gov', 'stake'];
+        types.forEach(type => {
+          if (data.result.hasOwnProperty(type)) {
+            wallet.transactions.tx_list = wallet.transactions.tx_list.concat(data.result[type]);
+          }
+        });
+
+        wallet.transactions.tx_list.sort(function(a: any, b: any) {
+          if (a.timestamp < b.timestamp) return 1;
+          if (a.timestamp > b.timestamp) return -1;
+          return 0;
+        });
+
+        // console.log('wallet:transacation history:', wallet.transactions.tx_list);
+
+        resolve(wallet);
+      });
+    });
+  }
+
+  currencyConv = async (balance: number,currencyext?:any) => {
    
     const currency = currencyext?currencyext:"usd";
     const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
@@ -456,18 +517,23 @@ class Wallet {
           : filter === window.i18n('filterIncoming')
           ? false
           : true,
-      pending: filter === window.i18n('filterAll') ? true :filter===window.i18n("pending")?true: false,
+      pending:
+        filter === window.i18n('filterAll')
+          ? true
+          : filter === window.i18n('pending')
+          ? true
+          : false,
       failed: filter === window.i18n('filterAll') ? true : false,
       pool: filter === window.i18n('filterAll') ? true : false,
     };
     let data = await wallet.sendRPC('get_transfers', params);
-    console.log('data::', data);
+    // console.log('data::', data);
     if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
       return [];
     }
     function concateData() {
       let wallet: any = [];
-      const types = ['in', 'out', 'pending', 'failed',]
+      const types = ['in', 'out', 'pending', 'failed'];
       // 'pool', 'miner', 'mnode', 'gov', 'stake'];
       types.forEach(type => {
         if (data.result.hasOwnProperty(type)) {
@@ -483,7 +549,9 @@ class Wallet {
           concateData()
         : filter === window.i18n('filterIncoming')
         ? data.result.in
-        : filter===window.i18n("pending")?data.result.pending:data.result.out;
+        : filter === window.i18n('pending')
+        ? data.result.pending
+        : data.result.out;
     // console.log('concateData(data.result) ::', concateData());
     return (combineData = combineData.sort(
       (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
@@ -504,17 +572,18 @@ class Wallet {
       get_tx_key: true,
     };
     const data = await this.sendRPC('transfer_split', params);
-    console.log('sendFunddata ::', data.result);
+    // console.log('sendFunddata ::', data.result);
     if (!data.hasOwnProperty('error')) {
       ToastUtils.pushToastSuccess(
         'successfully-sended',
         `Successfully fund sended.Tx-hash ${data.result.tx_hash}`
       );
     } else {
-      console.log('error -response from send:', data.error.message);
+      // console.log('error -response from send:', data.error.message);
       ToastUtils.pushToastError('Error fund send', data.error.message);
     }
   };
+
   openWallet = async (filename: string, password: string) => {
     const openWallet = await this.sendRPC('open_wallet', {
       filename,

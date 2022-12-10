@@ -16,7 +16,7 @@ class Helper  {
     this.scee = new SCEE();
   }
   heartbeatAction() {
-    console.log('HELPER HEART BEAT');
+    // console.log('HELPER HEART BEAT');
     setTimeout(() => {
       this.ws = new WebSocket('ws://127.0.0.1:' + 12313);
       this.ws.addEventListener('open', () => {
@@ -28,7 +28,9 @@ class Helper  {
     }, 1000);
   }
   receive(message: any) {
-    console.log("message:",message)
+    // console.log("message:",message)
+
+
     // should wrap this in a try catch, and if fail redirect to error screen
     // shouldn't happen outside of dev environment
     // const emitter = new EventEmitter();
@@ -37,7 +39,9 @@ class Helper  {
     // let decrypted_data:any = new TextDecoder().decode(message);
      let decrypted_data:any = JSON.parse(message);
 
-     console.log("help-rec:",decrypted_data.data.info)
+    //  console.log("help-rec:",decrypted_data.data.info)
+
+
     // emitter.emit('foo', decrypted_data.data);
     // emitter.on('foo', (foo)=>console.log("foo0000000000000000000:",foo));
 
@@ -64,7 +68,9 @@ class Helper  {
     //   "77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092"
     // );
     let encrypted_data = JSON.stringify(message);
-    console.log("help-send:",encrypted_data)
+
+    // console.log("help-send:",encrypted_data)
+
     this.ws.send(encrypted_data);
   }
 }

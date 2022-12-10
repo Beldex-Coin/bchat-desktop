@@ -162,7 +162,7 @@ export const TransactionSection = () => {
 
                             </article>
                             <div className="wallet-Transaction-contentBox-balanceBox">
-                                <div className="wallet-Transaction-contentBox-balanceBox-amount">{item.type === 'out' ? "-" : ""}{Number((item.amount / 1000000000).toFixed(4))} BDX</div>
+                                <div className="wallet-Transaction-contentBox-balanceBox-amount">{item.type === 'out' ? "-" : ""}{Number((item.amount / 1e9).toFixed(4))} BDX</div>
                                 <div>{item.address}</div>
                             </div>
                         </Flex>

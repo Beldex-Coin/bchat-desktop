@@ -1,10 +1,11 @@
-export const WALLET = "WALLET";
+export const WALLET = 'WALLET';
 
 export type WalletStateType = {
   balance: number;
   unlocked_balance: number;
   height: number;
   balanceConvert: number;
+  transacations: any;
 };
 export const updateBalance = (wallet: WalletStateType) => {
   return {
@@ -17,7 +18,8 @@ export const initialWalletState: WalletStateType = {
   balance: 0,
   unlocked_balance: 0,
   height: 0,
-  balanceConvert: 0
+  balanceConvert: 0,
+  transacations: {},
 };
 
 export const reducer = (
