@@ -624,7 +624,8 @@ label {
     padding: 7px 25px 15px;
     border-radius: 7px;
     cursor: pointer;
-
+     
+    
     .copyIconBtn {
       display: flex;
       background-color: var(--color-copyModalbtn);
@@ -650,6 +651,11 @@ label {
       display: flex;
       justify-content: center;
       margin-bottom: 18px;
+
+      .bchat-button.brand-outline
+      {
+        height: 45px;
+      }
 
       .bchat-button {
         margin: $bchat-margin-xs;
@@ -772,13 +778,16 @@ label {
         font-family: 'poppin-semibold';
         display: flex;
         border-radius: 10px;
-        :hover {
-          background-color: #444455;
-        }
+       
       }
-
+      &-walletModalContent:hover
+      {
+        background-color: #444455;
+        cursor: pointer;
+      }
       .isSelect {
         background-color: #2879fb;
+        cursor: pointer;
       }
     }
   }

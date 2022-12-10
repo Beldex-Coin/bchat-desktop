@@ -1,5 +1,8 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
+//  import { useEffect } from "react";
+import { getwalletExeCurrency } from "../../state/selectors/walletConfig";
+import { wallet as walletRpc } from "../../wallet/wallet-rpc";
 import { SpacerMD, SpacerSM, SpacerXS } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon";
 // import { walletHelper } from "./BchatWalletHelper";
@@ -9,6 +12,16 @@ import { BchatIcon } from "../icon/BchatIcon";
 export const WalletBalanceSection = () => {
    let wallet = useSelector((state: any) => state.wallet);
    let walletAddress = localStorage.getItem("userAddress");
+   const exeCurrency=useSelector(getwalletExeCurrency);
+   const [exeCurrencyValue,setExeCurrencyValue]=useState(wallet.balanceConvert);
+
+   useEffect(()=>{
+    let convCurrency=walletRpc.currencyConv(wallet.balance,exeCurrency);
+    setExeCurrencyValue(Number(convCurrency).toFixed(4))
+
+   },[exeCurrency,exeCurrencyValue])
+
+
    // const balanceConv = walletHelper.currencyConversion(balance);
 
 //  console.log ("walletBalance :: ",wallet)
@@ -28,7 +41,7 @@ export const WalletBalanceSection = () => {
                   <BchatIcon iconSize="medium" iconType="eye" />
                </div>
                <div className="wallet-left-balance-Sec-realCurrencyTxt">
-                  {wallet.balanceConvert} <span>USD</span>
+                  {exeCurrencyValue} <span>{exeCurrency}</span>
                </div>
             </div>
             <div className="wallet-right-Button-Sec">

@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React from "react"
+import React, { useState } from "react"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 // import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerMD, SpacerSM } from "../basic/Text"
@@ -8,12 +8,8 @@ import { BchatWrapperModal } from "../BchatWrapperModal"
 
 export const WalletModal = (props:any) => {
 
-    // console.log("content",props.content,props.headerName);
+   const[select,setSelect]=useState(props.currency);
 
-    // console.log('props.onClose',props.onClose);
-    
-    
-    // const isSelect=1;
     return <div>
         <BchatWrapperModal
             title={props.headerName}
@@ -27,7 +23,8 @@ export const WalletModal = (props:any) => {
             <div className="bchat-modal__centered">
                 <div style={{width: '100%',height: '148px',overflowY: 'auto'}}>
                 {props.content.length!==0&&props.content.map((item:any,i:any)=><>
-                    <div className={classNames("bchat-modal__centered-walletModalContent",props.currency===item&&"isSelect")} key={i} onClick={()=>{props.onClick(item)}}>
+                    <div className={classNames("bchat-modal__centered-walletModalContent",select===item&&"isSelect")} key={i} 
+                    onClick={()=>setSelect(item)} >
                     {item}
                 </div>
                 <SpacerSM />
@@ -42,7 +39,7 @@ export const WalletModal = (props:any) => {
 
                     {props.content[2]}
                 </div> */}
-                <SpacerMD />
+                {/* <SpacerMD /> */}
                 <SpacerMD />
                 {/* <div className="wallet-settings-modalBtnGrp"> */}
                 <div className="bchat-modal__button-group__center">
@@ -50,13 +47,13 @@ export const WalletModal = (props:any) => {
                         text={window.i18n('cancel')}
                         buttonType={BchatButtonType.BrandOutline}
                         buttonColor={BchatButtonColor.Primary}
-                    //   onClick={this.initClearDataView}
+                        onClick={props.onClose}
                     />
                     <BchatButton
                         text={window.i18n('save')}
                         buttonType={BchatButtonType.BrandOutline}
                         buttonColor={BchatButtonColor.Green}
-                    //   onClick={this.initClearDataView}
+                        onClick={()=>{props.onClick(select)}}
                     />
 
                 </div></div>

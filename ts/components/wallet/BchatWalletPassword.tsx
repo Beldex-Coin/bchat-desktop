@@ -12,10 +12,10 @@ export const WalletPassword = (props: any) => {
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
-
+   
   async function submit() {
     let profileName = UserDetails[userId].profileName;
-    let openWallet: any = await wallet.openWallet(profileName, password);
+    let openWallet: any = await wallet.openWallet(profileName, password,);
     if (openWallet.hasOwnProperty('error')) {
       pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {

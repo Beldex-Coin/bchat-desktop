@@ -26,7 +26,7 @@ export const SendForm = (props: any) => {
 
   async function send() {
     console.log('AMOUNT:', props.amount);
-   let data= await wallet.sendFund(address, props.amount * 1000000000, props.priority === 'Flash' ? 0 : 1);
+   let data:any= await wallet.sendFund(address, props.amount * 1000000000, props.priority === 'Flash' ? 0 : 1);
     if (!data.hasOwnProperty('error')) {
       ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
       props.setAmount(0);

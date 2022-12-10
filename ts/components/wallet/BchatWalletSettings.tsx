@@ -7,7 +7,7 @@ import { getwalletExeCurrency } from "../../state/selectors/walletConfig"
 
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerXS } from "../basic/Text"
-import { ModalContainer } from "../dialog/ModalContainer"
+// import { ModalContainer } from "../dialog/ModalContainer"
 import { BchatIcon } from "../icon/BchatIcon"
 // import { ChangePassword } from "./BchatWalletChangePassword"
 // import { WalletModal } from "./BchatWalletModal"
@@ -23,7 +23,7 @@ export const WalletSettings = () => {
         {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
         {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
 
-        <ModalContainer />
+        {/* <ModalContainer /> */}
         <div onClick={() => dispatch(dashboard())} style={{ cursor: 'pointer' }}>
             <Flex container={true} alignItems="center" >
                 <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
@@ -76,7 +76,7 @@ export const WalletSettings = () => {
                     onClick: (e:any) => dispatch(updateExeCurrency(e))
 
                 }))}>
-                    <span className="wallet-settings-tabBox-disableText">USD</span>
+                    <span className="wallet-settings-tabBox-disableText">{exeCurrency}</span>
                     <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
                 </div>
             </Flex>

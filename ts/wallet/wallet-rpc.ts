@@ -417,7 +417,7 @@ class Wallet {
           wallet.info.unlocked_balance = (n.result.unlocked_balance / 1000000000).toFixed(4);
         }
       }
-      const balanceConversation: any = (await this.currencyConv(wallet.info.balance)).toFixed(4);
+      const balanceConversation: any = (await this.currencyConv(wallet.info.balance,'usd')).toFixed(4);
       console.log('balance:', balanceConversation);
       this.send('set_wallet_data', {
         info: {
@@ -434,8 +434,9 @@ class Wallet {
       );
     });
   }
-  currencyConv = async (balance: number) => {
-    const currency = 'usd';
+  currencyConv = async (balance: number,currencyext:any) => {
+   
+    const currency = currencyext?currencyext:"usd";
     const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
     const currencyValue: any = await response.json();
     return response.ok ? balance * currencyValue[currency] : 0;
