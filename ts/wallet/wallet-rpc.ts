@@ -17,6 +17,8 @@ import { SCEE } from './SCEE';
 class Wallet {
   heartbeat: any;
   wss: any;
+  wallet_dir: string;
+  auth: any;
   wallet_state: {
     open: boolean;
     name: string;
@@ -27,6 +29,8 @@ class Wallet {
   constructor() {
     this.heartbeat = null;
     this.wss = null;
+    this.wallet_dir = '';
+    this.auth = [];
     this.wallet_state = {
       open: false,
       name: '',
@@ -39,13 +43,12 @@ class Wallet {
   startWallet = async () => {
     try {
       const webSocketStatus: any = await wallet.runningStatus(12313);
-      console.log('stat-webSocketStatus---:', webSocketStatus);
+      // console.log('stat-webSocketStatus---:', webSocketStatus);
       if (!webSocketStatus == true) {
-        console.log('webSocketStatus:', webSocketStatus);
+        // console.log('webSocketStatus:', webSocketStatus);
         wallet.init();
       }
       const status = await this.runningStatus(64371);
-      // console.log('stat:', status);
       if (status == true) {
         return;
       }
@@ -113,16 +116,19 @@ class Wallet {
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
     const currentDaemon: any = window.currentDaemon;
-    const generateCredentials = await crypto.randomBytes(64 + 64);
+    const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
-    window.rpcUserName = auth.substr(0, 64);
-    window.rpcPassword = auth.substr(64, 64);
+    this.auth = [
+      auth.substr(0, 64), // rpc username
+      auth.substr(64, 64), // rpc password
+    ];
+    console.log('this.auth::::::', this.auth);
+    this.wallet_dir = `${walletDir}/wallet`;
     const option = [
       '--testnet',
-      // '--rpc-login',
-      '--disable-rpc-login',
-      // `${window.rpcUserName}:${window.rpcPassword}`,
-      // 'test:test',
+      '--rpc-login',
+      // '--disable-rpc-login',
+      this.auth[0] + ':' + this.auth[1],
       '--rpc-bind-port',
       '64371',
       '--daemon-address',
@@ -167,8 +173,8 @@ class Wallet {
           },
         },
         auth: {
-          user: `${window.rpcUserName}`,
-          pass: `${window.rpcPassword}`,
+          user: this.auth[0],
+          pass: this.auth[1],
           sendImmediately: false,
         },
         timeout: 0,
@@ -498,19 +504,40 @@ class Wallet {
     };
     const data = await this.sendRPC('transfer_split', params);
     console.log('sendFunddata ::', data.result);
+    if (!data.hasOwnProperty('error')) {
+      ToastUtils.pushToastSuccess(
+        'successfully-sended',
+        `Successfully fund sended.Tx-hash ${data.result.tx_hash}`
+      );
+    } else {
+      console.log('error -response from send:', data.error.message);
+      ToastUtils.pushToastError('Error fund send', data.error.message);
+    }
+  };
+  openWallet = async (filename: string, password: string) => {
+    const openWallet = await this.sendRPC('open_wallet', {
+      filename,
+      password,
+    });
+    if (openWallet.hasOwnProperty('error')) {
+      return openWallet;
+    }
 
-    return data
-    // if (!data.hasOwnProperty('error')) {
-    //   ToastUtils.pushToastSuccess('successfully-sended',`Successfully fund sended.Tx-hash ${data.result.tx_hash}`);
-    //   return data.result.tx_hash
-    // }else{
-    //   console.log("error -response from send:",data.error.message)
-    //   ToastUtils.pushToastError('Error fund send',data.error.message);
-    //   return data.result.tx_hash
+    let address_txt_path = path.join(this.wallet_dir, filename + '.address.txt');
 
+    if (!fs.existsSync(address_txt_path)) {
+      this.sendRPC('get_address', { account_index: 0 }).then(data => {
+        if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
+          return;
+        }
+        fs.writeFile(address_txt_path, data.result.address, 'utf8', () => {});
+      });
+    }
+    this.wallet_state.name = filename;
+    this.wallet_state.open = true;
 
-    // }
-
+    this.startHeartbeat();
+    return openWallet;
   };
 
   sendRPC = async (method: string, params = {}, timeout = 0) => {
@@ -525,7 +552,7 @@ class Wallet {
           params,
         }),
         headers: {
-          Authorization: 'Basic ' + btoa(`${window.rpcUserName}:${window.rpcPassword}`),
+          Authorization: 'Basic ' + btoa(`${this.auth[0]}:${this.auth[1]}`),
         },
         timeout: timeout,
       };
@@ -533,7 +560,6 @@ class Wallet {
       if (!response.ok) {
         throw new HTTPError('beldex_rpc error', response);
       }
-
       const result = await response.json();
       if (result.hasOwnProperty('error')) {
         return {
@@ -550,6 +576,18 @@ class Wallet {
     } catch (e) {
       throw new HTTPError('exception during wallet-rpc:', e);
     }
+  };
+
+  rescanBlockchain() {
+    this.sendRPC('rescan_blockchain');
+  }
+
+  changeWalletPassword = async (old_password: string, new_password: string) => {
+    const changePassword = await this.sendRPC('change_wallet_password', {
+      old_password,
+      new_password,
+    });
+    return changePassword;
   };
 }
 

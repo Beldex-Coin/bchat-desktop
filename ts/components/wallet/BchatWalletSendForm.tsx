@@ -79,7 +79,7 @@ export const SendForm = (props: any) => {
             <span style={{ width: '20%' }}>{window.i18n('priority')}</span>
             <div className="wallet-sendForm-inputBox" style={{ display: 'block' }}>
               <div className="wallet-sendForm-inputBox" style={{ padding: 0 }}>
-                <span className="priortyBox">{props.priority}</span>
+                <span  className="priortyBox">{props.priority}</span>
 
                 {/* <input value={priority} onChange={(e: any) => { setPriority(e.target.value) }}/> */}
                 <span onClick={() => setDropDown(!dropDown)} style={{ cursor: 'pointer' }}>
@@ -135,6 +135,7 @@ export const SendForm = (props: any) => {
           <div className="wallet-sendForm-inputBox">
             <input
               value={address}
+              placeholder="Please enter beldex address"
               onChange={(e: any) => {
                 setAddress(e.target.value);
               }}

@@ -46,8 +46,6 @@ declare global {
     getSeedNodeList: () => Array<string> | undefined;
     getDaemonNodeRandomlyPick: () => Object;
     currentDaemon: any;
-    rpcUserName: string;
-    rpcPassword: string;
     setPassword: any;
     storage: any;
     isOnline: boolean;

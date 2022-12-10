@@ -11,10 +11,8 @@
  }
  
  export const initialWalletConfigState:WalletConfigState = {
-    walletsendAddress:'bd...',
-   walletExeCurrency:"USD",
-
-   
+    walletsendAddress:'',
+   walletExeCurrency:"USD",   
  };
  
  const walletConfigSlice = createSlice({
