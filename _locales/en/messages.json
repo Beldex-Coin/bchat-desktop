@@ -528,5 +528,9 @@
   "clearAllConfirmationBody": "Do you want to erase all message requests?",
   "hideBanner": "Hide",
   "openMessageRequestInboxDescription": "View your Message Request inbox",
-  "BChat":"BChat"
+  "BChat":"BChat",
+  "Rescan":"Rescan",
+  "rescanWallet":"Rescan Wallet",
+  "rescanWalletDiscription":"Warning : Some information about previous transactions such as the recipient’s address will be lost"
+
 }

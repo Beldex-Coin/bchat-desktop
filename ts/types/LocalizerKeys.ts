@@ -525,4 +525,7 @@ export type LocalizerKeys =
   | 'noContactsYet'
   | 'BChat'
   | 'WalletSettingsTitle'
+  | 'rescanWallet'
+  | 'rescanWalletDiscription'
+  | 'Rescan'
   ; 
