@@ -17,6 +17,7 @@ import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
 import { updateWalletHeight } from '../state/ducks/walletConfig';
 export class Wallet {
+
   heartbeat: any;
   wss: any;
   wallet_dir: string;
@@ -445,7 +446,7 @@ export class Wallet {
       this.sendRPC('getheight', {}, 5000),
       this.sendRPC('getbalance', { account_index: 0 }, 5000),
     ]).then(async data => {
-      console.log('data:', data[0].result);
+      // console.log('data:', data[0].result);
       // const dispatch = useDispatch();
       let wallet: any = {
         info: {
@@ -454,9 +455,7 @@ export class Wallet {
           unlocked_balance: 0,
           balanceConvert: 0,
         },
-        transacations: {
-          tx_list: [],
-        },
+      
       };
 
       for (let n of data) {
@@ -483,25 +482,29 @@ export class Wallet {
             n.result.unlocked_balance;
 
           let data: any = await this.getTransactions();
-          wallet.transacations = data.transactions;
+      const balanceConversation = await this.currencyConv(this.wallet_state.balance);
+
+          
+          // wallet.transacations= data.transactions;
+          window.inboxStore?.dispatch(
+            updateBalance({
+              balance: this.wallet_state.balance,
+              unlocked_balance: this.wallet_state.unlocked_balance,
+              balanceConvert: balanceConversation,
+              transacations:data.transactions,
+            })
+          );
         }
       }
       // console.log('wallet deta:', wallet);
-      const balanceConversation = await this.currencyConv(this.wallet_state.balance);
       this.sendGateway('set_wallet_data', {
         info: {
           height: wallet.info.height,
         },
       });
-      // this.backend.send("set_wallet_data", data);
-      window.inboxStore?.dispatch(
-        updateBalance({
-          balance: this.wallet_state.balance,
-          unlocked_balance: this.wallet_state.unlocked_balance,
-          balanceConvert: balanceConversation,
-          transacations: wallet.transacations,
-        })
-      );
+      console.log( 'wallet.transacations ::', wallet.transacations);
+      
+    
       window.inboxStore?.dispatch(updateWalletHeight(wallet.info.height));
     });
   }
@@ -525,7 +528,8 @@ export class Wallet {
           },
         };
 
-        const types = ['in', 'out', 'pending', 'failed', 'pool', 'miner', 'mnode', 'gov', 'stake'];
+        const types = ['in', 'out', 'pending', 'failed',] 
+        // 'pool', 'miner', 'mnode', 'gov', 'stake'];
         types.forEach(type => {
           if (data.result.hasOwnProperty(type)) {
             wallet.transactions.tx_list = wallet.transactions.tx_list.concat(data.result[type]);
@@ -549,60 +553,60 @@ export class Wallet {
     return response.ok ? balance * currencyValue[currency] : 0;
   };
 
-  getTransfer = async (filter: any) => {
-    let params = {
-      in:
-        filter === window.i18n('filterAll')
-          ? true
-          : filter === window.i18n('filterIncoming')
-          ? true
-          : false,
-      out:
-        filter === window.i18n('filterAll')
-          ? true
-          : filter === window.i18n('filterIncoming')
-          ? false
-          : true,
-      pending:
-        filter === window.i18n('filterAll')
-          ? true
-          : filter === window.i18n('pending')
-          ? true
-          : false,
-      failed: filter === window.i18n('filterAll') ? true : false,
-      pool: filter === window.i18n('filterAll') ? true : false,
-    };
-    let data = await this.sendRPC('get_transfers', params);
-    // console.log('data::', data);
-    if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
-      return [];
-    }
-    function concateData() {
-      let wallet: any = [];
-      const types = ['in', 'out', 'pending', 'failed'];
-      // 'pool', 'miner', 'mnode', 'gov', 'stake'];
-      types.forEach(type => {
-        if (data.result.hasOwnProperty(type)) {
-          wallet = wallet.concat(data.result[type]);
-        }
-      });
-      return wallet;
-    }
+  // getTransfer = async (filter: any) => {
+  //   let params = {
+  //     in:
+  //       filter === window.i18n('filterAll')
+  //         ? true
+  //         : filter === window.i18n('filterIncoming')
+  //         ? true
+  //         : false,
+  //     out:
+  //       filter === window.i18n('filterAll')
+  //         ? true
+  //         : filter === window.i18n('filterIncoming')
+  //         ? false
+  //         : true,
+  //     pending:
+  //       filter === window.i18n('filterAll')
+  //         ? true
+  //         : filter === window.i18n('pending')
+  //         ? true
+  //         : false,
+  //     failed: filter === window.i18n('filterAll') ? true : false,
+  //     pool: filter === window.i18n('filterAll') ? true : false,
+  //   };
+  //   let data = await wallet.sendRPC('get_transfers', params);
+  //   // console.log('data::', data);
+  //   if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
+  //     return [];
+  //   }
+  //   function concateData() {
+  //     let wallet: any = [];
+  //     const types = ['in', 'out', 'pending', 'failed'];
+  //     // 'pool', 'miner', 'mnode', 'gov', 'stake'];
+  //     types.forEach(type => {
+  //       if (data.result.hasOwnProperty(type)) {
+  //         wallet = wallet.concat(data.result[type]);
+  //       }
+  //     });
+  //     return wallet;
+  //   }
 
-    let combineData =
-      filter === window.i18n('filterAll')
-        ? // ? data.result.in.concat(data.result.out)
-          concateData()
-        : filter === window.i18n('filterIncoming')
-        ? data.result.in
-        : filter === window.i18n('pending')
-        ? data.result.pending
-        : data.result.out;
-    // console.log('concateData(data.result) ::', concateData());
-    return (combineData = combineData.sort(
-      (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
-    ));
-  };
+  //   let combineData =
+  //     filter === window.i18n('filterAll')
+  //       ? // ? data.result.in.concat(data.result.out)
+  //         concateData()
+  //       : filter === window.i18n('filterIncoming')
+  //       ? data.result.in
+  //       : filter === window.i18n('pending')
+  //       ? data.result.pending
+  //       : data.result.out;
+  //   // console.log('concateData(data.result) ::', concateData());
+  //   return (combineData = combineData.sort(
+  //     (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
+  //   ));
+  // };
 
   sendFund = async (address: string, amount: number, priority: number) => {
     const params = {

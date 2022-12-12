@@ -7,6 +7,8 @@ export type WalletStateType = {
   transacations: any;
 };
 export const updateBalance = (wallet: WalletStateType) => {
+  console.log('wallet payload ::',wallet);
+  
   return {
     type: WALLET,
     payload: wallet,

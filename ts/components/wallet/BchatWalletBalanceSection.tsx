@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-//  import { useEffect } from "react";
-import { getwalletExeCurrency } from '../../state/selectors/walletConfig';
-import { wallet as walletRpc } from '../../wallet/wallet-rpc';
+  // import { useEffect } from "react";
+import {  getwalletDecimalValue, getwalletExeCurrency } from '../../state/selectors/walletConfig';
+//  import { Wallet as walletRpc } from '../../wallet/wallet-rpc';
 import { SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 // import { walletHelper } from "./BchatWalletHelper";
@@ -11,12 +11,23 @@ export const WalletBalanceSection = () => {
   let wallet = useSelector((state: any) => state.wallet);
   let walletAddress = localStorage.getItem('userAddress');
   const exeCurrency = useSelector(getwalletExeCurrency);
-  const [exeCurrencyValue, setExeCurrencyValue] = useState(wallet.balanceConvert);
+  // const [exeCurrencyValue, setExeCurrencyValue] = useState(wallet.balanceConvert);
+   let  decimalValue:any=useSelector(getwalletDecimalValue);
+   decimalValue=decimalValue.charAt(0)
+   console.log("decimalValue :: ",(wallet.balance / 1e9).toFixed(decimalValue),"wallet.balance::",wallet.balance);
+   
 
-  useEffect(() => {
-    let convCurrency = walletRpc.currencyConv(wallet.balance, exeCurrency);
-    setExeCurrencyValue(Number(convCurrency).toFixed(4));
-  }, [exeCurrency, exeCurrencyValue]);
+
+  // useEffect(() => {
+   
+  // }, [exeCurrency, exeCurrencyValue]);
+
+  // async function getConvertedCurrency()
+  // {
+  //   let convCurrency:any =await walletRpc.currencyConv(wallet.balance, exeCurrency);
+  //   // let convcurrency=await walletClass.currencyConv()
+  //   setExeCurrencyValue(Number(convCurrency).toFixed(4));
+  // }
 
   // const balanceConv = walletHelper.currencyConversion(balance);
 
@@ -34,11 +45,11 @@ export const WalletBalanceSection = () => {
           </div>
           <SpacerSM />
           <div className="wallet-left-balance-Sec-balanceTxt">
-            {(wallet.balance / 1e9).toFixed(4)} <span className="marginRight">BDX</span>
+            {(wallet.balance / 1e9).toFixed(decimalValue)} <span className="marginRight">BDX</span>
             <BchatIcon iconSize="medium" iconType="eye" />
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">
-            {(wallet.balanceConvert / 1e9).toFixed(4)} <span>{exeCurrency}</span>
+            {(wallet.balanceConvert / 1e9).toFixed(decimalValue)} <span>{exeCurrency}</span>
           </div>
         </div>
         <div className="wallet-right-Button-Sec">
@@ -52,7 +63,7 @@ export const WalletBalanceSection = () => {
           <div className="wallet-right-Button-Sec-unlockbal-box">
             <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
             <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-            <span className="unBalance">{(wallet.unlocked_balance / 1e9).toFixed(4)}</span>
+            <span className="unBalance">{(wallet.unlocked_balance / 1e9).toFixed(decimalValue)}</span>
           </div>
         </div>
       </div>

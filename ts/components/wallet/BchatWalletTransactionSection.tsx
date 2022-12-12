@@ -1,7 +1,8 @@
 import classNames from "classnames"
 import moment from "moment"
-import React, { useEffect, useState } from "react"
-import { wallet } from "../../wallet/wallet-rpc"
+import React, { useState } from "react"
+ import { useSelector } from "react-redux"
+// import { wallet } from "../../wallet/wallet-rpc"
 // import { BchatDropdown } from "../basic/BchatDropdown"
 import { Flex } from "../basic/Flex"
 import { SpacerLG } from "../basic/Text"
@@ -9,46 +10,206 @@ import { BchatIcon } from "../icon/BchatIcon"
 
 export const TransactionSection = () => {
 
+        let transactions = useSelector((state: any) => state.wallet.transacations);
+    // console.log('transactionsHistory :: 1',transactions);
+
+        const transactionsHistory =
+          transactions.
+          tx_list == undefined ? [] : transactions.tx_list;
+    // console.log('transactionsHistory :: 2',transactionsHistory);
+    // let tx: any = [
+    //     {
+    //         address:
+    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
+    //         amount: 1000000000,
+    //         checkpointed: 1,
+    //         confirmations: 2396,
+    //         double_spend_seen: false,
+    //         fee: 3451150,
+    //         flash_mempool: false,
+    //         height: 235475,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 1,
+    //         timestamp: 1670587373,
+    //         txid: "addbcdeaecc029cf406e5f559cb1b290ab92fd761085905bb34a1a05ca000eca",
+    //         type: "out",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },
+    //     {
+    //         address:
+    //             "sjshjhjsjshs",
+    //         amount: 100000000000,
+    //         checkpointed: 1,
+    //         confirmations: 11069,
+    //         double_spend_seen: false,
+    //         fee: 3455150,
+    //         flash_mempool: false,
+    //         height: 226802,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 16,
+    //         timestamp: 1670327182,
+    //         txid: "sossj",
+    //         type: "in",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },
+    //     {
+    //         address:
+    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
+    //         amount: 1000000000,
+    //         checkpointed: 1,
+    //         confirmations: 2410,
+    //         double_spend_seen: false,
+    //         fee: 3455150,
+    //         flash_mempool: false,
+    //         height: 235461,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 1,
+    //         timestamp: 1670586952,
+    //         txid: "8f4c8cf8057cb31f6f615626c261b6464241e35e124d021db596ca9ca2b26ed3",
+    //         type: "pending",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },
+    //     {
+    //         address:
+    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
+    //         amount: 10000000000,
+    //         checkpointed: 1,
+    //         confirmations: 2552,
+    //         double_spend_seen: false,
+    //         fee: 3451150,
+    //         flash_mempool: false,
+    //         height: 235319,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 2,
+    //         timestamp: 1670582693,
+    //         txid: "18ff5a4d32a08349a9055388d750454a93cdae2c23c3fbf0dab8aecdfd386e69",
+    //         type: "failed",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },
+    //     {
+    //         address:
+    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
+    //         amount: 10000000000,
+    //         checkpointed: 1,
+    //         confirmations: 2562,
+    //         double_spend_seen: false,
+    //         fee: 3451150,
+    //         flash_mempool: false,
+    //         height: 235309,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 2,
+    //         timestamp: 1670582392,
+    //         txid: "e774512c00e71378c5e02c957aa515bbb4e9b947591a8aa5271765e86e5ae05e",
+    //         type: "failed",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },
+    //     {
+    //         address:
+    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
+    //         amount: 10000000000,
+    //         checkpointed: 1,
+    //         confirmations: 2572,
+    //         double_spend_seen: false,
+    //         fee: 3455150,
+    //         flash_mempool: false,
+    //         height: 235299,
+    //         note: "",
+    //         payment_id: "0000000000000000",
+    //         subaddr_index: { major: 0, minor: 0 },
+    //         subaddr_indices: [[Object]],
+    //         suggested_confirmations_threshold: 2,
+    //         timestamp: 1670582093,
+    //         txid: "1ebbaf429102aa4537d1fb468628796e638130c4e3830cc57109b3600a0291e5",
+    //         type: "pending",
+    //         unlock_time: 0,
+    //         was_flash: false
+    //     },]
+
+
     const [filter, setFilter] = useState(window.i18n('filterAll'))
     const [visible, setVisible] = useState(false);
-    const [data, setData] = useState([])
+    // const [data, setData] = useState(transactionsHistory)
+    const [data, setData] = useState(transactionsHistory)
 
-    function closeDropDown(params: any) {
+
+
+
+
+    function closeDropDown(params: any, type: any) {
         setFilter(params)
         setVisible(!visible)
+        filterTransac(type)
     }
-    useEffect(
-        () => {
-            getTransfer();
-        }, [filter]
-    )
 
-    async function getTransfer() {
-        let value: any = await wallet.getTransfer(filter)
-        // console.log("value getTransfer ::", value);
-        setData(value)
-        // setData(value)
+    function filterTransac(type: any) {
+        if (type !== window.i18n('filterAll')) {
+            let filterData = transactionsHistory.filter((data:any) => data.type === type);
+            console.log('filterData ::', filterData);
+            let descData = filterData.sort((a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp));
+            setData(descData)
+        }
+        else {
+            // setData(transactionsHistory);
+            setData(transactionsHistory);
+        }
 
     }
-    // const types = ['in', 'out', 'pending', 'failed', 'pool', 'miner', 'mnode', 'gov', 'stake'];
-   const Indication=(props:any)=>
-   {
-    const {type}=props
-       return(<>       
-        {type==='in'&&<div>{window.i18n("received")}</div>}
-        {type==='out'&&<div>{window.i18n("sent")}</div>}
-        {type==='pending'&&<div>{window.i18n("pending")}</div>}
-        {type==='failed'&&<div>{window.i18n("failed")}</div>}
-        {/* {type==='pool'&&<div>{window.i18n("pool")}</div>}
-        {type==='mnode'&&<div>{window.i18n("mnode")}</div>}
-        {type==='gov'&&<div>{window.i18n("gov")}</div>}
-        {type==='miner'&&<div>{window.i18n("miner")}</div>}
-        {type==='stake'&&<div>{window.i18n("stake")}</div>}  */}
+
+    const TransactionIndication = (props: any) => {
+        const { type } = props
+        let item:any = {
+            iconType: "payRecieved",
+            iconColor: "#128b17",
+            type: window.i18n("received")
+        }
+        switch (type) {
+            case "out":
+                item.iconType = "paySend",
+                item.iconColor = "#FC2727",
+                item.type = window.i18n("sent")
+                break;
+            case "pending":
+                item.iconType = "payRecieved",
+                item.iconColor = "#FDB12A",
+                item.type = window.i18n("pending")
+                break;
+            case "failed":
+                item.iconType = "error",
+                item.iconColor = "#FC2727",
+                item.type = window.i18n("failed")
+                break;
+
+            default:
+                break;
+        }
+        return (<>
+            <BchatIcon iconType={item.iconType} iconSize={"medium"} iconColor={item.iconColor} />
+            <div>{item.type}</div>
         </>
-       )
-   }
+        )
+    }
 
-    
+
     return <div className="wallet-Transaction">
 
         {/* **********************Transaction Header************************* */}
@@ -77,7 +238,7 @@ export const TransactionSection = () => {
                     {visible &&
                         <div style={{ position: 'relative' }}>
                             <div className="wallet-settings-nodeSetting-sendDropDown" >
-                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterAll"))} >
+                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterAll"), "All")} >
                                     {filter === window.i18n("filterAll") ? <span className="dropDownItem-blockAndMargin">
                                         <BchatIcon iconType="tickCircle"
                                             iconColor="#FFF"
@@ -92,7 +253,7 @@ export const TransactionSection = () => {
 
                                     {window.i18n("filterAll")}
                                 </div>
-                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterIncoming"))} >
+                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterIncoming"), 'in')} >
                                     {filter === window.i18n("filterIncoming") ? <span className="dropDownItem-blockAndMargin">
                                         <BchatIcon iconType="tickCircle"
                                             iconColor="#FFF"
@@ -107,7 +268,7 @@ export const TransactionSection = () => {
                                     {window.i18n("filterIncoming")}
                                 </div>
                                 <div className={classNames(`dropDownItem `)}
-                                    onClick={() => closeDropDown(window.i18n("filterOutgoing"))} >
+                                    onClick={() => closeDropDown(window.i18n("filterOutgoing"), 'out')} >
                                     {filter === window.i18n("filterOutgoing") ? <span className="dropDownItem-blockAndMargin">
                                         <BchatIcon iconType="tickCircle"
                                             iconColor="#FFF"
@@ -121,7 +282,7 @@ export const TransactionSection = () => {
 
                                     {window.i18n("filterOutgoing")}
                                 </div>
-                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterPending"))} >
+                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("filterPending"), 'pending')} >
                                     {filter === window.i18n("filterPending") ? <span className="dropDownItem-blockAndMargin">
                                         <BchatIcon iconType="tickCircle"
                                             iconColor="#FFF"
@@ -144,19 +305,14 @@ export const TransactionSection = () => {
 
         <SpacerLG />
         <div className="wallet-Transaction-parentBox" >
-            {data.length > 0 && data.map((item: any, i) =>
+            {data.length > 0 && data.map((item: any, i: any) =>
                 <div className="wallet-Transaction-contentBox" key={i}>
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
 
                         <Flex container={true} height=" 60px">
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
-                                <BchatIcon iconType={item.type === 'out' ? "paySend" : "payRecieved"} iconSize={"medium"} iconColor={item.type === 'out' ? "#FC2727" : '#128b17'} />
-                                <div>
-                                    {/* {item.type === 'out' ? window.i18n('sent') : window.i18n("received")} */}
-                                   
-                                    <Indication type={item.type} />
-                                </div>
+                                <TransactionIndication type={item.type} />
                             </article>
                             <article className="wallet-Transaction-contentBox-verticalline">
 

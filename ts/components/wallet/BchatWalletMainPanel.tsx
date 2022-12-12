@@ -17,6 +17,7 @@ import { TransactionSection } from "./BchatWalletTransactionSection"
 import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 // import { TransactionSection } from "./BchatWalletTransactionSection"
 import { daemon } from '../../wallet/daemon-rpc';
+// import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
 // import { wallet } from '../../wallet/wallet-rpc';
 // import { walletHelper } from "../../wallet/BchatWalletHelper";
 
@@ -42,6 +43,7 @@ export const WalletMainPanel = () => {
    const [amount, setAmount] = useState(0);
    const [priority, setPriority] = useState(window.i18n("flash"));
    const [passScreen,setPassScreen]=useState(true);
+   
 
    function numberOnly(e: any) {
       if (isNaN(e)) {
