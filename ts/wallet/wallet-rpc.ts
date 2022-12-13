@@ -10,14 +10,13 @@ import { default as queue } from 'promise-queue';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
 const crypto = require('crypto');
-import { WebSocket } from 'ws';
 import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
 import { updateWalletHeight } from '../state/ducks/walletConfig';
+// import { WebSocket } from 'ws';
 export class Wallet {
-
   heartbeat: any;
   wss: any;
   wallet_dir: string;
@@ -74,10 +73,10 @@ export class Wallet {
 
   startWallet = async () => {
     try {
-      const webSocketStatus: any = await this.runningStatus(12313);
-      if (!webSocketStatus == true) {
-        this.init();
-      }
+      // const webSocketStatus: any = await this.runningStatus(12313);
+      // if (!webSocketStatus == true) {
+      //   this.init();
+      // }
       const status = await this.runningStatus(64371);
       if (status == true) {
         return;
@@ -110,13 +109,13 @@ export class Wallet {
       portscanner
         .checkPortStatus(64371, '127.0.0.1')
         .catch(() => 'closed')
-        .then(async status => {
+        .then(async (status:any) => {
           if (status === 'closed') {
             await this.walletRpc(rpcPath, walletDir);
           } else {
             kill(64371)
               .then()
-              .catch(err => {
+              .catch((err:any) => {
                 throw new HTTPError('beldex_rpc_port', err);
               });
             await this.walletRpc(rpcPath, walletDir);
@@ -132,8 +131,7 @@ export class Wallet {
       .checkPortStatus(port, '127.0.0.1')
       .catch(() => 'closed')
       .then(
-        async (status): Promise<any> => {
-          // console.log('status:', status);
+        async (status:any): Promise<any> => {
           if (status === 'closed') {
             return false;
           } else {
@@ -302,7 +300,7 @@ export class Wallet {
       if (restoreWallet.hasOwnProperty('result')) {
         kill(64371)
           .then()
-          .catch(err => {
+          .catch((err:any) => {
             throw new HTTPError('beldex_rpc_port', err);
           });
       }
@@ -351,87 +349,39 @@ export class Wallet {
     return walletDir;
   };
 
-  init() {
-    this.wss = new WebSocket.Server({
-      port: 12313,
-      maxPayload: Number.POSITIVE_INFINITY,
-    });
+  // init() {
+  //   this.wss = new WebSocket.Server({
+  //     port: 12313,
+  //     maxPayload: Number.POSITIVE_INFINITY,
+  //   });
 
-    this.wss.on('connection', (ws: { on: (arg0: string, arg1: (data: any) => void) => void }) => {
-      ws.on('message', data => {
-        let a = JSON.parse(new TextDecoder().decode(data));
+  //   this.wss.on('connection', (ws: { on: (arg0: string, arg1: (data: any) => void) => void }) => {
+  //     ws.on('message', data => {
+  //       let a = JSON.parse(new TextDecoder().decode(data));
+  //       if (a.method == 'init') {
+  //         this.startHeartbeat();
+  //       }
+  //     });
+  //   });
+  // }
 
-        // console.log('A:', a);
+  // sendGateway(event: any, data: any) {
+  //   console.log('method:', data);
+  //   let message = {
+  //     event,
+  //     data,
+  //   };
+  //   let encrypted_data = JSON.stringify(message);
+  //   this.wss.clients.forEach(function each(client: { readyState: number; send: any }) {
+  //     if (client.readyState === WebSocket.OPEN) {
+  //       client.send(encrypted_data);
+  //     }
+  //   });
+  // }
 
-        if (a.method == 'init') {
-          this.startHeartbeat();
-        }
-
-        // let decrypted_data =JSON.parse(
-        //   this.scee.decryptString(
-        //     data,
-        //     '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
-        //   )
-        // );
-        // console.log("decrypted_data:",decrypted_data)
-        // this.receive(data);
-      });
-    });
-  }
-
-  sendGateway(event: any, data: any) {
-    console.log('method:', data);
-    let message = {
-      event,
-      data,
-    };
-    // const buffer = crypto.randomBytes(64);
-
-    // console.log('event:', event, data);
-
-    // let encrypted_data = this.scee.encryptString(
-    //   JSON.stringify(message),
-    //   '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
-    // );
-    let encrypted_data = JSON.stringify(message);
-    console.log('encrypted_data:', encrypted_data);
-    this.wss.clients.forEach(function each(client: { readyState: number; send: any }) {
-      if (client.readyState === WebSocket.OPEN) {
-        // console.log('wal---sended.....:', encrypted_data);
-
-        client.send(encrypted_data);
-      }
-    });
-  }
-
-  async receive(data: any) {
-    console.log(data);
-    // let decrypted_data = await JSON.parse(
-    //   this.scee.decryptString(
-    //     data,
-    //     '77f9d29cef9eea79016b5d642fb79744bf47b758e2d95a3342620163d952acc9ae2120ce7901cca1a9e5f6e26d87dc506ee38c066420d274b7efd069f10a4092'
-    //   )
-    // );
-
-    // console.log('wal---receive:', decrypted_data);
-
-    // route incoming request to either the daemon, wallet, or here
-    // switch (decrypted_data.module) {
-    //   case "core":
-    //     this.handle(decrypted_data);
-    //     break;
-    //   case "daemon":
-    //     if (this.daemon) {
-    //       this.daemon.handle(decrypted_data);
-    //     }
-    //     break;
-    //   case "wallet":
-    //     if (this.walletd) {
-    //       this.walletd.handle(decrypted_data);
-    //     }
-    //     break;
-    // }
-  }
+  // async receive(data: any) {
+  //   console.log(data);
+  // }
 
   startHeartbeat() {
     clearInterval(this.heartbeat);
@@ -455,7 +405,6 @@ export class Wallet {
           unlocked_balance: 0,
           balanceConvert: 0,
         },
-      
       };
 
       for (let n of data) {
@@ -482,29 +431,18 @@ export class Wallet {
             n.result.unlocked_balance;
 
           let data: any = await this.getTransactions();
-      const balanceConversation = await this.currencyConv(this.wallet_state.balance);
+          const balanceConversation = await this.currencyConv(this.wallet_state.balance);
 
-          
-          // wallet.transacations= data.transactions;
           window.inboxStore?.dispatch(
             updateBalance({
               balance: this.wallet_state.balance,
               unlocked_balance: this.wallet_state.unlocked_balance,
               balanceConvert: balanceConversation,
-              transacations:data.transactions,
+              transacations: data.transactions,
             })
           );
         }
       }
-      // console.log('wallet deta:', wallet);
-      this.sendGateway('set_wallet_data', {
-        info: {
-          height: wallet.info.height,
-        },
-      });
-      console.log( 'wallet.transacations ::', wallet.transacations);
-      
-    
       window.inboxStore?.dispatch(updateWalletHeight(wallet.info.height));
     });
   }
@@ -528,7 +466,7 @@ export class Wallet {
           },
         };
 
-        const types = ['in', 'out', 'pending', 'failed',] 
+        const types = ['in', 'out', 'pending', 'failed'];
         // 'pool', 'miner', 'mnode', 'gov', 'stake'];
         types.forEach(type => {
           if (data.result.hasOwnProperty(type)) {
