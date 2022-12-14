@@ -71,16 +71,8 @@ export class Wallet {
     ];
   }
 
-  startWallet = async () => {
+  startWallet = async (type?: string) => {
     try {
-      // const webSocketStatus: any = await this.runningStatus(12313);
-      // if (!webSocketStatus == true) {
-      //   this.init();
-      // }
-      const status = await this.runningStatus(64371);
-      if (status == true) {
-        return;
-      }
       let walletDir = await this.findDir();
       const rpcExecutable =
         process.platform === 'linux'
@@ -96,31 +88,30 @@ export class Wallet {
       }
       const rpcPath = await path.join(__ryo_bin, rpcExecutable);
       if (!fs.existsSync(rpcPath)) {
-        // console.log("NOO")
+        // console.log('NOO');
       } else {
-        // console.log("YES")
+        // console.log('YES');
       }
       if (!fs.existsSync(walletDir)) {
-        // console.log("NOO")
+        // console.log('NOO');
         fs.mkdirpSync(walletDir);
       } else {
-        // console.log("YES")
+        // console.log('YES');
       }
-      portscanner
-        .checkPortStatus(64371, '127.0.0.1')
-        .catch(() => 'closed')
-        .then(async (status:any) => {
-          if (status === 'closed') {
-            await this.walletRpc(rpcPath, walletDir);
-          } else {
-            kill(64371)
-              .then()
-              .catch((err:any) => {
-                throw new HTTPError('beldex_rpc_port', err);
-              });
-            await this.walletRpc(rpcPath, walletDir);
-          }
-        });
+      const status = await this.runningStatus(64371);
+      if (status == true) {
+        if (type == 'settings') {
+          return;
+        }
+        kill(64371)
+          .then()
+          .catch((err: any) => {
+            throw new HTTPError('beldex_rpc_port', err);
+          });
+        await this.walletRpc(rpcPath, walletDir);
+      } else {
+        await this.walletRpc(rpcPath, walletDir);
+      }
     } catch (e) {
       console.log('exception during wallet-rpc:', e);
     }
@@ -131,7 +122,7 @@ export class Wallet {
       .checkPortStatus(port, '127.0.0.1')
       .catch(() => 'closed')
       .then(
-        async (status:any): Promise<any> => {
+        async (status: any): Promise<any> => {
           if (status === 'closed') {
             return false;
           } else {
@@ -142,6 +133,7 @@ export class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
+    console.log('start new wallet rpc........................');
     const currentDaemon: any = window.currentDaemon;
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
@@ -150,14 +142,13 @@ export class Wallet {
       auth.substr(64, 64), // rpc password
     ];
 
-    // console.log('this.auth::::::', this.auth);
-
     this.wallet_dir = `${walletDir}/wallet`;
     const option = [
       '--testnet',
       '--rpc-login',
       // '--disable-rpc-login',
       this.auth[0] + ':' + this.auth[1],
+      // 'test:test',
       '--rpc-bind-port',
       '64371',
       '--daemon-address',
@@ -221,6 +212,8 @@ export class Wallet {
         auth: {
           user: this.auth[0],
           pass: this.auth[1],
+          // user: 'test',
+          // pass: 'test',
           sendImmediately: false,
         },
         timeout: 0,
@@ -247,6 +240,7 @@ export class Wallet {
 
       const getAddress = await this.sendRPC('get_address');
       const mnemonic = await this.sendRPC('query_key', { key_type: 'mnemonic' });
+      console.log('mne:', mnemonic);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
         localStorage.setItem('userAddress', getAddress.result.address);
         return mnemonic.result.key;
@@ -288,6 +282,7 @@ export class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
+      console.log('restoreWallet:', restoreWallet);
       if (restoreWallet.hasOwnProperty('error')) {
         if (restoreWallet.error.code === -1)
           restoreWallet = await this.deleteWallet(
@@ -300,7 +295,7 @@ export class Wallet {
       if (restoreWallet.hasOwnProperty('result')) {
         kill(64371)
           .then()
-          .catch((err:any) => {
+          .catch((err: any) => {
             throw new HTTPError('beldex_rpc_port', err);
           });
       }
@@ -386,7 +381,6 @@ export class Wallet {
   startHeartbeat() {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
-      console.log('HEAETBEAT');
       this.heartbeatAction();
     }, 8000);
     // this.heartbeatAction(true);
@@ -639,7 +633,6 @@ export class Wallet {
   // };
 
   sendRPC(method: string, params = {}, timeout = 0) {
-    console.log('method:', method);
     let id = this.id++;
     let options: any = {
       uri: `http://localhost:64371/json_rpc`,
@@ -652,6 +645,8 @@ export class Wallet {
       auth: {
         user: this.auth[0],
         pass: this.auth[1],
+        // user: 'test',
+        // pass: 'test',
         sendImmediately: false,
       },
       agent: this.agent,
@@ -665,7 +660,7 @@ export class Wallet {
 
     return this.queue.add(() => {
       return request(options)
-        .then(response => {
+        .then((response: any) => {
           if (response.hasOwnProperty('error')) {
             return {
               method: method,
@@ -679,7 +674,7 @@ export class Wallet {
             result: response.result,
           };
         })
-        .catch(error => {
+        .catch((error: any) => {
           return {
             method: method,
             params: params,

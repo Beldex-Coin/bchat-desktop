@@ -20,7 +20,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
 // import { BchatIconButton } from '../icon/BchatIconButton';
-const { clipboard } = require('electron')
+const { clipboard } = require('electron');
 
 export enum SignInMode {
   Default,
@@ -110,7 +110,7 @@ export const SignInTab = (props: any) => {
   const [repassword, setRepassword] = useState('');
 
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
-  const [recoveryPhraseError, setRecoveryPhraseError] = useState(undefined as string | undefined);
+  // const [recoveryPhraseError, setRecoveryPhraseError] = useState(undefined as string | undefined);
   const [displayName, setDisplayName] = useState('');
   const [displayNameError, setDisplayNameError] = useState<string | undefined>('');
   const [loading, setIsLoading] = useState(false);
@@ -123,7 +123,6 @@ export const SignInTab = (props: any) => {
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
 
-
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
   // from the configuration message will be used.
@@ -133,21 +132,21 @@ export const SignInTab = (props: any) => {
   const displayNameOK = (isRecovery && !displayNameError && !!displayName) || isLinking;
 
   // Seed is mandatory no matter which mode
-  const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
-  console.log(seedOK);
+  // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
+  // console.log(seedOK);
 
   const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
 
   const continueYourBchat = async () => {
     if (isRecovery) {
-      let refreshDetails = blockheight ?
-        { refresh_start_timestamp_or_height: blockheight, refresh_type: "height" }
-        : { refresh_start_timestamp_or_height: restoreDate, refresh_type: "date" };
+      let refreshDetails = blockheight
+        ? { refresh_start_timestamp_or_height: blockheight, refresh_type: 'height' }
+        : { refresh_start_timestamp_or_height: restoreDate, refresh_type: 'date' };
       await signInWithRecovery({
         displayName,
         password,
         userRecoveryPhrase: recoveryPhrase,
-        refreshDetails
+        refreshDetails,
       });
     } else if (isLinking) {
       setIsLoading(true);
@@ -160,17 +159,23 @@ export const SignInTab = (props: any) => {
 
   const passValid = () => {
     if (!password || !repassword) {
-      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !');
-
+     return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
-    else if (password !== repassword) {
+    if (password !== repassword) {
       window?.log?.warn('invalid password');
-      ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !');
+     return ToastUtils.pushToastError('invalidPassword', 'Passwords do not match');
     }
-    else {
-      setScreenName(3)
+    if (
+      (password.length < 4 && repassword.length < 4) ||
+      (password.length > 13 && repassword.length > 13)
+    ) {
+     return ToastUtils.pushToastError(
+        'walletPasswordLengthError',
+        window.i18n('walletPasswordLengthError')
+      );
     }
-  }
+    setScreenName(3);
+  };
 
   // const clickGoBack = () => {
   //   setScreenName(0);
@@ -185,49 +190,62 @@ export const SignInTab = (props: any) => {
     if (!recoveryPhrase) {
       // console.log("recoveryPhrase",recoveryPhrase);
       ToastUtils.pushToastError('registrationError', `Error: Please enter the seed`);
-    }
-    else {
+    } else {
       try {
         mn_decode(recoveryPhrase, 'english');
-        setScreenName(2)
+        setScreenName(2);
       } catch (e) {
-        setScreenName(1)
-        ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
+        setScreenName(1);
+        ToastUtils.pushToastError(
+          'registrationError',
+          `Error: ${e.message || 'Something went wrong'}`
+        );
         window?.log?.warn('exception during registration:', e);
       }
-
     }
-
-  }
+  };
 
   if (signInMode !== SignInMode.Default && screenName === 1) {
-
-    return <>
-      <div className='bchat-registration__backbutton'>
-        <GoBackMainMenuButton assent={() => { props.assent(true); setScreenName(1); }} />
-      </div>
-      <DisplaySeed
-        iconfunc={() => assignSeed()}
-        assignRecoveryPhase={(seed: string) => {
-          setRecoveryPhrase(seed);
-          setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
-        }}
-        onNext={() => { seedValidation() }}
-        recoveryPhrase={recoveryPhrase}
-      />
-    </>
-
+    return (
+      <>
+        <div className="bchat-registration__backbutton">
+          <GoBackMainMenuButton
+            assent={() => {
+              props.assent(true);
+              setScreenName(1);
+            }}
+          />
+        </div>
+        <DisplaySeed
+          iconfunc={() => assignSeed()}
+          assignRecoveryPhase={(seed: string) => {
+            setRecoveryPhrase(seed);
+            // setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
+          }}
+          onNext={() => {
+            seedValidation();
+          }}
+          recoveryPhrase={recoveryPhrase}
+        />
+      </>
+    );
   }
 
   if (screenName === 2) {
-    return <WalletPassword
-      password={password}
-      repassword={repassword}
-      setPassword={(e: any) => setPassword(e)}
-      setRepassword={(e: any) => setRepassword(e)}
-      backArrow={() => { setScreenName(1); setPassword(""); setRepassword(""), props.assent(true); }}
-      submit={passValid}
-    />
+    return (
+      <WalletPassword
+        password={password}
+        repassword={repassword}
+        setPassword={(e: any) => setPassword(e)}
+        setRepassword={(e: any) => setRepassword(e)}
+        backArrow={() => {
+          setScreenName(1);
+          setPassword('');
+          setRepassword(''), props.assent(true);
+        }}
+        submit={passValid}
+      />
+    );
   }
 
   // if(signInMode == SignInMode.UsingRecoveryPhrase){
@@ -245,20 +263,23 @@ export const SignInTab = (props: any) => {
     <div className="bchat-registration__content">
       {screenName === 3 && (
         <>
-          <div className='bchat-registration__backbutton'
+          <div
+            className="bchat-registration__backbutton"
             // data-tip="Back"
             // data-place="right"
             // data-offset="{top:10}"
-            style={{ left: '52px' }}>
-            <GoBackMainMenuButton assent={() => {
-              props.assent(true);
-              setScreenName(1);
-              setPassword("");
-              setRepassword("");
-            }}
+            style={{ left: '52px' }}
+          >
+            <GoBackMainMenuButton
+              assent={() => {
+                props.assent(true);
+                setScreenName(1);
+                setPassword('');
+                setRepassword('');
+              }}
             />
           </div>
-          <div className='bchat-registration-header'>{window.i18n('restoreFromSeed')}</div>
+          <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div>
           <BchatInput
             autoFocus={true}
             label={window.i18n('displayName')}
@@ -274,32 +295,33 @@ export const SignInTab = (props: any) => {
             }}
             // onEnterPressed={props.handlePressEnter}
             onEnterPressed={continueYourBchat}
-
             inputDataTestId="display-name-input"
           />
           <div>
-            <hr className='bchat-registration-hr'></hr>
-            <p className='bchat-restore-seed-textbox-message'>If you dont know the restore blockheight, you can skip it.</p>
+            <hr className="bchat-registration-hr"></hr>
+            <p className="bchat-restore-seed-textbox-message">
+              If you dont know the restore blockheight, you can skip it.
+            </p>
             <BchatInput
               autoFocus={true}
               type="text"
               placeholder={'Restore from Blockheight'}
               value={blockheight}
               maxLength={10}
-              onValueChanged={(e) => {
+              onValueChanged={e => {
                 let checkHeight = /^[\d ]*$/.test(e);
-                if (!checkHeight)
-                  return;
+                if (!checkHeight) return;
                 setBlockheight(e);
               }}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
             />
-
           </div>
-          <div className='bchat-restore-seed-or'> OR </div>
-          <div style={{ marginBottom: "56px" }} >
-            <p className='bchat-restore-seed-textbox-message'>If you dont know the restore Date, you can skip it.</p>
+          <div className="bchat-restore-seed-or"> OR </div>
+          <div style={{ marginBottom: '56px' }}>
+            <p className="bchat-restore-seed-textbox-message">
+              If you dont know the restore Date, you can skip it.
+            </p>
 
             <BchatInput
               autoFocus={true}
@@ -307,10 +329,9 @@ export const SignInTab = (props: any) => {
               placeholder={'Restore from Date'}
               value={restoreDate}
               maxLength={MAX_USERNAME_LENGTH}
-              onValueChanged={(e) => setRestoreDate(e)}
+              onValueChanged={e => setRestoreDate(e)}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
-
             />
           </div>
           <div style={{ width: '75%', marginLeft: '57px' }}>
@@ -332,7 +353,6 @@ export const SignInTab = (props: any) => {
           setIsLoading(false);
           props.assent(false);
         }}
-
         onLinkDeviceButtonClicked={() => {
           setRegistrationPhase(RegistrationPhase.SignIn);
           setSignInMode(SignInMode.LinkDevice);
@@ -342,7 +362,10 @@ export const SignInTab = (props: any) => {
         }}
       />
       {loading && (
-        <Flex container={true} justifyContent="center" alignItems="center"
+        <Flex
+          container={true}
+          justifyContent="center"
+          alignItems="center"
           style={{
             position: 'absolute',
             top: 0,

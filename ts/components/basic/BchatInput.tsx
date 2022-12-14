@@ -10,6 +10,7 @@ type Props = {
   value?: string;
   placeholder: string;
   maxLength?: number;
+  minLength?: number;
   enableShowHide?: boolean;
   onValueChanged?: (value: string) => any;
   onEnterPressed?: any;
@@ -56,6 +57,7 @@ export const BchatInput = (props: Props) => {
     type,
     value,
     maxLength,
+    minLength,
     enableShowHide,
     error,
     label,
@@ -88,6 +90,7 @@ export const BchatInput = (props: Props) => {
         placeholder={placeholder}
         value={value}
         maxLength={maxLength}
+        minLength={minLength}
         autoFocus={autoFocus}
         data-testid={inputDataTestId}
         onChange={updateInputValue}

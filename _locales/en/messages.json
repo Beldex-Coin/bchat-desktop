@@ -306,8 +306,9 @@
   "removeAccountPasswordTitle": "Remove Account Password",
   "removeAccountPasswordDescription": "Remove the password associated with your account",
   "oldPasswordAndNewPasswordSame":"Please enter a password that you have not used before.",
-  "enterPassword": "Kindly enter your password ",
-  "confirmPassword": "Confirm password",
+  "removePasswordDisc":"Enter your password",
+  "enterPassword": "Enter your new password",
+  "confirmPassword": "Confirm your new password",
   "showRecoveryPhrasePasswordRequest": "Kindly enter your password ",
   "recoveryPhraseSavePromptMain": "Your recovery phrase is the master key to your BChat ID — you can use it to restore your BChat ID if you lose access to your device. Store your recovery phrase in a safe place, and don't give it to anyone.",
   "invalidSocialGroupUrl": "Invalid URL",
@@ -323,9 +324,7 @@
   "typeInOldPassword": "Please type in your old password",
   "invalidOldPassword": "Old password is invalid",
   "invalidPassword": "Invalid password",
-  "noGivenPassword": "Kindly enter your password ",
-  "enterwalletPassword":"Enter Password",
-  "reEnterPassword":"Re-Enter Password",
+  "currentPassword": "Enter your current password",
   "passwordsDoNotMatch": "Password mismatch. Kindly re-enter.",
   "setPasswordInvalid": "Password mismatch. Kindly re-enter.",
   "changePasswordInvalid": "The old password you entered is incorrect",
@@ -531,6 +530,7 @@
   "BChat":"BChat",
   "Rescan":"Rescan",
   "rescanWallet":"Rescan Wallet",
-  "rescanWalletDiscription":"Warning : Some information about previous transactions such as the recipient’s address will be lost"
-
+  "rescanWalletDiscription":"Warning : Some information about previous transactions such as the recipient’s address will be lost",
+  "walletPasswordLengthError": "Password should be 4-13 characters long",
+  "passwordFieldEmpty":"Password field cannot be empty"
 }

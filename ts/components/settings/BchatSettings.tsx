@@ -186,7 +186,7 @@ export const PasswordLock = ({
       return <BchatOnionPathScreen/>;
     }    
     if (category === BchatSettingCategory.Wallet) {
-      wallet.startWallet();
+      wallet.startWallet("settings");
       return <WalletMainPanel/>;
     }    
     if (category === BchatSettingCategory.Notifications) {
@@ -210,7 +210,7 @@ export const PasswordLock = ({
     );
     if (!enteredPassword) {
       this.setState({
-        pwdLockError: window.i18n('noGivenPassword'),
+        pwdLockError: "emptyPassword",
       });
       ToastUtils.pushToastError(
         'emptyPassword',
