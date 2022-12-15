@@ -538,6 +538,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
   public async getUnreadCount() {
     const unreadCount = await getUnreadCountByConversation(this.id);
+console.log("getUnreadCountByConversation ::",unreadCount,this.id);
 
     return unreadCount;
   }

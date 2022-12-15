@@ -12,6 +12,9 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { contact } from '../../state/ducks/walletSection';
 import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
+import { saveRecipientAddress } from '../../data/data';
+import { walletSettingsKey } from '../../data/settings-key';
+// import { saveRecipientAddressvalid } from '../../data/data';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -22,23 +25,48 @@ export const SendForm = (props: any) => {
   const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
 
+
+  async function insertData() {
+    let dummydata = {
+      address: '9vPES3Dkzdpetm3wLfTjFi1hBBFm82Zdg2rtoDq3YEP298z64Zx5oBSa9V8gU8xHpqepXDYaRqhYZcAMGmyjtErREKi336r',
+      tx_hash: 'd71675f759f06481fac4d4838f7c708dd7355eac4f60528a8bc57a8521f15cd9'
+    }
+    await saveRecipientAddress(dummydata)
+    // await saveRecipientAddressvalid(dummydata);
+  }
   async function send() {
     let data: any = await wallet.transfer(
       address,
       props.amount * 1e9,
       props.priority === 'Flash' ? 0 : 1
     );
-    console.log('data:', data.result);
-    if (!data.hasOwnProperty('error')) {
+    // console.log('data:', data.result);
+    // if (!data.hasOwnProperty('error')) {
+
+    // if (data.hasOwnProperty('result')) {
+    if (data.result) {
+
       ToastUtils.pushToastSuccess(
         'successfully-sended',
-        `Successfully fund sended.Tx-hash ${data.result.tx_hash}`
+        `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
       );
+      const TransactionHistory = {
+        tx_hash: data.result.tx_hash_list[0]
+        , address: address
+      }
+      let getSettingvalue= window.getSettingValue(walletSettingsKey.settingSaveRecipient)
+      if(getSettingvalue)
+      {
+        await saveRecipientAddress(TransactionHistory);
+      }
       props.setAmount(0);
       props.setPriority(window.i18n('flash'));
       setAddress('bd...');
 
-      return data.result.tx_hash;
+      // console.log('senddata ::',data.result);
+
+      // data.result.tx_hash_list[0];
+
     } else {
       // console.log('error -response from send:', data.error.message);
       ToastUtils.pushToastError('Error fund send', data.error.message);
@@ -48,6 +76,7 @@ export const SendForm = (props: any) => {
 
   return (
     <div className="wallet-sendForm">
+      <button onClick={() => insertData()}>insertData</button>
       <Flex container={true} flexDirection="row" justifyContent="space-between">
         <Flex width="48%">
           <Flex
@@ -95,8 +124,7 @@ export const SendForm = (props: any) => {
                   <div className="wallet-settings-nodeSetting-sendDropDown">
                     <div
                       className={classNames(
-                        `dropDownItem ${
-                          props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
@@ -107,8 +135,7 @@ export const SendForm = (props: any) => {
                     </div>
                     <div
                       className={classNames(
-                        `dropDownItem ${
-                          props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
@@ -147,7 +174,7 @@ export const SendForm = (props: any) => {
               onClick={() => dispatch(contact())}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}
-              //   disabled={!caption}
+            //   disabled={!caption}
             />
           </div>
         </Flex>

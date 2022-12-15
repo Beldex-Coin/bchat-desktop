@@ -49,6 +49,7 @@ const ITEMS_TABLE = 'items';
 const ATTACHMENT_DOWNLOADS_TABLE = 'attachment_downloads';
 const CLOSED_GROUP_V2_KEY_PAIRS_TABLE = 'encryptionKeyPairsForClosedGroupV2';
 const LAST_HASHES_TABLE = 'lastHashes';
+const RECIPIENT_ADDRESS= 'recipient_address'; 
 
 const MAX_PUBKEYS_MEMBERS = 300;
 
@@ -513,6 +514,13 @@ function updateToSchemaVersion6(currentVersion: number, db: BetterSqlite3.Databa
       keyId
     );
 
+    CREATE TABLE ${RECIPIENT_ADDRESS}(
+      address STRING,
+      tx_hash STRING
+    );
+
+
+
     `);
     db.pragma('user_version = 6');
   })();
@@ -712,6 +720,31 @@ function updateToSchemaVersion11(currentVersion: number, db: BetterSqlite3.Datab
   console.log('updateToSchemaVersion11: success!');
 }
 
+// function updateToSchemaVersion12(currentVersion: number, db: BetterSqlite3.Database) {
+//   console.log("currentVersion ::",currentVersion);
+  
+//   if (currentVersion >= 12) {
+//     return;
+//   }
+//   console.log('updateToSchemaVersion12: starting...');
+
+//   db.transaction(() => {
+//     // db.exec(` 
+//     // CREATE TABLE ${RECIPIENT_ADDRESS_TABLE}(
+//     //   name STRING,
+//     //   address STRING
+//     // );`);
+//     db.exec(`CREATE TABLE ${RECIPIENT_ADDRESS_TABLE}(
+//       address STRING,
+//       tx_hash STRING
+//     );`)
+//     db.pragma('user_version = 12');
+//   });
+ 
+
+//   console.log('updateToSchemaVersion12: success!');
+// }
+
 const SCHEMA_VERSIONS = [
   updateToSchemaVersion1,
   updateToSchemaVersion2,
@@ -724,6 +757,7 @@ const SCHEMA_VERSIONS = [
   updateToSchemaVersion9,
   updateToSchemaVersion10,
   updateToSchemaVersion11,
+  //  updateToSchemaVersion12
 ];
 
 function updateSchema(db: BetterSqlite3.Database) {
@@ -793,7 +827,7 @@ function updateToBchatSchemaVersion1(currentVersion: number, db: BetterSqlite3.D
   })();
 
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
-}
+} 
 
 function updateToBchatSchemaVersion2(currentVersion: number, db: BetterSqlite3.Database) {
   const targetVersion = 2;
@@ -1675,6 +1709,8 @@ function createOrUpdateItem(data: StorageItem, instance?: BetterSqlite3.Database
   createOrUpdate(ITEMS_TABLE, data, instance);
 }
 function getItemById(id: string) {
+  console.log('getItemById:::muna');
+  
   return getById(ITEMS_TABLE, id);
 }
 function getAllItems() {
@@ -2247,6 +2283,7 @@ function cleanSeenMessages() {
     .run({
       now: Date.now(),
     });
+
 }
 
 function saveMessages(arrayOfMessages: Array<any>) {
@@ -2275,6 +2312,7 @@ function removeMessage(id: string, instance?: BetterSqlite3.Database) {
 }
 
 function getMessageIdsFromServerIds(serverIds: Array<string | number>, conversationId: string) {
+
   if (!Array.isArray(serverIds)) {
     return [];
   }
@@ -2297,6 +2335,9 @@ function getMessageIdsFromServerIds(serverIds: Array<string | number>, conversat
     .all({
       conversationId,
     });
+
+  //  getRecipientAddress();
+    
   return rows.map(row => row.id);
 }
 
@@ -2828,6 +2869,9 @@ function getAllUnprocessed() {
     .prepare('SELECT * FROM unprocessed ORDER BY timestamp ASC;')
     .all();
 
+    // console.log('getAllUnprocessed ::',rows);
+    // window.log.warn('getAllUnprocessed ::',rows)
+    // window.log.info("getAllUnprocessed dat ::")
   return rows;
 }
 
@@ -2936,6 +2980,7 @@ function removeAll() {
     DELETE FROM ${MESSAGES_TABLE};
     DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};
     DELETE FROM ${MESSAGES_FTS_TABLE};
+    DELETE FROM ${RECIPIENT_ADDRESS};
 `);
 }
 
@@ -3336,6 +3381,9 @@ function saveV2OpenGroupRoom(opengroupsv2Room: any) {
       conversationId,
       json: objectToJSON(opengroupsv2Room),
     });
+
+    
+    window.log.info('saveV2OpenGroupRoom :: log');
 }
 
 function removeV2OpenGroupRoom(conversationId: string) {
@@ -3377,6 +3425,7 @@ function printDbStats() {
     'messages_fts_idx',
     'nodesForPubkey',
     'openGroupRoomsV2',
+    'recipient_address',
     'seenMessages',
     'sqlite_sequence',
     'sqlite_stat1',
@@ -3694,6 +3743,84 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
   return convosIdsAdded;
 }
 
+//wallet DBs works
+
+function saveRecipientAddress(data: any) {
+  const { tx_hash,address } = data;
+  // console.log("RecipientAddress ::5",data);
+
+  // if () {
+  //   throw new Error(`saveReceipientAddress: id was falsey: ${id}`);
+  // }
+
+  assertGlobalInstance()
+    .prepare(
+      `INSERT INTO ${RECIPIENT_ADDRESS} (
+        address,
+    tx_hash
+    ) values (
+      $address,
+    $tx_hash
+    );`
+    )
+    .run({
+      address,
+      tx_hash,
+    });
+    console.log("RecipientAddress ::6 and end",);
+
+    console.log('addRecipientAddress');
+  return ;
+}
+
+// function saveRecipientAddressvalid(data:any)
+// {
+//   console.log("RecipientAddress ::2",data);
+//   // data.json=JSON.stringify(data);
+//   const { address } = data;
+
+//   const row = assertGlobalInstance()
+//   .prepare(`SELECT * FROM ${RECIPIENT_ADDRESS} WHERE address = $address;`)
+//   .get({
+//     address
+//   });
+//   console.log("RecipientAddress ::3",row);
+
+// if (!row) {
+//   console.log("RecipientAddress ::4",data);
+
+//   saveRecipientAddress(data)
+// }
+// }
+
+function getRecipientAddress(tx_hash:any)
+{
+
+  // let hash="af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b"
+  // console.log();
+  // console.log('hash:',hash === tx_hash);
+  
+  // const row = assertGlobalInstance()
+  //   .prepare(`SELECT * FROM  ${RECIPIENT_ADDRESS};`)
+  //   .all();
+  //   console.log("RecipientAddress ::1",tx_hash);
+  //   console.log("RecipientAddress ::1 row",row);
+  
+
+  const row = assertGlobalInstance()
+  .prepare(`SELECT * FROM ${RECIPIENT_ADDRESS} WHERE tx_hash = $tx_hash;`)
+  .get({
+    tx_hash,
+  });
+  // console.log("row1 ::",row1);
+  
+  if (!row) {
+    return [];
+  }
+  
+  return row;
+}
+
 export type SqlNodeType = typeof sqlNode;
 
 export const sqlNode = {
@@ -3801,4 +3928,10 @@ export const sqlNode = {
   getAllV2OpenGroupRooms,
   getV2OpenGroupRoomByRoomId,
   removeV2OpenGroupRoom,
+
+  //wallet
+
+   getRecipientAddress,
+   saveRecipientAddress
+  // saveRecipientAddressvalid
 };

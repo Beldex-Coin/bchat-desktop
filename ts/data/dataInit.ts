@@ -10,6 +10,11 @@ const channelsToMakeForOpengroupV2 = [
   'removeV2OpenGroupRoom',
   'getAllOpenGroupV2Conversations',
 ];
+
+// const channelsToMakeForWallet=[
+//   'getRecipientAddress',
+//   // 'saveRecipientAddressvalid'
+// ]
 const channelsToMake = new Set([
   'shutdown',
   'close',
@@ -91,6 +96,10 @@ const channelsToMake = new Set([
   'removeAllClosedGroupEncryptionKeyPairs',
   'fillWithTestData',
   ...channelsToMakeForOpengroupV2,
+  // ...channelsToMakeForWallet,
+// wallet
+  'getRecipientAddress',
+  'saveRecipientAddress',
 ]);
 
 const SQL_CHANNEL_KEY = 'sql-channel';
@@ -140,10 +149,15 @@ function _getJob(id: number) {
 
 function makeChannel(fnName: string) {
   channels[fnName] = async (...args: any) => {
+    // console.log("fnName::",fnName);
+    
     const jobId = _makeJob(fnName);
 
     return new Promise((resolve, reject) => {
+      // console.log("SQL_CHANNEL_KEY:: 1",SQL_CHANNEL_KEY, jobId, fnName, ...args);
+
       ipcRenderer.send(SQL_CHANNEL_KEY, jobId, fnName, ...args);
+      // console.log("SQL_CHANNEL_KEY:: 2",SQL_CHANNEL_KEY, jobId, fnName, ...args);
 
       _updateJob(jobId, {
         resolve,

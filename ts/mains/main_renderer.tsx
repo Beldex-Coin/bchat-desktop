@@ -282,6 +282,9 @@ async function start() {
     // Initialise default settings
     window.setSettingValue('hide-menu-bar', true);
     window.setSettingValue('link-preview-setting', false);
+    window.setSettingValue("decimal",'2 - Two (0.00)')
+    window.setSettingValue("save-recipient",false)
+
   }
 
   window.setTheme = newTheme => {

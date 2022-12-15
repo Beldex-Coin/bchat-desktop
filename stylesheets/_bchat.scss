@@ -2022,6 +2022,23 @@ label {
           }
         }
       }
+
+      &-recipitentBox
+      {
+        &-adddressBox
+        {
+          width: 614px;
+          padding-right: 10px;
+      
+
+          &-address
+          {
+           font-family: $bchat-font-poppin-light;
+           font-size:12px;
+          }
+        }
+       
+      }
     }
   }
 }

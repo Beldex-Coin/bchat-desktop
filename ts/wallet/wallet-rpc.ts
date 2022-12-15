@@ -558,14 +558,18 @@ export class Wallet {
     };
     const data = await this.sendRPC('transfer_split', params);
     // console.log('sendFunddata ::', data.result);
-    if (!data.hasOwnProperty('error')) {
+    if (data.result) {
       ToastUtils.pushToastSuccess(
         'successfully-sended',
-        `Successfully fund sended.Tx-hash ${data.result.tx_hash}`
+        `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
       );
+      return data
+
     } else {
       // console.log('error -response from send:', data.error.message);
       ToastUtils.pushToastError('Error fund send', data.error.message);
+      return data
+
     }
   };
 

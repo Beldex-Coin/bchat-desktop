@@ -8,9 +8,14 @@ const settingsLinkPreview = 'link-preview-setting';
 const settingsStartInTray = 'start-in-tray-setting';
 const settingsOpengroupPruning = 'prune-setting';
 
-export const SettingsKey = {
+// wallet setting keys
+
+const settingsDecimal="decimal";
+const settingSaveRecipient="save-recipient";
+
+export const SettingsKey = { 
   settingsReadReceipt,
-  settingsTypingIndicator,
+  settingsTypingIndicator, 
   settingsAutoUpdate,
   settingsMenuBar,
   settingsSpellCheck,
@@ -18,3 +23,8 @@ export const SettingsKey = {
   settingsStartInTray,
   settingsOpengroupPruning,
 };
+
+export const walletSettingsKey={
+  settingsDecimal,
+  settingSaveRecipient
+}

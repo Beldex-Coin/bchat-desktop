@@ -24,7 +24,7 @@ export const WalletBalanceSection = () => {
 
   // async function getConvertedCurrency()
   // {
-  //   let convCurrency:any =await walletRpc.currencyConv(wallet.balance, exeCurrency);
+  //   let convCurrency:any =await walletRpc.currencyConv(wallet.balance, CurrencyExtention);
   //   // let convcurrency=await walletClass.currencyConv()
   //   setExeCurrencyValue(Number(convCurrency).toFixed(4));
   // }

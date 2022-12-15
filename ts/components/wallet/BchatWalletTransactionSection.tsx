@@ -1,7 +1,8 @@
 import classNames from "classnames"
 import moment from "moment"
 import React, { useState } from "react"
- import { useSelector } from "react-redux"
+import { useSelector } from "react-redux"
+import { getRecipientAddress } from "../../data/data"
 // import { wallet } from "../../wallet/wallet-rpc"
 // import { BchatDropdown } from "../basic/BchatDropdown"
 import { Flex } from "../basic/Flex"
@@ -10,12 +11,12 @@ import { BchatIcon } from "../icon/BchatIcon"
 
 export const TransactionSection = () => {
 
-        let transactions = useSelector((state: any) => state.wallet.transacations);
+    let transactions = useSelector((state: any) => state.wallet.transacations);
     // console.log('transactionsHistory :: 1',transactions);
 
-        const transactionsHistory =
-          transactions.
-          tx_list == undefined ? [] : transactions.tx_list;
+    const transactionsHistory =
+        transactions.
+            tx_list == undefined ? [] : transactions.tx_list;
     // console.log('transactionsHistory :: 2',transactionsHistory);
     // let tx: any = [
     //     {
@@ -149,35 +150,42 @@ export const TransactionSection = () => {
     const [filter, setFilter] = useState(window.i18n('filterAll'))
     const [visible, setVisible] = useState(false);
     // const [data, setData] = useState(transactionsHistory)
-    const [data, setData] = useState(transactionsHistory)
-
-
+    const [data, setData] = useState(transactionsHistory);
+    const [selected, setSelected] = useState(null);
+    const [receipientData,setRecipientdata]=useState([])
 
 
 
     function closeDropDown(params: any, type: any) {
         setFilter(params)
         setVisible(!visible)
-        filterTransac(type)
+        filterTransaction(type)
     }
 
-    function filterTransac(type: any) {
-        if (type !== window.i18n('filterAll')) {
-            let filterData = transactionsHistory.filter((data:any) => data.type === type);
-            console.log('filterData ::', filterData);
-            let descData = filterData.sort((a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp));
-            setData(descData)
-        }
-        else {
-            // setData(transactionsHistory);
+    function filterTransaction(type: any) {
+        if (type === window.i18n('filterAll')) {
             setData(transactionsHistory);
+            return
         }
 
+        let filterData = transactionsHistory.filter((data: any) => data.type === type);
+        setData(filterData);
     }
+    async function showdata(tx_hash: string,i:any) {
+
+        console.log('recipientAddress showdata ::');
+        //   let tx_hash='af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b'
+        let recipientAddress = await getRecipientAddress(tx_hash)
+        console.log('showdata ::', recipientAddress);
+        setRecipientdata(recipientAddress)
+        setSelected(i);
+
+    }
+
 
     const TransactionIndication = (props: any) => {
         const { type } = props
-        let item:any = {
+        let item: any = {
             iconType: "payRecieved",
             iconColor: "#128b17",
             type: window.i18n("received")
@@ -185,18 +193,18 @@ export const TransactionSection = () => {
         switch (type) {
             case "out":
                 item.iconType = "paySend",
-                item.iconColor = "#FC2727",
-                item.type = window.i18n("sent")
+                    item.iconColor = "#FC2727",
+                    item.type = window.i18n("sent")
                 break;
             case "pending":
-                item.iconType = "payRecieved",
-                item.iconColor = "#FDB12A",
-                item.type = window.i18n("pending")
+                item.iconType = "pendingTransaction",
+                    item.iconColor = "#FDB12A",
+                    item.type = window.i18n("pending")
                 break;
             case "failed":
                 item.iconType = "error",
-                item.iconColor = "#FC2727",
-                item.type = window.i18n("failed")
+                    item.iconColor = "#FC2727",
+                    item.type = window.i18n("failed")
                 break;
 
             default:
@@ -209,6 +217,50 @@ export const TransactionSection = () => {
         )
     }
 
+    const RececipientAddress = (props: any) => {
+
+        const { RececipientData } = props;
+        console.log("RececipientData:,", RececipientData);
+
+
+        return <>
+            <Flex container={true} justifyContent="space-between" flexDirection="row" width="95%" >
+
+                {/* <Flex container={true} height=" 60px" > */}
+                <div style={{ display: 'flex' }}>
+                    <section style={{ display: 'flex' }}>
+                        <article style={{ width: '110px' }}>
+                            {/* <TransactionIndication type={item.type} /> */}
+                        </article>
+
+                        <div style={{ marginLeft: '20px' }} className='wallet-Transaction-recipitentBox-adddressBox'>
+                            <div className="">{window.i18n('recipientAddress')}</div>
+                            <div className="wallet-Transaction-recipitentBox-adddressBox-address">{receipientData}</div>
+                        </div>
+                    </section>
+
+
+                    <section>
+                        <article>
+                            {window.i18n('transactionFee')}
+                        </article>
+                        <article>
+                            0.1 BDX
+                        </article>
+                    </section>
+
+                </div>
+
+                <section className="wallet-Transaction-contentBox-dateandheight">
+                    <div className="wallet-Transaction-contentBox-dateandheight-month">{window.i18n('dateTime')}</div>
+                    <div className="wallet-Transaction-contentBox-dateandheight-height"></div>
+                </section>
+
+            </Flex>
+
+
+        </>
+    }
 
     return <div className="wallet-Transaction">
 
@@ -310,7 +362,7 @@ export const TransactionSection = () => {
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
 
-                        <Flex container={true} height=" 60px">
+                        <Flex container={true} height=" 60px" onClick={() => item.type === 'in'&&showdata(item.txid,i)}>
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
                                 <TransactionIndication type={item.type} />
                             </article>
@@ -328,8 +380,7 @@ export const TransactionSection = () => {
                         </section>
 
                     </Flex>
-
-
+                    {selected === i &&item.type === 'in' && <RececipientAddress RececipientData={item} />}
                 </div>
             )}
         </div>

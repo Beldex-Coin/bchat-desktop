@@ -11,11 +11,27 @@ import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerSM } from "../basic/Text"
 import { copyBchatID } from "../dialog/EditProfileDialog"
 import { BchatIcon } from "../icon"
+// import { sqlNode } from "../../node/sql"
+//  import {  getRecipientAddress } from "../../data/data"
 
 export const AddressBook = (props:any) => {
   const dispatch = useDispatch()
   const directContact = useSelector(getDirectContacts)
+
  
+  // async function showdata()
+  // {
+  //   console.log('recipientAddress showdata ::');
+  // //  let data= await sqlNode.getRecipientAddress()
+  // let tx_hash='af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b'
+  //  let data=await getRecipientAddress(tx_hash)
+  //  console.log('showdata ::',data);
+
+  //   // await getRecipientAddress()
+  //   // await getAllUnprocessed();
+
+  // }
+  
   // console.log("directContact :: ", directContact, directContact.length);
 
   function copyBtn(address:string){
@@ -30,6 +46,7 @@ export const AddressBook = (props:any) => {
   }
 
   return <div className="wallet-addressBook">
+    {/* <button onClick={()=>showdata()}>test 12345</button> */}
     <div style={{ cursor: "pointer" }}>
       <Flex container={true} alignItems="center" onClick={() => dispatch(dashboard())}>
         <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
