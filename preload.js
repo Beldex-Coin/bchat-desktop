@@ -228,42 +228,47 @@ window.Signal = data.initData();
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
   // tslint:disable-next-line: no-empty
-  window.nodeSetImmediate(() => { });
+  window.nodeSetImmediate(() => {});
 }, 1000);
 
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
+
+// window.getSeedNodeList = () =>
+//   process.env.NODE_ENV == 'development'
+//     ? [
+//       'https://publicnode1.rpcnode.stream:443',
+//       'https://publicnode2.rpcnode.stream:443',
+//       'https://publicnode3.rpcnode.stream:443',
+//     ]
+//     : [
+
+//       'https://publicnode1.rpcnode.stream:443',
+//       'https://publicnode2.rpcnode.stream:443',
+//       'https://publicnode3.rpcnode.stream:443',
+
+//     ];
+
 window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
-    ? [
-      'https://publicnode1.rpcnode.stream:443',
-      'https://publicnode2.rpcnode.stream:443',
-      'https://publicnode3.rpcnode.stream:443',
-    ]
-    : [
+    ? ['https//38.242.196.72:19095', 'http://154.26.139.105:19095']
+    : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
 
-      'https://publicnode1.rpcnode.stream:443',
-      'https://publicnode2.rpcnode.stream:443',
-      'https://publicnode3.rpcnode.stream:443',
-
-    ];
-
-
-window.getDaemonNodeRandomlyPick = () =>{
+window.getDaemonNodeRandomlyPick = () => {
   const remotes = [
     {
-      host: "38.242.196.72",
-      port: "19095"
+      host: '38.242.196.72',
+      port: '19095',
     },
     {
-      host: "154.26.139.105",
-      port: "19095"
-    }
+      host: '154.26.139.105',
+      port: '19095',
+    },
   ];
-  return remotes[Math.floor((Math.random()*remotes.length))];
-}
+  return remotes[Math.floor(Math.random() * remotes.length)];
+};
 
 const remotes = [
   // {
@@ -271,16 +276,16 @@ const remotes = [
   //   port: "19095"
   // },
   {
-    host: "154.26.139.105",
-    port: "19095"
-  }
+    host: '154.26.139.105',
+    port: '19095',
+  },
   //live
   // {
   //   host: "explorer.beldex.io",
   //   port: "19091"
   // }
 ];
-window.currentDaemon = remotes[Math.floor((Math.random()*remotes.length))];
+window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);

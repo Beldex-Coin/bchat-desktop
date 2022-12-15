@@ -1,25 +1,25 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-  // import { useEffect } from "react";
-import {  getwalletDecimalValue, getwalletExeCurrency } from '../../state/selectors/walletConfig';
-//  import { Wallet as walletRpc } from '../../wallet/wallet-rpc';
+import { getFiatBalance, getwalletDecimalValue } from '../../state/selectors/walletConfig';
 import { SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
-// import { walletHelper } from "./BchatWalletHelper";
+import { BchatToolTip } from '../leftpane/ActionsPanel';
+const { clipboard } = require('electron');
 
 export const WalletBalanceSection = () => {
-  let wallet = useSelector((state: any) => state.wallet);
-  let walletAddress = localStorage.getItem('userAddress');
-  const exeCurrency = useSelector(getwalletExeCurrency);
-  // const [exeCurrencyValue, setExeCurrencyValue] = useState(wallet.balanceConvert);
-   let  decimalValue:any=useSelector(getwalletDecimalValue);
-   decimalValue=decimalValue.charAt(0)
-   console.log("decimalValue :: ",(wallet.balance / 1e9).toFixed(decimalValue),"wallet.balance::",wallet.balance);
-   
-
+  const walletDetails = useSelector((state: any) => state.wallet);
+  const walletAddress: any = localStorage.getItem('userAddress');
+  const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 48) : '';
+  const currency: any = localStorage.getItem('currency');
+  const fiatBalance: any = Number(useSelector(getFiatBalance));
+  let decimalValue: any = useSelector(getwalletDecimalValue);
+  decimalValue = decimalValue.charAt(0);
+  const handlePaste = () => {
+    clipboard.writeText(walletAddress, 'clipboard');
+  };
 
   // useEffect(() => {
-   
+
   // }, [exeCurrency, exeCurrencyValue]);
 
   // async function getConvertedCurrency()
@@ -45,32 +45,41 @@ export const WalletBalanceSection = () => {
           </div>
           <SpacerSM />
           <div className="wallet-left-balance-Sec-balanceTxt">
-            {(wallet.balance / 1e9).toFixed(decimalValue)} <span className="marginRight">BDX</span>
+            {(walletDetails.balance / 1e9).toFixed(decimalValue)}{' '}
+            <span className="marginRight">BDX</span>
             <BchatIcon iconSize="medium" iconType="eye" />
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">
-            {(wallet.balanceConvert / 1e9).toFixed(decimalValue)} <span>{exeCurrency}</span>
+            {(fiatBalance / 1e9).toFixed(decimalValue)} <span>{currency}</span>
           </div>
         </div>
         <div className="wallet-right-Button-Sec">
           <SpacerXS />
-          <div className="wallet-right-Button-Sec-fetch-btn">
+          {/* <div className="wallet-right-Button-Sec-fetch-btn">
             <BchatIcon iconSize="tiny" iconType="fetch" />
             <span style={{ marginLeft: '2px' }}>Fetch Balance & Txn</span>
-          </div>
+          </div> */}
           <SpacerSM />
 
           <div className="wallet-right-Button-Sec-unlockbal-box">
             <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
             <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-            <span className="unBalance">{(wallet.unlocked_balance / 1e9).toFixed(decimalValue)}</span>
+            <span className="unBalance">
+              {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}
+            </span>
           </div>
         </div>
       </div>
       <SpacerMD />
       <div className="wallet-myAddress-Box">
-        <div className="wallet-myAddress-Box-content">{walletAddress}</div>
-        <div className="wallet-myAddress-Box-copyIcon-box">
+        <div className="wallet-myAddress-Box-content">{`${sliceWalletAddress}...`}</div>
+        <div
+          className="wallet-myAddress-Box-copyIcon-box"
+          onClick={handlePaste}
+          data-tip="Copy"
+          data-place="right"
+          data-offset="{'top':30,'left':15}"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -84,6 +93,7 @@ export const WalletBalanceSection = () => {
             />
           </svg>
         </div>
+        <BchatToolTip place="top" effect="solid" />
       </div>
     </div>
   );

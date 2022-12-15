@@ -14,7 +14,9 @@ import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
-import { updateWalletHeight } from '../state/ducks/walletConfig';
+import { updateFiatBalance, updateWalletHeight } from '../state/ducks/walletConfig';
+
+
 // import { WebSocket } from 'ws';
 export class Wallet {
   heartbeat: any;
@@ -382,7 +384,7 @@ export class Wallet {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
       this.heartbeatAction();
-    }, 8000);
+    }, 6000);
     // this.heartbeatAction(true);
   }
   async heartbeatAction() {
@@ -414,6 +416,8 @@ export class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
+          const balanceConversation: any = await this.currencyConv(n.result.balance);
+          window.inboxStore?.dispatch(updateFiatBalance(balanceConversation));
           if (
             this.wallet_state.balance == n.result.balance &&
             this.wallet_state.unlocked_balance == n.result.unlocked_balance
@@ -425,13 +429,10 @@ export class Wallet {
             n.result.unlocked_balance;
 
           let data: any = await this.getTransactions();
-          const balanceConversation = await this.currencyConv(this.wallet_state.balance);
-
           window.inboxStore?.dispatch(
             updateBalance({
               balance: this.wallet_state.balance,
               unlocked_balance: this.wallet_state.unlocked_balance,
-              balanceConvert: balanceConversation,
               transacations: data.transactions,
             })
           );
@@ -478,10 +479,12 @@ export class Wallet {
     });
   }
 
-  currencyConv = async (balance: number, currencyext?: any) => {
-    const currency = currencyext ? currencyext : 'usd';
+  currencyConv = async (balance: number) => {
+    const currency: any = localStorage.getItem('currency')?.toLocaleLowerCase();
     const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
     const currencyValue: any = await response.json();
+    console.log('response:', response);
+    console.log('currencyValue:', currencyValue);
     return response.ok ? balance * currencyValue[currency] : 0;
   };
 
@@ -540,7 +543,7 @@ export class Wallet {
   //   ));
   // };
 
-  sendFund = async (address: string, amount: number, priority: number) => {
+  transfer = async (address: string, amount: number, priority: number) => {
     const params = {
       destinations: [{ amount: amount, address: address }],
       account_index: 0,

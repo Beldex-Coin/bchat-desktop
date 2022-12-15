@@ -23,11 +23,12 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
 
   async function send() {
-    let data:any = await wallet.sendFund(
+    let data: any = await wallet.transfer(
       address,
       props.amount * 1e9,
       props.priority === 'Flash' ? 0 : 1
     );
+    console.log('data:', data.result);
     if (!data.hasOwnProperty('error')) {
       ToastUtils.pushToastSuccess(
         'successfully-sended',
@@ -59,7 +60,7 @@ export const SendForm = (props: any) => {
             <span style={{ width: '20%' }}>{window.i18n('amount')}</span>
             <div className="wallet-sendForm-inputBox">
               <input
-                value={props.amount}
+                value={props.amount == 0 ? '' : props.amount}
                 onChange={(e: any) => {
                   props.setAmount(e.target.value);
                 }}

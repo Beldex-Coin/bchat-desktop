@@ -6,14 +6,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface WalletConfigState {
   walletsendAddress: any | null;
-  walletExeCurrency: string | any;
+  fiatBalance: string | any;
   walletHeight: number | any;
   walletDecimalValue:any;
 }
 
 export const initialWalletConfigState: WalletConfigState = {
   walletsendAddress: '',
-  walletExeCurrency: 'USD',
+  fiatBalance: '',
   walletHeight: 100,
   walletDecimalValue:'2 - Two (0.00)',
 
@@ -22,7 +22,7 @@ export const initialWalletConfigState: WalletConfigState = {
 
  export interface WalletConfigState {
    walletsendAddress:any | null;
-   walletExeCurrency:string|any;
+   fiatBalance:string|any;
    walletDecimalValue:any;
    
  }
@@ -34,8 +34,8 @@ export const initialWalletConfigState: WalletConfigState = {
      updateSendAddress(state, action: PayloadAction<WalletConfigState> ) {
         return { ...state, walletsendAddress: action.payload };
       },
-      updateExeCurrency(state, action: PayloadAction<WalletConfigState> ) {
-        return { ...state, walletExeCurrency: action.payload };
+      updateFiatBalance(state, action: PayloadAction<WalletConfigState> ) {
+        return { ...state, fiatBalance: action.payload };
       },
       updateDecimalValue(state, action: PayloadAction<WalletConfigState> ) {
         return { ...state, walletDecimalValue: action.payload };
@@ -50,7 +50,7 @@ export const initialWalletConfigState: WalletConfigState = {
  export const { actions, reducer } = walletConfigSlice;
  export const {
     updateSendAddress,
-    updateExeCurrency,
+    updateFiatBalance,
     updateDecimalValue,
     updateWalletHeight,
  } = actions;
