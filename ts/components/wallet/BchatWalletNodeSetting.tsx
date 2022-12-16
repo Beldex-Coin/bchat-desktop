@@ -1,22 +1,27 @@
-import React from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { setting } from "../../state/ducks/walletSection"
 import { BchatButton, BchatButtonColor } from "../basic/BchatButton"
 import { Flex } from "../basic/Flex"
 import { SpacerLG, SpacerMD } from "../basic/Text"
 import { BchatIcon } from "../icon/BchatIcon"
+import classNames from "classnames"
 
 
 export const NodeSetting = () => {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
+    const [viewBox1, setViewBox1] = useState(false);
+    const [viewBox2, setViewBox2] = useState(false);
+
+
     return <div>
-        <div onClick={()=> dispatch(setting())} style={{cursor:'pointer'}}>
-        <Flex container={true} alignItems="center" >
-            <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
-            <div className="wallet-addressBook-header-txt" >
-                {window.i18n('node')}
-            </div>
-        </Flex>
+        <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
+            <Flex container={true} alignItems="center" >
+                <BchatIcon iconType="walletBackArrow" iconSize={"huge"} />
+                <div className="wallet-addressBook-header-txt" >
+                    {window.i18n('node')}
+                </div>
+            </Flex>
         </div>
         <SpacerLG />
         <section className="wallet-settings-nodeSetting-contentBox">
@@ -50,10 +55,13 @@ export const NodeSetting = () => {
                 <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                     {window.i18n('addRemoteDaemonNode')}
                 </div>
-                <BchatIcon iconType="circleChevron" iconSize={"medium"} />
+                <div onClick={()=>setViewBox1(!viewBox1)}>               
+                    <BchatIcon iconType="circleChevron" iconSize={"medium"} iconRotation={viewBox1?0:178} />
+                </div>
+
             </Flex>
             <SpacerLG />
-            <div>
+            <div className={classNames("wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box")} style={viewBox1?{display:'block'}:{}}>
                 <Flex container={true} justifyContent="space-between">
                     <article className="wallet-settings-nodeSetting-remoteContentBox">
                         <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
@@ -88,6 +96,7 @@ export const NodeSetting = () => {
                 <SpacerLG />
                 <SpacerLG />
             </div>
+
             <div className="wallet-settings-nodeSetting-horizontalLine">
 
             </div>
@@ -96,10 +105,12 @@ export const NodeSetting = () => {
                 <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                     {window.i18n('chooseRemoteDaemonNode')}
                 </div>
-                <BchatIcon iconType="circleChevron" iconSize={"medium"} />
+                <div onClick={()=>setViewBox2(!viewBox2)}>
+                <BchatIcon iconType="circleChevron" iconSize={"medium"} iconRotation={viewBox2?0:178}/>
+                </div>
             </Flex>
             <SpacerLG />
-            <div>
+            <div className={classNames("wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box")} style={viewBox2?{display:'block'}:{}}>
                 <Flex container={true} justifyContent="space-between">
                     <article className="wallet-settings-nodeSetting-remoteContentBox">
                         <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">

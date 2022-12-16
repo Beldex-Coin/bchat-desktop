@@ -1865,6 +1865,16 @@ label {
           align-items: center;
           width: 45%;
 
+          &-content-hidden-Box
+          {
+            display: none;
+            transition: display 2s;
+          }
+          .d-block
+          {
+            display: block;
+          }
+
           &-labelTxt {
             width: 20%;
           }
@@ -2007,14 +2017,22 @@ label {
             font-size: 18px;
             font-family: $bchat-font-poppins-bold;
           }
+          &-address
+          {
+            width: 584px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
         &-dateandheight {
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          // justify-content: center;
 
           &-month {
             font-size: 14px;
+            font-family: $bchat-font-poppin-semibold;
           }
           &-height {
             font-size: 10px;
@@ -2027,9 +2045,9 @@ label {
       {
         &-adddressBox
         {
-          width: 614px;
+          width: 601px;
           padding-right: 10px;
-      
+         font-family:$bchat-font-poppin-semibold ;
 
           &-address
           {
@@ -2037,7 +2055,15 @@ label {
            font-size:12px;
           }
         }
-       
+        &-transactionFee-header
+      {
+        font-family: $bchat-font-poppin-semibold;
+      }
+      &-transactionFee-text
+      {
+        font-family: $bchat-font-poppin-light;
+        font-size:12px;
+      }
       }
     }
   }

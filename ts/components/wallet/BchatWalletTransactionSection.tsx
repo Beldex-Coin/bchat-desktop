@@ -152,7 +152,7 @@ export const TransactionSection = () => {
     // const [data, setData] = useState(transactionsHistory)
     const [data, setData] = useState(transactionsHistory);
     const [selected, setSelected] = useState(null);
-    const [receipientData,setRecipientdata]=useState([])
+    const [receipientData, setRecipientdata] = useState([])
 
 
 
@@ -171,12 +171,8 @@ export const TransactionSection = () => {
         let filterData = transactionsHistory.filter((data: any) => data.type === type);
         setData(filterData);
     }
-    async function showdata(tx_hash: string,i:any) {
-
-        console.log('recipientAddress showdata ::');
-        //   let tx_hash='af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b'
+    async function showdata(tx_hash: string, i: any) {
         let recipientAddress = await getRecipientAddress(tx_hash)
-        console.log('showdata ::', recipientAddress);
         setRecipientdata(recipientAddress)
         setSelected(i);
 
@@ -219,8 +215,9 @@ export const TransactionSection = () => {
 
     const RececipientAddress = (props: any) => {
 
-        const { RececipientData } = props;
-        console.log("RececipientData:,", RececipientData);
+        const { trasactionData } = props;
+        let reccipient: any = receipientData
+        console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
 
 
         return <>
@@ -233,19 +230,20 @@ export const TransactionSection = () => {
                             {/* <TransactionIndication type={item.type} /> */}
                         </article>
 
-                        <div style={{ marginLeft: '20px' }} className='wallet-Transaction-recipitentBox-adddressBox'>
+                        {reccipient.address && <div style={{ marginLeft: '20px' }} className='wallet-Transaction-recipitentBox-adddressBox'>
                             <div className="">{window.i18n('recipientAddress')}</div>
-                            <div className="wallet-Transaction-recipitentBox-adddressBox-address">{receipientData}</div>
-                        </div>
+                            <div className="wallet-Transaction-recipitentBox-adddressBox-address">{reccipient.address}</div>
+                        </div>}
+
                     </section>
 
 
-                    <section>
-                        <article>
+                    <section style={{ marginLeft: '20px' }} >
+                        <article className="wallet-Transaction-recipitentBox-transactionFee-header">
                             {window.i18n('transactionFee')}
                         </article>
-                        <article>
-                            0.1 BDX
+                        <article className="wallet-Transaction-recipitentBox-transactionFee-text">
+                            {(trasactionData.fee / 1e9)} BDX
                         </article>
                     </section>
 
@@ -253,7 +251,7 @@ export const TransactionSection = () => {
 
                 <section className="wallet-Transaction-contentBox-dateandheight">
                     <div className="wallet-Transaction-contentBox-dateandheight-month">{window.i18n('dateTime')}</div>
-                    <div className="wallet-Transaction-contentBox-dateandheight-height"></div>
+                    <div className="wallet-Transaction-contentBox-dateandheight-height">{moment.unix(trasactionData.timestamp).format("DD/MM/YYYY HH:mm")}</div>
                 </section>
 
             </Flex>
@@ -347,6 +345,19 @@ export const TransactionSection = () => {
                                     }
                                     {window.i18n("filterPending")}
                                 </div>
+                                <div className={classNames(`dropDownItem `)} onClick={() => closeDropDown(window.i18n("failed"), 'failed')} >
+                                    {filter === window.i18n("failed") ? <span className="dropDownItem-blockAndMargin">
+                                        <BchatIcon iconType="tickCircle"
+                                            iconColor="#FFF"
+                                            iconSize={13}
+                                            iconPadding={'3px'}
+                                            backgroundColor={'#159B24'}
+                                            borderRadius={'10px'}
+                                        /></span> :
+                                        <span className="dropDownItem-checkedCircle"></span>
+                                    }
+                                    {window.i18n("failed")}
+                                </div>
                             </div>
                         </div>
                     }
@@ -362,7 +373,7 @@ export const TransactionSection = () => {
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
 
-                        <Flex container={true} height=" 60px" onClick={() => item.type === 'in'&&showdata(item.txid,i)}>
+                        <Flex container={true} height=" 60px" onClick={() => item.type === 'out' && showdata(item.txid, i)}>
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
                                 <TransactionIndication type={item.type} />
                             </article>
@@ -371,7 +382,7 @@ export const TransactionSection = () => {
                             </article>
                             <div className="wallet-Transaction-contentBox-balanceBox">
                                 <div className="wallet-Transaction-contentBox-balanceBox-amount">{item.type === 'out' ? "-" : ""}{Number((item.amount / 1e9).toFixed(4))} BDX</div>
-                                <div>{item.address}</div>
+                                <div className="wallet-Transaction-contentBox-balanceBox-address">{item.address}</div>
                             </div>
                         </Flex>
                         <section className="wallet-Transaction-contentBox-dateandheight">
@@ -380,7 +391,7 @@ export const TransactionSection = () => {
                         </section>
 
                     </Flex>
-                    {selected === i &&item.type === 'in' && <RececipientAddress RececipientData={item} />}
+                    {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />}
                 </div>
             )}
         </div>

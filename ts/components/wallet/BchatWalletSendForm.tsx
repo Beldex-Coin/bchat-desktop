@@ -26,14 +26,14 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
 
 
-  async function insertData() {
-    let dummydata = {
-      address: '9vPES3Dkzdpetm3wLfTjFi1hBBFm82Zdg2rtoDq3YEP298z64Zx5oBSa9V8gU8xHpqepXDYaRqhYZcAMGmyjtErREKi336r',
-      tx_hash: 'd71675f759f06481fac4d4838f7c708dd7355eac4f60528a8bc57a8521f15cd9'
-    }
-    await saveRecipientAddress(dummydata)
-    // await saveRecipientAddressvalid(dummydata);
-  }
+  // async function insertData() {
+  //   let dummydata = {
+  //     address: '9vPES3Dkzdpetm3wLfTjFi1hBBFm82Zdg2rtoDq3YEP298z64Zx5oBSa9V8gU8xHpqepXDYaRqhYZcAMGmyjtErREKi336r',
+  //     tx_hash: 'd71675f759f06481fac4d4838f7c708dd7355eac4f60528a8bc57a8521f15cd9'
+  //   }
+  //   await saveRecipientAddress(dummydata)
+  //   // await saveRecipientAddressvalid(dummydata);
+  // }
   async function send() {
     let data: any = await wallet.transfer(
       address,
@@ -76,7 +76,7 @@ export const SendForm = (props: any) => {
 
   return (
     <div className="wallet-sendForm">
-      <button onClick={() => insertData()}>insertData</button>
+      {/* <button onClick={() => insertData()}>insertData</button> */}
       <Flex container={true} flexDirection="row" justifyContent="space-between">
         <Flex width="48%">
           <Flex

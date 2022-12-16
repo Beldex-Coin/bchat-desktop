@@ -235,11 +235,6 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
-<<<<<<< Updated upstream
-
-=======
-// Mainnet
->>>>>>> Stashed changes
 // window.getSeedNodeList = () =>
 //   process.env.NODE_ENV == 'development'
 //     ? [
@@ -257,28 +252,9 @@ window.clipboard = clipboard;
 
 window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
-<<<<<<< Updated upstream
     ? ['https//38.242.196.72:19095', 'http://154.26.139.105:19095']
     : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
 
-=======
-    ? [
-        'http://38.242.196.72:19095',
-        'http://154.26.139.105:19095',
-        // 'https://publicnode1.rpcnode.stream:443',
-        // 'https://publicnode2.rpcnode.stream:443',
-        // 'https://publicnode3.rpcnode.stream:443',
-      ]
-    : [
-      'http://38.242.196.72:19095',
-      'http://154.26.139.105:19095',
-
-        // 'https://publicnode1.rpcnode.stream:443',
-        // 'https://publicnode2.rpcnode.stream:443',
-        // 'https://publicnode3.rpcnode.stream:443',
-      ];
-
->>>>>>> Stashed changes
 window.getDaemonNodeRandomlyPick = () => {
   const remotes = [
     {
@@ -302,11 +278,8 @@ const remotes = [
     host: '154.26.139.105',
     port: '19095',
   },
-<<<<<<< Updated upstream
-  //live
-=======
+
   // //live
->>>>>>> Stashed changes
   // {
   //   host: "explorer.beldex.io",
   //   port: "19091"
