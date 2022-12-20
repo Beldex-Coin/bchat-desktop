@@ -624,8 +624,7 @@ label {
     padding: 7px 25px 15px;
     border-radius: 7px;
     cursor: pointer;
-     
-    
+
     .copyIconBtn {
       display: flex;
       background-color: var(--color-copyModalbtn);
@@ -652,8 +651,7 @@ label {
       justify-content: center;
       margin-bottom: 18px;
 
-      .bchat-button.brand-outline
-      {
+      .bchat-button.brand-outline {
         height: 45px;
       }
 
@@ -778,10 +776,8 @@ label {
         font-family: 'poppin-semibold';
         display: flex;
         border-radius: 10px;
-       
       }
-      &-walletModalContent:hover
-      {
+      &-walletModalContent:hover {
         background-color: #444455;
         cursor: pointer;
       }
@@ -1753,6 +1749,13 @@ label {
         background-repeat: no-repeat;
         background-position: center;
 
+        &-content {
+          font-family: $bchat-font-poppin-medium;
+          // font-size: 15px;
+          color: var(--color-disableText);
+          padding-top: 50%
+          // margin: 10px 0 0 0;
+        }
       }
     }
 
@@ -1855,10 +1858,8 @@ label {
               border: 1.5px solid white;
               border-radius: 10px;
               margin-right: 5px;
-          
             }
-            &-blockAndMargin
-            {
+            &-blockAndMargin {
               display: inline-block;
               margin-right: 5px;
             }
@@ -1875,13 +1876,11 @@ label {
           align-items: center;
           width: 45%;
 
-          &-content-hidden-Box
-          {
+          &-content-hidden-Box {
             display: none;
             transition: display 2s;
           }
-          .d-block
-          {
+          .d-block {
             display: block;
           }
 
@@ -1988,11 +1987,10 @@ label {
           text-align: center;
         }
       }
-      &-parentBox
-    {
-      height: 84%;
-      overflow-y: auto;
-    }
+      &-parentBox {
+        height: 84%;
+        overflow-y: auto;
+      }
       &-contentBox {
         background-color: #1c1c26;
         padding: 15px;
@@ -2027,8 +2025,7 @@ label {
             font-size: 18px;
             font-family: $bchat-font-poppins-bold;
           }
-          &-address
-          {
+          &-address {
             width: 584px;
             white-space: nowrap;
             overflow: hidden;
@@ -2052,29 +2049,24 @@ label {
         }
       }
 
-      &-recipitentBox
-      {
-        &-adddressBox
-        {
+      &-recipitentBox {
+        &-adddressBox {
           width: 601px;
           padding-right: 10px;
-         font-family:$bchat-font-poppin-semibold ;
+          font-family: $bchat-font-poppin-semibold;
 
-          &-address
-          {
-           font-family: $bchat-font-poppin-light;
-           font-size:12px;
+          &-address {
+            font-family: $bchat-font-poppin-light;
+            font-size: 12px;
           }
         }
-        &-transactionFee-header
-      {
-        font-family: $bchat-font-poppin-semibold;
-      }
-      &-transactionFee-text
-      {
-        font-family: $bchat-font-poppin-light;
-        font-size:12px;
-      }
+        &-transactionFee-header {
+          font-family: $bchat-font-poppin-semibold;
+        }
+        &-transactionFee-text {
+          font-family: $bchat-font-poppin-light;
+          font-size: 12px;
+        }
       }
     }
   }

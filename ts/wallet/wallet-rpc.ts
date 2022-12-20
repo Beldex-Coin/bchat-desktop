@@ -28,6 +28,7 @@ export class Wallet {
     balance: number;
     unlocked_balance: number;
     fiatCurrency: string;
+    tx_list:any
   };
   id: number;
   scee: any;
@@ -48,6 +49,7 @@ export class Wallet {
       balance: 0,
       unlocked_balance: 0,
       fiatCurrency: '',
+      tx_list:[]
     };
     this.id = 0;
     this.scee = new SCEE();
@@ -421,17 +423,20 @@ export class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
+          let data: any = await this.getTransactions();
+          console.log("this.wallet_state.tx_list:",this.wallet_state.tx_list)
+          console.log("data:getTransactions:",data.transactions.tx_list)
           if (
             this.wallet_state.balance == n.result.balance &&
-            this.wallet_state.unlocked_balance == n.result.unlocked_balance
+            this.wallet_state.unlocked_balance == n.result.unlocked_balance && this.wallet_state.tx_list == data.transactions.tx_list
           ) {
             continue;
           }
           this.wallet_state.balance = wallet.info.balance = n.result.balance;
           this.wallet_state.unlocked_balance = wallet.info.unlocked_balance =
             n.result.unlocked_balance;
+            this.wallet_state.tx_list = data.transactions.tx_list;
 
-          let data: any = await this.getTransactions();
           this.getFiatBalance();
           window.inboxStore?.dispatch(
             updateBalance({
@@ -658,6 +663,7 @@ export class Wallet {
   }
 
   rescanBlockchain() {
+    localStorage.setItem('syncStatus', '');
     this.sendRPC('rescan_blockchain');
     window.inboxStore?.dispatch(
       updateBalance({

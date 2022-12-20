@@ -534,4 +534,6 @@ export type LocalizerKeys =
   | 'removePasswordDisc'
   | 'walletPasswordLengthError'
   | 'passwordFieldEmpty'
-  | 'notEnoughBalance';
+  | 'notEnoughBalance'
+  |'emptyAddressBook'
+  |'emptyContact';
