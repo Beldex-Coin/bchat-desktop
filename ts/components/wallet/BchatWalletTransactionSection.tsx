@@ -12,145 +12,13 @@ import { BchatIcon } from "../icon/BchatIcon"
 export const TransactionSection = () => {
 
     let transactions = useSelector((state: any) => state.wallet.transacations);
-    // console.log('transactionsHistory :: 1',transactions);
-
-    const transactionsHistory = transactions == undefined ? [] : transactions;
-    // console.log('transactionsHistory :: 2',transactionsHistory);
-    // let tx: any = [
-    //     {
-    //         address:
-    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
-    //         amount: 1000000000,
-    //         checkpointed: 1,
-    //         confirmations: 2396,
-    //         double_spend_seen: false,
-    //         fee: 3451150,
-    //         flash_mempool: false,
-    //         height: 235475,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 1,
-    //         timestamp: 1670587373,
-    //         txid: "addbcdeaecc029cf406e5f559cb1b290ab92fd761085905bb34a1a05ca000eca",
-    //         type: "out",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },
-    //     {
-    //         address:
-    //             "sjshjhjsjshs",
-    //         amount: 100000000000,
-    //         checkpointed: 1,
-    //         confirmations: 11069,
-    //         double_spend_seen: false,
-    //         fee: 3455150,
-    //         flash_mempool: false,
-    //         height: 226802,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 16,
-    //         timestamp: 1670327182,
-    //         txid: "sossj",
-    //         type: "in",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },
-    //     {
-    //         address:
-    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
-    //         amount: 1000000000,
-    //         checkpointed: 1,
-    //         confirmations: 2410,
-    //         double_spend_seen: false,
-    //         fee: 3455150,
-    //         flash_mempool: false,
-    //         height: 235461,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 1,
-    //         timestamp: 1670586952,
-    //         txid: "8f4c8cf8057cb31f6f615626c261b6464241e35e124d021db596ca9ca2b26ed3",
-    //         type: "pending",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },
-    //     {
-    //         address:
-    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
-    //         amount: 10000000000,
-    //         checkpointed: 1,
-    //         confirmations: 2552,
-    //         double_spend_seen: false,
-    //         fee: 3451150,
-    //         flash_mempool: false,
-    //         height: 235319,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 2,
-    //         timestamp: 1670582693,
-    //         txid: "18ff5a4d32a08349a9055388d750454a93cdae2c23c3fbf0dab8aecdfd386e69",
-    //         type: "failed",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },
-    //     {
-    //         address:
-    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
-    //         amount: 10000000000,
-    //         checkpointed: 1,
-    //         confirmations: 2562,
-    //         double_spend_seen: false,
-    //         fee: 3451150,
-    //         flash_mempool: false,
-    //         height: 235309,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 2,
-    //         timestamp: 1670582392,
-    //         txid: "e774512c00e71378c5e02c957aa515bbb4e9b947591a8aa5271765e86e5ae05e",
-    //         type: "failed",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },
-    //     {
-    //         address:
-    //             "9swTGGL3jP3HNeM7ajsKipQKUvwXYHpPR7NCA2jf2bMUKApQwWZUeXP1qxDv8ZbzPm6xf64NL8ozYVQeYzTFFCFFBkFEywB",
-    //         amount: 10000000000,
-    //         checkpointed: 1,
-    //         confirmations: 2572,
-    //         double_spend_seen: false,
-    //         fee: 3455150,
-    //         flash_mempool: false,
-    //         height: 235299,
-    //         note: "",
-    //         payment_id: "0000000000000000",
-    //         subaddr_index: { major: 0, minor: 0 },
-    //         subaddr_indices: [[Object]],
-    //         suggested_confirmations_threshold: 2,
-    //         timestamp: 1670582093,
-    //         txid: "1ebbaf429102aa4537d1fb468628796e638130c4e3830cc57109b3600a0291e5",
-    //         type: "pending",
-    //         unlock_time: 0,
-    //         was_flash: false
-    //     },]
-
-
+    const transactionsHistory = transactions == undefined ? [] : transactions
     const [filter, setFilter] = useState(window.i18n('filterAll'))
     const [visible, setVisible] = useState(false);
-    // const [data, setData] = useState(transactionsHistory)
     const [data, setData] = useState(transactionsHistory);
     const [selected, setSelected] = useState(null);
-    const [receipientData, setRecipientdata] = useState([])
+    const [receipientData, setRecipientdata] = useState([]);
+    const [searchText, setSearchText] = useState('');
 
 
 
@@ -160,20 +28,20 @@ export const TransactionSection = () => {
         filterTransaction(type)
     }
 
-    function filterTransaction(type: any) {
+    function filterTransaction(type: string) {
         if (type === window.i18n('filterAll')) {
             setData(transactionsHistory);
             return
         }
-
         let filterData = transactionsHistory.filter((data: any) => data.type === type);
         setData(filterData);
     }
-    async function showdata(tx_hash: string, i: any) {
-        let recipientAddress = await getRecipientAddress(tx_hash)
-        setRecipientdata(recipientAddress)
+    async function showdata(item: any, i: any) {
+        if (item.type === 'out') {
+            let recipientAddress = await getRecipientAddress(item.txid);
+            setRecipientdata(recipientAddress)
+        }
         setSelected(i);
-
     }
 
 
@@ -211,21 +79,44 @@ export const TransactionSection = () => {
         )
     }
 
+    function searchTransaction(value:any) {
+        setSearchText(value)
+        
+        // if(isNaN(value))
+        // {
+            let searchData=transactionsHistory.filter((item:any)=>(String(item.amount/1e9)).includes(value.toLowerCase()) || (item.txid).toLowerCase().includes(value.toLowerCase()));
+            setData(searchData);
+            // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
+            //     let search_item = [tx.txid,String(tx.amount/1e9)];
+            //    return !!search_item.find(f => f.toLowerCase().includes(value.toLowerCase()));
+            // });
+            // console.log('tx_list_filtered ::',tx_list_filtered);
+            // setData(tx_list_filtered);
+        // }
+        // else if(!isNaN(value) && value){
+        //     let searchData=transactionsHistory.filter((item:any)=> item.amount===Number(value)*1e9);
+        //     setData(searchData);   
+        // }
+        // else{
+        //     setData(transactionsHistory);    
+        // }
+    }
+
     const RececipientAddress = (props: any) => {
 
         const { trasactionData } = props;
         let reccipient: any = receipientData
-        console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
+        // console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
 
 
         return <>
-            <Flex container={true} justifyContent="space-between" flexDirection="row" width="95%" >
+            <Flex container={true} justifyContent="space-between" flexDirection="row" width={reccipient.address ? "94.5%" : "34%"} >
 
                 {/* <Flex container={true} height=" 60px" > */}
                 <div style={{ display: 'flex' }}>
                     <section style={{ display: 'flex' }}>
                         <article style={{ width: '110px' }}>
-                            {/* <TransactionIndication type={item.type} /> */}
+                            {/* <TransactionIndication type={item.type} /> */}  
                         </article>
 
                         {reccipient.address && <div style={{ marginLeft: '20px' }} className='wallet-Transaction-recipitentBox-adddressBox'>
@@ -269,7 +160,7 @@ export const TransactionSection = () => {
             <Flex container={true} justifyContent="space-between" flexDirection="row">
                 <div >
                     {window.i18n('filter')}
-                    <input placeholder={window.i18n('filterPlaceHolder')} className="wallet-Transaction-filterInput" />
+                    <input placeholder={window.i18n('filterPlaceHolder')} className="wallet-Transaction-filterInput" onChange={(e: any) => searchTransaction(e.target.value)} value={searchText}/>
                 </div>
                 <div className="wallet-Transaction-filterWithIcon">
                     {/* <input value={window.i18n('filterAll')} /> */}
@@ -371,7 +262,7 @@ export const TransactionSection = () => {
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
 
-                        <Flex container={true} height=" 60px" onClick={() => item.type === 'out' && showdata(item.txid, i)}>
+                        <Flex container={true} height=" 60px" onClick={() => showdata(item.txid, i)}>
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
                                 <TransactionIndication type={item.type} />
                             </article>
@@ -389,7 +280,9 @@ export const TransactionSection = () => {
                         </section>
 
                     </Flex>
-                    {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />}
+                    {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
+                    {selected === i && <RececipientAddress trasactionData={item} />}
+
                 </div>
             )}
         </div>

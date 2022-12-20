@@ -12,6 +12,11 @@ export const NodeSetting = () => {
     const dispatch = useDispatch()
     const [viewBox1, setViewBox1] = useState(false);
     const [viewBox2, setViewBox2] = useState(false);
+    const [mainnetIP,setMainnetIP]=useState('');
+    const [port,setPort]=useState("")
+    const [dropdown,setDropdown]=useState(false);
+    const [chooseDeamon,setChooseDeamon]=useState("mainnet.beldex.io")
+    const [chooseDeamonPort,setChooseDeamonPort]=useState(26071)
 
 
     return <div>
@@ -68,7 +73,7 @@ export const NodeSetting = () => {
                             {window.i18n("remoteNodeHost")}
                         </div>
 
-                        <input value="mainnet.beldex.io" className="wallet-settings-nodeSetting-remoteContentBox-inputBox" />
+                        <input value={mainnetIP} placeholder="Enter your MainNet IP Address" className="wallet-settings-nodeSetting-remoteContentBox-inputBox" onChange={(e:any)=>setMainnetIP(e.target.value)} />
 
                     </article>
                     <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -76,7 +81,7 @@ export const NodeSetting = () => {
                             {window.i18n("remoteNodePort")}
                         </div>
 
-                        <input value="26071" className="wallet-settings-nodeSetting-remoteContentBox-inputBox" />
+                        <input value={port} className="wallet-settings-nodeSetting-remoteContentBox-inputBox" onChange={(e:any)=>!isNaN(e.target.value)&&setPort(e.target.value)} placeholder='please enter your port '/>
 
                     </article>
                 </Flex>
@@ -118,19 +123,19 @@ export const NodeSetting = () => {
                         </div>
                         <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox">
                             <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input" style={{ padding: 0 }}>
-                                <input value="mainnet.beldex.io" className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input" style={{ width: "95%", padding: 0 }} />
-
-                                <div style={{ position: 'relative' }}>
+                                <input value={chooseDeamon} className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input" style={{ width: "95%", padding: 0 }} />
+                                 {dropdown &&  <div style={{ position: 'relative' }}>
                                     <div className="wallet-settings-nodeSetting-dropDownModal">
-                                        <div style={{ marginBottom: '5px' }}>
+                                        <div style={{ marginBottom: '5px' }} onClick={()=>{setChooseDeamon('mainnet.beldex.io'),setDropdown(false),setChooseDeamonPort(29095)}}>
                                             <BchatIcon iconType="circle" iconSize={8} iconColor='#20D024' />
                                             <span style={{ marginLeft: "10px" }}>mainnet.beldex.io:29095</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
+                               
                             </div>
 
-                            <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn">
+                            <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn" onClick={()=>setDropdown(!dropdown)}>
                                 <BchatIcon iconSize={20} iconType="chevron" />
                             </div>
                         </div>
@@ -142,7 +147,7 @@ export const NodeSetting = () => {
                             {window.i18n("remoteNodePort")}
                         </div>
 
-                        <input value="26071" className="wallet-settings-nodeSetting-remoteContentBox-inputBox" />
+                        <input value={chooseDeamonPort} className="wallet-settings-nodeSetting-remoteContentBox-inputBox" />
 
                     </article>
                 </Flex>
