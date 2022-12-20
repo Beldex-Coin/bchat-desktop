@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { ToastUtils } from '../../bchat/utils';
 import { getFiatBalance, getwalletDecimalValue } from '../../state/selectors/walletConfig';
 import { SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
@@ -16,6 +17,8 @@ export const WalletBalanceSection = () => {
   decimalValue = decimalValue.charAt(0);
   const handlePaste = () => {
     clipboard.writeText(walletAddress, 'clipboard');
+    ToastUtils.pushCopiedToClipBoard();
+
   };
 
   // useEffect(() => {

@@ -16,7 +16,6 @@ import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
 import { updateFiatBalance, updateWalletHeight } from '../state/ducks/walletConfig';
 
-
 // import { WebSocket } from 'ws';
 export class Wallet {
   heartbeat: any;
@@ -28,6 +27,7 @@ export class Wallet {
     name: string;
     balance: number;
     unlocked_balance: number;
+    fiatCurrency: string;
   };
   id: number;
   scee: any;
@@ -47,6 +47,7 @@ export class Wallet {
       name: '',
       balance: 0,
       unlocked_balance: 0,
+      fiatCurrency: '',
     };
     this.id = 0;
     this.scee = new SCEE();
@@ -75,6 +76,11 @@ export class Wallet {
 
   startWallet = async (type?: string) => {
     try {
+      let getFiatCurrency = localStorage.getItem('currency');
+      console.log('getFiatCurrency:', getFiatCurrency);
+      if (!getFiatCurrency) {
+        localStorage.setItem('currency', 'USD');
+      }
       let walletDir = await this.findDir();
       const rpcExecutable =
         process.platform === 'linux'
@@ -135,7 +141,6 @@ export class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    console.log('start new wallet rpc........................');
     const currentDaemon: any = window.currentDaemon;
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
@@ -416,8 +421,6 @@ export class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
-          const balanceConversation: any = await this.currencyConv(n.result.balance);
-          window.inboxStore?.dispatch(updateFiatBalance(balanceConversation));
           if (
             this.wallet_state.balance == n.result.balance &&
             this.wallet_state.unlocked_balance == n.result.unlocked_balance
@@ -429,11 +432,12 @@ export class Wallet {
             n.result.unlocked_balance;
 
           let data: any = await this.getTransactions();
+          this.getFiatBalance();
           window.inboxStore?.dispatch(
             updateBalance({
               balance: this.wallet_state.balance,
               unlocked_balance: this.wallet_state.unlocked_balance,
-              transacations: data.transactions,
+              transacations: data.transactions.tx_list,
             })
           );
         }
@@ -479,73 +483,33 @@ export class Wallet {
     });
   }
 
-  currencyConv = async (balance: number) => {
-    const currency: any = localStorage.getItem('currency')?.toLocaleLowerCase();
-    const response = await insecureNodeFetch(`https://api.beldex.io/price/${currency}`);
+  getFiatBalance = async (currency?: any) => {
+    const fiatCurrency: any = currency
+      ? currency.toLocaleLowerCase()
+      : localStorage.getItem('currency')?.toLocaleLowerCase();
+    const balance = this.wallet_state.balance;
+    const response = await insecureNodeFetch(`https://api.beldex.io/price/${fiatCurrency}`);
     const currencyValue: any = await response.json();
-    console.log('response:', response);
-    console.log('currencyValue:', currencyValue);
-    return response.ok ? balance * currencyValue[currency] : 0;
+    const FiatBalance: any = response.ok ? balance * currencyValue[fiatCurrency] : 0;
+    window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
   };
 
-  // getTransfer = async (filter: any) => {
-  //   let params = {
-  //     in:
-  //       filter === window.i18n('filterAll')
-  //         ? true
-  //         : filter === window.i18n('filterIncoming')
-  //         ? true
-  //         : false,
-  //     out:
-  //       filter === window.i18n('filterAll')
-  //         ? true
-  //         : filter === window.i18n('filterIncoming')
-  //         ? false
-  //         : true,
-  //     pending:
-  //       filter === window.i18n('filterAll')
-  //         ? true
-  //         : filter === window.i18n('pending')
-  //         ? true
-  //         : false,
-  //     failed: filter === window.i18n('filterAll') ? true : false,
-  //     pool: filter === window.i18n('filterAll') ? true : false,
-  //   };
-  //   let data = await wallet.sendRPC('get_transfers', params);
-  //   // console.log('data::', data);
-  //   if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
-  //     return [];
-  //   }
-  //   function concateData() {
-  //     let wallet: any = [];
-  //     const types = ['in', 'out', 'pending', 'failed'];
-  //     // 'pool', 'miner', 'mnode', 'gov', 'stake'];
-  //     types.forEach(type => {
-  //       if (data.result.hasOwnProperty(type)) {
-  //         wallet = wallet.concat(data.result[type]);
-  //       }
-  //     });
-  //     return wallet;
-  //   }
-
-  //   let combineData =
-  //     filter === window.i18n('filterAll')
-  //       ? // ? data.result.in.concat(data.result.out)
-  //         concateData()
-  //       : filter === window.i18n('filterIncoming')
-  //       ? data.result.in
-  //       : filter === window.i18n('pending')
-  //       ? data.result.pending
-  //       : data.result.out;
-  //   // console.log('concateData(data.result) ::', concateData());
-  //   return (combineData = combineData.sort(
-  //     (a: any, b: any) => parseFloat(b.timestamp) - parseFloat(a.timestamp)
-  //   ));
-  // };
-
-  transfer = async (address: string, amount: number, priority: number) => {
+  transfer = async (address: string, amount: number, priority: number,isSweepAll:Boolean) => {
+      const rpc_endpoint = isSweepAll ? "sweep_all" : "transfer_split";
+      // the call coming from the SN page will have address = wallet primary address
+      const rpcSpecificParams = isSweepAll
+        ? {
+            address,
+            // gui wallet only supports one account currently
+            account_index: 0,
+            // sweep *all* funds from all subaddresses to the address specified
+            subaddr_indices_all: true
+          }
+        : {
+            destinations: [{ amount: amount, address: address }]
+          };
     const params = {
-      destinations: [{ amount: amount, address: address }],
+      ...rpcSpecificParams,
       account_index: 0,
       priority: priority, // 0 flash -> important // 1 normal -> unimportant
       // do_not_relay: true,
@@ -556,20 +520,18 @@ export class Wallet {
       ring_size: 7,
       get_tx_key: true,
     };
-    const data = await this.sendRPC('transfer_split', params);
-    // console.log('sendFunddata ::', data.result);
+    const data = await this.sendRPC(rpc_endpoint, params);
+    console.log('sendFunddata ::', data.result);
     if (data.result) {
       ToastUtils.pushToastSuccess(
         'successfully-sended',
         `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
       );
-      return data
-
+      return data;
     } else {
       // console.log('error -response from send:', data.error.message);
       ToastUtils.pushToastError('Error fund send', data.error.message);
-      return data
-
+      return data;
     }
   };
 
@@ -697,6 +659,15 @@ export class Wallet {
 
   rescanBlockchain() {
     this.sendRPC('rescan_blockchain');
+    window.inboxStore?.dispatch(
+      updateBalance({
+        balance: 0,
+        unlocked_balance: 0,
+        transacations: { tx_list: [] },
+      })
+    );
+    this.wallet_state.balance = 0;
+    this.wallet_state.unlocked_balance = 0;
   }
 
   changeWalletPassword = async (old_password: string, new_password: string) => {

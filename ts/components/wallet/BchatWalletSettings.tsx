@@ -5,6 +5,7 @@ import { ChangePasswordModal, walletSettingMiniModal } from '../../state/ducks/m
 import { updateDecimalValue } from '../../state/ducks/walletConfig';
 import { dashboard, nodeSetting } from '../../state/ducks/walletSection';
 import { getwalletDecimalValue } from '../../state/selectors/walletConfig';
+import { wallet } from '../../wallet/wallet-rpc';
 
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
@@ -15,11 +16,11 @@ import { BchatIcon } from '../icon/BchatIcon';
 
 export const WalletSettings = () => {
   const dispatch = useDispatch();
-  const exeCurrency:any = localStorage.getItem('currency');
-  console.log("exeCurrency:",exeCurrency)
+  const exeCurrency: any = localStorage.getItem('currency');
   const decimalValue = useSelector(getwalletDecimalValue);
-  const [saveRecipient, setSaveRecipient] = useState(window.getSettingValue(walletSettingsKey.settingSaveRecipient) )
-
+  const [saveRecipient, setSaveRecipient] = useState(
+    window.getSettingValue(walletSettingsKey.settingSaveRecipient)
+  );
 
   const currenyExt = [
     'AUD',
@@ -54,12 +55,11 @@ export const WalletSettings = () => {
   ];
   const decimal = ['2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
   function enbaleOrdisableSaveRecipient() {
-    console.log("saveRecipient::",saveRecipient);
-    
+
     window.setSettingValue(walletSettingsKey.settingSaveRecipient, !saveRecipient);
-    
+
     setSaveRecipient(!saveRecipient);
-}
+  }
   // let content=[window.i18n("usdCurrency"),window.i18n("audCurrency"),window.i18n("bgnCurrency")]
   return (
     <div className="">
@@ -125,7 +125,8 @@ export const WalletSettings = () => {
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
                     localStorage.setItem('currency', e);
-                     dispatch(walletSettingMiniModal(null));
+                    wallet.getFiatBalance(e);
+                    dispatch(walletSettingMiniModal(null));
                   },
                 })
               )
@@ -136,25 +137,23 @@ export const WalletSettings = () => {
           </div>
         </Flex>
         {/* <SpacerMD /> */}
-        <Flex container={true} justifyContent='space-between' padding="10px 0" >
-
-                <div className="wallet-settings-tabBox-subtle" >
-                    {window.i18n("saveRecipientAddress")}
-                </div>
-                <div onClick={() => enbaleOrdisableSaveRecipient()}>
-                    {saveRecipient ? <BchatIcon iconType="tickCircle"
-                        iconColor="#FFF"
-                        iconSize={16}
-                        iconPadding={'3px'}
-                        backgroundColor={'#159B24'}
-                        borderRadius={'5px'}
-
-                    /> : <article className="wallet-settings-tabBox-checkBox">
-
-                    </article>}
-
-                </div>
-            </Flex>
+        <Flex container={true} justifyContent="space-between" padding="10px 0">
+          <div className="wallet-settings-tabBox-subtle">{window.i18n('saveRecipientAddress')}</div>
+          <div onClick={() => enbaleOrdisableSaveRecipient()}>
+            {saveRecipient ? (
+              <BchatIcon
+                iconType="tickCircle"
+                iconColor="#FFF"
+                iconSize={16}
+                iconPadding={'3px'}
+                backgroundColor={'#159B24'}
+                borderRadius={'5px'}
+              />
+            ) : (
+              <article className="wallet-settings-tabBox-checkBox"></article>
+            )}
+          </div>
+        </Flex>
       </div>
 
       <SpacerLG />

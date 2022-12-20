@@ -533,4 +533,5 @@ export type LocalizerKeys =
   | 'Rescan'
   | 'removePasswordDisc'
   | 'walletPasswordLengthError'
-  | 'passwordFieldEmpty';
+  | 'passwordFieldEmpty'
+  | 'notEnoughBalance';

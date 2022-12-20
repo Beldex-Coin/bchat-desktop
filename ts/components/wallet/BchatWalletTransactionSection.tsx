@@ -14,9 +14,7 @@ export const TransactionSection = () => {
     let transactions = useSelector((state: any) => state.wallet.transacations);
     // console.log('transactionsHistory :: 1',transactions);
 
-    const transactionsHistory =
-        transactions.
-            tx_list == undefined ? [] : transactions.tx_list;
+    const transactionsHistory = transactions == undefined ? [] : transactions;
     // console.log('transactionsHistory :: 2',transactionsHistory);
     // let tx: any = [
     //     {

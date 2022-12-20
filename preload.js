@@ -278,7 +278,6 @@ const remotes = [
     host: '154.26.139.105',
     port: '19095',
   },
-
   // //live
   // {
   //   host: "explorer.beldex.io",

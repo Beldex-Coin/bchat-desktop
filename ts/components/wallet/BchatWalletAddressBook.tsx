@@ -17,7 +17,6 @@ import { BchatIcon } from "../icon"
 export const AddressBook = (props:any) => {
   const dispatch = useDispatch()
   const directContact = useSelector(getDirectContacts)
-
  
   // async function showdata()
   // {
@@ -91,7 +90,8 @@ export const AddressBook = (props:any) => {
          
        </div>
          )}
-      
+  
+        <div className="wallet-addressBook-emptyAddressBook"/>       
     </div>
   </div>
 }

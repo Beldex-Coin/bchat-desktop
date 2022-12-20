@@ -40,7 +40,7 @@ export enum WalletDashboard {
  
 export const WalletMainPanel = () => {
    const focusedsettings = useSelector((state: any) => state.walletFocused);
-   const [amount, setAmount] = useState(0);
+   const [amount, setAmount] = useState();
    const [priority, setPriority] = useState(window.i18n("flash"));
    const [passScreen,setPassScreen]=useState(true);
    

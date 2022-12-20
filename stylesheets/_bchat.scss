@@ -1744,6 +1744,16 @@ label {
           }
         }
       }
+
+      &-emptyAddressBook {
+        margin: 0 auto;
+        background-image: var(--image-EmptyAddressBook);
+        height: 100%;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+
+      }
     }
 
     &-settings {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getWalletSendAddress } from '../../state/selectors/walletConfig';
+import { getwalletDecimalValue, getWalletSendAddress } from '../../state/selectors/walletConfig';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatDropdown } from "../basic/BchatDropdown"
 // import { BchatInput } from "../basic/BchatInput"
@@ -24,52 +24,40 @@ export const SendForm = (props: any) => {
   const [address, setAddress] = useState(sendAddress);
   const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
+  let decimalValue: any = useSelector(getwalletDecimalValue);
+  const walletDetails = useSelector((state: any) => state.wallet);
 
-
-  // async function insertData() {
-  //   let dummydata = {
-  //     address: '9vPES3Dkzdpetm3wLfTjFi1hBBFm82Zdg2rtoDq3YEP298z64Zx5oBSa9V8gU8xHpqepXDYaRqhYZcAMGmyjtErREKi336r',
-  //     tx_hash: 'd71675f759f06481fac4d4838f7c708dd7355eac4f60528a8bc57a8521f15cd9'
-  //   }
-  //   await saveRecipientAddress(dummydata)
-  //   // await saveRecipientAddressvalid(dummydata);
-  // }
   async function send() {
+    const isSweepAll =
+      props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
+    if (props.amount > walletDetails.unlocked_balance / 1e9) {
+      ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
+    }
+
     let data: any = await wallet.transfer(
       address,
       props.amount * 1e9,
-      props.priority === 'Flash' ? 0 : 1
+      props.priority === 'Flash' ? 0 : 1,
+      isSweepAll
     );
-    // console.log('data:', data.result);
-    // if (!data.hasOwnProperty('error')) {
-
-    // if (data.hasOwnProperty('result')) {
     if (data.result) {
-
       ToastUtils.pushToastSuccess(
         'successfully-sended',
         `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
       );
       const TransactionHistory = {
-        tx_hash: data.result.tx_hash_list[0]
-        , address: address
-      }
-      let getSettingvalue= window.getSettingValue(walletSettingsKey.settingSaveRecipient)
-      if(getSettingvalue)
-      {
+        tx_hash: data.result.tx_hash_list[0],
+        address: address,
+      };
+      let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
+      if (getSettingvalue) {
         await saveRecipientAddress(TransactionHistory);
       }
-      props.setAmount(0);
+      props.setAmount();
       props.setPriority(window.i18n('flash'));
-      setAddress('bd...');
-
-      // console.log('senddata ::',data.result);
-
-      // data.result.tx_hash_list[0];
-
+      setAddress('');
     } else {
-      // console.log('error -response from send:', data.error.message);
-      ToastUtils.pushToastError('Error fund send', data.error.message);
+      ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;
     }
   }
@@ -89,7 +77,7 @@ export const SendForm = (props: any) => {
             <span style={{ width: '20%' }}>{window.i18n('amount')}</span>
             <div className="wallet-sendForm-inputBox">
               <input
-                value={props.amount == 0 ? '' : props.amount}
+                value={props.amount}
                 onChange={(e: any) => {
                   props.setAmount(e.target.value);
                 }}
@@ -124,7 +112,8 @@ export const SendForm = (props: any) => {
                   <div className="wallet-settings-nodeSetting-sendDropDown">
                     <div
                       className={classNames(
-                        `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${
+                          props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
@@ -135,7 +124,8 @@ export const SendForm = (props: any) => {
                     </div>
                     <div
                       className={classNames(
-                        `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${
+                          props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
@@ -174,7 +164,7 @@ export const SendForm = (props: any) => {
               onClick={() => dispatch(contact())}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}
-            //   disabled={!caption}
+              //   disabled={!caption}
             />
           </div>
         </Flex>

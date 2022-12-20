@@ -535,5 +535,6 @@
   "rescanWallet":"Rescan Wallet",
   "rescanWalletDiscription":"Warning : Some information about previous transactions such as the recipient’s address will be lost",
   "walletPasswordLengthError": "Password should be 4-13 characters long",
-  "passwordFieldEmpty":"Password field cannot be empty"
+  "passwordFieldEmpty":"Password field cannot be empty",
+  "notEnoughBalance":"Not enough unlocked balance"
 }
