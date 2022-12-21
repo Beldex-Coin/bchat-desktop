@@ -2049,9 +2049,12 @@ label {
         }
       }
 
-      &-recipitentBox {
-        &-adddressBox {
-          width: 601px;
+      &-recipitentBox
+      {
+        &-adddressBox
+        {
+          // width: 601px;
+          width: 570px;
           padding-right: 10px;
           font-family: $bchat-font-poppin-semibold;
 

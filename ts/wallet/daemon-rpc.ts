@@ -78,8 +78,11 @@ class Daemon {
 
   sendRPC = async (method: any, params = {}) => {
     try {
-      // console.log('DAEMON_NODE_CURRENT:', window.currentDaemon);
-      const currentDaemon: any = window.currentDaemon;
+       let launchCount= window.getSettingValue('launch-count');
+       console.log('DAEMON_NODE_CURRENT:', window.currentDaemon,launchCount);
+
+      const currentDaemon: any = window.getSettingValue('current-deamon')?window.getSettingValue('current-deamon'):window.currentDaemon;
+      
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
       const fetchOptions = {
         method: 'POST',

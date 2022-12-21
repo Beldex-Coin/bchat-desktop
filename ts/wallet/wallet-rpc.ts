@@ -144,7 +144,13 @@ export class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    const currentDaemon: any = window.currentDaemon;
+    let launchCount= window.getSettingValue('launch-count');
+    let currentDeamon=window.getSettingValue('current-deamon')
+    console.log('currentDaemon wallet::',launchCount);
+
+    const currentDaemon: any =currentDeamon?currentDeamon:window.currentDaemon;
+    console.log('currentDaemon wallet:',currentDaemon,window.getSettingValue('current-deamon'));
+    
     localStorage.setItem('syncStatus','');
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');

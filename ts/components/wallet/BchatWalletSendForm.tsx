@@ -50,7 +50,11 @@ export const SendForm = (props: any) => {
         address: address,
       };
       let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
+      console.log("getSettingvalue ::",getSettingvalue);
+      
       if (getSettingvalue) {
+        // console.log('TransactionHistory::',TransactionHistory);
+        
         await saveRecipientAddress(TransactionHistory);
       }
       props.setAmount();

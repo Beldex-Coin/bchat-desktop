@@ -37,11 +37,18 @@ export const TransactionSection = () => {
         setData(filterData);
     }
     async function showdata(item: any, i: any) {
-        if (item.type === 'out') {
-            let recipientAddress = await getRecipientAddress(item.txid);
-            setRecipientdata(recipientAddress)
-        }
+        // console.log("item.type ::",item.type)
         setSelected(i);
+
+        if (item.type === 'out') {
+            
+            let recipientAddress = await getRecipientAddress(item.txid);
+            // console.log("showdata:: ",recipientAddress);
+            setRecipientdata(recipientAddress);
+            // return
+         }
+        // setRecipientdata([]);
+
     }
 
 
@@ -106,11 +113,11 @@ export const TransactionSection = () => {
 
         const { trasactionData } = props;
         let reccipient: any = receipientData
-        // console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
+        //  console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
 
 
         return <>
-            <Flex container={true} justifyContent="space-between" flexDirection="row" width={reccipient.address ? "94.5%" : "34%"} >
+            <Flex container={true} justifyContent="space-between" flexDirection="row" width={reccipient.address ? "92.5%" : "44%"} >
 
                 {/* <Flex container={true} height=" 60px" > */}
                 <div style={{ display: 'flex' }}>
@@ -262,7 +269,7 @@ export const TransactionSection = () => {
 
                     <Flex container={true} justifyContent="space-between" flexDirection="row" >
 
-                        <Flex container={true} height=" 60px" onClick={() => showdata(item.txid, i)}>
+                        <Flex container={true} height=" 60px" onClick={() => showdata(item, i)}>
                             <article className="wallet-Transaction-contentBox-sendIndicationBox">
                                 <TransactionIndication type={item.type} />
                             </article>
