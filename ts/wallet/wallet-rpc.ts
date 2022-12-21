@@ -113,6 +113,7 @@ export class Wallet {
         if (type == 'settings') {
           return;
         }
+        
         kill(64371)
           .then()
           .catch((err: any) => {
@@ -144,6 +145,7 @@ export class Wallet {
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
     const currentDaemon: any = window.currentDaemon;
+    localStorage.setItem('syncStatus','');
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
     this.auth = [
@@ -424,8 +426,6 @@ export class Wallet {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
           let data: any = await this.getTransactions();
-          console.log("this.wallet_state.tx_list:",this.wallet_state.tx_list)
-          console.log("data:getTransactions:",data.transactions.tx_list)
           if (
             this.wallet_state.balance == n.result.balance &&
             this.wallet_state.unlocked_balance == n.result.unlocked_balance && this.wallet_state.tx_list == data.transactions.tx_list

@@ -11,14 +11,10 @@ export const SyncStatusBar = () => {
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
   const getSyncStatus = localStorage.getItem('syncStatus');
-  console.log('getSyncStatus:', getSyncStatus);
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };
-  console.log('syncStatus:', syncStatus);
-  const updateStatus = (currentHeight == daemonHeight) ? localStorage.setItem('syncStatus', 'true') : '';
-  console.log('updateStatus:', updateStatus);
-  console.log("get:",localStorage.getItem('syncStatus'))
+  currentHeight == daemonHeight && pct !== 0 ? localStorage.setItem('syncStatus', 'true') : '';
 
   console.log(syncStatus);
   return (
@@ -27,7 +23,7 @@ export const SyncStatusBar = () => {
         <Indicator
           style={{
             width: `${percentage == 0 ? '10' : percentage}%`,
-            backgroundColor: currentHeight == daemonHeight ? '#1DBF25' : '#FDB12A',
+            backgroundColor: syncStatus.color,
           }}
         />
         <Flex container={true} justifyContent="space-between" padding="5px 0">
@@ -36,9 +32,9 @@ export const SyncStatusBar = () => {
               Status :{' '}
               <span
                 className="wallet-syncStatus-statusTxt-greenTxt"
-                style={{ color: currentHeight == daemonHeight ? '#1DBF25' : '#FDB12A' }}
+                style={{ color: syncStatus.color }}
               >
-                {pct !== 0 && currentHeight == daemonHeight ? 'Synchronized' : 'Scanning'}
+                {syncStatus.status}
               </span>
             </div>
           </Flex>
