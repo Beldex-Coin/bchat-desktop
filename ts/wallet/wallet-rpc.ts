@@ -79,7 +79,6 @@ export class Wallet {
   startWallet = async (type?: string) => {
     try {
       let getFiatCurrency = localStorage.getItem('currency');
-      console.log('getFiatCurrency:', getFiatCurrency);
       if (!getFiatCurrency) {
         localStorage.setItem('currency', 'USD');
       }
@@ -551,6 +550,7 @@ export class Wallet {
       filename,
       password,
     });
+    console.log("openWAllet:",openWallet)
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }

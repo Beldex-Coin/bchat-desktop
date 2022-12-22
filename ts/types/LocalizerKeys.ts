@@ -22,9 +22,9 @@ export type LocalizerKeys =
   | 'stake'
   | 'node'
   | 'personal'
-  |'recipientAddress'
+  | 'recipientAddress'
   | 'transactionFee'
-  |'dateTime'
+  | 'dateTime'
   | 'remoteDaemonOnly'
   | 'localDaemonOnly'
   | 'nCurrentRPCTxt'
@@ -535,5 +535,9 @@ export type LocalizerKeys =
   | 'walletPasswordLengthError'
   | 'passwordFieldEmpty'
   | 'notEnoughBalance'
-  |'emptyAddressBook'
-  |'emptyContact';
+  | 'emptyAddressBook'
+  | 'emptyContact'
+  | 'emptyTransaction'
+  | 'emptyTransactionDiscription'
+  | 'noPendingTransaction'
+  | 'noFailedTransaction';

@@ -101,6 +101,7 @@ export const AddressBook = (props: any) => {
         <div className="wallet-addressBook-emptyAddressBook">
         <h4 className="wallet-addressBook-emptyAddressBook-content">
           {window.i18n('addressBook') !== props.name ? window.i18n('emptyContact') : window.i18n('emptyAddressBook')}
+          <span style={{marginLeft:'7px'}}><BchatIcon iconType={'sadEmoji'} iconSize={'small'} iconColor={"#646474"}/></span>
         </h4>
           </div>
         

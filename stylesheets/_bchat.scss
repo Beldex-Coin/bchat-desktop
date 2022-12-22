@@ -1753,7 +1753,7 @@ label {
           font-family: $bchat-font-poppin-medium;
           // font-size: 15px;
           color: var(--color-disableText);
-          padding-top: 50%
+          padding-top: 50%;
           // margin: 10px 0 0 0;
         }
       }
@@ -1991,6 +1991,30 @@ label {
         height: 84%;
         overflow-y: auto;
       }
+      &-pending {
+        width: 300px;
+        height: 200px;
+        background-position: center;
+        margin: 0 auto;
+        background-image: var(--image-pendingTransHistory);
+        background-repeat: no-repeat;
+      }
+      &-failed {
+        width: 300px;
+        height: 200px;
+        background-position: center;
+        margin: 0 auto;
+        background-image: var(--image-failedTransHistory);
+        background-repeat: no-repeat;
+      }
+
+      &-content {
+        font-family: 'poppin-medium';
+        color: #82828d;
+        padding-top: 146px;
+        font-size: 16px;
+      }
+
       &-contentBox {
         background-color: #1c1c26;
         padding: 15px;

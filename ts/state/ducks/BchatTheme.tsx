@@ -96,6 +96,8 @@ const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
 const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
 const darkEmptyContact = `url("../images/bchat/no_con_scrt_grp_dark_theme.svg")`;
 const darkEmptyAddressBook = `url("../images/bchat/empty_address_book_dark.svg")`;
+const darkPendingTransHistory = `url("../images/bchat/pending_tx_history_dark.svg")`;
+const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg")`;
 const darkChatIcons = 'white';
 const darkComposeMsgInput = '#3F3C4B';
 const darkDayNight = `url("../images/bchat/light_theme .svg")`;
@@ -271,6 +273,11 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--image-AddContact', darkAddContact);
   document.documentElement.style.setProperty('--image-EmptyContact', darkEmptyContact);
   document.documentElement.style.setProperty('--image-EmptyAddressBook', darkEmptyAddressBook);
+  document.documentElement.style.setProperty(
+    '--image-pendingTransHistory',
+    darkPendingTransHistory
+  );
+  document.documentElement.style.setProperty('--image-failedTransHistory', darkFailedTransHistory);
   document.documentElement.style.setProperty('--image-NoMedia', darkNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
   document.documentElement.style.setProperty('--button-color', buttonColor);
@@ -360,6 +367,8 @@ const lightBlockedContact = `url("../images/bchat/no_blocked_contacts.svg")`;
 const lightAddContact = `url("../images/bchat/add_contact_white_theme.svg")`;
 const lightEmptyContact = `url("../images/bchat/no_contact_scrt_grp.svg")`;
 const lightEmptyAddressBook = `url("../images/bchat/empty_address_book_white.svg")`;
+const lightPendingTransHistory = `url("../images/bchat/pending_tx_history_white.svg")`;
+const lightFailedTransHistory = `url("../images/bchat/failed_tx_history_white.svg")`;
 const lightNoMedia = `url("../images/bchat/no_mediaWhiteTheme.svg")`;
 const lightChatHeader = '#EEEEEE';
 const lightChatIcons = 'black';
@@ -536,6 +545,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--image-AddContact', lightAddContact);
   document.documentElement.style.setProperty('--image-EmptyContact', lightEmptyContact);
   document.documentElement.style.setProperty('--image-EmptyAddressBook', lightEmptyAddressBook);
+  document.documentElement.style.setProperty( '--image-pendingTransHistory',lightPendingTransHistory);
+  document.documentElement.style.setProperty('--image-failedTransHistory', lightFailedTransHistory);
   document.documentElement.style.setProperty('--image-NoMedia', lightNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
   document.documentElement.style.setProperty('--button-color', buttonColor);
@@ -660,6 +671,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-AddContact:${darkAddContact};
     --image-EmptyContact:${darkEmptyContact};
     --image-EmptyAddressBook:${darkEmptyAddressBook};
+    --image-pendingTransHistory:${darkPendingTransHistory};
+    --image-failedTransHistory':${darkFailedTransHistory};
     --image-NoMedia:${darkNoMedia};
     --message-bubbles-received-background-color:${darkbubbleReceivedBg}
    

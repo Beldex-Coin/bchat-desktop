@@ -538,5 +538,9 @@
   "passwordFieldEmpty":"Password field cannot be empty",
   "notEnoughBalance":"Not enough unlocked balance",
   "emptyAddressBook":"No addresses in book",
-  "emptyContact":"There are no contacts"
+  "emptyContact":"There are no contacts",
+  "emptyTransaction":"No Transactions yet!",
+  "emptyTransactionDiscription":"After your first transaction, you will be able to view it here.",
+  "noPendingTransaction":"There are No Pending Transactions.",
+  "noFailedTransaction":"There are No Failed Transactions."
 }
