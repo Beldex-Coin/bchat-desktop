@@ -128,6 +128,7 @@
     }
   }
 
+ 
   input {
     width: 100%;
     padding: 8px;
@@ -192,6 +193,28 @@
     display: flex;
     border-bottom: var(--border-bchat);
   }
+  .changepass
+  {
+    &-oldpassInput
+    {
+      background-color: #353543;
+      width: 91%;
+      height: 45px;
+      box-shadow: 1px 2px 5px #00000074;
+    }
+    &-newPassInput {
+      background-color: #353543;
+      width: 91%;
+      height: 45px;
+      box-shadow: 1px 2px 5px #00000074;
+    }
+    &-newPassInput {
+      margin-right: 10px;
+    }
+  
+
+  }
+ 
 
   input {
     background-color: var(--color-smModal-bg);

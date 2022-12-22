@@ -83,6 +83,8 @@ export const WalletMainPanel = () => {
       </div>
    }
    if (WalletPage.NodeSetting === focusedsettings) {
+      console.log('NodeSetting');
+      
       return <div className="wallet"><NodeSetting />
       </div>
    }

@@ -23,7 +23,8 @@ import {OverlayMessageRequest} from "../leftpane/overlay/OverlayMessageRequest"
 import {BchatOnionPathScreen} from "./BchatOnionPathScreen"
 import { ToastUtils } from '../../bchat/utils';
 import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
-import { wallet } from '../../wallet/wallet-rpc'
+// import { wallet } from '../../wallet/wallet-rpc'
+import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 // import { startWallet } from "../../mains/wallet-rpc"
 
 export function getMediaPermissionsSettings() {
@@ -186,7 +187,7 @@ export const PasswordLock = ({
       return <BchatOnionPathScreen/>;
     }    
     if (category === BchatSettingCategory.Wallet) {
-      wallet.startWallet("settings");
+      deamonvalidation()
       return <WalletMainPanel/>;
     }    
     if (category === BchatSettingCategory.Notifications) {

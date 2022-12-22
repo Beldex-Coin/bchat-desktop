@@ -15,6 +15,8 @@ import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
 import { updateFiatBalance, updateWalletHeight } from '../state/ducks/walletConfig';
+// import { workingStatusForDeamon } from './BchatWalletHelper';
+import { walletSettingsKey } from '../data/settings-key';
 
 // import { WebSocket } from 'ws';
 export class Wallet {
@@ -28,7 +30,7 @@ export class Wallet {
     balance: number;
     unlocked_balance: number;
     fiatCurrency: string;
-    tx_list:any
+    tx_list: any;
   };
   id: number;
   scee: any;
@@ -49,7 +51,7 @@ export class Wallet {
       balance: 0,
       unlocked_balance: 0,
       fiatCurrency: '',
-      tx_list:[]
+      tx_list: [],
     };
     this.id = 0;
     this.scee = new SCEE();
@@ -112,7 +114,7 @@ export class Wallet {
         if (type == 'settings') {
           return;
         }
-        
+
         kill(64371)
           .then()
           .catch((err: any) => {
@@ -143,14 +145,24 @@ export class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    let launchCount= window.getSettingValue('launch-count');
-    let currentDeamon=window.getSettingValue('current-deamon')
-    console.log('currentDaemon wallet::',launchCount);
+    let launchCount = window.getSettingValue('launch-count');
+    let currentDeamon = window.getSettingValue('current-deamon');
+    // let list_deamon=window.getSettingValue()
+    let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
 
-    const currentDaemon: any =currentDeamon?currentDeamon:window.currentDaemon;
-    console.log('currentDaemon wallet:',currentDaemon,window.getSettingValue('current-deamon'));
-    
-    localStorage.setItem('syncStatus','');
+    const currentDaemon: any = currentDeamon ? currentDeamon : window.currentDaemon;
+    console.log('currentDaemon wallet::', launchCount, list_deamon);
+
+    //   let data={host:'38.242.196.753',port:'19095'}
+    //  let deamonStatus= await workingStatusForDeamon(data)
+    //  if(deamonStatus!=='ok')
+    // {
+
+    // }
+
+    console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
+
+    localStorage.setItem('syncStatus', '');
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
     this.auth = [
@@ -433,14 +445,15 @@ export class Wallet {
           let data: any = await this.getTransactions();
           if (
             this.wallet_state.balance == n.result.balance &&
-            this.wallet_state.unlocked_balance == n.result.unlocked_balance && this.wallet_state.tx_list == data.transactions.tx_list
+            this.wallet_state.unlocked_balance == n.result.unlocked_balance &&
+            this.wallet_state.tx_list == data.transactions.tx_list
           ) {
             continue;
           }
           this.wallet_state.balance = wallet.info.balance = n.result.balance;
           this.wallet_state.unlocked_balance = wallet.info.unlocked_balance =
             n.result.unlocked_balance;
-            this.wallet_state.tx_list = data.transactions.tx_list;
+          this.wallet_state.tx_list = data.transactions.tx_list;
 
           this.getFiatBalance();
           window.inboxStore?.dispatch(
@@ -504,20 +517,20 @@ export class Wallet {
     window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
   };
 
-  transfer = async (address: string, amount: number, priority: number,isSweepAll:Boolean) => {
-      const rpc_endpoint = isSweepAll ? "sweep_all" : "transfer_split";
-      // the call coming from the SN page will have address = wallet primary address
-      const rpcSpecificParams = isSweepAll
-        ? {
-            address,
-            // gui wallet only supports one account currently
-            account_index: 0,
-            // sweep *all* funds from all subaddresses to the address specified
-            subaddr_indices_all: true
-          }
-        : {
-            destinations: [{ amount: amount, address: address }]
-          };
+  transfer = async (address: string, amount: number, priority: number, isSweepAll: Boolean) => {
+    const rpc_endpoint = isSweepAll ? 'sweep_all' : 'transfer_split';
+    // the call coming from the SN page will have address = wallet primary address
+    const rpcSpecificParams = isSweepAll
+      ? {
+          address,
+          // gui wallet only supports one account currently
+          account_index: 0,
+          // sweep *all* funds from all subaddresses to the address specified
+          subaddr_indices_all: true,
+        }
+      : {
+          destinations: [{ amount: amount, address: address }],
+        };
     const params = {
       ...rpcSpecificParams,
       account_index: 0,
@@ -550,7 +563,7 @@ export class Wallet {
       filename,
       password,
     });
-    console.log("openWAllet:",openWallet)
+    console.log('openWAllet:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }

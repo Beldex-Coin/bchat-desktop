@@ -14,6 +14,9 @@ export const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
 
+  // const [oldPassVisible,setOldPassVisible]=useState('');
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
   const dispatch = useDispatch();
   function onClickCancelHandler() {
     dispatch(ChangePasswordModal(null));
@@ -43,7 +46,7 @@ export const ChangePassword = () => {
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();
   };
-  
+
   // const [confirm,setConfirm]=useState("");
   return (
     <div>
@@ -53,7 +56,7 @@ export const ChangePassword = () => {
         showExitIcon={false}
         headerReverse={true}
       >
-        <div className="bchat-modal__centered" style={{ width: '350px', alignItems: 'start' }}>
+        <div className="bchat-modal__centered changepass" style={{ width: '350px', alignItems: 'start' }}>
           <SpacerMD />
           <input
             value={oldPassword}
@@ -61,7 +64,7 @@ export const ChangePassword = () => {
               setOldPassword(e.target.value);
             }}
             placeholder={window.i18n('currentPassword')}
-            className="wallet-settings-nodeSetting-oldpassInput"
+            className="bchat-dialog-oldpassInput"
           />
           <SpacerMD />
           <div>{window.i18n('changewalletPassword')}</div>
@@ -73,9 +76,12 @@ export const ChangePassword = () => {
                 setNewPassword(e.target.value);
               }}
               placeholder={window.i18n('enterPassword')}
-              className="wallet-settings-nodeSetting-newPassInput"
+              className="bchat-dialog-newPassInput"
+              type={!newPasswordVisible?"password":"text"}
             />
-            <BchatIcon iconType="eye" iconSize={'medium'} />
+            <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)}>
+            <BchatIcon iconType={newPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
+            </span>
           </Flex>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
@@ -85,9 +91,13 @@ export const ChangePassword = () => {
                 setConfirmNewPassword(e.target.value);
               }}
               placeholder={window.i18n('confirmPassword')}
-              className="wallet-settings-nodeSetting-newPassInput"
+              className="bchat-dialog-newPassInput"
+              type={confirmPasswordVisible?"password":"text"}
             />
-            <BchatIcon iconType="eye" iconSize={'medium'} />
+            <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)}>
+            <BchatIcon iconType={confirmPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
+
+            </span>
           </Flex>
         </div>
         <SpacerMD />

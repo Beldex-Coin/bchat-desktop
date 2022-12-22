@@ -19,7 +19,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import kill from 'cross-port-killer';
 import { HTTPError } from '../bchat/utils/errors';
-import { walletSettingsKey } from '../data/settings-key';
+// import { walletSettingsKey } from '../data/settings-key';
 // tslint:disable: max-classes-per-file
 
 // Globally disable drag and drop
@@ -126,7 +126,7 @@ Storage.onready(async () => {
   // These make key operations available to IPC handlers created in preload.js
   window.Events = {
     getThemeSetting: () => Storage.get('theme-setting', 'dark'),
-    setThemeSetting: async (value: any) => { 
+    setThemeSetting: async (value: any) => {
       await Storage.put('theme-setting', value);
     },
     getHideMenuBar: () => Storage.get('hide-menu-bar'),
@@ -166,11 +166,11 @@ Storage.onready(async () => {
   }
 
   const themeSetting = window.Events.getThemeSetting();
-  
+
   // console.log("themeSetting ",themeSetting);
 
-  
-  
+
+
   const newThemeSetting = mapOldThemeToNew(themeSetting);
   window.Events.setThemeSetting(newThemeSetting);
 
@@ -278,16 +278,15 @@ async function start() {
   const launchCount = !prevLaunchCount ? 1 : prevLaunchCount + 1;
   window.setSettingValue('launch-count', launchCount);
   // test net
-  const deamon_list=[{host:'38.242.196.72',port:'19095',active:0}]
+  // const deamon_list=[{host:'154.26.139.105',port:'19095',active:0}]
 
   // On first launch
   if (launchCount === 1) {
     // Initialise default settings
     window.setSettingValue('hide-menu-bar', true);
     window.setSettingValue('link-preview-setting', false);
-    window.setSettingValue("decimal",'2 - Two (0.00)')
-    window.setSettingValue("save-recipient",false);
-    window.setSettingValue(walletSettingsKey.settingsDeamonList,deamon_list);  
+    window.setSettingValue("decimal", '2 - Two (0.00)')
+    window.setSettingValue("save-recipient", false);
 
 
   }
@@ -412,7 +411,7 @@ let connectCount = 0;
 async function connect() {
   window.log.info('connect');
   kill(64371).then().catch(err => { throw new HTTPError('beldex_rpc_port', err) })
-  console.log("connectCount === 0 && navigator.onLine:",connectCount, navigator.onLine)
+  console.log("connectCount === 0 && navigator.onLine:", connectCount, navigator.onLine)
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

@@ -1807,16 +1807,7 @@ label {
         //   text-align: unset;
         //   align-items: unset;
         // }
-        &-oldpassInput,
-        &-newPassInput {
-          background-color: #353543;
-          width: 91%;
-          height: 45px;
-          box-shadow: 1px 2px 5px #00000074;
-        }
-        &-newPassInput {
-          margin-right: 10px;
-        }
+       
         &-notesTxt {
           font-family: $bchat-font-poppin-light;
         }
@@ -1916,6 +1907,11 @@ label {
               padding-left: 20px;
             }
           }
+          &-warning-box {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 10px;
+          }
           &-btnBox {
             .bchat-button.default.primary,
             .bchat-button.default.green {
@@ -1996,7 +1992,7 @@ label {
         height: 200px;
         background-position: center;
         margin: 0 auto;
-        background-image    : var(--image-pendingTransHistory);
+        background-image: var(--image-pendingTransHistory);
         background-repeat: no-repeat;
       }
       &-failed {
@@ -2073,10 +2069,8 @@ label {
         }
       }
 
-      &-recipitentBox
-      {
-        &-adddressBox
-        {
+      &-recipitentBox {
+        &-adddressBox {
           // width: 601px;
           width: 570px;
           padding-right: 10px;

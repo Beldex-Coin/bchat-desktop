@@ -21,6 +21,7 @@ export const WalletSettings = () => {
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
+  const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
 
   const currenyExt = [
     'AUD',
@@ -80,7 +81,7 @@ export const WalletSettings = () => {
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
           <div onClick={() => dispatch(nodeSetting())} style={{ cursor: 'pointer' }}>
-            <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>
+            <span className="wallet-settings-tabBox-disableText">{connectedDeamon.host}:{connectedDeamon.port}</span>
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>

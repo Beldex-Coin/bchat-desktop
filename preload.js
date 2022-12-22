@@ -267,9 +267,9 @@ window.getDaemonNodeRandomlyPick = () => {
     },
   ];
 
-  // return window.getSettingValue('current-deamon');  
+  // return window.getSettingValue('current-deamon');
 
-   return remotes[Math.floor(Math.random() * remotes.length)];
+  return remotes[Math.floor(Math.random() * remotes.length)];
 };
 
 const remotes = [
@@ -280,6 +280,7 @@ const remotes = [
   {
     host: '154.26.139.105',
     port: '19095',
+    active: 0,
   },
   // //live
   // {
@@ -287,10 +288,9 @@ const remotes = [
   //   port: "19091"
   // }
 ];
- window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
+window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
 // console.log(window.getSettingValue('current-deamon'));
 // window.currentDaemon = window.getSettingValue('current-deamon');
-
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);
