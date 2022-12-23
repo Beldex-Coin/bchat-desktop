@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { getRecipientAddress } from '../../data/data';
 // import { wallet } from "../../wallet/wallet-rpc"
 // import { BchatDropdown } from "../basic/BchatDropdown"
@@ -9,16 +9,19 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 
-export const TransactionSection = () => {
-  let transactions = useSelector((state: any) => state.wallet.transacations);
-  const transactionsHistory = transactions == undefined ? [] : transactions;
+export const TransactionSection = (props: any) => {
+  // let transactions = useSelector((state: any) => state.wallet.transacations);
+  console.log("transaction-history:",props.transactionList.length)
+  // transactions = [];
+  const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
   const [filter, setFilter] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
-
+  const syncingStatus = props.syncStatus ? true : false;
+  console.log("syncingStatus:",syncingStatus)
   function closeDropDown(params: any, type: any) {
     setFilter(params);
     setVisible(!visible);
@@ -163,197 +166,220 @@ export const TransactionSection = () => {
       </>
     );
   };
-
+console.log("DAAAAAATAAAAAA.length:",data.length)
   return (
     <div className="wallet-Transaction">
-      {/* **********************Transaction Header************************* */}
+      {!syncingStatus ? (
+        <div className="wallet-syncing">
+          <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
+        </div>
+      ) : (
+        <div>
+          <Flex container={true} justifyContent="space-between" flexDirection="row">
+            <div>{window.i18n('transactions')}</div>
+            <Flex container={true} justifyContent="space-between" flexDirection="row">
+              {data.length !== 0 ? (
+                <div>
+                  {window.i18n('filter')}
+                  <input
+                    placeholder={window.i18n('filterPlaceHolder')}
+                    className="wallet-Transaction-filterInput"
+                    onChange={(e: any) => searchTransaction(e.target.value)}
+                    value={searchText}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
 
-      <Flex container={true} justifyContent="space-between" flexDirection="row">
-        <div>{window.i18n('transactions')}</div>
-        <Flex container={true} justifyContent="space-between" flexDirection="row">
-          {data.length !== 0 ? (
-            <div>
-              {window.i18n('filter')}
-              <input
-                placeholder={window.i18n('filterPlaceHolder')}
-                className="wallet-Transaction-filterInput"
-                onChange={(e: any) => searchTransaction(e.target.value)}
-                value={searchText}
-              />
-            </div>
-          ) : (
-            ''
-          )}
-          <div className="wallet-Transaction-filterWithIcon">
-            {/* <input value={window.i18n('filterAll')} /> */}
-            <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
-            <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
-              <BchatIcon iconType="filter" iconSize={'tiny'} />
-            </span>
-            {/* <BchatDropdown
+              {/* {data.length == 0 && filter == 'All' ? ( */}
+              {/* '' */}
+              {/* ) : ( */}
+              <div className="wallet-Transaction-filterWithIcon">
+                {/* <input value={window.i18n('filterAll')} /> */}
+                <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
+                <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
+                  <BchatIcon iconType="filter" iconSize={'tiny'} />
+                </span>
+                {/* <BchatDropdown
                         label={window.i18n('disappearingMessages')}
                         options={option}
                         expanded={true}
                     /> */}
-            {visible && (
-              <div style={{ position: 'relative' }}>
-                <div className="wallet-settings-nodeSetting-sendDropDown">
-                  <div
-                    className={classNames(`dropDownItem `)}
-                    onClick={() => closeDropDown(window.i18n('filterAll'), 'All')}
-                  >
-                    {filter === window.i18n('filterAll') ? (
-                      <span className="dropDownItem-blockAndMargin">
-                        <BchatIcon
-                          iconType="tickCircle"
-                          iconColor="#FFF"
-                          iconSize={13}
-                          iconPadding={'3px'}
-                          backgroundColor={'#159B24'}
-                          borderRadius={'10px'}
-                        />
-                      </span>
-                    ) : (
-                      <span className="dropDownItem-checkedCircle"></span>
-                    )}
+                {visible && (
+                  <div style={{ position: 'relative' }}>
+                    <div className="wallet-settings-nodeSetting-sendDropDown">
+                      <div
+                        className={classNames(`dropDownItem `)}
+                        onClick={() => closeDropDown(window.i18n('filterAll'), 'All')}
+                      >
+                        {filter === window.i18n('filterAll') ? (
+                          <span className="dropDownItem-blockAndMargin">
+                            <BchatIcon
+                              iconType="tickCircle"
+                              iconColor="#FFF"
+                              iconSize={13}
+                              iconPadding={'3px'}
+                              backgroundColor={'#159B24'}
+                              borderRadius={'10px'}
+                            />
+                          </span>
+                        ) : (
+                          <span className="dropDownItem-checkedCircle"></span>
+                        )}
 
-                    {window.i18n('filterAll')}
-                  </div>
-                  <div
-                    className={classNames(`dropDownItem `)}
-                    onClick={() => closeDropDown(window.i18n('filterIncoming'), 'in')}
-                  >
-                    {filter === window.i18n('filterIncoming') ? (
-                      <span className="dropDownItem-blockAndMargin">
-                        <BchatIcon
-                          iconType="tickCircle"
-                          iconColor="#FFF"
-                          iconSize={13}
-                          iconPadding={'3px'}
-                          backgroundColor={'#159B24'}
-                          borderRadius={'10px'}
-                        />
-                      </span>
-                    ) : (
-                      <span className="dropDownItem-checkedCircle"></span>
-                    )}
+                        {window.i18n('filterAll')}
+                      </div>
+                      <div
+                        className={classNames(`dropDownItem `)}
+                        onClick={() => closeDropDown(window.i18n('filterIncoming'), 'in')}
+                      >
+                        {filter === window.i18n('filterIncoming') ? (
+                          <span className="dropDownItem-blockAndMargin">
+                            <BchatIcon
+                              iconType="tickCircle"
+                              iconColor="#FFF"
+                              iconSize={13}
+                              iconPadding={'3px'}
+                              backgroundColor={'#159B24'}
+                              borderRadius={'10px'}
+                            />
+                          </span>
+                        ) : (
+                          <span className="dropDownItem-checkedCircle"></span>
+                        )}
 
-                    {window.i18n('filterIncoming')}
-                  </div>
-                  <div
-                    className={classNames(`dropDownItem `)}
-                    onClick={() => closeDropDown(window.i18n('filterOutgoing'), 'out')}
-                  >
-                    {filter === window.i18n('filterOutgoing') ? (
-                      <span className="dropDownItem-blockAndMargin">
-                        <BchatIcon
-                          iconType="tickCircle"
-                          iconColor="#FFF"
-                          iconSize={13}
-                          iconPadding={'3px'}
-                          backgroundColor={'#159B24'}
-                          borderRadius={'10px'}
-                        />
-                      </span>
-                    ) : (
-                      <span className="dropDownItem-checkedCircle"></span>
-                    )}
+                        {window.i18n('filterIncoming')}
+                      </div>
+                      <div
+                        className={classNames(`dropDownItem `)}
+                        onClick={() => closeDropDown(window.i18n('filterOutgoing'), 'out')}
+                      >
+                        {filter === window.i18n('filterOutgoing') ? (
+                          <span className="dropDownItem-blockAndMargin">
+                            <BchatIcon
+                              iconType="tickCircle"
+                              iconColor="#FFF"
+                              iconSize={13}
+                              iconPadding={'3px'}
+                              backgroundColor={'#159B24'}
+                              borderRadius={'10px'}
+                            />
+                          </span>
+                        ) : (
+                          <span className="dropDownItem-checkedCircle"></span>
+                        )}
 
-                    {window.i18n('filterOutgoing')}
+                        {window.i18n('filterOutgoing')}
+                      </div>
+                      <div
+                        className={classNames(`dropDownItem `)}
+                        onClick={() => closeDropDown(window.i18n('filterPending'), 'pending')}
+                      >
+                        {filter === window.i18n('filterPending') ? (
+                          <span className="dropDownItem-blockAndMargin">
+                            <BchatIcon
+                              iconType="tickCircle"
+                              iconColor="#FFF"
+                              iconSize={13}
+                              iconPadding={'3px'}
+                              backgroundColor={'#159B24'}
+                              borderRadius={'10px'}
+                            />
+                          </span>
+                        ) : (
+                          <span className="dropDownItem-checkedCircle"></span>
+                        )}
+                        {window.i18n('filterPending')}
+                      </div>
+                      <div
+                        className={classNames(`dropDownItem `)}
+                        onClick={() => closeDropDown(window.i18n('failed'), 'failed')}
+                      >
+                        {filter === window.i18n('failed') ? (
+                          <span className="dropDownItem-blockAndMargin">
+                            <BchatIcon
+                              iconType="tickCircle"
+                              iconColor="#FFF"
+                              iconSize={13}
+                              iconPadding={'3px'}
+                              backgroundColor={'#159B24'}
+                              borderRadius={'10px'}
+                            />
+                          </span>
+                        ) : (
+                          <span className="dropDownItem-checkedCircle"></span>
+                        )}
+                        {window.i18n('failed')}
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    className={classNames(`dropDownItem `)}
-                    onClick={() => closeDropDown(window.i18n('filterPending'), 'pending')}
-                  >
-                    {filter === window.i18n('filterPending') ? (
-                      <span className="dropDownItem-blockAndMargin">
-                        <BchatIcon
-                          iconType="tickCircle"
-                          iconColor="#FFF"
-                          iconSize={13}
-                          iconPadding={'3px'}
-                          backgroundColor={'#159B24'}
-                          borderRadius={'10px'}
-                        />
-                      </span>
-                    ) : (
-                      <span className="dropDownItem-checkedCircle"></span>
-                    )}
-                    {window.i18n('filterPending')}
-                  </div>
-                  <div
-                    className={classNames(`dropDownItem `)}
-                    onClick={() => closeDropDown(window.i18n('failed'), 'failed')}
-                  >
-                    {filter === window.i18n('failed') ? (
-                      <span className="dropDownItem-blockAndMargin">
-                        <BchatIcon
-                          iconType="tickCircle"
-                          iconColor="#FFF"
-                          iconSize={13}
-                          iconPadding={'3px'}
-                          backgroundColor={'#159B24'}
-                          borderRadius={'10px'}
-                        />
-                      </span>
-                    ) : (
-                      <span className="dropDownItem-checkedCircle"></span>
-                    )}
-                    {window.i18n('failed')}
-                  </div>
-                </div>
+                )}
               </div>
+              {/* )} */}
+            </Flex>
+          </Flex>
+
+          <SpacerLG />
+          <div className="wallet-Transaction-parentBox">
+            {data.length > 0 &&
+              data.map((item: any, i: any) => (
+                <div className="wallet-Transaction-contentBox" key={i}>
+                  <Flex container={true} justifyContent="space-between" flexDirection="row">
+                    <Flex container={true} height=" 60px" onClick={() => showdata(item, i)}>
+                      <article className="wallet-Transaction-contentBox-sendIndicationBox">
+                        <TransactionIndication type={item.type} />
+                      </article>
+                      <article className="wallet-Transaction-contentBox-verticalline"></article>
+                      <div className="wallet-Transaction-contentBox-balanceBox">
+                        <div className="wallet-Transaction-contentBox-balanceBox-amount">
+                          {item.type === 'out' ? '-' : ''}
+                          {Number((item.amount / 1e9).toFixed(4))} BDX
+                        </div>
+                        <div className="wallet-Transaction-contentBox-balanceBox-address">
+                          {item.address}
+                        </div>
+                      </div>
+                    </Flex>
+                    <section className="wallet-Transaction-contentBox-dateandheight">
+                      <div className="wallet-Transaction-contentBox-dateandheight-month">
+                        {moment.unix(item.timestamp).fromNow()}
+                      </div>
+                      <div className="wallet-Transaction-contentBox-dateandheight-height">
+                        Height : {item.height} (confirmed)
+                      </div>
+                    </section>
+                  </Flex>
+                  {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
+                  {selected === i && <RececipientAddress trasactionData={item} />}
+                </div>
+              ))}
+            {transactionsHistory.length == 0 ? (
+              <div className={`wallet-Transaction-${filter.toLocaleLowerCase()}`}>
+                <h4 className="wallet-Transaction-content">
+                  {filter == 'All' ? (
+                    <div>
+                      {window.i18n('emptyTransaction')}
+                      <h5 className="wallet-Transaction-content-subContent">
+                        {window.i18n('emptyTransactionDiscription')}
+                      </h5>
+                    </div>
+                  ) : filter == 'Outgoing' ? (
+                    window.i18n('noOutgoingTransaction')
+                  ) : filter == 'Pending' ? (
+                    window.i18n('noPendingTransaction')
+                  ) : (
+                    window.i18n('noFailedTransaction')
+                  )}
+                </h4>
+              </div>
+            ) : (
+              ''
             )}
           </div>
-        </Flex>
-      </Flex>
-
-      <SpacerLG />
-      <div className="wallet-Transaction-parentBox">
-        {data.length > 0 &&
-          data.map((item: any, i: any) => (
-            <div className="wallet-Transaction-contentBox" key={i}>
-              <Flex container={true} justifyContent="space-between" flexDirection="row">
-                <Flex container={true} height=" 60px" onClick={() => showdata(item, i)}>
-                  <article className="wallet-Transaction-contentBox-sendIndicationBox">
-                    <TransactionIndication type={item.type} />
-                  </article>
-                  <article className="wallet-Transaction-contentBox-verticalline"></article>
-                  <div className="wallet-Transaction-contentBox-balanceBox">
-                    <div className="wallet-Transaction-contentBox-balanceBox-amount">
-                      {item.type === 'out' ? '-' : ''}
-                      {Number((item.amount / 1e9).toFixed(4))} BDX
-                    </div>
-                    <div className="wallet-Transaction-contentBox-balanceBox-address">
-                      {item.address}
-                    </div>
-                  </div>
-                </Flex>
-                <section className="wallet-Transaction-contentBox-dateandheight">
-                  <div className="wallet-Transaction-contentBox-dateandheight-month">
-                    {moment.unix(item.timestamp).fromNow()}
-                  </div>
-                  <div className="wallet-Transaction-contentBox-dateandheight-height">
-                    Height : {item.height} (confirmed)
-                  </div>
-                </section>
-              </Flex>
-              {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
-              {selected === i && <RececipientAddress trasactionData={item} />}
-            </div>
-          ))}
-        {data.length == 0 ? (
-          <div className={`wallet-Transaction-${filter.toLocaleLowerCase()}`}>
-            <h4 className="wallet-Transaction-content">
-              {filter == 'Pending'
-                ? window.i18n('noPendingTransaction')
-                : window.i18n('noFailedTransaction')}
-            </h4>
-          </div>
-        ) : (
-          ''
-        )}
-      </div>
+        </div>
+      )}
+      {/* **********************Transaction Header************************* */}
     </div>
   );
 };

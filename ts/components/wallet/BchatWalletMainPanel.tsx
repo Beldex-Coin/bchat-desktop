@@ -13,9 +13,7 @@ import { ReceivedForm } from "./BchatWalletReceivedForm"
 import { WalletSettings } from "./BchatWalletSettings"
 import { SendForm } from "./BchatWalletSendForm"
 import { TransactionSection } from "./BchatWalletTransactionSection"
-// import { SendForm } from "./BchatWalletSendForm"
 import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
-// import { TransactionSection } from "./BchatWalletTransactionSection"
 import { daemon } from '../../wallet/daemon-rpc';
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
 // import { wallet } from '../../wallet/wallet-rpc';
@@ -108,6 +106,8 @@ export const WalletMainPanel = () => {
 
 export const Dashboard = (props: any) => {
    const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+   let transactions = useSelector((state: any) => state.wallet.transacations);
+   console.log("transactions-lenghyth:",transactions.length)
    daemon.daemonHeartbeat();
    // wallet.startHeartbeat();
    return (
@@ -120,7 +120,7 @@ export const Dashboard = (props: any) => {
             {WalletDashboard.walletSend === focusedInnersection && <SendForm amount={props.amount} setAmount={props.setAmount}
                priority={props.priority} setPriority={props.setPriority} />}
             {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
-            {WalletDashboard.walletTransaction === focusedInnersection && <TransactionSection />}
+            {WalletDashboard.walletTransaction === focusedInnersection && <TransactionSection syncStatus={localStorage.getItem('syncStatus')} transactionList = {transactions}/>}
 
             {/* <SendForm /> */}
             {/* <TransactionSection /> */}

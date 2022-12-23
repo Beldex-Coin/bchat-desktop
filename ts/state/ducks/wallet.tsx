@@ -16,7 +16,7 @@ export const updateBalance = (wallet: WalletStateType) => {
 export const initialWalletState: WalletStateType = {
   balance: 0,
   unlocked_balance: 0,
-  transacations: {},
+  transacations: [],
 };
 
 export const reducer = (

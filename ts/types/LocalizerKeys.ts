@@ -540,4 +540,6 @@ export type LocalizerKeys =
   | 'emptyTransaction'
   | 'emptyTransactionDiscription'
   | 'noPendingTransaction'
-  | 'noFailedTransaction';
+  | 'noFailedTransaction'
+  | 'noOutgoingTransaction'
+  | 'walletSyncingDiscription';

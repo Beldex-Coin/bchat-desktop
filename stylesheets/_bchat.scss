@@ -1950,6 +1950,23 @@ label {
         color: #9393b1;
       }
     }
+    &-syncing {
+      width: 100%;
+      height: 85%;
+      background-position: center;
+      margin: 0 auto;
+      background-image: var(--image-walletSyncing);
+      background-repeat: no-repeat;
+
+      &-content {
+        font-family: 'poppin-regular';
+        color: #82828d;
+        font-size: 13px;
+        text-align: center;
+        padding-top: 324px;
+      }
+    }
+
     &-Transaction {
       background-color: #303041;
       /* width: 49.4%; */
@@ -1987,6 +2004,25 @@ label {
         height: 84%;
         overflow-y: auto;
       }
+
+      &-all {
+        width: 240px;
+        height: 190px;
+        background-position: center;
+        margin: 0 auto;
+        background-image: var(--image-emptyTransHistory);
+        background-repeat: no-repeat;
+        padding-top: 32px;
+        padding-left: 45px;
+      }
+      &-outgoing {
+        width: 300px;
+        height: 200px;
+        background-position: center;
+        margin: 0 auto;
+        background-image: var(--image-outgoingTransHistory);
+        background-repeat: no-repeat;
+      }
       &-pending {
         width: 300px;
         height: 200px;
@@ -2009,6 +2045,11 @@ label {
         color: #82828d;
         padding-top: 146px;
         font-size: 16px;
+      }
+      &-subContent {
+        font-family: 'poppin-regular';
+        color: #82828d;
+        font-size: 13px;
       }
 
       &-contentBox {
