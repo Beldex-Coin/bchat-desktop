@@ -195,22 +195,38 @@
   }
   .changepass
   {
+    &-forgot-seed
+    {
+      textarea {
+        border: none;
+        outline: none;
+        width: 361px;
+        height: 76px;
+        background-color: #353543;
+        padding: 15px;
+        box-shadow: 1px 2px 5px #00000074;
+      }
+    };
     &-oldpassInput
     {
+      input {
+        background-color: #353543;
+        width: 361px;
+        height: 45px;
+        box-shadow: 1px 2px 5px #00000074;
+      };
+    }
+    
+    &-newPassInput {
+      input{
       background-color: #353543;
-      width: 91%;
+      width: 318px;
       height: 45px;
       box-shadow: 1px 2px 5px #00000074;
-    }
-    &-newPassInput {
-      background-color: #353543;
-      width: 91%;
-      height: 45px;
-      box-shadow: 1px 2px 5px #00000074;
-    }
-    &-newPassInput {
       margin-right: 10px;
+      }
     }
+    
   
 
   }

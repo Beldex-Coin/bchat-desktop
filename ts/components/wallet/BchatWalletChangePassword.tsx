@@ -58,42 +58,50 @@ export const ChangePassword = () => {
       >
         <div className="bchat-modal__centered changepass" style={{ width: '350px', alignItems: 'start' }}>
           <SpacerMD />
+          <span className='changepass-oldpassInput' >
           <input
             value={oldPassword}
             onChange={e => {
               setOldPassword(e.target.value);
             }}
             placeholder={window.i18n('currentPassword')}
-            className="bchat-dialog-oldpassInput"
+            // className="bchat-dialog-oldpassInput"
           />
+          </span>
           <SpacerMD />
           <div>{window.i18n('changewalletPassword')}</div>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
+          <span className='changepass-newPassInput' >
+
             <input
               value={newPassword}
               onChange={e => {
                 setNewPassword(e.target.value);
               }}
               placeholder={window.i18n('enterPassword')}
-              className="bchat-dialog-newPassInput"
+              // className="bchat-dialog-newPassInput"
               type={!newPasswordVisible?"password":"text"}
             />
+            </span>
             <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)}>
             <BchatIcon iconType={newPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
             </span>
           </Flex>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
+          <span className='changepass-newPassInput' >
+
             <input
               value={confirmPassword}
               onChange={e => {
                 setConfirmNewPassword(e.target.value);
               }}
               placeholder={window.i18n('confirmPassword')}
-              className="bchat-dialog-newPassInput"
+              // className="bchat-dialog-newPassInput"
               type={confirmPasswordVisible?"password":"text"}
             />
+            </span>
             <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)}>
             <BchatIcon iconType={confirmPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
 

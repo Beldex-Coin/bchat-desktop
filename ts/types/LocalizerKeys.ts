@@ -28,6 +28,7 @@ export type LocalizerKeys =
   | 'remoteDaemonOnly'
   | 'localDaemonOnly'
   | 'nCurrentRPCTxt'
+  |'enterSeed'
   | 'enterWalletPassword'
   | 'usdCurrency'
   | 'audCurrency'

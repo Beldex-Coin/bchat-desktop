@@ -1693,7 +1693,64 @@ label {
         }
       }
     }
+    &-forgotPassword {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      &-content-Box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 38%;
+        background-color: #2d2d3b;
+        border-radius: 10px;
 
+        &-seed {
+          display: flex;
+          flex-direction: row;
+          textarea {
+            border: none;
+            outline: none;
+            resize: none;
+            width: 318px;
+            height: 76px;
+            background-color: #353543;
+            padding: 15px;
+            box-shadow: 1px 2px 5px #00000074;
+            border-radius: 10px;
+          }
+        }
+        &-paste-icon {
+          background: url('../images/bchat/paste.svg') no-repeat;
+          width: 40px;
+          height: 40px;
+          // position: "relative",
+          background-color: var(--color-inboxBgColor);
+          background-size: 16px;
+          border-radius: 35px;
+          background-position: center;
+          left: 10px;
+          top: 14px;
+          position: relative;
+          cursor: pointer;
+        }
+        &-password {
+          input {
+            border: none;
+            outline: none;
+            background-color: #353543;
+            width: 318px;
+            height: 45px;
+            box-shadow: 1px 2px 5px #00000074;
+            margin-right: 10px;
+            border-radius: 10px;
+            padding: 10px;
+          }
+        }
+      }
+    }
     &-addressBook {
       &-header {
         &-txt {
@@ -1807,7 +1864,7 @@ label {
         //   text-align: unset;
         //   align-items: unset;
         // }
-       
+
         &-notesTxt {
           font-family: $bchat-font-poppin-light;
         }

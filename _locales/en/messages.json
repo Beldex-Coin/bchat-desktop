@@ -157,6 +157,7 @@
   "recipientAddress": "Recipient address",
   "transactionFee": "Transaction fee",
   "dateTime": "Date & Time",
+  "enterSeed":"Enter Seed",
   "deleteConversationConfirmation": "Permanently delete the messages in this conversation?",
   "clearAllData": "Clear Data",
   "deleteAccountWarning": "This will permanently erase all your account data. Do you wish to clear data on this device or completely earse your account?",

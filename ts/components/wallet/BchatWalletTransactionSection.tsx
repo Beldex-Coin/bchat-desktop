@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import React, { useState } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+//  import { useSelector } from 'react-redux';
 import { getRecipientAddress } from '../../data/data';
 // import { wallet } from "../../wallet/wallet-rpc"
 // import { BchatDropdown } from "../basic/BchatDropdown"
@@ -10,10 +10,16 @@ import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 
 export const TransactionSection = (props: any) => {
-  // let transactions = useSelector((state: any) => state.wallet.transacations);
-  console.log("transaction-history:",props.transactionList.length)
-  // transactions = [];
+  //  let transactions = useSelector((state: any) => state.wallet.transacations);
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
+
+  console.log('transactionsHistory1 ::', transactionsHistory);
+
+  // transactions = [];
+  // const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
+  // const transactionsHistory = transactions === undefined ? [] : transactions;
+  // console.log("transaction-history:",transactions)
+
   const [filter, setFilter] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
@@ -21,7 +27,30 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
-  console.log("syncingStatus:",syncingStatus)
+  console.log("syncingStatus:", syncingStatus)
+
+  useEffect(() => {
+    switch (filter) {
+      case 'out':
+        filterTransaction("out");
+        break;
+      case 'pending':
+        filterTransaction("pending");
+        break;
+      case 'failed':
+        filterTransaction("failed");
+        break;
+      case 'in':
+        filterTransaction("in");
+        break;
+
+      default:
+        filterTransaction("All");
+        break;
+    }
+    // filterTransaction(type);
+  }, [transactionsHistory]);
+
   function closeDropDown(params: any, type: any) {
     setFilter(params);
     setVisible(!visible);
@@ -166,7 +195,7 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-console.log("DAAAAAATAAAAAA.length:",data.length)
+  console.log("DAAAAAATAAAAAA.length:", data.length)
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (

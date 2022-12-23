@@ -8,6 +8,7 @@ import { BchatIcon } from "../icon/BchatIcon"
 import classNames from "classnames"
 import { walletSettingsKey } from "../../data/settings-key"
 import { workingStatusForDeamon } from "../../wallet/BchatWalletHelper"
+import { LocalDeamon } from "./BchatWalletLocalDeamonsettings"
 
 
 export const NodeSetting = () => {
@@ -27,6 +28,7 @@ export const NodeSetting = () => {
     const [option, setOption] = useState(deamonList)
     const [verifyDeamon, setvSerifyDeamon] = useState({})
     const [testNotify, setTestNotify] = useState('')
+    const [localDeamonVisible,setLocalDeamonVisible]=useState(false);
 
     // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
 
@@ -100,6 +102,8 @@ export const NodeSetting = () => {
 
         setvSerifyDeamon({})
     }
+   
+    
 
     return <div>
         <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
@@ -113,17 +117,17 @@ export const NodeSetting = () => {
         <SpacerLG />
         <section className="wallet-settings-nodeSetting-contentBox">
             <Flex container={true} alignItems="center" flexDirection="row" width="40%" justifyContent="space-between">
-                <article className="wallet-settings-nodeSetting-FlexBox">
+                <article className="wallet-settings-nodeSetting-FlexBox" onClick={()=>setLocalDeamonVisible(false)}>
                     <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle">
-                        <BchatIcon iconType="circle" iconSize='tiny' iconColor="#20D024" />
+                    {!localDeamonVisible && <BchatIcon iconType="circle" iconSize='tiny' iconColor="#20D024" />}
                     </div>
                     <div className="marginLeft"> {window.i18n("remoteDaemonOnly")}</div>
                 </article>
                 {/* <div className="marginLeft marginRight "></div> */}
 
-                <article className="wallet-settings-nodeSetting-FlexBox" >
+                <article className="wallet-settings-nodeSetting-FlexBox" onClick={()=>setLocalDeamonVisible(true)} >
                     <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle">
-                        <BchatIcon iconType="circle" iconSize='tiny' iconColor="#20D024" />
+                   { localDeamonVisible && <BchatIcon iconType="circle" iconSize='tiny' iconColor="#20D024" />}
                     </div>
                     <div className="marginLeft"> {window.i18n("localDaemonOnly")}</div>
                 </article>
@@ -136,8 +140,8 @@ export const NodeSetting = () => {
             </div>
 
             <SpacerLG />
-
-
+           
+            {localDeamonVisible?<LocalDeamon />:<>
             <Flex container={true} justifyContent="space-between">
                 <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                     {window.i18n('addRemoteDaemonNode')}
@@ -148,6 +152,7 @@ export const NodeSetting = () => {
 
             </Flex>
             <SpacerLG />
+
             <div className={classNames("wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box")} style={viewBox1 ? { display: 'block' } : {}}>
                 <Flex container={true} justifyContent="space-between">
                     <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -203,6 +208,7 @@ export const NodeSetting = () => {
                 </div>
             </Flex>
             <SpacerLG />
+           
             <div className={classNames("wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box")} style={viewBox2 ? { display: 'block' } : {}}>
                 <Flex container={true} justifyContent="space-between">
                     <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -259,6 +265,7 @@ export const NodeSetting = () => {
                 <SpacerLG />
                 <div className="wallet-settings-nodeSetting-horizontalLine"></div>
             </div>
+            </>}
 
         </section>
 
