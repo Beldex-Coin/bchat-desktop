@@ -181,7 +181,7 @@ export const NodeSetting = () => {
                         <BchatButton buttonColor={BchatButtonColor.Primary} text={window.i18n("test")} onClick={() => validationForDeamon()} />
                     </div>
                     <div>
-                        <BchatButton buttonColor={BchatButtonColor.Green} text={window.i18n("add")} onClick={() => addDeamonNet()} />
+                        <BchatButton buttonColor={BchatButtonColor.Green} text={window.i18n("add")} onClick={() => addDeamonNet()} disabled={Object.keys(verifyDeamon).length === 0?true:false} />
                     </div>
 
                 </div>

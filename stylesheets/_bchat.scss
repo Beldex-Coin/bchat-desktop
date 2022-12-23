@@ -654,6 +654,11 @@ label {
       .bchat-button.brand-outline {
         height: 45px;
       }
+      .bchat-button.brand-outline.primary
+      {
+        background-color: var(--color-walcancelBtn);
+        box-shadow: var(--color-bchat-shadow);
+      }
 
       .bchat-button {
         margin: $bchat-margin-xs;
@@ -778,12 +783,15 @@ label {
         border-radius: 10px;
       }
       &-walletModalContent:hover {
-        background-color: #444455;
+        // background-color: #444455;
+        background-color:var(--color-walPopuphover);
+        
         cursor: pointer;
       }
       .isSelect {
         background-color: #2879fb;
         cursor: pointer;
+        color:#fff;
       }
     }
   }
@@ -1411,7 +1419,8 @@ label {
       }
     }
     &-button {
-      background-color: #444455;
+      // background-color: #444455;
+      background-color: var(--color-WalcontentBg);
       border-radius: 50px;
       // padding: 3px 14px;
       padding: 10px 14px;
@@ -1419,7 +1428,9 @@ label {
     }
     &-squarBox {
       // display: flex;
-      background-color: #303041;
+      // background-color: #303041;
+      background-color: var(--color-WalcontentBg);
+
       width: 49.4%;
       border-radius: 10px;
       padding: 17px 30px 17px 30px;
@@ -1458,7 +1469,7 @@ label {
         font-size: 10px;
       }
       &-unlockbal-box {
-        background-color: #444455;
+        background-color:var(--color-walunlockbal);
         // height: 45px;
         height: 60px;
         display: flex;
@@ -1468,7 +1479,7 @@ label {
         margin-top: 20px;
 
         &--Text {
-          color: #eaeaea;
+          // color: #eaeaea;
           font-size: 10px;
           width: 50%;
           text-align: center;
@@ -1478,7 +1489,7 @@ label {
           height: 27px;
         }
         .unBalance {
-          color: #eaeaea;
+          // color: #eaeaea;
           font-size: 16px;
           width: 50%;
           text-align: center;
@@ -1497,7 +1508,8 @@ label {
 
       &-contentBox {
         width: 500px;
-        background-color: #2d2d3b;
+        // background-color: #2d2d3b;
+        background-color: var(--color-WalcontentBg);
         border-radius: 10px;
         &-walletImg {
           width: 25%;
@@ -1505,7 +1517,8 @@ label {
           background-repeat: no-repeat;
           background-size: 100%;
           margin: auto;
-          background-image: url('../images/wallet/Password_image.svg');
+          // background-image: url('../images/wallet/Password_image.svg');
+          background-image: var(--img-walPassword);
         }
         &-headerBox {
           display: flex;
@@ -1551,7 +1564,8 @@ label {
         width: 90%;
         // height: 38px;
         height: 50px;
-        background-color: #1c1c26;
+        // background-color: #1c1c26;
+        background-color: var(--color-walInputBg);
         border-radius: 10px;
         display: flex;
         justify-content: center;
@@ -1570,14 +1584,15 @@ label {
         width: 40px;
         height: 40px;
         position: relative;
-        // background-color: #128b17;
-        background-color: var(--button-color);
+        // background-color: #fff;
+         background-color: var(--button-color);
 
         background-size: 16px;
         border-radius: 30px;
         background-position: center;
         cursor: pointer;
-        color: var(--color-copyIcon);
+        // color: var(--color-copyIcon);
+        color:#fff;
       }
       &-copyIcon-box:hover {
         transform: scale(1.1);
@@ -1585,14 +1600,17 @@ label {
       }
     }
     &-sendForm {
-      background-color: #303041;
+      // background-color: #303041;
+      background-color: var(--color-WalcontentBg);
+
       width: 100%;
       border-radius: 10px;
       padding: 15px;
       &-inputBox {
         width: 100%;
         // height: 60px;
-        background-color: #1c1c26;
+        // background-color: #1c1c26;
+        background-color:var(--color-walInputBg);
         border-radius: 10px;
         display: flex;
         justify-content: center;
@@ -1638,7 +1656,8 @@ label {
     }
 
     &-receivedForm {
-      background-color: #303041;
+      // background-color: #303041;
+      background-color: var(--color-WalcontentBg);
       height: 58%;
       display: flex;
       width: 100%;
@@ -1647,7 +1666,7 @@ label {
         // width: 210px;
         // height: 210px;
         padding: 15px;
-        background-color: #1c1c26;
+        background-color: var(--color-walQrOutline);
         border-radius: 10px;
 
         &-qrView {
@@ -1674,7 +1693,8 @@ label {
           border: none;
           outline: none;
           width: 100%;
-          background-color: #1c1c26;
+          // background-color: #1c1c26;
+          background-color: var(--color-walInputBg);
           height: 50px;
           border-radius: 10px;
           padding-left: 20px;
@@ -1690,6 +1710,7 @@ label {
           height: 39px;
           border-radius: 6px;
           cursor: pointer;
+          color: #fff;
         }
       }
     }
@@ -1703,9 +1724,13 @@ label {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 38%;
-        background-color: #2d2d3b;
+        // width: 38%;
+        width: 521px;
+        height: 417px;
+        // background-color: #2d2d3b;
+        background-color: var(--color-WalcontentBg);
         border-radius: 10px;
+        margin: 5% 0px;
 
         &-seed {
           display: flex;
@@ -1716,7 +1741,9 @@ label {
             resize: none;
             width: 318px;
             height: 76px;
-            background-color: #353543;
+            // background-color: #353543;
+            background-color:var(--color-walInputBg);
+
             padding: 15px;
             box-shadow: 1px 2px 5px #00000074;
             border-radius: 10px;
@@ -1740,7 +1767,9 @@ label {
           input {
             border: none;
             outline: none;
-            background-color: #353543;
+            // background-color: #353543;
+            background-color:var(--color-walInputBg);
+
             width: 318px;
             height: 45px;
             box-shadow: 1px 2px 5px #00000074;
@@ -1818,7 +1847,8 @@ label {
 
     &-settings {
       &-tabBox {
-        background-color: #2d2d3b;
+        // background-color: #2d2d3b;
+        background-color: var(--color-WalcontentBg);
         padding: 20px;
         border-radius: 10px;
 
@@ -1827,6 +1857,7 @@ label {
         }
         &-subtle {
           font-family: $bchat-font-poppin-semibold;
+          font-size: 16px;
         }
         &-checkBox {
           display: block;
@@ -1839,7 +1870,8 @@ label {
 
       &-nodeSetting {
         &-contentBox {
-          background-color: #303041;
+          // background-color: #303041;
+          background-color:var(--color-WalcontentBg);
           border-radius: 10px;
           padding: 15px;
         }
@@ -1849,7 +1881,7 @@ label {
           align-items: center;
 
           &-outlineCircle {
-            border: 2px solid #fff;
+            border: 2px solid var(--color-text);
             /* padding: 2px; */
             width: 20px;
             height: 20px;
@@ -1881,7 +1913,8 @@ label {
         &-dropDownModal,
         &-sendDropDown {
           position: absolute;
-          background-color: #1c1c26;
+          // background-color: #1c1c26;
+          background-color: var(--color-walInputBg);
           width: 95%;
           top: 2px;
           padding: 19px;
@@ -1939,7 +1972,9 @@ label {
             border: none;
             outline: none;
             width: 80%;
-            background-color: #1c1c26;
+            // background-color: #1c1c26;
+            background-color:var(--color-walInputBg);
+
             height: 50px;
             border-radius: 10px;
             padding-left: 20px;
@@ -1953,12 +1988,15 @@ label {
               align-items: center;
               margin-top: 10px;
               border-radius: 5px;
+              color: #fff;
             }
             &-input {
               border: none;
               outline: none;
               width: 88%;
-              background-color: #1c1c26;
+              // background-color: #1c1c26;
+            background-color:var(--color-walInputBg);
+
               height: 50px;
               border-radius: 10px;
               padding-left: 20px;
@@ -1978,6 +2016,7 @@ label {
             .bchat-button.default.primary {
               background-color: #2879fb;
               margin-right: 30px;
+              color: white;
             }
           }
         }
@@ -2025,7 +2064,8 @@ label {
     }
 
     &-Transaction {
-      background-color: #303041;
+      // background-color: #303041;
+      background-color: var(--color-WalcontentBg);
       /* width: 49.4%; */
       border-radius: 10px;
       padding: 15px;
@@ -2038,12 +2078,15 @@ label {
         border: none;
         outline: none;
         height: 40px;
-        background-color: #1c1c26;
+        // background-color: #1c1c26;
+        background-color: var(--color-walInputBg);
         border-radius: 10px;
         margin-left: 10px;
       }
       &-filterWithIcon {
-        background-color: #1c1c26;
+        // background-color: #1c1c26;
+        background-color: var(--color-walInputBg);
+        
         width: 150px;
         height: 40px;
         border-radius: 10px;
@@ -2110,7 +2153,9 @@ label {
       }
 
       &-contentBox {
-        background-color: #1c1c26;
+        // background-color: #1c1c26;
+        background-color: var(--color-walInputBg);
+
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 5px;

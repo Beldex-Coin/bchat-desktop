@@ -124,6 +124,17 @@ const darkAudioRecord = '#3F3C4B';
 
 // Seed color
 const darkSeedColor = '#00E506';
+//wallet
+const darkWalcontentBg='#303041';
+const darkWalInputBg="#1c1c26";
+const darkWalunlockbal='#444455';
+const darkWalTransacBtn="#444455";
+const darkWalQrOutline="#1c1c26";
+const darkWalPopuphover="#1c1c26";
+const darkWalcancelBtn="#403e4b";
+
+const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
+
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -296,6 +307,19 @@ export const switchHtmlToDarkTheme = () => {
     '--message-bubbles-received-background-color',
     darkbubbleReceivedBg
   );
+  //wallet
+  document.documentElement.style.setProperty('--color-WalcontentBg', darkWalcontentBg);
+  document.documentElement.style.setProperty('--color-walInputBg', darkWalInputBg);
+  document.documentElement.style.setProperty('--color-walunlockbal', darkWalunlockbal);
+  document.documentElement.style.setProperty('--color-walTransacBtn', darkWalTransacBtn);
+  document.documentElement.style.setProperty('--color-walQrOutline', darkWalQrOutline);
+  document.documentElement.style.setProperty('--color-walPopuphover', darkWalPopuphover);
+  document.documentElement.style.setProperty('--color-walcancelBtn', darkWalcancelBtn);
+
+  document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
+
+
+
 };
 
 // LIGHT COLORS
@@ -404,6 +428,18 @@ const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF
 
 // Seed color
 const whiteSeedColor = '#128B17';
+//wallet
+const lightWalcontentBg='#E8E8E8';
+const lightWalInputBg="#F8F8F8";
+const lightWalunlockbal="#F8F8F8";
+const lightWalTransacBtn='#DEDEDE';
+const lightWalQrOutline='#DEDEDE';
+const lightWalPopuphover="#DEDEDE";
+const lightWalcancelBtn="#F8F8F8";
+
+const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
+
+
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -578,6 +614,21 @@ export const switchHtmlToLightTheme = () => {
     '--message-bubbles-received-background-color',
     whiteBubbleReceivedBg
   );
+
+  //wallet
+  document.documentElement.style.setProperty('--color-WalcontentBg',lightWalcontentBg);
+  document.documentElement.style.setProperty('--color-walInputBg',lightWalInputBg);
+  document.documentElement.style.setProperty('--color-walunlockbal',lightWalunlockbal);
+  document.documentElement.style.setProperty('--color-walTransacBtn',lightWalTransacBtn);
+  document.documentElement.style.setProperty('--color-walQrOutline',lightWalQrOutline);
+  document.documentElement.style.setProperty('--color-walPopuphover',lightWalPopuphover);
+  document.documentElement.style.setProperty('--color-walcancelBtn',lightWalcancelBtn);
+
+
+  document.documentElement.style.setProperty('--img-walPassword',lightWalPassword);
+
+
+
 };
 
 // default to light theme
@@ -682,8 +733,15 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
     --color-caret:${white};
-   
 
+    --color-WalcontentBg:${darkWalcontentBg};
+    --color-walInputBg:${darkWalInputBg};
+    --color-walunlockbal:${darkWalunlockbal};
+    --color-walTransacBtn:${darkWalTransacBtn};
+    --color-walQrOutline:${darkWalQrOutline};
+    --color-walPopuphover:${darkWalPopuphover};
+    --color-walcancelBtn:${darkWalcancelBtn};
+    
     
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};
@@ -699,7 +757,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-failedTransHistory':${darkFailedTransHistory};
     --image-walletSyncing:${darkWalletSyncing};
     --image-NoMedia:${darkNoMedia};
-    --message-bubbles-received-background-color:${darkbubbleReceivedBg}
+    --message-bubbles-received-background-color:${darkbubbleReceivedBg};
+    --img-walPassword:${darkWalPassword};
    
 
   };

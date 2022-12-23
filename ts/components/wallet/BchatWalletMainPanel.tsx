@@ -15,7 +15,7 @@ import { SendForm } from "./BchatWalletSendForm"
 import { TransactionSection } from "./BchatWalletTransactionSection"
 import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 import { daemon } from '../../wallet/daemon-rpc';
-// import { ForgotPassword } from "./BchatWalletForgotPassword"
+//  import { ForgotPassword } from "./BchatWalletForgotPassword"
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
 // import { wallet } from '../../wallet/wallet-rpc';
 // import { walletHelper } from "../../wallet/BchatWalletHelper";
@@ -60,7 +60,7 @@ export const WalletMainPanel = () => {
    //       </div>
    //   }
    if (passScreen) {
-      return <div className="wallet"><WalletPassword onClick={() => { setPassScreen(!passScreen) }} /> </div>
+       return <div className="wallet"><WalletPassword onClick={() => { setPassScreen(!passScreen) }} /> </div>
       // return <div className="wallet"><ForgotPassword onClick={()=>{setPassScreen(!passScreen)}}/> </div>
 
    }

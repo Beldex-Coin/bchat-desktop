@@ -90,9 +90,10 @@ export interface ButtonProps {
 const Button = styled.button<ButtonProps>`
   outline: none;
   border: none;
-  background-color: ${props => (props.isSelected ? 'var(--button-color)' : '#444455')};
+  background-color: ${props => (props.isSelected ? 'var(--button-color)' : 'var(--color-walTransacBtn)')};
   width: 100%;
   height: 60px;
   border-radius: 10px;
   font-size: 16px;
+  color:${props => (props.isSelected ? '#fff' : '')};
 `;
