@@ -173,6 +173,7 @@
   "save": "Save",
   "saveLogToDesktop": "Save log to desktop",
   "saved": "Saved",
+
   "tookAScreenshot": "$name$ took a screenshot",
   "savedTheFile": "Media saved by $name$",
   "linkPreviewsTitle": "Enable Link Previews",

@@ -55,7 +55,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     [props.onClose]
   );
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null); 
 
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {

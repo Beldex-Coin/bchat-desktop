@@ -19,8 +19,8 @@ import { matchesHash } from '../../util/passwordUtils';
 
 import { BchatRecoverySeed } from "./BchatRecoverySeed"
 // import {BchatSettingRecoveryKey} from "./BchatSettingRecoveryKey"
-import {OverlayMessageRequest} from "../leftpane/overlay/OverlayMessageRequest"
-import {BchatOnionPathScreen} from "./BchatOnionPathScreen"
+import { OverlayMessageRequest } from "../leftpane/overlay/OverlayMessageRequest"
+import { BchatOnionPathScreen } from "./BchatOnionPathScreen"
 import { ToastUtils } from '../../bchat/utils';
 import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
 // import { wallet } from '../../wallet/wallet-rpc'
@@ -41,11 +41,11 @@ export enum BchatSettingCategory {
   Notifications = 'notifications',
   MessageRequests = 'messageRequests',
   Blocked = 'blocked',
-  RecoverySeed="recoverySeed",
-  RecoveryKey="recoveryKey",
+  RecoverySeed = "recoverySeed",
+  RecoveryKey = "recoveryKey",
   // ViewMessageRequest="viewMessageRequest",
-  Hops="hops",
-  Wallet="wallet"
+  Hops = "hops",
+  Wallet = "wallet"
 
 }
 
@@ -93,26 +93,26 @@ export const PasswordLock = ({
           id="password-lock-input"
           defaultValue=""
           placeholder=""
-          style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
+          style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
           data-testid="password-lock-input"
         />
 
         {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
-       <div className="confirm-Button">
-        <BchatButton
-          buttonType={BchatButtonType.BrandOutline}
-          buttonColor={BchatButtonColor.Green}
-          text={window.i18n('ok')}
-          onClick={validatePasswordLock}
-        />
+        <div className="confirm-Button">
+          <BchatButton
+            buttonType={BchatButtonType.BrandOutline}
+            buttonColor={BchatButtonColor.Green}
+            text={window.i18n('ok')}
+            onClick={validatePasswordLock}
+          />
         </div>
       </div>
     </div>
   );
 };
 
- export class BchatSettingsView extends React.Component<SettingsViewProps, State> {
-  
+export class BchatSettingsView extends React.Component<SettingsViewProps, State> {
+
   public settingsViewRef: React.RefObject<HTMLDivElement>;
 
 
@@ -159,19 +159,19 @@ export const PasswordLock = ({
       return <BlockedUserSettings />;
     }
 
-    
+
 
     if (category === BchatSettingCategory.Appearance) {
       return <SettingsCategoryAppearance hasPassword={this.state.hasPassword} />;
     }
     if (category === BchatSettingCategory.RecoverySeed) {
       if (passwordLock) {
-       return <PasswordLock
+        return <PasswordLock
           pwdLockError={this.state.pwdLockError}
           validatePasswordLock={this.validatePasswordLock}
         />
       } else {
-        return <BchatRecoverySeed />
+        return <BchatRecoverySeed onPasswordUpdated={this.onPasswordUpdated} passwordLock={this.state.hasPassword} />
       }
     }
 
@@ -184,12 +184,12 @@ export const PasswordLock = ({
     }
 
     if (category === BchatSettingCategory.Hops) {
-      return <BchatOnionPathScreen/>;
-    }    
+      return <BchatOnionPathScreen />;
+    }
     if (category === BchatSettingCategory.Wallet) {
       deamonvalidation()
-      return <WalletMainPanel/>;
-    }    
+      return <WalletMainPanel />;
+    }
     if (category === BchatSettingCategory.Notifications) {
       return <BchatNotificationGroupSettings hasPassword={this.state.hasPassword} />;
     }
@@ -249,19 +249,19 @@ export const PasswordLock = ({
       category === BchatSettingCategory.Appearance
         ? 'appearanceSettingsTitle'
         : category === BchatSettingCategory.Blocked
-        ? 'blockedSettingsTitle'
-        : category === BchatSettingCategory.RecoverySeed
-        ? 'recoveryPhrase'
-        : category ===  BchatSettingCategory.MessageRequests
-        ? 'messageRequests'
-        : category === BchatSettingCategory.Hops
-        ? 'hops'
-        : category === BchatSettingCategory.Wallet
-        ? 'WalletSettingsTitle'
-        : category === BchatSettingCategory.Notifications
-        ? 'notificationsSettingsTitle'
-        : 'privacySettingsTitle'
-        
+          ? 'blockedSettingsTitle'
+          : category === BchatSettingCategory.RecoverySeed
+            ? 'recoveryPhrase'
+            : category === BchatSettingCategory.MessageRequests
+              ? 'messageRequests'
+              : category === BchatSettingCategory.Hops
+                ? 'hops'
+                : category === BchatSettingCategory.Wallet
+                  ? 'WalletSettingsTitle'
+                  : category === BchatSettingCategory.Notifications
+                    ? 'notificationsSettingsTitle'
+                    : 'privacySettingsTitle'
+
 
 
     return (
@@ -280,9 +280,9 @@ export const PasswordLock = ({
             </div>
           )} */}
 
-           <div ref={this.settingsViewRef} className="bchat-settings-list">
-              {this.renderSettingInCategory(shouldRenderPasswordLock)}
-            </div>
+          <div ref={this.settingsViewRef} className="bchat-settings-list">
+            {this.renderSettingInCategory(shouldRenderPasswordLock)}
+          </div>
           {/* <BchatInfo /> */}
         </div>
       </div>

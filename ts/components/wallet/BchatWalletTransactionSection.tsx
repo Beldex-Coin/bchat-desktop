@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 //  import { useSelector } from 'react-redux';
 import { getRecipientAddress } from '../../data/data';
 // import { wallet } from "../../wallet/wallet-rpc"
@@ -23,6 +23,9 @@ export const TransactionSection = (props: any) => {
   console.log('syncingStatus:', syncingStatus);
 
   useEffect(() => {
+    // console.log("filter ::",filter,'out');
+    
+    // document.addEventListener('mousedown', handleClick);
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
@@ -43,10 +46,16 @@ export const TransactionSection = (props: any) => {
         filterTransaction("All");
         break;
     }
+    return()=>{document.removeEventListener('mousedown', handleClick);}
     // filterTransaction(type);
   }, [transactionsHistory]);
 
-  console.log("data.length:",data.length)
+  const handleClick = (e: any) => {
+    if (!modalRef.current?.contains(e.target)) {
+    setVisible(!visible);
+       
+    }
+  };
   function closeDropDown(params: any, type: any) {
     setFilter(params);
     setEmptyScreen(params);
@@ -141,6 +150,7 @@ export const TransactionSection = (props: any) => {
     //     setData(transactionsHistory);
     // }
   }
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const RececipientAddress = (props: any) => {
     const { trasactionData } = props;
@@ -238,7 +248,7 @@ export const TransactionSection = (props: any) => {
                         expanded={true}
                     /> */}
                 {visible && (
-                  <div style={{ position: 'relative' }}>
+                  <div style={{ position: 'relative' }}  >
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(`dropDownItem `)}
@@ -391,7 +401,7 @@ export const TransactionSection = (props: any) => {
                   {filter == 'All' ? (
                     <div>
                       {window.i18n('emptyTransaction')}
-                      <h5 className="wallet-Transaction-content-subContent">
+                      <h5 className="wallet-Transaction-content-subContent" style={{marginTop: '5px'}}>
                         {window.i18n('emptyTransactionDiscription')}
                       </h5>
                     </div>
