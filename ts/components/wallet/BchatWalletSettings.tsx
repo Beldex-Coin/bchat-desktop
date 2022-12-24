@@ -92,7 +92,7 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox">
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('decimals')}</div>
-          <div
+          <div style={{ cursor: 'pointer' }}
             onClick={() =>
               dispatch(
                 walletSettingMiniModal({
@@ -101,8 +101,9 @@ export const WalletSettings = () => {
                   currency: decimalValue,
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
-                    dispatch(walletSettingMiniModal(null)),
-                      window.inboxStore?.dispatch(updateDecimalValue(e));
+                    dispatch(walletSettingMiniModal(null));
+                    window.inboxStore?.dispatch(updateDecimalValue(e));
+                    window.setSettingValue(walletSettingsKey.settingsDecimal, e);
                   },
                 })
               )
@@ -116,7 +117,7 @@ export const WalletSettings = () => {
         {/* <SpacerMD /> */}
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('displayCurrency')}</div>
-          <div
+          <div style={{ cursor: 'pointer' }}
             onClick={() =>
               dispatch(
                 walletSettingMiniModal({

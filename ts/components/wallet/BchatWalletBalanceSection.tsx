@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { ToastUtils } from '../../bchat/utils';
-import { getFiatBalance, getwalletDecimalValue } from '../../state/selectors/walletConfig';
+import { getFiatBalance, } from '../../state/selectors/walletConfig';
 import { SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
+import { walletSettingsKey } from '../../data/settings-key';
 const { clipboard } = require('electron');
 
 export const WalletBalanceSection = () => {
@@ -13,10 +14,11 @@ export const WalletBalanceSection = () => {
   const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 48) : '';
   const currency: any = localStorage.getItem('currency');
   const fiatBalance: any = Number(useSelector(getFiatBalance));
-  let decimalValue: any = useSelector(getwalletDecimalValue);
+  // let decimalValue: any = useSelector(getwalletDecimalValue);
+  let decimalValue: any= window.getSettingValue(walletSettingsKey.settingsDecimal)
   decimalValue = decimalValue.charAt(0);
   const handlePaste = () => {
-    clipboard.writeText(walletAddress, 'clipboard');
+    clipboard.writeText(walletAddress, 'clipboard'); 
     ToastUtils.pushCopiedToClipBoard();
 
   };

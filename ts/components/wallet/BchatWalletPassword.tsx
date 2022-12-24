@@ -6,12 +6,30 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
+import { walletSettingsKey } from '../../data/settings-key';
+import { updateDecimalValue } from '../../state/ducks/walletConfig';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+
+  function loadDecimal()
+  {   
+    if(!window.getSettingValue(walletSettingsKey.settingsDecimal))
+    {
+    let data:any='2 - Two (0.00)' 
+    window.setSettingValue("decimal", data)
+    dispatch(updateDecimalValue(data))
+    }
+    else
+    {
+      let data:any=window.getSettingValue(walletSettingsKey.settingsDecimal)
+      dispatch(updateDecimalValue(data))
+    }
+  }
+  loadDecimal();
    
   async function submit() {
     let profileName = UserDetails[userId].profileName;

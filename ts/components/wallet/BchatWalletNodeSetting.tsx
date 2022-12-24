@@ -18,7 +18,7 @@ export const NodeSetting = () => {
     const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon) ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon) : window.currentDaemon;
     const deamonList = window.getSettingValue(walletSettingsKey.settingsDeamonList);
 
-    const [viewBox1, setViewBox1] = useState(false);
+    const [viewBox1, setViewBox1] = useState(true);
     const [viewBox2, setViewBox2] = useState(false);
     const [ipAddress, setIpAddress] = useState('');
     const [port, setPort] = useState("")
@@ -74,7 +74,7 @@ export const NodeSetting = () => {
         setOption(status)
         setDropdown(!dropdown)
         
-        console.log("option ::", option);
+        // console.log("option ::", option);
 
     }
     function AssignCurrentDeamon(item: any) {
@@ -222,7 +222,7 @@ export const NodeSetting = () => {
                                     <div className="wallet-settings-nodeSetting-dropDownModal">
                                         {option.length > 0 && option.map((item: any, i: number) =>
                                             <div key={i} style={{ marginBottom: '5px' }} onClick={() => AssignCurrentDeamon(item)}>
-                                                <BchatIcon iconType="circle" iconSize={8} iconColor='#20D024' />
+                                                <BchatIcon iconType="circle" iconSize={8} iconColor={item.active?'#20D024':"red"} />
                                                 <span style={{ marginLeft: "10px" }}>{item.host}:{item.port}</span>
                                             </div>
                                         )}

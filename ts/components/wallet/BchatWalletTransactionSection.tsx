@@ -30,17 +30,22 @@ export const TransactionSection = (props: any) => {
   console.log("syncingStatus:", syncingStatus)
 
   useEffect(() => {
+    console.log("filter ::",filter,'out');
+
     switch (filter) {
-      case 'out':
+      
+      case 'Outgoing':
         filterTransaction("out");
+        console.log("filter ::",filter,'out');
+        
         break;
-      case 'pending':
+      case 'Pending':
         filterTransaction("pending");
         break;
-      case 'failed':
+      case 'Failed':
         filterTransaction("failed");
         break;
-      case 'in':
+      case 'Incoming':
         filterTransaction("in");
         break;
 
@@ -203,7 +208,7 @@ export const TransactionSection = (props: any) => {
           <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
         </div>
       ) : (
-        <div>
+        <div style={{height: '91%'}}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
             <div>{window.i18n('transactions')}</div>
             <Flex container={true} justifyContent="space-between" flexDirection="row">

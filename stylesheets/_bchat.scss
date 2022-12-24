@@ -1920,7 +1920,8 @@ label {
           padding: 19px;
           border-radius: 10px;
           box-shadow: 1px -1px 10px #00000074;
-          max-height: 140px;
+          // max-height: 140px;
+          max-height: 171px;
           overflow: auto;
         }
 
@@ -2030,10 +2031,14 @@ label {
     }
 
     &-syncStatus {
-      position: relative;
-      height: 30px;
-      // width: 66.5%;
-      bottom: 0;
+      // position: relative;
+      // height: 30px;
+      // // width: 66.5%;
+      // bottom: 0;
+      position: absolute;
+    width: calc( 100vw - 399px );
+    height: 30px;
+    bottom: 0;
 
       &-statusTxt {
         font-size: 12px;
@@ -2048,8 +2053,10 @@ label {
     }
     &-syncing {
       width: 100%;
-      height: 85%;
-      background-position: center;
+      // height: 85%;   
+      height: 82%;
+      // background-position: center;
+      background-size: 98% 98%;
       margin: 0 auto;
       background-image: var(--image-walletSyncing);
       background-repeat: no-repeat;
@@ -2059,7 +2066,8 @@ label {
         color: #82828d;
         font-size: 13px;
         text-align: center;
-        padding-top: 324px;
+        // padding-top: 324px;
+        padding-top: 280px;
       }
     }
 
@@ -2069,7 +2077,8 @@ label {
       /* width: 49.4%; */
       border-radius: 10px;
       padding: 15px;
-      height: 58%;
+      // height: 58%;
+      height: 61%;
       // overflow-y: auto;
       margin-bottom: 10px;
 

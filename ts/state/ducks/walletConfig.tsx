@@ -3,6 +3,7 @@
  * Anything setting under the cog wheel tab.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+// import { walletSettingsKey } from '../../data/settings-key';
 
 export interface WalletConfigState {
   walletsendAddress: any | null;
@@ -15,7 +16,8 @@ export const initialWalletConfigState: WalletConfigState = {
   walletsendAddress: '',
   fiatBalance: '',
   walletHeight: 100,
-  walletDecimalValue:'2 - Two (0.00)',
+   walletDecimalValue:'2 - Two (0.00)', 
+  // walletDecimalValue:window.getSettingValue(walletSettingsKey.settingsDecimal), 
 
   
 };
