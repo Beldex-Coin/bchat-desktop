@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 // import { ToastUtils } from '../../bchat/utils';
-import { ChangePasswordModal } from '../../state/ducks/modalDialog';
+// import { ChangePasswordModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerMD, SpacerSM } from '../basic/Text';
@@ -20,9 +20,10 @@ export const ForgotPassword = (props: any) => {
     // const [oldPassVisible,setOldPassVisible]=useState('');
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     function onClickCancelHandler() {
-        dispatch(ChangePasswordModal(null));
+        // dispatch(ChangePasswordModal(null));
+        props.cancelBtn();
     }
     const handlePaste = () => {
         // event.clipboardData.getData('text')

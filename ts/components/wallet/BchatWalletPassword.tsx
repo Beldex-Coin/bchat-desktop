@@ -8,9 +8,11 @@ import { BchatIcon } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { updateDecimalValue } from '../../state/ducks/walletConfig';
+import { ForgotPassword } from './BchatWalletForgotPassword';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
+  const [forgotPassword,setForgotPassword]=useState(false);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -42,6 +44,10 @@ export const WalletPassword = (props: any) => {
       dispatch(dashboard());
     }
   }
+  if(forgotPassword)
+  {
+    return <ForgotPassword cancelBtn={()=>setForgotPassword(false)} />
+  }
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">
@@ -58,7 +64,7 @@ export const WalletPassword = (props: any) => {
           <input type={'text'} value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
-        <div className="wallet-walletPassword-contentBox-forgotTxt">
+        <div className="wallet-walletPassword-contentBox-forgotTxt" onClick={()=>setForgotPassword(true)} style={{cursor:'pointer'}}>
           {window.i18n('forgotPassword')}
         </div>
         <SpacerMD />
