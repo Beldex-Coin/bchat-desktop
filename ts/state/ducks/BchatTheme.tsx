@@ -100,6 +100,7 @@ const darkEmptyTransHistory = `url("../images/bchat/no_tx_history_dark.svg")`;
 const darkPendingTransHistory = `url("../images/bchat/pending_tx_history_dark.svg")`;
 const darkOutgoingTransHistory = `url("../images/bchat/no_outgoing_dark.svg")`;
 const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg")`;
+const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.svg")`;
 const darkWalletSyncing = `url("../images/bchat/wallet_syncing_dark.svg")`;
 const darkChatIcons = 'white';
 const darkComposeMsgInput = '#3F3C4B';
@@ -125,16 +126,15 @@ const darkAudioRecord = '#3F3C4B';
 // Seed color
 const darkSeedColor = '#00E506';
 //wallet
-const darkWalcontentBg='#303041';
-const darkWalInputBg="#1c1c26";
-const darkWalunlockbal='#444455';
-const darkWalTransacBtn="#444455";
-const darkWalQrOutline="#1c1c26";
-const darkWalPopuphover="#1c1c26";
-const darkWalcancelBtn="#403e4b";
+const darkWalcontentBg = '#303041';
+const darkWalInputBg = '#1c1c26';
+const darkWalunlockbal = '#444455';
+const darkWalTransacBtn = '#444455';
+const darkWalQrOutline = '#1c1c26';
+const darkWalPopuphover = '#1c1c26';
+const darkWalcancelBtn = '#403e4b';
 
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
-
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -297,6 +297,7 @@ export const switchHtmlToDarkTheme = () => {
     darkPendingTransHistory
   );
   document.documentElement.style.setProperty('--image-failedTransHistory', darkFailedTransHistory);
+  document.documentElement.style.setProperty('--image-emptySearch', darkEmptyTransaction);
   document.documentElement.style.setProperty('--image-walletSyncing', darkWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', darkNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
@@ -317,9 +318,6 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-walcancelBtn', darkWalcancelBtn);
 
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
-
-
-
 };
 
 // LIGHT COLORS
@@ -404,6 +402,7 @@ const lightEmptyTransHistory = `url("../images/bchat/no_tx_history_white.svg")`;
 const whiteOutgoingTransHistory = `url("../images/bchat/no_outgoing_white.svg")`;
 const lightPendingTransHistory = `url("../images/bchat/pending_tx_history_white.svg")`;
 const lightFailedTransHistory = `url("../images/bchat/failed_tx_history_white.svg")`;
+const lightEmptyTransaction = `url("../images/bchat/no_transactions_found_white.svg")`;
 const whiteWalletSyncing = `url("../images/bchat/wallet_syncing_white.svg")`;
 const lightNoMedia = `url("../images/bchat/no_mediaWhiteTheme.svg")`;
 const lightChatHeader = '#EEEEEE';
@@ -429,17 +428,15 @@ const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF
 // Seed color
 const whiteSeedColor = '#128B17';
 //wallet
-const lightWalcontentBg='#E8E8E8';
-const lightWalInputBg="#F8F8F8";
-const lightWalunlockbal="#F8F8F8";
-const lightWalTransacBtn='#DEDEDE';
-const lightWalQrOutline='#DEDEDE';
-const lightWalPopuphover="#DEDEDE";
-const lightWalcancelBtn="#F8F8F8";
+const lightWalcontentBg = '#E8E8E8';
+const lightWalInputBg = '#F8F8F8';
+const lightWalunlockbal = '#F8F8F8';
+const lightWalTransacBtn = '#DEDEDE';
+const lightWalQrOutline = '#DEDEDE';
+const lightWalPopuphover = '#DEDEDE';
+const lightWalcancelBtn = '#F8F8F8';
 
 const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
-
-
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -604,6 +601,7 @@ export const switchHtmlToLightTheme = () => {
     lightPendingTransHistory
   );
   document.documentElement.style.setProperty('--image-failedTransHistory', lightFailedTransHistory);
+  document.documentElement.style.setProperty('--image-emptySearch', lightEmptyTransaction);
   document.documentElement.style.setProperty('--image-walletSyncing', whiteWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', lightNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
@@ -616,19 +614,15 @@ export const switchHtmlToLightTheme = () => {
   );
 
   //wallet
-  document.documentElement.style.setProperty('--color-WalcontentBg',lightWalcontentBg);
-  document.documentElement.style.setProperty('--color-walInputBg',lightWalInputBg);
-  document.documentElement.style.setProperty('--color-walunlockbal',lightWalunlockbal);
-  document.documentElement.style.setProperty('--color-walTransacBtn',lightWalTransacBtn);
-  document.documentElement.style.setProperty('--color-walQrOutline',lightWalQrOutline);
-  document.documentElement.style.setProperty('--color-walPopuphover',lightWalPopuphover);
-  document.documentElement.style.setProperty('--color-walcancelBtn',lightWalcancelBtn);
+  document.documentElement.style.setProperty('--color-WalcontentBg', lightWalcontentBg);
+  document.documentElement.style.setProperty('--color-walInputBg', lightWalInputBg);
+  document.documentElement.style.setProperty('--color-walunlockbal', lightWalunlockbal);
+  document.documentElement.style.setProperty('--color-walTransacBtn', lightWalTransacBtn);
+  document.documentElement.style.setProperty('--color-walQrOutline', lightWalQrOutline);
+  document.documentElement.style.setProperty('--color-walPopuphover', lightWalPopuphover);
+  document.documentElement.style.setProperty('--color-walcancelBtn', lightWalcancelBtn);
 
-
-  document.documentElement.style.setProperty('--img-walPassword',lightWalPassword);
-
-
-
+  document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
 };
 
 // default to light theme
@@ -755,6 +749,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-outgoingTransHistory: ${darkOutgoingTransHistory};
     --image-pendingTransHistory:${darkPendingTransHistory};
     --image-failedTransHistory':${darkFailedTransHistory};
+    --image-emptySearch:${darkEmptyTransaction};
     --image-walletSyncing:${darkWalletSyncing};
     --image-NoMedia:${darkNoMedia};
     --message-bubbles-received-background-color:${darkbubbleReceivedBg};

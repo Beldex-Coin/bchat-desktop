@@ -2124,6 +2124,14 @@ label {
         padding-top: 32px;
         padding-left: 45px;
       }
+      &-search {
+        width: 300px;
+        height: 200px;
+        background-position: center;
+        margin: 0 auto;
+        background-image: var(--image-emptySearch);
+        background-repeat: no-repeat;
+      }
       &-outgoing {
         width: 300px;
         height: 200px;

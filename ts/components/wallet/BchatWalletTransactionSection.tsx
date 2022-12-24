@@ -10,40 +10,30 @@ import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 
 export const TransactionSection = (props: any) => {
-  //  let transactions = useSelector((state: any) => state.wallet.transacations);
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
 
-  console.log('transactionsHistory1 ::', transactionsHistory);
-
-  // transactions = [];
-  // const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
-  // const transactionsHistory = transactions === undefined ? [] : transactions;
-  // console.log("transaction-history:",transactions)
-
   const [filter, setFilter] = useState(window.i18n('filterAll'));
+  const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
-  console.log("syncingStatus:", syncingStatus)
+  console.log('syncingStatus:', syncingStatus);
 
   useEffect(() => {
-    console.log("filter ::",filter,'out');
-
     switch (filter) {
-      
       case 'Outgoing':
-        filterTransaction("out");
-        console.log("filter ::",filter,'out');
-        
+        filterTransaction('out');
+        console.log('filter ::', filter, 'out');
+
         break;
       case 'Pending':
-        filterTransaction("pending");
+        filterTransaction('pending');
         break;
       case 'Failed':
-        filterTransaction("failed");
+        filterTransaction('failed');
         break;
       case 'Incoming':
         filterTransaction("in");
@@ -56,8 +46,10 @@ export const TransactionSection = (props: any) => {
     // filterTransaction(type);
   }, [transactionsHistory]);
 
+  console.log("data.length:",data.length)
   function closeDropDown(params: any, type: any) {
     setFilter(params);
+    setEmptyScreen(params);
     setVisible(!visible);
     filterTransaction(type);
   }
@@ -121,6 +113,10 @@ export const TransactionSection = (props: any) => {
   function searchTransaction(value: any) {
     setSearchText(value);
 
+    if (value.length == 0) {
+      setEmptyScreen('search');
+    }
+
     // if(isNaN(value))
     // {
     let searchData = transactionsHistory.filter(
@@ -128,6 +124,7 @@ export const TransactionSection = (props: any) => {
         String(item.amount / 1e9).includes(value.toLowerCase()) ||
         item.txid.toLowerCase().includes(value.toLowerCase())
     );
+    console.log("searchData:",searchData.length)
     setData(searchData);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];
@@ -200,7 +197,7 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  console.log("DAAAAAATAAAAAA.length:", data.length)
+  console.log('DAAAAAATAAAAAA.length:',`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`, data.length);
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (
@@ -208,11 +205,11 @@ export const TransactionSection = (props: any) => {
           <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
         </div>
       ) : (
-        <div style={{height: '91%'}}>
+        <div style={{ height: '91%' }}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
             <div>{window.i18n('transactions')}</div>
             <Flex container={true} justifyContent="space-between" flexDirection="row">
-              {data.length !== 0 ? (
+              {data.length !== 0 || searchText ? (
                 <div>
                   {window.i18n('filter')}
                   <input
@@ -388,8 +385,8 @@ export const TransactionSection = (props: any) => {
                   {selected === i && <RececipientAddress trasactionData={item} />}
                 </div>
               ))}
-            {transactionsHistory.length == 0 ? (
-              <div className={`wallet-Transaction-${filter.toLocaleLowerCase()}`}>
+            {data.length == 0 ? (
+              <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
                 <h4 className="wallet-Transaction-content">
                   {filter == 'All' ? (
                     <div>
