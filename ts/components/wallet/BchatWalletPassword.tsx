@@ -24,6 +24,7 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
+  console.log("percentage:",percentage)
   if (!progressing) {
     if ((daemonHeight != 0 && currentHeight != 0) && (daemonHeight !== currentHeight) && percentage !== 99) {
       setProgressing(true);

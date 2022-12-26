@@ -313,7 +313,7 @@ export class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
-      console.log("restoreWallet:",restoreWallet)
+      console.log('restoreWallet:', restoreWallet);
       if (restoreWallet.hasOwnProperty('error')) {
         if (restoreWallet.error.code === -1)
           restoreWallet = await this.deleteWallet(
@@ -449,7 +449,7 @@ export class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
-          console.log("geted balance ..........................")
+          console.log('geted balance ..........................');
           let data: any = await this.getTransactions();
           if (
             this.wallet_state.balance == n.result.balance &&
@@ -519,9 +519,14 @@ export class Wallet {
       ? currency.toLocaleLowerCase()
       : localStorage.getItem('currency')?.toLocaleLowerCase();
     const balance = this.wallet_state.balance;
-    const response = await insecureNodeFetch(`https://api.beldex.io/price/${fiatCurrency}`);
+    const response = await insecureNodeFetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=beldex&vs_currencies=${fiatCurrency}`
+    );
     const currencyValue: any = await response.json();
-    const FiatBalance: any = response.ok ? balance * currencyValue[fiatCurrency] : 0;
+    const FiatBalance: any =
+      response.ok && currencyValue.beldex[fiatCurrency]
+        ? balance * currencyValue.beldex[fiatCurrency]
+        : 0;
     window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
   };
 

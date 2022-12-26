@@ -21,7 +21,7 @@ export const WalletSettings = () => {
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
-  const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+  const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
 
   const currenyExt = [
     'AUD',
@@ -34,7 +34,6 @@ export const WalletSettings = () => {
     'DKK',
     'GBP',
     'HKD',
-    'HRK',
     'HUF',
     'IDR',
     'ILS',
@@ -50,13 +49,13 @@ export const WalletSettings = () => {
     'RUB',
     'SEK',
     'SGD',
+    'THB',
     'USD',
     'VEF',
-    'ZAR',
+    'ZAR'
   ];
   const decimal = ['2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
   function enbaleOrdisableSaveRecipient() {
-
     window.setSettingValue(walletSettingsKey.settingSaveRecipient, !saveRecipient);
 
     setSaveRecipient(!saveRecipient);
@@ -81,7 +80,9 @@ export const WalletSettings = () => {
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
           <div onClick={() => dispatch(nodeSetting())} style={{ cursor: 'pointer' }}>
-            <span className="wallet-settings-tabBox-disableText">{connectedDeamon.host}:{connectedDeamon.port}</span>
+            <span className="wallet-settings-tabBox-disableText">
+              {connectedDeamon.host}:{connectedDeamon.port}
+            </span>
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>
@@ -92,7 +93,8 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox">
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('decimals')}</div>
-          <div style={{ cursor: 'pointer' }}
+          <div
+            style={{ cursor: 'pointer' }}
             onClick={() =>
               dispatch(
                 walletSettingMiniModal({
@@ -117,7 +119,8 @@ export const WalletSettings = () => {
         {/* <SpacerMD /> */}
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('displayCurrency')}</div>
-          <div style={{ cursor: 'pointer' }}
+          <div
+            style={{ cursor: 'pointer' }}
             onClick={() =>
               dispatch(
                 walletSettingMiniModal({
