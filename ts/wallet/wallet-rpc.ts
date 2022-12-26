@@ -447,6 +447,7 @@ export class Wallet {
         if (n.method == 'getheight') {
           wallet.info.height = n.result.height;
         } else if (n.method == 'getbalance') {
+          console.log("geted balance ..........................")
           let data: any = await this.getTransactions();
           if (
             this.wallet_state.balance == n.result.balance &&

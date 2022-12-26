@@ -15,7 +15,7 @@ export interface WalletConfigState {
 export const initialWalletConfigState: WalletConfigState = {
   walletsendAddress: '',
   fiatBalance: '',
-  walletHeight: 100,
+  walletHeight: '',
    walletDecimalValue:'2 - Two (0.00)', 
   // walletDecimalValue:window.getSettingValue(walletSettingsKey.settingsDecimal), 
 

@@ -10,53 +10,64 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { updateDecimalValue } from '../../state/ducks/walletConfig';
 import { ForgotPassword } from './BchatWalletForgotPassword';
 import { ProgressForSync } from './BchatWalletProgressForSync';
-
+import { getHeight } from '../../state/selectors/walletConfig';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
-  const [forgotPassword,setForgotPassword]=useState(false);
-  const [progressing,setProgressing]=useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [progressing, setProgressing] = useState(false);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
-
-  function loadDecimal()
-  {   
-    if(!window.getSettingValue(walletSettingsKey.settingsDecimal))
-    {
-    let data:any='2 - Two (0.00)' 
-    window.setSettingValue("decimal", data)
-    dispatch(updateDecimalValue(data))
+  let daemonHeight = useSelector((state: any) => state.daemon.height);
+  const currentHeight: any = Number(useSelector(getHeight));
+  let pct: any =
+    currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
+  let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
+  if (!progressing) {
+    if ((daemonHeight != 0 && currentHeight != 0) && (daemonHeight !== currentHeight) && percentage !== 99) {
+      setProgressing(true);
     }
-    else
-    {
-      let data:any=window.getSettingValue(walletSettingsKey.settingsDecimal)
-      dispatch(updateDecimalValue(data))
+  }
+  if (progressing) {
+    if ((daemonHeight != 0 && currentHeight != 0) && (daemonHeight == currentHeight)) {
+      setProgressing(false);
+    }
+  }
+
+  function loadDecimal() {
+    if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
+      let data: any = '2 - Two (0.00)';
+      window.setSettingValue('decimal', data);
+      dispatch(updateDecimalValue(data));
+    } else {
+      let data: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+      dispatch(updateDecimalValue(data));
     }
   }
   loadDecimal();
-   
+
   async function submit() {
     let profileName = UserDetails[userId].profileName;
-    let openWallet: any = await wallet.openWallet(profileName, password,);
+    let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
       pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
       pushToastSuccess('successPassword', 'Success.');
       props.onClick();
-      setProgressing(true);
+      // setProgressing(true);
       dispatch(dashboard());
     }
   }
-  if(forgotPassword)
-  {
-    return <ForgotPassword cancelBtn={()=>setForgotPassword(false)} />
+  if (forgotPassword) {
+    return <ForgotPassword cancelBtn={() => setForgotPassword(false)} />;
   }
-if(progressing)
-{
-  return <ProgressForSync />
-}
-
+  if (progressing) {
+    return (
+      <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
+    );
+  }
+  
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">
@@ -73,7 +84,11 @@ if(progressing)
           <input type={'text'} value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
-        <div className="wallet-walletPassword-contentBox-forgotTxt" onClick={()=>setForgotPassword(true)} style={{cursor:'pointer'}}>
+        <div
+          className="wallet-walletPassword-contentBox-forgotTxt"
+          onClick={() => setForgotPassword(true)}
+          style={{ cursor: 'pointer' }}
+        >
           {window.i18n('forgotPassword')}
         </div>
         <SpacerMD />
