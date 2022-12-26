@@ -45,7 +45,7 @@ export const WalletBalanceSection = () => {
           <SpacerXS />
 
           <div className="flexCenter">
-            <BchatIcon iconSize={13} iconType="wallet" />
+            <BchatIcon iconSize={13} iconType="wallet" /> 
             <span className="marginLeft">Balance</span>
           </div>
           <SpacerSM />

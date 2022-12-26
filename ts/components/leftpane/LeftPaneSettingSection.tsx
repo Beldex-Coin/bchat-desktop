@@ -387,7 +387,7 @@ const LeftPaneSettingsCategoryRow = () =>
           )}
           role="link"
           onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+            dispatch(showSettingsSection(BchatSettingCategory.Wallet));    
           }}
           // style={{ marginTop: '15px' }}
         >

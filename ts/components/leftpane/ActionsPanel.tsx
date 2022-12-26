@@ -71,6 +71,8 @@ const Section = (props: { type: SectionType }) => {
 
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
+  console.log("focusedSection ::",focusedSection);
+  
 
   const handleClick = () => {
 

@@ -6,7 +6,7 @@ import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
 import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
 import { Flex } from '../basic/Flex';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
-import { SectionType, setOverlayMode } from '../../state/ducks/section';
+import { SectionType, setOverlayMode, showLeftPaneSection, showSettingsSection } from '../../state/ducks/section';
 import {
   BchatButton,
   // BchatButtonColor,
@@ -24,6 +24,7 @@ import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
+import { BchatSettingCategory } from '../settings/BchatSettings';
 // import ReactTooltip from 'react-tooltip';
 
 
@@ -83,6 +84,13 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     } else {
       switchHtmlToLightTheme();
     }
+  }
+
+  function switchToWalletSec()
+  {
+    dispatch (showLeftPaneSection(3));
+    dispatch(showSettingsSection(BchatSettingCategory.Wallet));    
+    
   }
 
   function verifyScreens() {
@@ -172,7 +180,10 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <div className='module-left-pane__header__title'>
           {label}
         </div>
-        {/* <SectionTitle></SectionTitle>           */}
+        {/* <SectionTitle></SectionTitle>           */} 
+        <div onClick={()=>switchToWalletSec()} style={{marginRight:'13px'}}>
+        <BchatIcon iconSize={20} iconType="wallet" iconColor='#16A51C' /> 
+        </div>
         <IsOnline />
         <Moon />
 
