@@ -9,10 +9,13 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { updateDecimalValue } from '../../state/ducks/walletConfig';
 import { ForgotPassword } from './BchatWalletForgotPassword';
+import { ProgressForSync } from './BchatWalletProgressForSync';
+
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword,setForgotPassword]=useState(false);
+  const [progressing,setProgressing]=useState(false);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -41,6 +44,7 @@ export const WalletPassword = (props: any) => {
     } else {
       pushToastSuccess('successPassword', 'Success.');
       props.onClick();
+      setProgressing(true);
       dispatch(dashboard());
     }
   }
@@ -48,6 +52,11 @@ export const WalletPassword = (props: any) => {
   {
     return <ForgotPassword cancelBtn={()=>setForgotPassword(false)} />
   }
+if(progressing)
+{
+  return <ProgressForSync />
+}
+
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">

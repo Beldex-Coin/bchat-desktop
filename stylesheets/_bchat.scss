@@ -654,8 +654,7 @@ label {
       .bchat-button.brand-outline {
         height: 45px;
       }
-      .bchat-button.brand-outline.primary
-      {
+      .bchat-button.brand-outline.primary {
         background-color: var(--color-walcancelBtn);
         box-shadow: var(--color-bchat-shadow);
       }
@@ -784,14 +783,14 @@ label {
       }
       &-walletModalContent:hover {
         // background-color: #444455;
-        background-color:var(--color-walPopuphover);
-        
+        background-color: var(--color-walPopuphover);
+
         cursor: pointer;
       }
       .isSelect {
         background-color: #2879fb;
         cursor: pointer;
-        color:#fff;
+        color: #fff;
       }
     }
   }
@@ -1392,23 +1391,21 @@ label {
     }
   }
 
-  &-warnUnsetpass
-  {
+  &-warnUnsetpass {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color:#0000001F;
-    &-contentbox
-    {
+    background-color: #0000001f;
+    &-contentbox {
       text-align: center;
       width: 45%;
       background-color: var(--color-WalcontentBg);
       padding: 21px 74px;
-     border-radius: 10px;
+      border-radius: 10px;
     }
-    .fontSemiBold{
+    .fontSemiBold {
       font-family: $bchat-font-poppin-semibold;
       font-size: 16px;
     }
@@ -1491,7 +1488,7 @@ label {
         font-size: 10px;
       }
       &-unlockbal-box {
-        background-color:var(--color-walunlockbal);
+        background-color: var(--color-walunlockbal);
         // height: 45px;
         height: 60px;
         display: flex;
@@ -1577,6 +1574,36 @@ label {
         }
       }
     }
+    &-progressSync {
+      &-presentage {
+        text-align: center;
+        font-family: $bchat-font-poppins-bold;
+        font-size: 20px;
+        color: #128b17;
+      }
+      &-barBg {
+        width: 100%;
+        height: 10px;
+        background-color: #dedede;
+        padding-top: 2px;
+        .bar {
+          background-color: #1bb51e;
+          width: 40%;
+          height: 6px;
+        }
+      }
+      &-reloadTxt
+      {
+      text-align: center;
+      font-family: $bchat-font-poppin-semibold;
+      font-size: 16px;
+      }
+      &-bRemaing
+      {
+        text-align: center;
+      }
+
+    }
     &-myAddress-Box {
       display: flex;
       justify-content: space-between;
@@ -1607,14 +1634,14 @@ label {
         height: 40px;
         position: relative;
         // background-color: #fff;
-         background-color: var(--button-color);
+        background-color: var(--button-color);
 
         background-size: 16px;
         border-radius: 30px;
         background-position: center;
         cursor: pointer;
         // color: var(--color-copyIcon);
-        color:#fff;
+        color: #fff;
       }
       &-copyIcon-box:hover {
         transform: scale(1.1);
@@ -1632,7 +1659,7 @@ label {
         width: 100%;
         // height: 60px;
         // background-color: #1c1c26;
-        background-color:var(--color-walInputBg);
+        background-color: var(--color-walInputBg);
         border-radius: 10px;
         display: flex;
         justify-content: center;
@@ -1764,7 +1791,7 @@ label {
             width: 318px;
             height: 76px;
             // background-color: #353543;
-            background-color:var(--color-walInputBg);
+            background-color: var(--color-walInputBg);
 
             padding: 15px;
             box-shadow: 1px 2px 5px #00000074;
@@ -1790,7 +1817,7 @@ label {
             border: none;
             outline: none;
             // background-color: #353543;
-            background-color:var(--color-walInputBg);
+            background-color: var(--color-walInputBg);
 
             width: 318px;
             height: 45px;
@@ -1893,7 +1920,7 @@ label {
       &-nodeSetting {
         &-contentBox {
           // background-color: #303041;
-          background-color:var(--color-WalcontentBg);
+          background-color: var(--color-WalcontentBg);
           border-radius: 10px;
           padding: 15px;
         }
@@ -1996,7 +2023,7 @@ label {
             outline: none;
             width: 80%;
             // background-color: #1c1c26;
-            background-color:var(--color-walInputBg);
+            background-color: var(--color-walInputBg);
 
             height: 50px;
             border-radius: 10px;
@@ -2018,7 +2045,7 @@ label {
               outline: none;
               width: 88%;
               // background-color: #1c1c26;
-            background-color:var(--color-walInputBg);
+              background-color: var(--color-walInputBg);
 
               height: 50px;
               border-radius: 10px;
@@ -2058,9 +2085,9 @@ label {
       // // width: 66.5%;
       // bottom: 0;
       position: absolute;
-    width: calc( 100vw - 399px );
-    height: 30px;
-    bottom: 0;
+      width: calc(100vw - 399px);
+      height: 30px;
+      bottom: 0;
 
       &-statusTxt {
         font-size: 12px;
@@ -2075,7 +2102,7 @@ label {
     }
     &-syncing {
       width: 100%;
-      // height: 85%;   
+      // height: 85%;
       height: 82%;
       // background-position: center;
       background-size: 98% 98%;
@@ -2117,7 +2144,7 @@ label {
       &-filterWithIcon {
         // background-color: #1c1c26;
         background-color: var(--color-walInputBg);
-        
+
         width: 150px;
         height: 40px;
         border-radius: 10px;
@@ -2185,10 +2212,9 @@ label {
       &-content {
         font-family: 'poppin-medium';
         color: #82828d;
-         padding-top: 146px;
+        padding-top: 146px;
         font-size: 16px;
         // padding-top: 112px;
-       
       }
       &-subContent {
         font-family: 'poppin-regular';
