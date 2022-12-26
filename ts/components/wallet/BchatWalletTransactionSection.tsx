@@ -16,6 +16,7 @@ export const TransactionSection = (props: any) => {
   const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
+  const [searchData,setSearchData]=useState([])
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -31,20 +32,29 @@ export const TransactionSection = (props: any) => {
       case 'Outgoing':
         filterTransaction('out');
         console.log('filter ::', filter, 'out');
+        searchTransaction(searchText)
 
         break;
       case 'Pending':
         filterTransaction('pending');
+        searchTransaction(searchText)
+        
         break;
       case 'Failed':
         filterTransaction('failed');
+        searchTransaction(searchText)
+
         break;
       case 'Incoming':
         filterTransaction('in');
+        searchTransaction(searchText)
+
         break;
 
       default:
         filterTransaction('All');
+        searchTransaction(searchText)
+
         break;
     }
     return () => {
@@ -67,11 +77,14 @@ export const TransactionSection = (props: any) => {
 
   function filterTransaction(type: string) {
     if (type === window.i18n('filterAll')) {
+      setSearchData(transactionsHistory)
       setData(transactionsHistory);
       return;
     }
     let filterData = transactionsHistory.filter((data: any) => data.type === type);
     setData(filterData);
+    setSearchData(filterData)
+
   }
   async function showdata(item: any, i: any) {
     // console.log("item.type ::",item.type)
@@ -130,13 +143,13 @@ export const TransactionSection = (props: any) => {
 
     // if(isNaN(value))
     // {
-    let searchData = transactionsHistory.filter(
+    let data = searchData.filter(
       (item: any) =>
         String(item.amount / 1e9).includes(value.toLowerCase()) ||
         item.txid.toLowerCase().includes(value.toLowerCase())
     );
     console.log('searchData:', searchData.length);
-    setData(searchData);
+    setData(data);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];
     //    return !!search_item.find(f => f.toLowerCase().includes(value.toLowerCase()));
@@ -384,7 +397,7 @@ export const TransactionSection = (props: any) => {
                           {Number((item.amount / 1e9).toFixed(4))} BDX
                         </div>
                         <div className="wallet-Transaction-contentBox-balanceBox-address">
-                          {item.address}
+                          {item.txid}
                         </div>
                       </div>
                     </Flex>

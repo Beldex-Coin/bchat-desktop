@@ -334,6 +334,8 @@ export class Wallet {
       }
       return restoreWallet;
     } catch (error) {
+      console.log("errr:",error)
+
       throw new HTTPError('exception during wallet-rpc:', error);
     }
   };

@@ -252,7 +252,7 @@ window.clipboard = clipboard;
 
 window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
-    ? ['https//38.242.196.72:19095', 'http://154.26.139.105:19095']
+    ? ['http://38.242.196.72:19095', 'http://154.26.139.105:19095']
     : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
 
 window.getDaemonNodeRandomlyPick = () => {

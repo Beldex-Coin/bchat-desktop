@@ -176,21 +176,30 @@ async function registrationDone(ourPubkey: string, displayName: string) {
   window?.log?.info('registration done');
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
+  window?.log?.info('registration done 1 ::',ourPubkey);
+
 
   // Ensure that we always have a conversation for ourself
   const conversation = await getConversationController().getOrCreateAndWait(
     ourPubkey,
     ConversationTypeEnum.PRIVATE
   );
+  window?.log?.info('registration done 2 ::',displayName);
+
   await conversation.setBchatProfile({ displayName });
+  window?.log?.info('registration done 3 ::',ourPubkey);
+
   await conversation.setIsApproved(true);
   await conversation.setDidApproveMe(true);
+  window?.log?.info('registration done 4 ::',ourPubkey);
 
   await conversation.commit();
   const user = {
     ourNumber: getOurPubKeyStrFromCache(),
     ourPrimary: ourPubkey,
   };
+  window?.log?.info('registration done 4 ::',ourPubkey);
+
   window.inboxStore?.dispatch(userActions.userChanged(user));
   await Registration.markDone();
   window?.log?.info('dispatching registration event');
