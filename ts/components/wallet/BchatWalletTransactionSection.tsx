@@ -24,8 +24,9 @@ export const TransactionSection = (props: any) => {
 
   useEffect(() => {
     // console.log("filter ::",filter,'out');
-    
+
     // document.addEventListener('mousedown', handleClick);
+    console.log('filter:', filter);
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
@@ -39,21 +40,22 @@ export const TransactionSection = (props: any) => {
         filterTransaction('failed');
         break;
       case 'Incoming':
-        filterTransaction("in");
+        filterTransaction('in');
         break;
 
       default:
-        filterTransaction("All");
+        filterTransaction('All');
         break;
     }
-    return()=>{document.removeEventListener('mousedown', handleClick);}
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
     // filterTransaction(type);
   }, [transactionsHistory]);
 
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
-    setVisible(!visible);
-       
+      setVisible(!visible);
     }
   };
   function closeDropDown(params: any, type: any) {
@@ -122,7 +124,7 @@ export const TransactionSection = (props: any) => {
   function searchTransaction(value: any) {
     setSearchText(value);
 
-    if (value.length == 0) {
+    if (value.length !== 0) {
       setEmptyScreen('search');
     }
 
@@ -133,7 +135,7 @@ export const TransactionSection = (props: any) => {
         String(item.amount / 1e9).includes(value.toLowerCase()) ||
         item.txid.toLowerCase().includes(value.toLowerCase())
     );
-    console.log("searchData:",searchData.length)
+    console.log('searchData:', searchData.length);
     setData(searchData);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];
@@ -207,7 +209,11 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  console.log('DAAAAAATAAAAAA.length:',`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`, data.length);
+  console.log(
+    'DAAAAAATAAAAAA.length:',
+    `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
+    data.length
+  );
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (
@@ -248,7 +254,7 @@ export const TransactionSection = (props: any) => {
                         expanded={true}
                     /> */}
                 {visible && (
-                  <div style={{ position: 'relative' }}  >
+                  <div style={{ position: 'relative' }}>
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(`dropDownItem `)}
@@ -398,16 +404,21 @@ export const TransactionSection = (props: any) => {
             {data.length == 0 ? (
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
                 <h4 className="wallet-Transaction-content">
-                  {filter == 'All' ? (
+                  {emptyScreen == 'All' ? (
                     <div>
                       {window.i18n('emptyTransaction')}
-                      <h5 className="wallet-Transaction-content-subContent" style={{marginTop: '5px'}}>
+                      <h5
+                        className="wallet-Transaction-content-subContent"
+                        style={{ marginTop: '5px' }}
+                      >
                         {window.i18n('emptyTransactionDiscription')}
                       </h5>
                     </div>
-                  ) : filter == 'Outgoing' ? (
+                  ) : emptyScreen == 'search' ? (
+                    window.i18n('searchEmptyTransaction')
+                  ) : emptyScreen == 'Outgoing' ? (
                     window.i18n('noOutgoingTransaction')
-                  ) : filter == 'Pending' ? (
+                  ) : emptyScreen == 'Pending' ? (
                     window.i18n('noPendingTransaction')
                   ) : (
                     window.i18n('noFailedTransaction')

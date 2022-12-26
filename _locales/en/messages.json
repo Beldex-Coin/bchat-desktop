@@ -546,5 +546,6 @@
   "noPendingTransaction": "There are No Pending Transactions.",
   "noOutgoingTransaction": "There are No Outgoing Transactions.",
   "noFailedTransaction": "There are No Failed Transactions.",
-  "walletSyncingDiscription": "Your wallet is currently syncing"
+  "walletSyncingDiscription": "Your wallet is currently syncing",
+  "searchEmptyTransaction":"No transactions found."
 }

@@ -544,4 +544,5 @@ export type LocalizerKeys =
   | 'noFailedTransaction'
   | 'noOutgoingTransaction'
   | 'walletSyncingDiscription'
-  | 'seedFieldEmpty';
+  | 'seedFieldEmpty'
+  | 'searchEmptyTransaction';
