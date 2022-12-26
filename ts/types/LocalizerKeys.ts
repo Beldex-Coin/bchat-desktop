@@ -28,7 +28,7 @@ export type LocalizerKeys =
   | 'remoteDaemonOnly'
   | 'localDaemonOnly'
   | 'nCurrentRPCTxt'
-  |'enterSeed'
+  | 'enterSeed'
   | 'enterWalletPassword'
   | 'usdCurrency'
   | 'audCurrency'
@@ -543,4 +543,5 @@ export type LocalizerKeys =
   | 'noPendingTransaction'
   | 'noFailedTransaction'
   | 'noOutgoingTransaction'
-  | 'walletSyncingDiscription';
+  | 'walletSyncingDiscription'
+  | 'seedFieldEmpty';

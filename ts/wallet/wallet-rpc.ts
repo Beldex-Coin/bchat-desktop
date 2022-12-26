@@ -282,7 +282,8 @@ export class Wallet {
     displayName: string,
     password: string,
     userRecoveryPhrase: string,
-    refreshDetails: any
+    refreshDetails: any,
+    type?: string
   ) => {
     let restoreWallet;
     let restore_height;
@@ -303,14 +304,16 @@ export class Wallet {
           restore_height = 0;
         }
       }
-
+      let walletDir =
+        os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+      fs.emptyDirSync(walletDir);
       restoreWallet = await this.sendRPC('restore_deterministic_wallet', {
         restore_height: restore_height,
         filename: displayName,
         password: password,
         seed: userRecoveryPhrase,
       });
-      console.log('restoreWallet:', restoreWallet);
+      console.log("restoreWallet:",restoreWallet)
       if (restoreWallet.hasOwnProperty('error')) {
         if (restoreWallet.error.code === -1)
           restoreWallet = await this.deleteWallet(
@@ -321,11 +324,13 @@ export class Wallet {
           );
       }
       if (restoreWallet.hasOwnProperty('result')) {
-        kill(64371)
-          .then()
-          .catch((err: any) => {
-            throw new HTTPError('beldex_rpc_port', err);
-          });
+        if (!type) {
+          kill(64371)
+            .then()
+            .catch((err: any) => {
+              throw new HTTPError('beldex_rpc_port', err);
+            });
+        }
       }
       return restoreWallet;
     } catch (error) {
