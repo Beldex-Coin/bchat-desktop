@@ -15,8 +15,8 @@ export const ChangePassword = () => {
   const [confirmPassword, setConfirmNewPassword] = useState('');
 
   // const [oldPassVisible,setOldPassVisible]=useState('');
-  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(true);
+  const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
   const dispatch = useDispatch();
   function onClickCancelHandler() {
     dispatch(ChangePasswordModal(null));
@@ -81,7 +81,7 @@ export const ChangePassword = () => {
               }}
               placeholder={window.i18n('enterPassword')}
               // className="bchat-dialog-newPassInput"
-              type={!newPasswordVisible?"password":"text"}
+              type={newPasswordVisible?"password":"text"}
             />
             </span>
             <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)}>

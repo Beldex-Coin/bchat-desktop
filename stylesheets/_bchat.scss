@@ -1552,12 +1552,13 @@ label {
 
         &-inputBox {
           margin: 0 auto;
-          width: 53%;
+          width: 73%;
           input {
             outline: none;
             border: none;
             width: 100%;
-            border-bottom: 3px solid #444455;
+            border-bottom: 1px solid #444455;
+            text-align: center;
           }
         }
         &-forgotTxt {
@@ -1584,19 +1585,20 @@ label {
       &-barBg {
         width: 100%;
         height: 10px;
-        background-color: #dedede;
+        background-color: var(--color-walSyncbar);
         padding-top: 2px;
         .bar {
           background-color: #1bb51e;
           width: 40%;
-          height: 6px;
+          height: 4px;
+          margin-top: 1px;
         }
       }
       &-reloadTxt
       {
       text-align: center;
       font-family: $bchat-font-poppin-semibold;
-      font-size: 16px;
+      font-size: 14px;
       }
       &-bRemaing
       {

@@ -11,7 +11,7 @@ const { clipboard } = require('electron');
 export const WalletBalanceSection = () => {
   const walletDetails = useSelector((state: any) => state.wallet);
   const walletAddress: any = localStorage.getItem('userAddress');
-  const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 48) : '';
+  const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 45) : '';
   const currency: any = localStorage.getItem('currency');
   const fiatBalance: any = Number(useSelector(getFiatBalance));
   // let decimalValue: any = useSelector(getwalletDecimalValue);

@@ -16,13 +16,12 @@ export const TransactionSection = (props: any) => {
   const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
-  const [searchData,setSearchData]=useState([])
+  const [searchData, setSearchData] = useState([]);
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
-  console.log('syncingStatus:', syncingStatus);
-
+  console.log('data:', data.length, filter);
   useEffect(() => {
     // console.log("filter ::",filter,'out');
 
@@ -32,28 +31,28 @@ export const TransactionSection = (props: any) => {
       case 'Outgoing':
         filterTransaction('out');
         console.log('filter ::', filter, 'out');
-        searchTransaction(searchText)
+        searchTransaction(searchText);
 
         break;
       case 'Pending':
         filterTransaction('pending');
-        searchTransaction(searchText)
-        
+        searchTransaction(searchText);
+
         break;
       case 'Failed':
         filterTransaction('failed');
-        searchTransaction(searchText)
+        searchTransaction(searchText);
 
         break;
       case 'Incoming':
         filterTransaction('in');
-        searchTransaction(searchText)
+        searchTransaction(searchText);
 
         break;
 
       default:
         filterTransaction('All');
-        searchTransaction(searchText)
+        searchTransaction(searchText);
 
         break;
     }
@@ -77,14 +76,13 @@ export const TransactionSection = (props: any) => {
 
   function filterTransaction(type: string) {
     if (type === window.i18n('filterAll')) {
-      setSearchData(transactionsHistory)
+      setSearchData(transactionsHistory);
       setData(transactionsHistory);
       return;
     }
     let filterData = transactionsHistory.filter((data: any) => data.type === type);
     setData(filterData);
-    setSearchData(filterData)
-
+    setSearchData(filterData);
   }
   async function showdata(item: any, i: any) {
     // console.log("item.type ::",item.type)
@@ -251,132 +249,134 @@ export const TransactionSection = (props: any) => {
               ) : (
                 ''
               )}
-
               {/* {data.length == 0 && filter == 'All' ? ( */}
               {/* '' */}
               {/* ) : ( */}
-              <div className="wallet-Transaction-filterWithIcon">
-                {/* <input value={window.i18n('filterAll')} /> */}
-                <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
-                <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
-                  <BchatIcon iconType="filter" iconSize={'tiny'} />
-                </span>
-                {/* <BchatDropdown
+              {data.length == 0 && filter == 'All' ? (
+                ''
+              ) : (
+                <div className="wallet-Transaction-filterWithIcon">
+                  {/* <input value={window.i18n('filterAll')} /> */}
+                  <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
+                  <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
+                    <BchatIcon iconType="filter" iconSize={'tiny'} />
+                  </span>
+                  {/* <BchatDropdown
                         label={window.i18n('disappearingMessages')}
                         options={option}
                         expanded={true}
                     /> */}
-                {visible && (
-                  <div style={{ position: 'relative' }}>
-                    <div className="wallet-settings-nodeSetting-sendDropDown">
-                      <div
-                        className={classNames(`dropDownItem `)}
-                        onClick={() => closeDropDown(window.i18n('filterAll'), 'All')}
-                      >
-                        {filter === window.i18n('filterAll') ? (
-                          <span className="dropDownItem-blockAndMargin">
-                            <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
-                            />
-                          </span>
-                        ) : (
-                          <span className="dropDownItem-checkedCircle"></span>
-                        )}
+                  {visible && (
+                    <div style={{ position: 'relative' }}>
+                      <div className="wallet-settings-nodeSetting-sendDropDown">
+                        <div
+                          className={classNames(`dropDownItem `)}
+                          onClick={() => closeDropDown(window.i18n('filterAll'), 'All')}
+                        >
+                          {filter === window.i18n('filterAll') ? (
+                            <span className="dropDownItem-blockAndMargin">
+                              <BchatIcon
+                                iconType="tickCircle"
+                                iconColor="#FFF"
+                                iconSize={13}
+                                iconPadding={'3px'}
+                                backgroundColor={'#159B24'}
+                                borderRadius={'10px'}
+                              />
+                            </span>
+                          ) : (
+                            <span className="dropDownItem-checkedCircle"></span>
+                          )}
 
-                        {window.i18n('filterAll')}
-                      </div>
-                      <div
-                        className={classNames(`dropDownItem `)}
-                        onClick={() => closeDropDown(window.i18n('filterIncoming'), 'in')}
-                      >
-                        {filter === window.i18n('filterIncoming') ? (
-                          <span className="dropDownItem-blockAndMargin">
-                            <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
-                            />
-                          </span>
-                        ) : (
-                          <span className="dropDownItem-checkedCircle"></span>
-                        )}
+                          {window.i18n('filterAll')}
+                        </div>
+                        <div
+                          className={classNames(`dropDownItem `)}
+                          onClick={() => closeDropDown(window.i18n('filterIncoming'), 'in')}
+                        >
+                          {filter === window.i18n('filterIncoming') ? (
+                            <span className="dropDownItem-blockAndMargin">
+                              <BchatIcon
+                                iconType="tickCircle"
+                                iconColor="#FFF"
+                                iconSize={13}
+                                iconPadding={'3px'}
+                                backgroundColor={'#159B24'}
+                                borderRadius={'10px'}
+                              />
+                            </span>
+                          ) : (
+                            <span className="dropDownItem-checkedCircle"></span>
+                          )}
 
-                        {window.i18n('filterIncoming')}
-                      </div>
-                      <div
-                        className={classNames(`dropDownItem `)}
-                        onClick={() => closeDropDown(window.i18n('filterOutgoing'), 'out')}
-                      >
-                        {filter === window.i18n('filterOutgoing') ? (
-                          <span className="dropDownItem-blockAndMargin">
-                            <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
-                            />
-                          </span>
-                        ) : (
-                          <span className="dropDownItem-checkedCircle"></span>
-                        )}
+                          {window.i18n('filterIncoming')}
+                        </div>
+                        <div
+                          className={classNames(`dropDownItem `)}
+                          onClick={() => closeDropDown(window.i18n('filterOutgoing'), 'out')}
+                        >
+                          {filter === window.i18n('filterOutgoing') ? (
+                            <span className="dropDownItem-blockAndMargin">
+                              <BchatIcon
+                                iconType="tickCircle"
+                                iconColor="#FFF"
+                                iconSize={13}
+                                iconPadding={'3px'}
+                                backgroundColor={'#159B24'}
+                                borderRadius={'10px'}
+                              />
+                            </span>
+                          ) : (
+                            <span className="dropDownItem-checkedCircle"></span>
+                          )}
 
-                        {window.i18n('filterOutgoing')}
-                      </div>
-                      <div
-                        className={classNames(`dropDownItem `)}
-                        onClick={() => closeDropDown(window.i18n('filterPending'), 'pending')}
-                      >
-                        {filter === window.i18n('filterPending') ? (
-                          <span className="dropDownItem-blockAndMargin">
-                            <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
-                            />
-                          </span>
-                        ) : (
-                          <span className="dropDownItem-checkedCircle"></span>
-                        )}
-                        {window.i18n('filterPending')}
-                      </div>
-                      <div
-                        className={classNames(`dropDownItem `)}
-                        onClick={() => closeDropDown(window.i18n('failed'), 'failed')}
-                      >
-                        {filter === window.i18n('failed') ? (
-                          <span className="dropDownItem-blockAndMargin">
-                            <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
-                            />
-                          </span>
-                        ) : (
-                          <span className="dropDownItem-checkedCircle"></span>
-                        )}
-                        {window.i18n('failed')}
+                          {window.i18n('filterOutgoing')}
+                        </div>
+                        <div
+                          className={classNames(`dropDownItem `)}
+                          onClick={() => closeDropDown(window.i18n('filterPending'), 'pending')}
+                        >
+                          {filter === window.i18n('filterPending') ? (
+                            <span className="dropDownItem-blockAndMargin">
+                              <BchatIcon
+                                iconType="tickCircle"
+                                iconColor="#FFF"
+                                iconSize={13}
+                                iconPadding={'3px'}
+                                backgroundColor={'#159B24'}
+                                borderRadius={'10px'}
+                              />
+                            </span>
+                          ) : (
+                            <span className="dropDownItem-checkedCircle"></span>
+                          )}
+                          {window.i18n('filterPending')}
+                        </div>
+                        <div
+                          className={classNames(`dropDownItem `)}
+                          onClick={() => closeDropDown(window.i18n('failed'), 'failed')}
+                        >
+                          {filter === window.i18n('failed') ? (
+                            <span className="dropDownItem-blockAndMargin">
+                              <BchatIcon
+                                iconType="tickCircle"
+                                iconColor="#FFF"
+                                iconSize={13}
+                                iconPadding={'3px'}
+                                backgroundColor={'#159B24'}
+                                borderRadius={'10px'}
+                              />
+                            </span>
+                          ) : (
+                            <span className="dropDownItem-checkedCircle"></span>
+                          )}
+                          {window.i18n('failed')}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              {/* )} */}
+                  )}
+                </div>
+              )}
             </Flex>
           </Flex>
 

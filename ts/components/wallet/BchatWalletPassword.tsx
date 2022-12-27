@@ -24,18 +24,25 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
-  console.log("percentage:",percentage)
+  console.log('percentage:', percentage);
   if (!progressing) {
-    if ((daemonHeight != 0 && currentHeight != 0) && (daemonHeight !== currentHeight) && percentage !== 99) {
+    if (
+      daemonHeight != 0 &&
+      currentHeight != 0 &&
+      daemonHeight !== currentHeight 
+      &&
+      percentage !== 99
+    ) {
+      console.log("nottt")
       setProgressing(true);
     }
   }
   if (progressing) {
-    if ((daemonHeight != 0 && currentHeight != 0) && (daemonHeight == currentHeight)) {
+    if (daemonHeight != 0 && currentHeight != 0 && daemonHeight == currentHeight) {
       setProgressing(false);
     }
   }
-
+  console.log("setProgressing:",progressing);
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -61,14 +68,19 @@ export const WalletPassword = (props: any) => {
     }
   }
   if (forgotPassword) {
-    return <ForgotPassword cancelBtn={() => setForgotPassword(false)} />;
+    return (
+      <ForgotPassword
+        cancelBtn={() => setForgotPassword(false)}
+        showSyncScreen={() => ProgressForSync(true)}
+      />
+    );
   }
   if (progressing) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
   }
-  
+
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">

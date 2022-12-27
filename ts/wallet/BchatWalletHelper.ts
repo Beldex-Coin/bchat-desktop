@@ -22,7 +22,7 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       timeout: 0,
     };
     let requestData: any = await request(options);
-    console.log('requestData::', requestData);
+    // console.log('requestData::', requestData);
     if (requestData.result) {
       // requestData.result.status==="ok"
       return requestData.result;

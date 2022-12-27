@@ -6,8 +6,11 @@ import { BchatIcon } from '../icon';
 import { clipboard } from 'electron';
 import { ToastUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
-import { useSelector } from 'react-redux';
+import { daemon } from '../../wallet/daemon-rpc';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
+import { updateDaemon } from '../../state/ducks/daemon';
 // import { mn_decode } from '../../bchat/crypto/mnemonic';
 
 export const ForgotPassword = (props: any) => {
@@ -15,12 +18,13 @@ export const ForgotPassword = (props: any) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
 
-  const [newPasswordVisible, setNewPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
+  const [newPasswordVisible, setNewPasswordVisible] = useState(true);
+  const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   const recoveryPhrase = getCurrentRecoveryPhrase();
   console.log('recoveryPhrase:', recoveryPhrase);
+  const dispatch = useDispatch();
   function onClickCancelHandler() {
     props.cancelBtn();
   }
@@ -98,9 +102,16 @@ export const ForgotPassword = (props: any) => {
       refreshDetails,
       'forgotPassword'
     );
+    daemon.sendRPC('get_info').then(data => {
+      if (!data.hasOwnProperty('error')) {
+        console.log("success")
+        dispatch(updateDaemon({ height: data.result.height }));
+      }
+    });
     if (changePassword.hasOwnProperty('error')) {
       return ToastUtils.pushToastError('changePasswordError', changePassword.error.message);
     }
+    props.showSyncScreen();
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();
   };
@@ -108,6 +119,7 @@ export const ForgotPassword = (props: any) => {
     <div className="wallet-forgotPassword">
       <div className="wallet-forgotPassword-content-Box">
         <div>
+          <h3 style={{ textAlign: 'center' }}>Forgot Password</h3>
           <SpacerMD />
           <div className="wallet-forgotPassword-content-Box-seed">
             <textarea
@@ -138,7 +150,7 @@ export const ForgotPassword = (props: any) => {
                 }}
                 placeholder={window.i18n('enterPassword')}
                 //   className="bchat-dialog-newPassInput"
-                type={!newPasswordVisible ? 'password' : 'text'}
+                type={newPasswordVisible ? 'password' : 'text'}
               />
             </span>
 
@@ -189,3 +201,4 @@ export const ForgotPassword = (props: any) => {
     </div>
   );
 };
+
