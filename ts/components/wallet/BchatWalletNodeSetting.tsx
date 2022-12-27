@@ -242,6 +242,7 @@ export const NodeSetting = () => {
                     TEST RESULT :
                   </span>
                   <span>{testNotify}</span>
+                  <BchatIcon iconType={testNotify === 'Connection Error' ?'warning':"tickCircle"} iconSize={8} iconColor={testNotify === 'Connection Error' ?"red":"green"} iconPadding={'0 0 0 3px'} />
                 </div>
               )}
 

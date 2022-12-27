@@ -5,6 +5,7 @@ import request from 'request-promise';
 // import { walletSettingsKey } from '../data/settings-key';
 import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
+// import { updateDecimalValue } from '../state/ducks/walletConfig';
 
 export async function workingStatusForDeamon(currentdeamon: any) {
   console.log('currentdeamon data::', currentdeamon);
@@ -77,6 +78,22 @@ export async function deamonvalidation() {
     //   })
   }
 }
+
+export function loadRecipient() {
+  if (!window.getSettingValue('save-recipient')) {
+    window.setSettingValue("save-recipient", true);
+    // window.inboxStore?.dispatch(updateDecimalValue(data));
+   
+  } else {
+    let data: any = window.getSettingValue('save-recipient');
+   window.setSettingValue("save-recipient", data);
+
+    // window.inboxStore?.dispatch(updateDecimalValue(data));
+  }
+  
+
+}
+
 
 // class Helper  {
 //   data_dir: null;

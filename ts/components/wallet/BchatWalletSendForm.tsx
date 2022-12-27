@@ -27,6 +27,12 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
+  function clearStateValue()
+  {
+    props.setAmount(0);
+    props.setPriority(window.i18n('flash'));
+    setAddress('');
+  }
 
   async function send() {
     const isSweepAll =
@@ -61,10 +67,10 @@ export const SendForm = (props: any) => {
         
         await saveRecipientAddress(TransactionHistory);
       }
-      props.setAmount();
-      props.setPriority(window.i18n('flash'));
-      setAddress('');
+      clearStateValue()
+     
     } else {
+      clearStateValue()
       dispatch(updateTransactionInitModal(null))
       ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;
