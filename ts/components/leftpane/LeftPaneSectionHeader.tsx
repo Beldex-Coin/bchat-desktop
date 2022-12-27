@@ -181,7 +181,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           {label}
         </div>
         {/* <SectionTitle></SectionTitle>           */} 
-        <div onClick={()=>switchToWalletSec()} style={{marginRight:'13px'}}>
+        <div onClick={()=>switchToWalletSec()} style={{marginRight:'13px',cursor:'pointer'}}>
         <BchatIcon iconSize={20} iconType="wallet" iconColor='#16A51C' /> 
         </div>
         <IsOnline />

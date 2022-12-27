@@ -11,6 +11,7 @@ import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from './BchatSettings';
 import { showSettingsSection } from '../../state/ducks/section';
 import { displayPasswordModal } from './section/CategoryPrivacy';
+import { SpacerMD } from '../basic/Text';
 
 export const BchatRecoverySeed = (props: any) => {
   //  const [verify, setVerify] = useState(false)
@@ -23,10 +24,13 @@ export const BchatRecoverySeed = (props: any) => {
   return <div className='bchat-settings-warnUnsetpass'>
     <div className='bchat-settings-warnUnsetpass-contentbox'>
       <BchatIcon iconType="info" iconSize={60} iconColor="blue" />
+      <SpacerMD />
+
       <div className='fontSemiBold'>{window.i18n('setPassword')}</div>
+      <SpacerMD />
       <div>Set a Password before accessing the Recovery Phrase. You can set your password from </div>
       <div className='fontSemiBold'>Settings -&gt; Privacy -&gt; Set Account Password.</div>
-      <div style={{ padding: '15px 74px 0' }}>
+      <div style={{ padding: '15px 94px 0' }}>
         <BchatButton
           text={"ok"}
           onClick={() => {

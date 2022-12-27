@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastUtils } from '../../bchat/utils';
 import { getFiatBalance, } from '../../state/selectors/walletConfig';
@@ -14,6 +14,7 @@ export const WalletBalanceSection = () => {
   const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 45) : '';
   const currency: any = localStorage.getItem('currency');
   const fiatBalance: any = Number(useSelector(getFiatBalance));
+  const [amountVisible,setAmountVisible]=useState(false)
   // let decimalValue: any = useSelector(getwalletDecimalValue);
   let decimalValue: any= window.getSettingValue(walletSettingsKey.settingsDecimal)
   decimalValue = decimalValue.charAt(0);
@@ -22,6 +23,28 @@ export const WalletBalanceSection = () => {
     ToastUtils.pushCopiedToClipBoard();
 
   };
+
+  function disableBalac(values:string | Number)
+  {
+    if(amountVisible)
+    {
+      return values
+    }
+    let txt:any=String(values);
+    let sliptStr=txt.split('');
+    let dataArray=""
+    console.log("sliptStr",sliptStr,sliptStr.length);
+    sliptStr.length>0 && sliptStr.map((item:any)=>{
+      if(item === ".")
+      {
+        dataArray= dataArray + ".";
+        return
+      }
+        dataArray=dataArray + "*";
+    })
+  return dataArray;
+
+  }
 
   // useEffect(() => {
 
@@ -50,12 +73,14 @@ export const WalletBalanceSection = () => {
           </div>
           <SpacerSM />
           <div className="wallet-left-balance-Sec-balanceTxt">
-            {(walletDetails.balance / 1e9).toFixed(decimalValue)}{' '}
-            <span className="marginRight">BDX</span>
-            <BchatIcon iconSize="medium" iconType="eye" />
+            {disableBalac((walletDetails.balance / 1e9).toFixed(decimalValue))}{' '}
+            <span className="marginRight" style={{color: '#128b17'}}>BDX</span>
+            <span onClick={()=>setAmountVisible(!amountVisible)}>
+            <BchatIcon iconSize="medium" iconType={!amountVisible?"eye":"eye_closed"} />
+            </span>
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">
-            {(fiatBalance / 1e9).toFixed(decimalValue)} <span>{currency}</span>
+            {disableBalac((fiatBalance / 1e9).toFixed(decimalValue))} <span>{currency}</span>
           </div>
         </div>
         <div className="wallet-right-Button-Sec">
@@ -70,7 +95,7 @@ export const WalletBalanceSection = () => {
             <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
             <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
             <span className="unBalance">
-              {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}
+              {disableBalac((walletDetails.unlocked_balance / 1e9).toFixed(decimalValue))}
             </span>
           </div>
         </div>

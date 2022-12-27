@@ -14,6 +14,7 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
+import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
 // import { saveRecipientAddressvalid } from '../../data/data';
 
 export const SendForm = (props: any) => {
@@ -30,10 +31,12 @@ export const SendForm = (props: any) => {
   async function send() {
     const isSweepAll =
       props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
+      // dispatch(updateTransactionInitModal({}))
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
+      return
     }
-
+    dispatch(updateTransactionInitModal({}))
     let data: any = await wallet.transfer(
       address,
       props.amount * 1e9,
@@ -41,6 +44,7 @@ export const SendForm = (props: any) => {
       isSweepAll
     );
     if (data.result) {
+      dispatch(updateTransactionInitModal(null))
       ToastUtils.pushToastSuccess(
         'successfully-sended',
         `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
@@ -61,6 +65,7 @@ export const SendForm = (props: any) => {
       props.setPriority(window.i18n('flash'));
       setAddress('');
     } else {
+      dispatch(updateTransactionInitModal(null))
       ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;
     }

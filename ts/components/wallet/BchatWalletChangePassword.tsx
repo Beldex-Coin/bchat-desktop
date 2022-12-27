@@ -56,7 +56,7 @@ export const ChangePassword = () => {
         showExitIcon={false}
         headerReverse={true}
       >
-        <div className="bchat-modal__centered changepass" style={{ width: '350px', alignItems: 'start' }}>
+        <div className="bchat-modal__centered changepass" style={{ width: '475px', alignItems: 'start' }}>
           <SpacerMD />
           <span className='changepass-oldpassInput' >
           <input

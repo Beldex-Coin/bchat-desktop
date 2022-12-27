@@ -206,16 +206,16 @@
         background-color:var(--color-walInputBg);
 
         padding: 15px;
-        box-shadow: 1px 2px 5px #00000074;
+        // box-shadow: 1px 2px 5px #00000074;
       }
     };
     &-oldpassInput
     {
       input {
         background-color:var(--color-walInputBg);
-        width: 361px;
-        height: 45px;
-        box-shadow: 1px 2px 5px #00000074;
+        width: 449px;
+        height: 55px;
+        // box-shadow: 1px 2px 5px #00000074;
       };
     }
     
@@ -223,9 +223,9 @@
       input{
       // background-color: #353543;
       background-color:var(--color-walInputBg);
-      width: 318px;
-      height: 45px;
-      box-shadow: 1px 2px 5px #00000074;
+      width: 449px;
+      height: 55px;
+      // box-shadow: 1px 2px 5px #00000074;
       margin-right: 10px;
       }
     }

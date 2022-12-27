@@ -393,7 +393,9 @@ const LeftPaneSettingsCategoryRow = () =>
         >
           <div style={{ display: 'flex' }}>
             <i className="left-pane-setting-category-list-item-icons">
-              <svg
+        <BchatIcon iconSize={23} iconType="wallet"  /> 
+
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="23.205"
                 height="23.25"
@@ -406,7 +408,7 @@ const LeftPaneSettingsCategoryRow = () =>
                   stroke="rgba(0,0,0,0)"
                   strokeWidth="1"
                 />
-              </svg>
+              </svg> */}
             </i>
             <span className="left-pane-setting-category-list-item-span">
               {window.i18n('WalletSettingsTitle')}

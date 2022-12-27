@@ -43,6 +43,7 @@ export type LocalizerKeys =
   | 'slow'
   | 'decimals'
   | 'test'
+  | 'transactionInitiated'
   | 'filterIncoming'
   | 'filterOutgoing'
   | 'filterPending'

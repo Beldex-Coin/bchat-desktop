@@ -1407,7 +1407,12 @@ label {
     }
     .fontSemiBold {
       font-family: $bchat-font-poppin-semibold;
-      font-size: 16px;
+      font-size: 14px;
+    }
+    .bchat-button.brand.green
+    {
+      height: 40px;
+    border-radius: 5px;
     }
   }
 
@@ -1463,9 +1468,6 @@ label {
         // font-size: 22px;
         font-size: 26px;
         font-family: $bchat-font-poppin-semibold;
-        span {
-          color: #128b17;
-        }
       }
       &-realCurrencyTxt {
         // font-size: 12px;
@@ -1600,11 +1602,9 @@ label {
       font-family: $bchat-font-poppin-semibold;
       font-size: 14px;
       }
-      &-bRemaing
-      {
+      &-bRemaing {
         text-align: center;
       }
-
     }
     &-myAddress-Box {
       display: flex;
@@ -1776,13 +1776,18 @@ label {
         justify-content: center;
         align-items: center;
         // width: 38%;
-        width: 521px;
+        width: 538px;
+
         height: 417px;
         // background-color: #2d2d3b;
         background-color: var(--color-WalcontentBg);
         border-radius: 10px;
         margin: 5% 0px;
-
+        &-title {
+          text-align: center;
+          font-size: 18px;
+          font-family: $bchat-font-poppins-bold;
+        }
         &-seed {
           display: flex;
           flex-direction: row;
@@ -1790,29 +1795,30 @@ label {
             border: none;
             outline: none;
             resize: none;
-            width: 318px;
+            width: 435px;
             height: 76px;
             // background-color: #353543;
             background-color: var(--color-walInputBg);
 
             padding: 15px;
-            box-shadow: 1px 2px 5px #00000074;
+            // box-shadow: 1px 2px 5px #00000074;
             border-radius: 10px;
           }
         }
         &-paste-icon {
           background: url('../images/bchat/paste.svg') no-repeat;
-          width: 40px;
-          height: 40px;
-          // position: "relative",
+          width: 35px;
+          height: 35px;
           background-color: var(--color-inboxBgColor);
-          background-size: 16px;
+          background-size: 14px;
           border-radius: 35px;
           background-position: center;
           left: 10px;
-          top: 14px;
+          top: 19px;
           position: relative;
           cursor: pointer;
+          box-shadow: var(--color-bchat-shadow);
+      
         }
         &-password {
           input {
@@ -1821,9 +1827,9 @@ label {
             // background-color: #353543;
             background-color: var(--color-walInputBg);
 
-            width: 318px;
+            width: 438px;
             height: 45px;
-            box-shadow: 1px 2px 5px #00000074;
+            // box-shadow: 1px 2px 5px #00000074;
             margin-right: 10px;
             border-radius: 10px;
             padding: 10px;
@@ -2087,9 +2093,10 @@ label {
       // // width: 66.5%;
       // bottom: 0;
       position: absolute;
-      width: calc(100vw - 399px);
+      width: calc(100vw - 417px);
       height: 30px;
       bottom: 0;
+      background-color: var(--color-chatHeader);
 
       &-statusTxt {
         font-size: 12px;

@@ -50,7 +50,7 @@ export const WalletPaymentSection = () => {
             name={window.i18n('transactionDetails')}
             iconSize="large"
             iconType="payTransaction"
-            iconColor={'#fff'}
+            iconColor={'var(--color-text)'}
             onClick={() => dispatch(walletTransactionPage())}
             isSelected={WalletDashboard.walletTransaction === focusedInnersection}
           />

@@ -37,6 +37,7 @@
   "forgotPassword": "Forgot Password",
   "databaseError": "Database Error",
   "resetDatabase": "Reset Database",
+  "transactionInitiated":"Transaction Initiated Successfully",
   "mainMenuFile": "&File",
   "mainMenuEdit": "&Edit",
   "mainMenuView": "&View",

@@ -25,6 +25,7 @@ export const ForgotPassword = (props: any) => {
   const recoveryPhrase = getCurrentRecoveryPhrase();
   console.log('recoveryPhrase:', recoveryPhrase);
   const dispatch = useDispatch();
+  // console.log('recoveryPhrase:', recoveryPhrase);
   function onClickCancelHandler() {
     props.cancelBtn();
   }
@@ -119,7 +120,7 @@ export const ForgotPassword = (props: any) => {
     <div className="wallet-forgotPassword">
       <div className="wallet-forgotPassword-content-Box">
         <div>
-          <h3 style={{ textAlign: 'center' }}>Forgot Password</h3>
+          <div className='wallet-forgotPassword-content-Box-title'>{window.i18n('forgotPassword')}</div>
           <SpacerMD />
           <div className="wallet-forgotPassword-content-Box-seed">
             <textarea
@@ -181,6 +182,9 @@ export const ForgotPassword = (props: any) => {
         </div>
         <SpacerMD />
         <SpacerMD />
+        <div style={{width: '86%'}}>
+          <span style={{color:'red'}}>Disclaimer </span>: if your forgot the wallet password and wallet syncnorization is start with 0 blocks
+        </div>
         <div className="wallet-settings-modalBtnGrp">
           <div className="bchat-modal__button-group__center">
             <BchatButton
