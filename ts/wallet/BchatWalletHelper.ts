@@ -17,13 +17,14 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       json: {
         jsonrpc: '2.0',
         id: '0',
-        method: 'getlastblockheader',
+        // method: 'getlastblockheader',
+        method:'getinfo'
       },
 
       timeout: 0,
     };
     let requestData: any = await request(options);
-    // console.log('requestData::', requestData);
+     console.log('requestData::', requestData);
     if (requestData.result) {
       // requestData.result.status==="ok"
       return requestData.result;

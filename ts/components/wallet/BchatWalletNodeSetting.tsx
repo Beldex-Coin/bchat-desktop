@@ -102,7 +102,7 @@ export const NodeSetting = () => {
       console.log('confirmation ok');
 
       setvSerifyDeamon(data);
-      setTestNotify(`Height:${confirmation.block_header.height},IP:${ipAddress}`);
+      setTestNotify(`Height:${confirmation.height}`);
       return;
     }
     setIpAddress('');
@@ -239,7 +239,7 @@ export const NodeSetting = () => {
                       testNotify === 'Connection Error' ? { color: 'red' } : { color: 'green' }
                     }
                   >
-                    TEST RESULT :
+                    Test Result :
                   </span>
                   <span>{testNotify}</span>
                   <BchatIcon iconType={testNotify === 'Connection Error' ?'warning':"tickCircle"} iconSize={8} iconColor={testNotify === 'Connection Error' ?"red":"green"} iconPadding={'0 0 0 3px'} />

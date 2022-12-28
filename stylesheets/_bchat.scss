@@ -2266,13 +2266,21 @@ label {
             color: #69697c;
             font-size: 18px;
             font-family: $bchat-font-poppins-bold;
+            cursor: pointer;
           }
           &-address {
             width: 584px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            cursor: pointer;
           }
+          &-address:hover{
+            color:var(--button-color);
+            text-decoration: underline;
+
+          }
+
         }
         &-dateandheight {
           display: flex;

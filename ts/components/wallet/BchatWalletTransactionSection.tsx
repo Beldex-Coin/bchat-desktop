@@ -8,6 +8,7 @@ import { getRecipientAddress } from '../../data/data';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
+import { shell } from 'electron';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
@@ -67,6 +68,11 @@ export const TransactionSection = (props: any) => {
       setVisible(!visible);
     }
   };
+  function openToExplore(traxId: string) {
+    void shell.openExternal(
+      `http://explorer.beldex.io/tx/${traxId}`
+    );
+  }
   function closeDropDown(params: any, type: any) {
     setFilter(params);
     setEmptyScreen(params);
@@ -386,17 +392,21 @@ export const TransactionSection = (props: any) => {
               data.map((item: any, i: any) => (
                 <div className="wallet-Transaction-contentBox" key={i}>
                   <Flex container={true} justifyContent="space-between" flexDirection="row">
-                    <Flex container={true} height=" 60px" onClick={() => showdata(item, i)}>
+                    <Flex container={true} height=" 60px" >
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
                         <TransactionIndication type={item.type} />
                       </article>
                       <article className="wallet-Transaction-contentBox-verticalline"></article>
                       <div className="wallet-Transaction-contentBox-balanceBox">
-                        <div className="wallet-Transaction-contentBox-balanceBox-amount">
+                        <div className="wallet-Transaction-contentBox-balanceBox-amount"
+                          onClick={() => showdata(item, i)}
+                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
                         </div>
-                        <div className="wallet-Transaction-contentBox-balanceBox-address">
+                        <div className="wallet-Transaction-contentBox-balanceBox-address"
+                          onClick={() => openToExplore(item.txid)}
+                        >
                           {item.txid}
                         </div>
                       </div>

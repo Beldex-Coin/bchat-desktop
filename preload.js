@@ -261,7 +261,8 @@ window.getSeedNodeList = () =>
 const remotes = [
   {
     host: "https://publicnode1.rpcnode.stream",
-    port: "443"
+    port: "443",
+    active:0
   },
   {
     host: 'https://publicnode2.rpcnode.stream',
