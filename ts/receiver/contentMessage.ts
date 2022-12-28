@@ -141,7 +141,6 @@ export async function decryptWithBchatProtocol(
 ): Promise<ArrayBuffer> {
   perfStart(`decryptWithBchatProtocol-${envelope.id}`);
 
-  
   const recipientX25519PrivateKey = x25519KeyPair.privateKeyData;
   const hex = toHex(new Uint8Array(x25519KeyPair.publicKeyData));
 
@@ -199,13 +198,13 @@ export async function decryptWithBchatProtocol(
     envelope.source = `bd${toHex(senderX25519PublicKey)}`;
   }
   perfEnd(`decryptWithBchatProtocol-${envelope.id}`, 'decryptWithBchatProtocol');
+  const addressLength = window.networkType == 'mainnet' ? 97 : 95;
+  const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0, addressLength));
 
-  const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0,97));
-
-  //  sender wallet Address  
-  localStorage.setItem("senderWalletAddress", beldexFinalAddress);
-  const message = plaintextWithMetadata.subarray(97, plainTextEnd)
-   return message;
+  //  sender wallet Address
+  localStorage.setItem('senderWalletAddress', beldexFinalAddress);
+  const message = plaintextWithMetadata.subarray(addressLength, plainTextEnd);
+  return message;
 }
 
 export async function isBlocked(number: string) {

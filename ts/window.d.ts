@@ -45,6 +45,7 @@ declare global {
     restart: any;
     getSeedNodeList: () => Array<string> | undefined;
     getDaemonNodeRandomlyPick: () => Object;
+    networkType : string;
     currentDaemon: any;
     setPassword: any;
     storage: any;

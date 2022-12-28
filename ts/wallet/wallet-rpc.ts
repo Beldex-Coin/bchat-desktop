@@ -172,11 +172,8 @@ export class Wallet {
 
     this.wallet_dir = `${walletDir}/wallet`;
     const option = [
-      // '--testnet',
       '--rpc-login',
-      // '--disable-rpc-login',
       this.auth[0] + ':' + this.auth[1],
-      // 'test:test',
       '--rpc-bind-port',
       '64371',
       '--daemon-address',
@@ -190,6 +187,9 @@ export class Wallet {
       '--log-file',
       `${walletDir}/wallet-rpc.log`,
     ];
+    if (window.networkType == 'testnet') {
+      option.push('--testnet');
+    }
     const wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
     wallet.stdout.on('data', data => {
       process.stdout.write(`Wallet: ${data}`);
@@ -345,7 +345,7 @@ export class Wallet {
   }
 
   async closeWallet() {
-    console.log("close wallet:")
+    console.log('close wallet:');
     await this.saveWallet();
     await this.sendRPC('close_wallet');
   }
