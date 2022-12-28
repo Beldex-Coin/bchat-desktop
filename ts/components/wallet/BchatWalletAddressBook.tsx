@@ -47,7 +47,7 @@ export const AddressBook = (props: any) => {
       {/* <button onClick={()=>showdata()}>test 12345</button> */}
       <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center" onClick={() => dispatch(dashboard())}>
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} />
+          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
           <div className="wallet-addressBook-header-txt">
             {/* {window.i18n('addressBook')} */}
             {props.name}

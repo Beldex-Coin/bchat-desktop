@@ -7,7 +7,7 @@ import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import classNames from 'classnames';
 import { walletSettingsKey } from '../../data/settings-key';
-import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
+import {  workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { LocalDeamon } from './BchatWalletLocalDeamonsettings';
 import { ToastUtils } from '../../bchat/utils';
 
@@ -17,6 +17,7 @@ export const NodeSetting = () => {
     'current deamon ::NodeSetting',
     window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   );
+  
 
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
@@ -32,11 +33,29 @@ export const NodeSetting = () => {
   const [chooseDeamonPort, setChooseDeamonPort] = useState(currentDeamon.port);
   const [option, setOption] = useState(deamonList);
   const [verifyDeamon, setvSerifyDeamon] = useState({});
-  const [testNotify, setTestNotify] = useState('');
+  const [testNotify, setTestNotify] = useState({status:'',content:``});
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
 
   // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
 
+  
+  function numberOnly(e:any) {
+    const re = /^[0-9\b]+$/;
+    if (e === '' || re.test(e)) {
+      setPort(e)
+      setvSerifyDeamon({});
+   setTestNotify({status:'',content:``})
+    }
+    // if (isNaN(e)) {
+    //    return
+    // }
+    // setAmount(e)
+ }
+ function assignHost(e:any) {
+  setIpAddress(e);
+   setvSerifyDeamon({});
+   setTestNotify({status:'',content:``})
+ }
   function addDeamonNet() {
     let data: any = verifyDeamon;
     if (Object.keys(data).length === 0) {
@@ -100,14 +119,21 @@ export const NodeSetting = () => {
 
     if (confirmation && confirmation.status === 'OK') {
       console.log('confirmation ok');
-
-      setvSerifyDeamon(data);
-      setTestNotify(`Height:${confirmation.height}`);
+      if(confirmation.nettype===window.networkType )
+      {
+        setvSerifyDeamon(data);
+        setTestNotify({status:"ok",content:`Height:${confirmation.height}`});
+        return
+      }
+      
+      // setvSerifyDeamon(data);
+      // setTestNotify(`this Ip is ${confirmation.nettype}`);
+      setTestNotify({status:"fail",content:`this Ip is ${confirmation.nettype} but Started net work type is ${window.networkType}`});
       return;
     }
     setIpAddress('');
     setPort('');
-    setTestNotify(`Connection Error`);
+    setTestNotify({status:'fail',content:`Connection Error`});
 
     setvSerifyDeamon({});
   }
@@ -116,7 +142,7 @@ export const NodeSetting = () => {
     <div>
       <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} />
+          <BchatIcon iconType="walletBackArrow" iconSize={'huge'}  iconColor={'#9393af'}/>
           <div className="wallet-addressBook-header-txt">{window.i18n('node')}</div>
         </Flex>
       </div>
@@ -157,7 +183,8 @@ export const NodeSetting = () => {
         <SpacerMD />
 
         <div className="wallet-settings-nodeSetting-notesTxt">
-          {window.i18n('remoteNoteToAllTransactions')}
+          {localDeamonVisible ?window.i18n('localDeamonheadetcntent'):window.i18n('remoteNoteToAllTransactions')}
+          {}
         </div>
 
         <SpacerLG />
@@ -196,7 +223,7 @@ export const NodeSetting = () => {
                     value={ipAddress}
                     placeholder="Enter your MainNet IP Address"
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    onChange={(e: any) => setIpAddress(e.target.value)}
+                    onChange={(e: any) => {assignHost(e.target.value)}}
                   />
                 </article>
                 <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -207,7 +234,7 @@ export const NodeSetting = () => {
                   <input
                     value={port}
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    onChange={(e: any) => !isNaN(e.target.value) && setPort(e.target.value)}
+                    onChange={(e: any) =>numberOnly(e.target.value)}
                     placeholder="please enter your port "
                   />
                 </article>
@@ -232,17 +259,16 @@ export const NodeSetting = () => {
                   />
                 </div>
               </div>
-              {testNotify && (
+              {testNotify.status && (
                 <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
                   <span
-                    style={
-                      testNotify === 'Connection Error' ? { color: 'red' } : { color: 'green' }
-                    }
+                    style={testNotify.status ? { color: 'red' } : { color: 'green' }}
                   >
                     Test Result :
                   </span>
-                  <span>{testNotify}</span>
-                  <BchatIcon iconType={testNotify === 'Connection Error' ?'warning':"tickCircle"} iconSize={8} iconColor={testNotify === 'Connection Error' ?"red":"green"} iconPadding={'0 0 0 3px'} />
+                  <span>{testNotify.content}</span>
+                  <BchatIcon iconType={testNotify.status === 'fail' ?'warning':"tickCircle"} 
+                  iconSize={12} iconColor={testNotify.status === 'fail' ?"red":"green"} iconPadding={'0 0 0 3px'} />
                 </div>
               )}
 

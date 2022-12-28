@@ -69,9 +69,18 @@ export const TransactionSection = (props: any) => {
     }
   };
   function openToExplore(traxId: string) {
-    void shell.openExternal(
-      `http://explorer.beldex.io/tx/${traxId}`
-    );
+    if (window.networkType === 'mainnet') {
+      void shell.openExternal(
+        `http://explorer.beldex.io/tx/${traxId}`
+      );
+    }
+    else {
+      void shell.openExternal(
+        `http://154.26.139.105/tx/${traxId}`
+      );
+    }
+
+
   }
   function closeDropDown(params: any, type: any) {
     setFilter(params);
@@ -226,11 +235,11 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  console.log(
-    'DAAAAAATAAAAAA.length:',
-    `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
-    data.length
-  );
+  // console.log(
+  //   'DAAAAAATAAAAAA.length:',
+  //   `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
+  //   data.length
+  // );
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (
@@ -400,7 +409,7 @@ export const TransactionSection = (props: any) => {
                       <div className="wallet-Transaction-contentBox-balanceBox">
                         <div className="wallet-Transaction-contentBox-balanceBox-amount"
                           onClick={() => showdata(item, i)}
-                         >
+                        >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
                         </div>
@@ -420,9 +429,11 @@ export const TransactionSection = (props: any) => {
                       </div>
                     </section>
                   </Flex>
+                  {/* <div> */}
                   {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
                   {selected === i && <RececipientAddress trasactionData={item} />}
                 </div>
+                // </div>
               ))}
             {data.length == 0 ? (
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>

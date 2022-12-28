@@ -1409,10 +1409,9 @@ label {
       font-family: $bchat-font-poppin-semibold;
       font-size: 14px;
     }
-    .bchat-button.brand.green
-    {
+    .bchat-button.brand.green {
       height: 40px;
-    border-radius: 5px;
+      border-radius: 5px;
     }
   }
 
@@ -1596,11 +1595,10 @@ label {
           margin-top: 1px;
         }
       }
-      &-reloadTxt
-      {
-      text-align: center;
-      font-family: $bchat-font-poppin-semibold;
-      font-size: 14px;
+      &-reloadTxt {
+        text-align: center;
+        font-family: $bchat-font-poppin-semibold;
+        font-size: 14px;
       }
       &-bRemaing {
         text-align: center;
@@ -1675,7 +1673,9 @@ label {
           align-items: center;
         }
         .bchat-button.brand.green {
-          height: 40px;
+          height: 35px;
+          border-radius: 6px;
+          width: 139px;
         }
         input {
           border: none;
@@ -1818,7 +1818,6 @@ label {
           position: relative;
           cursor: pointer;
           box-shadow: var(--color-bchat-shadow);
-      
         }
         &-password {
           input {
@@ -1847,17 +1846,18 @@ label {
       &-wholeBox {
         height: calc(83vh - 30px);
         &-contentBox {
-          background-color: #303041;
+          background-color: var(--color-WalcontentBg);;
           border-radius: 10px;
           padding: 15px;
           display: flex;
           justify-content: space-between;
           &-nameBtn {
             background-color: #159b24;
-            padding: 4px 10px;
+            padding: 4px 27px;
             border-radius: 3px;
             /* margin-bottom: 10px; */
             font-family: 'poppin-semibold';
+            color:#fff;
           }
           &-addresstxt {
             font-family: $bchat-font-poppin-light;
@@ -1876,10 +1876,15 @@ label {
             font-family: $bchat-font-poppin-semibold;
             cursor: pointer;
           }
-
+          &-sendBtn
+          {
+            color: #fff;
+          }
           &-copyBtn {
-            background-color: #444455;
+            background-color:var(--color-walcancelBtn);;
             margin-left: 10px;
+
+            
           }
         }
       }
@@ -1918,7 +1923,7 @@ label {
         }
         &-checkBox {
           display: block;
-          border: 2px solid white;
+          border: 2px solid var(--color-text);
           width: 15px;
           height: 15px;
           border-radius: 3px;
@@ -1936,6 +1941,7 @@ label {
           display: flex;
           justify-content: center;
           align-items: center;
+          cursor: pointer;
 
           &-outlineCircle {
             border: 2px solid var(--color-text);
@@ -1994,7 +2000,7 @@ label {
               display: inline-block;
               width: 13px;
               height: 13px;
-              border: 1.5px solid white;
+              border: 1.5px solid var(--color-text);
               border-radius: 10px;
               margin-right: 5px;
             }
@@ -2081,8 +2087,10 @@ label {
       }
       &-modalBtnGrp {
         .bchat-button.brand-outline.primary,
-        .bchat-button.brand-outline.green {
-          height: 45px;
+        .bchat-button.brand-outline.green .bchat-button.brand {
+          height: 35px;
+          border-radius: 6px;
+          min-width: 110px;
         }
       }
     }
@@ -2275,12 +2283,10 @@ label {
             text-overflow: ellipsis;
             cursor: pointer;
           }
-          &-address:hover{
-            color:var(--button-color);
+          &-address:hover {
+            color: var(--button-color);
             text-decoration: underline;
-
           }
-
         }
         &-dateandheight {
           display: flex;

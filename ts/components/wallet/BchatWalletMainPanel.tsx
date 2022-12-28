@@ -39,16 +39,20 @@ export enum WalletDashboard {
 
 export const WalletMainPanel = () => {
    const focusedsettings = useSelector((state: any) => state.walletFocused);
-   const [amount, setAmount] = useState(0);
+   const [amount, setAmount] = useState("");
    const [priority, setPriority] = useState(window.i18n("flash"));
    const [passScreen, setPassScreen] = useState(true);
 
 
-   function numberOnly(e:number) {
-      if (isNaN(e)) {
-         return
-      }
+   function numberOnly(e:any) {
+      const re = /^[0-9\b]+$/;
+      if (e === '' || re.test(e)) {
       setAmount(e)
+      }
+      // if (isNaN(e)) {
+      //    return
+      // }
+      // setAmount(e)
    }
 
 

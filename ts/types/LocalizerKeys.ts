@@ -38,6 +38,7 @@ export type LocalizerKeys =
   | 'bgnCurrency'
   | 'remoteNodeHost'
   | 'remoteNodePort'
+  |'localDeamonheadetcntent'
   | 'chooseRemoteDaemonNode'
   | 'flash'
   | 'slow'

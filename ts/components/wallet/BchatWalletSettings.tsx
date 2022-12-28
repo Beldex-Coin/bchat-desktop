@@ -69,7 +69,7 @@ export const WalletSettings = () => {
       {/* <ModalContainer /> */}
       <div onClick={() => dispatch(dashboard())} style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} />
+          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'}/>
           <div className="wallet-addressBook-header-txt">{window.i18n('settingsHeader')}</div>
         </Flex>
       </div>

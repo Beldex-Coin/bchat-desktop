@@ -33,7 +33,7 @@ export const WalletBalanceSection = () => {
     let txt:any=String(values);
     let sliptStr=txt.split('');
     let dataArray=""
-    console.log("sliptStr",sliptStr,sliptStr.length);
+    // console.log("sliptStr",sliptStr,sliptStr.length);
     sliptStr.length>0 && sliptStr.map((item:any)=>{
       if(item === ".")
       {
@@ -45,22 +45,6 @@ export const WalletBalanceSection = () => {
   return dataArray;
 
   }
-
-  // useEffect(() => {
-
-  // }, [exeCurrency, exeCurrencyValue]);
-
-  // async function getConvertedCurrency()
-  // {
-  //   let convCurrency:any =await walletRpc.currencyConv(wallet.balance, CurrencyExtention);
-  //   // let convcurrency=await walletClass.currencyConv()
-  //   setExeCurrencyValue(Number(convCurrency).toFixed(4));
-  // }
-
-  // const balanceConv = walletHelper.currencyConversion(balance);
-
-  //  console.log ("walletBalance :: ",wallet)
-
   return (
     <div className="wallet-squarBox">
       <div style={{ display: 'flex' }}>

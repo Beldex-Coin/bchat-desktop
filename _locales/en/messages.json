@@ -125,6 +125,7 @@
   "video": "Video",
   "photo": "Photo",
   "cannotUpdate": "Cannot Update",
+  "localDeamonheadetcntent":"Wallet will download the full blockchain.You will not be able to transact until sync is completed",
   "cannotUpdateDetail": "BChat Desktop failed to update, but there is a new version available. Please go to https://bchat.beldex.io/ and install the new version manually, then either contact support or file a bug about this problem.",
   "ok": "OK",
   "cancel": "Cancel",
