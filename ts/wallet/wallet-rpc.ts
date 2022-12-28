@@ -172,7 +172,7 @@ export class Wallet {
 
     this.wallet_dir = `${walletDir}/wallet`;
     const option = [
-      '--testnet',
+      // '--testnet',
       '--rpc-login',
       // '--disable-rpc-login',
       this.auth[0] + ':' + this.auth[1],
@@ -334,11 +334,21 @@ export class Wallet {
       }
       return restoreWallet;
     } catch (error) {
-      console.log("errr:",error)
+      console.log('errr:', error);
 
       throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
+
+  async saveWallet() {
+    await this.sendRPC('store');
+  }
+
+  async closeWallet() {
+    console.log("close wallet:")
+    await this.saveWallet();
+    await this.sendRPC('close_wallet');
+  }
 
   getLatestHeight = async () => {
     try {

@@ -112,6 +112,7 @@ export const ForgotPassword = (props: any) => {
     if (changePassword.hasOwnProperty('error')) {
       return ToastUtils.pushToastError('changePasswordError', changePassword.error.message);
     }
+    // await wallet.closeWallet();
     props.showSyncScreen();
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();

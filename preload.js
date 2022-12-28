@@ -235,62 +235,56 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 
 window.clipboard = clipboard;
-// window.getSeedNodeList = () =>
-//   process.env.NODE_ENV == 'development'
-//     ? [
-//       'https://publicnode1.rpcnode.stream:443',
-//       'https://publicnode2.rpcnode.stream:443',
-//       'https://publicnode3.rpcnode.stream:443',
-//     ]
-//     : [
-
-//       'https://publicnode1.rpcnode.stream:443',
-//       'https://publicnode2.rpcnode.stream:443',
-//       'https://publicnode3.rpcnode.stream:443',
-
-//     ];
-
 window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
-    ? ['http://38.242.196.72:19095', 'http://154.26.139.105:19095']
-    : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
+    ? [
+      'https://publicnode1.rpcnode.stream:443',
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
+    ]
+    : [
 
-window.getDaemonNodeRandomlyPick = () => {
-  const remotes = [
-    {
-      host: '38.242.196.72',
-      port: '19095',
-    },
-    {
-      host: '154.26.139.105',
-      port: '19095',
-    },
-  ];
+      'https://publicnode1.rpcnode.stream:443',
+      'https://publicnode2.rpcnode.stream:443',
+      'https://publicnode3.rpcnode.stream:443',
 
-  // return window.getSettingValue('current-deamon');
+    ];
 
-  return remotes[Math.floor(Math.random() * remotes.length)];
-};
+// window.getSeedNodeList = () =>
+//   process.env.NODE_ENV == 'development'
+//     ? ['http://38.242.196.72:19095', 'http://154.26.139.105:19095']
+//     : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
+
+
+// mainnet
 
 const remotes = [
-  // {
-  //   host: "38.242.196.72",
-  //   port: "19095"
-  // },
   {
-    host: '154.26.139.105',
-    port: '19095',
-    active: 0,
+    host: "https://publicnode1.rpcnode.stream",
+    port: "443"
   },
-  // //live
-  // {
-  //   host: "explorer.beldex.io",
-  //   port: "19091"
-  // }
+  {
+    host: 'https://publicnode2.rpcnode.stream',
+    port: '443',
+    active: 0,
+  }
 ];
+
+//testnet
+
+// const remotes = [
+//   {
+//     host: "38.242.196.72",
+//     port: "19095"
+//   },
+//   {
+//     host: '154.26.139.105',
+//     port: '19095',
+//     active: 0,
+//   }
+// ];
+
 window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
-// console.log(window.getSettingValue('current-deamon'));
-// window.currentDaemon = window.getSettingValue('current-deamon');
 
 const { locale: localFromEnv } = config;
 window.i18n = setupi18n(localFromEnv || 'en', localeMessages);
