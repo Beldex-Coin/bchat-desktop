@@ -17,8 +17,8 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       json: {
         jsonrpc: '2.0',
         id: '0',
-        // method: 'getlastblockheader',
-        method:'getinfo'
+         method: 'getlastblockheader',
+        // method:'getinfo'
       },
 
       timeout: 0,

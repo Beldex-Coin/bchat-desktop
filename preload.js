@@ -259,15 +259,11 @@ window.getSeedNodeList = () =>
 // mainnet
 
 const remotes = [
+  
+  // //live
   {
-    host: "https://publicnode1.rpcnode.stream",
-    port: "443",
-    active:0
-  },
-  {
-    host: 'https://publicnode2.rpcnode.stream',
-    port: '443',
-    active: 0,
+    host: "explorer.beldex.io",
+    port: "19091"
   }
 ];
 
