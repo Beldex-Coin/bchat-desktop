@@ -238,32 +238,48 @@ window.clipboard = clipboard;
 window.getSeedNodeList = () =>
   process.env.NODE_ENV == 'development'
     ? [
-      'https://publicnode1.rpcnode.stream:443',
-      'https://publicnode2.rpcnode.stream:443',
-      'https://publicnode3.rpcnode.stream:443',
-    ]
+        'https://publicnode1.rpcnode.stream:443',
+        'https://publicnode2.rpcnode.stream:443',
+        'https://publicnode3.rpcnode.stream:443',
+      ]
     : [
-
-      'https://publicnode1.rpcnode.stream:443',
-      'https://publicnode2.rpcnode.stream:443',
-      'https://publicnode3.rpcnode.stream:443',
-
-    ];
+        'https://publicnode1.rpcnode.stream:443',
+        'https://publicnode2.rpcnode.stream:443',
+        'https://publicnode3.rpcnode.stream:443',
+      ];
 
 // window.getSeedNodeList = () =>
 //   process.env.NODE_ENV == 'development'
 //     ? ['http://38.242.196.72:19095', 'http://154.26.139.105:19095']
 //     : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
 
-
 // mainnet
 
 const remotes = [
-  
   // //live
   {
-    host: "explorer.beldex.io",
-    port: "19091"
+    host: 'mainnet.beldex.io',
+    port: '29095',
+  },
+  {
+    host: 'publicnode1.rpcnode.stream',
+    port: '29095',
+  },
+  {
+    host: 'publicnode2.rpcnode.stream',
+    port: '29095',
+  },
+  {
+    host: 'publicnode3.rpcnode.stream',
+    port: '29095',
+  },
+  {
+    host: 'publicnode4.rpcnode.stream',
+    port: '29095',
+  },
+  {
+    host: 'explorer.beldex.io',
+    port: '19091',
   }
 ];
 
