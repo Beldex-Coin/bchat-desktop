@@ -4,19 +4,21 @@ import classNames from 'classNames';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletSendPage } from '../../state/ducks/walletInnerSection';
 import { dashboard } from '../../state/ducks/walletSection';
-import { getDirectContacts } from '../../state/selectors/conversations';
+import {  getPrivateContactsPubkeys } from '../../state/selectors/conversations';
 // import { getWalletSendAddress } from "../../state/selectors/walletConfig"
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 import { BchatIcon } from '../icon';
+import { useConversationBeldexAddress, useConversationUsernameOrShorten } from '../../hooks/useParamSelector';
 // import { sqlNode } from "../../node/sql"
 //  import {  getRecipientAddress } from "../../data/data"
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
-  const directContact = useSelector(getDirectContacts);
-  console.log('directContact ::',directContact);
+  const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
+  // const directContact = useSelector(getDirectContacts);
+  // console.log('directContact ::',directContact);
   // function getAcceptedContact()
   // {
   //   let data=directContact.length
@@ -39,15 +41,68 @@ export const AddressBook = (props: any) => {
 
   // console.log("directContact :: ", directContact, directContact.length);
 
-  function copyBtn(address: string) {
+  async function copyBtn(address: string) {
+    console.log('pubkeycopyBtn ::',address);
+    
+    // let address= useConversationBeldexAddress(pubkey)
     copyBchatID(address);
   }
   // console.log("sendAddress :: ",sendAddress);
-  function send(walletAddress: any) {
+  async function send(address: any) {
+    console.log('send ::',address);
+
+    // let address=await useConversationBeldexAddress(pubkey)
     dispatch(dashboard());
     dispatch(walletSendPage());
-    dispatch(updateSendAddress(walletAddress));
+    dispatch(updateSendAddress(address));
   }
+const AddressContent=(props:any)=>
+{
+  const username=useConversationUsernameOrShorten(props.pubkey)
+  const belAddress=useConversationBeldexAddress(props.pubkey)
+return <>
+<div
+  className={classNames(`wallet-addressBook-wholeBox-contentBox`)}
+  style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
+  
+  onClick={() => window.i18n('addressBook') !== props.title && send(belAddress)}
+>
+  <Flex container={true} flexDirection="column">
+    <div>
+      <span className="wallet-addressBook-wholeBox-contentBox-nameBtn">
+        {username}
+      </span>
+    </div>
+    <SpacerSM />
+    <div className="wallet-addressBook-wholeBox-contentBox-addresstxt">
+      {belAddress}
+      {/* bxcALKJHSakhdsadhaskdhHHHDJADHUAWjhjhsjdhjshaskjhdas9dapsidasasjhas8dauas */}
+    </div>
+  </Flex>
+
+  {window.i18n('addressBook') === props.title && (
+    <Flex container={true} flexDirection="row" alignItems="center">
+      <div
+        className="wallet-addressBook-wholeBox-contentBox-sendBtn"
+        onClick={() => send(belAddress)}
+      >
+        <BchatIcon iconType="send" iconSize={'small'} iconRotation={309} />
+        <span>{window.i18n('sent')}</span>
+      </div>
+      <div
+        className="wallet-addressBook-wholeBox-contentBox-copyBtn"
+        onClick={() => copyBtn(belAddress)}
+      >
+        <BchatIcon iconType="copy" iconSize={'small'} />
+        <span style={{ marginLeft: '3px' }}>{window.i18n('editMenuCopy')}</span>
+      </div>
+    </Flex>
+  )}
+ 
+</div>
+ <SpacerSM />
+ </>
+}
 
   return (
     <div className="wallet-addressBook">
@@ -63,49 +118,11 @@ export const AddressBook = (props: any) => {
       </div>
       <SpacerLG />
       <div className="wallet-addressBook-wholeBox">
-        {directContact.length > 0 &&
-          directContact.map((item, i) => (
-            <div
-              className={classNames(`wallet-addressBook-wholeBox-contentBox`)}
-              style={window.i18n('addressBook') !== props.name ? { cursor: 'pointer' } : {}}
-              key={i}
-              onClick={() => window.i18n('addressBook') !== props.name && send(item.walletAddress)}
-            >
-              <Flex container={true} flexDirection="column">
-                <div>
-                  <span className="wallet-addressBook-wholeBox-contentBox-nameBtn">
-                    {item.profileName}
-                  </span>
-                </div>
-                <SpacerSM />
-                <div className="wallet-addressBook-wholeBox-contentBox-addresstxt">
-                  {item.walletAddress}
-                  {/* bxcALKJHSakhdsadhaskdhHHHDJADHUAWjhjhsjdhjshaskjhdas9dapsidasasjhas8dauas */}
-                </div>
-              </Flex>
-
-              {window.i18n('addressBook') === props.name && (
-                <Flex container={true} flexDirection="row" alignItems="center">
-                  <div
-                    className="wallet-addressBook-wholeBox-contentBox-sendBtn"
-                    onClick={() => send(item.walletAddress)}
-                  >
-                    <BchatIcon iconType="send" iconSize={'small'} iconRotation={309} />
-                    <span>{window.i18n('sent')}</span>
-                  </div>
-                  <div
-                    className="wallet-addressBook-wholeBox-contentBox-copyBtn"
-                    onClick={() => copyBtn(item.walletAddress)}
-                  >
-                    <BchatIcon iconType="copy" iconSize={'small'} />
-                    <span style={{ marginLeft: '3px' }}>{window.i18n('editMenuCopy')}</span>
-                  </div>
-                </Flex>
-              )}
-              <SpacerSM />
-            </div>
-          ))}
-        {directContact.length == 0 ? (
+        {privateContactsPubkeys.length > 0 &&
+          privateContactsPubkeys.map((item) => <AddressContent pubkey={item} title={props.name} />)
+          
+        }
+        {privateContactsPubkeys.length == 0 ? (
           <div className="wallet-addressBook-emptyAddressBook">
             <h4 className="wallet-addressBook-emptyAddressBook-content">
               {window.i18n('addressBook') !== props.name

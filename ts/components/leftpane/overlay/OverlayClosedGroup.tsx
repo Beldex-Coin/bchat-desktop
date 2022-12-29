@@ -30,6 +30,8 @@ export const OverlayClosedGroup = () => {
 
   // const directContacts = useSelector(getDirectContacts);
   // console.log("directContacts ::",directContacts);
+  console.log("privateContactsPubkeys",privateContactsPubkeys);
+  
   
 
   function closeOverlay() {

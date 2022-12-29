@@ -29,6 +29,7 @@ export function useConversationUsername(convoId?: string) {
  */
 export function useConversationUsernameOrShorten(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
+console.log('convoProps ::',convoProps);
 
   return convoProps?.profileName || convoProps?.name || (convoId && PubKey.shorten(convoId));
 }
@@ -146,4 +147,11 @@ export function useConversationPropsById(convoId?: string) {
     }
     return convo;
   });
+}
+
+export function useConversationBeldexAddress(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+console.log('convoProps ::',convoProps?.walletAddress);
+
+  return convoProps?.walletAddress
 }
