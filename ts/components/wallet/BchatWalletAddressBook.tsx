@@ -16,6 +16,13 @@ import { BchatIcon } from '../icon';
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
   const directContact = useSelector(getDirectContacts);
+  console.log('directContact ::',directContact);
+  // function getAcceptedContact()
+  // {
+  //   let data=directContact.length
+
+  // }
+  
 
   // async function showdata()
   // {
@@ -95,6 +102,7 @@ export const AddressBook = (props: any) => {
                   </div>
                 </Flex>
               )}
+              <SpacerSM />
             </div>
           ))}
         {directContact.length == 0 ? (

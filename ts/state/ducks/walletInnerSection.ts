@@ -22,7 +22,7 @@ export function walletTransactionPage() {
   };
 }
 
-export const initialWalletInnerSectionState: WalletInnerSectionStateType = 'walletSend';
+export const initialWalletInnerSectionState: WalletInnerSectionStateType = 'walletTransaction';
 
 export const reducer = (
   state: WalletInnerSectionStateType = initialWalletInnerSectionState,

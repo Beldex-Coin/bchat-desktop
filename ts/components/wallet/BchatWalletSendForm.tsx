@@ -117,7 +117,7 @@ export const SendForm = (props: any) => {
 
                 {/* <input value={priority} onChange={(e: any) => { setPriority(e.target.value) }}/> */}
                 <span onClick={() => setDropDown(!dropDown)} style={{ cursor: 'pointer' }}>
-                  <BchatIcon iconType="dropdownArrow" iconSize="small" iconRotation={269} />
+                  <BchatIcon iconType="dropdownArrow" iconSize="small" iconRotation={269} iconColor={'var(--color-walDownthickArrow)'} />
                 </span>
               </div>
 

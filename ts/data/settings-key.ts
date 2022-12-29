@@ -13,7 +13,8 @@ const settingsOpengroupPruning = 'prune-setting';
 const settingsDecimal="decimal";
 const settingSaveRecipient="save-recipient";
 const settingsDeamonList="deamon-List";
-const settingsCurrentDeamon='current-deamon'
+const settingsCurrentDeamon='current-deamon';
+const settingsFiatCurrency='fiat-currency';
 export const SettingsKey = { 
   settingsReadReceipt,
   settingsTypingIndicator, 
@@ -29,5 +30,6 @@ export const walletSettingsKey={
   settingsDecimal,
   settingSaveRecipient,
   settingsDeamonList,
-  settingsCurrentDeamon
+  settingsCurrentDeamon,
+  settingsFiatCurrency
 }

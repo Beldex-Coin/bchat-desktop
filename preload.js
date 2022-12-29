@@ -235,8 +235,8 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
-// window.networkType = 'testnet';
-window.networkType = 'mainnet';
+window.networkType = 'testnet';
+// window.networkType = 'mainnet';
 
 if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
@@ -285,6 +285,7 @@ if (window.networkType == 'mainnet') {
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
+  window.deamon_list=remotes
 } else {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'

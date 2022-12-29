@@ -46,7 +46,8 @@ export async function deamonvalidation() {
   if (!list_deamon) {
 
     // let currentWorkingDeamon=window.getSettingValue('current-deamon');
-    const deamon_list = [{ host: currentDaemon.host, port: currentDaemon.port, active: 1 }];
+    // const deamon_list = [{ host: currentDaemon.host, port: currentDaemon.port, active: 1 }]; 
+    const deamon_list = window.deamon_list; 
     window.setSettingValue('deamon-List', deamon_list);
   }
 
@@ -95,6 +96,24 @@ export function loadRecipient() {
   
 
 }
+export function loadFiatCurrency() {
+  
+  if (!window.getSettingValue('fiat-currency')) {
+    window.setSettingValue("fiat-currency", 'USD');
+   
+    // window.inboxStore?.dispatch(updateDecimalValue(data));
+   
+  } else {
+    let data: any = window.getSettingValue('fiat-currency');
+   window.setSettingValue("fiat-currency", data);
+
+
+    // window.inboxStore?.dispatch(updateDecimalValue(data));
+  }
+  
+
+}
+
 
 
 

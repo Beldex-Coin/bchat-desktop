@@ -134,6 +134,7 @@ const darkWalQrOutline = '#1c1c26';
 const darkWalPopuphover = '#1c1c26';
 const darkWalcancelBtn = '#403e4b';
 const darkWalletSyncBar = '#444455';
+const darkDownthickArrow='#fff';
 
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
 
@@ -318,6 +319,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-walPopuphover', darkWalPopuphover);
   document.documentElement.style.setProperty('--color-walcancelBtn', darkWalcancelBtn);
   document.documentElement.style.setProperty('--color-walSyncbar', darkWalletSyncBar);
+  document.documentElement.style.setProperty('--color-walDownthickArrow', darkDownthickArrow);
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
 };
 
@@ -437,7 +439,7 @@ const lightWalQrOutline = '#DEDEDE';
 const lightWalPopuphover = '#DEDEDE';
 const lightWalcancelBtn = '#F8F8F8';
 const lightWalletSyncBar = '#DEDEDE';
-
+const lightDownthickArrow='#8F8FA2';
 const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
 
 export const switchHtmlToLightTheme = () => {
@@ -624,6 +626,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-walPopuphover', lightWalPopuphover);
   document.documentElement.style.setProperty('--color-walcancelBtn', lightWalcancelBtn);
   document.documentElement.style.setProperty('--color-walSyncbar', lightWalletSyncBar);
+  document.documentElement.style.setProperty('--color-walDownthickArrow', lightDownthickArrow);
 
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
 };
@@ -738,7 +741,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-walQrOutline:${darkWalQrOutline};
     --color-walPopuphover:${darkWalPopuphover};
     --color-walcancelBtn:${darkWalcancelBtn};
-    --color-walSyncbar:${darkWalletSyncBar}
+    --color-walSyncbar:${darkWalletSyncBar};
+    --color-walDownthickArrow:${darkDownthickArrow};
     
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};

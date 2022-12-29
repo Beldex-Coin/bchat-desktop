@@ -11,7 +11,7 @@ import { updateDecimalValue } from '../../state/ducks/walletConfig';
 import { ForgotPassword } from './BchatWalletForgotPassword';
 import { ProgressForSync } from './BchatWalletProgressForSync';
 import { getHeight } from '../../state/selectors/walletConfig';
-import { loadRecipient } from '../../wallet/BchatWalletHelper';
+import { loadFiatCurrency, loadRecipient } from '../../wallet/BchatWalletHelper';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -58,7 +58,8 @@ export const WalletPassword = (props: any) => {
 
   }
   loadDecimal();
-  loadRecipient()
+  loadRecipient();
+  loadFiatCurrency();
 
   async function submit() {
     let profileName = UserDetails[userId].profileName;

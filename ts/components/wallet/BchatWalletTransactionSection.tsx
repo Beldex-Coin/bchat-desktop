@@ -95,7 +95,7 @@ export const TransactionSection = (props: any) => {
       setData(transactionsHistory);
       return;
     }
-    let filterData = transactionsHistory.filter((data: any) => data.type === type);
+    let filterData =transactionsHistory.length>0 && transactionsHistory.filter((data: any) => data.type === type);
     setData(filterData);
     setSearchData(filterData);
   }
@@ -156,7 +156,7 @@ export const TransactionSection = (props: any) => {
 
     // if(isNaN(value))
     // {
-    let data = searchData.filter(
+    let data =searchData.length>0 && searchData.filter(
       (item: any) =>
         String(item.amount / 1e9).includes(value.toLowerCase()) ||
         item.txid.toLowerCase().includes(value.toLowerCase())
@@ -235,11 +235,11 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  // console.log(
-  //   'DAAAAAATAAAAAA.length:',
-  //   `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
-  //   data.length
-  // );
+  console.log(
+    'DAAAAAATAAAAAA.length:',
+    `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
+    data.length
+  );
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (
@@ -267,9 +267,7 @@ export const TransactionSection = (props: any) => {
               {/* {data.length == 0 && filter == 'All' ? ( */}
               {/* '' */}
               {/* ) : ( */}
-              {data.length == 0 && filter == 'All' ? (
-                ''
-              ) : (
+              {transactionsHistory.length !== 0 &&  (
                 <div className="wallet-Transaction-filterWithIcon">
                   {/* <input value={window.i18n('filterAll')} /> */}
                   <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
@@ -435,7 +433,7 @@ export const TransactionSection = (props: any) => {
                 </div>
                 // </div>
               ))}
-            {data.length == 0 ? (
+            {data.length == 0  ? (
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
                 <h4 className="wallet-Transaction-content">
                   {emptyScreen == 'All' ? (

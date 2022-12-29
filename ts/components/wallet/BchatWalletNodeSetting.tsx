@@ -197,7 +197,7 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('addRemoteDaemonNode')}
               </div>
-              <div onClick={() => setViewBox1(!viewBox1)}>
+              <div onClick={() => setViewBox1(!viewBox1)} style={{cursor:'pointer'}}>
                 <BchatIcon
                   iconType="circleChevron"
                   iconSize={'medium'}
@@ -282,7 +282,7 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('chooseRemoteDaemonNode')}
               </div>
-              <div onClick={() => setViewBox2(!viewBox2)}>
+              <div onClick={() => setViewBox2(!viewBox2)} style={{cursor:'pointer'}}>
                 <BchatIcon
                   iconType="circleChevron"
                   iconSize={'medium'}

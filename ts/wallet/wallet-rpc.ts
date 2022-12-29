@@ -80,7 +80,7 @@ export class Wallet {
 
   startWallet = async (type?: string) => {
     try {
-      let getFiatCurrency = localStorage.getItem('currency');
+      let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         localStorage.setItem('currency', 'USD');
       }
@@ -527,7 +527,7 @@ export class Wallet {
   getFiatBalance = async (currency?: any) => {
     const fiatCurrency: any = currency
       ? currency.toLocaleLowerCase()
-      : localStorage.getItem('currency')?.toLocaleLowerCase();
+      : window.getSettingValue(walletSettingsKey.settingsFiatCurrency)?.toLocaleLowerCase();
     const balance = this.wallet_state.balance;
     const response = await insecureNodeFetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=beldex&vs_currencies=${fiatCurrency}`

@@ -12,7 +12,7 @@ export const WalletBalanceSection = () => {
   const walletDetails = useSelector((state: any) => state.wallet);
   const walletAddress: any = localStorage.getItem('userAddress');
   const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 45) : '';
-  const currency: any = localStorage.getItem('currency');
+  const currency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const fiatBalance: any = Number(useSelector(getFiatBalance));
   const [amountVisible,setAmountVisible]=useState(false)
   // let decimalValue: any = useSelector(getwalletDecimalValue);

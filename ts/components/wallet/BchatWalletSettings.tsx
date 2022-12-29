@@ -16,11 +16,12 @@ import { BchatIcon } from '../icon/BchatIcon';
 
 export const WalletSettings = () => {
   const dispatch = useDispatch();
-  const exeCurrency: any = localStorage.getItem('currency');
+  // const exeCurrency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const decimalValue = useSelector(getwalletDecimalValue);
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
+  const [fiatCurrency,setFiatCurrency]=useState(window.getSettingValue(walletSettingsKey.settingsFiatCurrency))
   const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
 
   const currenyExt = [
@@ -126,18 +127,21 @@ export const WalletSettings = () => {
                 walletSettingMiniModal({
                   headerName: window.i18n('displayCurrency'),
                   content: currenyExt,
-                  currency: exeCurrency,
+                  currency: fiatCurrency,
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
-                    localStorage.setItem('currency', e);
+                    // localStorage.setItem('currency', e);
+                    window.setSettingValue(walletSettingsKey.settingsFiatCurrency,e)
                     wallet.getFiatBalance(e);
+                    setFiatCurrency(e);
+                    // dispatch(updateWalletFiatCurrency(e))
                     dispatch(walletSettingMiniModal(null));
                   },
                 })
               )
             }
           >
-            <span className="wallet-settings-tabBox-disableText">{exeCurrency}</span>
+            <span className="wallet-settings-tabBox-disableText">{window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}</span>
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>
