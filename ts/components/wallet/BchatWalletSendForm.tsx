@@ -77,7 +77,7 @@ export const SendForm = (props: any) => {
     }
   }
 
-  return (
+  return (<>
     <div className="wallet-sendForm">
       {/* <button onClick={() => insertData()}>insertData</button> */}
       <Flex container={true} flexDirection="row" justifyContent="space-between">
@@ -89,7 +89,9 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: '20%' }}>{window.i18n('amount')}</span>
+            {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
+            <span className='wallet-sendForm-label'>{window.i18n('amount')}</span>
+
             <div className="wallet-sendForm-inputBox">
               <input
                 value={props.amount}
@@ -112,7 +114,7 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: '20%' }}>{window.i18n('priority')}</span>
+            <span className='wallet-sendForm-label'>{window.i18n('priority')}</span>
             <div className="wallet-sendForm-inputBox" style={{ display: 'block' }}>
               <div className="wallet-sendForm-inputBox" style={{ padding: 0 }}>
                 <span className="priortyBox">{props.priority}</span>
@@ -167,7 +169,7 @@ export const SendForm = (props: any) => {
           alignItems="center"
           width="100%"
         >
-          <span style={{ width: '8.9%' }}>{window.i18n('address')}</span>
+          <span style={{     width: "calc( 8.9% + 21px)" }}>{window.i18n('address')}</span>
           <div className="wallet-sendForm-inputBox">
             <input
               value={address}
@@ -195,7 +197,7 @@ export const SendForm = (props: any) => {
           alignItems="center"
           width="100%"
         >
-          <span style={{ width: '8.9%' }}>{window.i18n('notes')}</span>
+          <span style={{ width: "calc( 8.9% + 21px)" }}>{window.i18n('notes')}</span>
           <div className="wallet-sendForm-inputBox">
             <textarea
               value={notes}
@@ -218,5 +220,8 @@ export const SendForm = (props: any) => {
         />
       </div>
     </div>
+    <SpacerLG />
+    <SpacerLG />
+    </>
   );
 };

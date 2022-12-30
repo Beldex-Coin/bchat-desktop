@@ -45,7 +45,7 @@ export const WalletMainPanel = () => {
 
 
    function numberOnly(e:any) {
-      const re = /^[0-9\b]+$/;
+      const re = /^[0-9]*\.?[0-9]*$/;
       if (e === '' || re.test(e)) {
       setAmount(e)
       }

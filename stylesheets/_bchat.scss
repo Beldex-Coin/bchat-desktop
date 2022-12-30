@@ -1465,7 +1465,8 @@ label {
       width: 55%;
       &-balanceTxt {
         // font-size: 22px;
-        font-size: 26px;
+        // font-size: 26px;
+        font-size: 22px;
         font-family: $bchat-font-poppin-semibold;
       }
       &-realCurrencyTxt {
@@ -1619,9 +1620,10 @@ label {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 15px;
+        // padding: 15px;
         font-family: $bchat-font-poppin-light;
         font-size: 12px;
+        padding: 8px;
       }
 
       &-copyIcon-box {
@@ -1655,6 +1657,11 @@ label {
       width: 100%;
       border-radius: 10px;
       padding: 15px;
+      &-label
+      {
+        // width: 77px;
+        width: calc( 20% + 30px);
+      }
       &-inputBox {
         width: 100%;
         // height: 60px;
@@ -1709,10 +1716,12 @@ label {
     &-receivedForm {
       // background-color: #303041;
       background-color: var(--color-WalcontentBg);
-      height: 58%;
+      // height: 58%;
       display: flex;
       width: 100%;
       border-radius: 10px;
+      // padding: 40px;
+      padding: 59px 40px;
       &-qrBox {
         // width: 210px;
         // height: 210px;
@@ -2055,6 +2064,7 @@ label {
               margin-top: 10px;
               border-radius: 5px;
               color: #fff;
+              cursor: pointer;
             }
             &-input {
               border: none;

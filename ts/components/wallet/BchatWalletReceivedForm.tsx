@@ -21,7 +21,8 @@ export const ReceivedForm = () => {
          }
          setTxnAmount(e)
      }
-    return <div className="wallet-receivedForm">
+    return <>
+     <div className="wallet-receivedForm">
         <Flex container={true} flexDirection="row" justifyContent="center" alignItems="center" width="100%">
             <section className="wallet-receivedForm-qrBox">
                 <div className="wallet-receivedForm-qrBox-qrView" >
@@ -52,4 +53,8 @@ export const ReceivedForm = () => {
 
         </Flex>
     </div>
+    <SpacerLG />
+    <SpacerLG />
+    <SpacerLG />
+    </>
 }
