@@ -57,7 +57,7 @@ export const ForgotPassword = (props: any) => {
       }
       console.log('seedvalidation:', seed.length, recoveryPhrase.length);
       if (trimWhiteSpace.toLocaleLowerCase() !== recoveryPhrase.toLocaleLowerCase()) {
-        ToastUtils.pushToastError('invalidSeed', 'You given seed is diffrent from account.');
+        ToastUtils.pushToastError('invalidSeed', 'Seed entered does not match.');
         return false;
       }
       return true;
@@ -105,7 +105,7 @@ export const ForgotPassword = (props: any) => {
     );
     daemon.sendRPC('get_info').then(data => {
       if (!data.hasOwnProperty('error')) {
-        console.log("success")
+        console.log('success');
         dispatch(updateDaemon({ height: data.result.height }));
       }
     });
@@ -121,7 +121,9 @@ export const ForgotPassword = (props: any) => {
     <div className="wallet-forgotPassword">
       <div className="wallet-forgotPassword-content-Box">
         <div>
-          <div className='wallet-forgotPassword-content-Box-title'>{window.i18n('forgotPassword')}</div>
+          <div className="wallet-forgotPassword-content-Box-title">
+            {window.i18n('forgotPassword')}
+          </div>
           <SpacerMD />
           <div className="wallet-forgotPassword-content-Box-seed">
             <textarea
@@ -183,8 +185,9 @@ export const ForgotPassword = (props: any) => {
         </div>
         <SpacerMD />
         <SpacerMD />
-        <div style={{width: '86%'}}>
-          <span style={{color:'red'}}>Disclaimer </span>: if your forgot the wallet password and wallet syncnorization is start with 0 blocks
+        <div style={{ width: '86%', paddingTop: '12px' ,paddingBottom:'25px',fontSize:'13px'}}>
+          <span style={{ color: 'red' }}>Disclaimer </span>: When you use this forget password
+          option, your wallet will sync from the 0th block
         </div>
         <div className="wallet-settings-modalBtnGrp">
           <div className="bchat-modal__button-group__center">
@@ -206,4 +209,3 @@ export const ForgotPassword = (props: any) => {
     </div>
   );
 };
-

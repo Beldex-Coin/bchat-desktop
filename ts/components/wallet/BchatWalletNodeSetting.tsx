@@ -221,7 +221,7 @@ export const NodeSetting = () => {
 
                   <input
                     value={ipAddress}
-                    placeholder="Enter your MainNet IP Address"
+                    placeholder="Enter your IP address"
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
                     onChange={(e: any) => {assignHost(e.target.value)}}
                   />
@@ -235,7 +235,7 @@ export const NodeSetting = () => {
                     value={port}
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
                     onChange={(e: any) =>numberOnly(e.target.value)}
-                    placeholder="please enter your port "
+                    placeholder="Enter your port"
                   />
                 </article>
               </Flex>

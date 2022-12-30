@@ -25,16 +25,15 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
-  console.log('percentage:', percentage);
+  console.log('percentage:', percentage, currentHeight, daemonHeight);
   if (!progressing) {
     if (
       daemonHeight != 0 &&
       currentHeight != 0 &&
-      daemonHeight !== currentHeight 
-      &&
+      daemonHeight !== currentHeight &&
       percentage !== 99
     ) {
-      console.log("nottt")
+      console.log('nottt');
       setProgressing(true);
     }
   }
@@ -43,7 +42,7 @@ export const WalletPassword = (props: any) => {
       setProgressing(false);
     }
   }
-  console.log("setProgressing:",progressing);
+  console.log('setProgressing:', progressing);
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -55,7 +54,6 @@ export const WalletPassword = (props: any) => {
     }
 
     // window.setSettingValue("save-recipient", false);
-
   }
   loadDecimal();
   loadRecipient();

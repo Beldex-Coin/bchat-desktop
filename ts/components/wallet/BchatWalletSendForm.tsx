@@ -53,7 +53,7 @@ export const SendForm = (props: any) => {
       dispatch(updateTransactionInitModal(null))
       ToastUtils.pushToastSuccess(
         'successfully-sended',
-        `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
+        `Your transaction was successful.`
       );
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
@@ -94,10 +94,12 @@ export const SendForm = (props: any) => {
               <input
                 value={props.amount}
                 onChange={(e: any) => {
+                  // let amount = e.target.value.replace(/[^0-9\.]/g, '');
+                  // console.log("word_Without_Numbers:",amount)
                   props.setAmount(e.target.value);
                 }}
                 placeholder={window.i18n('enterAmount')}
-                type="tel"
+                type="number"
               />
             </div>
           </Flex>
@@ -169,7 +171,7 @@ export const SendForm = (props: any) => {
           <div className="wallet-sendForm-inputBox">
             <input
               value={address}
-              placeholder="Please enter beldex address"
+              placeholder="Enter Beldex address"
               onChange={(e: any) => {
                 setAddress(e.target.value);
               }}

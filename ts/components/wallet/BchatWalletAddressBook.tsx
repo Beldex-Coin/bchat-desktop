@@ -60,6 +60,7 @@ const AddressContent=(props:any)=>
 {
   const username=useConversationUsernameOrShorten(props.pubkey)
   const belAddress=useConversationBeldexAddress(props.pubkey)
+  console.log("belAddress:",belAddress)
 return <>
 <div
   className={classNames(`wallet-addressBook-wholeBox-contentBox`)}

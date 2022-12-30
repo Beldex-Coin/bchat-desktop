@@ -2,9 +2,7 @@ import React from 'react';
 
 import { BchatSeedModal } from '../dialog/BchatSeedModal';
 import { useSelector } from 'react-redux';
-import {
-  getRecoveryPhraseDialog,
-} from '../../state/selectors/modal';
+import { getRecoveryPhraseDialog } from '../../state/selectors/modal';
 
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIcon } from '../icon';
@@ -18,40 +16,41 @@ export const BchatRecoverySeed = (props: any) => {
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
 
   if (props.passwordLock) {
-    return <BchatSeedModal {...recoveryPhraseModalState} />
+    return <BchatSeedModal {...recoveryPhraseModalState} />;
   }
 
-  return <div className='bchat-settings-warnUnsetpass'>
-    <div className='bchat-settings-warnUnsetpass-contentbox'>
-      <BchatIcon iconType="info" iconSize={60} iconColor="blue" />
-      <SpacerMD />
+  return (
+    <div className="bchat-settings-warnUnsetpass">
+      <div className="bchat-settings-warnUnsetpass-contentbox">
+        <BchatIcon iconType="info" iconSize={60} iconColor="#2879FB" />
+        <SpacerMD />
 
-      <div className='fontSemiBold'>{window.i18n('setPassword')}</div>
-      <SpacerMD />
-      <div>Set a Password before accessing the Recovery Phrase. You can set your password from </div>
-      <div className='fontSemiBold'>Settings -&gt; Privacy -&gt; Set Account Password.</div>
-      <div style={{ padding: '15px 94px 0' }}>
-        <BchatButton
-          text={"ok"}
-          onClick={() => {
-            window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
-            displayPasswordModal('set', props.onPasswordUpdated);
-            // setVerify(true)
-          }}
-          buttonType={BchatButtonType.Brand}
-          buttonColor={BchatButtonColor.Green}
-        />
+        <div className="fontSemiBold">{window.i18n('setPassword')}</div>
+        <SpacerMD />
+        <div>
+          Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
+        </div>
+        <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div>
+        <div style={{ padding: '15px 94px 15px', paddingTop: '30px' }}>
+          <BchatButton
+            text={'OK'}
+            onClick={() => {
+              window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+              displayPasswordModal('set', props.onPasswordUpdated);
+              // setVerify(true)
+            }}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Green}
+          />
+        </div>
       </div>
     </div>
-
-
-  </div>
+  );
 
   // if(true)
   // {
   // return <WarningUnSetPassword onPasswordUpdated={props.onPasswordUpdated}/>
   // }
-
 
   // return <div className='bchat-settings-recovery-seed'>
   //   <img src="images/bchat/warning.svg" className="bchat-settings-recovery-seed-danger " />
@@ -69,10 +68,7 @@ export const BchatRecoverySeed = (props: any) => {
   //   </div>
 
   // </div>
-
-
-
-}
+};
 
 // const WarningUnSetPassword = (props:any) => <div className='bchat-settings-warnUnsetpass'>
 //   <div className='bchat-settings-warnUnsetpass-contentbox'>
@@ -92,6 +88,5 @@ export const BchatRecoverySeed = (props: any) => {
 //     />
 //     </div>
 //   </div>
-
 
 // </div>

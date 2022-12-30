@@ -128,7 +128,6 @@
     }
   }
 
- 
   input {
     width: 100%;
     padding: 8px;
@@ -183,7 +182,7 @@
 }
 
 .bchat-dialog {
-  &~.index.inbox {
+  & ~ .index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
@@ -193,47 +192,41 @@
     display: flex;
     border-bottom: var(--border-bchat);
   }
-  .changepass
-  {
-    &-forgot-seed
-    {
+  .changepass {
+    &-forgot-seed {
       textarea {
         border: none;
         outline: none;
         width: 361px;
         height: 76px;
         // background-color: #353543;
-        background-color:var(--color-walInputBg);
+        background-color: var(--color-walInputBg);
 
         padding: 15px;
         // box-shadow: 1px 2px 5px #00000074;
       }
-    };
-    &-oldpassInput
-    {
-      input {
-        background-color:var(--color-walInputBg);
-        width: 449px;
-        height: 55px;
-        // box-shadow: 1px 2px 5px #00000074;
-      };
     }
-    
-    &-newPassInput {
-      input{
-      // background-color: #353543;
-      background-color:var(--color-walInputBg);
-      width: 449px;
-      height: 55px;
-      // box-shadow: 1px 2px 5px #00000074;
-      margin-right: 10px;
+    &-oldpassInput {
+      input {
+        background-color: var(--color-walInputBg);
+        width: 435px;
+        height: 55px;
+        margin-bottom: 10px;
+        // box-shadow: 1px 2px 5px #00000074;
       }
     }
-    
-  
 
+    &-newPassInput {
+      input {
+        // background-color: #353543;
+        background-color: var(--color-walInputBg);
+        width: 435px;
+        height: 52px;
+        // box-shadow: 1px 2px 5px #00000074;
+        margin-right: 12px;
+      }
+    }
   }
- 
 
   input {
     background-color: var(--color-smModal-bg);
@@ -241,7 +234,6 @@
     border-bottom: 0;
     margin: 0;
     // box-shadow: var(--color-bchat-shadow);
-
   }
 }
 
@@ -318,7 +310,7 @@
       padding: 10px 10px 10px 14px;
       font-family: $bchat-font-default;
       font-weight: 100;
-      color: #0BB70F;
+      color: #0bb70f;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -333,7 +325,6 @@
         width: 86%;
         font-family: $bchat-font-poppin-medium;
         font-size: 14px;
-        
       }
     }
 
@@ -352,14 +343,13 @@
       border-radius: 30px;
       background-position: center;
       cursor: pointer;
-      color:var(--color-copyIcon);
+      color: var(--color-copyIcon);
 
       &:hover {
         transform: scale(1.1);
         color: #1ced23;
       }
     }
-    
 
     .bchat-button {
       width: 148px;
@@ -367,7 +357,6 @@
   }
 
   &-modalLoader {
-    
     width: 400px;
     height: 455px;
     // top: 22.3%;
@@ -377,8 +366,6 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    
-
   }
 
   .profile-name {
@@ -387,19 +374,16 @@
     justify-content: space-between;
     width: 100%;
 
-
     .inputBox {
       display: flex;
       /* width: 134px; */
       padding-left: 73px;
-
     }
 
     .saveIcon {
       width: 35px;
       color: var(--color-accent);
       cursor: pointer;
-
     }
 
     input {
@@ -418,8 +402,6 @@
       justify-content: space-around;
       width: 100%;
       font-family: $bchat-font-poppin-semibold;
-
-
 
       p {
         font-size: 16px;

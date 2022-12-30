@@ -12,7 +12,6 @@ import { shell } from 'electron';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
-
   const [filter, setFilter] = useState(window.i18n('filterAll'));
   const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
@@ -22,16 +21,10 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
-  console.log('data:', data.length, filter);
   useEffect(() => {
-    // console.log("filter ::",filter,'out');
-
-    // document.addEventListener('mousedown', handleClick);
-    console.log('filter:', filter);
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
-        console.log('filter ::', filter, 'out');
         searchTransaction(searchText);
 
         break;
@@ -42,7 +35,7 @@ export const TransactionSection = (props: any) => {
         break;
       case 'Failed':
         filterTransaction('failed');
-        searchTransaction(searchText);
+        // searchTransaction(searchText);
 
         break;
       case 'Incoming':
@@ -52,8 +45,10 @@ export const TransactionSection = (props: any) => {
         break;
 
       default:
-        filterTransaction('All');
-        searchTransaction(searchText);
+        if (!searchText) {
+          filterTransaction('All');
+        }
+        // searchTransaction(searchText);
 
         break;
     }
@@ -70,17 +65,9 @@ export const TransactionSection = (props: any) => {
   };
   function openToExplore(traxId: string) {
     if (window.networkType === 'mainnet') {
-      void shell.openExternal(
-        `http://explorer.beldex.io/tx/${traxId}`
-      );
+      void shell.openExternal(`http://explorer.beldex.io/tx/${traxId}`);
     }
-    else {
-      void shell.openExternal(
-        `http://154.26.139.105/tx/${traxId}`
-      );
-    }
-
-
+    void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
   }
   function closeDropDown(params: any, type: any) {
     setFilter(params);
@@ -95,7 +82,9 @@ export const TransactionSection = (props: any) => {
       setData(transactionsHistory);
       return;
     }
-    let filterData =transactionsHistory.length>0 && transactionsHistory.filter((data: any) => data.type === type);
+    let filterData =
+      transactionsHistory.length > 0 &&
+      transactionsHistory.filter((data: any) => data.type === type);
     setData(filterData);
     setSearchData(filterData);
   }
@@ -156,12 +145,16 @@ export const TransactionSection = (props: any) => {
 
     // if(isNaN(value))
     // {
-    let data =searchData.length>0 && searchData.filter(
-      (item: any) =>
-        String(item.amount / 1e9).includes(value.toLowerCase()) ||
-        item.txid.toLowerCase().includes(value.toLowerCase())
-    );
+    let data =
+      searchData.length !== 0
+        ? searchData.filter(
+            (item: any) =>
+              String(item.amount / 1e9).includes(value.toLowerCase()) ||
+              item.txid.toLowerCase().includes(value.toLowerCase())
+          )
+        : [];
     console.log('searchData:', searchData.length);
+    console.log('searchData:', searchData);
     setData(data);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];
@@ -267,7 +260,7 @@ export const TransactionSection = (props: any) => {
               {/* {data.length == 0 && filter == 'All' ? ( */}
               {/* '' */}
               {/* ) : ( */}
-              {transactionsHistory.length !== 0 &&  (
+              {transactionsHistory.length !== 0 && (
                 <div className="wallet-Transaction-filterWithIcon">
                   {/* <input value={window.i18n('filterAll')} /> */}
                   <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
@@ -399,19 +392,21 @@ export const TransactionSection = (props: any) => {
               data.map((item: any, i: any) => (
                 <div className="wallet-Transaction-contentBox" key={i}>
                   <Flex container={true} justifyContent="space-between" flexDirection="row">
-                    <Flex container={true} height=" 60px" >
+                    <Flex container={true} height=" 60px">
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
                         <TransactionIndication type={item.type} />
                       </article>
                       <article className="wallet-Transaction-contentBox-verticalline"></article>
                       <div className="wallet-Transaction-contentBox-balanceBox">
-                        <div className="wallet-Transaction-contentBox-balanceBox-amount"
+                        <div
+                          className="wallet-Transaction-contentBox-balanceBox-amount"
                           onClick={() => showdata(item, i)}
                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
                         </div>
-                        <div className="wallet-Transaction-contentBox-balanceBox-address"
+                        <div
+                          className="wallet-Transaction-contentBox-balanceBox-address"
                           onClick={() => openToExplore(item.txid)}
                         >
                           {item.txid}
@@ -433,7 +428,7 @@ export const TransactionSection = (props: any) => {
                 </div>
                 // </div>
               ))}
-            {data.length == 0  ? (
+            {data.length == 0 ? (
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
                 <h4 className="wallet-Transaction-content">
                   {emptyScreen == 'All' ? (

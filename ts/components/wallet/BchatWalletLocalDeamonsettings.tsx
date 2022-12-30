@@ -53,7 +53,7 @@ export function LocalDeamon() {
 
             <input
               value={localDeamonHost}
-              placeholder="Enter your MainNet IP Address"
+              placeholder="Enter your IP address"
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               disabled={true}
               //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
