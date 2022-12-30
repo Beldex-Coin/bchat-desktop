@@ -48,7 +48,7 @@ export function LocalDeamon() {
         <Flex container={true} justifyContent="space-between">
           <article className="wallet-settings-nodeSetting-remoteContentBox">
             <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-              {window.i18n('remoteNodeHost')}
+              {window.i18n('localNodeHost')}
             </div>
 
             <input
@@ -61,14 +61,14 @@ export function LocalDeamon() {
           </article>
           <article className="wallet-settings-nodeSetting-remoteContentBox">
             <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-              {window.i18n('remoteNodePort')}
+              {window.i18n('localNodePort')}
             </div>
 
             <input
               value={localDeamonPort}
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               onChange={(e: any) => !isNaN(e.target.value) && setLocalDeamonPort(e.target.value)}
-              placeholder="please enter your port "
+              placeholder="Enter your port"
             />
           </article>
         </Flex>
@@ -81,6 +81,7 @@ export function LocalDeamon() {
               buttonColor={BchatButtonColor.Primary}
               text={window.i18n('test')}
               onClick={() => validationForDeamon()}
+              disabled={!localDeamonPort}
             />
           </div>
           <div>

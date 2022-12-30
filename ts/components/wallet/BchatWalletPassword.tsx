@@ -17,6 +17,7 @@ export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
   const [progressing, setProgressing] = useState(false);
+  const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -26,19 +27,25 @@ export const WalletPassword = (props: any) => {
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
   console.log('percentage:', percentage, currentHeight, daemonHeight);
+  if (percentage != 0) {
+    setPercentage(percentage);
+  }
+  console.log('get_percentage:', getPercentage);
+  console.log('progressing:', progressing);
+
   if (!progressing) {
     if (
       daemonHeight != 0 &&
       currentHeight != 0 &&
       daemonHeight !== currentHeight &&
-      percentage !== 99
+      percentage < 99
     ) {
       console.log('nottt');
       setProgressing(true);
     }
   }
   if (progressing) {
-    if (daemonHeight != 0 && currentHeight != 0 && daemonHeight == currentHeight) {
+    if (daemonHeight != 0 && currentHeight != 0 && percentage == 99) {
       setProgressing(false);
     }
   }

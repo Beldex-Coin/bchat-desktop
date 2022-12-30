@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastUtils } from '../../bchat/utils';
-import { getFiatBalance, } from '../../state/selectors/walletConfig';
+import { getFiatBalance } from '../../state/selectors/walletConfig';
 import { SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
@@ -14,36 +14,31 @@ export const WalletBalanceSection = () => {
   const sliceWalletAddress = walletAddress ? walletAddress.slice(0, 45) : '';
   const currency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const fiatBalance: any = Number(useSelector(getFiatBalance));
-  const [amountVisible,setAmountVisible]=useState(false)
+  const [amountVisible, setAmountVisible] = useState(window.getSettingValue('balancevisibility'));
   // let decimalValue: any = useSelector(getwalletDecimalValue);
-  let decimalValue: any= window.getSettingValue(walletSettingsKey.settingsDecimal)
+  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
   decimalValue = decimalValue.charAt(0);
   const handlePaste = () => {
-    clipboard.writeText(walletAddress, 'clipboard'); 
+    clipboard.writeText(walletAddress, 'clipboard');
     ToastUtils.pushCopiedToClipBoard();
-
   };
 
-  function disableBalac(values:string | Number)
-  {
-    if(amountVisible)
-    {
-      return values
+  function disableBalac(values: string | Number) {
+    if (amountVisible) {
+      return values;
     }
-    let txt:any=String(values);
-    let sliptStr=txt.split('');
-    let dataArray=""
-    // console.log("sliptStr",sliptStr,sliptStr.length);
-    sliptStr.length>0 && sliptStr.map((item:any)=>{
-      if(item === ".")
-      {
-        dataArray= dataArray + ".";
-        return
-      }
-        dataArray=dataArray + "*";
-    })
-  return dataArray;
-
+    let txt: any = String(values);
+    let sliptStr = txt.split('');
+    let dataArray = '';
+    sliptStr.length > 0 &&
+      sliptStr.map((item: any) => {
+        if (item === '.') {
+          dataArray = dataArray + '.';
+          return;
+        }
+        dataArray = dataArray + '*';
+      });
+    return dataArray;
   }
   return (
     <div className="wallet-squarBox">
@@ -52,15 +47,22 @@ export const WalletBalanceSection = () => {
           <SpacerXS />
 
           <div className="flexCenter">
-            <BchatIcon iconSize={13} iconType="wallet" /> 
+            <BchatIcon iconSize={13} iconType="wallet" />
             <span className="marginLeft">Balance</span>
           </div>
           <SpacerSM />
           <div className="wallet-left-balance-Sec-balanceTxt">
             {disableBalac((walletDetails.balance / 1e9).toFixed(decimalValue))}{' '}
-            <span className="marginRight" style={{color: '#128b17'}}>BDX</span>
-            <span onClick={()=>setAmountVisible(!amountVisible)}>
-            <BchatIcon iconSize="medium" iconType={!amountVisible?"eye":"eye_closed"} />
+            <span className="marginRight" style={{ color: '#128b17' }}>
+              BDX
+            </span>
+            <span
+              onClick={() => {
+                setAmountVisible(!amountVisible);
+                window.setSettingValue('balancevisibility',!amountVisible);
+              }}
+            >
+              <BchatIcon iconSize="medium" iconType={!amountVisible ? 'eye_closed' : 'eye'} />
             </span>
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">

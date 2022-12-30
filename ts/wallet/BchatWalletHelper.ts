@@ -53,10 +53,10 @@ export async function deamonvalidation() {
 
   // let data={host:'38.242.196.753',port:'19095'}
   const deamonStatus = await workingStatusForDeamon(currentDaemon);
-  console.log('deamonStatus::', deamonStatus, deamonStatus === 'OK');
+  // console.log('deamonStatus::', deamonStatus, deamonStatus === 'OK');
 
   if (deamonStatus.status === 'OK') {
-    console.log('ok');
+    // console.log('ok');
 
     window.setSettingValue('current-deamon', currentDaemon);
     await wallet.startWallet('settings');

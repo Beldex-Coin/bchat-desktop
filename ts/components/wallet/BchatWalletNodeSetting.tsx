@@ -7,7 +7,7 @@ import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import classNames from 'classnames';
 import { walletSettingsKey } from '../../data/settings-key';
-import {  workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
+import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { LocalDeamon } from './BchatWalletLocalDeamonsettings';
 import { ToastUtils } from '../../bchat/utils';
 
@@ -17,7 +17,6 @@ export const NodeSetting = () => {
     'current deamon ::NodeSetting',
     window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   );
-  
 
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
@@ -33,29 +32,28 @@ export const NodeSetting = () => {
   const [chooseDeamonPort, setChooseDeamonPort] = useState(currentDeamon.port);
   const [option, setOption] = useState(deamonList);
   const [verifyDeamon, setvSerifyDeamon] = useState({});
-  const [testNotify, setTestNotify] = useState({status:'',content:``});
+  const [testNotify, setTestNotify] = useState({ status: '', content: `` });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
 
   // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
 
-  
-  function numberOnly(e:any) {
+  function numberOnly(e: any) {
     const re = /^[0-9\b]+$/;
     if (e === '' || re.test(e)) {
-      setPort(e)
+      setPort(e);
       setvSerifyDeamon({});
-   setTestNotify({status:'',content:``})
+      setTestNotify({ status: '', content: `` });
     }
     // if (isNaN(e)) {
     //    return
     // }
     // setAmount(e)
- }
- function assignHost(e:any) {
-  setIpAddress(e);
-   setvSerifyDeamon({});
-   setTestNotify({status:'',content:``})
- }
+  }
+  function assignHost(e: any) {
+    setIpAddress(e);
+    setvSerifyDeamon({});
+    setTestNotify({ status: '', content: `` });
+  }
   function addDeamonNet() {
     let data: any = verifyDeamon;
     if (Object.keys(data).length === 0) {
@@ -109,7 +107,7 @@ export const NodeSetting = () => {
     setChooseDeamon(item.host);
     setDropdown(false);
     setChooseDeamonPort(item.port);
-    currentDeamonNet();
+    // currentDeamonNet();
   }
 
   async function validationForDeamon() {
@@ -119,21 +117,20 @@ export const NodeSetting = () => {
 
     if (confirmation && confirmation.status === 'OK') {
       console.log('confirmation ok');
-      if(confirmation.nettype===window.networkType )
-      {
+      if (confirmation.nettype === window.networkType) {
         setvSerifyDeamon(data);
-        setTestNotify({status:"ok",content:`Height:${confirmation.height}`});
-        return
+        setTestNotify({ status: 'ok', content: `Success` });
+        return;
       }
-      
-      // setvSerifyDeamon(data);
-      // setTestNotify(`this Ip is ${confirmation.nettype}`);
-      setTestNotify({status:"fail",content:`this Ip is ${confirmation.nettype} but Started net work type is ${window.networkType}`});
+      setTestNotify({
+        status: 'fail',
+        content: `You're using ${confirmation.nettype} IP. Use a ${window.networkType} IP`,
+      });
       return;
     }
     setIpAddress('');
     setPort('');
-    setTestNotify({status:'fail',content:`Connection Error`});
+    setTestNotify({ status: 'fail', content: `Connection Error` });
 
     setvSerifyDeamon({});
   }
@@ -142,7 +139,7 @@ export const NodeSetting = () => {
     <div>
       <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'}  iconColor={'#9393af'}/>
+          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
           <div className="wallet-addressBook-header-txt">{window.i18n('node')}</div>
         </Flex>
       </div>
@@ -183,7 +180,9 @@ export const NodeSetting = () => {
         <SpacerMD />
 
         <div className="wallet-settings-nodeSetting-notesTxt">
-          {localDeamonVisible ?window.i18n('localDeamonheadetcntent'):window.i18n('remoteNoteToAllTransactions')}
+          {localDeamonVisible
+            ? window.i18n('localDeamonheadetcntent')
+            : window.i18n('remoteNoteToAllTransactions')}
           {}
         </div>
 
@@ -197,7 +196,7 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('addRemoteDaemonNode')}
               </div>
-              <div onClick={() => setViewBox1(!viewBox1)} style={{cursor:'pointer'}}>
+              <div onClick={() => setViewBox1(!viewBox1)} style={{ cursor: 'pointer' }}>
                 <BchatIcon
                   iconType="circleChevron"
                   iconSize={'medium'}
@@ -223,7 +222,9 @@ export const NodeSetting = () => {
                     value={ipAddress}
                     placeholder="Enter your IP address"
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    onChange={(e: any) => {assignHost(e.target.value)}}
+                    onChange={(e: any) => {
+                      assignHost(e.target.value);
+                    }}
                   />
                 </article>
                 <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -234,7 +235,7 @@ export const NodeSetting = () => {
                   <input
                     value={port}
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    onChange={(e: any) =>numberOnly(e.target.value)}
+                    onChange={(e: any) => numberOnly(e.target.value)}
                     placeholder="Enter your port"
                   />
                 </article>
@@ -248,6 +249,7 @@ export const NodeSetting = () => {
                     buttonColor={BchatButtonColor.Primary}
                     text={window.i18n('test')}
                     onClick={() => validationForDeamon()}
+                    disabled={!ipAddress && !port}
                   />
                 </div>
                 <div>
@@ -261,14 +263,16 @@ export const NodeSetting = () => {
               </div>
               {testNotify.status && (
                 <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                  <span
-                    style={testNotify.status ? { color: 'red' } : { color: 'green' }}
-                  >
+                  <span style={testNotify.status ? { color: 'red' } : { color: 'green' }}>
                     Test Result :
                   </span>
                   <span>{testNotify.content}</span>
-                  <BchatIcon iconType={testNotify.status === 'fail' ?'warning':"tickCircle"} 
-                  iconSize={12} iconColor={testNotify.status === 'fail' ?"red":"green"} iconPadding={'0 0 0 3px'} />
+                  <BchatIcon
+                    iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
+                    iconSize={16}
+                    iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
+                    iconPadding={'0 0 0 3px'}
+                  />
                 </div>
               )}
 
@@ -282,7 +286,7 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('chooseRemoteDaemonNode')}
               </div>
-              <div onClick={() => setViewBox2(!viewBox2)} style={{cursor:'pointer'}}>
+              <div onClick={() => setViewBox2(!viewBox2)} style={{ cursor: 'pointer' }}>
                 <BchatIcon
                   iconType="circleChevron"
                   iconSize={'medium'}

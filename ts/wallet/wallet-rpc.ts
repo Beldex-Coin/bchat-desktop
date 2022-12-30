@@ -163,6 +163,9 @@ export class Wallet {
     console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
 
     localStorage.setItem('syncStatus', '');
+    if (!window.getSettingValue('balancevisibility')) {
+      window.setSettingValue('balancevisibility', true);
+    }
     const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
     const auth = generateCredentials.toString('hex');
     this.auth = [
