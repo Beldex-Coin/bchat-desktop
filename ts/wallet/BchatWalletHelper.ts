@@ -41,7 +41,7 @@ export async function deamonvalidation() {
     ? getcurrentWorkingDeamon
     : window.currentDaemon;
 
-  console.log('list_deamon::', list_deamon);
+  // console.log('list_deamon::', list_deamon);
   
   if (!list_deamon) {
 
@@ -87,12 +87,13 @@ export function loadRecipient() {
     window.setSettingValue("save-recipient", true);
     // window.inboxStore?.dispatch(updateDecimalValue(data));
    
-  } else {
-    let data: any = window.getSettingValue('save-recipient');
-   window.setSettingValue("save-recipient", data);
+  } 
+  // else {
+  //   let data: any = window.getSettingValue('save-recipient');
+  //  window.setSettingValue("save-recipient", data);
 
-    // window.inboxStore?.dispatch(updateDecimalValue(data));
-  }
+  //   // window.inboxStore?.dispatch(updateDecimalValue(data));
+  // }
   
 
 }
@@ -103,13 +104,15 @@ export function loadFiatCurrency() {
    
     // window.inboxStore?.dispatch(updateDecimalValue(data));
    
-  } else {
-    let data: any = window.getSettingValue('fiat-currency');
-   window.setSettingValue("fiat-currency", data);
-
-
-    // window.inboxStore?.dispatch(updateDecimalValue(data));
   }
+
+  //  else {
+  //   let data: any = window.getSettingValue('fiat-currency');
+  //  window.setSettingValue("fiat-currency", data);
+
+
+  //   // window.inboxStore?.dispatch(updateDecimalValue(data));
+  // }
   
 
 }

@@ -11,9 +11,11 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { BchatIconSize, BchatIconType } from '../icon/Icons';
 import { WalletDashboard } from './BchatWalletMainPanel';
 
-export const WalletPaymentSection = () => {
+export const WalletPaymentSection = (props:any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+  // console.log('props ::',props);
+  
   return (
     <div className="wallet-squarBox">
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
@@ -24,7 +26,7 @@ export const WalletPaymentSection = () => {
               iconSize="small"
               iconType="paySend"
               iconColor={WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}
-              onClick={() => dispatch(walletSendPage())}
+              onClick={() => {dispatch(walletSendPage()),props.setAmount(''),props.setNotes('')}}
               isSelected={WalletDashboard.walletSend === focusedInnersection}
             />
             <span style={{ width: '5%', height: '20px' }}></span>
@@ -35,7 +37,7 @@ export const WalletPaymentSection = () => {
               iconColor={
                 WalletDashboard.walletReceived === focusedInnersection ? '#fff' : '#159B24'
               }
-              onClick={() => dispatch(walletReceivedPage())}
+              onClick={() => {dispatch(walletReceivedPage())}}
               isSelected={WalletDashboard.walletReceived === focusedInnersection}
             />
           </Flex>
@@ -51,7 +53,7 @@ export const WalletPaymentSection = () => {
             iconSize="large"
             iconType="payTransaction"
             iconColor={WalletDashboard.walletTransaction === focusedInnersection?"#fff":'var(--color-text)'}
-            onClick={() => dispatch(walletTransactionPage())}
+            onClick={() => {dispatch(walletTransactionPage())}}
             isSelected={WalletDashboard.walletTransaction === focusedInnersection}
           />
         </Flex>

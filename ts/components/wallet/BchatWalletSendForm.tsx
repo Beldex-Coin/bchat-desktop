@@ -23,7 +23,7 @@ export const SendForm = (props: any) => {
   // const [amount, setAmount] = useState(props.amount);
   // const [priority, setPriority] = useState(window.i18n("flash"));
   const [address, setAddress] = useState(sendAddress);
-  const [notes, setNotes] = useState('');
+  // const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
@@ -101,7 +101,7 @@ export const SendForm = (props: any) => {
                   props.setAmount(e.target.value);
                 }}
                 placeholder={window.i18n('enterAmount')}
-                type="number"
+                type="text"
               />
             </div>
           </Flex>
@@ -200,10 +200,11 @@ export const SendForm = (props: any) => {
           <span style={{ width: "calc( 8.9% + 21px)" }}>{window.i18n('notes')}</span>
           <div className="wallet-sendForm-inputBox">
             <textarea
-              value={notes}
+              value={props.notes}
               onChange={(e: any) => {
-                setNotes(e.target.value);
+                props.setNotes(e.target.value);
               }}
+              placeholder='Notes'
               className="wallet-sendForm-textArea"
             />
           </div>

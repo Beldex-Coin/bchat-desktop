@@ -713,10 +713,14 @@ export class Wallet {
     window.inboxStore?.dispatch(
       updateBalance({
         balance: 0,
-        unlocked_balance: 0,
+        unlocked_balance: 0, 
+
         transacations: { tx_list: [] },
       })
     );
+    let zero:any=0
+    window.inboxStore?.dispatch(updateFiatBalance(zero));
+
     this.wallet_state.balance = 0;
     this.wallet_state.unlocked_balance = 0;
   }

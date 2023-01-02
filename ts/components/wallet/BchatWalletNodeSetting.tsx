@@ -149,14 +149,15 @@ export const NodeSetting = () => {
           container={true}
           alignItems="center"
           flexDirection="row"
-          width="40%"
-          justifyContent="space-between"
+          width="100%"
+          justifyContent="flex-start"
+
         >
           <article
             className="wallet-settings-nodeSetting-FlexBox"
             onClick={() => setLocalDeamonVisible(false)}
           >
-            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle">
+            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle" style={!localDeamonVisible?{border:"2px solid green"}:{border:"2px solid"}}>
               {!localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
               )}
@@ -166,10 +167,12 @@ export const NodeSetting = () => {
           {/* <div className="marginLeft marginRight "></div> */}
 
           <article
-            className="wallet-settings-nodeSetting-FlexBox"
+            className="wallet-settings-nodeSetting-FlexBox" style={{marginLeft:'100px'}}
+           
             onClick={() => setLocalDeamonVisible(true)}
           >
-            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle">
+            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle"   
+            style={localDeamonVisible?{border:"2px solid green"}:{border:"2px solid"}}>
               {localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
               )}

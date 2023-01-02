@@ -16,8 +16,8 @@ import { loadFiatCurrency, loadRecipient } from '../../wallet/BchatWalletHelper'
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [progressing, setProgressing] = useState(false);
-  const [getPercentage, setPercentage] = useState(1);
+  // const [progressing, setProgressing] = useState(false);
+  // const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -27,29 +27,29 @@ export const WalletPassword = (props: any) => {
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
   console.log('percentage:', percentage, currentHeight, daemonHeight);
-  if (percentage != 0) {
-    setPercentage(percentage);
-  }
-  console.log('get_percentage:', getPercentage);
-  console.log('progressing:', progressing);
+  // if (percentage != 0) {
+  //   setPercentage(percentage);
+  // }
+  // console.log('get_percentage:', getPercentage);
+  // console.log('progressing:', progressing);
 
-  if (!progressing) {
-    if (
-      daemonHeight != 0 &&
-      currentHeight != 0 &&
-      daemonHeight !== currentHeight &&
-      percentage < 99
-    ) {
-      console.log('nottt');
-      setProgressing(true);
-    }
-  }
-  if (progressing) {
-    if (daemonHeight != 0 && currentHeight != 0 && percentage == 99) {
-      setProgressing(false);
-    }
-  }
-  console.log('setProgressing:', progressing);
+  // if (!progressing) {
+  //   if (
+  //     daemonHeight != 0 &&
+  //     currentHeight != 0 &&
+  //     daemonHeight !== currentHeight &&
+  //     percentage < 99
+  //   ) {
+  //     console.log('nottt');
+  //     setProgressing(true);
+  //   }
+  // }
+  // if (progressing) {
+  //   if (daemonHeight != 0 && currentHeight != 0 && daemonHeight===currentHeight) {
+  //     setProgressing(false);
+  //   }
+  // }
+  // console.log('setProgressing:', progressing);
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -86,7 +86,10 @@ export const WalletPassword = (props: any) => {
       />
     );
   }
-  if (progressing) {
+  
+  console.log('currentHeight>0&&percentage<99',daemonHeight>0&&percentage<99,daemonHeight,percentage);
+  
+  if (daemonHeight>0&&percentage<99) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
@@ -105,7 +108,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type={'text'} value={password} onChange={e => setValue(e.target.value)} />
+          <input type='password' value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
         <div

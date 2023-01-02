@@ -15,6 +15,7 @@ import { SendForm } from "./BchatWalletSendForm"
 import { TransactionSection } from "./BchatWalletTransactionSection"
 import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
 import { daemon } from '../../wallet/daemon-rpc';
+// import { ModalContainer } from "../dialog/ModalContainer"
 //  import { ForgotPassword } from "./BchatWalletForgotPassword"
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
 // import { wallet } from '../../wallet/wallet-rpc';
@@ -45,7 +46,7 @@ export const WalletMainPanel = () => {
 
 
    function numberOnly(e:any) {
-      const re = /^[0-9]*\.?[0-9]*$/;
+      const re = /^-?\d+\.?\d*$/;
       if (e === '' || re.test(e)) {
       setAmount(e)
       }
@@ -75,6 +76,7 @@ export const WalletMainPanel = () => {
    //    </div>
    // }
    if (WalletPage.AddressBook === focusedsettings) {
+     
       return <div className="wallet"><AddressBook name={window.i18n('addressBook')} />
       </div>
    }
@@ -83,6 +85,7 @@ export const WalletMainPanel = () => {
       </div>
    }
    if (WalletPage.Setting === focusedsettings) {
+      // setAmount('')
       return <div className="wallet"><WalletSettings />
       </div>
    }
@@ -96,6 +99,8 @@ export const WalletMainPanel = () => {
 
    return (
       <div className="wallet">
+      {/* <ModalContainer /> */}
+
 
          {WalletPage.Dashboard === focusedsettings &&
             <Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
@@ -115,16 +120,18 @@ export const Dashboard = (props: any) => {
    let transactions = useSelector((state: any) => state.wallet.transacations);
    console.log("transactions-lenghyth:", transactions.length)
    daemon.daemonHeartbeat();
+   const [notes,setNotes]=useState("")
+
    // wallet.startHeartbeat();
    return (
       <>
          <WalletHeader />
          <SpacerLG />
          <div className="wallet-contentSpace">
-            <BalanceAndsendReceiveAction />
+            <BalanceAndsendReceiveAction setAmount={props.setAmount} setNotes={(e:any)=>setNotes(e)} />
             <SpacerLG />
             {WalletDashboard.walletSend === focusedInnersection && <SendForm amount={props.amount} setAmount={props.setAmount}
-               priority={props.priority} setPriority={props.setPriority} />}
+               priority={props.priority} setPriority={props.setPriority} notes={notes} setNotes={(e:any)=>setNotes(e)} />}
             {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
             {WalletDashboard.walletTransaction === focusedInnersection && <TransactionSection syncStatus={localStorage.getItem('syncStatus')} transactionList={transactions} />}
 
@@ -136,7 +143,7 @@ export const Dashboard = (props: any) => {
       </>
    )
 }
-export const BalanceAndsendReceiveAction = () => {
+export const BalanceAndsendReceiveAction = (props:any) => {
    return (
       <Flex
          container={true}
@@ -144,7 +151,7 @@ export const BalanceAndsendReceiveAction = () => {
          justifyContent="space-between"
       >
          <WalletBalanceSection />
-         <WalletPaymentSection />
+         <WalletPaymentSection setAmount={props.setAmount} setNotes={props.setNotes}/>
       </Flex>
 
    )

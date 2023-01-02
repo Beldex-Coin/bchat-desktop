@@ -235,7 +235,7 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
-window.networkType = 'testnet';
+ window.networkType = 'testnet';
 // window.networkType = 'mainnet';
 
 if (window.networkType == 'mainnet') {

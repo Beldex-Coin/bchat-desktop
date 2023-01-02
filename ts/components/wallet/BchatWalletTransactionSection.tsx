@@ -1,22 +1,23 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
-//  import { useSelector } from 'react-redux';
 import { getRecipientAddress } from '../../data/data';
-// import { wallet } from "../../wallet/wallet-rpc"
-// import { BchatDropdown } from "../basic/BchatDropdown"
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { shell } from 'electron';
 
+
 export const TransactionSection = (props: any) => {
+
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
+ 
+
   const [filter, setFilter] = useState(window.i18n('filterAll'));
   const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(transactionsHistory);
-  const [searchData, setSearchData] = useState([]);
+  const [searchData,setSearchData] = useState([]);
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -35,7 +36,7 @@ export const TransactionSection = (props: any) => {
         break;
       case 'Failed':
         filterTransaction('failed');
-        // searchTransaction(searchText);
+        searchTransaction(searchText);
 
         break;
       case 'Incoming':
@@ -48,7 +49,7 @@ export const TransactionSection = (props: any) => {
         if (!searchText) {
           filterTransaction('All');
         }
-        // searchTransaction(searchText);
+        searchTransaction(searchText);
 
         break;
     }
@@ -56,7 +57,12 @@ export const TransactionSection = (props: any) => {
       document.removeEventListener('mousedown', handleClick);
     };
     // filterTransaction(type);
-  }, [transactionsHistory]);
+    }, [transactionsHistory]);
+  // }, []);
+  console.log('transactionsHistory ::', transactionsHistory);
+  // setSearchData()
+
+  // console.log('tx', tx);
 
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
@@ -83,7 +89,7 @@ export const TransactionSection = (props: any) => {
       return;
     }
     let filterData =
-      transactionsHistory.length > 0 &&
+    transactionsHistory.length > 0 &&
       transactionsHistory.filter((data: any) => data.type === type);
     setData(filterData);
     setSearchData(filterData);
@@ -146,12 +152,12 @@ export const TransactionSection = (props: any) => {
     // if(isNaN(value))
     // {
     let data =
-      searchData.length !== 0
+      searchData.length >0
         ? searchData.filter(
-            (item: any) =>
-              String(item.amount / 1e9).includes(value.toLowerCase()) ||
-              item.txid.toLowerCase().includes(value.toLowerCase())
-          )
+          (item: any) =>
+            String(item.amount / 1e9).includes(value.toLowerCase()) ||
+            item.txid.toLowerCase().includes(value.toLowerCase())
+        )
         : [];
     console.log('searchData:', searchData.length);
     console.log('searchData:', searchData);
@@ -182,45 +188,58 @@ export const TransactionSection = (props: any) => {
       <>
         <Flex
           container={true}
-          justifyContent="space-between"
+          // justifyContent="space-around"
           flexDirection="row"
-          width={reccipient.address ? '92.5%' : '44%'}
+          width={'100%'}
         >
           {/* <Flex container={true} height=" 60px" > */}
-          <div style={{ display: 'flex' }}>
-            <section style={{ display: 'flex' }}>
-              <article style={{ width: '110px' }}>
-                {/* <TransactionIndication type={item.type} /> */}
-              </article>
+          {/* <div style={{ display: 'flex' }}> */}
+            <article style={{ width: '110px' }}>
+              {/* <TransactionIndication type={item.type} /> */}
+            </article>
 
-              {reccipient.address && (
+            {/* <section style={{ display: 'flex' }}> */}
+
+            {reccipient.address && (
+              <div
+                style={{ marginLeft: '20px' }}
+              className="wallet-Transaction-recipitentBox-adddressBox"
+              >
+                <div className="">{window.i18n('recipientAddress')}</div>
                 <div
-                  style={{ marginLeft: '20px' }}
-                  className="wallet-Transaction-recipitentBox-adddressBox"
+                 className="wallet-Transaction-recipitentBox-adddressBox-address"
                 >
-                  <div className="">{window.i18n('recipientAddress')}</div>
-                  <div className="wallet-Transaction-recipitentBox-adddressBox-address">
-                    {reccipient.address}
-                  </div>
+                  {reccipient.address}
                 </div>
-              )}
-            </section>
+              </div>
+            )}
+            {/* </section> */}
 
-            <section style={{ marginLeft: '20px' }}>
-              <article className="wallet-Transaction-recipitentBox-transactionFee-header">
+            <section style={{ marginLeft: '20px' ,width:reccipient.address?'18%':'22%'}}>
+              <article
+              className="wallet-Transaction-recipitentBox-transactionFee-header"
+              >
                 {window.i18n('transactionFee')}
               </article>
-              <article className="wallet-Transaction-recipitentBox-transactionFee-text">
+              <article
+              className="wallet-Transaction-recipitentBox-transactionFee-text"
+              >
                 {trasactionData.fee / 1e9} BDX
               </article>
             </section>
-          </div>
+          {/* </div> */}
 
-          <section className="wallet-Transaction-contentBox-dateandheight">
-            <div className="wallet-Transaction-contentBox-dateandheight-month">
+          <section style={{width:reccipient.address?'18%':'22%',marginLeft: '1%'}}
+          // className="wallet-Transaction-contentBox-dateandheight"
+          >
+            <div
+            className="wallet-Transaction-contentBox-dateandheight-month"
+            >
               {window.i18n('dateTime')}
             </div>
-            <div className="wallet-Transaction-contentBox-dateandheight-height">
+            <div
+            className="wallet-Transaction-contentBox-dateandheight-height"
+            >
               {moment.unix(trasactionData.timestamp).format('DD/MM/YYYY HH:mm')}
             </div>
           </section>
@@ -228,11 +247,11 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  console.log(
-    'DAAAAAATAAAAAA.length:',
-    `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
-    data.length
-  );
+  // console.log(
+  //   'DAAAAAATAAAAAA.length:',
+  //   `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
+  //   data.length
+  // );
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (
@@ -242,8 +261,8 @@ export const TransactionSection = (props: any) => {
       ) : (
         <div style={{ height: '91%' }}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
-            <div>{window.i18n('transactions')}</div>
-            <Flex container={true} justifyContent="space-between" flexDirection="row">
+            <div className='wallet-Transaction-title'>{window.i18n('transactions')}</div>
+            <Flex container={true} justifyContent='flex-end' flexDirection="row" width={'77%'}>
               {data.length !== 0 || searchText ? (
                 <div>
                   {window.i18n('filter')}
@@ -391,8 +410,8 @@ export const TransactionSection = (props: any) => {
             {data.length > 0 &&
               data.map((item: any, i: any) => (
                 <div className="wallet-Transaction-contentBox" key={i}>
-                  <Flex container={true} justifyContent="space-between" flexDirection="row">
-                    <Flex container={true} height=" 60px">
+                  <Flex container={true} justifyContent="space-between" flexDirection="row" >
+                    <Flex container={true} height=" 60px" width='66%'>
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
                         <TransactionIndication type={item.type} />
                       </article>
@@ -413,18 +432,22 @@ export const TransactionSection = (props: any) => {
                         </div>
                       </div>
                     </Flex>
-                    <section className="wallet-Transaction-contentBox-dateandheight">
-                      <div className="wallet-Transaction-contentBox-dateandheight-month">
-                        {moment.unix(item.timestamp).fromNow()}
-                      </div>
-                      <div className="wallet-Transaction-contentBox-dateandheight-height">
-                        Height : {item.height} (confirmed)
-                      </div>
-                    </section>
+                    <Flex>
+                      <section className="wallet-Transaction-contentBox-dateandheight">
+                        <div className="wallet-Transaction-contentBox-dateandheight-month">
+                          {moment.unix(item.timestamp).fromNow()}
+                        </div>
+                        <div className="wallet-Transaction-contentBox-dateandheight-height">
+                          Height : {item.height} (confirmed)
+                        </div>
+                      </section>
+                    </Flex>
+
                   </Flex>
                   {/* <div> */}
                   {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
                   {selected === i && <RececipientAddress trasactionData={item} />}
+                 
                 </div>
                 // </div>
               ))}
@@ -456,6 +479,8 @@ export const TransactionSection = (props: any) => {
               ''
             )}
           </div>
+          <SpacerLG />
+          <SpacerLG />
         </div>
       )}
       {/* **********************Transaction Header************************* */}
