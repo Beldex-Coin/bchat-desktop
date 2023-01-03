@@ -8,7 +8,7 @@ import { walletSettingsKey } from '../data/settings-key';
 // import { updateDecimalValue } from '../state/ducks/walletConfig';
 
 export async function workingStatusForDeamon(currentdeamon: any) {
-  console.log('currentdeamon data::', currentdeamon);
+  // console.log('currentdeamon data::', currentdeamon);
 
   try {
     const options = {
@@ -24,7 +24,7 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       timeout: 0,
     };
     let requestData: any = await request(options);
-     console.log('requestData::', requestData);
+    //  console.log('requestData::', requestData);
     if (requestData.result) {
       // requestData.result.status==="ok"
       return requestData.result;

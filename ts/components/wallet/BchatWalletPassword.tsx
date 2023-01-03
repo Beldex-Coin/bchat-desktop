@@ -18,6 +18,7 @@ export const WalletPassword = (props: any) => {
   const [forgotPassword, setForgotPassword] = useState(false);
   // const [progressing, setProgressing] = useState(false);
   // const [getPercentage, setPercentage] = useState(1);
+  // const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -39,6 +40,7 @@ export const WalletPassword = (props: any) => {
   //     currentHeight != 0 &&
   //     daemonHeight !== currentHeight &&
   //     percentage < 99
+  //     percentage !== 99
   //   ) {
   //     console.log('nottt');
   //     setProgressing(true);
@@ -49,6 +51,12 @@ export const WalletPassword = (props: any) => {
   //     setProgressing(false);
   //   }
   // }
+  // console.log('setProgressing:', progressing);
+  //   if (daemonHeight != 0 && currentHeight != 0 && daemonHeight == 99) {
+  // setProgressing(false);
+  //   }
+  // }
+
   // console.log('setProgressing:', progressing);
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
@@ -86,10 +94,15 @@ export const WalletPassword = (props: any) => {
       />
     );
   }
-  
-  console.log('currentHeight>0&&percentage<99',daemonHeight>0&&percentage<99,daemonHeight,percentage);
-  
-  if (daemonHeight>0&&percentage<99) {
+
+  console.log(
+    'currentHeight>0&&percentage<99',
+    daemonHeight > 0 && percentage < 99,
+    daemonHeight,
+    percentage
+  );
+
+  if (daemonHeight > 0 && percentage < 99) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
@@ -108,7 +121,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type='password' value={password} onChange={e => setValue(e.target.value)} />
+          <input type="password" value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
         <div

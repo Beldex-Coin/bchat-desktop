@@ -14,7 +14,9 @@ export const SyncStatusBar = () => {
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };
-  currentHeight == daemonHeight && pct !== 0 ? localStorage.setItem('syncStatus', 'true') : '';
+  // currentHeight == daemonHeight && pct !== 0 ? localStorage.setItem('syncStatus', 'true') : '';
+  console.log("percentage:",percentage)
+  pct >= 99 ? localStorage.setItem('syncStatus', 'true') : '';
 
   return (
     <div className="wallet-syncStatus">
