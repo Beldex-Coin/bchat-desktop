@@ -1,19 +1,19 @@
-import React, { useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 // import { WalletStateType } from "../../state/ducks/walletSection"
-import { Flex } from "../basic/Flex"
-import { SpacerLG } from "../basic/Text"
-import { AddressBook } from "./BchatWalletAddressBook"
-import { WalletBalanceSection } from "./BchatWalletBalanceSection"
-import { WalletHeader } from "./BchatWalletHeader"
-import { WalletPassword } from "./BchatWalletPassword"
-import { NodeSetting } from "./BchatWalletNodeSetting"
-import { WalletPaymentSection } from "./BchatWalletPaymentSection"
-import { ReceivedForm } from "./BchatWalletReceivedForm"
-import { WalletSettings } from "./BchatWalletSettings"
-import { SendForm } from "./BchatWalletSendForm"
-import { TransactionSection } from "./BchatWalletTransactionSection"
-import { SyncStatusBar } from "./BchatWalletSyncSatusBar"
+import { Flex } from '../basic/Flex';
+import { SpacerLG } from '../basic/Text';
+import { AddressBook } from './BchatWalletAddressBook';
+import { WalletBalanceSection } from './BchatWalletBalanceSection';
+import { WalletHeader } from './BchatWalletHeader';
+import { WalletPassword } from './BchatWalletPassword';
+import { NodeSetting } from './BchatWalletNodeSetting';
+import { WalletPaymentSection } from './BchatWalletPaymentSection';
+import { ReceivedForm } from './BchatWalletReceivedForm';
+import { WalletSettings } from './BchatWalletSettings';
+import { SendForm } from './BchatWalletSendForm';
+import { TransactionSection } from './BchatWalletTransactionSection';
+import { SyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
 // import { ModalContainer } from "../dialog/ModalContainer"
 //  import { ForgotPassword } from "./BchatWalletForgotPassword"
@@ -21,138 +21,167 @@ import { daemon } from '../../wallet/daemon-rpc';
 // import { wallet } from '../../wallet/wallet-rpc';
 // import { walletHelper } from "../../wallet/BchatWalletHelper";
 
-
 export enum WalletPage {
-   WalletPassword = "walletPassword",
-   Dashboard = "dashboard",
-   AddressBook = "addressbook",
-   Setting = "setting",
-   NodeSetting = "nodeSetting",
-   Contact = "contact"
+  WalletPassword = 'walletPassword',
+  Dashboard = 'dashboard',
+  AddressBook = 'addressbook',
+  Setting = 'setting',
+  NodeSetting = 'nodeSetting',
+  Contact = 'contact',
 }
 
 export enum WalletDashboard {
-   walletSend = "walletSend",
-   walletReceived = "walletReceived",
-   walletTransaction = "walletTransaction"
+  walletSend = 'walletSend',
+  walletReceived = 'walletReceived',
+  walletTransaction = 'walletTransaction',
 }
-
 
 export const WalletMainPanel = () => {
-   const focusedsettings = useSelector((state: any) => state.walletFocused);
-   const [amount, setAmount] = useState("");
-   const [priority, setPriority] = useState(window.i18n("flash"));
-   const [passScreen, setPassScreen] = useState(true);
+  const focusedsettings = useSelector((state: any) => state.walletFocused);
+  const [amount, setAmount] = useState('');
+  const [priority, setPriority] = useState(window.i18n('flash'));
+  const [passScreen, setPassScreen] = useState(true);
 
+  function numberOnly(e: any) {
+    const re = /^-?\d+\.?\d*$/;
+    if (e === '' || re.test(e)) {
+      setAmount(e);
+    }
+    // if (isNaN(e)) {
+    //    return
+    // }
+    // setAmount(e)
+  }
 
-   function numberOnly(e:any) {
-      const re = /^-?\d+\.?\d*$/;
-      if (e === '' || re.test(e)) {
-      setAmount(e)
-      }
-      // if (isNaN(e)) {
-      //    return
-      // }
-      // setAmount(e)
-   }
+  //   console.log("focusedsettings:",focusedsettings,WalletPage.WalletPassword);
 
-
-   //   console.log("focusedsettings:",focusedsettings,WalletPage.WalletPassword);
-
-   //   if(WalletPage.WalletPassword===focusedsettings)
-   //   {
-   //       return  <div className="wallet"> <WalletPassword />
-   //       </div>
-   //   }
-   if (passScreen) {
-       return <div className="wallet"><WalletPassword onClick={() => { setPassScreen(!passScreen) }} /> </div>
-      // return <div className="wallet"><ForgotPassword onClick={()=>{setPassScreen(!passScreen)}}/> </div>
-
-   }
-   // if (WalletPage.Dashboard === focusedsettings) {
-
-   //    return <div className="wallet"><Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
-   //       {/* <SyncStatusBar /> */}
-   //    </div>
-   // }
-   if (WalletPage.AddressBook === focusedsettings) {
-     
-      return <div className="wallet"><AddressBook name={window.i18n('addressBook')} />
-      </div>
-   }
-   if (WalletPage.Contact === focusedsettings) {
-      return <div className="wallet"><AddressBook name={window.i18n('contact')} />
-      </div>
-   }
-   if (WalletPage.Setting === focusedsettings) {
-      // setAmount('')
-      return <div className="wallet"><WalletSettings />
-      </div>
-   }
-   if (WalletPage.NodeSetting === focusedsettings) {
-      console.log('NodeSetting');
-
-      return <div className="wallet"><NodeSetting />
-      </div>
-   }
-   // walletheartAction();
-
-   return (
+  //   if(WalletPage.WalletPassword===focusedsettings)
+  //   {
+  //       return  <div className="wallet"> <WalletPassword />
+  //       </div>
+  //   }
+  if (passScreen) {
+    return (
       <div className="wallet">
+        <WalletPassword
+          onClick={() => {
+            setPassScreen(!passScreen);
+          }}
+        />{' '}
+      </div>
+    );
+    // return <div className="wallet"><ForgotPassword onClick={()=>{setPassScreen(!passScreen)}}/> </div>
+  }
+  // if (WalletPage.Dashboard === focusedsettings) {
+
+  //    return <div className="wallet"><Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
+  //       {/* <SyncStatusBar /> */}
+  //    </div>
+  // }
+  if (WalletPage.AddressBook === focusedsettings) {
+    return (
+      <div className="wallet">
+        <AddressBook name={window.i18n('addressBook')} />
+      </div>
+    );
+  }
+  if (WalletPage.Contact === focusedsettings) {
+    return (
+      <div className="wallet">
+        <AddressBook name={window.i18n('contact')} />
+      </div>
+    );
+  }
+  if (WalletPage.Setting === focusedsettings) {
+    // setAmount('')
+    return (
+      <div className="wallet">
+        <WalletSettings />
+      </div>
+    );
+  }
+  if (WalletPage.NodeSetting === focusedsettings) {
+    console.log('NodeSetting');
+
+    return (
+      <div className="wallet">
+        <NodeSetting />
+      </div>
+    );
+  }
+  // walletheartAction();
+
+  return (
+    <div className="wallet">
       {/* <ModalContainer /> */}
 
+      {WalletPage.Dashboard === focusedsettings && (
+        <Dashboard
+          amount={amount}
+          setAmount={(e: any) => {
+            numberOnly(e);
+          }}
+          priority={priority}
+          setPriority={(e: any) => setPriority(e)}
+        />
+      )}
 
-         {WalletPage.Dashboard === focusedsettings &&
-            <Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
-         }
-
-         {/* <WalletPassword /> */}
-         {/* <AddressBook /> */}
-         {/* <NodeSetting /> */}
-         {/* <WalletSettings /> */}
-
-      </div>
-   )
-}
+      {/* <WalletPassword /> */}
+      {/* <AddressBook /> */}
+      {/* <NodeSetting /> */}
+      {/* <WalletSettings /> */}
+    </div>
+  );
+};
 
 export const Dashboard = (props: any) => {
-   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
-   let transactions = useSelector((state: any) => state.wallet.transacations);
-   console.log("transactions-lenghyth:", transactions.length)
-   daemon.daemonHeartbeat();
-   const [notes,setNotes]=useState("")
+  const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+  let transactions = useSelector((state: any) => state.wallet.transacations);
+  daemon.daemonHeartbeat();
+  const [notes, setNotes] = useState('');
 
-   // wallet.startHeartbeat();
-   return (
-      <>
-         <WalletHeader />
-         <SpacerLG />
-         <div className="wallet-contentSpace">
-            <BalanceAndsendReceiveAction setAmount={props.setAmount} setNotes={(e:any)=>setNotes(e)} />
-            <SpacerLG />
-            {WalletDashboard.walletSend === focusedInnersection && <SendForm amount={props.amount} setAmount={props.setAmount}
-               priority={props.priority} setPriority={props.setPriority} notes={notes} setNotes={(e:any)=>setNotes(e)} />}
-            {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
-            {WalletDashboard.walletTransaction === focusedInnersection && <TransactionSection syncStatus={localStorage.getItem('syncStatus')} transactionList={transactions} />}
+  return (
+    <>
+      <WalletHeader />
+      <SpacerLG />
+      <div className="wallet-contentSpace">
+        <BalanceAndsendReceiveAction
+          setAmount={props.setAmount}
+          setNotes={(e: any) => setNotes(e)}
+        />
+        <SpacerLG />
+        {WalletDashboard.walletSend === focusedInnersection && (
+          <SendForm
+            amount={props.amount}
+            setAmount={props.setAmount}
+            priority={props.priority}
+            setPriority={props.setPriority}
+            notes={notes}
+            setNotes={(e: any) => setNotes(e)}
+          />
+        )}
+        {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
+        {WalletDashboard.walletTransaction === focusedInnersection && (
+          <TransactionSection
+            // syncStatus={localStorage.getItem('syncStatus')}
+            syncStatus={window.getSettingValue('syncStatus')}
+            transactionList={transactions}
+          />
+        )}
 
-            {/* <SendForm /> */}
-            {/* <TransactionSection /> */}
+        {/* <SendForm /> */}
+        {/* <TransactionSection /> */}
 
-            <SyncStatusBar />
-         </div>
-      </>
-   )
-}
-export const BalanceAndsendReceiveAction = (props:any) => {
-   return (
-      <Flex
-         container={true}
-         flexDirection="row"
-         justifyContent="space-between"
-      >
-         <WalletBalanceSection />
-         <WalletPaymentSection setAmount={props.setAmount} setNotes={props.setNotes}/>
-      </Flex>
-
-   )
-}
+        <SyncStatusBar />
+      </div>
+    </>
+  );
+};
+export const BalanceAndsendReceiveAction = (props: any) => {
+  return (
+    <Flex container={true} flexDirection="row" justifyContent="space-between">
+      <WalletBalanceSection />
+      <WalletPaymentSection setAmount={props.setAmount} setNotes={props.setNotes} />
+    </Flex>
+  );
+};

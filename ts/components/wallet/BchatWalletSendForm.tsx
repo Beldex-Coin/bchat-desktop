@@ -19,10 +19,12 @@ import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
+  console.log("send-sendAddress:",sendAddress)
   const dispatch = useDispatch();
   // const [amount, setAmount] = useState(props.amount);
   // const [priority, setPriority] = useState(window.i18n("flash"));
   const [address, setAddress] = useState(sendAddress);
+  console.log("Address:",address)
   // const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);

@@ -6,7 +6,7 @@ import { default as insecureNodeFetch } from 'node-fetch';
 import { HTTPError } from '../bchat/utils/errors';
 import request from 'request-promise';
 import { default as http } from 'http';
-import { default as queue } from 'promise-queue';
+// import { default as queue } from 'promise-queue';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
 const crypto = require('crypto');
@@ -35,7 +35,7 @@ export class Wallet {
   id: number;
   scee: any;
   agent: any;
-  queue: any;
+  // queue: any;
   backend: any;
   last_height_send_time: any;
   height_regexes: any;
@@ -56,7 +56,7 @@ export class Wallet {
     this.id = 0;
     this.scee = new SCEE();
     this.agent = new http.Agent({ keepAlive: true, maxSockets: 10 });
-    this.queue = new queue(1, Infinity);
+    // this.queue = new queue(1, Infinity);
     this.last_height_send_time = Date.now();
     this.height_regexes = [
       {
@@ -145,13 +145,13 @@ export class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    let launchCount = window.getSettingValue('launch-count');
+    // let launchCount = window.getSettingValue('launch-count');
     let currentDeamon = window.getSettingValue('current-deamon');
     // let list_deamon=window.getSettingValue()
-    let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
+    // let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
 
     const currentDaemon: any = currentDeamon ? currentDeamon : window.currentDaemon;
-    console.log('currentDaemon wallet::', launchCount, list_deamon);
+    // console.log('currentDaemon wallet::', launchCount, list_deamon);
 
     //   let data={host:'38.242.196.753',port:'19095'}
     //  let deamonStatus= await workingStatusForDeamon(data)
@@ -160,9 +160,11 @@ export class Wallet {
 
     // }
 
-    console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
+    // console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
 
-    localStorage.setItem('syncStatus', '');
+    // localStorage.setItem('syncStatus', '');
+    window.setSettingValue('syncStatus', false);
+
     if (!window.getSettingValue('balancevisibility')) {
       window.setSettingValue('balancevisibility', true);
     }
@@ -269,8 +271,8 @@ export class Wallet {
     try {
       await this.createWallet(props.displayName, props.password, 'English', 'create_wallet');
 
-      const getAddress = await this.sendRPC('get_address');
-      const mnemonic = await this.sendRPC('query_key', { key_type: 'mnemonic' });
+      const getAddress: any = await this.sendRPC('get_address');
+      const mnemonic: any = await this.sendRPC('query_key', { key_type: 'mnemonic' });
       console.log('mne:', mnemonic);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
         localStorage.setItem('userAddress', getAddress.result.address);
@@ -458,22 +460,22 @@ export class Wallet {
           }
           continue;
         }
-
+        let response: any = n;
         if (n.method == 'getheight') {
-          wallet.info.height = n.result.height;
+          wallet.info.height = response.result.height;
         } else if (n.method == 'getbalance') {
           console.log('geted balance ..........................');
           let data: any = await this.getTransactions();
           if (
-            this.wallet_state.balance == n.result.balance &&
-            this.wallet_state.unlocked_balance == n.result.unlocked_balance &&
+            this.wallet_state.balance == response.result.balance &&
+            this.wallet_state.unlocked_balance == response.result.unlocked_balance &&
             this.wallet_state.tx_list == data.transactions.tx_list
           ) {
             continue;
           }
-          this.wallet_state.balance = wallet.info.balance = n.result.balance;
+          this.wallet_state.balance = wallet.info.balance = response.result.balance;
           this.wallet_state.unlocked_balance = wallet.info.unlocked_balance =
-            n.result.unlocked_balance;
+            response.result.unlocked_balance;
           this.wallet_state.tx_list = data.transactions.tx_list;
 
           this.getFiatBalance();
@@ -569,7 +571,7 @@ export class Wallet {
       ring_size: 7,
       get_tx_key: true,
     };
-    const data = await this.sendRPC(rpc_endpoint, params);
+    const data: any = await this.sendRPC(rpc_endpoint, params);
     console.log('sendFunddata ::', data.result);
     if (data.result) {
       ToastUtils.pushToastSuccess(
@@ -677,48 +679,49 @@ export class Wallet {
       options.timeout = timeout;
     }
 
-    return this.queue.add(() => {
-      return request(options)
-        .then((response: any) => {
-          if (response.hasOwnProperty('error')) {
-            return {
-              method: method,
-              params: params,
-              error: response.error,
-            };
-          }
+    // return this.queue.add(() => {
+    return request(options)
+      .then((response: any) => {
+        if (response.hasOwnProperty('error')) {
           return {
             method: method,
             params: params,
-            result: response.result,
+            error: response.error,
           };
-        })
-        .catch((error: any) => {
-          return {
-            method: method,
-            params: params,
-            error: {
-              code: -1,
-              message: 'Cannot connect to wallet-rpc',
-              cause: error.cause,
-            },
-          };
-        });
-    });
+        }
+        return {
+          method: method,
+          params: params,
+          result: response.result,
+        };
+      })
+      .catch((error: any) => {
+        return {
+          method: method,
+          params: params,
+          error: {
+            code: -1,
+            message: 'Cannot connect to wallet-rpc',
+            cause: error.cause,
+          },
+        };
+      });
+    // });
   }
 
   rescanBlockchain() {
-    localStorage.setItem('syncStatus', '');
+    // localStorage.setItem('syncStatus', '');
+    window.setSettingValue('syncStatus', false);
     this.sendRPC('rescan_blockchain');
     window.inboxStore?.dispatch(
       updateBalance({
         balance: 0,
-        unlocked_balance: 0, 
+        unlocked_balance: 0,
 
         transacations: { tx_list: [] },
       })
     );
-    let zero:any=0
+    let zero: any = 0;
     window.inboxStore?.dispatch(updateFiatBalance(zero));
 
     this.wallet_state.balance = 0;

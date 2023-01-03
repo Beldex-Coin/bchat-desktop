@@ -10,20 +10,23 @@ export const SyncStatusBar = () => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
-  const getSyncStatus = localStorage.getItem('syncStatus');
+  // const getSyncStatus = localStorage.getItem('syncStatus');
+  const getSyncStatus = window.getSettingValue('syncStatus');
+console.log("localStorage.getItem('syncStatus'):",getSyncStatus)
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };
   // currentHeight == daemonHeight && pct !== 0 ? localStorage.setItem('syncStatus', 'true') : '';
-  console.log("percentage:",percentage)
-  pct >= 99 ? localStorage.setItem('syncStatus', 'true') : '';
+  // console.log("percentage:",percentage)
+  // pct >= 99 ? localStorage.setItem('syncStatus', 'true') : '';
+  window.setSettingValue('syncStatus', pct >= 99 ? true : false);
 
   return (
     <div className="wallet-syncStatus">
       <div className="wallet-syncStatus-absolute">
         <Indicator
           style={{
-            width: `${percentage == 0 ? '10' : percentage}%`,
+            width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
         />

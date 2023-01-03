@@ -43,7 +43,7 @@ export const WalletHeader = () => {
         <WalletButton
           name={'Rescan'}
           icontype="reload"
-          iconSize={'tiny'}
+          iconSize={'small'}
           submit={() => rescanModalDialog()}
         />
         <span style={{ marginLeft: '10px' }}>

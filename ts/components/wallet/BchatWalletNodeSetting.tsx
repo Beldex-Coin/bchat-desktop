@@ -34,7 +34,7 @@ export const NodeSetting = () => {
   const [verifyDeamon, setvSerifyDeamon] = useState({});
   const [testNotify, setTestNotify] = useState({ status: '', content: `` });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
-
+  console.log("ipAddress:",ipAddress,port)
   // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
 
   function numberOnly(e: any) {

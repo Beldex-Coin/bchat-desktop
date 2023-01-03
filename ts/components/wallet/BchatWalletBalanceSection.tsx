@@ -63,7 +63,7 @@ export const WalletBalanceSection = () => {
               }}
               style={{cursor:'pointer'}}
             >
-              <BchatIcon iconSize="medium" iconType={amountVisible ? 'eye_closed' : 'eye'} />
+              <BchatIcon iconSize="small" iconType={!amountVisible ? 'eye' : 'eye_closed'} />
             </span>
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">

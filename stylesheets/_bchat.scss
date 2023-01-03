@@ -1506,7 +1506,7 @@ label {
           text-align: center;
         }
         &--verticalLine {
-          border-left: 2px solid #5c5c7b;
+          border-left: 2px solid #afafc194;
           height: 27px;
         }
         .unBalance {
@@ -1624,7 +1624,7 @@ label {
         // font-family: $bchat-font-poppin-light;
         // font-size: 12px;
         // padding: 8px;
-        width: 90%;
+        width: 87%;
         /* height: 50px; */
         background-color: var(--color-walInputBg);
         border-radius: 10px;
@@ -1647,8 +1647,8 @@ label {
         align-items: center;
         // width: 30px;
         // height: 30px;
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         position: relative;
         // background-color: #fff;
         background-color: var(--button-color);
@@ -2198,11 +2198,12 @@ label {
 
       &-filterInput {
         // width: 298px;
-        width: 224px;
+        width: 315px;
         border: none;
         outline: none;
         height: 40px;
         // background-color: #1c1c26;
+        padding-left: 13px;
         background-color: var(--color-walInputBg);
         border-radius: 10px;
         margin-left: 10px;
@@ -2221,8 +2222,8 @@ label {
           display: inline-block;
           width: 80%;
           height: 100%;
-          padding: 10px;
-          text-align: center;
+          padding: 10px 10px 10px 15px;
+          // text-align: center;
         }
       }
       &-parentBox {
@@ -2318,7 +2319,7 @@ label {
         &-verticalline {
           width: 1.5px;
           height: 100%;
-          background-color: #303041;
+          background-color: #afafc194;
         }
         &-balanceBox {
           // width: 605px;
@@ -2338,6 +2339,7 @@ label {
             overflow: hidden;
             text-overflow: ellipsis;
             cursor: pointer;
+            padding-top: 6px;
           }
           &-address:hover {
             color: var(--button-color);
@@ -2357,6 +2359,7 @@ label {
             font-size: 12px;
             // color: #69697c;
             font-family: $bchat-font-poppin-light;
+            padding-top: 10px;
           }
         }
       }
