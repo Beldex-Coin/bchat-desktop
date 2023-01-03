@@ -84,8 +84,8 @@ export const ChangePassword = () => {
               type={newPasswordVisible?"password":"text"}
             />
             </span>
-            <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)}>
-            <BchatIcon iconType={newPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
+            <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)} style={{cursor:'pointer'}}>
+            <BchatIcon iconType={!newPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
             </span>
           </Flex>
           <SpacerSM />
@@ -102,8 +102,8 @@ export const ChangePassword = () => {
               type={confirmPasswordVisible?"password":"text"}
             />
             </span>
-            <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)}>
-            <BchatIcon iconType={confirmPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
+            <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{cursor:'pointer'}}>
+            <BchatIcon iconType={!confirmPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
 
             </span>
           </Flex>

@@ -2175,7 +2175,7 @@ label {
         font-size: 13px;
         text-align: center;
         // padding-top: 324px;
-        padding-top: 280px;
+        // padding-top: 280px;
       }
     }
 
@@ -2243,43 +2243,48 @@ label {
         padding-left: 45px;
         padding-top: 0.5px;
       }
-      &-search {
-        width: 300px;
-        height: 200px;
-        background-position: center;
-        margin: 0 auto;
-        background-image: var(--image-emptySearch);
-        background-repeat: no-repeat;
-      }
-      &-outgoing {
-        width: 300px;
-        height: 200px;
-        background-position: center;
-        margin: 0 auto;
-        background-image: var(--image-outgoingTransHistory);
-        background-repeat: no-repeat;
-      }
+
+      &-failed, &-search,
+      &-outgoing,
       &-pending {
-        width: 300px;
-        height: 200px;
+        width: 128px;
+        height: 128px;
         background-position: center;
         margin: 0 auto;
-        background-image: var(--image-pendingTransHistory);
-        background-repeat: no-repeat;
-      }
-      &-failed {
-        width: 300px;
-        height: 200px;
-        background-position: center;
-        margin: 0 auto;
+        background-size: 97% 98%;
         background-image: var(--image-failedTransHistory);
         background-repeat: no-repeat;
       }
+      &-search {
+        // width: 300px;
+        // height: 200px;
+        // background-position: center;
+        // margin: 0 auto;
+        background-image: var(--image-emptySearch);
+        // background-repeat: no-repeat;
+      }
+      &-outgoing {
+        // width: 300px;
+        // height: 200px;
+        // background-position: center;
+        // margin: 0 auto;
+        background-image: var(--image-outgoingTransHistory);
+        // background-repeat: no-repeat;
+      }
+      &-pending {
+        // width: 300px;
+        // height: 200px;
+        // background-position: center;
+        // margin: 0 auto;
+        background-image: var(--image-pendingTransHistory);
+        // background-repeat: no-repeat;
+      }
+      
 
       &-content {
         font-family: 'poppin-medium';
         color: #82828d;
-        padding-top: 146px;
+        // padding-top: 146px;
         font-size: 16px;
         // padding-top: 112px;
       }

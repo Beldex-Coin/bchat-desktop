@@ -48,6 +48,7 @@ export const TransactionSection = (props: any) => {
           filterTransaction('All');
         }
         // searchTransaction(searchText);
+        // setData([]);
         setData(transactionsHistory);
 
         break;
@@ -96,15 +97,22 @@ export const TransactionSection = (props: any) => {
   async function showdata(item: any, i: any) {
     console.log('showData:', item, i);
     // console.log("item.type ::",item.type)
-    setSelected(i);
+    if(selected===i)
+    {
+      setSelected(null);
+    }
+    else{
+      setSelected(i);
+    }
+    
 
     if (item.type === 'out') {
       let recipientAddress = await getRecipientAddress(item.txid);
       // console.log("showdata:: ",recipientAddress);
       setRecipientdata(recipientAddress);
-      // return
+      return
     }
-    // setRecipientdata([]);
+    setRecipientdata([]);
   }
 
   const TransactionIndication = (props: any) => {
@@ -160,7 +168,7 @@ export const TransactionSection = (props: any) => {
           )
         : [];
     console.log('searchData:', searchData.length);
-    console.log('searchData:', searchData);
+    console.log('searchData:', searchData,data);
     setData(data);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];
@@ -245,10 +253,11 @@ export const TransactionSection = (props: any) => {
   // );
   return (
     <div className="wallet-Transaction">
-      {!syncingStatus ? (
+      {!syncingStatus ? (<>
         <div className="wallet-syncing">
-          <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
+         
         </div>
+         <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5></>
       ) : (
         <div style={{ height: '91%' }} onClick={() => (visible ? setVisible(false) : '')}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
@@ -270,7 +279,7 @@ export const TransactionSection = (props: any) => {
               {/* {data.length == 0 && filter == 'All' ? ( */}
               {/* '' */}
               {/* ) : ( */}
-              {transactionsHistory.length !== 0 && (
+              {transactionsHistory.length > 0 && (
                 <div className="wallet-Transaction-filterWithIcon">
                   {/* <input value={window.i18n('filterAll')} /> */}
                   <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
@@ -398,7 +407,7 @@ export const TransactionSection = (props: any) => {
 
           <SpacerLG />
           <div className="wallet-Transaction-parentBox">
-            {data.length > 0 &&
+            {data.length > 0 &&  
               data.map((item: any, i: any) => (
                 <div className="wallet-Transaction-contentBox" key={i}>
                   <Flex container={true} justifyContent="space-between" flexDirection="row">
@@ -441,7 +450,11 @@ export const TransactionSection = (props: any) => {
                 // </div>
               ))}
             {data.length == 0 ? (
+              <>
+              
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
+              </div>
+
                 <h4 className="wallet-Transaction-content">
                   {emptyScreen == 'All' ? (
                     <div>
@@ -463,7 +476,7 @@ export const TransactionSection = (props: any) => {
                     window.i18n('noFailedTransaction')
                   )}
                 </h4>
-              </div>
+              </>
             ) : (
               ''
             )}

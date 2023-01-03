@@ -29,9 +29,10 @@ export const SendForm = (props: any) => {
   const walletDetails = useSelector((state: any) => state.wallet);
   function clearStateValue()
   {
-    props.setAmount(0);
+    props.setAmount("");
     props.setPriority(window.i18n('flash'));
     setAddress('');
+    props.setNotes("")
   }
 
   async function send() {
@@ -72,7 +73,7 @@ export const SendForm = (props: any) => {
     } else {
       clearStateValue()
       dispatch(updateTransactionInitModal(null))
-      ToastUtils.pushToastError('transferFailed', data.error.message);
+      // ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;
     }
   }

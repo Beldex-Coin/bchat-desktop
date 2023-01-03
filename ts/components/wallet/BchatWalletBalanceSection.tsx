@@ -61,8 +61,9 @@ export const WalletBalanceSection = () => {
                 setAmountVisible(!amountVisible);
                 window.setSettingValue('balancevisibility',!amountVisible);
               }}
+              style={{cursor:'pointer'}}
             >
-              <BchatIcon iconSize="medium" iconType={!amountVisible ? 'eye_closed' : 'eye'} />
+              <BchatIcon iconSize="medium" iconType={amountVisible ? 'eye_closed' : 'eye'} />
             </span>
           </div>
           <div className="wallet-left-balance-Sec-realCurrencyTxt">
