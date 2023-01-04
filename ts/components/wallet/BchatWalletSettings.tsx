@@ -11,6 +11,7 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
 // import { ModalContainer } from "../dialog/ModalContainer"
 import { BchatIcon } from '../icon/BchatIcon';
+import { ToastUtils } from '../../bchat/utils';
 // import { ChangePassword } from "./BchatWalletChangePassword"
 // import { WalletModal } from "./BchatWalletModal"
 
@@ -21,8 +22,11 @@ export const WalletSettings = () => {
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
+  const syncProDone= window.getSettingValue('syncStatus');
   const [fiatCurrency,setFiatCurrency]=useState(window.getSettingValue(walletSettingsKey.settingsFiatCurrency))
   const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  console.log('syncProssing ::',syncProDone);
+  
 
   const currenyExt = [
     'AUD',
@@ -56,6 +60,17 @@ export const WalletSettings = () => {
     'ZAR'
   ];
   const decimal = ['2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
+  function changepass()
+  {
+    if(syncProDone)
+    {
+      dispatch(ChangePasswordModal({}));
+    }
+    else{
+      ToastUtils.pushToastWarning('Wallet sync', 'Sorry.Wallet sync is going on!!. ');
+      
+    }
+  }
   function enbaleOrdisableSaveRecipient() {
     window.setSettingValue(walletSettingsKey.settingSaveRecipient, !saveRecipient);
 
@@ -172,7 +187,7 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox">
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
-          <div onClick={() => dispatch(ChangePasswordModal({}))} style={{ cursor: 'pointer' }}>
+          <div onClick={() =>changepass() } style={{ cursor: syncProDone?'pointer':'not-allowed' }}>
             {/* <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>  */}
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
