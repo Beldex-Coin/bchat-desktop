@@ -129,17 +129,15 @@ export const OverlayClosedGroup = () => {
               placeholder={placeholder}
               value={groupName}
               isGroup={true}
-              maxLength={100}
+              maxLength={32}
               onChange={setGroupName}
               onPressEnter={onEnterPressed}
               dataTestId="new-closed-group-name"
             />
           </div></>
         }
-
-        <BchatSpinner loading={loading} />
-
         <SpacerLG />
+      {loading?<BchatSpinner loading={loading} />:
         <div className="group-member-list__container">
           {noContactsForClosedGroup ? (
             <div className="group-member-list__no-contacts">
@@ -169,6 +167,7 @@ export const OverlayClosedGroup = () => {
             </div>
           )}
         </div>
+}
 
         <SpacerLG />
 

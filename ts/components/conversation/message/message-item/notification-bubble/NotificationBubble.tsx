@@ -6,8 +6,8 @@ const NotificationBubbleFlex = styled.div`
   display: flex;
   background-color: var(--message-bubbles-received-background-color);
   color: var(--color-text);
-  width: 90%;
-  max-width: 584px;
+  // width: 90%;
+  // max-width: 584px;
   margin: 10px auto;
   padding: 5px 10px;
   border-radius: 12px;
@@ -31,6 +31,12 @@ const NotificationBubbleIconContainer = styled.div`
   align-items: center;
 `;
 
+const FlexCenter=styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+`
+
 export const NotificationBubble = (props: {
   notificationText: string;
   iconType?: BchatIconType;
@@ -39,6 +45,7 @@ export const NotificationBubble = (props: {
 }) => {
   const { notificationText, iconType, iconColor,bgColor } = props;
   return (
+  <FlexCenter>
     <NotificationBubbleFlex>
       {iconType && (
         <NotificationBubbleIconContainer style={{backgroundColor:bgColor}}>
@@ -54,5 +61,6 @@ export const NotificationBubble = (props: {
       
       {/* {iconType && <NotificationBubbleIconContainer />} */}
     </NotificationBubbleFlex>
+    </FlexCenter>
   );
 };

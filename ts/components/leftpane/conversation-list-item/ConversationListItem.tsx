@@ -6,6 +6,7 @@ import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
+  openConversationToSpecificMessage,
   openConversationWithMessages,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
@@ -22,7 +23,11 @@ import { MemoConversationListItemContextMenu } from '../../menu/ConversationList
 import { ConversationListItemHeaderItem } from './HeaderItem';
 import { MessageItem } from './MessageItem';
 import _ from 'lodash';
-import { Timestamp } from '../../conversation/Timestamp';
+// import { Timestamp } from '../../conversation/Timestamp';
+import { getFirstUnreadMessageWithMention } from '../../../data/data';
+import { UserUtils } from '../../../bchat/utils';
+import styled from 'styled-components';
+// import { Timestamp } from '../../conversation/Timestamp';
 
 // tslint:disable-next-line: no-empty-interface
 export type ConversationListItemProps = Pick<
@@ -106,6 +111,10 @@ const ConversationListItem = (props: Props) => {
   const convoProps = useHeaderItemProps(conversationId);
   
   const activeAt=convoProps?.activeAt;
+  console.log("unreadCount ::",unreadCount);
+  
+  console.log(activeAt);
+  
   const key = `conversation-item-${conversationId}`;
 
   const triggerId = `${key}-ctxmenu`;
@@ -119,6 +128,76 @@ const ConversationListItem = (props: Props) => {
     },
     [conversationId]
   );
+
+  const openConvoToLastMention = useCallback(
+    async (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // mousedown is invoked sooner than onClick, but for both right and left click
+      if (e.button === 0) {
+        const oldestMessageUnreadWithMention =
+          (await getFirstUnreadMessageWithMention(
+            conversationId,
+            UserUtils.getOurPubKeyStrFromCache()
+          )) || null;
+        if (oldestMessageUnreadWithMention) {
+          await openConversationToSpecificMessage({
+            conversationKey: conversationId,
+            messageIdToNavigateTo: oldestMessageUnreadWithMention,
+            shouldHighlightMessage: true,
+          });
+        } else {
+          window.log.info('cannot open to latest mention as no unread mention are found');
+          await openConversationWithMessages({
+            conversationKey: conversationId,
+            messageId: null,
+          });
+        }
+      }
+    },
+    [conversationId]
+  );
+  const MentionAtSymbol = styled.span`
+  background-color: var(--color-accent);
+
+  color: black;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 1px;
+  padding-inline-start: 3px;
+  padding-inline-end: 3px;
+
+  position: static;
+  margin-inline-start: 5px;
+
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.25px;
+
+  height: 16px;
+  min-width: 16px;
+  border-radius: 8px;
+  /* transition: filter 0.25s linear; */
+  cursor: pointer;
+
+  :hover {
+    filter: grayscale(0.7);
+  }
+`;
+  
+
+  let atSymbol = null;
+  let unreadCountDiv = null;
+  if (unreadCount?unreadCount:0 > 0) {
+    atSymbol = mentionedUs ? (
+      <MentionAtSymbol title="Open to latest mention" onMouseDown={openConvoToLastMention}>
+        @
+      </MentionAtSymbol>
+    ) : null;
+    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount?unreadCount:0>99?"99+":unreadCount}</p>;
+  }
 
   return (
     <ContextConversationId.Provider value={conversationId}>
@@ -155,8 +234,11 @@ const ConversationListItem = (props: Props) => {
             <ConversationListItemHeaderItem />
             
             <div className='module-conversation-list-item__content__messageBox' >
+              
             <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
-            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
+            {unreadCountDiv}
+           {atSymbol}
+            {/* <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} /> */}
 
             </div>
             

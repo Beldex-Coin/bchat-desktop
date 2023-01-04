@@ -105,7 +105,7 @@ const LeftPaneSettingsCategoryRow = (
           dispatch(showSettingsSection(BchatSettingCategory.Appearance));
           // }
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           {/* {icon==="Hops"? <span style={{padding:"0 10px"}}> <ActionPanelOnionStatusLight
@@ -146,7 +146,7 @@ const LeftPaneSettingsCategoryRow = (
         onClick={() => {
           dispatch(showSettingsSection(BchatSettingCategory.Privacy));
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
@@ -175,7 +175,7 @@ const LeftPaneSettingsCategoryRow = (
         onClick={() => {
           dispatch(showSettingsSection(BchatSettingCategory.Notifications));
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
@@ -187,7 +187,7 @@ const LeftPaneSettingsCategoryRow = (
           <span className="left-pane-setting-category-list-item-span">{window.i18n('notificationsSettingsTitle')}</span>
         </div>
         <div>
-          {BchatSettingCategory.Privacy === focusedSettingsSection && (
+          {BchatSettingCategory.Notifications === focusedSettingsSection && (
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
         </div>
@@ -205,7 +205,7 @@ const LeftPaneSettingsCategoryRow = (
         onClick={() => {
           dispatch(showSettingsSection(BchatSettingCategory.Blocked));
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
@@ -234,7 +234,7 @@ const LeftPaneSettingsCategoryRow = (
         )}
         role="link"
         onClick={() => { dispatch(showSettingsSection(BchatSettingCategory.RecoverySeed)); }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
        >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
@@ -263,7 +263,7 @@ const LeftPaneSettingsCategoryRow = (
         onClick={() => {
           dispatch(showSettingsSection(BchatSettingCategory.MessageRequests))
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           <i className="left-pane-setting-category-list-item-icons">
@@ -292,7 +292,7 @@ const LeftPaneSettingsCategoryRow = (
         onClick={() => {
           dispatch(showSettingsSection(BchatSettingCategory.Hops));
         }}
-        style={{ marginTop: '15px' }}
+        // style={{ marginTop: '15px' }}
       >
         <div style={{ display: "flex", }}>
           <span style={{ padding: "5px 10px" }}> <ActionPanelOnionStatusLight

@@ -34,13 +34,21 @@ const OnionCountryDisplay = ({
   labelText: string;
   index: number;
 }) => {
-  const element = (hovered: boolean) => (
+  console.log('index',index);
+  
+  // const element = (hovered: boolean) => (
+  const element = () => (
     <div className="onion__node__country" key={`country-${index}`}>
-      {hovered && snodeIp ? snodeIp : labelText}
+      <div>
+      {index===1?"Entry Node":index!==0 && index!==4?"Service Node":labelText}
+      </div>
+      <span style={{fontSize: '11px'}}>
+      {index!==0 && index!==4?labelText+"("+snodeIp+")":<div></div>}
+      </span>
+      {/* {hovered && snodeIp ? snodeIp : labelText} */}
     </div>
   );
   const [hoverable] = useHover(element);
-
   return hoverable;
 };
 
@@ -140,7 +148,7 @@ export const ModalStatusLight = (props: StatusLightType) => {
         glowDuration={glowDuration}
         glowStartDelay={glowStartDelay}
         iconType="circle"
-        iconSize={"medium"}
+        iconSize={"small"}
       />
     </div>
   );

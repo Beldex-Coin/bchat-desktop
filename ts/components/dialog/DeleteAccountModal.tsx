@@ -174,6 +174,7 @@ export const DeleteAccountModal = () => {
       title={window.i18n('clearAllData')}
       onClose={onClickCancelHandler}
       showExitIcon={true}
+      headerReverse={true}
     >
       <SpacerLG />
 

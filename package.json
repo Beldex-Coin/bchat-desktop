@@ -271,7 +271,7 @@
       "verifyUpdateCodeSignature": false,
       "icon": "build/bchat.ico",
       "target": [
-        "nsis","msi"
+        "nsis"
       ]
     },
     "nsis": {

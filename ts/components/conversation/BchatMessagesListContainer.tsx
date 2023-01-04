@@ -271,7 +271,7 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
     const { messagesProps } = this.props;
 
     // If there's no message already in memory, we won't be scrolling. So we'll gather
-    //   some more information then show an informative toast to the user.
+    //   some More Info then show an informative toast to the user.
     if (!messagesProps.find(m => m.propsForMessage.id === loadedMessageToScrollTo)) {
       throw new Error('this message is not loaded');
     }
