@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getwalletDecimalValue, getWalletSendAddress } from '../../state/selectors/walletConfig';
@@ -19,28 +19,55 @@ import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
-  console.log("send-sendAddress:",sendAddress)
+
+  console.log("send-sendAddress:", sendAddress)
   const dispatch = useDispatch();
   // const [amount, setAmount] = useState(props.amount);
   // const [priority, setPriority] = useState(window.i18n("flash"));
   const [address, setAddress] = useState(sendAddress);
-  console.log("Address:",address)
+  console.log("Address:", address)
   // const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  function clearStateValue()
-  {
+  function clearStateValue() {
     props.setAmount("");
     props.setPriority(window.i18n('flash'));
     setAddress('');
     props.setNotes("")
   }
+  const modalRef = useRef<HTMLDivElement>(null);
+  //  const downArrowRef=useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+  const handleClick = (e: any) => {
+    console.log('modalRef', modalRef, modalRef.current, modalRef.current?.contains(e.target), e.target);
+    //  console.log('modalRef2 ::',downArrowRef,downArrowRef.current?.contains(e.target));
+
+
+    if (!modalRef.current?.contains(e.target)) {
+      console.log('modalRef if');
+      // setDropDown(!dropDown);
+      setDropDown(false)
+    }
+
+  };
+  // function handleChange(e:any)
+  // {
+  //   console.log('e.target.value',e.target.value);
+
+  //   props.setPriority(e.target.value);
+  // }
   async function send() {
     const isSweepAll =
       props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
-      // dispatch(updateTransactionInitModal({}))
+    // dispatch(updateTransactionInitModal({}))
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
       return
@@ -63,15 +90,15 @@ export const SendForm = (props: any) => {
         address: address,
       };
       let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
-      console.log("getSettingvalue ::",getSettingvalue);
-      
+      console.log("getSettingvalue ::", getSettingvalue);
+
       if (getSettingvalue) {
         // console.log('TransactionHistory::',TransactionHistory);
-        
+
         await saveRecipientAddress(TransactionHistory);
       }
       clearStateValue()
-     
+
     } else {
       clearStateValue()
       dispatch(updateTransactionInitModal(null))
@@ -117,37 +144,42 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span className='wallet-sendForm-label'>{window.i18n('priority')}</span>
-            <div className="wallet-sendForm-inputBox" style={{ display: 'block' }}>
+            <span className='wallet-sendForm-label' >{window.i18n('priority')}</span>
+            <div className="wallet-sendForm-inputBox" style={{ display: 'block', padding: '0px' }} ref={modalRef}>
+              {/* <select value={props.priority} onChange={handleChange}>
+    <option value= {window.i18n('flash')}>{window.i18n('flash')} </option>
+    <option value={window.i18n('slow')}>{window.i18n('slow')}</option>
+                
+  </select> */}
               <div className="wallet-sendForm-inputBox" style={{ padding: 0 }}>
                 <span className="priortyBox">{props.priority}</span>
 
-                {/* <input value={priority} onChange={(e: any) => { setPriority(e.target.value) }}/> */}
-                <span onClick={() => setDropDown(!dropDown)} style={{ cursor: 'pointer' }}>
+
+                <span style={{ cursor: 'pointer' }} onClick={()=>setDropDown(!dropDown)} >
                   <BchatIcon iconType="dropdownArrow" iconSize="small" iconRotation={269} iconColor={'var(--color-walDownthickArrow)'} />
                 </span>
               </div>
 
-              {/* <BchatDropdown label={'flash'} options={"flash",'slow'} /> */}
+
+
               {dropDown && (
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative' }} >
                   <div className="wallet-settings-nodeSetting-sendDropDown">
                     <div
                       className={classNames(
-                        `dropDownItem ${
-                          props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
-                        props.setPriority(window.i18n('flash')), setDropDown(!dropDown);
+                        props.setPriority(window.i18n('flash'));
+                        setDropDown(!dropDown)
                       }}
                     >
                       {window.i18n('flash')}
                     </div>
                     <div
                       className={classNames(
-                        `dropDownItem ${
-                          props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                        `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                         } `
                       )}
                       onClick={() => {
@@ -164,6 +196,8 @@ export const SendForm = (props: any) => {
         </Flex>
       </Flex>
       <SpacerLG />
+
+
       <div>
         <Flex
           container={true}
@@ -172,7 +206,7 @@ export const SendForm = (props: any) => {
           alignItems="center"
           width="100%"
         >
-          <span style={{     width: "calc( 8.9% + 21px)" }}>{window.i18n('address')}</span>
+          <span style={{ width: "calc( 8.9% + 21px)" }}>{window.i18n('address')}</span>
           <div className="wallet-sendForm-inputBox">
             <input
               value={address}
@@ -186,12 +220,13 @@ export const SendForm = (props: any) => {
               onClick={() => dispatch(contact())}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}
-              //   disabled={!caption}
+            //   disabled={!caption}
             />
           </div>
         </Flex>
       </div>
       <SpacerLG />
+
       <div>
         <Flex
           container={true}
@@ -226,6 +261,6 @@ export const SendForm = (props: any) => {
     </div>
     <SpacerLG />
     <SpacerLG />
-    </>
+  </>
   );
 };

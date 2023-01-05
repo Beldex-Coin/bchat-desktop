@@ -187,7 +187,8 @@ class Wallet {
     //  if(deamonStatus!=='ok')
     // {
 
-    // }
+    // }yarn start-dev
+    
 
     // console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
 

@@ -125,11 +125,9 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div
-          className="wallet-walletPassword-contentBox-forgotTxt"
-          onClick={() => setForgotPassword(true)}
-          style={{ cursor: 'pointer' }}
+          className="wallet-walletPassword-contentBox-forgotTxt"  
         >
-          {window.i18n('forgotPassword')}
+          <span onClick={() => setForgotPassword(true)} style={{ cursor: 'pointer' }}>{window.i18n('forgotPassword')}</span>
         </div>
         <SpacerMD />
         <div>

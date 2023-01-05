@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setting } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
@@ -34,9 +34,17 @@ export const NodeSetting = () => {
   const [verifyDeamon, setvSerifyDeamon] = useState({});
   const [testNotify, setTestNotify] = useState({ status: '', content: `` });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   console.log("ipAddress:", ipAddress, port)
   // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
 
+  useEffect(() => {
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
   function numberOnly(e: any) {
     const re = /^[0-9\b]+$/;
     if (e === '' || re.test(e)) {
@@ -111,7 +119,11 @@ export const NodeSetting = () => {
     setChooseDeamonPort(item.port);
     // currentDeamonNet();
   }
-
+  const handleClick = (e: any) => {
+    if (!modalRef.current?.contains(e.target)) {
+      setDropdown(false)
+    }
+  };
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
     const confirmation: any = await workingStatusForDeamon(data);
@@ -284,9 +296,12 @@ export const NodeSetting = () => {
               <SpacerLG />
               <SpacerLG />
             </div>
-
+          
             <div className="wallet-settings-nodeSetting-horizontalLine"></div>
             <SpacerLG />
+
+            {/* ******************************Choose deamon section****************************************** */}
+
             <Flex container={true} justifyContent="space-between">
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('chooseRemoteDaemonNode')}
@@ -312,7 +327,7 @@ export const NodeSetting = () => {
                   <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
                     {window.i18n('remoteNodeHost')}
                   </div>
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox">
+                  <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox" ref={modalRef}>
                     <div
                       className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
                       style={{ padding: 0 }}

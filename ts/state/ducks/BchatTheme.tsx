@@ -136,6 +136,7 @@ const darkWalcancelBtn = '#403e4b';
 const darkWalletSyncBar = '#444455';
 const darkDownthickArrow='#fff';
 
+const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
 
 export const switchHtmlToDarkTheme = () => {
@@ -321,6 +322,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-walSyncbar', darkWalletSyncBar);
   document.documentElement.style.setProperty('--color-walDownthickArrow', darkDownthickArrow);
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
+  document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
 };
 
 // LIGHT COLORS
@@ -441,6 +443,7 @@ const lightWalcancelBtn = '#F8F8F8';
 const lightWalletSyncBar = '#DEDEDE';
 const lightDownthickArrow='#8F8FA2';
 const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
+const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`;
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -629,6 +632,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-walDownthickArrow', lightDownthickArrow);
 
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
+  document.documentElement.style.setProperty('--img-walDownThickArrow', lightWalDownThickArrow);
 };
 
 // default to light theme
@@ -761,7 +765,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-NoMedia:${darkNoMedia};
     --message-bubbles-received-background-color:${darkbubbleReceivedBg};
     --img-walPassword:${darkWalPassword};
-   
+    --img-walDownThickArrow:${darkWalDownThickArrow};
 
   };
 `;

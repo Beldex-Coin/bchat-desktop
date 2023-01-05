@@ -1692,6 +1692,31 @@ label {
           height: 40px;
           display: flex;
           align-items: center;
+
+        }
+        select {
+          width: 100%;
+          border: none;
+          outline: none;
+          padding: 8px;
+          height: 55px;
+          background-image: var(--img-walDownThickArrow);
+          background-origin: content-box;
+
+          // -webkit-appearance: button;
+          // -webkit-border-radius: 2px;
+          // -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+          // -webkit-padding-end: 20px;
+          // -webkit-padding-start: 2px;
+          // -webkit-user-select: none;
+        }
+        option {
+          background-color: var(--color-walInputBg);
+          padding: 8px;
+          i {
+            padding: 8px;
+            height: 40px;
+          }
         }
         .bchat-button.brand.green {
           height: 35px;
@@ -1705,7 +1730,6 @@ label {
           height: 40px;
           font-family: $bchat-font-poppin-light;
           font-size: 12px;
-         
         }
 
         // input::-webkit-outer-spin-button,
@@ -1868,6 +1892,13 @@ label {
             border-radius: 10px;
             padding: 10px;
           }
+        }
+        &-disClaimerBox {
+          width: 86%;
+          padding-top: 12px;
+          padding-bottom: 25px;
+          font-size: 13px;
+          display: flex;
         }
       }
     }
@@ -2128,8 +2159,7 @@ label {
           border-radius: 6px;
           min-width: 110px;
         }
-        .bchat-button.brand-outline
-        {
+        .bchat-button.brand-outline {
           height: 35px;
           border-radius: 6px;
           min-width: 110px;
@@ -2245,7 +2275,8 @@ label {
         padding-top: 0.5px;
       }
 
-      &-failed, &-search,
+      &-failed,
+      &-search,
       &-outgoing,
       &-pending {
         width: 128px;
@@ -2280,7 +2311,6 @@ label {
         background-image: var(--image-pendingTransHistory);
         // background-repeat: no-repeat;
       }
-      
 
       &-content {
         font-family: 'poppin-medium';
@@ -2359,7 +2389,7 @@ label {
             font-size: 12px;
             // color: #69697c;
             font-family: $bchat-font-poppin-light;
-            padding-top: 10px;
+            // padding-top: 10px;
           }
         }
       }

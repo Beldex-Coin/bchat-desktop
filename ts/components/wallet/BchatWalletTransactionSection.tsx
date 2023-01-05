@@ -19,8 +19,10 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
+  const zoomLevel=window.getSettingValue('zoom-factor-setting')
   // console.log('visible:', visible);
   useEffect(() => {
+    document.removeEventListener('click', handleClick);
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
@@ -54,7 +56,7 @@ export const TransactionSection = (props: any) => {
         break;
     }
     return () => {
-      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('click', handleClick);
     };
     // filterTransaction(type);
   }, [transactionsHistory]);
@@ -106,7 +108,7 @@ export const TransactionSection = (props: any) => {
     }
     
 
-    if (item.type === 'out') {
+    if (item.type !== 'in') {
       let recipientAddress = await getRecipientAddress(item.txid);
       // console.log("showdata:: ",recipientAddress);
       setRecipientdata(recipientAddress);
@@ -185,7 +187,7 @@ export const TransactionSection = (props: any) => {
     //     setData(transactionsHistory);
     // }
   }
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null); 
 
   const RececipientAddress = (props: any) => {
     const { trasactionData } = props;
@@ -221,7 +223,7 @@ export const TransactionSection = (props: any) => {
           )}
           {/* </section> */}
 
-          <section style={{ marginLeft: '20px', width: reccipient.address ? '18%' : '22%' }}>
+          <section style={{ marginLeft: '20px',  width:zoomLevel>=100  ? '18%' : '' }}>
             <article className="wallet-Transaction-recipitentBox-transactionFee-header">
               {window.i18n('transactionFee')}
             </article>
@@ -232,7 +234,7 @@ export const TransactionSection = (props: any) => {
           {/* </div> */}
 
           <section
-            style={{ width: reccipient.address ? '18%' : '22%', marginLeft: '1%' }}
+            style={{ width:zoomLevel>=100 ? '18%' : '',  marginLeft: zoomLevel>=100?'1%':'20px',paddingTop:0 }}
             // className="wallet-Transaction-contentBox-dateandheight"
           >
             <div className="wallet-Transaction-contentBox-dateandheight-month">

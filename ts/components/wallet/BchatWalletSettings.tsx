@@ -11,7 +11,7 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
 // import { ModalContainer } from "../dialog/ModalContainer"
 import { BchatIcon } from '../icon/BchatIcon';
-import { ToastUtils } from '../../bchat/utils';
+
 // import { ChangePassword } from "./BchatWalletChangePassword"
 // import { WalletModal } from "./BchatWalletModal"
 
@@ -66,10 +66,7 @@ export const WalletSettings = () => {
     {
       dispatch(ChangePasswordModal({}));
     }
-    else{
-      ToastUtils.pushToastWarning('Wallet sync', 'Sorry.Wallet sync is going on!!. ');
-      
-    }
+    
   }
   function enbaleOrdisableSaveRecipient() {
     window.setSettingValue(walletSettingsKey.settingSaveRecipient, !saveRecipient);
