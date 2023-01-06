@@ -47,7 +47,7 @@ const ErrorItem = (props: { error: string | undefined }) => {
 
 const ShowHideButton = (props: { toggleForceShow: () => void,forceShow:boolean }) => {
   
-    return <BchatIconButton iconType={props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
+    return <BchatIconButton iconType={!props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
 };
 
 export const BchatInput = (props: Props) => {

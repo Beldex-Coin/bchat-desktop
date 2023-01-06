@@ -14,13 +14,20 @@ export const ReceivedForm = () => {
 
      let qrValue=`Beldex:${walletAddress}?tx_amount=${txnAmount}`
 
-     function validator(e:any)
-     {
-        if (isNaN(e)) {
-            return
-         }
-         setTxnAmount(e)
-     }
+    //  function validator(e:any)
+    //  {
+    //     if (isNaN(e)) {
+    //         return
+    //      }
+        
+    //  }
+     function validator(e: any) {
+        // const re = /^-?\d+\.?\d*$/;
+        const re = /^\d+\.?\d*$/;
+        if (e === '' || re.test(e)) {
+            setTxnAmount(e)
+        }
+      }
     return <>
      <div className="wallet-receivedForm">
         <Flex container={true} flexDirection="row" justifyContent="center" alignItems="center" width="100%">

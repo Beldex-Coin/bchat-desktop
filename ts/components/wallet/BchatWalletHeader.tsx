@@ -6,6 +6,7 @@ import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIconButton, BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
+import { updateBalance } from '../../state/ducks/wallet';
 
 export async function rescanModalDialog() {
   window.inboxStore?.dispatch(
@@ -16,7 +17,14 @@ export async function rescanModalDialog() {
       okText: window.i18n('Rescan'),
       onClickOk: () => {
         wallet.rescanBlockchain();
-      },
+        window.inboxStore?.dispatch(
+          updateBalance({
+            balance: 0,
+            unlocked_balance: 0,
+            transacations: [],
+          })
+        );
+      }
     })
   );
 }

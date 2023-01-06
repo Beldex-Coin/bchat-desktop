@@ -15,10 +15,14 @@ import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
 import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
+import { updateSendAddress } from '../../state/ducks/walletConfig';
+
 // import { saveRecipientAddressvalid } from '../../data/data';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting')
+
 
   console.log("send-sendAddress:", sendAddress)
   const dispatch = useDispatch();
@@ -30,11 +34,15 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
+  let widthStyle = { width: zoomLevel > 100 ?  '':"calc(12% + 30px)" }
   function clearStateValue() {
     props.setAmount("");
     props.setPriority(window.i18n('flash'));
     setAddress('');
-    props.setNotes("")
+    props.setNotes("");
+    let emtStr: any = ""
+    dispatch(updateSendAddress(emtStr));
+
   }
   const modalRef = useRef<HTMLDivElement>(null);
   //  const downArrowRef=useRef<HTMLDivElement>(null);
@@ -80,7 +88,7 @@ export const SendForm = (props: any) => {
       isSweepAll
     );
     if (data.result) {
-      dispatch(updateTransactionInitModal(null))
+      // dispatch(updateTransactionInitModal(null))
       ToastUtils.pushToastSuccess(
         'successfully-sended',
         `Your transaction was successful.`
@@ -120,7 +128,7 @@ export const SendForm = (props: any) => {
             width="100%"
           >
             {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
-            <span className='wallet-sendForm-label'>{window.i18n('amount')}</span>
+            <span className='wallet-sendForm-label' style={widthStyle}>{window.i18n('amount')}</span>
 
             <div className="wallet-sendForm-inputBox">
               <input
@@ -144,7 +152,7 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span className='wallet-sendForm-label' >{window.i18n('priority')}</span>
+            <span className='wallet-sendForm-label' style={widthStyle} >{window.i18n('priority')}</span>
             <div className="wallet-sendForm-inputBox" style={{ display: 'block', padding: '0px' }} ref={modalRef}>
               {/* <select value={props.priority} onChange={handleChange}>
     <option value= {window.i18n('flash')}>{window.i18n('flash')} </option>
@@ -155,7 +163,7 @@ export const SendForm = (props: any) => {
                 <span className="priortyBox">{props.priority}</span>
 
 
-                <span style={{ cursor: 'pointer' }} onClick={()=>setDropDown(!dropDown)} >
+                <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)} >
                   <BchatIcon iconType="dropdownArrow" iconSize="small" iconRotation={269} iconColor={'var(--color-walDownthickArrow)'} />
                 </span>
               </div>
@@ -206,7 +214,7 @@ export const SendForm = (props: any) => {
           alignItems="center"
           width="100%"
         >
-          <span style={{ width: "calc( 8.9% + 21px)" }}>{window.i18n('address')}</span>
+          <span style={{ width: zoomLevel > 100 ? "calc( 8.9% + 21px)" : 'calc(5.9% + 21px)' }}>{window.i18n('address')}</span>
           <div className="wallet-sendForm-inputBox">
             <input
               value={address}
@@ -214,6 +222,7 @@ export const SendForm = (props: any) => {
               onChange={(e: any) => {
                 setAddress(e.target.value);
               }}
+              maxLength={99}
             />
             <BchatButton
               text={window.i18n('contact')}
@@ -235,7 +244,7 @@ export const SendForm = (props: any) => {
           alignItems="center"
           width="100%"
         >
-          <span style={{ width: "calc( 8.9% + 21px)" }}>{window.i18n('notes')}</span>
+          <span style={{ width: zoomLevel > 100 ? "calc( 8.9% + 21px)" : 'calc(5.9% + 21px)' }}>{window.i18n('notes')}</span>
           <div className="wallet-sendForm-inputBox">
             <textarea
               value={props.notes}

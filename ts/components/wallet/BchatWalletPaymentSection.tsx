@@ -10,12 +10,22 @@ import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatIconSize, BchatIconType } from '../icon/Icons';
 import { WalletDashboard } from './BchatWalletMainPanel';
+import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 export const WalletPaymentSection = (props:any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   // console.log('props ::',props);
   
+  function tabBtn()
+  {
+    let emtStr:any=""
+   
+    props.setAmount('');
+    props.setNotes('');
+    dispatch(updateSendAddress(emtStr));
+    dispatch(walletSendPage());
+  }
   return (
     <div className="wallet-squarBox">
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
@@ -26,7 +36,7 @@ export const WalletPaymentSection = (props:any) => {
               iconSize="small"
               iconType="paySend"
               iconColor={WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}
-              onClick={() => {dispatch(walletSendPage()),props.setAmount(''),props.setNotes('')}}
+              onClick={() => tabBtn()}
               isSelected={WalletDashboard.walletSend === focusedInnersection}
             />
             <span style={{ width: '5%', height: '20px' }}></span>

@@ -41,9 +41,13 @@ export const WalletMainPanel = () => {
   const [amount, setAmount] = useState('');
   const [priority, setPriority] = useState(window.i18n('flash'));
   const [passScreen, setPassScreen] = useState(true);
+  const [notes, setNotes] = useState('');
 
   function numberOnly(e: any) {
-    const re = /^-?\d+\.?\d*$/;
+    // const re = /^-?\d+\.?\d*$/;
+    const re = /^\d+\.?\d*$/;
+    
+
     if (e === '' || re.test(e)) {
       setAmount(e);
     }
@@ -122,7 +126,10 @@ export const WalletMainPanel = () => {
             numberOnly(e);
           }}
           priority={priority}
+          notes={notes}
           setPriority={(e: any) => setPriority(e)}
+          setNotes={(e:any)=>setNotes(e)}
+
         />
       )}
 
@@ -138,7 +145,7 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   daemon.daemonHeartbeat();
-  const [notes, setNotes] = useState('');
+  
 
   return (
     <>
@@ -147,7 +154,7 @@ export const Dashboard = (props: any) => {
       <div className="wallet-contentSpace">
         <BalanceAndsendReceiveAction
           setAmount={props.setAmount}
-          setNotes={(e: any) => setNotes(e)}
+          setNotes={props.setNotes}
         />
         <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
@@ -156,8 +163,8 @@ export const Dashboard = (props: any) => {
             setAmount={props.setAmount}
             priority={props.priority}
             setPriority={props.setPriority}
-            notes={notes}
-            setNotes={(e: any) => setNotes(e)}
+            notes={props.notes}
+            setNotes={props.setNotes}
           />
         )}
         {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}

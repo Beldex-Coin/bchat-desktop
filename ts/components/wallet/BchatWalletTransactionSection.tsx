@@ -192,6 +192,7 @@ export const TransactionSection = (props: any) => {
   const RececipientAddress = (props: any) => {
     const { trasactionData } = props;
     let reccipient: any = receipientData;
+   
     //  console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
 
     return (
@@ -212,8 +213,8 @@ export const TransactionSection = (props: any) => {
 
           {reccipient.address && (
             <div
-              style={{ marginLeft: '20px' }}
-              className="wallet-Transaction-recipitentBox-adddressBox"
+              style={{ marginLeft: '20px' ,width:zoomLevel>100?"40%":'57%'}}
+              className="wallet-Transaction-recipitentBox-adddressBox"  
             >
               <div className="">{window.i18n('recipientAddress')}</div>
               <div className="wallet-Transaction-recipitentBox-adddressBox-address">
@@ -411,7 +412,8 @@ export const TransactionSection = (props: any) => {
           <div className="wallet-Transaction-parentBox">
             {data.length > 0 &&  
               data.map((item: any, i: any) => (
-                <div className="wallet-Transaction-contentBox" key={i}>
+                          
+                          <div className="wallet-Transaction-contentBox" key={i} onClick={() => showdata(item, i)} style={{cursor:'pointer'}}>
                   <Flex container={true} justifyContent="space-between" flexDirection="row">
                     <Flex container={true} height=" 60px" width="66%">
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
@@ -421,7 +423,7 @@ export const TransactionSection = (props: any) => {
                       <div className="wallet-Transaction-contentBox-balanceBox">
                         <div
                           className="wallet-Transaction-contentBox-balanceBox-amount"
-                          onClick={() => showdata(item, i)}
+                          // onClick={() => showdata(item, i)}
                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
