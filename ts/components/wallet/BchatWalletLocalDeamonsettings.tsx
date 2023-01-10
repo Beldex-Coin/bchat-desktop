@@ -99,9 +99,9 @@ export function LocalDeamon() {
             />
           </div>
         </div>
-        {testNotify && (
+        {testNotify ? (
           <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-            <span style={testNotify === 'Connection Error' ? { color: 'red' } : { color: 'green' }}>
+            <span className='result' style={testNotify === 'Connection Error' ? { color: '#FF2F2F'} : { color: 'green' }}>
               TEST RESULT :
             </span>
             <span style={{paddingLeft:'6px'}}>{testNotify}</span>
@@ -112,9 +112,9 @@ export function LocalDeamon() {
                     iconPadding={'0 0 0 3px'}
                   />
           </div>
-        )}
+        ):        <SpacerLG />
+      }
 
-        <SpacerLG />
         <SpacerLG />
       </div>
     </>

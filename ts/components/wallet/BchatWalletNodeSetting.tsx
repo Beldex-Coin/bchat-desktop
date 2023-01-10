@@ -114,7 +114,7 @@ export const NodeSetting = () => {
   }
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
-      setDropdown(false)
+      setDropdown(false);
     }
   };
   async function validationForDeamon() {
@@ -275,12 +275,12 @@ export const NodeSetting = () => {
                   />
                 </div>
               </div>
-              {testNotify.status && (
+              {testNotify.status ? (
                 <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
                   <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
                     Test Result :
                   </span>
-                  <span style={{paddingLeft:'6px'}}>{testNotify.content}</span>
+                  <span style={{ paddingLeft: '6px' }}>{testNotify.content}</span>
                   <BchatIcon
                     iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
                     iconSize={16}
@@ -288,12 +288,13 @@ export const NodeSetting = () => {
                     iconPadding={'0 0 0 3px'}
                   />
                 </div>
+              ) : (
+                <SpacerLG />
               )}
 
               <SpacerLG />
-              <SpacerLG />
             </div>
-          
+
             <div className="wallet-settings-nodeSetting-horizontalLine"></div>
             <SpacerLG />
 
@@ -324,7 +325,10 @@ export const NodeSetting = () => {
                   <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
                     {window.i18n('remoteNodeHost')}
                   </div>
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-inputBox" ref={modalRef}>
+                  <div
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                    ref={modalRef}
+                  >
                     <div
                       className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
                       style={{ padding: 0 }}
