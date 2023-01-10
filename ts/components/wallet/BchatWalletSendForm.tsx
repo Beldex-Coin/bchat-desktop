@@ -31,7 +31,7 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  let widthStyle = { width: zoomLevel > 100 ? '' : 'calc(12% + 30px)' };
+  let widthStyle = { width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)' };
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -237,7 +237,7 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: zoomLevel > 100 ? 'calc( 8.9% + 21px)' : 'calc(5.9% + 21px)' }}>
+            <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}>
               {window.i18n('address')}
             </span>
             <div className="wallet-sendForm-inputBox">
@@ -269,7 +269,7 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: zoomLevel > 100 ? 'calc( 8.9% + 21px)' : 'calc(5.9% + 21px)' }}>
+            <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}>
               {window.i18n('notes')}
             </span>
             <div className="wallet-sendForm-inputBox">

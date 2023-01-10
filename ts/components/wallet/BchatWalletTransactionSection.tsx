@@ -205,7 +205,7 @@ export const TransactionSection = (props: any) => {
         >
           {/* <Flex container={true} height=" 60px" > */}
           {/* <div style={{ display: 'flex' }}> */}
-          <article style={{ width: '110px' }}>
+          <article style={{ width: '120px' }}>
             {/* <TransactionIndication type={item.type} /> */}
           </article>
 
@@ -449,7 +449,9 @@ export const TransactionSection = (props: any) => {
                   </Flex>
                   {/* <div> */}
                   {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
-                  {selected === i && <RececipientAddress trasactionData={item} />}
+                  {selected === i && 
+                  <RececipientAddress trasactionData={item} />
+                 } 
                 </div>
                 // </div>
               ))}

@@ -1624,7 +1624,8 @@ label {
         // font-family: $bchat-font-poppin-light;
         // font-size: 12px;
         // padding: 8px;
-        width: 87%;
+        // width: 87%;
+        width: 90%;
         /* height: 50px; */
         background-color: var(--color-walInputBg);
         border-radius: 10px;
@@ -1693,7 +1694,6 @@ label {
           height: 55px;
           display: flex;
           align-items: center;
-
         }
         select {
           width: 100%;
@@ -1794,6 +1794,7 @@ label {
         &-label {
           color: #8f8fa2;
           font-family: $bchat-font-poppin-regular;
+          margin-bottom: 5px;
         }
         &-input {
           border: none;
@@ -1830,8 +1831,8 @@ label {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        // width: 38%;
-        width: 538px;
+        // width: 538px;
+        width: 580px;
 
         // height: 417px;
         // background-color: #2d2d3b;
@@ -1851,8 +1852,10 @@ label {
             border: none;
             outline: none;
             resize: none;
-            width: 435px;
-            height: 126px;
+            // width: 435px;
+            // height: 126px;
+            width: 500px;
+            height: 97px;
             // background-color: #353543;
             background-color: var(--color-walInputBg);
 
@@ -1886,7 +1889,8 @@ label {
             // background-color: #353543;
             background-color: var(--color-walInputBg);
 
-            width: 438px;
+            // width: 438px;
+            width: 500px;
             height: 45px;
             // box-shadow: 1px 2px 5px #00000074;
             margin-right: 10px;
@@ -1895,11 +1899,12 @@ label {
           }
         }
         &-disClaimerBox {
-          width: 86%;
+          // width: 86%;
           // padding-top: 12px;
           padding-bottom: 25px;
           font-size: 13px;
           display: flex;
+          justify-content: center;
         }
       }
     }
@@ -1929,6 +1934,7 @@ label {
           &-addresstxt {
             font-family: $bchat-font-poppin-light;
             font-size: 12px;
+            margin-right: 10px;
           }
 
           &-sendBtn,
@@ -1956,17 +1962,19 @@ label {
       &-emptyAddressBook {
         margin: 0 auto;
         background-image: var(--image-EmptyAddressBook);
-        height: 100%;
+        // height: 100%;
+        height: 80%;
         width: 100%;
         background-repeat: no-repeat;
         background-position: center;
+        background-size: 90% 98%;
 
         &-content {
           font-family: $bchat-font-poppin-medium;
           // font-size: 15px;
           color: var(--color-disableText);
-          padding-top: 50%;
-          // margin: 10px 0 0 0;
+          // padding-top: 50%;
+          margin:0;
         }
       }
     }
@@ -2097,6 +2105,7 @@ label {
           &-labelTxt {
             // width: 20%;
             width: 97px;
+            margin-right: 10px;
           }
           &-inputBox {
             border: none;
@@ -2139,7 +2148,8 @@ label {
             text-align: center;
             margin-top: 14px;
             font-size: 12px;
-           
+            height: 28px;
+
             .result {
               font-family: 'poppin-semibold';
             }
@@ -2233,8 +2243,8 @@ label {
       }
 
       &-filterInput {
-        // width: 298px;
-        width: 315px;
+        // width: 315px;
+        width: 200px;
         border: none;
         outline: none;
         height: 40px;

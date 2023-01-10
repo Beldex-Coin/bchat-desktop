@@ -275,8 +275,10 @@ export const NodeSetting = () => {
                   />
                 </div>
               </div>
-              {testNotify.status ? (
+              {/* {testNotify.status ? ( */}
                 <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+                  {testNotify.status && <>
+                 
                   <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
                     Test Result :
                   </span>
@@ -285,12 +287,17 @@ export const NodeSetting = () => {
                     iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
                     iconSize={16}
                     iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
-                    iconPadding={'0 0 0 3px'}
+                    iconPadding={'2px'}
+                  
                   />
+                   </>}
                 </div>
-              ) : (
+                
+              {/* )  */}
+              {/* : (
                 <SpacerLG />
-              )}
+              ) */}
+              {/* } */}
 
               <SpacerLG />
             </div>

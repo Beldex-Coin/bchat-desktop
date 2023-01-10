@@ -7,8 +7,10 @@ import { BchatIconButton, BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
+import { updateFiatBalance } from '../../state/ducks/walletConfig';
 
 export async function rescanModalDialog() {
+  let txt:any='';
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
@@ -24,6 +26,7 @@ export async function rescanModalDialog() {
             transacations: [],
           })
         );
+        window.inboxStore?.dispatch(updateFiatBalance(txt))
       }
     })
   );

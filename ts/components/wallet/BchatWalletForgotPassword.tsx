@@ -187,7 +187,7 @@ export const ForgotPassword = (props: any) => {
         <SpacerMD />
         <div className='wallet-forgotPassword-content-Box-disClaimerBox'>
 
-          <div style={{ color: 'red',width: '15px' }}>Disclaimer :</div><div style={{color: "#82828D",width: "70%"}}> When you use this forget password
+          <div style={{ color: 'red',marginRight:'10px' }}>Disclaimer :</div><div style={{color: "#82828D",width: "70%"}}> When you use this forget password
           option, your wallet will sync from the 0th block</div>
         </div>
         <div className="wallet-settings-modalBtnGrp">
