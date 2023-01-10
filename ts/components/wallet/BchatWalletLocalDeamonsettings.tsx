@@ -6,6 +6,7 @@ import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { walletSettingsKey } from '../../data/settings-key';
 import { ToastUtils } from '../../bchat/utils';
+import { BchatIcon } from '../icon/BchatIcon';
 
 export function LocalDeamon() {
   const localDeamonHost = '127.0.0.1';
@@ -103,7 +104,13 @@ export function LocalDeamon() {
             <span style={testNotify === 'Connection Error' ? { color: 'red' } : { color: 'green' }}>
               TEST RESULT :
             </span>
-            <span>{testNotify}</span>
+            <span style={{paddingLeft:'6px'}}>{testNotify}</span>
+            <BchatIcon
+                    iconType={testNotify === 'Connection Error' ? 'warning' : 'tickCircle'}
+                    iconSize={16}
+                    iconColor={testNotify === 'Connection Error' ? 'red' : 'green'}
+                    iconPadding={'0 0 0 3px'}
+                  />
           </div>
         )}
 

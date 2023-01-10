@@ -438,7 +438,7 @@ export const TransactionSection = (props: any) => {
                     </Flex>
                     <Flex>
                       <section className="wallet-Transaction-contentBox-dateandheight">
-                        <div className="wallet-Transaction-contentBox-dateandheight-month">
+                        <div className="wallet-Transaction-contentBox-dateandheight-month" style={{marginBottom:'7px'}}>
                           {moment.unix(item.timestamp).fromNow()}
                         </div>
                         <div className="wallet-Transaction-contentBox-dateandheight-height">

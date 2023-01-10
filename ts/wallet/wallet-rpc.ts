@@ -178,91 +178,78 @@ class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    // const currentDaemon: any = window.currentDaemon;
-    // let launchCount = window.getSettingValue('launch-count');
-    let currentDeamonLoc = window.getSettingValue('current-deamon');
-    // let list_deamon=window.getSettingValue()
-    // let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
+    try {
+      let currentDeamonLoc = window.getSettingValue('current-deamon');
+      const currentDaemon: any = currentDeamonLoc ? currentDeamonLoc : window.currentDaemon;
+      window.setSettingValue('syncStatus', false);
 
-    const currentDaemon: any = currentDeamonLoc ? currentDeamonLoc : window.currentDaemon;
-    // console.log('currentDaemon wallet::', launchCount, list_deamon);
+      if (!window.getSettingValue('balancevisibility')) {
+        window.setSettingValue('balancevisibility', true);
+      }
+      const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
+      const auth = generateCredentials.toString('hex');
+      this.auth = [
+        auth.substr(0, 64), // rpc username
+        auth.substr(64, 64), // rpc password
+      ];
 
-    //   let data={host:'38.242.196.753',port:'19095'}
-    //  let deamonStatus= await workingStatusForDeamon(data)
-    //  if(deamonStatus!=='ok')
-    // {
+      // console.log('this.auth::::::', this.auth);
 
-    // }yarn start-dev
-    
-
-    // console.log('currentDaemon wallet:1', currentDaemon, window.getSettingValue('current-deamon'));
-
-    // localStorage.setItem('syncStatus', '');
-    window.setSettingValue('syncStatus', false);
-
-    if (!window.getSettingValue('balancevisibility')) {
-      window.setSettingValue('balancevisibility', true);
-    }
-    const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
-    const auth = generateCredentials.toString('hex');
-    this.auth = [
-      auth.substr(0, 64), // rpc username
-      auth.substr(64, 64), // rpc password
-    ];
-
-    // console.log('this.auth::::::', this.auth);
-
-    this.wallet_dir = `${walletDir}/wallet`;
-    const option = [
-      '--rpc-login',
-      // '--disable-rpc-login',
-      this.auth[0] + ':' + this.auth[1],
-      '--rpc-bind-port',
-      '64371',
-      '--daemon-address',
-      `${currentDaemon.host}:${currentDaemon.port}`,
-      '--rpc-bind-ip',
-      '127.0.0.1',
-      '--log-level',
-      '0',
-      '--wallet-dir',
-      `${walletDir}/wallet`,
-      '--log-file',
-      `${walletDir}/wallet-rpc.log`,
-    ];
-    if (window.networkType == 'testnet') {
-      option.push('--testnet');
-    }
-    const wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
-    wallet.stdout.on('data', data => {
-      process.stdout.write(`Wallet: ${data}`);
-      let lines = data.toString().split('\n');
-      let match,
-        height = null;
-      for (const line of lines) {
-        for (const regex of this.height_regexes) {
-          match = line.match(regex.string);
-          if (match) {
-            height = regex.height(match);
-            break;
+      this.wallet_dir = `${walletDir}/wallet`;
+      const option = [
+        '--rpc-login',
+        // '--disable-rpc-login',
+        this.auth[0] + ':' + this.auth[1],
+        '--rpc-bind-port',
+        '64371',
+        '--daemon-address',
+        `${currentDaemon.host}:${currentDaemon.port}`,
+        '--rpc-bind-ip',
+        '127.0.0.1',
+        '--log-level',
+        '0',
+        '--wallet-dir',
+        `${walletDir}/wallet`,
+        '--log-file',
+        `${walletDir}/wallet-rpc.log`,
+      ];
+      if (window.networkType == 'testnet') {
+        option.push('--testnet');
+      }
+      const wallet = await ChildProcess.spawn(rpcPath, option, { detached: true });
+      wallet.stdout.on('data', data => {
+        process.stdout.write(`Wallet: ${data}`);
+        let lines = data.toString().split('\n');
+        let match,
+          height = null;
+        for (const line of lines) {
+          for (const regex of this.height_regexes) {
+            match = line.match(regex.string);
+            if (match) {
+              height = regex.height(match);
+              break;
+            }
           }
         }
-      }
 
-      if (height && Date.now() - this.last_height_send_time > 1000) {
-        this.last_height_send_time = Date.now();
-        window.inboxStore?.dispatch(updateWalletHeight(height));
-      }
-    });
-    wallet.stdout.on('error', err => {
-      process.stderr.write(`Wallet: ${err}`);
-    });
-    wallet.stdout.on('close', (code: any) => {
-      process.stderr.write(`Wallet: exited with code ${code} \n`);
-      if (code === null) {
-        // console.log("Failed to start wallet RPC");
-      }
-    });
+        if (height && Date.now() - this.last_height_send_time > 1000) {
+          this.last_height_send_time = Date.now();
+          window.inboxStore?.dispatch(updateWalletHeight(height));
+        }
+      });
+      wallet.stdout.on('error', err => {
+        process.stderr.write(`Wallet: ${err}`);
+      });
+      wallet.stdout.on('close', (code: any) => {
+        process.stderr.write(`Wallet: exited with code ${code} \n`);
+        if (code === null) {
+          // console.log("Failed to start wallet RPC");
+        }
+      });
+    } catch (error) {
+      console.log("failed to start wallet rpc")
+      console.log('ERR:', error);
+    }
   };
 
   createWallet = async (filename: string, password: string, language: string, method: string) => {
@@ -299,7 +286,7 @@ class Wallet {
       }
       return requestData;
     } catch (err) {
-      // console.log("ERR:",err)
+      console.log('ERR:', err);
     }
   };
 
@@ -403,26 +390,14 @@ class Wallet {
     }
   };
 
-  // validateAddres = async (address: string): Promise<any> => {
-  //   const validateAddress = await this.sendRPC('validate_address', { address });
-  //   console.log("validateAddress::::::::::::::::",validateAddress)
-  //   if (validateAddress.hasOwnProperty('error')) {
-  //     return false;
-  //   }
-  //   const { valid, nettype } = validateAddress.result;
-
-  //   const netMatches = window.networkType === nettype;
-  //   console.log('net type:', window.networkType, nettype);
-  //   const isValid = valid && netMatches;
-  //   console.log('isValid:', isValid);
-  //   console.log('validateAddress:', validateAddress);
-  //   return true;
-  //   // this.sendGateway('set_valid_address', {
-  //   //   address,
-  //   //   valid: isValid,
-  //   //   nettype,
-  //   // });
-  // };
+  validateAddres = async (address: string): Promise<any> => {
+    const validateAddress = await this.sendRPC('validate_address', { address });
+    console.log('validateAddress::::::::::::::::', validateAddress);
+    if (validateAddress.hasOwnProperty('error')) {
+      return false;
+    }
+    return validateAddress.result.valid;
+  };
 
   deleteWallet = async (
     displayName: string,
@@ -680,14 +655,14 @@ class Wallet {
     const data: any = await this.sendRPC(rpc_endpoint, params);
     console.log('sendFunddata ::', data.result);
     if (data.result) {
-      ToastUtils.pushToastSuccess(
-        'successfully-sended',
-        `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
-      );
+      // ToastUtils.pushToastSuccess(
+      //   'successfully-sended',
+      //   `Successfully fund sended.Tx-hash ${data.result.tx_hash_list[0]}`
+      // );
       return data;
     } else {
       // console.log('error -response from send:', data.error.message);
-      ToastUtils.pushToastError('Error fund send', data.error.message);
+      // ToastUtils.pushToastError('Error fund send', data.error.message);
       return data;
     }
   };
@@ -742,7 +717,7 @@ class Wallet {
         throw new HTTPError('beldex_rpc error', response);
       }
       const result = await response.json();
-      console.log("result:nowfill:",result)
+      console.log('result:nowfill:', result);
       if (result.hasOwnProperty('error')) {
         return {
           method: method,
@@ -756,6 +731,7 @@ class Wallet {
         result: result.result,
       };
     } catch (e) {
+      console.log("failed to send wallet rpc");
       throw new HTTPError('exception during wallet-rpc:', e);
     }
   };

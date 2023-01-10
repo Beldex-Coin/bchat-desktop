@@ -5,7 +5,7 @@ import request from 'request-promise';
 // import { walletSettingsKey } from '../data/settings-key';
 import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
-import { ToastUtils } from '../bchat/utils';
+// import { ToastUtils } from '../bchat/utils';
 // import { updateDecimalValue } from '../state/ducks/walletConfig';
 
 export async function workingStatusForDeamon(currentdeamon: any) {
@@ -32,7 +32,7 @@ export async function workingStatusForDeamon(currentdeamon: any) {
     }
   } catch (err) {
     console.log('ERR:', err.message);
-    return ToastUtils.pushToastError('err.message', err.message);
+    // return ToastUtils.pushToastError('err.message', err.message);
   }
 }
 

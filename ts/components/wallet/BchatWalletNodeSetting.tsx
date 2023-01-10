@@ -35,9 +35,6 @@ export const NodeSetting = () => {
   const [testNotify, setTestNotify] = useState({ status: '', content: `` });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  console.log("ipAddress:", ipAddress, port)
-  // console.log("current deamon ::",window.getSettingValue(walletSettingsKey.settingsCurrentDeamon));
-
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -52,10 +49,6 @@ export const NodeSetting = () => {
       setvSerifyDeamon({});
       setTestNotify({ status: '', content: `` });
     }
-    // if (isNaN(e)) {
-    //    return
-    // }
-    // setAmount(e)
   }
   function assignHost(e: any) {
     setIpAddress(e);
@@ -94,7 +87,6 @@ export const NodeSetting = () => {
   }
   async function showDropDown() {
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-    // setOption(data)
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
@@ -285,10 +277,10 @@ export const NodeSetting = () => {
               </div>
               {testNotify.status && (
                 <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                  <span style={testNotify.status ? { color: 'red' } : { color: 'green' }}>
+                  <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
                     Test Result :
                   </span>
-                  <span>{testNotify.content}</span>
+                  <span style={{paddingLeft:'6px'}}>{testNotify.content}</span>
                   <BchatIcon
                     iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
                     iconSize={16}
