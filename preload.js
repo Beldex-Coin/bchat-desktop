@@ -257,31 +257,37 @@ if (window.networkType == 'mainnet') {
       host: 'mainnet.beldex.io',
       port: '29095',
       active: 0,
+      type:"Remote"
     },
     {
       host: 'publicnode1.rpcnode.stream',
       port: '29095',
       active: 0,
+      type:"Remote"
     },
     {
       host: 'publicnode2.rpcnode.stream',
       port: '29095',
       active: 0,
+      type:"Remote"
     },
     {
       host: 'publicnode3.rpcnode.stream',
       port: '29095',
       active: 0,
+      type:"Remote"
     },
     {
       host: 'publicnode4.rpcnode.stream',
       port: '29095',
       active: 0,
+      type:"Remote"
     },
     {
       host: 'explorer.beldex.io',
       port: '19091',
       active: 0,
+      type:"Remote"
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
@@ -297,11 +303,13 @@ if (window.networkType == 'mainnet') {
       host: '38.242.196.72',
       port: '19095',
       active: 0,
+      type:"Remote"
     },
     {
       host: '154.26.139.105',
       port: '19095',
       active: 0,
+      type:"Remote"
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];

@@ -67,6 +67,7 @@ export const NodeSetting = () => {
     if (Object.keys(data).length === 0) {
       return;
     }
+    data.type = 'Remote';
     let deamon_list = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     console.log('datadata1 ::', deamon_list, data);
     console.log('datadata 9898898998::', data);
@@ -93,22 +94,22 @@ export const NodeSetting = () => {
   }
   async function showDropDown() {
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-
     // setOption(data)
     let status = [];
-    for (let index = 0; index < data.length; index++) {
-      const deamonStatus = await workingStatusForDeamon(data[index]);
-
-      if (deamonStatus.status === 'OK') {
-        data[index].active = true;
-        status.push(data[index]);
-      } else {
-        data[index].active = false;
-        status.push(data[index]);
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].type == 'Remote') {
+        const deamonStatus = await workingStatusForDeamon(data[i]);
+        if (deamonStatus.status === 'OK') {
+          data[i].active = true;
+          status.push(data[i]);
+        } else {
+          data[i].active = false;
+          status.push(data[i]);
+        }
       }
     }
     setOption(status);
-    setViewBox2(!viewBox2)
+    setViewBox2(!viewBox2);
 
     // setDropdown(!dropdown);
     // console.log("option ::", option);
@@ -165,13 +166,15 @@ export const NodeSetting = () => {
           flexDirection="row"
           width="100%"
           justifyContent="flex-start"
-
         >
           <article
             className="wallet-settings-nodeSetting-FlexBox"
             onClick={() => setLocalDeamonVisible(false)}
           >
-            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle" style={!localDeamonVisible ? { border: "2px solid green" } : { border: "2px solid" }}>
+            <div
+              className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
+              style={!localDeamonVisible ? { border: '2px solid green' } : { border: '2px solid' }}
+            >
               {!localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
               )}
@@ -181,12 +184,14 @@ export const NodeSetting = () => {
           {/* <div className="marginLeft marginRight "></div> */}
 
           <article
-            className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }}
-
+            className="wallet-settings-nodeSetting-FlexBox"
+            style={{ marginLeft: '100px' }}
             onClick={() => setLocalDeamonVisible(true)}
           >
-            <div className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
-              style={localDeamonVisible ? { border: "2px solid green" } : { border: "2px solid" }}>
+            <div
+              className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
+              style={localDeamonVisible ? { border: '2px solid green' } : { border: '2px solid' }}
+            >
               {localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
               )}
@@ -200,7 +205,7 @@ export const NodeSetting = () => {
           {localDeamonVisible
             ? window.i18n('localDeamonheadetcntent')
             : window.i18n('remoteNoteToAllTransactions')}
-          { }
+          {}
         </div>
 
         <SpacerLG />
@@ -306,7 +311,7 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('chooseRemoteDaemonNode')}
               </div>
-              <div onClick={() =>showDropDown()} style={{ cursor: 'pointer' }}>
+              <div onClick={() => showDropDown()} style={{ cursor: 'pointer' }}>
                 <BchatIcon
                   iconType="circleChevron"
                   iconSize={'medium'}

@@ -12,7 +12,6 @@ export const SyncStatusBar = () => {
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
   // const getSyncStatus = localStorage.getItem('syncStatus');
   const getSyncStatus = window.getSettingValue('syncStatus');
-console.log("localStorage.getItem('syncStatus'):",getSyncStatus)
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };
@@ -44,7 +43,7 @@ console.log("localStorage.getItem('syncStatus'):",getSyncStatus)
           </Flex>
           <Flex container={true}>
             <div style={{ marginRight: '10px' }} className="wallet-syncStatus-statusvalue">
-              Remote : {daemonHeight}
+              {window.getSettingValue('current-deamon').type} : {daemonHeight}
             </div>
             <div className="wallet-syncStatus-statusvalue">
               Wallet : {currentHeight} / {daemonHeight} ({percentage}%)

@@ -31,7 +31,12 @@ export function LocalDeamon() {
     if (Object.keys(data).length === 0) {
       return;
     }
-    let currentDeamonData = { host: localDeamonHost, port: localDeamonPort, active: 1 };
+    let currentDeamonData = {
+      host: localDeamonHost,
+      port: localDeamonPort,
+      active: 1,
+      type: 'Local'
+    };
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDeamonData);
     ToastUtils.pushToastSuccess(
       'successfully-added-daemon',
@@ -88,7 +93,7 @@ export function LocalDeamon() {
             <BchatButton
               buttonColor={BchatButtonColor.Green}
               text={window.i18n('save')}
-              onClick={() => Object.keys(verifyDeamon).length === 0 && addDeamonNet()}
+              onClick={() => addDeamonNet()}
               disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
             />
           </div>

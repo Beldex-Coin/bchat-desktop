@@ -7,7 +7,7 @@
   "optional": "(optional)",
   "transactions": "Transactions",
   "filter": "Filter",
-  "filterPlaceHolder": "Enter an ID or amount",
+  "filterPlaceHolder": "Enter ID or amount",
 
   "addressBook": "Address Book",
   "copyErrorAndQuit": "Copy error and quit",

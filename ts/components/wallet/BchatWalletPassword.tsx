@@ -27,7 +27,7 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
-  console.log('percentage:', percentage, currentHeight, daemonHeight);
+  // console.log('percentage:', percentage, currentHeight, daemonHeight);
   // if (percentage != 0) {
   //   setPercentage(percentage);
   // }
@@ -95,14 +95,14 @@ export const WalletPassword = (props: any) => {
     );
   }
 
-  console.log(
-    'currentHeight>0&&percentage<99',
-    daemonHeight > 0 && percentage < 99,
-    daemonHeight,
-    percentage
-  );
+  // console.log(
+  //   'currentHeight>0&&percentage<99',
+  //   daemonHeight > 0 && percentage < 99,
+  //   daemonHeight,
+  //   percentage
+  // );
 
-  if (daemonHeight > 0 && percentage < 99) {
+  if ((daemonHeight > 0 && percentage < 99) ) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );

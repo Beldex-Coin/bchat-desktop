@@ -97,7 +97,7 @@ export const TransactionSection = (props: any) => {
     setSearchData(filterData);
   }
   async function showdata(item: any, i: any) {
-    console.log('showData:', item, i);
+    // console.log('showData:', item, i);placeholder="Enter an ID or amount"
     // console.log("item.type ::",item.type)
     if(selected===i)
     {

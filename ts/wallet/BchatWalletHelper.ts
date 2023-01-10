@@ -5,6 +5,7 @@ import request from 'request-promise';
 // import { walletSettingsKey } from '../data/settings-key';
 import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
+import { ToastUtils } from '../bchat/utils';
 // import { updateDecimalValue } from '../state/ducks/walletConfig';
 
 export async function workingStatusForDeamon(currentdeamon: any) {
@@ -18,7 +19,7 @@ export async function workingStatusForDeamon(currentdeamon: any) {
         jsonrpc: '2.0',
         id: '0',
         //  method: 'getlastblockheader',
-        method:'getinfo'
+        method: 'getinfo',
       },
 
       timeout: 0,
@@ -30,7 +31,8 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       return requestData.result;
     }
   } catch (err) {
-    console.log('ERR:', err);
+    console.log('ERR:', err.message);
+    return ToastUtils.pushToastError('err.message', err.message);
   }
 }
 
@@ -42,12 +44,11 @@ export async function deamonvalidation() {
     : window.currentDaemon;
 
   // console.log('list_deamon::', list_deamon);
-  
-  if (!list_deamon) {
 
+  if (!list_deamon) {
     // let currentWorkingDeamon=window.getSettingValue('current-deamon');
-    // const deamon_list = [{ host: currentDaemon.host, port: currentDaemon.port, active: 1 }]; 
-    const deamon_list = window.deamon_list; 
+    // const deamon_list = [{ host: currentDaemon.host, port: currentDaemon.port, active: 1 }];
+    const deamon_list = window.deamon_list;
     window.setSettingValue('deamon-List', deamon_list);
   }
 
@@ -84,41 +85,30 @@ export async function deamonvalidation() {
 
 export function loadRecipient() {
   if (!window.getSettingValue('save-recipient')) {
-    window.setSettingValue("save-recipient", true);
+    window.setSettingValue('save-recipient', true);
     // window.inboxStore?.dispatch(updateDecimalValue(data));
-   
-  } 
+  }
   // else {
   //   let data: any = window.getSettingValue('save-recipient');
   //  window.setSettingValue("save-recipient", data);
 
   //   // window.inboxStore?.dispatch(updateDecimalValue(data));
   // }
-  
-
 }
 export function loadFiatCurrency() {
-  
   if (!window.getSettingValue('fiat-currency')) {
-    window.setSettingValue("fiat-currency", 'USD');
-   
+    window.setSettingValue('fiat-currency', 'USD');
+
     // window.inboxStore?.dispatch(updateDecimalValue(data));
-   
   }
 
   //  else {
   //   let data: any = window.getSettingValue('fiat-currency');
   //  window.setSettingValue("fiat-currency", data);
 
-
   //   // window.inboxStore?.dispatch(updateDecimalValue(data));
   // }
-  
-
 }
-
-
-
 
 // class Helper  {
 //   data_dir: null;
