@@ -146,7 +146,7 @@ class Wallet {
           // console.log("window.getSettingValue('syncStatus')", window.getSettingValue('syncStatus'));
           return;
         }
-
+        await this.closeWallet();
         kill(64371)
           .then()
           .catch((err: any) => {
@@ -352,6 +352,7 @@ class Wallet {
       }
       if (restoreWallet.hasOwnProperty('result')) {
         if (!type) {
+          await this.closeWallet();
           kill(64371)
             .then()
             .catch(err => {

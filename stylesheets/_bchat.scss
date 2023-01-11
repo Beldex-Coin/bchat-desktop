@@ -1463,13 +1463,13 @@ label {
     }
     &-left-balance-Sec {
       width: 55%;
+      font-family: $bchat-font-poppin-semibold;
       &-balanceTxt {
         // font-size: 22px;
         // font-size: 26px;
         font-size: 22px;
-        font-family: $bchat-font-poppin-semibold;
       }
-      &-realCurrencyTxt {
+      &-fiatCurrency {
         // font-size: 12px;
         font-size: 14px;
         color: #8f8fa2;
@@ -1501,7 +1501,7 @@ label {
 
         &--Text {
           // color: #eaeaea;
-          font-size: 10px;
+          font-size: 11px;
           width: 50%;
           text-align: center;
         }
@@ -1912,7 +1912,8 @@ label {
       &-header {
         &-txt {
           font-family: $bchat-font-poppin-semibold;
-          margin-left: 5px;
+          margin-left: 10px;
+          font-size: 15px;
         }
       }
       &-wholeBox {

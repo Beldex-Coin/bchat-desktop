@@ -74,16 +74,13 @@ export const SendForm = (props: any) => {
   // }
 
   async function addressValidation() {
-    console.log("addfress:lengthg:",address.length)
-    if (address.length > 106) {
-      return ToastUtils.pushToastError('invalidAddress', 'Invalid address.');
+    if (address.length > 106 || address.length < 95) {
+      return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     let addressValidate = await wallet.validateAddres(address);
-    console.log("addressValidateaddressValidateaddressValidate:",addressValidate)
     if (!addressValidate) {
-      return ToastUtils.pushToastError('invalidAddress', 'Invalid address.');
+      return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    console.log("success.....")
     await send();
   }
 
