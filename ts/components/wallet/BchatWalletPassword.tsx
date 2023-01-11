@@ -12,6 +12,7 @@ import { ForgotPassword } from './BchatWalletForgotPassword';
 import { ProgressForSync } from './BchatWalletProgressForSync';
 import { getHeight } from '../../state/selectors/walletConfig';
 import { loadFiatCurrency, loadRecipient } from '../../wallet/BchatWalletHelper';
+import { ToastUtils } from '../../bchat/utils';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -75,6 +76,9 @@ export const WalletPassword = (props: any) => {
   loadFiatCurrency();
 
   async function submit() {
+    if(!password){
+      return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
+    }
     let profileName = UserDetails[userId].profileName;
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
@@ -121,7 +125,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password" value={password} onChange={e => setValue(e.target.value)} />
+          <input type="password" value={password} onChange={e => setValue(e.target.value)}/>
         </div>
         <SpacerMD />
         <div

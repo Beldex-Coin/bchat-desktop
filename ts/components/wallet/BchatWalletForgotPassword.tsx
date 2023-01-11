@@ -155,6 +155,7 @@ export const ForgotPassword = (props: any) => {
                 placeholder={window.i18n('enterPassword')}
                 //   className="bchat-dialog-newPassInput"
                 type={newPasswordVisible ? 'password' : 'text'}
+                maxLength={13}
               />
             </span>
 
@@ -173,6 +174,7 @@ export const ForgotPassword = (props: any) => {
                 placeholder={window.i18n('confirmPassword')}
                 //   className="bchat-dialog-newPassInput"
                 type={confirmPasswordVisible ? 'password' : 'text'}
+                maxLength={13}
               />
             </span>
             <span onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{cursor:'pointer'}}>
