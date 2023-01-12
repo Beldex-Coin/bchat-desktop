@@ -41,15 +41,17 @@ export const WalletBalanceSection = () => {
     return dataArray;
   }
   return (
-    <div className="wallet-squarBox">
-      <div style={{ display: 'flex' }}>
-        <div className="wallet-left-balance-Sec">
-          <SpacerXS />
-
-          <div className="flexCenter">
+    <div className="wallet-squarBox-bala" >
+      <div className="flexCenter">
             <BchatIcon iconSize={13} iconType="wallet" />
             <span className="marginLeft">Balance</span>
           </div>
+      <div className='flexWrap'>
+
+        <div className="wallet-left-balance-Sec">
+          <SpacerXS />
+
+          
           <SpacerSM />
           <div className="wallet-left-balance-Sec-balanceTxt">
             {disableBalac((walletDetails.balance / 1e9).toFixed(decimalValue))}{' '}
@@ -77,18 +79,7 @@ export const WalletBalanceSection = () => {
             <span style={{ marginLeft: '2px' }}>Fetch Balance & Txn</span>
           </div> */}
           <SpacerSM />
-
-          <div className="wallet-right-Button-Sec-unlockbal-box">
-            <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
-            <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
-            <span className="unBalance">
-              {disableBalac((walletDetails.unlocked_balance / 1e9).toFixed(decimalValue))}
-            </span>
-          </div>
-        </div>
-      </div>
-      <SpacerMD />
-      <div className="wallet-myAddress-Box">
+          <div className="wallet-myAddress-Box">
         <div className="wallet-myAddress-Box-content">{`${sliceWalletAddress}...`}</div>
         <div
           className="wallet-myAddress-Box-copyIcon-box"
@@ -112,6 +103,24 @@ export const WalletBalanceSection = () => {
         </div>
         <BchatToolTip place="top" effect="solid" />
       </div>
+          
+        </div>
+      </div>
+      <SpacerMD />
+      <div className="wallet-right-Button-Sec-unlockbal-box">
+        <div>
+        <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
+            <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
+            <span className="unBalance">
+              {disableBalac((walletDetails.unlocked_balance / 1e9).toFixed(decimalValue))}
+            </span>
+        </div>
+        <div className='bdx'>
+          BDX
+        </div>
+           
+          </div>
+     
     </div>
   );
 };

@@ -120,6 +120,7 @@ export const SignUpTab = (props: any) => {
 
   const enableCompleteSignUp = displayNameOK;
   const signUpWithDetails = async () => {
+    localStorage.setItem("walletUserName",displayName);
     await signUp({
       displayName,
       generatedRecoveryPhrase: generatedRecoveryPhrase,

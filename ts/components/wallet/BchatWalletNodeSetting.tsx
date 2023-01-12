@@ -142,6 +142,9 @@ export const NodeSetting = () => {
     setvSerifyDeamon({});
   }
 
+  console.log('!ipAddress && !port ::',!ipAddress && !port);
+  
+
   return (
     <div>
       <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
@@ -165,7 +168,7 @@ export const NodeSetting = () => {
           >
             <div
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
-              style={!localDeamonVisible ? { border: '2px solid green' } : { border: '2px solid' }}
+              style={!localDeamonVisible ? { border: '2px solid #20d024' } : { border: '2px solid' }}
             >
               {!localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />

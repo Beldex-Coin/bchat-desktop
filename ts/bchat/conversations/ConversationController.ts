@@ -62,7 +62,7 @@ export class ConversationController {
   }
   // Needed for some model setup which happens during the initial fetch() call below
   public getUnsafe(id: string): ConversationModel | undefined {
-    return this.conversations.get(id);
+    return this.conversations.get(id); 
   }
 
   public dangerouslyCreateAndAdd(attributes: ConversationAttributes) {
@@ -103,10 +103,12 @@ export class ConversationController {
 
     const create = async () => {
       try {
-      
+        // conversation.attributes.walletUserName='munavver;
         conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
-   
+        conversation.attributes.walletUserName=localStorage.getItem("walletUserName");
         await saveConversation(conversation.attributes);
+        localStorage.setItem("walletUserName",'');
+
       } catch (error) {
         window?.log?.error(
           'Conversation save failed! ',

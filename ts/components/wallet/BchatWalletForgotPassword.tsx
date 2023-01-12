@@ -4,25 +4,30 @@ import { Flex } from '../basic/Flex';
 import { SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { clipboard } from 'electron';
-import { ToastUtils } from '../../bchat/utils';
+import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
 import { daemon } from '../../wallet/daemon-rpc';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch,  } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { updateDaemon } from '../../state/ducks/daemon';
+import { getConversationById } from '../../data/data';
 // import { mn_decode } from '../../bchat/crypto/mnemonic';
 
-export const ForgotPassword = (props: any) => {
+export const ForgotPassword =  (props: any) => {
   const [seed, setSeed] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
 
   const [newPasswordVisible, setNewPasswordVisible] = useState(true);
   const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
-  const userId = useSelector((state: any) => state.user.ourNumber);
-  const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+  // const userId = useSelector((state: any) => state.user.ourNumber);
+  // const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   const recoveryPhrase = getCurrentRecoveryPhrase();
+  
+  
+    
+  
   console.log('recoveryPhrase:', recoveryPhrase);
   const dispatch = useDispatch();
   // console.log('recoveryPhrase:', recoveryPhrase);
@@ -34,9 +39,17 @@ export const ForgotPassword = (props: any) => {
     setSeed(recoverySeed);
   };
 
+  // async function getConversation()
+  // {
+  //   let data=await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+  //   console.log('converstation data',data?.attributes);
+  // }
+
   console.log('seed:', seed);
   console.log('newPassword:', newPassword);
   console.log('confirmPassword:', confirmPassword);
+  // console.log('UserDetails',userDetails);
+  
 
   const seedvalidation = async () => {
     try {
@@ -71,6 +84,8 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
+    let userDetails= await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+    console.log('profileName',userDetails?.attributes.walletUserName);
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
     }
@@ -94,7 +109,11 @@ export const ForgotPassword = (props: any) => {
         window.i18n('walletPasswordLengthError')
       );
     }
-    let profileName = UserDetails[userId].profileName;
+    // let profileName = userDetails?.walletUserName;
+    
+    
+    let profileName =userDetails?.attributes.walletUserName;
+
     const refreshDetails = { refresh_start_timestamp_or_height: 0 };
     const changePassword = await wallet.restoreWallet(
       profileName,
@@ -192,6 +211,7 @@ export const ForgotPassword = (props: any) => {
           <div style={{ color: 'red',marginRight:'10px' }}>Disclaimer :</div><div style={{color: "#82828D",width: "70%"}}> When you use this forget password
           option, your wallet will sync from the 0th block</div>
         </div>
+        {/* <button onClick={()=>getConversation()}>getConversation</button> */}
         <div className="wallet-settings-modalBtnGrp">
           <div className="bchat-modal__button-group__center">
             <BchatButton

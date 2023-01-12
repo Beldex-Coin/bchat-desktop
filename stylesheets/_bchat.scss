@@ -1449,20 +1449,32 @@ label {
       padding: 10px 14px;
       cursor: pointer;
     }
-    &-squarBox {
+    &-squarBox-bala,
+    &-squarBox-tran {
       // display: flex;
       // background-color: #303041;
       background-color: var(--color-WalcontentBg);
 
-      width: 49.4%;
+      // width: 49.4%;
       border-radius: 10px;
       padding: 17px 30px 17px 30px;
+    }
+    &-squarBox-bala {
+      width: 63%;
+      .flexWrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+    }
+    &-squarBox-tran {
+      width: 35.4%;
     }
     &-contentSpace {
       height: calc(81vh - 30px);
     }
     &-left-balance-Sec {
-      width: 55%;
+      // width: 55%;
       font-family: $bchat-font-poppin-semibold;
       &-balanceTxt {
         // font-size: 22px;
@@ -1476,7 +1488,7 @@ label {
       }
     }
     &-right-Button-Sec {
-      width: 45%;
+      // width: 45%;
       &-fetch-btn {
         background-color: #2879fb;
         width: 100%;
@@ -1494,16 +1506,19 @@ label {
         // height: 45px;
         height: 60px;
         display: flex;
-        /* justify-content: center; */
+        justify-content: space-between;
         align-items: center;
         border-radius: 10px;
         margin-top: 20px;
+        padding: 0 20px;
 
         &--Text {
           // color: #eaeaea;
           font-size: 11px;
-          width: 50%;
-          text-align: center;
+          // width: 50%;
+          // padding: 0 10px;
+          margin-right: 10px;
+          // text-align: center;
         }
         &--verticalLine {
           border-left: 2px solid #afafc194;
@@ -1512,9 +1527,15 @@ label {
         .unBalance {
           // color: #eaeaea;
           font-size: 16px;
-          width: 50%;
+          margin-left: 10px;
+          // width: 50%;
           text-align: center;
           font-family: 'poppin-semibold';
+        }
+        .bdx {
+          font-family: 'poppin-semibold';
+          font-size: 18px;
+          color: #a2a2af;
         }
       }
     }
@@ -1625,7 +1646,8 @@ label {
         // font-size: 12px;
         // padding: 8px;
         // width: 87%;
-        width: 90%;
+        // width: 90%;
+        width: 200px;
         /* height: 50px; */
         background-color: var(--color-walInputBg);
         border-radius: 10px;
@@ -1925,6 +1947,8 @@ label {
           display: flex;
           justify-content: space-between;
           &-nameBtn {
+            display: inline-block;
+            min-width: 100px;
             background-color: #159b24;
             padding: 4px 27px;
             border-radius: 3px;
@@ -1975,7 +1999,7 @@ label {
           // font-size: 15px;
           color: var(--color-disableText);
           // padding-top: 50%;
-          margin:0;
+          margin: 0;
         }
       }
     }
@@ -2039,7 +2063,8 @@ label {
         }
         &-dropDownHeaderTxt {
           font-family: $bchat-font-poppin-semibold;
-          color: #20d024;
+          // color: #20d024;
+          color: green;
           font-size: 16px;
         }
         &-horizontalLine {

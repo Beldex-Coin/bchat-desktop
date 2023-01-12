@@ -27,7 +27,7 @@ export const WalletPaymentSection = (props:any) => {
     dispatch(walletSendPage());
   }
   return (
-    <div className="wallet-squarBox">
+    <div className="wallet-squarBox-tran" >
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
         <div>
           <Flex container={true} flexDirection="row" justifyContent="space-between">

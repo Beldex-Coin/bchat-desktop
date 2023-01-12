@@ -256,6 +256,7 @@ function updateToSchemaVersion1(currentVersion: number, db: BetterSqlite3.Databa
       hasAttachments INTEGER,
       hasFileAttachments INTEGER,
       hasVisualMediaAttachments INTEGER,
+      walletUserName STRING,
       walletAddress STRING
     );
 
@@ -414,6 +415,7 @@ function updateToSchemaVersion4(currentVersion: number, db: BetterSqlite3.Databa
       members TEXT,
       name TEXT,
       profileName TEXT,
+      walletUserName STRING,
       walletAddress STRING
     );
 
@@ -1823,19 +1825,18 @@ function getConversationCount() {
 }
 
 function saveConversation(data: any, instance?: BetterSqlite3.Database) {
-  const { id, active_at, type, members, name, profileName, } = data;
-
+  const { id, active_at, type, members, name, profileName,walletUserName } = data;
   assertGlobalInstanceOrInstance(instance)
     .prepare(
       `INSERT INTO ${CONVERSATIONS_TABLE} (
     id,
     json,
-
     active_at,
     type,
     members,
     name,
-    profileName
+    profileName,
+    walletUserName
    
   ) values (
     $id,
@@ -1845,7 +1846,8 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
     $type,
     $members,
     $name,
-    $profileName
+    $profileName,
+    $walletUserName
     
   );`
     )
@@ -1857,7 +1859,8 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
       type,
       members: members ? members.join(' ') : null,
       name,
-      profileName
+      profileName,
+      walletUserName
      
     });
 }
@@ -1949,7 +1952,8 @@ function getConversationById(id: string) {
   if (!row) {
     return null;
   }
-
+  console.log('getConversationById',row);
+  
   return jsonToObject(row.json);
 }
 
@@ -2128,8 +2132,10 @@ function saveMessage(data: any) {
     unread,
     expireTimer,
     expirationStartTimestamp,
+
     walletAddress
   } = data;
+console.log('saveMessage',data);
 
   if (!id) {
     throw new Error('id is required');
@@ -2139,6 +2145,7 @@ function saveMessage(data: any) {
     throw new Error('conversationId is required');
   }
 
+  // let walletUserName=walletAddress
   const payload = {
     id,
     json: objectToJSON(data),
@@ -2159,8 +2166,10 @@ function saveMessage(data: any) {
     source,
     type: type || '',
     unread,
+    // walletUserName,
     walletAddress
   };
+console.log('payload ::',payload);
 
   assertGlobalInstance()
     .prepare(

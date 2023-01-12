@@ -136,6 +136,7 @@ export const SignInTab = (props: any) => {
   // console.log(seedOK);
 
   const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
+  localStorage.setItem("walletUserName",displayName);
 
   const continueYourBchat = async () => {
     if (isRecovery) {

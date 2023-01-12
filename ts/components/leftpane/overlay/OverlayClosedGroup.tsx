@@ -17,6 +17,8 @@ import { SpacerLG } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
+// import { getConversationById } from '../../../data/data';
+// import { UserUtils } from '../../../bchat/utils';
 
 
 
@@ -30,8 +32,7 @@ export const OverlayClosedGroup = () => {
 
   // const directContacts = useSelector(getDirectContacts);
   // console.log("directContacts ::",directContacts);
-  console.log("privateContactsPubkeys",privateContactsPubkeys);
-  
+  // console.log("privateContactsPubkeys",privateContactsPubkeys);
   
 
   function closeOverlay() {
@@ -147,6 +148,8 @@ export const OverlayClosedGroup = () => {
               </div>
               <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
               <div style={{ display: "flex" }}>
+          {/* <button onClick={()=>getconverstation()}>getconverstation</button> */}
+
                 <button className='nextButton' style={{ width: "90%" }} onClick={() => addContact()}>Add Contacts + </button>
               </div>
               {/* {window.i18n('noContactsForGroup')} */}

@@ -13,6 +13,8 @@ import { ProgressForSync } from './BchatWalletProgressForSync';
 import { getHeight } from '../../state/selectors/walletConfig';
 import { loadFiatCurrency, loadRecipient } from '../../wallet/BchatWalletHelper';
 import { ToastUtils } from '../../bchat/utils';
+import { getConversationById } from '../../data/data';
+import { UserUtils } from '../../bchat/utils';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -21,8 +23,8 @@ export const WalletPassword = (props: any) => {
   // const [getPercentage, setPercentage] = useState(1);
   // const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
-  const userId = useSelector((state: any) => state.user.ourNumber);
-  const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+  // const userId = useSelector((state: any) => state.user.ourNumber);
+  // const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   let daemonHeight = useSelector((state: any) => state.daemon.height);
   const currentHeight: any = Number(useSelector(getHeight));
   let pct: any =
@@ -79,7 +81,10 @@ export const WalletPassword = (props: any) => {
     if(!password){
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
-    let profileName = UserDetails[userId].profileName;
+
+    let userDetails=await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+
+    let profileName = userDetails?.attributes.walletUserName;
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
       pushToastError('walletInvalidPassword', openWallet.error?.message);
