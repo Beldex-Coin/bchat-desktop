@@ -23,8 +23,8 @@ export const WalletPassword = (props: any) => {
   // const [getPercentage, setPercentage] = useState(1);
   // const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
-  // const userId = useSelector((state: any) => state.user.ourNumber);
-  // const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+  const userId = useSelector((state: any) => state.user.ourNumber);
+  const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   let daemonHeight = useSelector((state: any) => state.daemon.height);
   const currentHeight: any = Number(useSelector(getHeight));
   let pct: any =
@@ -85,6 +85,11 @@ export const WalletPassword = (props: any) => {
     let userDetails=await getConversationById(UserUtils.getOurPubKeyStrFromCache())
 
     let profileName = userDetails?.attributes.walletUserName;
+    console.log("profile:",profileName)
+    if(!profileName){
+      profileName = UserDetails[userId].profileName;
+    }
+    console.log("profile:",profileName)
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
       pushToastError('walletInvalidPassword', openWallet.error?.message);

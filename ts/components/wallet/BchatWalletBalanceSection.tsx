@@ -70,7 +70,7 @@ export const WalletBalanceSection = () => {
               <BchatIcon iconSize="small" iconType={!amountVisible ? 'eye' : 'eye_closed'} />
             </span>
           </div>
-          <div className="wallet-left-balance-Sec-realCurrencyTxt">
+          <div className="wallet-left-balance-Sec-fiatCurrency">
             {disableBalac((fiatBalance / 1e9).toFixed(decimalValue))} <span>{currency}</span>
           </div>
         </div>

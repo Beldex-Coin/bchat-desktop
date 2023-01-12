@@ -1631,7 +1631,7 @@ label {
       display: flex;
       // justify-content: space-between;
       align-items: center;
-
+      // justify-content: space-between;
       &-content {
         // width: 90%;
         // // height: 38px;
@@ -1662,7 +1662,7 @@ label {
         overflow: hidden;
         text-overflow: ellipsis;
         /* cursor: pointer; */
-        margin-right: 13px;
+        // margin-right: 13px;
       }
 
       &-copyIcon-box {

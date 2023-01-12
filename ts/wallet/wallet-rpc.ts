@@ -247,7 +247,7 @@ class Wallet {
         }
       });
     } catch (error) {
-      console.log("failed to start wallet rpc")
+      console.log('failed to start wallet rpc');
       console.log('ERR:', error);
     }
   };
@@ -579,11 +579,12 @@ class Wallet {
         pending: true,
         failed: true,
         pool: true,
-      }).then((data: any) => {
+      }).then(async (data: any) => {
         if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
           resolve({});
           return;
         }
+        await this.saveWallet();
         let wallet = {
           transactions: {
             tx_list: [],
@@ -732,7 +733,7 @@ class Wallet {
         result: result.result,
       };
     } catch (e) {
-      console.log("failed to send wallet rpc");
+      console.log('failed to send wallet rpc');
       throw new HTTPError('exception during wallet-rpc:', e);
     }
   };

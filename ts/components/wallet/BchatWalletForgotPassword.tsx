@@ -8,7 +8,7 @@ import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
 import { daemon } from '../../wallet/daemon-rpc';
 
-import { useDispatch,  } from 'react-redux';
+import { useDispatch, useSelector,  } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { updateDaemon } from '../../state/ducks/daemon';
 import { getConversationById } from '../../data/data';
@@ -21,14 +21,13 @@ export const ForgotPassword =  (props: any) => {
 
   const [newPasswordVisible, setNewPasswordVisible] = useState(true);
   const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
-  // const userId = useSelector((state: any) => state.user.ourNumber);
-  // const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
+  const userId = useSelector((state: any) => state.user.ourNumber);
+  const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   const recoveryPhrase = getCurrentRecoveryPhrase();
   
   
     
   
-  console.log('recoveryPhrase:', recoveryPhrase);
   const dispatch = useDispatch();
   // console.log('recoveryPhrase:', recoveryPhrase);
   function onClickCancelHandler() {
@@ -55,7 +54,7 @@ export const ForgotPassword =  (props: any) => {
     try {
       const trimWhiteSpace = seed.replace(/^\s+|\s+$/g, '');
       const wlist = trimWhiteSpace.split(' ');
-      console.log('wlist:', wlist, wlist.length, wlist.length % 3 !== 0);
+      console.log('wlist:', wlist.length, wlist.length % 3 !== 0);
       const wordset = { prefixLen: 3 };
       if (wlist.length < 24) {
         ToastUtils.pushToastError('invalidSeed', "You've entered too few words, please try again");
@@ -68,7 +67,7 @@ export const ForgotPassword =  (props: any) => {
         ToastUtils.pushToastError('invalidSeed', "You've entered too few words, please try again");
         return false;
       }
-      console.log('seedvalidation:', seed.length, recoveryPhrase.length);
+      console.log('seedvalidation:', trimWhiteSpace.length, recoveryPhrase.length);
       if (trimWhiteSpace.toLocaleLowerCase() !== recoveryPhrase.toLocaleLowerCase()) {
         ToastUtils.pushToastError('invalidSeed', 'Seed entered does not match.');
         return false;
@@ -108,12 +107,14 @@ export const ForgotPassword =  (props: any) => {
         'walletPasswordLengthError',
         window.i18n('walletPasswordLengthError')
       );
-    }
-    // let profileName = userDetails?.walletUserName;
-    
-    
+    }    
+  
     let profileName =userDetails?.attributes.walletUserName;
-
+    console.log("profileName:",profileName)
+    if(!profileName){
+      profileName = UserDetails[userId].profileName;
+    }
+    console.log("profileName:",profileName)
     const refreshDetails = { refresh_start_timestamp_or_height: 0 };
     const changePassword = await wallet.restoreWallet(
       profileName,
@@ -204,7 +205,7 @@ export const ForgotPassword =  (props: any) => {
             </span>
           </Flex>
         </div>
-        <SpacerMD />
+        {/* <SpacerMD /> */}
         <SpacerMD />
         <div className='wallet-forgotPassword-content-Box-disClaimerBox'>
 

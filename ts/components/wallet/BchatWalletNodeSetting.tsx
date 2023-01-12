@@ -31,10 +31,11 @@ export const NodeSetting = () => {
   const [chooseDeamon, setChooseDeamon] = useState(currentDeamon.host);
   const [chooseDeamonPort, setChooseDeamonPort] = useState(currentDeamon.port);
   const [option, setOption] = useState(deamonList);
-  const [verifyDeamon, setvSerifyDeamon] = useState({});
-  const [testNotify, setTestNotify] = useState({ status: '', content: `` });
+  const [verifyDeamon, setVerifyDeamon] = useState({});
+  const [testNotify, setTestNotify] = useState({ status: '', content: '' });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -46,13 +47,13 @@ export const NodeSetting = () => {
     const re = /^[0-9\b]+$/;
     if (e === '' || re.test(e)) {
       setPort(e);
-      setvSerifyDeamon({});
+      setVerifyDeamon({});
       setTestNotify({ status: '', content: `` });
     }
   }
   function assignHost(e: any) {
     setIpAddress(e);
-    setvSerifyDeamon({});
+    setVerifyDeamon({});
     setTestNotify({ status: '', content: `` });
   }
   function addDeamonNet() {
@@ -62,8 +63,6 @@ export const NodeSetting = () => {
     }
     data.type = 'Remote';
     let deamon_list = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-    console.log('datadata1 ::', deamon_list, data);
-    console.log('datadata 9898898998::', data);
     let checkVerifiedDaemon = deamon_list.find((daemon: any) => daemon.ip == data.ip);
     if (checkVerifiedDaemon) {
       return ToastUtils.pushToastSuccess('daemonAlreadyAdded', `This daemon already added.`);
@@ -75,8 +74,8 @@ export const NodeSetting = () => {
     }
     window.setSettingValue(walletSettingsKey.settingsDeamonList, deamon_list);
     setOption(deamon_list);
-    console.log('datadata 2::', deamon_list, data);
   }
+
   function currentDeamonNet() {
     let data = { host: chooseDeamon, port: chooseDeamonPort, active: 1 };
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, data);
@@ -85,6 +84,7 @@ export const NodeSetting = () => {
       `Successfully ${chooseDeamon}:${chooseDeamonPort} daemon updated.`
     );
   }
+
   async function showDropDown() {
     setViewBox2(!viewBox2);
 
@@ -103,44 +103,42 @@ export const NodeSetting = () => {
       }
     }
     setOption(status);
-
-    // setDropdown(!dropdown);
-    // console.log("option ::", option);
+    setViewBox2(!viewBox2);
   }
+
   function AssignCurrentDeamon(item: any) {
     setChooseDeamon(item.host);
     setDropdown(false);
     setChooseDeamonPort(item.port);
-    // currentDeamonNet();
   }
+
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
       setDropdown(false);
     }
-  };
+  }
+
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
     const confirmation: any = await workingStatusForDeamon(data);
-    console.log('confirmation::', confirmation);
 
     if (confirmation && confirmation.status === 'OK') {
       console.log('confirmation ok');
       if (confirmation.nettype === window.networkType) {
-        setvSerifyDeamon(data);
+        setVerifyDeamon(data);
         setTestNotify({ status: 'ok', content: `Success` });
         return;
       }
       setTestNotify({
-        status: 'fail',
+        status: 'failed',
         content: `You're using ${confirmation.nettype} IP. Use a ${window.networkType} IP`,
       });
       return;
     }
-    setIpAddress('');
-    setPort('');
-    setTestNotify({ status: 'fail', content: `Connection Error` });
-
-    setvSerifyDeamon({});
+    // setIpAddress('');
+    // setPort('');
+    setTestNotify({ status: 'failed', content: `Connection Error` });
+    setVerifyDeamon({});
   }
 
   console.log('!ipAddress && !port ::', !ipAddress && !port);
@@ -182,7 +180,13 @@ export const NodeSetting = () => {
           <article
             className="wallet-settings-nodeSetting-FlexBox"
             style={{ marginLeft: '100px' }}
-            onClick={() => setLocalDeamonVisible(true)}
+            onClick={() => {
+              setLocalDeamonVisible(true);
+              setTestNotify({ status: '', content: '' });
+              setIpAddress('');
+              setPort('');
+              setVerifyDeamon({});
+            }}
           >
             <div
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"

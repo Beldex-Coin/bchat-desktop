@@ -31,7 +31,7 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  let widthStyle = { width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)' };
+  let widthStyle = { width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',paddingLeft:'20px' };
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -128,7 +128,7 @@ export const SendForm = (props: any) => {
       <div className="wallet-sendForm">
         {/* <button onClick={() => insertData()}>insertData</button> */}
         <Flex container={true} flexDirection="row" justifyContent="space-between">
-          <Flex width="48%">
+          <Flex width="50%">
             <Flex
               container={true}
               flexDirection="row"
@@ -137,7 +137,7 @@ export const SendForm = (props: any) => {
               width="100%"
             >
               {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
-              <span className="wallet-sendForm-label" style={widthStyle}>
+              <span className="wallet-sendForm-label" style={{width:widthStyle.width}}>
                 {window.i18n('amount')}
               </span>
 
@@ -155,7 +155,7 @@ export const SendForm = (props: any) => {
               </div>
             </Flex>
           </Flex>
-          <Flex width="48%">
+          <Flex width="49%">
             <Flex
               container={true}
               flexDirection="row"
