@@ -15,6 +15,8 @@ import { updateSendAddress } from '../../state/ducks/walletConfig';
 export const WalletPaymentSection = (props:any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+  const zoomLevel=window.getSettingValue('zoom-factor-setting')
+
   // console.log('props ::',props);
   
   function tabBtn()
@@ -27,7 +29,7 @@ export const WalletPaymentSection = (props:any) => {
     dispatch(walletSendPage());
   }
   return (
-    <div className="wallet-squarBox-tran" >
+    <div className="wallet-squarBox-tran" style={zoomLevel>100?{width: '46.4%'}:{}}>
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
         <div>
           <Flex container={true} flexDirection="row" justifyContent="space-between">

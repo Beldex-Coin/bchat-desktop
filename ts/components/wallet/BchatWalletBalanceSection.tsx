@@ -16,6 +16,8 @@ export const WalletBalanceSection = () => {
   const fiatBalance: any = Number(useSelector(getFiatBalance));
   const [amountVisible, setAmountVisible] = useState(window.getSettingValue('balancevisibility'));
   // let decimalValue: any = useSelector(getwalletDecimalValue);
+  const zoomLevel=window.getSettingValue('zoom-factor-setting')
+
   let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
   decimalValue = decimalValue.charAt(0);
   const handlePaste = () => {
@@ -41,7 +43,7 @@ export const WalletBalanceSection = () => {
     return dataArray;
   }
   return (
-    <div className="wallet-squarBox-bala" >
+    <div className="wallet-squarBox-bala" style={zoomLevel>100?{width: '52%'}:{}} >
       <div className="flexCenter">
             <BchatIcon iconSize={13} iconType="wallet" />
             <span className="marginLeft">Balance</span>

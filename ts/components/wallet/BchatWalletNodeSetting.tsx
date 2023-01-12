@@ -86,6 +86,8 @@ export const NodeSetting = () => {
     );
   }
   async function showDropDown() {
+    setViewBox2(!viewBox2);
+
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     let status = [];
     for (let i = 0; i < data.length; i++) {
@@ -101,7 +103,6 @@ export const NodeSetting = () => {
       }
     }
     setOption(status);
-    setViewBox2(!viewBox2);
 
     // setDropdown(!dropdown);
     // console.log("option ::", option);
@@ -142,8 +143,8 @@ export const NodeSetting = () => {
     setvSerifyDeamon({});
   }
 
-  console.log('!ipAddress && !port ::',!ipAddress && !port);
-  
+  console.log('!ipAddress && !port ::', !ipAddress && !port);
+
 
   return (
     <div>
@@ -200,7 +201,7 @@ export const NodeSetting = () => {
           {localDeamonVisible
             ? window.i18n('localDeamonheadetcntent')
             : window.i18n('remoteNoteToAllTransactions')}
-          {}
+          { }
         </div>
 
         <SpacerLG />
@@ -279,9 +280,9 @@ export const NodeSetting = () => {
                 </div>
               </div>
               {/* {testNotify.status ? ( */}
-                <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                  {testNotify.status && <>
-                 
+              <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+                {testNotify.status && <>
+
                   <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
                     Test Result :
                   </span>
@@ -291,11 +292,11 @@ export const NodeSetting = () => {
                     iconSize={16}
                     iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
                     iconPadding={'2px'}
-                  
+
                   />
-                   </>}
-                </div>
-                
+                </>}
+              </div>
+
               {/* )  */}
               {/* : (
                 <SpacerLG />
@@ -337,18 +338,37 @@ export const NodeSetting = () => {
                   </div>
                   <div
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                    style={{flexDirection: 'column',padding: 0}}
                     ref={modalRef}
                   >
-                    <div
-                      className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
-                      style={{ padding: 0 }}
+                    <div 
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                    style={{width:'100%'}}
+
                     >
-                      <input
-                        value={chooseDeamon}
+                      <div
                         className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
-                        style={{ width: '95%', padding: 0 }}
-                        disabled={true}
-                      />
+                        style={{ padding: 0 }}
+                      >
+                        <input
+                          value={chooseDeamon}
+                          className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
+                          style={{ width: '95%', padding: 0 }}
+                          disabled={true}
+                        />
+
+                      </div>
+
+                      <div
+                        className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn"
+                        onClick={() => setDropdown(!dropdown)}
+                      >
+                        <BchatIcon iconSize={20} iconType="chevron" />
+                      </div>
+                    </div>
+                    <div>
+
+
                       {dropdown && (
                         <div style={{ position: 'relative' }}>
                           <div className="wallet-settings-nodeSetting-dropDownModal">
@@ -376,13 +396,6 @@ export const NodeSetting = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-
-                    <div
-                      className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn"
-                      onClick={() => setDropdown(!dropdown)}
-                    >
-                      <BchatIcon iconSize={20} iconType="chevron" />
                     </div>
                   </div>
                 </article>

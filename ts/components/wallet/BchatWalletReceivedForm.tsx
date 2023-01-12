@@ -25,8 +25,11 @@ export const ReceivedForm = () => {
         // const re = /^-?\d+\.?\d*$/;
         const re = /^\d+\.?\d*$/;
         if (e === '' || re.test(e)) {
+            // console.log('empty string');
+            
             setTxnAmount(e)
         }
+        return
       }
     return <>
      <div className="wallet-receivedForm">
@@ -48,6 +51,7 @@ export const ReceivedForm = () => {
                 <div >
                     <input value={txnAmount} className="wallet-receivedForm-rightSide-input"  
                     placeholder={window.i18n("enterAmount")}
+                    type='text'
                     onChange={(e:any)=>validator(e.target.value)}/>
                 </div>
                 <SpacerLG />
