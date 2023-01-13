@@ -111,7 +111,7 @@ export const WalletBalanceSection = () => {
       <SpacerMD />
       <div className="wallet-right-Button-Sec-unlockbal-box">
         <div>
-        <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked</span>
+        <span className="wallet-right-Button-Sec-unlockbal-box--Text">Unlocked Balance</span>
             <span className="wallet-right-Button-Sec-unlockbal-box--verticalLine"></span>
             <span className="unBalance">
               {disableBalac((walletDetails.unlocked_balance / 1e9).toFixed(decimalValue))}

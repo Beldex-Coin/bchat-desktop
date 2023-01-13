@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { WalletStateType } from "../../state/ducks/walletSection"
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
@@ -16,6 +16,7 @@ import { TransactionSection } from './BchatWalletTransactionSection';
 import { SyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
 import { pushToastError } from '../../bchat/utils/Toast';
+import { updateSendAddress } from '../../state/ducks/walletConfig';
 // import { ModalContainer } from "../dialog/ModalContainer"
 //  import { ForgotPassword } from "./BchatWalletForgotPassword"
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
@@ -38,11 +39,13 @@ export enum WalletDashboard {
 }
 
 export const WalletMainPanel = () => {
+  const dispatch=useDispatch();
   const focusedsettings = useSelector((state: any) => state.walletFocused);
   const [amount, setAmount] = useState('');
   const [priority, setPriority] = useState(window.i18n('flash'));
   const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
+
 
   if(!window.globalOnlineStatus){
     pushToastError('internetConnectionError', 'Please check your internet connection');
@@ -60,6 +63,13 @@ export const WalletMainPanel = () => {
     //    return
     // }
     // setAmount(e)
+  }
+  function clearStates() {
+    setAmount("");
+    setNotes("");
+    let emtStr: any = '';
+    dispatch(updateSendAddress(emtStr));
+
   }
 
   //   console.log("focusedsettings:",focusedsettings,WalletPage.WalletPassword);
@@ -134,6 +144,7 @@ export const WalletMainPanel = () => {
           notes={notes}
           setPriority={(e: any) => setPriority(e)}
           setNotes={(e:any)=>setNotes(e)}
+          clearStates={()=>clearStates()}
 
         />
       )}
@@ -154,13 +165,10 @@ export const Dashboard = (props: any) => {
 
   return (
     <>
-      <WalletHeader />
+      <WalletHeader clearStates={props.clearStates}/>
       <SpacerLG />
       <div className="wallet-contentSpace">
-        <BalanceAndsendReceiveAction
-          setAmount={props.setAmount}
-          setNotes={props.setNotes}
-        />
+        <BalanceAndsendReceiveAction clearStates={props.clearStates}  />
         <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
           <SendForm
@@ -193,7 +201,7 @@ export const BalanceAndsendReceiveAction = (props: any) => {
   return (
     <Flex container={true} flexDirection="row" justifyContent="space-between">
       <WalletBalanceSection />
-      <WalletPaymentSection setAmount={props.setAmount} setNotes={props.setNotes} />
+      <WalletPaymentSection clearStates={props.clearStates}/>
     </Flex>
   );
 };

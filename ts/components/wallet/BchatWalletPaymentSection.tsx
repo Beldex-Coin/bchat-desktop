@@ -10,7 +10,7 @@ import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatIconSize, BchatIconType } from '../icon/Icons';
 import { WalletDashboard } from './BchatWalletMainPanel';
-import { updateSendAddress } from '../../state/ducks/walletConfig';
+// import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 export const WalletPaymentSection = (props:any) => {
   const dispatch = useDispatch();
@@ -21,11 +21,12 @@ export const WalletPaymentSection = (props:any) => {
   
   function tabBtn()
   {
-    let emtStr:any=""
+    // let emtStr:any=""
    
-    props.setAmount('');
-    props.setNotes('');
-    dispatch(updateSendAddress(emtStr));
+    // props.setAmount('');
+    // props.setNotes('');
+    // dispatch(updateSendAddress(emtStr));
+    props.clearStates()
     dispatch(walletSendPage());
   }
   return (

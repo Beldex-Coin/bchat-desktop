@@ -82,15 +82,18 @@ export function LocalDeamon() {
         <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
           <div>
             <BchatButton
-              buttonColor={BchatButtonColor.Primary}
+              buttonColor={!localDeamonPort?BchatButtonColor.Disable:BchatButtonColor.Primary}
               text={window.i18n('test')}
               onClick={() => validationForDeamon()}
               disabled={!localDeamonPort}
             />
           </div>
+          <div style={{marginRight:'20px'}}>
+
+          </div>
           <div>
             <BchatButton
-              buttonColor={BchatButtonColor.Green}
+              buttonColor={Object.keys(verifyDeamon).length === 0 ? BchatButtonColor.Disable :BchatButtonColor.Green}
               text={window.i18n('save')}
               onClick={() => addDeamonNet()}
               disabled={Object.keys(verifyDeamon).length === 0 ? true : false}

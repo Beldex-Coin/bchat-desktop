@@ -32,7 +32,7 @@ export async function rescanModalDialog() {
   );
 }
 
-export const WalletHeader = () => {
+export const WalletHeader = (props:any) => {
   const dispatch = useDispatch();
   return (
     <div className="wallet-header">
@@ -46,7 +46,7 @@ export const WalletHeader = () => {
             name={'Add Address'}
             icontype="addressBook"
             iconSize={'medium'}
-            submit={() => dispatch(addressbook())}
+            submit={() => {dispatch(addressbook()),props.clearStates()}}
           />
         </div>
       </div>
@@ -62,7 +62,7 @@ export const WalletHeader = () => {
             iconSize="large"
             iconType="walletSetting"
             iconColor="#2879fb"
-            onClick={() => dispatch(setting())}
+            onClick={() =>{ dispatch(setting()),props.clearStates()}}
           />
 
           {/* <BchatIcon iconSize="large" iconType="walletSetting"  iconColor="#2879fb" /> */}
