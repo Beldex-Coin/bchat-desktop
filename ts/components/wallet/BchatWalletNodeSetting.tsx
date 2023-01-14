@@ -87,6 +87,9 @@ export const NodeSetting = () => {
       'successfully-updated-current-daemon',
       `Successfully ${chooseDeamon}:${chooseDeamonPort} daemon updated.`
     );
+    setDropdown(false);
+
+    
   }
 
   async function showDropDown() {

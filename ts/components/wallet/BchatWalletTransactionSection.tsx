@@ -489,6 +489,8 @@ export const TransactionSection = (props: any) => {
           </div>
           <SpacerLG />
           <SpacerLG />
+          {zoomLevel >100 &&  <SpacerLG />}
+
         </div>
       )}
       {/* **********************Transaction Header************************* */}

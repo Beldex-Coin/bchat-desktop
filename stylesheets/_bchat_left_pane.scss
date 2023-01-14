@@ -736,6 +736,18 @@ $bchat-compose-margin: 20px;
       font-size: 18px;
     }
 
+    .beta
+    {
+      margin-left: 5px;
+    background-color: #9494A0;
+    height: 11px;
+    border-radius: 2px;
+    padding: 0 5px;
+    font-size: 8px;
+    font-family: "poppin-semibold";
+    letter-spacing: 1px;
+    }
+
     &>div {
       display: block;
     }

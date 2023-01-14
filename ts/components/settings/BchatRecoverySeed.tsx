@@ -31,7 +31,10 @@ export const BchatRecoverySeed = (props: any) => {
           Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
         </div>
         <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div>
-        <div style={{ padding: '15px 94px 15px', paddingTop: '30px' }}>
+        <SpacerMD />
+        <SpacerMD />
+
+        <div  className='flexCenter'>
           <BchatButton
             text={'OK'}
             onClick={() => {

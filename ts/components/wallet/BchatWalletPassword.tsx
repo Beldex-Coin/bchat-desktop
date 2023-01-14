@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { pushToastError, pushToastSuccess } from '../../bchat/utils/Toast';
+import { pushToastError, pushToastInfo, pushToastSuccess } from '../../bchat/utils/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
@@ -26,6 +26,7 @@ export const WalletPassword = (props: any) => {
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   let daemonHeight = useSelector((state: any) => state.daemon.height);
+   const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   const currentHeight: any = Number(useSelector(getHeight));
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
@@ -89,12 +90,14 @@ export const WalletPassword = (props: any) => {
     if(!profileName){
       profileName = UserDetails[userId].profileName;
     }
+    pushToastInfo('Current Daemon',`Connected to ${currentDaemon.host}`);
     console.log("profile:",profileName)
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
       pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
       pushToastSuccess('successPassword', 'Success.');
+     
       props.onClick();
       // setProgressing(true);
       dispatch(dashboard());
