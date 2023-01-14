@@ -15,8 +15,8 @@ import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
 import { SyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
-import { pushToastError } from '../../bchat/utils/Toast';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
+import { ToastUtils } from '../../bchat/utils';
 // import { ModalContainer } from "../dialog/ModalContainer"
 //  import { ForgotPassword } from "./BchatWalletForgotPassword"
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
@@ -48,7 +48,7 @@ export const WalletMainPanel = () => {
 
 
   if(!window.globalOnlineStatus){
-    pushToastError('internetConnectionError', 'Please check your internet connection');
+    ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
   }
 
   function numberOnly(e: any) {

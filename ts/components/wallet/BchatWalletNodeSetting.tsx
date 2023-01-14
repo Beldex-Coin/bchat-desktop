@@ -22,21 +22,23 @@ export const NodeSetting = () => {
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     : window.currentDaemon;
   const deamonList = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-
+  console.log('currentDeamon.host:', currentDeamon.host);
+  const currentHost = currentDeamon.host == '127.0.0.1' ? 'explorer.beldex.io' : currentDeamon.host;
+  const currentPort = currentDeamon.host == '127.0.0.1' ? '19091' : currentDeamon.port;
+  console.log("cuuuurrrent:",currentHost,currentPort)
   const [viewBox1, setViewBox1] = useState(true);
   const [viewBox2, setViewBox2] = useState(false);
   const [ipAddress, setIpAddress] = useState('');
   const [port, setPort] = useState('');
   const [dropdown, setDropdown] = useState(false);
-  const [chooseDeamon, setChooseDeamon] = useState(currentDeamon.host);
-  const [chooseDeamonPort, setChooseDeamonPort] = useState(currentDeamon.port);
+  const [chooseDeamon, setChooseDeamon] = useState(currentHost);
+  const [chooseDeamonPort, setChooseDeamonPort] = useState(currentPort);
   const [option, setOption] = useState(deamonList);
   const [verifyDeamon, setVerifyDeamon] = useState({});
   const [testNotify, setTestNotify] = useState({ status: '', content: '' });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const zoomLevel=window.getSettingValue('zoom-factor-setting')
-
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
@@ -79,7 +81,7 @@ export const NodeSetting = () => {
   }
 
   function currentDeamonNet() {
-    let data = { host: chooseDeamon, port: chooseDeamonPort, active: 1 };
+    let data = { host: chooseDeamon, port: chooseDeamonPort, active: 1, type: 'Remote' };
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, data);
     ToastUtils.pushToastSuccess(
       'successfully-updated-current-daemon',
@@ -118,7 +120,7 @@ export const NodeSetting = () => {
     if (!modalRef.current?.contains(e.target)) {
       setDropdown(false);
     }
-  }
+  };
 
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
@@ -148,9 +150,12 @@ export const NodeSetting = () => {
     setVerifyDeamon({});
   }
 
-  console.log('!ipAddress && !port ::', currentDeamon.host===chooseDeamon && currentDeamon.port === chooseDeamonPort,currentDeamon.host,chooseDeamon);
-
-
+  console.log(
+    '!ipAddress && !port ::',
+    currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort,
+    currentDeamon.host,
+    chooseDeamon
+  );
 
   return (
     <div>
@@ -175,7 +180,9 @@ export const NodeSetting = () => {
           >
             <div
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
-              style={!localDeamonVisible ? { border: '2px solid #20d024' } : { border: '2px solid' }}
+              style={
+                !localDeamonVisible ? { border: '2px solid #20d024' } : { border: '2px solid' }
+              }
             >
               {!localDeamonVisible && (
                 <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
@@ -213,7 +220,7 @@ export const NodeSetting = () => {
           {localDeamonVisible
             ? window.i18n('localDeamonheadetcntent')
             : window.i18n('remoteNoteToAllTransactions')}
-          { }
+          {}
         </div>
 
         <SpacerLG />
@@ -255,7 +262,7 @@ export const NodeSetting = () => {
                     onChange={(e: any) => {
                       assignHost(e.target.value);
                     }}
-                    style={zoomLevel>125?{paddingLeft: '10px'}:{}}
+                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
                   />
                 </article>
                 <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -268,8 +275,7 @@ export const NodeSetting = () => {
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
                     onChange={(e: any) => numberOnly(e.target.value)}
                     placeholder="Enter your port"
-                    style={zoomLevel>125?{paddingLeft: '10px'}:{}}
-
+                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
                   />
                 </article>
               </Flex>
@@ -279,21 +285,30 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
                 <div>
                   <BchatButton
-                    buttonColor={!ipAddress && !port?BchatButtonColor.Disable:!ipAddress?BchatButtonColor.Disable:!port? 
-                                BchatButtonColor.Disable:BchatButtonColor.Primary}
+                    buttonColor={
+                      !ipAddress && !port
+                        ? BchatButtonColor.Disable
+                        : !ipAddress
+                        ? BchatButtonColor.Disable
+                        : !port
+                        ? BchatButtonColor.Disable
+                        : BchatButtonColor.Primary
+                    }
                     // buttonColor={BchatButtonColor.Disable}
 
                     text={window.i18n('test')}
                     onClick={() => validationForDeamon()}
-                    disabled={!ipAddress && !port?true:!ipAddress?true:!port?true:false}
+                    disabled={!ipAddress && !port ? true : !ipAddress ? true : !port ? true : false}
                   />
                 </div>
-                <div style={{marginLeft:'15px'}}>
-
-                </div>
+                <div style={{ marginLeft: '15px' }}></div>
                 <div>
                   <BchatButton
-                    buttonColor={Object.keys(verifyDeamon).length === 0 ? BchatButtonColor.Disable : BchatButtonColor.Green}
+                    buttonColor={
+                      Object.keys(verifyDeamon).length === 0
+                        ? BchatButtonColor.Disable
+                        : BchatButtonColor.Green
+                    }
                     text={window.i18n('add')}
                     onClick={() => addDeamonNet()}
                     disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
@@ -302,20 +317,20 @@ export const NodeSetting = () => {
               </div>
               {/* {testNotify.status ? ( */}
               <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                {testNotify.status && <>
-
-                  <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
-                    Test Result :
-                  </span>
-                  <span style={{ paddingLeft: '6px' }}>{testNotify.content}</span>
-                  <BchatIcon
-                    iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
-                    iconSize={16}
-                    iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
-                    iconPadding={'2px'}
-
-                  />
-                </>}
+                {testNotify.status && (
+                  <>
+                    <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
+                      Test Result :
+                    </span>
+                    <span style={{ paddingLeft: '6px' }}>{testNotify.content}</span>
+                    <BchatIcon
+                      iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
+                      iconSize={16}
+                      iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
+                      iconPadding={'2px'}
+                    />
+                  </>
+                )}
               </div>
 
               {/* )  */}
@@ -359,13 +374,12 @@ export const NodeSetting = () => {
                   </div>
                   <div
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    style={{flexDirection: 'column',padding: 0}}
+                    style={{ flexDirection: 'column', padding: 0 }}
                     ref={modalRef}
                   >
-                    <div 
-                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    style={{width:'100%'}}
-
+                    <div
+                      className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                      style={{ width: '100%' }}
                     >
                       <div
                         className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
@@ -376,8 +390,8 @@ export const NodeSetting = () => {
                           className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
                           style={{ width: '95%', padding: 0 }}
                           disabled={true}
+                          placeholder="Choose your daemon IP"
                         />
-
                       </div>
 
                       <div
@@ -388,8 +402,6 @@ export const NodeSetting = () => {
                       </div>
                     </div>
                     <div>
-
-
                       {dropdown && (
                         <div style={{ position: 'relative' }}>
                           <div className="wallet-settings-nodeSetting-dropDownModal">
@@ -397,8 +409,8 @@ export const NodeSetting = () => {
                               option.map((item: any, i: number) => (
                                 <div
                                   key={i}
-                                  className='wallet-settings-nodeSetting-dropDownModal-items'
-                                  // style={{ marginBottom: '5px' }} 
+                                  className="wallet-settings-nodeSetting-dropDownModal-items"
+                                  // style={{ marginBottom: '5px' }}
                                   onClick={() => AssignCurrentDeamon(item)}
                                 >
                                   <BchatIcon
@@ -431,6 +443,7 @@ export const NodeSetting = () => {
                     value={chooseDeamonPort}
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
                     disabled={true}
+                    placeholder="Choose your daemon port"
                   />
                 </article>
               </Flex>
@@ -441,12 +454,16 @@ export const NodeSetting = () => {
                 <div>
                   <BchatButton
                     // buttonColor={BchatButtonColor.Disable}
-                    buttonColor={currentDeamon.host===chooseDeamon
-                       && currentDeamon.port === chooseDeamonPort?
-                       BchatButtonColor.Disable:BchatButtonColor.Green}
+                    buttonColor={
+                      currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort
+                        ? BchatButtonColor.Disable
+                        : BchatButtonColor.Green
+                    }
                     text={window.i18n('save')}
                     onClick={() => currentDeamonNet()}
-                    disabled={currentDeamon.host===chooseDeamon && currentDeamon.port === chooseDeamonPort}
+                    disabled={
+                      currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort
+                    }
                   />
                 </div>
               </div>

@@ -12,6 +12,7 @@ export const SyncStatusBar = () => {
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
   // const getSyncStatus = localStorage.getItem('syncStatus');
   const getSyncStatus = window.getSettingValue('syncStatus');
+  console.log("current daemon type:",window.getSettingValue('current-deamon'))
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };

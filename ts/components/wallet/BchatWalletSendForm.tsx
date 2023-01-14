@@ -77,6 +77,9 @@ export const SendForm = (props: any) => {
     if (address.length > 106 || address.length < 95) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
+    if(!window.globalOnlineStatus){
+     return ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
+    }
     let addressValidate = await wallet.validateAddres(address);
     if (!addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
@@ -89,8 +92,7 @@ export const SendForm = (props: any) => {
       props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     // dispatch(updateTransactionInitModal({}))
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
-      ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
-      return;
+      return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
     dispatch(updateTransactionInitModal({}));
     let data: any = await wallet.transfer(
@@ -101,7 +103,6 @@ export const SendForm = (props: any) => {
     );
     if (data.result) {
       // dispatch(updateTransactionInitModal(null))
-      ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
         address: address,
@@ -114,6 +115,7 @@ export const SendForm = (props: any) => {
 
         await saveRecipientAddress(TransactionHistory);
       }
+     return ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
       clearStateValue();
     } else {
       clearStateValue();
