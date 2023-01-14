@@ -291,7 +291,7 @@ if (window.networkType == 'mainnet') {
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
-  window.deamon_list=remotes
+  window.deamon_list=remotes;
 } else {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'

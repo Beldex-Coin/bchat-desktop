@@ -115,8 +115,8 @@ export const SendForm = (props: any) => {
 
         await saveRecipientAddress(TransactionHistory);
       }
-     return ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
       clearStateValue();
+      return ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
     } else {
       clearStateValue();
       dispatch(updateTransactionInitModal(null));

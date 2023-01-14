@@ -15,7 +15,7 @@ import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
 import { updateFiatBalance, updateWalletHeight } from '../state/ducks/walletConfig';
-// import { workingStatusForDeamon } from './BchatWalletHelper';
+import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
 
 class Wallet {
@@ -698,8 +698,24 @@ class Wallet {
     return openWallet;
   };
 
+  chooseDaemon = async () =>{
+    let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
+    let daemon = [];
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].type == 'Remote') {
+        const deamonStatus = await workingStatusForDeamon(data[i],'daemonValidation');
+        if (deamonStatus.status === 'OK') {
+          daemon.push(data[i]);
+        }
+      }
+    }
+    console.log("status-data:",daemon)
+    return daemon[Math.floor(Math.random() * daemon.length)]
+  }
+
   sendRPC = async (method: string, params = {}, timeout = 0) => {
     try {
+      console.log("failed to send wallet rpc::::::::")
       const url = 'http://localhost:64371/json_rpc';
       const fetchOptions = {
         method: 'POST',
@@ -715,6 +731,7 @@ class Wallet {
         timeout: timeout,
       };
       const response = await insecureNodeFetch(url, fetchOptions);
+      console.log("response:",response.ok)
       if (!response.ok) {
         throw new HTTPError('beldex_rpc error', response);
       }
@@ -734,7 +751,17 @@ class Wallet {
       };
     } catch (e) {
       console.log('failed to send wallet rpc');
-      throw new HTTPError('exception during wallet-rpc:', e);
+      if(method == "open_wallet"){
+        const currentDaemon = await this.chooseDaemon();
+        currentDaemon.active = true;
+        console.log("currentDaemon:",currentDaemon)
+        const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+        window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
+        throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.
+        `);
+      }else{
+        throw new HTTPError('exception during wallet-rpc:', e);
+      }
     }
   };
 

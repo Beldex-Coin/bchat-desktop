@@ -15,7 +15,7 @@ export function LocalDeamon() {
   const [verifyDeamon, setvSerifyDeamon] = useState({});
   async function validationForDeamon() {
     let data = { host: localDeamonHost, port: localDeamonPort, active: 0 };
-    const confirmation: any = await workingStatusForDeamon(data);
+    const confirmation: any = await workingStatusForDeamon(data,'daemonValidation');
 
     if (confirmation && confirmation.status === 'OK') {
 

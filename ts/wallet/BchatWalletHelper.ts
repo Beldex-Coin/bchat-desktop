@@ -5,10 +5,11 @@ import request from 'request-promise';
 // import { walletSettingsKey } from '../data/settings-key';
 import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
+import { ToastUtils } from '../bchat/utils';
 // import { ToastUtils } from '../bchat/utils';
 // import { updateDecimalValue } from '../state/ducks/walletConfig';
 
-export async function workingStatusForDeamon(currentdeamon: any) {
+export async function workingStatusForDeamon(currentdeamon: any, type?:string) {
   // console.log('currentdeamon data::', currentdeamon);
 
   try {
@@ -31,7 +32,10 @@ export async function workingStatusForDeamon(currentdeamon: any) {
       return requestData.result;
     }
   } catch (err) {
-    console.log('ERR:', err.message);
+    console.log('ERR:', err.message,window.globalOnlineStatus);
+    if(window.globalOnlineStatus && !type){
+      return ToastUtils.pushToastError('daemonRpcDown', 'Your current daemon down.Please choose another daemon from settings.');
+     }
     // return ToastUtils.pushToastError('err.message', err.message);
   }
 }

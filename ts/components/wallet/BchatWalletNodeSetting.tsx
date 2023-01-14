@@ -99,7 +99,7 @@ export const NodeSetting = () => {
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
-        const deamonStatus = await workingStatusForDeamon(data[i]);
+        const deamonStatus = await workingStatusForDeamon(data[i],'daemonValidation');
         if (deamonStatus.status === 'OK') {
           data[i].active = true;
           status.push(data[i]);
@@ -127,7 +127,7 @@ export const NodeSetting = () => {
 
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
-    const confirmation: any = await workingStatusForDeamon(data);
+    const confirmation: any = await workingStatusForDeamon(data,'daemonValidation');
 
     // if(currentDeamon.host===ipAddress && currentDeamon.port === port)
     // {
