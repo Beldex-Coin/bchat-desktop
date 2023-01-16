@@ -187,7 +187,7 @@ export const SendForm = (props: any) => {
     <option value={window.i18n('slow')}>{window.i18n('slow')}</option>
                 
   </select> */}
-                <div className="wallet-sendForm-inputBox" style={{ padding: 0 }}>
+                <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px'}}>
                   <span className="priortyBox">{props.priority}</span>
 
                   <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>

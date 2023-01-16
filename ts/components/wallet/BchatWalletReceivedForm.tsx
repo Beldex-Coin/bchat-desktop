@@ -7,8 +7,8 @@ import { QRCode } from 'react-qrcode-logo';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 
 export const ReceivedForm = () => {
-  let walletAddress = localStorage.getItem('userAddress');
-  const [txnAmount, setTxnAmount] = useState();
+    let walletAddress = localStorage.getItem("userAddress");
+    const [txnAmount,setTxnAmount]=useState("")
 
   let qrValue = `Beldex:${walletAddress}?tx_amount=${txnAmount}`;
 

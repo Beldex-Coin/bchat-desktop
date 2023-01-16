@@ -19,6 +19,7 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = props.syncStatus ? true : false;
+  // const recip:any=receipientData
   const zoomLevel=window.getSettingValue('zoom-factor-setting')
   // console.log('visible:', visible);
   useEffect(() => {
@@ -205,7 +206,7 @@ export const TransactionSection = (props: any) => {
         >
           {/* <Flex container={true} height=" 60px" > */}
           {/* <div style={{ display: 'flex' }}> */}
-          <article style={{ width: '120px' }}>
+          <article style={zoomLevel>100?{width:'98px'}:{ width: '120px' }}>
             {/* <TransactionIndication type={item.type} /> */}
           </article>
 
@@ -213,7 +214,7 @@ export const TransactionSection = (props: any) => {
 
           {reccipient.address && (
             <div
-              style={{ marginLeft: '20px' ,width:zoomLevel>100?"40%":'57%'}}
+            style={{ marginLeft: '20px' ,width:zoomLevel>100?"40%":'57%'}}
               className="wallet-Transaction-recipitentBox-adddressBox"  
             >
               <div className="">{window.i18n('recipientAddress')}</div>
@@ -224,7 +225,7 @@ export const TransactionSection = (props: any) => {
           )}
           {/* </section> */}
 
-          <section style={{ marginLeft: '20px',  width:zoomLevel>=100  ? '18%' : '' }}>
+          <section  style={{ marginLeft: reccipient.address ? '20px':'10px' ,  width: reccipient.address ? '18%' : '' }}>
             <article className="wallet-Transaction-recipitentBox-transactionFee-header">
               {window.i18n('transactionFee')}
             </article>

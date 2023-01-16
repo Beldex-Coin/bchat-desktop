@@ -15,10 +15,12 @@ import { loadFiatCurrency, loadRecipient } from '../../wallet/BchatWalletHelper'
 import { ToastUtils } from '../../bchat/utils';
 import { getConversationById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
+import styled from 'styled-components';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
+  const [loading,setLoading]=useState(false);
   // const [progressing, setProgressing] = useState(false);
   // const [getPercentage, setPercentage] = useState(1);
   // const [getPercentage, setPercentage] = useState(1);
@@ -28,6 +30,19 @@ export const WalletPassword = (props: any) => {
   let daemonHeight = useSelector((state: any) => state.daemon.height);
    const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   const currentHeight: any = Number(useSelector(getHeight));
+  const Loader = styled.div`
+    position: absolute;
+    // top: 0;
+    display: flex;
+    // justify-content: center;
+    /* width: 100%; */
+    // width: 100Vw;
+    // height: 100%;
+    align-items: center;
+    z-index: 101;
+
+   
+`
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
@@ -92,12 +107,16 @@ export const WalletPassword = (props: any) => {
     }
     pushToastInfo('Current Daemon',`Connected to ${currentDaemon.host}`);
     console.log("profile:",profileName)
+    setLoading(true)
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
+    setLoading(false)
+
       pushToastError('walletInvalidPassword', openWallet.error?.message);
+
     } else {
+      setLoading(false)
       pushToastSuccess('successPassword', 'Success.');
-     
       props.onClick();
       // setProgressing(true);
       dispatch(dashboard());
@@ -127,7 +146,15 @@ export const WalletPassword = (props: any) => {
 
   return (
     <div className="wallet-walletPassword">
+      
       <div className="wallet-walletPassword-contentBox">
+      {loading && 
+      <Loader>
+            <div className='walletPassModal'>
+              <img src={"images/bchat/Load_animation.gif"} style={{ width: "150px", height: '150px' }} />
+            </div>
+          </Loader>
+}
         <SpacerLG />
         <SpacerLG />
         <div className="wallet-walletPassword-contentBox-walletImg"></div>

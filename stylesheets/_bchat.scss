@@ -1471,7 +1471,7 @@ label {
       .flexWrap {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: space-between;     
       }
     }
     &-squarBox-tran {
@@ -2344,8 +2344,10 @@ label {
       &-search,
       &-outgoing,
       &-pending {
-        width: 128px;
-        height: 128px;
+        // width: 128px;
+        // height: 128px;
+        width: 60px;
+        height: 60px;
         background-position: center;
         margin: 0 auto;
         background-size: 97% 98%;

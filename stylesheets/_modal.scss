@@ -243,6 +243,18 @@
   }
 }
 
+.walletPassModal
+{
+  width: 500px;
+    height: 343px;
+    background-color: #0000009e;
+    border-radius: 10px;
+    z-index: 99;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
 .edit-profile-dialog {
   .bchat-modal__header__title {
     font-size: $bchat-font-lg;
