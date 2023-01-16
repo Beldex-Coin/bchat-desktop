@@ -2325,7 +2325,14 @@ label {
         height: 84%;
         overflow-y: auto;
       }
-
+      &-empty-parentBox
+     {
+      width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+     }
       &-all {
         width: 240px;
         // height: 190px;

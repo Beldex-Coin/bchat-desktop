@@ -458,7 +458,7 @@ export const TransactionSection = (props: any) => {
               ))}
             {data.length == 0 ? (
               <>
-              
+              <div className='wallet-Transaction-empty-parentBox'>
               <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
               </div>
 
@@ -483,6 +483,7 @@ export const TransactionSection = (props: any) => {
                     window.i18n('noFailedTransaction')
                   )}
                 </h4>
+                </div>
               </>
             ) : (
               ''
