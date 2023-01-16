@@ -15,10 +15,9 @@ export function LocalDeamon() {
   const [verifyDeamon, setvSerifyDeamon] = useState({});
   async function validationForDeamon() {
     let data = { host: localDeamonHost, port: localDeamonPort, active: 0 };
-    const confirmation: any = await workingStatusForDeamon(data,'daemonValidation');
+    const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
 
     if (confirmation && confirmation.status === 'OK') {
-
       setvSerifyDeamon(data);
       setTestNotify(`Success`);
       return;
@@ -34,7 +33,7 @@ export function LocalDeamon() {
       host: localDeamonHost,
       port: localDeamonPort,
       active: 1,
-      type: 'Local'
+      type: 'Local',
     };
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDeamonData);
     ToastUtils.pushToastSuccess(
@@ -71,7 +70,9 @@ export function LocalDeamon() {
             <input
               value={localDeamonPort}
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-              onChange={(e: any) => !isNaN(e.target.value) && setLocalDeamonPort(e.target.value)}
+              onChange={(e: any) => {!isNaN(e.target.value) &&
+                setTestNotify('');
+                 setLocalDeamonPort(e.target.value)}}
               placeholder="Enter your port"
             />
           </article>
@@ -82,39 +83,47 @@ export function LocalDeamon() {
         <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
           <div>
             <BchatButton
-              buttonColor={!localDeamonPort?BchatButtonColor.Disable:BchatButtonColor.Primary}
+              buttonColor={!localDeamonPort ? BchatButtonColor.Disable : BchatButtonColor.Primary}
               text={window.i18n('test')}
               onClick={() => validationForDeamon()}
               disabled={!localDeamonPort}
             />
           </div>
-          <div style={{marginRight:'20px'}}>
-
-          </div>
+          <div style={{ marginRight: '20px' }}></div>
           <div>
             <BchatButton
-              buttonColor={Object.keys(verifyDeamon).length === 0 ? BchatButtonColor.Disable :BchatButtonColor.Green}
+              buttonColor={
+                Object.keys(verifyDeamon).length === 0
+                  ? BchatButtonColor.Disable
+                  : BchatButtonColor.Green
+              }
               text={window.i18n('save')}
               onClick={() => addDeamonNet()}
               disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
             />
           </div>
         </div>
-        {testNotify ? (
-          <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-            <span className='result' style={testNotify === 'Connection Error' ? { color: '#FF2F2F'} : { color: 'green' }}>
-              TEST RESULT :
-            </span>
-            <span style={{paddingLeft:'6px'}}>{testNotify}</span>
-            <BchatIcon
-                    iconType={testNotify === 'Connection Error' ? 'warning' : 'tickCircle'}
-                    iconSize={16}
-                    iconColor={testNotify === 'Connection Error' ? 'red' : 'green'}
-                    iconPadding={'0 0 0 3px'}
-                  />
-          </div>
-        ):        <SpacerLG />
-      }
+        <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+          {testNotify && (
+            <>
+              <span
+                className="result"
+                style={
+                  testNotify === 'Connection Error' ? { color: '#FF2F2F' } : { color: 'green' }
+                }
+              >
+                TEST RESULT :
+              </span>
+              <span style={{ paddingLeft: '6px' }}>{testNotify}</span>
+              <BchatIcon
+                iconType={testNotify === 'Connection Error' ? 'warning' : 'tickCircle'}
+                iconSize={16}
+                iconColor={testNotify === 'Connection Error' ? 'red' : 'green'}
+                iconPadding={'0 0 0 3px'}
+              />
+            </>
+          )}
+        </div>
 
         <SpacerLG />
       </div>

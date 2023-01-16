@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { walletSettingsKey } from '../../data/settings-key';
 
 export interface WalletConfigState {
-  walletsendAddress: any | null;
+  walletsendAddress: any | String;
   fiatBalance: string | any;
   walletHeight: number | any;
   walletDecimalValue:any;

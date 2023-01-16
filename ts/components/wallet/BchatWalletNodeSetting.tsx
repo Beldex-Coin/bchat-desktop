@@ -25,7 +25,6 @@ export const NodeSetting = () => {
   console.log('currentDeamon.host:', currentDeamon.host);
   const currentHost = currentDeamon.host == '127.0.0.1' ? 'explorer.beldex.io' : currentDeamon.host;
   const currentPort = currentDeamon.host == '127.0.0.1' ? '19091' : currentDeamon.port;
-  console.log("cuuuurrrent:",currentHost,currentPort)
   const [viewBox1, setViewBox1] = useState(true);
   const [viewBox2, setViewBox2] = useState(false);
   const [ipAddress, setIpAddress] = useState('');
@@ -35,10 +34,11 @@ export const NodeSetting = () => {
   const [chooseDeamonPort, setChooseDeamonPort] = useState(currentPort);
   const [option, setOption] = useState(deamonList);
   const [verifyDeamon, setVerifyDeamon] = useState({});
-  const [testNotify, setTestNotify] = useState({ status: '', content: '' });
+  const [testNotify, setTestNotify] = useState({ status: '', content: '', StatusIcon: true });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  console.log('testNotify:', testNotify);
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
@@ -52,13 +52,13 @@ export const NodeSetting = () => {
     if (e === '' || re.test(e)) {
       setPort(e);
       setVerifyDeamon({});
-      setTestNotify({ status: '', content: `` });
+      setTestNotify({ status: '', content: ``, StatusIcon: true });
     }
   }
   function assignHost(e: any) {
     setIpAddress(e);
     setVerifyDeamon({});
-    setTestNotify({ status: '', content: `` });
+    setTestNotify({ status: '', content: ``, StatusIcon: true });
   }
   function addDeamonNet() {
     let data: any = verifyDeamon;
@@ -88,8 +88,6 @@ export const NodeSetting = () => {
       `Successfully ${chooseDeamon}:${chooseDeamonPort} daemon updated.`
     );
     setDropdown(false);
-
-    
   }
 
   async function showDropDown() {
@@ -99,7 +97,7 @@ export const NodeSetting = () => {
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
-        const deamonStatus = await workingStatusForDeamon(data[i],'daemonValidation');
+        const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
           data[i].active = true;
           status.push(data[i]);
@@ -127,7 +125,7 @@ export const NodeSetting = () => {
 
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
-    const confirmation: any = await workingStatusForDeamon(data,'daemonValidation');
+    const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
 
     // if(currentDeamon.host===ipAddress && currentDeamon.port === port)
     // {
@@ -138,18 +136,19 @@ export const NodeSetting = () => {
       console.log('confirmation ok');
       if (confirmation.nettype === window.networkType) {
         setVerifyDeamon(data);
-        setTestNotify({ status: 'ok', content: `Success` });
+        setTestNotify({ status: 'ok', content: `Success`, StatusIcon: true });
         return;
       }
       setTestNotify({
-        status: 'failed',
+        status: 'ok',
         content: `You're using ${confirmation.nettype} IP. Use a ${window.networkType} IP`,
+        StatusIcon: false,
       });
       return;
     }
     // setIpAddress('');
     // setPort('');
-    setTestNotify({ status: 'failed', content: `Connection Error` });
+    setTestNotify({ status: 'failed', content: `Connection Error`, StatusIcon: true });
     setVerifyDeamon({});
   }
 
@@ -200,7 +199,7 @@ export const NodeSetting = () => {
             style={{ marginLeft: '100px' }}
             onClick={() => {
               setLocalDeamonVisible(true);
-              setTestNotify({ status: '', content: '' });
+              setTestNotify({ status: '', content: '', StatusIcon: true });
               setIpAddress('');
               setPort('');
               setVerifyDeamon({});
@@ -318,30 +317,26 @@ export const NodeSetting = () => {
                   />
                 </div>
               </div>
-              {/* {testNotify.status ? ( */}
               <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
                 {testNotify.status && (
                   <>
                     <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
                       Test Result :
                     </span>
-                    <span style={{ paddingLeft: '6px' }}>{testNotify.content}</span>
-                    <BchatIcon
-                      iconType={testNotify.status === 'fail' ? 'warning' : 'tickCircle'}
-                      iconSize={16}
-                      iconColor={testNotify.status === 'fail' ? 'red' : 'green'}
-                      iconPadding={'2px'}
-                    />
+                    <span style={{ paddingLeft: '6px', paddingRight: '5px' }}>
+                      {testNotify.content}
+                    </span>
+                    {testNotify.StatusIcon && (
+                      <BchatIcon
+                        iconType={testNotify.status === 'ok' ? 'tickCircle' : 'warning'}
+                        iconSize={16}
+                        iconColor={testNotify.status === 'ok' ? 'green' : 'red'}
+                        iconPadding={'2px'}
+                      />
+                    )}
                   </>
                 )}
               </div>
-
-              {/* )  */}
-              {/* : (
-                <SpacerLG />
-              ) */}
-              {/* } */}
-
               <SpacerLG />
             </div>
 

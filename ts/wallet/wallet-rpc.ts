@@ -322,8 +322,9 @@ class Wallet {
         restore_height = await daemon.timestampToHeight(
           refreshDetails.refresh_start_timestamp_or_height
         );
+        console.log("restore_height: from date:",refreshDetails.refresh_start_timestamp_or_height,restore_height)
         if (restore_height === false) {
-          ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
+         return ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
         }
       } else {
         restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
@@ -341,8 +342,10 @@ class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
+      // console.log("restoreWallet:1st",restoreWallet)
       if (restoreWallet.hasOwnProperty('error')) {
-        if (restoreWallet.error.code === -1)
+        console.log("restoreWallet:code",restoreWallet.error.code)
+        // if (restoreWallet.error.code === -21)
           restoreWallet = await this.deleteWallet(
             displayName,
             password,
@@ -751,17 +754,17 @@ class Wallet {
       };
     } catch (e) {
       console.log('failed to send wallet rpc');
-      if(method == "open_wallet"){
-        const currentDaemon = await this.chooseDaemon();
-        currentDaemon.active = true;
-        console.log("currentDaemon:",currentDaemon)
-        const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-        window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
-        throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.
-        `);
-      }else{
+      // if(method == "open_wallet"){
+      //   const currentDaemon = await this.chooseDaemon();
+      //   currentDaemon.active = true;
+      //   console.log("currentDaemon:",currentDaemon)
+      //   const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+      //   window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
+      //   throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.
+      //   `);
+      // }else{
         throw new HTTPError('exception during wallet-rpc:', e);
-      }
+      // }
     }
   };
 

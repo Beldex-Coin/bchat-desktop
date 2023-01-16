@@ -31,7 +31,10 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  let widthStyle = { width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',paddingLeft:'20px' };
+  let widthStyle = {
+    width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',
+    paddingLeft: '20px',
+  };
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -77,8 +80,11 @@ export const SendForm = (props: any) => {
     if (address.length > 106 || address.length < 95) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    if(!window.globalOnlineStatus){
-     return ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
+    if (!window.globalOnlineStatus) {
+      return ToastUtils.pushToastError(
+        'internetConnectionError',
+        'Please check your internet connection'
+      );
     }
     let addressValidate = await wallet.validateAddres(address);
     if (!addressValidate) {
@@ -88,6 +94,9 @@ export const SendForm = (props: any) => {
   }
 
   async function send() {
+    if (props.amount == 0) {
+      return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
+    }
     const isSweepAll =
       props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     // dispatch(updateTransactionInitModal({}))
@@ -139,7 +148,7 @@ export const SendForm = (props: any) => {
               width="100%"
             >
               {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
-              <span className="wallet-sendForm-label" style={{width:widthStyle.width}}>
+              <span className="wallet-sendForm-label" style={{ width: widthStyle.width }}>
                 {window.i18n('amount')}
               </span>
 
@@ -250,10 +259,13 @@ export const SendForm = (props: any) => {
               />
               <BchatButton
                 text={window.i18n('contact')}
-                onClick={() => dispatch(contact())}
+                onClick={() => {
+                  const updateAddress: any = address;
+                  dispatch(updateSendAddress(updateAddress));
+                  dispatch(contact());
+                }}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
-                //   disabled={!caption}
               />
             </div>
           </Flex>

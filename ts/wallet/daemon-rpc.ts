@@ -53,8 +53,8 @@ class Daemon {
     };
     this.last_height_send_time = Date.now();
     this.agent = new http.Agent({ keepAlive: true, maxSockets: 10 });
-    this.PIVOT_BLOCK_HEIGHT = 742421;
-    this.PIVOT_BLOCK_TIMESTAMP = 1639187815;
+    this.PIVOT_BLOCK_HEIGHT = window.networkType == 'mainnet' ? 742421 : 169960;
+    this.PIVOT_BLOCK_TIMESTAMP = window.networkType == 'mainnet' ? 1639187815 : 1668921922;
     this.PIVOT_BLOCK_TIME = 0;
     // this.queue = new queue(1, Infinity);
   }
@@ -81,9 +81,11 @@ class Daemon {
       //  let launchCount= window.getSettingValue('launch-count');
       //  console.log('DAEMON_NODE_CURRENT:', window.currentDaemon,launchCount);
 
-      const currentDaemon: any = window.getSettingValue('current-deamon')?window.getSettingValue('current-deamon'):window.currentDaemon;
+      const currentDaemon: any = window.getSettingValue('current-deamon')
+        ? window.getSettingValue('current-deamon')
+        : window.currentDaemon;
       // console.log('DAEMON_NODE_CURRENT:', currentDaemon,launchCount,window.getSettingValue('current-deamon'));
-      
+
       const url = `http://${currentDaemon.host}:${currentDaemon.port}/json_rpc`;
       const fetchOptions = {
         method: 'POST',
@@ -118,10 +120,8 @@ class Daemon {
 
   timestampToHeight(date: any) {
     return new Promise((resolve, reject) => {
-
       let timestamp = new Date(date).getTime();
       timestamp = timestamp - (timestamp % 86400000) - 86400000;
-
       if (timestamp > 999999999999) {
         // We have got a JS ms timestamp, convert
         timestamp = Math.floor(timestamp / 1000);
