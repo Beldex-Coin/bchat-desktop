@@ -267,6 +267,7 @@ export interface ReduxConversationType {
   didApproveMe?: boolean;
   walletAddress?: any;
   walletUserName?:any;
+  walletCreatedDaemonHeight?:number|any;
 }
 
 export interface NotificationForConvoOption {

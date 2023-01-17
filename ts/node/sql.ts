@@ -416,7 +416,8 @@ function updateToSchemaVersion4(currentVersion: number, db: BetterSqlite3.Databa
       name TEXT,
       profileName TEXT,
       walletUserName STRING,
-      walletAddress STRING
+      walletAddress STRING,
+      walletCreatedDaemonHeight INTEGER
     );
 
     CREATE INDEX conversations_active ON ${CONVERSATIONS_TABLE} (
@@ -1825,7 +1826,7 @@ function getConversationCount() {
 }
 
 function saveConversation(data: any, instance?: BetterSqlite3.Database) {
-  const { id, active_at, type, members, name, profileName,walletUserName } = data;
+  const { id, active_at, type, members, name, profileName,walletUserName,walletCreatedDaemonHeight } = data;
   assertGlobalInstanceOrInstance(instance)
     .prepare(
       `INSERT INTO ${CONVERSATIONS_TABLE} (
@@ -1836,18 +1837,19 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
     members,
     name,
     profileName,
-    walletUserName
+    walletUserName,
+    walletCreatedDaemonHeight
    
   ) values (
     $id,
     $json,
-
     $active_at,
     $type,
     $members,
     $name,
     $profileName,
-    $walletUserName
+    $walletUserName,
+    $walletCreatedDaemonHeight
     
   );`
     )
@@ -1860,7 +1862,8 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
       members: members ? members.join(' ') : null,
       name,
       profileName,
-      walletUserName
+      walletUserName,
+      walletCreatedDaemonHeight
      
     });
 }

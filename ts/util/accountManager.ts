@@ -17,6 +17,10 @@ import {
 } from './storage';
 import { Registration } from './registration';
 
+import { default as insecureNodeFetch } from 'node-fetch';
+import { HTTPError } from '../bchat/utils/errors';
+// import { wallet } from '../wallet/wallet-rpc';
+
 /**
  * Might throw
  */
@@ -66,7 +70,7 @@ export async function signInWithRecovery(
   mnemonicLanguage: string,
   profileName: string
 ) {
-  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName);
+  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName,0);
 }
 
 /**
@@ -89,7 +93,7 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
   // await for the first configuration message to come in.
-  await registrationDone(pubKeyString, '');
+  await registrationDone(pubKeyString, '',0);
   return pubKeyString;
 }
 /**
@@ -101,7 +105,9 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
 export async function registerSingleDevice(
   generatedMnemonic: string,
   mnemonicLanguage: string,
-  profileName: string
+  profileName: string,
+  deamonHeight:number
+ 
 ) {
   if (!generatedMnemonic) {
     throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
@@ -118,9 +124,9 @@ export async function registerSingleDevice(
   await createAccount(identityKeyPair);
   await saveRecoveryPhrase(generatedMnemonic);
   await setLastProfileUpdateTimestamp(Date.now());
-
+  deamonHeight
   const pubKeyString = toHex(identityKeyPair.pubKey);
-  await registrationDone(pubKeyString, profileName);
+  await registrationDone(pubKeyString, profileName,deamonHeight);
 }
 
 // export async function generateMnemonic() {
@@ -132,11 +138,43 @@ export async function registerSingleDevice(
   // localStorage.setItem("userAddress","bxdis3VF318i2QDjvqwoG9GyfP4sVjTvwZyf1JGLNFyTJ8fbtBgzW6ieyKnpbMw5bU9dggbAiznaPGay96WAmx1Z2B32B86PE");
   // return mn_encode(hex);
 // }
+// async function getDeamonHeight()
+// {
+//   let data=await wallet.sendRPC('getheight', {}, 5000);
+//   return data.result?.height
+//   // console.log('deamon height',data);
+  
+// }
+export const getLatestHeight = async () => {
+  try {
+    // http://154.26.139.105
+    let url:string;
+    if (window.networkType === 'mainnet') {
+     url ='http://explorer.beldex.io:19091';
+    }
+    else
+    {
+      url='http://154.26.139.105:19095';
+    }
+    const response = await insecureNodeFetch(`${url}/get_height`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+    });
 
+    if (!response.ok) {
+      throw new HTTPError('Beldex_rpc error', response);
+    }
+    const result = await response.json();
+    return result.height;
+  } catch (e) {
+    throw new HTTPError('exception during wallet-rpc:', e);
+  }
+};
 async function createAccount(identityKeyPair: any) {
   const sodium = await getSodiumRenderer();
   let password = fromArrayBufferToBase64(sodium.randombytes_buf(16));
   password = password.substring(0, password.length - 2);
+  
 
   await Promise.all([
     Storage.remove('identityKey'),
@@ -172,8 +210,10 @@ async function createAccount(identityKeyPair: any) {
   await setLocalPubKey(pubKeyString);
 }
 
-async function registrationDone(ourPubkey: string, displayName: string) {
+async function registrationDone(ourPubkey: string, displayName: string,
+  deamonHeight:number ) {
   window?.log?.info('registration done');
+  
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
   window?.log?.info('registration done 0 ::',ourPubkey);
@@ -195,6 +235,7 @@ async function registrationDone(ourPubkey: string, displayName: string) {
   window?.log?.info('registration done 4 ::',ourPubkey);
   await conversation.setDidApproveMe(true);
   window?.log?.info('registration done 5 ::',ourPubkey);
+  await conversation.setwalletCreatedDaemonHeight(deamonHeight);
 
   await conversation.commit();
   const user = {

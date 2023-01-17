@@ -312,6 +312,30 @@ class Wallet {
     }
   };
 
+  async getHeigthFromDateAndUserInput(refreshDetails:
+    {refresh_type:string,
+      refresh_start_timestamp_or_height:string})
+  {
+   let restore_height;
+    if (refreshDetails.refresh_type == 'date') {
+      //   // Convert timestamp to 00:00 and move back a day
+      //   // Core code also moved back some amount of blocks
+      restore_height = await daemon.timestampToHeight(
+        refreshDetails.refresh_start_timestamp_or_height
+      );
+      if (restore_height === false) {
+        return ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
+      }
+    } else {
+      restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
+      // if the height can't be parsed just start from block 0
+      if (!restore_height) {
+        restore_height = 0;
+      }
+    }
+    return restore_height;
+  }
+
   restoreWallet = async (
     displayName: string,
     password: string,
@@ -320,24 +344,26 @@ class Wallet {
     type?: string
   ) => {
     let restoreWallet;
-    let restore_height;
+    let restore_height=await this.getHeigthFromDateAndUserInput(refreshDetails)
     try {
-      if (refreshDetails.refresh_type == 'date') {
-        //   // Convert timestamp to 00:00 and move back a day
-        //   // Core code also moved back some amount of blocks
-        restore_height = await daemon.timestampToHeight(
-          refreshDetails.refresh_start_timestamp_or_height
-        );
-        if (restore_height === false) {
-          return ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
-        }
-      } else {
-        restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
-        // if the height can't be parsed just start from block 0
-        if (!restore_height) {
-          restore_height = 0;
-        }
-      }
+      // if (refreshDetails.refresh_type == 'date') {
+      //   //   // Convert timestamp to 00:00 and move back a day
+      //   //   // Core code also moved back some amount of blocks
+      //   restore_height = await daemon.timestampToHeight(
+      //     refreshDetails.refresh_start_timestamp_or_height
+      //   );
+      //   if (restore_height === false) {
+      //     return ToastUtils.pushToastError('invalidRestoreDate', window.i18n('invalidRestoreDate'));
+      //   }
+      // } else {
+      //   restore_height = Number.parseInt(refreshDetails.refresh_start_timestamp_or_height);
+      //   // if the height can't be parsed just start from block 0
+      //   if (!restore_height) {
+      //     restore_height = 0;
+      //   }
+      // }
+      console.log('restore_height',restore_height);
+      
       let walletDir =
         os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
       fs.emptyDirSync(walletDir);

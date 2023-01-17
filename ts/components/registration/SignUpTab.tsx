@@ -15,6 +15,7 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
+
 const { clipboard } = require('electron')
 
 export enum SignUpMode {
@@ -74,8 +75,10 @@ export const SignUpTab = (props: any) => {
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState("");
   const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
+  // const [daemonHeight,setDaemonHeight]=useState(0);
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
-
+     
+     
   useEffect(() => {
     if (signUpMode === SignUpMode.BchatIDShown) {
       window.bchat.setNewBchatID(hexGeneratedPubKey);
@@ -84,7 +87,9 @@ export const SignUpTab = (props: any) => {
 
   const generateMnemonicAndKeyPairCreate = async (props: any) => {
     if (generatedRecoveryPhrase === '') {
-      const mnemonic = await wallet.generateMnemonic(props);
+      const mnemonic = await wallet.generateMnemonic(props); 
+      // let data=await wallet.sendRPC('getheight', {}, 5000);
+    //  let  daemonBlockHeight=data.result?.height;
       let seedHex = mn_decode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;
@@ -95,7 +100,7 @@ export const SignUpTab = (props: any) => {
       const seed = fromHex(seedHex);
       const keyPair = await bchatGenerateKeyPair(seed);
       const newHexPubKey = StringUtils.decode(keyPair.pubKey, 'hex');
-
+      // setDaemonHeight(data.result?.height)
       setGeneratedRecoveryPhrase(mnemonic);
       setHexGeneratedPubKey(newHexPubKey); // our 'frontend' bchatID
     }
@@ -124,6 +129,7 @@ export const SignUpTab = (props: any) => {
     await signUp({
       displayName,
       generatedRecoveryPhrase: generatedRecoveryPhrase,
+     
     });
   };
   const LoaderGif = () => {

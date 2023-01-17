@@ -44,9 +44,9 @@ export const ForgotPassword =  (props: any) => {
   //   console.log('converstation data',data?.attributes);
   // }
 
-  console.log('seed:', seed);
-  console.log('newPassword:', newPassword);
-  console.log('confirmPassword:', confirmPassword);
+  // console.log('seed:', seed);
+  // console.log('newPassword:', newPassword);
+  // console.log('confirmPassword:', confirmPassword);
   // console.log('UserDetails',userDetails);
   
 
@@ -54,7 +54,7 @@ export const ForgotPassword =  (props: any) => {
     try {
       const trimWhiteSpace = seed.replace(/^\s+|\s+$/g, '');
       const wlist = trimWhiteSpace.split(' ');
-      console.log('wlist:', wlist.length, wlist.length % 3 !== 0);
+      // console.log('wlist:', wlist.length, wlist.length % 3 !== 0);
       const wordset = { prefixLen: 3 };
       if (wlist.length < 24) {
         ToastUtils.pushToastError('invalidSeed', "You've entered too few words, please try again");
@@ -84,7 +84,7 @@ export const ForgotPassword =  (props: any) => {
 
   const passValid = async () => {
     let userDetails= await getConversationById(UserUtils.getOurPubKeyStrFromCache())
-    console.log('profileName',userDetails?.attributes.walletUserName);
+    // console.log('profileName',userDetails?.attributes.walletUserName);
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
     }
@@ -110,12 +110,13 @@ export const ForgotPassword =  (props: any) => {
     }    
   
     let profileName =userDetails?.attributes.walletUserName;
+    const daemonHeight=userDetails?.attributes.walletCreatedDaemonHeight
     console.log("profileName:",profileName)
     if(!profileName){
       profileName = UserDetails[userId].profileName;
     }
     console.log("profileName:",profileName)
-    const refreshDetails = { refresh_start_timestamp_or_height: 0 };
+    const refreshDetails = { refresh_start_timestamp_or_height: daemonHeight?daemonHeight:0 };
     const changePassword = await wallet.restoreWallet(
       profileName,
       newPassword,

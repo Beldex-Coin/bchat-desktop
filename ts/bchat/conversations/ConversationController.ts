@@ -14,8 +14,10 @@ import _ from 'lodash';
 import { getOpenGroupManager } from '../apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 
 import { deleteAllMessagesByConvoIdNoConfirmation } from '../../interactions/conversationInteractions';
+// import { useSelector } from 'react-redux';
+// import { getHeight } from '../../state/selectors/walletConfig';
 
-
+// const height=useSelector(getHeight)
 let instance: ConversationController | null;
 
 export const getConversationController = () => {
@@ -66,7 +68,8 @@ export class ConversationController {
   }
 
   public dangerouslyCreateAndAdd(attributes: ConversationAttributes) {
-
+ console.log('attributes ::',attributes);
+ 
     return this.conversations.add(attributes);
   }
 
@@ -106,6 +109,7 @@ export class ConversationController {
         // conversation.attributes.walletUserName='munavver;
         conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
         conversation.attributes.walletUserName=localStorage.getItem("walletUserName");
+        // conversation.attributes.walletCreatedDaemonHeight=1234;
         await saveConversation(conversation.attributes);
         localStorage.setItem("walletUserName",'');
 

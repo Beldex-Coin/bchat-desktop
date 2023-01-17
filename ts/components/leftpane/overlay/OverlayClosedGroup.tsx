@@ -17,7 +17,8 @@ import { SpacerLG } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
-// import { getConversationById } from '../../../data/data';
+//  import { getConversationById } from '../../../data/data';
+// import { UserUtils } from '../../../bchat/utils';
 // import { UserUtils } from '../../../bchat/utils';
 
 
@@ -34,6 +35,11 @@ export const OverlayClosedGroup = () => {
   // console.log("directContacts ::",directContacts);
   // console.log("privateContactsPubkeys",privateContactsPubkeys);
   
+//  async function getconverstation()
+//   {
+//     let userDetails= await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+//     console.log('profileName',userDetails?.attributes);
+//   }
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -46,6 +52,7 @@ export const OverlayClosedGroup = () => {
 
     setSelectedMemberIds([...selectedMemberIds, memberId]);
   }
+
 
   function handleUnselectMember(unselectId: string) {
     setSelectedMemberIds(

@@ -119,6 +119,7 @@ export interface ConversationAttributes {
   isPinned: boolean;
   isApproved: boolean;
   didApproveMe: boolean;
+  walletCreatedDaemonHeight?:number|any;
 }
 
 export interface ConversationAttributesOptionals {
@@ -161,6 +162,7 @@ export interface ConversationAttributesOptionals {
   didApproveMe?: boolean;
   walletAddress?: string|null;
   walletUserName?:string|null|any;
+  walletCreatedDaemonHeight?:number|null|any;
   
 }
 
@@ -194,6 +196,7 @@ export const fillConvoAttributesWithDefaults = (
     didApproveMe: false,
     walletAddress:null,
     walletUserName:null,
+    walletCreatedDaemonHeight:null,
   });
 };
 
@@ -361,7 +364,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const groupAdmins = this.getGroupAdmins();
     const isPublic = this.isPublic();
     const walletAddress=this.isWalletAddress();
-    const walletUserName=this.getProfileName()
+    const walletUserName=this.getProfileName();
+    const walletCreatedDaemonHeight=this.getwalletCreatedDaemonHeight();
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
     const zombies = this.isGroup() && !isPublic ? this.get('zombies') : [];
@@ -504,6 +508,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (walletUserName)
     {      
       toRet.walletUserName=walletUserName;
+    }
+    if(walletCreatedDaemonHeight)
+    {
+      toRet.walletCreatedDaemonHeight=walletCreatedDaemonHeight;
     }
     
     return toRet;
@@ -1301,6 +1309,19 @@ console.log("getUnreadCountByConversation ::",unreadCount,this.id);
     }
   }
 
+  public async setwalletCreatedDaemonHeight(value:number, shouldCommit: boolean = true) {
+    
+      window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
+      this.set({
+        walletCreatedDaemonHeight: value,
+      });
+
+      if (shouldCommit) {
+        await this.commit();
+      }
+    
+  }
+
   public async setSubscriberCount(count: number) {
     if (this.get('subscriberCount') !== count) {
       this.set({ subscriberCount: count });
@@ -1385,6 +1406,10 @@ console.log("getUnreadCountByConversation ::",unreadCount,this.id);
     return Boolean(this.get('didApproveMe'));
   }
 
+  public walletCreatedDaemonHeight()
+  {
+    return Number(this.get('walletCreatedDaemonHeight'));
+  }
   public isApproved() {
     return Boolean(this.get('isApproved'));
   }
@@ -1453,7 +1478,11 @@ console.log("getUnreadCountByConversation ::",unreadCount,this.id);
     }
     return this.id;
   }
-
+  public getwalletCreatedDaemonHeight() {
+    
+    return this.get('walletCreatedDaemonHeight');
+  }
+ 
   public isWalletAddress()
   {       
     return this.attributes.walletAddress
