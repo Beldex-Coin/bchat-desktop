@@ -184,7 +184,7 @@ export const Dashboard = (props: any) => {
         {WalletDashboard.walletTransaction === focusedInnersection && (
           <TransactionSection
             // syncStatus={localStorage.getItem('syncStatus')}
-            syncStatus={window.getSettingValue('syncStatus')}
+            // syncStatus={window.getSettingValue('syncStatus')}
             transactionList={transactions}
           />
         )}

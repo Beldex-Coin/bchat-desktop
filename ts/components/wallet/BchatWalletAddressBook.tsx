@@ -109,8 +109,10 @@ return <>
     <div className="wallet-addressBook">
       {/* <button onClick={()=>showdata()}>test 12345</button> */}
       <div style={{ cursor: 'pointer' }}>
-        <Flex container={true} alignItems="center" onClick={() => dispatch(dashboard())}>
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+        <Flex container={true} alignItems="center" >
+          <div onClick={() => dispatch(dashboard())}>
+          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'}/>
+          </div>
           <div className="wallet-addressBook-header-txt">
             {/* {window.i18n('addressBook')} */}
             {props.name}

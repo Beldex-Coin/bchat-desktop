@@ -8,9 +8,16 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
 import { updateFiatBalance } from '../../state/ducks/walletConfig';
+import { ToastUtils } from '../../bchat/utils';
 
 export async function rescanModalDialog() {
-  let txt:any='';
+  if (!window.globalOnlineStatus)  {
+    return ToastUtils.pushToastError(
+      'internetConnectionError',
+      'Please check your internet connection'
+    );
+  }
+  let Transactions:any='';
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
@@ -26,7 +33,7 @@ export async function rescanModalDialog() {
             transacations: [],
           })
         );
-        window.inboxStore?.dispatch(updateFiatBalance(txt))
+        window.inboxStore?.dispatch(updateFiatBalance(Transactions));
       }
     })
   );
@@ -55,7 +62,9 @@ export const WalletHeader = (props:any) => {
           name={'Rescan'}
           icontype="reload"
           iconSize={'small'}
-          submit={() => rescanModalDialog()}
+          submit={() => {
+            window.setSettingValue('syncStatus', false);
+            rescanModalDialog()}}
         />
         <span style={{ marginLeft: '10px' }}>
           <BchatIconButton

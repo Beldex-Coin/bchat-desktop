@@ -42,6 +42,14 @@ export function LocalDeamon() {
     );
   }
 
+  function portValidation(value: any) {
+    const regex = /^[0-9\b]+$/;
+    if (value === '' || regex.test(value)) {
+      setLocalDeamonPort(value);
+      setTestNotify('');
+    }
+  }
+
   return (
     <>
       <div
@@ -70,9 +78,12 @@ export function LocalDeamon() {
             <input
               value={localDeamonPort}
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-              onChange={(e: any) => {!isNaN(e.target.value) &&
-                setTestNotify('');
-                 setLocalDeamonPort(e.target.value)}}
+              onChange={(e: any) => {
+                portValidation(e.target.value);
+                // !isNaN(e.target.value) &&
+                // setTestNotify('');
+                //  setLocalDeamonPort(e.target.value)}
+              }}
               placeholder="Enter your port"
             />
           </article>
@@ -112,7 +123,7 @@ export function LocalDeamon() {
                   testNotify === 'Connection Error' ? { color: '#FF2F2F' } : { color: 'green' }
                 }
               >
-                TEST RESULT :
+                {window.i18n('NodeTestResult')} :
               </span>
               <span style={{ paddingLeft: '6px' }}>{testNotify}</span>
               <BchatIcon

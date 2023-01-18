@@ -553,4 +553,5 @@ export type LocalizerKeys =
   | 'noOutgoingTransaction'
   | 'walletSyncingDiscription'
   | 'seedFieldEmpty'
-  | 'searchEmptyTransaction';
+  | 'searchEmptyTransaction'
+  | 'NodeTestResult';

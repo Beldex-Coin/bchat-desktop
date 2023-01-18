@@ -106,8 +106,7 @@ export const WalletPassword = (props: any) => {
       profileName = UserDetails[userId].profileName;
     }
     pushToastInfo('Current Daemon',`Connected to ${currentDaemon.host}`);
-    console.log("profile:",profileName)
-    setLoading(true)
+    setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
     setLoading(false)

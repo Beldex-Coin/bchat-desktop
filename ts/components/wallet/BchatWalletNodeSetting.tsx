@@ -22,9 +22,11 @@ export const NodeSetting = () => {
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     : window.currentDaemon;
   const deamonList = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-  console.log('currentDeamon.host:', currentDeamon.host);
-  const currentHost = currentDeamon.host == '127.0.0.1' ? 'explorer.beldex.io' : currentDeamon.host;
-  const currentPort = currentDeamon.host == '127.0.0.1' ? '19091' : currentDeamon.port;
+
+  console.log('currentDeamon.host:', window.currentDaemon);
+  console.log('currentDecuuu ::', currentDeamon.host);
+  const currentHost = currentDeamon.host == '127.0.0.1' ? window.currentDaemon.host : currentDeamon.host;
+  const currentPort = currentDeamon.host == '127.0.0.1' ? window.currentDaemon.port : currentDeamon.port;
   const [viewBox1, setViewBox1] = useState(true);
   const [viewBox2, setViewBox2] = useState(false);
   const [ipAddress, setIpAddress] = useState('');
@@ -47,19 +49,22 @@ export const NodeSetting = () => {
       document.removeEventListener('click', handleClick);
     };
   }, []);
-  function numberOnly(e: any) {
-    const re = /^[0-9\b]+$/;
-    if (e === '' || re.test(e)) {
-      setPort(e);
+
+  function portValidation(value: any) {
+    const regex = /^[0-9\b]+$/;
+    if (value === '' || regex.test(value)) {
+      setPort(value);
       setVerifyDeamon({});
       setTestNotify({ status: '', content: ``, StatusIcon: true });
     }
   }
+
   function assignHost(e: any) {
     setIpAddress(e);
     setVerifyDeamon({});
     setTestNotify({ status: '', content: ``, StatusIcon: true });
   }
+
   function addDeamonNet() {
     let data: any = verifyDeamon;
     if (Object.keys(data).length === 0) {
@@ -275,7 +280,7 @@ export const NodeSetting = () => {
                   <input
                     value={port}
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    onChange={(e: any) => numberOnly(e.target.value)}
+                    onChange={(e: any) => portValidation(e.target.value)}
                     placeholder="Enter your port"
                     style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
                   />
@@ -321,7 +326,7 @@ export const NodeSetting = () => {
                 {testNotify.status && (
                   <>
                     <span style={testNotify.status == 'ok' ? { color: 'green' } : { color: 'red' }}>
-                      Test Result :
+                      {window.i18n('NodeTestResult')} :
                     </span>
                     <span style={{ paddingLeft: '6px', paddingRight: '5px' }}>
                       {testNotify.content}

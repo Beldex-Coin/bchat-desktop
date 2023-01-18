@@ -18,7 +18,8 @@ export const TransactionSection = (props: any) => {
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const syncingStatus = props.syncStatus ? true : false;
+  const syncingStatus = window.getSettingValue('syncStatus') ? true : false;
+  console.log("syncingStatus:",window.getSettingValue('syncStatus'),syncingStatus)
   // const recip:any=receipientData
   const zoomLevel=window.getSettingValue('zoom-factor-setting')
   // console.log('visible:', visible);
@@ -250,11 +251,7 @@ export const TransactionSection = (props: any) => {
       </>
     );
   };
-  // console.log(
-  //   'DAAAAAATAAAAAA.length:',
-  //   `wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`,
-  //   data.length
-  // );
+
   return (
     <div className="wallet-Transaction">
       {!syncingStatus ? (<>
@@ -280,9 +277,6 @@ export const TransactionSection = (props: any) => {
               ) : (
                 ''
               )}
-              {/* {data.length == 0 && filter == 'All' ? ( */}
-              {/* '' */}
-              {/* ) : ( */}
               {transactionsHistory.length > 0 && (
                 <div className="wallet-Transaction-filterWithIcon">
                   {/* <input value={window.i18n('filterAll')} /> */}
