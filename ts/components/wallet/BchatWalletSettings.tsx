@@ -22,11 +22,11 @@ export const WalletSettings = () => {
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
-  const syncProDone= window.getSettingValue('syncStatus');
-  const [fiatCurrency,setFiatCurrency]=useState(window.getSettingValue(walletSettingsKey.settingsFiatCurrency))
+  const syncProDone = window.getSettingValue('syncStatus');
+  const [fiatCurrency, setFiatCurrency] = useState(
+    window.getSettingValue(walletSettingsKey.settingsFiatCurrency)
+  );
   const connectedDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  console.log('syncProssing ::',syncProDone);
-  
 
   const currenyExt = [
     'AUD',
@@ -57,16 +57,13 @@ export const WalletSettings = () => {
     'THB',
     'USD',
     'VEF',
-    'ZAR'
+    'ZAR',
   ];
   const decimal = ['2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
-  function changepass()
-  {
-    if(syncProDone)
-    {
+  function changepass() {
+    if (syncProDone) {
       dispatch(ChangePasswordModal({}));
     }
-    
   }
   function enbaleOrdisableSaveRecipient() {
     window.setSettingValue(walletSettingsKey.settingSaveRecipient, !saveRecipient);
@@ -80,9 +77,11 @@ export const WalletSettings = () => {
       {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
 
       {/* <ModalContainer /> */}
-      <div onClick={() => dispatch(dashboard())} style={{ cursor: 'pointer' }}>
+      <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'}/>
+          <div onClick={() => dispatch(dashboard())}>
+            <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+          </div>
           <div className="wallet-addressBook-header-txt">{window.i18n('settingsHeader')}</div>
         </Flex>
       </div>
@@ -143,7 +142,7 @@ export const WalletSettings = () => {
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
                     // localStorage.setItem('currency', e);
-                    window.setSettingValue(walletSettingsKey.settingsFiatCurrency,e)
+                    window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
                     wallet.getFiatBalance(e);
                     setFiatCurrency(e);
                     // dispatch(updateWalletFiatCurrency(e))
@@ -153,7 +152,9 @@ export const WalletSettings = () => {
               )
             }
           >
-            <span className="wallet-settings-tabBox-disableText">{window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}</span>
+            <span className="wallet-settings-tabBox-disableText">
+              {window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}
+            </span>
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>
@@ -184,7 +185,10 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox">
         <Flex container={true} justifyContent="space-between" padding="10px 0">
           <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
-          <div onClick={() =>changepass() } style={{ cursor: syncProDone?'pointer':'not-allowed' }}>
+          <div
+            onClick={() => changepass()}
+            style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}
+          >
             {/* <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>  */}
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>

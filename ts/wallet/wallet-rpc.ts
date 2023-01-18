@@ -312,11 +312,11 @@ class Wallet {
     }
   };
 
-  async getHeigthFromDateAndUserInput(refreshDetails:
-    {refresh_type:string,
-      refresh_start_timestamp_or_height:string})
-  {
-   let restore_height;
+  async getHeigthFromDateAndUserInput(refreshDetails: {
+    refresh_type: string;
+    refresh_start_timestamp_or_height: string;
+  }) {
+    let restore_height;
     if (refreshDetails.refresh_type == 'date') {
       //   // Convert timestamp to 00:00 and move back a day
       //   // Core code also moved back some amount of blocks
@@ -344,7 +344,7 @@ class Wallet {
     type?: string
   ) => {
     let restoreWallet;
-    let restore_height=await this.getHeigthFromDateAndUserInput(refreshDetails)
+    let restore_height = await this.getHeigthFromDateAndUserInput(refreshDetails);
     try {
       // if (refreshDetails.refresh_type == 'date') {
       //   //   // Convert timestamp to 00:00 and move back a day
@@ -362,8 +362,8 @@ class Wallet {
       //     restore_height = 0;
       //   }
       // }
-      console.log('restore_height',restore_height);
-      
+      console.log('restore_height', restore_height);
+
       let walletDir =
         os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
       fs.emptyDirSync(walletDir);
@@ -408,7 +408,13 @@ class Wallet {
 
   getLatestHeight = async () => {
     try {
-      const response = await insecureNodeFetch('http://explorer.beldex.io:19091/get_height', {
+      let url: string;
+      if (window.networkType === 'mainnet') {
+        url = 'http://explorer.beldex.io:19091';
+      } else {
+        url = 'http://154.26.139.105:19095';
+      }
+      const response = await insecureNodeFetch(`${url}/get_height`, {
         method: 'POST',
         body: JSON.stringify({}),
       });

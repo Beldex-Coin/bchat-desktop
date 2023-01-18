@@ -11,7 +11,7 @@ import { updateFiatBalance } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 
 export async function rescanModalDialog() {
-  if (!window.globalOnlineStatus)  {
+  if (!window.globalOnlineStatus) {
     return ToastUtils.pushToastError(
       'internetConnectionError',
       'Please check your internet connection'

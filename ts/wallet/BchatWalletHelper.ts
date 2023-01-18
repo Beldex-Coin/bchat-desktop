@@ -55,7 +55,6 @@ export async function deamonvalidation() {
     const deamon_list = window.deamon_list;
     window.setSettingValue('deamon-List', deamon_list);
   }
-
   // let data={host:'38.242.196.753',port:'19095'}
   const deamonStatus = await workingStatusForDeamon(currentDaemon);
   // console.log('deamonStatus::', deamonStatus, deamonStatus === 'OK');

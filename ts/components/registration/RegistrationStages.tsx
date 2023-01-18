@@ -4,24 +4,14 @@ import { SignInMode, SignInTab } from './SignInTab';
 import { createOrUpdateItem, removeAll } from '../../data/data';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { getConversationController } from '../../bchat/conversations';
-import {
-  PromiseUtils,
-  ToastUtils
-} from '../../bchat/utils';
+import { PromiseUtils, ToastUtils } from '../../bchat/utils';
 import { TaskTimedOutError } from '../../bchat/utils/Promise';
 import { trigger } from '../../shims/events';
-import {
-  getLatestHeight,
-  registerSingleDevice,
-  signInByLinkingDevice,
-} from '../../util/accountManager';
+import { registerSingleDevice, signInByLinkingDevice } from '../../util/accountManager';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
-import {
-  wallet
-} from '../../wallet/wallet-rpc'
+import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
-
 
 export const MAX_USERNAME_LENGTH = 26;
 // tslint:disable: use-simple-attributes
@@ -50,7 +40,6 @@ const displayNameIsValid = (displayName: string): undefined | string => {
   return trimName;
 };
 
-
 export async function signUp(signUpDetails: {
   displayName: string;
   generatedRecoveryPhrase: string;
@@ -66,9 +55,13 @@ export async function signUp(signUpDetails: {
 
   try {
     await resetRegistration();
-
-    let deamonHeight = await getLatestHeight();
-    await registerSingleDevice(generatedRecoveryPhrase, 'english', trimName, deamonHeight);
+    let deamonHeight: any = await wallet.getLatestHeight();
+    await registerSingleDevice(
+      generatedRecoveryPhrase,
+      'english',
+      trimName,
+      deamonHeight ? deamonHeight : 0
+    );
     await createOrUpdateItem({
       id: 'hasSyncedInitialConfigurationItem',
       value: true,
@@ -94,8 +87,8 @@ export async function signInWithRecovery(signInDetails: {
   password: string;
   userRecoveryPhrase: string;
   refreshDetails: {
-    refresh_type: string,
-    refresh_start_timestamp_or_height: string
+    refresh_type: string;
+    refresh_start_timestamp_or_height: string;
   };
 }) {
   const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
@@ -106,8 +99,13 @@ export async function signInWithRecovery(signInDetails: {
   }
 
   try {
-    const restoreWallet = await wallet.restoreWallet(displayName, password, userRecoveryPhrase, refreshDetails);
-    localStorage.setItem("userAddress", restoreWallet.address);
+    const restoreWallet = await wallet.restoreWallet(
+      displayName,
+      password,
+      userRecoveryPhrase,
+      refreshDetails
+    );
+    localStorage.setItem('userAddress', restoreWallet.address);
     const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
 
     // console.log('deamonHeight restore',deamonHeight);
@@ -228,10 +226,13 @@ export const RegistrationStages = () => {
       >
         {accent && <AccentText />}
         {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignUp) && <SignUpTab assent={(value: boolean) =>
-            setAccent(value)} />}
+          registrationPhase === RegistrationPhase.SignUp) && (
+          <SignUpTab assent={(value: boolean) => setAccent(value)} />
+        )}
         {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignIn) && <SignInTab assent={(value: boolean) => setAccent(value)} />}
+          registrationPhase === RegistrationPhase.SignIn) && (
+          <SignInTab assent={(value: boolean) => setAccent(value)} />
+        )}
         {accent && <TermsAndConditions />}
       </RegistrationContext.Provider>
     </div>

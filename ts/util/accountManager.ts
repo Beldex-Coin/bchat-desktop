@@ -17,10 +17,6 @@ import {
 } from './storage';
 import { Registration } from './registration';
 
-import { default as insecureNodeFetch } from 'node-fetch';
-import { HTTPError } from '../bchat/utils/errors';
-// import { wallet } from '../wallet/wallet-rpc';
-
 /**
  * Might throw
  */
@@ -145,31 +141,7 @@ export async function registerSingleDevice(
 //   // console.log('deamon height',data);
   
 // }
-export const getLatestHeight = async () => {
-  try {
-    // http://154.26.139.105
-    let url:string;
-    if (window.networkType === 'mainnet') {
-     url ='http://explorer.beldex.io:19091';
-    }
-    else
-    {
-      url='http://154.26.139.105:19095';
-    }
-    const response = await insecureNodeFetch(`${url}/get_height`, {
-      method: 'POST',
-      body: JSON.stringify({}),
-    });
 
-    if (!response.ok) {
-      throw new HTTPError('Beldex_rpc error', response);
-    }
-    const result = await response.json();
-    return result.height;
-  } catch (e) {
-    throw new HTTPError('exception during wallet-rpc:', e);
-  }
-};
 async function createAccount(identityKeyPair: any) {
   const sodium = await getSodiumRenderer();
   let password = fromArrayBufferToBase64(sodium.randombytes_buf(16));

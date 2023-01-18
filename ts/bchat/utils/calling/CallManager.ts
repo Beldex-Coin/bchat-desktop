@@ -130,24 +130,24 @@ let lastOutgoingOfferTimestamp = -Infinity;
  */
  const iceServersFullArray = [
   {
-    urls: 'turn:communication.beldex.org',
-    username: 'test@123',
-    credential: '053c268164bc7bd7',
+    urls: 'turn.call.beldex.io,',
+    username: 'test',
+    credential: 'test@123',
   },
   {
-    urls: 'turn:communication.beldex.org',
-    username: 'test@123',
-    credential: '053c268164bc7bd7',
+    urls: 'turn.call1.beldex.io,',
+    username: 'test',
+    credential: 'test@123',
   },
   {
-    urls: 'turn:communication.beldex.org',
-    username: 'test@123',
-    credential: '053c268164bc7bd7',
+    urls: 'turn.call2.beldex.io,',
+    username: 'test',
+    credential: 'test@123',
   },
   {
-    urls: 'turn:communication.beldex.org',
-    username: 'test@123',
-    credential: '053c268164bc7bd7',
+    urls: 'turn.call3.beldex.io,',
+    username: 'test',
+    credential: 'test@123',
   },
  
 ];

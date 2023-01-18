@@ -65,6 +65,7 @@ const darkMessageRequestBannerIconBackground = '#2879FB';
 const darkMessageRequestBannerUnreadBackground = grey67;
 const darkMessageRequestBannerIcon = '#adadad';
 const darkcomposeMsgRecordIcon = '#85858F';
+const darkWalletNodeHeader = '#20d024';
 
 // for bchat
 const darkColorBg = black;
@@ -271,6 +272,10 @@ export const switchHtmlToDarkTheme = () => {
     '--color-composeMsgRecordIcon',
     darkcomposeMsgRecordIcon
   );
+  document.documentElement.style.setProperty(
+    '--color-walletNodeHeader',
+    darkWalletNodeHeader
+  );
   document.documentElement.style.setProperty('--color-leftpaneSetting', darkLeftpaneSetting);
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
@@ -421,6 +426,7 @@ const lightChatHeader = '#EEEEEE';
 const lightChatIcons = 'black';
 const lightComposeMsgInput = '#EAEAEA';
 const lightcomposeMsgRecordIcon = '#85858F';
+const lightWalletNodeHeader = '#128B17'
 const lightDayNight = `url("../images/bchat/moon.svg")`;
 const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = '#C6C6C6';
@@ -582,6 +588,10 @@ export const switchHtmlToLightTheme = () => {
     '--color-composeMsgRecordIcon',
     lightcomposeMsgRecordIcon
   );
+  document.documentElement.style.setProperty(
+    '--color-walletNodeHeader',
+    lightWalletNodeHeader
+  );
   document.documentElement.style.setProperty('--color-MsgReqModal-bg', lightMsgReqModalBg);
   document.documentElement.style.setProperty('--color-smModal-bg', lightSmModalBg);
   document.documentElement.style.setProperty('--color-cancelBtn-bg', lightCancelBtnBg);
@@ -728,6 +738,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-composeMsgInput:${darkComposeMsgInput}
     --color-composeMsgIconBG:${darkComposeMsgIconBG};
     --color-composeMsgRecordIcon:${darkcomposeMsgRecordIcon}
+    --color-walletNodeHeader:${darkWalletNodeHeader}
     --color-settingIndication:${darkSettingIndication};
     --color-copyIcon:${darkCopyIcon};
     --color-copyIconBg:${darkCopyIconBg};

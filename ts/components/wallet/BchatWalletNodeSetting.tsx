@@ -25,8 +25,10 @@ export const NodeSetting = () => {
 
   console.log('currentDeamon.host:', window.currentDaemon);
   console.log('currentDecuuu ::', currentDeamon.host);
-  const currentHost = currentDeamon.host == '127.0.0.1' ? window.currentDaemon.host : currentDeamon.host;
-  const currentPort = currentDeamon.host == '127.0.0.1' ? window.currentDaemon.port : currentDeamon.port;
+  const currentHost =
+    currentDeamon.host == '127.0.0.1' ? window.currentDaemon.host : currentDeamon.host;
+  const currentPort =
+    currentDeamon.host == '127.0.0.1' ? window.currentDaemon.port : currentDeamon.port;
   const [viewBox1, setViewBox1] = useState(true);
   const [viewBox2, setViewBox2] = useState(false);
   const [ipAddress, setIpAddress] = useState('');
@@ -74,7 +76,7 @@ export const NodeSetting = () => {
     let deamon_list = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     let checkVerifiedDaemon = deamon_list.find((daemon: any) => daemon.ip == data.ip);
     if (checkVerifiedDaemon) {
-      return ToastUtils.pushToastSuccess('daemonAlreadyAdded', `This daemon already added.`);
+      return ToastUtils.pushToastInfo('daemonAlreadyAdded', `This daemon already added.`);
     }
 
     if (deamon_list) {
@@ -102,6 +104,7 @@ export const NodeSetting = () => {
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
+        console.log('Data:showDropDown', data[i]);
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
           data[i].active = true;
@@ -130,6 +133,7 @@ export const NodeSetting = () => {
 
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
+    console.log('Data:validationForDeamon', data);
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
 
     // if(currentDeamon.host===ipAddress && currentDeamon.port === port)
@@ -168,7 +172,9 @@ export const NodeSetting = () => {
     <div>
       <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+          <div onClick={() => dispatch(setting())}>
+            <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+          </div>
           <div className="wallet-addressBook-header-txt">{window.i18n('node')}</div>
         </Flex>
       </div>
@@ -181,18 +187,22 @@ export const NodeSetting = () => {
           width="100%"
           justifyContent="flex-start"
         >
-          <article
-            className="wallet-settings-nodeSetting-FlexBox"
-            onClick={() => setLocalDeamonVisible(false)}
-          >
+          <article className="wallet-settings-nodeSetting-FlexBox">
             <div
+              onClick={() => setLocalDeamonVisible(false)}
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
               style={
-                !localDeamonVisible ? { border: '2px solid #20d024' } : { border: '2px solid' }
+                !localDeamonVisible
+                  ? { border: '2px solid var(--color-walletNodeHeader)' }
+                  : { border: '2px solid' }
               }
             >
               {!localDeamonVisible && (
-                <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
+                <BchatIcon
+                  iconType="circle"
+                  iconSize="tiny"
+                  iconColor="var(--color-walletNodeHeader)"
+                />
               )}
             </div>
             <div className="marginLeft"> {window.i18n('remoteDaemonOnly')}</div>
@@ -200,22 +210,27 @@ export const NodeSetting = () => {
           {/* <div className="marginLeft marginRight "></div> */}
 
           <article
-            className="wallet-settings-nodeSetting-FlexBox"
-            style={{ marginLeft: '100px' }}
-            onClick={() => {
+            className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }} >
+            <div onClick={() => {
               setLocalDeamonVisible(true);
               setTestNotify({ status: '', content: '', StatusIcon: true });
               setIpAddress('');
               setPort('');
               setVerifyDeamon({});
             }}
-          >
-            <div
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
-              style={localDeamonVisible ? { border: '2px solid green' } : { border: '2px solid' }}
+              style={
+                localDeamonVisible
+                  ? { border: '2px solid var(--color-walletNodeHeader)' }
+                  : { border: '2px solid' }
+              }
             >
               {localDeamonVisible && (
-                <BchatIcon iconType="circle" iconSize="tiny" iconColor="#20D024" />
+                  <BchatIcon
+                    iconType="circle"
+                    iconSize="tiny"
+                    iconColor="var(--color-walletNodeHeader)"
+                  />
               )}
             </div>
             <div className="marginLeft"> {window.i18n('localDaemonOnly')}</div>

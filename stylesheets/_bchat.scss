@@ -1146,7 +1146,7 @@ label {
     }
   }
 
-  &-header {
+  &-wallet {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -2073,8 +2073,7 @@ label {
         }
         &-dropDownHeaderTxt {
           font-family: $bchat-font-poppin-semibold;
-          // color: #20d024;
-          color: green;
+          color: var(--color-walletNodeHeader);
           font-size: 16px;
         }
         &-horizontalLine {

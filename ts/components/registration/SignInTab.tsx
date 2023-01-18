@@ -189,8 +189,7 @@ export const SignInTab = (props: any) => {
 
   const seedValidation = () => {
     if (!recoveryPhrase) {
-      // console.log("recoveryPhrase",recoveryPhrase);
-      ToastUtils.pushToastError('registrationError', `Error: Please enter the seed`);
+     return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
     } else {
       try {
         mn_decode(recoveryPhrase, 'english');
