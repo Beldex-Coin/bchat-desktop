@@ -1712,7 +1712,7 @@ function createOrUpdateItem(data: StorageItem, instance?: BetterSqlite3.Database
   createOrUpdate(ITEMS_TABLE, data, instance);
 }
 function getItemById(id: string) {
-  console.log('getItemById:::muna');
+  // console.log('getItemById:::muna');
   
   return getById(ITEMS_TABLE, id);
 }
@@ -1955,7 +1955,7 @@ function getConversationById(id: string) {
   if (!row) {
     return null;
   }
-  console.log('getConversationById',row);
+  // console.log('getConversationById',row);
   
   return jsonToObject(row.json);
 }

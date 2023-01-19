@@ -8,13 +8,14 @@ import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
 import { daemon } from '../../wallet/daemon-rpc';
 
-import { useDispatch, useSelector,  } from 'react-redux';
+import { useDispatch, useSelector, } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { updateDaemon } from '../../state/ducks/daemon';
 import { getConversationById } from '../../data/data';
+import { useConversationWalletDaemonHeight } from '../../hooks/useParamSelector';
 // import { mn_decode } from '../../bchat/crypto/mnemonic';
 
-export const ForgotPassword =  (props: any) => {
+export const ForgotPassword = (props: any) => {
   const [seed, setSeed] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
@@ -24,10 +25,12 @@ export const ForgotPassword =  (props: any) => {
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   const recoveryPhrase = getCurrentRecoveryPhrase();
-  
-  
-    
-  
+
+  const walletDaemonHeight = useConversationWalletDaemonHeight(UserUtils.getOurPubKeyStrFromCache())
+
+  // console.log('walletDaemonHeight',walletDaemonHeight);
+
+
   const dispatch = useDispatch();
   // console.log('recoveryPhrase:', recoveryPhrase);
   function onClickCancelHandler() {
@@ -48,7 +51,7 @@ export const ForgotPassword =  (props: any) => {
   // console.log('newPassword:', newPassword);
   // console.log('confirmPassword:', confirmPassword);
   // console.log('UserDetails',userDetails);
-  
+
 
   const seedvalidation = async () => {
     try {
@@ -83,7 +86,7 @@ export const ForgotPassword =  (props: any) => {
   };
 
   const passValid = async () => {
-    let userDetails= await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+    let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache())
     // console.log('profileName',userDetails?.attributes.walletUserName);
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -107,16 +110,16 @@ export const ForgotPassword =  (props: any) => {
         'walletPasswordLengthError',
         window.i18n('walletPasswordLengthError')
       );
-    }    
-  
-    let profileName =userDetails?.attributes.walletUserName;
-    const daemonHeight=userDetails?.attributes.walletCreatedDaemonHeight
-    console.log("profileName:",profileName)
-    if(!profileName){
+    }
+
+    let profileName = userDetails?.attributes.walletUserName;
+    // const daemonHeight=walletDaemonHeight;
+    console.log("profileName:", profileName)
+    if (!profileName) {
       profileName = UserDetails[userId].profileName;
     }
-    console.log("profileName:",profileName)
-    const refreshDetails = { refresh_start_timestamp_or_height: daemonHeight?daemonHeight:0 };
+    console.log("profileName:", profileName)
+    const refreshDetails = { refresh_start_timestamp_or_height: walletDaemonHeight ? walletDaemonHeight : 0 };
     const changePassword = await wallet.restoreWallet(
       profileName,
       newPassword,
@@ -180,7 +183,7 @@ export const ForgotPassword =  (props: any) => {
               />
             </span>
 
-            <span onClick={() => setNewPasswordVisible(!newPasswordVisible)} style={{cursor:'pointer'}}>
+            <span onClick={() => setNewPasswordVisible(!newPasswordVisible)} style={{ cursor: 'pointer' }}>
               <BchatIcon iconType={!newPasswordVisible ? 'eye_closed' : 'eye'} iconSize={'medium'} />
             </span>
           </Flex>
@@ -198,7 +201,7 @@ export const ForgotPassword =  (props: any) => {
                 maxLength={13}
               />
             </span>
-            <span onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{cursor:'pointer'}}>
+            <span onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{ cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
                 iconSize={'medium'}
@@ -210,8 +213,8 @@ export const ForgotPassword =  (props: any) => {
         <SpacerMD />
         <div className='wallet-forgotPassword-content-Box-disClaimerBox'>
 
-          <div style={{ color: 'red',marginRight:'10px' }}>Disclaimer :</div><div style={{color: "#82828D",width: "70%"}}> When you use this forget password
-          option, your wallet will sync from the 0th block</div>
+          <div style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</div>
+          <div style={{ color: "#82828D", width: "70%" }}>{window.i18n('disclaimerForgotPassword', walletDaemonHeight)}</div>
         </div>
         {/* <button onClick={()=>getConversation()}>getConversation</button> */}
         <div className="wallet-settings-modalBtnGrp">

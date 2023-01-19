@@ -66,6 +66,7 @@ export type LocalizerKeys =
   | 'changePassword'
   | 'resetDatabase'
   | 'saved'
+  |'disclaimerForgotPassword'
   | 'startedACall'
   | 'mainMenuWindow'
   | 'unblocked'

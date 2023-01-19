@@ -213,6 +213,8 @@ export const SignInTab = (props: any) => {
             assent={() => {
               props.assent(true);
               setScreenName(1);
+              setBlockheight("");
+              setRestoreDate("");
             }}
           />
         </div>
@@ -276,6 +278,8 @@ export const SignInTab = (props: any) => {
                 setScreenName(1);
                 setPassword('');
                 setRepassword('');
+                setBlockheight("");
+                setRestoreDate("");
               }}
             />
           </div>

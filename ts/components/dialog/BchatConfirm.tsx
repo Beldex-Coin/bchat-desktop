@@ -36,6 +36,7 @@ export interface BchatConfirmDialogProps {
   iconSize?: BchatIconSize;
   shouldShowConfirm?: boolean | undefined;
   showExitIcon?: boolean | undefined;
+  btndisable?:boolean| undefined;
 }
 
 export const BchatConfirm = (props: BchatConfirmDialogProps) => {
@@ -53,6 +54,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     onClickCancel,
     showExitIcon,
     closeAfterInput = true,
+    btndisable
   } = props;  
   
   const [isLoading, setIsLoading] = useState(false);
@@ -147,6 +149,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
           buttonColor={props.okTheme}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
+          disabled={btndisable?btndisable:false}
         />
       </div>
     </BchatWrapperModal>

@@ -8,7 +8,7 @@
   "transactions": "Transactions",
   "filter": "Filter",
   "filterPlaceHolder": "Enter ID or amount",
-
+  "disclaimerForgotPassword":"When you used this forgot password option, your wallet will sync from the block height $daemonHeight$. This is the block height at which your wallet was created",
   "addressBook": "Address Book",
   "copyErrorAndQuit": "Copy error and quit",
   "copyAddress": "Copy Address",

@@ -10,6 +10,7 @@ export interface WalletConfigState {
   fiatBalance: string | any;
   walletHeight: number | any;
   walletDecimalValue:any;
+  walletRescaning:boolean|any;
   // walletFiatCurrency:any;
 }
 
@@ -18,6 +19,7 @@ export const initialWalletConfigState: WalletConfigState = {
   fiatBalance: '',
   walletHeight: '',
    walletDecimalValue:'2 - Two (0.00)', 
+   walletRescaning:false
   //  walletFiatCurrency:'USD'
   // walletDecimalValue:window.getSettingValue(walletSettingsKey.settingsDecimal), 
 
@@ -51,7 +53,10 @@ export const initialWalletConfigState: WalletConfigState = {
       // updateWalletFiatCurrency(state, action: PayloadAction<WalletConfigState>) {
       //   return { ...state, walletFiatCurrency: action.payload };
       // },
-     
+      updateWalletRescaning(state, action: PayloadAction<WalletConfigState>) {
+
+        return { ...state, walletRescaning: action.payload };
+      },
    },
  });
  
@@ -61,6 +66,7 @@ export const initialWalletConfigState: WalletConfigState = {
     updateFiatBalance, 
     updateDecimalValue,
     updateWalletHeight,
+    updateWalletRescaning
     // updateWalletFiatCurrency,
  } = actions;
  export const walletConfigReducer = reducer;

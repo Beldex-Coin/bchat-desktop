@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { addressbook, setting } from '../../state/ducks/walletSection';
 import { BchatButtonColor } from '../basic/BchatButton';
@@ -7,40 +7,55 @@ import { BchatIconButton, BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
-import { updateFiatBalance } from '../../state/ducks/walletConfig';
+import { updateFiatBalance, updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
+import { getRescaning } from '../../state/selectors/walletConfig';
 
-export async function rescanModalDialog() {
+export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
+
+
+
   if (!window.globalOnlineStatus) {
     return ToastUtils.pushToastError(
       'internetConnectionError',
       'Please check your internet connection'
     );
   }
-  let Transactions:any='';
+  let rescan: any = true;
+  let Transactions: any = '';
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
       message: window.i18n('rescanWalletDiscription'),
       okTheme: BchatButtonColor.Green,
       okText: window.i18n('Rescan'),
+      btndisable: rescaning,
       onClickOk: () => {
+        console.log('rescan0001', rescaning);
+
         wallet.rescanBlockchain();
-        window.inboxStore?.dispatch(
+        dispatch(updateWalletRescaning(rescan));
+        dispatch(updateFiatBalance(Transactions));
+        dispatch(
           updateBalance({
             balance: 0,
             unlocked_balance: 0,
             transacations: [],
           })
+
         );
-        window.inboxStore?.dispatch(updateFiatBalance(Transactions));
+
+
+        // console.log('rescan0002',rescaning);
       }
     })
   );
 }
 
-export const WalletHeader = (props:any) => {
+export const WalletHeader = (props: any) => {
   const dispatch = useDispatch();
+  const rescaning = useSelector(getRescaning);
+
   return (
     <div className="wallet-header">
       <div className="wallet-header-left-side">
@@ -53,7 +68,7 @@ export const WalletHeader = (props:any) => {
             name={'Add Address'}
             icontype="addressBook"
             iconSize={'medium'}
-            submit={() => {dispatch(addressbook()),props.clearStates()}}
+            submit={() => { dispatch(addressbook()), props.clearStates() }}
           />
         </div>
       </div>
@@ -64,14 +79,15 @@ export const WalletHeader = (props:any) => {
           iconSize={'small'}
           submit={() => {
             window.setSettingValue('syncStatus', false);
-            rescanModalDialog()}}
+            rescanModalDialog(rescaning, dispatch)
+          }}
         />
         <span style={{ marginLeft: '10px' }}>
           <BchatIconButton
             iconSize="large"
             iconType="walletSetting"
             iconColor="#2879fb"
-            onClick={() =>{ dispatch(setting()),props.clearStates()}}
+            onClick={() => { dispatch(setting()), props.clearStates() }}
           />
 
           {/* <BchatIcon iconSize="large" iconType="walletSetting"  iconColor="#2879fb" /> */}

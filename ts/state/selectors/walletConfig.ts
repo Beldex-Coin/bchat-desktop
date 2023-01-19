@@ -19,6 +19,10 @@ export const getWalletSendAddress = createSelector(
     getWalletConfig,
     (state: WalletConfigState): string => state.walletHeight
   );
+  export const getRescaning = createSelector(
+    getWalletConfig,
+    (state: WalletConfigState):boolean => state.walletRescaning
+  );
   // export const getwalletFiatCurrency = createSelector(
   //   getWalletConfig,
   //   (state: WalletConfigState): string=> state.walletFiatCurrency

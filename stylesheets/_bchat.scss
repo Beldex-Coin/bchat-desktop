@@ -120,7 +120,10 @@ textarea {
     &.danger,
     &.warning {
       &.disabled {
-        filter: brightness(60%);
+        // filter: brightness(60%);
+        background-color: var(--color-disableBtn);
+        color: var(--color-disableTxt);
+        cursor: not-allowed;
       }
     }
 
@@ -1777,6 +1780,8 @@ label {
         height: 100px;
         resize: none;
         outline: none;
+        font-family: $bchat-font-poppin-light;
+        font-size: 12px;
       }
       &-sendBtnBox {
         display: flex;
@@ -2103,8 +2108,8 @@ label {
         }
 
         &-sendDropDown {
-          width: 100%;
-          top: 15px;
+          width: 97%;
+          top: 4px;
           padding: 18px;
           .dropDownItem {
             margin-bottom: 5px;
@@ -2183,6 +2188,7 @@ label {
               height: 50px;
               border-radius: 10px;
               padding-left: 20px;
+              text-overflow: ellipsis;
             }
           }
           &-warning-box {
@@ -2453,6 +2459,7 @@ label {
           display: flex;
           flex-direction: column;
           // justify-content: center;
+          width: 181px;
 
           &-month {
             font-size: 14px;

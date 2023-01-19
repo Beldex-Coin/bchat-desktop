@@ -155,3 +155,10 @@ console.log('convoProps ::',convoProps?.walletAddress);
 
   return convoProps?.walletAddress
 }
+
+export function useConversationWalletDaemonHeight(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+console.log('convoProps ::',convoProps?.walletCreatedDaemonHeight);
+
+  return convoProps?.walletCreatedDaemonHeight
+}
