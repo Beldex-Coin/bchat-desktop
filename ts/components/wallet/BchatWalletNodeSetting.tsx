@@ -307,16 +307,16 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
                 <div>
                   <BchatButton
-                    // buttonColor={
-                    //   !ipAddress && !port
-                    //     ? BchatButtonColor.Disable
-                    //     : !ipAddress
-                    //     ? BchatButtonColor.Disable
-                    //     : !port
-                    //     ? BchatButtonColor.Disable
-                    //     : BchatButtonColor.Primary
-                    // }
-                    buttonColor={ BchatButtonColor.Primary}
+                    buttonColor={
+                      !ipAddress && !port
+                        ? BchatButtonColor.Disable
+                        : !ipAddress
+                        ? BchatButtonColor.Disable
+                        : !port
+                        ? BchatButtonColor.Disable
+                        : BchatButtonColor.Primary
+                    }
+                    // buttonColor={ BchatButtonColor.Primary}
 
                     text={window.i18n('test')}
                     onClick={() => validationForDeamon()}
@@ -436,7 +436,7 @@ export const NodeSetting = () => {
                                     iconSize={8}
                                     iconColor={item.active ? '#20D024' : 'red'}
                                   />
-                                  <span style={{ marginLeft: '10px' }}>
+                                  <span style={{ marginLeft: '10px',color:item.active ? '' : 'red' }}>
                                     {item.host}:{item.port}
                                   </span>
                                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { pushToastError, pushToastInfo, pushToastSuccess } from '../../bchat/utils/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { dashboard } from '../../state/ducks/walletSection';
@@ -16,6 +16,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { getConversationById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
 import styled from 'styled-components';
+
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -46,6 +47,22 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
+
+  // useEffect(() => {
+  //   const listener = (event:any) => {
+  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
+  //       console.log("Enter key was pressed. Run your function.");
+  //       submit()
+        
+  //       // event.preventDefault();
+  //       // callMyFunction();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", listener);
+  //   return () => {
+  //     document.removeEventListener("keydown", listener);
+  //   };
+  // }, []);
   // console.log('percentage:', percentage, currentHeight, daemonHeight);
   // if (percentage != 0) {
   //   setPercentage(percentage);
@@ -77,6 +94,9 @@ export const WalletPassword = (props: any) => {
   // }
 
   // console.log('setProgressing:', progressing);
+  
+
+  
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -94,7 +114,10 @@ export const WalletPassword = (props: any) => {
   loadFiatCurrency();
 
   async function submit() {
+    console.log('password',password);
+
     if(!password){
+      
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
 

@@ -48,19 +48,23 @@ export const SendForm = (props: any) => {
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
+   
 
     return () => {
       document.removeEventListener('click', handleClick);
+     
+
     };
   }, []);
+  
   const handleClick = (e: any) => {
-    console.log(
-      'modalRef',
-      modalRef,
-      modalRef.current,
-      modalRef.current?.contains(e.target),
-      e.target
-    );
+    // console.log(
+    //   'modalRef',
+    //   modalRef,
+    //   modalRef.current,
+    //   modalRef.current?.contains(e.target),
+    //   e.target
+    // );
     //  console.log('modalRef2 ::',downArrowRef,downArrowRef.current?.contains(e.target));
 
     if (!modalRef.current?.contains(e.target)) {
@@ -68,6 +72,9 @@ export const SendForm = (props: any) => {
       // setDropDown(!dropDown);
       setDropDown(false);
     }
+
+   
+    
   };
   // function handleChange(e:any)
   // {
