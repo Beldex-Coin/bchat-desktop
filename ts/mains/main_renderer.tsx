@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import { MessageModel } from '../models/message';
 import { isMacOS } from '../OS';
+import os from 'os';
+import path from 'path';
+import fs from 'fs-extra';
+
 import { queueAllCached } from '../receiver/receiver';
 import { getConversationController } from '../bchat/conversations';
 import { AttachmentDownloads, ToastUtils } from '../bchat/utils';
@@ -165,12 +169,12 @@ Storage.onready(async () => {
     await deleteAllLogs();
   }
 
+
+
+
   const themeSetting = window.Events.getThemeSetting();
 
   // console.log("themeSetting ",themeSetting);
-
-
-
   const newThemeSetting = mapOldThemeToNew(themeSetting);
   window.Events.setThemeSetting(newThemeSetting);
 
@@ -280,12 +284,29 @@ async function start() {
   // test net
   // const deamon_list=[{host:'154.26.139.105',port:'19095',active:0}]
 
+  function removeOldLoginDb() {
+    try {
+      let walletDir;
+      if (os.platform() === 'linux') {
+        walletDir = path.join(os.homedir(), '.config//BChat');
+        if (fs.existsSync(walletDir)) {
+          // console.log("NOO")
+          fs.emptyDirSync(walletDir);
+          console.log("Remove Bchat folder is done");
+        }
+      }
+    }
+    catch (e) {
+      console.log("removeOldLoginDb in ", e);
+    }
+  }
   // On first launch
   if (launchCount === 1) {
     // Initialise default settings
     window.setSettingValue('hide-menu-bar', true);
     window.setSettingValue('link-preview-setting', false);
     // window.setSettingValue("decimal", '2 - Two (0.00)')
+    removeOldLoginDb()
 
 
   }
