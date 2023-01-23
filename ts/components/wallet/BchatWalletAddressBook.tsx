@@ -88,7 +88,7 @@ return <>
         onClick={() => send(belAddress)}
       >
         <BchatIcon iconType="send" iconSize={'small'} iconRotation={309} />
-        <span>{window.i18n('sent')}</span>
+        <span>{window.i18n('send')}</span>
       </div>
       <div
         className="wallet-addressBook-wholeBox-contentBox-copyBtn"

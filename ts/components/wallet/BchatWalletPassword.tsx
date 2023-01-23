@@ -1,5 +1,5 @@
 import React, {  useState } from 'react';
-import { pushToastError, pushToastInfo, pushToastSuccess } from '../../bchat/utils/Toast';
+import { pushToastError, pushToastInfo } from '../../bchat/utils/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
@@ -137,8 +137,8 @@ export const WalletPassword = (props: any) => {
       pushToastError('walletInvalidPassword', openWallet.error?.message);
 
     } else {
-      setLoading(false)
-      pushToastSuccess('successPassword', 'Success.');
+      setLoading(false);
+      // pushToastSuccess('successPassword', 'Success.');
       props.onClick();
       // setProgressing(true);
       dispatch(dashboard());

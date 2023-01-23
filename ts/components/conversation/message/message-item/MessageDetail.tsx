@@ -122,7 +122,7 @@ export const MessageDetail = () => {
               </tr>
             ))}
             <tr>
-              <td className="module-message-detail__label">{i18n('sent')}</td>
+              <td className="module-message-detail__label">{i18n('send')}</td>
               <td className="module-message-detail__label" style={{paddingLeft:'10px'}}>
                 {moment(sentAt).format('LLLL')} 
                 

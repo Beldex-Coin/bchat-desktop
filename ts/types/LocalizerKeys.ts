@@ -73,7 +73,7 @@ export type LocalizerKeys =
   | 'keepDisabled'
   | 'userAddedToModerators'
   | 'to'
-  | 'sent'
+  | 'send'
   | 'requestsPlaceholder'
   | 'secretGroupInviteFailMessage'
   | 'noContactsForGroup'

@@ -146,7 +146,7 @@
   "messageDeletedPlaceholder": "This message has been deleted",
   "from": "From:",
   "to": "To:",
-  "sent": "Sent",
+  "send": "Send",
   "received": "Receive",
   "pending": "Pending",
   "failed": "Failed",

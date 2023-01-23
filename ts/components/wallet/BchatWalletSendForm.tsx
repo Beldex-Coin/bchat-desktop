@@ -305,7 +305,7 @@ export const SendForm = (props: any) => {
         <SpacerLG />
         <div className="wallet-sendForm-sendBtnBox">
           <BchatButton
-            text={window.i18n('sent')}
+            text={window.i18n('send')}
             onClick={() => addressValidation()}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Green}

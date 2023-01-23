@@ -27,8 +27,11 @@ export const ChangePassword = () => {
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
     if (newPassword !== confirmPassword) {
-      window?.log?.warn('invalid password');
       return ToastUtils.pushToastError('invalidPassword', 'Passwords do not match');
+    }
+    if (oldPassword == newPassword) {
+      window?.log?.warn('invalid password');
+      return ToastUtils.pushToastError('oldPasswordSame', `Cannot use old password. Set a different password.`);
     }
     if (
       (newPassword.length < 4 && confirmPassword.length < 4) ||

@@ -65,7 +65,7 @@ export const WalletHeader = (props: any) => {
                 </div> */}
         <div className="wallet-header-left-side-btn-box">
           <WalletButton
-            name={'Add Address'}
+            name={'Address Book'}
             icontype="addressBook"
             iconSize={'medium'}
             submit={() => { dispatch(addressbook()), props.clearStates() }}

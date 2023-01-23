@@ -35,7 +35,7 @@ export const WalletPaymentSection = (props:any) => {
         <div>
           <Flex container={true} flexDirection="row" justifyContent="space-between">
             <BchatButtonIcon
-              name={window.i18n('sent')}
+              name={window.i18n('send')}
               iconSize="small"
               iconType="paySend"
               iconColor={WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}

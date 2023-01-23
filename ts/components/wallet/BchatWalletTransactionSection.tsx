@@ -19,9 +19,9 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncingStatus = window.getSettingValue('syncStatus') ? true : false;
-  console.log("syncingStatus:", window.getSettingValue('syncStatus'), syncingStatus)
-  const recip: any = receipientData
-  const zoomLevel = window.getSettingValue('zoom-factor-setting')
+  console.log('syncingStatus:', window.getSettingValue('syncStatus'), syncingStatus);
+  const recip: any = receipientData;
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // console.log('visible:', visible);
   useEffect(() => {
     document.removeEventListener('click', handleClick);
@@ -76,8 +76,9 @@ export const TransactionSection = (props: any) => {
   function openToExplore(traxId: string) {
     if (window.networkType === 'mainnet') {
       void shell.openExternal(`http://explorer.beldex.io/tx/${traxId}`);
+    } else {
+      void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
     }
-    void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
   }
   function closeDropDown(params: any, type: any) {
     setFilter(params);
@@ -103,17 +104,15 @@ export const TransactionSection = (props: any) => {
     // console.log("item.type ::",item.type)
     if (selected === i) {
       setSelected(null);
-    }
-    else {
+    } else {
       setSelected(i);
     }
-
 
     if (item.type !== 'in') {
       let recipientAddress = await getRecipientAddress(item.txid);
       // console.log("showdata:: ",recipientAddress);
       setRecipientdata(recipientAddress);
-      return
+      return;
     }
     setRecipientdata([]);
   }
@@ -129,7 +128,7 @@ export const TransactionSection = (props: any) => {
       case 'out':
         (item.iconType = 'paySend'),
           (item.iconColor = '#FC2727'),
-          (item.type = window.i18n('sent'));
+          (item.type = window.i18n('send'));
         break;
       case 'pending':
         (item.iconType = 'pendingTransaction'),
@@ -165,10 +164,10 @@ export const TransactionSection = (props: any) => {
     let data =
       searchData.length > 0
         ? searchData.filter(
-          (item: any) =>
-            String(item.amount / 1e9).includes(value.toLowerCase()) ||
-            item.txid.toLowerCase().includes(value.toLowerCase())
-        )
+            (item: any) =>
+              String(item.amount / 1e9).includes(value.toLowerCase()) ||
+              item.txid.toLowerCase().includes(value.toLowerCase())
+          )
         : [];
     console.log('searchData:', searchData.length);
     console.log('searchData:', searchData, data);
@@ -215,7 +214,7 @@ export const TransactionSection = (props: any) => {
   //         {reccipient.address && (
   //           <div
   //           style={{ marginLeft: '20px' ,width:zoomLevel>100?"40%":'57%'}}
-  //             className="wallet-Transaction-recipitentBox-adddressBox"  
+  //             className="wallet-Transaction-recipitentBox-adddressBox"
   //           >
   //             <div className="">{window.i18n('recipientAddress')}</div>
   //             <div className="wallet-Transaction-recipitentBox-adddressBox-address">
@@ -253,11 +252,11 @@ export const TransactionSection = (props: any) => {
 
   return (
     <div className="wallet-Transaction">
-      {!syncingStatus ? (<>
-        <div className="wallet-syncing">
-
-        </div>
-        <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5></>
+      {!syncingStatus ? (
+        <>
+          <div className="wallet-syncing"></div>
+          <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
+        </>
       ) : (
         <div style={{ height: '91%' }} onClick={() => (visible ? setVisible(false) : '')}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
@@ -406,18 +405,25 @@ export const TransactionSection = (props: any) => {
           <div className="wallet-Transaction-parentBox">
             {data.length > 0 &&
               data.map((item: any, i: any) => (
-
-                <div className="wallet-Transaction-contentBox" key={i} onClick={() => showdata(item, i)} style={{ cursor: 'pointer' }}>
+                <div
+                  className="wallet-Transaction-contentBox"
+                  key={i}
+                  onClick={() => showdata(item, i)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <Flex container={true} justifyContent="space-between" flexDirection="row">
                     <Flex container={true} height=" 60px" width="66%">
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
                         <TransactionIndication type={item.type} />
                       </article>
                       <article className="wallet-Transaction-contentBox-verticalline"></article>
-                      <div className="wallet-Transaction-contentBox-balanceBox" style={{width: zoomLevel > 100 ? "44%" : ''}}>
+                      <div
+                        className="wallet-Transaction-contentBox-balanceBox"
+                        style={{ width: zoomLevel > 100 ? '44%' : '' }}
+                      >
                         <div
                           className="wallet-Transaction-contentBox-balanceBox-amount"
-                        // onClick={() => showdata(item, i)}
+                          // onClick={() => showdata(item, i)}
                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
@@ -432,7 +438,10 @@ export const TransactionSection = (props: any) => {
                     </Flex>
                     <Flex>
                       <section className="wallet-Transaction-contentBox-dateandheight">
-                        <div className="wallet-Transaction-contentBox-dateandheight-month" style={{ marginBottom: '7px' }}>
+                        <div
+                          className="wallet-Transaction-contentBox-dateandheight-month"
+                          style={{ marginBottom: '7px' }}
+                        >
                           {moment.unix(item.timestamp).fromNow()}
                         </div>
                         <div className="wallet-Transaction-contentBox-dateandheight-height">
@@ -443,70 +452,80 @@ export const TransactionSection = (props: any) => {
                   </Flex>
                   {/* <div> */}
                   {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
-                  {selected === i &&
+                  {selected === i && (
                     // <RececipientAddress trasactionData={item} />
                     <>
                       <Flex
                         container={true}
-                        justifyContent={recip.address&& zoomLevel <= 100 ?'space-between':"flex-start"}
+                        justifyContent={
+                          recip.address && zoomLevel <= 100 ? 'space-between' : 'flex-start'
+                        }
                         flexDirection="row"
                         width={'100%'}
                       >
-                        <Flex container={true}  >
-                        {/* <div style={{ display: 'flex' }}> */}
-                        <article style={recip.address&&zoomLevel > 100  ? { width: '122px' } : { width: '110px' }}>
-                          {/* <TransactionIndication type={item.type} /> */}
-                        </article>
+                        <Flex container={true}>
+                          {/* <div style={{ display: 'flex' }}> */}
+                          <article
+                            style={
+                              recip.address && zoomLevel > 100
+                                ? { width: '122px' }
+                                : { width: '110px' }
+                            }
+                          >
+                            {/* <TransactionIndication type={item.type} /> */}
+                          </article>
 
                           {/* <section style={{ display: 'flex' }}> */}
 
-                            {recip.address && (
-                              <div
-                                style={{ marginLeft: '20px', width: zoomLevel > 100 ? "44%" : '57%' }}
-                                className="wallet-Transaction-recipitentBox-adddressBox"
-                              >
-                                <div className="">{window.i18n('recipientAddress')}</div>
-                                <div className="wallet-Transaction-recipitentBox-adddressBox-address">
-                                  {recip.address}
-                                </div>
+                          {recip.address && (
+                            <div
+                              style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '57%' }}
+                              className="wallet-Transaction-recipitentBox-adddressBox"
+                            >
+                              <div className="">{window.i18n('recipientAddress')}</div>
+                              <div className="wallet-Transaction-recipitentBox-adddressBox-address">
+                                {recip.address}
                               </div>
-                            )}
-
-
-                            <section style={{ marginLeft: '20px',}}>
-                              <article className="wallet-Transaction-recipitentBox-transactionFee-header">
-                                {window.i18n('transactionFee')}
-                              </article>
-                              <article className="wallet-Transaction-recipitentBox-transactionFee-text">
-                                {item.fee / 1e9} BDX
-                              </article>
-                            </section>
-                            {/* </div> */}
-                          {/* </section> */}
-                          </Flex>
-
-                          <section
-                            style={{ width: zoomLevel > 100 ? '40%' :'209px', marginLeft: zoomLevel && recip.address > 100  ? '20px' : '20px', paddingTop: 0 }}
-                          // className="wallet-Transaction-contentBox-dateandheight"
-                          >
-                            <div className="wallet-Transaction-contentBox-dateandheight-month">
-                              {window.i18n('dateTime')}
                             </div>
-                            <div className="wallet-Transaction-contentBox-dateandheight-height">
-                              {moment.unix(item.timestamp).format('DD/MM/YYYY HH:mm')}
-                            </div>
+                          )}
+
+                          <section style={{ marginLeft: '20px' }}>
+                            <article className="wallet-Transaction-recipitentBox-transactionFee-header">
+                              {window.i18n('transactionFee')}
+                            </article>
+                            <article className="wallet-Transaction-recipitentBox-transactionFee-text">
+                              {item.fee / 1e9} BDX
+                            </article>
                           </section>
+                          {/* </div> */}
+                          {/* </section> */}
+                        </Flex>
 
-                      </Flex></>
-                  }
+                        <section
+                          style={{
+                            width: zoomLevel > 100 ? '40%' : '209px',
+                            marginLeft: zoomLevel && recip.address > 100 ? '20px' : '20px',
+                            paddingTop: 0,
+                          }}
+                          // className="wallet-Transaction-contentBox-dateandheight"
+                        >
+                          <div className="wallet-Transaction-contentBox-dateandheight-month">
+                            {window.i18n('dateTime')}
+                          </div>
+                          <div className="wallet-Transaction-contentBox-dateandheight-height">
+                            {moment.unix(item.timestamp).format('DD/MM/YYYY HH:mm')}
+                          </div>
+                        </section>
+                      </Flex>
+                    </>
+                  )}
                 </div>
                 // </div>
               ))}
             {data.length == 0 ? (
               <>
-                <div className='wallet-Transaction-empty-parentBox'>
-                  <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}>
-                  </div>
+                <div className="wallet-Transaction-empty-parentBox">
+                  <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}></div>
 
                   <h4 className="wallet-Transaction-content">
                     {emptyScreen == 'All' ? (
@@ -538,7 +557,6 @@ export const TransactionSection = (props: any) => {
           <SpacerLG />
           <SpacerLG />
           {zoomLevel > 100 && <SpacerLG />}
-
         </div>
       )}
       {/* **********************Transaction Header************************* */}
