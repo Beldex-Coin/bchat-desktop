@@ -59,7 +59,7 @@ export const WalletSettings = () => {
     'VEF',
     'ZAR',
   ];
-  const decimal = ['2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
+  const decimal = ['0 - Zero (0)', '2 - Two (0.00)', '3 - Three (0.000)', '4 - Four (0.0000)'];
   function changepass() {
     if (syncProDone) {
       dispatch(ChangePasswordModal({}));
@@ -89,9 +89,15 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('node')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <Flex container={true} justifyContent="space-between" padding="10px 0">
+        <Flex
+          container={true}
+          justifyContent="space-between"
+          padding="10px 0"
+          cursor="pointer"
+          onClick={() => dispatch(nodeSetting())}
+        >
           <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
-          <div onClick={() => dispatch(nodeSetting())} style={{ cursor: 'pointer' }}>
+          <div style={{ cursor: 'pointer' }}>
             <span className="wallet-settings-tabBox-disableText">
               {connectedDeamon.host}:{connectedDeamon.port}
             </span>
@@ -103,10 +109,12 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('WalletSettingsTitle')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <Flex container={true} justifyContent="space-between" padding="10px 0">
-          <div className="wallet-settings-tabBox-subtle">{window.i18n('decimals')}</div>
-          <div
-            style={{ cursor: 'pointer' }}
+        <div>
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
             onClick={() =>
               dispatch(
                 walletSettingMiniModal({
@@ -123,35 +131,41 @@ export const WalletSettings = () => {
               )
             }
           >
-            <span className="wallet-settings-tabBox-disableText">{decimalValue}</span>
-            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-          </div>
-        </Flex>
+            <div className="wallet-settings-tabBox-subtle">{window.i18n('decimals')}</div>
+            <div style={{ cursor: 'pointer' }}>
+              <span className="wallet-settings-tabBox-disableText">{decimalValue}</span>
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            </div>
+          </Flex>
+        </div>
 
         {/* <SpacerMD /> */}
-        <Flex container={true} justifyContent="space-between" padding="10px 0">
+        <Flex
+          container={true}
+          justifyContent="space-between"
+          padding="10px 0"
+          cursor="pointer"
+          onClick={() =>
+            dispatch(
+              walletSettingMiniModal({
+                headerName: window.i18n('displayCurrency'),
+                content: currenyExt,
+                currency: fiatCurrency,
+                onClose: () => dispatch(walletSettingMiniModal(null)),
+                onClick: (e: any) => {
+                  // localStorage.setItem('currency', e);
+                  window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
+                  wallet.getFiatBalance(e);
+                  setFiatCurrency(e);
+                  // dispatch(updateWalletFiatCurrency(e))
+                  dispatch(walletSettingMiniModal(null));
+                },
+              })
+            )
+          }
+        >
           <div className="wallet-settings-tabBox-subtle">{window.i18n('displayCurrency')}</div>
-          <div
-            style={{ cursor: 'pointer' }}
-            onClick={() =>
-              dispatch(
-                walletSettingMiniModal({
-                  headerName: window.i18n('displayCurrency'),
-                  content: currenyExt,
-                  currency: fiatCurrency,
-                  onClose: () => dispatch(walletSettingMiniModal(null)),
-                  onClick: (e: any) => {
-                    // localStorage.setItem('currency', e);
-                    window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
-                    wallet.getFiatBalance(e);
-                    setFiatCurrency(e);
-                    // dispatch(updateWalletFiatCurrency(e))
-                    dispatch(walletSettingMiniModal(null));
-                  },
-                })
-              )
-            }
-          >
+          <div style={{ cursor: 'pointer' }}>
             <span className="wallet-settings-tabBox-disableText">
               {window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}
             </span>
@@ -159,9 +173,15 @@ export const WalletSettings = () => {
           </div>
         </Flex>
         {/* <SpacerMD /> */}
-        <Flex container={true} justifyContent="space-between" padding="10px 0">
+        <Flex
+          container={true}
+          justifyContent="space-between"
+          padding="10px 0"
+          cursor="pointer"
+          onClick={() => enbaleOrdisableSaveRecipient()}
+        >
           <div className="wallet-settings-tabBox-subtle">{window.i18n('saveRecipientAddress')}</div>
-          <div onClick={() => enbaleOrdisableSaveRecipient()}>
+          <div>
             {saveRecipient ? (
               <BchatIcon
                 iconType="tickCircle"
@@ -183,12 +203,15 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('personal')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <Flex container={true} justifyContent="space-between" padding="10px 0">
+        <Flex
+          container={true}
+          justifyContent="space-between"
+          padding="10px 0"
+          cursor="pointer"
+          onClick={() => changepass()}
+        >
           <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
-          <div
-            onClick={() => changepass()}
-            style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}
-          >
+          <div style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}>
             {/* <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>  */}
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>

@@ -2112,7 +2112,6 @@ label {
           top: 4px;
           padding: 18px;
           .dropDownItem {
-            margin-bottom: 5px;
             cursor: pointer;
 
             &-checkedCircle {
@@ -2130,9 +2129,11 @@ label {
           }
           .fontSemiBold {
             font-family: $bchat-font-poppin-semibold;
+            margin-bottom: 8px;
           }
           .fontRegular {
             font-family: $bchat-font-poppin-regular;
+            font-weight: 100;
           }
         }
         &-remoteContentBox {

@@ -8,7 +8,7 @@ import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
 import { daemon } from '../../wallet/daemon-rpc';
 
-import { useDispatch, useSelector, } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { updateDaemon } from '../../state/ducks/daemon';
 import { getConversationById } from '../../data/data';
@@ -26,10 +26,11 @@ export const ForgotPassword = (props: any) => {
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   const recoveryPhrase = getCurrentRecoveryPhrase();
 
-  const walletDaemonHeight = useConversationWalletDaemonHeight(UserUtils.getOurPubKeyStrFromCache())
+  const walletDaemonHeight = useConversationWalletDaemonHeight(
+    UserUtils.getOurPubKeyStrFromCache()
+  );
 
   // console.log('walletDaemonHeight',walletDaemonHeight);
-
 
   const dispatch = useDispatch();
   // console.log('recoveryPhrase:', recoveryPhrase);
@@ -38,7 +39,7 @@ export const ForgotPassword = (props: any) => {
   }
   const handlePaste = () => {
     const recoverySeed = clipboard.readText();
-    setSeed(recoverySeed);
+    setSeed(recoverySeed.replace(/^\s+|\s+$/g, ''));
   };
 
   // async function getConversation()
@@ -51,7 +52,6 @@ export const ForgotPassword = (props: any) => {
   // console.log('newPassword:', newPassword);
   // console.log('confirmPassword:', confirmPassword);
   // console.log('UserDetails',userDetails);
-
 
   const seedvalidation = async () => {
     try {
@@ -70,8 +70,9 @@ export const ForgotPassword = (props: any) => {
         ToastUtils.pushToastError('invalidSeed', "You've entered too few words, please try again");
         return false;
       }
-      console.log('seedvalidation:', trimWhiteSpace.length, recoveryPhrase.length);
-      if (trimWhiteSpace.toLocaleLowerCase() !== recoveryPhrase.toLocaleLowerCase()) {
+      let trimWhiteSpaceRec = recoveryPhrase.replace(/^\s+|\s+$/g, '');
+      console.log('seedvalidation:', trimWhiteSpace.length, trimWhiteSpaceRec.length);
+      if (trimWhiteSpace.toLocaleLowerCase() !== trimWhiteSpaceRec.toLocaleLowerCase()) {
         ToastUtils.pushToastError('invalidSeed', 'Seed entered does not match.');
         return false;
       }
@@ -86,7 +87,7 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
-    let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+    let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
     // console.log('profileName',userDetails?.attributes.walletUserName);
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -114,12 +115,12 @@ export const ForgotPassword = (props: any) => {
 
     let profileName = userDetails?.attributes.walletUserName;
     // const daemonHeight=walletDaemonHeight;
-    console.log("profileName:", profileName)
     if (!profileName) {
       profileName = UserDetails[userId].profileName;
     }
-    console.log("profileName:", profileName)
-    const refreshDetails = { refresh_start_timestamp_or_height: walletDaemonHeight ? walletDaemonHeight : 0 };
+    const refreshDetails = {
+      refresh_start_timestamp_or_height: walletDaemonHeight ? walletDaemonHeight : 0,
+    };
     const changePassword = await wallet.restoreWallet(
       profileName,
       newPassword,
@@ -153,7 +154,8 @@ export const ForgotPassword = (props: any) => {
             <textarea
               value={seed}
               onChange={e => {
-                setSeed(e.target.value);
+                let trimWhiteSpace = e.target.value.replace(/^\s+|\s+$/g, '');
+                setSeed(trimWhiteSpace);
               }}
               placeholder={window.i18n('enterSeed')}
             />
@@ -183,8 +185,14 @@ export const ForgotPassword = (props: any) => {
               />
             </span>
 
-            <span onClick={() => setNewPasswordVisible(!newPasswordVisible)} style={{ cursor: 'pointer' }}>
-              <BchatIcon iconType={!newPasswordVisible ? 'eye_closed' : 'eye'} iconSize={'medium'} />
+            <span
+              onClick={() => setNewPasswordVisible(!newPasswordVisible)}
+              style={{ cursor: 'pointer' }}
+            >
+              <BchatIcon
+                iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
+                iconSize={'medium'}
+              />
             </span>
           </Flex>
           <SpacerSM />
@@ -201,7 +209,10 @@ export const ForgotPassword = (props: any) => {
                 maxLength={13}
               />
             </span>
-            <span onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{ cursor: 'pointer' }}>
+            <span
+              onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
+              style={{ cursor: 'pointer' }}
+            >
               <BchatIcon
                 iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
                 iconSize={'medium'}
@@ -211,10 +222,11 @@ export const ForgotPassword = (props: any) => {
         </div>
         {/* <SpacerMD /> */}
         <SpacerMD />
-        <div className='wallet-forgotPassword-content-Box-disClaimerBox'>
-
+        <div className="wallet-forgotPassword-content-Box-disClaimerBox">
           <div style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</div>
-          <div style={{ color: "#82828D", width: "70%" }}>{window.i18n('disclaimerForgotPassword', walletDaemonHeight)}</div>
+          <div style={{ color: '#82828D', width: '70%' }}>
+            {window.i18n('disclaimerForgotPassword', walletDaemonHeight)}
+          </div>
         </div>
         {/* <button onClick={()=>getConversation()}>getConversation</button> */}
         <div className="wallet-settings-modalBtnGrp">

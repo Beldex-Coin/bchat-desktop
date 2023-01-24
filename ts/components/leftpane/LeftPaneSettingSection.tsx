@@ -389,7 +389,7 @@ const LeftPaneSettingsCategoryRow = () =>
           // style={{ marginTop: '15px' }}
         >
           <div style={{ display: 'flex' }}>
-            <span style={{ padding: '5px 10px' }}>
+            <span style={{ padding: '5px 10px' ,marginRight:'11px'}}>
               {' '}
               <ActionPanelOnionStatusLight
                 dataTestId="onion-status-section"

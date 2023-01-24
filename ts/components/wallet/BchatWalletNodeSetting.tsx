@@ -74,7 +74,7 @@ export const NodeSetting = () => {
     }
     data.type = 'Remote';
     let deamon_list = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-    let checkVerifiedDaemon = deamon_list.find((daemon: any) => daemon.ip == data.ip);
+    let checkVerifiedDaemon = deamon_list.find((daemon: any) => daemon.host == data.host);
     if (checkVerifiedDaemon) {
       return ToastUtils.pushToastInfo('daemonAlreadyAdded', `This daemon already added.`);
     }
@@ -85,6 +85,9 @@ export const NodeSetting = () => {
     }
     window.setSettingValue(walletSettingsKey.settingsDeamonList, deamon_list);
     setOption(deamon_list);
+    assignHost('');
+    setPort('');
+    return ToastUtils.pushToastSuccess('daemonAddedSuccessfully', `Daemon added successfully.`);
   }
 
   function currentDeamonNet() {
@@ -425,7 +428,7 @@ export const NodeSetting = () => {
                           <div className="wallet-settings-nodeSetting-dropDownModal">
                             {option.length > 0 &&
                               option.map((item: any, i: number) => (
-                                <div
+                                <div style={{cursor:'pointer'}}
                                   key={i}
                                   className="wallet-settings-nodeSetting-dropDownModal-items"
                                   // style={{ marginBottom: '5px' }}
@@ -436,7 +439,7 @@ export const NodeSetting = () => {
                                     iconSize={8}
                                     iconColor={item.active ? '#20D024' : 'red'}
                                   />
-                                  <span style={{ marginLeft: '10px',color:item.active ? '' : 'red' }}>
+                                  <span style={{ marginLeft: '10px',color:item.active ? '' : 'red'}}>
                                     {item.host}:{item.port}
                                   </span>
                                 </div>

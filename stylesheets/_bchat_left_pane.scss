@@ -722,18 +722,18 @@ $bchat-compose-margin: 20px;
     transition: $bchat-transition-duration  !important;
 
     &-icons {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       display: inline-flex;
       background-repeat: no-repeat;
       background-size: contain;
-      margin-right: 10px;
+      margin-right: 20px;
       margin-left: 10px;
     }
 
     &-span {
       font-family: $bchat-font-poppin-medium;
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .beta

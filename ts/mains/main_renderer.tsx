@@ -169,9 +169,6 @@ Storage.onready(async () => {
     await deleteAllLogs();
   }
 
-
-
-
   const themeSetting = window.Events.getThemeSetting();
 
   // console.log("themeSetting ",themeSetting);
@@ -286,18 +283,21 @@ async function start() {
 
   function removeOldLoginDb() {
     try {
-      let walletDir;
-      if (os.platform() === 'linux') {
-        walletDir = path.join(os.homedir(), '.config//BChat');
-        if (fs.existsSync(walletDir)) {
+      let BChatDbDir;
+      if (os.platform() === 'linux' || os.platform() === 'darwin') {
+        BChatDbDir =
+          os.platform() === 'linux'
+            ? path.join(os.homedir(), '.config//BChat')
+            : path.join(os.homedir(), '/Library/Application Support/BChat');
+            console.log("bchBChatDbDir:at:",BChatDbDir)
+        if (fs.existsSync(BChatDbDir)) {
           // console.log("NOO")
-          fs.emptyDirSync(walletDir);
-          console.log("Remove Bchat folder is done");
+          fs.emptyDirSync(BChatDbDir);
+          console.log('Remove Bchat folder is done');
         }
       }
-    }
-    catch (e) {
-      console.log("removeOldLoginDb in ", e);
+    } catch (e) {
+      console.log('removeLoginDb in ', e);
     }
   }
   // On first launch
@@ -306,9 +306,7 @@ async function start() {
     window.setSettingValue('hide-menu-bar', true);
     window.setSettingValue('link-preview-setting', false);
     // window.setSettingValue("decimal", '2 - Two (0.00)')
-    removeOldLoginDb()
-
-
+    removeOldLoginDb();
   }
 
   window.setTheme = newTheme => {
@@ -430,8 +428,12 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  kill(64371).then().catch(err => { throw new HTTPError('beldex_rpc_port', err) })
-  console.log("connectCount === 0 && navigator.onLine:", connectCount, navigator.onLine)
+  kill(64371)
+    .then()
+    .catch(err => {
+      throw new HTTPError('beldex_rpc_port', err);
+    });
+  console.log('connectCount === 0 && navigator.onLine:', connectCount, navigator.onLine);
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

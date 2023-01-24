@@ -85,7 +85,6 @@ export const ChangePassword = () => {
               placeholder={window.i18n('enterPassword')}
               // className="bchat-dialog-newPassInput"
               type={newPasswordVisible?"password":"text"}
-              maxLength={13}
             />
             </span>
             <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)} style={{cursor:'pointer'}}>
