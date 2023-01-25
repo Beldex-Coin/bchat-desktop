@@ -49,7 +49,7 @@ const ITEMS_TABLE = 'items';
 const ATTACHMENT_DOWNLOADS_TABLE = 'attachment_downloads';
 const CLOSED_GROUP_V2_KEY_PAIRS_TABLE = 'encryptionKeyPairsForClosedGroupV2';
 const LAST_HASHES_TABLE = 'lastHashes';
-const RECIPIENT_ADDRESS= 'recipient_address'; 
+ const RECIPIENT_ADDRESS= 'recipient_address'; 
 
 const MAX_PUBKEYS_MEMBERS = 300;
 
@@ -3010,7 +3010,7 @@ function removeAll() {
     DELETE FROM ${MESSAGES_TABLE};
     DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};
     DELETE FROM ${MESSAGES_FTS_TABLE};
-    DELETE FROM ${RECIPIENT_ADDRESS};
+    DELETE FROM ${RECIPIENT_ADDRESS}; 
 `);
 }
 
@@ -3413,7 +3413,7 @@ function saveV2OpenGroupRoom(opengroupsv2Room: any) {
     });
 
     
-    window.log.info('saveV2OpenGroupRoom :: log');
+    
 }
 
 function removeV2OpenGroupRoom(conversationId: string) {
@@ -3773,7 +3773,7 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
   return convosIdsAdded;
 }
 
-//wallet DBs works
+// wallet DBs works
 
 function saveRecipientAddress(data: any) {
   const { tx_hash,address } = data;
@@ -3962,7 +3962,7 @@ export const sqlNode = {
 
   //wallet
 
-   getRecipientAddress,
+    getRecipientAddress,
    saveRecipientAddress
-  // saveRecipientAddressvalid
+  
 };
