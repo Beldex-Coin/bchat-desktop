@@ -210,7 +210,7 @@ export async function decryptWithBchatProtocol(
     ConversationTypeEnum.PRIVATE
   );
   await conversation.setwalletAddress(beldexFinalAddress);
-  await conversation.commit();
+  // await conversation.commit();
 
   // if (getConversation && getConversation.walletAddress) {
   //   console.log('yes');

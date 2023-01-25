@@ -153,6 +153,14 @@ export const TransactionSection = (props: any) => {
   };
 
   function searchTransaction(value: any) {
+    var letters = /^[0-9a-zA-Z]+$/;
+    if ( value==="" || value.match(letters)) {
+      
+    }
+    else
+    {
+      return
+    }
     setSearchText(value);
 
     if (value.length !== 0) {
@@ -164,10 +172,10 @@ export const TransactionSection = (props: any) => {
     let data =
       searchData.length > 0
         ? searchData.filter(
-            (item: any) =>
-              String(item.amount / 1e9).includes(value.toLowerCase()) ||
-              item.txid.toLowerCase().includes(value.toLowerCase())
-          )
+          (item: any) =>
+            String(item.amount / 1e9).includes(value.toLowerCase()) ||
+            item.txid.toLowerCase().includes(value.toLowerCase())
+        )
         : [];
     console.log('searchData:', searchData.length);
     console.log('searchData:', searchData, data);
@@ -423,7 +431,7 @@ export const TransactionSection = (props: any) => {
                       >
                         <div
                           className="wallet-Transaction-contentBox-balanceBox-amount"
-                          // onClick={() => showdata(item, i)}
+                        // onClick={() => showdata(item, i)}
                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
@@ -507,7 +515,7 @@ export const TransactionSection = (props: any) => {
                             marginLeft: zoomLevel && recip.address > 100 ? '20px' : '20px',
                             paddingTop: 0,
                           }}
-                          // className="wallet-Transaction-contentBox-dateandheight"
+                        // className="wallet-Transaction-contentBox-dateandheight"
                         >
                           <div className="wallet-Transaction-contentBox-dateandheight-month">
                             {window.i18n('dateTime')}

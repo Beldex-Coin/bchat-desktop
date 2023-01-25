@@ -795,6 +795,29 @@ label {
         cursor: pointer;
         color: #fff;
       }
+
+      &-sendConfirm_content
+      {
+        text-align: initial;
+        width: 300px;
+
+        .senderBox
+        {
+          display: flex;
+
+          &-address
+          {
+            width: 75%;
+            padding-left: 3px;
+            font-size: 12px;
+          }
+        }
+        &-probTitle
+        {
+          // width: 100px;
+          font-family: $bchat-font-poppin-semibold;
+        }
+      }
     }
   }
 

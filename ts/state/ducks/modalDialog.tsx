@@ -38,6 +38,8 @@ export type walletSettingMiniModalState={
   currency:string
 } | null
 export type TransactionInitModalState={} | null
+export type WalletSendConfirmState=any | null
+
 
 export type ModalState = {
   confirmModal: ConfirmModalState;
@@ -57,7 +59,8 @@ export type ModalState = {
   deleteAccountModal: DeleteAccountModalState;
   ChangePasswordModal:ChangePasswordModalState;
   walletSettingMiniModal:walletSettingMiniModalState;
-  transactionInitModal:TransactionInitModalState
+  transactionInitModal:TransactionInitModalState;
+  walletSendConfirm:WalletSendConfirmState;
 };
 
 export const initialModalState: ModalState = {
@@ -79,6 +82,7 @@ export const initialModalState: ModalState = {
   ChangePasswordModal:null,
   walletSettingMiniModal:null,
   transactionInitModal:null,
+  walletSendConfirm:null
 };
 
 const ModalSlice = createSlice({
@@ -141,6 +145,10 @@ const ModalSlice = createSlice({
     updateTransactionInitModal(state,action:PayloadAction<TransactionInitModalState>)
     {
       return { ...state, transactionInitModal: action.payload };
+    },
+    updateSendConfirmModal(state,action:PayloadAction<WalletSendConfirmState>)
+    {
+      return { ...state, walletSendConfirm: action.payload };
     }
   },
 });
@@ -164,6 +172,7 @@ export const {
   updateBanOrUnbanUserModal,
   ChangePasswordModal,
   walletSettingMiniModal,
-  updateTransactionInitModal
+  updateTransactionInitModal,
+  updateSendConfirmModal
 } = actions;
 export const modalReducer = reducer;

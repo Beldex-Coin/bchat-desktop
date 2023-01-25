@@ -14,7 +14,7 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
-import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
+import { updateConfirmModal, updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 // import { saveRecipientAddressvalid } from '../../data/data';
@@ -48,15 +48,15 @@ export const SendForm = (props: any) => {
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
-   
+
 
     return () => {
       document.removeEventListener('click', handleClick);
-     
+
 
     };
   }, []);
-  
+
   const handleClick = (e: any) => {
     // console.log(
     //   'modalRef',
@@ -73,8 +73,8 @@ export const SendForm = (props: any) => {
       setDropDown(false);
     }
 
-   
-    
+
+
   };
   // function handleChange(e:any)
   // {
@@ -97,7 +97,26 @@ export const SendForm = (props: any) => {
     if (!addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    await send();
+    callConfirmModal()
+  }
+
+  function callConfirmModal() {
+    updateSendConfirmModal({
+      title: 'Confirm Transaction',
+      // message: window.i18n('sendRecoveryPhraseMessage'),
+      okTheme: BchatButtonColor.Green,
+      
+      address:address,
+      amount: props.amount,
+      fee: 12,
+      Priority:props.priority,
+      onClickOk: async () => {
+        await send();
+      },
+      onClickClose: () => {
+        window.inboxStore?.dispatch(updateConfirmModal(null));
+      },
+    })
   }
 
   async function send() {
@@ -194,7 +213,7 @@ export const SendForm = (props: any) => {
     <option value={window.i18n('slow')}>{window.i18n('slow')}</option>
                 
   </select> */}
-                <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px'}}>
+                <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px' }}>
                   <span className="priortyBox">{props.priority}</span>
 
                   <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>
@@ -212,8 +231,7 @@ export const SendForm = (props: any) => {
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(
-                          `dropDownItem ${
-                            props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -223,10 +241,10 @@ export const SendForm = (props: any) => {
                       >
                         {window.i18n('flash')}
                       </div>
+                      <SpacerLG />
                       <div
                         className={classNames(
-                          `dropDownItem ${
-                            props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {

@@ -20,7 +20,8 @@ import {
   UserDetailsModalState,
   ChangePasswordModalState,
   walletSettingMiniModalState,
-  TransactionInitModalState
+  TransactionInitModalState,
+  WalletSendConfirmState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -113,5 +114,9 @@ export const getwalletSettingMiniModalState = createSelector(
 export const getTransactionInitModal = createSelector(
   getModal,
   (state: ModalState): TransactionInitModalState => state.transactionInitModal
+);
+export const getwalletSendConfirmModal = createSelector(
+  getModal,
+  (state: ModalState): WalletSendConfirmState => state.walletSendConfirm
 );
 
