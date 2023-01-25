@@ -141,6 +141,8 @@ class Daemon {
       this.sendRPC('getblockheaderbyheight', {
         height: estimated_height,
       }).then(data => {
+        console.log("estimated_height:",estimated_height);
+        console.log("data:",data.result)
         if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
           if (data.error.code == -2) {
             // Too big height

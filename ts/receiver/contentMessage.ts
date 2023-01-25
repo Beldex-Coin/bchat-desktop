@@ -21,7 +21,10 @@ import { SettingsKey } from '../data/settings-key';
 import { ConversationTypeEnum } from '../models/conversation';
 import { ReadReceipts } from '../util/readReceipts';
 import { Storage } from '../util/storage';
-import { getMessageBySenderAndTimestamp } from '../data/data';
+import {
+  getConversationById,
+  getMessageBySenderAndTimestamp
+} from '../data/data';
 import {
   deleteMessagesFromSwarmAndCompletelyLocally,
   deleteMessagesFromSwarmAndMarkAsDeletedLocally,
@@ -75,7 +78,6 @@ async function decryptForClosedGroup(envelope: EnvelopePlus, ciphertext: ArrayBu
           throw new Error('No more encryption keypairs to try for message.');
         }
         const encryptionKeyPair = ECKeyPair.fromHexKeyPair(hexEncryptionKeyPair);
-
         decryptedContent = await decryptWithBchatProtocol(
           envelope,
           ciphertext,
@@ -202,7 +204,43 @@ export async function decryptWithBchatProtocol(
   const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0, addressLength));
 
   //  sender wallet Address
-  localStorage.setItem('senderWalletAddress', beldexFinalAddress);
+
+  const conversation = await getConversationController().getOrCreateAndWait(
+    envelope.source,
+    ConversationTypeEnum.PRIVATE
+  );
+  await conversation.setwalletAddress(beldexFinalAddress);
+  await conversation.commit();
+
+  // if (getConversation && getConversation.walletAddress) {
+  //   console.log('yes');
+  //   if (
+  //     getConversation.walletAddress ==
+  //     'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
+  //   ) {
+  //     if (beldexFinalAddress != getConversation.walletAddress) {
+  //       let data = {
+  //         id: envelope.source,
+  //         walletAddress: beldexFinalAddress,
+  //       };
+  //       let updateConversation: any = await updateConversationAddress(data);
+  //       console.log('updateConversation:', updateConversation);
+  //     }
+  //     localStorage.setItem('senderWalletAddress', beldexFinalAddress);
+  //   } else {
+  //     localStorage.setItem('senderWalletAddress', getConversation.walletAddress);
+  //   }
+  // } else {
+  //   console.log('no');
+  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
+  // }
+  // if (
+  //   beldexFinalAddress !=
+  //   'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
+  // ) {
+  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
+  // }
+
   const message = plaintextWithMetadata.subarray(addressLength, plainTextEnd);
   return message;
 }
@@ -230,9 +268,7 @@ async function decryptUnidentifiedSender(
 
     // keep the await so the try catch works as expected
     perfStart(`decryptUnidentifiedSender-${envelope.id}`);
-
     const retBchatProtocol = await decryptWithBchatProtocol(envelope, ciphertext, ecKeyPair);
-
     const ret = removeMessagePadding(retBchatProtocol);
     perfEnd(`decryptUnidentifiedSender-${envelope.id}`, 'decryptUnidentifiedSender');
 

@@ -31,6 +31,7 @@ const channelsToMake = new Set([
   'saveConversation',
   'getConversationById',
   'updateConversation',
+  'updateConversationAddress',
   "updateWalletAddressInConversation",
   'removeConversation',
   'getAllConversations',

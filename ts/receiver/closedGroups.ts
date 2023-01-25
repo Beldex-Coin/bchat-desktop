@@ -423,7 +423,6 @@ async function handleClosedGroupEncryptionKeyPair(
   let plaintext: Uint8Array;
   try {
     perfStart(`encryptionKeyPair-${envelope.id}`);
-
     const buffer = await decryptWithBchatProtocol(
       envelope,
       ourWrapper.encryptedKeyPair,

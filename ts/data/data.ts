@@ -14,7 +14,7 @@ import { HexKeyPair } from '../receiver/keypairs';
 import { getConversationController } from '../bchat/conversations';
 import { getSodiumRenderer } from '../bchat/crypto';
 import { PubKey } from '../bchat/types';
-import { ReduxConversationType } from '../state/ducks/conversations';
+import { ReduxConversationAddress, ReduxConversationType } from '../state/ducks/conversations';
 import { MsgDuplicateSearchOpenGroup, UpdateLastHashType } from '../types/sqlSharedTypes';
 import { ExpirationTimerOptions } from '../util/expiringMessages';
 import { Storage } from '../util/storage';
@@ -216,6 +216,10 @@ export async function getConversationById(id: string): Promise<ConversationModel
 export async function updateConversation(data: ReduxConversationType): Promise<void> {
   const cleanedData = _cleanData(data);
   await channels.updateConversation(cleanedData);
+}
+export async function updateConversationAddress(data: ReduxConversationAddress): Promise<void> {
+  const cleanedData = _cleanData(data);
+  await channels.updateConversationAddress(cleanedData);
 }
 
 // For update wallet Address

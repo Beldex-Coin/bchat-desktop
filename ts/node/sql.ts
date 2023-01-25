@@ -1903,6 +1903,24 @@ function updateConversation(data: any, instance?: BetterSqlite3.Database) {
     });
 }
 
+function updateConversationAddress(data: any, instance?: BetterSqlite3.Database) {
+  const {
+    id,
+    walletAddress,
+  } = data;
+
+  assertGlobalInstanceOrInstance(instance)
+    .prepare(
+      `UPDATE ${CONVERSATIONS_TABLE} SET
+    walletAddress = $walletAddress
+    WHERE id = $id;`
+    )
+    .run({
+      id,
+      walletAddress
+    });
+}
+
 // For use update incoming user wallet address to store in update converstation table 
 
 function updateWalletAddressInConversation(data: any, instance?: BetterSqlite3.Database) {
@@ -3861,6 +3879,7 @@ export const sqlNode = {
   saveConversation,
   getConversationById,
   updateConversation,
+  updateConversationAddress,
   updateWalletAddressInConversation,
   removeConversation,
   getAllConversations,

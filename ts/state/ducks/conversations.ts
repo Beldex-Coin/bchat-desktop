@@ -222,6 +222,11 @@ export type LastMessageType = {
   text: string | null;
 };
 
+export type ReduxConversationAddress = {
+  id: string;
+  walletAddress: string | null;
+};
+
 export interface ReduxConversationType {
   id: string;
   /**
