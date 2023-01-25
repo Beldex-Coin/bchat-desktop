@@ -128,29 +128,30 @@ let lastOutgoingOfferTimestamp = -Infinity;
  * This array holds all of the ice servers BChat can contact.
  * They are all contacted at the same time, so before triggering the request, we get only a subset of those, randomly
  */
- const iceServersFullArray = [
+
+const iceServersFullArray = [
   {
-    urls: 'turn.call.beldex.io,',
+    urls: 'turn:turn.call.beldex.io',
     username: 'test',
     credential: 'test@123',
   },
   {
-    urls: 'turn.call1.beldex.io,',
+    urls: 'turn:turn.call1.beldex.io',
     username: 'test',
     credential: 'test@123',
   },
   {
-    urls: 'turn.call2.beldex.io,',
+    urls: 'turn:turn.call2.beldex.io',
     username: 'test',
     credential: 'test@123',
   },
   {
-    urls: 'turn.call3.beldex.io,',
+    urls: 'turn:turn.call3.beldex.io',
     username: 'test',
     credential: 'test@123',
   },
- 
 ];
+
 const configuration: RTCConfiguration = {
   bundlePolicy: 'max-bundle',
   rtcpMuxPolicy: 'require',
