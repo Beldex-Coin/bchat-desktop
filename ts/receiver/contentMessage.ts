@@ -22,7 +22,7 @@ import { ConversationTypeEnum } from '../models/conversation';
 import { ReadReceipts } from '../util/readReceipts';
 import { Storage } from '../util/storage';
 import {
-  getConversationById,
+  // getConversationById,
   getMessageBySenderAndTimestamp
 } from '../data/data';
 import {

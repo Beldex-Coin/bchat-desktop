@@ -735,6 +735,7 @@ class Wallet {
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     let daemon = [];
     for (let i = 0; i < data.length; i++) {
+      console.log("data:",data)
       if (data[i].type == 'Remote') {
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
@@ -781,18 +782,19 @@ class Wallet {
         result: result.result,
       };
     } catch (e) {
-      console.log('failed to send wallet rpc');
-      // if(method == "open_wallet"){
-      //   const currentDaemon = await this.chooseDaemon();
-      //   currentDaemon.active = true;
-      //   console.log("currentDaemon:",currentDaemon)
-      //   const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-      //   window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
-      //   throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.
-      //   `);
-      // }else{
+      console.log('failed to send wallet rpc',e);
+      let currentDeamonLoc = window.getSettingValue('current-deamon');
+      console.log("currentDeamonLoc:",currentDeamonLoc)
+      const deamonStatus = await workingStatusForDeamon({host:currentDeamonLoc.host,port:currentDeamonLoc.port}, 'daemonValidation');
+      console.log("deamonStatus:",deamonStatus)
+      if(deamonStatus.status=='NOT_OK'){
+        const currentDaemon = await this.chooseDaemon();
+        currentDaemon.active = true;
+        const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+        window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
+        throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.`);
+      }
       throw new HTTPError('exception during wallet-rpc:', e);
-      // }
     }
   };
 

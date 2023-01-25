@@ -1,5 +1,4 @@
-import React, {  useState } from 'react';
-import { pushToastError, pushToastInfo } from '../../bchat/utils/Toast';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
@@ -7,7 +6,7 @@ import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
-import { updateDecimalValue } from '../../state/ducks/walletConfig';
+import { updateDecimalValue, updateSendAddress } from '../../state/ducks/walletConfig';
 import { ForgotPassword } from './BchatWalletForgotPassword';
 import { ProgressForSync } from './BchatWalletProgressForSync';
 import { getHeight } from '../../state/selectors/walletConfig';
@@ -17,11 +16,10 @@ import { getConversationById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
 import styled from 'styled-components';
 
-
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   // const [progressing, setProgressing] = useState(false);
   // const [getPercentage, setPercentage] = useState(1);
   // const [getPercentage, setPercentage] = useState(1);
@@ -29,7 +27,7 @@ export const WalletPassword = (props: any) => {
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   let daemonHeight = useSelector((state: any) => state.daemon.height);
-   const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+  //  const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   const currentHeight: any = Number(useSelector(getHeight));
   const Loader = styled.div`
     position: absolute;
@@ -41,9 +39,7 @@ export const WalletPassword = (props: any) => {
     // height: 100%;
     align-items: center;
     z-index: 101;
-
-   
-`
+  `;
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
@@ -53,7 +49,7 @@ export const WalletPassword = (props: any) => {
   //     if (event.code === "Enter" || event.code === "NumpadEnter") {
   //       console.log("Enter key was pressed. Run your function.");
   //       submit()
-        
+
   //       // event.preventDefault();
   //       // callMyFunction();
   //     }
@@ -94,9 +90,7 @@ export const WalletPassword = (props: any) => {
   // }
 
   // console.log('setProgressing:', progressing);
-  
 
-  
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -114,33 +108,30 @@ export const WalletPassword = (props: any) => {
   loadFiatCurrency();
 
   async function submit() {
-    console.log('password',password);
+    console.log('password', password);
 
-    if(!password){
-      
+    if (!password) {
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
 
-    let userDetails=await getConversationById(UserUtils.getOurPubKeyStrFromCache())
+    let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
 
     let profileName = userDetails?.attributes.walletUserName;
-    console.log("profile:",profileName)
-    if(!profileName){
+    if (!profileName) {
       profileName = UserDetails[userId].profileName;
     }
-    pushToastInfo('Current Daemon',`Connected to ${currentDaemon.host}`);
+    // pushToastInfo('connectedDaemon',`Connected to ${currentDaemon.host}`);
     setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
-    setLoading(false)
-
-      pushToastError('walletInvalidPassword', openWallet.error?.message);
-
-    } else {
       setLoading(false);
-      // pushToastSuccess('successPassword', 'Success.');
+
+      ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
+    } else {
+      let emptyAddress: any = '';
+      dispatch(updateSendAddress(emptyAddress));
+      setLoading(false);
       props.onClick();
-      // setProgressing(true);
       dispatch(dashboard());
     }
   }
@@ -160,7 +151,7 @@ export const WalletPassword = (props: any) => {
   //   percentage
   // );
 
-  if ((daemonHeight > 0 && percentage < 99) ) {
+  if (daemonHeight > 0 && percentage < 99) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
@@ -168,15 +159,17 @@ export const WalletPassword = (props: any) => {
 
   return (
     <div className="wallet-walletPassword">
-      
       <div className="wallet-walletPassword-contentBox">
-      {loading && 
-      <Loader>
-            <div className='walletPassModal'>
-              <img src={"images/bchat/Load_animation.gif"} style={{ width: "150px", height: '150px' }} />
+        {loading && (
+          <Loader>
+            <div className="walletPassModal">
+              <img
+                src={'images/bchat/Load_animation.gif'}
+                style={{ width: '150px', height: '150px' }}
+              />
             </div>
           </Loader>
-}
+        )}
         <SpacerLG />
         <SpacerLG />
         <div className="wallet-walletPassword-contentBox-walletImg"></div>
@@ -187,13 +180,13 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password" value={password} onChange={e => setValue(e.target.value)}/>
+          <input type="password" value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
-        <div
-          className="wallet-walletPassword-contentBox-forgotTxt"  
-        >
-          <span onClick={() => setForgotPassword(true)} style={{ cursor: 'pointer' }}>{window.i18n('forgotPassword')}</span>
+        <div className="wallet-walletPassword-contentBox-forgotTxt">
+          <span onClick={() => setForgotPassword(true)} style={{ cursor: 'pointer' }}>
+            {window.i18n('forgotPassword')}
+          </span>
         </div>
         <SpacerMD />
         <div>

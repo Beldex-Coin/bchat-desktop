@@ -17,6 +17,7 @@ import { SyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
+import { walletSettingsKey } from '../../data/settings-key';
 // import { ModalContainer } from "../dialog/ModalContainer"
 //  import { ForgotPassword } from "./BchatWalletForgotPassword"
 // import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
@@ -67,8 +68,8 @@ export const WalletMainPanel = () => {
   function clearStates() {
     setAmount("");
     setNotes("");
-    let emtStr: any = '';
-    dispatch(updateSendAddress(emtStr));
+    let emptyAddress: any = '';
+    dispatch(updateSendAddress(emptyAddress));
 
   }
 
@@ -84,6 +85,8 @@ export const WalletMainPanel = () => {
       <div className="wallet">
         <WalletPassword
           onClick={() => {
+            const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+            ToastUtils.pushToastInfo('connectedDaemon',`Connected to ${currentDaemon.host}`);
             setPassScreen(!passScreen);
           }}
         />{' '}
@@ -135,6 +138,7 @@ export const WalletMainPanel = () => {
       {/* <ModalContainer /> */}
 
       {WalletPage.Dashboard === focusedsettings && (
+        
         <Dashboard
           amount={amount}
           setAmount={(e: any) => {
@@ -161,7 +165,8 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   daemon.daemonHeartbeat();
-  
+
+
 
   return (
     <>

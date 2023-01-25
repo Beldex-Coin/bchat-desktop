@@ -173,7 +173,7 @@ export const NodeSetting = () => {
 
   return (
     <div>
-      <div onClick={() => dispatch(setting())} style={{ cursor: 'pointer' }}>
+      <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
           <div onClick={() => dispatch(setting())}>
             <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />

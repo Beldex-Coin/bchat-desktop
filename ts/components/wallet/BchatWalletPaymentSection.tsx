@@ -21,12 +21,7 @@ export const WalletPaymentSection = (props:any) => {
   
   function tabBtn()
   {
-    // let emtStr:any=""
-   
-    // props.setAmount('');
-    // props.setNotes('');
-    // dispatch(updateSendAddress(emtStr));
-    props.clearStates()
+    props.clearStates();
     dispatch(walletSendPage());
   }
   return (

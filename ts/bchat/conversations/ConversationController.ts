@@ -106,10 +106,8 @@ export class ConversationController {
 
     const create = async () => {
       try {
-        // conversation.attributes.walletUserName='munavver;
-        conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
+        // conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
         conversation.attributes.walletUserName=localStorage.getItem("walletUserName");
-        // conversation.attributes.walletCreatedDaemonHeight=1234;
         await saveConversation(conversation.attributes);
         localStorage.setItem("walletUserName",'');
 
