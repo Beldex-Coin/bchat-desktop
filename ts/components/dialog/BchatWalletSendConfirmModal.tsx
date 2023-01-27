@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 // import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG, SpacerMD } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 // import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { useKey } from 'react-use';
+import { wallet } from '../../wallet/wallet-rpc';
 
 export interface BchatConfirmDialogProps {
   message?: string;
@@ -60,15 +61,16 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
     btndisable,
     address,
     amount,
-    fee = 2,
+    fee ,
     Priority
   } = props;
 
   // const [isLoading, setIsLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
+  const [error,setError]=useState('');
 
-  const okText = props.okText || window.i18n('ok');
+  // const okText = props.okText || window.i18n('ok');
 
   const cancelText = props.cancelText || window.i18n('cancel');
   // const showHeader = !!props.title;
@@ -81,12 +83,19 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
       // setIsLoading(true);
       try {
         
-        if(confirm)
+        if(!confirm)
         {
-          await onClickOk();
+          passwordVerify();    
         }
         else{
-          passwordVerify();
+          if(wallet.wallet_state.password_hash===wallet.passwordEncrypt(password))
+          {
+            await onClickOk();
+          }
+          else{
+             setError(window.i18n('setPasswordInvalid'))
+          }
+
         }
         
       } catch (e) {
@@ -131,7 +140,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
 
   return (
     <BchatWrapperModal
-      title={confirm ? 'Confirm Transaction' : 'Password'}
+      title={confirm ? 'Password':'Confirm Transaction'}
       onClose={onClickClose}
       showExitIcon={showExitIcon}
       showHeader={true}
@@ -146,44 +155,42 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             <SpacerLG />
           </>
         )}
-        {confirm ? <article className='bchat-modal__centered-sendConfirm_content'>
-          <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Send to:</div> <div className='senderBox-address'>{address}</div>
-
-          </div>
-          <SpacerMD />
-          <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Amount:</div> <div className='senderBox-address'>{amount}BDX</div>
-
-          </div>
-          <SpacerMD />
-          <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Fee:</div> <div className='senderBox-address'>{fee}BDX</div>
-
-          </div>
-          <SpacerMD />
-          <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Priority:</div><div className='senderBox-address'>{Priority}</div>
-          </div>
-          <SpacerMD />
-
-        </article> :
-          <div>
+        {confirm ? <div>
             <div className='bchat-modal__centered-sendConfirm_content-subHeader'>Enter your wallet Password</div>
             <div className="bchat-modal__centered-sendConfirm_content-passwordBox">
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
             </div>
+            <SpacerXS />
+            <div className='bchat-modal__centered-sendConfirm_content-errorTxt'>
+              {error}
+            </div>
+            {/* <SpacerMD /> */}
             <SpacerMD />
-            <SpacerMD />
-          </div>  
+          </div> : <article className='bchat-modal__centered-sendConfirm_content'>
+          <div className='senderBox'>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Send to : </div> <div className='senderBox-address senderBox-addressColor'>{address}</div>
+
+          </div>
+          <SpacerMD />
+          <div className='senderBox'>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Amount : </div> <div className='senderBox-address'>{amount} BDX</div>
+
+          </div>
+          <SpacerMD />
+          <div className='senderBox'>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Fee : </div> <div className='senderBox-address'>{fee} BDX</div>
+
+          </div>
+          <SpacerMD />
+          <div className='senderBox'>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Priority : </div><div className='senderBox-address'>{Priority}</div>
+          </div>
+          <SpacerMD />
+          <SpacerLG />
+
+        </article> 
+         
         }
-
-
-
-
-
-
-
         {/* <BchatSpinner loading={isLoading} /> */}
       </div>
 
@@ -198,7 +205,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
           />
         )}
         <BchatButton
-          text={okText}
+          text={confirm?'Confirm':window.i18n('send')}
           buttonColor={props.okTheme}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"

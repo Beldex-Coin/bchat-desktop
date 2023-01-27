@@ -266,7 +266,7 @@ export const TransactionSection = (props: any) => {
           <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
         </>
       ) : (
-        <div style={{ height: '91%' }} onClick={() => (visible ? setVisible(false) : '')}>
+        <div style={{ height: '98%' }} onClick={() => (visible ? setVisible(false) : '')}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
             <div className="wallet-Transaction-title">{window.i18n('transactions')}</div>
             <Flex container={true} justifyContent="flex-end" flexDirection="row" width={'77%'}>

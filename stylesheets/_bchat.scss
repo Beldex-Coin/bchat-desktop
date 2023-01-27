@@ -798,22 +798,33 @@ label {
 
       &-sendConfirm_content {
         text-align: initial;
-        width: 300px;
+        // width: 300px;
+        // width: 511px;
+        width: 355px;
 
         .senderBox {
           display: flex;
 
           &-address {
-            width: 75%;
-            padding-left: 3px;
-            font-size: 12px;
+            // width: 75%;
+            // padding-left: 3px;
+            // width: 85%;
+            width: 79%;
+            font-size: 14px;
+            font-family: $bchat-font-poppin-light;
+            line-height: 17px;
+          }
+          &-addressColor
+          {
+           color: var(--color-confirmAddress);
           }
         }
         &-probTitle {
           // width: 100px;
           font-family: $bchat-font-poppin-semibold;
-          font-size: 12px;
+          font-size: 16px;
         }
+       
 
         &-subHeader
         {
@@ -825,6 +836,12 @@ label {
           input {
             text-align: center;
           }
+        }
+        &-errorTxt
+        {
+          height: 16px;
+          color: red;
+          font-size: 10px;
         }
       }
     }
@@ -1512,7 +1529,9 @@ label {
       width: 35.4%;
     }
     &-contentSpace {
-      height: calc(81vh - 30px);
+      // height: calc(81vh - 30px);
+      height: calc(100vh - 153px);
+      overflow: hidden;
     }
     &-left-balance-Sec {
       // width: 55%;

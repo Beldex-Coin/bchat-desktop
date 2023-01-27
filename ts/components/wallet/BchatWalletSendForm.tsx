@@ -111,9 +111,10 @@ export const SendForm = (props: any) => {
       
       address:address,
       amount: props.amount,
-      fee: 12,
+      fee:0.0043,
       Priority:props.priority,
       onClickOk: async () => {
+       
         await send();
       },
       onClickClose: () => {

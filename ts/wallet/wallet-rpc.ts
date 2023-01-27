@@ -31,6 +31,7 @@ class Wallet {
     unlocked_balance: number;
     fiatCurrency: string;
     tx_list: any;
+    password_hash:string;
   };
   scee: any;
   id: number;
@@ -51,6 +52,7 @@ class Wallet {
       unlocked_balance: 0,
       fiatCurrency: '',
       tx_list: [],
+      password_hash:'',
     };
     this.id = 0;
     this.scee = new SCEE();
@@ -191,6 +193,7 @@ class Wallet {
       this.auth = [
         auth.substr(0, 64), // rpc username
         auth.substr(64, 64), // rpc password
+        auth.substr(128, 32) // password salt
       ];
 
       // console.log('this.auth::::::', this.auth);
@@ -701,7 +704,13 @@ class Wallet {
       return data;
     }
   };
-
+   public passwordEncrypt=(password:string)=>
+   {
+     return crypto
+    .pbkdf2Sync(password, this.auth[2], 1000, 64, "sha512")
+    .toString("hex");
+    // return encrypted_data
+   }
   openWallet = async (filename: string, password: string) => {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
@@ -726,6 +735,10 @@ class Wallet {
     }
     this.wallet_state.name = filename;
     this.wallet_state.open = true;
+    this.wallet_state.password_hash=this.passwordEncrypt(password);
+    //  crypto
+    // .pbkdf2Sync(password, this.auth[2], 1000, 64, "sha512")
+    // .toString("hex");
 
     this.startHeartbeat();
     return openWallet;

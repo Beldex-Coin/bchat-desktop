@@ -139,6 +139,7 @@ const darkWalletSyncBar = '#444455';
 const darkDownthickArrow = '#fff';
 const darkDisableBtn='#444455';
 const darkDisableTxt='#8F8FA2';
+const darkConfirmAddress="#A1A1BC";
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
@@ -332,6 +333,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-walDownthickArrow', darkDownthickArrow);
   document.documentElement.style.setProperty('--color-disableBtn', darkDisableBtn);
   document.documentElement.style.setProperty('--color-disableTxt', darkDisableTxt);
+  document.documentElement.style.setProperty('--color-confirmAddress', darkConfirmAddress);
+
 
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
@@ -458,6 +461,7 @@ const lightWalletSyncBar = '#DEDEDE';
 const lightDownthickArrow = '#8F8FA2';
 const lightDisableBtn='#DEDEDE';
 const lightDisableTxt="#B1B1B1";
+const lightConfirmAddress="#747474";
 const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
 const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`;
 
@@ -609,6 +613,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
   document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
 
+
   document.documentElement.style.setProperty('--image-DayNight', lightDayNight);
   document.documentElement.style.setProperty('--image-EmptyChatImg', lightEmptyChatImg);
   document.documentElement.style.setProperty('--image-BgDoodle', lightBgDoodle);
@@ -653,6 +658,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-walDownthickArrow', lightDownthickArrow);
   document.documentElement.style.setProperty('--color-disableBtn', lightDisableBtn);
   document.documentElement.style.setProperty('--color-disableTxt', lightDisableTxt);
+  document.documentElement.style.setProperty('--color-confirmAddress', lightConfirmAddress);
+
 
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', lightWalDownThickArrow);
@@ -774,6 +781,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-walDownthickArrow:${darkDownthickArrow};
     --color-disableBtn :${darkDisableBtn};
     --color-disableTxt:${darkDisableTxt};
+    --color-confirmAddress:${darkConfirmAddress};
+
+    
 
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};
