@@ -14,7 +14,7 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
-import { updateConfirmModal, updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
+import {  updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 // import { saveRecipientAddressvalid } from '../../data/data';
@@ -97,12 +97,15 @@ export const SendForm = (props: any) => {
     if (!addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    callConfirmModal()
+    sendConfirmModal()
+    
   }
 
-  function callConfirmModal() {
+  function sendConfirmModal() {
+
+    dispatch(
     updateSendConfirmModal({
-      title: 'Confirm Transaction',
+      // title: 'Confirm Transaction',
       // message: window.i18n('sendRecoveryPhraseMessage'),
       okTheme: BchatButtonColor.Green,
       
@@ -114,9 +117,9 @@ export const SendForm = (props: any) => {
         await send();
       },
       onClickClose: () => {
-        window.inboxStore?.dispatch(updateConfirmModal(null));
+        dispatch(updateSendConfirmModal(null));
       },
-    })
+    }))
   }
 
   async function send() {
@@ -129,6 +132,8 @@ export const SendForm = (props: any) => {
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
+    dispatch(updateSendConfirmModal(null));
+
     dispatch(updateTransactionInitModal({}));
     let data: any = await wallet.transfer(
       address,
@@ -142,6 +147,7 @@ export const SendForm = (props: any) => {
         tx_hash: data.result.tx_hash_list[0],
         address: address,
       };
+
       let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
       console.log('getSettingvalue ::', getSettingvalue);
 
@@ -154,6 +160,8 @@ export const SendForm = (props: any) => {
       return ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
     } else {
       clearStateValue();
+      dispatch(updateSendConfirmModal(null));
+
       dispatch(updateTransactionInitModal(null));
       // ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;

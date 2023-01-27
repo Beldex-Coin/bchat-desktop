@@ -87,7 +87,7 @@ export const ModalContainer:any = () => {
       {ChangePasswordModalState&&<ChangePassword />}
       {walletSettingMiniModal&&<WalletModal {...walletSettingMiniModal} />}
       {TransactionInitModalState&& <TransactionInitModal />}
-      {BchatSendConfirmState &&<BchatSendConfirm{ ...BchatSendConfirmState} /> }
+      {BchatSendConfirmState &&<BchatSendConfirm { ...BchatSendConfirmState} /> }
     </>
   );
 };

@@ -562,8 +562,8 @@ export const TransactionSection = (props: any) => {
               ''
             )}
           </div>
-          <SpacerLG />
-          <SpacerLG />
+          {/* <SpacerLG />
+          <SpacerLG /> */}
           {zoomLevel > 100 && <SpacerLG />}
         </div>
       )}

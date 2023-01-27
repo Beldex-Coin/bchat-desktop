@@ -197,8 +197,9 @@ export const Dashboard = (props: any) => {
         {/* <SendForm /> */}
         {/* <TransactionSection /> */}
 
-        <SyncStatusBar />
       </div>
+      <SyncStatusBar />
+      
     </>
   );
 };
