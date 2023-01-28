@@ -250,8 +250,8 @@ class Wallet {
         }
       });
     } catch (error) {
-      console.log('failed to start wallet rpc');
-      console.log('ERR:', error);
+      console.log('failed to start wallet rpc',error);
+      // console.log('ERR:', error);
     }
   };
 
@@ -305,7 +305,7 @@ class Wallet {
       });
       const getAddress: any = await this.sendRPC('get_address');
       const mnemonic: any = await this.sendRPC('query_key', { key_type: 'mnemonic' });
-      console.log('mne:', mnemonic);
+      // console.log('mne:', mnemonic);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
         localStorage.setItem('userAddress', getAddress.result.address);
         return mnemonic.result.key;
@@ -365,7 +365,7 @@ class Wallet {
       //     restore_height = 0;
       //   }
       // }
-      console.log('restore_height', restore_height);
+      // console.log('restore_height', restore_height);
 
       let walletDir =
         os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
@@ -748,7 +748,7 @@ class Wallet {
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     let daemon = [];
     for (let i = 0; i < data.length; i++) {
-      console.log("data:",data)
+      // console.log("data:",data)
       if (data[i].type == 'Remote') {
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
@@ -776,12 +776,12 @@ class Wallet {
         timeout,
       };
       const response = await insecureNodeFetch(url, fetchOptions);
-      console.log('response:', response.ok);
+      // console.log('response:', response.ok);
       if (!response.ok) {
         throw new HTTPError('beldex_rpc error', response);
       }
       const result = await response.json();
-      console.log('result:nowfill:', result);
+      // console.log('result:nowfill:', result);
       if (result.hasOwnProperty('error')) {
         return {
           method: method,
@@ -797,9 +797,9 @@ class Wallet {
     } catch (e) {
       console.log('failed to send wallet rpc',e);
       let currentDeamonLoc = window.getSettingValue('current-deamon');
-      console.log("currentDeamonLoc:",currentDeamonLoc)
+      // console.log("currentDeamonLoc:",currentDeamonLoc)
       const deamonStatus = await workingStatusForDeamon({host:currentDeamonLoc.host,port:currentDeamonLoc.port}, 'daemonValidation');
-      console.log("deamonStatus:",deamonStatus)
+      // console.log("deamonStatus:",deamonStatus)
       if(deamonStatus.status=='NOT_OK'){
         const currentDaemon = await this.chooseDaemon();
         currentDaemon.active = true;

@@ -293,7 +293,7 @@ async function start() {
         if (fs.existsSync(BChatDbDir)) {
           // console.log("NOO")
           fs.emptyDirSync(BChatDbDir);
-          console.log('Remove Bchat folder is done');
+          // console.log('Remove Bchat folder is done');
         }
       }
     } catch (e) {
@@ -433,7 +433,7 @@ async function connect() {
     .catch(err => {
       throw new HTTPError('beldex_rpc_port', err);
     });
-  console.log('connectCount === 0 && navigator.onLine:', connectCount, navigator.onLine);
+  // console.log('connectCount === 0 && navigator.onLine:', connectCount, navigator.onLine);
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

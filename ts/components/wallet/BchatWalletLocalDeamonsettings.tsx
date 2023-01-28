@@ -7,6 +7,7 @@ import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { walletSettingsKey } from '../../data/settings-key';
 import { ToastUtils } from '../../bchat/utils';
 import { BchatIcon } from '../icon/BchatIcon';
+import { useKey } from 'react-use';
 
 export function LocalDeamon() {
   const localDeamonHost = '127.0.0.1';
@@ -24,6 +25,19 @@ export function LocalDeamon() {
     }
     setTestNotify(`Connection Error`);
   }
+
+  useKey((event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      if (localDeamonPort) {
+        validationForDeamon();
+      }
+      if (Object.keys(verifyDeamon).length !== 0) {
+        addDeamonNet();
+      }
+    }
+    return event.key === 'Enter';
+  });
+
   function addDeamonNet() {
     let data = verifyDeamon;
     if (Object.keys(data).length === 0) {

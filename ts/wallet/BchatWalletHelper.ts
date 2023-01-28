@@ -13,7 +13,6 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
   // console.log('currentdeamon data::', currentdeamon);
 
   try {
-    console.log("currentdeamon:",currentdeamon)
     const options = {
       uri: `http://${currentdeamon.host}:${currentdeamon.port}/json_rpc`,
       method: 'POST',
@@ -33,7 +32,7 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
       return requestData.result;
     }
   } catch (err) {
-    console.log('ERR:', err.message, window.globalOnlineStatus);
+    // console.log('ERR:', err.message, window.globalOnlineStatus);
     if (window.globalOnlineStatus && !type) {
       ToastUtils.pushToastError(
         'daemonRpcDown',

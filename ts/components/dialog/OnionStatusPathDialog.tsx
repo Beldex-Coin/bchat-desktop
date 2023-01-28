@@ -34,7 +34,7 @@ const OnionCountryDisplay = ({
   labelText: string;
   index: number;
 }) => {
-  console.log('index',index);
+  // console.log('index',index);
   
   // const element = (hovered: boolean) => (
   const element = () => (

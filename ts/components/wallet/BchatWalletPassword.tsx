@@ -15,6 +15,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { getConversationById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
 import styled from 'styled-components';
+import { useKey } from 'react-use';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -106,6 +107,13 @@ export const WalletPassword = (props: any) => {
   loadDecimal();
   loadRecipient();
   loadFiatCurrency();
+
+  useKey((event: KeyboardEvent) => {
+    if (!forgotPassword && event.key === 'Enter') {
+      submit();
+    }
+    return event.key === 'Enter';
+  });
 
   async function submit() {
     console.log('password', password);

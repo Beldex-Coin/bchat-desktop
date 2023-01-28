@@ -10,21 +10,22 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { LocalDeamon } from './BchatWalletLocalDeamonsettings';
 import { ToastUtils } from '../../bchat/utils';
+import { useKey } from 'react-use';
 
 export const NodeSetting = () => {
   const dispatch = useDispatch();
-  console.log(
-    'current deamon ::NodeSetting',
-    window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-  );
+  // console.log(
+  //   'current deamon ::NodeSetting',
+  //   window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+  // );
 
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     : window.currentDaemon;
   const deamonList = window.getSettingValue(walletSettingsKey.settingsDeamonList);
 
-  console.log('currentDeamon.host:', window.currentDaemon);
-  console.log('currentDecuuu ::', currentDeamon.host);
+  // console.log('currentDeamon.host:', window.currentDaemon);
+  // console.log('currentDecuuu ::', currentDeamon.host);
   const currentHost =
     currentDeamon.host == '127.0.0.1' ? window.currentDaemon.host : currentDeamon.host;
   const currentPort =
@@ -42,8 +43,8 @@ export const NodeSetting = () => {
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  console.log('testNotify:', testNotify);
-
+  const testBottonEnable = !ipAddress && !port ? true : !ipAddress ? true : !port ? true : false;
+  console.log('testBottonEnable:', testBottonEnable);
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -87,6 +88,8 @@ export const NodeSetting = () => {
     setOption(deamon_list);
     assignHost('');
     setPort('');
+    setVerifyDeamon({});
+    setTestNotify({ status: '', content: '', StatusIcon: true });
     return ToastUtils.pushToastSuccess('daemonAddedSuccessfully', `Daemon added successfully.`);
   }
 
@@ -107,7 +110,7 @@ export const NodeSetting = () => {
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
-        console.log('Data:showDropDown', data[i]);
+        // console.log('Data:showDropDown', data[i]);
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
           data[i].active = true;
@@ -134,9 +137,22 @@ export const NodeSetting = () => {
     }
   };
 
+  useKey((event: KeyboardEvent) => {
+    if (!localDeamonVisible && event.key === 'Enter') {
+      if (!testBottonEnable) {
+        validationForDeamon();
+      }
+      if (Object.keys(verifyDeamon).length !== 0) {
+        addDeamonNet();
+      }
+      console.log('verifyDeamon:', verifyDeamon);
+    }
+    return event.key === 'Enter';
+  });
+
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 0 };
-    console.log('Data:validationForDeamon', data);
+    // console.log('Data:validationForDeamon', data);
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
 
     // if(currentDeamon.host===ipAddress && currentDeamon.port === port)
@@ -145,7 +161,7 @@ export const NodeSetting = () => {
     // }
 
     if (confirmation && confirmation.status === 'OK') {
-      console.log('confirmation ok');
+      // console.log('confirmation ok');
       if (confirmation.nettype === window.networkType) {
         setVerifyDeamon(data);
         setTestNotify({ status: 'ok', content: `Success`, StatusIcon: true });
@@ -164,12 +180,12 @@ export const NodeSetting = () => {
     setVerifyDeamon({});
   }
 
-  console.log(
-    '!ipAddress && !port ::',
-    currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort,
-    currentDeamon.host,
-    chooseDeamon
-  );
+  // console.log(
+  //   '!ipAddress && !port ::',
+  //   currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort,
+  //   currentDeamon.host,
+  //   chooseDeamon
+  // );
 
   return (
     <div>
@@ -212,15 +228,15 @@ export const NodeSetting = () => {
           </article>
           {/* <div className="marginLeft marginRight "></div> */}
 
-          <article
-            className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }} >
-            <div onClick={() => {
-              setLocalDeamonVisible(true);
-              setTestNotify({ status: '', content: '', StatusIcon: true });
-              setIpAddress('');
-              setPort('');
-              setVerifyDeamon({});
-            }}
+          <article className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }}>
+            <div
+              onClick={() => {
+                setLocalDeamonVisible(true);
+                setTestNotify({ status: '', content: '', StatusIcon: true });
+                setIpAddress('');
+                setPort('');
+                setVerifyDeamon({});
+              }}
               className="wallet-settings-nodeSetting-FlexBox-outlineCircle"
               style={
                 localDeamonVisible
@@ -229,11 +245,11 @@ export const NodeSetting = () => {
               }
             >
               {localDeamonVisible && (
-                  <BchatIcon
-                    iconType="circle"
-                    iconSize="tiny"
-                    iconColor="var(--color-walletNodeHeader)"
-                  />
+                <BchatIcon
+                  iconType="circle"
+                  iconSize="tiny"
+                  iconColor="var(--color-walletNodeHeader)"
+                />
               )}
             </div>
             <div className="marginLeft"> {window.i18n('localDaemonOnly')}</div>
@@ -323,7 +339,7 @@ export const NodeSetting = () => {
 
                     text={window.i18n('test')}
                     onClick={() => validationForDeamon()}
-                    disabled={!ipAddress && !port ? true : !ipAddress ? true : !port ? true : false}
+                    disabled={testBottonEnable}
                   />
                 </div>
                 <div style={{ marginLeft: '15px' }}></div>
@@ -424,11 +440,12 @@ export const NodeSetting = () => {
                     </div>
                     <div>
                       {dropdown && (
-                        <div style={{ position: 'relative',zIndex:1 }}>
+                        <div style={{ position: 'relative', zIndex: 1 }}>
                           <div className="wallet-settings-nodeSetting-dropDownModal">
                             {option.length > 0 &&
                               option.map((item: any, i: number) => (
-                                <div style={{cursor:'pointer'}}
+                                <div
+                                  style={{ cursor: 'pointer' }}
                                   key={i}
                                   className="wallet-settings-nodeSetting-dropDownModal-items"
                                   // style={{ marginBottom: '5px' }}
@@ -439,7 +456,9 @@ export const NodeSetting = () => {
                                     iconSize={8}
                                     iconColor={item.active ? '#20D024' : 'red'}
                                   />
-                                  <span style={{ marginLeft: '10px',color:item.active ? '' : 'red'}}>
+                                  <span
+                                    style={{ marginLeft: '10px', color: item.active ? '' : 'red' }}
+                                  >
                                     {item.host}:{item.port}
                                   </span>
                                 </div>

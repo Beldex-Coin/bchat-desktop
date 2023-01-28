@@ -43,7 +43,7 @@ export const MemberListItem = (props: {
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
-  console.log('memberName ::',memberName);
+  // console.log('memberName ::',memberName);
   
 
   return (

@@ -13,6 +13,7 @@ import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { updateDaemon } from '../../state/ducks/daemon';
 import { getConversationById } from '../../data/data';
 import { useConversationWalletDaemonHeight } from '../../hooks/useParamSelector';
+import { useKey } from 'react-use';
 // import { mn_decode } from '../../bchat/crypto/mnemonic';
 
 export const ForgotPassword = (props: any) => {
@@ -130,7 +131,7 @@ export const ForgotPassword = (props: any) => {
     );
     daemon.sendRPC('get_info').then(data => {
       if (!data.hasOwnProperty('error')) {
-        console.log('success');
+        // console.log('success');
         dispatch(updateDaemon({ height: data.result.height }));
       }
     });
@@ -142,6 +143,11 @@ export const ForgotPassword = (props: any) => {
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();
   };
+
+  useKey((event: KeyboardEvent) => {
+    return event.key === 'Enter';
+  }, passValid);
+
   return (
     <div className="wallet-forgotPassword">
       <div className="wallet-forgotPassword-content-Box">

@@ -29,7 +29,7 @@ export function useConversationUsername(convoId?: string) {
  */
 export function useConversationUsernameOrShorten(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
-console.log('convoProps ::',convoProps);
+// console.log('convoProps ::',convoProps);
 
   return convoProps?.profileName || convoProps?.name || (convoId && PubKey.shorten(convoId));
 }
@@ -151,14 +151,14 @@ export function useConversationPropsById(convoId?: string) {
 
 export function useConversationBeldexAddress(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
-console.log('convoProps ::',convoProps?.walletAddress);
+// console.log('convoProps ::',convoProps?.walletAddress);
 
   return convoProps?.walletAddress
 }
 
 export function useConversationWalletDaemonHeight(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
-console.log('convoProps ::',convoProps?.walletCreatedDaemonHeight);
+// console.log('convoProps ::',convoProps?.walletCreatedDaemonHeight);
 
   return convoProps?.walletCreatedDaemonHeight
 }
