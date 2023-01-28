@@ -16,6 +16,7 @@ import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
 import {  updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
+import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 
 // import { saveRecipientAddressvalid } from '../../data/data';
 
@@ -158,7 +159,8 @@ export const SendForm = (props: any) => {
         await saveRecipientAddress(TransactionHistory);
       }
       clearStateValue();
-      return ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
+      ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
+      dispatch(walletTransactionPage())
     } else {
       clearStateValue();
       dispatch(updateSendConfirmModal(null));

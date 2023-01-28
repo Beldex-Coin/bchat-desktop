@@ -28,32 +28,31 @@ export const TransactionSection = (props: any) => {
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
-        searchTransaction(searchText);
 
         break;
       case 'Pending':
         filterTransaction('pending');
-        searchTransaction(searchText);
+        // searchTransaction(searchText);
 
         break;
       case 'Failed':
         filterTransaction('failed');
-        searchTransaction(searchText);
+        // searchTransaction(searchText);
 
         break;
       case 'Incoming':
         filterTransaction('in');
-        searchTransaction(searchText);
+        // searchTransaction(searchText);
 
         break;
 
       default:
-        if (!searchText) {
+        // if (searchText) {
           filterTransaction('All');
-        }
+        // }
         // searchTransaction(searchText);
         // setData([]);
-        setData(transactionsHistory);
+        // setData(transactionsHistory);
 
         break;
     }
@@ -90,14 +89,25 @@ export const TransactionSection = (props: any) => {
   function filterTransaction(type: string) {
     if (type === window.i18n('filterAll')) {
       setSearchData(transactionsHistory);
-      setData(transactionsHistory);
+
+      if (searchText) {
+          searchTransaction(searchText);
+        }
+        else{
+       setData(transactionsHistory);
+        }
       return;
     }
     let filterData =
       transactionsHistory.length > 0 &&
       transactionsHistory.filter((data: any) => data.type === type);
-    setData(filterData);
     setSearchData(filterData);
+    if (searchText) {
+      searchTransaction(searchText);
+    }
+    else{
+    setData(filterData);
+    }
   }
   async function showdata(item: any, i: any) {
     // console.log('showData:', item, i);placeholder="Enter an ID or amount"
@@ -163,9 +173,9 @@ export const TransactionSection = (props: any) => {
     }
     setSearchText(value);
 
-    if (value.length !== 0) {
-      setEmptyScreen('search');
-    }
+    // if (value.length !== 0) {
+    //   setEmptyScreen('search');
+    // }
 
     // if(isNaN(value))
     // {
@@ -177,8 +187,6 @@ export const TransactionSection = (props: any) => {
             item.txid.toLowerCase().includes(value.toLowerCase())
         )
         : [];
-    console.log('searchData:', searchData.length);
-    console.log('searchData:', searchData, data);
     setData(data);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
     //     let search_item = [tx.txid,String(tx.amount/1e9)];

@@ -93,7 +93,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             await onClickOk();
           }
           else{
-             setError(window.i18n('setPasswordInvalid'))
+             setError('Invalid Password')
           }
 
         }
@@ -167,8 +167,9 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             {/* <SpacerMD /> */}
             <SpacerMD />
           </div> : <article className='bchat-modal__centered-sendConfirm_content'>
-          <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Send to : </div> <div className='senderBox-address senderBox-addressColor'>{address}</div>
+          <div className='senderBox' style={{display:'block'}}>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Send to : <div className='senderBox-address senderBox-addressColor'>{address}</div></div>
+           
 
           </div>
           <SpacerMD />
