@@ -59,7 +59,7 @@ export const OverlayMessage = () => {
       
       // this might be an BNS, validate the regex first
       const mightBeOnsName = new RegExp(onsNameRegex, 'g').test(pubkeyorOnsTrimmed);
-      // console.log("mightBeOnsName ::",mightBeOnsName);
+      console.log("mightBeOnsName ::",mightBeOnsName);
       
       // if (!mightBeOnsName) {
       //   ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError'));
