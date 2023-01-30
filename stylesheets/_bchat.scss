@@ -806,28 +806,29 @@ label {
           display: flex;
 
           &-address {
-            // width: 75%;
-            // padding-left: 3px;
-            // width: 85%;
+            width: 96%;
+            padding-top: 5px;
+            font-size: 13px;
+            font-family: 'poppin-light';
+            line-height: 20px;
+          }
+          &-details {
             width: 79%;
             font-size: 14px;
             font-family: $bchat-font-poppin-light;
             line-height: 17px;
           }
-          &-addressColor
-          {
-           color: var(--color-confirmAddress);
+          &-addressColor {
+            color: var(--color-confirmAddress);
           }
         }
         &-probTitle {
           // width: 100px;
           font-family: $bchat-font-poppin-semibold;
-          font-size: 16px;
+          font-size: 15px;
         }
-       
 
-        &-subHeader
-        {
+        &-subHeader {
           font-family: $bchat-font-poppin-light;
         }
         &-passwordBox {
@@ -837,8 +838,7 @@ label {
             text-align: center;
           }
         }
-        &-errorTxt
-        {
+        &-errorTxt {
           height: 16px;
           color: red;
           font-size: 10px;
@@ -2405,6 +2405,7 @@ label {
       &-failed,
       &-search,
       &-outgoing,
+      &-incoming,
       &-pending {
         // width: 128px;
         // height: 128px;
@@ -2432,6 +2433,10 @@ label {
         background-image: var(--image-outgoingTransHistory);
         // background-repeat: no-repeat;
       }
+      &-incoming {
+        background-image: var(--image-incomingTransHistory);
+      }
+
       &-pending {
         // width: 300px;
         // height: 200px;
@@ -2444,6 +2449,8 @@ label {
       &-content {
         font-family: 'poppin-medium';
         color: #82828d;
+        margin-top: 6px;
+        margin-left: 10px;
         // padding-top: 146px;
         font-size: 16px;
         // padding-top: 112px;

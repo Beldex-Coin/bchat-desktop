@@ -29,16 +29,17 @@ export type UserDetailsModalState = {
   userName: string;
 } | null;
 
-export type ChangePasswordModalState={} | null
+export type ChangePasswordModalState={} | null;
 export type walletSettingMiniModalState={
   headerName:string,
   content:any,
   onClose:any,
   onClick:any,
   currency:string
-} | null
-export type TransactionInitModalState={} | null
-export type WalletSendConfirmState=any | null
+} | null;
+
+export type TransactionInitModalState={} | null;
+export type WalletSendConfirmState=any | null;
 
 
 export type ModalState = {

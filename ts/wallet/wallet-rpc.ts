@@ -31,7 +31,7 @@ class Wallet {
     unlocked_balance: number;
     fiatCurrency: string;
     tx_list: any;
-    password_hash:string;
+    password_hash: string;
   };
   scee: any;
   id: number;
@@ -52,7 +52,7 @@ class Wallet {
       unlocked_balance: 0,
       fiatCurrency: '',
       tx_list: [],
-      password_hash:'',
+      password_hash: '',
     };
     this.id = 0;
     this.scee = new SCEE();
@@ -193,7 +193,7 @@ class Wallet {
       this.auth = [
         auth.substr(0, 64), // rpc username
         auth.substr(64, 64), // rpc password
-        auth.substr(128, 32) // password salt
+        auth.substr(128, 32), // password salt
       ];
 
       // console.log('this.auth::::::', this.auth);
@@ -250,7 +250,7 @@ class Wallet {
         }
       });
     } catch (error) {
-      console.log('failed to start wallet rpc',error);
+      console.log('failed to start wallet rpc', error);
       // console.log('ERR:', error);
     }
   };
@@ -704,13 +704,10 @@ class Wallet {
       return data;
     }
   };
-   public passwordEncrypt=(password:string)=>
-   {
-     return crypto
-    .pbkdf2Sync(password, this.auth[2], 1000, 64, "sha512")
-    .toString("hex");
+  public passwordEncrypt = (password: string) => {
+    return crypto.pbkdf2Sync(password, this.auth[2], 1000, 64, 'sha512').toString('hex');
     // return encrypted_data
-   }
+  };
   openWallet = async (filename: string, password: string) => {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
@@ -735,7 +732,7 @@ class Wallet {
     }
     this.wallet_state.name = filename;
     this.wallet_state.open = true;
-    this.wallet_state.password_hash=this.passwordEncrypt(password);
+    this.wallet_state.password_hash = this.passwordEncrypt(password);
     //  crypto
     // .pbkdf2Sync(password, this.auth[2], 1000, 64, "sha512")
     // .toString("hex");
@@ -746,21 +743,25 @@ class Wallet {
 
   chooseDaemon = async () => {
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-    let daemon = [];
+    // let daemon = [];
     for (let i = 0; i < data.length; i++) {
-      // console.log("data:",data)
       if (data[i].type == 'Remote') {
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
-          daemon.push(data[i]);
+          // daemon.push(data[i]);
+          return data[i];
         }
       }
     }
-    return daemon[Math.floor(Math.random() * daemon.length)];
+    // return daemon[Math.floor(Math.random() * daemon.length)];
   };
 
   sendRPC = async (method: string, params = {}, timeout = 0) => {
     try {
+      console.log(
+        'current daemon------:',
+        window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+      );
       const url = 'http://localhost:64371/json_rpc';
       const fetchOptions = {
         method: 'POST',
@@ -795,17 +796,29 @@ class Wallet {
         result: result.result,
       };
     } catch (e) {
-      console.log('failed to send wallet rpc',e);
+      console.log('failed to send wallet rpc', e);
       let currentDeamonLoc = window.getSettingValue('current-deamon');
       // console.log("currentDeamonLoc:",currentDeamonLoc)
-      const deamonStatus = await workingStatusForDeamon({host:currentDeamonLoc.host,port:currentDeamonLoc.port}, 'daemonValidation');
+      const deamonStatus = await workingStatusForDeamon(
+        { host: currentDeamonLoc.host, port: currentDeamonLoc.port },
+        'daemonValidation'
+      );
+      console.log("deamonStatus:deamonStatus:deamonStatus:",deamonStatus)
       // console.log("deamonStatus:",deamonStatus)
-      if(deamonStatus.status=='NOT_OK'){
+      if (deamonStatus.status == 'NOT_OK') {
         const currentDaemon = await this.chooseDaemon();
+        console.log('currentDaemon: choose:', currentDaemon);
         currentDaemon.active = true;
-        const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+        // const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+        // console.log('down daemon:', downedDaemon);
+        console.log('current daemon :', currentDaemon);
+        ToastUtils.pushToastSuccess(
+          'daemonRpcDown',
+          `Current daemon ${deamonStatus.host} is down. Connected to daemon ${currentDaemon.host +
+            ':' +
+            currentDaemon.port}.`
+        );
         window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
-        throw ToastUtils.pushToastSuccess('daemonRpcDown', `Current daemon ${downedDaemon.host} is down. Connected to daemon ${currentDaemon.host+':'+currentDaemon.port}.`);
       }
       throw new HTTPError('exception during wallet-rpc:', e);
     }

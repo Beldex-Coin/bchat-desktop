@@ -174,17 +174,17 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
           </div>
           <SpacerMD />
           <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Amount : </div> <div className='senderBox-address'>{amount} BDX</div>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Amount : </div> <div className='senderBox-details'>{amount} BDX</div>
 
           </div>
           <SpacerMD />
           <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Fee : </div> <div className='senderBox-address'>{fee} BDX</div>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Fee : </div> <div className='senderBox-details'>{fee} BDX</div>
 
           </div>
           <SpacerMD />
           <div className='senderBox'>
-            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Priority : </div><div className='senderBox-address'>{Priority}</div>
+            <div className='bchat-modal__centered-sendConfirm_content-probTitle'>Priority : </div><div className='senderBox-details'>{Priority}</div>
           </div>
           <SpacerMD />
           <SpacerLG />

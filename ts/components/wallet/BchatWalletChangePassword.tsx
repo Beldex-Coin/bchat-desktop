@@ -8,6 +8,7 @@ import { SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatIcon } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
+import { useKey } from 'react-use';
 
 export const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -21,7 +22,7 @@ export const ChangePassword = () => {
   function onClickCancelHandler() {
     dispatch(ChangePasswordModal(null));
   }
-
+  
   const passValid = async () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
@@ -49,6 +50,10 @@ export const ChangePassword = () => {
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();
   };
+
+  useKey((event: KeyboardEvent) => {
+    return event.key === 'Enter';
+  }, passValid);
 
   // const [confirm,setConfirm]=useState("");
   return (

@@ -553,6 +553,7 @@
   "emptyTransactionDiscription": "After your first transaction, you will be able to view it here.",
   "noPendingTransaction": "There are no pending transactions ",
   "noOutgoingTransaction": "There are no outgoing transactions.",
+  "noIncomingTransaction": "There are no incoming transactions.",
   "noFailedTransaction": "There are no failed transactions ",
   "walletSyncingDiscription": "Your wallet is currently syncing",
   "searchEmptyTransaction":"No transactions found.",

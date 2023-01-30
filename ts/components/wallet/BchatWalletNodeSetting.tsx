@@ -94,11 +94,11 @@ export const NodeSetting = () => {
   }
 
   function currentDeamonNet() {
-    let data = { host: chooseDeamon, port: chooseDeamonPort, active: 1, type: 'Remote' };
-    window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, data);
+    let verifiedDaemon: any = verifyDeamon;
+    window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, verifiedDaemon);
     ToastUtils.pushToastSuccess(
       'successfully-updated-current-daemon',
-      `Successfully ${chooseDeamon}:${chooseDeamonPort} daemon updated.`
+      `Successfully ${verifiedDaemon.host}:${verifiedDaemon.port} daemon updated.`
     );
     setDropdown(false);
   }
@@ -151,7 +151,7 @@ export const NodeSetting = () => {
   });
 
   async function validationForDeamon() {
-    let data = { host: ipAddress, port: port, active: 0 };
+    let data = { host: ipAddress, port: port, active: 1, type: 'Remote' };
     // console.log('Data:validationForDeamon', data);
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
 

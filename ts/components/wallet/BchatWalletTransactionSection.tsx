@@ -9,7 +9,6 @@ import { shell } from 'electron';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
-
   const [filter, setFilter] = useState(window.i18n('filterAll'));
   const [emptyScreen, setEmptyScreen] = useState(window.i18n('filterAll'));
   const [visible, setVisible] = useState(false);
@@ -48,7 +47,7 @@ export const TransactionSection = (props: any) => {
 
       default:
         // if (searchText) {
-          filterTransaction('All');
+        filterTransaction('All');
         // }
         // searchTransaction(searchText);
         // setData([]);
@@ -91,11 +90,10 @@ export const TransactionSection = (props: any) => {
       setSearchData(transactionsHistory);
 
       if (searchText) {
-          searchTransaction(searchText);
-        }
-        else{
-       setData(transactionsHistory);
-        }
+        searchTransaction(searchText);
+      } else {
+        setData(transactionsHistory);
+      }
       return;
     }
     let filterData =
@@ -104,9 +102,8 @@ export const TransactionSection = (props: any) => {
     setSearchData(filterData);
     if (searchText) {
       searchTransaction(searchText);
-    }
-    else{
-    setData(filterData);
+    } else {
+      setData(filterData);
     }
   }
   async function showdata(item: any, i: any) {
@@ -164,12 +161,9 @@ export const TransactionSection = (props: any) => {
 
   function searchTransaction(value: any) {
     var letters = /^[0-9a-zA-Z]+$/;
-    if ( value==="" || value.match(letters)) {
-      
-    }
-    else
-    {
-      return
+    if (value === '' || value.match(letters)) {
+    } else {
+      return;
     }
     setSearchText(value);
 
@@ -182,10 +176,10 @@ export const TransactionSection = (props: any) => {
     let data =
       searchData.length > 0
         ? searchData.filter(
-          (item: any) =>
-            String(item.amount / 1e9).includes(value.toLowerCase()) ||
-            item.txid.toLowerCase().includes(value.toLowerCase())
-        )
+            (item: any) =>
+              String(item.amount / 1e9).includes(value.toLowerCase()) ||
+              item.txid.toLowerCase().includes(value.toLowerCase())
+          )
         : [];
     setData(data);
     // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
@@ -439,7 +433,7 @@ export const TransactionSection = (props: any) => {
                       >
                         <div
                           className="wallet-Transaction-contentBox-balanceBox-amount"
-                        // onClick={() => showdata(item, i)}
+                          // onClick={() => showdata(item, i)}
                         >
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
@@ -523,7 +517,7 @@ export const TransactionSection = (props: any) => {
                             marginLeft: zoomLevel && recip.address > 100 ? '20px' : '20px',
                             paddingTop: 0,
                           }}
-                        // className="wallet-Transaction-contentBox-dateandheight"
+                          // className="wallet-Transaction-contentBox-dateandheight"
                         >
                           <div className="wallet-Transaction-contentBox-dateandheight-month">
                             {window.i18n('dateTime')}
@@ -547,13 +541,18 @@ export const TransactionSection = (props: any) => {
                     {emptyScreen == 'All' ? (
                       <div>
                         {window.i18n('emptyTransaction')}
-                        <h5
-                          className="wallet-Transaction-content-subContent"
-                          style={{ marginTop: '5px' }}
-                        >
-                          {window.i18n('emptyTransactionDiscription')}
-                        </h5>
+
+                        {!searchText && (
+                          <h5
+                            className="wallet-Transaction-content-subContent"
+                            style={{ marginTop: '5px' }}
+                          >
+                            {window.i18n('emptyTransactionDiscription')}
+                          </h5>
+                        )}
                       </div>
+                    ) : emptyScreen == 'imcoming' ? (
+                      window.i18n('noIncomingTransaction')
                     ) : emptyScreen == 'search' ? (
                       window.i18n('searchEmptyTransaction')
                     ) : emptyScreen == 'Outgoing' ? (

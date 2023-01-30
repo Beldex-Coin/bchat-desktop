@@ -61,6 +61,7 @@ export const ReceivedForm = () => {
                 placeholder={window.i18n('enterAmount')}
                 type="text"
                 onChange={(e: any) => validator(e.target.value)}
+                maxLength={16}
               />
             </div>
             <SpacerLG />

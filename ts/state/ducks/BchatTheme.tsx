@@ -100,6 +100,7 @@ const darkEmptyAddressBook = `url("../images/bchat/empty_address_book_dark.svg")
 const darkEmptyTransHistory = `url("../images/bchat/no_tx_history_dark.svg")`;
 const darkPendingTransHistory = `url("../images/bchat/pending_tx_history_dark.svg")`;
 const darkOutgoingTransHistory = `url("../images/bchat/no_outgoing_dark.svg")`;
+const darkIncomingTransHistory = `url("../images/bchat/no_incoming_transaction_dark.svg")`;
 const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg")`;
 const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.svg")`;
 const darkWalletSyncing = `url("../images/bchat/wallet_syncing_dark.svg")`;
@@ -304,6 +305,8 @@ export const switchHtmlToDarkTheme = () => {
     '--image-outgoingTransHistory',
     darkOutgoingTransHistory
   );
+  document.documentElement.style.setProperty('--image-incomingTransHistory',darkIncomingTransHistory);
+
   document.documentElement.style.setProperty(
     '--image-pendingTransHistory',
     darkPendingTransHistory
@@ -419,6 +422,7 @@ const lightAddContact = `url("../images/bchat/add_contact_white_theme.svg")`;
 const lightEmptyContact = `url("../images/bchat/no_contact_scrt_grp.svg")`;
 const lightEmptyAddressBook = `url("../images/bchat/empty_address_book_white.svg")`;
 const lightEmptyTransHistory = `url("../images/bchat/no_tx_history_white.svg")`;
+const lightIncomingTransHistory = `url("../images/bchat/no_incoming_transaction_white.svg")`;
 const whiteOutgoingTransHistory = `url("../images/bchat/no_outgoing_white.svg")`;
 const lightPendingTransHistory = `url("../images/bchat/pending_tx_history_white.svg")`;
 const lightFailedTransHistory = `url("../images/bchat/failed_tx_history_white.svg")`;
@@ -623,11 +627,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--image-EmptyContact', lightEmptyContact);
   document.documentElement.style.setProperty('--image-EmptyAddressBook', lightEmptyAddressBook);
   document.documentElement.style.setProperty('--image-emptyTransHistory', lightEmptyTransHistory);
-  document.documentElement.style.setProperty(
-    '--image-outgoingTransHistory',
-    whiteOutgoingTransHistory
-  );
-
+  document.documentElement.style.setProperty('--image-outgoingTransHistory',whiteOutgoingTransHistory);
+  document.documentElement.style.setProperty('--image-incomingTransHistory',lightIncomingTransHistory);
   document.documentElement.style.setProperty(
     '--image-pendingTransHistory',
     lightPendingTransHistory
@@ -795,6 +796,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-EmptyAddressBook:${darkEmptyAddressBook};
     --image-emptyTransHistory':${darkEmptyTransHistory};
     --image-outgoingTransHistory: ${darkOutgoingTransHistory};
+    --image-incomingTransHistory:${darkIncomingTransHistory};
     --image-pendingTransHistory:${darkPendingTransHistory};
     --image-failedTransHistory':${darkFailedTransHistory};
     --image-emptySearch:${darkEmptyTransaction};

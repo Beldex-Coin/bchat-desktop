@@ -32,14 +32,13 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
       return requestData.result;
     }
   } catch (err) {
-    // console.log('ERR:', err.message, window.globalOnlineStatus);
     if (window.globalOnlineStatus && !type) {
       ToastUtils.pushToastError(
         'daemonRpcDown',
         'Your current daemon down.Please choose another daemon from settings.'
       );
     }
-    return { status: 'NOT_OK' };
+    return { status: 'NOT_OK', host: currentdeamon.host, port: currentdeamon.port };
   }
 }
 

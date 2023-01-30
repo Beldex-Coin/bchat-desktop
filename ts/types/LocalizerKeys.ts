@@ -552,6 +552,7 @@ export type LocalizerKeys =
   | 'noPendingTransaction'
   | 'noFailedTransaction'
   | 'noOutgoingTransaction'
+  | 'noIncomingTransaction'
   | 'walletSyncingDiscription'
   | 'seedFieldEmpty'
   | 'searchEmptyTransaction'

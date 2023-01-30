@@ -14,9 +14,10 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
-import {  updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
+import { updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
+// import { useKey } from 'react-use';
 
 // import { saveRecipientAddressvalid } from '../../data/data';
 
@@ -50,13 +51,17 @@ export const SendForm = (props: any) => {
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
-
     return () => {
       document.removeEventListener('click', handleClick);
-
-
     };
   }, []);
+
+  // useKey((event: KeyboardEvent) => {
+  //   if ((props.amount && address) && event.key === 'Enter') {
+  //     addressValidation();
+  //   }
+  //   return event.key === 'Enter';
+  // });
 
   const handleClick = (e: any) => {
     // console.log(
@@ -73,9 +78,6 @@ export const SendForm = (props: any) => {
       // setDropDown(!dropDown);
       setDropDown(false);
     }
-
-
-
   };
   // function handleChange(e:any)
   // {
@@ -98,30 +100,28 @@ export const SendForm = (props: any) => {
     if (!addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    sendConfirmModal()
-    
+    sendConfirmModal();
   }
 
   function sendConfirmModal() {
-
     dispatch(
-    updateSendConfirmModal({
-      // title: 'Confirm Transaction',
-      // message: window.i18n('sendRecoveryPhraseMessage'),
-      okTheme: BchatButtonColor.Green,
-      
-      address:address,
-      amount: props.amount,
-      fee:0.0043,
-      Priority:props.priority,
-      onClickOk: async () => {
-       
-        await send();
-      },
-      onClickClose: () => {
-        dispatch(updateSendConfirmModal(null));
-      },
-    }))
+      updateSendConfirmModal({
+        // title: 'Confirm Transaction',
+        // message: window.i18n('sendRecoveryPhraseMessage'),
+        okTheme: BchatButtonColor.Green,
+
+        address: address,
+        amount: props.amount,
+        fee: 0.0043,
+        Priority: props.priority,
+        onClickOk: async () => {
+          await send();
+        },
+        onClickClose: () => {
+          dispatch(updateSendConfirmModal(null));
+        },
+      })
+    );
   }
 
   async function send() {
@@ -160,7 +160,7 @@ export const SendForm = (props: any) => {
       }
       clearStateValue();
       ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
-      dispatch(walletTransactionPage())
+      dispatch(walletTransactionPage());
     } else {
       clearStateValue();
       dispatch(updateSendConfirmModal(null));
@@ -199,6 +199,7 @@ export const SendForm = (props: any) => {
                   }}
                   placeholder={window.i18n('enterAmount')}
                   type="text"
+                  maxLength={16}
                 />
               </div>
             </Flex>
@@ -242,7 +243,8 @@ export const SendForm = (props: any) => {
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(
-                          `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${
+                            props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -255,7 +257,8 @@ export const SendForm = (props: any) => {
                       <SpacerLG />
                       <div
                         className={classNames(
-                          `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${
+                            props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
