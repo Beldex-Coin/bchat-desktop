@@ -1530,8 +1530,10 @@ label {
     }
     &-contentSpace {
       // height: calc(81vh - 30px);
-      height: calc(100vh - 153px);
-      overflow: hidden;
+      // height: calc(100vh - 153px);
+      // overflow: hidden;
+      height: calc(100vh - 170px);
+      overflow: auto;
     }
     &-left-balance-Sec {
       // width: 55%;
@@ -1645,6 +1647,22 @@ label {
             border-bottom: 1px solid #444455;
             text-align: center;
           }
+        }
+        &-loader,&-forgotpasswordLoader
+        {
+          width: 500px;
+          height: 343px;
+          background-color: rgba(0, 0, 0,0.8);
+          border-radius: 10px;
+          z-index: 99;
+          justify-content: center;
+          display: flex;
+          align-items: center;
+        }
+        &-forgotpasswordLoader
+        {
+          width: 590px;
+          height: 476px;
         }
         &-forgotTxt {
           text-align: center;

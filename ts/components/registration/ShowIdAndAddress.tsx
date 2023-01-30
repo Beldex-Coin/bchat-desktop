@@ -41,12 +41,18 @@ export const Icons = (props:any)=>
   <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)" />
 </svg>
 </div>
-
+  const LoaderGif = () => {
+    return <div className="bchat-registration-loadingGif">
+      <div style={{ background: "url(images/bchat/Load_animation.gif) no-repeat", width: "151px", height: "128px", margin: "0 auto" }}>
+      </div>
+    </div>
+  }
 
 export const ShowRecoveryPhase= (props:any) => {
   const [seedCopied,setSeedCopied] = useState(false);
   return(
      <div className='bchat-registration-welcome-screen-container' style={{width:'80%',marginLeft:'85px'}}>
+      {props.loading && <LoaderGif />}
       <Flex  flexDirection="row" container={true} height="100%">
       <Flex 
         alignItems="center"

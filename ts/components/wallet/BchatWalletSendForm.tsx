@@ -87,6 +87,7 @@ export const SendForm = (props: any) => {
   // }
 
   async function addressValidation() {
+
     if (address.length > 106 || address.length < 95) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
@@ -105,23 +106,23 @@ export const SendForm = (props: any) => {
 
   function sendConfirmModal() {
     dispatch(
-      updateSendConfirmModal({
-        // title: 'Confirm Transaction',
-        // message: window.i18n('sendRecoveryPhraseMessage'),
-        okTheme: BchatButtonColor.Green,
-
-        address: address,
-        amount: props.amount,
-        fee: 0.0043,
-        Priority: props.priority,
-        onClickOk: async () => {
-          await send();
-        },
-        onClickClose: () => {
-          dispatch(updateSendConfirmModal(null));
-        },
-      })
-    );
+    updateSendConfirmModal({
+      // title: 'Confirm Transaction',
+      // message: window.i18n('sendRecoveryPhraseMessage'),
+      okTheme: BchatButtonColor.Green,
+      
+      address:address,
+      amount: props.amount,
+      fee:props.priority === 'Flash' ? 0.0042 : 0.0014,
+      Priority:props.priority,
+      onClickOk: async () => {
+       
+        await send();
+      },
+      onClickClose: () => {
+        dispatch(updateSendConfirmModal(null));
+      },
+    }))
   }
 
   async function send() {
@@ -345,8 +346,8 @@ export const SendForm = (props: any) => {
           />
         </div>
       </div>
-      <SpacerLG />
-      <SpacerLG />
+      {/* <SpacerLG />
+      <SpacerLG /> */}
     </>
   );
 };

@@ -204,7 +204,7 @@ function captureClicks(window: BrowserWindow) {
   window.webContents.on('will-navigate', handleUrl);
   window.webContents.on('new-window', handleUrl);
 }
-console.log('getDefaultWindowSize',getDefaultWindowSize());
+// console.log('getDefaultWindowSize',getDefaultWindowSize());
 
 function getDefaultWindowSize() {
   // const screenSize = screen.getPrimaryDisplay().workAreaSize;
@@ -226,7 +226,7 @@ function getWindowSize() {
   // Ensure that the screen can fit within the default size
   const width = Math.min(defaultWidth, Math.max(minWidth, screenSize.width));
   const height = Math.min(defaultHeight, Math.max(minHeight, screenSize.height));
-console.log('screenSize ::',screenSize);
+//  console.log('screenSize ::',screenSize);
 
   return { width, height, minWidth, minHeight };
 }
@@ -264,18 +264,20 @@ function getStartInTray() {
 // tslint:disable-next-line: max-func-body-length
 async function createWindow() {
   const { minWidth, minHeight, width, height } = getWindowSize();
-  console.log('getWindowSize() ::',getWindowSize());
+  // console.log('getWindowSize() ::',getWindowSize());
   
   windowConfig = windowConfig || {};
   const picked = {
     maximized: (windowConfig as any).maximized || false,
+    // maximized:true,
+
     autoHideMenuBar: (windowConfig as any).autoHideMenuBar || false,
     width: (windowConfig as any).width || width,
     height: (windowConfig as any).height || height,
     x: (windowConfig as any).x,
     y: (windowConfig as any).y,
   };
-  console.log('isTestIntegration ',isTestIntegration);
+  // console.log('isTestIntegration ',isTestIntegration,picked);
   
 
   if (isTestIntegration) {
@@ -308,7 +310,7 @@ async function createWindow() {
     ...picked,
     // don't setup icon, the executable one will be used by default
   };
- console.log("windowOptions ::",windowOptions);
+  // console.log("windowOptions ::",windowOptions);
  
   if (!_.isNumber(windowOptions.width) || windowOptions.width < minWidth) {
     windowOptions.width = Math.max(minWidth, width);
@@ -316,7 +318,7 @@ async function createWindow() {
   if (!_.isNumber(windowOptions.height) || windowOptions.height < minHeight) {
     windowOptions.height = Math.max(minHeight, height);
   }
-  if (!_.isBoolean(windowOptions.maximized)) {
+  if (_.isBoolean(windowOptions.maximized)) {
     delete windowOptions.maximized;
   }
   if (!_.isBoolean(windowOptions.autoHideMenuBar)) {
@@ -379,6 +381,7 @@ async function createWindow() {
     const size = mainWindow.getSize();
     const position = mainWindow.getPosition();
 
+
     // so if we need to recreate the window, we have the most recent settings
     windowConfig = {
       maximized: mainWindow.isMaximized(),
@@ -415,7 +418,7 @@ async function createWindow() {
       passwordWindow = null;
     }
   });
-
+  mainWindow.maximize()
   const urlToLoad = prepareURL([getAppRootPath(), 'background.html']);
 
   await mainWindow.loadURL(urlToLoad);
@@ -617,6 +620,7 @@ async function showAbout() {
     autoHideMenuBar: true,
     backgroundColor: '#000',
     show: false,
+    
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: false,

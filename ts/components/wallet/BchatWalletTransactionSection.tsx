@@ -455,7 +455,7 @@ export const TransactionSection = (props: any) => {
                           {moment.unix(item.timestamp).fromNow()}
                         </div>
                         <div className="wallet-Transaction-contentBox-dateandheight-height">
-                          Height : {item.height} (confirmed)
+                          Height : {item.height} {item.type === 'out'||item.type ==="in"?'(confirmed)':""}
                         </div>
                       </section>
                     </Flex>

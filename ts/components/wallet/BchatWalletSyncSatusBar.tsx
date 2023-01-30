@@ -30,6 +30,7 @@ export const SyncStatusBar = () => {
     let value:any=false
     dispatch(updateWalletRescaning(value))
   }
+console.log('percentage ::',percentage);
 
   return (
     <div className="wallet-syncStatus">

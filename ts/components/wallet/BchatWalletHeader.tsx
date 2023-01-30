@@ -23,7 +23,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   }
   let rescan: any = true;
   let Transactions: any = '';
-  window.inboxStore?.dispatch(
+  dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
       message: window.i18n('rescanWalletDiscription'),
@@ -33,9 +33,10 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
       onClickOk: () => {
         console.log('rescan0001', rescaning);
 
-        wallet.rescanBlockchain();
+       
         dispatch(updateWalletRescaning(rescan));
         dispatch(updateFiatBalance(Transactions));
+        window.setSettingValue('syncStatus', false);
         dispatch(
           updateBalance({
             balance: 0,
@@ -44,6 +45,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
           })
 
         );
+        wallet.rescanBlockchain();
 
 
         // console.log('rescan0002',rescaning);
@@ -77,8 +79,7 @@ export const WalletHeader = (props: any) => {
           name={'Rescan'}
           icontype="reload"
           iconSize={'small'}
-          submit={() => {
-            window.setSettingValue('syncStatus', false);
+          submit={() => { 
             rescanModalDialog(rescaning, dispatch)
           }}
         />

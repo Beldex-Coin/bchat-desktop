@@ -75,6 +75,7 @@ export const SignUpTab = (props: any) => {
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState("");
   const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
+  const [showSeedLoading,setShowSeedLoading]=useState(false)
   // const [daemonHeight,setDaemonHeight]=useState(0);
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
      
@@ -125,12 +126,14 @@ export const SignUpTab = (props: any) => {
 
   const enableCompleteSignUp = displayNameOK;
   const signUpWithDetails = async () => {
+    setShowSeedLoading(true);
     localStorage.setItem("walletUserName",displayName);
     await signUp({
       displayName,
       generatedRecoveryPhrase: generatedRecoveryPhrase,
      
     });
+    setShowSeedLoading(false);
   };
   const LoaderGif = () => {
     return <div className="bchat-registration-loadingGif">
@@ -258,7 +261,11 @@ export const SignUpTab = (props: any) => {
         nextFunc={signUpWithDetails}
         enableCompleteSignUp={enableCompleteSignUp}
         copySeed={handlePaste}
-      ></ShowRecoveryPhase>
+        loading={showSeedLoading}
+
+      >
+        
+      </ShowRecoveryPhase>
     </>
 
   )

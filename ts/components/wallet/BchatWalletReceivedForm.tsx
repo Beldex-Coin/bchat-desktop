@@ -75,9 +75,9 @@ export const ReceivedForm = () => {
           </div>
         </Flex>
       </div>
+      {/* <SpacerLG />
       <SpacerLG />
-      <SpacerLG />
-      <SpacerLG />
+      <SpacerLG /> */}
     </>
   );
 };

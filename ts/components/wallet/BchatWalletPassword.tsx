@@ -170,7 +170,7 @@ export const WalletPassword = (props: any) => {
       <div className="wallet-walletPassword-contentBox">
         {loading && (
           <Loader>
-            <div className="walletPassModal">
+            <div className="wallet-walletPassword-contentBox-loader">
               <img
                 src={'images/bchat/Load_animation.gif'}
                 style={{ width: '150px', height: '150px' }}

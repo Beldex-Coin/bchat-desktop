@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { sanitizeBchatUsername } from '../../bchat/utils/String';
-import { Flex } from '../basic/Flex';
+// import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatSpinner } from '../basic/BchatSpinner';
+// import { BchatSpinner } from '../basic/BchatSpinner';
 import { SpacerLG } from '../basic/Text';
 import {
   MAX_USERNAME_LENGTH,
@@ -141,6 +141,8 @@ export const SignInTab = (props: any) => {
 
   const continueYourBchat = async () => {
     if (isRecovery) {
+      setIsLoading(true);
+
       let refreshDetails = blockheight
         ? { refresh_start_timestamp_or_height: blockheight, refresh_type: 'height' }
         : { refresh_start_timestamp_or_height: restoreDate, refresh_type: 'date' };
@@ -150,6 +152,8 @@ export const SignInTab = (props: any) => {
         userRecoveryPhrase: recoveryPhrase,
         refreshDetails,
       });
+      setIsLoading(false);
+
     } else if (isLinking) {
       setIsLoading(true);
       await signInWithLinking({
@@ -261,6 +265,12 @@ export const SignInTab = (props: any) => {
   //   </div>
   //  )
   // }
+  const LoaderGif = () => {
+    return <div className="bchat-registration-loadingGif">
+      <div style={{ background: "url(images/bchat/Load_animation.gif) no-repeat", width: "151px", height: "128px", margin: "0 auto" }}>
+      </div>
+    </div>
+  }
 
   return (
     <div className="bchat-registration__content">
@@ -366,7 +376,9 @@ export const SignInTab = (props: any) => {
           setIsLoading(false);
         }}
       />
-      {loading && (
+      {loading && <LoaderGif/>}
+
+      {/* {loading && (
         <Flex
           container={true}
           justifyContent="center"
@@ -383,7 +395,7 @@ export const SignInTab = (props: any) => {
         >
           <BchatSpinner loading={true} />
         </Flex>
-      )}
+      )} */}
     </div>
   );
 };
