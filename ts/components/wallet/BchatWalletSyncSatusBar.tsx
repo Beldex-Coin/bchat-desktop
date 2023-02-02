@@ -1,12 +1,12 @@
 import React from 'react';
-import {  useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
- import { updateWalletRescaning } from '../../state/ducks/walletConfig';
+import { updateWalletRescaning } from '../../state/ducks/walletConfig';
 
 export const SyncStatusBar = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const currentHeight: any = Number(useSelector(getHeight));
   let daemonHeight = useSelector((state: any) => state.daemon.height);
   // const rescaning=useSelector(getRescaning)  ;
@@ -14,23 +14,14 @@ export const SyncStatusBar = () => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
-  // const getSyncStatus = localStorage.getItem('syncStatus');
   const getSyncStatus = window.getSettingValue('syncStatus');
-  console.log("current daemon type:",window.getSettingValue('current-deamon'))
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
     : { color: '#FDB12A', status: 'Scanning' };
-  // currentHeight == daemonHeight && pct !== 0 ? localStorage.setItem('syncStatus', 'true') : '';
-  // console.log("percentage:",percentage)
-  // pct >= 99 ? localStorage.setItem('syncStatus', 'true') : '';
+
   window.setSettingValue('syncStatus', pct >= 99 ? true : false);
-  if(pct > 99)
-  {
-   
-    let value:any=false
-    dispatch(updateWalletRescaning(value))
-  }
-console.log('percentage ::',percentage);
+    let value: any = pct >= 99 ? true : false;
+    dispatch(updateWalletRescaning(value));
 
   return (
     <div className="wallet-syncStatus">
@@ -72,5 +63,3 @@ const Indicator = styled.div`
   height: 2px;
   background-color: #fdb12a;
 `;
-
-

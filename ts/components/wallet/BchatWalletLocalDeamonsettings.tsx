@@ -99,6 +99,7 @@ export function LocalDeamon() {
                 //  setLocalDeamonPort(e.target.value)}
               }}
               placeholder="Enter your port"
+              maxLength={5}
             />
           </article>
         </Flex>

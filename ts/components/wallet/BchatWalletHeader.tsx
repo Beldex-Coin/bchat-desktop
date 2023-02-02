@@ -80,7 +80,7 @@ export const WalletHeader = (props: any) => {
           icontype="reload"
           iconSize={'small'}
           submit={() => { 
-            rescanModalDialog(rescaning, dispatch)
+            rescanModalDialog(!rescaning, dispatch);
           }}
         />
         <span style={{ marginLeft: '10px' }}>

@@ -317,6 +317,7 @@ export const NodeSetting = () => {
                     onChange={(e: any) => portValidation(e.target.value)}
                     placeholder="Enter your port"
                     style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
+                    maxLength={5}
                   />
                 </article>
               </Flex>

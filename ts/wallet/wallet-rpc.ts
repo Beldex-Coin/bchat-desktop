@@ -14,7 +14,11 @@ import { daemon } from './daemon-rpc';
 import { ToastUtils } from '../bchat/utils';
 import { updateBalance } from '../state/ducks/wallet';
 import { SCEE } from './SCEE';
-import { updateFiatBalance, updateWalletHeight } from '../state/ducks/walletConfig';
+import {
+  updateFiatBalance,
+  updateWalletHeight,
+  updateWalletRescaning,
+} from '../state/ducks/walletConfig';
 import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
 // import { default as queue } from 'promise-queue';
@@ -184,7 +188,8 @@ class Wallet {
       let currentDeamonLoc = window.getSettingValue('current-deamon');
       const currentDaemon: any = currentDeamonLoc ? currentDeamonLoc : window.currentDaemon;
       window.setSettingValue('syncStatus', false);
-
+      let rescanStatusUpdate: any = false;
+      window.inboxStore?.dispatch(updateWalletRescaning(rescanStatusUpdate));
       if (!window.getSettingValue('balancevisibility')) {
         window.setSettingValue('balancevisibility', true);
       }
@@ -803,15 +808,15 @@ class Wallet {
         { host: currentDeamonLoc.host, port: currentDeamonLoc.port },
         'daemonValidation'
       );
-      console.log("deamonStatus:deamonStatus:deamonStatus:",deamonStatus)
+      // console.log('deamonStatus:deamonStatus:deamonStatus:', deamonStatus);
       // console.log("deamonStatus:",deamonStatus)
       if (deamonStatus.status == 'NOT_OK') {
         const currentDaemon = await this.chooseDaemon();
-        console.log('currentDaemon: choose:', currentDaemon);
+        // console.log('currentDaemon: choose:', currentDaemon);
         currentDaemon.active = true;
         // const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
         // console.log('down daemon:', downedDaemon);
-        console.log('current daemon :', currentDaemon);
+        // console.log('current daemon :', currentDaemon);
         ToastUtils.pushToastSuccess(
           'daemonRpcDown',
           `Current daemon ${deamonStatus.host} is down. Connected to daemon ${currentDaemon.host +

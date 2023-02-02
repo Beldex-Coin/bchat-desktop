@@ -6,6 +6,8 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { shell } from 'electron';
+import { getRescaning } from '../../state/selectors/walletConfig';
+import { useSelector } from 'react-redux';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
@@ -17,54 +19,33 @@ export const TransactionSection = (props: any) => {
   const [selected, setSelected] = useState(null);
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const syncingStatus = window.getSettingValue('syncStatus') ? true : false;
-  console.log('syncingStatus:', window.getSettingValue('syncStatus'), syncingStatus);
+  const syncStatus: boolean = useSelector(getRescaning);
   const recip: any = receipientData;
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  // console.log('visible:', visible);
+  
   useEffect(() => {
     document.removeEventListener('click', handleClick);
     switch (filter) {
       case 'Outgoing':
         filterTransaction('out');
-
         break;
       case 'Pending':
         filterTransaction('pending');
-        // searchTransaction(searchText);
-
         break;
       case 'Failed':
         filterTransaction('failed');
-        // searchTransaction(searchText);
-
         break;
       case 'Incoming':
         filterTransaction('in');
-        // searchTransaction(searchText);
-
         break;
-
       default:
-        // if (searchText) {
         filterTransaction('All');
-        // }
-        // searchTransaction(searchText);
-        // setData([]);
-        // setData(transactionsHistory);
-
         break;
     }
     return () => {
       document.removeEventListener('click', handleClick);
     };
-    // filterTransaction(type);
   }, [transactionsHistory]);
-  // }, []);
-  // console.log('transactionsHistory ::', transactionsHistory);
-  // setSearchData()
-
-  // console.log('tx', tx);
 
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
@@ -82,33 +63,11 @@ export const TransactionSection = (props: any) => {
     setFilter(params);
     setEmptyScreen(params);
     setVisible(!visible);
+    console.log('typeeeeeee:', type);
     filterTransaction(type);
   }
 
-  function filterTransaction(type: string) {
-    if (type === window.i18n('filterAll')) {
-      setSearchData(transactionsHistory);
-
-      if (searchText) {
-        searchTransaction(searchText);
-      } else {
-        setData(transactionsHistory);
-      }
-      return;
-    }
-    let filterData =
-      transactionsHistory.length > 0 &&
-      transactionsHistory.filter((data: any) => data.type === type);
-    setSearchData(filterData);
-    if (searchText) {
-      searchTransaction(searchText);
-    } else {
-      setData(filterData);
-    }
-  }
   async function showdata(item: any, i: any) {
-    // console.log('showData:', item, i);placeholder="Enter an ID or amount"
-    // console.log("item.type ::",item.type)
     if (selected === i) {
       setSelected(null);
     } else {
@@ -117,7 +76,6 @@ export const TransactionSection = (props: any) => {
 
     if (item.type !== 'in') {
       let recipientAddress = await getRecipientAddress(item.txid);
-      // console.log("showdata:: ",recipientAddress);
       setRecipientdata(recipientAddress);
       return;
     }
@@ -159,110 +117,49 @@ export const TransactionSection = (props: any) => {
     );
   };
 
-  function searchTransaction(value: any) {
+  function filterText(value: any) {
     var letters = /^[0-9a-zA-Z]+$/;
     if (value === '' || value.match(letters)) {
     } else {
       return;
     }
     setSearchText(value);
+    searchTransaction(searchData);
+  }
 
-    // if (value.length !== 0) {
-    //   setEmptyScreen('search');
-    // }
-
-    // if(isNaN(value))
-    // {
+  function searchTransaction(filteredTransaction: any) {
     let data =
-      searchData.length > 0
-        ? searchData.filter(
+      filteredTransaction.length > 0
+        ? filteredTransaction.filter(
             (item: any) =>
-              String(item.amount / 1e9).includes(value.toLowerCase()) ||
-              item.txid.toLowerCase().includes(value.toLowerCase())
+              String(item.amount / 1e9).includes(searchText.toLowerCase()) ||
+              item.txid.toLowerCase().includes(searchText.toLowerCase())
           )
         : [];
     setData(data);
-    // let tx_list_filtered = transactionsHistory.filter((tx:any)=>{
-    //     let search_item = [tx.txid,String(tx.amount/1e9)];
-    //    return !!search_item.find(f => f.toLowerCase().includes(value.toLowerCase()));
-    // });
-    // console.log('tx_list_filtered ::',tx_list_filtered);
-    // setData(tx_list_filtered);
-    // }
-    // else if(!isNaN(value) && value){
-    //     let searchData=transactionsHistory.filter((item:any)=> item.amount===Number(value)*1e9);
-    //     setData(searchData);
-    // }
-    // else{
-    //     setData(transactionsHistory);
-    // }
   }
+
+  function filterTransaction(filterType: string) {
+    let allTransaction: any;
+    if (filterType === window.i18n('filterAll')) {
+      allTransaction = transactionsHistory;
+    } else {
+      allTransaction =
+        transactionsHistory.length > 0 &&
+        transactionsHistory.filter((data: any) => data.type === filterType);
+    }
+    setSearchData(allTransaction);
+    if (searchText) {
+      searchTransaction(allTransaction);
+    } else {
+      setData(allTransaction);
+    }
+  }
+
   const modalRef = useRef<HTMLDivElement>(null);
-
-  // const RececipientAddress = (props: any) => {
-  //   const { trasactionData } = props;
-  //   let reccipient: any = receipientData;
-
-  //   //  console.log("RececipientData:,", trasactionData, receipientData, reccipient.addres);
-
-  //   return (
-  //     <>
-  //       <Flex
-  //         container={true}
-  //         // justifyContent="space-around"
-  //         flexDirection="row"
-  //         width={'100%'}
-  //       >
-  //         {/* <Flex container={true} height=" 60px" > */}
-  //         {/* <div style={{ display: 'flex' }}> */}
-  //         <article style={zoomLevel>100?{width:'98px'}:{ width: '120px' }}>
-  //           {/* <TransactionIndication type={item.type} /> */}
-  //         </article>
-
-  //         {/* <section style={{ display: 'flex' }}> */}
-
-  //         {reccipient.address && (
-  //           <div
-  //           style={{ marginLeft: '20px' ,width:zoomLevel>100?"40%":'57%'}}
-  //             className="wallet-Transaction-recipitentBox-adddressBox"
-  //           >
-  //             <div className="">{window.i18n('recipientAddress')}</div>
-  //             <div className="wallet-Transaction-recipitentBox-adddressBox-address">
-  //               {reccipient.address}
-  //             </div>
-  //           </div>
-  //         )}
-  //         {/* </section> */}
-
-  //         <section  style={{ marginLeft: reccipient.address ? '20px':'10px' ,  width: reccipient.address ? '18%' : '' }}>
-  //           <article className="wallet-Transaction-recipitentBox-transactionFee-header">
-  //             {window.i18n('transactionFee')}
-  //           </article>
-  //           <article className="wallet-Transaction-recipitentBox-transactionFee-text">
-  //             {trasactionData.fee / 1e9} BDX
-  //           </article>
-  //         </section>
-  //         {/* </div> */}
-
-  //         <section
-  //           style={{ width:zoomLevel>=100 ? '18%' : '',  marginLeft: zoomLevel>=100?'1%':'20px',paddingTop:0 }}
-  //           // className="wallet-Transaction-contentBox-dateandheight"
-  //         >
-  //           <div className="wallet-Transaction-contentBox-dateandheight-month">
-  //             {window.i18n('dateTime')}
-  //           </div>
-  //           <div className="wallet-Transaction-contentBox-dateandheight-height">
-  //             {moment.unix(trasactionData.timestamp).format('DD/MM/YYYY HH:mm')}
-  //           </div>
-  //         </section>
-  //       </Flex>
-  //     </>
-  //   );
-  // };
-
   return (
     <div className="wallet-Transaction">
-      {!syncingStatus ? (
+      {!syncStatus ? (
         <>
           <div className="wallet-syncing"></div>
           <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
@@ -278,7 +175,7 @@ export const TransactionSection = (props: any) => {
                   <input
                     placeholder={window.i18n('filterPlaceHolder')}
                     className="wallet-Transaction-filterInput"
-                    onChange={(e: any) => searchTransaction(e.target.value)}
+                    onChange={(e: any) => filterText(e.target.value)}
                     value={searchText}
                   />
                 </div>
@@ -287,16 +184,10 @@ export const TransactionSection = (props: any) => {
               )}
               {transactionsHistory.length > 0 && (
                 <div className="wallet-Transaction-filterWithIcon">
-                  {/* <input value={window.i18n('filterAll')} /> */}
                   <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
                   <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
                     <BchatIcon iconType="filter" iconSize={'tiny'} />
                   </span>
-                  {/* <BchatDropdown
-                        label={window.i18n('disappearingMessages')}
-                        options={option}
-                        expanded={true}
-                    /> */}
                   {visible && (
                     <div style={{ position: 'relative' }}>
                       <div className="wallet-settings-nodeSetting-sendDropDown">
@@ -431,10 +322,7 @@ export const TransactionSection = (props: any) => {
                         className="wallet-Transaction-contentBox-balanceBox"
                         style={{ width: zoomLevel > 100 ? '44%' : '' }}
                       >
-                        <div
-                          className="wallet-Transaction-contentBox-balanceBox-amount"
-                          // onClick={() => showdata(item, i)}
-                        >
+                        <div className="wallet-Transaction-contentBox-balanceBox-amount">
                           {item.type === 'out' ? '-' : ''}
                           {Number((item.amount / 1e9).toFixed(4))} BDX
                         </div>
@@ -455,7 +343,8 @@ export const TransactionSection = (props: any) => {
                           {moment.unix(item.timestamp).fromNow()}
                         </div>
                         <div className="wallet-Transaction-contentBox-dateandheight-height">
-                          Height : {item.height} {item.type === 'out'||item.type ==="in"?'(confirmed)':""}
+                          Height : {item.height}{' '}
+                          {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
                         </div>
                       </section>
                     </Flex>
