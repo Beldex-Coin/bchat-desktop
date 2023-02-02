@@ -56,7 +56,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
 
 export const WalletHeader = (props: any) => {
   const dispatch = useDispatch();
-  const rescaning = useSelector(getRescaning);
+  const syncStatus = useSelector(getRescaning);
 
   return (
     <div className="wallet-header">
@@ -80,7 +80,7 @@ export const WalletHeader = (props: any) => {
           icontype="reload"
           iconSize={'small'}
           submit={() => { 
-            rescanModalDialog(!rescaning, dispatch);
+            rescanModalDialog(!syncStatus, dispatch);
           }}
         />
         <span style={{ marginLeft: '10px' }}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getwalletDecimalValue, getWalletSendAddress } from '../../state/selectors/walletConfig';
+import { getRescaning, getwalletDecimalValue, getWalletSendAddress } from '../../state/selectors/walletConfig';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatDropdown } from "../basic/BchatDropdown"
 // import { BchatInput } from "../basic/BchatInput"
@@ -24,7 +24,8 @@ import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-
+  const syncStatus = useSelector(getRescaning);
+  console.log("syncStatus:",syncStatus)
   const dispatch = useDispatch();
   // const [amount, setAmount] = useState(props.amount);
   // const [priority, setPriority] = useState(window.i18n("flash"));
@@ -87,15 +88,20 @@ export const SendForm = (props: any) => {
   // }
 
   async function addressValidation() {
-
-    if (address.length > 106 || address.length < 95) {
-      return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
-    }
     if (!window.globalOnlineStatus) {
       return ToastUtils.pushToastError(
         'internetConnectionError',
         'Please check your internet connection'
       );
+    }
+    if (props.amount > walletDetails.unlocked_balance / 1e9) {
+      return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
+    }
+    if (address.length > 106 || address.length < 95) {
+      return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
+    }
+    if (props.amount == 0) {
+      return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
     }
     let addressValidate = await wallet.validateAddres(address);
     if (!addressValidate) {
@@ -126,17 +132,9 @@ export const SendForm = (props: any) => {
   }
 
   async function send() {
-    if (props.amount == 0) {
-      return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
-    }
     const isSweepAll =
       props.amount == (walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
-    // dispatch(updateTransactionInitModal({}))
-    if (props.amount > walletDetails.unlocked_balance / 1e9) {
-      return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
-    }
     dispatch(updateSendConfirmModal(null));
-
     dispatch(updateTransactionInitModal({}));
     let data: any = await wallet.transfer(
       address,
@@ -342,7 +340,7 @@ export const SendForm = (props: any) => {
             onClick={() => addressValidation()}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Green}
-            disabled={!(props.amount && address)}
+            disabled={!(props.amount && address && syncStatus)}
           />
         </div>
       </div>

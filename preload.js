@@ -235,8 +235,8 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
-  //  window.networkType = 'testnet';
- window.networkType = 'mainnet';
+//  window.networkType = 'testnet';
+window.networkType = 'mainnet';
 
 if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
@@ -257,41 +257,41 @@ if (window.networkType == 'mainnet') {
       host: 'mainnet.beldex.io',
       port: '29095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: 'publicnode1.rpcnode.stream',
       port: '29095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: 'publicnode2.rpcnode.stream',
       port: '29095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: 'publicnode3.rpcnode.stream',
       port: '29095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: 'publicnode4.rpcnode.stream',
       port: '29095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: 'explorer.beldex.io',
       port: '19091',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
-  window.deamon_list=remotes;
+  window.deamon_list = remotes;
 } else {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
@@ -303,17 +303,17 @@ if (window.networkType == 'mainnet') {
       host: '38.242.196.72',
       port: '19095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
     {
       host: '154.26.139.105',
       port: '19095',
       active: 0,
-      type:"Remote"
+      type: 'Remote',
     },
   ];
   window.currentDaemon = remotes[Math.floor(Math.random() * remotes.length)];
-  window.deamon_list=remotes
+  window.deamon_list = remotes;
 }
 
 const { locale: localFromEnv } = config;
