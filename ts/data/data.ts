@@ -668,6 +668,9 @@ export async function removeAll(): Promise<void> {
   await channels.removeAll();
 }
 
+export async function removeAllWithOutRecipient(): Promise<void> {
+  await channels.removeAllWithOutRecipient();
+}
 export async function removeAllConversations(): Promise<void> {
   await channels.removeAllConversations();
 }

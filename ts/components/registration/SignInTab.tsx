@@ -146,6 +146,8 @@ export const SignInTab = (props: any) => {
       let refreshDetails = blockheight
         ? { refresh_start_timestamp_or_height: blockheight, refresh_type: 'height' }
         : { refresh_start_timestamp_or_height: restoreDate, refresh_type: 'date' };
+        console.log("sign in :: 1");
+        
       await signInWithRecovery({
         displayName,
         password,

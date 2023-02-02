@@ -20,6 +20,7 @@ import {
   getwalletSettingMiniModalState,
   getTransactionInitModal,
   getwalletSendConfirmModal,
+  getBchatUpdateInstruntion,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 import { InviteContactsDialog } from './InviteContactsDialog';
@@ -40,6 +41,7 @@ import { ChangePassword } from '../wallet/BchatWalletChangePassword';
 import { WalletModal } from '../wallet/BchatWalletModal';
 import { TransactionInitModal } from '../wallet/BchatWalletTransactionInitModal';
 import {BchatSendConfirm} from './BchatWalletSendConfirmModal';
+import BchatUpdateInstruntion from './updateInstructionModal';
 
 export const ModalContainer:any = () => {
   const confirmModalState = useSelector(getConfirmModal);
@@ -60,7 +62,8 @@ export const ModalContainer:any = () => {
   const ChangePasswordModalState=useSelector(getChangePasswordModalState)
   const walletSettingMiniModal=useSelector(getwalletSettingMiniModalState)
   const TransactionInitModalState=useSelector(getTransactionInitModal);
-  const BchatSendConfirmState=useSelector(getwalletSendConfirmModal)
+  const BchatSendConfirmState=useSelector(getwalletSendConfirmModal);
+  const BchatUpdateInstruntionState=useSelector(getBchatUpdateInstruntion);
 
 
   return (
@@ -88,6 +91,7 @@ export const ModalContainer:any = () => {
       {walletSettingMiniModal&&<WalletModal {...walletSettingMiniModal} />}
       {TransactionInitModalState&& <TransactionInitModal />}
       {BchatSendConfirmState &&<BchatSendConfirm { ...BchatSendConfirmState} /> }
+      {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} /> }
     </>
   );
 };

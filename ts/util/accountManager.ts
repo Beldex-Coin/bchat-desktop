@@ -16,6 +16,7 @@ import {
   Storage,
 } from './storage';
 import { Registration } from './registration';
+// import { getConversationById } from '../data/data';
 
 /**
  * Might throw
@@ -105,6 +106,10 @@ export async function registerSingleDevice(
   deamonHeight:number
  
 ) {
+  console.log("sign in :: 8");
+
+  console.log("identityKeyPair -1::",generatedMnemonic,mnemonicLanguage);
+
   if (!generatedMnemonic) {
     throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
   }
@@ -116,12 +121,21 @@ export async function registerSingleDevice(
   }
 
   const identityKeyPair = await generateKeypair(generatedMnemonic, mnemonicLanguage);
+  console.log("identityKeyPair 0::",identityKeyPair);
+  console.log("sign in :: 9");
+  
 
   await createAccount(identityKeyPair);
+  console.log("identityKeyPair 1::");
+
   await saveRecoveryPhrase(generatedMnemonic);
+  console.log("identityKeyPair 2::");
+
   await setLastProfileUpdateTimestamp(Date.now());
-  deamonHeight
+  console.log("identityKeyPair 3::");
   const pubKeyString = toHex(identityKeyPair.pubKey);
+  console.log("identityKeyPair 4::");
+
   await registrationDone(pubKeyString, profileName,deamonHeight);
 }
 
@@ -190,7 +204,9 @@ async function registrationDone(ourPubkey: string, displayName: string,
   await Storage.put('primaryDevicePubKey', ourPubkey);
   window?.log?.info('registration done 0 ::',ourPubkey);
 
-
+  // let userDetails= await getConversationById(ourPubkey);
+  // console.log(" registration userDetails::",userDetails);
+  
   // Ensure that we always have a conversation for ourself
   const conversation = await getConversationController().getOrCreateAndWait(
     ourPubkey,

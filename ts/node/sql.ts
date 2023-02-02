@@ -3009,11 +3009,27 @@ function removeAll() {
     DELETE FROM ${CONVERSATIONS_TABLE};
     DELETE FROM ${MESSAGES_TABLE};
     DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};
-    DELETE FROM ${MESSAGES_FTS_TABLE};
-    DELETE FROM ${RECIPIENT_ADDRESS}; 
+    DELETE FROM ${MESSAGES_FTS_TABLE}; 
+    DELETE FROM ${RECIPIENT_ADDRESS};  
 `);
 }
 
+function removeAllWithOutRecipient() {
+  assertGlobalInstance().exec(`
+    DELETE FROM ${IDENTITY_KEYS_TABLE};
+    DELETE FROM ${ITEMS_TABLE};
+    DELETE FROM unprocessed;
+    DELETE FROM ${LAST_HASHES_TABLE};
+    DELETE FROM ${NODES_FOR_PUBKEY_TABLE};
+    DELETE FROM ${CLOSED_GROUP_V2_KEY_PAIRS_TABLE};
+    DELETE FROM seenMessages;
+    DELETE FROM ${CONVERSATIONS_TABLE};
+    DELETE FROM ${MESSAGES_TABLE};
+    DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};
+    DELETE FROM ${MESSAGES_FTS_TABLE};  
+`);
+}
+// DELETE FROM ${RECIPIENT_ADDRESS}; 
 function removeAllConversations() {
   assertGlobalInstance()
     .prepare(`DELETE FROM ${CONVERSATIONS_TABLE};`)
@@ -3944,6 +3960,7 @@ export const sqlNode = {
   removeKnownAttachments,
 
   removeAll,
+  removeAllWithOutRecipient,
 
   getMessagesWithVisualMediaAttachments,
   getMessagesWithFileAttachments,

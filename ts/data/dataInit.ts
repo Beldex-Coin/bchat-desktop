@@ -86,6 +86,7 @@ const channelsToMake = new Set([
   'removeAttachmentDownloadJob',
   'removeAllAttachmentDownloadJobs',
   'removeAll',
+  'removeAllWithOutRecipient',
   'removeAllConversations',
   'removeOtherData',
   'cleanupOrphanedAttachments',

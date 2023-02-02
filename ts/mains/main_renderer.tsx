@@ -281,7 +281,7 @@ async function start() {
   // test net
   // const deamon_list=[{host:'154.26.139.105',port:'19095',active:0}]
 
-  function removeOldLoginDb() {
+    function removeOldLoginDb() {
     try {
       let BChatDbDir;
       if (os.platform() === 'linux' || os.platform() === 'darwin') {

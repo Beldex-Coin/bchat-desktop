@@ -91,12 +91,15 @@ export async function signInWithRecovery(signInDetails: {
     refresh_start_timestamp_or_height: string;
   };
 }) {
+  console.log("sign in :: 2");
+  
   const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
   const trimName = displayNameIsValid(displayName);
   // shows toast to user about the error
   if (!trimName) {
     return;
   }
+  console.log("sign in :: 3");
 
   try {
     const restoreWallet = await wallet.restoreWallet(
@@ -107,12 +110,16 @@ export async function signInWithRecovery(signInDetails: {
     );
     localStorage.setItem('userAddress', restoreWallet.address);
     const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
+    console.log("sign in :: 4");
 
     // console.log('deamonHeight restore',deamonHeight);
 
     await resetRegistration();
+    console.log("sign in :: 5");
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName, deamonHeight);
+  console.log("sign in :: 6");
+
     await setSignWithRecoveryPhrase(true);
 
     trigger('openInbox');

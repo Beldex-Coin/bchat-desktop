@@ -13,18 +13,27 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 
-const deleteDbLocally = async () => {
+export const deleteDbLocally = async (deleteType?: string) => {
   window?.log?.info('last message sent successfully. Deleting everything');
   window.persistStore?.purge();
   await deleteAllLogs();
-  await Data.removeAll();
+  if (deleteType === "oldVersion") {
+    console.log("delete Type IF");
+    
+    await Data.removeAllWithOutRecipient()
+  }
+  else {
+    console.log("delete Type else");
+
+    await Data.removeAll();
+  }
   await Data.close();
   await Data.removeDB();
   await Data.removeOtherData();
   window.localStorage.setItem('restart-reason', 'delete-account');
 };
 
-async function sendConfigMessageAndDeleteEverything() {
+export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {
   try {
     // DELETE LOCAL DATA ONLY, NOTHING ON NETWORK
     window?.log?.info('DeleteAccount => Sending a last SyncConfiguration');
@@ -32,7 +41,7 @@ async function sendConfigMessageAndDeleteEverything() {
     // be sure to wait for the message being effectively sent. Otherwise we won't be able to encrypt it for our devices !
     await forceSyncConfigurationNowIfNeeded(true);
     window?.log?.info('Last configuration message sent!');
-    await deleteDbLocally();
+    await deleteDbLocally(deleteType);
     window.restart();
   } catch (error) {
     // if an error happened, it's not related to the delete everything on network logic as this is handled above.
@@ -43,7 +52,7 @@ async function sendConfigMessageAndDeleteEverything() {
       error && error.stack ? error.stack : error
     );
     try {
-      await deleteDbLocally();
+      await deleteDbLocally(deleteType);
     } catch (e) {
       window?.log?.error(e);
     } finally {
