@@ -3,7 +3,7 @@ import { SpacerLG, SpacerMD } from "../basic/Text";
 import { BchatButton, BchatButtonColor } from "../basic/BchatButton";
 import { clipboard } from "electron";
 import { getCurrentRecoveryPhrase } from "../../util/storage";
-import { ToastUtils } from "../../bchat/utils";
+// import { ToastUtils } from "../../bchat/utils";
 import { sendConfigMessageAndDeleteEverything } from "./DeleteAccountModal";
 
 
@@ -14,14 +14,14 @@ export default function BchatUpdateInstruntion() {
     function copyToClipboard() {
         clipboard.writeText(getCurrentRecoveryPhrase(), 'clipboard');
         setCopied(true)
-        ToastUtils.pushCopiedToClipBoard();
+        // ToastUtils.pushCopiedToClipBoard();
     }
 
     async function clearData() {
         await sendConfigMessageAndDeleteEverything("oldVersion");
     }
 
-    return <div className="modal">
+    return <div className="modal modal-center">
 
 
         <section className="contentUpdateModal">
@@ -29,7 +29,7 @@ export default function BchatUpdateInstruntion() {
             {/* <img src={require('../../../images/bchat/Update_icon.svg')} className="modal-UpdateModal-icon" /> */}
             <img src='images/bchat/Update_icon.svg' className="modal-UpdateModal-icon"></img>
             <SpacerMD />
-            <div>BChat Wallet Update</div>
+            <div className="modal-UpdateModal-header">BChat Wallet Update</div>
             <SpacerLG />
             <div className="modal-UpdateModal-discription">
                 The Beldex wallet has been integrated to BChat. Restore your app to gain access your BChat account.
