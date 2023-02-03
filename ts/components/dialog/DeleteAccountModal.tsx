@@ -12,8 +12,17 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
+import { wallet } from '../../wallet/wallet-rpc';
+import kill from 'cross-port-killer';
+import { HTTPError } from '../../bchat/utils/errors';
 
 export const deleteDbLocally = async (deleteType?: string) => {
+  await wallet.closeWallet();
+  kill(64371)
+    .then()
+    .catch(err => {
+      throw new HTTPError('beldex_rpc_port', err);
+    });
   window?.log?.info('last message sent successfully. Deleting everything');
   window.persistStore?.purge();
   await deleteAllLogs();
@@ -31,6 +40,7 @@ export const deleteDbLocally = async (deleteType?: string) => {
   await Data.removeDB();
   await Data.removeOtherData();
   window.localStorage.setItem('restart-reason', 'delete-account');
+  
 };
 
 export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {

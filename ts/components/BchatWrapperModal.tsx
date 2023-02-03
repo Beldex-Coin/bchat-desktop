@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import classNames from 'classnames';
 
 import { BchatIconButton } from './icon';
@@ -57,19 +57,19 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
 
   const modalRef = useRef<HTMLDivElement>(null); 
 
-  const handleClick = (e: any) => {
-    if (!modalRef.current?.contains(e.target)) {
-      props.onClose?.();
-    }
-  };
+  // const handleClick = (e: any) => {
+  //   if (!modalRef.current?.contains(e.target)) {
+  //     props.onClose?.();
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClick);
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', handleClick);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClick);
+  //   };
+  // }, []);
 
   return (
     <div

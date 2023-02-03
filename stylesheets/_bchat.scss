@@ -1778,7 +1778,8 @@ label {
       padding: 15px;
       &-label {
         // width: 77px;
-        width: calc(20% + 30px);
+        // width: calc(20% + 30px);
+        width: 90px;
       }
       &-inputBox {
         width: 100%;

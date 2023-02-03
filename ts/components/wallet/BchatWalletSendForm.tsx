@@ -23,7 +23,7 @@ import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const syncStatus = useSelector(getRescaning);
   console.log("syncStatus:",syncStatus)
   const dispatch = useDispatch();
@@ -34,10 +34,10 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  let widthStyle = {
-    width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',
-    paddingLeft: '20px',
-  };
+  // let widthStyle = {
+  //   width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',
+  //   paddingLeft: '20px',
+  // };
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -184,11 +184,11 @@ export const SendForm = (props: any) => {
               width="100%"
             >
               {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
-              <span className="wallet-sendForm-label" style={{ width: widthStyle.width }}>
+              <span className="wallet-sendForm-label"  >
                 {window.i18n('amount')}
               </span>
 
-              <div className="wallet-sendForm-inputBox">
+              <div className="wallet-sendForm-inputBox" style={{width: "90%"}}>
                 <input
                   value={props.amount}
                   onChange={(e: any) => {
@@ -211,7 +211,9 @@ export const SendForm = (props: any) => {
               alignItems="center"
               width="100%"
             >
-              <span className="wallet-sendForm-label" style={widthStyle}>
+              {/* <span className="wallet-sendForm-label" style={widthStyle}> */}
+              <span className="wallet-sendForm-label" >
+
                 {window.i18n('priority')}
               </span>
               <div
@@ -283,7 +285,9 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}>
+            {/* <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
+            <span className="wallet-sendForm-label" >
+
               {window.i18n('address')}
             </span>
             <div className="wallet-sendForm-inputBox">
@@ -318,7 +322,8 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}>
+            {/* <span className="wallet-sendForm-label" style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
+            <span className="wallet-sendForm-label" >  
               {window.i18n('notes')}
             </span>
             <div className="wallet-sendForm-inputBox">

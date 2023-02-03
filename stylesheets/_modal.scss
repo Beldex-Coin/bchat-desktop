@@ -9,14 +9,14 @@
   z-index: 100;
   overflow-y: auto;
 
-  &-center
-  {
+  &-center {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .content ,.contentUpdateModal {
+  .content,
+  .contentUpdateModal {
     position: relative;
     max-width: 350px;
     margin: 100px auto;
@@ -26,42 +26,49 @@
     overflow: auto;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
   }
-  .contentUpdateModal
-  {
-    max-width: 654px;
+  .contentUpdateModal {
+    // max-width: 654px;
+    max-width: 550px;
     background-color: var(--color-smModal-bg);
     text-align: center;
     margin: 0;
   }
-  
-  &-UpdateModal{
-    
-    &-discription
-    {
+
+  &-UpdateModal {
+    &-discription {
       font-family: $bchat-font-poppin-light;
-      &-fontMedium
-      {
+      &-fontMedium {
         font-family: $bchat-font-poppin-medium;
       }
     }
-    &-header
-    {
+    &-header {
       font-family: $bchat-font-poppin-semibold;
     }
-    &-icon
-    {
+    &-icon {
       // color:red
       width: 50px;
     }
 
-    &-btnBox
-    {
+    &-btnBox {
       width: 26%;
       margin: auto;
-    }
-    }
-}
 
+      .bchat-button.default.primary {
+        background-color: #2075ff;
+      }
+    }
+    &-loader {
+      width: 552px;
+      height: 362px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      z-index: 99;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
 
 /* remove scroll bars */
 .bchat-dialog .add-moderators-dialog .content {
@@ -285,16 +292,15 @@
   }
 }
 
-.walletPassModal
-{
+.walletPassModal {
   width: 500px;
-    height: 343px;
-    background-color:rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    z-index: 99;
-    justify-content: center;
-    display: flex;
-    align-items: center;
+  height: 343px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 99;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }
 
 .edit-profile-dialog {
@@ -411,8 +417,10 @@
   }
 
   &-modalLoader {
-    width: 400px;
-    height: 455px;
+    // width: 400px;
+    // height: 455px;
+    width: 402px;
+    height: 447px;
     // top: 22.3%;
     background-color: #0000009e;
     border-radius: 25px;
@@ -420,6 +428,7 @@
     justify-content: center;
     display: flex;
     align-items: center;
+    
   }
 
   .profile-name {

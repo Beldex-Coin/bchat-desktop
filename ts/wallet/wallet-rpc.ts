@@ -21,7 +21,7 @@ import {
 } from '../state/ducks/walletConfig';
 import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
-// import { default as queue } from 'promise-queue';
+ import { default as queue } from 'promise-queue';
 
 class Wallet {
   heartbeat: any;
@@ -40,7 +40,7 @@ class Wallet {
   scee: any;
   id: number;
   agent: any;
-  // queue: any;
+   queue: any;
   backend: any;
   last_height_send_time: any;
   height_regexes: any;
@@ -61,7 +61,7 @@ class Wallet {
     this.id = 0;
     this.scee = new SCEE();
     this.agent = new http.Agent({ keepAlive: true, maxSockets: 10 });
-    // this.queue = new queue(1, Infinity);
+     this.queue = new queue(1, Infinity);
     this.last_height_send_time = Date.now();
     this.height_regexes = [
       {
@@ -308,12 +308,12 @@ class Wallet {
         language: 'English',
         password: props.password,
       });
-      const getAddress: any = await this.sendRPC('get_address');
-      const mnemonic: any = await this.sendRPC('query_key', { key_type: 'mnemonic' });
-      // console.log('mne:', mnemonic);
+      const getAddress: any = await this.heartRpc('get_address');
+      const mnemonic: any = await this.heartRpc('query_key', { key_type: 'mnemonic' });
+       console.log('mne:', mnemonic,getAddress);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
-        localStorage.setItem('userAddress', getAddress.result.address);
-        return mnemonic.result.key;
+        localStorage.setItem('userAddress', getAddress.address);
+        return mnemonic.key;
       }
     } catch (e) {
       console.log('exception during wallet-rpc:', e);
@@ -409,6 +409,8 @@ class Wallet {
     await this.sendRPC('store');
   }
   async closeWallet() {
+    console.log("close Wallet");
+    
     await this.saveWallet();
     this.wallet_state.open = false;
     await this.sendRPC('close_wallet');
@@ -761,128 +763,128 @@ class Wallet {
     // return daemon[Math.floor(Math.random() * daemon.length)];
   };
 
-  sendRPC = async (method: string, params = {}, timeout = 0) => {
-    try {
-      console.log(
-        'current daemon------:',
-        window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-      );
-      const url = 'http://localhost:64371/json_rpc';
-      const fetchOptions = {
-        method: 'POST',
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: '0',
-          method: method,
-          params,
-        }),
-        headers: {
-          Authorization: 'Basic ' + btoa(`${this.auth[0]}:${this.auth[1]}`),
-        },
-        timeout,
-      };
-      const response = await insecureNodeFetch(url, fetchOptions);
-      // console.log('response:', response.ok);
-      if (!response.ok) {
-        throw new HTTPError('beldex_rpc error', response);
-      }
-      const result = await response.json();
-      // console.log('result:nowfill:', result);
-      if (result.hasOwnProperty('error')) {
-        return {
-          method: method,
-          params: params,
-          error: result.error,
-        };
-      }
-      return {
-        method: method,
-        params: params,
-        result: result.result,
-      };
-    } catch (e) {
-      console.log('failed to send wallet rpc', e);
-      let currentDeamonLoc = window.getSettingValue('current-deamon');
-      // console.log("currentDeamonLoc:",currentDeamonLoc)
-      const deamonStatus = await workingStatusForDeamon(
-        { host: currentDeamonLoc.host, port: currentDeamonLoc.port },
-        'daemonValidation'
-      );
-      // console.log('deamonStatus:deamonStatus:deamonStatus:', deamonStatus);
-      // console.log("deamonStatus:",deamonStatus)
-      if (deamonStatus.status == 'NOT_OK') {
-        const currentDaemon = await this.chooseDaemon();
-        // console.log('currentDaemon: choose:', currentDaemon);
-        currentDaemon.active = true;
-        // const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-        // console.log('down daemon:', downedDaemon);
-        // console.log('current daemon :', currentDaemon);
-        ToastUtils.pushToastSuccess(
-          'daemonRpcDown',
-          `Current daemon ${deamonStatus.host} is down. Connected to daemon ${currentDaemon.host +
-            ':' +
-            currentDaemon.port}.`
-        );
-        window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
-      }
-      throw new HTTPError('exception during wallet-rpc:', e);
-    }
-  };
-
-  // sendRPC(method: string, params = {}, timeout = 0) {
-  //   console.log('sendrpc');
-
-  //   let id = this.id++;
-  //   let options: any = {
-  //     uri: `http://localhost:64371/json_rpc`,
-  //     method: 'POST',
-  //     json: {
-  //       jsonrpc: '2.0',
-  //       id: id,
+  // sendRPC = async (method: string, params = {}, timeout = 0) => {
+  //   try {
+  //     console.log(
+  //       'current daemon------:',
+  //       window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+  //     );
+  //     const url = 'http://localhost:64371/json_rpc';
+  //     const fetchOptions = {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         jsonrpc: '2.0',
+  //         id: '0',
+  //         method: method,
+  //         params,
+  //       }),
+  //       headers: {
+  //         Authorization: 'Basic ' + btoa(`${this.auth[0]}:${this.auth[1]}`),
+  //       },
+  //       timeout,
+  //     };
+  //     const response = await insecureNodeFetch(url, fetchOptions);
+  //     // console.log('response:', response.ok);
+  //     if (!response.ok) {
+  //       throw new HTTPError('beldex_rpc error', response);
+  //     }
+  //     const result = await response.json();
+  //     // console.log('result:nowfill:', result);
+  //     if (result.hasOwnProperty('error')) {
+  //       return {
+  //         method: method,
+  //         params: params,
+  //         error: result.error,
+  //       };
+  //     }
+  //     return {
   //       method: method,
-  //     },
-  //     auth: {
-  //       user: this.auth[0],
-  //       pass: this.auth[1],
-  //       sendImmediately: false,
-  //     },
-  //     agent: this.agent,
-  //   };
-  //   if (Object.keys(params).length !== 0) {
-  //     options.json.params = params;
+  //       params: params,
+  //       result: result.result,
+  //     };
+  //   } catch (e) {
+  //     console.log('failed to send wallet rpc', e);
+  //     let currentDeamonLoc = window.getSettingValue('current-deamon');
+  //     // console.log("currentDeamonLoc:",currentDeamonLoc)
+  //     const deamonStatus = await workingStatusForDeamon(
+  //       { host: currentDeamonLoc.host, port: currentDeamonLoc.port },
+  //       'daemonValidation'
+  //     );
+  //     // console.log('deamonStatus:deamonStatus:deamonStatus:', deamonStatus);
+  //     // console.log("deamonStatus:",deamonStatus)
+  //     if (deamonStatus.status == 'NOT_OK') {
+  //       const currentDaemon = await this.chooseDaemon();
+  //       // console.log('currentDaemon: choose:', currentDaemon);
+  //       currentDaemon.active = true;
+  //       // const downedDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  //       // console.log('down daemon:', downedDaemon);
+  //       // console.log('current daemon :', currentDaemon);
+  //       ToastUtils.pushToastSuccess(
+  //         'daemonRpcDown',
+  //         `Current daemon ${deamonStatus.host} is down. Connected to daemon ${currentDaemon.host +
+  //           ':' +
+  //           currentDaemon.port}.`
+  //       );
+  //       window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, currentDaemon);
+  //     }
+  //     throw new HTTPError('exception during wallet-rpc:', e);
   //   }
-  //   if (timeout > 0) {
-  //     options.timeout = timeout;
-  //   }
-  //   return this.queue.add(() => {
-  //     return request(options)
-  //       .then((response: any) => {
-  //         if (response.hasOwnProperty('error')) {
-  //           return {
-  //             method: method,
-  //             params: params,
-  //             error: response.error,
-  //           };
-  //         }
-  //         return {
-  //           method: method,
-  //           params: params,
-  //           result: response.result,
-  //         };
-  //       })
-  //       .catch((error: any) => {
-  //         return {
-  //           method: method,
-  //           params: params,
-  //           error: {
-  //             code: -1,
-  //             message: 'Cannot connect to wallet-rpc',
-  //             cause: error.cause,
-  //           },
-  //         };
-  //       });
-  //   });
-  // }
+  // };
+
+  sendRPC(method: string, params = {}, timeout = 0) {
+    console.log('sendrpc');
+
+    let id = this.id++;
+    let options: any = {
+      uri: `http://localhost:64371/json_rpc`,
+      method: 'POST',
+      json: {
+        jsonrpc: '2.0',
+        id: id,
+        method: method,
+      },
+      auth: {
+        user: this.auth[0],
+        pass: this.auth[1],
+        sendImmediately: false,
+      },
+      agent: this.agent,
+    };
+    if (Object.keys(params).length !== 0) {
+      options.json.params = params;
+    }
+    if (timeout > 0) {
+      options.timeout = timeout;
+    }
+    return this.queue.add(() => {
+      return request(options)
+        .then((response: any) => {
+          if (response.hasOwnProperty('error')) {
+            return {
+              method: method,
+              params: params,
+              error: response.error,
+            };
+          }
+          return {
+            method: method,
+            params: params,
+            result: response.result,
+          };
+        })
+        .catch((error: any) => {
+          return {
+            method: method,
+            params: params,
+            error: {
+              code: -1,
+              message: 'Cannot connect to wallet-rpc',
+              cause: error.cause,
+            },
+          };
+        });
+    });
+  }
 
   rescanBlockchain() {
     this.sendRPC('rescan_blockchain');

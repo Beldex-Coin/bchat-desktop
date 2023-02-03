@@ -158,6 +158,7 @@ import { getAppRootPath } from '../node/getRootPath';
 import { HTTPError } from '../bchat/utils/errors';
 import { kill } from 'cross-port-killer';
 
+
 // Both of these will be set after app fires the 'ready' event
 let logger: Logger | null = null;
 let locale: LocaleMessagesWithNameType;
@@ -447,6 +448,7 @@ async function createWindow() {
   // Note: We do most of our shutdown logic here because all windows are closed by
   //   Electron before the app quits.
   mainWindow.on('close', async e => {
+     
     kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     console.log('close event', {
       readyForShutdown: mainWindow ? readyForShutdown : null,
@@ -471,7 +473,7 @@ async function createWindow() {
 
       return;
     }
-
+    //  await wallet.closeWallet();
     await requestShutdown();
     if (mainWindow) {
       readyForShutdown = true;
@@ -845,7 +847,8 @@ async function requestShutdown() {
   }
 }
 
-app.on('before-quit', () => {
+app.on('before-quit',async () => {
+   
   console.log('before-quit event', {
     readyForShutdown: mainWindow ? readyForShutdown : null,
     shouldQuit: windowShouldQuit(),
