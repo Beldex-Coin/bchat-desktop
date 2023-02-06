@@ -16,7 +16,6 @@ import { useConversationWalletDaemonHeight } from '../../hooks/useParamSelector'
 import { useKey } from 'react-use';
 import styled from 'styled-components';
 
-
 export const ForgotPassword = (props: any) => {
   const [seed, setSeed] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -96,7 +95,6 @@ export const ForgotPassword = (props: any) => {
         window.i18n('walletPasswordLengthError')
       );
     }
-
     let profileName = userDetails?.attributes.walletUserName;
     // const daemonHeight=walletDaemonHeight;
     if (!profileName) {
@@ -105,7 +103,8 @@ export const ForgotPassword = (props: any) => {
     const refreshDetails = {
       refresh_start_timestamp_or_height: walletDaemonHeight ? walletDaemonHeight : 0,
     };
-    setLoading(true)
+    setLoading(true);
+    await wallet.closeWallet();
     const changePassword = await wallet.restoreWallet(
       profileName,
       newPassword,
@@ -119,12 +118,12 @@ export const ForgotPassword = (props: any) => {
       }
     });
     if (changePassword.hasOwnProperty('error')) {
-      setLoading(false)
+      setLoading(false);
 
       return ToastUtils.pushToastError('changePasswordError', changePassword.error.message);
     }
     props.showSyncScreen();
-    setLoading(false)
+    setLoading(false);
 
     ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
     return onClickCancelHandler();
@@ -134,16 +133,16 @@ export const ForgotPassword = (props: any) => {
     return event.key === 'Enter';
   }, passValid);
   const Loader = styled.div`
-  position: absolute;
-  // top: 0;
-  display: flex;
-  // justify-content: center;
-  /* width: 100%; */
-  // width: 100Vw;
-  // height: 100%;
-  align-items: center;
-  z-index: 101;
-`;
+    position: absolute;
+    // top: 0;
+    display: flex;
+    // justify-content: center;
+    /* width: 100%; */
+    // width: 100Vw;
+    // height: 100%;
+    align-items: center;
+    z-index: 101;
+  `;
   return (
     <div className="wallet-forgotPassword">
       <div className="wallet-forgotPassword-content-Box">

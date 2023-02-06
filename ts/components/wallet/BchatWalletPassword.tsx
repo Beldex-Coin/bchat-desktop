@@ -21,14 +21,10 @@ export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [progressing, setProgressing] = useState(false);
-  // const [getPercentage, setPercentage] = useState(1);
-  // const [getPercentage, setPercentage] = useState(1);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
   let daemonHeight = useSelector((state: any) => state.daemon.height);
-  //  const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
   const currentHeight: any = Number(useSelector(getHeight));
   const Loader = styled.div`
     position: absolute;

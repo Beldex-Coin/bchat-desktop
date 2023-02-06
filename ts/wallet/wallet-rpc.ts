@@ -160,7 +160,8 @@ class Wallet {
         auth.substr(64, 64), // rpc password
         auth.substr(128, 32), // password salt
       ];
-      this.wallet_dir = `${walletDir}/wallet`;
+
+      this.wallet_dir = `${walletDir}/bchat`;
       const option = [
         '--rpc-login',
         this.auth[0] + ':' + this.auth[1],
@@ -173,9 +174,9 @@ class Wallet {
         '--log-level',
         '0',
         '--wallet-dir',
-        `${walletDir}/wallet`,
+        `${walletDir}/bchat`,
         '--log-file',
-        `${walletDir}/wallet-rpc.log`,
+        `${walletDir}/bchat/logs/wallet-rpc.log`,
       ];
       if (window.networkType == 'testnet') {
         option.push('--testnet');
@@ -206,8 +207,9 @@ class Wallet {
       });
       wallet.stdout.on('close', (code: any) => {
         process.stderr.write(`Wallet: exited with code ${code} \n`);
-        if (code === null) {
-        }
+        // if (code === null) {
+        // console.log("Failed to start wallet RPC");
+        // }
       });
     } catch (error) {
       console.log('failed to start wallet rpc', error);
@@ -237,7 +239,7 @@ class Wallet {
       if (requestData.hasOwnProperty('error')) {
         if (requestData.error.code === -21) {
           let walletDir =
-            os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+            os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
           fs.emptyDirSync(walletDir);
           requestData = await request(options);
         }
@@ -249,7 +251,7 @@ class Wallet {
           error: requestData.error,
         };
       }
-      return requestData.result;
+      return requestData;
     } catch (err) {
       console.log('ERR:', err);
     }
@@ -264,10 +266,9 @@ class Wallet {
       });
       const getAddress: any = await this.heartRpc('get_address');
       const mnemonic: any = await this.heartRpc('query_key', { key_type: 'mnemonic' });
-      // console.log('mne:', mnemonic, getAddress);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
-        localStorage.setItem('userAddress', getAddress.address);
-        return mnemonic.key;
+        localStorage.setItem('userAddress', getAddress.result.address);
+        return mnemonic.result.key;
       }
     } catch (e) {
       console.log('exception during wallet-rpc:', e);
@@ -309,7 +310,7 @@ class Wallet {
     let restore_height = await this.getHeigthFromDateAndUserInput(refreshDetails);
     try {
       let walletDir =
-        os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+        os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
       fs.emptyDirSync(walletDir);
       restoreWallet = await this.heartRpc('restore_deterministic_wallet', {
         restore_height: restore_height,
@@ -341,6 +342,7 @@ class Wallet {
       throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
+  
   async saveWallet() {
     await this.sendRPC('store');
   }
@@ -387,7 +389,7 @@ class Wallet {
     refreshDetails: object
   ): Promise<any> => {
     let walletDir =
-      os.platform() === 'win32' ? `${this.findDir()}\\wallet` : `${this.findDir()}//wallet`;
+      os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
     fs.emptyDirSync(walletDir);
     return await this.restoreWallet(displayName, password, userRecoveryPhrase, refreshDetails);
   };
@@ -552,7 +554,10 @@ class Wallet {
     return crypto.pbkdf2Sync(password, this.auth[2], 1000, 64, 'sha512').toString('hex');
   };
   openWallet = async (filename: string, password: string) => {
-    const openWallet = await this.sendRPC('open_wallet', {
+    // if(this.wallet_state.open){
+    //      await this.closeWallet();
+    // }
+    const openWallet = await this.heartRpc('open_wallet', {
       filename,
       password,
     });
@@ -590,6 +595,7 @@ class Wallet {
   };
 
   sendRPC(method: string, params = {}, timeout = 0) {
+    console.log('method:', method);
     let id = this.id++;
     let options: any = {
       uri: `http://localhost:64371/json_rpc`,
@@ -615,6 +621,7 @@ class Wallet {
     return this.queue.add(() => {
       return request(options)
         .then((response: any) => {
+          console.log('response:', method, response);
           if (response.hasOwnProperty('error')) {
             return {
               method: method,

@@ -86,18 +86,17 @@ export const NodeSetting = () => {
   }
 
   function currentDeamonNet() {
-    let verifiedDaemon: any = verifyDeamon;
-    window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, verifiedDaemon);
+    let choosenDaemon = { host: chooseDeamon, port: chooseDeamonPort, active: 1, type: 'Remote' };
+    window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, choosenDaemon);
     ToastUtils.pushToastSuccess(
       'successfully-updated-current-daemon',
-      `Successfully ${verifiedDaemon.host}:${verifiedDaemon.port} daemon updated.`
+      `Successfully ${choosenDaemon.host}:${choosenDaemon.port} daemon updated.`
     );
     setDropdown(false);
   }
 
   async function showDropDown() {
     setViewBox2(!viewBox2);
-
     let data = window.getSettingValue(walletSettingsKey.settingsDeamonList);
     let status = [];
     for (let i = 0; i < data.length; i++) {

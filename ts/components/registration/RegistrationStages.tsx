@@ -104,7 +104,7 @@ export async function signInWithRecovery(signInDetails: {
       userRecoveryPhrase,
       refreshDetails
     );
-    localStorage.setItem('userAddress', restoreWallet.address);
+    localStorage.setItem('userAddress', restoreWallet.result.address);
     const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
 
     await resetRegistration();

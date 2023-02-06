@@ -13,33 +13,36 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { wallet } from '../../wallet/wallet-rpc';
-// import kill from 'cross-port-killer';
+import { kill } from 'cross-port-killer';
 import { HTTPError } from '../../bchat/utils/errors';
 
 export const deleteDbLocally = async (deleteType?: string) => {
-  wallet.closeWallet().then(() => console.log("close Wallet")).catch(err => {
-    throw new HTTPError('close wallet errr', err);
-  }
-  )
-  // kill(64371)
-  //   .then(()=>console.log("kill port"))
-  //   .catch(err => {
-  //     throw new HTTPError('beldex_rpc_port', err);
-  //   });
+  wallet
+    .closeWallet()
+    .then(() => {
+      kill(64371)
+        .then(() => {
+          console.log('killed port.....');
+        })
+        .catch(err => {
+          throw new HTTPError('beldex_rpc_port', err);
+        });
+    })
+    .catch(err => {
+      throw new HTTPError('close wallet error', err);
+    });
   window?.log?.info('last message sent successfully. Deleting everything');
   window.persistStore?.purge();
   await deleteAllLogs();
-  if (deleteType === "oldVersion") {
-    await Data.removeAllWithOutRecipient()
-  }
-  else {
+  if (deleteType === 'oldVersion') {
+    await Data.removeAllWithOutRecipient();
+  } else {
     await Data.removeAll();
   }
   await Data.close();
   await Data.removeDB();
   await Data.removeOtherData();
   window.localStorage.setItem('restart-reason', 'delete-account');
-
 };
 
 export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {

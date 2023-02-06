@@ -18,8 +18,8 @@ export const SyncStatusBar = () => {
     : { color: '#FDB12A', status: 'Scanning' };
 
   window.setSettingValue('syncStatus', pct >= 99 ? true : false);
-    let value: any = pct >= 99 ? true : false;
-    dispatch(updateWalletRescaning(value));
+  let value: any = pct >= 99 ? true : false;
+  dispatch(updateWalletRescaning(value));
 
   return (
     <div className="wallet-syncStatus">
