@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 export default function BchatUpdateInstruntion() {
     const [copied, setCopied] = useState(false);
-    const [loading,setLoading]=useState(false);
+    const [loading, setLoading] = useState(false);
 
     function copyToClipboard() {
         clipboard.writeText(getCurrentRecoveryPhrase(), 'clipboard');
@@ -25,21 +25,20 @@ export default function BchatUpdateInstruntion() {
         setLoading(false)
 
     }
-    
+
     return <div className="modal modal-center">
-         
-         {loading && 
-           <Loader>
-            <div className="modal-UpdateModal-loader">
-              <img
-                src={'images/bchat/Load_animation.gif'}
-                style={{ width: '150px', height: '150px' }}
-              />
-            </div>
-          </Loader> }
+
+        {loading &&
+            <Loader>
+                <div className="modal-UpdateModal-loader">
+                    <img
+                        src={'images/bchat/Load_animation.gif'}
+                        style={{ width: '150px', height: '150px' }}
+                    />
+                </div>
+            </Loader>}
         <section className="contentUpdateModal">
             <SpacerLG />
-            {/* <img src={require('../../../images/bchat/Update_icon.svg')} className="modal-UpdateModal-icon" /> */}
             <img src='images/bchat/Update_icon.svg' className="modal-UpdateModal-icon"></img>
             <SpacerMD />
             <div className="modal-UpdateModal-header">BChat Wallet Update</div>

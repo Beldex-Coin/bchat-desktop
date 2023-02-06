@@ -14,18 +14,12 @@ import { useKey } from 'react-use';
 
 export const NodeSetting = () => {
   const dispatch = useDispatch();
-  // console.log(
-  //   'current deamon ::NodeSetting',
-  //   window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-  // );
+
 
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     : window.currentDaemon;
   const deamonList = window.getSettingValue(walletSettingsKey.settingsDeamonList);
-
-  // console.log('currentDeamon.host:', window.currentDaemon);
-  // console.log('currentDecuuu ::', currentDeamon.host);
   const currentHost =
     currentDeamon.host == '127.0.0.1' ? window.currentDaemon.host : currentDeamon.host;
   const currentPort =
@@ -82,7 +76,6 @@ export const NodeSetting = () => {
 
     if (deamon_list) {
       deamon_list.push(data);
-      // window.setSettingValue(walletSettingsKey.settingsDeamonList,data);
     }
     window.setSettingValue(walletSettingsKey.settingsDeamonList, deamon_list);
     setOption(deamon_list);
@@ -110,7 +103,6 @@ export const NodeSetting = () => {
     let status = [];
     for (let i = 0; i < data.length; i++) {
       if (data[i].type == 'Remote') {
-        // console.log('Data:showDropDown', data[i]);
         const deamonStatus = await workingStatusForDeamon(data[i], 'daemonValidation');
         if (deamonStatus.status === 'OK') {
           data[i].active = true;
@@ -152,14 +144,7 @@ export const NodeSetting = () => {
 
   async function validationForDeamon() {
     let data = { host: ipAddress, port: port, active: 1, type: 'Remote' };
-    // console.log('Data:validationForDeamon', data);
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
-
-    // if(currentDeamon.host===ipAddress && currentDeamon.port === port)
-    // {
-    //   return
-    // }
-
     if (confirmation && confirmation.status === 'OK') {
       // console.log('confirmation ok');
       if (confirmation.nettype === window.networkType) {

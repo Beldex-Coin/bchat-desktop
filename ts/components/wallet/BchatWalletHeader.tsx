@@ -7,14 +7,11 @@ import { BchatIconButton, BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
-import { updateFiatBalance, updateWalletRescaning } from '../../state/ducks/walletConfig';
+import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 import { getRescaning } from '../../state/selectors/walletConfig';
 
 export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
-
-
-
   if (!window.globalOnlineStatus) {
     return ToastUtils.pushToastError(
       'internetConnectionError',
@@ -23,6 +20,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   }
   let rescan: any = true;
   let Transactions: any = '';
+  let wallHeight:any=0
   dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
@@ -31,9 +29,6 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
       okText: window.i18n('Rescan'),
       btndisable: rescaning,
       onClickOk: () => {
-        console.log('rescan0001', rescaning);
-
-       
         dispatch(updateWalletRescaning(rescan));
         dispatch(updateFiatBalance(Transactions));
         window.setSettingValue('syncStatus', false);
@@ -45,10 +40,8 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
           })
 
         );
+        dispatch(updateWalletHeight(wallHeight));
         wallet.rescanBlockchain();
-
-
-        // console.log('rescan0002',rescaning);
       }
     })
   );
@@ -61,10 +54,6 @@ export const WalletHeader = (props: any) => {
   return (
     <div className="wallet-header">
       <div className="wallet-header-left-side">
-        {/* <BchatIcon iconSize="small" iconType="member"  />
-                <div style={{marginLeft:'10px'}}>
-                    Munavver
-                </div> */}
         <div className="wallet-header-left-side-btn-box">
           <WalletButton
             name={'Address Book'}
@@ -90,8 +79,6 @@ export const WalletHeader = (props: any) => {
             iconColor="#2879fb"
             onClick={() => { dispatch(setting()), props.clearStates() }}
           />
-
-          {/* <BchatIcon iconSize="large" iconType="walletSetting"  iconColor="#2879fb" /> */}
         </span>
       </div>
     </div>

@@ -15,7 +15,6 @@ export const WalletBalanceSection = () => {
   const currency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const fiatBalance: any = Number(useSelector(getFiatBalance));
   const [amountVisible, setAmountVisible] = useState(window.getSettingValue('balancevisibility'));
-  // let decimalValue: any = useSelector(getwalletDecimalValue);
   const zoomLevel=window.getSettingValue('zoom-factor-setting')
 
   let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
@@ -76,10 +75,6 @@ export const WalletBalanceSection = () => {
         </div>
         <div className="wallet-right-Button-Sec">
           <SpacerXS />
-          {/* <div className="wallet-right-Button-Sec-fetch-btn">
-            <BchatIcon iconSize="tiny" iconType="fetch" />
-            <span style={{ marginLeft: '2px' }}>Fetch Balance & Txn</span>
-          </div> */}
           <SpacerSM />
           <div className="wallet-myAddress-Box">
         <div className="wallet-myAddress-Box-content">{`${sliceWalletAddress}...`}</div>

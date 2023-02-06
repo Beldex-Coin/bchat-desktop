@@ -4,22 +4,15 @@ import classNames from 'classnames';
 import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  // SectionType,
-  // setOverlayMode,
-  // showLeftPaneSection,
   showSettingsSection,
 } from '../../state/ducks/section';
 import { getFocusedSettingsSection } from '../../state/selectors/section';
 import {
-  //  recoveryPhraseModal,
   updateDeleteAccountModal,
 } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from '../settings/BchatSettings';
-// import { resetConversationExternal } from '../../state/ducks/conversations';
-// import { BchatIconType } from '../icon';
-
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";

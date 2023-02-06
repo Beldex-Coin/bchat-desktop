@@ -51,7 +51,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
 
- 
+
 
   switch (focusedSection) {
     case SectionType.Contact:
@@ -86,11 +86,10 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     }
   }
 
-  function switchToWalletSec()
-  {
-    dispatch (showLeftPaneSection(3));
-    dispatch(showSettingsSection(BchatSettingCategory.Wallet));    
-    
+  function switchToWalletSec() {
+    dispatch(showLeftPaneSection(3));
+    dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+
   }
 
   function verifyScreens() {
@@ -119,13 +118,9 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
-    const status=isOnline?"Online":"Offline"
-    // console.log("isOnline",isOnline,status);
-    
+    const status = isOnline ? "Online" : "Offline"
     if (SectionType.Settings !== focusedSection) {
-      return     <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
-
-         {/* <div style={{ margin: "0 15px", width: '20px' }} data-tip="Hops" data-offset="{'right':30}" data-place="bottom"></div> */}
+      return <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
         <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
           throw new Error('Function not implemented.');
         }} id={''} size="tiny" />
@@ -139,22 +134,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
 
   function Moon() {
-    // if (SectionType.Settings !== focusedSection) {
     return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" data-offset="{'right':43}" data-place="bottom" >
-      {/* <BchatIconButton
-  iconSize="large"
-  iconType={'moon'}
-  dataTestId="theme-section"
-  iconColor={undefined}
-  onClick={handleClick}
- 
-/> */}
     </div>
-
-    // }
-    // else {
-    //   return null;
-    // }
   }
 
   return (
@@ -180,9 +161,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <div className='module-left-pane__header__title'>
           {label}
         </div>
-        {/* <SectionTitle></SectionTitle>           */} 
-        <div onClick={()=>switchToWalletSec()} style={{marginRight:'13px',cursor:'pointer'}}>
-        <BchatIcon iconSize={20} iconType="wallet" iconColor='#16A51C' /> 
+        <div onClick={() => switchToWalletSec()} style={{ marginRight: '13px', cursor: 'pointer' }}>
+          <BchatIcon iconSize={20} iconType="wallet" iconColor='#16A51C' />
         </div>
         <IsOnline />
         <Moon />
@@ -190,17 +170,10 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         {isMessageSection && !isMessageRequestOverlay && (
           <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts" data-offset="{'right':60}" data-place="bottom">
             <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
-
-            {/* <BchatButton onClick={props.buttonClicked} dataTestId="new-conversation-button"  buttonType={BchatButtonType.Default} buttonColor={BchatButtonColor.Green}>
-            <BchatIcon iconType="plus" iconSize="small" iconColor="white" />
-          </BchatButton> */}
           </div>
         )}
       </div>
-  {/* <ReactTooltip className="tooltipDesign"   effect="solid" /> */}
-
       <BchatToolTip effect="solid" />
-      {/* {showRecoveryPhrasePrompt && <LeftPaneBanner />} */}
     </Flex>
   );
 };
@@ -294,7 +267,7 @@ const StyledBannerInner = styled.div`
     margin-top: var(--margins-sm);
   }
 `;
-const Hops=styled.div`
+const Hops = styled.div`
 position: absolute;
     left: 47px;
     top: 43px;

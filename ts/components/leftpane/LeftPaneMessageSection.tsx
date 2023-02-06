@@ -28,7 +28,7 @@ export interface Props {
 
   messageRequestsEnabled?: boolean;
   overlayMode: OverlayMode;
-  directContact:any;
+  directContact: any;
 }
 
 export class LeftPaneMessageSection extends React.Component<Props> {
@@ -57,7 +57,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
     const { conversations, searchResults } = this.props;
-    
+
     if (searchResults) {
       return <SearchResults {...searchResults} />;
     }
@@ -107,41 +107,28 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           }}
         />
         {overlayMode ? this.renderClosableOverlay() : null}
-        {overlayMode ? null :<>
-          {/* <MessageRequestsBanner
-          handleOnClick={() => {
-            window.inboxStore?.dispatch(setOverlayMode('message-requests'));
-          }}
-        /> */}
-        {this.renderConversations()}
+        {overlayMode ? null : <>
+          {this.renderConversations()}
         </>}
       </div>
     );
   }
 
   public renderConversations() {
-    const { 
-      conversations ,
-      // searchResults,
-      // contacts,
-      directContact} = this.props;
-      // console.log("conversations,contacts ::",conversations?.length,contacts);
-      
-      
+    const {
+      conversations,
+      directContact } = this.props;
     return (
       <div className="module-conversations-list-content">
-        {/* {!conversations || conversations.length === 0 ? null : */}
-      {directContact.length!==0 &&
+        {directContact.length !== 0 &&
           <BchatSearchInput />
-      }
-        {/* } */}
+        }
         <MessageRequestsBanner
           handleOnClick={() => {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-          {/* {!conversations || conversations.length === 0 || searchResults ? */}
-          {directContact.length===0 && conversations?.length===0?
+        {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>
             </div>
@@ -151,7 +138,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             </div>
           </div>
           : this.renderList()}
-        {/* {this.renderList()} */}
         {this.renderBottomButtons()}
       </div>
     );
@@ -169,7 +155,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       case 'message':
         return <OverlayMessage />;
       case 'message-requests':
-        return <OverlayMessageRequest  leftPane={true}/>;
+        return <OverlayMessageRequest leftPane={true} />;
       default:
         return null;
     }

@@ -1,22 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppIsFocused } from '../hooks/useAppFocused';
-// import os from 'os';
-// import path from 'path';
-// import fs from 'fs-extra';
-
 import { getFocusedSettingsSection } from '../state/selectors/section';
-
 import { SmartBchatConversation } from '../state/smart/BchatConversation';
 import { BchatSettingsView } from './settings/BchatSettings';
-//  import { ModalContainer } from './dialog/ModalContainer';
 import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { getConversationById } from '../data/data';
 import { updateBchatUpgradeInstructionModal } from '../state/ducks/modalDialog';
-// import { BchatButtonColor } from './basic/BchatButton';
-// import { sendConfigMessageAndDeleteEverything } from './dialog/DeleteAccountModal';
 import { ModalContainer } from './dialog/ModalContainer';
-// import { getCurrentRecoveryPhrase } from '../util/storage';
 
 const FilteredSettingsView = BchatSettingsView as any;
 
@@ -42,9 +33,7 @@ export const BchatMainPanel = () => {
   return (
     <div className="bchat-conversation">
       <ModalContainer />
-      {/* <div className="bchat-conversation-doodle"> */}
       <SmartBchatConversation />
-      {/* </div> */}
     </div>
   );
 };

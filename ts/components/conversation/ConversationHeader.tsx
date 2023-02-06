@@ -110,7 +110,7 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
-     
+
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
@@ -140,7 +140,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   if (showBackButton) {
     return null;
   }
-  let  width = window.innerWidth;
+  let width = window.innerWidth;
   return (
     <div
       role="button"
@@ -149,16 +149,16 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           id: props.triggerId,
           event: e,
           position: {
-            x: width-300,
-            y:   55,
+            x: width - 300,
+            y: 55,
           },
         });
-        
+
       }}
-      style={{marginTop:'7px'}}
+      style={{ marginTop: '7px' }}
       data-testid="three-dots-conversation-options"
     >
-      
+
       <BchatIconButton iconType="ellipses" iconSize={35} />
     </div>
   );
@@ -285,8 +285,8 @@ const ConversationHeaderTitle = () => {
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
   const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
-  
-  const activeAt=convoProps?.activeAt;
+
+  const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return null;
   }
@@ -307,7 +307,7 @@ const ConversationHeaderTitle = () => {
       memberCount = members.length;
     }
   }
- const SubTxt=styled.div`
+  const SubTxt = styled.div`
  font-size: 11px;
  line-height: 16px;
  letter-spacing: 0.3px;
@@ -321,15 +321,6 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
-  
-  
-
-  // const notificationSubtitle = notificationSetting
-  //   ? window.i18n('notificationSubtitle', [notificationSetting])
-  //   : null;
-  // const fullTextSubtitle = memberCountText
-  //   ? `${memberCountText} ● ${notificationSubtitle}`
-  //   : `${notificationSubtitle}`;
 
   return (
     <div
@@ -346,16 +337,12 @@ const ConversationHeaderTitle = () => {
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName}
         <SubTxt>
-        {isGroup?memberCountText:
-        <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
-        }
+          {isGroup ? memberCountText :
+            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
+          }
         </SubTxt>
-       
-      </span>
 
-      {/* <StyledSubtitleContainer>
-        <ConversationHeaderSubtitle text={fullTextSubtitle} />
-      </StyledSubtitleContainer> */}
+      </span>
     </div>
   );
 };
@@ -374,7 +361,7 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 };
 
 export const ConversationHeaderWithDetails = () => {
-  const isSelectionMode = useSelector(isMessageSelectionMode);  
+  const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
   const dispatch = useDispatch();
@@ -400,35 +387,27 @@ export const ConversationHeaderWithDetails = () => {
           }}
           showBackButton={isMessageDetailOpened}
         />
-
         <ConversationHeaderMenu triggerId={triggerId} />
-
-        <div style={{width:'100%'}}>     
-           {/* {!isSelectionMode && ( */}
+        <div style={{ width: '100%' }}>
           <Flex container={true} flexDirection="row" alignItems="center">
-             <AvatarHeader
+            <AvatarHeader
               onAvatarClick={() => {
                 dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
               showBackButton={isMessageDetailOpened}
             />
-           <ConversationHeaderTitle />
+            <ConversationHeaderTitle />
 
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <div style={{marginTop:"10px"}}>  
-               <CallButton />
+            <div style={{ marginTop: "10px" }}>
+              <CallButton />
             </div>
 
           </Flex>
-        {/* )} */}
-        </div> 
-
-         
-       
-
+        </div>
         <div className="module-conversation-header__title-container">
           <div className="module-conversation-header__title-flex">
             <TripleDotsMenu triggerId={triggerId} showBackButton={isMessageDetailOpened} />

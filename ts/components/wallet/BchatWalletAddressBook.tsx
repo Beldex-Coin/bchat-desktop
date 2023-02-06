@@ -5,7 +5,6 @@ import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletSendPage } from '../../state/ducks/walletInnerSection';
 import { dashboard } from '../../state/ducks/walletSection';
 import { getPrivateContactsPubkeys } from '../../state/selectors/conversations';
-// import { getWalletSendAddress } from "../../state/selectors/walletConfig"
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { copyBchatID } from '../dialog/EditProfileDialog';
@@ -14,44 +13,14 @@ import {
   useConversationBeldexAddress,
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
-// import { sqlNode } from "../../node/sql"
-//  import {  getRecipientAddress } from "../../data/data"
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
-  // const directContact = useSelector(getDirectContacts);
-  // console.log('directContact ::',directContact);
-  // function getAcceptedContact()
-  // {
-  //   let data=directContact.length
-
-  // }
-
-  // async function showdata()
-  // {
-  //   console.log('recipientAddress showdata ::');
-  // //  let data= await sqlNode.getRecipientAddress()
-  // let tx_hash='af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b'
-  //  let data=await getRecipientAddress(tx_hash)
-  //  console.log('showdata ::',data);
-
-  //   // await getRecipientAddress()
-  //   // await getAllUnprocessed();
-
-  // }
-
-  // console.log("directContact :: ", directContact, directContact.length);
-
   async function copyBtn(address: string) {
-
-    // let address= useConversationBeldexAddress(pubkey)
     copyBchatID(address);
   }
-  // console.log("sendAddress :: ",sendAddress);
   async function send(address: any) {
-
-    // let address=await useConversationBeldexAddress(pubkey)
     dispatch(dashboard());
     dispatch(walletSendPage());
     dispatch(updateSendAddress(address));
@@ -73,7 +42,6 @@ export const AddressBook = (props: any) => {
             <SpacerSM />
             <div className="wallet-addressBook-wholeBox-contentBox-addresstxt">
               {belAddress}
-              {/* bxcALKJHSakhdsadhaskdhHHHDJADHUAWjhjhsjdhjshaskjhdas9dapsidasasjhas8dauas */}
             </div>
           </Flex>
 
@@ -105,14 +73,12 @@ export const AddressBook = (props: any) => {
 
   return (
     <div className="wallet-addressBook">
-      {/* <button onClick={()=>showdata()}>test 12345</button> */}
       <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
           <div onClick={() => dispatch(dashboard())}>
             <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
           </div>
           <div className="wallet-addressBook-header-txt">
-            {/* {window.i18n('addressBook')} */}
             {props.name}
           </div>
         </Flex>

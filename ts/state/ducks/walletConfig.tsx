@@ -3,7 +3,6 @@
  * Anything setting under the cog wheel tab.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { walletSettingsKey } from '../../data/settings-key';
 
 export interface WalletConfigState {
   walletsendAddress: any | String;
@@ -11,7 +10,6 @@ export interface WalletConfigState {
   walletHeight: number | any;
   walletDecimalValue:any;
   walletRescaning:boolean|any;
-  // walletFiatCurrency:any;
 }
 
 export const initialWalletConfigState: WalletConfigState = {
@@ -20,19 +18,9 @@ export const initialWalletConfigState: WalletConfigState = {
   walletHeight: '',
    walletDecimalValue:'2 - Two (0.00)', 
    walletRescaning:false
-  //  walletFiatCurrency:'USD'
-  // walletDecimalValue:window.getSettingValue(walletSettingsKey.settingsDecimal), 
-
-  
 };
 
-//  export interface WalletConfigState {
-//    walletsendAddress:any | null;
-//    fiatBalance:string|any;
-//    walletDecimalValue:any;
-//    walletFiatCurrency:any
-   
-//  }
+
  
  const walletConfigSlice = createSlice({
    name: 'walletConfig',
@@ -50,9 +38,6 @@ export const initialWalletConfigState: WalletConfigState = {
       updateWalletHeight(state, action: PayloadAction<WalletConfigState>) {
         return { ...state, walletHeight: action.payload };
       },
-      // updateWalletFiatCurrency(state, action: PayloadAction<WalletConfigState>) {
-      //   return { ...state, walletFiatCurrency: action.payload };
-      // },
       updateWalletRescaning(state, action: PayloadAction<WalletConfigState>) {
 
         return { ...state, walletRescaning: action.payload };
@@ -67,7 +52,6 @@ export const initialWalletConfigState: WalletConfigState = {
     updateDecimalValue,
     updateWalletHeight,
     updateWalletRescaning
-    // updateWalletFiatCurrency,
  } = actions;
  export const walletConfigReducer = reducer;
  

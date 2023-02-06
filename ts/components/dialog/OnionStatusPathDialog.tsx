@@ -33,7 +33,6 @@ const OnionCountryDisplay = ({
   labelText: string;
   index: number;
 }) => {
-  // const element = (hovered: boolean) => (
   const element = () => (
     <div className="onion__node__country" key={`country-${index}`}>
       <div>
@@ -42,7 +41,6 @@ const OnionCountryDisplay = ({
       <span style={{ fontSize: '11px' }}>
         {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
       </span>
-      {/* {hovered && snodeIp ? snodeIp : labelText} */}
     </div>
   );
   const [hoverable] = useHover(element);
@@ -52,7 +50,6 @@ const OnionCountryDisplay = ({
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
   const isOnline = useSelector(getIsOnline);
-  // including the device and destination in calculation
   const glowDuration = onionPath.length + 2;
   if (!isOnline || !onionPath || onionPath.length === 0) {
     return <BchatSpinner loading={true} />;

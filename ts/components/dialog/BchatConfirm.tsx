@@ -180,21 +180,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             dataTestId="Bchat-confirm-cancel-button"
           />
         )}
-        {/* {showCopyBtn &&
-          <BchatButton
-            text={"copy Seed"}
-            buttonColor={props.okTheme}
-            onClick={() => copyToClipboard()}
-            dataTestId="Bchat-confirm-ok-button"
-
-          />
-        } */}
         <BchatButton
           text={okText}
           buttonColor={props.okTheme}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
-          disabled={btndisable  ? btndisable : false}
+          disabled={btndisable ? btndisable : false}
         />
       </div>
     </BchatWrapperModal>

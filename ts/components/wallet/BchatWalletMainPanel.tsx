@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { WalletStateType } from "../../state/ducks/walletSection"
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { AddressBook } from './BchatWalletAddressBook';
@@ -18,11 +17,7 @@ import { daemon } from '../../wallet/daemon-rpc';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 import { walletSettingsKey } from '../../data/settings-key';
-// import { ModalContainer } from "../dialog/ModalContainer"
-//  import { ForgotPassword } from "./BchatWalletForgotPassword"
-// import { getwalletDecimalValue } from "../../state/selectors/walletConfig"
-// import { wallet } from '../../wallet/wallet-rpc';
-// import { walletHelper } from "../../wallet/BchatWalletHelper";
+
 
 export enum WalletPage {
   WalletPassword = 'walletPassword',
@@ -40,7 +35,7 @@ export enum WalletDashboard {
 }
 
 export const WalletMainPanel = () => {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const focusedsettings = useSelector((state: any) => state.walletFocused);
   const [amount, setAmount] = useState('');
   const [priority, setPriority] = useState(window.i18n('flash'));
@@ -48,22 +43,15 @@ export const WalletMainPanel = () => {
   const [notes, setNotes] = useState('');
 
 
-  if(!window.globalOnlineStatus){
+  if (!window.globalOnlineStatus) {
     ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
   }
 
   function numberOnly(e: any) {
-    // const re = /^-?\d+\.?\d*$/;
     const re = /^\d+\.?\d*$/;
-    
-
     if (e === '' || re.test(e)) {
       setAmount(e);
     }
-    // if (isNaN(e)) {
-    //    return
-    // }
-    // setAmount(e)
   }
   function clearStates() {
     setAmount("");
@@ -72,34 +60,19 @@ export const WalletMainPanel = () => {
     dispatch(updateSendAddress(emptyAddress));
 
   }
-
-  //   console.log("focusedsettings:",focusedsettings,WalletPage.WalletPassword);
-
-  //   if(WalletPage.WalletPassword===focusedsettings)
-  //   {
-  //       return  <div className="wallet"> <WalletPassword />
-  //       </div>
-  //   }
   if (passScreen) {
     return (
       <div className="wallet">
         <WalletPassword
           onClick={() => {
-            const currentDaemon= window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-            ToastUtils.pushToastInfo('connectedDaemon',`Connected to ${currentDaemon.host}`);
+            const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+            ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
             setPassScreen(!passScreen);
           }}
         />{' '}
       </div>
     );
-    // return <div className="wallet"><ForgotPassword onClick={()=>{setPassScreen(!passScreen)}}/> </div>
   }
-  // if (WalletPage.Dashboard === focusedsettings) {
-
-  //    return <div className="wallet"><Dashboard amount={amount} setAmount={(e: any) => { numberOnly(e) }} priority={priority} setPriority={(e: any) => setPriority(e)} />
-  //       {/* <SyncStatusBar /> */}
-  //    </div>
-  // }
   if (WalletPage.AddressBook === focusedsettings) {
     return (
       <div className="wallet">
@@ -115,7 +88,6 @@ export const WalletMainPanel = () => {
     );
   }
   if (WalletPage.Setting === focusedsettings) {
-    // setAmount('')
     return (
       <div className="wallet">
         <WalletSettings />
@@ -123,22 +95,17 @@ export const WalletMainPanel = () => {
     );
   }
   if (WalletPage.NodeSetting === focusedsettings) {
-    console.log('NodeSetting');
-
     return (
       <div className="wallet">
         <NodeSetting />
       </div>
     );
   }
-  // walletheartAction();
 
   return (
     <div className="wallet">
-      {/* <ModalContainer /> */}
-
       {WalletPage.Dashboard === focusedsettings && (
-        
+
         <Dashboard
           amount={amount}
           setAmount={(e: any) => {
@@ -147,16 +114,11 @@ export const WalletMainPanel = () => {
           priority={priority}
           notes={notes}
           setPriority={(e: any) => setPriority(e)}
-          setNotes={(e:any)=>setNotes(e)}
-          clearStates={()=>clearStates()}
+          setNotes={(e: any) => setNotes(e)}
+          clearStates={() => clearStates()}
 
         />
       )}
-
-      {/* <WalletPassword /> */}
-      {/* <AddressBook /> */}
-      {/* <NodeSetting /> */}
-      {/* <WalletSettings /> */}
     </div>
   );
 };
@@ -170,10 +132,10 @@ export const Dashboard = (props: any) => {
 
   return (
     <>
-      <WalletHeader clearStates={props.clearStates}/>
+      <WalletHeader clearStates={props.clearStates} />
       <SpacerLG />
       <div className="wallet-contentSpace">
-        <BalanceAndsendReceiveAction clearStates={props.clearStates}  />
+        <BalanceAndsendReceiveAction clearStates={props.clearStates} />
         <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
           <SendForm
@@ -188,18 +150,12 @@ export const Dashboard = (props: any) => {
         {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
         {WalletDashboard.walletTransaction === focusedInnersection && (
           <TransactionSection
-            // syncStatus={localStorage.getItem('syncStatus')}
-            // syncStatus={window.getSettingValue('syncStatus')}
             transactionList={transactions}
           />
         )}
-
-        {/* <SendForm /> */}
-        {/* <TransactionSection /> */}
-
       </div>
       <SyncStatusBar />
-      
+
     </>
   );
 };
@@ -207,7 +163,7 @@ export const BalanceAndsendReceiveAction = (props: any) => {
   return (
     <Flex container={true} flexDirection="row" justifyContent="space-between">
       <WalletBalanceSection />
-      <WalletPaymentSection clearStates={props.clearStates}/>
+      <WalletPaymentSection clearStates={props.clearStates} />
     </Flex>
   );
 };

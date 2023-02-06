@@ -134,8 +134,6 @@ export const ChangePassword = () => {
             />
           </div>
         </div>
-
-        {/* <BchatSpinner loading={isLoading} /> */}
       </BchatWrapperModal>
     </div>
   );

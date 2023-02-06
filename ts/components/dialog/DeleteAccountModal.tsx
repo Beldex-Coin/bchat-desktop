@@ -13,22 +13,25 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { wallet } from '../../wallet/wallet-rpc';
-import kill from 'cross-port-killer';
+// import kill from 'cross-port-killer';
 import { HTTPError } from '../../bchat/utils/errors';
 
 export const deleteDbLocally = async (deleteType?: string) => {
-  await wallet.closeWallet();
-  kill(64371)
-    .then()
-    .catch(err => {
-      throw new HTTPError('beldex_rpc_port', err);
-    });
+  wallet.closeWallet().then(() => console.log("close Wallet")).catch(err => {
+    throw new HTTPError('close wallet errr', err);
+  }
+  )
+  // kill(64371)
+  //   .then(()=>console.log("kill port"))
+  //   .catch(err => {
+  //     throw new HTTPError('beldex_rpc_port', err);
+  //   });
   window?.log?.info('last message sent successfully. Deleting everything');
   window.persistStore?.purge();
   await deleteAllLogs();
   if (deleteType === "oldVersion") {
     console.log("delete Type IF");
-    
+
     await Data.removeAllWithOutRecipient()
   }
   else {
@@ -40,7 +43,7 @@ export const deleteDbLocally = async (deleteType?: string) => {
   await Data.removeDB();
   await Data.removeOtherData();
   window.localStorage.setItem('restart-reason', 'delete-account');
-  
+
 };
 
 export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {
@@ -208,7 +211,7 @@ export const DeleteAccountModal = () => {
           className="bchat-confirm-main-message"
           html={window.i18n('dialogClearAllDataDeletionQuestion')}
         />
-        {/* <SpacerLG /> */}
+
         <div className="bchat-modal__button-group">
           <BchatButton
             text={window.i18n('entireAccount')}
@@ -228,8 +231,6 @@ export const DeleteAccountModal = () => {
             disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
           />
         </div>
-        {/* <SpacerLG /> */}
-
         {deleteEverythingWithNetwork && (
           <BchatHtmlRenderer
             tag="span"
@@ -245,8 +246,6 @@ export const DeleteAccountModal = () => {
             html={window.i18n('areYouSureDeleteDeviceOnly')}
           />
         )}
-        {/* <SpacerLG /> */}
-
         {(deleteDeviceOnly || deleteEverythingWithNetwork) && (
           <div className="bchat-modal__button-group">
             <BchatButton

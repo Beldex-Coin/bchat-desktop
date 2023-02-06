@@ -140,8 +140,6 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
       showExitIcon={showExitIcon}
       showHeader={true}
     >
-      {/* {!showHeader && <SpacerLG />} */}
-
       <div className="bchat-modal__centered">
         <SpacerMD />
         {bchatIcon && iconSize && (
@@ -160,7 +158,6 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             </div>
             <SpacerXS />
             <div className="bchat-modal__centered-sendConfirm_content-errorTxt">{error}</div>
-            {/* <SpacerMD /> */}
             <SpacerMD />
           </div>
         ) : (

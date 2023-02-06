@@ -5,7 +5,6 @@ import { BchatIconButton } from './icon';
 
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
-// import { BchatButton } from './basic/BchatButton';
 
 export type BchatWrapperModalType = {
   title?: string;
@@ -25,12 +24,7 @@ export type BchatWrapperModalType = {
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   const {
     title,
-    // onConfirm,
-    // onClose,
     showHeader = true,
-    // showClose = false,
-    // confirmText,
-    // cancelText,
     showExitIcon,
     headerIconButtons,
     headerReverse,
@@ -56,20 +50,6 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   );
 
   const modalRef = useRef<HTMLDivElement>(null); 
-
-  // const handleClick = (e: any) => {
-  //   if (!modalRef.current?.contains(e.target)) {
-  //     props.onClose?.();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener('mousedown', handleClick);
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClick);
-  //   };
-  // }, []);
 
   return (
     <div
@@ -111,19 +91,6 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
           <div className="bchat-modal__body">
             <div className="bchat-modal__centered">
               {props.children}
-
-              {/* <div className="bchat-modal__button-group">
-                {onClose && showClose ? (
-                  <BchatButton onClick={props.onClose}>
-                    {cancelText || window.i18n('close')}
-                  </BchatButton>
-                ) : null}
-                {onConfirm ? (
-                  <BchatButton onClick={props.onConfirm}>
-                    {confirmText || window.i18n('ok')}
-                  </BchatButton>
-                ) : null}
-              </div> */}
             </div>
           </div>
         </div>

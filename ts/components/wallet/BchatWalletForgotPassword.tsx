@@ -253,7 +253,6 @@ export const ForgotPassword = (props: any) => {
             </span>
           </Flex>
         </div>
-        {/* <SpacerMD /> */}
         <SpacerMD />
         <div className="wallet-forgotPassword-content-Box-disClaimerBox">
           <div style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</div>
@@ -261,7 +260,6 @@ export const ForgotPassword = (props: any) => {
             {window.i18n('disclaimerForgotPassword', walletDaemonHeight)}
           </div>
         </div>
-        {/* <button onClick={()=>getConversation()}>getConversation</button> */}
         <div className="wallet-settings-modalBtnGrp">
           <div className="bchat-modal__button-group__center">
             <BchatButton

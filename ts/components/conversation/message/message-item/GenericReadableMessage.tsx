@@ -186,13 +186,10 @@ export const GenericReadableMessage = (props: Props) => {
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
     >
-
-      {/* <SelectionDiv onClick={()=>isSelectionMode&&onSelect(messageId)}> */}
       <div className='message-box' onClick={() => isSelectionMode && onSelect(messageId)} >
         <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}>
           {selected && <div className='isSelected'><BchatIcon iconType="check" iconColor={'#11c119'} iconSize={23} /></div>}
         </div>
-        {/* <BchatIcon iconType="check" iconColor={'rgba(17, 193, 25, 1)'} iconSize={17} /> */}
         <MessageAvatar messageId={messageId} />
         {expirationLength && expirationTimestamp && (
           <ExpireTimer
@@ -214,7 +211,6 @@ export const GenericReadableMessage = (props: Props) => {
             expirationTimestamp={expirationTimestamp}
           />
         )}
-        {/* </SelectionDiv> */}
       </div>
     </ReadableMessage>
   );

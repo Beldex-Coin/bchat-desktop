@@ -336,11 +336,7 @@ export const BchatRightPanelWithDetails = () => {
         // tslint:disable-next-line: use-simple-attributes
         <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
           <div className='group-settings__leaveBtn'  >
-          
-              {/* <BchatIcon iconType="leaveGroup" iconSize="tiny" iconColor='#fc222f' iconRotation={180}/> */}
               <BchatIcon iconType={isPublic?"delete":'leaveGroup'} iconSize="tiny" iconColor='#fc222f' iconRotation={isPublic?0:180}/>
-
-              {/* } */}
             <div  style={{marginLeft:'5px'}}>
            { leaveGroupString}
               </div>
