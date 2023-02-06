@@ -43,9 +43,6 @@ export const MemberListItem = (props: {
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
-  // console.log('memberName ::',memberName);
-  
-
   return (
     // tslint:disable-next-line: use-simple-attributes
     <div

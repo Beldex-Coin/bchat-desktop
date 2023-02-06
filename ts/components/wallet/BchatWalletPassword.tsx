@@ -44,54 +44,6 @@ export const WalletPassword = (props: any) => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(0);
   let percentage = pct == 100 && currentHeight < daemonHeight ? 99 : pct;
-
-  // useEffect(() => {
-  //   const listener = (event:any) => {
-  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
-  //       console.log("Enter key was pressed. Run your function.");
-  //       submit()
-
-  //       // event.preventDefault();
-  //       // callMyFunction();
-  //     }
-  //   };
-  //   document.addEventListener("keydown", listener);
-  //   return () => {
-  //     document.removeEventListener("keydown", listener);
-  //   };
-  // }, []);
-  // console.log('percentage:', percentage, currentHeight, daemonHeight);
-  // if (percentage != 0) {
-  //   setPercentage(percentage);
-  // }
-  // console.log('get_percentage:', getPercentage);
-  // console.log('progressing:', progressing);
-
-  // if (!progressing) {
-  //   if (
-  //     daemonHeight != 0 &&
-  //     currentHeight != 0 &&
-  //     daemonHeight !== currentHeight &&
-  //     percentage < 99
-  //     percentage !== 99
-  //   ) {
-  //     console.log('nottt');
-  //     setProgressing(true);
-  //   }
-  // }
-  // if (progressing) {
-  //   if (daemonHeight != 0 && currentHeight != 0 && daemonHeight===currentHeight) {
-  //     setProgressing(false);
-  //   }
-  // }
-  // console.log('setProgressing:', progressing);
-  //   if (daemonHeight != 0 && currentHeight != 0 && daemonHeight == 99) {
-  // setProgressing(false);
-  //   }
-  // }
-
-  // console.log('setProgressing:', progressing);
-
   function loadDecimal() {
     if (!window.getSettingValue(walletSettingsKey.settingsDecimal)) {
       let data: any = '2 - Two (0.00)';
@@ -101,8 +53,6 @@ export const WalletPassword = (props: any) => {
       let data: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
       dispatch(updateDecimalValue(data));
     }
-
-    // window.setSettingValue("save-recipient", false);
   }
   loadDecimal();
   loadRecipient();
@@ -116,19 +66,14 @@ export const WalletPassword = (props: any) => {
   });
 
   async function submit() {
-    console.log('password', password);
-
     if (!password) {
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
-
     let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
-
     let profileName = userDetails?.attributes.walletUserName;
     if (!profileName) {
       profileName = UserDetails[userId].profileName;
     }
-    // pushToastInfo('connectedDaemon',`Connected to ${currentDaemon.host}`);
     setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
@@ -151,13 +96,6 @@ export const WalletPassword = (props: any) => {
       />
     );
   }
-
-  // console.log(
-  //   'currentHeight>0&&percentage<99',
-  //   daemonHeight > 0 && percentage < 99,
-  //   daemonHeight,
-  //   percentage
-  // );
 
   if (daemonHeight > 0 && percentage < 99) {
     return (

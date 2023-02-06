@@ -63,7 +63,6 @@ export const TransactionSection = (props: any) => {
     setFilter(params);
     setEmptyScreen(params);
     setVisible(!visible);
-    console.log('typeeeeeee:', type);
     filterTransaction(type);
   }
 
@@ -349,10 +348,8 @@ export const TransactionSection = (props: any) => {
                       </section>
                     </Flex>
                   </Flex>
-                  {/* <div> */}
-                  {/* {selected === i && item.type === 'out' && <RececipientAddress trasactionData={item} />} */}
+                 
                   {selected === i && (
-                    // <RececipientAddress trasactionData={item} />
                     <>
                       <Flex
                         container={true}
@@ -363,7 +360,6 @@ export const TransactionSection = (props: any) => {
                         width={'100%'}
                       >
                         <Flex container={true}>
-                          {/* <div style={{ display: 'flex' }}> */}
                           <article
                             style={
                               recip.address && zoomLevel > 100
@@ -371,11 +367,7 @@ export const TransactionSection = (props: any) => {
                                 : { width: '110px' }
                             }
                           >
-                            {/* <TransactionIndication type={item.type} /> */}
                           </article>
-
-                          {/* <section style={{ display: 'flex' }}> */}
-
                           {recip.address && (
                             <div
                               style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '57%' }}
@@ -396,8 +388,6 @@ export const TransactionSection = (props: any) => {
                               {item.fee / 1e9} BDX
                             </article>
                           </section>
-                          {/* </div> */}
-                          {/* </section> */}
                         </Flex>
 
                         <section
@@ -406,7 +396,6 @@ export const TransactionSection = (props: any) => {
                             marginLeft: zoomLevel && recip.address > 100 ? '20px' : '20px',
                             paddingTop: 0,
                           }}
-                          // className="wallet-Transaction-contentBox-dateandheight"
                         >
                           <div className="wallet-Transaction-contentBox-dateandheight-month">
                             {window.i18n('dateTime')}
@@ -419,7 +408,6 @@ export const TransactionSection = (props: any) => {
                     </>
                   )}
                 </div>
-                // </div>
               ))}
             {data.length == 0 ? (
               <>
@@ -458,8 +446,6 @@ export const TransactionSection = (props: any) => {
               ''
             )}
           </div>
-          {/* <SpacerLG />
-          <SpacerLG /> */}
           {zoomLevel > 100 && <SpacerLG />}
         </div>
       )}

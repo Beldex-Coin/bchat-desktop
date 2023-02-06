@@ -205,18 +205,13 @@ function captureClicks(window: BrowserWindow) {
   window.webContents.on('will-navigate', handleUrl);
   window.webContents.on('new-window', handleUrl);
 }
-// console.log('getDefaultWindowSize',getDefaultWindowSize());
 
 function getDefaultWindowSize() {
-  // const screenSize = screen.getPrimaryDisplay().workAreaSize;
-
   return {
     defaultWidth: isTestIntegration ? 1500 : 880,
     defaultHeight: 820,
     // minWidth: 880,
     minWidth: 1200,
-
-    // minWidth: screenSize.width-200,
     minHeight: 600,
   };
 }
@@ -227,7 +222,6 @@ function getWindowSize() {
   // Ensure that the screen can fit within the default size
   const width = Math.min(defaultWidth, Math.max(minWidth, screenSize.width));
   const height = Math.min(defaultHeight, Math.max(minHeight, screenSize.height));
-//  console.log('screenSize ::',screenSize);
 
   return { width, height, minWidth, minHeight };
 }
@@ -264,9 +258,7 @@ function getStartInTray() {
 }
 // tslint:disable-next-line: max-func-body-length
 async function createWindow() {
-  const { minWidth, minHeight, width, height } = getWindowSize();
-  // console.log('getWindowSize() ::',getWindowSize());
-  
+  const { minWidth, minHeight, width, height } = getWindowSize();  
   windowConfig = windowConfig || {};
   const picked = {
     maximized: (windowConfig as any).maximized || false,
@@ -278,9 +270,7 @@ async function createWindow() {
     x: (windowConfig as any).x,
     y: (windowConfig as any).y,
   };
-  // console.log('isTestIntegration ',isTestIntegration,picked);
   
-
   if (isTestIntegration) {
     const screenWidth =
       screen.getPrimaryDisplay().workAreaSize.width - getDefaultWindowSize().defaultWidth;
@@ -311,8 +301,6 @@ async function createWindow() {
     ...picked,
     // don't setup icon, the executable one will be used by default
   };
-  // console.log("windowOptions ::",windowOptions);
- 
   if (!_.isNumber(windowOptions.width) || windowOptions.width < minWidth) {
     windowOptions.width = Math.max(minWidth, width);
   }

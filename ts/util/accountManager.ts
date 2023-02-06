@@ -171,10 +171,7 @@ async function registrationDone(ourPubkey: string, displayName: string, deamonHe
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
   window?.log?.info('registration done 0 ::', ourPubkey);
-
-  // let userDetails= await getConversationById(ourPubkey);
-  // console.log(" registration userDetails::",userDetails);
-
+  // let userDetails= await getConversationById(ourPubkey)
   // Ensure that we always have a conversation for ourself
   const conversation = await getConversationController().getOrCreateAndWait(
     ourPubkey,

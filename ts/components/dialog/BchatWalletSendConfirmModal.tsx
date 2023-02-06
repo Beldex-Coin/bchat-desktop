@@ -186,7 +186,6 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             <SpacerLG />
           </article>
         )}
-        {/* <BchatSpinner loading={isLoading} /> */}
       </div>
 
       <div className="bchat-modal__button-group">

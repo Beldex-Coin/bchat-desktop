@@ -70,7 +70,6 @@ async function checkForUpdates(
   const canUpdate = await canAutoUpdate();
   logger.info('[updater] canUpdate', canUpdate);
   // insertInto(`[updater] canUpdate",${canUpdate}`)
-  // console.log(path.join(__dirname, '..', '..', 'config'))
   if (!canUpdate) {
     logger.info('checkForUpdates canAutoUpdate false');
     return;
@@ -155,7 +154,7 @@ async function checkForUpdates(
       //   return;
       // }
       // insertInto(`[updater] shouldDownload:1::",${shouldDownload}`)
-      // console.log("AFTER")
+    
     //  const down= await autoUpdater.downloadUpdate();
     //  insertInto(`download:",${down}`)
 
@@ -210,8 +209,7 @@ function isUpdateAvailable(updateInfo: UpdateInfo): boolean {
 async function canAutoUpdate(): Promise<boolean> {
   const isPackaged = app.isPackaged;
 
-  // console.log("ispackaged:",isPackaged)
-  // console.log("REsource:",process.resourcesPath)
+
 
   // On a production app, we need to use resources path to check for the file
   if (isPackaged && !process.resourcesPath) {
@@ -222,7 +220,6 @@ async function canAutoUpdate(): Promise<boolean> {
   const updateFile = isPackaged ? 'app-update.yml' : 'dev-app-update.yml';
   const basePath = isPackaged && process.resourcesPath ? process.resourcesPath : app.getAppPath();
   const appUpdateConfigPath = path.join(basePath, updateFile);
-  // console.log("after update")
   return new Promise(resolve => {
     try {
       // tslint:disable-next-line: non-literal-fs-path

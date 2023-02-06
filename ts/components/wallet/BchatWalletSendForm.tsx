@@ -7,9 +7,6 @@ import {
   getWalletSendAddress,
 } from '../../state/selectors/walletConfig';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-// import { BchatDropdown } from "../basic/BchatDropdown"
-// import { BchatInput } from "../basic/BchatInput"
-// import { BchatIdEditable } from "../basic/BchatIdEditable"
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
@@ -21,9 +18,7 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
-// import { useKey } from 'react-use';
 
-// import { saveRecipientAddressvalid } from '../../data/data';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -50,13 +45,6 @@ export const SendForm = (props: any) => {
       document.removeEventListener('click', handleClick);
     };
   }, []);
-
-  // useKey((event: KeyboardEvent) => {
-  //   if ((props.amount && address) && event.key === 'Enter') {
-  //     addressValidation();
-  //   }
-  //   return event.key === 'Enter';
-  // });
 
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
@@ -90,10 +78,7 @@ export const SendForm = (props: any) => {
   function sendConfirmModal() {
     dispatch(
       updateSendConfirmModal({
-        // title: 'Confirm Transaction',
-        // message: window.i18n('sendRecoveryPhraseMessage'),
         okTheme: BchatButtonColor.Green,
-
         address: address,
         amount: props.amount,
         fee: props.priority === 'Flash' ? 0.0042 : 0.0014,
@@ -120,18 +105,12 @@ export const SendForm = (props: any) => {
       isSweepAll
     );
     if (data.result) {
-      // dispatch(updateTransactionInitModal(null))
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
         address: address,
       };
-
       let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
-      console.log('getSettingvalue ::', getSettingvalue);
-
       if (getSettingvalue) {
-        // console.log('TransactionHistory::',TransactionHistory);
-
         await saveRecipientAddress(TransactionHistory);
       }
       clearStateValue();
@@ -140,9 +119,7 @@ export const SendForm = (props: any) => {
     } else {
       clearStateValue();
       dispatch(updateSendConfirmModal(null));
-
       dispatch(updateTransactionInitModal(null));
-      // ToastUtils.pushToastError('transferFailed', data.error.message);
       return data.result.tx_hash;
     }
   }
@@ -150,7 +127,6 @@ export const SendForm = (props: any) => {
   return (
     <>
       <div className="wallet-sendForm">
-        {/* <button onClick={() => insertData()}>insertData</button> */}
         <Flex container={true} flexDirection="row" justifyContent="space-between">
           <Flex width="50%">
             <Flex
@@ -160,15 +136,12 @@ export const SendForm = (props: any) => {
               alignItems="center"
               width="100%"
             >
-              {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
               <span className="wallet-sendForm-label">{window.i18n('amount')}</span>
 
               <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
                 <input
                   value={props.amount}
                   onChange={(e: any) => {
-                    // let amount = e.target.value.replace(/[^0-9\.]/g, '');
-                    // console.log("word_Without_Numbers:",amount)
                     props.setAmount(e.target.value);
                   }}
                   placeholder={window.i18n('enterAmount')}
@@ -186,18 +159,12 @@ export const SendForm = (props: any) => {
               alignItems="center"
               width="100%"
             >
-              {/* <span className="wallet-sendForm-label" style={widthStyle}> */}
               <span className="wallet-sendForm-label">{window.i18n('priority')}</span>
               <div
                 className="wallet-sendForm-inputBox"
                 style={{ display: 'block', padding: '0px' }}
                 ref={modalRef}
               >
-                {/* <select value={props.priority} onChange={handleChange}>
-    <option value= {window.i18n('flash')}>{window.i18n('flash')} </option>
-    <option value={window.i18n('slow')}>{window.i18n('slow')}</option>
-                
-  </select> */}
                 <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px' }}>
                   <span className="priortyBox">{props.priority}</span>
 
@@ -216,8 +183,7 @@ export const SendForm = (props: any) => {
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(
-                          `dropDownItem ${
-                            props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -230,8 +196,7 @@ export const SendForm = (props: any) => {
                       <SpacerLG />
                       <div
                         className={classNames(
-                          `dropDownItem ${
-                            props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -257,7 +222,7 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            {/* <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
+
             <span className="wallet-sendForm-label">{window.i18n('address')}</span>
             <div className="wallet-sendForm-inputBox">
               <input
@@ -291,7 +256,6 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-            {/* <span className="wallet-sendForm-label" style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
             <span className="wallet-sendForm-label">{window.i18n('notes')}</span>
             <div className="wallet-sendForm-inputBox">
               <textarea
@@ -316,8 +280,6 @@ export const SendForm = (props: any) => {
           />
         </div>
       </div>
-      {/* <SpacerLG />
-      <SpacerLG /> */}
     </>
   );
 };

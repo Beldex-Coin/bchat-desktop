@@ -70,13 +70,8 @@ export const WalletSettings = () => {
 
     setSaveRecipient(!saveRecipient);
   }
-  // let content=[window.i18n("usdCurrency"),window.i18n("audCurrency"),window.i18n("bgnCurrency")]
   return (
     <div className="">
-      {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
-      {/* <WalletModal headerName={window.i18n('displayCurrency')} content={content} /> */}
-
-      {/* <ModalContainer /> */}
       <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
           <div onClick={() => dispatch(dashboard())}>
@@ -138,8 +133,6 @@ export const WalletSettings = () => {
             </div>
           </Flex>
         </div>
-
-        {/* <SpacerMD /> */}
         <Flex
           container={true}
           justifyContent="space-between"
@@ -153,11 +146,9 @@ export const WalletSettings = () => {
                 currency: fiatCurrency,
                 onClose: () => dispatch(walletSettingMiniModal(null)),
                 onClick: (e: any) => {
-                  // localStorage.setItem('currency', e);
                   window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
                   wallet.getFiatBalance(e);
                   setFiatCurrency(e);
-                  // dispatch(updateWalletFiatCurrency(e))
                   dispatch(walletSettingMiniModal(null));
                 },
               })
@@ -172,7 +163,6 @@ export const WalletSettings = () => {
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>
-        {/* <SpacerMD /> */}
         <Flex
           container={true}
           justifyContent="space-between"
@@ -212,7 +202,6 @@ export const WalletSettings = () => {
         >
           <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
           <div style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}>
-            {/* <span className="wallet-settings-tabBox-disableText">mainnet.beldex.io:29095</span>  */}
             <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           </div>
         </Flex>

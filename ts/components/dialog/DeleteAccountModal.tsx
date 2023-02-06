@@ -30,13 +30,9 @@ export const deleteDbLocally = async (deleteType?: string) => {
   window.persistStore?.purge();
   await deleteAllLogs();
   if (deleteType === "oldVersion") {
-    console.log("delete Type IF");
-
     await Data.removeAllWithOutRecipient()
   }
   else {
-    console.log("delete Type else");
-
     await Data.removeAll();
   }
   await Data.close();

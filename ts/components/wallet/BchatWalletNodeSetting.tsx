@@ -38,7 +38,6 @@ export const NodeSetting = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const testBottonEnable = !ipAddress && !port ? true : !ipAddress ? true : !port ? true : false;
-  console.log('testBottonEnable:', testBottonEnable);
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -137,7 +136,6 @@ export const NodeSetting = () => {
       if (Object.keys(verifyDeamon).length !== 0) {
         addDeamonNet();
       }
-      console.log('verifyDeamon:', verifyDeamon);
     }
     return event.key === 'Enter';
   });
@@ -146,7 +144,6 @@ export const NodeSetting = () => {
     let data = { host: ipAddress, port: port, active: 1, type: 'Remote' };
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
     if (confirmation && confirmation.status === 'OK') {
-      // console.log('confirmation ok');
       if (confirmation.nettype === window.networkType) {
         setVerifyDeamon(data);
         setTestNotify({ status: 'ok', content: `Success`, StatusIcon: true });
@@ -159,18 +156,9 @@ export const NodeSetting = () => {
       });
       return;
     }
-    // setIpAddress('');
-    // setPort('');
     setTestNotify({ status: 'failed', content: `Connection Error`, StatusIcon: true });
     setVerifyDeamon({});
   }
-
-  // console.log(
-  //   '!ipAddress && !port ::',
-  //   currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort,
-  //   currentDeamon.host,
-  //   chooseDeamon
-  // );
 
   return (
     <div>
@@ -211,8 +199,6 @@ export const NodeSetting = () => {
             </div>
             <div className="marginLeft"> {window.i18n('remoteDaemonOnly')}</div>
           </article>
-          {/* <div className="marginLeft marginRight "></div> */}
-
           <article className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }}>
             <div
               onClick={() => {
@@ -449,10 +435,6 @@ export const NodeSetting = () => {
                                   </span>
                                 </div>
                               ))}
-                            {/* <div style={{ marginBottom: '5px' }} onClick={()=>{setChooseDeamon('mainnet.beldex.io'),setDropdown(false),setChooseDeamonPort(29095)}}>
-                                            <BchatIcon iconType="circle" iconSize={8} iconColor='#20D024' />
-                                            <span style={{ marginLeft: "10px" }}>mainnet.beldex.io:29095</span>
-                                        </div> */}
                           </div>
                         </div>
                       )}

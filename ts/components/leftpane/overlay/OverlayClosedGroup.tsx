@@ -105,9 +105,6 @@ export const OverlayClosedGroup = () => {
     dispatch(showLeftPaneSection(0));
     window.inboxStore?.dispatch(setOverlayMode('message'));
   }
-
-  // console.log('privateContactsPubkeys',privateContactsPubkeys);
-
   return (
     <div className="module-left-pane-overlay">
       <LeftPaneSectionHeader />

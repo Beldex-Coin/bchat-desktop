@@ -3842,24 +3842,11 @@ function saveRecipientAddress(data: any) {
 function getRecipientAddress(tx_hash:any)
 {
 
-  // let hash="af8ca296a9feb5655c4053704507978e9d637860dbf15bc642f7ce8638cbfc4b"
-  // console.log();
-  // console.log('hash:',hash === tx_hash);
-  
-  // const row = assertGlobalInstance()
-  //   .prepare(`SELECT * FROM  ${RECIPIENT_ADDRESS};`)
-  //   .all();
-  //   console.log("RecipientAddress ::1",tx_hash);
-  //   console.log("RecipientAddress ::1 row",row);
-  
-
   const row = assertGlobalInstance()
   .prepare(`SELECT * FROM ${RECIPIENT_ADDRESS} WHERE tx_hash = $tx_hash;`)
   .get({
     tx_hash,
-  });
-  // console.log("row1 ::",row1);
-  
+  });  
   if (!row) {
     return [];
   }

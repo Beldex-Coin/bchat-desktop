@@ -9,9 +9,6 @@ export const SyncStatusBar = () => {
   const dispatch = useDispatch();
   const currentHeight: any = Number(useSelector(getHeight));
   let daemonHeight = useSelector((state: any) => state.daemon.height);
-  // const rescaning=useSelector(getRescaning)  ;
-  console.log('currentHeight',currentHeight)
-
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
