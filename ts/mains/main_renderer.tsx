@@ -281,7 +281,7 @@ async function start() {
   // test net
   // const deamon_list=[{host:'154.26.139.105',port:'19095',active:0}]
 
-    function removeOldLoginDb() {
+  function removeOldLoginDb() {
     try {
       let BChatDbDir;
       if (os.platform() === 'linux' || os.platform() === 'darwin') {
@@ -289,7 +289,6 @@ async function start() {
           os.platform() === 'linux'
             ? path.join(os.homedir(), '.config//BChat')
             : path.join(os.homedir(), '/Library/Application Support/BChat');
-            console.log("bchBChatDbDir:at:",BChatDbDir)
         if (fs.existsSync(BChatDbDir)) {
           // console.log("NOO")
           fs.emptyDirSync(BChatDbDir);

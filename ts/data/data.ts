@@ -206,7 +206,7 @@ export async function saveConversation(data: ReduxConversationType): Promise<voi
 
 export async function getConversationById(id: string): Promise<ConversationModel | undefined> {
   const data = await channels.getConversationById(id);
-  
+
   if (data) {
     return new ConversationModel(data);
   }
@@ -224,15 +224,15 @@ export async function updateConversationAddress(data: ReduxConversationAddress):
 
 // For update wallet Address
 
-export async function updateWalletAddressInConversation(data: ReduxConversationType): Promise<void> {
+export async function updateWalletAddressInConversation(
+  data: ReduxConversationType
+): Promise<void> {
   const cleanedData = _cleanData(data);
   await channels.updateWalletAddressInConversation(cleanedData);
 }
 
 export async function removeConversation(id: string): Promise<void> {
   const existing = await getConversationById(id);
-  console.log('existing ::',existing);
-  
   // Note: It's important to have a fully database-hydrated model to delete here because
   //   it needs to delete all associated on-disk files along with the database delete.
   if (existing) {
@@ -372,9 +372,8 @@ export async function getMessageById(
   if (skipTimerInit) {
     message.skipTimerInit = skipTimerInit;
   }
-  let data:any={id:message.conversationId,walletAddress:message.walletAddress}
-  // console.log('getMessageById',data);
-  updateWalletAddressInConversation(data)
+  let data: any = { id: message.conversationId, walletAddress: message.walletAddress };
+  updateWalletAddressInConversation(data);
 
   return new MessageModel(message);
 }
@@ -394,8 +393,6 @@ export async function getMessageBySenderAndSentAt({
   if (!messages || !messages.length) {
     return null;
   }
-// console.log("messages getMessageBySenderAndSentAt",messages);
-
   return new MessageModel(messages[0]);
 }
 
@@ -760,11 +757,10 @@ export async function fillWithTestData(convs: number, msgs: number) {
 }
 
 //wallet integration
-export async function saveRecipientAddress(data:any) {  
+export async function saveRecipientAddress(data: any) {
   return await channels.saveRecipientAddress(data);
 }
 
-export async function getRecipientAddress(data:any) {
-   return channels.getRecipientAddress(data);
+export async function getRecipientAddress(data: any) {
+  return channels.getRecipientAddress(data);
 }
-

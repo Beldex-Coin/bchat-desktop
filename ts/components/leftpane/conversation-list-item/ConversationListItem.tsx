@@ -15,7 +15,7 @@ import { updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
-  useConversationPropsById,
+  // useConversationPropsById,
   useConversationUsername,
   useIsPrivate,
 } from '../../../hooks/useParamSelector';
@@ -96,25 +96,25 @@ const ConversationListItem = (props: Props) => {
   } = props;
  
   
-  function useHeaderItemProps(conversationId: string) {
-    const convoProps = useConversationPropsById(conversationId);
-    if (!convoProps) {
-      return null;
-    }
-    return {
-      isPinned: !!convoProps.isPinned,
-      mentionedUs: convoProps.mentionedUs || false,
-      unreadCount: convoProps.unreadCount || 0,
-      activeAt: convoProps.activeAt,
-    };
-  }
-  const convoProps = useHeaderItemProps(conversationId);
+  // function useHeaderItemProps(conversationId: string) {
+  //   const convoProps = useConversationPropsById(conversationId);
+  //   if (!convoProps) {
+  //     return null;
+  //   }
+  //   return {
+  //     isPinned: !!convoProps.isPinned,
+  //     mentionedUs: convoProps.mentionedUs || false,
+  //     unreadCount: convoProps.unreadCount || 0,
+  //     activeAt: convoProps.activeAt,
+  //   };
+  // }
+  // const convoProps = useHeaderItemProps(conversationId);
   
-  const activeAt=convoProps?.activeAt;
-  console.log("activeAt:",activeAt)
+  // const activeAt=convoProps?.activeAt;
+  // console.log("activeAt:",activeAt)
   // console.log("unreadCount ::",unreadCount);
   
-   console.log(activeAt);
+  //  console.log(activeAt);
   
   const key = `conversation-item-${conversationId}`;
 

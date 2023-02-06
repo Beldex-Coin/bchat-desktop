@@ -64,12 +64,10 @@ export class ConversationController {
   }
   // Needed for some model setup which happens during the initial fetch() call below
   public getUnsafe(id: string): ConversationModel | undefined {
-    return this.conversations.get(id); 
+    return this.conversations.get(id);
   }
 
   public dangerouslyCreateAndAdd(attributes: ConversationAttributes) {
- console.log('attributes ::',attributes);
- 
     return this.conversations.add(attributes);
   }
 
@@ -85,16 +83,9 @@ export class ConversationController {
     if (!this._initialFetchComplete) {
       throw new Error('getConversationController().get() needs complete initial fetch');
     }
-    
 
     let conversation = this.conversations.get(id);
     if (conversation) {
-      // console.log('conversation ::',conversation.attributes);
-      // console.log("time", Date.now());
-      // conversation.set({
-      //   active_at: Date.now(),
-      // });
-      
       return conversation;
     }
 
@@ -107,10 +98,9 @@ export class ConversationController {
     const create = async () => {
       try {
         // conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
-        conversation.attributes.walletUserName=localStorage.getItem("walletUserName");
+        conversation.attributes.walletUserName = localStorage.getItem('walletUserName');
         await saveConversation(conversation.attributes);
-        localStorage.setItem("walletUserName",'');
-
+        localStorage.setItem('walletUserName', '');
       } catch (error) {
         window?.log?.error(
           'Conversation save failed! ',
@@ -218,7 +208,7 @@ export class ConversationController {
         try {
           await removeV2OpenGroupRoom(conversation.id);
         } catch (e) {
-          window?.log?.info('removeV2OpenGroupRoom failed:', e); 
+          window?.log?.info('removeV2OpenGroupRoom failed:', e);
         }
       }
     }
@@ -233,7 +223,7 @@ export class ConversationController {
     // so conversation still exists (useful for medium groups members or opengroups) but is not shown on the UI
     if (conversation.isPrivate()) {
       window.log.info(`deleteContact isPrivate, marking as inactive: ${id}`);
-    
+
       // conversation.set({
       //   active_at: undefined,
       //   // active_at:2022,
@@ -253,7 +243,7 @@ export class ConversationController {
 
       this.conversations.remove(conversation);
       // this.conversations.remove(id);
-      
+
       if (window?.inboxStore) {
         window.inboxStore?.dispatch(
           conversationActions.conversationChanged({

@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getRescaning, getwalletDecimalValue, getWalletSendAddress } from '../../state/selectors/walletConfig';
+import {
+  getRescaning,
+  getwalletDecimalValue,
+  getWalletSendAddress,
+} from '../../state/selectors/walletConfig';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatDropdown } from "../basic/BchatDropdown"
 // import { BchatInput } from "../basic/BchatInput"
@@ -23,21 +27,12 @@ import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
-  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const syncStatus = useSelector(getRescaning);
-  console.log("syncStatus:",syncStatus)
   const dispatch = useDispatch();
-  // const [amount, setAmount] = useState(props.amount);
-  // const [priority, setPriority] = useState(window.i18n("flash"));
   const [address, setAddress] = useState(sendAddress);
-  // const [notes, setNotes] = useState('');
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  // let widthStyle = {
-  //   width: zoomLevel > 100 ? 'calc(30% + 30px)' : 'calc(12% + 30px)',
-  //   paddingLeft: '20px',
-  // };
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -47,7 +42,6 @@ export const SendForm = (props: any) => {
     dispatch(updateSendAddress(emtStr));
   }
   const modalRef = useRef<HTMLDivElement>(null);
-  //  const downArrowRef=useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
@@ -65,27 +59,10 @@ export const SendForm = (props: any) => {
   // });
 
   const handleClick = (e: any) => {
-    // console.log(
-    //   'modalRef',
-    //   modalRef,
-    //   modalRef.current,
-    //   modalRef.current?.contains(e.target),
-    //   e.target
-    // );
-    //  console.log('modalRef2 ::',downArrowRef,downArrowRef.current?.contains(e.target));
-
     if (!modalRef.current?.contains(e.target)) {
-      console.log('modalRef if');
-      // setDropDown(!dropDown);
       setDropDown(false);
     }
   };
-  // function handleChange(e:any)
-  // {
-  //   console.log('e.target.value',e.target.value);
-
-  //   props.setPriority(e.target.value);
-  // }
 
   async function addressValidation() {
     if (!window.globalOnlineStatus) {
@@ -112,23 +89,23 @@ export const SendForm = (props: any) => {
 
   function sendConfirmModal() {
     dispatch(
-    updateSendConfirmModal({
-      // title: 'Confirm Transaction',
-      // message: window.i18n('sendRecoveryPhraseMessage'),
-      okTheme: BchatButtonColor.Green,
-      
-      address:address,
-      amount: props.amount,
-      fee:props.priority === 'Flash' ? 0.0042 : 0.0014,
-      Priority:props.priority,
-      onClickOk: async () => {
-       
-        await send();
-      },
-      onClickClose: () => {
-        dispatch(updateSendConfirmModal(null));
-      },
-    }))
+      updateSendConfirmModal({
+        // title: 'Confirm Transaction',
+        // message: window.i18n('sendRecoveryPhraseMessage'),
+        okTheme: BchatButtonColor.Green,
+
+        address: address,
+        amount: props.amount,
+        fee: props.priority === 'Flash' ? 0.0042 : 0.0014,
+        Priority: props.priority,
+        onClickOk: async () => {
+          await send();
+        },
+        onClickClose: () => {
+          dispatch(updateSendConfirmModal(null));
+        },
+      })
+    );
   }
 
   async function send() {
@@ -184,11 +161,9 @@ export const SendForm = (props: any) => {
               width="100%"
             >
               {/* <span style={{ width: '20%' }}>{window.i18n('amount')}</span> */}
-              <span className="wallet-sendForm-label"  >
-                {window.i18n('amount')}
-              </span>
+              <span className="wallet-sendForm-label">{window.i18n('amount')}</span>
 
-              <div className="wallet-sendForm-inputBox" style={{width: "90%"}}>
+              <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
                 <input
                   value={props.amount}
                   onChange={(e: any) => {
@@ -212,10 +187,7 @@ export const SendForm = (props: any) => {
               width="100%"
             >
               {/* <span className="wallet-sendForm-label" style={widthStyle}> */}
-              <span className="wallet-sendForm-label" >
-
-                {window.i18n('priority')}
-              </span>
+              <span className="wallet-sendForm-label">{window.i18n('priority')}</span>
               <div
                 className="wallet-sendForm-inputBox"
                 style={{ display: 'block', padding: '0px' }}
@@ -286,10 +258,7 @@ export const SendForm = (props: any) => {
             width="100%"
           >
             {/* <span style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
-            <span className="wallet-sendForm-label" >
-
-              {window.i18n('address')}
-            </span>
+            <span className="wallet-sendForm-label">{window.i18n('address')}</span>
             <div className="wallet-sendForm-inputBox">
               <input
                 value={address}
@@ -323,9 +292,7 @@ export const SendForm = (props: any) => {
             width="100%"
           >
             {/* <span className="wallet-sendForm-label" style={{ width: zoomLevel > 100 ? 'calc( 12% + 21px)' : 'calc(5.9% + 21px)' }}> */}
-            <span className="wallet-sendForm-label" >  
-              {window.i18n('notes')}
-            </span>
+            <span className="wallet-sendForm-label">{window.i18n('notes')}</span>
             <div className="wallet-sendForm-inputBox">
               <textarea
                 value={props.notes}

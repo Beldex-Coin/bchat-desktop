@@ -32,7 +32,7 @@ const channelsToMake = new Set([
   'getConversationById',
   'updateConversation',
   'updateConversationAddress',
-  "updateWalletAddressInConversation",
+  'updateWalletAddressInConversation',
   'removeConversation',
   'getAllConversations',
   'getAllOpenGroupV1Conversations',
@@ -99,7 +99,7 @@ const channelsToMake = new Set([
   'fillWithTestData',
   ...channelsToMakeForOpengroupV2,
   // ...channelsToMakeForWallet,
-// wallet
+  // wallet
   'getRecipientAddress',
   'saveRecipientAddress',
 ]);
@@ -151,15 +151,10 @@ function _getJob(id: number) {
 
 function makeChannel(fnName: string) {
   channels[fnName] = async (...args: any) => {
-    // console.log("fnName::",fnName);
-    
     const jobId = _makeJob(fnName);
 
     return new Promise((resolve, reject) => {
-      // console.log("SQL_CHANNEL_KEY:: 1",SQL_CHANNEL_KEY, jobId, fnName, ...args);
-
       ipcRenderer.send(SQL_CHANNEL_KEY, jobId, fnName, ...args);
-      // console.log("SQL_CHANNEL_KEY:: 2",SQL_CHANNEL_KEY, jobId, fnName, ...args);
 
       _updateJob(jobId, {
         resolve,

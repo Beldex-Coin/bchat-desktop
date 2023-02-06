@@ -21,7 +21,7 @@ import {
 } from '../state/ducks/walletConfig';
 import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
- import { default as queue } from 'promise-queue';
+import { default as queue } from 'promise-queue';
 
 class Wallet {
   heartbeat: any;
@@ -40,7 +40,7 @@ class Wallet {
   scee: any;
   id: number;
   agent: any;
-   queue: any;
+  queue: any;
   backend: any;
   last_height_send_time: any;
   height_regexes: any;
@@ -61,7 +61,7 @@ class Wallet {
     this.id = 0;
     this.scee = new SCEE();
     this.agent = new http.Agent({ keepAlive: true, maxSockets: 10 });
-     this.queue = new queue(1, Infinity);
+    this.queue = new queue(1, Infinity);
     this.last_height_send_time = Date.now();
     this.height_regexes = [
       {
@@ -310,7 +310,7 @@ class Wallet {
       });
       const getAddress: any = await this.heartRpc('get_address');
       const mnemonic: any = await this.heartRpc('query_key', { key_type: 'mnemonic' });
-       console.log('mne:', mnemonic,getAddress);
+      console.log('mne:', mnemonic, getAddress);
       if (!getAddress.hasOwnProperty('error') && !mnemonic.hasOwnProperty('error')) {
         localStorage.setItem('userAddress', getAddress.address);
         return mnemonic.key;
@@ -409,8 +409,8 @@ class Wallet {
     await this.sendRPC('store');
   }
   async closeWallet() {
-    console.log("close Wallet");
-    
+    console.log('close Wallet');
+
     await this.saveWallet();
     this.wallet_state.open = false;
     await this.sendRPC('close_wallet');
@@ -832,8 +832,6 @@ class Wallet {
   // };
 
   sendRPC(method: string, params = {}, timeout = 0) {
-    console.log('sendrpc');
-
     let id = this.id++;
     let options: any = {
       uri: `http://localhost:64371/json_rpc`,

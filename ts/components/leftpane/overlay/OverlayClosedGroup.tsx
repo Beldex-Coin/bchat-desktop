@@ -10,9 +10,10 @@ import { MemberListItem } from '../../MemberListItem';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
-import { 
+import {
   // getDirectContacts,
-   getPrivateContactsPubkeys } from '../../../state/selectors/conversations';
+  getPrivateContactsPubkeys,
+} from '../../../state/selectors/conversations';
 import { SpacerLG } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
@@ -21,8 +22,6 @@ import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
 // import { UserUtils } from '../../../bchat/utils';
 // import { UserUtils } from '../../../bchat/utils';
 
-
-
 export const OverlayClosedGroup = () => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
@@ -30,16 +29,6 @@ export const OverlayClosedGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
-
-  // const directContacts = useSelector(getDirectContacts);
-  // console.log("directContacts ::",directContacts);
-  // console.log("privateContactsPubkeys",privateContactsPubkeys);
-  
-//  async function getconverstation()
-//   {
-//     let userDetails= await getConversationById(UserUtils.getOurPubKeyStrFromCache())
-//     console.log('profileName',userDetails?.attributes);
-//   }
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -52,7 +41,6 @@ export const OverlayClosedGroup = () => {
 
     setSelectedMemberIds([...selectedMemberIds, memberId]);
   }
-
 
   function handleUnselectMember(unselectId: string) {
     setSelectedMemberIds(
@@ -118,68 +106,74 @@ export const OverlayClosedGroup = () => {
     window.inboxStore?.dispatch(setOverlayMode('message'));
   }
 
-// console.log('privateContactsPubkeys',privateContactsPubkeys);
+  // console.log('privateContactsPubkeys',privateContactsPubkeys);
 
   return (
-    <div className="module-left-pane-overlay" >
-       <LeftPaneSectionHeader />
-      <div style={{height:'calc(100% - 222px)', overflowY: "auto"}} >
+    <div className="module-left-pane-overlay">
+      <LeftPaneSectionHeader />
+      <div style={{ height: 'calc(100% - 222px)', overflowY: 'auto' }}>
         {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
         {/* <LeftPaneSectionHeader /> */}
-        <div className='module-left-pane-overlay-closed--header'>{title}</div>
+        <div className="module-left-pane-overlay-closed--header">{title}</div>
         {/* <ClosedGrpHeader /> */}
-        {!noContactsForClosedGroup &&
+        {!noContactsForClosedGroup && (
           <>
-          <div className='module-left-pane-overlay-closed--subHeader'>
-            {subtitle}
-          </div>
-          <div className="create-group-name-input">
-            <BchatIdEditable
-              editable={!noContactsForClosedGroup}
-              placeholder={placeholder}
-              value={groupName}
-              isGroup={true}
-              maxLength={32}
-              onChange={setGroupName}
-              onPressEnter={onEnterPressed}
-              dataTestId="new-closed-group-name"
-            />
-          </div></>
-        }
+            <div className="module-left-pane-overlay-closed--subHeader">{subtitle}</div>
+            <div className="create-group-name-input">
+              <BchatIdEditable
+                editable={!noContactsForClosedGroup}
+                placeholder={placeholder}
+                value={groupName}
+                isGroup={true}
+                maxLength={32}
+                onChange={setGroupName}
+                onPressEnter={onEnterPressed}
+                dataTestId="new-closed-group-name"
+              />
+            </div>
+          </>
+        )}
         <SpacerLG />
-      {loading?<BchatSpinner loading={loading} />:
-        <div className="group-member-list__container">
-          {noContactsForClosedGroup ? (
-            <div className="group-member-list__no-contacts">
-              <div className='group-member-list__addImg'>
-              </div>
-              <h4 className='module-left-pane__empty_contact'>{window.i18n('noContactsYet')}</h4>
-              <div style={{ display: "flex" }}>
-          {/* <button onClick={()=>getconverstation()}>getconverstation</button> */}
+        {loading ? (
+          <BchatSpinner loading={loading} />
+        ) : (
+          <div className="group-member-list__container">
+            {noContactsForClosedGroup ? (
+              <div className="group-member-list__no-contacts">
+                <div className="group-member-list__addImg"></div>
+                <h4 className="module-left-pane__empty_contact">{window.i18n('noContactsYet')}</h4>
+                <div style={{ display: 'flex' }}>
+                  {/* <button onClick={()=>getconverstation()}>getconverstation</button> */}
 
-                <button className='nextButton' style={{ width: "90%" }} onClick={() => addContact()}>Add Contacts + </button>
+                  <button
+                    className="nextButton"
+                    style={{ width: '90%' }}
+                    onClick={() => addContact()}
+                  >
+                    Add Contacts +{' '}
+                  </button>
+                </div>
+                {/* {window.i18n('noContactsForGroup')} */}
               </div>
-              {/* {window.i18n('noContactsForGroup')} */}
-            </div>
-          ) : (
-            <div className="group-member-list__selection">
-              {privateContactsPubkeys.map((memberPubkey: string) => (
-                <MemberListItem
-                  pubkey={memberPubkey}
-                  isSelected={selectedMemberIds.some(m => m === memberPubkey)}
-                  key={memberPubkey}
-                  onSelect={selectedMember => {
-                    handleSelectMember(selectedMember);
-                  }}
-                  onUnselect={unselectedMember => {
-                    handleUnselectMember(unselectedMember);
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-}
+            ) : (
+              <div className="group-member-list__selection">
+                {privateContactsPubkeys.map((memberPubkey: string) => (
+                  <MemberListItem
+                    pubkey={memberPubkey}
+                    isSelected={selectedMemberIds.some(m => m === memberPubkey)}
+                    key={memberPubkey}
+                    onSelect={selectedMember => {
+                      handleSelectMember(selectedMember);
+                    }}
+                    onUnselect={unselectedMember => {
+                      handleUnselectMember(unselectedMember);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <SpacerLG />
 
@@ -193,13 +187,13 @@ export const OverlayClosedGroup = () => {
       /> */}
       </div>
 
-      {!noContactsForClosedGroup &&
-        <div className='buttonBox'>
-          <button
-            className='nextButton'
-            onClick={onEnterPressed}
-          >Create</button>
-        </div>}
+      {!noContactsForClosedGroup && (
+        <div className="buttonBox">
+          <button className="nextButton" onClick={onEnterPressed}>
+            Create
+          </button>
+        </div>
+      )}
     </div>
   );
 };

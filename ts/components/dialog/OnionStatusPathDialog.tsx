@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-
 import ip2country from 'ip2country';
 import countryLookup from 'country-code-lookup';
 import { Snode } from '../../data/data';
@@ -34,16 +33,14 @@ const OnionCountryDisplay = ({
   labelText: string;
   index: number;
 }) => {
-  // console.log('index',index);
-  
   // const element = (hovered: boolean) => (
   const element = () => (
     <div className="onion__node__country" key={`country-${index}`}>
       <div>
-      {index===1?"Entry Node":index!==0 && index!==4?"Service Node":labelText}
+        {index === 1 ? 'Entry Node' : index !== 0 && index !== 4 ? 'Service Node' : labelText}
       </div>
-      <span style={{fontSize: '11px'}}>
-      {index!==0 && index!==4?labelText+"("+snodeIp+")":<div></div>}
+      <span style={{ fontSize: '11px' }}>
+        {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
       </span>
       {/* {hovered && snodeIp ? snodeIp : labelText} */}
     </div>
@@ -73,42 +70,46 @@ const OnionPathModalInner = () => {
 
   return (
     <>
-     <Flex container={true} flexDirection="column" alignItems="center" height="70vh" justifyContent='center'>
-      <p className="onion__description">
-        {window.i18n('onionPathIndicatorDescription')}
-       </p>
-      <div className="onion__node-list">
-        <Flex container={true}>
-          <div className="onion__node-list-lights">
-            <div className="onion__vertical-line" />
+      <Flex
+        container={true}
+        flexDirection="column"
+        alignItems="center"
+        height="70vh"
+        justifyContent="center"
+      >
+        <p className="onion__description">{window.i18n('onionPathIndicatorDescription')}</p>
+        <div className="onion__node-list">
+          <Flex container={true}>
+            <div className="onion__node-list-lights">
+              <div className="onion__vertical-line" />
 
-            <Flex container={true} flexDirection="column" alignItems="center" height="100%">
-              {nodes.map((_snode: Snode | any, index: number) => {
-                return (
-                  <OnionNodeStatusLight
-                    glowDuration={glowDuration}
-                    glowStartDelay={index}
-                    key={`light-${index}`}
-                  />
-                );
+              <Flex container={true} flexDirection="column" alignItems="center" height="100%">
+                {nodes.map((_snode: Snode | any, index: number) => {
+                  return (
+                    <OnionNodeStatusLight
+                      glowDuration={glowDuration}
+                      glowStartDelay={index}
+                      key={`light-${index}`}
+                    />
+                  );
+                })}
+              </Flex>
+            </div>
+            <Flex container={true} flexDirection="column" alignItems="flex-start">
+              {nodes.map((snode: Snode | any, index: number) => {
+                let labelText = snode.label
+                  ? snode.label
+                  : `${countryLookup.byIso(ip2country(snode.ip))?.country}`;
+                if (!labelText) {
+                  labelText = window.i18n('unknownCountry');
+                }
+                return labelText ? (
+                  <OnionCountryDisplay index={index} labelText={labelText} snodeIp={snode.ip} />
+                ) : null;
               })}
             </Flex>
-          </div>
-          <Flex container={true} flexDirection="column" alignItems="flex-start">
-            {nodes.map((snode: Snode | any, index: number) => {
-              let labelText = snode.label
-                ? snode.label
-                : `${countryLookup.byIso(ip2country(snode.ip))?.country}`;
-              if (!labelText) {
-                labelText = window.i18n('unknownCountry');
-              }
-              return labelText ? (
-                <OnionCountryDisplay index={index} labelText={labelText} snodeIp={snode.ip} />
-              ) : null;
-            })}
           </Flex>
-        </Flex>
-      </div>
+        </div>
       </Flex>
     </>
   );
@@ -148,7 +149,7 @@ export const ModalStatusLight = (props: StatusLightType) => {
         glowDuration={glowDuration}
         glowStartDelay={glowStartDelay}
         iconType="circle"
-        iconSize={"small"}
+        iconSize={'small'}
       />
     </div>
   );
@@ -162,9 +163,9 @@ export const ActionPanelOnionStatusLight = (props: {
   handleClick: () => void;
   dataTestId?: string;
   id: string;
-  size:BchatIconSize | number;
+  size: BchatIconSize | number;
 }) => {
-  const { isSelected, handleClick, dataTestId, id,size } = props;
+  const { isSelected, handleClick, dataTestId, id, size } = props;
 
   const onionPathsCount = useSelector(getOnionPathsCount);
   const firstPathLength = useSelector(getFirstOnionPathLength);
@@ -172,9 +173,8 @@ export const ActionPanelOnionStatusLight = (props: {
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';
-  const green ='var(--green-color)';
+  const green = 'var(--green-color)';
   const orange = 'var(--color-warning)';
-
 
   // start with red
   let iconColor = red;
@@ -206,7 +206,5 @@ export const ActionPanelOnionStatusLight = (props: {
 };
 
 export const OnionPathModal = () => {
-  return (
-      <OnionPathModalInner />
-  );
+  return <OnionPathModalInner />;
 };

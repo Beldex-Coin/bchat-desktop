@@ -133,11 +133,9 @@ export const SignInTab = (props: any) => {
 
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
-  // console.log(seedOK);
 
   const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
-  localStorage.setItem("walletUserName",displayName);
-  
+  localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {
     if (isRecovery) {
@@ -146,8 +144,7 @@ export const SignInTab = (props: any) => {
       let refreshDetails = blockheight
         ? { refresh_start_timestamp_or_height: blockheight, refresh_type: 'height' }
         : { refresh_start_timestamp_or_height: restoreDate, refresh_type: 'date' };
-        console.log("sign in :: 1");
-        
+
       await signInWithRecovery({
         displayName,
         password,
@@ -155,7 +152,6 @@ export const SignInTab = (props: any) => {
         refreshDetails,
       });
       setIsLoading(false);
-
     } else if (isLinking) {
       setIsLoading(true);
       await signInWithLinking({
@@ -167,17 +163,17 @@ export const SignInTab = (props: any) => {
 
   const passValid = () => {
     if (!password || !repassword) {
-     return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
+      return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
     if (password !== repassword) {
       window?.log?.warn('invalid password');
-     return ToastUtils.pushToastError('invalidPassword', 'Passwords do not match');
+      return ToastUtils.pushToastError('invalidPassword', 'Passwords do not match');
     }
     if (
       (password.length < 4 && repassword.length < 4) ||
       (password.length > 13 && repassword.length > 13)
     ) {
-     return ToastUtils.pushToastError(
+      return ToastUtils.pushToastError(
         'walletPasswordLengthError',
         window.i18n('walletPasswordLengthError')
       );
@@ -196,7 +192,7 @@ export const SignInTab = (props: any) => {
 
   const seedValidation = () => {
     if (!recoveryPhrase) {
-     return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
+      return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
     } else {
       try {
         mn_decode(recoveryPhrase, 'english');
@@ -220,8 +216,8 @@ export const SignInTab = (props: any) => {
             assent={() => {
               props.assent(true);
               setScreenName(1);
-              setBlockheight("");
-              setRestoreDate("");
+              setBlockheight('');
+              setRestoreDate('');
             }}
           />
         </div>
@@ -268,11 +264,19 @@ export const SignInTab = (props: any) => {
   //  )
   // }
   const LoaderGif = () => {
-    return <div className="bchat-registration-loadingGif">
-      <div style={{ background: "url(images/bchat/Load_animation.gif) no-repeat", width: "151px", height: "128px", margin: "0 auto" }}>
+    return (
+      <div className="bchat-registration-loadingGif">
+        <div
+          style={{
+            background: 'url(images/bchat/Load_animation.gif) no-repeat',
+            width: '151px',
+            height: '128px',
+            margin: '0 auto',
+          }}
+        ></div>
       </div>
-    </div>
-  }
+    );
+  };
 
   return (
     <div className="bchat-registration__content">
@@ -291,8 +295,8 @@ export const SignInTab = (props: any) => {
                 setScreenName(1);
                 setPassword('');
                 setRepassword('');
-                setBlockheight("");
-                setRestoreDate("");
+                setBlockheight('');
+                setRestoreDate('');
               }}
             />
           </div>
@@ -378,7 +382,7 @@ export const SignInTab = (props: any) => {
           setIsLoading(false);
         }}
       />
-      {loading && <LoaderGif/>}
+      {loading && <LoaderGif />}
 
       {/* {loading && (
         <Flex

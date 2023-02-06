@@ -12,22 +12,18 @@ import { BchatIconSize, BchatIconType } from '../icon/Icons';
 import { WalletDashboard } from './BchatWalletMainPanel';
 // import { updateSendAddress } from '../../state/ducks/walletConfig';
 
-export const WalletPaymentSection = (props:any) => {
+export const WalletPaymentSection = (props: any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
-  const zoomLevel=window.getSettingValue('zoom-factor-setting')
-  const sync= window.getSettingValue('syncStatus',);
-        
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  const sync = window.getSettingValue('syncStatus');
 
-  // console.log('props ::',props);
-  
-  function tabBtn()
-  {
+  function tabBtn() {
     props.clearStates();
     dispatch(walletSendPage());
   }
   return (
-    <div className="wallet-squarBox-tran" style={zoomLevel>100?{width: '46.4%'}:{}}>
+    <div className="wallet-squarBox-tran" style={zoomLevel > 100 ? { width: '46.4%' } : {}}>
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
         <div>
           <Flex container={true} flexDirection="row" justifyContent="space-between">
@@ -35,7 +31,9 @@ export const WalletPaymentSection = (props:any) => {
               name={window.i18n('send')}
               iconSize="small"
               iconType="paySend"
-              iconColor={sync && WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}
+              iconColor={
+                sync && WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'
+              }
               onClick={() => sync && tabBtn()}
               isSelected={sync && WalletDashboard.walletSend === focusedInnersection}
             />
@@ -47,7 +45,9 @@ export const WalletPaymentSection = (props:any) => {
               iconColor={
                 sync && WalletDashboard.walletReceived === focusedInnersection ? '#fff' : '#159B24'
               }
-              onClick={() => {sync && dispatch(walletReceivedPage())}}
+              onClick={() => {
+                sync && dispatch(walletReceivedPage());
+              }}
               isSelected={sync && WalletDashboard.walletReceived === focusedInnersection}
             />
           </Flex>
@@ -62,8 +62,14 @@ export const WalletPaymentSection = (props:any) => {
             name={window.i18n('transactionDetails')}
             iconSize="large"
             iconType="payTransaction"
-            iconColor={sync && WalletDashboard.walletTransaction === focusedInnersection?"#fff":'var(--color-text)'}
-            onClick={() => {sync && dispatch(walletTransactionPage())}}
+            iconColor={
+              sync && WalletDashboard.walletTransaction === focusedInnersection
+                ? '#fff'
+                : 'var(--color-text)'
+            }
+            onClick={() => {
+              sync && dispatch(walletTransactionPage());
+            }}
             isSelected={sync && WalletDashboard.walletTransaction === focusedInnersection}
           />
         </Flex>
@@ -102,10 +108,11 @@ export interface ButtonProps {
 const Button = styled.button<ButtonProps>`
   outline: none;
   border: none;
-  background-color: ${props => (props.isSelected ? 'var(--button-color)' : 'var(--color-walTransacBtn)')};
+  background-color: ${props =>
+    props.isSelected ? 'var(--button-color)' : 'var(--color-walTransacBtn)'};
   width: 100%;
   height: 60px;
   border-radius: 10px;
   font-size: 16px;
-  color:${props => (props.isSelected ? '#fff' : '')};
+  color: ${props => (props.isSelected ? '#fff' : '')};
 `;
