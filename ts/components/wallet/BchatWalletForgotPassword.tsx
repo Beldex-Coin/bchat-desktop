@@ -71,6 +71,7 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
+    setLoading(true)
     let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -103,30 +104,35 @@ export const ForgotPassword = (props: any) => {
     const refreshDetails = {
       refresh_start_timestamp_or_height: walletDaemonHeight ? walletDaemonHeight : 0,
     };
-    setLoading(true);
-    await wallet.closeWallet();
-    const changePassword = await wallet.restoreWallet(
-      profileName,
-      newPassword,
-      seed,
-      refreshDetails,
-      'forgotPassword'
-    );
-    daemon.sendRPC('get_info').then(data => {
-      if (!data.hasOwnProperty('error')) {
-        dispatch(updateDaemon({ height: data.result.height }));
-      }
-    });
-    if (changePassword.hasOwnProperty('error')) {
-      setLoading(false);
 
-      return ToastUtils.pushToastError('changePasswordError', changePassword.error.message);
+    try {
+      await wallet.restoreWallet(
+        profileName,
+        newPassword,
+        seed,
+        refreshDetails,
+        'forgotPassword'
+      );
+      daemon.sendRPC('get_info').then(data => {
+        if (!data.hasOwnProperty('error')) {
+          dispatch(updateDaemon({ height: data.result.height }));
+        }
+      });
+      props.showSyncScreen();
+      setLoading(false)
+
+      ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
+      return onClickCancelHandler();
+
     }
-    props.showSyncScreen();
-    setLoading(false);
+    catch (error) {
+      // if (changePassword.hasOwnProperty('error')) {
+      setLoading(false)
+      console.log("err ::", error)
+      {error?.message && ToastUtils.pushToastError('changePasswordError', error?.message);}
+      // }
+    }
 
-    ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
-    return onClickCancelHandler();
   };
 
   useKey((event: KeyboardEvent) => {

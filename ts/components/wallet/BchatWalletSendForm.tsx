@@ -18,6 +18,7 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
+import { useKey } from 'react-use';
 
 
 export const SendForm = (props: any) => {
@@ -43,7 +44,7 @@ export const SendForm = (props: any) => {
 
     return () => {
       document.removeEventListener('click', handleClick);
-    };
+    }; 
   }, []);
 
   const handleClick = (e: any) => {
@@ -51,7 +52,12 @@ export const SendForm = (props: any) => {
       setDropDown(false);
     }
   };
-
+  useKey((event: KeyboardEvent) => {
+    if (props.amount && address && syncStatus && event.key === 'Enter') {
+      addressValidation();
+    }
+    return event.key === 'Enter';
+  });
   async function addressValidation() {
     if (!window.globalOnlineStatus) {
       return ToastUtils.pushToastError(

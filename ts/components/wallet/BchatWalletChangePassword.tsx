@@ -90,6 +90,7 @@ export const ChangePassword = () => {
               placeholder={window.i18n('enterPassword')}
               // className="bchat-dialog-newPassInput"
               type={newPasswordVisible?"password":"text"}
+              maxLength={13}
             />
             </span>
             <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)} style={{cursor:'pointer'}}>
@@ -108,6 +109,7 @@ export const ChangePassword = () => {
               placeholder={window.i18n('confirmPassword')}
               // className="bchat-dialog-newPassInput"
               type={confirmPasswordVisible?"password":"text"}
+              maxLength={13}
             />
             </span>
             <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{cursor:'pointer'}}>

@@ -3,10 +3,15 @@ import React, { useState } from "react"
 import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
 import { SpacerLG, SpacerMD, SpacerSM } from "../basic/Text"
 import { BchatWrapperModal } from "../BchatWrapperModal"
+import { useKey } from "react-use"
 
 
 export const WalletModal = (props:any) => {
    const[select,setSelect]=useState(props.currency);
+   useKey((event: KeyboardEvent) => {
+    props.onClick(select)
+    return event.key === 'Enter';
+  });
     return <div>
         <BchatWrapperModal
             title={props.headerName}

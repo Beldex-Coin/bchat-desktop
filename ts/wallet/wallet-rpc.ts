@@ -339,7 +339,9 @@ class Wallet {
       }
       return restoreWallet;
     } catch (error) {
-      throw new HTTPError('exception during wallet-rpc:', error);
+      
+      return {message:'exception during wallet-rpc', error:error}
+      // throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
   

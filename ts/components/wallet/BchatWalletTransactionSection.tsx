@@ -117,7 +117,8 @@ export const TransactionSection = (props: any) => {
   };
 
   function filterText(value: any) {
-    var letters = /^[0-9a-zA-Z]+$/;
+    // var letters = /^[0-9a-zA-Z]+$/; 
+    var letters=/^[0-9a-zA-Z]+\.?\d*$/
     if (value === '' || value.match(letters)) {
     } else {
       return;
