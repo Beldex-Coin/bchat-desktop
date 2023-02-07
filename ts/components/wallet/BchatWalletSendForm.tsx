@@ -19,6 +19,7 @@ import { updateSendConfirmModal, updateTransactionInitModal } from '../../state/
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 import { useKey } from 'react-use';
+import { getwalletSendConfirmModal } from '../../state/selectors/modal';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -28,6 +29,7 @@ export const SendForm = (props: any) => {
   const [dropDown, setDropDown] = useState(false);
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
+  const BchatSendConfirmState=useSelector(getwalletSendConfirmModal);
   function clearStateValue() {
     props.setAmount('');
     props.setPriority(window.i18n('flash'));
@@ -58,11 +60,13 @@ export const SendForm = (props: any) => {
     return event.key === 'Enter';
   });
   async function addressValidation() {
+    // console.log("netConnetion()",netConnetion())
     if (!window.globalOnlineStatus) {
-      return ToastUtils.pushToastError(
+       ToastUtils.pushToastError(
         'internetConnectionError',
         'Please check your internet connection'
       );
+      return
     }
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
@@ -77,7 +81,7 @@ export const SendForm = (props: any) => {
     if (!addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
-    sendConfirmModal();
+    !BchatSendConfirmState && sendConfirmModal();
   }
 
   function sendConfirmModal() {
@@ -119,6 +123,8 @@ export const SendForm = (props: any) => {
         await saveRecipientAddress(TransactionHistory);
       }
       clearStateValue();
+      dispatch(updateSendConfirmModal(null));
+      dispatch(updateTransactionInitModal(null));
       ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
       dispatch(walletTransactionPage());
     } else {

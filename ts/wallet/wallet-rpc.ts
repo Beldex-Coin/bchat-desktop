@@ -328,12 +328,11 @@ class Wallet {
       }
       if (restoreWallet.hasOwnProperty('result')) {
         if (!type) {
-          await this.closeWallet();
-          kill(64371)
-            .then()
+              kill(64371)
+             .then(()=>console.log("port kill successFull"))
             .catch(err => {
-              throw new HTTPError('beldex_rpc_port', err);
-            });
+             throw new HTTPError('beldex_rpc_port', err);
+            }); 
         }
       }
       return restoreWallet;

@@ -14,7 +14,8 @@ const FilteredSettingsView = BchatSettingsView as any;
 export async function getconverstation() {
   let userDetails = await getConversationById(getOurPubKeyStrFromCache());
   let data = userDetails?.attributes;
-  if (!data?.walletCreatedDaemonHeight) {
+console.log('walletCreatedDaemonHeight ::',data?.walletCreatedDaemonHeight);
+  if (data?.walletCreatedDaemonHeight===null) {
     window.inboxStore?.dispatch(updateBchatUpgradeInstructionModal({}));
   }
 }

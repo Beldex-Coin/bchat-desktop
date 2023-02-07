@@ -302,6 +302,20 @@
   display: flex;
   align-items: center;
 }
+.walletChangePasswordHeader
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  padding-bottom: 0px;
+  font-family: "Poppins";
+  text-align: center;
+  line-height: 18px;
+  font-size: 14px;
+  font-weight: bold;
+}
 
 .edit-profile-dialog {
   .bchat-modal__header__title {

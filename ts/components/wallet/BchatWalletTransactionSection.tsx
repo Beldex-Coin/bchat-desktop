@@ -127,6 +127,7 @@ export const TransactionSection = (props: any) => {
   }
 
   function searchTransaction(filteredTransaction: any) {
+    console.log("filteredTransaction ::",searchText)
     let data =
       filteredTransaction.length > 0
         ? filteredTransaction.filter(
@@ -168,7 +169,7 @@ export const TransactionSection = (props: any) => {
           <Flex container={true} justifyContent="space-between" flexDirection="row">
             <div className="wallet-Transaction-title">{window.i18n('transactions')}</div>
             <Flex container={true} justifyContent="flex-end" flexDirection="row" width={'77%'}>
-              {data.length !== 0 || searchText ? (
+              {transactionsHistory.length !== 0 || searchText ? (
                 <div>
                   {window.i18n('filter')}
                   <input

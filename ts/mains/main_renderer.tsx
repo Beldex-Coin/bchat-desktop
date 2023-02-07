@@ -380,14 +380,15 @@ async function start() {
     openInbox();
   });
 }
-
+// window.removeEventListener('offline', onOffline);
+//   window.addEventListener('online', onOnline);
 let disconnectTimer: NodeJS.Timeout | null = null;
 function onOffline() {
   window.log.info('offline');
   window.globalOnlineStatus = false;
 
-  window.removeEventListener('offline', onOffline);
-  window.addEventListener('online', onOnline);
+   window.removeEventListener('offline', onOffline);
+   window.addEventListener('online', onOnline);
 
   // We've received logs from Linux where we get an 'offline' event, then 30ms later
   //   we get an online event. This waits a bit after getting an 'offline' event
