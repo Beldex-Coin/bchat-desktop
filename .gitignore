@@ -4,7 +4,6 @@ node_modules
 .eslintcache
 stylesheets/*.css.map
 /dist
-bin/*
 .DS_Store
 config/local.json
 config/local-*.json
@@ -13,6 +12,11 @@ release/
 /dev-app-update.yml
 *.sublime*
 sql/
+
+
+# bin dir
+bin/*
+!bin/.gitkeep
 
 # generated files
 stylesheets/*.css

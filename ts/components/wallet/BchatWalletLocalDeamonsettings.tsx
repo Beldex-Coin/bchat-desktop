@@ -15,7 +15,6 @@ export function LocalDeamon() {
   const [testNotify, setTestNotify] = useState('');
   const [verifyDeamon, setvSerifyDeamon] = useState({});
 
-
   async function validationForDeamon() {
     let data = { host: localDeamonHost, port: localDeamonPort, active: 1, type: 'Local' };
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
@@ -48,6 +47,9 @@ export function LocalDeamon() {
     if (currentDaemon.host == data.host) {
       return ToastUtils.pushToastInfo('daemonAlreadyAdded', `This daemon already added.`);
     }
+    setLocalDeamonPort('');
+    setTestNotify('');
+    setvSerifyDeamon({});
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, verifyDeamon);
     return ToastUtils.pushToastSuccess(
       'successfully-added-daemon',

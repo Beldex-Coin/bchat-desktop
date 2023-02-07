@@ -318,7 +318,6 @@ class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
-      console.log("restoreWalletrestoreWallet::",restoreWallet)
       if (restoreWallet.hasOwnProperty('error')) {
         restoreWallet = await this.deleteWallet(
           displayName,
@@ -597,7 +596,6 @@ class Wallet {
   };
 
   sendRPC(method: string, params = {}, timeout = 0) {
-    console.log('method:', method);
     let id = this.id++;
     let options: any = {
       uri: `http://localhost:64371/json_rpc`,
@@ -623,7 +621,6 @@ class Wallet {
     return this.queue.add(() => {
       return request(options)
         .then((response: any) => {
-          console.log('response:', method, response);
           if (response.hasOwnProperty('error')) {
             return {
               method: method,
