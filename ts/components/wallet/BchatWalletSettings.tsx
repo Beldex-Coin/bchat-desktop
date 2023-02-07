@@ -9,15 +9,10 @@ import { wallet } from '../../wallet/wallet-rpc';
 
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
-// import { ModalContainer } from "../dialog/ModalContainer"
 import { BchatIcon } from '../icon/BchatIcon';
-
-// import { ChangePassword } from "./BchatWalletChangePassword"
-// import { WalletModal } from "./BchatWalletModal"
 
 export const WalletSettings = () => {
   const dispatch = useDispatch();
-  // const exeCurrency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const decimalValue = useSelector(getwalletDecimalValue);
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)

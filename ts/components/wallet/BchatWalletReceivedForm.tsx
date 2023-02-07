@@ -7,18 +7,10 @@ import { QRCode } from 'react-qrcode-logo';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 
 export const ReceivedForm = () => {
-    let walletAddress = localStorage.getItem("userAddress");
-    const [txnAmount,setTxnAmount]=useState("")
+  const walletAddress = localStorage.getItem('userAddress');
+  const [txnAmount, setTxnAmount] = useState('');
+  const qrValue = `Beldex:${walletAddress}?tx_amount=${txnAmount}`;
 
-  let qrValue = `Beldex:${walletAddress}?tx_amount=${txnAmount}`;
-
-  //  function validator(e:any)
-  //  {
-  //     if (isNaN(e)) {
-  //         return
-  //      }
-
-  //  }
   function validator(e: any) {
     const numbersValidation = /^\d+\.?\d*$/;
     if (e === '' || numbersValidation.test(e)) {

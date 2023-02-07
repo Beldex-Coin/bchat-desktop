@@ -3,9 +3,6 @@ import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon';
 
 export const ProgressForSync = (props: any) => {
-  // const [presentage,setPresentage]=useState(59)
-  // const [blockCount,setBlockCount]=useState(1000);
-  // const presentage = 59;
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">

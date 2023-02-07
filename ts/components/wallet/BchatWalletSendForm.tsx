@@ -20,7 +20,6 @@ import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 import { useKey } from 'react-use';
 
-
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
   const syncStatus = useSelector(getRescaning);
@@ -44,7 +43,7 @@ export const SendForm = (props: any) => {
 
     return () => {
       document.removeEventListener('click', handleClick);
-    }; 
+    };
   }, []);
 
   const handleClick = (e: any) => {
@@ -189,7 +188,8 @@ export const SendForm = (props: any) => {
                     <div className="wallet-settings-nodeSetting-sendDropDown">
                       <div
                         className={classNames(
-                          `dropDownItem ${props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${
+                            props.priority === window.i18n('flash') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -202,7 +202,8 @@ export const SendForm = (props: any) => {
                       <SpacerLG />
                       <div
                         className={classNames(
-                          `dropDownItem ${props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
+                          `dropDownItem ${
+                            props.priority === window.i18n('slow') ? 'fontSemiBold' : 'fontRegular'
                           } `
                         )}
                         onClick={() => {
@@ -228,7 +229,6 @@ export const SendForm = (props: any) => {
             alignItems="center"
             width="100%"
           >
-
             <span className="wallet-sendForm-label">{window.i18n('address')}</span>
             <div className="wallet-sendForm-inputBox">
               <input

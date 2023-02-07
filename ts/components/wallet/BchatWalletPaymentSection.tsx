@@ -10,13 +10,11 @@ import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatIconSize, BchatIconType } from '../icon/Icons';
 import { WalletDashboard } from './BchatWalletMainPanel';
-// import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 export const WalletPaymentSection = (props: any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  // const sync = window.getSettingValue('syncStatus');
 
   function tabBtn() {
     props.clearStates();
@@ -31,11 +29,9 @@ export const WalletPaymentSection = (props: any) => {
               name={window.i18n('send')}
               iconSize="small"
               iconType="paySend"
-              iconColor={
-                 WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'
-              }
-              onClick={() =>  tabBtn()}
-              isSelected={ WalletDashboard.walletSend === focusedInnersection}
+              iconColor={WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}
+              onClick={() => tabBtn()}
+              isSelected={WalletDashboard.walletSend === focusedInnersection}
             />
             <span style={{ width: '5%', height: '20px' }}></span>
             <BchatButtonIcon
@@ -43,12 +39,12 @@ export const WalletPaymentSection = (props: any) => {
               iconSize="small"
               iconType="payRecieved"
               iconColor={
-                 WalletDashboard.walletReceived === focusedInnersection ? '#fff' : '#159B24'
+                WalletDashboard.walletReceived === focusedInnersection ? '#fff' : '#159B24'
               }
               onClick={() => {
-                 dispatch(walletReceivedPage());
+                dispatch(walletReceivedPage());
               }}
-              isSelected={ WalletDashboard.walletReceived === focusedInnersection}
+              isSelected={WalletDashboard.walletReceived === focusedInnersection}
             />
           </Flex>
         </div>
@@ -63,14 +59,14 @@ export const WalletPaymentSection = (props: any) => {
             iconSize="large"
             iconType="payTransaction"
             iconColor={
-               WalletDashboard.walletTransaction === focusedInnersection
+              WalletDashboard.walletTransaction === focusedInnersection
                 ? '#fff'
                 : 'var(--color-text)'
             }
             onClick={() => {
-               dispatch(walletTransactionPage());
+              dispatch(walletTransactionPage());
             }}
-            isSelected={ WalletDashboard.walletTransaction === focusedInnersection}
+            isSelected={WalletDashboard.walletTransaction === focusedInnersection}
           />
         </Flex>
       </Flex>

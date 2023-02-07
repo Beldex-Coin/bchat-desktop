@@ -14,15 +14,13 @@ export const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
-
-  // const [oldPassVisible,setOldPassVisible]=useState('');
   const [newPasswordVisible, setNewPasswordVisible] = useState(true);
   const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
   const dispatch = useDispatch();
   function onClickCancelHandler() {
     dispatch(ChangePasswordModal(null));
   }
-  
+
   const passValid = async () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
       return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
@@ -32,7 +30,10 @@ export const ChangePassword = () => {
     }
     if (oldPassword == newPassword) {
       window?.log?.warn('invalid password');
-      return ToastUtils.pushToastError('oldPasswordSame', `Cannot use old password. Set a different password.`);
+      return ToastUtils.pushToastError(
+        'oldPasswordSame',
+        `Cannot use old password. Set a different password.`
+      );
     }
     if (
       (newPassword.length < 4 && confirmPassword.length < 4) ||
@@ -55,7 +56,6 @@ export const ChangePassword = () => {
     return event.key === 'Enter';
   }, passValid);
 
-  // const [confirm,setConfirm]=useState("");
   return (
     <div>
       <BchatWrapperModal
@@ -64,57 +64,66 @@ export const ChangePassword = () => {
         showExitIcon={false}
         headerReverse={true}
       >
-        <div className="bchat-modal__centered changepass" style={{ width: '475px', alignItems: 'start' }}>
+        <div
+          className="bchat-modal__centered changepass"
+          style={{ width: '475px', alignItems: 'start' }}
+        >
           <SpacerMD />
-          <span className='changepass-oldpassInput' >
-          <input
-            value={oldPassword}
-            onChange={e => {
-              setOldPassword(e.target.value);
-            }}
-            placeholder={window.i18n('currentPassword')}
-            // className="bchat-dialog-oldpassInput"
-          />
+          <span className="changepass-oldpassInput">
+            <input
+              value={oldPassword}
+              onChange={e => {
+                setOldPassword(e.target.value);
+              }}
+              placeholder={window.i18n('currentPassword')}
+            />
           </span>
           <SpacerMD />
           <div>{window.i18n('changewalletPassword')}</div>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
-          <span className='changepass-newPassInput' >
-
-            <input
-              value={newPassword}
-              onChange={e => {
-                setNewPassword(e.target.value);
-              }}
-              placeholder={window.i18n('enterPassword')}
-              // className="bchat-dialog-newPassInput"
-              type={newPasswordVisible?"password":"text"}
-              maxLength={13}
-            />
+            <span className="changepass-newPassInput">
+              <input
+                value={newPassword}
+                onChange={e => {
+                  setNewPassword(e.target.value);
+                }}
+                placeholder={window.i18n('enterPassword')}
+                type={newPasswordVisible ? 'password' : 'text'}
+                maxLength={13}
+              />
             </span>
-            <span onClick={()=>setNewPasswordVisible(!newPasswordVisible)} style={{cursor:'pointer'}}>
-            <BchatIcon iconType={!newPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
+            <span
+              onClick={() => setNewPasswordVisible(!newPasswordVisible)}
+              style={{ cursor: 'pointer' }}
+            >
+              <BchatIcon
+                iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
+                iconSize={'medium'}
+              />
             </span>
           </Flex>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
-          <span className='changepass-newPassInput' >
-
-            <input
-              value={confirmPassword}
-              onChange={e => {
-                setConfirmNewPassword(e.target.value);
-              }}
-              placeholder={window.i18n('confirmPassword')}
-              // className="bchat-dialog-newPassInput"
-              type={confirmPasswordVisible?"password":"text"}
-              maxLength={13}
-            />
+            <span className="changepass-newPassInput">
+              <input
+                value={confirmPassword}
+                onChange={e => {
+                  setConfirmNewPassword(e.target.value);
+                }}
+                placeholder={window.i18n('confirmPassword')}
+                type={confirmPasswordVisible ? 'password' : 'text'}
+                maxLength={13}
+              />
             </span>
-            <span onClick={()=>setConfirmNewPasswordVisible(!confirmPasswordVisible)} style={{cursor:'pointer'}}>
-            <BchatIcon iconType={!confirmPasswordVisible?"eye_closed":"eye"} iconSize={'medium'} />
-
+            <span
+              onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
+              style={{ cursor: 'pointer' }}
+            >
+              <BchatIcon
+                iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
+                iconSize={'medium'}
+              />
             </span>
           </Flex>
         </div>

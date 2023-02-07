@@ -96,9 +96,6 @@ export function LocalDeamon() {
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               onChange={(e: any) => {
                 portValidation(e.target.value);
-                // !isNaN(e.target.value) &&
-                // setTestNotify('');
-                //  setLocalDeamonPort(e.target.value)}
               }}
               placeholder="Enter your port"
               maxLength={5}

@@ -71,7 +71,7 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
-    setLoading(true)
+    setLoading(true);
     let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -97,7 +97,6 @@ export const ForgotPassword = (props: any) => {
       );
     }
     let profileName = userDetails?.attributes.walletUserName;
-    // const daemonHeight=walletDaemonHeight;
     if (!profileName) {
       profileName = UserDetails[userId].profileName;
     }
@@ -106,33 +105,24 @@ export const ForgotPassword = (props: any) => {
     };
 
     try {
-      await wallet.restoreWallet(
-        profileName,
-        newPassword,
-        seed,
-        refreshDetails,
-        'forgotPassword'
-      );
+      await wallet.restoreWallet(profileName, newPassword, seed, refreshDetails, 'forgotPassword');
       daemon.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           dispatch(updateDaemon({ height: data.result.height }));
         }
       });
       props.showSyncScreen();
-      setLoading(false)
+      setLoading(false);
 
       ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
       return onClickCancelHandler();
-
+    } catch (error) {
+      setLoading(false);
+      console.log('err ::', error);
+      {
+        error?.message && ToastUtils.pushToastError('changePasswordError', error?.message);
+      }
     }
-    catch (error) {
-      // if (changePassword.hasOwnProperty('error')) {
-      setLoading(false)
-      console.log("err ::", error)
-      {error?.message && ToastUtils.pushToastError('changePasswordError', error?.message);}
-      // }
-    }
-
   };
 
   useKey((event: KeyboardEvent) => {

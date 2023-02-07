@@ -15,7 +15,6 @@ import { useKey } from 'react-use';
 export const NodeSetting = () => {
   const dispatch = useDispatch();
 
-
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     ? window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
     : window.currentDaemon;
@@ -306,8 +305,6 @@ export const NodeSetting = () => {
                         ? BchatButtonColor.Disable
                         : BchatButtonColor.Primary
                     }
-                    // buttonColor={ BchatButtonColor.Primary}
-
                     text={window.i18n('test')}
                     onClick={() => validationForDeamon()}
                     disabled={testBottonEnable}
@@ -419,7 +416,6 @@ export const NodeSetting = () => {
                                   style={{ cursor: 'pointer' }}
                                   key={i}
                                   className="wallet-settings-nodeSetting-dropDownModal-items"
-                                  // style={{ marginBottom: '5px' }}
                                   onClick={() => AssignCurrentDeamon(item)}
                                 >
                                   <BchatIcon
@@ -460,7 +456,6 @@ export const NodeSetting = () => {
               <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
                 <div>
                   <BchatButton
-                    // buttonColor={BchatButtonColor.Disable}
                     buttonColor={
                       currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort
                         ? BchatButtonColor.Disable

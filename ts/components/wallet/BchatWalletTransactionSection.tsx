@@ -22,7 +22,7 @@ export const TransactionSection = (props: any) => {
   const syncStatus: boolean = useSelector(getRescaning);
   const recip: any = receipientData;
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  
+
   useEffect(() => {
     document.removeEventListener('click', handleClick);
     switch (filter) {
@@ -117,8 +117,7 @@ export const TransactionSection = (props: any) => {
   };
 
   function filterText(value: any) {
-    // var letters = /^[0-9a-zA-Z]+$/; 
-    var letters=/^[0-9a-zA-Z]+\.?\d*$/
+    var letters = /^[0-9a-zA-Z]+\.?\d*$/;
     if (value === '' || value.match(letters)) {
     } else {
       return;
@@ -349,7 +348,7 @@ export const TransactionSection = (props: any) => {
                       </section>
                     </Flex>
                   </Flex>
-                 
+
                   {selected === i && (
                     <>
                       <Flex
@@ -367,8 +366,7 @@ export const TransactionSection = (props: any) => {
                                 ? { width: '122px' }
                                 : { width: '110px' }
                             }
-                          >
-                          </article>
+                          ></article>
                           {recip.address && (
                             <div
                               style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '57%' }}
