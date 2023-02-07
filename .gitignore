@@ -14,8 +14,8 @@ release/
 sql/
 
 # bin dir
-# bin/*
-# !bin/.gitkeep
+bin/*
+!bin/.gitkeep
 
 # generated files
 stylesheets/*.css
