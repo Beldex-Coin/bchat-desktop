@@ -13,7 +13,6 @@ release/
 *.sublime*
 sql/
 
-
 # bin dir
 bin/*
 !bin/.gitkeep
