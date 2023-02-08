@@ -278,34 +278,12 @@ async function start() {
   // tslint:disable-next-line: restrict-plus-operands
   const launchCount = !prevLaunchCount ? 1 : prevLaunchCount + 1;
   window.setSettingValue('launch-count', launchCount);
-  // test net
-  // const deamon_list=[{host:'154.26.139.105',port:'19095',active:0}]
 
-  function removeOldLoginDb() {
-    try {
-      let BChatDbDir;
-      if (os.platform() === 'linux' || os.platform() === 'darwin') {
-        BChatDbDir =
-          os.platform() === 'linux'
-            ? path.join(os.homedir(), '.config//BChat')
-            : path.join(os.homedir(), '/Library/Application Support/BChat');
-        if (fs.existsSync(BChatDbDir)) {
-          // console.log("NOO")
-          fs.emptyDirSync(BChatDbDir);
-          // console.log('Remove Bchat folder is done');
-        }
-      }
-    } catch (e) {
-      console.log('removeLoginDb in ', e);
-    }
-  }
   // On first launch
   if (launchCount === 1) {
     // Initialise default settings
     window.setSettingValue('hide-menu-bar', true);
     window.setSettingValue('link-preview-setting', false);
-    // window.setSettingValue("decimal", '2 - Two (0.00)')
-    removeOldLoginDb();
   }
 
   window.setTheme = newTheme => {

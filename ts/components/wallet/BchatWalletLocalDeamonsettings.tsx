@@ -43,13 +43,14 @@ export function LocalDeamon() {
     if (Object.keys(data).length === 0) {
       return;
     }
-    const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-    if (currentDaemon.host == data.host) {
-      return ToastUtils.pushToastInfo('daemonAlreadyAdded', `This daemon already added.`);
-    }
+
     setLocalDeamonPort('');
     setTestNotify('');
     setvSerifyDeamon({});
+    const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+    if (currentDaemon.host == data.host) {
+      return ToastUtils.pushToastInfo('localAlreadyAdded', `Local daemon already connected.`);
+    }
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, verifyDeamon);
     return ToastUtils.pushToastSuccess(
       'successfully-added-daemon',
