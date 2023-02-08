@@ -1,10 +1,6 @@
 import _ from 'lodash';
 import { MessageModel } from '../models/message';
 import { isMacOS } from '../OS';
-import os from 'os';
-import path from 'path';
-import fs from 'fs-extra';
-
 import { queueAllCached } from '../receiver/receiver';
 import { getConversationController } from '../bchat/conversations';
 import { AttachmentDownloads, ToastUtils } from '../bchat/utils';
