@@ -8,12 +8,16 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { ToastUtils } from '../../bchat/utils';
 import { BchatIcon } from '../icon/BchatIcon';
 import { useKey } from 'react-use';
+import { useDispatch } from 'react-redux';
+import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
+import { updateBalance } from '../../state/ducks/wallet';
 
 export function LocalDeamon() {
   const localDeamonHost = '127.0.0.1';
   const [localDeamonPort, setLocalDeamonPort] = useState('');
   const [testNotify, setTestNotify] = useState('');
   const [verifyDeamon, setvSerifyDeamon] = useState({});
+  const dispatch = useDispatch();
 
   async function validationForDeamon() {
     let data = { host: localDeamonHost, port: localDeamonPort, active: 1, type: 'Local' };
@@ -43,19 +47,39 @@ export function LocalDeamon() {
     if (Object.keys(data).length === 0) {
       return;
     }
-
-    setLocalDeamonPort('');
-    setTestNotify('');
-    setvSerifyDeamon({});
+   
     const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
     if (currentDaemon.host == data.host) {
       return ToastUtils.pushToastInfo('localAlreadyAdded', `Local daemon already connected.`);
     }
+
+    let rescan: any = true;
+    let Transactions: any = '';
+    let wallHeight: any = 0;
+    dispatch( 
+      updateBalance({
+        balance: 0,
+        unlocked_balance: 0,
+        transacations: [],
+      })
+
+    );
+    dispatch(updateWalletRescaning(rescan));
+    dispatch(updateFiatBalance(Transactions));
+    window.setSettingValue('syncStatus', false);
+    
+    dispatch(updateWalletHeight(wallHeight));
+
+    setLocalDeamonPort('');
+    setTestNotify('');
+    setvSerifyDeamon({});
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, verifyDeamon);
     return ToastUtils.pushToastSuccess(
       'successfully-added-daemon',
       `Successfully ${data.host}:${data.port} daemon added.`
     );
+
+
   }
 
   function portValidation(value: any) {
@@ -84,7 +108,7 @@ export function LocalDeamon() {
               placeholder="Enter your IP address"
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               disabled={true}
-              //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
+            //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
             />
           </article>
           <article className="wallet-settings-nodeSetting-remoteContentBox">

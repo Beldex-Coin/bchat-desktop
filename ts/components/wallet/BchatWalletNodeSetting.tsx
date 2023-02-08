@@ -11,6 +11,8 @@ import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { LocalDeamon } from './BchatWalletLocalDeamonsettings';
 import { ToastUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
+import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
+import { updateBalance } from '../../state/ducks/wallet';
 
 export const NodeSetting = () => {
   const dispatch = useDispatch();
@@ -87,6 +89,22 @@ export const NodeSetting = () => {
   function currentDeamonNet() {
     let choosenDaemon = { host: chooseDeamon, port: chooseDeamonPort, active: 1, type: 'Remote' };
     window.setSettingValue(walletSettingsKey.settingsCurrentDeamon, choosenDaemon);
+
+    let rescan: any = true;
+    let Transactions: any = '';
+    let wallHeight: any = 0
+    dispatch(updateWalletRescaning(rescan));
+    dispatch(updateFiatBalance(Transactions));
+    window.setSettingValue('syncStatus', false);
+    dispatch( 
+      updateBalance({
+        balance: 0,
+        unlocked_balance: 0,
+        transacations: [],
+      })
+
+    );
+    dispatch(updateWalletHeight(wallHeight));
     ToastUtils.pushToastSuccess(
       'successfully-updated-current-daemon',
       `Successfully ${choosenDaemon.host}:${choosenDaemon.port} daemon updated.`

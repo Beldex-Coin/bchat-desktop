@@ -24,8 +24,21 @@ export const WalletPassword = (props: any) => {
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
-  let daemonHeight = useSelector((state: any) => state.daemon.height);
-  const currentHeight: any = Number(useSelector(getHeight));
+  let currentHeight: any;
+  let daemonHeight: any;
+  const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  if (currentDaemon.type === "Local") {
+    currentHeight = useSelector((state: any) => state.daemon.height);
+    daemonHeight = Number(useSelector(getHeight));
+  }
+  else {
+    currentHeight = Number(useSelector(getHeight));
+    daemonHeight = useSelector((state: any) => state.daemon.height);
+  }
+
+
+  // let daemonHeight = useSelector((state: any) => state.daemon.height);
+  // const currentHeight: any = Number(useSelector(getHeight));
   const Loader = styled.div`
     position: absolute;
     // top: 0;

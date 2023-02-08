@@ -4,15 +4,31 @@ import styled from 'styled-components';
 import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
 import { updateWalletRescaning } from '../../state/ducks/walletConfig';
+import { walletSettingsKey } from '../../data/settings-key';
 
 export const SyncStatusBar = () => {
   const dispatch = useDispatch();
-  const currentHeight: any = Number(useSelector(getHeight));
-  let daemonHeight = useSelector((state: any) => state.daemon.height);
+  let currentHeight: any;
+  let daemonHeight: any;
+
+  const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  console.log('currentHeight asdfghhgfcxfghg::', Number(useSelector(getHeight)), useSelector((state: any) => state.daemon.height),currentDaemon )
+
+  if (currentDaemon.type === "Local") {
+    currentHeight = useSelector((state: any) => state.daemon.height);
+    daemonHeight = Number(useSelector(getHeight));
+  }
+  else {
+    currentHeight = Number(useSelector(getHeight));
+    daemonHeight = useSelector((state: any) => state.daemon.height);
+  }
+
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
-  console.log("percentage:",pct)
+  console.log("percentage:", pct)
+  console.log('currentHeight ::', currentHeight, daemonHeight, percentage)
+
   const getSyncStatus = window.getSettingValue('syncStatus');
   const syncStatus = getSyncStatus
     ? { color: '#1DBF25', status: 'Synchronized' }
