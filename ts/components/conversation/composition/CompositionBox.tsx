@@ -19,6 +19,7 @@ import { getMediaPermissionsSettings } from '../../settings/BchatSettings';
 import { getDraftForConversation, updateDraftForConversation } from '../BchatConversationDrafts';
 import {
   AddStagedAttachmentButton,
+  SendFundButton,
   SendMessageButton,
   StartRecordingButton,
 } from './CompositionButtons';
@@ -380,6 +381,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         >
           
             {this.renderTextArea()}
+            <SendFundButton onClick={()=>null}/>
            {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
       
         </div>
