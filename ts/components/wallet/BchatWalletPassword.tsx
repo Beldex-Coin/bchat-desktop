@@ -27,7 +27,7 @@ export const WalletPassword = (props: any) => {
   let currentHeight: any;
   let daemonHeight: any;
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  if (currentDaemon.type === "Local") {
+  if (currentDaemon?.type === "Local") {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
   }
