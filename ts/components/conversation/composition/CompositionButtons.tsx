@@ -59,6 +59,25 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
         onClick={props.onClick}
         dataTestId="send-message-button"
       />
-    </div>
+    </div> 
+  );
+};
+export const SendFundButton = (props: { onClick: () => void }) => {
+  return (
+    <div 
+      onClick={props.onClick}>
+
+      <BchatIconButton
+        iconType="beldexCoinLogo"
+        iconColor='#159B24'
+        iconSize={32}
+        iconRotation={361}
+        borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
+        onClick={props.onClick}
+        backgroundColor='black'
+        dataTestId="send-message-button"
+      />
+    </div> 
   );
 };
