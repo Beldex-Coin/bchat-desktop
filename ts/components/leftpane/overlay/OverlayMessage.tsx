@@ -10,7 +10,7 @@ import { setOverlayMode } from '../../../state/ducks/section';
 import { PubKey } from '../../../bchat/types';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
- import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
+//  import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
 import { getConversationController } from '../../../bchat/conversations';
 // import { ToastUtils } from '../../../bchat/utils';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
@@ -56,17 +56,6 @@ export const OverlayMessage = () => {
       await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
       closeOverlay();
     } else {
-      
-      // this might be an BNS, validate the regex first
-      const mightBeOnsName = new RegExp(onsNameRegex, 'g').test(pubkeyorOnsTrimmed);
-      console.log("mightBeOnsName ::",mightBeOnsName);
-      
-      // if (!mightBeOnsName) {
-      //   ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError'));
-      //   console.log("test3")
-      //   return;
-      // }
-      
       setLoading(true);
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);

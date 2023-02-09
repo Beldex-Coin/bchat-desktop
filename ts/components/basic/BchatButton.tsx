@@ -20,6 +20,7 @@ export enum BchatButtonColor {
   Warning = 'warning',
   None = '',
   Red="red",
+  Disable="disable",
 }
 
 type Props = {

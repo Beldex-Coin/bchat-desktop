@@ -36,7 +36,7 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
   }
 };
 
-function displayPasswordModal(
+export function displayPasswordModal(
   passwordAction: PasswordAction,
   onPasswordUpdated: (action: string) => void
 ) {

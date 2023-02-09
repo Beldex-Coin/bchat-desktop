@@ -35,6 +35,7 @@ export interface FlexProps {
   height?: string;
   maxWidth?: string;
   maxHeight?: string;
+  cursor?:string;
 }
 
 export const Flex = styled.div<FlexProps>`
@@ -52,4 +53,6 @@ export const Flex = styled.div<FlexProps>`
   width: ${props => props.width || 'auto'};
   height: ${props => props.height || 'auto'};
   max-width: ${props => props.maxWidth || 'none'};
+  cursor: ${props => props.cursor || 'default'};
+
 `;

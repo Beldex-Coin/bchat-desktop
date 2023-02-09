@@ -44,6 +44,9 @@ declare global {
     persistStore?: Persistor;
     restart: any;
     getSeedNodeList: () => Array<string> | undefined;
+    getDaemonNodeRandomlyPick: () => Object;
+    networkType : string;
+    currentDaemon: any;
     setPassword: any;
     storage: any;
     isOnline: boolean;
@@ -101,5 +104,6 @@ declare global {
 
     Signal: any;
     WalletAddress: any;
+    deamon_list:any;
   }
 }

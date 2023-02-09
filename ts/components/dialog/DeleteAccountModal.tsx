@@ -12,19 +12,40 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
+// import { wallet } from '../../wallet/wallet-rpc';
+// import { kill } from 'cross-port-killer';
+// import { HTTPError } from '../../bchat/utils/errors';
 
-const deleteDbLocally = async () => {
+export const deleteDbLocally = async (deleteType?: string) => {
+  // wallet
+    // .closeWallet()
+    // .then(() => {
+    // kill(64371)
+    //     .then(() => {
+    //       console.log('killed port.....');
+    //     })
+    //     .catch(err => {
+    //       throw new HTTPError('beldex_rpc_port', err);
+    //     });
+    // })
+    // .catch(err => {
+    //   throw new HTTPError('close wallet error', err);
+    // });
   window?.log?.info('last message sent successfully. Deleting everything');
   window.persistStore?.purge();
   await deleteAllLogs();
-  await Data.removeAll();
+  if (deleteType === 'oldVersion') {
+    await Data.removeAllWithOutRecipient();
+  } else {
+    await Data.removeAll();
+  }
   await Data.close();
   await Data.removeDB();
   await Data.removeOtherData();
   window.localStorage.setItem('restart-reason', 'delete-account');
 };
 
-async function sendConfigMessageAndDeleteEverything() {
+export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {
   try {
     // DELETE LOCAL DATA ONLY, NOTHING ON NETWORK
     window?.log?.info('DeleteAccount => Sending a last SyncConfiguration');
@@ -32,7 +53,7 @@ async function sendConfigMessageAndDeleteEverything() {
     // be sure to wait for the message being effectively sent. Otherwise we won't be able to encrypt it for our devices !
     await forceSyncConfigurationNowIfNeeded(true);
     window?.log?.info('Last configuration message sent!');
-    await deleteDbLocally();
+    await deleteDbLocally(deleteType);
     window.restart();
   } catch (error) {
     // if an error happened, it's not related to the delete everything on network logic as this is handled above.
@@ -43,7 +64,7 @@ async function sendConfigMessageAndDeleteEverything() {
       error && error.stack ? error.stack : error
     );
     try {
-      await deleteDbLocally();
+      await deleteDbLocally(deleteType);
     } catch (e) {
       window?.log?.error(e);
     } finally {
@@ -189,7 +210,7 @@ export const DeleteAccountModal = () => {
           className="bchat-confirm-main-message"
           html={window.i18n('dialogClearAllDataDeletionQuestion')}
         />
-        {/* <SpacerLG /> */}
+
         <div className="bchat-modal__button-group">
           <BchatButton
             text={window.i18n('entireAccount')}
@@ -209,8 +230,6 @@ export const DeleteAccountModal = () => {
             disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
           />
         </div>
-        {/* <SpacerLG /> */}
-
         {deleteEverythingWithNetwork && (
           <BchatHtmlRenderer
             tag="span"
@@ -226,8 +245,6 @@ export const DeleteAccountModal = () => {
             html={window.i18n('areYouSureDeleteDeviceOnly')}
           />
         )}
-        {/* <SpacerLG /> */}
-
         {(deleteDeviceOnly || deleteEverythingWithNetwork) && (
           <div className="bchat-modal__button-group">
             <BchatButton

@@ -19,6 +19,7 @@ import { initialSearchState } from '../state/ducks/search';
 import { initialSectionState } from '../state/ducks/section';
 import { getEmptyStagedAttachmentsState } from '../state/ducks/stagedAttachments';
 import { initialThemeState } from '../state/ducks/theme';
+import { initialWalletState } from '../state/ducks/wallet';
 import { TimerOptionsArray } from '../state/ducks/timerOptions';
 import { initialUserConfigState } from '../state/ducks/userConfig';
 import { StateType } from '../state/reducer';
@@ -29,6 +30,10 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 
 // moment does not support es-419 correctly (and cause white screen on app start)
 import moment from 'moment';
+import { initialWalletSectionState } from '../state/ducks/walletSection';
+import { initialDaemonState } from '../state/ducks/daemon';
+import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
+import { initialWalletConfigState } from '../state/ducks/walletConfig';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -104,9 +109,14 @@ export class BchatInboxView extends React.Component<any, State> {
       defaultRooms: initialDefaultRoomState,
       search: initialSearchState,
       theme: initialThemeState,
+      wallet: initialWalletState,
+      daemon : initialDaemonState,
       onionPaths: initialOnionPathState,
       modals: initialModalState,
       userConfig: initialUserConfigState,
+      walletConfig:initialWalletConfigState,
+      walletFocused:initialWalletSectionState,
+      walletInnerFocused:initialWalletInnerSectionState,
       timerOptions: {
         timerOptions,
       },

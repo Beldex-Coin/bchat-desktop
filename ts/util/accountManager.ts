@@ -16,6 +16,7 @@ import {
   Storage,
 } from './storage';
 import { Registration } from './registration';
+// import { getConversationById } from '../data/data';
 
 /**
  * Might throw
@@ -66,7 +67,7 @@ export async function signInWithRecovery(
   mnemonicLanguage: string,
   profileName: string
 ) {
-  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName);
+  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName, 0);
 }
 
 /**
@@ -89,7 +90,7 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
   // await for the first configuration message to come in.
-  await registrationDone(pubKeyString, '');
+  await registrationDone(pubKeyString, '', 0);
   return pubKeyString;
 }
 /**
@@ -101,7 +102,8 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
 export async function registerSingleDevice(
   generatedMnemonic: string,
   mnemonicLanguage: string,
-  profileName: string
+  profileName: string,
+  deamonHeight: number
 ) {
   if (!generatedMnemonic) {
     throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
@@ -116,22 +118,14 @@ export async function registerSingleDevice(
   const identityKeyPair = await generateKeypair(generatedMnemonic, mnemonicLanguage);
 
   await createAccount(identityKeyPair);
+
   await saveRecoveryPhrase(generatedMnemonic);
+
   await setLastProfileUpdateTimestamp(Date.now());
-
   const pubKeyString = toHex(identityKeyPair.pubKey);
-  await registrationDone(pubKeyString, profileName);
-}
 
-// export async function generateMnemonic() {
-  // Note: 4 bytes are converted into 3 seed words, so length 12 seed words
-  // (13 - 1 checksum) are generated using 12 * 4 / 3 = 16 bytes.
-  // const seedSize = 16;
-  // const seed = (await getSodiumRenderer()).randombytes_buf(seedSize);
-  // const hex = toHex(seed);
-  // localStorage.setItem("userAddress","bxdis3VF318i2QDjvqwoG9GyfP4sVjTvwZyf1JGLNFyTJ8fbtBgzW6ieyKnpbMw5bU9dggbAiznaPGay96WAmx1Z2B32B86PE");
-  // return mn_encode(hex);
-// }
+  await registrationDone(pubKeyString, profileName, deamonHeight);
+}
 
 async function createAccount(identityKeyPair: any) {
   const sodium = await getSodiumRenderer();
@@ -172,25 +166,37 @@ async function createAccount(identityKeyPair: any) {
   await setLocalPubKey(pubKeyString);
 }
 
-async function registrationDone(ourPubkey: string, displayName: string) {
+async function registrationDone(ourPubkey: string, displayName: string, deamonHeight: number) {
   window?.log?.info('registration done');
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
-
+  window?.log?.info('registration done 0 ::', ourPubkey);
+  // let userDetails= await getConversationById(ourPubkey)
   // Ensure that we always have a conversation for ourself
   const conversation = await getConversationController().getOrCreateAndWait(
     ourPubkey,
     ConversationTypeEnum.PRIVATE
   );
+  window?.log?.info('registration done 1 ::', conversation);
+
+  window?.log?.info('registration done 2 ::', displayName);
+
   await conversation.setBchatProfile({ displayName });
+  window?.log?.info('registration done 3 ::', ourPubkey);
+
   await conversation.setIsApproved(true);
+  window?.log?.info('registration done 4 ::', ourPubkey);
   await conversation.setDidApproveMe(true);
+  window?.log?.info('registration done 5 ::', ourPubkey);
+  await conversation.setwalletCreatedDaemonHeight(deamonHeight);
 
   await conversation.commit();
   const user = {
     ourNumber: getOurPubKeyStrFromCache(),
     ourPrimary: ourPubkey,
   };
+  window?.log?.info('registration done 5 ::', user);
+
   window.inboxStore?.dispatch(userActions.userChanged(user));
   await Registration.markDone();
   window?.log?.info('dispatching registration event');

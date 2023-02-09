@@ -53,11 +53,11 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     const placeholders =
       passwordAction === 'change'
         ? [
-            window.i18n('typeInOldPassword'),
+            window.i18n('currentPassword'),
             window.i18n('enterPassword'),
             window.i18n('confirmPassword'),
           ]
-        : [window.i18n('enterPassword'), window.i18n('confirmPassword')];
+        : [window.i18n('removePasswordDisc'), window.i18n('confirmPassword')];
 
     const confirmButtonColor = BchatButtonColor.Green;
     // do this separately so typescript's compiler likes it

@@ -29,6 +29,21 @@ export type UserDetailsModalState = {
   userName: string;
 } | null;
 
+export type ChangePasswordModalState={} | null;
+export type walletSettingMiniModalState={
+  headerName:string,
+  content:any,
+  onClose:any,
+  onClick:any,
+  currency:string
+} | null;
+
+export type TransactionInitModalState={} | null;
+export type WalletSendConfirmState=any | null;
+export type BchatUpdateInstruntionState=any | null;
+
+
+
 export type ModalState = {
   confirmModal: ConfirmModalState;
   inviteContactModal: InviteContactModalState;
@@ -45,6 +60,11 @@ export type ModalState = {
   adminLeaveClosedGroup: AdminLeaveClosedGroupModalState;
   bchatPasswordModal: BchatPasswordModalState;
   deleteAccountModal: DeleteAccountModalState;
+  ChangePasswordModal:ChangePasswordModalState;
+  walletSettingMiniModal:walletSettingMiniModalState;
+  transactionInitModal:TransactionInitModalState;
+  walletSendConfirm:WalletSendConfirmState;
+  BchatUpdateInstruntion:BchatUpdateInstruntionState;
 };
 
 export const initialModalState: ModalState = {
@@ -63,6 +83,11 @@ export const initialModalState: ModalState = {
   adminLeaveClosedGroup: null,
   bchatPasswordModal: null,
   deleteAccountModal: null,
+  ChangePasswordModal:null,
+  walletSettingMiniModal:null,
+  transactionInitModal:null,
+  walletSendConfirm:null,
+  BchatUpdateInstruntion:null
 };
 
 const ModalSlice = createSlice({
@@ -114,6 +139,26 @@ const ModalSlice = createSlice({
     updateDeleteAccountModal(state, action: PayloadAction<DeleteAccountModalState>) {
       return { ...state, deleteAccountModal: action.payload };
     },
+    ChangePasswordModal(state,action:PayloadAction<ChangePasswordModalState>)
+    {
+      return { ...state, ChangePasswordModal: action.payload };
+    },
+    walletSettingMiniModal(state,action:PayloadAction<walletSettingMiniModalState>)
+    {
+      return { ...state, walletSettingMiniModal: action.payload };
+    },
+    updateTransactionInitModal(state,action:PayloadAction<TransactionInitModalState>)
+    {
+      return { ...state, transactionInitModal: action.payload };
+    },
+    updateSendConfirmModal(state,action:PayloadAction<WalletSendConfirmState>)
+    {
+      return { ...state, walletSendConfirm: action.payload };
+    },
+    updateBchatUpgradeInstructionModal(state,action:PayloadAction<BchatUpdateInstruntionState>)
+    {
+      return { ...state, BchatUpdateInstruntion: action.payload};
+    }
   },
 });
 
@@ -134,5 +179,10 @@ export const {
   bchatPassword,
   updateDeleteAccountModal,
   updateBanOrUnbanUserModal,
+  ChangePasswordModal,
+  walletSettingMiniModal,
+  updateTransactionInitModal,
+  updateSendConfirmModal,
+  updateBchatUpgradeInstructionModal
 } = actions;
 export const modalReducer = reducer;

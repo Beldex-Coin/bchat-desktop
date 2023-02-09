@@ -147,3 +147,13 @@ export function useConversationPropsById(convoId?: string) {
     return convo;
   });
 }
+
+export function useConversationBeldexAddress(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+  return convoProps?.walletAddress;
+}
+
+export function useConversationWalletDaemonHeight(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+  return convoProps?.walletCreatedDaemonHeight;
+}

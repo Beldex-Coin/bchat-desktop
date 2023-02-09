@@ -128,43 +128,30 @@ let lastOutgoingOfferTimestamp = -Infinity;
  * This array holds all of the ice servers BChat can contact.
  * They are all contacted at the same time, so before triggering the request, we get only a subset of those, randomly
  */
- const iceServersFullArray = [
+
+const iceServersFullArray = [
   {
-    urls: 'turn:freyr.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
+    urls: 'communication.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:fenrir.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
+    urls: 'communication1.beldex.io',
+    username: 'Bchat1',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:frigg.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
+    urls: 'communication2.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
   },
   {
-    urls: 'turn:angus.getsession.org',
-    username: 'session202111',
-    credential: '053c268164bc7bd7',
-  },
-  // {
-  //   urls: 'turn:hereford.getsession.org',
-  //   username: 'session202111',
-  //   credential: '053c268164bc7bd7',
-  // },
-  // {
-  //   urls: 'turn:holstein.getsession.org',
-  //   username: 'session202111',
-  //   credential: '053c268164bc7bd7',
-  // },
-  // {
-  //   urls: 'turn:brahman.getsession.org',
-  //   username: 'session202111',
-  //   credential: '053c268164bc7bd7',
-  // },
+    urls: 'communication3.beldex.io',
+    username: 'Bchat',
+    credential: 'Bchat@123',
+  }
 ];
+
 const configuration: RTCConfiguration = {
   bundlePolicy: 'max-bundle',
   rtcpMuxPolicy: 'require',

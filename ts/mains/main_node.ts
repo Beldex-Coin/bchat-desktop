@@ -158,6 +158,7 @@ import { getAppRootPath } from '../node/getRootPath';
 import { HTTPError } from '../bchat/utils/errors';
 import { kill } from 'cross-port-killer';
 
+
 // Both of these will be set after app fires the 'ready' event
 let logger: Logger | null = null;
 let locale: LocaleMessagesWithNameType;
@@ -209,7 +210,8 @@ function getDefaultWindowSize() {
   return {
     defaultWidth: isTestIntegration ? 1500 : 880,
     defaultHeight: 820,
-    minWidth: 880,
+    // minWidth: 880,
+    minWidth: 1200,
     minHeight: 600,
   };
 }
@@ -256,17 +258,19 @@ function getStartInTray() {
 }
 // tslint:disable-next-line: max-func-body-length
 async function createWindow() {
-  const { minWidth, minHeight, width, height } = getWindowSize();
+  const { minWidth, minHeight, width, height } = getWindowSize();  
   windowConfig = windowConfig || {};
   const picked = {
     maximized: (windowConfig as any).maximized || false,
+    // maximized:true,
+
     autoHideMenuBar: (windowConfig as any).autoHideMenuBar || false,
     width: (windowConfig as any).width || width,
     height: (windowConfig as any).height || height,
     x: (windowConfig as any).x,
     y: (windowConfig as any).y,
   };
-
+  
   if (isTestIntegration) {
     const screenWidth =
       screen.getPrimaryDisplay().workAreaSize.width - getDefaultWindowSize().defaultWidth;
@@ -282,6 +286,8 @@ async function createWindow() {
     minWidth,
     minHeight,
     fullscreen: false as boolean | undefined,
+
+
     backgroundColor: '#000',
     webPreferences: {
       nodeIntegration: true,
@@ -295,14 +301,13 @@ async function createWindow() {
     ...picked,
     // don't setup icon, the executable one will be used by default
   };
-
   if (!_.isNumber(windowOptions.width) || windowOptions.width < minWidth) {
     windowOptions.width = Math.max(minWidth, width);
   }
   if (!_.isNumber(windowOptions.height) || windowOptions.height < minHeight) {
     windowOptions.height = Math.max(minHeight, height);
   }
-  if (!_.isBoolean(windowOptions.maximized)) {
+  if (_.isBoolean(windowOptions.maximized)) {
     delete windowOptions.maximized;
   }
   if (!_.isBoolean(windowOptions.autoHideMenuBar)) {
@@ -365,6 +370,7 @@ async function createWindow() {
     const size = mainWindow.getSize();
     const position = mainWindow.getPosition();
 
+
     // so if we need to recreate the window, we have the most recent settings
     windowConfig = {
       maximized: mainWindow.isMaximized(),
@@ -401,7 +407,7 @@ async function createWindow() {
       passwordWindow = null;
     }
   });
-
+  mainWindow.maximize()
   const urlToLoad = prepareURL([getAppRootPath(), 'background.html']);
 
   await mainWindow.loadURL(urlToLoad);
@@ -430,6 +436,7 @@ async function createWindow() {
   // Note: We do most of our shutdown logic here because all windows are closed by
   //   Electron before the app quits.
   mainWindow.on('close', async e => {
+     
     kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
     console.log('close event', {
       readyForShutdown: mainWindow ? readyForShutdown : null,
@@ -454,7 +461,7 @@ async function createWindow() {
 
       return;
     }
-
+    //  await wallet.closeWallet();
     await requestShutdown();
     if (mainWindow) {
       readyForShutdown = true;
@@ -603,6 +610,7 @@ async function showAbout() {
     autoHideMenuBar: true,
     backgroundColor: '#000',
     show: false,
+    
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: false,
@@ -827,7 +835,8 @@ async function requestShutdown() {
   }
 }
 
-app.on('before-quit', () => {
+app.on('before-quit',async () => {
+   
   console.log('before-quit event', {
     readyForShutdown: mainWindow ? readyForShutdown : null,
     shouldQuit: windowShouldQuit(),

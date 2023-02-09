@@ -10,6 +10,7 @@ type Props = {
   value?: string;
   placeholder: string;
   maxLength?: number;
+  minLength?: number;
   enableShowHide?: boolean;
   onValueChanged?: (value: string) => any;
   onEnterPressed?: any;
@@ -46,7 +47,7 @@ const ErrorItem = (props: { error: string | undefined }) => {
 
 const ShowHideButton = (props: { toggleForceShow: () => void,forceShow:boolean }) => {
   
-    return <BchatIconButton iconType={props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
+    return <BchatIconButton iconType={!props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
 };
 
 export const BchatInput = (props: Props) => {
@@ -56,6 +57,7 @@ export const BchatInput = (props: Props) => {
     type,
     value,
     maxLength,
+    minLength,
     enableShowHide,
     error,
     label,
@@ -88,6 +90,7 @@ export const BchatInput = (props: Props) => {
         placeholder={placeholder}
         value={value}
         maxLength={maxLength}
+        minLength={minLength}
         autoFocus={autoFocus}
         data-testid={inputDataTestId}
         onChange={updateInputValue}

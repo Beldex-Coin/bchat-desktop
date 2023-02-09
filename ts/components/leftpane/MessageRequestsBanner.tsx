@@ -105,20 +105,13 @@ export const CirclularIcon = (props: { iconType: BchatIconType; iconSize: BchatI
 };
 
 export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
-  const { handleOnClick } = props;
-  
-  
+  const { handleOnClick } = props; 
   const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
   const hideRequestBanner = useSelector(getHideMessageRequestBanner); 
-
-  // console.log("hideRequestBanner :: ",hideRequestBanner,"    conversationRequestsUnread:: ",conversationRequestsUnread);
-
   if (hideRequestBanner || !conversationRequestsUnread ) {
     return null;
   }
-
   const triggerId = 'msg-req-banner';
-
   const handleOnContextMenu = (e: any) => {
     contextMenu.show({
       id: triggerId,

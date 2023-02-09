@@ -85,10 +85,7 @@ export const AudioPlayerWithEncryptedFile = (props: {
       triggerPlayNextMessageIfNeeded(messageId);
     }
   };
- 
-  // console.log(onEnded);
-  
-
+   
   return (
     <H5AudioPlayer
       src={urlToLoad}

@@ -56,9 +56,10 @@ export function mn_decode(str: string, wordsetName: string = MN_DEFAULT_WORDSET)
   const wordset = mnWords[wordsetName];
   let out = '';
   const n = wordset.words.length;
-  const wlist = str.split(' ');
+  const trimWhiteSpace = str.replace(/^\s+|\s+$/g, '')
+  const wlist = trimWhiteSpace.split(' ');
   let checksumWord = '';
-  if (wlist.length < 12) {
+  if (wlist.length < 24) {
     throw new MnemonicError("You've entered too few words, please try again");
   }
   if (

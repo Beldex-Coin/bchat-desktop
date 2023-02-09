@@ -31,7 +31,7 @@ const NotificationBubbleIconContainer = styled.div`
   align-items: center;
 `;
 
-const FlexCenter=styled.div`
+const FlexCenter = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
@@ -41,26 +41,24 @@ export const NotificationBubble = (props: {
   notificationText: string;
   iconType?: BchatIconType;
   iconColor?: string;
-  bgColor?:string;
+  bgColor?: string;
 }) => {
-  const { notificationText, iconType, iconColor,bgColor } = props;
+  const { notificationText, iconType, iconColor, bgColor } = props;
   return (
-  <FlexCenter>
-    <NotificationBubbleFlex>
-      {iconType && (
-        <NotificationBubbleIconContainer style={{backgroundColor:bgColor}}>
-          <BchatIcon
-            iconSize="medium"
-            iconType={iconType}
-            iconColor={iconColor}
-            iconPadding="auto 10px"
-          />
-        </NotificationBubbleIconContainer>
-      )}
-      <NotificationBubbleText>{notificationText}</NotificationBubbleText>
-      
-      {/* {iconType && <NotificationBubbleIconContainer />} */}
-    </NotificationBubbleFlex>
+    <FlexCenter>
+      <NotificationBubbleFlex>
+        {iconType && (
+          <NotificationBubbleIconContainer style={{ backgroundColor: bgColor }}>
+            <BchatIcon
+              iconSize="medium"
+              iconType={iconType}
+              iconColor={iconColor}
+              iconPadding="auto 10px"
+            />
+          </NotificationBubbleIconContainer>
+        )}
+        <NotificationBubbleText>{notificationText}</NotificationBubbleText>
+      </NotificationBubbleFlex>
     </FlexCenter>
   );
 };

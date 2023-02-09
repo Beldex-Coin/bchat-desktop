@@ -7,6 +7,8 @@ import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { useKey } from 'react-use';
+// import { clipboard } from 'electron';
+// import { ToastUtils } from '../../bchat/utils';
 
 export interface BchatConfirmDialogProps {
   message?: string;
@@ -30,12 +32,16 @@ export interface BchatConfirmDialogProps {
   okText?: string;
   cancelText?: string;
   hideCancel?: boolean;
+  // showCopyBtn?: boolean;
+  // copyTxt?: string;
+  // seed?: string;
   okTheme?: BchatButtonColor;
   closeTheme?: BchatButtonColor;
   bchatIcon?: BchatIconType;
   iconSize?: BchatIconSize;
   shouldShowConfirm?: boolean | undefined;
   showExitIcon?: boolean | undefined;
+  btndisable?: boolean | undefined;
 }
 
 export const BchatConfirm = (props: BchatConfirmDialogProps) => {
@@ -44,22 +50,23 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     message = '',
     messageSub = '',
     closeTheme = BchatButtonColor.White,
+    // seed="",
     onClickOk,
     onClickClose,
     hideCancel = false,
+    // showCopyBtn = false,
     bchatIcon,
     iconSize,
     shouldShowConfirm,
     onClickCancel,
     showExitIcon,
     closeAfterInput = true,
+    btndisable
   } = props;
 
-  console.log("props.okTheme ::",props);
-  
-  
-  
   const [isLoading, setIsLoading] = useState(false);
+  // const [copied, setCopied] = useState(false);
+
 
   const okText = props.okText || window.i18n('ok');
 
@@ -104,9 +111,36 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
 
+  // function copyToClipboard() {
+  //   clipboard.writeText(seed, 'clipboard');
+  //   setCopied(true)
+  //   ToastUtils.pushCopiedToClipBoard();
+
+  // }
+  // function disableValidate()
+  // {
+  //   let disable;
+  //   if(showCopyBtn)
+  //   {
+  //     if(copied)
+  //     {
+  //       disable=false
+  //     }
+  //     else
+  //     {
+  //       disable=true
+  //     }
+  //   }
+  //   else
+  //   {
+  //     disable=btndisable  ? btndisable : false
+  //   }
+
+  //   return disable
+  // }
   useKey((event: KeyboardEvent) => {
     return event.key === 'Enter';
-  },onClickOkHandler);
+  }, onClickOkHandler);
 
   return (
     <BchatWrapperModal
@@ -118,7 +152,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       {!showHeader && <SpacerLG />}
 
       <div className="bchat-modal__centered">
-      <SpacerMD />
+        <SpacerMD />
         {bchatIcon && iconSize && (
           <>
             <BchatIcon iconType={bchatIcon} iconSize={iconSize} />
@@ -135,9 +169,9 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
         <BchatSpinner loading={isLoading} />
       </div>
-  
+
       <div className="bchat-modal__button-group">
-       
+
         {!hideCancel && (
           <BchatButton
             text={cancelText}
@@ -146,11 +180,12 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             dataTestId="Bchat-confirm-cancel-button"
           />
         )}
-         <BchatButton
+        <BchatButton
           text={okText}
           buttonColor={props.okTheme}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
+          disabled={btndisable ? btndisable : false}
         />
       </div>
     </BchatWrapperModal>

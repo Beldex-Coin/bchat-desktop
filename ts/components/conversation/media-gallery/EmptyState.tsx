@@ -9,18 +9,13 @@ interface Props {
 
 export class EmptyState extends React.Component<Props> {
   public render() {
-    const { label } = this.props;    
-
+    const { label } = this.props;
     return <div className="module-empty-state">
-      {/* {label==="No media"? */}
       <div className='parent'>
-    {/* <img src={'images/bchat/no_media.svg'}  style={{width:"70%",height:"60%"}}/> */}
-    <div className='noMediaImg'>
-
-    </div>
-    <p style={{textAlign:'center'}}>{label}</p>
-    </div>
-    {/* :label } */}
+        <div className='noMediaImg'>
+        </div>
+        <p style={{ textAlign: 'center' }}>{label}</p>
+      </div>
     </div>;
   }
 }

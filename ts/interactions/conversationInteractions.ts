@@ -228,9 +228,6 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
   }
-   
-  //  console.log('username ::',username);
-
   const title = window.i18n('leaveGroup');
   const message = window.i18n('leaveGroupConfirmation',[username]); 
   const ourPK = UserUtils.getOurPubKeyStrFromCache();

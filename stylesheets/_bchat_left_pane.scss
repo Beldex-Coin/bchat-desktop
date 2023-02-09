@@ -165,8 +165,8 @@ $bchat-compose-margin: 20px;
 
     .dayAndNightIcon {
       background-image: var(--image-DayNight);
-      width: 23px;
-      height: 23px;
+      width: 20px;
+      height: 20px;
       background-size: contain;
       cursor: pointer;
       background-repeat: no-repeat;
@@ -304,7 +304,9 @@ $bchat-compose-margin: 20px;
       border-radius: 10px;
       color: #fff;
       font-family: $bchat-font-poppin-semibold;
-      background-image: var(--button-color);
+      // background-image: var(--button-color);
+      background-color: var(--button-color);
+
       margin: 15px auto;
 
       &:hover {
@@ -481,7 +483,8 @@ $bchat-compose-margin: 20px;
     border-radius: 10px;
     color: #fff;
     font-family: $bchat-font-poppin-semibold;
-    background-image: var(--button-color);
+    // background-image: var(--button-color);
+    background-color:var(--button-color) ;
     margin: 15px auto;
 
     &:hover {
@@ -719,18 +722,31 @@ $bchat-compose-margin: 20px;
     transition: $bchat-transition-duration  !important;
 
     &-icons {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       display: inline-flex;
       background-repeat: no-repeat;
       background-size: contain;
-      margin-right: 10px;
+      margin-right: 20px;
       margin-left: 10px;
     }
 
     &-span {
       font-family: $bchat-font-poppin-medium;
-      font-size: 18px;
+      font-size: 17px;
+    }
+
+    .beta
+    {
+      margin-left: 5px;
+    background-color: #9494A0;
+    height: 11px;
+    // border-radius: 2px;
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 8px;
+    font-family: "poppin-semibold";
+    letter-spacing: 1px;
     }
 
     &>div {

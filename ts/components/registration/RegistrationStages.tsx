@@ -4,21 +4,14 @@ import { SignInMode, SignInTab } from './SignInTab';
 import { createOrUpdateItem, removeAll } from '../../data/data';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { getConversationController } from '../../bchat/conversations';
-import { PromiseUtils,
-    ToastUtils } from '../../bchat/utils';
+import { PromiseUtils, ToastUtils } from '../../bchat/utils';
 import { TaskTimedOutError } from '../../bchat/utils/Promise';
 import { trigger } from '../../shims/events';
-import {
-  registerSingleDevice,
-  signInByLinkingDevice,
-} from '../../util/accountManager';
+import { registerSingleDevice, signInByLinkingDevice } from '../../util/accountManager';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
-import { 
-   restoreWallet } from '../../mains/wallet-rpc'
+import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
-import { startWalletRpc } from '../../mains/wallet-rpc'
-
 
 export const MAX_USERNAME_LENGTH = 26;
 // tslint:disable: use-simple-attributes
@@ -62,7 +55,13 @@ export async function signUp(signUpDetails: {
 
   try {
     await resetRegistration();
-    await registerSingleDevice(generatedRecoveryPhrase, 'english', trimName);
+    let deamonHeight: any = await wallet.getLatestHeight();
+    await registerSingleDevice(
+      generatedRecoveryPhrase,
+      'english',
+      trimName,
+      deamonHeight ? deamonHeight : 0
+    );
     await createOrUpdateItem({
       id: 'hasSyncedInitialConfigurationItem',
       value: true,
@@ -85,23 +84,33 @@ export async function signUp(signUpDetails: {
  */
 export async function signInWithRecovery(signInDetails: {
   displayName: string;
-  password:string;
+  password: string;
   userRecoveryPhrase: string;
+  refreshDetails: {
+    refresh_type: string;
+    refresh_start_timestamp_or_height: string;
+  };
 }) {
-  const { displayName,password, userRecoveryPhrase } = signInDetails;
-  window?.log?.info('RESTORING FROM SEED');
+  const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
   const trimName = displayNameIsValid(displayName);
   // shows toast to user about the error
   if (!trimName) {
     return;
   }
-
   try {
-    const wallet = await restoreWallet(displayName,password, userRecoveryPhrase);
-    localStorage.setItem("userAddress",wallet.result.address);
+    const restoreWallet = await wallet.restoreWallet(
+      displayName,
+      password,
+      userRecoveryPhrase,
+      refreshDetails
+    );
+    localStorage.setItem('userAddress', restoreWallet.result.address);
+    const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
+
     await resetRegistration();
 
-    await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
+    await registerSingleDevice(userRecoveryPhrase, 'english', trimName, deamonHeight);
+
     await setSignWithRecoveryPhrase(true);
 
     trigger('openInbox');
@@ -199,8 +208,7 @@ export const RegistrationStages = () => {
   }, []);
 
   const generateMnemonicAndKeyPairaa = async () => {
-
-      await startWalletRpc();
+    await wallet.startWallet();
   };
   return (
     <div className="bchat-registration-container">
@@ -213,15 +221,18 @@ export const RegistrationStages = () => {
           setSignUpMode,
           setRegistrationPhase,
         }}
-      > 
-        {accent &&<AccentText/>}
+      >
+        {accent && <AccentText />}
         {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignUp) && <SignUpTab assent={(value:boolean)=>
-          setAccent(value)} />}
+          registrationPhase === RegistrationPhase.SignUp) && (
+          <SignUpTab assent={(value: boolean) => setAccent(value)} />
+        )}
         {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignIn) && <SignInTab  assent={(value:boolean)=>setAccent(value)}/>}
-        {accent && <TermsAndConditions/>}
+          registrationPhase === RegistrationPhase.SignIn) && (
+          <SignInTab assent={(value: boolean) => setAccent(value)} />
+        )}
+        {accent && <TermsAndConditions />}
       </RegistrationContext.Provider>
-     </div>
+    </div>
   );
 };

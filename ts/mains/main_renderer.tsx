@@ -19,6 +19,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import kill from 'cross-port-killer';
 import { HTTPError } from '../bchat/utils/errors';
+// import { walletSettingsKey } from '../data/settings-key';
 // tslint:disable: max-classes-per-file
 
 // Globally disable drag and drop
@@ -125,7 +126,7 @@ Storage.onready(async () => {
   // These make key operations available to IPC handlers created in preload.js
   window.Events = {
     getThemeSetting: () => Storage.get('theme-setting', 'dark'),
-    setThemeSetting: async (value: any) => { 
+    setThemeSetting: async (value: any) => {
       await Storage.put('theme-setting', value);
     },
     getHideMenuBar: () => Storage.get('hide-menu-bar'),
@@ -165,11 +166,8 @@ Storage.onready(async () => {
   }
 
   const themeSetting = window.Events.getThemeSetting();
-  
-  // console.log("themeSetting ",themeSetting);
 
-  
-  
+  // console.log("themeSetting ",themeSetting);
   const newThemeSetting = mapOldThemeToNew(themeSetting);
   window.Events.setThemeSetting(newThemeSetting);
 
@@ -356,14 +354,15 @@ async function start() {
     openInbox();
   });
 }
-
+// window.removeEventListener('offline', onOffline);
+//   window.addEventListener('online', onOnline);
 let disconnectTimer: NodeJS.Timeout | null = null;
 function onOffline() {
   window.log.info('offline');
   window.globalOnlineStatus = false;
 
-  window.removeEventListener('offline', onOffline);
-  window.addEventListener('online', onOnline);
+   window.removeEventListener('offline', onOffline);
+   window.addEventListener('online', onOnline);
 
   // We've received logs from Linux where we get an 'offline' event, then 30ms later
   //   we get an online event. This waits a bit after getting an 'offline' event
@@ -403,8 +402,12 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  kill(64371).then().catch(err => { throw new HTTPError('beldex_rpc_port', err) })
-  console.log("connectCount === 0 && navigator.onLine:",connectCount, navigator.onLine)
+  kill(64371)
+    .then()
+    .catch(err => {
+      throw new HTTPError('beldex_rpc_port', err);
+    });
+  // console.log('connectCount === 0 && navigator.onLine:', connectCount, navigator.onLine);
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

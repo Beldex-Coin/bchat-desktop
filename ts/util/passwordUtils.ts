@@ -25,7 +25,7 @@ export const validatePassword = (phrase: string) => {
 
   const trimmed = phrase.trim();
   if (trimmed.length === 0) {
-    return window?.i18n ? window?.i18n('noGivenPassword') : ERRORS.LENGTH;
+    return window?.i18n ? window?.i18n('passwordFieldEmpty') : ERRORS.LENGTH;
   }
 
   if (trimmed.length < 4 || trimmed.length > MAX_PASSWORD_LENGTH) {

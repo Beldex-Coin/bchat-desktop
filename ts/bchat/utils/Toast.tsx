@@ -7,7 +7,6 @@ import { SectionType, showLeftPaneSection, showSettingsSection } from '../../sta
 
 // if you push a toast manually with toast...() be sure to set the type attribute of the BchatToast component
 export function pushToastError(id: string, title: string, description?: string) {
-  console.log("Er?:")
   toast.error(
     <BchatToast title={title} description={description} type={BchatToastType.Error} />,
     { toastId: id, updateId: id }

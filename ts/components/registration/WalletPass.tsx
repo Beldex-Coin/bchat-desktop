@@ -21,24 +21,26 @@ import { GoBackMainMenuButton } from "./SignUpTab"
       </Flex>
        <p className="bchat-registration-container-walletHintText">Create New Wallet Password </p>
          <BchatInput
-      label={"Enter Password"}
+      label={"Enter wallet password"}
       type="password"
       value={props.password}
       autoFocus={false}
-      placeholder={"Enter Password"}
+      placeholder={"Enter wallet password"}
       enableShowHide={true}
       onValueChanged={props.setPassword}
+      minLength={4}
       maxLength={13}
     />
     <div style={{height:'55px'}}></div>
      <BchatInput
-      label={"Re-Enter Password"}
+      label={"Re-enter wallet password"}
       type="password"
       value={props.repassword}
       autoFocus={false}
-      placeholder={"Re-Enter Password"}
+      placeholder={"Re-enter wallet password"}
       enableShowHide={true}
       onValueChanged={props.setRepassword}
+      minLength={4}
       maxLength={13}
     />
  <div style={{height:'50px'}}></div>

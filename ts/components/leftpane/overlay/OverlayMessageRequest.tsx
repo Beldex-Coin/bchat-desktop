@@ -162,8 +162,6 @@ const MessageRequestListContainer = styled.div`
  */
 const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
-console.log("conversationRequests :: ",conversationRequests);
-
   return (
     <MessageRequestListContainer>
       {conversationRequests.map(conversation => {

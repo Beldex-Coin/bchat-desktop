@@ -10,6 +10,11 @@ const channelsToMakeForOpengroupV2 = [
   'removeV2OpenGroupRoom',
   'getAllOpenGroupV2Conversations',
 ];
+
+// const channelsToMakeForWallet=[
+//   'getRecipientAddress',
+//   // 'saveRecipientAddressvalid'
+// ]
 const channelsToMake = new Set([
   'shutdown',
   'close',
@@ -26,7 +31,8 @@ const channelsToMake = new Set([
   'saveConversation',
   'getConversationById',
   'updateConversation',
-  "updateWalletAddressInConversation",
+  'updateConversationAddress',
+  'updateWalletAddressInConversation',
   'removeConversation',
   'getAllConversations',
   'getAllOpenGroupV1Conversations',
@@ -80,6 +86,7 @@ const channelsToMake = new Set([
   'removeAttachmentDownloadJob',
   'removeAllAttachmentDownloadJobs',
   'removeAll',
+  'removeAllWithOutRecipient',
   'removeAllConversations',
   'removeOtherData',
   'cleanupOrphanedAttachments',
@@ -91,6 +98,10 @@ const channelsToMake = new Set([
   'removeAllClosedGroupEncryptionKeyPairs',
   'fillWithTestData',
   ...channelsToMakeForOpengroupV2,
+  // ...channelsToMakeForWallet,
+  // wallet
+  'getRecipientAddress',
+  'saveRecipientAddress',
 ]);
 
 const SQL_CHANNEL_KEY = 'sql-channel';
