@@ -315,10 +315,9 @@
 
 .module-conversation-header__title {
   margin: 0px 0px 0px 20px;
-
   min-width: 0;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 17px;
   font-weight: 400;
   color: var(--color-text);
 
@@ -338,7 +337,7 @@
     width: 100%;
     overflow: hidden !important;
     text-overflow: ellipsis;
-    padding-top: 17px;
+    padding-top: 3px;
   }
 }
 
@@ -625,7 +624,13 @@
   flex-grow: 1;
   font-size: 28px;
   color: $color-light-45;
-
+  
+  .parent{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+  }
   .noMediaImg
   {
     width: 159px;
@@ -747,7 +752,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 70%;
+  width: 81%;
 }
 
 .module-conversation-list-item__message__text {

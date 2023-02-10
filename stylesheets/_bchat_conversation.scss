@@ -33,20 +33,21 @@
 }
 
 .conversation-item__options-pane {
+  display: none;
   position: absolute;
   height: 100%;
   // right: 0vw;
   top:64px;
   left: 387px;
   transition: transform 0.3s ease-in-out;
-
-  transform: translateX(-600%);
+  transform: translateX(-3%);
   will-change: transform;
   // width: 25vw;
   width: 100%;
   z-index: 5;
 
   &.show {
+    display: block;
     transform: none;
     transition: transform 0.3s ease-in-out;
     z-index: 3;
@@ -269,9 +270,11 @@
     svg{
       color:var(--color-composeMsgRecordIcon);
     }
-
+    svg:hover{
+      transform:scale(1.1);
+    }
     ul {
-      max-height: 70vh;
+      max-height: 70vh; 
       overflow: auto;
     }
 

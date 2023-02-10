@@ -12,32 +12,10 @@ import { toggleAudioAutoplay } from '../../../state/ducks/userConfig';
 import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 // import { isHideMenuBarSupported } from '../../../types/Settings';
 import { BchatButtonColor } from '../../basic/BchatButton';
-
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
-
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
-
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
 import { applyTheme } from '../../../state/ducks/theme';
-
-// import { reducer as theme} from '../../../state/ducks/theme';
-
-
-async function toggleLinkPreviews() {
-  const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
-  window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
-  if (!newValue) {
-    await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
-  } else {
-   window.inboxStore?.dispatch(
-      updateConfirmModal({
-        title: window.i18n('linkPreviewsTitle'),
-        message: window.i18n('linkPreviewsConfirmMessage'),
-        okTheme: BchatButtonColor.Danger,
-      })
-    );
-  }
-}
 
 async function toggleStartInTray() {
   try {
@@ -58,10 +36,9 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
-  const darktheme=useSelector((state:any)=>state.theme)
-  // console.log("darktheme ::",darktheme);
+  const darktheme=useSelector((state:any)=>state.theme);
   
-  
+ 
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
@@ -80,7 +57,6 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
     function handleClick() {
       const themeFromSettings = window.Events.getThemeSetting();
       const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
-      // console.log("theme reducer",darktheme,"store,");
       dispatch(applyTheme(updatedTheme));
       
       window.setTheme(updatedTheme);
@@ -90,6 +66,27 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
         switchHtmlToLightTheme();
       }
     }
+
+    async function toggleLinkPreviews() {
+      const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
+      if (!newValue) {
+        window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
+        await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
+      } else {
+       window.inboxStore?.dispatch(
+          updateConfirmModal({
+            title: window.i18n('linkPreviewsTitle'),
+            message: window.i18n('linkPreviewsConfirmMessage'), 
+            okTheme: BchatButtonColor.Danger,
+            onClickOk: () => {
+              window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
+              forceUpdate()
+            },
+          })
+        );
+      }
+    }
+    
 
     return (
       <>

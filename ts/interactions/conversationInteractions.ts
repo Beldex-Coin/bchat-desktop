@@ -48,6 +48,7 @@ import { MIME } from '../types';
 import { setLastProfileUpdateTimestamp } from '../util/storage';
 import { getSodiumRenderer } from '../bchat/crypto';
 import { encryptProfile } from '../util/crypto/profileEncrypter';
+// import { useConversationUsername } from '../hooks/useParamSelector';
 
 export const getCompleteUrlForV2ConvoId = async (convoId: string) => {
   if (convoId.match(openGroupV2ConversationIdRegex)) {
@@ -222,15 +223,13 @@ export async function showUpdateGroupMembersByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateGroupMembersModal({ conversationId }));
 }
 
-export function showLeaveGroupByConvoId(conversationId: string) {
+export function showLeaveGroupByConvoId(conversationId: string,username:string) {
   const conversation = getConversationController().get(conversationId);
-
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
   }
-
   const title = window.i18n('leaveGroup');
-  const message = window.i18n('leaveGroupConfirmation');
+  const message = window.i18n('leaveGroupConfirmation',[username]); 
   const ourPK = UserUtils.getOurPubKeyStrFromCache();
   const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
   const isClosedGroup = conversation.get('is_medium_group') || false;
@@ -245,10 +244,11 @@ export function showLeaveGroupByConvoId(conversationId: string) {
         title,
         message,
         onClickOk: async () => {
-          await conversation.leaveClosedGroup();
+          await conversation.leaveClosedGroup(); 
           onClickClose();
         },
         onClickClose,
+        okTheme:BchatButtonColor.Danger,
       })
     );
   } else {
@@ -353,7 +353,9 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       onClickOk,
       okTheme: BchatButtonColor.Danger,
       onClickClose,
-      okText:window.i18n('leaveGroup')  
+      // okText:window.i18n('leaveGroup')   
+      okText:window.i18n('delete')   
+
     })
   );
 }

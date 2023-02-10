@@ -51,6 +51,7 @@ export const OverlayMessageRequest = (props: any) => {
         title,
         message,
         onClose,
+        okTheme:BchatButtonColor.Danger,
         onClickOk: async () => {
           window?.log?.info('Blocking all conversations');
           if (!convoRequests) {
@@ -161,8 +162,6 @@ const MessageRequestListContainer = styled.div`
  */
 const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
-console.log("conversationRequests :: ",conversationRequests);
-
   return (
     <MessageRequestListContainer>
       {conversationRequests.map(conversation => {

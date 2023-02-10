@@ -53,7 +53,7 @@ $bchat-compose-margin: 20px;
       // border-bottom: 1px solid #1c1c26;
       .verticalLine {
         width: 5px;
-        background-color: #128B17;
+        // background-color: #128B17;
         margin-right: 5px;
         height: 100%;
         border-radius: 20px;
@@ -165,8 +165,8 @@ $bchat-compose-margin: 20px;
 
     .dayAndNightIcon {
       background-image: var(--image-DayNight);
-      width: 23px;
-      height: 23px;
+      width: 20px;
+      height: 20px;
       background-size: contain;
       cursor: pointer;
       background-repeat: no-repeat;
@@ -279,7 +279,7 @@ $bchat-compose-margin: 20px;
     .buttonBox {
       // width: 100%;
       width: 378px;
-      background-color: var(--color-overlayBg);
+      // background-color: var(--color-overlayBg);
       padding: 0 0;
       text-align: center;
       margin: 5px auto;
@@ -304,7 +304,9 @@ $bchat-compose-margin: 20px;
       border-radius: 10px;
       color: #fff;
       font-family: $bchat-font-poppin-semibold;
-      background-image: var(--button-color);
+      // background-image: var(--button-color);
+      background-color: var(--button-color);
+
       margin: 15px auto;
 
       &:hover {
@@ -444,7 +446,7 @@ $bchat-compose-margin: 20px;
   display: flex;
   flex-direction: column;
   // flex-grow: 1;
-  height: 75%;
+  height:  82.8%;
   transition: none;
   background: var(--color-left-pane-overlay-background);
   // text-align: center;
@@ -481,7 +483,8 @@ $bchat-compose-margin: 20px;
     border-radius: 10px;
     color: #fff;
     font-family: $bchat-font-poppin-semibold;
-    background-image: var(--button-color);
+    // background-image: var(--button-color);
+    background-color:var(--button-color) ;
     margin: 15px auto;
 
     &:hover {
@@ -711,7 +714,7 @@ $bchat-compose-margin: 20px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 74px;
+    height: 60px;
     line-height: 1.4;
     padding: 0px 12px;
     flex-shrink: 0;
@@ -719,18 +722,31 @@ $bchat-compose-margin: 20px;
     transition: $bchat-transition-duration  !important;
 
     &-icons {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       display: inline-flex;
       background-repeat: no-repeat;
       background-size: contain;
-      margin-right: 10px;
+      margin-right: 20px;
       margin-left: 10px;
     }
 
     &-span {
       font-family: $bchat-font-poppin-medium;
-      font-size: 18px;
+      font-size: 17px;
+    }
+
+    .beta
+    {
+      margin-left: 5px;
+    background-color: #9494A0;
+    height: 11px;
+    // border-radius: 2px;
+    border-radius: 4px;
+    padding: 0 5px;
+    font-size: 8px;
+    font-family: "poppin-semibold";
+    letter-spacing: 1px;
     }
 
     &>div {

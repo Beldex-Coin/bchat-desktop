@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  useConversationUsername,
   useHasNickname,
   useIsBlocked,
   useIsKickedFromGroup,
@@ -208,7 +209,9 @@ export const DeleteContactMenuItem = () => {
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
-  const ourNumber = useSelector(getOurNumber);
+  const ourNumber = useSelector(getOurNumber); 
+  const username = String(useConversationUsername(convoId));
+
 
   if (showDeleteContact(!isPrivate, isPublic, isLeft, isKickedFromGroup, isRequest)) {
     let menuItemText: string;
@@ -241,19 +244,17 @@ export const DeleteContactMenuItem = () => {
 
       let contactDelete={
         title: menuItemText,
-          message: isPrivate
-            ?"Permanently delete the Contact?"
-            // ? window.i18n('deleteContactConfirmation')
-            : window.i18n('leaveGroupConfirmation'),
-          onClickClose,
-          okTheme: BchatButtonColor.Danger,
-          onClickOk: async () => {  
-            await getConversationController().deleteContact(convoId);           
-          },
-          okText:menuItemText.slice(0,5)==='Leave'?"Leave":"Delete"
-        }
+        message: isPrivate?"Permanently delete the Contact?": window.i18n('leaveGroupConfirmation',[username]), 
+        onClickClose,
+        onClickOk: async () => {await getConversationController().deleteContact(convoId);},
+        okText:menuItemText.slice(0,5)==='Leave'?"Leave":"Delete",
+        okTheme:BchatButtonColor.Danger,
+
+        }    
       dispatch(
         updateConfirmModal(ourNumber===convoId?notetoSelf:contactDelete))
+        // updateConfirmModal(temp))
+
 
     };
 
@@ -268,12 +269,13 @@ export const LeaveGroupMenuItem = () => {
   const isLeft = useIsLeft(convoId);
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const isPrivate = useIsPrivate(convoId);
+  const username = String(useConversationUsername(convoId));
 
   if (showLeaveGroup(isKickedFromGroup, isLeft, !isPrivate, isPublic)) {
     return (
       <Item
         onClick={() => {
-          showLeaveGroupByConvoId(convoId);
+          showLeaveGroupByConvoId(convoId,username);
         }}
       >
         {window.i18n('leaveGroup')}

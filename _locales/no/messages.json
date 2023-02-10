@@ -445,7 +445,7 @@
   "decline": "Avvis",
   "endCall": "Avslutt anrop",
   "cameraPermissionNeededTitle": "Voice/Video Call permissions required",
-  "cameraPermissionNeeded": "You can enable the 'Voice and video calls' permission in the Privacy Settings.",
+  "cameraPermissionNeeded": "Allow 'Voice & Video Calls' under privacy settings to make a call.",
   "unableToCall": "Cancel your ongoing call first",
   "unableToCallTitle": "Kan ikke foreta nytt anrop",
   "callMissed": "Tapt anrop fra $name$",

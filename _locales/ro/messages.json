@@ -445,7 +445,7 @@
   "decline": "Respinge",
   "endCall": "Închide apelul",
   "cameraPermissionNeededTitle": "Permisiuni pentru apeluri vocale/video necesare",
-  "cameraPermissionNeeded": "You can enable the 'Voice and video calls' permission in the Privacy Settings.",
+  "cameraPermissionNeeded": "Allow 'Voice & Video Calls' under privacy settings to make a call.",
   "unableToCall": "Cancel your ongoing call first",
   "unableToCallTitle": "Nu se poate iniția apelul",
   "callMissed": "Apel nepreluat de la $name$",

@@ -64,6 +64,8 @@
   &-nameEditBox
   {
    display: flex;
+   justify-content: center;
+   width: 100%;
 
    h2{
     margin-right: 10px;
@@ -74,6 +76,8 @@
 
   h2 {
     word-break: break-word;
+    max-width: 82%;
+    font-size: 16px;
   }
 
   .description {

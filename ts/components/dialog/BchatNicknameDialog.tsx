@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 
 import _ from 'lodash';
-import { SpacerLG } from '../basic/Text';
+import {SpacerMD } from '../basic/Text';
 import { useDispatch } from 'react-redux';
 import { changeNickNameModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { useConversationUsername } from '../../hooks/useParamSelector';
 
 type Props = {
   conversationId: string;
@@ -15,6 +16,9 @@ type Props = {
 export const BchatNicknameDialog = (props: Props) => {
   const { conversationId } = props;
   const [nickname, setNickname] = useState('');
+  const usernames= String(useConversationUsername(conversationId));
+// console.log("username ::",usernames);
+
 
   const dispatch = useDispatch();
 
@@ -56,9 +60,10 @@ export const BchatNicknameDialog = (props: Props) => {
       showExitIcon={false}
       showHeader={true}
     >
+      <SpacerMD />
       <div className="bchat-modal__centered">
-        <span className="subtle">{window.i18n('changeNicknameMessage')}</span>
-        <SpacerLG />
+        <span className="subtle">{window.i18n('changeNicknameMessage',[usernames])}</span>
+        <SpacerMD />
       </div>
 
       <input

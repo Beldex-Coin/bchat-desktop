@@ -222,6 +222,11 @@ export type LastMessageType = {
   text: string | null;
 };
 
+export type ReduxConversationAddress = {
+  id: string;
+  walletAddress: string | null;
+};
+
 export interface ReduxConversationType {
   id: string;
   /**
@@ -266,6 +271,8 @@ export interface ReduxConversationType {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
+  walletUserName?:any;
+  walletCreatedDaemonHeight?:number|any;
 }
 
 export interface NotificationForConvoOption {

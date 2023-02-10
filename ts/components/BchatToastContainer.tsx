@@ -6,6 +6,7 @@ const BchatToastContainerPrivate = () => {
   return (
     <WrappedToastContainer
       position="bottom-right"
+      // position='top-right'
       autoClose={5000}
       hideProgressBar={true}
       newestOnTop={true}

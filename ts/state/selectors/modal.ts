@@ -18,6 +18,11 @@ import {
   UpdateGroupMembersModalState,
   UpdateGroupNameModalState,
   UserDetailsModalState,
+  ChangePasswordModalState,
+  walletSettingMiniModalState,
+  TransactionInitModalState,
+  WalletSendConfirmState,
+  BchatUpdateInstruntionState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -98,3 +103,25 @@ export const getDeleteAccountModalState = createSelector(
   getModal,
   (state: ModalState): DeleteAccountModalState => state.deleteAccountModal
 );
+
+export const getChangePasswordModalState = createSelector(
+  getModal,
+  (state: ModalState): ChangePasswordModalState => state.ChangePasswordModal
+);
+export const getwalletSettingMiniModalState = createSelector(
+  getModal,
+  (state: ModalState): walletSettingMiniModalState => state.walletSettingMiniModal
+);
+export const getTransactionInitModal = createSelector(
+  getModal,
+  (state: ModalState): TransactionInitModalState => state.transactionInitModal
+);
+export const getwalletSendConfirmModal = createSelector(
+  getModal,
+  (state: ModalState): WalletSendConfirmState => state.walletSendConfirm
+);
+export const getBchatUpdateInstruntion = createSelector(
+  getModal,
+  (state: ModalState): BchatUpdateInstruntionState => state.BchatUpdateInstruntion
+);
+

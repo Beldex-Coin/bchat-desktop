@@ -90,14 +90,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
     return (
       <div>
-        {this.state.loading &&
-          <Loader>
-            <div className='edit-profile-dialog-modalLoader'>
-              <img src={"images/bchat/Load_animation.gif"} style={{ width: "150px", height: '150px' }} />
-            </div>
-          </Loader>
-
-        }
+       
 
         <div className="edit-profile-dialog" data-testid="edit-profile-dialog">
 
@@ -109,6 +102,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
             headerIconButtons={backButton}
             showExitIcon={true}
           >
+             {this.state.loading &&
+          <Loader>
+            <div className='edit-profile-dialog-modalLoader'>
+              <img src={"images/bchat/Load_animation.gif"} style={{ width: "150px", height: '150px' }} />
+            </div>
+          </Loader>
+
+        }
 
 
             <div style={{ position: 'relative', marginLeft: '350px', marginTop: '12px' }}>
@@ -436,7 +437,7 @@ const Loader = styled.div`
 `
 
 
-function copyBchatID(bchatID: any) {
+export function copyBchatID(bchatID: any) {
   window.clipboard.writeText(bchatID);
   ToastUtils.pushCopiedToClipBoard();
 }

@@ -101,13 +101,13 @@ export const MessageDetail = () => {
 
   const { errors, receivedAt, sentAt,
     //  convoId, 
-     direction, messageId } = messageDetailProps;
+    direction, messageId } = messageDetailProps;
 
   return (
     <div className="message-detail-wrapper">
       <div className="module-message-detail">
         <div className="module-message-detail__message-container">
-          <h2>More Informations</h2>
+          <h2>More Info</h2>
           <Message messageId={messageId} isDetailView={false} />
         </div>
         <table className="module-message-detail__info">
@@ -122,19 +122,16 @@ export const MessageDetail = () => {
               </tr>
             ))}
             <tr>
-              <td className="module-message-detail__label">{i18n('sent')}</td>
-              <td className="module-message-detail__label" style={{paddingLeft:'10px'}}>
-                {moment(sentAt).format('LLLL')} 
-                
-                {/* <span>({sentAt})</span> */}
+              <td className="module-message-detail__label">{i18n('send')}</td>
+              <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                {moment(sentAt).format('LLLL')}
               </td>
             </tr>
             {receivedAt ? (
               <tr>
                 <td className="module-message-detail__label">{i18n('received')}</td>
-                <td className="module-message-detail__label" style={{paddingLeft:'10px'}}>
-                  {moment(receivedAt).format('LLLL')} 
-                  {/* <span>({receivedAt})</span> */}
+                <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                  {moment(receivedAt).format('LLLL')}
                 </td>
               </tr>
             ) : null}
@@ -146,7 +143,6 @@ export const MessageDetail = () => {
           </tbody>
         </table>
         <ContactsItem contacts={messageDetailProps.contacts} />
-        {/* <DeleteButtonItem convoId={convoId} messageId={messageId} isDeletable={isDeletable} /> */}
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ const TimestampContainerNotListItem = styled.div`
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.3px;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   user-select: none;
   color: var(--color-text-subtle);
   position: relative;
