@@ -22,6 +22,12 @@ export function useSet<T>(initialValues: Array<T> = []) {
     },
     [uniqueValues, setUniqueValues]
   );
+  const empty = useCallback(() => {
+    if (uniqueValues.length) {
+      setUniqueValues([]);
+      return;
+    }
+  }, [uniqueValues, setUniqueValues]);
 
-  return { uniqueValues, addTo, removeFrom };
+  return { uniqueValues, addTo, removeFrom ,empty};
 }

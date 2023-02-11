@@ -1,6 +1,7 @@
 import * as DataItem from '../data/channelsItem';
 import { PubKey } from '../bchat/types';
 import { UserUtils } from '../bchat/utils';
+import { getConversationController } from '../bchat/conversations';
 
 const BLOCKED_NUMBERS_ID = 'blocked';
 const BLOCKED_GROUPS_ID = 'blocked-groups';
@@ -107,6 +108,35 @@ export class BlockedNumberController {
     this.blockedGroups.add(id.key);
     await this.saveToDB(BLOCKED_GROUPS_ID, this.blockedGroups);
   }
+/**
+   * Unblock all these users.
+   * This will only unblock the primary device of the user.
+   *
+   * @param user The user to unblock.
+   */
+public static async unblockAll(users: Array<string>): Promise<void> {
+  await this.load();
+  let changes = false;
+  users.forEach(user => {
+    const toUnblock = PubKey.cast(user);
+
+    if (this.blockedNumbers.has(toUnblock.key)) {
+      this.blockedNumbers.delete(toUnblock.key);
+      changes = true;
+    }
+  });
+
+  users.map(user => {
+    const found = getConversationController().get(user);
+    if (found) {
+      found.triggerUIRefresh();
+    }
+  });
+
+  if (changes) {
+    await this.saveToDB(BLOCKED_NUMBERS_ID, this.blockedNumbers);
+  }
+}
 
   public static async unblockGroup(groupId: string | PubKey): Promise<void> {
     await this.load();
