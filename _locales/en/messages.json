@@ -285,6 +285,7 @@
   "multipleKickedFromTheGroup": "$name$ were removed from the group.",
   "blockUser": "Block",
   "unblockUser": "Unblock",
+  "unblockUserSelect":"Unblock Selected",
   "unblocked": "Unblocked",
   "blocked": "Blocked",
   "blockedSettingsTitle": "Blocked Contacts",
