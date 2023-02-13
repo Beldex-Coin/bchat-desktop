@@ -336,6 +336,7 @@ export type LocalizerKeys =
   | 'callMissed'
   | 'getStarted'
   | 'unblockUser'
+  |'unblockUserSelect'
   | 'blockUser'
   | 'clearAllConfirmationTitle'
   | 'trustThisContactDialogTitle'

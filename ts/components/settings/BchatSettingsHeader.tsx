@@ -4,6 +4,8 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { editProfileModal,} from '../../state/ducks/modalDialog';
 import { useDispatch ,useSelector} from 'react-redux';
 import { getOurNumber } from '../../state/selectors/user';
+import { BchatIconButton } from '../icon/BchatIconButton';
+import { blockedContactMarkAS } from '../../state/ducks/userConfig';
 
 type Props = Pick<SettingsViewProps, 'category'> & {
   categoryTitle: string;
@@ -24,6 +26,15 @@ export const SettingsHeader = (props: Props) => {
       />
       </div>
       <div className="bchat-settings-header-title">{categoryTitle}</div>  
+      {window.i18n('blockedSettingsTitle')===categoryTitle &&
+      <div className='bchat-settings-header-selectionBox'>
+      <BchatIconButton
+          iconSize="medium"
+          iconType="markAll"
+          onClick={() => {dispatch(blockedContactMarkAS()) }}
+        />
+      </div>
+}
     </div>
   );
 };

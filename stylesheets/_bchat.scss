@@ -1215,6 +1215,11 @@ label {
       flex-grow: 1;
     }
 
+    &-selectionBox {
+      width: 65px;
+      padding-left: 7px;
+    }
+
     .bchat-button,
     .bchat-icon-button {
       margin-inline-end: $bchat-margin-lg;
@@ -1289,6 +1294,31 @@ label {
 
     .react-select-container {
       background-color: #128b17;
+    }
+
+    &-notification {
+      display: flex;
+
+      padding-left: 25px;
+      margin-bottom: 15px;
+
+      &-circle,
+      .selected {
+        width: 17px;
+        height: 17px;
+        border: 2px solid;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+      .selected {
+        border: 2px solid var(--color-accent);
+      }
+      &-title {
+        font-family: $bchat-font-poppin-medium;
+      }
     }
   }
 
@@ -1648,19 +1678,18 @@ label {
             text-align: center;
           }
         }
-        &-loader,&-forgotpasswordLoader
-        {
+        &-loader,
+        &-forgotpasswordLoader {
           width: 500px;
           height: 343px;
-          background-color: rgba(0, 0, 0,0.8);
+          background-color: rgba(0, 0, 0, 0.8);
           border-radius: 10px;
           z-index: 99;
           justify-content: center;
           display: flex;
           align-items: center;
         }
-        &-forgotpasswordLoader
-        {
+        &-forgotpasswordLoader {
           width: 590px;
           height: 476px;
         }
@@ -2610,6 +2639,7 @@ label {
   label {
     margin-inline-end: 1em;
     cursor: pointer;
+    font-family: $bchat-font-poppin-medium;
   }
 
   label:before {
@@ -2864,7 +2894,8 @@ input {
     opacity: 0.5;
   }
 
-  &__checkmark {
+  &__checkmark,
+  &__checkmarkbox {
     width: 20px;
     height: 20px;
     border: 1px solid var(--color-text);
@@ -2881,6 +2912,13 @@ input {
       svg {
         fill: var(--color-accent) !important;
       }
+    }
+  }
+  &__checkmarkbox {
+    border-radius: 2px;
+    border: 3px solid var(--color-text);
+    &.selected {
+      border: unset;
     }
   }
 
