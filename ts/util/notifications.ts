@@ -22,10 +22,6 @@ function filter(text?: string) {
     .replace(/>/g, '&gt;');
 }
 let sound: any;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 export type BchatNotification = {
   conversationId: string;
   iconUrl: string | null;
@@ -220,13 +216,8 @@ function update(forceRefresh = false) {
   }
   lastNotificationDisplayed = new Notification(title || '', {
     body: window.platform === 'linux' ? filter(message) : message,
-<<<<<<< Updated upstream
-    icon: iconUrl,
-    silent: true,
-=======
     icon: iconUrl  || undefined,
     silent: !status.shouldPlayNotificationSound,
->>>>>>> Stashed changes
   });
   lastNotificationDisplayed.onclick = () => {
     window.openFromNotification(lastNotification.conversationId);
