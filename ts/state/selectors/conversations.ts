@@ -91,9 +91,9 @@ export const getIsTypingEnabled = createSelector(
     if (!selectedConvo) {
       return false;
     }
-    const { isBlocked, isKickedFromGroup, left } = selectedConvo;
-
-    return !(isBlocked || isKickedFromGroup || left);
+    const { isBlocked, isKickedFromGroup, left, isPublic } = selectedConvo;
+    console.log('getIsTypingEnabled:', !(isBlocked || isKickedFromGroup || left));
+    return !(isBlocked || isKickedFromGroup || left || isPublic);
   }
 );
 /**
