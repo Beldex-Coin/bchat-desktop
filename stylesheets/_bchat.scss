@@ -1216,7 +1216,7 @@ label {
     }
 
     &-selectionBox {
-      width: 65px;
+      width: 94px;
       padding-left: 7px;
     }
 
@@ -1306,7 +1306,7 @@ label {
       .selected {
         width: 17px;
         height: 17px;
-        border: 2px solid;
+        border: 1px solid;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -1314,7 +1314,7 @@ label {
         margin-right: 10px;
       }
       .selected {
-        border: 2px solid var(--color-accent);
+        border: 1px solid var(--color-accent);
       }
       &-title {
         font-family: $bchat-font-poppin-medium;
@@ -2870,7 +2870,7 @@ input {
   height: 40px;
 }
 
-.bchat-member-item {
+.bchat-member-item,.bchat-blockedMember-item {
   cursor: pointer;
   flex-shrink: 0;
   font-family: $bchat-font-default;
@@ -2944,7 +2944,33 @@ input {
     margin-bottom: 0px !important;
   }
 }
-
+.bchat-blockedMember-item
+{
+  background-color:var(--color-blockUserBg);
+  border-radius: 15px;
+  .selected
+  {
+    background-color: var(--color-blockseletedUserBg);
+  }
+  &__name {
+    font-weight: normal;
+    font-family: $bchat-font-poppin-semibold;
+    margin-inline-start: 10px;
+  }
+  &-selectionBox
+  {
+    display: flex;
+    width: 119px;
+    justify-content: flex-end;
+    padding-right: 30px;
+  }
+  &-btnBox
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .module-message-detail {
   .module-message {
     pointer-events: none;

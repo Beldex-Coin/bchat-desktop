@@ -71,7 +71,7 @@ export const BlockedUserSettings = () => {
   // }
 
   return <div >
-    <div style={blockedContactMarkAS?{height:  'calc( 100vh - 137px)'}:{}} >
+    <div style={blockedContactMarkAS ? { height: 'calc( 100vh - 137px)' } : {}} >
       <BlockedEntries
         blockedNumbers={blockedNumbers}
         selectedIds={selectedIds}
@@ -80,16 +80,16 @@ export const BlockedUserSettings = () => {
         blockedContactMarkAS={blockedContactMarkAS}
       />
     </div>
-    {blockedContactMarkAS && 
-    <UnBlockedBox  >
-      <BchatButton
-        buttonColor={BchatButtonColor.Danger}
-        text={window.i18n('unblockUserSelect')}
-        onClick={unBlockThoseUsers}
-        dataTestId="unblock-button-settings-screen"
-      />
-    </UnBlockedBox>
-}
+    {blockedContactMarkAS &&
+      <UnBlockedBox  >
+        <BchatButton
+          buttonColor={BchatButtonColor.Danger}
+          text={window.i18n('unblockUserSelect')}
+          onClick={unBlockThoseUsers}
+          dataTestId="unblock-button-settings-screen"
+        />
+      </UnBlockedBox>
+    }
   </div>
 
   // <BchatSettingButtonItem
@@ -178,7 +178,7 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean }) => {
   const { memberPubkey, isAdmin } = props;
   return (
     <AvatarContainer>
-      <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
+      <Avatar size={AvatarSize.S} pubkey={memberPubkey} />
       {isAdmin && <CrownIcon />}
     </AvatarContainer>
   );
@@ -214,7 +214,7 @@ export const BlockedMemberList = (props: {
     // tslint:disable-next-line: use-simple-attributes
     <div
       className={classNames(
-        'bchat-member-item',
+        'bchat-blockedMember-item',
         isSelected && 'selected',
         isZombie && 'zombie',
         disableBg && 'compact'
@@ -235,23 +235,27 @@ export const BlockedMemberList = (props: {
         <span className="bchat-member-item__avatar">
           <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false} />
         </span>
-        <span className="bchat-member-item__name">{memberName}</span>
+        <span className="bchat-blockedMember-item__name">{memberName}</span>
       </div>
-      {!blockedContactMarkAS ?
-        <div>
-          <BchatButton
-            buttonColor={BchatButtonColor.Danger}
-            text={window.i18n('unblockUser')}
-            onClick={() => unblockConvoById(pubkey)}
-            dataTestId="unblock-button-settings-screen"
-          />
-        </div> :
-        <span className={classNames('bchat-member-item__checkmarkbox', isSelected && 'selected')}>
+      <div className='bchat-blockedMember-item-selectionBox'>
 
-          {isSelected && <BchatIcon iconType="checkBox" iconSize="medium" iconColor={'white'} />}
+        {!blockedContactMarkAS ?
+          <div className='bchat-blockedMember-item-btnBox'>
+            <BchatButton
+              buttonColor={BchatButtonColor.Danger}
+              text={window.i18n('unblockUser')}
+              onClick={() => unblockConvoById(pubkey)}
+              dataTestId="unblock-button-settings-screen"
+            />
+          </div> :
+          <div className={classNames('bchat-member-item__checkmarkbox', isSelected && 'selected')}>
 
-        </span>
-      }
+            {isSelected && <BchatIcon iconType="checkBox" iconSize={23} iconColor={'white'} />}
+
+          </div>
+        }
+      </div>
+
     </div>
   );
 };
