@@ -117,6 +117,9 @@ const darkToastSuccessMessage =
 const darkToastErrorMessage =
   'linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))';
 const darkLeftpaneSetting = darkScrollbarTrack;
+const darkBlockUserBg='#2D2D3B';
+const darkBlockseletedUserBg='##2C2C3E';
+
 const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
 const darkbubbleReceivedBg = '#34323f75';
@@ -269,6 +272,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-cancelBtn-bg', darkCancelBtnBg);
   document.documentElement.style.setProperty('--color-settingIndication', darkSettingIndication);
   document.documentElement.style.setProperty('--color-chatHeader', darkChatHeader);
+  document.documentElement.style.setProperty('--color-blockseletedUserBg', darkBlockseletedUserBg);
+
   document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
   document.documentElement.style.setProperty(
     '--color-composeMsgRecordIcon',
@@ -279,6 +284,8 @@ export const switchHtmlToDarkTheme = () => {
     darkWalletNodeHeader
   );
   document.documentElement.style.setProperty('--color-leftpaneSetting', darkLeftpaneSetting);
+  document.documentElement.style.setProperty('--color-blockUserBg', darkBlockUserBg);
+
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
     darkPasswordBorderBottom
@@ -439,13 +446,14 @@ const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = '#C6C6C6';
 const lightClearBtn = '#fff';
 const lightLeftpaneSetting = '#f4f4f4';
+const lightBlockUserBg="#F2F2F2";
 const lightPasswordBorderBottom = '#D5D5D5';
 const lightRightpaneSetting = '#f8f8f8';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
 const whiteAudioRecord = '#dcdbdb';
 const whiteBubbleReceivedBg = '#eaeaea';
-
+const lightBlockseletedUserBg="#FFFFFF";
 // Toast Colors
 const lightToastSuccessMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)';
 const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)';
@@ -606,6 +614,9 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-chatHeader', lightChatHeader);
   document.documentElement.style.setProperty('--color-chatIcons', lightChatIcons);
   document.documentElement.style.setProperty('--color-leftpaneSetting', lightLeftpaneSetting);
+  document.documentElement.style.setProperty('--color-leftpaneSetting', lightBlockUserBg);
+  document.documentElement.style.setProperty('--color-blockseletedUserBg', lightBlockseletedUserBg);
+
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
     lightPasswordBorderBottom
@@ -757,12 +768,14 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-clearBtn:${darkClearBtn};
     --button-color:${buttonColor};
     
+    --color-blockUserBg:${darkBlockUserBg}
     --color-leftpaneSetting:${darkLeftpaneSetting};
     --color-rightpaneSetting:${darkRightpaneSetting}
     --color-disableText:${darkDisableText};
     --color-password-borderBottom:${darkPasswordBorderBottom}
     --color-audio-record:${darkAudioRecord};
     --color-seed:${darkSeedColor};
+    --color-blockseletedUserBg:${darkBlockseletedUserBg};
    
     --color-profile: ${darkProfileBgColor};
 

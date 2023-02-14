@@ -5,6 +5,7 @@ import { isMacOS } from '../OS';
 import { isAudioNotificationSupported } from '../types/Settings';
 import { isWindowFocused } from './focusListener';
 import { Storage } from './storage';
+import { SettingsKey } from '../data/settings-key';
 
 const SettingNames = {
   COUNT: 'count',
@@ -21,10 +22,13 @@ function filter(text?: string) {
     .replace(/>/g, '&gt;');
 }
 let sound: any;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 export type BchatNotification = {
   conversationId: string;
-  iconUrl: string;
+  iconUrl: string | null;
   isExpiringMessage: boolean;
   message: string;
   messageId?: string;
@@ -100,22 +104,29 @@ function clearByMessageId(messageId: string) {
     onRemove();
   }
 }
+/**
+ * Special case when we want to display a preview of what notifications looks like
+ */
+function addPreviewNotification(notif: BchatNotification) {
+  currentNotifications.push(notif);
+  update(true);
+}
 
-function update() {
+function update(forceRefresh = false) {
   if (lastNotificationDisplayed) {
     lastNotificationDisplayed.close();
     lastNotificationDisplayed = null;
   }
 
   const isAppFocused = isWindowFocused();
-  const isAudioNotificationEnabled = (Storage.get('audio-notification') as boolean) || false;
+  const isAudioNotificationEnabled = (Storage.get(SettingsKey.settingsAudioNotification) as boolean) || false;
   const audioNotificationSupported = isAudioNotificationSupported();
   // const isNotificationGroupingSupported = Settings.isNotificationGroupingSupported();
   const numNotifications = currentNotifications.length;
   const userSetting = getUserSetting();
 
   const status = getStatus({
-    isAppFocused,
+    isAppFocused:forceRefresh ? false : isAppFocused,
     isAudioNotificationEnabled,
     isAudioNotificationSupported: audioNotificationSupported,
     isEnabled,
@@ -209,8 +220,13 @@ function update() {
   }
   lastNotificationDisplayed = new Notification(title || '', {
     body: window.platform === 'linux' ? filter(message) : message,
+<<<<<<< Updated upstream
     icon: iconUrl,
     silent: true,
+=======
+    icon: iconUrl  || undefined,
+    silent: !status.shouldPlayNotificationSound,
+>>>>>>> Stashed changes
   });
   lastNotificationDisplayed.onclick = () => {
     window.openFromNotification(lastNotification.conversationId);
@@ -235,6 +251,7 @@ export const Notifications = {
   enable,
   clear,
   fastClear,
+  addPreviewNotification,
   clearByConversationID,
   clearByMessageId,
 };

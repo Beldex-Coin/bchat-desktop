@@ -3,11 +3,30 @@ import React, { useState } from 'react';
 import { BchatToggleWithDescription } from './BchatSettingListItem';
 import { Constants } from '../../bchat';
 import { BchatIcon } from '../icon';
+import { SettingsKey } from '../../data/settings-key';
+import { useUpdate } from 'react-use';
+import { isAudioNotificationSupported } from '../../types/Settings';
+import styled from 'styled-components';
+import { SpacerLG } from '../basic/Text';
+import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { Notifications } from '../../util/notifications';
+// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 // import { BchatToggle } from '../basic/BchatToggle';
 
-
+const StyledButtonContainer = styled.div`
+  display: flex;
+  width: min-content;
+  flex-direction: column;
+  padding-inline-start: var(--margins-lg);
+  justify-content: center;
+    align-items: center;
+    width: 100%;
+`;
 export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | null }) => {
   const initialItem = window.getSettingValue('notification-setting') || 'message';
+  const initialAudioNotificationEnabled =
+    window.getSettingValue(SettingsKey.settingsAudioNotification) || false;
+  const forceUpdate = useUpdate();
 
   const [selected, setSelected] = useState(initialItem)
   if (props.hasPassword === null) {
@@ -48,9 +67,27 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
     }
 
   }
+  const onClickPreview = () => {
+    if (selected === 'off') {
+      return;
+    }
+    Notifications.addPreviewNotification({
+      conversationId: `preview-notification-${Date.now()}`,
+      message:
+        items.find(m => m.value === selected)?.label ||
+        window?.i18n?.('messageBody') ||
+        'Message body',
+      title: window.i18n('notificationPreview'),
+      iconUrl: null,
+      isExpiringMessage: false,
+      messageSentAt: Date.now(),
+    });
+  };
+
   return (
     // <BchatSettingsItemWrapper inline={false}>
-    <div className={'bchat-settings-item'} style={{ padding:'0 0 10px 0' }}>
+    <>
+    <div className={'bchat-settings-item'} style={{ padding: '0 0 10px 0' }}>
       <BchatToggleWithDescription
         onClickToggle={() => {
           toggle()
@@ -73,8 +110,7 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
           </div>
         </div>
       )}
-
-
+      
       {/* <BchatRadioGroup
         initialItem={initialItem}
         group={'notification-setting'}
@@ -84,6 +120,30 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
         }}
       /> */}
     </div>
+    {selected !== 'off' && isAudioNotificationSupported() && (
+      <>
+        <BchatToggleWithDescription
+          onClickToggle={async () => {
+            window.setSettingValue(
+              SettingsKey.settingsAudioNotification,
+              !initialAudioNotificationEnabled
+            );
+            forceUpdate();
+          }}
+          title={window.i18n('notificationSound')}
+          // description={window.i18n('audioMessageAutoplayDescription')}
+          active={window.getSettingValue(
+            SettingsKey.settingsAudioNotification)}
+        />
+
+        <StyledButtonContainer>
+        <SpacerLG />
+        <BchatButton text={window.i18n('notificationPreview')} onClick={() => onClickPreview()}   buttonColor={BchatButtonColor.Green}/>
+      </StyledButtonContainer>
+      </>
+      )}
+      
+    </>
   );
 };
 
