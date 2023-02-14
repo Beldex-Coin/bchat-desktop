@@ -21,7 +21,7 @@ function filter(text?: string) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
-let sound: any;
+
 
 export type BchatNotification = {
   conversationId: string;
@@ -209,12 +209,7 @@ function update(forceRefresh = false) {
   }
 
   window.drawAttention();
-  if (status.shouldPlayNotificationSound) {
-    if (!sound) {
-      sound = new Audio('sound/new_message.mp3');
-    }
-    void sound.play();
-  }
+  
   lastNotificationDisplayed = new Notification(title || '', {
     body: window.platform === 'linux' ? filter(message) : message,
     icon: iconUrl  || undefined,

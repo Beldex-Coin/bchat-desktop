@@ -19,7 +19,7 @@ const TypingBubbleContainer = styled.div<TypingBubbleProps>`
   padding-top: ${props => (props.isTyping ? '4px' : '0px')};
   transition: var(--default-duration);
   padding-inline-end: 16px;
-  padding-inline-start: 4px;
+  // padding-inline-start: 4px;
   overflow: hidden;
   flex-shrink: 0;
 `;

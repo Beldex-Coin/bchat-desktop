@@ -4,13 +4,14 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
-import { ConversationNotificationSettingType } from '../../models/conversation';
+import { ConversationNotificationSettingType, ConversationTypeEnum } from '../../models/conversation';
 import {
   getConversationHeaderTitleProps,
   // getCurrentNotificationSettingText,
   getIsSelectedBlocked,
   getIsSelectedNoteToSelf,
   getIsSelectedPrivate,
+  getSelectedConversation,
   getSelectedConversationIsPublic,
   getSelectedConversationKey,
   getSelectedMessageIds,
@@ -44,6 +45,8 @@ import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
+import { TypingBubble } from './TypingBubble';
+import { getConversationController } from '../../bchat/conversations';
 
 export interface TimerOption {
   name: string;
@@ -85,7 +88,10 @@ const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
+  const conversation=useSelector(getSelectedConversation)
   const dispatch = useDispatch();
+  console.log('conversation ::selection ::',conversation,selectedConversationKey);
+  
 
   const { i18n } = window;
 
@@ -286,6 +292,15 @@ const ConversationHeaderTitle = () => {
   const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
 
+  const conversationKey:any=useSelector( getSelectedConversationKey)
+  const conversation:any=useSelector(getSelectedConversation) 
+  let displayedName = null;
+    if (conversation?.type === ConversationTypeEnum.PRIVATE) {
+      displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
+        conversationKey
+      );
+    }
+
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return null;
@@ -337,7 +352,16 @@ const ConversationHeaderTitle = () => {
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName}
         <SubTxt>
-          {isGroup ? memberCountText :
+          {isGroup ? memberCountText :!!conversation.isTyping?
+           <TypingBubble
+           pubkey={conversationKey}
+           conversationType={conversation?.type}
+            displayedName={displayedName}
+            isTyping={!!conversation.isTyping}
+          //  isTyping={true}
+ 
+           key="typing-bubble"
+         />:
             <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
           }
         </SubTxt>
@@ -364,6 +388,9 @@ export const ConversationHeaderWithDetails = () => {
   const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
+  
+ const conversation=useSelector(getSelectedConversation)
+console.log('conversation ::selection ::1',conversation,selectedConvoKey);
   const dispatch = useDispatch();
 
   if (!selectedConvoKey) {

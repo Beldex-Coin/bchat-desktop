@@ -958,20 +958,26 @@
   display: inline-flex;
   flex-direction: row;
   align-items: center;
-
   height: 8px;
-  width: 38px;
+  // width: 38px;
+  width: 52px;
   padding-inline-start: 1px;
   padding-inline-end: 1px;
 }
 
+.module-typing-Txt
+{
+  font-size: 10px;
+  margin-right: 3px;
+}
 .module-typing-animation__dot {
   border-radius: 50%;
   background-color: $color-gray-60;
 
-  height: 6px;
-  width: 6px;
+  height: 3px;
+  width: 3px;
   opacity: 0.4;
+  margin-top: 10px;
 }
 
 .module-typing-animation__dot--light {
