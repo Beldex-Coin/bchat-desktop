@@ -20,6 +20,7 @@ function filter(text?: string) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
+let sound: any;
 
 export type BchatNotification = {
   conversationId: string;
@@ -169,8 +170,7 @@ function update() {
       title = newMessageCountLabel;
       // eslint-disable-next-line prefer-destructuring
       iconUrl = lastNotification.iconUrl;
-      
-      
+
       if (messagesNotificationCount === 1) {
         message = `${window.i18n('notificationFrom')} ${lastMessageTitle}`;
       } else {
@@ -201,10 +201,16 @@ function update() {
   }
 
   window.drawAttention();
+  if (status.shouldPlayNotificationSound) {
+    if (!sound) {
+      sound = new Audio('sound/new_message.mp3');
+    }
+    void sound.play();
+  }
   lastNotificationDisplayed = new Notification(title || '', {
     body: window.platform === 'linux' ? filter(message) : message,
     icon: iconUrl,
-    silent: !status.shouldPlayNotificationSound,
+    silent: true,
   });
   lastNotificationDisplayed.onclick = () => {
     window.openFromNotification(lastNotification.conversationId);
