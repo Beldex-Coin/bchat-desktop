@@ -22,6 +22,7 @@ function filter(text?: string) {
     .replace(/>/g, '&gt;');
 }
 let sound: any;
+
 export type BchatNotification = {
   conversationId: string;
   iconUrl: string | null;
