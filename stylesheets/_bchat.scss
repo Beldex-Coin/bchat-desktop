@@ -1382,15 +1382,16 @@ label {
 
     &-notification {
       display: flex;
-
       padding-left: 25px;
       margin-bottom: 15px;
+      margin-left: 10px;
+      align-items: center;
 
       &-circle,
       .selected {
-        width: 17px;
-        height: 17px;
-        border: 1px solid;
+        width: 15px;
+        height: 15px;
+        border: 1px groove #EBEBEB;
         border-radius: 10px;
         display: flex;
         align-items: center;
