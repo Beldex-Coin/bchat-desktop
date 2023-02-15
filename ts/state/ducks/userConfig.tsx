@@ -8,14 +8,14 @@ export interface UserConfigState {
   audioAutoplay: boolean;
   showRecoveryPhrasePrompt: boolean;
   hideMessageRequests: boolean;
-  blockedContactMarkAs:boolean;
+   multipleSelection:boolean;
 }
 
 export const initialUserConfigState = {
   audioAutoplay: false,
   showRecoveryPhrasePrompt: true,
   hideMessageRequests: false,
-  blockedContactMarkAs:false,
+  multipleSelection:false,
 };
 
 const userConfigSlice = createSlice({
@@ -37,8 +37,11 @@ const userConfigSlice = createSlice({
     hideMessageRequestBanner: state => {
       state.hideMessageRequests = true;
     },
-    blockedContactMarkAS: state => {
-      state.blockedContactMarkAs = !state.blockedContactMarkAs;
+    hideMultipleSelection: state => {
+      state.multipleSelection = false;
+    },
+    toggleMultipleSelection: state => {
+      state.multipleSelection = !state.multipleSelection;
     },
   },
 });
@@ -50,6 +53,7 @@ export const {
   toggleMessageRequests,
   showMessageRequestBanner,
   hideMessageRequestBanner,
-  blockedContactMarkAS
+  hideMultipleSelection,
+  toggleMultipleSelection
 } = actions;
 export const userConfigReducer = reducer;

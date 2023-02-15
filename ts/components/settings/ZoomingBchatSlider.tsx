@@ -23,7 +23,7 @@ import { BchatIcon } from '../icon';
 //   { value: 150, label: '150%' },
 
 // ]
-const option = ['50', '75', '100', '125', '150']
+const option = ['50%', '75%', '100%', '125%', '150%']
 
 export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => void }) => {
   const currentValueFromSettings = window.getSettingValue('zoom-factor-setting') || 100;
@@ -40,17 +40,18 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   //   window.updateZoomFactor();
   //   forceUpdate();
   // };
-   
+
   const handleSlider = (valueToForward: any) => {
-    props?.onSliderChange?.(valueToForward);
-    window.setSettingValue('zoom-factor-setting', valueToForward);
-    setValue(valueToForward)
+    let value = valueToForward.substring(0, valueToForward.length - 1)
+    props?.onSliderChange?.(value);
+    window.setSettingValue('zoom-factor-setting', value);
+    setValue(value)
     window.updateZoomFactor();
     dispatch(walletSettingMiniModal(null))
     forceUpdate();
 
   };
-  
+
   // const customStyles = {
   //   option: (provided: any, state: any) => ({
   //     ...provided,
@@ -60,18 +61,18 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   //     backgroundColor: state.isFocused ?"#00B504":null,
   //     textAlign:'center',
   //     padding:"10 2",
-      
+
   //   }),
 
-   
+
   //   singleValue: (provided:any, state:any) => ({
   //     ...provided,
   //     opacity : state.isDisabled ? 0.5 : 1,
   //     transition : 'opacity 300ms',
   //     color:"var(--color-text)",
-      
-  
-     
+
+
+
   //   }),
   //   container:(provided:any) => ({
   //     ...provided,
@@ -99,7 +100,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
       walletSettingMiniModal({
         headerName: 'Zooming Factor',
         content: option,
-        currency: value,
+        currency: value + '%',
         onClose: () => dispatch(walletSettingMiniModal(null)),
         onClick: (e: any) => {
           console.log(e);
@@ -125,8 +126,8 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         </div>
       </div> */}
       {/* <div className="bchat-settings-item__selection"> */}
-      <div className="bchat-settings-item__dropdownValue">
-      {/* <Select
+      <div className="bchat-settings-item__dropdownValue" onClick={() => displayPopUp()}>
+        {/* <Select
       styles={customStyles}
         options={options}
          value={value}
@@ -134,14 +135,14 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         isSearchable={false}
         placeholder={""}
     /> */}
-    <div onClick={() => displayPopUp()}>
+        <div >
           {value}%
         </div>
         <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
-      
-    </div>
-    
-   
+
+      </div>
+
+
     </BchatSettingsItemWrapper>
   );
 };

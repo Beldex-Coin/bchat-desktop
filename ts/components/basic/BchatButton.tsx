@@ -32,11 +32,12 @@ type Props = {
   children?: ReactNode;
   dataTestId?: string;
   icon?: boolean;
-  style?:any;
+  style?:object;
+  
 };
 
 export const BchatButton = (props: Props) => {
-  const { buttonType, dataTestId, buttonColor, text, disabled, onClick } = props;
+  const { buttonType, dataTestId, buttonColor,style={}, text, disabled, onClick } = props;
 
   const clickHandler = (e: any) => {
     if (onClick) {
@@ -68,6 +69,7 @@ export const BchatButton = (props: Props) => {
   role="button"
   onClick={onClickFn}
   data-testid={dataTestId}
+  style={style}
 >
   {props.children || text}
 </div>}

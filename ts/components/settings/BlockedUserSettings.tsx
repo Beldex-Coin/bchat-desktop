@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { unblockConvoById } from '../../interactions/conversationInteractions';
 // import { getConversationController } from '../../bchat/conversations';
 import { getBlockedPubkeys } from '../../state/selectors/conversations';
@@ -19,12 +19,14 @@ import { Avatar, AvatarSize, CrownIcon } from '../avatar/Avatar';
 import { useConversationUsernameOrShorten } from '../../hooks/useParamSelector';
 import classNames from 'classnames';
 import { BchatIcon } from '../icon';
-import { getBlockedContactMarkAS } from '../../state/selectors/userConfig';
+import { getMultipleSelection } from '../../state/selectors/userConfig';
+import { hideMultipleSelection } from '../../state/ducks/userConfig';
 
 export const BlockedUserSettings = () => {
   const blockedNumbers = useSelector(getBlockedPubkeys);
   const forceUpdate = useUpdate();
-  const blockedContactMarkAS = useSelector(getBlockedContactMarkAS);
+  const multipleSelection = useSelector(getMultipleSelection);
+  const dispatch=useDispatch()
 
 
   const {
@@ -40,6 +42,7 @@ export const BlockedUserSettings = () => {
       emptySelected();
       ToastUtils.pushToastSuccess('unblocked', window.i18n('unblocked'));
       forceUpdate();
+      dispatch(hideMultipleSelection())
     }
   }
 
@@ -71,16 +74,16 @@ export const BlockedUserSettings = () => {
   // }
 
   return <div >
-    <div style={blockedContactMarkAS ? { height: 'calc( 100vh - 137px)' } : {}} >
+    <div style={multipleSelection ? { height: 'calc( 100vh - 137px)' } : {}} >
       <BlockedEntries
         blockedNumbers={blockedNumbers}
         selectedIds={selectedIds}
         addToSelected={addToSelected}
         removeFromSelected={removeFromSelected}
-        blockedContactMarkAS={blockedContactMarkAS}
+        multipleSelection={multipleSelection}
       />
     </div>
-    {blockedContactMarkAS &&
+    {multipleSelection &&
       <UnBlockedBox  >
         <BchatButton
           buttonColor={BchatButtonColor.Danger}
@@ -143,9 +146,9 @@ const BlockedEntries = (props: {
   selectedIds: Array<string>;
   addToSelected: (id: string) => void;
   removeFromSelected: (id: string) => void;
-  blockedContactMarkAS: boolean
+  multipleSelection: boolean
 }) => {
-  const { addToSelected, blockedNumbers, removeFromSelected, selectedIds, blockedContactMarkAS } = props;
+  const { addToSelected, blockedNumbers, removeFromSelected, selectedIds, multipleSelection } = props;
   return (
     <BlockedEntriesRoundedContainer>
       <BlockedEntriesContainer>
@@ -158,7 +161,7 @@ const BlockedEntries = (props: {
               onSelect={addToSelected}
               onUnselect={removeFromSelected}
               disableBg={false}
-              blockedContactMarkAS={blockedContactMarkAS}
+              multipleSelection={multipleSelection}
             // setting={true}
             />
           );
@@ -188,7 +191,7 @@ export const BlockedMemberList = (props: {
   pubkey: string;
   isSelected: boolean;
   setting?: boolean;
-  blockedContactMarkAS: boolean;
+  multipleSelection: boolean;
   // this bool is used to make a zombie appear with less opacity than a normal member
   isZombie?: boolean;
   disableBg?: boolean;
@@ -206,7 +209,7 @@ export const BlockedMemberList = (props: {
     onUnselect,
     disableBg,
     dataTestId,
-    blockedContactMarkAS
+    multipleSelection
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
@@ -220,7 +223,7 @@ export const BlockedMemberList = (props: {
         disableBg && 'compact'
       )}
       onClick={() => {
-        blockedContactMarkAS && isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey);
+        multipleSelection && isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey);
       }}
       style={
         !disableBg
@@ -239,7 +242,7 @@ export const BlockedMemberList = (props: {
       </div>
       <div className='bchat-blockedMember-item-selectionBox'>
 
-        {!blockedContactMarkAS ?
+        {!multipleSelection ?
           <div className='bchat-blockedMember-item-btnBox'>
             <BchatButton
               buttonColor={BchatButtonColor.Danger}

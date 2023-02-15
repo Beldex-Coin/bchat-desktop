@@ -41,6 +41,7 @@ export type walletSettingMiniModalState={
 export type TransactionInitModalState={} | null;
 export type WalletSendConfirmState=any | null;
 export type BchatUpdateInstruntionState=any | null;
+export type BchatWalletPasswordModalState={} |null;
 
 
 
@@ -65,6 +66,7 @@ export type ModalState = {
   transactionInitModal:TransactionInitModalState;
   walletSendConfirm:WalletSendConfirmState;
   BchatUpdateInstruntion:BchatUpdateInstruntionState;
+  BchatWalletPasswordModal:BchatWalletPasswordModalState;
 };
 
 export const initialModalState: ModalState = {
@@ -87,7 +89,8 @@ export const initialModalState: ModalState = {
   walletSettingMiniModal:null,
   transactionInitModal:null,
   walletSendConfirm:null,
-  BchatUpdateInstruntion:null
+  BchatUpdateInstruntion:null,
+  BchatWalletPasswordModal:null
 };
 
 const ModalSlice = createSlice({
@@ -158,6 +161,10 @@ const ModalSlice = createSlice({
     updateBchatUpgradeInstructionModal(state,action:PayloadAction<BchatUpdateInstruntionState>)
     {
       return { ...state, BchatUpdateInstruntion: action.payload};
+    },
+    updateBchatWalletPasswordModal(state,action:PayloadAction<BchatWalletPasswordModalState>)
+    {
+      return { ...state, BchatWalletPasswordModal: action.payload};
     }
   },
 });
@@ -183,6 +190,7 @@ export const {
   walletSettingMiniModal,
   updateTransactionInitModal,
   updateSendConfirmModal,
-  updateBchatUpgradeInstructionModal
+  updateBchatUpgradeInstructionModal,
+  updateBchatWalletPasswordModal
 } = actions;
 export const modalReducer = reducer;

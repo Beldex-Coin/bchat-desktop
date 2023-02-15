@@ -19,8 +19,8 @@ export const getHideMessageRequestBanner = createSelector(
   (state: UserConfigState): boolean => state.hideMessageRequests
   
 );
-export const getBlockedContactMarkAS = createSelector(
+export const getMultipleSelection = createSelector(
   getUserConfig,
-  (state: UserConfigState): boolean => state.blockedContactMarkAs
+  (state: UserConfigState): boolean => state.multipleSelection
   
 );

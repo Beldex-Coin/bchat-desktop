@@ -204,6 +204,7 @@
   "pruningSocialgroupDialogMessage": "Pruning old social group messages improves performance. Enable pruning for social group messages older than 6 months?",
   "pruningSocialgroupDialogSubMessage": "You can change this setting in the BChat settings menu",
   "enable": "Enable",
+  "chatWithWallet":"Chat With Wallet",
   "keepDisabled": "Keep disabled",
   "typing":"typing",
   "notificationPreview":"Preview",

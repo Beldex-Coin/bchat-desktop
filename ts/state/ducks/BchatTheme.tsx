@@ -58,6 +58,7 @@ const darkForegroundPrimary = white;
 const darkBackgroundPrimary = '#3A3A4E';
 const darkButtonGreen = baseColor;
 const darkModalBackground = '#101011';
+const darkDisableBorder="#66667C";
 
 const grey67 = '#1BB51E';
 const darkMessageRequestBannerBackground = darkConversationItemHasUnread;
@@ -273,6 +274,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-settingIndication', darkSettingIndication);
   document.documentElement.style.setProperty('--color-chatHeader', darkChatHeader);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', darkBlockseletedUserBg);
+  document.documentElement.style.setProperty('--color-disableBorder', darkDisableBorder);
 
   document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
   document.documentElement.style.setProperty(
@@ -454,6 +456,7 @@ const lightProfileBgColor = '#F8F8F8';
 const whiteAudioRecord = '#dcdbdb';
 const whiteBubbleReceivedBg = '#eaeaea';
 const lightBlockseletedUserBg="#FFFFFF";
+const lightDisableBorder="#C5C5C5"
 // Toast Colors
 const lightToastSuccessMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)';
 const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)';
@@ -614,8 +617,9 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-chatHeader', lightChatHeader);
   document.documentElement.style.setProperty('--color-chatIcons', lightChatIcons);
   document.documentElement.style.setProperty('--color-leftpaneSetting', lightLeftpaneSetting);
-  document.documentElement.style.setProperty('--color-leftpaneSetting', lightBlockUserBg);
+  document.documentElement.style.setProperty('--color-blockUserBg', lightBlockUserBg);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', lightBlockseletedUserBg);
+  document.documentElement.style.setProperty('--color-disableBorder', lightDisableBorder);
 
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
@@ -776,7 +780,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-audio-record:${darkAudioRecord};
     --color-seed:${darkSeedColor};
     --color-blockseletedUserBg:${darkBlockseletedUserBg};
-   
+    --color-disableBorder:${darkDisableBorder};
     --color-profile: ${darkProfileBgColor};
 
     --color-toast-success:${darkToastSuccessMessage};
