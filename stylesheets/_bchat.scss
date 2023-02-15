@@ -1281,15 +1281,20 @@ label {
       }
     }
 
-    &__dropdownValue {
-      width: 78px;
-      height: 40px;
-      border-radius: 10px;
+    &__dropdownValue ,&-font-Change{
+      width: 65px;
+      height: 26px;
+      border-radius: 4px;
       background-color: #3a3a4e;
-      padding: 6px;
+      /* padding: 6px; */
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
+    }
+    &-font-Change
+    {
+      width: unset;
+    padding: 0 5px;
     }
 
     .react-select-container {

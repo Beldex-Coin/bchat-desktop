@@ -16,7 +16,7 @@ export const WalletModal = (props:any) => {
         <BchatWrapperModal
             title={props.headerName}
              onClose={props.onClose}
-            showExitIcon={true}
+            showExitIcon={false}
             headerReverse={true}
         >
             <SpacerLG />

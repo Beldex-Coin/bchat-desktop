@@ -22,6 +22,25 @@ export const MessageText = (props: Props) => {
   const selected = useSelector(state => getMessageTextProps(state as any, props.messageId));
   const multiSelectMode = useSelector(isMessageSelectionMode);
 
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || "Small";
+
+  function FontSizeChanger()
+  {
+    let size;
+   if(currentValueFromSettings==="Small")
+   {
+    size="14px"
+   }
+   else if(currentValueFromSettings==="Medium")
+   {
+    size="16px"
+   }
+   else{
+    size="18px"
+   }
+   return size;
+  }
+
   if (!selected) {
     return null;
   }
@@ -46,13 +65,22 @@ export const MessageText = (props: Props) => {
         status === 'error' && direction === 'incoming' ? 'module-message__text--error' : null
       )}
     >
-      {isDeleted && <BchatIcon iconType="delete" iconSize="small" />}
+       <div  style={{fontSize: FontSizeChanger()}}>
+        {isDeleted && <BchatIcon iconType="delete" iconSize="small" />}
+        <MessageBody
+          text={contents || ''}
+          disableLinks={multiSelectMode}
+          disableJumbomoji={false}
+          isGroup={conversationType === 'group'}
+        />
+      </div>
+      {/* {isDeleted && <BchatIcon iconType="delete" iconSize="small" />}
       <MessageBody
         text={contents || ''}
         disableLinks={multiSelectMode}
         disableJumbomoji={false}
         isGroup={conversationType === 'group'}
-      />
+      /> */}
     </div>
   );
 };
