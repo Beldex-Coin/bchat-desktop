@@ -238,6 +238,7 @@ export type LocalizerKeys =
   | 'themeTitle'
   | 'zoomFactorSettingTitle'
   | 'unableToCall'
+  | 'chatFontSize'
   | 'callMissedTitle'
   | 'done'
   | 'videoAttachmentAlt'

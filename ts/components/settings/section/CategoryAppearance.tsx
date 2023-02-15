@@ -16,6 +16,7 @@ import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
 import { applyTheme } from '../../../state/ducks/theme';
+import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
 async function toggleStartInTray() {
   try {
@@ -123,6 +124,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           description={window.i18n('audioMessageAutoplayDescription')}
           active={audioAutoPlay}
         />
+        <ChangeChatFontSetting />
         <BchatToggleWithDescription
           onClickToggle={async () => {
             await toggleLinkPreviews();
