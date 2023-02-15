@@ -22,7 +22,8 @@ import {
   walletSettingMiniModalState,
   TransactionInitModalState,
   WalletSendConfirmState,
-  BchatUpdateInstruntionState
+  BchatUpdateInstruntionState,
+  BchatWalletPasswordModalState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -124,4 +125,7 @@ export const getBchatUpdateInstruntion = createSelector(
   getModal,
   (state: ModalState): BchatUpdateInstruntionState => state.BchatUpdateInstruntion
 );
-
+export const getBchatWalletPasswordModal = createSelector(
+  getModal,
+  (state: ModalState): BchatWalletPasswordModalState => state.BchatWalletPasswordModal
+);

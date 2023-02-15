@@ -14,6 +14,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from '../settings/BchatSettings';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { hideMultipleSelection } from '../../state/ducks/userConfig';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -255,6 +256,7 @@ const LeftPaneSettingsCategoryRow = () =>
           role="link"
           onClick={() => {
             dispatch(showSettingsSection(BchatSettingCategory.Blocked));
+            dispatch(hideMultipleSelection());
           }}
           // style={{ marginTop: '15px' }}
         >

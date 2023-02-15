@@ -239,6 +239,7 @@ export type LocalizerKeys =
   | 'zoomFactorSettingTitle'
   | 'unableToCall'
   | 'chatFontSize'
+  |'chatWithWallet'
   | 'callMissedTitle'
   | 'done'
   | 'videoAttachmentAlt'

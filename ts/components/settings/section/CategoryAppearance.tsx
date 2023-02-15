@@ -38,6 +38,9 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const darktheme=useSelector((state:any)=>state.theme);
+
+   const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+    
   
  
   if (props.hasPassword !== null) {
@@ -133,6 +136,15 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('linkPreviewsTitle')}
           description={window.i18n('linkPreviewDescription')}
           active={isLinkPreviewsOn}
+        />
+        <BchatToggleWithDescription
+          onClickToggle={async () => {
+           window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
+           forceUpdate();
+          }}
+          title={window.i18n('chatWithWallet')}
+          description={''}
+          active={chatwithWallet}
         />
         {os.platform() !== "darwin" &&
           <BchatToggleWithDescription

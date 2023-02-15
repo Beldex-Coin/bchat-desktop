@@ -50,8 +50,8 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
 
     return (
         <BchatSettingsItemWrapper title={window.i18n('chatFontSize')} inline={true}>
-            <div className="bchat-settings-item-font-Change">
-                <div onClick={() => displayPopUp()}>
+            <div className="bchat-settings-item-font-Change"  onClick={() => displayPopUp()}>
+                <div>
                     {value}
                 </div>
                 <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />

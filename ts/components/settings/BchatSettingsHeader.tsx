@@ -5,8 +5,8 @@ import { editProfileModal, } from '../../state/ducks/modalDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOurNumber } from '../../state/selectors/user';
 import { BchatIconButton } from '../icon/BchatIconButton';
-import { blockedContactMarkAS } from '../../state/ducks/userConfig';
-import { getBlockedContactMarkAS } from '../../state/selectors/userConfig';
+ import { toggleMultipleSelection } from '../../state/ducks/userConfig';
+import { getMultipleSelection } from '../../state/selectors/userConfig';
 // import { useUpdate } from 'react-use';
 
 type Props = Pick<SettingsViewProps, 'category'> & {
@@ -21,11 +21,12 @@ export const SettingsHeader = (props: Props) => {
   const dispatch = useDispatch();
   const ourNumber = useSelector(getOurNumber);
   // let color: any;
-  const blockedContactMarkASValue = useSelector(getBlockedContactMarkAS);
-  console.log('blockedContactMarkASValue', blockedContactMarkASValue);
+  const multipleSelectionValue = useSelector(getMultipleSelection);
+  // const temp=useSelector(state=>state)
+  // console.log('multipleSelectionValue', multipleSelectionValue,temp);
 
   // useEffect(() => {
-  //   if (blockedContactMarkASValue) {
+  //   if (multipleSelectionValue) {
   //     color = 'var(--color-text)';
   //     forceUpdate()
   //   }
@@ -33,7 +34,7 @@ export const SettingsHeader = (props: Props) => {
   //     color = "";
   //     forceUpdate()
   //   }
-  // }, [blockedContactMarkASValue])
+  // }, [multipleSelectionValue])
 
   return (
     <div className="bchat-settings-header">
@@ -48,19 +49,19 @@ export const SettingsHeader = (props: Props) => {
       <div className="bchat-settings-header-title">{categoryTitle}</div>
       {window.i18n('blockedSettingsTitle') === categoryTitle &&
         <div className='bchat-settings-header-selectionBox'>
-          {blockedContactMarkASValue ?
+          {multipleSelectionValue ?
             <BchatIconButton
               iconSize="medium"
               iconType="markAllDone"
 
-              onClick={() => { dispatch(blockedContactMarkAS()) }}
+              onClick={() => { dispatch(toggleMultipleSelection()) }}
             />
             :
             <BchatIconButton
               iconSize="medium"
               iconType="markAll"
 
-              onClick={() => { dispatch(blockedContactMarkAS()) }}
+              onClick={() => { dispatch(toggleMultipleSelection()) }}
             />
           }
         </div>

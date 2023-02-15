@@ -8,6 +8,7 @@ const settingsLinkPreview = 'link-preview-setting';
 const settingsStartInTray = 'start-in-tray-setting';
 const settingsOpengroupPruning = 'prune-setting';
 const settingsAudioNotification = 'audio-notification-setting';
+const settingsChatWithWallet="chat-with-wallet-settings"
 
 // wallet setting keys
 
@@ -25,7 +26,8 @@ export const SettingsKey = {
   settingsLinkPreview,
   settingsStartInTray,
   settingsOpengroupPruning,
-  settingsAudioNotification
+  settingsAudioNotification,
+  settingsChatWithWallet
 };
 
 export const walletSettingsKey={
