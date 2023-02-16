@@ -92,7 +92,6 @@ export const getIsTypingEnabled = createSelector(
       return false;
     }
     const { isBlocked, isKickedFromGroup, left, isPublic } = selectedConvo;
-    console.log('getIsTypingEnabled:', !(isBlocked || isKickedFromGroup || left));
     return !(isBlocked || isKickedFromGroup || left || isPublic);
   }
 );

@@ -239,7 +239,7 @@ export type LocalizerKeys =
   | 'zoomFactorSettingTitle'
   | 'unableToCall'
   | 'chatFontSize'
-  |'chatWithWallet'
+  | 'chatWithWallet'
   | 'callMissedTitle'
   | 'done'
   | 'videoAttachmentAlt'
@@ -563,4 +563,5 @@ export type LocalizerKeys =
   | 'walletSyncingDiscription'
   | 'seedFieldEmpty'
   | 'searchEmptyTransaction'
-  | 'NodeTestResult';
+  | 'NodeTestResult'
+  | 'Chat';

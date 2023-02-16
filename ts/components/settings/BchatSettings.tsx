@@ -25,6 +25,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
 // import { wallet } from '../../wallet/wallet-rpc'
 import { deamonvalidation } from '../../wallet/BchatWalletHelper';
+import { SettingsCategoryChat } from './section/categoryChat';
 // import { startWallet } from "../../mains/wallet-rpc"
 
 export function getMediaPermissionsSettings() {
@@ -45,7 +46,8 @@ export enum BchatSettingCategory {
   RecoveryKey = "recoveryKey",
   // ViewMessageRequest="viewMessageRequest",
   Hops = "hops",
-  Wallet = "wallet"
+  Wallet = "wallet",
+  Chat = "chat"
 
 }
 
@@ -163,6 +165,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
     if (category === BchatSettingCategory.Appearance) {
       return <SettingsCategoryAppearance hasPassword={this.state.hasPassword} />;
+    }
+    if (category === BchatSettingCategory.Chat) {
+      return <SettingsCategoryChat hasPassword={this.state.hasPassword} />;
     }
     if (category === BchatSettingCategory.RecoverySeed) {
       if (passwordLock) {

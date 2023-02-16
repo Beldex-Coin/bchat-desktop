@@ -1,4 +1,4 @@
-const sound = './sound/ringing.mp3';
+const sound = './sound/ringtone.mp3';
 
 let currentlyRinging = false;
 

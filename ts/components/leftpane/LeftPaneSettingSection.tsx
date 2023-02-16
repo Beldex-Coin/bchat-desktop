@@ -3,13 +3,9 @@ import classNames from 'classnames';
 
 import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  showSettingsSection,
-} from '../../state/ducks/section';
+import { showSettingsSection } from '../../state/ducks/section';
 import { getFocusedSettingsSection } from '../../state/selectors/section';
-import {
-  updateDeleteAccountModal,
-} from '../../state/ducks/modalDialog';
+import { updateDeleteAccountModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from '../settings/BchatSettings';
@@ -156,12 +152,12 @@ const LeftPaneSettingsCategoryRow = () =>
         >
           <div style={{ display: 'flex' }}>
             <i className="left-pane-setting-category-list-item-icons">
-              <BchatIcon iconSize={23} iconType="wallet" />
+              <BchatIcon iconSize={23} iconType="wallet" iconColor={'#2879FB'} />
             </i>
             <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('WalletSettingsTitle')} 
-            </span> 
-            <span className='beta'>BETA</span>
+              {window.i18n('WalletSettingsTitle')}
+            </span>
+            <span className="beta">BETA</span>
           </div>
           <div>
             {BchatSettingCategory.Wallet === focusedSettingsSection && (
@@ -170,6 +166,32 @@ const LeftPaneSettingsCategoryRow = () =>
           </div>
         </div>
 
+        {/* *******************************************************Chat********************************************************************** */}
+
+        <div
+          data-testid={dataTestId}
+          className={classNames(
+            'left-pane-setting-category-list-item',
+            BchatSettingCategory.Chat === focusedSettingsSection ? 'active' : ''
+          )}
+          role="link"
+          onClick={() => {
+            dispatch(showSettingsSection(BchatSettingCategory.Chat));
+          }}
+        >
+          <div style={{ display: 'flex' }}>
+            <i className="left-pane-setting-category-list-item-icons">
+              <BchatIcon iconSize={23} iconType="chat" />
+            </i>
+
+            <span className="left-pane-setting-category-list-item-span">{window.i18n('Chat')}</span>
+          </div>
+          <div>
+            {BchatSettingCategory.Chat === focusedSettingsSection && (
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            )}
+          </div>
+        </div>
         {/* **********************************************************Privacy******************************************************************* */}
 
         <div
@@ -384,7 +406,7 @@ const LeftPaneSettingsCategoryRow = () =>
           // style={{ marginTop: '15px' }}
         >
           <div style={{ display: 'flex' }}>
-            <span style={{ padding: '5px 10px' ,marginRight:'11px'}}>
+            <span style={{ padding: '5px 10px', marginRight: '11px' }}>
               {' '}
               <ActionPanelOnionStatusLight
                 dataTestId="onion-status-section"
