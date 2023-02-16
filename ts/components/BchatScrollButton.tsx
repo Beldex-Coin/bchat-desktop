@@ -13,18 +13,26 @@ const BchatScrollButtonDiv = styled.div`
   bottom: 72px;
 `;
 
-export const BchatScrollButton = (props: { onClickScrollBottom: () => void }) => {
+export const BchatScrollButton = (props: { onClickScrollBottom: () => void, unreadCount: number | undefined }) => {
   const show = useSelector(getShowScrollButton);
 
   return (
     <BchatScrollButtonDiv>
-      <BchatIconButton
-        iconType="chevron"
-        iconSize={'huge'}
-        isHidden={!show}
-        onClick={props.onClickScrollBottom}
-        dataTestId="scroll-to-bottom-button"
-      />
+      <div className='downArrow'>
+        <BchatIconButton
+          iconType="arrow"
+          iconSize={18}
+          isHidden={!show}
+          onClick={props.onClickScrollBottom}
+          dataTestId="scroll-to-bottom-button"
+        // iconRotation={3}
+        />
+        <div className='downArrow-unreadCountBox'>
+          {props.unreadCount}
+
+        </div>
+      </div>
+
     </BchatScrollButtonDiv>
   );
 };

@@ -1,26 +1,44 @@
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { useDispatch } from 'react-redux';
+import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { ToastUtils } from '../../bchat/utils';
+import { useKey } from 'react-use';
 
 
 export const BchatWalletPasswordModal = () => {
+    const dispatch=useDispatch()
 
+    const [password,setPassword]=useState('')
     const onClickClose = () => {
+        dispatch( updateBchatWalletPasswordModal(null))
 
     };
+    function submit()    
+    {
+        if (!password) {
+            return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
+          }
+      onClickClose()
+    }
+    useKey((event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          submit();
+        }
+        return event.key === 'Enter';
+      });
     return (
         <BchatWrapperModal
             title={window.i18n('changeNickname')}
             onClose={onClickClose}
             showExitIcon={false}
             showHeader={false}
-        >
-            
-
+        >        
                 <div className="bchat-modal-walletPassword">
                     <div className="bchat-modal-walletPassword-contentBox">
                         {/* {loading && (
@@ -43,13 +61,13 @@ export const BchatWalletPasswordModal = () => {
                         </div>
                         <SpacerMD />
                         <div className="bchat-modal-walletPassword-contentBox-inputBox">
-                            <input type="password" value={""} onChange={e => console.log(e.target.value)} />
+                            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
                         </div>
                         <SpacerMD />
                         <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
-                            <span style={{ cursor: 'pointer' }}>
+                            {/* <span style={{ cursor: 'pointer' }}>
                                 {window.i18n('forgotPassword')}
-                            </span>
+                            </span> */}
                         </div>
                         <SpacerMD />
                         <div>
@@ -57,7 +75,7 @@ export const BchatWalletPasswordModal = () => {
                                 text={window.i18n('continue')}
                                 buttonType={BchatButtonType.BrandOutline}
                                 buttonColor={BchatButtonColor.Green}
-                                onClick={() => null}
+                                onClick={() => submit()}
                             />
                         </div>
                         <SpacerLG />

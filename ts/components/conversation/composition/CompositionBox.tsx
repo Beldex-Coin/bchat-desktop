@@ -55,6 +55,7 @@ import {
 } from './UserMentions';
 import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
+import { SettingsKey } from '../../../data/settings-key';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -211,6 +212,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private linkPreviewAbortController?: AbortController;
   private container: HTMLDivElement | null;
   private lastBumpTypingMessageLength: number = 0;
+  private readonly chatwithWallet:boolean;
 
   constructor(props: Props) {
     super(props);
@@ -225,6 +227,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.emojiPanelButton = React.createRef();
     autoBind(this);
     this.toggleEmojiPanel = debounce(this.toggleEmojiPanel.bind(this), 100);
+    this.chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+
   }
 
   public componentDidMount() {
@@ -353,6 +357,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
+    const {selectedConversation}=this.props
+    // console.log("this.props this.props::",this.props)
 
     return (
       <>
@@ -379,9 +385,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
           }}
           data-testid="message-input"
         >
-          
+          {}
             {this.renderTextArea()}
-            <SendFundButton onClick={()=>null}/>
+
+           {this.chatwithWallet && selectedConversation?.type==="private" &&  <SendFundButton onClick={()=>null}/> }
            {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
       
         </div>
