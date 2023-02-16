@@ -92,7 +92,7 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
     if (!conversationKey || !conversation) {
       return null;
     }
-
+   console.log("conversation render",conversation)
     // let displayedName = null;
     // if (conversation.type === ConversationTypeEnum.PRIVATE) {
     //   displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -136,6 +136,7 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
         <BchatScrollButton
           onClickScrollBottom={this.props.scrollToNow}
           key="scroll-down-button"
+          unreadCount={conversation.unreadCount}
         />
       </div>
     );

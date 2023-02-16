@@ -1361,7 +1361,7 @@ label {
       width: 82px;
       height: 30px;
       border-radius: 4px;
-      background-color: var(--color-inboxBgColor);;
+      background-color: var(--color-inboxBgColor);
       /* padding: 6px; */
       display: flex;
       align-items: center;
@@ -1391,7 +1391,7 @@ label {
       .selected {
         width: 15px;
         height: 15px;
-        border: 1px groove #EBEBEB;
+        border: 1px groove #ebebeb;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -1588,7 +1588,7 @@ label {
     }
   }
 
-  .wallet  {
+  .wallet {
     .marginLeft {
       margin-left: 10px;
     }
@@ -2893,6 +2893,29 @@ input {
 
     &:hover svg path {
       opacity: 1;
+    }
+  }
+  .downArrow {
+    .bchat-icon-button {
+      &:hover {
+        background-color: #128b17;
+      }
+    }
+    .bchat-icon-button:hover + .downArrow-unreadCountBox {
+      background-color: #ffffff;
+      color: #000;
+    }
+
+    &-unreadCountBox {
+      position: fixed;
+      background-color: #159b24;
+      padding: 0px 6px;
+      font-size: 10px;
+      border-radius: 8px;
+      right: 16px;
+      bottom: 67px;
+      font-family: $bchat-font-poppin-semibold;
+      color: white;
     }
   }
 }
