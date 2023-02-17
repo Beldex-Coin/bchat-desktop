@@ -784,6 +784,26 @@ label {
       }
     }
   }
+
+  &-imgConfirmBox
+  {
+    width: 315px;
+    margin: 20px;
+      &-header
+      {
+        font-family: $bchat-font-poppin-semibold;
+        font-size: 16px;
+      }
+      &-message
+      {
+        font-family: $bchat-font-poppin-light;
+        line-height: 20px;
+        span{
+          font-family: $bchat-font-poppin-semibold;
+          font-size: 14px;
+        }
+      }
+  }
 }
 
 .bchat-modal__body {
