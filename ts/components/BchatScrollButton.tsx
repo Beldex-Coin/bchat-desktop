@@ -23,6 +23,7 @@ export const BchatScrollButton = (props: { onClickScrollBottom: () => void, unre
           iconType="arrow"
           iconSize={18}
           isHidden={!show}
+          iconColor='var(--color-downArrow)'
           onClick={props.onClickScrollBottom}
           dataTestId="scroll-to-bottom-button"
         // iconRotation={3}

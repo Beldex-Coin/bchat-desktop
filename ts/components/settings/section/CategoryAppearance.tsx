@@ -40,6 +40,8 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const darktheme=useSelector((state:any)=>state.theme);
 
   //  const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+    
+  
  
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
