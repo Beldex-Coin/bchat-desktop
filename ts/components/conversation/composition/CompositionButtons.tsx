@@ -79,7 +79,7 @@ export const SendFundButton = (props: { onClick: () => void }) => {
         dataTestId="send-message-button"
       /> */}
       <div>
-      <img src="images/wallet/beldexCoinAnimate.gif" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
+      <img src="images/wallet/beldexCoinAnimateNew.png" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
 
       </div>
     </div> 

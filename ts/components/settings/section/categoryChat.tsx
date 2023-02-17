@@ -52,7 +52,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             forceUpdate();
           }}
           title={window.i18n('chatWithWallet')}
-          description={''}
+          description={window.i18n('chatWithWalletDisc')}
           active={chatwithWallet}
         />
         <ChangeChatFontSetting />

@@ -564,4 +564,5 @@ export type LocalizerKeys =
   | 'seedFieldEmpty'
   | 'searchEmptyTransaction'
   | 'NodeTestResult'
-  | 'Chat';
+  | 'Chat'
+  | 'chatWithWalletDisc';
