@@ -42,6 +42,7 @@ export interface BchatConfirmDialogProps {
   shouldShowConfirm?: boolean | undefined;
   showExitIcon?: boolean | undefined;
   btndisable?: boolean | undefined;
+  Childern?:any;
 }
 
 export const BchatConfirm = (props: BchatConfirmDialogProps) => {
@@ -61,7 +62,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     onClickCancel,
     showExitIcon,
     closeAfterInput = true,
-    btndisable
+    btndisable,
+    Childern=""
   } = props;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -159,6 +161,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             <SpacerLG />
           </>
         )}
+        {Childern}
 
         <BchatHtmlRenderer tag="span" className={messageSubText} html={message} />
         <BchatHtmlRenderer

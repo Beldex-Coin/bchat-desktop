@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import classNames from 'classnames';
 import { contextMenu } from 'react-contexify';
-
+import useUpdate from 'react-use/lib/useUpdate';
 import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
@@ -11,7 +11,7 @@ import {
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
 import { useDispatch } from 'react-redux';
-import { updateUserDetailsModal } from '../../../state/ducks/modalDialog';
+import { updateBchatAlertConfirmModal, updateBchatWalletPasswordModal, updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
@@ -27,6 +27,8 @@ import _ from 'lodash';
 import { getFirstUnreadMessageWithMention } from '../../../data/data';
 import { UserUtils } from '../../../bchat/utils';
 import styled from 'styled-components';
+import { showLeftPaneSection } from '../../../state/ducks/section';
+import { SettingsKey } from '../../../data/settings-key';
 // import { Timestamp } from '../../conversation/Timestamp';
 
 // tslint:disable-next-line: no-empty-interface
@@ -92,10 +94,15 @@ const ConversationListItem = (props: Props) => {
     mentionedUs,
     isMessageRequest,
     // walletAddress
-    
+
   } = props;
- 
-  
+  const dispatch = useDispatch();
+  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+  const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
+    window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
+
+  const forceUpdate = useUpdate();
+  console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
   // function useHeaderItemProps(conversationId: string) {
   //   const convoProps = useConversationPropsById(conversationId);
   //   if (!convoProps) {
@@ -109,13 +116,13 @@ const ConversationListItem = (props: Props) => {
   //   };
   // }
   // const convoProps = useHeaderItemProps(conversationId);
-  
+
   // const activeAt=convoProps?.activeAt;
   // console.log("activeAt:",activeAt)
   // console.log("unreadCount ::",unreadCount);
-  
+
   //  console.log(activeAt);
-  
+
   const key = `conversation-item-${conversationId}`;
 
   const triggerId = `${key}-ctxmenu`;
@@ -187,17 +194,45 @@ const ConversationListItem = (props: Props) => {
     filter: grayscale(0.7);
   }
 `;
-  
+
 
   let atSymbol = null;
   let unreadCountDiv = null;
-  if (unreadCount?unreadCount:0 > 0) {
+  if (unreadCount ? unreadCount : 0 > 0) {
     atSymbol = mentionedUs ? (
       <MentionAtSymbol title="Open to latest mention" onMouseDown={openConvoToLastMention}>
         @
       </MentionAtSymbol>
     ) : null;
-    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount?unreadCount:0>99?"99+":unreadCount}</p>;
+    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount ? unreadCount : 0 > 99 ? "99+" : unreadCount}</p>;
+  }
+  function chatWithWalletInstruction() {
+    // let children=<>
+    // <img src={"images/bchat/walletinchat.svg"}  width={"200px"} height={"200px"} />
+    // <h3>{window.i18n('payYouChat')}</h3>
+    // </>
+    dispatch(updateBchatAlertConfirmModal({
+      onClickOk: async () => {
+        dispatch(updateBchatAlertConfirmModal(null))
+        dispatch(showLeftPaneSection(3));
+        window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false);
+        forceUpdate();
+
+
+      },
+      onClickCancel: () => dispatch(updateBchatAlertConfirmModal(null))
+    })
+    )
+  }
+  const walletPassWordValidation = () => {
+    if (chatwithWallet) {
+      dispatch(updateBchatWalletPasswordModal({}))
+    }
+
+  }
+  const validation = () => {
+    walletPassWordValidation();
+    chatInstruction && chatWithWalletInstruction();
   }
 
   return (
@@ -205,6 +240,7 @@ const ConversationListItem = (props: Props) => {
       <div key={key}>
         <div
           role="button"
+          onClick={() => validation()}
           onMouseDown={openConvo}
           onMouseUp={e => {
             e.stopPropagation();
@@ -228,28 +264,28 @@ const ConversationListItem = (props: Props) => {
           )}
         >
           <div className='verticalLine'>
-            
+
           </div>
           <AvatarItem />
           <div className="module-conversation-list-item__content">
             <ConversationListItemHeaderItem />
-            
+
             <div className='module-conversation-list-item__content__messageBox' >
-              
-            <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
-            {unreadCountDiv}
-           {atSymbol}
-            {/* <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} /> */}
+
+              <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
+              {unreadCountDiv}
+              {atSymbol}
+              {/* <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} /> */}
 
             </div>
-            
 
-            
-            <div style={{fontSize:'12px'}}>
-      {/* {walletAddress} */}
+
+
+            <div style={{ fontSize: '12px' }}>
+              {/* {walletAddress} */}
+            </div>
           </div>
-          </div>
-         
+
         </div>
         <Portal>
           <MemoConversationListItemContextMenu triggerId={triggerId} />
