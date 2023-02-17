@@ -4,19 +4,19 @@ import {  useDispatch, useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
 import os from 'os';
-import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
+// import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
 import { SettingsKey } from '../../../data/settings-key';
 import { ToastUtils } from '../../../bchat/utils';
-import { updateConfirmModal } from '../../../state/ducks/modalDialog';
-import { toggleAudioAutoplay } from '../../../state/ducks/userConfig';
-import { getAudioAutoplay } from '../../../state/selectors/userConfig';
+// import { updateConfirmModal } from '../../../state/ducks/modalDialog';
+// import { toggleAudioAutoplay } from '../../../state/ducks/userConfig';
+// import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 // import { isHideMenuBarSupported } from '../../../types/Settings';
-import { BchatButtonColor } from '../../basic/BchatButton';
+// import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
 import { applyTheme } from '../../../state/ducks/theme';
-import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
+// import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
 async function toggleStartInTray() {
   try {
@@ -36,12 +36,10 @@ async function toggleStartInTray() {
 export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
-  const audioAutoPlay = useSelector(getAudioAutoplay);
+  // const audioAutoPlay = useSelector(getAudioAutoplay);
   const darktheme=useSelector((state:any)=>state.theme);
 
-   const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    
-  
+  //  const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
  
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
@@ -50,12 +48,12 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
     //     : window.getSettingValue(SettingsKey.settingsMenuBar);
     const isdark = darktheme === "dark" ? true : false;
     
-    const isSpellCheckActive =
-      window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
-        ? true
-        : window.getSettingValue(SettingsKey.settingsSpellCheck);
+    // const isSpellCheckActive =
+    //   window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
+    //     ? true
+    //     : window.getSettingValue(SettingsKey.settingsSpellCheck);
 
-    const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
+    // const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
     const isStartInTrayActive = Boolean(window.getSettingValue(SettingsKey.settingsStartInTray));
 
     function handleClick() {
@@ -71,25 +69,25 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
       }
     }
 
-    async function toggleLinkPreviews() {
-      const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
-      if (!newValue) {
-        window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
-        await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
-      } else {
-       window.inboxStore?.dispatch(
-          updateConfirmModal({
-            title: window.i18n('linkPreviewsTitle'),
-            message: window.i18n('linkPreviewsConfirmMessage'), 
-            okTheme: BchatButtonColor.Danger,
-            onClickOk: () => {
-              window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
-              forceUpdate()
-            },
-          })
-        );
-      }
-    }
+    // async function toggleLinkPreviews() {
+    //   const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
+    //   if (!newValue) {
+    //     window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
+    //     await createOrUpdateItem({ id: hasLinkPreviewPopupBeenDisplayed, value: false });
+    //   } else {
+    //    window.inboxStore?.dispatch(
+    //       updateConfirmModal({
+    //         title: window.i18n('linkPreviewsTitle'),
+    //         message: window.i18n('linkPreviewsConfirmMessage'), 
+    //         okTheme: BchatButtonColor.Danger,
+    //         onClickOk: () => {
+    //           window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
+    //           forceUpdate()
+    //         },
+    //       })
+    //     );
+    //   }
+    // }
     
 
     return (
@@ -118,7 +116,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           // description={window.i18n('spellCheckDescription')}
           active={isdark}
         />
-        <BchatToggleWithDescription
+        {/* <BchatToggleWithDescription
           onClickToggle={() => {
             dispatch(toggleAudioAutoplay());
             forceUpdate();
@@ -126,9 +124,8 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('audioMessageAutoplayTitle')}
           description={window.i18n('audioMessageAutoplayDescription')}
           active={audioAutoPlay}
-        />
-        <ChangeChatFontSetting />
-        <BchatToggleWithDescription
+        /> */}
+        {/* <BchatToggleWithDescription
           onClickToggle={async () => {
             await toggleLinkPreviews();
             forceUpdate();
@@ -136,8 +133,8 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('linkPreviewsTitle')}
           description={window.i18n('linkPreviewDescription')}
           active={isLinkPreviewsOn}
-        />
-        <BchatToggleWithDescription
+        /> */}
+        {/* <BchatToggleWithDescription
           onClickToggle={async () => {
            window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
            forceUpdate();
@@ -145,7 +142,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('chatWithWallet')}
           description={''}
           active={chatwithWallet}
-        />
+        /> */}
         {os.platform() !== "darwin" &&
           <BchatToggleWithDescription
             onClickToggle={async () => {
@@ -158,7 +155,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
             active={isStartInTrayActive}
           />
         }
-        <BchatToggleWithDescription
+        {/* <BchatToggleWithDescription
           onClickToggle={() => {
             window.toggleSpellCheck();
             forceUpdate();
@@ -166,7 +163,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('spellCheckTitle')}
           description={window.i18n('spellCheckDescription')}
           active={isSpellCheckActive}
-        />
+        /> */}
         <ZoomingBchatSlider />
         {/* <BchatSettingButtonItem
           title={window.i18n('surveyTitle')}

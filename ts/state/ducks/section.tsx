@@ -133,7 +133,7 @@ export const reducer = (
       return {
         ...state,
         focusedSection: payload,
-        focusedSettingsSection: BchatSettingCategory.Appearance,
+        focusedSettingsSection: BchatSettingCategory.Chat,
       };
     case FOCUS_SETTINGS_SECTION:
       return {
