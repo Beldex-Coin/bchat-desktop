@@ -9,7 +9,7 @@ import { updateDeleteAccountModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from '../settings/BchatSettings';
-import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+// import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
@@ -407,15 +407,16 @@ const LeftPaneSettingsCategoryRow = () =>
           // style={{ marginTop: '15px' }}
         >
           <div style={{ display: 'flex' }}>
-            <span style={{ padding: '5px 10px', marginRight: '11px' }}>
+            <span style={{ padding: '0px 10px', marginRight: '11px' }}>
               {' '}
-              <ActionPanelOnionStatusLight
+              {/* <ActionPanelOnionStatusLight
                 dataTestId="onion-status-section"
                 handleClick={() => {}}
                 isSelected={false}
                 id={'onion-path-indicator-led-id'}
                 size="small"
-              />
+              /> */}
+              <BchatIcon iconType='hops'  iconSize={'large'} iconColor='#01b700'/>
             </span>
             <span className="left-pane-setting-category-list-item-span">Hops</span>
           </div>

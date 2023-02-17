@@ -2893,12 +2893,25 @@ input {
 
     &:hover svg path {
       opacity: 1;
+
     }
   }
   .downArrow {
+    .bchat-icon-button
+    {
+      background-color:var(--color-downArrowBg);
+      svg path
+      {
+        fill:var(--color-downArrow)
+      }
+    }
     .bchat-icon-button {
       &:hover {
         background-color: #128b17;
+       svg path
+        {
+          fill:white;
+        }
       }
     }
     .bchat-icon-button:hover + .downArrow-unreadCountBox {

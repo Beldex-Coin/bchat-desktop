@@ -145,6 +145,8 @@ const darkDownthickArrow = '#fff';
 const darkDisableBtn='#444455';
 const darkDisableTxt='#8F8FA2';
 const darkConfirmAddress="#A1A1BC";
+const darkDownArrowBg='#525262';
+const darkDownArrow='#CACAD8';
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
@@ -275,8 +277,11 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-chatHeader', darkChatHeader);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', darkBlockseletedUserBg);
   document.documentElement.style.setProperty('--color-disableBorder', darkDisableBorder);
+  document.documentElement.style.setProperty('--color-downArrowBg', darkDownArrowBg);
+  document.documentElement.style.setProperty('--color-downArrow', darkDownArrow);
 
   document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
+  
   document.documentElement.style.setProperty(
     '--color-composeMsgRecordIcon',
     darkcomposeMsgRecordIcon
@@ -456,7 +461,9 @@ const lightProfileBgColor = '#F8F8F8';
 const whiteAudioRecord = '#dcdbdb';
 const whiteBubbleReceivedBg = '#eaeaea';
 const lightBlockseletedUserBg="#FFFFFF";
-const lightDisableBorder="#C5C5C5"
+const lightDisableBorder="#C5C5C5";
+const lightDownArrowBg="#FFFFFF";
+const lightDownArrow="#A8A8C3";
 // Toast Colors
 const lightToastSuccessMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)';
 const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)';
@@ -497,6 +504,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', lightCopyModalbtn);
   document.documentElement.style.setProperty('--color-disableText', ligntDisableText);
+  document.documentElement.style.setProperty('--color-downArrow', lightDownArrow);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
     lightColorComposeViewBg
@@ -620,6 +628,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-blockUserBg', lightBlockUserBg);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', lightBlockseletedUserBg);
   document.documentElement.style.setProperty('--color-disableBorder', lightDisableBorder);
+  document.documentElement.style.setProperty('--color-downArrowBg', lightDownArrowBg);
 
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
@@ -772,7 +781,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-clearBtn:${darkClearBtn};
     --button-color:${buttonColor};
     
-    --color-blockUserBg:${darkBlockUserBg}
+    --color-blockUserBg:${darkBlockUserBg};
+    --color-downArrowBg:${darkDownArrowBg};
+    --color-downArrow:${darkDownArrow}
     --color-leftpaneSetting:${darkLeftpaneSetting};
     --color-rightpaneSetting:${darkRightpaneSetting}
     --color-disableText:${darkDisableText};
