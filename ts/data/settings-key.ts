@@ -9,7 +9,7 @@ const settingsStartInTray = 'start-in-tray-setting';
 const settingsOpengroupPruning = 'prune-setting';
 const settingsAudioNotification = 'audio-notification-setting';
 const settingsChatWithWallet="chat-with-wallet-settings"
-const settingChatwithWalletInstruction="chat-with-wallet-instrunction-settings"
+// const settingChatwithWalletInstruction="chat-with-wallet-instrunction-settings"
 
 // wallet setting keys
 
@@ -29,7 +29,7 @@ export const SettingsKey = {
   settingsOpengroupPruning,
   settingsAudioNotification,
   settingsChatWithWallet,
-  settingChatwithWalletInstruction
+  // settingChatwithWalletInstruction
 };
 
 export const walletSettingsKey={

@@ -13,6 +13,8 @@ import {
 import { perfEnd, perfStart } from '../../bchat/utils/Performance';
 
 const DEFAULT_JPEG_QUALITY = 0.85;
+// import classNames from 'classnames';
+
 
 import { BchatMessagesListContainer } from './BchatMessagesListContainer';
 
@@ -54,6 +56,10 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 import { BchatRightPanelWithDetails } from './BchatRightPanel';
+import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
+import { SettingsKey } from '../../data/settings-key';
+// import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
+// import { useSelector } from 'react-redux';
 // tslint:disable: jsx-curly-spacing
 
 interface State {
@@ -217,29 +223,34 @@ export class BchatConversation extends React.Component<Props, State> {
       selectedMessages,
       isRightPanelShowing,
       lightBoxOptions,
+      
     } = this.props;
-    
+
     if (!selectedConversation || !messagesProps) {
 
       // return an empty message view
       return <MessageView />;
     }
-   
+
     const selectionMode = selectedMessages.length > 0;
-     
+
+    const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
     return (
       <BchatTheme>
 
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
-         <div
+        <div
           // if you change the classname, also update it on onKeyDown
           className={classNames('conversation-content', selectionMode && 'selection-mode')}
           tabIndex={0}
           onKeyDown={this.onKeyDown}
           role="navigation"
-         >
+        >
+          <div>
+           {chatWithWallet && selectedConversation.isPrivate && <SyncStatusBar from={"chat"} />} 
+          </div>
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
           </div>
@@ -262,21 +273,21 @@ export class BchatConversation extends React.Component<Props, State> {
           </div>
 
           <ConversationRequestinfo />
-          
+
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
             onChoseAttachments={this.onChoseAttachments}
           />
-        
-        </div> 
+
+        </div>
         <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
-         
+
         >
           <BchatRightPanelWithDetails />
         </div>
-        
+
       </BchatTheme>
     );
   }
@@ -489,8 +500,7 @@ export class BchatConversation extends React.Component<Props, State> {
     const allPubKeys = await getPubkeysInPublicConversation(this.props.selectedConversationKey);
 
     window?.log?.debug(
-      `[perf] getPubkeysInPublicConversation returned '${
-        allPubKeys?.length
+      `[perf] getPubkeysInPublicConversation returned '${allPubKeys?.length
       }' members in ${Date.now() - start}ms`
     );
 

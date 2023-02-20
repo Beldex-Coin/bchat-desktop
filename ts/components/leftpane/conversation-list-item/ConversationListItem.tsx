@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import classNames from 'classnames';
 import { contextMenu } from 'react-contexify';
-import useUpdate from 'react-use/lib/useUpdate';
+// import useUpdate from 'react-use/lib/useUpdate';
 import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
@@ -10,8 +10,8 @@ import {
   openConversationWithMessages,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
-import { useDispatch } from 'react-redux';
-import { updateBchatAlertConfirmModal, updateBchatWalletPasswordModal, updateUserDetailsModal } from '../../../state/ducks/modalDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import {  updateBchatWalletPasswordModal, updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
@@ -27,8 +27,9 @@ import _ from 'lodash';
 import { getFirstUnreadMessageWithMention } from '../../../data/data';
 import { UserUtils } from '../../../bchat/utils';
 import styled from 'styled-components';
-import { showLeftPaneSection } from '../../../state/ducks/section';
+// import { showLeftPaneSection } from '../../../state/ducks/section';
 import { SettingsKey } from '../../../data/settings-key';
+import { getWalletSyncInitiatedWithChat } from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
 // tslint:disable-next-line: no-empty-interface
@@ -98,11 +99,12 @@ const ConversationListItem = (props: Props) => {
   } = props;
   const dispatch = useDispatch();
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
-    window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
+  const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
+  // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
+    // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
 
-  const forceUpdate = useUpdate();
-  console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
+  // const forceUpdate = useUpdate();
+  // console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
   // function useHeaderItemProps(conversationId: string) {
   //   const convoProps = useConversationPropsById(conversationId);
   //   if (!convoProps) {
@@ -206,33 +208,19 @@ const ConversationListItem = (props: Props) => {
     ) : null;
     unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount ? unreadCount : 0 > 99 ? "99+" : unreadCount}</p>;
   }
-  function chatWithWalletInstruction() {
-    // let children=<>
-    // <img src={"images/bchat/walletinchat.svg"}  width={"200px"} height={"200px"} />
-    // <h3>{window.i18n('payYouChat')}</h3>
-    // </>
-    dispatch(updateBchatAlertConfirmModal({
-      onClickOk: async () => {
-        dispatch(updateBchatAlertConfirmModal(null))
-        dispatch(showLeftPaneSection(3));
-        window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false);
-        forceUpdate();
-
-
-      },
-      onClickCancel: () => dispatch(updateBchatAlertConfirmModal(null))
-    })
-    )
-  }
+  
   const walletPassWordValidation = () => {
-    if (chatwithWallet) {
+    console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
+    
+    if (chatwithWallet && !WalletSyncInitiatedWithChat) {
+
       dispatch(updateBchatWalletPasswordModal({}))
     }
 
   }
   const validation = () => {
     walletPassWordValidation();
-    chatInstruction && chatWithWalletInstruction();
+    // chatInstruction && chatWithWalletInstruction();
   }
 
   return (

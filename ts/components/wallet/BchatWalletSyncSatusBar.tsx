@@ -5,9 +5,12 @@ import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
 import { updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { walletSettingsKey } from '../../data/settings-key';
+// import classNames from 'classnames';
 
-export const SyncStatusBar = () => {
+
+export const SyncStatusBar = (props:{from?:string}) => {
   const dispatch = useDispatch();
+  const {from=""}=props
   let currentHeight: any;
   let daemonHeight: any;
 
@@ -35,20 +38,21 @@ export const SyncStatusBar = () => {
   dispatch(updateWalletRescaning(value));
 
   return (
-    <div className="wallet-syncStatus">
-      <div className="wallet-syncStatus-absolute">
-        <Indicator
+    <div className="syncStatus">
+      <div  >
+      { from!=="chat" && <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
         />
-        <Flex container={true} justifyContent="space-between" padding="5px 0">
+        }
+        <Flex container={true} justifyContent="space-between" padding={from==="chat"?"5px 18px":"5px 0"}>
           <Flex container={true}>
-            <div className="wallet-syncStatus-statusTxt">
+            <div className="syncStatus-statusTxt">
               Status :{' '}
               <span
-                className="wallet-syncStatus-statusTxt-greenTxt"
+                className="syncStatus-statusTxt-greenTxt"
                 style={{ color: syncStatus.color }}
               >
                 {syncStatus.status}
@@ -56,14 +60,21 @@ export const SyncStatusBar = () => {
             </div>
           </Flex>
           <Flex container={true}>
-            <div style={{ marginRight: '10px' }} className="wallet-syncStatus-statusvalue">
+            <div style={{ marginRight: '10px' }} className="syncStatus-statusvalue">
               {window.getSettingValue('current-deamon').type} : {daemonHeight}
             </div>
-            <div className="wallet-syncStatus-statusvalue">
+            <div className="syncStatus-statusvalue">
               Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
             </div>
           </Flex>
         </Flex>
+        { from=="chat" && <Indicator
+          style={{
+            width: `${percentage}%`,
+            backgroundColor: syncStatus.color,
+          }}
+        />
+        }
       </div>
     </div>
   );

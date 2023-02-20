@@ -785,24 +785,21 @@ label {
     }
   }
 
-  &-imgConfirmBox
-  {
+  &-imgConfirmBox {
     width: 315px;
     margin: 20px;
-      &-header
-      {
+    &-header {
+      font-family: $bchat-font-poppin-semibold;
+      font-size: 16px;
+    }
+    &-message {
+      font-family: $bchat-font-poppin-light;
+      line-height: 20px;
+      span {
         font-family: $bchat-font-poppin-semibold;
-        font-size: 16px;
+        font-size: 14px;
       }
-      &-message
-      {
-        font-family: $bchat-font-poppin-light;
-        line-height: 20px;
-        span{
-          font-family: $bchat-font-poppin-semibold;
-          font-size: 14px;
-        }
-      }
+    }
   }
 }
 
@@ -1256,6 +1253,32 @@ label {
   // }
 }
 
+.syncStatus {
+  // position: relative;
+  // height: 30px;
+  // // width: 66.5%;
+  // bottom: 0;
+  // position: absolute;
+  // width: calc(100vw - 417px);
+  // height: 30px;
+  // bottom: 0;
+  background-color: var(--color-walSyncbar);
+  // &-subParent {
+  //   padding: 0 18px;
+  // }
+
+  &-statusTxt {
+    font-size: 12px;
+    &-greenTxt {
+      color: #00bf25;
+    }
+  }
+  &-statusvalue {
+    font-size: 12px;
+    color: #9393b1;
+  }
+}
+
 .bchat-settings {
   width: 100%;
   height: 100vh;
@@ -1538,8 +1561,8 @@ label {
       font-family: $bchat-font-poppin-semibold;
       margin-right: 20px;
       cursor: pointer;
-      &:hover{
-        background-color: #00CE04;
+      &:hover {
+        background-color: #00ce04;
       }
     }
   }
@@ -2444,16 +2467,22 @@ label {
       }
     }
 
+    &-syncStatusBox {
+      position: absolute;
+      width: calc(100vw - 417px);
+      height: 30px;
+      bottom: 0;
+      background-color: var(--color-walSyncbar);
+    }
+
     &-syncStatus {
       // position: relative;
       // height: 30px;
       // // width: 66.5%;
       // bottom: 0;
-      position: absolute;
-      width: calc(100vw - 417px);
-      height: 30px;
-      bottom: 0;
-      background-color: var(--color-chatHeader);
+      &-subParent {
+        padding: 0 18px;
+      }
 
       &-statusTxt {
         font-size: 12px;
@@ -2916,24 +2945,20 @@ input {
 
     &:hover svg path {
       opacity: 1;
-
     }
   }
   .downArrow {
-    .bchat-icon-button
-    {
-      background-color:var(--color-downArrowBg);
-      svg path
-      {
-        fill:var(--color-downArrow)
+    .bchat-icon-button {
+      background-color: var(--color-downArrowBg);
+      svg path {
+        fill: var(--color-downArrow);
       }
     }
     .bchat-icon-button {
       &:hover {
         background-color: #128b17;
-       svg path
-        {
-          fill:white;
+        svg path {
+          fill: white;
         }
       }
     }

@@ -154,7 +154,9 @@ export const Dashboard = (props: any) => {
           />
         )}
       </div>
+      <div  className='wallet-syncStatusBox'>
       <SyncStatusBar />
+      </div>
 
     </>
   );

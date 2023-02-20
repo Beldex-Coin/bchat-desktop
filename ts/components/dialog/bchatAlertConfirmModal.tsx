@@ -95,6 +95,8 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
                     buttonColor={BchatButtonColor.White}
                     onClick={onClickCancelHandler}
                     dataTestId="Bchat-confirm-cancel-button"
+                    style={{    width: '120px',
+                        height: '35px'}}
                 />
                 <BchatButton
                     text={okText}
@@ -102,6 +104,8 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
                     onClick={onClickOkHandler}
                     dataTestId="Bchat-confirm-ok-button"
                     disabled={btndisable ? btndisable : false}
+                    style={{    width: '120px',
+                        height: '35px'}}
                 />
             </div>
         </BchatWrapperModal>
