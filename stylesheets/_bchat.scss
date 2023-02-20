@@ -1538,6 +1538,9 @@ label {
       font-family: $bchat-font-poppin-semibold;
       margin-right: 20px;
       cursor: pointer;
+      &:hover{
+        background-color: #00CE04;
+      }
     }
   }
 

@@ -34,7 +34,7 @@ const darkColorRecoveryPhraseBannerBg = '#1f1f1f';
 const darkColorPillDivider = '#353535';
 const darkColorLastSeenIndicator = accentDarkTheme;
 const darkColorQuoteBottomBarBg = '#34323F';
-const darkColorCellBackground = '#252531';
+const darkColorCellBackground = '#181821';
 const darkColorReceivedMessageBg = '#34323F';
 const darkColorReceivedMessageText = white;
 
@@ -367,7 +367,7 @@ const lightColorTextAccent = accentLightTheme;
 const lightColorBchatShadow = `0 0 4px 0 #00000029`;
 const lightColorComposeViewBg = '#efefef';
 const lightColorSentMessageBg = '#2879FB';
-const lightColorClickableHovered = '#eaeaea';
+const lightColorClickableHovered = '#F5F5F5';
 // const lightColorBchatBorderColor = borderLightThemeColor;
 const lightColorBchatBorder = `2px solid #E3E3E3 `;
 const lightColorRecoveryPhraseBannerBg = white;
