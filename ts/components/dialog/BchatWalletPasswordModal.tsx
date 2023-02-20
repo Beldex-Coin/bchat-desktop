@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { ToastUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
+import { updateWalletSyncInitiatedWithChat } from '../../state/ducks/walletConfig';
 
 
 export const BchatWalletPasswordModal = () => {
@@ -24,6 +25,8 @@ export const BchatWalletPasswordModal = () => {
         if (!password) {
             return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
           }
+          let data:any=true;
+          dispatch(updateWalletSyncInitiatedWithChat(data)) ;
       onClickClose()
     }
     useKey((event: KeyboardEvent) => {
@@ -34,10 +37,11 @@ export const BchatWalletPasswordModal = () => {
       });
     return (
         <BchatWrapperModal
-            title={window.i18n('changeNickname')}
+            title={''}
             onClose={onClickClose}
-            showExitIcon={false}
-            showHeader={false}
+            showExitIcon={true}
+            showHeader={true}
+            headerReverse={true}
         >        
                 <div className="bchat-modal-walletPassword">
                     <div className="bchat-modal-walletPassword-contentBox">
@@ -51,8 +55,8 @@ export const BchatWalletPasswordModal = () => {
             </div>
           </Loader>
         )} */}
-                        <SpacerLG />
-                        <SpacerLG />
+                        {/* <SpacerLG /> */}
+                        {/* <SpacerLG /> */}
                         <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
                         <SpacerMD />
                         <div className="bchat-modal-walletPassword-contentBox-headerBox">

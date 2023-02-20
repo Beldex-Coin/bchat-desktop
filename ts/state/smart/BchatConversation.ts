@@ -16,6 +16,8 @@ import { getStagedAttachmentsForCurrentConversation } from '../selectors/stagedA
 import { getHasOngoingCallWithFocusedConvo } from '../selectors/call';
 import { BchatConversation } from '../../components/conversation/BchatConversation';
 
+
+
 const mapStateToProps = (state: StateType) => {
   return {
     selectedConversation: getSelectedConversation(state),
@@ -29,6 +31,7 @@ const mapStateToProps = (state: StateType) => {
     lightBoxOptions: getLightBoxOptions(state),
     stagedAttachments: getStagedAttachmentsForCurrentConversation(state),
     hasOngoingCallWithFocusedConvo: getHasOngoingCallWithFocusedConvo(state),
+    
   };
 };
 

@@ -78,7 +78,7 @@ export const SendFundButton = (props: { onClick: () => void }) => {
         backgroundColor='black'
         dataTestId="send-message-button"
       /> */}
-      <div>
+      <div style={{cursor:'pointer'}}>
       <img src="images/wallet/beldexCoin.png" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
 
       </div>

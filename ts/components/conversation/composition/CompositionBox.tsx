@@ -56,6 +56,9 @@ import {
 import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
 import { SettingsKey } from '../../../data/settings-key';
+import { updateBchatAlertConfirmModal, updateSendConfirmModal, updateTransactionInitModal } from '../../../state/ducks/modalDialog';
+import { showLeftPaneSection } from '../../../state/ducks/section';
+import { BchatButtonColor } from '../../basic/BchatButton';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -246,6 +249,53 @@ class CompositionBoxInner extends React.Component<Props, State> {
     div?.removeEventListener('paste', this.handlePaste);
   }
 
+   chatWithWalletInstruction() {
+    // const messagePlaintext = cleanMentions(this.state.draft);
+    // console.log("this.props.selectedConversation::",this.props.selectedConversation?.walletAddress,messagePlaintext,_.isNumber( messagePlaintext ))
+    // let children=<>
+    // <img src={"images/bchat/walletinchat.svg"}  width={"200px"} height={"200px"} />
+    // <h3>{window.i18n('payYouChat')}</h3>
+    // </>
+    window.inboxStore?.dispatch
+
+     (updateBchatAlertConfirmModal({
+      onClickOk: async () => {
+    window.inboxStore?.dispatch
+    (updateBchatAlertConfirmModal(null))
+    window.inboxStore?.dispatch
+    (showLeftPaneSection(3));
+        // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false);
+        // forceUpdate();
+
+
+      },
+      onClickCancel: () =>window.inboxStore?.dispatch
+      (updateBchatAlertConfirmModal(null))
+    })
+    )
+  }
+ 
+   sendConfirmModal() {
+    const messagePlaintext = cleanMentions(this.state.draft);
+
+    window.inboxStore?.dispatch(
+      updateSendConfirmModal({
+        okTheme: BchatButtonColor.Green,
+        address: this.props.selectedConversation?.walletAddress,
+         amount: messagePlaintext,
+         fee:  0.0042,
+        Priority: 'Flash',
+        onClickOk: async () => {
+          // await send();
+          window.inboxStore?.dispatch(updateTransactionInitModal({}));
+
+        },
+        onClickClose: () => {
+          window.inboxStore?.dispatch(updateSendConfirmModal(null));
+        },
+      })
+    );
+  }
   public componentDidUpdate(prevProps: Props, _prevState: State) {
     // reset the state on new conversation key
     if (prevProps.selectedConversationKey !== this.props.selectedConversationKey) {
@@ -388,7 +438,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
           {}
             {this.renderTextArea()}
 
-           {this.chatwithWallet && selectedConversation?.type==="private" &&  <SendFundButton onClick={()=>null}/> }
+           { selectedConversation?.type==="private" &&  <SendFundButton 
+           onClick={()=>!this.chatwithWallet ? this.chatWithWalletInstruction():this.sendConfirmModal()}/> }
            {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
       
         </div>

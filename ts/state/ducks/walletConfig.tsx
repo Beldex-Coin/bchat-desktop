@@ -3,6 +3,7 @@
  * Anything setting under the cog wheel tab.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SettingsKey } from '../../data/settings-key';
 
 export interface WalletConfigState {
   walletsendAddress: any | String;
@@ -10,14 +11,19 @@ export interface WalletConfigState {
   walletHeight: number | any;
   walletDecimalValue:any;
   walletRescaning:boolean|any;
+  WalletSyncInitiatedWithChat:boolean | any
 }
+
+const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || true;
 
 export const initialWalletConfigState: WalletConfigState = {
   walletsendAddress: '',
   fiatBalance: '',
   walletHeight: '',
    walletDecimalValue:'2 - Two (0.00)', 
-   walletRescaning:false
+   walletRescaning:false,
+   WalletSyncInitiatedWithChat:chatwithWallet,
+
 };
 
 
@@ -42,6 +48,12 @@ export const initialWalletConfigState: WalletConfigState = {
 
         return { ...state, walletRescaning: action.payload };
       },
+
+      // Wallet With chat
+      updateWalletSyncInitiatedWithChat(state, action: PayloadAction<WalletConfigState>) {
+
+        return { ...state, WalletSyncInitiatedWithChat: action.payload };
+      },
    },
  });
  
@@ -51,7 +63,8 @@ export const initialWalletConfigState: WalletConfigState = {
     updateFiatBalance, 
     updateDecimalValue,
     updateWalletHeight,
-    updateWalletRescaning
+    updateWalletRescaning,
+    updateWalletSyncInitiatedWithChat
  } = actions;
  export const walletConfigReducer = reducer;
  
