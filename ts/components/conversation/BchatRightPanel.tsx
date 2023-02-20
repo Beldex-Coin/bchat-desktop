@@ -108,25 +108,29 @@ const HeaderItem = () => {
   if (!selectedConversation) {
     return null;
   }
-  const { id,
-    profileName } = selectedConversation;
-
+  const { id, profileName } = selectedConversation;
 
   return (
     <div className="group-settings-header">
-      <div className='group-settings-header-avatarBox'>
+      <div className="group-settings-header-avatarBox">
         <Avatar size={AvatarSize.XL} pubkey={id} />
         <p>{profileName}</p>
       </div>
 
-
       <div onClick={() => dispatch(closeRightPanel())} className="group-settings-header-closeBox">
-        <svg xmlns="http://www.w3.org/2000/svg" width="17.833" height="17.822" viewBox="0 0 17.833 17.822">
-          <path id="close" d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z" transform="translate(-3.99 -3.99)"  />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="17.833"
+          height="17.822"
+          viewBox="0 0 17.833 17.822"
+        >
+          <path
+            id="close"
+            d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z"
+            transform="translate(-3.99 -3.99)"
+          />
         </svg>
-
       </div>
-
     </div>
   );
 };
@@ -139,7 +143,6 @@ export const BchatRightPanelWithDetails = () => {
 
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
-  
 
   useEffect(() => {
     let isRunning = true;
@@ -190,22 +193,21 @@ export const BchatRightPanelWithDetails = () => {
     isGroup,
     isPrivate,
   } = selectedConversation;
- 
+
   const username = String(useConversationUsername(id));
 
-  
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
   const commonNoShow = isKickedFromGroup || left || isBlocked;
   const hasDisappearingMessages = !isPublic && !commonNoShow;
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-      ? window.i18n('youGotKickedFromGroup') 
-      : left
-        ? window.i18n('youLeftTheGroup')
-        : window.i18n('leaveGroup');
+    ? window.i18n('youGotKickedFromGroup')
+    : left
+    ? window.i18n('youLeftTheGroup')
+    : window.i18n('leaveGroup');
 
- const timerOptions = useSelector(getTimerOptions).timerOptions;
+  const timerOptions = useSelector(getTimerOptions).timerOptions;
 
   const disappearingMessagesOptions = timerOptions.map(option => {
     return {
@@ -220,38 +222,42 @@ export const BchatRightPanelWithDetails = () => {
     isGroup && (!isPublic || (isPublic && weAreAdmin)) && !commonNoShow;
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
   const showUpdateGroupMembersButton = !isPublic && isGroup && !commonNoShow;
-  
+
   const deleteConvoAction = isPublic
     ? () => {
-      deleteAllMessagesByConvoIdWithConfirmation(id);
-    }
+        deleteAllMessagesByConvoIdWithConfirmation(id);
+      }
     : () => {
-      showLeaveGroupByConvoId(id,username);
-    };
+        showLeaveGroupByConvoId(id, username);
+      };
   return (
     <div className="group-settings">
       <HeaderItem />
-      {isPrivate &&<div className='group-settings-header-chatIdBox'>
-        <p>BChat ID:</p>
-        <div>{id}</div>
-      </div>}
-      <div className='group-settings-nameEditBox'>
+      {isPrivate && (
+        <div className="group-settings-header-chatIdBox">
+          <p>BChat ID:</p>
+          <div>{id}</div>
+        </div>
+      )}
+      <div className="group-settings-nameEditBox">
         <h2 data-testid="right-panel-group-name">{name}</h2>
-        {showUpdateGroupNameButton && <BchatIconButton
-          iconType="pencil"
-          iconSize="medium"
-          iconColor='#128b17'
-          onClick={async () => {
-            await showUpdateGroupNameByConvoId(id);
-          }}
-          dataTestId="edit-profile-icon"
-        />}
+        {showUpdateGroupNameButton && (
+          <BchatIconButton
+            iconType="pencil"
+            iconSize="medium"
+            iconColor="#128b17"
+            onClick={async () => {
+              await showUpdateGroupNameByConvoId(id);
+            }}
+            dataTestId="edit-profile-icon"
+          />
+        )}
       </div>
 
       {showMemberCount && (
         <>
           <SpacerLG />
-          <div role="button" className="subtle"  style={{textAlign:'center'}}>
+          <div role="button" className="subtle" style={{ textAlign: 'center' }}>
             {window.i18n('members', [`${subscriberCount}`])}
           </div>
           <SpacerLG />
@@ -267,7 +273,6 @@ export const BchatRightPanelWithDetails = () => {
             }}
           >
             {window.i18n('addModerators')}
-
           </div>
           <div
             className="group-settings-item"
@@ -290,16 +295,31 @@ export const BchatRightPanelWithDetails = () => {
             }
           }}
         >
-          <div className="invite-friends-container" style={{ marginRight: "10px" }} onClick={() => {
-            if (selectedConversation) {
-              showInviteContactByConvoId(selectedConversation.id);
-            }
-          }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="21.266" height="21.266" viewBox="0 0 21.266 21.266">
-              <path id="add_member" data-name="add member" d="M9.595,2a5.318,5.318,0,0,0-2.967,9.731A7.617,7.617,0,0,0,2,18.709H3.519a6.065,6.065,0,0,1,6.076-6.076,6,6,0,0,1,2.872.736,6.169,6.169,0,1,0,1.163-1.092,7.7,7.7,0,0,0-1.068-.546A5.318,5.318,0,0,0,9.595,2Zm0,1.519a3.8,3.8,0,1,1-3.8,3.8A3.786,3.786,0,0,1,9.595,3.519Zm7.595,9.114a4.557,4.557,0,1,1-4.557,4.557A4.547,4.547,0,0,1,17.19,12.633Zm-.759,1.519V16.43H14.152v1.519H16.43v2.278h1.519V17.949h2.278V16.43H17.949V14.152Z" transform="translate(-2 -2)" fill="#128b17" />
+          <div
+            className="invite-friends-container"
+            style={{ marginRight: '10px' }}
+            onClick={() => {
+              if (selectedConversation) {
+                showInviteContactByConvoId(selectedConversation.id);
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="21.266"
+              height="21.266"
+              viewBox="0 0 21.266 21.266"
+            >
+              <path
+                id="add_member"
+                data-name="add member"
+                d="M9.595,2a5.318,5.318,0,0,0-2.967,9.731A7.617,7.617,0,0,0,2,18.709H3.519a6.065,6.065,0,0,1,6.076-6.076,6,6,0,0,1,2.872.736,6.169,6.169,0,1,0,1.163-1.092,7.7,7.7,0,0,0-1.068-.546A5.318,5.318,0,0,0,9.595,2Zm0,1.519a3.8,3.8,0,1,1-3.8,3.8A3.786,3.786,0,0,1,9.595,3.519Zm7.595,9.114a4.557,4.557,0,1,1-4.557,4.557A4.547,4.547,0,0,1,17.19,12.633Zm-.759,1.519V16.43H14.152v1.519H16.43v2.278h1.519V17.949h2.278V16.43H17.949V14.152Z"
+                transform="translate(-2 -2)"
+                fill="#128b17"
+              />
             </svg>
           </div>
-           {window.i18n('addingContacts')}
+          {window.i18n('addingContacts')}
         </div>
       )}
 
@@ -311,35 +331,49 @@ export const BchatRightPanelWithDetails = () => {
             await showUpdateGroupMembersByConvoId(id);
           }}
         >
-          <div className="invite-friends-container" style={{ marginRight: "10px" }}>
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="26.154" height="15.455" viewBox="0 0 26.154 15.455">
-              <path id="group_members" d="M12.133,15a4.722,4.722,0,0,0-3.564,1.514,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817A7.1,7.1,0,0,0,5,30.455H7.378a4.755,4.755,0,1,1,9.511,0h2.378a4.755,4.755,0,1,1,9.511,0h2.378a7.1,7.1,0,0,0-4.7-6.641A4.434,4.434,0,0,0,27.585,23a5.006,5.006,0,0,0,0-6.483,4.953,4.953,0,0,0-7.128,0,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817,7.04,7.04,0,0,0-3.515,2.942,7.04,7.04,0,0,0-3.515-2.942A4.434,4.434,0,0,0,15.7,23a5.006,5.006,0,0,0,0-6.483A4.722,4.722,0,0,0,12.133,15Zm0,2.378a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,12.133,17.378Zm11.888,0a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,24.021,17.378Z" transform="translate(-5 -15)" fill="#128b17" />
+          <div className="invite-friends-container" style={{ marginRight: '10px' }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26.154"
+              height="15.455"
+              viewBox="0 0 26.154 15.455"
+            >
+              <path
+                id="group_members"
+                d="M12.133,15a4.722,4.722,0,0,0-3.564,1.514,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817A7.1,7.1,0,0,0,5,30.455H7.378a4.755,4.755,0,1,1,9.511,0h2.378a4.755,4.755,0,1,1,9.511,0h2.378a7.1,7.1,0,0,0-4.7-6.641A4.434,4.434,0,0,0,27.585,23a5.006,5.006,0,0,0,0-6.483,4.953,4.953,0,0,0-7.128,0,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817,7.04,7.04,0,0,0-3.515,2.942,7.04,7.04,0,0,0-3.515-2.942A4.434,4.434,0,0,0,15.7,23a5.006,5.006,0,0,0,0-6.483A4.722,4.722,0,0,0,12.133,15Zm0,2.378a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,12.133,17.378Zm11.888,0a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,24.021,17.378Z"
+                transform="translate(-5 -15)"
+                fill="#128b17"
+              />
             </svg>
-            
           </div>
           {window.i18n('groupMembers')}
         </div>
       )}
 
       {hasDisappearingMessages && (
-        <div style={{borderBottom:"2px solid #262631",width:'100%'}}>
-        <BchatDropdown
-          label={window.i18n('disappearingMessages')}
-          options={disappearingMessagesOptions}
-        />
+        <div style={{ borderBottom: '2px solid #262631', width: '100%' }}>
+          <BchatDropdown
+            label={window.i18n('disappearingMessages')}
+            options={disappearingMessagesOptions}
+          />
         </div>
       )}
 
       <MediaGallery documents={documents} media={media} />
       {isGroup && (
         // tslint:disable-next-line: use-simple-attributes
-        <div style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
-          <div className='group-settings__leaveBtn'  >
-              <BchatIcon iconType={isPublic?"delete":'leaveGroup'} iconSize="tiny" iconColor='#fc222f' iconRotation={isPublic?0:180}/>
-            <div  style={{marginLeft:'5px'}}>
-           { leaveGroupString}
-              </div>
+        <div
+          style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}
+          onClick={deleteConvoAction}
+        >
+          <div className="group-settings__leaveBtn">
+            <BchatIcon
+              iconType={isPublic ? 'delete' : 'leaveGroup'}
+              iconSize="tiny"
+              iconColor="#fc222f"
+              iconRotation={isPublic ? 0 : 180}
+            />
+            <div style={{ marginLeft: '5px' }}>{leaveGroupString}</div>
           </div>
         </div>
       )}

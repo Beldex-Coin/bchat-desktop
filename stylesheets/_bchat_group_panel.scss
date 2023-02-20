@@ -212,6 +212,10 @@
     color: red;
     font-family:$bchat-font-poppin-medium;
     cursor: pointer;
+
+    &:hover{
+      opacity: 0.8;
+    }
   }
 }
 

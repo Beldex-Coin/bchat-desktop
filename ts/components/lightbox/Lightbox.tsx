@@ -10,7 +10,6 @@ import { useDisableDrag } from '../../hooks/useDisableDrag';
 import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { showLightBox } from '../../state/ducks/conversations';
 import { GoogleChrome } from '../../util';
-import { Flex } from '../basic/Flex';
 import { BchatIconButton, BchatIconType } from '../icon';
 import * as MIME from '../../types/MIME';
 import { isUndefined } from 'lodash';
@@ -101,17 +100,23 @@ const styles = {
     marginRight: CONTROLS_SPACING,
     flexShrink: 0,
   },
+  headers: {
+    display: 'flex',
+    justifyContent: 'end',
+    marginBottom: '15px',
+  } as React.CSSProperties,
   controls: {
-    width: CONTROLS_WIDTH,
+    width: '80px',
     flexShrink: 0,
     display: 'flex',
-    flexDirection: 'column',
-    marginLeft: CONTROLS_SPACING,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginRight: '50px',
   } as React.CSSProperties,
   navigationContainer: {
     flexShrink: 0,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     padding: 10,
   } as React.CSSProperties,
@@ -140,21 +145,29 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
     onClick();
   };
   let iconRotation = 0;
-  let iconType: BchatIconType = 'chevron';
+  let iconType: BchatIconType;
+  let iconColor = 'white';
+  let iconSize: any = 'huge';
   switch (type) {
     case 'next':
-      iconRotation = 270;
+      iconType = 'forwardArrow';
+      iconSize = 45;
       break;
     case 'previous':
-      iconRotation = 90;
+      iconType = 'backArrow';
+      iconRotation = 180;
+      iconColor = '#4e4e71';
+      iconSize = 45;
       break;
     case 'close':
       iconType = 'exit';
+      iconSize = 18;
+      iconColor = '#BABABA';
       break;
     case 'save':
       iconType = 'upload';
-      iconRotation = 180;
-
+      iconSize = 23;
+      iconColor = '#00b200';
       break;
     default:
       throw new TypeError(`Invalid button type: ${type}`);
@@ -163,10 +176,10 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
   return (
     <BchatIconButton
       iconType={iconType}
-      iconSize={'huge'}
+      iconSize={iconSize}
       iconRotation={iconRotation}
       // the lightbox has a dark background
-      iconColor="white"
+      iconColor={iconColor}
       onClick={clickHandler}
     />
   );
@@ -285,6 +298,19 @@ export const Lightbox = (props: Props) => {
       <div style={styles.mainContainer as any}>
         <div style={styles.controlsOffsetPlaceholder} />
         <div style={styles.objectParentContainer} role="button">
+          <div style={styles.headers as any}>
+            <div style={styles.controls as any}>
+              {onSave ? (
+                <IconButton type="save" onClick={onSave} style={styles.saveButton} />
+              ) : null}
+              <IconButton
+                type="close"
+                onClick={() => {
+                  dispatch(showLightBox(undefined));
+                }}
+              />
+            </div>
+          </div>
           <div style={styles.objectContainer as any}>
             {!isUndefined(contentType) ? (
               <LightboxObject
@@ -297,26 +323,16 @@ export const Lightbox = (props: Props) => {
             {caption ? <div style={styles.caption as any}>{caption}</div> : null}
           </div>
         </div>
-        <div style={styles.controls as any}>
-          <Flex flex="1 1 auto">
-            <IconButton
-              type="close"
-              onClick={() => {
-                dispatch(showLightBox(undefined));
-              }}
-            />
-          </Flex>
-
-          {onSave ? <IconButton type="save" onClick={onSave} style={styles.saveButton} /> : null}
+        <div style={styles.navigationContainer as any}>
+          {onPrevious ? (
+            <IconButton type="previous" onClick={onPrevious} />
+          ) : (
+            <IconButtonPlaceholder />
+          )}
+          <div style={{ marginTop: '15px' }}>
+            {onNext ? <IconButton type="next" onClick={onNext} /> : <IconButtonPlaceholder />}
+          </div>
         </div>
-      </div>
-      <div style={styles.navigationContainer as any}>
-        {onPrevious ? (
-          <IconButton type="previous" onClick={onPrevious} />
-        ) : (
-          <IconButtonPlaceholder />
-        )}
-        {onNext ? <IconButton type="next" onClick={onNext} /> : <IconButtonPlaceholder />}
       </div>
     </div>
   );

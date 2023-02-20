@@ -41,7 +41,6 @@ export const MessageItem = (props: { isMessageRequest: boolean }) => {
   if (isEmpty(text)) {
     return null;
   }
-  console.log("isTyping:",isTyping)
   return (
     <div className="module-conversation-list-item__message">
       <div
