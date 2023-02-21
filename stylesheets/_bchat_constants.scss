@@ -2,15 +2,13 @@
 // /////////////////// Fonts ////////////////////
 // //////////////////////////////////////////////
 
-
-
 $bchat-font-default: 'poppin-medium';
 $bchat-font-poppins-bold: 'Poppins';
 $bchat-font-mono: 'SpaceMono';
-$bchat-font-poppin-semibold:"poppin-semibold";
-$bchat-font-poppin-light:"poppin-light";
-$bchat-font-poppin-medium:"poppin-medium";
-$bchat-font-poppin-regular:"poppin-regular";
+$bchat-font-poppin-semibold: 'poppin-semibold';
+$bchat-font-poppin-light: 'poppin-light';
+$bchat-font-poppin-medium: 'poppin-medium';
+$bchat-font-poppin-regular: 'poppin-regular';
 
 @font-face {
   font-family: $bchat-font-mono;
@@ -76,14 +74,14 @@ $bchat-font-poppin-regular:"poppin-regular";
 // //////////////////////////////////////////////
 
 // Brand
-$bchat-color-green: #00B504;
+$bchat-color-green: #00b504;
 
 // Shades
 $bchat-shade-1: #0c0c0c;
 $bchat-shade-1-alt: #0f1011;
 $bchat-shade-2: #161616;
 $bchat-shade-3: #191818;
-$bchat-shade-4: #2D2D3B;
+$bchat-shade-4: #2d2d3b;
 $bchat-shade-5: #222325;
 $bchat-shade-6: #232323;
 $bchat-shade-6-alt: #2c2c2c;
@@ -109,20 +107,19 @@ $bchat-color-white: #fff;
 $bchat-color-light-grey: #a0a0a0;
 $bchat-color-dark-grey: #353535;
 $bchat-color-black: #000;
-$bchat-password-color-black: #16161D;
+$bchat-password-color-black: #16161d;
 
 // Semantic Colors
 $bchat-color-info: $bchat-shade-10;
-$bchat-color-success: #159B24;
+$bchat-color-success: #159b24;
 $bchat-color-error: #edd422;
 $bchat-color-warning: $bchat-shade-17;
 $bchat-color-warning-alt: #ff9d00;
 $bchat-color-danger: #ff453a;
 $bchat-color-danger-alt: #ff4538;
 // $bchat-color-primary: $bchat-shade-13;
-$bchat-color-primary:"#fff";
+$bchat-color-primary: '#fff';
 $bchat-color-secondary: $bchat-shade-6;
-
 
 // Opacity and Shadow
 $bchat-shadow-opacity: 0.15;
@@ -146,7 +143,10 @@ $bchat-font-h4: 16px;
 
 // Button
 
-$bchat-button-color: #00A803;
+$bchat-button-color: #00a803;
+$bchat-button-hovor-color: #00a705;
+$bchat-button-gray-color: #403e4b;
+$bchat-button-gray-hover-color: #52505f;
 
 // Mixins
 @mixin fontAccentBold {
@@ -232,15 +232,21 @@ $bchat-transition-duration: 0.25s;
 
 $composition-container-height: 60px;
 
- //////////////////////////////////////////////
+//////////////////////////////////////////////
 // ///////////////// placeholder ////////////////////
 // //////////////////////////////////////////////
 
-
 @mixin placeholder {
-  ::-webkit-input-placeholder {@content}
-  :-moz-placeholder           {@content}
-  ::-moz-placeholder          {@content}
-  :-ms-input-placeholder      {@content}  
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
 }
-

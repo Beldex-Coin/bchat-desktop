@@ -215,12 +215,12 @@
     align-items: center;
     // opacity: 0.7;
 
-    &:hover {
-      opacity: 1;
-      filter: brightness(0.9);
+    // &:hover {
+    //   opacity: 1;
+    //   filter: brightness(0.9);
       
-      transition: $bchat-transition-duration;
-    }
+    //   transition: $bchat-transition-duration;
+    // }
     
 
     .send {
@@ -244,7 +244,7 @@
     }
 
     &:hover {
-      opacity: 0.7;
+      background-color: #20A1FF;
     }
 
   }
@@ -402,7 +402,7 @@
 }
 
 .send-message-button {
-  background-color: #159B24;
+  background-color: #128B17;
     border-radius: 10px;
     /* padding: 8px; */
     cursor: pointer;
@@ -443,7 +443,7 @@
   }
 
   &:hover {
-    opacity: 0.7;
+    background-color: #00A705;
   }
 
 }

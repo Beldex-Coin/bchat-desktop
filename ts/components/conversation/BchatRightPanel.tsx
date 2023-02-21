@@ -120,8 +120,8 @@ const HeaderItem = () => {
       <div onClick={() => dispatch(closeRightPanel())} className="group-settings-header-closeBox">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="17.833"
-          height="17.822"
+          width="13.833"
+          height="13.822"
           viewBox="0 0 17.833 17.822"
         >
           <path
