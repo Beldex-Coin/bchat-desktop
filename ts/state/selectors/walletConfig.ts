@@ -26,9 +26,13 @@ export const getWalletSendAddress = createSelector(
 
   // wallet with chat
   
-  export const getWalletSyncInitiatedWithChat = createSelector(
+  // export const getWalletSyncInitiatedWithChat = createSelector(
+  //   getWalletConfig,
+  //   (state: WalletConfigState):boolean => state.WalletSyncInitiatedWithChat
+  // );
+  export const getWalletSyncBarShowInChat = createSelector(
     getWalletConfig,
-    (state: WalletConfigState):boolean => state.WalletSyncInitiatedWithChat
+    (state: WalletConfigState):boolean => state.walletSyncBarShowInChat
   );
   // export const getwalletFiatCurrency = createSelector(
   //   getWalletConfig,

@@ -16,7 +16,7 @@ export const SyncStatusBar = (props:{from?:string}) => {
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
   
-  if (currentDaemon.type === 'Local') {
+  if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
   } else {
@@ -61,7 +61,7 @@ export const SyncStatusBar = (props:{from?:string}) => {
           </Flex>
           <Flex container={true}>
             <div style={{ marginRight: '10px' }} className="syncStatus-statusvalue">
-              {window.getSettingValue('current-deamon').type} : {daemonHeight}
+              {window.getSettingValue('current-deamon')?.type} : {daemonHeight}
             </div>
             <div className="syncStatus-statusvalue">
               Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
