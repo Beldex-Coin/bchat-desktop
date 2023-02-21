@@ -54,6 +54,8 @@ class Daemon {
       this.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           dispatch(updateDaemon({ height: data.result.height }));
+          console.log('updateDaemonupdateDaemon::',data.result.height);
+          
         }
       });
     }, 3000);

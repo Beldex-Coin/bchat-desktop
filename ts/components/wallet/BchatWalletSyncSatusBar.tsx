@@ -5,23 +5,33 @@ import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
 import { updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { walletSettingsKey } from '../../data/settings-key';
+import _ from 'lodash';
 // import classNames from 'classnames';
 
 
-export const SyncStatusBar = (props:{from?:string}) => {
+
+
+const SyncStatusBar = (props: { from?: string }) => {
   const dispatch = useDispatch();
-  const {from=""}=props
+  const { from = "" } = props
   let currentHeight: any;
   let daemonHeight: any;
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  
+  const walletDetails = useSelector((state: any) => state.wallet);
+  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+  decimalValue = decimalValue.charAt(0);
+
   if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
+    console.log('currentDaemon?.type ::', currentDaemon?.type, currentHeight, daemonHeight)
+
   } else {
     currentHeight = Number(useSelector(getHeight));
     daemonHeight = useSelector((state: any) => state.daemon.height);
+    console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, daemonHeight)
+
   }
 
   let pct: any =
@@ -40,14 +50,14 @@ export const SyncStatusBar = (props:{from?:string}) => {
   return (
     <div className="syncStatus">
       <div  >
-      { from!=="chat" && <Indicator
+        {from !== "chat" && <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
         />
         }
-        <Flex container={true} justifyContent="space-between" padding={from==="chat"?"5px 18px":"5px 0"}>
+        <Flex container={true} justifyContent="space-between" padding={from === "chat" ? "5px 18px" : "5px 0"}>
           <Flex container={true}>
             <div className="syncStatus-statusTxt">
               Status :{' '}
@@ -66,9 +76,19 @@ export const SyncStatusBar = (props:{from?:string}) => {
             <div className="syncStatus-statusvalue">
               Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
             </div>
+            {from == "chat" && <>
+              <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
+                Balance : {(walletDetails.balance / 1e9).toFixed(decimalValue)}
+
+              </div>
+              <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
+                Unlocked Balance : {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}
+              </div>
+            </>
+            }
           </Flex>
         </Flex>
-        { from=="chat" && <Indicator
+        {from == "chat" && <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
@@ -85,3 +105,5 @@ const Indicator = styled.div`
   height: 2px;
   background-color: #fdb12a;
 `;
+
+export const MemoSyncStatusBar = React.memo(SyncStatusBar);

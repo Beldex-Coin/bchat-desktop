@@ -85,3 +85,26 @@ export const SendFundButton = (props: { onClick: () => void }) => {
     </div> 
   );
 };
+export const SendFundDisableButton = (props: { onClick: () => void }) => {
+  return (
+    <div 
+      onClick={props.onClick}>
+
+      {/* <BchatIconButton
+        iconType="beldexCoinLogo"
+        iconColor='#159B24'
+        iconSize={32}
+        iconRotation={361}
+        borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
+        onClick={props.onClick}
+        backgroundColor='black'
+        dataTestId="send-message-button"
+      /> */}
+      <div style={{cursor:'pointer'}}>
+      <img src="images/wallet/beldex_coinDisable.svg" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
+
+      </div>
+    </div> 
+  );
+};

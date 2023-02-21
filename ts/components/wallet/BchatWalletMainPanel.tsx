@@ -12,7 +12,7 @@ import { ReceivedForm } from './BchatWalletReceivedForm';
 import { WalletSettings } from './BchatWalletSettings';
 import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
-import { SyncStatusBar } from './BchatWalletSyncSatusBar';
+import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
@@ -155,7 +155,7 @@ export const Dashboard = (props: any) => {
         )}
       </div>
       <div  className='wallet-syncStatusBox'>
-      <SyncStatusBar />
+      <MemoSyncStatusBar />
       </div>
 
     </>

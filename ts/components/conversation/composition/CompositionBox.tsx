@@ -20,6 +20,7 @@ import { getDraftForConversation, updateDraftForConversation } from '../BchatCon
 import {
   AddStagedAttachmentButton,
   SendFundButton,
+  SendFundDisableButton,
   SendMessageButton,
   StartRecordingButton,
 } from './CompositionButtons';
@@ -55,10 +56,13 @@ import {
 } from './UserMentions';
 import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
-import { SettingsKey } from '../../../data/settings-key';
-import { updateBchatAlertConfirmModal, updateSendConfirmModal, updateTransactionInitModal } from '../../../state/ducks/modalDialog';
+import { SettingsKey, walletSettingsKey } from '../../../data/settings-key';
+import { updateBchatAlertConfirmModal, updateBchatWalletPasswordModal, updateSendConfirmModal, updateTransactionInitModal } from '../../../state/ducks/modalDialog';
 import { showLeftPaneSection } from '../../../state/ducks/section';
 import { BchatButtonColor } from '../../basic/BchatButton';
+import { getWalletSyncBarShowInChat } from '../../../state/selectors/walletConfig';
+import { wallet } from '../../../wallet/wallet-rpc';
+import { saveRecipientAddress } from '../../../data/data';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -103,9 +107,12 @@ interface Props {
   selectedConversationKey?: string;
   selectedConversation: ReduxConversationType | undefined;
   typingEnabled: boolean;
+  WalletSyncBarShowInChat:boolean;
   quotedMessageProps?: ReplyingToMessageProps;
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
+   walletDetails:any;
+
 }
 
 interface State {
@@ -256,6 +263,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // <img src={"images/bchat/walletinchat.svg"}  width={"200px"} height={"200px"} />
     // <h3>{window.i18n('payYouChat')}</h3>
     // </>
+    const {WalletSyncBarShowInChat}=this.props
+     console.log("this.props WalletSyncBarShowInChat::",WalletSyncBarShowInChat)
+     if(!WalletSyncBarShowInChat)
+     {
+      window.inboxStore?.dispatch( updateBchatWalletPasswordModal({}))
+      return 
+     }
     window.inboxStore?.dispatch
 
      (updateBchatAlertConfirmModal({
@@ -275,7 +289,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     )
   }
  
-   sendConfirmModal() {
+   sendConfirmModal() {  
     const messagePlaintext = cleanMentions(this.state.draft);
 
     window.inboxStore?.dispatch(
@@ -286,8 +300,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
          fee:  0.0042,
         Priority: 'Flash',
         onClickOk: async () => {
-          // await send();
-          window.inboxStore?.dispatch(updateTransactionInitModal({}));
+           await this.sendFund(); 
+          // window.inboxStore?.dispatch(updateTransactionInitModal({}));
 
         },
         onClickClose: () => {
@@ -296,6 +310,47 @@ class CompositionBoxInner extends React.Component<Props, State> {
       })
     );
   }
+    sendFund=async()=> {
+    const draft:any  = this.state.draft;
+    
+    let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+     const isSweepAll =draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
+    window.inboxStore?.dispatch(updateSendConfirmModal(null));
+    window.inboxStore?.dispatch(updateTransactionInitModal({}));
+    console.log("wallet.transfer draft::",draft * 1e9);
+
+    let data: any = await wallet.transfer(
+      this.props.selectedConversation?.walletAddress,
+      draft * 1e9,
+      0 ,
+      isSweepAll
+    );
+    if (data.result) {
+      const TransactionHistory = {
+        tx_hash: data.result.tx_hash_list[0],
+        address: this.props.selectedConversation?.walletAddress,
+      };
+      let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
+      if (getSettingvalue) {
+        await saveRecipientAddress(TransactionHistory);
+      }
+       let sendViaMsg=`Amount:${draft},Txn_Id:${TransactionHistory.tx_hash}`
+       this.setState({draft:sendViaMsg})
+
+      window.inboxStore?.dispatch(updateSendConfirmModal(null));
+      window.inboxStore?.dispatch(updateTransactionInitModal(null));
+      ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
+      this.onSendMessage()
+      // dispatch(walletTransactionPage());
+    } else {
+      // clearStateValue();
+      window.inboxStore?.dispatch(updateSendConfirmModal(null));
+      window.inboxStore?.dispatch(updateTransactionInitModal(null));
+
+      return data.result.tx_hash;
+    }
+  }
+
   public componentDidUpdate(prevProps: Props, _prevState: State) {
     // reset the state on new conversation key
     if (prevProps.selectedConversationKey !== this.props.selectedConversationKey) {
@@ -408,7 +463,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
     const {selectedConversation}=this.props
-    // console.log("this.props this.props::",this.props)
+    // const {WalletSyncBarShowInChat}=this.props
+    const { draft } = this.state;
+    const re = /^\d+\.?\d*$/;
+       
+
+    //  console.log("this.props WalletSyncBarShowInChat::",WalletSyncBarShowInChat)
 
     return (
       <>
@@ -438,8 +498,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
           {}
             {this.renderTextArea()}
 
-           { selectedConversation?.type==="private" &&  <SendFundButton 
-           onClick={()=>!this.chatwithWallet ? this.chatWithWalletInstruction():this.sendConfirmModal()}/> }
+           { selectedConversation?.type==="private" && re.test(draft) && this.chatwithWallet ? <SendFundButton 
+           onClick={()=>this.sendConfirmModal()}/>:
+           <SendFundDisableButton onClick={()=> this.chatWithWalletInstruction()} /> }
            {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
       
         </div>
@@ -1088,6 +1149,8 @@ const mapStateToProps = (state: StateType) => {
     selectedConversation: getSelectedConversation(state),
     selectedConversationKey: getSelectedConversationKey(state),
     typingEnabled: getIsTypingEnabled(state),
+    WalletSyncBarShowInChat:getWalletSyncBarShowInChat(state),
+    walletDetails: state.wallet
   };
 };
 
