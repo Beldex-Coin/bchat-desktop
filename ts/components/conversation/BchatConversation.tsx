@@ -56,8 +56,9 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 import { BchatRightPanelWithDetails } from './BchatRightPanel';
-import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
+// import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
 import { SettingsKey } from '../../data/settings-key';
+import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
 // import { useSelector } from 'react-redux';
 // tslint:disable: jsx-curly-spacing
@@ -247,9 +248,9 @@ export class BchatConversation extends React.Component<Props, State> {
           tabIndex={0}
           onKeyDown={this.onKeyDown}
           role="navigation"
-        >
+        > 
           <div>
-           {chatWithWallet && selectedConversation.isPrivate && <SyncStatusBar from={"chat"} />} 
+           {chatWithWallet && selectedConversation.isPrivate && <ConditionalSyncBar />} 
           </div>
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />

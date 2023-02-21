@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { ToastUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
-import { updateWalletSyncInitiatedWithChat } from '../../state/ducks/walletConfig';
+import { updatewalletSyncBarShowInChat } from '../../state/ducks/walletConfig';
 
 
 export const BchatWalletPasswordModal = () => {
@@ -26,7 +26,8 @@ export const BchatWalletPasswordModal = () => {
             return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
           }
           let data:any=true;
-          dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+        //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+          dispatch(updatewalletSyncBarShowInChat(data))
       onClickClose()
     }
     useKey((event: KeyboardEvent) => {

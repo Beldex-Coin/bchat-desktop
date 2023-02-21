@@ -29,7 +29,7 @@ import { UserUtils } from '../../../bchat/utils';
 import styled from 'styled-components';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
 import { SettingsKey } from '../../../data/settings-key';
-import { getWalletSyncInitiatedWithChat } from '../../../state/selectors/walletConfig';
+import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
 // tslint:disable-next-line: no-empty-interface
@@ -99,7 +99,9 @@ const ConversationListItem = (props: Props) => {
   } = props;
   const dispatch = useDispatch();
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
+  // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
+ const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
+
   // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
     // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
 
@@ -210,9 +212,9 @@ const ConversationListItem = (props: Props) => {
   }
   
   const walletPassWordValidation = () => {
-    console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
+    // console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
     
-    if (chatwithWallet && !WalletSyncInitiatedWithChat) {
+    if (chatwithWallet && !walletSyncBarShowInChat) {
 
       dispatch(updateBchatWalletPasswordModal({}))
     }

@@ -11,7 +11,8 @@ export interface WalletConfigState {
   walletHeight: number | any;
   walletDecimalValue:any;
   walletRescaning:boolean|any;
-  WalletSyncInitiatedWithChat:boolean | any
+  WalletSyncInitiatedWithChat:boolean | any;
+  walletSyncBarShowInChat:Boolean|any;
 }
 
 const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || true;
@@ -23,6 +24,7 @@ export const initialWalletConfigState: WalletConfigState = {
    walletDecimalValue:'2 - Two (0.00)', 
    walletRescaning:false,
    WalletSyncInitiatedWithChat:chatwithWallet,
+   walletSyncBarShowInChat:false
 
 };
 
@@ -50,9 +52,11 @@ export const initialWalletConfigState: WalletConfigState = {
       },
 
       // Wallet With chat
-      updateWalletSyncInitiatedWithChat(state, action: PayloadAction<WalletConfigState>) {
-
-        return { ...state, WalletSyncInitiatedWithChat: action.payload };
+      // updateWalletSyncInitiatedWithChat(state, action: PayloadAction<WalletConfigState>) {
+      //   return { ...state, WalletSyncInitiatedWithChat: action.payload };
+      // },
+      updatewalletSyncBarShowInChat(state, action: PayloadAction<WalletConfigState>) {
+        return { ...state, walletSyncBarShowInChat: action.payload };
       },
    },
  });
@@ -64,7 +68,8 @@ export const initialWalletConfigState: WalletConfigState = {
     updateDecimalValue,
     updateWalletHeight,
     updateWalletRescaning,
-    updateWalletSyncInitiatedWithChat
+    // updateWalletSyncInitiatedWithChat,
+    updatewalletSyncBarShowInChat
  } = actions;
  export const walletConfigReducer = reducer;
  
