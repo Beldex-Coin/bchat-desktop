@@ -22,8 +22,7 @@
 
   &-content {
     .bchat-button.brand-outline.brand.green:hover {
-      // background-color: var(--color-accent);
-      background-color: $bchat-button-color;
+      background-color: $bchat-button-hovor-color;
     }
 
     &-left {
@@ -228,8 +227,9 @@
         justify-content: center;
       }
       .iconBox:hover{
-        transform: scale(1.1);
-        color: #1ced23;
+        // transform: scale(1.1);
+        // color: #1ced23;
+        background-color: #008D00;
       }
     }
 

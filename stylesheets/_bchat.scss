@@ -78,7 +78,7 @@ textarea {
 
 .bchat-button {
   @mixin transparent-background($textAndBorderColor) {
-    background-color: #403e4b;
+    background-color: $bchat-button-gray-color;
     background-repeat: no-repeat;
     overflow: hidden;
     outline: none;
@@ -107,10 +107,9 @@ textarea {
   &.brand {
     color: var(--color-foreground-primary);
 
-    &:not(.disabled):hover {
-      // background: var(--color-clickable-hovered);
-      opacity: 0.8;
-    }
+    // &:not(.disabled):hover {
+    //   // opacity: 0.8;
+    // }
 
     &.green,
     &.white,
@@ -133,11 +132,18 @@ textarea {
 
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
+      &:hover {
+        background-color: $bchat-button-hovor-color;
+        color: white;
+      }
     }
 
     &.white {
       color: var(--color-text);
       background-color: var(--color-cancelBtn-bg);
+      &:hover {
+        background-color: #4f4f65;
+      }
     }
 
     &.primary {
@@ -165,6 +171,9 @@ textarea {
       // background-color: $bchat-color-danger;
       background-color: #e22b2b;
       color: #ffffff;
+      &:hover {
+        background-color: #ff2727;
+      }
     }
 
     &.danger-alt {
@@ -193,6 +202,9 @@ textarea {
       @include transparent-background(var(--color-text));
       // background-color:var(--color-body-bg);
       box-shadow: 0px 0px 6px 0px #19192424;
+      &:hover {
+        background-color: $bchat-button-gray-hover-color;
+      }
     }
 
     &.primary {
@@ -303,11 +315,13 @@ textarea {
   display: inline-block;
   position: relative;
   transform: translateZ(0);
-  //  color: white;
 
   &:hover {
     color: #159b24;
-    // padding: 5px;
+    // width: 30px;
+    // height: 30px;
+    // background-color: $bchat-button-gray-hover-color;
+    // border-radius: 20px;
   }
 
   transition: opacity $bchat-transition-duration;
@@ -1197,60 +1211,9 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: relative; */
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
-
-  // div {
-  //   position: absolute;
-  //   top: 33px;
-  //   width: 13px;
-  //   height: 13px;
-  //   border-radius: 50%;
-  //   background: $bchat-color-green;
-  //   animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  // }
-  // div:nth-child(1) {
-  //   left: 8px;
-  //   animation: bchat-loader1 0.6s infinite;
-  // }
-  // div:nth-child(2) {
-  //   left: 8px;
-  //   animation: bchat-loader2 0.6s infinite;
-  // }
-  // div:nth-child(3) {
-  //   left: 32px;
-  //   animation: bchat-loader2 0.6s infinite;
-  // }
-  // div:nth-child(4) {
-  //   left: 56px;
-  //   animation: bchat-loader3 0.6s infinite;
-  // }
-  // @keyframes bchat-loader1 {
-  //   0% {
-  //     transform: scale(0);
-  //   }
-  //   100% {
-  //     transform: scale(1);
-  //   }
-  // }
-  // @keyframes bchat-loader3 {
-  //   0% {
-  //     transform: scale(1);
-  //   }
-  //   100% {
-  //     transform: scale(0);
-  //   }
-  // }
-  // @keyframes bchat-loader2 {
-  //   0% {
-  //     transform: translate(0, 0);
-  //   }
-  //   100% {
-  //     transform: translate(24px, 0);
-  //   }
-  // }
 }
 
 .syncStatus {
@@ -1288,14 +1251,11 @@ label {
   &-list {
     overflow-y: auto;
     overflow-x: hidden;
-    // padding: 15px;
     padding: 15px 15px 0 15px;
     height: 100%;
 
     .noBlockedContacts {
       width: 100%;
-      // height: 60px;
-      // background-color: var(--color-left-pane-overlay-background);
       text-align: center;
       margin: 0 auto;
       font-family: 'poppin-semibold';
@@ -1322,7 +1282,6 @@ label {
     justify-content: center;
     align-items: center;
     height: $main-view-header-height;
-    // background: var(--color-cell-background);
     background-color: var(--color-chatHeader);
 
     &-title {
@@ -1351,7 +1310,6 @@ label {
     border-radius: 10px;
     background: var(--color-settingIndication);
     color: var(--color-text);
-    // box-shadow: var(--color-bchat-shadow);
 
     &.inline {
       display: flex;
@@ -1371,7 +1329,6 @@ label {
     &__title {
       line-height: 1.7;
       font-size: $bchat-font-lg;
-      // font-weight: bold;
       font-family: $bchat-font-poppin-semibold;
     }
 
@@ -1405,7 +1362,6 @@ label {
       height: 30px;
       border-radius: 4px;
       background-color: var(--color-inboxBgColor);
-      /* padding: 6px; */
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -1528,7 +1484,6 @@ label {
           font-size: 14px;
           font-family: 'Poppins';
           border-radius: 13px;
-          // background-image: var(--button-color);
           background-color: var(--button-color);
         }
       }
@@ -1613,7 +1568,6 @@ label {
     background-color: #0000001f;
     &-contentbox {
       text-align: center;
-      // width: 48%;
       width: 60%;
       background-color: var(--color-WalcontentBg);
       padding: 21px 30px;
@@ -1653,7 +1607,6 @@ label {
       display: flex;
       width: 100%;
       justify-content: space-between;
-      // margin-bottom: 10px;
       &-left-side,
       &-right-side {
         display: flex;
@@ -1661,20 +1614,14 @@ label {
       }
     }
     &-button {
-      // background-color: #444455;
       background-color: var(--color-WalcontentBg);
       border-radius: 50px;
-      // padding: 3px 14px;
       padding: 10px 14px;
       cursor: pointer;
     }
     &-squarBox-bala,
     &-squarBox-tran {
-      // display: flex;
-      // background-color: #303041;
       background-color: var(--color-WalcontentBg);
-
-      // width: 49.4%;
       border-radius: 10px;
       padding: 17px 30px 17px 30px;
     }
@@ -1690,33 +1637,24 @@ label {
       width: 35.4%;
     }
     &-contentSpace {
-      // height: calc(81vh - 30px);
-      // height: calc(100vh - 153px);
-      // overflow: hidden;
       height: calc(100vh - 170px);
       overflow: auto;
     }
     &-left-balance-Sec {
-      // width: 55%;
       font-family: $bchat-font-poppin-semibold;
       &-balanceTxt {
-        // font-size: 22px;
-        // font-size: 26px;
         font-size: 22px;
       }
       &-fiatCurrency {
-        // font-size: 12px;
         font-size: 14px;
         color: #8f8fa2;
       }
     }
     &-right-Button-Sec {
-      // width: 45%;
       &-fetch-btn {
         background-color: #2879fb;
         width: 100%;
         height: 45px;
-        /* text-align: center; */
         justify-content: center;
         display: flex;
         align-items: center;
@@ -1726,33 +1664,24 @@ label {
       }
       &-unlockbal-box {
         background-color: var(--color-walunlockbal);
-        // height: 45px;
         height: 60px;
         display: flex;
-        // justify-content: space-between;
         align-items: center;
         border-radius: 10px;
-        // margin-top: 20px;
         margin-top: 5px;
         padding: 0 20px;
 
         &--Text {
-          // color: #eaeaea;
           font-size: 11px;
-          // width: 50%;
-          // padding: 0 10px;
           margin-right: 10px;
-          // text-align: center;
         }
         &--verticalLine {
           border-left: 2px solid #afafc194;
           height: 27px;
         }
         .unBalance {
-          // color: #eaeaea;
           font-size: 16px;
           margin-left: 10px;
-          // width: 50%;
           text-align: center;
           font-family: 'poppin-semibold';
         }
@@ -1769,13 +1698,11 @@ label {
       display: flex;
       width: 100%;
       height: 87vh;
-      // background-color: aliceblue;
       flex-direction: column;
       justify-content: center;
 
       &-contentBox {
         width: 500px;
-        // background-color: #2d2d3b;
         background-color: var(--color-WalcontentBg);
         border-radius: 10px;
         &-walletImg {
@@ -1784,7 +1711,6 @@ label {
           background-repeat: no-repeat;
           background-size: 100%;
           margin: auto;
-          // background-image: url('../images/wallet/Password_image.svg');
           background-image: var(--img-walPassword);
         }
         &-headerBox {
@@ -3096,6 +3022,10 @@ input {
   &__checkmark {
     display: flex;
     align-items: center;
+
+    &:hover {
+      border: 1px solid #008e00;
+    }
   }
 
   &__name {

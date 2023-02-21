@@ -28,7 +28,7 @@ export const LeftPaneSectionContainer = styled.div`
   }
   .icon-box .btnView:hover
   {
-    background-color:white;
+    background-color:#006203;
     color:#159B24;
   }
 

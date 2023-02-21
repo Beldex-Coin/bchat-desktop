@@ -125,7 +125,7 @@ const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
 const darkbubbleReceivedBg = '#34323f75';
 
-const buttonColor = '#16A51C';
+const buttonColor = '#008C04';
 // const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 const darkAudioRecord = '#3F3C4B';
 
