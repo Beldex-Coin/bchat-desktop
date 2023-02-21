@@ -1,41 +1,74 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
-import { ToastUtils } from '../../bchat/utils';
+import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
 import { updatewalletSyncBarShowInChat } from '../../state/ducks/walletConfig';
+import { deamonvalidation } from '../../wallet/BchatWalletHelper';
+import { getConversationById } from '../../data/data';
+import { wallet } from '../../wallet/wallet-rpc';
+import { walletSettingsKey } from '../../data/settings-key';
 
 
 export const BchatWalletPasswordModal = () => {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
 
-    const [password,setPassword]=useState('')
+    const [password, setPassword] = useState('')
+    const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
+
     const onClickClose = () => {
-        dispatch( updateBchatWalletPasswordModal(null))
+        dispatch(updateBchatWalletPasswordModal(null))
 
     };
-    function submit()    
-    {
+  
+    
+    useEffect(() => {
+        deamonvalidation();
+
+    }, [])
+    async function submit() {
         if (!password) {
             return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
-          }
-          let data:any=true;
-        //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
-          dispatch(updatewalletSyncBarShowInChat(data))
-      onClickClose()
+        }
+        let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
+        let profileName = userDetails?.attributes.walletUserName;
+        if (!profileName) {
+            profileName = UserDetails?.userId?.profileName;
+        }
+        //   setLoading(true);
+        let openWallet: any = await wallet.openWallet(profileName, password);
+        if (openWallet.hasOwnProperty('error')) {
+            // setLoading(false);
+
+            ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
+        } else {
+            // let emptyAddress: any = '';
+            // dispatch(updateSendAddress(emptyAddress));
+            // setLoading(false);
+            // props.onClick();
+            // dispatch(dashboard());
+            let data: any = true;
+            //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+            dispatch(updatewalletSyncBarShowInChat(data))
+            onClickClose()
+            // heartbeat();
+            const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+            ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+        }
+
     }
     useKey((event: KeyboardEvent) => {
         if (event.key === 'Enter') {
-          submit();
+            submit();
         }
         return event.key === 'Enter';
-      });
+    });
     return (
         <BchatWrapperModal
             title={''}
@@ -43,10 +76,10 @@ export const BchatWalletPasswordModal = () => {
             showExitIcon={true}
             showHeader={true}
             headerReverse={true}
-        >        
-                <div className="bchat-modal-walletPassword">
-                    <div className="bchat-modal-walletPassword-contentBox">
-                        {/* {loading && (
+        >
+            <div className="bchat-modal-walletPassword">
+                <div className="bchat-modal-walletPassword-contentBox">
+                    {/* {loading && (
           <Loader>
             <div className="bchat-modal-walletPassword-contentBox-loader">
               <img
@@ -56,37 +89,37 @@ export const BchatWalletPasswordModal = () => {
             </div>
           </Loader>
         )} */}
-                        {/* <SpacerLG /> */}
-                        {/* <SpacerLG /> */}
-                        <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-headerBox">
-                            <BchatIcon iconType="lock" iconSize={'small'} />
-                            <span>{window.i18n('enterWalletPassword')}</span>
-                        </div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-inputBox">
-                            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                        </div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
-                            {/* <span style={{ cursor: 'pointer' }}>
+                    {/* <SpacerLG /> */}
+                    {/* <SpacerLG /> */}
+                    <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
+                    <SpacerMD />
+                    <div className="bchat-modal-walletPassword-contentBox-headerBox">
+                        <BchatIcon iconType="lock" iconSize={'small'} />
+                        <span>{window.i18n('enterWalletPassword')}</span>
+                    </div>
+                    <SpacerMD />
+                    <div className="bchat-modal-walletPassword-contentBox-inputBox">
+                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+                    </div>
+                    <SpacerMD />
+                    <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
+                        {/* <span style={{ cursor: 'pointer' }}>
                                 {window.i18n('forgotPassword')}
                             </span> */}
-                        </div>
-                        <SpacerMD />
-                        <div>
-                            <BchatButton
-                                text={window.i18n('continue')}
-                                buttonType={BchatButtonType.BrandOutline}
-                                buttonColor={BchatButtonColor.Green}
-                                onClick={() => submit()}
-                            />
-                        </div>
-                        <SpacerLG />
                     </div>
+                    <SpacerMD />
+                    <div>
+                        <BchatButton
+                            text={window.i18n('continue')}
+                            buttonType={BchatButtonType.BrandOutline}
+                            buttonColor={BchatButtonColor.Green}
+                            onClick={() => submit()}
+                        />
+                    </div>
+                    <SpacerLG />
                 </div>
-            
+            </div>
+
         </BchatWrapperModal>
     );
 };
