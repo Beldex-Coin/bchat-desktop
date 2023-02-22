@@ -79,27 +79,29 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('node')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <Flex
-          container={true}
-          justifyContent="space-between"
-          padding="10px 0"
-          cursor="pointer"
-          onClick={() => dispatch(nodeSetting())}
-        >
-          <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
-          <div style={{ cursor: 'pointer' }}>
-            <span className="wallet-settings-tabBox-disableText">
-              {connectedDeamon.host}:{connectedDeamon.port}
-            </span>
-            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-          </div>
-        </Flex>
+        <div className="subBox">
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
+            onClick={() => dispatch(nodeSetting())}
+          >
+            <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
+            <div style={{ cursor: 'pointer' }}>
+              <span className="wallet-settings-tabBox-disableText">
+                {connectedDeamon.host}:{connectedDeamon.port}
+              </span>
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            </div>
+          </Flex>
+        </div>
       </div>
       <SpacerLG />
       <div className="wallet-settings-tabBox-subtle">{window.i18n('WalletSettingsTitle')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <div>
+        <div className="subBox">
           <Flex
             container={true}
             justifyContent="space-between"
@@ -128,59 +130,65 @@ export const WalletSettings = () => {
             </div>
           </Flex>
         </div>
-        <Flex
-          container={true}
-          justifyContent="space-between"
-          padding="10px 0"
-          cursor="pointer"
-          onClick={() =>
-            dispatch(
-              walletSettingMiniModal({
-                headerName: window.i18n('displayCurrency'),
-                content: currenyExt,
-                currency: fiatCurrency,
-                onClose: () => dispatch(walletSettingMiniModal(null)),
-                onClick: (e: any) => {
-                  window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
-                  wallet.getFiatBalance(e);
-                  setFiatCurrency(e);
-                  dispatch(walletSettingMiniModal(null));
-                },
-              })
-            )
-          }
-        >
-          <div className="wallet-settings-tabBox-subtle">{window.i18n('displayCurrency')}</div>
-          <div style={{ cursor: 'pointer' }}>
-            <span className="wallet-settings-tabBox-disableText">
-              {window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}
-            </span>
-            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-          </div>
-        </Flex>
-        <Flex
-          container={true}
-          justifyContent="space-between"
-          padding="10px 0"
-          cursor="pointer"
-          onClick={() => enbaleOrdisableSaveRecipient()}
-        >
-          <div className="wallet-settings-tabBox-subtle">{window.i18n('saveRecipientAddress')}</div>
-          <div>
-            {saveRecipient ? (
-              <BchatIcon
-                iconType="tickCircle"
-                iconColor="#FFF"
-                iconSize={16}
-                iconPadding={'3px'}
-                backgroundColor={'#159B24'}
-                borderRadius={'5px'}
-              />
-            ) : (
-              <article className="wallet-settings-tabBox-checkBox"></article>
-            )}
-          </div>
-        </Flex>
+        <div className="subBox">
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
+            onClick={() =>
+              dispatch(
+                walletSettingMiniModal({
+                  headerName: window.i18n('displayCurrency'),
+                  content: currenyExt,
+                  currency: fiatCurrency,
+                  onClose: () => dispatch(walletSettingMiniModal(null)),
+                  onClick: (e: any) => {
+                    window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);
+                    wallet.getFiatBalance(e);
+                    setFiatCurrency(e);
+                    dispatch(walletSettingMiniModal(null));
+                  },
+                })
+              )
+            }
+          >
+            <div className="wallet-settings-tabBox-subtle">{window.i18n('displayCurrency')}</div>
+            <div style={{ cursor: 'pointer' }}>
+              <span className="wallet-settings-tabBox-disableText">
+                {window.getSettingValue(walletSettingsKey.settingsFiatCurrency)}
+              </span>
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            </div>
+          </Flex>
+        </div>
+        <div className="subBox">
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
+            onClick={() => enbaleOrdisableSaveRecipient()}
+          >
+            <div className="wallet-settings-tabBox-subtle">
+              {window.i18n('saveRecipientAddress')}
+            </div>
+            <div>
+              {saveRecipient ? (
+                <BchatIcon
+                  iconType="tickCircle"
+                  iconColor="#FFF"
+                  iconSize={16}
+                  iconPadding={'3px'}
+                  backgroundColor={'#159B24'}
+                  borderRadius={'5px'}
+                />
+              ) : (
+                <article className="wallet-settings-tabBox-checkBox"></article>
+              )}
+            </div>
+          </Flex>
+        </div>
       </div>
 
       <SpacerLG />
@@ -188,18 +196,20 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('personal')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
-        <Flex
-          container={true}
-          justifyContent="space-between"
-          padding="10px 0"
-          cursor="pointer"
-          onClick={() => changepass()}
-        >
-          <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
-          <div style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}>
-            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-          </div>
-        </Flex>
+        <div className="subBox">
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
+            onClick={() => changepass()}
+          >
+            <div className="wallet-settings-tabBox-subtle">{window.i18n('changePassword')}</div>
+            <div style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}>
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            </div>
+          </Flex>
+        </div>
       </div>
     </div>
   );

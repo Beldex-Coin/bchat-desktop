@@ -297,7 +297,7 @@ $bchat-compose-margin: 20px;
       margin: 15px auto;
 
       &:hover {
-        opacity: 0.7;
+        background-color: $bchat-button-hovor-color;
       }
     }
 
@@ -584,11 +584,20 @@ $bchat-compose-margin: 20px;
   background: none;
 
   .bchat-button.square-outline.square.green,
-  .bchat-button.square-outline.square.white,
+  .bchat-button.square-outline.square.white {
+    flex-grow: 1;
+    height: $composition-container-height;
+    border: var(--border-bchat);
+  }
   .bchat-button.square-outline.square.danger {
     flex-grow: 1;
     height: $composition-container-height;
     border: var(--border-bchat);
+
+    &:hover {
+      background-color: #ff2424;
+      color: #fff;
+    }
   }
 }
 
@@ -726,7 +735,7 @@ $bchat-compose-margin: 20px;
     }
 
     &:hover {
-      background: var(--color-clickable-hovered);
+      background-color: var(--color-settings-leftpane-options-hover);
     }
 
     &__buttons {
