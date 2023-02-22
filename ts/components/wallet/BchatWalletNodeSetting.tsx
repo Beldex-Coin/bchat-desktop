@@ -202,7 +202,7 @@ export const NodeSetting = () => {
               style={
                 !localDeamonVisible
                   ? { border: '2px solid var(--color-walletNodeHeader)' }
-                  : { border: '2px solid' }
+                  : { border: '2px solid white' }
               }
             >
               {!localDeamonVisible && (

@@ -111,4 +111,8 @@ const Button = styled.button<ButtonProps>`
   border-radius: 10px;
   font-size: 16px;
   color: ${props => (props.isSelected ? '#fff' : '')};
+
+  &:hover {
+    background-color : ${props => (props.isSelected ? 'var(--button-color)' : 'var(--color-walletSelectOption)')};;
+  }
 `;

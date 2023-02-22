@@ -150,7 +150,10 @@ textarea {
       background-color: var(--color-background-primary);
       color: var(--color-text);
       border-radius: 10px;
-      // background-image: var(--button-color);
+
+      &:hover {
+        background-color: #4f4f65;
+      }
 
       .bchat-icon {
         fill: var(--color-foreground-primary);
@@ -800,8 +803,8 @@ label {
   }
 
   &-imgConfirmBox {
-    width: 315px;
-    margin: 20px;
+    width: 380px;
+    margin: 20px 20px 10px;
     &-header {
       font-family: $bchat-font-poppin-semibold;
       font-size: 16px;
@@ -1308,8 +1311,12 @@ label {
     padding: $bchat-margin-lg;
     margin-bottom: 4px;
     border-radius: 10px;
-    background: var(--color-settingIndication);
+    background-color: var(--color-settingIndication);
     color: var(--color-text);
+
+    &:hover {
+      background-color: var(--color-settings-options-hover);
+    }
 
     &.inline {
       display: flex;
@@ -1396,6 +1403,9 @@ label {
         align-items: center;
         justify-content: center;
         margin-right: 10px;
+        &:hover {
+          border: 1px groove #008e00;
+        }
       }
       .selected {
         border: 1px solid var(--color-accent);
@@ -1577,6 +1587,9 @@ label {
     .fontSemiBold {
       font-family: $bchat-font-poppin-semibold;
       font-size: 14px;
+      &:hover {
+        background-color: var(--color-walletPriorityHover);
+      }
     }
     .bchat-button.brand.green {
       width: 168px;
@@ -1619,6 +1632,10 @@ label {
       border-radius: 50px;
       padding: 10px 14px;
       cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-WalcontentBgHover);
+      }
     }
     &-squarBox-bala,
     &-squarBox-tran {
@@ -1852,8 +1869,9 @@ label {
         color: #fff;
       }
       &-copyIcon-box:hover {
-        transform: scale(1.1);
-        color: #1ced23;
+        // transform: scale(1.1);
+        // color: #1ced23;
+        background-color: #29b52f;
       }
     }
     &-sendForm {
@@ -2072,7 +2090,8 @@ label {
           box-shadow: var(--color-bchat-shadow);
         }
         &-paste-icon:hover {
-          transform: scale(1.1);
+          // transform: scale(1.1);
+          background-color: var(--color-wallet-copy-hover);
           // color: #1ced23;
         }
         &-password {
@@ -2147,10 +2166,17 @@ label {
           }
           &-sendBtn {
             color: #fff;
+
+            &:hover {
+              background-color: #0b9fff;
+            }
           }
           &-copyBtn {
             background-color: var(--color-walAddressBookCopy);
             margin-left: 10px;
+            &:hover {
+              background-color: var(--color-addressbook-copy-hover);
+            }
           }
         }
       }
@@ -2196,6 +2222,13 @@ label {
           width: 15px;
           height: 15px;
           border-radius: 3px;
+        }
+        .subBox {
+          padding: 0px 10px;
+          border-radius: 7px;
+          &:hover {
+            background-color: var(--color-settings-options-hover);
+          }
         }
       }
 
@@ -2260,6 +2293,9 @@ label {
             margin-bottom: 5px;
             display: flex;
             align-items: baseline;
+            &:hover{
+              background-color: var(--color-walletPriorityHover);
+            }
           }
         }
 
@@ -2369,6 +2405,9 @@ label {
               background-color: #2879fb;
               // margin-right: 30px;
               color: white;
+              &:hover{
+                background-color: #0B9FFF;
+              }
             }
             .bchat-button.default.disable {
               background-color: var(--color-disableBtn);
@@ -3019,7 +3058,15 @@ input {
     }
   }
 
-  &__info,
+  &__info {
+    display: flex;
+    align-items: center;
+
+    // &:hover{
+    //   background-color: #353543;
+    // }
+  }
+
   &__checkmark {
     display: flex;
     align-items: center;
