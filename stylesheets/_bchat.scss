@@ -31,8 +31,9 @@ $onionPathLineColor: #d1d1d1;
 
 input,
 textarea {
-  // caret-color: var(--color-text) !important;
+  // caret-color: var(--color-caret) !important;
   caret-color: var(--color-caret) !important;
+
 }
 
 * {
@@ -142,7 +143,7 @@ textarea {
       color: var(--color-text);
       background-color: var(--color-cancelBtn-bg);
       &:hover {
-        background-color: #4f4f65;
+        background-color: var(--color-leave-button);
       }
     }
 
@@ -152,7 +153,7 @@ textarea {
       border-radius: 10px;
 
       &:hover {
-        background-color: #4f4f65;
+        background-color: var(--color-leave-button);
       }
 
       .bchat-icon {
@@ -319,13 +320,13 @@ textarea {
   position: relative;
   transform: translateZ(0);
 
-  &:hover {
-    color: #159b24;
-    // width: 30px;
-    // height: 30px;
-    // background-color: $bchat-button-gray-hover-color;
-    // border-radius: 20px;
-  }
+  // &:hover {
+  // color: #159b24;
+  // width: 30px;
+  // height: 30px;
+  // background-color: $bchat-button-gray-hover-color;
+  // border-radius: 20px;
+  // }
 
   transition: opacity $bchat-transition-duration;
 
@@ -2293,10 +2294,14 @@ label {
             margin-bottom: 5px;
             display: flex;
             align-items: baseline;
-            &:hover{
+            padding: 10px 19px;
+            &:hover {
               background-color: var(--color-walletPriorityHover);
             }
           }
+        }
+        &-dropDownModal {
+          padding: 19px 0px;
         }
 
         &-sendDropDown {
@@ -2405,8 +2410,8 @@ label {
               background-color: #2879fb;
               // margin-right: 30px;
               color: white;
-              &:hover{
-                background-color: #0B9FFF;
+              &:hover {
+                background-color: #0b9fff;
               }
             }
             .bchat-button.default.disable {
@@ -3090,6 +3095,11 @@ input {
 
   &__avatar > div {
     margin-bottom: 0px !important;
+  }
+}
+.bchat-member-item {
+  &:hover {
+    background-color: var(--color-clickable-hovered);
   }
 }
 .bchat-blockedMember-item {

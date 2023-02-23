@@ -72,6 +72,8 @@ const darkWalletNodeHeader = '#20d024';
 const darkWalletSelectHover = '#545469';
 const darkWalletPriorityHover = '#303042';
 const darkWalletCopyHover = '#52505F';
+const darkAddMembers = '#313143';
+const darkProfileClose = '#242431';
 
 // for bchat
 const darkColorBg = black;
@@ -112,7 +114,8 @@ const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.sv
 const darkWalletSyncing = `url("../images/bchat/wallet_syncing_dark.svg")`;
 const darkChatIcons = 'white';
 const darkComposeMsgInput = '#3F3C4B';
-const darkDayNight = `url("../images/bchat/light_theme .svg")`;
+const darkDayNight = `url("../images/bchat/light_theme.svg")`;
+const darkNewChat = `url("../images/bchat/newChat_dark.svg")`;
 const darkMsgReqImg = `url("../images/bchat/no_message_request_dark_theme.svg")`;
 const darkBlockedContact = `url("../images/bchat/no_blocked_contacts_dark_theme.svg")`;
 const darkAddContact = `url("../images/bchat/add_contact.svg")`;
@@ -322,10 +325,13 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
   document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', darkCopyHover);
+  document.documentElement.style.setProperty('--color-add-member', darkAddMembers);
+  document.documentElement.style.setProperty('--color-profile-close', darkProfileClose);
   document.documentElement.style.setProperty('--color-addressbook-copy-hover', darkAddressBookCopy);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', darkWalletCopyHover);
 
   document.documentElement.style.setProperty('--image-DayNight', darkDayNight);
+  document.documentElement.style.setProperty('--image-addContact', darkNewChat);
   document.documentElement.style.setProperty('--image-EmptyChatImg', darkEmptyChatImg);
   document.documentElement.style.setProperty('--image-BgDoodle', darkBgDoodle);
   document.documentElement.style.setProperty('--image-MsgReq', darkMsgReqImg);
@@ -383,7 +389,7 @@ export const switchHtmlToDarkTheme = () => {
 // LIGHT COLORS
 const lightColorAccent = '#128b17';
 const lightColorAccentButton = black;
-const lightColorText = '#181818';
+const lightColorText = black;
 const lightColorTextOpposite = white;
 const lightColorTextSubtle = `${black}99`;
 const lightColorTextAccent = accentLightTheme;
@@ -399,7 +405,7 @@ const lightColorRecoveryPhraseBannerBg = white;
 const lightColorPillDivider = `${black}1A`;
 const lightColorLastSeenIndicator = black;
 const lightColorQuoteBottomBarBg = '#f8f8f8';
-const lightColorCellBackground = '#EEEEEE';
+const lightColorCellBackground = '#FAFAFA';
 const lightColorReceivedMessageBg = '#f5f5f5';
 const lightColorReceivedMessageText = black;
 
@@ -422,7 +428,7 @@ const lightConversationList = '#f9f9f9';
 const lightTextHighlight = `${black}88`;
 const lightForegroundPrimary = white;
 // const lightBackgroundPrimary = '#272726';
-const lightBackgroundPrimary = '#F8F8F8';
+const lightBackgroundPrimary = '#E8E8E8';
 const lightButtonGreen = '#FFFFFF';
 const lightModalBackground = '#fcfcfc';
 
@@ -476,6 +482,7 @@ const lightWalletNodeHeader = '#128B17';
 const lightWalletSelectHover = '#D3D3D3';
 const lightWalletPriorityHover = '#E3E3E3';
 const lightDayNight = `url("../images/bchat/moon.svg")`;
+const lightNewChat = `url("../images/bchat/newChat_white.svg")`;
 const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = '#C6C6C6';
 const lightClearBtn = '#fff';
@@ -517,7 +524,9 @@ const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`
 const lightLeaveHover = '#D9D9D9';
 const lightCopyHover = '#FFFFFF';
 const lightWalletCopyHover = '#EBEBEB';
-const lightAddressBookCopy = "#FFFFFF";
+const lightAddressBookCopy = '#FFFFFF';
+const lightAddMembers = '#F2F2F2';
+const lightProfileClose = '#DDDDDD';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -680,9 +689,16 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
   document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', lightCopyHover);
-  document.documentElement.style.setProperty('--color-addressbook-copy-hover', lightAddressBookCopy);
+  document.documentElement.style.setProperty(
+    '--color-addressbook-copy-hover',
+    lightAddressBookCopy
+  );
+  document.documentElement.style.setProperty('--color-add-member', lightAddMembers);
+  document.documentElement.style.setProperty('--color-profile-close', lightProfileClose);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', lightWalletCopyHover);
   document.documentElement.style.setProperty('--image-DayNight', lightDayNight);
+  document.documentElement.style.setProperty('--image-addContact', lightNewChat);
+
   document.documentElement.style.setProperty('--image-EmptyChatImg', lightEmptyChatImg);
   document.documentElement.style.setProperty('--image-BgDoodle', lightBgDoodle);
   document.documentElement.style.setProperty('--image-MsgReq', lightMsgReqImg);
@@ -847,8 +863,10 @@ export const BchatGlobalStyles = createGlobalStyle`
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
-    --color-caret:${white};
+    --color-caret:${darkColorCellBackground};
     --color-copy-hover:${darkCopyHover};
+    --color-add-member:${lightAddMembers};
+    --color-profile-close: ${darkProfileClose};
     --color-addressbook-copy-hover:${darkAddressBookCopy};
     --color-wallet-copy-hover:${darkWalletCopyHover};
     --color-WalcontentBg:${darkWalcontentBg};
@@ -866,12 +884,13 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-disableTxt:${darkDisableTxt};
     --color-confirmAddress:${darkConfirmAddress};
     --color-leave-button:${darkLeaveHover};
-
+    --color-text:${darkColorText};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
     --image-BgDoodle:${darkBgDoodle};
     --image-DayNight:${darkDayNight};
+    --image-addContact:${darkNewChat};
     --image-MsgReq:${darkMsgReqImg};
     --image-BlockedContact:${darkBlockedContact};
     --image-AddContact:${darkAddContact};

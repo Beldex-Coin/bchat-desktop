@@ -136,7 +136,7 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
   function Moon() {
     return (
       <div
-        style={{ marginRight: '13px' }}
+        // style={{ marginRight: '13px' }}
         className="dayAndNightIcon"
         onClick={handleClick}
         data-tip="Themes"
@@ -167,8 +167,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <div className="">{verifyScreens()}</div>
 
         <div className="module-left-pane__header__title">{label}</div>
-        <div onClick={() => switchToWalletSec()} style={{ marginRight: '13px', cursor: 'pointer' }}>
-          <BchatIcon iconSize={20} iconType="wallet" iconColor="#16A51C" />
+        <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
+          <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
         </div>
         <IsOnline />
         <Moon />
@@ -181,7 +181,8 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
             data-offset="{'right':60}"
             data-place="bottom"
           >
-            <img src={'images/bchat/addButton.svg'} style={{ width: '35px' }} />
+            {/* <div className='addContactIcon'></div> */}
+            {/* <img className="addContactIcon" /> */}
           </div>
         )}
       </div>
