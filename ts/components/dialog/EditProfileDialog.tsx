@@ -107,7 +107,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               </Loader>
             )}
 
-            <div style={{ position: 'relative', marginLeft: '350px', marginTop: '12px' }}>
+            <div className='profileClose'>
               <BchatIconButton
                 iconType="exit"
                 iconSize="tiny"

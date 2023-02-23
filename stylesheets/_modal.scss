@@ -444,6 +444,19 @@
     align-items: center;
   }
 
+  .profileClose {
+    display: flex;
+    justify-content: center;
+    margin-left: 350px;
+    margin-top: 12px;
+    width: 28px;
+    height: 28px;
+    &:hover {
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
+  }
+
   .profile-name {
     display: flex;
     margin-top: $bchat-margin-sm;
