@@ -371,6 +371,19 @@ textarea {
 
 .module-conversation-header__title-flex {
   flex-direction: row;
+
+  .threedot-option{
+    width: 38px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2px;
+    &:hover{
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
+  }
 }
 
 .module-conversation__user__profile-name,

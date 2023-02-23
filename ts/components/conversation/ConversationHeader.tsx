@@ -149,6 +149,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   let width = window.innerWidth;
   return (
     <div
+    className='threedot-option'
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -161,11 +162,10 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
         });
 
       }}
-      style={{ marginTop: '7px' }}
       data-testid="three-dots-conversation-options"
     >
 
-      <BchatIconButton iconType="ellipses" iconSize={35} />
+      <BchatIconButton iconType="ellipses" iconSize={22} />
     </div>
   );
 };
@@ -429,7 +429,7 @@ console.log('conversation ::selection ::1',conversation,selectedConvoKey);
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <div style={{ marginTop: "10px" }}>
+            <div className='call'>
               <CallButton />
             </div>
 

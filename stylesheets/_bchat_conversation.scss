@@ -37,7 +37,7 @@
   position: absolute;
   height: 100%;
   // right: 0vw;
-  top:64px;
+  top: 64px;
   left: 387px;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-3%);
@@ -61,10 +61,25 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    
-    svg
-    {
-       color:var(--color-chatIcons);
+
+    svg {
+      color: var(--color-chatIcons);
+    }
+    .call {
+      // margin-top: 10px;
+      margin-right: 14px;
+      padding-left: 14px;
+      display: flex;
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+
+      &:hover {
+        background-color: var(--color-profile-close);
+        border-radius: 20px;
+      }
     }
   }
 
@@ -97,9 +112,7 @@
       color: #ffffff;
       background-color: red;
       border-radius: 10px;
-
     }
-    
   }
 
   .message-selection-overlay div[role='button'] {
@@ -112,7 +125,6 @@
     justify-content: center;
   }
 }
-
 
 .bchat-conversation {
   flex-grow: 1;
@@ -127,21 +139,19 @@
   // height: 90.1;
   // background-image: url("../images/bchat/doodle_white.svg");
 
-
-  .bchat-conversation-doodle
-  {
-    background-image:var(--image-BgDoodle);
-    width:"100%";
-    height:"100%";
+  .bchat-conversation-doodle {
+    background-image: var(--image-BgDoodle);
+    width: '100%';
+    height: '100%';
   }
 
   // selection for transparent device chat menu
-  
+
   // .selection-mode {
   //   .messages-container>*:not(.message-selected) {
   //     animation: toShadow $bchat-transition-duration;
   //     opacity: 0.4;
-      
+
   //   }
   // }
 }
@@ -218,10 +228,9 @@
     // &:hover {
     //   opacity: 1;
     //   filter: brightness(0.9);
-      
+
     //   transition: $bchat-transition-duration;
     // }
-    
 
     .send {
       padding: $bchat-margin-xs;
@@ -234,7 +243,7 @@
   .attachment-box {
     background-color: var(--color-composeMsgIconBG);
     padding: 8px 13px;
-    color: #85858F;
+    color: #85858f;
     border-radius: 10px;
 
     &-icon {
@@ -244,11 +253,9 @@
     }
 
     &:hover {
-      background-color: #20A1FF;
+      background-color: #20a1ff;
     }
-
   }
-
 
   .send-message-input {
     width: 80%;
@@ -261,20 +268,20 @@
     z-index: 1;
     background-color: inherit;
     margin-left: 27px;
-    background:var(--color-composeMsgInput);
+    background: var(--color-composeMsgInput);
     margin: 5px 13px;
     border-radius: 10px;
     padding-left: 20px;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
 
-    svg{
-      color:var(--color-composeMsgRecordIcon);
+    svg {
+      color: var(--color-composeMsgRecordIcon);
     }
-    svg:hover{
-      transform:scale(1.1);
+    svg:hover {
+      transform: scale(1.1);
     }
     ul {
-      max-height: 70vh; 
+      max-height: 70vh;
       overflow: auto;
     }
 
@@ -329,7 +336,7 @@
     visibility: visible;
   }
 
-  &>section.emoji-mart {
+  & > section.emoji-mart {
     font-family: $bchat-font-default;
     font-size: $bchat-font-sm;
     background-color: var(--color-cell-background);
@@ -402,16 +409,16 @@
 }
 
 .send-message-button {
-  background-color: #128B17;
-    border-radius: 10px;
-    /* padding: 8px; */
-    cursor: pointer;
-    animation: fadein 0.25s;
-    width: 47px;
-    height: 46px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #128b17;
+  border-radius: 10px;
+  /* padding: 8px; */
+  cursor: pointer;
+  animation: fadein 0.25s;
+  width: 47px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation: fadein $bchat-transition-duration;
   // padding-left: 15px;
 
@@ -439,15 +446,12 @@
     height: 30px;
     background-size: cover;
     margin-bottom: 3px;
-
   }
 
   &:hover {
-    background-color: #00A705;
+    background-color: #00a705;
   }
-
 }
-
 
 .bchat-recording {
   height: $composition-container-height;
@@ -469,9 +473,7 @@
     height: 47px;
     border-radius: 13px;
     justify-content: space-between;
-}
-
-
+  }
 
   &--actions {
     display: flex;
