@@ -1264,6 +1264,28 @@ label {
     font-size: 12px;
     color: #9393b1;
   }
+
+  &-balance
+  {
+    color:#00C10D;
+    font-size: 12px;
+    font-family:$bchat-font-poppin-semibold;
+    
+  }
+  &-unlocked-Balance 
+  {
+    color:#0093FF;
+    font-size: 12px;
+    font-family:$bchat-font-poppin-semibold;
+
+  }
+
+  &-disableBalance
+  {
+    color: var(--color-text);
+    font-size: 12px;
+    font-family:$bchat-font-poppin-semibold;
+  }
 }
 
 .bchat-settings {
@@ -2485,6 +2507,9 @@ label {
         font-size: 12px;
         color: #9393b1;
       }
+     
+      
+
     }
     &-syncing {
       width: 100%;
