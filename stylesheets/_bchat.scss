@@ -33,7 +33,6 @@ input,
 textarea {
   // caret-color: var(--color-caret) !important;
   caret-color: var(--color-caret) !important;
-
 }
 
 * {
@@ -372,14 +371,14 @@ textarea {
 .module-conversation-header__title-flex {
   flex-direction: row;
 
-  .threedot-option{
+  .threedot-option {
     width: 38px;
     height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding-bottom: 2px;
-    &:hover{
+    &:hover {
       background-color: var(--color-profile-close);
       border-radius: 20px;
     }
@@ -579,7 +578,15 @@ label {
 
     &__icons,
     &__close {
-      width: 60px;
+      display: flex;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-right: 20px;
+      &:hover {
+        background-color: var(--color-profile-close);
+        border-radius: 20px;
+      }
 
       .bchat-icon-button {
         color: var(--color-text);
