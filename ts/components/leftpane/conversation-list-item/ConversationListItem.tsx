@@ -10,8 +10,8 @@ import {
   openConversationWithMessages,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
-import { useDispatch, useSelector } from 'react-redux';
-import {  updateBchatWalletPasswordModal, updateUserDetailsModal } from '../../../state/ducks/modalDialog';
+import { useDispatch,  } from 'react-redux';
+import {  updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
@@ -28,8 +28,8 @@ import { getFirstUnreadMessageWithMention } from '../../../data/data';
 import { UserUtils } from '../../../bchat/utils';
 import styled from 'styled-components';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
-import { SettingsKey } from '../../../data/settings-key';
-import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
+// import { SettingsKey } from '../../../data/settings-key';
+// import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
 // tslint:disable-next-line: no-empty-interface
@@ -97,10 +97,10 @@ const ConversationListItem = (props: Props) => {
     // walletAddress
 
   } = props;
-  const dispatch = useDispatch();
-  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
- const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
+//   const dispatch = useDispatch();
+//   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+//   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
+//  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
 
   // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
     // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
@@ -211,26 +211,14 @@ const ConversationListItem = (props: Props) => {
     unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount ? unreadCount : 0 > 99 ? "99+" : unreadCount}</p>;
   }
   
-  const walletPassWordValidation = () => {
-    // console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
-    
-    if (chatwithWallet && !walletSyncBarShowInChat) {
-
-      dispatch(updateBchatWalletPasswordModal({}))
-    }
-
-  }
-  const validation = () => {
-    walletPassWordValidation();
-    // chatInstruction && chatWithWalletInstruction();
-  }
+ 
 
   return (
     <ContextConversationId.Provider value={conversationId}>
       <div key={key}>
         <div
           role="button"
-          onClick={() => validation()}
+          // onClick={() => validation()}
           onMouseDown={openConvo}
           onMouseUp={e => {
             e.stopPropagation();

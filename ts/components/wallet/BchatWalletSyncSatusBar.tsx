@@ -70,22 +70,23 @@ const SyncStatusBar = (props: { from?: string }) => {
             </div>
           </Flex>
           <Flex container={true}>
-            <div style={{ marginRight: '10px' }} className="syncStatus-statusvalue">
-              {window.getSettingValue('current-deamon')?.type} : {daemonHeight}
-            </div>
-            <div className="syncStatus-statusvalue">
-              Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
-            </div>
-            {from == "chat" && <>
-              <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
-                Balance : {(walletDetails.balance / 1e9).toFixed(decimalValue)}
+          {from == "chat" && <>
+              <div className={ (walletDetails.balance / 1e9) > 0 ?"syncStatus-balance":'syncStatus-disableBalance'} >
+                Balance : <span className='syncStatus-disableBalance'>{(walletDetails.balance / 1e9).toFixed(decimalValue)}</span>
 
               </div>
-              <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
-                Unlocked Balance : {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}
+              <div className={ (walletDetails.balance / 1e9) > 0 ?"syncStatus-unlocked-Balance":'syncStatus-disableBalance'} style={{ marginLeft: '10px' }}>
+                Unlocked Balance : <span className='syncStatus-disableBalance'> {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}</span>
               </div>
             </>
             }
+            <div style={{ marginLeft: '10px' }} className="syncStatus-statusvalue">
+              {window.getSettingValue('current-deamon')?.type} : {daemonHeight}
+            </div>
+            <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
+              Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
+            </div>
+           
           </Flex>
         </Flex>
         {from == "chat" && <Indicator
