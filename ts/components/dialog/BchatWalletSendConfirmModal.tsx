@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 // import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
@@ -158,7 +158,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             </div>
             <SpacerXS />
             <div className="bchat-modal__centered-sendConfirm_content-errorTxt">{error}</div>
-            <SpacerMD />
+            <SpacerSM />
           </div>
         ) : (
           <article className="bchat-modal__centered-sendConfirm_content">

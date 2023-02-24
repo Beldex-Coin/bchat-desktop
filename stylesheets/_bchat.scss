@@ -964,6 +964,7 @@ label {
         &-passwordBox {
           border-bottom: 1px solid #444455;
           width: 358px;
+          padding-top: 20px;
           input {
             text-align: center;
           }
@@ -2494,7 +2495,7 @@ label {
       // // width: 66.5%;
       // bottom: 0;
       &-subParent {
-        padding: 0 18px;
+        padding: 12px 18px;
       }
 
       &-statusTxt {
