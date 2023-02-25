@@ -57,7 +57,7 @@ const SyncStatusBar = (props: { from?: string }) => {
           }}
         />
         }
-        <Flex container={true} justifyContent="space-between" padding={from === "chat" ? "5px 18px" : "5px 0"}>
+        <Flex container={true} justifyContent="space-between" padding={from === "chat" ? "9px 18px" : "5px 0"}>
           <Flex container={true}>
             <div className="syncStatus-statusTxt">
               Status :{' '}
