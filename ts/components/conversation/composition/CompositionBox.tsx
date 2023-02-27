@@ -105,6 +105,10 @@ export type SendMessageType = {
   quote: any | undefined;
   preview: any | undefined;
   groupInvitation: { url: string | undefined; name: string } | undefined;
+  txnDetails?: {
+    amount: any;
+    txnId: any;
+  };
 };
 
 interface Props {
@@ -457,6 +461,22 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
 
+  private bchatWalletView() {
+    const { selectedConversation } = this.props;
+    const { draft } = this.state;
+    const re = /^\d+\.?\d*$/;
+
+    return (
+      <>
+        {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet ? (
+          <SendFundButton />
+        ) : (
+          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
+        )}
+      </>
+    );
+  }
+
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
@@ -465,6 +485,21 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { draft } = this.state;
     const re = /^\d+\.?\d*$/;
 
+    console.log(
+      "selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet:",
+      selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
+    );
+    console.log(
+      "selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet:",
+      selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
+    );
+
+    console.log(
+      "selectedConversation?.type === 'private' ",
+      selectedConversation?.type === 'private',
+      re.test(draft),
+      this.chatwithWallet
+    );
     //  console.log("this.props WalletSyncBarShowInChat::",WalletSyncBarShowInChat)
 
     return (
@@ -495,15 +530,16 @@ class CompositionBoxInner extends React.Component<Props, State> {
             >
               {}
               {this.renderTextArea()}
-
-              {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet ? (
-                <SendFundButton onClick={() => this.sendConfirmModal()} />
-              ) : (
-                <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
-              )}
+              {selectedConversation?.isPrivate ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
             </div>
-            <SendMessageButton onClick={this.onSendMessage} />
+            <SendMessageButton
+              onClick={() =>
+                selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
+                  ? this.sendConfirmModal()
+                  : this.onSendMessage()
+              }
+            />
           </>
         )}
         {typingEnabled && (
@@ -872,7 +908,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
-      await this.onSendMessage();
+      // await this.onSendMessage();
+      const { selectedConversation } = this.props;
+      const { draft } = this.state;
+      const re = /^\d+\.?\d*$/;
+      if (selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet) {
+        await this.sendConfirmModal();
+      } else {
+        await this.onSendMessage();
+      }
     } else if (event.key === 'Escape' && this.state.showEmojiPanel) {
       this.hideEmojiPanel();
     } else if (event.key === 'PageUp' || event.key === 'PageDown') {
@@ -927,6 +971,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // Verify message length
     const msgLen = messagePlaintext.trim().length || 0;
 
+    console.log('msgLen:', msgLen);
     if (msgLen === 0 && this.props.stagedAttachments?.length === 0) {
       ToastUtils.pushMessageBodyMissing();
       return;

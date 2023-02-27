@@ -62,10 +62,11 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
     </div> 
   );
 };
-export const SendFundButton = (props: { onClick: () => void }) => {
+export const SendFundButton = () => {
   return (
     <div 
-      onClick={props.onClick}>
+      // onClick={props.onClick}
+      >
 
       {/* <BchatIconButton
         iconType="beldexCoinLogo"

@@ -134,6 +134,37 @@ const LeftPaneSettingsCategoryRow = () =>
           </div>
         </div>
 
+        {/* *******************************************************Wallet********************************************************************** */}
+
+        <div
+          data-testid={dataTestId}
+          className={classNames(
+            'left-pane-setting-category-list-item',
+            BchatSettingCategory.WalletSettings === focusedSettingsSection ? 'active' : ''
+          )}
+          role="link"
+          onClick={() => {
+            dispatch(showSettingsSection(BchatSettingCategory.WalletSettings));
+          }}
+          // style={{ marginTop: '15px' }}
+        >
+          <div style={{ display: 'flex' }}>
+            <i className="left-pane-setting-category-list-item-icons">
+              <BchatIcon iconSize={23} iconType="wallet" iconColor={'#2879FB'} />
+            </i>
+            <span className="left-pane-setting-category-list-item-span">
+              {/* {window.i18n('WalletSettingsTitle')} */}
+              Wallet Settings
+            </span>
+            {/* <span className="beta">BETA</span> */}
+          </div>
+          <div>
+            {BchatSettingCategory.WalletSettings === focusedSettingsSection && (
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            )}
+          </div>
+        </div>
+
         {/* **********************************************************Privacy******************************************************************* */}
 
         <div
@@ -416,7 +447,7 @@ const LeftPaneSettingsCategoryRow = () =>
                 id={'onion-path-indicator-led-id'}
                 size="small"
               /> */}
-              <BchatIcon iconType='hops'  iconSize={'large'} iconColor='#01b700'/>
+              <BchatIcon iconType="hops" iconSize={'large'} iconColor="#01b700" />
             </span>
             <span className="left-pane-setting-category-list-item-span">Hops</span>
           </div>
