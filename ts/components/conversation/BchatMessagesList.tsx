@@ -11,6 +11,7 @@ import {
   PropsForExpirationTimer,
   PropsForGroupInvitation,
   PropsForGroupUpdate,
+  PropsForPayment,
 } from '../../state/ducks/conversations';
 import {
   getOldBottomMessageId,
@@ -27,6 +28,7 @@ import { CallNotification } from './message/message-item/notification-bubble/Cal
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
+import { PaymentMessage } from './message/message-item/PaymentMessage';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -104,12 +106,15 @@ export const BchatMessagesList = (props: {
           const msgProps = messageProps.message.props as PropsForGroupUpdate;          
           return [<GroupUpdateMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
-
+        
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
           return [<GroupInvitation key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
-
+        if (messageProps.message?.messageType === 'payment') {
+          const msgProps = messageProps.message.props as PropsForPayment;
+          return [<PaymentMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
+        }
         if (messageProps.message?.messageType === 'message-request-response') {
           const msgProps = messageProps.message.props as PropsForMessageRequestResponse;
 

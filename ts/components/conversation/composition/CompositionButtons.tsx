@@ -62,10 +62,10 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
     </div> 
   );
 };
-export const SendFundButton = () => {
+export const SendFundButton = (props:any) => {
   return (
     <div 
-      // onClick={props.onClick}
+      onClick={props.onClick}
       >
 
       {/* <BchatIconButton
