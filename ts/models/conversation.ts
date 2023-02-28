@@ -725,26 +725,19 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
           return;
         }
 
-        console.log('sender 1::',message)
          // Handle transaction details Message
        
          if (message.get('txnDetails')) {
-          // if (false) {
-  
-            console.log('invite 4:: txn_details',message.get('txnDetails'))
-  
+          // if (false) {  
             const txnDetails = message.get('txnDetails');
             // const txn_detailsMessages = new GroupInvitationMessage({
             const txnDetailsMessages = new TxnDetailsMessage({
-  
               identifier: id,
               timestamp: sentAt,
               amount: txnDetails.amount,
               txnId: txnDetails.txnId,
               expireTimer: this.get('expireTimer'),
             });
-            console.log('invite 5::txn_details',txnDetailsMessages)
-            console.log('sender 2::',txnDetailsMessages)
   
             // we need the return await so that errors are caught in the catch {}
             await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);

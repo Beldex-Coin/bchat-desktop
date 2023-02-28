@@ -215,25 +215,17 @@ async function handleRegularMessage(
   const type = message.get('type');
   // this does not trigger a UI update nor write to the db
   await copyFromQuotedMessage(message, rawDataMessage.quote);
-  console.log("rawDataMessage 6::",rawDataMessage)
-  console.log("content 11::",rawDataMessage)
 
   if (rawDataMessage.payment) {
-    // console.log("rawDataMessage7",rawDataMessage.payment)
-    console.log("content 12::",rawDataMessage.payment)
     message.set({ payment: rawDataMessage.payment });
   }
 
   if (rawDataMessage.openGroupInvitation) {
-    console.log("rawDataMessage7",rawDataMessage.openGroupInvitation)
-    console.log("content 12::",rawDataMessage)
-
     message.set({ groupInvitation: rawDataMessage.openGroupInvitation });
   }
 
   handleLinkPreviews(rawDataMessage.body, rawDataMessage.preview, message);
   const existingExpireTimer = conversation.get('expireTimer');
-console.log("message handleRegularMessage::",message)
   message.set({
     flags: rawDataMessage.flags,
     quote: rawDataMessage.quote,
@@ -340,8 +332,6 @@ export async function handleMessageJob(
   source: string,
   messageHash: string
 ) {
-  console.log("rawDataMessage 3::",regularDataMessage)
-  console.log("content 8::",regularDataMessage)
 
 
   window?.log?.info(
@@ -356,8 +346,6 @@ export async function handleMessageJob(
   );
   try {
     messageModel.set({ flags: regularDataMessage.flags });
-  console.log("rawDataMessage 4::",regularDataMessage)
-  console.log("content 9::",regularDataMessage)
 
     if (messageModel.isExpirationTimerUpdate()) {
       const { expireTimer } = regularDataMessage;
@@ -371,8 +359,6 @@ export async function handleMessageJob(
       }
       await handleExpirationTimerUpdateNoCommit(conversation, messageModel, source, expireTimer);
     } else {
-  console.log("rawDataMessage 5::",regularDataMessage)
-  console.log("content 10::",regularDataMessage)
 
       // this does not commit to db nor UI unless we need to approve a convo
       await handleRegularMessage(
