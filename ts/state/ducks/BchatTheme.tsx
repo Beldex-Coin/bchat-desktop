@@ -38,6 +38,7 @@ const darkColorLastSeenIndicator = accentDarkTheme;
 const darkColorQuoteBottomBarBg = '#34323F';
 const darkColorCellBackground = '#181821';
 const darkColorReceivedMessageBg = '#34323F';
+const darkColorReceivedMessageBgHover = '#52505F';
 const darkColorReceivedMessageText = white;
 
 const darkColorPillDividerText = '#a0a0a0';
@@ -221,6 +222,7 @@ export const switchHtmlToDarkTheme = () => {
     '--color-received-message-background',
     darkColorReceivedMessageBg
   );
+  document.documentElement.style.setProperty('--color-received-message-background-hover', darkColorReceivedMessageBgHover);
   document.documentElement.style.setProperty('--color-pill-divider-text', darkColorPillDividerText);
   document.documentElement.style.setProperty('--color-input-background', darkInputBackground);
 
@@ -407,6 +409,7 @@ const lightColorLastSeenIndicator = black;
 const lightColorQuoteBottomBarBg = '#f8f8f8';
 const lightColorCellBackground = '#FAFAFA';
 const lightColorReceivedMessageBg = '#f5f5f5';
+const whiteColorReceivedMessageBgHover = '#FAFAFA';
 const lightColorReceivedMessageText = black;
 
 const lightColorPillDividerText = '#555555';
@@ -593,6 +596,7 @@ export const switchHtmlToLightTheme = () => {
     '--color-received-message-background',
     lightColorReceivedMessageBg
   );
+  document.documentElement.style.setProperty('--color-received-message-background-hover', whiteColorReceivedMessageBgHover);
   document.documentElement.style.setProperty(
     '--color-pill-divider-text',
     lightColorPillDividerText

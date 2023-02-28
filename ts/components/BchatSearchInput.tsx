@@ -48,7 +48,7 @@ export const BchatSearchInput = () => {
       <div className='search'>
       <BchatIconButton iconSize="small" iconType="search" />
       </div>
-      <input
+      <input 
         value={currentSearchTerm}
         onChange={e => {
           const inputValue = e.target.value;
