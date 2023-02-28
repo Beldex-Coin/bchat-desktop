@@ -19,7 +19,7 @@ const SyncStatusBar = (props: { from?: string }) => {
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
   const walletDetails = useSelector((state: any) => state.wallet);
-  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)'; 
   decimalValue = decimalValue.charAt(0);
 
   if (currentDaemon?.type === 'Local') {

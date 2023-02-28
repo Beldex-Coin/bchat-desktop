@@ -68,6 +68,7 @@ import { BchatButtonColor } from '../../basic/BchatButton';
 import { getWalletSyncBarShowInChat } from '../../../state/selectors/walletConfig';
 import { wallet } from '../../../wallet/wallet-rpc';
 import { saveRecipientAddress } from '../../../data/data';
+import { ConversationTypeEnum } from '../../../models/conversation';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -106,8 +107,8 @@ export type SendMessageType = {
   preview: any | undefined;
   groupInvitation: { url: string | undefined; name: string } | undefined;
   txnDetails?: {
-    amount: any;
-    txnId: any;
+    amount: any,
+    txnId: any
   };
 };
 
@@ -317,7 +318,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
-    let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+    let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
     const isSweepAll =
       draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     window.inboxStore?.dispatch(updateSendConfirmModal(null));
@@ -338,15 +339,43 @@ class CompositionBoxInner extends React.Component<Props, State> {
       if (getSettingvalue) {
         await saveRecipientAddress(TransactionHistory);
       }
-      let sendViaMsg = `Amount:${draft},Transaction_hash:${`https://explorer.beldex.io/tx/`}${
-        TransactionHistory.tx_hash
-      }`;
-      this.setState({ draft: sendViaMsg });
+      // let sendViaMsg = `Amount:${draft},Transaction_hash:${`https://explorer.beldex.io/tx/`}${TransactionHistory.tx_hash
+      //   }`;
+      // this.setState({ draft: sendViaMsg });
 
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
       ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
-      this.onSendMessage();
+      let selectedConversationKey: any = this.props.selectedConversationKey
+
+      const privateConvo = await getConversationController().getOrCreateAndWait(selectedConversationKey,
+        ConversationTypeEnum.PRIVATE
+      );
+      // console.log('privateConvo::', privateConvo, groupInvitation)
+      if (privateConvo) {
+        void privateConvo.sendMessage({
+          body: '',
+          attachments: undefined,
+          groupInvitation: undefined,
+          preview: undefined,
+          quote: undefined,
+          txnDetails: {
+            amount: this.state.draft,
+            txnId: TransactionHistory.tx_hash
+          }
+        })
+        // Empty composition box and stagedAttachments
+      this.setState({
+        showEmojiPanel: false,
+        stagedLinkPreview: undefined,
+        ignoredLink: undefined,
+        draft: '',
+      });
+      updateDraftForConversation({
+        conversationKey:selectedConversationKey,
+        draft: '',
+      });
+      }
       // dispatch(walletTransactionPage());
     } else {
       // clearStateValue();
@@ -469,7 +498,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet ? (
-          <SendFundButton />
+          <SendFundButton onClick={()=>this.sendConfirmModal()} />
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
         )}
@@ -528,7 +557,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
-              {}
+              { }
               {this.renderTextArea()}
               {selectedConversation?.isPrivate ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}

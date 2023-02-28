@@ -177,7 +177,9 @@ export type MessagePropsType =
   | 'timer-notification'
   | 'regular-message'
   | 'unread-indicator'
-  | 'call-notification';
+  | 'call-notification'
+  | 'payment'
+  ;
 
 export const getSortedMessagesTypesOfSelectedConversation = createSelector(
   getSortedMessagesOfSelectedConversation,
@@ -201,6 +203,7 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
         messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
           ? messageTimestamp
           : undefined;
+          console.log("PropsForPayment 3::",msg)
 
       if (msg.propsForDataExtractionNotification) {
         return {
@@ -234,7 +237,18 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
+      if (msg.propsForPayment) {
+    console.log("PropsForPayment 4::",msg.propsForPayment)
 
+        return {
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'payment',
+            props: { ...msg.propsForPayment, messageId: msg.propsForMessage.id },
+          },
+        };
+      }
       if (msg.propsForGroupUpdateMessage) {
         return {
           showUnreadIndicator: isFirstUnread,

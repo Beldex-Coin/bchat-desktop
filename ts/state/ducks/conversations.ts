@@ -38,6 +38,8 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
+  propsForPayment?:PropsForPayment;
+  
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -138,6 +140,15 @@ export type PropsForGroupInvitation = {
   isUnread: boolean;
 };
 
+export type PropsForPayment = {
+  amount: string;
+  txnId: string;
+  direction: MessageModelType;
+  acceptUrl: string;
+  messageId: string;
+  receivedAt?: number;
+  isUnread: boolean;
+};
 export type PropsForAttachment = {
   id: number;
   contentType: string;

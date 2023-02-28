@@ -106,6 +106,9 @@ export interface MessageAttributes {
   isDeleted?: boolean;
 
   callNotificationType?: CallNotificationType;
+  txnDetails?:any;
+  payment?:any;
+
 }
 
 export interface DataExtractionNotificationMsg {
@@ -202,6 +205,8 @@ export interface MessageAttributesOptionals {
   messageHash?: string;
   isDeleted?: boolean;
   callNotificationType?: CallNotificationType;
+  txnDetails?:any;
+  payment?:any;
 }
 
 /**
