@@ -4,7 +4,10 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
-import { ConversationNotificationSettingType, ConversationTypeEnum } from '../../models/conversation';
+import {
+  ConversationNotificationSettingType,
+  ConversationTypeEnum,
+} from '../../models/conversation';
 import {
   getConversationHeaderTitleProps,
   // getCurrentNotificationSettingText,
@@ -88,10 +91,7 @@ const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
-  // const conversation=useSelector(getSelectedConversation)
   const dispatch = useDispatch();
-  // console.log('conversation ::selection ::',conversation,selectedConversationKey);
-  
 
   const { i18n } = window;
 
@@ -116,7 +116,6 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
-
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
@@ -136,7 +135,6 @@ const SelectionOverlay = () => {
       <div className="close-button">
         <BchatIconButton iconType="exit" iconSize="medium" onClick={onCloseOverlay} />
       </div>
-
     </div>
   );
 };
@@ -149,7 +147,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   let width = window.innerWidth;
   return (
     <div
-    className='threedot-option'
+      className="threedot-option"
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -160,11 +158,9 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
             y: 55,
           },
         });
-
       }}
       data-testid="three-dots-conversation-options"
     >
-
       <BchatIconButton iconType="ellipses" iconSize={22} />
     </div>
   );
@@ -292,14 +288,14 @@ const ConversationHeaderTitle = () => {
   const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
 
-  const conversationKey:any=useSelector( getSelectedConversationKey)
-  const conversation:any=useSelector(getSelectedConversation) 
+  const conversationKey: any = useSelector(getSelectedConversationKey);
+  const conversation: any = useSelector(getSelectedConversation);
   let displayedName = null;
-    if (conversation?.type === ConversationTypeEnum.PRIVATE) {
-      displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
-        conversationKey
-      );
-    }
+  if (conversation?.type === ConversationTypeEnum.PRIVATE) {
+    displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
+      conversationKey
+    );
+  }
 
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
@@ -323,14 +319,14 @@ const ConversationHeaderTitle = () => {
     }
   }
   const SubTxt = styled.div`
- font-size: 11px;
- line-height: 16px;
- letter-spacing: 0.3px;
- // text-transform: uppercase;
- user-select: none;
- font-weight: 100;
- color: var(--color-text-subtle);
- `
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: 0.3px;
+    // text-transform: uppercase;
+    user-select: none;
+    font-weight: 100;
+    color: var(--color-text-subtle);
+  `;
   let memberCountText = '';
   if (isGroup && memberCount > 0 && !isKickedFromGroup) {
     const count = String(memberCount);
@@ -352,20 +348,22 @@ const ConversationHeaderTitle = () => {
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName}
         <SubTxt>
-          {isGroup ? memberCountText :!!conversation.isTyping?
-           <TypingBubble
-           pubkey={conversationKey}
-           conversationType={conversation?.type}
-            displayedName={displayedName}
-            isTyping={!!conversation.isTyping}
-          //  isTyping={true}
- 
-           key="typing-bubble"
-         />:
-            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
-          }
-        </SubTxt>
+          {isGroup ? (
+            memberCountText
+          ) : !!conversation.isTyping ? (
+            <TypingBubble
+              pubkey={conversationKey}
+              conversationType={conversation?.type}
+              displayedName={displayedName}
+              isTyping={!!conversation.isTyping}
+              //  isTyping={true}
 
+              key="typing-bubble"
+            />
+          ) : (
+            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
+          )}
+        </SubTxt>
       </span>
     </div>
   );
@@ -388,9 +386,8 @@ export const ConversationHeaderWithDetails = () => {
   const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
-  
-//  const conversation=useSelector(getSelectedConversation)
-// console.log('conversation ::selection ::1',conversation,selectedConvoKey);
+
+  const conversation = useSelector(getSelectedConversation);
   const dispatch = useDispatch();
 
   if (!selectedConvoKey) {
@@ -429,10 +426,11 @@ export const ConversationHeaderWithDetails = () => {
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <div className='call'>
-              <CallButton />
-            </div>
-
+            {conversation?.type == 'private' && (
+              <div className="call">
+                <CallButton />
+              </div>
+            )}
           </Flex>
         </div>
         <div className="module-conversation-header__title-container">
