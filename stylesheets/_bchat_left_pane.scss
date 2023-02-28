@@ -507,6 +507,20 @@ $bchat-compose-margin: 20px;
   padding: 0 21px;
   box-shadow: var(--color-Bchat-shadow);
 
+  .search {
+    margin-top: 13px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    &:hover {
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
+  }
+
   .bchat-icon-button {
     margin: auto 10px;
   }

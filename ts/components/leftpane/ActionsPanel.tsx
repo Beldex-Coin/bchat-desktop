@@ -23,8 +23,13 @@ import {
 } from '../../state/selectors/conversations';
 import { applyTheme } from '../../state/ducks/theme';
 import { getFocusedSection } from '../../state/selectors/section';
-import { clearSearch } from '../../state/ducks/search';
-import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
+// import { clearSearch } from '../../state/ducks/search';
+import {
+  SectionType,
+  setOverlayMode,
+  showLeftPaneSection,
+  showSettingsSection,
+} from '../../state/ducks/section';
 
 import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmentsManager';
 
@@ -58,6 +63,8 @@ import { SettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 
 import ReactTooltip from 'react-tooltip';
+import { BchatSettingCategory } from '../settings/BchatSettings';
+import { clearSearch } from '../../state/ducks/search';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -68,8 +75,14 @@ const Section = (props: { type: SectionType }) => {
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
 
+  // function switchToWalletSec() {
+  //   dispatch(showLeftPaneSection(3));
+  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+  // }
+
   const handleClick = () => {
     /* tslint:disable:no-void-expression */
+    console.log('type:', type);
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
@@ -97,10 +110,15 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else {
+      console.log('type:type', type);
       // message section
       dispatch(clearSearch());
       dispatch(showLeftPaneSection(type));
-      dispatch(setOverlayMode(undefined));
+      if (type == 3) {
+        dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      } else {
+        dispatch(setOverlayMode(undefined));
+      }
     }
   };
 
