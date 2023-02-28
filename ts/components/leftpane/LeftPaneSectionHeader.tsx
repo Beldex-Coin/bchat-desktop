@@ -10,7 +10,7 @@ import {
   SectionType,
   setOverlayMode,
   showLeftPaneSection,
-  showSettingsSection,
+  // showSettingsSection,
 } from '../../state/ducks/section';
 import {
   BchatButton,
@@ -29,7 +29,8 @@ import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
-import { BchatSettingCategory } from '../settings/BchatSettings';
+// import { BchatSettingCategory } from '../settings/BchatSettings';
+import { clearSearch } from '../../state/ducks/search';
 // import ReactTooltip from 'react-tooltip';
 
 // const SectionTitle = styled.h1`
@@ -84,10 +85,10 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     }
   }
 
-  function switchToWalletSec() {
-    dispatch(showLeftPaneSection(3));
-    dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-  }
+  // function switchToWalletSec() {
+  //   dispatch(showLeftPaneSection(3));
+  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+  // }
 
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
@@ -146,6 +147,22 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     );
   }
 
+  function Settings() {
+    return (
+      <span style={{ marginRight: '15px',marginTop:'8px' }}>
+        <BchatIconButton
+          iconSize="large"
+          iconType="walletSetting"
+          iconColor="#2879fb"
+          onClick={() => {
+            dispatch(clearSearch());
+            dispatch(showLeftPaneSection(3));
+            dispatch(setOverlayMode(undefined));
+          }}
+        />
+      </span>
+    );
+  }
   return (
     <Flex flexDirection="column">
       <div
@@ -167,11 +184,12 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <div className="">{verifyScreens()}</div>
 
         <div className="module-left-pane__header__title">{label}</div>
-        <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
+        {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
-        </div>
+        </div> */}
         <IsOnline />
         <Moon />
+        <Settings />
 
         {isMessageSection && !isMessageRequestOverlay && (
           <div
