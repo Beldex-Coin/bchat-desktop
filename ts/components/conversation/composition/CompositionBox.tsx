@@ -514,23 +514,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { draft } = this.state;
     const re = /^\d+\.?\d*$/;
 
-    console.log(
-      "selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet:",
-      selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
-    );
-    console.log(
-      "selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet:",
-      selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
-    );
-
-    console.log(
-      "selectedConversation?.type === 'private' ",
-      selectedConversation?.type === 'private',
-      re.test(draft),
-      this.chatwithWallet
-    );
-    //  console.log("this.props WalletSyncBarShowInChat::",WalletSyncBarShowInChat)
-
     return (
       <>
         {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}

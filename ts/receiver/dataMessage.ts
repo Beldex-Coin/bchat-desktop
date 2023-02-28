@@ -163,10 +163,8 @@ export async function handleSwarmDataMessage(
   senderConversationModel: ConversationModel
 ): Promise<void> {
   window.log.info('handleSwarmDataMessage');
-  console.log("content 4::",rawDataMessage);
 
   const cleanDataMessage = await cleanIncomingDataMessage(envelope, rawDataMessage);
-  console.log("content 5::",cleanDataMessage);
 
   // we handle group updates from our other devices in handleClosedGroupControlMessage()
   if (cleanDataMessage.closedGroupControlMessage) {
@@ -176,7 +174,6 @@ export async function handleSwarmDataMessage(
     );
     return;
   }
-  console.log("content 5.1::",cleanDataMessage);
 
   /**
    * This is a mess, but
@@ -188,45 +185,32 @@ export async function handleSwarmDataMessage(
    * 3. for a private conversation message, envelope.senderIdentity and envelope.source are probably the pubkey of the sender.
    */
   const isSyncedMessage = Boolean(cleanDataMessage.syncTarget?.length);
-  console.log("content 5.2::",isSyncedMessage);
 
   // no need to remove prefix here, as senderIdentity set => envelope.source is not used (and this is the one having the prefix when this is an opengroup)
   const convoIdOfSender = envelope.senderIdentity || envelope.source;
   const isMe = UserUtils.isUsFromCache(convoIdOfSender);
-  console.log("content 5.3::",isMe,convoIdOfSender);
 
   if (isSyncedMessage && !isMe) {
     window?.log?.warn('Got a sync message from someone else than me. Dropping it.');
-  console.log("content 5.4::",isMe,convoIdOfSender);
-
     return removeFromCache(envelope);
 
   } else if (isSyncedMessage) {
-  console.log("content 5.5::",isMe,convoIdOfSender);
 
     // we should create the synTarget convo but I have no idea how to know if this is a private or closed group convo?
   }
   const convoIdToAddTheMessageTo = PubKey.removeTextSecurePrefixIfNeeded(
     isSyncedMessage ? cleanDataMessage.syncTarget : envelope.source
   );
-  console.log("content 5.6::",convoIdToAddTheMessageTo);
-
-
   const convoToAddMessageTo = await getConversationController().getOrCreateAndWait(
     convoIdToAddTheMessageTo,
     envelope.senderIdentity ? ConversationTypeEnum.GROUP : ConversationTypeEnum.PRIVATE
   );
-  console.log("content 5.7::",convoToAddMessageTo);
 
   window?.log?.info(
     `Handle dataMessage about convo ${convoIdToAddTheMessageTo} from user: ${convoIdOfSender}`
   );
   // remove the prefix from the source object so this is correct for all other
-  console.log("content 5.8::",!isMe &&
-  senderConversationModel &&
-  cleanDataMessage.profile &&
-  cleanDataMessage.profileKey?.length);
-
+  
   // Check if we need to update any profile names
   if (
     !isMe &&
@@ -234,7 +218,6 @@ export async function handleSwarmDataMessage(
     cleanDataMessage.profile &&
     cleanDataMessage.profileKey?.length
   ) {
-  console.log("content 5.9::",cleanDataMessage);
 
     // do not await this
     void appendFetchAvatarAndProfileJob(
@@ -245,22 +228,14 @@ export async function handleSwarmDataMessage(
   }
   if (isMessageEmpty(cleanDataMessage)) {
     window?.log?.warn(`Message ${getEnvelopeId(envelope)} ignored; it was empty`);
-  console.log("content 5.10::",envelope);
-
     return removeFromCache(envelope);
   }
 
-  console.log("content 5.11::",!convoIdToAddTheMessageTo);
-
   if (!convoIdToAddTheMessageTo) {
-  console.log("content 5.12::",!convoIdToAddTheMessageTo);
-
     window?.log?.error('We cannot handle a message without a conversationId');
     confirm();
     return;
   }
-  console.log("content 5.13::",!convoIdToAddTheMessageTo);
-
 
   const msgModel =
     isSyncedMessage || (envelope.senderIdentity && isUsFromCache(envelope.senderIdentity))
@@ -275,7 +250,6 @@ export async function handleSwarmDataMessage(
           sender: senderConversationModel.id,
           sentAt: sentAtTimestamp,
         });
-  console.log("content 6::",cleanDataMessage);
 
 
   await handleSwarmMessage(
@@ -317,9 +291,7 @@ async function handleSwarmMessage(
   convoToAddMessageTo: ConversationModel,
   confirm: () => void
 ): Promise<void> {
-  console.log("content 5::",rawDataMessage);
 
-  console.log("content 6::",rawDataMessage)
   if (!rawDataMessage || !msgModel) {
     window?.log?.warn('Invalid data passed to handleSwarmMessage.');
     confirm();
@@ -328,8 +300,6 @@ async function handleSwarmMessage(
 
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
-  console.log("rawDataMessage 2::",rawDataMessage)
-  console.log("content 7::",rawDataMessage)
 
     const isDuplicate = await isSwarmMessageDuplicate({
       source: msgModel.get('source'),
@@ -340,7 +310,6 @@ async function handleSwarmMessage(
       confirm();
       return;
     }
-  console.log("content 8::",rawDataMessage)
 
     await handleMessageJob(
       msgModel,

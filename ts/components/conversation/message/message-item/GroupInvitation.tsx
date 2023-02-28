@@ -7,7 +7,6 @@ import { ReadableMessage } from './ReadableMessage';
 
 export const GroupInvitation = (props: PropsForGroupInvitation) => {
   const { messageId, receivedAt, isUnread } = props;
-  console.log('props.GroupInvitation ::',props)
   const classes = ['group-invitation'];
 
   if (props.direction === 'outgoing') {

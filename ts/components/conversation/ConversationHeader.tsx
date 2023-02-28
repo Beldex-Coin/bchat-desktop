@@ -88,9 +88,9 @@ const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
-  const conversation=useSelector(getSelectedConversation)
+  // const conversation=useSelector(getSelectedConversation)
   const dispatch = useDispatch();
-  console.log('conversation ::selection ::',conversation,selectedConversationKey);
+  // console.log('conversation ::selection ::',conversation,selectedConversationKey);
   
 
   const { i18n } = window;
@@ -389,8 +389,8 @@ export const ConversationHeaderWithDetails = () => {
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
   
- const conversation=useSelector(getSelectedConversation)
-console.log('conversation ::selection ::1',conversation,selectedConvoKey);
+//  const conversation=useSelector(getSelectedConversation)
+// console.log('conversation ::selection ::1',conversation,selectedConvoKey);
   const dispatch = useDispatch();
 
   if (!selectedConvoKey) {

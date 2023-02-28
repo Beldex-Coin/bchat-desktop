@@ -380,7 +380,6 @@ export async function innerHandleSwarmContentMessage(
     window.log.info('innerHandleSwarmContentMessage');
 
     const content = SignalService.Content.decode(new Uint8Array(plaintext));
-    console.log("content innerHandleSwarmContentMessage ::",content);
     perfEnd(`SignalService.Content.decode-${envelope.id}`, 'SignalService.Content.decode');
 
     perfStart(`isBlocked-${envelope.id}`);
@@ -421,16 +420,11 @@ export async function innerHandleSwarmContentMessage(
       );
     }
 
-    console.log("content 1::",content);
-
     if (content.dataMessage) {
-    console.log("content 2::",content);
 
       if (content.dataMessage.profileKey && content.dataMessage.profileKey.length === 0) {
         content.dataMessage.profileKey = null;
       }
-    console.log("content 3::",content);
-
       perfStart(`handleSwarmDataMessage-${envelope.id}`);
       await handleSwarmDataMessage(
         envelope,

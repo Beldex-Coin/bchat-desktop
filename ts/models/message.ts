@@ -87,15 +87,12 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
   constructor(attributes: MessageAttributesOptionals & { skipTimerInit?: boolean }) {
     const filledAttrs = fillMessageAttributesWithDefaults(attributes);
     super(filledAttrs);
-    console.log('filledAttrs ::',filledAttrs);
-
     if (!this.attributes.id) {
       throw new Error('A message always needs to have an id.');
     }
     if (!this.attributes.conversationId) {
       throw new Error('A message always needs to have an conversationId.');
     }
-
     // this.on('expired', this.onExpired);
     if (!attributes.skipTimerInit) {
       void this.setToExpire();
@@ -127,10 +124,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (propsForMessageRequestResponse) {
       messageProps.propsForMessageRequestResponse = propsForMessageRequestResponse;
     }
-    console.log('PropsForPayment 0::',propsForPayment);
     if (propsForPayment) {
       messageProps.propsForPayment = propsForPayment;
-      console.log("PropsForPayment 1::",messageProps)
     }
     if (propsForGroupInvitation) {
       messageProps.propsForGroupInvitation = propsForGroupInvitation;
@@ -151,7 +146,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         isUnread: this.isUnread(),
       };
     }
-    console.log("PropsForPayment 2::",messageProps)
 
     perfEnd(`getPropsMessage-${this.id}`, 'getPropsMessage');
     return messageProps;
@@ -1290,9 +1284,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           getConversationController().getContactProfileNameOrFullPubKey(pubKey)
         );
 
-        if (names.length > 1) {
-          console.log("names names ::",names);
-          
+        if (names.length > 1) {          
           messages.push(window.i18n('multipleJoinedTheGroup', [names.join(', ')]));
         } else {
           messages.push(window.i18n('joinedTheGroup', names));

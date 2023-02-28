@@ -9,7 +9,6 @@ import { shell } from 'electron/common';
 
 export const PaymentMessage = (props: PropsForPayment) => {
   const { messageId, receivedAt, isUnread } = props;
-  // console.log('props.GroupInvitation ::',props)
   const classes = ['payment'];
 
   if (props.direction === 'outgoing') {
