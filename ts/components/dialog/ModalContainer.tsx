@@ -97,7 +97,7 @@ export const ModalContainer: any = () => {
       {TransactionInitModalState && <TransactionInitModal />}
       {BchatSendConfirmState && <BchatSendConfirm {...BchatSendConfirmState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
-      {BchatWalletPasswordModalState && <BchatWalletPasswordModal />}
+      {BchatWalletPasswordModalState && <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />}
       {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
     </>
   );

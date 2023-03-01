@@ -61,6 +61,9 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
       break;
+      case SectionType.Wallet:
+      label = window.i18n('wallet');
+      break;
     case SectionType.Message:
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')

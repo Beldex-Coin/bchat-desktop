@@ -16,6 +16,7 @@ import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
 import {OverlayClosedGroup} from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
+import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
 
 
@@ -76,6 +77,10 @@ const InnerLeftPaneMessageSection = () => {
   
   if (focusedSection === SectionType.Opengroup) {
     return<OverlayOpenGroup />;
+  }
+
+  if (focusedSection === SectionType.Wallet) {
+    return<AddressBook from={"leftpane"} />;
   }
   
 

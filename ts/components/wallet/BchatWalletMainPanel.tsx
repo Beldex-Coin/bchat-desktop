@@ -76,14 +76,14 @@ export const WalletMainPanel = () => {
   if (WalletPage.AddressBook === focusedsettings) {
     return (
       <div className="wallet">
-        <AddressBook name={window.i18n('addressBook')} />
+        <AddressBook from={window.i18n('addressBook')} />
       </div>
     );
   }
   if (WalletPage.Contact === focusedsettings) {
     return (
       <div className="wallet">
-        <AddressBook name={window.i18n('contact')} />
+        <AddressBook from={window.i18n('contact')} />
       </div>
     );
   }

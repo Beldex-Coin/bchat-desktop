@@ -1266,26 +1266,109 @@ label {
     color: #9393b1;
   }
 
-  &-balance
-  {
-    color:#00C10D;
+  &-balance {
+    color: #00c10d;
     font-size: 12px;
-    font-family:$bchat-font-poppin-semibold;
-    
+    font-family: $bchat-font-poppin-semibold;
   }
-  &-unlocked-Balance 
-  {
-    color:#0093FF;
+  &-unlocked-Balance {
+    color: #0093ff;
     font-size: 12px;
-    font-family:$bchat-font-poppin-semibold;
-
+    font-family: $bchat-font-poppin-semibold;
   }
 
-  &-disableBalance
-  {
+  &-disableBalance {
     color: var(--color-text);
     font-size: 12px;
-    font-family:$bchat-font-poppin-semibold;
+    font-family: $bchat-font-poppin-semibold;
+  }
+}
+
+.addressBook {
+  &-header {
+    &-txt {
+      font-family: $bchat-font-poppin-semibold;
+      margin-left: 10px;
+      font-size: 15px;
+    }
+  }
+  &-wholeBox {
+    height: calc(83vh - 30px);
+    &-contentBox {
+      background-color: var(--color-WalcontentBg);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      &-nameBtn {
+        display: inline-block;
+        min-width: 130px;
+        background-color: #159b24;
+        padding: 4px 27px;
+        border-radius: 3px;
+        /* margin-bottom: 10px; */
+        font-family: 'poppin-semibold';
+        color: #fff;
+      }
+      &-addresstxt {
+        font-family: $bchat-font-poppin-light;
+        font-size: 12px;
+        margin-right: 10px;
+      }
+
+      .ellipse {
+        width: 321px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &-sendBtn,
+      &-copyBtn {
+        width: 100px;
+        background-color: #2879fb;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-family: $bchat-font-poppin-semibold;
+        cursor: pointer;
+      }
+      &-sendBtn {
+        color: #fff;
+
+        &:hover {
+          background-color: #0b9fff;
+        }
+      }
+      &-copyBtn {
+        background-color: var(--color-walAddressBookCopy);
+        margin-left: 10px;
+        &:hover {
+          background-color: var(--color-addressbook-copy-hover);
+        }
+      }
+    }
+  }
+
+  &-emptyAddressBook {
+    margin: 0 auto;
+    background-image: var(--image-EmptyAddressBook);
+    // height: 100%;
+    height: 80%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90% 98%;
+
+    &-content {
+      font-family: $bchat-font-poppin-medium;
+      // font-size: 15px;
+      color: var(--color-disableText);
+      // padding-top: 50%;
+      margin: 0;
+    }
   }
 }
 
@@ -2164,86 +2247,6 @@ label {
         }
       }
     }
-    &-addressBook {
-      &-header {
-        &-txt {
-          font-family: $bchat-font-poppin-semibold;
-          margin-left: 10px;
-          font-size: 15px;
-        }
-      }
-      &-wholeBox {
-        height: calc(83vh - 30px);
-        &-contentBox {
-          background-color: var(--color-WalcontentBg);
-          border-radius: 10px;
-          padding: 15px;
-          display: flex;
-          justify-content: space-between;
-          &-nameBtn {
-            display: inline-block;
-            min-width: 130px;
-            background-color: #159b24;
-            padding: 4px 27px;
-            border-radius: 3px;
-            /* margin-bottom: 10px; */
-            font-family: 'poppin-semibold';
-            color: #fff;
-          }
-          &-addresstxt {
-            font-family: $bchat-font-poppin-light;
-            font-size: 12px;
-            margin-right: 10px;
-          }
-
-          &-sendBtn,
-          &-copyBtn {
-            width: 100px;
-            background-color: #2879fb;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 5px;
-            font-family: $bchat-font-poppin-semibold;
-            cursor: pointer;
-          }
-          &-sendBtn {
-            color: #fff;
-
-            &:hover {
-              background-color: #0b9fff;
-            }
-          }
-          &-copyBtn {
-            background-color: var(--color-walAddressBookCopy);
-            margin-left: 10px;
-            &:hover {
-              background-color: var(--color-addressbook-copy-hover);
-            }
-          }
-        }
-      }
-
-      &-emptyAddressBook {
-        margin: 0 auto;
-        background-image: var(--image-EmptyAddressBook);
-        // height: 100%;
-        height: 80%;
-        width: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 90% 98%;
-
-        &-content {
-          font-family: $bchat-font-poppin-medium;
-          // font-size: 15px;
-          color: var(--color-disableText);
-          // padding-top: 50%;
-          margin: 0;
-        }
-      }
-    }
 
     &-settings {
       &-tabBox {
@@ -2508,9 +2511,6 @@ label {
         font-size: 12px;
         color: #9393b1;
       }
-     
-      
-
     }
     &-syncing {
       width: 100%;
