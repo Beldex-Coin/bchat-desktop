@@ -325,7 +325,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-disableText', darkDisableText);
   document.documentElement.style.setProperty('--color-toast-success', darkToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
-  document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
+  document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', darkCopyHover);
   document.documentElement.style.setProperty('--color-add-member', darkAddMembers);
   document.documentElement.style.setProperty('--color-profile-close', darkProfileClose);
@@ -691,7 +691,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-clearBtn', lightClearBtn);
   document.documentElement.style.setProperty('--color-toast-success', lightToastSuccessMessage);
   document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
-  document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
+  document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', lightCopyHover);
   document.documentElement.style.setProperty(
     '--color-addressbook-copy-hover',
@@ -867,7 +867,7 @@ export const BchatGlobalStyles = createGlobalStyle`
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};
-    --color-caret:${darkColorCellBackground};
+    --color-caret:${lightColorCellBackground};
     --color-copy-hover:${darkCopyHover};
     --color-add-member:${lightAddMembers};
     --color-profile-close: ${darkProfileClose};

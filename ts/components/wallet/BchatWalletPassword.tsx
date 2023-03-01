@@ -113,7 +113,8 @@ export const WalletPassword = (props: any) => {
   }
 
   return (
-    <div className="wallet-walletPassword">
+    
+    <div className="wallet-walletPassword"> 
       <div className="wallet-walletPassword-contentBox">
         {loading && (
           <Loader>

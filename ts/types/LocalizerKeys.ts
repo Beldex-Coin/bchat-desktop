@@ -10,6 +10,7 @@ export type LocalizerKeys =
   | 'filterPlaceHolder'
   | 'filterAll'
   | 'addressBook'
+  | 'wallet'
   | 'receiveBDX'
   | 'hintReceiveBDX'
   | 'removePassword'

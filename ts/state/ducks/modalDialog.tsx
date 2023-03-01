@@ -41,7 +41,7 @@ export type walletSettingMiniModalState={
 export type TransactionInitModalState={} | null;
 export type WalletSendConfirmState=any | null;
 export type BchatUpdateInstruntionState=any | null;
-export type BchatWalletPasswordModalState={} |null;
+export type BchatWalletPasswordModalState={from?:string} |null;
 export type BchatAlertConfirmModalState=any |null;
 
 

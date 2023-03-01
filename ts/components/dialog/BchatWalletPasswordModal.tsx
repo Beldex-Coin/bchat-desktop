@@ -14,9 +14,10 @@ import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { getConversationById } from '../../data/data';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
+import { WalletPassword } from '../wallet/BchatWalletPassword';
 
 
-export const BchatWalletPasswordModal = () => {
+export const BchatWalletPasswordModal = (props: any) => {
     const dispatch = useDispatch()
 
     const [password, setPassword] = useState('')
@@ -26,8 +27,8 @@ export const BchatWalletPasswordModal = () => {
         dispatch(updateBchatWalletPasswordModal(null))
 
     };
-  
-    
+
+
     useEffect(() => {
         deamonvalidation();
 
@@ -68,7 +69,7 @@ export const BchatWalletPasswordModal = () => {
             submit();
         }
         return event.key === 'Enter';
-    });
+    }); 
     return (
         <BchatWrapperModal
             title={''}
@@ -77,9 +78,11 @@ export const BchatWalletPasswordModal = () => {
             showHeader={true}
             headerReverse={true}
         >
-            <div className="bchat-modal-walletPassword">
-                <div className="bchat-modal-walletPassword-contentBox">
-                    {/* {loading && (
+            {props.from === 'wallet' ? <WalletPassword /> :
+
+                <div className="bchat-modal-walletPassword">
+                    <div className="bchat-modal-walletPassword-contentBox">
+                        {/* {loading && (
           <Loader>
             <div className="bchat-modal-walletPassword-contentBox-loader">
               <img
@@ -89,37 +92,37 @@ export const BchatWalletPasswordModal = () => {
             </div>
           </Loader>
         )} */}
-                    {/* <SpacerLG /> */}
-                    {/* <SpacerLG /> */}
-                    <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
-                    <SpacerMD />
-                    <div className="bchat-modal-walletPassword-contentBox-headerBox">
-                        <BchatIcon iconType="lock" iconSize={'small'} />
-                        <span>{window.i18n('enterWalletPassword')}</span>
-                    </div>
-                    <SpacerMD />
-                    <div className="bchat-modal-walletPassword-contentBox-inputBox">
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    </div>
-                    <SpacerMD />
-                    <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
-                        {/* <span style={{ cursor: 'pointer' }}>
+                        {/* <SpacerLG /> */}
+                        {/* <SpacerLG /> */}
+                        <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
+                        <SpacerMD />
+                        <div className="bchat-modal-walletPassword-contentBox-headerBox">
+                            <BchatIcon iconType="lock" iconSize={'small'} />
+                            <span>{window.i18n('enterWalletPassword')}</span>
+                        </div>
+                        <SpacerMD />
+                        <div className="bchat-modal-walletPassword-contentBox-inputBox">
+                            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+                        </div>
+                        <SpacerMD />
+                        <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
+                            {/* <span style={{ cursor: 'pointer' }}>
                                 {window.i18n('forgotPassword')}
                             </span> */}
+                        </div>
+                        <SpacerMD />
+                        <div>
+                            <BchatButton
+                                text={window.i18n('continue')}
+                                buttonType={BchatButtonType.BrandOutline}
+                                buttonColor={BchatButtonColor.Green}
+                                onClick={() => submit()}
+                            />
+                        </div>
+                        <SpacerLG />
                     </div>
-                    <SpacerMD />
-                    <div>
-                        <BchatButton
-                            text={window.i18n('continue')}
-                            buttonType={BchatButtonType.BrandOutline}
-                            buttonColor={BchatButtonColor.Green}
-                            onClick={() => submit()}
-                        />
-                    </div>
-                    <SpacerLG />
                 </div>
-            </div>
-
+            }
         </BchatWrapperModal>
     );
 };

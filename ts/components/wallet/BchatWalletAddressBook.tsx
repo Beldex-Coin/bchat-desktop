@@ -13,6 +13,7 @@ import {
   useConversationBeldexAddress,
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
+import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
@@ -31,16 +32,16 @@ export const AddressBook = (props: any) => {
     return belAddress ? (
       <>
         <div
-          className={classNames(`wallet-addressBook-wholeBox-contentBox`)}
+          className={classNames(`addressBook-wholeBox-contentBox`)}
           style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
           onClick={() => window.i18n('addressBook') !== props.title && send(belAddress)}
         >
           <Flex container={true} flexDirection="column">
             <div>
-              <span className="wallet-addressBook-wholeBox-contentBox-nameBtn">{username}</span>
+              <span className="addressBook-wholeBox-contentBox-nameBtn">{username}</span>
             </div>
             <SpacerSM />
-            <div className="wallet-addressBook-wholeBox-contentBox-addresstxt">
+            <div className={classNames("addressBook-wholeBox-contentBox-addresstxt",props.title==="leftpane"&&"ellipse")}>
               {belAddress}
             </div>
           </Flex>
@@ -48,14 +49,14 @@ export const AddressBook = (props: any) => {
           {window.i18n('addressBook') === props.title && (
             <Flex container={true} flexDirection="row" alignItems="center">
               <div
-                className="wallet-addressBook-wholeBox-contentBox-sendBtn"
+                className="addressBook-wholeBox-contentBox-sendBtn"
                 onClick={() => send(belAddress)}
               >
                 <BchatIcon iconType="send" iconSize={'small'} iconRotation={309} />
                 <span>{window.i18n('send')}</span>
               </div>
               <div
-                className="wallet-addressBook-wholeBox-contentBox-copyBtn"
+                className="addressBook-wholeBox-contentBox-copyBtn"
                 onClick={() => copyBtn(belAddress)}
               >
                 <BchatIcon iconType="copy" iconSize={'small'} />
@@ -72,26 +73,39 @@ export const AddressBook = (props: any) => {
   };
 
   return (
-    <div className="wallet-addressBook">
-      <div style={{ cursor: 'pointer' }}>
-        <Flex container={true} alignItems="center">
-          <div onClick={() => dispatch(dashboard())}>
-            <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+    <div className="addressBook">
+      {
+        props.from === "leftpane" && <>
+          <LeftPaneSectionHeader />
+          <div className="addressBook-header-txt">
+            {window.i18n('contact')}
           </div>
-          <div className="wallet-addressBook-header-txt">
-            {props.name}
-          </div>
-        </Flex>
-      </div>
+        </>
+      }
+
+      {props.from !== "leftpane" &&
+        <div style={{ cursor: 'pointer' }}>
+
+          <Flex container={true} alignItems="center">
+            <div onClick={() => dispatch(dashboard())}>
+              <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+            </div>
+            <div className="addressBook-header-txt">
+              {props.from}
+            </div>
+          </Flex>
+        </div>
+      }
+
       <SpacerLG />
-      <div className="wallet-addressBook-wholeBox">
+      <div className="addressBook-wholeBox">
         {privateContactsPubkeys.length > 0 &&
-          privateContactsPubkeys.map(item => <AddressContent pubkey={item} title={props.name} />)}
+          privateContactsPubkeys.map(item => <AddressContent pubkey={item} title={props.from} />)}
         {privateContactsPubkeys.length == 0 ? (
           <>
-            <div className="wallet-addressBook-emptyAddressBook"></div>
-            <h4 className="wallet-addressBook-emptyAddressBook-content">
-              {window.i18n('addressBook') !== props.name
+            <div className="addressBook-emptyAddressBook"></div>
+            <h4 className="addressBook-emptyAddressBook-content">
+              {window.i18n('addressBook') !== props.from
                 ? window.i18n('emptyContact')
                 : window.i18n('emptyAddressBook')}
               <span style={{ marginLeft: '7px' }}>

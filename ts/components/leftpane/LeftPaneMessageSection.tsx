@@ -19,6 +19,7 @@ import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
 import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
+// import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
 
 export interface Props {
@@ -156,6 +157,8 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         return <OverlayMessage />;
       case 'message-requests':
         return <OverlayMessageRequest leftPane={true} />;
+      // case 'wallet':
+      //   return <AddressBook from={'leftpane'}  />
       default:
         return null;
     }
