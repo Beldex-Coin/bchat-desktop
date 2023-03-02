@@ -122,7 +122,6 @@ const Section = (props: { type: SectionType }) => {
       // dispatch(setOverlayMode(undefined))
     }
     else {
-      console.log('type:type', type);
       // message section
       dispatch(clearSearch());
       dispatch(showLeftPaneSection(type));

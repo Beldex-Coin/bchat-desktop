@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setting } from '../../state/ducks/walletSection';
+// import { setting } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD } from '../basic/Text';
@@ -13,8 +13,9 @@ import { ToastUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
 import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { updateBalance } from '../../state/ducks/wallet';
+// import { WalletSettings } from './BchatWalletSettings';
 
-export const NodeSetting = () => {
+export const NodeSetting = (props:any) => {
   const dispatch = useDispatch();
 
   const currentDeamon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
@@ -176,11 +177,13 @@ export const NodeSetting = () => {
     setVerifyDeamon({});
   }
 
+ 
+
   return (
     <div>
       <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
-          <div onClick={() => dispatch(setting())}>
+          <div onClick={() => props.onClick()} className='marginRight'>
             <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
           </div>
           <div className="wallet-addressBook-header-txt">{window.i18n('node')}</div>

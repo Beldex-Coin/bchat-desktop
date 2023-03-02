@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import { SectionType } from '../../state/ducks/section';
+import { SectionType, setOverlayMode } from '../../state/ducks/section';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { getLeftPaneLists } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
@@ -17,6 +17,7 @@ import {OverlayClosedGroup} from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
+import { BchatIcon } from '../icon/BchatIcon';
 
 
 
@@ -93,6 +94,24 @@ const InnerLeftPaneMessageSection = () => {
   return null;
 };
 
+const AddContactFloatingIcon=()=>{
+  const focusedSection = useSelector(getFocusedSection);
+  const overlayMode = useSelector(getOverlayMode);
+
+  if (focusedSection === SectionType.Message && overlayMode!=='message') {
+    // return <InnerLeftPaneMessageSection />;
+  return <div className='addContactFloating'>         
+    <div className='addContactFloating-content' 
+     data-tip="Add Contacts"
+     data-offset="{'right':60}"
+     data-place="bottom"
+     onClick={()=> window.inboxStore?.dispatch(setOverlayMode('message'))}
+    ><BchatIcon iconSize={23} iconType="chat" /></div>
+  </div>
+  }
+  return <></>
+}
+
 export const LeftPane = () => {
  
   return (
@@ -102,6 +121,7 @@ export const LeftPane = () => {
 
         <div className="module-left-pane">
           <LeftPaneSection />
+          <AddContactFloatingIcon />
           <ActionsPanel />
            
         </div>

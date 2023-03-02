@@ -5,7 +5,7 @@ import { SpacerLG } from '../basic/Text';
 import { AddressBook } from './BchatWalletAddressBook';
 import { WalletBalanceSection } from './BchatWalletBalanceSection';
 import { WalletHeader } from './BchatWalletHeader';
-import { WalletPassword } from './BchatWalletPassword';
+// import { WalletPassword } from './BchatWalletPassword';
 import { NodeSetting } from './BchatWalletNodeSetting';
 import { WalletPaymentSection } from './BchatWalletPaymentSection';
 import { ReceivedForm } from './BchatWalletReceivedForm';
@@ -16,7 +16,7 @@ import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
 import { daemon } from '../../wallet/daemon-rpc';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
-import { walletSettingsKey } from '../../data/settings-key';
+// import { walletSettingsKey } from '../../data/settings-key';
 
 
 export enum WalletPage {
@@ -39,7 +39,7 @@ export const WalletMainPanel = () => {
   const focusedsettings = useSelector((state: any) => state.walletFocused);
   const [amount, setAmount] = useState('');
   const [priority, setPriority] = useState(window.i18n('flash'));
-  const [passScreen, setPassScreen] = useState(true);
+  // const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
 
 
@@ -60,19 +60,19 @@ export const WalletMainPanel = () => {
     dispatch(updateSendAddress(emptyAddress));
 
   }
-  if (passScreen) {
-    return (
-      <div className="wallet">
-        <WalletPassword
-          onClick={() => {
-            const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-            ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
-            setPassScreen(!passScreen);
-          }}
-        />{' '}
-      </div>
-    );
-  }
+  // if (passScreen) {
+  //   return (
+  //     <div className="wallet">
+  //       <WalletPassword
+  //         onClick={() => {
+  //           const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
+  //           ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+  //           setPassScreen(!passScreen);
+  //         }}
+  //       />{' '}
+  //     </div>
+  //   );
+  // }
   if (WalletPage.AddressBook === focusedsettings) {
     return (
       <div className="wallet">
@@ -104,7 +104,7 @@ export const WalletMainPanel = () => {
 
   return (
     <div className="wallet">
-      {WalletPage.Dashboard === focusedsettings && (
+      {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
         <Dashboard
           amount={amount}
@@ -118,7 +118,7 @@ export const WalletMainPanel = () => {
           clearStates={() => clearStates()}
 
         />
-      )}
+      {/* )} */}
     </div>
   );
 };

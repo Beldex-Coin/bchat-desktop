@@ -15,6 +15,8 @@ import { getConversationById } from '../../data/data';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { WalletPassword } from '../wallet/BchatWalletPassword';
+import { clearSearch } from '../../state/ducks/search';
+import {  setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
 
 
 export const BchatWalletPasswordModal = (props: any) => {
@@ -24,8 +26,14 @@ export const BchatWalletPasswordModal = (props: any) => {
     const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
 
     const onClickClose = () => {
-        dispatch(updateBchatWalletPasswordModal(null))
-
+        if(props.from === 'wallet' )
+        {
+            backToChat();
+            dispatch(updateBchatWalletPasswordModal(null))
+        }
+        else{
+            dispatch(updateBchatWalletPasswordModal(null))
+        }
     };
 
 
@@ -70,6 +78,13 @@ export const BchatWalletPasswordModal = (props: any) => {
         }
         return event.key === 'Enter';
     }); 
+
+    function backToChat()
+    {
+        dispatch(clearSearch());
+        dispatch(setOverlayMode(undefined));
+        dispatch(showLeftPaneSection(0));
+    }
     return (
         <BchatWrapperModal
             title={''}

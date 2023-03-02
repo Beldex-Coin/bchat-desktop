@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { dashboard } from '../../state/ducks/walletSection';
+// import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon } from '../icon';
@@ -94,7 +94,7 @@ export const WalletPassword = (props: any) => {
       dispatch(updateSendAddress(emptyAddress));
       setLoading(false);
       props.onClick();
-      dispatch(dashboard());
+      // dispatch(dashboard());
     }
   }
   if (forgotPassword) {

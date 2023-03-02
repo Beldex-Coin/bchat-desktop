@@ -102,11 +102,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
     return (
       <div className="bchat-left-pane-section-content">
-        <LeftPaneSectionHeader
-          buttonClicked={() => {
-            window.inboxStore?.dispatch(setOverlayMode('message'));
-          }}
-        />
+        <LeftPaneSectionHeader/>
         {overlayMode ? this.renderClosableOverlay() : null}
         {overlayMode ? null : <>
           {this.renderConversations()}

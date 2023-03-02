@@ -23,6 +23,7 @@ export type LocalizerKeys =
   | 'gov'
   | 'stake'
   | 'node'
+  |'walletNode'
   | 'personal'
   | 'almostThere'
   | 'walletSyncingNow'

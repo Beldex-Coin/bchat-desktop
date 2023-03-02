@@ -124,7 +124,22 @@ $bchat-compose-margin: 20px;
     display: flex;
     height: 100vh;
   }
-
+  .addContactFloating {
+    position: absolute;
+    bottom: 75px;
+    left: 313px;
+    &-content {
+      width: 50px;
+      height: 50px;
+      background-color: #00be08;
+      display: flex;
+      /* align-content: center; */
+      justify-content: center;
+      align-items: center;
+      border-radius: 44px;
+      cursor: pointer;
+    }
+  }
   &__header {
     display: flex;
     flex-direction: row;
@@ -164,16 +179,16 @@ $bchat-compose-margin: 20px;
       margin-right: 18px;
     }
 
-    .addContact {
-      width: 25px;
-      height: 25px;
-      background-size: contain;
-      cursor: pointer;
-      background-repeat: no-repeat;
-      margin-top: 10px;
-      margin-right: 12px;
-      background-image: var(--image-addContact);
-    }
+    // .addContact {
+    //   width: 25px;
+    //   height: 25px;
+    //   background-size: contain;
+    //   cursor: pointer;
+    //   background-repeat: no-repeat;
+    //   margin-top: 10px;
+    //   margin-right: 12px;
+    //   background-image: var(--image-addContact);
+    // }
 
     .bchat-button {
       margin-inline-start: auto;

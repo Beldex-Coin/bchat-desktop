@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { walletSettingsKey } from '../../data/settings-key';
 import { ChangePasswordModal, walletSettingMiniModal } from '../../state/ducks/modalDialog';
 import { updateDecimalValue } from '../../state/ducks/walletConfig';
-import { dashboard, nodeSetting } from '../../state/ducks/walletSection';
+// import { dashboard } from '../../state/ducks/walletSection';
 import { getwalletDecimalValue } from '../../state/selectors/walletConfig';
 import { wallet } from '../../wallet/wallet-rpc';
 
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
+import { NodeSetting } from './BchatWalletNodeSetting';
+// import { showSettingsSection } from '../../state/ducks/section';
+// import { BchatSettingCategory } from '../settings/BchatSettings';
 
 export const WalletSettings = () => {
   const dispatch = useDispatch();
@@ -17,6 +20,8 @@ export const WalletSettings = () => {
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
+  const [nodeSetting,setNodeSetting]=useState(false);
+
   const syncProDone = window.getSettingValue('syncStatus');
   const [fiatCurrency, setFiatCurrency] = useState(
     window.getSettingValue(walletSettingsKey.settingsFiatCurrency)
@@ -65,16 +70,22 @@ export const WalletSettings = () => {
 
     setSaveRecipient(!saveRecipient);
   }
+  if(nodeSetting)
+  {
+    return<div className='wallet'>
+    <NodeSetting  onClick={()=>setNodeSetting(false)}/>
+  </div>
+  }
   return (
     <div className="">
-      <div style={{ cursor: 'pointer' }}>
+      {/* <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
           <div onClick={() => dispatch(dashboard())}>
             <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
           </div>
           <div className="wallet-addressBook-header-txt">{window.i18n('settingsHeader')}</div>
         </Flex>
-      </div>
+      </div> */}
       <SpacerLG />
       <div className="wallet-settings-tabBox-subtle">{window.i18n('node')}</div>
       <SpacerXS />
@@ -85,7 +96,7 @@ export const WalletSettings = () => {
             justifyContent="space-between"
             padding="10px 0"
             cursor="pointer"
-            onClick={() => dispatch(nodeSetting())}
+            onClick={()=>setNodeSetting(true)}
           >
             <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
             <div style={{ cursor: 'pointer' }}>
