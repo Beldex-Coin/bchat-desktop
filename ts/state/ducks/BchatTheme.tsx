@@ -75,6 +75,7 @@ const darkWalletPriorityHover = '#303042';
 const darkWalletCopyHover = '#52505F';
 const darkAddMembers = '#313143';
 const darkProfileClose = '#242431';
+const darkChatTimestamp = '#FFFFFF';
 
 // for bchat
 const darkColorBg = black;
@@ -132,7 +133,7 @@ const darkBlockseletedUserBg = '##2C2C3E';
 
 const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
-const darkbubbleReceivedBg = '#34323f75';
+const darkbubbleReceivedBg = '#373746';
 
 const buttonColor = '#008C04';
 // const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
@@ -222,7 +223,10 @@ export const switchHtmlToDarkTheme = () => {
     '--color-received-message-background',
     darkColorReceivedMessageBg
   );
-  document.documentElement.style.setProperty('--color-received-message-background-hover', darkColorReceivedMessageBgHover);
+  document.documentElement.style.setProperty(
+    '--color-received-message-background-hover',
+    darkColorReceivedMessageBgHover
+  );
   document.documentElement.style.setProperty('--color-pill-divider-text', darkColorPillDividerText);
   document.documentElement.style.setProperty('--color-input-background', darkInputBackground);
 
@@ -329,6 +333,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-copy-hover', darkCopyHover);
   document.documentElement.style.setProperty('--color-add-member', darkAddMembers);
   document.documentElement.style.setProperty('--color-profile-close', darkProfileClose);
+  document.documentElement.style.setProperty('--color-chat-timestamp', darkChatTimestamp);
   document.documentElement.style.setProperty('--color-addressbook-copy-hover', darkAddressBookCopy);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', darkWalletCopyHover);
 
@@ -426,7 +431,7 @@ const lightInboxBackground = '#EDEDED';
 const lightLeftPaneOverlayBg = '#EDEDED';
 const lightConversationItemSelected = '#fff';
 const lightConversationItemHasUnread = '#EDEDED';
-const lightConversationList = '#f9f9f9';
+const lightConversationList = '#E6E6E6';
 
 const lightTextHighlight = `${black}88`;
 const lightForegroundPrimary = white;
@@ -496,7 +501,7 @@ const lightRightpaneSetting = '#f8f8f8';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
 const whiteAudioRecord = '#dcdbdb';
-const whiteBubbleReceivedBg = '#eaeaea';
+const whiteBubbleReceivedBg = '#E2E2E2';
 const lightBlockseletedUserBg = '#FFFFFF';
 const lightDisableBorder = '#C5C5C5';
 const lightDownArrowBg = '#FFFFFF';
@@ -530,6 +535,7 @@ const lightWalletCopyHover = '#EBEBEB';
 const lightAddressBookCopy = '#FFFFFF';
 const lightAddMembers = '#F2F2F2';
 const lightProfileClose = '#DDDDDD';
+const lightChattimestamp = '#222222';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -596,7 +602,10 @@ export const switchHtmlToLightTheme = () => {
     '--color-received-message-background',
     lightColorReceivedMessageBg
   );
-  document.documentElement.style.setProperty('--color-received-message-background-hover', whiteColorReceivedMessageBgHover);
+  document.documentElement.style.setProperty(
+    '--color-received-message-background-hover',
+    whiteColorReceivedMessageBgHover
+  );
   document.documentElement.style.setProperty(
     '--color-pill-divider-text',
     lightColorPillDividerText
@@ -699,6 +708,7 @@ export const switchHtmlToLightTheme = () => {
   );
   document.documentElement.style.setProperty('--color-add-member', lightAddMembers);
   document.documentElement.style.setProperty('--color-profile-close', lightProfileClose);
+  document.documentElement.style.setProperty('--color-chat-timestamp', lightChattimestamp);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', lightWalletCopyHover);
   document.documentElement.style.setProperty('--image-DayNight', lightDayNight);
   document.documentElement.style.setProperty('--image-addContact', lightNewChat);
@@ -871,6 +881,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-copy-hover:${darkCopyHover};
     --color-add-member:${lightAddMembers};
     --color-profile-close: ${darkProfileClose};
+    --color-chat-timestamp:${darkChatTimestamp};
     --color-addressbook-copy-hover:${darkAddressBookCopy};
     --color-wallet-copy-hover:${darkWalletCopyHover};
     --color-WalcontentBg:${darkWalcontentBg};
