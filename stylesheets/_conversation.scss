@@ -17,15 +17,12 @@
 
 .payment {
   background-color: #128b17;
+  color: #FFFFFF;
   display: inline-block;
   margin: 4px 16px;
-  // padding: 4px;
   padding: 16px;
-
   border-radius: 15px;
-
   align-self: flex-start;
-
   box-shadow: none;
   cursor: pointer;
   &.invitation-outgoing {
