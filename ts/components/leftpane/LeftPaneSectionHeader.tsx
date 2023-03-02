@@ -40,7 +40,7 @@ import { clearSearch } from '../../state/ducks/search';
 //   font-family:$bchat-font-poppin-semibold;
 // `;
 
-export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
+export const LeftPaneSectionHeader = () => {
   // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
@@ -194,18 +194,18 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
         <Moon />
         <Settings />
 
-        {isMessageSection && !isMessageRequestOverlay && (
+        {/* {isMessageSection && !isMessageRequestOverlay && (
           <div
             onClick={props.buttonClicked}
             className="addContact"
             data-tip="Add Contacts"
             data-offset="{'right':60}"
             data-place="bottom"
-          >
+          > */}
             {/* <div className='addContactIcon'></div> */}
             {/* <img className="addContactIcon" /> */}
-          </div>
-        )}
+          {/* </div>
+        )} */}
       </div>
       <BchatToolTip effect="solid" />
     </Flex>

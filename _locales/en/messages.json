@@ -55,6 +55,7 @@
   "editMenuCopy": "Copy",
   "editMenuPaste": "Paste",
   "wallet":"Wallet",
+  "walletNode":"Wallet Node",
 
   "editMenuDeleteContact": "Delete Contact",
   "editMenuDeleteGroup": "Delete Group",

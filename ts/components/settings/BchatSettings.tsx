@@ -21,11 +21,12 @@ import { BchatRecoverySeed } from './BchatRecoverySeed';
 import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest';
 import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
-import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
+import { WalletMainPanel, } from '../wallet/BchatWalletMainPanel';
 // import { wallet } from '../../wallet/wallet-rpc'
 import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { WalletSettings } from '../wallet/BchatWalletSettings';
+// import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
 // import { startWallet } from "../../mains/wallet-rpc"
 
 export function getMediaPermissionsSettings() {
@@ -49,6 +50,7 @@ export enum BchatSettingCategory {
   Hops = 'hops',
   Wallet = 'wallet',
   WalletSettings = 'walletSettings',
+ 
 }
 
 export interface SettingsViewProps {
@@ -61,6 +63,7 @@ interface State {
   mediaSetting: boolean | null;
   callMediaSetting: boolean | null;
   shouldLockSettings: boolean | null;
+  nodeSetting: boolean | null;
 }
 
 // const BchatInfo = () => {
@@ -125,6 +128,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       mediaSetting: null,
       callMediaSetting: null,
       shouldLockSettings: true,
+      nodeSetting: false,
     };
 
     this.settingsViewRef = React.createRef();
@@ -199,9 +203,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     }
     if (category === BchatSettingCategory.WalletSettings) {
       return (
-        <div>
-          <WalletSettings />
-        </div>
+            <div>
+              <WalletSettings />
+            </div>      
       );
     }
     if (category === BchatSettingCategory.Notifications) {
@@ -257,18 +261,18 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       category === BchatSettingCategory.Appearance
         ? 'appearanceSettingsTitle'
         : category === BchatSettingCategory.Blocked
-        ? 'blockedSettingsTitle'
-        : category === BchatSettingCategory.RecoverySeed
-        ? 'recoveryPhrase'
-        : category === BchatSettingCategory.MessageRequests
-        ? 'messageRequests'
-        : category === BchatSettingCategory.Hops
-        ? 'hops'
-        : category === BchatSettingCategory.Wallet
-        ? 'WalletSettingsTitle'
-        : category === BchatSettingCategory.Notifications
-        ? 'notificationsSettingsTitle'
-        : 'privacySettingsTitle';
+          ? 'blockedSettingsTitle'
+          : category === BchatSettingCategory.RecoverySeed
+            ? 'recoveryPhrase'
+            : category === BchatSettingCategory.MessageRequests
+              ? 'messageRequests'
+              : category === BchatSettingCategory.Hops
+                ? 'hops'
+                : category === BchatSettingCategory.Wallet
+                  ? 'WalletSettingsTitle'
+                  : category === BchatSettingCategory.Notifications
+                    ? 'notificationsSettingsTitle'
+                      : 'privacySettingsTitle';
 
     return (
       <div className="bchat-settings">
