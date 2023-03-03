@@ -6,7 +6,7 @@ import { walletSendPage } from '../../state/ducks/walletInnerSection';
 import { dashboard } from '../../state/ducks/walletSection';
 import { getPrivateContactsPubkeys } from '../../state/selectors/conversations';
 import { Flex } from '../basic/Flex';
-import { SpacerLG, SpacerSM } from '../basic/Text';
+import { SpacerLG, SpacerSM, SpacerXS } from '../basic/Text';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 import { BchatIcon } from '../icon';
 import {
@@ -14,6 +14,7 @@ import {
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
@@ -31,18 +32,26 @@ export const AddressBook = (props: any) => {
     const belAddress = useConversationBeldexAddress(props.pubkey);
     return belAddress ? (
       <>
+
         <div
           className={classNames(`addressBook-wholeBox-contentBox`)}
           style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
           onClick={() => window.i18n('addressBook') !== props.title && send(belAddress)}
         >
+          {props.title === window.i18n('contact') &&
+            <div className='avatarBox'> <Avatar
+              size={AvatarSize.M}
+              pubkey={props.pubkey}
+            // onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
+            /></div>
+          }
           <Flex container={true} flexDirection="column">
             <div>
-              <span className="addressBook-wholeBox-contentBox-nameBtn">{username}</span>
+              <span className={classNames("addressBook-wholeBox-contentBox-nameBtn",props.title === window.i18n('contact') && 'contact')}>{username}</span>
             </div>
-            <SpacerSM />
-            <div className={classNames("addressBook-wholeBox-contentBox-addresstxt",props.title==="leftpane"&&"ellipse")}>
-              {belAddress}
+            <SpacerXS />
+            <div className={"addressBook-wholeBox-contentBox-addresstxt"}>
+              {props.title ===window.i18n('contact')? belAddress.slice(0, 70)+'...':belAddress}
             </div>
           </Flex>
 
@@ -75,7 +84,7 @@ export const AddressBook = (props: any) => {
   return (
     <div className="addressBook">
       {
-        props.from === "leftpane" && <>
+        props.from === window.i18n('contact') && <>
           <LeftPaneSectionHeader />
           <div className="addressBook-header-txt">
             {window.i18n('contact')}
@@ -83,7 +92,7 @@ export const AddressBook = (props: any) => {
         </>
       }
 
-      {props.from !== "leftpane" &&
+      {props.from !== window.i18n('contact') &&
         <div style={{ cursor: 'pointer' }}>
 
           <Flex container={true} alignItems="center">

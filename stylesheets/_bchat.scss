@@ -1310,18 +1310,30 @@ label {
         font-family: 'poppin-semibold';
         color: #fff;
       }
+      .contact {
+        font-family:$bchat-font-poppin-medium;  
+        background-color: unset;   
+        padding: unset;
+       }
       &-addresstxt {
         font-family: $bchat-font-poppin-light;
         font-size: 12px;
         margin-right: 10px;
       }
-
-      .ellipse {
-        width: 321px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+       
+      .avatarBox
+      {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
       }
+      // .ellipse {
+      //   width: 321px;
+      //   white-space: nowrap;
+      //   overflow: hidden;
+      //   text-overflow: ellipsis;
+      // }
 
       &-sendBtn,
       &-copyBtn {

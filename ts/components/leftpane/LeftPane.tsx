@@ -17,7 +17,7 @@ import {OverlayClosedGroup} from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
-import { BchatIcon } from '../icon/BchatIcon';
+// import { BchatIcon } from '../icon/BchatIcon';
 
 
 
@@ -81,7 +81,7 @@ const InnerLeftPaneMessageSection = () => {
   }
 
   if (focusedSection === SectionType.Wallet) {
-    return<AddressBook from={"leftpane"} />;
+    return<AddressBook from={window.i18n('contact')} />;
   }
   
 
@@ -106,7 +106,12 @@ const AddContactFloatingIcon=()=>{
      data-offset="{'right':60}"
      data-place="bottom"
      onClick={()=> window.inboxStore?.dispatch(setOverlayMode('message'))}
-    ><BchatIcon iconSize={23} iconType="chat" /></div>
+    >
+      <img src="images/wallet/addNewChat.svg"  style={{width:'23px',height:'23px'}} />
+
+      {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
+      {/* <img src={"addNewChat.svg"} /> */}
+      </div>
   </div>
   }
   return <></>

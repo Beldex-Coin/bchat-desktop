@@ -318,6 +318,11 @@ class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
+
+      console.log("restoreWallet deterministic::",restoreWallet)
+     console.log("restoreWallet deterministic:: 1",restore_height,displayName,password,
+     userRecoveryPhrase,)
+
       if (restoreWallet.hasOwnProperty('error')) {
         restoreWallet = await this.deleteWallet(
           displayName,

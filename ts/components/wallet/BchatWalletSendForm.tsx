@@ -10,7 +10,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
-import { contact } from '../../state/ducks/walletSection';
+// import { contact } from '../../state/ducks/walletSection';
 import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
@@ -245,7 +245,7 @@ export const SendForm = (props: any) => {
                 }}
                 maxLength={120}
               />
-              <BchatButton
+              {/* <BchatButton
                 text={window.i18n('contact')}
                 onClick={() => {
                   const updateAddress: any = address;
@@ -254,7 +254,7 @@ export const SendForm = (props: any) => {
                 }}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
-              />
+              /> */}
             </div>
           </Flex>
         </div>
