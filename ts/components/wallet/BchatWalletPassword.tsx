@@ -106,7 +106,7 @@ export const WalletPassword = (props: any) => {
     );
   }
 
-  if (daemonHeight > 0 && percentage < 99) {
+  if (daemonHeight > 0 && percentage < 99 && percentage >1 ) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
