@@ -68,7 +68,7 @@ const AvatarItem = () => {
       updateUserDetailsModal({
         conversationId: conversationId,
         userName: userName || '',
-        authorAvatarPath: avatarPath,
+        authorAvatarPath: avatarPath, 
       })
     );
   }
