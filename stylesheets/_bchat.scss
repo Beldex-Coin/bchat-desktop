@@ -756,7 +756,7 @@ label {
     // background-color: aliceblue;
     flex-direction: column;
     justify-content: center;
-
+    
     &-contentBox {
       width: 500px;
       // background-color: #2d2d3b;
@@ -1029,7 +1029,7 @@ label {
 .react-contexify {
   // be sure it is more than the one set for the More Infos screen of messages
   z-index: 30;
-  min-width: 215  px;
+  min-width: 215 px;
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   background: var(--color-cell-background);
   border-radius: 10px;
@@ -1311,18 +1311,17 @@ label {
         color: #fff;
       }
       .contact {
-        font-family:$bchat-font-poppin-medium;  
-        background-color: unset;   
+        font-family: $bchat-font-poppin-medium;
+        background-color: unset;
         padding: unset;
-       }
+      }
       &-addresstxt {
         font-family: $bchat-font-poppin-light;
         font-size: 12px;
         margin-right: 10px;
       }
-       
-      .avatarBox
-      {
+
+      .avatarBox {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1858,10 +1857,13 @@ label {
       flex-direction: column;
       justify-content: center;
 
+      
       &-contentBox {
         width: 500px;
         background-color: var(--color-WalcontentBg);
         border-radius: 10px;
+
+        
         &-walletImg {
           width: 25%;
           height: 103px;

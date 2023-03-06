@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { addressbook, setting } from '../../state/ducks/walletSection';
+import { addressbook } from '../../state/ducks/walletSection';
 import { BchatButtonColor } from '../basic/BchatButton';
-import { BchatIconButton, BchatIconSize, BchatIconType } from '../icon';
+import { BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
@@ -72,14 +72,14 @@ export const WalletHeader = (props: any) => {
             rescanModalDialog(!syncStatus, dispatch);
           }}
         />
-        <span style={{ marginLeft: '10px' }}>
+        {/* <span style={{ marginLeft: '10px' }}>
           <BchatIconButton
             iconSize="large"
             iconType="walletSetting"
             iconColor="#2879fb"
             onClick={() => { dispatch(setting()), props.clearStates() }}
           />
-        </span>
+        </span> */}
       </div>
     </div>
   );

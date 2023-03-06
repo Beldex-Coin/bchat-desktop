@@ -900,6 +900,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-confirmAddress:${darkConfirmAddress};
     --color-leave-button:${darkLeaveHover};
     --color-text:${darkColorText};
+
+  
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
