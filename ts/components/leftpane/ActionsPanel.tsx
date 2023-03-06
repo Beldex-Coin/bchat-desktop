@@ -36,7 +36,11 @@ import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmen
 
 import { DURATION } from '../../bchat/constants';
 import { conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
-import { editProfileModal, updateBchatWalletPasswordModal, updateConfirmModal } from '../../state/ducks/modalDialog';
+import {
+  editProfileModal,
+  updateBchatWalletPasswordModal,
+  updateConfirmModal,
+} from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { ModalContainer } from '../dialog/ModalContainer';
 import { debounce, isEmpty, isString } from 'lodash';
@@ -113,22 +117,21 @@ const Section = (props: { type: SectionType }) => {
     } else if (type === SectionType.Wallet) {
       // Show Path Indicator Modal
 
-       dispatch(showLeftPaneSection(type));
+      dispatch(showLeftPaneSection(type));
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      dispatch(updateBchatWalletPasswordModal({from:"wallet"}));
+      dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
 
       // dispatch(setOverlayMode(undefined))
-    }
-    else {
+    } else {
       // message section
       dispatch(clearSearch());
       dispatch(showLeftPaneSection(type));
       if (type == 3) {
         // dispatch(setOverlayMode('wallet'));
 
-         dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+        dispatch(showSettingsSection(BchatSettingCategory.Wallet));
       } else {
         dispatch(setOverlayMode(undefined));
       }
@@ -238,28 +241,35 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            {/* <BchatIconButton
               iconSize="medium"
               dataTestId="settings-section"
               iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
-            />
+            /> */}
+            <div style={{ cursor: 'pointer' }}>
+              <img
+                src="images/wallet/Wallet_Animated.png"
+                // className="bchat-text-logo"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </div>
           </div>
         </div>
       );
     default:
-      return null
-      // (
-        // <BchatIconButton
-        //   iconSize="medium"
-        //   iconType={'moon'}
-        //   dataTestId="theme-section"
-        //   iconColor={undefined}
-        //   notificationCount={unreadToShow}
-        //   onClick={handleClick}
-        // />
-      // );
+      return null;
+    // (
+    // <BchatIconButton
+    //   iconSize="medium"
+    //   iconType={'moon'}
+    //   dataTestId="theme-section"
+    //   iconColor={undefined}
+    //   notificationCount={unreadToShow}
+    //   onClick={handleClick}
+    // />
+    // );
   }
 };
 
@@ -488,7 +498,6 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Opengroup} />
 
         <Section type={SectionType.Wallet} />
-
 
         <Section type={SectionType.Settings} />
 
