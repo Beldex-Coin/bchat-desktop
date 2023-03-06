@@ -16,24 +16,26 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { WalletPassword } from '../wallet/BchatWalletPassword';
 import { clearSearch } from '../../state/ducks/search';
-import {  setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
+import { setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
+// import styled from 'styled-components';
 
 
 export const BchatWalletPasswordModal = (props: any) => {
     const dispatch = useDispatch()
+    // const [loading, setLoading] = useState(true);
 
     const [password, setPassword] = useState('')
     const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
 
     const onClickClose = () => {
-        if(props.from === 'wallet' )
-        {
-            backToChat();
-            dispatch(updateBchatWalletPasswordModal(null))
-        }
-        else{
-            dispatch(updateBchatWalletPasswordModal(null))
-        }
+        // if(props.from === 'wallet' )
+        // {
+        // backToChat();
+        // dispatch(updateBchatWalletPasswordModal(null))
+        // }
+        // else{
+        dispatch(updateBchatWalletPasswordModal(null))
+        // }
     };
 
 
@@ -77,36 +79,38 @@ export const BchatWalletPasswordModal = (props: any) => {
             submit();
         }
         return event.key === 'Enter';
-    }); 
+    });
 
-    function backToChat()
-    {
+    function backToChat() {
         dispatch(clearSearch());
         dispatch(setOverlayMode(undefined));
         dispatch(showLeftPaneSection(0));
+        dispatch(updateBchatWalletPasswordModal(null))
+
     }
+
     return (
         <BchatWrapperModal
             title={''}
             onClose={onClickClose}
-            showExitIcon={true}
-            showHeader={true}
-            headerReverse={true}
+            showExitIcon={props.from === 'wallet' ? false : true}
+            showHeader={props.from === 'wallet' ? false : true}
+            headerReverse={props.from === 'wallet' ? false : true}
         >
-            {props.from === 'wallet' ? <WalletPassword /> :
+            {props.from === 'wallet' ? <WalletPassword onClickClose={backToChat} /> :
 
                 <div className="bchat-modal-walletPassword">
                     <div className="bchat-modal-walletPassword-contentBox">
                         {/* {loading && (
-          <Loader>
-            <div className="bchat-modal-walletPassword-contentBox-loader">
-              <img
-                src={'images/bchat/Load_animation.gif'}
-                style={{ width: '150px', height: '150px' }}
-              />
-            </div>
-          </Loader>
-        )} */}
+                            <Loader>
+                                <div className="bchat-modal-walletPassword-contentBox-loader">
+                                    <img
+                                        src={'images/bchat/Load_animation.gif'}
+                                        style={{ width: '150px', height: '150px' }}
+                                    />
+                                </div>
+                            </Loader>
+                        )} */}
                         {/* <SpacerLG /> */}
                         {/* <SpacerLG /> */}
                         <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
@@ -141,3 +145,15 @@ export const BchatWalletPasswordModal = (props: any) => {
         </BchatWrapperModal>
     );
 };
+
+// const Loader = styled.div`
+//     position: absolute;
+//     // top: 0;
+//     display: flex;
+//     // justify-content: center;
+//     /* width: 100%; */
+//     // width: 100Vw;
+//     // height: 100%;
+//     align-items: center;
+//     z-index: 101;
+//   `;

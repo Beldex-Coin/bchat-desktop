@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerLG, SpacerMD } from '../basic/Text';
-import { BchatIcon } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { updateDecimalValue, updateSendAddress } from '../../state/ducks/walletConfig';
@@ -16,11 +16,12 @@ import { getConversationById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
 import styled from 'styled-components';
 import { useKey } from 'react-use';
+import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -84,6 +85,7 @@ export const WalletPassword = (props: any) => {
       profileName = UserDetails[userId].profileName;
     }
     setLoading(true);
+    console.log("profileName ::", profileName, password)
     let openWallet: any = await wallet.openWallet(profileName, password);
     if (openWallet.hasOwnProperty('error')) {
       setLoading(false);
@@ -92,6 +94,7 @@ export const WalletPassword = (props: any) => {
     } else {
       let emptyAddress: any = '';
       dispatch(updateSendAddress(emptyAddress));
+      dispatch(updateBchatWalletPasswordModal(null))
       setLoading(false);
       props.onClick();
       // dispatch(dashboard());
@@ -105,17 +108,20 @@ export const WalletPassword = (props: any) => {
       />
     );
   }
+  // if (true) {
 
-  if (daemonHeight > 0 && percentage < 99 && percentage >1 ) {
+  if (daemonHeight > 0 && percentage < 99 && percentage > 1) {
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
     );
   }
 
   return (
-    
-    <div className="wallet-walletPassword"> 
+
+    <div className="wallet-walletPassword">
+
       <div className="wallet-walletPassword-contentBox">
+
         {loading && (
           <Loader>
             <div className="wallet-walletPassword-contentBox-loader">
@@ -126,6 +132,12 @@ export const WalletPassword = (props: any) => {
             </div>
           </Loader>
         )}
+        <BchatIconButton
+          iconType="exit"
+          iconSize="small"
+          onClick={props.onClickClose}
+          dataTestId="modal-close-button"
+        />
         <SpacerLG />
         <SpacerLG />
         <div className="wallet-walletPassword-contentBox-walletImg"></div>

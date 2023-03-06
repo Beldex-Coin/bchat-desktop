@@ -9,7 +9,10 @@ export const fileServerV2URL = 'http://fs1.rpcnode.stream';
 
 export const fileServerV2PubKey =
   'f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c';
-
+  
+  // export const fileServerV2URL = 'http://13.233.252.86';
+  // export const fileServerV2PubKey =
+  //   '51a8cd2e8a2c7e012d2ed4e0a24b5ed26f6f4f5b89e0d9d9c8856a5fd7140314';
 export type FileServerV2Request = {
   method: 'GET' | 'POST' | 'DELETE' | 'PUT';
   endpoint: string;
@@ -20,6 +23,7 @@ export type FileServerV2Request = {
 
 const FILES_ENDPOINT = 'files';
 const RELEASE_VERSION_ENDPOINT = 'bchat_version';
+
 
 // Disable this if you don't want to use the file server v2 for sending
 // Receiving is always enabled if the attachments url matches a fsv2 url
@@ -142,7 +146,6 @@ export const buildUrl = (request: FileServerV2Request | OpenGroupV2Request): URL
     return null;
   }
 };
-
 /**
  * Fetch the latest desktop release available on github from the fileserver.
  * This call is onion routed and so do not expose our ip to github nor the file server.
@@ -157,9 +160,13 @@ export const getLatestDesktopReleaseFileToFsV2 = async (): Promise<string | null
     endpoint: RELEASE_VERSION_ENDPOINT,
     queryParams,
   };
-
+  console.log('fileserver::0', request);
   const result = await sendApiV2Request(request);
+  console.log('fileserver::1', result);
+
   const statusCode = parseStatusCodeFromOnionRequest(result);
+  console.log('fileserver::2', statusCode);
+
   if (statusCode !== 200) {
     return null;
   }
