@@ -15,8 +15,7 @@
     align-items: center;
   }
 
-  .wallet
-  {
+  .wallet {
     &-walletPassword {
       align-items: center;
       display: flex;
@@ -24,8 +23,7 @@
       // height: 87vh;
       flex-direction: column;
       justify-content: center;
-      .progressSyncBox
-      {
+      .progressSyncBox {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -35,7 +33,13 @@
         width: 500px;
         // background-color: var(--color-WalcontentBg);
         border-radius: 10px;
-       
+
+        .exitBtn {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 12px;
+          margin-top: 10px;
+        }
         .progress {
           width: 70px;
           .CircularProgressbar {
@@ -50,30 +54,30 @@
              */
             vertical-align: middle;
           }
-          
+
           .CircularProgressbar .CircularProgressbar-path {
-            stroke:#00CA00;
+            stroke: #00ca00;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.5s ease 0s;
           }
-          
+
           .CircularProgressbar .CircularProgressbar-trail {
             stroke: #d6d6d6;
             /* Used when trail is not full diameter, i.e. when props.circleRatio is set */
             stroke-linecap: round;
           }
-          
+
           .CircularProgressbar .CircularProgressbar-text {
             fill: #3e98c7;
             font-size: 20px;
             dominant-baseline: middle;
             text-anchor: middle;
           }
-          
+
           .CircularProgressbar .CircularProgressbar-background {
             fill: #d6d6d6;
           }
-          
+
           /*
            * Sample background styles. Use these with e.g.:
            *
@@ -86,81 +90,80 @@
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-background {
             fill: #3e98c7;
           }
-          
+
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text {
             fill: #fff;
           }
-          
+
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path {
             stroke: #fff;
           }
-          
+
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
             stroke: transparent;
           }
-        //   .circle-wrap {
-        //     // margin: 150px auto;
-        //     width: 150px;
-        //     height: 150px;
-        //     background: var(--color-inbox-background);
-        //     border-radius: 50%;
-        //     // border: 1px solid #cdcbd0;
-        //   }
-        //   .circle{
-        //     position: relative;
-        //   }
-        //   .circle-wrap .circle .mask,
-        //   .circle-wrap .circle .fill {
-        //     width: 150px;
-        //     height: 150px;
-        //     position: absolute;
-        //     border-radius: 50%;
-        //   }
-          
-        //   .circle-wrap .circle .mask {
-        //     clip: rect(0px, 150px, 150px, 74px);
-        //   }
-          
-        //   .circle-wrap .inside-circle {
-        //     width: 122px;
-        //     height: 122px;
-        //     border-radius: 50%;
-        //     background: var(--color-smModal-bg);
-        //     line-height: 120px;
-        //     text-align: center;
-        //     margin-top: 14px;
-        //     margin-left: 14px;
-        //     // color: #1e51d;
-        //     position: absolute;
-        //     z-index: 100;
-        //     font-weight: 700;
-        //     font-size: 2em;
-        //   }
-          
-        //   /* color animation */
-          
-        //   /* 3rd progress bar */
-        //   .mask .fill {
-        //     clip: rect(0px, 75px, 150px, 0px);
-        //     background-color: #00CA00;
-        //   }
-          
-        //   .mask.full,
-        //   .circle .fill {
-        //     animation: fill ease-in-out 3s;
-        //     transform: rotate(10deg);
-        //   }
-          
-        //   @keyframes fill{
-        //     0% {
-        //       transform: rotate(0deg);
-        //     }
-        //     100% {
-        //       transform: rotate(135deg);
-        //     }
-        //   }
-          
-         }
+          //   .circle-wrap {
+          //     // margin: 150px auto;
+          //     width: 150px;
+          //     height: 150px;
+          //     background: var(--color-inbox-background);
+          //     border-radius: 50%;
+          //     // border: 1px solid #cdcbd0;
+          //   }
+          //   .circle{
+          //     position: relative;
+          //   }
+          //   .circle-wrap .circle .mask,
+          //   .circle-wrap .circle .fill {
+          //     width: 150px;
+          //     height: 150px;
+          //     position: absolute;
+          //     border-radius: 50%;
+          //   }
+
+          //   .circle-wrap .circle .mask {
+          //     clip: rect(0px, 150px, 150px, 74px);
+          //   }
+
+          //   .circle-wrap .inside-circle {
+          //     width: 122px;
+          //     height: 122px;
+          //     border-radius: 50%;
+          //     background: var(--color-smModal-bg);
+          //     line-height: 120px;
+          //     text-align: center;
+          //     margin-top: 14px;
+          //     margin-left: 14px;
+          //     // color: #1e51d;
+          //     position: absolute;
+          //     z-index: 100;
+          //     font-weight: 700;
+          //     font-size: 2em;
+          //   }
+
+          //   /* color animation */
+
+          //   /* 3rd progress bar */
+          //   .mask .fill {
+          //     clip: rect(0px, 75px, 150px, 0px);
+          //     background-color: #00CA00;
+          //   }
+
+          //   .mask.full,
+          //   .circle .fill {
+          //     animation: fill ease-in-out 3s;
+          //     transform: rotate(10deg);
+          //   }
+
+          //   @keyframes fill{
+          //     0% {
+          //       transform: rotate(0deg);
+          //     }
+          //     100% {
+          //       transform: rotate(135deg);
+          //     }
+          //   }
+        }
 
         &-walletImg {
           width: 25%;
@@ -195,7 +198,7 @@
         &-loader,
         &-forgotpasswordLoader {
           width: 500px;
-          height: 343px;
+          height: 360px;
           background-color: rgba(0, 0, 0, 0.8);
           border-radius: 10px;
           z-index: 99;
@@ -226,7 +229,7 @@
         text-align: center;
         font-family: $bchat-font-poppins-bold;
         font-size: 20px;
-        color: #1BB51E;;
+        color: #1bb51e;
       }
       &-barBg {
         width: 100%;
@@ -352,7 +355,6 @@
     overflow: auto;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
   }
-
 
   .contentUpdateModal {
     // max-width: 654px;

@@ -139,6 +139,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentDidMount() {
     window.addEventListener('keyup', this.onKeyUp);
+    deamonvalidation();
 
     const mediaSetting = getMediaPermissionsSettings();
     const callMediaSetting = getCallMediaPermissionsSettings();
@@ -149,6 +150,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentWillUnmount() {
     window.removeEventListener('keyup', this.onKeyUp);
+    deamonvalidation();
+
   }
 
   /* tslint:disable-next-line:max-func-body-length */
@@ -202,8 +205,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       return <WalletMainPanel />;
     }
     if (category === BchatSettingCategory.WalletSettings) {
+
       return (
-            <div>
+            <div>         
               <WalletSettings />
             </div>      
       );

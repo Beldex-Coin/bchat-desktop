@@ -21,7 +21,7 @@ import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userId = useSelector((state: any) => state.user.ourNumber);
   const UserDetails = useSelector((state: any) => state.conversations.conversationLookup);
@@ -132,14 +132,16 @@ export const WalletPassword = (props: any) => {
             </div>
           </Loader>
         )}
-        <BchatIconButton
-          iconType="exit"
-          iconSize="small"
-          onClick={props.onClickClose}
-          dataTestId="modal-close-button"
-        />
-        <SpacerLG />
-        <SpacerLG />
+        <div className='exitBtn'>
+          <BchatIconButton
+            iconType="exit"
+            iconSize="small"
+            onClick={props.onClickClose}
+            dataTestId="modal-close-button"
+          />
+        </div>
+        {/* <SpacerLG /> */}
+        {/* <SpacerLG /> */}
         <div className="wallet-walletPassword-contentBox-walletImg"></div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-headerBox">
