@@ -2,7 +2,7 @@
   "name": "bchat-desktop",
   "productName": "BChat",
   "description": "Private messaging from your desktop",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "license": "GPL-3.0",
   "author": {
     "name": "Beldex team",
@@ -108,6 +108,7 @@
     "queue-promise": "^2.2.1",
     "rc-slider": "^8.7.1",
     "react": "^17.0.2",
+    "react-circular-progressbar": "^2.1.0",
     "react-contexify": "5.0.0",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
