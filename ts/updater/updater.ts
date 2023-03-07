@@ -235,5 +235,5 @@ async function canAutoUpdate(): Promise<boolean> {
 }
 
 function insertInto(a:any){
-  fs.appendFileSync(`${os.homedir()}/Desktop/updateLog.json`,`${a}`+'\n', 'utf8');
+  fs.appendFileSync(`${os.homedir()}/updateLog.json`,`${a}`+'\n', 'utf8');
 }

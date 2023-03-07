@@ -69,6 +69,7 @@ import { getWalletSyncBarShowInChat } from '../../../state/selectors/walletConfi
 import { wallet } from '../../../wallet/wallet-rpc';
 import { saveRecipientAddress } from '../../../data/data';
 import { ConversationTypeEnum } from '../../../models/conversation';
+import { pushToastError } from '../../../bchat/utils/Toast';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -288,6 +289,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
   sendConfirmModal() {
     const messagePlaintext = cleanMentions(this.state.draft);
 
+    if(!this.props.selectedConversation?.walletAddress)
+    {
+      return pushToastError('', 'To send & receive BDX in-chat, start a conversation with your friend first.');
+    }
     window.inboxStore?.dispatch(
       updateSendConfirmModal({
         okTheme: BchatButtonColor.Green,
@@ -500,7 +505,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet ? (
           <SendFundButton onClick={()=>this.sendConfirmModal()} />
         ) : (
-          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
+          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()}  />
         )}
       </>
     );

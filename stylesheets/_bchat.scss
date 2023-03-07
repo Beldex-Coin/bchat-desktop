@@ -846,6 +846,9 @@ label {
   flex-direction: column;
 }
 
+.walletPassword .bchat-modal__body {
+ padding: 0;
+}
 .bchat-confirm {
   &-wrapper {
     .bchat-modal__body .bchat-modal__centered {

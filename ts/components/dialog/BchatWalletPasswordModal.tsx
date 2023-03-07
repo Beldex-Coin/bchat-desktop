@@ -96,6 +96,7 @@ export const BchatWalletPasswordModal = (props: any) => {
             showExitIcon={props.from === 'wallet' ? false : true}
             showHeader={props.from === 'wallet' ? false : true}
             headerReverse={props.from === 'wallet' ? false : true}
+            additionalClassName="walletPassword"
         >
             {props.from === 'wallet' ? <WalletPassword onClickClose={backToChat} /> :
 

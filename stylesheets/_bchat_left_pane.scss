@@ -131,13 +131,16 @@ $bchat-compose-margin: 20px;
     &-content {
       width: 50px;
       height: 50px;
-      background-color: #00be08;
+      background-color: var(--button-color);
       display: flex;
       /* align-content: center; */
       justify-content: center;
       align-items: center;
       border-radius: 44px;
       cursor: pointer;
+      &:hover {
+        background-color: $bchat-button-hovor-color;
+      }
     }
   }
   &__header {
