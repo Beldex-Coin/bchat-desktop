@@ -201,7 +201,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       return <BchatOnionPathScreen />;
     }
     if (category === BchatSettingCategory.Wallet) {
-      deamonvalidation();
+      // deamonvalidation();
       return <WalletMainPanel />;
     }
     if (category === BchatSettingCategory.WalletSettings) {

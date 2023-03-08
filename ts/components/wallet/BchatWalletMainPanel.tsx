@@ -13,7 +13,7 @@ import { WalletSettings } from './BchatWalletSettings';
 import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
 import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
-import { daemon } from '../../wallet/daemon-rpc';
+// import { daemon } from '../../wallet/daemon-rpc';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 // import { walletSettingsKey } from '../../data/settings-key';
@@ -126,7 +126,7 @@ export const WalletMainPanel = () => {
 export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
-  daemon.daemonHeartbeat();
+  // daemon.daemonHeartbeat();
 
 
 

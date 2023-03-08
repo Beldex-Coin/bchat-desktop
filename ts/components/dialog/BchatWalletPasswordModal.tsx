@@ -41,8 +41,12 @@ export const BchatWalletPasswordModal = (props: any) => {
 
     useEffect(() => {
         deamonvalidation();
-
+        startWalletRpc();
     }, [])
+    async function startWalletRpc() {
+        await wallet.startWallet('settings');
+        
+    }
     async function submit() {
         if (!password) {
             return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
