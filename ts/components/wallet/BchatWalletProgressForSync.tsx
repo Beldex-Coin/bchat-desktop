@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 // import 'react-circular-progressbar/dist/styles.css';
@@ -9,6 +9,8 @@ export const ProgressForSync = (props: any) => {
     <div className="wallet-walletPassword ">
       <div className="wallet-walletPassword-contentBox progressSyncBox">
         <SpacerLG />
+        {/* <SpacerLG /> */}
+
         {/* <div className="wallet-progressSync-presentage">{props.percentage}%</div>
         <section className="wallet-progressSync-barBg">
           <article className="bar" style={{ width: `${props.percentage}%` }}></article>
@@ -25,7 +27,7 @@ export const ProgressForSync = (props: any) => {
           </CircularProgressbarWithChildren>
           <SpacerMD />
           <div className="wallet-progressSync-presentage">{props.percentage}%</div>
-          <SpacerMD />
+          <SpacerLG />
           {/* <div className="circle-wrap" >
             <div className="circle">
               <div className="mask full">
@@ -45,12 +47,14 @@ export const ProgressForSync = (props: any) => {
           <span style={{ marginRight: '5px' }}>{window.i18n('walletSyncingNow')}</span>
           <BchatIcon iconType="reload" iconSize={'small'} />
         </div>
-        <SpacerXS />
+        <SpacerSM />
         <div className="wallet-progressSync-bRemaing">
           <span style={{ color: '#128B17', marginRight: '5px' }}>{props.remainingHeight}</span>
           <span>{window.i18n('blocksRemaining')}</span>
         </div>
         <SpacerLG />
+        <SpacerLG />
+
       </div>
     </div>
   );
