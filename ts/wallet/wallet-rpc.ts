@@ -319,9 +319,14 @@ class Wallet {
         seed: userRecoveryPhrase,
       });
 
-      console.log("restoreWallet deterministic::",restoreWallet)
-     console.log("restoreWallet deterministic:: 1",restore_height,displayName,password,
-     userRecoveryPhrase,)
+      // console.log('restoreWallet deterministic::', restoreWallet);
+      // console.log(
+      //   'restoreWallet deterministic:: 1',
+      //   restore_height,
+      //   displayName,
+      //   password,
+      //   userRecoveryPhrase
+      // );
 
       if (restoreWallet.hasOwnProperty('error')) {
         restoreWallet = await this.deleteWallet(
@@ -333,21 +338,20 @@ class Wallet {
       }
       if (restoreWallet.hasOwnProperty('result')) {
         if (!type) {
-              kill(64371)
-             .then(()=>console.log("port kill successFull"))
+          kill(64371)
+            .then(() => console.log('port kill successFull'))
             .catch(err => {
-             throw new HTTPError('beldex_rpc_port', err);
-            }); 
+              throw new HTTPError('beldex_rpc_port', err);
+            });
         }
       }
       return restoreWallet;
     } catch (error) {
-      
-      return {message:'exception during wallet-rpc', error:error}
+      return { message: 'exception during wallet-rpc', error: error };
       // throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
-  
+
   async saveWallet() {
     await this.sendRPC('store');
   }
@@ -562,14 +566,15 @@ class Wallet {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
     // }
+    console.log('filename-password:', filename,password);
     const openWallet = await this.heartRpc('open_wallet', {
       filename,
       password,
     });
+    console.log('openWallet:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }
-
     let address_txt_path = path.join(this.wallet_dir, filename + '.address.txt');
 
     if (!fs.existsSync(address_txt_path)) {

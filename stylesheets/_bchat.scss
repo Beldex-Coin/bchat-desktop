@@ -1320,8 +1320,8 @@ label {
       }
       &-addresstxt {
         font-family: $bchat-font-poppin-light;
-        font-size: 12px;
-        margin-right: 10px;
+        font-size: 11px;
+        margin-right: 12px;
       }
 
       .avatarBox {
@@ -1724,6 +1724,7 @@ label {
       background-color: var(--color-WalcontentBg);
       padding: 21px 30px;
       border-radius: 10px;
+      margin: 0px 15px;
     }
     .fontSemiBold {
       font-family: $bchat-font-poppin-semibold;

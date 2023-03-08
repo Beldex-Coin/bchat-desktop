@@ -6,7 +6,7 @@ import { walletSendPage } from '../../state/ducks/walletInnerSection';
 import { dashboard } from '../../state/ducks/walletSection';
 import { getPrivateContactsPubkeys } from '../../state/selectors/conversations';
 import { Flex } from '../basic/Flex';
-import { SpacerLG, SpacerSM, SpacerXS } from '../basic/Text';
+import { SpacerLG, SpacerXS } from '../basic/Text';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 import { BchatIcon } from '../icon';
 import {
@@ -37,7 +37,7 @@ export const AddressBook = (props: any) => {
           className={classNames(`addressBook-wholeBox-contentBox`)}
           style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
           onClick={() => window.i18n('addressBook') !== props.title && send(belAddress)}
-        >
+        > 
           {props.title === window.i18n('contact') &&
             <div className='avatarBox'> <Avatar
               size={AvatarSize.M}
@@ -74,7 +74,7 @@ export const AddressBook = (props: any) => {
             </Flex>
           )}
         </div>
-        <SpacerSM />
+        <SpacerXS />
       </>
     ) : (
       <></>
