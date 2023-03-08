@@ -17,6 +17,7 @@ import { UserUtils } from '../../bchat/utils';
 import styled from 'styled-components';
 import { useKey } from 'react-use';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { daemon } from '../../wallet/daemon-rpc';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -96,6 +97,7 @@ export const WalletPassword = (props: any) => {
       dispatch(updateSendAddress(emptyAddress));
       dispatch(updateBchatWalletPasswordModal(null))
       setLoading(false);
+      daemon.daemonHeartbeat();
       props.onClick();
       // dispatch(dashboard());
     }

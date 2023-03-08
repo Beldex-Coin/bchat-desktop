@@ -33,6 +33,7 @@ import { ReduxConversationType } from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
 import {
+  getIsSelectedNoteToSelf,
   getIsTypingEnabled,
   getMentionsInput,
   getQuotedMessage,
@@ -119,6 +120,7 @@ interface Props {
   selectedConversation: ReduxConversationType | undefined;
   typingEnabled: boolean;
   WalletSyncBarShowInChat: boolean;
+  isMe:boolean;
   quotedMessageProps?: ReplyingToMessageProps;
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
@@ -514,8 +516,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
-    const { selectedConversation } = this.props;
+    const { selectedConversation,isMe} = this.props;
     // const {WalletSyncBarShowInChat}=this.props
+    // console.log('isMe ::',selectedConversation?.isPrivate && !isMe,selectedConversation?.isPrivate,isMe);
     const { draft } = this.state;
     const re = /^\d+\.?\d*$/;
 
@@ -547,7 +550,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             >
               { }
               {this.renderTextArea()}
-              {selectedConversation?.isPrivate ? this.bchatWalletView() : ''}
+              {selectedConversation?.isPrivate && !isMe ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
             </div>
             <SendMessageButton
@@ -1209,6 +1212,7 @@ const mapStateToProps = (state: StateType) => {
     selectedConversation: getSelectedConversation(state),
     selectedConversationKey: getSelectedConversationKey(state),
     typingEnabled: getIsTypingEnabled(state),
+    isMe:getIsSelectedNoteToSelf(state),
     WalletSyncBarShowInChat: getWalletSyncBarShowInChat(state),
     walletDetails: state.wallet,
   };

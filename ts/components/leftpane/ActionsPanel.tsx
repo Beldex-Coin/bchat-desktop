@@ -70,6 +70,7 @@ import classNames from 'classnames';
 import ReactTooltip from 'react-tooltip';
 import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
+import { wallet } from '../../wallet/wallet-rpc';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -85,7 +86,7 @@ const Section = (props: { type: SectionType }) => {
   //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
   // }
 
-  const handleClick = () => {
+  const handleClick =async () => {
     /* tslint:disable:no-void-expression */
     console.log('type:', type);
     if (type === SectionType.Profile) {
@@ -116,12 +117,13 @@ const Section = (props: { type: SectionType }) => {
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
       // Show Path Indicator Modal
-
       dispatch(showLeftPaneSection(type));
+      await wallet.startWallet('settings');
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
       dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
+
 
       // dispatch(setOverlayMode(undefined))
     } else {
