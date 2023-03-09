@@ -141,6 +141,16 @@ export const ForgotPassword = (props: any) => {
   `;
   return (
     <div className="wallet-forgotPassword">
+      <div  style={{width:'100%'}}>
+      <div className='exitBtn'>
+          <BchatIconButton
+            iconType="exit"
+            iconSize="small"
+            onClick={props.exit}
+            dataTestId="modal-close-button"
+          />
+        </div>
+      </div>
       <div className="wallet-forgotPassword-content-Box">
         {loading && (
           <Loader>
@@ -152,14 +162,7 @@ export const ForgotPassword = (props: any) => {
             </div>
           </Loader>
         )}
-         <div className='exitBtn'>
-          <BchatIconButton
-            iconType="exit"
-            iconSize="small"
-            onClick={props.exit}
-            dataTestId="modal-close-button"
-          />
-        </div>
+         
         <div>
           <div className="wallet-forgotPassword-content-Box-title">
             {window.i18n('forgotPassword')}

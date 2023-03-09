@@ -849,6 +849,16 @@ label {
 .walletPassword .bchat-modal__body {
  padding: 0;
 }
+.walletPassword .exitBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 12px;
+  margin-top: 10px;
+}
+.blurBg
+{
+  filter: blur(10px);
+}
 .bchat-confirm {
   &-wrapper {
     .bchat-modal__body .bchat-modal__centered {

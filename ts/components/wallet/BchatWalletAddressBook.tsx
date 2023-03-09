@@ -15,10 +15,13 @@ import {
 } from '../../hooks/useParamSelector';
 import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
+  const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
+
   async function copyBtn(address: string) {
     copyBchatID(address);
   }
@@ -36,7 +39,7 @@ export const AddressBook = (props: any) => {
         <div
           className={classNames(`addressBook-wholeBox-contentBox`)}
           style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
-          onClick={() => window.i18n('addressBook') !== props.title && send(belAddress)}
+          onClick={() => window.i18n('addressBook') !== props.title ? send(belAddress): dispatch(updateSendAddress(belAddress))}
         > 
           {props.title === window.i18n('contact') &&
             <div className='avatarBox'> <Avatar
@@ -50,7 +53,10 @@ export const AddressBook = (props: any) => {
               <span className={classNames("addressBook-wholeBox-contentBox-nameBtn",props.title === window.i18n('contact') && 'contact')}>{username}</span>
             </div>
             <SpacerXS />
-            <div className={"addressBook-wholeBox-contentBox-addresstxt"}>
+   
+            <div className={"addressBook-wholeBox-contentBox-addresstxt"} style={{cursor:'pointer'}}
+            onClick={()=> {dispatch(updateSendAddress(belAddress));dispatch(walletSendPage());}}
+            >
               {props.title ===window.i18n('contact')? belAddress.slice(0, 70)+'...':belAddress}
             </div>
           </Flex>
@@ -107,7 +113,7 @@ export const AddressBook = (props: any) => {
       }
 
       <SpacerLG />
-      <div className="addressBook-wholeBox">
+      <div className={classNames("addressBook-wholeBox ",BchatWalletPasswordModal  && 'blurBg')}>
         {privateContactsPubkeys.length > 0 &&
           privateContactsPubkeys.map(item => <AddressContent pubkey={item} title={props.from} />)}
         {privateContactsPubkeys.length == 0 ? (

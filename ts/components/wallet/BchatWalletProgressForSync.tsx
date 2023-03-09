@@ -8,7 +8,15 @@ export const ProgressForSync = (props: any) => {
   return (
     <div className="wallet-walletPassword ">
       <div className="wallet-walletPassword-contentBox progressSyncBox">
-        <SpacerLG />
+      <div className='exitBtn'>
+          <BchatIconButton
+            iconType="exit"
+            iconSize="small"
+            onClick={props.exit}
+            dataTestId="modal-close-button"
+          />
+        </div>
+        {/* <SpacerLG /> */}
         {/* <SpacerLG /> */}
 
         {/* <div className="wallet-progressSync-presentage">{props.percentage}%</div>
