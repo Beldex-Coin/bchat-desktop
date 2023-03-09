@@ -32,12 +32,12 @@ export const BchatMainPanel = () => {
     getconverstation();
     validation()
 
-  }, [chatwithWallet]);
+  }, [chatwithWallet,focusedSettingsSection]);
   
   const walletPassWordValidation = () => {
     // console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
     
-    if (chatwithWallet && !walletSyncBarShowInChat) {
+    if (chatwithWallet && !walletSyncBarShowInChat && !isSettingsView) {
 
       dispatch(updateBchatWalletPasswordModal({}))
     }
