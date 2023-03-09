@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerMD, SpacerSM } from '../basic/Text';
-import { BchatIcon } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { clipboard } from 'electron';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
@@ -152,6 +152,14 @@ export const ForgotPassword = (props: any) => {
             </div>
           </Loader>
         )}
+         <div className='exitBtn'>
+          <BchatIconButton
+            iconType="exit"
+            iconSize="small"
+            onClick={props.exit}
+            dataTestId="modal-close-button"
+          />
+        </div>
         <div>
           <div className="wallet-forgotPassword-content-Box-title">
             {window.i18n('forgotPassword')}

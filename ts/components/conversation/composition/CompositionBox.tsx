@@ -268,7 +268,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   chatWithWalletInstruction() {
     const { WalletSyncBarShowInChat } = this.props;
-    console.log('this.props WalletSyncBarShowInChat::', WalletSyncBarShowInChat);
     if (this.chatwithWallet && !WalletSyncBarShowInChat) {
       window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
       return;
@@ -336,7 +335,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       0,
       isSweepAll
     );
-    console.log('data:', data);
+  
     if (data.result) {
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
@@ -358,7 +357,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       const privateConvo = await getConversationController().getOrCreateAndWait(selectedConversationKey,
         ConversationTypeEnum.PRIVATE
       );
-      // console.log('privateConvo::', privateConvo, groupInvitation)
+     
       if (privateConvo) {
         void privateConvo.sendMessage({
           body: '',
@@ -498,14 +497,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   private bchatWalletView() {
-    const { selectedConversation } = this.props;
+    const { selectedConversation,WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
     const re = /^\d+\.?\d*$/;
-
+// console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
       <>
-        {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet ? (
-          <SendFundButton onClick={()=>this.sendConfirmModal()} />
+        {selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat ? (
+          <SendFundButton  />
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()}  />
         )}
@@ -516,7 +515,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
-    const { selectedConversation,isMe} = this.props;
+    const { selectedConversation,isMe,WalletSyncBarShowInChat} = this.props;
     // const {WalletSyncBarShowInChat}=this.props
     // console.log('isMe ::',selectedConversation?.isPrivate && !isMe,selectedConversation?.isPrivate,isMe);
     const { draft } = this.state;
@@ -555,7 +554,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             </div>
             <SendMessageButton
               onClick={() =>
-                selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet
+                selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat
                   ? this.sendConfirmModal()
                   : this.onSendMessage()
               }
@@ -991,7 +990,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // Verify message length
     const msgLen = messagePlaintext.trim().length || 0;
 
-    console.log('msgLen:', msgLen);
     if (msgLen === 0 && this.props.stagedAttachments?.length === 0) {
       ToastUtils.pushMessageBodyMissing();
       return;

@@ -107,6 +107,7 @@ export const WalletPassword = (props: any) => {
       <ForgotPassword
         cancelBtn={() => setForgotPassword(false)}
         showSyncScreen={() => ProgressForSync(true)}
+        exit={props.onClickClose}
       />
     );
   }
@@ -114,7 +115,7 @@ export const WalletPassword = (props: any) => {
 
   if (daemonHeight > 0 && percentage < 99 && percentage > 1) {
     return (
-      <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} />
+      <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} exit={props.onClickClose}/>
     );
   }
 
