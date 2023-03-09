@@ -17,6 +17,8 @@ import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 // import { walletSettingsKey } from '../../data/settings-key';
+import classNames from 'classNames';
+import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 
 
 export enum WalletPage {
@@ -41,6 +43,7 @@ export const WalletMainPanel = () => {
   const [priority, setPriority] = useState(window.i18n('flash'));
   // const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
+  const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
 
 
   if (!window.globalOnlineStatus) {
@@ -103,7 +106,7 @@ export const WalletMainPanel = () => {
   }
 
   return (
-    <div className="wallet">
+    <div className={classNames("wallet",BchatWalletPasswordModal  && 'blurBg')}>
       {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
         <Dashboard
