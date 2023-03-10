@@ -3,6 +3,7 @@ import { mapDispatchToProps } from '../actions';
 import { StateType } from '../reducer';
 import { getTheme } from '../selectors/theme';
 import {
+  getIsSelectedNoteToSelf,
   getLightBoxOptions,
   getSelectedConversation,
   getSelectedConversationKey,
@@ -31,6 +32,7 @@ const mapStateToProps = (state: StateType) => {
     lightBoxOptions: getLightBoxOptions(state),
     stagedAttachments: getStagedAttachmentsForCurrentConversation(state),
     hasOngoingCallWithFocusedConvo: getHasOngoingCallWithFocusedConvo(state),
+    isMe:getIsSelectedNoteToSelf(state),
     
   };
 };

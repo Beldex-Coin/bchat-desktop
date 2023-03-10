@@ -554,7 +554,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             </div>
             <SendMessageButton
               onClick={() =>
-                selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat
+                selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat && !isMe
                   ? this.sendConfirmModal()
                   : this.onSendMessage()
               }

@@ -80,6 +80,7 @@ interface Props {
   showMessageDetails: boolean;
   isRightPanelShowing: boolean;
   hasOngoingCallWithFocusedConvo: boolean;
+  isMe:boolean;
 
   // lightbox options
   lightBoxOptions?: LightBoxOptions;
@@ -224,7 +225,7 @@ export class BchatConversation extends React.Component<Props, State> {
       selectedMessages,
       isRightPanelShowing,
       lightBoxOptions,
-      
+      isMe
     } = this.props;
 
     if (!selectedConversation || !messagesProps) {
@@ -250,7 +251,7 @@ export class BchatConversation extends React.Component<Props, State> {
           role="navigation"
         > 
           <div>
-           {chatWithWallet && selectedConversation.isPrivate && <ConditionalSyncBar />} 
+           {chatWithWallet && selectedConversation.isPrivate && !isMe &&<ConditionalSyncBar />} 
           </div>
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
