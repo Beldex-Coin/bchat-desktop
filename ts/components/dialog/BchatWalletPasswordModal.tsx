@@ -80,7 +80,8 @@ export const BchatWalletPasswordModal = (props: any) => {
     }
     useKey((event: KeyboardEvent) => {
         if (event.key === 'Enter') {
-            submit();
+            props.from !== 'wallet' && submit();
+
         }
         return event.key === 'Enter';
     });

@@ -558,7 +558,7 @@
   "rescanWallet": "Rescan Wallet",
   "rescanWalletDiscription": "You can rescan your wallet to sync again",
   "walletPasswordLengthError": "Password should be 4-13 characters long",
-  "passwordFieldEmpty": "Password field cannot be empty",
+  "passwordFieldEmpty": "Please enter your password!",
   "seedFieldEmpty": "Seed field cannot be empty",
   "notEnoughBalance": "Not enough unlocked balance",
   "emptyAddressBook": "No addresses in book",
