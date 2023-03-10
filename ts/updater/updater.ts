@@ -127,6 +127,7 @@ async function checkForUpdates(
 
       logger.info('[updater] showing download dialog...');
       const shouldDownload = await showDownloadUpdateDialog(mainWindow, messages);
+      insertInto(`[updater] shouldDownload:",${shouldDownload}`);
       if (!shouldDownload) {
         insertInto(`[updater] shouldDownload:if ::",${!shouldDownload}`);
         downloadIgnored = true;
