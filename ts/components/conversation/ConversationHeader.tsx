@@ -324,7 +324,9 @@ const ConversationHeaderTitle = () => {
   if (isMe) {
     console.log("convertion header 12::",isMe)
 
-    return <div className="module-conversation-header__title">{i18n('noteToSelf')}</div>;
+    // return <div className="module-conversation-header__title">{window.i18n('noteToSelf')}</div>;
+    return <div className="module-conversation-header__title">Note to Self</div>;
+
   }
   console.log("convertion header 13::",headerTitleProps)
 
