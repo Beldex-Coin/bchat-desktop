@@ -135,10 +135,10 @@ async function checkForUpdates(
         return;
       }
       insertInto(`[updater] shouldDownload:",${shouldDownload}`);
-      autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+      autoUpdater.on('update-downloaded', async (event, releaseNotes, releaseName) => {
         insertInto(`update-downloaded-releasename",${releaseName}`);
         console.log('event, releaseNotes, releaseName:', event, releaseNotes, releaseName);
-        autoUpdater.quitAndInstall(false);
+        await autoUpdater.quitAndInstall(false);
       });
 
       logger.info('[updater] shouldDownload:', shouldDownload);
@@ -173,8 +173,8 @@ async function checkForUpdates(
     }
     insertInto(`[updater] showing update dialog...:`);
     logger.info('[updater] calling quitAndInstall...');
-    windowMarkShouldQuit();
-    autoUpdater.quitAndInstall();
+    await windowMarkShouldQuit();
+    await autoUpdater.quitAndInstall();
   } finally {
     insertInto(`[updater] showing update dialog...:`);
     isUpdating = false;

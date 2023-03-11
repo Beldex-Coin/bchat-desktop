@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { SpacerLG, SpacerMD } from '../basic/Text';
@@ -19,95 +17,90 @@ import { clearSearch } from '../../state/ducks/search';
 import { setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
 // import styled from 'styled-components';
 
-
 export const BchatWalletPasswordModal = (props: any) => {
-    const dispatch = useDispatch()
-    // const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(true);
 
-    const [password, setPassword] = useState('')
-    const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
+  const [password, setPassword] = useState('');
+  const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
 
-    const onClickClose = () => {
-        // if(props.from === 'wallet' )
-        // {
-        // backToChat();
-        // dispatch(updateBchatWalletPasswordModal(null))
-        // }
-        // else{
-        dispatch(updateBchatWalletPasswordModal(null))
-        // }
-    };
+  const onClickClose = () => {
+    // if(props.from === 'wallet' )
+    // {
+    // backToChat();
+    // dispatch(updateBchatWalletPasswordModal(null))
+    // }
+    // else{
+    dispatch(updateBchatWalletPasswordModal(null));
+    // }
+  };
 
-
-    useEffect(() => {
-        deamonvalidation();
-        startWalletRpc();
-    }, [])
-    async function startWalletRpc() {
-        await wallet.startWallet('settings');
-        
+  useEffect(() => {
+    deamonvalidation();
+    startWalletRpc();
+  }, []);
+  async function startWalletRpc() {
+    await wallet.startWallet('settings');
+  }
+  async function submit() {
+    if (!password) {
+      return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
     }
-    async function submit() {
-        if (!password) {
-            return ToastUtils.pushToastError('passwordFieldEmpty', window.i18n('passwordFieldEmpty'));
-        }
-        let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
-        let profileName = userDetails?.attributes.walletUserName;
-        if (!profileName) {
-            profileName = UserDetails?.userId?.profileName;
-        }
-        //   setLoading(true);
-        let openWallet: any = await wallet.openWallet(profileName, password);
-        if (openWallet.hasOwnProperty('error')) {
-            // setLoading(false);
-
-            ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
-        } else {
-            // let emptyAddress: any = '';
-            // dispatch(updateSendAddress(emptyAddress));
-            // setLoading(false);
-            // props.onClick();
-            // dispatch(dashboard());
-            let data: any = true;
-            //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
-            dispatch(updatewalletSyncBarShowInChat(data))
-            onClickClose()
-            // heartbeat();
-            const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon)
-            ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
-        }
-
+    let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
+    let profileName = userDetails?.attributes.walletUserName;
+    if (!profileName) {
+      profileName = UserDetails?.userId?.profileName;
     }
-    useKey((event: KeyboardEvent) => {
-        if (event.key === 'Enter') {
-            props.from !== 'wallet' && submit();
+    //   setLoading(true);
+    let openWallet: any = await wallet.openWallet(profileName, password);
+    if (openWallet.hasOwnProperty('error')) {
+      // setLoading(false);
 
-        }
-        return event.key === 'Enter';
-    });
-
-    function backToChat() {
-        dispatch(clearSearch());
-        dispatch(setOverlayMode(undefined));
-        dispatch(showLeftPaneSection(0));
-        dispatch(updateBchatWalletPasswordModal(null))
-
+      ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
+    } else {
+      // let emptyAddress: any = '';
+      // dispatch(updateSendAddress(emptyAddress));
+      // setLoading(false);
+      // props.onClick();
+      // dispatch(dashboard());
+      let data: any = true;
+      //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+      dispatch(updatewalletSyncBarShowInChat(data));
+      onClickClose();
+      // heartbeat();
+      const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+      ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
     }
+  }
+  useKey((event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      props.from !== 'wallet' && submit();
+    }
+    return event.key === 'Enter';
+  });
 
-    return (
-        <BchatWrapperModal
-            title={''}
-            onClose={onClickClose}
-            showExitIcon={props.from === 'wallet' ? false : true}
-            showHeader={props.from === 'wallet' ? false : true}
-            headerReverse={props.from === 'wallet' ? false : true}
-            additionalClassName="walletPassword"
-        >
-            {props.from === 'wallet' ? <WalletPassword onClickClose={backToChat} /> :
+  function backToChat() {
+    dispatch(clearSearch());
+    dispatch(setOverlayMode(undefined));
+    dispatch(showLeftPaneSection(0));
+    dispatch(updateBchatWalletPasswordModal(null));
+  }
 
-                <div className="bchat-modal-walletPassword">
-                    <div className="bchat-modal-walletPassword-contentBox">
-                        {/* {loading && (
+  return (
+    <BchatWrapperModal
+      title={''}
+      onClose={onClickClose}
+      showExitIcon={props.from === 'wallet' ? false : true}
+      showHeader={props.from === 'wallet' ? false : true}
+      headerReverse={props.from === 'wallet' ? false : true}
+      additionalClassName="walletPassword"
+    >
+      {props.from === 'wallet' ? (
+        <WalletPassword onClickClose={backToChat} />
+      ) : (
+        <div className="bchat-modal-walletPassword">
+          <div className="bchat-modal-walletPassword-contentBox">
+            {/* {loading && (
                             <Loader>
                                 <div className="bchat-modal-walletPassword-contentBox-loader">
                                     <img
@@ -117,39 +110,39 @@ export const BchatWalletPasswordModal = (props: any) => {
                                 </div>
                             </Loader>
                         )} */}
-                        {/* <SpacerLG /> */}
-                        {/* <SpacerLG /> */}
-                        <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-headerBox">
-                            <BchatIcon iconType="lock" iconSize={'small'} />
-                            <span>{window.i18n('enterWalletPassword')}</span>
-                        </div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-inputBox">
-                            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                        </div>
-                        <SpacerMD />
-                        <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
-                            {/* <span style={{ cursor: 'pointer' }}>
+            {/* <SpacerLG /> */}
+            {/* <SpacerLG /> */}
+            <div className="bchat-modal-walletPassword-contentBox-walletImg"></div>
+            <SpacerMD />
+            <div className="bchat-modal-walletPassword-contentBox-headerBox">
+              <BchatIcon iconType="lock" iconSize={'small'} />
+              <span>{window.i18n('enterWalletPassword')}</span>
+            </div>
+            <SpacerMD />
+            <div className="bchat-modal-walletPassword-contentBox-inputBox">
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            </div>
+            <SpacerMD />
+            <div className="bchat-modal-walletPassword-contentBox-forgotTxt">
+              {/* <span style={{ cursor: 'pointer' }}>
                                 {window.i18n('forgotPassword')}
                             </span> */}
-                        </div>
-                        <SpacerMD />
-                        <div>
-                            <BchatButton
-                                text={window.i18n('continue')}
-                                buttonType={BchatButtonType.BrandOutline}
-                                buttonColor={BchatButtonColor.Green}
-                                onClick={() => submit()}
-                            />
-                        </div>
-                        <SpacerLG />
-                    </div>
-                </div>
-            }
-        </BchatWrapperModal>
-    );
+            </div>
+            <SpacerMD />
+            <div>
+              <BchatButton
+                text={window.i18n('continue')}
+                buttonType={BchatButtonType.BrandOutline}
+                buttonColor={BchatButtonColor.Green}
+                onClick={() => submit()}
+              />
+            </div>
+            <SpacerLG />
+          </div>
+        </div>
+      )}
+    </BchatWrapperModal>
+  );
 };
 
 // const Loader = styled.div`
