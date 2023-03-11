@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerMD, SpacerSM } from '../basic/Text';
-import { BchatIcon, } from '../icon';
+import { BchatIcon } from '../icon';
 import { clipboard } from 'electron';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
@@ -71,7 +71,7 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
-    setLoading(true);
+    // setLoading(true);
     let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -105,7 +105,17 @@ export const ForgotPassword = (props: any) => {
     };
 
     try {
-      await wallet.restoreWallet(profileName, newPassword, seed, refreshDetails, 'forgotPassword');
+      let restore = await wallet.restoreWallet(
+        profileName,
+        newPassword,
+        seed,
+        refreshDetails,
+        'forgotPassword'
+      );
+      console.log("restore:",restore)
+      // if (restore) {
+      //   return onClickCancelHandler();
+      // }
       daemon.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           dispatch(updateDaemon({ height: data.result.height }));
@@ -162,7 +172,7 @@ export const ForgotPassword = (props: any) => {
             </div>
           </Loader>
         )}
-         
+
         <div>
           <div className="wallet-forgotPassword-content-Box-title">
             {window.i18n('forgotPassword')}

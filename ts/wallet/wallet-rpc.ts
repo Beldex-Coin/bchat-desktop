@@ -83,8 +83,8 @@ class Wallet {
   }
 
   startWallet = async (type?: string) => {
-    
     try {
+      console.log("start wallet rpc :",type)
       let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         window.setSettingValue(walletSettingsKey.settingsFiatCurrency, 'USD');
@@ -111,6 +111,7 @@ class Wallet {
       } else {
       }
       const status: any = await this.runningStatus(64371);
+      console.log("status:",status)
       if (status == true) {
         if (type == 'settings') {
           return;
@@ -145,7 +146,6 @@ class Wallet {
   };
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
-    
     try {
       let currentDeamonLoc = window.getSettingValue('current-deamon');
       const currentDaemon: any = currentDeamonLoc ? currentDeamonLoc : window.currentDaemon;
@@ -157,13 +157,12 @@ class Wallet {
       }
       const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
       const auth = generateCredentials.toString('hex');
-      this.auth = [
-        auth.substr(0, 64), // rpc username
-        auth.substr(64, 64), // rpc password
-        auth.substr(128, 32), // password salt
-      ];
-      
-
+      if (this.auth.length == 0)
+        this.auth = [
+          auth.substr(0, 64), // rpc username
+          auth.substr(64, 64), // rpc password
+          auth.substr(128, 32), // password salt
+        ];
       this.wallet_dir = `${walletDir}/bchat`;
       const option = [
         '--rpc-login',
@@ -220,7 +219,6 @@ class Wallet {
   };
 
   heartRpc = async (method: string, params = {}, timeout = 0) => {
-    
     try {
       const options = {
         uri: `http://localhost:64371/json_rpc`,
@@ -238,10 +236,9 @@ class Wallet {
         },
         timeout,
       };
-    
 
       let requestData: any = await request(options);
-     
+
       if (requestData.hasOwnProperty('error')) {
         if (requestData.error.code === -21) {
           let walletDir =
@@ -563,19 +560,17 @@ class Wallet {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
     // }
-    
+
     const openWallet = await this.heartRpc('open_wallet', {
       filename,
       password,
     });
-    
+
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }
 
-
     let address_txt_path = path.join(this.wallet_dir, filename + '.address.txt');
-    
 
     if (!fs.existsSync(address_txt_path)) {
       this.sendRPC('get_address', { account_index: 0 }).then((data: any) => {
