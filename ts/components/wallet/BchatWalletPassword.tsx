@@ -106,14 +106,16 @@ export const WalletPassword = (props: any) => {
     return (
       <ForgotPassword
         cancelBtn={() => setForgotPassword(false)}
-        showSyncScreen={() => ProgressForSync(true)}
+        showSyncScreen={() => setLoading(true)}
+        // loginLoader={()=> setLoading(true)}
         exit={props.onClickClose}
       />
     );
   }
   // if (true) {
-
-  if (daemonHeight > 0 && percentage < 99 && percentage > 1) {
+console.log("currentHeight ::",currentHeight,"daemonHeight ::",daemonHeight)
+  if (daemonHeight > 0 && percentage < 99 && currentHeight > 0) {
+    // setLoading(false)
     return (
       <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} exit={props.onClickClose}/>
     );

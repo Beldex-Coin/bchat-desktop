@@ -8,14 +8,14 @@ import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
 import { updatewalletSyncBarShowInChat } from '../../state/ducks/walletConfig';
-import { deamonvalidation } from '../../wallet/BchatWalletHelper';
+//import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { getConversationById } from '../../data/data';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
 import { WalletPassword } from '../wallet/BchatWalletPassword';
 import { clearSearch } from '../../state/ducks/search';
 import { setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
-import { getRescaning } from '../../state/selectors/walletConfig';
+// import { getRescaning } from '../../state/selectors/walletConfig';
 // import styled from 'styled-components';
 
 export const BchatWalletPasswordModal = (props: any) => {
@@ -24,7 +24,8 @@ export const BchatWalletPasswordModal = (props: any) => {
 
   const [password, setPassword] = useState('');
   const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
-  const syncStatus = useSelector(getRescaning);
+  // const syncStatus = useSelector(getRescaning);
+  const getSyncStatus = window.getSettingValue('syncStatus');
 
   const onClickClose = () => {
     // if(props.from === 'wallet' )
@@ -38,9 +39,12 @@ export const BchatWalletPasswordModal = (props: any) => {
   };
 
   useEffect(() => {
-    deamonvalidation();
-    startWalletRpc();
+    // deamonvalidation();
+    // startWalletRpc();
   }, []);
+
+  startWalletRpc();
+
   async function startWalletRpc() {
     await wallet.startWallet('settings');
   }
@@ -53,10 +57,12 @@ export const BchatWalletPasswordModal = (props: any) => {
     if (!profileName) {
       profileName = UserDetails?.userId?.profileName;
     }
-     
-    if(syncStatus && wallet.wallet_state.open && wallet.wallet_state.password_hash === wallet.passwordEncrypt(password) )
+      // console.log("password hash ::",wallet.wallet_state.password_hash , wallet.passwordEncrypt(password),
+      // wallet.wallet_state.password_hash === wallet.passwordEncrypt(password),!getSyncStatus)
+    if(!getSyncStatus && wallet.wallet_state.password_hash === wallet.passwordEncrypt(password) )
     {
-      return showSyncBar();
+      showSyncBar();
+      return
     }
       
     
