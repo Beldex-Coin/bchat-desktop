@@ -53,10 +53,12 @@ export const BchatWalletPasswordModal = (props: any) => {
     }
     //   setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
+    console.log('openWallet:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       // setLoading(false);
 
       ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
+      return;
     } else {
       // let emptyAddress: any = '';
       // dispatch(updateSendAddress(emptyAddress));
@@ -70,6 +72,7 @@ export const BchatWalletPasswordModal = (props: any) => {
       // heartbeat();
       const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
       ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+      return;
     }
   }
   useKey((event: KeyboardEvent) => {

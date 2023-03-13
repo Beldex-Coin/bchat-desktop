@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
-import {  useDispatch, useSelector } from 'react-redux';
+// import {  useDispatch, useSelector } from 'react-redux';
+import {   useSelector } from 'react-redux';
 import { useAppIsFocused } from '../hooks/useAppFocused';
 import { getFocusedSettingsSection } from '../state/selectors/section';
 import { SmartBchatConversation } from '../state/smart/BchatConversation';
 import { BchatSettingsView } from './settings/BchatSettings';
 import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { getConversationById } from '../data/data';
-import { updateBchatUpgradeInstructionModal, updateBchatWalletPasswordModal  } from '../state/ducks/modalDialog';
+// import { updateBchatUpgradeInstructionModal, updateBchatWalletPasswordModal  } from '../state/ducks/modalDialog';
+import { updateBchatUpgradeInstructionModal  } from '../state/ducks/modalDialog';
+
 import { SettingsKey } from '../data/settings-key';
 import { getWalletSyncBarShowInChat } from '../state/selectors/walletConfig';
 
@@ -23,7 +26,7 @@ export async function getconverstation() {
 export const BchatMainPanel = () => {
   const focusedSettingsSection = useSelector(getFocusedSettingsSection);
   const isSettingsView = focusedSettingsSection !== undefined;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
@@ -39,7 +42,7 @@ export const BchatMainPanel = () => {
     
     if (chatwithWallet && !walletSyncBarShowInChat && !isSettingsView) {
 
-      dispatch(updateBchatWalletPasswordModal({}))
+      // dispatch(updateBchatWalletPasswordModal({}))
     }
 
   }

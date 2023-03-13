@@ -197,7 +197,7 @@ export const ForgotPassword = (props: any) => {
           </div>
 
           <SpacerMD />
-          <div>{window.i18n('changewalletPassword')}</div>
+          <div style={{display:'flex'}}>{window.i18n('changewalletPassword')}</div>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
             <span className="wallet-forgotPassword-content-Box-password">
