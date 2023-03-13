@@ -331,6 +331,8 @@ class Wallet {
         );
       }
       if (restoreWallet.hasOwnProperty('result')) {
+      this.wallet_state.password_hash = this.passwordEncrypt(password);
+
         if (!type) {
           console.log("killed...............:",type)
           kill(64371)
