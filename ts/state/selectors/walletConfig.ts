@@ -34,6 +34,10 @@ export const getWalletSendAddress = createSelector(
     getWalletConfig,
     (state: WalletConfigState):boolean => state.walletSyncBarShowInChat
   );
+  export const getWalletPasswordPopUpFlag = createSelector(
+    getWalletConfig,
+    (state: WalletConfigState):boolean => state.walletPasswordPopUpFlag
+  );
   // export const getwalletFiatCurrency = createSelector(
   //   getWalletConfig,
   //   (state: WalletConfigState): string=> state.walletFiatCurrency
