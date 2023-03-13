@@ -332,6 +332,7 @@ class Wallet {
       }
       if (restoreWallet.hasOwnProperty('result')) {
         if (!type) {
+          console.log("killed...............:",type)
           kill(64371)
             .then(() => console.log('port kill successFull'))
             .catch(err => {
