@@ -15,6 +15,7 @@ import { walletSettingsKey } from '../../data/settings-key';
 import { WalletPassword } from '../wallet/BchatWalletPassword';
 import { clearSearch } from '../../state/ducks/search';
 import { setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
+import { getRescaning } from '../../state/selectors/walletConfig';
 // import styled from 'styled-components';
 
 export const BchatWalletPasswordModal = (props: any) => {
@@ -23,6 +24,7 @@ export const BchatWalletPasswordModal = (props: any) => {
 
   const [password, setPassword] = useState('');
   const UserDetails: any = useSelector((state: any) => state.conversations.conversationLookup);
+  const syncStatus = useSelector(getRescaning);
 
   const onClickClose = () => {
     // if(props.from === 'wallet' )
@@ -51,6 +53,13 @@ export const BchatWalletPasswordModal = (props: any) => {
     if (!profileName) {
       profileName = UserDetails?.userId?.profileName;
     }
+     
+    if(syncStatus && wallet.wallet_state.open && wallet.wallet_state.password_hash === wallet.passwordEncrypt(password) )
+    {
+      return showSyncBar();
+    }
+      
+    
     //   setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
     console.log('openWallet:', openWallet);
@@ -65,15 +74,26 @@ export const BchatWalletPasswordModal = (props: any) => {
       // setLoading(false);
       // props.onClick();
       // dispatch(dashboard());
-      let data: any = true;
-      //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
-      dispatch(updatewalletSyncBarShowInChat(data));
-      onClickClose();
-      // heartbeat();
-      const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-      ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+      // let data: any = true;
+      // //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+      // dispatch(updatewalletSyncBarShowInChat(data));
+      // onClickClose();
+      // // heartbeat();
+      // const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+      // ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+      showSyncBar()
       return;
     }
+  }
+  function showSyncBar()
+  {
+    let data: any = true;
+    //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
+    dispatch(updatewalletSyncBarShowInChat(data));
+    onClickClose();
+    // heartbeat();
+    const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+    ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
   }
   useKey((event: KeyboardEvent) => {
     if (event.key === 'Enter') {

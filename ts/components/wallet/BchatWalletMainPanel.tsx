@@ -17,7 +17,7 @@ import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { ToastUtils } from '../../bchat/utils';
 // import { walletSettingsKey } from '../../data/settings-key';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 
 

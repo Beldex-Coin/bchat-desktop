@@ -10,7 +10,7 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
-import {  updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
+import {  updateWalletPasswordPopUpFlag, updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
@@ -53,11 +53,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
       let data:any=false;
       
       dispatch(updatewalletSyncBarShowInChat(data))
-
-
-      
-
-          
+      dispatch(updateWalletPasswordPopUpFlag(data))          
       // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false)
 
       forceUpdate();
