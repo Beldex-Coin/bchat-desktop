@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useRef, useState } from 'react';
 // import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
@@ -8,6 +8,8 @@ import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { useKey } from 'react-use';
 import { wallet } from '../../wallet/wallet-rpc';
+// import { useFocusMount } from '../../hooks/useFocusMount';
+// import { BchatIdEditable } from '../basic/BchatIdEditable';
 
 export interface BchatConfirmDialogProps {
   message?: string;
@@ -69,7 +71,11 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
   const [confirm, setConfirm] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const inputRef = useRef(null);
 
+// useEffect(()=>{
+//  
+// })
   // const okText = props.okText || window.i18n('ok');
 
   const cancelText = props.cancelText || window.i18n('cancel');
@@ -130,8 +136,12 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
   }, onClickOkHandler);
 
   async function passwordVerify() {
-    setConfirm(true);
+    setConfirm(true);  
   }
+
+  // useFocusMount(inputRef, true);
+ 
+  // console.log('inputRef ::',inputRef)
 
   return (
     <BchatWrapperModal
@@ -153,8 +163,9 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             <div className="bchat-modal__centered-sendConfirm_content-subHeader">
               Enter your wallet Password
             </div>
-            <div className="bchat-modal__centered-sendConfirm_content-passwordBox">
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+            <div className="bchat-modal__centered-sendConfirm_content-passwordBox" >
+              <input type="password" autoFocus  value={password} onChange={e => setPassword(e.target.value)} ref={inputRef} />
+              {/* <BchatIdEditable  value={password} onChange={e => setPassword(e)}   editable={true}/> */}
             </div>
             <SpacerXS />
             <div className="bchat-modal__centered-sendConfirm_content-errorTxt">{error}</div>

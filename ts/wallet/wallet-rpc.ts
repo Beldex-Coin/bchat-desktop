@@ -435,7 +435,6 @@ class Wallet {
           tx_list: [],
         },
       };
-
       for (let n of data) {
         if (n.hasOwnProperty('error') || !n.hasOwnProperty('result')) {
           // Maybe we also need to look into the other error codes it could give us
@@ -575,6 +574,7 @@ class Wallet {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
     // }
+    console.log("openWallet ");
 
     const openWallet = await this.heartRpc('open_wallet', {
       filename,

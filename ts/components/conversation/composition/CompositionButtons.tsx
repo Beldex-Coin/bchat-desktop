@@ -44,12 +44,12 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
   }
 );
 
-export const SendMessageButton = (props: { onClick: () => void }) => {
+export const SendMessageButton = (props: { onClick: () => void,name?:string }) => {
   return (
     <div className="send-message-button"
       onClick={props.onClick}>
 
-      <BchatIconButton
+      {/* <BchatIconButton
         iconType="send"
         iconColor='#fff'
         iconSize={'huge'}
@@ -58,7 +58,8 @@ export const SendMessageButton = (props: { onClick: () => void }) => {
         iconPadding="5px 0 0 5px"
         onClick={props.onClick}
         dataTestId="send-message-button"
-      />
+      /> */}
+      <div className='text'>{props.name}</div>
     </div> 
   );
 };
@@ -105,7 +106,8 @@ export const SendFundDisableButton = (props: { onClick: () => void }) => {
       <div style={{cursor:'pointer'}} 
        data-tip="Chat With Wallet"
         //  data-offset="{'right':60}"
-        data-offset="{'top':30,'right':80}">
+        data-offset="{'top':30,'right':80}"
+        >
       <img src="images/wallet/beldex_coinDisable.svg" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
 
       </div>

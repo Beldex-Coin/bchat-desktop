@@ -273,7 +273,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     return basicProps;
   }
   public getPropsForPayment(): PropsForPayment | null {
-    // console.log("this.istxnDetails() ::0",this.istxnDetails())
+    //  console.log("this.istxnDetails() ::0",this.istxnDetails(),!this.isPayment())
 
     if (!this.isPayment() && !this.istxnDetails()) {
       // console.log("this.istxnDetails() ::1",this.istxnDetails())
@@ -1313,7 +1313,10 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     if(this.isPayment() || this.istxnDetails())
     {
-      return `Payment Details`;
+      let amount=this.getMessageModelProps()?.propsForPayment?.amount;
+      let direction=this.getMessageModelProps()?.propsForPayment?.direction === "outgoing"?"Send":'Received'
+      // console.log('Payment Details ::',this.isPayment(),this.getMessageModelProps()?.propsForPayment?.amount,`${amount}BDX ${direction}`)
+      return `${amount} BDX ${direction}`;
     }
 
     if (this.isDataExtractionNotification()) {

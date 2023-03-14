@@ -158,7 +158,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password" value={password} onChange={e => setValue(e.target.value)} />
+          <input type="password" autoFocus={true} value={password} onChange={e => setValue(e.target.value)}  />
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-forgotTxt">

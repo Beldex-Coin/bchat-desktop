@@ -183,6 +183,7 @@
   "save": "Save",
   "saveLogToDesktop": "Save log to desktop",
   "saved": "Saved",
+  "connectWallet": "Connect Wallet",
 
   "tookAScreenshot": "$name$ took a screenshot",
   "savedTheFile": "Media saved by $name$",

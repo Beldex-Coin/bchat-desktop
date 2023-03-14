@@ -186,6 +186,7 @@ export const ForgotPassword = (props: any) => {
                 setSeed(trimWhiteSpace);
               }}
               placeholder={window.i18n('enterSeed')}
+              autoFocus
             />
             <div
               onClick={() => handlePaste()}

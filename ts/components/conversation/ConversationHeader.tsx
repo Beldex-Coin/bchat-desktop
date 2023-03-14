@@ -50,6 +50,9 @@ import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
 import { TypingBubble } from './TypingBubble';
 import { getConversationController } from '../../bchat/conversations';
+import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
+import { SettingsKey } from '../../data/settings-key';
+import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 
 export interface TimerOption {
   name: string;
@@ -410,6 +413,9 @@ export const ConversationHeaderWithDetails = () => {
   const selectedConvoKey = useSelector(getSelectedConversationKey);
 
   const conversation = useSelector(getSelectedConversation);
+  const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
+  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+
   const dispatch = useDispatch();
 
   if (!selectedConvoKey) {
@@ -424,6 +430,13 @@ export const ConversationHeaderWithDetails = () => {
 
   const triggerId = 'conversation-header';
 
+  // function displayWalletPassword() {
+
+  //   // if (chatwithWallet && !WalletSyncBarShowInChat) {
+  //   dispatch(updateBchatWalletPasswordModal({}));
+  //     // return;
+  //   // }
+  // }
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -445,6 +458,21 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
 
+            {chatwithWallet && !WalletSyncBarShowInChat && <div>
+              <BchatButton
+                text={window.i18n('connectWallet')}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Green}
+                style={{
+                  height: '25px',
+                  borderRadius: '5px',
+                  marginRight: '14px'
+                }}
+                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              // disabled={!caption}
+              />
+            </div>
+            }
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
