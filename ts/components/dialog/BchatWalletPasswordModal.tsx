@@ -57,24 +57,22 @@ export const BchatWalletPasswordModal = (props: any) => {
     if (!profileName) {
       profileName = UserDetails?.userId?.profileName;
     }
-      // console.log("password hash ::",wallet.wallet_state.password_hash , wallet.passwordEncrypt(password),
-      // wallet.wallet_state.password_hash === wallet.passwordEncrypt(password),!getSyncStatus)
-    if(!getSyncStatus && wallet.wallet_state.password_hash === wallet.passwordEncrypt(password) )
-    {
+    // console.log("password hash ::",wallet.wallet_state.password_hash , wallet.passwordEncrypt(password),
+    // wallet.wallet_state.password_hash === wallet.passwordEncrypt(password),!getSyncStatus)
+    if (!getSyncStatus && wallet.wallet_state.password_hash === wallet.passwordEncrypt(password)) {
       showSyncBar();
-      return
+      return;
     }
-      
-    
+
     //   setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
-    console.log('openWallet:', openWallet);
+    console.log('openWallet:-', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       // setLoading(false);
 
-      ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
-      return;
+      return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
+      await wallet.startHeartbeat('inChat');
       // let emptyAddress: any = '';
       // dispatch(updateSendAddress(emptyAddress));
       // setLoading(false);
@@ -87,19 +85,18 @@ export const BchatWalletPasswordModal = (props: any) => {
       // // heartbeat();
       // const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
       // ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
-      showSyncBar()
+      showSyncBar();
       return;
     }
   }
-  function showSyncBar()
-  {
+  function showSyncBar() {
     let data: any = true;
     //   dispatch(updateWalletSyncInitiatedWithChat(data)) ;
     dispatch(updatewalletSyncBarShowInChat(data));
     onClickClose();
     // heartbeat();
     const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-    ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
+    return ToastUtils.pushToastInfo('connectedDaemon', `Connected to ${currentDaemon.host}`);
   }
   useKey((event: KeyboardEvent) => {
     if (event.key === 'Enter') {
