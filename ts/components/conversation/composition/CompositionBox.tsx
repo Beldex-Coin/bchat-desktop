@@ -505,6 +505,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
+
     const re = /^\d+\.?\d*$/;
     // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
@@ -521,23 +522,46 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
 
-  private sendMessageValidation() {
+  // private sendMessageValidation() {
+  //   const { draft } = this.state;
+  //   const re = /^\d+\.?\d*$/; 
+  //   const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
+  // const getSyncStatus = window.getSettingValue('syncStatus');
+
+  //   console.log("walletSyncStatus:",walletSyncStatus)
+  //   if (
+  //     selectedConversation?.type === 'private' &&
+  //     re.test(draft) &&
+  //     this.chatwithWallet &&
+  //     WalletSyncBarShowInChat 
+  //   ) {
+  //     this.sendConfirmModal();
+  //   } else {
+  //     this.onSendMessage();
+  //   }
+  // }
+   private sendButton() {
+    const { selectedConversation, WalletSyncBarShowInChat,isMe } = this.props;
     const { draft } = this.state;
+    const getSyncStatus = window.getSettingValue('syncStatus');
+
     const re = /^\d+\.?\d*$/;
-    const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
-    console.log("walletSyncStatus:",walletSyncStatus)
-    if (
-      selectedConversation?.type === 'private' &&
-      re.test(draft) &&
-      this.chatwithWallet &&
-      WalletSyncBarShowInChat &&
-      !isMe
-    ) {
-      this.sendConfirmModal();
-    } else {
-      this.onSendMessage();
-    }
-  }
+    // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
+    return (
+      <>
+        {selectedConversation?.type === 'private' &&
+        re.test(draft) &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat &&
+        !isMe  && getSyncStatus ? (
+          <SendMessageButton name='Pay' onClick={() => this.sendConfirmModal()} />
+        ) : (   
+          <SendMessageButton name='Send' onClick={() => this.onSendMessage()} />
+
+        )}
+      </>
+    );
+   }
 
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
@@ -577,7 +601,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               {selectedConversation?.isPrivate && !isMe ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
             </div>
-            <SendMessageButton onClick={() => this.sendMessageValidation()} />
+            {this.sendButton()}
           </>
         )}
         {typingEnabled && (

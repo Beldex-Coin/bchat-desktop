@@ -421,7 +421,9 @@
   align-items: center;
   animation: fadein $bchat-transition-duration;
   // padding-left: 15px;
-
+ .text{
+  font-family: $bchat-font-poppins-bold;
+ }
   &---scale {
     animation: scaling 2s ease-in-out;
 

@@ -8,7 +8,7 @@ import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { useKey } from 'react-use';
 import { updatewalletSyncBarShowInChat } from '../../state/ducks/walletConfig';
-//import { deamonvalidation } from '../../wallet/BchatWalletHelper';
+import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { getConversationById } from '../../data/data';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
@@ -39,11 +39,11 @@ export const BchatWalletPasswordModal = (props: any) => {
   };
 
   useEffect(() => {
-    // deamonvalidation();
-    // startWalletRpc();
+    deamonvalidation();
+    startWalletRpc();
   }, []);
 
-  startWalletRpc();
+  // startWalletRpc();
 
   async function startWalletRpc() {
     await wallet.startWallet('settings');
@@ -146,7 +146,7 @@ export const BchatWalletPasswordModal = (props: any) => {
             </div>
             <SpacerMD />
             <div className="bchat-modal-walletPassword-contentBox-inputBox">
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} autoFocus={true} />
             </div>
             <SpacerMD />
             <div className="bchat-modal-walletPassword-contentBox-forgotTxt">

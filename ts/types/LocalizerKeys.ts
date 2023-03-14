@@ -431,6 +431,7 @@ export type LocalizerKeys =
   | 'recoveryPhraseEmpty'
   | 'noAudioOutputFound'
   | 'save'
+  |'connectWallet'
   | 'typing'
   | 'privacySettingsTitle'
   | 'changeAccountPasswordDescription'
