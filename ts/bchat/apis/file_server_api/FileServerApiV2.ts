@@ -46,7 +46,7 @@ export const uploadFileToFsV2 = async (
     endpoint: FILES_ENDPOINT,
     queryParams,
   };
-  console.log('FILES_ENDPOINT:result:', request);
+  // console.log('FILES_ENDPOINT:result:', request);
   const result = await sendApiV2Request(request);
   console.log('FILES_ENDPOINT:result:', result);
   const statusCode = parseStatusCodeFromOnionRequest(result);
@@ -158,11 +158,11 @@ export const getLatestDesktopReleaseFileToFsV2 = async (): Promise<string | null
     endpoint: RELEASE_VERSION_ENDPOINT,
     queryParams,
   };
-  console.log('RELEASE_VERSION_ENDPOINT:request', request);
+  // console.log('RELEASE_VERSION_ENDPOINT:request', request);
   const result = await sendApiV2Request(request);
   console.log('RELEASE_VERSION_ENDPOINT:', result);
   const statusCode = parseStatusCodeFromOnionRequest(result);
-  console.log('fileserver::2', statusCode);
+  // console.log('fileserver::2', result);
 
   if (statusCode !== 200) {
     return null;

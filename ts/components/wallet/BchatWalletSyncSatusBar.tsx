@@ -25,12 +25,12 @@ const SyncStatusBar = (props: { from?: string }) => {
   if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
-    console.log('currentDaemon?.type ::', currentDaemon?.type, currentHeight, daemonHeight)
+    // console.log('currentDaemon?.type ::', currentDaemon?.type, currentHeight, daemonHeight)
 
   } else {
     currentHeight = Number(useSelector(getHeight));
     daemonHeight = useSelector((state: any) => state.daemon.height);
-    console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, daemonHeight)
+    // console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, daemonHeight)
 
   }
 

@@ -29,15 +29,13 @@ export const WalletPassword = (props: any) => {
   let currentHeight: any;
   let daemonHeight: any;
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  if (currentDaemon?.type === "Local") {
+  if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
-  }
-  else {
+  } else {
     currentHeight = Number(useSelector(getHeight));
     daemonHeight = useSelector((state: any) => state.daemon.height);
   }
-
 
   // let daemonHeight = useSelector((state: any) => state.daemon.height);
   // const currentHeight: any = Number(useSelector(getHeight));
@@ -86,22 +84,26 @@ export const WalletPassword = (props: any) => {
       profileName = UserDetails[userId].profileName;
     }
     setLoading(true);
-    console.log("profileName ::", profileName, password)
+    // console.log('profileName ::', profileName, password);
     let openWallet: any = await wallet.openWallet(profileName, password);
+    console.log('openWallet pass:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       setLoading(false);
-
-      ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
+      return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
+      await wallet.startHeartbeat('wallet');
       let emptyAddress: any = '';
       dispatch(updateSendAddress(emptyAddress));
-      dispatch(updateBchatWalletPasswordModal(null))
+      dispatch(updateBchatWalletPasswordModal(null));
       setLoading(false);
-      daemon.daemonHeartbeat();
+      await daemon.daemonHeartbeat();
       props.onClick();
+      return;
+      // return wallet.startHeartbeat();
       // dispatch(dashboard());
     }
   }
+
   if (forgotPassword) {
     return (
       <ForgotPassword
@@ -113,20 +115,21 @@ export const WalletPassword = (props: any) => {
     );
   }
   // if (true) {
-console.log("currentHeight ::",currentHeight,"daemonHeight ::",daemonHeight)
+  console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
   if (daemonHeight > 0 && percentage < 99 && currentHeight > 0) {
     // setLoading(false)
     return (
-      <ProgressForSync remainingHeight={daemonHeight - currentHeight} percentage={percentage} exit={props.onClickClose}/>
+      <ProgressForSync
+        remainingHeight={daemonHeight - currentHeight}
+        percentage={percentage}
+        exit={props.onClickClose}
+      />
     );
   }
 
   return (
-
     <div className="wallet-walletPassword">
-
       <div className="wallet-walletPassword-contentBox">
-
         {loading && (
           <Loader>
             <div className="wallet-walletPassword-contentBox-loader">
@@ -137,7 +140,7 @@ console.log("currentHeight ::",currentHeight,"daemonHeight ::",daemonHeight)
             </div>
           </Loader>
         )}
-        <div className='exitBtn'>
+        <div className="exitBtn">
           <BchatIconButton
             iconType="exit"
             iconSize="small"

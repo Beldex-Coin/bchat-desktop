@@ -1,10 +1,8 @@
-
 const http = require('http');
 import { default as insecureNodeFetch } from 'node-fetch';
 import { HTTPError } from '../bchat/utils/errors';
 import { updateDaemon } from '../state/ducks/daemon';
 import { useDispatch } from 'react-redux';
-
 
 class Daemon {
   data_dir: null;
@@ -54,8 +52,7 @@ class Daemon {
       this.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           dispatch(updateDaemon({ height: data.result.height }));
-          console.log('updateDaemonupdateDaemon::',data.result.height);
-          
+          // console.log('updateDaemonupdateDaemon::', data.result.height);
         }
       });
     }, 3000);

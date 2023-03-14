@@ -84,7 +84,7 @@ class Wallet {
 
   startWallet = async (type?: string) => {
     try {
-      console.log("start wallet rpc :",type)
+      console.log('start wallet rpc :', type);
       let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         window.setSettingValue(walletSettingsKey.settingsFiatCurrency, 'USD');
@@ -111,7 +111,7 @@ class Wallet {
       } else {
       }
       const status: any = await this.runningStatus(64371);
-      console.log("status:",status)
+      console.log('status:', status);
       if (status == true) {
         if (type == 'settings') {
           return;
@@ -331,10 +331,10 @@ class Wallet {
         );
       }
       if (restoreWallet.hasOwnProperty('result')) {
-      this.wallet_state.password_hash = this.passwordEncrypt(password);
+        this.wallet_state.password_hash = this.passwordEncrypt(password);
 
         if (!type) {
-          console.log("killed...............:",type)
+          console.log('killed...............:', type);
           kill(64371)
             .then(() => console.log('port kill successFull'))
             .catch(err => {
@@ -410,14 +410,16 @@ class Wallet {
     return walletDir;
   };
 
-  startHeartbeat() {
+  startHeartbeat(type?: string) {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
-      this.heartbeatAction();
+      console.log('startHeartbeat:', type);
+      this.heartbeatAction(type);
     }, 8000);
   }
 
-  async heartbeatAction() {
+  async heartbeatAction(type?: string) {
+    console.log('heartbeatAction:');
     Promise.all([
       this.sendRPC('getheight', {}, 5000),
       this.sendRPC('getbalance', { account_index: 0 }, 5000),
@@ -448,7 +450,15 @@ class Wallet {
           wallet.info.height = response.result.height;
           window.inboxStore?.dispatch(updateWalletHeight(response.result.height));
         } else if (n.method == 'getbalance') {
+          console.log('response:-balance', response.result.balance);
+          let transacationsHistory: any;
+          if (type == 'wallet') {
+            transacationsHistory = await this.getTransactions();
+            transacationsHistory = transacationsHistory.transactions.tx_list;
+          }
           let data: any = await this.getTransactions();
+          console.log('response:-balance', response.result.balance);
+          console.log('response:-unlocked_balance', response.result.unlocked_balance);
           if (
             this.wallet_state.balance == response.result.balance &&
             this.wallet_state.unlocked_balance == response.result.unlocked_balance &&
@@ -461,7 +471,9 @@ class Wallet {
             response.result.unlocked_balance;
           this.wallet_state.tx_list = data.transactions.tx_list;
 
-          this.getFiatBalance();
+          if (type == 'wallet') {
+            this.getFiatBalance();
+          }
           window.inboxStore?.dispatch(
             updateBalance({
               balance: this.wallet_state.balance,
@@ -568,7 +580,7 @@ class Wallet {
       filename,
       password,
     });
-
+    console.log('openWallet: rpc :', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }
@@ -586,7 +598,7 @@ class Wallet {
     this.wallet_state.name = filename;
     this.wallet_state.open = true;
     this.wallet_state.password_hash = this.passwordEncrypt(password);
-    this.startHeartbeat();
+    // this.startHeartbeat();
     return openWallet;
   };
 

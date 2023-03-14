@@ -208,7 +208,7 @@ export const RegistrationStages = () => {
   }, []);
 
   const generateMnemonicAndKeyPairaa = async () => {
-    console.log('registration');
+    // console.log('registration');
     await wallet.startWallet();
   };
   return (
