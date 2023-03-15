@@ -59,6 +59,7 @@ import { BchatRightPanelWithDetails } from './BchatRightPanel';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
 import { SettingsKey } from '../../data/settings-key';
 import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+// import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
 // import { useSelector } from 'react-redux';
@@ -239,6 +240,14 @@ export class BchatConversation extends React.Component<Props, State> {
     }
     // const belAddress = useConversationBeldexAddress(selectedConversation.id); 
     const syncbarCondition=chatWithWallet && selectedConversation?.isPrivate && !isMe && selectedConversation?.didApproveMe && selectedConversation?.isApproved
+    // const msgProps={ amount:'0.1',
+    //   txnId: "1234567890",
+    //   direction: 'outgoing',
+    //   acceptUrl: "qwerty",
+    //   messageId: "qwert12345",
+    //   receivedAt: "123456",
+    //   isUnread: true,
+    // }
 
     // console.log("selectedConversation ::",syncbarCondition,selectedConversation)
    
@@ -268,10 +277,13 @@ export class BchatConversation extends React.Component<Props, State> {
             <SplitViewContainer
               top={<InConversationCallContainer />}
               bottom={
+                <>
                 <BchatMessagesListContainer
                   messageContainerRef={this.messageContainerRef}
                   scrollToNow={this.scrollToNow}
                 />
+                {/* <div><PaymentMessage key={'122334'} {...msgProps} /></div> */}
+                </>
               }
               disableTop={!this.props.hasOngoingCallWithFocusedConvo}
             />

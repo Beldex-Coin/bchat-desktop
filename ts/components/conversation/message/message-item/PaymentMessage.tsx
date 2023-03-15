@@ -1,13 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PropsForPayment } from '../../../../state/ducks/conversations';
+// import { PropsForPayment } from '../../../../state/ducks/conversations';
 // import { acceptOpenGroupInvitation } from '../../../../interactions/messageInteractions';
 // import { BchatIconButton } from '../../../icon';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon';
 import { shell } from 'electron/common';
 
-export const PaymentMessage = (props: PropsForPayment) => {
+// export const PaymentMessage = (props: PropsForPayment) => {
+export const PaymentMessage = (props: any) => {
+
   const { messageId, receivedAt, isUnread } = props;
   const classes = ['payment'];
 
@@ -20,6 +22,23 @@ function openToExplore(traxId: string) {
     void shell.openExternal(`http://explorer.beldex.io/tx/${traxId}`);
   } else {
     void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
+  }
+}
+
+function HindTxt()
+{
+  // console.log()
+ 
+  if(props.messageId ==='1234-567-7890')
+  {
+    return <div>Loading ...</div>
+  }
+  else if(props.direction=== 'outgoing')
+  {
+    return <div>Sent Successfully!</div>
+  }
+  else{
+    return <div>Received successfully</div>
   }
 }
   return (
@@ -47,8 +66,10 @@ function openToExplore(traxId: string) {
               <span className="group-address">{props.txnId}</span>
             </span> */}
           </div>
-          <div className={props.direction === 'outgoing'?'hint-out':'hintTxt'}>
-            {props.direction === 'outgoing'?"Sent Successfully!":"Received successfully"}
+          <div className={props.direction === 'outgoing'?'hint-out':'hintTxt'}>  
+          
+            {/* {props.direction === 'outgoing'?"Sent Successfully!":"Received successfully"} */}
+            <HindTxt />
             </div>
         </div>
       </div>

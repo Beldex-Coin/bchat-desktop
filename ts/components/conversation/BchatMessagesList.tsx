@@ -29,6 +29,7 @@ import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
 import { PaymentMessage } from './message/message-item/PaymentMessage';
+import { getWalletPaymentDetailsSend } from '../../state/selectors/walletConfig';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -47,6 +48,8 @@ export const BchatMessagesList = (props: {
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
   const oldTopMessageId = useSelector(getOldTopMessageId);
   const oldBottomMessageId = useSelector(getOldBottomMessageId);
+    
+  const dummywalletDetails = useSelector(getWalletPaymentDetailsSend);
 
   useLayoutEffect(() => {
     const newTopMessageId = messagesProps.length
@@ -86,6 +89,33 @@ export const BchatMessagesList = (props: {
     }
   });
 
+  // let dummydata:any = {
+  //   message: {
+  //     messageType: "payment",
+  //     props: {
+  //       acceptUrl: "",
+  //       amount: "10",
+  //       direction: "outgoing",
+  //       isUnread: false,
+  //       messageId: "9047dc12-fd11-4bfd-8d7b-63e5a7bb5563",
+  //       receivedAt: 1678799702674,
+  //       txnId: "a2e39a924e9b228606315833662290f431dc04a87cc0148f6dd0f4385f109772"
+  //     },
+
+  //     showDateBreak: 1678799702809,
+  //     showUnreadIndicator: false,
+  //   }
+  // }
+
+  console.log('dummywalletDetails ::', dummywalletDetails);
+  
+  if(dummywalletDetails)
+  {
+    messagesProps.unshift(dummywalletDetails)
+  }
+  console.log('messageProps ::', messagesProps);
+
+
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -103,17 +133,17 @@ export const BchatMessagesList = (props: {
             />
           ) : null;
         if (messageProps.message?.messageType === 'group-notification') {
-          const msgProps = messageProps.message.props as PropsForGroupUpdate;          
+          const msgProps = messageProps.message.props as PropsForGroupUpdate;
           return [<GroupUpdateMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
-        
+
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
           return [<GroupInvitation key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
         if (messageProps.message?.messageType === 'payment') {
           const msgProps = messageProps.message.props as PropsForPayment;
-          return [<PaymentMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
+          return [<PaymentMessage key={messageId} {...msgProps}  />, dateBreak, unreadIndicator];
         }
         if (messageProps.message?.messageType === 'message-request-response') {
           const msgProps = messageProps.message.props as PropsForMessageRequestResponse;

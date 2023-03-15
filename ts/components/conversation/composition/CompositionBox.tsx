@@ -71,6 +71,7 @@ import { wallet } from '../../../wallet/wallet-rpc';
 import { saveRecipientAddress } from '../../../data/data';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { pushToastError } from '../../../bchat/utils/Toast';
+import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
 
 
 export interface ReplyingToMessageProps {
@@ -334,6 +335,25 @@ class CompositionBoxInner extends React.Component<Props, State> {
       draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     window.inboxStore?.dispatch(updateSendConfirmModal(null));
     window.inboxStore?.dispatch(updateTransactionInitModal({}));
+    let dummydata:any = {
+      message: {
+        messageType: "payment",
+        props: {
+          acceptUrl: "",
+          amount: this.state.draft,
+          direction: "outgoing",
+          isUnread: false,
+          messageId: "1234-567-7890",
+          receivedAt: 1678799702674,
+          txnId: ""
+
+        },
+  
+        showDateBreak: 1678799702809,
+        showUnreadIndicator: false,
+      }
+    }
+    window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(dummydata));
     let data: any = await wallet.transfer(
       this.props.selectedConversation?.walletAddress,
       draft * 1e9,
@@ -363,8 +383,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
         selectedConversationKey,
         ConversationTypeEnum.PRIVATE
       );
+      
+
+      window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
 
       if (privateConvo) {
+
         void privateConvo.sendMessage({
           body: '',
           attachments: undefined,
@@ -376,6 +400,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
             txnId: TransactionHistory.tx_hash,
           },
         });
+
+
+        
         // Empty composition box and stagedAttachments
         this.setState({
           showEmojiPanel: false,
