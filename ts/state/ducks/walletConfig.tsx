@@ -14,6 +14,7 @@ export interface WalletConfigState {
   WalletSyncInitiatedWithChat: boolean | any;
   walletSyncBarShowInChat: Boolean | any;
   walletPasswordPopUpFlag:Boolean | any;
+  walletPaymentDetailsSend:any
 }
 
 const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || true;
@@ -26,7 +27,8 @@ export const initialWalletConfigState: WalletConfigState = {
   walletRescaning: false,
   WalletSyncInitiatedWithChat: chatwithWallet,
   walletSyncBarShowInChat: false,
-  walletPasswordPopUpFlag:true
+  walletPasswordPopUpFlag:true,
+  walletPaymentDetailsSend:null
 
 };
 
@@ -63,6 +65,9 @@ const walletConfigSlice = createSlice({
     updateWalletPasswordPopUpFlag(state, action: PayloadAction<WalletConfigState>) {
       return { ...state, walletPasswordPopUpFlag: action.payload };
     },
+    updateWalletPaymentDetailsSend(state, action: PayloadAction<any>) {
+      return { ...state, walletPaymentDetailsSend: action.payload };
+    },
   },
 });
 
@@ -75,7 +80,8 @@ export const {
   updateWalletRescaning,
   // updateWalletSyncInitiatedWithChat,
   updatewalletSyncBarShowInChat,
-  updateWalletPasswordPopUpFlag
+  updateWalletPasswordPopUpFlag,
+  updateWalletPaymentDetailsSend
 } = actions;
 export const walletConfigReducer = reducer;
 

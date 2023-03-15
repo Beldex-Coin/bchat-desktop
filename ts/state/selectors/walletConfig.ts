@@ -38,6 +38,10 @@ export const getWalletSendAddress = createSelector(
     getWalletConfig,
     (state: WalletConfigState):boolean => state.walletPasswordPopUpFlag
   );
+  export const getWalletPaymentDetailsSend = createSelector(
+    getWalletConfig,
+    (state: WalletConfigState) => state.walletPaymentDetailsSend
+  );
   // export const getwalletFiatCurrency = createSelector(
   //   getWalletConfig,
   //   (state: WalletConfigState): string=> state.walletFiatCurrency
