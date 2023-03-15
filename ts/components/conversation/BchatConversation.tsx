@@ -59,6 +59,7 @@ import { BchatRightPanelWithDetails } from './BchatRightPanel';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
 import { SettingsKey } from '../../data/settings-key';
 import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+// import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
 // import { useSelector } from 'react-redux';
 // tslint:disable: jsx-curly-spacing
@@ -227,16 +228,20 @@ export class BchatConversation extends React.Component<Props, State> {
       lightBoxOptions,
       isMe
     } = this.props;
+    const selectionMode = selectedMessages.length > 0;
+
+    const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
     if (!selectedConversation || !messagesProps) {
 
       // return an empty message view
       return <MessageView />;
     }
+    // const belAddress = useConversationBeldexAddress(selectedConversation.id); 
+    const syncbarCondition=chatWithWallet && selectedConversation?.isPrivate && !isMe && selectedConversation?.didApproveMe && selectedConversation?.isApproved
 
-    const selectionMode = selectedMessages.length > 0;
-
-    const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+    // console.log("selectedConversation ::",syncbarCondition,selectedConversation)
+   
     return (
       <BchatTheme>
 
@@ -251,7 +256,7 @@ export class BchatConversation extends React.Component<Props, State> {
           role="navigation"
         > 
           <div>
-           {chatWithWallet && selectedConversation.isPrivate && !isMe &&<ConditionalSyncBar />} 
+           {syncbarCondition &&<ConditionalSyncBar />} 
           </div>
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletSendPage } from '../../state/ducks/walletInnerSection';
 import { dashboard } from '../../state/ducks/walletSection';
