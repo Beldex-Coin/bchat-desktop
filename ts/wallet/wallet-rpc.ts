@@ -330,7 +330,8 @@ class Wallet {
           displayName,
           password,
           userRecoveryPhrase,
-          refreshDetails
+          refreshDetails,
+          type
         );
       }
       if (restoreWallet.hasOwnProperty('result')) {
@@ -395,12 +396,19 @@ class Wallet {
     displayName: string,
     password: string,
     userRecoveryPhrase: string,
-    refreshDetails: object
+    refreshDetails: object,
+    type?: string
   ): Promise<any> => {
     let walletDir =
       os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
     fs.emptyDirSync(walletDir);
-    return await this.restoreWallet(displayName, password, userRecoveryPhrase, refreshDetails);
+    return await this.restoreWallet(
+      displayName,
+      password,
+      userRecoveryPhrase,
+      refreshDetails,
+      type
+    );
   };
 
   findDir = () => {
