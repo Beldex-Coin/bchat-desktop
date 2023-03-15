@@ -158,7 +158,6 @@ import { getAppRootPath } from '../node/getRootPath';
 import { HTTPError } from '../bchat/utils/errors';
 import { kill } from 'cross-port-killer';
 
-
 // Both of these will be set after app fires the 'ready' event
 let logger: Logger | null = null;
 let locale: LocaleMessagesWithNameType;
@@ -258,7 +257,7 @@ function getStartInTray() {
 }
 // tslint:disable-next-line: max-func-body-length
 async function createWindow() {
-  const { minWidth, minHeight, width, height } = getWindowSize();  
+  const { minWidth, minHeight, width, height } = getWindowSize();
   windowConfig = windowConfig || {};
   const picked = {
     maximized: (windowConfig as any).maximized || false,
@@ -270,7 +269,7 @@ async function createWindow() {
     x: (windowConfig as any).x,
     y: (windowConfig as any).y,
   };
-  
+
   if (isTestIntegration) {
     const screenWidth =
       screen.getPrimaryDisplay().workAreaSize.width - getDefaultWindowSize().defaultWidth;
@@ -286,7 +285,6 @@ async function createWindow() {
     minWidth,
     minHeight,
     fullscreen: false as boolean | undefined,
-
 
     backgroundColor: '#000',
     webPreferences: {
@@ -370,7 +368,6 @@ async function createWindow() {
     const size = mainWindow.getSize();
     const position = mainWindow.getPosition();
 
-
     // so if we need to recreate the window, we have the most recent settings
     windowConfig = {
       maximized: mainWindow.isMaximized(),
@@ -407,7 +404,7 @@ async function createWindow() {
       passwordWindow = null;
     }
   });
-  mainWindow.maximize()
+  mainWindow.maximize();
   const urlToLoad = prepareURL([getAppRootPath(), 'background.html']);
 
   await mainWindow.loadURL(urlToLoad);
@@ -436,8 +433,11 @@ async function createWindow() {
   // Note: We do most of our shutdown logic here because all windows are closed by
   //   Electron before the app quits.
   mainWindow.on('close', async e => {
-     
-    kill(64371).then().catch(err => {throw new HTTPError('beldex_rpc_port', err) } )
+    kill(64371)
+      .then()
+      .catch(err => {
+        throw new HTTPError('beldex_rpc_port', err);
+      });
     console.log('close event', {
       readyForShutdown: mainWindow ? readyForShutdown : null,
       shouldQuit: windowShouldQuit(),
@@ -513,7 +513,7 @@ setTimeout(readyForUpdates, TEN_MINUTES);
 
 function openReleaseNotes() {
   void shell.openExternal(
-        `https://github.com/Beldex-Coin/bchat-desktop/releases/tag/v${app.getVersion()}`
+    `https://github.com/Beldex-Coin/bchat-desktop/releases/tag/v${app.getVersion()}`
   );
 }
 
@@ -610,7 +610,7 @@ async function showAbout() {
     autoHideMenuBar: true,
     backgroundColor: '#000',
     show: false,
-    
+
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: false,
@@ -835,8 +835,12 @@ async function requestShutdown() {
   }
 }
 
-app.on('before-quit',async () => {
-   
+app.on('before-quit', async () => {
+  kill(64371)
+    .then()
+    .catch((err: any) => {
+      throw new HTTPError('beldex_rpc_port', err);
+    });
   console.log('before-quit event', {
     readyForShutdown: mainWindow ? readyForShutdown : null,
     shouldQuit: windowShouldQuit(),
