@@ -44,6 +44,7 @@ export const BchatMessagesList = (props: {
   onPageDownPressed: () => void;
   onHomePressed: () => void;
   onEndPressed: () => void;
+  pubkey:string;
 }) => {
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
   const oldTopMessageId = useSelector(getOldTopMessageId);
@@ -109,7 +110,7 @@ export const BchatMessagesList = (props: {
 
   console.log('dummywalletDetails ::', dummywalletDetails);
   
-  if(dummywalletDetails)
+  if(props.pubkey===dummywalletDetails?.message?.props?.id)
   {
     messagesProps.unshift(dummywalletDetails)
   }

@@ -105,6 +105,7 @@ const Indicator = styled.div`
   width: 10%;
   height: 2px;
   background-color: #fdb12a;
+  transition: width 3s ease-in-out;
 `;
 
 export const MemoSyncStatusBar = React.memo(SyncStatusBar);
