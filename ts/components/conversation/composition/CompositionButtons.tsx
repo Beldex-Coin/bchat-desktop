@@ -48,17 +48,19 @@ export const SendMessageButton = (props: { onClick: () => void,name?:string }) =
   return (
     <div className="send-message-button"
       onClick={props.onClick}>
-
-      {/* <BchatIconButton
+      {props.name==="Send"?
+      <BchatIconButton
         iconType="send"
         iconColor='#fff'
-        iconSize={'huge'}
-        iconRotation={321}
-        borderRadius="300px"
-        iconPadding="5px 0 0 5px"
+        iconSize={'small'}
+        // iconRotation={321}
+        // borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
         onClick={props.onClick}
         dataTestId="send-message-button"
-      /> */}
+      />:
+      <img src="images/wallet/beldex_send.svg" className="bchat-text-logo" style={{width: '20px', height: '20px'}}></img>
+  }
       <div className='text'>{props.name}</div>
     </div> 
   );

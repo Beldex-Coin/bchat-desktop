@@ -43,7 +43,7 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
@@ -53,6 +53,7 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
   name: string;
@@ -458,9 +459,16 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
 
-            {chatwithWallet && !WalletSyncBarShowInChat && <div>
-              <BchatButton
-                text={window.i18n('connectWallet')}
+            {chatwithWallet && !WalletSyncBarShowInChat && <div 
+            className='connectWalletBtn'
+            onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+            >
+              <BchatIcon iconType='wallet' iconSize={"tiny"} iconColor='white' />
+              <div>
+              {window.i18n('connectWallet')}
+              </div>
+              {/* <BchatButtonIcon
+                name={window.i18n('connectWallet')}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
                 style={{
@@ -470,7 +478,7 @@ export const ConversationHeaderWithDetails = () => {
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
               // disabled={!caption}
-              />
+              /> */}
             </div>
             }
             {!isKickedFromGroup && (

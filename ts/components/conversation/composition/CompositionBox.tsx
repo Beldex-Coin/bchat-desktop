@@ -339,6 +339,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       message: {
         messageType: "payment",
         props: {
+          id:this.props.selectedConversation?.id,
           acceptUrl: "",
           amount: this.state.draft,
           direction: "outgoing",
@@ -360,7 +361,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       0,
       isSweepAll
     );
-
+    console.log('data transfer::',data)
     if (data.result) {
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
@@ -396,7 +397,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           preview: undefined,
           quote: undefined,
           txnDetails: {
-            amount: this.state.draft,
+            amount: data?.result?.amount_list[0]/1e9,
             txnId: TransactionHistory.tx_hash,
           },
         });
