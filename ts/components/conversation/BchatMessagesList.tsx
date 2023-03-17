@@ -112,9 +112,17 @@ export const BchatMessagesList = (props: {
   
   if(props.pubkey===dummywalletDetails?.message?.props?.id)
   {
-    messagesProps.unshift(dummywalletDetails)
+    function checkKey(key:any) {
+      return key?.message?.props?.messageId === dummywalletDetails?.message?.props?.messageId;
+    }
+    if(!messagesProps.find(checkKey))
+    {
+      messagesProps.unshift(dummywalletDetails)
+    }
+   
   }
   console.log('messageProps ::', messagesProps);
+  console.log('messagesProps[0]::',messagesProps[0],messagesProps[1])
 
 
   return (

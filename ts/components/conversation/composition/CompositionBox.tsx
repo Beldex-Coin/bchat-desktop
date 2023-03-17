@@ -270,7 +270,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   chatWithWalletInstruction() {
-    const { WalletSyncBarShowInChat } = this.props;
+   const { WalletSyncBarShowInChat } = this.props;
     if (this.chatwithWallet && !WalletSyncBarShowInChat) {
       window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
       return;
@@ -335,6 +335,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     window.inboxStore?.dispatch(updateSendConfirmModal(null));
     window.inboxStore?.dispatch(updateTransactionInitModal({}));
+    
     let dummydata:any = {
       message: {
         messageType: "payment",
@@ -346,8 +347,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           isUnread: false,
           messageId: "1234-567-7890",
           receivedAt: 1678799702674,
-          txnId: ""
-
+          txnId: "",
         },
   
         showDateBreak: 1678799702809,
@@ -999,10 +999,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
       // await this.onSendMessage();
-      const { selectedConversation } = this.props;
+      const { selectedConversation,WalletSyncBarShowInChat,isMe } = this.props;
+      const getSyncStatus = window.getSettingValue('syncStatus');
       const { draft } = this.state;
       const re = /^\d+\.?\d*$/;
-      if (selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet) {
+      // const { WalletSyncBarShowInChat } = this.props;
+      if (selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat &&
+      !isMe  && getSyncStatus) {
         await this.sendConfirmModal();
       } else {
         await this.onSendMessage();
