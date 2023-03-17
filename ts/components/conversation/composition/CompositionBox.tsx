@@ -388,6 +388,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
       window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
 
+      console.log('data?.result?.amount_list[0]/1e9 ::',data?.result?.amount_list[0]/1e9,data?.result?.amount_list)
       if (privateConvo) {
 
         void privateConvo.sendMessage({
@@ -397,7 +398,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           preview: undefined,
           quote: undefined,
           txnDetails: {
-            amount: data?.result?.amount_list[0]/1e9,
+            amount: (data?.result?.amount_list[0]/1e9).toString(),
             txnId: TransactionHistory.tx_hash,
           },
         });
