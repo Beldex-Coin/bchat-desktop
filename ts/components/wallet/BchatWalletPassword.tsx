@@ -95,14 +95,21 @@ export const WalletPassword = (props: any) => {
       setLoading(false);
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
+      // console.log('test 1')
       await wallet.startHeartbeat('wallet');
       let emptyAddress: any = '';
+      // console.log('test 2')
       dispatch(updateSendAddress(emptyAddress));
+      // console.log('test 3')
       dispatch(updateBchatWalletPasswordModal(null));
+      // console.log('test 4')
       setLoading(false);
-      await daemon.daemonHeartbeat();
-      props.onClick();
-      return;
+      // console.log('test 5')
+      daemon.daemonHeartbeat();
+      // console.log('test 6')
+      // props.onClickClose();
+      // console.log('test 7')
+      // return;
       // return wallet.startHeartbeat();
       // dispatch(dashboard());
     }
