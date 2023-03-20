@@ -250,6 +250,7 @@ const Section = (props: { type: SectionType }) => {
               iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
+              margin='18px 0 0 0'
             />
             {/* <div style={{ cursor: 'pointer' }}>
               <img
