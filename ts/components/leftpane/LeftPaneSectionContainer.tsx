@@ -25,6 +25,18 @@ export const LeftPaneSectionContainer = styled.div`
     justify-content: center;
     color: white;
     cursor: pointer;
+
+    .beta{
+      background-color: #9494a0;
+    height: 9px;
+    border-radius: 4px;
+    padding: 0 2px;
+    font-size: 6px;
+    font-family: 'poppin-semibold';
+    letter-spacing: 1px;
+    margin-top: 2px;
+    color: white;
+    }
   }
   .icon-box .btnView:hover {
     background-color: #006203;

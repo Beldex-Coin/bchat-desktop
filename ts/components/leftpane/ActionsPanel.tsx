@@ -235,28 +235,30 @@ const Section = (props: { type: SectionType }) => {
 
     case SectionType.Wallet:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
           <div
             data-tip="Wallet"
             data-place="top"
             data-offset="{'right':35}"
             className="btnView"
             onClick={handleClick}
+            style={{flexDirection: 'column'}}
           >
-            {/* <BchatIconButton
-              iconSize="medium"
+            <BchatIconButton
+              iconSize="small"
               dataTestId="settings-section"
               iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
-            /> */}
-            <div style={{ cursor: 'pointer' }}>
+            />
+            {/* <div style={{ cursor: 'pointer' }}>
               <img
-                src="images/wallet/Wallet_Animated.png"
+                src="images/wallet/wallet_beta.svg"
                 // className="bchat-text-logo"
                 style={{ width: '20px', height: '20px' }}
               />
-            </div>
+            </div> */}
+            <div className='beta'>BETA</div>
           </div>
         </div>
       );
