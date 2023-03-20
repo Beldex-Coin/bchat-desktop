@@ -245,12 +245,12 @@ const Section = (props: { type: SectionType }) => {
             style={{flexDirection: 'column'}}
           >
             <BchatIconButton
-              iconSize="small"
+              iconSize={18}
               dataTestId="settings-section"
               iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
-              margin='18px 0 0 0'
+              margin='9px 0 0 0'
             />
             {/* <div style={{ cursor: 'pointer' }}>
               <img
