@@ -31,7 +31,7 @@ function HindTxt()
  
   if(props.messageId ==='1234-567-7890')
   {
-    return <div>Loading ...</div>
+    return <div>Initiating transaction</div>
   }
   else if(props.direction=== 'outgoing')
   {
