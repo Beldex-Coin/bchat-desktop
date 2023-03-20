@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
@@ -67,10 +67,10 @@ export const WalletPassword = (props: any) => {
   loadRecipient();
   loadFiatCurrency();
 
-  const searchInput:any = useRef(null);
-  useEffect(()=>{
-     // current property is refered to input element
-     searchInput.current.focus();  },[])
+  // const searchInput:any = useRef(null);
+  // useEffect(()=>{
+  //    // current property is refered to input element
+  //    searchInput.current.focus();  },[])
   useKey((event: KeyboardEvent) => {
     if (!forgotPassword && event.key === 'Enter') {
       submit();
@@ -162,7 +162,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password"  ref={searchInput} value={password} onChange={e => setValue(e.target.value)}  />
+          <input type="password"  autoFocus={true} value={password} onChange={e => setValue(e.target.value)}  />
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-forgotTxt">
