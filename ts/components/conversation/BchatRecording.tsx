@@ -177,8 +177,8 @@ export class BchatRecording extends React.Component<Props, State> {
             className={classNames( 
               'send-message-button',
             )}
-          >
-            {!isRecording ? <SendMessageButton   onClick={this.onSendVoiceMessage}/> :<SendMessageButton   onClick={()=>{}}/>}
+          > 
+            {!isRecording ? <SendMessageButton name="Send"  onClick={this.onSendVoiceMessage}/> :<SendMessageButton name="Send"  onClick={()=>{}}/>}
           </div>
       </div>
     );

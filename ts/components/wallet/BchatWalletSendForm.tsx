@@ -42,12 +42,14 @@ export const SendForm = (props: any) => {
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
+    setAddress(sendAddress);
 
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, []);
-
+  }, [sendAddress]);
+ 
+  // console.log('sendAddress ::',sendAddress,'address ::',address);
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
       setDropDown(false);
