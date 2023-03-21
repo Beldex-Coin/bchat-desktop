@@ -35,7 +35,7 @@ function HindTxt()
   }
   else if(props.direction=== 'outgoing')
   {
-    return <div>Sent Successfully!</div>
+    return <div>Send Successfully!</div>
   }
   else{
     return <div>Received successfully</div>

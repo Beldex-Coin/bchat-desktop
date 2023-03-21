@@ -67,8 +67,8 @@ export const AddressBook = (props: any) => {
                 className="addressBook-wholeBox-contentBox-sendBtn"
                 onClick={() => send(belAddress)}
               >
-                <BchatIcon iconType="send" iconSize={'small'} iconRotation={309} />
-                <span>{window.i18n('send')}</span>
+                <BchatIcon iconType="send" iconSize={'small'}  />
+                <span style={{marginLeft:"3px"}}>{window.i18n('send')}</span>
               </div>
               <div
                 className="addressBook-wholeBox-contentBox-copyBtn"

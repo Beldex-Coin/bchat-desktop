@@ -260,6 +260,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public render() {
     const { category } = this.props;
+    // console.log("category setting ::",category)
     const shouldRenderPasswordLock = this.state.shouldLockSettings && this.state.hasPassword;
     const categoryLocalized: LocalizerKeys =
       category === BchatSettingCategory.Appearance
@@ -272,7 +273,11 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
               ? 'messageRequests'
               : category === BchatSettingCategory.Hops
                 ? 'hops'
-                : category === BchatSettingCategory.Wallet
+                : category === BchatSettingCategory.Chat
+                  ? 'Chat'
+                : category === BchatSettingCategory.WalletSettings
+                  ? 'WalletSettingsTitle'
+                  : category === BchatSettingCategory.Wallet
                   ? 'WalletSettingsTitle'
                   : category === BchatSettingCategory.Notifications
                     ? 'notificationsSettingsTitle'

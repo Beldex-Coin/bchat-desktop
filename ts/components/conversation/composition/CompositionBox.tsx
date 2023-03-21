@@ -580,7 +580,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       <>
         {selectedConversation?.type === 'private' &&
         re.test(draft) 
-        && (draft.length-1 - draft.indexOf(".")) < 4
+        // && (draft.length-1 - draft.indexOf(".")) < 4
         &&
         this.chatwithWallet &&
         WalletSyncBarShowInChat &&

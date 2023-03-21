@@ -101,7 +101,7 @@ export const WalletSettings = () => {
             <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
             <div style={{ cursor: 'pointer' }}>
               <span className="wallet-settings-tabBox-disableText">
-                {connectedDeamon.host}:{connectedDeamon.port}
+                {connectedDeamon? `${connectedDeamon?.host}:${connectedDeamon?.port}` :"Please check your internet connection"}
               </span>
               <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
             </div>
