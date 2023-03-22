@@ -66,7 +66,7 @@ export const BchatWalletPasswordModal = (props: any) => {
 
     //   setLoading(true);
     let openWallet: any = await wallet.openWallet(profileName, password);
-    console.log('openWallet:-', openWallet);
+    // console.log('openWallet:-', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       // setLoading(false);
 

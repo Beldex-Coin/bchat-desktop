@@ -50,7 +50,7 @@ export const BchatMessagesList = (props: {
   const oldTopMessageId = useSelector(getOldTopMessageId);
   const oldBottomMessageId = useSelector(getOldBottomMessageId);
     
-  const dummywalletDetails = useSelector(getWalletPaymentDetailsSend);
+  const transactionInitiatDetails = useSelector(getWalletPaymentDetailsSend);
 
   useLayoutEffect(() => {
     const newTopMessageId = messagesProps.length
@@ -90,39 +90,20 @@ export const BchatMessagesList = (props: {
     }
   });
 
-  // let dummydata:any = {
-  //   message: {
-  //     messageType: "payment",
-  //     props: {
-  //       acceptUrl: "",
-  //       amount: "10",
-  //       direction: "outgoing",
-  //       isUnread: false,
-  //       messageId: "9047dc12-fd11-4bfd-8d7b-63e5a7bb5563",
-  //       receivedAt: 1678799702674,
-  //       txnId: "a2e39a924e9b228606315833662290f431dc04a87cc0148f6dd0f4385f109772"
-  //     },
-
-  //     showDateBreak: 1678799702809,
-  //     showUnreadIndicator: false,
-  //   }
-  // }
-
-  console.log('dummywalletDetails ::', dummywalletDetails);
   
-  if(props.pubkey===dummywalletDetails?.message?.props?.id)
+  if(props.pubkey===transactionInitiatDetails?.message?.props?.id)
   {
     function checkKey(key:any) {
-      return key?.message?.props?.messageId === dummywalletDetails?.message?.props?.messageId;
+      return key?.message?.props?.messageId === transactionInitiatDetails?.message?.props?.messageId;
     }
     if(!messagesProps.find(checkKey))
     {
-      messagesProps.unshift(dummywalletDetails)
+      messagesProps.unshift(transactionInitiatDetails)
     }
    
   }
-  console.log('messageProps ::', messagesProps);
-  console.log('messagesProps[0]::',messagesProps[0],messagesProps[1])
+  // console.log('messageProps ::', messagesProps);
+  // console.log('messagesProps[0]::',messagesProps[0],messagesProps[1])
 
 
   return (

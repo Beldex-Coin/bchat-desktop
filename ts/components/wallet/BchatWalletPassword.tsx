@@ -90,7 +90,7 @@ export const WalletPassword = (props: any) => {
     setLoading(true);
     // console.log('profileName ::', profileName, password);
     let openWallet: any = await wallet.openWallet(profileName, password);
-    console.log('openWallet pass:', openWallet);
+    // console.log('openWallet pass:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       setLoading(false);
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
@@ -127,7 +127,7 @@ export const WalletPassword = (props: any) => {
   }
   // if (true) {
   console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
-  if (daemonHeight > 0 && percentage < 99 && currentHeight > 0) {
+  if (daemonHeight > 0 && percentage < 99 ) {
     // setLoading(false)
     return (
       <ProgressForSync

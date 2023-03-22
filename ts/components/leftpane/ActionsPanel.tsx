@@ -88,7 +88,7 @@ const Section = (props: { type: SectionType }) => {
 
   const handleClick =async () => {
     /* tslint:disable:no-void-expression */
-    console.log('type:', type);
+   
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
