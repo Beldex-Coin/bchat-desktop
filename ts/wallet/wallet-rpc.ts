@@ -462,15 +462,15 @@ class Wallet {
           wallet.info.height = response.result.height;
           window.inboxStore?.dispatch(updateWalletHeight(response.result.height));
         } else if (n.method == 'getbalance') {
-          console.log('response:-balance', response.result.balance);
+          // console.log('response:-balance', response.result.balance);
           let transacationsHistory: any = [];
           if (type == 'wallet') {
             transacationsHistory = await this.getTransactions();
             transacationsHistory = transacationsHistory.transactions.tx_list;
           }
           // let data: any = await this.getTransactions();
-          console.log('response:-balance', response.result.balance);
-          console.log('response:-unlocked_balance', response.result.unlocked_balance);
+          // console.log('response:-balance', response.result.balance);
+          // console.log('response:-unlocked_balance', response.result.unlocked_balance);
           if (
             this.wallet_state.balance == response.result.balance &&
             this.wallet_state.unlocked_balance == response.result.unlocked_balance &&
@@ -484,7 +484,7 @@ class Wallet {
           this.wallet_state.tx_list = transacationsHistory;
 
           if (type == 'wallet') {
-            this.getFiatBalance();
+            await this.getFiatBalance();
           }
           // console.log(
           //   'bala:',
