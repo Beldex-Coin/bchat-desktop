@@ -599,7 +599,7 @@ class Wallet {
       filename,
       password,
     });
-    console.log('openWallet: rpc :', openWallet);
+    // console.log('openWallet: rpc :', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }

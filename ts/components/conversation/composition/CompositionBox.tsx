@@ -336,7 +336,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     window.inboxStore?.dispatch(updateSendConfirmModal(null));
     window.inboxStore?.dispatch(updateTransactionInitModal({}));
     
-    let dummydata:any = {
+    let transactionInitiatDetails:any = {
       message: {
         messageType: "payment",
         props: {
@@ -354,14 +354,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
         showUnreadIndicator: false,
       }
     }
-    window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(dummydata));
+    window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(transactionInitiatDetails));
     let data: any = await wallet.transfer(
       this.props.selectedConversation?.walletAddress,
       draft * 1e9,
       0,
       isSweepAll
     );
-    console.log('data transfer::',data)
     if (data.result) {
       const TransactionHistory = {
         tx_hash: data.result.tx_hash_list[0],
@@ -385,10 +384,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ConversationTypeEnum.PRIVATE
       );
       
-
       window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
 
-      console.log('data?.result?.amount_list[0]/1e9 ::',data?.result?.amount_list[0]/1e9,data?.result?.amount_list)
       if (privateConvo) {
 
         void privateConvo.sendMessage({
