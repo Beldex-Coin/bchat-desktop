@@ -31,7 +31,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
   const dispatch = useDispatch();
-
+//  console.log('MessageContentWithStatuses ::',contentProps,props)
   const multiSelectMode = useSelector(isMessageSelectionMode);
 
   const onClickOnMessageOuterContainer = useCallback(

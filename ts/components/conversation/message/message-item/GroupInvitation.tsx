@@ -13,7 +13,24 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
     classes.push('invitation-outgoing');
   }
   const socialGroupInvitation = window.i18n('socialGroupInvitation');
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || "Small";
 
+  function FontSizeChanger(fontSize:number)
+  {
+    let size;
+   if(currentValueFromSettings==="Small")
+   {
+    size= fontSize
+   }
+   else if(currentValueFromSettings==="Medium")
+   {
+    size=fontSize+2
+   }
+   else{
+    size=fontSize+4
+   }
+   return size;
+  }
   return (
     <ReadableMessage
       messageId={messageId}
@@ -31,9 +48,9 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
               iconSize={'large'}
             />
             <span className="group-details">
-              <span className="group-name">{props.serverName}</span>
-              <span className="group-type">{socialGroupInvitation}</span>
-              <span className="group-address">{props.url}</span>
+              <span className="group-name" style={{fontSize:`${FontSizeChanger(18)}px`}}>{props.serverName}</span>
+              <span className="group-type" style={{fontSize:`${FontSizeChanger(14)}px`}}>{socialGroupInvitation}</span>
+              <span className="group-address" style={{fontSize:`${FontSizeChanger(14)}px`}}>{props.url}</span>
             </span>
           </div>
         </div>

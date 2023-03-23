@@ -12,6 +12,7 @@ export const PaymentMessage = (props: any) => {
 
   const { messageId, receivedAt, isUnread } = props;
   const classes = ['payment'];
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || "Small";
 
   if (props.direction === 'outgoing') {
     classes.push('invitation-outgoing');
@@ -24,21 +25,39 @@ function openToExplore(traxId: string) {
     void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
   }
 }
+function FontSizeChanger(fontSize:number)
+  {
+    let size;
+   if(currentValueFromSettings==="Small")
+   {
+    size= fontSize
+   }
+   else if(currentValueFromSettings==="Medium")
+   {
+    size=fontSize+2
+   }
+   else{
+    size=fontSize+4
+   }
+   return size;
+  }
 
 function HindTxt()
 {
   // console.log()
+  const iconColor = 'var(--color-text)';
  
   if(props.messageId ==='1234-567-7890')
   {
-    return <div>Initiating transaction</div>
+      return <div><span style={{marginRight: '5px'}} >Initiating transaction</span><BchatIcon rotateDuration={2} iconColor={iconColor} iconType="loading" iconSize="tiny"  /></div>
   }
   else if(props.direction=== 'outgoing')
   {
-    return <div>Send Successfully!</div>
+    return <div><span style={{marginRight: '5px'}}>Sent Successfully!</span><BchatIcon iconColor={iconColor} iconType="doubleCheckCircleFilled" iconSize="tiny"  /></div>
   }
   else{
-    return <div>Received successfully</div>
+      
+      return <div>Received successfully </div>
   }
 }
   return (
@@ -50,13 +69,14 @@ function HindTxt()
     >
       <div className="group-invitation-container" id={`msg-${props.messageId}`}>
             
-        <div className={classNames(classes)} onClick={()=>openToExplore(props.txnId)}>
+        <div className={classNames(classes)} onClick={()=>props.txnId?openToExplore(props.txnId):""} 
+        style={{cursor:props.txnId ?"pointer":"unset"}}>
           <div className={props.direction === 'outgoing'?"contents":"contents-incoming"}
             // onClick={() => { acceptOpenGroupInvitation(props.acceptUrl, props.serverName)}}
             >
             
             <div><BchatIcon iconType={'borderWithBeldex'} iconSize={"huge"} /></div>
-            <div className='amount'>
+            <div className='amount'  style={{fontSize:`${FontSizeChanger(18)}px`}}>
             {props.amount} BDX
             </div>
             
@@ -66,7 +86,7 @@ function HindTxt()
               <span className="group-address">{props.txnId}</span>
             </span> */}
           </div>
-          <div className={props.direction === 'outgoing'?'hint-out':'hintTxt'}>  
+          <div className={props.direction === 'outgoing'?'hint-out':'hintTxt'} style={{fontSize:`${FontSizeChanger(12)}px`}}>  
           
             {/* {props.direction === 'outgoing'?"Sent Successfully!":"Received successfully"} */}
             <HindTxt />
