@@ -292,6 +292,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   sendConfirmModal() {
     const messagePlaintext = cleanMentions(this.state.draft);
+    const priority=window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
 
     if (!this.props.selectedConversation?.walletAddress) {
       return pushToastError(
@@ -305,7 +306,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         address: this.props.selectedConversation?.walletAddress,
         amount: messagePlaintext,
         fee: 0.0042,
-        Priority: 'Flash',
+        Priority: priority,
         onClickOk: async () => {
           await this.sendFund();
           // window.inboxStore?.dispatch(updateTransactionInitModal({}));
@@ -532,6 +533,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
 
+
     const re = /^\d+\.?\d*$/;
     // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
@@ -626,7 +628,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             >
               {}
               {this.renderTextArea()}
-              {selectedConversation?.isPrivate && !isMe ? this.bchatWalletView() : ''}
+              {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
             </div>
             {this.sendButton()}

@@ -71,6 +71,7 @@ import ReactTooltip from 'react-tooltip';
 import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
 import { wallet } from '../../wallet/wallet-rpc';
+import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -79,6 +80,7 @@ const Section = (props: { type: SectionType }) => {
   const { type } = props;
 
   const focusedSection = useSelector(getFocusedSection);
+  const walletPasswordPopUp=useSelector(getWalletPasswordPopUpFlag)
   const isSelected = focusedSection === props.type;
 
   // function switchToWalletSec() {
@@ -116,13 +118,17 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
+      
       // Show Path Indicator Modal
       dispatch(showLeftPaneSection(type));
       await wallet.startWallet('settings');
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
+      if(walletPasswordPopUp)
+      {
+        dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
+      }
 
 
       // dispatch(setOverlayMode(undefined))

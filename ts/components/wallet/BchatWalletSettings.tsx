@@ -17,10 +17,12 @@ import { NodeSetting } from './BchatWalletNodeSetting';
 export const WalletSettings = () => {
   const dispatch = useDispatch();
   const decimalValue = useSelector(getwalletDecimalValue);
+  const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+  const [priorityStatus, setPriorityStatus] = useState(priority)
   const [saveRecipient, setSaveRecipient] = useState(
     window.getSettingValue(walletSettingsKey.settingSaveRecipient)
   );
-  const [nodeSetting,setNodeSetting]=useState(false);
+  const [nodeSetting, setNodeSetting] = useState(false);
 
   const syncProDone = window.getSettingValue('syncStatus');
   const [fiatCurrency, setFiatCurrency] = useState(
@@ -70,11 +72,10 @@ export const WalletSettings = () => {
 
     setSaveRecipient(!saveRecipient);
   }
-  if(nodeSetting)
-  {
-    return<div className='wallet'>
-    <NodeSetting  onClick={()=>setNodeSetting(false)}/>
-  </div>
+  if (nodeSetting) {
+    return <div className='wallet'>
+      <NodeSetting onClick={() => setNodeSetting(false)} />
+    </div>
   }
   return (
     <div className="">
@@ -96,12 +97,12 @@ export const WalletSettings = () => {
             justifyContent="space-between"
             padding="10px 0"
             cursor="pointer"
-            onClick={()=>setNodeSetting(true)}
+            onClick={() => setNodeSetting(true)}
           >
             <div className="wallet-settings-tabBox-subtle">{window.i18n('nCurrentRPCTxt')}</div>
             <div style={{ cursor: 'pointer' }}>
               <span className="wallet-settings-tabBox-disableText">
-                {connectedDeamon? `${connectedDeamon?.host}:${connectedDeamon?.port}` :"Please check your internet connection"}
+                {connectedDeamon ? `${connectedDeamon?.host}:${connectedDeamon?.port}` : "Please check your internet connection"}
               </span>
               <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
             </div>
@@ -112,6 +113,35 @@ export const WalletSettings = () => {
       <div className="wallet-settings-tabBox-subtle">{window.i18n('WalletSettingsTitle')}</div>
       <SpacerXS />
       <div className="wallet-settings-tabBox">
+        <div className="subBox">
+          <Flex
+            container={true}
+            justifyContent="space-between"
+            padding="10px 0"
+            cursor="pointer"
+            onClick={() =>
+              dispatch(
+                walletSettingMiniModal({
+                  headerName: window.i18n('priority'),
+                  content: ["Flash", 'Slow'],
+                  currency: decimalValue,
+                  onClose: () => dispatch(walletSettingMiniModal(null)),
+                  onClick: (e: any) => {
+                    dispatch(walletSettingMiniModal(null));
+                    window.setSettingValue(walletSettingsKey.settingsPriority, e);
+                    setPriorityStatus(e)
+                  },
+                })
+              )
+            }
+          >
+            <div className="wallet-settings-tabBox-subtle">{window.i18n('priority')}</div>
+            <div style={{ cursor: 'pointer' }}>
+              <span className="wallet-settings-tabBox-disableText">{priorityStatus}</span>
+              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+            </div>
+          </Flex>
+        </div>
         <div className="subBox">
           <Flex
             container={true}

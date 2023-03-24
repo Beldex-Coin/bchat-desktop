@@ -76,6 +76,7 @@ export type LocalizerKeys =
   | 'userAddedToModerators'
   | 'to'
   | 'send'
+  | 'sent'
   | 'requestsPlaceholder'
   | 'secretGroupInviteFailMessage'
   | 'noContactsForGroup'

@@ -149,6 +149,7 @@
   "from": "From:",
   "to": "To:",
   "send": "Send",
+  "sent":"Sent",
   "received": "Receive",
   "pending": "Pending",
   "failed": "Failed",
