@@ -18,6 +18,7 @@ const settingSaveRecipient="save-recipient";
 const settingsDeamonList="deamon-List";
 const settingsCurrentDeamon='current-deamon';
 const settingsFiatCurrency='fiat-currency';
+const settingsPriority="priority"
 export const SettingsKey = { 
   settingsReadReceipt,
   settingsTypingIndicator, 
@@ -29,6 +30,7 @@ export const SettingsKey = {
   settingsOpengroupPruning,
   settingsAudioNotification,
   settingsChatWithWallet,
+
   // settingChatwithWalletInstruction
 };
 
@@ -37,5 +39,6 @@ export const walletSettingsKey={
   settingSaveRecipient,
   settingsDeamonList,
   settingsCurrentDeamon,
-  settingsFiatCurrency
+  settingsFiatCurrency,
+  settingsPriority
 }

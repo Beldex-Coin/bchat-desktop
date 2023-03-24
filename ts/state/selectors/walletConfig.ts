@@ -37,10 +37,10 @@ export const getWalletSendAddress = createSelector(
   export const getWalletPasswordPopUpFlag = createSelector(
     getWalletConfig,
     (state: WalletConfigState):boolean => state.walletPasswordPopUpFlag
-  );
+  ); 
   export const getWalletPaymentDetailsSend = createSelector(
     getWalletConfig,
-    (state: WalletConfigState) => state.walletPaymentDetailsSend
+    (state: WalletConfigState) => state.walletPaymentDetailsSend 
   );
   // export const getwalletFiatCurrency = createSelector(
   //   getWalletConfig,

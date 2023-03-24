@@ -28,7 +28,8 @@ export const initialWalletConfigState: WalletConfigState = {
   WalletSyncInitiatedWithChat: chatwithWallet,
   walletSyncBarShowInChat: false,
   walletPasswordPopUpFlag:true,
-  walletPaymentDetailsSend:null
+  walletPaymentDetailsSend:null,
+  
 
 };
 
@@ -80,7 +81,7 @@ export const {
   updateWalletRescaning,
   // updateWalletSyncInitiatedWithChat,
   updatewalletSyncBarShowInChat,
-  updateWalletPasswordPopUpFlag,
+   updateWalletPasswordPopUpFlag,
   updateWalletPaymentDetailsSend
 } = actions;
 export const walletConfigReducer = reducer;

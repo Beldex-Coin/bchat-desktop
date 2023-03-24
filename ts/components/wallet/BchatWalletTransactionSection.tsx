@@ -92,7 +92,7 @@ export const TransactionSection = (props: any) => {
       case 'out':
         (item.iconType = 'paySend'),
           (item.iconColor = '#FC2727'),
-          (item.type = window.i18n('send'));
+          (item.type = window.i18n('sent'));
         break;
       case 'pending':
         (item.iconType = 'pendingTransaction'),

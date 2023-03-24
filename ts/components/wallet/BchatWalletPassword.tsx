@@ -6,7 +6,7 @@ import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { walletSettingsKey } from '../../data/settings-key';
-import { updateDecimalValue, updateSendAddress } from '../../state/ducks/walletConfig';
+import { updateDecimalValue, updateSendAddress, updateWalletPasswordPopUpFlag } from '../../state/ducks/walletConfig';
 import { ForgotPassword } from './BchatWalletForgotPassword';
 import { ProgressForSync } from './BchatWalletProgressForSync';
 import { getHeight } from '../../state/selectors/walletConfig';
@@ -101,6 +101,8 @@ export const WalletPassword = (props: any) => {
       // console.log('test 2')
       dispatch(updateSendAddress(emptyAddress));
       // console.log('test 3')
+      let False: any = false
+      dispatch(updateWalletPasswordPopUpFlag(False))
       dispatch(updateBchatWalletPasswordModal(null));
       // console.log('test 4')
       setLoading(false);
@@ -127,7 +129,7 @@ export const WalletPassword = (props: any) => {
   }
   // if (true) {
   console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
-  if (daemonHeight > 0 && percentage < 99 ) {
+  if (daemonHeight > 0 && percentage < 99) {
     // setLoading(false)
     return (
       <ProgressForSync
@@ -169,7 +171,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password"  autoFocus={true} value={password} onChange={e => setValue(e.target.value)}  />
+          <input type="password" autoFocus={true} value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-forgotTxt">
