@@ -124,7 +124,7 @@ export const WalletSettings = () => {
                 walletSettingMiniModal({
                   headerName: window.i18n('priority'),
                   content: ["Flash", 'Slow'],
-                  currency: decimalValue,
+                  currency:priorityStatus,
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
                     dispatch(walletSettingMiniModal(null));

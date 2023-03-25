@@ -40,7 +40,7 @@ export const WalletMainPanel = () => {
   const dispatch = useDispatch();
   const focusedsettings = useSelector((state: any) => state.walletFocused);
   const [amount, setAmount] = useState('');
-  const [priority, setPriority] = useState(window.i18n('flash'));
+  // const [priority, setPriority] = useState(window.i18n('flash'));
   // const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
@@ -114,9 +114,9 @@ export const WalletMainPanel = () => {
           setAmount={(e: any) => {
             numberOnly(e);
           }}
-          priority={priority}
+          // priority={priority}
           notes={notes}
-          setPriority={(e: any) => setPriority(e)}
+          // setPriority={(e: any) => setPriority(e)}
           setNotes={(e: any) => setNotes(e)}
           clearStates={() => clearStates()}
 
@@ -130,9 +130,6 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   // daemon.daemonHeartbeat();
-
-
-
   return (
     <>
       <WalletHeader clearStates={props.clearStates} />
@@ -144,8 +141,8 @@ export const Dashboard = (props: any) => {
           <SendForm
             amount={props.amount}
             setAmount={props.setAmount}
-            priority={props.priority}
-            setPriority={props.setPriority}
+            // priority={props.priority}
+            // setPriority={props.setPriority}
             notes={props.notes}
             setNotes={props.setNotes}
           />

@@ -161,6 +161,7 @@ const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
 const darkCopyHover = '#008C04';
 const darkAddressBookCopy = '#009D17';
+const darkBgModalColor="rgba(0, 0, 0, 0.8)";
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
@@ -387,7 +388,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-disableBtn', darkDisableBtn);
   document.documentElement.style.setProperty('--color-disableTxt', darkDisableTxt);
   document.documentElement.style.setProperty('--color-confirmAddress', darkConfirmAddress);
-
+  document.documentElement.style.setProperty('--color-BgModalColor', darkBgModalColor);
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
   document.documentElement.style.setProperty('--color-leave-button', darkLeaveHover);
@@ -536,6 +537,7 @@ const lightAddressBookCopy = '#FFFFFF';
 const lightAddMembers = '#F2F2F2';
 const lightProfileClose = '#DDDDDD';
 const lightChattimestamp = '#222222';
+const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -555,6 +557,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-copyModalbtn', lightCopyModalbtn);
   document.documentElement.style.setProperty('--color-disableText', ligntDisableText);
   document.documentElement.style.setProperty('--color-downArrow', lightDownArrow);
+  document.documentElement.style.setProperty('--color-BgModalColor', lightBgModalColor);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
     lightColorComposeViewBg
@@ -900,7 +903,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-confirmAddress:${darkConfirmAddress};
     --color-leave-button:${darkLeaveHover};
     --color-text:${darkColorText};
-
+    --color-BgModalColor:${darkBgModalColor};
   
     
 
