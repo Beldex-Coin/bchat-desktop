@@ -63,6 +63,11 @@
     justify-content: flex-end;
   }
 }
+.payment:hover
+{
+opacity: 0.9;
+}
+
 .group-invitation {
   background: var(--color-received-message-background);
 

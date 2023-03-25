@@ -92,6 +92,7 @@ export const WalletPassword = (props: any) => {
     let openWallet: any = await wallet.openWallet(profileName, password);
     // console.log('openWallet pass:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
+      console.log("openWallet.error")
       setLoading(false);
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
@@ -154,12 +155,14 @@ export const WalletPassword = (props: any) => {
           </Loader>
         )}
         <div className="exitBtn">
-          <BchatIconButton
-            iconType="exit"
-            iconSize="small"
-            onClick={props.onClickClose}
-            dataTestId="modal-close-button"
-          />
+          <article>
+            <BchatIconButton
+              iconType="exit"
+              iconSize="small"
+              onClick={props.onClickClose}
+              dataTestId="modal-close-button"
+            />
+          </article>
         </div>
         {/* <SpacerLG /> */}
         {/* <SpacerLG /> */}

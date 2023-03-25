@@ -756,7 +756,7 @@ label {
     // background-color: aliceblue;
     flex-direction: column;
     justify-content: center;
-    
+
     &-contentBox {
       width: 500px;
       // background-color: #2d2d3b;
@@ -847,16 +847,28 @@ label {
 }
 
 .walletPassword .bchat-modal__body {
- padding: 0;
+  padding: 0;
 }
 .walletPassword .exitBtn {
   display: flex;
   justify-content: flex-end;
   margin-right: 12px;
   margin-top: 10px;
+
+  article
+  {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+  }
 }
-.blurBg
-{
+.walletPassword .exitBtn article:hover {
+  background-color: var(--color-profile-close);
+  border-radius: 20px;
+}
+.blurBg {
   filter: blur(10px);
 }
 .bchat-confirm {
@@ -1872,13 +1884,11 @@ label {
       flex-direction: column;
       justify-content: center;
 
-      
       &-contentBox {
         width: 500px;
         background-color: var(--color-WalcontentBg);
         border-radius: 10px;
 
-        
         &-walletImg {
           width: 25%;
           height: 103px;
