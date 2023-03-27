@@ -74,7 +74,7 @@ const darkWalletSelectHover = '#545469';
 const darkWalletPriorityHover = '#303042';
 const darkWalletCopyHover = '#52505F';
 const darkAddMembers = '#313143';
-const darkProfileClose = '#242431';
+const darkProfileClose = '#4C4C64';
 const darkChatTimestamp = '#FFFFFF';
 
 // for bchat
