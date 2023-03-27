@@ -355,9 +355,11 @@
       position: relative;
 
       .paste-icon {
+        // background-image: url('../images/bchat/paste.svg') no-repeat;
+        // background: url(images/bchat/paste.svg) no-repeat;
         width: 40px;
         height: 40px;
-        background-color: 'var(--color-inboxBgColor)';
+        background-color: var(--color-inboxBgColor);
         background-size: 16px;
         border-radius: 35px;
         background-position: center;
@@ -365,8 +367,14 @@
         top: -92px;
         position: absolute;
         cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &:hover {
-          background-color: #52505F;
+          background-color: #52505f;
+          // background-color: var(--color-profile-close);
+
         }
       }
     }
