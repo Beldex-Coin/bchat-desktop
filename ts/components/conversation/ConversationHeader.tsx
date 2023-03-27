@@ -459,7 +459,7 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
 
-            {chatwithWallet && !WalletSyncBarShowInChat && <div 
+            {chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && <div 
             className='connectWalletBtn'
             onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
             >

@@ -89,7 +89,7 @@ export const SendFundButton = (props:any) => {
     </div> 
   );
 };
-export const SendFundDisableButton = (props: { onClick: () => void }) => {
+export const SendFundDisableButton = (props: { onClick: () => void}) => {
   return (
     <div 
       onClick={props.onClick}>

@@ -60,7 +60,7 @@ import { LinkPreviews } from '../../../util/linkPreviews';
 import { SettingsKey, walletSettingsKey } from '../../../data/settings-key';
 import {
   updateBchatAlertConfirmModal,
-  updateBchatWalletPasswordModal,
+  // updateBchatWalletPasswordModal,
   updateSendConfirmModal,
   updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
@@ -271,10 +271,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   chatWithWalletInstruction() {
    const { WalletSyncBarShowInChat } = this.props;
-    if (this.chatwithWallet && !WalletSyncBarShowInChat) {
-      window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
-      return;
-    }
+    // if (this.chatwithWallet && !WalletSyncBarShowInChat) {
+    //   window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
+    //   return;
+    // }
     if (!this.chatwithWallet && !WalletSyncBarShowInChat) {
       window.inboxStore?.dispatch(
         updateBchatAlertConfirmModal({
@@ -532,19 +532,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
-
+   console.log('selectedConversation :: ',selectedConversation)
 
     const re = /^\d+\.?\d*$/;
     // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
       <>
-        {selectedConversation?.type === 'private' &&
-        re.test(draft) &&
+        {selectedConversation?.type === 'private' && selectedConversation?.isApproved
+        &&selectedConversation?.didApproveMe
+        &&  re.test(draft) &&
         this.chatwithWallet &&
         WalletSyncBarShowInChat ? (
           <SendFundButton />
         ) : (
-          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
+          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()}   />
         )}
       </>
     );
@@ -580,7 +581,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
         {selectedConversation?.type === 'private' &&
         re.test(draft) 
         // && (draft.length-1 - draft.indexOf(".")) < 4
-        &&
+        &&selectedConversation?.isApproved
+        &&selectedConversation?.didApproveMe
+        && 
         this.chatwithWallet &&
         WalletSyncBarShowInChat &&
         !isMe  && getSyncStatus ? (
