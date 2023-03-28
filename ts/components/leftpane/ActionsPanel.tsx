@@ -72,6 +72,7 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
 import { wallet } from '../../wallet/wallet-rpc';
 import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
+import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -118,13 +119,14 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
-      
+      let emptyAddress:any=""
       // Show Path Indicator Modal
       dispatch(showLeftPaneSection(type));
       await wallet.startWallet('settings');
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      dispatch(updateSendAddress(emptyAddress))
       if(walletPasswordPopUp)
       {
         dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));

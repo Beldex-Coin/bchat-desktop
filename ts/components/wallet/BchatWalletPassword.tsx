@@ -130,7 +130,7 @@ export const WalletPassword = (props: any) => {
   }
   // if (true) {
   console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
-  if (daemonHeight > 0 && percentage < 99) {
+  if (daemonHeight > 0 && percentage < 99 ) {
     // setLoading(false)
     return (
       <ProgressForSync
