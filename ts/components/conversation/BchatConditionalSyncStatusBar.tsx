@@ -6,9 +6,8 @@ import { daemon } from '../../wallet/daemon-rpc';
 
 export default function ConditionalSyncBar() {
   const walletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
-  daemon.daemonHeartbeat();
-
   if (walletSyncBarShowInChat) {
+    daemon.daemonHeartbeat();
     return <MemoSyncStatusBar from={'chat'} />;
   }
   return <></>;
