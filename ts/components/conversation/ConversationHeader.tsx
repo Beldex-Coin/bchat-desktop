@@ -418,6 +418,7 @@ export const ConversationHeaderWithDetails = () => {
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
   const dispatch = useDispatch();
+   const displayConnectWalletBtn=chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && conversation?.isApproved && conversation?.didApproveMe 
 
   if (!selectedConvoKey) {
     return null;
@@ -459,13 +460,13 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
 
-            {chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && <div 
-            className='connectWalletBtn'
-            onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+            { displayConnectWalletBtn && <div
+              className='connectWalletBtn'
+              onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
             >
               <BchatIcon iconType='wallet' iconSize={"tiny"} iconColor='white' />
               <div>
-              {window.i18n('connectWallet')}
+                {window.i18n('connectWallet')}
               </div>
               {/* <BchatButtonIcon
                 name={window.i18n('connectWallet')}

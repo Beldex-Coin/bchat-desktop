@@ -17,7 +17,8 @@ export const LeftPaneSectionContainer = styled.div`
 
   .isSelected-icon-box .btnView,
   .icon-box .btnView {
-    border-radius: 66px;
+    // border-radius: 66px;
+    border-radius: 12px; 
     width: 48%;
     height: 45px;
     display: flex;

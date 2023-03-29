@@ -210,7 +210,7 @@
   "enable": "Enable",
   "payYouChat":"Pay As You Chat",
   "EnablepaySettingsChat":"Enable pay as you chat from Settings -> Chat -> Pay As You Chat to use this option",
-  "warningWalletPassword":"You will now be asked to enter your wallet password every time you close and reopen the BChat app.",
+  "warningWalletPassword":"When you enable 'Pay As You Chat,' you will see a 'connect wallet' option at the top of the chat window.",
   "chatWithWallet":"Pay As You Chat",
   "chatWithWalletDisc":"You will be able to pay BDX as you chat, when this option is enabled",
   "keepDisabled": "Keep disabled",

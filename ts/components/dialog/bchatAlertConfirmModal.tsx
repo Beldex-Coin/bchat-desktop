@@ -4,7 +4,7 @@ import { SpacerMD } from '../basic/Text';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { useKey } from 'react-use';
+// import { useKey } from 'react-use';
 
 export interface BchatAlertConfirmModalProps {
   /**
@@ -54,9 +54,9 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
     window.inboxStore?.dispatch(updateConfirmModal(null));
   };
 
-  useKey((event: KeyboardEvent) => {
-    return event.key === 'Enter';
-  }, onClickOkHandler);
+  // useKey((event: KeyboardEvent) => {
+  //   return event.key === 'Enter';
+  // }, onClickOkHandler);
 
   return (
     <BchatWrapperModal title={''} onClose={onClickClose} showExitIcon={false} showHeader={false}>

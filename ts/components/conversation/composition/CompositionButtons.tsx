@@ -108,7 +108,7 @@ export const SendFundDisableButton = (props: { onClick: () => void}) => {
       <div style={{cursor:'pointer'}} 
        data-tip="Chat With Wallet"
         //  data-offset="{'right':60}"
-        data-offset="{'top':30,'right':80}"
+        data-offset="{'top':10,'right':0}"
         >
       <img src="images/wallet/beldex_coinDisable.svg" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
 
