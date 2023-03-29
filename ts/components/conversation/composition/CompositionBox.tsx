@@ -72,6 +72,7 @@ import { saveRecipientAddress } from '../../../data/data';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { pushToastError } from '../../../bchat/utils/Toast';
 import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
+import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
 
 
 export interface ReplyingToMessageProps {
@@ -128,6 +129,7 @@ interface Props {
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
   walletDetails: any;
+  BchatAlertConfirmModal:any;
 }
 
 interface State {
@@ -1004,16 +1006,21 @@ class CompositionBoxInner extends React.Component<Props, State> {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
       // await this.onSendMessage();
-      const { selectedConversation,WalletSyncBarShowInChat,isMe } = this.props;
+      const { selectedConversation,WalletSyncBarShowInChat,isMe,BchatAlertConfirmModal } = this.props;
       const getSyncStatus = window.getSettingValue('syncStatus');
       const { draft } = this.state;
       const re = /^\d+\.?\d*$/;
       // const { WalletSyncBarShowInChat } = this.props;
-      if (selectedConversation?.type === 'private' && re.test(draft) && this.chatwithWallet && WalletSyncBarShowInChat &&
+      if (selectedConversation?.type === 'private'
+      && re.test(draft) && this.chatwithWallet && selectedConversation?.isApproved &&selectedConversation?.didApproveMe
+      && WalletSyncBarShowInChat &&
       !isMe  && getSyncStatus) {
         await this.sendConfirmModal();
       } else {
-        await this.onSendMessage();
+        if(!BchatAlertConfirmModal)
+        {
+          await this.onSendMessage();
+        }
       }
     } else if (event.key === 'Escape' && this.state.showEmojiPanel) {
       this.hideEmojiPanel();
@@ -1293,6 +1300,7 @@ const mapStateToProps = (state: StateType) => {
     WalletSyncBarShowInChat: getWalletSyncBarShowInChat(state),
     walletSyncStatus : getRescaning(state),
     walletDetails: state.wallet,
+    BchatAlertConfirmModal:getBchatAlertConfirmModal(state),
   };
 };
 
