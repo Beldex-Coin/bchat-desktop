@@ -121,7 +121,7 @@ export const ForgotPassword = (props: any) => {
           dispatch(updateDaemon({ height: data.result.height }));
         }
       });
-      props.showSyncScreen();
+      // props.showSyncScreen();
       setLoading(false);
 
       ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');

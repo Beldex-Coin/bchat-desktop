@@ -122,7 +122,7 @@ export const WalletPassword = (props: any) => {
     return (
       <ForgotPassword
         cancelBtn={() => setForgotPassword(false)}
-        showSyncScreen={() => setLoading(true)}
+        // showSyncScreen={() => setLoading(true)}
         // loginLoader={()=> setLoading(true)}
         exit={props.onClickClose}
       />

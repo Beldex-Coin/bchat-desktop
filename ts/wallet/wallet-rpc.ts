@@ -543,7 +543,8 @@ class Wallet {
   }
 
   getFiatBalance = async (currency?: any) => {
-    const fiatCurrency: any = currency
+    try {
+      const fiatCurrency: any = currency
       ? currency.toLocaleLowerCase()
       : window.getSettingValue(walletSettingsKey.settingsFiatCurrency)?.toLocaleLowerCase();
     const balance = this.wallet_state.balance;
@@ -556,6 +557,10 @@ class Wallet {
         ? balance * currencyValue.beldex[fiatCurrency]
         : 0;
     window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
+    } catch (error) {
+      console.log("Uncaught error Fiat Balance",error)
+    }
+   
   };
 
   transfer = async (address: string, amount: number, priority: number, isSweepAll: Boolean) => {
