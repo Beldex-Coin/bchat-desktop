@@ -129,7 +129,7 @@ interface Props {
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
   walletDetails: any;
-  BchatAlertConfirmModal:any;
+  BchatAlertConfirmModal: any;
 }
 
 interface State {
@@ -257,7 +257,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-     setTimeout(this.focusCompositionBox, 500);
+    setTimeout(this.focusCompositionBox, 500);
 
     const div = this.container;
     div?.addEventListener('paste', this.handlePaste);
@@ -272,7 +272,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   chatWithWalletInstruction() {
-   const { WalletSyncBarShowInChat } = this.props;
+    const { WalletSyncBarShowInChat } = this.props;
     // if (this.chatwithWallet && !WalletSyncBarShowInChat) {
     //   window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
     //   return;
@@ -294,7 +294,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   sendConfirmModal() {
     const messagePlaintext = cleanMentions(this.state.draft);
-    const priority=window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
 
     if (!this.props.selectedConversation?.walletAddress) {
       return pushToastError(
@@ -307,7 +307,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         okTheme: BchatButtonColor.Green,
         address: this.props.selectedConversation?.walletAddress,
         amount: messagePlaintext,
-        fee: 0.0042,
+        fee: priority === 'Flash' ? 0.0042 : 0.0014,
         Priority: priority,
         onClickOk: async () => {
           await this.sendFund();
@@ -322,6 +322,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   sendFund = async () => {
     const draft: any = this.state.draft;
+    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+
     if (draft == 0) {
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
@@ -338,12 +340,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
       draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
     window.inboxStore?.dispatch(updateSendConfirmModal(null));
     window.inboxStore?.dispatch(updateTransactionInitModal({}));
-    
-    let transactionInitiatDetails:any = {
+
+    let transactionInitiatDetails: any = {
       message: {
         messageType: "payment",
         props: {
-          id:this.props.selectedConversation?.id,
+          id: this.props.selectedConversation?.id,
           acceptUrl: "",
           amount: this.state.draft,
           direction: "outgoing",
@@ -352,7 +354,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           receivedAt: 1678799702674,
           txnId: "",
         },
-  
+
         showDateBreak: 1678799702809,
         showUnreadIndicator: false,
       }
@@ -361,7 +363,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     let data: any = await wallet.transfer(
       this.props.selectedConversation?.walletAddress,
       draft * 1e9,
-      0,
+      priority === 'Flash' ? 0 : 1,
       isSweepAll
     );
     if (data.result) {
@@ -386,7 +388,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         selectedConversationKey,
         ConversationTypeEnum.PRIVATE
       );
-      
+
       window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
 
       if (privateConvo) {
@@ -398,13 +400,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
           preview: undefined,
           quote: undefined,
           txnDetails: {
-            amount: (data?.result?.amount_list[0]/1e9).toString(),
+            amount: (data?.result?.amount_list[0] / 1e9).toString(),
             txnId: TransactionHistory.tx_hash,
           },
         });
 
 
-        
+
         // Empty composition box and stagedAttachments
         this.setState({
           showEmojiPanel: false,
@@ -534,20 +536,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
-   console.log('selectedConversation :: ',selectedConversation)
+    console.log('selectedConversation :: ', selectedConversation)
 
     const re = /^\d+\.?\d*$/;
     // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
       <>
         {selectedConversation?.type === 'private' && selectedConversation?.isApproved
-        &&selectedConversation?.didApproveMe
-        &&  re.test(draft) &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat ? (
+          && selectedConversation?.didApproveMe
+          && re.test(draft) &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat ? (
           <SendFundButton />
         ) : (
-          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()}   />
+          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
         )}
       </>
     );
@@ -571,8 +573,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
   //     this.onSendMessage();
   //   }
   // }
-   private sendButton() {
-    const { selectedConversation, WalletSyncBarShowInChat,isMe } = this.props;
+  private sendButton() {
+    const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
     const { draft } = this.state;
     const getSyncStatus = window.getSettingValue('syncStatus');
 
@@ -581,22 +583,22 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        re.test(draft) 
-        // && (draft.length-1 - draft.indexOf(".")) < 4
-        &&selectedConversation?.isApproved
-        &&selectedConversation?.didApproveMe
-        && 
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat &&
-        !isMe  && getSyncStatus ? (
+          re.test(draft)
+          // && (draft.length-1 - draft.indexOf(".")) < 4
+          && selectedConversation?.isApproved
+          && selectedConversation?.didApproveMe
+          &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat &&
+          !isMe && getSyncStatus ? (
           <SendMessageButton name='Pay' onClick={() => this.sendConfirmModal()} />
-        ) : (   
+        ) : (
           <SendMessageButton name='Send' onClick={() => this.onSendMessage()} />
 
         )}
       </>
     );
-   }
+  }
 
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
@@ -631,7 +633,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
-              {}
+              { }
               {this.renderTextArea()}
               {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView() : ''}
               {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
@@ -1006,19 +1008,18 @@ class CompositionBoxInner extends React.Component<Props, State> {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
       // await this.onSendMessage();
-      const { selectedConversation,WalletSyncBarShowInChat,isMe,BchatAlertConfirmModal } = this.props;
+      const { selectedConversation, WalletSyncBarShowInChat, isMe, BchatAlertConfirmModal } = this.props;
       const getSyncStatus = window.getSettingValue('syncStatus');
       const { draft } = this.state;
       const re = /^\d+\.?\d*$/;
       // const { WalletSyncBarShowInChat } = this.props;
       if (selectedConversation?.type === 'private'
-      && re.test(draft) && this.chatwithWallet && selectedConversation?.isApproved &&selectedConversation?.didApproveMe
-      && WalletSyncBarShowInChat &&
-      !isMe  && getSyncStatus) {
+        && re.test(draft) && this.chatwithWallet && selectedConversation?.isApproved && selectedConversation?.didApproveMe
+        && WalletSyncBarShowInChat &&
+        !isMe && getSyncStatus) {
         await this.sendConfirmModal();
       } else {
-        if(!BchatAlertConfirmModal)
-        {
+        if (!BchatAlertConfirmModal) {
           await this.onSendMessage();
         }
       }
@@ -1050,7 +1051,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
+  // tslint:disable-next-line: cyclomatic-complexitysend
   private async onSendMessage() {
     if (!this.props.selectedConversationKey) {
       throw new Error('selectedConversationKey is needed');
@@ -1298,9 +1299,9 @@ const mapStateToProps = (state: StateType) => {
     typingEnabled: getIsTypingEnabled(state),
     isMe: getIsSelectedNoteToSelf(state),
     WalletSyncBarShowInChat: getWalletSyncBarShowInChat(state),
-    walletSyncStatus : getRescaning(state),
+    walletSyncStatus: getRescaning(state),
     walletDetails: state.wallet,
-    BchatAlertConfirmModal:getBchatAlertConfirmModal(state),
+    BchatAlertConfirmModal: getBchatAlertConfirmModal(state),
   };
 };
 
