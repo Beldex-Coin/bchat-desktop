@@ -5,15 +5,6 @@ import { parseStatusCodeFromOnionRequest } from '../open_group_api/opengroupV2/O
 
 // tslint:disable-next-line: no-http-string
 
-// export const fileServerV2URL = 'http://13.233.252.86';
-
-// export const fileServerV2PubKey =
-//   '51a8cd2e8a2c7e012d2ed4e0a24b5ed26f6f4f5b89e0d9d9c8856a5fd7140314';
-
-// export const fileServerV2URL = 'http://194.233.68.227';
-// export const fileServerV2PubKey =
-//   'decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a';
-
 export const fileServerV2URL = 'http://fs1.rpcnode.stream';
 export const fileServerV2PubKey =
   'f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c';
