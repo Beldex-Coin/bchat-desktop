@@ -84,7 +84,7 @@ class Wallet {
 
   startWallet = async (type?: string) => {
     try {
-      console.log('start wallet rpc :', type);
+      // console.log('start wallet rpc :', type);
       let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         window.setSettingValue(walletSettingsKey.settingsFiatCurrency, 'USD');
@@ -111,7 +111,7 @@ class Wallet {
       } else {
       }
       const status: any = await this.runningStatus(64371);
-      console.log('status:', status);
+      // console.log('status:', status);
       if (status == true) {
         if (type == 'settings') {
           return;
@@ -164,6 +164,7 @@ class Wallet {
         auth.substr(64, 64), // rpc password
         auth.substr(128, 32), // password salt
       ];
+      // console.log(" this.auth[0] + ':' + this.auth[1]", this.auth[0] + ':' + this.auth[1])
       this.wallet_dir = `${walletDir}/bchat`;
       const option = [
         '--rpc-login',
@@ -424,13 +425,13 @@ class Wallet {
   startHeartbeat(type?: string) {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
-      console.log('startHeartbeat:', type);
+      // console.log('startHeartbeat:', type);
       this.heartbeatAction(type);
     }, 8000);
   }
 
   async heartbeatAction(type?: string) {
-    console.log('heartbeatAction:');
+    // console.log('heartbeatAction:');
     Promise.all([
       this.sendRPC('getheight', {}, 5000),
       this.sendRPC('getbalance', { account_index: 0 }),

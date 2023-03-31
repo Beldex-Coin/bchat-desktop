@@ -536,7 +536,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
-    console.log('selectedConversation :: ', selectedConversation)
+    // console.log('selectedConversation :: ', selectedConversation)
 
     const re = /^\d+\.?\d*$/;
     // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
