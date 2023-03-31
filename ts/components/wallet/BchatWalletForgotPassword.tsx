@@ -105,14 +105,7 @@ export const ForgotPassword = (props: any) => {
     };
 
     try {
-      let restore = await wallet.restoreWallet(
-        profileName,
-        newPassword,
-        seed,
-        refreshDetails,
-        'forgotPassword'
-      );
-      console.log("restore:",restore)
+      await wallet.restoreWallet(profileName, newPassword, seed, refreshDetails, 'forgotPassword');
       // if (restore) {
       //   return onClickCancelHandler();
       // }
@@ -128,7 +121,6 @@ export const ForgotPassword = (props: any) => {
       return onClickCancelHandler();
     } catch (error) {
       setLoading(false);
-      console.log('err ::', error);
       {
         error?.message && ToastUtils.pushToastError('changePasswordError', error?.message);
       }
@@ -198,7 +190,7 @@ export const ForgotPassword = (props: any) => {
           </div>
 
           <SpacerMD />
-          <div style={{display:'flex'}}>{window.i18n('changewalletPassword')}</div>
+          <div style={{ display: 'flex' }}>{window.i18n('changewalletPassword')}</div>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
             <span className="wallet-forgotPassword-content-Box-password">
