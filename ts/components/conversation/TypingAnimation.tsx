@@ -4,6 +4,10 @@ import classNames from 'classnames';
 export const TypingAnimation = () => {
   return (
     <div className="module-typing-animation" title={window.i18n('typingAlt')}>
+      <div className='module-typing-Txt'>
+     { window.i18n('typing')}
+      
+      </div>
       <div
         className={classNames(
           'module-typing-animation__dot',

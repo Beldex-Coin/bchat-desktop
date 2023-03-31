@@ -25,8 +25,8 @@ module.exports = grunt => {
       transpile: {
         cmd: 'yarn transpile',
       },
-      'build-protobuf': {
-        cmd: 'yarn build-protobuf',
+      'protobuf': {
+        cmd: 'yarn protobuf',
       },
     },
     gitinfo: {}, // to be populated by grunt gitinfo
@@ -64,7 +64,7 @@ module.exports = grunt => {
 
   grunt.registerTask('date', ['gitinfo']);
   grunt.registerTask('default', [
-    'exec:build-protobuf',
+    'exec:protobuf',
     'sass',
     'exec:transpile',
     'date',

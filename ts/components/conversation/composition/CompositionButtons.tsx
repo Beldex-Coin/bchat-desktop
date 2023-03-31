@@ -44,21 +44,75 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
   }
 );
 
-export const SendMessageButton = (props: { onClick: () => void }) => {
+export const SendMessageButton = (props: { onClick: () => void,name?:string }) => {
   return (
     <div className="send-message-button"
       onClick={props.onClick}>
-
+      {props.name==="Send"?
       <BchatIconButton
         iconType="send"
         iconColor='#fff'
-        iconSize={'huge'}
-        iconRotation={321}
-        borderRadius="300px"
-        iconPadding="5px 0 0 5px"
+        iconSize={'small'}
+        // iconRotation={321}
+        // borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
         onClick={props.onClick}
         dataTestId="send-message-button"
-      />
-    </div>
+      />:
+      <img src="images/wallet/beldex_send.svg" className="bchat-text-logo" style={{width: '20px', height: '20px'}}></img>
+  }
+      <div className='text'>{props.name}</div>
+    </div> 
+  );
+};
+export const SendFundButton = (props:any) => {
+  return (
+    <div 
+      onClick={props.onClick}
+      >
+
+      {/* <BchatIconButton
+        iconType="beldexCoinLogo"
+        iconColor='#159B24'
+        iconSize={32}
+        iconRotation={361}
+        borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
+        onClick={props.onClick}
+        backgroundColor='black'
+        dataTestId="send-message-button"
+      /> */}
+      <div style={{cursor:'pointer'}}>
+      <img src="images/wallet/beldexCoin.png" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
+
+      </div>
+    </div> 
+  );
+};
+export const SendFundDisableButton = (props: { onClick: () => void}) => {
+  return (
+    <div 
+      onClick={props.onClick}>
+
+      {/* <BchatIconButton
+        iconType="beldexCoinLogo"
+        iconColor='#159B24'
+        iconSize={32}
+        iconRotation={361}
+        borderRadius="300px"
+        // iconPadding="5px 0 0 5px"
+        onClick={props.onClick}
+        backgroundColor='black'
+        dataTestId="send-message-button"
+      /> */}
+      <div style={{cursor:'pointer'}} 
+       data-tip="Chat With Wallet"
+        //  data-offset="{'right':60}"
+        data-offset="{'top':10,'right':0}"
+        >
+      <img src="images/wallet/beldex_coinDisable.svg" className="bchat-text-logo" style={{width:'30px',height:'30px'}} />
+
+      </div>
+    </div> 
   );
 };

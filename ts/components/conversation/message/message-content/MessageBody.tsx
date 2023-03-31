@@ -11,6 +11,7 @@ import { Emojify } from '../../Emojify';
 import { MessageInteraction } from '../../../../interactions';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { LinkPreviews } from '../../../../util/linkPreviews';
+import { BchatButtonColor } from '../../../basic/BchatButton';
 
 const linkify = LinkifyIt();
 
@@ -159,6 +160,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         okText: window.i18n('open'),
         cancelText: window.i18n('editMenuCopy'),
         showExitIcon: true,
+        okTheme:BchatButtonColor.Green,
         onClickOk: openLink,
         onClickClose: () => {
           dispatch(updateConfirmModal(null));

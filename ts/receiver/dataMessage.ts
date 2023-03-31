@@ -79,7 +79,7 @@ function cleanAttachments(decrypted: SignalService.DataMessage) {
 }
 
 export function isMessageEmpty(message: SignalService.DataMessage) {
-  const { flags, body, attachments, group, quote, preview, openGroupInvitation } = message;
+  const { flags, body, attachments, group, quote, preview, openGroupInvitation,payment } = message;
 
   return (
     !flags &&
@@ -89,7 +89,10 @@ export function isMessageEmpty(message: SignalService.DataMessage) {
     _.isEmpty(group) &&
     _.isEmpty(quote) &&
     _.isEmpty(preview) &&
-    _.isEmpty(openGroupInvitation)
+    _.isEmpty(openGroupInvitation) &&
+    _.isEmpty(payment)
+
+    
   );
 }
 
@@ -162,6 +165,7 @@ export async function handleSwarmDataMessage(
   window.log.info('handleSwarmDataMessage');
 
   const cleanDataMessage = await cleanIncomingDataMessage(envelope, rawDataMessage);
+
   // we handle group updates from our other devices in handleClosedGroupControlMessage()
   if (cleanDataMessage.closedGroupControlMessage) {
     await handleClosedGroupControlMessage(
@@ -181,6 +185,7 @@ export async function handleSwarmDataMessage(
    * 3. for a private conversation message, envelope.senderIdentity and envelope.source are probably the pubkey of the sender.
    */
   const isSyncedMessage = Boolean(cleanDataMessage.syncTarget?.length);
+
   // no need to remove prefix here, as senderIdentity set => envelope.source is not used (and this is the one having the prefix when this is an opengroup)
   const convoIdOfSender = envelope.senderIdentity || envelope.source;
   const isMe = UserUtils.isUsFromCache(convoIdOfSender);
@@ -188,13 +193,14 @@ export async function handleSwarmDataMessage(
   if (isSyncedMessage && !isMe) {
     window?.log?.warn('Got a sync message from someone else than me. Dropping it.');
     return removeFromCache(envelope);
+
   } else if (isSyncedMessage) {
+
     // we should create the synTarget convo but I have no idea how to know if this is a private or closed group convo?
   }
   const convoIdToAddTheMessageTo = PubKey.removeTextSecurePrefixIfNeeded(
     isSyncedMessage ? cleanDataMessage.syncTarget : envelope.source
   );
-
   const convoToAddMessageTo = await getConversationController().getOrCreateAndWait(
     convoIdToAddTheMessageTo,
     envelope.senderIdentity ? ConversationTypeEnum.GROUP : ConversationTypeEnum.PRIVATE
@@ -204,7 +210,7 @@ export async function handleSwarmDataMessage(
     `Handle dataMessage about convo ${convoIdToAddTheMessageTo} from user: ${convoIdOfSender}`
   );
   // remove the prefix from the source object so this is correct for all other
-
+  
   // Check if we need to update any profile names
   if (
     !isMe &&
@@ -212,6 +218,7 @@ export async function handleSwarmDataMessage(
     cleanDataMessage.profile &&
     cleanDataMessage.profileKey?.length
   ) {
+
     // do not await this
     void appendFetchAvatarAndProfileJob(
       senderConversationModel,
@@ -243,6 +250,7 @@ export async function handleSwarmDataMessage(
           sender: senderConversationModel.id,
           sentAt: sentAtTimestamp,
         });
+
 
   await handleSwarmMessage(
     msgModel,
@@ -283,6 +291,7 @@ async function handleSwarmMessage(
   convoToAddMessageTo: ConversationModel,
   confirm: () => void
 ): Promise<void> {
+
   if (!rawDataMessage || !msgModel) {
     window?.log?.warn('Invalid data passed to handleSwarmMessage.');
     confirm();
@@ -291,6 +300,7 @@ async function handleSwarmMessage(
 
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
+
     const isDuplicate = await isSwarmMessageDuplicate({
       source: msgModel.get('source'),
       sentAt,
@@ -300,6 +310,7 @@ async function handleSwarmMessage(
       confirm();
       return;
     }
+
     await handleMessageJob(
       msgModel,
       convoToAddMessageTo,

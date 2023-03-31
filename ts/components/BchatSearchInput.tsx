@@ -6,6 +6,7 @@ import { getConversationsCount } from '../state/selectors/conversations';
 import { cleanSearchTerm } from '../util/cleanSearchTerm';
 import { BchatIconButton } from './icon';
 
+
 const doTheSearch = (dispatch: Dispatch<any>, cleanedTerm: string) => {
   dispatch(search(cleanedTerm));
 };
@@ -42,11 +43,13 @@ export const BchatSearchInput = () => {
   if (convoCount <= 1) {
     return null;
   }
-
+  
   return (
     <div className="bchat-search-input">
-      <BchatIconButton iconSize="medium" iconType="search" />
-      <input
+      <div className='search'>
+      <BchatIconButton iconSize="small" iconType="search" />
+      </div>
+      <input 
         value={currentSearchTerm}
         onChange={e => {
           const inputValue = e.target.value;
@@ -55,6 +58,7 @@ export const BchatSearchInput = () => {
         }}
         placeholder={window.i18n('searchFor...')}
         maxLength={26}
+        
         // placeholder={'Search people and groups'}
 
       />

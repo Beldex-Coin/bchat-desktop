@@ -4,13 +4,17 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
-import { ConversationNotificationSettingType } from '../../models/conversation';
+import {
+  ConversationNotificationSettingType,
+  ConversationTypeEnum,
+} from '../../models/conversation';
 import {
   getConversationHeaderTitleProps,
   // getCurrentNotificationSettingText,
   getIsSelectedBlocked,
   getIsSelectedNoteToSelf,
   getIsSelectedPrivate,
+  getSelectedConversation,
   getSelectedConversationIsPublic,
   getSelectedConversationKey,
   getSelectedMessageIds,
@@ -39,11 +43,17 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
+import { TypingBubble } from './TypingBubble';
+import { getConversationController } from '../../bchat/conversations';
+import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
+import { SettingsKey } from '../../data/settings-key';
+import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
   name: string;
@@ -110,7 +120,6 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
-
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
@@ -130,7 +139,6 @@ const SelectionOverlay = () => {
       <div className="close-button">
         <BchatIconButton iconType="exit" iconSize="medium" onClick={onCloseOverlay} />
       </div>
-
     </div>
   );
 };
@@ -143,6 +151,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   let width = window.innerWidth;
   return (
     <div
+      className="threedot-option"
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -153,13 +162,10 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
             y: 55,
           },
         });
-
       }}
-      style={{ marginTop: '7px' }}
       data-testid="three-dots-conversation-options"
     >
-
-      <BchatIconButton iconType="ellipses" iconSize={35} />
+      <BchatIconButton iconType="ellipses" iconSize={22} />
     </div>
   );
 };
@@ -278,26 +284,55 @@ export type ConversationHeaderTitleProps = {
 };
 
 const ConversationHeaderTitle = () => {
+  // console.log("convertion header 1::")
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
+  // console.log("convertion header 2::",headerTitleProps)
+
   // const notificationSetting = useSelector(getCurrentNotificationSettingText);
   const isRightPanelOn = useSelector(isRightPanelShowing);
+  // console.log("convertion header 3::",isRightPanelOn)
 
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
+  // console.log("convertion header 4::",convoName)
+
   const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
+  // console.log("convertion header 5::",convoProps)
+
+  const conversationKey: any = useSelector(getSelectedConversationKey);
+  // console.log("convertion header 6::",conversationKey)
+
+  const conversation: any = useSelector(getSelectedConversation);
+  // console.log("convertion header 7::",conversation)
+
+  let displayedName = null;
+  if (conversation?.type === ConversationTypeEnum.PRIVATE) {
+    displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
+      conversationKey
+    );
+  }
+  // console.log("convertion header 8::",displayedName)
 
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return null;
   }
+  // console.log("convertion header 9::",activeAt)
 
   const { isGroup, isPublic, members, subscriberCount, isMe, isKickedFromGroup } = headerTitleProps;
+  // console.log("convertion header 10::",headerTitleProps)
 
   const { i18n } = window;
+  // console.log("convertion header 11::",isMe)
 
   if (isMe) {
-    return <div className="module-conversation-header__title">{i18n('noteToSelf')}</div>;
+    // console.log("convertion header 12::",isMe)
+
+    // return <div className="module-conversation-header__title">{window.i18n('noteToSelf')}</div>;
+    return <div className="module-conversation-header__title">Note to Self</div>;
+
   }
+  // console.log("convertion header 13::",headerTitleProps)
 
   let memberCount = 0;
   if (isGroup) {
@@ -307,15 +342,17 @@ const ConversationHeaderTitle = () => {
       memberCount = members.length;
     }
   }
+  // console.log("convertion header 14::",headerTitleProps)
+
   const SubTxt = styled.div`
- font-size: 11px;
- line-height: 16px;
- letter-spacing: 0.3px;
- // text-transform: uppercase;
- user-select: none;
- font-weight: 100;
- color: var(--color-text-subtle);
- `
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: 0.3px;
+    // text-transform: uppercase;
+    user-select: none;
+    font-weight: 100;
+    color: var(--color-text-subtle);
+  `;
   let memberCountText = '';
   if (isGroup && memberCount > 0 && !isKickedFromGroup) {
     const count = String(memberCount);
@@ -337,11 +374,22 @@ const ConversationHeaderTitle = () => {
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName}
         <SubTxt>
-          {isGroup ? memberCountText :
-            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
-          }
-        </SubTxt>
+          {isGroup ? (
+            memberCountText
+          ) : !!conversation.isTyping ? (
+            <TypingBubble
+              pubkey={conversationKey}
+              conversationType={conversation?.type}
+              displayedName={displayedName}
+              isTyping={!!conversation.isTyping}
+              //  isTyping={true}
 
+              key="typing-bubble"
+            />
+          ) : (
+            <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} />
+          )}
+        </SubTxt>
       </span>
     </div>
   );
@@ -364,7 +412,13 @@ export const ConversationHeaderWithDetails = () => {
   const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
+
+  const conversation = useSelector(getSelectedConversation);
+  const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
+  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+
   const dispatch = useDispatch();
+   const displayConnectWalletBtn=chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && conversation?.isApproved && conversation?.didApproveMe 
 
   if (!selectedConvoKey) {
     return null;
@@ -378,6 +432,13 @@ export const ConversationHeaderWithDetails = () => {
 
   const triggerId = 'conversation-header';
 
+  // function displayWalletPassword() {
+
+  //   // if (chatwithWallet && !WalletSyncBarShowInChat) {
+  //   dispatch(updateBchatWalletPasswordModal({}));
+  //     // return;
+  //   // }
+  // }
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -399,13 +460,36 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
 
+            { displayConnectWalletBtn && <div
+              className='connectWalletBtn'
+              onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+            >
+              <BchatIcon iconType='wallet' iconSize={"tiny"} iconColor='white' />
+              <div>
+                {window.i18n('connectWallet')}
+              </div>
+              {/* <BchatButtonIcon
+                name={window.i18n('connectWallet')}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Green}
+                style={{
+                  height: '25px',
+                  borderRadius: '5px',
+                  marginRight: '14px'
+                }}
+                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              // disabled={!caption}
+              /> */}
+            </div>
+            }
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            <div style={{ marginTop: "10px" }}>
-              <CallButton />
-            </div>
-
+            {conversation?.type == 'private' && (
+              <div className="call">
+                <CallButton />
+              </div>
+            )}
           </Flex>
         </div>
         <div className="module-conversation-header__title-container">

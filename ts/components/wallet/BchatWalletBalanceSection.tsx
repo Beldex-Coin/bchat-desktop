@@ -17,7 +17,7 @@ export const WalletBalanceSection = () => {
   const [amountVisible, setAmountVisible] = useState(window.getSettingValue('balancevisibility'));
   const zoomLevel=window.getSettingValue('zoom-factor-setting')
 
-  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal);
+  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
   decimalValue = decimalValue.charAt(0);
   const handlePaste = () => {
     clipboard.writeText(walletAddress, 'clipboard');

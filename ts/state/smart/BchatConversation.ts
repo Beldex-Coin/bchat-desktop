@@ -3,6 +3,7 @@ import { mapDispatchToProps } from '../actions';
 import { StateType } from '../reducer';
 import { getTheme } from '../selectors/theme';
 import {
+  getIsSelectedNoteToSelf,
   getLightBoxOptions,
   getSelectedConversation,
   getSelectedConversationKey,
@@ -15,6 +16,8 @@ import { getOurNumber } from '../selectors/user';
 import { getStagedAttachmentsForCurrentConversation } from '../selectors/stagedAttachments';
 import { getHasOngoingCallWithFocusedConvo } from '../selectors/call';
 import { BchatConversation } from '../../components/conversation/BchatConversation';
+
+
 
 const mapStateToProps = (state: StateType) => {
   return {
@@ -29,6 +32,8 @@ const mapStateToProps = (state: StateType) => {
     lightBoxOptions: getLightBoxOptions(state),
     stagedAttachments: getStagedAttachmentsForCurrentConversation(state),
     hasOngoingCallWithFocusedConvo: getHasOngoingCallWithFocusedConvo(state),
+    isMe:getIsSelectedNoteToSelf(state),
+    
   };
 };
 

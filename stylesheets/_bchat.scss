@@ -31,7 +31,7 @@ $onionPathLineColor: #d1d1d1;
 
 input,
 textarea {
-  // caret-color: var(--color-text) !important;
+  // caret-color: var(--color-caret) !important;
   caret-color: var(--color-caret) !important;
 }
 
@@ -78,7 +78,7 @@ textarea {
 
 .bchat-button {
   @mixin transparent-background($textAndBorderColor) {
-    background-color: #403e4b;
+    background-color: $bchat-button-gray-color;
     background-repeat: no-repeat;
     overflow: hidden;
     outline: none;
@@ -107,10 +107,9 @@ textarea {
   &.brand {
     color: var(--color-foreground-primary);
 
-    &:not(.disabled):hover {
-      // background: var(--color-clickable-hovered);
-      opacity: 0.8;
-    }
+    // &:not(.disabled):hover {
+    //   // opacity: 0.8;
+    // }
 
     &.green,
     &.white,
@@ -133,18 +132,28 @@ textarea {
 
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
+      &:hover {
+        background-color: $bchat-button-hovor-color;
+        color: white;
+      }
     }
 
     &.white {
       color: var(--color-text);
       background-color: var(--color-cancelBtn-bg);
+      &:hover {
+        background-color: var(--color-leave-button);
+      }
     }
 
     &.primary {
       background-color: var(--color-background-primary);
       color: var(--color-text);
       border-radius: 10px;
-      // background-image: var(--button-color);
+
+      &:hover {
+        background-color: var(--color-leave-button);
+      }
 
       .bchat-icon {
         fill: var(--color-foreground-primary);
@@ -165,6 +174,9 @@ textarea {
       // background-color: $bchat-color-danger;
       background-color: #e22b2b;
       color: #ffffff;
+      &:hover {
+        background-color: #ff2727;
+      }
     }
 
     &.danger-alt {
@@ -193,6 +205,9 @@ textarea {
       @include transparent-background(var(--color-text));
       // background-color:var(--color-body-bg);
       box-shadow: 0px 0px 6px 0px #19192424;
+      &:hover {
+        background-color: $bchat-button-gray-hover-color;
+      }
     }
 
     &.primary {
@@ -303,12 +318,14 @@ textarea {
   display: inline-block;
   position: relative;
   transform: translateZ(0);
-  //  color: white;
 
-  &:hover {
-    color: #159b24;
-    // padding: 5px;
-  }
+  // &:hover {
+  // color: #159b24;
+  // width: 30px;
+  // height: 30px;
+  // background-color: $bchat-button-gray-hover-color;
+  // border-radius: 20px;
+  // }
 
   transition: opacity $bchat-transition-duration;
 
@@ -353,6 +370,19 @@ textarea {
 
 .module-conversation-header__title-flex {
   flex-direction: row;
+
+  .threedot-option {
+    width: 38px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2px;
+    &:hover {
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
+  }
 }
 
 .module-conversation__user__profile-name,
@@ -548,7 +578,15 @@ label {
 
     &__icons,
     &__close {
-      width: 60px;
+      display: flex;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-right: 20px;
+      &:hover {
+        background-color: var(--color-profile-close);
+        border-radius: 20px;
+      }
 
       .bchat-icon-button {
         color: var(--color-text);
@@ -653,6 +691,7 @@ label {
       display: flex;
       justify-content: center;
       margin-bottom: 18px;
+      width: 325px;
 
       .bchat-button.brand-outline {
         height: 45px;
@@ -709,6 +748,97 @@ label {
   &__input-group {
     width: 87%;
   }
+  &-walletPassword {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    // height: 87vh;
+    // background-color: aliceblue;
+    flex-direction: column;
+    justify-content: center;
+
+    &-contentBox {
+      width: 500px;
+      // background-color: #2d2d3b;
+      // background-color: var(--color-WalcontentBg);
+      border-radius: 10px;
+      &-walletImg {
+        width: 25%;
+        height: 103px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin: auto;
+        // background-image: url('../images/wallet/Password_image.svg');
+        background-image: var(--img-walPassword);
+      }
+      &-headerBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+          font-family: $bchat-font-poppins-bold;
+          margin-left: 10px;
+          font-size: 18px;
+        }
+      }
+
+      &-inputBox {
+        margin: 0 auto;
+        width: 73%;
+        input {
+          outline: none;
+          border: none;
+          width: 100%;
+          border-bottom: 1px solid #444455;
+          text-align: center;
+        }
+      }
+      &-loader,
+      &-forgotpasswordLoader {
+        width: 500px;
+        height: 343px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        z-index: 99;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+      }
+      &-forgotpasswordLoader {
+        width: 590px;
+        height: 476px;
+      }
+      &-forgotTxt {
+        text-align: center;
+        color: #1bb51e;
+        font-size: 12px;
+        text-decoration: underline;
+      }
+      .bchat-button.brand-outline.green {
+        width: 33%;
+        margin: auto;
+        height: 45px;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  &-imgConfirmBox {
+    width: 380px;
+    margin: 20px 20px 10px;
+    &-header {
+      font-family: $bchat-font-poppin-semibold;
+      font-size: 16px;
+    }
+    &-message {
+      font-family: $bchat-font-poppin-light;
+      line-height: 20px;
+      span {
+        font-family: $bchat-font-poppin-semibold;
+        font-size: 14px;
+      }
+    }
+  }
 }
 
 .bchat-modal__body {
@@ -716,6 +846,31 @@ label {
   flex-direction: column;
 }
 
+.walletPassword .bchat-modal__body {
+  padding: 0;
+}
+.walletPassword .exitBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 12px;
+  margin-top: 10px;
+
+  article
+  {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.walletPassword .exitBtn article:hover {
+  background-color: var(--color-profile-close);
+  border-radius: 20px;
+}
+.blurBg {
+  filter: blur(10px);
+}
 .bchat-confirm {
   &-wrapper {
     .bchat-modal__body .bchat-modal__centered {
@@ -834,6 +989,7 @@ label {
         &-passwordBox {
           border-bottom: 1px solid #444455;
           width: 358px;
+          padding-top: 20px;
           input {
             text-align: center;
           }
@@ -898,7 +1054,7 @@ label {
 .react-contexify {
   // be sure it is more than the one set for the More Infos screen of messages
   z-index: 30;
-  min-width: 250px;
+  min-width: 215 px;
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   background: var(--color-cell-background);
   border-radius: 10px;
@@ -1105,60 +1261,152 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: relative; */
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
+}
 
-  // div {
-  //   position: absolute;
-  //   top: 33px;
-  //   width: 13px;
-  //   height: 13px;
-  //   border-radius: 50%;
-  //   background: $bchat-color-green;
-  //   animation-timing-function: cubic-bezier(0, 1, 1, 0);
+.syncStatus {
+  // position: relative;
+  // height: 30px;
+  // // width: 66.5%;
+  // bottom: 0;
+  // position: absolute;
+  // width: calc(100vw - 417px);
+  // height: 30px;
+  // bottom: 0;
+  background-color: var(--color-walSyncbar);
+  // &-subParent {
+  //   padding: 0 18px;
   // }
-  // div:nth-child(1) {
-  //   left: 8px;
-  //   animation: bchat-loader1 0.6s infinite;
-  // }
-  // div:nth-child(2) {
-  //   left: 8px;
-  //   animation: bchat-loader2 0.6s infinite;
-  // }
-  // div:nth-child(3) {
-  //   left: 32px;
-  //   animation: bchat-loader2 0.6s infinite;
-  // }
-  // div:nth-child(4) {
-  //   left: 56px;
-  //   animation: bchat-loader3 0.6s infinite;
-  // }
-  // @keyframes bchat-loader1 {
-  //   0% {
-  //     transform: scale(0);
-  //   }
-  //   100% {
-  //     transform: scale(1);
-  //   }
-  // }
-  // @keyframes bchat-loader3 {
-  //   0% {
-  //     transform: scale(1);
-  //   }
-  //   100% {
-  //     transform: scale(0);
-  //   }
-  // }
-  // @keyframes bchat-loader2 {
-  //   0% {
-  //     transform: translate(0, 0);
-  //   }
-  //   100% {
-  //     transform: translate(24px, 0);
-  //   }
-  // }
+
+  &-statusTxt {
+    font-size: 12px;
+    &-greenTxt {
+      color: #00bf25;
+    }
+  }
+  &-statusvalue {
+    font-size: 12px;
+    color: #9393b1;
+  }
+
+  &-balance {
+    color: #00c10d;
+    font-size: 12px;
+    font-family: $bchat-font-poppin-semibold;
+  }
+  &-unlocked-Balance {
+    color: #0093ff;
+    font-size: 12px;
+    font-family: $bchat-font-poppin-semibold;
+  }
+
+  &-disableBalance {
+    color: var(--color-text);
+    font-size: 12px;
+    font-family: $bchat-font-poppin-semibold;
+  }
+}
+
+.addressBook {
+  &-header {
+    &-txt {
+      font-family: $bchat-font-poppin-semibold;
+      margin-left: 10px;
+      font-size: 15px;
+    }
+  }
+  &-wholeBox {
+    height: calc(83vh - 30px);
+    &-contentBox {
+      background-color: var(--color-WalcontentBg);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      &-nameBtn {
+        display: inline-block;
+        min-width: 130px;
+        background-color: #159b24;
+        padding: 4px 27px;
+        border-radius: 3px;
+        /* margin-bottom: 10px; */
+        font-family: 'poppin-semibold';
+        color: #fff;
+      }
+      .contact {
+        font-family: $bchat-font-poppin-medium;
+        background-color: unset;
+        padding: unset;
+        color: unset;
+      }
+      &-addresstxt {
+        font-family: $bchat-font-poppin-light;
+        font-size: 11px;
+        margin-right: 12px;
+      }
+
+      .avatarBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+      }
+      // .ellipse {
+      //   width: 321px;
+      //   white-space: nowrap;
+      //   overflow: hidden;
+      //   text-overflow: ellipsis;
+      // }
+
+      &-sendBtn,
+      &-copyBtn {
+        width: 100px;
+        background-color: #2879fb;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-family: $bchat-font-poppin-semibold;
+        cursor: pointer;
+      }
+      &-sendBtn {
+        color: #fff;
+
+        &:hover {
+          background-color: #0b9fff;
+        }
+      }
+      &-copyBtn {
+        background-color: var(--color-walAddressBookCopy);
+        margin-left: 10px;
+        &:hover {
+          background-color: var(--color-addressbook-copy-hover);
+        }
+      }
+    }
+  }
+
+  &-emptyAddressBook {
+    margin: 0 auto;
+    background-image: var(--image-EmptyAddressBook);
+    // height: 100%;
+    height: 80%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90% 98%;
+
+    &-content {
+      font-family: $bchat-font-poppin-medium;
+      // font-size: 15px;
+      color: var(--color-disableText);
+      // padding-top: 50%;
+      margin: 0;
+    }
+  }
 }
 
 .bchat-settings {
@@ -1170,14 +1418,11 @@ label {
   &-list {
     overflow-y: auto;
     overflow-x: hidden;
-    // padding: 15px;
     padding: 15px 15px 0 15px;
     height: 100%;
 
     .noBlockedContacts {
       width: 100%;
-      // height: 60px;
-      // background-color: var(--color-left-pane-overlay-background);
       text-align: center;
       margin: 0 auto;
       font-family: 'poppin-semibold';
@@ -1204,7 +1449,6 @@ label {
     justify-content: center;
     align-items: center;
     height: $main-view-header-height;
-    // background: var(--color-cell-background);
     background-color: var(--color-chatHeader);
 
     &-title {
@@ -1213,6 +1457,11 @@ label {
       font-size: $bchat-font-lg;
       text-align: center;
       flex-grow: 1;
+    }
+
+    &-selectionBox {
+      width: 94px;
+      padding-left: 7px;
     }
 
     .bchat-button,
@@ -1226,9 +1475,12 @@ label {
     padding: $bchat-margin-lg;
     margin-bottom: 4px;
     border-radius: 10px;
-    background: var(--color-settingIndication);
+    background-color: var(--color-settingIndication);
     color: var(--color-text);
-    // box-shadow: var(--color-bchat-shadow);
+
+    &:hover {
+      background-color: var(--color-settings-options-hover);
+    }
 
     &.inline {
       display: flex;
@@ -1248,7 +1500,6 @@ label {
     &__title {
       line-height: 1.7;
       font-size: $bchat-font-lg;
-      // font-weight: bold;
       font-family: $bchat-font-poppin-semibold;
     }
 
@@ -1276,19 +1527,56 @@ label {
       }
     }
 
-    &__dropdownValue {
-      width: 78px;
-      height: 40px;
-      border-radius: 10px;
-      background-color: #3a3a4e;
-      padding: 6px;
+    &__dropdownValue,
+    &-font-Change {
+      width: 82px;
+      height: 30px;
+      border-radius: 4px;
+      background-color: var(--color-inboxBgColor);
       display: flex;
       align-items: center;
       justify-content: space-around;
+      padding-left: 10px;
+      cursor: pointer;
+    }
+    &-font-Change {
+      width: 110px;
+      padding: 0 0px 0 10px;
+      justify-content: space-around;
+      height: 30px;
     }
 
     .react-select-container {
       background-color: #128b17;
+    }
+
+    &-notification {
+      display: flex;
+      padding-left: 25px;
+      margin-bottom: 15px;
+      margin-left: 10px;
+      align-items: center;
+
+      &-circle,
+      .selected {
+        width: 15px;
+        height: 15px;
+        border: 1px groove #ebebeb;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        &:hover {
+          border: 1px groove #008e00;
+        }
+      }
+      .selected {
+        border: 1px solid var(--color-accent);
+      }
+      &-title {
+        font-family: $bchat-font-poppin-medium;
+      }
     }
   }
 
@@ -1370,7 +1658,6 @@ label {
           font-size: 14px;
           font-family: 'Poppins';
           border-radius: 13px;
-          // background-image: var(--button-color);
           background-color: var(--button-color);
         }
       }
@@ -1403,6 +1690,9 @@ label {
       font-family: $bchat-font-poppin-semibold;
       margin-right: 20px;
       cursor: pointer;
+      &:hover {
+        background-color: #00ce04;
+      }
     }
   }
 
@@ -1452,15 +1742,19 @@ label {
     background-color: #0000001f;
     &-contentbox {
       text-align: center;
-      // width: 48%;
-      width: 60%;
+      // width: 60%;
+      width: 414px;
       background-color: var(--color-WalcontentBg);
       padding: 21px 30px;
       border-radius: 10px;
+      margin: 0px 15px;
     }
     .fontSemiBold {
       font-family: $bchat-font-poppin-semibold;
       font-size: 14px;
+      &:hover {
+        background-color: var(--color-walletPriorityHover);
+      }
     }
     .bchat-button.brand.green {
       width: 168px;
@@ -1492,7 +1786,6 @@ label {
       display: flex;
       width: 100%;
       justify-content: space-between;
-      // margin-bottom: 10px;
       &-left-side,
       &-right-side {
         display: flex;
@@ -1500,20 +1793,18 @@ label {
       }
     }
     &-button {
-      // background-color: #444455;
       background-color: var(--color-WalcontentBg);
       border-radius: 50px;
-      // padding: 3px 14px;
       padding: 10px 14px;
       cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-WalcontentBgHover);
+      }
     }
     &-squarBox-bala,
     &-squarBox-tran {
-      // display: flex;
-      // background-color: #303041;
       background-color: var(--color-WalcontentBg);
-
-      // width: 49.4%;
       border-radius: 10px;
       padding: 17px 30px 17px 30px;
     }
@@ -1529,33 +1820,24 @@ label {
       width: 35.4%;
     }
     &-contentSpace {
-      // height: calc(81vh - 30px);
-      // height: calc(100vh - 153px);
-      // overflow: hidden;
       height: calc(100vh - 170px);
       overflow: auto;
     }
     &-left-balance-Sec {
-      // width: 55%;
       font-family: $bchat-font-poppin-semibold;
       &-balanceTxt {
-        // font-size: 22px;
-        // font-size: 26px;
         font-size: 22px;
       }
       &-fiatCurrency {
-        // font-size: 12px;
         font-size: 14px;
         color: #8f8fa2;
       }
     }
     &-right-Button-Sec {
-      // width: 45%;
       &-fetch-btn {
         background-color: #2879fb;
         width: 100%;
         height: 45px;
-        /* text-align: center; */
         justify-content: center;
         display: flex;
         align-items: center;
@@ -1565,33 +1847,24 @@ label {
       }
       &-unlockbal-box {
         background-color: var(--color-walunlockbal);
-        // height: 45px;
         height: 60px;
         display: flex;
-        // justify-content: space-between;
         align-items: center;
         border-radius: 10px;
-        // margin-top: 20px;
         margin-top: 5px;
         padding: 0 20px;
 
         &--Text {
-          // color: #eaeaea;
           font-size: 11px;
-          // width: 50%;
-          // padding: 0 10px;
           margin-right: 10px;
-          // text-align: center;
         }
         &--verticalLine {
           border-left: 2px solid #afafc194;
           height: 27px;
         }
         .unBalance {
-          // color: #eaeaea;
           font-size: 16px;
           margin-left: 10px;
-          // width: 50%;
           text-align: center;
           font-family: 'poppin-semibold';
         }
@@ -1608,22 +1881,20 @@ label {
       display: flex;
       width: 100%;
       height: 87vh;
-      // background-color: aliceblue;
       flex-direction: column;
       justify-content: center;
 
       &-contentBox {
         width: 500px;
-        // background-color: #2d2d3b;
         background-color: var(--color-WalcontentBg);
         border-radius: 10px;
+
         &-walletImg {
           width: 25%;
           height: 103px;
           background-repeat: no-repeat;
           background-size: 100%;
           margin: auto;
-          // background-image: url('../images/wallet/Password_image.svg');
           background-image: var(--img-walPassword);
         }
         &-headerBox {
@@ -1648,19 +1919,18 @@ label {
             text-align: center;
           }
         }
-        &-loader,&-forgotpasswordLoader
-        {
+        &-loader,
+        &-forgotpasswordLoader {
           width: 500px;
           height: 343px;
-          background-color: rgba(0, 0, 0,0.8);
+          background-color: rgba(0, 0, 0, 0.8);
           border-radius: 10px;
           z-index: 99;
           justify-content: center;
           display: flex;
           align-items: center;
         }
-        &-forgotpasswordLoader
-        {
+        &-forgotpasswordLoader {
           width: 590px;
           height: 476px;
         }
@@ -1765,8 +2035,9 @@ label {
         color: #fff;
       }
       &-copyIcon-box:hover {
-        transform: scale(1.1);
-        color: #1ced23;
+        // transform: scale(1.1);
+        // color: #1ced23;
+        background-color: #29b52f;
       }
     }
     &-sendForm {
@@ -1985,7 +2256,8 @@ label {
           box-shadow: var(--color-bchat-shadow);
         }
         &-paste-icon:hover {
-          transform: scale(1.1);
+          // transform: scale(1.1);
+          background-color: var(--color-wallet-copy-hover);
           // color: #1ced23;
         }
         &-password {
@@ -2014,79 +2286,6 @@ label {
         }
       }
     }
-    &-addressBook {
-      &-header {
-        &-txt {
-          font-family: $bchat-font-poppin-semibold;
-          margin-left: 10px;
-          font-size: 15px;
-        }
-      }
-      &-wholeBox {
-        height: calc(83vh - 30px);
-        &-contentBox {
-          background-color: var(--color-WalcontentBg);
-          border-radius: 10px;
-          padding: 15px;
-          display: flex;
-          justify-content: space-between;
-          &-nameBtn {
-            display: inline-block;
-            min-width: 130px;
-            background-color: #159b24;
-            padding: 4px 27px;
-            border-radius: 3px;
-            /* margin-bottom: 10px; */
-            font-family: 'poppin-semibold';
-            color: #fff;
-          }
-          &-addresstxt {
-            font-family: $bchat-font-poppin-light;
-            font-size: 12px;
-            margin-right: 10px;
-          }
-
-          &-sendBtn,
-          &-copyBtn {
-            width: 100px;
-            background-color: #2879fb;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 5px;
-            font-family: $bchat-font-poppin-semibold;
-            cursor: pointer;
-          }
-          &-sendBtn {
-            color: #fff;
-          }
-          &-copyBtn {
-            background-color: var(--color-walAddressBookCopy);
-            margin-left: 10px;
-          }
-        }
-      }
-
-      &-emptyAddressBook {
-        margin: 0 auto;
-        background-image: var(--image-EmptyAddressBook);
-        // height: 100%;
-        height: 80%;
-        width: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 90% 98%;
-
-        &-content {
-          font-family: $bchat-font-poppin-medium;
-          // font-size: 15px;
-          color: var(--color-disableText);
-          // padding-top: 50%;
-          margin: 0;
-        }
-      }
-    }
 
     &-settings {
       &-tabBox {
@@ -2109,6 +2308,13 @@ label {
           width: 15px;
           height: 15px;
           border-radius: 3px;
+        }
+        .subBox {
+          padding: 0px 10px;
+          border-radius: 7px;
+          &:hover {
+            background-color: var(--color-settings-options-hover);
+          }
         }
       }
 
@@ -2173,7 +2379,14 @@ label {
             margin-bottom: 5px;
             display: flex;
             align-items: baseline;
+            padding: 10px 19px;
+            &:hover {
+              background-color: var(--color-walletPriorityHover);
+            }
           }
+        }
+        &-dropDownModal {
+          padding: 19px 0px;
         }
 
         &-sendDropDown {
@@ -2282,6 +2495,9 @@ label {
               background-color: #2879fb;
               // margin-right: 30px;
               color: white;
+              &:hover {
+                background-color: #0b9fff;
+              }
             }
             .bchat-button.default.disable {
               background-color: var(--color-disableBtn);
@@ -2307,16 +2523,22 @@ label {
       }
     }
 
+    &-syncStatusBox {
+      position: absolute;
+      width: calc(100vw - 417px);
+      height: 30px;
+      bottom: 0;
+      background-color: var(--color-walSyncbar);
+    }
+
     &-syncStatus {
       // position: relative;
       // height: 30px;
       // // width: 66.5%;
       // bottom: 0;
-      position: absolute;
-      width: calc(100vw - 417px);
-      height: 30px;
-      bottom: 0;
-      background-color: var(--color-chatHeader);
+      &-subParent {
+        padding: 0px 18px;
+      }
 
       &-statusTxt {
         font-size: 12px;
@@ -2610,6 +2832,7 @@ label {
   label {
     margin-inline-end: 1em;
     cursor: pointer;
+    font-family: $bchat-font-poppin-medium;
   }
 
   label:before {
@@ -2780,6 +3003,38 @@ input {
       opacity: 1;
     }
   }
+  .downArrow {
+    .bchat-icon-button {
+      background-color: var(--color-downArrowBg);
+      svg path {
+        fill: var(--color-downArrow);
+      }
+    }
+    .bchat-icon-button {
+      &:hover {
+        background-color: #128b17;
+        svg path {
+          fill: white;
+        }
+      }
+    }
+    .bchat-icon-button:hover + .downArrow-unreadCountBox {
+      background-color: #ffffff;
+      color: #000;
+    }
+
+    &-unreadCountBox {
+      position: fixed;
+      background-color: #159b24;
+      padding: 0px 6px;
+      font-size: 10px;
+      border-radius: 8px;
+      right: 16px;
+      bottom: 67px;
+      font-family: $bchat-font-poppin-semibold;
+      color: white;
+    }
+  }
 }
 
 .group-member-list {
@@ -2840,7 +3095,8 @@ input {
   height: 40px;
 }
 
-.bchat-member-item {
+.bchat-member-item,
+.bchat-blockedMember-item {
   cursor: pointer;
   flex-shrink: 0;
   font-family: $bchat-font-default;
@@ -2864,7 +3120,8 @@ input {
     opacity: 0.5;
   }
 
-  &__checkmark {
+  &__checkmark,
+  &__checkmarkbox {
     width: 20px;
     height: 20px;
     border: 1px solid var(--color-text);
@@ -2883,11 +3140,30 @@ input {
       }
     }
   }
+  &__checkmarkbox {
+    border-radius: 2px;
+    border: 3px solid var(--color-disableBorder);
+    &.selected {
+      border: unset;
+    }
+  }
 
-  &__info,
+  &__info {
+    display: flex;
+    align-items: center;
+
+    // &:hover{
+    //   background-color: #353543;
+    // }
+  }
+
   &__checkmark {
     display: flex;
     align-items: center;
+
+    &:hover {
+      border: 1px solid #008e00;
+    }
   }
 
   &__name {
@@ -2906,7 +3182,34 @@ input {
     margin-bottom: 0px !important;
   }
 }
-
+.bchat-member-item {
+  &:hover {
+    background-color: var(--color-clickable-hovered);
+  }
+}
+.bchat-blockedMember-item {
+  background-color: var(--color-blockUserBg);
+  border-radius: 15px;
+  .selected {
+    background-color: var(--color-blockseletedUserBg);
+  }
+  &__name {
+    font-weight: normal;
+    font-family: $bchat-font-poppin-semibold;
+    margin-inline-start: 10px;
+  }
+  &-selectionBox {
+    display: flex;
+    width: 119px;
+    justify-content: flex-end;
+    padding-right: 30px;
+  }
+  &-btnBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .module-message-detail {
   .module-message {
     pointer-events: none;

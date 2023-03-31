@@ -421,6 +421,7 @@ export async function innerHandleSwarmContentMessage(
     }
 
     if (content.dataMessage) {
+
       if (content.dataMessage.profileKey && content.dataMessage.profileKey.length === 0) {
         content.dataMessage.profileKey = null;
       }

@@ -11,6 +11,7 @@ import {
   PropsForExpirationTimer,
   PropsForGroupInvitation,
   PropsForGroupUpdate,
+  PropsForPayment,
 } from '../../state/ducks/conversations';
 import {
   getOldBottomMessageId,
@@ -27,6 +28,8 @@ import { CallNotification } from './message/message-item/notification-bubble/Cal
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
+import { PaymentMessage } from './message/message-item/PaymentMessage';
+import { getWalletPaymentDetailsSend } from '../../state/selectors/walletConfig';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -41,10 +44,13 @@ export const BchatMessagesList = (props: {
   onPageDownPressed: () => void;
   onHomePressed: () => void;
   onEndPressed: () => void;
+  pubkey:string;
 }) => {
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
   const oldTopMessageId = useSelector(getOldTopMessageId);
   const oldBottomMessageId = useSelector(getOldBottomMessageId);
+    
+  const transactionInitiatDetails = useSelector(getWalletPaymentDetailsSend);
 
   useLayoutEffect(() => {
     const newTopMessageId = messagesProps.length
@@ -84,6 +90,22 @@ export const BchatMessagesList = (props: {
     }
   });
 
+  
+  if(props.pubkey===transactionInitiatDetails?.message?.props?.id)
+  {
+    function checkKey(key:any) {
+      return key?.message?.props?.messageId === transactionInitiatDetails?.message?.props?.messageId;
+    }
+    if(!messagesProps.find(checkKey))
+    {
+      messagesProps.unshift(transactionInitiatDetails)
+    }
+   
+  }
+  // console.log('messageProps ::', messagesProps);
+  // console.log('messagesProps[0]::',messagesProps[0],messagesProps[1])
+
+
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -101,7 +123,7 @@ export const BchatMessagesList = (props: {
             />
           ) : null;
         if (messageProps.message?.messageType === 'group-notification') {
-          const msgProps = messageProps.message.props as PropsForGroupUpdate;          
+          const msgProps = messageProps.message.props as PropsForGroupUpdate;
           return [<GroupUpdateMessage key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
 
@@ -109,7 +131,10 @@ export const BchatMessagesList = (props: {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
           return [<GroupInvitation key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
-
+        if (messageProps.message?.messageType === 'payment') {
+          const msgProps = messageProps.message.props as PropsForPayment;
+          return [<PaymentMessage key={messageId} {...msgProps}  />, dateBreak, unreadIndicator];
+        }
         if (messageProps.message?.messageType === 'message-request-response') {
           const msgProps = messageProps.message.props as PropsForMessageRequestResponse;
 

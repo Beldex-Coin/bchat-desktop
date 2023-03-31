@@ -1,13 +1,38 @@
-import React from 'react';
-import { BchatRadioGroup } from '../basic/BchatRadioGroup';
-import { BchatSettingsItemWrapper } from './BchatSettingListItem';
+import React, { useState } from 'react';
+// import { BchatRadioGroup } from '../basic/BchatRadioGroup';
+import { BchatToggleWithDescription } from './BchatSettingListItem';
+import { Constants } from '../../bchat';
+import { BchatIcon } from '../icon';
+import { SettingsKey } from '../../data/settings-key';
+import { useUpdate } from 'react-use';
+import { isAudioNotificationSupported } from '../../types/Settings';
+import styled from 'styled-components';
+import { SpacerLG } from '../basic/Text';
+import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { Notifications } from '../../util/notifications';
+// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
+// import { BchatToggle } from '../basic/BchatToggle';
 
+const StyledButtonContainer = styled.div`
+  display: flex;
+  width: min-content;
+  flex-direction: column;
+  padding-inline-start: var(--margins-lg);
+  justify-content: center;
+    align-items: center;
+    width: 100%;
+`;
 export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | null }) => {
+  const initialItem = window.getSettingValue('notification-setting') || 'message';
+  const initialAudioNotificationEnabled =
+    window.getSettingValue(SettingsKey.settingsAudioNotification) || false;
+  const forceUpdate = useUpdate();
+
+  const [selected, setSelected] = useState(initialItem)
   if (props.hasPassword === null) {
     return null;
   }
 
-  const initialItem = window.getSettingValue('notification-setting') || 'message';
 
   const items = [
     {
@@ -22,21 +47,105 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
       label: window.i18n('noNameOrMessage'),
       value: 'count',
     },
-    {
-      label: window.i18n('disableNotifications'),
-      value: 'off',
-    },
+    // {
+    //   label: window.i18n('disableNotifications'),
+    //   value: 'off',
+    // },
   ];
+  function notificationOption(item: any) {
+    window.setSettingValue('notification-setting', item.value);
+    setSelected(item.value)
+  }
+  function toggle() {
+    if (selected === 'off') {
+      window.setSettingValue('notification-setting', 'message');
+      setSelected('message')
+    }
+    else {
+      window.setSettingValue('notification-setting', 'off');
+      setSelected('off')
+    }
+
+  }
+  const onClickPreview = () => {
+    if (selected === 'off') {
+      return;
+    }
+    Notifications.addPreviewNotification({
+      conversationId: `preview-notification-${Date.now()}`,
+      message:
+        items.find(m => m.value === selected)?.label ||
+        window?.i18n?.('messageBody') ||
+        'Message body',
+      title: window.i18n('notificationPreview'),
+      iconUrl: null,
+      isExpiringMessage: false,
+      messageSentAt: Date.now(),
+    });
+  };
+
   return (
-    <BchatSettingsItemWrapper title={window.i18n('notificationSettingsDialog')} inline={false}>
-      <BchatRadioGroup
+    // <BchatSettingsItemWrapper inline={false}>
+    <>
+    <div className={'bchat-settings-item'} style={{ padding: '0 0 10px 0' }}>
+      <BchatToggleWithDescription
+        onClickToggle={() => {
+          toggle()
+        }}
+        title={window.i18n('notificationSettingsDialog')}
+        // description={window.i18n('audioMessageAutoplayDescription')}
+        active={selected !== 'off'}
+      />
+      {selected !== 'off' && items.map((item, i) =>
+        <div className='bchat-settings-item-notification'
+          key={i}
+          onClick={() => notificationOption(item)}>
+          <div
+            className={selected !== item.value ? 'bchat-settings-item-notification-circle' : "selected"}
+          >
+            {selected === item.value && <BchatIcon iconType="circle" iconSize={10} iconColor={Constants.UI.COLORS.GREEN} />}
+          </div>
+          <div className='bchat-settings-item-notification-title'>
+            {item.label}
+          </div>
+        </div>
+      )}
+      
+      {/* <BchatRadioGroup
         initialItem={initialItem}
         group={'notification-setting'}
         items={items}
         onClick={(selectedRadioValue: string) => {
           window.setSettingValue('notification-setting', selectedRadioValue);
         }}
-      />
-    </BchatSettingsItemWrapper>
+      /> */}
+    </div>
+    {selected !== 'off' && isAudioNotificationSupported() && (
+      <>
+        <BchatToggleWithDescription
+          onClickToggle={async () => {
+            window.setSettingValue(
+              SettingsKey.settingsAudioNotification,
+              !initialAudioNotificationEnabled
+            );
+            forceUpdate();
+          }}
+          title={window.i18n('notificationSound')}
+          // description={window.i18n('audioMessageAutoplayDescription')}
+          active={window.getSettingValue(
+            SettingsKey.settingsAudioNotification)}
+        />
+
+        <StyledButtonContainer>
+        <SpacerLG />
+        <BchatButton text={window.i18n('notificationPreview')} onClick={() => onClickPreview()}   buttonColor={BchatButtonColor.Green}/>
+      </StyledButtonContainer>
+      </>
+      )}
+      
+    </>
   );
 };
+
+
+

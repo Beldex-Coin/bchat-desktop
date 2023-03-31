@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 
 import { BchatMessagesList } from './BchatMessagesList';
 import autoBind from 'auto-bind';
-import { ConversationTypeEnum } from '../../models/conversation';
-import { getConversationController } from '../../bchat/conversations';
+// import { ConversationTypeEnum } from '../../models/conversation';
+// import { getConversationController } from '../../bchat/conversations';
 import {
   quotedMessageToAnimate,
   ReduxConversationType,
@@ -23,7 +23,7 @@ import {
   getSelectedConversationKey,
   getSortedMessagesOfSelectedConversation,
 } from '../../state/selectors/conversations';
-import { TypingBubble } from './TypingBubble';
+// import { TypingBubble } from './TypingBubble';
 
 export type BchatMessageListProps = {
   messageContainerRef: React.RefObject<HTMLDivElement>;
@@ -92,13 +92,14 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
     if (!conversationKey || !conversation) {
       return null;
     }
-
-    let displayedName = null;
-    if (conversation.type === ConversationTypeEnum.PRIVATE) {
-      displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
-        conversationKey
-      );
-    }
+    // console.log('conversationKey ::',conversationKey)
+  //  console.log("conversation render",conversation)
+    // let displayedName = null;
+    // if (conversation.type === ConversationTypeEnum.PRIVATE) {
+    //   displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
+    //     conversationKey
+    //   );
+    // }
 
     return (
       <div
@@ -108,13 +109,15 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
         ref={this.props.messageContainerRef}
         data-testid="messages-container"
       >
-        <TypingBubble
+        {/* <TypingBubble
           pubkey={conversationKey}
           conversationType={conversation.type}
           displayedName={displayedName}
-          isTyping={!!conversation.isTyping}
+          // isTyping={!!conversation.isTyping}
+          isTyping={true}
+
           key="typing-bubble"
-        />
+        /> */}
 
         <ScrollToLoadedMessageContext.Provider value={this.scrollToLoadedMessage}>
           <BchatMessagesList
@@ -128,12 +131,14 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
             onPageUpPressed={this.scrollPgUp}
             onHomePressed={this.scrollTop}
             onEndPressed={this.scrollEnd}
+            pubkey={conversationKey}
           />
         </ScrollToLoadedMessageContext.Provider>
 
         <BchatScrollButton
           onClickScrollBottom={this.props.scrollToNow}
           key="scroll-down-button"
+          unreadCount={conversation.unreadCount}
         />
       </div>
     );

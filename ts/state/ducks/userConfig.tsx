@@ -8,12 +8,14 @@ export interface UserConfigState {
   audioAutoplay: boolean;
   showRecoveryPhrasePrompt: boolean;
   hideMessageRequests: boolean;
+   multipleSelection:boolean;
 }
 
 export const initialUserConfigState = {
   audioAutoplay: false,
   showRecoveryPhrasePrompt: true,
   hideMessageRequests: false,
+  multipleSelection:false,
 };
 
 const userConfigSlice = createSlice({
@@ -35,6 +37,12 @@ const userConfigSlice = createSlice({
     hideMessageRequestBanner: state => {
       state.hideMessageRequests = true;
     },
+    hideMultipleSelection: state => {
+      state.multipleSelection = false;
+    },
+    toggleMultipleSelection: state => {
+      state.multipleSelection = !state.multipleSelection;
+    },
   },
 });
 
@@ -45,5 +53,7 @@ export const {
   toggleMessageRequests,
   showMessageRequestBanner,
   hideMessageRequestBanner,
+  hideMultipleSelection,
+  toggleMultipleSelection
 } = actions;
 export const userConfigReducer = reducer;

@@ -23,6 +23,39 @@ type Props = {
   conversationId: string;
 };
 
+// const submitFortxnDetails = async (conversationId: string, pubkeys: Array<string>) => {
+//   const completeUrl = await getCompleteUrlForV2ConvoId(conversationId);
+//   const convo = getConversationController().get(conversationId);
+//   if (!convo || !convo.isPublic()) {
+//     throw new Error('submitForOpenGroup group not found');
+//   }
+//   const groupInvitation = {
+//     url: completeUrl,
+//     name: convo.getName() || 'Unknown',
+//   };
+//   pubkeys.forEach(async pubkeyStr => {
+//     const privateConvo = await getConversationController().getOrCreateAndWait(
+//       pubkeyStr,
+//       ConversationTypeEnum.PRIVATE
+//     );
+//      console.log('privateConvo::',privateConvo,groupInvitation)
+//     if (privateConvo) {
+//       void privateConvo.sendMessage({
+//         body: '',
+//         attachments: undefined,
+//         groupInvitation:undefined,
+//         preview: undefined,
+//         quote: undefined,
+//         payment:{
+//           amount:"200",
+//           txnId:"fghjkbhjkghjghj"
+//         }
+//       });
+//     }
+//   });
+// };
+
+
 const submitForOpenGroup = async (conversationId: string, pubkeys: Array<string>) => {
   const completeUrl = await getCompleteUrlForV2ConvoId(conversationId);
   const convo = getConversationController().get(conversationId);
@@ -126,7 +159,8 @@ const InviteContactsDialogInner = (props: Props) => {
   const onClickOK = () => {
     if (selectedContacts.length > 0) {
       if (isPublicConvo) {
-        void submitForOpenGroup(conversationId, selectedContacts);
+         void submitForOpenGroup(conversationId, selectedContacts);
+        //  submitFortxnDetails(conversationId, selectedContacts)
       } else {
         void submitForClosedGroup(conversationId, selectedContacts);
       }

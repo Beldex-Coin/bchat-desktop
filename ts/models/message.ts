@@ -31,6 +31,7 @@ import {
   PropsForAttachment,
   PropsForExpirationTimer,
   PropsForGroupInvitation,
+  PropsForPayment,
   PropsForGroupUpdate,
   PropsForGroupUpdateAdd,
   PropsForGroupUpdateGeneral,
@@ -86,14 +87,12 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
   constructor(attributes: MessageAttributesOptionals & { skipTimerInit?: boolean }) {
     const filledAttrs = fillMessageAttributesWithDefaults(attributes);
     super(filledAttrs);
-
     if (!this.attributes.id) {
       throw new Error('A message always needs to have an id.');
     }
     if (!this.attributes.conversationId) {
       throw new Error('A message always needs to have an conversationId.');
     }
-
     // this.on('expired', this.onExpired);
     if (!attributes.skipTimerInit) {
       void this.setToExpire();
@@ -111,6 +110,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     perfStart(`getPropsMessage-${this.id}`);
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
+    const propsForPayment=this.getPropsForPayment();
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
     const propsForTimerNotification = this.getPropsForTimerNotification();
     const propsForMessageRequestResponse = this.getPropsForMessageRequestResponse();
@@ -124,9 +124,13 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (propsForMessageRequestResponse) {
       messageProps.propsForMessageRequestResponse = propsForMessageRequestResponse;
     }
+    if (propsForPayment) {
+      messageProps.propsForPayment = propsForPayment;
+    }
     if (propsForGroupInvitation) {
       messageProps.propsForGroupInvitation = propsForGroupInvitation;
     }
+    
     if (propsForGroupUpdateMessage) {
       messageProps.propsForGroupUpdateMessage = propsForGroupUpdateMessage;
     }
@@ -142,6 +146,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         isUnread: this.isUnread(),
       };
     }
+
     perfEnd(`getPropsMessage-${this.id}`, 'getPropsMessage');
     return messageProps;
   }
@@ -183,10 +188,16 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     this.set(attributes);
   }
 
+  public isPayment() {
+    return !!this.get('payment');
+  }
+
+  public istxnDetails() {
+    return !!this.get('txnDetails');
+  }
   public isGroupInvitation() {
     return !!this.get('groupInvitation');
   }
-
   public isMessageRequestResponse() {
     return !!this.get('messageRequestResponse');
   }
@@ -260,6 +271,40 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     };
 
     return basicProps;
+  }
+  public getPropsForPayment(): PropsForPayment | null {
+    //  console.log("this.istxnDetails() ::0",this.istxnDetails(),!this.isPayment())
+
+    if (!this.isPayment() && !this.istxnDetails()) {
+      // console.log("this.istxnDetails() ::1",this.istxnDetails())
+      return null;
+    }
+    // else if (!this.istxnDetails()) {
+    //   console.log("this.istxnDetails() ::1",this.istxnDetails())
+    //   return null;
+    // }
+
+    // console.log("this.istxnDetails() ::2",this.get('txnDetails'))
+
+    const Payment = this.get('payment') || this.get('txnDetails');
+    // console.log("this.istxnDetails() ::3",Payment)
+
+    let direction = this.get('direction');
+    if (!direction) {
+      direction = this.get('type') === 'outgoing' ? 'outgoing' : 'incoming';
+    }
+
+    
+
+    return {
+      amount: Payment.amount,
+      txnId: Payment.txnId,
+      direction,
+      acceptUrl: "",
+      messageId: this.id as string,
+      receivedAt: this.get('received_at'),
+      isUnread: this.isUnread(),
+    };
   }
 
   public getPropsForGroupInvitation(): PropsForGroupInvitation | null {
@@ -1239,9 +1284,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           getConversationController().getContactProfileNameOrFullPubKey(pubKey)
         );
 
-        if (names.length > 1) {
-          console.log("names names ::",names);
-          
+        if (names.length > 1) {          
           messages.push(window.i18n('multipleJoinedTheGroup', [names.join(', ')]));
         } else {
           messages.push(window.i18n('joinedTheGroup', names));
@@ -1267,6 +1310,13 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     if (this.isGroupInvitation()) {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
+    }
+    if(this.isPayment() || this.istxnDetails())
+    {
+      let amount=this.getMessageModelProps()?.propsForPayment?.amount;
+      let direction=this.getMessageModelProps()?.propsForPayment?.direction === "outgoing"?"Send":'Received'
+      // console.log('Payment Details ::',this.isPayment(),this.getMessageModelProps()?.propsForPayment?.amount,`${amount}BDX ${direction}`)
+      return `${amount} BDX ${direction}`;
     }
 
     if (this.isDataExtractionNotification()) {

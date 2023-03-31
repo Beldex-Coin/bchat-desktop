@@ -14,17 +14,19 @@ import { getPasswordHash } from '../../data/data';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { matchesHash } from '../../util/passwordUtils';
 
-
 //bchat
 
-import { BchatRecoverySeed } from "./BchatRecoverySeed"
+import { BchatRecoverySeed } from './BchatRecoverySeed';
 // import {BchatSettingRecoveryKey} from "./BchatSettingRecoveryKey"
-import { OverlayMessageRequest } from "../leftpane/overlay/OverlayMessageRequest"
-import { BchatOnionPathScreen } from "./BchatOnionPathScreen"
+import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest';
+import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
-import { WalletMainPanel } from '../wallet/BchatWalletMainPanel';
+import { WalletMainPanel, } from '../wallet/BchatWalletMainPanel';
 // import { wallet } from '../../wallet/wallet-rpc'
 import { deamonvalidation } from '../../wallet/BchatWalletHelper';
+import { SettingsCategoryChat } from './section/categoryChat';
+import { WalletSettings } from '../wallet/BchatWalletSettings';
+// import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
 // import { startWallet } from "../../mains/wallet-rpc"
 
 export function getMediaPermissionsSettings() {
@@ -36,17 +38,19 @@ export function getCallMediaPermissionsSettings() {
 }
 
 export enum BchatSettingCategory {
+  Chat = 'chat',
   Appearance = 'appearance',
   Privacy = 'privacy',
   Notifications = 'notifications',
   MessageRequests = 'messageRequests',
   Blocked = 'blocked',
-  RecoverySeed = "recoverySeed",
-  RecoveryKey = "recoveryKey",
+  RecoverySeed = 'recoverySeed',
+  RecoveryKey = 'recoveryKey',
   // ViewMessageRequest="viewMessageRequest",
-  Hops = "hops",
-  Wallet = "wallet"
-
+  Hops = 'hops',
+  Wallet = 'wallet',
+  WalletSettings = 'walletSettings',
+ 
 }
 
 export interface SettingsViewProps {
@@ -59,6 +63,7 @@ interface State {
   mediaSetting: boolean | null;
   callMediaSetting: boolean | null;
   shouldLockSettings: boolean | null;
+  nodeSetting: boolean | null;
 }
 
 // const BchatInfo = () => {
@@ -112,9 +117,7 @@ export const PasswordLock = ({
 };
 
 export class BchatSettingsView extends React.Component<SettingsViewProps, State> {
-
   public settingsViewRef: React.RefObject<HTMLDivElement>;
-
 
   public constructor(props: any) {
     super(props);
@@ -125,6 +128,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       mediaSetting: null,
       callMediaSetting: null,
       shouldLockSettings: true,
+      nodeSetting: false,
     };
 
     this.settingsViewRef = React.createRef();
@@ -135,6 +139,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentDidMount() {
     window.addEventListener('keyup', this.onKeyUp);
+    deamonvalidation();
 
     const mediaSetting = getMediaPermissionsSettings();
     const callMediaSetting = getCallMediaPermissionsSettings();
@@ -145,6 +150,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentWillUnmount() {
     window.removeEventListener('keyup', this.onKeyUp);
+    deamonvalidation();
+
   }
 
   /* tslint:disable-next-line:max-func-body-length */
@@ -154,24 +161,31 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     if (this.state.hasPassword === null) {
       return null;
     }
+    if (category === BchatSettingCategory.Chat) {
+      return <SettingsCategoryChat hasPassword={this.state.hasPassword} />;
+    }
     if (category === BchatSettingCategory.Blocked) {
       // special case for blocked user
       return <BlockedUserSettings />;
     }
-
-
-
     if (category === BchatSettingCategory.Appearance) {
       return <SettingsCategoryAppearance hasPassword={this.state.hasPassword} />;
     }
     if (category === BchatSettingCategory.RecoverySeed) {
       if (passwordLock) {
-        return <PasswordLock
-          pwdLockError={this.state.pwdLockError}
-          validatePasswordLock={this.validatePasswordLock}
-        />
+        return (
+          <PasswordLock
+            pwdLockError={this.state.pwdLockError}
+            validatePasswordLock={this.validatePasswordLock}
+          />
+        );
       } else {
-        return <BchatRecoverySeed onPasswordUpdated={this.onPasswordUpdated} passwordLock={this.state.hasPassword} />
+        return (
+          <BchatRecoverySeed
+            onPasswordUpdated={this.onPasswordUpdated}
+            passwordLock={this.state.hasPassword}
+          />
+        );
       }
     }
 
@@ -180,15 +194,23 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     // }
 
     if (category === BchatSettingCategory.MessageRequests) {
-      return <OverlayMessageRequest settings={"true"} />;
+      return <OverlayMessageRequest settings={'true'} />;
     }
 
     if (category === BchatSettingCategory.Hops) {
       return <BchatOnionPathScreen />;
     }
     if (category === BchatSettingCategory.Wallet) {
-      deamonvalidation()
+      // deamonvalidation();
       return <WalletMainPanel />;
+    }
+    if (category === BchatSettingCategory.WalletSettings) {
+
+      return (
+            <div>         
+              <WalletSettings />
+            </div>      
+      );
     }
     if (category === BchatSettingCategory.Notifications) {
       return <BchatNotificationGroupSettings hasPassword={this.state.hasPassword} />;
@@ -211,12 +233,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     );
     if (!enteredPassword) {
       this.setState({
-        pwdLockError: "emptyPassword",
+        pwdLockError: 'emptyPassword',
       });
-      ToastUtils.pushToastError(
-        'emptyPassword',
-        window.i18n('emptyPassword'),
-      );
+      ToastUtils.pushToastError('emptyPassword', window.i18n('emptyPassword'));
       return false;
     }
 
@@ -226,10 +245,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       this.setState({
         pwdLockError: window.i18n('invalidPassword'),
       });
-      ToastUtils.pushToastError(
-        'invalidPassword',
-        window.i18n('invalidPassword'),
-      );
+      ToastUtils.pushToastError('invalidPassword', window.i18n('invalidPassword'));
       return false;
     }
 
@@ -244,6 +260,7 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public render() {
     const { category } = this.props;
+    // console.log("category setting ::",category)
     const shouldRenderPasswordLock = this.state.shouldLockSettings && this.state.hasPassword;
     const categoryLocalized: LocalizerKeys =
       category === BchatSettingCategory.Appearance
@@ -256,13 +273,15 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
               ? 'messageRequests'
               : category === BchatSettingCategory.Hops
                 ? 'hops'
-                : category === BchatSettingCategory.Wallet
+                : category === BchatSettingCategory.Chat
+                  ? 'Chat'
+                : category === BchatSettingCategory.WalletSettings
+                  ? 'WalletSettingsTitle'
+                  : category === BchatSettingCategory.Wallet
                   ? 'WalletSettingsTitle'
                   : category === BchatSettingCategory.Notifications
                     ? 'notificationsSettingsTitle'
-                    : 'privacySettingsTitle'
-
-
+                      : 'privacySettingsTitle';
 
     return (
       <div className="bchat-settings">

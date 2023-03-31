@@ -71,7 +71,7 @@ export const ForgotPassword = (props: any) => {
   };
 
   const passValid = async () => {
-    setLoading(true);
+    // setLoading(true);
     let userDetails = await getConversationById(UserUtils.getOurPubKeyStrFromCache());
     if (!seed) {
       return ToastUtils.pushToastError('seedFieldEmpty', window.i18n('seedFieldEmpty'));
@@ -106,19 +106,21 @@ export const ForgotPassword = (props: any) => {
 
     try {
       await wallet.restoreWallet(profileName, newPassword, seed, refreshDetails, 'forgotPassword');
+      // if (restore) {
+      //   return onClickCancelHandler();
+      // }
       daemon.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           dispatch(updateDaemon({ height: data.result.height }));
         }
       });
-      props.showSyncScreen();
+      // props.showSyncScreen();
       setLoading(false);
 
       ToastUtils.pushToastSuccess('changePasswordSuccess', 'Password successfully changed.');
       return onClickCancelHandler();
     } catch (error) {
       setLoading(false);
-      console.log('err ::', error);
       {
         error?.message && ToastUtils.pushToastError('changePasswordError', error?.message);
       }
@@ -141,6 +143,16 @@ export const ForgotPassword = (props: any) => {
   `;
   return (
     <div className="wallet-forgotPassword">
+      {/* <div  style={{width:'100%'}}>
+      <div className='exitBtn'>
+          <BchatIconButton
+            iconType="exit"
+            iconSize="small"
+            onClick={props.exit}
+            dataTestId="modal-close-button"
+          />
+        </div>
+      </div> */}
       <div className="wallet-forgotPassword-content-Box">
         {loading && (
           <Loader>
@@ -152,6 +164,7 @@ export const ForgotPassword = (props: any) => {
             </div>
           </Loader>
         )}
+
         <div>
           <div className="wallet-forgotPassword-content-Box-title">
             {window.i18n('forgotPassword')}
@@ -165,6 +178,7 @@ export const ForgotPassword = (props: any) => {
                 setSeed(trimWhiteSpace);
               }}
               placeholder={window.i18n('enterSeed')}
+              autoFocus
             />
             <div
               onClick={() => handlePaste()}
@@ -176,7 +190,7 @@ export const ForgotPassword = (props: any) => {
           </div>
 
           <SpacerMD />
-          <div>{window.i18n('changewalletPassword')}</div>
+          <div style={{ display: 'flex' }}>{window.i18n('changewalletPassword')}</div>
           <SpacerSM />
           <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
             <span className="wallet-forgotPassword-content-Box-password">

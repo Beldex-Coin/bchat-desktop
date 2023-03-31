@@ -180,6 +180,7 @@ export type RegularMessageType = Pick<
   | 'profile'
   | 'profileKey'
   | 'expireTimer'
+  | 'payment'
 > & { isRegularMessage: true };
 
 /**
@@ -197,6 +198,7 @@ export function toRegularMessage(rawDataMessage: SignalService.DataMessage): Reg
       'quote',
       'profile',
       'expireTimer',
+      'payment'
     ]),
     isRegularMessage: true,
   };
@@ -214,13 +216,16 @@ async function handleRegularMessage(
   // this does not trigger a UI update nor write to the db
   await copyFromQuotedMessage(message, rawDataMessage.quote);
 
+  if (rawDataMessage.payment) {
+    message.set({ payment: rawDataMessage.payment });
+  }
+
   if (rawDataMessage.openGroupInvitation) {
     message.set({ groupInvitation: rawDataMessage.openGroupInvitation });
   }
 
   handleLinkPreviews(rawDataMessage.body, rawDataMessage.preview, message);
   const existingExpireTimer = conversation.get('expireTimer');
-
   message.set({
     flags: rawDataMessage.flags,
     quote: rawDataMessage.quote,
@@ -327,6 +332,8 @@ export async function handleMessageJob(
   source: string,
   messageHash: string
 ) {
+
+
   window?.log?.info(
     `Starting handleMessageJob for message ${messageModel.idForLogging()}, ${messageModel.get(
       'serverTimestamp'
@@ -339,6 +346,7 @@ export async function handleMessageJob(
   );
   try {
     messageModel.set({ flags: regularDataMessage.flags });
+
     if (messageModel.isExpirationTimerUpdate()) {
       const { expireTimer } = regularDataMessage;
       const oldValue = conversation.get('expireTimer');
@@ -351,6 +359,7 @@ export async function handleMessageJob(
       }
       await handleExpirationTimerUpdateNoCommit(conversation, messageModel, source, expireTimer);
     } else {
+
       // this does not commit to db nor UI unless we need to approve a convo
       await handleRegularMessage(
         conversation,

@@ -5,29 +5,38 @@ import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
 import { updateWalletRescaning } from '../../state/ducks/walletConfig';
 import { walletSettingsKey } from '../../data/settings-key';
+import _ from 'lodash';
+// import classNames from 'classnames';
 
-export const SyncStatusBar = () => {
+
+
+
+const SyncStatusBar = (props: { from?: string }) => {
   const dispatch = useDispatch();
+  const { from = "" } = props
   let currentHeight: any;
   let daemonHeight: any;
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  console.log('currentHeight asdfghhgfcxfghg::', Number(useSelector(getHeight)), useSelector((state: any) => state.daemon.height),currentDaemon )
+  const walletDetails = useSelector((state: any) => state.wallet);
+  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)'; 
+  decimalValue = decimalValue.charAt(0);
 
-  if (currentDaemon.type === "Local") {
+  if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
-  }
-  else {
+    // console.log('currentDaemon?.type ::', currentDaemon?.type, currentHeight, daemonHeight)
+
+  } else {
     currentHeight = Number(useSelector(getHeight));
     daemonHeight = useSelector((state: any) => state.daemon.height);
+    // console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, daemonHeight)
+
   }
 
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
-  console.log("percentage:", pct)
-  console.log('currentHeight ::', currentHeight, daemonHeight, percentage)
 
   const getSyncStatus = window.getSettingValue('syncStatus');
   const syncStatus = getSyncStatus
@@ -39,20 +48,21 @@ export const SyncStatusBar = () => {
   dispatch(updateWalletRescaning(value));
 
   return (
-    <div className="wallet-syncStatus">
-      <div className="wallet-syncStatus-absolute">
-        <Indicator
+    <div className="syncStatus">
+      <div  >
+        {from !== "chat" && <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
         />
-        <Flex container={true} justifyContent="space-between" padding="5px 0">
+        }
+        <Flex container={true} justifyContent="space-between" padding={from === "chat" ? "9px 18px" : "5px 15px"}>
           <Flex container={true}>
-            <div className="wallet-syncStatus-statusTxt">
+            <div className="syncStatus-statusTxt">
               Status :{' '}
               <span
-                className="wallet-syncStatus-statusTxt-greenTxt"
+                className="syncStatus-statusTxt-greenTxt"
                 style={{ color: syncStatus.color }}
               >
                 {syncStatus.status}
@@ -60,14 +70,32 @@ export const SyncStatusBar = () => {
             </div>
           </Flex>
           <Flex container={true}>
-            <div style={{ marginRight: '10px' }} className="wallet-syncStatus-statusvalue">
-              {window.getSettingValue('current-deamon').type} : {daemonHeight}
+          {from == "chat" && <>
+              <div className={ (walletDetails.balance / 1e9) > 0 ?"syncStatus-balance":'syncStatus-disableBalance'} >
+                Balance : <span className='syncStatus-disableBalance'>{(walletDetails.balance / 1e9).toFixed(decimalValue)}</span>
+
+              </div>
+              <div className={ (walletDetails.balance / 1e9) > 0 ?"syncStatus-unlocked-Balance":'syncStatus-disableBalance'} style={{ marginLeft: '10px' }}>
+                Unlocked Balance : <span className='syncStatus-disableBalance'> {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}</span>
+              </div>
+            </>
+            }
+            <div style={{ marginLeft: '10px' }} className="syncStatus-statusvalue">
+              {window.getSettingValue('current-deamon')?.type} : {daemonHeight}
             </div>
-            <div className="wallet-syncStatus-statusvalue">
+            <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
               Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
             </div>
+           
           </Flex>
         </Flex>
+        {from == "chat" && <Indicator
+          style={{
+            width: `${percentage}%`,
+            backgroundColor: syncStatus.color,
+          }}
+        />
+        }
       </div>
     </div>
   );
@@ -77,4 +105,7 @@ const Indicator = styled.div`
   width: 10%;
   height: 2px;
   background-color: #fdb12a;
+  transition: width 3s ease-in-out;
 `;
+
+export const MemoSyncStatusBar = React.memo(SyncStatusBar);

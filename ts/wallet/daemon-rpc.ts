@@ -1,10 +1,8 @@
-
 const http = require('http');
 import { default as insecureNodeFetch } from 'node-fetch';
 import { HTTPError } from '../bchat/utils/errors';
 import { updateDaemon } from '../state/ducks/daemon';
-import { useDispatch } from 'react-redux';
-
+// import { useDispatch } from 'react-redux';
 
 class Daemon {
   data_dir: null;
@@ -48,12 +46,21 @@ class Daemon {
   }
 
   daemonHeartbeat() {
-    const dispatch = useDispatch();
+    // console.log('updateDaemonupdateDaemon::0');
+    // const dispatch = useDispatch();
+    // console.log('updateDaemonupdateDaemon::1');
+
     clearInterval(this.heartbeat);
+    // console.log('updateDaemonupdateDaemon::2');
+
     this.heartbeat = setInterval(() => {
       this.sendRPC('get_info').then(data => {
+        // console.log('updateDaemonupdateDaemon::3', data);
         if (!data.hasOwnProperty('error')) {
-          dispatch(updateDaemon({ height: data.result.height }));
+          // console.log('updateDaemonupdateDaemon::4', data.result.height);
+          window.inboxStore?.dispatch(updateDaemon({ height: data.result.height }));
+
+          // window dispatch(updateDaemon({ height: data.result.height }));
         }
       });
     }, 3000);

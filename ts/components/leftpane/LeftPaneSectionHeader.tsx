@@ -6,11 +6,16 @@ import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
 import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
 import { Flex } from '../basic/Flex';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
-import { SectionType, setOverlayMode, showLeftPaneSection, showSettingsSection } from '../../state/ducks/section';
+import {
+  SectionType,
+  setOverlayMode,
+  showLeftPaneSection,
+  // showSettingsSection,
+} from '../../state/ducks/section';
 import {
   BchatButton,
   // BchatButtonColor,
-  BchatButtonType
+  BchatButtonType,
 } from '../basic/BchatButton';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
@@ -24,11 +29,9 @@ import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
-import { BchatSettingCategory } from '../settings/BchatSettings';
+// import { BchatSettingCategory } from '../settings/BchatSettings';
+import { clearSearch } from '../../state/ducks/search';
 // import ReactTooltip from 'react-tooltip';
-
-
-
 
 // const SectionTitle = styled.h1`
 //   padding: 0 var(--margins-sm);
@@ -37,11 +40,11 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 //   font-family:$bchat-font-poppin-semibold;
 // `;
 
-export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
+export const LeftPaneSectionHeader = () => {
   // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
-  const bChatId = useSelector(getOurNumber)
+  const bChatId = useSelector(getOurNumber);
   const dispatch = useDispatch();
 
   let label: string | undefined;
@@ -51,8 +54,6 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
 
-
-
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -60,17 +61,18 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
       break;
+      case SectionType.Wallet:
+      label = window.i18n('wallet');
+      break;
     case SectionType.Message:
-
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')
-        // : window.i18n('messagesHeader');
-        : "BChat";
-
+        : // : window.i18n('messagesHeader');
+          'BChat';
 
       break;
     default:
-      label = 'BChat'
+      label = 'BChat';
   }
 
   function handleClick() {
@@ -86,61 +88,90 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
     }
   }
 
-  function switchToWalletSec() {
-    dispatch(showLeftPaneSection(3));
-    dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-
-  }
+  // function switchToWalletSec() {
+  //   dispatch(showLeftPaneSection(3));
+  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+  // }
 
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
-      return <Avatar
-        size={AvatarSize.M}
-
-        onAvatarClick={() => dispatch(editProfileModal({}))}
-        pubkey={bChatId}
-        dataTestId="leftpane-primary-avatar"
-      />
-
-    }
-    else {
-      return <div className='module-left-pane__header_gearIcon'>
-        <BchatIcon
-          iconType={"gear"}
-          //  iconColor={"#fff"}
-          iconSize={"large"}
+      return (
+        <Avatar
+          size={AvatarSize.M}
+          onAvatarClick={() => dispatch(editProfileModal({}))}
+          pubkey={bChatId}
+          dataTestId="leftpane-primary-avatar"
         />
-      </div>
-
+      );
+    } else {
+      return (
+        <div className="module-left-pane__header_gearIcon">
+          <BchatIcon
+            iconType={'gear'}
+            //  iconColor={"#fff"}
+            iconSize={'large'}
+          />
+        </div>
+      );
     }
-
   }
 
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
-    const status = isOnline ? "Online" : "Offline"
+    const status = isOnline ? 'Online' : 'Offline';
     if (SectionType.Settings !== focusedSection) {
-      return <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
-        <ActionPanelOnionStatusLight isSelected={false} handleClick={function (): void {
-          throw new Error('Function not implemented.');
-        }} id={''} size="tiny" />
-      </Hops>
+      return (
+        <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+          <ActionPanelOnionStatusLight
+            isSelected={false}
+            handleClick={function(): void {
+              throw new Error('Function not implemented.');
+            }}
+            id={''}
+            size="tiny"
+          />
+        </Hops>
+      );
+    } else {
+      return null;
     }
-    else {
-      return null
-    }
-  }
-
-
+  };
 
   function Moon() {
-    return <div style={{ marginRight: "13px" }} className='dayAndNightIcon' onClick={handleClick} data-tip="Themes" data-offset="{'right':43}" data-place="bottom" >
-    </div>
+    return (
+      <div
+        // style={{ marginRight: '13px' }}
+        className="dayAndNightIcon"
+        onClick={handleClick}
+        data-tip="Themes"
+        data-offset="{'right':43}"
+        data-place="bottom"
+      ></div>
+    );
   }
 
+  function Settings() {
+    return (
+      <span style={{ marginRight: '15px',marginTop:'8px' }}>
+        <BchatIconButton
+          iconSize="large"
+          iconType="walletSetting"
+          iconColor="#2879fb"
+          onClick={() => {
+            dispatch(clearSearch());
+            dispatch(showLeftPaneSection(3));
+            dispatch(setOverlayMode(undefined));
+          }}
+        />
+      </span>
+    );
+  }
   return (
     <Flex flexDirection="column">
-      <div className="module-left-pane__header" style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}>
+      <div
+        className="module-left-pane__header"
+        style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
+      >
         {showBackButton && (
           <BchatIconButton
             onClick={() => {
@@ -153,25 +184,28 @@ export const LeftPaneSectionHeader = (props: { buttonClicked?: any }) => {
           />
         )}
 
-        <div className=''>
-          {verifyScreens()}
-        </div>
+        <div className="">{verifyScreens()}</div>
 
-
-        <div className='module-left-pane__header__title'>
-          {label}
-        </div>
-        <div onClick={() => switchToWalletSec()} style={{ marginRight: '13px', cursor: 'pointer' }}>
-          <BchatIcon iconSize={20} iconType="wallet" iconColor='#16A51C' />
-        </div>
+        <div className="module-left-pane__header__title">{label}</div>
+        {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
+          <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
+        </div> */}
         <IsOnline />
         <Moon />
+        <Settings />
 
-        {isMessageSection && !isMessageRequestOverlay && (
-          <div onClick={props.buttonClicked} style={{ cursor: "pointer" }} data-tip="Add Contacts" data-offset="{'right':60}" data-place="bottom">
-            <img src={"images/bchat/addButton.svg"} style={{ width: "35px" }} />
-          </div>
-        )}
+        {/* {isMessageSection && !isMessageRequestOverlay && (
+          <div
+            onClick={props.buttonClicked}
+            className="addContact"
+            data-tip="Add Contacts"
+            data-offset="{'right':60}"
+            data-place="bottom"
+          > */}
+            {/* <div className='addContactIcon'></div> */}
+            {/* <img className="addContactIcon" /> */}
+          {/* </div>
+        )} */}
       </div>
       <BchatToolTip effect="solid" />
     </Flex>
@@ -268,7 +302,7 @@ const StyledBannerInner = styled.div`
   }
 `;
 const Hops = styled.div`
-position: absolute;
-    left: 47px;
-    top: 43px;
-`
+  position: absolute;
+  left: 47px;
+  top: 43px;
+`;

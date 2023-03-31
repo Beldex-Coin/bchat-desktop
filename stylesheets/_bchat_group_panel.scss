@@ -19,60 +19,60 @@
     flex-direction: row;
     flex-shrink: 0;
 
-    &-avatarBox
-    {
+    &-avatarBox {
       width: 86%;
-    text-align: center;
-    padding-left: 17%;
-
-    p{
-      font-family:$bchat-font-poppin-semibold;
-      font-size: 24px;
-      margin: 0;
-    }
-    }
-
-    &-chatIdBox
-    {
       text-align: center;
-      p{
-        font-family:$bchat-font-poppin-medium;
+      padding-left: 17%;
+
+      p {
+        font-family: $bchat-font-poppin-semibold;
+        font-size: 24px;
+        margin: 0;
+      }
+    }
+
+    &-chatIdBox {
+      text-align: center;
+      p {
+        font-family: $bchat-font-poppin-medium;
         font-size: 18px;
-        margin-top:30px;
+        margin-top: 30px;
         margin-bottom: 0;
       }
-      div{
+      div {
         width: 85%;
         margin: 0 auto;
         color: #159b24;
       }
     }
-    
-    &-closeBox
-    {
+
+    &-closeBox {
       margin-left: 10px;
-    cursor: pointer;
-    width: 20%;
-    display: flex;
-    justify-content: end;
+      display: flex;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background-color: var(--color-profile-close);
+        border-radius: 20px;
+      }
     }
     .module-avatar {
       margin: auto;
     }
   }
 
-  &-nameEditBox
-  {
-   display: flex;
-   justify-content: center;
-   width: 100%;
+  &-nameEditBox {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 
-   h2{
-    margin-right: 10px;
-   }
+    h2 {
+      margin-right: 10px;
+    }
   }
-
-  
 
   h2 {
     word-break: break-word;
@@ -199,7 +199,7 @@
     }
   }
 
-  &__leaveBtn{
+  &__leaveBtn {
     width: 100%;
     height: 40px;
     background-color: var(--color-cancelBtn-bg);
@@ -210,8 +210,12 @@
     bottom: 10px;
     border-radius: 10px;
     color: red;
-    font-family:$bchat-font-poppin-medium;
+    font-family: $bchat-font-poppin-medium;
     cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-leave-button);
+    }
   }
 }
 

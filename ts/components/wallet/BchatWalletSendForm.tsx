@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import {
   getRescaning,
   getwalletDecimalValue,
@@ -9,8 +9,8 @@ import {
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
-import { BchatIcon } from '../icon/BchatIcon';
-import { contact } from '../../state/ducks/walletSection';
+// import { BchatIcon } from '../icon/BchatIcon';
+// import { contact } from '../../state/ducks/walletSection';
 import { wallet } from '../../wallet/wallet-rpc';
 import { ToastUtils } from '../../bchat/utils';
 import { saveRecipientAddress } from '../../data/data';
@@ -26,13 +26,17 @@ export const SendForm = (props: any) => {
   const syncStatus = useSelector(getRescaning);
   const dispatch = useDispatch();
   const [address, setAddress] = useState(sendAddress);
-  const [dropDown, setDropDown] = useState(false);
+  // const [dropDown, setDropDown] = useState(false);
+  const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
   const BchatSendConfirmState=useSelector(getwalletSendConfirmModal);
   function clearStateValue() {
     props.setAmount('');
-    props.setPriority(window.i18n('flash'));
+    // props.setPriority(window.i18n('flash'));
+    // props.setPriority(window.i18n('flash'));
+
     setAddress('');
     props.setNotes('');
     let emtStr: any = '';
@@ -42,15 +46,17 @@ export const SendForm = (props: any) => {
 
   useEffect(() => {
     document.addEventListener('click', handleClick);
+    setAddress(sendAddress);
 
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, []);
-
+  }, [sendAddress]);
+ 
+  // console.log('sendAddress ::',sendAddress,'address ::',address);
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
-      setDropDown(false);
+      // setDropDown(false);
     }
   };
   useKey((event: KeyboardEvent) => {
@@ -90,8 +96,8 @@ export const SendForm = (props: any) => {
         okTheme: BchatButtonColor.Green,
         address: address,
         amount: props.amount,
-        fee: props.priority === 'Flash' ? 0.0042 : 0.0014,
-        Priority: props.priority,
+        fee: priority === 'Flash' ? 0.0042 : 0.0014,
+        Priority: priority,
         onClickOk: async () => {
           await send();
         },
@@ -110,7 +116,7 @@ export const SendForm = (props: any) => {
     let data: any = await wallet.transfer(
       address,
       props.amount * 1e9,
-      props.priority === 'Flash' ? 0 : 1,
+      priority === 'Flash' ? 0 : 1,
       isSweepAll
     );
     if (data.result) {
@@ -177,18 +183,18 @@ export const SendForm = (props: any) => {
                 ref={modalRef}
               >
                 <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px' }}>
-                  <span className="priortyBox">{props.priority}</span>
+                  <span className="priortyBox">{priority}</span>
 
-                  <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>
+                  {/* <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>
                     <BchatIcon
                       iconType="dropdownArrow"
                       iconSize="small"
                       iconRotation={269}
                       iconColor={'var(--color-walDownthickArrow)'}
                     />
-                  </span>
+                  </span> */}
                 </div>
-
+{/* 
                 {dropDown && (
                   <div style={{ position: 'relative' }}>
                     <div className="wallet-settings-nodeSetting-sendDropDown">
@@ -220,7 +226,7 @@ export const SendForm = (props: any) => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </Flex>
           </Flex>
@@ -245,7 +251,7 @@ export const SendForm = (props: any) => {
                 }}
                 maxLength={120}
               />
-              <BchatButton
+              {/* <BchatButton
                 text={window.i18n('contact')}
                 onClick={() => {
                   const updateAddress: any = address;
@@ -254,7 +260,7 @@ export const SendForm = (props: any) => {
                 }}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
-              />
+              /> */}
             </div>
           </Flex>
         </div>

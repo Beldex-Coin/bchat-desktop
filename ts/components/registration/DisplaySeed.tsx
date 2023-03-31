@@ -11,20 +11,23 @@ export const Icons = (props: any) => (
     data-offset="{'top':30,'left':15}"
     data-place="right"
     style={{
-      background: `url(images/bchat/${props.icon}.svg) no-repeat`,
-      width: '40px',
-      height: '40px',
-      // position: "relative",
-      backgroundColor: 'var(--color-inboxBgColor)',
-      backgroundSize: '16px',
-      borderRadius: '35px',
-      backgroundPosition: 'center',
-      left: '430px',
-      top: '-92px',
-      position: 'absolute',
-      cursor: 'pointer',
-    }}
-  ></div>
+      // background: `url(images/bchat/${props.icon}.svg) no-repeat`,
+    //   width: '40px',
+    //   height: '40px',
+    //   backgroundColor: 'var(--color-inboxBgColor)',
+    //   backgroundSize: '16px',
+    //   borderRadius: '35px',
+    //   backgroundPosition: 'center',
+    //   left: '430px',
+    //   top: '-92px',
+    //   position: 'absolute',
+    //   cursor: 'pointer',
+     }}
+  >
+    
+    <img  src="images/bchat/paste.svg"  width={20}  height={20}/>
+
+  </div>
 );
 
 export const ClearIcon = (props: any) => (

@@ -23,14 +23,24 @@ import {
 } from '../../state/selectors/conversations';
 import { applyTheme } from '../../state/ducks/theme';
 import { getFocusedSection } from '../../state/selectors/section';
-import { clearSearch } from '../../state/ducks/search';
-import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
+// import { clearSearch } from '../../state/ducks/search';
+import {
+  SectionType,
+  setOverlayMode,
+  showLeftPaneSection,
+  showSettingsSection,
+  // showSettingsSection,
+} from '../../state/ducks/section';
 
 import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmentsManager';
 
 import { DURATION } from '../../bchat/constants';
 import { conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
-import { editProfileModal, updateConfirmModal } from '../../state/ducks/modalDialog';
+import {
+  editProfileModal,
+  updateBchatWalletPasswordModal,
+  updateConfirmModal,
+} from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { ModalContainer } from '../dialog/ModalContainer';
 import { debounce, isEmpty, isString } from 'lodash';
@@ -58,6 +68,11 @@ import { SettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 
 import ReactTooltip from 'react-tooltip';
+import { BchatSettingCategory } from '../settings/BchatSettings';
+import { clearSearch } from '../../state/ducks/search';
+// import { wallet } from '../../wallet/wallet-rpc';
+import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
+import { updateSendAddress } from '../../state/ducks/walletConfig';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -66,10 +81,17 @@ const Section = (props: { type: SectionType }) => {
   const { type } = props;
 
   const focusedSection = useSelector(getFocusedSection);
+  const walletPasswordPopUp=useSelector(getWalletPasswordPopUpFlag)
   const isSelected = focusedSection === props.type;
 
-  const handleClick = () => {
+  // function switchToWalletSec() {
+  //   dispatch(showLeftPaneSection(3));
+  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+  // }
+
+  const handleClick =async () => {
     /* tslint:disable:no-void-expression */
+   
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
@@ -96,11 +118,33 @@ const Section = (props: { type: SectionType }) => {
 
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
+    } else if (type === SectionType.Wallet) {
+      let emptyAddress:any=""
+      // Show Path Indicator Modal
+      dispatch(showLeftPaneSection(type));
+      // wallet.startWallet('settings');
+
+      dispatch(setOverlayMode('wallet'));
+      dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      dispatch(updateSendAddress(emptyAddress))
+      if(walletPasswordPopUp)
+      {
+        dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
+      }
+
+
+      // dispatch(setOverlayMode(undefined))
     } else {
       // message section
       dispatch(clearSearch());
       dispatch(showLeftPaneSection(type));
-      dispatch(setOverlayMode(undefined));
+      if (type == 3) {
+        // dispatch(setOverlayMode('wallet'));
+
+        dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      } else {
+        dispatch(setOverlayMode(undefined));
+      }
     }
   };
 
@@ -197,37 +241,48 @@ const Section = (props: { type: SectionType }) => {
         </div>
       );
 
-    case SectionType.Settings:
+    case SectionType.Wallet:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
           <div
-            data-tip="Settings"
+            data-tip="Wallet"
             data-place="top"
             data-offset="{'right':35}"
             className="btnView"
             onClick={handleClick}
+            style={{flexDirection: 'column'}}
           >
             <BchatIconButton
-              iconSize="large"
+              iconSize={18}
               dataTestId="settings-section"
-              iconType={'gear'}
+              iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
+              margin='9px 0 0 0'
             />
+            {/* <div style={{ cursor: 'pointer' }}>
+              <img
+                src="images/wallet/wallet_beta.svg"
+                // className="bchat-text-logo"
+                style={{ width: '20px', height: '20px' }}
+              />
+            </div> */}
+            <div className='beta'>BETA</div>
           </div>
         </div>
       );
     default:
-      return (
-        <BchatIconButton
-          iconSize="medium"
-          iconType={'moon'}
-          dataTestId="theme-section"
-          iconColor={undefined}
-          notificationCount={unreadToShow}
-          onClick={handleClick}
-        />
-      );
+      return null;
+    // (
+    // <BchatIconButton
+    //   iconSize="medium"
+    //   iconType={'moon'}
+    //   dataTestId="theme-section"
+    //   iconColor={undefined}
+    //   notificationCount={unreadToShow}
+    //   onClick={handleClick}
+    // />
+    // );
   }
 };
 
@@ -454,6 +509,8 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Closedgroup} />
 
         <Section type={SectionType.Opengroup} />
+
+        <Section type={SectionType.Wallet} />
 
         <Section type={SectionType.Settings} />
 

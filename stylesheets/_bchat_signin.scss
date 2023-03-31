@@ -11,7 +11,7 @@
   }
 
   .registration-inputfields {
-    background-color: #128B17;
+    background-color: #128b17;
   }
 
   &_conversation-doodle {
@@ -22,8 +22,7 @@
 
   &-content {
     .bchat-button.brand-outline.brand.green:hover {
-      // background-color: var(--color-accent);
-      background-color: $bchat-button-color;
+      background-color: $bchat-button-hovor-color;
     }
 
     &-left {
@@ -55,7 +54,7 @@
           line-height: 17px;
           text-align: center;
           // color:var(--color-Bchat-hint);
-          color: #FFFFFF;
+          color: #ffffff;
           font-family: $bchat-font-poppin-regular;
         }
       }
@@ -92,36 +91,30 @@
       .bchat-button {
         width: 100%;
       }
-      &-walletHintText
-      {
+      &-walletHintText {
         margin: 0;
         margin-left: 59px;
         margin-bottom: 35px;
-       color: var(--color-text);
-
+        color: var(--color-text);
       }
-     .warning-notes
-     {
-      color: #C1C1C1;
-      // text-align: center;
-      font-family: "poppin-regular";
-      font-size: 12px;
-      width: 88%;
-       margin-top: 45px;
-    /* display: flex; */
-       margin-left: 58px;
-    
-      span{
-        color:#F23333;
-      }
-      strong
-      {
+      .warning-notes {
+        color: #c1c1c1;
+        // text-align: center;
+        font-family: 'poppin-regular';
         font-size: 12px;
-       font-family:$bchat-font-poppin-semibold;
-      }
-      
-     }
+        width: 88%;
+        margin-top: 45px;
+        /* display: flex; */
+        margin-left: 58px;
 
+        span {
+          color: #f23333;
+        }
+        strong {
+          font-size: 12px;
+          font-family: $bchat-font-poppin-semibold;
+        }
+      }
     }
 
     &__content {
@@ -173,6 +166,10 @@
       top: 33px;
       width: 30px;
       height: 30px;
+      &:hover {
+        background-color: #52505f;
+        border-radius: 20px;
+      }
     }
 
     &-header {
@@ -193,6 +190,10 @@
     &-goback-icon {
       position: relative;
       color: white;
+      &:hover {
+        background-color: #52505f;
+        border-radius: 20px;
+      }
     }
 
     &-loadingGif {
@@ -211,25 +212,25 @@
       margin: 0 auto;
       text-align: center;
 
-      .iconBox
-      {
+      .iconBox {
         width: 40px;
         height: 40px;
-        background-color:var(--color-inboxBgColor);
-        background-size:16px;
-        border-radius:35px;
-        background-position:center;
-        cursor:pointer;
-        margin-top:207px;
-        margin-Left:35px;
-        color:var(--color-copyIcon);
+        background-color: var(--color-inboxBgColor);
+        background-size: 16px;
+        border-radius: 35px;
+        background-position: center;
+        cursor: pointer;
+        margin-top: 207px;
+        margin-left: 35px;
+        color: var(--color-copyIcon);
         display: flex;
-        align-items:center;
+        align-items: center;
         justify-content: center;
       }
-      .iconBox:hover{
-        transform: scale(1.1);
-        color: #1ced23;
+      .iconBox:hover {
+        // transform: scale(1.1);
+        // color: #1ced23;
+        background-color: #008d00;
       }
     }
 
@@ -239,6 +240,10 @@
       top: 32px;
       width: 30px;
       height: 30px;
+      &:hover {
+        background-color: #52505f;
+        border-radius: 20px;
+      }
     }
 
     &-welcome-screen-back {
@@ -262,7 +267,7 @@
       width: 80%;
       display: flex;
       font-size: 10px;
-      color: #82828D;
+      color: #82828d;
       margin: 10px auto;
     }
 
@@ -286,7 +291,7 @@
       height: 135px;
       //  justifyContent: "center",
       font-size: 12px;
-      color: #0BB70F;
+      color: #0bb70f;
       align-items: center;
       box-shadow: 0px 0px 6px 0px #19192424;
     }
@@ -302,7 +307,6 @@
   }
 
   &-restore-seed {
-
     &__address-container {
       width: 90%;
       margin: 0 auto;
@@ -322,7 +326,7 @@
       // min-height: 60px;
       border-radius: 13px;
       text-align: center;
-      color: #0BB70F;
+      color: #0bb70f;
       box-shadow: 0px 0px 6px 0px #19192424;
     }
 
@@ -338,7 +342,7 @@
     }
 
     ::placeholder {
-      color: #77778B;
+      color: #77778b;
       font-family: $bchat-font-poppin-semibold;
     }
 
@@ -350,10 +354,28 @@
       margin-left: 1.5vw;
       position: relative;
 
-      .paste-icon:hover
-      {
-        transform: scale(1.1);
-        color: #1ced23;
+      .paste-icon {
+        // background-image: url('../images/bchat/paste.svg') no-repeat;
+        // background: url(images/bchat/paste.svg) no-repeat;
+        width: 40px;
+        height: 40px;
+        background-color: var(--color-inboxBgColor);
+        background-size: 16px;
+        border-radius: 35px;
+        background-position: center;
+        left: 430px;
+        top: -92px;
+        position: absolute;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          background-color: #52505f;
+          // background-color: var(--color-profile-close);
+
+        }
       }
     }
 
@@ -369,7 +391,7 @@
     }
 
     &-clear {
-      background: url("images/bchat/clear.svg no-repeat") no-repeat;
+      background: url('images/bchat/clear.svg no-repeat') no-repeat;
       width: 10px;
       height: 10px;
       position: absolute;
@@ -380,7 +402,7 @@
     }
 
     &-textbox-message {
-      color: #77778B;
+      color: #77778b;
       padding-top: 10px;
       font-size: 12px;
       padding-left: 60px;
@@ -421,14 +443,13 @@
       position: absolute;
       top: 0px;
       left: 58px;
-
     }
 
     &.filled {
       opacity: 1;
       margin-top: -20px;
       margin-left: 4px;
-      font-family: "poppin-regular";
+      font-family: 'poppin-regular';
     }
 
     &.error {
@@ -445,7 +466,7 @@
       // background: var(--color-body-bg);
       // background: transparent;
       // color: var(--color-text);
-      color: #0BB70F;
+      color: #0bb70f;
       padding: 0px 8px 0px 15px;
       font-family: $bchat-font-poppin-regular;
       font-size: 12px;
@@ -458,7 +479,7 @@
     }
 
     ::placeholder {
-      color: #77778B;
+      color: #77778b;
     }
 
     input::-webkit-calendar-picker-indicator {
@@ -510,7 +531,7 @@
 
       &:hover {
         // color: var(--color-text);
-        color: #128B17;
+        color: #128b17;
       }
     }
   }

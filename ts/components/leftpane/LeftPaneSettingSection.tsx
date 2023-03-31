@@ -3,17 +3,14 @@ import classNames from 'classnames';
 
 import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  showSettingsSection,
-} from '../../state/ducks/section';
+import { showSettingsSection } from '../../state/ducks/section';
 import { getFocusedSettingsSection } from '../../state/selectors/section';
-import {
-  updateDeleteAccountModal,
-} from '../../state/ducks/modalDialog';
+import { updateDeleteAccountModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from '../settings/BchatSettings';
-import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+// import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { hideMultipleSelection } from '../../state/ducks/userConfig';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -64,84 +61,52 @@ import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 // };
 
 const LeftPaneSettingsCategoryRow = () =>
-  // props: {
-  // item: { id: BchatSettingCategory; title: string; icon:string };
-  // }
-  {
-    // const { item } = props;
-    // const { id, title,icon} = item;
-    const dispatch = useDispatch();
-    const focusedSettingsSection = useSelector(getFocusedSettingsSection);
+// props: {
+// item: { id: BchatSettingCategory; title: string; icon:string };
+// }
+{
+  // const { item } = props;
+  // const { id, title,icon} = item;
+  const dispatch = useDispatch();
+  const focusedSettingsSection = useSelector(getFocusedSettingsSection);
 
-    // const isMessageRequestSetting = id === BchatSettingCategory.MessageRequests;
+  // const isMessageRequestSetting = id === BchatSettingCategory.MessageRequests;
 
-    // const dataTestId = `${title.toLowerCase()}-settings-menu-item`;
-    const dataTestId = `settings-menu-item`;
+  // const dataTestId = `${title.toLowerCase()}-settings-menu-item`;
+  const dataTestId = `settings-menu-item`;
 
-    return (
-      <>
-        {/* *******************************************************Appearance********************************************************************** */}
+  return (
+    <>
+      {/* *******************************************************Chat********************************************************************** */}
 
-        <div
-          data-testid={dataTestId}
-          // key={id}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.Appearance === focusedSettingsSection ? 'active' : ''
-          )}
-          role="link"
-          onClick={() => {
-            // if (isMessageRequestSetting) {
-            //   dispatch(showLeftPaneSection(SectionType.Message));
-            //   dispatch(setOverlayMode('message-requests'));
-            //   dispatch(resetConversationExternal());
-            // } else {
-            dispatch(showSettingsSection(BchatSettingCategory.Appearance));
-            // }
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            {/* {icon==="Hops"? <span style={{padding:"0 10px"}}> <ActionPanelOnionStatusLight
-          dataTestId="onion-status-section"
-          //  handleClick={()=> dispatch(onionPathModal({}))}
-          handleClick={()=>{}}
-           isSelected={false}
-          
-           id={'onion-path-indicator-led-id'}
-         /></span>: */}
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18.07"
-                height="18.07"
-                viewBox="0 0 18.07 18.07"
-              >
-                <path
-                  id="appearance"
-                  d="M9.228,2A2.708,2.708,0,0,0,6.683,3.807H2.9a.9.9,0,1,0,0,1.807h3.78A2.706,2.706,0,1,0,9.228,2Zm5.421,1.807a.9.9,0,1,0,0,1.807h4.518a.9.9,0,1,0,0-1.807Zm-.9,4.518A2.708,2.708,0,0,0,11.2,10.132H2.9a.9.9,0,1,0,0,1.807h8.3a2.706,2.706,0,1,0,2.545-3.614Zm5.421,1.807a.9.9,0,1,0,.9.9.9.9,0,0,0-.9-.9ZM6.518,14.649a2.708,2.708,0,0,0-2.545,1.807H2.9a.9.9,0,1,0,0,1.807H3.973a2.706,2.706,0,1,0,2.545-3.614Zm5.421,1.807a.9.9,0,1,0,0,1.807h7.228a.9.9,0,1,0,0-1.807Z"
-                  transform="translate(-2 -2)"
-                />
-              </svg>
-            </i>
-            {/* } */}
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Chat === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Chat));
+        }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <BchatIcon iconSize={23} iconType="chat" />
+          </i>
 
-            {/* <i className="left-pane-setting-category-list-item-icons" style={{backgroundImage:`url(images/bchat/${icon})`}}></i> */}
-
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('appearanceSettingsTitle')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.Appearance === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
+          <span className="left-pane-setting-category-list-item-span">{window.i18n('Chat')}</span>
         </div>
+        <div>
+          {BchatSettingCategory.Chat === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
 
-        {/* *******************************************************Wallet********************************************************************** */}
+      {/* *******************************************************Wallet********************************************************************** */}
 
-        <div
+      {/* <div
           data-testid={dataTestId}
           className={classNames(
             'left-pane-setting-category-list-item',
@@ -155,254 +120,374 @@ const LeftPaneSettingsCategoryRow = () =>
         >
           <div style={{ display: 'flex' }}>
             <i className="left-pane-setting-category-list-item-icons">
-              <BchatIcon iconSize={23} iconType="wallet" />
+              <BchatIcon iconSize={23} iconType="wallet" iconColor={'#2879FB'} />
             </i>
             <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('WalletSettingsTitle')} 
-            </span> 
-            <span className='beta'>BETA</span>
+              {window.i18n('WalletSettingsTitle')}
+            </span>
+            <span className="beta">BETA</span>
           </div>
           <div>
             {BchatSettingCategory.Wallet === focusedSettingsSection && (
               <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
             )}
           </div>
+        </div> */}
+
+      {/* *******************************************************Wallet********************************************************************** */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.WalletSettings === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.WalletSettings));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <BchatIcon iconSize={23} iconType="wallet" iconColor={'#2879FB'} />
+          </i>
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('WalletSettingsTitle')}
+            {/* Wallet Settings */}
+          </span>
+          <span className="beta">BETA</span>
         </div>
-
-        {/* **********************************************************Privacy******************************************************************* */}
-
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.Privacy === focusedSettingsSection ? 'active' : ''
+        <div>
+          {BchatSettingCategory.WalletSettings === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.Privacy));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18.192"
-                height="21.53"
-                viewBox="0 0 18.192 21.53"
-              >
-                <path
-                  id="privacy"
-                  d="M14.116,2a.717.717,0,0,0-.5.184,13.576,13.576,0,0,1-7.9,3.165A.717.717,0,0,0,5,6.067v5.866c0,3.2,1.478,8.453,8.817,11.542a.717.717,0,0,0,.557,0c7.335-3.089,8.817-8.346,8.817-11.542V6.067a.717.717,0,0,0-.717-.717,13.577,13.577,0,0,1-7.91-3.165A.717.717,0,0,0,14.116,2Zm-.024,6.7a2.391,2.391,0,0,1,1.435,4.3v2.4a1.435,1.435,0,1,1-2.871,0v-2.4a2.391,2.391,0,0,1,1.435-4.3Z"
-                  transform="translate(-5 -2)"
-                />
-              </svg>
-            </i>
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('privacySettingsTitle')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.Privacy === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
         </div>
+      </div>
 
-        {/* **********************************************************Notifiaction******************************************************************* */}
+      {/* *******************************************************WalletNode**********************************************************************
 
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.Notifications === focusedSettingsSection ? 'active' : ''
-          )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.Notifications));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
-                <path
-                  id="notification"
-                  d="M12,2a1.5,1.5,0,0,0-1.5,1.5v.7A6,6,0,0,0,6,10v6L4.465,17.156h0A1,1,0,0,0,5,19H19a1,1,0,0,0,.537-1.844L18,16V10a6,6,0,0,0-4.5-5.8V3.5A1.5,1.5,0,0,0,12,2ZM10,20a2,2,0,0,0,4,0Z"
-                  transform="translate(-4 -2)"
-                />
-              </svg>
-            </i>
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('notificationsSettingsTitle')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.Notifications === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.WalletNode === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.WalletNode));
+        }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <BchatIcon iconSize={23} iconType="chat" />
+          </i>
+
+          <span className="left-pane-setting-category-list-item-span">{window.i18n('walletNode')}</span>
         </div>
-
-        {/* **********************************************************Blocked******************************************************************* */}
-
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.Blocked === focusedSettingsSection ? 'active' : ''
+        <div>
+          {BchatSettingCategory.WalletNode === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.Blocked));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23.338"
-                height="23.281"
-                viewBox="0 0 23.338 23.281"
-              >
-                <path
-                  id="blocked_contact"
-                  d="M9.537.156C6.8.156,4.6,2.035,4.6,5.629a9.282,9.282,0,0,0,2.354,6.21c.553,1.471-.443,2.02-.652,2.1C3.44,14.987.094,16.894.094,18.787V19.5c0,2.58,4.913,3.176,9.471,3.176,1,0,2-.043,2.977-.113a7.05,7.05,0,0,1-.454-9.159,2.242,2.242,0,0,1,.057-1.588,9.249,9.249,0,0,0,2.325-6.182C14.471,2.035,12.273.156,9.537.156ZM17.7,11.981a5.728,5.728,0,1,0,5.728,5.728A5.728,5.728,0,0,0,17.7,11.981Zm-3.176,4.906h6.324v1.645H14.528Z"
-                  transform="translate(-0.094 -0.156)"
-                />
-              </svg>
-            </i>
-
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('blockedSettingsTitle')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.Blocked === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
         </div>
+      </div> */}
 
-        {/* *******************************************************RecoverySeed********************************************************************** */}
 
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.RecoverySeed === focusedSettingsSection ? 'active' : ''
-          )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.RecoverySeed));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.648"
-                height="21.832"
-                viewBox="0 0 19.648 21.832"
-              >
-                <path
-                  id="recovery_seed"
-                  d="M20.465,3.184H15.9a3.255,3.255,0,0,0-6.147,0H5.184A2.182,2.182,0,0,0,3,5.366V20.648a2.182,2.182,0,0,0,2.184,2.184H20.465a2.182,2.182,0,0,0,2.184-2.184V5.366a2.182,2.182,0,0,0-2.184-2.182Zm-7.641,0a1.091,1.091,0,1,1-1.091,1.091A1.091,1.091,0,0,1,12.824,3.184Zm4.366,7.641H13.915v7.641H11.733V10.824H8.458V8.641h8.733Z"
-                  transform="translate(-3 -1)"
-                />
-              </svg>
-            </i>
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('showRecoveryPhrase')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.RecoverySeed === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
+      {/* **********************************************************Privacy******************************************************************* */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Privacy === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18.192"
+              height="21.53"
+              viewBox="0 0 18.192 21.53"
+            >
+              <path
+                id="privacy"
+                d="M14.116,2a.717.717,0,0,0-.5.184,13.576,13.576,0,0,1-7.9,3.165A.717.717,0,0,0,5,6.067v5.866c0,3.2,1.478,8.453,8.817,11.542a.717.717,0,0,0,.557,0c7.335-3.089,8.817-8.346,8.817-11.542V6.067a.717.717,0,0,0-.717-.717,13.577,13.577,0,0,1-7.91-3.165A.717.717,0,0,0,14.116,2Zm-.024,6.7a2.391,2.391,0,0,1,1.435,4.3v2.4a1.435,1.435,0,1,1-2.871,0v-2.4a2.391,2.391,0,0,1,1.435-4.3Z"
+                transform="translate(-5 -2)"
+              />
+            </svg>
+          </i>
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('privacySettingsTitle')}
+          </span>
         </div>
-
-        {/* *******************************************************MessageRequests********************************************************************** */}
-
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.MessageRequests === focusedSettingsSection ? 'active' : ''
+        <div>
+          {BchatSettingCategory.Privacy === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <i className="left-pane-setting-category-list-item-icons">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23.205"
-                height="23.25"
-                viewBox="0 0 23.205 23.25"
-              >
-                <path
-                  id="Message_request"
-                  d="M8151.968-11515.188a1.833,1.833,0,0,1-1.827-1.827v-10.959a1.833,1.833,0,0,1,1.827-1.827h12.789l3.651-3.653-.009,16.439a1.825,1.825,0,0,1-1.818,1.827Zm6.393-2.739h1.827v-1.827h-1.827Zm1.827-6.283c0,.962-1.827,2.763-1.827,3.651h1.827c0-.9,1.827-2.354,1.827-3.651a2.714,2.714,0,0,0-2.739-2.741,2.755,2.755,0,0,0-2.739,2.741h1.824a.951.951,0,0,1,.915-.915A.9.9,0,0,1,8160.188-11524.211Zm-12.32,4.126a1.663,1.663,0,0,1-1.656-1.665l-.009-14.98,3.33,3.33h11.651a1.67,1.67,0,0,1,1.665,1.665v.109h-12.476a1.832,1.832,0,0,0-1.827,1.827v9.714Z"
-                  transform="translate(-8145.703 11537.938)"
-                  stroke="rgba(0,0,0,0)"
-                  strokeWidth="1"
-                />
-              </svg>
-            </i>
-            <span className="left-pane-setting-category-list-item-span">
-              {window.i18n('openMessageRequestInbox')}
-            </span>
-          </div>
-          <div>
-            {BchatSettingCategory.MessageRequests === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
         </div>
+      </div>
 
-        {/* **************************************************Hops*************************************************************************** */}
+      {/* *******************************************************Appearance********************************************************************** */}
 
-        <div
-          data-testid={dataTestId}
-          className={classNames(
-            'left-pane-setting-category-list-item',
-            BchatSettingCategory.Hops === focusedSettingsSection ? 'active' : ''
+      <div
+        data-testid={dataTestId}
+        // key={id}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Appearance === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          // if (isMessageRequestSetting) {
+          //   dispatch(showLeftPaneSection(SectionType.Message));
+          //   dispatch(setOverlayMode('message-requests'));
+          //   dispatch(resetConversationExternal());
+          // } else {
+          dispatch(showSettingsSection(BchatSettingCategory.Appearance));
+          // }
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          {/* {icon==="Hops"? <span style={{padding:"0 10px"}}> <ActionPanelOnionStatusLight
+          dataTestId="onion-status-section"
+          //  handleClick={()=> dispatch(onionPathModal({}))}
+          handleClick={()=>{}}
+           isSelected={false}
+          
+           id={'onion-path-indicator-led-id'}
+         /></span>: */}
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18.07"
+              height="18.07"
+              viewBox="0 0 18.07 18.07"
+            >
+              <path
+                id="appearance"
+                d="M9.228,2A2.708,2.708,0,0,0,6.683,3.807H2.9a.9.9,0,1,0,0,1.807h3.78A2.706,2.706,0,1,0,9.228,2Zm5.421,1.807a.9.9,0,1,0,0,1.807h4.518a.9.9,0,1,0,0-1.807Zm-.9,4.518A2.708,2.708,0,0,0,11.2,10.132H2.9a.9.9,0,1,0,0,1.807h8.3a2.706,2.706,0,1,0,2.545-3.614Zm5.421,1.807a.9.9,0,1,0,.9.9.9.9,0,0,0-.9-.9ZM6.518,14.649a2.708,2.708,0,0,0-2.545,1.807H2.9a.9.9,0,1,0,0,1.807H3.973a2.706,2.706,0,1,0,2.545-3.614Zm5.421,1.807a.9.9,0,1,0,0,1.807h7.228a.9.9,0,1,0,0-1.807Z"
+                transform="translate(-2 -2)"
+              />
+            </svg>
+          </i>
+          {/* } */}
+
+          {/* <i className="left-pane-setting-category-list-item-icons" style={{backgroundImage:`url(images/bchat/${icon})`}}></i> */}
+
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('appearanceSettingsTitle')}
+          </span>
+        </div>
+        <div>
+          {BchatSettingCategory.Appearance === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
           )}
-          role="link"
-          onClick={() => {
-            dispatch(showSettingsSection(BchatSettingCategory.Hops));
-          }}
-          // style={{ marginTop: '15px' }}
-        >
-          <div style={{ display: 'flex' }}>
-            <span style={{ padding: '5px 10px' ,marginRight:'11px'}}>
-              {' '}
-              <ActionPanelOnionStatusLight
+        </div>
+      </div>
+
+      {/* **********************************************************Notifiaction******************************************************************* */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Notifications === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Notifications));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+              <path
+                id="notification"
+                d="M12,2a1.5,1.5,0,0,0-1.5,1.5v.7A6,6,0,0,0,6,10v6L4.465,17.156h0A1,1,0,0,0,5,19H19a1,1,0,0,0,.537-1.844L18,16V10a6,6,0,0,0-4.5-5.8V3.5A1.5,1.5,0,0,0,12,2ZM10,20a2,2,0,0,0,4,0Z"
+                transform="translate(-4 -2)"
+              />
+            </svg>
+          </i>
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('notificationsSettingsTitle')}
+          </span>
+        </div>
+        <div>
+          {BchatSettingCategory.Notifications === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
+      {/* **********************************************************Blocked******************************************************************* */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Blocked === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Blocked));
+          dispatch(hideMultipleSelection());
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="23.338"
+              height="23.281"
+              viewBox="0 0 23.338 23.281"
+            >
+              <path
+                id="blocked_contact"
+                d="M9.537.156C6.8.156,4.6,2.035,4.6,5.629a9.282,9.282,0,0,0,2.354,6.21c.553,1.471-.443,2.02-.652,2.1C3.44,14.987.094,16.894.094,18.787V19.5c0,2.58,4.913,3.176,9.471,3.176,1,0,2-.043,2.977-.113a7.05,7.05,0,0,1-.454-9.159,2.242,2.242,0,0,1,.057-1.588,9.249,9.249,0,0,0,2.325-6.182C14.471,2.035,12.273.156,9.537.156ZM17.7,11.981a5.728,5.728,0,1,0,5.728,5.728A5.728,5.728,0,0,0,17.7,11.981Zm-3.176,4.906h6.324v1.645H14.528Z"
+                transform="translate(-0.094 -0.156)"
+              />
+            </svg>
+          </i>
+
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('blockedSettingsTitle')}
+          </span>
+        </div>
+        <div>
+          {BchatSettingCategory.Blocked === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
+      {/* *******************************************************RecoverySeed********************************************************************** */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.RecoverySeed === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.RecoverySeed));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="19.648"
+              height="21.832"
+              viewBox="0 0 19.648 21.832"
+            >
+              <path
+                id="recovery_seed"
+                d="M20.465,3.184H15.9a3.255,3.255,0,0,0-6.147,0H5.184A2.182,2.182,0,0,0,3,5.366V20.648a2.182,2.182,0,0,0,2.184,2.184H20.465a2.182,2.182,0,0,0,2.184-2.184V5.366a2.182,2.182,0,0,0-2.184-2.182Zm-7.641,0a1.091,1.091,0,1,1-1.091,1.091A1.091,1.091,0,0,1,12.824,3.184Zm4.366,7.641H13.915v7.641H11.733V10.824H8.458V8.641h8.733Z"
+                transform="translate(-3 -1)"
+              />
+            </svg>
+          </i>
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('showRecoveryPhrase')}
+          </span>
+        </div>
+        <div>
+          {BchatSettingCategory.RecoverySeed === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
+      {/* *******************************************************MessageRequests********************************************************************** */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.MessageRequests === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <i className="left-pane-setting-category-list-item-icons">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="23.205"
+              height="23.25"
+              viewBox="0 0 23.205 23.25"
+            >
+              <path
+                id="Message_request"
+                d="M8151.968-11515.188a1.833,1.833,0,0,1-1.827-1.827v-10.959a1.833,1.833,0,0,1,1.827-1.827h12.789l3.651-3.653-.009,16.439a1.825,1.825,0,0,1-1.818,1.827Zm6.393-2.739h1.827v-1.827h-1.827Zm1.827-6.283c0,.962-1.827,2.763-1.827,3.651h1.827c0-.9,1.827-2.354,1.827-3.651a2.714,2.714,0,0,0-2.739-2.741,2.755,2.755,0,0,0-2.739,2.741h1.824a.951.951,0,0,1,.915-.915A.9.9,0,0,1,8160.188-11524.211Zm-12.32,4.126a1.663,1.663,0,0,1-1.656-1.665l-.009-14.98,3.33,3.33h11.651a1.67,1.67,0,0,1,1.665,1.665v.109h-12.476a1.832,1.832,0,0,0-1.827,1.827v9.714Z"
+                transform="translate(-8145.703 11537.938)"
+                stroke="rgba(0,0,0,0)"
+                strokeWidth="1"
+              />
+            </svg>
+          </i>
+          <span className="left-pane-setting-category-list-item-span">
+            {window.i18n('openMessageRequestInbox')}
+          </span>
+        </div>
+        <div>
+          {BchatSettingCategory.MessageRequests === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+
+      {/* **************************************************Hops*************************************************************************** */}
+
+      <div
+        data-testid={dataTestId}
+        className={classNames(
+          'left-pane-setting-category-list-item',
+          BchatSettingCategory.Hops === focusedSettingsSection ? 'active' : ''
+        )}
+        role="link"
+        onClick={() => {
+          dispatch(showSettingsSection(BchatSettingCategory.Hops));
+        }}
+      // style={{ marginTop: '15px' }}
+      >
+        <div style={{ display: 'flex' }}>
+          <span style={{ padding: '0px 10px', marginRight: '11px' }}>
+            {' '}
+            {/* <ActionPanelOnionStatusLight
                 dataTestId="onion-status-section"
                 handleClick={() => {}}
                 isSelected={false}
                 id={'onion-path-indicator-led-id'}
                 size="small"
-              />
-            </span>
-            <span className="left-pane-setting-category-list-item-span">Hops</span>
-          </div>
-          <div>
-            {BchatSettingCategory.Hops === focusedSettingsSection && (
-              <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
-            )}
-          </div>
+              /> */}
+            <BchatIcon iconType="hops" iconSize={'large'} iconColor="#01b700" />
+          </span>
+          <span className="left-pane-setting-category-list-item-span">Hops</span>
         </div>
-      </>
-    );
-  };
+        <div>
+          {BchatSettingCategory.Hops === focusedSettingsSection && (
+            <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
 
 const LeftPaneSettingsCategories = () => {
   // const categories = getCategories();

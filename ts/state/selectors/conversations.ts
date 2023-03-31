@@ -92,7 +92,6 @@ export const getIsTypingEnabled = createSelector(
       return false;
     }
     const { isBlocked, isKickedFromGroup, left } = selectedConvo;
-
     return !(isBlocked || isKickedFromGroup || left);
   }
 );
@@ -178,7 +177,8 @@ export type MessagePropsType =
   | 'timer-notification'
   | 'regular-message'
   | 'unread-indicator'
-  | 'call-notification';
+  | 'call-notification'
+  | 'payment';
 
 export const getSortedMessagesTypesOfSelectedConversation = createSelector(
   getSortedMessagesOfSelectedConversation,
@@ -235,7 +235,16 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
-
+      if (msg.propsForPayment) {
+        return {
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'payment',
+            props: { ...msg.propsForPayment, messageId: msg.propsForMessage.id },
+          },
+        };
+      }
       if (msg.propsForGroupUpdateMessage) {
         return {
           showUnreadIndicator: isFirstUnread,

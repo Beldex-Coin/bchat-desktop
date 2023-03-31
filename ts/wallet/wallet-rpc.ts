@@ -84,6 +84,7 @@ class Wallet {
 
   startWallet = async (type?: string) => {
     try {
+      // console.log('start wallet rpc :', type);
       let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         window.setSettingValue(walletSettingsKey.settingsFiatCurrency, 'USD');
@@ -110,6 +111,7 @@ class Wallet {
       } else {
       }
       const status: any = await this.runningStatus(64371);
+      // console.log('status:', status);
       if (status == true) {
         if (type == 'settings') {
           return;
@@ -145,6 +147,7 @@ class Wallet {
 
   walletRpc = async (rpcPath: string, walletDir: string) => {
     try {
+      // console.log('walletRpc:walletRpc');
       let currentDeamonLoc = window.getSettingValue('current-deamon');
       const currentDaemon: any = currentDeamonLoc ? currentDeamonLoc : window.currentDaemon;
       window.setSettingValue('syncStatus', false);
@@ -155,12 +158,13 @@ class Wallet {
       }
       const generateCredentials = await crypto.randomBytes(64 + 64 + 32);
       const auth = generateCredentials.toString('hex');
+      // if (this.auth.length == 0)
       this.auth = [
         auth.substr(0, 64), // rpc username
         auth.substr(64, 64), // rpc password
         auth.substr(128, 32), // password salt
       ];
-
+      // console.log(" this.auth[0] + ':' + this.auth[1]", this.auth[0] + ':' + this.auth[1])
       this.wallet_dir = `${walletDir}/bchat`;
       const option = [
         '--rpc-login',
@@ -218,6 +222,8 @@ class Wallet {
 
   heartRpc = async (method: string, params = {}, timeout = 0) => {
     try {
+      // console.log('this.auth[0]:', this.auth[0]);
+      // console.log('this.auth[0]:', this.auth[1]);
       const options = {
         uri: `http://localhost:64371/json_rpc`,
         method: 'POST',
@@ -234,6 +240,7 @@ class Wallet {
         },
         timeout,
       };
+
       let requestData: any = await request(options);
 
       if (requestData.hasOwnProperty('error')) {
@@ -318,31 +325,35 @@ class Wallet {
         password: password,
         seed: userRecoveryPhrase,
       });
+
       if (restoreWallet.hasOwnProperty('error')) {
         restoreWallet = await this.deleteWallet(
           displayName,
           password,
           userRecoveryPhrase,
-          refreshDetails
+          refreshDetails,
+          type
         );
       }
       if (restoreWallet.hasOwnProperty('result')) {
+        this.wallet_state.password_hash = this.passwordEncrypt(password);
+
         if (!type) {
-              kill(64371)
-             .then(()=>console.log("port kill successFull"))
+          console.log('killed...............:', type);
+          kill(64371)
+            .then(() => console.log('port kill successFull'))
             .catch(err => {
-             throw new HTTPError('beldex_rpc_port', err);
-            }); 
+              throw new HTTPError('beldex_rpc_port', err);
+            });
         }
       }
       return restoreWallet;
     } catch (error) {
-      
-      return {message:'exception during wallet-rpc', error:error}
+      return { message: 'exception during wallet-rpc', error: error };
       // throw new HTTPError('exception during wallet-rpc:', error);
     }
   };
-  
+
   async saveWallet() {
     await this.sendRPC('store');
   }
@@ -386,12 +397,19 @@ class Wallet {
     displayName: string,
     password: string,
     userRecoveryPhrase: string,
-    refreshDetails: object
+    refreshDetails: object,
+    type?: string
   ): Promise<any> => {
     let walletDir =
       os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
     fs.emptyDirSync(walletDir);
-    return await this.restoreWallet(displayName, password, userRecoveryPhrase, refreshDetails);
+    return await this.restoreWallet(
+      displayName,
+      password,
+      userRecoveryPhrase,
+      refreshDetails,
+      type
+    );
   };
 
   findDir = () => {
@@ -404,17 +422,19 @@ class Wallet {
     return walletDir;
   };
 
-  startHeartbeat() {
+  startHeartbeat(type?: string) {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(async () => {
-      this.heartbeatAction();
+      // console.log('startHeartbeat:', type);
+      this.heartbeatAction(type);
     }, 8000);
   }
 
-  async heartbeatAction() {
+  async heartbeatAction(type?: string) {
+    // console.log('heartbeatAction:');
     Promise.all([
       this.sendRPC('getheight', {}, 5000),
-      this.sendRPC('getbalance', { account_index: 0 }, 5000),
+      this.sendRPC('getbalance', { account_index: 0 }),
     ]).then(async data => {
       let wallet: any = {
         info: {
@@ -427,7 +447,8 @@ class Wallet {
           tx_list: [],
         },
       };
-
+      // console.log('type:', type);
+      // console.log('data:', data);
       for (let n of data) {
         if (n.hasOwnProperty('error') || !n.hasOwnProperty('result')) {
           // Maybe we also need to look into the other error codes it could give us
@@ -442,25 +463,41 @@ class Wallet {
           wallet.info.height = response.result.height;
           window.inboxStore?.dispatch(updateWalletHeight(response.result.height));
         } else if (n.method == 'getbalance') {
-          let data: any = await this.getTransactions();
+          // console.log('response:-balance', response.result.balance);
+          let transacationsHistory: any = [];
+          if (type == 'wallet') {
+            transacationsHistory = await this.getTransactions();
+            transacationsHistory = transacationsHistory.transactions.tx_list;
+          }
+          // let data: any = await this.getTransactions();
+          // console.log('response:-balance', response.result.balance);
+          // console.log('response:-unlocked_balance', response.result.unlocked_balance);
           if (
             this.wallet_state.balance == response.result.balance &&
             this.wallet_state.unlocked_balance == response.result.unlocked_balance &&
-            this.wallet_state.tx_list == data.transactions.tx_list
+            this.wallet_state.tx_list == transacationsHistory
           ) {
             continue;
           }
           this.wallet_state.balance = wallet.info.balance = response.result.balance;
           this.wallet_state.unlocked_balance = wallet.info.unlocked_balance =
             response.result.unlocked_balance;
-          this.wallet_state.tx_list = data.transactions.tx_list;
+          this.wallet_state.tx_list = transacationsHistory;
 
-          this.getFiatBalance();
+          if (type == 'wallet') {
+            await this.getFiatBalance();
+          }
+          // console.log(
+          //   'bala:',
+          //   this.wallet_state.balance,
+          //   this.wallet_state.unlocked_balance,
+          //   transacationsHistory
+          // );
           window.inboxStore?.dispatch(
-            updateBalance({
+            await updateBalance({
               balance: this.wallet_state.balance,
               unlocked_balance: this.wallet_state.unlocked_balance,
-              transacations: data.transactions.tx_list,
+              transacations: transacationsHistory,
             })
           );
         }
@@ -507,7 +544,8 @@ class Wallet {
   }
 
   getFiatBalance = async (currency?: any) => {
-    const fiatCurrency: any = currency
+    try {
+      const fiatCurrency: any = currency
       ? currency.toLocaleLowerCase()
       : window.getSettingValue(walletSettingsKey.settingsFiatCurrency)?.toLocaleLowerCase();
     const balance = this.wallet_state.balance;
@@ -520,6 +558,10 @@ class Wallet {
         ? balance * currencyValue.beldex[fiatCurrency]
         : 0;
     window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
+    } catch (error) {
+      console.log("Uncaught error Fiat Balance",error)
+    }
+   
   };
 
   transfer = async (address: string, amount: number, priority: number, isSweepAll: Boolean) => {
@@ -557,10 +599,13 @@ class Wallet {
     // if(this.wallet_state.open){
     //      await this.closeWallet();
     // }
+    // console.log('openWallet ');
+
     const openWallet = await this.heartRpc('open_wallet', {
       filename,
       password,
     });
+    // console.log('openWallet: rpc :', openWallet);
     if (openWallet.hasOwnProperty('error')) {
       return openWallet;
     }
@@ -578,7 +623,7 @@ class Wallet {
     this.wallet_state.name = filename;
     this.wallet_state.open = true;
     this.wallet_state.password_hash = this.passwordEncrypt(password);
-    this.startHeartbeat();
+    // this.startHeartbeat();
     return openWallet;
   };
 
@@ -595,6 +640,7 @@ class Wallet {
   };
 
   sendRPC(method: string, params = {}, timeout = 0) {
+    // console.log('this.auth[0]:', this.auth[0], this.auth[1]);
     let id = this.id++;
     let options: any = {
       uri: `http://localhost:64371/json_rpc`,
@@ -620,6 +666,7 @@ class Wallet {
     return this.queue.add(() => {
       return request(options)
         .then((response: any) => {
+          // console.log('getbalance:', response);
           if (response.hasOwnProperty('error')) {
             return {
               method: method,
@@ -634,6 +681,7 @@ class Wallet {
           };
         })
         .catch((error: any) => {
+          // console.log('ERRORRRRRR:', error);
           return {
             method: method,
             params: params,

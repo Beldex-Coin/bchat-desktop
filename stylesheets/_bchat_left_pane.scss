@@ -7,10 +7,8 @@ $bchat-compose-margin: 20px;
 }
 
 .module-conversation {
-
   // default conversation list item text color
   &__user__profile {
-
     &-number,
     &-name {
       font-weight: bold;
@@ -36,7 +34,6 @@ $bchat-compose-margin: 20px;
       .module-conversation__user__profile-name,
       .module-conversation-list-item__message__text {
         color: var(--color-text);
-
       }
     }
 
@@ -64,7 +61,7 @@ $bchat-compose-margin: 20px;
       // color: var(--color-text);
       /* background: var(--color-clickable-hovered); */
       color: white;
-      background-color: #128B17;
+      background-color: #128b17;
       position: relative;
       // font-weight: 700 !important;
       box-shadow: none !important;
@@ -107,9 +104,7 @@ $bchat-compose-margin: 20px;
     &__header__name--with-unread .module-conversation__user__profile-number,
     &__header__name--with-unread .module-conversation__user__profile-name {
       color: var(--color-text);
-
     }
-
   }
 }
 
@@ -121,19 +116,33 @@ $bchat-compose-margin: 20px;
   // background: var(--color-inbox-background);
   background-color: var(--color-overlayBg);
 
-
   @include placeholder {
-
-    color: #7E7E8D;
-
+    color: #7e7e8d;
   }
 
   &-bchat {
     display: flex;
     height: 100vh;
   }
-
-
+  .addContactFloating {
+    position: absolute;
+    bottom: 75px;
+    left: 313px;
+    &-content {
+      width: 50px;
+      height: 50px;
+      background-color: var(--button-color);
+      display: flex;
+      /* align-content: center; */
+      justify-content: center;
+      align-items: center;
+      border-radius: 44px;
+      cursor: pointer;
+      &:hover {
+        background-color: $bchat-button-hovor-color;
+      }
+    }
+  }
   &__header {
     display: flex;
     flex-direction: row;
@@ -142,12 +151,11 @@ $bchat-compose-margin: 20px;
     height: $main-view-header-height;
     // padding-inline-end: 7px;
     padding: 0 10px;
-    margin-bottom: 4px;
+    // margin-bottom: 4px;
     transition: $bchat-transition-duration;
     box-shadow: 0px 0px 5px 0px #00000029;
     background-color: var(--color-leftHeaderBg);
     // background-color: #F2F2F2;
-
 
     &__title {
       padding: 0 var(--margins-sm);
@@ -170,9 +178,20 @@ $bchat-compose-margin: 20px;
       background-size: contain;
       cursor: pointer;
       background-repeat: no-repeat;
-      margin-top: 1px;
+      margin-top: 7px;
+      margin-right: 18px;
     }
 
+    // .addContact {
+    //   width: 25px;
+    //   height: 25px;
+    //   background-size: contain;
+    //   cursor: pointer;
+    //   background-repeat: no-repeat;
+    //   margin-top: 10px;
+    //   margin-right: 12px;
+    //   background-image: var(--image-addContact);
+    // }
 
     .bchat-button {
       margin-inline-start: auto;
@@ -199,8 +218,6 @@ $bchat-compose-margin: 20px;
 
   &__list {
     height: -webkit-fill-available;
-
-
   }
 
   &__chatHeader {
@@ -248,9 +265,7 @@ $bchat-compose-margin: 20px;
         // margin-top: 13px;
         // margin-left: 20px;
         // margin-bottom: 8px;
-
       }
-
     }
 
     &-open {
@@ -258,7 +273,7 @@ $bchat-compose-margin: 20px;
         width: 100%;
         margin: 10px auto 0px;
         font-size: 14px;
-        color: #6E6E84;
+        color: #6e6e84;
         padding: 15px 34px 15px 20px;
         font-family: $bchat-font-poppin-regular;
         line-height: 1.8;
@@ -285,17 +300,15 @@ $bchat-compose-margin: 20px;
       margin: 5px auto;
       z-index: 1;
       padding-top: 10px;
-      
+
       .bchat-button.brand-outline.danger {
         width: 79%;
         height: 42px;
         margin: 14px auto;
         background-color: var(--color-clearBtn);
         box-shadow: var(--color-bchat-shadow);
-
       }
     }
-
 
     .nextButton {
       width: 79%;
@@ -310,9 +323,8 @@ $bchat-compose-margin: 20px;
       margin: 15px auto;
 
       &:hover {
-        opacity: 0.7;
+        background-color: $bchat-button-hovor-color;
       }
-
     }
 
     .bchat-icon .exit {
@@ -372,7 +384,7 @@ $bchat-compose-margin: 20px;
       line-height: $bchat-font-h3;
       margin: 10px 20px 0;
       font-family: $bchat-font-default;
-      color: var(--color-HintMessageText)
+      color: var(--color-HintMessageText);
     }
 
     .bchat-id-editable {
@@ -387,9 +399,7 @@ $bchat-compose-margin: 20px;
         margin: 0px 20px;
         width: -webkit-fill-available;
         flex-shrink: 0;
-
       }
-
     }
 
     .bchat-id-editable-disabled {
@@ -409,7 +419,6 @@ $bchat-compose-margin: 20px;
       justify-content: center;
       display: flex;
       flex-direction: column;
-
     }
 
     .bchat-noMsgRequest {
@@ -425,8 +434,7 @@ $bchat-compose-margin: 20px;
       margin: 0 auto;
       margin-bottom: 23px;
     }
-   .bchat-noMsgRequest-leftPane
-    {
+    .bchat-noMsgRequest-leftPane {
       display: flex;
       width: 291px;
       height: 221px;
@@ -446,7 +454,7 @@ $bchat-compose-margin: 20px;
   display: flex;
   flex-direction: column;
   // flex-grow: 1;
-  height:  82.8%;
+  height: 82.8%;
   transition: none;
   background: var(--color-left-pane-overlay-background);
   // text-align: center;
@@ -469,7 +477,6 @@ $bchat-compose-margin: 20px;
     margin: 0 auto;
   }
 
-
   .left-pane-contact-bottom-buttons .bchat-button {
     vertical-align: middle;
     white-space: normal;
@@ -484,16 +491,13 @@ $bchat-compose-margin: 20px;
     color: #fff;
     font-family: $bchat-font-poppin-semibold;
     // background-image: var(--button-color);
-    background-color:var(--button-color) ;
+    background-color: var(--button-color);
     margin: 15px auto;
 
     &:hover {
-      opacity: 0.7;
+      background-color: $bchat-button-hovor-color;
     }
-
   }
-
-
 }
 
 .bchat-left-pane-section-content {
@@ -521,6 +525,20 @@ $bchat-compose-margin: 20px;
   padding: 0 21px;
   box-shadow: var(--color-Bchat-shadow);
 
+  .search {
+    margin-top: 13px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    &:hover {
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
+  }
+
   .bchat-icon-button {
     margin: auto 10px;
   }
@@ -543,12 +561,11 @@ $bchat-compose-margin: 20px;
 
   ::placeholder {
     font-family: $bchat-font-poppin-medium;
-    color: #BABABA
+    color: #bababa;
   }
 }
 
 .conversation.placeholder {
-
   margin: auto;
 
   .container {
@@ -573,10 +590,9 @@ $bchat-compose-margin: 20px;
   .bchat-text {
     font-family: $bchat-font-poppin-semibold;
     /* color: #fff; */
-    color: #4E4E5F;
+    color: #4e4e5f;
     font-size: 24px;
     text-align: center;
-
   }
 
   .bchat-text-logo {
@@ -608,16 +624,24 @@ $bchat-compose-margin: 20px;
   background: none;
 
   .bchat-button.square-outline.square.green,
-  .bchat-button.square-outline.square.white,
-  .bchat-button.square-outline.square.danger {
+  .bchat-button.square-outline.square.white {
     flex-grow: 1;
     height: $composition-container-height;
     border: var(--border-bchat);
   }
+  .bchat-button.square-outline.square.danger {
+    flex-grow: 1;
+    height: $composition-container-height;
+    border: var(--border-bchat);
+
+    &:hover {
+      background-color: #ff2424;
+      color: #fff;
+    }
+  }
 }
 
 .left-pane-contact {
-
   &-section,
   &-content {
     display: flex;
@@ -626,7 +650,6 @@ $bchat-compose-margin: 20px;
     flex: 1;
 
     .module-conversation-list-item {
-
       &__header__date,
       &__message {
         display: none;
@@ -647,7 +670,6 @@ $bchat-compose-margin: 20px;
   }
 
   &-bottom-buttons {
-
     // @include bottom-buttons();
     display: flex;
     flex-direction: row;
@@ -657,7 +679,6 @@ $bchat-compose-margin: 20px;
     bottom: 0px;
     left: 184px;
 
-
     .bchat-button {
       height: 57px;
     }
@@ -665,7 +686,6 @@ $bchat-compose-margin: 20px;
 }
 
 .left-pane-setting {
-
   &-bottom-buttons {
     @include bottom-buttons();
     // background-color: var(--color-inboxBgColor);
@@ -687,13 +707,11 @@ $bchat-compose-margin: 20px;
 
     &-clear-button {
       border-radius: 9px;
-      background-color: #3D3D4D;
+      background-color: #3d3d4d;
       padding: 9px 116px;
       margin: 0 auto;
       color: red;
       font-family: $bchat-font-poppin-semibold;
-
-
     }
   }
 
@@ -719,7 +737,7 @@ $bchat-compose-margin: 20px;
     padding: 0px 12px;
     flex-shrink: 0;
     cursor: pointer;
-    transition: $bchat-transition-duration  !important;
+    transition: $bchat-transition-duration !important;
 
     &-icons {
       width: 19px;
@@ -736,20 +754,19 @@ $bchat-compose-margin: 20px;
       font-size: 17px;
     }
 
-    .beta
-    {
+    .beta {
       margin-left: 5px;
-    background-color: #9494A0;
-    height: 11px;
-    // border-radius: 2px;
-    border-radius: 4px;
-    padding: 0 5px;
-    font-size: 8px;
-    font-family: "poppin-semibold";
-    letter-spacing: 1px;
+      background-color: #9494a0;
+      height: 11px;
+      // border-radius: 2px;
+      border-radius: 4px;
+      padding: 0 5px;
+      font-size: 8px;
+      font-family: 'poppin-semibold';
+      letter-spacing: 1px;
     }
 
-    &>div {
+    & > div {
       display: block;
     }
 
@@ -758,7 +775,7 @@ $bchat-compose-margin: 20px;
     }
 
     &:hover {
-      background: var(--color-clickable-hovered);
+      background-color: var(--color-settings-leftpane-options-hover);
     }
 
     &__buttons {
@@ -771,9 +788,7 @@ $bchat-compose-margin: 20px;
         margin: 0px;
         line-height: 14px;
       }
-
     }
-
   }
 
   &-input-group {
@@ -809,7 +824,6 @@ $bchat-compose-margin: 20px;
       // line-height: 50px;
     }
   }
-
 }
 
 .panel-text-divider {

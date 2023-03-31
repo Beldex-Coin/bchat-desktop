@@ -7,6 +7,9 @@ const settingsSpellCheck = 'spell-check';
 const settingsLinkPreview = 'link-preview-setting';
 const settingsStartInTray = 'start-in-tray-setting';
 const settingsOpengroupPruning = 'prune-setting';
+const settingsAudioNotification = 'audio-notification-setting';
+const settingsChatWithWallet="chat-with-wallet-settings"
+// const settingChatwithWalletInstruction="chat-with-wallet-instrunction-settings"
 
 // wallet setting keys
 
@@ -15,6 +18,7 @@ const settingSaveRecipient="save-recipient";
 const settingsDeamonList="deamon-List";
 const settingsCurrentDeamon='current-deamon';
 const settingsFiatCurrency='fiat-currency';
+const settingsPriority="priority"
 export const SettingsKey = { 
   settingsReadReceipt,
   settingsTypingIndicator, 
@@ -24,6 +28,10 @@ export const SettingsKey = {
   settingsLinkPreview,
   settingsStartInTray,
   settingsOpengroupPruning,
+  settingsAudioNotification,
+  settingsChatWithWallet,
+
+  // settingChatwithWalletInstruction
 };
 
 export const walletSettingsKey={
@@ -31,5 +39,6 @@ export const walletSettingsKey={
   settingSaveRecipient,
   settingsDeamonList,
   settingsCurrentDeamon,
-  settingsFiatCurrency
+  settingsFiatCurrency,
+  settingsPriority
 }

@@ -65,6 +65,7 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessage/MessageRequestResponse';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
+import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -723,6 +724,25 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
           await getMessageQueue().sendSyncMessage(chatMessageMe);
           return;
         }
+
+         // Handle transaction details Message
+       
+         if (message.get('txnDetails')) {
+          // if (false) {  
+            const txnDetails = message.get('txnDetails');
+            // const txn_detailsMessages = new GroupInvitationMessage({
+            const txnDetailsMessages = new TxnDetailsMessage({
+              identifier: id,
+              timestamp: sentAt,
+              amount: txnDetails.amount,
+              txnId: txnDetails.txnId,
+              expireTimer: this.get('expireTimer'),
+            });
+  
+            // we need the return await so that errors are caught in the catch {}
+            await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
+            return;
+          }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
           const groupInvitation = message.get('groupInvitation');
@@ -847,11 +867,11 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote } = msg;
+    const { attachments, body, groupInvitation, preview, quote,txnDetails } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
-
+    
     window?.log?.info(
       'Sending message to conversation',
       this.idForLogging(),
@@ -868,6 +888,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       expireTimer,
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
+      txnDetails
     });
 
     // We're offline!

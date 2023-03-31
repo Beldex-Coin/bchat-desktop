@@ -15,6 +15,59 @@
   flex-direction: column;
 }
 
+.payment {
+  background-color: #128b17;
+  color: #FFFFFF;
+  display: inline-block;
+  margin: 4px 16px;
+  padding: 16px;
+  border-radius: 15px;
+  align-self: flex-start;
+  box-shadow: none;
+  cursor: pointer;
+  &.invitation-outgoing {
+    background: var(--color-sent-message-background);
+    align-self: flex-end;
+    margin-right: 26px;
+  }
+  .contents-incoming,
+  .contents {
+    display: flex;
+    align-items: center;
+    // margin: 6px;
+    justify-content: space-between;
+    // min-width: 202px;
+    min-width: 217px;
+    /* margin: 10px; */
+    max-width: 465px;
+    margin: 0px 0px 7px;
+    background-color: #3e88ff;
+    border-radius: 10px;
+    // padding: 5px 10px;
+    padding: 5px 16px;
+  }
+  .contents-incoming {
+    background-color: #20a826;
+  }
+  .amount {
+    font-family: $bchat-font-poppins-bold;
+    font-size: 18px;
+  }
+  .hint-out,
+  .hintTxt {
+    display: flex;
+    align-self: flex-end;
+    font-size: 12px;
+  }
+  .hint-out {
+    justify-content: flex-end;
+  }
+}
+.payment:hover
+{
+opacity: 0.9;
+}
+
 .group-invitation {
   background: var(--color-received-message-background);
 
@@ -23,7 +76,6 @@
     align-self: flex-end;
     margin-right: 26px;
   }
-  
 
   display: inline-block;
   margin: 4px 16px;
@@ -79,7 +131,6 @@
       opacity: 0.7;
     }
   }
- 
 }
 
 .group-invitation {

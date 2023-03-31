@@ -15,6 +15,332 @@
     align-items: center;
   }
 
+  .wallet {
+    &-walletPassword {
+      align-items: center;
+      display: flex;
+      width: 100%;
+      // height: 87vh;
+      flex-direction: column;
+      justify-content: center;
+      .progressSyncBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      &-contentBox {
+        width: 500px;
+        // background-color: var(--color-WalcontentBg);
+        border-radius: 10px;
+
+        
+        .progress {
+          width: 70px;
+          .CircularProgressbar {
+            /*
+             * This fixes an issue where the CircularProgressbar svg has
+             * 0 width inside a "display: flex" container, and thus not visible.
+             */
+            width: 100%;
+            /*
+             * This fixes a centering issue with CircularProgressbarWithChildren:
+             * https://github.com/kevinsqi/react-circular-progressbar/issues/94
+             */
+            vertical-align: middle;
+          }
+
+          .CircularProgressbar .CircularProgressbar-path {
+            stroke: #00ca00;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease 0s;
+          }
+
+          .CircularProgressbar .CircularProgressbar-trail {
+            stroke: #d6d6d6;
+            /* Used when trail is not full diameter, i.e. when props.circleRatio is set */
+            stroke-linecap: round;
+          }
+
+          .CircularProgressbar .CircularProgressbar-text {
+            fill: #3e98c7;
+            font-size: 20px;
+            dominant-baseline: middle;
+            text-anchor: middle;
+          }
+
+          .CircularProgressbar .CircularProgressbar-background {
+            fill: #d6d6d6;
+          }
+
+          /*
+           * Sample background styles. Use these with e.g.:
+           *
+           *   <CircularProgressbar
+           *     className="CircularProgressbar-inverted"
+           *     background
+           *     percentage={50}
+           *   />
+           */
+          .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-background {
+            fill: #3e98c7;
+          }
+
+          .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text {
+            fill: #fff;
+          }
+
+          .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path {
+            stroke: #fff;
+          }
+
+          .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
+            stroke: transparent;
+          }
+          //   .circle-wrap {
+          //     // margin: 150px auto;
+          //     width: 150px;
+          //     height: 150px;
+          //     background: var(--color-inbox-background);
+          //     border-radius: 50%;
+          //     // border: 1px solid #cdcbd0;
+          //   }
+          //   .circle{
+          //     position: relative;
+          //   }
+          //   .circle-wrap .circle .mask,
+          //   .circle-wrap .circle .fill {
+          //     width: 150px;
+          //     height: 150px;
+          //     position: absolute;
+          //     border-radius: 50%;
+          //   }
+
+          //   .circle-wrap .circle .mask {
+          //     clip: rect(0px, 150px, 150px, 74px);
+          //   }
+
+          //   .circle-wrap .inside-circle {
+          //     width: 122px;
+          //     height: 122px;
+          //     border-radius: 50%;
+          //     background: var(--color-smModal-bg);
+          //     line-height: 120px;
+          //     text-align: center;
+          //     margin-top: 14px;
+          //     margin-left: 14px;
+          //     // color: #1e51d;
+          //     position: absolute;
+          //     z-index: 100;
+          //     font-weight: 700;
+          //     font-size: 2em;
+          //   }
+
+          //   /* color animation */
+
+          //   /* 3rd progress bar */
+          //   .mask .fill {
+          //     clip: rect(0px, 75px, 150px, 0px);
+          //     background-color: #00CA00;
+          //   }
+
+          //   .mask.full,
+          //   .circle .fill {
+          //     animation: fill ease-in-out 3s;
+          //     transform: rotate(10deg);
+          //   }
+
+          //   @keyframes fill{
+          //     0% {
+          //       transform: rotate(0deg);
+          //     }
+          //     100% {
+          //       transform: rotate(135deg);
+          //     }
+          //   }
+        }
+
+        &-walletImg {
+          width: 25%;
+          height: 103px;
+          background-repeat: no-repeat;
+          background-size: 100%;
+          margin: auto;
+          background-image: var(--img-walPassword);
+        }
+        &-headerBox {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          span {
+            font-family: $bchat-font-poppins-bold;
+            margin-left: 10px;
+            font-size: 18px;
+          }
+        }
+
+        &-inputBox {
+          margin: 0 auto;
+          width: 73%;
+          input {
+            outline: none;
+            border: none;
+            width: 100%;
+            border-bottom: 1px solid #444455;
+            text-align: center;
+          }
+        }
+        &-loader,
+        &-forgotpasswordLoader {
+          width: 500px;
+          height: 360px;
+          background-color:var(--color-BgModalColor);
+          border-radius: 10px;
+          z-index: 99;
+          justify-content: center;
+          display: flex;
+          align-items: center;
+        }
+        &-forgotpasswordLoader {
+          width: 590px;
+          height: 476px;
+        }
+        &-forgotTxt {
+          text-align: center;
+          color: #1bb51e;
+          font-size: 12px;
+          text-decoration: underline;
+        }
+        .bchat-button.brand-outline.green {
+          width: 33%;
+          margin: auto;
+          height: 45px;
+          border-radius: 10px;
+        }
+      }
+    }
+    &-progressSync {
+      &-presentage {
+        text-align: center;
+        font-family: $bchat-font-poppins-bold;
+        font-size: 20px;
+        color: #1bb51e;
+      }
+      &-barBg {
+        width: 100%;
+        height: 10px;
+        background-color: var(--color-walSyncbar);
+        padding-top: 2px;
+        .bar {
+          background-color: #1bb51e;
+          width: 40%;
+          height: 4px;
+          margin-top: 1px;
+        }
+      }
+      &-reloadTxt {
+        text-align: center;
+        font-family: $bchat-font-poppin-semibold;
+        font-size: 14px;
+      }
+      &-bRemaing {
+        text-align: center;
+      }
+    }
+    &-forgotPassword {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      flex-direction: column;
+      &-content-Box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        // width: 538px;
+        width: 580px;
+
+        // height: 417px;
+        // background-color: #2d2d3b;
+        // background-color: var(--color-WalcontentBg);
+        border-radius: 10px;
+        // margin: 5% 0px;
+        &-title {
+          text-align: center;
+          font-size: 18px;
+          font-family: $bchat-font-poppins-bold;
+          padding-top: 20px;
+        }
+        &-seed {
+          display: flex;
+          flex-direction: row;
+          textarea {
+            border: none;
+            outline: none;
+            resize: none;
+            // width: 435px;
+            // height: 126px;
+            width: 500px;
+            height: 97px;
+            // background-color: #353543;
+            // background-color: var(--color-walInputBg);
+            background-color: var(--color-background-primary);
+            padding: 15px;
+            // box-shadow: 1px 2px 5px #00000074;
+            border-radius: 10px;
+          }
+        }
+        &-paste-icon {
+          background: url('../images/bchat/paste.svg') no-repeat;
+          width: 35px;
+          height: 35px;
+          // background-color: var(--color-inboxBgColor);
+          background-color: var(--color-background-primary);
+          background-size: 14px;
+          border-radius: 35px;
+          background-position: center;
+          left: 10px;
+          top: 19px;
+          position: relative;
+          cursor: pointer;
+          box-shadow: var(--color-bchat-shadow);
+        }
+        &-paste-icon:hover {
+          // transform: scale(1.1);
+          // background-color: var(--color-wallet-copy-hover);
+          // color: #1ced23;
+          background-color: var(--color-profile-close);
+        }
+        &-password {
+          input {
+            border: none;
+            outline: none;
+            // background-color: #353543;
+            // background-color: var(--color-walInputBg);
+            background-color: var(--color-background-primary);
+
+            // width: 438px;
+            width: 500px;
+            height: 45px;
+            // box-shadow: 1px 2px 5px #00000074;
+            margin-right: 10px;
+            border-radius: 10px;
+            padding: 10px;
+          }
+        }
+        &-disClaimerBox {
+          // width: 86%;
+          // padding-top: 12px;
+          padding-bottom: 25px;
+          font-size: 13px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
   .content,
   .contentUpdateModal {
     position: relative;
@@ -26,6 +352,7 @@
     overflow: auto;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
   }
+
   .contentUpdateModal {
     // max-width: 654px;
     max-width: 550px;
@@ -77,8 +404,10 @@
 
 .bchat-modal {
   .contact-selection-list {
-    width: 100%;
+    // width: 100%;
+    max-width: 350px;
     min-width: 300px;
+    background-color: #313143;
     box-shadow: var(--color-bchat-shadow);
   }
 }
@@ -302,15 +631,14 @@
   display: flex;
   align-items: center;
 }
-.walletChangePasswordHeader
-{
+.walletChangePasswordHeader {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   padding-bottom: 0px;
-  font-family: "Poppins";
+  font-family: 'Poppins';
   text-align: center;
   line-height: 18px;
   font-size: 14px;
@@ -420,8 +748,7 @@
       color: var(--color-copyIcon);
 
       &:hover {
-        transform: scale(1.1);
-        color: #1ced23;
+        background-color: var(--color-copy-hover);
       }
     }
 
@@ -442,7 +769,19 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    
+  }
+
+  .profileClose {
+    display: flex;
+    justify-content: center;
+    margin-left: 350px;
+    margin-top: 12px;
+    width: 28px;
+    height: 28px;
+    &:hover {
+      background-color: var(--color-profile-close);
+      border-radius: 20px;
+    }
   }
 
   .profile-name {
@@ -493,6 +832,9 @@
         // left: 103px;
         position: relative;
         cursor: pointer;
+        &:hover {
+          color: #128b17;
+        }
       }
 
       .bchat-icon-button {
