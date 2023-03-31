@@ -92,12 +92,12 @@ export const WalletPassword = (props: any) => {
     let openWallet: any = await wallet.openWallet(profileName, password);
     // console.log('openWallet pass:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
-      console.log("openWallet.error")
+      // console.log("openWallet.error")
       setLoading(false);
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
       // console.log('test 1')
-      await wallet.startHeartbeat('wallet');
+      wallet.startHeartbeat('wallet');
       let emptyAddress: any = '';
       // console.log('test 2')
       dispatch(updateSendAddress(emptyAddress));
@@ -129,7 +129,7 @@ export const WalletPassword = (props: any) => {
     );
   }
   // if (true) {
-  console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
+  // console.log('currentHeight ::', currentHeight, 'daemonHeight ::', daemonHeight);
   if (daemonHeight > 0 && percentage < 99 ) {
     // setLoading(false)
     return (
