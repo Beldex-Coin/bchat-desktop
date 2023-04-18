@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ToastUtils } from '../../bchat/utils';
 import { ChangePasswordModal } from '../../state/ducks/modalDialog';
@@ -10,6 +10,7 @@ import { BchatIcon } from '../icon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { useKey } from 'react-use';
 import styled from 'styled-components';
+import { useFocusMount } from '../../hooks/useFocusMount';
 
 export const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -18,6 +19,7 @@ export const ChangePassword = () => {
   const [newPasswordVisible, setNewPasswordVisible] = useState(true);
   const [confirmPasswordVisible, setConfirmNewPasswordVisible] = useState(true);
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef(null);
   const dispatch = useDispatch();
   function onClickCancelHandler() {
     setLoading(false);
@@ -72,7 +74,7 @@ export const ChangePassword = () => {
   useKey((event: KeyboardEvent) => {
     return event.key === 'Enter';
   }, passValid);
-
+  useFocusMount(inputRef, true);
   return (
     <div>
       {/* {loading && (
@@ -109,7 +111,9 @@ export const ChangePassword = () => {
           <span className='changepass-oldpassInput' >
             <input
               value={oldPassword}
-              onChange={e => {
+              ref={inputRef}
+
+              onChange={e => { 
                 setOldPassword(e.target.value);
               }}
               placeholder={window.i18n('currentPassword')}

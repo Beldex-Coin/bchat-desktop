@@ -459,7 +459,9 @@ export const ConversationHeaderWithDetails = () => {
               showBackButton={isMessageDetailOpened}
             />
             <ConversationHeaderTitle />
-
+            {!isKickedFromGroup && (
+              <ExpirationLength expirationSettingName={expirationSettingName} />
+            )}
             { displayConnectWalletBtn && <div
               className='connectWalletBtn'
               onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
@@ -482,9 +484,7 @@ export const ConversationHeaderWithDetails = () => {
               /> */}
             </div>
             }
-            {!isKickedFromGroup && (
-              <ExpirationLength expirationSettingName={expirationSettingName} />
-            )}
+           
             {conversation?.type == 'private' && (
               <div className="call">
                 <CallButton />

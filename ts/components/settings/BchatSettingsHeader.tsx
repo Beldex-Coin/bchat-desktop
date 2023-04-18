@@ -7,6 +7,7 @@ import { getOurNumber } from '../../state/selectors/user';
 import { BchatIconButton } from '../icon/BchatIconButton';
  import { toggleMultipleSelection } from '../../state/ducks/userConfig';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
+import { getBlockedPubkeys } from '../../state/selectors/conversations';
 // import { useUpdate } from 'react-use';
 
 type Props = Pick<SettingsViewProps, 'category'> & {
@@ -20,6 +21,9 @@ export const SettingsHeader = (props: Props) => {
 
   const dispatch = useDispatch();
   const ourNumber = useSelector(getOurNumber);
+  const blockedNumbers = useSelector(getBlockedPubkeys);
+
+
   // let color: any;
   const multipleSelectionValue = useSelector(getMultipleSelection);
   // const temp=useSelector(state=>state)
@@ -47,7 +51,7 @@ export const SettingsHeader = (props: Props) => {
         />
       </div>
       <div className="bchat-settings-header-title">{categoryTitle}</div>
-      {window.i18n('blockedSettingsTitle') === categoryTitle &&
+      {window.i18n('blockedSettingsTitle') === categoryTitle && blockedNumbers.length > 0 &&
         <div className='bchat-settings-header-selectionBox'>
           {multipleSelectionValue ?
             <BchatIconButton

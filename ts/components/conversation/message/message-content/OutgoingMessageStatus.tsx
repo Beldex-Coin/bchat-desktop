@@ -26,7 +26,7 @@ const MessageStatusSent = ({ dataTestId }: { dataTestId?: string }) => {
 
   return (
     <MessageStatusSendingContainer data-testid={dataTestId} data-testtype="sent">
-      <BchatIcon iconColor={iconColor} iconType="circleCheck" iconSize="tiny" />
+      <BchatIcon iconColor={iconColor} iconType="tickWithCircle" iconSize="tiny" />
     </MessageStatusSendingContainer>
   );
 };

@@ -38,6 +38,7 @@ export const NodeSetting = (props: any) => {
   const [testNotify, setTestNotify] = useState({ status: '', content: '', StatusIcon: true });
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  // const inputRef=useRef<HTMLInputElement>(null)
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const testBottonEnable = !ipAddress && !port ? true : !ipAddress ? true : !port ? true : false;
   useEffect(() => {
@@ -143,6 +144,8 @@ export const NodeSetting = (props: any) => {
     if (!modalRef.current?.contains(e.target)) {
       setDropdown(false);
     }
+   
+   
   };
 
   useKey((event: KeyboardEvent) => {
@@ -389,7 +392,7 @@ export const NodeSetting = (props: any) => {
             <SpacerLG />
             {/* ******************************Add deamon section****************************************** */}
 
-            <Flex container={true} justifyContent="space-between"  cursor={'pointer'} onClick={() => setViewBox1(!viewBox1)}>
+            <Flex container={true} justifyContent="space-between"  cursor={'pointer'} onClick={() => {setViewBox1(!viewBox1)}}>
               <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
                 {window.i18n('addRemoteDaemonNode')}
               </div>
@@ -419,6 +422,7 @@ export const NodeSetting = (props: any) => {
                     value={ipAddress}
                     placeholder="Enter your IP address"
                     className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                    autoFocus
                     onChange={(e: any) => {
                       assignHost(e.target.value);
                     }}

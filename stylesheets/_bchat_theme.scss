@@ -67,7 +67,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      line-height: 15px;
+      // line-height: 15px;
       
       svg {
         margin-right: $bchat-margin-xs;
@@ -112,7 +112,7 @@
 
     .module-message__text {
       color: var(--color-sent-message-text);
-      line-height: 17px;
+      line-height: 22px;
       a {
         text-decoration: underline;
         color: var(--color-sent-message-text);

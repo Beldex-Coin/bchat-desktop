@@ -216,7 +216,9 @@ export const ForgotPassword = (props: any) => {
 
             <span
               onClick={() => setNewPasswordVisible(!newPasswordVisible)}
-              style={{ cursor: 'pointer' }}
+              // style={{ cursor: 'pointer' }}
+              className='wallet-forgotPassword-content-Box-eyeIcon'
+
             >
               <BchatIcon
                 iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
@@ -240,7 +242,8 @@ export const ForgotPassword = (props: any) => {
             </span>
             <span
               onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
-              style={{ cursor: 'pointer' }}
+              // style={{ cursor: 'pointer' }}
+              className='wallet-forgotPassword-content-Box-eyeIcon'
             >
               <BchatIcon
                 iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
@@ -252,7 +255,7 @@ export const ForgotPassword = (props: any) => {
         <SpacerMD />
         <div className="wallet-forgotPassword-content-Box-disClaimerBox">
           <div style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</div>
-          <div style={{ color: '#82828D', width: '70%' }}>
+          <div style={{ color: '#82828D', width: '76%' }}>
             {window.i18n('disclaimerForgotPassword', walletDaemonHeight)}
           </div>
         </div>

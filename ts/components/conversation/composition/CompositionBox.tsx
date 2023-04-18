@@ -72,7 +72,7 @@ import { saveRecipientAddress } from '../../../data/data';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { pushToastError } from '../../../bchat/utils/Toast';
 import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
-import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
+import { getBchatAlertConfirmModal, getBchatWalletPasswordModal } from '../../../state/selectors/modal';
 
 
 export interface ReplyingToMessageProps {
@@ -130,6 +130,7 @@ interface Props {
   onChoseAttachments: (newAttachments: Array<File>) => void;
   walletDetails: any;
   BchatAlertConfirmModal: any;
+  modalStatus:any;
 }
 
 interface State {
@@ -1287,7 +1288,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   private focusCompositionBox() {
     // Focus the textarea when user clicks anywhere in the composition box
-    this.textarea.current?.focus();
+   this.textarea.current?.focus();
   }
 }
 
@@ -1302,6 +1303,7 @@ const mapStateToProps = (state: StateType) => {
     walletSyncStatus: getRescaning(state),
     walletDetails: state.wallet,
     BchatAlertConfirmModal: getBchatAlertConfirmModal(state),
+    modalStatus:getBchatWalletPasswordModal(state)
   };
 };
 

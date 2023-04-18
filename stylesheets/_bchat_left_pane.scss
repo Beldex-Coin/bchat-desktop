@@ -424,7 +424,8 @@ $bchat-compose-margin: 20px;
     .bchat-noMsgRequest {
       display: flex;
       width: 500px;
-      height: 337px;
+      // height: 337px;
+      height: 260px;
       align-items: center;
       background-image: var(--image-MsgReq);
       background-repeat: no-repeat;

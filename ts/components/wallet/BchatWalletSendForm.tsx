@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import classNames from 'classnames';
 import {
@@ -20,6 +20,7 @@ import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 import { useKey } from 'react-use';
 import { getwalletSendConfirmModal } from '../../state/selectors/modal';
+import { useFocusMount } from '../../hooks/useFocusMount';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -32,6 +33,9 @@ export const SendForm = (props: any) => {
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
   const BchatSendConfirmState=useSelector(getwalletSendConfirmModal);
+  const inputRef = useRef(null);
+  
+
   function clearStateValue() {
     props.setAmount('');
     // props.setPriority(window.i18n('flash'));
@@ -44,21 +48,22 @@ export const SendForm = (props: any) => {
   }
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    document.addEventListener('click', handleClick);
-    setAddress(sendAddress);
+  // useEffect(() => {
+  //   document.addEventListener('click', handleClick);
+  //   setAddress(sendAddress);
 
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, [sendAddress]);
+  //   return () => {
+  //     document.removeEventListener('click', handleClick);
+  //   };
+  // }, [sendAddress]);
  
   // console.log('sendAddress ::',sendAddress,'address ::',address);
-  const handleClick = (e: any) => {
-    if (!modalRef.current?.contains(e.target)) {
-      // setDropDown(false);
-    }
-  };
+  // const handleClick = (e: any) => {
+  //   if (!modalRef.current?.contains(e.target)) {
+  //     // setDropDown(false);
+  //   }
+  // };
+
   useKey((event: KeyboardEvent) => {
     if (props.amount && address && syncStatus && event.key === 'Enter') {
       addressValidation();
@@ -140,7 +145,8 @@ export const SendForm = (props: any) => {
       return data.result.tx_hash;
     }
   }
-
+  useFocusMount(inputRef, true);
+  // console.log('inputRef ...',inputRef)
   return (
     <>
       <div className="wallet-sendForm">
@@ -157,7 +163,9 @@ export const SendForm = (props: any) => {
 
               <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
                 <input
+                ref={inputRef}
                   value={props.amount}
+                  
                   onChange={(e: any) => {
                     props.setAmount(e.target.value);
                   }}
@@ -246,6 +254,7 @@ export const SendForm = (props: any) => {
               <input
                 value={address}
                 placeholder="Enter Beldex address"
+                
                 onChange={(e: any) => {
                   setAddress(e.target.value);
                 }}

@@ -61,12 +61,14 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
               <div className="bchat-modal__header__close">
                 {showExitIcon ? (
+                  <div className='exit'>
                   <BchatIconButton
                     iconType="exit"
                     iconSize="small"
                     onClick={props.onClose}
                     dataTestId="modal-close-button"
                   />
+                  </div>
                 ) : null}
               </div>
               <div className="bchat-modal__header__title">{title}</div>

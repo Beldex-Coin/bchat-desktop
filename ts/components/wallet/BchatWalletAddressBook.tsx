@@ -39,8 +39,8 @@ export const AddressBook = (props: any) => {
         <div
           className={classNames(`addressBook-wholeBox-contentBox`)}
           style={window.i18n('addressBook') !== props.title ? { cursor: 'pointer' } : {}}
-          onClick={() => window.i18n('addressBook') !== props.title ? send(belAddress): dispatch(updateSendAddress(belAddress))}
-        > 
+          onClick={() => window.i18n('addressBook') !== props.title ? send(belAddress) : dispatch(updateSendAddress(belAddress))}
+        >
           {props.title === window.i18n('contact') &&
             <div className='avatarBox'> <Avatar
               size={AvatarSize.M}
@@ -50,14 +50,14 @@ export const AddressBook = (props: any) => {
           }
           <Flex container={true} flexDirection="column">
             <div>
-              <span className={classNames("addressBook-wholeBox-contentBox-nameBtn",props.title === window.i18n('contact') && 'contact')}>{username}</span>
+              <span className={classNames("addressBook-wholeBox-contentBox-nameBtn", props.title === window.i18n('contact') && 'contact')}>{username}</span>
             </div>
             <SpacerXS />
-   
-            <div className={"addressBook-wholeBox-contentBox-addresstxt"} style={{cursor:'pointer'}}
-            onClick={()=> {dispatch(updateSendAddress(belAddress));dispatch(walletSendPage());}}
+
+            <div className={"addressBook-wholeBox-contentBox-addresstxt"} style={{ cursor: 'pointer' }}
+              onClick={() => { dispatch(updateSendAddress(belAddress)); dispatch(walletSendPage()); }}
             >
-              {props.title ===window.i18n('contact')? belAddress.slice(0, 70)+'...':belAddress}
+              {props.title === window.i18n('contact') ? belAddress.slice(0, 70) + '...' : belAddress}
             </div>
           </Flex>
 
@@ -67,8 +67,8 @@ export const AddressBook = (props: any) => {
                 className="addressBook-wholeBox-contentBox-sendBtn"
                 onClick={() => send(belAddress)}
               >
-                <BchatIcon iconType="send" iconSize={'small'}  />
-                <span style={{marginLeft:"3px"}}>{window.i18n('send')}</span>
+                <BchatIcon iconType="send" iconSize={'small'} />
+                <span style={{ marginLeft: "3px" }}>{window.i18n('send')}</span>
               </div>
               <div
                 className="addressBook-wholeBox-contentBox-copyBtn"
@@ -113,20 +113,22 @@ export const AddressBook = (props: any) => {
       }
 
       <SpacerLG />
-      <div className={classNames("addressBook-wholeBox ",BchatWalletPasswordModal  && 'blurBg')}>
+      <div className={classNames("addressBook-wholeBox ", BchatWalletPasswordModal && 'blurBg')}>
         {privateContactsPubkeys.length > 0 &&
           privateContactsPubkeys.map(item => <AddressContent pubkey={item} title={props.from} />)}
         {privateContactsPubkeys.length == 0 ? (
           <>
-            <div className="addressBook-emptyAddressBook"></div>
-            <h4 className="addressBook-emptyAddressBook-content">
-              {window.i18n('addressBook') !== props.from
-                ? window.i18n('emptyContact')
-                : window.i18n('emptyAddressBook')}
-              <span style={{ marginLeft: '7px' }}>
-                <BchatIcon iconType={'sadEmoji'} iconSize={'small'} iconColor={'#646474'} />
-              </span>
-            </h4>
+            <div className='addressBook-emptyAddressBookBox'>
+              <div className={window.i18n('addressBook') !== props.from?"addressBook-emptyAddressBook":'addressBook-emptyBook'}></div>
+              <h4 className="addressBook-emptyAddressBook-content">
+                {window.i18n('addressBook') !== props.from
+                  ? window.i18n('emptyContact')
+                  : window.i18n('emptyAddressBook')}
+                <span style={{ marginLeft: '7px' }}>
+                  <BchatIcon iconType={'sadEmoji'} iconSize={'small'} iconColor={'#646474'} />
+                </span>
+              </h4>
+            </div>
           </>
         ) : (
           ''

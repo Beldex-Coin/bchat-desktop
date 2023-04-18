@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 // import { QRCode } from "react-qr-svg"
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { QRCode } from 'react-qrcode-logo';
 import { copyBchatID } from '../dialog/EditProfileDialog';
+import { useFocusMount } from '../../hooks/useFocusMount';
 
 export const ReceivedForm = () => {
   const walletAddress = localStorage.getItem('userAddress');
   const [txnAmount, setTxnAmount] = useState('');
   const qrValue = `Beldex:${walletAddress}?tx_amount=${txnAmount}`;
-
+  const inputRef = useRef(null);
   function validator(e: any) {
     const numbersValidation = /^\d+\.?\d*$/;
     if (e === '' || numbersValidation.test(e)) {
       setTxnAmount(e);
     }
   }
+  useFocusMount(inputRef, true);
 
   return (
     <>
@@ -52,6 +54,7 @@ export const ReceivedForm = () => {
                 className="wallet-receivedForm-rightSide-input"
                 placeholder={window.i18n('enterAmount')}
                 type="text"
+                ref={inputRef}
                 onChange={(e: any) => validator(e.target.value)}
                 maxLength={16}
               />

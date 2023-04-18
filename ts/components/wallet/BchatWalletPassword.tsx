@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { dashboard } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import { useKey } from 'react-use';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { daemon } from '../../wallet/daemon-rpc';
+import { useFocusMount } from '../../hooks/useFocusMount';
 
 export const WalletPassword = (props: any) => {
   const [password, setValue] = useState('');
@@ -29,6 +30,8 @@ export const WalletPassword = (props: any) => {
   let currentHeight: any;
   let daemonHeight: any;
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  const inputRef = useRef(null);
+  
   if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
@@ -66,6 +69,7 @@ export const WalletPassword = (props: any) => {
   loadDecimal();
   loadRecipient();
   loadFiatCurrency();
+  useFocusMount(inputRef, true);
 
   // const searchInput:any = useRef(null);
   // useEffect(()=>{
@@ -174,7 +178,7 @@ export const WalletPassword = (props: any) => {
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-inputBox">
-          <input type="password" autoFocus={true} value={password} onChange={e => setValue(e.target.value)} />
+          <input type="password" autoFocus={true} ref={inputRef} value={password} onChange={e => setValue(e.target.value)} />
         </div>
         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-forgotTxt">
