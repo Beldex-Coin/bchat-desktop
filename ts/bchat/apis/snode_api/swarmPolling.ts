@@ -20,7 +20,7 @@ import { perfEnd, perfStart } from '../../utils/Performance';
 import { ed25519Str } from '../../onions/onionPath';
 import { updateIsOnline } from '../../../state/ducks/onion';
 import pRetry from 'p-retry';
-import { getHasSeenHF190, getHasSeenHF191 } from './hfHandling';
+import { getHasSeenHF170, getHasSeenHF180 } from './hfHandling';
 
 interface Message {
   hash: string;
@@ -163,8 +163,8 @@ export class SwarmPolling {
           ?.idForLogging() || group.pubkey.key;
 
       if (diff >= convoPollingTimeout) {
-        const hardfork190Happened = await getHasSeenHF190();
-        const hardfork191Happened = await getHasSeenHF191();
+        const hardfork190Happened = await getHasSeenHF170();
+        const hardfork191Happened = await getHasSeenHF180();
         window?.log?.info(
           `Polling for ${loggingId}; timeout: ${convoPollingTimeout}; diff: ${diff} ; hardfork190Happened: ${hardfork190Happened}; hardfork191Happened: ${hardfork191Happened} `
         );

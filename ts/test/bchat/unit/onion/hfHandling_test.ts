@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import Sinon from 'sinon';
 import {
-  getHasSeenHF190,
-  getHasSeenHF191,
+  getHasSeenHF170,
+  getHasSeenHF180,
   handleHardforkResult,
   resetHardForkCachedValues,
 } from '../../../../bchat/apis/snode_api/hfHandling';
@@ -10,7 +10,7 @@ import { TestUtils } from '../../../test-utils';
 
 // tslint:disable-next-line: max-func-body-length
 describe('hardfork handling', () => {
-  describe('getHasSeenHF190', () => {
+  describe('getHasSeenHF170', () => {
     afterEach(() => {
       Sinon.restore();
       resetHardForkCachedValues();
@@ -20,8 +20,8 @@ describe('hardfork handling', () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves(undefined);
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF190();
-      expect(ret).to.be.eq(false, 'getHasSeenHF190 should return false');
+      const ret = await getHasSeenHF170();
+      expect(ret).to.be.eq(false, 'getHasSeenHF170 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.calledOnce).to.be.eq(true, 'createItem should have been called');
@@ -33,13 +33,13 @@ describe('hardfork handling', () => {
 
     it('fetches from db if undefined, and does not write to db if db value is not undefined', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF190',
+        id: 'getHasSeenHF170',
         value: false,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF190();
-      expect(ret).to.be.eq(false, 'getHasSeenHF190 should return false');
+      const ret = await getHasSeenHF170();
+      expect(ret).to.be.eq(false, 'getHasSeenHF170 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
@@ -47,13 +47,13 @@ describe('hardfork handling', () => {
 
     it('fetches from db if undefined, and does not write to db if db value is not undefined - 2', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF190',
+        id: 'getHasSeenHF170',
         value: true,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF190();
-      expect(ret).to.be.eq(true, 'getHasSeenHF190 should return false');
+      const ret = await getHasSeenHF170();
+      expect(ret).to.be.eq(true, 'getHasSeenHF170 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
@@ -61,22 +61,22 @@ describe('hardfork handling', () => {
 
     it('fetches from db only the value is not cached already', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF190',
+        id: 'getHasSeenHF170',
         value: true,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF190();
-      const ret2 = await getHasSeenHF190();
-      expect(ret).to.be.eq(true, 'getHasSeenHF190 should return false');
-      expect(ret2).to.be.eq(true, 'getHasSeenHF190 should return false - 2');
+      const ret = await getHasSeenHF170();
+      const ret2 = await getHasSeenHF170();
+      expect(ret).to.be.eq(true, 'getHasSeenHF170 should return false');
+      expect(ret2).to.be.eq(true, 'getHasSeenHF170 should return false - 2');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
     });
   });
 
-  describe('getHasSeenHF191', () => {
+  describe('getHasSeenHF180', () => {
     afterEach(() => {
       Sinon.restore();
       resetHardForkCachedValues();
@@ -86,8 +86,8 @@ describe('hardfork handling', () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves(undefined);
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF191();
-      expect(ret).to.be.eq(false, 'getHasSeenHF191 should return false');
+      const ret = await getHasSeenHF180();
+      expect(ret).to.be.eq(false, 'getHasSeenHF180 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.calledOnce).to.be.eq(true, 'createItem should have been called');
@@ -99,13 +99,13 @@ describe('hardfork handling', () => {
 
     it('fetches from db if undefined, and does not write to db if db value is not undefined', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF191',
+        id: 'getHasSeenHF180',
         value: false,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF191();
-      expect(ret).to.be.eq(false, 'getHasSeenHF191 should return false');
+      const ret = await getHasSeenHF180();
+      expect(ret).to.be.eq(false, 'getHasSeenHF180 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
@@ -113,13 +113,13 @@ describe('hardfork handling', () => {
 
     it('fetches from db if undefined, and does not write to db if db value is not undefined - 2', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF191',
+        id: 'getHasSeenHF180',
         value: true,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF191();
-      expect(ret).to.be.eq(true, 'getHasSeenHF191 should return false');
+      const ret = await getHasSeenHF180();
+      expect(ret).to.be.eq(true, 'getHasSeenHF180 should return false');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
@@ -127,15 +127,15 @@ describe('hardfork handling', () => {
 
     it('fetches from db only the value is not cached already', async () => {
       const getItemById = TestUtils.stubDataItem('getItemById').resolves({
-        id: 'getHasSeenHF191',
+        id: 'getHasSeenHF180',
         value: true,
       });
       const createItem = TestUtils.stubDataItem('createOrUpdateItem').resolves();
 
-      const ret = await getHasSeenHF191();
-      const ret2 = await getHasSeenHF191();
-      expect(ret).to.be.eq(true, 'getHasSeenHF191 should return false');
-      expect(ret2).to.be.eq(true, 'getHasSeenHF191 should return false - 2');
+      const ret = await getHasSeenHF180();
+      const ret2 = await getHasSeenHF180();
+      expect(ret).to.be.eq(true, 'getHasSeenHF180 should return false');
+      expect(ret2).to.be.eq(true, 'getHasSeenHF180 should return false - 2');
 
       expect(getItemById.calledOnce).to.be.eq(true, 'getItemById should have been called');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called');
@@ -291,7 +291,7 @@ describe('hardfork handling', () => {
 
       getItemById.resetHistory();
       createItem.resetHistory();
-      expect(await getHasSeenHF190()).to.be.eq(true, 'getHasSeenHF190 should have been true');
+      expect(await getHasSeenHF170()).to.be.eq(true, 'getHasSeenHF170 should have been true');
       expect(getItemById.notCalled).to.be.eq(true, 'getItemById should not have been called more');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called more');
     });
@@ -322,8 +322,8 @@ describe('hardfork handling', () => {
       );
       getItemById.resetHistory();
       createItem.resetHistory();
-      expect(await getHasSeenHF190()).to.be.eq(true, 'getHasSeenHF190 should have been true');
-      expect(await getHasSeenHF191()).to.be.eq(true, 'getHasSeenHF191 should have been true');
+      expect(await getHasSeenHF170()).to.be.eq(true, 'getHasSeenHF170 should have been true');
+      expect(await getHasSeenHF180()).to.be.eq(true, 'getHasSeenHF180 should have been true');
       expect(getItemById.notCalled).to.be.eq(true, 'getItemById should not have been called more');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called more');
     });
@@ -338,8 +338,8 @@ describe('hardfork handling', () => {
 
       getItemById.resetHistory();
       createItem.resetHistory();
-      expect(await getHasSeenHF190()).to.be.eq(true, 'getHasSeenHF190 should have been true');
-      expect(await getHasSeenHF191()).to.be.eq(true, 'getHasSeenHF191 should have been true');
+      expect(await getHasSeenHF170()).to.be.eq(true, 'getHasSeenHF170 should have been true');
+      expect(await getHasSeenHF180()).to.be.eq(true, 'getHasSeenHF180 should have been true');
       expect(getItemById.notCalled).to.be.eq(true, 'getItemById should not have been called more');
       expect(createItem.notCalled).to.be.eq(true, 'createItem should not have been called more');
     });

@@ -22,7 +22,7 @@ import { getConversationController } from '../conversations';
 import { ed25519Str } from '../onions/onionPath';
 import { EmptySwarmError } from '../utils/errors';
 import ByteBuffer from 'bytebuffer';
-import { getHasSeenHF190, getHasSeenHF191 } from '../apis/snode_api/hfHandling';
+import { getHasSeenHF170, getHasSeenHF180 } from '../apis/snode_api/hfHandling';
 
 const DEFAULT_CONNECTIONS = 1;
 
@@ -141,8 +141,8 @@ export async function sendMessageToSnode(
   const conversation = getConversationController().get(pubKey);
   const isClosedGroup = conversation?.isClosedGroup();
 
-  const hardfork190Happened = await getHasSeenHF190();
-  const hardfork191Happened = await getHasSeenHF191();
+  const hardfork190Happened = await getHasSeenHF170();
+  const hardfork191Happened = await getHasSeenHF180();
   const namespace = isClosedGroup ? -10 : 0;
 
   window?.log?.debug(
