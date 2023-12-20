@@ -228,7 +228,7 @@ window.Signal = data.initData();
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
   // tslint:disable-next-line: no-empty
-  window.nodeSetImmediate(() => {});
+  window.nodeSetImmediate(() => { });
 }, 1000);
 
 window.React = require('react');
@@ -241,15 +241,15 @@ if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
       ? [
-          'https://publicnode1.rpcnode.stream:443',
-          'https://publicnode2.rpcnode.stream:443',
-          'https://publicnode3.rpcnode.stream:443',
-        ]
+        'https://publicnode1.rpcnode.stream:443',
+        'https://publicnode2.rpcnode.stream:443',
+        'https://publicnode3.rpcnode.stream:443',
+      ]
       : [
-          'https://publicnode1.rpcnode.stream:443',
-          'https://publicnode2.rpcnode.stream:443',
-          'https://publicnode3.rpcnode.stream:443',
-        ];
+        'https://publicnode1.rpcnode.stream:443',
+        'https://publicnode2.rpcnode.stream:443',
+        'https://publicnode3.rpcnode.stream:443',
+      ];
 
   const remotes = [
     {
@@ -294,18 +294,18 @@ if (window.networkType == 'mainnet') {
 } else {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
-      ? ['http://38.242.196.72:19095', 'http://154.26.139.105:19095']
-      : ['http://38.242.196.72:19095', 'http://154.26.139.105:19095'];
+      ? ['http://149.102.156.174:19095']
+      : ['http://149.102.156.174:19095'];
 
   const remotes = [
     {
-      host: '38.242.196.72',
+      host: '149.102.156.174',
       port: '19095',
       active: 0,
       type: 'Remote',
     },
     {
-      host: '154.26.139.105',
+      host: '149.102.156.174',
       port: '19095',
       active: 0,
       type: 'Remote',
