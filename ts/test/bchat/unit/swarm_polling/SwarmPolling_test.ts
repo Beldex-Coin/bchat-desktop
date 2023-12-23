@@ -209,7 +209,7 @@ describe('SwarmPolling', () => {
       expect(pollOnceForKeySpy.secondCall.args).to.deep.eq([groupConvoPubkey, true, 0]);
     });
 
-    it('does run for group pubkey on start no matter the old timestamp if HF >= 19.0 & < 19.1  ', async () => {
+    it('does run for group pubkey on start no matter the old timestamp if HF >= 17.0 & < 18.0  ', async () => {
       const convo = getConversationController().getOrCreate(
         TestUtils.generateFakePubKeyStr(),
         ConversationTypeEnum.GROUP
@@ -239,7 +239,7 @@ describe('SwarmPolling', () => {
       getItemByIdStub.resolves();
     });
 
-    it('does only poll from -10 for closed groups if HF >= 19.1  ', async () => {
+    it('does only poll from -10 for closed groups if HF >= 18.0  ', async () => {
       const convo = getConversationController().getOrCreate(
         TestUtils.generateFakePubKeyStr(),
         ConversationTypeEnum.GROUP

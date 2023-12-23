@@ -369,7 +369,7 @@ class Wallet {
       if (window.networkType === 'mainnet') {
         url = 'http://explorer.beldex.io:19091';
       } else {
-        url = 'http://154.26.139.105:19095';
+        url = 'http://149.102.156.174:19095';
       }
       const response = await insecureNodeFetch(`${url}/get_height`, {
         method: 'POST',
