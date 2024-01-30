@@ -283,6 +283,12 @@ if (window.networkType == 'mainnet') {
       type: 'Remote',
     },
     {
+      host: 'publicnode5.rpcnode.stream',
+      port: '29095',
+      active: 0,
+      type: 'Remote',
+    },
+    {
       host: 'explorer.beldex.io',
       port: '19091',
       active: 0,
