@@ -374,6 +374,7 @@ export async function TEST_getSnodePoolFromSnode(targetNode: Snode): Promise<Arr
     endpoint: 'get_master_nodes',
     params: {
       active_only: true,
+      ours_only: true,
       fields: {
         public_ip: true,
         storage_port: true,

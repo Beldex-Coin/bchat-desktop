@@ -31,7 +31,7 @@ export const SendForm = (props: any) => {
 
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
-  const BchatSendConfirmState=useSelector(getwalletSendConfirmModal);
+  const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
   function clearStateValue() {
     props.setAmount('');
     // props.setPriority(window.i18n('flash'));
@@ -52,8 +52,6 @@ export const SendForm = (props: any) => {
       document.removeEventListener('click', handleClick);
     };
   }, [sendAddress]);
- 
-  // console.log('sendAddress ::',sendAddress,'address ::',address);
   const handleClick = (e: any) => {
     if (!modalRef.current?.contains(e.target)) {
       // setDropDown(false);
@@ -68,7 +66,7 @@ export const SendForm = (props: any) => {
   async function addressValidation() {
     // console.log("netConnetion()",netConnetion())
     if (!window.globalOnlineStatus) {
-       ToastUtils.pushToastError(
+      ToastUtils.pushToastError(
         'internetConnectionError',
         'Please check your internet connection'
       );
@@ -77,14 +75,14 @@ export const SendForm = (props: any) => {
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
-    if (address.length > 106 || address.length < 95) {
+    if ((address.length > 106 || address.length < 95) && !address.includes('.bdx')) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     if (props.amount == 0) {
       return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
     }
     let addressValidate = await wallet.validateAddres(address);
-    if (!addressValidate) {
+    if (!address.includes('.bdx') && !addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     !BchatSendConfirmState && sendConfirmModal();
@@ -137,7 +135,10 @@ export const SendForm = (props: any) => {
       clearStateValue();
       dispatch(updateSendConfirmModal(null));
       dispatch(updateTransactionInitModal(null));
-      return data.result.tx_hash;
+      if (data.error) {
+        return ToastUtils.pushToastError('invalidAddress', data.error.message);
+      }
+      // return data.result.tx_hash;
     }
   }
 

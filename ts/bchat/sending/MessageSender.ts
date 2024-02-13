@@ -63,7 +63,7 @@ export function getMinRetryTimeout() {
 }
 
 /**
- * Send a message via service nodes.
+ * Send a message via master nodes.
  *
  * @param message The message to send.
  * @param attempts The amount of times to attempt sending. Minimum value is 1.

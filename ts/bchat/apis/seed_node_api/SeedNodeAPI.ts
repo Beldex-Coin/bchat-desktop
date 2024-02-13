@@ -64,8 +64,6 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
 
 
   switch (seedNodeHost) {
-
-
     case 'publicnode1.rpcnode.stream':
       certContent = Buffer.from(storageSeed1Crt, 'utf-8').toString();
       pubkey256 =
@@ -74,22 +72,31 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
       cert256 =
         '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F'
       // '67:AD:D1:16:6B:02:0A:E6:1B:8F:5F:C9:68:13:C0:4C:2A:A5:89:96:07:96:86:55:72:A3:C7:E7:37:61:3D:FD'
-
       break;
-
     case 'publicnode2.rpcnode.stream':
       certContent = Buffer.from(storageSeed3Crt, 'utf-8').toString();
       pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
       cert256 =
         '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F';
-
       break;
     case 'publicnode3.rpcnode.stream':
       certContent = Buffer.from(publicBeldexFoundationCtr, 'utf-8').toString();
       pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
       cert256 =
         '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F';
-
+      break;
+    case 'publicnode4.rpcnode.stream':
+      certContent = Buffer.from(publicBeldexFoundationCtr, 'utf-8').toString();
+      pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
+      cert256 =
+        '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F';
+      break;
+    case 'publicnode5.rpcnode.stream':
+      console.log(storageSeed3Crt, storageSeed1Crt)
+      certContent = Buffer.from(publicBeldexFoundationCtr, 'utf-8').toString();
+      pubkey256 = 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=';
+      cert256 =
+        '6D:99:FB:26:5E:B1:C5:B3:74:47:65:FC:BC:64:8F:3C:D8:E1:BF:FA:FD:C4:C2:F9:9B:9D:47:CF:7F:F1:C2:4F';
       break;
 
     default:
@@ -237,6 +244,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
 
   const params = {
     active_only: true,
+    ours_only: true,
     fields: {
       public_ip: true,
       storage_port: true,
@@ -274,7 +282,6 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
 
 
   const response = await insecureNodeFetch(url, fetchOptions);
-
   if (response.status !== 200) {
     window?.log?.error(
       `beldex_mnode_api:::getSnodesFromSeedUrl - invalid response from seed ${urlObj.toString()}:`,
