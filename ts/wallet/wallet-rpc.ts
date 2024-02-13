@@ -181,6 +181,7 @@ class Wallet {
         `${walletDir}/bchat`,
         '--log-file',
         `${walletDir}/bchat/logs/wallet-rpc.log`,
+        '--trusted-daemon'
       ];
       if (window.networkType == 'testnet') {
         option.push('--testnet');
