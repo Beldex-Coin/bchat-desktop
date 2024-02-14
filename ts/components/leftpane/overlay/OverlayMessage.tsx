@@ -40,8 +40,7 @@ export const OverlayMessage = () => {
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-  
-    if ( !pubkeyOrOns||pubkeyOrOns.length!==66) {
+    if ((!pubkeyOrOns || pubkeyOrOns.length !== 66) && !pubkeyOrOns.includes('.bdx')) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
