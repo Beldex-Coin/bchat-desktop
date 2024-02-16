@@ -526,7 +526,7 @@ class Wallet {
           },
         };
 
-        const types = ['in', 'out', 'pending', 'failed'];
+        const types = ['in', 'out', 'pending', 'failed','bns'];
         // 'pool', 'miner', 'mnode', 'gov', 'stake'];
         types.forEach(type => {
           if (data.result.hasOwnProperty(type)) {

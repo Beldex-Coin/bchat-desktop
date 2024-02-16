@@ -350,7 +350,7 @@
   "linkDevice": "Poveži urežaj",
   "restoreUsingRecoveryPhrase": "Povratite svoj nalog",
   "or": "ili",
-  "ByUsingThisService...": "Korišćenjem ove usluge prihvatate naše <a href=\"https://bchat.beldex.io/terms-and-conditions\">uslove korišćenja</a> i <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">politiku privatnosti</a>",
+  "ByUsingThisMaster...": "Korišćenjem ove usluge prihvatate naše <a href=\"https://bchat.beldex.io/terms-and-conditions\">uslove korišćenja</a> i <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">politiku privatnosti</a>",
   "beginYourBchat": "Pokrenite svoju sesiju.",
   "welcomeToYourBchat": "Dobrodošli na vašu sesiju",
   "newBchat": "Nova sеsija",
@@ -463,5 +463,6 @@
   "answeredACall": "Poziv sa $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

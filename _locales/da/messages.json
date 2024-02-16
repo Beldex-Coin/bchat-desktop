@@ -350,7 +350,7 @@
   "linkDevice": "Sammenkæd enhed",
   "restoreUsingRecoveryPhrase": "Gendan din konto",
   "or": "eller",
-  "ByUsingThisService...": "Ved at bruge denne tjeneste accepterer du vores <a href=\"https://bchat.beldex.io/terms-and-conditions\">Servicevilkår</a> og <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privatlivspolitik</a>",
+  "ByUsingThisMaster...": "Ved at bruge denne tjeneste accepterer du vores <a href=\"https://bchat.beldex.io/terms-and-conditions\">Servicevilkår</a> og <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privatlivspolitik</a>",
   "beginYourBchat": "Begynd din BChat.",
   "welcomeToYourBchat": "Velkommen til BChat",
   "newBchat": "Ny BChat",
@@ -463,5 +463,6 @@
   "answeredACall": "Call with $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

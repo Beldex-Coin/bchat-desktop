@@ -4,7 +4,7 @@ import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 export const TermsAndConditions = () => {
   return (
     <div className="bchat-terms-conditions-agreement">
-      <BchatHtmlRenderer html={window.i18n('ByUsingThisService...')} />
+      <BchatHtmlRenderer html={window.i18n('ByUsingThisMaster...')} />
     </div>
   );
 };

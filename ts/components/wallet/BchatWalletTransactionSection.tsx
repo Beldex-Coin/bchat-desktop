@@ -83,6 +83,7 @@ export const TransactionSection = (props: any) => {
 
   const TransactionIndication = (props: any) => {
     const { type } = props;
+    console.log("type.................:", type)
     let item: any = {
       iconType: 'payRecieved',
       iconColor: '#128b17',
@@ -98,6 +99,11 @@ export const TransactionSection = (props: any) => {
         (item.iconType = 'pendingTransaction'),
           (item.iconColor = '#FDB12A'),
           (item.type = window.i18n('pending'));
+        break;
+      case 'bns':
+        (item.iconType = 'bnsTransaction'),
+          (item.iconColor = "var(--color-bns-transaction)"),
+          (item.type = window.i18n('bns'));
         break;
       case 'failed':
         (item.iconType = 'error'),
@@ -131,10 +137,10 @@ export const TransactionSection = (props: any) => {
     let data =
       filteredTransaction.length > 0
         ? filteredTransaction.filter(
-            (item: any) =>
-              String(item.amount / 1e9).includes(searchText.toLowerCase()) ||
-              item.txid.toLowerCase().includes(searchText.toLowerCase())
-          )
+          (item: any) =>
+            String(item.amount / 1e9).includes(searchText.toLowerCase()) ||
+            item.txid.toLowerCase().includes(searchText.toLowerCase())
+        )
         : [];
     setData(data);
   }

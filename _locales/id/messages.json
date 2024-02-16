@@ -350,7 +350,7 @@
   "linkDevice": "Tautkan perangkat",
   "restoreUsingRecoveryPhrase": "Kembalikan akun",
   "or": "or",
-  "ByUsingThisService...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
+  "ByUsingThisMaster...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Welcome to your BChat",
   "newBchat": "BChat baru",
@@ -463,5 +463,6 @@
   "answeredACall": "Call with $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }
