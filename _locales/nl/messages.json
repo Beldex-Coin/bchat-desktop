@@ -350,7 +350,7 @@
   "linkDevice": "Koppel een apparaat",
   "restoreUsingRecoveryPhrase": "Herstel je account",
   "or": "of",
-  "ByUsingThisService...": "Door gebruik te maken van deze service, gaat u akkoord met onze <a href=\"https://bchat.beldex.io/terms-and-conditions\">Gebruiksvoorwaarden</a> en <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
+  "ByUsingThisMaster...": "Door gebruik te maken van deze service, gaat u akkoord met onze <a href=\"https://bchat.beldex.io/terms-and-conditions\">Gebruiksvoorwaarden</a> en <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
   "beginYourBchat": "Begin je sessie.",
   "welcomeToYourBchat": "Welkom bij BChat",
   "newBchat": "Nieuwe sessie",
@@ -463,5 +463,6 @@
   "answeredACall": "Bel met $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

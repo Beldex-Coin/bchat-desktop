@@ -161,10 +161,11 @@ const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
 const darkCopyHover = '#008C04';
 const darkAddressBookCopy = '#009D17';
-const darkBgModalColor="rgba(0, 0, 0, 0.8)";
+const darkBgModalColor = "rgba(0, 0, 0, 0.8)";
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
+const darkBnsTransactionColor = '#FFFFFF';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -392,6 +393,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
   document.documentElement.style.setProperty('--color-leave-button', darkLeaveHover);
+  document.documentElement.style.setProperty('--color-bns-transaction', darkBnsTransactionColor);
 };
 
 // LIGHT COLORS
@@ -538,6 +540,7 @@ const lightAddMembers = '#F2F2F2';
 const lightProfileClose = '#DDDDDD';
 const lightChattimestamp = '#222222';
 const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
+const lightBnsTransactionColor = '#222222';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -768,6 +771,7 @@ export const switchHtmlToLightTheme = () => {
 
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', lightWalDownThickArrow);
+  document.documentElement.style.setProperty('--color-bns-transaction', lightBnsTransactionColor);
 };
 
 // default to light theme
@@ -904,6 +908,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-leave-button:${darkLeaveHover};
     --color-text:${darkColorText};
     --color-BgModalColor:${darkBgModalColor};
+    --color-bns-transaction:${darkBnsTransactionColor};
   
     
 

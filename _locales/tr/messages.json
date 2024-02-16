@@ -350,7 +350,7 @@
   "linkDevice": "Cihaz Bağla",
   "restoreUsingRecoveryPhrase": "Hesabını geri yükle",
   "or": "veya",
-  "ByUsingThisService...": "Bu hizmeti kullanarak, <a href=\"https://bchat.beldex.io/terms-and-conditions\">Hizmet Şartlarımızı\n</a> ve <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\"> Gizlilik Politikamızı kabul etmiş sayılırsınız</a>",
+  "ByUsingThisMaster...": "Bu hizmeti kullanarak, <a href=\"https://bchat.beldex.io/terms-and-conditions\">Hizmet Şartlarımızı\n</a> ve <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\"> Gizlilik Politikamızı kabul etmiş sayılırsınız</a>",
   "beginYourBchat": "BChat'ını başlat.",
   "welcomeToYourBchat": "BChat'a hoşgeldiniz",
   "newBchat": "Yeni BChat",
@@ -463,5 +463,6 @@
   "answeredACall": "$name$ ile ara",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }
