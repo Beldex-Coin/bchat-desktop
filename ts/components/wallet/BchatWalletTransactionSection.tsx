@@ -83,7 +83,6 @@ export const TransactionSection = (props: any) => {
 
   const TransactionIndication = (props: any) => {
     const { type } = props;
-    console.log("type.................:", type)
     let item: any = {
       iconType: 'payRecieved',
       iconColor: '#128b17',
