@@ -75,7 +75,7 @@ export const SendForm = (props: any) => {
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
-    if ((address.length > 106 || address.length < 95) && !address.endsWith('.bdx')) {
+    if ((address.length > 106 || address.length < 95) && !address.includes('.bdx')) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     if (props.amount == 0) {
