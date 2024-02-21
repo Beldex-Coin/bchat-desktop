@@ -27,7 +27,7 @@ export const SendForm = (props: any) => {
   const dispatch = useDispatch();
   const [address, setAddress] = useState(sendAddress);
   // const [dropDown, setDropDown] = useState(false);
-  const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+  const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || 'Flash';
 
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
@@ -66,23 +66,21 @@ export const SendForm = (props: any) => {
   async function addressValidation() {
     // console.log("netConnetion()",netConnetion())
     if (!window.globalOnlineStatus) {
-      ToastUtils.pushToastError(
-        'internetConnectionError',
-        'Please check your internet connection'
-      );
-      return
+      ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
+      return;
     }
+
     if (props.amount > walletDetails.unlocked_balance / 1e9) {
       return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
     }
-    if ((address.length > 106 || address.length < 95) && !address.includes('.bdx')) {
+    if ((address.length > 106 || address.length < 95) && !address.toLowerCase().endsWith('.bdx')) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     if (props.amount == 0) {
       return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
     }
     let addressValidate = await wallet.validateAddres(address);
-    if (!address.includes('.bdx') && !addressValidate) {
+    if (!address.toLowerCase().endsWith('.bdx') && !addressValidate) {
       return ToastUtils.pushToastError('invalidAddress', 'Invalid address');
     }
     !BchatSendConfirmState && sendConfirmModal();
@@ -195,7 +193,7 @@ export const SendForm = (props: any) => {
                     />
                   </span> */}
                 </div>
-{/* 
+                {/* 
                 {dropDown && (
                   <div style={{ position: 'relative' }}>
                     <div className="wallet-settings-nodeSetting-sendDropDown">
