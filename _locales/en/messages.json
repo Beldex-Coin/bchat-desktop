@@ -424,7 +424,7 @@
   "invalidRestoreDate": "Invalid restore date",
   "signIn": "Restore account",
   "or": "or",
-  "ByUsingThisService...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
+  "ByUsingThisMaster...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Display Name",
   "welcome": "Hi,Welcome to BChat",
@@ -573,5 +573,6 @@
   "noFailedTransaction": "There are no failed transactions ",
   "walletSyncingDiscription": "Your wallet is currently syncing",
   "searchEmptyTransaction":"No transactions found.",
-  "NodeTestResult":"Test Result"
+  "NodeTestResult":"Test Result",
+  "bns":"Bns"
 }

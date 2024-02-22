@@ -350,7 +350,7 @@
   "linkDevice": "关联设备",
   "restoreUsingRecoveryPhrase": "恢复您的帐号",
   "or": "或者",
-  "ByUsingThisService...": "通过使用此服务，您同意我们的 <a href=\"https://bchat.beldex.io/terms-and-conditions\">服务条款</a> 和 <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">隐私政策</a>",
+  "ByUsingThisMaster...": "通过使用此服务，您同意我们的 <a href=\"https://bchat.beldex.io/terms-and-conditions\">服务条款</a> 和 <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">隐私政策</a>",
   "beginYourBchat": "开始<您的会话。",
   "welcomeToYourBchat": "欢迎来到 BChat 。",
   "newBchat": "新建私人聊天",
@@ -463,5 +463,6 @@
   "answeredACall": "与 $name$ 通话",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

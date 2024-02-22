@@ -350,7 +350,7 @@
   "linkDevice": "Link Device",
   "restoreUsingRecoveryPhrase": "ගිණුම ප්‍රත්‍යර්පණය කරන්න",
   "or": "හෝ",
-  "ByUsingThisService...": "මෙම සේවාව භාවිතා කිරීමෙන්, ඔබ අපගේ <a href=\"https://bchat.beldex.io/terms-and-conditions\">සේවාවේ කොන්දේසි</a> සහ <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">රහස්‍යතා ප්‍රතිපත්තිය</a> ට එකඟ වේ",
+  "ByUsingThisMaster...": "මෙම සේවාව භාවිතා කිරීමෙන්, ඔබ අපගේ <a href=\"https://bchat.beldex.io/terms-and-conditions\">සේවාවේ කොන්දේසි</a> සහ <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">රහස්‍යතා ප්‍රතිපත්තිය</a> ට එකඟ වේ",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Welcome to your BChat",
   "newBchat": "New BChat",
@@ -396,7 +396,7 @@
   "notificationForConvo_disabled": "අබල කර ඇත",
   "notificationForConvo_mentions_only": "Mentions Only",
   "onionPathIndicatorTitle": "Path",
-  "onionPathIndicatorDescription": "BChat hides your IP by bouncing your messages through several Service Nodes in BChat's decentralized network. These are the countries your connection is currently being bounced through:",
+  "onionPathIndicatorDescription": "BChat hides your IP by bouncing your messages through several Master Nodes in BChat's decentralized network. These are the countries your connection is currently being bounced through:",
   "unknownCountry": "නොදන්නා රටකි",
   "device": "උපාංගය",
   "destination": "Destination",
@@ -463,5 +463,6 @@
   "answeredACall": "Call with $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

@@ -350,7 +350,7 @@
   "linkDevice": "Koppel een apparaat",
   "restoreUsingRecoveryPhrase": "Herstel je account",
   "or": "of",
-  "ByUsingThisService...": "Door gebruik te maken van deze service, gaat u akkoord met onze <a href=\"https://bchat.beldex.io/terms-and-conditions\">Gebruiksvoorwaarden</a> en <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
+  "ByUsingThisMaster...": "Door gebruik te maken van deze service, gaat u akkoord met onze <a href=\"https://bchat.beldex.io/terms-and-conditions\">Gebruiksvoorwaarden</a> en <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Privacy Policy</a>",
   "beginYourBchat": "Begin je sessie.",
   "welcomeToYourBchat": "Welkom bij BChat",
   "newBchat": "Nieuwe sessie",
@@ -396,7 +396,7 @@
   "notificationForConvo_disabled": "Gedeactiveerd",
   "notificationForConvo_mentions_only": "Alleen vermeldingen,",
   "onionPathIndicatorTitle": "Pad",
-  "onionPathIndicatorDescription": "BChat verbergt uw IP door uw berichten te verzenden via meerdere Service Nodes in het gedecentraliseerde BChat netwerk. Uw verbinding wordt momenteel verzonden via deze landen:",
+  "onionPathIndicatorDescription": "BChat verbergt uw IP door uw berichten te verzenden via meerdere Master Nodes in het gedecentraliseerde BChat netwerk. Uw verbinding wordt momenteel verzonden via deze landen:",
   "unknownCountry": "Onbekend land",
   "device": "Apparaat",
   "destination": "Bestemming",
@@ -420,7 +420,7 @@
   "dialogClearAllDataDeletionFailedTitle": "Gegevens niet verwijderd",
   "dialogClearAllDataDeletionFailedDesc": "Gegevens niet verwijderd door een onbekende fout. Wilt je gegevens verwijderen van alleen dit apparaat?",
   "dialogClearAllDataDeletionFailedTitleQuestion": "Wilt je gegevens verwijderen van alleen dit apparaat?",
-  "dialogClearAllDataDeletionFailedMultiple": "Gegevens niet verwijderd door deze Service Nodes: $snodes$",
+  "dialogClearAllDataDeletionFailedMultiple": "Gegevens niet verwijderd door deze Master Nodes: $snodes$",
   "dialogClearAllDataDeletionQuestion": "Wilt je alleen dit apparaat, of uw hele account verwijderen?",
   "deviceOnly": "Alleen apparaat",
   "entireAccount": "Gehele account",
@@ -463,5 +463,6 @@
   "answeredACall": "Bel met $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

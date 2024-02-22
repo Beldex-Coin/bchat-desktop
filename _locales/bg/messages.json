@@ -288,7 +288,7 @@
   "unlock": "Открыть",
   "password": "Password",
   "setPassword": "Set Password",
-  "oldPasswordAndNewPasswordSame":"Please enter a password that you have not used before.",
+  "oldPasswordAndNewPasswordSame": "Please enter a password that you have not used before.",
   "changePassword": "Change Password",
   "removePassword": "Remove Password",
   "maxPasswordAttempts": "Invalid Password. Would you like to reset the database?",
@@ -351,7 +351,7 @@
   "linkDevice": "Привязать устройство",
   "restoreUsingRecoveryPhrase": "Восстановите свой аккаунт",
   "or": "or",
-  "ByUsingThisService...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
+  "ByUsingThisMaster...": "<a href=\"https://bchat.beldex.io/terms-and-conditions\">Terms of Service</a>",
   "beginYourBchat": "Begin your BChat.",
   "welcomeToYourBchat": "Welcome to your BChat",
   "newBchat": "Новый Диалог",
@@ -397,7 +397,7 @@
   "notificationForConvo_disabled": "Disabled",
   "notificationForConvo_mentions_only": "Mentions Only",
   "onionPathIndicatorTitle": "Path",
-  "onionPathIndicatorDescription": "BChat hides your IP by bouncing your messages through several Service Nodes in Beldex decentralized network. These are the countries your connection is currently being bounced through:",
+  "onionPathIndicatorDescription": "BChat hides your IP by bouncing your messages through several Master Nodes in Beldex decentralized network. These are the countries your connection is currently being bounced through:",
   "unknownCountry": "Unknown Country",
   "device": "You",
   "destination": "Destination",
@@ -464,5 +464,6 @@
   "answeredACall": "Call with $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }

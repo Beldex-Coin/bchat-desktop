@@ -19,7 +19,7 @@ import { perfEnd, perfStart } from '../bchat/utils/Performance';
  * 1. The User selects whatever attachments he wants to send with the system file handler.
  * 2. We generate a preview if possible just to use it in the Composition Box Staged attachments list (preview of attachments scheduled for sending with the next message)
  * 3. During that preview generation, we also autoscale images if possible and make sure the orientation is right.
- * 4. If autoscale is not possible, we make sure the size of each attachments is fine with the service nodes limit. Otherwise, a toast is shown and the attachment is not added.
+ * 4. If autoscale is not possible, we make sure the size of each attachments is fine with the master nodes limit. Otherwise, a toast is shown and the attachment is not added.
  * 5. When autoscale is possible, we make sure that the scaled size is OK for the services nodes already
  * 6. We do not keep those autoscaled attachments in memory for now, just the previews are kept in memory and the original filepath.
  *

@@ -235,7 +235,7 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
-window.networkType = 'mainnet';
+window.networkType = 'testnet';
 
 if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
@@ -244,11 +244,15 @@ if (window.networkType == 'mainnet') {
         'https://publicnode1.rpcnode.stream:443',
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
+        'https://publicnode4.rpcnode.stream:443',
+        'https://publicnode5.rpcnode.stream:443',
       ]
       : [
         'https://publicnode1.rpcnode.stream:443',
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
+        'https://publicnode4.rpcnode.stream:443',
+        'https://publicnode5.rpcnode.stream:443',
       ];
 
   const remotes = [

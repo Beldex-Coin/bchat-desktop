@@ -350,7 +350,7 @@
   "linkDevice": "Conectează-te cu un alt dispozitiv",
   "restoreUsingRecoveryPhrase": "Recuperează-ți contul",
   "or": "sau",
-  "ByUsingThisService...": "Utilizând acest serviciu, ești de acord cu <a href=\"https://bchat.beldex.io/terms-and-conditions\">Termenii și condițiile</a> și cu <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Politica de confidențialitate</a>",
+  "ByUsingThisMaster...": "Utilizând acest serviciu, ești de acord cu <a href=\"https://bchat.beldex.io/terms-and-conditions\">Termenii și condițiile</a> și cu <a href=\"https://bchat.beldex.io/privacy-policy/\" target=\"_blank\">Politica de confidențialitate</a>",
   "beginYourBchat": "Începe sesiunea.",
   "welcomeToYourBchat": "Bine ai venit pe BChat",
   "newBchat": "Sesiune nouă",
@@ -463,5 +463,6 @@
   "answeredACall": "Apel cu $name$",
   "trimDatabase": "Trim Database",
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
-  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?"
+  "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
+  "bns": "Bns"
 }
