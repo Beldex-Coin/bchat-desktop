@@ -244,7 +244,7 @@ export const SendForm = (props: any) => {
             <div className="wallet-sendForm-inputBox">
               <input
                 value={address}
-                placeholder="Enter Beldex address"
+                placeholder="Enter Beldex address or BNS Name"
                 onChange={(e: any) => {
                   setAddress(e.target.value);
                 }}
