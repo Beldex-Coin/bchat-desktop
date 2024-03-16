@@ -992,11 +992,16 @@ export const {
 export async function openConversationWithMessages(args: {
   conversationKey: string;
   messageId: string | null;
+  bns?: string | undefined | null;
 }) {
-  const { conversationKey, messageId } = args;
+  //
+  const { conversationKey, messageId, bns } = args;
   const firstUnreadIdOnOpen = await getFirstUnreadMessageIdInConversation(conversationKey);
   const mostRecentMessageIdOnOpen = await getLastMessageIdInConversation(conversationKey);
-
+  if(bns)
+  {
+    savebnsname(conversationKey,bns)
+  }
   const initialMessages = await getMessages({
     conversationKey,
     messageId: messageId || null,
@@ -1011,6 +1016,22 @@ export async function openConversationWithMessages(args: {
     })
   );
 }
+
+  /**
+   * Saves the currently entered nickname.
+   */
+  const savebnsname = async ( conversationKey: string,displayName: any) => {
+    if (!conversationKey) {
+      throw new Error('Cant save without conversation id');
+    }
+    const conversation = await getConversationController().get(conversationKey);
+    if(conversation.getBchatProfile()?.displayName)
+    {
+      return  ;
+    }
+     await conversation.setBchatProfile({ displayName });
+    
+  };
 
 export async function openConversationToSpecificMessage(args: {
   conversationKey: string;

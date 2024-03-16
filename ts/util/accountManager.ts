@@ -170,24 +170,15 @@ async function registrationDone(ourPubkey: string, displayName: string, deamonHe
   window?.log?.info('registration done');
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
-  window?.log?.info('registration done 0 ::', ourPubkey);
   // let userDetails= await getConversationById(ourPubkey)
   // Ensure that we always have a conversation for ourself
   const conversation = await getConversationController().getOrCreateAndWait(
     ourPubkey,
     ConversationTypeEnum.PRIVATE
   );
-  window?.log?.info('registration done 1 ::', conversation);
-
-  window?.log?.info('registration done 2 ::', displayName);
-
   await conversation.setBchatProfile({ displayName });
-  window?.log?.info('registration done 3 ::', ourPubkey);
-
   await conversation.setIsApproved(true);
-  window?.log?.info('registration done 4 ::', ourPubkey);
   await conversation.setDidApproveMe(true);
-  window?.log?.info('registration done 5 ::', ourPubkey);
   await conversation.setwalletCreatedDaemonHeight(deamonHeight);
 
   await conversation.commit();
@@ -195,8 +186,6 @@ async function registrationDone(ourPubkey: string, displayName: string, deamonHe
     ourNumber: getOurPubKeyStrFromCache(),
     ourPrimary: ourPubkey,
   };
-  window?.log?.info('registration done 5 ::', user);
-
   window.inboxStore?.dispatch(userActions.userChanged(user));
   await Registration.markDone();
   window?.log?.info('dispatching registration event');

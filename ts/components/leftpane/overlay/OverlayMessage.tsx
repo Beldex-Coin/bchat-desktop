@@ -66,8 +66,8 @@ export const OverlayMessage = () => {
           resolvedBchatID,
           ConversationTypeEnum.PRIVATE
         );
-
-        await openConversationWithMessages({ conversationKey: resolvedBchatID, messageId: null });
+        // bns:pubkeyorOnsTrimmed 
+        await openConversationWithMessages({ conversationKey: resolvedBchatID, messageId: null, bns:pubkeyorOnsTrimmed });
 
         closeOverlay();
       } catch (e) {
