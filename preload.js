@@ -256,12 +256,7 @@ if (window.networkType == 'mainnet') {
       ];
 
   const remotes = [
-    {
-      host: 'mainnet.beldex.io',
-      port: '29095',
-      active: 0,
-      type: 'Remote',
-    },
+   
     {
       host: 'publicnode1.rpcnode.stream',
       port: '29095',
@@ -289,12 +284,6 @@ if (window.networkType == 'mainnet') {
     {
       host: 'publicnode5.rpcnode.stream',
       port: '29095',
-      active: 0,
-      type: 'Remote',
-    },
-    {
-      host: 'explorer.beldex.io',
-      port: '19091',
       active: 0,
       type: 'Remote',
     },

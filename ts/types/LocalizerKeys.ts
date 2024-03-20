@@ -31,6 +31,7 @@ export type LocalizerKeys =
   | 'blocksRemaining'
   | 'recipientAddress'
   | 'transactionFee'
+  | 'paymentID'
   | 'dateTime'
   | 'remoteDaemonOnly'
   | 'localDaemonOnly'
