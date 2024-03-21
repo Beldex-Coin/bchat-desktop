@@ -66,8 +66,7 @@ export const OverlayMessage = () => {
           resolvedBchatID,
           ConversationTypeEnum.PRIVATE
         );
-
-        await openConversationWithMessages({ conversationKey: resolvedBchatID, messageId: null });
+        await openConversationWithMessages({ conversationKey: resolvedBchatID, messageId: null, bns:pubkeyorOnsTrimmed });
 
         closeOverlay();
       } catch (e) {
@@ -94,10 +93,12 @@ export const OverlayMessage = () => {
         dataTestId="new-bchat-conversation"
         // onPressEnter={handleMessageButtonClick}
       />
-
-      <BchatSpinner loading={loading} />
-
-
+      {loading && (
+        <div className="module-left-pane-overlay-loadingWrapper">
+          <BchatSpinner loading={true} />
+        </div>
+      )}
+      
       <p className="module-left-pane__subHeader" style={{marginBottom:"10px"}}>Your BChat ID</p>
       <div className="bchat-description-long">Share your BChat ID with your friends. You can find your BChat ID below</div>
       <BchatIdEditable

@@ -101,7 +101,7 @@ export const TransactionSection = (props: any) => {
         break;
       case 'bns':
         (item.iconType = 'bnsTransaction'),
-          (item.iconColor = "var(--color-bns-transaction)"),
+          (item.iconColor = 'var(--color-bns-transaction)'),
           (item.type = window.i18n('bns'));
         break;
       case 'failed':
@@ -136,10 +136,10 @@ export const TransactionSection = (props: any) => {
     let data =
       filteredTransaction.length > 0
         ? filteredTransaction.filter(
-          (item: any) =>
-            String(item.amount / 1e9).includes(searchText.toLowerCase()) ||
-            item.txid.toLowerCase().includes(searchText.toLowerCase())
-        )
+            (item: any) =>
+              String(item.amount / 1e9).includes(searchText.toLowerCase()) ||
+              item.txid.toLowerCase().includes(searchText.toLowerCase())
+          )
         : [];
     setData(data);
   }
@@ -375,7 +375,7 @@ export const TransactionSection = (props: any) => {
                           ></article>
                           {recip.address && (
                             <div
-                              style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '57%' }}
+                              style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '49%' }}
                               className="wallet-Transaction-recipitentBox-adddressBox"
                             >
                               <div className="">{window.i18n('recipientAddress')}</div>
@@ -393,6 +393,17 @@ export const TransactionSection = (props: any) => {
                               {item.fee / 1e9} BDX
                             </article>
                           </section>
+
+                          {item.payment_id != '0000000000000000' && (
+                          <section style={{ marginLeft: '20px' }}>
+                            <article className="wallet-Transaction-recipitentBox-transactionFee-header">
+                              {window.i18n('paymentID')}
+                            </article>
+                            <article className="wallet-Transaction-recipitentBox-transactionFee-text">
+                              {item.payment_id}
+                            </article>
+                          </section>
+                        )}
                         </Flex>
 
                         <section
