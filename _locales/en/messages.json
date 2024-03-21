@@ -164,6 +164,7 @@
   "resend": "Resend",
   "recipientAddress": "Recipient address",
   "transactionFee": "Transaction fee",
+   "paymentID":"Payment ID",
   "dateTime": "Date & Time",
   "enterSeed":"Enter Seed",
   "deleteConversationConfirmation": "Permanently delete the messages in this conversation?",
