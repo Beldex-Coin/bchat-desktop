@@ -146,7 +146,7 @@ const sendMessageStyle = {
   input: {
     overflow: 'auto',
     maxHeight: '60px',
-    wordBreak: 'break-word',
+    // wordBreak: 'break-word',
     padding: '0px',
     margin: '0px',
   },
