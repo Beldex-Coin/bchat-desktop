@@ -1044,6 +1044,12 @@ export async function handleCallTypeOffer(
       await handleMissedCall(sender, incomingOfferTimestamp, 'not-approved');
       return;
     }
+    
+        // if the offer is more than the call timeout, don't try to handle it (as the sender would have already closed it)
+        if (incomingOfferTimestamp <= Date.now() - callTimeoutMs) {
+          await handleMissedCall(sender, incomingOfferTimestamp, 'too-old-timestamp');
+          return;
+        }
 
     if (currentCallUUID && currentCallUUID !== remoteCallUUID) {
       // we just got a new offer with a different callUUID. this is a missed call (from either the same sender or another one)
@@ -1110,7 +1116,7 @@ export async function handleCallTypeOffer(
 export async function handleMissedCall(
   sender: string,
   incomingOfferTimestamp: number,
-  reason: 'not-approved' | 'permissions' | 'another-call-ongoing'
+  reason: 'not-approved' | 'permissions' | 'another-call-ongoing'| 'too-old-timestamp'
 ) {
   const incomingCallConversation = getConversationController().get(sender);
 
@@ -1128,6 +1134,9 @@ export async function handleMissedCall(
       break;
     case 'not-approved':
       ToastUtils.pushedMissedCallNotApproved(displayname);
+      break;
+      case 'too-old-timestamp':
+      //no toast for this case, the missed call notification is enough
       break;
     default:
   }
