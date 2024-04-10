@@ -307,7 +307,7 @@
 
     textarea {
       font-family: $bchat-font-default;
-      min-height: $composition-container-height / 3;
+      min-height: calc($composition-container-height / 3);
       max-height: 3 * $composition-container-height;
       margin-right: $bchat-margin-md;
       color: var(--color-text);

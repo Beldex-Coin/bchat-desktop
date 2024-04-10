@@ -391,7 +391,7 @@
     }
 
     &-clear {
-      background: url('images/bchat/clear.svg no-repeat') no-repeat;
+      background: url('../images/bchat/clear.svg') no-repeat;
       width: 10px;
       height: 10px;
       position: absolute;
@@ -507,7 +507,7 @@
   &-terms-conditions-agreement {
     // padding-top: $bchat-margin-md;
     padding-left: 12px;
-    @include bchat-color-subtle(var(white));
+    @include bchat-color-subtle(#fff);
     text-align: center;
     font-size: 12px;
     // font-family: $bchat-font-poppins-bold;

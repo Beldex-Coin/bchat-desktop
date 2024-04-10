@@ -20,6 +20,12 @@
       "optimize": true,
       "sourceMap": false,
       "context": "web-worker"
+    },
+    "sass": {
+      "source": "stylesheets/manifest.scss",
+      "distDir": "dist",
+      "optimize": true,
+      "sourceMap": true
     }
   },
   "scripts": {
@@ -29,7 +35,7 @@
     "grunt": "yarn clean && yarn protobuf && grunt && yarn sass && tsc && yarn parcel-util-worker",
     "generate": "yarn grunt --force",
     "build-release": "run-script-os",
-    "build-release-non-linux": "yarn generate && cross-env SIGNAL_ENV=production electron-builder --config.extraMetadata.environment=production --publish=never --config.directories.output=release",
+    "build-release-non-linux": "yarn sass && yarn generate && cross-env SIGNAL_ENV=production electron-builder --config.extraMetadata.environment=production --publish=never --config.directories.output=release",
     "build-release:win32": "yarn build-release-non-linux",
     "build-release:macos": "yarn build-release-non-linux",
     "build-release:linux": "yarn sedtoDeb; yarn build-release-non-linux && yarn sedtoAppImage && yarn build-release-non-linux && yarn sedtoDeb",
@@ -40,8 +46,8 @@
     "build-release-publish:linux": "yarn sedtoDeb; yarn build-release-publish-non-linux && yarn sedtoAppImage && yarn build-release-publish-non-linux && yarn sedtoDeb",
     "appImage": "yarn sedtoAppImage; yarn build-release-non-linux; yarn sedtoDeb",
     "protobuf": "pbjs --target static-module --wrap commonjs --out ts/protobuf/compiled.js protos/*.proto && pbts --out ts/protobuf/compiled.d.ts ts/protobuf/compiled.js --force-long",
-    "sass": "rimraf 'stylesheets/dist/' && parcel build --target sass --no-autoinstall --no-cache",
-    "sass:watch": "rimraf 'stylesheets/dist/' && parcel watch --target sass --no-autoinstall --no-cache",
+    "sass": "rimraf 'dist' && parcel build --target sass --no-autoinstall",
+    "sass:watch": "parcel watch --target sass",
     "test": "mocha --globals=Worker -r jsdom-global/register --recursive --exit --timeout 10000  \"./ts/test/**/*_test.js\" ",
     "lint-full": "yarn format-full && eslint . && tslint --format stylish --project .",
     "format-full": "prettier --list-different --write \"*.{css,js,json,scss,ts,tsx}\" \"./**/*.{css,js,json,scss,ts,tsx}\"",
@@ -50,12 +56,13 @@
     "integration-test": "npx playwright test",
     "integration-test-snapshots": "npx playwright test -g 'profile picture' --update-snapshots",
     "clean": "rimraf 'ts/**/*.js' 'ts/*.js' 'ts/*.js.map' 'ts/**/*.js.map' && rimraf tsconfig.tsbuildinfo;",
-    "ready": "yarn grunt && yarn lint-full && yarn test",
+    "ready": "yarn sass && yarn grunt && yarn lint-full && yarn test",
     "sedtoAppImage": "sed -i 's/\"target\": \\[\"deb\", \"rpm\", \"freebsd\"\\]/\"target\": \"AppImage\"/g' package.json",
     "sedtoDeb": "sed -i 's/\"target\": \"AppImage\"/\"target\": \\[\"deb\", \"rpm\", \"freebsd\"\\]/g' package.json",
     "parcel-util-worker": "rimraf ts/webworker/workers/util.worker.js && parcel build --target util-worker --no-autoinstall --no-cache"
   },
   "dependencies": {
+    "@parcel/transformer-sass": "^2.12.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@types/portscanner": "^2.1.1",
     "@types/promise-queue": "^2.2.0",
@@ -98,7 +105,7 @@
     "mustache": "2.3.0",
     "nan": "2.14.2",
     "node-fetch": "2.3.0",
-    "node-sass": "6.0.1",
+   
     "os-locale": "5.0.0",
     "p-retry": "^4.2.0",
     "pify": "3.0.0",
@@ -134,6 +141,7 @@
     "reselect": "4.0.0",
     "rimraf": "2.6.2",
     "sanitize.css": "^12.0.1",
+    "sass": "^1.74.1",
     "semver": "5.4.1",
     "styled-components": "5.1.1",
     "uuid": "3.3.2"
@@ -293,8 +301,6 @@
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
       "target": [
         "deb",
-        "rpm",
-        "freebsd",
         "AppImage"
       ]
     },
@@ -326,7 +332,7 @@
       "js/**",
       "ts/**/*.js",
       "ts/*.js",
-      "stylesheets/*.css",
+      "dist/**",
       "!js/register.js",
       "js/views/standalone_registration_view.js",
       "preload.js",

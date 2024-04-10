@@ -2,7 +2,6 @@ node_modules
 .parcel-cache
 .sass-cache
 .eslintcache
-stylesheets/*.css.map
 /dist
 .DS_Store
 config/local.json
@@ -17,8 +16,6 @@ sql/
 bin/*
 !bin/.gitkeep
 
-# generated files
-stylesheets/*.css
 
 # React / TypeScript
 ts/**/*.js
