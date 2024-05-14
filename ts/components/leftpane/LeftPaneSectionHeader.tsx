@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -31,6 +31,10 @@ import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
+// import { getConversationController } from '../../bchat/conversations';
+// import { ConversationTypeEnum } from '../../models/conversation';
+// import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import ReactTooltip from 'react-tooltip';
 
 // const SectionTitle = styled.h1`
@@ -46,6 +50,8 @@ export const LeftPaneSectionHeader = () => {
   const overlayMode = useSelector(getOverlayMode);
   const bChatId = useSelector(getOurNumber);
   const dispatch = useDispatch();
+
+  const [selectedFruit, setSelectedFruit] = useState('false'); 
 
   let label: string | undefined;
 
@@ -75,6 +81,49 @@ export const LeftPaneSectionHeader = () => {
       label = 'BChat';
   }
 
+  async function printlog()
+  {
+    isLinkedBchatIDWithBnsForDeamon()
+  // console.log('conversation data 0 ----->')
+  
+
+  
+
+  // //  const conversation = await getConversationController().getOrCreateAndWait(
+  // //   bChatId,ConversationTypeEnum.PRIVATE
+    
+  // // );
+  // const conversation =getConversationController().get(
+  //   getOurPubKeyStrFromCache()
+    
+  // );
+  // console.log('conversation data ----->',conversation)
+  }
+  // async function updatebnsholder(e:any)
+  // {
+  //   setSelectedFruit(e.target.value)
+  //   console.log('updatebnsholder ----------->')
+  //   const conversation = await getConversationController().getOrCreateAndWait(
+  //     bChatId,ConversationTypeEnum.PRIVATE
+      
+  //   );
+  //   console.log('updatebnsholder 0----------->',conversation.attributes.isBnsHolder);
+  //   let conditon=false
+  //   if(e.target.value ==='true' )
+  //   {
+  //     conditon=true
+  //   }
+  //   console.log('updatebnsholder 1----------->',conditon);
+
+  //   console.log('set value ->>>>>>>>>>>',e.target.value,conditon)
+    
+  //   await conversation.setIsBnsHolder(conditon);
+
+  //   const conversation_1 = getConversationController().get(
+  //     getOurPubKeyStrFromCache()   
+  //   );
+  //   console.log('updatebnsholder 2----------->', getOurPubKeyStrFromCache(),conversation_1.attributes.isBnsHolder);
+  // }
   function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
     const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
@@ -185,7 +234,15 @@ export const LeftPaneSectionHeader = () => {
         )}
 
         <div className="">{verifyScreens()}</div>
-
+       <button onClick={()=>printlog()}>convo</button>
+       <input
+      value={selectedFruit} // ...force the select's value to match the state variable...
+      onChange={e => setSelectedFruit(e.target.value)} // ... and update the state variable on any change!
+    />
+   
+      
+  
+       {/* <button onClick={()=>updatebnsholder()}>updatetag</button> */}
         <div className="module-left-pane__header__title">{label}</div>
         {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />

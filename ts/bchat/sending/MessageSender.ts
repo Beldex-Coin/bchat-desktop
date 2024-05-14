@@ -84,7 +84,7 @@ export async function send(
         networkTimestamp,
       } = overwriteOutgoingTimestampWithNetworkTimestamp(message);
 
-      const { envelopeType, cipherText } = await MessageEncrypter.encrypt(
+      const { envelopeType, cipherText,isBnsHolder } = await MessageEncrypter.encrypt(
         recipient,
         overRiddenTimestampBuffer,
         encryption
@@ -94,10 +94,13 @@ export async function send(
         envelopeType,
         recipient.key,
         networkTimestamp,
-        cipherText
-      );
+        cipherText,
+        isBnsHolder
 
+      );
+console.log ('send envolope --------->',envelope)
       const data = wrapEnvelope(envelope);
+      console.log("send wrap envolepe -------->",data)
       // make sure to update the local sent_at timestamp, because sometimes, we will get the just pushed message in the receiver side
       // before we return from the await below.
       // and the isDuplicate messages relies on sent_at timestamp to be valid.
@@ -139,6 +142,7 @@ export async function sendMessageToSnode(
   const swarm = await getSwarmFor(pubKey);
 
   const conversation = getConversationController().get(pubKey);
+  console.log('sendMessageToSnode --------->',conversation)
   const isClosedGroup = conversation?.isClosedGroup();
 
   const hardfork190Happened = await getHasSeenHF170();
@@ -162,6 +166,8 @@ export async function sendMessageToSnode(
     isSyncMessage, // I don't think that's of any use
     messageId, // I don't think that's of any use
     namespace,
+    // isBnsHolder:false
+
   };
 
   const usedNodes = _.slice(swarm, 0, DEFAULT_CONNECTIONS);
@@ -230,7 +236,8 @@ async function buildEnvelope(
   type: SignalService.Envelope.Type,
   sskSource: string | undefined,
   timestamp: number,
-  content: Uint8Array
+  content: Uint8Array,
+  isBnsHolder?:boolean
 ): Promise<SignalService.Envelope> {
   let source: string | undefined;
 
@@ -238,11 +245,13 @@ async function buildEnvelope(
     source = sskSource;
   }
 
+  console.log('isBnsHolder dum',isBnsHolder)
   return SignalService.Envelope.create({
     type,
     source,
     timestamp,
     content,
+    isBnsHolder,
   });
 }
 

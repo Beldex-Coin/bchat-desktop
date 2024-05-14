@@ -122,6 +122,7 @@ export interface ConversationAttributes {
   didApproveMe: boolean;
   walletAddress?: any;
   walletCreatedDaemonHeight?: number | any;
+  isBnsHolder?:Boolean;
 }
 
 export interface ConversationAttributesOptionals {
@@ -165,6 +166,7 @@ export interface ConversationAttributesOptionals {
   walletAddress?: any;
   walletUserName?: string | null | any;
   walletCreatedDaemonHeight?: number | null | any;
+  isBnsHolder?:Boolean;
 }
 
 /**
@@ -198,6 +200,7 @@ export const fillConvoAttributesWithDefaults = (
     walletAddress: null,
     walletUserName: null,
     walletCreatedDaemonHeight: null,
+    isBnsHolder:false,
   });
 };
 
@@ -367,6 +370,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const walletAddress = this.isWalletAddress();
     const walletUserName = this.getProfileName();
     const walletCreatedDaemonHeight = this.getwalletCreatedDaemonHeight();
+    const isBnsHolder=this.bnsHolder()
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
     const zombies = this.isGroup() && !isPublic ? this.get('zombies') : [];
@@ -399,6 +403,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       activeAt: this.get('active_at'),
       type: isPrivate ? ConversationTypeEnum.PRIVATE : ConversationTypeEnum.GROUP,
     };
+    console.log('isBnsHolder---------->',isBnsHolder)
+    toRet.isBnsHolder =isBnsHolder ;
 
     if (isPrivate) {
       toRet.isPrivate = true;
@@ -511,7 +517,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (walletCreatedDaemonHeight) {
       toRet.walletCreatedDaemonHeight = walletCreatedDaemonHeight;
     }
-
     return toRet;
   }
 
@@ -1347,6 +1352,16 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       await this.commit();
     }
   }
+  public async setIsBnsHolder(value: Boolean, shouldCommit: boolean = true) {
+    window?.log?.info(`Setting ${ed25519Str(this.id)} setIsBnsHolder to: ${value}`);
+    this.set({
+      isBnsHolder: value,
+    });
+
+    if (shouldCommit) {
+      await this.commit();
+    }
+  }
 
   public async setSubscriberCount(count: number) {
     if (this.get('subscriberCount') !== count) {
@@ -1509,6 +1524,13 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
   public isWalletAddress() {
     return this.attributes.walletAddress;
+  }
+  public bnsHolder() {
+    if (!this.isPrivate()) {
+      return false;
+    }
+    console.log('bnsHolder ------------>',Boolean(this.get('isBnsHolder')), this.attributes)
+    return Boolean(this.get('isBnsHolder'));
   }
   public isPrivate() {
     return this.get('type') === ConversationTypeEnum.PRIVATE;

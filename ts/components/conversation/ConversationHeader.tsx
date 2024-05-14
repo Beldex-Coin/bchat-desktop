@@ -304,6 +304,7 @@ const ConversationHeaderTitle = () => {
 
   const conversation: any = useSelector(getSelectedConversation);
   // console.log("convertion header 7::",conversation)
+  
 
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
@@ -330,7 +331,6 @@ const ConversationHeaderTitle = () => {
 
     // return <div className="module-conversation-header__title">{window.i18n('noteToSelf')}</div>;
     return <div className="module-conversation-header__title">Note to Self</div>;
-
   }
   // console.log("convertion header 13::",headerTitleProps)
 
@@ -372,7 +372,8 @@ const ConversationHeaderTitle = () => {
       role="button"
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
-        {convoName}
+        {convoName} 
+        {!isGroup &&conversation.isBnsHolder && <span className='module-contact-name-bns-tag '>Bns</span>}
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -411,15 +412,21 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 export const ConversationHeaderWithDetails = () => {
   const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
-  const selectedConvoKey = useSelector(getSelectedConversationKey);
+  const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
   const conversation = useSelector(getSelectedConversation);
   const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
   const dispatch = useDispatch();
-   const displayConnectWalletBtn=chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && conversation?.isApproved && conversation?.didApproveMe 
+  const displayConnectWalletBtn =
+    chatwithWallet &&
+    !WalletSyncBarShowInChat &&
+    conversation?.type == 'private' &&
+    conversation?.isApproved &&
+    conversation?.didApproveMe;
 
+  console.log('ConversationHeaderWithDetails............', conversation);
   if (!selectedConvoKey) {
     return null;
   }
@@ -439,6 +446,15 @@ export const ConversationHeaderWithDetails = () => {
   //     // return;
   //   // }
   // }
+  async function printlog() {
+    console.log('conversation data 0 ----->');
+    const conversation = await getConversationController().getOrCreateAndWait(
+      selectedConvoKey,
+      ConversationTypeEnum.PRIVATE
+    );
+    // await conversation.setIsBnsHolder(false)
+    console.log('conversation data ----->', conversation);
+  }
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -451,6 +467,8 @@ export const ConversationHeaderWithDetails = () => {
         <ConversationHeaderMenu triggerId={triggerId} />
         <div style={{ width: '100%' }}>
           <Flex container={true} flexDirection="row" alignItems="center">
+            {/* <div> */}
+
             <AvatarHeader
               onAvatarClick={() => {
                 dispatch(openRightPanel());
@@ -458,17 +476,18 @@ export const ConversationHeaderWithDetails = () => {
               pubkey={selectedConvoKey}
               showBackButton={isMessageDetailOpened}
             />
+            {/* <span>BNS</span>
+            </div> */}
             <ConversationHeaderTitle />
-
-            { displayConnectWalletBtn && <div
-              className='connectWalletBtn'
-              onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-            >
-              <BchatIcon iconType='wallet' iconSize={"tiny"} iconColor='white' />
-              <div>
-                {window.i18n('connectWallet')}
-              </div>
-              {/* <BchatButtonIcon
+            <button onClick={() => printlog()}>get convo</button>
+            {displayConnectWalletBtn && (
+              <div
+                className="connectWalletBtn"
+                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              >
+                <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
+                <div>{window.i18n('connectWallet')}</div>
+                {/* <BchatButtonIcon
                 name={window.i18n('connectWallet')}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
@@ -480,8 +499,8 @@ export const ConversationHeaderWithDetails = () => {
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
               // disabled={!caption}
               /> */}
-            </div>
-            }
+              </div>
+            )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}

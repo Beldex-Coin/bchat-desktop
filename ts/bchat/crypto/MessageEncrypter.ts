@@ -7,9 +7,16 @@ import { getLatestClosedGroupEncryptionKeyPair } from '../../data/data';
 import { UserUtils } from '../utils';
 import { addMessagePadding } from './BufferPadding';
 
+import { getConversationController } from '../conversations';
+// import { ConversationTypeEnum } from '../../models/conversation';
+import { getOurPubKeyStrFromCache } from '../utils/User';
+// import { getOurNumber } from '../../state/selectors/user';
+// import { useSelector } from 'react-redux';
+
 type EncryptResult = {
   envelopeType: SignalService.Envelope.Type;
   cipherText: Uint8Array;
+  isBnsHolder?: boolean;
 };
 
 /**
@@ -26,11 +33,11 @@ export async function encrypt(
   encryptionType: SignalService.Envelope.Type
 ): Promise<EncryptResult> {
   const { CLOSED_GROUP_MESSAGE, BCHAT_MESSAGE } = SignalService.Envelope.Type;
-
+  // const bChatId = useSelector(getOurNumber);
   if (encryptionType !== CLOSED_GROUP_MESSAGE && encryptionType !== BCHAT_MESSAGE) {
     throw new Error(`Invalid encryption type:${encryptionType}`);
   }
-
+  console.log('device ------------>', getOurPubKeyStrFromCache());
   const encryptForClosedGroup = encryptionType === CLOSED_GROUP_MESSAGE;
   const plainText = addMessagePadding(plainTextBuffer);
 
@@ -56,8 +63,15 @@ export async function encrypt(
     };
   }
   const cipherText = await MessageEncrypter.encryptUsingBchatProtocol(device, plainText);
+  // const conversation=
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  console.log('encrypt ----------->', conversation.attributes.isBnsHolder,conversation?.attributes?.isBnsHolder ? true : false);
 
-  return { envelopeType: BCHAT_MESSAGE, cipherText };
+  return {
+    envelopeType: BCHAT_MESSAGE,
+    cipherText,
+    isBnsHolder: conversation?.attributes?.isBnsHolder ? true : false ,
+  };
 }
 
 export async function encryptUsingBchatProtocol(
@@ -81,13 +95,12 @@ export async function encryptUsingBchatProtocol(
   const userED25519SecretKeyBytes = fromHexToArray(userED25519KeyPairHex.privKey);
 
   // const walletAddress="bxdis3VF318i2QDjvqwoG9GyfP4sVjTvwZyf1JGLNFyTJ8fbtBgzW6ieyKnpbMw5bU9dggbAiznaPGay96WAmx1Z2B32B86PE";
-  let walletAddress :any = localStorage.getItem("userAddress");
+  let walletAddress: any = localStorage.getItem('userAddress');
 
   let utf8Encode = new TextEncoder();
 
   const beldexWalletAddress = utf8Encode.encode(walletAddress);
   const walletAddressConCatPlaintext = concatUInt8Array(beldexWalletAddress, plaintext);
-
 
   // merge all arrays into one
   const verificationData = concatUInt8Array(
@@ -101,7 +114,11 @@ export async function encryptUsingBchatProtocol(
     throw new Error("Couldn't sign message");
   }
 
-  const plaintextWithMetadata = concatUInt8Array(walletAddressConCatPlaintext, userED25519PubKeyBytes, signature);
+  const plaintextWithMetadata = concatUInt8Array(
+    walletAddressConCatPlaintext,
+    userED25519PubKeyBytes,
+    signature
+  );
 
   const ciphertext = sodium.crypto_box_seal(plaintextWithMetadata, recipientX25519PublicKey);
   if (!ciphertext) {

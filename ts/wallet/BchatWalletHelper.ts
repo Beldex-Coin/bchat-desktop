@@ -1,9 +1,9 @@
-
 import request from 'request-promise';
 // import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
-import { ToastUtils } from '../bchat/utils';
-
+import { ToastUtils, UserUtils } from '../bchat/utils';
+import { daemon } from '../wallet/daemon-rpc';
+import { getConversationController } from '../bchat/conversations';
 
 export async function workingStatusForDeamon(currentdeamon: any, type?: string) {
   try {
@@ -33,6 +33,27 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
   }
 }
 
+async function setIsBnsHolder(value: Boolean) {
+  const conversation = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
+  await conversation.setIsBnsHolder(value);
+}
+
+export async function isLinkedBchatIDWithBnsForDeamon() {
+  const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: 'aarman.bdx' });
+  const ourNumber = UserUtils.getOurPubKeyStrFromCache();
+  console.log(
+    'isValidDetail ------------->',
+    isValidDetail,
+    ourNumber,
+    isValidDetail?.result?.bchat_value
+  );
+  let isholder = false;
+  if (ourNumber === isValidDetail?.result?.bchat_value) {
+    isholder = true;
+  }
+  setIsBnsHolder(isholder);
+}
+
 export async function deamonvalidation() {
   let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
   let getcurrentWorkingDeamon = window.getSettingValue('current-deamon');
@@ -45,16 +66,12 @@ export async function deamonvalidation() {
   }
   const deamonStatus = await workingStatusForDeamon(currentDaemon);
   if (deamonStatus.status === 'OK') {
-   
-
     window.setSettingValue('current-deamon', currentDaemon);
     // await wallet.startWallet('settings');
   } else {
-
     for (let index = 0; index < list_deamon.length; index++) {
       const deamonStatus = await workingStatusForDeamon(list_deamon[index]);
       if (deamonStatus.status === 'OK') {
-       
         window.setSettingValue('current-deamon', currentDaemon);
         // await wallet.startWallet('settings');
         break;
@@ -72,5 +89,4 @@ export function loadFiatCurrency() {
   if (!window.getSettingValue('fiat-currency')) {
     window.setSettingValue('fiat-currency', 'USD');
   }
-
 }
