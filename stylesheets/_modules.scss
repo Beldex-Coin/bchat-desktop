@@ -339,6 +339,11 @@
     text-overflow: ellipsis;
     padding-top: 3px;
   }
+ 
+
+
+}
+.module-left-pane__header,.module-conversation-header__title {
   .module-contact-name-bns-tag {
     font-weight: bold;
     background-color: white;
@@ -354,8 +359,6 @@
     border-radius: 3px;
     margin-left: 5px;
   }
-
-
 }
 
 .module-conversation-header__expiration {

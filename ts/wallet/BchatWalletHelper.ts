@@ -36,10 +36,16 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
 async function setIsBnsHolder(value: Boolean) {
   const conversation = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
   await conversation.setIsBnsHolder(value);
+  console.log('successfully set the ' + value);
 }
 
-export async function isLinkedBchatIDWithBnsForDeamon() {
-  const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: 'aarman.bdx' });
+export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
+  const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
+  console.log(' ourBnsName ourBnsName -------->', ourBnsName);
+  if (!ourBnsName) {
+    return;
+  }
+  const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: ourBnsName });
   const ourNumber = UserUtils.getOurPubKeyStrFromCache();
   console.log(
     'isValidDetail ------------->',
@@ -50,6 +56,14 @@ export async function isLinkedBchatIDWithBnsForDeamon() {
   let isholder = false;
   if (ourNumber === isValidDetail?.result?.bchat_value) {
     isholder = true;
+    window.setLocalValue('ourBnsName', ourBnsName);
+    ToastUtils.pushToastSuccess('successfully added', 'Successfully added bns tag in our profile');
+  } else {
+    ToastUtils.pushToastError(
+      'invalid',
+      isValidDetail?.error?.message || 'your bns name and id not matched,try another one'
+    );
+    window.setLocalValue('ourBnsName', '');
   }
   setIsBnsHolder(isholder);
 }

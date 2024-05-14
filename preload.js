@@ -176,6 +176,16 @@ window.setSettingValue = async (settingID, value) => {
   await Storage.put(settingID, value);
 };
 
+
+window.getLocalValue = (localId) => {
+  const bchatVal = Storage.get(localId);
+  return bchatVal;
+};
+window.setLocalValue = async (localId, value) => {
+  // For auto updating we need to pass the value to the main process
+  await Storage.put(localId, value);
+};
+
 window.getMediaPermissions = () => ipc.sendSync('get-media-permissions');
 window.setMediaPermissions = value => {
   ipc.send('set-media-permissions', !!value);
@@ -235,8 +245,8 @@ window.React = require('react');
 window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
-window.networkType = 'mainnet';
-
+// window.networkType = 'mainnet';
+window.networkType = 'testnet';
 if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'

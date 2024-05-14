@@ -31,10 +31,11 @@ import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
-// import { getConversationController } from '../../bchat/conversations';
+import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
+import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
 // const SectionTitle = styled.h1`
@@ -51,7 +52,7 @@ export const LeftPaneSectionHeader = () => {
   const bChatId = useSelector(getOurNumber);
   const dispatch = useDispatch();
 
-  const [selectedFruit, setSelectedFruit] = useState('false'); 
+  const [bnsName, setBnsName] = useState('');
 
   let label: string | undefined;
 
@@ -59,7 +60,8 @@ export const LeftPaneSectionHeader = () => {
   const isMessageRequestOverlay = overlayMode === 'message-requests';
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
-
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  console.log('LeftPaneSectionHeader----------------->',conversation?.attributes?.isBnsHolder)
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -67,7 +69,7 @@ export const LeftPaneSectionHeader = () => {
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
       break;
-      case SectionType.Wallet:
+    case SectionType.Wallet:
       label = window.i18n('wallet');
       break;
     case SectionType.Message:
@@ -81,31 +83,27 @@ export const LeftPaneSectionHeader = () => {
       label = 'BChat';
   }
 
-  async function printlog()
-  {
-    isLinkedBchatIDWithBnsForDeamon()
-  // console.log('conversation data 0 ----->')
-  
+  async function printlog() {
+    isLinkedBchatIDWithBnsForDeamon(bnsName);
+    // console.log('conversation data 0 ----->')
 
-  
+    // //  const conversation = await getConversationController().getOrCreateAndWait(
+    // //   bChatId,ConversationTypeEnum.PRIVATE
 
-  // //  const conversation = await getConversationController().getOrCreateAndWait(
-  // //   bChatId,ConversationTypeEnum.PRIVATE
-    
-  // // );
-  // const conversation =getConversationController().get(
-  //   getOurPubKeyStrFromCache()
-    
-  // );
-  // console.log('conversation data ----->',conversation)
+    // // );
+    // const conversation =getConversationController().get(
+    //   getOurPubKeyStrFromCache()
+
+    // );
+    // console.log('conversation data ----->',conversation)
   }
   // async function updatebnsholder(e:any)
   // {
-  //   setSelectedFruit(e.target.value)
+  //   setbnsName(e.target.value)
   //   console.log('updatebnsholder ----------->')
   //   const conversation = await getConversationController().getOrCreateAndWait(
   //     bChatId,ConversationTypeEnum.PRIVATE
-      
+
   //   );
   //   console.log('updatebnsholder 0----------->',conversation.attributes.isBnsHolder);
   //   let conditon=false
@@ -116,11 +114,11 @@ export const LeftPaneSectionHeader = () => {
   //   console.log('updatebnsholder 1----------->',conditon);
 
   //   console.log('set value ->>>>>>>>>>>',e.target.value,conditon)
-    
+
   //   await conversation.setIsBnsHolder(conditon);
 
   //   const conversation_1 = getConversationController().get(
-  //     getOurPubKeyStrFromCache()   
+  //     getOurPubKeyStrFromCache()
   //   );
   //   console.log('updatebnsholder 2----------->', getOurPubKeyStrFromCache(),conversation_1.attributes.isBnsHolder);
   // }
@@ -145,12 +143,26 @@ export const LeftPaneSectionHeader = () => {
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <Avatar
-          size={AvatarSize.M}
-          onAvatarClick={() => dispatch(editProfileModal({}))}
-          pubkey={bChatId}
-          dataTestId="leftpane-primary-avatar"
-        />
+        <div style={{ position: 'relative' }}>
+          <Avatar
+            size={AvatarSize.M}
+            onAvatarClick={() => dispatch(editProfileModal({}))}
+            pubkey={bChatId}
+            dataTestId="leftpane-primary-avatar"
+          />
+         {!!conversation?.attributes?.isBnsHolder &&  <div
+            style={{
+              position: 'absolute',
+              width: '27px',
+              height: '16px',
+              left: '-4px',
+              top: '-1px',
+              boxShadow: '4px 7px 5px black',
+            }}
+          >
+            <span className="module-contact-name-bns-tag ">Bns</span>
+            </div>}
+        </div>
       );
     } else {
       return (
@@ -201,7 +213,7 @@ export const LeftPaneSectionHeader = () => {
 
   function Settings() {
     return (
-      <span style={{ marginRight: '15px',marginTop:'8px' }}>
+      <span style={{ marginRight: '15px', marginTop: '8px' }}>
         <BchatIconButton
           iconSize="large"
           iconType="walletSetting"
@@ -234,15 +246,19 @@ export const LeftPaneSectionHeader = () => {
         )}
 
         <div className="">{verifyScreens()}</div>
-       <button onClick={()=>printlog()}>convo</button>
-       <input
-      value={selectedFruit} // ...force the select's value to match the state variable...
-      onChange={e => setSelectedFruit(e.target.value)} // ... and update the state variable on any change!
-    />
-   
-      
-  
-       {/* <button onClick={()=>updatebnsholder()}>updatetag</button> */}
+
+        <div>
+          <input
+            style={{ width: '130px' }}
+            value={bnsName} // ...force the select's value to match the state variable...
+            onChange={e => setBnsName(e.target.value)} // ... and update the state variable on any change!
+            placeholder="enter your bdx"
+          />
+
+          <button onClick={() => printlog()}>submit</button>
+        </div>
+
+        {/* <button onClick={()=>updatebnsholder()}>updatetag</button> */}
         <div className="module-left-pane__header__title">{label}</div>
         {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
@@ -259,9 +275,9 @@ export const LeftPaneSectionHeader = () => {
             data-offset="{'right':60}"
             data-place="bottom"
           > */}
-            {/* <div className='addContactIcon'></div> */}
-            {/* <img className="addContactIcon" /> */}
-          {/* </div>
+        {/* <div className='addContactIcon'></div> */}
+        {/* <img className="addContactIcon" /> */}
+        {/* </div>
         )} */}
       </div>
       <BchatToolTip effect="solid" />

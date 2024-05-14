@@ -33,11 +33,11 @@ export async function encrypt(
   encryptionType: SignalService.Envelope.Type
 ): Promise<EncryptResult> {
   const { CLOSED_GROUP_MESSAGE, BCHAT_MESSAGE } = SignalService.Envelope.Type;
-  // const bChatId = useSelector(getOurNumber);
+
   if (encryptionType !== CLOSED_GROUP_MESSAGE && encryptionType !== BCHAT_MESSAGE) {
     throw new Error(`Invalid encryption type:${encryptionType}`);
   }
-  console.log('device ------------>', getOurPubKeyStrFromCache());
+
   const encryptForClosedGroup = encryptionType === CLOSED_GROUP_MESSAGE;
   const plainText = addMessagePadding(plainTextBuffer);
 

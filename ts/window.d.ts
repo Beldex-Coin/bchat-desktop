@@ -32,7 +32,8 @@ declare global {
     dcodeIO: any;
     getSettingValue: (id: string, comparisonValue?: any) => any;
     setSettingValue: (id: string, value: any) => void;
-
+    getLocalValue: (id: string) => any;
+    setLocalValue: (id: string, value: any) => void;
     i18n: LocalizerType;
     log: any;
     bchatFeatureFlags: {
@@ -45,7 +46,7 @@ declare global {
     restart: any;
     getSeedNodeList: () => Array<string> | undefined;
     getDaemonNodeRandomlyPick: () => Object;
-    networkType : string;
+    networkType: string;
     currentDaemon: any;
     setPassword: any;
     storage: any;
@@ -104,6 +105,6 @@ declare global {
 
     Signal: any;
     WalletAddress: any;
-    deamon_list:any;
+    deamon_list: any;
   }
 }

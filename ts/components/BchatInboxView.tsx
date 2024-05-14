@@ -34,6 +34,7 @@ import { initialWalletSectionState } from '../state/ducks/walletSection';
 import { initialDaemonState } from '../state/ducks/daemon';
 import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
 import { initialWalletConfigState } from '../state/ducks/walletConfig';
+import { isLinkedBchatIDWithBnsForDeamon } from '../wallet/BchatWalletHelper';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -60,6 +61,7 @@ export class BchatInboxView extends React.Component<any, State> {
 
   public componentDidMount() {
     this.setupLeftPane();
+    isLinkedBchatIDWithBnsForDeamon();
   }
 
   public render() {
