@@ -61,7 +61,6 @@ export const LeftPaneSectionHeader = () => {
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
-  console.log('LeftPaneSectionHeader----------------->',conversation?.attributes?.isBnsHolder)
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -85,43 +84,8 @@ export const LeftPaneSectionHeader = () => {
 
   async function printlog() {
     isLinkedBchatIDWithBnsForDeamon(bnsName);
-    // console.log('conversation data 0 ----->')
-
-    // //  const conversation = await getConversationController().getOrCreateAndWait(
-    // //   bChatId,ConversationTypeEnum.PRIVATE
-
-    // // );
-    // const conversation =getConversationController().get(
-    //   getOurPubKeyStrFromCache()
-
-    // );
-    // console.log('conversation data ----->',conversation)
   }
-  // async function updatebnsholder(e:any)
-  // {
-  //   setbnsName(e.target.value)
-  //   console.log('updatebnsholder ----------->')
-  //   const conversation = await getConversationController().getOrCreateAndWait(
-  //     bChatId,ConversationTypeEnum.PRIVATE
-
-  //   );
-  //   console.log('updatebnsholder 0----------->',conversation.attributes.isBnsHolder);
-  //   let conditon=false
-  //   if(e.target.value ==='true' )
-  //   {
-  //     conditon=true
-  //   }
-  //   console.log('updatebnsholder 1----------->',conditon);
-
-  //   console.log('set value ->>>>>>>>>>>',e.target.value,conditon)
-
-  //   await conversation.setIsBnsHolder(conditon);
-
-  //   const conversation_1 = getConversationController().get(
-  //     getOurPubKeyStrFromCache()
-  //   );
-  //   console.log('updatebnsholder 2----------->', getOurPubKeyStrFromCache(),conversation_1.attributes.isBnsHolder);
-  // }
+  
   function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
     const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
@@ -254,11 +218,8 @@ export const LeftPaneSectionHeader = () => {
             onChange={e => setBnsName(e.target.value)} // ... and update the state variable on any change!
             placeholder="enter your bdx"
           />
-
           <button onClick={() => printlog()}>submit</button>
         </div>
-
-        {/* <button onClick={()=>updatebnsholder()}>updatetag</button> */}
         <div className="module-left-pane__header__title">{label}</div>
         {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />

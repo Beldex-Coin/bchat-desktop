@@ -536,10 +536,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
-    // console.log('selectedConversation :: ', selectedConversation)
-
     const re = /^\d+\.?\d*$/;
-    // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
       <>
         {selectedConversation?.type === 'private' && selectedConversation?.isApproved
@@ -577,9 +574,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
     const { draft } = this.state;
     const getSyncStatus = window.getSettingValue('syncStatus');
-
     const re = /^\d+\.?\d*$/;
-    // console.log('beldex btn ::', this.chatwithWallet && WalletSyncBarShowInChat,this.chatwithWallet , WalletSyncBarShowInChat)
     return (
       <>
         {selectedConversation?.type === 'private' &&
@@ -605,8 +600,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { typingEnabled } = this.props;
     const { selectedConversation, isMe } = this.props;
     // const {WalletSyncBarShowInChat}=this.props
-    // console.log('isMe ::',selectedConversation?.isPrivate && !isMe,selectedConversation?.isPrivate,isMe);
-
     return (
       <>
         {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}

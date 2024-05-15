@@ -19,7 +19,6 @@ export const MessageStatus = (props: Props) => {
   if (!selected) {
     return null;
   }
-  // console.log('MessageStatusMessageStatus ::',selected)
   const { status, direction } = selected;
 
   if (!isCorrectSide) {

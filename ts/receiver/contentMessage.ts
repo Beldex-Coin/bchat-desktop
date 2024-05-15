@@ -40,9 +40,6 @@ export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageH
       return;
     }
     const sentAtTimestamp = _.toNumber(envelope.timestamp);
-    console.log('envolope ---------------->', envelope);
-    console.log('plaintext -------------->', plaintext);
-
     await innerHandleSwarmContentMessage(envelope, sentAtTimestamp, plaintext, messageHash);
   } catch (e) {
     window?.log?.warn(e);
@@ -409,10 +406,7 @@ export async function innerHandleSwarmContentMessage(
       isPrivateConversationMessage ? envelope.source : envelope.senderIdentity,
       ConversationTypeEnum.PRIVATE
     );
-    console.log('senderConversationModel before----------->', senderConversationModel.attributes.isBnsHolder,envelope.source, envelope.senderIdentity );
-
     senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
-    console.log('senderConversationModel after----------->', senderConversationModel.attributes.isBnsHolder,envelope.source, envelope.senderIdentity);
     /**
      * For a closed group message, this holds the closed group's conversation.
      * For a private conversation message, this is just the conversation with that user

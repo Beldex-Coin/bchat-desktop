@@ -789,7 +789,6 @@ export const getMessagePropsByMessageId = createSelector(
     const foundMessageProps: SortedMessageModelProps | undefined = messages?.find(
       m => m?.propsForMessage?.id === id
     );
-
     if (!foundMessageProps || !foundMessageProps.propsForMessage.convoId) {
       return undefined;
     }

@@ -403,7 +403,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       activeAt: this.get('active_at'),
       type: isPrivate ? ConversationTypeEnum.PRIVATE : ConversationTypeEnum.GROUP,
     };
-    console.log('isBnsHolder---------->',isBnsHolder)
     toRet.isBnsHolder =isBnsHolder ;
 
     if (isPrivate) {
@@ -1529,7 +1528,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (!this.isPrivate()) {
       return false;
     }
-    console.log('bnsHolder ------------>',Boolean(this.get('isBnsHolder')), this.attributes)
     return Boolean(this.get('isBnsHolder'));
   }
   public isPrivate() {

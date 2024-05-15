@@ -31,7 +31,6 @@ export const MessageContentWithStatuses = (props: Props) => {
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
   const dispatch = useDispatch();
-//  console.log('MessageContentWithStatuses ::',contentProps,props)
   const multiSelectMode = useSelector(isMessageSelectionMode);
 
   const onClickOnMessageOuterContainer = useCallback(
@@ -68,8 +67,6 @@ export const MessageContentWithStatuses = (props: Props) => {
     return null;
   }
   const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload } = contentProps;
-  // console.log("isDeleted isDeleted::",isDeleted);
-  
   const isIncoming = direction === 'incoming';
 
   return (

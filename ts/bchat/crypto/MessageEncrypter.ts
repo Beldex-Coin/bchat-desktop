@@ -65,7 +65,6 @@ export async function encrypt(
   const cipherText = await MessageEncrypter.encryptUsingBchatProtocol(device, plainText);
   // const conversation=
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
-  console.log('encrypt ----------->', conversation.attributes.isBnsHolder,conversation?.attributes?.isBnsHolder ? true : false);
 
   return {
     envelopeType: BCHAT_MESSAGE,

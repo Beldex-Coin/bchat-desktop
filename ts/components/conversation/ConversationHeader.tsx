@@ -284,56 +284,28 @@ export type ConversationHeaderTitleProps = {
 };
 
 const ConversationHeaderTitle = () => {
-  // console.log("convertion header 1::")
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
-  // console.log("convertion header 2::",headerTitleProps)
-
-  // const notificationSetting = useSelector(getCurrentNotificationSettingText);
   const isRightPanelOn = useSelector(isRightPanelShowing);
-  // console.log("convertion header 3::",isRightPanelOn)
-
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-  // console.log("convertion header 4::",convoName)
-
   const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
-  // console.log("convertion header 5::",convoProps)
-
   const conversationKey: any = useSelector(getSelectedConversationKey);
-  // console.log("convertion header 6::",conversationKey)
-
   const conversation: any = useSelector(getSelectedConversation);
-  // console.log("convertion header 7::",conversation)
-  
-
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
       conversationKey
     );
   }
-  // console.log("convertion header 8::",displayedName)
-
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return null;
   }
-  // console.log("convertion header 9::",activeAt)
-
   const { isGroup, isPublic, members, subscriberCount, isMe, isKickedFromGroup } = headerTitleProps;
-  // console.log("convertion header 10::",headerTitleProps)
-
   const { i18n } = window;
-  // console.log("convertion header 11::",isMe)
-
   if (isMe) {
-    // console.log("convertion header 12::",isMe)
-
-    // return <div className="module-conversation-header__title">{window.i18n('noteToSelf')}</div>;
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
-  // console.log("convertion header 13::",headerTitleProps)
-
   let memberCount = 0;
   if (isGroup) {
     if (isPublic) {
@@ -342,7 +314,6 @@ const ConversationHeaderTitle = () => {
       memberCount = members.length;
     }
   }
-  // console.log("convertion header 14::",headerTitleProps)
 
   const SubTxt = styled.div`
     font-size: 11px;
@@ -425,8 +396,6 @@ export const ConversationHeaderWithDetails = () => {
     conversation?.type == 'private' &&
     conversation?.isApproved &&
     conversation?.didApproveMe;
-
-  console.log('ConversationHeaderWithDetails............', conversation);
   if (!selectedConvoKey) {
     return null;
   }
@@ -446,15 +415,7 @@ export const ConversationHeaderWithDetails = () => {
   //     // return;
   //   // }
   // }
-  async function printlog() {
-    console.log('conversation data 0 ----->');
-    const conversation = await getConversationController().getOrCreateAndWait(
-      selectedConvoKey,
-      ConversationTypeEnum.PRIVATE
-    );
-    // await conversation.setIsBnsHolder(false)
-    console.log('conversation data ----->', conversation);
-  }
+
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -467,19 +428,15 @@ export const ConversationHeaderWithDetails = () => {
         <ConversationHeaderMenu triggerId={triggerId} />
         <div style={{ width: '100%' }}>
           <Flex container={true} flexDirection="row" alignItems="center">
-            {/* <div> */}
-
             <AvatarHeader
               onAvatarClick={() => {
                 dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
               showBackButton={isMessageDetailOpened}
-            />
-            {/* <span>BNS</span>
-            </div> */}
+            />   
             <ConversationHeaderTitle />
-            <button onClick={() => printlog()}>get convo</button>
+           
             {displayConnectWalletBtn && (
               <div
                 className="connectWalletBtn"

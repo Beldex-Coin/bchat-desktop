@@ -98,9 +98,7 @@ export async function send(
         isBnsHolder
 
       );
-console.log ('send envolope --------->',envelope)
       const data = wrapEnvelope(envelope);
-      console.log("send wrap envolepe -------->",data)
       // make sure to update the local sent_at timestamp, because sometimes, we will get the just pushed message in the receiver side
       // before we return from the await below.
       // and the isDuplicate messages relies on sent_at timestamp to be valid.
@@ -142,7 +140,6 @@ export async function sendMessageToSnode(
   const swarm = await getSwarmFor(pubKey);
 
   const conversation = getConversationController().get(pubKey);
-  console.log('sendMessageToSnode --------->',conversation)
   const isClosedGroup = conversation?.isClosedGroup();
 
   const hardfork190Happened = await getHasSeenHF170();
@@ -245,7 +242,6 @@ async function buildEnvelope(
     source = sskSource;
   }
 
-  console.log('isBnsHolder dum',isBnsHolder)
   return SignalService.Envelope.create({
     type,
     source,

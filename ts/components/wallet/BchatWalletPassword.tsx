@@ -88,28 +88,19 @@ export const WalletPassword = (props: any) => {
       profileName = UserDetails[userId].profileName;
     }
     setLoading(true);
-    // console.log('profileName ::', profileName, password);
     let openWallet: any = await wallet.openWallet(profileName, password);
-    // console.log('openWallet pass:', openWallet);
     if (openWallet.hasOwnProperty('error')) {
-      // console.log("openWallet.error")
       setLoading(false);
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
-      // console.log('test 1')
       wallet.startHeartbeat('wallet');
       let emptyAddress: any = '';
-      // console.log('test 2')
       dispatch(updateSendAddress(emptyAddress));
-      // console.log('test 3')
       let False: any = false
       dispatch(updateWalletPasswordPopUpFlag(False))
       dispatch(updateBchatWalletPasswordModal(null));
-      // console.log('test 4')
       setLoading(false);
-      // console.log('test 5')
       daemon.daemonHeartbeat();
-      // console.log('test 6')
       // props.onClickClose();
       // console.log('test 7')
       // return;
