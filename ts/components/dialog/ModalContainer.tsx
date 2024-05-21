@@ -23,6 +23,7 @@ import {
   getBchatUpdateInstruntion,
   getBchatWalletPasswordModal,
   getBchatAlertConfirmModal,
+  getBnsLinkDialog,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 import { InviteContactsDialog } from './InviteContactsDialog';
@@ -46,6 +47,7 @@ import { BchatSendConfirm } from './BchatWalletSendConfirmModal';
 import BchatUpdateInstruntion from './updateInstructionModal';
 import { BchatWalletPasswordModal } from './BchatWalletPasswordModal';
 import { BchatAlertConfirmModal } from './bchatAlertConfirmModal';
+import {BnsLinkDialog} from './BnsLinkDialog'
 
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
@@ -57,6 +59,7 @@ export const ModalContainer: any = () => {
   const userDetailsModalState = useSelector(getUserDetailsModal);
   const changeNicknameModal = useSelector(getChangeNickNameDialog);
   const editProfileModalState = useSelector(getEditProfileDialog);
+  const bnsLinkModalState = useSelector(getBnsLinkDialog);
   const onionPathModalState = useSelector(getOnionPathDialog);
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
   const adminLeaveClosedGroupModalState = useSelector(getAdminLeaveClosedGroupDialog);
@@ -84,6 +87,7 @@ export const ModalContainer: any = () => {
       {userDetailsModalState && <UserDetailsDialog {...userDetailsModalState} />}
       {changeNicknameModal && <BchatNicknameDialog {...changeNicknameModal} />}
       {editProfileModalState && <EditProfileDialog {...editProfileModalState} />}
+      {bnsLinkModalState && <BnsLinkDialog {...bnsLinkModalState} /> }
       {onionPathModalState && <OnionPathModal {...onionPathModalState} />}
       {recoveryPhraseModalState && <BchatSeedModal {...recoveryPhraseModalState} />}
       {adminLeaveClosedGroupModalState && (
@@ -97,7 +101,9 @@ export const ModalContainer: any = () => {
       {TransactionInitModalState && <TransactionInitModal />}
       {BchatSendConfirmState && <BchatSendConfirm {...BchatSendConfirmState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
-      {BchatWalletPasswordModalState && <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />}
+      {BchatWalletPasswordModalState && (
+        <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />
+      )}
       {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
     </>
   );

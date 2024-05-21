@@ -17,6 +17,7 @@ export type UpdateGroupNameModalState = InviteContactModalState;
 export type ChangeNickNameModalState = InviteContactModalState;
 export type AdminLeaveClosedGroupModalState = InviteContactModalState;
 export type EditProfileModalState = {} | null;
+export type BnsLinkModalState={} | null;
 export type OnionPathModalState = EditProfileModalState;
 export type RecoveryPhraseModalState = EditProfileModalState;
 export type DeleteAccountModalState = EditProfileModalState;
@@ -57,6 +58,7 @@ export type ModalState = {
   userDetailsModal: UserDetailsModalState;
   nickNameModal: ChangeNickNameModalState;
   editProfileModal: EditProfileModalState;
+  bnsLinkModal:BnsLinkModalState;
   onionPathModal: OnionPathModalState;
   recoveryPhraseModal: RecoveryPhraseModalState;
   adminLeaveClosedGroup: AdminLeaveClosedGroupModalState;
@@ -82,6 +84,7 @@ export const initialModalState: ModalState = {
   userDetailsModal: null,
   nickNameModal: null,
   editProfileModal: null,
+  bnsLinkModal:null,
   onionPathModal: null,
   recoveryPhraseModal: null,
   adminLeaveClosedGroup: null,
@@ -129,6 +132,9 @@ const ModalSlice = createSlice({
     },
     editProfileModal(state, action: PayloadAction<EditProfileModalState | null>) {
       return { ...state, editProfileModal: action.payload };
+    },
+    bnsLinkModal(state, action: PayloadAction<BnsLinkModalState | null>) {
+      return { ...state, bnsLinkModal: action.payload };
     },
     onionPathModal(state, action: PayloadAction<OnionPathModalState | null>) {
       return { ...state, onionPathModal: action.payload };
@@ -188,6 +194,7 @@ export const {
   updateUserDetailsModal,
   changeNickNameModal,
   editProfileModal,
+  bnsLinkModal,
   onionPathModal,
   recoveryPhraseModal,
   adminLeaveClosedGroup,

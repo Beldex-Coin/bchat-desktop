@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -20,7 +20,7 @@ import {
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
@@ -31,11 +31,11 @@ import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
-import { getConversationController } from '../../bchat/conversations';
+// import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
-import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
-import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+// import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
+// import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
 // const SectionTitle = styled.h1`
@@ -52,7 +52,7 @@ export const LeftPaneSectionHeader = () => {
   const bChatId = useSelector(getOurNumber);
   const dispatch = useDispatch();
 
-  const [bnsName, setBnsName] = useState('');
+  // const [bnsName, setBnsName] = useState('');
 
   let label: string | undefined;
 
@@ -60,7 +60,7 @@ export const LeftPaneSectionHeader = () => {
   const isMessageRequestOverlay = overlayMode === 'message-requests';
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
-  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  // const conversation = getConversationController().get(getOurPubKeyStrFromCache());
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -82,10 +82,10 @@ export const LeftPaneSectionHeader = () => {
       label = 'BChat';
   }
 
-  async function printlog() {
-    isLinkedBchatIDWithBnsForDeamon(bnsName);
-  }
-  
+  // async function printlog() {
+  //   isLinkedBchatIDWithBnsForDeamon(bnsName);
+  // }
+
   function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
     const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
@@ -107,26 +107,14 @@ export const LeftPaneSectionHeader = () => {
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <div style={{ position: 'relative' }}>
+        <BNSWrapper size={52} position={{left:'36px',top:'35px'}}>
           <Avatar
             size={AvatarSize.M}
             onAvatarClick={() => dispatch(editProfileModal({}))}
             pubkey={bChatId}
             dataTestId="leftpane-primary-avatar"
           />
-         {!!conversation?.attributes?.isBnsHolder &&  <div
-            style={{
-              position: 'absolute',
-              width: '27px',
-              height: '16px',
-              left: '-4px',
-              top: '-1px',
-              boxShadow: '4px 7px 5px black',
-            }}
-          >
-            <span className="module-contact-name-bns-tag ">Bns</span>
-            </div>}
-        </div>
+        </BNSWrapper>
       );
     } else {
       return (
@@ -144,7 +132,7 @@ export const LeftPaneSectionHeader = () => {
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
     const status = isOnline ? 'Online' : 'Offline';
-    if (SectionType.Settings !== focusedSection) {
+    if (SectionType.Settings == focusedSection) {
       return (
         <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
           <ActionPanelOnionStatusLight
@@ -211,7 +199,7 @@ export const LeftPaneSectionHeader = () => {
 
         <div className="">{verifyScreens()}</div>
 
-        <div>
+        {/* <div>
           <input
             style={{ width: '130px' }}
             value={bnsName} // ...force the select's value to match the state variable...
@@ -219,7 +207,7 @@ export const LeftPaneSectionHeader = () => {
             placeholder="enter your bdx"
           />
           <button onClick={() => printlog()}>submit</button>
-        </div>
+        </div> */}
         <div className="module-left-pane__header__title">{label}</div>
         {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />

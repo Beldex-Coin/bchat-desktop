@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
@@ -199,6 +199,7 @@ const AvatarHeader = (props: {
 
   return (
     <span className="module-conversation-header__avatar">
+      <BNSWrapper size={40} position={{left:'25px',top:'25px'}}>
       <Avatar
         size={AvatarSize.S}
         onAvatarClick={() => {
@@ -210,6 +211,7 @@ const AvatarHeader = (props: {
         pubkey={pubkey}
         dataTestId="conversation-options-avatar"
       />
+       </BNSWrapper>
     </span>
   );
 };

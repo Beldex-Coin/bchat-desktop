@@ -82,6 +82,7 @@ const darkColorBg = black;
 // const darkunreadBg="#39394A";
 const darkBorderBottomColor = '#1A1A24';
 const darkInboxBgColor = '#3A3A4E';
+const darkBnsLinkIdBgColor='#3A3A4E';
 const darkHintMessage = '#7B7B86';
 const darkTextAreaColor = '#0BB70F';
 const darkComposeMsgBg = '#2B2B38';
@@ -306,6 +307,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-downArrow', darkDownArrow);
 
   document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
+  document.documentElement.style.setProperty('--color-BnsLinkIdBg', darkBnsLinkIdBgColor);
 
   document.documentElement.style.setProperty(
     '--color-composeMsgRecordIcon',
@@ -440,6 +442,7 @@ const lightTextHighlight = `${black}88`;
 const lightForegroundPrimary = white;
 // const lightBackgroundPrimary = '#272726';
 const lightBackgroundPrimary = '#E8E8E8';
+const lightBnsLinkIdBgColor='#F8F8F8';
 const lightButtonGreen = '#FFFFFF';
 const lightModalBackground = '#fcfcfc';
 
@@ -680,6 +683,7 @@ export const switchHtmlToLightTheme = () => {
     '--color-composeMsgRecordIcon',
     lightcomposeMsgRecordIcon
   );
+  document.documentElement.style.setProperty('--color-BnsLinkIdBg', lightBnsLinkIdBgColor);
   document.documentElement.style.setProperty('--color-walletNodeHeader', lightWalletNodeHeader);
   document.documentElement.style.setProperty('--color-walletSelectOption', lightWalletSelectHover);
   document.documentElement.style.setProperty(
@@ -881,6 +885,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-blockseletedUserBg:${darkBlockseletedUserBg};
     --color-disableBorder:${darkDisableBorder};
     --color-profile: ${darkProfileBgColor};
+    --color-BnsLinkIdBg:${darkBnsLinkIdBgColor};
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};

@@ -97,3 +97,12 @@ $borderAvatarColor: unquote(
     filter: grayscale(0.7);
   }
 }
+.module-avatar-verify-wrapper {
+  position: relative;
+  border: 2px solid #00bd40;
+  border-radius: 10px;
+
+  &-verify-tag {
+    position: absolute;
+  }
+}

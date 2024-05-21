@@ -24,7 +24,8 @@ import {
   WalletSendConfirmState,
   BchatUpdateInstruntionState,
   BchatWalletPasswordModalState,
-  BchatAlertConfirmModalState
+  BchatAlertConfirmModalState,
+  BnsLinkModalState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -79,6 +80,10 @@ export const getChangeNickNameDialog = createSelector(
 export const getEditProfileDialog = createSelector(
   getModal,
   (state: ModalState): EditProfileModalState => state.editProfileModal
+);
+export const getBnsLinkDialog = createSelector(
+  getModal,
+  (state: ModalState): BnsLinkModalState => state.bnsLinkModal
 );
 
 export const getOnionPathDialog = createSelector(
