@@ -82,7 +82,6 @@ const darkColorBg = black;
 // const darkunreadBg="#39394A";
 const darkBorderBottomColor = '#1A1A24';
 const darkInboxBgColor = '#3A3A4E';
-const darkBnsLinkIdBgColor='#3A3A4E';
 const darkHintMessage = '#7B7B86';
 const darkTextAreaColor = '#0BB70F';
 const darkComposeMsgBg = '#2B2B38';
@@ -142,6 +141,11 @@ const darkAudioRecord = '#3F3C4B';
 
 // Seed color
 const darkSeedColor = '#00E506';
+// Bns link colors
+const darkBnsLinkIdBgColor = '#3A3A4E';
+const darkBnsLinkInputBgColor = '#353543';
+const darkBnsCameraIconBgColor = '#22222E';
+
 //wallet
 const darkWalcontentBg = '#303041';
 const darkWalcontentBgHover = '#60607B';
@@ -162,7 +166,7 @@ const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
 const darkCopyHover = '#008C04';
 const darkAddressBookCopy = '#009D17';
-const darkBgModalColor = "rgba(0, 0, 0, 0.8)";
+const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
@@ -307,7 +311,6 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-downArrow', darkDownArrow);
 
   document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
-  document.documentElement.style.setProperty('--color-BnsLinkIdBg', darkBnsLinkIdBgColor);
 
   document.documentElement.style.setProperty(
     '--color-composeMsgRecordIcon',
@@ -376,6 +379,10 @@ export const switchHtmlToDarkTheme = () => {
     '--message-bubbles-received-background-color',
     darkbubbleReceivedBg
   );
+  //Bns link chatid
+  document.documentElement.style.setProperty('--color-BnsLinkIdBg', darkBnsLinkIdBgColor);
+  document.documentElement.style.setProperty('--color-BnsLinkInputBg', darkBnsLinkInputBgColor);
+  document.documentElement.style.setProperty('--color-BnsCameraIconBg', darkBnsCameraIconBgColor);
   //wallet
   document.documentElement.style.setProperty('--color-WalcontentBg', darkWalcontentBg);
   document.documentElement.style.setProperty('--color-WalcontentBgHover', darkWalcontentBgHover);
@@ -442,7 +449,7 @@ const lightTextHighlight = `${black}88`;
 const lightForegroundPrimary = white;
 // const lightBackgroundPrimary = '#272726';
 const lightBackgroundPrimary = '#E8E8E8';
-const lightBnsLinkIdBgColor='#F8F8F8';
+
 const lightButtonGreen = '#FFFFFF';
 const lightModalBackground = '#fcfcfc';
 
@@ -518,6 +525,11 @@ const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF
 
 // Seed color
 const whiteSeedColor = '#128B17';
+//bns link color
+const lightBnsLinkInputBgColor = '#F8F8F8';
+const lightBnsLinkIdBgColor = '#F8F8F8';
+const lightBnsCameraIconBgColor = '#FFFFFF';
+
 //wallet
 const lightWalcontentBg = '#E8E8E8';
 const lightWalcontentBgHover = '#DDDDDD';
@@ -683,7 +695,7 @@ export const switchHtmlToLightTheme = () => {
     '--color-composeMsgRecordIcon',
     lightcomposeMsgRecordIcon
   );
-  document.documentElement.style.setProperty('--color-BnsLinkIdBg', lightBnsLinkIdBgColor);
+
   document.documentElement.style.setProperty('--color-walletNodeHeader', lightWalletNodeHeader);
   document.documentElement.style.setProperty('--color-walletSelectOption', lightWalletSelectHover);
   document.documentElement.style.setProperty(
@@ -757,6 +769,11 @@ export const switchHtmlToLightTheme = () => {
   );
   document.documentElement.style.setProperty('--color-leave-button', lightLeaveHover);
 
+  // bns link selectors
+  document.documentElement.style.setProperty('--color-BnsLinkIdBg', lightBnsLinkIdBgColor);
+  document.documentElement.style.setProperty('--color-BnsLinkInputBg', lightBnsLinkInputBgColor);
+  document.documentElement.style.setProperty('--color-BnsCameraIconBg', lightBnsCameraIconBgColor);
+  
   //wallet
   document.documentElement.style.setProperty('--color-WalcontentBg', lightWalcontentBg);
   document.documentElement.style.setProperty('--color-WalcontentBgHover', lightWalcontentBgHover);
@@ -886,6 +903,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-disableBorder:${darkDisableBorder};
     --color-profile: ${darkProfileBgColor};
     --color-BnsLinkIdBg:${darkBnsLinkIdBgColor};
+    --color-BnsLinkInputBg:${darkBnsLinkInputBgColor};
 
     --color-toast-success:${darkToastSuccessMessage};
     --color-toast-error:${darkToastErrorMessage};

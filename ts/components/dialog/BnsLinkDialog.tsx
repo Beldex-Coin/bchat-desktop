@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 // tslint:disable no-submodule-imports
-
-
 
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
- import { BchatIcon } from '../icon/BchatIcon';
-import { bnsLinkModal } from '../../state/ducks/modalDialog';
+import { BchatIcon } from '../icon/BchatIcon';
+import { bnsLinkModal, editProfileModal } from '../../state/ducks/modalDialog';
 
 export const BnsLinkDialog = () => {
+  const [success, setSuccess] = useState(false);
+  const [bnsName,setBnsName]=useState('');
   function closeDialog() {
     window.inboxStore?.dispatch(bnsLinkModal(null));
+    setSuccess(false);
+    window.inboxStore?.dispatch(editProfileModal({}));
   }
-
-  
-  return (
-    <BchatWrapperModal showHeader={false} onClose={closeDialog} showExitIcon={true}>
-      <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
-        {/* <header>BNS Linked Successfully</header>
+  const BnsLinkedSuccessModal = () => {
+    return (
+      <>
+        <header>BNS Linked Successfully</header>
         <div>
           <svg
             width="68"
@@ -39,16 +39,25 @@ export const BnsLinkDialog = () => {
               />
             </g>
           </svg>
-        </div> */}
-        {/* <BchatButton
-            style={{ height: '45px', borderRadius:'10px',margin: '15px 122px'}}
-            text={'ok'}
-            buttonType={BchatButtonType.BrandOutline}
-            buttonColor={BchatButtonColor.Green}
-            onClick={() => {}}
-          /> */}
-
-         <header>Link Bns</header>
+        </div>
+        <BchatButton
+          style={{ height: '45px', borderRadius: '10px', margin: '15px 122px' }}
+          text={'ok'}
+          buttonType={BchatButtonType.Default}
+          buttonColor={BchatButtonColor.Green}
+          onClick={() => {
+            closeDialog();
+          }}
+        />
+      </>
+    );
+  };
+  return (
+    <BchatWrapperModal showHeader={false} onClose={closeDialog} showExitIcon={false}>
+      <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
+        
+        {!success ?<>
+        <header>Link Bns</header>
         <div className="label_id">Your BChat ID</div>
         <div className="id_wrapper">
           <span className="id_content">
@@ -61,11 +70,11 @@ export const BnsLinkDialog = () => {
           <input
             type="text"
             className="inputBox"
-            value={'munavver.bdx'}
-            placeholder={'munavver.bdx'}
-            onChange={() => {}}
+            value={bnsName}
+            placeholder={'Enter BNS Name'}
+            onChange={(event) => {setBnsName(event.target.value)}}
             maxLength={12}
-            tabIndex={0}
+          
             required={true}
             aria-required={true}
             data-testid="profile-name-input"
@@ -73,36 +82,39 @@ export const BnsLinkDialog = () => {
         </div>
         <div className="divided-btn-wrapper">
           <BchatButton
-            style={{ height: '45px',backgroundColor:'#444455', borderRadius:'10px'}}
+            style={{ height: '45px', borderRadius: '10px' }}
             text={'Cancel'}
-            buttonType={BchatButtonType.BrandOutline}
-            buttonColor={BchatButtonColor.White}
-            onClick={() => {}}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            onClick={() => closeDialog()}
           />
           <BchatButton
-            style={{ height: '45px',borderRadius:'10px' }}
+            style={{ height: '45px', borderRadius: '10px' }}
             text={'Verify'}
             disabled={false}
             buttonType={BchatButtonType.BrandOutline}
             buttonColor={BchatButtonColor.Green}
-            children={<div style={{display: "flex", alignItems: "center"}}>
-              <span style={{marginRight:'2px'}}>Verified</span><span>
-              <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#fff" />
-              </span>
-            </div>}
+            children={
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span style={{ marginRight: '2px' }}>Verified</span>
+                <span>
+                  <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#fff" />
+                </span>
+              </div>
+            }
             onClick={() => {}}
           />
         </div>
-        <div style={{marginBottom:'30px',padding:' 0 30px'}}>
+        <div style={{ marginBottom: '30px', padding: ' 0 30px' }}>
           <BchatButton
-          style={{ height: '45px',backgroundColor:'#444455',borderRadius:'10px' }}
+            style={{ height: '45px', borderRadius: '10px' }}
             text={'Link'}
-            disabled={true}
-            buttonType={BchatButtonType.BrandOutline}
-            buttonColor={BchatButtonColor.Disable}
-            onClick={() => {}}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            onClick={() =>setSuccess(true)}
           />
-        </div> 
+        </div>
+      </> : <BnsLinkedSuccessModal />}
       </div>
     </BchatWrapperModal>
   );
