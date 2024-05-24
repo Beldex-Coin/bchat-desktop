@@ -66,9 +66,11 @@ export const CrownIcon = () => {
   );
 };
 export const BNSWrapper = (props: any) => {
-  const { size, position } = props;
+  const { size, position,isBnsHolder } = props;
   return (
-    <div
+    <>  
+    {isBnsHolder?
+      <div
       className="module-avatar-verify-wrapper"
       style={{ width: size + 'px', height: size + 'px' }}
     >
@@ -93,6 +95,10 @@ export const BNSWrapper = (props: any) => {
         </svg>
       </span>
     </div>
+    :
+    props.children}
+    </>
+
   );
 };
 const NoImage = (

@@ -33,32 +33,35 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
   }
 }
 
-async function setIsBnsHolder(value: Boolean) {
+export async function setIsBnsHolder(value: Boolean) {
+  //   window.setLocalValue('ourBnsName', ourBnsName);
+  //   ToastUtils.pushToastSuccess('successfully added', 'Successfully added bns tag in our profile');
   const conversation = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
   await conversation.setIsBnsHolder(value);
 }
-
+export async function linkBns(ourBnsName: string) {
+  window.setLocalValue('ourBnsName', ourBnsName);
+  console.log('linkBns ', !!ourBnsName);
+ await  setIsBnsHolder(true);
+}
 export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
   const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
   console.log(' ourBnsName ourBnsName -------->', ourBnsName);
   if (!ourBnsName) {
-    return;
+    return false;
   }
   const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: ourBnsName });
   const ourNumber = UserUtils.getOurPubKeyStrFromCache();
-  let isholder = false;
+
   if (ourNumber === isValidDetail?.result?.bchat_value) {
-    isholder = true;
-    window.setLocalValue('ourBnsName', ourBnsName);
-    ToastUtils.pushToastSuccess('successfully added', 'Successfully added bns tag in our profile');
+    ToastUtils.pushToastSuccess('success', 'your bns name is verified');
+    return true;
   } else {
-    ToastUtils.pushToastError(
-      'invalid',
-      'your bns name and id not matched,try another one'
-    );
     window.setLocalValue('ourBnsName', '');
+    await setIsBnsHolder(false)
+    ToastUtils.pushToastError('invalid', 'your bns name and id not matched,try another one');
+    return false;
   }
-  setIsBnsHolder(isholder);
 }
 
 export async function deamonvalidation() {

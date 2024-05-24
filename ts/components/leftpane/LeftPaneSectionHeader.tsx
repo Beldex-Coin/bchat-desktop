@@ -31,9 +31,9 @@ import { applyTheme } from '../../state/ducks/theme';
 import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
-// import { getConversationController } from '../../bchat/conversations';
+import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
-// import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -46,21 +46,16 @@ import { clearSearch } from '../../state/ducks/search';
 // `;
 
 export const LeftPaneSectionHeader = () => {
-  // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
   const bChatId = useSelector(getOurNumber);
   const dispatch = useDispatch();
-
-  // const [bnsName, setBnsName] = useState('');
-
   let label: string | undefined;
-
   const isMessageSection = focusedSection === SectionType.Message;
   const isMessageRequestOverlay = overlayMode === 'message-requests';
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
-  // const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -107,7 +102,11 @@ export const LeftPaneSectionHeader = () => {
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <BNSWrapper size={52} position={{left:'36px',top:'35px'}}>
+        <BNSWrapper
+          size={52}
+          position={{ left: '36px', top: '35px' }}
+          isBnsHolder={conversation?.attributes?.isBnsHolder}
+        >
           <Avatar
             size={AvatarSize.M}
             onAvatarClick={() => dispatch(editProfileModal({}))}

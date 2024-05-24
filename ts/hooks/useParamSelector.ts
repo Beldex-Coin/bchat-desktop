@@ -24,6 +24,13 @@ export function useConversationUsername(convoId?: string) {
   return convoProps?.profileName || convoProps?.name || convoId;
 }
 
+// return to contact bns holder or not
+export function useConversationBnsHolder(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+
+  return convoProps?.isBnsHolder;
+}
+
 /**
  * Returns either the nickname, profileName, or the shorten pubkey
  */

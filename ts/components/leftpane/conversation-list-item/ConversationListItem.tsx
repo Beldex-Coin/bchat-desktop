@@ -15,6 +15,7 @@ import {  updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
+  useConversationBnsHolder,
   // useConversationPropsById,
   useConversationUsername,
   useIsPrivate,
@@ -61,6 +62,7 @@ const AvatarItem = () => {
   const userName = useConversationUsername(conversationId);
   const isPrivate = useIsPrivate(conversationId);
   const avatarPath = useAvatarPath(conversationId);
+  const isBnsHolder=useConversationBnsHolder(conversationId)
   const dispatch = useDispatch();
 
   function onPrivateAvatarClick() {
@@ -75,7 +77,7 @@ const AvatarItem = () => {
 
   return (
     <div className="module-conversation-list-item__avatar-container">
-        <BNSWrapper size={40} position={{left:'26px',top:'23px'}}>
+        <BNSWrapper size={40} position={{left:'26px',top:'23px'}} isBnsHolder={isBnsHolder}>
       <Avatar
         size={AvatarSize.S}
         pubkey={conversationId}

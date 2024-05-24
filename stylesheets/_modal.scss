@@ -854,10 +854,10 @@
   }
   .hintTxt {
     color: #a7a7ba;
-    font-size: 12px;
+    font-size: 10px;
     display: flex;
-    align-items: center;
     margin-top: 7px;
+    align-items: flex-start;
   }
 }
 .bns_enable_modal{
@@ -872,13 +872,14 @@
 .bns_link_modal {
   header {
     font-family: $bchat-font-poppin-semibold;
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 25px;
   }
   .label_id {
     // font-weight: 700;
     font-family: $bchat-font-poppin-semibold;
     margin-bottom: 10px;
+    font-size: 12px;
   }
   .id_wrapper {
     height: 60px;

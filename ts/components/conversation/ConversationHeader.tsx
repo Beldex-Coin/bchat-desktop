@@ -193,13 +193,13 @@ const ExpirationLength = (props: { expirationSettingName?: string }) => {
 const AvatarHeader = (props: {
   pubkey: string;
   showBackButton: boolean;
+  conversation:any
   onAvatarClick?: (pubkey: string) => void;
 }) => {
-  const { pubkey, onAvatarClick, showBackButton } = props;
-
+  const { pubkey, onAvatarClick, showBackButton,conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <BNSWrapper size={40} position={{left:'25px',top:'25px'}}>
+      <BNSWrapper size={40} position={{left:'25px',top:'25px'}} isBnsHolder={conversation?.isBnsHolder}>
       <Avatar
         size={AvatarSize.S}
         onAvatarClick={() => {
@@ -346,7 +346,6 @@ const ConversationHeaderTitle = () => {
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
         {convoName} 
-        {!isGroup &&conversation.isBnsHolder && <span className='module-contact-name-bns-tag '>Bns</span>}
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -435,6 +434,7 @@ export const ConversationHeaderWithDetails = () => {
                 dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
+              conversation={conversation}
               showBackButton={isMessageDetailOpened}
             />   
             <ConversationHeaderTitle />

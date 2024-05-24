@@ -88,7 +88,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
     return (
       <div>
-        <div className="edit-profile-dialog bns_enable_modal" data-testid="edit-profile-dialog">
+        <div
+          className={
+            this.convo?.attributes?.isBnsHolder
+              ? 'edit-profile-dialog bns_enable_modal '
+              : 'edit-profile-dialog'
+          }
+          data-testid="edit-profile-dialog"
+        >
           <BchatWrapperModal
             title={i18n('editProfileModalTitle')}
             onClose={this.closeDialog}
@@ -122,7 +129,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               className="link_bns_Btn"
               onClick={() => {
                 window.inboxStore?.dispatch(editProfileModal(null));
-                window.inboxStore?.dispatch(bnsLinkModal({}));  
+                window.inboxStore?.dispatch(bnsLinkModal({}));
               }}
             >
               <span>
@@ -143,7 +150,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             </button>
             <div className="hintTxt">
               <span> Read more about BNS </span>
-              <BchatIcon iconType="infoCircle" iconSize={14} iconColor="#A7A7BA" />
+              <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
             </div>
             <div className="bchat-id-section">
               <PillDivider />
@@ -391,7 +398,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const userName = profileName || this.convo.id;
 
     return (
-      <BNSWrapper size={89} position={{ left: '72px', top: '72px' }}>
+      <BNSWrapper
+        size={89}
+        position={{ left: '72px', top: '72px' }}
+        isBnsHolder={this.convo?.attributes?.isBnsHolder}
+      >
         <Avatar
           forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
           forcedName={userName}
