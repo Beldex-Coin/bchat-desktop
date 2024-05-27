@@ -13,7 +13,7 @@ export const BnsLinkDialog = () => {
   const [bnsName,setBnsName]=useState('');
   const [isVerify,setIsVerify]=useState(false);
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id 
-
+  const regexForBnsName=/^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   function closeDialog() {
     console.log(isVerify)
     window.inboxStore?.dispatch(bnsLinkModal(null));
@@ -56,7 +56,7 @@ export const BnsLinkDialog = () => {
           </svg>
         </div>
         <BchatButton
-          style={{ height: '45px', borderRadius: '10px', margin: '15px 122px',fontSize:'16px' }}
+          style={{ height: '45px', borderRadius: '10px', margin: '15px 122px 40px',fontSize:'16px' }}
           text={'OK'}
           buttonType={BchatButtonType.Default}
           buttonColor={BchatButtonColor.Green}
@@ -85,13 +85,11 @@ export const BnsLinkDialog = () => {
           <input
             type="text"
             className="inputBox"
+            disabled={isVerify}
             value={bnsName}
             placeholder={'Enter BNS Name'}
             onChange={(event) => {setBnsName(event.target.value)}}
-            maxLength={12}
-          
-            required={true}
-            aria-required={true}
+            maxLength={33}
             data-testid="profile-name-input"
           />
         </div>
@@ -106,7 +104,7 @@ export const BnsLinkDialog = () => {
           <BchatButton
             style={{ height: '45px', borderRadius: '10px' }}
             text={'Verify'}
-            disabled={!bnsName}
+            disabled={ !regexForBnsName.test(bnsName) }
             buttonType={BchatButtonType.Brand}
             buttonColor={ BchatButtonColor.Green }
             children={

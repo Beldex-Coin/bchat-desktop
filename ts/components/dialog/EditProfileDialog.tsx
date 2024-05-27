@@ -73,6 +73,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const viewEdit = this.state.mode === 'edit';
     const viewQR = this.state.mode === 'qr';
     const bchatID = UserUtils.getOurPubKeyStrFromCache();
+    const isBnsHolder = this.convo?.attributes?.isBnsHolder;
     const backButton =
       viewEdit || viewQR
         ? [
@@ -89,11 +90,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     return (
       <div>
         <div
-          className={
-            this.convo?.attributes?.isBnsHolder
-              ? 'edit-profile-dialog bns_enable_modal '
-              : 'edit-profile-dialog'
-          }
+          className={isBnsHolder ? 'edit-profile-dialog bns_enable_modal ' : 'edit-profile-dialog'}
           data-testid="edit-profile-dialog"
         >
           <BchatWrapperModal
@@ -125,33 +122,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
             {(viewDefault || viewQR) && this.renderDefaultView()}
             {viewEdit && this.renderEditView()}
-            <button
-              className="link_bns_Btn"
-              onClick={() => {
-                window.inboxStore?.dispatch(editProfileModal(null));
-                window.inboxStore?.dispatch(bnsLinkModal({}));
-              }}
-            >
-              <span>
-                <svg
-                  width="26"
-                  height="26"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20.0007 3.33301C13.8472 3.33301 8.47667 6.69293 5.58984 11.6663H9.65885C11.159 9.81304 13.1164 8.34603 15.3945 7.50293C14.8726 8.71604 14.4549 10.1331 14.1348 11.6663H17.5625C18.3606 8.37153 19.4787 6.66634 20.0007 6.66634C20.5226 6.66634 21.6407 8.37153 22.4388 11.6663H25.8665C25.5464 10.1331 25.1265 8.71604 24.6068 7.50293C26.8832 8.34603 28.8423 9.81304 30.3425 11.6663H34.4115C31.5246 6.69293 26.1541 3.33301 20.0007 3.33301ZM5.58984 28.333C8.47667 33.3064 13.8472 36.6663 20.0007 36.6663C26.1541 36.6663 31.5246 33.3064 34.4115 28.333H30.3425C28.8423 30.1863 26.8849 31.6533 24.6068 32.4964C25.1265 31.2833 25.5432 29.8662 25.8633 28.333H22.4355C21.6375 31.6278 20.5193 33.333 19.9974 33.333C19.4755 33.333 18.3606 31.6278 17.5625 28.333H14.1348C14.4549 29.8662 14.8748 31.2833 15.3945 32.4964C13.1181 31.6533 11.159 30.1863 9.65885 28.333H5.58984ZM11.6714 21.9244C11.6714 21.1252 11.0129 20.6457 9.97172 20.6457H7.85864V23.1499H10.0177C11.0589 23.1499 11.6714 22.7103 11.6714 21.9244ZM11.4111 18.0483C11.4111 17.3024 10.8292 16.8761 9.8186 16.8761H7.85864V19.2071H9.8186C10.8292 19.2071 11.4111 18.8075 11.4111 18.0483ZM13.8457 22.1509C13.8457 23.6294 12.5442 24.6683 10.3239 24.6683H5.71494V15.371H10.1248C12.3604 15.371 13.6007 16.3833 13.6007 17.7686C13.6007 18.9008 12.8198 19.6067 11.7786 19.8998C12.9882 20.0863 13.8457 21.0586 13.8457 22.1509ZM22.5519 15.3577H24.6956V24.6683H22.5519L17.6979 18.2881V24.6683H15.5542V15.3577H17.6979L22.5519 21.7513V15.3577ZM34.2864 21.9777C34.2864 23.4429 32.9389 24.7616 30.5043 24.7616C28.284 24.7616 26.569 23.7493 26.5384 21.991H28.8352C28.8965 22.7369 29.463 23.2298 30.4583 23.2298C31.4689 23.2298 32.0661 22.7636 32.0661 22.0976C32.0661 20.0863 26.5537 21.2984 26.569 17.9284C26.569 16.2501 28.1309 15.2378 30.3358 15.2378C32.5255 15.2378 34.0261 16.2101 34.1639 17.8885H31.8058C31.7599 17.2757 31.1933 16.7962 30.2746 16.7829C29.4324 16.7563 28.8046 17.1159 28.8046 17.8751C28.8046 19.7399 34.2864 18.701 34.2864 21.9777Z"
-                    fill="#fff"
-                  />
-                </svg>
-              </span>
-              Link your Bns
-            </button>
-            <div className="hintTxt">
-              <span> Read more about BNS </span>
-              <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
-            </div>
+            {this.renderBnsVerified(isBnsHolder)}
             <div className="bchat-id-section">
               <PillDivider />
               {!viewQR ? this.renderAddressView({ bchatID }) : this.renderQrView({ bchatID })}
@@ -322,7 +293,37 @@ export class EditProfileDialog extends React.Component<{}, State> {
       </>
     );
   }
-
+  private renderBnsVerified(isBnsHolder: any) {
+    return (
+      <div>
+        {!isBnsHolder ? (
+          <>
+            <button
+              className="link_bns_Btn"
+              onClick={() => {
+                window.inboxStore?.dispatch(editProfileModal(null));
+                window.inboxStore?.dispatch(bnsLinkModal({}));
+              }}
+            >
+              <span>
+                <BchatIcon iconType={'bnslogo'} iconSize={26} />
+              </span>
+              Link your Bns
+            </button>
+            <div className="hintTxt">
+              <span> Read more about BNS </span>
+              <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
+            </div>
+          </>
+        ) : (
+          <div className="bnsVerfiedTxt">
+            <span> BNS Verified </span>
+            <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
+          </div>
+        )}
+      </div>
+    );
+  }
   private renderAddressView(props: any) {
     let walletAddress = localStorage.getItem('userAddress');
     return (

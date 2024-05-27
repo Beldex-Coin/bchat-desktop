@@ -852,12 +852,17 @@
     height: 45px;
     font-family: $bchat-font-poppin-semibold;
   }
-  .hintTxt {
+  .hintTxt,.bnsVerfiedTxt {
     color: #a7a7ba;
     font-size: 10px;
     display: flex;
     margin-top: 7px;
     align-items: flex-start;
+  }
+  .bnsVerfiedTxt{
+    color: #0BB70F;
+    font-size: 14px;
+    font-family: $bchat-font-poppin-semibold;
   }
 }
 .bns_enable_modal{
@@ -873,6 +878,7 @@
   header {
     font-family: $bchat-font-poppin-semibold;
     font-size: 22px;
+    margin-bottom: 25px;
     margin-bottom: 25px;
   }
   .label_id {

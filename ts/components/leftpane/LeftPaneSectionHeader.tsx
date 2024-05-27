@@ -131,7 +131,7 @@ export const LeftPaneSectionHeader = () => {
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
     const status = isOnline ? 'Online' : 'Offline';
-    if (SectionType.Settings == focusedSection) {
+    if (SectionType.Settings !== focusedSection) {
       return (
         <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
           <ActionPanelOnionStatusLight
@@ -211,7 +211,7 @@ export const LeftPaneSectionHeader = () => {
         {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
         </div> */}
-        <IsOnline />
+       {!conversation?.attributes?.isBnsHolder && <IsOnline />} 
         <Moon />
         <Settings />
 

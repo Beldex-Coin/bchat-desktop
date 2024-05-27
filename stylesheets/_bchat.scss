@@ -132,10 +132,10 @@ textarea {
 
       color: var(--color-text-opposite);
       font-family: $bchat-font-poppin-semibold;
-      &:hover {
-        background-color: $bchat-button-hovor-color;
-        color: white;
-      }
+      // &:hover {
+      //   background-color: $bchat-button-hovor-color;
+      //   color: white;
+      // }
     }
 
     &.white {

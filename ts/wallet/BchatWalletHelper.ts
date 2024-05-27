@@ -52,6 +52,7 @@ export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
   }
   const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: ourBnsName });
   const ourNumber = UserUtils.getOurPubKeyStrFromCache();
+  console.log('isValidDetail ------>',isValidDetail)
 
   if (ourNumber === isValidDetail?.result?.bchat_value) {
     ToastUtils.pushToastSuccess('success', 'your bns name is verified');
