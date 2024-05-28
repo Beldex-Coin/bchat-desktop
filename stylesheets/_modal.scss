@@ -756,19 +756,6 @@
     }
   }
 
-  &-modalLoader {
-    // width: 400px;
-    // height: 455px;
-    width: 402px;
-    height: 447px;
-    // top: 22.3%;
-    background-color: #0000009e;
-    border-radius: 25px;
-    z-index: 99;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-  }
 
   .profileClose {
     display: flex;
@@ -841,6 +828,12 @@
         padding: 0px;
       }
     }
+  }
+  .link_bns_wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
   }
   .link_bns_Btn {
     width: 70%;

@@ -34,7 +34,8 @@ import { initialWalletSectionState } from '../state/ducks/walletSection';
 import { initialDaemonState } from '../state/ducks/daemon';
 import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
 import { initialWalletConfigState } from '../state/ducks/walletConfig';
-import { isLinkedBchatIDWithBnsForDeamon } from '../wallet/BchatWalletHelper';
+import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
+
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.

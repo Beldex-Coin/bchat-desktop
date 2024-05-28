@@ -1,9 +1,8 @@
 import request from 'request-promise';
 // import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
-import { ToastUtils, UserUtils } from '../bchat/utils';
-import { daemon } from '../wallet/daemon-rpc';
-import { getConversationController } from '../bchat/conversations';
+import { ToastUtils} from '../bchat/utils';
+
 
 export async function workingStatusForDeamon(currentdeamon: any, type?: string) {
   try {
@@ -33,37 +32,6 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
   }
 }
 
-export async function setIsBnsHolder(value: Boolean) {
-  //   window.setLocalValue('ourBnsName', ourBnsName);
-  //   ToastUtils.pushToastSuccess('successfully added', 'Successfully added bns tag in our profile');
-  const conversation = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
-  await conversation.setIsBnsHolder(value);
-}
-export async function linkBns(ourBnsName: string) {
-  window.setLocalValue('ourBnsName', ourBnsName);
-  console.log('linkBns ', !!ourBnsName);
- await  setIsBnsHolder(true);
-}
-export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
-  const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
-  console.log(' ourBnsName ourBnsName -------->', ourBnsName);
-  if (!ourBnsName) {
-    return false;
-  }
-  const isValidDetail: any = await daemon.sendRPC('bns_lookup', { name: ourBnsName });
-  const ourNumber = UserUtils.getOurPubKeyStrFromCache();
-  console.log('isValidDetail ------>',isValidDetail)
-
-  if (ourNumber === isValidDetail?.result?.bchat_value) {
-    ToastUtils.pushToastSuccess('success', 'your bns name is verified');
-    return true;
-  } else {
-    window.setLocalValue('ourBnsName', '');
-    await setIsBnsHolder(false)
-    ToastUtils.pushToastError('invalid', 'your bns name and id not matched,try another one');
-    return false;
-  }
-}
 
 export async function deamonvalidation() {
   let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);

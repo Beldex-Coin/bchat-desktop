@@ -6,12 +6,13 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import { BchatIcon } from '../icon/BchatIcon';
 import { bnsLinkModal, editProfileModal } from '../../state/ducks/modalDialog';
 import { UserUtils } from '../../bchat/utils';
-import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../../wallet/BchatWalletHelper';
+import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVerification';
 
 export const BnsLinkDialog = () => {
   const [success, setSuccess] = useState(false);
   const [bnsName,setBnsName]=useState('');
   const [isVerify,setIsVerify]=useState(false);
+  const [isLoading,setIsLoading]=useState(false)
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id 
   const regexForBnsName=/^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   function closeDialog() {
@@ -21,8 +22,10 @@ export const BnsLinkDialog = () => {
     window.inboxStore?.dispatch(editProfileModal({}));
   }
   async function verifyBns (){
+    setIsLoading(true)
     const isverified:boolean=await isLinkedBchatIDWithBnsForDeamon(bnsName);
     setIsVerify(isverified);
+    setIsLoading(false)
    
   }
   const callLinkBns=async ()=>{  //call to update conversational state value
@@ -68,7 +71,7 @@ export const BnsLinkDialog = () => {
     );
   };
   return (
-    <BchatWrapperModal showHeader={false} onClose={closeDialog} showExitIcon={false}>
+    <BchatWrapperModal showHeader={false} onClose={closeDialog} showExitIcon={false} isloading={isLoading}>
       <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
         
         {!success ?<>

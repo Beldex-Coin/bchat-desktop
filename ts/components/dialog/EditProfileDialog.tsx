@@ -18,7 +18,6 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
-import styled from 'styled-components';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 interface State {
@@ -99,18 +98,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
             showHeader={false}
             headerIconButtons={backButton}
             showExitIcon={true}
+            isloading={this.state.loading}
           >
-            {this.state.loading && (
-              <Loader>
-                <div className="edit-profile-dialog-modalLoader">
-                  <img
-                    src={'images/bchat/Load_animation.gif'}
-                    style={{ width: '150px', height: '150px' }}
-                  />
-                </div>
-              </Loader>
-            )}
-
             <div className="profileClose">
               <BchatIconButton
                 iconType="exit"
@@ -295,7 +284,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   }
   private renderBnsVerified(isBnsHolder: any) {
     return (
-      <div>
+      <div className='link_bns_wrapper'>
         {!isBnsHolder ? (
           <>
             <button
@@ -504,17 +493,6 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
   await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
 }
 
-const Loader = styled.div`
-  position: absolute;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  /* width: 100%; */
-  width: 100vw;
-  height: 100%;
-  align-items: center;
-  z-index: 101;
-`;
 
 export function copyBchatID(bchatID: any) {
   window.clipboard.writeText(bchatID);

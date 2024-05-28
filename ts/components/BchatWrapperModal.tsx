@@ -5,6 +5,8 @@ import { BchatIconButton } from './icon';
 
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
+import styled from 'styled-components';
+import { BchatSpinner } from './basic/BchatSpinner';
 
 export type BchatWrapperModalType = {
   title?: string;
@@ -19,7 +21,20 @@ export type BchatWrapperModalType = {
   children: any;
   headerReverse?: boolean;
   additionalClassName?: string;
+  isloading?:boolean;
 };
+const Loader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #0000009e;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  z-index: 101;
+`;
 
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   const {
@@ -29,6 +44,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     headerIconButtons,
     headerReverse,
     additionalClassName,
+    isloading
   } = props;
 
   useKey(
@@ -49,7 +65,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     [props.onClose]
   );
 
-  const modalRef = useRef<HTMLDivElement>(null); 
+  const modalRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
@@ -88,10 +104,14 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             </div>
           ) : null}
 
-          <div className="bchat-modal__body">
-            <div className="bchat-modal__centered">
-              {props.children}
+          <div className="bchat-modal__body" style={{ position: 'relative' }}>
+            <div className="bchat-modal__centered">{props.children}</div>
+           {isloading &&  <div>
+              <Loader>
+                <BchatSpinner loading={true} />
+              </Loader>
             </div>
+}
           </div>
         </div>
       </div>

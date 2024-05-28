@@ -13,7 +13,7 @@ export const LeftPaneSectionContainer = styled.div`
   overflow-y: hidden;
   background-color: var(--green-color);
   padding: 6px 0;
-  z-index: 2;
+  
 
   .isSelected-icon-box .btnView,
   .icon-box .btnView {
