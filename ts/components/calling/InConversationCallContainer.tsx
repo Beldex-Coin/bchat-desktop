@@ -12,7 +12,7 @@ import {
   getHasOngoingCallWithPubkey,
 } from '../../state/selectors/call';
 import { StyledVideoElement } from './DraggableCallContainer';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
@@ -22,6 +22,8 @@ import { DEVICE_DISABLED_DEVICE_ID } from '../../bchat/utils/calling/CallManager
 import useInterval from 'react-use/lib/useInterval';
 import moment from 'moment';
 import { BchatSpinner } from '../basic/BchatSpinner';
+import { getSelectedConversation } from '../../state/selectors/conversations';
+import { getConversationController } from '../../bchat/conversations';
 
 const VideoContainer = styled.div`
   height: 100%;
@@ -142,10 +144,11 @@ export const InConversationCallContainer = () => {
 
   const ongoingCallPubkey = useSelector(getHasOngoingCallWithPubkey);
   const ongoingCallWithFocused = useSelector(getHasOngoingCallWithFocusedConvo);
+  const selectedConversation = useSelector(getSelectedConversation);
   const videoRefRemote = useRef<HTMLVideoElement>(null);
   const videoRefLocal = useRef<HTMLVideoElement>(null);
-
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
+  const conversation = getConversationController().get(ourPubkey);
 
   const {
     currentConnectedAudioInputs,
@@ -202,7 +205,13 @@ export const InConversationCallContainer = () => {
           />
           {remoteStreamVideoIsMuted && (
             <CenteredAvatarInConversation>
-              <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
+              <BNSWrapper
+                size={89}
+                position={{ left: '75px', top: '72px' }}
+                isBnsHolder={selectedConversation?.isBnsHolder}
+              >
+                <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
+              </BNSWrapper>
             </CenteredAvatarInConversation>
           )}
         </VideoContainer>
@@ -215,7 +224,13 @@ export const InConversationCallContainer = () => {
           />
           {localStreamVideoIsMuted && (
             <CenteredAvatarInConversation>
-              <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+              <BNSWrapper
+                size={89}
+                position={{ left: '75px', top: '72px' }}
+                isBnsHolder={conversation?.attributes?.isBnsHolder}
+              >
+                <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+              </BNSWrapper>
             </CenteredAvatarInConversation>
           )}
         </VideoContainer>

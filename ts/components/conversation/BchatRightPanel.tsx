@@ -23,13 +23,14 @@ import { closeRightPanel } from '../../state/ducks/conversations';
 import { getSelectedConversation, isRightPanelShowing } from '../../state/selectors/conversations';
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
 import { getAbsoluteAttachmentPath } from '../../types/MessageAttachment';
 import { useConversationUsername } from '../../hooks/useParamSelector';
+import { Flex } from '../basic/Flex';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -108,28 +109,39 @@ const HeaderItem = () => {
   if (!selectedConversation) {
     return null;
   }
-  const { id, profileName } = selectedConversation;
+  const { id, profileName, isBnsHolder } = selectedConversation;
+  console.log('HeaderItem HeaderItem ----------->', selectedConversation);
 
   return (
     <div className="group-settings-header">
-      <div className="group-settings-header-avatarBox">
-        <Avatar size={AvatarSize.XL} pubkey={id} />
-        <p>{profileName}</p>
-      </div>
-
-      <div onClick={() => dispatch(closeRightPanel())} className="group-settings-header-closeBox">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="13.833"
-          height="13.822"
-          viewBox="0 0 17.833 17.822"
+      <Flex
+      container={true}
+      justifyContent={"flex-end"}
+      
+    >
+        <span
+          onClick={() => dispatch(closeRightPanel())}
+          className="group-settings-header-closeBox"
         >
-          <path
-            id="close"
-            d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z"
-            transform="translate(-3.99 -3.99)"
-          />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="13.833"
+            height="13.822"
+            viewBox="0 0 17.833 17.822"
+          >
+            <path
+              id="close"
+              d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z"
+              transform="translate(-3.99 -3.99)"
+            />
+          </svg>
+        </span>
+        </Flex>
+      <div className="group-settings-header-avatarBox">
+        <BNSWrapper size={89} position={{ left: '75px', top: '72px' }} isBnsHolder={isBnsHolder}>
+          <Avatar size={AvatarSize.XL} pubkey={id} />
+        </BNSWrapper>
+        <p>{profileName}</p>
       </div>
     </div>
   );

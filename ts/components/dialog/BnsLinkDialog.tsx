@@ -15,6 +15,7 @@ export const BnsLinkDialog = () => {
   const [isLoading,setIsLoading]=useState(false)
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id 
   const regexForBnsName=/^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
+  const i18n = window.i18n;
   function closeDialog() {
     console.log(isVerify)
     window.inboxStore?.dispatch(bnsLinkModal(null));
@@ -35,7 +36,7 @@ export const BnsLinkDialog = () => {
   const BnsLinkedSuccessModal = () => {
     return (
       <>
-        <header>BNS Linked Successfully</header>
+        <header>{i18n('bnsLinkedSuccessfully')}</header>
         <div>
           <svg
             width="68"
@@ -60,7 +61,7 @@ export const BnsLinkDialog = () => {
         </div>
         <BchatButton
           style={{ height: '45px', borderRadius: '10px', margin: '15px 122px 40px',fontSize:'16px' }}
-          text={'OK'}
+          text={i18n('ok')}
           buttonType={BchatButtonType.Default}
           buttonColor={BchatButtonColor.Green}
           onClick={() => {
@@ -75,22 +76,22 @@ export const BnsLinkDialog = () => {
       <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
         
         {!success ?<>
-        <header>Link BNS</header>
-        <div className="label_id">Your BChat ID</div>
+        <header>{i18n('linkBNS')}</header>
+        <div className="label_id"> {i18n('yourBchatID')}</div>
         <div className="id_wrapper">
           <span className="id_content">
             {ourNumber}
           </span>
         </div>
         <div className="hr_line"></div>
-        <div className="label_input">BNS Name</div>
+        <div className="label_input">{i18n('bnsName')}</div>
         <div className="inputBox-wrapper">
           <input
             type="text"
             className="inputBox"
             disabled={isVerify}
             value={bnsName}
-            placeholder={'Enter BNS Name'}
+            placeholder={i18n('enterBnsName') }
             onChange={(event) => {setBnsName(event.target.value)}}
             maxLength={33}
             data-testid="profile-name-input"
@@ -99,21 +100,21 @@ export const BnsLinkDialog = () => {
         <div className="divided-btn-wrapper">
           <BchatButton
             style={{ height: '45px', borderRadius: '10px' }}
-            text={'Cancel'}
+            text={i18n('cancel')}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Primary}
             onClick={() => closeDialog()}
           />
           <BchatButton
             style={{ height: '45px', borderRadius: '10px' }}
-            text={'Verify'}
+            text={i18n('verify')}
             disabled={ !regexForBnsName.test(bnsName) }
             buttonType={BchatButtonType.Brand}
             buttonColor={ BchatButtonColor.Green }
             children={
               isVerify &&
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ marginRight: '2px' }}>Verified</span>
+                <span style={{ marginRight: '2px' }}>{i18n('verified')}</span>
                 <span style={{display: 'flex'}}>
                   <BchatIcon iconType="circleWithTick" iconSize={12} iconColor="#fff" />
                 </span>
@@ -125,7 +126,7 @@ export const BnsLinkDialog = () => {
         <div style={{ marginBottom: '30px', padding: ' 0 30px' }}>
           <BchatButton
             style={{ height: '45px', borderRadius: '10px' }}
-            text={'Link'}
+            text={i18n('link')}
             disabled={!isVerify}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Green}

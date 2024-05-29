@@ -283,6 +283,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
     );
   }
   private renderBnsVerified(isBnsHolder: any) {
+
+    const i18n = window.i18n;
     return (
       <div className='link_bns_wrapper'>
         {!isBnsHolder ? (
@@ -297,16 +299,16 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <span>
                 <BchatIcon iconType={'bnslogo'} iconSize={26} />
               </span>
-              Link your Bns
+              {i18n('linkYourBns')}
             </button>
             <div className="hintTxt">
-              <span> Read more about BNS </span>
+              <span> {i18n('readMoreAboutBNS')} </span>
               <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
             </div>
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span> BNS Verified </span>
+            <span> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}

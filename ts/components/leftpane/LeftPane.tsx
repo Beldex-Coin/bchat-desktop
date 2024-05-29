@@ -43,7 +43,7 @@ const InnerLeftPaneMessageSection = () => {
   const lists = showSearch ? undefined : useSelector(getLeftPaneLists);
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
-  const directContact = useSelector(getDirectContacts)
+  const directContact = useSelector(getDirectContacts);
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -54,7 +54,6 @@ const InnerLeftPaneMessageSection = () => {
       messageRequestsEnabled={messageRequestsEnabled}
       overlayMode={overlayMode}
       directContact={directContact}
-
     />
   );
 };
@@ -66,15 +65,12 @@ const InnerLeftPaneMessageSection = () => {
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
 
-
   if (focusedSection === SectionType.Message) {
     return <InnerLeftPaneMessageSection />;
   }
   if (focusedSection === SectionType.Closedgroup) {
     return <OverlayClosedGroup />;
   }
-
-
 
   if (focusedSection === SectionType.Opengroup) {
     return <OverlayOpenGroup />;
@@ -83,7 +79,6 @@ const LeftPaneSection = () => {
   if (focusedSection === SectionType.Wallet) {
     return <AddressBook from={window.i18n('contact')} />;
   }
-
 
   // if (focusedSection === SectionType.Contact) {
   //   return <InnerLeftPaneContactSection />;
@@ -100,36 +95,35 @@ const AddContactFloatingIcon = () => {
 
   if (focusedSection === SectionType.Message && overlayMode !== 'message') {
     // return <InnerLeftPaneMessageSection />;
-    return <div className='addContactFloating'>
-      <div className='addContactFloating-content'
-        data-tip="Add Contacts"
-        //  data-offset="{'right':60}"
-        data-offset="{'top':80,'right':80}"
-        data-place="bottom"
-        onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
-      >
-        <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
+    return (
+      <div className="addContactFloating">
+        <div
+          className="addContactFloating-content"
+          data-tip="Add Contacts"
+          //  data-offset="{'right':60}"
+          data-offset="{'top':80,'right':80}"
+          data-place="bottom"
+          onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
+        >
+          <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
 
-        {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
-        {/* <img src={"addNewChat.svg"} /> */}
+          {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
+          {/* <img src={"addNewChat.svg"} /> */}
+        </div>
       </div>
-    </div>
+    );
   }
-  return <></>
-}
+  return <></>;
+};
 
 export const LeftPane = () => {
-
   return (
     <BchatTheme>
       <div className="module-left-pane-bchat">
-
-
         <div className="module-left-pane">
           <LeftPaneSection />
           <AddContactFloatingIcon />
           <ActionsPanel />
-
         </div>
       </div>
     </BchatTheme>

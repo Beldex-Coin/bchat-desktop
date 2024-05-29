@@ -11,32 +11,31 @@ export async function linkBns(ourBnsName: string) {
   console.log('linkBns ', !!ourBnsName);
   await setIsBnsHolder(true);
 }
-const failureBnsLinkHandler=async()=>{
-    window.setLocalValue('ourBnsName', '');
-    await setIsBnsHolder(false);
-    ToastUtils.pushToastError('invalid', 'your bns name and id not matched,try another one');
-    return false;
-}
+const failureBnsLinkHandler = async () => {
+  window.setLocalValue('ourBnsName', '');
+  await setIsBnsHolder(false);
+  ToastUtils.pushToastError('invalid', 'your bns name and id not matched,try another one');
+  return false;
+};
 export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
   try {
     const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
-    console.log(' ourBnsName ourBnsName -------->', ourBnsName);
+    console.log(' ourBnsName -------->', ourBnsName);
     if (!ourBnsName) {
       return false;
     }
 
     const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(ourBnsName);
     const ourNumber = UserUtils.getOurPubKeyStrFromCache();
-    console.log('isValidDetail ------>', resolvedBchatID);
 
     if (ourNumber === resolvedBchatID) {
-      ToastUtils.pushToastSuccess('success', 'your bns name is verified');
+      !!bnsName && ToastUtils.pushToastSuccess('success', 'your bns name is verified');
       return true;
     } else {
-       return failureBnsLinkHandler()
+      return failureBnsLinkHandler();
     }
   } catch (error) {
-    console.log(error)
-    return failureBnsLinkHandler()
+    console.log(error);
+    return failureBnsLinkHandler();
   }
 }
