@@ -1,21 +1,27 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Avatar, AvatarSize, CrownIcon } from './avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper, CrownIcon } from './avatar/Avatar';
 import { Constants } from '../bchat';
 import { BchatIcon } from './icon';
-import { useConversationUsernameOrShorten } from '../hooks/useParamSelector';
+import { useConversationBnsHolder, useConversationUsernameOrShorten } from '../hooks/useParamSelector';
 import styled from 'styled-components';
 
 const AvatarContainer = styled.div`
   position: relative;
 `;
 
-const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean }) => {
-  const { memberPubkey, isAdmin } = props;
+const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean;isBnsHolder:any }) => {
+  const { memberPubkey, isAdmin ,isBnsHolder} = props;
   return (
     <AvatarContainer>
+       <BNSWrapper
+                size={52}
+                position={{ left: '34px', top: '34px' }}
+                isBnsHolder={isBnsHolder}
+              >
       <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
       {isAdmin && <CrownIcon />}
+      </BNSWrapper>
     </AvatarContainer>
   );
 };
@@ -43,6 +49,8 @@ export const MemberListItem = (props: {
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
+  const isBnsHolder=useConversationBnsHolder(pubkey)
+
   return (
     // tslint:disable-next-line: use-simple-attributes
     <div
@@ -66,7 +74,7 @@ export const MemberListItem = (props: {
     >
       <div className="bchat-member-item__info" style={{width:"100%"}}>
         <span className="bchat-member-item__avatar">
-          <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false} />
+          <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false}  isBnsHolder={isBnsHolder} />
         </span>
         <span className="bchat-member-item__name">{memberName}</span>
       </div>

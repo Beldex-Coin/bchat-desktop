@@ -18,6 +18,8 @@ import { SpacerLG } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
 import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
+import { getIsOnline } from '../../../state/selectors/onions';
+import useNetworkStatus from '../../../hooks/useNetworkStatus';
 //  import { getConversationById } from '../../../data/data';
 // import { UserUtils } from '../../../bchat/utils';
 // import { UserUtils } from '../../../bchat/utils';
@@ -25,6 +27,9 @@ import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
 export const OverlayClosedGroup = () => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
+  const pathCon = useSelector(getIsOnline);
+  const isOnline = useNetworkStatus();
+  const heightValidation=  !pathCon && isOnline || !pathCon && !isOnline 
   // FIXME autofocus inputref on mount
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -108,7 +113,7 @@ export const OverlayClosedGroup = () => {
   return (
     <div className="module-left-pane-overlay">
       <LeftPaneSectionHeader />
-      <div style={{ height: 'calc(100% - 222px)', overflowY: 'auto' }}>
+      <div style={{ height: `calc(100% - ${heightValidation?293 :222 }px)`, overflowY: 'auto' }}>
         {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
         {/* <LeftPaneSectionHeader /> */}
         <div className="module-left-pane-overlay-closed--header">{title}</div>

@@ -110,7 +110,6 @@ const HeaderItem = () => {
     return null;
   }
   const { id, profileName, isBnsHolder } = selectedConversation;
-  console.log('HeaderItem HeaderItem ----------->', selectedConversation);
 
   return (
     <div className="group-settings-header">

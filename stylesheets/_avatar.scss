@@ -101,8 +101,9 @@ $borderAvatarColor: unquote(
   position: relative;
   border: 2px solid #00bd40;
   border-radius: 10px;
-
+  transition: 0.25s;
   &-verify-tag {
+    transition: 0.25s;
     position: absolute;
   }
 }

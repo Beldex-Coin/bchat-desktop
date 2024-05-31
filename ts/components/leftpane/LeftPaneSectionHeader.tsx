@@ -34,6 +34,7 @@ import { clearSearch } from '../../state/ducks/search';
 import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import useNetworkStatus from '../../hooks/useNetworkStatus';
 // import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -49,6 +50,9 @@ export const LeftPaneSectionHeader = () => {
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
   const bChatId = useSelector(getOurNumber);
+  const pathCon = useSelector(getIsOnline);
+  // const isOnline=window.getGlobalOnlineStatus();
+  const isOnline = useNetworkStatus();
   const dispatch = useDispatch();
   let label: string | undefined;
   const isMessageSection = focusedSection === SectionType.Message;
@@ -56,6 +60,10 @@ export const LeftPaneSectionHeader = () => {
 
   const showBackButton = isMessageRequestOverlay && isMessageSection;
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+
+  // console.log('if online ------------>', window.getGlobalOnlineStatus());
+
+  console.log('isOnline ------------>', isOnline, 'pathCon ..', pathCon);
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -164,7 +172,7 @@ export const LeftPaneSectionHeader = () => {
 
   function Settings() {
     return (
-      <span style={{ marginRight: '15px', marginTop: '8px' }}>
+      <span style={{ marginRight: '15px'}}>
         <BchatIconButton
           iconSize="large"
           iconType="walletSetting"
@@ -179,26 +187,27 @@ export const LeftPaneSectionHeader = () => {
     );
   }
   return (
-    <Flex flexDirection="column">
-      <div
-        className="module-left-pane__header"
-        style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
-      >
-        {showBackButton && (
-          <BchatIconButton
-            onClick={() => {
-              dispatch(setOverlayMode(undefined));
-            }}
-            iconType="chevron"
-            iconRotation={90}
-            iconSize="medium"
-            margin="0 0 var(--margins-xs) var(--margins-xs)"
-          />
-        )}
+    <>
+      <Flex flexDirection="column">
+        <div
+          className="module-left-pane__header"
+          style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
+        >
+          {showBackButton && (
+            <BchatIconButton
+              onClick={() => {
+                dispatch(setOverlayMode(undefined));
+              }}
+              iconType="chevron"
+              iconRotation={90}
+              iconSize="medium"
+              margin="0 0 var(--margins-xs) var(--margins-xs)"
+            />
+          )}
 
-        <div className="">{verifyScreens()}</div>
+          <div className="">{verifyScreens()}</div>
 
-        {/* <div>
+          {/* <div>
           <input
             style={{ width: '130px' }}
             value={bnsName} // ...force the select's value to match the state variable...
@@ -207,15 +216,15 @@ export const LeftPaneSectionHeader = () => {
           />
           <button onClick={() => printlog()}>submit</button>
         </div> */}
-        <div className="module-left-pane__header__title">{label}</div>
-        {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
+          <div className="module-left-pane__header__title">{label}   <IsOnline /></div>
+          {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
         </div> */}
-       {!conversation?.attributes?.isBnsHolder && <IsOnline />} 
-        <Moon />
-        <Settings />
+        
+          <Moon />
+          <Settings />
 
-        {/* {isMessageSection && !isMessageRequestOverlay && (
+          {/* {isMessageSection && !isMessageRequestOverlay && (
           <div
             onClick={props.buttonClicked}
             className="addContact"
@@ -223,13 +232,35 @@ export const LeftPaneSectionHeader = () => {
             data-offset="{'right':60}"
             data-place="bottom"
           > */}
-        {/* <div className='addContactIcon'></div> */}
-        {/* <img className="addContactIcon" /> */}
-        {/* </div>
+          {/* <div className='addContactIcon'></div> */}
+          {/* <img className="addContactIcon" /> */}
+          {/* </div>
         )} */}
-      </div>
-      <BchatToolTip effect="solid" />
-    </Flex>
+        </div>
+        <BchatToolTip effect="solid" />
+      </Flex>
+      {!isOnline && !pathCon && (
+        <div className="offline-msg">
+          <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
+          <span className="txt">
+            You are not connected to the Hop. Check your internet connection or Restart the app!
+          </span>
+        </div>
+       )} 
+      {!pathCon && isOnline && (
+        <div className="connection-Wrapper">
+          <Flex container={true} flexDirection="row" alignItems="center">
+            <div>connecting</div>
+
+            <div className="dots">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+            </div>
+          </Flex>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -323,7 +354,7 @@ const StyledBannerInner = styled.div`
   }
 `;
 const Hops = styled.div`
-  position: absolute;
-  left: 47px;
-  top: 43px;
+  margin-left: 15px;
+  display: flex;
+  align-content: center;
 `;
