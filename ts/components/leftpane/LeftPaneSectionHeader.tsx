@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -35,6 +35,8 @@ import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
+import { getIsVerifyBnsCalled } from '../../state/selectors/bnsConfig';
+import { isLinkedBchatIDWithBnsForDeamon } from '../conversation/BnsVerification';
 // import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -57,13 +59,15 @@ export const LeftPaneSectionHeader = () => {
   let label: string | undefined;
   const isMessageSection = focusedSection === SectionType.Message;
   const isMessageRequestOverlay = overlayMode === 'message-requests';
-
+  const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  useEffect(() => {
+    if (isOnline && !IsVerifyBnsCalled) {
+      isLinkedBchatIDWithBnsForDeamon();
+    }
+  }, [isOnline]);
 
-  // console.log('if online ------------>', window.getGlobalOnlineStatus());
-
-  console.log('isOnline ------------>', isOnline, 'pathCon ..', pathCon);
   switch (focusedSection) {
     case SectionType.Contact:
       label = window.i18n('contactsHeader');
@@ -172,7 +176,7 @@ export const LeftPaneSectionHeader = () => {
 
   function Settings() {
     return (
-      <span style={{ marginRight: '15px'}}>
+      <span style={{ marginRight: '15px' }}>
         <BchatIconButton
           iconSize="large"
           iconType="walletSetting"
@@ -216,11 +220,13 @@ export const LeftPaneSectionHeader = () => {
           />
           <button onClick={() => printlog()}>submit</button>
         </div> */}
-          <div className="module-left-pane__header__title">{label}   <IsOnline /></div>
+          <div className="module-left-pane__header__title">
+            {label} <IsOnline />
+          </div>
           {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
         </div> */}
-        
+
           <Moon />
           <Settings />
 
@@ -246,7 +252,7 @@ export const LeftPaneSectionHeader = () => {
             You are not connected to the Hop. Check your internet connection or Restart the app!
           </span>
         </div>
-       )} 
+      )}
       {!pathCon && isOnline && (
         <div className="connection-Wrapper">
           <Flex container={true} flexDirection="row" alignItems="center">

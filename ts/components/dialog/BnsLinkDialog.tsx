@@ -17,7 +17,6 @@ export const BnsLinkDialog = () => {
   const regexForBnsName=/^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   const i18n = window.i18n;
   function closeDialog() {
-    console.log(isVerify)
     window.inboxStore?.dispatch(bnsLinkModal(null));
     setSuccess(false);
     window.inboxStore?.dispatch(editProfileModal({}));

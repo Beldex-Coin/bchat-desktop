@@ -11,7 +11,7 @@ const AvatarContainer = styled.div`
 `;
 
 const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean;isBnsHolder:any }) => {
-  const { memberPubkey, isAdmin ,isBnsHolder} = props;
+  const { memberPubkey ,isBnsHolder} = props;
   return (
     <AvatarContainer>
        <BNSWrapper
@@ -20,7 +20,7 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean;isBnsHolder:
                 isBnsHolder={isBnsHolder}
               >
       <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
-      {isAdmin && <CrownIcon />}
+      
       </BNSWrapper>
     </AvatarContainer>
   );
@@ -73,10 +73,11 @@ export const MemberListItem = (props: {
       data-testid={dataTestId}
     >
       <div className="bchat-member-item__info" style={{width:"100%"}}>
-        <span className="bchat-member-item__avatar">
+        <span className="bchat-member-item__avatar" >
           <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false}  isBnsHolder={isBnsHolder} />
         </span>
-        <span className="bchat-member-item__name">{memberName}</span>
+        <span className="bchat-member-item__name" style={{ marginInlineEnd: "5px"}}>{memberName}</span>
+        <span style={{marginRight:'60px'}}>{isAdmin && <CrownIcon />}</span>
       </div>
       <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}> 
         {isSelected&&<BchatIcon iconType="circle" iconSize="medium" iconColor={Constants.UI.COLORS.GREEN} /> }

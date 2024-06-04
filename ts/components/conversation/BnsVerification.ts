@@ -1,6 +1,7 @@
 import { SNodeAPI } from '../../bchat/apis/snode_api';
 import { getConversationController } from '../../bchat/conversations/ConversationController';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
+import { setIsVerifyBnsCalled } from '../../state/ducks/bnsConfig';
 
 export async function setIsBnsHolder(value: Boolean) {
   const conversation = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
@@ -24,10 +25,13 @@ export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
     if (!ourBnsName) {
       return false;
     }
-
+    if (!window.navigator.onLine) {
+      !!bnsName && ToastUtils.pushToastError('invalid', 'please check your internet');
+      return false;
+    }
     const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(ourBnsName);
     const ourNumber = UserUtils.getOurPubKeyStrFromCache();
-
+    window.inboxStore?.dispatch(setIsVerifyBnsCalled(true));
     if (ourNumber === resolvedBchatID) {
       !!bnsName && ToastUtils.pushToastSuccess('success', 'your bns name is verified');
       return true;

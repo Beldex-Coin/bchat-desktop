@@ -41,27 +41,15 @@ const Identicon = (props: Props) => {
 };
 
 const CrownWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  bottom: 0%;
-  right: 12%;
-  top: 24px;
-  height: 20px;
-  width: 20px;
-  transform: translate(25%, 25%);
-  color: #f7c347;
-  background: var(--color-inbox-background);
-  border-radius: 50%;
-  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.3));
-
-  align-items: center;
-  justify-content: center;
+  
+  height: 15px;
+  width: 15px;
 `;
 
 export const CrownIcon = () => {
   return (
     <CrownWrapper>
-      <img src="images/bchat/Crown.svg" width={'65%'} height={'75%'}></img>
+      <img src="images/bchat/Crown.svg" width={'100%'} height={'100%'}></img>
     </CrownWrapper>
   );
 };

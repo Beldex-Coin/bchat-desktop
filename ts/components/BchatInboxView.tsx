@@ -34,8 +34,8 @@ import { initialWalletSectionState } from '../state/ducks/walletSection';
 import { initialDaemonState } from '../state/ducks/daemon';
 import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
 import { initialWalletConfigState } from '../state/ducks/walletConfig';
-import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
-
+// import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
+import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -62,7 +62,7 @@ export class BchatInboxView extends React.Component<any, State> {
 
   public componentDidMount() {
     this.setupLeftPane();
-    isLinkedBchatIDWithBnsForDeamon();
+    // isLinkedBchatIDWithBnsForDeamon();
   }
 
   public render() {
@@ -112,14 +112,15 @@ export class BchatInboxView extends React.Component<any, State> {
       defaultRooms: initialDefaultRoomState,
       search: initialSearchState,
       theme: initialThemeState,
+      isVerifyBnsCalled:initialisVerifyBnsCalledState,
       wallet: initialWalletState,
-      daemon : initialDaemonState,
+      daemon: initialDaemonState,
       onionPaths: initialOnionPathState,
       modals: initialModalState,
       userConfig: initialUserConfigState,
-      walletConfig:initialWalletConfigState,
-      walletFocused:initialWalletSectionState,
-      walletInnerFocused:initialWalletInnerSectionState,
+      walletConfig: initialWalletConfigState,
+      walletFocused: initialWalletSectionState,
+      walletInnerFocused: initialWalletInnerSectionState,
       timerOptions: {
         timerOptions,
       },
