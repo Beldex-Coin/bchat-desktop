@@ -869,16 +869,18 @@
 }
 .bns_link_modal {
   header {
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-poppins-bold;
+    // font-family: $bchat-font-poppin-semibold;
     font-size: 22px;
     margin-bottom: 25px;
     margin-top: 25px;
   }
   .label_id {
     // font-weight: 700;
-    font-family: $bchat-font-poppin-semibold;
+    // font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-poppins-bold;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 12x;
   }
   .id_wrapper {
     height: 60px;

@@ -152,8 +152,9 @@ const MessageRequestListPlaceholder = styled.div`
 
 const MessageRequestListContainer = styled.div`
   width: 100%;
+  height:73%;
   overflow-y: auto;
-  margin-bottom: auto;
+  // margin-bottom: auto;
 `;
 
 /**

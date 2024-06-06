@@ -130,7 +130,7 @@ textarea {
       // background-image: var(--button-color);
       background-color: var(--button-color);
 
-      color: var(--color-text-opposite);
+      color: var(--color-text-opposite) ;
       font-family: $bchat-font-poppin-semibold;
       // &:hover {
       //   background-color: $bchat-button-hovor-color;
@@ -232,6 +232,7 @@ textarea {
     &.primary,
     &.white,
     &.green {
+      
       &.disabled {
         filter: brightness(60%);
 
@@ -251,10 +252,10 @@ textarea {
     font-family: $bchat-font-poppins-bold;
     border-radius: 13px;
 
-    &:not(.disabled):hover {
-      color: var(--color-text);
-      border-color: var(--color-text);
-    }
+    // &:not(.disabled):hover {
+    //   color: var(--color-text);
+    //   border-color: var(--color-text);
+    // }
   }
 
   &.default,

@@ -3,12 +3,16 @@ import React from 'react';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';
 import { ContactName } from '../conversation/ContactName';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { Timestamp } from '../conversation/Timestamp';
 import { MessageBodyHighlight } from '../basic/MessageBodyHighlight';
 import styled from 'styled-components';
 import { MessageAttributes } from '../../models/messageType';
-import { useConversationUsername, useIsPrivate } from '../../hooks/useParamSelector';
+import {
+  useConversationBnsHolder,
+  useConversationUsername,
+  useIsPrivate,
+} from '../../hooks/useParamSelector';
 import { UserUtils } from '../../bchat/utils';
 
 export type MessageResultProps = MessageAttributes & { snippet: string };
@@ -133,8 +137,12 @@ const FromUserInGroup = (props: { authorPubkey: string; conversationId: string }
   return <StyledConversationFromUserInGroup>{authorConvoName}: </StyledConversationFromUserInGroup>;
 };
 
-const AvatarItem = (props: { source: string }) => {
-  return <Avatar size={AvatarSize.S} pubkey={props.source} />;
+const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
+  return (
+    <BNSWrapper size={40} position={{ left: '23px', top: '23px' }} isBnsHolder={props.isBnsHolder}>
+      <Avatar size={AvatarSize.S} pubkey={props.source} />
+    </BNSWrapper>
+  );
 };
 
 const ResultBody = styled.div`
@@ -199,7 +207,16 @@ export const MessageSearchResult = (props: MessageResultProps) => {
 
   const destination =
     direction === 'incoming' ? conversationId : convoIsPrivate ? me : conversationId;
-
+  const isBnsHolder = useConversationBnsHolder(destination);
+  console.log(
+    'isBnsHolderisBnsHolderisBnsHolder ---->',
+    conversationId,
+    isBnsHolder,
+    'destination --->',
+    destination,
+    'source--->',
+    source
+  );
   if (!source && !destination) {
     return null;
   }
@@ -217,7 +234,7 @@ export const MessageSearchResult = (props: MessageResultProps) => {
         });
       }}
     >
-      <AvatarItem source={conversationId} />
+      <AvatarItem source={conversationId} isBnsHolder={isBnsHolder} />
       <StyledResultText>
         <ResultsHeader>
           <ConversationHeader source={destination} conversationId={conversationId} />

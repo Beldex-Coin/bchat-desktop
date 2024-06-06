@@ -406,7 +406,8 @@ export async function innerHandleSwarmContentMessage(
       isPrivateConversationMessage ? envelope.source : envelope.senderIdentity,
       ConversationTypeEnum.PRIVATE
     );
-    senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
+    
+    isPrivateConversationMessage && senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
     /**
      * For a closed group message, this holds the closed group's conversation.
      * For a private conversation message, this is just the conversation with that user

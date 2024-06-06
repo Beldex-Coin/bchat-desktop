@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "El format Pubkey no és vàlid",
   "emptyGroupNameError": "Introdueix nom de grup, si us plau",
   "editProfileModalTitle": "Perfil",
- "linkYourBns": "Link Your Bns",
+ "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",

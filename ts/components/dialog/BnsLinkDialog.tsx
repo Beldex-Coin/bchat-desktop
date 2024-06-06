@@ -119,7 +119,7 @@ export const BnsLinkDialog = () => {
                 </span>
               </div>
             }
-            onClick={() => verifyBns()}
+            onClick={() => !isVerify && verifyBns()}
           />
         </div>
         <div style={{ marginBottom: '30px', padding: ' 0 30px' }}>
