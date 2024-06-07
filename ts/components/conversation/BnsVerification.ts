@@ -18,6 +18,23 @@ const failureBnsLinkHandler = async () => {
   ToastUtils.pushToastError('invalid', 'your bns name and id not matched,try another one');
   return false;
 };
+export function bnsVerificationConvo(
+  senderConversationModel: any,
+  isPrivateConversationMessage: boolean,
+  envelope: { isBnsHolder: boolean }
+) {
+  const ourPubkey: string = UserUtils.getOurPubKeyStrFromCache();
+  if (
+    senderConversationModel?.attributes?.id === ourPubkey &&
+    !window.getLocalValue('ourBnsName') &&
+    isPrivateConversationMessage
+  ) {
+    senderConversationModel.setIsBnsHolder(false);
+    console.log('verify disable');
+  } else {
+    isPrivateConversationMessage && senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
+  }
+}
 export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
   try {
     const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
