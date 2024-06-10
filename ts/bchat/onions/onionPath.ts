@@ -164,7 +164,11 @@ export async function getOnionPath({
         return { ip: c.ip };
       })
     );
+   
+
     if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths, ipsOnly)) {
+    console.log("updated path ::",ipsOnly)
+
       window.inboxStore?.dispatch(updateOnionPaths(ipsOnly));
     }
   }
@@ -192,6 +196,7 @@ export async function getOnionPath({
   if (!randomPath) {
     throw new Error('No onion paths available after filtering');
   }
+  // console.log('randomPath ::',randomPath)
   return randomPath;
 }
 
@@ -313,7 +318,7 @@ export async function testGuardNode(snode: Data.Snode) {
   try {
     // Log this line for testing
     // curl -k -X POST -H 'Content-Type: application/json' -d '"+fetchOptions.body.replace(/"/g, "\\'")+"'", url
-    window?.log?.info('insecureNodeFetch => plaintext for testGuardNode');
+    // window?.log?.info('insecureNodeFetch => plaintext for testGuardNode');
 
     response = await insecureNodeFetch(url, fetchOptions);
   } catch (e) {

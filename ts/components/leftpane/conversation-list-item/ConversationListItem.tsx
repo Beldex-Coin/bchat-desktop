@@ -10,8 +10,8 @@ import {
   openConversationWithMessages,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
-import { useDispatch,  } from 'react-redux';
-import {  updateUserDetailsModal } from '../../../state/ducks/modalDialog';
+import { useDispatch } from 'react-redux';
+import { updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
@@ -36,7 +36,13 @@ import styled from 'styled-components';
 // tslint:disable-next-line: no-empty-interface
 export type ConversationListItemProps = Pick<
   ReduxConversationType,
-  'id' | 'isSelected' | 'isBlocked' | 'mentionedUs' | 'unreadCount' | 'profileName' | 'walletAddress'
+  | 'id'
+  | 'isSelected'
+  | 'isBlocked'
+  | 'mentionedUs'
+  | 'unreadCount'
+  | 'profileName'
+  | 'walletAddress'
 >;
 
 /**
@@ -62,7 +68,7 @@ const AvatarItem = () => {
   const userName = useConversationUsername(conversationId);
   const isPrivate = useIsPrivate(conversationId);
   const avatarPath = useAvatarPath(conversationId);
-  const isBnsHolder=useConversationBnsHolder(conversationId)
+  const isBnsHolder = useConversationBnsHolder(conversationId);
   const dispatch = useDispatch();
 
   function onPrivateAvatarClick() {
@@ -70,20 +76,24 @@ const AvatarItem = () => {
       updateUserDetailsModal({
         conversationId: conversationId,
         userName: userName || '',
-        authorAvatarPath: avatarPath, 
+        authorAvatarPath: avatarPath,
       })
     );
   }
 
   return (
     <div className="module-conversation-list-item__avatar-container">
-        <BNSWrapper size={40} position={{left:'26px',top:'23px'}} isBnsHolder={isBnsHolder}>
-      <Avatar
-        size={AvatarSize.S}
-        pubkey={conversationId}
-        onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
-      />
-       </BNSWrapper>
+      <BNSWrapper
+        // size={40}
+        position={{ left: '26px', top: '23px' }}
+        isBnsHolder={isBnsHolder}
+      >
+        <Avatar
+          size={AvatarSize.S}
+          pubkey={conversationId}
+          onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
+        />
+      </BNSWrapper>
     </div>
   );
 };
@@ -99,15 +109,14 @@ const ConversationListItem = (props: Props) => {
     mentionedUs,
     isMessageRequest,
     // walletAddress
-
   } = props;
-//   const dispatch = useDispatch();
-//   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-//   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
-//  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
+  //   const dispatch = useDispatch();
+  //   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+  //   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
+  //  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
 
   // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
-    // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
+  // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
 
   // const forceUpdate = useUpdate();
   // console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
@@ -175,33 +184,33 @@ const ConversationListItem = (props: Props) => {
     [conversationId]
   );
   const MentionAtSymbol = styled.span`
-  background-color: var(--color-accent);
+    background-color: var(--color-accent);
 
-  color: black;
-  text-align: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 1px;
-  padding-inline-start: 3px;
-  padding-inline-end: 3px;
+    color: black;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 1px;
+    padding-inline-start: 3px;
+    padding-inline-end: 3px;
 
-  position: static;
-  margin-inline-start: 5px;
+    position: static;
+    margin-inline-start: 5px;
 
-  font-weight: 300;
-  font-size: 11px;
-  letter-spacing: 0.25px;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.25px;
 
-  height: 16px;
-  min-width: 16px;
-  border-radius: 8px;
-  /* transition: filter 0.25s linear; */
-  cursor: pointer;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 8px;
+    /* transition: filter 0.25s linear; */
+    cursor: pointer;
 
-  :hover {
-    filter: grayscale(0.7);
-  }
-`;
+    :hover {
+      filter: grayscale(0.7);
+    }
+  `;
 
 
   let atSymbol = null;
@@ -245,29 +254,20 @@ const ConversationListItem = (props: Props) => {
             isBlocked ? 'module-conversation-list-item--is-blocked' : null
           )}
         >
-          <div className='verticalLine'>
-
-          </div>
+          <div className="verticalLine"></div>
           <AvatarItem />
           <div className="module-conversation-list-item__content">
             <ConversationListItemHeaderItem />
 
-            <div className='module-conversation-list-item__content__messageBox' >
-
+            <div className="module-conversation-list-item__content__messageBox">
               <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
               {unreadCountDiv}
               {atSymbol}
               {/* <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} /> */}
-
             </div>
 
-
-
-            <div style={{ fontSize: '12px' }}>
-              {/* {walletAddress} */}
-            </div>
+            <div style={{ fontSize: '12px' }}>{/* {walletAddress} */}</div>
           </div>
-
         </div>
         <Portal>
           <MemoConversationListItemContextMenu triggerId={triggerId} />
@@ -278,5 +278,3 @@ const ConversationListItem = (props: Props) => {
 };
 
 export const MemoConversationListItemWithDetails = React.memo(ConversationListItem, _.isEqual);
-
-

@@ -374,7 +374,7 @@ export async function TEST_getSnodePoolFromSnode(targetNode: Snode): Promise<Arr
     endpoint: 'get_master_nodes',
     params: {
       active_only: true,
-      ours_only: true,
+      frBct: true,
       fields: {
         public_ip: true,
         storage_port: true,
@@ -526,7 +526,6 @@ export async function retrieveNextMessages(
     associatedWith,
     timeout: 4000,
   });
-
   if (!result) {
     window?.log?.warn(
       `_retrieveNextMessages - bchatRpc could not talk to ${targetNode.ip}:${targetNode.port}`

@@ -139,7 +139,11 @@ const FromUserInGroup = (props: { authorPubkey: string; conversationId: string }
 
 const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
   return (
-    <BNSWrapper size={40} position={{ left: '23px', top: '23px' }} isBnsHolder={props.isBnsHolder}>
+    <BNSWrapper
+      // size={40}
+      position={{ left: '23px', top: '23px' }}
+      isBnsHolder={props.isBnsHolder}
+    >
       <Avatar size={AvatarSize.S} pubkey={props.source} />
     </BNSWrapper>
   );

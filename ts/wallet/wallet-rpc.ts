@@ -362,7 +362,7 @@ class Wallet {
     try {
       let url: string;
       if (window.networkType === 'mainnet') {
-        url = 'publicnode1.rpcnode.stream:29095';
+        url = 'http://publicnode1.rpcnode.stream:29095';
       } else {
         url = 'http://149.102.156.174:19095';
       }

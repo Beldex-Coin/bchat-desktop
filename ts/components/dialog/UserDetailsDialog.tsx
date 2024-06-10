@@ -54,7 +54,7 @@ export const UserDetailsDialog = (props: Props) => {
       <div style={{ width: '410px', paddingTop: '20px' }}>
         <Flex container={true} justifyContent="center">
           <BNSWrapper
-            size={isEnlargedImageShown ? 305 : 89}
+            // size={isEnlargedImageShown ? 305 : 89}
             position={{
               left: isEnlargedImageShown ? '288px' : '71px',
               top: isEnlargedImageShown ? '288px' : '71px',

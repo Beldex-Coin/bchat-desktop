@@ -244,7 +244,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
 
   const params = {
     active_only: true,
-    ours_only: true,
+    frBct: true,
     fields: {
       public_ip: true,
       storage_port: true,
@@ -278,9 +278,7 @@ async function getSnodesFromSeedUrl(urlObj: URL): Promise<Array<any>> {
     },
     agent: sslAgent,
   };
-  window?.log?.info('insecureNodeFetch => plaintext for getSnodesFromSeedUrl');
-
-
+  
   const response = await insecureNodeFetch(url, fetchOptions);
   if (response.status !== 200) {
     window?.log?.error(

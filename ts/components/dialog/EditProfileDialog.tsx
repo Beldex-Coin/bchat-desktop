@@ -175,7 +175,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
       this.setState({
         newAvatarObjectUrl: scaledAvatarUrl,
         mode: 'edit',
-        loading: true,
+        loading: false,
       });
       this.onClickOK();
     }
@@ -283,10 +283,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
     );
   }
   private renderBnsVerified(isBnsHolder: any) {
-
     const i18n = window.i18n;
     return (
-      <div className='link_bns_wrapper'>
+      <div className="link_bns_wrapper">
         {!isBnsHolder ? (
           <>
             <button
@@ -387,17 +386,17 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
   private renderAvatar() {
     const { oldAvatarPath, newAvatarObjectUrl, profileName } = this.state;
-    const userName = profileName || this.convo.id;
+    // const userName = profileName || this.convo.id;
 
     return (
       <BNSWrapper
-        size={89}
+        // size={89}
         position={{ left: '72px', top: '72px' }}
         isBnsHolder={this.convo?.attributes?.isBnsHolder}
       >
         <Avatar
           forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
-          forcedName={userName}
+          forcedName={profileName}
           size={AvatarSize.XL}
           pubkey={this.convo.id}
         />
@@ -433,11 +432,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
   private onClickOK() {
     const { newAvatarObjectUrl, profileName } = this.state;
     const newName = profileName ? profileName.trim() : '';
-
     if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
+      ToastUtils.pushToastError('invalid name', 'invalid name');
       return;
     }
-
+    console.log('onClick upload image ----->', newName.length);
     this.setState(
       {
         loading: true,
@@ -494,7 +493,6 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
   await setLastProfileUpdateTimestamp(Date.now());
   await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
 }
-
 
 export function copyBchatID(bchatID: any) {
   window.clipboard.writeText(bchatID);

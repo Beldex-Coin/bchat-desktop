@@ -206,7 +206,7 @@ export const InConversationCallContainer = () => {
           {remoteStreamVideoIsMuted && (
             <CenteredAvatarInConversation>
               <BNSWrapper
-                size={89}
+                // size={89}
                 position={{ left: '75px', top: '72px' }}
                 isBnsHolder={selectedConversation?.isBnsHolder}
               >
@@ -225,7 +225,7 @@ export const InConversationCallContainer = () => {
           {localStreamVideoIsMuted && (
             <CenteredAvatarInConversation>
               <BNSWrapper
-                size={89}
+                // size={89}
                 position={{ left: '75px', top: '72px' }}
                 isBnsHolder={conversation?.attributes?.isBnsHolder}
               >

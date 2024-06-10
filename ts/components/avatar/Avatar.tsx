@@ -54,13 +54,14 @@ export const CrownIcon = () => {
   );
 };
 export const BNSWrapper = (props: any) => {
-  const { size, position,isBnsHolder } = props;
+  const {  position,isBnsHolder } = props;
+
   return (
     <>  
     {isBnsHolder?
       <div
       className="module-avatar-verify-wrapper"
-      style={{ width: size + 'px', height: size + 'px' }}
+      // style={{ width: size + 'px', height: size + 'px' }}
     >
       {props.children}
       <span
