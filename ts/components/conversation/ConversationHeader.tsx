@@ -248,6 +248,7 @@ const CallButton = () => {
   }
 
   return (
+    <div className="call">
     <BchatIconButton
       iconType="phone"
       iconRotation={270}
@@ -258,6 +259,7 @@ const CallButton = () => {
         void callRecipient(selectedConvoKey, canCall);
       }}
     />
+    </div>
   );
 };
 
@@ -464,9 +466,7 @@ export const ConversationHeaderWithDetails = () => {
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
             {conversation?.type == 'private' && (
-              <div className="call">
                 <CallButton />
-              </div>
             )}
           </Flex>
         </div>

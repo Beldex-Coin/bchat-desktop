@@ -115,7 +115,7 @@ export const BnsLinkDialog = () => {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span style={{ marginRight: '2px' }}>{i18n('verified')}</span>
                 <span style={{display: 'flex'}}>
-                  <BchatIcon iconType="circleWithTick" iconSize={12} iconColor="#fff" />
+                  <BchatIcon iconType="halfCircleWithTick" iconSize={12} iconColor="#fff" />
                 </span>
               </div>
             }
