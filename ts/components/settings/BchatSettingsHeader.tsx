@@ -42,7 +42,7 @@ export const SettingsHeader = (props: Props) => {
     <div className="bchat-settings-header">
       <div style={{ paddingLeft: '15px' }}>
         <BNSWrapper
-          size={52}
+          // size={52}
           position={{ left: '34px', top: '34px' }}
           isBnsHolder={converstation?.attributes?.isBnsHolder}
         >

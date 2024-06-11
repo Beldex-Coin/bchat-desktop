@@ -193,25 +193,29 @@ const ExpirationLength = (props: { expirationSettingName?: string }) => {
 const AvatarHeader = (props: {
   pubkey: string;
   showBackButton: boolean;
-  conversation:any
+  conversation: any;
   onAvatarClick?: (pubkey: string) => void;
 }) => {
-  const { pubkey, onAvatarClick, showBackButton,conversation } = props;
+  const { pubkey, onAvatarClick, showBackButton, conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <BNSWrapper size={40} position={{left:'25px',top:'25px'}} isBnsHolder={conversation?.isBnsHolder}>
-      <Avatar
-        size={AvatarSize.S}
-        onAvatarClick={() => {
-          // do not allow right panel to appear if another button is shown on the BchatConversation
-          if (onAvatarClick && !showBackButton) {
-            onAvatarClick(pubkey);
-          }
-        }}
-        pubkey={pubkey}
-        dataTestId="conversation-options-avatar"
-      />
-       </BNSWrapper>
+      <BNSWrapper
+        // size={40}
+        position={{ left: '25px', top: '25px' }}
+        isBnsHolder={conversation?.isBnsHolder}
+      >
+        <Avatar
+          size={AvatarSize.S}
+          onAvatarClick={() => {
+            // do not allow right panel to appear if another button is shown on the BchatConversation
+            if (onAvatarClick && !showBackButton) {
+              onAvatarClick(pubkey);
+            }
+          }}
+          pubkey={pubkey}
+          dataTestId="conversation-options-avatar"
+        />
+      </BNSWrapper>
     </span>
   );
 };
@@ -347,7 +351,7 @@ const ConversationHeaderTitle = () => {
       role="button"
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
-        {convoName} 
+        {convoName}
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -438,9 +442,9 @@ export const ConversationHeaderWithDetails = () => {
               pubkey={selectedConvoKey}
               conversation={conversation}
               showBackButton={isMessageDetailOpened}
-            />   
+            />
             <ConversationHeaderTitle />
-           
+
             {displayConnectWalletBtn && (
               <div
                 className="connectWalletBtn"
@@ -465,8 +469,10 @@ export const ConversationHeaderWithDetails = () => {
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            {conversation?.type == 'private' && (
+            {conversation?.type == 'private' && conversation?.didApproveMe && (
+              <div className="call">
                 <CallButton />
+                </div>
             )}
           </Flex>
         </div>

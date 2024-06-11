@@ -111,14 +111,14 @@ export const AvatarPlaceHolder = (props: Props) => {
     <svg viewBox={viewBox}>
       <g id="UrTavla">
         <rect
-          rx={10}
-          ry={10}
+          rx={0}
+          ry={0}
           width={diameter}
           height={diameter}
           // r={rWithoutBorder}
           fill={bgColor}
           stroke={avatarBorderColor}
-          strokeWidth="1"
+          strokeWidth="0"
         />
         <text
           fontSize={fontSize}

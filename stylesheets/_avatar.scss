@@ -7,8 +7,10 @@ $borderAvatarColor: unquote(
   position: relative;
   vertical-align: middle;
   display: inline-block;
-  border-radius: 50%;
+  // border-radius: 50%;
   flex-shrink: 0;
+  border-radius: 7px;
+  overflow: hidden;
 
   img {
     object-fit: cover;

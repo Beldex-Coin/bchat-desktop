@@ -10,28 +10,28 @@ import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVer
 
 export const BnsLinkDialog = () => {
   const [success, setSuccess] = useState(false);
-  const [bnsName,setBnsName]=useState('');
-  const [isVerify,setIsVerify]=useState(false);
-  const [isLoading,setIsLoading]=useState(false)
-  const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id 
-  const regexForBnsName=/^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
+  const [bnsName, setBnsName] = useState('');
+  const [isVerify, setIsVerify] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id
+  const regexForBnsName = /^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   const i18n = window.i18n;
   function closeDialog() {
     window.inboxStore?.dispatch(bnsLinkModal(null));
     setSuccess(false);
     window.inboxStore?.dispatch(editProfileModal({}));
   }
-  async function verifyBns (){
-    setIsLoading(true)
-    const isverified:boolean=await isLinkedBchatIDWithBnsForDeamon(bnsName);
+  async function verifyBns() {
+    setIsLoading(true);
+    const isverified: boolean = await isLinkedBchatIDWithBnsForDeamon(bnsName);
     setIsVerify(isverified);
-    setIsLoading(false)
-   
+    setIsLoading(false);
   }
-  const callLinkBns=async ()=>{  //call to update conversational state value
-    await linkBns(bnsName)
-    setSuccess(true)
-  }
+  const callLinkBns = async () => {
+    //call to update conversational state value
+    await linkBns(bnsName);
+    setSuccess(true);
+  };
   const BnsLinkedSuccessModal = () => {
     return (
       <>
@@ -59,7 +59,12 @@ export const BnsLinkDialog = () => {
           </svg>
         </div>
         <BchatButton
-          style={{ height: '45px', borderRadius: '10px', margin: '15px 122px 40px',fontSize:'16px' }}
+          style={{
+            height: '45px',
+            borderRadius: '10px',
+            margin: '15px 122px 40px',
+            fontSize: '16px',
+          }}
           text={i18n('ok')}
           buttonType={BchatButtonType.Default}
           buttonColor={BchatButtonColor.Green}
@@ -71,69 +76,77 @@ export const BnsLinkDialog = () => {
     );
   };
   return (
-    <BchatWrapperModal showHeader={false} onClose={closeDialog} showExitIcon={false} isloading={isLoading}>
+    <BchatWrapperModal
+      showHeader={false}
+      onClose={closeDialog}
+      showExitIcon={false}
+      isloading={isLoading}
+    >
       <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
-        
-        {!success ?<>
-        <header>{i18n('linkBNS')}</header>
-        <div className="label_id"> {i18n('yourBchatID')}</div>
-        <div className="id_wrapper">
-          <span className="id_content">
-            {ourNumber}
-          </span>
-        </div>
-        <div className="hr_line"></div>
-        <div className="label_input">{i18n('bnsName')}</div>
-        <div className="inputBox-wrapper">
-          <input
-            type="text"
-            className="inputBox"
-            disabled={isVerify}
-            value={bnsName}
-            placeholder={i18n('enterBnsName') }
-            onChange={(event) => {setBnsName(event.target.value)}}
-            maxLength={33}
-            data-testid="profile-name-input"
-          />
-        </div>
-        <div className="divided-btn-wrapper">
-          <BchatButton
-            style={{ height: '45px', borderRadius: '10px' }}
-            text={i18n('cancel')}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Primary}
-            onClick={() => closeDialog()}
-          />
-          <BchatButton
-            style={{ height: '45px', borderRadius: '10px' }}
-            text={i18n('verify')}
-            disabled={ !regexForBnsName.test(bnsName) }
-            buttonType={BchatButtonType.Brand}
-            buttonColor={ BchatButtonColor.Green }
-            children={
-              isVerify &&
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ marginRight: '2px' }}>{i18n('verified')}</span>
-                <span style={{display: 'flex'}}>
-                  <BchatIcon iconType="halfCircleWithTick" iconSize={12} iconColor="#fff" />
-                </span>
-              </div>
-            }
-            onClick={() => !isVerify && verifyBns()}
-          />
-        </div>
-        <div style={{ marginBottom: '30px', padding: ' 0 30px' }}>
-          <BchatButton
-            style={{ height: '45px', borderRadius: '10px' }}
-            text={i18n('link')}
-            disabled={!isVerify}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            onClick={() =>callLinkBns() }
-            // setSuccess(true)
-          />
-        </div>
-      </> : <BnsLinkedSuccessModal />}
+        {!success ? (
+          <>
+            <header>{i18n('linkBNS')}</header>
+            <div className="label_id"> {i18n('yourBchatID')}</div>
+            <div className="id_wrapper">
+              <span className="id_content">{ourNumber}</span>
+            </div>
+            <div className="hr_line"></div>
+            <div className="label_input">{i18n('bnsName')}</div>
+            <div className="inputBox-wrapper">
+              <input
+                type="text"
+                className="inputBox"
+                disabled={isVerify}
+                value={bnsName}
+                placeholder={i18n('enterBnsName')}
+                onChange={event => {
+                  setBnsName(event.target.value);
+                }}
+                maxLength={33}
+                data-testid="profile-name-input"
+              />
+            </div>
+            <div className="divided-btn-wrapper">
+              <BchatButton
+                style={{ height: '45px', borderRadius: '10px' }}
+                text={i18n('cancel')}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Primary}
+                onClick={() => closeDialog()}
+              />
+              {!isVerify ? (
+                <BchatButton
+                  style={{ height: '45px', borderRadius: '10px' }}
+                  text={i18n('verify')}
+                  disabled={!regexForBnsName.test(bnsName)}
+                  buttonType={BchatButtonType.Brand}
+                  buttonColor={BchatButtonColor.Green}
+                  onClick={() => verifyBns()}
+                />
+              ) : (
+                <div className="bchat-btn-struct">
+                  <span style={{ marginRight: '2px' }}>{i18n('verified')}</span>
+                  <span style={{ display: 'flex' }}>
+                    <BchatIcon iconType="circleWithTick" iconSize={12} iconColor="#fff" />
+                  </span>
+                </div>
+              )}
+            </div>
+            <div style={{ marginBottom: '30px', padding: ' 0 30px' }}>
+              <BchatButton
+                style={{ height: '45px', borderRadius: '10px' }}
+                text={i18n('link')}
+                disabled={!isVerify}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Green}
+                onClick={() => callLinkBns()}
+                // setSuccess(true)
+              />
+            </div>
+          </>
+        ) : (
+          <BnsLinkedSuccessModal />
+        )}
       </div>
     </BchatWrapperModal>
   );

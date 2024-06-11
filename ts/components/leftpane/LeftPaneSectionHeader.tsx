@@ -115,7 +115,7 @@ export const LeftPaneSectionHeader = () => {
     if (SectionType.Settings !== focusedSection) {
       return (
         <BNSWrapper
-          size={52}
+          // size={52}
           position={{ left: '36px', top: '35px' }}
           isBnsHolder={conversation?.attributes?.isBnsHolder}
         >

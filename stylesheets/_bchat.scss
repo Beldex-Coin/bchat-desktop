@@ -335,6 +335,18 @@ textarea {
     background: white;
   }
 }
+.bchat-btn-struct{
+  display: flex;
+  align-items: center;
+  width: 100px;
+  background-color: var(--button-color);
+  height: 45px;
+  /* text-align: center; */
+  justify-content: center;
+  min-width: 165px;
+  border-radius: 10px;
+  font-family: $bchat-font-poppin-semibold;
+}
 
 /* CONVERSATION AND MESSAGES */
 .module-conversation-header {
@@ -1184,7 +1196,7 @@ label {
   align-items: center;
   justify-content: center;
   position: absolute;
-  cursor: pointer;
+  // cursor: pointer;
   width: 85px;
   height: 85px;
   border-radius: 100%;
@@ -3098,7 +3110,7 @@ input {
 
 .bchat-member-item,
 .bchat-blockedMember-item {
-  cursor: pointer;
+  // cursor: pointer;
   flex-shrink: 0;
   font-family: $bchat-font-default;
   padding: 0px $bchat-margin-lg;

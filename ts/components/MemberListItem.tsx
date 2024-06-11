@@ -3,24 +3,26 @@ import classNames from 'classnames';
 import { Avatar, AvatarSize, BNSWrapper, CrownIcon } from './avatar/Avatar';
 import { Constants } from '../bchat';
 import { BchatIcon } from './icon';
-import { useConversationBnsHolder, useConversationUsernameOrShorten } from '../hooks/useParamSelector';
+import {
+  useConversationBnsHolder,
+  useConversationUsernameOrShorten,
+} from '../hooks/useParamSelector';
 import styled from 'styled-components';
 
 const AvatarContainer = styled.div`
   position: relative;
 `;
 
-const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean;isBnsHolder:any }) => {
-  const { memberPubkey ,isBnsHolder} = props;
+const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder: any }) => {
+  const { memberPubkey, isBnsHolder } = props;
   return (
     <AvatarContainer>
-       <BNSWrapper
-                size={52}
-                position={{ left: '34px', top: '34px' }}
-                isBnsHolder={isBnsHolder}
-              >
-      <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
-      
+      <BNSWrapper
+        // size={52}
+        position={{ left: '34px', top: '34px' }}
+        isBnsHolder={isBnsHolder}
+      >
+        <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
       </BNSWrapper>
     </AvatarContainer>
   );
@@ -49,7 +51,7 @@ export const MemberListItem = (props: {
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
-  const isBnsHolder=useConversationBnsHolder(pubkey)
+  const isBnsHolder = useConversationBnsHolder(pubkey);
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -63,24 +65,23 @@ export const MemberListItem = (props: {
       onClick={() => {
         isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey);
       }}
-      style={
-        !disableBg
-          ? {
-            }
-          : {}
-      }
+      style={!disableBg ? {} : {}}
       role="button"
       data-testid={dataTestId}
     >
-      <div className="bchat-member-item__info" style={{width:"100%"}}>
-        <span className="bchat-member-item__avatar" >
-          <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false}  isBnsHolder={isBnsHolder} />
+      <div className="bchat-member-item__info" style={{ width: '100%' }}>
+        <span className="bchat-member-item__avatar">
+          <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false} isBnsHolder={isBnsHolder} />
         </span>
-        <span className="bchat-member-item__name" style={{ marginInlineEnd: "5px"}}>{memberName}</span>
-        <span style={{marginRight:'60px'}}>{isAdmin && <CrownIcon />}</span>
+        <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px' }}>
+          {memberName}
+        </span>
+        <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span>
       </div>
-      <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}> 
-        {isSelected&&<BchatIcon iconType="circle" iconSize="medium" iconColor={Constants.UI.COLORS.GREEN} /> }
+      <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
+        {isSelected && (
+          <BchatIcon iconType="circle" iconSize="medium" iconColor={Constants.UI.COLORS.GREEN} />
+        )}
       </span>
     </div>
   );

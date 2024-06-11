@@ -113,11 +113,7 @@ const HeaderItem = () => {
 
   return (
     <div className="group-settings-header">
-      <Flex
-      container={true}
-      justifyContent={"flex-end"}
-      
-    >
+      <Flex container={true} justifyContent={'flex-end'}>
         <span
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
@@ -135,9 +131,13 @@ const HeaderItem = () => {
             />
           </svg>
         </span>
-        </Flex>
+      </Flex>
       <div className="group-settings-header-avatarBox">
-        <BNSWrapper size={89} position={{ left: '75px', top: '72px' }} isBnsHolder={isBnsHolder}>
+        <BNSWrapper
+          //  size={89}
+          position={{ left: '75px', top: '72px' }}
+          isBnsHolder={isBnsHolder}
+        >
           <Avatar size={AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
         <p>{profileName}</p>

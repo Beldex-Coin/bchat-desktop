@@ -92,8 +92,10 @@ const LeftPaneSection = () => {
 const AddContactFloatingIcon = () => {
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
+  const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
+ 
 
-  if (focusedSection === SectionType.Message && overlayMode !== 'message') {
+  if (visibleFloatIcon) {
     // return <InnerLeftPaneMessageSection />;
     return (
       <div className="addContactFloating">
