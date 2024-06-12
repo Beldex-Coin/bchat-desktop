@@ -341,6 +341,9 @@ const ConversationHeaderTitle = () => {
   return (
     <div
       className="module-conversation-header__title"
+      
+    >
+      <span className="module-contact-name__profile-name" data-testid="header-conversation-name"
       onClick={() => {
         if (isRightPanelOn) {
           dispatch(closeRightPanel());
@@ -349,8 +352,7 @@ const ConversationHeaderTitle = () => {
         }
       }}
       role="button"
-    >
-      <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
+      >
         {convoName}
         <SubTxt>
           {isGroup ? (
@@ -414,6 +416,7 @@ export const ConversationHeaderWithDetails = () => {
     : undefined;
 
   const triggerId = 'conversation-header';
+  const isMe = useSelector(getIsSelectedNoteToSelf);
 
   // function displayWalletPassword() {
 
@@ -469,7 +472,7 @@ export const ConversationHeaderWithDetails = () => {
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            {conversation?.type == 'private' && conversation?.didApproveMe && (
+            {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
               <div className="call">
                 <CallButton />
                 </div>

@@ -391,6 +391,7 @@ textarea {
     justify-content: center;
     align-items: center;
     padding-bottom: 2px;
+    cursor: pointer;
     &:hover {
       background-color: var(--color-profile-close);
       border-radius: 20px;

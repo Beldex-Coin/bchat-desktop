@@ -13,7 +13,7 @@ const AvatarContainer = styled.div`
   position: relative;
 `;
 
-const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder: any }) => {
+const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
   const { memberPubkey, isBnsHolder } = props;
   return (
     <AvatarContainer>
@@ -71,7 +71,7 @@ export const MemberListItem = (props: {
     >
       <div className="bchat-member-item__info" style={{ width: '100%' }}>
         <span className="bchat-member-item__avatar">
-          <AvatarItem memberPubkey={pubkey} isAdmin={isAdmin || false} isBnsHolder={isBnsHolder} />
+          <AvatarItem memberPubkey={pubkey} isBnsHolder={isBnsHolder} />
         </span>
         <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px' }}>
           {memberName}

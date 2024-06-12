@@ -10,12 +10,34 @@ import { SpacerLG, SpacerXS } from '../basic/Text';
 import { copyBchatID } from '../dialog/EditProfileDialog';
 import { BchatIcon } from '../icon';
 import {
+  useConversationBnsHolder,
   useConversationBeldexAddress,
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize,BNSWrapper } from '../avatar/Avatar';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
+import styled from 'styled-components';
+
+
+const AvatarContainer = styled.div`
+  position: relative;
+`;
+
+const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
+  const { memberPubkey, isBnsHolder } = props;
+  return (
+    <AvatarContainer>
+      <BNSWrapper
+        // size={52}
+        position={{ left: '34px', top: '34px' }}
+        isBnsHolder={isBnsHolder}
+      >
+        <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
+      </BNSWrapper>
+    </AvatarContainer>
+  );
+};
 
 export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
@@ -33,6 +55,8 @@ export const AddressBook = (props: any) => {
   const AddressContent = (props: any) => {
     const username = useConversationUsernameOrShorten(props.pubkey);
     const belAddress = useConversationBeldexAddress(props.pubkey);
+    const isBnsHolder = useConversationBnsHolder(props.pubkey);
+
     return belAddress ? (
       <>
 
@@ -42,11 +66,14 @@ export const AddressBook = (props: any) => {
           onClick={() => window.i18n('addressBook') !== props.title ? send(belAddress): dispatch(updateSendAddress(belAddress))}
         > 
           {props.title === window.i18n('contact') &&
-            <div className='avatarBox'> <Avatar
+            <div className='avatarBox'>
+               {/* <Avatar
               size={AvatarSize.M}
               pubkey={props.pubkey}
             // onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
-            /></div>
+            /> */}
+            <AvatarItem memberPubkey={props.pubkey} isBnsHolder={isBnsHolder} />
+            </div>
           }
           <Flex container={true} flexDirection="column">
             <div>
