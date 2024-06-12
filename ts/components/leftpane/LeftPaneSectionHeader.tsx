@@ -37,6 +37,10 @@ import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { getIsVerifyBnsCalled } from '../../state/selectors/bnsConfig';
 import { isLinkedBchatIDWithBnsForDeamon } from '../conversation/BnsVerification';
+import { updateIsOnline, 
+  // updateOnionPaths 
+} from '../../state/ducks/onion';
+// import { OnionPaths } from '../../bchat/onions';
 // import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -66,7 +70,15 @@ export const LeftPaneSectionHeader = () => {
     if (isOnline && !IsVerifyBnsCalled) {
       isLinkedBchatIDWithBnsForDeamon();
     }
+    if (!isOnline) {
+      clearStatus();
+    }
   }, [isOnline]);
+  const clearStatus = async () => {
+    // window.inboxStore?.dispatch(updateOnionPaths([]));
+    window.inboxStore?.dispatch(updateIsOnline(false));
+    // OnionPaths.clearTestOnionPath();
+  };
 
   switch (focusedSection) {
     case SectionType.Contact:

@@ -265,7 +265,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               value={this.state.profileName}
               placeholder={placeholderText}
               onChange={this.onNameEdited}
-              maxLength={MAX_USERNAME_LENGTH}
+              maxLength={MAX_USERNAME_LENGTH - 1}
               tabIndex={0}
               required={true}
               aria-required={true}
@@ -430,24 +430,23 @@ export class EditProfileDialog extends React.Component<{}, State> {
    * Tidy the profile name input text and save the new profile name and avatar
    */
   private onClickOK() {
-    const { newAvatarObjectUrl, profileName } = this.state;
-    const newName = profileName ? profileName.trim() : '';
-    if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
-      ToastUtils.pushToastError('invalid name', 'invalid name');
-      return;
-    }
-    console.log('onClick upload image ----->', newName.length);
+    const { newAvatarObjectUrl, profileName, setProfileName } = this.state;
+    const newName = profileName ? profileName.trim() : setProfileName;
+    // if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
+    //   ToastUtils.pushToastError('invalid name', 'invalid name');
+    //   return;
+    // }
     this.setState(
       {
         loading: true,
       },
       async () => {
-        await commitProfileEdits(newName, newAvatarObjectUrl);
+        await commitProfileEdits(setProfileName, newName, newAvatarObjectUrl);
         this.setState({
           loading: false,
-
           mode: 'default',
-          setProfileName: this.state.profileName,
+          setProfileName: newName,
+          profileName: newName,
         });
       }
     );
@@ -459,7 +458,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
   }
 }
 
-async function commitProfileEdits(newName: string, scaledAvatarUrl: string | null) {
+async function commitProfileEdits(
+  oldName: string,
+  newName: string,
+  scaledAvatarUrl: string | null
+) {
   const ourNumber = UserUtils.getOurPubKeyStrFromCache();
   const conversation = await getConversationController().getOrCreateAndWait(
     ourNumber,
@@ -482,6 +485,10 @@ async function commitProfileEdits(newName: string, scaledAvatarUrl: string | nul
         error && error.stack ? error.stack : error
       );
     }
+    // return;
+  }
+  if (oldName === newName) {
+    console.log('same profile name');
     return;
   }
   // do not update the avatar if it did not change
