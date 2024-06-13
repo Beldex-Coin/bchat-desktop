@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
-import { useConversationUsername } from '../../hooks/useParamSelector';
+import { useConversationBnsHolder, useConversationUsername } from '../../hooks/useParamSelector';
 import { ed25519Str } from '../../bchat/onions/onionPath';
 import { CallManager } from '../../bchat/utils';
 import { callTimeoutMs } from '../../bchat/utils/calling/CallManager';
 import { getHasIncomingCall, getHasIncomingCallFrom } from '../../state/selectors/call';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { SpacerLG } from '../basic/Text';
@@ -32,6 +32,8 @@ const IncomingCallAvatarContainer = styled.div`
 export const IncomingCallDialog = () => {
   const hasIncomingCall = useSelector(getHasIncomingCall);
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
+  const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
+  console.log('incomingCallFromPubkey --->', incomingCallFromPubkey,isBnsHolder);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -78,7 +80,13 @@ export const IncomingCallDialog = () => {
       <BchatWrapperModal title={window.i18n('incomingCallFrom', [from || 'unknown'])}>
         <IncomingCallAvatarContainer>
           <SpacerLG />
-          <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
+          <BNSWrapper
+            // size={52}
+            position={{ left: '73px', top: '73px' }}
+            isBnsHolder={isBnsHolder}
+          >
+            <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
+          </BNSWrapper>
         </IncomingCallAvatarContainer>
         <div className="bchat-modal__button-group">
           <BchatButton

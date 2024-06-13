@@ -42,7 +42,9 @@ const darkColorReceivedMessageBgHover = '#52505F';
 const darkColorReceivedMessageText = white;
 
 const darkColorPillDividerText = '#a0a0a0';
-const darkInputBackground = darkColorCellBackground;
+// const darkInputBackground = darkColorCellBackground;
+const darkInputBackground = '#22222E';
+
 const darkFilterBchatText = 'none';
 const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
 
