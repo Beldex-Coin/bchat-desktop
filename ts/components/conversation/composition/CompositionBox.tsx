@@ -540,7 +540,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' && selectedConversation?.isApproved
-          && selectedConversation?.didApproveMe
+          && selectedConversation?.didApproveMe && !selectedConversation?.isBlocked
           && re.test(draft) &&
           this.chatwithWallet &&
           WalletSyncBarShowInChat ? (
@@ -582,7 +582,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           // && (draft.length-1 - draft.indexOf(".")) < 4
           && selectedConversation?.isApproved
           && selectedConversation?.didApproveMe
-          &&
+          &&!selectedConversation?.isBlocked &&
           this.chatwithWallet &&
           WalletSyncBarShowInChat &&
           !isMe && getSyncStatus ? (

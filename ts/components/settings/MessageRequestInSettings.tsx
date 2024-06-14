@@ -3,7 +3,7 @@ import classNames from 'classnames';
 // import { contextMenu } from 'react-contexify';
 // import { useSelector } from 'react-redux';
 
-import { Avatar, AvatarSize } from '.././avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '.././avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
@@ -15,6 +15,7 @@ import { updateUserDetailsModal } from '../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
+  useConversationBnsHolder,
   useConversationUsername,
   useIsPrivate,
 //   useIsRequest,
@@ -63,6 +64,7 @@ const AvatarItem = () => {
   const userName = useConversationUsername(conversationId);
   const isPrivate = useIsPrivate(conversationId);
   const avatarPath = useAvatarPath(conversationId);
+  const isBnsHolder = useConversationBnsHolder(conversationId);
   const dispatch = useDispatch();
 
   function onPrivateAvatarClick() {
@@ -73,15 +75,21 @@ const AvatarItem = () => {
         authorAvatarPath: avatarPath,
       })
     );
-  }
+  } 
 
   return (
     <div className="module-conversation-list-item__avatar-container">
+       <BNSWrapper
+        // size={52}
+        position={{ left: '34px', top: '34px' }}
+        isBnsHolder={isBnsHolder}
+      >
       <Avatar
         size={AvatarSize.M}
         pubkey={conversationId}
         onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
       />
+      </BNSWrapper>
     </div>
   );
 };
