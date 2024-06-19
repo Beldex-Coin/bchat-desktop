@@ -20,7 +20,7 @@ import {
   getSelectedMessageIds,
   isMessageDetailView,
   isMessageSelectionMode,
-  isRightPanelShowing,
+  // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,7 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
-  closeRightPanel,
+  // closeRightPanel,
   openRightPanel,
   resetSelectedMessageIds,
 } from '../../state/ducks/conversations';
@@ -247,6 +247,7 @@ const CallButton = () => {
   const hasOngoingCall = useSelector(getHasOngoingCall);
   const canCall = !(hasIncomingCall || hasOngoingCall);
 
+  console.log('call icon validation -->',!isPrivate || isMe || !selectedConvoKey || isBlocked,isBlocked)
   if (!isPrivate || isMe || !selectedConvoKey || isBlocked) {
     return null;
   }
@@ -293,12 +294,13 @@ export type ConversationHeaderTitleProps = {
 
 const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
-  const isRightPanelOn = useSelector(isRightPanelShowing);
+  // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-  const dispatch = useDispatch();
+  
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
+  // const dispatch = useDispatch();
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -306,6 +308,7 @@ const ConversationHeaderTitle = () => {
     );
   }
   const activeAt = convoProps?.activeAt;
+  console.log('activeAt -->',activeAt);
   if (!headerTitleProps) {
     return null;
   }
@@ -344,14 +347,14 @@ const ConversationHeaderTitle = () => {
       
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name"
-      onClick={() => {
-        if (isRightPanelOn) {
-          dispatch(closeRightPanel());
-        } else {
-          dispatch(openRightPanel());
-        }
-      }}
-      role="button"
+      // onClick={() => {
+      //   if (isRightPanelOn) {
+      //     dispatch(closeRightPanel());
+      //   } else {
+      //     dispatch(openRightPanel());
+      //   }
+      // }}
+      // role="button"
       >
         {convoName}
         <SubTxt>

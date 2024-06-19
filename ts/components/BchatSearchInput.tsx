@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch, search, updateSearchTerm } from '../state/ducks/search';
 import { getConversationsCount } from '../state/selectors/conversations';
 import { cleanSearchTerm } from '../util/cleanSearchTerm';
-import { BchatIconButton } from './icon';
+import { BchatIcon, BchatIconButton } from './icon';
 
 
 const doTheSearch = (dispatch: Dispatch<any>, cleanedTerm: string) => {
@@ -47,7 +47,8 @@ export const BchatSearchInput = () => {
   return (
     <div className="bchat-search-input">
       <div className='search'>
-      <BchatIconButton iconSize="small" iconType="search" />
+      {/* <BchatIconButton iconSize="small" iconType="search" /> */}
+      <BchatIcon iconSize="small" iconType="search" />
       </div>
       <input 
         value={currentSearchTerm}

@@ -419,7 +419,13 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const timerOptions = useSelector(getTimerOptions).timerOptions;
   const isRequest = useIsRequest(convoId);
+  const ourNumber = useSelector(getOurNumber); 
 
+  if(ourNumber === convoId)
+  {
+    return null
+  }
+ 
   if (
     showTimerOptions(
       Boolean(isPublic),

@@ -72,7 +72,7 @@ export const OverlayMessage = () => {
       } catch (e) {
         window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
       
-        // ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
+        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
       } finally {
         setLoading(false);
       }

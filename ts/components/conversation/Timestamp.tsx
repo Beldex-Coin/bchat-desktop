@@ -44,7 +44,7 @@ export const Timestamp = (props: Props) => {
 
   const { timestamp, momentFromNow } = props;
 
-  if (timestamp === null || timestamp === undefined) {
+  if (timestamp === null || timestamp === undefined || timestamp === 0) {
     return null;
   }
 

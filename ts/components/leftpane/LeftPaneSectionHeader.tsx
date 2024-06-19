@@ -160,9 +160,7 @@ export const LeftPaneSectionHeader = () => {
         <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
           <ActionPanelOnionStatusLight
             isSelected={false}
-            handleClick={function(): void {
-              throw new Error('Function not implemented.');
-            }}
+            handleClick={()=>{}}
             id={''}
             size="tiny"
           />

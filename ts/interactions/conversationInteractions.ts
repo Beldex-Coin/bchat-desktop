@@ -259,6 +259,46 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
     );
   }
 }
+
+export function deleteGroupByConvoId(conversationId: string,username:string) {
+  const conversation = getConversationController().get(conversationId);
+  if (!conversation.isGroup()) {
+    throw new Error('showLeaveGroupDialog() called with a non group convo.');
+  }
+  const title = window.i18n('editMenuDeleteGroup');
+  const deletetxt=window.i18n('delete');
+  const message = `Are you sure you want to delete this group,${username}?`; 
+  const ourPK = UserUtils.getOurPubKeyStrFromCache();
+  const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
+  const isClosedGroup = conversation.get('is_medium_group') || false;
+
+  // if this is not a closed group, or we are not admin, we can just show a confirmation dialog
+  if (!isClosedGroup || (isClosedGroup && !isAdmin)) {
+    const onClickClose = () => {
+      window.inboxStore?.dispatch(updateConfirmModal(null));
+    };
+    window.inboxStore?.dispatch(
+      updateConfirmModal({
+        title,
+        message,
+        onClickOk: async () => {
+           await getConversationController().deleteContact(conversationId);; 
+          onClickClose();
+        },
+        onClickClose,
+        okText:deletetxt,
+        okTheme:BchatButtonColor.Danger,
+      })
+    );
+  } else {
+    window.inboxStore?.dispatch(
+      adminLeaveClosedGroup({
+        conversationId,
+      })
+    );
+  }
+}
+
 export function showInviteContactByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));
 }

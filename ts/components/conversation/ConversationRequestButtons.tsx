@@ -38,10 +38,13 @@ export const ConversationMessageRequestButtons = () => {
     getIncomingMessages();
   }, []);
 
+ 
   if (!selectedConversation || !hasIncoming || !incomingChecked) {
     return null;
   }
-
+  console.log("ConversationMessageRequestButtons -->",selectedConversation ,'hasIncoming -->',hasIncoming,'incomingChecked-->',incomingChecked );
+  console.log("ConversationMessageRequestButtons 1-->",!selectedConversation || !hasIncoming || !incomingChecked,'selectedConversation-->',!selectedConversation ,'hasIncoming -->',!hasIncoming,'incomingChecked-->',!incomingChecked );
+  
   const convoModel = getConversationController().get(selectedConversation.id);
   const showMsgRequestUI = convoModel && convoModel.isIncomingRequest();
 

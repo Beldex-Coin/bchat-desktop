@@ -10,6 +10,7 @@ import {
 } from '../../data/data';
 import {
   deleteAllMessagesByConvoIdWithConfirmation,
+  deleteGroupByConvoId,
   setDisappearingMessagesByConvoId,
   showAddModeratorsByConvoId,
   showInviteContactByConvoId,
@@ -204,7 +205,7 @@ export const BchatRightPanelWithDetails = () => {
     isGroup,
     isPrivate,
   } = selectedConversation;
-
+console.log('left --->',left)
   const username = String(useConversationUsername(id));
 
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
@@ -238,9 +239,14 @@ export const BchatRightPanelWithDetails = () => {
     ? () => {
         deleteAllMessagesByConvoIdWithConfirmation(id);
       }
-    : () => {
+    : left? () => {
+      deleteGroupByConvoId(id, username);
+    }
+    
+    :() => {
         showLeaveGroupByConvoId(id, username);
       };
+      
   return (
     <div className="group-settings">
       <HeaderItem />
