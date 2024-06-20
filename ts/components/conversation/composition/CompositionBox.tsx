@@ -1185,7 +1185,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (!this.state.showRecordingView) {
       return;
     }
-
+    const { selectedConversation } = this.props;
+    if (selectedConversation?.isBlocked && selectedConversation?.isPrivate) {
+      ToastUtils.pushUnblockToSend();
+      return;
+    }
+    if (selectedConversation?.isBlocked && !selectedConversation?.isPrivate) {
+      ToastUtils.pushUnblockToSendGroup();
+      return;
+    }
     const savedAudioFile = await processNewAttachment({
       data: await audioBlob.arrayBuffer(),
       isRaw: true,

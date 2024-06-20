@@ -308,15 +308,12 @@ const ConversationHeaderTitle = () => {
     );
   }
   const activeAt = convoProps?.activeAt;
-  console.log('activeAt -->',activeAt);
   if (!headerTitleProps) {
-    return null;
+    return <></>;
   }
-  const { isGroup, isPublic, members, subscriberCount, isMe, isKickedFromGroup } = headerTitleProps;
+  const { isGroup, isPublic, members, subscriberCount,  isKickedFromGroup } = headerTitleProps;
   const { i18n } = window;
-  if (isMe) {
-    return <div className="module-conversation-header__title">Note to Self</div>;
-  }
+
   let memberCount = 0;
   if (isGroup) {
     if (isPublic) {
@@ -340,11 +337,13 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
+  if (conversation?.isMe) {    
+    return <div className="module-conversation-header__title">Note to Self</div>;
+  }
 
   return (
     <div
-      className="module-conversation-header__title"
-      
+      className="module-conversation-header__title"   
     >
       <span className="module-contact-name__profile-name" data-testid="header-conversation-name"
       // onClick={() => {
@@ -407,7 +406,9 @@ export const ConversationHeaderWithDetails = () => {
     !WalletSyncBarShowInChat &&
     conversation?.type == 'private' &&
     conversation?.isApproved &&
-    conversation?.didApproveMe;
+    conversation?.didApproveMe&&
+    !conversation?.isMe
+   
   if (!selectedConvoKey) {
     return null;
   }
@@ -476,7 +477,7 @@ export const ConversationHeaderWithDetails = () => {
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
             {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
-              <div className="call">
+              <div >
                 <CallButton />
                 </div>
             )}
