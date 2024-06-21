@@ -922,6 +922,40 @@
     margin-bottom: 10px;
   }
 }
+.about-bns {
+  section {
+    text-align: left;
+    width: 520px;
+    height: 430px;
+    overflow: auto;
+  }
+  article{
+    padding: 0 10px;
+  }
+  .bchat-modal__header__title
+  {
+    font-size: 16px;
+  }
+  &-header {
+    font-family: $bchat-font-poppin-semibold;
+    margin-top: $bchat-margin-md;
+    margin-bottom: $bchat-margin-sm;
+  }
+  &-txt {
+    font-family: $bchat-font-poppin-regular;
+    margin-bottom: $bchat-margin-lg;
+    line-height: 22px;
+  }
+  &-txt-bold {
+    line-height: 22px;
+    span {
+      font-family: $bchat-font-poppins-bold;
+    }
+    span:first-child {
+      font-family: $bchat-font-poppin-semibold;
+    }
+  }
+}
 .onion-status-dialog {
   .bchat-modal__header__title {
     font-size: $bchat-font-lg;

@@ -247,7 +247,6 @@ const CallButton = () => {
   const hasOngoingCall = useSelector(getHasOngoingCall);
   const canCall = !(hasIncomingCall || hasOngoingCall);
 
-  console.log('call icon validation -->',!isPrivate || isMe || !selectedConvoKey || isBlocked,isBlocked)
   if (!isPrivate || isMe || !selectedConvoKey || isBlocked) {
     return null;
   }

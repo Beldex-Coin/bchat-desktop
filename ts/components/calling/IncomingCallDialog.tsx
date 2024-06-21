@@ -33,7 +33,6 @@ export const IncomingCallDialog = () => {
   const hasIncomingCall = useSelector(getHasIncomingCall);
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
-  console.log('incomingCallFromPubkey --->', incomingCallFromPubkey,isBnsHolder);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;

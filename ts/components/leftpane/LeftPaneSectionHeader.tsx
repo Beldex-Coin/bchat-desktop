@@ -23,7 +23,7 @@ import { isSignWithRecoveryPhrase } from '../../util/storage';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
-import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+// import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
@@ -152,24 +152,24 @@ export const LeftPaneSectionHeader = () => {
     }
   }
 
-  const IsOnline = () => {
-    const isOnline = useSelector(getIsOnline);
-    const status = isOnline ? 'Online' : 'Offline';
-    if (SectionType.Settings !== focusedSection) {
-      return (
-        <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
-          <ActionPanelOnionStatusLight
-            isSelected={false}
-            handleClick={()=>{}}
-            id={''}
-            size="tiny"
-          />
-        </Hops>
-      );
-    } else {
-      return null;
-    }
-  };
+  // const IsOnline = () => {
+  //   const isOnline = useSelector(getIsOnline);
+  //   const status = isOnline ? 'Online' : 'Offline';
+  //   if (SectionType.Settings !== focusedSection) {
+  //     return (
+  //       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+  //         <ActionPanelOnionStatusLight
+  //           isSelected={false}
+  //           handleClick={()=>{}}
+  //           id={''}
+  //           size="tiny"
+  //         />
+  //       </Hops>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   function Moon() {
     return (
@@ -231,7 +231,8 @@ export const LeftPaneSectionHeader = () => {
           <button onClick={() => printlog()}>submit</button>
         </div> */}
           <div className="module-left-pane__header__title">
-            {label} <IsOnline />
+            {label} 
+            {/* <IsOnline /> */}
           </div>
           {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
@@ -369,8 +370,8 @@ const StyledBannerInner = styled.div`
     margin-top: var(--margins-sm);
   }
 `;
-const Hops = styled.div`
-  margin-left: 15px;
-  display: flex;
-  align-content: center;
-`;
+// const Hops = styled.div`
+//   margin-left: 15px;
+//   display: flex;
+//   align-content: center;
+// `;

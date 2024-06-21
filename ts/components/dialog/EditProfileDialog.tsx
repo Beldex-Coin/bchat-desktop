@@ -10,7 +10,7 @@ import { ConversationModel, ConversationTypeEnum } from '../../models/conversati
 
 import { getConversationController } from '../../bchat/conversations';
 import autoBind from 'auto-bind';
-import { bnsLinkModal, editProfileModal } from '../../state/ducks/modalDialog';
+import { bnsLinkModal, editProfileModal, updateAboutBnsModal } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { MAX_USERNAME_LENGTH } from '../registration/RegistrationStages';
@@ -300,7 +300,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               </span>
               {i18n('linkYourBns')}
             </button>
-            <div className="hintTxt">
+            <div className="hintTxt"  style={{cursor:'pointer'}} role='button' onClick={()=>window.inboxStore?.dispatch(updateAboutBnsModal({}))}>
               <span> {i18n('readMoreAboutBNS')} </span>
               <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
             </div>

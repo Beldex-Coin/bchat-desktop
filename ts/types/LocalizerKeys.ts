@@ -584,4 +584,7 @@ export type LocalizerKeys =
   | 'searchEmptyTransaction'
   | 'NodeTestResult'
   | 'Chat'
-  | 'chatWithWalletDisc';
+  | 'chatWithWalletDisc'
+  |'bnsNameAndIDNotMatch'
+  |'bnsNameverified'
+  ;

@@ -212,15 +212,6 @@ export const MessageSearchResult = (props: MessageResultProps) => {
   const destination =
     direction === 'incoming' ? conversationId : convoIsPrivate ? me : conversationId;
   const isBnsHolder = useConversationBnsHolder(destination);
-  console.log(
-    'isBnsHolderisBnsHolderisBnsHolder ---->',
-    conversationId,
-    isBnsHolder,
-    'destination --->',
-    destination,
-    'source--->',
-    source
-  );
   if (!source && !destination) {
     return null;
   }

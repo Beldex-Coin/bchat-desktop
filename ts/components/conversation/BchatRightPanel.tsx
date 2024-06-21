@@ -205,9 +205,7 @@ export const BchatRightPanelWithDetails = () => {
     isGroup,
     isPrivate,
   } = selectedConversation;
-console.log('left --->',left)
   const username = String(useConversationUsername(id));
-
   const showMemberCount = !!(subscriberCount && subscriberCount > 0);
   const commonNoShow = isKickedFromGroup || left || isBlocked;
   const hasDisappearingMessages = !isPublic && !commonNoShow;

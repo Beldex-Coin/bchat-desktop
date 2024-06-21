@@ -24,6 +24,7 @@ import {
   getBchatWalletPasswordModal,
   getBchatAlertConfirmModal,
   getBnsLinkDialog,
+  getAboutBnsModal,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 import { InviteContactsDialog } from './InviteContactsDialog';
@@ -48,6 +49,7 @@ import BchatUpdateInstruntion from './updateInstructionModal';
 import { BchatWalletPasswordModal } from './BchatWalletPasswordModal';
 import { BchatAlertConfirmModal } from './bchatAlertConfirmModal';
 import {BnsLinkDialog} from './BnsLinkDialog'
+import { AboutBnsDialog } from './AboutBnsDialog';
 
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
@@ -73,6 +75,7 @@ export const ModalContainer: any = () => {
   const BchatUpdateInstruntionState = useSelector(getBchatUpdateInstruntion);
   const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
   const BchatAlertConfirmModalState = useSelector(getBchatAlertConfirmModal);
+  const aboutBnsModalState=useSelector(getAboutBnsModal);
 
   return (
     <>
@@ -88,6 +91,7 @@ export const ModalContainer: any = () => {
       {changeNicknameModal && <BchatNicknameDialog {...changeNicknameModal} />}
       {editProfileModalState && <EditProfileDialog {...editProfileModalState} />}
       {bnsLinkModalState && <BnsLinkDialog {...bnsLinkModalState} /> }
+
       {onionPathModalState && <OnionPathModal {...onionPathModalState} />}
       {recoveryPhraseModalState && <BchatSeedModal {...recoveryPhraseModalState} />}
       {adminLeaveClosedGroupModalState && (
@@ -105,6 +109,7 @@ export const ModalContainer: any = () => {
         <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />
       )}
       {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
+      {aboutBnsModalState && <AboutBnsDialog />}
     </>
   );
 };
