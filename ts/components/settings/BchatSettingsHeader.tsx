@@ -1,13 +1,13 @@
 import React from 'react';
 import { SettingsViewProps } from './BchatSettings';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
-import { editProfileModal } from '../../state/ducks/modalDialog';
+// import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+// import { editProfileModal } from '../../state/ducks/modalDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOurNumber } from '../../state/selectors/user';
+// import { getOurNumber } from '../../state/selectors/user';
 import { BchatIconButton } from '../icon/BchatIconButton';
 import { toggleMultipleSelection } from '../../state/ducks/userConfig';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
-import { getConversationController } from '../../bchat/conversations';
+// import { getConversationController } from '../../bchat/conversations';
 // import { useUpdate } from 'react-use';
 
 type Props = Pick<SettingsViewProps, 'category'> & {
@@ -19,8 +19,8 @@ export const SettingsHeader = (props: Props) => {
   // const forceUpdate = useUpdate();
 
   const dispatch = useDispatch();
-  const ourNumber = useSelector(getOurNumber);
-  const converstation = getConversationController().get(ourNumber);
+  // const ourNumber = useSelector(getOurNumber);
+  // const converstation = getConversationController().get(ourNumber);
 
   // let color: any;
   const multipleSelectionValue = useSelector(getMultipleSelection);
@@ -40,7 +40,7 @@ export const SettingsHeader = (props: Props) => {
 
   return (
     <div className="bchat-settings-header">
-      <div style={{ paddingLeft: '15px' }}>
+      {/* <div style={{ paddingLeft: '15px' }}>
         <BNSWrapper
           // size={52}
           position={{ left: '34px', top: '34px' }}
@@ -53,7 +53,7 @@ export const SettingsHeader = (props: Props) => {
             dataTestId="leftpane-primary-avatar"
           />
         </BNSWrapper>
-      </div>
+      </div> */}
       <div className="bchat-settings-header-title">{categoryTitle}</div>
       {window.i18n('blockedSettingsTitle') === categoryTitle && (
         <div className="bchat-settings-header-selectionBox">
