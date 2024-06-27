@@ -65,6 +65,7 @@ export const SendMessageButton = (props: { onClick: () => void,name?:string }) =
     </div> 
   );
 };
+
 export const SendFundButton = (props:any) => {
   return (
     <div 
