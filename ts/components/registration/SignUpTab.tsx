@@ -25,8 +25,8 @@ const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
   return (
     <BchatButton
       onClick={createBchatID}
-      buttonType={BchatButtonType.BrandOutline}
-      buttonColor={BchatButtonColor.Green}
+      buttonType={BchatButtonType.Default}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('createAccount')}
     />
   );

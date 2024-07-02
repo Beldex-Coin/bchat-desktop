@@ -9,7 +9,8 @@ $bchat-font-poppin-semibold: 'poppin-semibold';
 $bchat-font-poppin-light: 'poppin-light';
 $bchat-font-poppin-medium: 'poppin-medium';
 $bchat-font-poppin-regular: 'poppin-regular';
-
+$bchat-font-open-sans-extra-bold:'OpenSans-ExtraBold';
+$bchat-font-open-sans-light:'OpenSans-light';
 @font-face {
   font-family: $bchat-font-mono;
   src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
@@ -41,6 +42,20 @@ $bchat-font-poppin-regular: 'poppin-regular';
 
 // Accented font
 @font-face {
+  font-family: $bchat-font-open-sans-extra-bold;
+  src: url('../fonts/OpenSans-ExtraBold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: $bchat-font-open-sans-light;
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 300;
+}
+
+@font-face {
   font-family: $bchat-font-poppins-bold;
   src: url('../fonts/Poppins-Bold.ttf') format('truetype');
   line-height: 1.4rem;
@@ -62,6 +77,7 @@ $bchat-font-poppin-regular: 'poppin-regular';
   font-family: $bchat-font-poppin-regular;
   src: url('../fonts/Poppins-Regular.ttf') format('truetype');
   line-height: 1.4rem;
+  font-weight: 400;
 }
 
 @font-face {
@@ -143,7 +159,7 @@ $bchat-font-h4: 16px;
 
 // Button
 
-$bchat-button-color: #00a803;
+$bchat-button-green-color: #00A638;
 $bchat-button-hovor-color: #00a705;
 $bchat-button-gray-color: #403e4b;
 $bchat-button-gray-hover-color: #52505f;
@@ -215,6 +231,7 @@ $bchat-margin-xs: 5px;
 $bchat-margin-sm: 10px;
 $bchat-margin-md: 15px;
 $bchat-margin-lg: 20px;
+$bchat-margin-xl: 30px;
 
 // Animations
 $bchat-transition-duration: 0.25s;

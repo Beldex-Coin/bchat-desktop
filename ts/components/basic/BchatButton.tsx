@@ -50,9 +50,9 @@ export const BchatButton = (props: Props) => {
   const onClickFn = disabled ? () => null : clickHandler;
 
   buttonTypes.push(buttonType);
-  if (buttonType.includes('-outline')) {
-    buttonTypes.push(buttonType.replace('-outline', ''));
-  }
+  // if (buttonType.includes('-outline')) {
+  //   buttonTypes.push(buttonType.replace('-outline', ''));
+  // }
 
   return (
     <>   

@@ -3,7 +3,7 @@ import { sanitizeBchatUsername } from '../../bchat/utils/String';
 // import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatSpinner } from '../basic/BchatSpinner';
-import { SpacerLG } from '../basic/Text';
+// import { SpacerLG } from '../basic/Text';
 import {
   MAX_USERNAME_LENGTH,
   RegistrationContext,
@@ -46,8 +46,8 @@ const RestoreUsingRecoveryPhraseButton = (props: { onRecoveryButtonClicked: () =
   return (
     <BchatButton
       onClick={props.onRecoveryButtonClicked}
-      buttonType={BchatButtonType.BrandOutline}
-      buttonColor={BchatButtonColor.White}
+      buttonType={BchatButtonType.DefaultOutline}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('signIn')}
       dataTestId="restore-using-recovery"
     />
@@ -97,7 +97,7 @@ const SignInButtons = (props: {
   return (
     <div>
       <RestoreUsingRecoveryPhraseButton onRecoveryButtonClicked={props.onRecoveryButtonClicked} />
-      <SpacerLG />
+      {/* <SpacerLG /> */}
       {/* <LinkDeviceButton onLinkDeviceButtonClicked={props.onLinkDeviceButtonClicked} /> */}
     </div>
   );
