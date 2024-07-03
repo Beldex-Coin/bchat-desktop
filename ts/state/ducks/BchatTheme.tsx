@@ -187,7 +187,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-text-opposite', darkColorTextOpposite);
   document.documentElement.style.setProperty('--color-text-signIn', darkSinginTextColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', darkColorBchatShadow);
-  document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
+  // document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
   document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
   document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', darkCopyModalbtn);
@@ -474,7 +474,7 @@ const lightComposeMsgBg = '#f2f2f2';
 // const lightComposeMsgIconBG="#2879fb";
 const lightSettingIndication = '#F2F2F2';
 const lightSinginTextColor = '#128B17';
-const lightHintColor = lightGreyColor;
+// const lightHintColor = lightGreyColor;
 const lightCopyIcon = '#0BB70F';
 const lightCopyIconBg = '#EFEFEF';
 const lightCopyModalbtn = '#F8F8F8';
@@ -571,7 +571,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-text-accent', lightColorTextAccent);
   document.documentElement.style.setProperty('--color-text-opposite', lightColorTextOpposite);
   document.documentElement.style.setProperty('--color-text-signIn', lightSinginTextColor);
-  document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
+  // document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', lightColorBchatShadow);
   document.documentElement.style.setProperty('--color-copyIcon', lightCopyIcon);
   document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
@@ -802,7 +802,7 @@ export const switchHtmlToLightTheme = () => {
 export const BchatGlobalStyles = createGlobalStyle`
   html {
     /* FONTS */
-    --font-default:  'poppin-medium';
+    --font-default:  'Poppins';
     --font-font-accent:  'Loor';
     --font-font-mono:  'SpaceMono';
     --font-size-xs:  11px;
@@ -836,7 +836,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-text-accent:  ${darkColorTextAccent};
     --color-text-opposite:  ${darkColorTextOpposite};
     --color-text-signIn:${darkSinginTextColor};
-    --color-Bchat-hint: ${darkHintColor};
+    /* --color-Bchat-hint: ${darkHintColor}; */
     --color-bchat-shadow: ${darkColorBchatShadow};
     --color-compose-view-button-background: ${darkColorComposeViewBg};
     --color-sent-message-background:  ${darkColorSentMessageBg};

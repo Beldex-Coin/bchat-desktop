@@ -79,9 +79,10 @@ export const BchatInput = (props: Props) => {
 
   return (
     <div className="bchat-input-with-label-container">
-      {error ? (
+      {error && (
         <ErrorItem error={props.error} />
-      ) : (
+      ) }
+      { label &&(
         <LabelItem inputValue={inputValue} label={label} />
       )}
       <input

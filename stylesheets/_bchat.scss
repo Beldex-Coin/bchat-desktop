@@ -107,7 +107,7 @@ textarea {
     align-items: center;
     padding: 0px $bchat-margin-lg;
     font-size: $bchat-font-lg;
-    font-family: $bchat-font-poppin-semibold;
+   font-weight: 600;
     border-radius: 13px;
     &.primary{
       background-color: #008e00;
@@ -120,7 +120,8 @@ textarea {
     align-items: center;
     padding: 0px $bchat-margin-lg;
     font-size: $bchat-font-lg;
-    font-family: $bchat-font-poppin-semibold;
+    font-weight: 600;
+   
     border-radius: 13px;
     &.primary{
      border:1px solid $bchat-button-green-color;

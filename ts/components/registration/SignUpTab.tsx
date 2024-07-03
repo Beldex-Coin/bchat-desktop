@@ -202,14 +202,14 @@ export const SignUpTab = (props: any) => {
           flexDirection="row"
           container={true}
           alignItems="center"
-          padding="14px 0px"
-          margin="0px 0px 0px 65px"
+          // padding="14px 0px"
+          // margin="0px 0px 0px 65px"
         >
           <div className="bchat-registration-goback-icon">
             <GoBackMainMenuButton assent={goback} />
           </div>
           <Flex className="bchat-registration__welcome-bchat">
-            {window.i18n('welcomeToYourBchat')}
+            {window.i18n('displayName')}
           </Flex>
         </Flex>
         <RegistrationUserDetails
@@ -227,14 +227,14 @@ export const SignUpTab = (props: any) => {
           }}
           stealAutoFocus={true}
         />
-        <div style={{ width: '76%', marginLeft: '55px' }}>
+        <div style={{ width: '450px', }}>
           <BchatButton
             onClick={() => {
               verifyUserName();
             }}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            text={window.i18n('getStarted')}
+            buttonType={BchatButtonType.Default}
+            buttonColor={BchatButtonColor.Primary}
+            text={window.i18n('continue')} 
           />
         </div>
       </div>
