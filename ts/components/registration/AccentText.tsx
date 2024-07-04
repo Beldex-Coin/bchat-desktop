@@ -1,5 +1,5 @@
 import React from 'react';
-import ChatwithTxtIcon from '../../../images/bchat/tsxIcons/chatwithTxtIcon';
+import ChatwithTxtIcon from '../icon/chatwithTxtIcon';
 
 export const AccentText: React.FC = () => (
   <div className="bchat-content-accent-text">

@@ -13,7 +13,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
 
-const { clipboard } = require('electron');
+// const { clipboard } = require('electron');
 
 export enum SignUpMode {
   Default,
@@ -241,9 +241,9 @@ export const SignUpTab = (props: any) => {
     );
   }
 
-  const handlePaste = () => {
-    clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
-  };
+  // const handlePaste = () => {
+  //   clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
+  // };
 
   if (displayNameScreen === 2) {
     return (
@@ -274,7 +274,7 @@ export const SignUpTab = (props: any) => {
         mnemonic={generatedRecoveryPhrase}
         nextFunc={signUpWithDetails}
         enableCompleteSignUp={enableCompleteSignUp}
-        copySeed={handlePaste}
+        // copySeed={handlePaste}
         loading={showSeedLoading}
       ></ShowRecoveryPhase>
     </>

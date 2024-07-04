@@ -966,12 +966,11 @@ label {
         height: 40px;
         position: relative;
         // background-color: var(--color-composeMsgInput);
-        background-color: var(--color-copyIconBg);
         background-size: 16px;
         border-radius: 30px;
         background-position: center;
         cursor: pointer;
-        color: var(--color-copyIcon);
+       
       }
       &-display-icon:hover {
         transform: scale(1.1);

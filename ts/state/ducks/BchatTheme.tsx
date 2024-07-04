@@ -93,8 +93,8 @@ const darkSettingIndication = greyColor;
 const darkProfileBgColor = '#2A2A3B';
 const darkSinginTextColor = '#128B17';
 const darkHintColor = lightGreyColor;
-const darkCopyIcon = '#fff';
-const darkCopyIconBg = '#353543';
+// const darkCopyIcon = '#fff';
+// const darkCopyIconBg = '#353543';
 const darkCopyModalbtn = '#444455';
 const darkChatHeader = '#1c1c26';
 const darkToggleOff = '#000';
@@ -188,8 +188,6 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-text-signIn', darkSinginTextColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', darkColorBchatShadow);
   // document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
-  document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
-  document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', darkCopyModalbtn);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
@@ -475,8 +473,8 @@ const lightComposeMsgBg = '#f2f2f2';
 const lightSettingIndication = '#F2F2F2';
 const lightSinginTextColor = '#128B17';
 // const lightHintColor = lightGreyColor;
-const lightCopyIcon = '#0BB70F';
-const lightCopyIconBg = '#EFEFEF';
+// const lightCopyIcon = '#0BB70F';
+// const lightCopyIconBg = '#EFEFEF';
 const lightCopyModalbtn = '#F8F8F8';
 
 const lightOverlayBg = '#EDEDED';
@@ -573,8 +571,6 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-text-signIn', lightSinginTextColor);
   // document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', lightColorBchatShadow);
-  document.documentElement.style.setProperty('--color-copyIcon', lightCopyIcon);
-  document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', lightCopyModalbtn);
   document.documentElement.style.setProperty('--color-disableText', ligntDisableText);
   document.documentElement.style.setProperty('--color-downArrow', lightDownArrow);
@@ -884,8 +880,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-walletSelectOption:${darkWalletSelectHover};
     --color-walletPriorityHover:${darkWalletPriorityHover};
     --color-settingIndication:${darkSettingIndication};
-    --color-copyIcon:${darkCopyIcon};
-    --color-copyIconBg:${darkCopyIconBg};
     --color-copyModalbtn:${darkCopyModalbtn}
     --color-chatHeader:${darkChatHeader};
     --color-chatIcons:${darkChatIcons};
