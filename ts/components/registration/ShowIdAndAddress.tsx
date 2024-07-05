@@ -144,7 +144,7 @@ export const ShowRecoveryPhase = (props: any) => {
             {window.i18n('copyToContinueRecovery')}
             </p>
             <SpacerLG/>
-            <SpacerLG/>
+            {/* <SpacerLG/> */}
           <BchatButton
             onClick={props.nextFunc}
             buttonType={BchatButtonType.Default}

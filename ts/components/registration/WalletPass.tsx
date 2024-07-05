@@ -41,7 +41,7 @@ export const WalletPassword = (props: any) => {
           minLength={4}
           maxLength={13}
         />
-        <div style={{ height: '50px' }}></div>
+        <div style={{ height: '25px' }}></div>
         <div style={{ width: '450px' }}>
           <BchatButton
             onClick={() => props.submit()}

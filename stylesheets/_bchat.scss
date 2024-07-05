@@ -112,6 +112,10 @@ textarea {
     &.primary{
       background-color: #008e00;
       color:#F0F0F0;
+    }
+    &.disabled{
+      background-color:  #2E333D;
+      color:#858598;
     } 
   }
   &.default-outline{
