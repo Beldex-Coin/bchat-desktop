@@ -3,7 +3,7 @@ import { sanitizeBchatUsername } from '../../bchat/utils/String';
 // import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 // import { BchatSpinner } from '../basic/BchatSpinner';
-import { SpacerLG } from '../basic/Text';
+// import { SpacerLG } from '../basic/Text';
 import {
   MAX_USERNAME_LENGTH,
   RegistrationContext,
@@ -46,8 +46,8 @@ const RestoreUsingRecoveryPhraseButton = (props: { onRecoveryButtonClicked: () =
   return (
     <BchatButton
       onClick={props.onRecoveryButtonClicked}
-      buttonType={BchatButtonType.BrandOutline}
-      buttonColor={BchatButtonColor.White}
+      buttonType={BchatButtonType.DefaultOutline}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('signIn')}
       dataTestId="restore-using-recovery"
     />
@@ -61,8 +61,8 @@ const ContinueYourBchatButton = (props: {
   return (
     <BchatButton
       onClick={props.handleContinueYourBchatClick}
-      buttonType={BchatButtonType.Brand}
-      buttonColor={BchatButtonColor.Green}
+      buttonType={BchatButtonType.Default}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('restore')}
       disabled={props.disabled}
       dataTestId="continue-Bchat-button"
@@ -97,7 +97,7 @@ const SignInButtons = (props: {
   return (
     <div>
       <RestoreUsingRecoveryPhraseButton onRecoveryButtonClicked={props.onRecoveryButtonClicked} />
-      <SpacerLG />
+      {/* <SpacerLG /> */}
       {/* <LinkDeviceButton onLinkDeviceButtonClicked={props.onLinkDeviceButtonClicked} /> */}
     </div>
   );
@@ -222,7 +222,7 @@ export const SignInTab = (props: any) => {
           />
         </div>
         <DisplaySeed
-          iconfunc={() => assignSeed()}
+          paste={() => assignSeed()}
           assignRecoveryPhase={(seed: string) => {
             setRecoveryPhrase(seed);
             // setRecoveryPhraseError(!seed ? window.i18n('recoveryPhraseEmpty') : undefined);
@@ -287,7 +287,7 @@ export const SignInTab = (props: any) => {
             // data-tip="Back"
             // data-place="right"
             // data-offset="{top:10}"
-            style={{ left: '52px' }}
+            // style={{ left: '52px' }}
           >
             <GoBackMainMenuButton
               assent={() => {
@@ -303,7 +303,7 @@ export const SignInTab = (props: any) => {
           <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div>
           <BchatInput
             autoFocus={true}
-            label={window.i18n('displayName')}
+            // label={window.i18n('displayName')}
             type="text"
             placeholder={window.i18n('enterDisplayName')}
             value={props.displayName}
@@ -339,7 +339,7 @@ export const SignInTab = (props: any) => {
             />
           </div>
           <div className="bchat-restore-seed-or"> OR </div>
-          <div style={{ marginBottom: '56px' }}>
+          <div style={{ marginBottom: '25px' }}>
             <p className="bchat-restore-seed-textbox-message">
               If you dont know the restore Date, you can skip it.
             </p>
@@ -355,7 +355,7 @@ export const SignInTab = (props: any) => {
               inputDataTestId="display-name-input"
             />
           </div>
-          <div style={{ width: '75%', marginLeft: '57px' }}>
+          <div style={{ width: '450px'}}>
             <SignInContinueButton
               signInMode={signInMode}
               handleContinueYourBchatClick={continueYourBchat}

@@ -13,7 +13,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
 
-const { clipboard } = require('electron');
+// const { clipboard } = require('electron');
 
 export enum SignUpMode {
   Default,
@@ -25,8 +25,8 @@ const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
   return (
     <BchatButton
       onClick={createBchatID}
-      buttonType={BchatButtonType.BrandOutline}
-      buttonColor={BchatButtonColor.Green}
+      buttonType={BchatButtonType.Default}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('createAccount')}
     />
   );
@@ -202,14 +202,14 @@ export const SignUpTab = (props: any) => {
           flexDirection="row"
           container={true}
           alignItems="center"
-          padding="14px 0px"
-          margin="0px 0px 0px 65px"
+          // padding="14px 0px"
+          // margin="0px 0px 0px 65px"
         >
           <div className="bchat-registration-goback-icon">
             <GoBackMainMenuButton assent={goback} />
           </div>
           <Flex className="bchat-registration__welcome-bchat">
-            {window.i18n('welcomeToYourBchat')}
+            {window.i18n('displayName')}
           </Flex>
         </Flex>
         <RegistrationUserDetails
@@ -227,23 +227,23 @@ export const SignUpTab = (props: any) => {
           }}
           stealAutoFocus={true}
         />
-        <div style={{ width: '76%', marginLeft: '55px' }}>
+        <div style={{ width: '450px', }}>
           <BchatButton
             onClick={() => {
               verifyUserName();
             }}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            text={window.i18n('getStarted')}
+            buttonType={BchatButtonType.Default}
+            buttonColor={BchatButtonColor.Primary}
+            text={window.i18n('continue')} 
           />
         </div>
       </div>
     );
   }
 
-  const handlePaste = () => {
-    clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
-  };
+  // const handlePaste = () => {
+  //   clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
+  // };
 
   if (displayNameScreen === 2) {
     return (
@@ -274,7 +274,7 @@ export const SignUpTab = (props: any) => {
         mnemonic={generatedRecoveryPhrase}
         nextFunc={signUpWithDetails}
         enableCompleteSignUp={enableCompleteSignUp}
-        copySeed={handlePaste}
+        // copySeed={handlePaste}
         loading={showSeedLoading}
       ></ShowRecoveryPhase>
     </>

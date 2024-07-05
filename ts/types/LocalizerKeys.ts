@@ -548,7 +548,7 @@ export type LocalizerKeys =
   | 'reportIssue'
   | 'copyToContinueRecovery'
   | 'saveYourRecoveryPhrase'
-  | 'chatId'
+  | 'bChatID'
   | 'welcome'
   | 'yourBchatName'
   | 'beldexAddress'

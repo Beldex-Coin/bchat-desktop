@@ -3,7 +3,7 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 const white = '#F2F2F2';
-const black = '#22232E';
+const black = '#131313';
 const warning = '#e7b100';
 const destructive = '#ff453a';
 const accentLightTheme = '#159B24';
@@ -14,6 +14,7 @@ const baseColor = '#00A803';
 const greyColor = '#2D2D3B';
 const lightGreyColor = '#646474';
 const greenColor = '#16A51C';
+const forestGreenColor="#00A638";
 
 // DARK COLORS
 const darkColorAccent = baseColor;
@@ -92,8 +93,8 @@ const darkSettingIndication = greyColor;
 const darkProfileBgColor = '#2A2A3B';
 const darkSinginTextColor = '#128B17';
 const darkHintColor = lightGreyColor;
-const darkCopyIcon = '#fff';
-const darkCopyIconBg = '#353543';
+// const darkCopyIcon = '#fff';
+// const darkCopyIconBg = '#353543';
 const darkCopyModalbtn = '#444455';
 const darkChatHeader = '#1c1c26';
 const darkToggleOff = '#000';
@@ -106,7 +107,7 @@ const darkleftHeaderBg = '#1C1C26';
 const darkCancelBtnBg = '#3D3D4E';
 const darkDisableText = '#545469';
 const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
-const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
+// const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
 const darkEmptyContact = `url("../images/bchat/no_con_scrt_grp_dark_theme.svg")`;
 const darkEmptyAddressBook = `url("../images/bchat/empty_address_book_dark.svg")`;
 const darkEmptyTransHistory = `url("../images/bchat/no_tx_history_dark.svg")`;
@@ -137,7 +138,7 @@ const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
 const darkbubbleReceivedBg = '#373746';
 
-const buttonColor = '#008C04';
+const buttonColor = forestGreenColor;
 // const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
 const darkAudioRecord = '#3F3C4B';
 
@@ -186,9 +187,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-text-opposite', darkColorTextOpposite);
   document.documentElement.style.setProperty('--color-text-signIn', darkSinginTextColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', darkColorBchatShadow);
-  document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
-  document.documentElement.style.setProperty('--color-copyIcon', darkCopyIcon);
-  document.documentElement.style.setProperty('--color-copyIconBg', darkCopyIconBg);
+  // document.documentElement.style.setProperty('--color-Bchat-hint', darkHintColor);
   document.documentElement.style.setProperty('--color-copyModalbtn', darkCopyModalbtn);
   document.documentElement.style.setProperty(
     '--color-compose-view-button-background',
@@ -349,7 +348,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--image-DayNight', darkDayNight);
   document.documentElement.style.setProperty('--image-addContact', darkNewChat);
   document.documentElement.style.setProperty('--image-EmptyChatImg', darkEmptyChatImg);
-  document.documentElement.style.setProperty('--image-BgDoodle', darkBgDoodle);
+  // document.documentElement.style.setProperty('--image-BgDoodle', darkBgDoodle);
   document.documentElement.style.setProperty('--image-MsgReq', darkMsgReqImg);
   document.documentElement.style.setProperty('--image-BlockedContact', darkBlockedContact);
   document.documentElement.style.setProperty('--image-AddContact', darkAddContact);
@@ -374,7 +373,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--image-walletSyncing', darkWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', darkNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
-  document.documentElement.style.setProperty('--button-color', buttonColor);
+  // document.documentElement.style.setProperty('--button-color', buttonColor);
   document.documentElement.style.setProperty('--color-audio-record', darkAudioRecord);
   document.documentElement.style.setProperty('--color-seed', darkSeedColor);
   document.documentElement.style.setProperty(
@@ -473,9 +472,9 @@ const lightComposeMsgBg = '#f2f2f2';
 // const lightComposeMsgIconBG="#2879fb";
 const lightSettingIndication = '#F2F2F2';
 const lightSinginTextColor = '#128B17';
-const lightHintColor = lightGreyColor;
-const lightCopyIcon = '#0BB70F';
-const lightCopyIconBg = '#EFEFEF';
+// const lightHintColor = lightGreyColor;
+// const lightCopyIcon = '#0BB70F';
+// const lightCopyIconBg = '#EFEFEF';
 const lightCopyModalbtn = '#F8F8F8';
 
 const lightOverlayBg = '#EDEDED';
@@ -483,7 +482,7 @@ const lightleftHeaderBg = '#F2F2F2';
 const lightLeaveGrpBtn = '#F2F2F2';
 
 const lightEmptyChatImg = `url("../images/bchat/emptyMessageWhite.svg")`;
-const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
+// const lightBgDoodle = `url("../images/bchat/doodle_dark.svg")`;
 const lightMsgReqImg = `url("../images/bchat/no_message_request.svg")`;
 const lightBlockedContact = `url("../images/bchat/no_blocked_contacts.svg")`;
 const lightAddContact = `url("../images/bchat/add_contact_white_theme.svg")`;
@@ -570,10 +569,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-text-accent', lightColorTextAccent);
   document.documentElement.style.setProperty('--color-text-opposite', lightColorTextOpposite);
   document.documentElement.style.setProperty('--color-text-signIn', lightSinginTextColor);
-  document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
+  // document.documentElement.style.setProperty('--color-Bchat-hint', lightHintColor);
   document.documentElement.style.setProperty('--color-bchat-shadow', lightColorBchatShadow);
-  document.documentElement.style.setProperty('--color-copyIcon', lightCopyIcon);
-  document.documentElement.style.setProperty('--color-copyIconBg', lightCopyIconBg);
   document.documentElement.style.setProperty('--color-copyModalbtn', lightCopyModalbtn);
   document.documentElement.style.setProperty('--color-disableText', ligntDisableText);
   document.documentElement.style.setProperty('--color-downArrow', lightDownArrow);
@@ -738,7 +735,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--image-addContact', lightNewChat);
 
   document.documentElement.style.setProperty('--image-EmptyChatImg', lightEmptyChatImg);
-  document.documentElement.style.setProperty('--image-BgDoodle', lightBgDoodle);
+  // document.documentElement.style.setProperty('--image-BgDoodle', lightBgDoodle);
   document.documentElement.style.setProperty('--image-MsgReq', lightMsgReqImg);
   document.documentElement.style.setProperty('--image-BlockedContact', lightBlockedContact);
   document.documentElement.style.setProperty('--image-AddContact', lightAddContact);
@@ -762,7 +759,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--image-walletSyncing', whiteWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', lightNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
-  document.documentElement.style.setProperty('--button-color', buttonColor);
+  // document.documentElement.style.setProperty('--button-color', buttonColor);
   document.documentElement.style.setProperty('--color-audio-record', whiteAudioRecord);
   document.documentElement.style.setProperty('--color-seed', whiteSeedColor);
   document.documentElement.style.setProperty(
@@ -801,7 +798,7 @@ export const switchHtmlToLightTheme = () => {
 export const BchatGlobalStyles = createGlobalStyle`
   html {
     /* FONTS */
-    --font-default:  'poppin-medium';
+    --font-default:  'Poppins';
     --font-font-accent:  'Loor';
     --font-font-mono:  'SpaceMono';
     --font-size-xs:  11px;
@@ -835,7 +832,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-text-accent:  ${darkColorTextAccent};
     --color-text-opposite:  ${darkColorTextOpposite};
     --color-text-signIn:${darkSinginTextColor};
-    --color-Bchat-hint: ${darkHintColor};
+    /* --color-Bchat-hint: ${darkHintColor}; */
     --color-bchat-shadow: ${darkColorBchatShadow};
     --color-compose-view-button-background: ${darkColorComposeViewBg};
     --color-sent-message-background:  ${darkColorSentMessageBg};
@@ -883,8 +880,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-walletSelectOption:${darkWalletSelectHover};
     --color-walletPriorityHover:${darkWalletPriorityHover};
     --color-settingIndication:${darkSettingIndication};
-    --color-copyIcon:${darkCopyIcon};
-    --color-copyIconBg:${darkCopyIconBg};
     --color-copyModalbtn:${darkCopyModalbtn}
     --color-chatHeader:${darkChatHeader};
     --color-chatIcons:${darkChatIcons};
@@ -938,7 +933,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
-    --image-BgDoodle:${darkBgDoodle};
     --image-DayNight:${darkDayNight};
     --image-addContact:${darkNewChat};
     --image-MsgReq:${darkMsgReqImg};
