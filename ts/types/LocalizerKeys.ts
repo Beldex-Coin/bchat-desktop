@@ -587,4 +587,5 @@ export type LocalizerKeys =
   | 'chatWithWalletDisc'
   |'bnsNameAndIDNotMatch'
   |'bnsNameverified'
+  |'KeyboardBackspaceArrow'
   ;

@@ -29,9 +29,9 @@ export const BchatRegistrationView = () => {
             container={true}
             height="100%"
             width='40%'
-            justifyContent="center"
+            justifyContent="flex-end"
             >
-            <img src='images/bchat/BChat_image.svg' width={"80%"} height={"100%"}></img>
+            <img src='images/bchat/loginpage.png' width={"86%"} height={"80%"}></img>
            </Flex>
           
            <Flex
