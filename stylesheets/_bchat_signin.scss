@@ -97,6 +97,7 @@
       &-walletHintText {
         margin: 0;
         // margin-left: 59px;
+        margin-left: 38px;
         margin-bottom: 30px;
         font-size: 16px;
         // color: var(--color-text);
@@ -193,17 +194,18 @@
       width: 78%;
       // color: #353543;
       // margin-top: 25px;
-      border-color: #23232F;
+      border-color: #23232f;
       margin-top: 25px;
       margin-bottom: 25px;
     }
 
     &-goback-icon {
       position: relative;
-      color: white;
+      // color: #A9AEBA;
+      margin-right: $bchat-margin-xs;
       &:hover {
-        background-color: #52505f;
-        border-radius: 20px;
+        background-color: #2e333d;
+        border-radius: 8px;
       }
     }
 

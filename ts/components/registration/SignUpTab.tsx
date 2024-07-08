@@ -45,9 +45,9 @@ export const GoBackMainMenuButton = (props: any) => {
   return (
     <BchatIconButton
       iconSize="huge"
-      iconType="chevron"
-      iconRotation={90}
+      iconType="KeyboardBackspaceArrow"
       iconPadding="5px"
+      iconColor='#A9AEBA'
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
         setSignInMode(SignInMode.Default);
