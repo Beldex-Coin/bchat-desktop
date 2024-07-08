@@ -53,16 +53,26 @@ $borderAvatarColor: unquote(
   }
 }
 
-.module-avatar__icon-closed .module-avatar--64,
-.module-avatar--64 {
-  height: 64px;
-  width: 64px;
+.module-avatar__icon-closed .module-avatar--60,
+.module-avatar--60 {
+  height:60px;
+  width: 60px;
 
   img {
-    height: 64px;
-    width: 64px;
+    height: 60px;
+    width: 60px;
   }
 }
+// .module-avatar__icon-closed .module-avatar--64,
+// .module-avatar--64 {
+//   height: 64px;
+//   width: 64px;
+
+//   img {
+//     height: 64px;
+//     width: 64px;
+//   }
+// }
 
 .module-avatar__icon-closed .module-avatar--80,
 .module-avatar--80 {

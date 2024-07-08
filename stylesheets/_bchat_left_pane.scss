@@ -3,7 +3,7 @@ $bchat-compose-margin: 20px;
 .gutter {
   width: 380px !important;
   transition: none;
-  background: var(--color-cell-background);
+  // background: var(--color-cell-background);
 }
 
 .module-conversation {
@@ -169,7 +169,7 @@ $bchat-compose-margin: 20px;
   height: 100vh;
   flex-shrink: 0;
   // background: var(--color-inbox-background);
-  background-color: var(--color-overlayBg);
+  // background-color: var(--color-overlayBg);
 
   @include placeholder {
     color: #7e7e8d;
