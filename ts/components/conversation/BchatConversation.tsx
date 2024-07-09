@@ -15,7 +15,6 @@ import { perfEnd, perfStart } from '../../bchat/utils/Performance';
 const DEFAULT_JPEG_QUALITY = 0.85;
 // import classNames from 'classnames';
 
-
 import { BchatMessagesListContainer } from './BchatMessagesListContainer';
 
 import { BchatFileDropzone } from './BchatFileDropzone';
@@ -41,7 +40,7 @@ import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util';
 import { BchatButtonColor } from '../basic/BchatButton';
-import { MessageView } from '../MainViewController';
+import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
 import { ConversationHeaderWithDetails } from './ConversationHeader';
 import { MessageDetail } from './message/message-item/MessageDetail';
 import {
@@ -82,12 +81,13 @@ interface Props {
   showMessageDetails: boolean;
   isRightPanelShowing: boolean;
   hasOngoingCallWithFocusedConvo: boolean;
-  isMe:boolean;
+  isMe: boolean;
 
   // lightbox options
   lightBoxOptions?: LightBoxOptions;
 
   stagedAttachments: Array<StagedAttachmentType>;
+  convoList: any;
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -227,19 +227,27 @@ export class BchatConversation extends React.Component<Props, State> {
       selectedMessages,
       isRightPanelShowing,
       lightBoxOptions,
-      isMe
+      isMe,
+      convoList,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
     const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-
+    console.log('convoList ------->', convoList.conversations);
+    if (convoList?.conversations?.length == 0 && (!selectedConversation || !messagesProps)) {
+      return <AddNewContactInEmptyConvo />;
+    }
     if (!selectedConversation || !messagesProps) {
-
       // return an empty message view
       return <MessageView />;
     }
-    // const belAddress = useConversationBeldexAddress(selectedConversation.id); 
-    const syncbarCondition=chatWithWallet && selectedConversation?.isPrivate && !isMe && selectedConversation?.didApproveMe && selectedConversation?.isApproved
+    // const belAddress = useConversationBeldexAddress(selectedConversation.id);
+    const syncbarCondition =
+      chatWithWallet &&
+      selectedConversation?.isPrivate &&
+      !isMe &&
+      selectedConversation?.didApproveMe &&
+      selectedConversation?.isApproved;
     // const msgProps={ amount:'0.1',
     //   txnId: "1234567890",
     //   direction: 'outgoing',
@@ -250,10 +258,9 @@ export class BchatConversation extends React.Component<Props, State> {
     // }
 
     // console.log("selectedConversation ::",syncbarCondition,selectedConversation)
-   
+
     return (
       <BchatTheme>
-
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
@@ -263,10 +270,8 @@ export class BchatConversation extends React.Component<Props, State> {
           tabIndex={0}
           onKeyDown={this.onKeyDown}
           role="navigation"
-        > 
-          <div>
-           {syncbarCondition &&<ConditionalSyncBar />} 
-          </div>
+        >
+          <div>{syncbarCondition && <ConditionalSyncBar />}</div>
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
           </div>
@@ -278,11 +283,11 @@ export class BchatConversation extends React.Component<Props, State> {
               top={<InConversationCallContainer />}
               bottom={
                 <>
-                <BchatMessagesListContainer
-                  messageContainerRef={this.messageContainerRef}
-                  scrollToNow={this.scrollToNow}
-                />
-                {/* <div><PaymentMessage key={'122334'} {...msgProps} /></div> */}
+                  <BchatMessagesListContainer
+                    messageContainerRef={this.messageContainerRef}
+                    scrollToNow={this.scrollToNow}
+                  />
+                  {/* <div><PaymentMessage key={'122334'} {...msgProps} /></div> */}
                 </>
               }
               disableTop={!this.props.hasOngoingCallWithFocusedConvo}
@@ -298,15 +303,12 @@ export class BchatConversation extends React.Component<Props, State> {
             stagedAttachments={this.props.stagedAttachments}
             onChoseAttachments={this.onChoseAttachments}
           />
-
         </div>
         <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
-
         >
           <BchatRightPanelWithDetails />
         </div>
-
       </BchatTheme>
     );
   }
@@ -519,7 +521,8 @@ export class BchatConversation extends React.Component<Props, State> {
     const allPubKeys = await getPubkeysInPublicConversation(this.props.selectedConversationKey);
 
     window?.log?.debug(
-      `[perf] getPubkeysInPublicConversation returned '${allPubKeys?.length
+      `[perf] getPubkeysInPublicConversation returned '${
+        allPubKeys?.length
       }' members in ${Date.now() - start}ms`
     );
 
@@ -624,5 +627,3 @@ const renderImagePreview = async (contentType: string, file: File, fileName: str
     thumbnail: null,
   };
 };
-
-

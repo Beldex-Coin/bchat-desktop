@@ -104,7 +104,7 @@ export const BchatInput = (props: Props) => {
           }
         }}
       />
-
+      
       {enableShowHide && (
         <ShowHideButton
           toggleForceShow={() => {

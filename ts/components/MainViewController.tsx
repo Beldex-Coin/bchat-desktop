@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { ToastUtils } from '../bchat/utils'; 
+import { ToastUtils } from '../bchat/utils';
 import { createClosedGroup as createClosedGroupV2 } from '../receiver/closedGroups';
 import { VALIDATION } from '../bchat/constants';
+import SmileSymbolIcon from './icon/SmileSymbolIcon';
+// import { BchatInput } from './basic/BchatInput';
+import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
+import { SpacerLG } from './basic/Text';
+import { BchatIdEditable } from './basic/BchatIdEditable';
+import { PubKey } from '../bchat/types/PubKey';
+import { getConversationController } from '../bchat/conversations';
+import { ConversationTypeEnum } from '../models/conversation';
+import { openConversationWithMessages } from '../state/ducks/conversations';
+import { SNodeAPI } from '../bchat/apis/snode_api';
 
 export class MessageView extends React.Component {
   public render() {
-  
     return (
       <div className="conversation placeholder">
         <div className="conversation-header" />
         <div className="container">
           <div className="content bchat-full-logo">
-            <div  className="bchat-text-logo">
-            <p  className="bchat-text">Much empty. Such wow.<br></br> Get some friends to BChat!</p>
+            <div className="bchat-text-logo">
+              {/* <p className="bchat-text">
+                Much empty. Such wow.<br></br> Get some friends to BChat!
+              </p> */}
             </div>
           </div>
         </div>
@@ -22,6 +33,89 @@ export class MessageView extends React.Component {
   }
 }
 
+export const AddNewContactInEmptyConvo = () => {
+  const [bchatId, setBchatId] = useState('');
+  async function handleMessageButtonClick() {
+    const pubkeyorOnsTrimmed = bchatId.trim();
+    if (
+      (!pubkeyorOnsTrimmed || pubkeyorOnsTrimmed.length !== 66) &&
+      !pubkeyorOnsTrimmed.toLowerCase().endsWith('.bdx')
+    ) {
+      ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
+      return;
+    }
+    if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
+      // this is a pubkey
+      await getConversationController().getOrCreateAndWait(
+        pubkeyorOnsTrimmed,
+        ConversationTypeEnum.PRIVATE
+      );
+
+      await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
+      // closeOverlay();
+    } else {
+      // setLoading(true);
+      try {
+        const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
+        if (PubKey.validateWithError(resolvedBchatID)) {
+          throw new Error('Got a resolved BNS but the returned entry is not a valid bchatID');
+        }
+        // this is a pubkey
+        await getConversationController().getOrCreateAndWait(
+          resolvedBchatID,
+          ConversationTypeEnum.PRIVATE
+        );
+        await openConversationWithMessages({
+          conversationKey: resolvedBchatID,
+          messageId: null,
+          bns: pubkeyorOnsTrimmed,
+        });
+      } catch (e) {
+        window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
+
+        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
+      } finally {
+      }
+    }
+  }
+  return (
+    <div className="conversation placeholder">
+      <div className="conversation-header" />
+      <div className="container">
+        <div className="content bchat-full-logo">
+          <div className="bchat-text-logo"></div>
+          <section style={{ width: '450px' }}>
+            <div className="bchat-text">
+              Start a New Chat <SmileSymbolIcon />
+            </div>
+            <SpacerLG />
+            <SpacerLG />
+            <div>
+              <BchatIdEditable
+                editable={true}
+                placeholder={'Enter BChat ID or BNS'}
+                value={bchatId}
+                isGroup={false}
+                maxLength={66}
+                onChange={setBchatId}
+                dataTestId="new-closed-group-name"
+              />
+            </div>
+            <SpacerLG />
+            <div>
+              <BchatButton
+                text={'Let’s Bchat'}
+                buttonType={BchatButtonType.Default}
+                buttonColor={BchatButtonColor.Primary}
+                onClick={() => handleMessageButtonClick()}
+              />
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+};
 // /////////////////////////////////////
 // //////////// Management /////////////
 // /////////////////////////////////////

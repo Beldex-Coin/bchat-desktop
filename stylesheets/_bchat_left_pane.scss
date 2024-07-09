@@ -1,7 +1,7 @@
 $bchat-compose-margin: 20px;
 
 .gutter {
-  width: 380px !important;
+  // width: 380px !important;
   transition: none;
   // background: var(--color-cell-background);
 }
@@ -124,7 +124,7 @@ $bchat-compose-margin: 20px;
 }
 .connection-Wrapper {
   margin: 10px;
-  color:  #3bd110;
+  color: #3bd110;
   .dots {
     display: flex;
     justify-content: space-between;
@@ -220,7 +220,7 @@ $bchat-compose-margin: 20px;
       color: var(--color-text);
       font-family: $bchat-font-poppin-semibold;
       font-size: 22px;
-      .bchat-icon-button{
+      .bchat-icon-button {
         cursor: unset;
       }
     }
@@ -521,9 +521,9 @@ $bchat-compose-margin: 20px;
   display: flex;
   flex-direction: column;
   // flex-grow: 1;
-  height: 82.8%;
+  height: 100%;
   transition: none;
-  background: var(--color-left-pane-overlay-background);
+  // background: var(--color-left-pane-overlay-background);
   // text-align: center;
   justify-content: center;
 
@@ -534,15 +534,15 @@ $bchat-compose-margin: 20px;
     height: 100%;
   }
 
-  .addContactImg {
-    width: 111px;
-    height: 103px;
-    background-image: var(--image-AddContact);
-    background-repeat: no-repeat;
-    background-size: contain;
-    /* text-align: center; */
-    margin: 0 auto;
-  }
+  // .addContactImg {
+  //   width: 111px;
+  //   height: 103px;
+  //   background-image: var(--image-AddContact);
+  //   background-repeat: no-repeat;
+  //   background-size: contain;
+  //   /* text-align: center; */
+  //   margin: 0 auto;
+  // }
 
   .left-pane-contact-bottom-buttons .bchat-button {
     vertical-align: middle;
@@ -556,10 +556,11 @@ $bchat-compose-margin: 20px;
     border: none;
     border-radius: 10px;
     color: #fff;
-    font-family: $bchat-font-poppin-semibold;
+    // font-family: $bchat-font-poppin-semibold;
     // background-image: var(--button-color);
     background-color: var(--button-color);
     margin: 15px auto;
+    font-weight: 600;
 
     &:hover {
       background-color: $bchat-button-hovor-color;
@@ -572,6 +573,7 @@ $bchat-compose-margin: 20px;
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  background-color: #202329;
 }
 
 .user-search-dropdown {
@@ -583,15 +585,19 @@ $bchat-compose-margin: 20px;
 
 .bchat-search-input {
   height: 60px;
-  width: 100%;
+  // width: 90%;
+  width: 420px;
   margin-inline-end: 1px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   display: inline-flex;
   flex-shrink: 0;
-  background: var(--color-inboxBgColor);
+  // background: var(--color-inboxBgColor);
   padding: 0 21px;
-  box-shadow: var(--color-Bchat-shadow);
-
+  // box-shadow: var(--color-Bchat-shadow);
+  border-radius: 16px;
+  margin: 15px;
+  border: 1px solid #46465D; 
+  background: #202329;
   .search {
     margin-top: 13px;
     display: flex;
@@ -611,15 +617,16 @@ $bchat-compose-margin: 20px;
   }
 
   input {
-    width: inherit;
+    width: 70%;
     height: inherit;
     border: none;
     flex-grow: 1;
-    font-size: $bchat-font-sm;
-    font-family: $bchat-font-default;
+    font-size: $bchat-font-lg;
+    // font-family: $bchat-font-default;
+    font-weight: 300;
     text-overflow: ellipsis;
     background: none;
-    color: var(--color-text);
+    // color: var(--color-text);
 
     &:focus {
       outline: none !important;
@@ -643,7 +650,7 @@ $bchat-compose-margin: 20px;
 
 .bchat-full-logo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 
@@ -655,16 +662,21 @@ $bchat-compose-margin: 20px;
   }
 
   .bchat-text {
-    font-family: $bchat-font-poppin-semibold;
-    /* color: #fff; */
-    color: #4e4e5f;
-    font-size: 24px;
-    text-align: center;
+    // font-family: $bchat-font-poppin-semibold;
+    // /* color: #fff; */
+    // color: #4e4e5f;
+    // font-size: 24px;
+    // text-align: center;
+    color: #108d32;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 
   .bchat-text-logo {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: flex-end;
     margin-top: 12px;

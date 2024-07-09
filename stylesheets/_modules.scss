@@ -673,13 +673,13 @@
   // max-width: 380px;
   display: flex;
   flex-direction: row;
-  padding-inline-end: 16px;
+  padding-inline-end: 15px;
   padding-top: 8px;
   padding-bottom: 8px;
-  padding-inline-start: 16px;
+  padding-inline-start: 15px;
   align-items: center;
-  border-bottom: var(--color-bchat-border);
-  background-color: var(--color-conversation-list);
+  // border-bottom: var(--color-bchat-border);
+  // background-color: var(--color-conversation-list);
   // background-color: brown;
 
   cursor: pointer;
@@ -1401,7 +1401,7 @@
 .module-left-pane {
   display: inline-flex;
   flex-direction: row;
-  width: 380px;
+  // width: 380px;
   height: 100%;
 }
 

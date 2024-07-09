@@ -6,7 +6,7 @@ import {
 } from './conversation-list-item/ConversationListItem';
 import { ReduxConversationType } from '../../state/ducks/conversations';
 import { SearchResults, SearchResultsProps } from '../search/SearchResults';
-import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
+// import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
 import autoBind from 'auto-bind';
 import _ from 'lodash';
 import { MessageRequestsBanner } from './MessageRequestsBanner';
@@ -102,7 +102,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
     return (
       <div className="bchat-left-pane-section-content">
-        <LeftPaneSectionHeader/>
+        {/* <LeftPaneSectionHeader/> */}
         {overlayMode ? this.renderClosableOverlay() : null}
         {overlayMode ? null : <>
           {this.renderConversations()}
@@ -113,7 +113,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
   public renderConversations() {
     const {
-      conversations,
+      // conversations,
       directContact } = this.props;
     return (
       <div className="module-conversations-list-content">
@@ -125,7 +125,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
-        {directContact.length === 0 && conversations?.length === 0 ?
+        {/* {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>
             </div>
@@ -134,8 +134,10 @@ export class LeftPaneMessageSection extends React.Component<Props> {
               <button className='nextButton' onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}>Add Contacts + </button>
             </div>
           </div>
-          : this.renderList()}
-        {this.renderBottomButtons()}
+          :  */}
+          {this.renderList()}
+          {/* } */}
+        {/* {this.renderBottomButtons()} */}
       </div>
     );
   }
@@ -160,36 +162,36 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     }
   }
 
-  private renderBottomButtons(): JSX.Element {
-    // const joinSocialGroup = window.i18n('joinSocialGroup');
-    // const newSecretGroup = window.i18n('newSecretGroup');
+  // private renderBottomButtons(): JSX.Element {
+  //   const joinSocialGroup = window.i18n('joinSocialGroup');
+  //   const newSecretGroup = window.i18n('newSecretGroup');
 
-    return (
-      <div className="left-pane-contact-bottom-buttons">
-        {/* <BchatButton
-          // text={joinSocialGroup}
-          icon={true}
-          buttonType={BchatButtonType.SquareOutline}
-          buttonColor={BchatButtonColor.Green}
-          onClick={() => {
-            window.inboxStore?.dispatch(setOverlayMode('open-group'));
-          }}
-          style={{background: "url(images/bchat/secret-group.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
+  //   return (
+  //     <div className="left-pane-contact-bottom-buttons">
+  //       <BchatButton
+  //         // text={joinSocialGroup}
+  //         icon={true}
+  //         buttonType={BchatButtonType.SquareOutline}
+  //         buttonColor={BchatButtonColor.Green}
+  //         onClick={() => {
+  //           window.inboxStore?.dispatch(setOverlayMode('open-group'));
+  //         }}
+  //         style={{background: "url(images/bchat/secret-group.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
           
 
-        />
-        <BchatButton
-          icon={true}
-          style={{background: "url(images/bchat/socialgroup.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
+  //       />
+  //       <BchatButton
+  //         icon={true}
+  //         style={{background: "url(images/bchat/socialgroup.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
 
-          // text={newSecretGroup}
-          buttonType={BchatButtonType.SquareOutline}
-          buttonColor={BchatButtonColor.White}
-          onClick={() => {
-            window.inboxStore?.dispatch(setOverlayMode('closed-group'));
-          }}
-        /> */}
-      </div>
-    );
-  }
+  //         // text={newSecretGroup}
+  //         buttonType={BchatButtonType.SquareOutline}
+  //         buttonColor={BchatButtonColor.White}
+  //         onClick={() => {
+  //           window.inboxStore?.dispatch(setOverlayMode('closed-group'));
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // }
 }
