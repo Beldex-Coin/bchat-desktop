@@ -6,7 +6,7 @@ import { Avatar, AvatarSize, BNSWrapper } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
-  openConversationToSpecificMessage,
+  // openConversationToSpecificMessage,
   openConversationWithMessages,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
@@ -16,7 +16,7 @@ import { updateUserDetailsModal } from '../../../state/ducks/modalDialog';
 import {
   useAvatarPath,
   useConversationBnsHolder,
-  // useConversationPropsById,
+  useConversationPropsById,
   useConversationUsername,
   useIsPrivate,
 } from '../../../hooks/useParamSelector';
@@ -25,9 +25,10 @@ import { ConversationListItemHeaderItem } from './HeaderItem';
 import { MessageItem } from './MessageItem';
 import _ from 'lodash';
 // import { Timestamp } from '../../conversation/Timestamp';
-import { getFirstUnreadMessageWithMention } from '../../../data/data';
-import { UserUtils } from '../../../bchat/utils';
-import styled from 'styled-components';
+// import { getFirstUnreadMessageWithMention } from '../../../data/data';
+// import { UserUtils } from '../../../bchat/utils';
+// import styled from 'styled-components';
+import { Timestamp } from '../../conversation/Timestamp';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
 // import { SettingsKey } from '../../../data/settings-key';
 // import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
@@ -105,7 +106,7 @@ const ConversationListItem = (props: Props) => {
     id: conversationId,
     isSelected,
     isBlocked,
-    style,
+    // style,
     mentionedUs,
     isMessageRequest,
     // walletAddress
@@ -120,21 +121,21 @@ const ConversationListItem = (props: Props) => {
 
   // const forceUpdate = useUpdate();
   // console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
-  // function useHeaderItemProps(conversationId: string) {
-  //   const convoProps = useConversationPropsById(conversationId);
-  //   if (!convoProps) {
-  //     return null;
-  //   }
-  //   return {
-  //     isPinned: !!convoProps.isPinned,
-  //     mentionedUs: convoProps.mentionedUs || false,
-  //     unreadCount: convoProps.unreadCount || 0,
-  //     activeAt: convoProps.activeAt,
-  //   };
-  // }
-  // const convoProps = useHeaderItemProps(conversationId);
+  function useHeaderItemProps(conversationId: string) {
+    const convoProps = useConversationPropsById(conversationId);
+    if (!convoProps) {
+      return null;
+    }
+    return {
+      isPinned: !!convoProps.isPinned,
+      mentionedUs: convoProps.mentionedUs || false,
+      unreadCount: convoProps.unreadCount || 0,
+      activeAt: convoProps.activeAt,
+    };
+  }
+  const convoProps = useHeaderItemProps(conversationId);
 
-  // const activeAt=convoProps?.activeAt;
+  const activeAt = convoProps?.activeAt;
   // console.log("activeAt:",activeAt)
   // console.log("unreadCount ::",unreadCount);
 
@@ -154,124 +155,127 @@ const ConversationListItem = (props: Props) => {
     [conversationId]
   );
 
-  const openConvoToLastMention = useCallback(
-    async (e: React.MouseEvent<HTMLDivElement>) => {
-      e.stopPropagation();
-      e.preventDefault();
+  // const openConvoToLastMention = useCallback(
+  //   async (e: React.MouseEvent<HTMLDivElement>) => {
+  //     e.stopPropagation();
+  //     e.preventDefault();
 
-      // mousedown is invoked sooner than onClick, but for both right and left click
-      if (e.button === 0) {
-        const oldestMessageUnreadWithMention =
-          (await getFirstUnreadMessageWithMention(
-            conversationId,
-            UserUtils.getOurPubKeyStrFromCache()
-          )) || null;
-        if (oldestMessageUnreadWithMention) {
-          await openConversationToSpecificMessage({
-            conversationKey: conversationId,
-            messageIdToNavigateTo: oldestMessageUnreadWithMention,
-            shouldHighlightMessage: true,
-          });
-        } else {
-          window.log.info('cannot open to latest mention as no unread mention are found');
-          await openConversationWithMessages({
-            conversationKey: conversationId,
-            messageId: null,
-          });
-        }
-      }
-    },
-    [conversationId]
-  );
-  const MentionAtSymbol = styled.span`
-    background-color: var(--color-accent);
+  //     // mousedown is invoked sooner than onClick, but for both right and left click
+  //     if (e.button === 0) {
+  //       const oldestMessageUnreadWithMention =
+  //         (await getFirstUnreadMessageWithMention(
+  //           conversationId,
+  //           UserUtils.getOurPubKeyStrFromCache()
+  //         )) || null;
+  //       if (oldestMessageUnreadWithMention) {
+  //         await openConversationToSpecificMessage({
+  //           conversationKey: conversationId,
+  //           messageIdToNavigateTo: oldestMessageUnreadWithMention,
+  //           shouldHighlightMessage: true,
+  //         });
+  //       } else {
+  //         window.log.info('cannot open to latest mention as no unread mention are found');
+  //         await openConversationWithMessages({
+  //           conversationKey: conversationId,
+  //           messageId: null,
+  //         });
+  //       }
+  //     }
+  //   },
+  //   [conversationId]
+  // );
+  // const MentionAtSymbol = styled.span`
+  //   background-color: var(--color-accent);
 
-    color: black;
-    text-align: center;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 1px;
-    padding-inline-start: 3px;
-    padding-inline-end: 3px;
+  //   color: black;
+  //   text-align: center;
+  //   margin-top: 0px;
+  //   margin-bottom: 0px;
+  //   padding-top: 1px;
+  //   padding-inline-start: 3px;
+  //   padding-inline-end: 3px;
 
-    position: static;
-    margin-inline-start: 5px;
+  //   position: static;
+  //   margin-inline-start: 5px;
 
-    font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.25px;
+  //   font-weight: 300;
+  //   font-size: 11px;
+  //   letter-spacing: 0.25px;
 
-    height: 16px;
-    min-width: 16px;
-    border-radius: 8px;
-    /* transition: filter 0.25s linear; */
-    cursor: pointer;
+  //   height: 16px;
+  //   min-width: 16px;
+  //   border-radius: 8px;
+  //   /* transition: filter 0.25s linear; */
+  //   cursor: pointer;
 
-    :hover {
-      filter: grayscale(0.7);
-    }
-  `;
+  //   :hover {
+  //     filter: grayscale(0.7);
+  //   }
+  // `;
 
-
-  let atSymbol = null;
-  let unreadCountDiv = null;
-  if (unreadCount ? unreadCount : 0 > 0) {
-    atSymbol = mentionedUs ? (
-      <MentionAtSymbol title="Open to latest mention" onMouseDown={openConvoToLastMention}>
-        @
-      </MentionAtSymbol>
-    ) : null;
-    unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount ? unreadCount : 0 > 99 ? "99+" : unreadCount}</p>;
-  }
-  
- 
+  // let atSymbol = null;
+  // let unreadCountDiv = null;
+  // if (unreadCount ? unreadCount : 0 > 0) {
+  //   atSymbol = mentionedUs ? (
+  //     <MentionAtSymbol title="Open to latest mention" onMouseDown={openConvoToLastMention}>
+  //       @
+  //     </MentionAtSymbol>
+  //   ) : null;
+  //   unreadCountDiv = <p className="module-conversation-list-item__unread-count">{unreadCount ? unreadCount : 0 > 99 ? "99+" : unreadCount}</p>;
+  // }
 
   return (
     <ContextConversationId.Provider value={conversationId}>
-      <div key={key}>
-        <div
-          role="button"
-          // onClick={() => validation()}
-          onMouseDown={openConvo}
-          onMouseUp={e => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-          onContextMenu={e => {
-            contextMenu.show({
-              id: triggerId,
-              event: e,
-            });
-          }}
-          style={style}
-          className={classNames(
-            'module-conversation-list-item',
-            unreadCount && unreadCount > 0 ? 'module-conversation-list-item--has-unread' : null,
-            unreadCount && unreadCount > 0 && mentionedUs
-              ? 'module-conversation-list-item--mentioned-us'
-              : null,
-            isSelected ? 'module-conversation-list-item--is-selected' : null,
-            isBlocked ? 'module-conversation-list-item--is-blocked' : null
-          )}
-        >
-          <div className="verticalLine"></div>
-          <AvatarItem />
-          <div className="module-conversation-list-item__content">
-            <ConversationListItemHeaderItem />
+      <div style={{ position: 'relative' }}>
+        <div key={key}>
+          <div
+            role="button"
+            // onClick={() => validation()}
+            onMouseDown={openConvo}
+            onMouseUp={e => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+            onContextMenu={e => {
+              contextMenu.show({
+                id: triggerId,
+                event: e,
+              });
+            }}
+            // style={style}
+            className={classNames(
+              'module-conversation-list-item',
+              unreadCount && unreadCount > 0 ? 'module-conversation-list-item--has-unread' : null,
+              unreadCount && unreadCount > 0 && mentionedUs
+                ? 'module-conversation-list-item--mentioned-us'
+                : null,
+              isSelected ? 'module-conversation-list-item--is-selected' : null,
+              isBlocked ? 'module-conversation-list-item--is-blocked' : null
+            )}
+          >
+            <div className="verticalLine"></div>
+            <AvatarItem />
+            <div className="module-conversation-list-item__content">
+              <ConversationListItemHeaderItem />
 
-            <div className="module-conversation-list-item__content__messageBox">
-              <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
-              {unreadCountDiv}
-              {atSymbol}
-              {/* <Timestamp timestamp={activeAt} isConversationListItem={true} momentFromNow={true} /> */}
+              <div className="module-conversation-list-item__content__messageBox">
+                <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
+                {/* {unreadCountDiv}
+              {atSymbol} */}
+                <Timestamp
+                  timestamp={activeAt}
+                  isConversationListItem={true}
+                  momentFromNow={true}
+                />
+              </div>
+
+              {/* <div style={{ fontSize: '12px' }}>{walletAddress}</div> */}
             </div>
-
-            <div style={{ fontSize: '12px' }}>{/* {walletAddress} */}</div>
           </div>
+          <Portal>
+            <MemoConversationListItemContextMenu triggerId={triggerId} />
+          </Portal>
         </div>
-        <Portal>
-          <MemoConversationListItemContextMenu triggerId={triggerId} />
-        </Portal>
       </div>
     </ContextConversationId.Provider>
   );
