@@ -10,15 +10,12 @@ export enum SectionType {
   NewChat,
   Closedgroup,
   Opengroup,
-
-  Settings,
   Wallet,
+  Settings,
+ 
 
   Profile,
-
-  
   Contact,
-
   Moon,
   PathIndicator,
   

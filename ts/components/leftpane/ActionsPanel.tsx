@@ -111,21 +111,24 @@ const Section = (props: { type: SectionType }) => {
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
-    } else if (type === SectionType.Closedgroup) {
-      // Show Path Indicator Modal
-
+    } else if (type === SectionType.NewChat) {
       dispatch(showLeftPaneSection(1));
-      dispatch(setOverlayMode('closed-group'));
-    } else if (type === SectionType.Opengroup) {
-      // Show Path Indicator Modal
+      dispatch(setOverlayMode('message'));
+    } else if (type === SectionType.Closedgroup) {
+      // Show close group
 
       dispatch(showLeftPaneSection(2));
+      dispatch(setOverlayMode('closed-group'));
+    } else if (type === SectionType.Opengroup) {
+      // Show open group
+
+      dispatch(showLeftPaneSection(3));
 
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
       let emptyAddress: any = '';
-      // Show Path Indicator Modal
+      // Show open wallet
       dispatch(showLeftPaneSection(type));
       // wallet.startWallet('settings');
 
@@ -137,17 +140,24 @@ const Section = (props: { type: SectionType }) => {
       }
 
       // dispatch(setOverlayMode(undefined))
-    } else {
-      // message section
-      dispatch(clearSearch());
+    } else if (type === SectionType.Settings) {
+      // show open settings
       dispatch(showLeftPaneSection(type));
-      if (type == 4) {
-        // dispatch(setOverlayMode('wallet'));
 
-        dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      } else {
-        dispatch(setOverlayMode(undefined));
-      }
+      // dispatch(setOverlayMode());
+      dispatch(setOverlayMode(undefined));
+    } else {
+      // show open all chat
+        dispatch(clearSearch());
+      dispatch(setOverlayMode(undefined));
+      dispatch(showLeftPaneSection(type));
+      // if (type == BchatSettingCategory.Wallet) {
+      //   // dispatch(setOverlayMode('wallet'));
+
+      //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      // } else {
+      //   dispatch(setOverlayMode(undefined));
+      // }
     }
   };
 

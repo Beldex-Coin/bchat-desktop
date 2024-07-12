@@ -86,7 +86,7 @@ export const AddNewContactInEmptyConvo = () => {
           <div className="bchat-text-logo"></div>
           <section style={{ width: '450px' }}>
             <div className="bchat-text">
-              Start a New Chat <SmileSymbolIcon />
+             {window.i18n('startConversation')} <SmileSymbolIcon />
             </div>
             <SpacerLG />
             <SpacerLG />

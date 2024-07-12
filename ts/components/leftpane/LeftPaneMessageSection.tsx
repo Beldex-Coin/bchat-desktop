@@ -14,10 +14,10 @@ import { MessageRequestsBanner } from './MessageRequestsBanner';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatSearchInput } from '../BchatSearchInput';
 import { RowRendererParamsType } from './LeftPane';
-import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
-import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
-import { OverlayMessage } from './overlay/OverlayMessage';
-import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
+// import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
+// import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
+// import { OverlayMessage } from './overlay/OverlayMessage';
+// import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
 // import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
@@ -98,15 +98,15 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   public render(): JSX.Element {
-    const { overlayMode } = this.props;
-
+    // const { overlayMode } = this.props;
+    // console.log('overlayMode  0-->',overlayMode)
     return (
       <div className="bchat-left-pane-section-content">
         {/* <LeftPaneSectionHeader/> */}
-        {overlayMode ? this.renderClosableOverlay() : null}
-        {overlayMode ? null : <>
+        {/* {overlayMode ? this.renderClosableOverlay() : null} */}
+        {/* {overlayMode ? null : <> */}
           {this.renderConversations()}
-        </>}
+        {/* </>} */}
       </div>
     );
   }
@@ -142,25 +142,25 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     );
   }
 
-  private renderClosableOverlay() {
-    const { overlayMode } = this.props;
+//   private renderClosableOverlay() {
+//     const { overlayMode } = this.props;
+// console.log('overlayMode  -->',overlayMode)
+//     switch (overlayMode) {
+//       case 'open-group':
+//         return <OverlayOpenGroup />;
+//       case 'closed-group':
+//         return <OverlayClosedGroup />;
 
-    switch (overlayMode) {
-      case 'open-group':
-        return <OverlayOpenGroup />;
-      case 'closed-group':
-        return <OverlayClosedGroup />;
-
-      case 'message':
-        return <OverlayMessage />;
-      case 'message-requests':
-        return <OverlayMessageRequest leftPane={true} />;
-      // case 'wallet':
-      //   return <AddressBook from={'leftpane'}  />
-      default:
-        return null;
-    }
-  }
+//       case 'message':
+//         return <OverlayMessage />;
+//       case 'message-requests':
+//         return <OverlayMessageRequest leftPane={true} />;
+//       // case 'wallet':
+//       //   return <AddressBook from={'leftpane'}  />
+//       default:
+//         return null;
+//     }
+//   }
 
   // private renderBottomButtons(): JSX.Element {
   //   const joinSocialGroup = window.i18n('joinSocialGroup');
