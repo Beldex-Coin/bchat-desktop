@@ -377,10 +377,10 @@
       min-height: 95px;
       overflow-y: hidden;
     }
-
     ::placeholder {
-      color: #77778b;
-      font-family: $bchat-font-poppin-semibold;
+      color: #858598;
+      font-family: $bchat-font-default;
+      font-weight: 400;
     }
 
     &-icon-box {
@@ -513,9 +513,10 @@
       border: 1px solid #46465d;
       background: #202329;
     }
-
     ::placeholder {
       color: #858598;
+      font-family: $bchat-font-default;
+      font-weight: 400;
     }
 
     input::-webkit-calendar-picker-indicator {
@@ -601,6 +602,7 @@
       width: 100%;
       outline: 0;
       border: none;
+      font-size: 16px;
       /* background: transparent; */
       /* color: var(--color-TextAreaColor); */
       /* font-size: 15px; */
@@ -609,7 +611,6 @@
       overflow-wrap: break-word;
       // padding: 1px 5px 20px 5px;
       display: inline-block;
-      /* font-family: "poppin-medium"; */
       user-select: all;
       overflow: hidden;
       resize: none;

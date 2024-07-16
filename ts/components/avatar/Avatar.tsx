@@ -41,7 +41,6 @@ const Identicon = (props: Props) => {
 };
 
 const CrownWrapper = styled.div`
-  
   height: 15px;
   width: 15px;
 `;
