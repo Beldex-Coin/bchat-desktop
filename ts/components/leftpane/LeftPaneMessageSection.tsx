@@ -19,6 +19,7 @@ import { RowRendererParamsType } from './LeftPane';
 // import { OverlayMessage } from './overlay/OverlayMessage';
 // import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 // import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
 
@@ -117,14 +118,17 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       directContact } = this.props;
     return (
       <div className="module-conversations-list-content">
+        <SpacerLG />
         {directContact.length !== 0 &&
           <BchatSearchInput />
         }
+        
         <MessageRequestsBanner
           handleOnClick={() => {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
           }}
         />
+        <SpacerMD />
         {/* {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>

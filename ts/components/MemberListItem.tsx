@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, BNSWrapper, CrownIcon } from './avatar/Avatar';
-import { Constants } from '../bchat';
-import { BchatIcon } from './icon';
+// import { Constants } from '../bchat';
 import {
   useConversationBnsHolder,
   useConversationUsernameOrShorten,
 } from '../hooks/useParamSelector';
 import styled from 'styled-components';
+import CheckBoxTickIcon from './icon/CheckBoxTickIcon';
 
 const AvatarContainer = styled.div`
   position: relative;
@@ -79,9 +79,7 @@ export const MemberListItem = (props: {
         <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span>
       </div>
       <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
-        {isSelected && (
-          <BchatIcon iconType="circle" iconSize="medium" iconColor={Constants.UI.COLORS.GREEN} />
-        )}
+        {isSelected && <CheckBoxTickIcon iconSize={26} />}
       </span>
     </div>
   );
