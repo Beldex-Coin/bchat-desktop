@@ -96,6 +96,10 @@ $borderAvatarColor: unquote(
 }
 
 .module-avatar__icon-closed {
+  .module-avatar:first-child{
+    z-index: 1;
+    box-shadow: 3px 3px 0px 0px rgba(0,0,0 ,75%);
+  }
   .module-avatar:last-child {
     position: absolute;
     right: 0px;

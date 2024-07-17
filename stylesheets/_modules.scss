@@ -673,50 +673,52 @@
   // max-width: 380px;
   display: flex;
   flex-direction: row;
-  padding-inline-end: 16px;
+  padding-inline-end: 15px;
   padding-top: 8px;
   padding-bottom: 8px;
-  padding-inline-start: 16px;
+  padding-inline-start: 15px;
   align-items: center;
-  border-bottom: var(--color-bchat-border);
-  background-color: var(--color-conversation-list);
+  margin:10px 15px;
+  // position: relative;
+  // border-bottom: var(--color-bchat-border);
+  // background-color: var(--color-conversation-list);
   // background-color: brown;
 
   cursor: pointer;
 
-  &:hover {
-    background-color: $color-dark-70;
-  }
+  // &:hover {
+  //   background-color: $color-dark-70;
+  // }
 
   &--is-blocked {
     border-left: 4px solid var(--color-destructive) !important;
   }
 }
 
-.module-conversation-list-item__unread-count {
-  color: $color-white;
-  background-color: $color-bchat-green;
-  text-align: center;
+// .module-conversation-list-item__unread-count {
+//   color: $color-white;
+//   background-color: $color-bchat-green;
+//   text-align: center;
 
-  padding-top: 1px;
-  padding-inline-start: 3px;
-  padding-inline-end: 3px;
+//   padding-top: 1px;
+//   padding-inline-start: 3px;
+//   padding-inline-end: 3px;
 
-  position: absolute;
-  right: -6px;
-  top: -6px;
+//   position: absolute;
+//   right: -6px;
+//   top: -6px;
 
-  font-weight: 300;
-  font-size: 11px;
-  letter-spacing: 0.25px;
+//   font-weight: 300;
+//   font-size: 11px;
+//   letter-spacing: 0.25px;
 
-  height: 16px;
-  min-width: 16px;
-  line-height: 16px;
-  border-radius: 8px;
+//   height: 16px;
+//   min-width: 16px;
+//   line-height: 16px;
+//   border-radius: 8px;
 
-  box-shadow: 0px 0px 0px 1px $color-dark-85;
-}
+//   box-shadow: 0px 0px 0px 1px $color-dark-85;
+// }
 
 .module-conversation-list-item__content {
   flex-grow: 1;
@@ -772,7 +774,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 81%;
+  width: 80%;
 }
 
 .module-conversation-list-item__message__text {
@@ -1401,7 +1403,7 @@
 .module-left-pane {
   display: inline-flex;
   flex-direction: row;
-  width: 380px;
+  // width: 380px;
   height: 100%;
 }
 

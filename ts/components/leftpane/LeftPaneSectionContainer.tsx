@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const LeftPaneSectionContainer = styled.div`
   /* position: absolute; */
   /* bottom: 0; */
-  width: 42%;
+  // width: 42%;
+  width: 140px;
   /* height: 60px; */
   display: flex;
   flex-direction: column;

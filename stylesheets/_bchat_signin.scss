@@ -593,25 +593,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid subtle(#353535);
-    margin-bottom: 20px;
+    border-radius: 16px;
+    border: 1px solid #46465d;
+    background: #202329;
 
     textarea {
       width: 100%;
       outline: 0;
       border: none;
-      background: transparent;
-      color: var(--color-TextAreaColor);
-
-      font-size: 15px;
-      line-height: 18px;
-      text-align: center;
+      /* background: transparent; */
+      /* color: var(--color-TextAreaColor); */
+      /* font-size: 15px; */
+      /* line-height: 18px; */
+      /* text-align: center; */
       overflow-wrap: break-word;
-      padding: 1px 5px 20px 5px;
+      // padding: 1px 5px 20px 5px;
       display: inline-block;
-      font-family: $bchat-font-poppin-medium;
+      /* font-family: "poppin-medium"; */
       user-select: all;
       overflow: hidden;
       resize: none;

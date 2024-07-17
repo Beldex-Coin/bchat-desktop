@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import { SectionType, setOverlayMode } from '../../state/ducks/section';
+import { SectionType } from '../../state/ducks/section';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { getLeftPaneLists } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
@@ -89,34 +89,34 @@ const LeftPaneSection = () => {
   return null;
 };
 
-const AddContactFloatingIcon = () => {
-  const focusedSection = useSelector(getFocusedSection);
-  const overlayMode = useSelector(getOverlayMode);
-  const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
+// const AddContactFloatingIcon = () => {
+//   const focusedSection = useSelector(getFocusedSection);
+//   const overlayMode = useSelector(getOverlayMode);
+//   const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
  
 
-  if (visibleFloatIcon) {
-    // return <InnerLeftPaneMessageSection />;
-    return (
-      <div className="addContactFloating">
-        <div
-          className="addContactFloating-content"
-          data-tip="Add Contacts"
-          //  data-offset="{'right':60}"
-          data-offset="{'top':80,'right':80}"
-          data-place="bottom"
-          onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
-        >
-          <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
+//   if (visibleFloatIcon) {
+//     // return <InnerLeftPaneMessageSection />;
+//     return (
+//       <div className="addContactFloating">
+//         <div
+//           className="addContactFloating-content"
+//           data-tip="Add Contacts"
+//           //  data-offset="{'right':60}"
+//           data-offset="{'top':80,'right':80}"
+//           data-place="bottom"
+//           onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
+//         >
+//           <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
 
-          {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
-          {/* <img src={"addNewChat.svg"} /> */}
-        </div>
-      </div>
-    );
-  }
-  return <></>;
-};
+//           {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
+//           {/* <img src={"addNewChat.svg"} /> */}
+//         </div>
+//       </div>
+//     );
+//   }
+//   return <></>;
+// };
 
 export const LeftPane = () => {
   return (
@@ -125,7 +125,7 @@ export const LeftPane = () => {
         <div className="module-left-pane">
            <ActionsPanel />
           <LeftPaneSection />
-          <AddContactFloatingIcon />
+          {/* <AddContactFloatingIcon /> */}
           
         </div>
       </div>
