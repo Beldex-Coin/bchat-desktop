@@ -123,9 +123,10 @@ export const LeftPane = () => {
     <BchatTheme>
       <div className="module-left-pane-bchat">
         <div className="module-left-pane">
+           <ActionsPanel />
           <LeftPaneSection />
           <AddContactFloatingIcon />
-          <ActionsPanel />
+          
         </div>
       </div>
     </BchatTheme>

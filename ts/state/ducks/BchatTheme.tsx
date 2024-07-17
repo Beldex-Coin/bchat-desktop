@@ -13,7 +13,7 @@ const accentDarkTheme = '#2879FB';
 const baseColor = '#00A803';
 const greyColor = '#2D2D3B';
 const lightGreyColor = '#646474';
-const greenColor = '#16A51C';
+const greenColor = '#108D32';
 const forestGreenColor="#00A638";
 
 // DARK COLORS
@@ -53,7 +53,7 @@ const darkScrollbarThumb = '#504D5D';
 const darkScrollbarTrack = '#1C1C26';
 const darkFakeChatBubbleBg = '#212121';
 
-const darkInboxBackground = darkScrollbarTrack;
+const darkInboxBackground = '#131313';
 const darkLeftPaneOverlayBg = darkInboxBackground;
 const darkConversationItemSelected = '#303041';
 const darkConversationItemHasUnread = '#39394A';

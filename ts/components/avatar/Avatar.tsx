@@ -17,7 +17,7 @@ export enum AvatarSize {
   XS = 28,
   S = 36,
   M = 48,
-  L = 64,
+  L = 60,
   XL = 80,
   HUGE = 300,
 }

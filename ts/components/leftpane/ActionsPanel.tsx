@@ -52,7 +52,7 @@ import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/Ap
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { forceRefreshRandomSnodePool } from '../../bchat/apis/snode_api/snodePool';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { CallInFullScreenContainer } from '../calling/CallInFullScreenContainer';
 import { DraggableCallContainer } from '../calling/DraggableCallContainer';
 import { IncomingCallDialog } from '../calling/IncomingCallDialog';
@@ -73,6 +73,11 @@ import { clearSearch } from '../../state/ducks/search';
 // import { wallet } from '../../wallet/wallet-rpc';
 import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
+import BchatLogo from '../icon/bchatLogo';
+import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import { getIsOnline } from '../../state/selectors/onions';
+import styled from 'styled-components';
+import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -81,7 +86,7 @@ const Section = (props: { type: SectionType }) => {
   const { type } = props;
 
   const focusedSection = useSelector(getFocusedSection);
-  const walletPasswordPopUp=useSelector(getWalletPasswordPopUpFlag)
+  const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
 
   // function switchToWalletSec() {
@@ -89,9 +94,9 @@ const Section = (props: { type: SectionType }) => {
   //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
   // }
 
-  const handleClick =async () => {
+  const handleClick = async () => {
     /* tslint:disable:no-void-expression */
-   
+
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
@@ -119,26 +124,24 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
-      let emptyAddress:any=""
+      let emptyAddress: any = '';
       // Show Path Indicator Modal
       dispatch(showLeftPaneSection(type));
       // wallet.startWallet('settings');
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      dispatch(updateSendAddress(emptyAddress))
-      if(walletPasswordPopUp)
-      {
+      dispatch(updateSendAddress(emptyAddress));
+      if (walletPasswordPopUp) {
         dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
       }
-
 
       // dispatch(setOverlayMode(undefined))
     } else {
       // message section
       dispatch(clearSearch());
       dispatch(showLeftPaneSection(type));
-      if (type == 3) {
+      if (type == 4) {
         // dispatch(setOverlayMode('wallet'));
 
         dispatch(showSettingsSection(BchatSettingCategory.Wallet));
@@ -166,17 +169,18 @@ const Section = (props: { type: SectionType }) => {
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
             data-tip="Chat"
-            data-place="top"
-            data-offset="{'right':27}"
+            data-place="right"
+            data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
             <BchatIconButton
-              iconSize="large"
+              iconSize={28}
               dataTestId="message-section"
               iconType={'chatBubble'}
               isSelected={isSelected}
             />
+            <div className="menu-txt">All Chats</div>
           </div>
           {unreadMessageCount !== 0 ? (
             <div className="unreadCountChatIcon">
@@ -200,23 +204,45 @@ const Section = (props: { type: SectionType }) => {
           ) : null}
         </div>
       );
+    case SectionType.NewChat:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div
+            data-tip="New Chat"
+            data-place="right"
+            data-offset="{'top':0}"
+            className="btnView"
+            onClick={handleClick}
+          >
+            <BchatIconButton
+              iconSize={28}
+              dataTestId="settings-section"
+              iconType={'newChat'}
+              notificationCount={unreadToShow}
+              isSelected={isSelected}
+            />
+            <div className="menu-txt">New Chat</div>
+          </div>
+        </div>
+      );
     case SectionType.Closedgroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
             data-tip="Secret Group"
-            data-place="top"
-            data-offset="{'right':54}"
+            data-place="right"
+            data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
             <BchatIconButton
-              iconSize="large"
+              iconSize={28}
               dataTestId="settings-section"
               iconType={'closedgroup'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
             />
+            <div className="menu-txt">Secret Group</div>
           </div>
         </div>
       );
@@ -225,41 +251,64 @@ const Section = (props: { type: SectionType }) => {
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
             data-tip="Social Group"
-            data-place="top"
-            data-offset="{'right':50}"
+            data-place="right"
+            data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
             <BchatIconButton
-              iconSize="large"
+              iconSize={28}
               dataTestId="settings-section"
               iconType={'opengroup'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
             />
+            <div className="menu-txt">Social Group</div>
+          </div>
+        </div>
+      );
+    case SectionType.Settings:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div
+            data-tip="settings"
+            data-place="right"
+            data-offset="{'top':0}"
+            className="btnView"
+            onClick={handleClick}
+          >
+            <BchatIconButton
+              iconSize={28}
+              dataTestId="settings-section"
+              iconType={'gear'}
+              // notificationCount={unreadToShow}
+              isSelected={isSelected}
+            />
+            <div className="menu-txt">Settings</div>
           </div>
         </div>
       );
 
     case SectionType.Wallet:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
             data-tip="Wallet"
-            data-place="top"
-            data-offset="{'right':35}"
+            data-place="right"
+            data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
-            style={{flexDirection: 'column'}}
+            style={{ flexDirection: 'column' }}
           >
             <BchatIconButton
-              iconSize={18}
+              iconSize={28}
               dataTestId="settings-section"
               iconType={'wallet'}
               notificationCount={unreadToShow}
               isSelected={isSelected}
-              margin='9px 0 0 0'
+              margin="9px 0 0 0"
             />
+            <div className="menu-txt">Wallet</div>
             {/* <div style={{ cursor: 'pointer' }}>
               <img
                 src="images/wallet/wallet_beta.svg"
@@ -267,7 +316,7 @@ const Section = (props: { type: SectionType }) => {
                 style={{ width: '20px', height: '20px' }}
               />
             </div> */}
-            <div className='beta'>BETA</div>
+            {/* <div className='beta'>BETA</div> */}
           </div>
         </div>
       );
@@ -451,7 +500,8 @@ export const BchatToolTip = (props: any) => (
 export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
-
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  const dispatch = useDispatch();
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
   useEffect(() => {
@@ -498,13 +548,51 @@ export const ActionsPanel = () => {
     void triggerAvatarReUploadIfNeeded();
   }, DURATION.DAYS * 1);
 
+  const IsOnline = () => {
+    const isOnline = useSelector(getIsOnline);
+    const status = isOnline ? 'Online' : 'Offline';
+
+    return (
+      <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+        <ActionPanelOnionStatusLight
+          isSelected={false}
+          handleClick={() => {}}
+          id={''}
+          size="small"
+        />
+      </Hops>
+    );
+  };
   return (
     <>
       <ModalContainer />
 
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
+        <div className="profile-box">
+          <div className="logo-wrapper">
+            <IsOnline />
+            <BchatLogo />
+          </div>
+        </div>
+
+        <div className="profile-box">
+          <BNSWrapper
+            // size={52}
+            position={{ left: '36px', top: '35px' }}
+            isBnsHolder={conversation?.attributes?.isBnsHolder}
+          >
+            <Avatar
+              size={AvatarSize.L}
+              onAvatarClick={() => dispatch(editProfileModal({}))}
+              pubkey={'mn'}
+              dataTestId="leftpane-primary-avatar"
+            />
+          </BNSWrapper>
+        </div>
         <Section type={SectionType.Message} />
+
+        <Section type={SectionType.NewChat} />
 
         <Section type={SectionType.Closedgroup} />
 
@@ -520,3 +608,8 @@ export const ActionsPanel = () => {
     </>
   );
 };
+const Hops = styled.div`
+  position: absolute;
+  right: 0px;
+  top: 0px;
+`;

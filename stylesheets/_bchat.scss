@@ -367,10 +367,10 @@ textarea {
 
   transition: opacity $bchat-transition-duration;
 
-  &.no-opacity {
-    color: #159b24;
-    background: white;
-  }
+  // &.no-opacity {
+  //   color: #159b24;
+  //   background: white;
+  // }
 }
 .bchat-btn-struct{
   display: flex;
