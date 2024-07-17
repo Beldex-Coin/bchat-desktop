@@ -373,8 +373,8 @@ $bchat-compose-margin: 20px;
         // margin-left: 20px;
         // margin-bottom: 8px;
       }
-      &--search-label{
-        color: #A7A7BA;
+      &--search-label {
+        color: #a7a7ba;
         font-size: 18px;
         font-weight: 500;
       }
@@ -450,19 +450,23 @@ $bchat-compose-margin: 20px;
     &-open {
       &hint-message {
         width: 100%;
-        margin: 10px auto 0px;
+        // margin: 10px auto 0px;
+        // font-size: 14px;
+        // color: #6e6e84;
+        // padding: 15px 34px 15px 20px;
+        // font-family: $bchat-font-poppin-regular;
+        // line-height: 1.8;
+        color: #858598;
         font-size: 14px;
-        color: #6e6e84;
-        padding: 15px 34px 15px 20px;
-        font-family: $bchat-font-poppin-regular;
-        line-height: 1.8;
+        font-weight: 400;
       }
 
       &-title {
         margin-top: 53px;
-        margin-left: 20px;
         margin-bottom: 10px;
-        font-family: $bchat-font-poppin-medium;
+        color: #A7A7BA;
+        font-size: 18px;
+        font-weight: 500;
       }
     }
 

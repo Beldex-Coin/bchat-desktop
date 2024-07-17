@@ -10,13 +10,14 @@ import { joinOpenGroupV2WithUIEvents } from '../../../bchat/apis/open_group_api/
 import { openGroupV2CompleteURLRegex } from '../../../bchat/apis/open_group_api/utils/OpenGroupUtils';
 import { ToastUtils } from '../../../bchat/utils';
 import useKey from 'react-use/lib/useKey';
-import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
 import styled from 'styled-components';
+import { SpacerLG, SpacerXS } from '../../basic/Text';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 
 async function joinSocialGroup(serverUrl: string) {
   // guess if this is an open
   if (serverUrl.match(openGroupV2CompleteURLRegex)) {
-    const groupCreated = await joinOpenGroupV2WithUIEvents(serverUrl, true, false);    
+    const groupCreated = await joinOpenGroupV2WithUIEvents(serverUrl, true, false);
     return groupCreated;
   } else {
     ToastUtils.pushToastError('invalidSocialGroupUrl', window.i18n('invalidSocialGroupUrl'));
@@ -24,10 +25,11 @@ async function joinSocialGroup(serverUrl: string) {
     return false;
   }
 }
-const ScrollView=styled.div`
-    height: 90%;
-    overflow-y: scroll;
-`
+const SocialGrpWrapper = styled.div`
+  height: calc(100% - 115px);
+  padding: 15px;
+  overflow-y: auto;
+`;
 export const OverlayOpenGroup = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,6 @@ export const OverlayOpenGroup = () => {
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
     dispatch(showLeftPaneSection(0));
-    
   }
 
   async function onEnterPressed() {
@@ -48,8 +49,6 @@ export const OverlayOpenGroup = () => {
       const groupCreated = await joinSocialGroup(groupUrl);
       if (groupCreated) {
         closeOverlay();
-        
-
       }
     } catch (e) {
       window.log.warn(e);
@@ -68,44 +67,42 @@ export const OverlayOpenGroup = () => {
 
   return (
     <div className="module-left-pane-overlay">
-      <div style={{
-    height: 'calc(100% - 153px)'}} >
+      <SocialGrpWrapper>
+        <SpacerLG />
+        <div className="module-left-pane-overlay-closed--header">{title}</div>
+        <SpacerLG />
+        <div className="module-left-pane-overlay-closed--subHeader">{subtitle}</div>
+        <SpacerXS />
 
-      <LeftPaneSectionHeader />
-     <ScrollView>     
-       <div className='module-left-pane-overlay-closed--header'>{title}</div>
-      <div className='module-left-pane-overlay-closed--subHeader'>
-      {subtitle}
-      </div>
-    
-      <div className="create-group-name-input">
-        <BchatIdEditable
-          editable={true}
-          placeholder={placeholder}
-          value={groupUrl}
-          isGroup={true}
-          maxLength={300}
-          onChange={setGroupUrl}
-          onPressEnter={onEnterPressed}
-        />
-      </div>
-      <div className='module-left-pane-overlay-openhint-message'>
-      Social groups are similar to public groups. however, you need an invite link to join. Join a social group using the group's URL.
-      </div>
+        <div className="create-group-name-input">
+          <BchatIdEditable
+            editable={true}
+            placeholder={placeholder}
+            value={groupUrl}
+            isGroup={true}
+            maxLength={300}
+            onChange={setGroupUrl}
+            onPressEnter={onEnterPressed}
+          />
+        </div>
+        <SpacerXS />
+        <div className="module-left-pane-overlay-openhint-message">
+          Social groups are similar to public groups. however, you need an invite link to join. Join
+          a social group using the group's URL.
+        </div>
 
-      <BchatSpinner loading={loading} />
-      <BchatJoinableRooms onRoomClicked={closeOverlay} />
-    </ScrollView>
-    </div>
-
-
-    <div className='buttonBox'>
-    <button 
-      className='nextButton'
-      onClick={onEnterPressed}
-      >{buttonText}</button>
-    </div>
-
+        <BchatSpinner loading={loading} />
+        <BchatJoinableRooms onRoomClicked={closeOverlay} />
+      </SocialGrpWrapper>
+      <div className="buttonBox">
+          <BchatButton
+            buttonColor={BchatButtonColor.Primary}
+            buttonType={BchatButtonType.Brand}
+            text={buttonText}
+            dataTestId="next-button"
+            onClick={onEnterPressed}
+          />
+        </div>
     </div>
   );
 };

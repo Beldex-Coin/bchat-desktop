@@ -40,7 +40,8 @@
 
     &-accent {
       &-text {
-        font-family: $bchat-font-open-sans-extra-bold;
+        font-family: $bchat-font-open-sans;
+        font-weight: 800;
         width: 390px;
         .title {
           font-size: 40px;
@@ -59,7 +60,8 @@
           // text-align: center;
           // color:var(--color-Bchat-hint);
           color: #a7a7ba;
-          font-family: $bchat-font-open-sans-light;
+          font-family: $bchat-font-open-sans;
+          font-weight: 300;
           margin-bottom: $bchat-margin-xl;
           // margin-top: $bchat-margin-md;
         }
