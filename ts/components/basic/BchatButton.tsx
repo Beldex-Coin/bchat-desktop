@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
+import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 
 export enum BchatButtonType {
   Brand = 'brand',
@@ -16,11 +17,12 @@ export enum BchatButtonColor {
   White = 'white',
   Primary = 'primary',
   Success = 'success',
+  Secondary = 'secondary',
   Danger = 'danger',
   Warning = 'warning',
   None = '',
-  Red="red",
-  Disable="disable",
+  Red = 'red',
+  Disable = 'disable',
 }
 
 type Props = {
@@ -32,12 +34,23 @@ type Props = {
   children?: ReactNode;
   dataTestId?: string;
   icon?: boolean;
-  style?:object;
-  
+  style?: object;
+  iconType?: BchatIconType;
+  iconSize?: BchatIconSize | number;
 };
 
 export const BchatButton = (props: Props) => {
-  const { buttonType, dataTestId, buttonColor,style={}, text, disabled, onClick } = props;
+  const {
+    buttonType,
+    dataTestId,
+    buttonColor,
+    style = {},
+    text,
+    disabled,
+    onClick,
+    iconSize,
+    iconType = 'bell',
+  } = props;
 
   const clickHandler = (e: any) => {
     if (onClick) {
@@ -55,26 +68,29 @@ export const BchatButton = (props: Props) => {
   // }
 
   return (
-    <>   
-     {props.icon ? <div
-      style={props.style}
-     
-      onClick={onClickFn}
-      data-testid={dataTestId}
-    >
-      {props.children || text}
-    </div>
-  : <div
-  className={classNames('bchat-button', ...buttonTypes, buttonColor, disabled && 'disabled')}
-  role="button"
-  onClick={onClickFn}
-  data-testid={dataTestId}
-  style={style}
->
-  {props.children || text}
-</div>}
-</>
-
+    <>
+      {props.icon ? (
+        <div style={props.style} onClick={onClickFn} data-testid={dataTestId}>
+          {props.children || text}
+        </div>
+      ) : (
+        <div
+          className={classNames(
+            'bchat-button',
+            ...buttonTypes,
+            buttonColor,
+            disabled && 'disabled'
+          )}
+          role="button"
+          onClick={onClickFn}
+          data-testid={dataTestId}
+          style={style}
+        >
+          {iconType && iconSize && <span style={{marginRight:'5px'}}><BchatIcon iconType={iconType} iconSize={iconSize} /></span>}
+          {props.children || text}
+        </div>
+      )}
+    </>
   );
 };
 

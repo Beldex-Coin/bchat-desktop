@@ -274,7 +274,7 @@
   "noteToSelf": "Note to Self",
   "hideMenuBarTitle": "Hide Menu Bar",
   "hideMenuBarDescription": "Toggle system menu bar visibility",
-  "startConversation": "Start New Chat",
+  "startConversation": "Start a New Chat",
   "shareBchatIdDiscription": "Enter your friend's BChat ID to connect with them.",
   "invalidNumberError": "Invalid BChat ID or BNS Name",
   "failedResolveOns": "Failed to resolve BNS name",

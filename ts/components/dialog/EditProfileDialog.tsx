@@ -29,7 +29,7 @@ interface State {
   loading: boolean;
 }
 
-const QRView = ({ bchatID }: { bchatID: string }) => {
+export const QRView = ({ bchatID }: { bchatID: string }) => {
   return (
     <div className="qr-image">
       <QRCode value={bchatID} bgColor="#FFFFFF" fgColor="#1B1B1B" level="L" />

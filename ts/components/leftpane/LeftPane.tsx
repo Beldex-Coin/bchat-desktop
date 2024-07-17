@@ -17,6 +17,7 @@ import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
+import { OverlayMessage } from './overlay/OverlayMessage';
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -67,6 +68,9 @@ const LeftPaneSection = () => {
 
   if (focusedSection === SectionType.Message) {
     return <InnerLeftPaneMessageSection />;
+  }
+  if (focusedSection === SectionType.NewChat) {
+    return  <OverlayMessage />;
   }
   if (focusedSection === SectionType.Closedgroup) {
     return <OverlayClosedGroup />;

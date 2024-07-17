@@ -825,7 +825,9 @@
   }
 
   &::placeholder {
-    color: $color-gray-45;
+    color: #858598;
+    font-family: $bchat-font-default;
+    font-weight: 400;
   }
 }
 
