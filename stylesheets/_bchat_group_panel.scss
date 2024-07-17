@@ -1,9 +1,11 @@
 .group-settings {
   display: flex;
   flex-direction: column;
-  height: 94vh;
-  // width: -webkit-fill-available;
+  height: 100vh;
+  /* width: 25vw; */
+  min-width: 300px;
   width: 25vw;
+  max-width: 420px;
   background: var(--color-cell-background);
   // background: #181821;
   border-left: var(--border-bchat);

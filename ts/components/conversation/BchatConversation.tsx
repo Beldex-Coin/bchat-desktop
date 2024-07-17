@@ -54,7 +54,7 @@ import { ConversationMessageRequestButtons } from './ConversationRequestButtons'
 import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
-import { BchatRightPanelWithDetails } from './BchatRightPanel';
+// import { BchatRightPanelWithDetails } from './BchatRightPanel';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
 import { SettingsKey } from '../../data/settings-key';
 import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
@@ -225,7 +225,7 @@ export class BchatConversation extends React.Component<Props, State> {
       messagesProps,
       showMessageDetails,
       selectedMessages,
-      isRightPanelShowing,
+      // isRightPanelShowing,
       lightBoxOptions,
       isMe,
       convoList,
@@ -304,11 +304,11 @@ export class BchatConversation extends React.Component<Props, State> {
             onChoseAttachments={this.onChoseAttachments}
           />
         </div>
-        <div
+        {/* <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
         >
           <BchatRightPanelWithDetails />
-        </div>
+        </div> */}
       </BchatTheme>
     );
   }

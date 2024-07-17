@@ -608,8 +608,11 @@ $bchat-compose-margin: 20px;
 
 .bchat-search-input {
   height: 60px;
-  // width: 90%;
-  width: 420px;
+  min-width: 300px;
+  // width: 420px;
+  // for responsive in small screens
+  width: 21.9vw;
+  max-width: 420px;
   margin-inline-end: 1px;
   // margin-bottom: 10px;
   display: inline-flex;
