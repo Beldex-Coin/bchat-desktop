@@ -233,7 +233,6 @@ export class BchatConversation extends React.Component<Props, State> {
     const selectionMode = selectedMessages.length > 0;
 
     const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    console.log('convoList ------->', convoList.conversations);
     if (convoList?.conversations?.length == 0 && (!selectedConversation || !messagesProps)) {
       return <AddNewContactInEmptyConvo />;
     }

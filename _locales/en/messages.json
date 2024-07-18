@@ -453,7 +453,7 @@
   "displayNameEmpty": "Please enter a display name",
   "members": "$count$ members",
   "joinSocialGroup": "Join Social Group",
-  "newSecretGroup": "Create Secret Group",
+  "newSecretGroup": "Secret Group",
   "createSecretGroupNamePrompt": "Secret Group Name",
   "createSecretGroupPlaceholder": "Enter a Secret Group Name",
   "openSocialURL": "Social Group URL",

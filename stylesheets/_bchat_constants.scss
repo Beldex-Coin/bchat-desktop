@@ -9,8 +9,8 @@ $bchat-font-poppin-semibold: 'poppin-semibold';
 $bchat-font-poppin-light: 'poppin-light';
 $bchat-font-poppin-medium: 'poppin-medium';
 $bchat-font-poppin-regular: 'poppin-regular';
-$bchat-font-open-sans-extra-bold:'OpenSans-ExtraBold';
-$bchat-font-open-sans-light:'OpenSans-light';
+$bchat-font-open-sans:'OpenSans';
+// $bchat-font-open-sans-light:'OpenSans-light';
 // @font-face {
 //   font-family: $bchat-font-mono;
 //   src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
@@ -42,18 +42,27 @@ $bchat-font-open-sans-light:'OpenSans-light';
 
 // Accented font
 @font-face {
-  font-family: $bchat-font-open-sans-extra-bold;
+  font-family:$bchat-font-open-sans;
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 300;
+}
+@font-face {
+  font-family:$bchat-font-open-sans;
+  src: url('../fonts/OpenSans_Condensed-SemiBold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 600;
+}
+@font-face {
+  font-family: $bchat-font-open-sans;
   src: url('../fonts/OpenSans-ExtraBold.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 800;
 }
 
-@font-face {
-  font-family: $bchat-font-open-sans-light;
-  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
-  line-height: 1.4rem;
-  font-weight: 300;
-}
+
+// popins font includes
+
 @font-face {
   font-family:$bchat-font-default;
   src: url('../fonts/Poppins-Light.ttf') format('truetype');

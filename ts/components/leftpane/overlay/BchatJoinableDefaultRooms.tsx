@@ -13,6 +13,7 @@ import { Avatar, AvatarSize } from '../../avatar/Avatar';
 import { Flex } from '../../basic/Flex';
 import { PillContainerHoverable, PillTooltipWrapper } from '../../basic/PillContainer';
 import { BchatSpinner } from '../../basic/BchatSpinner';
+import { SpacerXS } from '../../basic/Text';
 // import { H3 } from '../../basic/Text';
 // tslint:disable: no-void-expression
 
@@ -72,7 +73,7 @@ const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
 
   return (
     <Avatar
-      size={AvatarSize.M}
+      size={AvatarSize.L}
       base64Data={props.base64Data}
       {...props}
       pubkey=""
@@ -86,10 +87,14 @@ const StyledRoomName = styled(Flex)`
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 0 10px;
-  font-size:18px;
-  font-weight:bold;
+  font-size: 13px;
 `;
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
+  gap: 12px 10px;
+`;
 const BchatJoinableRoomName = (props: JoinableRoomProps) => {
   return <StyledRoomName>{props.name}</StyledRoomName>;
 };
@@ -101,10 +106,10 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
         onClick={() => {
           props.onClick(props.completeUrl);
         }}
-        margin="7px 0px 0 19px"
         padding="5px"
       >
         <BchatJoinableRoomAvatar {...props} />
+        <SpacerXS/>
         <BchatJoinableRoomName {...props} />
       </PillContainerHoverable>
     </PillTooltipWrapper>
@@ -127,7 +132,9 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
     return null;
   }
 
-  const componentToRender = joinableRooms.inProgress ? ( <BchatSpinner loading={false} />) : (
+  const componentToRender = joinableRooms.inProgress ? (
+    <BchatSpinner loading={false} />
+  ) : (
     joinableRooms.rooms.map(r => {
       return (
         <BchatJoinableRoomRow
@@ -146,13 +153,11 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
 
   return (
     <Flex container={true} flexGrow={1} flexDirection="column" width="93%">
-      <div  className="module-left-pane-overlay-open-title">
-      {window.i18n('orJoinOneOfThese')}
-      </div>
+      <div className="module-left-pane-overlay-open-title">{window.i18n('orJoinOneOfThese')}</div>
       {/* <H3 text={window.i18n('orJoinOneOfThese')} /> */}
-      <Flex container={true} flexGrow={1}  justifyContent="center" flexDirection="column">
-        {componentToRender}
-      </Flex>
+      {/* <Flex container={true} flexGrow={1}  justifyContent="center" flexDirection="row" flexWrap='wrap'> */}
+      <Grid>{componentToRender}</Grid>
+      {/* </Flex> */}
     </Flex>
   );
 };

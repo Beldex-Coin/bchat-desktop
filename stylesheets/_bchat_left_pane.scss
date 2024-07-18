@@ -352,24 +352,31 @@ $bchat-compose-margin: 20px;
     }
     &-closed {
       &--header {
-        font-family: $bchat-font-poppins-bold;
-        font-size: 22px;
-        justify-content: flex-start;
-        width: 87%;
-        margin-left: 20px;
-        margin-top: 30px;
+        font-size: 24px;
+        // justify-content: flex-start;
+        // width: 87%;
+        // margin-left: 20px;
+        // margin-top: 30px;
       }
 
       &--subHeader {
-        display: flex;
-        justify-content: flex-start;
-        font-family: $bchat-font-poppin-regular;
+        color: #f0f0f0;
         font-size: 18px;
-        width: 88%;
-        margin: 30px 0 8px 20px;
+        font-weight: 400;
+        // display: flex;
+        // justify-content: flex-start;
+        // font-family: $bchat-font-poppin-regular;
+        // font-size: 18px;
+        // width: 88%;
+        // margin: 30px 0 8px 20px;
         // margin-top: 13px;
         // margin-left: 20px;
         // margin-bottom: 8px;
+      }
+      &--search-label {
+        color: #a7a7ba;
+        font-size: 18px;
+        font-weight: 500;
       }
     }
     .bchatId_input_wrapper {
@@ -431,32 +438,35 @@ $bchat-compose-margin: 20px;
         border: 0.947px solid #4b4b64;
         background: #282836;
         padding: 10px;
-       
+
         // width: 70%;
       }
       .qr-txt {
         color: #a7a7ba;
         font-size: 18px;
         font-weight: 400;
-       
       }
     }
     &-open {
       &hint-message {
         width: 100%;
-        margin: 10px auto 0px;
+        // margin: 10px auto 0px;
+        // font-size: 14px;
+        // color: #6e6e84;
+        // padding: 15px 34px 15px 20px;
+        // font-family: $bchat-font-poppin-regular;
+        // line-height: 1.8;
+        color: #858598;
         font-size: 14px;
-        color: #6e6e84;
-        padding: 15px 34px 15px 20px;
-        font-family: $bchat-font-poppin-regular;
-        line-height: 1.8;
+        font-weight: 400;
       }
 
       &-title {
         margin-top: 53px;
-        margin-left: 20px;
         margin-bottom: 10px;
-        font-family: $bchat-font-poppin-medium;
+        color: #A7A7BA;
+        font-size: 18px;
+        font-weight: 500;
       }
     }
 
@@ -467,14 +477,17 @@ $bchat-compose-margin: 20px;
     }
 
     .buttonBox {
-      // width: 100%;
-      width: 378px;
+      width: 100%;
+      padding: 0 90px;
+      // display: flex;
+      // justify-items: center;
+      // width: 378px;
       // background-color: var(--color-overlayBg);
-      padding: 0 0;
-      text-align: center;
-      margin: 5px auto;
-      z-index: 1;
-      padding-top: 10px;
+      // padding: 0 0;
+      // text-align: center;
+      // margin: 5px auto;
+      // z-index: 1;
+      // padding-top: 10px;
 
       .bchat-button.brand-outline.danger {
         width: 79%;
@@ -485,22 +498,22 @@ $bchat-compose-margin: 20px;
       }
     }
 
-    .nextButton {
-      width: 79%;
-      height: 50px;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-family: $bchat-font-poppin-semibold;
-      // background-image: var(--button-color);
-      background-color: var(--button-color);
+    // .nextButton {
+    //   width: 79%;
+    //   height: 50px;
+    //   border: none;
+    //   border-radius: 10px;
+    //   color: #fff;
+    //   font-family: $bchat-font-poppin-semibold;
+    //   // background-image: var(--button-color);
+    //   background-color: var(--button-color);
 
-      margin: 15px auto;
+    //   margin: 15px auto;
 
-      &:hover {
-        background-color: $bchat-button-hovor-color;
-      }
-    }
+    //   &:hover {
+    //     background-color: $bchat-button-hovor-color;
+    //   }
+    // }
 
     .bchat-icon .exit {
       padding: 13px;
@@ -549,10 +562,10 @@ $bchat-compose-margin: 20px;
       align-self: flex-start;
     }
 
-    .bchat-search-input {
-      margin: 10px $bchat-compose-margin 0 $bchat-compose-margin;
-      width: -webkit-fill-available;
-    }
+    // .bchat-search-input {
+    //   margin: 10px $bchat-compose-margin 0 $bchat-compose-margin;
+    //   width: -webkit-fill-available;
+    // }
 
     .bchat-description-long {
       font-size: $bchat-font-sm;
@@ -638,6 +651,7 @@ $bchat-compose-margin: 20px;
   min-width: 300px;
   width: 25vw;
   max-width: 420px;
+  padding: 15px;
 
   .bchatEmptyScrBox {
     display: flex;
@@ -706,11 +720,13 @@ $bchat-compose-margin: 20px;
   padding: 0 21px;
   // box-shadow: var(--color-Bchat-shadow);
   border-radius: 16px;
-  margin: 15px;
+  // margin: 15px;
   border: 1px solid #46465d;
   background: #202329;
+  display: flex;
+  align-items: center;
   .search {
-    margin-top: 13px;
+    // margin-top: 13px;
     display: flex;
     justify-content: center;
     justify-items: center;

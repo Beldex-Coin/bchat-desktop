@@ -1,39 +1,31 @@
 import React, { useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
-// import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
 import { MemberListItem } from '../../MemberListItem';
-// import { OverlayHeader } from './OverlayHeader';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
-import {
-  // getDirectContacts,
-  getPrivateContactsPubkeys,
-} from '../../../state/selectors/conversations';
-import { SpacerLG } from '../../basic/Text';
+import { getPrivateContactsPubkeys } from '../../../state/selectors/conversations';
+import { SpacerLG, SpacerMD, SpacerXS } from '../../basic/Text';
 import { MainViewController } from '../../MainViewController';
 import useKey from 'react-use/lib/useKey';
-import { LeftPaneSectionHeader } from '../LeftPaneSectionHeader';
-import { getIsOnline } from '../../../state/selectors/onions';
-import useNetworkStatus from '../../../hooks/useNetworkStatus';
-//  import { getConversationById } from '../../../data/data';
-// import { UserUtils } from '../../../bchat/utils';
-// import { UserUtils } from '../../../bchat/utils';
+import { BchatIcon } from '../../icon/BchatIcon';
+import { getConversationController } from '../../../bchat/conversations';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 
 export const OverlayClosedGroup = () => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
-  const pathCon = useSelector(getIsOnline);
-  const isOnline = useNetworkStatus();
-  const heightValidation=  !pathCon && isOnline || !pathCon && !isOnline 
+  // const pathCon = useSelector(getIsOnline);
+  // const isOnline = useNetworkStatus();
+  // const heightValidation = (!pathCon && isOnline) || (!pathCon && !isOnline);
   // FIXME autofocus inputref on mount
   const [groupName, setGroupName] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
+  const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -54,6 +46,19 @@ export const OverlayClosedGroup = () => {
       })
     );
   }
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setCurrentSearchTerm(value);
+    setFilteredNames(
+      value
+        ? privateContactsPubkeys.filter((pubkey: any) => {
+            const convo = getConversationController().get(pubkey);
+            const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
+            return memberName?.toLowerCase().includes(value.toLowerCase());
+          })
+        : privateContactsPubkeys
+    );
+  };
 
   async function onEnterPressed() {
     if (loading) {
@@ -81,46 +86,29 @@ export const OverlayClosedGroup = () => {
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
 
-  // const ClosedGrpHeader = () => {
-  //   if (!noContactsForClosedGroup) {
-  //     return (<>
-
-  //       <div className='module-left-pane-overlay-closed--subHeader'>
-  //         {subtitle}
-  //       </div>
-  //       <div className="create-group-name-input">
-  //         <BchatIdEditable
-  //           editable={!noContactsForClosedGroup}
-  //           placeholder={placeholder}
-  //           value={groupName}
-  //           isGroup={true}
-  //           maxLength={100}
-  //           onChange={setGroupName}
-  //           onPressEnter={onEnterPressed}
-  //           dataTestId="new-closed-group-name"
-  //         />
-  //       </div></>)
-  //   }
-  //   else {
-  //     return <></>
-  //   }
-
-  // }
   function addContact() {
     dispatch(showLeftPaneSection(0));
     window.inboxStore?.dispatch(setOverlayMode('message'));
   }
   return (
     <div className="module-left-pane-overlay">
-      <LeftPaneSectionHeader />
-      <div style={{ height: `calc(100% - ${heightValidation?293 :222 }px)`, overflowY: 'auto' }}>
+      {/* <LeftPaneSectionHeader /> */}
+      <div
+        style={{
+          height: `calc(100% - 115px)`,
+          overflowY: 'auto',
+          padding: '15px',
+        }}
+      >
         {/* <OverlayHeader title={title} subtitle={subtitle} hideExit={true}/> */}
         {/* <LeftPaneSectionHeader /> */}
+        <SpacerLG />
         <div className="module-left-pane-overlay-closed--header">{title}</div>
-        {/* <ClosedGrpHeader /> */}
+        <SpacerLG />
         {!noContactsForClosedGroup && (
           <>
             <div className="module-left-pane-overlay-closed--subHeader">{subtitle}</div>
+            <SpacerXS />
             <div className="create-group-name-input">
               <BchatIdEditable
                 editable={!noContactsForClosedGroup}
@@ -136,6 +124,24 @@ export const OverlayClosedGroup = () => {
           </>
         )}
         <SpacerLG />
+        <div>
+          <label className="module-left-pane-overlay-closed--search-label"> Select Contacts</label>
+          <SpacerXS />
+          <div className="bchat-search-input">
+            <div className="search">
+              <BchatIcon iconSize={20} iconType="search" />
+            </div>
+            <input
+              value={currentSearchTerm}
+              onChange={e => {
+                handleSearch(e);
+              }}
+              placeholder={'Search Contact'}
+              maxLength={26}
+            />
+          </div>
+        </div>
+        <SpacerMD />
         {loading ? (
           <BchatSpinner loading={loading} />
         ) : (
@@ -145,8 +151,6 @@ export const OverlayClosedGroup = () => {
                 <div className="group-member-list__addImg"></div>
                 <h4 className="module-left-pane__empty_contact">{window.i18n('noContactsYet')}</h4>
                 <div style={{ display: 'flex' }}>
-                  {/* <button onClick={()=>getconverstation()}>getconverstation</button> */}
-
                   <button
                     className="nextButton"
                     style={{ width: '90%' }}
@@ -159,7 +163,7 @@ export const OverlayClosedGroup = () => {
               </div>
             ) : (
               <div className="group-member-list__selection">
-                {privateContactsPubkeys.map((memberPubkey: string) => (
+                {filteredNames.map((memberPubkey: string) => (
                   <MemberListItem
                     pubkey={memberPubkey}
                     isSelected={selectedMemberIds.some(m => m === memberPubkey)}
@@ -178,22 +182,18 @@ export const OverlayClosedGroup = () => {
         )}
 
         <SpacerLG />
-
-        {/* <BchatButton
-        buttonColor={BchatButtonColor.Green}
-        buttonType={BchatButtonType.BrandOutline}
-        text={buttonText}
-        disabled={noContactsForClosedGroup}
-       
-        dataTestId="next-button"
-      /> */}
       </div>
 
       {!noContactsForClosedGroup && (
         <div className="buttonBox">
-          <button className="nextButton" onClick={onEnterPressed}>
-            Create
-          </button>
+          <BchatButton
+            buttonColor={BchatButtonColor.Primary}
+            buttonType={BchatButtonType.Brand}
+            text={'Create'}
+            disabled={noContactsForClosedGroup}
+            dataTestId="next-button"
+            onClick={onEnterPressed}
+          />
         </div>
       )}
     </div>
