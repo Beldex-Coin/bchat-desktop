@@ -50,6 +50,7 @@ export enum BchatSettingCategory {
   Hops = 'hops',
   Wallet = 'wallet',
   WalletSettings = 'walletSettings',
+  ClearData='clearData'
  
 }
 
