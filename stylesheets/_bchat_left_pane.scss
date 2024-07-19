@@ -5,7 +5,9 @@ $bchat-compose-margin: 20px;
   transition: none;
   // background: var(--color-cell-background);
 }
-
+.d-none{
+  display: none !important;
+}
 .module-conversation {
   // default conversation list item text color
   &__user__profile {

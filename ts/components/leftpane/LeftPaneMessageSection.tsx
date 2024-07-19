@@ -20,8 +20,8 @@ import { RowRendererParamsType } from './LeftPane';
 // import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, setOverlayMode } from '../../state/ducks/section';
 import { SpacerLG, SpacerMD } from '../basic/Text';
+import classNames from 'classnames';
 // import { AddressBook } from '../wallet/BchatWalletAddressBook';
-
 
 export interface Props {
   contacts: Array<ReduxConversationType>;
@@ -53,7 +53,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       throw new Error('renderRow: conversations selector returned element containing falsy value.');
     }
 
-
     return <MemoConversationListItemWithDetails key={key} style={style} {...conversation} />;
   };
 
@@ -76,8 +75,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     //   on startup and scroll.
     const list = (
       <div className="module-left-pane__list" key={listKey}>
-
-
         <AutoSizer>
           {({ height, width }) => (
             <List
@@ -101,28 +98,36 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   public render(): JSX.Element {
     // const { overlayMode } = this.props;
     // console.log('overlayMode  0-->',overlayMode)
+    const { conversations } = this.props;
+    const convolen: boolean = conversations?.length === 0 || false;
+    console.log('conversations conversations  0-->', conversations);
     return (
-      <div className="bchat-left-pane-section-content">
+      <div
+        className={classNames('bchat-left-pane-section-content', convolen && 'd-none')}
+        
+        // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
+      >
         {/* <LeftPaneSectionHeader/> */}
         {/* {overlayMode ? this.renderClosableOverlay() : null} */}
         {/* {overlayMode ? null : <> */}
-          {this.renderConversations()}
+        {this.renderConversations()}
         {/* </>} */}
       </div>
     );
   }
 
   public renderConversations() {
-    const {
-      // conversations,
-      directContact } = this.props;
+    // const {
+    //   conversations,
+    //   // directContact
+    //  } = this.props;
     return (
       <div className="module-conversations-list-content">
         <SpacerLG />
-        {directContact.length !== 0 &&
-          <BchatSearchInput />
-        }
-        
+        {/* {conversations?.length !== 0 && */}
+        <BchatSearchInput />
+        {/* } */}
+
         <MessageRequestsBanner
           handleOnClick={() => {
             window.inboxStore?.dispatch(setOverlayMode('message-requests'));
@@ -139,32 +144,32 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             </div>
           </div>
           :  */}
-          {this.renderList()}
-          {/* } */}
+        {this.renderList()}
+        {/* } */}
         {/* {this.renderBottomButtons()} */}
       </div>
     );
   }
 
-//   private renderClosableOverlay() {
-//     const { overlayMode } = this.props;
-// console.log('overlayMode  -->',overlayMode)
-//     switch (overlayMode) {
-//       case 'open-group':
-//         return <OverlayOpenGroup />;
-//       case 'closed-group':
-//         return <OverlayClosedGroup />;
+  //   private renderClosableOverlay() {
+  //     const { overlayMode } = this.props;
+  // console.log('overlayMode  -->',overlayMode)
+  //     switch (overlayMode) {
+  //       case 'open-group':
+  //         return <OverlayOpenGroup />;
+  //       case 'closed-group':
+  //         return <OverlayClosedGroup />;
 
-//       case 'message':
-//         return <OverlayMessage />;
-//       case 'message-requests':
-//         return <OverlayMessageRequest leftPane={true} />;
-//       // case 'wallet':
-//       //   return <AddressBook from={'leftpane'}  />
-//       default:
-//         return null;
-//     }
-//   }
+  //       case 'message':
+  //         return <OverlayMessage />;
+  //       case 'message-requests':
+  //         return <OverlayMessageRequest leftPane={true} />;
+  //       // case 'wallet':
+  //       //   return <AddressBook from={'leftpane'}  />
+  //       default:
+  //         return null;
+  //     }
+  //   }
 
   // private renderBottomButtons(): JSX.Element {
   //   const joinSocialGroup = window.i18n('joinSocialGroup');
@@ -181,7 +186,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   //           window.inboxStore?.dispatch(setOverlayMode('open-group'));
   //         }}
   //         style={{background: "url(images/bchat/secret-group.svg) no-repeat ",backgroundSize: 'cover',height: "19px",color: "rgb(0, 0, 0)",width: "29px",margin:'30px 30px'}}
-          
 
   //       />
   //       <BchatButton

@@ -360,6 +360,7 @@ textarea {
   position: relative;
   transform: translateZ(0);
   transition: opacity $bchat-transition-duration;
+  padding: 5px;
 
   &:hover {
     border-radius: 8px;
@@ -416,24 +417,25 @@ textarea {
 
 .module-conversation-header__title {
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .module-conversation-header__title-flex {
   flex-direction: row;
 
-  .threedot-option {
-    width: 38px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2px;
-    cursor: pointer;
-    &:hover {
-      background-color: var(--color-profile-close);
-      border-radius: 20px;
-    }
-  }
+  // .threedot-option {
+  //   width: 38px;
+  //   height: 35px;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   padding-bottom: 2px;
+  //   cursor: pointer;
+  //   &:hover {
+  //     background-color: var(--color-profile-close);
+  //     border-radius: 20px;
+  //   }
+  // }
 }
 
 .module-conversation__user__profile-name,
@@ -478,7 +480,7 @@ pre {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  min-width: 30px;
+  min-width: 93px;
   // To limit messages with things forcing them wider, like long attachment names
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
@@ -1104,17 +1106,23 @@ label {
   z-index: 30;
   min-width: 215 px;
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
-  background: var(--color-cell-background);
-  border-radius: 10px;
-  font-family: $bchat-font-poppin-medium;
+  border-radius: 16px;
+  background: #1b1e23;
+  // background: var(--color-cell-background);
+  // border-radius: 10px;
 
   .react-contexify__item {
-    background: var(--color-cell-background);
+    // background: var(--color-cell-background);
+    margin: 5px 15px;
+    font-size: 16px;
   }
 
   .react-contexify__item:not(.react-contexify__item--disabled):hover
     > .react-contexify__item__content {
-    background: var(--color-composeMsgIconBG);
+    border-radius: 14px;
+    background: #333842;
+   
+    // background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     color: '#fff';
   }

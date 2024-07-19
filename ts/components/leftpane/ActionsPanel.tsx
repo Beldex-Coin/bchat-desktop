@@ -84,7 +84,6 @@ const Section = (props: { type: SectionType }) => {
   const unreadMessageCount = useSelector(getUnreadMessageCount);
   const dispatch = useDispatch();
   const { type } = props;
-
   const focusedSection = useSelector(getFocusedSection);
   const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
@@ -113,15 +112,15 @@ const Section = (props: { type: SectionType }) => {
       dispatch(applyTheme(newThemeObject));
     } else if (type === SectionType.NewChat) {
       dispatch(showLeftPaneSection(1));
+
       dispatch(setOverlayMode('message'));
     } else if (type === SectionType.Closedgroup) {
       // Show close group
-
       dispatch(showLeftPaneSection(2));
+
       dispatch(setOverlayMode('closed-group'));
     } else if (type === SectionType.Opengroup) {
       // Show open group
-
       dispatch(showLeftPaneSection(3));
 
       dispatch(setOverlayMode('open-group'));
@@ -148,7 +147,7 @@ const Section = (props: { type: SectionType }) => {
       dispatch(setOverlayMode(undefined));
     } else {
       // show open all chat
-        dispatch(clearSearch());
+      dispatch(clearSearch());
       dispatch(setOverlayMode(undefined));
       dispatch(showLeftPaneSection(type));
       // if (type == BchatSettingCategory.Wallet) {

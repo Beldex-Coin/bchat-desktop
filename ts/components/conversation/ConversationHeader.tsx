@@ -53,6 +53,8 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { CustomIconButton } from '../icon/CustomIconButton';
+import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
@@ -151,7 +153,6 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   let width = window.innerWidth;
   return (
     <div
-      className="threedot-option"
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -165,7 +166,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
       }}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize={22} />
+      <BchatIconButton iconType="ellipses" iconSize={24} />
     </div>
   );
 };
@@ -205,7 +206,7 @@ const AvatarHeader = (props: {
         isBnsHolder={conversation?.isBnsHolder}
       >
         <Avatar
-          size={AvatarSize.S}
+          size={AvatarSize.M}
           onAvatarClick={() => {
             // do not allow right panel to appear if another button is shown on the BchatConversation
             if (onAvatarClick && !showBackButton) {
@@ -252,17 +253,13 @@ const CallButton = () => {
   }
 
   return (
-    <div className="call">
-    <BchatIconButton
-      iconType="phone"
-      iconRotation={270}
-      iconSize="medium"
-      iconPadding="2px"
-      margin="0 10px 0 0"
-      onClick={() => {
-        void callRecipient(selectedConvoKey, canCall);
-      }}
-    />
+    <div >
+      <CustomIconButton
+        onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }}
+        customIcon={<CallIcon iconSize={24} />}
+      />
     </div>
   );
 };
@@ -295,7 +292,7 @@ const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
   // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-  
+
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
@@ -310,7 +307,7 @@ const ConversationHeaderTitle = () => {
   if (!headerTitleProps) {
     return <></>;
   }
-  const { isGroup, isPublic, members, subscriberCount,  isKickedFromGroup } = headerTitleProps;
+  const { isGroup, isPublic, members, subscriberCount, isKickedFromGroup } = headerTitleProps;
   const { i18n } = window;
 
   let memberCount = 0;
@@ -336,23 +333,23 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
-  if (conversation?.isMe) {    
+  if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
 
   return (
-    <div
-      className="module-conversation-header__title"   
-    >
-      <span className="module-contact-name__profile-name" data-testid="header-conversation-name"
-      // onClick={() => {
-      //   if (isRightPanelOn) {
-      //     dispatch(closeRightPanel());
-      //   } else {
-      //     dispatch(openRightPanel());
-      //   }
-      // }}
-      // role="button"
+    <div className="module-conversation-header__title">
+      <span
+        className="module-contact-name__profile-name"
+        data-testid="header-conversation-name"
+        // onClick={() => {
+        //   if (isRightPanelOn) {
+        //     dispatch(closeRightPanel());
+        //   } else {
+        //     dispatch(openRightPanel());
+        //   }
+        // }}
+        // role="button"
       >
         {convoName}
         <SubTxt>
@@ -405,9 +402,9 @@ export const ConversationHeaderWithDetails = () => {
     !WalletSyncBarShowInChat &&
     conversation?.type == 'private' &&
     conversation?.isApproved &&
-    conversation?.didApproveMe&&
-    !conversation?.isMe
-   
+    conversation?.didApproveMe &&
+    !conversation?.isMe;
+
   if (!selectedConvoKey) {
     return null;
   }
@@ -476,9 +473,9 @@ export const ConversationHeaderWithDetails = () => {
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
             {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
-              <div >
+              <div>
                 <CallButton />
-                </div>
+              </div>
             )}
           </Flex>
         </div>

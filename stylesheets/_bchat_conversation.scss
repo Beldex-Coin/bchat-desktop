@@ -85,23 +85,23 @@
       background-color: #00a705;
     }
 
-    .call {
-      // margin-top: 10px;
-      margin-right: 14px;
-      padding-left: 14px;
-      display: flex;
-      justify-content: center;
-      justify-items: center;
-      align-items: center;
-      width: 35px;
-      height: 35px;
-      cursor: pointer;
+    // .call {
+    //   // margin-top: 10px;
+    //   margin-right: 14px;
+    //   padding-left: 14px;
+    //   display: flex;
+    //   justify-content: center;
+    //   justify-items: center;
+    //   align-items: center;
+    //   width: 35px;
+    //   height: 35px;
+    //   cursor: pointer;
 
-      &:hover {
-        background-color: var(--color-profile-close);
-        border-radius: 20px;
-      }
-    }
+    //   &:hover {
+    //     background-color: var(--color-profile-close);
+    //     border-radius: 20px;
+    //   }
+    // }
   }
 
   .message-selection-overlay {

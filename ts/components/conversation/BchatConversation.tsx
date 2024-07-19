@@ -58,6 +58,7 @@ import loadImage from 'blueimp-load-image';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
 import { SettingsKey } from '../../data/settings-key';
 import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+import { SectionType } from '../../state/ducks/section';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -88,6 +89,7 @@ interface Props {
 
   stagedAttachments: Array<StagedAttachmentType>;
   convoList: any;
+  focusedSection: any;
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -229,11 +231,17 @@ export class BchatConversation extends React.Component<Props, State> {
       lightBoxOptions,
       isMe,
       convoList,
+      focusedSection,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
     const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    if (convoList?.conversations?.length == 0 && (!selectedConversation || !messagesProps)) {
+    if (
+      convoList?.conversations?.length == 0 &&
+      (!selectedConversation || !messagesProps) &&
+      focusedSection !== SectionType.Opengroup &&
+      focusedSection !== SectionType.NewChat
+    ) {
       return <AddNewContactInEmptyConvo />;
     }
     if (!selectedConversation || !messagesProps) {

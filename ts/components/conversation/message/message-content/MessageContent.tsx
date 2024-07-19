@@ -28,6 +28,7 @@ import { MessagePreview } from './MessagePreview';
 import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
+import { SpacerXS } from '../../../basic/Text';
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -229,7 +230,9 @@ export const MessageContent = (props: Props) => {
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} />
               )}
               <Flex padding="7px 15px" container={true} flexDirection="column">
-                <MessageText messageId={props.messageId} />
+                <MessageText messageId={props.messageId} /> 
+                <SpacerXS />
+                <div className='timeStamp'>{moment(timestamp).format("hh:mm A")}</div>
               </Flex>
             </>
           ) : null}

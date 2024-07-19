@@ -26,10 +26,12 @@ export const MessageStatus = (props: Props) => {
   }
   const isIncoming = direction === 'incoming';
 
+  const margin=isIncoming?{marginLeft:'10px'}:{marginRight:'10px'}
+
   const showStatus = !isIncoming && Boolean(status);
   if (!showStatus) {
     return null;
   }
 
-  return <OutgoingMessageStatus dataTestId={dataTestId} status={status} />;
+  return <span style={margin}><OutgoingMessageStatus dataTestId={dataTestId} status={status} /></span>;
 };
