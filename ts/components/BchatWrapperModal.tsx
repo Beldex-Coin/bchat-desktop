@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import classNames from 'classnames';
 
-import { BchatIconButton } from './icon';
+import {BchatIconButton } from './icon';
 
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
@@ -22,6 +22,7 @@ export type BchatWrapperModalType = {
   headerReverse?: boolean;
   additionalClassName?: string;
   isloading?:boolean;
+  buttons?:any;
 };
 const Loader = styled.div`
   position: absolute;
@@ -112,6 +113,16 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               </Loader>
             </div>
 }
+          </div>
+          <div className='childhood' style={{
+             height: "90px",
+             width: "100%",
+             display: "flex",
+             flexDirection : 'row',
+             justifyContent: "center",
+             backgroundColor: "#202329",
+          }}>
+           {props.buttons}
           </div>
         </div>
       </div>

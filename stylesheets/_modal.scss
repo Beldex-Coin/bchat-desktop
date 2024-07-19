@@ -701,20 +701,19 @@
 
     &-display {
       user-select: text;
-      text-align: center;
+      text-align: left;
       word-break: break-all;
       font-size: $bchat-font-md;
-      // padding: 0px $bchat-margin-lg;
-      // background-color: var(--color-composeMsgInput);
-      background-color: var(--color-background-primary);
+      // background-color: var(--color-background-primary);
+background-color: #202329;
       border-radius: 10px;
-      padding: 10px 10px 10px 14px;
+      padding: 0px 10px 10px 14px;
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0bb70f;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      // align-items: center;
       flex-direction: row;
       width: 100%;
       min-height: 60px;
@@ -755,47 +754,56 @@
       width: 148px;
     }
   }
+  .profileHeader{
+   width: 100%;
+   display: flex;
+   justify-content: end;
+  }
 
   .profileClose {
     display: flex;
-    justify-content: center;
-    margin-left: 350px;
+    // justify-content: center;
+    // margin-left: 350px;
     margin-top: 12px;
     width: 28px;
     height: 28px;
-    &:hover {
-      background-color: var(--color-profile-close);
-      border-radius: 20px;
-    }
+    // &:hover {
+    //   background-color: var(--color-profile-close);
+    //   border-radius: 20px;
+    // }
   }
 
   .profile-name {
     display: flex;
     margin-top: $bchat-margin-sm;
     margin-bottom: $bchat-margin-sm;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
+    font-family: $bchat-font-default;
+    font-weight: 400;
 
     .inputBox {
       display: flex;
-      width: 310px;
-      padding-left: 59px;
+      width: 200px;
+      padding-left: 45px;
     }
 
     .saveIcon {
       width: 35px;
       color: var(--color-accent);
       cursor: pointer;
+      margin: auto 0;
+      margin-left: 7px;
     }
 
     input {
       height: 38px;
-      border-radius: 5px;
+      border-radius: 16px;
       text-align: center;
       font-size: $bchat-font-md;
       background: var(--color-input-background);
       color: var(--color-text);
-      // border: var(--border-bchat);
+      border: 1px solid #46465D;
     }
 
     &-uneditable {
@@ -803,7 +811,8 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      font-family: $bchat-font-poppin-semibold;
+      margin-right: 25px;
+      font-family: $bchat-font-default;
 
       p {
         font-size: 16px;
@@ -835,22 +844,24 @@
     align-items: center;
   }
   .link_bns_Btn {
-    width: 70%;
+    width: 55%;
     border-radius: 12px;
     background-color: #128b17;
     font-weight: 600;
     border: none;
     font-size: 12px;
     height: 45px;
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-default;
+    font-weight: 600;
   }
   .hintTxt,
   .bnsVerfiedTxt {
     color: #a7a7ba;
-    font-size: 10px;
+    font-size: 12px;
     display: flex;
     margin-top: 7px;
     align-items: flex-start;
+    margin-bottom: 15px;
   }
   .bnsVerfiedTxt {
     color: #0bb70f;
