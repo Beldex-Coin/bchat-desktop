@@ -78,10 +78,8 @@
       border-radius: 10px;
       margin-right: 14px;
       cursor: pointer;
-     
     }
-    .connectWalletBtn:hover
-    {
+    .connectWalletBtn:hover {
       background-color: #00a705;
     }
 
@@ -234,8 +232,8 @@
   align-items: center;
   padding: 0px $bchat-margin-md;
   min-height: min-content;
-  background: var(--color-composeMsgBg);
-  border-top: var(--border-bchat);
+  // background: var(--color-composeMsgBg);
+  // border-top: var(--border-bchat);
   z-index: 1;
 
   .bchat-icon-button {
@@ -262,19 +260,28 @@
   }
 
   .attachment-box {
-    background-color: var(--color-composeMsgIconBG);
-    padding: 8px 13px;
-    color: #85858f;
+    // background-color: var(--color-composeMsgIconBG);
+    padding: 8px;
+    // color: #85858f;
     border-radius: 10px;
 
-    &-icon {
-      width: 25px;
-      height: 25px;
-      padding: 2px;
-    }
+    // &-icon {
+    //   width: 25px;
+    //   height: 25px;
+    //   padding: 2px;
+    // }
 
     &:hover {
-      background-color: #20a1ff;
+      background-color: #2f8fff;
+      color: white;
+    }
+  }
+  .recorded-btn {
+    border-radius: 16px;
+    padding: 15px 13px;
+    background: #2f8fff;
+    &:hover {
+      opacity: 0.9;
     }
   }
 
@@ -284,23 +291,32 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-    min-height: 43px;
+    min-height: 60px;
     padding: 5px 0;
     z-index: 1;
-    background-color: inherit;
+    // background-color: inherit;
     margin-left: 27px;
-    background: var(--color-composeMsgInput);
+    // background: var(--color-composeMsgInput);
+    border-radius: 16px;
+    background: #202329;
     margin: 5px 7px;
     border-radius: 10px;
-    padding-left: 20px;
+    padding: 0 20px;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
 
-    svg {
-      color: var(--color-composeMsgRecordIcon);
+    .coin-logo-wrapper {
+      cursor: pointer;
+      padding: 7px;
+      border-radius: 26px;
+      border: 2px solid #888a8d;
     }
-    svg:hover {
-      transform: scale(1.1);
-    }
+
+    // svg {
+    //   color: var(--color-composeMsgRecordIcon);
+    // }
+    // svg:hover {
+    //   transform: scale(1.1);
+    // }
     ul {
       max-height: 70vh;
       overflow: auto;
@@ -430,24 +446,24 @@
 }
 
 .send-message-button {
-  background-color: #128b17;
-  border-radius: 10px;
+  border-radius: 16px;
+  background: #108d32;
   /* padding: 8px; */
   cursor: pointer;
-  animation: fadein 0.25s;
+  // animation: fadein 0.25s;
   // width: 47px;
-  width: 90px;
-  height: 50px;
+  // width: 90px;
+  // height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadein $bchat-transition-duration;
+  // animation: fadein $bchat-transition-duration;
   // padding-left: 15px;
-  .text {
-    font-family: $bchat-font-poppin-medium;
-    margin-left: 3px;
-    color: #ffffff;
-  }
+  // .text {
+  //   font-family: $bchat-font-poppin-medium;
+  //   margin-left: 3px;
+  //   color: #ffffff;
+  // }
   &---scale {
     animation: scaling 2s ease-in-out;
 
@@ -493,37 +509,40 @@
     padding: 10px;
     display: flex;
     width: 100%;
-    margin-right: 12px;
-    background-color: var(--color-composeMsgInput);
-    margin-left: 13px;
-    height: 47px;
-    border-radius: 13px;
+    border-radius: 10px;
+    margin: 5px 7px;
+    background: #202329;
+    // background-color: var(--color-composeMsgInput);
+    margin-left: 12px;
+    height: 60px;
+    // border-radius: 13px;
     justify-content: space-between;
+    align-items: center;
   }
 
   &--actions {
     display: flex;
     align-items: center;
-    width: $actions-element-size;
-    height: $actions-element-size;
+    // width: $actions-element-size;
+    // height: $actions-element-size;
     border-radius: 50%;
-    margin-right: 50px;
+    // margin-right: 50px;
 
-    .bchat-button {
-      animation: fadein $bchat-transition-duration;
-    }
+    // .bchat-button {
+    //   animation: fadein $bchat-transition-duration;
+    // }
 
-    .bchat-icon-button {
-      animation: fadein $bchat-transition-duration;
-      border-radius: 50%;
-      width: $actions-element-size;
-      height: $actions-element-size;
-      margin-right: var(--margins-sm);
+    // .bchat-icon-button {
+    //   // animation: fadein $bchat-transition-duration;
+    //   border-radius: 50%;
+    //   // width: $actions-element-size;
+    //   // height: $actions-element-size;
+    //   // margin-right: var(--margins-sm);
 
-      .play {
-        margin-left: 4px;
-      }
-    }
+    //   .play {
+    //     margin-left: 4px;
+    //   }
+    // }
   }
 
   &--visualisation {
@@ -587,15 +606,20 @@
       @media (-webkit-min-device-pixel-ratio: 1.6) {
       }
     }
-
+    &-wrapper {
+      border: 1px solid red;
+      padding: 3px;
+      border-radius: 36px;
+      margin-right: 10px;
+    }
     &-light {
       height: 15px;
       width: 15px;
       border-radius: 50%;
-      background-color: $bchat-color-success;
-      margin: 0 $bchat-margin-sm;
+      background-color: #ff3e3e;
+      // margin: 0 $bchat-margin-sm;
 
-      @include pulse-color($bchat-color-success, 1s, infinite);
+      // @include pulse-color($bchat-color-success, 1s, infinite);
     }
   }
 }

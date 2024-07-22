@@ -145,7 +145,7 @@ const sendMessageStyle = {
   control: {},
   input: {
     overflow: 'auto',
-    maxHeight: '60px',
+    maxHeight: '80px',
     wordBreak: 'break-word',
     padding: '0px',
     margin: '0px',
@@ -153,11 +153,11 @@ const sendMessageStyle = {
   highlighter: {
     boxSizing: 'border-box',
     overflow: 'hidden',
-    maxHeight: '40px',
+    maxHeight: '80px',
   },
   flexGrow: 1,
 
-  maxHeight: '40px',
+  maxHeight: '80px',
   width: '100%',
   ...styleForCompositionBoxSuggestions,
 };
@@ -599,6 +599,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { showEmojiPanel } = this.state;
     const { typingEnabled } = this.props;
     const { selectedConversation, isMe } = this.props;
+    const { draft } = this.state;
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
@@ -629,9 +630,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
               { }
               {this.renderTextArea()}
               {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView() : ''}
-              {typingEnabled && <StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
+             
             </div>
-            {this.sendButton()}
+            {typingEnabled && draft ?  
+            this.sendButton() :<StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
           </>
         )}
         {typingEnabled && (
