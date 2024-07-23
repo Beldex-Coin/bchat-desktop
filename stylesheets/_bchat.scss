@@ -299,6 +299,16 @@ textarea {
       background: #108d32;
     }
 
+    &.secondary {
+      background: #2e333d;
+      color: #f0f0f0;
+    }
+
+    &.disabled {
+      background-color: #202329;
+      color: #858598;
+    }
+
     // &:not(.disabled):hover {
     //   color: var(--color-text);
     //   border-color: var(--color-text);
@@ -611,17 +621,18 @@ label {
   &__header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    // justify-content: space-between;
+    // align-items: center;
 
     padding: $bchat-margin-lg;
     padding-bottom: 0px;
 
     font-family: $bchat-font-poppins-bold;
-    text-align: center;
+    // text-align: center;
     line-height: 18px;
     font-size: $bchat-font-md;
     font-weight: bold;
+    margin-top: 10px;
 
     &.reverse {
       flex-direction: row-reverse;
@@ -712,15 +723,6 @@ label {
     align-items: center;
     // to allow new lines
     white-space: pre-wrap;
-  }
-
-  &childhood {
-    height: "90px";
-    width: "100%";
-    display: "flex";
-    flex-direction: 'row';
-    justify-content: "center";
-    background-color: "#202329";
   }
 
   &__description {
@@ -925,6 +927,15 @@ label {
       }
     }
   }
+  &-childhood {
+    height: 110px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #202329;
+    align-items: center;
+  }
 }
 
 .bchat-modal__body {
@@ -966,7 +977,7 @@ label {
       // margin: $bchat-margin-lg;
       // margin-top: 30px;
       // margin-bottom: 30px;
-      text-align: center;
+      // text-align: center;
       // margin-top: 8px;
       font-family: $bchat-font-default;
       // font-size: 14px;
