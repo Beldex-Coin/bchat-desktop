@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import classNames from 'classnames';
 
-import {BchatIconButton } from './icon';
+import { BchatIconButton } from './icon';
 
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
@@ -21,8 +21,8 @@ export type BchatWrapperModalType = {
   children: any;
   headerReverse?: boolean;
   additionalClassName?: string;
-  isloading?:boolean;
-  buttons?:any;
+  isloading?: boolean;
+  buttons?: any;
 };
 const Loader = styled.div`
   position: absolute;
@@ -76,30 +76,28 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
         <div ref={modalRef} className="bchat-modal">
           {showHeader ? (
             <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
-              <div className="bchat-modal__header__close">
-                {showExitIcon ? (
-                  <BchatIconButton
-                    iconType="exit"
-                    iconSize="small"
-                    onClick={props.onClose}
-                    dataTestId="modal-close-button"
-                  />
-                ) : null}
-              </div>
+              {showExitIcon ? <div className="bchat-modal__header__close">
+                <BchatIconButton
+                  iconType="exit"
+                  iconSize="small"
+                  onClick={props.onClose}
+                  dataTestId="modal-close-button"
+                />
+              </div> : null}
               <div className="bchat-modal__header__title">{title}</div>
               <div className="bchat-modal__header__icons">
                 {headerIconButtons
                   ? headerIconButtons.map((iconItem: any) => {
-                      return (
-                        <BchatIconButton
-                          key={iconItem.iconType}
-                          iconType={iconItem.iconType}
-                          iconSize={'large'}
-                          iconRotation={iconItem.iconRotation}
-                          onClick={iconItem.onClick}
-                        />
-                      );
-                    })
+                    return (
+                      <BchatIconButton
+                        key={iconItem.iconType}
+                        iconType={iconItem.iconType}
+                        iconSize={'large'}
+                        iconRotation={iconItem.iconRotation}
+                        onClick={iconItem.onClick}
+                      />
+                    );
+                  })
                   : null}
               </div>
             </div>
@@ -107,22 +105,25 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
 
           <div className="bchat-modal__body" style={{ position: 'relative' }}>
             <div className="bchat-modal__centered">{props.children}</div>
-           {isloading &&  <div>
+            {isloading && <div>
               <Loader>
                 <BchatSpinner loading={true} />
               </Loader>
             </div>
-}
+            }
           </div>
-          <div className='childhood' style={{
-             height: "90px",
-             width: "100%",
-             display: "flex",
-             flexDirection : 'row',
-             justifyContent: "center",
-             backgroundColor: "#202329",
-          }}>
-           {props.buttons}
+          <div className="bchat-modal-childhood"
+          // style={{
+          //   height: "90px",
+          //   width: "100%",
+          //   display: "flex",
+          //   flexDirection: 'row',
+          //   justifyContent: "center",
+          //   backgroundColor: "#202329",
+          //   alignItems:'center'
+          // }}
+          >
+            {props.buttons}
           </div>
         </div>
       </div>

@@ -373,7 +373,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-place="right"
             data-offset="{'top':17}"
           >
-            <CopyIconButton content={props.bchatID} iconSize={15}
+            <CopyIconButton content={props.bchatID} iconSize={18}
             />
           </div>
         </div>
@@ -412,7 +412,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-place="right"
             data-offset="{'top':17}"
           >
-            <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={15}
+            <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
             />
           </div>
         </div>
