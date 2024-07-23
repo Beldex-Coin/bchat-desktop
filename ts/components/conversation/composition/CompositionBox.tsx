@@ -5,6 +5,7 @@ import * as MIME from '../../../types/MIME';
 
 import { BchatEmojiPanel } from '../BchatEmojiPanel';
 import { BchatRecording } from '../BchatRecording';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
 import {
   getPreview,
@@ -19,7 +20,7 @@ import { getMediaPermissionsSettings } from '../../settings/BchatSettings';
 import { getDraftForConversation, updateDraftForConversation } from '../BchatConversationDrafts';
 import {
   AddStagedAttachmentButton,
-  SendFundButton,
+  // SendFundButton,
   SendFundDisableButton,
   SendMessageButton,
   StartRecordingButton,
@@ -73,6 +74,8 @@ import { ConversationTypeEnum } from '../../../models/conversation';
 import { pushToastError } from '../../../bchat/utils/Toast';
 import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
 import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
+import { BchatIcon } from '../../icon/BchatIcon';
+
 
 
 export interface ReplyingToMessageProps {
@@ -450,7 +453,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       <Flex flexDirection="column">
         <BchatQuotedMessageComposition />
         {this.renderStagedLinkPreview()}
-        {this.renderAttachmentsStaged()}
+        {/* {this.renderAttachmentsStaged()} */}
         <div className="composition-container">{this.renderCompositionView()}</div>
       </Flex>
     );
@@ -535,16 +538,17 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   private bchatWalletView() {
     const { selectedConversation, WalletSyncBarShowInChat } = this.props;
-    const { draft } = this.state;
-    const re = /^\d+\.?\d*$/;
+    // const { draft } = this.state;
+    // const re = /^\d+\.?\d*$/;
     return (
       <>
         {selectedConversation?.type === 'private' && selectedConversation?.isApproved
           && selectedConversation?.didApproveMe && !selectedConversation?.isBlocked
-          && re.test(draft) &&
+          && 
+          // re.test(draft) &&
           this.chatwithWallet &&
           WalletSyncBarShowInChat ? (
-          <SendFundButton />
+          <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
         )}
@@ -595,11 +599,64 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
 
+  private renderCurcularBar(){
+  
+    return    <CircularProgressbarWithChildren value={10}  styles={{
+      // Customize the root svg element
+      root: {
+        width:'40px'
+      },
+      // Customize the path, i.e. the "completed progress"
+      path: {
+        // Path color
+        stroke: `blue`,
+        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+        strokeLinecap: 'butt',
+        // Customize transition animation
+        transition: 'stroke-dashoffset 0.5s ease 0s',
+        // Rotate the path
+        // transform: 'rotate(0.25turn)',
+        transformOrigin: 'center center',
+      },
+      // Customize the circle behind the path, i.e. the "total progress"
+      trail: {
+        // Trail color
+        // stroke: '#108D32',
+        stroke: 'red',
+
+        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+        strokeLinecap: 'butt',
+        // Rotate the trail
+        transform: 'rotate(0.25turn)',
+        transformOrigin: 'center center',
+      },
+      // Customize the text
+      // text: {
+      //   // Text color
+      //   fill: '#f88',
+      //   // Text size
+      //   fontSize: '16px',
+      // },
+      // // Customize background - only used when the `background` prop is true
+      // background: {
+      //   fill: '#3e98c7',
+      // },
+    }}
+    >
+  {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
+  
+  <BchatIcon iconType={'beldexCoinLogo'} iconSize={20} iconColor=" #888A8D" />
+</CircularProgressbarWithChildren>;
+  }
+
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
-    const { typingEnabled } = this.props;
+    const { typingEnabled,stagedAttachments } = this.props;
+   
     const { selectedConversation, isMe } = this.props;
     const { draft } = this.state;
+
+    console.log('stagedAttachments.length!==0 --> ',stagedAttachments.length!==0 ,(draft || stagedAttachments.length!==0),'typingEnabled',typingEnabled && (draft || stagedAttachments.length!==0))
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
@@ -627,12 +684,16 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
-              { }
+              
+              {this.renderAttachmentsStaged()}
+              <Flex container={true} flexDirection='row' width='100%' alignItems='center' style={{minHeight:'60px'}}>
               {this.renderTextArea()}
-              {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView() : ''}
+              
+              {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView()  : ''}
+              </Flex>
              
             </div>
-            {typingEnabled && draft ?  
+            {typingEnabled && (draft || stagedAttachments.length!==0)?  
             this.sendButton() :<StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
           </>
         )}
@@ -955,6 +1016,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderAttachmentsStaged() {
     const { stagedAttachments } = this.props;
     const { showCaptionEditor } = this.state;
+    console.log('showCaptionEditor -->',showCaptionEditor,'stagedAttachments -->',stagedAttachments, stagedAttachments.length)
     if (stagedAttachments && stagedAttachments.length) {
       return (
         <>

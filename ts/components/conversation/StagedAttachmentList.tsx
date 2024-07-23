@@ -12,7 +12,7 @@ import {
 } from '../../types/Attachment';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  removeAllStagedAttachmentsInConversation,
+  // removeAllStagedAttachmentsInConversation,
   removeStagedAttachmentInConversation,
 } from '../../state/ducks/stagedAttachments';
 import { getSelectedConversationKey } from '../../state/selectors/conversations';
@@ -23,7 +23,7 @@ type Props = {
   onAddAttachment: () => void;
 };
 
-const IMAGE_WIDTH = 120;
+const IMAGE_WIDTH = 100;
 const IMAGE_HEIGHT = 120;
 
 export const StagedAttachmentList = (props: Props) => {
@@ -32,12 +32,13 @@ export const StagedAttachmentList = (props: Props) => {
   const dispatch = useDispatch();
   const conversationKey = useSelector(getSelectedConversationKey);
 
-  const onRemoveAllStaged = () => {
-    if (!conversationKey) {
-      return;
-    }
-    dispatch(removeAllStagedAttachmentsInConversation({ conversationKey }));
-  };
+  // before revamp design to call close all the attachment
+  // const onRemoveAllStaged = () => {
+  //   if (!conversationKey) {
+  //     return;
+  //   }
+  //   dispatch(removeAllStagedAttachmentsInConversation({ conversationKey }));
+  // };
 
   const onRemoveByFilename = (filename: string) => {
     if (!conversationKey) {
@@ -54,7 +55,7 @@ export const StagedAttachmentList = (props: Props) => {
 
   return (
     <div className="module-attachments">
-      {attachments.length > 1 ? (
+      {/* {attachments.length > 1 ? (
         <div className="module-attachments__header">
           <div
             role="button"
@@ -62,7 +63,7 @@ export const StagedAttachmentList = (props: Props) => {
             className="module-attachments__close-button"
           />
         </div>
-      ) : null}
+      ) : null} */}
       <div className="module-attachments__rail">
         {(attachments || []).map((attachment, index) => {
           const { contentType } = attachment;
