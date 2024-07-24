@@ -13,8 +13,8 @@ import {
 } from '../../../../state/selectors/conversations';
 import {
   canDisplayImage,
-  getGridDimensions,
-  getImageDimensionsInAttachment,
+  // getGridDimensions,
+  // getImageDimensionsInAttachment,
   hasImage,
   hasVideoScreenshot,
   isImage,
@@ -22,7 +22,7 @@ import {
   isVideo,
 } from '../../../../types/Attachment';
 import { Flex } from '../../../basic/Flex';
-import { MINIMUM_LINK_PREVIEW_IMAGE_WIDTH } from '../message-item/Message';
+// import { MINIMUM_LINK_PREVIEW_IMAGE_WIDTH } from '../message-item/Message';
 import { MessageAttachment } from './MessageAttachment';
 import { MessagePreview } from './MessagePreview';
 import { MessageQuote } from './MessageQuote';
@@ -168,13 +168,15 @@ export const MessageContent = (props: Props) => {
   } = contentProps;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
+  console.log('previews -->',previews)
 
   let isDeleted = false;
   if (selectedMsg && selectedMsg.isDeleted !== undefined) {
     isDeleted = selectedMsg.isDeleted;
   }
 
-  const width = getWidth({ previews, attachments });
+  // const width = getWidth({ previews, attachments });
+  // console.log('width --->',width);
   const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
   const hasQuote = !isEmpty(quote);
@@ -199,9 +201,9 @@ export const MessageContent = (props: Props) => {
           : '',
         flashGreen && 'flash-green-once'
       )}
-      style={{
-        width: isShowingImage ? width : undefined,
-      }}
+      // style={{
+      //   width: isShowingImage ? width : undefined,
+      // }}
       role="button"
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
@@ -242,33 +244,33 @@ export const MessageContent = (props: Props) => {
   );
 };
 
-function getWidth(
-  props: Pick<MessageRenderingProps, 'attachments' | 'previews'>
-): number | undefined {
-  const { attachments, previews } = props;
+// function getWidth(
+//   props: Pick<MessageRenderingProps, 'attachments' | 'previews'>
+// ): number | undefined {
+//   const { attachments, previews } = props;
 
-  if (attachments && attachments.length) {
-    const dimensions = getGridDimensions(attachments);
-    if (dimensions) {
-      return dimensions.width;
-    }
-  }
+//   if (attachments && attachments.length) {
+//     const dimensions = getGridDimensions(attachments);
+//     if (dimensions) {
+//       return dimensions.width;
+//     }
+//   }
 
-  if (previews && previews.length) {
-    const first = previews[0];
+//   if (previews && previews.length) {
+//     const first = previews[0];
 
-    if (!first || !first.image) {
-      return;
-    }
-    const { width } = first.image;
+//     if (!first || !first.image) {
+//       return;
+//     }
+//     const { width } = first.image;
 
-    if (isImageAttachment(first.image) && width && width >= MINIMUM_LINK_PREVIEW_IMAGE_WIDTH) {
-      const dimensions = getImageDimensionsInAttachment(first.image);
-      if (dimensions) {
-        return dimensions.width;
-      }
-    }
-  }
+//     if (isImageAttachment(first.image) && width && width >= MINIMUM_LINK_PREVIEW_IMAGE_WIDTH) {
+//       const dimensions = getImageDimensionsInAttachment(first.image);
+//       if (dimensions) {
+//         return dimensions.width;
+//       }
+//     }
+//   }
 
-  return;
-}
+//   return;
+// }

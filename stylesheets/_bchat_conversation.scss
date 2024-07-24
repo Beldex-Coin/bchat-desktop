@@ -304,8 +304,37 @@
     margin: 5px 7px;
     border-radius: 10px;
     padding: 0 20px;
-    //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%); 
-   
+    position: relative;
+    //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
+
+    .wallet-sync-box {
+      border-radius: 16px;
+      border: 2px solid #108d32;
+      background: #202329;
+      width: 254px;
+      height: 66px;
+      flex-shrink: 0;
+      position: absolute;
+      right: 0px;
+      top: -74px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      .sync-txt {
+        color: #f0f0f0;
+        font-family: $bchat-font-open-sans;
+        font-size: 18px;
+        font-weight: 600;
+        margin-right: 21px;
+      }
+      .inner-perc-txt {
+        color: #f0f0f0;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+    }
     .coin-logo-wrapper {
       cursor: pointer;
       padding: 7px;
@@ -351,6 +380,10 @@
       line-height: $bchat-font-h2;
       letter-spacing: 0.5px;
       color: rgba(0, 0, 0, 0);
+    }
+
+    .circular-bar-wrapper:hover+.wallet-sync-box {
+      display: flex;
     }
   }
 }

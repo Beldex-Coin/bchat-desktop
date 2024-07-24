@@ -835,8 +835,10 @@
   background: none;
   position: relative;
   display: inline-block;
-  margin: 1px;
+  // margin: 1px;
   vertical-align: middle;
+  margin: 4px;
+  border-radius: 16px;
 }
 
 .module-image__caption-icon {
@@ -852,7 +854,7 @@
 
 .module-image--soft-corners {
   border-radius: 16px;
-  margin-right: 10px;
+  // margin-right: 10px;
 }
 
 .module-image__border-overlay {
@@ -960,6 +962,8 @@
   align-items: center;
 
   margin: -1px;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .module-image-grid__column {

@@ -67,7 +67,11 @@ import {
 } from '../../../state/ducks/modalDialog';
 import { showLeftPaneSection } from '../../../state/ducks/section';
 import { BchatButtonColor } from '../../basic/BchatButton';
-import { getRescaning, getWalletSyncBarShowInChat } from '../../../state/selectors/walletConfig';
+import {
+  getHeight,
+  getRescaning,
+  getWalletSyncBarShowInChat,
+} from '../../../state/selectors/walletConfig';
 import { wallet } from '../../../wallet/wallet-rpc';
 import { saveRecipientAddress } from '../../../data/data';
 import { ConversationTypeEnum } from '../../../models/conversation';
@@ -75,8 +79,9 @@ import { pushToastError } from '../../../bchat/utils/Toast';
 import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
 import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
 import { BchatIcon } from '../../icon/BchatIcon';
-
-
+import { getdaemonHeight } from '../../../state/selectors/daemon';
+import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
+import  classNames from 'classnames';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -133,6 +138,8 @@ interface Props {
   onChoseAttachments: (newAttachments: Array<File>) => void;
   walletDetails: any;
   BchatAlertConfirmModal: any;
+  walletHeight: any;
+  deamonHeight: any;
 }
 
 interface State {
@@ -297,7 +304,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   sendConfirmModal() {
     const messagePlaintext = cleanMentions(this.state.draft);
-    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || 'Flash';
 
     if (!this.props.selectedConversation?.walletAddress) {
       return pushToastError(
@@ -325,7 +332,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   sendFund = async () => {
     const draft: any = this.state.draft;
-    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || "Flash";
+    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || 'Flash';
 
     if (draft == 0) {
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
@@ -346,22 +353,22 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
     let transactionInitiatDetails: any = {
       message: {
-        messageType: "payment",
+        messageType: 'payment',
         props: {
           id: this.props.selectedConversation?.id,
-          acceptUrl: "",
+          acceptUrl: '',
           amount: this.state.draft,
-          direction: "outgoing",
+          direction: 'outgoing',
           isUnread: false,
-          messageId: "1234-567-7890",
+          messageId: '1234-567-7890',
           receivedAt: 1678799702674,
-          txnId: "",
+          txnId: '',
         },
 
         showDateBreak: 1678799702809,
         showUnreadIndicator: false,
-      }
-    }
+      },
+    };
     window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(transactionInitiatDetails));
     let data: any = await wallet.transfer(
       this.props.selectedConversation?.walletAddress,
@@ -395,7 +402,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
       window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
 
       if (privateConvo) {
-
         void privateConvo.sendMessage({
           body: '',
           attachments: undefined,
@@ -407,8 +413,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
             txnId: TransactionHistory.tx_hash,
           },
         });
-
-
 
         // Empty composition box and stagedAttachments
         this.setState({
@@ -526,6 +530,30 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
   }
 
+  private percentageCalc() {
+    const { walletHeight, deamonHeight } = this.props;
+    let currentHeight = 0;
+    let valdatedDaemonHeight = 0;
+    const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+    if (currentDaemon?.type === 'Local') {
+      currentHeight = Number(deamonHeight);
+      valdatedDaemonHeight = Number(walletHeight);
+    } else {
+      currentHeight = walletHeight;
+      valdatedDaemonHeight = deamonHeight;
+    }
+    console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, valdatedDaemonHeight);
+    let pct: any =
+      currentHeight == 0 || valdatedDaemonHeight == 0
+        ? 0
+        : ((100 * currentHeight) / valdatedDaemonHeight).toFixed(1);
+    console.log('currentDaemon sync 1::', pct);
+
+    let percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
+    console.log('currentDaemon sync 2::', percentage);
+    return percentage;
+  }
+
   private renderRecordingView() {
     return (
       <BchatRecording
@@ -542,12 +570,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // const re = /^\d+\.?\d*$/;
     return (
       <>
-        {selectedConversation?.type === 'private' && selectedConversation?.isApproved
-          && selectedConversation?.didApproveMe && !selectedConversation?.isBlocked
-          && 
-          // re.test(draft) &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat ? (
+        {selectedConversation?.type === 'private' &&
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        // re.test(draft) &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -558,7 +587,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   // private sendMessageValidation() {
   //   const { draft } = this.state;
-  //   const re = /^\d+\.?\d*$/; 
+  //   const re = /^\d+\.?\d*$/;
   //   const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
   // const getSyncStatus = window.getSettingValue('syncStatus');
 
@@ -567,7 +596,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   //     selectedConversation?.type === 'private' &&
   //     re.test(draft) &&
   //     this.chatwithWallet &&
-  //     WalletSyncBarShowInChat 
+  //     WalletSyncBarShowInChat
   //   ) {
   //     this.sendConfirmModal();
   //   } else {
@@ -582,81 +611,95 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-          re.test(draft)
-          // && (draft.length-1 - draft.indexOf(".")) < 4
-          && selectedConversation?.isApproved
-          && selectedConversation?.didApproveMe
-          &&!selectedConversation?.isBlocked &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat &&
-          !isMe && getSyncStatus ? (
-          <SendMessageButton name='Pay' onClick={() => this.sendConfirmModal()} />
+        re.test(draft) &&
+        // && (draft.length-1 - draft.indexOf(".")) < 4
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat &&
+        !isMe &&
+        getSyncStatus ? (
+          <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) : (
-          <SendMessageButton name='Send' onClick={() => this.onSendMessage()} />
-
+          <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
         )}
       </>
     );
   }
 
-  private renderCurcularBar(){
-  
-    return    <CircularProgressbarWithChildren value={10}  styles={{
-      // Customize the root svg element
-      root: {
-        width:'40px'
-      },
-      // Customize the path, i.e. the "completed progress"
-      path: {
-        // Path color
-        stroke: `blue`,
-        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-        strokeLinecap: 'butt',
-        // Customize transition animation
-        transition: 'stroke-dashoffset 0.5s ease 0s',
-        // Rotate the path
-        // transform: 'rotate(0.25turn)',
-        transformOrigin: 'center center',
-      },
-      // Customize the circle behind the path, i.e. the "total progress"
-      trail: {
-        // Trail color
-        // stroke: '#108D32',
-        stroke: 'red',
+  private renderCurcularBar(ispopover?: boolean) {
+    // console.log('this.percentageCalc() ----->', this.percentageCalc());
+    const pathColor = this.percentageCalc() !== 0 ? '#108D32' : '#FDB12A';
+    return (
+      <ChangingProgressProvider values={[0, 20, 40, 60, 80, 100]}>
+        {() => (
+          <CircularProgressbarWithChildren
+            value={this.percentageCalc()}
+            styles={{
+              // Customize the root svg element
+              root: {
+                width: ispopover ? '47px' : '40px',
+              },
+              // Customize the path, i.e. the "completed progress"
+              path: {
+                // Path color
+                stroke: `${pathColor}`,
+                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                strokeLinecap: 'butt',
+                // Customize transition animation
+                transition: 'stroke-dashoffset 0.5s ease 0s',
+                // Rotate the path
+                // transform: 'rotate(0.25turn)',
+                transformOrigin: 'center center',
+              },
+              // Customize the circle behind the path, i.e. the "total progress"
+              trail: {
+                // Trail color
+                // stroke: '#108D32',
+                stroke: '#888A8D',
 
-        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-        strokeLinecap: 'butt',
-        // Rotate the trail
-        transform: 'rotate(0.25turn)',
-        transformOrigin: 'center center',
-      },
-      // Customize the text
-      // text: {
-      //   // Text color
-      //   fill: '#f88',
-      //   // Text size
-      //   fontSize: '16px',
-      // },
-      // // Customize background - only used when the `background` prop is true
-      // background: {
-      //   fill: '#3e98c7',
-      // },
-    }}
-    >
-  {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
-  
-  <BchatIcon iconType={'beldexCoinLogo'} iconSize={20} iconColor=" #888A8D" />
-</CircularProgressbarWithChildren>;
+                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                strokeLinecap: 'butt',
+                // Rotate the trail
+                transform: 'rotate(0.25turn)',
+                transformOrigin: 'center center',
+              },
+            }}
+          >
+            {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
+
+            {ispopover ? (
+              <span className="inner-perc-txt">{Math.floor(this.percentageCalc())}%</span>
+            ) : (
+              <BchatIcon iconType={'beldexCoinLogo'} iconSize={20} iconColor=" #888A8D" />
+            )}
+          </CircularProgressbarWithChildren>
+        )}
+      </ChangingProgressProvider>
+    );
   }
 
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
-    const { typingEnabled,stagedAttachments } = this.props;
-   
-    const { selectedConversation, isMe } = this.props;
-    const { draft } = this.state;
+    const { typingEnabled, stagedAttachments } = this.props;
 
-    console.log('stagedAttachments.length!==0 --> ',stagedAttachments.length!==0 ,(draft || stagedAttachments.length!==0),'typingEnabled',typingEnabled && (draft || stagedAttachments.length!==0))
+    const { selectedConversation, isMe,WalletSyncBarShowInChat } = this.props;
+    const { draft } = this.state;
+    const syncStatus =
+      this.percentageCalc() === 0
+        ? 'Scanning..'
+        : this.percentageCalc() > 0 && this.percentageCalc() < 98
+        ? 'Syncronizing..'
+        : 'Synchronized';
+
+    console.log(
+      'stagedAttachments.length!==0 --> ',
+      stagedAttachments.length !== 0,
+      draft || stagedAttachments.length !== 0,
+      'typingEnabled',
+      typingEnabled && (draft || stagedAttachments.length !== 0)
+    );
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
@@ -684,17 +727,35 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
-              
               {this.renderAttachmentsStaged()}
-              <Flex container={true} flexDirection='row' width='100%' alignItems='center' style={{minHeight:'60px'}}>
-              {this.renderTextArea()}
-              
-              {selectedConversation?.isPrivate && typingEnabled && !isMe ? this.bchatWalletView()  : ''}
+
+              <Flex
+                container={true}
+                flexDirection="row"
+                width="100%"
+                alignItems="center"
+                style={{ minHeight: '60px' }}
+              >
+                {this.renderTextArea()}
+
+                <div className={classNames(WalletSyncBarShowInChat&&"circular-bar-wrapper")}>
+                  {selectedConversation?.isPrivate && typingEnabled && !isMe
+                    ? this.bchatWalletView()
+                    : ''}
+                </div>
+                <div className="wallet-sync-box">
+                  <div className="sync-txt">
+                    Wallet <span> {syncStatus}</span>
+                  </div>
+                  <div>{this.renderCurcularBar(true)}</div>
+                </div>
               </Flex>
-             
             </div>
-            {typingEnabled && (draft || stagedAttachments.length!==0)?  
-            this.sendButton() :<StartRecordingButton onClick={this.onLoadVoiceNoteView} />}
+            {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
+              this.sendButton()
+            ) : (
+              <StartRecordingButton onClick={this.onLoadVoiceNoteView} />
+            )}
           </>
         )}
         {typingEnabled && (
@@ -1016,7 +1077,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderAttachmentsStaged() {
     const { stagedAttachments } = this.props;
     const { showCaptionEditor } = this.state;
-    console.log('showCaptionEditor -->',showCaptionEditor,'stagedAttachments -->',stagedAttachments, stagedAttachments.length)
+    console.log(
+      'showCaptionEditor -->',
+      showCaptionEditor,
+      'stagedAttachments -->',
+      stagedAttachments,
+      stagedAttachments.length
+    );
     if (stagedAttachments && stagedAttachments.length) {
       return (
         <>
@@ -1065,15 +1132,26 @@ class CompositionBoxInner extends React.Component<Props, State> {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
       // await this.onSendMessage();
-      const { selectedConversation, WalletSyncBarShowInChat, isMe, BchatAlertConfirmModal } = this.props;
+      const {
+        selectedConversation,
+        WalletSyncBarShowInChat,
+        isMe,
+        BchatAlertConfirmModal,
+      } = this.props;
       const getSyncStatus = window.getSettingValue('syncStatus');
       const { draft } = this.state;
       const re = /^\d+\.?\d*$/;
       // const { WalletSyncBarShowInChat } = this.props;
-      if (selectedConversation?.type === 'private'
-        && re.test(draft) && this.chatwithWallet && selectedConversation?.isApproved && selectedConversation?.didApproveMe
-        && WalletSyncBarShowInChat &&
-        !isMe && getSyncStatus) {
+      if (
+        selectedConversation?.type === 'private' &&
+        re.test(draft) &&
+        this.chatwithWallet &&
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        WalletSyncBarShowInChat &&
+        !isMe &&
+        getSyncStatus
+      ) {
         await this.sendConfirmModal();
       } else {
         if (!BchatAlertConfirmModal) {
@@ -1367,6 +1445,8 @@ const mapStateToProps = (state: StateType) => {
     walletSyncStatus: getRescaning(state),
     walletDetails: state.wallet,
     BchatAlertConfirmModal: getBchatAlertConfirmModal(state),
+    deamonHeight: getdaemonHeight(state),
+    walletHeight: getHeight(state),
   };
 };
 
