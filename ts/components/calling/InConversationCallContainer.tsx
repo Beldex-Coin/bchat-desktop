@@ -209,6 +209,7 @@ export const InConversationCallContainer = () => {
                 // size={89}
                 position={{ left: '75px', top: '72px' }}
                 isBnsHolder={selectedConversation?.isBnsHolder}
+                size={{width:'20',height:'20'}}
               >
                 <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
               </BNSWrapper>
@@ -228,6 +229,7 @@ export const InConversationCallContainer = () => {
                 // size={89}
                 position={{ left: '75px', top: '72px' }}
                 isBnsHolder={conversation?.attributes?.isBnsHolder}
+                size={{width:'20',height:'20'}}
               >
                 <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
               </BNSWrapper>

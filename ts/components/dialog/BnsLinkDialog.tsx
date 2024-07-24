@@ -120,6 +120,7 @@ export const BnsLinkDialog = () => {
             <div className="label_input">{i18n('bnsName')}</div>
             <div className="inputBox-wrapper">
               <input
+                style={{ color: '#0BB70F' }}
                 type="text"
                 className="inputBox"
                 disabled={isVerify}
@@ -135,46 +136,36 @@ export const BnsLinkDialog = () => {
             <div className="divided-btn-wrapper">
               {!isVerify ? (
                 // <div className='button'>
-                  <BchatButton
-                    style={{
-                      width: '200px',
-                        height: '55px',
-                      //   borderRadius: '12px',
-                      //   backgroundColor: '#202329',
-                      //   color: '#858598',
-                      //   fontSize:'18px',
-                      //   cursor:'pointer'
-                    }}
-                    text={i18n('verify')}
-                    disabled={!regexForBnsName.test(bnsName)}
-                    buttonType={BchatButtonType.Brand}
-                    buttonColor={BchatButtonColor.Disable}
-                    onClick={() => verifyBns()}
-                  />
+                <BchatButton
+                  style={{
+                    width: '200px',
+                    height: '55px'
+                  }}
+                  text={i18n('verify')}
+                  disabled={!regexForBnsName.test(bnsName)}
+                  buttonType={BchatButtonType.Brand}
+                  buttonColor={!regexForBnsName.test(bnsName) ? BchatButtonColor.Disable : BchatButtonColor.Enable}
+                  onClick={() => verifyBns()}
+                />
                 // </div>
               ) : (
                 <div className="bchat-btn-struct">
-                  <span style={{ marginRight: '2px' }}>{i18n('verified')}</span>
+                  <span style={{ marginRight: '4px' }}>{i18n('verified')}</span>
                   <span style={{ display: 'flex' }}>
-                    <BchatIcon iconType="circleWithTick" iconSize={12} iconColor="#fff" />
+                    <BchatIcon iconType="circleWithTick" iconSize={16} iconColor="#0B9E3C" />
                   </span>
                 </div>
               )}
               {/* <div className='button'> */}
               <BchatButton
                 style={{
-                  width:'200px',
-                  height: '55px',
-                //   borderRadius: '12px',
-                //   backgroundColor: '#202329',
-                //   color: '#858598',
-                //   fontSize: '18px',
-                //   cursor: 'pointer'
+                  width: '200px',
+                  height: '55px'
                 }}
                 text={i18n('linkBNS')}
                 disabled={!isVerify}
                 buttonType={BchatButtonType.Brand}
-                buttonColor={BchatButtonColor.Disable}
+                buttonColor={BchatButtonColor.Primary}
                 onClick={() => callLinkBns()}
               // setSuccess(true)
               />

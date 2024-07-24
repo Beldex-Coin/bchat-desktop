@@ -292,7 +292,7 @@ textarea {
     padding: 0px $bchat-margin-lg;
     color: #f0f0f0;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 500;
     border-radius: 16px;
 
     &.primary {
@@ -307,6 +307,11 @@ textarea {
     &.disabled {
       background-color: #202329;
       color: #858598;
+    }
+
+    &.enable {
+      background-color:  #202329;
+      color: #108D32;
     }
 
     // &:not(.disabled):hover {
@@ -392,15 +397,18 @@ textarea {
 .bchat-btn-struct {
   display: flex;
   align-items: center;
-  width: 100px;
-  background-color: $bchat-button-green-color;
-  height: 45px;
-  color: white;
+  width: 200px;
+  // background-color: $bchat-button-green-color;
+  background-color: #202329;
+  height: 55px;
+  color: #108D32;
   /* text-align: center; */
   justify-content: center;
   min-width: 165px;
-  border-radius: 10px;
-  font-family: $bchat-font-poppin-semibold;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: $bchat-font-default;
 }
 
 /* CONVERSATION AND MESSAGES */

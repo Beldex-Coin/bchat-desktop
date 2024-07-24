@@ -138,6 +138,7 @@ const HeaderItem = () => {
           //  size={89}
           position={{ left: '75px', top: '72px' }}
           isBnsHolder={isBnsHolder}
+          size={{width:'20',height:'20'}}
         >
           <Avatar size={AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
