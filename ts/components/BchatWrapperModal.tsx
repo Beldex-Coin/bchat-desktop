@@ -23,6 +23,7 @@ export type BchatWrapperModalType = {
   additionalClassName?: string;
   isloading?: boolean;
   buttons?: any;
+  isButton?: boolean;
 };
 const Loader = styled.div`
   position: absolute;
@@ -45,7 +46,8 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     headerIconButtons,
     headerReverse,
     additionalClassName,
-    isloading
+    isloading,
+    isButton = true
   } = props;
 
   useKey(
@@ -112,19 +114,9 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             </div>
             }
           </div>
-          <div className="bchat-modal-childhood"
-          // style={{
-          //   height: "90px",
-          //   width: "100%",
-          //   display: "flex",
-          //   flexDirection: 'row',
-          //   justifyContent: "center",
-          //   backgroundColor: "#202329",
-          //   alignItems:'center'
-          // }}
-          >
+          {isButton && <div className="bchat-modal-childhood">
             {props.buttons}
-          </div>
+          </div>}
         </div>
       </div>
     </div>

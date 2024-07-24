@@ -111,8 +111,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 fontWeight: 600,
                 border: 'none',
                 borderRadius: '12px',
-                fontSize: "12px",
-                height: '45px',
+                fontSize: "16px",
+                height: '60px',
                 fontFamily: "Poppins"
               }}
               onClick={() => {

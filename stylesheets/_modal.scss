@@ -854,8 +854,7 @@ background-color: #202329;
     font-family: $bchat-font-default;
     font-weight: 600;
   }
-  .hintTxt,
-  .bnsVerfiedTxt {
+  .hintTxt {
     color: #a7a7ba;
     font-size: 12px;
     display: flex;
@@ -864,9 +863,13 @@ background-color: #202329;
     margin-bottom: 15px;
   }
   .bnsVerfiedTxt {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
     color: #0bb70f;
     font-size: 14px;
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-default;
+    font-weight: 700;
   }
 }
 // .bns_enable_modal {
@@ -946,6 +949,14 @@ background-color: #202329;
       font-size: 18px;
       cursor: pointer;
     }
+  }
+  .success {
+    font-family: $bchat-font-default;
+    font-size: 22px;
+    margin-bottom: 35px;
+    margin-top: 20px;
+    font-weight: 700;
+    color: #108D32;
   }
 }
 .about-bns {
