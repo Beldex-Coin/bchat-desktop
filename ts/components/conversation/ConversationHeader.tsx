@@ -203,6 +203,7 @@ const AvatarHeader = (props: {
         // size={40}
         position={{ left: '25px', top: '25px' }}
         isBnsHolder={conversation?.isBnsHolder}
+        size={{width:'20',height:'20'}}
       >
         <Avatar
           size={AvatarSize.S}

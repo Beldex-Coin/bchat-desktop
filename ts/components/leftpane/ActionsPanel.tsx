@@ -589,8 +589,9 @@ export const ActionsPanel = () => {
         <div className="profile-box">
           <BNSWrapper
             // size={52}
-            position={{ left: '36px', top: '35px' }}
+            position={{ left: '45px', top: '43px' }}
             isBnsHolder={conversation?.attributes?.isBnsHolder}
+            size={{width:'25',height:'25'}}
           >
             <Avatar
               size={AvatarSize.L}

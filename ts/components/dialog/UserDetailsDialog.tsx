@@ -60,6 +60,7 @@ export const UserDetailsDialog = (props: Props) => {
               top: isEnlargedImageShown ? '288px' : '71px',
             }}
             isBnsHolder={convo?.attributes?.isBnsHolder}
+            size={{width:'20',height:'20'}}
           >
             <Avatar
               size={size}

@@ -438,8 +438,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
     return (
       <BNSWrapper
         // size={89}
-        position={{ left: '72px', top: '72px' }}
+        position={{ left: '65px', top: '62px' }}
         isBnsHolder={this.convo?.attributes?.isBnsHolder}
+        size={{width:'30',height:'30'}}
       >
         <Avatar
           forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
