@@ -10,6 +10,7 @@ import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVer
 
 export const BnsLinkDialog = () => {
   const [success, setSuccess] = useState(false);
+  const [buttonStatus, setButtonStatus] = useState(true);
   const [bnsName, setBnsName] = useState('');
   const [isVerify, setIsVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,11 +32,11 @@ export const BnsLinkDialog = () => {
     //call to update conversational state value
     await linkBns(bnsName);
     setSuccess(true);
+    setButtonStatus(false);
   };
   const BnsLinkedSuccessModal = () => {
     return (
-      <>
-        <header>{i18n('bnsLinkedSuccessfully')}</header>
+      <div style={{ textAlign: 'center' }}>
         <div>
           <svg
             width="68"
@@ -58,21 +59,22 @@ export const BnsLinkDialog = () => {
             </g>
           </svg>
         </div>
+        <div>{i18n('bnsLinkedSuccessfully')}</div>
         <BchatButton
           style={{
-            height: '45px',
+            height: '60px',
             borderRadius: '10px',
             margin: '15px 122px 40px',
             fontSize: '16px',
           }}
           text={i18n('ok')}
-          buttonType={BchatButtonType.Default}
-          buttonColor={BchatButtonColor.Green}
+          buttonType={BchatButtonType.Brand}
+          buttonColor={BchatButtonColor.Primary}
           onClick={() => {
             closeDialog();
           }}
         />
-      </>
+      </div>
     );
   };
   return (
@@ -81,6 +83,7 @@ export const BnsLinkDialog = () => {
       onClose={closeDialog}
       showExitIcon={false}
       isloading={isLoading}
+      isButton={buttonStatus}
       buttons={<div style={{
         width: '40%',
         margin: 'auto 0',

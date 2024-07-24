@@ -119,7 +119,7 @@ export const LeftPaneSectionContainer = styled.div`
   // }
 
   .module-avatar {
-    height: 80px;
+    height: 60px;
     display: flex;
     align-items: center;
   }
