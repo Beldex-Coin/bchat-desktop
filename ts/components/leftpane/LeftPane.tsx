@@ -65,14 +65,18 @@ const InnerLeftPaneMessageSection = () => {
 
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
+  // const convoList = useSelector(getLeftPaneLists);
 
-  if (focusedSection === SectionType.Message) {
+  if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
   }
   if (focusedSection === SectionType.NewChat) {
     return  <OverlayMessage />;
   }
   if (focusedSection === SectionType.Closedgroup) {
+    // if (convoList?.conversations.length === 0 || convoList.contacts.length === 0 ) {
+    //   return<></>;
+    // }
     return <OverlayClosedGroup />;
   }
 

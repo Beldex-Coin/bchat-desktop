@@ -56,8 +56,9 @@ import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 // import { BchatRightPanelWithDetails } from './BchatRightPanel';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
-import { SettingsKey } from '../../data/settings-key';
-import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+// import { SettingsKey } from '../../data/settings-key';
+// import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+import { SectionType } from '../../state/ducks/section';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -88,6 +89,7 @@ interface Props {
 
   stagedAttachments: Array<StagedAttachmentType>;
   convoList: any;
+  focusedSection: any;
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -227,13 +229,19 @@ export class BchatConversation extends React.Component<Props, State> {
       selectedMessages,
       // isRightPanelShowing,
       lightBoxOptions,
-      isMe,
+      // isMe,
       convoList,
+      focusedSection,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
-    const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    if (convoList?.conversations?.length == 0 && (!selectedConversation || !messagesProps)) {
+    // const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+    if (
+      convoList?.conversations?.length == 0 &&
+      (!selectedConversation || !messagesProps) &&
+      focusedSection !== SectionType.Opengroup &&
+      focusedSection !== SectionType.NewChat
+    ) {
       return <AddNewContactInEmptyConvo />;
     }
     if (!selectedConversation || !messagesProps) {
@@ -241,22 +249,13 @@ export class BchatConversation extends React.Component<Props, State> {
       return <MessageView />;
     }
     // const belAddress = useConversationBeldexAddress(selectedConversation.id);
-    const syncbarCondition =
-      chatWithWallet &&
-      selectedConversation?.isPrivate &&
-      !isMe &&
-      selectedConversation?.didApproveMe &&
-      selectedConversation?.isApproved;
-    // const msgProps={ amount:'0.1',
-    //   txnId: "1234567890",
-    //   direction: 'outgoing',
-    //   acceptUrl: "qwerty",
-    //   messageId: "qwert12345",
-    //   receivedAt: "123456",
-    //   isUnread: true,
-    // }
-
-    // console.log("selectedConversation ::",syncbarCondition,selectedConversation)
+    // const syncbarCondition =
+    //   chatWithWallet &&
+    //   selectedConversation?.isPrivate &&
+    //   !isMe &&
+    //   selectedConversation?.didApproveMe &&
+    //   selectedConversation?.isApproved;
+  
 
     return (
       <BchatTheme>
@@ -270,7 +269,7 @@ export class BchatConversation extends React.Component<Props, State> {
           onKeyDown={this.onKeyDown}
           role="navigation"
         >
-          <div>{syncbarCondition && <ConditionalSyncBar />}</div>
+          {/* <div>{syncbarCondition && <ConditionalSyncBar />}</div> */}
           <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
           </div>

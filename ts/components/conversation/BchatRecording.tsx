@@ -10,6 +10,8 @@ import { Constants } from '../../bchat';
 import { ToastUtils } from '../../bchat/utils';
 import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
 import { SendMessageButton } from './composition/CompositionButtons';
+import StopIcon from '../icon/StopIcon';
+import { CustomIconButton } from '../icon/CustomIconButton';
 
 interface Props {
   onExitVoiceNoteView: () => void;
@@ -32,20 +34,24 @@ function getTimestamp() {
   return Date.now() / 1000;
 }
 
-interface StyledFlexWrapperProps {
-  marginHorizontal: string;
-}
+// interface StyledFlexWrapperProps {
+//   marginHorizontal: string;
+// }
 
 /**
  * Generic wrapper for quickly passing in theme constant values.
  */
-const StyledFlexWrapper = styled.div<StyledFlexWrapperProps>`
+const StyledFlexWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width:100%
-  .bchat-button {
-    margin: ${props => props.marginHorizontal};
+  // width:100%;
+  justify-content: space-between;
+  width: 65px;
+  .bchat-icon-button{
+    border-radius:30px;
+  }
+  
   }
 `;
 
@@ -123,63 +129,71 @@ export class BchatRecording extends React.Component<Props, State> {
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
         <div className="bchat-recording-box">
-
-        {hasRecording && !isRecording ? (
-          <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
-            {displayTimeString + remainingTimeString}
+          {hasRecording && !isRecording ? (
+            <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
+              {displayTimeString + remainingTimeString}
             </div>
           ) : null}
-        <div className="bchat-recording--actions">
-          
-         {isRecording ? (
-          <div className={classNames('bchat-recording--timer')}>
-             <div className="bchat-recording--timer-light" />
-            {displayTimeString}
-           
+          <div className="bchat-recording--actions">
+            {isRecording ? (
+              <div className={classNames('bchat-recording--timer')}>
+                <div className="bchat-recording--timer-wrapper">
+                  <div className="bchat-recording--timer-light" />
+                </div>
+                {displayTimeString}
+              </div>
+            ) : null}
+
+            <StyledFlexWrapper>
+              {actionPauseAudio && (
+                <BchatIconButton
+                  iconType="pause"
+                  iconSize="medium"
+                  onClick={actionPauseFn}
+                  iconColor="#277AFB"
+                />
+              )}
+              {hasRecordingAndPaused && (
+                <BchatIconButton
+                  iconType="play"
+                  iconSize="medium"
+                  onClick={this.playAudio}
+                  iconColor="#F0F0F0"
+                  btnBgColor="#108D32"
+                  padding="5px"
+                />
+              )}
+              {hasRecording && (
+                <BchatIconButton
+                  iconType="delete"
+                  iconSize="medium"
+                  onClick={this.onDeleteVoiceMessage}
+                  iconColor="#F0F0F0"
+                  btnBgColor="#FF3E3E"
+                  padding="5px"
+                />
+              )}
+            </StyledFlexWrapper>
+
+            {actionDefault && <BchatIconButton iconType="microphone" iconSize={'huge'} />}
           </div>
-         ) : null}
-
-
-
-          <StyledFlexWrapper marginHorizontal="5px">
-
-          
-           
-            {actionPauseAudio && (
-              <BchatIconButton iconType="pause" iconSize="medium" onClick={actionPauseFn} iconColor="#277AFB"/>
-            )}
-            {hasRecordingAndPaused && (
-              <BchatIconButton iconType="play" iconSize="medium" onClick={this.playAudio} iconColor="#277AFB" />
-            )}
-            {hasRecording && (
-              <BchatIconButton
-                iconType="delete"
-                iconSize="medium"
-                onClick={this.onDeleteVoiceMessage}
-                iconColor="#E22A2B"
-              />
-            )}
-          </StyledFlexWrapper>
-
-          {actionDefault && <BchatIconButton iconType="microphone" iconSize={'huge'} />}
+          {isRecording && (
+            // <BchatIconButton
+            //   iconType="stop"
+            //   iconSize="medium"
+            //   iconColor={'#FF4538'}
+            //   onClick={actionPauseFn}
+            // />
+            <CustomIconButton customIcon={<StopIcon iconSize={30} />} onClick={actionPauseFn} />
+          )}
         </div>
-         {isRecording && (
-              <BchatIconButton
-              iconType="stop"
-                iconSize="medium"
-                iconColor={'#FF4538'}
-                onClick={actionPauseFn}
-              />
-            )}
-        
+        <div className={classNames('send-message-button')}>
+          {!isRecording ? (
+            <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
+          ) : (
+            <SendMessageButton name="Send" onClick={() => {}} />
+          )}
         </div>
-          <div
-            className={classNames( 
-              'send-message-button',
-            )}
-          > 
-            {!isRecording ? <SendMessageButton name="Send"  onClick={this.onSendVoiceMessage}/> :<SendMessageButton name="Send"  onClick={()=>{}}/>}
-          </div>
       </div>
     );
   }

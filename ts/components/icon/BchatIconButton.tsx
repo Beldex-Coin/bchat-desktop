@@ -13,6 +13,8 @@ interface SProps extends BchatIconProps {
   dataTestId?: string;
   id?: string;
   style?: any;
+  padding?:string;
+  btnBgColor?:string;
 }
 
 const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, ref) => {
@@ -33,6 +35,8 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
     margin,
     id,
     dataTestId,
+    padding,
+    btnBgColor
   } = props;
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (props.onClick) {
@@ -48,7 +52,7 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
       ref={ref}
       id={id}
       onClick={clickHandler}
-      style={{ display: isHidden ? 'none' : 'flex', margin: margin ? margin : '',alignItems:"center" }}
+      style={{ display: isHidden ? 'none' : 'flex', margin: margin ? margin : '',padding:padding??'',alignItems:"center",background:btnBgColor??'' }}
       data-testid={dataTestId}
     >
       <BchatIcon

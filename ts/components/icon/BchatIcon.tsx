@@ -28,7 +28,7 @@ const getIconDimensionFromIconSize = (iconSize: BchatIconSize | number) => {
       case 'medium':
         return 18;
       case 'large':
-        return 25;
+        return 22;
       case 'huge':
         return 30;
       case 'huge2':

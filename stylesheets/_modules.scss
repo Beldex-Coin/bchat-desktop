@@ -334,16 +334,13 @@
   // cursor: pointer;
 
   .module-contact-name__profile-name {
-    width: 100%;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-    padding-top: 3px;
+    color: #f0f0f0;
+    font-size: 18px;
+    font-weight: 400;
   }
- 
-
-
 }
-.module-left-pane__header,.module-conversation-header__title {
+.module-left-pane__header,
+.module-conversation-header__title {
   .module-contact-name-bns-tag {
     font-weight: bold;
     background-color: white;
@@ -678,7 +675,7 @@
   padding-bottom: 8px;
   padding-inline-start: 15px;
   align-items: center;
-  margin:10px 0;
+  margin: 10px 0;
   // position: relative;
   // border-bottom: var(--color-bchat-border);
   // background-color: var(--color-conversation-list);
@@ -838,8 +835,10 @@
   background: none;
   position: relative;
   display: inline-block;
-  margin: 1px;
+  // margin: 1px;
   vertical-align: middle;
+  margin: 4px;
+  border-radius: 16px;
 }
 
 .module-image__caption-icon {
@@ -850,10 +849,12 @@
 
 .module-image__with-click-handler {
   cursor: pointer;
+  // margin-right: 10px;
 }
 
 .module-image--soft-corners {
-  border-radius: 4px;
+  border-radius: 16px;
+  // margin-right: 10px;
 }
 
 .module-image__border-overlay {
@@ -943,14 +944,14 @@
 .module-image__close-button {
   cursor: pointer;
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 16px;
-  height: 16px;
+  top: 2px;
+  right: 2px;
+  //   width: 16px;
+  //   height: 16px;
   z-index: 2;
-  background-image: url('../images/x-shadow-16.svg');
-  background-color: #2879fbc2;
-  border-radius: 10px;
+  //   background-image: url('../images/x-shadow-16.svg');
+  //   background-color: #2879fbc2;
+  //   border-radius: 10px;
 }
 
 // Module: Image Grid
@@ -961,6 +962,8 @@
   align-items: center;
 
   margin: -1px;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .module-image-grid__column {
@@ -1091,15 +1094,19 @@
 }
 
 .module-attachments__rail {
-  margin-top: 12px;
-  margin-inline-start: 16px;
-  padding-inline-end: 16px;
-  overflow-x: scroll;
-  max-height: 142px;
-  background-color: var(--color-received-message-background);
+  // margin-top: 12px;
+  // margin-inline-start: 16px;
+  // padding-inline-end: 16px;
+  padding: 10px;
+  overflow-x: auto;
+  max-height: 160px;
+  // background-color: var(--color-received-message-background);
   white-space: nowrap;
   overflow-y: hidden;
   margin-bottom: 6px;
+  border-radius: 12px;
+  background: #131313;
+  margin-top: 20px;
 }
 
 // Module: Staged Generic Attachment
@@ -1308,15 +1315,16 @@
 // Module: Staged Placeholder Attachment
 
 .module-staged-placeholder-attachment {
-  margin: 1px;
-  border-radius: 4px;
-  border: 1px solid $color-gray-25;
-  height: 120px;
-  width: 120px;
+  /* margin: 1px; */
+  border-radius: 42px;
+  border: 1px solid #bbbdbe;
+  height: 30px;
+  width: 30px;
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
   position: relative;
+  background-color: #f0f0f0;
 
   &:hover {
     background: $color-gray-05;
@@ -1330,8 +1338,9 @@
 
   transform: translate(-50%, -50%);
 
-  height: 36px;
-  width: 36px;
+  height: 21px;
+  width: 21px;
+  background-color: #131313;
 
   @include color-svg('../images/plus-36.svg', $color-gray-45);
 }

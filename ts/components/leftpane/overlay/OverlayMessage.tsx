@@ -27,6 +27,8 @@ import { CopyIconButton } from '../../icon/CopyIconButton';
 import { BchatIconButton } from '../../icon';
 import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
+import { getLeftPaneLists } from '../../../state/selectors/conversations';
+import classNames from 'classnames';
 
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
@@ -41,6 +43,8 @@ export const OverlayMessage = () => {
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
+  const convoList = useSelector(getLeftPaneLists);
+  const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
   // const title = window.i18n('newBchat');
   // const buttonText = window.i18n('next');
@@ -96,9 +100,9 @@ export const OverlayMessage = () => {
       }
     }
   }
-
+  convolen
   return (
-    <div className="module-left-pane-overlay">
+    <div  className={classNames('module-left-pane-overlay')}>
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
       <p className="module-left-pane__chatHeader">
         {' '}
