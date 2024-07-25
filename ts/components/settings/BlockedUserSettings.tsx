@@ -185,6 +185,7 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder
         // size={40}
         position={{ left: '23px', top: '23px' }}
         isBnsHolder={isBnsHolder}
+        size={{width:'20',height:'20'}}
       >
         <Avatar size={AvatarSize.S} pubkey={memberPubkey} />
         {isAdmin && <CrownIcon />}

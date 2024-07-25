@@ -88,6 +88,7 @@ const AvatarItem = () => {
         // size={40}
         position={{ left: '26px', top: '23px' }}
         isBnsHolder={isBnsHolder}
+        size={{width:'20',height:'20'}}
       >
         <Avatar
           size={AvatarSize.S}

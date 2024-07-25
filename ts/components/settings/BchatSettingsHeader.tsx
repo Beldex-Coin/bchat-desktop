@@ -45,6 +45,7 @@ export const SettingsHeader = (props: Props) => {
           // size={52}
           position={{ left: '34px', top: '34px' }}
           isBnsHolder={converstation?.attributes?.isBnsHolder}
+          size={{width:'20',height:'20'}}
         >
           <Avatar
             size={AvatarSize.M}

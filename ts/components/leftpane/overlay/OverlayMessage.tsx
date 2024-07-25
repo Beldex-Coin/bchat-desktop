@@ -149,6 +149,7 @@ export const OverlayMessage = () => {
                   // size={89}
                   position={{ left: '72px', top: '72px' }}
                   isBnsHolder={ourconvo.attributes.isBnsHolder}
+                  size={{width:'20',height:'20'}}
                 >
                   <Avatar size={AvatarSize.XL} pubkey={ourconvo.id} />
                 </BNSWrapper>

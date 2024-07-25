@@ -53,7 +53,7 @@ export const CrownIcon = () => {
   );
 };
 export const BNSWrapper = (props: any) => {
-  const {  position,isBnsHolder } = props;
+  const {  position,isBnsHolder,size } = props;
 
   return (
     <>  
@@ -68,8 +68,8 @@ export const BNSWrapper = (props: any) => {
         style={{ left: position.left, top: position.top }}
       >
         <svg
-          width="20"
-          height="20"
+          width={size?.width }
+          height={size?.height}
           viewBox="0 0 30 30"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

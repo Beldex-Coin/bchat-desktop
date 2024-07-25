@@ -83,6 +83,7 @@ export const IncomingCallDialog = () => {
             // size={52}
             position={{ left: '73px', top: '73px' }}
             isBnsHolder={isBnsHolder}
+            size={{width:'20',height:'20'}}
           >
             <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
           </BNSWrapper>
