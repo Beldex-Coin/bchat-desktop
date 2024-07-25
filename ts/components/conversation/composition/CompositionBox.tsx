@@ -81,7 +81,7 @@ import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
 import { BchatIcon } from '../../icon/BchatIcon';
 import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
-import  classNames from 'classnames';
+import classNames from 'classnames';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -456,7 +456,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <Flex flexDirection="column">
         <BchatQuotedMessageComposition />
-        {this.renderStagedLinkPreview()}
+        {/* {this.renderStagedLinkPreview()} */}
         {/* {this.renderAttachmentsStaged()} */}
         <div className="composition-container">{this.renderCompositionView()}</div>
       </Flex>
@@ -542,15 +542,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
       currentHeight = walletHeight;
       valdatedDaemonHeight = deamonHeight;
     }
-    console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, valdatedDaemonHeight);
     let pct: any =
       currentHeight == 0 || valdatedDaemonHeight == 0
         ? 0
         : ((100 * currentHeight) / valdatedDaemonHeight).toFixed(1);
-    console.log('currentDaemon sync 1::', pct);
 
     let percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
-    console.log('currentDaemon sync 2::', percentage);
     return percentage;
   }
 
@@ -684,7 +681,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { showEmojiPanel } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
 
-    const { selectedConversation, isMe,WalletSyncBarShowInChat } = this.props;
+    const { selectedConversation, isMe, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
     const syncStatus =
       this.percentageCalc() === 0
@@ -727,6 +724,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
+              {this.renderStagedLinkPreview()}
               {this.renderAttachmentsStaged()}
 
               <Flex
@@ -738,7 +736,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               >
                 {this.renderTextArea()}
 
-                <div className={classNames(WalletSyncBarShowInChat&&"circular-bar-wrapper")}>
+                <div className={classNames(WalletSyncBarShowInChat && 'circular-bar-wrapper')}>
                   {selectedConversation?.isPrivate && typingEnabled && !isMe
                     ? this.bchatWalletView()
                     : ''}

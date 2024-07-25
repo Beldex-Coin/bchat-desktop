@@ -50,7 +50,7 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 
 export const SendMessageButton = (props: { onClick: () => void; name?: string }) => {
   return (
-    <div className="send-message-button" onClick={props.onClick}>
+    <div  onClick={props.onClick}>
       {/* {props.name === 'Send' ? ( */}
         <BchatIconButton
           iconType="send"

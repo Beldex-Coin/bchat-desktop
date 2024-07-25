@@ -1351,10 +1351,16 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  background-color: var(--color-conversation-item-selected);
-  align-items: flex-start;
+  /* background-color: var(--color-conversation-item-selected); */
+  /* align-items: flex-start; */
   min-height: 65px;
-  margin: $bchat-margin-xs;
+  margin: 5px;
+  overflow-y: hidden;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background: #131313;
+  margin-top: 20px;
+  align-items: center;
 }
 
 .module-staged-link-preview--is-loading {
@@ -1402,11 +1408,12 @@
   position: absolute;
   top: 5px;
   right: 5px;
+  border: none;
 
-  height: 16px;
-  width: 16px;
+  // height: 16px;
+  // width: 16px;
 
-  @include color-svg('../images/x-16.svg', $color-gray-60);
+  // @include color-svg('../images/x-16.svg', $color-gray-60);
 }
 
 // Module: Left Pane
