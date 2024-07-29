@@ -11,16 +11,16 @@ import {
   getQuotedMessageToAnimate,
   getShouldHighlightMessage,
 } from '../../../../state/selectors/conversations';
-import {
-  canDisplayImage,
-  // getGridDimensions,
-  // getImageDimensionsInAttachment,
-  hasImage,
-  hasVideoScreenshot,
-  isImage,
-  isImageAttachment,
-  isVideo,
-} from '../../../../types/Attachment';
+// import {
+//   canDisplayImage,
+//   // getGridDimensions,
+//   // getImageDimensionsInAttachment,
+//   hasImage,
+//   hasVideoScreenshot,
+//   isImage,
+//   isImageAttachment,
+//   isVideo,
+// } from '../../../../types/Attachment';
 import { Flex } from '../../../basic/Flex';
 // import { MINIMUM_LINK_PREVIEW_IMAGE_WIDTH } from '../message-item/Message';
 import { MessageAttachment } from './MessageAttachment';
@@ -48,39 +48,39 @@ type Props = {
   isDetailView?: boolean;
 };
 
-function getIsShowingImage(
-  props: Pick<MessageRenderingProps, 'attachments' | 'previews' | 'text'> & { imageBroken: boolean }
-): boolean {
-  const { attachments, previews, text, imageBroken } = props;
+// function getIsShowingImage(
+//   props: Pick<MessageRenderingProps, 'attachments' | 'previews' | 'text'> & { imageBroken: boolean }
+// ): boolean {
+//   const { attachments, previews, text, imageBroken } = props;
 
-  if (imageBroken) {
-    return false;
-  }
+//   if (imageBroken) {
+//     return false;
+//   }
 
-  if (attachments && attachments.length) {
-    const displayImage = canDisplayImage(attachments);
-    const hasText = text?.length;
-    return Boolean(
-      displayImage &&
-        !hasText &&
-        ((isImage(attachments) && hasImage(attachments)) ||
-          (isVideo(attachments) && hasVideoScreenshot(attachments)))
-    );
-  }
+//   if (attachments && attachments.length) {
+//     const displayImage = canDisplayImage(attachments);
+//     const hasText = text?.length;
+//     return Boolean(
+//       displayImage &&
+//         !hasText &&
+//         ((isImage(attachments) && hasImage(attachments)) ||
+//           (isVideo(attachments) && hasVideoScreenshot(attachments)))
+//     );
+//   }
 
-  if (previews && previews.length) {
-    const first = previews[0];
-    const { image } = first;
+//   if (previews && previews.length) {
+//     const first = previews[0];
+//     const { image } = first;
 
-    if (!image) {
-      return false;
-    }
+//     if (!image) {
+//       return false;
+//     }
 
-    return isImageAttachment(image);
-  }
+//     return isImageAttachment(image);
+//   }
 
-  return false;
-}
+//   return false;
+// }
 
 function onClickOnMessageInnerContainer(event: React.MouseEvent<HTMLDivElement>) {
   const selection = window.getSelection();
@@ -163,12 +163,12 @@ export const MessageContent = (props: Props) => {
     firstMessageOfSeries,
     lastMessageOfSeries,
     previews,
-    quote,
-    attachments,
+    // quote,
+    // attachments,
   } = contentProps;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
-  console.log('previews -->',previews)
+  console.log('previews -->', previews);
 
   let isDeleted = false;
   if (selectedMsg && selectedMsg.isDeleted !== undefined) {
@@ -177,12 +177,12 @@ export const MessageContent = (props: Props) => {
 
   // const width = getWidth({ previews, attachments });
   // console.log('width --->',width);
-  const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
-  const hasText = Boolean(text);
-  const hasQuote = !isEmpty(quote);
+  // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
+  // const hasText = Boolean(text);
+  // const hasQuote = !isEmpty(quote);
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
 
-  const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
+  // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 
   return (
@@ -190,9 +190,10 @@ export const MessageContent = (props: Props) => {
       className={classNames(
         'module-message__container',
         `module-message__container--${direction}`,
-        bgShouldBeTransparent
-          ? `module-message__container--${direction}--transparent`
-          : `module-message__container--${direction}--opaque`,
+        // bgShouldBeTransparent
+        //   ? `module-message__container--${direction}--transparent`
+        // :
+        `module-message__container--${direction}--opaque`,
         firstMessageOfSeries || props.isDetailView
           ? `module-message__container--${direction}--first-of-series`
           : '',
@@ -232,12 +233,13 @@ export const MessageContent = (props: Props) => {
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} />
               )}
               <Flex padding="7px 15px" container={true} flexDirection="column">
-                <MessageText messageId={props.messageId} /> 
-                <SpacerXS />
-                <div className='timeStamp'>{moment(timestamp).format("hh:mm A")}</div>
+                <MessageText messageId={props.messageId} />
               </Flex>
             </>
           ) : null}
+          <SpacerXS />
+          <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
+          <SpacerXS />
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
