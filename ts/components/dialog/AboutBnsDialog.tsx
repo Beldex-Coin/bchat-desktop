@@ -1,6 +1,6 @@
 import React from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+// import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { editProfileModal, updateAboutBnsModal } from '../../state/ducks/modalDialog';
 
 export const AboutBnsDialog = () => {
@@ -16,16 +16,20 @@ export const AboutBnsDialog = () => {
         showExitIcon={false}
         isloading={false}
         title="About BNS"
-        buttons={
-        <div >
-          <BchatButton
-            text={window.i18n('close')}
-            buttonColor={BchatButtonColor.Secondary}
-            buttonType={BchatButtonType.Brand}
-            // style={{ minWidth: '135px', height: '45px', margin: "15px 0" }}
-            onClick={closeDialog}
-          />
-        </div>}
+        okButton={{
+          text: window.i18n('close'),
+          onClickOkHandler: closeDialog,
+        }}
+        // buttons={
+        //   <div >
+        //     <BchatButton
+        //       text={window.i18n('close')}
+        //       buttonColor={BchatButtonColor.Secondary}
+        //       buttonType={BchatButtonType.Brand}
+        //       // style={{ minWidth: '135px', height: '45px', margin: "15px 0" }}
+        //       onClick={closeDialog}
+        //     />
+        //   </div>}
       >
         <section>
           <article>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerMD } from '../basic/Text';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 // import { useKey } from 'react-use';
@@ -24,8 +24,7 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
   const { settings = false, onClickOk, onClickClose, onClickCancel, btndisable } = props;
 
   const [isLoading, setIsLoading] = useState(false);
-  const okText = window.i18n('ok');
-  const cancelText = window.i18n('cancel');
+  // const cancelText = window.i18n('cancel');
 
   const onClickOkHandler = async () => {
     if (onClickOk) {
@@ -59,7 +58,19 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
   // }, onClickOkHandler);
 
   return (
-    <BchatWrapperModal title={''} onClose={onClickClose} showExitIcon={false} showHeader={false}>
+    <BchatWrapperModal title={''} onClose={onClickClose} showExitIcon={false} showHeader={false}
+      okButton={{
+        text: window.i18n('ok'),
+        onClickOkHandler,
+        color: BchatButtonColor.Primary,
+        disabled: btndisable ? btndisable : false
+      }}
+      cancelButton={{
+        text: window.i18n('cancel'),
+        status: true,
+        onClickCancelHandler
+      }}
+    >
       <div className="bchat-modal__centered">
         <div className="bchat-modal-imgConfirmBox">
           <img src={'images/bchat/walletinchat.svg'} width={'50px'} height={'50px'} />
@@ -80,23 +91,25 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
           <BchatSpinner loading={isLoading} />
         </div>
       </div>
-      <div className="bchat-modal__button-group">
+      {/* <div className="bchat-modal__button-group">
         <BchatButton
           text={cancelText}
-          buttonColor={BchatButtonColor.White}
+          buttonType={BchatButtonType.Brand}
+          buttonColor={BchatButtonColor.Secondary}
           onClick={onClickCancelHandler}
           dataTestId="Bchat-confirm-cancel-button"
-          style={{ width: '120px', height: '35px' }}
+        // style={{ width: '120px', height: '35px' }}
         />
         <BchatButton
-          text={okText}
-          buttonColor={BchatButtonColor.Green}
+          text={window.i18n('ok')}
+          buttonType={BchatButtonType.Brand}
+          buttonColor={BchatButtonColor.Primary}
           onClick={onClickOkHandler}
           dataTestId="Bchat-confirm-ok-button"
           disabled={btndisable ? btndisable : false}
-          style={{ width: '120px', height: '35px' }}
+        // style={{ width: '120px', height: '35px' }}
         />
-      </div>
+      </div> */}
     </BchatWrapperModal>
   );
 };

@@ -26,6 +26,7 @@ import { WalletMainPanel, } from '../wallet/BchatWalletMainPanel';
 import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { WalletSettings } from '../wallet/BchatWalletSettings';
+import { updateBchatAlertConfirmModal } from '../../state/ducks/modalDialog';
 // import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
 // import { startWallet } from "../../mains/wallet-rpc"
 
@@ -50,8 +51,8 @@ export enum BchatSettingCategory {
   Hops = 'hops',
   Wallet = 'wallet',
   WalletSettings = 'walletSettings',
-  ClearData='clearData'
- 
+  ClearData = 'clearData'
+
 }
 
 export interface SettingsViewProps {
@@ -185,6 +186,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
           <BchatRecoverySeed
             onPasswordUpdated={this.onPasswordUpdated}
             passwordLock={this.state.hasPassword}
+            onClickCancel={() => this.onClickCancel()}
+
           />
         );
       }
@@ -208,9 +211,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     if (category === BchatSettingCategory.WalletSettings) {
 
       return (
-            <div>         
-              <WalletSettings />
-            </div>      
+        <div>
+          <WalletSettings />
+        </div>
       );
     }
     if (category === BchatSettingCategory.Notifications) {
@@ -276,13 +279,13 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
                 ? 'hops'
                 : category === BchatSettingCategory.Chat
                   ? 'Chat'
-                : category === BchatSettingCategory.WalletSettings
-                  ? 'WalletSettingsTitle'
-                  : category === BchatSettingCategory.Wallet
-                  ? 'WalletSettingsTitle'
-                  : category === BchatSettingCategory.Notifications
-                    ? 'notificationsSettingsTitle'
-                      : 'privacySettingsTitle';
+                  : category === BchatSettingCategory.WalletSettings
+                    ? 'WalletSettingsTitle'
+                    : category === BchatSettingCategory.Wallet
+                      ? 'WalletSettingsTitle'
+                      : category === BchatSettingCategory.Notifications
+                        ? 'notificationsSettingsTitle'
+                        : 'privacySettingsTitle';
 
     return (
       <div className="bchat-settings">
@@ -331,6 +334,10 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
         hasPassword: false,
       });
     }
+  }
+
+  public onClickCancel() {
+    window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null))
   }
 
   private async onKeyUp(event: any) {

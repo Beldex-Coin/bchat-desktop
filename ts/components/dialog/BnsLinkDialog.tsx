@@ -10,7 +10,6 @@ import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVer
 
 export const BnsLinkDialog = () => {
   const [success, setSuccess] = useState(false);
-  const [buttonStatus, setButtonStatus] = useState(true);
   const [bnsName, setBnsName] = useState('');
   const [isVerify, setIsVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,13 +31,16 @@ export const BnsLinkDialog = () => {
     //call to update conversational state value
     await linkBns(bnsName);
     setSuccess(true);
-    setButtonStatus(false);
   };
   const BnsLinkedSuccessModal = () => {
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
-          <svg
+          <img
+            src={'images/bchat/linked_bns.gif'}
+            style={{ width: '120px', height: '120px' }}
+          />
+          {/* <svg
             width="68"
             height="68"
             viewBox="0 0 68 68"
@@ -57,10 +59,10 @@ export const BnsLinkDialog = () => {
                 fill="white"
               />
             </g>
-          </svg>
+          </svg> */}
         </div>
-        <div>{i18n('bnsLinkedSuccessfully')}</div>
-        <BchatButton
+        <div className='linked_bns'>{i18n('bnsLinkedSuccessfully')}</div>
+        {/* <BchatButton
           style={{
             height: '60px',
             borderRadius: '10px',
@@ -73,7 +75,7 @@ export const BnsLinkDialog = () => {
           onClick={() => {
             closeDialog();
           }}
-        />
+        /> */}
       </div>
     );
   };
@@ -83,26 +85,20 @@ export const BnsLinkDialog = () => {
       onClose={closeDialog}
       showExitIcon={false}
       isloading={isLoading}
-      isButton={buttonStatus}
-      buttons={<div style={{
-        width: '40%',
-        margin: 'auto 0',
-        backgroundColor: '#2E333D',
-        fontWeight: 600,
-        border: 'none',
-        borderRadius: '12px',
-        fontSize: "12px",
-        height: '55px',
-        fontFamily: "Poppins",
-      }}>
-        <BchatButton
-          style={{ borderRadius: '10px', fontSize: '18px' }}
-          text={i18n('cancel')}
-          buttonType={BchatButtonType.Brand}
-          buttonColor={BchatButtonColor.Secondary}
-          onClick={() => closeDialog()}
-        />
-      </div>}
+      okButton={{
+        text: success ? i18n('ok') : i18n('cancel'),
+        onClickOkHandler: closeDialog,
+        color: success ? BchatButtonColor.Primary : BchatButtonColor.Secondary
+      }}
+    // buttons={<div className='buttons'>
+    //   <BchatButton
+    //     style={{ borderRadius: '10px', fontSize: '18px' }}
+    //     text={success ? i18n('ok') : i18n('cancel')}
+    //     buttonType={BchatButtonType.Brand}
+    //     buttonColor={success ? BchatButtonColor.Primary : BchatButtonColor.Secondary}
+    //     onClick={() => closeDialog()}
+    //   />
+    // </div>}
     >
       <div style={{ width: '410px', paddingTop: '20px' }} className="bns_link_modal">
         {!success ? (

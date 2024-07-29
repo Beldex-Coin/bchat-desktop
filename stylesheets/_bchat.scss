@@ -286,7 +286,7 @@ textarea {
   // }
 
   &.brand {
-    min-width: 165px;
+    min-width: 200px;
     height: 60px;
     align-items: center;
     padding: 0px $bchat-margin-lg;
@@ -310,7 +310,7 @@ textarea {
     }
 
     &.enable {
-      background-color:  #202329;
+      background-color: #202329;
       color: #108D32;
     }
 
@@ -920,17 +920,19 @@ label {
   }
 
   &-imgConfirmBox {
-    width: 380px;
-    margin: 20px 20px 10px;
+    width: 400px;
+    margin: 35px 20px 25px;
+    font-family: $bchat-font-default;
+
 
     &-header {
-      font-family: $bchat-font-poppin-semibold;
       font-size: 16px;
+      font-weight: 700;
     }
 
     &-message {
-      font-family: $bchat-font-poppin-light;
       line-height: 20px;
+      color: #A7A7BA;
 
       span {
         font-family: $bchat-font-poppin-semibold;
@@ -938,7 +940,53 @@ label {
       }
     }
   }
-  &-childhood {
+
+  &-setPassword {
+    width: 425px;
+    margin: 40px 10px 25px;
+    font-family: $bchat-font-default;
+
+    .contentbox {
+      text-align: left;
+      // width: 60%;
+      // width: 414px;
+      // background-color: var(--color-WalcontentBg);
+      // padding: 21px 30px;
+      // border-radius: 10px;
+      // margin: 0px 15px;
+    }
+
+    .header {
+      font-family: $bchat-font-default;
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .fontSemiBold {
+      font-family: $bchat-font-default;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 20px;
+      color: #A7A7BA;
+    }
+
+    .span {
+      color: white;
+    }
+
+    // .bchat-button.brand.green {
+    //   width: 168px;
+    //   height: 40px;
+    //   border-radius: 5px;
+    // }
+
+    // .flexCenter {
+    //   display: flex;
+    //   justify-content: center;
+    // }
+  }
+
+  &-footer {
     height: 110px;
     width: 100%;
     display: flex;
@@ -947,6 +995,18 @@ label {
     background-color: #202329;
     align-items: center;
   }
+}
+
+.buttons {
+  display: flex;
+  width: 180px;
+  margin: auto 0;
+  background-color: #2E333D;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  font-size: 12px;
+  font-family: "Poppins";
 }
 
 .bchat-modal__body {
@@ -988,7 +1048,7 @@ label {
       // margin: $bchat-margin-lg;
       // margin-top: 30px;
       // margin-bottom: 30px;
-      // text-align: center;
+      text-align: center;
       // margin-top: 8px;
       font-family: $bchat-font-default;
       // font-size: 14px;
@@ -1184,15 +1244,16 @@ label {
     margin: 5px 15px;
     font-size: 16px;
   }
- .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+
+  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     border-radius: 14px;
     background: #333842;
-   
+
     // background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     color: '#fff';
   }
+
   .react-contexify__item__content {
     transition: $bchat-transition-duration;
     color: var(--color-text);
@@ -1897,44 +1958,51 @@ label {
     }
   }
 
-  &-warnUnsetpass {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #0000001f;
+  // &-warnUnsetpass {
+  //   width: 100%;
+  //   height: 100%;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   background-color: #0000001f;
 
-    &-contentbox {
-      text-align: center;
-      // width: 60%;
-      width: 414px;
-      background-color: var(--color-WalcontentBg);
-      padding: 21px 30px;
-      border-radius: 10px;
-      margin: 0px 15px;
-    }
+  //   &-contentbox {
+  //     text-align: left;
+  //     // width: 60%;
+  //     width: 414px;
+  //     background-color: var(--color-WalcontentBg);
+  //     padding: 21px 30px;
+  //     border-radius: 10px;
+  //     margin: 0px 15px;
+  //   }
 
-    .fontSemiBold {
-      font-family: $bchat-font-poppin-semibold;
-      font-size: 14px;
+  //   .header {
+  //     font-family: $bchat-font-default;
+  //     font-weight: 500;
+  //     font-size: 20px;
+  //   }
 
-      &:hover {
-        background-color: var(--color-walletPriorityHover);
-      }
-    }
+  //   .fontSemiBold {
+  //     font-family: $bchat-font-default;
+  //     font-weight: 500;
+  //     font-size: 14px;
 
-    .bchat-button.brand.green {
-      width: 168px;
-      height: 40px;
-      border-radius: 5px;
-    }
+  //     &:hover {
+  //       background-color: var(--color-walletPriorityHover);
+  //     }
+  //   }
 
-    .flexCenter {
-      display: flex;
-      justify-content: center;
-    }
-  }
+  //   .bchat-button.brand.green {
+  //     width: 168px;
+  //     height: 40px;
+  //     border-radius: 5px;
+  //   }
+
+  //   .flexCenter {
+  //     display: flex;
+  //     justify-content: center;
+  //   }
+  // }
 
   .wallet {
     .marginLeft {

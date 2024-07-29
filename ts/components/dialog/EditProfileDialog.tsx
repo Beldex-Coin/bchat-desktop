@@ -86,8 +86,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
           },
         ]
         : undefined;
-    const mode = this.state.mode == 'qr' ? 'default' : 'qr';
-
 
     return (
       <div style={{ backgroundColor: 'red' }}>
@@ -103,6 +101,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
             headerIconButtons={backButton}
             showExitIcon={true}
             isloading={this.state.loading}
+            okButton={{
+              text: 'Show QR',
+              iconSize: 26,
+              iconType: 'qr_code'
+              , onClickOkHandler: this.qrStatusUpdate
+            }}
             buttons={<button
               style={{
                 width: '40%',
@@ -116,8 +120,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 fontFamily: "Poppins"
               }}
               onClick={() => {
-                this.setState(state => ({ ...state, mode: mode }));
-
+                // this.setState(state => ({ ...state, mode: mode }));
+                this.qrStatusUpdate();
                 // window.inboxStore?.dispatch(editProfileModal(null));
                 // window.inboxStore?.dispatch(bnsLinkModal({}));
                 // props.qrStatus?.(true)
@@ -421,6 +425,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
     );
   }
 
+  private qrStatusUpdate() {
+    const mode = this.state.mode == 'qr' ? 'default' : 'qr';
+
+    this.setState(state => ({ ...state, mode: mode }));
+  }
+
   private renderQrView(props: any) {
     return (
       <div className="qr-box-view">
@@ -440,7 +450,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         // size={89}
         position={{ left: '65px', top: '62px' }}
         isBnsHolder={this.convo?.attributes?.isBnsHolder}
-        size={{width:'30',height:'30'}}
+        size={{ width: '30', height: '30' }}
       >
         <Avatar
           forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}

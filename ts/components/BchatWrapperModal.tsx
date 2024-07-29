@@ -7,6 +7,7 @@ import { BchatIconButton } from './icon';
 import useKey from 'react-use/lib/useKey';
 import styled from 'styled-components';
 import { BchatSpinner } from './basic/BchatSpinner';
+import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 
 export type BchatWrapperModalType = {
   title?: string;
@@ -23,7 +24,8 @@ export type BchatWrapperModalType = {
   additionalClassName?: string;
   isloading?: boolean;
   buttons?: any;
-  isButton?: boolean;
+  okButton?: any;
+  cancelButton?: any;
 };
 const Loader = styled.div`
   position: absolute;
@@ -47,7 +49,8 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     headerReverse,
     additionalClassName,
     isloading,
-    isButton = true
+    okButton,
+    cancelButton
   } = props;
 
   useKey(
@@ -114,9 +117,27 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             </div>
             }
           </div>
-          {isButton && <div className="bchat-modal-childhood">
-            {props.buttons}
-          </div>}
+          <div className="bchat-modal-footer">
+            {cancelButton?.status && <BchatButton
+              text={cancelButton?.text}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={BchatButtonColor.Secondary}
+              onClick={cancelButton.onClickCancelHandler}
+              dataTestId="Bchat-confirm-cancel-button"
+              style={{ marginRight: '12px' }}
+            />}
+            <BchatButton
+              text={okButton?.text}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={okButton?.color ? okButton.color : BchatButtonColor.Secondary}
+              disabled={okButton?.disabled}
+              iconSize={okButton?.iconSize}
+              iconType={okButton?.iconType}
+              onClick={okButton?.onClickOkHandler}
+              dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}
+            // style={{ width: '120px', height: '35px' }}
+            />
+          </div>
         </div>
       </div>
     </div>
