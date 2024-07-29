@@ -23,12 +23,14 @@
       // height: 87vh;
       flex-direction: column;
       justify-content: center;
+
       .progressSyncBox {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       }
+
       &-contentBox {
         width: 500px;
         // background-color: var(--color-WalcontentBg);
@@ -36,6 +38,7 @@
 
         .progress {
           width: 70px;
+
           .CircularProgressbar {
             /*
              * This fixes an issue where the CircularProgressbar svg has
@@ -96,6 +99,7 @@
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
             stroke: transparent;
           }
+
           //   .circle-wrap {
           //     // margin: 150px auto;
           //     width: 150px;
@@ -167,10 +171,12 @@
           margin: auto;
           background-image: var(--img-walPassword);
         }
+
         &-headerBox {
           display: flex;
           align-items: center;
           justify-content: center;
+
           span {
             font-family: $bchat-font-poppins-bold;
             margin-left: 10px;
@@ -181,6 +187,7 @@
         &-inputBox {
           margin: 0 auto;
           width: 73%;
+
           input {
             outline: none;
             border: none;
@@ -189,6 +196,7 @@
             text-align: center;
           }
         }
+
         &-loader,
         &-forgotpasswordLoader {
           width: 500px;
@@ -200,16 +208,19 @@
           display: flex;
           align-items: center;
         }
+
         &-forgotpasswordLoader {
           width: 590px;
           height: 476px;
         }
+
         &-forgotTxt {
           text-align: center;
           color: #1bb51e;
           font-size: 12px;
           text-decoration: underline;
         }
+
         .bchat-button.brand-outline.green {
           width: 33%;
           margin: auto;
@@ -218,6 +229,7 @@
         }
       }
     }
+
     &-progressSync {
       &-presentage {
         text-align: center;
@@ -225,11 +237,13 @@
         font-size: 20px;
         color: #1bb51e;
       }
+
       &-barBg {
         width: 100%;
         height: 10px;
         background-color: var(--color-walSyncbar);
         padding-top: 2px;
+
         .bar {
           background-color: #1bb51e;
           width: 40%;
@@ -237,21 +251,25 @@
           margin-top: 1px;
         }
       }
+
       &-reloadTxt {
         text-align: center;
         font-family: $bchat-font-poppin-semibold;
         font-size: 14px;
       }
+
       &-bRemaing {
         text-align: center;
       }
     }
+
     &-forgotPassword {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       flex-direction: column;
+
       &-content-Box {
         display: flex;
         flex-direction: column;
@@ -264,6 +282,7 @@
         // background-color: #2d2d3b;
         // background-color: var(--color-WalcontentBg);
         border-radius: 10px;
+
         // margin: 5% 0px;
         &-title {
           text-align: center;
@@ -271,9 +290,11 @@
           font-family: $bchat-font-poppins-bold;
           padding-top: 20px;
         }
+
         &-seed {
           display: flex;
           flex-direction: row;
+
           textarea {
             border: none;
             outline: none;
@@ -290,6 +311,7 @@
             border-radius: 10px;
           }
         }
+
         &-paste-icon {
           background: url('../images/bchat/paste.svg') no-repeat;
           width: 35px;
@@ -305,12 +327,14 @@
           cursor: pointer;
           box-shadow: var(--color-bchat-shadow);
         }
+
         &-paste-icon:hover {
           // transform: scale(1.1);
           // background-color: var(--color-wallet-copy-hover);
           // color: #1ced23;
           background-color: var(--color-profile-close);
         }
+
         &-password {
           input {
             border: none;
@@ -328,6 +352,7 @@
             padding: 10px;
           }
         }
+
         &-disClaimerBox {
           // width: 86%;
           // padding-top: 12px;
@@ -363,13 +388,16 @@
   &-UpdateModal {
     &-discription {
       font-family: $bchat-font-poppin-light;
+
       &-fontMedium {
         font-family: $bchat-font-poppin-medium;
       }
     }
+
     &-header {
       font-family: $bchat-font-poppin-semibold;
     }
+
     &-icon {
       // color:red
       width: 50px;
@@ -383,6 +411,7 @@
         background-color: #2075ff;
       }
     }
+
     &-loader {
       width: 552px;
       height: 362px;
@@ -559,7 +588,7 @@
 }
 
 .bchat-dialog {
-  & ~ .index.inbox {
+  &~.index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
@@ -569,6 +598,7 @@
     display: flex;
     border-bottom: var(--border-bchat);
   }
+
   .changepass {
     &-forgot-seed {
       textarea {
@@ -583,6 +613,7 @@
         // box-shadow: 1px 2px 5px #00000074;
       }
     }
+
     &-oldpassInput {
       input {
         background-color: var(--color-walInputBg);
@@ -630,6 +661,7 @@
   display: flex;
   align-items: center;
 }
+
 .walletChangePasswordHeader {
   display: flex;
   flex-direction: row;
@@ -705,7 +737,7 @@
       word-break: break-all;
       font-size: $bchat-font-md;
       // background-color: var(--color-background-primary);
-background-color: #202329;
+      background-color: #202329;
       border-radius: 10px;
       padding: 0px 10px 10px 14px;
       font-family: $bchat-font-default;
@@ -720,6 +752,7 @@ background-color: #202329;
       box-shadow: var(--color-bchat-shadow);
 
       font-size: $bchat-font-md;
+
       // padding: 0px $bchat-margin-sm;
       .profile-value {
         width: 86%;
@@ -743,7 +776,7 @@ background-color: #202329;
       border-radius: 30px;
       background-position: center;
       cursor: pointer;
-     
+
 
       // &:hover {
       //   background-color: var(--color-copy-hover);
@@ -754,10 +787,11 @@ background-color: #202329;
       width: 148px;
     }
   }
-  .profileHeader{
-   width: 100%;
-   display: flex;
-   justify-content: end;
+
+  .profileHeader {
+    width: 100%;
+    display: flex;
+    justify-content: end;
   }
 
   .profileClose {
@@ -827,6 +861,7 @@ background-color: #202329;
         // left: 103px;
         position: relative;
         cursor: pointer;
+
         &:hover {
           color: #128b17;
         }
@@ -837,12 +872,14 @@ background-color: #202329;
       }
     }
   }
+
   .link_bns_wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
   }
+
   .link_bns_Btn {
     width: 55%;
     border-radius: 12px;
@@ -854,6 +891,7 @@ background-color: #202329;
     font-family: $bchat-font-default;
     font-weight: 600;
   }
+
   .hintTxt {
     color: #a7a7ba;
     font-size: 12px;
@@ -862,6 +900,7 @@ background-color: #202329;
     align-items: flex-start;
     margin-bottom: 15px;
   }
+
   .bnsVerfiedTxt {
     display: flex;
     align-items: flex-start;
@@ -872,12 +911,13 @@ background-color: #202329;
     font-weight: 700;
   }
 }
+
 // .bns_enable_modal {
-  // .bchat-modal__body {
-    // border: 2px solid #00bd40;
-    // box-shadow: inset 0 0 24px 0px rgba(0, 189, 64, 0.45);
-    // border-radius: 17px;
-  // }
+// .bchat-modal__body {
+// border: 2px solid #00bd40;
+// box-shadow: inset 0 0 24px 0px rgba(0, 189, 64, 0.45);
+// border-radius: 17px;
+// }
 // }
 .bns_link_modal {
   header {
@@ -888,6 +928,7 @@ background-color: #202329;
     margin-top: 15px;
     font-weight: 600;
   }
+
   .label_id {
     // font-weight: 700;
     // font-family: $bchat-font-poppin-semibold;
@@ -895,6 +936,14 @@ background-color: #202329;
     margin-bottom: 10px;
     font-size: 12x;
   }
+
+  .linked_bns {
+    padding: 0px 0px 35px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #108D32;
+  }
+
   .id_wrapper {
     height: 90px;
     display: flex;
@@ -909,16 +958,19 @@ background-color: #202329;
     color: #108D32;
     box-shadow: var(--color-bchat-shadow);
   }
+
   .hr_line {
     background-color: var(--color-pill-divider);
     width: 100%;
     height: 2px;
   }
+
   .label_input {
     text-align: start;
     margin-top: 20px;
     color: #A7A7BA;
   }
+
   .inputBox-wrapper {
     margin: 15px auto;
     height: 65px;
@@ -927,12 +979,14 @@ background-color: #202329;
     border-radius: 10px;
     padding: 0px 25px;
     box-shadow: var(--color-bchat-shadow);
+
     input {
       width: 100%;
       height: 100%;
       background-color: transparent;
     }
   }
+
   .divided-btn-wrapper {
     align-items: center;
     display: flex;
@@ -950,6 +1004,7 @@ background-color: #202329;
       cursor: pointer;
     }
   }
+
   .success {
     font-family: $bchat-font-default;
     font-size: 22px;
@@ -959,6 +1014,7 @@ background-color: #202329;
     color: #108D32;
   }
 }
+
 .about-bns {
   section {
     text-align: left;
@@ -966,13 +1022,15 @@ background-color: #202329;
     // height: 500px;
     overflow: auto;
   }
-  article{
+
+  article {
     padding: 0 10px;
   }
-  .bchat-modal__header__title
-  {
+
+  .bchat-modal__header__title {
     font-size: 18px;
   }
+
   &-header {
     font-family: $bchat-font-default;
     font-weight: 600;
@@ -980,6 +1038,7 @@ background-color: #202329;
     margin-top: $bchat-margin-md;
     margin-bottom: $bchat-margin-sm;
   }
+
   &-txt {
     font-family: $bchat-font-default;
     font-weight: 400;
@@ -987,17 +1046,21 @@ background-color: #202329;
     margin-bottom: $bchat-margin-lg;
     line-height: 22px;
   }
+
   &-txt-bold {
     line-height: 22px;
+
     span {
       font-family: $bchat-font-default;
       font-weight: 600;
     }
+
     span:first-child {
       font-family: $bchat-font-default;
     }
   }
 }
+
 .onion-status-dialog {
   .bchat-modal__header__title {
     font-size: $bchat-font-lg;

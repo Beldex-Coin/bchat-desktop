@@ -3,15 +3,19 @@ import React from 'react';
 import { BchatSeedModal } from '../dialog/BchatSeedModal';
 import { useSelector } from 'react-redux';
 import { getRecoveryPhraseDialog } from '../../state/selectors/modal';
+import { BchatWrapperModal } from '../BchatWrapperModal';
 
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIcon } from '../icon';
+// import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+// import { BchatIcon } from '../icon';
 import { BchatSettingCategory } from './BchatSettings';
 import { showSettingsSection } from '../../state/ducks/section';
 import { displayPasswordModal } from './section/CategoryPrivacy';
-import { SpacerMD } from '../basic/Text';
+import { SpacerLG } from '../basic/Text';
+import { BchatButtonColor } from '../basic/BchatButton';
+// import {  updateConfirmModal } from '../../state/ducks/modalDialog';
 
 export const BchatRecoverySeed = (props: any) => {
+
   //  const [verify, setVerify] = useState(false)
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
 
@@ -19,35 +23,66 @@ export const BchatRecoverySeed = (props: any) => {
     return <BchatSeedModal {...recoveryPhraseModalState} />;
   }
 
+  const onClickOkHandler = () => {
+    window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+    displayPasswordModal('set', props.onPasswordUpdated);
+  };
+
+  const onClickCancelHandler = () => {
+    console.log("sdnksnfksfkjf")
+  //   if (props.onClickCancel) {
+  //     onClickCancel();
+  //   }
+
+  //   if (onClickClose) {
+  //     onClickClose();
+  //   }
+  // state.recoveryPhraseModal
+  // displayPasswordModal('remove', props.onPasswordUpdated);
+  window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Chat));
+
+  // window.inboxStore?.dispatch(updateConfirmModal(null));
+};
+
   return (
-    <div className="bchat-settings-warnUnsetpass">
-      <div className="bchat-settings-warnUnsetpass-contentbox">
-        <BchatIcon iconType="info" iconSize={60} iconColor="#2879FB" />
-        <SpacerMD />
-
-        <div className="fontSemiBold">{window.i18n('setPassword')}</div>
-        <SpacerMD />
-        <div>
-          Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
-        </div>
-        <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div>
-        <SpacerMD />
-        <SpacerMD />
-
-        <div  className='flexCenter'>
-          <BchatButton
-            text={'OK'}
-            onClick={() => {
-              window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
-              displayPasswordModal('set', props.onPasswordUpdated);
-              // setVerify(true)
-            }}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-          />
+    <BchatWrapperModal title={''} showExitIcon={false} showHeader={false}
+    okButton={{
+      text: window.i18n('ok'),
+      onClickOkHandler,
+      color: BchatButtonColor.Primary,
+    }}
+    cancelButton={{
+      text: window.i18n('cancel'),
+      status: true,
+      onClickCancelHandler
+    }}
+    >
+      <div className="bchat-modal__centered">
+        <div className="bchat-modal-setPassword">
+          <div className="contentbox">
+            <div className="header">{window.i18n('setPassword')}</div>
+            <SpacerLG />
+            <div className='fontSemiBold'>
+              Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
+              <span className='span'>Settings -&gt; Privacy -&gt; Set Account Password.</span>
+            </div>
+            {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}
+          </div>
+          {/* <div className="bchat-modal-imgConfirmBox-header">{window.i18n('payYouChat')}</div>
+          <SpacerMD /> */}
+          {/* <div className="bchat-modal-imgConfirmBox-message">
+            {settings ? (
+              window.i18n('warningWalletPassword')
+            ) : (
+              <>
+                Enable pay as you chat from <span>Settings -&gt; Chat -&gt; Pay As You Chat </span>
+                to use this option
+              </>
+            )}
+          </div> */}
         </div>
       </div>
-    </div>
+    </BchatWrapperModal>
   );
 
   // if(true)
