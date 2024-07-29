@@ -22,6 +22,8 @@ import {
 } from '../../../../state/ducks/conversations';
 import { getMessageContextMenuProps } from '../../../../state/selectors/conversations';
 import { saveAttachmentToDisk } from '../../../../util/attachmentsUtil';
+import { BchatIcon } from '../../../icon';
+import CopyIcon from '../../../icon/CopyIcon';
 
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -186,25 +188,38 @@ export const MessageContextMenu = (props: Props) => {
         <Item onClick={saveAttachment}>{window.i18n('downloadAttachment')}</Item>
       ) : null}
 
-      <Item onClick={copyText}>{window.i18n('copyMessage')}</Item>
-      {(isSent || !isOutgoing) && <Item onClick={onReply}>{window.i18n('replyToMessage')}</Item>}
+      <Item onClick={copyText}>
+        <CopyIcon color={'#F0F0F0'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
+      </Item>
+      {(isSent || !isOutgoing) && (
+        <Item onClick={onReply}>
+          <BchatIcon iconType={'reply'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
+        </Item>
+      )}
       {(!isPublic || isOutgoing) && (
-        <Item onClick={onShowDetail}>{window.i18n('moreInformation')}</Item>
+        <Item onClick={onShowDetail}>
+        <BchatIcon iconType={'infoCircle'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
       )}
       {showRetry ? <Item onClick={onRetry}>{window.i18n('resend')}</Item> : null}
       {isDeletable ? (
         <>
-          <Item onClick={onSelect}>{selectMessageText}</Item>
+          <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{selectMessageText}</span></Item>
         </>
       ) : null}
       {isDeletable && !isPublic ? (
         <>
-          <Item onClick={onDelete}>{deleteMessageJustForMeText}</Item>
+          <Item onClick={onDelete}><BchatIcon iconType={'delete'} iconSize={18} iconColor='#FF3E3E' />
+        <span style={{ marginLeft: '10px' }}>{deleteMessageJustForMeText}</span></Item>
         </>
       ) : null}
       {isDeletableForEveryone ? (
         <>
-          <Item onClick={onDeleteForEveryone}>{unsendMessageText}</Item>
+          <Item onClick={onDeleteForEveryone}><BchatIcon iconType={'delete'} iconSize={18} iconColor='#FF3E3E' />
+        <span style={{ marginLeft: '10px' }}>{unsendMessageText}</span></Item>
         </>
       ) : null}
       {weAreAdmin && isPublic ? <Item onClick={onBan}>{window.i18n('banUser')}</Item> : null}

@@ -6,17 +6,42 @@ import { AttachmentDownloads } from '../../../../bchat/utils';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { BchatIcon } from '../../../icon';
+import { Flex } from '../../../basic/Flex';
 
 const StyledTrustSenderUI = styled.div`
   padding-inline: var(--margins-sm);
   display: flex;
   align-items: center;
+  margin: 15px 15px 5px;
+  padding: 15px;
+  border-radius: 16px;
+  background: #131313;
 `;
 
 const ClickToDownload = styled.div`
   cursor: pointer;
-  padding: var(--margins-xs) var(--margins-md);
+  // padding: var(--margins-xs) var(--margins-md);
   white-space: nowrap;
+  overflow: hidden;
+  color: #f0f0f0;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 300;
+`;
+
+const VerticalLine = styled.div`
+  width: 5px;
+  background-color: #858598;
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 10px;
+`;
+const ImageTxt = styled.span`
+  margin-left: 5px;
+  color: #f0f0f0;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 export const ClickToTrustSender = (props: { messageId: string }) => {
@@ -106,8 +131,14 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
 
   return (
     <StyledTrustSenderUI onClick={openConfirmationModal}>
-      <BchatIcon iconSize="small" iconType="gallery" />
-      <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
+      <VerticalLine></VerticalLine>
+      <Flex container={true} flexDirection="column">
+        <Flex container={true} flexDirection="row" alignItems="center">
+          <BchatIcon iconSize="small" iconType="gallery" />
+          <ImageTxt>Image</ImageTxt>
+        </Flex>
+        <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
+      </Flex>
     </StyledTrustSenderUI>
   );
 };

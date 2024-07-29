@@ -237,12 +237,12 @@
   // border-top: var(--border-bchat);
   z-index: 1;
 
-  .bchat-icon-button {
-    // margin-right: $bchat-margin-sm;
+  // .bchat-icon-button {
+  //   // margin-right: $bchat-margin-sm;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
     // opacity: 0.7;
 
     // &:hover {
@@ -252,13 +252,13 @@
     //   transition: $bchat-transition-duration;
     // }
 
-    .send {
-      padding: $bchat-margin-xs;
-      border-radius: 50%;
-      height: 30px;
-      width: 30px;
-    }
-  }
+    // .send {
+    //   padding: $bchat-margin-xs;
+    //   border-radius: 50%;
+    //   height: 30px;
+    //   width: 30px;
+    // }
+  // }
 
   .attachment-box {
     // background-color: var(--color-composeMsgIconBG);
