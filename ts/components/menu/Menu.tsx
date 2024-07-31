@@ -40,10 +40,7 @@ import {
 } from '../../models/conversation';
 import { getConversationController } from '../../bchat/conversations';
 import { ToastUtils } from '../../bchat/utils';
-import {
-  changeNickNameModal,
-  updateConfirmModal,
-} from '../../state/ducks/modalDialog';
+import { changeNickNameModal, updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SectionType } from '../../state/ducks/section';
 import { hideMessageRequestBanner } from '../../state/ducks/userConfig';
 import { getNumberOfPinnedConversations } from '../../state/selectors/conversations';
@@ -53,6 +50,9 @@ import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { ContextConversationId } from '../leftpane/conversation-list-item/ConversationListItem';
 import { getOurNumber } from '../../state/selectors/user';
+import { BchatIcon } from '../icon/BchatIcon';
+// import CopyIcon from '../icon/CopyIcon';
+import styled from 'styled-components';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -153,6 +153,10 @@ function showInviteContact(isPublic: boolean): boolean {
   return isPublic;
 }
 
+export const MenuWrapper = styled.span`
+  margin-left: 5px;
+  margin-right: 5px;
+`;
 /** Menu items standardized */
 
 export const InviteContactMenuItem = (): JSX.Element | null => {
@@ -196,7 +200,12 @@ export const PinConversationMenuItem = (): JSX.Element | null => {
     };
 
     const menuText = isPinned ? window.i18n('unpinConversation') : window.i18n('pinConversation');
-    return <Item onClick={togglePinConversation}>{menuText}</Item>;
+    return (
+      <Item onClick={togglePinConversation}>
+        <BchatIcon iconType="pinSubMenu" iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper>{menuText}</MenuWrapper>
+      </Item>
+    );
   }
   return null;
 };
@@ -209,9 +218,8 @@ export const DeleteContactMenuItem = () => {
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
-  const ourNumber = useSelector(getOurNumber); 
+  const ourNumber = useSelector(getOurNumber);
   const username = String(useConversationUsername(convoId));
-
 
   if (showDeleteContact(!isPrivate, isPublic, isLeft, isKickedFromGroup, isRequest)) {
     let menuItemText: string;
@@ -228,37 +236,47 @@ export const DeleteContactMenuItem = () => {
     };
 
     const showConfirmationModal = () => {
-
-      let notetoSelf={
+      let notetoSelf = {
         title: menuItemText,
-        message:"This chat is for your self reference.So can't be deleted.",
+        message: "This chat is for your self reference.So can't be deleted.",
         onClickClose,
         okTheme: BchatButtonColor.Green,
         onClickOk: async () => {
-          onClickClose
+          onClickClose;
         },
-        okText:"ok",
+        okText: 'ok',
         hideCancel: true,
+      };
 
-      }
-
-      let contactDelete={
+      let contactDelete = {
         title: menuItemText,
-        message: isPrivate?"Permanently delete the Contact?": window.i18n('leaveGroupConfirmation',[username]), 
+        message: isPrivate
+          ? 'Permanently delete the Contact?'
+          : window.i18n('leaveGroupConfirmation', [username]),
         onClickClose,
-        onClickOk: async () => {await getConversationController().deleteContact(convoId);},
-        okText:menuItemText.slice(0,5)==='Leave'?"Leave":"Delete",
-        okTheme:BchatButtonColor.Danger,
-
-        }    
-      dispatch(
-        updateConfirmModal(ourNumber===convoId?notetoSelf:contactDelete))
-        // updateConfirmModal(temp))
-
-
+        onClickOk: async () => {
+          await getConversationController().deleteContact(convoId);
+        },
+        okText: menuItemText.slice(0, 5) === 'Leave' ? 'Leave' : 'Delete',
+        okTheme: BchatButtonColor.Danger,
+      };
+      dispatch(updateConfirmModal(ourNumber === convoId ? notetoSelf : contactDelete));
+      // updateConfirmModal(temp))
     };
 
-    return <Item onClick={showConfirmationModal}>{menuItemText}</Item>;
+    return (
+      <Item onClick={showConfirmationModal}>
+        {' '}
+        <BchatIcon
+          iconType="deleteContact"
+          iconSize={20}
+          iconColor="#FF3E3E"
+          fillRule="evenodd"
+          clipRule="evenodd"
+        />{' '}
+        <MenuWrapper>{menuItemText}</MenuWrapper>
+      </Item>
+    );
   }
   return null;
 };
@@ -275,17 +293,18 @@ export const LeaveGroupMenuItem = () => {
     return (
       <Item
         onClick={() => {
-          showLeaveGroupByConvoId(convoId,username);
+          showLeaveGroupByConvoId(convoId, username);
         }}
       >
-        {window.i18n('leaveGroup')}
+        <BchatIcon iconType={'leave'} iconSize={20} fillRule="evenodd" clipRule="evenodd"  iconColor='#FF3E3E'/>
+        <MenuWrapper style={{color:'#FF3E3E'}}> {window.i18n('leaveGroup')}</MenuWrapper>
+       
       </Item>
     );
   }
 
   return null;
 };
-
 
 export const UpdateGroupNameMenuItem = () => {
   const convoId = useContext(ContextConversationId);
@@ -300,7 +319,8 @@ export const UpdateGroupNameMenuItem = () => {
           await showUpdateGroupNameByConvoId(convoId);
         }}
       >
-        {window.i18n('editGroup')}
+        <BchatIcon iconType={'editNotes'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper>{window.i18n('editGroup')}</MenuWrapper>
       </Item>
     );
   }
@@ -394,7 +414,12 @@ export const CopyMenuItem = (): JSX.Element | null => {
 
   if (showCopyId(isPublic, isPrivate)) {
     const copyIdLabel = isPublic ? window.i18n('copySocialGroupURL') : window.i18n('copyBchatID');
-    return <Item onClick={() => copyPublicKeyByConvoId(convoId)}>{copyIdLabel}</Item>;
+    return (
+      <Item onClick={() => copyPublicKeyByConvoId(convoId)}>
+        <BchatIcon iconType={'copy'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />
+        <MenuWrapper>{copyIdLabel}</MenuWrapper>
+      </Item>
+    );
   }
   return null;
 };
@@ -404,7 +429,10 @@ export const MarkAllReadMenuItem = (): JSX.Element | null => {
   const isRequest = useIsRequest(convoId);
   if (!isRequest) {
     return (
-      <Item onClick={() => markAllReadByConvoId(convoId)}>{window.i18n('markAllAsRead')}</Item>
+      <Item onClick={() => markAllReadByConvoId(convoId)}>
+        <BchatIcon iconType={'markRead'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper> {window.i18n('markAllAsRead')}</MenuWrapper>
+      </Item>
     );
   } else {
     return null;
@@ -419,13 +447,12 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
   const isKickedFromGroup = useIsKickedFromGroup(convoId);
   const timerOptions = useSelector(getTimerOptions).timerOptions;
   const isRequest = useIsRequest(convoId);
-  const ourNumber = useSelector(getOurNumber); 
+  const ourNumber = useSelector(getOurNumber);
 
-  if(ourNumber === convoId)
-  {
-    return null
+  if (ourNumber === convoId) {
+    return null;
   }
- 
+
   if (
     showTimerOptions(
       Boolean(isPublic),
@@ -435,11 +462,15 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
       isRequest
     )
   ) {
-
     return (
       // Remove the && false to make context menu work with RTL support
       <Submenu
-        label={window.i18n('disappearingMessages')}
+        label={
+          <>
+            <BchatIcon iconType={'chatTimer'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+            <MenuWrapper>{window.i18n('disappearingMessages')}</MenuWrapper>
+          </>
+        }
       >
         {timerOptions.map(item => (
           <Item
@@ -469,7 +500,6 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   if (
     showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest)
   ) {
-
     // exclude mentions_only settings for private chats as this does not make much sense
     const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>
       isPrivate ? n !== 'mentions_only' : true
@@ -487,7 +517,18 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
     return (
       // Remove the && false to make context menu work with RTL support
       <Submenu
-        label={window.i18n('notificationForConvo') as any}
+        label={
+          <>
+            <BchatIcon
+              iconType={'notifyBell'}
+              iconSize={20}
+              fillRule="evenodd"
+              clipRule="evenodd"
+            />{' '}
+            <MenuWrapper>{window.i18n('notificationForConvo') as any}</MenuWrapper>
+          </>
+        }
+        // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;
@@ -528,7 +569,13 @@ export const BlockMenuItem = (): JSX.Element | null => {
     const blockHandler = isBlocked
       ? () => unblockConvoById(convoId)
       : () => blockConvoById(convoId);
-    return <Item onClick={blockHandler}>{blockTitle}</Item>;
+
+    return (
+      <Item onClick={blockHandler}>
+        <BchatIcon iconType={'blockSubmenu'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper>{blockTitle}</MenuWrapper>
+      </Item>
+    );
   }
   return null;
 };
@@ -562,7 +609,8 @@ export const ChangeNicknameMenuItem = () => {
           dispatch(changeNickNameModal({ conversationId: convoId }));
         }}
       >
-        {window.i18n('changeNickname')}
+        <BchatIcon iconType={'editNotes'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper>{window.i18n('changeNickname')}</MenuWrapper>
       </Item>
     );
   }
@@ -583,7 +631,8 @@ export const DeleteMessagesMenuItem = () => {
         deleteAllMessagesByConvoIdWithConfirmation(convoId);
       }}
     >
-      {window.i18n('deleteMessages')}
+      <BchatIcon iconType={'delete'} iconSize={20} iconColor="#FF3E3E" />
+      <MenuWrapper style={{color:'#FF3E3E'}}> {window.i18n('deleteMessages')}</MenuWrapper>
     </Item>
   );
 };

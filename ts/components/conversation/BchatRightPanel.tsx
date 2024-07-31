@@ -26,12 +26,15 @@ import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { BchatDropdown } from '../basic/BchatDropdown';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerXS } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
 import { getAbsoluteAttachmentPath } from '../../types/MessageAttachment';
 import { useConversationUsername } from '../../hooks/useParamSelector';
 import { Flex } from '../basic/Flex';
+// import { CopyIconButton } from '../icon/CopyIconButton';
+import { clipboard } from 'electron';
+import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -114,36 +117,37 @@ const HeaderItem = () => {
 
   return (
     <div className="group-settings-header">
-      <Flex container={true} justifyContent={'flex-end'}>
+      <Flex
+        container={true}
+        justifyContent={'space-between'}
+        alignItems="center"
+        height="70px"
+        padding="25px"
+        style={{ borderRadius: '16px', background: '#2E333D' }}
+      >
+        <span className="group-settings-header-titleTxt">Profile Info</span>
         <span
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="13.833"
-            height="13.822"
-            viewBox="0 0 17.833 17.822"
-          >
-            <path
-              id="close"
-              d="M5.1,3.99A1.113,1.113,0,0,0,4.327,5.9l7.005,7.005L4.327,19.912A1.113,1.113,0,1,0,5.9,21.486l7.005-7.005,7.005,7.005a1.113,1.113,0,1,0,1.574-1.574l-7.005-7.005L21.486,5.9a1.113,1.113,0,1,0-1.574-1.574l-7.005,7.005L5.9,4.327A1.113,1.113,0,0,0,5.1,3.99Z"
-              transform="translate(-3.99 -3.99)"
-            />
-          </svg>
+          <BchatIconButton iconType={'xWithCircle'} iconSize={26} />
         </span>
       </Flex>
+      <SpacerLG />
+
       <div className="group-settings-header-avatarBox">
         <BNSWrapper
           //  size={89}
           position={{ left: '75px', top: '72px' }}
           isBnsHolder={isBnsHolder}
-          size={{width:'20',height:'20'}}
+          size={{ width: '20', height: '20' }}
         >
           <Avatar size={AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
+        <SpacerXS />
         <p>{profileName}</p>
       </div>
+      <SpacerLG />
     </div>
   );
 };
@@ -194,6 +198,7 @@ export const BchatRightPanelWithDetails = () => {
     return null;
   }
 
+  
   const {
     id,
     subscriberCount,
@@ -238,21 +243,32 @@ export const BchatRightPanelWithDetails = () => {
     ? () => {
         deleteAllMessagesByConvoIdWithConfirmation(id);
       }
-    : left? () => {
-      deleteGroupByConvoId(id, username);
-    }
-    
-    :() => {
+    : left
+    ? () => {
+        deleteGroupByConvoId(id, username);
+      }
+    : () => {
         showLeaveGroupByConvoId(id, username);
       };
-      
+
+      const handleCopy = () => {
+        clipboard.writeText(id, 'clipboard');
+        pushUserCopySuccess()
+      };
   return (
     <div className="group-settings">
       <HeaderItem />
       {isPrivate && (
         <div className="group-settings-header-chatIdBox">
-          <p>BChat ID:</p>
-          <div>{id}</div>
+          <p>Your BChat ID</p>
+          <SpacerXS />
+          <div className='id-wrapper'>
+            <Flex container={true} flexDirection='row' alignItems='flex-start' >
+            <span className='txt'>{id}</span>
+            <BchatIconButton iconType={'copy'} iconSize={0} fillRule='evenodd' clipRule='evenodd' onClick={handleCopy} />
+            {/* <CopyIconButton iconSize={20} content={id} /> */}
+            </Flex>
+            </div>
         </div>
       )}
       <div className="group-settings-nameEditBox">
@@ -367,8 +383,9 @@ export const BchatRightPanelWithDetails = () => {
       )}
 
       {hasDisappearingMessages && (
-        <div style={{ borderBottom: '2px solid #262631', width: '100%' }}>
+        <div style={{ borderBottom: '4px solid #202329', width: '100%',paddingBottom:'15px' }}>
           <BchatDropdown
+          labelIcon={'chatTimer'}
             label={window.i18n('disappearingMessages')}
             options={disappearingMessagesOptions}
           />

@@ -5,7 +5,7 @@ $bchat-compose-margin: 20px;
   transition: none;
   // background: var(--color-cell-background);
 }
-.d-none{
+.d-none {
   display: none !important;
 }
 .module-conversation {
@@ -50,15 +50,17 @@ $bchat-compose-margin: 20px;
 
     &--has-unread {
       // border-left: var(--border-unread);
-      background: var(--color-conversation-item-has-unread);
+      // background: var(--color-conversation-item-has-unread);
       // background-color: #39394A;
-      margin-bottom: 2px;
+      // margin-bottom: 2px;
       // border-radius: 10px;
-      padding-left: 6px;
+      // padding-left: 6px;
       // border-top: 1px solid #1c1c26;
-      border-bottom: 1px solid var(--color-borderBottomColor);
+      // border-bottom: 1px solid var(--color-borderBottomColor);
 
       // border-bottom: 1px solid #1c1c26;
+      border-radius: 16px;
+      background: #2e333d;
       .verticalLine {
         width: 5px;
         // background-color: #128B17;
