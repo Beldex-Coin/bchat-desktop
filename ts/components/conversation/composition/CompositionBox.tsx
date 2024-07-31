@@ -455,7 +455,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
   public render() {
     return (
       <Flex flexDirection="column">
-        <BchatQuotedMessageComposition />
         {/* {this.renderStagedLinkPreview()} */}
         {/* {this.renderAttachmentsStaged()} */}
         <div className="composition-container">{this.renderCompositionView()}</div>
@@ -724,6 +723,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
               }}
               data-testid="message-input"
             >
+              <BchatQuotedMessageComposition />
+
               {this.renderStagedLinkPreview()}
               {this.renderAttachmentsStaged()}
 
