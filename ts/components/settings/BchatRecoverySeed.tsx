@@ -58,7 +58,7 @@ export const BchatRecoverySeed = (props: any) => {
     }}
     >
       <div className="bchat-modal__centered">
-        <div className="bchat-modal-setPassword">
+        <div className="bchat-modal-setPasswordAccess">
           <div className="contentbox">
             <div className="header">{window.i18n('setPassword')}</div>
             <SpacerLG />

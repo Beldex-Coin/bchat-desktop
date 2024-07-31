@@ -38,6 +38,8 @@ type Props = {
   style?: object;
   iconType?: BchatIconType;
   iconSize?: BchatIconSize | number;
+  fillRule?: 'iherit' | 'evenodd';
+  clipRule?: 'iherit' | 'evenodd';
 };
 
 export const BchatButton = (props: Props) => {
@@ -51,6 +53,8 @@ export const BchatButton = (props: Props) => {
     onClick,
     iconSize,
     iconType = 'bell',
+    fillRule,
+    clipRule
   } = props;
 
   const clickHandler = (e: any) => {
@@ -87,7 +91,7 @@ export const BchatButton = (props: Props) => {
           data-testid={dataTestId}
           style={style}
         >
-          {iconType && iconSize && <span style={{marginRight:'5px'}}><BchatIcon iconType={iconType} iconSize={iconSize} /></span>}
+          {iconType && iconSize && <span style={{ marginRight: '5px' }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
           {props.children || text}
         </div>
       )}

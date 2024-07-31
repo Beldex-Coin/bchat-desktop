@@ -3,13 +3,15 @@ import React from 'react';
 import { missingCaseError } from '../../util';
 import { ToastUtils } from '../../bchat/utils';
 import { getPasswordHash } from '../../data/data';
-import {  SpacerSM } from '../basic/Text';
+// import { SpacerSM } from '../basic/Text';
 import autoBind from 'auto-bind';
 import { bchatPassword } from '../../state/ducks/modalDialog';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { matchesHash, validatePassword } from '../../util/passwordUtils';
+import { BchatInput } from '../basic/BchatInput';
+// import { BchatInput } from '../basic/BchatInput';
 
 export type PasswordAction = 'set' | 'change' | 'remove';
 
@@ -20,9 +22,9 @@ interface Props {
 
 interface State {
   error: string | null;
-  currentPasswordEntered: string | null;
-  currentPasswordConfirmEntered: string | null;
-  currentPasswordRetypeEntered: string | null;
+  currentPasswordEntered: string;
+  currentPasswordConfirmEntered: string;
+  currentPasswordRetypeEntered: string;
 }
 
 export class BchatPasswordDialog extends React.Component<Props, State> {
@@ -33,9 +35,9 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
     this.state = {
       error: null,
-      currentPasswordEntered: null,
-      currentPasswordConfirmEntered: null,
-      currentPasswordRetypeEntered: null,
+      currentPasswordEntered: '',
+      currentPasswordConfirmEntered: '',
+      currentPasswordRetypeEntered: '',
     };
 
     autoBind(this);
@@ -53,72 +55,122 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     const placeholders =
       passwordAction === 'change'
         ? [
-            window.i18n('currentPassword'),
-            window.i18n('enterPassword'),
-            window.i18n('confirmPassword'),
-          ]
+          window.i18n('currentPassword'),
+          window.i18n('enterPassword'),
+          window.i18n('confirmPassword'),
+        ]
         : [window.i18n('removePasswordDisc'), window.i18n('confirmPassword')];
 
-    const confirmButtonColor = BchatButtonColor.Green;
+    // const confirmButtonColor = BchatButtonColor.Primary;
     // do this separately so typescript's compiler likes it
     const localizedKeyAction: LocalizerKeys =
       passwordAction === 'change'
         ? 'changePassword'
         : passwordAction === 'remove'
-        ? 'removePassword'
-        : 'setPassword';
+          ? 'removePassword'
+          : 'setPassword';
 
     return (
-      <BchatWrapperModal title={window.i18n(localizedKeyAction)} onClose={this.closeDialog}>
-        <SpacerSM />
+      <BchatWrapperModal
+        title={window.i18n(localizedKeyAction)}
+        onClose={this.closeDialog}
+        okButton={{
+          text: window.i18n('save'),
+          color: BchatButtonColor.Primary,
+          onClickOkHandler: this.setPassword
+        }}
+        cancelButton={{ status: true, text: window.i18n('cancel'), onClickCancelHandler: this.closeDialog }
+        }
+      >
+        {/* <SpacerSM /> */}
+        <div className="bchat-modal-setPassword">
 
-        <div className="bchat-modal__input-group">
-          <input
-            type="password"
-            id="password-modal-input"
-            style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
-            ref={input => {
-              this.passportInput = input;
-            }}
-            placeholder={placeholders[0]}
-            onKeyUp={this.onPasswordInput}
-            data-testid="password-input"
-            maxLength={26}
-          />
-          {passwordAction !== 'remove' && (
-            <input
+          {/* <div className="bchat-modal__input-group"> */}
+          {/* <input
               type="password"
-              id="password-modal-input-confirm"
-              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
-              placeholder={placeholders[1]}
-              onKeyUp={this.onPasswordConfirmInput}
-              data-testid="password-input-confirm"
+              id="password-modal-input"
+              style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
+              ref={input => {
+                this.passportInput = input;
+              }}
+              placeholder={placeholders[0]}
+              onKeyUp={this.onPasswordInput}
+              data-testid="password-input"
+              maxLength={26}
+            /> */}
+          <div style={{ marginBottom: '10px' }}>
+            <BchatInput
+              type="password"
+              inputDataTestId="password-input"
+              value={this.state.currentPasswordEntered}
+              autoFocus={false}
+              placeholder={placeholders[0]}
+              enableShowHide={true}
+              onValueChanged={this.onPasswordInput}
               maxLength={26}
             />
+          </div>
+          {passwordAction !== 'remove' && (
+            // <input
+            //   type="password"
+            //   id="password-modal-input-confirm"
+            //   style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
+            //   placeholder={placeholders[1]}
+            //   onKeyUp={this.onPasswordConfirmInput}
+            //   data-testid="password-input-confirm"
+            //   maxLength={26}
+            // />
+            <div style={{ marginBottom: '10px' }}>
+              <BchatInput
+                type="password"
+                inputDataTestId="password-input-confirm"
+                value={this.state.currentPasswordConfirmEntered}
+                autoFocus={false}
+                placeholder={placeholders[1]}
+                enableShowHide={true}
+                onValueChanged={this.onPasswordConfirmInput}
+                maxLength={26}
+              />
+            </div>
           )}
           {passwordAction === 'change' && (
-            <input
-              type="password"
-              id="password-modal-input-reconfirm"
-              style={{borderBottom:'2px solid var(--color-password-borderBottom)',borderRadius:0}}
-              placeholder={placeholders[2]}
-              onKeyUp={this.onPasswordRetypeInput}
-              data-testid="password-input-reconfirm"
-              maxLength={26}
-            />
+            // <input
+            //   type="password"
+            //   id="password-modal-input-reconfirm"
+            //   style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
+            //   placeholder={"confirm the pass"}
+            //   onKeyUp={this.onPasswordRetypeInput}
+            //   data-testid="password-input-reconfirm"
+            //   maxLength={26}
+            // />
+
+            <div style={{ marginBottom: '10px' }}>
+              <BchatInput
+                type="password"
+                inputDataTestId="password-input-reconfirm"
+                value={this.state.currentPasswordRetypeEntered}
+                autoFocus={false}
+                placeholder={placeholders[2]}
+                enableShowHide={true}
+                onValueChanged={this.onPasswordRetypeInput}
+                maxLength={26}
+              />
+            </div>
           )}
+          {/* </div> */}
         </div>
 
-        <SpacerSM />
 
-        <div className="bchat-modal__button-group">
+        {/* <SpacerSM /> */}
+
+        {/* <div className="bchat-modal__button-group">
           <BchatButton text={window.i18n('cancel')} onClick={this.closeDialog} />
           <BchatButton
             text={window.i18n('ok')}
             buttonColor={confirmButtonColor}
             onClick={this.setPassword}
           />
-        </div>
+        </div> */}
       </BchatWrapperModal>
     );
   }
@@ -141,7 +193,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // if user did not fill the first password field, we can't do anything
     const errorFirstInput = validatePassword(firstPassword);
     if (errorFirstInput !== null) {
-      ToastUtils.pushToastError('validatePassword',errorFirstInput);
+      ToastUtils.pushToastError('validatePassword', errorFirstInput);
       this.setState({
         error: errorFirstInput,
       });
@@ -290,29 +342,29 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     window.inboxStore?.dispatch(bchatPassword(null));
   }
 
-  private async onPasswordInput(event: any) {
-    if (event.key === 'Enter') {
-      return this.setPassword();
-    }
-    const currentPasswordEntered = event.target.value;
+  private async onPasswordInput(currentPasswordEntered: any) {
+    // if (event.key === 'Enter') {
+    //   return this.setPassword();
+    // }
+    // const currentPasswordEntered = event.target.value;
 
     this.setState({ currentPasswordEntered });
   }
 
-  private async onPasswordConfirmInput(event: any) {
-    if (event.key === 'Enter') {
-      return this.setPassword();
-    }
-    const currentPasswordConfirmEntered = event.target.value;
+  private async onPasswordConfirmInput(currentPasswordConfirmEntered: any) {
+    // if (event.key === 'Enter') {
+    //   return this.setPassword();
+    // }
+    // const currentPasswordConfirmEntered = event.target.value;
 
     this.setState({ currentPasswordConfirmEntered });
   }
 
-  private async onPasswordRetypeInput(event: any) {
-    if (event.key === 'Enter') {
-      return this.setPassword();
-    }
-    const currentPasswordRetypeEntered = event.target.value;
+  private async onPasswordRetypeInput(currentPasswordRetypeEntered: any) {
+    // if (event.key === 'Enter') {
+    //   return this.setPassword();
+    // }
+    // const currentPasswordRetypeEntered = event.target.value;
 
     this.setState({ currentPasswordRetypeEntered });
   }

@@ -640,7 +640,7 @@ label {
     font-family: $bchat-font-poppins-bold;
     // text-align: center;
     line-height: 18px;
-    font-size: $bchat-font-md;
+    font-size: $bchat-font-h3;
     font-weight: bold;
     margin-top: 10px;
 
@@ -715,17 +715,62 @@ label {
     width: 100%;
   }
 
-  &__box {
-    background-color: var(--color-settingIndication);
-    width: 70%;
+  &__seedPhrase {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin: 200px auto;
     justify-content: center;
-    border-radius: 15px;
-    padding: 0 6%;
+    height: 95%;
+
+    .box {
+      padding: 0 6%;
+    }
+
+    .subLayer {
+      // margin: 200px auto;
+      width: 70%;
+      background-color: var(--color-settingIndication);
+      // display: flex;
+      // flex-direction: column;
+      border-radius: 15px;
+      overflow: hidden;
+  
+      .subText {
+        color: #F0AF13;
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 25px;
+      }
+    }
   }
+
+  // &__box {
+  //   // background-color: var(--color-settingIndication);
+  //   // width: 70%;
+  //   // display: flex;
+  //   // flex-direction: column;
+  //   // align-items: center;
+  //   // margin: 200px auto;
+  //   // justify-content: center;
+  //   // border-radius: 15px;
+  //   padding: 0 6%;
+  // }
+
+  // &__subLayer {
+  //   // margin: 200px auto;
+  //   width: 70%;
+  //   background-color: var(--color-settingIndication);
+  //   // display: flex;
+  //   // flex-direction: column;
+  //   border-radius: 15px;
+  //   overflow: hidden;
+
+  //   .subText {
+  //     color: #F0AF13;
+  //     font-weight: 500;
+  //     font-size: 16px;
+  //     margin-bottom: 25px;
+  //   }
+  // }
 
   &__centered {
     display: flex;
@@ -736,7 +781,9 @@ label {
   }
 
   &__description {
-    font-family: $bchat-font-poppin-semibold;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
   }
 
   &__button-group {
@@ -808,10 +855,16 @@ label {
 
   &__text-highlight {
     // @include text-highlight($bchat-color-green);
-    font-family: $bchat-font-poppin-medium;
+    // font-family: $bchat-font-poppin-medium;
     font-size: $bchat-font-lg;
-    color: var(--color-seed);
+    // color: var(--color-seed);
     font-style: normal;
+    font-weight: 400;
+    background-color: #202329;
+    border: 1px solid #46465D;
+    border-radius: 14px;
+    padding: 20px 30px;
+    margin-top: 15px;
   }
 
   &-recovery-key {
@@ -939,7 +992,7 @@ label {
     }
   }
 
-  &-setPassword {
+  &-setPasswordAccess {
     width: 425px;
     margin: 40px 10px 25px;
     font-family: $bchat-font-default;
@@ -966,6 +1019,51 @@ label {
       font-size: 15px;
       line-height: 20px;
       color: #a7a7ba;
+    }
+
+    .span {
+      color: white;
+    }
+
+    // .bchat-button.brand.green {
+    //   width: 168px;
+    //   height: 40px;
+    //   border-radius: 5px;
+    // }
+
+    // .flexCenter {
+    //   display: flex;
+    //   justify-content: center;
+    // }
+  }
+
+  &-setPassword {
+    // width: 425px;
+    margin: 10px 0px 15px;
+    font-family: $bchat-font-default;
+
+    .contentbox {
+      text-align: left;
+      // width: 60%;
+      // width: 414px;
+      // background-color: var(--color-WalcontentBg);
+      // padding: 21px 30px;
+      // border-radius: 10px;
+      // margin: 0px 15px;
+    }
+
+    .header {
+      font-family: $bchat-font-default;
+      font-weight: 500;
+      font-size: 20px;
+    }
+
+    .fontSemiBold {
+      font-family: $bchat-font-default;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 20px;
+      color: #A7A7BA;
     }
 
     .span {
