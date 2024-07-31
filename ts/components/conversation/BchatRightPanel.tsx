@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BchatIcon, BchatIconButton } from '../icon';
 import _ from 'lodash';
 // tslint:disable-next-line: no-submodule-imports
@@ -17,7 +17,7 @@ import {
   showLeaveGroupByConvoId,
   showRemoveModeratorsByConvoId,
   showUpdateGroupMembersByConvoId,
-  showUpdateGroupNameByConvoId,
+  // showUpdateGroupNameByConvoId,
 } from '../../interactions/conversationInteractions';
 import { Constants } from '../../bchat';
 import { closeRightPanel } from '../../state/ducks/conversations';
@@ -26,7 +26,7 @@ import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { BchatDropdown } from '../basic/BchatDropdown';
-import { SpacerLG, SpacerXS } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
 import { getAbsoluteAttachmentPath } from '../../types/MessageAttachment';
@@ -35,6 +35,9 @@ import { Flex } from '../basic/Flex';
 // import { CopyIconButton } from '../icon/CopyIconButton';
 import { clipboard } from 'electron';
 import { pushUserCopySuccess } from '../../bchat/utils/Toast';
+import { getConversationController } from '../../bchat/conversations';
+import { initiateOpenGroupUpdate } from '../../bchat/group/open-group';
+import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -106,6 +109,110 @@ async function getMediaGalleryProps(
   };
 }
 
+// Adjust the import path as necessary
+
+const MAX_USERNAME_LENGTH = 20;
+
+const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
+  const [profileName, setProfileName] = useState(props.grpName);
+  const [errorDisplayed, setErrorDisplayed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('placeholder');
+  const selectedConversation = useSelector(getSelectedConversation);
+  if (!selectedConversation) {
+    return null;
+  }
+  const convo = getConversationController().get(selectedConversation.id);
+  // const groupName = convo.getName();
+
+  const oldAvatarPath = convo.getAvatarPath();
+  const newAvatarObjecturl = null;
+  const onNameEdited = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setProfileName(event.target.value);
+  }, []);
+
+  function onClickOK() {
+    console.log('test 1');
+    const trimmedGroupName = profileName?.trim();
+    if (!trimmedGroupName) {
+      console.log('test 2');
+      onShowError(window.i18n('emptyGroupNameError'));
+
+      return;
+    }
+
+    if (trimmedGroupName !== convo.getName() || newAvatarObjecturl !== oldAvatarPath) {
+      if (convo.isPublic()) {
+        void initiateOpenGroupUpdate(convo.id, trimmedGroupName, {
+          objectUrl: newAvatarObjecturl,
+        });
+        console.log('test 3');
+      } else {
+        console.log('test 4');
+        const members = convo.get('members') || [];
+
+        void initiateClosedGroupUpdate(convo.id, trimmedGroupName, members);
+
+        setProfileName('');
+      }
+    }
+    props.onCloseEdit();
+  }
+  function onShowError(msg: string) {
+    console.log('test 5');
+    if (errorDisplayed) {
+      return;
+    }
+
+    setErrorDisplayed(true);
+    setErrorMessage(msg);
+    console.log('test 5');
+
+    setTimeout(() => {
+      setErrorDisplayed(false);
+    }, 3000);
+  }
+  // const onClickOK = useCallback(() => {
+  //   console.log('Save icon clicked', selectedConversation);
+  //   // Handle the save action
+  // }, [profileName]);
+
+  return (
+    <div>
+      <div className="profile-name">
+        <div className="inputBox">
+          <input
+            type="text"
+            className="profile-name-input"
+            value={profileName}
+            placeholder={'Enter a group name'}
+            onChange={onNameEdited}
+            maxLength={MAX_USERNAME_LENGTH - 1}
+            tabIndex={0}
+            required
+            aria-required
+            data-testid="profile-name-input"
+          />
+        </div>
+
+        <div className="saveIcon">
+          <BchatIconButton
+            iconType="save_tick"
+            iconSize={16}
+            onClick={() => onClickOK()}
+            // dataTestId="modal-close-button"
+          />
+        </div>
+      </div>
+      {errorDisplayed ? (
+        <>
+          <SpacerXS />
+          <p style={{ color: 'red' }}>{errorMessage}</p>
+        </>
+      ) : null}
+    </div>
+  );
+};
+
 const HeaderItem = () => {
   const selectedConversation = useSelector(getSelectedConversation);
   const dispatch = useDispatch();
@@ -113,7 +220,7 @@ const HeaderItem = () => {
   if (!selectedConversation) {
     return null;
   }
-  const { id, profileName, isBnsHolder } = selectedConversation;
+  const { id, profileName, isBnsHolder, isGroup } = selectedConversation;
 
   return (
     <div className="group-settings-header">
@@ -125,7 +232,9 @@ const HeaderItem = () => {
         padding="25px"
         style={{ borderRadius: '16px', background: '#2E333D' }}
       >
-        <span className="group-settings-header-titleTxt">Profile Info</span>
+        <span className="group-settings-header-titleTxt">
+          {isGroup ? 'Group Info' : 'Profile Info'}
+        </span>
         <span
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
@@ -145,6 +254,7 @@ const HeaderItem = () => {
           <Avatar size={AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
         <SpacerXS />
+
         <p>{profileName}</p>
       </div>
       <SpacerLG />
@@ -157,6 +267,8 @@ const HeaderItem = () => {
 export const BchatRightPanelWithDetails = () => {
   const [documents, setDocuments] = useState<Array<MediaItemType>>([]);
   const [media, setMedia] = useState<Array<MediaItemType>>([]);
+  const [fullView, setFullView] = useState(false);
+  const [edit, setEdit] = useState(false);
 
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
@@ -198,7 +310,6 @@ export const BchatRightPanelWithDetails = () => {
     return null;
   }
 
-  
   const {
     id,
     subscriberCount,
@@ -251,164 +362,205 @@ export const BchatRightPanelWithDetails = () => {
         showLeaveGroupByConvoId(id, username);
       };
 
-      const handleCopy = () => {
-        clipboard.writeText(id, 'clipboard');
-        pushUserCopySuccess()
-      };
+  const handleCopy = () => {
+    clipboard.writeText(id, 'clipboard');
+    pushUserCopySuccess();
+  };
+  const dispalyMedia = (value: boolean) => {
+    setFullView(value);
+  };
   return (
     <div className="group-settings">
-      <HeaderItem />
-      {isPrivate && (
-        <div className="group-settings-header-chatIdBox">
-          <p>Your BChat ID</p>
-          <SpacerXS />
-          <div className='id-wrapper'>
-            <Flex container={true} flexDirection='row' alignItems='flex-start' >
-            <span className='txt'>{id}</span>
-            <BchatIconButton iconType={'copy'} iconSize={0} fillRule='evenodd' clipRule='evenodd' onClick={handleCopy} />
-            {/* <CopyIconButton iconSize={20} content={id} /> */}
-            </Flex>
+      {!fullView ? (
+        <>
+          <HeaderItem />
+          {isPrivate && (
+            <div className="group-settings-header-chatIdBox">
+              <p>Your BChat ID</p>
+              <SpacerXS />
+              <div className="id-wrapper">
+                <Flex container={true} flexDirection="row" alignItems="flex-start">
+                  <span className="txt">{id}</span>
+                  <BchatIconButton
+                    iconType={'copy'}
+                    iconSize={0}
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    onClick={handleCopy}
+                  />
+                  {/* <CopyIconButton iconSize={20} content={id} /> */}
+                </Flex>
+              </div>
             </div>
-        </div>
-      )}
-      <div className="group-settings-nameEditBox">
-        <h2 data-testid="right-panel-group-name">{name}</h2>
-        {showUpdateGroupNameButton && (
-          <BchatIconButton
-            iconType="pencil"
-            iconSize="medium"
-            iconColor="#128b17"
-            onClick={async () => {
-              await showUpdateGroupNameByConvoId(id);
-            }}
-            dataTestId="edit-profile-icon"
-          />
-        )}
-      </div>
+          )}
+          {!edit ? (
+            <div className="group-settings-nameEditBox">
+              <h2 data-testid="right-panel-group-name">{name}</h2>
+              {showUpdateGroupNameButton && (
+                <div>
+                  <BchatIconButton
+                    iconType="pencil"
+                    iconSize="medium"
+                    iconColor="#128b17"
+                    onClick={() => {
+                      // await showUpdateGroupNameByConvoId(id);
+                      setEdit(true);
+                    }}
+                    dataTestId="edit-profile-icon"
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* <SpacerMD /> */}
+              <ProfileName onCloseEdit={() => setEdit(false)} grpName={name} />
+            </>
+          )}
+          <SpacerMD />
 
-      {showMemberCount && (
-        <>
-          <SpacerLG />
-          <div role="button" className="subtle" style={{ textAlign: 'center' }}>
-            {window.i18n('members', [`${subscriberCount}`])}
-          </div>
-          <SpacerLG />
-        </>
-      )}
-      {showAddRemoveModeratorsButton && (
-        <>
-          <div
-            className="group-settings-item"
-            role="button"
-            onClick={() => {
-              showAddModeratorsByConvoId(id);
-            }}
-          >
-            {window.i18n('addModerators')}
-          </div>
-          <div
-            className="group-settings-item"
-            role="button"
-            onClick={() => {
-              showRemoveModeratorsByConvoId(id);
-            }}
-          >
-            {window.i18n('removeModerators')}
-          </div>
-        </>
-      )}
-      {showUpdateGroupMembersButton && (
-        <div
-          className="group-settings-item"
-          role="button"
-          onClick={() => {
-            if (selectedConversation) {
-              showInviteContactByConvoId(selectedConversation.id);
-            }
-          }}
-        >
-          <div
-            className="invite-friends-container"
-            style={{ marginRight: '10px' }}
-            onClick={() => {
-              if (selectedConversation) {
-                showInviteContactByConvoId(selectedConversation.id);
-              }
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="21.266"
-              height="21.266"
-              viewBox="0 0 21.266 21.266"
+          {showMemberCount && (
+            <>
+              <SpacerLG />
+              <div role="button" className="subtle" style={{ textAlign: 'center' }}>
+                {window.i18n('members', [`${subscriberCount}`])}
+              </div>
+              <SpacerLG />
+            </>
+          )}
+          {showAddRemoveModeratorsButton && (
+            <>
+              <div
+                className="group-settings-item"
+                role="button"
+                onClick={() => {
+                  showAddModeratorsByConvoId(id);
+                }}
+              >
+                {window.i18n('addModerators')}
+              </div>
+              <div
+                className="group-settings-item"
+                role="button"
+                onClick={() => {
+                  showRemoveModeratorsByConvoId(id);
+                }}
+              >
+                {window.i18n('removeModerators')}
+              </div>
+            </>
+          )}
+          {showUpdateGroupMembersButton && (
+            <div className='grp_btn_wrapper'>
+               <div
+                className="group-settings-item"
+                role="button"
+                onClick={async () => {
+                  await showUpdateGroupMembersByConvoId(id);
+                }}
+              >
+                <div className="invite-friends-container" style={{ marginRight: '10px' }}>
+                </div>
+                {window.i18n('groupMembers')}
+              </div>
+              <div
+                className="add-btn"
+                role="button"
+                onClick={() => {
+                  if (selectedConversation) {
+                    showInviteContactByConvoId(selectedConversation.id);
+                  }
+                }}
+              >
+                <div
+                  className="invite-friends-container"
+                  style={{ marginRight: '10px' }}
+                  onClick={() => {
+                    if (selectedConversation) {
+                      showInviteContactByConvoId(selectedConversation.id);
+                    }
+                  }}
+                >
+                
+                </div>
+                {/* {window.i18n('addingContacts')} */}
+                Add +
+              </div>
+
+             
+            </div>
+          )}
+          {hasDisappearingMessages && (
+            <div
+              style={{ borderBottom: '4px solid #202329', width: '100%', paddingBottom: '15px' }}
             >
-              <path
-                id="add_member"
-                data-name="add member"
-                d="M9.595,2a5.318,5.318,0,0,0-2.967,9.731A7.617,7.617,0,0,0,2,18.709H3.519a6.065,6.065,0,0,1,6.076-6.076,6,6,0,0,1,2.872.736,6.169,6.169,0,1,0,1.163-1.092,7.7,7.7,0,0,0-1.068-.546A5.318,5.318,0,0,0,9.595,2Zm0,1.519a3.8,3.8,0,1,1-3.8,3.8A3.786,3.786,0,0,1,9.595,3.519Zm7.595,9.114a4.557,4.557,0,1,1-4.557,4.557A4.547,4.547,0,0,1,17.19,12.633Zm-.759,1.519V16.43H14.152v1.519H16.43v2.278h1.519V17.949h2.278V16.43H17.949V14.152Z"
-                transform="translate(-2 -2)"
-                fill="#128b17"
+              <BchatDropdown
+                labelIcon={'chatTimer'}
+                label={window.i18n('disappearingMessages')}
+                options={disappearingMessagesOptions}
               />
-            </svg>
-          </div>
-          {window.i18n('addingContacts')}
-        </div>
-      )}
+            </div>
+          )}
 
-      {showUpdateGroupMembersButton && (
-        <div
-          className="group-settings-item"
-          role="button"
-          onClick={async () => {
-            await showUpdateGroupMembersByConvoId(id);
-          }}
-        >
-          <div className="invite-friends-container" style={{ marginRight: '10px' }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="26.154"
-              height="15.455"
-              viewBox="0 0 26.154 15.455"
-            >
-              <path
-                id="group_members"
-                d="M12.133,15a4.722,4.722,0,0,0-3.564,1.514,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817A7.1,7.1,0,0,0,5,30.455H7.378a4.755,4.755,0,1,1,9.511,0h2.378a4.755,4.755,0,1,1,9.511,0h2.378a7.1,7.1,0,0,0-4.7-6.641A4.434,4.434,0,0,0,27.585,23a5.006,5.006,0,0,0,0-6.483,4.953,4.953,0,0,0-7.128,0,5.006,5.006,0,0,0,0,6.483,4.434,4.434,0,0,0,1.135.817,7.04,7.04,0,0,0-3.515,2.942,7.04,7.04,0,0,0-3.515-2.942A4.434,4.434,0,0,0,15.7,23a5.006,5.006,0,0,0,0-6.483A4.722,4.722,0,0,0,12.133,15Zm0,2.378a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,12.133,17.378Zm11.888,0a2.189,2.189,0,0,1,1.786.715,2.63,2.63,0,0,1,0,3.325,2.189,2.189,0,0,1-1.786.715,2.189,2.189,0,0,1-1.786-.715,2.63,2.63,0,0,1,0-3.325A2.189,2.189,0,0,1,24.021,17.378Z"
-                transform="translate(-5 -15)"
-                fill="#128b17"
-              />
-            </svg>
-          </div>
-          {window.i18n('groupMembers')}
-        </div>
-      )}
-
-      {hasDisappearingMessages && (
-        <div style={{ borderBottom: '4px solid #202329', width: '100%',paddingBottom:'15px' }}>
-          <BchatDropdown
-          labelIcon={'chatTimer'}
-            label={window.i18n('disappearingMessages')}
-            options={disappearingMessagesOptions}
-          />
-        </div>
-      )}
-
-      <MediaGallery documents={documents} media={media} />
-      {isGroup && (
-        // tslint:disable-next-line: use-simple-attributes
-        <div
-          style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}
-          onClick={deleteConvoAction}
-        >
-          <div className="group-settings__leaveBtn">
-            <BchatIcon
-              iconType={isPublic ? 'delete' : 'leaveGroup'}
-              iconSize="tiny"
-              iconColor="#fc222f"
-              iconRotation={isPublic ? 0 : 180}
+          <SpacerMD />
+          <Flex container={true} justifyContent="space-between" width="100%">
+            <span className="group-settings-media-txt">Media, docs</span>
+            <BchatIconButton
+              iconType={'chevron'}
+              iconSize={14}
+              iconRotation={268}
+              iconColor="#A7A7BA"
+              onClick={() => dispalyMedia(true)}
             />
-            <div style={{ marginLeft: '5px' }}>{leaveGroupString}</div>
+          </Flex>
+          <SpacerSM />
+          <div className="img-wrapper">
+            <MediaGallery documents={documents} media={media} fullView={fullView} />
           </div>
-        </div>
+          <SpacerMD />
+          {isGroup && (
+            // tslint:disable-next-line: use-simple-attributes
+            <div
+              style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}
+              onClick={deleteConvoAction}
+            >
+              <div className="group-settings__leaveBtn">
+                <BchatIcon
+                  iconType={isPublic ? 'delete' : 'leaveGroup'}
+                  iconSize="tiny"
+                  iconColor="#fc222f"
+                  iconRotation={isPublic ? 0 : 180}
+                />
+                <div style={{ marginLeft: '5px' }}>{leaveGroupString}</div>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <Flex
+            container={true}
+            alignItems="center"
+            height="70px"
+            width="100%"
+            style={{ borderRadius: '16px', background: '#2E333D' }}
+          >
+            <span
+              onClick={() => dispalyMedia(false)}
+              className="group-settings-header-closeBox"
+              style={{ marginRight: '10px' }}
+            >
+              <BchatIconButton
+                iconType={'KeyboardBackspaceArrow'}
+                iconSize={28}
+                iconColor="#A9AEBA"
+              />
+            </span>
+            <span className="group-settings-header-titleTxt">Media & Documents</span>
+          </Flex>
+          <SpacerSM />
+          <MediaGallery documents={documents} media={media} fullView={true} />
+        </>
       )}
     </div>
   );
