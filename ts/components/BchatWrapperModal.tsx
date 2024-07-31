@@ -127,7 +127,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               style={{ marginRight: '12px' }}
             />}
             <BchatButton
-              text={okButton?.text}
+              text={okButton?.text ? okButton.text : window.i18n('ok')}
               buttonType={BchatButtonType.Brand}
               buttonColor={okButton?.color ? okButton.color : BchatButtonColor.Secondary}
               disabled={okButton?.disabled}
