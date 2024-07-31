@@ -6,44 +6,64 @@
   min-width: 300px;
   width: 25vw;
   max-width: 420px;
-  background: var(--color-cell-background);
+  // background: var(--color-cell-background);
   // background: #181821;
+  background: #131313;
   border-left: var(--border-bchat);
 
   align-items: center;
+  padding: 15px;
 
   &-header {
-    margin-top: $bchat-margin-lg;
-    margin-inline-start: $bchat-margin-sm;
-    margin-inline-end: $bchat-margin-sm;
+    // margin-top: $bchat-margin-lg;
+    // margin-inline-start: $bchat-margin-sm;
+    // margin-inline-end: $bchat-margin-sm;
     width: -webkit-fill-available;
     // display: flex;
     // flex-direction: row;
     flex-shrink: 0;
+
+    &-titleTxt {
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 400;
+    }
 
     &-avatarBox {
       display: flex;
       flex-direction: column;
       align-items: center;
       p {
-        font-family: $bchat-font-poppin-semibold;
-        font-size: 24px;
         margin: 0;
+        color: #f0f0f0;
+        font-size: 18px;
+        font-weight: 600;
       }
     }
 
     &-chatIdBox {
-      text-align: center;
+      border-radius: 12px;
+      border: 1px solid #202329;
+      padding: 20px;
       p {
-        font-family: $bchat-font-poppin-medium;
+        margin: 0;
+        color: #f0f0f0;
         font-size: 18px;
-        margin-top: 30px;
-        margin-bottom: 0;
+        font-weight: 500;
       }
-      div {
-        width: 85%;
-        margin: 0 auto;
+      .id-wrapper {
         color: #159b24;
+        border-radius: 16px;
+        border: 1px solid #3a3a41;
+        background: #1c1f25;
+        padding: 15px;
+        .txt {
+          width: 90%;
+          color: #108d32;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 30px;
+        }
       }
     }
 
@@ -144,6 +164,7 @@
     &-media {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      row-gap: 10px;
       width: 100%;
     }
 
@@ -187,14 +208,16 @@
 
         .module-media-grid-item__image,
         .module-media-grid-item {
-          height: calc(
-            30vw / 4
-          ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
-          width: calc(
-            29vw / 4
-          ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
+          // height: calc(
+          //   30vw / 4
+          // ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
+          // width: calc(
+          //   29vw / 4
+          // ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
           // margin: auto;
-          border-radius: 5px;
+          height: calc(22vw / 4);
+          width: calc(22vw / 4);
+          border-radius: 8px;
         }
       }
     }

@@ -14,6 +14,8 @@ export type BchatIconProps = {
   glowStartDelay?: number;
   noScale?: boolean;
   backgroundColor?: string;
+  fillRule?:'iherit'|'evenodd';
+  clipRule?:'iherit'|'evenodd';
 };
 
 const getIconDimensionFromIconSize = (iconSize: BchatIconSize | number) => {
@@ -148,9 +150,15 @@ const BchatSvg = (props: {
   borderRadius?: string;
   backgroundColor?: string;
   iconPadding?: string;
+  fillRule?:string ;
+  clipRule?:string;
 }) => {
   const colorSvg = props.iconColor;
   const pathArray = props.path instanceof Array ? props.path : [props.path];
+  const rules:any=props.fillRule?{
+    fillRule:props.fillRule,
+    clipRule:props.clipRule||"inherit"
+  }:{}
   const propsToPick = {
     width: props.width,
     height: props.height,
@@ -164,13 +172,15 @@ const BchatSvg = (props: {
     backgroundColor: props.backgroundColor,
     borderRadius: props.borderRadius,
     iconPadding: props.iconPadding,
+    
   };
 
   return (
     <Svg {...propsToPick}>
       {pathArray.map((path, index) => {
-        return <path key={index} fill={colorSvg} d={path} />;
+        return <path key={index} fill={colorSvg} d={path} {...rules}/> ;
       })}
+      
     </Svg>
   );
 };
@@ -186,6 +196,9 @@ export const BchatIcon = (props: BchatIconProps) => {
     noScale,
     backgroundColor,
     iconPadding,
+    fillRule,
+    clipRule
+
   } = props;
   let { iconSize, iconRotation } = props;
   iconSize = iconSize || 'medium';
@@ -210,6 +223,8 @@ export const BchatIcon = (props: BchatIconProps) => {
       iconColor={iconColor}
       backgroundColor={backgroundColor}
       iconPadding={iconPadding}
+      fillRule={fillRule}
+      clipRule={clipRule}
     />
   );
 };

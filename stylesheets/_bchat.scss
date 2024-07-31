@@ -70,7 +70,7 @@ textarea {
   position: relative;
 }
 
-.button-group>div {
+.button-group > div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
@@ -311,7 +311,7 @@ textarea {
 
     &.enable {
       background-color: #202329;
-      color: #108D32;
+      color: #108d32;
     }
 
     // &:not(.disabled):hover {
@@ -402,7 +402,7 @@ textarea {
   // background-color: $bchat-button-green-color;
   background-color: #202329;
   height: 55px;
-  color: #108D32;
+  color: #108d32;
   /* text-align: center; */
   justify-content: center;
   min-width: 165px;
@@ -462,7 +462,6 @@ textarea {
   //     border-radius: 20px;
   //   }
   // }
-
 }
 
 .module-conversation__user__profile-name,
@@ -620,7 +619,7 @@ label {
   max-width: calc(min(70vw, 800px));
   font-family: $bchat-font-default;
   // background-color: var(--color-smModal-bg);
-  background-color: #2E333D;
+  background-color: #2e333d;
   color: var(--color-text);
   // border: var(--border-bchat);
   box-shadow: var(--color-bchat-shadow);
@@ -648,11 +647,11 @@ label {
     &.reverse {
       flex-direction: row-reverse;
 
-      .bchat-modal__header__close>div {
+      .bchat-modal__header__close > div {
         float: right;
       }
 
-      .bchat-modal__header__icons>div {
+      .bchat-modal__header__icons > div {
         float: left;
         padding-inline-start: 0px;
         padding-inline-end: 10px;
@@ -681,13 +680,13 @@ label {
       float: right;
     }
 
-    &__close>div {
+    &__close > div {
       float: left;
       padding: $bchat-margin-xs;
       margin: 0px;
     }
 
-    &__icons>div {
+    &__icons > div {
       float: right;
       padding-inline-start: 10px;
     }
@@ -924,7 +923,6 @@ label {
     margin: 35px 20px 25px;
     font-family: $bchat-font-default;
 
-
     &-header {
       font-size: 16px;
       font-weight: 700;
@@ -932,7 +930,7 @@ label {
 
     &-message {
       line-height: 20px;
-      color: #A7A7BA;
+      color: #a7a7ba;
 
       span {
         font-family: $bchat-font-poppin-semibold;
@@ -967,7 +965,7 @@ label {
       font-weight: 400;
       font-size: 15px;
       line-height: 20px;
-      color: #A7A7BA;
+      color: #a7a7ba;
     }
 
     .span {
@@ -1001,12 +999,12 @@ label {
   display: flex;
   width: 180px;
   margin: auto 0;
-  background-color: #2E333D;
+  background-color: #2e333d;
   font-weight: 600;
   border: none;
   border-radius: 12px;
   font-size: 12px;
-  font-family: "Poppins";
+  font-family: 'Poppins';
 }
 
 .bchat-modal__body {
@@ -1245,7 +1243,8 @@ label {
     font-size: 16px;
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
+  .react-contexify__item:not(.react-contexify__item--disabled):hover
+    > .react-contexify__item__content {
     border-radius: 14px;
     background: #333842;
 
@@ -1285,12 +1284,17 @@ label {
     padding: 0px $bchat-margin-md;
     font-size: $bchat-font-sm;
 
-    color: var(--color-text);
-    background: var(--color-composeMsgInput);
+    // color: var(--color-text);
+    // background: var(--color-composeMsgInput);
     // background: var(--color-cell-background);
+    border-radius: 16px;
+    background: #2e333d;
+    color: #F0F0F0;
+    font-size: 16px;
+    font-weight: 300;
 
     &:hover {
-      background: var(--color-clickable-hovered);
+     opacity: 0.9;
     }
   }
 
@@ -1352,13 +1356,13 @@ label {
     }
   }
 
-  &:hover {
-    background: var(--color-clickable-hovered);
+  // &:hover {
+  //   background: var(--color-clickable-hovered);
 
-    .bchat-icon {
-      opacity: 1;
-    }
-  }
+  //   .bchat-icon {
+  //     opacity: 1;
+  //   }
+  // }
 }
 
 .image-upload-section {
@@ -1381,7 +1385,6 @@ label {
   // &:hover {
   //   opacity: 1;
   // }
-
 }
 
 .camera {
@@ -1398,20 +1401,18 @@ label {
   cursor: pointer;
 
   &:hover {
-    background-color: #46465D;
+    background-color: #46465d;
   }
-
 }
 
 .qr-image {
   display: flex;
   justify-content: center;
   background-color: #282836;
-  border: 0.73px solid #4B4B64;
+  border: 0.73px solid #4b4b64;
   height: 161px;
   width: 161px;
   border-radius: 12px;
-
 
   svg {
     width: 130px !important;
@@ -1431,7 +1432,7 @@ label {
   position: relative;
   font-family: $bchat-font-default;
   font-weight: 400;
-  color: #A7A7BA;
+  color: #a7a7ba;
   // margin-top: 5px;
 }
 
@@ -1459,7 +1460,7 @@ label {
   left: 50%;
   margin: -40px 0 0 -40px;
 
-  &>div {
+  & > div {
     display: block;
   }
 }
@@ -2804,7 +2805,6 @@ label {
           }
 
           &-btnBox {
-
             .bchat-button.default.primary,
             .bchat-button.default.green,
             .bchat-button.default.disable {
@@ -2833,7 +2833,6 @@ label {
       }
 
       &-modalBtnGrp {
-
         .bchat-button.brand-outline.primary,
         .bchat-button.brand-outline.green .bchat-button.brand {
           height: 35px;
@@ -2858,7 +2857,6 @@ label {
     }
 
     &-syncStatus {
-
       // position: relative;
       // height: 30px;
       // // width: 66.5%;
@@ -3201,11 +3199,11 @@ label {
     transition: $bchat-transition-duration;
   }
 
-  input:hover+label:before {
+  input:hover + label:before {
     background: var(--color-accent);
   }
 
-  input:checked+label:before {
+  input:checked + label:before {
     background: var(--color-accent);
   }
 }
@@ -3372,7 +3370,7 @@ input {
       }
     }
 
-    .bchat-icon-button:hover+.downArrow-unreadCountBox {
+    .bchat-icon-button:hover + .downArrow-unreadCountBox {
       background-color: #ffffff;
       color: #000;
     }
@@ -3428,9 +3426,9 @@ input {
 }
 
 .create-group-name-input {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  // display: flex;
+  // justify-content: center;
+  // width: 100%;
 
   .bchat-id-editable {
     height: 80px !important;
@@ -3539,7 +3537,7 @@ input {
     opacity: 0.8;
   }
 
-  &__avatar>div {
+  &__avatar > div {
     margin-bottom: 0px !important;
   }
 }

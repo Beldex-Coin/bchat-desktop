@@ -13,11 +13,13 @@ interface SProps extends BchatIconProps {
   dataTestId?: string;
   id?: string;
   style?: any;
-  padding?:string;
-  btnBgColor?:string;
+  padding?: string;
+  btnBgColor?: string;
+  fillRule?: 'iherit' | 'evenodd';
+  clipRule?: 'iherit' | 'evenodd';
 }
 
-const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, ref) => {
+const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, ref) => {
   const {
     iconType,
     iconSize,
@@ -36,7 +38,9 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
     id,
     dataTestId,
     padding,
-    btnBgColor
+    btnBgColor,
+    fillRule,
+    clipRule,
   } = props;
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (props.onClick) {
@@ -47,12 +51,18 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
 
   return (
     <div
-      className={classNames('bchat-icon-button', iconSize, isSelected ? 'no-opacity' : '')}     
+      className={classNames('bchat-icon-button', iconSize, isSelected ? 'no-opacity' : '')}
       role="button"
       ref={ref}
       id={id}
       onClick={clickHandler}
-      style={{ display: isHidden ? 'none' : 'flex', margin: margin ? margin : '',padding:padding??'',alignItems:"center",background:btnBgColor??'' }}
+      style={{
+        display: isHidden ? 'none' : 'flex',
+        margin: margin ? margin : '',
+        padding: padding ?? '',
+        alignItems: 'center',
+        background: btnBgColor ?? '',
+      }}
       data-testid={dataTestId}
     >
       <BchatIcon
@@ -66,6 +76,8 @@ const   BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, 
         backgroundColor={backgroundColor}
         borderRadius={borderRadius}
         iconPadding={iconPadding}
+        fillRule={fillRule}
+        clipRule={clipRule}
       />
       {Boolean(notificationCount) && <BchatNotificationCount count={notificationCount} />}
     </div>
