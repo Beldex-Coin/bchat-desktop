@@ -11,16 +11,23 @@ import { Image } from './Image';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
-  padding-inline-end: var(--margins-md);
-  padding-inline-start: var(--margins-md);
+  margin-top: 15px;
+  // padding-inline-end: var(--margins-md);
+  // padding-inline-start: var(--margins-md);
 `;
 
 const QuotedMessageCompositionReply = styled.div`
-  background: var(--color-quote-bottom-bar-background);
-  border-radius: var(--margins-sm);
+  // background: var(--color-quote-bottom-bar-background);
+  // border-radius: var(--margins-sm);
   padding: var(--margins-xs);
   box-shadow: var(--color-bchat-shadow);
-  margin: var(--margins-xs);
+  // margin: var(--margins-xs);
+
+  border-radius: 16px;
+  background: #13130a;
+  min-height: 70px;
+  width: 100%;
+  margin-right: 10px;
 `;
 
 const Subtle = styled.div`
@@ -32,10 +39,16 @@ const Subtle = styled.div`
   display: -webkit-box;
   color: var(--color-text);
 `;
-
-const ReplyingTo = styled.div`
-  color: var(--color-text);
+const VerticalLine = styled.div`
+  width: 5px;
+  background-color: #858598;
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 10px;
 `;
+// const ReplyingTo = styled.div`
+//   color: var(--color-text);
+// `;
 
 export const BchatQuotedMessageComposition = () => {
   const quotedMessageProps = useSelector(getQuotedMessage);
@@ -73,12 +86,14 @@ export const BchatQuotedMessageComposition = () => {
         justifyContent="space-between"
         flexGrow={1}
         margin={'var(--margins-xs)'}
+        alignItems='center'
       >
-        <ReplyingTo>{window.i18n('replyingToMessage')}</ReplyingTo>
-        <BchatIconButton iconType="exit" iconSize="small" onClick={removeQuotedMessage} />
-      </Flex>
+        {/* <ReplyingTo>{window.i18n('replyingToMessage')}</ReplyingTo> */}
+      
       <QuotedMessageCompositionReply>
-        <Flex container={true} justifyContent="space-between" margin={'var(--margins-xs)'}>
+        <Flex container={true} justifyContent="flex-start" margin={'var(--margins-xs)'} alignItems='center'>
+        <VerticalLine />
+
           <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
 
           {hasImageAttachment && (
@@ -94,6 +109,9 @@ export const BchatQuotedMessageComposition = () => {
           {hasAudioAttachment && <BchatIcon iconType="microphone" iconSize="huge" />}
         </Flex>
       </QuotedMessageCompositionReply>
+      <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
+
+      </Flex>
     </QuotedMessageComposition>
   );
 };

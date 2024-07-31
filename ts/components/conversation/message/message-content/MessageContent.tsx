@@ -168,8 +168,6 @@ export const MessageContent = (props: Props) => {
   } = contentProps;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
-  console.log('previews -->', previews);
-
   let isDeleted = false;
   if (selectedMsg && selectedMsg.isDeleted !== undefined) {
     isDeleted = selectedMsg.isDeleted;

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isImageAttachment } from '../../../../types/Attachment';
-import { ImageGrid } from '../../ImageGrid';
+// import { ImageGrid } from '../../ImageGrid';
 import { Image } from '../../Image';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { useSelector } from 'react-redux';
@@ -44,7 +44,16 @@ export const MessagePreview = (props: Props) => {
   return (
     <div role="button" className={classNames('module-message__link-preview')}>
       {first.image && previewHasImage && isFullSizeImage ? (
-        <ImageGrid attachments={[first.image]} onError={props.handleImageError} />
+        // <ImageGrid attachments={[first.image]} onError={props.handleImageError} />
+        <Image
+        softCorners={true}
+        alt={window.i18n('previewThumbnail', [first.domain])}
+        height={120}
+        width={120}
+        url={first.image.url}
+        attachment={first.image}
+        onError={props.handleImageError}
+      />
       ) : null}
       <div className={classNames('module-message__link-preview__content')}>
         {first.image && previewHasImage && !isFullSizeImage ? (

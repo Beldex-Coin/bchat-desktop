@@ -62,6 +62,10 @@
   flex-direction: row;
   align-items: center;
   padding: 10px;
+
+  border-radius: 16px;
+  background: #131313;
+  margin: 15px 15px 0;
 }
 
 .module-message__generic-attachment__icon-container {
@@ -89,7 +93,7 @@
 
 .module-message__generic-attachment__icon__extension {
   font-size: 10px;
-  line-height: 13px;
+  line-height: 16px;
   letter-spacing: 0.1px;
   text-transform: uppercase;
 
@@ -117,7 +121,7 @@
 .module-message__generic-attachment__file-name {
   color: $color-gray-90;
   font-size: 14px;
-  line-height: 18px;
+  // line-height: 18px;
   font-weight: 300;
   margin-top: 2px;
 
@@ -147,6 +151,7 @@
   cursor: pointer;
   border-top-left-radius: $bchat_message-container-border-radius;
   border-top-right-radius: $bchat_message-container-border-radius;
+  display: flex;
 }
 
 .module-message__link-preview__content {
@@ -156,6 +161,10 @@
   flex-direction: row;
   align-items: flex-start;
   border: 1px solid $color-black-015;
+
+  width: 82%;
+  margin: 5px;
+  border-radius: 10px;
 }
 
 .module-message__link-preview__image_container {
