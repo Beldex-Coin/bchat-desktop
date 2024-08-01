@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Avatar, AvatarSize, BNSWrapper, CrownIcon } from './avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from './avatar/Avatar';
 // import { Constants } from '../bchat';
 import {
   useConversationBnsHolder,
@@ -21,7 +21,7 @@ const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
         // size={52}
         position={{ left: '34px', top: '34px' }}
         isBnsHolder={isBnsHolder}
-        size={{width:'20',height:'20'}}
+        size={{ width: '20', height: '20' }}
       >
         <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
       </BNSWrapper>
@@ -32,6 +32,7 @@ const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
 export const MemberListItem = (props: {
   pubkey: string;
   isSelected: boolean;
+  onlyList?: boolean;
   // this bool is used to make a zombie appear with less opacity than a normal member
   isZombie?: boolean;
   disableBg?: boolean;
@@ -49,6 +50,7 @@ export const MemberListItem = (props: {
     onUnselect,
     disableBg,
     dataTestId,
+    onlyList,
   } = props;
 
   const memberName = useConversationUsernameOrShorten(pubkey);
@@ -59,12 +61,12 @@ export const MemberListItem = (props: {
     <div
       className={classNames(
         'bchat-member-item',
-        isSelected && 'selected',
+        !onlyList && isSelected && 'selected',
         isZombie && 'zombie',
         disableBg && 'compact'
       )}
       onClick={() => {
-        isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey);
+        !onlyList && (isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey));
       }}
       style={!disableBg ? {} : {}}
       role="button"
@@ -77,11 +79,15 @@ export const MemberListItem = (props: {
         <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px' }}>
           {memberName}
         </span>
-        <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span>
+        {/* <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span> */}
       </div>
-      <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
-        {isSelected && <CheckBoxTickIcon iconSize={26} />}
-      </span>
+      {!onlyList && !isAdmin &&(
+        <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
+          {isSelected && <CheckBoxTickIcon iconSize={26} />}
+        </span>
+        
+      )}
+      {isAdmin && <span className='bchat-member-item_admin-txt'>Admin</span>}
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { BchatIcon, BchatIconButton } from '../icon';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BchatIconButton } from '../icon';
 import _ from 'lodash';
 // tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
@@ -16,7 +16,7 @@ import {
   showInviteContactByConvoId,
   showLeaveGroupByConvoId,
   showRemoveModeratorsByConvoId,
-  showUpdateGroupMembersByConvoId,
+  // showUpdateGroupMembersByConvoId,
   // showUpdateGroupNameByConvoId,
 } from '../../interactions/conversationInteractions';
 import { Constants } from '../../bchat';
@@ -30,7 +30,11 @@ import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
 import { getAbsoluteAttachmentPath } from '../../types/MessageAttachment';
-import { useConversationUsername } from '../../hooks/useParamSelector';
+import {
+  useConversationPropsById,
+  useConversationUsername,
+  useWeAreAdmin,
+} from '../../hooks/useParamSelector';
 import { Flex } from '../basic/Flex';
 // import { CopyIconButton } from '../icon/CopyIconButton';
 import { clipboard } from 'electron';
@@ -38,6 +42,14 @@ import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { getConversationController } from '../../bchat/conversations';
 import { initiateOpenGroupUpdate } from '../../bchat/group/open-group';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
+import { useSet } from '../../hooks/useSet';
+import { ToastUtils, UserUtils } from '../../bchat/utils';
+import { MemberListItem } from '../MemberListItem';
+import classNames from 'classnames';
+import { InviteContact, onClickRef } from './InviteContacts';
+import { BchatButton } from '../basic/BchatButton';
+import { BchatButtonType } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -261,6 +273,45 @@ const HeaderItem = () => {
     </div>
   );
 };
+const ClassicMemberList = (props: {
+  convoId: string;
+  selectedMembers: Array<string>;
+  onSelect: (m: string) => void;
+  onUnselect: (m: string) => void;
+  removeMem?: boolean;
+}) => {
+  const { onSelect, convoId, onUnselect, selectedMembers, removeMem } = props;
+  console.log('removeMem --->', removeMem);
+  const weAreAdmin = useWeAreAdmin(convoId);
+  const convoProps = useConversationPropsById(convoId);
+  if (!convoProps) {
+    throw new Error('MemberList needs convoProps');
+  }
+  let currentMembers = convoProps.members || [];
+  const { groupAdmins } = convoProps;
+  currentMembers = [...currentMembers].sort(m => (groupAdmins?.includes(m) ? -1 : 0));
+
+  return (
+    <>
+      {currentMembers.map(member => {
+        const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
+        const isAdmin = groupAdmins?.includes(member);
+
+        return (
+          <MemberListItem
+            pubkey={member}
+            onlyList={!removeMem}
+            isSelected={isSelected}
+            onSelect={onSelect}
+            onUnselect={onUnselect}
+            key={member}
+            isAdmin={isAdmin}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 // tslint:disable: cyclomatic-complexity
 // tslint:disable: max-func-body-length
@@ -269,10 +320,18 @@ export const BchatRightPanelWithDetails = () => {
   const [media, setMedia] = useState<Array<MediaItemType>>([]);
   const [fullView, setFullView] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [removeMem, setRemoveMem] = useState(false);
+  const [addMem, setAddMem] = useState(false);
 
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
-
+  const convoProps = useConversationPropsById(selectedConversation?.id);
+  const existingMembers = convoProps?.members || [];
+  const ref = useRef<onClickRef>(null);
+  const { addTo, removeFrom, uniqueValues: membersToKeepWithUpdate } = useSet<string>(
+    existingMembers
+  );
+  const { uniqueValues: selectedContacts } = useSet<string>();
   useEffect(() => {
     let isRunning = true;
 
@@ -369,6 +428,99 @@ export const BchatRightPanelWithDetails = () => {
   const dispalyMedia = (value: boolean) => {
     setFullView(value);
   };
+  const onAdd = (member: string) => {
+    if (!weAreAdmin) {
+      ToastUtils.pushOnlyAdminCanRemove();
+      return;
+    }
+
+    addTo(member);
+  };
+  const onRemove = (member: string) => {
+    if (!weAreAdmin) {
+      window?.log?.warn('Only group admin can remove members!');
+
+      ToastUtils.pushOnlyAdminCanRemove();
+      return;
+    }
+    if (convoProps?.groupAdmins?.includes(member)) {
+      ToastUtils.pushCannotRemoveCreatorFromGroup();
+      window?.log?.warn(
+        `User ${member} cannot be removed as they are the creator of the closed group.`
+      );
+      return;
+    }
+
+    removeFrom(member);
+  };
+
+  async function onSubmit(convoId: string, membersAfterUpdate: Array<string>) {
+    // not ideal to get the props here, but this is not run often
+    const convoProps = getConversationController()
+      .get(convoId)
+      .getConversationModelProps();
+    if (!convoProps || !convoProps.isGroup || convoProps.isPublic) {
+      throw new Error('Invalid convo for updateGroupMembersDialog');
+    }
+    if (!convoProps.weAreAdmin) {
+      window.log.warn('Skipping update of members, we are not the admin');
+      return;
+    }
+    const ourPK = UserUtils.getOurPubKeyStrFromCache();
+
+    const allMembersAfterUpdate = _.uniq(_.concat(membersAfterUpdate, [ourPK]));
+
+    // membersAfterUpdate won't include the zombies. We are the admin and we want to remove them not matter what
+
+    // We need to NOT trigger an group update if the list of member is the same.
+    // We need to merge all members, including zombies for this call.
+    // We consider that the admin ALWAYS wants to remove zombies (actually they should be removed
+    // automatically by him when the LEFT message is received)
+
+    const existingMembers = convoProps.members || [];
+    const existingZombies = convoProps.zombies || [];
+
+    const allExistingMembersWithZombies = _.uniq(existingMembers.concat(existingZombies));
+
+    const notPresentInOld = allMembersAfterUpdate.filter(
+      m => !allExistingMembersWithZombies.includes(m)
+    );
+
+    // be sure to include zombies in here
+    const membersToRemove = allExistingMembersWithZombies.filter(
+      m => !allMembersAfterUpdate.includes(m)
+    );
+
+    // do the xor between the two. if the length is 0, it means the before and the after is the same.
+    const xor = _.xor(membersToRemove, notPresentInOld);
+    if (xor.length === 0) {
+      window.log.info('skipping group update: no detected changes in group member list');
+
+      return;
+    }
+
+    // If any extra devices of removed exist in newMembers, ensure that you filter them
+    // Note: I think this is useless
+    const filteredMembers = allMembersAfterUpdate.filter(
+      memberAfterUpdate => !_.includes(membersToRemove, memberAfterUpdate)
+    );
+
+    void initiateClosedGroupUpdate(convoId, convoProps.name || 'Unknown', filteredMembers);
+  }
+  const onClickOK = async () => {
+    // const members = getWouldBeMembers(this.state.contactList).map(d => d.id);
+    // do not include zombies here, they are removed by force
+    if (removeMem) {
+      await onSubmit(id, membersToKeepWithUpdate);
+      setRemoveMem(false);
+    }
+    if (addMem) {
+      console.log('selectedContacts ...', selectedContacts);
+      //  await submitForClosedGroup(id, selectedContacts);
+      await ref.current?.onclick();
+      setAddMem(false);
+    }
+  };
   return (
     <div className="group-settings">
       {!fullView ? (
@@ -417,7 +569,6 @@ export const BchatRightPanelWithDetails = () => {
               <ProfileName onCloseEdit={() => setEdit(false)} grpName={name} />
             </>
           )}
-          <SpacerMD />
 
           {showMemberCount && (
             <>
@@ -431,7 +582,7 @@ export const BchatRightPanelWithDetails = () => {
           {showAddRemoveModeratorsButton && (
             <>
               <div
-                className="group-settings-item"
+                className={classNames('group-settings-item')}
                 role="button"
                 onClick={() => {
                   showAddModeratorsByConvoId(id);
@@ -451,43 +602,88 @@ export const BchatRightPanelWithDetails = () => {
             </>
           )}
           {showUpdateGroupMembersButton && (
-            <div className='grp_btn_wrapper'>
-               <div
-                className="group-settings-item"
-                role="button"
-                onClick={async () => {
-                  await showUpdateGroupMembersByConvoId(id);
-                }}
-              >
-                <div className="invite-friends-container" style={{ marginRight: '10px' }}>
-                </div>
-                {window.i18n('groupMembers')}
-              </div>
-              <div
-                className="add-btn"
-                role="button"
-                onClick={() => {
-                  if (selectedConversation) {
-                    showInviteContactByConvoId(selectedConversation.id);
-                  }
-                }}
-              >
+            <div className="grp_btn_wrapper">
+              <Flex container={true} justifyContent="space-between" alignItems="center">
                 <div
-                  className="invite-friends-container"
-                  style={{ marginRight: '10px' }}
-                  onClick={() => {
-                    if (selectedConversation) {
-                      showInviteContactByConvoId(selectedConversation.id);
-                    }
-                  }}
+                  className="group-settings-item"
+                  // role="button"
+                  // onClick={async () => {
+                  //   await showUpdateGroupMembersByConvoId(id);
+                  // }}
                 >
-                
+                  <div className="invite-friends-container" style={{ marginRight: '10px' }}></div>
+                  {window.i18n('groupMembers')}
                 </div>
-                {/* {window.i18n('addingContacts')} */}
-                Add +
-              </div>
+                <Flex container={true} flexDirection="row">
+                  {removeMem || addMem ? (
+                    <>
+                      <BchatIconButton
+                        iconType="xWithCircle"
+                        iconSize={20}
+                        onClick={() => {
+                          setRemoveMem(false);
+                          setAddMem(false);
+                        }}
+                      />
 
-             
+                      <BchatIconButton
+                        iconType="circleFillTick"
+                        iconSize={20}
+                        iconColor="#108D32"
+                        onClick={() => onClickOK()}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {' '}
+                      <BchatIconButton
+                        iconType="avatarX"
+                        iconSize={24}
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                        onClick={() => setRemoveMem(true)}
+                      />
+                      <div
+                        className="add-btn"
+                        role="button"
+                        style={{ marginLeft: '5px' }}
+                        onClick={() => {
+                          setAddMem(true);
+                          // if (selectedConversation) {
+                          //   showInviteContactByConvoId(selectedConversation.id);
+                          // }
+                        }}
+                      >
+                        <div
+                          className="invite-friends-container"
+                          style={{ marginRight: '10px' }}
+                          onClick={() => {
+                            if (selectedConversation) {
+                              showInviteContactByConvoId(selectedConversation.id);
+                            }
+                          }}
+                        ></div>
+                        {/* {window.i18n('addingContacts')} */}
+                        Add +
+                      </div>
+                    </>
+                  )}
+                </Flex>
+              </Flex>
+
+              <div className="list-wrapper">
+                {addMem ? (
+                  <InviteContact conversationId={selectedConversation.id} ref={ref} />
+                ) : (
+                  <ClassicMemberList
+                    removeMem={removeMem}
+                    convoId={selectedConversation.id}
+                    onSelect={onAdd}
+                    onUnselect={onRemove}
+                    selectedMembers={membersToKeepWithUpdate}
+                  />
+                )}
+              </div>
             </div>
           )}
           {hasDisappearingMessages && (
@@ -514,25 +710,32 @@ export const BchatRightPanelWithDetails = () => {
             />
           </Flex>
           <SpacerSM />
-          <div className="img-wrapper">
+          <div
+            className={classNames('img-wrapper', existingMembers.length >= 3 && 'grp_more_member')}
+          >
             <MediaGallery documents={documents} media={media} fullView={fullView} />
           </div>
           <SpacerMD />
           {isGroup && (
             // tslint:disable-next-line: use-simple-attributes
-            <div
-              style={{ marginBottom: '14px', width: '90%', borderRadius: '12px' }}
-              onClick={deleteConvoAction}
-            >
-              <div className="group-settings__leaveBtn">
+            <div style={{ width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
+              <BchatButton
+                text={leaveGroupString}
+                iconType={isPublic ? 'delete' : 'leaveGroup'}
+                iconSize={'tiny'}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Danger}
+              />
+
+              {/* <div className="group-settings__leaveBtn">
                 <BchatIcon
                   iconType={isPublic ? 'delete' : 'leaveGroup'}
                   iconSize="tiny"
                   iconColor="#fc222f"
                   iconRotation={isPublic ? 0 : 180}
                 />
-                <div style={{ marginLeft: '5px' }}>{leaveGroupString}</div>
-              </div>
+                <div style={{ marginLeft: '5px' }}>{leaveGroupString}</div> */}
+              {/* </div> */}
             </div>
           )}
         </>

@@ -313,6 +313,10 @@ textarea {
       background-color: #202329;
       color: #108d32;
     }
+    &.danger{
+      background: #2e333d;
+      color: #FF3E3E;
+    }
 
     // &:not(.disabled):hover {
     //   color: var(--color-text);
@@ -3335,9 +3339,9 @@ input {
   user-select: text;
 }
 
-.contact-selection-list {
-  width: 20vw;
-}
+// .contact-selection-list {
+//   width: 20vw;
+// }
 
 .bchat-confirm-wrapper {
   position: absolute;
@@ -3637,6 +3641,14 @@ input {
 
   &__avatar > div {
     margin-bottom: 0px !important;
+  }
+  &_admin-txt{
+    width: 58px;
+    display: flex;
+    align-items: center;
+    color: #108D32;
+    font-size: 14px;
+    font-weight: 500;
   }
 }
 

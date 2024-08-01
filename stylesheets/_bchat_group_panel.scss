@@ -135,7 +135,7 @@
     // border-bottom: var(--border-bchat);
 
     // width: -webkit-fill-available;
-    padding: 0 5px;
+    // padding: 0 5px;
     transition: $bchat-transition-duration;
     cursor: pointer;
     color: #f0f0f0;
@@ -226,19 +226,36 @@
     border-radius: 12px;
     border: 1px solid #202329;
     /* background: #131313; */
-    display: flex;
-    justify-content: space-between;
     padding: 10px;
+    margin: 15px 0px;
+
     .add-btn {
       border-radius: 50px;
       background: #108d32;
       color: #f0f0f0;
       font-size: 12px;
       font-weight: 500;
-
-      padding: 0 7px 0 0;
+      padding: 5px 7px 5px 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .list-wrapper {
+      padding-top: 10px;
+      max-height: 294px;
+      overflow: auto;
+      .bchat-member-item {
+        height: 60px;
+        
+      }
+      .bchat-member-item:hover{
+        background: unset !important;
+        cursor: default;
+      }
     }
   }
+  
+
 
   // bottom button
   .bchat-button.square-outline.danger {
@@ -259,12 +276,19 @@
   .module-empty-state {
     text-align: center;
   }
+
+  .grp_more_member {
+    .module-media-gallery__content {
+      height: 191px !important;
+    }
+  }
   .img-wrapper {
     .module-media-gallery__content {
       overflow-y: hidden;
       height: 303px;
     }
   }
+  
   .module-attachment-section__items {
     &-media {
       display: grid;
@@ -341,7 +365,8 @@
     bottom: 10px;
     border-radius: 10px;
     color: red;
-    font-family: $bchat-font-poppin-medium;
+    // font-family: $bchat-font-poppin-medium;
+    font-weight: 500;
     cursor: pointer;
 
     &:hover {
