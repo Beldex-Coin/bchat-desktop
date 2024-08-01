@@ -70,7 +70,7 @@ textarea {
   position: relative;
 }
 
-.button-group > div {
+.button-group>div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
@@ -647,11 +647,11 @@ label {
     &.reverse {
       flex-direction: row-reverse;
 
-      .bchat-modal__header__close > div {
+      .bchat-modal__header__close>div {
         float: right;
       }
 
-      .bchat-modal__header__icons > div {
+      .bchat-modal__header__icons>div {
         float: left;
         padding-inline-start: 0px;
         padding-inline-end: 10px;
@@ -680,13 +680,13 @@ label {
       float: right;
     }
 
-    &__close > div {
+    &__close>div {
       float: left;
       padding: $bchat-margin-xs;
       margin: 0px;
     }
 
-    &__icons > div {
+    &__icons>div {
       float: right;
       padding-inline-start: 10px;
     }
@@ -733,7 +733,7 @@ label {
       // flex-direction: column;
       border-radius: 15px;
       overflow: hidden;
-  
+
       .subText {
         color: #F0AF13;
         font-weight: 500;
@@ -1341,8 +1341,7 @@ label {
     font-size: 16px;
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     border-radius: 14px;
     background: #333842;
 
@@ -1392,7 +1391,7 @@ label {
     font-weight: 300;
 
     &:hover {
-     opacity: 0.9;
+      opacity: 0.9;
     }
   }
 
@@ -1558,7 +1557,7 @@ label {
   left: 50%;
   margin: -40px 0 0 -40px;
 
-  & > div {
+  &>div {
     display: block;
   }
 }
@@ -1937,39 +1936,51 @@ label {
     flex-grow: 1;
 
     &-box {
-      padding: 45px 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      width: 500px;
 
-      max-width: 90%;
-      width: 600px;
+      .subBox {
+        padding: 20px 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-      background: var(--color-cell-background);
-      color: var(--color-text);
+        // max-width: 90%;
+        // width: 600px;
 
-      border: 1px solid $bchat-shade-8;
-      border-radius: 5px;
+        background: #2E333D;
+        // color: #858598;
 
-      h3 {
-        padding: 0px;
-        margin-bottom: $bchat-margin-lg;
+        // border: 1px solid $bchat-shade-8;
+        border-radius: 5px;
+      }
+
+      .password {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .subtext {
+        font-size: 22px;
+        margin-bottom: 15px;
+        font-weight: 700;
       }
 
       input {
         width: 100%;
-        background: var(--color-input-background);
-        color: var(--color-text);
-
+        background: #202329;
+        color: #858598;
+        height: 65px;
         padding: $bchat-margin-xs $bchat-margin-md;
-        margin-bottom: $bchat-margin-lg;
+        // margin-bottom: $bchat-margin-lg;
+        // outline: none;
+        border: 1px solid #46465D;
+        border-radius: 16px;
+        // text-align: center;
+        font-size: $bchat-font-h4 ;
+        // letter-spacing: 5px;
+        // font-family: $bchat-font-default;
         outline: none;
-        border: none;
-        border-radius: 2px;
-        text-align: center;
-        font-size: $bchat-font-xl;
-        letter-spacing: 5px;
-        font-family: $bchat-font-default;
       }
 
       .confirm-Button {
@@ -2903,6 +2914,7 @@ label {
           }
 
           &-btnBox {
+
             .bchat-button.default.primary,
             .bchat-button.default.green,
             .bchat-button.default.disable {
@@ -2931,6 +2943,7 @@ label {
       }
 
       &-modalBtnGrp {
+
         .bchat-button.brand-outline.primary,
         .bchat-button.brand-outline.green .bchat-button.brand {
           height: 35px;
@@ -2955,6 +2968,7 @@ label {
     }
 
     &-syncStatus {
+
       // position: relative;
       // height: 30px;
       // // width: 66.5%;
@@ -3297,11 +3311,11 @@ label {
     transition: $bchat-transition-duration;
   }
 
-  input:hover + label:before {
+  input:hover+label:before {
     background: var(--color-accent);
   }
 
-  input:checked + label:before {
+  input:checked+label:before {
     background: var(--color-accent);
   }
 }
@@ -3468,7 +3482,7 @@ input {
       }
     }
 
-    .bchat-icon-button:hover + .downArrow-unreadCountBox {
+    .bchat-icon-button:hover+.downArrow-unreadCountBox {
       background-color: #ffffff;
       color: #000;
     }
@@ -3635,7 +3649,7 @@ input {
     opacity: 0.8;
   }
 
-  &__avatar > div {
+  &__avatar>div {
     margin-bottom: 0px !important;
   }
 }

@@ -93,26 +93,42 @@ export const PasswordLock = ({
 }) => {
   return (
     <div className="bchat-settings__password-lock">
-      <div className="bchat-settings__password-lock-box">
-        <h3>{window.i18n('password')}</h3>
-        <input
-          type="password"
-          id="password-lock-input"
-          defaultValue=""
-          placeholder=""
-          style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
-          data-testid="password-lock-input"
-        />
+      <div className='bchat-settings__password-lock-box'>
+       <div style={{borderRadius:'16px',overflow:'hidden'}}>
+       <div className="subBox">
+          <img src='images/bchat/passwordIcon.svg'width={"130px"} height={"130px"}></img>
+          <div className='subtext'>{window.i18n('password')}</div>
+          <input
+            type="password"
+            id="password-lock-input"
+            defaultValue=""
+            placeholder="Enter your password"
+            // style={{height:'60px' }}
+            data-testid="password-lock-input"
+          />
 
-        {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
-        <div className="confirm-Button">
+          {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
+          {/* <div className="confirm-Button">
           <BchatButton
             buttonType={BchatButtonType.BrandOutline}
             buttonColor={BchatButtonColor.Green}
             text={window.i18n('ok')}
             onClick={validatePasswordLock}
           />
+        </div> */}
         </div>
+        <div className='bchat-modal-footer'>
+          <BchatButton
+            text={window.i18n('ok')}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            // disabled={okButton?.disabled}
+            onClick={validatePasswordLock}
+          // dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}
+          // style={{ width: '120px', height: '35px' }}
+          />
+        </div>
+       </div>
       </div>
     </div>
   );
