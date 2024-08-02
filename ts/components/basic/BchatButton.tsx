@@ -10,6 +10,7 @@ export enum BchatButtonType {
   Square = 'square',
   SquareOutline = 'square-outline',
   Simple = 'simple',
+  Medium='medium'
 }
 
 export enum BchatButtonColor {

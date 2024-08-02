@@ -221,6 +221,42 @@
       }
     }
   }
+  .disppear-wrapper {
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 16px;
+    background: #2e333d;
+    margin-top: 15px;
+    padding: 0 15px;
+    color: #f0f0f0;
+    cursor: pointer;
+  }
+  .disappear-option {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 7px;
+    margin: 15px 0;
+    span {
+      padding:0 10px;
+      color: #a7a7ba;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    span:hover {
+      border-radius: 16px;
+      background: #2e333d;
+      cursor: pointer;
+    }
+  }
+  .hr-line {
+    width: 100%;
+    height: 4px;
+    background: #202329;
+    margin-bottom: 15px;
+  }
   .grp_btn_wrapper {
     width: 100%;
     border-radius: 12px;
@@ -246,16 +282,13 @@
       overflow: auto;
       .bchat-member-item {
         height: 60px;
-        
       }
-      .bchat-member-item:hover{
+      .bchat-member-item:hover {
         background: unset !important;
         cursor: default;
       }
     }
   }
-  
-
 
   // bottom button
   .bchat-button.square-outline.danger {
@@ -288,7 +321,7 @@
       height: 303px;
     }
   }
-  
+
   .module-attachment-section__items {
     &-media {
       display: grid;

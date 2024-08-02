@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import _ from 'lodash';
 // tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
@@ -25,7 +25,7 @@ import { getSelectedConversation, isRightPanelShowing } from '../../state/select
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
-import { BchatDropdown } from '../basic/BchatDropdown';
+// import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
 import { MediaGallery } from './media-gallery/MediaGallery';
@@ -50,6 +50,7 @@ import { InviteContact, onClickRef } from './InviteContacts';
 import { BchatButton } from '../basic/BchatButton';
 import { BchatButtonType } from '../basic/BchatButton';
 import { BchatButtonColor } from '../basic/BchatButton';
+import { MenuWrapper } from '../menu/Menu';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -322,6 +323,7 @@ export const BchatRightPanelWithDetails = () => {
   const [edit, setEdit] = useState(false);
   const [removeMem, setRemoveMem] = useState(false);
   const [addMem, setAddMem] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
@@ -403,7 +405,7 @@ export const BchatRightPanelWithDetails = () => {
       },
     };
   });
-
+  // console.log('disappearingMessagesOptions --->', disappearingMessagesOptions);
   const showUpdateGroupNameButton =
     isGroup && (!isPublic || (isPublic && weAreAdmin)) && !commonNoShow;
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
@@ -569,7 +571,46 @@ export const BchatRightPanelWithDetails = () => {
               <ProfileName onCloseEdit={() => setEdit(false)} grpName={name} />
             </>
           )}
-
+          {hasDisappearingMessages && (
+            <div style={{width:'100%'}}>
+              <div className="disppear-wrapper" role='button' onClick={()=>setExpanded(!expanded)}>
+                <Flex container={true} flexDirection="row" alignItems="center">
+                  <BchatIcon
+                    iconType={'chatTimer'}
+                    iconSize={17}
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                  />
+                  <MenuWrapper style={{ fontSize: '16px', fontWeight: 300 }}>
+                    {window.i18n('disappearingMessages')}
+                  </MenuWrapper>
+                </Flex>
+                <BchatIcon iconType="chevron" iconSize="small" iconRotation={0} />
+                {/* <BchatDropdown
+                labelIcon={'chatTimer'}
+                label={window.i18n('disappearingMessages')}
+                options={disappearingMessagesOptions}
+              /> */}
+              </div>
+              {expanded && (
+                <div className="disappear-option">
+                  {disappearingMessagesOptions.map((item, key) => {
+                    return (
+                      <span
+                        key={key}
+                        onClick={() => {
+                          setExpanded(false);
+                          item.onClick();
+                        }}
+                      >
+                        {item.content}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
           {showMemberCount && (
             <>
               <SpacerLG />
@@ -686,44 +727,15 @@ export const BchatRightPanelWithDetails = () => {
               </div>
             </div>
           )}
-          {hasDisappearingMessages && (
-            <div
-              style={{ borderBottom: '4px solid #202329', width: '100%', paddingBottom: '15px' }}
-            >
-              <BchatDropdown
-                labelIcon={'chatTimer'}
-                label={window.i18n('disappearingMessages')}
-                options={disappearingMessagesOptions}
-              />
-            </div>
-          )}
 
-          <SpacerMD />
-          <Flex container={true} justifyContent="space-between" width="100%">
-            <span className="group-settings-media-txt">Media, docs</span>
-            <BchatIconButton
-              iconType={'chevron'}
-              iconSize={14}
-              iconRotation={268}
-              iconColor="#A7A7BA"
-              onClick={() => dispalyMedia(true)}
-            />
-          </Flex>
-          <SpacerSM />
-          <div
-            className={classNames('img-wrapper', existingMembers.length >= 3 && 'grp_more_member')}
-          >
-            <MediaGallery documents={documents} media={media} fullView={fullView} />
-          </div>
-          <SpacerMD />
           {isGroup && (
             // tslint:disable-next-line: use-simple-attributes
             <div style={{ width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
               <BchatButton
                 text={leaveGroupString}
                 iconType={isPublic ? 'delete' : 'leaveGroup'}
-                iconSize={'tiny'}
-                buttonType={BchatButtonType.Brand}
+                iconSize={20}
+                buttonType={BchatButtonType.Medium}
                 buttonColor={BchatButtonColor.Danger}
               />
 
@@ -738,6 +750,26 @@ export const BchatRightPanelWithDetails = () => {
               {/* </div> */}
             </div>
           )}
+          <SpacerMD />
+          <div className="hr-line" />
+          <Flex container={true} justifyContent="space-between" width="100%">
+            <span className="group-settings-media-txt">Media, docs</span>
+            <BchatIconButton
+              iconType={'chevron'}
+              iconSize={14}
+              iconRotation={268}
+              iconColor="#A7A7BA"
+              onClick={() => dispalyMedia(true)}
+            />
+          </Flex>
+          <SpacerSM />
+
+          <div
+            className={classNames('img-wrapper', existingMembers.length >= 3 && 'grp_more_member')}
+          >
+            <MediaGallery documents={documents} media={media} fullView={fullView} />
+          </div>
+          <SpacerMD />
         </>
       ) : (
         <>

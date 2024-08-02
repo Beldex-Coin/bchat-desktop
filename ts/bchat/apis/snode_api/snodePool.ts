@@ -148,15 +148,20 @@ export async function getSnodePoolFromDBOrFetchFromSeed(
     return randomSnodePool;
   }
   const fetchedFromDb = await Data.getSnodePoolFromDb();
-
-  if (!fetchedFromDb || fetchedFromDb.length <= minSnodePoolCount + countToAddToRequirement) {
+  let getOurNodeStatus: any = localStorage.getItem('getOurNodeStatus'); //undefined
+  if (
+    !fetchedFromDb ||
+    fetchedFromDb.length <= minSnodePoolCount + countToAddToRequirement ||
+    !getOurNodeStatus
+  ) {
     window?.log?.warn(
       `getSnodePoolFromDBOrFetchFromSeed: not enough snodes in db (${fetchedFromDb?.length}), Fetching from seed node instead... `
     );
     // if that fails to get enough snodes, even after retries, well we just have to retry later.
     // this call does not throw
     await SnodePool.TEST_fetchFromSeedWithRetriesAndWriteToDb();
-
+    await OnionPaths.clearTestOnionPath();
+    localStorage.setItem('getOurNodeStatus', 'true');
     return randomSnodePool;
   }
 
@@ -305,19 +310,25 @@ export async function getSwarmFor(pubkey: string): Promise<Array<Data.Snode>> {
 
   // See how many are actually still reachable
   // the nodes still reachable are the one still present in the snode pool
+  //   const goodNodes = randomSnodePool.filter(
+  //     (n: Data.Snode) => nodes.indexOf(n.pubkey_ed25519) !== -1
+  //   );
+  //  console.log('getSwarmFor goodNodes ::',goodNodes)
+  //   if (goodNodes.length >= minSwarmSnodeCount) {
+  //     return goodNodes;
+  //   }
+  const getOurNodeStatus: any = localStorage.getItem('getOurNodeStatus'); //undefined
   const goodNodes = randomSnodePool.filter(
     (n: Data.Snode) => nodes.indexOf(n.pubkey_ed25519) !== -1
   );
-
-  if (goodNodes.length >= minSwarmSnodeCount) {
+  if (goodNodes.length >= minSwarmSnodeCount && getOurNodeStatus) {
     return goodNodes;
   }
-
   // Request new node list from the network
   const freshNodes = _.shuffle(await requestSnodesForPubkey(pubkey));
 
   const edkeys = freshNodes.map((n: Data.Snode) => n.pubkey_ed25519);
   await internalUpdateSwarmFor(pubkey, edkeys);
-
+console.log('freshNodes -->',freshNodes);
   return freshNodes;
 }
