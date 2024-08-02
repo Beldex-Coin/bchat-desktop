@@ -8,7 +8,7 @@ import {
   getConfirmModal,
   getDeleteAccountModalState,
   getEditProfileDialog,
-  getInviteContactModal,
+  // getInviteContactModal,
   getOnionPathDialog,
   getRecoveryPhraseDialog,
   getRemoveModeratorsModal,
@@ -27,7 +27,7 @@ import {
   getAboutBnsModal,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
-import { InviteContactsDialog } from './InviteContactsDialog';
+// import { InviteContactsDialog } from '../conversation/InviteContacts';
 import { DeleteAccountModal } from './DeleteAccountModal';
 import { EditProfileDialog } from './EditProfileDialog';
 import { OnionPathModal } from './OnionStatusPathDialog';
@@ -53,7 +53,7 @@ import { AboutBnsDialog } from './AboutBnsDialog';
 
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
-  const inviteModalState = useSelector(getInviteContactModal);
+  // const inviteModalState = useSelector(getInviteContactModal);
   const addModeratorsModalState = useSelector(getAddModeratorsModal);
   const removeModeratorsModalState = useSelector(getRemoveModeratorsModal);
   const updateGroupMembersModalState = useSelector(getUpdateGroupMembersModal);
@@ -80,7 +80,7 @@ export const ModalContainer: any = () => {
   return (
     <>
       {banOrUnbanUserModalState && <BanOrUnBanUserDialog {...banOrUnbanUserModalState} />}
-      {inviteModalState && <InviteContactsDialog {...inviteModalState} />}
+      {/* {inviteModalState && <InviteContactsDialog {...inviteModalState} />} */}
       {addModeratorsModalState && <AddModeratorsDialog {...addModeratorsModalState} />}
       {removeModeratorsModalState && <RemoveModeratorsDialog {...removeModeratorsModalState} />}
       {updateGroupMembersModalState && (

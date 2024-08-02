@@ -580,9 +580,9 @@
   width: 94px;
   cursor: pointer;
   background-color: $color-light-10;
-  margin-inline-end: 8px;
-  margin-bottom: 8px;
-  margin-left: 8%;
+  // margin-inline-end: 8px;
+  // margin-bottom: 8px;
+  // margin-left: 8%;
   position: relative;
 }
 
@@ -667,7 +667,7 @@
   }
 
   p {
-    font-family: $bchat-font-poppin-semibold;
+    font-weight: 600;
     color: #646474;
     font-size: 14px;
   }

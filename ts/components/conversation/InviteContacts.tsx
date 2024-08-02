@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 import { getConversationController } from '../../bchat/conversations';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
@@ -11,16 +11,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateInviteContactModal } from '../../state/ducks/modalDialog';
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+// import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { MemberListItem } from '../MemberListItem';
-import { BchatWrapperModal } from '../BchatWrapperModal';
+// import { BchatWrapperModal } from '../BchatWrapperModal';
 import { getPrivateContactsPubkeys } from '../../state/selectors/conversations';
 import { useConversationPropsById } from '../../hooks/useParamSelector';
 import { useSet } from '../../hooks/useSet';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 
+// Define the ref type
+export type onClickRef = {
+  onclick: () => void;
+};
+
 type Props = {
   conversationId: string;
+  ref: onClickRef;
 };
 
 // const submitFortxnDetails = async (conversationId: string, pubkeys: Array<string>) => {
@@ -55,7 +61,6 @@ type Props = {
 //   });
 // };
 
-
 const submitForOpenGroup = async (conversationId: string, pubkeys: Array<string>) => {
   const completeUrl = await getCompleteUrlForV2ConvoId(conversationId);
   const convo = getConversationController().get(conversationId);
@@ -84,7 +89,7 @@ const submitForOpenGroup = async (conversationId: string, pubkeys: Array<string>
   });
 };
 
-const submitForClosedGroup = async (convoId: string, pubkeys: Array<string>) => {
+ const submitForClosedGroup = async (convoId: string, pubkeys: Array<string>) => {
   const convo = getConversationController().get(convoId);
   if (!convo || !convo.isGroup()) {
     throw new Error('submitForClosedGroup group not found');
@@ -123,7 +128,7 @@ const submitForClosedGroup = async (convoId: string, pubkeys: Array<string>) => 
 };
 
 // tslint:disable-next-line: max-func-body-length
-const InviteContactsDialogInner = (props: Props) => {
+const InviteContactsInner = forwardRef<onClickRef, Props>((props, ref) => {
   const { conversationId } = props;
   const dispatch = useDispatch();
 
@@ -149,17 +154,24 @@ const InviteContactsDialogInner = (props: Props) => {
     );
   }
 
-  const chatName = convoProps.name;
+  // const chatName = convoProps.name;
   const isPublicConvo = convoProps.isPublic;
 
   const closeDialog = () => {
     dispatch(updateInviteContactModal(null));
   };
 
+  // Pass the ref to the useImperativeHandle hook
+  useImperativeHandle(ref, () => ({
+    onclick: () => {
+      onClickOK();
+    },
+  }));
+
   const onClickOK = () => {
     if (selectedContacts.length > 0) {
       if (isPublicConvo) {
-         void submitForOpenGroup(conversationId, selectedContacts);
+        void submitForOpenGroup(conversationId, selectedContacts);
         //  submitFortxnDetails(conversationId, selectedContacts)
       } else {
         void submitForClosedGroup(conversationId, selectedContacts);
@@ -177,16 +189,17 @@ const InviteContactsDialogInner = (props: Props) => {
     return event.key === 'Esc' || event.key === 'Escape';
   }, closeDialog);
 
-  const unknown = window.i18n('unknown');
+  // const unknown = window.i18n('unknown');
 
-  const titleText = `${window.i18n('addingContacts', [chatName || unknown])}`;
-  const cancelText = window.i18n('cancel');
-  const okText = window.i18n('ok');
+  // const titleText = `${window.i18n('addingContacts', [chatName || unknown])}`;
+  // const cancelText = window.i18n('cancel');
+  // const okText = window.i18n('ok');
 
   const hasContacts = validContactsForInvite.length > 0;
 
   return (
-    <BchatWrapperModal title={titleText} onClose={closeDialog}>
+    <>
+      {/* <BchatWrapperModal title={titleText} onClose={closeDialog}> */}
       <SpacerLG />
 
       <div className="contact-selection-list">
@@ -210,7 +223,7 @@ const InviteContactsDialogInner = (props: Props) => {
       </div>
       <SpacerLG />
 
-      <div className="bchat-modal__button-group">
+      {/* <div className="bchat-modal__button-group">
         <BchatButton text={cancelText} onClick={closeDialog}  buttonColor={BchatButtonColor.White}/>
         <BchatButton
           text={okText}
@@ -218,9 +231,11 @@ const InviteContactsDialogInner = (props: Props) => {
           onClick={onClickOK}
           buttonColor={BchatButtonColor.Green}
         />
-      </div>
-    </BchatWrapperModal>
-  );
-};
+      </div> */}
+    </>
 
-export const InviteContactsDialog = InviteContactsDialogInner;
+    // {/* </BchatWrapperModal> */}
+  );
+});
+
+export const InviteContact = InviteContactsInner;

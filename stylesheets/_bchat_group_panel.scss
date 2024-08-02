@@ -89,6 +89,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    align-items: center;
 
     h2 {
       margin-right: 10px;
@@ -98,7 +99,15 @@
   h2 {
     word-break: break-word;
     max-width: 82%;
+    font-size: 18px;
+    /* font-style: normal; */
+    font-weight: 600;
+    margin: 0;
+  }
+  &-media-txt {
+    color: #a7a7ba;
     font-size: 16px;
+    font-weight: 500;
   }
 
   .description {
@@ -116,19 +125,24 @@
   &-item {
     display: flex;
     align-items: center;
-    min-height: 3rem;
-    font-size: 0.8rem;
-    color: var(--color-text);
-    background: var(--color-cell-background);
+    min-height: 2rem;
+    // font-size: 0.8rem;
+    // color: var(--color-text);
+    // background: var(--color-cell-background);
     // background: #181821;
     // border-top: var(--border-bchat);
-    border-bottom: var(--color-bchat-border);
+    // border-bottom: var(--color-bchat-border);
     // border-bottom: var(--border-bchat);
 
-    width: -webkit-fill-available;
-    padding: 0 $bchat-margin-md;
+    // width: -webkit-fill-available;
+    // padding: 0 5px;
     transition: $bchat-transition-duration;
     cursor: pointer;
+    color: #f0f0f0;
+    /* font-family: Poppins; */
+    font-size: 18px;
+    /* font-style: normal; */
+    font-weight: 500;
 
     &:hover {
       background: var(--color-clickable-hovered);
@@ -138,6 +152,142 @@
   // no double border (top and bottom) between two elements
   &-item + &-item {
     border-top: none;
+  }
+
+  .profile-name {
+    display: flex;
+    // margin-top: $bchat-margin-sm;
+    // margin-bottom: $bchat-margin-sm;
+    justify-content: center;
+    // width: 100%;
+    // font-family: $bchat-font-default;
+    font-weight: 400;
+    align-items: center;
+
+    .inputBox {
+      display: flex;
+      // width: 200px;
+      padding-left: 45px;
+    }
+
+    .saveIcon {
+      // width: 35px;
+      color: var(--color-accent);
+      cursor: pointer;
+      // margin: auto 0;
+      margin-left: 7px;
+    }
+
+    input {
+      height: 42px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: $bchat-font-md;
+      background: var(--color-input-background);
+      color: var(--color-text);
+      border: 1px solid #46465d;
+      outline: none;
+    }
+
+    &-uneditable {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      width: 100%;
+      margin-right: 25px;
+      font-family: $bchat-font-default;
+
+      p {
+        font-size: 16px;
+        padding: 0px $bchat-margin-sm;
+        margin-left: 33px;
+        line-height: 22px;
+      }
+
+      .qr-icon-btn {
+        width: 30px;
+        height: 30px;
+        // left: 103px;
+        position: relative;
+        cursor: pointer;
+
+        &:hover {
+          color: #128b17;
+        }
+      }
+
+      .bchat-icon-button {
+        padding: 0px;
+      }
+    }
+  }
+  .disppear-wrapper {
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 16px;
+    background: #2e333d;
+    margin-top: 15px;
+    padding: 0 15px;
+    color: #f0f0f0;
+    cursor: pointer;
+  }
+  .disappear-option {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 7px;
+    margin: 15px 0;
+    span {
+      padding:0 10px;
+      color: #a7a7ba;
+      font-size: 16px;
+      font-weight: 400;
+    }
+    span:hover {
+      border-radius: 16px;
+      background: #2e333d;
+      cursor: pointer;
+    }
+  }
+  .hr-line {
+    width: 100%;
+    height: 4px;
+    background: #202329;
+    margin-bottom: 15px;
+  }
+  .grp_btn_wrapper {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #202329;
+    /* background: #131313; */
+    padding: 10px;
+    margin: 15px 0px;
+
+    .add-btn {
+      border-radius: 50px;
+      background: #108d32;
+      color: #f0f0f0;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 7px 5px 0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .list-wrapper {
+      padding-top: 10px;
+      max-height: 294px;
+      overflow: auto;
+      .bchat-member-item {
+        height: 60px;
+      }
+      .bchat-member-item:hover {
+        background: unset !important;
+        cursor: default;
+      }
+    }
   }
 
   // bottom button
@@ -160,11 +310,24 @@
     text-align: center;
   }
 
+  .grp_more_member {
+    .module-media-gallery__content {
+      height: 191px !important;
+    }
+  }
+  .img-wrapper {
+    .module-media-gallery__content {
+      overflow-y: hidden;
+      height: 303px;
+    }
+  }
+
   .module-attachment-section__items {
     &-media {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      row-gap: 10px;
+      row-gap: 15px;
+      column-gap: 15px;
       width: 100%;
     }
 
@@ -190,15 +353,16 @@
         &--active {
           border-bottom: none;
           opacity: 1;
-
-          &:after {
-            content: ''; /* This is necessary for the pseudo element to work. */
-            display: block;
-            margin: 0 auto;
-            width: 70%;
-            padding-top: 0.5rem;
-            border-bottom: var(--border-unread);
-          }
+          border-radius: 16px;
+          background: #2e333d;
+          // &:after {
+          //   content: ''; /* This is necessary for the pseudo element to work. */
+          //   display: block;
+          //   margin: 0 auto;
+          //   width: 70%;
+          //   padding-top: 0.5rem;
+          //   border-bottom: var(--border-unread);
+          // }
         }
       }
 
@@ -216,7 +380,7 @@
           // ); //.group-settings is 22vw and we want three rows with some space so divide it by 4
           // margin: auto;
           height: calc(22vw / 4);
-          width: calc(22vw / 4);
+          width: calc(26vw / 4);
           border-radius: 8px;
         }
       }
@@ -234,7 +398,8 @@
     bottom: 10px;
     border-radius: 10px;
     color: red;
-    font-family: $bchat-font-poppin-medium;
+    // font-family: $bchat-font-poppin-medium;
+    font-weight: 500;
     cursor: pointer;
 
     &:hover {

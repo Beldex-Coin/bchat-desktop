@@ -313,13 +313,30 @@ textarea {
       background-color: #202329;
       color: #108d32;
     }
+    &.danger {
+      background: #2e333d;
+      color: #ff3e3e;
+    }
 
     // &:not(.disabled):hover {
     //   color: var(--color-text);
     //   border-color: var(--color-text);
     // }
   }
-
+  &.medium {
+    min-width: 200px;
+    height: 50px;
+    align-items: center;
+    padding: 0px $bchat-margin-lg;
+    border-radius: 16px;
+    color: #ff3e3e;
+    font-size: 16px;
+    font-weight: 300;
+    &.danger {
+      background: #2e333d;
+      color: #ff3e3e;
+    }
+  }
   // &.default,
   // &.square,
   // &.default-outline,
@@ -735,7 +752,7 @@ label {
       overflow: hidden;
 
       .subText {
-        color: #F0AF13;
+        color: #f0af13;
         font-weight: 500;
         font-size: 16px;
         margin-bottom: 25px;
@@ -861,7 +878,7 @@ label {
     font-style: normal;
     font-weight: 400;
     background-color: #202329;
-    border: 1px solid #46465D;
+    border: 1px solid #46465d;
     border-radius: 14px;
     padding: 20px 30px;
     margin-top: 15px;
@@ -1063,7 +1080,7 @@ label {
       font-weight: 400;
       font-size: 15px;
       line-height: 20px;
-      color: #A7A7BA;
+      color: #a7a7ba;
     }
 
     .span {
@@ -1386,7 +1403,7 @@ label {
     // background: var(--color-cell-background);
     border-radius: 16px;
     background: #2e333d;
-    color: #F0F0F0;
+    color: #f0f0f0;
     font-size: 16px;
     font-weight: 300;
 
@@ -3349,9 +3366,9 @@ input {
   user-select: text;
 }
 
-.contact-selection-list {
-  width: 20vw;
-}
+// .contact-selection-list {
+//   width: 20vw;
+// }
 
 .bchat-confirm-wrapper {
   position: absolute;
@@ -3651,6 +3668,14 @@ input {
 
   &__avatar>div {
     margin-bottom: 0px !important;
+  }
+  &_admin-txt {
+    width: 58px;
+    display: flex;
+    align-items: center;
+    color: #108d32;
+    font-size: 14px;
+    font-weight: 500;
   }
 }
 
