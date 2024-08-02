@@ -70,7 +70,7 @@
   "unableToLoadAttachment": "Sorry, there was an error setting your attachment.",
   "offline": "Offline",
   "checkNetworkConnection": "Check your network connection.",
-  "attemptingReconnection": "Attempting reconnect in $reconnect_duration_in_seconds$ seconds",
+  "attemptingReconnection": "Attempting reconnect in $reconnect_duration_in_seconds$ sec",
   "submitDebugLog": "Registro de depuración",
   "debugLog": "Registro de Depuración",
   "showDebugLog": "Mostrar Registro de Depuración",
