@@ -364,7 +364,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
     return (
       <div>
         {/* <p className="profile-header">{window.i18n('BchatID')}</p> */}
-        <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}>
+        <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}
+          onClick={() => copyBchatID(props.bchatID)}
+        >
           <div className="profile-value">
             <div style={{ marginTop: '10px', color: 'white', fontFamily: 'Poppins' }}>{window.i18n('BchatID')}</div>
             <p style={{ margin: '10px 0px', fontFamily: 'Poppins', fontWeight: '400' }}>
@@ -383,7 +385,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
         </div>
 
         {/* <p className="profile-header">{window.i18n('profileBeldexAddres')}</p> */}
-        <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}>
+        <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
+          onClick={() => copyBchatID(walletAddress)}
+        >
           <div className="profile-value" style={{ color: '#1782FF' }}>
             <div style={{ marginTop: '10px', color: 'white', fontFamily: 'Poppins' }}>{window.i18n('BchatID')}</div>
             <p style={{ margin: '10px 0px', fontFamily: 'Poppins', fontWeight: '400' }}>

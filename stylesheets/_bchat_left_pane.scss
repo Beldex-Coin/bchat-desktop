@@ -502,6 +502,12 @@ $bchat-compose-margin: 20px;
       }
     }
 
+    .messageRequestButton {
+      display: flex;
+      justify-content: center;
+    }
+
+
     // .nextButton {
     //   width: 79%;
     //   height: 50px;

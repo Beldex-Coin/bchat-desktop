@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BchatIconButton } from '../icon/BchatIconButton';
 import { toggleMultipleSelection } from '../../state/ducks/userConfig';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
+import { getBlockedPubkeys } from '../../state/selectors/conversations';
 // import { getConversationController } from '../../bchat/conversations';
 // import { useUpdate } from 'react-use';
 
@@ -24,6 +25,10 @@ export const SettingsHeader = (props: Props) => {
 
   // let color: any;
   const multipleSelectionValue = useSelector(getMultipleSelection);
+  const blockedNumbers = useSelector(getBlockedPubkeys);
+
+  console.log("multipleSelectionValue:", multipleSelectionValue);
+  console.log("blockedNumbers:", blockedNumbers)
   // const temp=useSelector(state=>state)
   // console.log('multipleSelectionValue', multipleSelectionValue,temp);
 
@@ -56,11 +61,11 @@ export const SettingsHeader = (props: Props) => {
         </BNSWrapper>
       </div> */}
       <div className="bchat-settings-header-title">{categoryTitle}</div>
-      {window.i18n('blockedSettingsTitle') === categoryTitle && (
+      {window.i18n('blockedSettingsTitle') === categoryTitle && blockedNumbers.length != 0 && (
         <div className="bchat-settings-header-selectionBox">
           {multipleSelectionValue ? (
             <BchatIconButton
-              iconSize="medium"
+              iconSize="large"
               iconType="markAllDone"
               onClick={() => {
                 dispatch(toggleMultipleSelection());
@@ -68,7 +73,7 @@ export const SettingsHeader = (props: Props) => {
             />
           ) : (
             <BchatIconButton
-              iconSize="medium"
+              iconSize="large"
               iconType="markAll"
               onClick={() => {
                 dispatch(toggleMultipleSelection());

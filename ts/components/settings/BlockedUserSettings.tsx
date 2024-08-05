@@ -24,6 +24,7 @@ import classNames from 'classnames';
 import { BchatIcon } from '../icon';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
+import { SpacerLG } from '../basic/Text';
 
 export const BlockedUserSettings = () => {
   const blockedNumbers = useSelector(getBlockedPubkeys);
@@ -83,17 +84,24 @@ export const BlockedUserSettings = () => {
           removeFromSelected={removeFromSelected}
           multipleSelection={multipleSelection}
         />
+        <SpacerLG />
+        <SpacerLG />
+        {multipleSelection && (
+          <UnBlockedBox>
+            <BchatButton
+              buttonColor={BchatButtonColor.Danger}
+              style={{
+                height: '55px', fontSize: '16px',
+                fontWeight: '500'
+              }}
+              text={window.i18n('unblockUserSelect')}
+              onClick={unBlockThoseUsers}
+              dataTestId="unblock-button-settings-screen"
+            />
+          </UnBlockedBox>
+        )}
       </div>
-      {multipleSelection && (
-        <UnBlockedBox>
-          <BchatButton
-            buttonColor={BchatButtonColor.Danger}
-            text={window.i18n('unblockUserSelect')}
-            onClick={unBlockThoseUsers}
-            dataTestId="unblock-button-settings-screen"
-          />
-        </UnBlockedBox>
-      )}
+
     </div>
   );
 
@@ -124,10 +132,7 @@ const BlockedEntriesContainer = styled.div`
 const UnBlockedBox = styled.div`
   display: flex;
   justify-content: center;
-  background: var(--color-chatHeader);
-  height: 56px;
-  align-items: center;
-`;
+ `;
 const BlockedEntriesRoundedContainer = styled.div`
   overflow: hidden;
   background: var(--background-secondary-color);
@@ -164,7 +169,7 @@ const BlockedEntries = (props: {
               onUnselect={removeFromSelected}
               disableBg={false}
               multipleSelection={multipleSelection}
-              // setting={true}
+            // setting={true}
             />
           );
         })}
@@ -185,9 +190,9 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder
         // size={40}
         position={{ left: '23px', top: '23px' }}
         isBnsHolder={isBnsHolder}
-        size={{width:'20',height:'20'}}
+        size={{ width: '20', height: '20' }}
       >
-        <Avatar size={AvatarSize.S} pubkey={memberPubkey} />
+        <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
         {isAdmin && <CrownIcon />}
       </BNSWrapper>
     </AvatarContainer>
@@ -247,6 +252,7 @@ export const BlockedMemberList = (props: {
         {!multipleSelection ? (
           <div className="bchat-blockedMember-item-btnBox">
             <BchatButton
+              style={{ minWidth: '45px', height: '45px', fontWeight: '400', fontSize: '16px', fontFamily: 'Poppins' }}
               buttonColor={BchatButtonColor.Danger}
               text={window.i18n('unblockUser')}
               onClick={() => unblockConvoById(pubkey)}
@@ -255,7 +261,7 @@ export const BlockedMemberList = (props: {
           </div>
         ) : (
           <div className={classNames('bchat-member-item__checkmarkbox', isSelected && 'selected')}>
-            {isSelected && <BchatIcon iconType="checkBox" iconSize={23} iconColor={'white'} />}
+            {isSelected && <BchatIcon iconType="checkBox" iconSize={23} />}
           </div>
         )}
       </div>

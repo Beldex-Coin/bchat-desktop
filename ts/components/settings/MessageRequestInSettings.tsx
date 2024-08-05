@@ -31,6 +31,7 @@ import {
     approveConvoAndSendResponse,
   } from '../../interactions/conversationInteractions';
 import { getConversationController } from '../../bchat/conversations';
+import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 // import { AcceptMenuItem } from '../menu/Menu';
 
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -173,9 +174,16 @@ const MessageRequestListSetting = (props: Props) => {
           </div> */}
           </div>
           {/* <button style={{background:"green"}} onClick={handleAcceptConversationRequest}>{window.i18n('accept')}</button> */}
-          <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>
+          {/* <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>
           {window.i18n('accept')}
-          </div>
+          </div> */}
+          <BchatButton
+            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px',fontFamily:'Poppins'}}
+              buttonColor={BchatButtonColor.Primary}
+              text={window.i18n('accept')}
+              onClick={handleAcceptConversationRequest}
+              dataTestId="accept-button-settings-screen"
+            />
           
           {/* <AcceptMenuItem /> */}
         </div>
