@@ -94,6 +94,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
 
     return (
       <>
+    <div className="bgWrapper ">
         {/* this function used for hide the menubar */}
         {/* {isHideMenuBarSupported() && (
           <BchatToggleWithDescription
@@ -117,6 +118,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
 
           // description={window.i18n('spellCheckDescription')}
           active={isdark}
+          iconType='sun'
         />
         {/* <BchatToggleWithDescription
           onClickToggle={() => {
@@ -155,6 +157,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
             // description={window.i18n('startInTrayDescription')}
             description={"After closing the window, BChat runs in the background"}
             active={isStartInTrayActive}
+            iconType='bgProcess'
           />
         }
         {/* <BchatToggleWithDescription
@@ -198,6 +201,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           buttonColor={BchatButtonColor.Primary}
           buttonText={'Spam fill DB using cached'}
         /> */}
+        </div>
       </>
     );
   }

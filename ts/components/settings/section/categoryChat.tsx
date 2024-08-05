@@ -10,7 +10,7 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
-import {   updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
+import { updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
@@ -46,14 +46,14 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
     }
 
     function chatWithWallet() {
-      window.setSettingValue(SettingsKey.settingsChatWithWallet,!chatwithWallet);
+      window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
       // let contional:any=chatwithWallet;
       // console.log('contional::',contional)
       // dispatch(updateWalletSyncInitiatedWithChat(contional)) ;
-      let data:any=false;
-      
-      dispatch(updatewalletSyncBarShowInChat(data))
-      // dispatch(updateWalletPasswordPopUpFlag(data))          
+      let data: any = false;
+
+      dispatch(updatewalletSyncBarShowInChat(data));
+      // dispatch(updateWalletPasswordPopUpFlag(data))
       // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false)
 
       forceUpdate();
@@ -61,51 +61,54 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
 
     function dispatchConfirmModal() {
       if (!chatwithWallet) {
-        dispatch(updateBchatAlertConfirmModal({
-          settings: true,
-          onClickOk: async () => {
-            chatWithWallet();
-            dispatch(updateBchatAlertConfirmModal(null))
-          },
-          onClickCancel: () => dispatch(updateBchatAlertConfirmModal(null))
-        })
-        )
-
-      }
-      else {
+        dispatch(
+          updateBchatAlertConfirmModal({
+            settings: true,
+            onClickOk: async () => {
+              chatWithWallet();
+              dispatch(updateBchatAlertConfirmModal(null));
+            },
+            onClickCancel: () => dispatch(updateBchatAlertConfirmModal(null)),
+          })
+        );
+      } else {
         chatWithWallet();
       }
     }
 
-
     return (
       <>
-        <BchatToggleWithDescription
-          onClickToggle={() => dispatchConfirmModal()}
-          title={window.i18n('chatWithWallet')}
-          description={window.i18n('chatWithWalletDisc')}
-          active={chatwithWallet}
-        />
-        <ChangeChatFontSetting />
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            dispatch(toggleAudioAutoplay());
-            forceUpdate();
-          }}
-          title={window.i18n('audioMessageAutoplayTitle')}
-          description={window.i18n('audioMessageAutoplayDescription')}
-          active={audioAutoPlay}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleLinkPreviews();
-            forceUpdate();
-          }}
-          title={window.i18n('linkPreviewsTitle')}
-          description={window.i18n('linkPreviewDescription')}
-          active={isLinkPreviewsOn}
-        />
-        {/* <BchatToggleWithDescription
+        <div className='bgWrapper'> 
+          {' '}
+          <BchatToggleWithDescription
+            onClickToggle={() => dispatchConfirmModal()}
+            title={window.i18n('chatWithWallet')}
+            description={window.i18n('chatWithWalletDisc')}
+            active={chatwithWallet}
+            iconType={'chatWithLogo'}
+          />
+          <ChangeChatFontSetting />
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              dispatch(toggleAudioAutoplay());
+              forceUpdate();
+            }}
+            title={window.i18n('audioMessageAutoplayTitle')}
+            description={window.i18n('audioMessageAutoplayDescription')}
+            active={audioAutoPlay}
+            iconType="microphone"
+          />
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleLinkPreviews();
+              forceUpdate();
+            }}
+            title={window.i18n('linkPreviewsTitle')}
+            description={window.i18n('linkPreviewDescription')}
+            active={isLinkPreviewsOn}
+            iconType="chainLink"
+          />
+          {/* <BchatToggleWithDescription
           onClickToggle={() => {
             window.toggleSpellCheck();
             forceUpdate();
@@ -114,6 +117,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
           description={window.i18n('spellCheckDescription')}
           active={isSpellCheckActive}
         /> */}
+        </div>
       </>
     );
   }

@@ -75,112 +75,119 @@ export const SettingsCategoryPrivacy = (props: {
   if (props.hasPassword !== null) {
     return (
       <>
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            const old = Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator));
-            window.setSettingValue(SettingsKey.settingsTypingIndicator, !old);
-            forceUpdate();
-          }}
-          title={window.i18n('typingIndicatorsSettingTitle')}
-          // description={window.i18n('typingIndicatorsSettingDescription')}
-          description={window.i18n('typingIndicatorsSettingDescription')}
-          active={Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator))}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await window.toggleMediaPermissions();
-            forceUpdate();
-          }}
-          title={window.i18n('mediaPermissionsTitle')}
-          description={window.i18n('mediaPermissionsDescription')}
-          active={Boolean(window.getSettingValue('media-permissions'))}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleCallMediaPermissions(forceUpdate);
-            forceUpdate();
-          }}
-          title={window.i18n('callMediaPermissionsTitle')}
-          description={window.i18n('callMediaPermissionsDescription')}
-          active={Boolean(window.getCallMediaPermissions())}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            dispatch(toggleMessageRequests());
-          }}
-          title={window.i18n('hideRequestBanner')}
-          description={window.i18n('hideRequestBannerDescription')}
-          active={useSelector(getHideMessageRequestBanner)}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            const old = Boolean(window.getSettingValue(SettingsKey.settingsReadReceipt));
-            window.setSettingValue(SettingsKey.settingsReadReceipt, !old);
-            forceUpdate();
-          }}
-          title={window.i18n('readReceiptSettingTitle')}
-          // description={window.i18n('readReceiptSettingDescription')}
-          description={window.i18n('readReceiptSettingDescription')}
-
-          active={window.getSettingValue(SettingsKey.settingsReadReceipt)}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={async () => {
-            await toggleOpengroupPruning();
-            forceUpdate();
-          }}
-          title={window.i18n('pruneSettingTitle')}
-          description={window.i18n('pruneSettingDescription')}
-          active={isOpengroupPruningEnabled}
-        />
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            const old = Boolean(window.getSettingValue(SettingsKey.settingsAutoUpdate));
-            window.setSettingValue(SettingsKey.settingsAutoUpdate, !old);
-            forceUpdate();
-          }}
-          title={window.i18n('autoUpdateSettingTitle')}
-          description={window.i18n('autoUpdateSettingDescription')}
-          active={Boolean(window.getSettingValue(SettingsKey.settingsAutoUpdate))}
-        />
-        {!props.hasPassword && (
-          <BchatSettingButtonItem
-            title={window.i18n('setAccountPasswordTitle')}
-            // description={window.i18n('setAccountPasswordDescription')}
-            description={window.i18n('setAccountPasswordDescription')}
-
-            onClick={() => {
-              displayPasswordModal('set', props.onPasswordUpdated);
+        <div className="bgWrapper ">
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              const old = Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator));
+              window.setSettingValue(SettingsKey.settingsTypingIndicator, !old);
+              forceUpdate();
             }}
-            buttonColor={BchatButtonColor.Primary}
-            buttonText={window.i18n('setPassword')}
-            dataTestId={'set-password-button'}
+            title={window.i18n('typingIndicatorsSettingTitle')}
+            // description={window.i18n('typingIndicatorsSettingDescription')}
+            description={window.i18n('typingIndicatorsSettingDescription')}
+            active={Boolean(window.getSettingValue(SettingsKey.settingsTypingIndicator))}
+            iconType="chatDots"
           />
-        )}
-        {props.hasPassword && (
-          <BchatSettingButtonItem
-            title={window.i18n('changeAccountPasswordTitle')}
-            description={window.i18n('changeAccountPasswordDescription')}
-            onClick={() => {
-              displayPasswordModal('change', props.onPasswordUpdated);
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await window.toggleMediaPermissions();
+              forceUpdate();
             }}
-            buttonColor={BchatButtonColor.Primary}
-            buttonText={window.i18n('changePassword')}
+            title={window.i18n('mediaPermissionsTitle')}
+            description={window.i18n('mediaPermissionsDescription')}
+            active={Boolean(window.getSettingValue('media-permissions'))}
+            iconType="microphone"
           />
-        )}
-        {props.hasPassword && (
-          <BchatSettingButtonItem
-            title={window.i18n('removeAccountPasswordTitle')}
-            // description={window.i18n('removeAccountPasswordDescription')}
-            description={window.i18n('removeAccountPasswordDescription')}
-
-            onClick={() => {
-              displayPasswordModal('remove', props.onPasswordUpdated);
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleCallMediaPermissions(forceUpdate);
+              forceUpdate();
             }}
-            buttonColor={BchatButtonColor.Danger}
-            buttonText={window.i18n('removePassword')}
+            title={window.i18n('callMediaPermissionsTitle')}
+            description={window.i18n('callMediaPermissionsDescription')}
+            active={Boolean(window.getCallMediaPermissions())}
+            iconType="privacyvideoCam"
           />
-        )}
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              dispatch(toggleMessageRequests());
+            }}
+            title={window.i18n('hideRequestBanner')}
+            description={window.i18n('hideRequestBannerDescription')}
+            active={useSelector(getHideMessageRequestBanner)}
+            iconType="eye_closed"
+          />
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              const old = Boolean(window.getSettingValue(SettingsKey.settingsReadReceipt));
+              window.setSettingValue(SettingsKey.settingsReadReceipt, !old);
+              forceUpdate();
+            }}
+            title={window.i18n('readReceiptSettingTitle')}
+            // description={window.i18n('readReceiptSettingDescription')}
+            description={window.i18n('readReceiptSettingDescription')}
+            active={window.getSettingValue(SettingsKey.settingsReadReceipt)}
+            iconType="receipt"
+          />
+          <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleOpengroupPruning();
+              forceUpdate();
+            }}
+            title={window.i18n('pruneSettingTitle')}
+            description={window.i18n('pruneSettingDescription')}
+            active={isOpengroupPruningEnabled}
+            iconType="members"
+          />
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              const old = Boolean(window.getSettingValue(SettingsKey.settingsAutoUpdate));
+              window.setSettingValue(SettingsKey.settingsAutoUpdate, !old);
+              forceUpdate();
+            }}
+            title={window.i18n('autoUpdateSettingTitle')}
+            description={window.i18n('autoUpdateSettingDescription')}
+            active={Boolean(window.getSettingValue(SettingsKey.settingsAutoUpdate))}
+            iconType="rotatedArrow"
+          />
+          {!props.hasPassword && (
+            <BchatSettingButtonItem
+              title={window.i18n('setAccountPasswordTitle')}
+              // description={window.i18n('setAccountPasswordDescription')}
+              description={window.i18n('setAccountPasswordDescription')}
+              onClick={() => {
+                displayPasswordModal('set', props.onPasswordUpdated);
+              }}
+              buttonColor={BchatButtonColor.Secondary}
+              buttonText={window.i18n('setPassword')}
+              dataTestId={'set-password-button'}
+              iconType="lockWithDots"
+            />
+          )}
+          {props.hasPassword && (
+            <BchatSettingButtonItem
+              title={window.i18n('changeAccountPasswordTitle')}
+              description={window.i18n('changeAccountPasswordDescription')}
+              onClick={() => {
+                displayPasswordModal('change', props.onPasswordUpdated);
+              }}
+              buttonColor={BchatButtonColor.Primary}
+              buttonText={window.i18n('changePassword')}
+            />
+          )}
+          {props.hasPassword && (
+            <BchatSettingButtonItem
+              title={window.i18n('removeAccountPasswordTitle')}
+              // description={window.i18n('removeAccountPasswordDescription')}
+              description={window.i18n('removeAccountPasswordDescription')}
+              onClick={() => {
+                displayPasswordModal('remove', props.onPasswordUpdated);
+              }}
+              buttonColor={BchatButtonColor.Danger}
+              buttonText={window.i18n('removePassword')}
+            />
+          )}
+        </div>
       </>
     );
   }
