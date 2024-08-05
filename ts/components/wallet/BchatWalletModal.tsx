@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import React, { useState } from "react"
-import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
+import {  BchatButtonColor } from "../basic/BchatButton"
 import { SpacerLG, SpacerMD, SpacerSM } from "../basic/Text"
 import { BchatWrapperModal } from "../BchatWrapperModal"
 import { useKey } from "react-use"
@@ -18,6 +18,16 @@ export const WalletModal = (props: any) => {
             onClose={props.onClose}
             showExitIcon={false}
             headerReverse={true}
+            okButton={{
+                text: window.i18n('save'),
+                color: BchatButtonColor.Primary,
+                onClickOkHandler: () => { props.onClick(select) }
+            }}
+            cancelButton={{
+                status:true,
+                text:window.i18n('cancel'),
+                onClickCancelHandler:props.onClose
+            }}
         >
             <SpacerLG />
             <div className="bchat-modal__centered">
@@ -32,7 +42,7 @@ export const WalletModal = (props: any) => {
                 </div>
                 <SpacerMD />
                 <div className="bchat-modal__button-group__center">
-                    <BchatButton
+                    {/* <BchatButton
                         text={window.i18n('cancel')}
                         buttonType={BchatButtonType.Default}
                         buttonColor={BchatButtonColor.Primary}
@@ -41,8 +51,8 @@ export const WalletModal = (props: any) => {
                             width: '100px',
                             borderRadius: '5px'
                         }}
-                    />
-                    <BchatButton
+                    /> */}
+                    {/* <BchatButton
                         text={window.i18n('save')}
                         buttonType={BchatButtonType.Default}
                         buttonColor={BchatButtonColor.Green}
@@ -51,7 +61,7 @@ export const WalletModal = (props: any) => {
                             width: '100px',
                             borderRadius: '5px'
                         }}
-                    />
+                    /> */}
 
                 </div></div>
         </BchatWrapperModal>

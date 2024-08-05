@@ -125,6 +125,11 @@ textarea {
       background: #2e333d;
       color: #f0f0f0;
     }
+
+    &.danger {
+      background-color: #FF3E3E;
+      color: #F0F0F0;
+    }
   }
 
   &.default-outline {
@@ -316,6 +321,16 @@ textarea {
     &.danger {
       background: #2e333d;
       color: #ff3e3e;
+    }
+
+    &.danger {
+      background-color: #2E333D;
+      color: #F0F0F0;
+
+      &:hover {
+        background-color: #FF3E3E;
+      }
+
     }
 
     // &:not(.disabled):hover {
@@ -1752,11 +1767,12 @@ label {
   &-list {
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 15px 15px 0 15px;
+    padding: 10px 15px 0 15px;
     height: 100%;
 
     .noBlockedContacts {
       width: 100%;
+      height: 100%;
       text-align: center;
       margin: 0 auto;
       font-family: 'poppin-semibold';
@@ -1764,7 +1780,8 @@ label {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      color: var(--color-disableText);
+      color: #858598;
+      font-size: 18px;
 
       .noBlockedContacts-img {
         width: 500px;
@@ -1772,7 +1789,7 @@ label {
         background-image: var(--image-BlockedContact);
         background-repeat: no-repeat;
         background-size: contain;
-        margin-top: 16%;
+        // margin-top: 16%;
       }
     }
   }
@@ -1783,7 +1800,8 @@ label {
     justify-content: center;
     align-items: center;
     height: $main-view-header-height;
-    background-color: var(--color-chatHeader);
+    background-color: #131313;
+    border: 1px solid #202329;
 
     &-title {
       line-height: $main-view-header-height;
@@ -1793,10 +1811,10 @@ label {
       flex-grow: 1;
     }
 
-    &-selectionBox {
-      width: 94px;
-      padding-left: 7px;
-    }
+    // &-selectionBox {
+    // width: 94px;
+    // padding-left: 7px;
+    // }
 
     .bchat-button,
     .bchat-icon-button {
@@ -1924,7 +1942,7 @@ label {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    background-color: var(--color-rightpaneSetting);
+    // background-color: var(--color-rightpaneSetting);
   }
 
   &__version-info {
@@ -2020,17 +2038,19 @@ label {
       display: flex;
       flex-direction: row;
       padding-inline-end: 16px;
-      padding: 10px 0;
+      padding: 10px 15px;
       padding-inline-start: 16px;
       align-items: center;
-      background-color: var(--color-settingIndication);
-      margin-bottom: 2px;
+      // background-color: var(--color-settingIndication);
+      background-color: #202329;
+      font-family: $bchat-font-default;
+      margin-bottom: 6px;
       border-radius: 10px;
     }
 
     &-profileName {
-      font-family: $bchat-font-poppin-semibold;
       font-size: $bchat-font-lg;
+      font-weight: 500;
     }
 
     &-acceptButton {
@@ -2038,7 +2058,6 @@ label {
       color: white;
       padding: 8px 25px;
       border-radius: 8px;
-      font-family: $bchat-font-poppin-semibold;
       margin-right: 20px;
       cursor: pointer;
 
@@ -3583,7 +3602,7 @@ input {
   // cursor: pointer;
   flex-shrink: 0;
   font-family: $bchat-font-default;
-  padding: 0px $bchat-margin-sm;
+  padding: 0px $bchat-margin-md;
   height: 70px;
   display: flex;
   justify-content: space-between;
@@ -3594,12 +3613,13 @@ input {
 
   &:not(:last-child) {
     border-bottom: var(--border-bchat);
+    margin-bottom: 6px;
   }
 
   &.selected {
     // background-color: var(--color-conversation-item-selected) !important;
     border-radius: 16px;
-    background: #2e333d;
+    background-color: #202329;
   }
 
   &.zombie {
@@ -3608,8 +3628,8 @@ input {
 
   &__checkmark,
   &__checkmarkbox {
-    width: 26px;
-    height: 26px;
+    width: 23px;
+    height: 23px;
     border: 2px solid #bcbdbe;
     border-radius: 6px;
     margin: auto 0;
@@ -3627,8 +3647,8 @@ input {
   }
 
   &__checkmarkbox {
-    border-radius: 2px;
-    border: 3px solid var(--color-disableBorder);
+    // border-radius: 2px;
+    border: 1.5px solid #F0F0F0;
 
     &.selected {
       border: unset;
@@ -3687,7 +3707,8 @@ input {
 }
 
 .bchat-blockedMember-item {
-  background-color: var(--color-blockUserBg);
+  // background-color: var(--color-blockUserBg);
+  background-color: #202329;
   border-radius: 15px;
 
   .selected {
@@ -3695,22 +3716,28 @@ input {
   }
 
   &__name {
-    font-weight: normal;
-    font-family: $bchat-font-poppin-semibold;
-    margin-inline-start: 10px;
+    font-size: $bchat-font-lg;
+    font-weight: 500;
   }
 
   &-selectionBox {
     display: flex;
     width: 119px;
     justify-content: flex-end;
-    padding-right: 30px;
+    // padding-right: 30px;
   }
 
   &-btnBox {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .btnSize {
+      width: 45px;
+      height: 45px;
+      font-weight: 400;
+      font-size: 16px;
+    }
   }
 }
 
