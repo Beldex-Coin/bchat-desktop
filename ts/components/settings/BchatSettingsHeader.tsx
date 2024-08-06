@@ -1,5 +1,5 @@
 import React from 'react';
-import { SettingsViewProps } from './BchatSettings';
+import { BchatSettingCategory, SettingsViewProps } from './BchatSettings';
 // import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 // import { editProfileModal } from '../../state/ducks/modalDialog';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ type Props = Pick<SettingsViewProps, 'category'> & {
 };
 
 export const SettingsHeader = (props: Props) => {
-  const { categoryTitle } = props;
+  const { categoryTitle,category } = props;
   // const forceUpdate = useUpdate();
 
   const dispatch = useDispatch();
@@ -27,8 +27,8 @@ export const SettingsHeader = (props: Props) => {
   const multipleSelectionValue = useSelector(getMultipleSelection);
   const blockedNumbers = useSelector(getBlockedPubkeys);
 
-  console.log("multipleSelectionValue:", multipleSelectionValue);
-  console.log("blockedNumbers:", blockedNumbers)
+  // console.log("multipleSelectionValue:", multipleSelectionValue);
+  // console.log("blockedNumbers:", blockedNumbers)
   // const temp=useSelector(state=>state)
   // console.log('multipleSelectionValue', multipleSelectionValue,temp);
 
@@ -42,6 +42,11 @@ export const SettingsHeader = (props: Props) => {
   //     forceUpdate()
   //   }
   // }, [multipleSelectionValue])
+  console.log('categoryTitle -->',category,BchatSettingCategory.Wallet,)
+  if(category === BchatSettingCategory.Wallet)
+  {
+    return <></>
+  }
 
   return (
     <div className="bchat-settings-header">

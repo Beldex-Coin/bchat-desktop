@@ -132,7 +132,11 @@ export const Dashboard = (props: any) => {
   // daemon.daemonHeartbeat();
   return (
     <>
-      <WalletHeader clearStates={props.clearStates} />
+      <WalletHeader clearStates={props.clearStates}  />
+      <SpacerLG />
+      <div  className='wallet-syncStatusBox'>
+      <MemoSyncStatusBar />
+      </div>
       <SpacerLG />
       <div className="wallet-contentSpace">
         <BalanceAndsendReceiveAction clearStates={props.clearStates} />
@@ -154,9 +158,7 @@ export const Dashboard = (props: any) => {
           />
         )}
       </div>
-      <div  className='wallet-syncStatusBox'>
-      <MemoSyncStatusBar />
-      </div>
+      
 
     </>
   );
