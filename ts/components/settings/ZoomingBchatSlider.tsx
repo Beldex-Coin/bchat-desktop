@@ -110,7 +110,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     )
   }
   return (
-    <BchatSettingsItemWrapper title={window.i18n('zoomFactorSettingTitle')} inline={true}>
+    <BchatSettingsItemWrapper title={window.i18n('zoomFactorSettingTitle')} inline={true} iconType='zoom'>
       {/* <div className="slider-wrapper">
         <Slider
           dots={true}
