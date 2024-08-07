@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Devre dışı",
   "notificationForConvo_mentions_only": "Sadece bahsetmeler",
   "onionPathIndicatorTitle": "Yol",
-  "onionPathIndicatorDescription": "BChat, mesajlarınızı BChat'ın merkezi olmayan ağındaki birkaç Hizmet Düğümü üzerinden geri göndererek IP'nizi gizler. Şu anda bağlantınızın geri döndüğü ülkeler şunlardır:",
+  "onionPathIndicatorDescription": "BChat, mesajlarınızı BChat'ın merkezi olmayan ağındaki birkaç Hizmet Düğümü üzerinden geri göndererek IP'nizi gizler. Şu anda bağlantınızın geri döndüğü ülkeler şunlardır",
   "unknownCountry": "Bilinmeyen Ülke",
   "device": "Cihaz",
   "destination": "Hedef",

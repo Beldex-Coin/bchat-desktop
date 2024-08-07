@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Deaktivert",
   "notificationForConvo_mentions_only": "Kun omtaler",
   "onionPathIndicatorTitle": "Sti",
-  "onionPathIndicatorDescription": "BChat skjuler IPen din ved å la beskjedene dine passere gjennom flere tjenesteknutepunkter i BChats desentraliserte nettverk. Dette er landene forbindelsen din nå passerer gjennom:",
+  "onionPathIndicatorDescription": "BChat skjuler IPen din ved å la beskjedene dine passere gjennom flere tjenesteknutepunkter i BChats desentraliserte nettverk. Dette er landene forbindelsen din nå passerer gjennom",
   "unknownCountry": "Ukjent land",
   "device": "Enhet",
   "destination": "Mål",

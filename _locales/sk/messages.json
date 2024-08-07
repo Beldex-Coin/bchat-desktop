@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Vypnuté",
   "notificationForConvo_mentions_only": "Iba zmienky",
   "onionPathIndicatorTitle": "Cesta",
-  "onionPathIndicatorDescription": "BChat skryje Vašu IP adresu tým, že vaše správy sa odrazia cez niekoľko Servisných Uzlov v decentralizovanej sieti BChat. Toto sú krajiny cez ktoré sa Vaše spojenie práve odráža:",
+  "onionPathIndicatorDescription": "BChat skryje Vašu IP adresu tým, že vaše správy sa odrazia cez niekoľko Servisných Uzlov v decentralizovanej sieti BChat. Toto sú krajiny cez ktoré sa Vaše spojenie práve odráža",
   "unknownCountry": "Neznáma Krajina",
   "device": "Zariadenie",
   "destination": "Cieľ",

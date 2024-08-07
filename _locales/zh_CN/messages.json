@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "关闭",
   "notificationForConvo_mentions_only": "仅当被提及时",
   "onionPathIndicatorTitle": "路径",
-  "onionPathIndicatorDescription": "BChat会通过其去中心化网络中的多个服务节点跳转消息以隐藏IP。以下国家是您目前的消息连接跳转服务节点所在地：",
+  "onionPathIndicatorDescription": "BChat会通过其去中心化网络中的多个服务节点跳转消息以隐藏IP。以下国家是您目前的消息连接跳转服务节点所在地",
   "unknownCountry": "未知国家",
   "device": "设备",
   "destination": "目的地",

@@ -483,7 +483,7 @@
   "notificationForConvo_disabled": "Disabled",
   "notificationForConvo_mentions_only": "Mentions Only",
   "onionPathIndicatorTitle": "Path",
-  "onionPathIndicatorDescription": "BChat masks your IP by routing your messages through the masternodes on the Beldex decentralized network. Your messages are currently being routed through nodes in the following countries:",
+  "onionPathIndicatorDescription": "BChat masks your IP by routing your messages through the masternodes on the Beldex decentralized network. Your messages are currently being routed through nodes in the following countries",
   "unknownCountry": "Unknown Country",
   "device": "You",
   "destination": "Destination",

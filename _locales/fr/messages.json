@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Désactivées",
   "notificationForConvo_mentions_only": "Mentions seulement",
   "onionPathIndicatorTitle": "Chemin",
-  "onionPathIndicatorDescription": "BChat cache votre adresse IP en envoyant vos messages via plusieurs Nœuds de Service dans le réseau décentralisé de BChat. Voici les pays via lesquels votre connexion est actuellement transmise :",
+  "onionPathIndicatorDescription": "BChat cache votre adresse IP en envoyant vos messages via plusieurs Nœuds de Service dans le réseau décentralisé de BChat. Voici les pays via lesquels votre connexion est actuellement transmise",
   "unknownCountry": "Pays inconnu",
   "device": "Appareil",
   "destination": "Destination",

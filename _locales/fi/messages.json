@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Poistettu käytöstä",
   "notificationForConvo_mentions_only": "Vain maininnat",
   "onionPathIndicatorTitle": "Polku",
-  "onionPathIndicatorDescription": "BChat piilottaa IP -osoitteesi ohjaamalla viestisi useiden välittäjäreleiden läpi BChatin hajautetussa verkossa. Tässä ovat maat joiden kautta viestisi tällähetkellä kulkevat:",
+  "onionPathIndicatorDescription": "BChat piilottaa IP -osoitteesi ohjaamalla viestisi useiden välittäjäreleiden läpi BChatin hajautetussa verkossa. Tässä ovat maat joiden kautta viestisi tällähetkellä kulkevat",
   "unknownCountry": "Tuntematon maa/alue",
   "device": "Laite",
   "destination": "Kohde",

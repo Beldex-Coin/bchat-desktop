@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Inaktiverad",
   "notificationForConvo_mentions_only": "Endast omnämnd",
   "onionPathIndicatorTitle": "Väg",
-  "onionPathIndicatorDescription": "BChat döljer din IP-adress genom att dirigera dina meddelanden genom flera Tjänstnoder i BChats decentraliserade nätverk. Detta är de länder som din anslutning går igenom just nu:",
+  "onionPathIndicatorDescription": "BChat döljer din IP-adress genom att dirigera dina meddelanden genom flera Tjänstnoder i BChats decentraliserade nätverk. Detta är de länder som din anslutning går igenom just nu",
   "unknownCountry": "Okänt land",
   "device": "Enhet",
   "destination": "Mål",

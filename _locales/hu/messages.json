@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Letiltva",
   "notificationForConvo_mentions_only": "Csak említések",
   "onionPathIndicatorTitle": "Útvonal",
-  "onionPathIndicatorDescription": "A BChat elrejti IP címét azzal, hogy az üzeneteket a BChat decentralizált hálózatának több szolgáltatási csomópontján vezeti keresztül. Ezek azok az országok, ahol a kapcsolat jelenleg átmegy:",
+  "onionPathIndicatorDescription": "A BChat elrejti IP címét azzal, hogy az üzeneteket a BChat decentralizált hálózatának több szolgáltatási csomópontján vezeti keresztül. Ezek azok az országok, ahol a kapcsolat jelenleg átmegy",
   "unknownCountry": "Ismeretlen ország",
   "device": "Eszköz",
   "destination": "Cél",

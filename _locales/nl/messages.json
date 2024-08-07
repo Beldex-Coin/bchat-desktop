@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Gedeactiveerd",
   "notificationForConvo_mentions_only": "Alleen vermeldingen,",
   "onionPathIndicatorTitle": "Pad",
-  "onionPathIndicatorDescription": "BChat verbergt uw IP door uw berichten te verzenden via meerdere Master Nodes in het gedecentraliseerde BChat netwerk. Uw verbinding wordt momenteel verzonden via deze landen:",
+  "onionPathIndicatorDescription": "BChat verbergt uw IP door uw berichten te verzenden via meerdere Master Nodes in het gedecentraliseerde BChat netwerk. Uw verbinding wordt momenteel verzonden via deze landen",
   "unknownCountry": "Onbekend land",
   "device": "Apparaat",
   "destination": "Bestemming",

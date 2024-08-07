@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Desabilitado",
   "notificationForConvo_mentions_only": "Apenas menções",
   "onionPathIndicatorTitle": "Caminho",
-  "onionPathIndicatorDescription": "O BChat oculta seu IP ao enviar suas mensagens através de vários Nós de Serviço na rede descentralizada do BChat. Estes são os países pelos quais sua conexão está sendo ricocheteada no momento:",
+  "onionPathIndicatorDescription": "O BChat oculta seu IP ao enviar suas mensagens através de vários Nós de Serviço na rede descentralizada do BChat. Estes são os países pelos quais sua conexão está sendo ricocheteada no momento",
   "unknownCountry": "País desconhecido",
   "device": "Dispositivo",
   "destination": "Destino",
