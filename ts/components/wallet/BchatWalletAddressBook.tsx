@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
@@ -14,17 +14,19 @@ import {
   useConversationBeldexAddress,
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
-import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
+// import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
 import { Avatar, AvatarSize,BNSWrapper } from '../avatar/Avatar';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 import styled from 'styled-components';
+import { getConversationController } from '../../bchat/conversations';
+// import { BchatSearchInput } from '../BchatSearchInput';
 
 
 const AvatarContainer = styled.div`
   position: relative;
 `;
 
-const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
+export const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
   const { memberPubkey, isBnsHolder } = props;
   return (
     <AvatarContainer>
@@ -44,6 +46,9 @@ export const AddressBook = (props: any) => {
   const dispatch = useDispatch();
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
+  const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
+ 
 
   async function copyBtn(address: string) {
     copyBchatID(address);
@@ -53,6 +58,19 @@ export const AddressBook = (props: any) => {
     dispatch(walletSendPage());
     dispatch(updateSendAddress(address));
   }
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setCurrentSearchTerm(value);
+    setFilteredNames(
+      value
+        ? privateContactsPubkeys.filter((pubkey: any) => {
+            const convo = getConversationController().get(pubkey);
+            const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
+            return memberName?.toLowerCase().includes(value.toLowerCase());
+          })
+        : privateContactsPubkeys
+    );
+  };
   const AddressContent = (props: any) => {
     const username = useConversationUsernameOrShorten(props.pubkey);
     const belAddress = useConversationBeldexAddress(props.pubkey);
@@ -85,7 +103,7 @@ export const AddressBook = (props: any) => {
             <div className={"addressBook-wholeBox-contentBox-addresstxt"} style={{cursor:'pointer'}}
             onClick={()=> {dispatch(updateSendAddress(belAddress));dispatch(walletSendPage());}}
             >
-              {props.title ===window.i18n('contact')? belAddress.slice(0, 70)+'...':belAddress}
+              {props.title ===window.i18n('contact')? belAddress.slice(0, 50)+'...':belAddress}
             </div>
           </Flex>
 
@@ -119,7 +137,24 @@ export const AddressBook = (props: any) => {
     <div className="addressBook">
       {
         props.from === window.i18n('contact') && <>
-          <LeftPaneSectionHeader />
+          {/* <LeftPaneSectionHeader /> */}
+          <SpacerLG />
+        {/* {conversations?.length !== 0 && */}
+        <div className="bchat-search-input">
+            <div className="search">
+              <BchatIcon iconSize={20} iconType="search" />
+            </div>
+            <input
+              value={currentSearchTerm}
+              onChange={e => {
+                console.log(e)
+                handleSearch(e);
+              }}
+              placeholder={'Search Contact'}
+              maxLength={26}
+            />
+          </div>
+        <SpacerLG />
           <div className="addressBook-header-txt">
             {window.i18n('contact')}
           </div>
@@ -140,11 +175,11 @@ export const AddressBook = (props: any) => {
         </div>
       }
 
-      <SpacerLG />
+      {/* <SpacerSM /> */}
       <div className={classNames("addressBook-wholeBox ",BchatWalletPasswordModal  && 'blurBg')}>
-        {privateContactsPubkeys.length > 0 &&
-          privateContactsPubkeys.map(item => <AddressContent pubkey={item} title={props.from} />)}
-        {privateContactsPubkeys.length == 0 ? (
+        {filteredNames.length > 0 &&
+          filteredNames.map(item => <AddressContent pubkey={item} title={props.from} />)}
+        {filteredNames.length == 0 ? (
           <>
             <div className="addressBook-emptyAddressBook"></div>
             <h4 className="addressBook-emptyAddressBook-content">

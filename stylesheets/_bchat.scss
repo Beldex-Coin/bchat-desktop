@@ -127,8 +127,8 @@ textarea {
     }
 
     &.danger {
-      background-color: #FF3E3E;
-      color: #F0F0F0;
+      background-color: #ff3e3e;
+      color: #f0f0f0;
     }
   }
 
@@ -324,13 +324,12 @@ textarea {
     }
 
     &.danger {
-      background-color: #2E333D;
-      color: #F0F0F0;
+      background-color: #2e333d;
+      color: #f0f0f0;
 
       &:hover {
-        background-color: #FF3E3E;
+        background-color: #ff3e3e;
       }
-
     }
 
     // &:not(.disabled):hover {
@@ -347,6 +346,10 @@ textarea {
     color: #ff3e3e;
     font-size: 16px;
     font-weight: 300;
+    &.secondary {
+      background: #2e333d;
+      color: #f0f0f0;
+    }
     &.danger {
       background: #2e333d;
       color: #ff3e3e;
@@ -1613,22 +1616,55 @@ label {
   // width: calc(100vw - 417px);
   // height: 30px;
   // bottom: 0;
-  background-color: var(--color-walSyncbar);
+  // background-color: var(--color-walSyncbar);
   // &-subParent {
   //   padding: 0 18px;
   // }
 
-  &-statusTxt {
-    font-size: 12px;
-
+  height: 50px;
+  border-radius: 10px;
+  background: #202329;
+  overflow: hidden;
+  .per-Wrapper {
+    color: #f0f0f0;
+    font-weight: 600;
+    border-radius: 33px;
+    background: #131313;
+    padding: 0px 15px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+  &-statusTxt-wrapper {
+    .txt {
+      color: #f0f0f0;
+      font-weight: 400;
+      border-radius: 33px;
+      background: #131313;
+      padding: 5px 15px;
+      margin-right: 10px;
+    }
     &-greenTxt {
-      color: #00bf25;
+      color: #f0f0f0;
+      font-weight: 600;
     }
   }
 
   &-statusvalue {
-    font-size: 12px;
-    color: #9393b1;
+    // font-size: 12px;
+    // color: #9393b1;
+    padding: 3px 10px;
+    border-radius: 16px;
+    border: 1px solid #46465d;
+    .type-txt {
+      color: #a7a7ba;
+      font-weight: 400;
+    }
+    .type-value {
+      color: #f0f0f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
   }
 
   &-balance {
@@ -1651,11 +1687,17 @@ label {
 }
 
 .addressBook {
+  min-width: 300px;
+  width: 25vw;
+  max-width: 420px;
+  background-color: #202329;
+  padding: 15px;
+
   &-header {
     &-txt {
-      font-family: $bchat-font-poppin-semibold;
-      margin-left: 10px;
-      font-size: 15px;
+      color: #a7a7ba;
+      font-size: 18px;
+      font-weight: 500;
     }
   }
 
@@ -1663,9 +1705,9 @@ label {
     height: calc(83vh - 30px);
 
     &-contentBox {
-      background-color: var(--color-WalcontentBg);
+      // background-color: var(--color-WalcontentBg);
       border-radius: 10px;
-      padding: 15px;
+      padding: 6px 15px;
       display: flex;
       justify-content: space-between;
 
@@ -1676,21 +1718,31 @@ label {
         padding: 4px 27px;
         border-radius: 3px;
         /* margin-bottom: 10px; */
-        font-family: 'poppin-semibold';
+        // font-family: 'poppin-semibold';
         color: #fff;
       }
 
       .contact {
-        font-family: $bchat-font-poppin-medium;
+        // font-family: $bchat-font-poppin-medium;
         background-color: unset;
         padding: unset;
         color: unset;
+        color: #f0f0f0;
+        font-size: 16px;
+        font-weight: 400;
       }
 
       &-addresstxt {
-        font-family: $bchat-font-poppin-light;
-        font-size: 11px;
-        margin-right: 12px;
+        // font-family: $bchat-font-poppin-light;
+        // font-size: 11px;
+        // margin-right: 12px;
+
+        // overflow: hidden;
+        color: #a7a7ba;
+        // text-overflow: ellipsis;
+        // white-space: nowrap;
+        // font-size: 14px;
+        font-weight: 300;
       }
 
       .avatarBox {
@@ -1901,7 +1953,7 @@ label {
       height: 45px;
       border-radius: 12px;
       /* background-color: var(--color-inboxBgColor); */
-      background: #2E333D;
+      background: #2e333d;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -2208,23 +2260,37 @@ label {
       display: flex;
       width: 100%;
       justify-content: space-between;
+      height: 70px;
+      border-bottom: 1px solid #202329;
 
       &-left-side,
       &-right-side {
         display: flex;
         align-items: center;
       }
+      &-left-side {
+        .header-txt {
+          margin-left: 10px;
+          color: #f0f0f0;
+          font-size: 22px;
+          font-weight: 400;
+        }
+      }
     }
 
     &-button {
-      background-color: var(--color-WalcontentBg);
-      border-radius: 50px;
-      padding: 10px 14px;
+      // background-color: var(--color-WalcontentBg);
+      // border-radius: 50px;
+      // padding: 10px 14px;
+      padding: 14px 18px;
       cursor: pointer;
 
-      &:hover {
-        background-color: var(--color-WalcontentBgHover);
-      }
+      border-radius: 16px;
+      background: #2e333d;
+
+      // &:hover {
+      //   background-color: var(--color-WalcontentBgHover);
+      // }
     }
 
     &-squarBox-bala,
@@ -2249,7 +2315,7 @@ label {
     }
 
     &-contentSpace {
-      height: calc(100vh - 170px);
+      height: calc(100vh - 200px);
       overflow: auto;
     }
 
@@ -3030,11 +3096,14 @@ label {
     }
 
     &-syncStatusBox {
-      position: absolute;
-      width: calc(100vw - 417px);
-      height: 30px;
-      bottom: 0;
-      background-color: var(--color-walSyncbar);
+      // position: absolute;
+      // width: calc(100vw - 417px);
+      // height: 45px;
+      // background-color: var(--color-walSyncbar);
+      /* bottom: 0; */
+      /* background-color: var(--color-walSyncbar); */
+      // border-radius: 16px;
+      // background: #202329;
     }
 
     &-syncStatus {
@@ -3084,7 +3153,7 @@ label {
       // background-color: #303041;
       background-color: var(--color-WalcontentBg);
       /* width: 49.4%; */
-      width: calc(100vw - 417px);
+      // width: calc(100vw - 417px);
       border-radius: 10px;
       padding: 15px;
       // height: 58%;
@@ -3681,7 +3750,7 @@ input {
 
   &__checkmarkbox {
     // border-radius: 2px;
-    border: 1.5px solid #F0F0F0;
+    border: 1.5px solid #f0f0f0;
 
     &.selected {
       border: unset;

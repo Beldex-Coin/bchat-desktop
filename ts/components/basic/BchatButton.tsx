@@ -53,7 +53,7 @@ export const BchatButton = (props: Props) => {
     disabled,
     onClick,
     iconSize,
-    iconType = 'bell',
+    iconType,
     fillRule,
     clipRule
   } = props;

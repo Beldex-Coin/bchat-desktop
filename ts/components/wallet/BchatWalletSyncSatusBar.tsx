@@ -8,30 +8,26 @@ import { walletSettingsKey } from '../../data/settings-key';
 import _ from 'lodash';
 // import classNames from 'classnames';
 
-
-
-
-const SyncStatusBar = (props: { from?: string }) => {
+const SyncStatusBar = () => {
   const dispatch = useDispatch();
-  const { from = "" } = props
+  // const { from = "" } = props
   let currentHeight: any;
   let daemonHeight: any;
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-  const walletDetails = useSelector((state: any) => state.wallet);
-  let decimalValue: any = window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)'; 
+  // const walletDetails = useSelector((state: any) => state.wallet);
+  let decimalValue: any =
+    window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
   decimalValue = decimalValue.charAt(0);
 
   if (currentDaemon?.type === 'Local') {
     currentHeight = useSelector((state: any) => state.daemon.height);
     daemonHeight = Number(useSelector(getHeight));
     // console.log('currentDaemon?.type ::', currentDaemon?.type, currentHeight, daemonHeight)
-
   } else {
     currentHeight = Number(useSelector(getHeight));
     daemonHeight = useSelector((state: any) => state.daemon.height);
     // console.log('currentDaemon sync ::', currentDaemon?.type, currentHeight, daemonHeight)
-
   }
 
   let pct: any =
@@ -49,28 +45,24 @@ const SyncStatusBar = (props: { from?: string }) => {
 
   return (
     <div className="syncStatus">
-      <div  >
-        {from !== "chat" && <Indicator
-          style={{
-            width: `${percentage}%`,
-            backgroundColor: syncStatus.color,
-          }}
-        />
-        }
-        <Flex container={true} justifyContent="space-between" padding={from === "chat" ? "9px 18px" : "5px 15px"}>
+      <div>
+        <Flex
+          container={true}
+          justifyContent="space-between"
+          alignItems="center"
+          padding={'5px 15px'}
+          height="43px"
+        >
           <Flex container={true}>
-            <div className="syncStatus-statusTxt">
-              Status :{' '}
-              <span
-                className="syncStatus-statusTxt-greenTxt"
-                style={{ color: syncStatus.color }}
-              >
+            <div className="syncStatus-statusTxt-wrapper">
+              <span className="txt">Status </span>
+              <span className="syncStatus-statusTxt-greenTxt" style={{ color: syncStatus.color }}>
                 {syncStatus.status}
               </span>
             </div>
           </Flex>
           <Flex container={true}>
-          {from == "chat" && <>
+            {/* {from == "chat" && <>
               <div className={ (walletDetails.balance / 1e9) > 0 ?"syncStatus-balance":'syncStatus-disableBalance'} >
                 Balance : <span className='syncStatus-disableBalance'>{(walletDetails.balance / 1e9).toFixed(decimalValue)}</span>
 
@@ -79,23 +71,28 @@ const SyncStatusBar = (props: { from?: string }) => {
                 Unlocked Balance : <span className='syncStatus-disableBalance'> {(walletDetails.unlocked_balance / 1e9).toFixed(decimalValue)}</span>
               </div>
             </>
-            }
-            <div style={{ marginLeft: '10px' }} className="syncStatus-statusvalue">
-              {window.getSettingValue('current-deamon')?.type} : {daemonHeight}
+            } */}
+            <div className="syncStatus-statusvalue">
+              <span className="type-txt">{window.getSettingValue('current-deamon')?.type} :</span>{' '}
+              <span className="type-value">{daemonHeight}</span>
             </div>
             <div className="syncStatus-statusvalue" style={{ marginLeft: '10px' }}>
-              Wallet : {currentHeight} / {daemonHeight} ({percentage}%)
+              <span className="type-txt">Wallet :</span>{' '}
+              <span className="type-value">
+                {currentHeight} / {daemonHeight}
+              </span>
             </div>
-           
+            <div className="per-Wrapper" style={{ marginLeft: '10px' }}>
+              {Math.floor(percentage)}%
+            </div>
           </Flex>
         </Flex>
-        {from == "chat" && <Indicator
+        <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
         />
-        }
       </div>
     </div>
   );
