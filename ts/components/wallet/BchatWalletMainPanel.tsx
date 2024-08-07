@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex } from '../basic/Flex';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 import { AddressBook } from './BchatWalletAddressBook';
 import { WalletBalanceSection } from './BchatWalletBalanceSection';
 import { WalletHeader } from './BchatWalletHeader';
 // import { WalletPassword } from './BchatWalletPassword';
 import { NodeSetting } from './BchatWalletNodeSetting';
 import { WalletPaymentSection } from './BchatWalletPaymentSection';
-import { ReceivedForm } from './BchatWalletReceivedForm';
+// import { ReceivedForm } from './BchatWalletReceivedForm';
 import { WalletSettings } from './BchatWalletSettings';
 import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
@@ -127,7 +127,7 @@ export const WalletMainPanel = () => {
 };
 
 export const Dashboard = (props: any) => {
-  const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+  // const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   // daemon.daemonHeartbeat();
   return (
@@ -139,8 +139,30 @@ export const Dashboard = (props: any) => {
       </div>
       <SpacerLG />
       <div className="wallet-contentSpace">
-        <BalanceAndsendReceiveAction clearStates={props.clearStates} />
-        <SpacerLG />
+      <Flex container={true} flexDirection="row" justifyContent="space-between" width='100%'>
+        <div style={{width:'60%'}}>
+        <WalletBalanceSection />
+        <SpacerMD />
+        <TransactionSection
+            transactionList={transactions}
+          />
+        </div>
+        <div style={{width:'40%'}}>
+        <WalletPaymentSection clearStates={props.clearStates} />
+        <SendForm
+            amount={props.amount}
+            setAmount={props.setAmount}
+            // priority={props.priority}
+            // setPriority={props.setPriority}
+            notes={props.notes}
+            setNotes={props.setNotes}
+          />
+        </div>
+     
+      
+    </Flex>
+        {/* <BalanceAndsendReceiveAction clearStates={props.clearStates} /> */}
+        {/* <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
           <SendForm
             amount={props.amount}
@@ -156,7 +178,7 @@ export const Dashboard = (props: any) => {
           <TransactionSection
             transactionList={transactions}
           />
-        )}
+        )} */}
       </div>
       
 

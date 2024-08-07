@@ -85,18 +85,18 @@ export const TransactionSection = (props: any) => {
     const { type } = props;
     let item: any = {
       iconType: 'payRecieved',
-      iconColor: '#128b17',
+      iconColor: '#00A638',
       type: window.i18n('received'),
     };
     switch (type) {
       case 'out':
         (item.iconType = 'paySend'),
-          (item.iconColor = '#FC2727'),
+          (item.iconColor = '#FF3E3E'),
           (item.type = window.i18n('sent'));
         break;
       case 'pending':
         (item.iconType = 'pendingTransaction'),
-          (item.iconColor = '#FDB12A'),
+          (item.iconColor = '#A7A7BA'),
           (item.type = window.i18n('pending'));
         break;
       case 'bns':
@@ -115,8 +115,8 @@ export const TransactionSection = (props: any) => {
     }
     return (
       <>
-        <BchatIcon iconType={item.iconType} iconSize={'medium'} iconColor={item.iconColor} />
-        <div>{item.type}</div>
+        <BchatIcon iconType={item.iconType} iconSize={26} iconColor={item.iconColor} clipRule='evenodd' fillRule='evenodd' />
+        {/* <div>{item.type}</div> */}
       </>
     );
   };
@@ -172,16 +172,29 @@ export const TransactionSection = (props: any) => {
       ) : (
         <div style={{ height: '98%' }} onClick={() => (visible ? setVisible(false) : '')}>
           <Flex container={true} justifyContent="space-between" flexDirection="row">
-            <div className="wallet-Transaction-title">{window.i18n('transactions')}</div>
-            <Flex container={true} justifyContent="flex-end" flexDirection="row" width={'77%'}>
+            <div className="wallet-Transaction-title">
+              <BchatIcon
+                iconType="oppositeDirDoubleArrow"
+                iconSize={20}
+                clipRule="evenodd"
+                fillRule="evenodd"
+              />
+              <span style={{marginLeft:'10px'}}>{window.i18n('transactions')}</span>
+            </div>
+            <Flex container={true} justifyContent="flex-end" flexDirection="row" >
               {transactionsHistory.length !== 0 || searchText ? (
-                <div>
-                  {window.i18n('filter')}
+                <div className="wallet-Transaction-filter-wrapper">
                   <input
                     placeholder={window.i18n('filterPlaceHolder')}
                     className="wallet-Transaction-filterInput"
                     onChange={(e: any) => filterText(e.target.value)}
                     value={searchText}
+                  />
+                  <BchatIcon
+                    iconType={'funnelWithBorder'}
+                    iconSize={20}
+                    clipRule="evenodd"
+                    fillRule="evenodd"
                   />
                 </div>
               ) : (
@@ -191,7 +204,7 @@ export const TransactionSection = (props: any) => {
                 <div className="wallet-Transaction-filterWithIcon">
                   <span className="wallet-Transaction-filterWithIcon-inputBox">{filter}</span>
                   <span onClick={() => setVisible(!visible)} style={{ cursor: 'pointer' }}>
-                    <BchatIcon iconType="filter" iconSize={'tiny'} />
+                    <BchatIcon iconType="filter" iconSize={'medium'}  clipRule='evenodd' fillRule='evenodd'/>
                   </span>
                   {visible && (
                     <div style={{ position: 'relative' }}>
@@ -322,7 +335,6 @@ export const TransactionSection = (props: any) => {
                       <article className="wallet-Transaction-contentBox-sendIndicationBox">
                         <TransactionIndication type={item.type} />
                       </article>
-                      <article className="wallet-Transaction-contentBox-verticalline"></article>
                       <div
                         className="wallet-Transaction-contentBox-balanceBox"
                         style={{ width: zoomLevel > 100 ? '44%' : '' }}
@@ -395,15 +407,15 @@ export const TransactionSection = (props: any) => {
                           </section>
 
                           {item.payment_id != '0000000000000000' && (
-                          <section style={{ marginLeft: '20px' }}>
-                            <article className="wallet-Transaction-recipitentBox-transactionFee-header">
-                              {window.i18n('paymentID')}
-                            </article>
-                            <article className="wallet-Transaction-recipitentBox-transactionFee-text">
-                              {item.payment_id}
-                            </article>
-                          </section>
-                        )}
+                            <section style={{ marginLeft: '20px' }}>
+                              <article className="wallet-Transaction-recipitentBox-transactionFee-header">
+                                {window.i18n('paymentID')}
+                              </article>
+                              <article className="wallet-Transaction-recipitentBox-transactionFee-text">
+                                {item.payment_id}
+                              </article>
+                            </section>
+                          )}
                         </Flex>
 
                         <section
