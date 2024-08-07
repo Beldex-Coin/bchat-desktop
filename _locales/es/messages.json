@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Desactivado",
   "notificationForConvo_mentions_only": "Solo menciones",
   "onionPathIndicatorTitle": "Ruta",
-  "onionPathIndicatorDescription": "BChat esconde tu IP haciendo pasar tus mensajes a través de los Nodos de servicio de la red descentralizada de BChat. Estos son los países par los que tus mensajes están viajando actualmente:",
+  "onionPathIndicatorDescription": "BChat esconde tu IP haciendo pasar tus mensajes a través de los Nodos de servicio de la red descentralizada de BChat. Estos son los países par los que tus mensajes están viajando actualmente",
   "unknownCountry": "País desconocido",
   "device": "Dispositivo",
   "destination": "Destinatario",

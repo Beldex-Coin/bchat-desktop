@@ -68,6 +68,7 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
       cancelButton={{
         text: window.i18n('cancel'),
         status: true,
+        color: BchatButtonColor.Secondary,
         onClickCancelHandler
       }}
     >

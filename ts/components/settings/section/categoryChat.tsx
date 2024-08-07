@@ -35,7 +35,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
           updateConfirmModal({
             title: window.i18n('linkPreviewsTitle'),
             message: window.i18n('linkPreviewsConfirmMessage'),
-            okTheme: BchatButtonColor.Danger,
+            okTheme: BchatButtonColor.Primary,
             onClickOk: () => {
               window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
               forceUpdate();

@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Wyłączone",
   "notificationForConvo_mentions_only": "Tylko wzmianki",
   "onionPathIndicatorTitle": "Ścieżka",
-  "onionPathIndicatorDescription": "BChat ukrywa Twój adres IP, odbijając wiadomości przez kilka węzłów usług w zdecentralizowanej sieci BChat. Oto kraje, w których obecnie Twoje połączenie jest odbijane:",
+  "onionPathIndicatorDescription": "BChat ukrywa Twój adres IP, odbijając wiadomości przez kilka węzłów usług w zdecentralizowanej sieci BChat. Oto kraje, w których obecnie Twoje połączenie jest odbijane",
   "unknownCountry": "Nieznany kraj",
   "device": "Urządzenie",
   "destination": "Miejsce docelowe",

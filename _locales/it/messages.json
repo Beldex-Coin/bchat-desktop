@@ -406,7 +406,7 @@
   "notificationForConvo_disabled": "Non attivo",
   "notificationForConvo_mentions_only": "Solo menzioni",
   "onionPathIndicatorTitle": "Percorso",
-  "onionPathIndicatorDescription": "La Bchate nasconde il tuo IP facendo rimbalzare i messaggi attraverso diversi nodi di servizio nella sua rete decentralizzata. Questi sono i paesi in cui la connessione viene rimbalzata attualmente:",
+  "onionPathIndicatorDescription": "La Bchate nasconde il tuo IP facendo rimbalzare i messaggi attraverso diversi nodi di servizio nella sua rete decentralizzata. Questi sono i paesi in cui la connessione viene rimbalzata attualmente",
   "unknownCountry": "Stato sconosciuto",
   "device": "Dispositivo",
   "destination": "Destinazione",
