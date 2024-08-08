@@ -98,7 +98,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   function displayPopUp() {
     dispatch(
       walletSettingMiniModal({
-        headerName: 'Zooming Factor',
+        headerName: 'Zoom Level',
         content: option,
         currency: value + '%',
         onClose: () => dispatch(walletSettingMiniModal(null)),
