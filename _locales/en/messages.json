@@ -202,7 +202,7 @@
   "typingIndicatorsSettingTitle": "Typing Indicators",
   "typingIndicatorsSettingDescription": "Enabling this option will allow the recipient to see that a message is being typed (applied to all chats).",
   "zoomFactorSettingTitle": "Zoom Level",
-  "chatFontSize":"Chat Font Size",
+  "chatFontSize":"Font Size",
   "pruneSettingTitle": "Shear Old Social Group Messages",
   "pruneSettingDescription": "Enabling this option will cut back messages that are older than 6 months.",
   "pruningSocialgroupDialogTitle": "social group pruning",
