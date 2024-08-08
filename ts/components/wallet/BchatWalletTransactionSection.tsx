@@ -105,7 +105,7 @@ export const TransactionSection = (props: any) => {
           (item.type = window.i18n('bns'));
         break;
       case 'failed':
-        (item.iconType = 'error'),
+        (item.iconType = 'xWithCircle'),
           (item.iconColor = '#FC2727'),
           (item.type = window.i18n('failed'));
         break;
@@ -210,11 +210,11 @@ export const TransactionSection = (props: any) => {
                     <div style={{ position: 'relative' }}>
                       <div className="wallet-settings-nodeSetting-sendDropDown">
                         <div
-                          className={classNames(`dropDownItem `)}
+                          className={classNames(`dropDownItem `,filter === window.i18n('filterAll') &&"dropDownItem-selected")}
                           onClick={() => closeDropDown(window.i18n('filterAll'), 'All')}
                         >
                           {filter === window.i18n('filterAll') ? (
-                            <span className="dropDownItem-blockAndMargin">
+                            <span className={classNames( "dropDownItem-blockAndMargin" )}>
                               <BchatIcon
                                 iconType="tickCircle"
                                 iconColor="#FFF"
@@ -231,7 +231,7 @@ export const TransactionSection = (props: any) => {
                           {window.i18n('filterAll')}
                         </div>
                         <div
-                          className={classNames(`dropDownItem `)}
+                         className={classNames(`dropDownItem `,filter === window.i18n('filterIncoming') &&"dropDownItem-selected")}
                           onClick={() => closeDropDown(window.i18n('filterIncoming'), 'in')}
                         >
                           {filter === window.i18n('filterIncoming') ? (
@@ -252,7 +252,7 @@ export const TransactionSection = (props: any) => {
                           {window.i18n('filterIncoming')}
                         </div>
                         <div
-                          className={classNames(`dropDownItem `)}
+                         className={classNames(`dropDownItem `,filter === window.i18n('filterOutgoing') &&"dropDownItem-selected")}
                           onClick={() => closeDropDown(window.i18n('filterOutgoing'), 'out')}
                         >
                           {filter === window.i18n('filterOutgoing') ? (
@@ -273,7 +273,7 @@ export const TransactionSection = (props: any) => {
                           {window.i18n('filterOutgoing')}
                         </div>
                         <div
-                          className={classNames(`dropDownItem `)}
+                         className={classNames(`dropDownItem `,filter === window.i18n('filterPending') && "dropDownItem-selected")}
                           onClick={() => closeDropDown(window.i18n('filterPending'), 'pending')}
                         >
                           {filter === window.i18n('filterPending') ? (
@@ -293,7 +293,7 @@ export const TransactionSection = (props: any) => {
                           {window.i18n('filterPending')}
                         </div>
                         <div
-                          className={classNames(`dropDownItem `)}
+                         className={classNames(`dropDownItem `,filter === window.i18n('failed') &&"dropDownItem-selected")}
                           onClick={() => closeDropDown(window.i18n('failed'), 'failed')}
                         >
                           {filter === window.i18n('failed') ? (
@@ -357,7 +357,7 @@ export const TransactionSection = (props: any) => {
                           className="wallet-Transaction-contentBox-dateandheight-month"
                           style={{ marginBottom: '7px' }}
                         >
-                          {moment.unix(item.timestamp).fromNow()}
+                          {moment.unix(item.timestamp).format('ll')}
                         </div>
                         <div className="wallet-Transaction-contentBox-dateandheight-height">
                           Height : {item.height}{' '}

@@ -2560,6 +2560,7 @@ label {
       padding: 15px;
       border-radius: 12px;
       background: #202329;
+      justify-content: space-between;
 
       &-content {
         width: 88%;
@@ -2979,12 +2980,22 @@ label {
         }
 
         &-sendDropDown {
-          width: 97%;
-          top: 4px;
-          padding: 18px;
+          width: 142px;
+          top: 7px;
+          right: -10px;
+          padding: 2px;
 
           .dropDownItem {
             cursor: pointer;
+            color: #f0f0f0;
+            font-size: 16px;
+            font-weight: 300;
+            padding: 10px;
+
+            &-selected {
+              border-radius: 16px;
+              background: #333842;
+            }
 
             &-checkedCircle {
               display: inline-block;
@@ -3326,8 +3337,6 @@ label {
 
         padding: 15px;
         border-radius: 10px;
-        margin-bottom: 5px;
-        padding-left: 0;
 
         &-sendIndicationBox {
           display: flex;
@@ -3346,7 +3355,7 @@ label {
 
         &-balanceBox {
           // width: 605px;
-          width: 67%;
+          width: 75%;
           margin-left: 15px;
 
           &-amount {
@@ -3374,22 +3383,26 @@ label {
           display: flex;
           flex-direction: column;
           // justify-content: center;
-          width: 181px;
+          width: 242px;
 
           &-month {
-            font-size: 14px;
-            font-family: $bchat-font-poppin-semibold;
+            color: #f0f0f0;
+            text-align: right;
+            font-size: 16px;
+            font-weight: 400;
           }
 
           &-height {
-            font-size: 12px;
-            // color: #69697c;
-            font-family: $bchat-font-poppin-light;
-            // padding-top: 10px;
+            color: #858598;
+            text-align: right;
+            font-weight: 400;
           }
         }
       }
-
+      &-contentBox:hover {
+        border-radius: 16px;
+        background: #2e333d;
+      }
       &-recipitentBox {
         &-adddressBox {
           // width: 601px;
