@@ -26,6 +26,8 @@ export type BchatWrapperModalType = {
   buttons?: any;
   okButton?: any;
   cancelButton?: any;
+  iconShow?: boolean;
+  customIcon?: any;
 };
 const Loader = styled.div`
   position: absolute;
@@ -50,7 +52,9 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     additionalClassName,
     isloading,
     okButton,
-    cancelButton
+    cancelButton,
+    iconShow = false,
+    customIcon
   } = props;
 
   useKey(
@@ -72,50 +76,56 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   );
 
   const modalRef = useRef<HTMLDivElement>(null);
-
   return (
     <div
       className={classNames('bchat-dialog modal', additionalClassName ? additionalClassName : null)}
     >
       <div className="bchat-confirm-wrapper">
         <div ref={modalRef} className="bchat-modal">
-          {showHeader ? (
-            <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
-              {showExitIcon ? <div className="bchat-modal__header__close">
-                <BchatIconButton
-                  iconType="exit"
-                  iconSize="small"
-                  onClick={props.onClose}
-                  dataTestId="modal-close-button"
-                />
-              </div> : null}
-              <div className="bchat-modal__header__title">{title}</div>
-              <div className="bchat-modal__header__icons">
-                {headerIconButtons
-                  ? headerIconButtons.map((iconItem: any) => {
-                    return (
-                      <BchatIconButton
-                        key={iconItem.iconType}
-                        iconType={iconItem.iconType}
-                        iconSize={'large'}
-                        iconRotation={iconItem.iconRotation}
-                        onClick={iconItem.onClick}
-                      />
-                    );
-                  })
-                  : null}
+          <div className='model-layer'>
+            {iconShow && <div className='mediaPermission'>
+              {customIcon}
+            </div>}
+            <div>
+              {showHeader ? (
+                <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
+                  {showExitIcon ? <div className="bchat-modal__header__close">
+                    <BchatIconButton
+                      iconType="exit"
+                      iconSize="small"
+                      onClick={props.onClose}
+                      dataTestId="modal-close-button"
+                    />
+                  </div> : null}
+                  <div className="bchat-modal__header__title">{title}</div>
+                  <div className="bchat-modal__header__icons">
+                    {headerIconButtons
+                      ? headerIconButtons.map((iconItem: any) => {
+                        return (
+                          <BchatIconButton
+                            key={iconItem.iconType}
+                            iconType={iconItem.iconType}
+                            iconSize={'large'}
+                            iconRotation={iconItem.iconRotation}
+                            onClick={iconItem.onClick}
+                          />
+                        );
+                      })
+                      : null}
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="bchat-modal__body" style={{ position: 'relative' }}>
+                <div className="bchat-modal__centered">{props.children}</div>
+                {isloading && <div>
+                  <Loader>
+                    <BchatSpinner loading={true} />
+                  </Loader>
+                </div>
+                }
               </div>
             </div>
-          ) : null}
-
-          <div className="bchat-modal__body" style={{ position: 'relative' }}>
-            <div className="bchat-modal__centered">{props.children}</div>
-            {isloading && <div>
-              <Loader>
-                <BchatSpinner loading={true} />
-              </Loader>
-            </div>
-            }
           </div>
           <div className="bchat-modal-footer">
             {cancelButton?.status && <BchatButton
@@ -124,7 +134,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               buttonColor={BchatButtonColor.Secondary}
               onClick={cancelButton.onClickCancelHandler}
               dataTestId="Bchat-confirm-cancel-button"
-              style={{ marginRight: '12px' }}
+              style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
             />}
             <BchatButton
               text={okButton?.text ? okButton.text : window.i18n('ok')}
@@ -135,7 +145,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               iconType={okButton?.iconType}
               onClick={okButton?.onClickOkHandler}
               dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}
-            // style={{ width: '120px', height: '35px' }}
+              style={{ minWidth: iconShow ? '235px' : '200px' }}
             />
           </div>
         </div>

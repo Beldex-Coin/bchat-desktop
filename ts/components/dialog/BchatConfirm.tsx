@@ -17,6 +17,8 @@ export interface BchatConfirmDialogProps {
   onOk?: any;
   onClose?: any;
   closeAfterInput?: boolean;
+  iconShow?:any;
+  customIcon?:any
 
   /**
    * function to run on ok click. Closes modal after execution by default
@@ -63,7 +65,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     showExitIcon,
     closeAfterInput = true,
     btndisable,
-    Childern = ""
+    Childern = "",
+    customIcon
   } = props;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -161,7 +164,9 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         color: closeTheme,
         onClickCancelHandler
       }}
-    >
+      iconShow={true}
+      customIcon={customIcon}
+    > 
       {!showHeader && <SpacerLG />}
 
       <div className="bchat-modal__centered">
