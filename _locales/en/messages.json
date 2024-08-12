@@ -582,7 +582,7 @@
   "noOutgoingTransaction": "There are no outgoing transactions.",
   "noIncomingTransaction": "There are no incoming transactions.",
   "noFailedTransaction": "There are no failed transactions ",
-  "walletSyncingDiscription": "Your wallet is currently syncing",
+  "walletSyncingDiscription": "Please wait while wallet getting synced",
   "searchEmptyTransaction":"No transactions found.",
   "NodeTestResult":"Test Result",
   "bns":"Bns",

@@ -1742,7 +1742,7 @@ label {
 
 .addressBook {
   min-width: 300px;
-  width: 25vw;
+  width: 24vw;
   max-width: 420px;
   background-color: #202329;
   padding: 15px;
@@ -3222,29 +3222,36 @@ label {
     }
 
     &-syncing {
-      width: 100%;
-      // height: 85%;
-      height: 82%;
+      width: 46%;
+      height: 32%;
       // background-position: center;
       background-size: 98% 98%;
       margin: 0 auto;
       background-image: var(--image-walletSyncing);
       background-repeat: no-repeat;
 
-      &-content {
-        font-family: 'poppin-regular';
-        color: #82828d;
-        font-size: 13px;
+      &-title {
+        color: #a7a7ba;
+        font-family: $bchat-font-open-sans;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
         text-align: center;
-        // padding-top: 324px;
-        // padding-top: 280px;
+        padding: 0;
+      }
+      &-content {
+        color: #858598;
+        font-size: 14px;
+        font-weight: 300;
+        margin: 0;
+        text-align: center;
       }
     }
 
     &-Transaction {
       padding: 15px;
-      height: 61%;
-      margin-bottom: 10px;
+      height: 89%;
+      margin-bottom: 5px;
       border-radius: 16px;
       background: #202329;
 
@@ -3366,19 +3373,19 @@ label {
       }
 
       &-content {
-        font-family: 'poppin-medium';
-        color: #82828d;
-        margin-top: 6px;
-        margin-left: 10px;
-        // padding-top: 146px;
-        font-size: 16px;
-        // padding-top: 112px;
+        color: #a7a7ba;
+        /* text-align: right; */
+        font-family: $bchat-font-open-sans;
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
       }
 
       &-subContent {
-        font-family: 'poppin-regular';
-        color: #82828d;
-        font-size: 13px;
+        color: #858598;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
       }
 
       &-contentBox {
@@ -3447,6 +3454,19 @@ label {
             text-align: right;
             font-weight: 400;
           }
+
+          &-title,
+          &-content {
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 20px;
+          }
+          &-title {
+            color: #838894;
+          }
+          &-content {
+            color: #ebebeb;
+          }
         }
       }
 
@@ -3460,22 +3480,31 @@ label {
           // width: 601px;
           width: 40%;
           padding-right: 10px;
-          font-family: $bchat-font-poppin-semibold;
-          overflow-wrap: break-word;
+          word-break: break-all;
+          color: #858598;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 21px;
 
           &-address {
-            font-family: $bchat-font-poppin-light;
-            font-size: 12px;
+            // font-family: $bchat-font-poppin-light;
+            // font-size: 12px;
+            color: #ebebeb;
           }
         }
 
+        &-transactionFee-header,
+        &-transactionFee-text {
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 20px;
+        }
         &-transactionFee-header {
-          font-family: $bchat-font-poppin-semibold;
+          color: #858598;
         }
 
         &-transactionFee-text {
-          font-family: $bchat-font-poppin-light;
-          font-size: 12px;
+          color: #ebebeb;
         }
       }
     }
