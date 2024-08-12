@@ -19,7 +19,7 @@ import { ToastUtils } from '../../bchat/utils';
 // import { walletSettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
-
+import styled from 'styled-components';
 
 export enum WalletPage {
   WalletPassword = 'walletPassword',
@@ -45,7 +45,6 @@ export const WalletMainPanel = () => {
   const [notes, setNotes] = useState('');
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
 
-
   if (!window.globalOnlineStatus) {
     ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
   }
@@ -57,11 +56,10 @@ export const WalletMainPanel = () => {
     }
   }
   function clearStates() {
-    setAmount("");
-    setNotes("");
+    setAmount('');
+    setNotes('');
     let emptyAddress: any = '';
     dispatch(updateSendAddress(emptyAddress));
-
   }
   // if (passScreen) {
   //   return (
@@ -106,21 +104,20 @@ export const WalletMainPanel = () => {
   }
 
   return (
-    <div className={classNames("wallet",BchatWalletPasswordModal  && 'blurBg')}>
+    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')}>
       {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
-        <Dashboard
-          amount={amount}
-          setAmount={(e: any) => {
-            numberOnly(e);
-          }}
-          // priority={priority}
-          notes={notes}
-          // setPriority={(e: any) => setPriority(e)}
-          setNotes={(e: any) => setNotes(e)}
-          clearStates={() => clearStates()}
-
-        />
+      <Dashboard
+        amount={amount}
+        setAmount={(e: any) => {
+          numberOnly(e);
+        }}
+        // priority={priority}
+        notes={notes}
+        // setPriority={(e: any) => setPriority(e)}
+        setNotes={(e: any) => setNotes(e)}
+        clearStates={() => clearStates()}
+      />
       {/* )} */}
     </div>
   );
@@ -132,35 +129,31 @@ export const Dashboard = (props: any) => {
   // daemon.daemonHeartbeat();
   return (
     <>
-      <WalletHeader clearStates={props.clearStates}  />
+      <WalletHeader clearStates={props.clearStates} />
       <SpacerLG />
-      <div  className='wallet-syncStatusBox'>
-      <MemoSyncStatusBar />
+      <div className="wallet-syncStatusBox">
+        <MemoSyncStatusBar />
       </div>
       <SpacerLG />
       <div className="wallet-contentSpace">
-      <Flex container={true} flexDirection="row" justifyContent="space-between" width='100%'>
-        <div style={{width:'60%'}}>
-        <WalletBalanceSection />
-        <SpacerMD />
-        <TransactionSection
-            transactionList={transactions}
-          />
-        </div>
-        <div style={{width:'40%'}}>
-        <WalletPaymentSection clearStates={props.clearStates} />
-        <SendForm
-            amount={props.amount}
-            setAmount={props.setAmount}
-            // priority={props.priority}
-            // setPriority={props.setPriority}
-            notes={props.notes}
-            setNotes={props.setNotes}
-          />
-        </div>
-     
-      
-    </Flex>
+        <Flex container={true} flexDirection="row" justifyContent="space-between" width="100%">
+          <Leftpane>
+            <WalletBalanceSection />
+            <SpacerMD />
+            <TransactionSection transactionList={transactions} />
+          </Leftpane>
+          <RightPane style={{ width: '40%' }}>
+            <WalletPaymentSection clearStates={props.clearStates} />
+            <SendForm
+              amount={props.amount}
+              setAmount={props.setAmount}
+              // priority={props.priority}
+              // setPriority={props.setPriority}
+              notes={props.notes}
+              setNotes={props.setNotes}
+            />
+          </RightPane>
+        </Flex>
         {/* <BalanceAndsendReceiveAction clearStates={props.clearStates} /> */}
         {/* <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
@@ -180,8 +173,6 @@ export const Dashboard = (props: any) => {
           />
         )} */}
       </div>
-      
-
     </>
   );
 };
@@ -193,3 +184,11 @@ export const BalanceAndsendReceiveAction = (props: any) => {
     </Flex>
   );
 };
+
+const Leftpane = styled.div`
+  width: 60%;
+  margin-right: 15px;
+`;
+const RightPane = styled.div`
+  width: 40%;
+`;
