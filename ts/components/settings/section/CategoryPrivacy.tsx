@@ -9,16 +9,17 @@ import { toggleMessageRequests } from '../../../state/ducks/userConfig';
 import { getHideMessageRequestBanner } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { PasswordAction } from '../../dialog/BchatPasswordDialog';
-
 import { BchatSettingButtonItem, BchatToggleWithDescription } from '../BchatSettingListItem';
+import MediaPermissionIcon from '../../icon/MediapermissionIcon';
 
 const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
   const currentValue = window.getCallMediaPermissions();
   if (!currentValue) {
     window.inboxStore?.dispatch(
       updateConfirmModal({
+        title:'Turn on Voice/Video Call',
         message: window.i18n('callMediaPermissionsDialogContent'),
-        okTheme: BchatButtonColor.Danger,
+        okTheme: BchatButtonColor.Primary,
         onClickOk: async () => {
           await window.toggleCallMediaPermissionsTo(true);
           triggerUIUpdate();
@@ -28,6 +29,8 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
           await window.toggleCallMediaPermissionsTo(false);
           triggerUIUpdate();
         },
+        iconShow: false,
+        customIcon: <MediaPermissionIcon iconSize={30}/>
       })
     );
   } else {
