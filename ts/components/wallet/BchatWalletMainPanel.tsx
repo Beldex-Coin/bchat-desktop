@@ -6,10 +6,9 @@ import { AddressBook } from './BchatWalletAddressBook';
 import { WalletBalanceSection } from './BchatWalletBalanceSection';
 import { WalletHeader } from './BchatWalletHeader';
 // import { WalletPassword } from './BchatWalletPassword';
-import { NodeSetting } from './BchatWalletNodeSetting';
 import { WalletPaymentSection } from './BchatWalletPaymentSection';
 // import { ReceivedForm } from './BchatWalletReceivedForm';
-import { WalletSettings } from './BchatWalletSettings';
+
 import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
 import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
@@ -20,31 +19,33 @@ import { ToastUtils } from '../../bchat/utils';
 import classNames from 'classnames';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 import styled from 'styled-components';
+import { ReceivedForm } from './BchatWalletReceivedForm';
+import { walletSettingsKey } from '../../data/settings-key';
 
 export enum WalletPage {
   WalletPassword = 'walletPassword',
   Dashboard = 'dashboard',
   AddressBook = 'addressbook',
-  Setting = 'setting',
-  NodeSetting = 'nodeSetting',
   Contact = 'contact',
 }
 
 export enum WalletDashboard {
   walletSend = 'walletSend',
   walletReceived = 'walletReceived',
-  walletTransaction = 'walletTransaction',
 }
 
 export const WalletMainPanel = () => {
   const dispatch = useDispatch();
   const focusedsettings = useSelector((state: any) => state.walletFocused);
+  const walletDetails = useSelector((state: any) => state.wallet);
   const [amount, setAmount] = useState('');
   // const [priority, setPriority] = useState(window.i18n('flash'));
   // const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
-
+  let decimalValue: any =
+    window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
+  decimalValue = decimalValue.charAt(0);
   if (!window.globalOnlineStatus) {
     ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
   }
@@ -60,6 +61,10 @@ export const WalletMainPanel = () => {
     setNotes('');
     let emptyAddress: any = '';
     dispatch(updateSendAddress(emptyAddress));
+  }
+
+  function fillAmount(){
+    setAmount((walletDetails.balance / 1e9).toFixed(decimalValue));
   }
   // if (passScreen) {
   //   return (
@@ -88,23 +93,11 @@ export const WalletMainPanel = () => {
       </div>
     );
   }
-  if (WalletPage.Setting === focusedsettings) {
-    return (
-      <div className="wallet">
-        <WalletSettings />
-      </div>
-    );
-  }
-  if (WalletPage.NodeSetting === focusedsettings) {
-    return (
-      <div className="wallet">
-        <NodeSetting />
-      </div>
-    );
-  }
+
+  
 
   return (
-    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')}>
+    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')} >
       {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
       <Dashboard
@@ -117,6 +110,7 @@ export const WalletMainPanel = () => {
         // setPriority={(e: any) => setPriority(e)}
         setNotes={(e: any) => setNotes(e)}
         clearStates={() => clearStates()}
+        fillAmount={()=>fillAmount()}
       />
       {/* )} */}
     </div>
@@ -124,7 +118,7 @@ export const WalletMainPanel = () => {
 };
 
 export const Dashboard = (props: any) => {
-  // const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
+  const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   // daemon.daemonHeartbeat();
   return (
@@ -136,22 +130,26 @@ export const Dashboard = (props: any) => {
       </div>
       <SpacerLG />
       <div className="wallet-contentSpace">
-        <Flex container={true} flexDirection="row" justifyContent="space-between" width="100%">
+        <Flex container={true} flexDirection="row"  width="100%">
           <Leftpane>
             <WalletBalanceSection />
             <SpacerMD />
             <TransactionSection transactionList={transactions} />
           </Leftpane>
-          <RightPane style={{ width: '40%' }}>
+          <RightPane>
             <WalletPaymentSection clearStates={props.clearStates} />
-            <SendForm
-              amount={props.amount}
-              setAmount={props.setAmount}
-              // priority={props.priority}
-              // setPriority={props.setPriority}
-              notes={props.notes}
-              setNotes={props.setNotes}
-            />
+            {WalletDashboard.walletSend === focusedInnersection && (
+          <SendForm
+            amount={props.amount}
+            setAmount={props.setAmount}
+            // priority={props.priority}
+            // setPriority={props.setPriority}
+            notes={props.notes}
+            setNotes={props.setNotes}
+            fillAmount={props.fillAmount}
+          />
+        )}
+              {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
           </RightPane>
         </Flex>
         {/* <BalanceAndsendReceiveAction clearStates={props.clearStates} /> */}
@@ -186,9 +184,16 @@ export const BalanceAndsendReceiveAction = (props: any) => {
 };
 
 const Leftpane = styled.div`
-  width: 60%;
+  // width:45vw;
+  height: 79vh;
   margin-right: 15px;
 `;
 const RightPane = styled.div`
-  width: 40%;
+  // width: 25vw;
+  width: 50%;
+  min-width: 320px;
+
+  height: 79vh;
+  border-radius: 16px;
+  background: #202329;
 `;

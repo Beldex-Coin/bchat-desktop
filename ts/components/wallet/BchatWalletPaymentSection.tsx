@@ -1,14 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import {
-  walletReceivedPage,
-  walletSendPage,
-  walletTransactionPage,
-} from '../../state/ducks/walletInnerSection';
+import { walletReceivedPage, walletSendPage } from '../../state/ducks/walletInnerSection';
 import { Flex } from '../basic/Flex';
-import { BchatIcon } from '../icon/BchatIcon';
-import { BchatIconSize, BchatIconType } from '../icon/Icons';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { WalletDashboard } from './BchatWalletMainPanel';
 
 export const WalletPaymentSection = (props: any) => {
@@ -23,77 +17,41 @@ export const WalletPaymentSection = (props: any) => {
   return (
     <div className="wallet-squarBox-tran" style={zoomLevel > 100 ? { width: '46.4%' } : {}}>
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
-        <div>
-          <Flex container={true} flexDirection="row" justifyContent="space-between">
-            <BchatButtonIcon
-              name={window.i18n('send')}
+        <div className="wallet-btn-wrapper">
+          <Flex container={true} flexDirection="row" justifyContent="center">
+            <BchatButton
+              text={window.i18n('send')}
               iconSize="small"
               iconType="paySend"
-              iconColor={WalletDashboard.walletSend === focusedInnersection ? '#fff' : '#FC2727'}
               onClick={() => tabBtn()}
-              isSelected={WalletDashboard.walletSend === focusedInnersection}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={
+                WalletDashboard.walletSend === focusedInnersection
+                  ? BchatButtonColor.Primary
+                  : BchatButtonColor.Secondary
+              }
+              style={{minWidth:'unset', width: '45%' }}
             />
             <span style={{ width: '5%', height: '20px' }}></span>
-            <BchatButtonIcon
-              name={window.i18n('received')}
+
+            <BchatButton
+              text={window.i18n('received')}
               iconSize="small"
               iconType="payRecieved"
-              iconColor={
-                WalletDashboard.walletReceived === focusedInnersection ? '#fff' : '#159B24'
+              buttonType={BchatButtonType.Brand}
+              buttonColor={
+                WalletDashboard.walletReceived === focusedInnersection
+                  ? BchatButtonColor.Primary
+                  : BchatButtonColor.Secondary
               }
               onClick={() => {
                 dispatch(walletReceivedPage());
               }}
-              isSelected={WalletDashboard.walletReceived === focusedInnersection}
+              style={{minWidth:'unset', width: '45%' }}
             />
           </Flex>
         </div>
-        <Flex
-          container={true}
-          flexDirection="row"
-          justifyContent="space-between"
-          margin="15px 0 0 0"
-        >
-          <BchatButtonIcon
-            name={window.i18n('transactionDetails')}
-            iconSize="large"
-            iconType="payTransaction"
-            iconColor={
-              WalletDashboard.walletTransaction === focusedInnersection
-                ? '#fff'
-                : 'var(--color-text)'
-            }
-            onClick={() => {
-              dispatch(walletTransactionPage());
-            }}
-            isSelected={WalletDashboard.walletTransaction === focusedInnersection}
-          />
-        </Flex>
       </Flex>
-    </div>
-  );
-};
-
-export const BchatButtonIcon = (props: {
-  name: string;
-  iconType: BchatIconType;
-  iconColor: string;
-  iconSize: BchatIconSize;
-  onClick: () => void;
-  isSelected: boolean;
-}) => {
-  return (
-    <div onClick={props.onClick} style={{ width: '100%' }}>
-      <Button isSelected={props.isSelected}>
-        <BchatIcon
-          iconSize={props.iconSize}
-          iconType={props.iconType}
-          iconColor={props.iconColor}
-        />
-        <span className="font-medium" style={{ marginLeft: '5px' }}>
-          {props.name}
-        </span>
-      </Button>
     </div>
   );
 };
@@ -101,18 +59,19 @@ export const BchatButtonIcon = (props: {
 export interface ButtonProps {
   isSelected?: boolean;
 }
-const Button = styled.button<ButtonProps>`
-  outline: none;
-  border: none;
-  background-color: ${props =>
-    props.isSelected ? 'var(--button-color)' : 'var(--color-walTransacBtn)'};
-  width: 100%;
-  height: 60px;
-  border-radius: 10px;
-  font-size: 16px;
-  color: ${props => (props.isSelected ? '#fff' : '')};
+// const Button = styled.button<ButtonProps>`
+//   outline: none;
+//   border: none;
+//   background-color: ${props =>
+//     props.isSelected ? 'var(--button-color)' : 'var(--color-walTransacBtn)'};
+//   width: 100%;
+//   height: 60px;
+//   border-radius: 10px;
+//   font-size: 16px;
+//   color: ${props => (props.isSelected ? '#fff' : '')};
 
-  &:hover {
-    background-color : ${props => (props.isSelected ? 'var(--button-color)' : 'var(--color-walletSelectOption)')};;
-  }
-`;
+//   &:hover {
+//     background-color: ${props =>
+//       props.isSelected ? 'var(--button-color)' : 'var(--color-walletSelectOption)'};
+//   }
+// `;

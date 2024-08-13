@@ -3,7 +3,7 @@
   "priority": "Priority",
   "contact": "Contact",
   "address": "Address",
-  "notes": "Notes (optional)",
+  "notes": "Notes",
   "optional": "(optional)",
   "transactions": "Transactions",
   "filter": "Filter",
