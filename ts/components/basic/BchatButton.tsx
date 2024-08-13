@@ -93,7 +93,7 @@ export const BchatButton = (props: Props) => {
           style={style}
         >
           {iconType && iconSize && <span style={{ marginRight: '5px' }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
-          {props.children || text}
+          {props.children || text}  
         </div>
       )}
     </>
