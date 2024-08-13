@@ -11,6 +11,7 @@ import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 import { updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
+import { BchatIcon } from '../../icon';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,8 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
               window.setSettingValue(SettingsKey.settingsLinkPreview, newValue);
               forceUpdate();
             },
+            iconShow: true,
+            customIcon: <BchatIcon iconType="linkPreview" iconSize={26} />
           })
         );
       }

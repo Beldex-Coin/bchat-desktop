@@ -130,15 +130,15 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
           <div className="bchat-modal-footer">
             {cancelButton?.status && <BchatButton
               text={cancelButton?.text}
-              buttonType={BchatButtonType.Brand}
-              buttonColor={BchatButtonColor.Secondary}
+              buttonType={cancelButton?.buttonType ? cancelButton.buttonType : BchatButtonType.Brand}
+              buttonColor={cancelButton?.color ? cancelButton.color : BchatButtonColor.Secondary}
               onClick={cancelButton.onClickCancelHandler}
               dataTestId="Bchat-confirm-cancel-button"
               style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
             />}
             <BchatButton
               text={okButton?.text ? okButton.text : window.i18n('ok')}
-              buttonType={BchatButtonType.Brand}
+              buttonType={okButton?.buttonType ? okButton.buttonType : BchatButtonType.Brand}
               buttonColor={okButton?.color ? okButton.color : BchatButtonColor.Secondary}
               disabled={okButton?.disabled}
               iconSize={okButton?.iconSize}

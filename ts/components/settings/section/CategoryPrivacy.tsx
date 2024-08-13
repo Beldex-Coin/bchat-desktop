@@ -29,7 +29,7 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
           await window.toggleCallMediaPermissionsTo(false);
           triggerUIUpdate();
         },
-        iconShow: false,
+        iconShow: true,
         customIcon: <MediaPermissionIcon iconSize={30}/>
       })
     );

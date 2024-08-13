@@ -66,6 +66,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     closeAfterInput = true,
     btndisable,
     Childern = "",
+    iconShow,
     customIcon
   } = props;
 
@@ -164,7 +165,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         color: closeTheme,
         onClickCancelHandler
       }}
-      iconShow={true}
+      iconShow={iconShow}
       customIcon={customIcon}
     > 
       {!showHeader && <SpacerLG />}

@@ -12,6 +12,7 @@ import { showSettingsSection } from '../../state/ducks/section';
 import { displayPasswordModal } from './section/CategoryPrivacy';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
+import { BchatIcon } from '../icon/BchatIcon';
 // import {  updateConfirmModal } from '../../state/ducks/modalDialog';
 
 export const BchatRecoverySeed = (props: any) => {
@@ -56,6 +57,8 @@ export const BchatRecoverySeed = (props: any) => {
       status: true,
       onClickCancelHandler
     }}
+    iconShow={true}
+    customIcon={<BchatIcon iconType="enablePasswordIcon" iconSize={26} />}
     >
       <div className="bchat-modal__centered">
         <div className="bchat-modal-setPasswordAccess">
