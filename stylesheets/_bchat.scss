@@ -2950,19 +2950,26 @@ label {
 
     &-settings {
       &-tabBox {
-        // background-color: #2d2d3b;
-        background-color: var(--color-WalcontentBg);
+        background-color: #202329;
+        // background-color: var(--color-WalcontentBg);
         padding: 20px;
         border-radius: 10px;
 
         &-disableText {
-          color: #a1a1bc;
+          color: #A7A7BA;
           padding-right: 12px;
         }
 
+        &-title {
+          font-family: $bchat-font-default;
+          font-size: 18px;
+          font-weight: 500;
+        }
+
         &-subtle {
-          font-family: $bchat-font-poppin-semibold;
+          font-family: $bchat-font-default;
           font-size: 16px;
+          font-weight: 400;
         }
 
         &-checkBox {
@@ -2978,17 +2985,18 @@ label {
           border-radius: 7px;
 
           &:hover {
-            background-color: var(--color-settings-options-hover);
+            // background-color: var(--color-settings-options-hover);
+            background-color: #1B1E23;
           }
         }
       }
 
       &-nodeSetting {
         &-contentBox {
-          // background-color: #303041;
-          background-color: var(--color-WalcontentBg);
+          background-color: #202329;
+          // background-color: var(--color-WalcontentBg);
           border-radius: 10px;
-          padding: 15px;
+          padding: 25px 20px 20px;
         }
 
         &-FlexBox {
@@ -3000,8 +3008,8 @@ label {
           &-outlineCircle {
             border: 2px solid var(--color-text);
             /* padding: 2px; */
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             padding: 0;
             border-radius: 36px;
             display: flex;
@@ -3016,13 +3024,22 @@ label {
         // }
 
         &-notesTxt {
-          font-family: $bchat-font-poppin-light;
+          font-family: $bchat-font-default;
+          color: #A7A7BA;
+          font-weight: 400;
+          font-size: 15px;
         }
 
         &-dropDownHeaderTxt {
-          font-family: $bchat-font-poppin-semibold;
-          color: var(--color-walletNodeHeader);
-          font-size: 16px;
+          background-color: #2E333D;
+          padding: 10px;
+          border-radius: 16px;
+          font-family: $bchat-font-default;
+
+          .text {
+            font-size: 14px;
+            font-weight: 300;
+          }
         }
 
         &-horizontalLine {
@@ -3273,6 +3290,7 @@ label {
         text-align: center;
         padding: 0;
       }
+
       &-content {
         color: #858598;
         font-size: 14px;
@@ -3497,9 +3515,11 @@ label {
             font-weight: 400;
             line-height: 20px;
           }
+
           &-title {
             color: #838894;
           }
+
           &-content {
             color: #ebebeb;
           }
@@ -3535,6 +3555,7 @@ label {
           font-weight: 400;
           line-height: 20px;
         }
+
         &-transactionFee-header {
           color: #858598;
         }

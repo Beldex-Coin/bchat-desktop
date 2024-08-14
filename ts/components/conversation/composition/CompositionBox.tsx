@@ -61,6 +61,7 @@ import { LinkPreviews } from '../../../util/linkPreviews';
 import { SettingsKey, walletSettingsKey } from '../../../data/settings-key';
 import {
   updateBchatAlertConfirmModal,
+  updateConfirmModal,
   // updateBchatWalletPasswordModal,
   updateSendConfirmModal,
   updateTransactionInitModal,
@@ -82,6 +83,7 @@ import { BchatIcon } from '../../icon/BchatIcon';
 import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
+import MicrophoneIcon from '../../icon/MicrophoneIcon';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -567,12 +569,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        // re.test(draft) &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat ? (
+          selectedConversation?.isApproved &&
+          selectedConversation?.didApproveMe &&
+          !selectedConversation?.isBlocked &&
+          // re.test(draft) &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -607,15 +609,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        re.test(draft) &&
-        // && (draft.length-1 - draft.indexOf(".")) < 4
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat &&
-        !isMe &&
-        getSyncStatus ? (
+          re.test(draft) &&
+          // && (draft.length-1 - draft.indexOf(".")) < 4
+          selectedConversation?.isApproved &&
+          selectedConversation?.didApproveMe &&
+          !selectedConversation?.isBlocked &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat &&
+          !isMe &&
+          getSyncStatus ? (
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) : (
           <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
@@ -686,8 +688,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-        ? 'Syncronizing..'
-        : 'Synchronized';
+          ? 'Syncronizing..'
+          : 'Synchronized';
 
     console.log(
       'stagedAttachments.length!==0 --> ',
@@ -1367,7 +1369,24 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   private async onLoadVoiceNoteView() {
     if (!getMediaPermissionsSettings()) {
-      ToastUtils.pushAudioPermissionNeeded();
+      window.inboxStore?.dispatch(
+        updateConfirmModal({
+          title: window.i18n('audioPermissionNeededTitle'),
+          message:
+            window.i18n('audioPermissionNeeded'),
+          okText: window.i18n('allow'),
+          cancelText: window.i18n('deny'),
+          okTheme: BchatButtonColor.Primary,
+          onClickOk: async () => {
+            await window.toggleMediaPermissions();
+            // this.forceUpdate();
+            window.inboxStore?.dispatch(updateConfirmModal(null));
+          },
+          closeAfterInput: false,
+          iconShow: true,
+          customIcon: <MicrophoneIcon iconSize={30} />
+        })
+      );
       return;
     }
     this.setState({

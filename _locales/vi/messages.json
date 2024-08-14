@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Original message found, but not loaded. Scroll up to load it.",
   "recording": "Recording",
   "you": "Bạn",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "To send audio messages, allow BChat Desktop to access your microphone.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Âm thanh",
   "video": "Đoạn phim",
   "photo": "Photo",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Vui lòng nhập tên nhóm",
   "editProfileModalTitle": "Profile",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

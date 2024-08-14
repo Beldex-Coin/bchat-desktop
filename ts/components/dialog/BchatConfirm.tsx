@@ -52,7 +52,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     title = '',
     message = '',
     messageSub = '',
-    closeTheme = BchatButtonColor.White,
+    closeTheme = BchatButtonColor.Secondary,
     // seed="",
     onClickOk,
     onClickClose,
@@ -166,7 +166,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         onClickCancelHandler
       }}
       iconShow={iconShow}
-      customIcon={customIcon}
+      customIcon={customIcon} 
     > 
       {!showHeader && <SpacerLG />}
 

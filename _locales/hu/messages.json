@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Az eredeti üzenet ugyan fellelhető, de még nincs betöltve. Görgess fel a betöltéséhez!",
   "recording": "Rögzítés",
   "you": "Te",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Hangüzenetek küldéséhez engedélyezd, hogy a BChat Desktop hozzáférjen mikrofonodhoz",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Hang",
   "video": "Videó",
   "photo": "Kép",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Érvénytelen Publikus kulcs formátum",
   "emptyGroupNameError": "Add meg a csoport nevét",
   "editProfileModalTitle": "Profil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }
