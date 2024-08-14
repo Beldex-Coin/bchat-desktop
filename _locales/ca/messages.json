@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "S'ha trobat el missatge original, però no s'ha carregat. Desplaceu-vos amunt per a carregar-lo.",
   "recording": "S'està gravant",
   "you": "Vós",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Per enviar missatges d'àudio, permeteu que el BChat Desktop tingui accés al micròfon.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Àudio",
   "video": "Vídeo",
   "photo": "Foto",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "El format Pubkey no és vàlid",
   "emptyGroupNameError": "Introdueix nom de grup, si us plau",
   "editProfileModalTitle": "Perfil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

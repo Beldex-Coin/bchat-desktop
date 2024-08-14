@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Исходное сообщение найдено, но не загружено. Прокрутите вверх, чтобы загрузить его.",
   "recording": "Recording",
   "you": "Вы",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Для отправки аудиосообщений разрешите BChat доступ к микрофону.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Аудио",
   "video": "Видео",
   "photo": "Фото",
@@ -319,7 +319,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Пожалуйста, введите название группы",
   "editProfileModalTitle": "Аккаунт",
-  "linkYourBns":"Свържете вашите Bns",
+  "linkYourBns": "Свържете вашите Bns",
   "readMoreAboutBNS": "Прочетете повече за BNS",
   "bnsVerified": "BNS Проверен",
   "linkBNS": "Линк BNS",
@@ -476,5 +476,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

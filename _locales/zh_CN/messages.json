@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "原始消息可用，但尚未加载。向上滑动可加载。",
   "recording": "录音中",
   "you": "您",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "发送音频消息前，请先允许 BChat Desktop访问您的麦克风。",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "音频",
   "video": "视频",
   "photo": "照片",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "无效的公钥格式",
   "emptyGroupNameError": "请输入群组名称",
   "editProfileModalTitle": "资料",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

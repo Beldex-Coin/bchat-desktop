@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "រកឃើញសារដើម ប៉ុន្តែមិនអាចផ្ទុក។ រំកិលចុះក្រោម ដើម្បីផ្ទុកវា។",
   "recording": "Recording",
   "you": "អ្នក",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "ដើម្បីបញ្ជូនសារសំឡេង អនុញ្ញាតឲ្យSignal Desktop ចូលប្រើប្រាស់ម៉ៃក្រូហ្វូនរបស់អ្នក។",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "សំឡេង",
   "video": "វីដេអូ",
   "photo": "រូបភាព",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Please enter a group name",
   "editProfileModalTitle": "Profile",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

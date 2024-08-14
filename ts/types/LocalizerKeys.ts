@@ -513,6 +513,8 @@ export type LocalizerKeys =
   | 'linkVisitWarningTitle'
   | 'invalidPassword'
   | 'endCall'
+  | 'allow'
+  | 'deny'
   | 'connectingToServer'
   | 'settingsHeader'
   | 'autoUpdateNewVersionMessage'

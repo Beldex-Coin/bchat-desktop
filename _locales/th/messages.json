@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Original message found, but not loaded. Scroll up to load it.",
   "recording": "Recording",
   "you": "คุณ",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "เพื่อจะส่งข้อความเสียง ต้องอนุญาตให้ BChat Desktop ใช้งานไมโครโฟนของคุณ",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "เสียง",
   "video": "วิดีโอ",
   "photo": "รูปภาพ",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Please enter a group name",
   "editProfileModalTitle": "Profile",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

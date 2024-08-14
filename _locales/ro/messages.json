@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Mesaj original găsit, dar neîncărcat. Scroll-ează în sus pentru a-l încărca.",
   "recording": "Se înregistrează",
   "you": "Tu",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Pentru a trimite mesaje audio, permite aplicației BChat Desktop accesul la microfonul tău.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Audio",
   "video": "Video",
   "photo": "Poză",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Formatul de număr Pubkey nu este valid",
   "emptyGroupNameError": "Te rugăm să introduci un nume de grup",
   "editProfileModalTitle": "Profil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

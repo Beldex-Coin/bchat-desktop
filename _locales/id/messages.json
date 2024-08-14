@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Pesan asli ditemukan, tapi tidak dapat dimuat. Gulir ke atas untuk memuatnya.",
   "recording": "Merekam",
   "you": "Anda",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Untuk mengirim pesan suara, izinkan BChat mengakses mikrofon Anda.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Suara",
   "video": "Video",
   "photo": "Foto",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Masukkan nama grup",
   "editProfileModalTitle": "Profile",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

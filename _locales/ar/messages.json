@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "الرسائل الأصلية موجودة, اسحب للأعلى لتحميلها.",
   "recording": "تسجيل",
   "you": "انت",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "To send audio messages, allow BCHat Desktop to access your microphone.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "صوت",
   "video": "فيديو",
   "photo": "صورة",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID": "Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

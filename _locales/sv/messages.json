@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Originalmeddelande hittades, men lästes inte in. Skrolla upp för att läsa in det.",
   "recording": "Spelar in ",
   "you": "Du",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Om du vill skicka röstmeddelanden måste BChat Desktop ha tillgång till din mikrofon.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Ljud",
   "video": "Video",
   "photo": "Foto",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Ogiltigt Pub-nyckel format",
   "emptyGroupNameError": "Ange ett gruppnamn",
   "editProfileModalTitle": "Profil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

@@ -184,9 +184,9 @@ export const NodeSetting = (props: any) => {
       <div style={{ cursor: 'pointer' }}>
         <Flex container={true} alignItems="center">
           <div onClick={() => props.onClick()} className='marginRight'>
-            <BchatIcon iconType="walletBackArrow" iconSize={'huge'} iconColor={'#9393af'} />
+            <BchatIcon iconType="walletBackArrow" iconSize={'medium'} iconColor={'#F0F0F0'} />
           </div>
-          <div className="wallet-addressBook-header-txt">{window.i18n('node')}</div>
+          <div className="wallet-settings-tabBox-subtle">{window.i18n('node')}</div>
         </Flex>
       </div>
       <SpacerLG />
@@ -197,6 +197,7 @@ export const NodeSetting = (props: any) => {
           flexDirection="row"
           width="100%"
           justifyContent="flex-start"
+          style={{ fontSize: '16px' }}
         >
           <article className="wallet-settings-nodeSetting-FlexBox">
             <div
@@ -211,7 +212,7 @@ export const NodeSetting = (props: any) => {
               {!localDeamonVisible && (
                 <BchatIcon
                   iconType="circle"
-                  iconSize="tiny"
+                  iconSize={7}
                   iconColor="var(--color-walletNodeHeader)"
                 />
               )}
@@ -237,7 +238,7 @@ export const NodeSetting = (props: any) => {
               {localDeamonVisible && (
                 <BchatIcon
                   iconType="circle"
-                  iconSize="tiny"
+                  iconSize={7}
                   iconColor="var(--color-walletNodeHeader)"
                 />
               )}
@@ -262,16 +263,17 @@ export const NodeSetting = (props: any) => {
           <>
             {/* ******************************Choose deamon section****************************************** */}
 
-            <Flex container={true} justifyContent="space-between" cursor={'pointer'} onClick={() => showDropDown()}>
-              <div className="wallet-settings-nodeSetting-dropDownHeaderTxt"  >
+            <Flex className="wallet-settings-nodeSetting-dropDownHeaderTxt" container={true} justifyContent="space-between" cursor={'pointer'} onClick={() => showDropDown()}>
+              <div className="text"  >
                 {window.i18n('chooseRemoteDaemonNode')}
               </div>
               <div
                 // onClick={() => showDropDown()}
                 style={{ cursor: 'pointer' }}>
                 <BchatIcon
-                  iconType="circleChevron"
-                  iconSize={'medium'}
+                  iconColor='#A7A7BA'
+                  iconType="chevron"
+                  iconSize={'small'}
                   iconRotation={viewBox2 ? 0 : 178}
                 />
               </div>
@@ -389,14 +391,15 @@ export const NodeSetting = (props: any) => {
             <SpacerLG />
             {/* ******************************Add deamon section****************************************** */}
 
-            <Flex container={true} justifyContent="space-between"  cursor={'pointer'} onClick={() => setViewBox1(!viewBox1)}>
-              <div className="wallet-settings-nodeSetting-dropDownHeaderTxt">
+            <Flex className='wallet-settings-nodeSetting-dropDownHeaderTxt' container={true} justifyContent="space-between" cursor={'pointer'} onClick={() => setViewBox1(!viewBox1)}>
+              <div className="text">
                 {window.i18n('addRemoteDaemonNode')}
               </div>
               <div >
                 <BchatIcon
-                  iconType="circleChevron"
-                  iconSize={'medium'}
+                  iconColor='#A7A7BA'
+                  iconType="chevron"
+                  iconSize={'small'}
                   iconRotation={viewBox1 ? 0 : 178}
                 />
               </div>

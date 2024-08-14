@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Opprinnelig beskjed funnet, men ikke lastet inn. Rull oppover for å laste den.",
   "recording": "Tar opp",
   "you": "Du",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Du kan aktivere mikrofontilgang under: Innstillinger (Tannhjulssymbol) => Personvern",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Lyd",
   "video": "Video",
   "photo": "Fotografi",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Ugyldig format på offentlig nøkkel",
   "emptyGroupNameError": "Vennligst skriv inn et gruppenavn",
   "editProfileModalTitle": "Profil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

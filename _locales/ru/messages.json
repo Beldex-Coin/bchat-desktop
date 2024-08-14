@@ -98,7 +98,7 @@
   "recording": "Идет запись",
   "you": "Вы",
   "audioPermissionNeededTitle": "Требуется доступ к микрофону",
-  "audioPermissionNeeded": "Для отправки аудиосообщений разрешите BChat доступ к микрофону (Настройки > Конфиденциальность)",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Аудио",
   "video": "Видео",
   "photo": "Фото",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Неверный формат данных",
   "emptyGroupNameError": "Пожалуйста, введите название группы",
   "editProfileModalTitle": "Аккаунт",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

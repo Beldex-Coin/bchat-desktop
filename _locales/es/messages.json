@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Se ha encontrado el mensaje original pero no se ha cargado. Desliza para cargar el mensaje.",
   "recording": "Grabando",
   "you": "Tú",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Para enviar notas de voz y hacer llamadas, permite a BChat acceder al micrófono.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Audio",
   "video": "Vídeo",
   "photo": "Foto",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Formato de Clave Pública inválido",
   "emptyGroupNameError": "Por favor, ingresa un nombre de grupo",
   "editProfileModalTitle": "Perfil",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }

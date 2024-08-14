@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "Pradinė žinutė rasta, tačiau neįkelta. Slinkite žemyn, norėdami ją įkelti.",
   "recording": "Recording",
   "you": "Jūs",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "Norėdami siųsti garso žinutes, suteikite BChat Desktop prieigą prie savo mikrofono.",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "Garso įrašas",
   "video": "Vaizdo įrašas",
   "photo": "Nuotrauka",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "Invalid Pubkey Format",
   "emptyGroupNameError": "Please enter a group name",
   "editProfileModalTitle": "Profile",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -475,5 +475,7 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny"
 }
