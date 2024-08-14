@@ -575,7 +575,7 @@
   "seedFieldEmpty": "Seed field cannot be empty",
   "notEnoughBalance": "Not enough unlocked balance",
   "emptyAddressBook": "No addresses in book",
-  "emptyContact": "There are no contacts",
+  "emptyContact": "No Contacts to show!",
   "emptyTransaction": "No Transactions yet!",
   "emptyTransactionDiscription": "After your first transaction, you will be able to view it here.",
   "noPendingTransaction": "There are no pending transactions ",

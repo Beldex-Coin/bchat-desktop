@@ -15,6 +15,7 @@ interface SProps extends BchatIconProps {
   style?: any;
   padding?: string;
   btnBgColor?: string;
+  btnRadius?:string
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';
 }
@@ -39,6 +40,7 @@ const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, re
     dataTestId,
     padding,
     btnBgColor,
+    btnRadius,
     fillRule,
     clipRule,
   } = props;
@@ -62,6 +64,7 @@ const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, re
         padding: padding ?? '',
         alignItems: 'center',
         background: btnBgColor ?? '',
+        borderRadius:btnRadius??''
       }}
       data-testid={dataTestId}
     >

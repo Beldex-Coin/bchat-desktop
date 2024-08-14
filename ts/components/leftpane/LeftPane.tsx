@@ -85,7 +85,7 @@ const LeftPaneSection = () => {
   }
 
   if (focusedSection === SectionType.Wallet) {
-    return <AddressBook from={window.i18n('contact')} />;
+    return <div className='wallet-contact-left-pane-wrapper'><AddressBook isContact={true} /></div> ;
   }
 
   // if (focusedSection === SectionType.Contact) {
