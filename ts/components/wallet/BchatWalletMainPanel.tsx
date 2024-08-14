@@ -36,7 +36,7 @@ export enum WalletDashboard {
 
 export const WalletMainPanel = () => {
   const dispatch = useDispatch();
-  const focusedsettings = useSelector((state: any) => state.walletFocused);
+  // const focusedsettings = useSelector((state: any) => state.walletFocused);
   const walletDetails = useSelector((state: any) => state.wallet);
   const [amount, setAmount] = useState('');
   // const [priority, setPriority] = useState(window.i18n('flash'));
@@ -63,7 +63,7 @@ export const WalletMainPanel = () => {
     dispatch(updateSendAddress(emptyAddress));
   }
 
-  function fillAmount(){
+  function fillAmount() {
     setAmount((walletDetails.balance / 1e9).toFixed(decimalValue));
   }
   // if (passScreen) {
@@ -79,25 +79,23 @@ export const WalletMainPanel = () => {
   //     </div>
   //   );
   // }
-  if (WalletPage.AddressBook === focusedsettings) {
-    return (
-      <div className="wallet">
-        <AddressBook from={window.i18n('addressBook')} />
-      </div>
-    );
-  }
-  if (WalletPage.Contact === focusedsettings) {
-    return (
-      <div className="wallet">
-        <AddressBook from={window.i18n('contact')} />
-      </div>
-    );
-  }
-
-  
+  // if (WalletPage.AddressBook === focusedsettings) {
+  //   return (
+  //     <div className="wallet">
+  //       <AddressBook from={window.i18n('addressBook')} />
+  //     </div>
+  //   );
+  // }
+  // if (WalletPage.Contact === focusedsettings) {
+  //   return (
+  //     <div className="wallet">
+  //       <AddressBook isContact={false}/>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')} >
+    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')}>
       {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
       <Dashboard
@@ -110,7 +108,7 @@ export const WalletMainPanel = () => {
         // setPriority={(e: any) => setPriority(e)}
         setNotes={(e: any) => setNotes(e)}
         clearStates={() => clearStates()}
-        fillAmount={()=>fillAmount()}
+        fillAmount={() => fillAmount()}
       />
       {/* )} */}
     </div>
@@ -118,6 +116,7 @@ export const WalletMainPanel = () => {
 };
 
 export const Dashboard = (props: any) => {
+  const focusedsettings = useSelector((state: any) => state.walletFocused);
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   // daemon.daemonHeartbeat();
@@ -130,26 +129,31 @@ export const Dashboard = (props: any) => {
       </div>
       <SpacerLG />
       <div className="wallet-contentSpace">
-        <Flex container={true} flexDirection="row"  width="100%">
+        <Flex container={true} flexDirection="row" width="100%">
           <Leftpane>
             <WalletBalanceSection />
             <SpacerMD />
-            <TransactionSection transactionList={transactions} />
+            {WalletPage.AddressBook === focusedsettings ? (
+              <div className='address-book-wrapper'><AddressBook isContact={false} /></div>
+             
+            ) : (
+              <TransactionSection transactionList={transactions} />
+            )}
           </Leftpane>
           <RightPane>
             <WalletPaymentSection clearStates={props.clearStates} />
             {WalletDashboard.walletSend === focusedInnersection && (
-          <SendForm
-            amount={props.amount}
-            setAmount={props.setAmount}
-            // priority={props.priority}
-            // setPriority={props.setPriority}
-            notes={props.notes}
-            setNotes={props.setNotes}
-            fillAmount={props.fillAmount}
-          />
-        )}
-              {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
+              <SendForm
+                amount={props.amount}
+                setAmount={props.setAmount}
+                // priority={props.priority}
+                // setPriority={props.setPriority}
+                notes={props.notes}
+                setNotes={props.setNotes}
+                fillAmount={props.fillAmount}
+              />
+            )}
+            {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
           </RightPane>
         </Flex>
         {/* <BalanceAndsendReceiveAction clearStates={props.clearStates} /> */}

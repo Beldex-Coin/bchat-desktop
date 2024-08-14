@@ -372,7 +372,6 @@ textarea {
       color: #f0f0f0;
       background: #108d32;
     }
-    
   }
 
   // &.default,
@@ -1777,25 +1776,32 @@ label {
     font-family: $bchat-font-poppin-semibold;
   }
 }
-
-.addressBook {
+.wallet-contact-left-pane-wrapper {
   min-width: 300px;
   width: 24vw;
   max-width: 420px;
+  height: 100vh;
   background-color: #202329;
+}
+.address-book-wrapper {
+  background-color: #202329;
+
+  border-radius: 16px;
+}
+.addressBook {
   padding: 15px;
 
   &-header {
     &-txt {
-      color: #a7a7ba;
-      font-size: 18px;
-      font-weight: 500;
+      color: #f0f0f0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 25px; /* 125% */
     }
   }
 
   &-wholeBox {
-    height: calc(83vh - 30px);
-
+    overflow: auto;
     &-contentBox {
       // background-color: var(--color-WalcontentBg);
       border-radius: 10px;
@@ -1803,16 +1809,16 @@ label {
       display: flex;
       justify-content: space-between;
 
-      &-nameBtn {
-        display: inline-block;
-        min-width: 130px;
-        background-color: #159b24;
-        padding: 4px 27px;
-        border-radius: 3px;
-        /* margin-bottom: 10px; */
-        // font-family: 'poppin-semibold';
-        color: #fff;
-      }
+      // &-nameBtn {
+      //   display: inline-block;
+      //   min-width: 130px;
+      //   background-color: #159b24;
+      //   padding: 4px 27px;
+      //   border-radius: 3px;
+      //   /* margin-bottom: 10px; */
+      //   // font-family: 'poppin-semibold';
+      //   color: #fff;
+      // }
 
       .contact {
         // font-family: $bchat-font-poppin-medium;
@@ -1850,36 +1856,6 @@ label {
       //   overflow: hidden;
       //   text-overflow: ellipsis;
       // }
-
-      &-sendBtn,
-      &-copyBtn {
-        width: 100px;
-        background-color: #2879fb;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        font-family: $bchat-font-poppin-semibold;
-        cursor: pointer;
-      }
-
-      &-sendBtn {
-        color: #fff;
-
-        &:hover {
-          background-color: #0b9fff;
-        }
-      }
-
-      &-copyBtn {
-        background-color: var(--color-walAddressBookCopy);
-        margin-left: 10px;
-
-        &:hover {
-          background-color: var(--color-addressbook-copy-hover);
-        }
-      }
     }
   }
 
@@ -1887,18 +1863,29 @@ label {
     margin: 0 auto;
     background-image: var(--image-EmptyAddressBook);
     // height: 100%;
-    height: 80%;
+    height: 42%;
+    // height: 27%;
+
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 90% 98%;
 
     &-content {
-      font-family: $bchat-font-poppin-medium;
-      // font-size: 15px;
-      color: var(--color-disableText);
-      // padding-top: 50%;
-      margin: 0;
+      .address-txt {
+        color: #a7a7ba;
+        font-family: $bchat-font-open-sans;
+        font-size: 18px;
+        text-align: center;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+      }
+      .address-hint-txt {
+        color: #82828d;
+        text-align: center;
+        font-weight: 400;
+      }
     }
   }
 }
@@ -2824,7 +2811,7 @@ label {
         // background-color: var(--color-walQrOutline);
         // border-radius: 10px;
         border-radius: 16px;
-        background: #2E333D;
+        background: #2e333d;
 
         &-qrView {
           display: flex;
@@ -2859,7 +2846,7 @@ label {
           height: 70px;
           padding-left: 20px;
           border-radius: 16px;
-          border: 1px solid #46465D;
+          border: 1px solid #46465d;
         }
       }
     }
@@ -3297,10 +3284,11 @@ label {
 
     &-Transaction {
       padding: 15px;
-      height: 66%;
+      // height: 66%;
       margin-bottom: 5px;
       border-radius: 16px;
       background: #202329;
+      height: calc( 100vh - 479px );
 
       &-title {
         display: flex;
