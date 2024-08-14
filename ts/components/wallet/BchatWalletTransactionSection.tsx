@@ -353,7 +353,7 @@ export const TransactionSection = (props: any) => {
                 style={{ cursor: 'pointer' }}
               >
                 <Flex container={true} justifyContent="space-between" flexDirection="row">
-                  <Flex container={true} height=" 60px" width="64%">
+                  <Flex container={true} height=" 60px" width='55%'>
                     <article className="wallet-Transaction-contentBox-sendIndicationBox">
                       <TransactionIndication type={item.type} />
                     </article>
@@ -373,7 +373,7 @@ export const TransactionSection = (props: any) => {
                       </div>
                     </div>
                   </Flex>
-                  <Flex>
+                  
                     <section className="wallet-Transaction-contentBox-dateandheight">
                       <div
                         className="wallet-Transaction-contentBox-dateandheight-month"
@@ -386,7 +386,7 @@ export const TransactionSection = (props: any) => {
                         {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
                       </div>
                     </section>
-                  </Flex>
+                  
                 </Flex>
 
                 {selected === i && (

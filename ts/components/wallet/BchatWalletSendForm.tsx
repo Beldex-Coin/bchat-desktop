@@ -17,9 +17,9 @@ import { saveRecipientAddress } from '../../data/data';
 import { walletSettingsKey } from '../../data/settings-key';
 import { updateSendConfirmModal, updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
-import { walletTransactionPage } from '../../state/ducks/walletInnerSection';
 import { useKey } from 'react-use';
 import { getwalletSendConfirmModal } from '../../state/selectors/modal';
+import { BchatIcon } from '../icon';
 
 export const SendForm = (props: any) => {
   const sendAddress = useSelector(getWalletSendAddress);
@@ -128,7 +128,6 @@ export const SendForm = (props: any) => {
       dispatch(updateSendConfirmModal(null));
       dispatch(updateTransactionInitModal(null));
       ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
-      dispatch(walletTransactionPage());
     } else {
       clearStateValue();
       dispatch(updateSendConfirmModal(null));
@@ -143,48 +142,38 @@ export const SendForm = (props: any) => {
   return (
     <>
       <div className="wallet-sendForm">
-        <Flex container={true} flexDirection="row" justifyContent="space-between">
-          <Flex width="50%">
-            <Flex
-              container={true}
-              flexDirection="row"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-            >
-              <span className="wallet-sendForm-label">{window.i18n('amount')}</span>
+        <span className="wallet-sendForm-label">{window.i18n('amount')}</span>
+        <Flex
+          container={true}
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
+            <input
+              value={props.amount}
+              onChange={(e: any) => {
+                props.setAmount(e.target.value);
+              }}
+              placeholder={window.i18n('enterAmount')}
+              type="text"
+              maxLength={16}
+            />
+            <BchatButton
+              text="All"
+              buttonType={BchatButtonType.Medium}
+              buttonColor={BchatButtonColor.Success}
+              style={{ minWidth: '50px', height: '30px' }}
+              onClick={()=>props.fillAmount()}
+            />
+          </div>
 
-              <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
-                <input
-                  value={props.amount}
-                  onChange={(e: any) => {
-                    props.setAmount(e.target.value);
-                  }}
-                  placeholder={window.i18n('enterAmount')}
-                  type="text"
-                  maxLength={16}
-                />
-              </div>
-            </Flex>
-          </Flex>
-          <Flex width="49%">
-            <Flex
-              container={true}
-              flexDirection="row"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-            >
-              <span className="wallet-sendForm-label">{window.i18n('priority')}</span>
-              <div
-                className="wallet-sendForm-inputBox"
-                style={{ display: 'block', padding: '0px' }}
-                ref={modalRef}
-              >
-                <div className="wallet-sendForm-inputBox" style={{ padding: '0px 8px' }}>
-                  <span className="priortyBox">{priority}</span>
+          <div ref={modalRef}>
+            <div className="wallet-sendForm-priorty-wrapper">
+              <BchatIcon iconType={'lightning'} iconSize={16} />
+              <span className="txt">{priority}</span>
 
-                  {/* <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>
+              {/* <span style={{ cursor: 'pointer' }} onClick={() => setDropDown(!dropDown)}>
                     <BchatIcon
                       iconType="dropdownArrow"
                       iconSize="small"
@@ -192,8 +181,8 @@ export const SendForm = (props: any) => {
                       iconColor={'var(--color-walDownthickArrow)'}
                     />
                   </span> */}
-                </div>
-                {/* 
+            </div>
+            {/* 
                 {dropDown && (
                   <div style={{ position: 'relative' }}>
                     <div className="wallet-settings-nodeSetting-sendDropDown">
@@ -226,31 +215,24 @@ export const SendForm = (props: any) => {
                     </div>
                   </div>
                 )} */}
-              </div>
-            </Flex>
-          </Flex>
+          </div>
         </Flex>
         <SpacerLG />
 
         <div>
-          <Flex
-            container={true}
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            width="100%"
-          >
-            <span className="wallet-sendForm-label">{window.i18n('address')}</span>
-            <div className="wallet-sendForm-inputBox">
-              <input
-                value={address}
-                placeholder="Enter Beldex address or BNS Name"
-                onChange={(e: any) => {
-                  setAddress(e.target.value);
-                }}
-                maxLength={120}
-              />
-              {/* <BchatButton
+          <span className="wallet-sendForm-label">{window.i18n('address')}</span>
+          <div className="wallet-sendForm-inputBox">
+          <textarea
+              value={address}
+              placeholder="Enter Beldex address or BNS Name"
+              className="wallet-sendForm-textArea"
+              onChange={(e: any) => {
+                setAddress(e.target.value);
+              }}
+              maxLength={120}
+            />
+           
+            {/* <BchatButton
                 text={window.i18n('contact')}
                 onClick={() => {
                   const updateAddress: any = address;
@@ -260,31 +242,22 @@ export const SendForm = (props: any) => {
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Green}
               /> */}
-            </div>
-          </Flex>
+          </div>
         </div>
         <SpacerLG />
 
         <div>
-          <Flex
-            container={true}
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            width="100%"
-          >
-            <span className="wallet-sendForm-label">{window.i18n('notes')}</span>
-            <div className="wallet-sendForm-inputBox">
-              <textarea
-                value={props.notes}
-                onChange={(e: any) => {
-                  props.setNotes(e.target.value);
-                }}
-                placeholder="Notes"
-                className="wallet-sendForm-textArea"
-              />
-            </div>
-          </Flex>
+          <span className="wallet-sendForm-label">{window.i18n('notes')}</span>
+          <div className="wallet-sendForm-inputBox">
+            <textarea
+              value={props.notes}
+              onChange={(e: any) => {
+                props.setNotes(e.target.value);
+              }}
+              placeholder="Add notes (optional)"
+              className="wallet-sendForm-textArea"
+            />
+          </div>
         </div>
         <SpacerLG />
         <div className="wallet-sendForm-sendBtnBox">
@@ -292,7 +265,7 @@ export const SendForm = (props: any) => {
             text={window.i18n('send')}
             onClick={() => addressValidation()}
             buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
+            buttonColor={BchatButtonColor.Primary}
             disabled={!(props.amount && address && syncStatus)}
           />
         </div>
