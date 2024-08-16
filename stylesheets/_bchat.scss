@@ -621,7 +621,6 @@ label {
 
 .Toastify__toast {
   background: var(--color-toast-success);
-  font-family: $bchat-font-poppin-medium;
 
   // background: linear-gradient(--color-cell-background);
 
@@ -637,25 +636,25 @@ label {
   }
 
   @mixin set-toast-theme($color) {
-    border: 1x solid #919191 !important;
-    background: $color;
-    border-radius: 15px;
+    border-radius: 16px;
+    border-left: 4px solid $color;
+    background: #131313;
   }
 
   &--success {
-    @include set-toast-theme(var(--color-toast-success));
+    @include set-toast-theme(#00A638);
   }
 
   &--info {
-    @include set-toast-theme(var(--color-toast-success));
+    @include set-toast-theme(#2F8FFF);
   }
 
   &--warning {
-    @include set-toast-theme(var(--color-toast-error));
+    @include set-toast-theme(#F0AF13);
   }
 
   &--error {
-    @include set-toast-theme(var(--color-toast-error));
+    @include set-toast-theme(#FF3E3E);
   }
 
   .Toastify__progress-bar {
