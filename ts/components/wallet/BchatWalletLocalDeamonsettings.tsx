@@ -1,15 +1,19 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Flex } from '../basic/Flex';
-import { SpacerLG } from '../basic/Text';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { SpacerLG} from '../basic/Text';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { walletSettingsKey } from '../../data/settings-key';
 import { ToastUtils } from '../../bchat/utils';
 import { BchatIcon } from '../icon/BchatIcon';
 import { useKey } from 'react-use';
 import { useDispatch } from 'react-redux';
-import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
+import {
+  updateFiatBalance,
+  updateWalletHeight,
+  updateWalletRescaning,
+} from '../../state/ducks/walletConfig';
 import { updateBalance } from '../../state/ducks/wallet';
 
 export function LocalDeamon() {
@@ -27,7 +31,7 @@ export function LocalDeamon() {
       setTestNotify(`Success`);
       return;
     }
-    setTestNotify(`Connection Error`);
+    setTestNotify(`Error`);
   }
 
   useKey((event: KeyboardEvent) => {
@@ -47,7 +51,7 @@ export function LocalDeamon() {
     if (Object.keys(data).length === 0) {
       return;
     }
-   
+
     const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
     if (currentDaemon.host == data.host) {
       return ToastUtils.pushToastInfo('localAlreadyAdded', `Local daemon already connected.`);
@@ -56,18 +60,17 @@ export function LocalDeamon() {
     let rescan: any = true;
     let Transactions: any = '';
     let wallHeight: any = 0;
-    dispatch( 
+    dispatch(
       updateBalance({
         balance: 0,
         unlocked_balance: 0,
         transacations: [],
       })
-
     );
     dispatch(updateWalletRescaning(rescan));
     dispatch(updateFiatBalance(Transactions));
     window.setSettingValue('syncStatus', false);
-    
+
     dispatch(updateWalletHeight(wallHeight));
 
     setLocalDeamonPort('');
@@ -78,8 +81,6 @@ export function LocalDeamon() {
       'successfully-added-daemon',
       `Successfully ${data.host}:${data.port} daemon added.`
     );
-
-
   }
 
   function portValidation(value: any) {
@@ -108,7 +109,7 @@ export function LocalDeamon() {
               placeholder="Enter your IP address"
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               disabled={true}
-            //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
+              //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
             />
           </article>
           <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -118,7 +119,7 @@ export function LocalDeamon() {
 
             <input
               value={localDeamonPort}
-              className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+              className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
               onChange={(e: any) => {
                 portValidation(e.target.value);
               }}
@@ -133,7 +134,9 @@ export function LocalDeamon() {
         <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
           <div>
             <BchatButton
-              buttonColor={!localDeamonPort ? BchatButtonColor.Disable : BchatButtonColor.Primary}
+              buttonColor={BchatButtonColor.Primary}
+              buttonType={BchatButtonType.Brand}
+              // buttonColor={!localDeamonPort ? BchatButtonColor.Disable : BchatButtonColor.Primary}
               text={window.i18n('test')}
               onClick={() => validationForDeamon()}
               disabled={!localDeamonPort}
@@ -142,33 +145,31 @@ export function LocalDeamon() {
           <div style={{ marginRight: '20px' }}></div>
           <div>
             <BchatButton
-              buttonColor={
-                Object.keys(verifyDeamon).length === 0
-                  ? BchatButtonColor.Disable
-                  : BchatButtonColor.Green
-              }
+              buttonColor={BchatButtonColor.Primary}
+              buttonType={BchatButtonType.Brand}
               text={window.i18n('save')}
               onClick={() => addDeamonNet()}
               disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
             />
           </div>
         </div>
+        <SpacerLG />
         <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
           {testNotify && (
             <>
-              <span
-                className="result"
-                style={
-                  testNotify === 'Connection Error' ? { color: '#FF2F2F' } : { color: 'green' }
-                }
-              >
-                {window.i18n('NodeTestResult')} :
-              </span>
-              <span style={{ paddingLeft: '6px' }}>{testNotify}</span>
+              <span className="result">{window.i18n('NodeTestResult')}</span>
+              {testNotify === 'Success' ? (
+                <span className="result-msg">{testNotify}</span>
+              ) : (
+                <span className="result-msg">
+                  Connection : <span className="error-msg">{testNotify}</span>
+                </span>
+              )}
+             
               <BchatIcon
-                iconType={testNotify === 'Connection Error' ? 'warning' : 'tickCircle'}
-                iconSize={16}
-                iconColor={testNotify === 'Connection Error' ? 'red' : 'green'}
+                iconType={testNotify === 'Success' ? 'tickCircle' : 'warning'}
+                iconSize={18}
+                iconColor={testNotify === 'Success' ? 'green' : 'red'}
                 iconPadding={'0 0 0 3px'}
               />
             </>
