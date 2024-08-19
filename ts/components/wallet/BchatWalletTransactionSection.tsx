@@ -469,7 +469,7 @@ export const TransactionSection = (props: any) => {
               <div className="wallet-Transaction-empty-parentBox">
                 <div className={`wallet-Transaction-${emptyScreen.toLocaleLowerCase()}`}></div>
 
-                <h4 style={{ marginTop: '5px' }}>
+                <div style={{ marginTop: '5px' }}>
                   {emptyScreen == 'All' ? (
                     <>
                       <div className="wallet-Transaction-content">
@@ -502,7 +502,7 @@ export const TransactionSection = (props: any) => {
                       {window.i18n('noFailedTransaction')}
                     </h5>
                   )}
-                </h4>
+                </div>
               </div>
             </>
           ) : (
