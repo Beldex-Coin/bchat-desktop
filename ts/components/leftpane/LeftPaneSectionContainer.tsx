@@ -35,6 +35,7 @@ export const LeftPaneSectionContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+   
 
     color: #a7a7ba;
     cursor: pointer;
@@ -78,6 +79,7 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: relative;
   }
 
   .isSelected-icon-box {
@@ -93,8 +95,9 @@ export const LeftPaneSectionContainer = styled.div`
     width: 20px;
     height: 20px;
     font-size: 10px;
-    bottom: 33px;
-    left: 51px;
+    top: 10px;
+    /* bottom: 33px; */
+    left: 72px;
     padding: 7px;
     opacity: 1;
     display: flex;
