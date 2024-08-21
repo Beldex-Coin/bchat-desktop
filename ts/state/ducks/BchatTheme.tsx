@@ -126,10 +126,6 @@ const darkBlockedContact = `url("../images/bchat/no_blocked_contacts_dark_theme.
 const darkAddContact = `url("../images/bchat/add_contact.svg")`;
 const darkNoMedia = `url("../images/bchat/no_mediaDarkTheme.svg")`;
 
-const darkToastSuccessMessage =
-  'linear-gradient(to right,rgba(12, 43, 18, 0.8),rgba(4,35,38,0.8),rgba(28,28,38,0.8))';
-const darkToastErrorMessage =
-  'linear-gradient(to right,rgba(56,13,13,0.8),rgba(38,4,4,0.8),rgba(28,28,38,0.8))';
 const darkLeftpaneSetting = darkScrollbarTrack;
 const darkBlockUserBg = '#2D2D3B';
 const darkBlockseletedUserBg = '##2C2C3E';
@@ -335,8 +331,6 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-clearBtn', darkClearBtn);
   document.documentElement.style.setProperty('--color-clearBtn', darkClearBtn);
   document.documentElement.style.setProperty('--color-disableText', darkDisableText);
-  document.documentElement.style.setProperty('--color-toast-success', darkToastSuccessMessage);
-  document.documentElement.style.setProperty('--color-toast-error', darkToastErrorMessage);
   document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', darkCopyHover);
   document.documentElement.style.setProperty('--color-add-member', darkAddMembers);
@@ -521,8 +515,7 @@ const lightDisableBorder = '#C5C5C5';
 const lightDownArrowBg = '#FFFFFF';
 const lightDownArrow = '#A8A8C3';
 // Toast Colors
-const lightToastSuccessMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#F3FFF5)';
-const lightToastErrorMessage = 'linear-gradient(to right, #FFFFFF , #F5F5F5,#FFF6F6)';
+
 
 // Seed color
 const whiteSeedColor = '#128B17';
@@ -719,8 +712,6 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-toggleOff', lightToggleOff);
 
   document.documentElement.style.setProperty('--color-clearBtn', lightClearBtn);
-  document.documentElement.style.setProperty('--color-toast-success', lightToastSuccessMessage);
-  document.documentElement.style.setProperty('--color-toast-error', lightToastErrorMessage);
   document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
   document.documentElement.style.setProperty('--color-copy-hover', lightCopyHover);
   document.documentElement.style.setProperty(
@@ -902,8 +893,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-BnsLinkIdBg:${darkBnsLinkIdBgColor};
     --color-BnsLinkInputBg:${darkBnsLinkInputBgColor};
 
-    --color-toast-success:${darkToastSuccessMessage};
-    --color-toast-error:${darkToastErrorMessage};
     --color-caret:${lightColorCellBackground};
     --color-copy-hover:${darkCopyHover};
     --color-add-member:${lightAddMembers};
