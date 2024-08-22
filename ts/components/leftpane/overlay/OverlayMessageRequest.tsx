@@ -133,31 +133,31 @@ export const OverlayMessageRequest = (props: any) => {
       ) : (
         <>
           <SpacerLG />
-          <MessageRequestListPlaceholder>
+          {/* <MessageRequestListPlaceholder> */}
             <div className='bchat-noMsgRequest-box'>
               <div className={leftPane ? 'bchat-noMsgRequest-leftPane' : 'bchat-noMsgRequest'}>
               </div>
-              <div style={{ fontFamily: 'Poppins', color: '#858598' }}>
+              <div className='content-txt'>
                 {window.i18n('noMessageRequestsPending')}
               </div>
 
             </div>
 
             {/* {window.i18n('noMessageRequestsPending')} */}
-          </MessageRequestListPlaceholder>
+          {/* </MessageRequestListPlaceholder> */}
         </>
       )}
     </div>
   );
 };
 
-const MessageRequestListPlaceholder = styled.div`
-  color:var(--color-disableText);
-  margin-bottom: auto;
-  text-align:center;
-  margin-bottom: 20px;
-  font-family: 'poppin-semibold';
-`;
+// const MessageRequestListPlaceholder = styled.div`
+//   color:var(--color-disableText);
+//   margin-bottom: auto;
+//   text-align:center;
+//   margin-bottom: 20px;
+//   font-family: 'poppin-semibold';
+// `;
 
 const MessageRequestListContainer = styled.div`
   width: 100%;

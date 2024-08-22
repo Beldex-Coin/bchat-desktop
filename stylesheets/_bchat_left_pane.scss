@@ -13,7 +13,7 @@ $bchat-compose-margin: 20px;
   &__user__profile {
     &-number,
     &-name {
-      // font-weight: bold;
+      // font-weight: bold;bchat-noMsgRequest
       // font-size: 15px;
 
       // color: var(--color-text-subtle);
@@ -507,7 +507,6 @@ $bchat-compose-margin: 20px;
       justify-content: center;
     }
 
-
     // .nextButton {
     //   width: 79%;
     //   height: 50px;
@@ -617,6 +616,13 @@ $bchat-compose-margin: 20px;
       justify-content: center;
       display: flex;
       flex-direction: column;
+      .content-txt {
+        color: #858598;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 400;
+
+      }
     }
 
     .bchat-noMsgRequest {

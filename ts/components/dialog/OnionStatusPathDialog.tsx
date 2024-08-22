@@ -38,7 +38,7 @@ const OnionCountryDisplay = ({
       <div>
         {index === 1 ? 'Entry Node' : index !== 0 && index !== 4 ? 'Master Node' : labelText}
       </div>
-      <span style={{ fontSize: '11px', fontWeight: '300' }}>
+      <span className='ip-country'>
         {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
       </span>
     </div>
