@@ -67,7 +67,16 @@
   background: #131313;
   margin: 15px 15px 0;
 }
-
+// .module-message__generic-attachment  + .attachment-with-quote ,.module-message__attachment-container +
+.attachment-with-quote {
+  min-width: 500px;
+}
+.module-message__attachment-container-displayBgBlur {
+  background-image: url('../images/bchat/bgBlurLogo.png');
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
 .module-message__generic-attachment__icon-container {
   position: relative;
   cursor: pointer;
