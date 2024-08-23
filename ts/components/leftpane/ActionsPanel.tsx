@@ -56,7 +56,7 @@ import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { CallInFullScreenContainer } from '../calling/CallInFullScreenContainer';
 import { DraggableCallContainer } from '../calling/DraggableCallContainer';
 import { IncomingCallDialog } from '../calling/IncomingCallDialog';
-import { BchatIconButton } from '../icon';
+import { BchatIcon } from '../icon';
 import { BchatToastContainer } from '../BchatToastContainer';
 import { LeftPaneSectionContainer } from './LeftPaneSectionContainer';
 import { getLatestDesktopReleaseFileToFsV2 } from '../../bchat/apis/file_server_api/FileServerApiV2';
@@ -183,11 +183,10 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="message-section"
               iconType={'chatBubble'}
-              isSelected={isSelected}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">All Chats</div>
           </div>
@@ -223,12 +222,10 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="settings-section"
               iconType={'newChat'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">New Chat</div>
           </div>
@@ -244,12 +241,12 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="settings-section"
+              // dataTestId="settings-section"
               iconType={'closedgroup'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Secret Group</div>
           </div>
@@ -265,12 +262,12 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="settings-section"
+              // dataTestId="settings-section"
               iconType={'opengroup'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Social Group</div>
           </div>
@@ -286,12 +283,12 @@ const Section = (props: { type: SectionType }) => {
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="settings-section"
+              // dataTestId="settings-section"
               iconType={'gear'}
               // notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Settings</div>
           </div>
@@ -301,6 +298,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Wallet:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+           <hr className="grey-border" />
           <div
             data-tip="Wallet"
             data-place="right"
@@ -309,13 +307,13 @@ const Section = (props: { type: SectionType }) => {
             onClick={handleClick}
             style={{ flexDirection: 'column' }}
           >
-            <BchatIconButton
+            <BchatIcon
               iconSize={28}
-              dataTestId="settings-section"
+             
               iconType={'wallet'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
-              margin="9px 0 0 0"
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
+             
             />
             <div className="menu-txt">Wallet</div>
             {/* <div style={{ cursor: 'pointer' }}>
@@ -327,6 +325,7 @@ const Section = (props: { type: SectionType }) => {
             </div> */}
             {/* <div className='beta'>BETA</div> */}
           </div>
+          <hr className="grey-border" />
         </div>
       );
     default:

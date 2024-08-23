@@ -72,11 +72,16 @@ textarea {
   position: relative;
 }
 
+.grey-border{
+  width: 70%;
+  background: #6F6F6F;
+}
 .button-group > div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
 }
+
 
 .bchat-button {
   @mixin transparent-background($textAndBorderColor) {
@@ -1935,13 +1940,13 @@ label {
       height: 100%;
       text-align: center;
       margin: 0 auto;
-      font-family: 'poppin-semibold';
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       color: #858598;
-      font-size: 18px;
+      font-size: 24px;
+      font-weight: 400;
 
       .noBlockedContacts-img {
         width: 500px;
@@ -3698,11 +3703,10 @@ input {
 }
 
 .onion__description {
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 16px;
-  color: #a7a7ba;
   margin-bottom: 10px;
+  color: #a7a7ba;
+  font-size: 20px;
+  font-weight: 400;
 }
 
 .onion__node-list {
@@ -3740,29 +3744,45 @@ input {
   }
 
   .onion__node__country {
-    // margin: $bchat-margin-lg ;
+    // // margin: $bchat-margin-lg ;
     margin: 11px 14px;
     min-width: 150px;
-    font-size: 16px;
-    font-family: $bchat-font-default;
-    font-weight: 400;
+    // font-size: 16px;
+    // font-family: $bchat-font-default;
+    // font-weight: 400;
     height: 50px;
+
+    color: #f0f0f0;
+    font-size: 20px;
+    font-weight: 500;
+    height: 70px;
+    &:nth-child(1) {
+      height: 32px;
+    }
+    .ip-country {
+      color: #f0f0f0;
+      font-size: 16px;
+      font-weight: 400;
+    }
   }
 
   .onion__growing-icon {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    padding-bottom: 27px;
+    padding-bottom: 40px;
+    &:nth-child(1) {
+      padding-bottom: 2px;
+    }
   }
 
-  .onion__vertical-line {
-    background: $onionPathLineColor;
-    position: absolute;
-    height: calc(100% - 2 * 42px);
-    margin: 27px calc(100% / 2 - 1px);
-    width: 0.5px;
-  }
+  // .onion__vertical-line {
+  //   background: $onionPathLineColor;
+  //   position: absolute;
+  //   height: calc(100% - 2 * 42px);
+  //   margin: 27px calc(100% / 2 - 1px);
+  //   width: 0.5px;
+  // }
 }
 
 .bchat-nickname-wrapper {
