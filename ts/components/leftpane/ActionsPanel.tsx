@@ -21,7 +21,7 @@ import {
   getOurPrimaryConversation,
   getUnreadMessageCount,
 } from '../../state/selectors/conversations';
-import { applyTheme } from '../../state/ducks/theme';
+import { ThemeStateType, applyTheme } from '../../state/ducks/theme';
 import { getFocusedSection } from '../../state/selectors/section';
 // import { clearSearch } from '../../state/ducks/search';
 import {
@@ -78,6 +78,8 @@ import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { Flex } from '../basic/Flex';
+import { SpacerSM } from '../basic/Text';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -298,7 +300,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Wallet:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-           <hr className="grey-border" />
+          <hr className="grey-border" />
           <div
             data-tip="Wallet"
             data-place="right"
@@ -309,11 +311,9 @@ const Section = (props: { type: SectionType }) => {
           >
             <BchatIcon
               iconSize={28}
-             
               iconType={'wallet'}
               // notificationCount={unreadToShow}
               // isSelected={isSelected}
-             
             />
             <div className="menu-txt">Wallet</div>
             {/* <div style={{ cursor: 'pointer' }}>
@@ -510,6 +510,8 @@ export const ActionsPanel = () => {
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
   const dispatch = useDispatch();
+  const darktheme = useSelector((state: any) => state.theme);
+  const isdark = darktheme === 'dark' ? true : false;
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
   useEffect(() => {
@@ -556,6 +558,20 @@ export const ActionsPanel = () => {
     void triggerAvatarReUploadIfNeeded();
   }, DURATION.DAYS * 1);
 
+  const themeChanger = (theme: ThemeStateType) => {
+    const themeFromSettings = window.Events.getThemeSetting();
+    // const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+    window.setTheme(theme);
+    dispatch(applyTheme(theme));
+
+    if (themeFromSettings !== theme) {
+      if (theme === 'dark') {
+        switchHtmlToDarkTheme();
+      } else {
+        switchHtmlToLightTheme();
+      }
+    }
+  };
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
     const status = isOnline ? 'Online' : 'Offline';
@@ -589,7 +605,7 @@ export const ActionsPanel = () => {
             // size={52}
             position={{ left: '45px', top: '43px' }}
             isBnsHolder={conversation?.attributes?.isBnsHolder}
-            size={{width:'25',height:'25'}}
+            size={{ width: '25', height: '25' }}
           >
             <Avatar
               size={AvatarSize.L}
@@ -610,6 +626,28 @@ export const ActionsPanel = () => {
         <Section type={SectionType.Wallet} />
 
         <Section type={SectionType.Settings} />
+
+        <Flex container={true} height="20%" alignItems="flex-end">
+          <div className="theme-Wrapper ">
+            <div
+              className={classNames('icon-wrapper', !isdark && 'selected')}
+              onClick={() => themeChanger('light')}
+            >
+              <BchatIcon
+                iconType={'sun'}
+                iconSize={24}
+                iconColor={isdark ? '#F0F0F0' : '#A7A7BA'}
+              />
+            </div>
+            <SpacerSM />
+            <div
+              className={classNames('icon-wrapper', isdark && 'selected')}
+              onClick={() => themeChanger('dark')}
+            >
+              <BchatIcon iconType={'moon'} iconSize={24} />
+            </div>
+          </div>
+        </Flex>
 
         <BchatToolTip effect="solid" />
         <BchatToastContainer />

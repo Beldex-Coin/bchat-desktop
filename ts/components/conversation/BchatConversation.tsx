@@ -59,6 +59,7 @@ import loadImage from 'blueimp-load-image';
 // import { SettingsKey } from '../../data/settings-key';
 // import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
 import { SectionType } from '../../state/ducks/section';
+import { BchatScrollButton } from '../BchatScrollButton';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -295,7 +296,11 @@ export class BchatConversation extends React.Component<Props, State> {
           </div>
 
           <ConversationRequestinfo />
-
+          <BchatScrollButton
+          onClickScrollBottom={this.scrollToNow}
+          key="scroll-down-button"
+          unreadCount={selectedConversation.unreadCount}
+        />
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
