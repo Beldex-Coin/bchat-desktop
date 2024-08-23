@@ -20,6 +20,7 @@ import {
   getSelectedMessageIds,
   isMessageDetailView,
   isMessageSelectionMode,
+  isRightPanelShowing,
   // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,7 +44,7 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
@@ -147,10 +148,11 @@ const SelectionOverlay = () => {
 
 const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
   const { showBackButton } = props;
+  const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
     return null;
   }
-  let width = window.innerWidth;
+  let width =isShowing  ?window.innerWidth-370 :window.innerWidth  ;
   return (
     <div
       role="button"
@@ -160,7 +162,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           event: e,
           position: {
             x: width - 300,
-            y: 55,
+            y: 70,
           },
         });
       }}
@@ -450,25 +452,28 @@ export const ConversationHeaderWithDetails = () => {
             <ConversationHeaderTitle />
 
             {displayConnectWalletBtn && (
-              <div
-                className="connectWalletBtn"
-                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              >
-                <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
-                <div>{window.i18n('connectWallet')}</div>
-                {/* <BchatButtonIcon
-                name={window.i18n('connectWallet')}
-                buttonType={BchatButtonType.Brand}
-                buttonColor={BchatButtonColor.Green}
+              // <div
+              //   className="connectWalletBtn"
+              //   onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              // >
+              //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
+              //   <div>{window.i18n('connectWallet')}</div>
+                 <BchatButton
+                text={window.i18n('connectWallet')}
+                buttonType={BchatButtonType.Medium}
+                buttonColor={BchatButtonColor.Primary}
+                iconType='wallet'
+                iconSize={'small'}
                 style={{
-                  height: '25px',
+                  minWidth: '172px',
+                  height: '40px',
                   borderRadius: '5px',
                   marginRight: '14px'
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
               // disabled={!caption}
-              /> */}
-              </div>
+              /> 
+              // </div>
             )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />

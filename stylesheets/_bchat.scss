@@ -72,16 +72,15 @@ textarea {
   position: relative;
 }
 
-.grey-border{
+.grey-border {
   width: 70%;
-  background: #6F6F6F;
+  background: #6f6f6f;
 }
 .button-group > div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
 }
-
 
 .bchat-button {
   @mixin transparent-background($textAndBorderColor) {
@@ -3818,43 +3817,6 @@ input {
       opacity: 1;
     }
   }
-
-  .downArrow {
-    .bchat-icon-button {
-      background-color: var(--color-downArrowBg);
-
-      svg path {
-        fill: var(--color-downArrow);
-      }
-    }
-
-    .bchat-icon-button {
-      &:hover {
-        background-color: #128b17;
-
-        svg path {
-          fill: white;
-        }
-      }
-    }
-
-    .bchat-icon-button:hover + .downArrow-unreadCountBox {
-      background-color: #ffffff;
-      color: #000;
-    }
-
-    &-unreadCountBox {
-      position: fixed;
-      background-color: #159b24;
-      padding: 0px 6px;
-      font-size: 10px;
-      border-radius: 8px;
-      right: 16px;
-      bottom: 67px;
-      font-family: $bchat-font-poppin-semibold;
-      color: white;
-    }
-  }
 }
 
 .group-member-list {
@@ -3893,6 +3855,59 @@ input {
   }
 }
 
+.floated-downArrow {
+  // .bchat-icon-button {
+  //   background-color: var(--color-downArrowBg);
+
+  //   svg path {
+  //     fill: var(--color-downArrow);
+  //   }
+  // }
+
+  // .bchat-icon-button {
+  //   &:hover {
+  //     background-color: #128b17;
+
+  //     svg path {
+  //       fill: white;
+  //     }
+  //   }
+  // }
+  &-btn-wrapper {
+    background-color: var(--color-downArrowBg);
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    &:hover {
+      background-color: #128b17;
+
+      svg path {
+        fill: white;
+      }
+    }
+  }
+  .floated-downArrow-btn-wrapper + .downArrow-unreadCountBox {
+    background-color: #ffffff;
+    color: #000;
+  }
+
+  &-unreadCountBox {
+    position: absolute;
+    background-color: #159b24;
+    padding: 0px 6px;
+    font-size: 10px;
+    border-radius: 8px;
+    right: 6px;
+    top: 41px;
+   font-weight: 600;
+    color: white;
+  }
+}
 .create-group-name-input {
   // display: flex;
   // justify-content: center;

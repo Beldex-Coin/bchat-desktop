@@ -35,7 +35,6 @@ export const LeftPaneSectionContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-   
 
     color: #a7a7ba;
     cursor: pointer;
@@ -126,7 +125,23 @@ export const LeftPaneSectionContainer = styled.div`
     display: flex;
     align-items: center;
   }
-
+  .theme-Wrapper {
+    border-radius: 70px;
+    border: 1.5px solid #46465d;
+    padding: 5px 4px;
+    .selected{
+    background-Color:#242B38;
+    border-radius:40px;
+  
+    }
+    .icon-wrapper{
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   // this is not ideal but it seems that nth-0last-child does not work
   #onion-path-indicator-led-id {
     margin: auto auto 0px auto;
