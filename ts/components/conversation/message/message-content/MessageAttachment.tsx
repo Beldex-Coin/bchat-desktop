@@ -30,6 +30,7 @@ import { AudioPlayerWithEncryptedFile } from '../../H5AudioPlayer';
 import { ImageGrid } from '../../ImageGrid';
 import { LightBoxOptions } from '../../BchatConversation';
 import { ClickToTrustSender } from './ClickToTrustSender';
+// import { useEncryptedFileFetch } from '../../../../hooks/useEncryptedFileFetch';
 
 export type MessageAttachmentSelectorProps = Pick<
   MessageRenderingProps,
@@ -46,13 +47,14 @@ export type MessageAttachmentSelectorProps = Pick<
 type Props = {
   messageId: string;
   imageBroken: boolean;
+  displayBgBlur:boolean;
   handleImageError: () => void;
 };
 // tslint:disable: use-simple-attributes
 
 // tslint:disable-next-line max-func-body-length cyclomatic-complexity
 export const MessageAttachment = (props: Props) => {
-  const { messageId, imageBroken, handleImageError } = props;
+  const { messageId, imageBroken, handleImageError,displayBgBlur } = props;
 
   const dispatch = useDispatch();
   const attachmentProps = useSelector(state => getMessageAttachmentProps(state as any, messageId));
@@ -120,12 +122,17 @@ export const MessageAttachment = (props: Props) => {
     ((isImage(attachments) && hasImage(attachments)) ||
       (isVideo(attachments) && hasVideoScreenshot(attachments)))
   ) {
+    //  const { loading, urlToLoad } = useEncryptedFileFetch(attachments[0]?.url || '', attachments[0]?.contentType, false);
+    // // data will be url if loading is finished and '' if not
+    // const srcData = !loading ? urlToLoad : '';
+    // console.log('message__attachment ::',srcData,'displayBgBlur -->',displayBgBlur)
     return (
-      <div className={classNames('module-message__attachment-container')}>
+      <div className={classNames('module-message__attachment-container',displayBgBlur && 'module-message__attachment-container-displayBgBlur')}  >
         <ImageGrid
           attachments={attachments}
           onError={handleImageError}
           onClickAttachment={onClickOnImageGrid}
+         
         />
       </div>
     );

@@ -164,7 +164,7 @@ export const MessageContent = (props: Props) => {
     lastMessageOfSeries,
     previews,
     // quote,
-    // attachments,
+    attachments=[],
   } = contentProps;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
@@ -176,9 +176,12 @@ export const MessageContent = (props: Props) => {
   // const width = getWidth({ previews, attachments });
   // console.log('width --->',width);
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
-  // const hasText = Boolean(text);
+  const hasText = Boolean(text);
   // const hasQuote = !isEmpty(quote);
+  const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
+
+  // console.log('isShowingImage->',isShowingImage,'hasText->',hasText,'hasQuote',hasQuote,'attachments->',hasAttachment)
 
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
@@ -222,6 +225,7 @@ export const MessageContent = (props: Props) => {
                 messageId={props.messageId}
                 imageBroken={imageBroken}
                 handleImageError={handleImageError}
+                displayBgBlur={hasAttachment && hasText}
               />
             </>
           )}
@@ -230,7 +234,8 @@ export const MessageContent = (props: Props) => {
               {!isDeleted && (
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} />
               )}
-              <Flex padding="7px 15px" container={true} flexDirection="column">
+              {/* attachment-with-quote class is used to only refer the design validation in css */}
+              <Flex padding="7px 15px" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
             </>

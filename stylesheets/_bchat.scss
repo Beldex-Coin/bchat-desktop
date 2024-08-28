@@ -530,7 +530,7 @@ textarea {
 .module-message__author-avatar {
   position: relative;
   margin-inline-end: 20px;
-  padding-top: 5px;
+  // padding-top: 5px;
   padding-inline-end: 4px;
 }
 
@@ -580,10 +580,10 @@ label {
   position: relative;
   overflow: hidden;
 
-  border-top-left-radius: $bchat_message-container-border-radius;
-  border-bottom-left-radius: $bchat_message-container-border-radius;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  // border-top-left-radius: $bchat_message-container-border-radius;
+  // border-bottom-left-radius: $bchat_message-container-border-radius;
+  // border-top-right-radius: 5px;
+  // border-bottom-right-radius: 5px;
   padding: 10px 10px 0;
 }
 
