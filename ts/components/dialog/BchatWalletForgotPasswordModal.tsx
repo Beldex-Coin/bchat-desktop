@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
-import { SpacerMD, SpacerSM } from '../basic/Text';
-import { BchatIcon } from '../icon';
+import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
+import {  BchatIconButton } from '../icon';
 import { clipboard } from 'electron';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
@@ -15,8 +15,13 @@ import { getConversationById } from '../../data/data';
 import { useConversationWalletDaemonHeight } from '../../hooks/useParamSelector';
 import { useKey } from 'react-use';
 import styled from 'styled-components';
+import { BchatWrapperModal } from '../BchatWrapperModal';
+import {
+  updateBchatWalletForgotPasswordModal,
+  updateBchatWalletPasswordModal,
+} from '../../state/ducks/modalDialog';
 
-export const ForgotPassword = (props: any) => {
+export const BchatWalletForgotPasswordModal = () => {
   const [seed, setSeed] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmNewPassword] = useState('');
@@ -33,7 +38,8 @@ export const ForgotPassword = (props: any) => {
   );
   const dispatch = useDispatch();
   function onClickCancelHandler() {
-    props.cancelBtn();
+    dispatch(updateBchatWalletForgotPasswordModal(null));
+    dispatch(updateBchatWalletPasswordModal({from:'wallet'}));
   }
   const handlePaste = () => {
     const recoverySeed = clipboard.readText();
@@ -143,7 +149,31 @@ export const ForgotPassword = (props: any) => {
   `;
   return (
     <div className="wallet-forgotPassword">
-      {/* <div  style={{width:'100%'}}>
+      <BchatWrapperModal
+        title={''}
+        onClose={() => {}}
+        showExitIcon={false}
+        showHeader={false}
+        headerReverse={false}
+        additionalClassName="walletPassword"
+        okButton={{
+          text: window.i18n('save'),
+          onClickOkHandler: () => {
+            passValid();
+          },
+          color: BchatButtonColor.Primary,
+          disabled: false,
+        }}
+        cancelButton={{
+          text: window.i18n('cancel'),
+          status: true,
+          color: BchatButtonColor.Secondary,
+          onClickCancelHandler: () => {
+            onClickCancelHandler();
+          },
+        }}
+      >
+        {/* <div  style={{width:'100%'}}>
       <div className='exitBtn'>
           <BchatIconButton
             iconType="exit"
@@ -153,47 +183,64 @@ export const ForgotPassword = (props: any) => {
           />
         </div>
       </div> */}
-      <div className="wallet-forgotPassword-content-Box">
-        {loading && (
-          <Loader>
-            <div className="wallet-walletPassword-contentBox-forgotpasswordLoader">
-              <img
-                src={'images/bchat/Load_animation.gif'}
-                style={{ width: '150px', height: '150px' }}
-              />
+        <div className="wallet-forgotPassword-content-Box">
+          {loading && (
+            <Loader>
+              <div className="wallet-walletPassword-contentBox-forgotpasswordLoader">
+                <img
+                  src={'images/bchat/Load_animation.gif'}
+                  style={{ width: '150px', height: '150px' }}
+                />
+              </div>
+            </Loader>
+          )}
+
+          <div>
+            <SpacerLG />
+            <div className="wallet-forgotPassword-content-Box-title">
+              {window.i18n('forgotPassword')}
             </div>
-          </Loader>
-        )}
+            <SpacerLG />
+            <SpacerLG />
+            <div className="wallet-forgotPassword-content-Box-seed">
+              <textarea
+                value={seed}
+                onChange={e => {
+                  let trimWhiteSpace = e.target.value.replace(/^\s+|\s+$/g, '');
+                  setSeed(trimWhiteSpace);
+                }}
+                placeholder={window.i18n('enterSeed')}
+                autoFocus
+              />
+              <div
+                // onClick={() => handlePaste()}
+                // className="wallet-forgotPassword-content-Box-paste-icon"
+                style={{ marginTop: '15px' }}
+                data-tip="Paste"
+                data-offset="{'top':30,'left':15}"
+                data-place="right"
+              >
+                <BchatIconButton
+                  iconType={'paste'}
+                  iconSize={20}
+                  iconColor="#0B9E3C"
+                  onClick={() => handlePaste()}
+                />
+              </div>
+            </div>
 
-        <div>
-          <div className="wallet-forgotPassword-content-Box-title">
-            {window.i18n('forgotPassword')}
-          </div>
-          <SpacerMD />
-          <div className="wallet-forgotPassword-content-Box-seed">
-            <textarea
-              value={seed}
-              onChange={e => {
-                let trimWhiteSpace = e.target.value.replace(/^\s+|\s+$/g, '');
-                setSeed(trimWhiteSpace);
-              }}
-              placeholder={window.i18n('enterSeed')}
-              autoFocus
-            />
-            <div
-              onClick={() => handlePaste()}
-              className="wallet-forgotPassword-content-Box-paste-icon"
-              data-tip="Paste"
-              data-offset="{'top':30,'left':15}"
-              data-place="right"
-            ></div>
-          </div>
-
-          <SpacerMD />
-          <div style={{ display: 'flex' }}>{window.i18n('changewalletPassword')}</div>
-          <SpacerSM />
-          <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
-            <span className="wallet-forgotPassword-content-Box-password">
+            <SpacerLG />
+            <div className="wallet-forgotPassword-content-Box-password-label">
+              {window.i18n('changewalletPassword')}
+            </div>
+            <SpacerSM />
+            <Flex
+              container={true}
+              flexDirection={'row'}
+              alignItems="center"
+              width="100%"
+              className="wallet-forgotPassword-content-Box-password"
+            >
               <input
                 value={newPassword}
                 onChange={e => {
@@ -204,21 +251,24 @@ export const ForgotPassword = (props: any) => {
                 type={newPasswordVisible ? 'password' : 'text'}
                 maxLength={13}
               />
-            </span>
 
-            <span
-              onClick={() => setNewPasswordVisible(!newPasswordVisible)}
-              style={{ cursor: 'pointer' }}
+               <BchatIconButton
+                  iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
+                  iconSize={'medium'}
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  onClick={() => setNewPasswordVisible(!newPasswordVisible)}
+                />
+           
+            </Flex>
+            <SpacerSM />
+            <Flex
+              container={true}
+              flexDirection={'row'}
+              alignItems="center"
+              width="100%"
+              className="wallet-forgotPassword-content-Box-password"
             >
-              <BchatIcon
-                iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
-                iconSize={'medium'}
-              />
-            </span>
-          </Flex>
-          <SpacerSM />
-          <Flex container={true} flexDirection={'row'} alignItems="center" width="100%">
-            <span className="wallet-forgotPassword-content-Box-password">
               <input
                 value={confirmPassword}
                 onChange={e => {
@@ -229,42 +279,38 @@ export const ForgotPassword = (props: any) => {
                 type={confirmPasswordVisible ? 'password' : 'text'}
                 maxLength={13}
               />
-            </span>
-            <span
-              onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
-              style={{ cursor: 'pointer' }}
-            >
-              <BchatIcon
-                iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
-                iconSize={'medium'}
+                <BchatIconButton
+                  iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
+                  iconSize={'medium'}
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
+                />
+            </Flex>
+          </div>
+          <SpacerMD />
+          <div className="wallet-forgotPassword-content-Box-disClaimerBox">
+            <span style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</span>
+            <span>{window.i18n('disclaimerForgotPassword', walletDaemonHeight)}</span>
+          </div>
+          {/* <div className="wallet-settings-modalBtnGrp">
+            <div className="bchat-modal__button-group__center">
+              <BchatButton
+                text={window.i18n('cancel')}
+                buttonType={BchatButtonType.BrandOutline}
+                buttonColor={BchatButtonColor.Primary}
+                onClick={onClickCancelHandler}
               />
-            </span>
-          </Flex>
+              <BchatButton
+                text={window.i18n('save')}
+                buttonType={BchatButtonType.BrandOutline}
+                buttonColor={BchatButtonColor.Green}
+                onClick={passValid}
+              />
+            </div>
+          </div> */}
         </div>
-        <SpacerMD />
-        <div className="wallet-forgotPassword-content-Box-disClaimerBox">
-          <div style={{ color: 'red', marginRight: '10px' }}>Disclaimer :</div>
-          <div style={{ color: '#82828D', width: '70%' }}>
-            {window.i18n('disclaimerForgotPassword', walletDaemonHeight)}
-          </div>
-        </div>
-        <div className="wallet-settings-modalBtnGrp">
-          <div className="bchat-modal__button-group__center">
-            <BchatButton
-              text={window.i18n('cancel')}
-              buttonType={BchatButtonType.BrandOutline}
-              buttonColor={BchatButtonColor.Primary}
-              onClick={onClickCancelHandler}
-            />
-            <BchatButton
-              text={window.i18n('save')}
-              buttonType={BchatButtonType.BrandOutline}
-              buttonColor={BchatButtonColor.Green}
-              onClick={passValid}
-            />
-          </div>
-        </div>
-      </div>
+      </BchatWrapperModal>
     </div>
   );
 };

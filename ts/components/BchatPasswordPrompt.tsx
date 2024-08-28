@@ -173,8 +173,8 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
           <>
             <BchatButton
               text={window.i18n('resetDatabase')}
-              buttonType={BchatButtonType.BrandOutline}
-              buttonColor={BchatButtonColor.White}
+              buttonType={BchatButtonType.Default}
+              buttonColor={BchatButtonColor.Danger}
               onClick={this.initClearDataView}
             />
           </>
@@ -182,8 +182,8 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
         <div className="unlock-button">
         <BchatButton
           text={window.i18n('unlock')}
-          buttonType={BchatButtonType.BrandOutline}
-          buttonColor={BchatButtonColor.Green}
+          buttonType={BchatButtonType.Default}
+          buttonColor={BchatButtonColor.Primary}
           onClick={this.initLogin}
         />
         </div>

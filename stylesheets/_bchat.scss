@@ -333,14 +333,15 @@ textarea {
     &.danger {
       background: #2e333d;
       color: #ff3e3e;
-    }
+      // }
 
-    &.danger {
-      background-color: #2e333d;
-      color: #f0f0f0;
+      // &.danger {
+      //   background-color: #2e333d;
+      //   color: #f0f0f0;
 
       &:hover {
         background-color: #ff3e3e;
+        color: #f0f0f0;
       }
     }
 
@@ -674,7 +675,6 @@ label {
   box-sizing: border-box;
   max-height: 70vh;
   max-width: calc(min(70vw, 800px));
-  font-family: $bchat-font-default;
   // background-color: var(--color-smModal-bg);
   background-color: #2e333d;
   color: var(--color-text);
@@ -684,6 +684,7 @@ label {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   &__header {
     display: flex;
@@ -3904,7 +3905,7 @@ input {
     border-radius: 8px;
     right: 6px;
     top: 41px;
-   font-weight: 600;
+    font-weight: 600;
     color: white;
   }
 }
