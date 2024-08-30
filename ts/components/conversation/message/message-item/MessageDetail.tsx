@@ -2,16 +2,20 @@ import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 
-import { Message } from './Message';
-import { useSelector } from 'react-redux';
+// import { Message } from './Message';
+// import { useSelector } from 'react-redux';
 import { Avatar, AvatarSize } from '../../../avatar/Avatar';
 // import { deleteMessagesById } from '../../../../interactions/conversations/unsendingInteractions';
-import { ContactPropsMessageDetail } from '../../../../state/ducks/conversations';
-import {
-  getMessageDetailsViewProps,
-  // getMessageIsDeletable,
-} from '../../../../state/selectors/conversations';
+import { ContactPropsMessageDetail, MessagePropsDetails } from '../../../../state/ducks/conversations';
+// import {
+//   getMessageDetailsViewProps,
+//   // getMessageIsDeletable,
+// } from '../../../../state/selectors/conversations';
 import { ContactName } from '../../ContactName';
+import { BchatWrapperModal } from '../../../BchatWrapperModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
+import { getMessageTextProps } from '../../../../state/selectors/conversations';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -88,62 +92,85 @@ const ContactItem = (props: { contact: ContactPropsMessageDetail }) => {
   );
 };
 
-export const MessageDetail = () => {
+export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
   const { i18n } = window;
-
-  const messageDetailProps = useSelector(getMessageDetailsViewProps);
+  const dispatch=useDispatch();
+  const {
+    errors,
+    receivedAt,
+    sentAt,
+    //  convoId,
+    direction,
+    messageId,
+  } = props;
+  const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
+console.log('selected -->',selectedMsg)
+  // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
   //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
   // );
-  if (!messageDetailProps) {
+  if (!props) {
     return null;
   }
 
-  const { errors, receivedAt, sentAt,
-    //  convoId, 
-    direction, messageId } = messageDetailProps;
+  
 
   return (
     <div className="message-detail-wrapper">
-      <div className="module-message-detail">
-        <div className="module-message-detail__message-container">
-          <h2>More Info</h2>
-          <Message messageId={messageId} isDetailView={false} />
-        </div>
-        <table className="module-message-detail__info">
-          <tbody>
-            {(errors || []).map((error, index) => (
-              <tr key={index}>
-                <td className="module-message-detail__label">{i18n('error')}</td>
-                <td>
-                  {' '}
-                  <span className="error-message">{error.message}</span>{' '}
-                </td>
-              </tr>
-            ))}
-            <tr>
-              <td className="module-message-detail__label">{i18n('send')}</td>
-              <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
-                {moment(sentAt).format('LLLL')}
-              </td>
-            </tr>
-            {receivedAt ? (
+      <BchatWrapperModal
+        title={'More Info'}
+        onClose={() => { dispatch(updateMessageMoreInfoModal(null))}}
+        showExitIcon={false}
+        showHeader={true}
+        headerReverse={false}
+        okButton={{
+          text: 'Close',
+          onClickOkHandler: () => {dispatch(updateMessageMoreInfoModal(null))},
+
+          disabled: false,
+        }}
+      >
+        <div className="module-message-detail">
+          <div className="module-message-detail__message-container">
+            {/* <h2>More Info</h2> */}
+            {/* <Message messageId={messageId} isDetailView={false} /> */}
+            {selectedMsg?.text}
+          </div>
+          <table className="module-message-detail__info">
+            <tbody>
+              {(errors || []).map((error, index) => (
+                <tr key={index}>
+                  <td className="module-message-detail__label">{i18n('error')}</td>
+                  <td>
+                    {' '}
+                    <span className="error-message">{error.message}</span>{' '}
+                  </td>
+                </tr>
+              ))}
               <tr>
-                <td className="module-message-detail__label">{i18n('received')}</td>
+                <td className="module-message-detail__label">{i18n('send')}</td>
                 <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
-                  {moment(receivedAt).format('LLLL')}
+                  {moment(sentAt).format('LLLL')}
                 </td>
               </tr>
-            ) : null}
-            <tr>
-              <td className="module-message-detail__label">
-                {direction === 'incoming' ? i18n('from') : i18n('to')}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <ContactsItem contacts={messageDetailProps.contacts} />
-      </div>
+              {receivedAt ? (
+                <tr>
+                  <td className="module-message-detail__label">{i18n('received')}</td>
+                  <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                    {moment(receivedAt).format('LLLL')}
+                  </td>
+                </tr>
+              ) : null}
+              <tr>
+                <td className="module-message-detail__label">
+                  {direction === 'incoming' ? i18n('from') : i18n('to')}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ContactsItem contacts={props.contacts} />
+        </div>
+      </BchatWrapperModal>
     </div>
   );
 };

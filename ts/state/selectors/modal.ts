@@ -27,7 +27,8 @@ import {
   BchatAlertConfirmModalState,
   BnsLinkModalState,
   AboutBnsModalState,
-  BchatWalletForgotPasswordModalState
+  BchatWalletForgotPasswordModalState,
+  MessageMoreInfoState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -147,5 +148,9 @@ export const getBchatAlertConfirmModal = createSelector(
 export const getAboutBnsModal = createSelector(
   getModal,
   (state: ModalState): AboutBnsModalState => state.aboutBnsModal
+);
+export const getMessageMoreInfoModal = createSelector(
+  getModal,
+  (state: ModalState): MessageMoreInfoState => state.messageMoreInfo
 );
 

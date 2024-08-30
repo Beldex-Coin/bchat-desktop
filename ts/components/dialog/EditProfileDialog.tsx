@@ -102,9 +102,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
             showExitIcon={true}
             isloading={this.state.loading}
             okButton={{
-              text: 'Show QR',
+              text:this.state.mode == 'qr'?'Show ID' :'Show QR',
               iconSize: 26,
-              iconType: 'qr_code'
+              iconType:this.state.mode == 'qr'?'KeyboardBackspaceArrow': 'qr_code'
               , onClickOkHandler: this.qrStatusUpdate
             }}
             buttons={<button

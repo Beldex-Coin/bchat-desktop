@@ -42,7 +42,7 @@ import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util
 import { BchatButtonColor } from '../basic/BchatButton';
 import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
 import { ConversationHeaderWithDetails } from './ConversationHeader';
-import { MessageDetail } from './message/message-item/MessageDetail';
+// import { MessageDetail } from './message/message-item/MessageDetail';
 import {
   makeImageThumbnailBuffer,
   makeVideoScreenshot,
@@ -226,7 +226,7 @@ export class BchatConversation extends React.Component<Props, State> {
     const {
       selectedConversation,
       messagesProps,
-      showMessageDetails,
+      // showMessageDetails,
       selectedMessages,
       // isRightPanelShowing,
       lightBoxOptions,
@@ -271,9 +271,9 @@ export class BchatConversation extends React.Component<Props, State> {
           role="navigation"
         >
           {/* <div>{syncbarCondition && <ConditionalSyncBar />}</div> */}
-          <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
+          {/* <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
-          </div>
+          </div> */}
           {lightBoxOptions?.media && this.renderLightBox(lightBoxOptions)}
 
           <div className="conversation-messages">

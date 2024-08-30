@@ -66,7 +66,7 @@ const InnerLeftPaneMessageSection = () => {
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
   // const convoList = useSelector(getLeftPaneLists);
-
+console.log('focusedSection ::',focusedSection)
   if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
   }

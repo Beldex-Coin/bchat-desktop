@@ -321,8 +321,8 @@ textarea {
     }
 
     &.disabled {
-      background: #2e333d;
-      color: #f0f0f0;
+      color: #858598;
+      background: #202329;
     }
 
     &.enable {
@@ -1651,7 +1651,7 @@ label {
 }
 
 .qr-box-view {
-  width: 100%;
+  width: 415px;
   display: flex;
   flex-direction: column;
   justify-content: center;
