@@ -37,7 +37,9 @@
         border-radius: 10px;
 
         .progress {
-          width: 70px;
+          width: 90px;
+          background-color: #202329;
+          border-radius: 68px;
 
           .CircularProgressbar {
             /*
@@ -59,7 +61,7 @@
           }
 
           .CircularProgressbar .CircularProgressbar-trail {
-            stroke: #d6d6d6;
+            stroke: #858598;
             /* Used when trail is not full diameter, i.e. when props.circleRatio is set */
             stroke-linecap: round;
           }
@@ -178,22 +180,26 @@
           justify-content: center;
 
           span {
-            font-family: $bchat-font-poppins-bold;
-            margin-left: 10px;
-            font-size: 18px;
+            color: #f0f0f0;
+            font-size: 26px;
+            font-weight: 700;
           }
         }
 
         &-inputBox {
           margin: 0 auto;
-          width: 73%;
+          width: 91%;
 
           input {
             outline: none;
             border: none;
             width: 100%;
-            border-bottom: 1px solid #444455;
             text-align: center;
+
+            border-radius: 16px;
+            border: 1px solid #46465d;
+            background: #202329;
+            height: 70px;
           }
         }
 
@@ -216,36 +222,33 @@
 
         &-forgotTxt {
           text-align: center;
-          color: #1bb51e;
-          font-size: 12px;
           text-decoration: underline;
-        }
 
-        .bchat-button.brand-outline.green {
-          width: 33%;
-          margin: auto;
-          height: 45px;
-          border-radius: 10px;
+          color: #108d32;
+          font-size: 18px;
+          font-weight: 400;
+          text-transform: capitalize;
         }
       }
     }
 
     &-progressSync {
       &-presentage {
+        color: #108d32;
         text-align: center;
-        font-family: $bchat-font-poppins-bold;
-        font-size: 20px;
-        color: #1bb51e;
+        font-size: 30px;
+        font-weight: 700;
       }
 
       &-barBg {
         width: 100%;
         height: 10px;
-        background-color: var(--color-walSyncbar);
+        // background-color: var(--color-walSyncbar);
+        background-color: #858598;
         padding-top: 2px;
 
         .bar {
-          background-color: #1bb51e;
+          background-color: #108d32;
           width: 40%;
           height: 4px;
           margin-top: 1px;
@@ -253,13 +256,17 @@
       }
 
       &-reloadTxt {
+        color: #a7a7ba;
         text-align: center;
-        font-family: $bchat-font-poppin-semibold;
-        font-size: 14px;
+        font-size: 18px;
+        font-weight: 400;
       }
 
       &-bRemaing {
         text-align: center;
+        color: #f0f0f0;
+        font-size: 18px;
+        font-weight: 400;
       }
     }
 
@@ -285,15 +292,20 @@
 
         // margin: 5% 0px;
         &-title {
-          text-align: center;
-          font-size: 18px;
-          font-family: $bchat-font-poppins-bold;
           padding-top: 20px;
+          color: #f0f0f0;
+          font-size: 26px;
+          font-weight: 700;
+          text-align: left;
         }
 
         &-seed {
           display: flex;
           flex-direction: row;
+          border-radius: 16px;
+          border: 1px solid #46465d;
+          background: #202329;
+          width: 505px;
 
           textarea {
             border: none;
@@ -301,65 +313,81 @@
             resize: none;
             // width: 435px;
             // height: 126px;
-            width: 500px;
-            height: 97px;
+            width: 463px;
+            height: 140px;
             // background-color: #353543;
             // background-color: var(--color-walInputBg);
-            background-color: var(--color-background-primary);
-            padding: 15px;
+            // background-color: var(--color-background-primary);
+            padding: 15px 25px;
+
             // box-shadow: 1px 2px 5px #00000074;
             border-radius: 10px;
+
+            font-size: 18px;
+            line-height: 22px;
           }
         }
 
-        &-paste-icon {
-          background: url('../images/bchat/paste.svg') no-repeat;
-          width: 35px;
-          height: 35px;
-          // background-color: var(--color-inboxBgColor);
-          background-color: var(--color-background-primary);
-          background-size: 14px;
-          border-radius: 35px;
-          background-position: center;
-          left: 10px;
-          top: 19px;
-          position: relative;
-          cursor: pointer;
-          box-shadow: var(--color-bchat-shadow);
-        }
+        // &-paste-icon {
+        //   background: url('../images/bchat/paste.svg') no-repeat;
+        //   width: 35px;
+        //   height: 35px;
+        //   // background-color: var(--color-inboxBgColor);
+        //   background-color: var(--color-background-primary);
+        //   background-size: 14px;
+        //   border-radius: 35px;
+        //   background-position: center;
+        //   left: 10px;
+        //   top: 19px;
+        //   position: relative;
+        //   cursor: pointer;
+        //   box-shadow: var(--color-bchat-shadow);
+        // }
 
-        &-paste-icon:hover {
-          // transform: scale(1.1);
-          // background-color: var(--color-wallet-copy-hover);
-          // color: #1ced23;
-          background-color: var(--color-profile-close);
+        // &-paste-icon:hover {
+        //   // transform: scale(1.1);
+        //   // background-color: var(--color-wallet-copy-hover);
+        //   // color: #1ced23;
+        //   background-color: var(--color-profile-close);
+        // }
+        &-password-label {
+          display: flex;
+          color: #f0f0f0;
+          font-size: 16px;
+          font-weight: 400;
         }
-
         &-password {
+          border-radius: 16px;
+          border: 1px solid #46465d;
+          background: #202329;
+          width: 505px;
           input {
             border: none;
             outline: none;
             // background-color: #353543;
             // background-color: var(--color-walInputBg);
-            background-color: var(--color-background-primary);
-
+            // background-color: var(--color-background-primary);
+            background-color: unset;
             // width: 438px;
-            width: 500px;
-            height: 45px;
+            width: 453px;
+            height: 70px;
             // box-shadow: 1px 2px 5px #00000074;
             margin-right: 10px;
             border-radius: 10px;
-            padding: 10px;
+            padding: 15px 25px;
           }
         }
 
         &-disClaimerBox {
           // width: 86%;
           // padding-top: 12px;
+          width: 505px;
           padding-bottom: 25px;
-          font-size: 13px;
-          display: flex;
-          justify-content: center;
+          color: #a7a7ba;
+          font-size: 16px;
+          font-weight: 400;
+          text-align: start;
+          line-height: 20px;
         }
       }
     }
@@ -588,7 +616,7 @@
 }
 
 .bchat-dialog {
-  &~.index.inbox {
+  & ~ .index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
@@ -596,7 +624,23 @@
 
   .groupNameBox {
     display: flex;
-    border-bottom: var(--border-bchat);
+    justify-content: center;
+    align-items: center;
+    width: 443px;
+    height: 70px;
+    background: var(--color-input-background);
+    color: var(--color-text);
+    border: 1px solid #46465d;
+    border-radius: 16px;
+
+    input {
+      width: 371px;
+      height: 65px;
+
+      // text-align: center;
+      background: unset;
+      padding: 0 20px;
+    }
   }
 
   .changepass {
@@ -608,7 +652,6 @@
         height: 76px;
         // background-color: #353543;
         background-color: var(--color-walInputBg);
-
         padding: 15px;
         // box-shadow: 1px 2px 5px #00000074;
       }
@@ -777,7 +820,6 @@
       background-position: center;
       cursor: pointer;
 
-
       // &:hover {
       //   background-color: var(--color-copy-hover);
       // }
@@ -837,7 +879,7 @@
       font-size: $bchat-font-md;
       background: var(--color-input-background);
       color: var(--color-text);
-      border: 1px solid #46465D;
+      border: 1px solid #46465d;
     }
 
     &-uneditable {
@@ -941,7 +983,7 @@
     padding: 0px 0px 35px;
     font-size: 20px;
     font-weight: 700;
-    color: #108D32;
+    color: #108d32;
   }
 
   .id_wrapper {
@@ -951,11 +993,11 @@
     // align-items: center;
     // background-color: var(--color-BnsLinkIdBg);
     background-color: #202329;
-    border: 1p solid #46465D;
+    border: 1p solid #46465d;
     padding: 0px 25px;
     border-radius: 8px;
     margin-bottom: 15px;
-    color: #108D32;
+    color: #108d32;
     box-shadow: var(--color-bchat-shadow);
   }
 
@@ -968,14 +1010,14 @@
   .label_input {
     text-align: start;
     margin-top: 20px;
-    color: #A7A7BA;
+    color: #a7a7ba;
   }
 
   .inputBox-wrapper {
     margin: 15px auto;
     height: 65px;
     background-color: #202329;
-    border: 1px solid #46465D;
+    border: 1px solid #46465d;
     border-radius: 10px;
     padding: 0px 25px;
     box-shadow: var(--color-bchat-shadow);
@@ -1011,7 +1053,7 @@
     margin-bottom: 35px;
     margin-top: 20px;
     font-weight: 700;
-    color: #108D32;
+    color: #108d32;
   }
 }
 

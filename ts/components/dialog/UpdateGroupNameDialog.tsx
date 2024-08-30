@@ -2,17 +2,17 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { SpacerMD } from '../basic/Text';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 import { updateGroupNameModal } from '../../state/ducks/modalDialog';
 import autoBind from 'auto-bind';
 import { ConversationModel } from '../../models/conversation';
 import { getConversationController } from '../../bchat/conversations';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { initiateOpenGroupUpdate } from '../../bchat/group/open-group';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
-
+import {  BchatIconButton } from '../icon';
 
 type Props = {
   conversationId: string;
@@ -97,6 +97,19 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         // tslint:disable-next-line: no-void-expression
         onClose={() => this.closeDialog()}
         additionalClassName="update-group-dialog"
+        okButton={{
+          text: okText,
+          onClickOkHandler: () => this.onClickOK(),
+          color: BchatButtonColor.Primary,
+          disabled: false,
+        }}
+        cancelButton={{
+          text: cancelText,
+          status: true,
+          color: BchatButtonColor.Secondary,
+          onClickCancelHandler: () => this.closeDialog(),
+        }}
+       
       >
         {this.state.errorDisplayed ? (
           <>
@@ -110,23 +123,29 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         <SpacerMD />
 
         {isAdmin ? (
-          <div className='groupNameBox'>
-          <input
-            type="text"
-            className="profile-name-input"
-            value={this.state.groupName}
-            placeholder={window.i18n('groupNamePlaceholder')}
-            onChange={this.onGroupNameChanged}
-            tabIndex={0}
-            required={true}
-            aria-required={true}
-            autoFocus={true}
-            data-testid="group-name-input"
-          />
-          <span style={{color:"red",cursor:"pointer",fontSize:"18px"}} onClick={()=>this.setState({groupName:""})}>x</span> </div>
+          <div className="groupNameBox">
+            <input
+              type="text"
+              className="profile-name-input"
+              value={this.state.groupName}
+              placeholder={window.i18n('groupNamePlaceholder')}
+              onChange={this.onGroupNameChanged}
+              tabIndex={0}
+              required={true}
+              aria-required={true}
+              autoFocus={true}
+              data-testid="group-name-input"
+            />
+            <BchatIconButton
+              onClick={() => this.setState({ groupName: "" })}
+              iconType={'xWithCircle'}
+              iconSize={24}
+            />{' '}
+          </div>
         ) : null}
+        <SpacerLG />
 
-        <div className="bchat-modal__button-group">
+        {/* <div className="bchat-modal__button-group">
           <BchatButton text={cancelText} onClick={this.closeDialog} buttonColor={BchatButtonColor.White} />
 
           <BchatButton
@@ -134,7 +153,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
             onClick={this.onClickOK}
             buttonColor={BchatButtonColor.Green}
           />
-        </div>
+        </div> */}
       </BchatWrapperModal>
     );
   }
@@ -178,8 +197,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
   private onGroupNameChanged(event: any) {
     const groupName = event.target.value;
 
-    if(groupName.length<=26)
-    {
+    if (groupName.length <= 26) {
       this.setState(state => {
         return {
           ...state,
@@ -187,7 +205,6 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         };
       });
     }
-    
   }
 
   private renderAvatar() {

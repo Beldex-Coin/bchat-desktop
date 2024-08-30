@@ -118,12 +118,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
 
               <div className="bchat-modal__body" style={{ position: 'relative' }}>
                 <div className="bchat-modal__centered">{props.children}</div>
-                {isloading && <div>
-                  <Loader>
-                    <BchatSpinner loading={true} />
-                  </Loader>
-                </div>
-                }
+               
               </div>
             </div>
           </div>
@@ -148,6 +143,12 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               style={{ minWidth: iconShow ? '235px' : '200px' }}
             />
           </div>
+          {isloading && <div>
+                  <Loader>
+                    <BchatSpinner loading={true} />
+                  </Loader>
+                </div>
+                }
         </div>
       </div>
     </div>
