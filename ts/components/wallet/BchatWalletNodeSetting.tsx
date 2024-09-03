@@ -44,7 +44,9 @@ export const NodeSetting = (props: any) => {
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  const testBottonEnable = !ipAddress && !port ? true : !ipAddress ? true : !port ? true : false;
+  const testBottonEnable = !(ipAddress && port);
+  const savebtnValidation =
+    currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort;
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -388,13 +390,13 @@ export const NodeSetting = (props: any) => {
 
               <Flex container={true} justifyContent="center" alignItems="center">
                 <BchatButton
-                  buttonColor={BchatButtonColor.Primary}
+                  buttonColor={
+                    savebtnValidation ? BchatButtonColor.Secondary : BchatButtonColor.Primary
+                  }
                   buttonType={BchatButtonType.Brand}
                   text={window.i18n('save')}
-                  onClick={() => currentDeamonNet()}
-                  disabled={
-                    currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort
-                  }
+                  onClick={() => !savebtnValidation && currentDeamonNet()}
+                  style={{ cursor: savebtnValidation ? 'default' : 'pointer' }}
                 />
               </Flex>
 
@@ -476,20 +478,28 @@ export const NodeSetting = (props: any) => {
                     //         : BchatButtonColor.Primary
                     // }
                     buttonType={BchatButtonType.Brand}
-                    buttonColor={BchatButtonColor.Primary}
+                    buttonColor={
+                      !testBottonEnable ? BchatButtonColor.Primary : BchatButtonColor.Secondary
+                    }
                     text={window.i18n('test')}
-                    onClick={() => validationForDeamon()}
-                    disabled={testBottonEnable}
+                    onClick={() => !testBottonEnable && validationForDeamon()}
+                    style={{ cursor: !testBottonEnable ? 'pointer' : 'default' }}
                   />
                 </div>
                 <div style={{ marginLeft: '15px' }}></div>
                 <div>
                   <BchatButton
                     buttonType={BchatButtonType.Brand}
-                    buttonColor={BchatButtonColor.Primary}
+                    buttonColor={
+                      Object.keys(verifyDeamon).length !== 0
+                        ? BchatButtonColor.Primary
+                        : BchatButtonColor.Secondary
+                    }
                     text={window.i18n('add')}
-                    onClick={() => addDeamonNet()}
-                    disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
+                    onClick={() => Object.keys(verifyDeamon).length !== 0 && addDeamonNet()}
+                    style={{
+                      cursor: Object.keys(verifyDeamon).length !== 0 ? 'pointer' : 'default',
+                    }}
                   />
                 </div>
               </div>
@@ -501,15 +511,15 @@ export const NodeSetting = (props: any) => {
                     {/* {testNotify.status === 'ok' ? (
                       <span className="result-msg">{testNotify.content}</span>
                     ) : ( */}
-                      <span className="result-msg">
-                        Connection : <span className="error-msg">{testNotify.content}</span>
-                      </span>
+                    <span className="result-msg">
+                      Connection : <span className="error-msg">{testNotify.content}</span>
+                    </span>
                     {/* )} */}
 
                     <BchatIcon
-                      iconType={testNotify.status=== 'ok' ? 'check' : 'warning'}
+                      iconType={testNotify.status === 'ok' ? 'check' : 'warning'}
                       iconSize={18}
-                      iconColor={testNotify.status=== 'ok' ? 'green' : 'red'}
+                      iconColor={testNotify.status === 'ok' ? 'green' : 'red'}
                       iconPadding={'0 0 0 3px'}
                     />
                   </>

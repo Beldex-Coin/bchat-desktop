@@ -333,16 +333,14 @@ textarea {
     &.danger {
       background: #2e333d;
       color: #ff3e3e;
-      // }
-
-      // &.danger {
-      //   background-color: #2e333d;
-      //   color: #f0f0f0;
-
       &:hover {
         background-color: #ff3e3e;
         color: #f0f0f0;
       }
+    }
+    &.red{
+      background-color: #ff3e3e;
+      color: #f0f0f0;
     }
 
     // &:not(.disabled):hover {
@@ -376,6 +374,10 @@ textarea {
     &.primary {
       color: #f0f0f0;
       background: #108d32;
+    }
+    &.red{
+      background-color: #ff3e3e;
+      color: #f0f0f0;
     }
   }
 
@@ -1250,52 +1252,52 @@ label {
       font-family: $bchat-font-default;
       // font-size: 14px;
 
-      &-display {
-        user-select: text;
-        text-align: center;
-        word-break: break-all;
-        font-size: $bchat-font-md;
-        // padding: 0px $bchat-margin-lg;
-        // background-color: var(--color-composeMsgInput);
-        background-color: var(--color-background-primary);
-        border-radius: 10px;
-        padding: 10px 10px 10px 14px;
-        font-family: $bchat-font-default;
-        font-weight: 100;
-        color: #0bb70f;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-        width: 100%;
-        min-height: 60px;
-        box-shadow: var(--color-bchat-shadow);
+      // &-display {
+      //   user-select: text;
+      //   text-align: center;
+      //   word-break: break-all;
+      //   font-size: $bchat-font-md;
+      //   // padding: 0px $bchat-margin-lg;
+      //   // background-color: var(--color-composeMsgInput);
+      //   background-color: var(--color-background-primary);
+      //   border-radius: 10px;
+      //   padding: 10px 10px 10px 14px;
+      //   font-family: $bchat-font-default;
+      //   font-weight: 100;
+      //   color: #0bb70f;
+      //   display: flex;
+      //   justify-content: space-between;
+      //   align-items: center;
+      //   flex-direction: row;
+      //   width: 100%;
+      //   min-height: 60px;
+      //   box-shadow: var(--color-bchat-shadow);
 
-        font-size: $bchat-font-md;
-        // padding: 0px $bchat-margin-sm;
-        margin: 17px 0px 0;
-      }
+      //   font-size: $bchat-font-md;
+      //   // padding: 0px $bchat-margin-sm;
+      //   margin: 17px 0px 0;
+      // }
 
-      &-display-icon {
-        // background:url('../images/bchat/copy_icon.svg');
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        // background-repeat: no-repeat;
-        width: 40px;
-        height: 40px;
-        position: relative;
-        // background-color: var(--color-composeMsgInput);
-        background-size: 16px;
-        border-radius: 30px;
-        background-position: center;
-        cursor: pointer;
-      }
+      // &-display-icon {
+      //   // background:url('../images/bchat/copy_icon.svg');
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   // background-repeat: no-repeat;
+      //   width: 40px;
+      //   height: 40px;
+      //   position: relative;
+      //   // background-color: var(--color-composeMsgInput);
+      //   background-size: 16px;
+      //   border-radius: 30px;
+      //   background-position: center;
+      //   cursor: pointer;
+      // }
 
-      &-display-icon:hover {
-        transform: scale(1.1);
-        color: #1ced23;
-      }
+      // &-display-icon:hover {
+      //   transform: scale(1.1);
+      //   color: #1ced23;
+      // }
 
       &-walletModalContent {
         align-items: center;
@@ -3045,9 +3047,10 @@ label {
 
         &-dropDownHeaderTxt {
           background-color: #2e333d;
-          padding: 10px;
+          padding: 20px;
           border-radius: 16px;
-          font-family: $bchat-font-default;
+          height: 50px;
+          align-items: center;
 
           .text {
             font-size: 14px;
@@ -3138,7 +3141,7 @@ label {
         &-remoteContentBox {
           display: flex;
           align-items: center;
-          width: 45%;
+          width: 50%;
 
           &-content-hidden-Box {
             display: none;
@@ -3154,12 +3157,13 @@ label {
             color: #f0f0f0;
             font-size: 16px;
             font-weight: 500;
+            width: 163px;
           }
 
           &-inputBox {
             border: none;
             outline: none;
-            width: 80%;
+            width: 57%;
             // background-color: #1c1c26;
             // background-color: var(--color-walInputBg);
 
@@ -3207,6 +3211,7 @@ label {
               background: #202329;
               height: 60px;
               padding: 15px;
+              width: 57%;
             }
           }
 

@@ -5,13 +5,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   font-weight: 400;
 }
 
 .module-contact-name span {
-  text-overflow: ellipsis;
-  overflow-x: hidden;
+  // text-overflow: ellipsis;
+  // overflow-x: hidden;
   width: 100%;
   text-align: left;
   user-select: none;
@@ -357,6 +357,18 @@
     font-weight: 400;
   }
 }
+.module-contact-name__profile-name {
+  color: #f0f0f0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+}
+.module-contact-name__profile-number {
+  color: #108d32;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 15px;
+}
 .module-left-pane__header,
 .module-conversation-header__title {
   .module-contact-name-bns-tag {
@@ -405,12 +417,17 @@
   margin-inline-start: auto;
   margin-inline-end: auto;
   // padding: 20px;
-  padding: 0 20px;
+  // padding: 0 20px;
+  text-align: left;
 }
 
 .module-message-detail__message-container {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  text-align: left;
+  padding: 20px;
+  border-radius: 16px;
+  display: inline-block;
+  max-height: 225px;
+  overflow: auto;
 
   &:after {
     content: '.';
@@ -421,13 +438,34 @@
   }
 }
 
-.module-message-detail__label {
-  font-weight: 300;
-  padding-inline-end: 5px;
-  font-family: $bchat-font-poppin-semibold;
-  font-size: 16px;
+.message-direction-incoming {
+  border-top-left-radius: 0px;
+  background: #202329;
+}
+.message-direction-outgoing {
+  border-top-right-radius: 0px;
+  background: #108D32;
 }
 
+.module-message-detail__info {
+  border-radius: 16px;
+  border: 1px solid #46465d;
+  background: #202329;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px;
+  border-collapse: unset;
+}
+.module-message-detail__label {
+  color: #a7a7ba;
+  font-size: 16px;
+  font-weight: 400;
+}
+.module-message-detail__direction_label {
+  color: #a7a7ba;
+  font-size: 16px;
+  font-weight: 400;
+}
 .module-message-detail__delete-button-container {
   text-align: center;
   margin-top: 10px;
@@ -446,15 +484,20 @@
   padding: 1em;
 }
 
-.module-message-detail__contact-container {
-  margin: 20px 0 20px 0;
-}
+// .module-message-detail__contact-container {
+//   margin: 20px 0 20px 0;
+// }
 
 .module-message-detail__contact {
   margin-bottom: 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  border-radius: 16px;
+  border: 1px solid #46465d;
+  background: #202329;
+  padding: 20px;
 }
 
 .module-message-detail__contact__text {
