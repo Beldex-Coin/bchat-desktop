@@ -17,13 +17,15 @@ import {
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
 import {
-  showMessageDetailsView,
+  // MessagePropsDetails,
+  // showMessageDetailsView,
   toggleSelectedMessageId,
 } from '../../../../state/ducks/conversations';
 import { getMessageContextMenuProps } from '../../../../state/selectors/conversations';
 import { saveAttachmentToDisk } from '../../../../util/attachmentsUtil';
 import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
+import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -93,7 +95,9 @@ export const MessageContextMenu = (props: Props) => {
     const found = await getMessageById(messageId);
     if (found) {
       const messageDetailsProps = await found.getPropsForMessageDetail();
-      dispatch(showMessageDetailsView(messageDetailsProps));
+      console.log('messageDetailsProps -->',messageDetailsProps)
+      // dispatch(showMessageDetailsView(messageDetailsProps));
+      dispatch(updateMessageMoreInfoModal(messageDetailsProps));
     } else {
       window.log.warn(`Message ${messageId} not found in db`);
     }
@@ -199,7 +203,7 @@ export const MessageContextMenu = (props: Props) => {
         </Item>
       )}
       {(!isPublic || isOutgoing) && (
-        <Item onClick={onShowDetail}>
+        <Item onClick={onShowDetail}> 
         <BchatIcon iconType={'infoCircle'} iconSize={18} />
         <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
       )}
@@ -235,3 +239,6 @@ export const MessageContextMenu = (props: Props) => {
     </Menu>
   );
 };
+
+
+

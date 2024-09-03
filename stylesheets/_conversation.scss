@@ -1,8 +1,11 @@
 .message-detail-wrapper {
-  height: calc(100% - 48px);
-  width: 100%;
-  overflow-y: auto;
-  z-index: 2;
+  // height: calc(100% - 48px);
+  // width: 100%;
+  // overflow-y: auto;
+  // z-index: 2;
+  .bchat-message-wrapper{
+    padding: 0;
+  }
 }
 
 .public-chat-message-wrapper {

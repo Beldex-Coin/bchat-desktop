@@ -962,13 +962,15 @@
 // }
 // }
 .bns_link_modal {
+  width: 500px;
+  padding-top: 20px;
+  text-align: left;
   header {
-    font-family: $bchat-font-poppins-bold;
-    // font-family: $bchat-font-poppin-semibold;
-    font-size: 22px;
     margin-bottom: 25px;
     margin-top: 15px;
-    font-weight: 600;
+    color: #f0f0f0;
+    font-size: 26px;
+    font-weight: 700;
   }
 
   .label_id {
@@ -987,18 +989,30 @@
   }
 
   .id_wrapper {
-    height: 90px;
+    // height: 90px;
     display: flex;
     flex-direction: column;
     // align-items: center;
     // background-color: var(--color-BnsLinkIdBg);
     background-color: #202329;
-    border: 1p solid #46465d;
+    border: 1px solid #46465d;
     padding: 0px 25px;
-    border-radius: 8px;
+    border-radius: 16px;
     margin-bottom: 15px;
-    color: #108d32;
     box-shadow: var(--color-bchat-shadow);
+    .id-label {
+      color: #f0f0f0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .id_content {
+      color: #108d32;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: normal;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 
   .hr_line {
@@ -1008,17 +1022,17 @@
   }
 
   .label_input {
-    text-align: start;
-    margin-top: 20px;
     color: #a7a7ba;
+    font-size: 16px;
+    font-weight: 400;
   }
 
   .inputBox-wrapper {
-    margin: 15px auto;
+    // margin: 15px auto;
     height: 65px;
     background-color: #202329;
     border: 1px solid #46465d;
-    border-radius: 10px;
+    border-radius: 16px;
     padding: 0px 25px;
     box-shadow: var(--color-bchat-shadow);
 
@@ -1032,7 +1046,7 @@
   .divided-btn-wrapper {
     align-items: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     // padding: 0 32px;
 
     margin-bottom: 10px;
@@ -1056,7 +1070,22 @@
     color: #108d32;
   }
 }
-
+.nickNameDialog {
+  .input-wrapper {
+    width: 420px;
+    height: 70px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    border: 1px solid #46465d;
+    background: #202329;
+    display: flex;
+    padding: 0 13px;
+    align-items: center;
+    input {
+      background-color: unset;
+    }
+  }
+}
 .about-bns {
   section {
     text-align: left;

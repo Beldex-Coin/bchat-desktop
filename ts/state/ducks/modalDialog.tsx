@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BchatConfirmDialogProps } from '../../components/dialog/BchatConfirm';
 import { PasswordAction } from '../../components/dialog/BchatPasswordDialog';
+import { MessagePropsDetails } from './conversations';
 export type BanType = 'ban' | 'unban';
 
 export type ConfirmModalState = BchatConfirmDialogProps | null;
@@ -21,6 +22,7 @@ export type BnsLinkModalState={} | null;
 export type OnionPathModalState = EditProfileModalState;
 export type RecoveryPhraseModalState = EditProfileModalState;
 export type DeleteAccountModalState = EditProfileModalState;
+export type MessageMoreInfoState=MessagePropsDetails | null;
 
 export type BchatPasswordModalState = { passwordAction: PasswordAction; onOk: () => void } | null;
 
@@ -75,6 +77,7 @@ export type ModalState = {
   BchatWalletForgotPasswordModal:BchatWalletForgotPasswordModalState;
   BchatAlertConfirmModal:BchatAlertConfirmModalState;
   aboutBnsModal:AboutBnsModalState;
+  messageMoreInfo:MessageMoreInfoState;
 };
 
 export const initialModalState: ModalState = {
@@ -102,7 +105,8 @@ export const initialModalState: ModalState = {
   BchatWalletPasswordModal:null,
   BchatWalletForgotPasswordModal:null,
   BchatAlertConfirmModal:null,
-  aboutBnsModal:null
+  aboutBnsModal:null,
+  messageMoreInfo:null
 };
 
 const ModalSlice = createSlice({
@@ -192,8 +196,11 @@ const ModalSlice = createSlice({
     updateAboutBnsModal(state,action:PayloadAction<AboutBnsModalState>)
     {
       return { ...state, aboutBnsModal: action.payload};
+    },
+    updateMessageMoreInfoModal(state,action:PayloadAction<MessageMoreInfoState>)
+    {
+      return { ...state, messageMoreInfo: action.payload};
     }
-
   },
 });
 
@@ -223,6 +230,7 @@ export const {
   updateBchatWalletPasswordModal,
   updateBchatWalletForgotPasswordModal,
   updateBchatAlertConfirmModal,
-  updateAboutBnsModal
+  updateAboutBnsModal,
+  updateMessageMoreInfoModal
 } = actions;
 export const modalReducer = reducer;
