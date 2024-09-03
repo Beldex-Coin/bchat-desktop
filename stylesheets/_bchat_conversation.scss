@@ -120,27 +120,22 @@
       padding-right: 10px;
     }
 
-    .bchat-button.default.danger {
-      display: flex;
-      border-radius: 10px;
-      background-color: var(--color-inboxBgColor);
-      color: red;
+    .seleted-count{
+      width: 160px;
+      color: #F0F0F0;
+      font-size: 18px;
+      font-weight: 400;
     }
-    .bchat-button.default.red {
-      display: flex;
-      color: #ffffff;
-      background-color: red;
-      border-radius: 10px;
-    }
+ 
+
   }
 
-  .message-selection-overlay div[role='button'] {
-    display: inline-block;
-  }
+  // .message-selection-overlay div[role='button'] {
+  //   display: inline-block;
+  // }
 
   .message-selection-overlay .button-group {
     display: flex;
-    width: 97%;
     justify-content: center;
   }
 }

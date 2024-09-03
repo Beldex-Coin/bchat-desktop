@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Flex } from '../basic/Flex';
-import { SpacerLG} from '../basic/Text';
+import { SpacerLG } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { workingStatusForDeamon } from '../../wallet/BchatWalletHelper';
 import { walletSettingsKey } from '../../data/settings-key';
@@ -134,22 +134,27 @@ export function LocalDeamon() {
         <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
           <div>
             <BchatButton
-              buttonColor={BchatButtonColor.Primary}
+              // buttonColor={BchatButtonColor.Primary}
               buttonType={BchatButtonType.Brand}
-              // buttonColor={!localDeamonPort ? BchatButtonColor.Disable : BchatButtonColor.Primary}
+              buttonColor={!localDeamonPort ? BchatButtonColor.Secondary : BchatButtonColor.Primary}
               text={window.i18n('test')}
-              onClick={() => validationForDeamon()}
-              disabled={!localDeamonPort}
+              onClick={() => localDeamonPort && validationForDeamon()}
+              style={{ cursor: !localDeamonPort ? 'default' : 'pointer' }}
             />
           </div>
           <div style={{ marginRight: '20px' }}></div>
           <div>
             <BchatButton
-              buttonColor={BchatButtonColor.Primary}
+              buttonColor={
+                Object.keys(verifyDeamon).length === 0
+                  ? BchatButtonColor.Secondary
+                  : BchatButtonColor.Primary
+              }
               buttonType={BchatButtonType.Brand}
               text={window.i18n('save')}
-              onClick={() => addDeamonNet()}
-              disabled={Object.keys(verifyDeamon).length === 0 ? true : false}
+              onClick={() => Object.keys(verifyDeamon).length !== 0 && addDeamonNet()}
+              style={{ cursor: Object.keys(verifyDeamon).length === 0 ? 'default' : 'pointer' }}
+
             />
           </div>
         </div>
@@ -165,7 +170,7 @@ export function LocalDeamon() {
                   Connection : <span className="error-msg">{testNotify}</span>
                 </span>
               )}
-             
+
               <BchatIcon
                 iconType={testNotify === 'Success' ? 'tickCircle' : 'warning'}
                 iconSize={18}

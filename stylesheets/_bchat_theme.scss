@@ -169,22 +169,23 @@
     // align-items: center;
     // height: 68px;
     padding-right: 15px;
-  }
-  .checkedCircle,
-  .isSelected {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 20px;
-    margin-right: 10px;
   }
-  .checkedCircle {
-    border: 2px solid var(--color-text);
-  }
+  // .checkedCircle,
+  // .isSelected {
+  //   width: 20px;
+  //   height: 20px;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   border-radius: 20px;
+  //   margin-right: 10px;
+  // }
+  // .checkedCircle {
+  //   border: 2px solid var(--color-text);
+  // }
   &.message-selected {
-    background-color: rgba(40, 121, 251, 0.3);
+    background-color: #202329;
 
     // .isSelected{
 

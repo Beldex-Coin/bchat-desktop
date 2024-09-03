@@ -123,24 +123,34 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
+      <Flex container={true} alignItems='center'>
+        <div className="close-button">
+          <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
+        </div>
+
+        <div className="seleted-count">
+          <span style={{ marginRight: '5px' }}>{selectedMessageIds.length}</span>
+          <span>Selected</span>
+        </div>
+      </Flex>
+     
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
-            buttonType={BchatButtonType.Default}
+            buttonType={BchatButtonType.Medium}
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
+            style={{borderRadius:'40px'}}
           />
         )}
         <BchatButton
-          buttonType={BchatButtonType.Default}
+          buttonType={BchatButtonType.Medium}
           buttonColor={BchatButtonColor.Red}
           text={deleteForEveryoneMessageButtonText}
           onClick={onDeleteSelectedMessagesForEveryone}
+          style={{borderRadius:'40px'}}
         />
-      </div>
-      <div className="close-button">
-        <BchatIconButton iconType="exit" iconSize="medium" onClick={onCloseOverlay} />
       </div>
     </div>
   );
@@ -152,7 +162,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
   if (showBackButton) {
     return null;
   }
-  let width =isShowing  ?window.innerWidth-370 :window.innerWidth  ;
+  let width = isShowing ? window.innerWidth - 370 : window.innerWidth;
   return (
     <div
       role="button"
@@ -206,7 +216,7 @@ const AvatarHeader = (props: {
         // size={40}
         position={{ left: '25px', top: '25px' }}
         isBnsHolder={conversation?.isBnsHolder}
-        size={{width:'20',height:'20'}}
+        size={{ width: '20', height: '20' }}
       >
         <Avatar
           size={AvatarSize.M}
@@ -256,7 +266,7 @@ const CallButton = () => {
   }
 
   return (
-    <div >
+    <div>
       <CustomIconButton
         onClick={() => {
           void callRecipient(selectedConvoKey, canCall);
@@ -458,21 +468,21 @@ export const ConversationHeaderWithDetails = () => {
               // >
               //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
               //   <div>{window.i18n('connectWallet')}</div>
-                 <BchatButton
+              <BchatButton
                 text={window.i18n('connectWallet')}
                 buttonType={BchatButtonType.Medium}
                 buttonColor={BchatButtonColor.Primary}
-                iconType='wallet'
+                iconType="wallet"
                 iconSize={'small'}
                 style={{
                   minWidth: '172px',
                   height: '40px',
                   borderRadius: '5px',
-                  marginRight: '14px'
+                  marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // disabled={!caption}
-              /> 
+                // disabled={!caption}
+              />
               // </div>
             )}
             {!isKickedFromGroup && (

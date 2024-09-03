@@ -16,6 +16,7 @@ import { BchatWrapperModal } from '../../../BchatWrapperModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 import { getMessageTextProps } from '../../../../state/selectors/conversations';
+import {  SpacerSM, SpacerXS } from '../../../basic/Text';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -130,12 +131,14 @@ console.log('selected -->',selectedMsg)
           disabled: false,
         }}
       >
+        <SpacerSM />
         <div className="module-message-detail">
-          <div className="module-message-detail__message-container">
+          <div className={`module-message-detail__message-container message-direction-${direction}`}>
             {/* <h2>More Info</h2> */}
             {/* <Message messageId={messageId} isDetailView={false} /> */}
             {selectedMsg?.text}
           </div>
+          <SpacerSM />
           <table className="module-message-detail__info">
             <tbody>
               {(errors || []).map((error, index) => (
@@ -161,13 +164,16 @@ console.log('selected -->',selectedMsg)
                   </td>
                 </tr>
               ) : null}
-              <tr>
+              {/* <tr>
                 <td className="module-message-detail__label">
                   {direction === 'incoming' ? i18n('from') : i18n('to')}
                 </td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
+          <SpacerSM />
+          <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
+          <SpacerXS/>
           <ContactsItem contacts={props.contacts} />
         </div>
       </BchatWrapperModal>
