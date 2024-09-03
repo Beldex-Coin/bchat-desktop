@@ -20,7 +20,7 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
     .logo-wrapper {
       border-radius: 16px;
-      background: #202329;
+      background:var(--color-logo-bg);
       padding: 14px;
       position: relative;
     }
@@ -36,12 +36,12 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
     justify-content: center;
 
-    color: #a7a7ba;
+    color:var(--color-action-btn-icon);
     cursor: pointer;
     :hover {
       border-radius: 16px;
-      background: #202329;
-      // background-color: #006203;
+      // background: #202329;
+      background-color: var(--color-action-btn-bg);
       // color: #ffffff;
     }
 
@@ -58,7 +58,7 @@ export const LeftPaneSectionContainer = styled.div`
     // }
   }
   .menu-txt {
-    color: #a7a7ba;
+    color: var(--color-action-btn-txt);
     text-align: center;
     font-size: 14px;
     font-weight: 400;
@@ -130,8 +130,9 @@ export const LeftPaneSectionContainer = styled.div`
     border: 1.5px solid #46465d;
     padding: 5px 4px;
     .selected{
-    background-Color:#242B38;
+    background-Color:var(--color-theme-selected-bg);
     border-radius:40px;
+    
   
     }
     .icon-wrapper{

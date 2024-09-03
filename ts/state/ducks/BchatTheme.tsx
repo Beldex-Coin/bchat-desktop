@@ -2,12 +2,13 @@ import React from 'react';
 
 import { createGlobalStyle } from 'styled-components';
 
-const white = '#F2F2F2';
-const black = '#131313';
+const white = '#F0F0F0';
+const black = '#333333';
 const warning = '#e7b100';
 const destructive = '#ff453a';
 const accentLightTheme = '#159B24';
 const accentDarkTheme = '#2879FB';
+const darkGrey='#202329';
 // const borderLightThemeColor = '#f1f1f1';
 // const borderDarkThemeColor = '#ffffff0F';
 const baseColor = '#00A803';
@@ -15,6 +16,9 @@ const greyColor = '#2D2D3B';
 const lightGreyColor = '#646474';
 const greenColor = '#108D32';
 const forestGreenColor="#00A638";
+
+// const bgWhite='#EBEBEB';
+const baseWhite='#F8F8F8'
 
 // DARK COLORS
 const darkColorAccent = baseColor;
@@ -55,8 +59,8 @@ const darkFakeChatBubbleBg = '#212121';
 
 const darkInboxBackground = '#131313';
 const darkLeftPaneOverlayBg = darkInboxBackground;
-const darkConversationItemSelected = '#303041';
-const darkConversationItemHasUnread = '#39394A';
+const darkConversationItemSelected = '#2e333d';
+const darkConversationItemHasUnread = '#2e333d';
 const darkConversationList = darkScrollbarTrack;
 
 const darkTextHighlight = `${white}88`;
@@ -128,7 +132,7 @@ const darkNoMedia = `url("../images/bchat/no_mediaDarkTheme.svg")`;
 
 const darkLeftpaneSetting = darkScrollbarTrack;
 const darkBlockUserBg = '#2D2D3B';
-const darkBlockseletedUserBg = '##2C2C3E';
+const darkBlockseletedUserBg = '#2C2C3E';
 
 const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
@@ -170,6 +174,14 @@ const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
 const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
 const darkBnsTransactionColor = '#FFFFFF';
+
+// revamp
+const darklogoBg=darkGrey;
+const darkActionBtnBg=darkGrey;
+const darkActionBtnicon='#a7a7ba';
+const darkActionBtnTxt="#a7a7ba";
+const darkThemeSelectedBg='#242B38';
+const darkLeftPaneBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -398,6 +410,14 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
   document.documentElement.style.setProperty('--color-leave-button', darkLeaveHover);
   document.documentElement.style.setProperty('--color-bns-transaction', darkBnsTransactionColor);
+
+  // revamp
+  document.documentElement.style.setProperty('--color-logo-bg', darklogoBg);
+  document.documentElement.style.setProperty('--color-action-btn-bg', darkActionBtnBg);
+  document.documentElement.style.setProperty('--color-action-btn-icon', darkActionBtnicon);
+  document.documentElement.style.setProperty('--color-action-btn-txt', darkActionBtnTxt);
+  document.documentElement.style.setProperty('--color-theme-selected-bg', darkThemeSelectedBg);
+  document.documentElement.style.setProperty('--color-left-pane-bg', darkLeftPaneBg);
 };
 
 // LIGHT COLORS
@@ -434,10 +454,10 @@ const lightScrollbarThumb = '#D5D5D8';
 const lightScrollbarTrack = '#fcfcfc';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
-const lightInboxBackground = '#EDEDED';
+const lightInboxBackground = '#F0F0F0';
 const lightLeftPaneOverlayBg = '#EDEDED';
-const lightConversationItemSelected = '#fff';
-const lightConversationItemHasUnread = '#EDEDED';
+const lightConversationItemSelected = '#F8F8F8;';
+const lightConversationItemHasUnread = '#F8F8F8';
 const lightConversationList = '#E6E6E6';
 
 const lightTextHighlight = `${black}88`;
@@ -550,6 +570,14 @@ const lightProfileClose = '#DDDDDD';
 const lightChattimestamp = '#222222';
 const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
 const lightBnsTransactionColor = '#222222';
+
+// revamp
+const lightLogoBg=baseWhite;
+const lightActionBtnBg=baseWhite;
+const lightActionBtnicon='#ACACAC';
+const lightActionBtnTxt='#333333';
+const lightThemeSelectedBg='#DEDEDE';
+const lightLeftPaneBg='#EBEBEB';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -783,6 +811,14 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', lightWalDownThickArrow);
   document.documentElement.style.setProperty('--color-bns-transaction', lightBnsTransactionColor);
+
+  // revamp
+  document.documentElement.style.setProperty('--color-logo-bg', lightLogoBg);
+  document.documentElement.style.setProperty('--color-action-btn-bg', lightActionBtnBg);
+  document.documentElement.style.setProperty('--color-action-btn-icon', lightActionBtnicon);
+  document.documentElement.style.setProperty('--color-action-btn-txt', lightActionBtnTxt);
+  document.documentElement.style.setProperty('--color-theme-selected-bg', lightThemeSelectedBg);
+  document.documentElement.style.setProperty('--color-left-pane-bg', lightLeftPaneBg);
 };
 
 // default to light theme
@@ -918,6 +954,13 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-text:${darkColorText};
     --color-BgModalColor:${darkBgModalColor};
     --color-bns-transaction:${darkBnsTransactionColor};
+
+    --color-logo-bg:${darklogoBg};
+    --color-action-btn-bg:${ darkActionBtnBg};
+    --color-action-btn-icon:${darkActionBtnicon};
+    --color-action-btn-txt:${darkActionBtnTxt};
+    --color-theme-selected-bg:${ darkThemeSelectedBg};
+    --color-left-pane-bg: ${lightLeftPaneBg};
   
     
 

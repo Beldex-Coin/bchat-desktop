@@ -636,7 +636,7 @@ export const ActionsPanel = () => {
               <BchatIcon
                 iconType={'sun'}
                 iconSize={24}
-                iconColor={isdark ? '#F0F0F0' : '#A7A7BA'}
+                iconColor={isdark ? '#F0F0F0' : '#333333'}
               />
             </div>
             <SpacerSM />

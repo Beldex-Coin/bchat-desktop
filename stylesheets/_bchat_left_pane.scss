@@ -37,9 +37,9 @@ $bchat-compose-margin: 20px;
     }
 
     &--is-selected {
-      // background: var(--color-conversation-item-selected);
+      background: var(--color-conversation-item-selected);
       border-radius: 16px;
-      background: #2e333d;
+      // background: #2e333d;
 
       .module-conversation__user__profile-number,
       .module-conversation__user__profile-name,
