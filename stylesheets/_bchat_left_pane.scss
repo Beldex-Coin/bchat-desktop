@@ -17,7 +17,7 @@ $bchat-compose-margin: 20px;
       // font-size: 15px;
 
       // color: var(--color-text-subtle);
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 18px;
       // font-style: normal;
       font-weight: 400;
@@ -29,11 +29,11 @@ $bchat-compose-margin: 20px;
     transition: $bchat-transition-duration;
 
     &:hover {
-      // background: var(--color-clickable-hovered);
+      background: var(--color-clickable-hovered);
       // box-shadow: var(--color-Bchat-shadow);
       // background: #242431;
       border-radius: 16px;
-      background: #2e333d;
+      // background: #2e333d;
     }
 
     &--is-selected {
@@ -44,13 +44,13 @@ $bchat-compose-margin: 20px;
       .module-conversation__user__profile-number,
       .module-conversation__user__profile-name,
       .module-conversation-list-item__message__text {
-        color: var(--color-text);
+        color: var(--color-last-msg-txt);
       }
     }
 
     &--has-unread {
       // border-left: var(--border-unread);
-      // background: var(--color-conversation-item-has-unread);
+      background: var(--color-conversation-item-has-unread);
       // background-color: #39394A;
       // margin-bottom: 2px;
       // border-radius: 10px;
@@ -60,7 +60,7 @@ $bchat-compose-margin: 20px;
 
       // border-bottom: 1px solid #1c1c26;
       border-radius: 16px;
-      background: #2e333d;
+      // background: #2e333d;
       .verticalLine {
         width: 5px;
         // background-color: #128B17;
@@ -114,11 +114,11 @@ $bchat-compose-margin: 20px;
     }
 
     &__message__text {
-      color: $bchat-shade-17;
+      color: var(--color-last-msg-txt);
       text-align: left;
 
       &--has-unread {
-        color: var(--color-text);
+        color: var(--color-last-msg-txt);
       }
     }
 
@@ -322,8 +322,8 @@ $bchat-compose-margin: 20px;
     text-align: center;
     margin-bottom: 10px;
     border-radius: 13px;
-    border: 1px solid #46465d;
-    background: #202329;
+    border: 1px solid var(--color-search-border);
+    background-color: var(--color-left-pane-bg);
     color: #108d32;
     font-size: 24px;
     font-weight: 700;
@@ -335,7 +335,7 @@ $bchat-compose-margin: 20px;
 
   &-overlay {
     // background: var(--color-left-pane-overlay-background);
-
+    background-color: var(--color-left-pane-bg);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -345,7 +345,7 @@ $bchat-compose-margin: 20px;
     min-width: 300px;
     width: 25vw;
     max-width: 420px;
-    background: #202329;
+    // background: #202329;
 
     &-loadingWrapper {
       position: absolute;
@@ -386,14 +386,14 @@ $bchat-compose-margin: 20px;
     .bchatId_input_wrapper {
       padding: 15px;
       border-radius: 16px;
-      border: 2px solid #46465d;
-      background: #202329;
+      border: 2px solid var(--color-search-border);
+      // background: #202329;
       margin: 15px;
     }
     .ourDetails_wrapper {
       border-radius: 16px;
-      border: 2px solid #46465d;
-      background: #202329;
+      border: 2px solid var(--color-search-border);
+      background-color: var(--color-left-pane-bg);
       margin: 15px;
       padding: 15px;
       position: relative;
@@ -403,7 +403,7 @@ $bchat-compose-margin: 20px;
       }
       .profile-name {
         margin-left: 15px;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 24px;
         font-weight: 700;
         word-break: break-all;
@@ -415,8 +415,8 @@ $bchat-compose-margin: 20px;
       }
       .id-Wrapper {
         border-radius: 16px;
-        border: 1px solid #3a3a41;
-        background: #1c1f25;
+        border: 1px solid var(--color-profile-id-border);
+        background:var(--color-profile-id-bg);
         display: flex;
         padding: 10px;
         p {
@@ -432,15 +432,15 @@ $bchat-compose-margin: 20px;
         }
       }
       .back-btn-txt {
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 18px;
         font-weight: 500;
         margin-left: 5px;
       }
       .qr-wrapper {
         border-radius: 15.147px;
-        border: 0.947px solid #4b4b64;
-        background: #282836;
+        // border: 0.947px solid #4b4b64;
+        // background: #282836;
         padding: 10px;
 
         // width: 70%;
@@ -621,7 +621,6 @@ $bchat-compose-margin: 20px;
         text-align: center;
         font-size: 24px;
         font-weight: 400;
-
       }
     }
 
@@ -715,7 +714,7 @@ $bchat-compose-margin: 20px;
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  background-color: #202329;
+  background-color: var(--color-left-pane-bg);
 }
 
 .user-search-dropdown {
@@ -737,8 +736,8 @@ $bchat-compose-margin: 20px;
   // box-shadow: var(--color-Bchat-shadow);
   border-radius: 16px;
   // margin: 15px;
-  border: 1px solid #46465d;
-  background: #202329;
+  border: 1px solid var(--color-search-border);
+  // background: #202329;
   display: flex;
   align-items: center;
   .search {

@@ -597,8 +597,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 16px;
-    border: 1px solid #46465d;
-    background: #202329;
+    border: 1px solid var(--color-search-border);
+    // background: #202329;
 
     textarea {
       width: 100%;
