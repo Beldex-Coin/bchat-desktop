@@ -306,13 +306,14 @@ textarea {
     height: 60px;
     align-items: center;
     padding: 0px $bchat-margin-lg;
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-size: 20px;
     font-weight: 500;
     border-radius: 16px;
 
     &.primary {
       background: #108d32;
+      color: #f0f0f0;
     }
 
     &.secondary {
@@ -1424,9 +1425,9 @@ label {
   border-radius: 50px;
   position: relative;
   cursor: pointer;
-  // background-color: var(--color-toggleOff);
+  background-color: var(--color-toggleOff);
   // box-shadow: var(--color-bchat-shadow);
-  background-color: #363645;
+  // background-color: #363645;
 
   .knob {
     position: absolute;
@@ -1435,7 +1436,7 @@ label {
     height: 25px;
     width: 25px;
     border-radius: 28px;
-    background-color: #ececec;
+    background-color: var(--color-toggle-btn);
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.05), 0 3px 1px 0 rgba(0, 0, 0, 0.05),
       0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -1915,7 +1916,7 @@ label {
 
     .bgWrapper {
       border-radius: 16px;
-      background: #202329;
+      background: var(--color-settings-right-pane-option);
     }
 
     .hopes {
@@ -1932,7 +1933,8 @@ label {
         // height: 72%;
         margin: auto;
         justify-content: center;
-        background-color: #202329;
+        // background-color: #202329;
+        background-color: var(--color-hop-bg);
         padding: 30px;
         border-radius: 16px;
       }
@@ -1968,15 +1970,14 @@ label {
     justify-content: center;
     align-items: center;
     height: $main-view-header-height;
-    // background-color: var(--color-chatHeader);
-    border: 1px solid #202329;
-    background: #131313;
+    background-color: var(--color-chatHeader);
+    border-bottom: 1px solid var(--color-setting-header-border);
+    // background: #131313;
 
     &-title {
       // line-height: $main-view-header-height;
       text-align: center;
       flex-grow: 1;
-      color: #f0f0f0;
       font-size: 24px;
       font-weight: 600;
     }
@@ -1999,7 +2000,7 @@ label {
     // border-radius: 10px;
     // background-color: var(--color-settingIndication);
     // color: var(--color-text);
-    border-bottom: 0.5px solid #4b4b64;
+    border-bottom: 0.5px solid var(--color-settings-right-pane-option-border);
 
     // &:hover {
     //   background-color: var(--color-settings-options-hover);
@@ -2022,8 +2023,8 @@ label {
 
     &__title {
       // line-height: 1.7;
-      font-size: $bchat-font-lg;
-      color: #f0f0f0;
+      // font-size: $bchat-font-lg;
+      // color: #f0f0f0;
       font-size: 20px;
       font-weight: 400;
       // font-family: $bchat-font-poppin-semibold;
@@ -2063,7 +2064,7 @@ label {
       height: 45px;
       border-radius: 12px;
       /* background-color: var(--color-inboxBgColor); */
-      background: #2e333d;
+      background-color: var(--color-conversation-item-selected);
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -2111,7 +2112,7 @@ label {
 
       &-title {
         // font-family: $bchat-font-poppin-medium;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 16px;
         font-weight: 400;
       }
@@ -2125,13 +2126,14 @@ label {
   .notification-setting {
     .notify-option-wrapper {
       border-radius: 16px;
-      background: #202329;
+      // background: #202329;
+      background: var(--color-settings-right-pane-option);
       overflow: hidden;
     }
 
     .bchat-settings-item {
       border: unset;
-      background: #202329;
+      background: var(--color-settings-right-pane-option);
       border-radius: 16px;
     }
   }
@@ -2143,7 +2145,7 @@ label {
     justify-content: space-between;
     overflow: hidden;
     // background-color: var(--color-rightpaneSetting);
-    background: #131313;
+    // background: #131313;
   }
 
   &__version-info {
@@ -2965,6 +2967,7 @@ label {
         // background-color: var(--color-WalcontentBg);
         padding: 20px;
         border-radius: 10px;
+        background-color: var(--color-settings-right-pane-option);
 
         &-disableText {
           color: #a7a7ba;
@@ -2997,14 +3000,16 @@ label {
 
           &:hover {
             // background-color: var(--color-settings-options-hover);
-            background-color: #1b1e23;
+            background-color: var(--color-conversation-item-selected);
+            // background-color: #1b1e23;
           }
         }
       }
 
       &-nodeSetting {
         &-contentBox {
-          background-color: #202329;
+          // background-color: #202329;
+          background-color: var(--color-settings-right-pane-option);
           // background-color: var(--color-WalcontentBg);
           border-radius: 10px;
           padding: 25px 20px 20px;
@@ -3029,7 +3034,7 @@ label {
           }
 
           &-radio-label {
-            color: #f0f0f0;
+            // color: #f0f0f0;
             font-size: 20px;
             font-weight: 400;
           }
@@ -3047,7 +3052,7 @@ label {
         }
 
         &-dropDownHeaderTxt {
-          background-color: #2e333d;
+          background-color: var(--color-conversation-item-selected);
           padding: 20px;
           border-radius: 16px;
           height: 50px;
@@ -3155,7 +3160,7 @@ label {
 
           &-labelTxt {
             // width: 20%;
-            color: #f0f0f0;
+            // color: #f0f0f0;
             font-size: 16px;
             font-weight: 500;
             width: 163px;
@@ -3176,7 +3181,7 @@ label {
 
             align-items: center;
             border-radius: 16px;
-            background: #2e333d;
+            background-color: var(--color-conversation-item-selected);
 
             &-dropDownBtn {
               display: flex;
@@ -3208,8 +3213,8 @@ label {
               border: none;
               outline: none;
               border-radius: 16px;
-              border: 1px solid #46465d;
-              background: #202329;
+              border: 1px solid var(--color-search-border);
+              background-color: var(--color-conversation-item-selected);
               height: 60px;
               padding: 15px;
               width: 57%;
@@ -3710,7 +3715,7 @@ input {
 
 .onion__description {
   margin-bottom: 10px;
-  color: #a7a7ba;
+  color: var(--color-hop-txt);
   font-size: 20px;
   font-weight: 400;
 }
@@ -3722,7 +3727,8 @@ input {
   margin: 10px 0px 0px;
   min-width: 10vw;
   position: relative;
-  background-color: #2e333d;
+  // background-color: #2e333d;
+  background-color: var(--color-conversation-item-selected);
   padding: 20px 30px 0px;
   border-radius: 16px;
 
@@ -3758,7 +3764,7 @@ input {
     // font-weight: 400;
     height: 50px;
 
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-size: 20px;
     font-weight: 500;
     height: 70px;
@@ -3766,7 +3772,7 @@ input {
       height: 32px;
     }
     .ip-country {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 16px;
       font-weight: 400;
     }
@@ -3959,9 +3965,9 @@ input {
   }
 
   &.selected {
-    // background-color: var(--color-conversation-item-selected) !important;
+    background-color: var(--color-conversation-item-selected) !important;
     border-radius: 16px;
-    background-color: #202329;
+    // background-color: #202329;
   }
 
   &.zombie {
@@ -4018,7 +4024,7 @@ input {
   &__name {
     margin-inline-start: $bchat-margin-md;
     margin-inline-end: $bchat-margin-md;
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-size: 16px;
     font-weight: 400;
   }
@@ -4045,7 +4051,8 @@ input {
 .bchat-member-item {
   &:hover {
     border-radius: 16px;
-    background: #2e333d;
+    // background: #2e333d;
+    background-color: var(--color-conversation-item-selected);
   }
 }
 

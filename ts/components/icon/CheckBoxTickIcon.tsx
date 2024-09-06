@@ -15,9 +15,9 @@ const CheckBoxTickIcon = (props: { iconSize: number }) => (
     <path
       d="M8.39648 12.9999L11.4623 16.0657L17.6048 9.93408"
       stroke="#F0F0F0"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

@@ -38,7 +38,7 @@ const StyledPillInner = styled.div<PillContainerProps>`
   margin: ${props => props.margin || ''};
   border-radius: 16px;
   padding: 20px 0;
-  background: #2E333D;
+  background-color: var(--color-conversation-item-selected);
   cursor: pointer;
   // border: 1px solid var(--color-pill-divider);
   transition: var(--default-duration);

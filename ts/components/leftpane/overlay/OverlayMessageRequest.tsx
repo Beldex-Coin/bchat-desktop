@@ -108,7 +108,7 @@ export const OverlayMessageRequest = (props: any) => {
       style={{
         width: '100%',
         maxWidth: '100%',
-        backgroundColor: '#131313'
+        backgroundColor: 'unset'
       }}>
       {convoRequestCount ? (
         <>
