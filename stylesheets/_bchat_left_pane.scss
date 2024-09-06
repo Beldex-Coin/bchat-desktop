@@ -944,11 +944,11 @@ $bchat-compose-margin: 20px;
     min-width: 300px;
     width: 25vw;
     max-width: 420px;
-    background: #202329;
+    background:var(--color-left-pane-bg);
     padding: 15px;
 
     h6 {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 24px;
       font-weight: 600;
       margin: 0;
@@ -980,7 +980,6 @@ $bchat-compose-margin: 20px;
     }
 
     &-span {
-      color: #f0f0f0;
       font-size: 18px;
       font-weight: 400;
     }
@@ -993,8 +992,8 @@ $bchat-compose-margin: 20px;
       border-radius: 4px;
       padding: 0 5px;
       font-size: 8px;
-      font-family: 'poppin-semibold';
       letter-spacing: 1px;
+      font-weight: 600;
     }
 
     & > div {
@@ -1010,7 +1009,7 @@ $bchat-compose-margin: 20px;
     &:hover,
     &.active {
       border-radius: 16px;
-      background: #2e333d;
+      background: var(--color-conversation-item-selected);
     }
 
     &__buttons {

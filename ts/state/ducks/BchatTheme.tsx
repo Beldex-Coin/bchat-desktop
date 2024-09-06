@@ -100,8 +100,8 @@ const darkHintColor = lightGreyColor;
 // const darkCopyIcon = '#fff';
 // const darkCopyIconBg = '#353543';
 const darkCopyModalbtn = '#444455';
-const darkChatHeader = '#1c1c26';
-const darkToggleOff = '#000';
+const darkChatHeader = '#131313';
+const darkToggleOff = '#363645';
 const darkClearBtn = '#3D3D4D';
 const darkLeaveGrpBtn = '#20202F';
 const darkSmModalBg = '#2A2A3B';
@@ -189,6 +189,12 @@ const darkProfileIdBg='#1C1F25';
 const darkProfileIDBorder='#3A3A41';
 const darkSecondaryBtnBg='#2e333d';
 const darkQrOuterBg='#282836';
+const darkSettingsRightPaneOption='#202329';
+const darksettingHeaderBorder='#202329'
+const darkToggleBtn='#9595B5';
+const darkSettingsRightPaneOptionBorder='#4B4B64';
+const darkHopBg='#202329';
+const darkHopTxt='#A7A7BA'
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -432,6 +438,12 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-profile-id-border', darkProfileIDBorder);
   document.documentElement.style.setProperty('--color-secondary-btn-bg', darkSecondaryBtnBg);
   document.documentElement.style.setProperty('--color-qr-outer-bg', darkQrOuterBg);
+  document.documentElement.style.setProperty('--color-settings-right-pane-option', darkSettingsRightPaneOption);
+  document.documentElement.style.setProperty('--color-setting-header-border', darksettingHeaderBorder);
+  document.documentElement.style.setProperty('--color-toggle-btn', darkToggleBtn);
+  document.documentElement.style.setProperty('--color-settings-right-pane-option-border', darkSettingsRightPaneOptionBorder);
+  document.documentElement.style.setProperty('--color-hop-bg', darkHopBg);
+  document.documentElement.style.setProperty('--color-hop-txt', darkHopTxt);
 };
 
 // LIGHT COLORS
@@ -524,7 +536,7 @@ const lightFailedTransHistory = `url("../images/bchat/failed_tx_history_white.sv
 const lightEmptyTransaction = `url("../images/bchat/no_transactions_found_white.svg")`;
 const whiteWalletSyncing = `url("../images/bchat/wallet_syncing_white.svg")`;
 const lightNoMedia = `url("../images/bchat/no_mediaWhiteTheme.svg")`;
-const lightChatHeader = '#EEEEEE';
+const lightChatHeader = '#F0F0F0';
 const lightChatIcons = 'black';
 const lightComposeMsgInput = '#EAEAEA';
 const lightcomposeMsgRecordIcon = '#85858F';
@@ -534,7 +546,7 @@ const lightWalletPriorityHover = '#E3E3E3';
 const lightDayNight = `url("../images/bchat/moon.svg")`;
 const lightNewChat = `url("../images/bchat/newChat_white.svg")`;
 const lightBorderBottomColor = '#E3E3E3';
-const lightToggleOff = '#C6C6C6';
+const lightToggleOff = '#F8F8F8';
 const lightClearBtn = '#fff';
 const lightLeftpaneSetting = '#f4f4f4';
 const lightBlockUserBg = '#F2F2F2';
@@ -599,6 +611,12 @@ const lightProfileIdBg='#EBEBEB';
 const lightProfileIDBorder='#C5C5C5';
 const lightSecondaryBtnBg='#F8F8F8';
 const lightQrOuterBg='#F8F8F8';
+const lightSettingsRightPaneOption='#EBEBEB';
+const lightSettingHeaderBorder='#ACACAC';
+const lightToggleBtn='#ACACAC';
+const ligthSettingsRightPaneOptionBorder='#ACACAC';
+const lightHopBg='#EBEBEB';
+const lightHoptxt='#333';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -848,6 +866,12 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-profile-id-border', lightProfileIDBorder);
   document.documentElement.style.setProperty('--color-secondary-btn-bg', lightSecondaryBtnBg);
   document.documentElement.style.setProperty('--color-qr-outer-bg', lightQrOuterBg);
+  document.documentElement.style.setProperty('--color-settings-right-pane-option', lightSettingsRightPaneOption);
+  document.documentElement.style.setProperty('--color-setting-header-border', lightSettingHeaderBorder);
+  document.documentElement.style.setProperty('--color-toggle-btn', lightToggleBtn);
+  document.documentElement.style.setProperty('--color-settings-right-pane-option-border', ligthSettingsRightPaneOptionBorder);
+  document.documentElement.style.setProperty('--color-hop-bg', lightHopBg);
+  document.documentElement.style.setProperty('--color-hop-txt', lightHoptxt);
 };
 
 // default to light theme
@@ -997,6 +1021,12 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-profile-id-border:${darkProfileIDBorder};
     --color-secondary-btn-bg:${darkSecondaryBtnBg};
     --color-qr-outer-bg:${darkQrOuterBg};
+    --color-settings-right-pane-option:${darkSettingsRightPaneOption};
+    --color-setting-header-border:${darksettingHeaderBorder};
+    --color-toggle-btn:${darkToggleBtn};
+    --color-settings-right-pane-option-border:${darkSettingsRightPaneOptionBorder};
+    --color-hop-bg:${darkHopBg};
+    --color-hop-txt:${darkHopTxt};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

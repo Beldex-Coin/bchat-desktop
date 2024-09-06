@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // import { setting } from '../../state/ducks/walletSection';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
@@ -18,6 +18,7 @@ import {
 } from '../../state/ducks/walletConfig';
 import { updateBalance } from '../../state/ducks/wallet';
 import { BchatIconButton } from '../icon';
+import { getTheme } from '../../state/selectors/theme';
 // import { WalletSettings } from './BchatWalletSettings';
 
 export const NodeSetting = (props: any) => {
@@ -47,6 +48,7 @@ export const NodeSetting = (props: any) => {
   const testBottonEnable = !(ipAddress && port);
   const savebtnValidation =
     currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort;
+    const darkMode = useSelector(getTheme) === 'dark';
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -191,7 +193,7 @@ export const NodeSetting = (props: any) => {
             <BchatIconButton
               iconType="walletBackArrow"
               iconSize={'medium'}
-              iconColor={'#F0F0F0'}
+              iconColor={darkMode ?'#F0F0F0':'#333333'}
               onClick={() => props.onClick()}
             />
           </div>
