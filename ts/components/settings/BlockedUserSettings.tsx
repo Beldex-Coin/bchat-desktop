@@ -21,7 +21,7 @@ import {
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 import classNames from 'classnames';
-import { BchatIcon } from '../icon';
+import { BchatIconButton } from '../icon';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
@@ -260,8 +260,9 @@ export const BlockedMemberList = (props: {
             />
           </div>
         ) : (
-          <div className={classNames('bchat-member-item__checkmarkbox', isSelected && 'selected')}>
-            {isSelected && <BchatIcon iconType="checkBox" iconSize={23} />}
+          <div>
+          {/* <div className={classNames('bchat-member-item__checkmarkbox')}> */}
+             <BchatIconButton iconType={isSelected?"checkBoxTick":'checkBox'} iconSize={23} />
           </div>
         )}
       </div>

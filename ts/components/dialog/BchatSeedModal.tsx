@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { ToastUtils } from '../../bchat/utils';
 import { SpacerSM } from '../basic/Text';
 import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { getTheme } from '../../state/selectors/theme';
 // import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 
@@ -18,6 +19,7 @@ const Seed = (props: SeedProps) => {
   const { recoveryPhrase, onClickCopy } = props;
   const i18n = window.i18n;
   const dispatch = useDispatch();
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const copyRecoveryPhrase = (recoveryPhraseToCopy: string) => {
     window.clipboard.writeText(recoveryPhraseToCopy);
@@ -35,7 +37,7 @@ const Seed = (props: SeedProps) => {
           <div className="bchat-modal__centered text-center ">
             <p className="bchat-modal__description">{i18n('recoveryPhrase')}</p>
             {/* <SpacerXS /> */}
-            <img src='images/bchat/recoveryPhrase.svg' width={"150px"} height={"150px"}></img>
+            <img src={darkMode?'images/bchat/recoveryPhrase.svg':"images/bchat/recoveryPhraseLight.svg"} width={"150px"} height={"150px"}></img>
             <i data-testid="recovery-phrase-seed-modal" className="bchat-modal__text-highlight">
               {recoveryPhrase}
             </i>
