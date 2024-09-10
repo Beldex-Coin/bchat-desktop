@@ -145,7 +145,7 @@ const darkAudioRecord = '#3F3C4B';
 // Seed color
 const darkSeedColor = '#00E506';
 // Bns link colors
-const darkBnsLinkIdBgColor = '#3A3A4E';
+const darkBnsLinkIdBgColor = '#202329';
 const darkBnsLinkInputBgColor = '#353543';
 const darkBnsCameraIconBgColor = '#22222E';
 
@@ -207,6 +207,8 @@ const darkChatIdBorder='#3A3A41';
 const darkProfileInfoBorder='#2E333D';
 const darkDisappearTimeHover='#2E333D';
 const darkProfileInfoMediaTitle='#A7A7BA';
+const darkModalBg='#2e333d';
+const darkModalIconBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -468,6 +470,9 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-profile-info-border', darkProfileInfoBorder);
   document.documentElement.style.setProperty('--color-disappear-time-hover', darkDisappearTimeHover);
   document.documentElement.style.setProperty('--color-profile-info-media-title', darkProfileInfoMediaTitle);
+  document.documentElement.style.setProperty('--color-modal-bg', darkModalBg);
+  document.documentElement.style.setProperty('--color-modal-icon-bg', darkModalIconBg);
+
 
 };
 
@@ -592,7 +597,7 @@ const lightDownArrow = '#A8A8C3';
 const whiteSeedColor = '#128B17';
 //bns link color
 const lightBnsLinkInputBgColor = '#F8F8F8';
-const lightBnsLinkIdBgColor = '#F8F8F8';
+const lightBnsLinkIdBgColor = '#EBEBEB';
 const lightBnsCameraIconBgColor = '#FFFFFF';
 
 //wallet
@@ -654,6 +659,8 @@ const lightChatIdBorder='#C5C5C5'
 const lightProfileInfoBorder='#ACACAC';
 const lightDisappearTimeHover='#EBEBEB';
 const lightProfileInfoMediaTitle='#333333';
+const lightModalBg='#F8F8F8';
+const lightModalIconBg='#EBEBEB'
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -921,6 +928,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-profile-info-border', lightProfileInfoBorder);
   document.documentElement.style.setProperty('--color-disappear-time-hover', lightDisappearTimeHover);
   document.documentElement.style.setProperty('--color-profile-info-media-title', lightProfileInfoMediaTitle);
+  document.documentElement.style.setProperty('--color-modal-bg', lightModalBg);
+  document.documentElement.style.setProperty('--color-modal-icon-bg', lightModalIconBg);
   
 };
 
@@ -1089,6 +1098,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-profile-info-border:${darkProfileInfoBorder};
     --color-disappear-time-hover:${darkDisappearTimeHover};
     --color-profile-info-media-title:${darkProfileInfoMediaTitle};
+    --color-modal-bg:${darkModalBg};
+    --color-modal-icon-bg:${darkModalIconBg}
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

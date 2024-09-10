@@ -368,8 +368,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
           onClick={() => copyBchatID(props.bchatID)}
         >
           <div className="profile-value">
-            <div style={{ marginTop: '10px', color: 'white', fontFamily: 'Poppins' }}>{window.i18n('BchatID')}</div>
-            <p style={{ margin: '10px 0px', fontFamily: 'Poppins', fontWeight: '400' }}>
+            <div style={{ marginTop: '10px', color: 'var(--color-text)'}}>{window.i18n('BchatID')}</div>
+            <p style={{ margin: '10px 0px',fontWeight: '400' }}>
               {props.bchatID}
             </p>
           </div>
@@ -388,9 +388,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
         <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
           onClick={() => copyBchatID(walletAddress)}
         >
-          <div className="profile-value" style={{ color: '#1782FF' }}>
-            <div style={{ marginTop: '10px', color: 'white', fontFamily: 'Poppins' }}>{window.i18n('BchatID')}</div>
-            <p style={{ margin: '10px 0px', fontFamily: 'Poppins', fontWeight: '400' }}>
+          <div className="profile-value" style={{ color: 'var(--color-text)'}}>
+            <div style={{ marginTop: '10px', }}>{window.i18n('BchatID')}</div>
+            <p style={{ margin: '10px 0px', fontWeight: '400',color:'#2F8FFF' }}>
               {walletAddress}
             </p>
           </div>

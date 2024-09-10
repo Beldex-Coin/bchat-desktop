@@ -780,7 +780,7 @@
       word-break: break-all;
       font-size: $bchat-font-md;
       // background-color: var(--color-background-primary);
-      background-color: #202329;
+      background-color:var(--color-hop-bg);
       border-radius: 10px;
       padding: 0px 10px 10px 14px;
       font-family: $bchat-font-default;
@@ -799,7 +799,7 @@
       // padding: 0px $bchat-margin-sm;
       .profile-value {
         width: 86%;
-        font-family: $bchat-font-poppin-medium;
+        font-weight: 600;
         font-size: 14px;
       }
     }
@@ -968,7 +968,7 @@
   header {
     margin-bottom: 25px;
     margin-top: 15px;
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-size: 26px;
     font-weight: 700;
   }
@@ -993,15 +993,15 @@
     display: flex;
     flex-direction: column;
     // align-items: center;
-    // background-color: var(--color-BnsLinkIdBg);
-    background-color: #202329;
-    border: 1px solid #46465d;
+    background-color: var(--color-BnsLinkIdBg);
+    // background-color: #202329;
+    border: 1px solid var(--color-search-border);
     padding: 0px 25px;
     border-radius: 16px;
     margin-bottom: 15px;
-    box-shadow: var(--color-bchat-shadow);
+    // box-shadow: var(--color-bchat-shadow);
     .id-label {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 16px;
       font-weight: 600;
     }
@@ -1030,11 +1030,12 @@
   .inputBox-wrapper {
     // margin: 15px auto;
     height: 65px;
-    background-color: #202329;
-    border: 1px solid #46465d;
+    background-color: var(--color-BnsLinkIdBg);
+    // background-color: #202329;
+    border: 1px solid var(--color-search-border);
     border-radius: 16px;
     padding: 0px 25px;
-    box-shadow: var(--color-bchat-shadow);
+    // box-shadow: var(--color-bchat-shadow);
 
     input {
       width: 100%;
