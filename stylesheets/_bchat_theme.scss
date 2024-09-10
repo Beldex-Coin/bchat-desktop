@@ -4,9 +4,9 @@
 }
 .module-conversation-header {
   // background: var(--color-cell-background);
-  // background-color: var(--color-chatHeader);
-  border: 1px solid #202329;
-  background: #131313;
+  background-color: var(--color-chatHeader);
+  border-bottom: 1px solid var(--color-setting-header-border);
+
 }
 
 .module-message {
@@ -36,8 +36,8 @@
 
   &__container--incoming {
     &--opaque {
-      // background: var(--color-received-message-background);
-     background-color: #2E333D;
+      background: var(--color-received-message-background);
+    //  background-color: #2E333D;
       // box-shadow: 0px 3px 5px 0px #00000029;
       &:hover {
         // background-color: var(--color-received-message-background-hover);

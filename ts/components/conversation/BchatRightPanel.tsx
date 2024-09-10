@@ -252,11 +252,11 @@ const HeaderItem = () => {
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
         >
-          <BchatIconButton iconType={'xWithCircle'} iconSize={26} />
+          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor='#fff' />
         </span>
       </Flex>
       <SpacerLG />
-
+    
       <div className="group-settings-header-avatarBox">
         <BNSWrapper
           //  size={89}

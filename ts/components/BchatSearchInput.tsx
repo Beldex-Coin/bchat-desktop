@@ -65,7 +65,7 @@ export const BchatSearchInput = () => {
       />
       {!!currentSearchTerm.length && (
         <BchatIconButton
-          iconSize="tiny"
+          iconSize={24}
           iconType="exit"
           onClick={() => {
             setCurrentSearchTerm('');

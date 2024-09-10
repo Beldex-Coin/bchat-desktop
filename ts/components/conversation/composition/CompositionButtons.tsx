@@ -54,7 +54,7 @@ export const SendMessageButton = (props: { onClick: () => void; name?: string })
       {/* {props.name === 'Send' ? ( */}
         <BchatIconButton
           iconType="send"
-          iconColor="#fff"
+          // iconColor="#fff"
           iconSize={30}
           padding="15px 13px"
           onClick={props.onClick}

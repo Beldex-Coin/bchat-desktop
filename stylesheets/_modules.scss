@@ -64,7 +64,7 @@
   padding: 10px;
 
   border-radius: 16px;
-  background: #131313;
+  background: var(--color-untrust-media-bg);
   margin: 15px 15px 0;
 }
 // .module-message__generic-attachment  + .attachment-with-quote ,.module-message__attachment-container +
@@ -352,13 +352,13 @@
   // cursor: pointer;
 
   .module-contact-name__profile-name {
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-size: 18px;
     font-weight: 400;
   }
 }
 .module-contact-name__profile-name {
-  color: #f0f0f0;
+  // color: #f0f0f0;
   font-size: 16px;
   font-weight: 600;
   line-height: normal;
@@ -1133,9 +1133,9 @@
 
 // Module: Attachments
 
-.module-attachments {
-  border-top: 1px solid $color-black-015;
-}
+// .module-attachments {
+//   border-top: 1px solid $color-black-015;
+// }
 
 .module-attachments__header {
   height: 24px;
@@ -1163,11 +1163,12 @@
   overflow-x: auto;
   max-height: 160px;
   // background-color: var(--color-received-message-background);
+  background-color: var(--color-untrust-media-bg);
   white-space: nowrap;
   overflow-y: hidden;
   margin-bottom: 6px;
   border-radius: 12px;
-  background: #131313;
+  // background: #131313;
   margin-top: 20px;
 }
 
@@ -1378,34 +1379,34 @@
 
 .module-staged-placeholder-attachment {
   /* margin: 1px; */
-  border-radius: 42px;
-  border: 1px solid #bbbdbe;
-  height: 30px;
-  width: 30px;
+  // border-radius: 42px;
+  // border: 1px solid #bbbdbe;
+  // height: 30px;
+  // width: 30px;
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
   position: relative;
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
 
-  &:hover {
-    background: $color-gray-05;
-  }
+  // &:hover {
+  //   background: $color-gray-05;
+  // }
 }
 
-.module-staged-placeholder-attachment__plus-icon {
-  position: absolute;
-  left: 50%;
-  top: 50%;
+// .module-staged-placeholder-attachment__plus-icon {
+//   position: absolute;
+//   left: 50%;
+//   top: 50%;
 
-  transform: translate(-50%, -50%);
+//   transform: translate(-50%, -50%);
 
-  height: 21px;
-  width: 21px;
-  background-color: #131313;
+//   height: 21px;
+//   width: 21px;
+//   // background-color: #131313;
 
-  @include color-svg('../images/plus-36.svg', $color-gray-45);
-}
+//   // @include color-svg('../images/plus-36.svg', $color-gray-45);
+// }
 
 // Module: Staged Link Preview
 
@@ -1420,9 +1421,10 @@
   overflow-y: hidden;
   margin-bottom: 6px;
   border-radius: 12px;
-  background: #131313;
+  // background: #131313;
   margin-top: 20px;
   align-items: center;
+  background-color: var(--color-untrust-media-bg);
 }
 
 .module-staged-link-preview--is-loading {

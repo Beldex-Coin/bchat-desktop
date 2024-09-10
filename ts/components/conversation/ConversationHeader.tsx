@@ -54,8 +54,8 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
-import { CustomIconButton } from '../icon/CustomIconButton';
-import CallIcon from '../icon/CallIcon';
+// import { CustomIconButton } from '../icon/CustomIconButton';
+// import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
@@ -267,12 +267,15 @@ const CallButton = () => {
 
   return (
     <div>
-      <CustomIconButton
+      {/* <CustomIconButton
         onClick={() => {
           void callRecipient(selectedConvoKey, canCall);
         }}
         customIcon={<CallIcon iconSize={24} />}
-      />
+      /> */}
+      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd'  onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }} />
     </div>
   );
 };
