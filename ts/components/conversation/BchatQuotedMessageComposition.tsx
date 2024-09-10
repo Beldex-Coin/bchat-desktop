@@ -22,9 +22,8 @@ const QuotedMessageCompositionReply = styled.div`
   padding: var(--margins-xs);
   box-shadow: var(--color-bchat-shadow);
   // margin: var(--margins-xs);
-
+  background: var(--color-untrust-media-bg);
   border-radius: 16px;
-  background: #13130a;
   min-height: 70px;
   width: 100%;
   margin-right: 10px;
@@ -41,7 +40,7 @@ const Subtle = styled.div`
 `;
 const VerticalLine = styled.div`
   width: 5px;
-  background-color: #858598;
+  background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
   margin-right: 10px;

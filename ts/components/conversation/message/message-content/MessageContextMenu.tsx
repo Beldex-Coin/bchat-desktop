@@ -193,7 +193,7 @@ export const MessageContextMenu = (props: Props) => {
       ) : null}
 
       <Item onClick={copyText}>
-        <CopyIcon color={'#F0F0F0'} iconSize={18} />
+        <CopyIcon color={'var(--color-text)'} iconSize={18} />
         <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
       </Item>
       {(isSent || !isOutgoing) && (

@@ -154,6 +154,7 @@ export const Image = (props: Props) => {
         <BchatIconButton
           iconType={'xWithCircle'}
           iconSize={16}
+          iconColor='#fff'
           onClick={(e: any) => {
             e.stopPropagation();
             if (onClickClose) {

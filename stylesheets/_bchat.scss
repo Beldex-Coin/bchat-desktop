@@ -448,7 +448,8 @@ textarea {
 
   &:hover {
     border-radius: 8px;
-    background: #2e333d;
+    background: var(--color-icon-btn-hover);
+    color: var(--color-text);
   }
 
   // &.no-opacity {
@@ -1477,11 +1478,12 @@ label {
   .react-contexify__item:not(.react-contexify__item--disabled):hover
     > .react-contexify__item__content {
     border-radius: 14px;
-    background: #333842;
+    // background: #333842;
 
     // background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
-    color: '#fff';
+    background-color: var(--color-context-menu-hover-bg);
+    color:var(--color-text);
   }
 
   .react-contexify__item__content {

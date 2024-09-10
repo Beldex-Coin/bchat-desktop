@@ -19,8 +19,8 @@ const DateBreakText = styled.div`
   // font-size: 0.8rem;
   // font-weight: bold;
   // text-align: center;
-  // color: var(--color-chat-timestamp);
-  // background-color: var(--message-bubbles-received-background-color);
+  color: var(--color-chat-timestamp);
+  background-color: var(--message-bubbles-received-background-color);
   border-radius: 40px;
   display: flex;
   justify-content: center;
@@ -30,11 +30,9 @@ const DateBreakText = styled.div`
   height: 40px;
   // margin-top: -20px;
   border-radius: 22px;
-  background: #2e333d;
 
   font-size: 14px;
   font-weight: 400;
-  color: #858598;
 `;
 
 export const MessageDateBreak = (props: { timestamp: number; messageId: string }) => {

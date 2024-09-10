@@ -569,12 +569,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-          selectedConversation?.isApproved &&
-          selectedConversation?.didApproveMe &&
-          !selectedConversation?.isBlocked &&
-          // re.test(draft) &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat ? (
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        // re.test(draft) &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -609,15 +609,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-          re.test(draft) &&
-          // && (draft.length-1 - draft.indexOf(".")) < 4
-          selectedConversation?.isApproved &&
-          selectedConversation?.didApproveMe &&
-          !selectedConversation?.isBlocked &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat &&
-          !isMe &&
-          getSyncStatus ? (
+        re.test(draft) &&
+        // && (draft.length-1 - draft.indexOf(".")) < 4
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat &&
+        !isMe &&
+        getSyncStatus ? (
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) : (
           <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
@@ -688,8 +688,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-          ? 'Syncronizing..'
-          : 'Synchronized';
+        ? 'Syncronizing..'
+        : 'Synchronized';
 
     console.log(
       'stagedAttachments.length!==0 --> ',
@@ -753,7 +753,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               </Flex>
             </div>
             {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
-              this.sendButton()
+              <div className={classNames('send-message-button')}>{this.sendButton()}</div>
             ) : (
               <StartRecordingButton onClick={this.onLoadVoiceNoteView} />
             )}
@@ -1078,13 +1078,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderAttachmentsStaged() {
     const { stagedAttachments } = this.props;
     const { showCaptionEditor } = this.state;
-    console.log(
-      'showCaptionEditor -->',
-      showCaptionEditor,
-      'stagedAttachments -->',
-      stagedAttachments,
-      stagedAttachments.length
-    );
+  
     if (stagedAttachments && stagedAttachments.length) {
       return (
         <>
@@ -1372,8 +1366,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       window.inboxStore?.dispatch(
         updateConfirmModal({
           title: window.i18n('audioPermissionNeededTitle'),
-          message:
-            window.i18n('audioPermissionNeeded'),
+          message: window.i18n('audioPermissionNeeded'),
           okText: window.i18n('allow'),
           cancelText: window.i18n('deny'),
           okTheme: BchatButtonColor.Primary,
@@ -1384,7 +1377,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           },
           closeAfterInput: false,
           iconShow: true,
-          customIcon: <MicrophoneIcon iconSize={30} />
+          customIcon: <MicrophoneIcon iconSize={30} />,
         })
       );
       return;

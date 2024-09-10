@@ -42,13 +42,13 @@ const darkColorPillDivider = '#3E3E4E';
 const darkColorLastSeenIndicator = accentDarkTheme;
 const darkColorQuoteBottomBarBg = '#34323F';
 const darkColorCellBackground = '#181821';
-const darkColorReceivedMessageBg = '#34323F';
+const darkColorReceivedMessageBg = '#2E333D';
 const darkColorReceivedMessageBgHover = '#52505F';
 const darkColorReceivedMessageText = white;
 
 const darkColorPillDividerText = '#a0a0a0';
 // const darkInputBackground = darkColorCellBackground;
-const darkInputBackground = '#202329 ';
+const darkInputBackground = '#202329';
 
 const darkFilterBchatText = 'none';
 const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
@@ -82,7 +82,7 @@ const darkWalletPriorityHover = '#303042';
 const darkWalletCopyHover = '#52505F';
 const darkAddMembers = '#313143';
 const darkProfileClose = '#4C4C64';
-const darkChatTimestamp = '#FFFFFF';
+const darkChatTimestamp = '#858598';
 
 // for bchat
 const darkColorBg = black;
@@ -122,7 +122,7 @@ const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg"
 const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.svg")`;
 const darkWalletSyncing = `url("../images/bchat/wallet_syncing_dark.svg")`;
 const darkChatIcons = 'white';
-const darkComposeMsgInput = '#3F3C4B';
+const darkComposeMsgInput = '#202329';
 const darkDayNight = `url("../images/bchat/light_theme.svg")`;
 const darkNewChat = `url("../images/bchat/newChat_dark.svg")`;
 const darkMsgReqImg = `url("../images/bchat/no_message_request_dark_theme.svg")`;
@@ -136,7 +136,7 @@ const darkBlockseletedUserBg = '#2C2C3E';
 
 const darkPasswordBorderBottom = '#444455';
 const darkRightpaneSetting = '#16161D';
-const darkbubbleReceivedBg = '#373746';
+const darkbubbleReceivedBg = '#2e333d';
 
 const buttonColor = forestGreenColor;
 // const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
@@ -197,6 +197,11 @@ const darkHopBg='#202329';
 const darkHopTxt='#A7A7BA';
 const darkRecoverySeedBg='#202329';
 const darkModalFooter='#202329';
+const darkUntrustMediaBg='#131313';
+const darkUntrustedVerticalBar='#858598';
+const darkIconBtnHover='#2e333d';
+const darkContextMenuHoverBg='#333842';
+const darkWalletSyncBoxBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -448,6 +453,12 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-hop-txt', darkHopTxt);
   document.documentElement.style.setProperty('--color-recovery-seed-bg', darkRecoverySeedBg);
   document.documentElement.style.setProperty('--color-modal-footer', darkModalFooter);
+  document.documentElement.style.setProperty('--color-untrust-media-bg', darkUntrustMediaBg);
+  document.documentElement.style.setProperty('--color-untrusted-vertical-bar', darkUntrustedVerticalBar);
+  document.documentElement.style.setProperty('--color-icon-btn-hover', darkIconBtnHover);
+  document.documentElement.style.setProperty('--color-context-menu-hover-bg', darkContextMenuHoverBg);
+  document.documentElement.style.setProperty('--color-wallet-Sync-box-bg', darkWalletSyncBoxBg);
+
 };
 
 // LIGHT COLORS
@@ -470,7 +481,7 @@ const lightColorPillDivider = `#E3E3E3`;
 const lightColorLastSeenIndicator = black;
 const lightColorQuoteBottomBarBg = '#f8f8f8';
 const lightColorCellBackground = '#FAFAFA';
-const lightColorReceivedMessageBg = '#f5f5f5';
+const lightColorReceivedMessageBg = '#F8F8F8';
 const whiteColorReceivedMessageBgHover = '#FAFAFA';
 const lightColorReceivedMessageText = black;
 
@@ -542,7 +553,7 @@ const whiteWalletSyncing = `url("../images/bchat/wallet_syncing_white.svg")`;
 const lightNoMedia = `url("../images/bchat/no_mediaWhiteTheme.svg")`;
 const lightChatHeader = '#F0F0F0';
 const lightChatIcons = 'black';
-const lightComposeMsgInput = '#EAEAEA';
+const lightComposeMsgInput = '#F8F8F8';
 const lightcomposeMsgRecordIcon = '#85858F';
 const lightWalletNodeHeader = '#128B17';
 const lightWalletSelectHover = '#D3D3D3';
@@ -559,7 +570,7 @@ const lightRightpaneSetting = '#f8f8f8';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
 const whiteAudioRecord = '#dcdbdb';
-const whiteBubbleReceivedBg = '#E2E2E2';
+const whiteBubbleReceivedBg = '#F8F8F8';
 const lightBlockseletedUserBg = '#FFFFFF';
 const lightDisableBorder = '#C5C5C5';
 const lightDownArrowBg = '#FFFFFF';
@@ -597,7 +608,7 @@ const lightWalletCopyHover = '#EBEBEB';
 const lightAddressBookCopy = '#FFFFFF';
 const lightAddMembers = '#F2F2F2';
 const lightProfileClose = '#DDDDDD';
-const lightChattimestamp = '#222222';
+const lightChattimestamp = '#333333';
 const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
 const lightBnsTransactionColor = '#222222';
 
@@ -623,6 +634,11 @@ const lightHopBg='#EBEBEB';
 const lightHoptxt='#333';
 const lightRecoverySeedBg='#F0F0F0';
 const lightModalFooter='#EBEBEB';
+const lightUntrustMediaBg='#EBEBEB';
+const lightUntrustedVerticalBar='#ACACAC';
+const lightIconBtnHover='#F8F8F8';
+const lightContextMenuHoverBg='#EBEBEB';
+const lightWalletSyncBoxBg='#F8F8F8';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -880,6 +896,11 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-hop-txt', lightHoptxt);
   document.documentElement.style.setProperty('--color-recovery-seed-bg', lightRecoverySeedBg);
   document.documentElement.style.setProperty('--color-modal-footer', lightModalFooter);
+  document.documentElement.style.setProperty('--color-untrust-media-bg', lightUntrustMediaBg);
+  document.documentElement.style.setProperty('--color-untrusted-vertical-bar', lightUntrustedVerticalBar);
+  document.documentElement.style.setProperty('--color-icon-btn-hover', lightIconBtnHover);
+  document.documentElement.style.setProperty('--color-context-menu-hover-bg', lightContextMenuHoverBg);
+  document.documentElement.style.setProperty('--color-wallet-Sync-box-bg', lightWalletSyncBoxBg);
 };
 
 // default to light theme
@@ -1037,6 +1058,11 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-hop-txt:${darkHopTxt};
     --color-recovery-seed-bg:${darkRecoverySeedBg};
     --color-modal-footer:${darkModalFooter};
+    --color-untrust-media-bg:${darkUntrustMediaBg};
+    --color-untrusted-vertical-bar:${darkUntrustedVerticalBar};
+    --color-icon-btn-hover:${darkIconBtnHover};
+    --color-context-menu-hover-bg:${darkContextMenuHoverBg};
+    --color-wallet-Sync-box-bg:${darkWalletSyncBoxBg};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

@@ -62,9 +62,9 @@
     justify-content: center;
     width: 100%;
 
-    svg {
-      color: var(--color-chatIcons);
-    }
+    // svg {
+    //   color: var(--color-chatIcons);
+    // }
     // .connectWalletBtn {
     //   display: flex;
     //   width: 155px;
@@ -269,8 +269,8 @@
     // }
 
     &:hover {
-      background-color: #202329;
-      color: white;
+      background-color: var(--color-icon-btn-hover);
+      color: var(--color-text);
     }
   }
   .recorded-btn {
@@ -280,6 +280,7 @@
     margin-bottom: 5px;
     &:hover {
       opacity: 0.9;
+      color: white;
     }
   }
 
@@ -295,7 +296,7 @@
     /* z-index: 1; */
     /* margin-left: 27px; */
     border-radius: 16px;
-    background: #202329;
+    background-color: var(--color-composeMsgInput);
     margin: 5px 7px;
     border-radius: 10px;
     padding: 0 20px;
@@ -305,7 +306,7 @@
     .wallet-sync-box {
       border-radius: 16px;
       border: 2px solid #108d32;
-      background: #202329;
+      background-color: var(--color-wallet-Sync-box-bg);
       width: 254px;
       height: 66px;
       flex-shrink: 0;
@@ -317,14 +318,14 @@
       justify-content: center;
       padding: 15px;
       .sync-txt {
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-family: $bchat-font-open-sans;
         font-size: 18px;
         font-weight: 600;
         margin-right: 21px;
       }
       .inner-perc-txt {
-        color: #f0f0f0;
+        // color: #f0f0f0;
         text-align: center;
         font-size: 12px;
         font-weight: 700;
@@ -488,6 +489,7 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 5px;
+  color: white;
   // animation: fadein $bchat-transition-duration;
   // padding-left: 15px;
   // .text {
@@ -542,8 +544,8 @@
     width: 100%;
     border-radius: 10px;
     margin: 5px 7px;
-    background: #202329;
-    // background-color: var(--color-composeMsgInput);
+    // background: #202329;
+    background-color: var(--color-composeMsgInput);
     margin-left: 12px;
     height: 60px;
     // border-radius: 13px;

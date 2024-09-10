@@ -15,7 +15,7 @@ const StyledTrustSenderUI = styled.div`
   margin: 15px 15px 5px;
   padding: 15px;
   border-radius: 16px;
-  background: #131313;
+  background: var(--color-untrust-media-bg);
 `;
 
 const ClickToDownload = styled.div`
@@ -23,7 +23,7 @@ const ClickToDownload = styled.div`
   // padding: var(--margins-xs) var(--margins-md);
   white-space: nowrap;
   overflow: hidden;
-  color: #f0f0f0;
+  // color: #f0f0f0;
   text-overflow: ellipsis;
   font-size: 16px;
   font-weight: 300;
@@ -31,14 +31,14 @@ const ClickToDownload = styled.div`
 
 const VerticalLine = styled.div`
   width: 5px;
-  background-color: #858598;
+  background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
   margin-right: 10px;
 `;
 const ImageTxt = styled.span`
   margin-left: 5px;
-  color: #f0f0f0;
+  // color: #f0f0f0;
   font-family: Poppins;
   font-size: 16px;
   font-weight: 600;
