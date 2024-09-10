@@ -12,7 +12,7 @@ const darkGrey='#202329';
 // const borderLightThemeColor = '#f1f1f1';
 // const borderDarkThemeColor = '#ffffff0F';
 const baseColor = '#00A803';
-const greyColor = '#2D2D3B';
+// const greyColor = '#2D2D3B';
 const lightGreyColor = '#646474';
 const greenColor = '#108D32';
 const forestGreenColor="#00A638";
@@ -48,7 +48,7 @@ const darkColorReceivedMessageText = white;
 
 const darkColorPillDividerText = '#a0a0a0';
 // const darkInputBackground = darkColorCellBackground;
-const darkInputBackground = '#22222E';
+const darkInputBackground = '#202329 ';
 
 const darkFilterBchatText = 'none';
 const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
@@ -93,7 +93,7 @@ const darkHintMessage = '#7B7B86';
 const darkTextAreaColor = '#0BB70F';
 const darkComposeMsgBg = '#2B2B38';
 const darkComposeMsgIconBG = '#2879FB';
-const darkSettingIndication = greyColor;
+const darkSettingIndication = '#2E333D';
 const darkProfileBgColor = '#2A2A3B';
 const darkSinginTextColor = '#128B17';
 const darkHintColor = lightGreyColor;
@@ -131,7 +131,7 @@ const darkAddContact = `url("../images/bchat/add_contact.svg")`;
 const darkNoMedia = `url("../images/bchat/no_mediaDarkTheme.svg")`;
 
 const darkLeftpaneSetting = darkScrollbarTrack;
-const darkBlockUserBg = '#2D2D3B';
+const darkBlockUserBg = '#202329';
 const darkBlockseletedUserBg = '#2C2C3E';
 
 const darkPasswordBorderBottom = '#444455';
@@ -194,7 +194,9 @@ const darksettingHeaderBorder='#202329'
 const darkToggleBtn='#9595B5';
 const darkSettingsRightPaneOptionBorder='#4B4B64';
 const darkHopBg='#202329';
-const darkHopTxt='#A7A7BA'
+const darkHopTxt='#A7A7BA';
+const darkRecoverySeedBg='#202329';
+const darkModalFooter='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -444,6 +446,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-settings-right-pane-option-border', darkSettingsRightPaneOptionBorder);
   document.documentElement.style.setProperty('--color-hop-bg', darkHopBg);
   document.documentElement.style.setProperty('--color-hop-txt', darkHopTxt);
+  document.documentElement.style.setProperty('--color-recovery-seed-bg', darkRecoverySeedBg);
+  document.documentElement.style.setProperty('--color-modal-footer', darkModalFooter);
 };
 
 // LIGHT COLORS
@@ -472,7 +476,7 @@ const lightColorReceivedMessageText = black;
 
 const lightColorPillDividerText = '#555555';
 
-const lightInputBackground = '#efefef';
+const lightInputBackground = '#EBEBEB';
 const lightFilterBchatText = 'brightness(0) saturate(100%)';
 const lightUnreadBorder = `4px solid ${accentLightTheme}`;
 
@@ -510,7 +514,7 @@ const lightInboxBgColor = '#FCFCFC';
 // const lightTextAreaColor="black";
 const lightComposeMsgBg = '#f2f2f2';
 // const lightComposeMsgIconBG="#2879fb";
-const lightSettingIndication = '#F2F2F2';
+const lightSettingIndication = '#F8F8F8';
 const lightSinginTextColor = '#128B17';
 // const lightHintColor = lightGreyColor;
 // const lightCopyIcon = '#0BB70F';
@@ -549,7 +553,7 @@ const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = '#F8F8F8';
 const lightClearBtn = '#fff';
 const lightLeftpaneSetting = '#f4f4f4';
-const lightBlockUserBg = '#F2F2F2';
+const lightBlockUserBg = '#EBEBEB';
 const lightPasswordBorderBottom = '#D5D5D5';
 const lightRightpaneSetting = '#f8f8f8';
 const ligntDisableText = '#B9BABF';
@@ -617,6 +621,8 @@ const lightToggleBtn='#ACACAC';
 const ligthSettingsRightPaneOptionBorder='#ACACAC';
 const lightHopBg='#EBEBEB';
 const lightHoptxt='#333';
+const lightRecoverySeedBg='#F0F0F0';
+const lightModalFooter='#EBEBEB';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -872,6 +878,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-settings-right-pane-option-border', ligthSettingsRightPaneOptionBorder);
   document.documentElement.style.setProperty('--color-hop-bg', lightHopBg);
   document.documentElement.style.setProperty('--color-hop-txt', lightHoptxt);
+  document.documentElement.style.setProperty('--color-recovery-seed-bg', lightRecoverySeedBg);
+  document.documentElement.style.setProperty('--color-modal-footer', lightModalFooter);
 };
 
 // default to light theme
@@ -1027,6 +1035,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-settings-right-pane-option-border:${darkSettingsRightPaneOptionBorder};
     --color-hop-bg:${darkHopBg};
     --color-hop-txt:${darkHopTxt};
+    --color-recovery-seed-bg:${darkRecoverySeedBg};
+    --color-modal-footer:${darkModalFooter};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

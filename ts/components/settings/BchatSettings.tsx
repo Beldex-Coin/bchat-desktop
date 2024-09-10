@@ -27,6 +27,8 @@ import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { WalletSettings } from '../wallet/BchatWalletSettings';
 import { updateBchatAlertConfirmModal } from '../../state/ducks/modalDialog';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 // import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
 // import { startWallet } from "../../mains/wallet-rpc"
 
@@ -91,12 +93,13 @@ export const PasswordLock = ({
   pwdLockError: string | null;
   validatePasswordLock: () => Promise<boolean>;
 }) => {
+  const darkMode = useSelector(getTheme) === 'dark';
   return (
     <div className="bchat-settings__password-lock">
       <div className='bchat-settings__password-lock-box'>
        <div style={{borderRadius:'16px',overflow:'hidden'}}>
        <div className="subBox">
-          <img src='images/bchat/passwordIcon.svg'width={"130px"} height={"130px"}></img>
+          <img src={darkMode?'images/bchat/passwordIcon.svg':'images/bchat/passwordIconWhite.svg'} width={"130px"} height={"130px"}></img>
           <div className='subtext'>{window.i18n('password')}</div>
           <input
             type="password"

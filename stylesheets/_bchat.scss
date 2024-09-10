@@ -945,8 +945,8 @@ label {
     // color: var(--color-seed);
     font-style: normal;
     font-weight: 400;
-    background-color: #202329;
-    border: 1px solid #46465d;
+    background-color: var(--color-recovery-seed-bg);
+    border: 1px solid var(--color-search-border);
     border-radius: 14px;
     padding: 20px 30px;
     margin-top: 15px;
@@ -1192,7 +1192,7 @@ label {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: #202329;
+    background-color: var(--color-modal-footer);
     align-items: center;
   }
 }
@@ -2185,7 +2185,7 @@ label {
         // max-width: 90%;
         // width: 600px;
 
-        background: #2e333d;
+        background: var(--color-settingIndication);
         // color: #858598;
 
         // border: 1px solid $bchat-shade-8;
@@ -2206,13 +2206,13 @@ label {
 
       input {
         width: 100%;
-        background: #202329;
+        background:var(--color-input-background);
         color: #858598;
         height: 65px;
         padding: $bchat-margin-xs $bchat-margin-md;
         // margin-bottom: $bchat-margin-lg;
         // outline: none;
-        border: 1px solid #46465d;
+        border: 1px solid var(--color-search-border);
         border-radius: 16px;
         // text-align: center;
         font-size: $bchat-font-h4;
@@ -2244,8 +2244,8 @@ label {
       padding: 10px 15px;
       padding-inline-start: 16px;
       align-items: center;
-      // background-color: var(--color-settingIndication);
-      background-color: #202329;
+      background-color: var(--color-blockUserBg);
+      // background-color: #202329;
       font-family: $bchat-font-default;
       margin-bottom: 6px;
       border-radius: 10px;
@@ -3954,6 +3954,7 @@ input {
   height: 70px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   transition: $bchat-transition-duration;
   cursor: pointer;
   // border:var(--color-bchat-border);
@@ -3974,34 +3975,34 @@ input {
     opacity: 0.5;
   }
 
-  &__checkmark,
-  &__checkmarkbox {
-    width: 23px;
-    height: 23px;
-    border: 2px solid #bcbdbe;
-    border-radius: 6px;
-    margin: auto 0;
-    // opacity: 0;
-    transition: $bchat-transition-duration;
+  // &__checkmark,
+  // &__checkmarkbox {
+  //   width: 23px;
+  //   height: 23px;
+  //   border: 2px solid #bcbdbe;
+  //   border-radius: 6px;
+  //   margin: auto 0;
+  //   // opacity: 0;
+  //   transition: $bchat-transition-duration;
 
-    &.selected {
-      opacity: 1;
-      border: unset;
+  //   &.selected {
+  //     opacity: 1;
+  //     border: unset;
 
-      svg {
-        fill: var(--color-accent) !important;
-      }
-    }
-  }
+  //     svg {
+  //       fill: var(--color-accent) !important;
+  //     }
+  //   }
+  // }
 
-  &__checkmarkbox {
-    // border-radius: 2px;
-    border: 1.5px solid #f0f0f0;
+  // &__checkmarkbox {
+  //   // border-radius: 2px;
+  //   border: 1.5px solid #f0f0f0;
 
-    &.selected {
-      border: unset;
-    }
-  }
+  //   &.selected {
+  //     border: unset;
+  //   }
+  // }
 
   &__info {
     display: flex;
@@ -4057,8 +4058,8 @@ input {
 }
 
 .bchat-blockedMember-item {
-  // background-color: var(--color-blockUserBg);
-  background-color: #202329;
+  background-color: var(--color-blockUserBg);
+  // background-color: #202329;
   border-radius: 15px;
 
   .selected {
