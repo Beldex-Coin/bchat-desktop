@@ -4,7 +4,7 @@ import { BchatIcon, BchatIconType } from '../../../../icon';
 
 const NotificationBubbleFlex = styled.div`
   display: flex;
-  // background-color: var(--message-bubbles-received-background-color);
+
   // color: var(--color-text);
   // width: 90%;
   // max-width: 584px;
@@ -18,13 +18,13 @@ const NotificationBubbleFlex = styled.div`
   height: 40px;
   margin-top: -20px;
   border-radius: 22px;
-  background: #2e333d;
+  background-color: var(--message-bubbles-received-background-color);
 `;
 
 const NotificationBubbleText = styled.div`
   // color: var(--color-text);
   // margin-left: 45px;
-  color: #a7a7ba;
+  color: var(--color-chat-timestamp);
   font-size: 14px;
   font-weight: 400;
 `;
@@ -44,7 +44,8 @@ const FlexCenter = styled.div`
   width: 90%;
   height: 1px;
   margin: 25px auto;
-  background: #2e333d;
+
+  background-color: var(--message-bubbles-received-background-color);
 `;
 
 export const NotificationBubble = (props: {

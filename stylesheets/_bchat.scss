@@ -365,7 +365,7 @@ textarea {
     }
 
     &.danger {
-      background: #2e333d;
+      background:var(--color-secondary-btn-bg);
       color: #ff3e3e;
     }
     &.success {

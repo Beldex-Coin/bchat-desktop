@@ -243,7 +243,8 @@ const HeaderItem = () => {
         alignItems="center"
         height="70px"
         padding="25px"
-        style={{ borderRadius: '16px', background: '#2E333D' }}
+        className='group-settings-header-title-wrapper'
+        
       >
         <span className="group-settings-header-titleTxt">
           {isGroup ? 'Group Info' : 'Profile Info'}
@@ -252,7 +253,7 @@ const HeaderItem = () => {
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
         >
-          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor='#fff' />
+          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor='var(--color-text)' />
         </span>
       </Flex>
       <SpacerLG />
