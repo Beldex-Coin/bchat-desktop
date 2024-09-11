@@ -8,13 +8,17 @@ import { bnsLinkModal, editProfileModal } from '../../state/ducks/modalDialog';
 import { UserUtils } from '../../bchat/utils';
 import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVerification';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 
 export const BnsLinkDialog = () => {
+  
   const [success, setSuccess] = useState(false);
   const [bnsName, setBnsName] = useState('');
   const [isVerify, setIsVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id
+  const darkMode = useSelector(getTheme) === 'dark';
   const regexForBnsName = /^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   const i18n = window.i18n;
   function closeDialog() {
@@ -37,7 +41,7 @@ export const BnsLinkDialog = () => {
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
-          <img src={'images/bchat/linked_bns.gif'} style={{ width: '120px', height: '120px' }} />
+          <img src={darkMode?'images/bchat/linked_bns.gif':'images/bchat/linked_bns_white.gif'} style={{ width: '120px', height: '120px' }} />
         </div>
         <div className="linked_bns">{i18n('bnsLinkedSuccessfully')}</div>
         {/* <BchatButton

@@ -4,6 +4,8 @@ import { SpacerMD } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 // import { useKey } from 'react-use';
 
 export interface BchatAlertConfirmModalProps {
@@ -24,6 +26,7 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
   const { settings = false, onClickOk, onClickClose, onClickCancel, btndisable } = props;
 
   const [isLoading, setIsLoading] = useState(false);
+  const darkMode = useSelector(getTheme) === 'dark';
   // const cancelText = window.i18n('cancel');
 
   const onClickOkHandler = async () => {
@@ -74,7 +77,7 @@ export const BchatAlertConfirmModal = (props: BchatAlertConfirmModalProps) => {
     >
       <div className="bchat-modal__centered">
         <div className="bchat-modal-imgConfirmBox">
-          <img src={'images/bchat/walletinchat.svg'} width={'50px'} height={'50px'} />
+          <img src={darkMode?'images/bchat/walletinchat.svg':'images/bchat/Pay_as_you_chat_white.svg'} width={'50px'} height={'50px'} />
           <SpacerMD />
 
           <div className="bchat-modal-imgConfirmBox-header">{window.i18n('payYouChat')}</div>

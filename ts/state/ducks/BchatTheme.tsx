@@ -172,7 +172,7 @@ const darkAddressBookCopy = '#009D17';
 const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
-const darkWalPassword = `url("../images/wallet/Password_image.svg")`;
+const darkWalPassword = `url("../images/bchat/passwordIcon.svg")`;
 const darkBnsTransactionColor = '#FFFFFF';
 
 // revamp
@@ -209,6 +209,9 @@ const darkDisappearTimeHover='#2E333D';
 const darkProfileInfoMediaTitle='#A7A7BA';
 const darkModalBg='#2e333d';
 const darkModalIconBg='#202329';
+const darkChatMultiSelectBg='#202329';
+const darkConfirmModalInnerBg='#1B1E23';
+const darkConfirmModalHoverBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -472,6 +475,9 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-profile-info-media-title', darkProfileInfoMediaTitle);
   document.documentElement.style.setProperty('--color-modal-bg', darkModalBg);
   document.documentElement.style.setProperty('--color-modal-icon-bg', darkModalIconBg);
+  document.documentElement.style.setProperty('--color-chat-multi-select-bg', darkChatMultiSelectBg);
+  document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', darkConfirmModalInnerBg);
+  document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', darkConfirmModalHoverBg);
 
 
 };
@@ -615,7 +621,7 @@ const lightDownthickArrow = '#8F8FA2';
 const lightDisableBtn = '#DEDEDE';
 const lightDisableTxt = '#B1B1B1';
 const lightConfirmAddress = '#747474';
-const lightWalPassword = `url("../images/wallet/Password_image_white.svg")`;
+const lightWalPassword = `url("../images/bchat/passwordIconWhite.svg")`;
 const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`;
 const lightLeaveHover = '#D9D9D9';
 const lightCopyHover = '#FFFFFF';
@@ -660,7 +666,10 @@ const lightProfileInfoBorder='#ACACAC';
 const lightDisappearTimeHover='#EBEBEB';
 const lightProfileInfoMediaTitle='#333333';
 const lightModalBg='#F8F8F8';
-const lightModalIconBg='#EBEBEB'
+const lightModalIconBg='#EBEBEB';
+const lightChatMultiSelectBg='#DDDDDD';
+const lightConfirmModalInnerBg='#EBEBEB';
+const lightConfirmModalHoverBg='#E4E4E4';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -930,6 +939,9 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-profile-info-media-title', lightProfileInfoMediaTitle);
   document.documentElement.style.setProperty('--color-modal-bg', lightModalBg);
   document.documentElement.style.setProperty('--color-modal-icon-bg', lightModalIconBg);
+  document.documentElement.style.setProperty('--color-chat-multi-select-bg', lightChatMultiSelectBg);
+  document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', lightConfirmModalInnerBg);
+  document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', lightConfirmModalHoverBg);
   
 };
 
@@ -1099,7 +1111,10 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-disappear-time-hover:${darkDisappearTimeHover};
     --color-profile-info-media-title:${darkProfileInfoMediaTitle};
     --color-modal-bg:${darkModalBg};
-    --color-modal-icon-bg:${darkModalIconBg}
+    --color-modal-icon-bg:${darkModalIconBg};
+    --color-chat-multi-select-bg:${darkChatMultiSelectBg};
+    --color-confirm-modal-inner-bg:${darkConfirmModalInnerBg};
+    --color-confirm-modal-hover-bg:${darkConfirmModalHoverBg};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

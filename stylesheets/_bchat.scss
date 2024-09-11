@@ -464,7 +464,7 @@ textarea {
   align-items: center;
   width: 200px;
   // background-color: $bchat-button-green-color;
-  background-color: #202329;
+  background-color: var(--color-disableBtn);
   height: 55px;
   color: #108d32;
   /* text-align: center; */
@@ -1090,8 +1090,8 @@ label {
   &__walletModel {
     width: 390px;
     margin: 10px 10px 25px;
-    font-family: 'Poppins';
-    background-color: #1b1e23;
+    // font-family: 'Poppins';
+    background-color: var(--color-confirm-modal-inner-bg);
     border-radius: 16px;
     padding: 20px 20px 0px;
     max-height: 300px;
@@ -1335,7 +1335,7 @@ label {
       }
 
       &-walletModalContent:hover {
-        background-color: #202329;
+        background-color: var(--color-confirm-modal-hover-bg);
         // background-color: var(--color-walPopuphover);
 
         cursor: pointer;
@@ -1343,9 +1343,9 @@ label {
 
       .isSelect {
         // background-color: #2879fb;
-        background-color: #2e333d;
+        background-color: var(--color-icon-btn-hover);
         cursor: pointer;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         // height: 45px;
       }
 
@@ -3711,7 +3711,7 @@ input {
     text-align: center;
     width: 60px;
     height: 60px;
-    background-color: #202329;
+    background-color: var(--color-modal-icon-bg);
     border-radius: 10px;
     margin-left: 25px;
     margin-top: 30px;

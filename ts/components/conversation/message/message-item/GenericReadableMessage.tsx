@@ -20,6 +20,7 @@ import { MessageAvatar } from '../message-content/MessageAvatar';
 import { MessageContentWithStatuses } from '../message-content/MessageContentWithStatus';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
+import { getTheme } from '../../../../state/selectors/theme';
 // import styled from 'styled-components';
 
 export type GenericReadableMessageSelectorProps = Pick<
@@ -159,6 +160,8 @@ export const GenericReadableMessage = (props: Props) => {
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
+  const darkMode = useSelector(getTheme) === 'dark';
+  const iconColor=darkMode?'#F0F0F0':selected?'#3E4A53':'#ACACAC';
 
   const onSelect = useCallback(
     messageId => {
@@ -188,10 +191,10 @@ export const GenericReadableMessage = (props: Props) => {
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
         <div>
           {isSelectionMode &&isIncoming && (
-            <div style={{ marginRight: '15px' }}>
+            <div style={{ marginRight: '15px' }}> 
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
-                iconColor={'#F0F0F0'}
+                iconColor={iconColor}
                 clipRule="evenodd"
                 fillRule="evenodd"
                 iconSize={23}
@@ -225,7 +228,7 @@ export const GenericReadableMessage = (props: Props) => {
             <div style={{ marginLeft: '15px' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
-                iconColor={'#F0F0F0'}
+                iconColor={iconColor}
                 clipRule="evenodd"
                 fillRule="evenodd"
                 iconSize={23}
