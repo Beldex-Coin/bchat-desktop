@@ -128,7 +128,7 @@ textarea {
     }
 
     &.secondary {
-      background:var(--color-secondary-btn-bg);
+      background: var(--color-secondary-btn-bg);
       // color: #f0f0f0;
     }
 
@@ -317,13 +317,14 @@ textarea {
     }
 
     &.secondary {
-      background:var(--color-secondary-btn-bg);
+      background: var(--color-secondary-btn-bg);
       // color: #f0f0f0;
     }
 
     &.disabled {
-      color: #858598;
-      background: #202329;
+      background-color: var(--color-disableBtn);
+      color: var(--color-disableTxt);
+      cursor: not-allowed;
     }
 
     &.enable {
@@ -332,14 +333,14 @@ textarea {
     }
 
     &.danger {
-      background:var(--color-secondary-btn-bg);
+      background: var(--color-secondary-btn-bg);
       color: #ff3e3e;
       &:hover {
         background-color: #ff3e3e;
         color: #f0f0f0;
       }
     }
-    &.red{
+    &.red {
       background-color: #ff3e3e;
       color: #f0f0f0;
     }
@@ -360,12 +361,12 @@ textarea {
     font-weight: 300;
 
     &.secondary {
-      background:var(--color-secondary-btn-bg);
+      background: var(--color-secondary-btn-bg);
       // color: #f0f0f0;
     }
 
     &.danger {
-      background:var(--color-secondary-btn-bg);
+      background: var(--color-secondary-btn-bg);
       color: #ff3e3e;
     }
     &.success {
@@ -376,7 +377,7 @@ textarea {
       color: #f0f0f0;
       background: #108d32;
     }
-    &.red{
+    &.red {
       background-color: #ff3e3e;
       color: #f0f0f0;
     }
@@ -463,7 +464,7 @@ textarea {
   align-items: center;
   width: 200px;
   // background-color: $bchat-button-green-color;
-  background-color: #202329;
+  background-color: var(--color-disableBtn);
   height: 55px;
   color: #108d32;
   /* text-align: center; */
@@ -680,7 +681,7 @@ label {
   max-height: 70vh;
   max-width: calc(min(70vw, 800px));
   // background-color: var(--color-smModal-bg);
-  background-color: #2e333d;
+  background-color: var(--color-modal-bg);
   color: var(--color-text);
   // border: var(--border-bchat);
   box-shadow: var(--color-bchat-shadow);
@@ -1089,8 +1090,8 @@ label {
   &__walletModel {
     width: 390px;
     margin: 10px 10px 25px;
-    font-family: 'Poppins';
-    background-color: #1b1e23;
+    // font-family: 'Poppins';
+    background-color: var(--color-confirm-modal-inner-bg);
     border-radius: 16px;
     padding: 20px 20px 0px;
     max-height: 300px;
@@ -1334,7 +1335,7 @@ label {
       }
 
       &-walletModalContent:hover {
-        background-color: #202329;
+        background-color: var(--color-confirm-modal-hover-bg);
         // background-color: var(--color-walPopuphover);
 
         cursor: pointer;
@@ -1342,9 +1343,9 @@ label {
 
       .isSelect {
         // background-color: #2879fb;
-        background-color: #2e333d;
+        background-color: var(--color-icon-btn-hover);
         cursor: pointer;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         // height: 45px;
       }
 
@@ -1483,7 +1484,7 @@ label {
     // background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     background-color: var(--color-context-menu-hover-bg);
-    color:var(--color-text);
+    color: var(--color-text);
   }
 
   .react-contexify__item__content {
@@ -1621,7 +1622,7 @@ label {
 }
 
 .camera {
-  background-color: #202329;
+  background-color: var(--color-modal-icon-bg);
   border-radius: 20px;
   width: 30px;
   height: 30px;
@@ -1634,7 +1635,8 @@ label {
   cursor: pointer;
 
   &:hover {
-    background-color: #46465d;
+    // background-color: #46465d;
+    opacity: 0.8;
   }
 }
 
@@ -1677,14 +1679,16 @@ label {
 }
 
 .profile-header {
-  font-family: $bchat-font-poppin-semibold;
+  // font-family: $bchat-font-poppin-semibold;
   font-size: 12px;
+  font-weight: 600;
 }
 
 .profile-value {
   width: 86%;
-  font-family: $bchat-font-poppin-medium;
+  // font-family: $bchat-font-poppin-medium;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .conversation-loader {
@@ -2208,7 +2212,7 @@ label {
 
       input {
         width: 100%;
-        background:var(--color-input-background);
+        background: var(--color-input-background);
         color: #858598;
         height: 65px;
         padding: $bchat-margin-xs $bchat-margin-md;
@@ -3592,7 +3596,7 @@ label {
   width: $bchat-modal-size-sm;
   height: $bchat-modal-size-sm;
   padding: $bchat-margin-xs;
-  background-color: #d9d9d9; 
+  background-color: #d9d9d9;
   margin: auto 0;
   // border-radius: 5px;
 }
@@ -3707,7 +3711,7 @@ input {
     text-align: center;
     width: 60px;
     height: 60px;
-    background-color: #202329;
+    background-color: var(--color-modal-icon-bg);
     border-radius: 10px;
     margin-left: 25px;
     margin-top: 30px;
