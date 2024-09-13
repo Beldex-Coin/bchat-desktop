@@ -38,7 +38,7 @@
 
         .progress {
           width: 90px;
-          background-color: #202329;
+          background-color: var(--color-hop-bg);
           border-radius: 68px;
 
           .CircularProgressbar {
@@ -256,7 +256,7 @@
       }
 
       &-reloadTxt {
-        color: #a7a7ba;
+        color: var(--color-modal-disable-txt);
         text-align: center;
         font-size: 18px;
         font-weight: 400;
@@ -264,7 +264,7 @@
 
       &-bRemaing {
         text-align: center;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 18px;
         font-weight: 400;
       }
@@ -293,7 +293,7 @@
         // margin: 5% 0px;
         &-title {
           padding-top: 20px;
-          color: #f0f0f0;
+          // color: #f0f0f0;
           font-size: 26px;
           font-weight: 700;
           text-align: left;
@@ -303,8 +303,8 @@
           display: flex;
           flex-direction: row;
           border-radius: 16px;
-          border: 1px solid #46465d;
-          background: #202329;
+          border: 1px solid var(--color-search-border);
+          background: var(--color-input-background);
           width: 505px;
 
           textarea {
@@ -352,14 +352,14 @@
         // }
         &-password-label {
           display: flex;
-          color: #f0f0f0;
+          // color: #f0f0f0;
           font-size: 16px;
           font-weight: 400;
         }
         &-password {
           border-radius: 16px;
-          border: 1px solid #46465d;
-          background: #202329;
+          border: 1px solid var(--color-search-border);
+          background: var(--color-input-background);
           width: 505px;
           input {
             border: none;

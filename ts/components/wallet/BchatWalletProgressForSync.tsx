@@ -1,6 +1,6 @@
 import React from 'react';
 import { SpacerLG,   SpacerSM } from '../basic/Text';
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIcon } from '../icon';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import styled from 'styled-components';
 // import 'react-circular-progressbar/dist/styles.css';
@@ -35,9 +35,8 @@ export const ProgressForSync = (props: any) => {
         <div className='progress' >
           <CircularProgressbarWithChildren value={props.percentage}>
             {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
-            <BchatIconButton
+            <BchatIcon
               iconSize={40}
-              dataTestId="settings-section"
               iconType={'wallet'}
             />
           </CircularProgressbarWithChildren>

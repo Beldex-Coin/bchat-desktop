@@ -212,6 +212,8 @@ const darkModalIconBg='#202329';
 const darkChatMultiSelectBg='#202329';
 const darkConfirmModalInnerBg='#1B1E23';
 const darkConfirmModalHoverBg='#202329';
+const darkEnableBtnBg='#202329';
+const darkModalDisableTxt='#a7a7ba';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -478,7 +480,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-chat-multi-select-bg', darkChatMultiSelectBg);
   document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', darkConfirmModalInnerBg);
   document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', darkConfirmModalHoverBg);
-
+  document.documentElement.style.setProperty('--color-enable-btn-bg', darkEnableBtnBg);
+  document.documentElement.style.setProperty('--color-modal-disable-txt', darkModalDisableTxt);
 
 };
 
@@ -670,6 +673,8 @@ const lightModalIconBg='#EBEBEB';
 const lightChatMultiSelectBg='#DDDDDD';
 const lightConfirmModalInnerBg='#EBEBEB';
 const lightConfirmModalHoverBg='#E4E4E4';
+const lightEnableBtnBg='#EBEBEB';
+const lightModalDisableTxt='#ACACAC';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -942,6 +947,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-chat-multi-select-bg', lightChatMultiSelectBg);
   document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', lightConfirmModalInnerBg);
   document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', lightConfirmModalHoverBg);
+  document.documentElement.style.setProperty('--color-enable-btn-bg', lightEnableBtnBg);
+  document.documentElement.style.setProperty('--color-modal-disable-txt', lightModalDisableTxt);
   
 };
 
@@ -1115,6 +1122,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-chat-multi-select-bg:${darkChatMultiSelectBg};
     --color-confirm-modal-inner-bg:${darkConfirmModalInnerBg};
     --color-confirm-modal-hover-bg:${darkConfirmModalHoverBg};
+    --color-enable-btn-bg:${darkEnableBtnBg};
+    --color-modal-disable-txt:${darkModalDisableTxt};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
