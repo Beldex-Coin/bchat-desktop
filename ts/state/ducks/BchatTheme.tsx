@@ -159,7 +159,7 @@ const darkWalQrOutline = '#1c1c26';
 const darkWalPopuphover = '#444457';
 const darkWalcancelBtn = '#403e4b';
 const darkWalAddressBookCopy = '#535364';
-const darkWalletSyncBar = '#444455';
+const darkWalletSyncBar = '#202329';
 const darkDownthickArrow = '#fff';
 const darkDisableBtn = '#444455';
 const darkDisableTxt = '#8F8FA2';
@@ -214,6 +214,8 @@ const darkConfirmModalInnerBg='#1B1E23';
 const darkConfirmModalHoverBg='#202329';
 const darkEnableBtnBg='#202329';
 const darkModalDisableTxt='#a7a7ba';
+const darkWalletStatusTxtBg='#131313';
+const darkWalletUnBalanceLabel='#858598';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -482,6 +484,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', darkConfirmModalHoverBg);
   document.documentElement.style.setProperty('--color-enable-btn-bg', darkEnableBtnBg);
   document.documentElement.style.setProperty('--color-modal-disable-txt', darkModalDisableTxt);
+  document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', darkWalletStatusTxtBg);
+  document.documentElement.style.setProperty('--color-wallet-unbalance-label', darkWalletUnBalanceLabel);
 
 };
 
@@ -619,7 +623,7 @@ const lightWalQrOutline = '#DEDEDE';
 const lightWalPopuphover = '#DEDEDE';
 const lightWalcancelBtn = '#F8F8F8';
 const lightWalAddressBookCopy = '#DEDEDE';
-const lightWalletSyncBar = '#DEDEDE';
+const lightWalletSyncBar = '#EBEBEB';
 const lightDownthickArrow = '#8F8FA2';
 const lightDisableBtn = '#DEDEDE';
 const lightDisableTxt = '#B1B1B1';
@@ -675,6 +679,8 @@ const lightConfirmModalInnerBg='#EBEBEB';
 const lightConfirmModalHoverBg='#E4E4E4';
 const lightEnableBtnBg='#EBEBEB';
 const lightModalDisableTxt='#ACACAC';
+const lightWalletStatusTxtBg='#F8F8F8';
+const lightWalletUnBalanceLabel='#333333';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -949,6 +955,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', lightConfirmModalHoverBg);
   document.documentElement.style.setProperty('--color-enable-btn-bg', lightEnableBtnBg);
   document.documentElement.style.setProperty('--color-modal-disable-txt', lightModalDisableTxt);
+  document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', lightWalletStatusTxtBg);
+  document.documentElement.style.setProperty('--color-wallet-unbalance-label', lightWalletUnBalanceLabel);
   
 };
 
@@ -1124,6 +1132,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-confirm-modal-hover-bg:${darkConfirmModalHoverBg};
     --color-enable-btn-bg:${darkEnableBtnBg};
     --color-modal-disable-txt:${darkModalDisableTxt};
+    --color-wallet-status-txt-Bg:${darkWalletStatusTxtBg};
+    --color-wallet-unbalance-label:${darkWalletUnBalanceLabel};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

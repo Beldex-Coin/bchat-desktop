@@ -1421,8 +1421,7 @@ label {
 
           input {
             // text-align: center;
-            background-color: unset;  
-
+            background-color: unset;
           }
         }
 
@@ -1755,14 +1754,14 @@ label {
 
   height: 50px;
   border-radius: 10px;
-  background: #202329;
+  background: var(--color-walSyncbar);
   overflow: hidden;
 
   .per-Wrapper {
-    color: #f0f0f0;
+    // color: #f0f0f0;
     font-weight: 600;
     border-radius: 33px;
-    background: #131313;
+    background: var(--color-wallet-status-txt-Bg);
     padding: 0px 15px;
     margin-right: 10px;
     display: flex;
@@ -1771,10 +1770,10 @@ label {
 
   &-statusTxt-wrapper {
     .txt {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-weight: 400;
       border-radius: 33px;
-      background: #131313;
+      background: var(--color-wallet-status-txt-Bg);
       padding: 5px 15px;
       margin-right: 10px;
     }
@@ -1790,15 +1789,15 @@ label {
     // color: #9393b1;
     padding: 3px 10px;
     border-radius: 16px;
-    border: 1px solid #46465d;
+    border: 1px solid var(--color-search-border);
 
     .type-txt {
-      color: #a7a7ba;
+      color: var(--color-modal-disable-txt);
       font-weight: 400;
     }
 
     .type-value {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 12px;
       font-weight: 600;
     }
@@ -1827,7 +1826,7 @@ label {
   width: 24vw;
   max-width: 420px;
   height: 100vh;
-  background-color: #202329;
+  background-color: var(--color-left-pane-bg);
 }
 .address-book-wrapper {
   background-color: #202329;
@@ -1839,7 +1838,7 @@ label {
 
   &-header {
     &-txt {
-      color: #f0f0f0;
+      // color: #f0f0f0;
       font-size: 20px;
       font-weight: 600;
       line-height: 25px; /* 125% */
@@ -1871,7 +1870,7 @@ label {
         background-color: unset;
         padding: unset;
         color: unset;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 16px;
         font-weight: 400;
       }
@@ -1882,7 +1881,7 @@ label {
         // margin-right: 12px;
 
         // overflow: hidden;
-        color: #a7a7ba;
+        color: var(--color-last-msg-txt);
         // text-overflow: ellipsis;
         // white-space: nowrap;
         // font-size: 14px;
@@ -2421,7 +2420,7 @@ label {
       &-left-side {
         .header-txt {
           margin-left: 10px;
-          color: #f0f0f0;
+          // color: #f0f0f0;
           font-size: 22px;
           font-weight: 400;
         }
@@ -2436,7 +2435,7 @@ label {
       cursor: pointer;
 
       border-radius: 16px;
-      background: #2e333d;
+      background: var(--color-secondary-btn-bg);
 
       // &:hover {
       //   background-color: var(--color-WalcontentBgHover);
@@ -2449,14 +2448,14 @@ label {
       // border-radius: 10px;
       // padding: 17px 30px 17px 30px;
       border-radius: 16px;
-      background: #202329;
+      background: var(--color-hop-bg);
       padding: 15px;
     }
 
     &-squarBox-bala {
       .innerWrapper {
         border-radius: 16px;
-        background: #131313;
+        background: var(--color-wallet-status-txt-Bg);
         padding: 15px;
       }
 
@@ -2484,7 +2483,7 @@ label {
 
     &-left-balance-Sec {
       &-balanceTxt {
-        color: #ebebeb;
+        // color: #ebebeb;
         font-size: 24px;
         font-weight: 700;
       }
@@ -2495,14 +2494,14 @@ label {
       // }
       .currencyExt {
         border-radius: 33px;
-        background: #202329;
-        color: #a7a7ba;
+        background: var(--color-hop-bg);
+        color: var(--color-hop-txt);
         font-weight: 600;
         padding: 2px 15px;
       }
 
       .currencyVal {
-        color: #a7a7ba;
+        color: var(--color-hop-txt);
         font-size: 18px;
         font-weight: 700;
         margin-left: 10px;
@@ -2535,7 +2534,7 @@ label {
           // font-size: 11px;
           // margin-right: 10px;
 
-          color: #858598;
+          color: var(--color-wallet-unbalance-label);
           font-size: 18px;
           font-weight: 400;
         }
@@ -2545,7 +2544,8 @@ label {
           // margin-left: 10px;
           // text-align: center;
           // font-family: 'poppin-semibold';
-          color: #a7a7ba;
+          // color: #a7a7ba;
+          color:var(--color-hop-txt);
           text-align: right;
           font-size: 22px;
           font-weight: 600;
@@ -2678,15 +2678,16 @@ label {
       width: 100%;
       padding: 15px;
       border-radius: 12px;
-      background: #202329;
+      background: var(--color-hop-bg);
       justify-content: space-between;
+      align-items: center;
 
       &-content {
         width: 88%;
         margin-right: 10px;
 
         .addres-title {
-          color: #f0f0f0;
+          // color: #f0f0f0;
           font-size: 16px;
           font-weight: 600;
         }
@@ -2704,7 +2705,7 @@ label {
         align-items: center;
         width: 40px;
         height: 40px;
-        background-color: #2e333d;
+        background-color:var(--color-clickable-hovered);
         border-radius: 12px;
       }
 
@@ -3356,20 +3357,20 @@ label {
       // height: 66%;
       margin-bottom: 5px;
       border-radius: 16px;
-      background: #202329;
+      background: var(--color-hop-bg);
       height: calc(100vh - 479px);
 
       &-title {
         display: flex;
         align-items: center;
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 18px;
         font-weight: 600;
       }
 
       &-filter-wrapper {
         border-radius: 16px;
-        border: 1px solid #46465d;
+        border: 1px solid var(--color-search-border);
         padding: 0 15px;
       }
 
@@ -3389,14 +3390,14 @@ label {
         height: 40px;
         margin-left: 15px;
         border-radius: 16px;
-        border: 1px solid #46465d;
+        border: 1px solid var(--color-search-border);
         padding: 5px 15px;
 
         &-inputBox {
           display: inline-block;
           width: 80%;
           height: 100%;
-          color: #f0f0f0;
+          // color: #f0f0f0;
           font-size: 18px;
           font-weight: 600;
         }
@@ -3497,7 +3498,8 @@ label {
         // background-color: var(--color-walInputBg);
 
         padding: 15px;
-        border-radius: 10px;
+        // border-radius: 10px;
+       border-bottom: 1px solid var(--color-search-border);
 
         &-sendIndicationBox {
           display: flex;
@@ -3521,7 +3523,7 @@ label {
 
           &-amount {
             cursor: pointer;
-            color: #f0f0f0;
+            // color: #f0f0f0;
             font-size: 18px;
             font-weight: 700;
           }
@@ -3548,7 +3550,7 @@ label {
           width: 242px;
 
           &-month {
-            color: #f0f0f0;
+            // color: #f0f0f0;
             text-align: right;
             font-size: 16px;
             font-weight: 400;
@@ -3579,7 +3581,7 @@ label {
 
       &-contentBox:hover {
         border-radius: 16px;
-        background: #2e333d;
+        background:var(--color-clickable-hovered);
       }
 
       &-recipitentBox {
@@ -3596,7 +3598,7 @@ label {
           &-address {
             // font-family: $bchat-font-poppin-light;
             // font-size: 12px;
-            color: #ebebeb;
+            color: var(--color-text);
           }
         }
 
@@ -3612,7 +3614,7 @@ label {
         }
 
         &-transactionFee-text {
-          color: #ebebeb;
+          color: var(--color-text);
         }
       }
     }

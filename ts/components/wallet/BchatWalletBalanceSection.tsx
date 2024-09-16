@@ -65,7 +65,7 @@ export const WalletBalanceSection = () => {
                 }}
                 style={{ cursor: 'pointer', marginBottom: '6px' }}
               >
-                <BchatIcon iconSize={18} iconType={!amountVisible ? 'eye' : 'eye_closed'} />
+                <BchatIcon iconSize={18} iconType={!amountVisible ? 'eye' : 'eye_closed'} clipRule='evenodd' fillRule='evenodd' />
               </span>
             </div>
             <Flex
