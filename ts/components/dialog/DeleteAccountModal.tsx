@@ -218,7 +218,7 @@ export const DeleteAccountModal = () => {
 
               }}
               // disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
-              style={{ marginRight: '25px', minWidth: '240px', height: '55px', color: 'white' }}
+              style={{ marginRight: '25px', minWidth: '240px', height: '55px',fontWeight: 500 }}
               iconType={deleteDeviceOnly ? "circle" : undefined}
               iconSize="tiny"
             />
@@ -230,7 +230,7 @@ export const DeleteAccountModal = () => {
                 setDeleteDeviceOnly(false);
               }}
               // disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
-              style={{ marginRight: '12px', minWidth: '240px', height: '55px', color: 'white' }}
+              style={{ marginRight: '12px', minWidth: '240px', height: '55px',fontWeight: 500 }}
               iconType={deleteEverythingWithNetwork ? "circle" : undefined}
               iconSize="tiny"
             />

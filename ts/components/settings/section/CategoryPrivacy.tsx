@@ -10,7 +10,7 @@ import { getHideMessageRequestBanner } from '../../../state/selectors/userConfig
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { PasswordAction } from '../../dialog/BchatPasswordDialog';
 import { BchatSettingButtonItem, BchatToggleWithDescription } from '../BchatSettingListItem';
-import MediaPermissionIcon from '../../icon/MediapermissionIcon';
+import { BchatIcon } from '../../icon';
 
 const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
   const currentValue = window.getCallMediaPermissions();
@@ -30,7 +30,7 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
           triggerUIUpdate();
         },
         iconShow: true,
-        customIcon: <MediaPermissionIcon iconSize={30}/>
+        customIcon: <BchatIcon iconType='videoCall' iconSize={30} />
       })
     );
   } else {
