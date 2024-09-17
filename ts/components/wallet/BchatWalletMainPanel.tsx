@@ -199,5 +199,5 @@ const RightPane = styled.div`
 
   height: 79vh;
   border-radius: 16px;
-  background: #202329;
+  background: var(--color-wallet-inner-bg);
 `;

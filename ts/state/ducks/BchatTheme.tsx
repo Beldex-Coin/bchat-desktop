@@ -153,17 +153,12 @@ const darkBnsCameraIconBgColor = '#22222E';
 const darkWalcontentBg = '#303041';
 const darkWalcontentBgHover = '#60607B';
 const darkWalInputBg = '#1c1c26';
-const darkWalunlockbal = '#444455';
 const darkWalTransacBtn = '#444455';
-const darkWalQrOutline = '#1c1c26';
-const darkWalPopuphover = '#444457';
 const darkWalcancelBtn = '#403e4b';
-const darkWalAddressBookCopy = '#535364';
 const darkWalletSyncBar = '#202329';
 const darkDownthickArrow = '#fff';
 const darkDisableBtn = '#444455';
 const darkDisableTxt = '#8F8FA2';
-const darkConfirmAddress = '#A1A1BC';
 const darkDownArrowBg = '#525262';
 const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
@@ -216,6 +211,7 @@ const darkEnableBtnBg='#202329';
 const darkModalDisableTxt='#a7a7ba';
 const darkWalletStatusTxtBg='#131313';
 const darkWalletUnBalanceLabel='#858598';
+const darkWalletInnerBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -428,17 +424,12 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-WalcontentBg', darkWalcontentBg);
   document.documentElement.style.setProperty('--color-WalcontentBgHover', darkWalcontentBgHover);
   document.documentElement.style.setProperty('--color-walInputBg', darkWalInputBg);
-  document.documentElement.style.setProperty('--color-walunlockbal', darkWalunlockbal);
   document.documentElement.style.setProperty('--color-walTransacBtn', darkWalTransacBtn);
-  document.documentElement.style.setProperty('--color-walQrOutline', darkWalQrOutline);
-  document.documentElement.style.setProperty('--color-walPopuphover', darkWalPopuphover);
   document.documentElement.style.setProperty('--color-walcancelBtn', darkWalcancelBtn);
-  document.documentElement.style.setProperty('--color-walAddressBookCopy', darkWalAddressBookCopy);
   document.documentElement.style.setProperty('--color-walSyncbar', darkWalletSyncBar);
   document.documentElement.style.setProperty('--color-walDownthickArrow', darkDownthickArrow);
   document.documentElement.style.setProperty('--color-disableBtn', darkDisableBtn);
   document.documentElement.style.setProperty('--color-disableTxt', darkDisableTxt);
-  document.documentElement.style.setProperty('--color-confirmAddress', darkConfirmAddress);
   document.documentElement.style.setProperty('--color-BgModalColor', darkBgModalColor);
   document.documentElement.style.setProperty('--img-walPassword', darkWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', darkWalDownThickArrow);
@@ -486,6 +477,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-modal-disable-txt', darkModalDisableTxt);
   document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', darkWalletStatusTxtBg);
   document.documentElement.style.setProperty('--color-wallet-unbalance-label', darkWalletUnBalanceLabel);
+  document.documentElement.style.setProperty('--color-wallet-inner-bg', darkWalletInnerBg);
 
 };
 
@@ -617,17 +609,12 @@ const lightBnsCameraIconBgColor = '#FFFFFF';
 const lightWalcontentBg = '#E8E8E8';
 const lightWalcontentBgHover = '#DDDDDD';
 const lightWalInputBg = '#F8F8F8';
-const lightWalunlockbal = '#F8F8F8';
 const lightWalTransacBtn = '#DEDEDE';
-const lightWalQrOutline = '#DEDEDE';
-const lightWalPopuphover = '#DEDEDE';
 const lightWalcancelBtn = '#F8F8F8';
-const lightWalAddressBookCopy = '#DEDEDE';
 const lightWalletSyncBar = '#EBEBEB';
 const lightDownthickArrow = '#8F8FA2';
 const lightDisableBtn = '#DEDEDE';
 const lightDisableTxt = '#B1B1B1';
-const lightConfirmAddress = '#747474';
 const lightWalPassword = `url("../images/bchat/passwordIconWhite.svg")`;
 const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`;
 const lightLeaveHover = '#D9D9D9';
@@ -681,6 +668,7 @@ const lightEnableBtnBg='#EBEBEB';
 const lightModalDisableTxt='#ACACAC';
 const lightWalletStatusTxtBg='#F8F8F8';
 const lightWalletUnBalanceLabel='#333333';
+const lightWalletInnerBg='#EBEBEB';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -899,17 +887,12 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-WalcontentBg', lightWalcontentBg);
   document.documentElement.style.setProperty('--color-WalcontentBgHover', lightWalcontentBgHover);
   document.documentElement.style.setProperty('--color-walInputBg', lightWalInputBg);
-  document.documentElement.style.setProperty('--color-walunlockbal', lightWalunlockbal);
   document.documentElement.style.setProperty('--color-walTransacBtn', lightWalTransacBtn);
-  document.documentElement.style.setProperty('--color-walQrOutline', lightWalQrOutline);
-  document.documentElement.style.setProperty('--color-walPopuphover', lightWalPopuphover);
   document.documentElement.style.setProperty('--color-walcancelBtn', lightWalcancelBtn);
-  document.documentElement.style.setProperty('--color-walAddressBookCopy', lightWalAddressBookCopy);
   document.documentElement.style.setProperty('--color-walSyncbar', lightWalletSyncBar);
   document.documentElement.style.setProperty('--color-walDownthickArrow', lightDownthickArrow);
   document.documentElement.style.setProperty('--color-disableBtn', lightDisableBtn);
   document.documentElement.style.setProperty('--color-disableTxt', lightDisableTxt);
-  document.documentElement.style.setProperty('--color-confirmAddress', lightConfirmAddress);
 
   document.documentElement.style.setProperty('--img-walPassword', lightWalPassword);
   document.documentElement.style.setProperty('--img-walDownThickArrow', lightWalDownThickArrow);
@@ -957,6 +940,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-modal-disable-txt', lightModalDisableTxt);
   document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', lightWalletStatusTxtBg);
   document.documentElement.style.setProperty('--color-wallet-unbalance-label', lightWalletUnBalanceLabel);
+  document.documentElement.style.setProperty('--color-wallet-inner-bg', lightWalletInnerBg);
   
 };
 
@@ -1078,17 +1062,13 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-WalcontentBg:${darkWalcontentBg};
     --color-WalcontentBgHover:${darkWalcontentBgHover};
     --color-walInputBg:${darkWalInputBg};
-    --color-walunlockbal:${darkWalunlockbal};
     --color-walTransacBtn:${darkWalTransacBtn};
-    --color-walQrOutline:${darkWalQrOutline};
-    --color-walPopuphover:${darkWalPopuphover};
+   
     --color-walcancelBtn:${darkWalcancelBtn};
-    --color-walAddressBookCopy:${darkWalAddressBookCopy};
     --color-walSyncbar:${darkWalletSyncBar};
     --color-walDownthickArrow:${darkDownthickArrow};
     --color-disableBtn :${darkDisableBtn};
     --color-disableTxt:${darkDisableTxt};
-    --color-confirmAddress:${darkConfirmAddress};
     --color-leave-button:${darkLeaveHover};
     --color-text:${darkColorText};
     --color-BgModalColor:${darkBgModalColor};
@@ -1134,6 +1114,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-modal-disable-txt:${darkModalDisableTxt};
     --color-wallet-status-txt-Bg:${darkWalletStatusTxtBg};
     --color-wallet-unbalance-label:${darkWalletUnBalanceLabel};
+    --color-wallet-inner-bg:${darkWalletInnerBg};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

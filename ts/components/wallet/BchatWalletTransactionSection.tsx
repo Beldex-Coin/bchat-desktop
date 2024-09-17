@@ -226,12 +226,9 @@ export const TransactionSection = (props: any) => {
                         {filter === window.i18n('filterAll') ? (
                           <span className={classNames('dropDownItem-blockAndMargin')}>
                             <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
+                              iconType="circleTickOutline"
+                              iconColor="#00A638"
+                              iconSize={16}
                             />
                           </span>
                         ) : (
@@ -250,12 +247,9 @@ export const TransactionSection = (props: any) => {
                         {filter === window.i18n('filterIncoming') ? (
                           <span className="dropDownItem-blockAndMargin">
                             <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
+                              iconType="circleTickOutline"
+                              iconColor="#00A638"
+                              iconSize={16}
                             />
                           </span>
                         ) : (
@@ -274,12 +268,10 @@ export const TransactionSection = (props: any) => {
                         {filter === window.i18n('filterOutgoing') ? (
                           <span className="dropDownItem-blockAndMargin">
                             <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
+                              iconType="circleTickOutline"
+                              iconColor="#00A638"
+                              iconSize={16}
+
                             />
                           </span>
                         ) : (
@@ -298,12 +290,10 @@ export const TransactionSection = (props: any) => {
                         {filter === window.i18n('filterPending') ? (
                           <span className="dropDownItem-blockAndMargin">
                             <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
+                              iconType="circleTickOutline"
+                              iconColor="#00A638"
+                              iconSize={16}
+
                             />
                           </span>
                         ) : (
@@ -321,12 +311,10 @@ export const TransactionSection = (props: any) => {
                         {filter === window.i18n('failed') ? (
                           <span className="dropDownItem-blockAndMargin">
                             <BchatIcon
-                              iconType="tickCircle"
-                              iconColor="#FFF"
-                              iconSize={13}
-                              iconPadding={'3px'}
-                              backgroundColor={'#159B24'}
-                              borderRadius={'10px'}
+                              iconType="circleTickOutline"
+                              iconColor="#00A638"
+                              iconSize={16}
+ 
                             />
                           </span>
                         ) : (
