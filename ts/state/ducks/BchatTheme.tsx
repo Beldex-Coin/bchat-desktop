@@ -8,17 +8,17 @@ const warning = '#e7b100';
 const destructive = '#ff453a';
 const accentLightTheme = '#159B24';
 const accentDarkTheme = '#2879FB';
-const darkGrey='#202329';
+const darkGrey = '#202329';
 // const borderLightThemeColor = '#f1f1f1';
 // const borderDarkThemeColor = '#ffffff0F';
 const baseColor = '#00A803';
 // const greyColor = '#2D2D3B';
 const lightGreyColor = '#646474';
 const greenColor = '#108D32';
-const forestGreenColor="#00A638";
+const forestGreenColor = '#00A638';
 
 // const bgWhite='#EBEBEB';
-const baseWhite='#F8F8F8'
+const baseWhite = '#F8F8F8';
 
 // DARK COLORS
 const darkColorAccent = baseColor;
@@ -64,23 +64,20 @@ const darkConversationItemHasUnread = '#2e333d';
 const darkConversationList = darkScrollbarTrack;
 
 const darkTextHighlight = `${white}88`;
-const darkForegroundPrimary = white;
 const darkBackgroundPrimary = '#3A3A4E';
 const darkButtonGreen = baseColor;
 const darkModalBackground = '#101011';
-const darkDisableBorder = '#66667C';
 
 const grey67 = '#1BB51E';
 const darkMessageRequestBannerBackground = darkConversationItemHasUnread;
 const darkMessageRequestBannerIconBackground = '#2879FB';
 const darkMessageRequestBannerUnreadBackground = grey67;
 const darkMessageRequestBannerIcon = '#adadad';
-const darkcomposeMsgRecordIcon = '#85858F';
+
 const darkWalletNodeHeader = '#108D32';
 const darkWalletSelectHover = '#545469';
-const darkWalletPriorityHover = '#303042';
+
 const darkWalletCopyHover = '#52505F';
-const darkAddMembers = '#313143';
 const darkProfileClose = '#4C4C64';
 const darkChatTimestamp = '#858598';
 
@@ -88,11 +85,7 @@ const darkChatTimestamp = '#858598';
 const darkColorBg = black;
 // const darkunreadBg="#39394A";
 const darkBorderBottomColor = '#1A1A24';
-const darkInboxBgColor = '#3A3A4E';
 const darkHintMessage = '#7B7B86';
-const darkTextAreaColor = '#0BB70F';
-const darkComposeMsgBg = '#2B2B38';
-const darkComposeMsgIconBG = '#2879FB';
 const darkSettingIndication = '#2E333D';
 const darkProfileBgColor = '#2A2A3B';
 const darkSinginTextColor = '#128B17';
@@ -106,7 +99,7 @@ const darkClearBtn = '#3D3D4D';
 const darkLeaveGrpBtn = '#20202F';
 const darkSmModalBg = '#2A2A3B';
 const darkMsgReqModalBg = 'rgba(0,0,0,0.4)';
-const darkOverlayBg = '#1C1C26';
+
 const darkleftHeaderBg = '#1C1C26';
 const darkCancelBtnBg = '#3D3D4E';
 const darkDisableText = '#545469';
@@ -120,8 +113,6 @@ const darkOutgoingTransHistory = `url("../images/bchat/no_outgoing_dark.svg")`;
 const darkIncomingTransHistory = `url("../images/bchat/no_incoming_transaction_dark.svg")`;
 const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg")`;
 const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.svg")`;
-const darkWalletSyncing = `url("../images/bchat/wallet_syncing_dark.svg")`;
-const darkChatIcons = 'white';
 const darkComposeMsgInput = '#202329';
 const darkDayNight = `url("../images/bchat/light_theme.svg")`;
 const darkNewChat = `url("../images/bchat/newChat_dark.svg")`;
@@ -130,28 +121,22 @@ const darkBlockedContact = `url("../images/bchat/no_blocked_contacts_dark_theme.
 const darkAddContact = `url("../images/bchat/add_contact.svg")`;
 const darkNoMedia = `url("../images/bchat/no_mediaDarkTheme.svg")`;
 
-const darkLeftpaneSetting = darkScrollbarTrack;
 const darkBlockUserBg = '#202329';
 const darkBlockseletedUserBg = '#2C2C3E';
 
 const darkPasswordBorderBottom = '#444455';
-const darkRightpaneSetting = '#16161D';
 const darkbubbleReceivedBg = '#2e333d';
 
 const buttonColor = forestGreenColor;
 // const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
-const darkAudioRecord = '#3F3C4B';
 
 // Seed color
-const darkSeedColor = '#00E506';
 // Bns link colors
 const darkBnsLinkIdBgColor = '#202329';
-const darkBnsLinkInputBgColor = '#353543';
 const darkBnsCameraIconBgColor = '#22222E';
 
 //wallet
 const darkWalcontentBg = '#303041';
-const darkWalcontentBgHover = '#60607B';
 const darkWalInputBg = '#1c1c26';
 const darkWalTransacBtn = '#444455';
 const darkWalcancelBtn = '#403e4b';
@@ -162,8 +147,7 @@ const darkDisableTxt = '#8F8FA2';
 const darkDownArrowBg = '#525262';
 const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
-const darkCopyHover = '#008C04';
-const darkAddressBookCopy = '#009D17';
+
 const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
 
 const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
@@ -171,47 +155,50 @@ const darkWalPassword = `url("../images/bchat/passwordIcon.svg")`;
 const darkBnsTransactionColor = '#FFFFFF';
 
 // revamp
-const darklogoBg=darkGrey;
-const darkActionBtnBg=darkGrey;
-const darkActionBtnicon='#a7a7ba';
-const darkActionBtnTxt="#a7a7ba";
-const darkThemeSelectedBg='#242B38';
-const darkLeftPaneBg='#202329';
-const darkSearchBorder='#46465d';
-const darkLastMsgTxt='#A7A7BA';
-const darkContextMenuBg='#1B1E23';
-const darkProfileIdBg='#1C1F25';
-const darkProfileIDBorder='#3A3A41';
-const darkSecondaryBtnBg='#2e333d';
-const darkQrOuterBg='#282836';
-const darkSettingsRightPaneOption='#202329';
-const darksettingHeaderBorder='#202329'
-const darkToggleBtn='#9595B5';
-const darkSettingsRightPaneOptionBorder='#4B4B64';
-const darkHopBg='#202329';
-const darkHopTxt='#A7A7BA';
-const darkRecoverySeedBg='#202329';
-const darkModalFooter='#202329';
-const darkUntrustMediaBg='#131313';
-const darkUntrustedVerticalBar='#858598';
-const darkIconBtnHover='#2e333d';
-const darkContextMenuHoverBg='#333842';
-const darkWalletSyncBoxBg='#202329';
-const darkProfileHeaderBg='#2E333D';
-const darkChatIdBorder='#3A3A41';
-const darkProfileInfoBorder='#2E333D';
-const darkDisappearTimeHover='#2E333D';
-const darkProfileInfoMediaTitle='#A7A7BA';
-const darkModalBg='#2e333d';
-const darkModalIconBg='#202329';
-const darkChatMultiSelectBg='#202329';
-const darkConfirmModalInnerBg='#1B1E23';
-const darkConfirmModalHoverBg='#202329';
-const darkEnableBtnBg='#202329';
-const darkModalDisableTxt='#a7a7ba';
-const darkWalletStatusTxtBg='#131313';
-const darkWalletUnBalanceLabel='#858598';
-const darkWalletInnerBg='#202329';
+const darklogoBg = darkGrey;
+const darkActionBtnBg = darkGrey;
+const darkActionBtnicon = '#a7a7ba';
+const darkActionBtnTxt = '#a7a7ba';
+const darkThemeSelectedBg = '#242B38';
+const darkLeftPaneBg = '#202329';
+const darkSearchBorder = '#46465d';
+const darkLastMsgTxt = '#A7A7BA';
+const darkContextMenuBg = '#1B1E23';
+const darkProfileIdBg = '#1C1F25';
+const darkProfileIDBorder = '#3A3A41';
+const darkSecondaryBtnBg = '#2e333d';
+const darkQrOuterBg = '#282836';
+const darkSettingsRightPaneOption = '#202329';
+const darksettingHeaderBorder = '#202329';
+const darkToggleBtn = '#9595B5';
+const darkSettingsRightPaneOptionBorder = '#4B4B64';
+const darkHopBg = '#202329';
+const darkHopTxt = '#A7A7BA';
+const darkRecoverySeedBg = '#202329';
+const darkModalFooter = '#202329';
+const darkUntrustMediaBg = '#131313';
+const darkUntrustedVerticalBar = '#858598';
+const darkIconBtnHover = '#2e333d';
+const darkContextMenuHoverBg = '#333842';
+const darkWalletSyncBoxBg = '#202329';
+const darkProfileHeaderBg = '#2E333D';
+const darkChatIdBorder = '#3A3A41';
+const darkProfileInfoBorder = '#2E333D';
+const darkDisappearTimeHover = '#2E333D';
+const darkProfileInfoMediaTitle = '#A7A7BA';
+const darkModalBg = '#2e333d';
+const darkModalIconBg = '#202329';
+const darkChatMultiSelectBg = '#202329';
+const darkConfirmModalInnerBg = '#1B1E23';
+const darkConfirmModalHoverBg = '#202329';
+const darkEnableBtnBg = '#202329';
+const darkModalDisableTxt = '#a7a7ba';
+const darkWalletStatusTxtBg = '#131313';
+const darkWalletUnBalanceLabel = '#858598';
+const darkWalletInnerBg = '#202329';
+const darkNoTxnTxt = '#A7A7BA';
+const darkToastBg = '#131313';
+const bodyBg='#131313'
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -300,7 +287,6 @@ export const switchHtmlToDarkTheme = () => {
   );
   document.documentElement.style.setProperty('--color-conversation-list', darkConversationList);
   document.documentElement.style.setProperty('--color-text-highlight', darkTextHighlight);
-  document.documentElement.style.setProperty('--color-foreground-primary', darkForegroundPrimary);
   document.documentElement.style.setProperty('--color-background-primary', darkBackgroundPrimary);
   document.documentElement.style.setProperty('--color-button-green', darkButtonGreen);
   document.documentElement.style.setProperty('--color-modal-background', darkModalBackground);
@@ -327,58 +313,38 @@ export const switchHtmlToDarkTheme = () => {
   //   '--color-unreadBg',
   //   darkunreadBg
   // );
-  document.documentElement.style.setProperty('--color-overlayBg', darkOverlayBg);
   document.documentElement.style.setProperty('--color-leaveGrpBtn', darkLeaveGrpBtn);
   document.documentElement.style.setProperty('--color-borderBottomColor', darkBorderBottomColor);
-  document.documentElement.style.setProperty('--color-inboxBgColor', darkInboxBgColor);
   document.documentElement.style.setProperty('--color-HintMessageText', darkHintMessage);
 
-  document.documentElement.style.setProperty('--color-TextAreaColor', darkTextAreaColor);
   document.documentElement.style.setProperty('--color-leftHeaderBg', darkleftHeaderBg);
-  document.documentElement.style.setProperty('--color-composeMsgBg', darkComposeMsgBg);
   document.documentElement.style.setProperty('--color-composeMsgInput', darkComposeMsgInput);
 
-  document.documentElement.style.setProperty('--color-composeMsgIconBG', darkComposeMsgIconBG);
   document.documentElement.style.setProperty('--color-smModal-bg', darkSmModalBg);
   document.documentElement.style.setProperty('--color-MsgReqModal-bg', darkMsgReqModalBg);
   document.documentElement.style.setProperty('--color-cancelBtn-bg', darkCancelBtnBg);
   document.documentElement.style.setProperty('--color-settingIndication', darkSettingIndication);
   document.documentElement.style.setProperty('--color-chatHeader', darkChatHeader);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', darkBlockseletedUserBg);
-  document.documentElement.style.setProperty('--color-disableBorder', darkDisableBorder);
   document.documentElement.style.setProperty('--color-downArrowBg', darkDownArrowBg);
   document.documentElement.style.setProperty('--color-downArrow', darkDownArrow);
 
-  document.documentElement.style.setProperty('--color-chatIcons', darkChatIcons);
-
-  document.documentElement.style.setProperty(
-    '--color-composeMsgRecordIcon',
-    darkcomposeMsgRecordIcon
-  );
   document.documentElement.style.setProperty('--color-walletNodeHeader', darkWalletNodeHeader);
   document.documentElement.style.setProperty('--color-walletSelectOption', darkWalletSelectHover);
-  document.documentElement.style.setProperty(
-    '--color-walletPriorityHover',
-    darkWalletPriorityHover
-  );
-  document.documentElement.style.setProperty('--color-leftpaneSetting', darkLeftpaneSetting);
+
   document.documentElement.style.setProperty('--color-blockUserBg', darkBlockUserBg);
 
   document.documentElement.style.setProperty(
     '--color-password-borderBottom',
     darkPasswordBorderBottom
   );
-  document.documentElement.style.setProperty('--color-rightpaneSetting', darkRightpaneSetting);
   document.documentElement.style.setProperty('--color-toggleOff', darkToggleOff);
   document.documentElement.style.setProperty('--color-clearBtn', darkClearBtn);
   document.documentElement.style.setProperty('--color-clearBtn', darkClearBtn);
   document.documentElement.style.setProperty('--color-disableText', darkDisableText);
   document.documentElement.style.setProperty('--color-caret', lightColorCellBackground);
-  document.documentElement.style.setProperty('--color-copy-hover', darkCopyHover);
-  document.documentElement.style.setProperty('--color-add-member', darkAddMembers);
   document.documentElement.style.setProperty('--color-profile-close', darkProfileClose);
   document.documentElement.style.setProperty('--color-chat-timestamp', darkChatTimestamp);
-  document.documentElement.style.setProperty('--color-addressbook-copy-hover', darkAddressBookCopy);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', darkWalletCopyHover);
 
   document.documentElement.style.setProperty('--image-DayNight', darkDayNight);
@@ -406,23 +372,18 @@ export const switchHtmlToDarkTheme = () => {
   );
   document.documentElement.style.setProperty('--image-failedTransHistory', darkFailedTransHistory);
   document.documentElement.style.setProperty('--image-emptySearch', darkEmptyTransaction);
-  document.documentElement.style.setProperty('--image-walletSyncing', darkWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', darkNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
   // document.documentElement.style.setProperty('--button-color', buttonColor);
-  document.documentElement.style.setProperty('--color-audio-record', darkAudioRecord);
-  document.documentElement.style.setProperty('--color-seed', darkSeedColor);
   document.documentElement.style.setProperty(
     '--message-bubbles-received-background-color',
     darkbubbleReceivedBg
   );
   //Bns link chatid
   document.documentElement.style.setProperty('--color-BnsLinkIdBg', darkBnsLinkIdBgColor);
-  document.documentElement.style.setProperty('--color-BnsLinkInputBg', darkBnsLinkInputBgColor);
   document.documentElement.style.setProperty('--color-BnsCameraIconBg', darkBnsCameraIconBgColor);
   //wallet
   document.documentElement.style.setProperty('--color-WalcontentBg', darkWalcontentBg);
-  document.documentElement.style.setProperty('--color-WalcontentBgHover', darkWalcontentBgHover);
   document.documentElement.style.setProperty('--color-walInputBg', darkWalInputBg);
   document.documentElement.style.setProperty('--color-walTransacBtn', darkWalTransacBtn);
   document.documentElement.style.setProperty('--color-walcancelBtn', darkWalcancelBtn);
@@ -450,35 +411,66 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-profile-id-border', darkProfileIDBorder);
   document.documentElement.style.setProperty('--color-secondary-btn-bg', darkSecondaryBtnBg);
   document.documentElement.style.setProperty('--color-qr-outer-bg', darkQrOuterBg);
-  document.documentElement.style.setProperty('--color-settings-right-pane-option', darkSettingsRightPaneOption);
-  document.documentElement.style.setProperty('--color-setting-header-border', darksettingHeaderBorder);
+  document.documentElement.style.setProperty(
+    '--color-settings-right-pane-option',
+    darkSettingsRightPaneOption
+  );
+  document.documentElement.style.setProperty(
+    '--color-setting-header-border',
+    darksettingHeaderBorder
+  );
   document.documentElement.style.setProperty('--color-toggle-btn', darkToggleBtn);
-  document.documentElement.style.setProperty('--color-settings-right-pane-option-border', darkSettingsRightPaneOptionBorder);
+  document.documentElement.style.setProperty(
+    '--color-settings-right-pane-option-border',
+    darkSettingsRightPaneOptionBorder
+  );
   document.documentElement.style.setProperty('--color-hop-bg', darkHopBg);
   document.documentElement.style.setProperty('--color-hop-txt', darkHopTxt);
   document.documentElement.style.setProperty('--color-recovery-seed-bg', darkRecoverySeedBg);
   document.documentElement.style.setProperty('--color-modal-footer', darkModalFooter);
   document.documentElement.style.setProperty('--color-untrust-media-bg', darkUntrustMediaBg);
-  document.documentElement.style.setProperty('--color-untrusted-vertical-bar', darkUntrustedVerticalBar);
+  document.documentElement.style.setProperty(
+    '--color-untrusted-vertical-bar',
+    darkUntrustedVerticalBar
+  );
   document.documentElement.style.setProperty('--color-icon-btn-hover', darkIconBtnHover);
-  document.documentElement.style.setProperty('--color-context-menu-hover-bg', darkContextMenuHoverBg);
+  document.documentElement.style.setProperty(
+    '--color-context-menu-hover-bg',
+    darkContextMenuHoverBg
+  );
   document.documentElement.style.setProperty('--color-wallet-Sync-box-bg', darkWalletSyncBoxBg);
   document.documentElement.style.setProperty('--color-profile-header-bg', darkProfileHeaderBg);
   document.documentElement.style.setProperty('--color-chatId-border', darkChatIdBorder);
   document.documentElement.style.setProperty('--color-profile-info-border', darkProfileInfoBorder);
-  document.documentElement.style.setProperty('--color-disappear-time-hover', darkDisappearTimeHover);
-  document.documentElement.style.setProperty('--color-profile-info-media-title', darkProfileInfoMediaTitle);
+  document.documentElement.style.setProperty(
+    '--color-disappear-time-hover',
+    darkDisappearTimeHover
+  );
+  document.documentElement.style.setProperty(
+    '--color-profile-info-media-title',
+    darkProfileInfoMediaTitle
+  );
   document.documentElement.style.setProperty('--color-modal-bg', darkModalBg);
   document.documentElement.style.setProperty('--color-modal-icon-bg', darkModalIconBg);
   document.documentElement.style.setProperty('--color-chat-multi-select-bg', darkChatMultiSelectBg);
-  document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', darkConfirmModalInnerBg);
-  document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', darkConfirmModalHoverBg);
+  document.documentElement.style.setProperty(
+    '--color-confirm-modal-inner-bg',
+    darkConfirmModalInnerBg
+  );
+  document.documentElement.style.setProperty(
+    '--color-confirm-modal-hover-bg',
+    darkConfirmModalHoverBg
+  );
   document.documentElement.style.setProperty('--color-enable-btn-bg', darkEnableBtnBg);
   document.documentElement.style.setProperty('--color-modal-disable-txt', darkModalDisableTxt);
   document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', darkWalletStatusTxtBg);
-  document.documentElement.style.setProperty('--color-wallet-unbalance-label', darkWalletUnBalanceLabel);
+  document.documentElement.style.setProperty(
+    '--color-wallet-unbalance-label',
+    darkWalletUnBalanceLabel
+  );
   document.documentElement.style.setProperty('--color-wallet-inner-bg', darkWalletInnerBg);
-
+  document.documentElement.style.setProperty('--color-noTxn-txt', darkNoTxnTxt);
+  document.documentElement.style.setProperty('--color-toast-bg', darkToastBg);
 };
 
 // LIGHT COLORS
@@ -522,7 +514,7 @@ const lightConversationItemHasUnread = '#F8F8F8';
 const lightConversationList = '#E6E6E6';
 
 const lightTextHighlight = `${black}88`;
-const lightForegroundPrimary = white;
+
 // const lightBackgroundPrimary = '#272726';
 const lightBackgroundPrimary = '#E8E8E8';
 
@@ -540,10 +532,10 @@ const lightColorBg = white;
 const lightMsgReqModalBg = 'rgba(230,230,230,0.4)';
 const lightSmModalBg = '#F4F4F4';
 const lightCancelBtnBg = '#E8E8E8';
-const lightInboxBgColor = '#FCFCFC';
+
 // const lightHintMessageText="black";
 // const lightTextAreaColor="black";
-const lightComposeMsgBg = '#f2f2f2';
+
 // const lightComposeMsgIconBG="#2879fb";
 const lightSettingIndication = '#F8F8F8';
 const lightSinginTextColor = '#128B17';
@@ -552,7 +544,6 @@ const lightSinginTextColor = '#128B17';
 // const lightCopyIconBg = '#EFEFEF';
 const lightCopyModalbtn = '#F8F8F8';
 
-const lightOverlayBg = '#EDEDED';
 const lightleftHeaderBg = '#F2F2F2';
 const lightLeaveGrpBtn = '#F2F2F2';
 
@@ -562,52 +553,43 @@ const lightMsgReqImg = `url("../images/bchat/no_message_request.svg")`;
 const lightBlockedContact = `url("../images/bchat/no_blocked_contacts.svg")`;
 const lightAddContact = `url("../images/bchat/add_contact_white_theme.svg")`;
 const lightEmptyContact = `url("../images/bchat/no_contact_scrt_grp.svg")`;
-const lightEmptyAddressBook = `url("../images/bchat/empty_address_book_white.svg")`;
+const lightEmptyAddressBook = `url("../images/bchat/empty_address_book_White.svg")`;
 const lightEmptyTransHistory = `url("../images/bchat/no_tx_history_white.svg")`;
 const lightIncomingTransHistory = `url("../images/bchat/no_incoming_transaction_white.svg")`;
 const whiteOutgoingTransHistory = `url("../images/bchat/no_outgoing_white.svg")`;
 const lightPendingTransHistory = `url("../images/bchat/pending_tx_history_white.svg")`;
 const lightFailedTransHistory = `url("../images/bchat/failed_tx_history_white.svg")`;
 const lightEmptyTransaction = `url("../images/bchat/no_transactions_found_white.svg")`;
-const whiteWalletSyncing = `url("../images/bchat/wallet_syncing_white.svg")`;
 const lightNoMedia = `url("../images/bchat/no_mediaWhiteTheme.svg")`;
 const lightChatHeader = '#F0F0F0';
-const lightChatIcons = 'black';
 const lightComposeMsgInput = '#F8F8F8';
-const lightcomposeMsgRecordIcon = '#85858F';
+
 const lightWalletNodeHeader = '#128B17';
 const lightWalletSelectHover = '#D3D3D3';
-const lightWalletPriorityHover = '#E3E3E3';
+
 const lightDayNight = `url("../images/bchat/moon.svg")`;
 const lightNewChat = `url("../images/bchat/newChat_white.svg")`;
 const lightBorderBottomColor = '#E3E3E3';
 const lightToggleOff = '#F8F8F8';
 const lightClearBtn = '#fff';
-const lightLeftpaneSetting = '#f4f4f4';
+
 const lightBlockUserBg = '#EBEBEB';
 const lightPasswordBorderBottom = '#D5D5D5';
-const lightRightpaneSetting = '#f8f8f8';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
-const whiteAudioRecord = '#dcdbdb';
 const whiteBubbleReceivedBg = '#F8F8F8';
 const lightBlockseletedUserBg = '#FFFFFF';
-const lightDisableBorder = '#C5C5C5';
 const lightDownArrowBg = '#FFFFFF';
 const lightDownArrow = '#A8A8C3';
 // Toast Colors
 
-
 // Seed color
-const whiteSeedColor = '#128B17';
 //bns link color
-const lightBnsLinkInputBgColor = '#F8F8F8';
 const lightBnsLinkIdBgColor = '#EBEBEB';
 const lightBnsCameraIconBgColor = '#FFFFFF';
 
 //wallet
 const lightWalcontentBg = '#E8E8E8';
-const lightWalcontentBgHover = '#DDDDDD';
 const lightWalInputBg = '#F8F8F8';
 const lightWalTransacBtn = '#DEDEDE';
 const lightWalcancelBtn = '#F8F8F8';
@@ -618,57 +600,56 @@ const lightDisableTxt = '#B1B1B1';
 const lightWalPassword = `url("../images/bchat/passwordIconWhite.svg")`;
 const lightWalDownThickArrow = `url("../images/wallet/downThickArrowWhite.svg")`;
 const lightLeaveHover = '#D9D9D9';
-const lightCopyHover = '#FFFFFF';
 const lightWalletCopyHover = '#EBEBEB';
-const lightAddressBookCopy = '#FFFFFF';
-const lightAddMembers = '#F2F2F2';
 const lightProfileClose = '#DDDDDD';
 const lightChattimestamp = '#333333';
 const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
 const lightBnsTransactionColor = '#222222';
 
 // revamp
-const lightLogoBg=baseWhite;
-const lightActionBtnBg=baseWhite;
-const lightActionBtnicon='#ACACAC';
-const lightActionBtnTxt='#333333';
-const lightThemeSelectedBg='#DEDEDE';
-const lightLeftPaneBg='#EBEBEB';
-const lightSearchBorder='#ACACAC';
-const lightLastMsgTxt='#858598';
-const lightContextMenuBg='#F8F8F8';
-const lightProfileIdBg='#EBEBEB';
-const lightProfileIDBorder='#C5C5C5';
-const lightSecondaryBtnBg='#F8F8F8';
-const lightQrOuterBg='#F8F8F8';
-const lightSettingsRightPaneOption='#EBEBEB';
-const lightSettingHeaderBorder='#ACACAC';
-const lightToggleBtn='#ACACAC';
-const ligthSettingsRightPaneOptionBorder='#ACACAC';
-const lightHopBg='#EBEBEB';
-const lightHoptxt='#333';
-const lightRecoverySeedBg='#F0F0F0';
-const lightModalFooter='#EBEBEB';
-const lightUntrustMediaBg='#EBEBEB';
-const lightUntrustedVerticalBar='#ACACAC';
-const lightIconBtnHover='#F8F8F8';
-const lightContextMenuHoverBg='#EBEBEB';
-const lightWalletSyncBoxBg='#F8F8F8';
-const lightProfileHeaderBg='#EBEBEB';
-const lightChatIdBorder='#C5C5C5'
-const lightProfileInfoBorder='#ACACAC';
-const lightDisappearTimeHover='#EBEBEB';
-const lightProfileInfoMediaTitle='#333333';
-const lightModalBg='#F8F8F8';
-const lightModalIconBg='#EBEBEB';
-const lightChatMultiSelectBg='#DDDDDD';
-const lightConfirmModalInnerBg='#EBEBEB';
-const lightConfirmModalHoverBg='#E4E4E4';
-const lightEnableBtnBg='#EBEBEB';
-const lightModalDisableTxt='#ACACAC';
-const lightWalletStatusTxtBg='#F8F8F8';
-const lightWalletUnBalanceLabel='#333333';
-const lightWalletInnerBg='#EBEBEB';
+const lightLogoBg = baseWhite;
+const lightActionBtnBg = baseWhite;
+const lightActionBtnicon = '#ACACAC';
+const lightActionBtnTxt = '#333333';
+const lightThemeSelectedBg = '#DEDEDE';
+const lightLeftPaneBg = '#EBEBEB';
+const lightSearchBorder = '#ACACAC';
+const lightLastMsgTxt = '#858598';
+const lightContextMenuBg = '#F8F8F8';
+const lightProfileIdBg = '#EBEBEB';
+const lightProfileIDBorder = '#C5C5C5';
+const lightSecondaryBtnBg = '#F8F8F8';
+const lightQrOuterBg = '#F8F8F8';
+const lightSettingsRightPaneOption = '#EBEBEB';
+const lightSettingHeaderBorder = '#ACACAC';
+const lightToggleBtn = '#ACACAC';
+const ligthSettingsRightPaneOptionBorder = '#ACACAC';
+const lightHopBg = '#EBEBEB';
+const lightHoptxt = '#333';
+const lightRecoverySeedBg = '#F0F0F0';
+const lightModalFooter = '#EBEBEB';
+const lightUntrustMediaBg = '#EBEBEB';
+const lightUntrustedVerticalBar = '#ACACAC';
+const lightIconBtnHover = '#F8F8F8';
+const lightContextMenuHoverBg = '#EBEBEB';
+const lightWalletSyncBoxBg = '#F8F8F8';
+const lightProfileHeaderBg = '#EBEBEB';
+const lightChatIdBorder = '#C5C5C5';
+const lightProfileInfoBorder = '#ACACAC';
+const lightDisappearTimeHover = '#EBEBEB';
+const lightProfileInfoMediaTitle = '#333333';
+const lightModalBg = '#F8F8F8';
+const lightModalIconBg = '#EBEBEB';
+const lightChatMultiSelectBg = '#DDDDDD';
+const lightConfirmModalInnerBg = '#EBEBEB';
+const lightConfirmModalHoverBg = '#E4E4E4';
+const lightEnableBtnBg = '#EBEBEB';
+const lightModalDisableTxt = '#ACACAC';
+const lightWalletStatusTxtBg = '#F8F8F8';
+const lightWalletUnBalanceLabel = '#333333';
+const lightWalletInnerBg = '#EBEBEB';
+const lightNoTxnTxt = '#ACACAC';
+const lightToastBg = '#F8F8F8';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -711,7 +692,6 @@ export const switchHtmlToLightTheme = () => {
   //   '--color-bchat-border',
   //   lightColorBchatBorderColor
   // );
-  document.documentElement.style.setProperty('--color-overlayBg', lightOverlayBg);
   document.documentElement.style.setProperty(
     '--color-recovery-phrase-banner-background',
     lightColorRecoveryPhraseBannerBg
@@ -768,7 +748,6 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-conversation-list', lightConversationList);
 
   document.documentElement.style.setProperty('--color-text-highlight', lightTextHighlight);
-  document.documentElement.style.setProperty('--color-foreground-primary', lightForegroundPrimary);
   document.documentElement.style.setProperty('--color-background-primary', lightBackgroundPrimary);
   document.documentElement.style.setProperty('--color-button-green', lightButtonGreen);
   document.documentElement.style.setProperty('--color-modal-background', lightModalBackground);
@@ -791,37 +770,22 @@ export const switchHtmlToLightTheme = () => {
   );
 
   document.documentElement.style.setProperty('--color-settingIndication', lightSettingIndication);
-  document.documentElement.style.setProperty('--color-rightpaneSetting', lightRightpaneSetting);
   // document.documentElement.style.setProperty(
   //   '--color-unreadBg',
   //   lightunreadBg
   // );
   document.documentElement.style.setProperty('--color-leftHeaderBg', lightleftHeaderBg);
   document.documentElement.style.setProperty('--color-borderBottomColor', lightBorderBottomColor);
-  document.documentElement.style.setProperty('--color-inboxBgColor', lightInboxBgColor);
-  document.documentElement.style.setProperty('--color-composeMsgIconBG', darkComposeMsgIconBG);
-  document.documentElement.style.setProperty('--color-composeMsgBg', lightComposeMsgBg);
   document.documentElement.style.setProperty('--color-composeMsgInput', lightComposeMsgInput);
-  document.documentElement.style.setProperty(
-    '--color-composeMsgRecordIcon',
-    lightcomposeMsgRecordIcon
-  );
 
   document.documentElement.style.setProperty('--color-walletNodeHeader', lightWalletNodeHeader);
   document.documentElement.style.setProperty('--color-walletSelectOption', lightWalletSelectHover);
-  document.documentElement.style.setProperty(
-    '--color-walletPriorityHover',
-    lightWalletPriorityHover
-  );
   document.documentElement.style.setProperty('--color-MsgReqModal-bg', lightMsgReqModalBg);
   document.documentElement.style.setProperty('--color-smModal-bg', lightSmModalBg);
   document.documentElement.style.setProperty('--color-cancelBtn-bg', lightCancelBtnBg);
   document.documentElement.style.setProperty('--color-chatHeader', lightChatHeader);
-  document.documentElement.style.setProperty('--color-chatIcons', lightChatIcons);
-  document.documentElement.style.setProperty('--color-leftpaneSetting', lightLeftpaneSetting);
   document.documentElement.style.setProperty('--color-blockUserBg', lightBlockUserBg);
   document.documentElement.style.setProperty('--color-blockseletedUserBg', lightBlockseletedUserBg);
-  document.documentElement.style.setProperty('--color-disableBorder', lightDisableBorder);
   document.documentElement.style.setProperty('--color-downArrowBg', lightDownArrowBg);
 
   document.documentElement.style.setProperty(
@@ -832,12 +796,6 @@ export const switchHtmlToLightTheme = () => {
 
   document.documentElement.style.setProperty('--color-clearBtn', lightClearBtn);
   document.documentElement.style.setProperty('--color-caret', darkColorCellBackground);
-  document.documentElement.style.setProperty('--color-copy-hover', lightCopyHover);
-  document.documentElement.style.setProperty(
-    '--color-addressbook-copy-hover',
-    lightAddressBookCopy
-  );
-  document.documentElement.style.setProperty('--color-add-member', lightAddMembers);
   document.documentElement.style.setProperty('--color-profile-close', lightProfileClose);
   document.documentElement.style.setProperty('--color-chat-timestamp', lightChattimestamp);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', lightWalletCopyHover);
@@ -866,12 +824,9 @@ export const switchHtmlToLightTheme = () => {
   );
   document.documentElement.style.setProperty('--image-failedTransHistory', lightFailedTransHistory);
   document.documentElement.style.setProperty('--image-emptySearch', lightEmptyTransaction);
-  document.documentElement.style.setProperty('--image-walletSyncing', whiteWalletSyncing);
   document.documentElement.style.setProperty('--image-NoMedia', lightNoMedia);
   document.documentElement.style.setProperty('--green-color', greenColor);
   // document.documentElement.style.setProperty('--button-color', buttonColor);
-  document.documentElement.style.setProperty('--color-audio-record', whiteAudioRecord);
-  document.documentElement.style.setProperty('--color-seed', whiteSeedColor);
   document.documentElement.style.setProperty(
     '--message-bubbles-received-background-color',
     whiteBubbleReceivedBg
@@ -880,12 +835,10 @@ export const switchHtmlToLightTheme = () => {
 
   // bns link selectors
   document.documentElement.style.setProperty('--color-BnsLinkIdBg', lightBnsLinkIdBgColor);
-  document.documentElement.style.setProperty('--color-BnsLinkInputBg', lightBnsLinkInputBgColor);
   document.documentElement.style.setProperty('--color-BnsCameraIconBg', lightBnsCameraIconBgColor);
-  
+
   //wallet
   document.documentElement.style.setProperty('--color-WalcontentBg', lightWalcontentBg);
-  document.documentElement.style.setProperty('--color-WalcontentBgHover', lightWalcontentBgHover);
   document.documentElement.style.setProperty('--color-walInputBg', lightWalInputBg);
   document.documentElement.style.setProperty('--color-walTransacBtn', lightWalTransacBtn);
   document.documentElement.style.setProperty('--color-walcancelBtn', lightWalcancelBtn);
@@ -913,35 +866,72 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-profile-id-border', lightProfileIDBorder);
   document.documentElement.style.setProperty('--color-secondary-btn-bg', lightSecondaryBtnBg);
   document.documentElement.style.setProperty('--color-qr-outer-bg', lightQrOuterBg);
-  document.documentElement.style.setProperty('--color-settings-right-pane-option', lightSettingsRightPaneOption);
-  document.documentElement.style.setProperty('--color-setting-header-border', lightSettingHeaderBorder);
+  document.documentElement.style.setProperty(
+    '--color-settings-right-pane-option',
+    lightSettingsRightPaneOption
+  );
+  document.documentElement.style.setProperty(
+    '--color-setting-header-border',
+    lightSettingHeaderBorder
+  );
   document.documentElement.style.setProperty('--color-toggle-btn', lightToggleBtn);
-  document.documentElement.style.setProperty('--color-settings-right-pane-option-border', ligthSettingsRightPaneOptionBorder);
+  document.documentElement.style.setProperty(
+    '--color-settings-right-pane-option-border',
+    ligthSettingsRightPaneOptionBorder
+  );
   document.documentElement.style.setProperty('--color-hop-bg', lightHopBg);
   document.documentElement.style.setProperty('--color-hop-txt', lightHoptxt);
   document.documentElement.style.setProperty('--color-recovery-seed-bg', lightRecoverySeedBg);
   document.documentElement.style.setProperty('--color-modal-footer', lightModalFooter);
   document.documentElement.style.setProperty('--color-untrust-media-bg', lightUntrustMediaBg);
-  document.documentElement.style.setProperty('--color-untrusted-vertical-bar', lightUntrustedVerticalBar);
+  document.documentElement.style.setProperty(
+    '--color-untrusted-vertical-bar',
+    lightUntrustedVerticalBar
+  );
   document.documentElement.style.setProperty('--color-icon-btn-hover', lightIconBtnHover);
-  document.documentElement.style.setProperty('--color-context-menu-hover-bg', lightContextMenuHoverBg);
+  document.documentElement.style.setProperty(
+    '--color-context-menu-hover-bg',
+    lightContextMenuHoverBg
+  );
   document.documentElement.style.setProperty('--color-wallet-Sync-box-bg', lightWalletSyncBoxBg);
   document.documentElement.style.setProperty('--color-profile-header-bg', lightProfileHeaderBg);
   document.documentElement.style.setProperty('--color-chatId-border', lightChatIdBorder);
   document.documentElement.style.setProperty('--color-profile-info-border', lightProfileInfoBorder);
-  document.documentElement.style.setProperty('--color-disappear-time-hover', lightDisappearTimeHover);
-  document.documentElement.style.setProperty('--color-profile-info-media-title', lightProfileInfoMediaTitle);
+  document.documentElement.style.setProperty(
+    '--color-disappear-time-hover',
+    lightDisappearTimeHover
+  );
+  document.documentElement.style.setProperty(
+    '--color-profile-info-media-title',
+    lightProfileInfoMediaTitle
+  );
   document.documentElement.style.setProperty('--color-modal-bg', lightModalBg);
   document.documentElement.style.setProperty('--color-modal-icon-bg', lightModalIconBg);
-  document.documentElement.style.setProperty('--color-chat-multi-select-bg', lightChatMultiSelectBg);
-  document.documentElement.style.setProperty('--color-confirm-modal-inner-bg', lightConfirmModalInnerBg);
-  document.documentElement.style.setProperty('--color-confirm-modal-hover-bg', lightConfirmModalHoverBg);
+  document.documentElement.style.setProperty(
+    '--color-chat-multi-select-bg',
+    lightChatMultiSelectBg
+  );
+  document.documentElement.style.setProperty(
+    '--color-confirm-modal-inner-bg',
+    lightConfirmModalInnerBg
+  );
+  document.documentElement.style.setProperty(
+    '--color-confirm-modal-hover-bg',
+    lightConfirmModalHoverBg
+  );
   document.documentElement.style.setProperty('--color-enable-btn-bg', lightEnableBtnBg);
   document.documentElement.style.setProperty('--color-modal-disable-txt', lightModalDisableTxt);
-  document.documentElement.style.setProperty('--color-wallet-status-txt-Bg', lightWalletStatusTxtBg);
-  document.documentElement.style.setProperty('--color-wallet-unbalance-label', lightWalletUnBalanceLabel);
+  document.documentElement.style.setProperty(
+    '--color-wallet-status-txt-Bg',
+    lightWalletStatusTxtBg
+  );
+  document.documentElement.style.setProperty(
+    '--color-wallet-unbalance-label',
+    lightWalletUnBalanceLabel
+  );
   document.documentElement.style.setProperty('--color-wallet-inner-bg', lightWalletInnerBg);
-  
+  document.documentElement.style.setProperty('--color-noTxn-txt', lightNoTxnTxt);
+  document.documentElement.style.setProperty('--color-toast-bg', lightToastBg);
 };
 
 // default to light theme
@@ -970,7 +960,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --border-bchat:  ${darkColorBchatBorder};
 
     /* COLORS NOT CHANGING BETWEEN THEMES */
-    --color-body-bg:${black};
+    --color-body-bg:${bodyBg};
     --color-warning:  ${warning};
     --color-destructive:  ${destructive};
     /* COLORS */
@@ -1007,32 +997,28 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-conversation-item-has-unread: ${darkConversationItemHasUnread};
     --color-conversation-list: ${darkConversationList};
     --color-text-highlight: ${darkTextHighlight};
-    --color-foreground-primary: ${darkForegroundPrimary};
-    --color-background-primary: ${darkBackgroundPrimary};
-    --color-button-green: ${darkButtonGreen};
+ 
+
     --color-modal-background: ${darkModalBackground};
-    --color-overlayBg:${darkOverlayBg};
     --color-leftHeaderBg:${darkleftHeaderBg};
     --color-leaveGrpBtn:${darkLeaveGrpBtn}
 
     --color-MsgReqModal-bg:${darkMsgReqModalBg};
     --color-smModal-bg:${darkSmModalBg};
     --color-cancelBtn-bg:${darkCancelBtnBg};
-    --color-inboxBgColor:${darkInboxBgColor};
+  
     --color-borderBottomColor:${darkBorderBottomColor};
     --color-HintMessageText:${darkHintMessage};
-    --color-TextAreaColor:${darkTextAreaColor};
-    --color-composeMsgBg:${darkComposeMsgBg};
+    
+  
     --color-composeMsgInput:${darkComposeMsgInput}
-    --color-composeMsgIconBG:${darkComposeMsgIconBG};
-    --color-composeMsgRecordIcon:${darkcomposeMsgRecordIcon}
+    
+  
     --color-walletNodeHeader:${darkWalletNodeHeader}
     --color-walletSelectOption:${darkWalletSelectHover};
-    --color-walletPriorityHover:${darkWalletPriorityHover};
     --color-settingIndication:${darkSettingIndication};
     --color-copyModalbtn:${darkCopyModalbtn}
-    --color-chatHeader:${darkChatHeader};
-    --color-chatIcons:${darkChatIcons};
+
     --color-toggleOff:${darkToggleOff};
     --color-clearBtn:${darkClearBtn};
     --button-color:${buttonColor};
@@ -1040,30 +1026,23 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-blockUserBg:${darkBlockUserBg};
     --color-downArrowBg:${darkDownArrowBg};
     --color-downArrow:${darkDownArrow}
-    --color-leftpaneSetting:${darkLeftpaneSetting};
-    --color-rightpaneSetting:${darkRightpaneSetting}
+   
+  
     --color-disableText:${darkDisableText};
-    --color-password-borderBottom:${darkPasswordBorderBottom}
-    --color-audio-record:${darkAudioRecord};
-    --color-seed:${darkSeedColor};
+   
+    
     --color-blockseletedUserBg:${darkBlockseletedUserBg};
-    --color-disableBorder:${darkDisableBorder};
+
     --color-profile: ${darkProfileBgColor};
     --color-BnsLinkIdBg:${darkBnsLinkIdBgColor};
-    --color-BnsLinkInputBg:${darkBnsLinkInputBgColor};
+   
 
     --color-caret:${lightColorCellBackground};
-    --color-copy-hover:${darkCopyHover};
-    --color-add-member:${lightAddMembers};
     --color-profile-close: ${darkProfileClose};
     --color-chat-timestamp:${darkChatTimestamp};
-    --color-addressbook-copy-hover:${darkAddressBookCopy};
-    --color-wallet-copy-hover:${darkWalletCopyHover};
     --color-WalcontentBg:${darkWalcontentBg};
-    --color-WalcontentBgHover:${darkWalcontentBgHover};
     --color-walInputBg:${darkWalInputBg};
     --color-walTransacBtn:${darkWalTransacBtn};
-   
     --color-walcancelBtn:${darkWalcancelBtn};
     --color-walSyncbar:${darkWalletSyncBar};
     --color-walDownthickArrow:${darkDownthickArrow};
@@ -1075,10 +1054,10 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-bns-transaction:${darkBnsTransactionColor};
 
     --color-logo-bg:${darklogoBg};
-    --color-action-btn-bg:${ darkActionBtnBg};
+    --color-action-btn-bg:${darkActionBtnBg};
     --color-action-btn-icon:${darkActionBtnicon};
     --color-action-btn-txt:${darkActionBtnTxt};
-    --color-theme-selected-bg:${ darkThemeSelectedBg};
+    --color-theme-selected-bg:${darkThemeSelectedBg};
     --color-left-pane-bg: ${darkLeftPaneBg};
     --color-search-border:${darkSearchBorder};
     --color-last-msg-txt:${darkLastMsgTxt};
@@ -1115,6 +1094,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-wallet-status-txt-Bg:${darkWalletStatusTxtBg};
     --color-wallet-unbalance-label:${darkWalletUnBalanceLabel};
     --color-wallet-inner-bg:${darkWalletInnerBg};
+    --color-noTxn-txt:${darkNoTxnTxt};
+    --color-toast-bg:${darkToastBg};
+
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
@@ -1131,7 +1113,6 @@ export const BchatGlobalStyles = createGlobalStyle`
     --image-pendingTransHistory:${darkPendingTransHistory};
     --image-failedTransHistory':${darkFailedTransHistory};
     --image-emptySearch:${darkEmptyTransaction};
-    --image-walletSyncing:${darkWalletSyncing};
     --image-NoMedia:${darkNoMedia};
     --message-bubbles-received-background-color:${darkbubbleReceivedBg};
     --img-walPassword:${darkWalPassword};

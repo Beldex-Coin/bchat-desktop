@@ -62,9 +62,7 @@
     justify-content: center;
     width: 100%;
 
-    // svg {
-    //   color: var(--color-chatIcons);
-    // }
+ 
     // .connectWalletBtn {
     //   display: flex;
     //   width: 155px;
@@ -228,7 +226,6 @@
   align-items: flex-end;
   padding: 0px $bchat-margin-md;
   min-height: min-content;
-  // background: var(--color-composeMsgBg);
   // border-top: var(--border-bchat);
   z-index: 1;
 
@@ -256,7 +253,6 @@
   // }
 
   .attachment-box {
-    // background-color: var(--color-composeMsgIconBG);
     padding: 8px;
     // color: #85858f;
     border-radius: 10px;
@@ -338,9 +334,7 @@
       border: 2px solid #888a8d;
     }
 
-    // svg {
-    //   color: var(--color-composeMsgRecordIcon);
-    // }
+  
     // svg:hover {
     //   transform: scale(1.1);
     // }
