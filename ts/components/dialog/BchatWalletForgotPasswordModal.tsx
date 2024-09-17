@@ -214,7 +214,7 @@ export const BchatWalletForgotPasswordModal = () => {
               />
               <div
                 // onClick={() => handlePaste()}
-                // className="wallet-forgotPassword-content-Box-paste-icon"
+               
                 style={{ marginTop: '15px' }}
                 data-tip="Paste"
                 data-offset="{'top':30,'left':15}"

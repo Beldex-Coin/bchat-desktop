@@ -23,10 +23,10 @@ type Props = {
 };
 
 const TitleDiv = styled.div`
-  color: #f0f0f0;
+  
   font-size: 18px;
   font-weight: 400;
-  line-height: 25px; /* 138.889% */
+  
 `;
 
 const DescriptionDiv = styled.div`

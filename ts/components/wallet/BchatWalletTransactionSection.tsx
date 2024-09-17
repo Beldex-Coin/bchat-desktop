@@ -3,11 +3,12 @@ import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { getRecipientAddress } from '../../data/data';
 import { Flex } from '../basic/Flex';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 import { BchatIcon } from '../icon/BchatIcon';
 import { shell } from 'electron';
 import { getRescaning } from '../../state/selectors/walletConfig';
 import { useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
@@ -21,6 +22,7 @@ export const TransactionSection = (props: any) => {
   const [receipientData, setRecipientdata] = useState([]);
   const [searchText, setSearchText] = useState('');
   const syncStatus: boolean = useSelector(getRescaning);
+  const darkMode = useSelector(getTheme) === 'dark';
   const recip: any = receipientData;
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
@@ -271,7 +273,6 @@ export const TransactionSection = (props: any) => {
                               iconType="circleTickOutline"
                               iconColor="#00A638"
                               iconSize={16}
-
                             />
                           </span>
                         ) : (
@@ -293,7 +294,6 @@ export const TransactionSection = (props: any) => {
                               iconType="circleTickOutline"
                               iconColor="#00A638"
                               iconSize={16}
-
                             />
                           </span>
                         ) : (
@@ -314,7 +314,6 @@ export const TransactionSection = (props: any) => {
                               iconType="circleTickOutline"
                               iconColor="#00A638"
                               iconSize={16}
- 
                             />
                           </span>
                         ) : (
@@ -341,7 +340,7 @@ export const TransactionSection = (props: any) => {
                 style={{ cursor: 'pointer' }}
               >
                 <Flex container={true} justifyContent="space-between" flexDirection="row">
-                  <Flex container={true} height=" 60px" width='55%'>
+                  <Flex container={true} height=" 60px" width="55%">
                     <article className="wallet-Transaction-contentBox-sendIndicationBox">
                       <TransactionIndication type={item.type} />
                     </article>
@@ -361,20 +360,19 @@ export const TransactionSection = (props: any) => {
                       </div>
                     </div>
                   </Flex>
-                  
-                    <section className="wallet-Transaction-contentBox-dateandheight">
-                      <div
-                        className="wallet-Transaction-contentBox-dateandheight-month"
-                        style={{ marginBottom: '7px' }}
-                      >
-                        {moment.unix(item.timestamp).format('ll')}
-                      </div>
-                      <div className="wallet-Transaction-contentBox-dateandheight-height">
-                        Height : {item.height}{' '}
-                        {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
-                      </div>
-                    </section>
-                  
+
+                  <section className="wallet-Transaction-contentBox-dateandheight">
+                    <div
+                      className="wallet-Transaction-contentBox-dateandheight-month"
+                      style={{ marginBottom: '7px' }}
+                    >
+                      {moment.unix(item.timestamp).format('ll')}
+                    </div>
+                    <div className="wallet-Transaction-contentBox-dateandheight-height">
+                      Height : {item.height}{' '}
+                      {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
+                    </div>
+                  </section>
                 </Flex>
 
                 {selected === i && (
@@ -447,8 +445,16 @@ export const TransactionSection = (props: any) => {
             ))}
           {!syncStatus && (
             <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
-              <div className="wallet-syncing"></div>
+              <div className="wallet-syncing">
+                <BchatIcon
+                  iconType={'rotatedArrow'}
+                  iconSize={70}
+                  iconColor={darkMode ? '#65656E' : '#ACACAC'}
+                />{' '}
+              </div>
+              <SpacerMD />
               <h3 className="wallet-syncing-title">Wallet Syncing..</h3>
+              <SpacerXS />
               <h5 className="wallet-syncing-content">{window.i18n('walletSyncingDiscription')}</h5>
             </Flex>
           )}
@@ -464,7 +470,10 @@ export const TransactionSection = (props: any) => {
                         {window.i18n('emptyTransaction')}
                       </div>
                       {!searchText && (
-                        <h5 className="wallet-Transaction-subContent" style={{ marginTop: '5px' }}>
+                        <h5
+                          className="wallet-Transaction-subContent"
+                          style={{ margin: 'auto', marginTop: '5px', width: '223px' }}
+                        >
                           {window.i18n('emptyTransactionDiscription')}
                         </h5>
                       )}

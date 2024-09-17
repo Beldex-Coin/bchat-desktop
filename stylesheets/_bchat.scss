@@ -648,7 +648,7 @@ label {
   @mixin set-toast-theme($color) {
     border-radius: 16px;
     border-left: 4px solid $color;
-    background: #131313;
+    background: var(--color-toast-bg);
   }
 
   &--success {
@@ -944,7 +944,6 @@ label {
     // @include text-highlight($bchat-color-green);
     // font-family: $bchat-font-poppin-medium;
     font-size: $bchat-font-lg;
-    // color: var(--color-seed);
     font-style: normal;
     font-weight: 400;
     background-color: var(--color-recovery-seed-bg);
@@ -1503,8 +1502,6 @@ label {
     > .react-contexify__item__content {
     border-radius: 14px;
     // background: #333842;
-
-    // background: var(--color-composeMsgIconBG);
     // color: var(--color-text-menu-highlighted);
     background-color: var(--color-context-menu-hover-bg);
     color: var(--color-text);
@@ -2172,8 +2169,7 @@ label {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    // background-color: var(--color-rightpaneSetting);
-    // background: #131313;
+  
   }
 
   &__version-info {
@@ -2364,10 +2360,7 @@ label {
   //     font-weight: 500;
   //     font-size: 14px;
 
-  //     &:hover {
-  //       background-color: var(--color-walletPriorityHover);
-  //     }
-  //   }
+  
 
   //   .bchat-button.brand.green {
   //     width: 168px;
@@ -2432,9 +2425,6 @@ label {
       border-radius: 16px;
       background: var(--color-secondary-btn-bg);
 
-      // &:hover {
-      //   background-color: var(--color-WalcontentBgHover);
-      // }
     }
 
     &-squarBox-bala,
@@ -2940,26 +2930,8 @@ label {
           }
         }
 
-        &-paste-icon {
-          background: url('../images/bchat/paste.svg') no-repeat;
-          width: 35px;
-          height: 35px;
-          background-color: var(--color-inboxBgColor);
-          background-size: 14px;
-          border-radius: 35px;
-          background-position: center;
-          left: 10px;
-          top: 19px;
-          position: relative;
-          cursor: pointer;
-          box-shadow: var(--color-bchat-shadow);
-        }
+       
 
-        &-paste-icon:hover {
-          // transform: scale(1.1);
-          background-color: var(--color-wallet-copy-hover);
-          // color: #1ced23;
-        }
 
         &-password {
           input {
@@ -3122,7 +3094,6 @@ label {
             padding: 10px 19px;
           }
           &-items:hover {
-            // background-color: var(--color-walletPriorityHover);
             border-radius: 16px;
             background: #333842;
           }
@@ -3319,16 +3290,16 @@ label {
     }
 
     &-syncing {
-      width: 46%;
-      height: 32%;
+      text-align: center;
+      // width: 46%;
+      // height: 32%;
       // background-position: center;
-      background-size: 98% 98%;
-      margin: 0 auto;
-      background-image: var(--image-walletSyncing);
-      background-repeat: no-repeat;
+      // background-size: 98% 98%;
+      // margin: 0 auto;
+      // background-repeat: no-repeat;
 
       &-title {
-        color: #a7a7ba;
+        color: var(--color-noTxn-txt);
         font-family: $bchat-font-open-sans;
         font-size: 18px;
         font-weight: 600;
@@ -3472,7 +3443,7 @@ label {
       }
 
       &-content {
-        color: #a7a7ba;
+        color:var(--color-noTxn-txt);
         /* text-align: right; */
         font-family: $bchat-font-open-sans;
         font-size: 18px;
