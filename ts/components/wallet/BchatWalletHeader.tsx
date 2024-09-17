@@ -31,7 +31,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
       message: window.i18n('rescanWalletDiscription'),
-      okTheme: BchatButtonColor.Green,
+      okTheme: BchatButtonColor.Primary,
       okText: window.i18n('Rescan'),
       btndisable: rescaning,
       onClickOk: () => {

@@ -27,7 +27,7 @@ export const ReceivedForm = () => {
           <div className="wallet-receivedForm-qrBox-qrView">
             <QRCode
               value={qrValue}
-              bgColor="#FFFFFF"
+              bgColor="#d9d9d9"
               fgColor="#1B1B1B"
               ecLevel="M"
               size={160}

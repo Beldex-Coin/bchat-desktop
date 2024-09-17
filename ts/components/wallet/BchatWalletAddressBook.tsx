@@ -201,7 +201,7 @@ const AddressContent = (props: { isContact?: boolean; pubkey: string; send: any 
             <BchatIconButton
               iconType="copy"
               iconSize={20}
-              btnBgColor="#2E333D"
+              btnBgColor="var(--color-clickable-hovered)"
               padding="15px"
               btnRadius="16px"
               clipRule="evenodd"
@@ -212,6 +212,7 @@ const AddressContent = (props: { isContact?: boolean; pubkey: string; send: any 
             <BchatIconButton
               iconType="send"
               iconSize={20}
+              iconColor='#FFF'
               btnBgColor="#108D32"
               padding="15px"
               btnRadius="16px"
