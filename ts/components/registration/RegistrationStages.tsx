@@ -12,6 +12,7 @@ import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../ut
 import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
+import { Flex } from '../basic/Flex';
 
 export const MAX_USERNAME_LENGTH = 26;
 // tslint:disable: use-simple-attributes
@@ -178,6 +179,13 @@ export enum RegistrationPhase {
   SignUp,
 }
 
+export enum LeftImage {
+  registration,
+  password,
+  address,
+  recoveryseed,
+}
+
 interface RegistrationPhaseContext {
   registrationPhase: RegistrationPhase;
   signUpMode: SignUpMode;
@@ -201,6 +209,7 @@ export const RegistrationStages = () => {
   const [signInMode, setSignInMode] = useState(SignInMode.Default);
   const [signUpMode, setSignUpMode] = useState(SignUpMode.Default);
   const [accent, setAccent] = useState(true);
+  const [imageCount, setImageCount] = useState(0);
 
   useEffect(() => {
     void generateMnemonicAndKeyPairaa();
@@ -211,29 +220,79 @@ export const RegistrationStages = () => {
     // console.log('registration');
     await wallet.startWallet();
   };
+  const imageValidator = (e: any) => {
+    console.log('imageValidator');
+    setImageCount(e);
+  };
+  const displayImg = () => {
+    let path;
+    if (imageCount === LeftImage.recoveryseed) {
+      path = 'images/bchat/loginPageSeed.png';
+    } else if (imageCount === LeftImage.password) {
+      path = 'images/bchat/loginPagePassword.png';
+    } else if (imageCount === LeftImage.address) {
+      path = 'images/bchat/loginPageAddress.png';
+    } else {
+      path = 'images/bchat/loginpage.png';
+    }
+
+    return path;
+  };
   return (
     <div className="bchat-registration-container">
-      <RegistrationContext.Provider
-        value={{
-          registrationPhase,
-          signInMode,
-          signUpMode,
-          setSignInMode,
-          setSignUpMode,
-          setRegistrationPhase,
-        }}
-      >
-        {accent && <AccentText />}
-        {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignUp) && (
-          <SignUpTab assent={(value: boolean) => setAccent(value)} />
-        )}
-        {(registrationPhase === RegistrationPhase.Start ||
-          registrationPhase === RegistrationPhase.SignIn) && (
-          <SignInTab assent={(value: boolean) => setAccent(value)} />
-        )}
-        {accent && <TermsAndConditions />}
-      </RegistrationContext.Provider>
+      <Flex flexDirection="row" container={true} height="100%" width="100%">
+        <Flex
+          className="bchat-content-left"
+          alignItems="center"
+          flexDirection="row"
+          container={true}
+          height="100%"
+          width="40%"
+          justifyContent="flex-end"
+        >
+          <img src={displayImg()} width={'86%'} height={'80%'}></img>
+        </Flex>
+
+        <Flex
+          className="bchat-content"
+          alignItems="center"
+          flexDirection="column"
+          container={true}
+          height="100%"
+          width="60%"
+          justifyContent="center"
+        >
+          <div style={{ width: '470px' }}>
+            <RegistrationContext.Provider
+              value={{
+                registrationPhase,
+                signInMode,
+                signUpMode,
+                setSignInMode,
+                setSignUpMode,
+                setRegistrationPhase,
+              }}
+            >
+              {accent && <AccentText />}
+              {(registrationPhase === RegistrationPhase.Start ||
+                registrationPhase === RegistrationPhase.SignUp) && (
+                <SignUpTab
+                  assent={(value: boolean) => setAccent(value)}
+                  imageValidator={(e: Number) => imageValidator(e)}
+                />
+              )}
+              {(registrationPhase === RegistrationPhase.Start ||
+                registrationPhase === RegistrationPhase.SignIn) && (
+                <SignInTab
+                  assent={(value: boolean) => setAccent(value)}
+                  imageValidator={(e: Number) => imageValidator(e)}
+                />
+              )}
+              {accent && <TermsAndConditions />}
+            </RegistrationContext.Provider>
+          </div>
+        </Flex>
+      </Flex>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 // import { BchatSpinner } from '../basic/BchatSpinner';
 // import { SpacerLG } from '../basic/Text';
 import {
+  LeftImage,
   MAX_USERNAME_LENGTH,
   RegistrationContext,
   RegistrationPhase,
@@ -179,6 +180,7 @@ export const SignInTab = (props: any) => {
       );
     }
     setScreenName(3);
+    props.imageValidator(LeftImage.recoveryseed);
   };
 
   // const clickGoBack = () => {
@@ -197,6 +199,7 @@ export const SignInTab = (props: any) => {
       try {
         mn_decode(recoveryPhrase, 'english');
         setScreenName(2);
+        props.imageValidator(LeftImage.password);
       } catch (e) {
         setScreenName(1);
         ToastUtils.pushToastError(
@@ -218,6 +221,7 @@ export const SignInTab = (props: any) => {
               setScreenName(1);
               setBlockheight('');
               setRestoreDate('');
+              props.imageValidator(LeftImage.registration);
             }}
           />
         </div>
@@ -245,6 +249,7 @@ export const SignInTab = (props: any) => {
         setRepassword={(e: any) => setRepassword(e)}
         backArrow={() => {
           setScreenName(1);
+          props.imageValidator(LeftImage.recoveryseed);
           setPassword('');
           setRepassword(''), props.assent(true);
         }}
@@ -269,9 +274,10 @@ export const SignInTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '151px',
-            height: '128px',
-            margin: '0 auto',
+            width: "120px",
+            height: "120px",
+            margin: "0px auto",
+            backgroundSize: "102px"
           }}
         ></div>
       </div>
@@ -297,6 +303,7 @@ export const SignInTab = (props: any) => {
                 setRepassword('');
                 setBlockheight('');
                 setRestoreDate('');
+                props.imageValidator(LeftImage.registration);
               }}
             />
           </div>
@@ -373,6 +380,7 @@ export const SignInTab = (props: any) => {
           setDisplayName('');
           setIsLoading(false);
           props.assent(false);
+          props.imageValidator(LeftImage.recoveryseed)
         }}
         onLinkDeviceButtonClicked={() => {
           setRegistrationPhase(RegistrationPhase.SignIn);
