@@ -94,7 +94,8 @@
     &-container {
       display: flex;
       flex-direction: column;
-      width: 470px;
+      // width: 470px;
+      height: 100%;
 
       &-walletHintText {
         margin: 0;
@@ -131,6 +132,7 @@
       // padding-top: 20px;
       // margin-left: 26px;
       margin-bottom: $bchat-margin-md;
+      width: 417px
     }
 
     &__content1 {

@@ -3,7 +3,7 @@ import { fromHex, sanitizeBchatUsername } from '../../bchat/utils/String';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIconButton } from '../icon';
-import { RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
+import { LeftImage, RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
 import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
 import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
@@ -46,7 +46,7 @@ export const GoBackMainMenuButton = (props: any) => {
     <BchatIconButton
       iconSize="huge"
       iconType="KeyboardBackspaceArrow"
-      iconPadding="5px"
+      // iconPadding="5px"
       iconColor='#A9AEBA'
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
@@ -131,9 +131,10 @@ export const SignUpTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '151px',
-            height: '128px',
-            margin: '0 auto',
+            width: "120px",
+            height: "120px",
+            margin: "0px auto",
+            backgroundSize: "102px"
           }}
         ></div>
       </div>
@@ -142,6 +143,7 @@ export const SignUpTab = (props: any) => {
   const clickGoBack = () => {
     setDisplayName('');
     setDisplayNameScreen(0);
+    props.imageValidator(LeftImage.registration);
   };
   const verifyUserName = () => {
     if (!displayName) {
@@ -149,6 +151,7 @@ export const SignUpTab = (props: any) => {
       ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
     } else {
       setDisplayNameScreen(1);
+      props.imageValidator(LeftImage.password);
     }
   };
 
@@ -170,6 +173,7 @@ export const SignUpTab = (props: any) => {
       const walletData = { displayName, password };
       void generateMnemonicAndKeyPairCreate(walletData);
       setDisplayNameScreen(2);
+      props.imageValidator(LeftImage.address);
       setRepassword('');
       setPassword('');
     }
@@ -180,6 +184,7 @@ export const SignUpTab = (props: any) => {
     if (displayNameScreen === 1) {
       setPassword('');
       setRepassword('');
+      props.imageValidator(LeftImage.registration)
     }
   };
   if (displayNameScreen === 1) {
@@ -252,6 +257,7 @@ export const SignUpTab = (props: any) => {
         <DisplayIdAndAddress
           nextFunc={() => {
             setDisplayNameScreen(3);
+            props.imageValidator(LeftImage.recoveryseed);
           }}
           pubKey={hexGeneratedPubKey}
           walletAddress={localStorage.getItem('userAddress')}

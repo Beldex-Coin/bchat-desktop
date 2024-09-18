@@ -72,9 +72,10 @@ const LoaderGif = () => {
       <div
         style={{
           background: 'url(images/bchat/Load_animation.gif) no-repeat',
-          width: '151px',
-          height: '128px',
-          margin: '0 auto',
+          width: "120px",
+          height: "120px",
+          margin: "0px auto",
+          backgroundSize: "102px"
         }}
       ></div>
     </div>
