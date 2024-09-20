@@ -86,10 +86,10 @@ export const OverlayClosedGroup = () => {
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
 
-  function addContact() {
-    dispatch(showLeftPaneSection(0));
-    window.inboxStore?.dispatch(setOverlayMode('message'));
-  }
+  // function addContact() {
+  //   dispatch(showLeftPaneSection(0));
+  //   window.inboxStore?.dispatch(setOverlayMode('message'));
+  // }
   return (
     <div className="module-left-pane-overlay">
       {/* <LeftPaneSectionHeader /> */}
@@ -149,8 +149,10 @@ export const OverlayClosedGroup = () => {
             {noContactsForClosedGroup ? (
               <div className="group-member-list__no-contacts">
                 <div className="group-member-list__addImg"></div>
+              
                 <h4 className="module-left-pane__empty_contact">{window.i18n('noContactsYet')}</h4>
-                <div style={{ display: 'flex' }}>
+                <SpacerMD/>
+                {/* <div style={{ display: 'flex' }}>
                   <button
                     className="nextButton"
                     style={{ width: '90%' }}
@@ -158,7 +160,8 @@ export const OverlayClosedGroup = () => {
                   >
                     Add Contacts +{' '}
                   </button>
-                </div>
+                </div> */}
+                {/* <BchatButton  text=' Add Contacts +' onClick={} /> */}
                 {/* {window.i18n('noContactsForGroup')} */}
               </div>
             ) : (

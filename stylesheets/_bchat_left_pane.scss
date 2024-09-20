@@ -416,7 +416,7 @@ $bchat-compose-margin: 20px;
       .id-Wrapper {
         border-radius: 16px;
         border: 1px solid var(--color-profile-id-border);
-        background:var(--color-profile-id-bg);
+        background: var(--color-profile-id-bg);
         display: flex;
         padding: 10px;
         p {
@@ -691,22 +691,22 @@ $bchat-compose-margin: 20px;
     text-align: center;
   }
 
-  .nextButton {
-    width: 79%;
-    height: 50px;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    // font-family: $bchat-font-poppin-semibold;
-    // background-image: var(--button-color);
-    background-color: var(--button-color);
-    margin: 15px auto;
-    font-weight: 600;
+  // .nextButton {
+  //   width: 79%;
+  //   height: 50px;
+  //   border: none;
+  //   border-radius: 10px;
+  //   color: #fff;
+  //   // font-family: $bchat-font-poppin-semibold;
+  //   // background-image: var(--button-color);
+  //   background-color: var(--button-color);
+  //   margin: 15px auto;
+  //   font-weight: 600;
 
-    &:hover {
-      background-color: $bchat-button-hovor-color;
-    }
-  }
+  //   &:hover {
+  //     background-color: $bchat-button-hovor-color;
+  //   }
+  // }
 }
 
 .bchat-left-pane-section-content {
@@ -822,15 +822,17 @@ $bchat-compose-margin: 20px;
     align-items: center;
     justify-content: flex-end;
     margin-top: 12px;
-    width: 668px;
+    // width: 668px;
     // max-width: 615px;
+    width: 32vw;
+    max-width: 668px;
     height: 570px;
     // filter: var(--filter-bchat-text);
     background-image: var(--image-EmptyChatImg);
     background-repeat: no-repeat;
     transition: 0s;
     background-position: center;
-    background-size: 75%;
+    background-size: 100%;
 
     .path {
       fill: red;
@@ -944,7 +946,7 @@ $bchat-compose-margin: 20px;
     min-width: 300px;
     width: 25vw;
     max-width: 420px;
-    background:var(--color-left-pane-bg);
+    background: var(--color-left-pane-bg);
     padding: 15px;
 
     h6 {

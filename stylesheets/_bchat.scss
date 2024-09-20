@@ -1383,8 +1383,6 @@ label {
             font-weight: 600;
             // line-height: 26px; /* 162.5% */
           }
-
-       
         }
 
         &-probTitle {
@@ -2169,7 +2167,6 @@ label {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-  
   }
 
   &__version-info {
@@ -2360,8 +2357,6 @@ label {
   //     font-weight: 500;
   //     font-size: 14px;
 
-  
-
   //   .bchat-button.brand.green {
   //     width: 168px;
   //     height: 40px;
@@ -2424,7 +2419,6 @@ label {
 
       border-radius: 16px;
       background: var(--color-secondary-btn-bg);
-
     }
 
     &-squarBox-bala,
@@ -2479,7 +2473,7 @@ label {
       // }
       .currencyExt {
         border-radius: 33px;
-        background:var(--color-wallet-inner-bg);
+        background: var(--color-wallet-inner-bg);
         color: var(--color-hop-txt);
         font-weight: 600;
         padding: 2px 15px;
@@ -2529,7 +2523,7 @@ label {
           // text-align: center;
           // font-family: 'poppin-semibold';
           // color: #a7a7ba;
-          color:var(--color-hop-txt);
+          color: var(--color-hop-txt);
           text-align: right;
           font-size: 22px;
           font-weight: 600;
@@ -2689,7 +2683,7 @@ label {
         align-items: center;
         width: 40px;
         height: 40px;
-        background-color:var(--color-clickable-hovered);
+        background-color: var(--color-clickable-hovered);
         border-radius: 12px;
       }
 
@@ -2793,7 +2787,7 @@ label {
         align-items: center;
         padding: 15px;
         .txt {
-          color: var(--color-hop-txt) ;
+          color: var(--color-hop-txt);
           font-size: 18px;
           font-weight: 500;
           margin-left: 5px;
@@ -2929,9 +2923,6 @@ label {
             border-radius: 10px;
           }
         }
-
-       
-
 
         &-password {
           input {
@@ -3443,7 +3434,7 @@ label {
       }
 
       &-content {
-        color:var(--color-noTxn-txt);
+        color: var(--color-noTxn-txt);
         /* text-align: right; */
         font-family: $bchat-font-open-sans;
         font-size: 18px;
@@ -3464,7 +3455,7 @@ label {
 
         padding: 15px;
         // border-radius: 10px;
-       border-bottom: 1px solid var(--color-search-border);
+        border-bottom: 1px solid var(--color-search-border);
 
         &-sendIndicationBox {
           display: flex;
@@ -3546,7 +3537,7 @@ label {
 
       &-contentBox:hover {
         border-radius: 16px;
-        background:var(--color-clickable-hovered);
+        background: var(--color-clickable-hovered);
       }
 
       &-recipitentBox {
@@ -3851,7 +3842,7 @@ input {
   }
 
   &__no-contacts {
-    font-family: $bchat-font-poppin-medium;
+    // font-family: $bchat-font-poppin-medium;
     // background: var(--color-cell-background);
     text-align: center;
     padding: 20px;
@@ -3859,8 +3850,8 @@ input {
   }
 
   &__addImg {
-    width: 111px;
-    height: 103px;
+    width: 170px;
+    height: 182px;
     background-image: var(--image-EmptyContact);
     background-repeat: no-repeat;
     background-size: contain;

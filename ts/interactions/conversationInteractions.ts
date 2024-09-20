@@ -157,6 +157,7 @@ export const declineConversationWithConfirm = (convoId: string, syncToDevices: b
   window?.inboxStore?.dispatch(
     updateConfirmModal({
       okText: window.i18n('decline'),
+      okTheme:BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
       message: window.i18n('declineRequestMessage'),
       onClickOk: async () => {

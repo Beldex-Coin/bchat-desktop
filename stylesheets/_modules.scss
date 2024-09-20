@@ -355,6 +355,10 @@
     // color: #f0f0f0;
     font-size: 18px;
     font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 380px;
   }
 }
 .module-contact-name__profile-name {
@@ -1506,8 +1510,15 @@
 }
 
 .module-left-pane__empty_contact {
-  font-family: $bchat-font-poppin-medium;
-  font-size: 15px;
-  color: var(--color-disableText);
-  margin: 10px 0 0 0;
+  // font-family: $bchat-font-poppin-medium;
+  // font-size: 15px;
+  // color: var(--color-disableText);
+  // margin: 10px 0 0 0;
+
+    color: #858598;
+    // font-family: Poppins;
+    font-size: 18px;
+    // font-style: normal;
+    font-weight: 300;
+    // line-height: normal;
 }

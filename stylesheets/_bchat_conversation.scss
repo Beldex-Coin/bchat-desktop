@@ -142,7 +142,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  max-width: calc(100vw - 380px);
+  // max-width: calc(100vw - 380px);
   // background: var(--image-BgDoodle);
   // background-repeat: no-repeat;
   // background-position: center;
@@ -253,7 +253,7 @@
   // }
 
   .attachment-box {
-    padding: 8px;
+    padding: 17px 8px;
     // color: #85858f;
     border-radius: 10px;
     margin-bottom: 5px;
