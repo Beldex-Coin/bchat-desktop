@@ -13,6 +13,7 @@ import { getConversationController } from '../bchat/conversations';
 import { ConversationTypeEnum } from '../models/conversation';
 import { openConversationWithMessages } from '../state/ducks/conversations';
 import { SNodeAPI } from '../bchat/apis/snode_api';
+import styled from 'styled-components';
 
 export class MessageView extends React.Component {
   public render() {
@@ -84,9 +85,9 @@ export const AddNewContactInEmptyConvo = () => {
       <div className="container">
         <div className="content bchat-full-logo">
           <div className="bchat-text-logo"></div>
-          <section style={{ width: '450px' }}>
+          <StartConvoWrapper>
             <div className="bchat-text">
-             {window.i18n('startConversation')} <SmileSymbolIcon />
+              {window.i18n('startConversation')} <SmileSymbolIcon />
             </div>
             <SpacerLG />
             <SpacerLG />
@@ -110,12 +111,18 @@ export const AddNewContactInEmptyConvo = () => {
                 onClick={() => handleMessageButtonClick()}
               />
             </div>
-          </section>
+          </StartConvoWrapper>
         </div>
       </div>
     </div>
   );
 };
+const StartConvoWrapper = styled.div`
+width: 24vw;
+max-width: 470px;
+margin-left: 43px;
+  
+`;
 // /////////////////////////////////////
 // //////////// Management /////////////
 // /////////////////////////////////////

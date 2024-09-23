@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getUnreadConversationRequests } from '../../state/selectors/conversations';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
-import {  BchatIconSize, BchatIconType } from '../icon';
+import {  BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { MemoMessageRequestBannerContextMenu } from '../menu/MessageRequestBannerContextMenu';
 
 const StyledMessageRequestBanner = styled.div`
@@ -15,13 +15,15 @@ const StyledMessageRequestBanner = styled.div`
   // max-width: 300px;
   display: flex;
   flex-direction: row;
-  padding: 8px 12px; // adjusting for unread border always being active
+  padding: 8px 22px; // adjusting for unread border always being active
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
   background: var(--color-request-banner-background);
 
   transition: var(--bchat-transition-duration);
+  margin-top:10px;
+  border-radius:22px;
 
   &:hover {
     background: var(--color-clickable-hovered);
@@ -29,15 +31,8 @@ const StyledMessageRequestBanner = styled.div`
 `;
 
 const StyledMessageRequestBannerHeader = styled.span`
-  font-weight: bold;
-  font-size: 15px;
-  color: var(--color-text-subtle);
-  margin-inline-start: 12px;
-  line-height: 18px;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+font-size: 16px;
+font-weight: 400;
 `;
 
 const StyledCircleIcon = styled.div`
@@ -136,7 +131,8 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
         }}
         data-testid="message-request-banner"
       >
-        <CirclularIcon iconType="messageRequest" iconSize="medium" />
+        {/* <CirclularIcon iconType="messageRequest" iconSize="medium" /> */}
+        <BchatIcon  iconSize="medium" iconType="messageRequest" />
         <StyledMessageRequestBannerHeader>
           {window.i18n('messageRequests')}
         </StyledMessageRequestBannerHeader>

@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { SectionType } from '../../state/ducks/section';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
-import { getLeftPaneLists } from '../../state/selectors/conversations';
+import { getLeftPaneLists, getUnreadConversationRequests } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
@@ -45,6 +45,7 @@ const InnerLeftPaneMessageSection = () => {
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
   const directContact = useSelector(getDirectContacts);
+  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -55,6 +56,7 @@ const InnerLeftPaneMessageSection = () => {
       messageRequestsEnabled={messageRequestsEnabled}
       overlayMode={overlayMode}
       directContact={directContact}
+      conversationRequestsUnread={conversationRequestsUnread}
     />
   );
 };
@@ -66,7 +68,7 @@ const InnerLeftPaneMessageSection = () => {
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
   // const convoList = useSelector(getLeftPaneLists);
-console.log('focusedSection ::',focusedSection)
+// console.log('focusedSection ::',focusedSection)
   if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
   }

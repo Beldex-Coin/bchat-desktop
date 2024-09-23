@@ -28,10 +28,11 @@ import _ from 'lodash';
 // import { getSelectedConversation } from '../../state/selectors/conversations';
 // import { getConversationController } from 'bchat/conversations';
 import {
-    approveConvoAndSendResponse,
+    approveConvoAndSendResponse, declineConversationWithConfirm,
   } from '../../interactions/conversationInteractions';
 import { getConversationController } from '../../bchat/conversations';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { SpacerXS } from '../basic/Text';
 // import { AcceptMenuItem } from '../menu/Menu';
 
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -98,8 +99,6 @@ const AvatarItem = () => {
 
 // tslint:disable: max-func-body-length
 const MessageRequestListSetting = (props: Props) => {
-//   const selectedConversation = useSelector(getSelectedConversation);
-
   const {
     // unreadCount,
     id: conversationId,
@@ -133,7 +132,9 @@ const MessageRequestListSetting = (props: Props) => {
     await approveConvoAndSendResponse(conversationId, true);
 //     // forceUpdate()
   };
-
+  const handleDeclineConversationRequest = () => {
+    declineConversationWithConfirm(conversationId, true);
+  };
 
   return (
     <ContextConversationId.Provider value={conversationId}>
@@ -178,8 +179,18 @@ const MessageRequestListSetting = (props: Props) => {
           {window.i18n('accept')}
           </div> */}
           <BchatButton
-            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px',fontFamily:'Poppins'}}
+            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px'}}
+              buttonColor={BchatButtonColor.Danger}
+              buttonType={BchatButtonType.Brand}
+              text={window.i18n('decline')}
+              onClick={handleDeclineConversationRequest}
+              dataTestId="accept-button-settings-screen"
+            />
+            <SpacerXS/>
+          <BchatButton
+            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px'}}
               buttonColor={BchatButtonColor.Primary}
+              buttonType={BchatButtonType.Brand}
               text={window.i18n('accept')}
               onClick={handleAcceptConversationRequest}
               dataTestId="accept-button-settings-screen"
