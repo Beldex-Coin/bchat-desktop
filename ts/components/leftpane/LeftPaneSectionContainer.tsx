@@ -141,6 +141,7 @@ export const LeftPaneSectionContainer = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
     }
   }
   // this is not ideal but it seems that nth-0last-child does not work
