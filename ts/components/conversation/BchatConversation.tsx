@@ -20,7 +20,7 @@ import { BchatMessagesListContainer } from './BchatMessagesListContainer';
 import { BchatFileDropzone } from './BchatFileDropzone';
 
 import { InConversationCallContainer } from '../calling/InConversationCallContainer';
-import { SplitViewContainer } from '../SplitViewContainer';
+// import { SplitViewContainer } from '../SplitViewContainer';
 import { LightboxGallery, MediaItemType } from '../lightbox/LightboxGallery';
 import { getLastMessageInConversation, getPubkeysInPublicConversation } from '../../data/data';
 import { getConversationController } from '../../bchat/conversations';
@@ -60,6 +60,7 @@ import loadImage from 'blueimp-load-image';
 // import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
 import { SectionType } from '../../state/ducks/section';
 import { BchatScrollButton } from '../BchatScrollButton';
+import { Flex } from '../basic/Flex';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -256,7 +257,6 @@ export class BchatConversation extends React.Component<Props, State> {
     //   !isMe &&
     //   selectedConversation?.didApproveMe &&
     //   selectedConversation?.isApproved;
-  
 
     return (
       <BchatTheme>
@@ -278,7 +278,14 @@ export class BchatConversation extends React.Component<Props, State> {
 
           <div className="conversation-messages">
             <ConversationMessageRequestButtons />
-            <SplitViewContainer
+            {this.props.hasOngoingCallWithFocusedConvo && (
+              <Flex container={true} justifyContent="center" alignItems="center" height="660px">
+                {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
+                <InConversationCallContainer /> {/* </div> */}
+              </Flex>
+            )}
+
+            {/* <SplitViewContainer
               top={<InConversationCallContainer />}
               bottom={
                 <>
@@ -286,10 +293,13 @@ export class BchatConversation extends React.Component<Props, State> {
                     messageContainerRef={this.messageContainerRef}
                     scrollToNow={this.scrollToNow}
                   />
-                  {/* <div><PaymentMessage key={'122334'} {...msgProps} /></div> */}
                 </>
               }
               disableTop={!this.props.hasOngoingCallWithFocusedConvo}
+            /> */}
+            <BchatMessagesListContainer
+              messageContainerRef={this.messageContainerRef}
+              scrollToNow={this.scrollToNow}
             />
 
             {isDraggingFile && <BchatFileDropzone />}
@@ -297,10 +307,10 @@ export class BchatConversation extends React.Component<Props, State> {
 
           <ConversationRequestinfo />
           <BchatScrollButton
-          onClickScrollBottom={this.scrollToNow}
-          key="scroll-down-button"
-          unreadCount={selectedConversation.unreadCount}
-        />
+            onClickScrollBottom={this.scrollToNow}
+            key="scroll-down-button"
+            unreadCount={selectedConversation.unreadCount}
+          />
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}

@@ -102,7 +102,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     // console.log('overlayMode  0-->',overlayMode)
     const { conversations,conversationRequestsUnread,directContact } = this.props;
     const convolen: boolean = conversations?.length === 0 && conversationRequestsUnread === 0 &&directContact.length ===0 ;
-    console.log('convolen ::',convolen,{directContact})
+    // console.log('convolen ::',convolen,{directContact})
     return (
       <div
         className={classNames('bchat-left-pane-section-content', convolen && 'd-none')}

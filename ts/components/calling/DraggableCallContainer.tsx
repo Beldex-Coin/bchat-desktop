@@ -24,7 +24,7 @@ export const DraggableCallWindow = styled.div`
 `;
 
 export const StyledVideoElement = styled.video<{ isVideoMuted: boolean }>`
-  padding: 0 1rem;
+  // padding: 0 1rem;
   height: 100%;
   width: 100%;
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
