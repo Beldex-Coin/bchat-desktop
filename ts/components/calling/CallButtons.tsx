@@ -221,18 +221,10 @@ export const HangUpButton = () => {
 
     // />
     <div
+      className="hangingBtn"
       role="button"
       style={{
-        width: '60px',
-        height: '60px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor:'#FC3B3B',
-        color:'#fff',
-        borderRadius:'50px',
-        margin: '10px',
-        cursor:'pointer'
+        backgroundColor: '#FC3B3B',
       }}
       onClick={handleEndCall}
     >

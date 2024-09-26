@@ -283,7 +283,7 @@ export class BchatConversation extends React.Component<Props, State> {
                 {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
                 <InConversationCallContainer /> {/* </div> */}
               </Flex>
-            )}
+           )}  
 
             {/* <SplitViewContainer
               top={<InConversationCallContainer />}

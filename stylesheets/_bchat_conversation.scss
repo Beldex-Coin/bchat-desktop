@@ -218,18 +218,34 @@
   top: 1%;
 
   .remote-video{
-    background-color: aliceblue;
+    // background-color: aliceblue;
     height: 500px;
     width: 619px;
     border-radius: 20px;
   }
   .local-video{
-    background-color: green;
+    // background-color: green;
     width: 229px;
     height: 300px;
     margin: auto 10px;
     border-radius: 20px;
   }
+}
+
+.hangingBtn{
+  width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50px;
+    margin: 10px 36px;
+    cursor: pointer;
+    
+}
+.hangingBtn:hover{
+  opacity: 0.8;
 }
 
 .messages-container {

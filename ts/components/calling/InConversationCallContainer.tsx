@@ -46,7 +46,7 @@ const InConvoCallWindow = styled.div`
   // flex-grow: 1;
 
   border-radius: 32px;
-  background: #202329;
+  background-color: var(--color-hop-bg);
   height: 100%;
   // margin-top: 20px;
 `;
@@ -86,12 +86,11 @@ const StyledCenteredLabel = styled.div`
   // text-shadow: 0px 0px 8px white;
   // z-index: 5;
   font-size: 22px;
-  text-align:center;
+  text-align: center;
 `;
 
 const RingingLabel = () => {
   const ongoingCallWithFocusedIsRinging = useSelector(getCallWithFocusedConvoIsOffering);
-  console.log('ongoingCallWithFocusedIsRinging --', ongoingCallWithFocusedIsRinging);
   const modulatedStr = useModuloWithTripleDots(window.i18n('ringing'), 3, 1000);
   if (!ongoingCallWithFocusedIsRinging) {
     return null;
@@ -155,9 +154,7 @@ export const VideoLoadingSpinner = (props: { fullWidth: boolean }) => {
 export const InConversationCallContainer = () => {
   const isInFullScreen = useSelector(getCallIsInFullScreen);
 
-  const ongoingCallPubkey =
-    useSelector(getHasOngoingCallWithPubkey) ||
-    'bd985a1b3a74a71668f2515a07db347bbe6d37e3207d082e33f72d0e5e8c59c53c';
+  const ongoingCallPubkey = useSelector(getHasOngoingCallWithPubkey);
   const ongoingCallWithFocused = useSelector(getHasOngoingCallWithFocusedConvo);
   const selectedConversation = useSelector(getSelectedConversation);
   const videoRefRemote = useRef<HTMLVideoElement>(null);
@@ -206,15 +203,8 @@ export const InConversationCallContainer = () => {
     return null;
   }
 
-  console.log(
-    'ongoingCallWithFocused -->',
-    ongoingCallWithFocused,
-    'ongoingCallPubkey--->',
-    ongoingCallPubkey
-  );
-
   return (
-    <div className={remoteStreamVideoIsMuted?'voiceCall':"videoCall"}>
+    <div className={remoteStreamVideoIsMuted ? 'voiceCall' : 'videoCall'}>
       <InConvoCallWindow>
         <RelativeCallWindow>
           <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'}>
@@ -248,7 +238,7 @@ export const InConversationCallContainer = () => {
               </CenteredAvatarInConversation>
             )}
           </Flex>
-          <div className='remote-video'>
+          <div className="remote-video">
             {!remoteStreamVideoIsMuted && (
               <VideoContainer>
                 <StyledVideoElement
@@ -260,14 +250,11 @@ export const InConversationCallContainer = () => {
             )}
           </div>
 
-          {/* <SpacerMD /> */}
           <SpacerLG />
           <RingingLabel />
           <ConnectingLabel />
           <DurationLabel />
           <SpacerMD />
-          {/* <SpacerLG/> */}
-          {/* <SpacerLG /> */}
           <CallWindowControls
             currentConnectedAudioInputs={currentConnectedAudioInputs}
             currentConnectedCameras={currentConnectedCameras}
@@ -280,7 +267,7 @@ export const InConversationCallContainer = () => {
           />
         </RelativeCallWindow>
       </InConvoCallWindow>
-      <div className='local-video'>
+      <div className="local-video">
         {!localStreamVideoIsMuted && (
           <VideoContainer>
             <StyledVideoElement
