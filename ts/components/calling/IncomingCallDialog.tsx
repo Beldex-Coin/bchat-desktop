@@ -8,9 +8,11 @@ import { CallManager } from '../../bchat/utils';
 import { callTimeoutMs } from '../../bchat/utils/calling/CallManager';
 import { getHasIncomingCall, getHasIncomingCallFrom } from '../../state/selectors/call';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
-import { BchatWrapperModal } from '../BchatWrapperModal';
-import { SpacerLG } from '../basic/Text';
+// import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+// import { BchatWrapperModal } from '../BchatWrapperModal';
+import { SpacerLG, SpacerSM } from '../basic/Text';
+import { BchatIcon } from '../icon';
+import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
 
 export const CallWindow = styled.div`
   position: absolute;
@@ -21,18 +23,35 @@ export const CallWindow = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  background-color: var(--color-modal-background);
+  background-color:var(--color-hop-bg);
   border: var(--bchat-border);
 `;
 
 const IncomingCallAvatarContainer = styled.div`
   padding: 0 0 1rem 0;
+  width: 400px;
+  text-align: center;
 `;
-
+const UserName = styled.div`
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+const IncomingTxt = styled.div`
+  color: var(--color-hop-txt);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
 export const IncomingCallDialog = () => {
   const hasIncomingCall = useSelector(getHasIncomingCall);
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
+  const modulatedStr = useModuloWithTripleDots('Incoming...', 3, 1000);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -70,37 +89,60 @@ export const IncomingCallDialog = () => {
     }
   };
   const from = useConversationUsername(incomingCallFromPubkey);
+
   if (!hasIncomingCall || !incomingCallFromPubkey) {
     return null;
   }
 
   if (hasIncomingCall) {
     return (
-      <BchatWrapperModal title={window.i18n('incomingCallFrom', [from || 'unknown'])}>
-        <IncomingCallAvatarContainer>
-          <SpacerLG />
-          <BNSWrapper
-            // size={52}
-            position={{ left: '73px', top: '73px' }}
-            isBnsHolder={isBnsHolder}
-            size={{width:'20',height:'20'}}
-          >
-            <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
-          </BNSWrapper>
-        </IncomingCallAvatarContainer>
-        <div className="bchat-modal__button-group">
-          <BchatButton
-            text={window.i18n('decline')}
-            buttonColor={BchatButtonColor.Danger}
-            onClick={handleDeclineIncomingCall}
-          />
-          <BchatButton
-            text={window.i18n('accept')}
-            onClick={handleAcceptIncomingCall}
-            buttonColor={BchatButtonColor.Green}
-          />
+      // <BchatWrapperModal title={window.i18n('incomingCallFrom', [from || 'unknown'])}>
+      <div className="bchat-dialog modal">
+        <div className="bchat-modal">
+          <IncomingCallAvatarContainer>
+            <SpacerLG />
+            <BNSWrapper
+              // size={52}
+              position={{ left: '73px', top: '73px' }}
+              isBnsHolder={isBnsHolder}
+              size={{ width: '20', height: '20' }}
+            >
+              <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
+            </BNSWrapper>
+            <UserName>{from}</UserName>
+          </IncomingCallAvatarContainer>
+          <IncomingTxt>{modulatedStr}</IncomingTxt>
+          <SpacerSM />
+          <div className="bchat-modal__button-group">
+            {/* <BchatButton
+              text={window.i18n('decline')}
+              buttonColor={BchatButtonColor.Danger}
+              onClick={handleDeclineIncomingCall}
+            /> */}
+            <div
+              className="hangingBtn"
+              role="button"
+              style={{
+                backgroundColor: '#FC3B3B',
+              }}
+              onClick={handleDeclineIncomingCall}
+            >
+              <BchatIcon iconSize={27} iconType="hangup" clipRule="evenodd" fillRule="evenodd" />
+            </div>
+            <div
+              className="hangingBtn"
+              role="button"
+              style={{
+                backgroundColor: '#108D32',
+              }}
+              onClick={handleAcceptIncomingCall}
+            >
+              <BchatIcon iconSize={27} iconType="hangIn" clipRule="evenodd" fillRule="evenodd" />
+            </div>
+          </div>
         </div>
-      </BchatWrapperModal>
+      </div>
+      // </BchatWrapperModal>
     );
   }
   // display spinner while connecting

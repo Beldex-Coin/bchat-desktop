@@ -199,6 +199,7 @@ const darkWalletInnerBg = '#202329';
 const darkNoTxnTxt = '#A7A7BA';
 const darkToastBg = '#131313';
 const bodyBg='#131313'
+const darkCallOptionBtnHover='#424751';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -471,6 +472,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-wallet-inner-bg', darkWalletInnerBg);
   document.documentElement.style.setProperty('--color-noTxn-txt', darkNoTxnTxt);
   document.documentElement.style.setProperty('--color-toast-bg', darkToastBg);
+  document.documentElement.style.setProperty('--color-call-option-btn-hover', darkCallOptionBtnHover);
 };
 
 // LIGHT COLORS
@@ -650,6 +652,7 @@ const lightWalletUnBalanceLabel = '#333333';
 const lightWalletInnerBg = '#EBEBEB';
 const lightNoTxnTxt = '#ACACAC';
 const lightToastBg = '#F8F8F8';
+const lightCallOptionBtnHover='#FFFFFF';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -932,6 +935,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-wallet-inner-bg', lightWalletInnerBg);
   document.documentElement.style.setProperty('--color-noTxn-txt', lightNoTxnTxt);
   document.documentElement.style.setProperty('--color-toast-bg', lightToastBg);
+  document.documentElement.style.setProperty('--color-call-option-btn-hover', lightCallOptionBtnHover);
 };
 
 // default to light theme
@@ -1096,6 +1100,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-wallet-inner-bg:${darkWalletInnerBg};
     --color-noTxn-txt:${darkNoTxnTxt};
     --color-toast-bg:${darkToastBg};
+    --color-call-option-btn-hover:${darkCallOptionBtnHover};
 
     
 

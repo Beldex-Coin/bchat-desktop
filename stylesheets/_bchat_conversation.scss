@@ -62,7 +62,6 @@
     justify-content: center;
     width: 100%;
 
- 
     // .connectWalletBtn {
     //   display: flex;
     //   width: 155px;
@@ -118,14 +117,12 @@
       padding-right: 10px;
     }
 
-    .seleted-count{
+    .seleted-count {
       width: 160px;
       // color: #F0F0F0;
       font-size: 18px;
       font-weight: 400;
     }
- 
-
   }
 
   // .message-selection-overlay div[role='button'] {
@@ -207,6 +204,49 @@
     }
   }
 }
+.voiceCall {
+  height: 320px;
+  width: 534px;
+  margin: 10px 0;
+}
+.videoCall{
+  margin: 10px 0px;
+  position: absolute;
+  z-index: 1;
+  /* width: 750px; */
+  display: flex;
+  top: 1%;
+
+  .remote-video{
+    // background-color: aliceblue;
+    height: 500px;
+    width: 619px;
+    border-radius: 20px;
+  }
+  .local-video{
+    // background-color: green;
+    width: 229px;
+    height: 300px;
+    margin: auto 10px;
+    border-radius: 20px;
+  }
+}
+
+.hangingBtn{
+  width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50px;
+    margin: 10px 36px;
+    cursor: pointer;
+    
+}
+.hangingBtn:hover{
+  opacity: 0.8;
+}
 
 .messages-container {
   display: flex;
@@ -235,21 +275,21 @@
   //   display: flex;
   //   justify-content: center;
   //   align-items: center;
-    // opacity: 0.7;
+  // opacity: 0.7;
 
-    // &:hover {
-    //   opacity: 1;
-    //   filter: brightness(0.9);
+  // &:hover {
+  //   opacity: 1;
+  //   filter: brightness(0.9);
 
-    //   transition: $bchat-transition-duration;
-    // }
+  //   transition: $bchat-transition-duration;
+  // }
 
-    // .send {
-    //   padding: $bchat-margin-xs;
-    //   border-radius: 50%;
-    //   height: 30px;
-    //   width: 30px;
-    // }
+  // .send {
+  //   padding: $bchat-margin-xs;
+  //   border-radius: 50%;
+  //   height: 30px;
+  //   width: 30px;
+  // }
   // }
 
   .attachment-box {
@@ -334,7 +374,6 @@
       border: 2px solid #888a8d;
     }
 
-  
     // svg:hover {
     //   transform: scale(1.1);
     // }
@@ -372,7 +411,7 @@
       color: rgba(0, 0, 0, 0);
     }
 
-    .circular-bar-wrapper:hover+.wallet-sync-box {
+    .circular-bar-wrapper:hover + .wallet-sync-box {
       display: flex;
     }
   }
