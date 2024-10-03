@@ -26,10 +26,11 @@ import {
 } from '../../../../types/Attachment';
 import { saveAttachmentToDisk } from '../../../../util/attachmentsUtil';
 import { Spinner } from '../../../basic/Spinner';
-import { AudioPlayerWithEncryptedFile } from '../../H5AudioPlayer';
+// import { AudioPlayerWithEncryptedFile } from '../../H5AudioPlayer';
 import { ImageGrid } from '../../ImageGrid';
 import { LightBoxOptions } from '../../BchatConversation';
 import { ClickToTrustSender } from './ClickToTrustSender';
+import WaveFormAudioPlayerWithEncryptedFile from '../../WaveFormAudioPlayer';
 // import { useEncryptedFileFetch } from '../../../../hooks/useEncryptedFileFetch';
 
 export type MessageAttachmentSelectorProps = Pick<
@@ -149,11 +150,14 @@ export const MessageAttachment = (props: Props) => {
         }}
         style={{ padding: '5px 10px' }}
       >
-        <AudioPlayerWithEncryptedFile
+        <WaveFormAudioPlayerWithEncryptedFile src={firstAttachment.url}
+          contentType={firstAttachment.contentType}
+          messageId={messageId} direction={direction} />
+        {/* <AudioPlayerWithEncryptedFile
           src={firstAttachment.url}
           contentType={firstAttachment.contentType}
           messageId={messageId}
-        />
+        /> */}
       </div>
     );
   } else {

@@ -611,6 +611,41 @@ label {
   }
 }
 
+.audio-message{
+  .timer{
+    width: 60px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-left: 10px;
+    
+  }
+  .timer-outgoing{
+    color: #F0F0F0;
+  }
+  .play-speed-btn{
+    width: 36px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #004F16;
+    color: #F0F0F0;
+    // font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    align-items: center;  
+    justify-content: center;
+  }
+  .play-speed-btn-incoming{
+    background-color: var(--color-speedPlay-bg);
+    color:var(--color-text);
+  } 
+}
+
 .module-conversation-header {
   position: relative;
   padding: 0px $bchat-margin-lg 0px $bchat-margin-sm;
@@ -3809,17 +3844,19 @@ input {
     width: 40px;
     border-radius: 50%;
     opacity: 1;
-    background-color: var(--color-cell-background);
+    // background-color: var(--color-cell-background);
+
+    background-color:#2F8FFF;
     box-shadow: var(--color-bchat-shadow);
 
-    svg path {
-      transition: $bchat-transition-duration;
-      opacity: 0.6;
-      fill: var(--color-text);
-    }
+    // svg path {
+    //   transition: $bchat-transition-duration;
+    //   opacity: 0.6;
+    //   fill: var(--color-text);
+    // }
 
     &:hover svg path {
-      opacity: 1;
+      opacity: 0.6;
     }
   }
 }
