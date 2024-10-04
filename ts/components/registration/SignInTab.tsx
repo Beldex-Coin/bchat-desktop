@@ -20,6 +20,7 @@ import { DisplaySeed } from './DisplaySeed';
 import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
+import { Flex } from '../basic/Flex';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
 
@@ -214,7 +215,7 @@ export const SignInTab = (props: any) => {
   if (signInMode !== SignInMode.Default && screenName === 1) {
     return (
       <>
-        <div className="bchat-registration__backbutton">
+        {/* <div className="bchat-registration__backbutton">
           <GoBackMainMenuButton
             assent={() => {
               props.assent(true);
@@ -224,8 +225,15 @@ export const SignInTab = (props: any) => {
               props.imageValidator(LeftImage.registration);
             }}
           />
-        </div>
+        </div> */}
         <DisplaySeed
+          backArrow={() => {
+            props.assent(true);
+            setScreenName(1);
+            setBlockheight('');
+            setRestoreDate('');
+            props.imageValidator(LeftImage.registration);
+          }}
           paste={() => assignSeed()}
           assignRecoveryPhase={(seed: string) => {
             setRecoveryPhrase(seed);
@@ -288,12 +296,12 @@ export const SignInTab = (props: any) => {
     <div className="bchat-registration__content">
       {screenName === 3 && (
         <>
-          <div
+          {/* <div
             className="bchat-registration__backbutton"
-            // data-tip="Back"
-            // data-place="right"
-            // data-offset="{top:10}"
-            // style={{ left: '52px' }}
+          // data-tip="Back"
+          // data-place="right"
+          // data-offset="{top:10}"
+          // style={{ left: '52px' }}
           >
             <GoBackMainMenuButton
               assent={() => {
@@ -307,7 +315,21 @@ export const SignInTab = (props: any) => {
               }}
             />
           </div>
-          <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div>
+          <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div> */}
+          <Flex flexDirection="row" container={true} alignItems="center" padding="20px 0px">
+            <div className="bchat-registration-goback-icon">
+              <GoBackMainMenuButton assent={() => {
+                props.assent(true);
+                setScreenName(1);
+                setPassword('');
+                setRepassword('');
+                setBlockheight('');
+                setRestoreDate('');
+                props.imageValidator(LeftImage.registration);
+              }} />
+            </div>
+            <Flex className="bchat-registration__welcome-bchat">{window.i18n('restoreFromSeed')}</Flex>
+          </Flex>
           <BchatInput
             autoFocus={true}
             // label={window.i18n('displayName')}
@@ -362,7 +384,7 @@ export const SignInTab = (props: any) => {
               inputDataTestId="display-name-input"
             />
           </div>
-          <div style={{ width: '450px'}}>
+          <div style={{ width: '450px' }}>
             <SignInContinueButton
               signInMode={signInMode}
               handleContinueYourBchatClick={continueYourBchat}

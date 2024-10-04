@@ -19,7 +19,7 @@ import { RowRendererParamsType } from './LeftPane';
 // import { OverlayMessage } from './overlay/OverlayMessage';
 // import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { OverlayMode, SectionType, setOverlayMode, showLeftPaneSection, showSettingsSection } from '../../state/ducks/section';
-import { SpacerLG, SpacerMD } from '../basic/Text';
+import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
 import { BchatSettingCategory } from '../settings/BchatSettings';
 // import { AddressBook } from '../wallet/BchatWalletAddressBook';
@@ -32,7 +32,7 @@ export interface Props {
   messageRequestsEnabled?: boolean;
   overlayMode: OverlayMode;
   directContact: any;
-  conversationRequestsUnread:any;
+  conversationRequestsUnread: any;
 }
 
 export class LeftPaneMessageSection extends React.Component<Props> {
@@ -106,10 +106,10 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     return (
       <div
         className={classNames('bchat-left-pane-section-content', convolen && 'd-none')}
-        // className={classNames('bchat-left-pane-section-content')}
+      // className={classNames('bchat-left-pane-section-content')}
 
-        
-        // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
+
+      // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
       >
         {/* <LeftPaneSectionHeader/> */}
         {/* {overlayMode ? this.renderClosableOverlay() : null} */}
@@ -127,7 +127,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     //  } = this.props;
     return (
       <div className="module-conversations-list-content">
-        <SpacerLG />
+        <SpacerSM />
         {/* {conversations?.length !== 0 && */}
         <BchatSearchInput />
         {/* } */}
@@ -135,13 +135,13 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         <MessageRequestsBanner
           handleOnClick={() => {
             // window.inboxStore?.dispatch(setOverlayMode('message-requests'));
-             // show open settings
-             window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
-             window.inboxStore?.dispatch(setOverlayMode(undefined));
-             window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
+            // show open settings
+            window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+            window.inboxStore?.dispatch(setOverlayMode(undefined));
+            window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
           }}
         />
-        <SpacerMD />
+        {/* <SpacerMD /> */}
         {/* {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>
             <div className='addContactImg'>

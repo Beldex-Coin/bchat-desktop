@@ -154,14 +154,19 @@ function showInviteContact(isPublic: boolean): boolean {
 }
 
 export const MenuWrapper = styled.span`
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 12px;
+  margin-right: 10px;
 `;
 /** Menu items standardized */
 
 export const InviteContactMenuItem = (): JSX.Element | null => {
+  console.log("InviteContactMenuItem::")
   const convoId = useContext(ContextConversationId);
   const isPublic = useIsPublic(convoId);
+  console.log("convoId:", convoId)
+  console.log("isPublic:", isPublic)
+  console.log("showInviteContact(isPublic):", showInviteContact(isPublic))
+  console.log("showInviteContactByConvoId(convoId):", showInviteContactByConvoId(convoId));
 
   if (showInviteContact(isPublic)) {
     return (
@@ -170,7 +175,9 @@ export const InviteContactMenuItem = (): JSX.Element | null => {
           showInviteContactByConvoId(convoId);
         }}
       >
-        {window.i18n('inviteContacts')}
+        <BchatIcon iconType={'inviteContact'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#F0F0F0' />
+        <MenuWrapper>{window.i18n('inviteContacts')}</MenuWrapper>
+
       </Item>
     );
   }
@@ -296,9 +303,9 @@ export const LeaveGroupMenuItem = () => {
           showLeaveGroupByConvoId(convoId, username);
         }}
       >
-        <BchatIcon iconType={'leave'} iconSize={20} fillRule="evenodd" clipRule="evenodd"  iconColor='#FF3E3E'/>
-        <MenuWrapper style={{color:'#FF3E3E'}}> {window.i18n('leaveGroup')}</MenuWrapper>
-       
+        <BchatIcon iconType={'leave'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#FF3E3E' />
+        <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('leaveGroup')}</MenuWrapper>
+
       </Item>
     );
   }
@@ -509,8 +516,8 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
         n === 'all' || !n
           ? 'notificationForConvo_all'
           : n === 'disabled'
-          ? 'notificationForConvo_disabled'
-          : 'notificationForConvo_mentions_only';
+            ? 'notificationForConvo_disabled'
+            : 'notificationForConvo_mentions_only';
       return { value: n, name: window.i18n(keyToUse) };
     });
 
@@ -528,7 +535,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
             <MenuWrapper>{window.i18n('notificationForConvo') as any}</MenuWrapper>
           </>
         }
-        // label={window.i18n('notificationForConvo') as any}
+      // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;
@@ -632,7 +639,7 @@ export const DeleteMessagesMenuItem = () => {
       }}
     >
       <BchatIcon iconType={'delete'} iconSize={20} iconColor="#FF3E3E" />
-      <MenuWrapper style={{color:'#FF3E3E'}}> {window.i18n('deleteMessages')}</MenuWrapper>
+      <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('deleteMessages')}</MenuWrapper>
     </Item>
   );
 };

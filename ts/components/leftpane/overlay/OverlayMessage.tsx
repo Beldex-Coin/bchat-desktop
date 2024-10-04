@@ -134,7 +134,7 @@ export const OverlayMessage = () => {
           />
         </article>
         <SpacerLG />
-        <SpacerLG />
+        {/* <SpacerLG /> */}
 
         <article className="ourDetails_wrapper">
           <p className="module-left-pane__subHeader" style={{ marginBottom: '10px' }}>
