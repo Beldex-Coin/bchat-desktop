@@ -90,7 +90,7 @@ export const AddNewContactInEmptyConvo = () => {
               {window.i18n('startConversation')} <SmileSymbolIcon />
             </div>
             <SpacerLG />
-            <SpacerLG />
+            {/* <SpacerLG /> */}
             <div>
               <BchatIdEditable
                 editable={true}

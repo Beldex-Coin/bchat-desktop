@@ -157,7 +157,7 @@ export const declineConversationWithConfirm = (convoId: string, syncToDevices: b
   window?.inboxStore?.dispatch(
     updateConfirmModal({
       okText: window.i18n('decline'),
-      okTheme:BchatButtonColor.Red,
+      okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
       message: window.i18n('declineRequestMessage'),
       onClickOk: async () => {
@@ -224,13 +224,13 @@ export async function showUpdateGroupMembersByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateGroupMembersModal({ conversationId }));
 }
 
-export function showLeaveGroupByConvoId(conversationId: string,username:string) {
+export function showLeaveGroupByConvoId(conversationId: string, username: string) {
   const conversation = getConversationController().get(conversationId);
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
   }
   const title = window.i18n('leaveGroup');
-  const message = window.i18n('leaveGroupConfirmation',[username]); 
+  const message = window.i18n('leaveGroupConfirmation', [username]);
   const ourPK = UserUtils.getOurPubKeyStrFromCache();
   const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
   const isClosedGroup = conversation.get('is_medium_group') || false;
@@ -245,11 +245,11 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
         title,
         message,
         onClickOk: async () => {
-          await conversation.leaveClosedGroup(); 
+          await conversation.leaveClosedGroup();
           onClickClose();
         },
         onClickClose,
-        okTheme:BchatButtonColor.Danger,
+        okTheme: BchatButtonColor.Danger,
       })
     );
   } else {
@@ -261,14 +261,14 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
   }
 }
 
-export function deleteGroupByConvoId(conversationId: string,username:string) {
+export function deleteGroupByConvoId(conversationId: string, username: string) {
   const conversation = getConversationController().get(conversationId);
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
   }
   const title = window.i18n('editMenuDeleteGroup');
-  const deletetxt=window.i18n('delete');
-  const message = `Are you sure you want to delete this group,${username}?`; 
+  const deletetxt = window.i18n('delete');
+  const message = `Are you sure you want to delete this group,${username}?`;
   const ourPK = UserUtils.getOurPubKeyStrFromCache();
   const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
   const isClosedGroup = conversation.get('is_medium_group') || false;
@@ -283,12 +283,12 @@ export function deleteGroupByConvoId(conversationId: string,username:string) {
         title,
         message,
         onClickOk: async () => {
-           await getConversationController().deleteContact(conversationId);; 
+          await getConversationController().deleteContact(conversationId);;
           onClickClose();
         },
         onClickClose,
-        okText:deletetxt,
-        okTheme:BchatButtonColor.Danger,
+        okText: deletetxt,
+        okTheme: BchatButtonColor.Danger,
       })
     );
   } else {
@@ -301,6 +301,7 @@ export function deleteGroupByConvoId(conversationId: string,username:string) {
 }
 
 export function showInviteContactByConvoId(conversationId: string) {
+  console.log("window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));", window.inboxStore?.dispatch(updateInviteContactModal({ conversationId })))
   window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));
 }
 export async function onMarkAllReadByConvoId(conversationId: string) {
@@ -395,7 +396,7 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       okTheme: BchatButtonColor.Danger,
       onClickClose,
       // okText:window.i18n('leaveGroup')   
-      okText:window.i18n('delete')   
+      okText: window.i18n('delete')
 
     })
   );

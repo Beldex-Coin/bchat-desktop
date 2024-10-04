@@ -3,6 +3,8 @@ import React from 'react';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import PasteIcon from '../icon/PasteIcon';
+import { Flex } from '../basic/Flex';
+import { GoBackMainMenuButton } from './SignUpTab';
 
 // export const Icons = (props: any) => (
 //   <div
@@ -60,7 +62,12 @@ export const DisplaySeed = (props: any) => {
   return (
     <div className="bchat-restore-seed__address-container">
       <>
-        <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div>
+        <Flex flexDirection="row" container={true} alignItems="center" padding="20px 0px">
+          <div className="bchat-registration-goback-icon">
+            <GoBackMainMenuButton assent={props.backArrow} />
+          </div>
+          <Flex className="bchat-registration__welcome-bchat">{window.i18n('restoreFromSeed')}</Flex>
+        </Flex>
         <div className="bchat-restore-seed-parent-box">
           <div className="bchat-restore-seed-text-box">
             {/* <ClearIcon removeRecoveryPhrase={() => props.assignRecoveryPhase('')}></ClearIcon> */}
@@ -69,7 +76,7 @@ export const DisplaySeed = (props: any) => {
               name="text"
               onPaste={handlePaste}
               value={props.recoveryPhrase}
-              placeholder="Enter your recovery seed to restore your account"
+              placeholder="Enter your recover seed"
               onChange={e => props.assignRecoveryPhase(e.target.value)}
             ></textarea>
             <div className="bchat-restore-seed-icon-box">
@@ -80,7 +87,7 @@ export const DisplaySeed = (props: any) => {
                 data-offset="{'top':30,'left':15}"
                 data-place="right"
               >
-                <PasteIcon iconSize={20} />
+                <PasteIcon iconSize={18} />
               </div>
             </div>
           </div>

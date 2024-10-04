@@ -316,6 +316,7 @@ $bchat-compose-margin: 20px;
     color: #108d32;
     font-size: 28px;
     font-weight: 700;
+    margin: 40px 0px 5px 5px;
   }
 
   &__subHeader {
@@ -728,7 +729,7 @@ $bchat-compose-margin: 20px;
   height: 60px;
   // width: 420px;
   margin-inline-end: 1px;
-  // margin-bottom: 10px;
+  margin-bottom: 10px;
   display: inline-flex;
   flex-shrink: 0;
   // background: var(--color-inboxBgColor);

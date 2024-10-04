@@ -240,6 +240,7 @@ export const SignUpTab = (props: any) => {
             buttonType={BchatButtonType.Default}
             buttonColor={BchatButtonColor.Primary}
             text={window.i18n('continue')} 
+            disabled={!displayName}
           />
         </div>
       </div>

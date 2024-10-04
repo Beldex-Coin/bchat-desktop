@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { SpacerLG } from '../basic/Text';
 import { useDispatch } from 'react-redux';
 import { changeNickNameModal } from '../../state/ducks/modalDialog';
-import {  BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import {  BchatIconButton } from '../icon';
+import { BchatIconButton } from '../icon';
 // import { useConversationUsername } from '../../hooks/useParamSelector';
 
 type Props = {
@@ -60,12 +60,12 @@ export const BchatNicknameDialog = (props: Props) => {
       additionalClassName="nickNameDialog"
       okButton={{
         text: window.i18n('ok'),
-        onClick: { saveNickname },
+        // onClick: { saveNickname },
         color: BchatButtonColor.Primary,
-        onClickCancelHandler: () => saveNickname(),
+        onClickOkHandler: () => saveNickname(),
       }}
       cancelButton={{
-        status:true,
+        status: true,
         text: window.i18n('cancel'),
         buttonColor: BchatButtonColor.Secondary,
         onClickCancelHandler: () => onClickClose(),
@@ -92,7 +92,7 @@ export const BchatNicknameDialog = (props: Props) => {
             void onNicknameInput(_.cloneDeep(e));
           }}
         />
-        <BchatIconButton iconType={'xWithCircle'} iconSize={24} onClick={()=>setNickname('')} />
+        <BchatIconButton iconType={'xWithCircle'} iconSize={24} onClick={() => setNickname('')} />
       </div>
       <SpacerLG />
       {/* <div className="bchat-modal__button-group">
