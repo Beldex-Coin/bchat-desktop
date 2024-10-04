@@ -200,6 +200,7 @@ const darkNoTxnTxt = '#A7A7BA';
 const darkToastBg = '#131313';
 const bodyBg='#131313'
 const darkCallOptionBtnHover='#424751';
+const darkSpeedPlayBg='#202329';
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -473,6 +474,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-noTxn-txt', darkNoTxnTxt);
   document.documentElement.style.setProperty('--color-toast-bg', darkToastBg);
   document.documentElement.style.setProperty('--color-call-option-btn-hover', darkCallOptionBtnHover);
+  document.documentElement.style.setProperty('--color-speedPlay-bg', darkSpeedPlayBg);
 };
 
 // LIGHT COLORS
@@ -653,6 +655,7 @@ const lightWalletInnerBg = '#EBEBEB';
 const lightNoTxnTxt = '#ACACAC';
 const lightToastBg = '#F8F8F8';
 const lightCallOptionBtnHover='#FFFFFF';
+const lightSpeedPlayBg='#ACACAC'
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -936,6 +939,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-noTxn-txt', lightNoTxnTxt);
   document.documentElement.style.setProperty('--color-toast-bg', lightToastBg);
   document.documentElement.style.setProperty('--color-call-option-btn-hover', lightCallOptionBtnHover);
+  document.documentElement.style.setProperty('--color-speedPlay-bg', lightSpeedPlayBg);
 };
 
 // default to light theme
@@ -1101,6 +1105,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-noTxn-txt:${darkNoTxnTxt};
     --color-toast-bg:${darkToastBg};
     --color-call-option-btn-hover:${darkCallOptionBtnHover};
+    --color-speedPlay-bg:${darkSpeedPlayBg};
 
     
 

@@ -136,7 +136,8 @@
     "sanitize.css": "^12.0.1",
     "semver": "5.4.1",
     "styled-components": "5.1.1",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "wavesurfer.js": "^7.8.6"
   },
   "devDependencies": {
     "@electron/notarize": "^2.3.2",
