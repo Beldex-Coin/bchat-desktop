@@ -417,6 +417,7 @@ textarea {
   width: 100%;
   border-radius: 2px;
   text-align: center;
+  
 
   &.primary {
     background-color: $bchat-color-primary;
@@ -618,6 +619,7 @@ label {
 }
 
 .audio-message{
+  // height: 40px;
   .timer{
     width: 60px;
     font-size: 14px;
@@ -882,6 +884,9 @@ label {
     align-items: center;
     // to allow new lines
     white-space: pre-wrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 513px;
   }
 
   &__deleteAccountModal {
@@ -1686,19 +1691,20 @@ label {
 .camera {
   background-color: var(--color-modal-icon-bg);
   border-radius: 20px;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   position: relative;
   justify-content: center;
   background-size: 32px;
   top: 29px;
   left: 10px;
   align-items: center;
+  display: flex;
   cursor: pointer;
 
   &:hover {
-    // background-color: #46465d;
-    opacity: 0.8;
+    background-color:var(--color-camera-hover-bg);
+    
   }
 }
 

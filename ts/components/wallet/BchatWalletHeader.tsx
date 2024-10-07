@@ -34,6 +34,8 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
       okTheme: BchatButtonColor.Primary,
       okText: window.i18n('Rescan'),
       btndisable: rescaning,
+      iconShow: true,
+      customIcon: <BchatIcon iconType='rotatedArrow' iconSize={30} />,
       onClickOk: () => {
         dispatch(updateWalletRescaning(rescan));
         dispatch(updateFiatBalance(Transactions));
@@ -87,7 +89,7 @@ export const WalletHeader = (props: any) => {
         </div>
         <WalletButton
           // name={''}
-          icontype="rotatedArrow"
+          icontype="rotatedArrow" 
           iconSize={20}
           submit={() => {
             rescanModalDialog(!syncStatus, dispatch);

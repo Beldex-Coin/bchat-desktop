@@ -61,6 +61,7 @@ import loadImage from 'blueimp-load-image';
 import { SectionType } from '../../state/ducks/section';
 import { BchatScrollButton } from '../BchatScrollButton';
 import { Flex } from '../basic/Flex';
+import { BchatIcon } from '../icon';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -200,9 +201,14 @@ export class BchatConversation extends React.Component<Props, State> {
     if (msg.body.replace(/\s/g, '').includes(recoveryPhrase.replace(/\s/g, ''))) {
       window.inboxStore?.dispatch(
         updateConfirmModal({
-          title: window.i18n('sendRecoveryPhraseTitle'),
-          message: window.i18n('sendRecoveryPhraseMessage'),
+          // title: window.i18n('sendRecoveryPhraseTitle'),
+          title:'Warning',
+          // message: window.i18n('sendRecoveryPhraseMessage'),
+          message:'This is your recovery phrase. if you send it to someone they will have full access to your account.',
           okTheme: BchatButtonColor.Danger,
+          okText:window.i18n('send'),
+          iconShow: true,
+          customIcon: <BchatIcon iconType='warningCircle' iconSize={30}  iconColor='#F0AF13' clipRule='evenodd' fillRule='evenodd' />,
           onClickOk: () => {
             void sendAndScroll();
           },
