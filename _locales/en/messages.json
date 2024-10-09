@@ -382,7 +382,7 @@
   "verified": "Verified",
   "link": "Link",
   "bnsLinkedSuccessfully": "BNS Linked Successfully!",
-  "groupNamePlaceholder": "Secret Group",
+  "groupNamePlaceholder": "Enter group name",
   "inviteContacts": "Invite Contacts",
   "addModerators": "Add Moderators",
   "removeModerators": "Remove Moderators",

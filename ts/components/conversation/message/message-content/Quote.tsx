@@ -17,6 +17,7 @@ import {
 import { ContactName } from '../../ContactName';
 import { MessageBody } from './MessageBody';
 import { useIsPrivate } from '../../../../hooks/useParamSelector';
+import styled from 'styled-components';
 
 export type QuotePropsWithoutListener = {
   attachment?: QuotedAttachmentType;
@@ -363,6 +364,9 @@ export const Quote = (props: QuotePropsWithListener) => {
           referencedMessageNotFound ? 'module-quote--with-reference-warning' : null
         )}
       >
+        <div>
+          <VerticalLine  isIncoming={isIncoming} />
+        </div>
         <div className="module-quote__primary">
           <QuoteAuthor
             authorName={props.authorName}
@@ -388,3 +392,13 @@ export const Quote = (props: QuotePropsWithListener) => {
     </div>
   );
 };
+
+type VerticalLineProps = {
+  isIncoming:boolean
+}
+const VerticalLine = styled.div<VerticalLineProps>`
+  width: 5px;
+  background-color:${props=>props.isIncoming?'var(--color-untrusted-vertical-bar)':'#F0F0F0'};
+  height: 100%;
+  border-radius: 10px;
+`;

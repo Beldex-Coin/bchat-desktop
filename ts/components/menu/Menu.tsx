@@ -681,12 +681,13 @@ export const AcceptMenuItem = () => {
 export const DeclineMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
+  const customIcon=<BchatIcon iconType={'messageRequest'} iconSize={30}  />
 
   if (isRequest) {
     return (
       <Item
         onClick={() => {
-          declineConversationWithConfirm(convoId, true);
+          declineConversationWithConfirm(convoId, true,customIcon);
         }}
       >
         {window.i18n('decline')}

@@ -167,6 +167,8 @@ const darkContextMenuBg = '#1B1E23';
 const darkProfileIdBg = '#1C1F25';
 const darkProfileIDBorder = '#3A3A41';
 const darkSecondaryBtnBg = '#2e333d';
+const darkSecondaryBtnHoverBg='#383D47';
+
 const darkQrOuterBg = '#282836';
 const darkSettingsRightPaneOption = '#202329';
 const darksettingHeaderBorder = '#202329';
@@ -204,6 +206,7 @@ const darkSpeedPlayBg='#202329';
 const darkMoreInfoIncommingChatBg='#202329';
 const darkCameraHoverBg='#46465D';
 const darkSettingWalletBetaBg='#131313';
+const darkPrimaryBtnHoverBg='#1A973C';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -482,6 +485,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-moreInfo-incomming-chat-bg', darkMoreInfoIncommingChatBg);
   document.documentElement.style.setProperty('--color-camera-hover-bg', darkCameraHoverBg);
   document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', darkSettingWalletBetaBg);
+  document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', darkSecondaryBtnHoverBg);
+  document.documentElement.style.setProperty('--color-primary-btn-hover-bg', darkPrimaryBtnHoverBg);
 };
 
 // LIGHT COLORS
@@ -666,6 +671,8 @@ const lightSpeedPlayBg='#ACACAC';
 const lightMoreInfoIncommingChatBg='#F0F0F0';
 const lightCameraHoverBg ='#DADADA';
 const lightSettingWalletBetaBg='#F8F8F8';
+const lightSecondaryBtnHoverBg='#FFFFFF';
+const lightPrimaryBtnHoverBg='#1A973C';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -953,6 +960,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-moreInfo-incomming-chat-bg', lightMoreInfoIncommingChatBg);
   document.documentElement.style.setProperty('--color-camera-hover-bg', lightCameraHoverBg);
   document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', lightSettingWalletBetaBg);
+  document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', lightSecondaryBtnHoverBg);
+  document.documentElement.style.setProperty('--color-primary-btn-hover-bg', lightPrimaryBtnHoverBg);
 };
 
 // default to light theme
@@ -1086,6 +1095,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-profile-id-bg:${darkProfileIdBg};
     --color-profile-id-border:${darkProfileIDBorder};
     --color-secondary-btn-bg:${darkSecondaryBtnBg};
+    --color-secondary-btn-hover-bg:${darkSecondaryBtnHoverBg};
+    --color-primary-btn-hover-bg:${darkPrimaryBtnHoverBg};
     --color-qr-outer-bg:${darkQrOuterBg};
     --color-settings-right-pane-option:${darkSettingsRightPaneOption};
     --color-setting-header-border:${darksettingHeaderBorder};

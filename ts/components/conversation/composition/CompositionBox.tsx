@@ -27,7 +27,7 @@ import {
 } from './CompositionButtons';
 import { AttachmentType } from '../../../types/Attachment';
 import { connect } from 'react-redux';
-import { showLinkSharingConfirmationModalDialog } from '../../../interactions/conversationInteractions';
+import { showLinkSharingConfirmationModalDialog, unblockConvoById } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
 import { ReduxConversationType } from '../../../state/ducks/conversations';
@@ -67,7 +67,7 @@ import {
   updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
 import { showLeftPaneSection } from '../../../state/ducks/section';
-import { BchatButtonColor } from '../../basic/BchatButton';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import {
   getHeight,
   getRescaning,
@@ -84,6 +84,7 @@ import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
 import MicrophoneIcon from '../../icon/MicrophoneIcon';
+import { SpacerLG } from '../../basic/Text';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -677,7 +678,42 @@ class CompositionBoxInner extends React.Component<Props, State> {
       </ChangingProgressProvider>
     );
   }
+  deleteContact() {
+    const convoId: any = this.props.selectedConversationKey;
+    window?.inboxStore?.dispatch(
+      updateConfirmModal({
+        title: window.i18n('editMenuDeleteContact'),
+        message: 'Permanently delete the Contact?',
+        onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
+        onClickOk: async () => {
+          await getConversationController().deleteContact(convoId);
+        },
+        okText: 'Delete',
+        okTheme: BchatButtonColor.Danger,
+      })
+    );
+  }
 
+  private renderBlockedContactBottoms() {
+    const convoId: any = this.props.selectedConversationKey;
+    return (
+      <Flex container={true} justifyContent="center" alignItems="center" height="90px">
+        <BchatButton
+          buttonType={BchatButtonType.Brand}
+          buttonColor={BchatButtonColor.Danger}
+          text={'Delete this contact'}
+          onClick={() =>this.deleteContact()}
+        />
+        <SpacerLG />
+        <BchatButton
+          buttonType={BchatButtonType.Brand}
+          buttonColor={BchatButtonColor.Primary}
+          text={'Unblock contact'}
+          onClick={() =>unblockConvoById(convoId)}
+        />
+      </Flex>
+    );
+  }
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
@@ -701,70 +737,76 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
-        {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
-
-        <input
-          className="hidden"
-          placeholder="Attachment"
-          multiple={true}
-          ref={this.fileInput}
-          type="file"
-          onChange={this.onChoseAttachment}
-        />
-
-        {this.state.showRecordingView ? (
-          this.renderRecordingView()
+        {selectedConversation?.isBlocked ? (
+          this.renderBlockedContactBottoms()
         ) : (
           <>
-            <div
-              className="send-message-input"
-              role="main"
-              onClick={this.focusCompositionBox} // used to focus on the textarea when clicking in its container
-              ref={el => {
-                this.container = el;
-              }}
-              data-testid="message-input"
-            >
-              <BchatQuotedMessageComposition />
+            {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
 
-              {this.renderStagedLinkPreview()}
-              {this.renderAttachmentsStaged()}
+            <input
+              className="hidden"
+              placeholder="Attachment"
+              multiple={true}
+              ref={this.fileInput}
+              type="file"
+              onChange={this.onChoseAttachment}
+            />
 
-              <Flex
-                container={true}
-                flexDirection="row"
-                width="100%"
-                alignItems="center"
-                style={{ minHeight: '60px' }}
-              >
-                {this.renderTextArea()}
-
-                <div className={classNames(WalletSyncBarShowInChat && 'circular-bar-wrapper')}>
-                  {selectedConversation?.isPrivate && typingEnabled && !isMe
-                    ? this.bchatWalletView()
-                    : ''}
-                </div>
-                <div className="wallet-sync-box">
-                  <div className="sync-txt">
-                    Wallet <span> {syncStatus}</span>
-                  </div>
-                  <div>{this.renderCurcularBar(true)}</div>
-                </div>
-              </Flex>
-            </div>
-            {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
-              <div className={classNames('send-message-button')}>{this.sendButton()}</div>
+            {this.state.showRecordingView && typingEnabled ? (
+              this.renderRecordingView()
             ) : (
-              <StartRecordingButton onClick={this.onLoadVoiceNoteView} />
+              <>
+                <div
+                  className="send-message-input"
+                  role="main"
+                  onClick={this.focusCompositionBox} // used to focus on the textarea when clicking in its container
+                  ref={el => {
+                    this.container = el;
+                  }}
+                  data-testid="message-input"
+                >
+                  <BchatQuotedMessageComposition />
+
+                  {this.renderStagedLinkPreview()}
+                  {this.renderAttachmentsStaged()}
+
+                  <Flex
+                    container={true}
+                    flexDirection="row"
+                    width="100%"
+                    alignItems="center"
+                    style={{ minHeight: '60px' }}
+                  >
+                    {this.renderTextArea()}
+
+                    <div className={classNames(WalletSyncBarShowInChat && 'circular-bar-wrapper')}>
+                      {selectedConversation?.isPrivate && typingEnabled && !isMe
+                        ? this.bchatWalletView()
+                        : ''}
+                    </div>
+                    <div className="wallet-sync-box">
+                      <div className="sync-txt">
+                        Wallet <span> {syncStatus}</span>
+                      </div>
+                      <div>{this.renderCurcularBar(true)}</div>
+                    </div>
+                  </Flex>
+                </div>
+                {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
+                  <div className={classNames('send-message-button')}>{this.sendButton()}</div>
+                ) : (
+                  <StartRecordingButton onClick={this.onLoadVoiceNoteView} />
+                )}
+              </>
+            )}
+            {typingEnabled && (
+              <div ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
+                {showEmojiPanel && (
+                  <BchatEmojiPanel onEmojiClicked={this.onEmojiClick} show={showEmojiPanel} />
+                )}
+              </div>
             )}
           </>
-        )}
-        {typingEnabled && (
-          <div ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
-            {showEmojiPanel && (
-              <BchatEmojiPanel onEmojiClicked={this.onEmojiClick} show={showEmojiPanel} />
-            )}
-          </div>
         )}
       </>
     );
@@ -1078,7 +1120,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderAttachmentsStaged() {
     const { stagedAttachments } = this.props;
     const { showCaptionEditor } = this.state;
-  
+
     if (stagedAttachments && stagedAttachments.length) {
       return (
         <>

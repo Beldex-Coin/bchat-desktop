@@ -48,6 +48,7 @@ import { MIME } from '../types';
 import { setLastProfileUpdateTimestamp } from '../util/storage';
 import { getSodiumRenderer } from '../bchat/crypto';
 import { encryptProfile } from '../util/crypto/profileEncrypter';
+
 // import { useConversationUsername } from '../hooks/useParamSelector';
 
 export const getCompleteUrlForV2ConvoId = async (convoId: string) => {
@@ -153,13 +154,17 @@ export const approveConvoAndSendResponse = async (
   }
 };
 
-export const declineConversationWithConfirm = (convoId: string, syncToDevices: boolean = true) => {
+export const declineConversationWithConfirm = (convoId: string, syncToDevices: boolean = true,customIcon?:any) => {
+  
   window?.inboxStore?.dispatch(
     updateConfirmModal({
+      title:'Decline Request?',
       okText: window.i18n('decline'),
       okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
       message: window.i18n('declineRequestMessage'),
+      iconShow: true,
+      customIcon:customIcon,
       onClickOk: async () => {
         await declineConversationWithoutConfirm(convoId, syncToDevices);
         await blockConvoById(convoId);

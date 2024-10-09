@@ -11,6 +11,7 @@ import { getConversationController } from '../../bchat/conversations';
 import { getSelectedConversation } from '../../state/selectors/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { setOverlayMode } from '../../state/ducks/section';
+import { BchatIcon } from '../icon';
 
 export const ConversationMessageRequestButtons = () => {
   const selectedConversation = useSelector(getSelectedConversation);
@@ -47,7 +48,8 @@ export const ConversationMessageRequestButtons = () => {
   const showMsgRequestUI = convoModel && convoModel.isIncomingRequest();
 
   const handleDeclineConversationRequest = () => {
-    declineConversationWithConfirm(selectedConversation.id, true);
+    const customIcon=<BchatIcon iconType={'messageRequest'} iconSize={30}  />
+    declineConversationWithConfirm(selectedConversation.id, true,customIcon);
   };
 
   const handleAcceptConversationRequest = async () => {
