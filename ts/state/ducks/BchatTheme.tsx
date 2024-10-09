@@ -207,7 +207,7 @@ const darkMoreInfoIncommingChatBg='#202329';
 const darkCameraHoverBg='#46465D';
 const darkSettingWalletBetaBg='#131313';
 const darkPrimaryBtnHoverBg='#1A973C';
-
+const darkOfflineContentBg='#131313'
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -487,6 +487,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', darkSettingWalletBetaBg);
   document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', darkSecondaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-primary-btn-hover-bg', darkPrimaryBtnHoverBg);
+  document.documentElement.style.setProperty('--color-offline-content-bg', darkOfflineContentBg);
 };
 
 // LIGHT COLORS
@@ -673,6 +674,7 @@ const lightCameraHoverBg ='#DADADA';
 const lightSettingWalletBetaBg='#F8F8F8';
 const lightSecondaryBtnHoverBg='#FFFFFF';
 const lightPrimaryBtnHoverBg='#1A973C';
+const lightOfflineContentBg='#F0F0F0';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -962,6 +964,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', lightSettingWalletBetaBg);
   document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', lightSecondaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-primary-btn-hover-bg', lightPrimaryBtnHoverBg);
+  document.documentElement.style.setProperty('--color-offline-content-bg', lightOfflineContentBg);
 };
 
 // default to light theme
@@ -1132,7 +1135,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-speedPlay-bg:${darkSpeedPlayBg};
     --color-moreInfo-incomming-chat-bg:${darkMoreInfoIncommingChatBg};
     --color-camera-hover-bg:${darkCameraHoverBg};
-    --color-setting-wallet-beta-bg:${darkSettingWalletBetaBg}
+    --color-setting-wallet-beta-bg:${darkSettingWalletBetaBg};
+    --color-offline-content-bg:${darkOfflineContentBg};
 
     
 

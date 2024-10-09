@@ -70,9 +70,10 @@ function showNotificationConvo(
   isKickedFromGroup: boolean,
   left: boolean,
   isBlocked: boolean,
-  isRequest: boolean
+  isRequest: boolean,
+  isMe:boolean
 ): boolean {
-  return !left && !isKickedFromGroup && !isBlocked && !isRequest;
+  return !left && !isKickedFromGroup && !isBlocked && !isRequest && !isMe; 
 }
 
 function showBlock(isMe: boolean, isPrivate: boolean, isRequest: boolean): boolean {
@@ -434,7 +435,8 @@ export const CopyMenuItem = (): JSX.Element | null => {
 export const MarkAllReadMenuItem = (): JSX.Element | null => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
-  if (!isRequest) {
+  const isMe=useIsMe(convoId);
+  if (!isRequest&&!isMe) {
     return (
       <Item onClick={() => markAllReadByConvoId(convoId)}>
         <BchatIcon iconType={'markRead'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
@@ -503,9 +505,10 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
+  const isMe=useIsMe(convoId);
 
   if (
-    showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest)
+    showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest,isMe)
   ) {
     // exclude mentions_only settings for private chats as this does not make much sense
     const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>

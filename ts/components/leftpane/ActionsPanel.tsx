@@ -35,7 +35,11 @@ import {
 import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmentsManager';
 
 import { DURATION } from '../../bchat/constants';
-import { closeRightPanel, conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
+import {
+  closeRightPanel,
+  conversationChanged,
+  conversationRemoved,
+} from '../../state/ducks/conversations';
 import {
   editProfileModal,
   updateBchatWalletPasswordModal,
@@ -80,6 +84,7 @@ import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { Flex } from '../basic/Flex';
 import { SpacerSM } from '../basic/Text';
+import useNetworkStatus from '../../hooks/useNetworkStatus';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -97,7 +102,7 @@ const Section = (props: { type: SectionType }) => {
 
   const handleClick = async () => {
     /* tslint:disable:no-void-expression */
-     dispatch(closeRightPanel())
+    dispatch(closeRightPanel());
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
@@ -512,6 +517,9 @@ export const ActionsPanel = () => {
   const dispatch = useDispatch();
   const darktheme = useSelector((state: any) => state.theme);
   const isdark = darktheme === 'dark' ? true : false;
+  const pathCon = useSelector(getIsOnline);
+  // const isOnline=window.getGlobalOnlineStatus();
+  const isOnline = useNetworkStatus();
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
   useEffect(() => {
@@ -644,13 +652,40 @@ export const ActionsPanel = () => {
               className={classNames('icon-wrapper', isdark && 'selected')}
               onClick={() => themeChanger('dark')}
             >
-              <BchatIcon iconType={'moon'} iconSize={24} />
+              <BchatIcon
+                iconType={'moon'}
+                iconSize={24}
+                iconColor={isdark ? '#F0F0F0' : '#A7A7BA'}
+              />
             </div>
           </div>
         </Flex>
 
         <BchatToolTip effect="solid" />
         <BchatToastContainer />
+        <NetWorkStatusWrapper>
+          {!isOnline && !pathCon && (
+            <div className="offline-msg">
+              <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
+              <span className="txt">
+                You are not connected to the Hop. Check your internet connection or Restart the app!
+              </span>
+            </div>
+          )}
+          {!pathCon && isOnline && (
+            <div className="offline-msg connection-Wrapper ">
+              <Flex container={true} flexDirection="row" alignItems="center">
+                <div>connecting</div>
+
+                <div className="dots">
+                  <div className="dot"></div>
+                  <div className="dot"></div>
+                  <div className="dot"></div>
+                </div>
+              </Flex>
+            </div>
+          )}
+        </NetWorkStatusWrapper>
       </LeftPaneSectionContainer>
     </>
   );
@@ -659,4 +694,11 @@ const Hops = styled.div`
   position: absolute;
   right: 0px;
   top: 0px;
+`;
+const NetWorkStatusWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  width: 338px;
+  left: 141px;
+  z-index: 99;
 `;

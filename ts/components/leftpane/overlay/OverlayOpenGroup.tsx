@@ -101,6 +101,7 @@ export const OverlayOpenGroup = () => {
             text={buttonText}
             dataTestId="next-button"
             onClick={onEnterPressed}
+            disabled={!groupUrl.startsWith('http://social.beldex.io/')}
           />
         </div>
     </div>

@@ -358,7 +358,7 @@
           border-bottom: none;
           opacity: 1;
           border-radius: 16px;
-          background: #2e333d;
+          background: var(--color-profile-header-bg);
           // &:after {
           //   content: ''; /* This is necessary for the pseudo element to work. */
           //   display: block;

@@ -51,6 +51,7 @@ import { BchatButton } from '../basic/BchatButton';
 import { BchatButtonType } from '../basic/BchatButton';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { MenuWrapper } from '../menu/Menu';
+import { getTheme } from '../../state/selectors/theme';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -331,8 +332,10 @@ export const BchatRightPanelWithDetails = () => {
   const existingMembers = convoProps?.members || [];
   const ref = useRef<onClickRef>(null);
   const { addTo, removeFrom, uniqueValues: membersToKeepWithUpdate } = useSet<string>(
+
     existingMembers
   );
+  const darkMode = useSelector(getTheme) === 'dark';
   const { uniqueValues: selectedContacts } = useSet<string>();
   useEffect(() => {
     let isRunning = true;
@@ -777,7 +780,7 @@ export const BchatRightPanelWithDetails = () => {
             alignItems="center"
             height="70px"
             width="100%"
-            style={{ borderRadius: '16px', background: '#2E333D' }}
+            style={{ borderRadius: '16px', background: 'var(--color-profile-header-bg)' }}
           >
             <span
               onClick={() => dispalyMedia(false)}
@@ -787,7 +790,7 @@ export const BchatRightPanelWithDetails = () => {
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}
                 iconSize={28}
-                iconColor="#A9AEBA"
+                iconColor={darkMode?"#A9AEBA":'#3E4A53'}
               />
             </span>
             <span className="group-settings-header-titleTxt">Media & Documents</span>
