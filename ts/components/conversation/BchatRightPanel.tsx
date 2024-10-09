@@ -212,7 +212,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             iconType="save_tick"
             iconSize={16}
             onClick={() => onClickOK()}
-            // dataTestId="modal-close-button"
+          // dataTestId="modal-close-button"
           />
         </div>
       </div>
@@ -244,7 +244,7 @@ const HeaderItem = () => {
         height="70px"
         padding="25px"
         className='group-settings-header-title-wrapper'
-        
+
       >
         <span className="group-settings-header-titleTxt">
           {isGroup ? 'Group Info' : 'Profile Info'}
@@ -257,7 +257,7 @@ const HeaderItem = () => {
         </span>
       </Flex>
       <SpacerLG />
-    
+
       <div className="group-settings-header-avatarBox">
         <BNSWrapper
           //  size={89}
@@ -283,7 +283,6 @@ const ClassicMemberList = (props: {
   removeMem?: boolean;
 }) => {
   const { onSelect, convoId, onUnselect, selectedMembers, removeMem } = props;
-  console.log('removeMem --->', removeMem);
   const weAreAdmin = useWeAreAdmin(convoId);
   const convoProps = useConversationPropsById(convoId);
   if (!convoProps) {
@@ -391,10 +390,10 @@ export const BchatRightPanelWithDetails = () => {
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-    ? window.i18n('youGotKickedFromGroup')
-    : left
-    ? window.i18n('youLeftTheGroup')
-    : window.i18n('leaveGroup');
+      ? window.i18n('youGotKickedFromGroup')
+      : left
+        ? window.i18n('youLeftTheGroup')
+        : window.i18n('leaveGroup');
 
   const timerOptions = useSelector(getTimerOptions).timerOptions;
 
@@ -414,14 +413,14 @@ export const BchatRightPanelWithDetails = () => {
 
   const deleteConvoAction = isPublic
     ? () => {
-        deleteAllMessagesByConvoIdWithConfirmation(id);
-      }
+      deleteAllMessagesByConvoIdWithConfirmation(id);
+    }
     : left
-    ? () => {
+      ? () => {
         deleteGroupByConvoId(id, username);
       }
-    : () => {
-        showLeaveGroupByConvoId(id, username);
+      : () => {
+        showLeaveGroupByConvoId(id, username, <BchatIcon iconType='leaveGroup' iconColor='#FF3E3E' iconSize={30} />);
       };
 
   const handleCopy = () => {
@@ -573,8 +572,8 @@ export const BchatRightPanelWithDetails = () => {
             </>
           )}
           {hasDisappearingMessages && (
-            <div style={{width:'100%'}}>
-              <div className="disppear-wrapper" role='button' onClick={()=>setExpanded(!expanded)}>
+            <div style={{ width: '100%' }}>
+              <div className="disppear-wrapper" role='button' onClick={() => setExpanded(!expanded)}>
                 <Flex container={true} flexDirection="row" alignItems="center">
                   <BchatIcon
                     iconType={'chatTimer'}
@@ -648,10 +647,10 @@ export const BchatRightPanelWithDetails = () => {
               <Flex container={true} justifyContent="space-between" alignItems="center">
                 <div
                   className="group-settings-item"
-                  // role="button"
-                  // onClick={async () => {
-                  //   await showUpdateGroupMembersByConvoId(id);
-                  // }}
+                // role="button"
+                // onClick={async () => {
+                //   await showUpdateGroupMembersByConvoId(id);
+                // }}
                 >
                   <div className="invite-friends-container" style={{ marginRight: '10px' }}></div>
                   {window.i18n('groupMembers')}
@@ -677,14 +676,13 @@ export const BchatRightPanelWithDetails = () => {
                     </>
                   ) : (
                     <>
-                      {' '}
-                      <BchatIconButton
+                      {weAreAdmin && <BchatIconButton
                         iconType="avatarX"
                         iconSize={24}
                         clipRule="evenodd"
                         fillRule="evenodd"
                         onClick={() => setRemoveMem(true)}
-                      />
+                      />}
                       <div
                         className="add-btn"
                         role="button"

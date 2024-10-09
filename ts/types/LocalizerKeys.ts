@@ -590,4 +590,5 @@ export type LocalizerKeys =
   |'bnsNameAndIDNotMatch'
   |'bnsNameverified'
   |'KeyboardBackspaceArrow'
+  |'openLink'
   ;

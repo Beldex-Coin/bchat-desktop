@@ -224,7 +224,7 @@ export async function showUpdateGroupMembersByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateGroupMembersModal({ conversationId }));
 }
 
-export function showLeaveGroupByConvoId(conversationId: string, username: string) {
+export function showLeaveGroupByConvoId(conversationId: string, username: string, customIcon: any) {
   const conversation = getConversationController().get(conversationId);
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
@@ -250,6 +250,8 @@ export function showLeaveGroupByConvoId(conversationId: string, username: string
         },
         onClickClose,
         okTheme: BchatButtonColor.Danger,
+        iconShow: true,
+        customIcon
       })
     );
   } else {

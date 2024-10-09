@@ -95,7 +95,6 @@ export const MessageContextMenu = (props: Props) => {
     const found = await getMessageById(messageId);
     if (found) {
       const messageDetailsProps = await found.getPropsForMessageDetail();
-      console.log('messageDetailsProps -->',messageDetailsProps)
       // dispatch(showMessageDetailsView(messageDetailsProps));
       dispatch(updateMessageMoreInfoModal(messageDetailsProps));
     } else {
@@ -203,27 +202,27 @@ export const MessageContextMenu = (props: Props) => {
         </Item>
       )}
       {(!isPublic || isOutgoing) && (
-        <Item onClick={onShowDetail}> 
-        <BchatIcon iconType={'infoCircle'} iconSize={18} />
-        <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
+        <Item onClick={onShowDetail}>
+          <BchatIcon iconType={'infoCircle'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
       )}
       {showRetry ? <Item onClick={onRetry}>{window.i18n('resend')}</Item> : null}
       {isDeletable ? (
         <>
           <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
-        <span style={{ marginLeft: '10px' }}>{selectMessageText}</span></Item>
+            <span style={{ marginLeft: '10px' }}>{selectMessageText}</span></Item>
         </>
       ) : null}
       {isDeletable && !isPublic ? (
         <>
           <Item onClick={onDelete}><BchatIcon iconType={'delete'} iconSize={18} iconColor='#FF3E3E' />
-        <span style={{ marginLeft: '10px' }}>{deleteMessageJustForMeText}</span></Item>
+            <span style={{ marginLeft: '10px', color: "#FF3E3E" }}>{deleteMessageJustForMeText}</span></Item>
         </>
       ) : null}
       {isDeletableForEveryone ? (
         <>
           <Item onClick={onDeleteForEveryone}><BchatIcon iconType={'twoMember'} iconSize={18} iconColor='#FF3E3E' />
-        <span style={{ marginLeft: '10px' }}>{unsendMessageText}</span></Item>
+            <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span></Item>
         </>
       ) : null}
       {weAreAdmin && isPublic ? <Item onClick={onBan}>{window.i18n('banUser')}</Item> : null}

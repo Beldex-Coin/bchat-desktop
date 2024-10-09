@@ -585,5 +585,6 @@
   "bnsNameAndIDNotMatch": "Your BNS name and ID does not match. Try again",
   "bnsNameverified": "Your BNS name is verified",
   "allow": "Allow",
-  "deny": "Deny"
+  "deny": "Deny",
+  "openLink": "Open Link"
 }
