@@ -6,7 +6,7 @@ import { forceSyncConfigurationNowIfNeeded } from '../../bchat/utils/syncUtils';
 import { updateConfirmModal, updateDeleteAccountModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
-import { BchatSpinner } from '../basic/BchatSpinner';
+// import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 
 import * as Data from '../../data/data';
@@ -200,6 +200,7 @@ export const DeleteAccountModal = () => {
       }}
       iconShow={true}
       customIcon={<BchatIcon iconType="clearDataIcon" iconSize={26} />}
+      isloading={isLoading}
     >
       <div className="bchat-modal__centered">
         <div className='bchat-modal__deleteAccountModal'>
@@ -271,7 +272,7 @@ export const DeleteAccountModal = () => {
           )}
         </div>
 
-        <BchatSpinner loading={isLoading} />
+        {/* <BchatSpinner loading={isLoading} /> */}
       </div>
     </BchatWrapperModal>
   );

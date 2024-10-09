@@ -194,8 +194,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 iconType="camera"
                 // backgroundColor="var(--color-BnsCameraIconBg)"
                 // borderRadius="20px"
-                iconSize={30}
-                iconPadding="7px"
+                iconSize={16}
+                // iconPadding="7px"
               />
               <BchatToolTip place="top" effect="solid" />
             </div>

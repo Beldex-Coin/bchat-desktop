@@ -109,7 +109,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
 
   return (
     <div className="audio-message">
-      <Flex container={true} justifyContent="center" alignItems="center">
+      <Flex container={true} justifyContent="center" alignItems="center" height='40px' margin='10px 0 0 0'>
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
