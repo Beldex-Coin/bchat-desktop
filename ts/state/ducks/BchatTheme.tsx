@@ -201,6 +201,10 @@ const darkToastBg = '#131313';
 const bodyBg='#131313'
 const darkCallOptionBtnHover='#424751';
 const darkSpeedPlayBg='#202329';
+const darkMoreInfoIncommingChatBg='#202329';
+const darkCameraHoverBg='#46465D';
+const darkSettingWalletBetaBg='#131313';
+
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -475,6 +479,9 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-toast-bg', darkToastBg);
   document.documentElement.style.setProperty('--color-call-option-btn-hover', darkCallOptionBtnHover);
   document.documentElement.style.setProperty('--color-speedPlay-bg', darkSpeedPlayBg);
+  document.documentElement.style.setProperty('--color-moreInfo-incomming-chat-bg', darkMoreInfoIncommingChatBg);
+  document.documentElement.style.setProperty('--color-camera-hover-bg', darkCameraHoverBg);
+  document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', darkSettingWalletBetaBg);
 };
 
 // LIGHT COLORS
@@ -581,7 +588,7 @@ const lightBlockUserBg = '#EBEBEB';
 const lightPasswordBorderBottom = '#D5D5D5';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
-const whiteBubbleReceivedBg = '#F8F8F8';
+const whiteBubbleReceivedBg = '#F8F8F8';  
 const lightBlockseletedUserBg = '#FFFFFF';
 const lightDownArrowBg = '#FFFFFF';
 const lightDownArrow = '#A8A8C3';
@@ -655,7 +662,10 @@ const lightWalletInnerBg = '#EBEBEB';
 const lightNoTxnTxt = '#ACACAC';
 const lightToastBg = '#F8F8F8';
 const lightCallOptionBtnHover='#FFFFFF';
-const lightSpeedPlayBg='#ACACAC'
+const lightSpeedPlayBg='#ACACAC';
+const lightMoreInfoIncommingChatBg='#F0F0F0';
+const lightCameraHoverBg ='#DADADA';
+const lightSettingWalletBetaBg='#F8F8F8';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -940,6 +950,9 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-toast-bg', lightToastBg);
   document.documentElement.style.setProperty('--color-call-option-btn-hover', lightCallOptionBtnHover);
   document.documentElement.style.setProperty('--color-speedPlay-bg', lightSpeedPlayBg);
+  document.documentElement.style.setProperty('--color-moreInfo-incomming-chat-bg', lightMoreInfoIncommingChatBg);
+  document.documentElement.style.setProperty('--color-camera-hover-bg', lightCameraHoverBg);
+  document.documentElement.style.setProperty('--color-setting-wallet-beta-bg', lightSettingWalletBetaBg);
 };
 
 // default to light theme
@@ -1106,6 +1119,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-toast-bg:${darkToastBg};
     --color-call-option-btn-hover:${darkCallOptionBtnHover};
     --color-speedPlay-bg:${darkSpeedPlayBg};
+    --color-moreInfo-incomming-chat-bg:${darkMoreInfoIncommingChatBg};
+    --color-camera-hover-bg:${darkCameraHoverBg};
+    --color-setting-wallet-beta-bg:${darkSettingWalletBetaBg}
 
     
 

@@ -20,7 +20,10 @@ body {
 // scrollbars
 ::-webkit-scrollbar {
   width: 7px;
+  height:7px
+ 
 }
+
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-scroll-bar-thumb);
@@ -29,6 +32,9 @@ body {
   &:hover {
     background: $color-light-45;
   }
+}
+::-webkit-scrollbar-thumb:horizontal {
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
   border-radius: 10px;

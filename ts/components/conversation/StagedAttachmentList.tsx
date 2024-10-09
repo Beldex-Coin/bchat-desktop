@@ -16,6 +16,7 @@ import {
   removeStagedAttachmentInConversation,
 } from '../../state/ducks/stagedAttachments';
 import { getSelectedConversationKey } from '../../state/selectors/conversations';
+import { getTheme } from '../../state/selectors/theme';
 
 type Props = {
   attachments: Array<AttachmentType>;
@@ -28,6 +29,7 @@ const IMAGE_HEIGHT = 120;
 
 export const StagedAttachmentList = (props: Props) => {
   const { attachments, onAddAttachment, onClickAttachment } = props;
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const dispatch = useDispatch();
   const conversationKey = useSelector(getSelectedConversationKey);
@@ -65,45 +67,48 @@ export const StagedAttachmentList = (props: Props) => {
         </div>
       ) : null} */}
       <div className="module-attachments__rail">
-        {(attachments || []).map((attachment, index) => {
-          const { contentType } = attachment;
-          if (isImageTypeSupported(contentType) || isVideoTypeSupported(contentType)) {
-            const imageKey = getUrl(attachment) || attachment.fileName || index;
-            const clickCallback = attachments.length > 1 ? onClickAttachment : undefined;
+        <div className='module-inner-img-wrapper'>
+          {(attachments || []).map((attachment, index) => {
+            const { contentType } = attachment;
+            if (isImageTypeSupported(contentType) || isVideoTypeSupported(contentType)) {
+              const imageKey = getUrl(attachment) || attachment.fileName || index;
+              const clickCallback = attachments.length > 1 ? onClickAttachment : undefined;
+
+              return (
+                <Image
+                  key={imageKey}
+                  alt={window.i18n('stagedImageAttachment', [attachment.fileName])}
+                  attachment={attachment}
+                  softCorners={true}
+                  playIconOverlay={isVideoAttachment(attachment)}
+                  height={IMAGE_HEIGHT}
+                  width={IMAGE_WIDTH}
+                  forceSquare={true}
+                  url={getUrl(attachment)}
+                  closeButton={true}
+                  onClick={clickCallback}
+                  onClickClose={() => {
+                    onRemoveByFilename(attachment.fileName);
+                  }}
+                />
+              );
+            }
+
+            const genericKey = getUrl(attachment) || attachment.fileName || index;
 
             return (
-              <Image
-                key={imageKey}
-                alt={window.i18n('stagedImageAttachment', [attachment.fileName])}
+              <StagedGenericAttachment
+                key={genericKey}
                 attachment={attachment}
-                softCorners={true}
-                playIconOverlay={isVideoAttachment(attachment)}
-                height={IMAGE_HEIGHT}
-                width={IMAGE_WIDTH}
-                forceSquare={true}
-                url={getUrl(attachment)}
-                closeButton={true}
-                onClick={clickCallback}
-                onClickClose={() => {
+                onClose={() => {
                   onRemoveByFilename(attachment.fileName);
                 }}
+               
               />
             );
-          }
-
-          const genericKey = getUrl(attachment) || attachment.fileName || index;
-
-          return (
-            <StagedGenericAttachment
-              key={genericKey}
-              attachment={attachment}
-              onClose={() => {
-                onRemoveByFilename(attachment.fileName);
-              }}
-            />
-          );
-        })}
-        {allVisualAttachments ? <StagedPlaceholderAttachment onClick={onAddAttachment} /> : null}
+          })}
+        </div>
+        {allVisualAttachments ? <StagedPlaceholderAttachment onClick={onAddAttachment}  darkMode={darkMode} /> : null}
       </div>
     </div>
   );

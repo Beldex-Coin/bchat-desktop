@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 
-// import { Message } from './Message';
+import { Message } from './Message';
 // import { useSelector } from 'react-redux';
 import { Avatar, AvatarSize } from '../../../avatar/Avatar';
 // import { deleteMessagesById } from '../../../../interactions/conversations/unsendingInteractions';
@@ -13,9 +13,9 @@ import { ContactPropsMessageDetail, MessagePropsDetails } from '../../../../stat
 // } from '../../../../state/selectors/conversations';
 import { ContactName } from '../../ContactName';
 import { BchatWrapperModal } from '../../../BchatWrapperModal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
-import { getMessageTextProps } from '../../../../state/selectors/conversations';
+// import { getMessageTextProps } from '../../../../state/selectors/conversations';
 import {  SpacerSM, SpacerXS } from '../../../basic/Text';
 
 const AvatarItem = (props: { pubkey: string }) => {
@@ -104,8 +104,8 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
     direction,
     messageId,
   } = props;
-  const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
-console.log('selected -->',selectedMsg)
+  // const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
+// console.log('selected -->',selectedMsg)
   // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
   //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
@@ -133,10 +133,10 @@ console.log('selected -->',selectedMsg)
       >
         <SpacerSM />
         <div className="module-message-detail">
-          <div className={`module-message-detail__message-container message-direction-${direction}`}>
+          <div >
             {/* <h2>More Info</h2> */}
-            {/* <Message messageId={messageId} isDetailView={false} /> */}
-            {selectedMsg?.text}
+            <Message messageId={messageId} isDetailView={false} />
+            {/* {selectedMsg?.text} */}
           </div>
           <SpacerSM />
           <table className="module-message-detail__info">

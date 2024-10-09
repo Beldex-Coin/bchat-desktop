@@ -423,15 +423,23 @@
   // padding: 20px;
   // padding: 0 20px;
   text-align: left;
+  padding-right: 3px;
+  .module-message--outgoing{
+    margin-inline-end: unset;
+    margin-inline-start: unset;
+  }
+  .module-message__container--incoming--opaque{
+background-color: var(--color-moreInfo-incomming-chat-bg);
+  }
 }
 
 .module-message-detail__message-container {
-  text-align: left;
-  padding: 20px;
-  border-radius: 16px;
-  display: inline-block;
-  max-height: 225px;
-  overflow: auto;
+  // text-align: left;
+  // padding: 20px;
+  // border-radius: 16px;
+  // display: inline-block;
+  // max-height: 225px;
+  // overflow: auto;
 
   &:after {
     content: '.';
@@ -442,19 +450,19 @@
   }
 }
 
-.message-direction-incoming {
-  border-top-left-radius: 0px;
-  background: #202329;
-}
-.message-direction-outgoing {
-  border-top-right-radius: 0px;
-  background: #108D32;
-}
+// .message-direction-incoming {
+//   border-top-left-radius: 0px;
+//   background: var(--color-moreInfo-incomming-chat-bg);
+// }
+// .message-direction-outgoing {
+//   border-top-right-radius: 0px;
+//   background: #108d32;
+// }
 
 .module-message-detail__info {
   border-radius: 16px;
-  border: 1px solid #46465d;
-  background: #202329;
+  border: 1px solid var(--color-search-border);
+            background: var(--color-hop-bg);
   width: 100%;
   overflow: hidden;
   padding: 20px;
@@ -499,8 +507,8 @@
   align-items: center;
 
   border-radius: 16px;
-  border: 1px solid #46465d;
-  background: #202329;
+  border: 1px solid var(--color-search-border);
+  background: var(--color-hop-bg);
   padding: 20px;
 }
 
@@ -1174,6 +1182,17 @@
   border-radius: 12px;
   // background: #131313;
   margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+
+ 
+}
+
+.module-inner-img-wrapper {
+  max-width: calc(100vw - 795px);
+  overflow-x: auto;
+  margin-right: 20px;
 }
 
 // Module: Staged Generic Attachment
@@ -1515,10 +1534,10 @@
   // color: var(--color-disableText);
   // margin: 10px 0 0 0;
 
-    color: #858598;
-    // font-family: Poppins;
-    font-size: 18px;
-    // font-style: normal;
-    font-weight: 300;
-    // line-height: normal;
+  color: #858598;
+  // font-family: Poppins;
+  font-size: 18px;
+  // font-style: normal;
+  font-weight: 300;
+  // line-height: normal;
 }

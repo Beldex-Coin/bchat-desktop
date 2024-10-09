@@ -989,14 +989,14 @@ $bchat-compose-margin: 20px;
 
     .beta {
       margin-left: 5px;
-      background-color: #9494a0;
-      height: 11px;
-      // border-radius: 2px;
-      border-radius: 4px;
-      padding: 0 5px;
+      background-color:var(--color-setting-wallet-beta-bg);
+      height: 18px;
+      border-radius: 6px;
+      padding: 4px 5px;
       font-size: 8px;
       letter-spacing: 1px;
       font-weight: 600;
+      margin-top: -7px;
     }
 
     & > div {

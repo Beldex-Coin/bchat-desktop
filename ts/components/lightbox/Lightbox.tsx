@@ -104,6 +104,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'end',
     marginBottom: '15px',
+    width: '98%',
   } as React.CSSProperties,
   controls: {
     width: '80px',
@@ -111,7 +112,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: '50px',
+    marginRight: '15px',
   } as React.CSSProperties,
   navigationContainer: {
     flexShrink: 0,
@@ -119,6 +120,9 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     padding: 10,
+    position: 'absolute',
+    right: '23px',
+    top: '50%',
   } as React.CSSProperties,
   saveButton: {
     marginTop: 10,
@@ -151,22 +155,23 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
   switch (type) {
     case 'next':
       iconType = 'forwardArrow';
-      iconSize = 45;
+      iconSize = 58;
+      iconColor = '#108D32';
       break;
     case 'previous':
-      iconType = 'backArrow';
+      iconType = 'forwardArrow';
       iconRotation = 180;
-      iconColor = '#4e4e71';
-      iconSize = 45;
+      // iconColor = '#4e4e71';
+      iconSize = 58;
       break;
     case 'close':
       iconType = 'exit';
-      iconSize = 18;
+      iconSize = 40;
       iconColor = '#BABABA';
       break;
     case 'save':
       iconType = 'upload';
-      iconSize = 23;
+      iconSize = 40;
       iconColor = '#00b200';
       break;
     default:
@@ -181,6 +186,8 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
       // the lightbox has a dark background
       iconColor={iconColor}
       onClick={clickHandler}
+      clipRule="evenodd"
+      fillRule="evenodd"
     />
   );
 };
@@ -296,19 +303,29 @@ export const Lightbox = (props: Props) => {
   return (
     <div style={styles.container as any} role="dialog" onClick={onContainerClick}>
       <div style={styles.mainContainer as any}>
-        <div style={styles.controlsOffsetPlaceholder} />
+        {/* <div style={styles.controlsOffsetPlaceholder} /> */}
+        <div style={{ position: 'absolute', top: '50%' }}>
+          {onPrevious ? (
+            <IconButton type="previous" onClick={onPrevious} />
+          ) : (
+            <IconButtonPlaceholder />
+          )}
+        </div>
         <div style={styles.objectParentContainer} role="button">
           <div style={styles.headers as any}>
             <div style={styles.controls as any}>
               {onSave ? (
                 <IconButton type="save" onClick={onSave} style={styles.saveButton} />
               ) : null}
-              <IconButton
-                type="close"
-                onClick={() => {
-                  dispatch(showLightBox(undefined));
-                }}
-              />
+              <div style={{ marginLeft: '10px' }}>
+                {' '}
+                <IconButton
+                  type="close"
+                  onClick={() => {
+                    dispatch(showLightBox(undefined));
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div style={styles.objectContainer as any}>
@@ -324,12 +341,7 @@ export const Lightbox = (props: Props) => {
           </div>
         </div>
         <div style={styles.navigationContainer as any}>
-          {onPrevious ? (
-            <IconButton type="previous" onClick={onPrevious} />
-          ) : (
-            <IconButtonPlaceholder />
-          )}
-          <div style={{ marginTop: '15px' }}>
+          <div>
             {onNext ? <IconButton type="next" onClick={onNext} /> : <IconButtonPlaceholder />}
           </div>
         </div>
