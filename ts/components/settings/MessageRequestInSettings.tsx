@@ -33,6 +33,7 @@ import {
 import { getConversationController } from '../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerXS } from '../basic/Text';
+import { BchatIcon } from '../icon';
 // import { AcceptMenuItem } from '../menu/Menu';
 
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -133,7 +134,8 @@ const MessageRequestListSetting = (props: Props) => {
 //     // forceUpdate()
   };
   const handleDeclineConversationRequest = () => {
-    declineConversationWithConfirm(conversationId, true);
+    const customIcon=<BchatIcon iconType={'messageRequest'} iconSize={30}  />
+    declineConversationWithConfirm(conversationId, true,customIcon);
   };
 
   return (

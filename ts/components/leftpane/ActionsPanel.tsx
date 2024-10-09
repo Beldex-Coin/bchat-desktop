@@ -35,7 +35,7 @@ import {
 import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmentsManager';
 
 import { DURATION } from '../../bchat/constants';
-import { conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
+import { closeRightPanel, conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
 import {
   editProfileModal,
   updateBchatWalletPasswordModal,
@@ -97,7 +97,7 @@ const Section = (props: { type: SectionType }) => {
 
   const handleClick = async () => {
     /* tslint:disable:no-void-expression */
-
+     dispatch(closeRightPanel())
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {

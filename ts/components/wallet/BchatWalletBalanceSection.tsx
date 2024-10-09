@@ -7,7 +7,6 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { walletSettingsKey } from '../../data/settings-key';
 import { Flex } from '../basic/Flex';
-import { BchatIconButton } from '../icon';
 const { clipboard } = require('electron');
 
 export const WalletBalanceSection = () => {
@@ -107,12 +106,13 @@ export const WalletBalanceSection = () => {
             data-tip="Copy"
             data-place="right"
             data-offset="{'top':30,'left':15}"
+            onClick={handlePaste}
           >
-            <BchatIconButton
+            <BchatIcon
               iconType="copy"
               iconSize={20}
               iconColor='#00A638'
-              onClick={handlePaste}
+              
               clipRule="evenodd"
               fillRule="evenodd"
             />
