@@ -63,7 +63,10 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
         message: window.i18n('trustThisContactDialogDescription', [
           convo.getContactProfileNameOrShortenedPubKey(),
         ]),
-        okTheme: BchatButtonColor.Green,
+        okTheme: BchatButtonColor.Primary,
+        okText: window.i18n('autoUpdateDownloadButtonLabel'),
+        iconShow: true,
+        customIcon: <BchatIcon iconType='trustDownloadMedia' iconSize={30} />,
         onClickOk: async () => {
           convo.set({ isTrustedForAttachmentDownload: true });
           await convo.commit();
@@ -106,12 +109,12 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
 
                   const image = message.isTrustedForAttachmentDownload()
                     ? await AttachmentDownloads.addJob(item.image, {
-                        messageId: message.id,
-                        type: 'preview',
-                        index,
-                        isOpenGroupV2: false,
-                        openGroupV2Details: undefined,
-                      })
+                      messageId: message.id,
+                      type: 'preview',
+                      index,
+                      isOpenGroupV2: false,
+                      openGroupV2Details: undefined,
+                    })
                     : null;
 
                   return { ...item, image };

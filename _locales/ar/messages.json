@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "صيغة المفتاح خاطئة",
   "emptyGroupNameError": "اكتب اسم المجموعة من فضلك",
   "editProfileModalTitle": "الملف الشخصي",
- "linkYourBns": "ربط Bns الخاص بك",
+  "linkYourBns": "ربط Bns الخاص بك",
   "readMoreAboutBNS": "إقرأ المزيد عن BNS",
   "bnsVerified": "تم التحقق من BNS ",
   "linkBNS": "وصلة BNS",
@@ -477,5 +477,6 @@
   "bns": "Bns",
   "paymentID": "Payment ID",
   "allow": "Allow",
-  "deny": "Deny"
+  "deny": "Deny",
+  "openLink": "Open Link"
 }

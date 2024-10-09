@@ -281,7 +281,7 @@ export const DeleteContactMenuItem = () => {
           fillRule="evenodd"
           clipRule="evenodd"
         />{' '}
-        <MenuWrapper>{menuItemText}</MenuWrapper>
+        <MenuWrapper style={{ color: '#FF3E3E' }}>{menuItemText}</MenuWrapper>
       </Item>
     );
   }
@@ -300,7 +300,7 @@ export const LeaveGroupMenuItem = () => {
     return (
       <Item
         onClick={() => {
-          showLeaveGroupByConvoId(convoId, username);
+          showLeaveGroupByConvoId(convoId, username, <BchatIcon iconType='leaveGroup' iconColor='#FF3E3E' iconSize={30} />);
         }}
       >
         <BchatIcon iconType={'leave'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#FF3E3E' />

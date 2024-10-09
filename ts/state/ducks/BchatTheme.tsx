@@ -53,8 +53,8 @@ const darkInputBackground = '#202329';
 const darkFilterBchatText = 'none';
 const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
 
-const darkScrollbarThumb = '#504D5D';
-const darkScrollbarTrack = '#1C1C26';
+const darkScrollbarThumb = '#858598';
+const darkScrollbarTrack = '#131313';
 const darkFakeChatBubbleBg = '#212121';
 
 const darkInboxBackground = '#131313';
@@ -514,8 +514,8 @@ const lightInputBackground = '#EBEBEB';
 const lightFilterBchatText = 'brightness(0) saturate(100%)';
 const lightUnreadBorder = `4px solid ${accentLightTheme}`;
 
-const lightScrollbarThumb = '#D5D5D8';
-const lightScrollbarTrack = '#fcfcfc';
+const lightScrollbarThumb = '#F8F8F8';
+const lightScrollbarTrack = '#EBEBEB';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
 const lightInboxBackground = '#F0F0F0';

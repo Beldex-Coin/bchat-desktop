@@ -155,7 +155,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       showExitIcon={showExitIcon}
       showHeader={showHeader}
       okButton={{
-        text: okText, onClickOkHandler,
+        text: okText,
+         onClickOkHandler,
         disabled: btndisable ? btndisable : false,
         color: props.okTheme
       }}

@@ -67,7 +67,7 @@ export const AboutBnsDialog = () => {
               a message, making a transaction, or using decentralized services, your BNS name ensures
               a consistent and simplified experience.
             </div>
-            <div className="about-bns-txt">
+            <div className="about-bns-txt" style={{marginBottom:'0px'}}>
               Get started with your BNS name today and enjoy the benefits of a decentralized identity
               across all your Beldex services!
             </div>
