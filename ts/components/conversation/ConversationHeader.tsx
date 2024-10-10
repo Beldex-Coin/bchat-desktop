@@ -54,6 +54,7 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { getTheme } from '../../state/selectors/theme';
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
@@ -99,6 +100,7 @@ const SelectionOverlay = () => {
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
   const dispatch = useDispatch();
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const { i18n } = window;
 
@@ -141,7 +143,7 @@ const SelectionOverlay = () => {
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
-            style={{borderRadius:'40px'}}
+            style={{borderRadius:'40px',background:darkMode?'#131313':''}}
           />
         )}
         <BchatButton

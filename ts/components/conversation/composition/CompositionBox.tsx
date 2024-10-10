@@ -66,7 +66,7 @@ import {
   updateSendConfirmModal,
   updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
-import { showLeftPaneSection } from '../../../state/ducks/section';
+import { SectionType, setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import {
   getHeight,
@@ -295,7 +295,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
         updateBchatAlertConfirmModal({
           onClickOk: async () => {
             window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null));
-            window.inboxStore?.dispatch(showLeftPaneSection(3));
+            window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+
+            // dispatch(setOverlayMode());
+            window.inboxStore?.dispatch(setOverlayMode(undefined));
+            // window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null));
+            // window.inboxStore?.dispatch(showLeftPaneSection(3));
             // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false);
             // forceUpdate();
           },

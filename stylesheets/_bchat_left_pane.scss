@@ -136,17 +136,18 @@ $bchat-compose-margin: 20px;
 }
 .offline-msg {
   margin: 11px;
-  border: 1px solid #4b4b64;
+  // border: 1px solid #4b4b64;
   height: 50px;
   display: flex;
   /* justify-content: center; */
   align-items: center;
   padding: 10px;
   border-radius: 6px;
+  background-color: var(--color-offline-content-bg);
   .txt {
     font-size: 11px;
     margin-left: 11px;
-    color: #a7a7ba;
+    // color: #a7a7ba;
   }
 }
 .connection-Wrapper {
@@ -365,7 +366,7 @@ $bchat-compose-margin: 20px;
       }
 
       &--subHeader {
-        color: #f0f0f0;
+        // color: #f0f0f0;
         font-size: 18px;
         font-weight: 400;
         // display: flex;
@@ -483,8 +484,9 @@ $bchat-compose-margin: 20px;
 
     .buttonBox {
       width: 100%;
-      padding: 0 90px;
-      // display: flex;
+      // padding: 0 90px;
+      display: flex;
+      justify-content: center;
       // justify-items: center;
       // width: 378px;
       // background-color: var(--color-overlayBg);
