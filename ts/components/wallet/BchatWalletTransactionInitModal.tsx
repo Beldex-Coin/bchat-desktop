@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateTransactionInitModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import styled from 'styled-components';
+import { BchatButtonColor } from '../basic/BchatButton';
 
 export const TransactionInitModal = (props: any) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ export const TransactionInitModal = (props: any) => {
         showHeader={false}
         okButton={{
           text: 'ok',
+          color:BchatButtonColor.Primary,
           onClickOkHandler: () => {
             dispatch(updateTransactionInitModal(null));
           },

@@ -17,6 +17,7 @@ export const BnsLinkDialog = () => {
   const [bnsName, setBnsName] = useState('');
   const [isVerify, setIsVerify] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [verifyError,setVerifyError]=useState(false);
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id
   const darkMode = useSelector(getTheme) === 'dark';
   const regexForBnsName = /^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
@@ -30,13 +31,19 @@ export const BnsLinkDialog = () => {
     setIsLoading(true);
     const isverified: boolean = await isLinkedBchatIDWithBnsForDeamon(bnsName);
     setIsVerify(isverified);
+    setVerifyError(!isverified);
     setIsLoading(false);
+   
   }
   const callLinkBns = async () => {
     //call to update conversational state value
     await linkBns(bnsName);
     setSuccess(true);
   };
+  const onchange=(e:string)=>{
+    setBnsName(e);
+    verifyError&&setVerifyError(false)
+  }
   const BnsLinkedSuccessModal = () => {
     return (
       <div style={{ textAlign: 'center' }}>
@@ -99,16 +106,17 @@ export const BnsLinkDialog = () => {
             {/* <div className="hr_line"></div> */}
             <div className="label_input">{i18n('bnsName')}</div>
             <SpacerSM />
-            <div className="inputBox-wrapper">
+            <div className="inputBox-wrapper" style={{border:verifyError?' 1px solid #FF3E3E':''}}>
               <input
-                style={{ color: '#0BB70F' }}
+                style={{ color:verifyError?'#FF3E3E':'#0BB70F' }}
                 type="text"
                 className="inputBox"
                 disabled={isVerify}
                 value={bnsName}
                 placeholder={i18n('enterBnsName')}
                 onChange={event => {
-                  setBnsName(event.target.value);
+                  onchange(event.target.value)
+                  
                 }}
                 maxLength={33}
                 data-testid="profile-name-input"

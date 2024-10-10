@@ -42,13 +42,14 @@ export const NodeSetting = (props: any) => {
   const [option, setOption] = useState(deamonList);
   const [verifyDeamon, setVerifyDeamon] = useState({});
   const [testNotify, setTestNotify] = useState({ status: '', content: '', StatusIcon: true });
+  const [testbtnDisable, setTestbtnDisable] = useState(false);
   const [localDeamonVisible, setLocalDeamonVisible] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const testBottonEnable = !(ipAddress && port);
   const savebtnValidation =
     currentDeamon.host === chooseDeamon && currentDeamon.port === chooseDeamonPort;
-    const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = useSelector(getTheme) === 'dark';
   useEffect(() => {
     document.addEventListener('click', handleClick);
 
@@ -166,6 +167,7 @@ export const NodeSetting = (props: any) => {
   });
 
   async function validationForDeamon() {
+    setTestbtnDisable(true);
     let data = { host: ipAddress, port: port, active: 1, type: 'Remote' };
     const confirmation: any = await workingStatusForDeamon(data, 'daemonValidation');
     if (confirmation && confirmation.status === 'OK') {
@@ -183,6 +185,7 @@ export const NodeSetting = (props: any) => {
     }
     setTestNotify({ status: 'failed', content: `Error`, StatusIcon: true });
     setVerifyDeamon({});
+    setTestbtnDisable(false);
   }
 
   return (
@@ -193,7 +196,7 @@ export const NodeSetting = (props: any) => {
             <BchatIconButton
               iconType="walletBackArrow"
               iconSize={'medium'}
-              iconColor={darkMode ?'#F0F0F0':'#333333'}
+              iconColor={darkMode ? '#F0F0F0' : '#333333'}
               onClick={() => props.onClick()}
             />
           </div>
@@ -278,6 +281,133 @@ export const NodeSetting = (props: any) => {
           <LocalDeamon />
         ) : (
           <>
+            {/* ******************************Add deamon section****************************************** */}
+
+            <Flex
+              className="wallet-settings-nodeSetting-dropDownHeaderTxt"
+              container={true}
+              justifyContent="space-between"
+              cursor={'pointer'}
+              onClick={() => setViewBox1(!viewBox1)}
+            >
+              <div className="text">{window.i18n('addRemoteDaemonNode')}</div>
+              <div>
+                <BchatIcon
+                  iconColor="#A7A7BA"
+                  iconType="chevron"
+                  iconSize={'small'}
+                  iconRotation={viewBox1 ? 178 : 0}
+                />
+              </div>
+            </Flex>
+            <SpacerLG />
+
+            <div
+              className={classNames(
+                'wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box'
+              )}
+              style={viewBox1 ? { display: 'block' } : {}}
+            >
+              <Flex container={true} justifyContent="space-between">
+                <article className="wallet-settings-nodeSetting-remoteContentBox">
+                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
+                    {window.i18n('remoteNodeHost')}
+                  </div>
+
+                  <input
+                    value={ipAddress}
+                    placeholder="Enter your IP address"
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
+                    onChange={(e: any) => {
+                      assignHost(e.target.value);
+                    }}
+                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
+                  />
+                </article>
+                <article className="wallet-settings-nodeSetting-remoteContentBox">
+                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
+                    {window.i18n('remoteNodePort')}
+                  </div>
+
+                  <input
+                    value={port}
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
+                    onChange={(e: any) => portValidation(e.target.value)}
+                    placeholder="Enter your port"
+                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
+                    maxLength={5}
+                  />
+                </article>
+              </Flex>
+              <SpacerLG />
+              <SpacerLG />
+
+              <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
+                <div>
+                  <BchatButton
+                    // buttonColor={
+                    //   !ipAddress && !port
+                    //     ? BchatButtonColor.Disable
+                    //     : !ipAddress
+                    //       ? BchatButtonColor.Disable
+                    //       : !port
+                    //         ? BchatButtonColor.Disable
+                    //         : BchatButtonColor.Primary
+                    // }
+                    buttonType={BchatButtonType.Brand}
+                    buttonColor={
+                      !testBottonEnable ? BchatButtonColor.Primary : BchatButtonColor.Secondary
+                    }
+                    text={window.i18n('test')}
+                    onClick={() => !testBottonEnable && !testbtnDisable && validationForDeamon()}
+                    style={{ cursor: !testBottonEnable ? 'pointer' : 'default' }}
+                    disabled={testbtnDisable}
+                  />
+                </div>
+                <div style={{ marginLeft: '15px' }}></div>
+                <div>
+                  <BchatButton
+                    buttonType={BchatButtonType.Brand}
+                    buttonColor={
+                      Object.keys(verifyDeamon).length !== 0
+                        ? BchatButtonColor.Primary
+                        : BchatButtonColor.Secondary
+                    }
+                    text={window.i18n('add')}
+                    onClick={() => Object.keys(verifyDeamon).length !== 0 && addDeamonNet()}
+                    style={{
+                      cursor: Object.keys(verifyDeamon).length !== 0 ? 'pointer' : 'default',
+                    }}
+                  />
+                </div>
+              </div>
+              <SpacerLG />
+              <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+                {testNotify.status && (
+                  <>
+                    <span className="result">{window.i18n('NodeTestResult')}</span>
+                    {/* {testNotify.status === 'ok' ? (
+                      <span className="result-msg">{testNotify.content}</span>
+                    ) : ( */}
+                    <span className="result-msg">
+                      Connection : <span className="error-msg">{testNotify.content}</span>
+                    </span>
+                    {/* )} */}
+
+                    <BchatIcon
+                      iconType={testNotify.status === 'ok' ? 'check' : 'warning'}
+                      iconSize={18}
+                      iconColor={testNotify.status === 'ok' ? 'green' : 'red'}
+                      iconPadding={'0 0 0 3px'}
+                    />
+                  </>
+                )}
+              </div>
+              <SpacerLG />
+            </div>
+
+            <div className="wallet-settings-nodeSetting-horizontalLine"></div>
+            <SpacerLG />
             {/* ******************************Choose deamon section****************************************** */}
 
             <Flex
@@ -401,137 +531,11 @@ export const NodeSetting = (props: any) => {
                   style={{ cursor: savebtnValidation ? 'default' : 'pointer' }}
                 />
               </Flex>
-
+              <SpacerLG />
               <SpacerLG />
             </div>
             <div className="wallet-settings-nodeSetting-horizontalLine"></div>
             <SpacerLG />
-            {/* ******************************Add deamon section****************************************** */}
-
-            <Flex
-              className="wallet-settings-nodeSetting-dropDownHeaderTxt"
-              container={true}
-              justifyContent="space-between"
-              cursor={'pointer'}
-              onClick={() => setViewBox1(!viewBox1)}
-            >
-              <div className="text">{window.i18n('addRemoteDaemonNode')}</div>
-              <div>
-                <BchatIcon
-                  iconColor="#A7A7BA"
-                  iconType="chevron"
-                  iconSize={'small'}
-                  iconRotation={viewBox1 ? 178 : 0}
-                />
-              </div>
-            </Flex>
-            <SpacerLG />
-
-            <div
-              className={classNames(
-                'wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box'
-              )}
-              style={viewBox1 ? { display: 'block' } : {}}
-            >
-              <Flex container={true} justifyContent="space-between">
-                <article className="wallet-settings-nodeSetting-remoteContentBox">
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-                    {window.i18n('remoteNodeHost')}
-                  </div>
-
-                  <input
-                    value={ipAddress}
-                    placeholder="Enter your IP address"
-                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
-                    onChange={(e: any) => {
-                      assignHost(e.target.value);
-                    }}
-                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
-                  />
-                </article>
-                <article className="wallet-settings-nodeSetting-remoteContentBox">
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-                    {window.i18n('remoteNodePort')}
-                  </div>
-
-                  <input
-                    value={port}
-                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
-                    onChange={(e: any) => portValidation(e.target.value)}
-                    placeholder="Enter your port"
-                    style={zoomLevel > 125 ? { paddingLeft: '10px' } : {}}
-                    maxLength={5}
-                  />
-                </article>
-              </Flex>
-              <SpacerLG />
-              <SpacerLG />
-
-              <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
-                <div>
-                  <BchatButton
-                    // buttonColor={
-                    //   !ipAddress && !port
-                    //     ? BchatButtonColor.Disable
-                    //     : !ipAddress
-                    //       ? BchatButtonColor.Disable
-                    //       : !port
-                    //         ? BchatButtonColor.Disable
-                    //         : BchatButtonColor.Primary
-                    // }
-                    buttonType={BchatButtonType.Brand}
-                    buttonColor={
-                      !testBottonEnable ? BchatButtonColor.Primary : BchatButtonColor.Secondary
-                    }
-                    text={window.i18n('test')}
-                    onClick={() => !testBottonEnable && validationForDeamon()}
-                    style={{ cursor: !testBottonEnable ? 'pointer' : 'default' }}
-                  />
-                </div>
-                <div style={{ marginLeft: '15px' }}></div>
-                <div>
-                  <BchatButton
-                    buttonType={BchatButtonType.Brand}
-                    buttonColor={
-                      Object.keys(verifyDeamon).length !== 0
-                        ? BchatButtonColor.Primary
-                        : BchatButtonColor.Secondary
-                    }
-                    text={window.i18n('add')}
-                    onClick={() => Object.keys(verifyDeamon).length !== 0 && addDeamonNet()}
-                    style={{
-                      cursor: Object.keys(verifyDeamon).length !== 0 ? 'pointer' : 'default',
-                    }}
-                  />
-                </div>
-              </div>
-              <SpacerLG />
-              <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                {testNotify.status && (
-                  <>
-                    <span className="result">{window.i18n('NodeTestResult')}</span>
-                    {/* {testNotify.status === 'ok' ? (
-                      <span className="result-msg">{testNotify.content}</span>
-                    ) : ( */}
-                    <span className="result-msg">
-                      Connection : <span className="error-msg">{testNotify.content}</span>
-                    </span>
-                    {/* )} */}
-
-                    <BchatIcon
-                      iconType={testNotify.status === 'ok' ? 'check' : 'warning'}
-                      iconSize={18}
-                      iconColor={testNotify.status === 'ok' ? 'green' : 'red'}
-                      iconPadding={'0 0 0 3px'}
-                    />
-                  </>
-                )}
-              </div>
-              <SpacerLG />
-              <SpacerLG />
-            </div>
-
-            <div className="wallet-settings-nodeSetting-horizontalLine"></div>
           </>
         )}
       </section>

@@ -658,23 +658,36 @@
     }
 
     &-oldpassInput {
+      border-radius: 16px;
+      border: 1px solid var(--color-search-border);
+      background: var(--color-hop-bg);
+      height: 70px;
+      width: 100%;
+      padding: 10px;
       input {
-        background-color: var(--color-walInputBg);
-        width: 435px;
-        height: 55px;
-        margin-bottom: 10px;
+        background: var(--color-hop-bg);
+        height: 100%;
+        width: 430px;
+
+        // margin-bottom: 10px;
         // box-shadow: 1px 2px 5px #00000074;
       }
     }
 
     &-newPassInput {
+      border-radius: 16px;
+      border: 1px solid var(--color-search-border);
+      background: var(--color-hop-bg);
+      height: 70px;
+      width: 100%;
+      padding: 10px;
       input {
         // background-color: #353543;
-        background-color: var(--color-walInputBg);
-        width: 435px;
-        height: 52px;
+        background: var(--color-hop-bg);
+        height: 100%;
+        width: 430px;
         // box-shadow: 1px 2px 5px #00000074;
-        margin-right: 12px;
+        // margin-right: 12px;
       }
     }
   }
@@ -819,8 +832,6 @@
       border-radius: 30px;
       background-position: center;
       cursor: pointer;
-
- 
     }
 
     .bchat-button {

@@ -60,7 +60,7 @@ export type LocalizerKeys =
   | 'forgotPassword'
   | 'enterwalletPassword'
   | 'invalidRestoreDate'
-  | 'changewalletPassword'
+  | 'newwalletPassword'
   | 'reEnterPassword'
   | 'saveRecipientAddress'
   | 'remoteNoteToAllTransactions'

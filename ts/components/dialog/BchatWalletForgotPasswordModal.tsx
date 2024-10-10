@@ -231,7 +231,7 @@ export const BchatWalletForgotPasswordModal = () => {
 
             <SpacerLG />
             <div className="wallet-forgotPassword-content-Box-password-label">
-              {window.i18n('changewalletPassword')}
+              {window.i18n('newwalletPassword')}
             </div>
             <SpacerSM />
             <Flex
