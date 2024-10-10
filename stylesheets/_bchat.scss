@@ -3166,7 +3166,7 @@ label {
 
           &-items:hover {
             border-radius: 16px;
-            background: #333842;
+            background: var(--color-context-menu-hover-bg);
           }
         }
 
@@ -3301,7 +3301,7 @@ label {
             .result {
               // font-family: 'poppin-semibold';
               border-radius: 33px;
-              background: #131313;
+              background: var(--color-setting-wallet-beta-bg);
               padding: 6px 15px;
               color: #108d32;
               font-weight: 600;
@@ -3310,8 +3310,8 @@ label {
 
             .result-msg {
               border-radius: 16px;
-              border: 1px solid #46465d;
-              background: #202329;
+              border: 1px solid var(--color-search-border);
+              // background: #202329;
               padding: 6px 15px;
               color: #a7a7ba;
               font-size: 14px;
@@ -3320,7 +3320,7 @@ label {
             }
 
             .error-msg {
-              color: #f0f0f0;
+              // color: #f0f0f0;
               font-size: 13px;
               font-weight: 600;
             }
@@ -3329,7 +3329,7 @@ label {
       }
     }
 
-    &-syncStatusBox {
+    // &-syncStatusBox {
       // position: absolute;
       // width: calc(100vw - 417px);
       // height: 45px;
@@ -3338,7 +3338,7 @@ label {
       /* background-color: var(--color-walSyncbar); */
       // border-radius: 16px;
       // background: #202329;
-    }
+    // }
 
     &-syncStatus {
       // position: relative;

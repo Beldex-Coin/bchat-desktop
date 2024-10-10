@@ -9,6 +9,7 @@ import { shell } from 'electron';
 import { getRescaning } from '../../state/selectors/walletConfig';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
+import { BchatIconButton } from '../icon';
 
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
@@ -373,6 +374,12 @@ export const TransactionSection = (props: any) => {
                       {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
                     </div>
                   </section>
+                  <BchatIconButton
+                  iconColor={darkMode?"#A7A7BA":'#3E4A53'}
+                  iconType="chevron"
+                  iconSize={'medium'}
+                  iconRotation={selected === i ? 178 : 0}
+                />
                 </Flex>
 
                 {selected === i && (

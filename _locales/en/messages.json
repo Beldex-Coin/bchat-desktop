@@ -343,7 +343,7 @@
   "setPassword": "Set Password",
   "changePassword": "Change Password",
   "removePassword": "Remove Password",
-  "changewalletPassword": "Change wallet Password",
+  "newwalletPassword": "New Wallet password",
   "maxPasswordAttempts": "Invalid Password. Would you like to reset the database?",
   "typeInOldPassword": "Please type in your old password",
   "invalidOldPassword": "Old password is invalid",
