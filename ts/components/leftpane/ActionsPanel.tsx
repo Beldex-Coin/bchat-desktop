@@ -305,7 +305,7 @@ const Section = (props: { type: SectionType }) => {
     case SectionType.Wallet:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <hr className="grey-border" />
+          <div className="grey-border" />
           <div
             data-tip="Wallet"
             data-place="right"
@@ -330,7 +330,7 @@ const Section = (props: { type: SectionType }) => {
             </div> */}
             {/* <div className='beta'>BETA</div> */}
           </div>
-          <hr className="grey-border" />
+          <div className="grey-border" />
         </div>
       );
     default:

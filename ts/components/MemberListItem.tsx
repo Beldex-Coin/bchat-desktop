@@ -8,6 +8,7 @@ import {
 } from '../hooks/useParamSelector';
 import styled from 'styled-components';
 import CheckBoxTickIcon from './icon/CheckBoxTickIcon';
+import { BchatIcon } from './icon';
 
 const AvatarContainer = styled.div`
   position: relative;
@@ -81,13 +82,16 @@ export const MemberListItem = (props: {
         </span>
         {/* <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span> */}
       </div>
-      {!onlyList && !isAdmin &&(
+      {!onlyList && !isAdmin && (
         <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
-          {isSelected && <CheckBoxTickIcon iconSize={26} />}
+          {isSelected ? (
+            <CheckBoxTickIcon iconSize={26} />
+          ) : (
+            <BchatIcon iconType={'checkBox'} clipRule="evenodd" fillRule="evenodd" iconSize={26} />
+          )}
         </span>
-        
       )}
-      {isAdmin && <span className='bchat-member-item_admin-txt'>Admin</span>}
+      {isAdmin && <span className="bchat-member-item_admin-txt">Admin</span>}
     </div>
   );
 };
