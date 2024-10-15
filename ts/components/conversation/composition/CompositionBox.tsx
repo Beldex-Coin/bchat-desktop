@@ -83,7 +83,7 @@ import { BchatIcon } from '../../icon/BchatIcon';
 import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
-import MicrophoneIcon from '../../icon/MicrophoneIcon';
+// import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { SpacerLG } from '../../basic/Text';
 
 export interface ReplyingToMessageProps {
@@ -575,12 +575,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        // re.test(draft) &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat ? (
+          selectedConversation?.isApproved &&
+          selectedConversation?.didApproveMe &&
+          !selectedConversation?.isBlocked &&
+          // re.test(draft) &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -615,15 +615,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        re.test(draft) &&
-        // && (draft.length-1 - draft.indexOf(".")) < 4
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat &&
-        !isMe &&
-        getSyncStatus ? (
+          re.test(draft) &&
+          // && (draft.length-1 - draft.indexOf(".")) < 4
+          selectedConversation?.isApproved &&
+          selectedConversation?.didApproveMe &&
+          !selectedConversation?.isBlocked &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat &&
+          !isMe &&
+          getSyncStatus ? (
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) : (
           <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
@@ -729,8 +729,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-        ? 'Syncronizing..'
-        : 'Synchronized';
+          ? 'Syncronizing..'
+          : 'Synchronized';
 
     console.log(
       'stagedAttachments.length!==0 --> ',
@@ -1424,7 +1424,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           },
           closeAfterInput: false,
           iconShow: true,
-          customIcon: <MicrophoneIcon iconSize={30} />,
+          customIcon: <BchatIcon iconType={'microphone'} iconSize={30} iconColor="var(--color-icon)" fillRule="evenodd" clipRule="evenodd" />
         })
       );
       return;

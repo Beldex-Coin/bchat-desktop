@@ -188,7 +188,10 @@ export const MessageContextMenu = (props: Props) => {
       animation={animation.fade}
     >
       {attachments?.length ? (
-        <Item onClick={saveAttachment}>{window.i18n('downloadAttachment')}</Item>
+        <Item onClick={saveAttachment}>
+          <BchatIcon iconType={'reply'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
+        </Item>
       ) : null}
 
       <Item onClick={copyText}>

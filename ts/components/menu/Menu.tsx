@@ -53,6 +53,7 @@ import { getOurNumber } from '../../state/selectors/user';
 import { BchatIcon } from '../icon/BchatIcon';
 // import CopyIcon from '../icon/CopyIcon';
 import styled from 'styled-components';
+import DeclineMessageRequest from '../icon/DeclineMessageRequest';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -684,7 +685,7 @@ export const AcceptMenuItem = () => {
 export const DeclineMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
-  const customIcon=<BchatIcon iconType={'messageRequest'} iconSize={30}  />
+  const customIcon = <DeclineMessageRequest iconSize={30} />
 
   if (isRequest) {
     return (

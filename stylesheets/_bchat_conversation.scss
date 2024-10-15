@@ -204,12 +204,14 @@
     }
   }
 }
+
 .voiceCall {
   height: 350px;
   width: 534px;
   margin: 10px 0;
 }
-.videoCall{
+
+.videoCall {
   margin: 10px 0px;
   position: absolute;
   z-index: 1;
@@ -217,13 +219,14 @@
   display: flex;
   top: 1%;
 
-  .remote-video{
+  .remote-video {
     // background-color: aliceblue;
     height: 500px;
     width: 619px;
     border-radius: 20px;
   }
-  .local-video{
+
+  .local-video {
     // background-color: green;
     width: 229px;
     height: 300px;
@@ -232,7 +235,7 @@
   }
 }
 
-.hangingBtn{
+.hangingBtn {
   width: 60px;
     height: 60px;
     display: flex;
@@ -244,7 +247,8 @@
     cursor: pointer;
     
 }
-.hangingBtn:hover{
+
+.hangingBtn:hover {
   opacity: 0.8;
 }
 
@@ -309,11 +313,13 @@
       color: var(--color-text);
     }
   }
+
   .recorded-btn {
     border-radius: 16px;
     padding: 15px 13px;
     background: #2f8fff;
     margin-bottom: 5px;
+
     &:hover {
       opacity: 0.9;
       color: white;
@@ -353,6 +359,7 @@
       align-items: center;
       justify-content: center;
       padding: 15px;
+
       .sync-txt {
         // color: #f0f0f0;
         font-family: $bchat-font-open-sans;
@@ -360,6 +367,7 @@
         font-weight: 600;
         margin-right: 21px;
       }
+
       .inner-perc-txt {
         // color: #f0f0f0;
         text-align: center;
@@ -367,6 +375,7 @@
         font-weight: 700;
       }
     }
+
     .coin-logo-wrapper {
       cursor: pointer;
       padding: 7px;
@@ -411,7 +420,7 @@
       color: rgba(0, 0, 0, 0);
     }
 
-    .circular-bar-wrapper:hover + .wallet-sync-box {
+    .circular-bar-wrapper:hover+.wallet-sync-box {
       display: flex;
     }
   }
@@ -437,7 +446,7 @@
     visibility: visible;
   }
 
-  & > section.emoji-mart {
+  &>section.emoji-mart {
     font-family: $bchat-font-default;
     font-size: $bchat-font-sm;
     background-color: var(--color-cell-background);
@@ -523,6 +532,7 @@
   align-items: center;
   margin-bottom: 5px;
   color: white;
+
   // animation: fadein $bchat-transition-duration;
   // padding-left: 15px;
   // .text {
@@ -675,15 +685,28 @@
     &.playback-timer {
       animation: fadein $bchat-transition-duration;
 
-      @media (-webkit-min-device-pixel-ratio: 1.6) {
-      }
+      @media (-webkit-min-device-pixel-ratio: 1.6) {}
     }
+
+    &-micIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      margin-right  : 10px;
+      color: var(--color-icon);
+      background-color: var(--color-disappear-time-hover);
+      border-radius: 10px;
+    }
+
     &-wrapper {
       border: 1px solid red;
       padding: 3px;
       border-radius: 36px;
       margin-right: 10px;
     }
+
     &-light {
       height: 15px;
       width: 15px;

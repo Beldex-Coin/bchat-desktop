@@ -208,6 +208,9 @@ const darkCameraHoverBg='#46465D';
 const darkSettingWalletBetaBg='#131313';
 const darkPrimaryBtnHoverBg='#1A973C';
 const darkOfflineContentBg='#131313'
+const darkInputText = '#858598';
+const darkIconColor = white;
+
 
 export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg', darkColorBg);
@@ -488,6 +491,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', darkSecondaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-primary-btn-hover-bg', darkPrimaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-offline-content-bg', darkOfflineContentBg);
+  document.documentElement.style.setProperty('--color-input-text', darkInputText);
+  document.documentElement.style.setProperty('--color-icon', darkIconColor);
 };
 
 // LIGHT COLORS
@@ -594,7 +599,7 @@ const lightBlockUserBg = '#EBEBEB';
 const lightPasswordBorderBottom = '#D5D5D5';
 const ligntDisableText = '#B9BABF';
 const lightProfileBgColor = '#F8F8F8';
-const whiteBubbleReceivedBg = '#F8F8F8';  
+const whiteBubbleReceivedBg = '#F8F8F8';
 const lightBlockseletedUserBg = '#FFFFFF';
 const lightDownArrowBg = '#FFFFFF';
 const lightDownArrow = '#A8A8C3';
@@ -675,6 +680,8 @@ const lightSettingWalletBetaBg='#F8F8F8';
 const lightSecondaryBtnHoverBg='#FFFFFF';
 const lightPrimaryBtnHoverBg='#1A973C';
 const lightOfflineContentBg='#F0F0F0';
+const lightInputText = '#ACACAC';
+const lightIconColor = '#3E4A53';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -965,6 +972,8 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-secondary-btn-hover-bg', lightSecondaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-primary-btn-hover-bg', lightPrimaryBtnHoverBg);
   document.documentElement.style.setProperty('--color-offline-content-bg', lightOfflineContentBg);
+  document.documentElement.style.setProperty('--color-input-text', lightInputText);
+  document.documentElement.style.setProperty('--color-icon', lightIconColor);
 };
 
 // default to light theme
@@ -1137,6 +1146,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-camera-hover-bg:${darkCameraHoverBg};
     --color-setting-wallet-beta-bg:${darkSettingWalletBetaBg};
     --color-offline-content-bg:${darkOfflineContentBg};
+    --color-input-text:${darkInputText};
+    --color-icon:${darkIconColor};
 
     
 

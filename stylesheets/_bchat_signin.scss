@@ -518,7 +518,7 @@
       // background: var(--color-body-bg);
       // background: transparent;
       // color: var(--color-text);
-      color: #f0f0f0;
+      color: var(--color-input-text);
       // padding: 0px 8px 0px 15px;
       // font-family: $bchat-font-poppin-regular;
       // font-size: 12px;
@@ -559,7 +559,7 @@
       top: 36%;
       // transform: translateY(-50%);
       right: 27px;
-      color: #a7a7ba;
+      color: var(--color-icon);
     }
   }
 
