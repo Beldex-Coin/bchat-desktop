@@ -5,8 +5,10 @@ import { getConversationController } from '../../../../bchat/conversations';
 import { AttachmentDownloads } from '../../../../bchat/utils';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
-import { BchatIcon } from '../../../icon';
+import { BchatIcon, BchatIconType } from '../../../icon';
 import { Flex } from '../../../basic/Flex';
+import { PropsForAttachment } from '../../../../state/ducks/conversations';
+import { isAudio, isImage, isVideo } from '../../../../types/Attachment';
 
 const StyledTrustSenderUI = styled.div`
   padding-inline: var(--margins-sm);
@@ -43,8 +45,30 @@ const ImageTxt = styled.span`
   font-size: 16px;
   font-weight: 600;
 `;
+interface AttachmentTypeProps {
+  txt: string;
+  icon: BchatIconType;
+}
+export const ClickToTrustSender =(props: { messageId: string, attachments: Array<PropsForAttachment> }) => {
+const {attachments}=props;
 
-export const ClickToTrustSender = (props: { messageId: string }) => {
+const attachmentProps: { [key: string]: AttachmentTypeProps } = {
+  image: { txt: "Image", icon: "gallery" },
+  audio: { txt: "Audio", icon: "audio" },
+  video: { txt: "Video", icon: "video" },
+  document: { txt: "Document", icon: "document" }
+};
+
+const getAttachmentType = (attachments: any): AttachmentTypeProps => {
+  if (isImage(attachments)) return attachmentProps.image;
+  if (isAudio(attachments)) return attachmentProps.audio;
+  if (isVideo(attachments)) return attachmentProps.video;
+  return attachmentProps.document;
+};
+
+const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
+
+
   const openConfirmationModal = async (e: any) => {
     e.stopPropagation();
     e.preventDefault();
@@ -137,8 +161,8 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
       <VerticalLine></VerticalLine>
       <Flex container={true} flexDirection="column">
         <Flex container={true} flexDirection="row" alignItems="center">
-          <BchatIcon iconSize="small" iconType="gallery" />
-          <ImageTxt>Image</ImageTxt>
+          <BchatIcon iconSize="small" iconType={attachmentType.icon} />
+          <ImageTxt>{attachmentType.txt}</ImageTxt>
         </Flex>
         <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
       </Flex>

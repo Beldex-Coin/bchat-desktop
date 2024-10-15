@@ -205,7 +205,7 @@
   }
 }
 .voiceCall {
-  height: 320px;
+  height: 350px;
   width: 534px;
   margin: 10px 0;
 }
@@ -240,7 +240,7 @@
     align-items: center;
     color: #fff;
     border-radius: 50px;
-    margin: 10px 36px;
+    margin: 10px 10px;
     cursor: pointer;
     
 }
@@ -558,6 +558,12 @@
 
   &:hover {
     background-color: #00a705;
+  }
+  .bchat-icon-button:hover{
+
+   background:#1A973C; 
+   color: white;
+  // color: var(--color-text);
   }
 }
 

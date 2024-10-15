@@ -532,7 +532,7 @@
   "unableToCall": "Cancel your ongoing call first",
   "unableToCallTitle": "Cannot start new call",
   "callMissed": "Missed call from $name$",
-  "callMissedTitle": "Call missed",
+  "callMissedTitle": "Call Missed!",
   "noCameraFound": "No camera found",
   "noAudioInputFound": "No audio input found",
   "noAudioOutputFound": "No audio output found",

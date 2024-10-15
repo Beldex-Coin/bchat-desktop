@@ -134,7 +134,8 @@ export class BchatRecording extends React.Component<Props, State> {
               {displayTimeString + remainingTimeString}
             </div>
           ) : null}
-          <div className="bchat-recording--actions">
+
+          <div>
             {isRecording ? (
               <div className={classNames('bchat-recording--timer')}>
                 <div className="bchat-recording--timer-wrapper">
@@ -143,7 +144,8 @@ export class BchatRecording extends React.Component<Props, State> {
                 {displayTimeString}
               </div>
             ) : null}
-
+          </div>
+          <div className="bchat-recording--actions">
             <StyledFlexWrapper>
               {actionPauseAudio && (
                 <BchatIconButton
