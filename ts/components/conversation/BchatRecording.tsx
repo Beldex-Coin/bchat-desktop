@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import autoBind from 'auto-bind';
 import MicRecorder from 'mic-recorder-to-mp3';
 import styled from 'styled-components';
@@ -111,8 +111,8 @@ export class BchatRecording extends React.Component<Props, State> {
     const displayTimeMs = isRecording
       ? (nowTimestamp - startTimestamp) * 1000
       : (this.audioElement &&
-          (this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
-        0;
+        (this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
+      0;
 
     const displayTimeString = moment.utc(displayTimeMs).format('m:ss');
     const recordingDurationMs = this.audioElement?.duration
@@ -129,8 +129,17 @@ export class BchatRecording extends React.Component<Props, State> {
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
         <div className="bchat-recording-box">
+
           {hasRecording && !isRecording ? (
             <div className={classNames('bchat-recording--timer', !isRecording && 'playback-timer')}>
+              <div className='bchat-recording--timer-micIcon'>
+                <BchatIcon
+                  iconType="recordMicrophone"
+                  iconSize={20}
+                // onClick={actionPauseFn}
+                // iconColor="#277AFB"
+                />
+              </div>
               {displayTimeString + remainingTimeString}
             </div>
           ) : null}
@@ -193,7 +202,7 @@ export class BchatRecording extends React.Component<Props, State> {
           {!isRecording ? (
             <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
           ) : (
-            <SendMessageButton name="Send" onClick={() => {}} />
+            <SendMessageButton name="Send" onClick={() => { }} />
           )}
         </div>
       </div>

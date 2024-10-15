@@ -14,7 +14,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
       onClick={props.onClick}
     >
       <BchatToolTip effect="solid" />
-      <BchatIcon iconSize={24} iconType="attachment" iconColor="#A7A7BA" />
+      <BchatIcon iconSize={24} iconType="attachment" iconColor="var(--color-icon)" />
     </div>
   );
 };
