@@ -68,6 +68,7 @@ export const WalletPassword = (props: any) => {
             type="password"
             autoFocus={true}
             value={password}
+            maxLength={16}
             placeholder="Enter wallet password"
             onChange={e => onChangePassword(e.target.value)}
           />

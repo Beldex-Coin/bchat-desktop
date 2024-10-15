@@ -114,7 +114,7 @@ export const MessageAttachment = (props: Props) => {
   const displayImage = canDisplayImage(attachments);
 
   if (!isTrustedForAttachmentDownload) {
-    return <ClickToTrustSender messageId={messageId} />;
+    return <ClickToTrustSender messageId={messageId} attachments={attachments} />;
   }
 
   if (

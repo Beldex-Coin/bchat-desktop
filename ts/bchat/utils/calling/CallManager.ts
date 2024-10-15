@@ -24,10 +24,22 @@ import { getMessageQueue } from '../..';
 import { MessageSender } from '../../sending';
 import { DURATION } from '../../constants';
 import { hasConversationOutgoingMessage } from '../../../data/data';
-import { getCallMediaPermissionsSettings } from '../../../components/settings/BchatSettings';
+import {
+  BchatSettingCategory,
+  getCallMediaPermissionsSettings,
+} from '../../../components/settings/BchatSettings';
 import { PnServer } from '../../apis/push_notification_api';
 import { getNowWithNetworkOffset } from '../../apis/snode_api/SNodeAPI';
 import { approveConvoAndSendResponse } from '../../../interactions/conversationInteractions';
+import { updateConfirmModal } from '../../../state/ducks/modalDialog';
+import { BchatButtonColor } from '../../../components/basic/BchatButton';
+
+
+import {
+  SectionType,
+  showLeftPaneSection,
+  showSettingsSection,
+} from '../../../state/ducks/section';
 
 // tslint:disable: function-name
 
@@ -1114,13 +1126,35 @@ export async function handleMissedCall(
 ) {
   const incomingCallConversation = getConversationController().get(sender);
 
+
   const displayname =
     incomingCallConversation?.getNickname() ||
     incomingCallConversation?.getProfileName() ||
     'Unknown';
+  const openPrivacySettings = () => {
+    window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+    window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+  };
 
   switch (reason) {
     case 'permissions':
+      window.inboxStore?.dispatch(
+        updateConfirmModal({
+          title: window.i18n('callMissedTitle'),
+          message: window.i18n('callMissedCausePermission', [displayname]),
+          okTheme: BchatButtonColor.Primary,
+          onClickOk: async () => {
+            openPrivacySettings();
+          },
+          onClickCancel: async () => {
+            window.inboxStore?.dispatch(updateConfirmModal(null));
+          },
+          iconShow: true,
+          bchatIcon: 'callMissedConfirm',
+          iconSize: 30,
+        })
+      );
+
       ToastUtils.pushedMissedCallCauseOfPermission(displayname);
       break;
     case 'another-call-ongoing':

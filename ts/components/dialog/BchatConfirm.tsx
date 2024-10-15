@@ -17,8 +17,8 @@ export interface BchatConfirmDialogProps {
   onOk?: any;
   onClose?: any;
   closeAfterInput?: boolean;
-  iconShow?:any;
-  customIcon?:any
+  iconShow?: any;
+  customIcon?: any;
 
   /**
    * function to run on ok click. Closes modal after execution by default
@@ -40,7 +40,7 @@ export interface BchatConfirmDialogProps {
   okTheme?: BchatButtonColor;
   closeTheme?: BchatButtonColor;
   bchatIcon?: BchatIconType;
-  iconSize?: BchatIconSize;
+  iconSize?: BchatIconSize|number;
   shouldShowConfirm?: boolean | undefined;
   showExitIcon?: boolean | undefined;
   btndisable?: boolean | undefined;
@@ -65,14 +65,13 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     showExitIcon,
     closeAfterInput = true,
     btndisable,
-    Childern = "",
+    Childern = '',
     iconShow,
-    customIcon
+    customIcon,
   } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   // const [copied, setCopied] = useState(false);
-
 
   const okText = props.okText || window.i18n('ok');
 
@@ -144,6 +143,9 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
   //   return disable
   // }
+  const validCustomIcon =
+    bchatIcon && iconSize ? <BchatIcon iconType={bchatIcon} iconSize={iconSize} clipRule='evenodd' fillRule='evenodd' /> : customIcon;
+
   useKey((event: KeyboardEvent) => {
     return event.key === 'Enter';
   }, onClickOkHandler);
@@ -156,39 +158,39 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       showHeader={showHeader}
       okButton={{
         text: okText,
-         onClickOkHandler,
+        onClickOkHandler,
         disabled: btndisable ? btndisable : false,
-        color: props.okTheme
+        color: props.okTheme,
       }}
       cancelButton={{
         status: !hideCancel,
         text: cancelText,
         color: closeTheme,
-        onClickCancelHandler
+        onClickCancelHandler,
       }}
       iconShow={iconShow}
-      customIcon={customIcon} 
-    > 
+      customIcon={validCustomIcon}
+    >
       {!showHeader && <SpacerLG />}
 
       <div className="bchat-modal__centered">
-        <div className='bchat-modal-bchatConfirm'>
-        {bchatIcon && iconSize && (
-          <>
-            <BchatIcon iconType={bchatIcon} iconSize={iconSize} />
-            <SpacerLG />
-          </>
-        )}
-        {Childern}
+        <div className="bchat-modal-bchatConfirm">
+          {/* {bchatIcon && iconSize && (
+            <>
+              <BchatIcon iconType={bchatIcon} iconSize={iconSize} />
+              <SpacerLG />
+            </>
+          )} */}
+          {Childern}
 
-        <BchatHtmlRenderer tag="span" className={messageSubText} html={message} />
-        <BchatHtmlRenderer
-          tag="span"
-          className="bchat-confirm-sub-message subtle"
-          html={messageSub}
-        />
+          <BchatHtmlRenderer tag="span" className={messageSubText} html={message} />
+          <BchatHtmlRenderer
+            tag="span"
+            className="bchat-confirm-sub-message subtle"
+            html={messageSub}
+          />
 
-        <BchatSpinner loading={isLoading} />
+          <BchatSpinner loading={isLoading} />
         </div>
       </div>
 
