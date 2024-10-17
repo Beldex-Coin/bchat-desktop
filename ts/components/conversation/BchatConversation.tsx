@@ -50,7 +50,7 @@ import {
 } from '../../types/attachments/VisualAttachment';
 import { blobToArrayBuffer } from 'blob-util';
 import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
-import { ConversationMessageRequestButtons } from './ConversationRequestButtons';
+// import { ConversationMessageRequestButtons } from './ConversationRequestButtons';
 import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
@@ -283,7 +283,7 @@ export class BchatConversation extends React.Component<Props, State> {
           {lightBoxOptions?.media && this.renderLightBox(lightBoxOptions)}
 
           <div className="conversation-messages">
-            <ConversationMessageRequestButtons />
+            {/* <ConversationMessageRequestButtons /> */}
             {this.props.hasOngoingCallWithFocusedConvo && (
               <Flex container={true} justifyContent="center" alignItems="center" height="660px">
                 {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}

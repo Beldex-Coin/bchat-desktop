@@ -7,6 +7,7 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { walletSettingsKey } from '../../data/settings-key';
 import { Flex } from '../basic/Flex';
+import { BchatIconButton } from '../icon';
 const { clipboard } = require('electron');
 
 export const WalletBalanceSection = () => {
@@ -64,7 +65,7 @@ export const WalletBalanceSection = () => {
                 }}
                 style={{ cursor: 'pointer', marginBottom: '6px' }}
               >
-                <BchatIcon iconSize={18} iconType={!amountVisible ? 'eye' : 'eye_closed'} clipRule='evenodd' fillRule='evenodd' />
+                <BchatIconButton iconSize={18} iconType={!amountVisible ? 'eye' : 'eye_closed'} clipRule='evenodd' fillRule='evenodd' />
               </span>
             </div>
             <Flex
