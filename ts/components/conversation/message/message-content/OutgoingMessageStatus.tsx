@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { MessageDeliveryStatus } from '../../../../models/messageType';
 import { BchatIcon } from '../../../icon';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../../state/selectors/theme';
 
 const MessageStatusSendingContainer = styled.div`
   display: inline-block;
@@ -13,9 +15,15 @@ const MessageStatusSendingContainer = styled.div`
 `;
 
 const MessageStatusSending = ({ dataTestId }: { dataTestId?: string }) => {
+  const darkMode = useSelector(getTheme) === 'dark';
+  const imgsrc=darkMode?'images/bchat/message_send_loading_dark_theme.gif':'images/bchat/message_send_loading_white_theme.gif';
+  
   return (
     <MessageStatusSendingContainer data-testid={dataTestId} data-testtype="sending">
-      <BchatIcon rotateDuration={2} iconColor={'#A7A7BA'} iconType="sending" iconSize="medium" />
+      {/* <BchatIcon rotateDuration={2} iconColor={'#A7A7BA'} iconType="sending" iconSize="medium" /> */}
+      <div>
+      <img src={imgsrc}  style={{width:'18px',height:'18px',display:'flex',}}/>
+      </div>
     </MessageStatusSendingContainer>
   );
 };
