@@ -389,7 +389,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           onClick={() => copyBchatID(walletAddress)}
         >
           <div className="profile-value" style={{ color: 'var(--color-text)'}}>
-            <div style={{ marginTop: '10px', }}>{window.i18n('BchatID')}</div>
+            <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
             <p style={{ margin: '10px 0px', fontWeight: '400',color:'#2F8FFF' }}>
               {walletAddress}
             </p>

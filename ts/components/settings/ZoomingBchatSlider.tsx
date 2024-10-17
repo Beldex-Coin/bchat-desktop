@@ -43,6 +43,11 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
 
   const handleSlider = (valueToForward: any) => {
     let value = valueToForward.substring(0, valueToForward.length - 1)
+    console.log("value:",value)
+    if(value == 100){
+      value =85;
+    }
+    console.log("value1:",value)
     props?.onSliderChange?.(value);
     window.setSettingValue('zoom-factor-setting', value);
     setValue(value)

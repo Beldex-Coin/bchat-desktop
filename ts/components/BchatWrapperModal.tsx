@@ -32,13 +32,13 @@ export type BchatWrapperModalType = {
   customIcon?: any;
 };
 interface LoaderProps {
-  darkMode:boolean;
+  darkMode: boolean;
 }
 const Loader = styled.div<LoaderProps>`
   position: absolute;
   top: 0;
   left: 0;
-  background-color:${(props=>props.darkMode?'#0000009e':'#ffffff9e')};
+  background-color:${(props => props.darkMode ? '#0000009e' : '#ffffff9e')};
   display: flex;
   justify-content: center;
   width: 100%;
@@ -80,7 +80,9 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     undefined,
     [props.onClose]
   );
-
+  console.log("showHeader:", showHeader)
+  console.log("showExitIcon:", showExitIcon)
+  console.log("headerIconButtons:", headerIconButtons)
   const modalRef = useRef<HTMLDivElement>(null);
   return (
     <div
@@ -94,37 +96,41 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             </div>}
             <div>
               {showHeader ? (
-                <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
-                  {showExitIcon ? <div className="bchat-modal__header__close">
-                    <BchatIconButton
-                      iconType="exit"
-                      iconSize="small"
-                      onClick={props.onClose}
-                      dataTestId="modal-close-button"
-                    />
-                  </div> : null}
-                  <div className="bchat-modal__header__title">{title}</div>
-                  <div className="bchat-modal__header__icons">
-                    {headerIconButtons
-                      ? headerIconButtons.map((iconItem: any) => {
-                        return (
-                          <BchatIconButton
-                            key={iconItem.iconType}
-                            iconType={iconItem.iconType}
-                            iconSize={'large'}
-                            iconRotation={iconItem.iconRotation}
-                            onClick={iconItem.onClick}
-                          />
-                        );
-                      })
-                      : null}
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
+                    <div className="bchat-modal__header__title">{title}</div>
+                    <div className="bchat-modal__header__icons">
+                      {headerIconButtons
+                        ?
+                        headerIconButtons.map((iconItem: any) => {
+                          return (
+                            <BchatIconButton
+                              key={iconItem.iconType}
+                              iconType={iconItem.iconType}
+                              iconSize={'large'}
+                              iconRotation={iconItem.iconRotation}
+                              onClick={iconItem.onClick}
+                            />
+                          );
+                        })
+                        : null}
+                    </div>
+                  </div>
+                  <div className='bchat-modal__header__iconHeader'>
+                    {showExitIcon && <div className="bchat-modal__header__close">
+                      <BchatIconButton
+                        iconType="exit"
+                        iconSize={25}
+                        onClick={props.onClose}
+                        dataTestId="modal-close-button"
+                      />
+                    </div>}
                   </div>
                 </div>
               ) : null}
 
               <div className="bchat-modal__body" style={{ position: 'relative' }}>
                 <div className="bchat-modal__centered">{props.children}</div>
-               
               </div>
             </div>
           </div>
@@ -150,11 +156,11 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             />
           </div>
           {isloading && <div>
-                  <Loader darkMode={darkMode} >
-                    <BchatSpinner loading={true} />
-                  </Loader>
-                </div>
-                }
+            <Loader darkMode={darkMode} >
+              <BchatSpinner loading={true} />
+            </Loader>
+          </div>
+          }
         </div>
       </div>
     </div>
