@@ -42,7 +42,13 @@ const ipc = ipcRenderer;
 const localeMessages = ipc.sendSync('locale-data');
 
 window.updateZoomFactor = () => {
-  const zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
+  let zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
+  console.log("window.screen.width:::", window.screen.width);
+
+  console.log('window.innerWidth --->', window.innerWidth);
+  if (window.screen.width <= 1440) {
+    zoomFactor = zoomFactor - 15;
+  }
   window.setZoomFactor(zoomFactor / 100);
 };
 
@@ -266,7 +272,7 @@ if (window.networkType == 'mainnet') {
       ];
 
   const remotes = [
-   
+
     {
       host: 'publicnode1.rpcnode.stream',
       port: '29095',
