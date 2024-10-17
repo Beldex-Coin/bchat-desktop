@@ -160,7 +160,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         message: window.i18n('linkVisitWarningMessage', url),
         okText: window.i18n('openLink'),
         cancelText: window.i18n('editMenuCopy'),
-        showExitIcon: false,
+        showExitIcon: true,
         iconShow: true,
         customIcon: <BchatIcon iconType='openLink' iconSize={30} />,
         okTheme:BchatButtonColor.Primary,

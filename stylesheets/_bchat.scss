@@ -77,9 +77,10 @@ textarea {
   height: 0.5px;
   background: #6f6f6f;
   margin: 10px 0;
+  opacity: 0.3;
 }
 
-.button-group > div {
+.button-group>div {
   display: inline-flex;
   margin-inline-start: 5px;
   margin-inline-end: 5px;
@@ -399,14 +400,16 @@ textarea {
 
       background-color: var(--color-secondary-btn-hover-bg);
     }
-    &.primary:hover:not(.disabled)  {
+
+    &.primary:hover:not(.disabled) {
       background-color: var(--color-primary-btn-hover-bg);
     }
+
     &.success:hover {
       filter: brightness(80%);
     }
   }
-  
+
   // &.default,
   // &.square,
   // &.default-outline,
@@ -636,6 +639,7 @@ label {
 }
 
 .audio-message {
+
   // height: 40px;
   .timer {
     width: 60px;
@@ -645,9 +649,11 @@ label {
     line-height: normal;
     padding-left: 10px;
   }
+
   .timer-outgoing {
     color: #f0f0f0;
   }
+
   .play-speed-btn {
     width: 36px;
     height: 22px;
@@ -664,6 +670,7 @@ label {
     align-items: center;
     justify-content: center;
   }
+
   .play-speed-btn-incoming {
     background-color: var(--color-speedPlay-bg);
     color: var(--color-text);
@@ -769,15 +776,21 @@ label {
     &.reverse {
       flex-direction: row-reverse;
 
-      .bchat-modal__header__close > div {
+      .bchat-modal__header__close>div {
         float: right;
       }
 
-      .bchat-modal__header__icons > div {
+      .bchat-modal__header__icons>div {
         float: left;
         padding-inline-start: 0px;
         padding-inline-end: 10px;
       }
+    }
+
+    &__iconHeader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     &__icons,
@@ -802,13 +815,13 @@ label {
       float: right;
     }
 
-    &__close > div {
+    &__close>div {
       float: left;
       padding: $bchat-margin-xs;
       margin: 0px;
     }
 
-    &__icons > div {
+    &__icons>div {
       float: right;
       padding-inline-start: 10px;
     }
@@ -1562,8 +1575,7 @@ label {
     font-size: 16px;
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+  .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     border-radius: 14px;
     // background: #333842;
     // color: var(--color-text-menu-highlighted);
@@ -1781,7 +1793,7 @@ label {
   left: 50%;
   margin: -40px 0 0 -40px;
 
-  & > div {
+  &>div {
     display: block;
   }
 }
@@ -2492,7 +2504,8 @@ label {
       border-radius: 16px;
       background: var(--color-secondary-btn-bg);
     }
-    &-button:hover{
+
+    &-button:hover {
       background-color: var(--color-secondary-btn-hover-bg);
     }
 
@@ -3332,17 +3345,18 @@ label {
     }
 
     // &-syncStatusBox {
-      // position: absolute;
-      // width: calc(100vw - 417px);
-      // height: 45px;
-      // background-color: var(--color-walSyncbar);
-      /* bottom: 0; */
-      /* background-color: var(--color-walSyncbar); */
-      // border-radius: 16px;
-      // background: #202329;
+    // position: absolute;
+    // width: calc(100vw - 417px);
+    // height: 45px;
+    // background-color: var(--color-walSyncbar);
+    /* bottom: 0; */
+    /* background-color: var(--color-walSyncbar); */
+    // border-radius: 16px;
+    // background: #202329;
     // }
 
     &-syncStatus {
+
       // position: relative;
       // height: 30px;
       // // width: 66.5%;
@@ -3718,11 +3732,11 @@ label {
     transition: $bchat-transition-duration;
   }
 
-  input:hover + label:before {
+  input:hover+label:before {
     background: var(--color-accent);
   }
 
-  input:checked + label:before {
+  input:checked+label:before {
     background: var(--color-accent);
   }
 }
@@ -3988,7 +4002,7 @@ input {
     }
   }
 
-  .floated-downArrow-btn-wrapper + .downArrow-unreadCountBox {
+  .floated-downArrow-btn-wrapper+.downArrow-unreadCountBox {
     background-color: #ffffff;
     color: #000;
   }
@@ -4120,7 +4134,7 @@ input {
     opacity: 0.8;
   }
 
-  &__avatar > div {
+  &__avatar>div {
     margin-bottom: 0px !important;
   }
 
