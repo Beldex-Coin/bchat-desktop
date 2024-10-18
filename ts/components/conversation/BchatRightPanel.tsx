@@ -145,10 +145,8 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
   }, []);
 
   function onClickOK() {
-    console.log('test 1');
     const trimmedGroupName = profileName?.trim();
     if (!trimmedGroupName) {
-      console.log('test 2');
       onShowError(window.i18n('emptyGroupNameError'));
 
       return;
@@ -159,28 +157,21 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
         void initiateOpenGroupUpdate(convo.id, trimmedGroupName, {
           objectUrl: newAvatarObjecturl,
         });
-        console.log('test 3');
       } else {
-        console.log('test 4');
         const members = convo.get('members') || [];
-
         void initiateClosedGroupUpdate(convo.id, trimmedGroupName, members);
-
         setProfileName('');
       }
     }
     props.onCloseEdit();
   }
   function onShowError(msg: string) {
-    console.log('test 5');
     if (errorDisplayed) {
       return;
     }
 
     setErrorDisplayed(true);
     setErrorMessage(msg);
-    console.log('test 5');
-
     setTimeout(() => {
       setErrorDisplayed(false);
     }, 3000);

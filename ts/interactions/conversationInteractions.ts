@@ -307,8 +307,7 @@ export function deleteGroupByConvoId(conversationId: string, username: string) {
   }
 }
 
-export function showInviteContactByConvoId(conversationId: string) {
-  console.log("window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));", window.inboxStore?.dispatch(updateInviteContactModal({ conversationId })))
+export function showInviteContactByConvoId(conversationId: string) { 
   window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));
 }
 export async function onMarkAllReadByConvoId(conversationId: string) {

@@ -2007,6 +2007,11 @@ label {
       }
     }
   }
+  .partition:not(:last-child){
+  border-bottom: 0.5px solid var(--color-search-border);
+  border-radius: unset;
+  }
+  
 }
 
 .bchat-settings {
@@ -3413,7 +3418,7 @@ label {
       margin-bottom: 5px;
       border-radius: 16px;
       background: var(--color-wallet-inner-bg);
-      height: calc(100vh - 469px);
+      height: calc(100vh - 494px);
 
       &-title {
         display: flex;

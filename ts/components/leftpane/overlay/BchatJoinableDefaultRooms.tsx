@@ -26,7 +26,7 @@ export type JoinableRoomProps = {
   base64Data?: string;
 };
 
-const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
+export const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
   const dispatch = useDispatch();
   useEffect(() => {
     let isCancelled = false;
@@ -118,6 +118,7 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
 
 export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
+  
   const onRoomClicked = useCallback(
     (loading: boolean) => {
       if (loading) {
@@ -131,7 +132,6 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
     window?.log?.info('no default joinable rooms yet and not in progress');
     return null;
   }
-
   const componentToRender = joinableRooms.inProgress ? (
     <BchatSpinner loading={false} />
   ) : (

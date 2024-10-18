@@ -3,7 +3,7 @@
   // width: 100%;
   // overflow-y: auto;
   // z-index: 2;
-  .bchat-message-wrapper{
+  .bchat-message-wrapper {
     padding: 0;
   }
 }
@@ -20,7 +20,7 @@
 
 .payment {
   background-color: #128b17;
-  color: #FFFFFF;
+  color: #ffffff;
   display: inline-block;
   margin: 4px 16px;
   padding: 16px;
@@ -67,30 +67,71 @@
     justify-content: flex-end;
   }
 }
-.payment:hover
-{
-opacity: 0.9;
+.payment:hover {
+  opacity: 0.9;
+}
+.inviteWrapper-incoming{
+  align-self: flex-start;
+}
+.inviteWrapper-outgoing{
+  align-self: flex-end;
 }
 
 .group-invitation {
   background: var(--color-received-message-background);
 
   &.invitation-outgoing {
-    background: var(--color-sent-message-background);
+    // background: var(--color-sent-message-background);
     align-self: flex-end;
     margin-right: 26px;
+    background-color: #108d32;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 15px;
   }
+
 
   display: inline-block;
   margin: 4px 16px;
-  padding: 4px;
-
+  padding: 15px;
   border-radius: 15px;
-
+  border-top-left-radius: 0px;
   align-self: flex-start;
-
   box-shadow: none;
+  .group-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 16px;
+    width: 305px;
+    background-color: var(--color-untrust-media-bg);
+    .group-name {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+    .group-type {
+      overflow: hidden;
 
+      text-overflow: ellipsis;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: normal;
+    }
+  }
+  .timeStamp {
+    color: #858598;
+    font-size: 12px;
+    font-weight: 400;
+    width: 100%;
+    text-align: end;
+    padding-right: 18px;
+  }
+  .timeStamp-outgoing {
+    color: #f0f0f0;
+  }
   .title {
     margin: 6px;
     color: darkslategray;
@@ -113,10 +154,6 @@ opacity: 0.9;
       flex-direction: column;
 
       padding: 0px 12px;
-      .group-name {
-        font-weight: bold;
-        font-size: 18px;
-      }
     }
 
     .bchat-icon-button {
@@ -146,5 +183,12 @@ opacity: 0.9;
 .group-invitation.invitation-outgoing {
   .group-details {
     color: var(--color-sent-message-text);
+    background: #0a6f0a;
+    .group-name {
+      color: #f0f0f0;
+    }
+    .group-type {
+      color: #f0f0f0;
+    }
   }
 }
