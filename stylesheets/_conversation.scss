@@ -16,6 +16,9 @@
 .group-invitation-container {
   display: flex;
   flex-direction: column;
+  padding-right: 15px;
+  align-items: flex-end;
+  padding-left: 15px;
 }
 
 .payment {
@@ -74,7 +77,10 @@
   align-self: flex-start;
 }
 .inviteWrapper-outgoing{
-  align-self: flex-end;
+  // align-self: flex-end;
+  align-items: center;
+  display: flex;
+
 }
 
 .group-invitation {
@@ -82,16 +88,18 @@
 
   &.invitation-outgoing {
     // background: var(--color-sent-message-background);
-    align-self: flex-end;
-    margin-right: 26px;
+    // align-self: flex-end;
+    // margin-right: 26px;
+    align-items: center;
     background-color: #108d32;
     border-top-right-radius: 0px;
     border-top-left-radius: 15px;
+    color: white;
   }
 
 
   display: inline-block;
-  margin: 4px 16px;
+  // margin: 4px 16px;
   padding: 15px;
   border-radius: 15px;
   border-top-left-radius: 0px;
