@@ -467,7 +467,7 @@
     box-shadow: var(--color-bchat-shadow);
   }
 
-  .invite-friends-list{
+  .invite-friends-list {
     width: 400px;
     max-height: 500px;
     overflow-y: auto;
@@ -1146,6 +1146,28 @@
     span:first-child {
       font-family: $bchat-font-default;
     }
+  }
+}
+.community-guidelines {
+  article {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    line-height: 22px;
+    overflow: auto;
+    overflow-x: hidden;
+    height: 482px;
+    width: 581px;
+    text-align: left;
+    padding: 0 26px;
+
+    div {
+      margin-bottom: 10px;
+    }
+    a {
+      color: #108d32;
+    }
+    
   }
 }
 
