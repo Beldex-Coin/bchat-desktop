@@ -8,7 +8,7 @@ import {
   getConfirmModal,
   getDeleteAccountModalState,
   getEditProfileDialog,
-  // getInviteContactModal,
+  getInviteContactModal,
   getOnionPathDialog,
   getRecoveryPhraseDialog,
   getRemoveModeratorsModal,
@@ -54,11 +54,12 @@ import {BnsLinkDialog} from './BnsLinkDialog'
 import { AboutBnsDialog } from './AboutBnsDialog';
 import { BchatWalletForgotPasswordModal } from './BchatWalletForgotPasswordModal';
 import { MessageMoreInfoModal } from '../conversation/message/message-item/MessageDetail';
+import { InviteContactsDialog } from './InviteContactDialog';
 
 
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
-  // const inviteModalState = useSelector(getInviteContactModal);
+  const inviteModalState = useSelector(getInviteContactModal);
   const addModeratorsModalState = useSelector(getAddModeratorsModal);
   const removeModeratorsModalState = useSelector(getRemoveModeratorsModal);
   const updateGroupMembersModalState = useSelector(getUpdateGroupMembersModal);
@@ -87,7 +88,7 @@ export const ModalContainer: any = () => {
   return (
     <>
       {banOrUnbanUserModalState && <BanOrUnBanUserDialog {...banOrUnbanUserModalState} />}
-      {/* {inviteModalState && <InviteContactsDialog {...inviteModalState} />} */}
+      {inviteModalState && <InviteContactsDialog {...inviteModalState} />}
       {addModeratorsModalState && <AddModeratorsDialog {...addModeratorsModalState} />}
       {removeModeratorsModalState && <RemoveModeratorsDialog {...removeModeratorsModalState} />}
       {updateGroupMembersModalState && (

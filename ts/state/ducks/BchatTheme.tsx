@@ -210,6 +210,7 @@ const darkPrimaryBtnHoverBg='#1A973C';
 const darkOfflineContentBg='#131313'
 const darkInputText = '#858598';
 const darkIconColor = white;
+const darkInviteCardIconBg='#202329';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -493,6 +494,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-offline-content-bg', darkOfflineContentBg);
   document.documentElement.style.setProperty('--color-input-text', darkInputText);
   document.documentElement.style.setProperty('--color-icon', darkIconColor);
+  document.documentElement.style.setProperty('--color-invite-card-icon-bg', darkInviteCardIconBg);
 };
 
 // LIGHT COLORS
@@ -682,6 +684,7 @@ const lightPrimaryBtnHoverBg='#1A973C';
 const lightOfflineContentBg='#F0F0F0';
 const lightInputText = '#ACACAC';
 const lightIconColor = '#3E4A53';
+const lightInviteCardIconBg='#F8F8F8';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -974,6 +977,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-offline-content-bg', lightOfflineContentBg);
   document.documentElement.style.setProperty('--color-input-text', lightInputText);
   document.documentElement.style.setProperty('--color-icon', lightIconColor);
+  document.documentElement.style.setProperty('--color-invite-card-icon-bg', lightInviteCardIconBg);
 };
 
 // default to light theme
@@ -1148,6 +1152,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-offline-content-bg:${darkOfflineContentBg};
     --color-input-text:${darkInputText};
     --color-icon:${darkIconColor};
+    --color-invite-card-icon-bg:${darkInviteCardIconBg};
 
     
 

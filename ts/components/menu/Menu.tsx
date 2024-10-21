@@ -166,18 +166,19 @@ export const InviteContactMenuItem = (): JSX.Element | null => {
   const convoId = useContext(ContextConversationId);
   const isPublic = useIsPublic(convoId);
   console.log("convoId:", convoId)
-  console.log("isPublic:", isPublic)
-  console.log("showInviteContact(isPublic):", showInviteContact(isPublic))
-  console.log("showInviteContactByConvoId(convoId):", showInviteContactByConvoId(convoId));
+  // console.log("isPublic:", isPublic)
+  // console.log("showInviteContact(isPublic):", showInviteContact(isPublic))
+  // console.log("showInviteContactByConvoId(convoId):", showInviteContactByConvoId(convoId));
 
   if (showInviteContact(isPublic)) {
     return (
       <Item
         onClick={() => {
+          console.log('before invited::->',convoId);
           showInviteContactByConvoId(convoId);
         }}
       >
-        <BchatIcon iconType={'inviteContact'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#F0F0F0' />
+        <BchatIcon iconType={'inviteContact'} iconSize={20} fillRule="evenodd" clipRule="evenodd"  />
         <MenuWrapper>{window.i18n('inviteContacts')}</MenuWrapper>
 
       </Item>

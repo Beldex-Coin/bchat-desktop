@@ -8,30 +8,27 @@ type Props = {
   isCorrectSide: boolean;
   messageId: string;
   dataTestId?: string;
+ 
 };
 
 export type MessageStatusSelectorProps = Pick<MessageRenderingProps, 'direction' | 'status'>;
 
 export const MessageStatus = (props: Props) => {
   const { isCorrectSide, dataTestId } = props;
-
   const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
   if (!selected) {
+    
     return null;
   }
   const { status, direction } = selected;
-
   if (!isCorrectSide) {
     return null;
   }
   const isIncoming = direction === 'incoming';
-
   const margin=isIncoming?{marginLeft:'10px'}:{marginRight:'10px'}
-
   const showStatus = !isIncoming && Boolean(status);
   if (!showStatus) {
     return null;
   }
-
   return <span style={margin}><OutgoingMessageStatus dataTestId={dataTestId} status={status} /></span>;
 };

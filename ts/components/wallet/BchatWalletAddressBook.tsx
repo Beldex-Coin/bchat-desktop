@@ -163,7 +163,7 @@ const AddressContent = (props: { isContact?: boolean; pubkey: string; send: any 
   return belAddress ? (
     <>
       <div
-        className={classNames(`addressBook-wholeBox-contentBox`)}
+        className={classNames(`addressBook-wholeBox-contentBox`,!props.isContact&&'partition')}
         style={props.isContact ? { cursor: 'pointer' } : {}}
         onClick={() =>
           props.isContact &&  dispatch(updateSendAddress(belAddress))

@@ -732,13 +732,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
           ? 'Syncronizing..'
           : 'Synchronized';
 
-    console.log(
-      'stagedAttachments.length!==0 --> ',
-      stagedAttachments.length !== 0,
-      draft || stagedAttachments.length !== 0,
-      'typingEnabled',
-      typingEnabled && (draft || stagedAttachments.length !== 0)
-    );
+    // console.log(
+    //   'stagedAttachments.length!==0 --> ',
+    //   stagedAttachments.length !== 0,
+    //   draft || stagedAttachments.length !== 0,
+    //   'typingEnabled',
+    //   typingEnabled && (draft || stagedAttachments.length !== 0)
+    // );
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
