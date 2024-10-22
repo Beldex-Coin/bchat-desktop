@@ -85,6 +85,7 @@ import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { Flex } from '../basic/Flex';
 import { SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
+import { getTheme } from '../../state/selectors/theme';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
@@ -193,7 +194,7 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'chatBubble'}
-              // isSelected={isSelected}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">All Chats</div>
           </div>
@@ -232,7 +233,7 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'newChat'}
-              // isSelected={isSelected}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">New Chat</div>
           </div>
@@ -252,8 +253,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'closedgroup'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
+            // notificationCount={unreadToShow}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">Secret Group</div>
           </div>
@@ -273,8 +274,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'opengroup'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
+            // notificationCount={unreadToShow}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">Social Group</div>
           </div>
@@ -294,8 +295,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'gear'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
+            // notificationCount={unreadToShow}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">Settings</div>
           </div>
@@ -317,8 +318,8 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'wallet'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
+            // notificationCount={unreadToShow}
+            // isSelected={isSelected}
             />
             <div className="menu-txt">Wallet</div>
             {/* <div style={{ cursor: 'pointer' }}>
@@ -520,6 +521,9 @@ export const ActionsPanel = () => {
   const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
+  const darkMode = useSelector(getTheme) === 'dark';
+  const imgsrc: any = darkMode ? 'images/bchat/connect_wallet_dark.gif' : 'images/bchat/connect_wallet_white.gif';
+
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
   useEffect(() => {
@@ -588,7 +592,7 @@ export const ActionsPanel = () => {
       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
         <ActionPanelOnionStatusLight
           isSelected={false}
-          handleClick={() => {}}
+          handleClick={() => { }}
           id={''}
           size="small"
         />
@@ -672,15 +676,21 @@ export const ActionsPanel = () => {
               </span>
             </div>
           )}
+          {/* !pathCon && isOnline */}
           {!pathCon && isOnline && (
             <div className="offline-msg connection-Wrapper ">
-              <Flex container={true} flexDirection="row" alignItems="center">
-                <div>connecting</div>
-
-                <div className="dots">
-                  <div className="dot"></div>
-                  <div className="dot"></div>
-                  <div className="dot"></div>
+              <Flex container={true} flexDirection="row" alignItems="center" width='350px' justifyContent='space-between'>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div className='dotIcon'>
+                    <BchatIcon
+                      iconSize={"small"}
+                      iconType="circle"
+                    />
+                  </div>
+                  <div>Connecting..</div>
+                </div>
+                <div>
+                  <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex', }} />
                 </div>
               </Flex>
             </div>

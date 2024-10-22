@@ -72,9 +72,9 @@ function showNotificationConvo(
   left: boolean,
   isBlocked: boolean,
   isRequest: boolean,
-  isMe:boolean
+  isMe: boolean
 ): boolean {
-  return !left && !isKickedFromGroup && !isBlocked && !isRequest && !isMe; 
+  return !left && !isKickedFromGroup && !isBlocked && !isRequest && !isMe;
 }
 
 function showBlock(isMe: boolean, isPrivate: boolean, isRequest: boolean): boolean {
@@ -437,8 +437,8 @@ export const CopyMenuItem = (): JSX.Element | null => {
 export const MarkAllReadMenuItem = (): JSX.Element | null => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
-  const isMe=useIsMe(convoId);
-  if (!isRequest&&!isMe) {
+  const isMe = useIsMe(convoId);
+  if (!isRequest && !isMe) {
     return (
       <Item onClick={() => markAllReadByConvoId(convoId)}>
         <BchatIcon iconType={'markRead'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
@@ -459,7 +459,7 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
   const timerOptions = useSelector(getTimerOptions).timerOptions;
   const isRequest = useIsRequest(convoId);
   const ourNumber = useSelector(getOurNumber);
-
+  console.log("timerOptions:",timerOptions)
   if (ourNumber === convoId) {
     return null;
   }
@@ -482,16 +482,21 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
             <MenuWrapper>{window.i18n('disappearingMessages')}</MenuWrapper>
           </>
         }
+        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
+
       >
         {timerOptions.map(item => (
-          <Item
-            key={item.value}
-            onClick={async () => {
-              await setDisappearingMessagesByConvoId(convoId, item.value);
-            }}
-          >
-            {item.name}
-          </Item>
+          <div className='submenu'>
+            <Item style={{width:'100%'}}
+              key={item.value}
+              onClick={async () => {
+                await setDisappearingMessagesByConvoId(convoId, item.value);
+              }}
+            >
+              {item.name}
+            </Item>
+          </div>
+
         ))}
       </Submenu>
     );
@@ -507,10 +512,10 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
-  const isMe=useIsMe(convoId);
+  const isMe = useIsMe(convoId);
 
   if (
-    showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest,isMe)
+    showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest, isMe)
   ) {
     // exclude mentions_only settings for private chats as this does not make much sense
     const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>
@@ -540,21 +545,30 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
             <MenuWrapper>{window.i18n('notificationForConvo') as any}</MenuWrapper>
           </>
         }
+        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
       // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;
 
           return (
-            <Item
-              key={item.value}
-              onClick={async () => {
-                await setNotificationForConvoId(convoId, item.value);
-              }}
-              disabled={disabled}
-            >
-              {item.name}
-            </Item>
+            <div className='submenu'>
+              <Item style={{width:'100%'}}
+                key={item.value}
+                onClick={async () => {
+                  await setNotificationForConvoId(convoId, item.value);
+                }}
+                // disabled={disabled}
+              >
+                <div style={{ marginRight: '10px', color: disabled ? '#108D32' : ' var(--color-action-btn-icon)' }}>
+                  <BchatIcon
+                    iconSize={10}
+                    iconType="circle"
+                  />
+                </div>
+                {item.name}
+              </Item>
+            </div>
           );
         })}
       </Submenu>
@@ -692,7 +706,7 @@ export const DeclineMenuItem = () => {
     return (
       <Item
         onClick={() => {
-          declineConversationWithConfirm(convoId, true,customIcon);
+          declineConversationWithConfirm(convoId, true, customIcon);
         }}
       >
         {window.i18n('decline')}

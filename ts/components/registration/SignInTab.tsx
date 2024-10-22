@@ -335,12 +335,12 @@ export const SignInTab = (props: any) => {
             // label={window.i18n('displayName')}
             type="text"
             placeholder={window.i18n('enterDisplayName')}
-            value={props.displayName}
+            value={displayName}
             maxLength={MAX_USERNAME_LENGTH}
             onValueChanged={(name: string) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
-              setDisplayName(sanitizedName);
+              setDisplayName(sanitizedName.replace(/\s/g, ''));
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
             // onEnterPressed={props.handlePressEnter}

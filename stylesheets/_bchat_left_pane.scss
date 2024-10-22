@@ -5,12 +5,16 @@ $bchat-compose-margin: 20px;
   transition: none;
   // background: var(--color-cell-background);
 }
+
 .d-none {
   display: none !important;
 }
+
 .module-conversation {
+
   // default conversation list item text color
   &__user__profile {
+
     &-number,
     &-name {
       // font-weight: bold;bchat-noMsgRequest
@@ -60,6 +64,7 @@ $bchat-compose-margin: 20px;
 
       // border-bottom: 1px solid #1c1c26;
       border-radius: 16px;
+
       // background: #2e333d;
       .verticalLine {
         width: 5px;
@@ -69,6 +74,7 @@ $bchat-compose-margin: 20px;
         border-radius: 20px;
       }
     }
+
     &_unread-count_wrapper {
       display: flex;
       flex-direction: row;
@@ -77,6 +83,7 @@ $bchat-compose-margin: 20px;
       flex-shrink: 0;
       flex: 4;
     }
+
     &__unread-count {
       // color: var(--color-text);
       /* background: var(--color-clickable-hovered); */
@@ -134,6 +141,7 @@ $bchat-compose-margin: 20px;
     }
   }
 }
+
 .offline-msg {
   margin: 11px;
   // border: 1px solid #4b4b64;
@@ -144,21 +152,35 @@ $bchat-compose-margin: 20px;
   padding: 10px;
   border-radius: 6px;
   background-color: var(--color-offline-content-bg);
+
   .txt {
     font-size: 11px;
     margin-left: 11px;
     // color: #a7a7ba;
   }
 }
+
 .connection-Wrapper {
   margin: 10px;
-  color: #3bd110;
-  .dots {
+  font-size: 16px;
+  padding: 30px 15px;
+  border-radius: 16px;
+
+  .dotIcon {
     display: flex;
-    justify-content: space-between;
-    width: 30px;
-    margin-left: 5px;
+    align-items: center;
+    justify-content: center;
+    color: #108D32;
+    margin-right: 10px;
   }
+
+  // color: #3bd110;
+  // .dots {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   width: 30px;
+  //   margin-left: 5px;
+  // }
 
   .dot {
     width: 6px;
@@ -181,16 +203,19 @@ $bchat-compose-margin: 20px;
   }
 
   @keyframes dot-blink {
+
     0%,
     80%,
     100% {
       opacity: 0;
     }
+
     40% {
       opacity: 1;
     }
   }
 }
+
 .module-left-pane {
   // width: $bchat-left-pane-width;
   position: relative;
@@ -207,10 +232,12 @@ $bchat-compose-margin: 20px;
     display: flex;
     height: 100vh;
   }
+
   .addContactFloating {
     position: absolute;
     bottom: 75px;
     left: 313px;
+
     &-content {
       width: 50px;
       height: 50px;
@@ -221,6 +248,7 @@ $bchat-compose-margin: 20px;
       align-items: center;
       border-radius: 44px;
       cursor: pointer;
+
       &:hover {
         background-color: $bchat-button-hovor-color;
       }
@@ -248,6 +276,7 @@ $bchat-compose-margin: 20px;
       color: var(--color-text);
       font-family: $bchat-font-poppin-semibold;
       font-size: 22px;
+
       .bchat-icon-button {
         cursor: unset;
       }
@@ -361,6 +390,7 @@ $bchat-compose-margin: 20px;
       left: 0;
       top: 0;
     }
+
     &-closed {
       &--header {
         font-size: 24px;
@@ -384,12 +414,14 @@ $bchat-compose-margin: 20px;
         // margin-left: 20px;
         // margin-bottom: 8px;
       }
+
       &--search-label {
         color: #a7a7ba;
         font-size: 18px;
         font-weight: 500;
       }
     }
+
     .bchatId_input_wrapper {
       padding: 15px;
       border-radius: 16px;
@@ -397,6 +429,7 @@ $bchat-compose-margin: 20px;
       // background: #202329;
       margin: 15px;
     }
+
     .ourDetails_wrapper {
       border-radius: 16px;
       border: 2px solid var(--color-search-border);
@@ -404,10 +437,12 @@ $bchat-compose-margin: 20px;
       margin: 15px;
       padding: 15px;
       position: relative;
+
       .avatar-Wrapper {
         display: flex;
         align-items: center;
       }
+
       .profile-name {
         margin-left: 15px;
         // color: #f0f0f0;
@@ -415,17 +450,20 @@ $bchat-compose-margin: 20px;
         font-weight: 700;
         word-break: break-all;
       }
+
       .label-txt {
         color: #a7a7ba;
         font-size: 16px;
         font-weight: 500;
       }
+
       .id-Wrapper {
         border-radius: 16px;
         border: 1px solid var(--color-profile-id-border);
         background: var(--color-profile-id-bg);
         display: flex;
         padding: 10px;
+
         p {
           color: #108d32;
           white-space: nowrap;
@@ -434,16 +472,19 @@ $bchat-compose-margin: 20px;
           font-weight: 500;
           font-size: 16px;
         }
+
         .blue-color {
           color: #2d81ff;
         }
       }
+
       .back-btn-txt {
         // color: #f0f0f0;
         font-size: 18px;
         font-weight: 500;
         margin-left: 5px;
       }
+
       .qr-wrapper {
         border-radius: 15.147px;
         // border: 0.947px solid #4b4b64;
@@ -452,12 +493,14 @@ $bchat-compose-margin: 20px;
 
         // width: 70%;
       }
+
       .qr-txt {
         color: #a7a7ba;
         font-size: 18px;
         font-weight: 400;
       }
     }
+
     &-open {
       &hint-message {
         width: 100%;
@@ -624,6 +667,7 @@ $bchat-compose-margin: 20px;
       justify-content: center;
       display: flex;
       flex-direction: column;
+
       .content-txt {
         color: #858598;
         text-align: center;
@@ -645,6 +689,7 @@ $bchat-compose-margin: 20px;
       margin: 0 auto;
       margin-bottom: 23px;
     }
+
     .bchat-noMsgRequest-leftPane {
       display: flex;
       width: 291px;
@@ -748,6 +793,7 @@ $bchat-compose-margin: 20px;
   // background: #202329;
   display: flex;
   align-items: center;
+
   .search {
     // margin-top: 13px;
     display: flex;
@@ -860,6 +906,7 @@ $bchat-compose-margin: 20px;
     height: $composition-container-height;
     border: var(--border-bchat);
   }
+
   .bchat-button.square-outline.square.danger {
     flex-grow: 1;
     height: $composition-container-height;
@@ -873,6 +920,7 @@ $bchat-compose-margin: 20px;
 }
 
 .left-pane-contact {
+
   &-section,
   &-content {
     display: flex;
@@ -881,6 +929,7 @@ $bchat-compose-margin: 20px;
     flex: 1;
 
     .module-conversation-list-item {
+
       &__header__date,
       &__message {
         display: none;
@@ -1006,7 +1055,7 @@ $bchat-compose-margin: 20px;
       margin-top: -7px;
     }
 
-    & > div {
+    &>div {
       display: block;
     }
 
