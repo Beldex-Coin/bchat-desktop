@@ -27,6 +27,7 @@ import {
   getAboutBnsModal,
   getBchatWalletForgotPasswordModal,
   getMessageMoreInfoModal,
+  getCommunityGuidelinesModal,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 // import { InviteContactsDialog } from '../conversation/InviteContacts';
@@ -55,6 +56,7 @@ import { AboutBnsDialog } from './AboutBnsDialog';
 import { BchatWalletForgotPasswordModal } from './BchatWalletForgotPasswordModal';
 import { MessageMoreInfoModal } from '../conversation/message/message-item/MessageDetail';
 import { InviteContactsDialog } from './InviteContactDialog';
+import { CommunityGuidelinesDialog } from './CommunityGuidelinesDialog';
 
 
 export const ModalContainer: any = () => {
@@ -84,6 +86,8 @@ export const ModalContainer: any = () => {
   const BchatAlertConfirmModalState = useSelector(getBchatAlertConfirmModal);
   const aboutBnsModalState=useSelector(getAboutBnsModal);
   const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
+  const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
+
 
   return (
     <>
@@ -120,6 +124,7 @@ export const ModalContainer: any = () => {
       {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
       {aboutBnsModalState && <AboutBnsDialog />}
       {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}
+      {communityGuidelinesModalState && <CommunityGuidelinesDialog  />}
     </>
   );
 };

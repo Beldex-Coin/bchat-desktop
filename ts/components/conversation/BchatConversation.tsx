@@ -33,7 +33,7 @@ import {
   SortedMessageModelProps,
   updateMentionsMembers,
 } from '../../state/ducks/conversations';
-import { updateConfirmModal } from '../../state/ducks/modalDialog';
+import { updateCommunityGuidelinesModal, updateConfirmModal } from '../../state/ducks/modalDialog';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAttachments';
 import { MIME } from '../../types';
@@ -62,6 +62,7 @@ import { SectionType } from '../../state/ducks/section';
 import { BchatScrollButton } from '../BchatScrollButton';
 import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon';
+import styled from 'styled-components';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -202,13 +203,22 @@ export class BchatConversation extends React.Component<Props, State> {
       window.inboxStore?.dispatch(
         updateConfirmModal({
           // title: window.i18n('sendRecoveryPhraseTitle'),
-          title:'Warning',
+          title: 'Warning',
           // message: window.i18n('sendRecoveryPhraseMessage'),
-          message:'This is your recovery phrase. if you send it to someone they will have full access to your account.',
+          message:
+            'This is your recovery phrase. if you send it to someone they will have full access to your account.',
           okTheme: BchatButtonColor.Danger,
-          okText:window.i18n('send'),
+          okText: window.i18n('send'),
           iconShow: true,
-          customIcon: <BchatIcon iconType='warningCircle' iconSize={30}  iconColor='#F0AF13' clipRule='evenodd' fillRule='evenodd' />,
+          customIcon: (
+            <BchatIcon
+              iconType="warningCircle"
+              iconSize={30}
+              iconColor="#F0AF13"
+              clipRule="evenodd"
+              fillRule="evenodd"
+            />
+          ),
           onClickOk: () => {
             void sendAndScroll();
           },
@@ -276,6 +286,20 @@ export class BchatConversation extends React.Component<Props, State> {
           onKeyDown={this.onKeyDown}
           role="navigation"
         >
+          {selectedConversation?.isPublic && (
+            <div
+              className="pinned-msg"
+              onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
+            >
+              <Flex container={true} alignItems="center">
+                <VerticalLine />
+                <div>
+                  <div className="msg-title">Pinned Message</div>
+                  <div className="msg-sub-title">Community guidelines</div>
+                </div>
+              </Flex>
+            </div>
+          )}
           {/* <div>{syncbarCondition && <ConditionalSyncBar />}</div> */}
           {/* <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
@@ -289,7 +313,7 @@ export class BchatConversation extends React.Component<Props, State> {
                 {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
                 <InConversationCallContainer /> {/* </div> */}
               </Flex>
-           )}  
+            )}
 
             {/* <SplitViewContainer
               top={<InConversationCallContainer />}
@@ -646,3 +670,11 @@ const renderImagePreview = async (contentType: string, file: File, fileName: str
     thumbnail: null,
   };
 };
+
+const VerticalLine = styled.div`
+  width: 5px;
+  background-color: var(--color-untrusted-vertical-bar);
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 10px;
+`;

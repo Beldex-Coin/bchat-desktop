@@ -203,6 +203,27 @@
       background: var(--color-inbox-background);
     }
   }
+  .pinned-msg {
+    border-radius: 16px;
+    background: #202329;
+    margin: 15px;
+    padding: 10px 15px;
+    .msg-title {
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      margin-left: 5px;
+    }
+    .msg-sub-title {
+      color: #a7a7ba;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      margin-left: 5px;
+    }
+  }
 }
 
 .voiceCall {
@@ -237,15 +258,14 @@
 
 .hangingBtn {
   width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    border-radius: 50px;
-    margin: 10px 10px;
-    cursor: pointer;
-    
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: 50px;
+  margin: 10px 10px;
+  cursor: pointer;
 }
 
 .hangingBtn:hover {
@@ -420,7 +440,7 @@
       color: rgba(0, 0, 0, 0);
     }
 
-    .circular-bar-wrapper:hover+.wallet-sync-box {
+    .circular-bar-wrapper:hover + .wallet-sync-box {
       display: flex;
     }
   }
@@ -446,7 +466,7 @@
     visibility: visible;
   }
 
-  &>section.emoji-mart {
+  & > section.emoji-mart {
     font-family: $bchat-font-default;
     font-size: $bchat-font-sm;
     background-color: var(--color-cell-background);
@@ -569,11 +589,10 @@
   &:hover {
     background-color: #00a705;
   }
-  .bchat-icon-button:hover{
-
-   background:#1A973C; 
-   color: white;
-  // color: var(--color-text);
+  .bchat-icon-button:hover {
+    background: #1a973c;
+    color: white;
+    // color: var(--color-text);
   }
 }
 
@@ -685,7 +704,8 @@
     &.playback-timer {
       animation: fadein $bchat-transition-duration;
 
-      @media (-webkit-min-device-pixel-ratio: 1.6) {}
+      @media (-webkit-min-device-pixel-ratio: 1.6) {
+      }
     }
 
     &-micIcon {
@@ -694,7 +714,7 @@
       justify-content: center;
       width: 35px;
       height: 35px;
-      margin-right  : 10px;
+      margin-right: 10px;
       color: var(--color-icon);
       background-color: var(--color-disappear-time-hover);
       border-radius: 10px;
