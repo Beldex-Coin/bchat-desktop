@@ -135,7 +135,7 @@ const SelectionOverlay = () => {
           <span>Selected</span>
         </div>
       </Flex>
-     
+
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
@@ -143,7 +143,7 @@ const SelectionOverlay = () => {
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
-            style={{borderRadius:'40px',background:darkMode?'#131313':''}}
+            style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
         <BchatButton
@@ -151,7 +151,7 @@ const SelectionOverlay = () => {
           buttonColor={BchatButtonColor.Red}
           text={deleteForEveryoneMessageButtonText}
           onClick={onDeleteSelectedMessagesForEveryone}
-          style={{borderRadius:'40px'}}
+          style={{ borderRadius: '40px' }}
         />
       </div>
     </div>
@@ -268,16 +268,16 @@ const CallButton = () => {
   }
 
   return (
-    <div>
+    <div style={{ marginRight: '15px' }}>
       {/* <CustomIconButton
         onClick={() => {
           void callRecipient(selectedConvoKey, canCall);
         }}
         customIcon={<CallIcon iconSize={24} />}
       /> */}
-      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd'  onClick={() => {
-          void callRecipient(selectedConvoKey, canCall);
-        }} />
+      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
+        void callRecipient(selectedConvoKey, canCall);
+      }} />
     </div>
   );
 };
@@ -360,14 +360,14 @@ const ConversationHeaderTitle = () => {
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
-        // onClick={() => {
-        //   if (isRightPanelOn) {
-        //     dispatch(closeRightPanel());
-        //   } else {
-        //     dispatch(openRightPanel());
-        //   }
-        // }}
-        // role="button"
+      // onClick={() => {
+      //   if (isRightPanelOn) {
+      //     dispatch(closeRightPanel());
+      //   } else {
+      //     dispatch(openRightPanel());
+      //   }
+      // }}
+      // role="button"
       >
         {convoName}
         <SubTxt>
@@ -486,7 +486,7 @@ export const ConversationHeaderWithDetails = () => {
                   marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-                // disabled={!caption}
+              // disabled={!caption}
               />
               // </div>
             )}

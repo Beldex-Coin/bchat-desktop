@@ -579,7 +579,7 @@ export const BchatRightPanelWithDetails = () => {
                     {window.i18n('disappearingMessages')}
                   </MenuWrapper>
                 </Flex>
-                <BchatIcon iconType="chevron" iconSize="small" iconRotation={0} />
+                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} />
                 {/* <BchatDropdown
                 labelIcon={'chatTimer'}
                 label={window.i18n('disappearingMessages')}
@@ -781,7 +781,7 @@ export const BchatRightPanelWithDetails = () => {
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}
                 iconSize={28}
-                iconColor={darkMode?"#A9AEBA":'#3E4A53'}
+                iconColor={darkMode ? "#A9AEBA" : '#3E4A53'}
               />
             </span>
             <span className="group-settings-header-titleTxt">Media & Documents</span>
