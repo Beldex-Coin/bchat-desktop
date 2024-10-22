@@ -27,6 +27,7 @@ export const VideoInputButton = ({
       <DropDownAndToggleButton
         iconType="camera"
         isMuted={localStreamVideoIsMuted}
+        isSelected={!localStreamVideoIsMuted}
         onMainButtonClick={() => {
           void handleCameraToggle(currentConnectedCameras, localStreamVideoIsMuted);
         }}
@@ -55,6 +56,7 @@ export const AudioInputButton = ({
       <DropDownAndToggleButton
         iconType="microphone"
         isMuted={isAudioMuted}
+        isSelected={isAudioMuted}
         onMainButtonClick={() => {
           void handleMicrophoneToggle(currentConnectedAudioInputs, isAudioMuted);
         }}

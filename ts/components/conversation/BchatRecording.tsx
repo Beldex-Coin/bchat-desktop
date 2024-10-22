@@ -167,13 +167,13 @@ export class BchatRecording extends React.Component<Props, State> {
               {hasRecordingAndPaused && (
                 <BchatIconButton
                   iconType="play"
-                  iconSize="medium"
+                  iconSize={14}
                   onClick={this.playAudio}
                   iconColor="#F0F0F0"
                   btnBgColor="#108D32"
-                  padding="5px"
+                  padding="8px"
                 />
-              )}
+              )}  
               {hasRecording && (
                 <BchatIconButton
                   iconType="delete"
@@ -199,11 +199,13 @@ export class BchatRecording extends React.Component<Props, State> {
           )}
         </div>
         <div className={classNames('send-message-button')}>
-          {!isRecording ? (
+          {!isRecording && (
             <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
-          ) : (
-            <SendMessageButton name="Send" onClick={() => { }} />
-          )}
+          ) 
+          // : (
+          //   <SendMessageButton name="Send" onClick={() => { }}  />
+          // )
+          }
         </div>
       </div>
     );

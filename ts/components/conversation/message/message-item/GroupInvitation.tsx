@@ -17,7 +17,7 @@ import {
 } from '../../../../state/selectors/conversations';
 import moment from 'moment';
 import { MessageStatus } from '../message-content/MessageStatus';
-import { BchatIcon } from '../../../icon';
+
 
 interface Room {
   completeUrl: string;
@@ -92,7 +92,6 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
                   </span>
                 </Flex>
               </Flex>
-              {socialGrp[0]?.base64Data ? (
                 <BchatJoinableRoomAvatar
                   completeUrl={socialGrp[0]?.completeUrl}
                   name={socialGrp[0]?.name}
@@ -101,12 +100,10 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
                   onClick={() => {
                     acceptOpenGroupInvitation(props.acceptUrl, props.serverName);
                   }}
+                  direction={contentProps?.direction}
+                  
                 />
-              ) : (
-                <IconWrapper direcrion={contentProps?.direction}>
-                  <BchatIcon iconType={'peopleGrp'} iconSize={40} />
-                </IconWrapper>
-              )}
+             
             </div>
             <SpacerMD />
             <span className="group-address" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
@@ -145,13 +142,4 @@ const VerticalLine = styled.div<VerticalLineProps>`
   margin-right: 10px;
 `;
 
-const IconWrapper = styled.div<VerticalLineProps>`
-  background-color: ${props =>
-    props.direcrion === 'incoming' ? 'var(--color-invite-card-icon-bg)' : '#108d32'};
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-`;
+

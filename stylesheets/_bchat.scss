@@ -669,6 +669,7 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
 
   .play-speed-btn-incoming {
@@ -3940,6 +3941,7 @@ input {
     width: 100%;
     // max-height: 400px;
     overflow-y: auto;
+    height: 52%;
     // margin: auto 0 auto 0;
     // border: var(--border-bchat);
     // border-bottom: var(--border-bchat);

@@ -47,7 +47,7 @@ const styles = {
     width: '100vw',
     height: '100vh',
     left: 0,
-    zIndex: 5,
+    zIndex: 31,
     right: 0,
     top: 0,
     bottom: 0,
