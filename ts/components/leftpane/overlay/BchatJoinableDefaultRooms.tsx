@@ -14,6 +14,7 @@ import { Flex } from '../../basic/Flex';
 import { PillContainerHoverable, PillTooltipWrapper } from '../../basic/PillContainer';
 import { BchatSpinner } from '../../basic/BchatSpinner';
 import { SpacerXS } from '../../basic/Text';
+import { BchatIcon } from '../../icon/BchatIcon';
 // import { H3 } from '../../basic/Text';
 // tslint:disable: no-void-expression
 
@@ -24,6 +25,7 @@ export type JoinableRoomProps = {
   imageId?: string;
   onClick: (completeUrl: string) => void;
   base64Data?: string;
+  direction?: string;
 };
 
 export const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
@@ -72,13 +74,21 @@ export const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
   }, [props.imageId, props.completeUrl]);
 
   return (
-    <Avatar
-      size={AvatarSize.L}
-      base64Data={props.base64Data}
-      {...props}
-      pubkey=""
-      onAvatarClick={() => props.onClick(props.completeUrl)}
-    />
+    <>
+      {props.base64Data ? (
+        <Avatar
+          size={AvatarSize.L}
+          base64Data={props.base64Data}
+          {...props}
+          pubkey=""
+          onAvatarClick={() => props.onClick(props.completeUrl)}
+        />
+      ) : (
+        <IconWrapper direcrion={props?.direction}>
+          <BchatIcon iconType={'peopleGrp'} iconSize={40} />
+        </IconWrapper>
+      )}
+    </>
   );
 };
 
@@ -95,6 +105,19 @@ const Grid = styled.div`
   grid-template-columns: 33.3% 33.3% 33.3%;
   gap: 12px 10px;
 `;
+interface VerticalLineProps {
+  direcrion?: string;
+}
+const IconWrapper = styled.div<VerticalLineProps>`
+  background-color: ${props =>
+    props.direcrion === 'outgoing' ? '#108d32' : 'var(--color-invite-card-icon-bg)'};
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+`;
 const BchatJoinableRoomName = (props: JoinableRoomProps) => {
   return <StyledRoomName>{props.name}</StyledRoomName>;
 };
@@ -109,7 +132,7 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
         padding="5px"
       >
         <BchatJoinableRoomAvatar {...props} />
-        <SpacerXS/>
+        <SpacerXS />
         <BchatJoinableRoomName {...props} />
       </PillContainerHoverable>
     </PillTooltipWrapper>
@@ -118,7 +141,7 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
 
 export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
-  
+
   const onRoomClicked = useCallback(
     (loading: boolean) => {
       if (loading) {

@@ -67,7 +67,9 @@
   background: var(--color-untrust-media-bg);
   margin: 15px 15px 0;
 }
-
+.module-message__generic-attachment-outgoing {
+  background-color: #0a6f0a;
+}
 // .module-message__generic-attachment  + .attachment-with-quote ,.module-message__attachment-container +
 .attachment-with-quote {
   min-width: 500px;
@@ -129,6 +131,7 @@
   margin-inline-start: 8px;
   // The width of the icon plus our 8px margin
   max-width: calc(100% - 37px);
+  cursor: pointer;
 }
 
 .module-message__generic-attachment__file-name {
@@ -412,7 +415,7 @@
   padding-left: 15px;
   height: 40px;
   border-radius: 25px;
-  background-color: var(--color-input-background)
+  background-color: var(--color-input-background);
 }
 
 .module-conversation-header__expiration__clock-icon {
@@ -984,10 +987,12 @@
 
 .module-image__bottom-overlay {
   height: 48px;
-  background-image: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0) 9%,
-      rgba(0, 0, 0, 0.6));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0) 9%,
+    rgba(0, 0, 0, 0.6)
+  );
   position: absolute;
   bottom: 0;
   z-index: 1;
@@ -1212,8 +1217,6 @@
 
   display: flex;
   align-items: center;
-
-
 }
 
 .module-inner-img-wrapper {

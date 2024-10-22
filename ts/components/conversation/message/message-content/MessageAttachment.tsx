@@ -165,7 +165,7 @@ export const MessageAttachment = (props: Props) => {
     const extension = getExtensionForDisplay({ contentType, fileName });
 
     return (
-      <div className={classNames('module-message__generic-attachment')}>
+      <div className={classNames('module-message__generic-attachment ',`module-message__generic-attachment-${direction}`)}>
         {pending ? (
           <div className="module-message__generic-attachment__spinner-container">
             <Spinner size="small" />
@@ -185,7 +185,7 @@ export const MessageAttachment = (props: Props) => {
             </div>
           </div>
         )}
-        <div className="module-message__generic-attachment__text">
+        <div className="module-message__generic-attachment__text" onClick={onClickOnGenericAttachment} role='button'>
           <div
             className={classNames(
               'module-message__generic-attachment__file-name',

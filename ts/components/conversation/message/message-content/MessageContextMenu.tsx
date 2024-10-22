@@ -193,11 +193,11 @@ export const MessageContextMenu = (props: Props) => {
           <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
         </Item>
       ) : null}
-
+      {!attachments?.length  &&  
       <Item onClick={copyText}>
         <CopyIcon color={'var(--color-text)'} iconSize={18} />
         <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
-      </Item>
+      </Item>}
       {(isSent || !isOutgoing) && (
         <Item onClick={onReply}>
           <BchatIcon iconType={'reply'} iconSize={18} />

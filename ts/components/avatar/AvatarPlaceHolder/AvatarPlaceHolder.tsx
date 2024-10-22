@@ -140,7 +140,7 @@ export const AvatarPlaceHolder = (props: Props) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect width="60" height="60" rx="16" fill={avatarColors.bgColor} />
+        <rect width="60" height="60" rx="0" fill={avatarColors.bgColor} />
         <path
           d="M40.5182 33.5H19.4818C17.5616 33.5 16 35.0616 16 36.9818V38.3125C16 41.2109 17.6497 43.7159 20.6439 45.3672C23.1352 46.7435 26.4575 47.5 30 47.5C36.7433 47.5 44 44.6244 44 38.3125V36.9818C44 35.0616 42.4384 33.5 40.5182 33.5Z"
           fill={avatarColors.bodyColor}

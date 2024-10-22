@@ -205,7 +205,7 @@
   }
   .pinned-msg {
     border-radius: 16px;
-    background: #202329;
+    background: var(--color-invite-card-icon-bg);
     margin: 15px;
     padding: 10px 15px;
     .msg-title {
@@ -379,6 +379,7 @@
       align-items: center;
       justify-content: center;
       padding: 15px;
+      z-index: 2;
 
       .sync-txt {
         // color: #f0f0f0;
