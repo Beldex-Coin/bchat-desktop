@@ -771,7 +771,7 @@ label {
     // text-align: center;
     line-height: 18px;
     font-size: $bchat-font-h3;
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 10px;
 
     &.reverse {
@@ -3139,7 +3139,7 @@ label {
 
         &-notesTxt {
           color: #a7a7ba;
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 400;
         }
 
@@ -3345,6 +3345,7 @@ label {
               // color: #f0f0f0;
               font-size: 13px;
               font-weight: 600;
+              color: #F0F0F0;
             }
           }
         }
@@ -3420,7 +3421,8 @@ label {
       margin-bottom: 5px;
       border-radius: 16px;
       background: var(--color-wallet-inner-bg);
-      height: calc(100vh - 494px);
+      // height: calc(100vh - 494px);
+      height: calc(100vh - 446px);
 
       &-title {
         display: flex;

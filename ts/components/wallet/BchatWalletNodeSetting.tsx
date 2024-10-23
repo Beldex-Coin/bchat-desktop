@@ -220,7 +220,7 @@ export const NodeSetting = (props: any) => {
               style={
                 !localDeamonVisible
                   ? { border: '2px solid var(--color-walletNodeHeader)' }
-                  : { border: '2px solid white' }
+                  : { border: '2px solid var(--color-radio-icon)' }
               }
             >
               {!localDeamonVisible && (
@@ -236,7 +236,7 @@ export const NodeSetting = (props: any) => {
               {window.i18n('remoteDaemonOnly')}
             </div>
           </article>
-          <article className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '100px' }}>
+          <article className="wallet-settings-nodeSetting-FlexBox" style={{ marginLeft: '50px' }}>
             <div
               onClick={() => {
                 setLocalDeamonVisible(true);
@@ -249,7 +249,7 @@ export const NodeSetting = (props: any) => {
               style={
                 localDeamonVisible
                   ? { border: '2px solid var(--color-walletNodeHeader)' }
-                  : { border: '2px solid' }
+                  : { border: '2px solid var(--color-radio-icon)' }
               }
             >
               {localDeamonVisible && (
@@ -267,12 +267,12 @@ export const NodeSetting = (props: any) => {
           </article>
         </Flex>
         <SpacerMD />
-
+        <SpacerMD />
         <div className="wallet-settings-nodeSetting-notesTxt">
           {localDeamonVisible
             ? window.i18n('localDeamonheadetcntent')
             : window.i18n('remoteNoteToAllTransactions')}
-          {}
+          { }
         </div>
 
         <SpacerLG />
@@ -340,7 +340,7 @@ export const NodeSetting = (props: any) => {
                 </article>
               </Flex>
               <SpacerLG />
-              <SpacerLG />
+              {/* <SpacerLG /> */}
 
               <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
                 <div>
@@ -382,8 +382,10 @@ export const NodeSetting = (props: any) => {
                 </div>
               </div>
               <SpacerLG />
-              <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-                {testNotify.status && (
+              {/* <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box"> */}
+              {testNotify.status && (
+                <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+
                   <>
                     <span className="result">{window.i18n('NodeTestResult')}</span>
                     {/* {testNotify.status === 'ok' ? (
@@ -396,149 +398,151 @@ export const NodeSetting = (props: any) => {
 
                     <BchatIcon
                       iconType={testNotify.status === 'ok' ? 'check' : 'warning'}
-                      iconSize={18}
+                      iconSize={20}
                       iconColor={testNotify.status === 'ok' ? 'green' : 'red'}
                       iconPadding={'0 0 0 3px'}
                     />
                   </>
-                )}
-              </div>
-              <SpacerLG />
-            </div>
-
-            <div className="wallet-settings-nodeSetting-horizontalLine"></div>
-            <SpacerLG />
-            {/* ******************************Choose deamon section****************************************** */}
-
-            <Flex
-              className="wallet-settings-nodeSetting-dropDownHeaderTxt"
-              container={true}
-              justifyContent="space-between"
-              cursor={'pointer'}
-              onClick={() => showDropDown()}
-            >
-              <div className="text">{window.i18n('chooseRemoteDaemonNode')}</div>
-              <div
-                // onClick={() => showDropDown()}
-                style={{ cursor: 'pointer' }}
-              >
-                <BchatIcon
-                  iconColor="#A7A7BA"
-                  iconType="chevron"
-                  iconSize={'small'}
-                  iconRotation={viewBox2 ? 178 : 0}
-                />
-              </div>
-            </Flex>
-            <SpacerLG />
-
-            <div
-              className={classNames(
-                'wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box'
+                </div>
               )}
-              style={viewBox2 ? { display: 'block' } : {}}
-            >
-              <Flex container={true} justifyContent="space-between">
-                <article className="wallet-settings-nodeSetting-remoteContentBox">
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-                    {window.i18n('remoteNodeHost')}
-                  </div>
-                  <div
-                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                    style={{ flexDirection: 'column', padding: 0 }}
-                    ref={modalRef}
-                  >
-                    <div
-                      className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
-                      style={{ width: '100%' }}
-                    >
-                      <div
-                        className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropdown"
-                        style={{ padding: 0 }}
-                      >
-                        <input
-                          value={chooseDeamon}
-                          className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropdown"
-                          style={{ width: '95%', padding: 0 }}
-                          disabled={true}
-                          placeholder="Choose your daemon IP"
-                        />
-                      </div>
-
-                      <div
-                        className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn"
-                        onClick={() => setDropdown(!dropdown)}
-                      >
-                        <BchatIcon iconSize={20} iconType="chevron" iconColor="#A7A7BA" />
-                      </div>
-                    </div>
-                    <div style={{ width: '100%' }}>
-                      {dropdown && (
-                        <div style={{ position: 'relative', zIndex: 1 }}>
-                          <div className="wallet-settings-nodeSetting-dropDownModal">
-                            {option.length > 0 &&
-                              option.map((item: any, i: number) => (
-                                <div
-                                  style={{ cursor: 'pointer' }}
-                                  key={i}
-                                  className="wallet-settings-nodeSetting-dropDownModal-items"
-                                  onClick={() => AssignCurrentDeamon(item)}
-                                >
-                                  <BchatIcon
-                                    iconType="circle"
-                                    iconSize={8}
-                                    iconColor={item.active ? '#108D32' : '#FF3E3E'}
-                                  />
-                                  <span
-                                    style={{ marginLeft: '10px', color: item.active ? '' : 'red' }}
-                                  >
-                                    {item.host}:{item.port}
-                                  </span>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </article>
-
-                <article className="wallet-settings-nodeSetting-remoteContentBox">
-                  <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
-                    {window.i18n('remoteNodePort')}
-                  </div>
-
-                  <input
-                    value={chooseDeamonPort}
-                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
-                    disabled={true}
-                    placeholder="Choose your daemon port"
-                  />
-                </article>
-              </Flex>
-
-              <SpacerLG />
-              <SpacerLG />
-
-              <Flex container={true} justifyContent="center" alignItems="center">
-                <BchatButton
-                  buttonColor={
-                    savebtnValidation ? BchatButtonColor.Secondary : BchatButtonColor.Primary
-                  }
-                  buttonType={BchatButtonType.Brand}
-                  text={window.i18n('save')}
-                  onClick={() => !savebtnValidation && currentDeamonNet()}
-                  style={{ cursor: savebtnValidation ? 'default' : 'pointer' }}
-                />
-              </Flex>
-              <SpacerLG />
-              <SpacerLG />
             </div>
-            <div className="wallet-settings-nodeSetting-horizontalLine"></div>
-            <SpacerLG />
-          </>
+
+            {/* <SpacerLG /> */}
+            {/* // </div> */}
+
+        {/* <div className="wallet-settings-nodeSetting-horizontalLine"></div> */}
+        <SpacerLG />
+        {/* ******************************Choose deamon section****************************************** */}
+
+        <Flex
+          className="wallet-settings-nodeSetting-dropDownHeaderTxt"
+          container={true}
+          justifyContent="space-between"
+          cursor={'pointer'}
+          onClick={() => showDropDown()}
+        >
+          <div className="text">{window.i18n('chooseRemoteDaemonNode')}</div>
+          <div
+            // onClick={() => showDropDown()}
+            style={{ cursor: 'pointer' }}
+          >
+            <BchatIcon
+              iconColor="#A7A7BA"
+              iconType="chevron"
+              iconSize={'small'}
+              iconRotation={viewBox2 ? 178 : 0}
+            />
+          </div>
+        </Flex>
+        <SpacerLG />
+
+        <div
+          className={classNames(
+            'wallet-settings-nodeSetting-remoteContentBox-content-hidden-Box'
+          )}
+          style={viewBox2 ? { display: 'block' } : {}}
+        >
+          <Flex container={true} justifyContent="space-between">
+            <article className="wallet-settings-nodeSetting-remoteContentBox">
+              <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
+                {window.i18n('remoteNodeHost')}
+              </div>
+              <div
+                className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                style={{ flexDirection: 'column', padding: 0 }}
+                ref={modalRef}
+              >
+                <div
+                  className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
+                  style={{ width: '100%' }}
+                >
+                  <div
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropdown"
+                    style={{ padding: 0 }}
+                  >
+                    <input
+                      value={chooseDeamon}
+                      className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropdown"
+                      style={{ width: '95%', padding: 0 }}
+                      disabled={true}
+                      placeholder="Choose your daemon IP"
+                    />
+                  </div>
+
+                  <div
+                    className="wallet-settings-nodeSetting-remoteContentBox-inputBox-dropDownBtn"
+                    onClick={() => setDropdown(!dropdown)}
+                  >
+                    <BchatIcon iconSize={20} iconType="chevron" iconColor="#A7A7BA" />
+                  </div>
+                </div>
+                <div style={{ width: '100%' }}>
+                  {dropdown && (
+                    <div style={{ position: 'relative', zIndex: 1 }}>
+                      <div className="wallet-settings-nodeSetting-dropDownModal">
+                        {option.length > 0 &&
+                          option.map((item: any, i: number) => (
+                            <div
+                              style={{ cursor: 'pointer' }}
+                              key={i}
+                              className="wallet-settings-nodeSetting-dropDownModal-items"
+                              onClick={() => AssignCurrentDeamon(item)}
+                            >
+                              <BchatIcon
+                                iconType="circle"
+                                iconSize={8}
+                                iconColor={item.active ? '#108D32' : '#FF3E3E'}
+                              />
+                              <span
+                                style={{ marginLeft: '10px', color: item.active ? '' : 'red' }}
+                              >
+                                {item.host}:{item.port}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+
+            <article className="wallet-settings-nodeSetting-remoteContentBox">
+              <div className="wallet-settings-nodeSetting-remoteContentBox-labelTxt">
+                {window.i18n('remoteNodePort')}
+              </div>
+
+              <input
+                value={chooseDeamonPort}
+                className="wallet-settings-nodeSetting-remoteContentBox-inputBox-input"
+                disabled={true}
+                placeholder="Choose your daemon port"
+              />
+            </article>
+          </Flex>
+
+          <SpacerLG />
+          <SpacerLG />
+
+          <Flex container={true} justifyContent="center" alignItems="center">
+            <BchatButton
+              buttonColor={
+                savebtnValidation ? BchatButtonColor.Secondary : BchatButtonColor.Primary
+              }
+              buttonType={BchatButtonType.Brand}
+              text={window.i18n('save')}
+              onClick={() => !savebtnValidation && currentDeamonNet()}
+              style={{ cursor: savebtnValidation ? 'default' : 'pointer' }}
+            />
+          </Flex>
+          <SpacerLG />
+          {/* <SpacerLG /> */}
+        </div>
+        {/* <div className="wallet-settings-nodeSetting-horizontalLine"></div> */}
+        {/* <SpacerLG /> */}
+      </>
         )}
-      </section>
-    </div>
+    </section>
+    </div >
   );
 };

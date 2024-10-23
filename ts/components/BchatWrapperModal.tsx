@@ -80,9 +80,6 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     undefined,
     [props.onClose]
   );
-  console.log("showHeader:", showHeader)
-  console.log("showExitIcon:", showExitIcon)
-  console.log("headerIconButtons:", headerIconButtons)
   const modalRef = useRef<HTMLDivElement>(null);
   return (
     <div
@@ -96,7 +93,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
             </div>}
             <div>
               {showHeader ? (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                   <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
                     <div className="bchat-modal__header__title">{title}</div>
                     <div className="bchat-modal__header__icons">
@@ -140,6 +137,8 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               buttonType={cancelButton?.buttonType ? cancelButton.buttonType : BchatButtonType.Brand}
               buttonColor={cancelButton?.color ? cancelButton.color : BchatButtonColor.Secondary}
               onClick={cancelButton.onClickCancelHandler}
+              iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
+              iconType={cancelButton?.iconType}
               dataTestId="Bchat-confirm-cancel-button"
               style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
             />}
@@ -148,7 +147,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               buttonType={okButton?.buttonType ? okButton.buttonType : BchatButtonType.Brand}
               buttonColor={okButton?.color ? okButton.color : BchatButtonColor.Secondary}
               disabled={okButton?.disabled}
-              iconSize={okButton?.iconSize}
+              iconSize={okButton?.iconSize ? okButton.iconSize : 10}
               iconType={okButton?.iconType}
               onClick={okButton?.onClickOkHandler}
               dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}

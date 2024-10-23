@@ -109,7 +109,7 @@ export function LocalDeamon() {
               placeholder="Enter your IP address"
               className="wallet-settings-nodeSetting-remoteContentBox-inputBox"
               disabled={true}
-              //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
+            //   onChange={(e: any) => setLocalDeamonHost(e.target.value)}
             />
           </article>
           <article className="wallet-settings-nodeSetting-remoteContentBox">
@@ -129,7 +129,7 @@ export function LocalDeamon() {
           </article>
         </Flex>
         <SpacerLG />
-        <SpacerLG />
+        {/* <SpacerLG /> */}
 
         <div className="wallet-settings-nodeSetting-FlexBox wallet-settings-nodeSetting-remoteContentBox-btnBox">
           <div>
@@ -159,8 +159,10 @@ export function LocalDeamon() {
           </div>
         </div>
         <SpacerLG />
-        <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
-          {testNotify && (
+        {/* <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box"> */}
+        {testNotify && (
+          <div className="wallet-settings-nodeSetting-remoteContentBox-warning-box">
+
             <>
               <span className="result">{window.i18n('NodeTestResult')}</span>
               {testNotify === 'Success' ? (
@@ -173,15 +175,15 @@ export function LocalDeamon() {
 
               <BchatIcon
                 iconType={testNotify === 'Success' ? 'tickCircle' : 'warning'}
-                iconSize={18}
+                iconSize={20}
                 iconColor={testNotify === 'Success' ? 'green' : 'red'}
                 iconPadding={'0 0 0 3px'}
               />
             </>
-          )}
-        </div>
-
-        <SpacerLG />
+          </div>
+        )}
+        {/* </div> */}
+        {/* <SpacerLG /> */}
       </div>
     </>
   );

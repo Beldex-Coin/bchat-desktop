@@ -167,7 +167,7 @@ const darkContextMenuBg = '#1B1E23';
 const darkProfileIdBg = '#1C1F25';
 const darkProfileIDBorder = '#3A3A41';
 const darkSecondaryBtnBg = '#2e333d';
-const darkSecondaryBtnHoverBg='#383D47';
+const darkSecondaryBtnHoverBg = '#383D47';
 
 const darkQrOuterBg = '#282836';
 const darkSettingsRightPaneOption = '#202329';
@@ -200,17 +200,18 @@ const darkWalletUnBalanceLabel = '#858598';
 const darkWalletInnerBg = '#202329';
 const darkNoTxnTxt = '#A7A7BA';
 const darkToastBg = '#131313';
-const bodyBg='#131313'
-const darkCallOptionBtnHover='#424751';
-const darkSpeedPlayBg='#202329';
-const darkMoreInfoIncommingChatBg='#202329';
-const darkCameraHoverBg='#46465D';
-const darkSettingWalletBetaBg='#131313';
-const darkPrimaryBtnHoverBg='#1A973C';
-const darkOfflineContentBg='#131313'
+const bodyBg = '#131313'
+const darkCallOptionBtnHover = '#424751';
+const darkSpeedPlayBg = '#202329';
+const darkMoreInfoIncommingChatBg = '#202329';
+const darkCameraHoverBg = '#46465D';
+const darkSettingWalletBetaBg = '#131313';
+const darkPrimaryBtnHoverBg = '#1A973C';
+const darkOfflineContentBg = '#131313'
 const darkInputText = '#858598';
 const darkIconColor = white;
-const darkInviteCardIconBg='#202329';
+const darkInviteCardIconBg = '#202329';
+const darkRadioButton = '#F0F0F0';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -495,6 +496,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-input-text', darkInputText);
   document.documentElement.style.setProperty('--color-icon', darkIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', darkInviteCardIconBg);
+  document.documentElement.style.setProperty('--color-radio-icon', darkRadioButton);
 };
 
 // LIGHT COLORS
@@ -674,17 +676,18 @@ const lightWalletUnBalanceLabel = '#333333';
 const lightWalletInnerBg = '#EBEBEB';
 const lightNoTxnTxt = '#ACACAC';
 const lightToastBg = '#F8F8F8';
-const lightCallOptionBtnHover='#FFFFFF';
-const lightSpeedPlayBg='#ACACAC';
-const lightMoreInfoIncommingChatBg='#F0F0F0';
-const lightCameraHoverBg ='#DADADA';
-const lightSettingWalletBetaBg='#F8F8F8';
-const lightSecondaryBtnHoverBg='#FFFFFF';
-const lightPrimaryBtnHoverBg='#1A973C';
-const lightOfflineContentBg='#F0F0F0';
+const lightCallOptionBtnHover = '#FFFFFF';
+const lightSpeedPlayBg = '#ACACAC';
+const lightMoreInfoIncommingChatBg = '#F0F0F0';
+const lightCameraHoverBg = '#DADADA';
+const lightSettingWalletBetaBg = '#F8F8F8';
+const lightSecondaryBtnHoverBg = '#FFFFFF';
+const lightPrimaryBtnHoverBg = '#1A973C';
+const lightOfflineContentBg = '#F0F0F0';
 const lightInputText = '#ACACAC';
 const lightIconColor = '#3E4A53';
-const lightInviteCardIconBg='#F8F8F8';
+const lightInviteCardIconBg = '#F8F8F8';
+const lightRadioButton = '#ACACAC';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -978,6 +981,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-input-text', lightInputText);
   document.documentElement.style.setProperty('--color-icon', lightIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', lightInviteCardIconBg);
+  document.documentElement.style.setProperty('--color-radio-icon', lightRadioButton);
 };
 
 // default to light theme
@@ -1153,6 +1157,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-input-text:${darkInputText};
     --color-icon:${darkIconColor};
     --color-invite-card-icon-bg:${darkInviteCardIconBg};
+    --color-radio-icon:${lightRadioButton};
 
     
 
