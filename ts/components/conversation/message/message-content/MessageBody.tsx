@@ -163,7 +163,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         showExitIcon: true,
         iconShow: true,
         customIcon: <BchatIcon iconType='openLink' iconSize={30} />,
-        okTheme:BchatButtonColor.Primary,
+        okTheme: BchatButtonColor.Primary,
         onClickOk: openLink,
         onClickClose: () => {
           dispatch(updateConfirmModal(null));
@@ -172,6 +172,8 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         onClickCancel: () => {
           MessageInteraction.copyBodyToClipboard(url);
         },
+        okIcon: { icon: "openLinkBtn", size: 20 },
+        cancelIcon: { icon: "copy", size: 20 }
       })
     );
   }, []);

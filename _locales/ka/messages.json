@@ -411,7 +411,7 @@
   "device": "You",
   "destination": "Destination",
   "learnMore": "Learn more",
-  "linkVisitWarningTitle": "Open this link in your browser?",
+  "linkVisitWarningTitle": "Open Link?",
   "linkVisitWarningMessage": "Are you sure you want to open $url$ in your browser?",
   "open": "Open",
   "audioMessageAutoplayTitle": "Autoplay Audio Message",

@@ -40,11 +40,13 @@ export interface BchatConfirmDialogProps {
   okTheme?: BchatButtonColor;
   closeTheme?: BchatButtonColor;
   bchatIcon?: BchatIconType;
-  iconSize?: BchatIconSize|number;
+  iconSize?: BchatIconSize | number;
   shouldShowConfirm?: boolean | undefined;
   showExitIcon?: boolean | undefined;
   btndisable?: boolean | undefined;
   Childern?: any;
+  okIcon?: any;
+  cancelIcon?: any;
 }
 
 export const BchatConfirm = (props: BchatConfirmDialogProps) => {
@@ -68,6 +70,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     Childern = '',
     iconShow,
     customIcon,
+    okIcon,
+    cancelIcon
   } = props;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +83,6 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
   const showHeader = !!props.title;
 
   const messageSubText = messageSub ? 'bchat-confirm-main-message' : 'subtle';
-
   const onClickOkHandler = async () => {
     if (onClickOk) {
       setIsLoading(true);
@@ -161,12 +164,16 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         onClickOkHandler,
         disabled: btndisable ? btndisable : false,
         color: props.okTheme,
+        iconType: okIcon.icon ? okIcon.icon : '',
+        iconSize: okIcon.size ? okIcon.size : ''
       }}
       cancelButton={{
         status: !hideCancel,
         text: cancelText,
         color: closeTheme,
         onClickCancelHandler,
+        iconType: cancelIcon.icon ? cancelIcon.icon : '',
+        iconSize: cancelIcon.size ? cancelIcon.size : ''
       }}
       iconShow={iconShow}
       customIcon={validCustomIcon}

@@ -261,14 +261,14 @@ if (window.networkType == 'mainnet') {
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
         'https://publicnode4.rpcnode.stream:443',
-        'https://publicnode5.rpcnode.stream:443',
+        // 'https://publicnode5.rpcnode.stream:443',
       ]
       : [
         'https://publicnode1.rpcnode.stream:443',
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
         'https://publicnode4.rpcnode.stream:443',
-        'https://publicnode5.rpcnode.stream:443',
+        // 'https://publicnode5.rpcnode.stream:443',
       ];
 
   const remotes = [

@@ -71,6 +71,8 @@ export const WalletHeader = (props: any) => {
           <BchatButton
             iconType="addressBook"
             iconSize={20}
+            fillRule="evenodd"
+            clipRule="evenodd"
             text="Address Book"
             buttonType={BchatButtonType.Medium}
             buttonColor={BchatButtonColor.Secondary}
@@ -89,7 +91,7 @@ export const WalletHeader = (props: any) => {
         </div>
         <WalletButton
           // name={''}
-          icontype="rotatedArrow" 
+          icontype="rotatedArrow"
           iconSize={20}
           submit={() => {
             rescanModalDialog(!syncStatus, dispatch);
@@ -111,7 +113,7 @@ export const WalletHeader = (props: any) => {
 export const WalletButton = (props: {
   // name: string;
   icontype: BchatIconType;
-  iconSize: BchatIconSize|number;
+  iconSize: BchatIconSize | number;
   submit: any;
 }) => {
   const { icontype, iconSize, submit } = props;
