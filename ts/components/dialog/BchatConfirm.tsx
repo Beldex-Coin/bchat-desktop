@@ -164,16 +164,16 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
         onClickOkHandler,
         disabled: btndisable ? btndisable : false,
         color: props.okTheme,
-        iconType: okIcon.icon ? okIcon.icon : '',
-        iconSize: okIcon.size ? okIcon.size : ''
+        iconType: okIcon ? okIcon.icon : '',
+        iconSize: okIcon ? okIcon.size : ''
       }}
       cancelButton={{
         status: !hideCancel,
         text: cancelText,
         color: closeTheme,
         onClickCancelHandler,
-        iconType: cancelIcon.icon ? cancelIcon.icon : '',
-        iconSize: cancelIcon.size ? cancelIcon.size : ''
+        iconType: cancelIcon ? cancelIcon.icon : '',
+        iconSize: cancelIcon ? cancelIcon.size : ''
       }}
       iconShow={iconShow}
       customIcon={validCustomIcon}

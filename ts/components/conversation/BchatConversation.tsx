@@ -291,7 +291,7 @@ export class BchatConversation extends React.Component<Props, State> {
               className="pinned-msg"
               onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
             >
-              <Flex container={true} alignItems="center">
+              <Flex container={true} alignItems="center" cursor='pointer'>
                 <VerticalLine />
                 <div>
                   <div className="msg-title">Pinned Message</div>
