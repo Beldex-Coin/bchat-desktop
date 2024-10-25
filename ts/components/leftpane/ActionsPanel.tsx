@@ -515,6 +515,7 @@ export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  
   const dispatch = useDispatch();
   const darktheme = useSelector((state: any) => state.theme);
   const isdark = darktheme === 'dark' ? true : false;
@@ -622,7 +623,7 @@ export const ActionsPanel = () => {
             <Avatar
               size={AvatarSize.L}
               onAvatarClick={() => dispatch(editProfileModal({}))}
-              pubkey={'mn'}
+              pubkey={conversation.id}
               dataTestId="leftpane-primary-avatar"
             />
           </BNSWrapper>

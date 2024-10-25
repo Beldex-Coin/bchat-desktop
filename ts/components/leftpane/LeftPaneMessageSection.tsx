@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutoSizer, List } from 'react-virtualized';
+// import { AutoSizer, List } from 'react-virtualized';
 import {
   ConversationListItemProps,
   MemoConversationListItemWithDetails,
@@ -13,12 +13,18 @@ import { MessageRequestsBanner } from './MessageRequestsBanner';
 
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatSearchInput } from '../BchatSearchInput';
-import { RowRendererParamsType } from './LeftPane';
+// import { RowRendererParamsType } from './LeftPane';
 // import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
 // import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
 // import { OverlayMessage } from './overlay/OverlayMessage';
 // import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
-import { OverlayMode, SectionType, setOverlayMode, showLeftPaneSection, showSettingsSection } from '../../state/ducks/section';
+import {
+  OverlayMode,
+  SectionType,
+  setOverlayMode,
+  showLeftPaneSection,
+  showSettingsSection,
+} from '../../state/ducks/section';
 import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
 import { BchatSettingCategory } from '../settings/BchatSettings';
@@ -42,20 +48,22 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     autoBind(this);
   }
 
-  public renderRow = ({ index, key, style }: RowRendererParamsType): JSX.Element | null => {
-    const { conversations } = this.props;
+  // public renderRow = ({ index, key, style }: RowRendererParamsType): JSX.Element | null => {
+  public renderRow = (item: any, key: any): JSX.Element | null => {
+    // const { conversations } = this.props;
+    const conversation = item;
 
     //assume conversations that have been marked unapproved should be filtered out by selector.
-    if (!conversations) {
-      throw new Error('renderRow: Tried to render without conversations');
-    }
+    // if (!conversations) {
+    //   throw new Error('renderRow: Tried to render without conversations');
+    // }
 
-    const conversation = conversations[index];
+    // const conversation = conversations[index];
     if (!conversation) {
       throw new Error('renderRow: conversations selector returned element containing falsy value.');
     }
 
-    return <MemoConversationListItemWithDetails key={key} style={style} {...conversation} />;
+    return <MemoConversationListItemWithDetails key={key} {...conversation} />;
   };
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
@@ -69,7 +77,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       throw new Error('render: must provided conversations if no search results are provided');
     }
 
-    const length = conversations.length;
+    // const length = conversations.length;
     const listKey = 0;
 
     // Note: conversations is not a known prop for List, but it is required to ensure that
@@ -77,20 +85,23 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     //   on startup and scroll.
     const list = (
       <div className="module-left-pane__list" key={listKey}>
-        <AutoSizer>
-          {({ height, width }) => (
+        {/*  <AutoSizer>
+          {({height,  width }) => (
             <List
               className="module-left-pane__virtual-list"
               conversations={conversations}
               height={height}
               rowCount={length}
-              rowHeight={80}
+              rowHeight={64}
               rowRenderer={this.renderRow}
+             
               width={width}
               autoHeight={false}
             />
           )}
         </AutoSizer>
+   */}
+        {conversations.map((item, key) => this.renderRow(item, key))}
       </div>
     );
 
@@ -100,16 +111,16 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   public render(): JSX.Element {
     // const { overlayMode } = this.props;
     // console.log('overlayMode  0-->',overlayMode)
-    const { conversations,conversationRequestsUnread,directContact } = this.props;
-    const convolen: boolean = conversations?.length === 0 && conversationRequestsUnread === 0 &&directContact.length ===0 ;
+    const { conversations, conversationRequestsUnread, directContact } = this.props;
+    const convolen: boolean =
+      conversations?.length === 0 && conversationRequestsUnread === 0 && directContact.length === 0;
     // console.log('convolen ::',convolen,{directContact})
     return (
       <div
         className={classNames('bchat-left-pane-section-content', convolen && 'd-none')}
-      // className={classNames('bchat-left-pane-section-content')}
+        // className={classNames('bchat-left-pane-section-content')}
 
-
-      // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
+        // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
       >
         {/* <LeftPaneSectionHeader/> */}
         {/* {overlayMode ? this.renderClosableOverlay() : null} */}

@@ -266,7 +266,7 @@ export const SendForm = (props: any) => {
             onClick={() => addressValidation()}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Primary}
-            disabled={!(props.amount && address && syncStatus)}
+            disabled={!(props.amount && address && syncStatus&&props.amount>=0.1)}
           />
         </div>
       </div>

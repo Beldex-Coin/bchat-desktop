@@ -235,7 +235,7 @@
 .videoCall {
   margin: 10px 0px;
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   /* width: 750px; */
   display: flex;
   top: 1%;
@@ -321,7 +321,7 @@
     // color: #85858f;
     border-radius: 10px;
     margin-bottom: 5px;
-
+    cursor: pointer;
     // &-icon {
     //   width: 25px;
     //   height: 25px;
