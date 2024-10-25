@@ -141,8 +141,8 @@
     // width: -webkit-fill-available;
     // padding: 0 5px;
     transition: $bchat-transition-duration;
-    cursor: pointer;
-    color: #f0f0f0;
+    // cursor: pointer;
+    color: var(--color-text);
     /* font-family: Poppins; */
     font-size: 18px;
     /* font-style: normal; */
