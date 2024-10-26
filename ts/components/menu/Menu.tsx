@@ -250,7 +250,7 @@ export const DeleteContactMenuItem = () => {
         title: menuItemText,
         message: "This chat is for your self reference.So can't be deleted.",
         onClickClose,
-        okTheme: BchatButtonColor.Green,
+        okTheme: BchatButtonColor.Primary,
         onClickOk: async () => {
           onClickClose;
         },

@@ -1397,7 +1397,7 @@ label {
         .selected {
           width: 18px;
           height: 18px;
-          border: 2px groove #ebebeb;
+          border: 2px  solid;
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -1405,7 +1405,7 @@ label {
           margin-right: 10px;
 
           &:hover {
-            border: 1px groove #008e00;
+            border: 2px solid #008e00;
           }
         }
 

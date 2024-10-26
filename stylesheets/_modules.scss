@@ -873,7 +873,8 @@
 }
 
 .module-conversation-list-item__message__text {
-  flex-grow: 1;
+  // flex-grow: 1;
+  width: 120px;
   flex-shrink: 1;
 
   font-size: 13px;
@@ -885,6 +886,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  
 
   .text-selectable {
     user-select: none;

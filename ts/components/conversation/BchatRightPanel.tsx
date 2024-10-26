@@ -286,6 +286,7 @@ const ClassicMemberList = (props: {
 
   return (
     <>
+    <div className={classNames(removeMem && 'remove-contact-list')}>
       {currentMembers.map(member => {
         const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
         const isAdmin = groupAdmins?.includes(member);
@@ -302,6 +303,7 @@ const ClassicMemberList = (props: {
           />
         );
       })}
+      </div>
     </>
   );
 };

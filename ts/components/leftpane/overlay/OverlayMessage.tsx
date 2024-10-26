@@ -44,7 +44,9 @@ export const OverlayMessage = () => {
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
   const convoList = useSelector(getLeftPaneLists);
+  const walletAddress:any = localStorage.getItem('userAddress');
   const convolen: boolean =convoList?.contacts?.length === 0 || false;
+  console.log('convolen',convolen)
 
   // const title = window.i18n('newBchat');
   // const buttonText = window.i18n('next');
@@ -100,7 +102,7 @@ export const OverlayMessage = () => {
       }
     }
   }
-  convolen
+  
   return (
     <div  className={classNames('module-left-pane-overlay')}>
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
@@ -167,9 +169,9 @@ export const OverlayMessage = () => {
               <label className="label-txt">Beldex Address</label>
               <SpacerXS />
               <div className="id-Wrapper">
-                <p className="blue-color">{ourconvo.isWalletAddress()}</p>
+                <p className="blue-color">{walletAddress}</p>
                 <CopyIconButton
-                  content={ourconvo.isWalletAddress()}
+                  content={walletAddress}
                   iconSize={22}
                   onClick={() => {}}
                 />
