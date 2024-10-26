@@ -27,7 +27,10 @@ import {
 } from './CompositionButtons';
 import { AttachmentType } from '../../../types/Attachment';
 import { connect } from 'react-redux';
-import { showLinkSharingConfirmationModalDialog, unblockConvoById } from '../../../interactions/conversationInteractions';
+import {
+  showLinkSharingConfirmationModalDialog,
+  unblockConvoById,
+} from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
 import { ReduxConversationType } from '../../../state/ducks/conversations';
@@ -85,6 +88,7 @@ import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
 // import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { SpacerLG } from '../../basic/Text';
+import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -284,6 +288,26 @@ class CompositionBoxInner extends React.Component<Props, State> {
     div?.removeEventListener('paste', this.handlePaste);
   }
 
+  sendAmountValidation() {
+    const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
+    const { draft } = this.state;
+    const getSyncStatus = window.getSettingValue('syncStatus');
+    const re = /^\d+\.?\d*$/;
+
+    const results =
+      selectedConversation?.type === 'private' &&
+      re.test(draft) &&
+      // && (draft.length-1 - draft.indexOf(".")) < 4
+      selectedConversation?.isApproved &&
+      selectedConversation?.didApproveMe &&
+      !selectedConversation?.isBlocked &&
+      this.chatwithWallet &&
+      WalletSyncBarShowInChat &&
+      !isMe &&
+      getSyncStatus;
+
+    return results;
+  }
   chatWithWalletInstruction() {
     const { WalletSyncBarShowInChat } = this.props;
     // if (this.chatwithWallet && !WalletSyncBarShowInChat) {
@@ -575,12 +599,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-          selectedConversation?.isApproved &&
-          selectedConversation?.didApproveMe &&
-          !selectedConversation?.isBlocked &&
-          // re.test(draft) &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat ? (
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        // re.test(draft) &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -608,26 +632,27 @@ class CompositionBoxInner extends React.Component<Props, State> {
   //   }
   // }
   private sendButton() {
-    const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
-    const { draft } = this.state;
-    const getSyncStatus = window.getSettingValue('syncStatus');
-    const re = /^\d+\.?\d*$/;
+    // const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
+    // const { draft } = this.state;
+    // const getSyncStatus = window.getSettingValue('syncStatus');
+    // const re = /^\d+\.?\d*$/;
     return (
       <>
-        {selectedConversation?.type === 'private' &&
-          re.test(draft) &&
-          // && (draft.length-1 - draft.indexOf(".")) < 4
-          selectedConversation?.isApproved &&
-          selectedConversation?.didApproveMe &&
-          !selectedConversation?.isBlocked &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat &&
-          !isMe &&
-          getSyncStatus ? (
+        {/* {selectedConversation?.type === 'private' &&
+        re.test(draft) &&
+        // && (draft.length-1 - draft.indexOf(".")) < 4
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat &&
+        !isMe &&
+        getSyncStatus ? ( */}
+        {/* {this.sendAmountValidation() ? (
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
-        ) : (
-          <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
-        )}
+        ) :  */}
+        
+        <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />{/* } */}
       </>
     );
   }
@@ -707,14 +732,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Danger}
           text={'Delete this contact'}
-          onClick={() =>this.deleteContact()}
+          onClick={() => this.deleteContact()}
         />
         <SpacerLG />
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
           text={'Unblock contact'}
-          onClick={() =>unblockConvoById(convoId)}
+          onClick={() => unblockConvoById(convoId)}
         />
       </Flex>
     );
@@ -729,8 +754,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-          ? 'Syncronizing..'
-          : 'Synchronized';
+        ? 'Syncronizing..'
+        : 'Synchronized';
 
     // console.log(
     //   'stagedAttachments.length!==0 --> ',
@@ -784,7 +809,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   >
                     {this.renderTextArea()}
 
-                    <div className={classNames(WalletSyncBarShowInChat && 'circular-bar-wrapper')}>
+                    <div className={classNames(WalletSyncBarShowInChat && !this.sendAmountValidation() && 'circular-bar-wrapper')}>
                       {selectedConversation?.isPrivate && typingEnabled && !isMe
                         ? this.bchatWalletView()
                         : ''}
@@ -795,6 +820,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       </div>
                       <div>{this.renderCurcularBar(true)}</div>
                     </div>
+                    {this.sendAmountValidation() && (
+                      <div className="amount-tap-box" onClick={() => this.sendConfirmModal()}>
+                        <div className="sync-txt" style={{ marginRight: 'unset' }}>
+                          Tap to send <BeldexCoinLogo iconSize={22} /> <span> {draft} </span>BDX{' '}
+                          <BchatIcon iconType="send" iconSize={20} iconColor="#0B9E3C" />
+                        </div>
+                      </div>
+                    )}
                   </Flex>
                 </div>
                 {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
@@ -1424,7 +1457,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
           },
           closeAfterInput: false,
           iconShow: true,
-          customIcon: <BchatIcon iconType={'microphone'} iconSize={30} iconColor="var(--color-icon)" fillRule="evenodd" clipRule="evenodd" />
+          customIcon: (
+            <BchatIcon
+              iconType={'microphone'}
+              iconSize={30}
+              iconColor="var(--color-icon)"
+              fillRule="evenodd"
+              clipRule="evenodd"
+            />
+          ),
         })
       );
       return;

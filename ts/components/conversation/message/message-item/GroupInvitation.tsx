@@ -83,7 +83,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
             <div className="group-details">
               <Flex container={true}>
                 <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
-                <Flex container={true} flexDirection="column">
+                <Flex container={true} flexDirection="column" cursor='pointer'>
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                     {props.serverName}
                   </span>

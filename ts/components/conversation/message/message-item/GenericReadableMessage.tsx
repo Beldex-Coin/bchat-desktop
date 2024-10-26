@@ -187,11 +187,11 @@ export const GenericReadableMessage = (props: Props) => {
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
     >
-      <div className="message-box" onClick={() => isSelectionMode && onSelect(messageId)}>
+      <div className="message-box" style={{cursor:isSelectionMode?'pointer':"default" }} onClick={() => isSelectionMode && onSelect(messageId)}>
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
         <div>
           {isSelectionMode &&isIncoming && (
-            <div style={{ marginRight: '15px' }}> 
+            <div style={{ marginRight: '15px',cursor:'pointer' }}> 
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -225,7 +225,7 @@ export const GenericReadableMessage = (props: Props) => {
         )}
         <div>
           {!isIncoming && isSelectionMode && (
-            <div style={{ marginLeft: '15px' }}>
+            <div style={{ marginLeft: '15px',cursor:'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
