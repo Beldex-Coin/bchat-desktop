@@ -14,6 +14,7 @@ export type MessagePreviewSelectorProps = Pick<MessageRenderingProps, 'attachmen
 type Props = {
   handleImageError: () => void;
   messageId: string;
+  direction: String
 };
 
 export const MessagePreview = (props: Props) => {
@@ -36,7 +37,6 @@ export const MessagePreview = (props: Props) => {
   if (!first) {
     return null;
   }
-
   const previewHasImage = first.image && isImageAttachment(first.image);
   const width = first.image && first.image.width;
   const isFullSizeImage = width && width >= MINIMUM_LINK_PREVIEW_IMAGE_WIDTH;
@@ -46,16 +46,20 @@ export const MessagePreview = (props: Props) => {
       {first.image && previewHasImage && isFullSizeImage ? (
         // <ImageGrid attachments={[first.image]} onError={props.handleImageError} />
         <Image
-        softCorners={true}
-        alt={window.i18n('previewThumbnail', [first.domain])}
-        height={120}
-        width={120}
-        url={first.image.url}
-        attachment={first.image}
-        onError={props.handleImageError}
-      />
-      ) : null}
-      <div className={classNames('module-message__link-preview__content')}>
+          softCorners={true}
+          alt={window.i18n('previewThumbnail', [first.domain])}
+          height={68}
+          width={68}
+          url={first.image.url}
+          attachment={first.image}
+          onError={props.handleImageError}
+        />
+      ) :
+        <div className={classNames('noImage',`noImage__${props.direction}`)}>
+          <BchatIcon iconType="openLink" iconSize="medium" />
+        </div>
+      }
+      <div className={classNames('module-message__link-preview__content', `module-message__link-preview__content__${props.direction}`)}>
         {first.image && previewHasImage && !isFullSizeImage ? (
           <div className="module-message__link-preview__image_container">
             <Image
@@ -71,9 +75,9 @@ export const MessagePreview = (props: Props) => {
         ) : !first.image || !previewHasImage ? (
           <div className="module-message__link-preview__icon_container">
             <div className="module-message__link-preview__icon_container__inner">
-              <div className="module-message__link-preview__icon-container__circle-background">
+              {/* <div className="module-message__link-preview__icon-container__circle-background">
                 <BchatIcon iconType="link" iconSize="small" />
-              </div>
+              </div> */}
             </div>
           </div>
         ) : null}
@@ -85,8 +89,8 @@ export const MessagePreview = (props: Props) => {
               : null
           )}
         >
-          <div className="module-message__link-preview__title">{first.title}</div>
-          <div className="module-message__link-preview__location">{first.domain}</div>
+          <div className={classNames('module-message__link-preview__title', `${props.direction}`)}>{first.title}</div>
+          <div className={classNames('module-message__link-preview__location', `${props.direction}`)}>{first.domain}</div>
         </div>
       </div>
     </div>

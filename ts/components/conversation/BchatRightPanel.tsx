@@ -526,7 +526,7 @@ export const BchatRightPanelWithDetails = () => {
           <HeaderItem />
           {isPrivate && (
             <div className="group-settings-header-chatIdBox">
-              <p>Your BChat ID</p>
+              <p>BChat ID</p>
               <SpacerXS />
               <div className="id-wrapper">
                 <Flex container={true} flexDirection="row" alignItems="flex-start">
