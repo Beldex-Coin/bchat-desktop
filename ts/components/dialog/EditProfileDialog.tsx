@@ -493,7 +493,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
    */
   private onClickOK() {
     const { newAvatarObjectUrl, profileName, setProfileName } = this.state;
-    const newName = profileName ? profileName.trim() : setProfileName;
+    const newName = profileName.trim()  ? profileName.trim() : setProfileName;
     // if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
     //   ToastUtils.pushToastError('invalid name', 'invalid name');
     //   return;

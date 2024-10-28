@@ -39,7 +39,7 @@ import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAtta
 import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util';
-import { BchatButtonColor } from '../basic/BchatButton';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
 import { ConversationHeaderWithDetails } from './ConversationHeader';
 // import { MessageDetail } from './message/message-item/MessageDetail';
@@ -287,16 +287,22 @@ export class BchatConversation extends React.Component<Props, State> {
           role="navigation"
         >
           {selectedConversation?.isPublic && (
-            <div
-              className="pinned-msg"
-              onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
-            >
-              <Flex container={true} alignItems="center" cursor='pointer'>
-                <VerticalLine />
-                <div>
-                  <div className="msg-title">Pinned Message</div>
-                  <div className="msg-sub-title">Community guidelines</div>
-                </div>
+            <div className="pinned-msg">
+              <Flex container={true} alignItems="center" justifyContent="space-between">
+                <Flex container={true} alignItems="center">
+                  <VerticalLine />
+                  <div>
+                    <div className="msg-title">Pinned Message</div>
+                    <div className="msg-sub-title">Community guidelines</div>
+                  </div>
+                </Flex>
+                <BchatButton
+                  buttonType={BchatButtonType.Brand}
+                  buttonColor={BchatButtonColor.Secondary}
+                  style={{ minWidth: '130px', height: '45px' }}
+                  text="Read More"
+                  onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
+                />
               </Flex>
             </div>
           )}

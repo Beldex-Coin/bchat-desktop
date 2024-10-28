@@ -365,7 +365,7 @@
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
-    .wallet-sync-box {
+    .wallet-sync-box,.amount-tap-box {
       border-radius: 16px;
       border: 2px solid #108d32;
       background-color: var(--color-wallet-Sync-box-bg);
@@ -394,6 +394,16 @@
         text-align: center;
         font-size: 12px;
         font-weight: 700;
+      }
+    }
+
+    .amount-tap-box{
+      display: block;
+      min-width:224px;
+      width: unset; 
+      cursor: pointer;
+      .sync-txt {
+        margin-right: unset;
       }
     }
 

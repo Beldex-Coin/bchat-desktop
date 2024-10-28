@@ -623,7 +623,7 @@ export const ActionsPanel = () => {
             <Avatar
               size={AvatarSize.L}
               onAvatarClick={() => dispatch(editProfileModal({}))}
-              pubkey={conversation.id}
+              pubkey={getOurPubKeyStrFromCache()}
               dataTestId="leftpane-primary-avatar"
             />
           </BNSWrapper>
