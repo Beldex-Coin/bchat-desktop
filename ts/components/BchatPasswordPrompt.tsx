@@ -8,6 +8,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatBut
 // import { Constants } from '../bchat';
 import { BchatSpinner } from './basic/BchatSpinner';
 import { Flex } from './basic/Flex';
+// import { ToastUtils } from '../bchat/utils';
 
 interface State {
   error: string;
@@ -105,7 +106,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     );
     const clearDataView = this.state.clearDataView && (
       <div>
-        <Flex container={true} alignItems='baseline'    padding= {'20px 30px'}>
+        <Flex container={true} alignItems='baseline' padding={'20px 30px'}>
           <div className="clearData-icon-wrapper">
             <BchatIcon iconType={'warning'} iconSize={25} iconColor="#FF3E3E" />
           </div>
@@ -177,10 +178,15 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   }
 
   private initLogin() {
+    const passPhrase = String((this.inputRef as HTMLInputElement).value);
+
+    // if (passPhrase.trim()) {
+    //   ToastUtils.pushToastError('validatePassword', window.i18n('emptyPassword'));
+    //   return;
+    // }
     this.setState({
       loading: true,
     });
-    const passPhrase = String((this.inputRef as HTMLInputElement).value);
 
     global.setTimeout(() => this.onLogin(passPhrase), 100);
   }
