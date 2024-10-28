@@ -1562,7 +1562,38 @@
   flex-shrink: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0 !important; 
 }
+}
+// .bchat-search-input + .module-left-pane__list ::-webkit-scrollbar {
+//   .module-left-pane__list ::-webkit-scrollbar{
+//   display: none !important;
+//   width: 0 !important; 
+// }
+
+.module-left-pane__list {
+  /* Hide scrollbar for Webkit-based browsers */
+  -webkit-overflow-scrolling: touch;
+}
+
+.module-left-pane__list::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+// .module-left-pane__list {
+//   /* Hide scrollbar for Firefox */
+//   scrollbar-width: none !important;
+// }
+
+// .module-left-pane__list {
+//   /* Hide scrollbar for IE, Edge and legacy browsers */
+//   -ms-overflow-style: none !important;
+// }
+
 
 .module-left-pane__virtual-list {
   outline: none;
