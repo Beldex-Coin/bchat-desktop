@@ -34,7 +34,7 @@ export type BchatWrapperModalType = {
 interface LoaderProps {
   darkMode: boolean;
 }
-const Loader = styled.div<LoaderProps>`
+export const Loader = styled.div<LoaderProps>`
   position: absolute;
   top: 0;
   left: 0;

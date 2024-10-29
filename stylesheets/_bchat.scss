@@ -1397,7 +1397,7 @@ label {
         .selected {
           width: 18px;
           height: 18px;
-          border: 2px  solid;
+          border: 2px  solid var(--color-radio-icon);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -2208,7 +2208,7 @@ label {
       .selected {
         width: 20px;
         height: 20px;
-        border: 2px groove #ebebeb;
+        border: 2px solid var(--color-radio-icon);
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -2216,7 +2216,7 @@ label {
         margin-right: 10px;
 
         &:hover {
-          border: 1px groove #008e00;
+          border: 2px solid #008e00;
         }
       }
 

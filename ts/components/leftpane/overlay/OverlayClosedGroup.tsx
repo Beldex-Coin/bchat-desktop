@@ -13,6 +13,8 @@ import useKey from 'react-use/lib/useKey';
 import { BchatIcon } from '../../icon/BchatIcon';
 import { getConversationController } from '../../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
+import { Loader } from '../../BchatWrapperModal';
+import { getTheme } from '../../../state/selectors/theme';
 
 export const OverlayClosedGroup = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ export const OverlayClosedGroup = () => {
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
+  const darkMode = useSelector(getTheme) === 'dark';
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -143,7 +146,9 @@ export const OverlayClosedGroup = () => {
         </div>
         <SpacerMD />
         {loading ? (
+          <Loader darkMode={darkMode}>
           <BchatSpinner loading={loading} />
+          </Loader>
         ) : (
           <div className="group-member-list__container">
             {noContactsForClosedGroup ? (
