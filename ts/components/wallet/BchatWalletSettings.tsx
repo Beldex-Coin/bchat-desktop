@@ -260,14 +260,14 @@ export const WalletSettings = () => {
             container={true}
             justifyContent="space-between"
             padding="10px 0"
-            cursor="pointer"
+            cursor={syncProDone ? 'pointer' : 'not-allowed' }
             onClick={() => changepass()}
           >
             <div className="wallet-settings-tabBox-subtle">
               <span style={{ marginRight: '10px' }}><BchatIcon iconType="changePasswordIcon" iconSize={18} />
               </span>
               {window.i18n('changePassword')}</div>
-            <div style={{ cursor: syncProDone ? 'pointer' : 'not-allowed' }}>
+            <div>
               <BchatIcon iconSize="medium" iconType="chevron" iconRotation={270} />
             </div>
           </Flex>
