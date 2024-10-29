@@ -60,11 +60,16 @@ export const PaymentMessage = (props: any) => {
       return (
         <Flex container={true} alignItems="center">
           <span className="txn-status">Sent Successfully!</span>
-          <BchatIcon iconColor={iconColor} iconType="circleWithTick" iconSize={16} />
+          <BchatIcon iconColor={'#f0f0f0'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
     } else {
-      return <div className="txn-status">Received successfully </div>;
+      return (
+        <Flex container={true} alignItems="center" color='#108D32'>
+          <span className="txn-status" style={{ color:'#108D32'}}>Received Successfully!</span>
+          <BchatIcon iconColor={'#108D32'} iconType="circleWithTick" iconSize={16} />
+        </Flex>
+      );
     }
   }
   return (
@@ -113,9 +118,7 @@ export const PaymentMessage = (props: any) => {
             <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
               {moment(contentProps?.timestamp).format('hh:mm A')}
             </div>
-
           </div>
-          
         </div>
       </div>
     </ReadableMessage>

@@ -64,6 +64,9 @@
   }
   .contents-incoming {
     background-color: var(--color-untrust-media-bg);
+    .amount {
+      color:var(--color-text);
+    }
   }
   .amount {
     font-family: $bchat-font-open-sans;
