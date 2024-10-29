@@ -304,7 +304,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.chatwithWallet &&
       WalletSyncBarShowInChat &&
       !isMe &&
-      getSyncStatus;
+      getSyncStatus && draft.length <= 16;
 
     return results;
   }
@@ -599,12 +599,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        // re.test(draft) &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat ? (
+          selectedConversation?.isApproved &&
+          selectedConversation?.didApproveMe &&
+          !selectedConversation?.isBlocked &&
+          // re.test(draft) &&
+          this.chatwithWallet &&
+          WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -651,7 +651,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         {/* {this.sendAmountValidation() ? (
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) :  */}
-        
+
         <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />{/* } */}
       </>
     );
@@ -754,8 +754,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-        ? 'Syncronizing..'
-        : 'Synchronized';
+          ? 'Syncronizing..'
+          : 'Synchronized';
 
     // console.log(
     //   'stagedAttachments.length!==0 --> ',

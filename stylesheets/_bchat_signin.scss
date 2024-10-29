@@ -541,9 +541,28 @@
     }
 
     input::-webkit-calendar-picker-indicator {
-      width: 27px;
-      height: 27px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
       color: white;
+      opacity: 1;
+      background-image: url("../images/bchat/calendar.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 27px;
+      // margin-right: 20px;
+      border-radius: 10px;
+      // padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        // width: 35px;
+        // height: 35px;
+        // padding: 10px;
+        background-color: #2E333D;
+      }
     }
 
     hr {
