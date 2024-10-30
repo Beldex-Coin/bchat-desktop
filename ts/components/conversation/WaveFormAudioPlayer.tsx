@@ -24,12 +24,9 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
   const waveSurferRef = useRef<WaveSurfer | null>(null);
   // const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioLength, setAudioLength] = useState('')
   const [remainingTime, setRemainingTime] = useState('0.00');
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const darkMode = useSelector(getTheme) === 'dark';
-  console.log("remainingTime:", remainingTime);
-  console.log("audioLength:", audioLength)
   function validColor() {
     const incomingColors = {
       waveColor: darkMode ? '#647494' : '#ACACAC',
@@ -72,7 +69,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         waveSurferRef.current = surfer;
         const remainingTime = (surfer.getDuration() - surfer.getCurrentTime()) / 60;
         setRemainingTime(remainingTime.toFixed(2));
-        setAudioLength(remainingTime.toFixed(2))
         setPlaybackSpeed(surfer.getPlaybackRate());
       });
       surfer.on('play', () => {

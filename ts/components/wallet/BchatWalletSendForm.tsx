@@ -220,7 +220,7 @@ export const SendForm = (props: any) => {
         <SpacerLG />
 
         <div>
-          <span className="wallet-sendForm-label">{window.i18n('address')}</span>
+          <span className="wallet-sendForm-label">Address or BNS Name</span>
           <div className="wallet-sendForm-inputBox">
           <textarea
               value={address}
