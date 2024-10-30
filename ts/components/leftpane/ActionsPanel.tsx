@@ -185,9 +185,9 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Chat"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="Chat"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
@@ -224,9 +224,9 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="New Chat"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="New Chat"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
@@ -243,9 +243,9 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Secret Group"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="Secret Group"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
@@ -264,9 +264,9 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Social Group"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="Social Group"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
@@ -285,9 +285,9 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="settings"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="settings"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
@@ -308,9 +308,9 @@ const Section = (props: { type: SectionType }) => {
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div className="grey-border" />
           <div
-            data-tip="Wallet"
-            data-place="right"
-            data-offset="{'top':0}"
+            // data-tip="Wallet"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
             style={{ flexDirection: 'column' }}

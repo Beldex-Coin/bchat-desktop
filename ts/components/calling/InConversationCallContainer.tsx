@@ -203,6 +203,15 @@ export const InConversationCallContainer = () => {
     return null;
   }
 
+  const validateMemberName = (memberName: any) => {
+    if (memberName.length == 66) {
+      let staringTwoString = memberName.substring(0, 2);
+      let lastString = memberName.substring(58, 66);
+      return `(${staringTwoString}...${lastString})`;
+    }
+    return memberName;
+  }
+
   return (
     <div className={remoteStreamVideoIsMuted ? 'voiceCall' : 'videoCall'}>
       <InConvoCallWindow>
@@ -219,7 +228,7 @@ export const InConversationCallContainer = () => {
                   <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
                 </BNSWrapper>
                 <SpacerXS />
-                <UserNameTxt>{selectedConversation?.profileName}</UserNameTxt>
+                <UserNameTxt>{validateMemberName(selectedConversation?.profileName)}</UserNameTxt>
               </CenteredAvatarInConversation>
             )}
 

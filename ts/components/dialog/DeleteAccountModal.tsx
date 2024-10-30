@@ -265,7 +265,7 @@ export const DeleteAccountModal = () => {
                     void onDeleteEverythingAndNetworkData();
                   }
                 }}
-                disabled={isLoading}
+                // disabled={isLoading}
                 style={{ marginRight: '25px', minWidth: '240px', height: '55px' }}
               />
             </div>
