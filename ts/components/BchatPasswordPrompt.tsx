@@ -6,7 +6,6 @@ import { withTheme } from 'styled-components';
 import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 // import { Constants } from '../bchat';
-import { BchatSpinner } from './basic/BchatSpinner';
 import { Flex } from './basic/Flex';
 // import { ToastUtils } from '../bchat/utils';
 
@@ -19,7 +18,22 @@ interface State {
 }
 
 export const MAX_LOGIN_TRIES = 3;
-
+type Props = {
+  loading: boolean;
+};
+const BchatSpinner = (props: Props) => {
+  const { loading } = props;
+ 
+  const imgsrc='images/bchat/Load_animation.gif';
+  return loading ? (
+    <div className="bchat-loader" data-testid="loading-spinner">
+      <div>
+      <img src={imgsrc}  style={{width:'150px',height:'150px',display:'flex',}}/>
+      </div>
+    </div>
+  
+  ) : null;
+};
 class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   private inputRef?: any;
 
@@ -69,7 +83,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       <div className="input-wrapper">
         <input
           id="password-prompt-input"
-          type="password"
+          type={this.state.PasswordVisible ?"password":''}
           defaultValue=""
           placeholder={'Enter password'}
           minLength={4}
@@ -178,7 +192,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   }
 
   private initLogin() {
-    const passPhrase = String((this.inputRef as HTMLInputElement).value);
+    const passPhrase = String((this.inputRef as HTMLInputElement)?.value);
 
     // if (passPhrase.trim()) {
     //   ToastUtils.pushToastError('validatePassword', window.i18n('emptyPassword'));
