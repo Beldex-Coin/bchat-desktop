@@ -58,7 +58,7 @@ export const MemberListItem = (props: {
   const isBnsHolder = useConversationBnsHolder(pubkey);
 
   const validateMemberName = (memberName: string) => {
-    if (memberName.length == 66) {
+    if (memberName?.length == 66) {
       let staringTwoString = memberName.substring(0, 2);
       let lastString = memberName.substring(58, 66)
       return `(${staringTwoString}...${lastString})`;

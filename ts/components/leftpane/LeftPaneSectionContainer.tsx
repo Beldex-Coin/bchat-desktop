@@ -97,7 +97,6 @@ export const LeftPaneSectionContainer = styled.div`
     top: 10px;
     /* bottom: 33px; */
     left: 72px;
-    padding: 7px;
     opacity: 1;
     display: flex;
     align-items: center;
