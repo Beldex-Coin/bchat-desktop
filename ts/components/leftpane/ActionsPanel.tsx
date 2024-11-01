@@ -200,11 +200,11 @@ const Section = (props: { type: SectionType }) => {
           </div>
           {unreadMessageCount !== 0 ? (
             <div className="unreadCountChatIcon">
-              {unreadMessageCount <= 9 ? (
+              {unreadMessageCount <= 99 ? (
                 unreadToShow
               ) : (
                 <span style={{ marginLeft: '-5px' }}>
-                  9
+                  99
                   <span
                     style={{
                       position: 'absolute',

@@ -1397,7 +1397,7 @@ label {
         .selected {
           width: 18px;
           height: 18px;
-          border: 2px  solid var(--color-radio-icon);
+          border: 2px solid var(--color-radio-icon);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -2009,11 +2009,12 @@ label {
       }
     }
   }
-  .partition:not(:last-child){
-  border-bottom: 0.5px solid var(--color-search-border);
-  border-radius: unset;
+
+  .partition:not(:last-child) {
+    border-bottom: 0.5px solid var(--color-search-border);
+    border-radius: unset;
   }
-  
+
 }
 
 .bchat-settings {
@@ -2803,7 +2804,7 @@ label {
         // width: 77px;
         // width: calc(20% + 30px);
         width: 90px;
-        color: #f0f0f0;
+        color: var(--color-text);
         /* font-family: Poppins; */
         font-size: 18px;
         /* font-style: normal; */
@@ -2924,7 +2925,7 @@ label {
       padding: 15px;
 
       &-title {
-        color: #f0f0f0;
+        color: var(--color-text);
         font-size: 18px;
         font-weight: 600;
         margin: 0;

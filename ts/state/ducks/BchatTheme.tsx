@@ -5,7 +5,7 @@ import { createGlobalStyle } from 'styled-components';
 const white = '#F0F0F0';
 const black = '#333333';
 const warning = '#e7b100';
-const destructive = '#ff453a';
+const destructive = '#FF3E3E';
 const accentLightTheme = '#159B24';
 const accentDarkTheme = '#2879FB';
 const darkGrey = '#202329';
