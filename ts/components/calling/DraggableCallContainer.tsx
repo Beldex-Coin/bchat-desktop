@@ -23,11 +23,17 @@ export const DraggableCallWindow = styled.div`
   border: var(--bchat-border);
 `;
 
-export const StyledVideoElement = styled.video<{ isVideoMuted: boolean }>`
+export const StyledVideoElement = styled.video<{ isVideoMuted: boolean; width?: string }>`
   // padding: 0 1rem;
   height: 100%;
-  width: 100%;
+  width: ${props => (props.width ? props.width : '100%')};
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
+  display: ${props => (props.isVideoMuted ? 'none' : 'block')};
+  /*Mirror code starts*/
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+  /*Mirror code ends*/
 `;
 
 const StyledDraggableVideoElement = styled(StyledVideoElement)`

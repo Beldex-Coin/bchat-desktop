@@ -235,7 +235,7 @@ export const MessageContent = (props: Props) => {
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
               )}
               {/* attachment-with-quote class is used to only refer the design validation in css */}
-              <Flex padding="7px 15px" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
+              <Flex padding="7px 15px 0" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
             </>
