@@ -204,12 +204,12 @@
     }
   }
   .pinned-msg {
-    border-radius: 16px;
+    border-radius: 10px;
     background: var(--color-invite-card-icon-bg);
     margin: 15px;
     padding: 10px 15px;
     .msg-title {
-      font-size: 18px;
+      font-size: 14px;
       font-style: normal;
       font-weight: 600;
       line-height: normal;
@@ -217,7 +217,7 @@
     }
     .msg-sub-title {
       color: #a7a7ba;
-      font-size: 16px;
+      font-size: 12px;
       font-style: normal;
       font-weight: 400;
       line-height: normal;
@@ -227,9 +227,15 @@
 }
 
 .voiceCall {
-  height: 350px;
+  // height: 350px;
   width: 534px;
   margin: 10px 0;
+  max-height: 450px;
+
+  .local-video {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .videoCall {
@@ -365,7 +371,8 @@
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
-    .wallet-sync-box,.amount-tap-box {
+    .wallet-sync-box,
+    .amount-tap-box {
       border-radius: 16px;
       border: 2px solid #108d32;
       background-color: var(--color-wallet-Sync-box-bg);
@@ -397,10 +404,10 @@
       }
     }
 
-    .amount-tap-box{
+    .amount-tap-box {
       display: block;
-      min-width:224px;
-      width: unset; 
+      min-width: 224px;
+      width: unset;
       cursor: pointer;
       .sync-txt {
         margin-right: unset;

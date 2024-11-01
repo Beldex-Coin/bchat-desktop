@@ -299,7 +299,13 @@ export class BchatConversation extends React.Component<Props, State> {
                 <BchatButton
                   buttonType={BchatButtonType.Brand}
                   buttonColor={BchatButtonColor.Secondary}
-                  style={{ minWidth: '130px', height: '45px' }}
+                  style={{
+                    minWidth: '106px',
+                    height: '31px',
+                    fontSize: '14px',
+                    padding: '0 0px',
+                    borderRadius: '6px',
+                  }}
                   text="Read More"
                   onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
                 />
@@ -680,7 +686,7 @@ const renderImagePreview = async (contentType: string, file: File, fileName: str
 const VerticalLine = styled.div`
   width: 5px;
   background-color: var(--color-untrusted-vertical-bar);
-  height: 60px;
+  height: 38px;
   border-radius: 10px;
   margin-right: 10px;
 `;

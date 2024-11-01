@@ -31,6 +31,8 @@ const VideoContainer = styled.div`
   height: 100%;
   width: 100%;
   z-index: 0;
+  display:flex;
+  justify-content:center;
   // padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
 `;
 
@@ -202,6 +204,14 @@ export const InConversationCallContainer = () => {
   if (!ongoingCallWithFocused || !ongoingCallPubkey) {
     return null;
   }
+  console.log(
+    'videoRefLocal -->',
+    videoRefLocal,
+    'localStreamVideoIsMuted--->',
+    localStreamVideoIsMuted,
+    'localStream -->',
+    localStream
+  );
 
   const validateMemberName = (memberName: any) => {
     if (memberName.length == 66) {
@@ -210,29 +220,39 @@ export const InConversationCallContainer = () => {
       return `(${staringTwoString}...${lastString})`;
     }
     return memberName;
-  }
+  };
 
   return (
-    <div className={remoteStreamVideoIsMuted ? 'voiceCall' : 'videoCall'}>
+    <div
+      className={!localStreamVideoIsMuted && !remoteStreamVideoIsMuted ? 'videoCall' : 'voiceCall'}
+    >
       <InConvoCallWindow>
         <RelativeCallWindow>
           <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'}>
-            {remoteStreamVideoIsMuted && (
-              <CenteredAvatarInConversation>
-                <BNSWrapper
-                  // size={89}
-                  position={{ left: '75px', top: '72px' }}
-                  isBnsHolder={selectedConversation?.isBnsHolder}
-                  size={{ width: '20', height: '20' }}
-                >
-                  <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
-                </BNSWrapper>
-                <SpacerXS />
-                <UserNameTxt>{validateMemberName(selectedConversation?.profileName)}</UserNameTxt>
-              </CenteredAvatarInConversation>
-            )}
+            <VideoContainer>
+              <StyledVideoElement
+                ref={videoRefRemote}
+                autoPlay={true}
+                isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
+                  width='50%'
+              />
+              {remoteStreamVideoIsMuted && (
+                <CenteredAvatarInConversation>
+                  <BNSWrapper
+                    // size={89}
+                    position={{ left: '75px', top: '72px' }}
+                    isBnsHolder={selectedConversation?.isBnsHolder}
+                    size={{ width: '20', height: '20' }}
+                  >
+                    <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
+                  </BNSWrapper>
+                  <SpacerXS />
+                  <UserNameTxt>{validateMemberName(selectedConversation?.profileName)}</UserNameTxt>
+                </CenteredAvatarInConversation>
+              )}
+            </VideoContainer>
 
-            {localStreamVideoIsMuted && (
+            {/* {localStreamVideoIsMuted && (
               <CenteredAvatarInConversation>
                 <BNSWrapper
                   // size={89}
@@ -245,19 +265,45 @@ export const InConversationCallContainer = () => {
                 <SpacerXS />
                 <UserNameTxt>{conversation.attributes.profileName}</UserNameTxt>
               </CenteredAvatarInConversation>
-            )}
+            )} */}
+
+            <VideoContainer>
+              <StyledVideoElement
+                ref={videoRefLocal}
+                autoPlay={true}
+                muted={true}
+                isVideoMuted={localStreamVideoIsMuted || !remoteStreamVideoIsMuted}
+                width='76%'
+              />
+              {localStreamVideoIsMuted && (
+                <CenteredAvatarInConversation>
+                  <BNSWrapper
+                    // size={89}
+                    position={{ left: '75px', top: '72px' }}
+                    isBnsHolder={conversation?.attributes?.isBnsHolder}
+                    size={{ width: '20', height: '20' }}
+                  >
+                    <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+                  </BNSWrapper>
+                  <SpacerXS />
+                  <UserNameTxt>{conversation.attributes.profileName}</UserNameTxt>
+                </CenteredAvatarInConversation>
+              )}
+            </VideoContainer>
           </Flex>
-          <div className="remote-video">
-            {!remoteStreamVideoIsMuted && (
+
+          {!localStreamVideoIsMuted && !remoteStreamVideoIsMuted && (
+            <div className="remote-video">
               <VideoContainer>
                 <StyledVideoElement
                   ref={videoRefRemote}
                   autoPlay={true}
                   isVideoMuted={remoteStreamVideoIsMuted}
+
                 />
               </VideoContainer>
-            )}
-          </div>
+            </div>
+          )}
 
           <SpacerLG />
           <RingingLabel />
@@ -277,7 +323,7 @@ export const InConversationCallContainer = () => {
         </RelativeCallWindow>
       </InConvoCallWindow>
       <div className="local-video">
-        {!localStreamVideoIsMuted && (
+        {!localStreamVideoIsMuted && !remoteStreamVideoIsMuted && (
           <VideoContainer>
             <StyledVideoElement
               ref={videoRefLocal}
