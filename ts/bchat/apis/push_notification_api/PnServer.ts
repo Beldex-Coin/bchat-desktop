@@ -7,7 +7,6 @@ export const hrefPnServerProd = 'notification.rpcnode.stream';
 
 export const hrefPnServerDev = 'notification.rpcnode.stream';
 const pnServerUrl = `http://${hrefPnServerProd}`;
-console.log("pnServerUrl:", pnServerUrl)
 export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: string) {
   const options: ServerRequestOptionsType = {
     method: 'post',
@@ -16,11 +15,8 @@ export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: strin
       send_to: sentTo,
     },
   };
-  const endpoint = 'notify';
-  // console.log("endpoint", endpoint);
-  console.log("options:",options)
+  const endpoint = 'notify';  
   const ret = await serverRequest(`${pnServerUrl}/${endpoint}`, options);
-  console.log("pnServerUrl---------ret:", ret)
   if (!ret) {
     window?.log?.warn('Push notification server request returned false');
   }
@@ -55,10 +51,7 @@ const serverRequest = async (
   }
 
   try {
-    console.log("url:",url)
-    console.log("pn server.......", pnServerPubkeyHex, url, fetchOptions)
     const onionResponse = await sendViaOnionToNonSnode(pnServerPubkeyHex, url, fetchOptions);
-    console.log("onionResponse:", onionResponse)
     if (
       !onionResponse ||
       !onionResponse.result ||

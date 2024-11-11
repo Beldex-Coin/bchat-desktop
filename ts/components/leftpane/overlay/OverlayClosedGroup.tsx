@@ -87,7 +87,7 @@ export const OverlayClosedGroup = () => {
   const subtitle = window.i18n('createSecretGroupNamePrompt');
   const placeholder = window.i18n('createSecretGroupPlaceholder');
 
-  const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
+  const noContactsForClosedGroup = privateContactsPubkeys.length === 0 ;
 
   // function addContact() {
   //   dispatch(showLeftPaneSection(0));
@@ -198,7 +198,7 @@ export const OverlayClosedGroup = () => {
             buttonColor={BchatButtonColor.Primary}
             buttonType={BchatButtonType.Brand}
             text={'Create'}
-            disabled={noContactsForClosedGroup}
+            disabled={noContactsForClosedGroup|| groupName.trim().length===0}
             dataTestId="next-button"
             onClick={onEnterPressed}
           />
