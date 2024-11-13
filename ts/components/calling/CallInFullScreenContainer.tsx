@@ -14,7 +14,7 @@ import { StyledVideoElement } from './DraggableCallContainer';
 
 const CallInFullScreenVisible = styled.div`
   position: absolute;
-  z-index: 9;
+  z-index: 13;
   top: 0;
   bottom: 0;
   right: 0;
@@ -33,6 +33,7 @@ const StyledLocalVideoElement = styled.video<{ isVideoMuted: boolean }>`
   bottom: 0;
   right: 0;
   position: absolute;
+  transform: rotateY(180deg);
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
 `;
 
