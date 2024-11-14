@@ -174,7 +174,6 @@ export const InviteContactMenuItem = (): JSX.Element | null => {
     return (
       <Item
         onClick={() => {
-          console.log('before invited::->',convoId);
           showInviteContactByConvoId(convoId);
         }}
       >

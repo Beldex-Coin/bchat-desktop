@@ -20,7 +20,7 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
     .logo-wrapper {
       border-radius: 16px;
-      background:var(--color-logo-bg);
+      background: var(--color-logo-bg);
       padding: 14px;
       position: relative;
     }
@@ -36,7 +36,7 @@ export const LeftPaneSectionContainer = styled.div`
     align-items: center;
     justify-content: center;
 
-    color:var(--color-action-btn-icon);
+    color: var(--color-action-btn-icon);
     cursor: pointer;
     :hover {
       border-radius: 16px;
@@ -94,9 +94,8 @@ export const LeftPaneSectionContainer = styled.div`
     width: 20px;
     height: 20px;
     font-size: 10px;
-    top: 10px;
-    /* bottom: 33px; */
-    left: 72px;
+    top: 8px;
+    left: 76px;
     opacity: 1;
     display: flex;
     align-items: center;
@@ -128,13 +127,11 @@ export const LeftPaneSectionContainer = styled.div`
     border-radius: 70px;
     border: 1.5px solid #46465d;
     padding: 5px 4px;
-    .selected{
-    background-Color:var(--color-theme-selected-bg);
-    border-radius:40px;
-    
-  
+    .selected {
+      background-color: var(--color-theme-selected-bg);
+      border-radius: 40px;
     }
-    .icon-wrapper{
+    .icon-wrapper {
       width: 50px;
       height: 50px;
       display: flex;

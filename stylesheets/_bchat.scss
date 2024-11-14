@@ -1148,7 +1148,7 @@ label {
       color: #a7a7ba;
 
       span {
-        font-family: $bchat-font-poppin-semibold;
+        color: var(--color-text);
         font-size: 14px;
       }
     }
@@ -1203,7 +1203,7 @@ label {
     }
 
     .span {
-      color: white;
+      color: var(--color-text);
     }
 
     // .bchat-button.brand.green {
@@ -3200,6 +3200,7 @@ label {
           max-height: 260px;
           padding: 14px;
           font-weight: 300;
+          z-index: 1;
 
           .dropDownItem {
             cursor: pointer;
@@ -3422,8 +3423,8 @@ label {
       margin-bottom: 5px;
       border-radius: 16px;
       background: var(--color-wallet-inner-bg);
-      // height: calc(100vh - 494px);
-      height: calc(100vh - 446px);
+      // height: calc(100vh - 446px);
+      height: calc(100vh - 460px);
 
       &-title {
         display: flex;
@@ -3944,7 +3945,7 @@ input {
     width: 100%;
     // max-height: 400px;
     overflow-y: auto;
-    height: 52%;
+    height: 53%;
     // margin: auto 0 auto 0;
     // border: var(--border-bchat);
     // border-bottom: var(--border-bchat);
