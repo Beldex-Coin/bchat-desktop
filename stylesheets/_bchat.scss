@@ -863,7 +863,7 @@ label {
 
     .subLayer {
       // margin: 200px auto;
-      width: 70%;
+      width: 55%;
       background-color: var(--color-settingIndication);
       // display: flex;
       // flex-direction: column;
@@ -913,7 +913,7 @@ label {
     flex-direction: column;
     align-items: center;
     // to allow new lines
-    white-space: pre-wrap;
+    // white-space: pre-wrap;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 513px;
@@ -1025,8 +1025,9 @@ label {
     background-color: var(--color-recovery-seed-bg);
     border: 1px solid var(--color-search-border);
     border-radius: 14px;
-    padding: 20px 30px;
+    padding: 30px;
     margin-top: 15px;
+    white-space: none;
   }
 
   &-recovery-key {
