@@ -95,7 +95,7 @@ const Section = (props: { type: SectionType }) => {
   const focusedSection = useSelector(getFocusedSection);
   const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
-
+  const darkMode = useSelector(getTheme) === 'dark';
   // function switchToWalletSec() {
   //   dispatch(showLeftPaneSection(3));
   //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
@@ -194,7 +194,7 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'chatBubble'}
-            // isSelected={isSelected}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">All Chats</div>
           </div>
@@ -233,7 +233,7 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'newChat'}
-            // isSelected={isSelected}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">New Chat</div>
           </div>
@@ -253,8 +253,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'closedgroup'}
-            // notificationCount={unreadToShow}
-            // isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Secret Group</div>
           </div>
@@ -274,8 +274,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'opengroup'}
-            // notificationCount={unreadToShow}
-            // isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Social Group</div>
           </div>
@@ -295,8 +295,8 @@ const Section = (props: { type: SectionType }) => {
               iconSize={28}
               // dataTestId="settings-section"
               iconType={'gear'}
-            // notificationCount={unreadToShow}
-            // isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Settings</div>
           </div>
@@ -318,10 +318,21 @@ const Section = (props: { type: SectionType }) => {
             <BchatIcon
               iconSize={28}
               iconType={'wallet'}
-            // notificationCount={unreadToShow}
-            // isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
             <div className="menu-txt">Wallet</div>
+            <Beta>
+              <BchatIcon
+                iconSize={34}
+                iconType={'beta'}
+                clipRule="evenodd"
+                fillRule="evenodd"
+                iconColor={darkMode ? '#A7A7BA' : '#ACACAC'}
+                // notificationCount={unreadToShow}
+                // isSelected={isSelected}
+              />
+            </Beta>
             {/* <div style={{ cursor: 'pointer' }}>
               <img
                 src="images/wallet/wallet_beta.svg"
@@ -515,7 +526,7 @@ export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
-  
+
   const dispatch = useDispatch();
   const darktheme = useSelector((state: any) => state.theme);
   const isdark = darktheme === 'dark' ? true : false;
@@ -523,7 +534,9 @@ export const ActionsPanel = () => {
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
   const darkMode = useSelector(getTheme) === 'dark';
-  const imgsrc: any = darkMode ? 'images/bchat/connect_wallet_dark.gif' : 'images/bchat/connect_wallet_white.gif';
+  const imgsrc: any = darkMode
+    ? 'images/bchat/connect_wallet_dark.gif'
+    : 'images/bchat/connect_wallet_white.gif';
 
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
@@ -593,7 +606,7 @@ export const ActionsPanel = () => {
       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
         <ActionPanelOnionStatusLight
           isSelected={false}
-          handleClick={() => { }}
+          handleClick={() => {}}
           id={''}
           size="small"
         />
@@ -680,18 +693,21 @@ export const ActionsPanel = () => {
           {/* !pathCon && isOnline */}
           {!pathCon && isOnline && (
             <div className="offline-msg connection-Wrapper ">
-              <Flex container={true} flexDirection="row" alignItems="center" width='350px' justifyContent='space-between'>
+              <Flex
+                container={true}
+                flexDirection="row"
+                alignItems="center"
+                width="350px"
+                justifyContent="space-between"
+              >
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div className='dotIcon'>
-                    <BchatIcon
-                      iconSize={"small"}
-                      iconType="circle"
-                    />
+                  <div className="dotIcon">
+                    <BchatIcon iconSize={'small'} iconType="circle" />
                   </div>
                   <div>Connecting..</div>
                 </div>
                 <div>
-                  <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex', }} />
+                  <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex' }} />
                 </div>
               </Flex>
             </div>
@@ -713,3 +729,8 @@ const NetWorkStatusWrapper = styled.div`
   left: 141px;
   z-index: 99;
 `;
+const Beta=styled.div`
+svg{
+height:14px !important;
+}
+`

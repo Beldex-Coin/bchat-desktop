@@ -43,11 +43,11 @@ const Identicon = (props: Props) => {
 const CrownWrapper = styled.div`
   // height: 15px;
   // width: 15px;
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
   position: absolute;
-  top: -18px;
-  left: 7px;
+  top: -12px;
+  left: 22px;
 `;
 
 export const CrownIcon = () => {
