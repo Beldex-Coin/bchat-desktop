@@ -37,7 +37,7 @@ const Seed = (props: SeedProps) => {
           <div className="bchat-modal__centered text-center ">
             <p className="bchat-modal__description">{i18n('recoveryPhrase')}</p>
             {/* <SpacerXS /> */}
-            <img src={darkMode?'images/bchat/recoveryPhrase.svg':"images/bchat/recoveryPhraseLight.svg"} width={"150px"} height={"150px"}></img>
+            <img src={darkMode ? 'images/bchat/recoveryPhrase.svg' : "images/bchat/recoveryPhraseLight.svg"} width={"150px"} height={"150px"}></img>
             <i data-testid="recovery-phrase-seed-modal" className="bchat-modal__text-highlight">
               {recoveryPhrase}
             </i>

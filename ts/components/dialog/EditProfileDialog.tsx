@@ -365,7 +365,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
       <div>
         {/* <p className="profile-header">{window.i18n('BchatID')}</p> */}
         <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}
-          onClick={() => copyBchatID(props.bchatID)}
         >
           <div className="profile-value">
             <div style={{ marginTop: '10px', color: 'var(--color-text)'}}>{window.i18n('BchatID')}</div>
@@ -378,6 +377,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-tip="Copy"
             data-place="right"
             data-offset="{'top':17}"
+            onClick={() => copyBchatID(props.bchatID)}
           >
             <CopyIconButton content={props.bchatID} iconSize={18}
             />
@@ -386,7 +386,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
         {/* <p className="profile-header">{window.i18n('profileBeldexAddres')}</p> */}
         <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
-          onClick={() => copyBchatID(walletAddress)}
         >
           <div className="profile-value" style={{ color: 'var(--color-text)'}}>
             <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
@@ -419,6 +418,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             data-tip="Copy"
             data-place="right"
             data-offset="{'top':17}"
+            onClick={() => copyBchatID(walletAddress)}
           >
             <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
             />

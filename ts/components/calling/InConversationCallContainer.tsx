@@ -204,10 +204,10 @@ export const InConversationCallContainer = () => {
   if (!ongoingCallWithFocused || !ongoingCallPubkey) {
     return null;
   }
- 
+
 
   const validateMemberName = (memberName: any) => {
-    if (memberName?.length == selectedConversation?.id) {
+    if (memberName == selectedConversation?.id) {
       let staringTwoString = memberName.substring(0, 2);
       let lastString = memberName.substring(58, 66);
       return `${staringTwoString}...${lastString}`;
@@ -227,7 +227,7 @@ export const InConversationCallContainer = () => {
                 ref={videoRefRemote}
                 autoPlay={true}
                 isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
-                  width='50%'
+                width='50%'
               />
               {remoteStreamVideoIsMuted && (
                 <CenteredAvatarInConversation>
@@ -279,7 +279,7 @@ export const InConversationCallContainer = () => {
                     <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
-                  <UserNameTxt>{conversation.attributes.profileName}</UserNameTxt>
+                  <UserNameTxt>{validateMemberName(conversation.attributes.profileName)}</UserNameTxt>
                 </CenteredAvatarInConversation>
               )}
             </VideoContainer>
