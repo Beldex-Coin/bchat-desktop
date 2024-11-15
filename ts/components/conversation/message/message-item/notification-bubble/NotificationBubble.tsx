@@ -8,16 +8,16 @@ const NotificationBubbleFlex = styled.div`
   // color: var(--color-text);
   // width: 90%;
   // max-width: 584px;
-  margin: 10px auto;
-  padding: 5px 10px;
+  // margin: 10px auto;
+  padding: 5px 20px;
   border-radius: 42px;
   word-break: break-word;
   text-align: center;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  margin-top: -20px;
-  border-radius: 22px;
+  // height: 40px;
+  // margin-top: -20px;
+  border-radius: 40px;
   background-color: var(--message-bubbles-received-background-color);
 `;
 
@@ -42,11 +42,11 @@ const FlexCenter = styled.div`
   display: flex;
   justify-content: center;
   width: 90%;
-  height: 1px;
-  margin: 25px auto;
+  // height: 1px;
+  min-height: 40px;
+  margin: 0 auto;
 `;
 // background-color: var(--message-bubbles-received-background-color);
-
 
 export const NotificationBubble = (props: {
   notificationText: string;
@@ -71,12 +71,13 @@ export const NotificationBubble = (props: {
           </NotificationBubbleIconContainer>
         )}
         {callNotification ? (
-          <NotificationBubbleText style={{ color: 'var(--color-text)' }}>{notificationText}
+          <NotificationBubbleText style={{ color: 'var(--color-text)' }}>
+            {notificationText}
             <span style={{ color: 'var(--color-chat-timestamp)' }}> {displayText}</span>
-          </NotificationBubbleText>) :
-          (<NotificationBubbleText>{notificationText}
-          </NotificationBubbleText>)}
-
+          </NotificationBubbleText>
+        ) : (
+          <NotificationBubbleText>{notificationText}</NotificationBubbleText>
+        )}
       </NotificationBubbleFlex>
     </FlexCenter>
   );
