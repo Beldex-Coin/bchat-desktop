@@ -203,13 +203,13 @@ const Section = (props: { type: SectionType }) => {
               {unreadMessageCount <= 99 ? (
                 unreadToShow
               ) : (
-                <span style={{ marginLeft: '-5px' }}>
+                <span style={{ marginLeft: '-4px' }}>
                   99
                   <span
                     style={{
                       position: 'absolute',
-                      top: '-1px',
-                      left: '10px',
+                      top: '-3px',
+                      left: '13px',
                     }}
                   >
                     +

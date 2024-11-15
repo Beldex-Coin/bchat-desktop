@@ -67,7 +67,7 @@ export const BchatRecoverySeed = (props: any) => {
             <SpacerLG />
             <div className='fontSemiBold'>
               Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
-              <span className='span'>Settings -&gt; Privacy -&gt; Set Account Password.</span>
+              <span className='span'>Settings -&gt; Privacy -&gt; Set Account Password.</span> 
             </div>
             {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}
           </div>
@@ -81,7 +81,7 @@ export const BchatRecoverySeed = (props: any) => {
                 Enable pay as you chat from <span>Settings -&gt; Chat -&gt; Pay As You Chat </span>
                 to use this option
               </>
-            )}
+            )} 
           </div> */}
         </div>
       </div>

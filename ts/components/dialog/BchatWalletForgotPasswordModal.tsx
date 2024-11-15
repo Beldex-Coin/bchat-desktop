@@ -274,7 +274,7 @@ export const BchatWalletForgotPasswordModal = () => {
                 onChange={e => {
                   setConfirmNewPassword(e.target.value);
                 }}
-                placeholder={window.i18n('confirmPassword')}
+                placeholder={'Confirm wallet password'}
                 //   className="bchat-dialog-newPassInput"
                 type={confirmPasswordVisible ? 'password' : 'text'}
                 maxLength={13}
