@@ -591,4 +591,6 @@ export type LocalizerKeys =
   |'bnsNameverified'
   |'KeyboardBackspaceArrow'
   |'openLink'
+  |'changeWalletPassword'
+  |'enterNewWalletPassword'
   ;

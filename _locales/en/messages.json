@@ -462,7 +462,7 @@
   "noBlockedContacts": "No blocked contacts Yet!",
   "userAddedToModerators": "User added to moderator list",
   "userRemovedFromModerators": "User removed from moderator list",
-  "orJoinOneOfThese": "Or join here.",
+  "orJoinOneOfThese": "or Join here",
   "noContactsYet": "No contacts yet!",
   "helpUsTranslateBchat": "Help us Translate BChat",
   "translation": "Translation",
@@ -586,5 +586,7 @@
   "bnsNameverified": "Your BNS name is verified",
   "allow": "Allow",
   "deny": "Deny",
-  "openLink": "Open Link"
+  "openLink": "Open Link",
+  "changeWalletPassword":"Change Wallet password",
+  "enterNewWalletPassword":"Enter New Wallet Password"
 }

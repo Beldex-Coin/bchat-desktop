@@ -477,5 +477,7 @@
   "bns": "Bns",
   "paymentID": "Payment ID",
   "allow": "Allow",
-  "deny": "Deny"
+  "deny": "Deny",
+  "changeWalletPassword":"Change Wallet password",
+  "enterNewWalletPassword":"Enter New Wallet Password"
 }
