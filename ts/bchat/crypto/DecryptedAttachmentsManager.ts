@@ -107,7 +107,6 @@ export const getDecryptedMediaUrl = async (
                   forceRetain: isAvatar,
                 });
               }
-              window.log.info(' file decrypted :', url, ' as ', obj);
               urlToDecryptingPromise.delete(url);
               resolve(obj);
               return;

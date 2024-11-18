@@ -11,7 +11,7 @@ import { openGroupV2CompleteURLRegex } from '../../../bchat/apis/open_group_api/
 import { ToastUtils } from '../../../bchat/utils';
 import useKey from 'react-use/lib/useKey';
 import styled from 'styled-components';
-import { SpacerLG, SpacerXS } from '../../basic/Text';
+import { SpacerLG, SpacerSM, SpacerXS } from '../../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 
 async function joinSocialGroup(serverUrl: string) {
@@ -85,7 +85,7 @@ export const OverlayOpenGroup = () => {
             onPressEnter={onEnterPressed}
           />
         </div>
-        <SpacerXS />
+        <SpacerSM />
         <div className="module-left-pane-overlay-openhint-message">
           Social groups are similar to public groups. however, you need an invite link to join. Join
           a social group using the group's URL.

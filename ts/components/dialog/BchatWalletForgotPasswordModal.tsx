@@ -231,7 +231,7 @@ export const BchatWalletForgotPasswordModal = () => {
 
             <SpacerLG />
             <div className="wallet-forgotPassword-content-Box-password-label">
-              {window.i18n('newwalletPassword')}
+              {window.i18n('changeWalletPassword')}
             </div>
             <SpacerSM />
             <Flex
@@ -246,7 +246,7 @@ export const BchatWalletForgotPasswordModal = () => {
                 onChange={e => {
                   setNewPassword(e.target.value);
                 }}
-                placeholder={window.i18n('enterPassword')}
+                placeholder={window.i18n('enterNewWalletPassword')}
                 //   className="bchat-dialog-newPassInput"
                 type={newPasswordVisible ? 'password' : 'text'}
                 maxLength={13}
