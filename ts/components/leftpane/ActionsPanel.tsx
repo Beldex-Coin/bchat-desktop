@@ -626,7 +626,7 @@ export const ActionsPanel = () => {
           </div>
         </div>
 
-        <div className="profile-box">
+        <div className="profile-box" style={{ marginTop: "10px", height: "60px", marginBottom: "10px" }}>
           <BNSWrapper
             // size={52}
             position={{ left: '45px', top: '43px' }}
@@ -641,18 +641,19 @@ export const ActionsPanel = () => {
             />
           </BNSWrapper>
         </div>
-        <Section type={SectionType.Message} />
+        <div style={{ overflow: 'auto', width: '90%' }}>
+          <Section type={SectionType.Message} />
 
-        <Section type={SectionType.NewChat} />
+          <Section type={SectionType.NewChat} />
 
-        <Section type={SectionType.Closedgroup} />
+          <Section type={SectionType.Closedgroup} />
 
-        <Section type={SectionType.Opengroup} />
+          <Section type={SectionType.Opengroup} />
 
-        <Section type={SectionType.Wallet} />
+          <Section type={SectionType.Wallet} />
 
-        <Section type={SectionType.Settings} />
-
+          <Section type={SectionType.Settings} />
+        </div>
         <Flex container={true} height="20%" alignItems="flex-end">
           <div className="theme-Wrapper ">
             <div
@@ -729,8 +730,8 @@ const NetWorkStatusWrapper = styled.div`
   left: 141px;
   z-index: 99;
 `;
-const Beta=styled.div`
-svg{
-height:14px !important;
-}
-`
+const Beta = styled.div`
+  svg {
+    height: 14px !important;
+  }
+`;

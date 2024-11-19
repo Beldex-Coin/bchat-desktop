@@ -29,7 +29,7 @@ export const LeftPaneSectionContainer = styled.div`
   .icon-box .btnView {
     // border-radius: 66px;
     border-radius: 12px;
-    width: 90%;
+    width: 100%;
     height: 80px;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,7 @@ export const LeftPaneSectionContainer = styled.div`
 
   .isSelected-icon-box,
   .icon-box {
-    width: 90%;
+    // width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;

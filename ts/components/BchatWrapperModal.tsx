@@ -38,7 +38,7 @@ export const Loader = styled.div<LoaderProps>`
   position: absolute;
   top: 0;
   left: 0;
-  background-color:${(props => props.darkMode ? '#0000009e' : '#ffffff9e')};
+  background-color: ${props => (props.darkMode ? '#0000009e' : '#ffffff9e')};
   display: flex;
   justify-content: center;
   width: 100%;
@@ -49,6 +49,7 @@ export const Loader = styled.div<LoaderProps>`
 
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   const darkMode = useSelector(getTheme) === 'dark';
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const {
     title,
     showHeader = true,
@@ -60,7 +61,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     okButton,
     cancelButton,
     iconShow = false,
-    customIcon
+    customIcon,
   } = props;
 
   useKey(
@@ -87,61 +88,71 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     >
       <div className="bchat-confirm-wrapper">
         <div ref={modalRef} className="bchat-modal">
-          <div className='model-layer'>
-            {iconShow && <div className='mediaPermission'>
-              {customIcon}
-            </div>}
+          <div className="model-layer">
+            {iconShow && <div className="mediaPermission">{customIcon}</div>}
             <div>
               {showHeader ? (
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                >
                   <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
                     <div className="bchat-modal__header__title">{title}</div>
                     <div className="bchat-modal__header__icons">
                       {headerIconButtons
-                        ?
-                        headerIconButtons.map((iconItem: any) => {
-                          return (
-                            <BchatIconButton
-                              key={iconItem.iconType}
-                              iconType={iconItem.iconType}
-                              iconSize={'large'}
-                              iconRotation={iconItem.iconRotation}
-                              onClick={iconItem.onClick}
-                            />
-                          );
-                        })
+                        ? headerIconButtons.map((iconItem: any) => {
+                            return (
+                              <BchatIconButton
+                                key={iconItem.iconType}
+                                iconType={iconItem.iconType}
+                                iconSize={'large'}
+                                iconRotation={iconItem.iconRotation}
+                                onClick={iconItem.onClick}
+                              />
+                            );
+                          })
                         : null}
                     </div>
                   </div>
-                  <div className='bchat-modal__header__iconHeader'>
-                    {showExitIcon && <div className="bchat-modal__header__close">
-                      <BchatIconButton
-                        iconType="exit"
-                        iconSize={25}
-                        onClick={props.onClose}
-                        dataTestId="modal-close-button"
-                      />
-                    </div>}
+                  <div className="bchat-modal__header__iconHeader">
+                    {showExitIcon && (
+                      <div className="bchat-modal__header__close">
+                        <BchatIconButton
+                          iconType="exit"
+                          iconSize={25}
+                          onClick={props.onClose}
+                          dataTestId="modal-close-button"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : null}
 
               <div className="bchat-modal__body" style={{ position: 'relative' }}>
-                <div className="bchat-modal__centered">{props.children}</div>
+                <div
+                  className="bchat-modal__centered"
+                  style={{ maxHeight: zoomLevel > 100 ? '311px' : '' }}
+                >
+                  {props.children}
+                </div>
               </div>
             </div>
           </div>
           <div className="bchat-modal-footer">
-            {cancelButton?.status && <BchatButton
-              text={cancelButton?.text}
-              buttonType={cancelButton?.buttonType ? cancelButton.buttonType : BchatButtonType.Brand}
-              buttonColor={cancelButton?.color ? cancelButton.color : BchatButtonColor.Secondary}
-              onClick={cancelButton.onClickCancelHandler}
-              iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
-              iconType={cancelButton?.iconType}
-              dataTestId="Bchat-confirm-cancel-button"
-              style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
-            />}
+            {cancelButton?.status && (
+              <BchatButton
+                text={cancelButton?.text}
+                buttonType={
+                  cancelButton?.buttonType ? cancelButton.buttonType : BchatButtonType.Brand
+                }
+                buttonColor={cancelButton?.color ? cancelButton.color : BchatButtonColor.Secondary}
+                onClick={cancelButton.onClickCancelHandler}
+                iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
+                iconType={cancelButton?.iconType}
+                dataTestId="Bchat-confirm-cancel-button"
+                style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
+              />
+            )}
             <BchatButton
               text={okButton?.text ? okButton.text : window.i18n('ok')}
               buttonType={okButton?.buttonType ? okButton.buttonType : BchatButtonType.Brand}
@@ -150,16 +161,17 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               iconSize={okButton?.iconSize ? okButton.iconSize : 10}
               iconType={okButton?.iconType}
               onClick={okButton?.onClickOkHandler}
-              dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}
+              dataTestId={okButton?.dataTestId ? okButton.dataTestId : 'Bchat-confirm-ok-button'}
               style={{ minWidth: iconShow ? '235px' : '200px' }}
             />
           </div>
-          {isloading && <div>
-            <Loader darkMode={darkMode} >
-              <BchatSpinner loading={true} />
-            </Loader>
-          </div>
-          }
+          {isloading && (
+            <div>
+              <Loader darkMode={darkMode}>
+                <BchatSpinner loading={true} />
+              </Loader>
+            </div>
+          )}
         </div>
       </div>
     </div>

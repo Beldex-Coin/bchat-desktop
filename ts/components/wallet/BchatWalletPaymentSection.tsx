@@ -8,14 +8,14 @@ import { WalletDashboard } from './BchatWalletMainPanel';
 export const WalletPaymentSection = (props: any) => {
   const dispatch = useDispatch();
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   function tabBtn() {
     props.clearStates();
     dispatch(walletSendPage());
   }
   return (
-    <div className="wallet-squarBox-tran" style={zoomLevel > 100 ? { width: '46.4%' } : {}}>
+    <div className="wallet-squarBox-tran">
       <Flex container={true} flexDirection="column" justifyContent="center" height="100%">
         <div className="wallet-btn-wrapper">
           <Flex container={true} flexDirection="row" justifyContent="center">

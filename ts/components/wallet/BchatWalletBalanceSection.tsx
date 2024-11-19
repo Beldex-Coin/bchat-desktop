@@ -17,7 +17,7 @@ export const WalletBalanceSection = () => {
   const currency: any = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
   const fiatBalance: any = Number(useSelector(getFiatBalance));
   const [amountVisible, setAmountVisible] = useState(window.getSettingValue('balancevisibility'));
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   let decimalValue: any =
     window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
@@ -45,7 +45,9 @@ export const WalletBalanceSection = () => {
     return dataArray;
   }
   return (
-    <div className="wallet-squarBox-bala" style={zoomLevel > 100 ? { width: '52%' } : {}}>
+    <div className="wallet-squarBox-bala" 
+    // style={zoomLevel > 100 ? { width: '52%' } : {}}
+    >
       <div className="innerWrapper">
         <Flex container={true} flexDirection="row" justifyContent="space-between">
           <div>
