@@ -367,7 +367,7 @@ export const TransactionSection = (props: any) => {
                       className="wallet-Transaction-contentBox-dateandheight-month"
                       style={{ marginBottom: '7px' }}
                     >
-                      {moment.unix(item.timestamp).format('ll')}
+                      {moment.unix(item.timestamp).format('ll HH:mm')}
                     </div>
                     <div className="wallet-Transaction-contentBox-dateandheight-height">
                       Height : {item.height}{' '}
@@ -400,7 +400,7 @@ export const TransactionSection = (props: any) => {
                         ></article>
                         {recip.address && (
                           <div
-                            style={{ marginLeft: '20px', width: zoomLevel > 100 ? '44%' : '49%' }}
+                            style={{ marginLeft: '20px', width: zoomLevel > 100 ? '65%' : '69%' }}
                             className="wallet-Transaction-recipitentBox-adddressBox"
                           >
                             <span>{window.i18n('recipientAddress')} : </span>
@@ -431,7 +431,7 @@ export const TransactionSection = (props: any) => {
                         )}
                       </Flex>
 
-                      <section
+                      {/* <section
                         style={{
                           width: zoomLevel > 100 ? '40%' : '209px',
                           marginLeft: zoomLevel && recip.address > 100 ? '20px' : '20px',
@@ -444,7 +444,7 @@ export const TransactionSection = (props: any) => {
                         <div className="wallet-Transaction-contentBox-dateandheight-content">
                           {moment.unix(item.timestamp).format('DD/MM/YYYY HH:mm')}
                         </div>
-                      </section>
+                      </section> */}
                     </Flex>
                   </>
                 )}

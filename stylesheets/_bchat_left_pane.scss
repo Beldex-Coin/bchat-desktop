@@ -1007,6 +1007,7 @@ $bchat-compose-margin: 20px;
     max-width: 420px;
     background: var(--color-left-pane-bg);
     padding: 15px;
+    overflow: auto;
 
     h6 {
       // color: #f0f0f0;
