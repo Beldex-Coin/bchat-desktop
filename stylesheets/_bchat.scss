@@ -1926,7 +1926,8 @@ label {
     &-contentBox {
       // background-color: var(--color-WalcontentBg);
       border-radius: 10px;
-      padding: 6px 15px;
+      // padding: 6px 15px;
+      padding: 6px 15px 6px 0;
       display: flex;
       justify-content: space-between;
 
@@ -3567,6 +3568,7 @@ label {
         padding: 15px;
         // border-radius: 10px;
         border-bottom: 1px solid var(--color-search-border);
+        padding-top: 0;
 
         &-sendIndicationBox {
           display: flex;
@@ -3587,6 +3589,7 @@ label {
           // width: 605px;
           // width: 75%;
           margin-left: 15px;
+          
 
           &-amount {
             cursor: pointer;
@@ -3614,7 +3617,7 @@ label {
           display: flex;
           flex-direction: column;
           // justify-content: center;
-          width: 242px;
+          // width: 242px;
 
           &-month {
             // color: #f0f0f0;

@@ -15,6 +15,7 @@ const SyncStatusBar = () => {
   let daemonHeight: any;
 
   const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // const walletDetails = useSelector((state: any) => state.wallet);
   let decimalValue: any =
     window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
@@ -44,14 +45,14 @@ const SyncStatusBar = () => {
   dispatch(updateWalletRescaning(value));
 
   return (
-    <div className="syncStatus">
+    <div className="syncStatus" style={{height:zoomLevel>125?'unset':''}}>
       <div>
         <Flex
           container={true}
           justifyContent="space-between"
           alignItems="center"
           padding={'5px 15px'}
-          height="43px"
+          height={zoomLevel>125?"":"43px"}
         >
           <Flex container={true}>
             <div className="syncStatus-statusTxt-wrapper">

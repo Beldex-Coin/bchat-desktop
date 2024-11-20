@@ -32,6 +32,10 @@ export const SendForm = (props: any) => {
   let decimalValue: any = useSelector(getwalletDecimalValue);
   const walletDetails = useSelector((state: any) => state.wallet);
   const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  const validZoomLevel=window.screen.width <= 1920 && zoomLevel>100;
+  console.log('validZoomLevel -->',validZoomLevel,window.screen.width,window.screen.width <= 1920)
+ 
   function clearStateValue() {
     props.setAmount('');
     // props.setPriority(window.i18n('flash'));
@@ -148,6 +152,7 @@ export const SendForm = (props: any) => {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
+          flexWrap={validZoomLevel?'wrap':'nowrap'}
         >
           <div className="wallet-sendForm-inputBox" style={{ width: '90%' }}>
             <input
@@ -169,7 +174,7 @@ export const SendForm = (props: any) => {
           </div>
 
           <div ref={modalRef}>
-            <div className="wallet-sendForm-priorty-wrapper">
+            <div className="wallet-sendForm-priorty-wrapper" style={{marginTop:validZoomLevel?'15px':''}}>
               <BchatIcon iconType={'lightning'} iconSize={16} />
               <span className="txt">{priority}</span>
 
