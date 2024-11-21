@@ -342,13 +342,13 @@ export const TransactionSection = (props: any) => {
                 style={{ cursor: 'pointer' }}
               >
                 <Flex container={true} justifyContent="space-between" flexDirection="row" width='100%' flexWrap='wrap'> 
-                  <Flex container={true} height=" 60px" width="55%" margin='15px 0 0 0'>
+                  <Flex container={true} height=" 60px" margin='15px 0 0 0'>
                     <article className="wallet-Transaction-contentBox-sendIndicationBox">
                       <TransactionIndication type={item.type} />
                     </article>
                     <div
                       className="wallet-Transaction-contentBox-balanceBox"
-                      style={{ width: zoomLevel > 100 ? '44%' : '' }}
+                      // style={{ width: zoomLevel > 100 ? '44%' : '' }}
                     >
                       <div className="wallet-Transaction-contentBox-balanceBox-amount">
                         {item.type === 'out' ? '-' : ''}
@@ -363,10 +363,10 @@ export const TransactionSection = (props: any) => {
                     </div>
                   </Flex>
 
-                  <section className="wallet-Transaction-contentBox-dateandheight" style={{marginTop:'15px'}}>
+                  <section className="wallet-Transaction-contentBox-dateandheight" style={{marginLeft:zoomLevel>125 && innerWidth<1920?'38px':'',marginTop:'15px'}}>
                     <div
                       className="wallet-Transaction-contentBox-dateandheight-month"
-                      style={{ marginBottom: '7px' }}
+                      style={{ marginBottom: '7px',textAlign:zoomLevel>125 && innerWidth<1920?'unset':'right' }}
                     >
                       {moment.unix(item.timestamp).format('ll HH:mm')}
                     </div>

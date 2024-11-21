@@ -88,7 +88,7 @@ const LeftPaneSection = () => {
   }
 
   if (focusedSection === SectionType.Wallet) {
-    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'233px':''}}><AddressBook isContact={true} /></div> ;
+    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'223px':'',width:zoomLevel>100?'20vw':''}}><AddressBook isContact={true} /></div> ;
   }
 
   // if (focusedSection === SectionType.Contact) {

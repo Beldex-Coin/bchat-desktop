@@ -120,6 +120,7 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  console.log('zoomLevel -->',zoomLevel,'window.innerWidth -->',window.innerWidth)
   // daemon.daemonHeartbeat();
   return (
     <>
@@ -131,7 +132,7 @@ export const Dashboard = (props: any) => {
       <SpacerLG />
       <div className="wallet-contentSpace">
         <Flex container={true} flexDirection="row" width="100%">
-          <Leftpane zoomFactor={zoomLevel>100}>
+          <Leftpane zoomFactor={zoomLevel}>
             <WalletBalanceSection />
             <SpacerMD />
             {WalletPage.AddressBook === focusedsettings ? (
@@ -141,7 +142,7 @@ export const Dashboard = (props: any) => {
               <TransactionSection transactionList={transactions} />
             )}
           </Leftpane>
-          <RightPane zoomFactor={zoomLevel>100}>
+          <RightPane zoomFactor={zoomLevel}>
             <WalletPaymentSection clearStates={props.clearStates} />
             {WalletDashboard.walletSend === focusedInnersection && (
               <SendForm
@@ -188,22 +189,22 @@ export const BalanceAndsendReceiveAction = (props: any) => {
   );
 };
 type RightPaneProps = {
-  zoomFactor:boolean;
+  zoomFactor:number;
 };
 const Leftpane = styled.div<RightPaneProps>`
   // width:45vw;
-  height:${props=>props.zoomFactor?'69vh':'79vh'};
+  height:${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '69vh':props.zoomFactor==150?'73vh' :'79vh'};
   // height:79vh
   margin-right: 15px;
-  overflow:auto;
+  overflow:${props=>props.zoomFactor>100?'auto':''};
 `;
 
 const RightPane = styled.div<RightPaneProps>`
   // width: 25vw;
   width: 50%;
-  min-width:${props=>props.zoomFactor?'250px':'320px'} ;
+  min-width:${props=>props.zoomFactor?'260px':'320px'} ;
 
-  height: ${props=>props.zoomFactor?'70vh':'81vh'} ;
+  height: ${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '69vh':props.zoomFactor==150?'73vh':'81vh'} ;
   // height:78vh;
   border-radius: 16px;
   background: var(--color-wallet-inner-bg);
