@@ -204,7 +204,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             iconType="save_tick"
             iconSize={16}
             onClick={() => onClickOK()}
-          // dataTestId="modal-close-button"
+            // dataTestId="modal-close-button"
           />
         </div>
       </div>
@@ -235,8 +235,7 @@ const HeaderItem = () => {
         alignItems="center"
         height="70px"
         padding="25px"
-        className='group-settings-header-title-wrapper'
-
+        className="group-settings-header-title-wrapper"
       >
         <span className="group-settings-header-titleTxt">
           {isGroup ? 'Group Info' : 'Profile Info'}
@@ -245,7 +244,7 @@ const HeaderItem = () => {
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
         >
-          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor='var(--color-text)' />
+          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
         </span>
       </Flex>
       <SpacerLG />
@@ -286,23 +285,23 @@ const ClassicMemberList = (props: {
 
   return (
     <>
-    <div className={classNames(removeMem && 'remove-contact-list')}>
-      {currentMembers.map(member => {
-        const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
-        const isAdmin = groupAdmins?.includes(member);
+      <div className={classNames(removeMem && 'remove-contact-list')}>
+        {currentMembers.map(member => {
+          const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
+          const isAdmin = groupAdmins?.includes(member);
 
-        return (
-          <MemberListItem
-            pubkey={member}
-            onlyList={!removeMem}
-            isSelected={isSelected}
-            onSelect={onSelect}
-            onUnselect={onUnselect}
-            key={member}
-            isAdmin={isAdmin}
-          />
-        );
-      })}
+          return (
+            <MemberListItem
+              pubkey={member}
+              onlyList={!removeMem}
+              isSelected={isSelected}
+              onSelect={onSelect}
+              onUnselect={onUnselect}
+              key={member}
+              isAdmin={isAdmin}
+            />
+          );
+        })}
       </div>
     </>
   );
@@ -325,11 +324,11 @@ export const BchatRightPanelWithDetails = () => {
   const existingMembers = convoProps?.members || [];
   const ref = useRef<onClickRef>(null);
   const { addTo, removeFrom, uniqueValues: membersToKeepWithUpdate } = useSet<string>(
-
     existingMembers
   );
   const darkMode = useSelector(getTheme) === 'dark';
   const { uniqueValues: selectedContacts } = useSet<string>();
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   useEffect(() => {
     let isRunning = true;
 
@@ -386,10 +385,10 @@ export const BchatRightPanelWithDetails = () => {
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-      ? window.i18n('youGotKickedFromGroup')
-      : left
-        ? window.i18n('youLeftTheGroup')
-        : window.i18n('leaveGroup');
+    ? window.i18n('youGotKickedFromGroup')
+    : left
+    ? window.i18n('youLeftTheGroup')
+    : window.i18n('leaveGroup');
 
   const timerOptions = useSelector(getTimerOptions).timerOptions;
 
@@ -409,14 +408,18 @@ export const BchatRightPanelWithDetails = () => {
 
   const deleteConvoAction = isPublic
     ? () => {
-      deleteAllMessagesByConvoIdWithConfirmation(id);
-    }
+        deleteAllMessagesByConvoIdWithConfirmation(id);
+      }
     : left
-      ? () => {
+    ? () => {
         deleteGroupByConvoId(id, username);
       }
-      : () => {
-        showLeaveGroupByConvoId(id, username, <BchatIcon iconType='leaveGroup' iconColor='#FF3E3E' iconSize={30} />);
+    : () => {
+        showLeaveGroupByConvoId(
+          id,
+          username,
+          <BchatIcon iconType="leaveGroup" iconColor="#FF3E3E" iconSize={30} />
+        );
       };
 
   const handleCopy = () => {
@@ -520,7 +523,15 @@ export const BchatRightPanelWithDetails = () => {
     }
   };
   return (
-    <div className="group-settings">
+    <div
+      className="group-settings"
+      style={{
+        position: zoomLevel > 100 ? 'absolute' : 'unset',
+        overflowY: zoomLevel > 100 ? 'auto' : 'unset',
+        right:0,
+        zIndex:2
+      }}
+    >
       {!fullView ? (
         <>
           <HeaderItem />
@@ -569,7 +580,11 @@ export const BchatRightPanelWithDetails = () => {
           )}
           {hasDisappearingMessages && (
             <div style={{ width: '100%' }}>
-              <div className="disppear-wrapper" role='button' onClick={() => setExpanded(!expanded)}>
+              <div
+                className="disppear-wrapper"
+                role="button"
+                onClick={() => setExpanded(!expanded)}
+              >
                 <Flex container={true} flexDirection="row" alignItems="center">
                   <BchatIcon
                     iconType={'chatTimer'}
@@ -643,10 +658,10 @@ export const BchatRightPanelWithDetails = () => {
               <Flex container={true} justifyContent="space-between" alignItems="center">
                 <div
                   className="group-settings-item"
-                // role="button"
-                // onClick={async () => {
-                //   await showUpdateGroupMembersByConvoId(id);
-                // }}
+                  // role="button"
+                  // onClick={async () => {
+                  //   await showUpdateGroupMembersByConvoId(id);
+                  // }}
                 >
                   <div className="invite-friends-container" style={{ marginRight: '10px' }}></div>
                   {window.i18n('groupMembers')}
@@ -672,13 +687,15 @@ export const BchatRightPanelWithDetails = () => {
                     </>
                   ) : (
                     <>
-                      {weAreAdmin && <BchatIconButton
-                        iconType="avatarX"
-                        iconSize={24}
-                        clipRule="evenodd"
-                        fillRule="evenodd"
-                        onClick={() => setRemoveMem(true)}
-                      />}
+                      {weAreAdmin && (
+                        <BchatIconButton
+                          iconType="avatarX"
+                          iconSize={24}
+                          clipRule="evenodd"
+                          fillRule="evenodd"
+                          onClick={() => setRemoveMem(true)}
+                        />
+                      )}
                       <div
                         className="add-btn"
                         role="button"
@@ -783,7 +800,7 @@ export const BchatRightPanelWithDetails = () => {
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}
                 iconSize={28}
-                iconColor={darkMode ? "#A9AEBA" : '#3E4A53'}
+                iconColor={darkMode ? '#A9AEBA' : '#3E4A53'}
               />
             </span>
             <span className="group-settings-header-titleTxt">Media & Documents</span>

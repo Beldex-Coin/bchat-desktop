@@ -47,6 +47,7 @@ export const AddressBook = (props: { isContact?: boolean }) => {
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   async function send(address: any) {
     // dispatch(dashboard());
@@ -112,7 +113,7 @@ export const AddressBook = (props: { isContact?: boolean }) => {
       {/* <SpacerSM /> */}
       <div
         className={classNames('addressBook-wholeBox ', BchatWalletPasswordModal && 'blurBg')}
-        style={{ height: !isContact ? 'calc( 100vh - 548px )' : 'calc( 100vh - 153px )' }}
+        style={{ height:!isContact && zoomLevel>100?'': !isContact ? 'calc( 100vh - 548px )' : 'calc( 100vh - 153px )' }} 
       >
         {filteredNames.length > 0 &&
           filteredNames.map(item => (

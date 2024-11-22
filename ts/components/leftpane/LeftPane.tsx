@@ -45,7 +45,7 @@ const InnerLeftPaneMessageSection = () => {
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
   const directContact = useSelector(getDirectContacts);
-  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
+  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length; 
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -67,6 +67,7 @@ const InnerLeftPaneMessageSection = () => {
 
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // const convoList = useSelector(getLeftPaneLists);
 // console.log('focusedSection ::',focusedSection)
   if (focusedSection === SectionType.Message) { 
@@ -87,7 +88,7 @@ const LeftPaneSection = () => {
   }
 
   if (focusedSection === SectionType.Wallet) {
-    return <div className='wallet-contact-left-pane-wrapper'><AddressBook isContact={true} /></div> ;
+    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'223px':'',width:zoomLevel>100?'20vw':''}}><AddressBook isContact={true} /></div> ;
   }
 
   // if (focusedSection === SectionType.Contact) {
