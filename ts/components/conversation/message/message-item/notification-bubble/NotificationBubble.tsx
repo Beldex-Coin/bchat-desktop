@@ -57,9 +57,10 @@ export const NotificationBubble = (props: {
   displayText?: string;
 }) => {
   const { notificationText, iconType, iconColor, bgColor, callNotification, displayText } = props;
+  
   return (
     <FlexCenter>
-      <NotificationBubbleFlex>
+      <NotificationBubbleFlex style={{margin:'0.3rem 0rem'}}>
         {iconType && (
           <NotificationBubbleIconContainer style={{ backgroundColor: bgColor }}>
             <BchatIcon
