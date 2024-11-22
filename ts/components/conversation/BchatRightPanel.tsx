@@ -527,8 +527,9 @@ export const BchatRightPanelWithDetails = () => {
       className="group-settings"
       style={{
         position: zoomLevel > 100 ? 'absolute' : 'unset',
-        overflow: zoomLevel > 100 ? 'auto' : 'unset',
-        right:0
+        overflowY: zoomLevel > 100 ? 'auto' : 'unset',
+        right:0,
+        zIndex:2
       }}
     >
       {!fullView ? (

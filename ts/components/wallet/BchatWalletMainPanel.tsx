@@ -193,7 +193,7 @@ type RightPaneProps = {
 };
 const Leftpane = styled.div<RightPaneProps>`
   // width:45vw;
-  height:${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '69vh':props.zoomFactor==150?'73vh' :'79vh'};
+  height:${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '74vh':props.zoomFactor==150?'73vh' :'79vh'};
   // height:79vh
   margin-right: 15px;
   overflow:${props=>props.zoomFactor>100?'auto':''};
@@ -204,7 +204,7 @@ const RightPane = styled.div<RightPaneProps>`
   width: 50%;
   min-width:${props=>props.zoomFactor?'260px':'320px'} ;
 
-  height: ${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '69vh':props.zoomFactor==150?'73vh':'81vh'} ;
+  height: ${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '73.7vh':props.zoomFactor==150?'73vh':'81vh'} ;
   // height:78vh;
   border-radius: 16px;
   background: var(--color-wallet-inner-bg);

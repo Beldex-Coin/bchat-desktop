@@ -363,7 +363,7 @@ export const TransactionSection = (props: any) => {
                     </div>
                   </Flex>
 
-                  <section className="wallet-Transaction-contentBox-dateandheight" style={{marginLeft:zoomLevel>125 && innerWidth<1920?'38px':'',marginTop:'15px'}}>
+                  <section className="wallet-Transaction-contentBox-dateandheight" style={{marginLeft:zoomLevel>125 && innerWidth<1920?'38px':'',marginTop:zoomLevel>125 && innerWidth<1920?'15px':''}}>
                     <div
                       className="wallet-Transaction-contentBox-dateandheight-month"
                       style={{ marginBottom: '7px',textAlign:zoomLevel>125 && innerWidth<1920?'unset':'right' }}
