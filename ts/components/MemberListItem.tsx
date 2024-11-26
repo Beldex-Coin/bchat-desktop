@@ -33,6 +33,7 @@ const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
 export const MemberListItem = (props: {
   pubkey: string;
   isSelected: boolean;
+  removeMem?:boolean;
   onlyList?: boolean;
   // this bool is used to make a zombie appear with less opacity than a normal member
   isZombie?: boolean;
@@ -52,6 +53,7 @@ export const MemberListItem = (props: {
     disableBg,
     dataTestId,
     onlyList,
+    removeMem
   } = props;
 
   const memberName:any = useConversationUsernameOrShorten(pubkey);
@@ -66,12 +68,13 @@ export const MemberListItem = (props: {
     return memberName;
   }
 
+  const selectionValidation=removeMem? !onlyList && !isSelected :!onlyList  &&isSelected
   return (
     // tslint:disable-next-line: use-simple-attributes
     <div
       className={classNames(
         'bchat-member-item',
-        !onlyList && isSelected && 'selected',
+        selectionValidation && 'selected',
         isZombie && 'zombie',
         disableBg && 'compact'
       )}
@@ -92,8 +95,8 @@ export const MemberListItem = (props: {
         {/* <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span> */}
       </div>
       {!onlyList && !isAdmin && (
-        <span className={classNames('bchat-member-item__checkmark', isSelected && 'selected')}>
-          {isSelected ? (
+        <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>
+          {selectionValidation ? (
             <CheckBoxTickIcon iconSize={26} />
           ) : (
             <BchatIcon iconType={'checkBox'} clipRule="evenodd" fillRule="evenodd" iconSize={26} />

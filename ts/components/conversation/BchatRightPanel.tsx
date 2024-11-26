@@ -294,6 +294,7 @@ const ClassicMemberList = (props: {
             <MemberListItem
               pubkey={member}
               onlyList={!removeMem}
+              removeMem={removeMem}
               isSelected={isSelected}
               onSelect={onSelect}
               onUnselect={onUnselect}
