@@ -20,7 +20,7 @@ export const TransactionInitModal = (props: any) => {
         headerReverse={true}
         showHeader={false}
         okButton={{
-          text: 'ok',
+          text: 'OK',
           color:BchatButtonColor.Primary,
           onClickOkHandler: () => {
             dispatch(updateTransactionInitModal(null));

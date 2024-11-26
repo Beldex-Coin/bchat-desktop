@@ -253,7 +253,7 @@ export const DeleteContactMenuItem = () => {
         onClickOk: async () => {
           onClickClose;
         },
-        okText: 'ok',
+        okText: 'OK',
         hideCancel: true,
       };
 

@@ -19,6 +19,7 @@ import {
   getChangePasswordModalState,
   getwalletSettingMiniModalState,
   getTransactionInitModal,
+  getInsufficientBalanceModal,
   getwalletSendConfirmModal,
   getBchatUpdateInstruntion,
   getBchatWalletPasswordModal,
@@ -47,6 +48,7 @@ import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
 import { ChangePassword } from '../wallet/BchatWalletChangePassword';
 import { WalletModal } from '../wallet/BchatWalletModal';
 import { TransactionInitModal } from '../wallet/BchatWalletTransactionInitModal';
+import { InsufficientBalanceModal } from '../wallet/BchatWalletInsufficientBalanceModal';
 import { BchatSendConfirm } from './BchatWalletSendConfirmModal';
 import BchatUpdateInstruntion from './updateInstructionModal';
 import { BchatWalletPasswordModal } from './BchatWalletPasswordModal';
@@ -79,6 +81,7 @@ export const ModalContainer: any = () => {
   const ChangePasswordModalState = useSelector(getChangePasswordModalState);
   const walletSettingMiniModal = useSelector(getwalletSettingMiniModalState);
   const TransactionInitModalState = useSelector(getTransactionInitModal);
+  const InsufficientBalanceModalState = useSelector(getInsufficientBalanceModal);
   const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
   const BchatUpdateInstruntionState = useSelector(getBchatUpdateInstruntion);
   const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
@@ -115,6 +118,7 @@ export const ModalContainer: any = () => {
       {ChangePasswordModalState && <ChangePassword />}
       {walletSettingMiniModal && <WalletModal {...walletSettingMiniModal} />}
       {TransactionInitModalState && <TransactionInitModal />}
+      {InsufficientBalanceModalState && <InsufficientBalanceModal/>}
       {BchatSendConfirmState && <BchatSendConfirm {...BchatSendConfirmState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
       {BchatWalletPasswordModalState && (

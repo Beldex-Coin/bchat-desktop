@@ -21,6 +21,7 @@ import {
   ChangePasswordModalState,
   walletSettingMiniModalState,
   TransactionInitModalState,
+  InsufficientBalanceModalState,
   WalletSendConfirmState,
   BchatUpdateInstruntionState,
   BchatWalletPasswordModalState,
@@ -126,6 +127,10 @@ export const getwalletSettingMiniModalState = createSelector(
 export const getTransactionInitModal = createSelector(
   getModal,
   (state: ModalState): TransactionInitModalState => state.transactionInitModal
+);
+export const getInsufficientBalanceModal = createSelector(
+  getModal,
+  (state: ModalState): InsufficientBalanceModalState => state.insufficientBalanceModal
 );
 export const getwalletSendConfirmModal = createSelector(
   getModal,

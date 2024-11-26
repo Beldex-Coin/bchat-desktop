@@ -42,6 +42,7 @@ export type walletSettingMiniModalState={
 } | null;
 
 export type TransactionInitModalState={} | null;
+export type InsufficientBalanceModalState={} |  null;
 export type WalletSendConfirmState=any | null;
 export type BchatUpdateInstruntionState=any | null;
 export type BchatWalletPasswordModalState={from?:string} |null;
@@ -72,6 +73,7 @@ export type ModalState = {
   ChangePasswordModal:ChangePasswordModalState;
   walletSettingMiniModal:walletSettingMiniModalState;
   transactionInitModal:TransactionInitModalState;
+  insufficientBalanceModal:InsufficientBalanceModalState;
   walletSendConfirm:WalletSendConfirmState;
   BchatUpdateInstruntion:BchatUpdateInstruntionState;
   BchatWalletPasswordModal:BchatWalletPasswordModalState;
@@ -102,6 +104,7 @@ export const initialModalState: ModalState = {
   ChangePasswordModal:null,
   walletSettingMiniModal:null,
   transactionInitModal:null,
+  insufficientBalanceModal:null,
   walletSendConfirm:null,
   BchatUpdateInstruntion:null,
   BchatWalletPasswordModal:null,
@@ -176,6 +179,10 @@ const ModalSlice = createSlice({
     {
       return { ...state, transactionInitModal: action.payload };
     },
+    updateInsufficientBalanceModal(state,action:PayloadAction<InsufficientBalanceModalState>)
+    {
+      return { ...state, insufficientBalanceModal: action.payload };
+    },
     updateSendConfirmModal(state,action:PayloadAction<WalletSendConfirmState>)
     {
       return { ...state, walletSendConfirm: action.payload };
@@ -232,6 +239,7 @@ export const {
   ChangePasswordModal,
   walletSettingMiniModal,
   updateTransactionInitModal,
+  updateInsufficientBalanceModal,
   updateSendConfirmModal,
   updateBchatUpgradeInstructionModal,
   updateBchatWalletPasswordModal,
