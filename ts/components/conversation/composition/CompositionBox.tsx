@@ -65,6 +65,7 @@ import { SettingsKey, walletSettingsKey } from '../../../data/settings-key';
 import {
   updateBchatAlertConfirmModal,
   updateConfirmModal,
+  updateInsufficientBalanceModal,
   // updateBchatWalletPasswordModal,
   updateSendConfirmModal,
   updateTransactionInitModal,
@@ -374,7 +375,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (draft > this.props.walletDetails.unlocked_balance / 1e9) {
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
-      return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance');
+      // return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance..');
+     return window.inboxStore?.dispatch(updateInsufficientBalanceModal(true));
+
+
     }
     let decimalValue: any =
       window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
