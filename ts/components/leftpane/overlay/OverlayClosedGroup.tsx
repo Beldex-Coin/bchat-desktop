@@ -29,6 +29,7 @@ export const OverlayClosedGroup = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
   const darkMode = useSelector(getTheme) === 'dark';
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -77,7 +78,7 @@ export const OverlayClosedGroup = () => {
       dispatch(setOverlayMode(undefined));
       return;
     }
-    setLoading(false);
+    setLoading(false); 
   }
 
   useKey('Escape', closeOverlay);
@@ -150,7 +151,7 @@ export const OverlayClosedGroup = () => {
           <BchatSpinner loading={loading} />
           </Loader>
         ) : (
-          <div className="group-member-list__container">
+          <div className="group-member-list__container"  style={{overflow:zoomLevel>100?"unset":'auto'}} >
             {noContactsForClosedGroup ? (
               <div className="group-member-list__no-contacts">
                 <div className="group-member-list__addImg"></div>

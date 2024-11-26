@@ -745,7 +745,7 @@ label {
   min-width: 300px;
   border-radius: 18px;
   box-sizing: border-box;
-  max-height: 70vh;
+  // max-height: 70vh;
   max-width: calc(min(70vw, 800px));
   // background-color: var(--color-smModal-bg);
   background-color: var(--color-modal-bg);
@@ -835,6 +835,7 @@ label {
     font-size: $bchat-font-md;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: 55vh;
 
     .message {
       text-align: center;
@@ -914,9 +915,9 @@ label {
     align-items: center;
     // to allow new lines
     // white-space: pre-wrap;
-    overflow-y: auto;
+    // overflow-y: auto;
     overflow-x: hidden;
-    max-height: 513px;
+    // max-height: 513px;
   }
 
   &__deleteAccountModal {

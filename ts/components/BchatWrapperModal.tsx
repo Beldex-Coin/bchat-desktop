@@ -49,7 +49,7 @@ export const Loader = styled.div<LoaderProps>`
 
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
   const darkMode = useSelector(getTheme) === 'dark';
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const {
     title,
     showHeader = true,
@@ -131,7 +131,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               <div className="bchat-modal__body" style={{ position: 'relative' }}>
                 <div
                   className="bchat-modal__centered"
-                  style={{ maxHeight: zoomLevel > 100 ? '311px' : '' }}
+                  // style={{ maxHeight: zoomLevel > 100 ? '311px' : '' }}
                 >
                   {props.children}
                 </div>
