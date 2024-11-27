@@ -1,11 +1,18 @@
 import { callUtilsWorker } from '../../../webworker/workers/util_worker_interface';
 import { sendViaOnionToNonSnode } from '../../onions/onionSend';
 
-const pnServerPubkeyHex = '54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911';
+// const pnServerPubkeyHex = '54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911';
 
-export const hrefPnServerProd = 'notification.rpcnode.stream';
+// export const hrefPnServerProd = 'notification.rpcnode.stream';
 
-export const hrefPnServerDev = 'notification.rpcnode.stream';
+// export const hrefPnServerDev = 'notification.rpcnode.stream';
+const pnServerPubkeyHex = '589f8d0d376933e6a48266423235f323dfa4eb4179903314cf5dfb30d6cf794a';
+
+export const hrefPnServerProd = '3.108.79.216:5000';
+
+export const hrefPnServerDev = '3.108.79.216:5000';
+
+
 const pnServerUrl = `http://${hrefPnServerProd}`;
 export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: string) {
   const options: ServerRequestOptionsType = {
