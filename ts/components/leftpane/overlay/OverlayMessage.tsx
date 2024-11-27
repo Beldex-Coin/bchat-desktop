@@ -58,13 +58,12 @@ export const OverlayMessage = () => {
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-    if (
-      (!pubkeyOrOns || pubkeyOrOns.length !== 66) &&
-      !pubkeyOrOns.toLowerCase().endsWith('.bdx')
-    ) {
+    if(PubKey.validateWithError(pubkeyorOnsTrimmed) && !pubkeyOrOns.toLowerCase().endsWith('.bdx'))
+    {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
+    
     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
