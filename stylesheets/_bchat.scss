@@ -829,16 +829,19 @@ label {
   }
 
   &__body {
-    padding: 0px $bchat-margin-lg 0px $bchat-margin-md;
+    padding: 0px $bchat-margin-sm 0px $bchat-margin-xs;
     font-family: $bchat-font-default;
     line-height: $bchat-font-md;
     font-size: $bchat-font-md;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 55vh;
-
+    max-height: 65vh;
+    // ::-webkit-scrollbar {
+    //   display: none;
+    // }
     .message {
       text-align: center;
+
     }
 
     .bchat-id-editable {
@@ -918,6 +921,7 @@ label {
     // overflow-y: auto;
     overflow-x: hidden;
     // max-height: 513px;
+    padding: 0px $bchat-margin-md 0px $bchat-margin-md;
   }
 
   &__deleteAccountModal {

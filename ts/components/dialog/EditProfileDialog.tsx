@@ -20,6 +20,7 @@ import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { CopyIconButton } from '../icon/CopyIconButton'
+import {  SpacerXS } from '../basic/Text';
 
 interface State {
   profileName: string;
@@ -347,6 +348,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             </button>
             <div className="hintTxt" style={{ cursor: 'pointer' }} role='button' onClick={() => window.inboxStore?.dispatch(updateAboutBnsModal({}))}>
               <span> {i18n('readMoreAboutBNS')} </span>
+              <SpacerXS />
               <BchatIcon iconType="infoCircle" iconSize={12} iconColor="#A7A7BA" />
             </div>
           </>
