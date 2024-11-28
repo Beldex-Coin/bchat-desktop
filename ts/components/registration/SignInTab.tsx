@@ -169,7 +169,7 @@ export const SignInTab = (props: any) => {
     }
     if (password !== repassword) {
       window?.log?.warn('invalid password');
-      return ToastUtils.pushToastError('invalidPassword', 'Passwords do not match');
+      return ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !');
     }
     if (
       (password.length < 4 && repassword.length < 4) ||

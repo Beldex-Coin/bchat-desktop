@@ -28,7 +28,7 @@ const StyledPillInner = styled.div<PillContainerProps>`
   flex-grow: 1;
   flex-shrink: 0;
   font-family: 'OpenSans';
-  font-weight: 600;
+  font-weight: 400;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -209,7 +209,8 @@ export const MessageContextMenu = (props: Props) => {
           <BchatIcon iconType={'infoCircle'} iconSize={18} />
           <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
       )}
-      {showRetry ? <Item onClick={onRetry}>{window.i18n('resend')}</Item> : null}
+      {showRetry ? <Item onClick={onRetry}> <BchatIcon iconType={'resend'} iconSize={18}  />
+      <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span></Item> : null}
       {isDeletable ? (
         <>
           <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
