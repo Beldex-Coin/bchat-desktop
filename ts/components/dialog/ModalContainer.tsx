@@ -19,15 +19,19 @@ import {
   getChangePasswordModalState,
   getwalletSettingMiniModalState,
   getTransactionInitModal,
+  getInsufficientBalanceModal,
   getwalletSendConfirmModal,
   getBchatUpdateInstruntion,
   getBchatWalletPasswordModal,
   getBchatAlertConfirmModal,
   getBnsLinkDialog,
   getAboutBnsModal,
+  getBchatWalletForgotPasswordModal,
+  getMessageMoreInfoModal,
+  getCommunityGuidelinesModal,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
-import { InviteContactsDialog } from './InviteContactsDialog';
+// import { InviteContactsDialog } from '../conversation/InviteContacts';
 import { DeleteAccountModal } from './DeleteAccountModal';
 import { EditProfileDialog } from './EditProfileDialog';
 import { OnionPathModal } from './OnionStatusPathDialog';
@@ -44,12 +48,18 @@ import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
 import { ChangePassword } from '../wallet/BchatWalletChangePassword';
 import { WalletModal } from '../wallet/BchatWalletModal';
 import { TransactionInitModal } from '../wallet/BchatWalletTransactionInitModal';
+import { InsufficientBalanceModal } from '../wallet/BchatWalletInsufficientBalanceModal';
 import { BchatSendConfirm } from './BchatWalletSendConfirmModal';
 import BchatUpdateInstruntion from './updateInstructionModal';
 import { BchatWalletPasswordModal } from './BchatWalletPasswordModal';
 import { BchatAlertConfirmModal } from './bchatAlertConfirmModal';
 import {BnsLinkDialog} from './BnsLinkDialog'
 import { AboutBnsDialog } from './AboutBnsDialog';
+import { BchatWalletForgotPasswordModal } from './BchatWalletForgotPasswordModal';
+import { MessageMoreInfoModal } from '../conversation/message/message-item/MessageDetail';
+import { InviteContactsDialog } from './InviteContactDialog';
+import { CommunityGuidelinesDialog } from './CommunityGuidelinesDialog';
+
 
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
@@ -71,11 +81,16 @@ export const ModalContainer: any = () => {
   const ChangePasswordModalState = useSelector(getChangePasswordModalState);
   const walletSettingMiniModal = useSelector(getwalletSettingMiniModalState);
   const TransactionInitModalState = useSelector(getTransactionInitModal);
+  const InsufficientBalanceModalState = useSelector(getInsufficientBalanceModal);
   const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
   const BchatUpdateInstruntionState = useSelector(getBchatUpdateInstruntion);
   const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
+  const BchatWalletForgotPasswordModalState=useSelector(getBchatWalletForgotPasswordModal)
   const BchatAlertConfirmModalState = useSelector(getBchatAlertConfirmModal);
   const aboutBnsModalState=useSelector(getAboutBnsModal);
+  const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
+  const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
+
 
   return (
     <>
@@ -103,13 +118,17 @@ export const ModalContainer: any = () => {
       {ChangePasswordModalState && <ChangePassword />}
       {walletSettingMiniModal && <WalletModal {...walletSettingMiniModal} />}
       {TransactionInitModalState && <TransactionInitModal />}
+      {InsufficientBalanceModalState && <InsufficientBalanceModal/>}
       {BchatSendConfirmState && <BchatSendConfirm {...BchatSendConfirmState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
       {BchatWalletPasswordModalState && (
         <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />
       )}
+      {BchatWalletForgotPasswordModalState && <BchatWalletForgotPasswordModal {...BchatWalletForgotPasswordModalState}/> }
       {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
       {aboutBnsModalState && <AboutBnsDialog />}
+      {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}
+      {communityGuidelinesModalState && <CommunityGuidelinesDialog  />}
     </>
   );
 };

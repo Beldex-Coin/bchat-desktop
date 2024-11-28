@@ -143,6 +143,7 @@ const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
       // size={40}
       position={{ left: '23px', top: '23px' }}
       isBnsHolder={props.isBnsHolder}
+      size={{width:'20',height:'20'}}
     >
       <Avatar size={AvatarSize.S} pubkey={props.source} />
     </BNSWrapper>

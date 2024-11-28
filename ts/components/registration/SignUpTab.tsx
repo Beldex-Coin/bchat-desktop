@@ -3,7 +3,7 @@ import { fromHex, sanitizeBchatUsername } from '../../bchat/utils/String';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIconButton } from '../icon';
-import { RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
+import { LeftImage, RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
 import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
 import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
@@ -13,7 +13,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
 
-const { clipboard } = require('electron');
+// const { clipboard } = require('electron');
 
 export enum SignUpMode {
   Default,
@@ -25,8 +25,8 @@ const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
   return (
     <BchatButton
       onClick={createBchatID}
-      buttonType={BchatButtonType.BrandOutline}
-      buttonColor={BchatButtonColor.Green}
+      buttonType={BchatButtonType.Default}
+      buttonColor={BchatButtonColor.Primary}
       text={window.i18n('createAccount')}
     />
   );
@@ -45,9 +45,9 @@ export const GoBackMainMenuButton = (props: any) => {
   return (
     <BchatIconButton
       iconSize="huge"
-      iconType="chevron"
-      iconRotation={90}
-      iconPadding="5px"
+      iconType="KeyboardBackspaceArrow"
+      // iconPadding="5px"
+      iconColor='#A9AEBA'
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
         setSignInMode(SignInMode.Default);
@@ -131,9 +131,10 @@ export const SignUpTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '151px',
-            height: '128px',
-            margin: '0 auto',
+            width: "120px",
+            height: "120px",
+            margin: "0px auto",
+            backgroundSize: "102px"
           }}
         ></div>
       </div>
@@ -142,6 +143,7 @@ export const SignUpTab = (props: any) => {
   const clickGoBack = () => {
     setDisplayName('');
     setDisplayNameScreen(0);
+    props.imageValidator(LeftImage.registration);
   };
   const verifyUserName = () => {
     if (!displayName) {
@@ -149,6 +151,7 @@ export const SignUpTab = (props: any) => {
       ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
     } else {
       setDisplayNameScreen(1);
+      props.imageValidator(LeftImage.password);
     }
   };
 
@@ -170,6 +173,7 @@ export const SignUpTab = (props: any) => {
       const walletData = { displayName, password };
       void generateMnemonicAndKeyPairCreate(walletData);
       setDisplayNameScreen(2);
+      props.imageValidator(LeftImage.address);
       setRepassword('');
       setPassword('');
     }
@@ -180,6 +184,7 @@ export const SignUpTab = (props: any) => {
     if (displayNameScreen === 1) {
       setPassword('');
       setRepassword('');
+      props.imageValidator(LeftImage.registration)
     }
   };
   if (displayNameScreen === 1) {
@@ -202,14 +207,14 @@ export const SignUpTab = (props: any) => {
           flexDirection="row"
           container={true}
           alignItems="center"
-          padding="14px 0px"
-          margin="0px 0px 0px 65px"
+          // padding="14px 0px"
+          // margin="0px 0px 0px 65px"
         >
           <div className="bchat-registration-goback-icon">
             <GoBackMainMenuButton assent={goback} />
           </div>
           <Flex className="bchat-registration__welcome-bchat">
-            {window.i18n('welcomeToYourBchat')}
+            {window.i18n('displayName')}
           </Flex>
         </Flex>
         <RegistrationUserDetails
@@ -227,23 +232,24 @@ export const SignUpTab = (props: any) => {
           }}
           stealAutoFocus={true}
         />
-        <div style={{ width: '76%', marginLeft: '55px' }}>
+        <div style={{ width: '450px', }}>
           <BchatButton
             onClick={() => {
               verifyUserName();
             }}
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            text={window.i18n('getStarted')}
+            buttonType={BchatButtonType.Default}
+            buttonColor={BchatButtonColor.Primary}
+            text={window.i18n('continue')} 
+            disabled={!displayName}
           />
         </div>
       </div>
     );
   }
 
-  const handlePaste = () => {
-    clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
-  };
+  // const handlePaste = () => {
+  //   clipboard.writeText(generatedRecoveryPhrase, 'clipboard');
+  // };
 
   if (displayNameScreen === 2) {
     return (
@@ -252,6 +258,7 @@ export const SignUpTab = (props: any) => {
         <DisplayIdAndAddress
           nextFunc={() => {
             setDisplayNameScreen(3);
+            props.imageValidator(LeftImage.recoveryseed);
           }}
           pubKey={hexGeneratedPubKey}
           walletAddress={localStorage.getItem('userAddress')}
@@ -274,7 +281,7 @@ export const SignUpTab = (props: any) => {
         mnemonic={generatedRecoveryPhrase}
         nextFunc={signUpWithDetails}
         enableCompleteSignUp={enableCompleteSignUp}
-        copySeed={handlePaste}
+        // copySeed={handlePaste}
         loading={showSeedLoading}
       ></ShowRecoveryPhase>
     </>

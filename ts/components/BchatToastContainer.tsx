@@ -1,6 +1,8 @@
 import React from 'react';
 import { Slide, ToastContainer, ToastContainerProps } from 'react-toastify';
 import styled from 'styled-components';
+import { BchatIconButton } from './icon';
+import { Flex } from './basic/Flex';
 
 const BchatToastContainerPrivate = () => {
   return (
@@ -20,13 +22,18 @@ const BchatToastContainerPrivate = () => {
     />
   );
 };
-
+const CloseButton = ({ closeToast }:{closeToast:any}) => (
+  <Flex container={true} justifyContent='center' alignItems='center' >
+  <BchatIconButton iconType={'xWithCircle'} iconSize={20} onClick={closeToast} style={{height: '31px'}}/>
+  </Flex>
+);
 const WrappedToastContainer = ({
   className,
   ...rest
 }: ToastContainerProps & { className?: string }) => (
   <div className={className}>
-    <ToastContainer {...rest} />
+    <ToastContainer {...rest} closeButton={CloseButton} />
+   
   </div>
 );
 

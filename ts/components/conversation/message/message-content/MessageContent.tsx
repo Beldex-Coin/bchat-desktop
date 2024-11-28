@@ -11,23 +11,24 @@ import {
   getQuotedMessageToAnimate,
   getShouldHighlightMessage,
 } from '../../../../state/selectors/conversations';
-import {
-  canDisplayImage,
-  getGridDimensions,
-  getImageDimensionsInAttachment,
-  hasImage,
-  hasVideoScreenshot,
-  isImage,
-  isImageAttachment,
-  isVideo,
-} from '../../../../types/Attachment';
+// import {
+//   canDisplayImage,
+//   // getGridDimensions,
+//   // getImageDimensionsInAttachment,
+//   hasImage,
+//   hasVideoScreenshot,
+//   isImage,
+//   isImageAttachment,
+//   isVideo,
+// } from '../../../../types/Attachment';
 import { Flex } from '../../../basic/Flex';
-import { MINIMUM_LINK_PREVIEW_IMAGE_WIDTH } from '../message-item/Message';
+// import { MINIMUM_LINK_PREVIEW_IMAGE_WIDTH } from '../message-item/Message';
 import { MessageAttachment } from './MessageAttachment';
 import { MessagePreview } from './MessagePreview';
 import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
+import { SpacerXS } from '../../../basic/Text';
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -47,39 +48,39 @@ type Props = {
   isDetailView?: boolean;
 };
 
-function getIsShowingImage(
-  props: Pick<MessageRenderingProps, 'attachments' | 'previews' | 'text'> & { imageBroken: boolean }
-): boolean {
-  const { attachments, previews, text, imageBroken } = props;
+// function getIsShowingImage(
+//   props: Pick<MessageRenderingProps, 'attachments' | 'previews' | 'text'> & { imageBroken: boolean }
+// ): boolean {
+//   const { attachments, previews, text, imageBroken } = props;
 
-  if (imageBroken) {
-    return false;
-  }
+//   if (imageBroken) {
+//     return false;
+//   }
 
-  if (attachments && attachments.length) {
-    const displayImage = canDisplayImage(attachments);
-    const hasText = text?.length;
-    return Boolean(
-      displayImage &&
-        !hasText &&
-        ((isImage(attachments) && hasImage(attachments)) ||
-          (isVideo(attachments) && hasVideoScreenshot(attachments)))
-    );
-  }
+//   if (attachments && attachments.length) {
+//     const displayImage = canDisplayImage(attachments);
+//     const hasText = text?.length;
+//     return Boolean(
+//       displayImage &&
+//         !hasText &&
+//         ((isImage(attachments) && hasImage(attachments)) ||
+//           (isVideo(attachments) && hasVideoScreenshot(attachments)))
+//     );
+//   }
 
-  if (previews && previews.length) {
-    const first = previews[0];
-    const { image } = first;
+//   if (previews && previews.length) {
+//     const first = previews[0];
+//     const { image } = first;
 
-    if (!image) {
-      return false;
-    }
+//     if (!image) {
+//       return false;
+//     }
 
-    return isImageAttachment(image);
-  }
+//     return isImageAttachment(image);
+//   }
 
-  return false;
-}
+//   return false;
+// }
 
 function onClickOnMessageInnerContainer(event: React.MouseEvent<HTMLDivElement>) {
   const selection = window.getSelection();
@@ -162,24 +163,27 @@ export const MessageContent = (props: Props) => {
     firstMessageOfSeries,
     lastMessageOfSeries,
     previews,
-    quote,
-    attachments,
+    // quote,
+    attachments=[],
   } = contentProps;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
-
   let isDeleted = false;
   if (selectedMsg && selectedMsg.isDeleted !== undefined) {
     isDeleted = selectedMsg.isDeleted;
   }
 
-  const width = getWidth({ previews, attachments });
-  const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
+  // const width = getWidth({ previews, attachments });
+  // console.log('width --->',width);
+  // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
-  const hasQuote = !isEmpty(quote);
+  // const hasQuote = !isEmpty(quote);
+  const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
 
-  const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
+  // console.log('isShowingImage->',isShowingImage,'hasText->',hasText,'hasQuote',hasQuote,'attachments->',hasAttachment)
+
+  // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 
   return (
@@ -187,9 +191,10 @@ export const MessageContent = (props: Props) => {
       className={classNames(
         'module-message__container',
         `module-message__container--${direction}`,
-        bgShouldBeTransparent
-          ? `module-message__container--${direction}--transparent`
-          : `module-message__container--${direction}--opaque`,
+        // bgShouldBeTransparent
+        //   ? `module-message__container--${direction}--transparent`
+        // :
+        `module-message__container--${direction}--opaque`,
         firstMessageOfSeries || props.isDetailView
           ? `module-message__container--${direction}--first-of-series`
           : '',
@@ -198,9 +203,9 @@ export const MessageContent = (props: Props) => {
           : '',
         flashGreen && 'flash-green-once'
       )}
-      style={{
-        width: isShowingImage ? width : undefined,
-      }}
+      // style={{
+      //   width: isShowingImage ? width : undefined,
+      // }}
       role="button"
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
@@ -220,52 +225,57 @@ export const MessageContent = (props: Props) => {
                 messageId={props.messageId}
                 imageBroken={imageBroken}
                 handleImageError={handleImageError}
+                displayBgBlur={hasAttachment && hasText}
               />
             </>
           )}
           {hasContentAfterAttachmentAndQuote ? (
             <>
               {!isDeleted && (
-                <MessagePreview messageId={props.messageId} handleImageError={handleImageError} />
+                <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
               )}
-              <Flex padding="7px 15px" container={true} flexDirection="column">
+              {/* attachment-with-quote class is used to only refer the design validation in css */}
+              <Flex padding="7px 15px 0" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
             </>
           ) : null}
+          <SpacerXS />
+          <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
+          <SpacerXS />
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
   );
 };
 
-function getWidth(
-  props: Pick<MessageRenderingProps, 'attachments' | 'previews'>
-): number | undefined {
-  const { attachments, previews } = props;
+// function getWidth(
+//   props: Pick<MessageRenderingProps, 'attachments' | 'previews'>
+// ): number | undefined {
+//   const { attachments, previews } = props;
 
-  if (attachments && attachments.length) {
-    const dimensions = getGridDimensions(attachments);
-    if (dimensions) {
-      return dimensions.width;
-    }
-  }
+//   if (attachments && attachments.length) {
+//     const dimensions = getGridDimensions(attachments);
+//     if (dimensions) {
+//       return dimensions.width;
+//     }
+//   }
 
-  if (previews && previews.length) {
-    const first = previews[0];
+//   if (previews && previews.length) {
+//     const first = previews[0];
 
-    if (!first || !first.image) {
-      return;
-    }
-    const { width } = first.image;
+//     if (!first || !first.image) {
+//       return;
+//     }
+//     const { width } = first.image;
 
-    if (isImageAttachment(first.image) && width && width >= MINIMUM_LINK_PREVIEW_IMAGE_WIDTH) {
-      const dimensions = getImageDimensionsInAttachment(first.image);
-      if (dimensions) {
-        return dimensions.width;
-      }
-    }
-  }
+//     if (isImageAttachment(first.image) && width && width >= MINIMUM_LINK_PREVIEW_IMAGE_WIDTH) {
+//       const dimensions = getImageDimensionsInAttachment(first.image);
+//       if (dimensions) {
+//         return dimensions.width;
+//       }
+//     }
+//   }
 
-  return;
-}
+//   return;
+// }

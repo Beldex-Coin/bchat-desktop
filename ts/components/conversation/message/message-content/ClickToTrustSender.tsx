@@ -5,21 +5,70 @@ import { getConversationController } from '../../../../bchat/conversations';
 import { AttachmentDownloads } from '../../../../bchat/utils';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
-import { BchatIcon } from '../../../icon';
+import { BchatIcon, BchatIconType } from '../../../icon';
+import { Flex } from '../../../basic/Flex';
+import { PropsForAttachment } from '../../../../state/ducks/conversations';
+import { isAudio, isImage, isVideo } from '../../../../types/Attachment';
 
 const StyledTrustSenderUI = styled.div`
   padding-inline: var(--margins-sm);
   display: flex;
   align-items: center;
+  margin: 15px 15px 5px;
+  padding: 15px;
+  border-radius: 16px;
+  background: var(--color-untrust-media-bg);
 `;
 
 const ClickToDownload = styled.div`
   cursor: pointer;
-  padding: var(--margins-xs) var(--margins-md);
+  // padding: var(--margins-xs) var(--margins-md);
   white-space: nowrap;
+  overflow: hidden;
+  // color: #f0f0f0;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 300;
 `;
 
-export const ClickToTrustSender = (props: { messageId: string }) => {
+const VerticalLine = styled.div`
+  width: 5px;
+  background-color: var(--color-untrusted-vertical-bar);
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 10px;
+`;
+const ImageTxt = styled.span`
+  margin-left: 5px;
+  // color: #f0f0f0;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+`;
+interface AttachmentTypeProps {
+  txt: string;
+  icon: BchatIconType;
+}
+export const ClickToTrustSender =(props: { messageId: string, attachments: Array<PropsForAttachment> }) => {
+const {attachments}=props;
+
+const attachmentProps: { [key: string]: AttachmentTypeProps } = {
+  image: { txt: "Image", icon: "gallery" },
+  audio: { txt: "Audio", icon: "audio" },
+  video: { txt: "Video", icon: "video" },
+  document: { txt: "Document", icon: "document" }
+};
+
+const getAttachmentType = (attachments: any): AttachmentTypeProps => {
+  if (isImage(attachments)) return attachmentProps.image;
+  if (isAudio(attachments)) return attachmentProps.audio;
+  if (isVideo(attachments)) return attachmentProps.video;
+  return attachmentProps.document;
+};
+
+const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
+
+
   const openConfirmationModal = async (e: any) => {
     e.stopPropagation();
     e.preventDefault();
@@ -38,7 +87,10 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
         message: window.i18n('trustThisContactDialogDescription', [
           convo.getContactProfileNameOrShortenedPubKey(),
         ]),
-        okTheme: BchatButtonColor.Green,
+        okTheme: BchatButtonColor.Primary,
+        okText: window.i18n('autoUpdateDownloadButtonLabel'),
+        iconShow: true,
+        customIcon: <BchatIcon iconType='trustDownloadMedia' iconSize={30} />,
         onClickOk: async () => {
           convo.set({ isTrustedForAttachmentDownload: true });
           await convo.commit();
@@ -81,12 +133,12 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
 
                   const image = message.isTrustedForAttachmentDownload()
                     ? await AttachmentDownloads.addJob(item.image, {
-                        messageId: message.id,
-                        type: 'preview',
-                        index,
-                        isOpenGroupV2: false,
-                        openGroupV2Details: undefined,
-                      })
+                      messageId: message.id,
+                      type: 'preview',
+                      index,
+                      isOpenGroupV2: false,
+                      openGroupV2Details: undefined,
+                    })
                     : null;
 
                   return { ...item, image };
@@ -106,8 +158,14 @@ export const ClickToTrustSender = (props: { messageId: string }) => {
 
   return (
     <StyledTrustSenderUI onClick={openConfirmationModal}>
-      <BchatIcon iconSize="small" iconType="gallery" />
-      <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
+      <VerticalLine></VerticalLine>
+      <Flex container={true} flexDirection="column">
+        <Flex container={true} flexDirection="row" alignItems="center">
+          <BchatIcon iconSize="small" iconType={attachmentType.icon} />
+          <ImageTxt>{attachmentType.txt}</ImageTxt>
+        </Flex>
+        <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
+      </Flex>
     </StyledTrustSenderUI>
   );
 };

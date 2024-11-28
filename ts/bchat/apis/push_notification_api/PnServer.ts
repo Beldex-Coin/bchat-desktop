@@ -6,8 +6,8 @@ const pnServerPubkeyHex = '54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d
 export const hrefPnServerProd = 'notification.rpcnode.stream';
 
 export const hrefPnServerDev = 'notification.rpcnode.stream';
-const pnServerUrl = `http://${hrefPnServerProd}`;
 
+const pnServerUrl = `http://${hrefPnServerProd}`;
 export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: string) {
   const options: ServerRequestOptionsType = {
     method: 'post',
@@ -16,7 +16,7 @@ export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: strin
       send_to: sentTo,
     },
   };
-  const endpoint = 'notify';
+  const endpoint = 'notify';  
   const ret = await serverRequest(`${pnServerUrl}/${endpoint}`, options);
   if (!ret) {
     window?.log?.warn('Push notification server request returned false');
@@ -46,6 +46,7 @@ const serverRequest = async (
     fetchOptions.headers = headers;
     fetchOptions.method = method;
   } catch (e) {
+
     window?.log?.error('onionSend:::notifyPnServer - set up error:', e.code, e.message);
     return false;
   }

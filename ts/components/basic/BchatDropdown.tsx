@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { BchatIcon, BchatIconType } from '../icon';
 
 import { BchatDropdownItem, BchatDropDownItemType } from './BchatDropdownItem';
+import { MenuWrapper } from '../menu/Menu';
 
 // THIS IS DROPDOWN ACCORDIAN STYLE OPTIONS SELECTOR ELEMENT, NOT A CONTEXTMENU
 
 type Props = {
   label: string;
+  labelIcon?: BchatIconType;
   onClick?: any;
   expanded?: boolean;
   options: Array<{
@@ -20,7 +22,7 @@ type Props = {
 };
 
 export const BchatDropdown = (props: Props) => {
-  const { label, options } = props;
+  const { label, options, labelIcon } = props;
   const [expanded, setExpanded] = useState(!!props.expanded);
   const chevronOrientation = expanded ? 180 : 0;
 
@@ -33,7 +35,16 @@ export const BchatDropdown = (props: Props) => {
         }}
         role="button"
       >
-        {label}
+        <div>
+          {labelIcon ? (
+            <>
+              <BchatIcon iconType={labelIcon} iconSize={18} fillRule="evenodd" clipRule="evenodd" />
+              <MenuWrapper>{label}</MenuWrapper>
+            </>
+          ) : (
+            { label }
+          )}
+        </div>
         <BchatIcon iconType="chevron" iconSize="small" iconRotation={chevronOrientation} />
       </div>
 

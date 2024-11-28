@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import { SectionType, setOverlayMode } from '../../state/ducks/section';
+import { SectionType } from '../../state/ducks/section';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
-import { getLeftPaneLists } from '../../state/selectors/conversations';
+import { getLeftPaneLists, getUnreadConversationRequests } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
@@ -17,6 +17,7 @@ import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
+import { OverlayMessage } from './overlay/OverlayMessage';
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -44,6 +45,7 @@ const InnerLeftPaneMessageSection = () => {
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
   const directContact = useSelector(getDirectContacts);
+  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length; 
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -54,6 +56,7 @@ const InnerLeftPaneMessageSection = () => {
       messageRequestsEnabled={messageRequestsEnabled}
       overlayMode={overlayMode}
       directContact={directContact}
+      conversationRequestsUnread={conversationRequestsUnread}
     />
   );
 };
@@ -64,11 +67,19 @@ const InnerLeftPaneMessageSection = () => {
 
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
-
-  if (focusedSection === SectionType.Message) {
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const convoList = useSelector(getLeftPaneLists);
+// console.log('focusedSection ::',focusedSection)
+  if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
   }
+  if (focusedSection === SectionType.NewChat) {
+    return  <OverlayMessage />;
+  }
   if (focusedSection === SectionType.Closedgroup) {
+    // if (convoList?.conversations.length === 0 || convoList.contacts.length === 0 ) {
+    //   return<></>;
+    // }
     return <OverlayClosedGroup />;
   }
 
@@ -77,7 +88,7 @@ const LeftPaneSection = () => {
   }
 
   if (focusedSection === SectionType.Wallet) {
-    return <AddressBook from={window.i18n('contact')} />;
+    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'223px':'',width:zoomLevel>100?'20vw':''}}><AddressBook isContact={true} /></div> ;
   }
 
   // if (focusedSection === SectionType.Contact) {
@@ -89,43 +100,44 @@ const LeftPaneSection = () => {
   return null;
 };
 
-const AddContactFloatingIcon = () => {
-  const focusedSection = useSelector(getFocusedSection);
-  const overlayMode = useSelector(getOverlayMode);
-  const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
+// const AddContactFloatingIcon = () => {
+//   const focusedSection = useSelector(getFocusedSection);
+//   const overlayMode = useSelector(getOverlayMode);
+//   const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
  
 
-  if (visibleFloatIcon) {
-    // return <InnerLeftPaneMessageSection />;
-    return (
-      <div className="addContactFloating">
-        <div
-          className="addContactFloating-content"
-          data-tip="Add Contacts"
-          //  data-offset="{'right':60}"
-          data-offset="{'top':80,'right':80}"
-          data-place="bottom"
-          onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
-        >
-          <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
+//   if (visibleFloatIcon) {
+//     // return <InnerLeftPaneMessageSection />;
+//     return (
+//       <div className="addContactFloating">
+//         <div
+//           className="addContactFloating-content"
+//           data-tip="Add Contacts"
+//           //  data-offset="{'right':60}"
+//           data-offset="{'top':80,'right':80}"
+//           data-place="bottom"
+//           onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
+//         >
+//           <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
 
-          {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
-          {/* <img src={"addNewChat.svg"} /> */}
-        </div>
-      </div>
-    );
-  }
-  return <></>;
-};
+//           {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
+//           {/* <img src={"addNewChat.svg"} /> */}
+//         </div>
+//       </div>
+//     );
+//   }
+//   return <></>;
+// };
 
 export const LeftPane = () => {
   return (
     <BchatTheme>
       <div className="module-left-pane-bchat">
         <div className="module-left-pane">
+           <ActionsPanel />
           <LeftPaneSection />
-          <AddContactFloatingIcon />
-          <ActionsPanel />
+          {/* <AddContactFloatingIcon /> */}
+          
         </div>
       </div>
     </BchatTheme>

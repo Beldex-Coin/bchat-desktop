@@ -21,12 +21,16 @@ import {
   ChangePasswordModalState,
   walletSettingMiniModalState,
   TransactionInitModalState,
+  InsufficientBalanceModalState,
   WalletSendConfirmState,
   BchatUpdateInstruntionState,
   BchatWalletPasswordModalState,
   BchatAlertConfirmModalState,
   BnsLinkModalState,
-  AboutBnsModalState
+  AboutBnsModalState,
+  BchatWalletForgotPasswordModalState,
+  MessageMoreInfoState,
+  CommunityGuidelinesModalState
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -124,6 +128,10 @@ export const getTransactionInitModal = createSelector(
   getModal,
   (state: ModalState): TransactionInitModalState => state.transactionInitModal
 );
+export const getInsufficientBalanceModal = createSelector(
+  getModal,
+  (state: ModalState): InsufficientBalanceModalState => state.insufficientBalanceModal
+);
 export const getwalletSendConfirmModal = createSelector(
   getModal,
   (state: ModalState): WalletSendConfirmState => state.walletSendConfirm
@@ -136,6 +144,9 @@ export const getBchatWalletPasswordModal = createSelector(
   getModal,
   (state: ModalState): BchatWalletPasswordModalState => state.BchatWalletPasswordModal
 );
+export const getBchatWalletForgotPasswordModal=createSelector(
+  getModal,(state:ModalState):BchatWalletForgotPasswordModalState=>state.BchatWalletForgotPasswordModal
+)
 export const getBchatAlertConfirmModal = createSelector(
   getModal,
   (state: ModalState): BchatAlertConfirmModalState => state.BchatAlertConfirmModal
@@ -143,5 +154,13 @@ export const getBchatAlertConfirmModal = createSelector(
 export const getAboutBnsModal = createSelector(
   getModal,
   (state: ModalState): AboutBnsModalState => state.aboutBnsModal
+);
+export const getMessageMoreInfoModal = createSelector(
+  getModal,
+  (state: ModalState): MessageMoreInfoState => state.messageMoreInfo
+);
+export const getCommunityGuidelinesModal = createSelector(
+  getModal,
+  (state: ModalState): CommunityGuidelinesModalState => state.communityGuidelinesModal
 );
 

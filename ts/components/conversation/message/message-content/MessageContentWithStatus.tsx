@@ -79,20 +79,22 @@ export const MessageContentWithStatuses = (props: Props) => {
       data-testid={dataTestId}
     >
       <MessageStatus
-        dataTestId="msg-status-incoming"
+        dataTestId="msg-status-outgoing"
         messageId={messageId}
-        isCorrectSide={isIncoming}
+        isCorrectSide={!isIncoming}
       />
+      
       <div>
         <MessageAuthorText messageId={messageId} />
 
         <MessageContent messageId={messageId} isDetailView={isDetailView} />
       </div>
       <MessageStatus
-        dataTestId="msg-status-outgoing"
+        dataTestId="msg-status-incoming"
         messageId={messageId}
-        isCorrectSide={!isIncoming}
+        isCorrectSide={isIncoming}
       />
+      
       {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
     </div>
   );

@@ -47,7 +47,7 @@ const ErrorItem = (props: { error: string | undefined }) => {
 
 const ShowHideButton = (props: { toggleForceShow: () => void,forceShow:boolean }) => {
   
-    return <BchatIconButton iconType={!props.forceShow?"eye":'eye_closed'} iconSize="medium" onClick={props.toggleForceShow} />;
+    return <BchatIconButton iconType={!props.forceShow?"eye":'eye_closed'} iconSize="medium" fillRule="evenodd" clipRule="evenodd" onClick={props.toggleForceShow} />;
 };
 
 export const BchatInput = (props: Props) => {
@@ -79,9 +79,10 @@ export const BchatInput = (props: Props) => {
 
   return (
     <div className="bchat-input-with-label-container">
-      {error ? (
+      {error && (
         <ErrorItem error={props.error} />
-      ) : (
+      ) }
+      { label &&(
         <LabelItem inputValue={inputValue} label={label} />
       )}
       <input
@@ -103,7 +104,7 @@ export const BchatInput = (props: Props) => {
           }
         }}
       />
-
+      
       {enableShowHide && (
         <ShowHideButton
           toggleForceShow={() => {

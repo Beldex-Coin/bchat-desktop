@@ -1,9 +1,11 @@
 import classNames from "classnames"
 import React, { useState } from "react"
-import { BchatButton, BchatButtonColor, BchatButtonType } from "../basic/BchatButton"
-import { SpacerLG, SpacerMD, SpacerSM } from "../basic/Text"
+import { BchatButtonColor } from "../basic/BchatButton"
+import { SpacerSM } from "../basic/Text"
 import { BchatWrapperModal } from "../BchatWrapperModal"
 import { useKey } from "react-use"
+import { BchatIcon } from "../icon"
+import { Constants } from '../../bchat';
 
 
 export const WalletModal = (props: any) => {
@@ -17,22 +19,47 @@ export const WalletModal = (props: any) => {
             title={props.headerName}
             onClose={props.onClose}
             showExitIcon={false}
-            headerReverse={true}
+            // headerReverse={true}
+            okButton={{
+                text: window.i18n('save'),
+                color: BchatButtonColor.Primary,
+                onClickOkHandler: () => { props.onClick(select) }
+            }}
+            cancelButton={{
+                status: true,
+                text: window.i18n('cancel'),
+                onClickCancelHandler: props.onClose
+            }}
         >
-            <SpacerLG />
             <div className="bchat-modal__centered">
-                <div style={{ width: '100%', height: '148px', overflowY: 'auto' }}>
-                    {props.content.length !== 0 && props.content.map((item: any, i: any) => <>
-                        <div className={classNames("bchat-modal__centered-walletModalContent", select === item && "isSelect")} key={i}
-                            onClick={() => setSelect(item)} >
-                            {item}
-                        </div>
-                        <SpacerSM />
-                    </>)}
+                <div className="bchat-modal__walletModel">
+                    <div style={{ width: '100%', overflowY: 'auto' }}>
+                        {props.content.length !== 0 && props.content.map((item: any, i: any) => <>
+                            <div className={classNames("bchat-modal__centered-walletModalContent", select === item && "isSelect")} key={i}
+
+                                onClick={() => setSelect(item)} >
+                                <div
+                                    className={
+                                        select !== item ? 'bchat-modal__centered-walletModalContent-circle' : 'selected'
+                                    }
+                                >
+                                    {select === item && (
+                                        <BchatIcon
+                                            iconType="circle"
+                                            iconSize={10}
+                                            iconColor={Constants.UI.COLORS.GREEN}
+                                        />
+                                    )}
+                                </div>
+                                {item}
+                            </div>
+                            <SpacerSM />
+                        </>)}
+                    </div>
+                    {/* <SpacerMD /> */}
                 </div>
-                <SpacerMD />
-                <div className="bchat-modal__button-group__center">
-                    <BchatButton
+                {/* <div className="bchat-modal__button-group__center"> */}
+                {/* <BchatButton
                         text={window.i18n('cancel')}
                         buttonType={BchatButtonType.Default}
                         buttonColor={BchatButtonColor.Primary}
@@ -41,8 +68,8 @@ export const WalletModal = (props: any) => {
                             width: '100px',
                             borderRadius: '5px'
                         }}
-                    />
-                    <BchatButton
+                    /> */}
+                {/* <BchatButton
                         text={window.i18n('save')}
                         buttonType={BchatButtonType.Default}
                         buttonColor={BchatButtonColor.Green}
@@ -51,9 +78,10 @@ export const WalletModal = (props: any) => {
                             width: '100px',
                             borderRadius: '5px'
                         }}
-                    />
+                    /> */}
 
-                </div></div>
+                {/* </div> */}
+            </div>
         </BchatWrapperModal>
     </div>
 }

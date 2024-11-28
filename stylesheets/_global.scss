@@ -12,26 +12,31 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: $bchat-font-poppin-regular;
+  font-family: $bchat-font-default;
   font-size: 14px;
   letter-spacing: 0.3px;
 }
 
 // scrollbars
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
+  height:5px
+ 
 }
+
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-scroll-bar-thumb);
   border-radius: 10px;
 
-  &:hover {
-    background: $color-light-45;
-  }
+  // &:hover {
+  //   background: $color-light-45;
+  // }
 }
+
 ::-webkit-scrollbar-track {
   border-radius: 10px;
+  background: var(--color-scroll-bar-track);
 }
 
 audio {
@@ -43,6 +48,7 @@ audio {
   display: table;
   content: ' ';
 }
+
 .clearfix:after {
   clear: both;
 }
@@ -56,6 +62,7 @@ button {
   font-size: inherit;
 
   &[disabled='disabled'] {
+
     &,
     &:hover {
       opacity: 0.5;
@@ -64,6 +71,7 @@ button {
     }
   }
 }
+
 button.grey {
   border-radius: $border-radius;
   border: solid 1px #ccc;
@@ -80,6 +88,7 @@ button.grey {
   }
 
   &[disabled='disabled'] {
+
     &,
     &:hover {
       opacity: 0.5;
@@ -96,6 +105,7 @@ a {
 
 .file-input {
   position: relative;
+
   .choose-file {
     cursor: pointer;
   }
@@ -121,6 +131,7 @@ a {
   .members .contact {
     box-shadow: none;
     border-bottom: 1px solid #eee;
+
     .last-message,
     .last-timestamp {
       display: none;
@@ -173,6 +184,7 @@ $loading-height: 16px;
 
 .loading {
   position: relative;
+
   &::before {
     display: block;
     margin: 0px auto;
@@ -216,6 +228,7 @@ $loading-height: 16px;
     transform: scale(1);
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -233,7 +246,7 @@ $loading-height: 16px;
   user-select: none;
   // force this to black, to stay consistent with the password prompt being in dark mode too.
   // background-color: var(--color-inbox-background);
-  background-color: #1C1C26;
+  background-color: #131313;
 
   .content {
     margin-inline-start: auto;
@@ -241,12 +254,14 @@ $loading-height: 16px;
     text-align: center;
     width: 250px;
   }
+
   .container {
     margin-inline-start: auto;
     margin-inline-end: auto;
     width: 78px;
     height: 22px;
   }
+
   .message {
     -webkit-user-select: text;
     max-width: 35em;
@@ -262,13 +277,16 @@ $loading-height: 16px;
     transform: scale(0);
 
     animation: loading 1500ms ease infinite 0ms;
+
     &:nth-child(2) {
       animation: loading 1500ms ease infinite 333ms;
     }
+
     &:nth-child(3) {
       animation: loading 1500ms ease infinite 666ms;
     }
   }
+
   .bchat-text-logo {
     filter: brightness(0) saturate(100%);
   }
@@ -283,21 +301,25 @@ $loading-height: 16px;
   position: relative;
 }
 
-.tooltipDesign{
+.tooltipDesign {
   background-color: #F7F7F7 !important;
   padding: 1px 6px !important;
-  color: black  !important;
-  border:1px solid #D9D9D9 !important;
-  font-family: $bchat-font-poppin-medium !important;
-    &.place-top,&.place-bottom {
-      &:after {
-        border: none !important;
-      }
+  color: black !important;
+  border: 1px solid #D9D9D9 !important;
+  font-family: $bchat-font-default !important;
+
+  &.place-top,
+  &.place-bottom {
+    &:after {
+      border: none !important;
     }
-    &.place-right {
-      //  display: none;
-      &:after {
-        border: none !important;
-      }
+  }
+
+  &.place-right {
+
+    //  display: none;
+    &:after {
+      border: none !important;
     }
- }
+  }
+}

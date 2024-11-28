@@ -97,8 +97,8 @@
   "messageFoundButNotLoaded": "元のメッセージを見つけたが、ロードされていません。ロードするのにスクロールアップして下さい。",
   "recording": "記録中",
   "you": "あなた",
-  "audioPermissionNeededTitle": "Microphone access required",
-  "audioPermissionNeeded": "音声メッセージを送るには、BChatのマイクへのアクセスを許可してください。",
+  "audioPermissionNeededTitle": "Record Permission Required!",
+  "audioPermissionNeeded": "Allow Recorder to access voice recording?",
   "audio": "音声",
   "video": "動画",
   "photo": "写真",
@@ -318,7 +318,7 @@
   "invalidPubkeyFormat": "無効な公開鍵フォーマットです",
   "emptyGroupNameError": "グループ名を入力してください",
   "editProfileModalTitle": "プロフィール",
- "linkYourBns": "Link Your BNS",
+  "linkYourBns": "Link Your BNS",
   "readMoreAboutBNS": "Read more about BNS",
   "bnsVerified": "BNS Verified ",
   "linkBNS": "Link BNS",
@@ -327,7 +327,7 @@
   "verify": "Verify",
   "verified": "Verified",
   "link": "Link",
-  "bnsLinkedSuccessfully": "BNS Linked Successfully",
+  "bnsLinkedSuccessfully": "BNS Linked Successfully!",
   "groupNamePlaceholder": "グループ名",
   "inviteContacts": "友達にオススメする",
   "addModerators": "モデレータを追加",
@@ -475,5 +475,11 @@
   "trimDatabaseDescription": "Reduces your message database size to your last 10,000 messages.",
   "trimDatabaseConfirmationBody": "Are you sure you want to delete your $deleteAmount$ oldest received messages?",
   "bns": "Bns",
-  "paymentID":"Payment ID"
+  "paymentID": "Payment ID",
+  "allow": "Allow",
+  "deny": "Deny",
+  "openLink": "Open Link",
+  "changeWalletPassword":"Change Wallet password",
+  "enterNewWalletPassword":"Enter New Wallet Password"
+
 }

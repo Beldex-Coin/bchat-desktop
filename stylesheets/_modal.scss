@@ -23,19 +23,24 @@
       // height: 87vh;
       flex-direction: column;
       justify-content: center;
+
       .progressSyncBox {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       }
+
       &-contentBox {
         width: 500px;
         // background-color: var(--color-WalcontentBg);
         border-radius: 10px;
 
         .progress {
-          width: 70px;
+          width: 90px;
+          background-color: var(--color-hop-bg);
+          border-radius: 68px;
+
           .CircularProgressbar {
             /*
              * This fixes an issue where the CircularProgressbar svg has
@@ -56,7 +61,7 @@
           }
 
           .CircularProgressbar .CircularProgressbar-trail {
-            stroke: #d6d6d6;
+            stroke: #858598;
             /* Used when trail is not full diameter, i.e. when props.circleRatio is set */
             stroke-linecap: round;
           }
@@ -96,6 +101,7 @@
           .CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
             stroke: transparent;
           }
+
           //   .circle-wrap {
           //     // margin: 150px auto;
           //     width: 150px;
@@ -167,28 +173,36 @@
           margin: auto;
           background-image: var(--img-walPassword);
         }
+
         &-headerBox {
           display: flex;
           align-items: center;
           justify-content: center;
+
           span {
-            font-family: $bchat-font-poppins-bold;
-            margin-left: 10px;
-            font-size: 18px;
+            // color: #f0f0f0;
+            font-size: 26px;
+            font-weight: 700;
           }
         }
 
         &-inputBox {
           margin: 0 auto;
-          width: 73%;
+          width: 91%;
+
           input {
             outline: none;
             border: none;
             width: 100%;
-            border-bottom: 1px solid #444455;
             text-align: center;
+
+            border-radius: 16px;
+            border: 1px solid var(--color-search-border);
+            background: var(--color-hop-bg);
+            height: 70px;
           }
         }
+
         &-loader,
         &-forgotpasswordLoader {
           width: 500px;
@@ -200,141 +214,180 @@
           display: flex;
           align-items: center;
         }
+
         &-forgotpasswordLoader {
           width: 590px;
           height: 476px;
         }
+
         &-forgotTxt {
           text-align: center;
-          color: #1bb51e;
-          font-size: 12px;
           text-decoration: underline;
-        }
-        .bchat-button.brand-outline.green {
-          width: 33%;
-          margin: auto;
-          height: 45px;
-          border-radius: 10px;
+
+          color: #108d32;
+          font-size: 18px;
+          font-weight: 400;
+          text-transform: capitalize;
         }
       }
     }
+
     &-progressSync {
       &-presentage {
+        color: #108d32;
         text-align: center;
-        font-family: $bchat-font-poppins-bold;
-        font-size: 20px;
-        color: #1bb51e;
+        font-size: 30px;
+        font-weight: 700;
       }
+
       &-barBg {
         width: 100%;
         height: 10px;
-        background-color: var(--color-walSyncbar);
+        // background-color: var(--color-walSyncbar);
+        background-color: #858598;
         padding-top: 2px;
+
         .bar {
-          background-color: #1bb51e;
+          background-color: #108d32;
           width: 40%;
           height: 4px;
           margin-top: 1px;
         }
       }
+
       &-reloadTxt {
+        color: var(--color-modal-disable-txt);
         text-align: center;
-        font-family: $bchat-font-poppin-semibold;
-        font-size: 14px;
+        font-size: 18px;
+        font-weight: 400;
       }
+
       &-bRemaing {
         text-align: center;
+        // color: #f0f0f0;
+        font-size: 18px;
+        font-weight: 400;
       }
     }
+
     &-forgotPassword {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       flex-direction: column;
+
       &-content-Box {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         // width: 538px;
-        width: 580px;
+        width: 550px;
 
         // height: 417px;
         // background-color: #2d2d3b;
         // background-color: var(--color-WalcontentBg);
         border-radius: 10px;
+
         // margin: 5% 0px;
         &-title {
-          text-align: center;
-          font-size: 18px;
-          font-family: $bchat-font-poppins-bold;
           padding-top: 20px;
+          // color: #f0f0f0;
+          font-size: 26px;
+          font-weight: 700;
+          text-align: left;
         }
+
         &-seed {
           display: flex;
           flex-direction: row;
+          border-radius: 16px;
+          border: 1px solid var(--color-search-border);
+          background: var(--color-input-background);
+          width: 505px;
+
           textarea {
             border: none;
             outline: none;
             resize: none;
             // width: 435px;
             // height: 126px;
-            width: 500px;
-            height: 97px;
+            width: 463px;
+            height: 140px;
             // background-color: #353543;
             // background-color: var(--color-walInputBg);
-            background-color: var(--color-background-primary);
-            padding: 15px;
+            // background-color: var(--color-background-primary);
+            padding: 15px 25px;
+
             // box-shadow: 1px 2px 5px #00000074;
             border-radius: 10px;
+
+            font-size: 18px;
+            line-height: 22px;
           }
         }
-        &-paste-icon {
-          background: url('../images/bchat/paste.svg') no-repeat;
-          width: 35px;
-          height: 35px;
-          // background-color: var(--color-inboxBgColor);
-          background-color: var(--color-background-primary);
-          background-size: 14px;
-          border-radius: 35px;
-          background-position: center;
-          left: 10px;
-          top: 19px;
-          position: relative;
-          cursor: pointer;
-          box-shadow: var(--color-bchat-shadow);
-        }
-        &-paste-icon:hover {
-          // transform: scale(1.1);
-          // background-color: var(--color-wallet-copy-hover);
-          // color: #1ced23;
-          background-color: var(--color-profile-close);
+
+        // &-paste-icon {
+        //   background: url('../images/bchat/paste.svg') no-repeat;
+        //   width: 35px;
+        //   height: 35px;
+        //   // background-color: var(--color-inboxBgColor);
+        //   background-color: var(--color-background-primary);
+        //   background-size: 14px;
+        //   border-radius: 35px;
+        //   background-position: center;
+        //   left: 10px;
+        //   top: 19px;
+        //   position: relative;
+        //   cursor: pointer;
+        //   box-shadow: var(--color-bchat-shadow);
+        // }
+
+        // &-paste-icon:hover {
+        //   // transform: scale(1.1);
+        //   // background-color: var(--color-wallet-copy-hover);
+        //   // color: #1ced23;
+        //   background-color: var(--color-profile-close);
+        // }
+        &-password-label {
+          display: flex;
+          // color: #f0f0f0;
+          font-size: 16px;
+          font-weight: 400;
         }
         &-password {
+          border-radius: 16px;
+          border: 1px solid var(--color-search-border);
+          background: var(--color-input-background);
+          width: 505px;
           input {
             border: none;
             outline: none;
             // background-color: #353543;
             // background-color: var(--color-walInputBg);
-            background-color: var(--color-background-primary);
-
+            // background-color: var(--color-background-primary);
+            background-color: unset;
             // width: 438px;
-            width: 500px;
-            height: 45px;
+            width: 453px;
+            height: 70px;
             // box-shadow: 1px 2px 5px #00000074;
             margin-right: 10px;
             border-radius: 10px;
-            padding: 10px;
+            padding: 15px 25px;
           }
         }
+
         &-disClaimerBox {
           // width: 86%;
           // padding-top: 12px;
+          width: 505px;
           padding-bottom: 25px;
-          font-size: 13px;
-          display: flex;
-          justify-content: center;
+          color: #a7a7ba;
+          font-size: 16px;
+          font-weight: 400;
+          text-align: start;
+          line-height: 20px;
         }
       }
     }
@@ -363,13 +416,16 @@
   &-UpdateModal {
     &-discription {
       font-family: $bchat-font-poppin-light;
+
       &-fontMedium {
         font-family: $bchat-font-poppin-medium;
       }
     }
+
     &-header {
       font-family: $bchat-font-poppin-semibold;
     }
+
     &-icon {
       // color:red
       width: 50px;
@@ -383,6 +439,7 @@
         background-color: #2075ff;
       }
     }
+
     &-loader {
       width: 552px;
       height: 362px;
@@ -408,6 +465,12 @@
     min-width: 300px;
     // background-color: #313143;
     box-shadow: var(--color-bchat-shadow);
+  }
+
+  .invite-friends-list {
+    width: 400px;
+    max-height: 500px;
+    overflow-y: auto;
   }
 }
 
@@ -567,8 +630,25 @@
 
   .groupNameBox {
     display: flex;
-    border-bottom: var(--border-bchat);
+    justify-content: center;
+    align-items: center;
+    width: 443px;
+    height: 70px;
+    background: var(--color-input-background);
+    color: var(--color-text);
+    border: 1px solid #46465d;
+    border-radius: 16px;
+
+    input {
+      width: 371px;
+      height: 65px;
+
+      // text-align: center;
+      background: unset;
+      padding: 0 20px;
+    }
   }
+
   .changepass {
     &-forgot-seed {
       textarea {
@@ -578,29 +658,42 @@
         height: 76px;
         // background-color: #353543;
         background-color: var(--color-walInputBg);
-
         padding: 15px;
         // box-shadow: 1px 2px 5px #00000074;
       }
     }
+
     &-oldpassInput {
+      border-radius: 16px;
+      border: 1px solid var(--color-search-border);
+      background: var(--color-hop-bg);
+      height: 70px;
+      width: 100%;
+      padding: 10px;
       input {
-        background-color: var(--color-walInputBg);
-        width: 435px;
-        height: 55px;
-        margin-bottom: 10px;
+        background: var(--color-hop-bg);
+        height: 100%;
+        width: 430px;
+
+        // margin-bottom: 10px;
         // box-shadow: 1px 2px 5px #00000074;
       }
     }
 
     &-newPassInput {
+      border-radius: 16px;
+      border: 1px solid var(--color-search-border);
+      background: var(--color-hop-bg);
+      height: 70px;
+      width: 100%;
+      padding: 10px;
       input {
         // background-color: #353543;
-        background-color: var(--color-walInputBg);
-        width: 435px;
-        height: 52px;
+        background: var(--color-hop-bg);
+        height: 100%;
+        width: 430px;
         // box-shadow: 1px 2px 5px #00000074;
-        margin-right: 12px;
+        // margin-right: 12px;
       }
     }
   }
@@ -630,6 +723,7 @@
   display: flex;
   align-items: center;
 }
+
 .walletChangePasswordHeader {
   display: flex;
   flex-direction: row;
@@ -701,30 +795,30 @@
 
     &-display {
       user-select: text;
-      text-align: center;
+      text-align: left;
       word-break: break-all;
       font-size: $bchat-font-md;
-      // padding: 0px $bchat-margin-lg;
-      // background-color: var(--color-composeMsgInput);
-      background-color: var(--color-background-primary);
+      // background-color: var(--color-background-primary);
+      background-color: var(--color-hop-bg);
       border-radius: 10px;
-      padding: 10px 10px 10px 14px;
+      padding: 0px 10px 10px 14px;
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0bb70f;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      // align-items: center;
       flex-direction: row;
       width: 100%;
       min-height: 60px;
       box-shadow: var(--color-bchat-shadow);
 
       font-size: $bchat-font-md;
+
       // padding: 0px $bchat-margin-sm;
       .profile-value {
         width: 86%;
-        font-family: $bchat-font-poppin-medium;
+        font-weight: 600;
         font-size: 14px;
       }
     }
@@ -744,11 +838,6 @@
       border-radius: 30px;
       background-position: center;
       cursor: pointer;
-      color: var(--color-copyIcon);
-
-      &:hover {
-        background-color: var(--color-copy-hover);
-      }
     }
 
     .bchat-button {
@@ -756,46 +845,56 @@
     }
   }
 
+  .profileHeader {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+  }
+
   .profileClose {
     display: flex;
-    justify-content: center;
-    margin-left: 350px;
+    // justify-content: center;
+    margin-left: 20px;
     margin-top: 12px;
     width: 28px;
     height: 28px;
-    &:hover {
-      background-color: var(--color-profile-close);
-      border-radius: 20px;
-    }
+    // &:hover {
+    //   background-color: var(--color-profile-close);
+    //   border-radius: 20px;
+    // }
   }
 
   .profile-name {
     display: flex;
     margin-top: $bchat-margin-sm;
     margin-bottom: $bchat-margin-sm;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
+    font-family: $bchat-font-default;
+    font-weight: 400;
 
     .inputBox {
       display: flex;
-      width: 310px;
-      padding-left: 59px;
+      width: 200px;
+      padding-left: 45px;
     }
 
     .saveIcon {
       width: 35px;
       color: var(--color-accent);
       cursor: pointer;
+      margin: auto 0;
+      margin-left: 7px;
     }
 
     input {
       height: 38px;
-      border-radius: 5px;
+      border-radius: 16px;
       text-align: center;
       font-size: $bchat-font-md;
       background: var(--color-input-background);
       color: var(--color-text);
-      // border: var(--border-bchat);
+      border: 1px solid #46465d;
     }
 
     &-uneditable {
@@ -803,7 +902,8 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      font-family: $bchat-font-poppin-semibold;
+      margin-right: 25px;
+      font-family: $bchat-font-default;
 
       p {
         font-size: 16px;
@@ -818,6 +918,7 @@
         // left: 103px;
         position: relative;
         cursor: pointer;
+
         &:hover {
           color: #128b17;
         }
@@ -828,51 +929,65 @@
       }
     }
   }
+
   .link_bns_wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
   }
+
   .link_bns_Btn {
-    width: 70%;
+    width: 55%;
     border-radius: 12px;
     background-color: #128b17;
     font-weight: 600;
     border: none;
     font-size: 12px;
     height: 45px;
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-default;
+    font-weight: 600;
   }
-  .hintTxt,
-  .bnsVerfiedTxt {
+
+  .hintTxt {
     color: #a7a7ba;
-    font-size: 10px;
+    font-size: 12px;
     display: flex;
     margin-top: 7px;
     align-items: flex-start;
+    margin-bottom: 15px;
   }
+
   .bnsVerfiedTxt {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
     color: #0bb70f;
     font-size: 14px;
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-default;
+    font-weight: 700;
   }
 }
-.bns_enable_modal {
-  .bchat-modal__body {
-    border: 2px solid #00bd40;
-    box-shadow: inset 0 0 24px 0px rgba(0, 189, 64, 0.45);
-    border-radius: 17px;
-  }
-}
+
+// .bns_enable_modal {
+// .bchat-modal__body {
+// border: 2px solid #00bd40;
+// box-shadow: inset 0 0 24px 0px rgba(0, 189, 64, 0.45);
+// border-radius: 17px;
+// }
+// }
 .bns_link_modal {
+  width: 500px;
+  padding-top: 20px;
+  text-align: left;
   header {
-    font-family: $bchat-font-poppins-bold;
-    // font-family: $bchat-font-poppin-semibold;
-    font-size: 22px;
     margin-bottom: 25px;
-    margin-top: 25px;
+    margin-top: 15px;
+    // color: #f0f0f0;
+    font-size: 26px;
+    font-weight: 700;
   }
+
   .label_id {
     // font-weight: 700;
     // font-family: $bchat-font-poppin-semibold;
@@ -880,82 +995,182 @@
     margin-bottom: 10px;
     font-size: 12x;
   }
-  .id_wrapper {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: var(--color-BnsLinkIdBg);
-    padding: 0px 25px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    color: #0bb70f;
-    box-shadow: var(--color-bchat-shadow);
+
+  .linked_bns {
+    padding: 0px 0px 35px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #108d32;
   }
+
+  .id_wrapper {
+    // height: 90px;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    background-color: var(--color-BnsLinkIdBg);
+    // background-color: #202329;
+    border: 1px solid var(--color-search-border);
+    padding: 0px 25px;
+    border-radius: 16px;
+    margin-bottom: 15px;
+    // box-shadow: var(--color-bchat-shadow);
+    .id-label {
+      // color: #f0f0f0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .id_content {
+      color: #108d32;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: normal;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
   .hr_line {
     background-color: var(--color-pill-divider);
     width: 100%;
     height: 2px;
   }
+
   .label_input {
-    text-align: start;
-    margin-top: 20px;
+    color: #a7a7ba;
+    font-size: 16px;
+    font-weight: 400;
   }
+
   .inputBox-wrapper {
-    margin: 15px auto;
-    height: 60px;
-    background-color: var(--color-BnsLinkInputBg);
-    border-radius: 10px;
+    // margin: 15px auto;
+    height: 65px;
+    background-color: var(--color-BnsLinkIdBg);
+    // background-color: #202329;
+    border: 1px solid var(--color-search-border);
+    border-radius: 16px;
     padding: 0px 25px;
-    box-shadow: var(--color-bchat-shadow);
+    // box-shadow: var(--color-bchat-shadow);
+
     input {
       width: 100%;
       height: 100%;
       background-color: transparent;
     }
   }
+
   .divided-btn-wrapper {
     align-items: center;
     display: flex;
-    justify-content: space-between;
-    padding: 0 32px;
+    justify-content: center;
+    // padding: 0 32px;
 
     margin-bottom: 10px;
+
+    .button {
+      height: 55px;
+      border-radius: 12px;
+      background-color: #202329;
+      color: #858598 !important;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+
+  .success {
+    font-family: $bchat-font-default;
+    font-size: 22px;
+    margin-bottom: 35px;
+    margin-top: 20px;
+    font-weight: 700;
+    color: #108d32;
+  }
+}
+.nickNameDialog {
+  .input-wrapper {
+    width: 420px;
+    height: 70px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    border: 1px solid var(--color-search-border);
+    background: var(--color-input-background);
+    display: flex;
+    padding: 0 13px;
+    align-items: center;
+    input {
+      background-color: unset;
+    }
   }
 }
 .about-bns {
   section {
     text-align: left;
-    width: 520px;
-    height: 430px;
+    width: 600px;
+    height: 450px;
     overflow: auto;
+    margin-bottom: 25px;
   }
-  article{
+
+  article {
     padding: 0 10px;
   }
-  .bchat-modal__header__title
-  {
-    font-size: 16px;
+
+  .bchat-modal__header__title {
+    font-size: 18px;
   }
+
   &-header {
-    font-family: $bchat-font-poppin-semibold;
+    font-family: $bchat-font-default;
+    font-weight: 600;
+    font-size: 16px;
     margin-top: $bchat-margin-md;
     margin-bottom: $bchat-margin-sm;
   }
+
   &-txt {
-    font-family: $bchat-font-poppin-regular;
+    font-family: $bchat-font-default;
+    font-weight: 400;
+    font-size: 14px;
     margin-bottom: $bchat-margin-lg;
     line-height: 22px;
   }
+
   &-txt-bold {
     line-height: 22px;
+
     span {
-      font-family: $bchat-font-poppins-bold;
+      font-family: $bchat-font-default;
+      font-weight: 600;
     }
+
     span:first-child {
-      font-family: $bchat-font-poppin-semibold;
+      font-family: $bchat-font-default;
     }
   }
 }
+.community-guidelines {
+  article {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    line-height: 22px;
+    overflow: auto;
+    overflow-x: hidden;
+    // height: 482px;
+    width: 581px;
+    text-align: left;
+    padding: 0 26px;
+
+    div {
+      margin-bottom: 10px;
+    }
+    a {
+      color: #108d32;
+    }
+    
+  }
+}
+
 .onion-status-dialog {
   .bchat-modal__header__title {
     font-size: $bchat-font-lg;
@@ -1013,6 +1228,36 @@
 
     .lineContainer {
       height: 50px;
+    }
+  }
+}
+
+.user-details {
+  .user-name {
+    // color: #f0f0f0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .user-id-wrapper {
+    border-radius: 16px;
+    border: 1px solid var(--color-search-border);
+    background: var(--color-hop-bg);
+    padding: 15px;
+    text-align: left;
+    &-label {
+      // color: #f0f0f0;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+    .user-id {
+      color: #108d32;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 17px;
+      padding-right: 20px;
     }
   }
 }

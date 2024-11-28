@@ -13,12 +13,13 @@ const DisplayNameInput = (props: {
     // tslint:disable-next-line: use-simple-attributes
     <BchatInput
       autoFocus={props.stealAutoFocus || false}
-      label={window.i18n('displayName')}
       type="text"
       placeholder={window.i18n('enterDisplayName')}
       value={props.displayName}
       maxLength={MAX_USERNAME_LENGTH}
-      onValueChanged={props.onDisplayNameChanged}
+      onValueChanged={(value => {
+        props.onDisplayNameChanged(value.replace(/\s/g, ''))
+      })}
       onEnterPressed={props.handlePressEnter}
       inputDataTestId="display-name-input"
     />

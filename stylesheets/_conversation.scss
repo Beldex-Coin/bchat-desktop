@@ -1,8 +1,11 @@
 .message-detail-wrapper {
-  height: calc(100% - 48px);
-  width: 100%;
-  overflow-y: auto;
-  z-index: 2;
+  // height: calc(100% - 48px);
+  // width: 100%;
+  // overflow-y: auto;
+  // z-index: 2;
+  .bchat-message-wrapper {
+    padding: 0;
+  }
 }
 
 .public-chat-message-wrapper {
@@ -13,80 +16,171 @@
 .group-invitation-container {
   display: flex;
   flex-direction: column;
+  padding-right: 15px;
+  align-items: flex-end;
+  padding-left: 15px;
+  padding-bottom: 3px;
 }
 
 .payment {
-  background-color: #128b17;
-  color: #FFFFFF;
   display: inline-block;
-  margin: 4px 16px;
+  // margin: 4px 16px;
   padding: 16px;
   border-radius: 15px;
-  align-self: flex-start;
+  // align-self: flex-start;
   box-shadow: none;
   cursor: pointer;
+  // width: 352px;
+  background: var(--color-received-message-background);
+  // border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+
   &.invitation-outgoing {
-    background: var(--color-sent-message-background);
+    // background: var(--color-sent-message-background);
+    // align-self: flex-end;
+    // margin-right: 26px;
     align-self: flex-end;
-    margin-right: 26px;
+    background-color: #108d32;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 15px;
+    color: white;
   }
   .contents-incoming,
   .contents {
     display: flex;
     align-items: center;
     // margin: 6px;
-    justify-content: space-between;
+    // justify-content: space-between;
     // min-width: 202px;
-    min-width: 217px;
+    min-width: 300px;
     /* margin: 10px; */
     max-width: 465px;
     margin: 0px 0px 7px;
-    background-color: #3e88ff;
+    background-color: #0a6f0a;
     border-radius: 10px;
     // padding: 5px 10px;
-    padding: 5px 16px;
+    padding-left: 15px;
+    height: 80px;
   }
   .contents-incoming {
-    background-color: #20a826;
+    background-color: var(--color-untrust-media-bg);
+    .amount {
+      color:var(--color-text);
+    }
   }
   .amount {
-    font-family: $bchat-font-poppins-bold;
-    font-size: 18px;
+    font-family: $bchat-font-open-sans;
+    color: #f0f0f0;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-left: 10px;
   }
   .hint-out,
   .hintTxt {
     display: flex;
-    align-self: flex-end;
-    font-size: 12px;
+    // align-self: flex-end;
+    // font-size: 12px;
+    font-weight: 400;
+    .txn-status {
+      margin-right: 10px;
+      overflow: hidden;
+      color: #f0f0f0;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
   }
-  .hint-out {
-    justify-content: flex-end;
+  // .hint-out {
+  //   justify-content: flex-end;
+  // }
+  .timeStamp {
+    color: #858598;
+    font-size: 12px;
+    font-weight: 400;
+    width: 100%;
+    text-align: end;
+    padding-right: 18px;
+  }
+  .timeStamp-outgoing {
+    color: #f0f0f0;
   }
 }
-.payment:hover
-{
-opacity: 0.9;
+.payment:hover {
+  opacity: 0.9;
+}
+.inviteWrapper-incoming,
+.payment-Wrapper-incoming {
+  align-self: flex-start;
+}
+.inviteWrapper-outgoing,
+.payment-Wrapper-outgoing {
+  // align-self: flex-end;
+  align-items: center;
+  display: flex;
 }
 
 .group-invitation {
   background: var(--color-received-message-background);
+  cursor: pointer;
 
   &.invitation-outgoing {
-    background: var(--color-sent-message-background);
-    align-self: flex-end;
-    margin-right: 26px;
+    // background: var(--color-sent-message-background);
+    // align-self: flex-end;
+    // margin-right: 26px;
+    align-items: center;
+    background-color: #108d32;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 15px;
+    color: white;
   }
 
   display: inline-block;
-  margin: 4px 16px;
-  padding: 4px;
-
+  // margin: 4px 16px;
+  padding: 15px;
   border-radius: 15px;
-
+  border-top-left-radius: 0px;
   align-self: flex-start;
-
   box-shadow: none;
+  .group-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 16px;
+    width: 305px;
+    background-color: var(--color-untrust-media-bg);
+    cursor: pointer;
+    .group-name {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+    .group-type {
+      overflow: hidden;
 
+      text-overflow: ellipsis;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: normal;
+    }
+  }
+  .timeStamp {
+    color: #858598;
+    font-size: 12px;
+    font-weight: 400;
+    width: 100%;
+    text-align: end;
+    padding-right: 18px;
+  }
+  .timeStamp-outgoing {
+    color: #f0f0f0;
+  }
   .title {
     margin: 6px;
     color: darkslategray;
@@ -109,10 +203,6 @@ opacity: 0.9;
       flex-direction: column;
 
       padding: 0px 12px;
-      .group-name {
-        font-weight: bold;
-        font-size: 18px;
-      }
     }
 
     .bchat-icon-button {
@@ -142,5 +232,12 @@ opacity: 0.9;
 .group-invitation.invitation-outgoing {
   .group-details {
     color: var(--color-sent-message-text);
+    background: #0a6f0a;
+    .group-name {
+      color: #f0f0f0;
+    }
+    .group-type {
+      color: #f0f0f0;
+    }
   }
 }

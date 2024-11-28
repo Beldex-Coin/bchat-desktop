@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BchatScrollButton } from '../BchatScrollButton';
+// import { BchatScrollButton } from '../BchatScrollButton';
 import { contextMenu } from 'react-contexify';
 
 import { connect } from 'react-redux';
@@ -135,11 +135,13 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
           />
         </ScrollToLoadedMessageContext.Provider>
 
-        <BchatScrollButton
+
+        {/* <BchatScrollButton
           onClickScrollBottom={this.props.scrollToNow}
           key="scroll-down-button"
           unreadCount={conversation.unreadCount}
-        />
+        /> */}
+
       </div>
     );
   }

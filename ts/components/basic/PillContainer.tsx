@@ -12,35 +12,33 @@ type PillContainerProps = {
 
 const StyledPillContainerHoverable = styled.div<PillContainerProps>`
   background: none;
-
   position: relative;
-  flex-direction: 'row';
+  flex-direction: 'column';
   flex-shrink: 0;
-  min-width: 50%;
   max-width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
   align-items: center;
   padding: ${props => props.padding || ''};
-  margin: ${props => props.margin || ''};
 `;
 
 const StyledPillInner = styled.div<PillContainerProps>`
-  
-  background:var(--color-inboxBgColor);
   display: flex;
-  flex-direction: 'row';
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
-
+  font-family: 'OpenSans';
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  align-items: center;  
+  align-items: center;
   padding: ${props => props.padding || ''};
   margin: ${props => props.margin || ''};
-  border-radius: 7px;
+  border-radius: 16px;
+  padding: 20px 0;
+  background-color: var(--color-conversation-item-selected);
   cursor: pointer;
   // border: 1px solid var(--color-pill-divider);
   transition: var(--default-duration);

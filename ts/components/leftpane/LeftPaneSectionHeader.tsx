@@ -28,7 +28,7 @@ import { editProfileModal } from '../../state/ducks/modalDialog';
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
-import { getIsOnline } from '../../state/selectors/onions';
+// import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
 import { getConversationController } from '../../bchat/conversations';
@@ -56,7 +56,7 @@ export const LeftPaneSectionHeader = () => {
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
   const bChatId = useSelector(getOurNumber);
-  const pathCon = useSelector(getIsOnline);
+  // const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
   const dispatch = useDispatch();
@@ -130,6 +130,7 @@ export const LeftPaneSectionHeader = () => {
           // size={52}
           position={{ left: '36px', top: '35px' }}
           isBnsHolder={conversation?.attributes?.isBnsHolder}
+          size={{width:'20',height:'20'}}
         >
           <Avatar
             size={AvatarSize.M}
@@ -256,27 +257,7 @@ export const LeftPaneSectionHeader = () => {
         </div>
         <BchatToolTip effect="solid" />
       </Flex>
-      {!isOnline && !pathCon && (
-        <div className="offline-msg">
-          <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
-          <span className="txt">
-            You are not connected to the Hop. Check your internet connection or Restart the app!
-          </span>
-        </div>
-      )}
-      {!pathCon && isOnline && (
-        <div className="connection-Wrapper">
-          <Flex container={true} flexDirection="row" alignItems="center">
-            <div>connecting</div>
-
-            <div className="dots">
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
-            </div>
-          </Flex>
-        </div>
-      )}
+      
     </>
   );
 };

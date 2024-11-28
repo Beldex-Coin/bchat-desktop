@@ -48,7 +48,7 @@ export const BchatSearchInput = () => {
     <div className="bchat-search-input">
       <div className='search'>
       {/* <BchatIconButton iconSize="small" iconType="search" /> */}
-      <BchatIcon iconSize="small" iconType="search" />
+      <BchatIcon iconSize={20} iconType="search" />
       </div>
       <input 
         value={currentSearchTerm}
@@ -65,7 +65,7 @@ export const BchatSearchInput = () => {
       />
       {!!currentSearchTerm.length && (
         <BchatIconButton
-          iconSize="tiny"
+          iconSize={24}
           iconType="exit"
           onClick={() => {
             setCurrentSearchTerm('');

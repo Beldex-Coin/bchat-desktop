@@ -32,7 +32,7 @@ export const OverlayMessageRequest = (props: any) => {
   const convoRequestCount = useSelector(getConversationRequests).length;
   const messageRequests = useSelector(getConversationRequests);
   const selectedConversation = useSelector(getSelectedConversation);
-  const {leftPane}=props;
+  const { leftPane } = props;
 
   const buttonText = window.i18n('clearAll');
 
@@ -51,7 +51,7 @@ export const OverlayMessageRequest = (props: any) => {
         title,
         message,
         onClose,
-        okTheme:BchatButtonColor.Danger,
+        okTheme: BchatButtonColor.Danger,
         onClickOk: async () => {
           window?.log?.info('Blocking all conversations');
           if (!convoRequests) {
@@ -98,21 +98,31 @@ export const OverlayMessageRequest = (props: any) => {
       return <MessageRequestListForSetting />
     }
     else {
-      return <MessageRequestList  />
+      return <MessageRequestList />
     }
 
   }
 
   return (
-    <div className="module-left-pane-overlay">
+    <div className="module-left-pane-overlay"
+      style={{
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: 'unset'
+      }}>
       {convoRequestCount ? (
         <>
           <VerifyScreen />
           <SpacerLG />
-          <div className='buttonBox '>
+          <SpacerLG />
+          <div className='messageRequestButton'>
             <BchatButton
+              style={{
+                height: '55px', fontSize: '16px',
+                fontWeight: '500'
+              }}
               buttonColor={BchatButtonColor.Danger}
-              buttonType={BchatButtonType.BrandOutline}
+              buttonType={BchatButtonType.Brand}
               text={buttonText}
               onClick={() => {
                 handleClearAllRequestsClick(messageRequests);
@@ -123,32 +133,31 @@ export const OverlayMessageRequest = (props: any) => {
       ) : (
         <>
           <SpacerLG />
-          <MessageRequestListPlaceholder>
+          {/* <MessageRequestListPlaceholder> */}
             <div className='bchat-noMsgRequest-box'>
-              <div></div>
-              <div className={leftPane?'bchat-noMsgRequest-leftPane':'bchat-noMsgRequest'}>
+              <div className={leftPane ? 'bchat-noMsgRequest-leftPane' : 'bchat-noMsgRequest'}>
               </div>
-              <div>
+              <div className='content-txt'>
                 {window.i18n('noMessageRequestsPending')}
               </div>
 
             </div>
 
             {/* {window.i18n('noMessageRequestsPending')} */}
-          </MessageRequestListPlaceholder>
+          {/* </MessageRequestListPlaceholder> */}
         </>
       )}
     </div>
   );
 };
 
-const MessageRequestListPlaceholder = styled.div`
-  color:var(--color-disableText);
-  margin-bottom: auto;
-  text-align:center;
-  margin-bottom: 20px;
-  font-family: 'poppin-semibold';
-`;
+// const MessageRequestListPlaceholder = styled.div`
+//   color:var(--color-disableText);
+//   margin-bottom: auto;
+//   text-align:center;
+//   margin-bottom: 20px;
+//   font-family: 'poppin-semibold';
+// `;
 
 const MessageRequestListContainer = styled.div`
   width: 100%;

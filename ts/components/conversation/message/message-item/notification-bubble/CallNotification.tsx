@@ -14,29 +14,29 @@ import { NotificationBubble } from './NotificationBubble';
 
 type StyleType = Record<
   CallNotificationType,
-  { notificationTextKey: LocalizerKeys; iconType: BchatIconType; iconColor: string;bgColor:string }
+  { notificationTextKey: LocalizerKeys; iconType: BchatIconType; iconColor: string; bgColor: string }
 >;
 
 const style: StyleType = {
   'missed-call': {
     notificationTextKey: 'callMissed',
-    iconType: 'callMissed', 
-    iconColor:'var(--color-destructive)' ,
-    bgColor:'transparent',
-    
+    iconType: 'callMissed',
+    iconColor: '#FF3E3E',
+    bgColor: 'transparent',
+
   },
   'started-call': {
     notificationTextKey: 'startedACall',
     iconType: 'callOutgoing',
-    iconColor: '#136ef8',
-    bgColor:'transparent',
-    
+    iconColor: 'var(--color-text)',
+    bgColor: 'transparent',
+
   },
   'answered-a-call': {
     notificationTextKey: 'answeredACall',
     iconType: 'callIncoming',
-    iconColor: '#136ef8',
-    bgColor:'transparent',
+    iconColor: '#108D32',
+    bgColor: 'transparent',
   },
 };
 
@@ -51,14 +51,15 @@ export const CallNotification = (props: PropsForCallNotification) => {
     (selectedConvoProps?.id && PubKey.shorten(selectedConvoProps?.id));
 
   const styleItem = style[notificationType];
-  const notificationText = window.i18n(styleItem.notificationTextKey, [displayName || 'Unknown']);
+  const notificationText = window.i18n(styleItem.notificationTextKey);
+  const displayText = notificationType == 'started-call' ? `to ${[displayName || 'Unknown']}` : `from ${[displayName || 'Unknown']}`
   if (!window.i18n(styleItem.notificationTextKey)) {
     throw new Error(`invalid i18n key ${styleItem.notificationTextKey}`);
   }
   const iconType = styleItem.iconType;
   const iconColor = styleItem.iconColor;
-  const bgColor=styleItem.bgColor;
-  
+  const bgColor = styleItem.bgColor;
+
 
   return (
     <ReadableMessage
@@ -69,9 +70,11 @@ export const CallNotification = (props: PropsForCallNotification) => {
     >
       <NotificationBubble
         notificationText={notificationText}
+        displayText={displayText}
         iconType={iconType}
         bgColor={bgColor}
         iconColor={iconColor}
+        callNotification={true}
       />
     </ReadableMessage>
   );

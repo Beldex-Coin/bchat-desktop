@@ -20,6 +20,7 @@ import {
   getSelectedMessageIds,
   isMessageDetailView,
   isMessageSelectionMode,
+  isRightPanelShowing,
   // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,7 +44,7 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
@@ -53,6 +54,9 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { getTheme } from '../../state/selectors/theme';
+// import { CustomIconButton } from '../icon/CustomIconButton';
+// import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
@@ -96,6 +100,7 @@ const SelectionOverlay = () => {
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
   const dispatch = useDispatch();
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const { i18n } = window;
 
@@ -120,24 +125,34 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
+      <Flex container={true} alignItems='center'>
+        <div className="close-button">
+          <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
+        </div>
+
+        <div className="seleted-count">
+          <span style={{ marginRight: '5px' }}>{selectedMessageIds.length}</span>
+          <span>Selected</span>
+        </div>
+      </Flex>
+
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
-            buttonType={BchatButtonType.Default}
+            buttonType={BchatButtonType.Medium}
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
+            style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
         <BchatButton
-          buttonType={BchatButtonType.Default}
+          buttonType={BchatButtonType.Medium}
           buttonColor={BchatButtonColor.Red}
           text={deleteForEveryoneMessageButtonText}
           onClick={onDeleteSelectedMessagesForEveryone}
+          style={{ borderRadius: '40px' }}
         />
-      </div>
-      <div className="close-button">
-        <BchatIconButton iconType="exit" iconSize="medium" onClick={onCloseOverlay} />
       </div>
     </div>
   );
@@ -145,13 +160,13 @@ const SelectionOverlay = () => {
 
 const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
   const { showBackButton } = props;
+  const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
     return null;
   }
-  let width = window.innerWidth;
+  let width = isShowing ? window.innerWidth - 370 : window.innerWidth;
   return (
     <div
-      className="threedot-option"
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -159,13 +174,13 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           event: e,
           position: {
             x: width - 300,
-            y: 55,
+            y: 70,
           },
         });
       }}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize={22} />
+      <BchatIconButton iconType="ellipses" iconSize={24} />
     </div>
   );
 };
@@ -201,11 +216,12 @@ const AvatarHeader = (props: {
     <span className="module-conversation-header__avatar">
       <BNSWrapper
         // size={40}
-        position={{ left: '25px', top: '25px' }}
+        position={{ left: '34px', top: '34px' }}
         isBnsHolder={conversation?.isBnsHolder}
+        size={{ width: '20', height: '20' }}
       >
         <Avatar
-          size={AvatarSize.S}
+          size={AvatarSize.M}
           onAvatarClick={() => {
             // do not allow right panel to appear if another button is shown on the BchatConversation
             if (onAvatarClick && !showBackButton) {
@@ -252,17 +268,16 @@ const CallButton = () => {
   }
 
   return (
-    <div className="call">
-    <BchatIconButton
-      iconType="phone"
-      iconRotation={270}
-      iconSize="medium"
-      iconPadding="2px"
-      margin="0 10px 0 0"
-      onClick={() => {
+    <div style={{ marginRight: '15px' }}>
+      {/* <CustomIconButton
+        onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }}
+        customIcon={<CallIcon iconSize={24} />}
+      /> */}
+      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
         void callRecipient(selectedConvoKey, canCall);
-      }}
-    />
+      }} />
     </div>
   );
 };
@@ -295,7 +310,7 @@ const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
   // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-  
+
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
@@ -310,7 +325,7 @@ const ConversationHeaderTitle = () => {
   if (!headerTitleProps) {
     return <></>;
   }
-  const { isGroup, isPublic, members, subscriberCount,  isKickedFromGroup } = headerTitleProps;
+  const { isGroup, isPublic, members, subscriberCount, isKickedFromGroup } = headerTitleProps;
   const { i18n } = window;
 
   let memberCount = 0;
@@ -336,15 +351,15 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
-  if (conversation?.isMe) {    
+  if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
 
   return (
-    <div
-      className="module-conversation-header__title"   
-    >
-      <span className="module-contact-name__profile-name" data-testid="header-conversation-name"
+    <div className="module-conversation-header__title">
+      <span
+        className="module-contact-name__profile-name"
+        data-testid="header-conversation-name"
       // onClick={() => {
       //   if (isRightPanelOn) {
       //     dispatch(closeRightPanel());
@@ -405,9 +420,9 @@ export const ConversationHeaderWithDetails = () => {
     !WalletSyncBarShowInChat &&
     conversation?.type == 'private' &&
     conversation?.isApproved &&
-    conversation?.didApproveMe&&
-    !conversation?.isMe
-   
+    conversation?.didApproveMe &&
+    !conversation?.isMe;
+
   if (!selectedConvoKey) {
     return null;
   }
@@ -452,33 +467,36 @@ export const ConversationHeaderWithDetails = () => {
             <ConversationHeaderTitle />
 
             {displayConnectWalletBtn && (
-              <div
-                className="connectWalletBtn"
-                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              >
-                <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
-                <div>{window.i18n('connectWallet')}</div>
-                {/* <BchatButtonIcon
-                name={window.i18n('connectWallet')}
-                buttonType={BchatButtonType.Brand}
-                buttonColor={BchatButtonColor.Green}
+              // <div
+              //   className="connectWalletBtn"
+              //   onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              // >
+              //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
+              //   <div>{window.i18n('connectWallet')}</div>
+              <BchatButton
+                text={window.i18n('connectWallet')}
+                buttonType={BchatButtonType.Medium}
+                buttonColor={BchatButtonColor.Primary}
+                iconType="wallet"
+                iconSize={'small'}
                 style={{
-                  height: '25px',
+                  minWidth: '172px',
+                  height: '40px',
                   borderRadius: '5px',
-                  marginRight: '14px'
+                  marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
               // disabled={!caption}
-              /> */}
-              </div>
+              />
+              // </div>
             )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
             {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
-              <div >
+              <div>
                 <CallButton />
-                </div>
+              </div>
             )}
           </Flex>
         </div>

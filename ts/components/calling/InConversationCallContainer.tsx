@@ -24,60 +24,75 @@ import moment from 'moment';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { getSelectedConversation } from '../../state/selectors/conversations';
 import { getConversationController } from '../../bchat/conversations';
+import { Flex } from '../basic/Flex';
+import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 
 const VideoContainer = styled.div`
   height: 100%;
-  width: 50%;
+  width: 100%;
   z-index: 0;
-  padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
+  display:flex;
+  justify-content:center;
+  // padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
 `;
 
 const InConvoCallWindow = styled.div`
   padding: 1rem;
-  display: flex;
+  // display: flex;
 
-  background-color: var(--color-inbox-background);
+  // background-color: var(--color-inbox-background);
 
-  flex-shrink: 1;
-  min-height: 80px;
-  align-items: center;
-  flex-grow: 1;
+  // flex-shrink: 1;
+  // min-height: 80px;
+  // align-items: center;
+  // flex-grow: 1;
+
+  border-radius: 32px;
+  background-color: var(--color-hop-bg);
+  height: 100%;
+  // margin-top: 20px;
 `;
 
 const RelativeCallWindow = styled.div`
-  position: relative;
-  height: 100%;
-  display: flex;
-  flex-grow: 1;
+  // position: relative;
+  // height: 100%;
+  // display: flex;
+  // flex-grow: 1;
 `;
 
 const CenteredAvatarInConversation = styled.div`
-  top: -50%;
-  transform: translateY(-50%);
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right: 50%;
+  // top: -50%;
+  // transform: translateY(-50%);
+  // position: relative;
+  // bottom: 0;
+  // left: 0;
+  // right: 50%;
 
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 157px;
+  flex-direction: column;
+`;
+const UserNameTxt = styled.div`
+  font-size: 20px;
 `;
 
 const StyledCenteredLabel = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  height: min-content;
-  white-space: nowrap;
+  // position: absolute;
+  // left: 50%;
+  // transform: translateX(-50%);
+  // height: min-content;
+  // white-space: nowrap;
   color: var(--color-text);
-  text-shadow: 0px 0px 8px white;
-  z-index: 5;
+  // text-shadow: 0px 0px 8px white;
+  // z-index: 5;
+  font-size: 22px;
+  text-align: center;
 `;
 
 const RingingLabel = () => {
   const ongoingCallWithFocusedIsRinging = useSelector(getCallWithFocusedConvoIsOffering);
-
   const modulatedStr = useModuloWithTripleDots(window.i18n('ringing'), 3, 1000);
   if (!ongoingCallWithFocusedIsRinging) {
     return null;
@@ -89,7 +104,6 @@ const ConnectingLabel = () => {
   const ongoingCallWithFocusedIsConnecting = useSelector(getCallWithFocusedConvosIsConnecting);
 
   const modulatedStr = useModuloWithTripleDots(window.i18n('establishingConnection'), 3, 1000);
-
   if (!ongoingCallWithFocusedIsConnecting) {
     return null;
   }
@@ -191,61 +205,128 @@ export const InConversationCallContainer = () => {
     return null;
   }
 
-  return (
-    <InConvoCallWindow>
-      <RelativeCallWindow>
-        <RingingLabel />
-        <ConnectingLabel />
-        <DurationLabel />
-        <VideoContainer>
-          <StyledVideoElement
-            ref={videoRefRemote}
-            autoPlay={true}
-            isVideoMuted={remoteStreamVideoIsMuted}
-          />
-          {remoteStreamVideoIsMuted && (
-            <CenteredAvatarInConversation>
-              <BNSWrapper
-                // size={89}
-                position={{ left: '75px', top: '72px' }}
-                isBnsHolder={selectedConversation?.isBnsHolder}
-              >
-                <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
-              </BNSWrapper>
-            </CenteredAvatarInConversation>
-          )}
-        </VideoContainer>
-        <VideoContainer>
-          <StyledVideoElement
-            ref={videoRefLocal}
-            autoPlay={true}
-            muted={true}
-            isVideoMuted={localStreamVideoIsMuted}
-          />
-          {localStreamVideoIsMuted && (
-            <CenteredAvatarInConversation>
-              <BNSWrapper
-                // size={89}
-                position={{ left: '75px', top: '72px' }}
-                isBnsHolder={conversation?.attributes?.isBnsHolder}
-              >
-                <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
-              </BNSWrapper>
-            </CenteredAvatarInConversation>
-          )}
-        </VideoContainer>
 
-        <CallWindowControls
-          currentConnectedAudioInputs={currentConnectedAudioInputs}
-          currentConnectedCameras={currentConnectedCameras}
-          isAudioMuted={isAudioMuted}
-          currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-          isAudioOutputMuted={isAudioOutputMuted}
-          localStreamVideoIsMuted={localStreamVideoIsMuted}
-          remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-          isFullScreen={isInFullScreen}
-        />
-      </RelativeCallWindow>
-    </InConvoCallWindow>
+  const validateMemberName = (memberName: any) => {
+    if (memberName == selectedConversation?.id) {
+      let staringTwoString = memberName.substring(0, 2);
+      let lastString = memberName.substring(58, 66);
+      return `${staringTwoString}...${lastString}`;
+    }
+    return memberName;
+  };
+
+  return (
+    <div
+      className={!localStreamVideoIsMuted && !remoteStreamVideoIsMuted ? 'videoCall' : 'voiceCall'}
+    >
+      <InConvoCallWindow>
+        <RelativeCallWindow>
+          <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'}>
+            <VideoContainer>
+              <StyledVideoElement
+                ref={videoRefRemote}
+                autoPlay={true}
+                isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
+                width='50%'
+              />
+              {remoteStreamVideoIsMuted && (
+                <CenteredAvatarInConversation>
+                  <BNSWrapper
+                    // size={89}
+                    position={{ left: '75px', top: '72px' }}
+                    isBnsHolder={selectedConversation?.isBnsHolder}
+                    size={{ width: '20', height: '20' }}
+                  >
+                    <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
+                  </BNSWrapper>
+                  <SpacerXS />
+                  <UserNameTxt>{validateMemberName(selectedConversation?.profileName || selectedConversation?.id)}</UserNameTxt>
+                </CenteredAvatarInConversation>
+              )}
+            </VideoContainer>
+
+            {/* {localStreamVideoIsMuted && (
+              <CenteredAvatarInConversation>
+                <BNSWrapper
+                  // size={89}
+                  position={{ left: '75px', top: '72px' }}
+                  isBnsHolder={conversation?.attributes?.isBnsHolder}
+                  size={{ width: '20', height: '20' }}
+                >
+                  <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+                </BNSWrapper>
+                <SpacerXS />
+                <UserNameTxt>{conversation.attributes.profileName}</UserNameTxt>
+              </CenteredAvatarInConversation>
+            )} */}
+
+            <VideoContainer>
+              <StyledVideoElement
+                ref={videoRefLocal}
+                autoPlay={true}
+                muted={true}
+                isVideoMuted={localStreamVideoIsMuted || !remoteStreamVideoIsMuted}
+                width='76%'
+              />
+              {localStreamVideoIsMuted && (
+                <CenteredAvatarInConversation>
+                  <BNSWrapper
+                    // size={89}
+                    position={{ left: '75px', top: '72px' }}
+                    isBnsHolder={conversation?.attributes?.isBnsHolder}
+                    size={{ width: '20', height: '20' }}
+                  >
+                    <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+                  </BNSWrapper>
+                  <SpacerXS />
+                  <UserNameTxt>{validateMemberName(conversation.attributes.profileName)}</UserNameTxt>
+                </CenteredAvatarInConversation>
+              )}
+            </VideoContainer>
+          </Flex>
+
+          {!localStreamVideoIsMuted && !remoteStreamVideoIsMuted && (
+            <div className="remote-video">
+              <VideoContainer>
+                <StyledVideoElement
+                  ref={videoRefRemote}
+                  autoPlay={true}
+                  isVideoMuted={remoteStreamVideoIsMuted}
+
+                />
+              </VideoContainer>
+            </div>
+          )}
+
+          <SpacerLG />
+          <RingingLabel />
+          <ConnectingLabel />
+          <DurationLabel />
+          <SpacerMD />
+          <CallWindowControls
+            currentConnectedAudioInputs={currentConnectedAudioInputs}
+            currentConnectedCameras={currentConnectedCameras}
+            isAudioMuted={isAudioMuted}
+            currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+            isAudioOutputMuted={isAudioOutputMuted}
+            localStreamVideoIsMuted={localStreamVideoIsMuted}
+            remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
+            isFullScreen={isInFullScreen}
+          />
+        </RelativeCallWindow>
+      </InConvoCallWindow>
+      <div className="local-video">
+        {!localStreamVideoIsMuted && !remoteStreamVideoIsMuted && (
+          <VideoContainer>
+            <StyledVideoElement
+              ref={videoRefLocal}
+              autoPlay={true}
+              muted={true}
+              isVideoMuted={localStreamVideoIsMuted}
+            />
+          </VideoContainer>
+        )}
+      </div>
+    </div>
   );
 };
