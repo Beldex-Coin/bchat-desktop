@@ -529,8 +529,8 @@ const lightInputBackground = '#EBEBEB';
 const lightFilterBchatText = 'brightness(0) saturate(100%)';
 const lightUnreadBorder = `4px solid ${accentLightTheme}`;
 
-const lightScrollbarThumb = '#F8F8F8';
-const lightScrollbarTrack = '#EBEBEB';
+const lightScrollbarThumb = '#ACACAC';
+const lightScrollbarTrack = '#F8F8F8';
 const lightFakeChatBubbleBg = '#f5f5f5';
 
 const lightInboxBackground = '#F0F0F0';

@@ -75,6 +75,7 @@ export const WalletBalanceSection = () => {
               flexDirection="row"
               alignItems="center"
               className="wallet-left-balance-Sec"
+              margin='5px 0 0 0'
             >
               <div className="currencyExt">{currency}</div>
               <div className="currencyVal">
