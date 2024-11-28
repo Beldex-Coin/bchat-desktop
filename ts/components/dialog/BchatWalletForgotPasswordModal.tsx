@@ -14,7 +14,6 @@ import { updateDaemon } from '../../state/ducks/daemon';
 import { getConversationById } from '../../data/data';
 import { useConversationWalletDaemonHeight } from '../../hooks/useParamSelector';
 import { useKey } from 'react-use';
-import styled from 'styled-components';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import {
   updateBchatWalletForgotPasswordModal,
@@ -136,26 +135,17 @@ export const BchatWalletForgotPasswordModal = () => {
   useKey((event: KeyboardEvent) => {
     return event.key === 'Enter';
   }, passValid);
-  const Loader = styled.div`
-    position: absolute;
-    // top: 0;
-    display: flex;
-    // justify-content: center;
-    /* width: 100%; */
-    // width: 100Vw;
-    // height: 100%;
-    align-items: center;
-    z-index: 101;
-  `;
+
   return (
     <div className="wallet-forgotPassword">
       <BchatWrapperModal
-        title={''}
+        title={window.i18n('forgotPassword')}
         onClose={() => {}}
         showExitIcon={false}
-        showHeader={false}
+        showHeader={true}
         headerReverse={false}
         additionalClassName="walletPassword"
+        isloading={loading}
         okButton={{
           text: window.i18n('save'),
           onClickOkHandler: () => {
@@ -184,24 +174,8 @@ export const BchatWalletForgotPasswordModal = () => {
         </div>
       </div> */}
         <div className="wallet-forgotPassword-content-Box">
-          {loading && (
-            <Loader>
-              <div className="wallet-walletPassword-contentBox-forgotpasswordLoader">
-                <img
-                  src={'images/bchat/Load_animation.gif'}
-                  style={{ width: '150px', height: '150px' }}
-                />
-              </div>
-            </Loader>
-          )}
-
           <div>
-            <SpacerLG />
-            <div className="wallet-forgotPassword-content-Box-title">
-              {window.i18n('forgotPassword')}
-            </div>
-            <SpacerLG />
-            <SpacerLG />
+            <SpacerMD />
             <div className="wallet-forgotPassword-content-Box-seed">
               <textarea
                 value={seed}

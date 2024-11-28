@@ -69,9 +69,9 @@ export const AddressBook = (props: { isContact?: boolean }) => {
   };
 
   return (
-    <div className="addressBook">
+    <div className="addressBook"  >
       {isContact && (
-        <>
+        <div className={classNames( BchatWalletPasswordModal && 'blurBg')}>
           {/* <LeftPaneSectionHeader /> */}
           <SpacerLG />
           {/* {conversations?.length !== 0 && */}
@@ -91,7 +91,7 @@ export const AddressBook = (props: { isContact?: boolean }) => {
           </div>
           <SpacerLG />
           <div className="addressBook-header-txt">{window.i18n('contact')}</div>
-        </>
+        </div>
       )}
 
       {!isContact && (
