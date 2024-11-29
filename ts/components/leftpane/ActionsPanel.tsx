@@ -21,7 +21,7 @@ import {
   getOurPrimaryConversation,
   getUnreadMessageCount,
 } from '../../state/selectors/conversations';
-import { applyTheme } from '../../state/ducks/theme';
+import { ThemeStateType, applyTheme } from '../../state/ducks/theme';
 import { getFocusedSection } from '../../state/selectors/section';
 // import { clearSearch } from '../../state/ducks/search';
 import {
@@ -35,7 +35,11 @@ import {
 import { cleanUpOldDecryptedMedias } from '../../bchat/crypto/DecryptedAttachmentsManager';
 
 import { DURATION } from '../../bchat/constants';
-import { conversationChanged, conversationRemoved } from '../../state/ducks/conversations';
+import {
+  closeRightPanel,
+  conversationChanged,
+  conversationRemoved,
+} from '../../state/ducks/conversations';
 import {
   editProfileModal,
   updateBchatWalletPasswordModal,
@@ -52,11 +56,11 @@ import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/Ap
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { forceRefreshRandomSnodePool } from '../../bchat/apis/snode_api/snodePool';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { CallInFullScreenContainer } from '../calling/CallInFullScreenContainer';
 import { DraggableCallContainer } from '../calling/DraggableCallContainer';
 import { IncomingCallDialog } from '../calling/IncomingCallDialog';
-import { BchatIconButton } from '../icon';
+import { BchatIcon } from '../icon';
 import { BchatToastContainer } from '../BchatToastContainer';
 import { LeftPaneSectionContainer } from './LeftPaneSectionContainer';
 import { getLatestDesktopReleaseFileToFsV2 } from '../../bchat/apis/file_server_api/FileServerApiV2';
@@ -73,25 +77,33 @@ import { clearSearch } from '../../state/ducks/search';
 // import { wallet } from '../../wallet/wallet-rpc';
 import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
+import BchatLogo from '../icon/bchatLogo';
+import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import { getIsOnline } from '../../state/selectors/onions';
+import styled from 'styled-components';
+import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { Flex } from '../basic/Flex';
+import { SpacerSM } from '../basic/Text';
+import useNetworkStatus from '../../hooks/useNetworkStatus';
+import { getTheme } from '../../state/selectors/theme';
 
 const Section = (props: { type: SectionType }) => {
   const ourNumber = useSelector(getOurNumber);
   const unreadMessageCount = useSelector(getUnreadMessageCount);
   const dispatch = useDispatch();
   const { type } = props;
-
   const focusedSection = useSelector(getFocusedSection);
-  const walletPasswordPopUp=useSelector(getWalletPasswordPopUpFlag)
+  const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
-
+  const darkMode = useSelector(getTheme) === 'dark';
   // function switchToWalletSec() {
   //   dispatch(showLeftPaneSection(3));
   //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
   // }
 
-  const handleClick =async () => {
+  const handleClick = async () => {
     /* tslint:disable:no-void-expression */
-   
+    dispatch(closeRightPanel());
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
     } else if (type === SectionType.Moon) {
@@ -106,45 +118,53 @@ const Section = (props: { type: SectionType }) => {
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
-    } else if (type === SectionType.Closedgroup) {
-      // Show Path Indicator Modal
-
+    } else if (type === SectionType.NewChat) {
       dispatch(showLeftPaneSection(1));
+
+      dispatch(setOverlayMode('message'));
+    } else if (type === SectionType.Closedgroup) {
+      // Show close group
+      dispatch(showLeftPaneSection(2));
+
       dispatch(setOverlayMode('closed-group'));
     } else if (type === SectionType.Opengroup) {
-      // Show Path Indicator Modal
-
-      dispatch(showLeftPaneSection(2));
+      // Show open group
+      dispatch(showLeftPaneSection(3));
 
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
     } else if (type === SectionType.Wallet) {
-      let emptyAddress:any=""
-      // Show Path Indicator Modal
+      let emptyAddress: any = '';
+      // Show open wallet
       dispatch(showLeftPaneSection(type));
       // wallet.startWallet('settings');
 
       dispatch(setOverlayMode('wallet'));
       dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      dispatch(updateSendAddress(emptyAddress))
-      if(walletPasswordPopUp)
-      {
+      dispatch(updateSendAddress(emptyAddress));
+      if (walletPasswordPopUp) {
         dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
       }
 
-
       // dispatch(setOverlayMode(undefined))
-    } else {
-      // message section
-      dispatch(clearSearch());
+    } else if (type === SectionType.Settings) {
+      // show open settings
       dispatch(showLeftPaneSection(type));
-      if (type == 3) {
-        // dispatch(setOverlayMode('wallet'));
 
-        dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      } else {
-        dispatch(setOverlayMode(undefined));
-      }
+      // dispatch(setOverlayMode());
+      dispatch(setOverlayMode(undefined));
+    } else {
+      // show open all chat
+      dispatch(clearSearch());
+      dispatch(setOverlayMode(undefined));
+      dispatch(showLeftPaneSection(type));
+      // if (type == BchatSettingCategory.Wallet) {
+      //   // dispatch(setOverlayMode('wallet'));
+
+      //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
+      // } else {
+      //   dispatch(setOverlayMode(undefined));
+      // }
     }
   };
 
@@ -165,31 +185,31 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Chat"
-            data-place="top"
-            data-offset="{'right':27}"
+            // data-tip="Chat"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
-              iconSize="large"
-              dataTestId="message-section"
+            <BchatIcon
+              iconSize={28}
               iconType={'chatBubble'}
-              isSelected={isSelected}
+              // isSelected={isSelected}
             />
+            <div className="menu-txt">All Chats</div>
           </div>
           {unreadMessageCount !== 0 ? (
             <div className="unreadCountChatIcon">
-              {unreadMessageCount <= 9 ? (
+              {unreadMessageCount <= 99 ? (
                 unreadToShow
               ) : (
-                <span style={{ marginLeft: '-5px' }}>
-                  9
+                <span style={{ marginLeft: '-4px' }}>
+                  99
                   <span
                     style={{
                       position: 'absolute',
-                      top: '-1px',
-                      left: '10px',
+                      top: '-3px',
+                      left: '13px',
                     }}
                   >
                     +
@@ -200,23 +220,43 @@ const Section = (props: { type: SectionType }) => {
           ) : null}
         </div>
       );
+    case SectionType.NewChat:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div
+            // data-tip="New Chat"
+            // data-place="right"
+            // data-offset="{'top':0}"
+            className="btnView"
+            onClick={handleClick}
+          >
+            <BchatIcon
+              iconSize={28}
+              iconType={'newChat'}
+              // isSelected={isSelected}
+            />
+            <div className="menu-txt">New Chat</div>
+          </div>
+        </div>
+      );
     case SectionType.Closedgroup:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Secret Group"
-            data-place="top"
-            data-offset="{'right':54}"
+            // data-tip="Secret Group"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
-              iconSize="large"
-              dataTestId="settings-section"
+            <BchatIcon
+              iconSize={28}
+              // dataTestId="settings-section"
               iconType={'closedgroup'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
+            <div className="menu-txt">Secret Group</div>
           </div>
         </div>
       );
@@ -224,42 +264,75 @@ const Section = (props: { type: SectionType }) => {
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
           <div
-            data-tip="Social Group"
-            data-place="top"
-            data-offset="{'right':50}"
+            // data-tip="Social Group"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
           >
-            <BchatIconButton
-              iconSize="large"
-              dataTestId="settings-section"
+            <BchatIcon
+              iconSize={28}
+              // dataTestId="settings-section"
               iconType={'opengroup'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
+            <div className="menu-txt">Social Group</div>
+          </div>
+        </div>
+      );
+    case SectionType.Settings:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div
+            // data-tip="settings"
+            // data-place="right"
+            // data-offset="{'top':0}"
+            className="btnView"
+            onClick={handleClick}
+          >
+            <BchatIcon
+              iconSize={28}
+              // dataTestId="settings-section"
+              iconType={'gear'}
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
+            />
+            <div className="menu-txt">Settings</div>
           </div>
         </div>
       );
 
     case SectionType.Wallet:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')} >
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div className="grey-border" />
           <div
-            data-tip="Wallet"
-            data-place="top"
-            data-offset="{'right':35}"
+            // data-tip="Wallet"
+            // data-place="right"
+            // data-offset="{'top':0}"
             className="btnView"
             onClick={handleClick}
-            style={{flexDirection: 'column'}}
+            style={{ flexDirection: 'column' }}
           >
-            <BchatIconButton
-              iconSize={18}
-              dataTestId="settings-section"
+            <BchatIcon
+              iconSize={28}
               iconType={'wallet'}
-              notificationCount={unreadToShow}
-              isSelected={isSelected}
-              margin='9px 0 0 0'
+              // notificationCount={unreadToShow}
+              // isSelected={isSelected}
             />
+            <div className="menu-txt">Wallet</div>
+            <Beta>
+              <BchatIcon
+                iconSize={34}
+                iconType={'beta'}
+                clipRule="evenodd"
+                fillRule="evenodd"
+                iconColor={darkMode ? '#A7A7BA' : '#ACACAC'}
+                // notificationCount={unreadToShow}
+                // isSelected={isSelected}
+              />
+            </Beta>
             {/* <div style={{ cursor: 'pointer' }}>
               <img
                 src="images/wallet/wallet_beta.svg"
@@ -267,8 +340,9 @@ const Section = (props: { type: SectionType }) => {
                 style={{ width: '20px', height: '20px' }}
               />
             </div> */}
-            <div className='beta'>BETA</div>
+            {/* <div className='beta'>BETA</div> */}
           </div>
+          <div className="grey-border" />
         </div>
       );
     default:
@@ -451,6 +525,18 @@ export const BchatToolTip = (props: any) => (
 export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+
+  const dispatch = useDispatch();
+  const darktheme = useSelector((state: any) => state.theme);
+  const isdark = darktheme === 'dark' ? true : false;
+  const pathCon = useSelector(getIsOnline);
+  // const isOnline=window.getGlobalOnlineStatus();
+  const isOnline = useNetworkStatus();
+  const darkMode = useSelector(getTheme) === 'dark';
+  const imgsrc: any = darkMode
+    ? 'images/bchat/connect_wallet_dark.gif'
+    : 'images/bchat/connect_wallet_white.gif';
 
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin
@@ -498,25 +584,154 @@ export const ActionsPanel = () => {
     void triggerAvatarReUploadIfNeeded();
   }, DURATION.DAYS * 1);
 
+  const themeChanger = (theme: ThemeStateType) => {
+    const themeFromSettings = window.Events.getThemeSetting();
+    // const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
+    window.setTheme(theme);
+    dispatch(applyTheme(theme));
+
+    if (themeFromSettings !== theme) {
+      if (theme === 'dark') {
+        switchHtmlToDarkTheme();
+      } else {
+        switchHtmlToLightTheme();
+      }
+    }
+  };
+  const IsOnline = () => {
+    const isOnline = useSelector(getIsOnline);
+    const status = isOnline ? 'Online' : 'Offline';
+
+    return (
+      <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+        <ActionPanelOnionStatusLight
+          isSelected={false}
+          handleClick={() => {}}
+          id={''}
+          size="small"
+        />
+      </Hops>
+    );
+  };
   return (
     <>
       <ModalContainer />
 
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
-        <Section type={SectionType.Message} />
+        <div className="profile-box">
+          <div className="logo-wrapper">
+            <IsOnline />
+            <BchatLogo />
+          </div>
+        </div>
 
-        <Section type={SectionType.Closedgroup} />
+        <div className="profile-box" style={{ marginTop: "10px", height: "60px", marginBottom: "10px" }}>
+          <BNSWrapper
+            // size={52}
+            position={{ left: '45px', top: '43px' }}
+            isBnsHolder={conversation?.attributes?.isBnsHolder}
+            size={{ width: '25', height: '25' }}
+          >
+            <Avatar
+              size={AvatarSize.L}
+              onAvatarClick={() => dispatch(editProfileModal({}))}
+              pubkey={getOurPubKeyStrFromCache()}
+              dataTestId="leftpane-primary-avatar"
+            />
+          </BNSWrapper>
+        </div>
+        <div style={{ overflow: 'auto', width: '90%' }}>
+          <Section type={SectionType.Message} />
 
-        <Section type={SectionType.Opengroup} />
+          <Section type={SectionType.NewChat} />
 
-        <Section type={SectionType.Wallet} />
+          <Section type={SectionType.Closedgroup} />
 
-        <Section type={SectionType.Settings} />
+          <Section type={SectionType.Opengroup} />
+
+          <Section type={SectionType.Wallet} />
+
+          <Section type={SectionType.Settings} />
+        </div>
+        <Flex container={true} height="20%" alignItems="flex-end">
+          <div className="theme-Wrapper ">
+            <div
+              className={classNames('icon-wrapper', !isdark && 'selected')}
+              onClick={() => themeChanger('light')}
+            >
+              <BchatIcon
+                iconType={'sun'}
+                iconSize={24}
+                iconColor={isdark ? '#F0F0F0' : '#333333'}
+              />
+            </div>
+            <SpacerSM />
+            <div
+              className={classNames('icon-wrapper', isdark && 'selected')}
+              onClick={() => themeChanger('dark')}
+            >
+              <BchatIcon
+                iconType={'moon'}
+                iconSize={24}
+                iconColor={isdark ? '#F0F0F0' : '#A7A7BA'}
+              />
+            </div>
+          </div>
+        </Flex>
 
         <BchatToolTip effect="solid" />
         <BchatToastContainer />
+        <NetWorkStatusWrapper>
+          {!isOnline && !pathCon && (
+            <div className="offline-msg">
+              <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
+              <span className="txt">
+                You are not connected to the Hop. Check your internet connection or Restart the app!
+              </span>
+            </div>
+          )}
+          {/* !pathCon && isOnline */}
+          {!pathCon && isOnline && (
+            <div className="offline-msg connection-Wrapper ">
+              <Flex
+                container={true}
+                flexDirection="row"
+                alignItems="center"
+                width="350px"
+                justifyContent="space-between"
+              >
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div className="dotIcon">
+                    <BchatIcon iconSize={'small'} iconType="circle" />
+                  </div>
+                  <div>Connecting..</div>
+                </div>
+                <div>
+                  <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex' }} />
+                </div>
+              </Flex>
+            </div>
+          )}
+        </NetWorkStatusWrapper>
       </LeftPaneSectionContainer>
     </>
   );
 };
+const Hops = styled.div`
+  position: absolute;
+  right: 0px;
+  top: 0px;
+`;
+const NetWorkStatusWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  width: 338px;
+  left: 141px;
+  z-index: 99;
+`;
+const Beta = styled.div`
+  svg {
+    height: 14px !important;
+  }
+`;

@@ -2,14 +2,20 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { addressbook } from '../../state/ducks/walletSection';
-import { BchatButtonColor } from '../basic/BchatButton';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIconSize, BchatIconType } from '../icon';
 import { BchatIcon } from '../icon/BchatIcon';
 import { wallet } from '../../wallet/wallet-rpc';
 import { updateBalance } from '../../state/ducks/wallet';
-import { updateFiatBalance, updateWalletHeight, updateWalletRescaning } from '../../state/ducks/walletConfig';
-import { ToastUtils } from '../../bchat/utils';
+import {
+  updateFiatBalance,
+  updateWalletHeight,
+  updateWalletRescaning,
+} from '../../state/ducks/walletConfig';
+import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { getRescaning } from '../../state/selectors/walletConfig';
+import { AvatarItem } from './BchatWalletAddressBook';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 
 export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   if (!window.globalOnlineStatus) {
@@ -20,14 +26,16 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   }
   let rescan: any = true;
   let Transactions: any = '';
-  let wallHeight:any=0
+  let wallHeight: any = 0;
   dispatch(
     updateConfirmModal({
       title: window.i18n('rescanWallet'),
       message: window.i18n('rescanWalletDiscription'),
-      okTheme: BchatButtonColor.Green,
+      okTheme: BchatButtonColor.Primary,
       okText: window.i18n('Rescan'),
       btndisable: rescaning,
+      iconShow: true,
+      customIcon: <BchatIcon iconType='rotatedArrow' iconSize={30} />,
       onClickOk: () => {
         dispatch(updateWalletRescaning(rescan));
         dispatch(updateFiatBalance(Transactions));
@@ -38,37 +46,54 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
             unlocked_balance: 0,
             transacations: [],
           })
-
         );
         dispatch(updateWalletHeight(wallHeight));
         wallet.rescanBlockchain();
-      }
+      },
     })
   );
 }
 
 export const WalletHeader = (props: any) => {
   const dispatch = useDispatch();
+  const ourPubkey: any = UserUtils.getOurPubKeyFromCache();
   const syncStatus = useSelector(getRescaning);
+  const isBnsHolder = useConversationBnsHolder(ourPubkey);
 
   return (
     <div className="wallet-header">
       <div className="wallet-header-left-side">
-        <div className="wallet-header-left-side-btn-box">
-          <WalletButton
+        <AvatarItem memberPubkey={ourPubkey} isBnsHolder={isBnsHolder} />
+        <span className="header-txt">{window.i18n('WalletSettingsTitle')}</span>
+      </div>
+      <div className="wallet-header-right-side">
+        <div className="wallet-header-left-side-btn-box" style={{ marginRight: '15px' }}>
+          <BchatButton
+            iconType="addressBook"
+            iconSize={20}
+            fillRule="evenodd"
+            clipRule="evenodd"
+            text="Address Book"
+            buttonType={BchatButtonType.Medium}
+            buttonColor={BchatButtonColor.Secondary}
+            onClick={() => {
+              dispatch(addressbook()), props.clearStates();
+            }}
+          />
+          {/* <WalletButton
             name={'Address Book'}
             icontype="addressBook"
             iconSize={'medium'}
-            submit={() => { dispatch(addressbook()), props.clearStates() }}
-          />
+            submit={() => {
+              dispatch(addressbook()), props.clearStates();
+            }}
+          /> */}
         </div>
-      </div>
-      <div className="wallet-header-right-side">
         <WalletButton
-          name={'Rescan'}
-          icontype="reload"
-          iconSize={'small'}
-          submit={() => { 
+          // name={''}
+          icontype="rotatedArrow"
+          iconSize={20}
+          submit={() => {
             rescanModalDialog(!syncStatus, dispatch);
           }}
         />
@@ -86,17 +111,17 @@ export const WalletHeader = (props: any) => {
 };
 
 export const WalletButton = (props: {
-  name: string;
+  // name: string;
   icontype: BchatIconType;
-  iconSize: BchatIconSize;
+  iconSize: BchatIconSize | number;
   submit: any;
 }) => {
-  const { name, icontype, iconSize, submit } = props;
+  const { icontype, iconSize, submit } = props;
 
   return (
     <div className="wallet-button" onClick={() => submit()}>
       <BchatIcon iconSize={iconSize} iconType={icontype} />
-      <span style={{ marginLeft: '5px' }}>{name}</span>
+      {/* <span style={{ marginLeft: '5px' }}>{name}</span> */}
     </div>
   );
 };

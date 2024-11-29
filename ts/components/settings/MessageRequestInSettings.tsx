@@ -3,7 +3,7 @@ import classNames from 'classnames';
 // import { contextMenu } from 'react-contexify';
 // import { useSelector } from 'react-redux';
 
-import { Avatar, AvatarSize } from '.././avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '.././avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
@@ -15,6 +15,7 @@ import { updateUserDetailsModal } from '../../state/ducks/modalDialog';
 
 import {
   useAvatarPath,
+  useConversationBnsHolder,
   useConversationUsername,
   useIsPrivate,
 //   useIsRequest,
@@ -27,9 +28,13 @@ import _ from 'lodash';
 // import { getSelectedConversation } from '../../state/selectors/conversations';
 // import { getConversationController } from 'bchat/conversations';
 import {
-    approveConvoAndSendResponse,
+    approveConvoAndSendResponse, declineConversationWithConfirm,
   } from '../../interactions/conversationInteractions';
 import { getConversationController } from '../../bchat/conversations';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { SpacerXS } from '../basic/Text';
+// import { BchatIcon } from '../icon';
+import DeclineMessageRequest from '../icon/DeclineMessageRequest';
 // import { AcceptMenuItem } from '../menu/Menu';
 
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -63,6 +68,7 @@ const AvatarItem = () => {
   const userName = useConversationUsername(conversationId);
   const isPrivate = useIsPrivate(conversationId);
   const avatarPath = useAvatarPath(conversationId);
+  const isBnsHolder = useConversationBnsHolder(conversationId);
   const dispatch = useDispatch();
 
   function onPrivateAvatarClick() {
@@ -73,23 +79,28 @@ const AvatarItem = () => {
         authorAvatarPath: avatarPath,
       })
     );
-  }
+  } 
 
   return (
     <div className="module-conversation-list-item__avatar-container">
+       <BNSWrapper
+        // size={52}
+        position={{ left: '34px', top: '34px' }}
+        isBnsHolder={isBnsHolder}
+        size={{width:'20',height:'20'}}
+      >
       <Avatar
         size={AvatarSize.M}
         pubkey={conversationId}
         onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
       />
+      </BNSWrapper>
     </div>
   );
 };
 
 // tslint:disable: max-func-body-length
 const MessageRequestListSetting = (props: Props) => {
-//   const selectedConversation = useSelector(getSelectedConversation);
-
   const {
     // unreadCount,
     id: conversationId,
@@ -123,7 +134,10 @@ const MessageRequestListSetting = (props: Props) => {
     await approveConvoAndSendResponse(conversationId, true);
 //     // forceUpdate()
   };
-
+  const handleDeclineConversationRequest = () => {
+    const customIcon = <DeclineMessageRequest iconSize={30} />
+    declineConversationWithConfirm(conversationId, true,customIcon);
+  };
 
   return (
     <ContextConversationId.Provider value={conversationId}>
@@ -164,9 +178,26 @@ const MessageRequestListSetting = (props: Props) => {
           </div> */}
           </div>
           {/* <button style={{background:"green"}} onClick={handleAcceptConversationRequest}>{window.i18n('accept')}</button> */}
-          <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>
+          {/* <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>
           {window.i18n('accept')}
-          </div>
+          </div> */}
+          <BchatButton
+            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px'}}
+              buttonColor={BchatButtonColor.Danger}
+              buttonType={BchatButtonType.Brand}
+              text={window.i18n('decline')}
+              onClick={handleDeclineConversationRequest}
+              dataTestId="accept-button-settings-screen"
+            />
+            <SpacerXS/>
+          <BchatButton
+            style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px'}}
+              buttonColor={BchatButtonColor.Primary}
+              buttonType={BchatButtonType.Brand}
+              text={window.i18n('accept')}
+              onClick={handleAcceptConversationRequest}
+              dataTestId="accept-button-settings-screen"
+            />
           
           {/* <AcceptMenuItem /> */}
         </div>

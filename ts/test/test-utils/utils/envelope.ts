@@ -12,6 +12,7 @@ export function generateEnvelopePlusClosedGroup(groupId: string, sender: string)
     type: SignalService.Envelope.Type.CLOSED_GROUP_MESSAGE,
     source: groupId,
     content: new Uint8Array(),
+    isBnsHolder:false,
     toJSON: () => ['fake'],
   };
 
@@ -27,6 +28,7 @@ export function generateEnvelopePlus(sender: string): EnvelopePlus {
     source: sender,
     senderIdentity: sender,
     content: new Uint8Array(),
+    isBnsHolder:false,
     toJSON: () => ['fake'],
   };
 

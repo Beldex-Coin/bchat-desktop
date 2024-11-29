@@ -43,6 +43,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
 
   const handleSlider = (valueToForward: any) => {
     let value = valueToForward.substring(0, valueToForward.length - 1)
+    console.log("value:",value)
     props?.onSliderChange?.(value);
     window.setSettingValue('zoom-factor-setting', value);
     setValue(value)
@@ -98,7 +99,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   function displayPopUp() {
     dispatch(
       walletSettingMiniModal({
-        headerName: 'Zooming Factor',
+        headerName: 'Zoom Level',
         content: option,
         currency: value + '%',
         onClose: () => dispatch(walletSettingMiniModal(null)),
@@ -110,7 +111,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     )
   }
   return (
-    <BchatSettingsItemWrapper title={window.i18n('zoomFactorSettingTitle')} inline={true}>
+    <BchatSettingsItemWrapper title={window.i18n('zoomFactorSettingTitle')} inline={true} iconType='zoom'>
       {/* <div className="slider-wrapper">
         <Slider
           dots={true}

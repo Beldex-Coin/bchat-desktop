@@ -1,8 +1,8 @@
 export const WALLETSEND = 'WALLETSEND';
 export const WALLETRECEIVED = 'WALLETRECEIVED';
-export const WALLETTRANSACTION = 'WALLETTRANSACTION';
 
-export type WalletInnerSectionStateType = 'walletSend' | 'walletReceived' | 'walletTransaction';
+
+export type WalletInnerSectionStateType = 'walletSend' | 'walletReceived' ;
 export function walletSendPage() {
   return {
     type: WALLETSEND,
@@ -15,14 +15,9 @@ export function walletReceivedPage() {
     payload: 'walletReceived',
   };
 }
-export function walletTransactionPage() {
-  return {
-    type: WALLETTRANSACTION,
-    payload: 'walletTransaction',
-  };
-}
 
-export const initialWalletInnerSectionState: WalletInnerSectionStateType = 'walletTransaction';
+
+export const initialWalletInnerSectionState: WalletInnerSectionStateType = 'walletSend';
 
 export const reducer = (
   state: WalletInnerSectionStateType = initialWalletInnerSectionState,
@@ -39,8 +34,6 @@ export const reducer = (
       return payload;
     case WALLETRECEIVED:
       return payload;
-    case WALLETTRANSACTION:
-      return payload;
     default:
       return state;
   }
@@ -49,5 +42,4 @@ export const reducer = (
 export const action = {
   walletSendPage,
   walletReceivedPage,
-  walletTransactionPage,
 };

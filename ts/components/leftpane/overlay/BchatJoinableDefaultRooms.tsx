@@ -13,6 +13,8 @@ import { Avatar, AvatarSize } from '../../avatar/Avatar';
 import { Flex } from '../../basic/Flex';
 import { PillContainerHoverable, PillTooltipWrapper } from '../../basic/PillContainer';
 import { BchatSpinner } from '../../basic/BchatSpinner';
+import { SpacerXS } from '../../basic/Text';
+import { BchatIcon } from '../../icon/BchatIcon';
 // import { H3 } from '../../basic/Text';
 // tslint:disable: no-void-expression
 
@@ -23,9 +25,10 @@ export type JoinableRoomProps = {
   imageId?: string;
   onClick: (completeUrl: string) => void;
   base64Data?: string;
+  direction?: string;
 };
 
-const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
+export const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
   const dispatch = useDispatch();
   useEffect(() => {
     let isCancelled = false;
@@ -71,13 +74,21 @@ const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
   }, [props.imageId, props.completeUrl]);
 
   return (
-    <Avatar
-      size={AvatarSize.M}
-      base64Data={props.base64Data}
-      {...props}
-      pubkey=""
-      onAvatarClick={() => props.onClick(props.completeUrl)}
-    />
+    <>
+      {props.base64Data ? (
+        <Avatar
+          size={AvatarSize.L}
+          base64Data={props.base64Data}
+          {...props}
+          pubkey=""
+          onAvatarClick={() => props.onClick(props.completeUrl)}
+        />
+      ) : (
+        <IconWrapper direcrion={props?.direction}>
+          <BchatIcon iconType={'peopleGrp'} iconSize={40} />
+        </IconWrapper>
+      )}
+    </>
   );
 };
 
@@ -86,10 +97,27 @@ const StyledRoomName = styled(Flex)`
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 0 10px;
-  font-size:18px;
-  font-weight:bold;
+  font-size: 13px;
 `;
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
+  gap: 12px 10px;
+`;
+interface VerticalLineProps {
+  direcrion?: string;
+}
+const IconWrapper = styled.div<VerticalLineProps>`
+  background-color: ${props =>
+    props.direcrion === 'outgoing' ? '#108d32' : 'var(--color-invite-card-icon-bg)'};
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+`;
 const BchatJoinableRoomName = (props: JoinableRoomProps) => {
   return <StyledRoomName>{props.name}</StyledRoomName>;
 };
@@ -101,10 +129,10 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
         onClick={() => {
           props.onClick(props.completeUrl);
         }}
-        margin="7px 0px 0 19px"
         padding="5px"
       >
         <BchatJoinableRoomAvatar {...props} />
+        <SpacerXS />
         <BchatJoinableRoomName {...props} />
       </PillContainerHoverable>
     </PillTooltipWrapper>
@@ -113,6 +141,7 @@ const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
 
 export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
+
   const onRoomClicked = useCallback(
     (loading: boolean) => {
       if (loading) {
@@ -126,8 +155,9 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
     window?.log?.info('no default joinable rooms yet and not in progress');
     return null;
   }
-
-  const componentToRender = joinableRooms.inProgress ? ( <BchatSpinner loading={false} />) : (
+  const componentToRender = joinableRooms.inProgress ? (
+    <BchatSpinner loading={false} />
+  ) : (
     joinableRooms.rooms.map(r => {
       return (
         <BchatJoinableRoomRow
@@ -146,13 +176,11 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
 
   return (
     <Flex container={true} flexGrow={1} flexDirection="column" width="93%">
-      <div  className="module-left-pane-overlay-open-title">
-      {window.i18n('orJoinOneOfThese')}
-      </div>
+      <div className="module-left-pane-overlay-open-title">{window.i18n('orJoinOneOfThese')}</div>
       {/* <H3 text={window.i18n('orJoinOneOfThese')} /> */}
-      <Flex container={true} flexGrow={1}  justifyContent="center" flexDirection="column">
-        {componentToRender}
-      </Flex>
+      {/* <Flex container={true} flexGrow={1}  justifyContent="center" flexDirection="row" flexWrap='wrap'> */}
+      <Grid>{componentToRender}</Grid>
+      {/* </Flex> */}
     </Flex>
   );
 };

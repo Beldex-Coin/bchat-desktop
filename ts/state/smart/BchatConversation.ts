@@ -3,7 +3,9 @@ import { mapDispatchToProps } from '../actions';
 import { StateType } from '../reducer';
 import { getTheme } from '../selectors/theme';
 import {
+  
   getIsSelectedNoteToSelf,
+  getLeftPaneLists,
   getLightBoxOptions,
   getSelectedConversation,
   getSelectedConversationKey,
@@ -16,6 +18,7 @@ import { getOurNumber } from '../selectors/user';
 import { getStagedAttachmentsForCurrentConversation } from '../selectors/stagedAttachments';
 import { getHasOngoingCallWithFocusedConvo } from '../selectors/call';
 import { BchatConversation } from '../../components/conversation/BchatConversation';
+import { getFocusedSection } from '../selectors/section';
 
 
 
@@ -33,6 +36,8 @@ const mapStateToProps = (state: StateType) => {
     stagedAttachments: getStagedAttachmentsForCurrentConversation(state),
     hasOngoingCallWithFocusedConvo: getHasOngoingCallWithFocusedConvo(state),
     isMe:getIsSelectedNoteToSelf(state),
+    convoList:getLeftPaneLists(state),
+    focusedSection : getFocusedSection(state)
     
   };
 };

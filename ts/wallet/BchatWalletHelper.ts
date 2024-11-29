@@ -1,8 +1,7 @@
-
 import request from 'request-promise';
 // import { wallet } from './wallet-rpc';
 import { walletSettingsKey } from '../data/settings-key';
-import { ToastUtils } from '../bchat/utils';
+import { ToastUtils} from '../bchat/utils';
 
 
 export async function workingStatusForDeamon(currentdeamon: any, type?: string) {
@@ -33,6 +32,7 @@ export async function workingStatusForDeamon(currentdeamon: any, type?: string) 
   }
 }
 
+
 export async function deamonvalidation() {
   let list_deamon = window.getSettingValue(walletSettingsKey.settingsDeamonList);
   let getcurrentWorkingDeamon = window.getSettingValue('current-deamon');
@@ -45,16 +45,12 @@ export async function deamonvalidation() {
   }
   const deamonStatus = await workingStatusForDeamon(currentDaemon);
   if (deamonStatus.status === 'OK') {
-   
-
     window.setSettingValue('current-deamon', currentDaemon);
     // await wallet.startWallet('settings');
   } else {
-
     for (let index = 0; index < list_deamon.length; index++) {
       const deamonStatus = await workingStatusForDeamon(list_deamon[index]);
       if (deamonStatus.status === 'OK') {
-       
         window.setSettingValue('current-deamon', currentDaemon);
         // await wallet.startWallet('settings');
         break;
@@ -72,5 +68,4 @@ export function loadFiatCurrency() {
   if (!window.getSettingValue('fiat-currency')) {
     window.setSettingValue('fiat-currency', 'USD');
   }
-
 }

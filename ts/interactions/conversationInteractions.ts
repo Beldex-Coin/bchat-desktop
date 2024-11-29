@@ -48,6 +48,7 @@ import { MIME } from '../types';
 import { setLastProfileUpdateTimestamp } from '../util/storage';
 import { getSodiumRenderer } from '../bchat/crypto';
 import { encryptProfile } from '../util/crypto/profileEncrypter';
+
 // import { useConversationUsername } from '../hooks/useParamSelector';
 
 export const getCompleteUrlForV2ConvoId = async (convoId: string) => {
@@ -153,12 +154,17 @@ export const approveConvoAndSendResponse = async (
   }
 };
 
-export const declineConversationWithConfirm = (convoId: string, syncToDevices: boolean = true) => {
+export const declineConversationWithConfirm = (convoId: string, syncToDevices: boolean = true,customIcon?:any) => {
+  
   window?.inboxStore?.dispatch(
     updateConfirmModal({
+      title:'Decline Request?',
       okText: window.i18n('decline'),
+      okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
       message: window.i18n('declineRequestMessage'),
+      iconShow: true,
+      customIcon:customIcon,
       onClickOk: async () => {
         await declineConversationWithoutConfirm(convoId, syncToDevices);
         await blockConvoById(convoId);
@@ -223,13 +229,13 @@ export async function showUpdateGroupMembersByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateGroupMembersModal({ conversationId }));
 }
 
-export function showLeaveGroupByConvoId(conversationId: string,username:string) {
+export function showLeaveGroupByConvoId(conversationId: string, username: string, customIcon: any) {
   const conversation = getConversationController().get(conversationId);
   if (!conversation.isGroup()) {
     throw new Error('showLeaveGroupDialog() called with a non group convo.');
   }
   const title = window.i18n('leaveGroup');
-  const message = window.i18n('leaveGroupConfirmation',[username]); 
+  const message = window.i18n('leaveGroupConfirmation', [username]);
   const ourPK = UserUtils.getOurPubKeyStrFromCache();
   const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
   const isClosedGroup = conversation.get('is_medium_group') || false;
@@ -244,11 +250,13 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
         title,
         message,
         onClickOk: async () => {
-          await conversation.leaveClosedGroup(); 
+          await conversation.leaveClosedGroup();
           onClickClose();
         },
         onClickClose,
-        okTheme:BchatButtonColor.Danger,
+        okTheme: BchatButtonColor.Danger,
+        iconShow: true,
+        customIcon
       })
     );
   } else {
@@ -259,7 +267,47 @@ export function showLeaveGroupByConvoId(conversationId: string,username:string) 
     );
   }
 }
-export function showInviteContactByConvoId(conversationId: string) {
+
+export function deleteGroupByConvoId(conversationId: string, username: string) {
+  const conversation = getConversationController().get(conversationId);
+  if (!conversation.isGroup()) {
+    throw new Error('showLeaveGroupDialog() called with a non group convo.');
+  }
+  const title = window.i18n('editMenuDeleteGroup');
+  const deletetxt = window.i18n('delete');
+  const message = `Are you sure you want to delete this group,${username}?`;
+  const ourPK = UserUtils.getOurPubKeyStrFromCache();
+  const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
+  const isClosedGroup = conversation.get('is_medium_group') || false;
+
+  // if this is not a closed group, or we are not admin, we can just show a confirmation dialog
+  if (!isClosedGroup || (isClosedGroup && !isAdmin)) {
+    const onClickClose = () => {
+      window.inboxStore?.dispatch(updateConfirmModal(null));
+    };
+    window.inboxStore?.dispatch(
+      updateConfirmModal({
+        title,
+        message,
+        onClickOk: async () => {
+          await getConversationController().deleteContact(conversationId);;
+          onClickClose();
+        },
+        onClickClose,
+        okText: deletetxt,
+        okTheme: BchatButtonColor.Danger,
+      })
+    );
+  } else {
+    window.inboxStore?.dispatch(
+      adminLeaveClosedGroup({
+        conversationId,
+      })
+    );
+  }
+}
+
+export function showInviteContactByConvoId(conversationId: string) { 
   window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));
 }
 export async function onMarkAllReadByConvoId(conversationId: string) {
@@ -354,7 +402,7 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       okTheme: BchatButtonColor.Danger,
       onClickClose,
       // okText:window.i18n('leaveGroup')   
-      okText:window.i18n('delete')   
+      okText: window.i18n('delete')
 
     })
   );

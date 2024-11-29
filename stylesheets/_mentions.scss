@@ -1,7 +1,7 @@
 // used for the list after adding a `@` in the compose text input
 .contact-selection-list {
-  max-height: 240px;
-  overflow-y: auto;
+  // max-height: 240px;
+  // overflow-y: auto;
   margin: 4px;
 
   .check-mark {
@@ -10,6 +10,14 @@
     color: darkslategrey;
     margin: 4px;
     min-width: 20px;
+  }
+  .bchat-member-item:hover {
+    cursor:pointer !important;
+  }
+}
+.remove-contact-list{
+  .bchat-member-item:hover {
+    cursor:pointer !important;
   }
 }
 

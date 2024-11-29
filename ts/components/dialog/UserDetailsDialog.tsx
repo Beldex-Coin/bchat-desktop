@@ -7,9 +7,11 @@ import { getConversationController } from '../../bchat/conversations';
 import { ToastUtils } from '../../bchat/utils';
 import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { updateUserDetailsModal } from '../../state/ducks/modalDialog';
-import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { SpacerLG } from '../basic/Text';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { Flex } from '../basic/Flex';
+import { BchatIconButton } from '../icon';
 
 type Props = {
   conversationId: string;
@@ -20,9 +22,7 @@ type Props = {
 export const UserDetailsDialog = (props: Props) => {
   const [isEnlargedImageShown, setIsEnlargedImageShown] = useState(false);
   const convo = getConversationController().get(props.conversationId);
-
   const size = isEnlargedImageShown ? AvatarSize.HUGE : AvatarSize.XL;
-
   function closeDialog() {
     window.inboxStore?.dispatch(updateUserDetailsModal(null));
   }
@@ -51,34 +51,57 @@ export const UserDetailsDialog = (props: Props) => {
   }
 
   return (
-    <BchatWrapperModal title={props.userName} onClose={closeDialog} showExitIcon={true}>
-      <div style={{width:'410px',paddingTop:'20px'}}>
-      <div className="avatar-center">
-        <div className="avatar-center-inner">
-          <Avatar
-            size={size}
-            onAvatarClick={() => {
-              setIsEnlargedImageShown(!isEnlargedImageShown);
+    <BchatWrapperModal
+      title={''}
+      onClose={closeDialog}
+      showExitIcon={false}
+      showHeader={false}
+      additionalClassName="user-details"
+      okButton={{
+        onClickOkHandler: () => closeDialog(),
+      }}
+    >
+      <div style={{ width: '500px', paddingTop: '20px' }}>
+        <Flex container={true} justifyContent="center" >
+          <BNSWrapper
+            // size={isEnlargedImageShown ? 305 : 89}
+            position={{
+              left: isEnlargedImageShown ? '288px' : '71px',
+              top: isEnlargedImageShown ? '288px' : '71px',
             }}
-            pubkey={props.conversationId}
-          />
-        </div>
-      </div>
-      <div className='bchat-modal__centered-display'>
-          <div className='profile-value'>{convo.id}</div>
-          <div onClick={() => copyBchatID(convo.id)}
-            className="bchat-modal__centered-display-icon"
+            isBnsHolder={convo?.attributes?.isBnsHolder}
+            size={{ width: '20', height: '20' }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18.151" height="18.151" viewBox="0 0 18.151 18.151">
-              <path id="copy_icon" d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z" transform="translate(-2 -2)"  />
-            </svg>
-          </div>
+            <Avatar
+              size={size}
+              onAvatarClick={() => {
+                setIsEnlargedImageShown(!isEnlargedImageShown);
+              }}
+              pubkey={props.conversationId}
+            />
+          </BNSWrapper>
+        </Flex>
+        <SpacerSM />
+        <div className="user-name">{props.userName}</div>
+        <SpacerMD />
+        <div className="user-id-wrapper">
+          <Flex container={true} alignItems='baseline'>
+            <div>
+              <div className="user-id-wrapper-label">BChat Id</div>
+              <div className="user-id">{convo.id}</div>
+            </div>
+            <BchatIconButton
+              iconType="copy"
+              iconSize={18}
+              iconColor="#00A638"
+              clipRule="evenodd"
+              fillRule="evenodd"
+              onClick={() => copyBchatID(convo.id)}
+            />
+          </Flex>
         </div>
 
-      <SpacerLG />
-
-      <div className="bchat-modal__button-group__center"> 
-      </div>
+        <SpacerLG />
       </div>
     </BchatWrapperModal>
   );

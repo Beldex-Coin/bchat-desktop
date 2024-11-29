@@ -2,73 +2,102 @@
 // /////////////////// Fonts ////////////////////
 // //////////////////////////////////////////////
 
-$bchat-font-default: 'poppin-medium';
+$bchat-font-default: 'Poppins';
 $bchat-font-poppins-bold: 'Poppins';
 $bchat-font-mono: 'SpaceMono';
 $bchat-font-poppin-semibold: 'poppin-semibold';
 $bchat-font-poppin-light: 'poppin-light';
 $bchat-font-poppin-medium: 'poppin-medium';
 $bchat-font-poppin-regular: 'poppin-regular';
-
-@font-face {
-  font-family: $bchat-font-mono;
-  src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
-}
+$bchat-font-open-sans:'OpenSans';
+// $bchat-font-open-sans-light:'OpenSans-light';
+// @font-face {
+//   font-family: $bchat-font-mono;
+//   src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
+// }
 
 // Roboto is an open replacement for $bchat-font-default
-@font-face {
-  font-family: $bchat-font-default;
-  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
-  font-weight: 300;
-}
-@font-face {
-  font-family: $bchat-font-default;
-  src: url('../fonts/Roboto-Italic.ttf') format('truetype');
-  font-style: italic;
-  font-weight: 300;
-}
-@font-face {
-  font-family: $bchat-font-default;
-  src: url('../fonts/Roboto-Bold.ttf') format('truetype');
-  font-weight: 600;
-}
-@font-face {
-  font-family: $bchat-font-default;
-  src: url('../fonts/Roboto-BoldItalic.ttf') format('truetype');
-  font-weight: 600;
-  font-style: italic;
-}
+// @font-face {
+//   font-family: $bchat-font-default;
+//   src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+//   font-weight: 300;
+// }
+// @font-face {
+//   font-family: $bchat-font-default;
+//   src: url('../fonts/Roboto-Italic.ttf') format('truetype');
+//   font-style: italic;
+//   font-weight: 300;
+// }
+// @font-face {
+//   font-family: $bchat-font-default;
+//   src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+//   font-weight: 600;
+// }
+// @font-face {
+//   font-family: $bchat-font-default;
+//   src: url('../fonts/Roboto-BoldItalic.ttf') format('truetype');
+//   font-weight: 600;
+//   font-style: italic;
+// }
 
 // Accented font
 @font-face {
-  font-family: $bchat-font-poppins-bold;
-  src: url('../fonts/Poppins-Bold.ttf') format('truetype');
+  font-family:$bchat-font-open-sans;
+  src: url('../fonts/OpenSans-Light.ttf') format('truetype');
   line-height: 1.4rem;
-  font-weight: bold;
+  font-weight: 300;
 }
 @font-face {
-  font-family: $bchat-font-poppin-semibold;
-  src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-family:$bchat-font-open-sans;
+  src: url('../fonts/OpenSans_Condensed-SemiBold.ttf') format('truetype');
   line-height: 1.4rem;
+  font-weight: 600;
+}
+@font-face {
+  font-family: $bchat-font-open-sans;
+  src: url('../fonts/OpenSans-ExtraBold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 800;
 }
 
+
+// popins font includes
+
 @font-face {
-  font-family: $bchat-font-poppin-light;
+  font-family:$bchat-font-default;
   src: url('../fonts/Poppins-Light.ttf') format('truetype');
   line-height: 1.4rem;
+  font-weight: 300;
 }
 
 @font-face {
-  font-family: $bchat-font-poppin-regular;
+  font-family: $bchat-font-default;
   src: url('../fonts/Poppins-Regular.ttf') format('truetype');
   line-height: 1.4rem;
+  font-weight: 400;
 }
 
 @font-face {
-  font-family: $bchat-font-poppin-medium;
+  font-family: $bchat-font-default;
   src: url('../fonts/Poppins-Medium.ttf') format('truetype');
   line-height: 1.4rem;
+  font-weight: 500;
 }
+
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 600;
+}
+@font-face {
+  font-family: $bchat-font-default;
+  src: url('../fonts/Poppins-Bold.ttf') format('truetype');
+  line-height: 1.4rem;
+  font-weight: 700;
+}
+
+
 // //////////////////////////////////////////////
 // ////////////////// Colors ////////////////////
 // //////////////////////////////////////////////
@@ -143,15 +172,15 @@ $bchat-font-h4: 16px;
 
 // Button
 
-$bchat-button-color: #00a803;
+$bchat-button-green-color: #00A638;
 $bchat-button-hovor-color: #00a705;
 $bchat-button-gray-color: #403e4b;
 $bchat-button-gray-hover-color: #52505f;
 
 // Mixins
 @mixin fontAccentBold {
-  font-weight: bold;
-  font-family: $bchat-font-poppins-bold;
+  font-weight: 700;
+
 }
 
 @mixin text-highlight($color) {
@@ -199,13 +228,13 @@ $bchat-subtle-factor: 0.6;
 // Default Components
 $bchat-search-input-height: 34px;
 // $main-view-header-height: 63px;
-$main-view-header-height: 67px;
+$main-view-header-height: 70px;
 
 $bchat-left-pane-width: 300px;
 
 // Various Components
 $bchat-modal-size-sm: 220px;
-$bchat-modal-size-md: 400px;
+$bchat-modal-size-md: 450px;
 $bchat-modal-size-lg: 650px;
 
 $bchat_message-container-border-radius: 13px;
@@ -215,6 +244,7 @@ $bchat-margin-xs: 5px;
 $bchat-margin-sm: 10px;
 $bchat-margin-md: 15px;
 $bchat-margin-lg: 20px;
+$bchat-margin-xl: 30px;
 
 // Animations
 $bchat-transition-duration: 0.25s;
@@ -232,7 +262,7 @@ $bchat-transition-duration: 0.25s;
 // ///////////////// Various ////////////////////
 // //////////////////////////////////////////////
 
-$composition-container-height: 60px;
+$composition-container-height: 70px;
 
 //////////////////////////////////////////////
 // ///////////////// placeholder ////////////////////

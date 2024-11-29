@@ -23,12 +23,13 @@ import { ReadReceipts } from '../util/readReceipts';
 import { Storage } from '../util/storage';
 import {
   // getConversationById,
-  getMessageBySenderAndTimestamp
+  getMessageBySenderAndTimestamp,
 } from '../data/data';
 import {
   deleteMessagesFromSwarmAndCompletelyLocally,
   deleteMessagesFromSwarmAndMarkAsDeletedLocally,
 } from '../interactions/conversations/unsendingInteractions';
+import { bnsVerificationConvo } from '../components/conversation/BnsVerification';
 
 export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageHash: string) {
   try {
@@ -40,7 +41,6 @@ export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageH
       return;
     }
     const sentAtTimestamp = _.toNumber(envelope.timestamp);
-
     await innerHandleSwarmContentMessage(envelope, sentAtTimestamp, plaintext, messageHash);
   } catch (e) {
     window?.log?.warn(e);
@@ -408,6 +408,32 @@ export async function innerHandleSwarmContentMessage(
       ConversationTypeEnum.PRIVATE
     );
 
+    // When restoring the message, this function is used to validate BNS in the conversation.
+    bnsVerificationConvo(senderConversationModel,isPrivateConversationMessage,envelope);
+    // const ourPubkey = UserUtils.getOurPubKeyFromCache();
+    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id,'ourPubkey ---> ',ourPubkey.key,"!window.getLocalValue('ourBnsName')--->",!window.getLocalValue('ourBnsName'),"ourBnsName-->",window.getLocalValue('ourBnsName'),'isPrivateConversationMessage --->',isPrivateConversationMessage)
+    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id === ourPubkey.key &&
+    // !window.getLocalValue('ourBnsName') &&
+    // isPrivateConversationMessage)
+    // if (
+    //   senderConversationModel?.attributes?.id === ourPubkey.key &&
+    //   !window.getLocalValue('ourBnsName') &&
+    //   isPrivateConversationMessage
+    // ) {
+    //   console.log(" private validatio 2------>",senderConversationModel);
+    //   senderConversationModel.setIsBnsHolder(false);
+    // } else {
+    //   console.log(" private validatio 3------>",senderConversationModel);
+
+    //   isPrivateConversationMessage && senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
+    // }
+
+    // console.log(
+    //   'user pukey ------>',
+    //   senderConversationModel?.attributes,
+    //   'local stor-->',
+    //   window.getLocalValue('ourBnsName')
+    // );
     /**
      * For a closed group message, this holds the closed group's conversation.
      * For a private conversation message, this is just the conversation with that user
@@ -421,7 +447,6 @@ export async function innerHandleSwarmContentMessage(
     }
 
     if (content.dataMessage) {
-
       if (content.dataMessage.profileKey && content.dataMessage.profileKey.length === 0) {
         content.dataMessage.profileKey = null;
       }

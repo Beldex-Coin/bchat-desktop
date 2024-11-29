@@ -7,17 +7,15 @@ export const OVERLAY_MODE = 'OVERLAY_MODE';
 
 export enum SectionType {
   Message,
+  NewChat,
   Closedgroup,
   Opengroup,
-
-  Settings,
   Wallet,
+  Settings,
+ 
 
   Profile,
-
-  
   Contact,
-
   Moon,
   PathIndicator,
   
@@ -63,6 +61,7 @@ export function setIsAppFocused(focused: boolean): IsAppFocusedActionType {
 
 export type OverlayMode =
   | 'message'
+  |'new-Chat'
   | 'open-group'
   | 'closed-group'
   | 'message-requests'

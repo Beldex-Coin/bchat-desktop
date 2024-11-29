@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -20,17 +20,29 @@ import {
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
-import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+// import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
-import { getIsOnline } from '../../state/selectors/onions';
+// import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
+import { getConversationController } from '../../bchat/conversations';
+// import { ConversationTypeEnum } from '../../models/conversation';
+import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
+import useNetworkStatus from '../../hooks/useNetworkStatus';
+import { getIsVerifyBnsCalled } from '../../state/selectors/bnsConfig';
+import { isLinkedBchatIDWithBnsForDeamon } from '../conversation/BnsVerification';
+import { updateIsOnline, 
+  // updateOnionPaths 
+} from '../../state/ducks/onion';
+// import { OnionPaths } from '../../bchat/onions';
+// import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
+// import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
 // const SectionTitle = styled.h1`
@@ -41,18 +53,32 @@ import { clearSearch } from '../../state/ducks/search';
 // `;
 
 export const LeftPaneSectionHeader = () => {
-  // const showRecoveryPhrasePrompt = useSelector(getShowRecoveryPhrasePrompt);
   const focusedSection = useSelector(getFocusedSection);
   const overlayMode = useSelector(getOverlayMode);
   const bChatId = useSelector(getOurNumber);
+  // const pathCon = useSelector(getIsOnline);
+  // const isOnline=window.getGlobalOnlineStatus();
+  const isOnline = useNetworkStatus();
   const dispatch = useDispatch();
-
   let label: string | undefined;
-
   const isMessageSection = focusedSection === SectionType.Message;
   const isMessageRequestOverlay = overlayMode === 'message-requests';
-
+  const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
+  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  useEffect(() => {
+    if (isOnline && !IsVerifyBnsCalled) {
+      isLinkedBchatIDWithBnsForDeamon();
+    }
+    if (!isOnline) {
+      clearStatus();
+    }
+  }, [isOnline]);
+  const clearStatus = async () => {
+    // window.inboxStore?.dispatch(updateOnionPaths([]));
+    window.inboxStore?.dispatch(updateIsOnline(false));
+    // OnionPaths.clearTestOnionPath();
+  };
 
   switch (focusedSection) {
     case SectionType.Contact:
@@ -61,7 +87,7 @@ export const LeftPaneSectionHeader = () => {
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
       break;
-      case SectionType.Wallet:
+    case SectionType.Wallet:
       label = window.i18n('wallet');
       break;
     case SectionType.Message:
@@ -74,6 +100,10 @@ export const LeftPaneSectionHeader = () => {
     default:
       label = 'BChat';
   }
+
+  // async function printlog() {
+  //   isLinkedBchatIDWithBnsForDeamon(bnsName);
+  // }
 
   function handleClick() {
     const themeFromSettings = window.Events.getThemeSetting();
@@ -96,12 +126,19 @@ export const LeftPaneSectionHeader = () => {
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <Avatar
-          size={AvatarSize.M}
-          onAvatarClick={() => dispatch(editProfileModal({}))}
-          pubkey={bChatId}
-          dataTestId="leftpane-primary-avatar"
-        />
+        <BNSWrapper
+          // size={52}
+          position={{ left: '36px', top: '35px' }}
+          isBnsHolder={conversation?.attributes?.isBnsHolder}
+          size={{width:'20',height:'20'}}
+        >
+          <Avatar
+            size={AvatarSize.M}
+            onAvatarClick={() => dispatch(editProfileModal({}))}
+            pubkey={bChatId}
+            dataTestId="leftpane-primary-avatar"
+          />
+        </BNSWrapper>
       );
     } else {
       return (
@@ -116,26 +153,24 @@ export const LeftPaneSectionHeader = () => {
     }
   }
 
-  const IsOnline = () => {
-    const isOnline = useSelector(getIsOnline);
-    const status = isOnline ? 'Online' : 'Offline';
-    if (SectionType.Settings !== focusedSection) {
-      return (
-        <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
-          <ActionPanelOnionStatusLight
-            isSelected={false}
-            handleClick={function(): void {
-              throw new Error('Function not implemented.');
-            }}
-            id={''}
-            size="tiny"
-          />
-        </Hops>
-      );
-    } else {
-      return null;
-    }
-  };
+  // const IsOnline = () => {
+  //   const isOnline = useSelector(getIsOnline);
+  //   const status = isOnline ? 'Online' : 'Offline';
+  //   if (SectionType.Settings !== focusedSection) {
+  //     return (
+  //       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+  //         <ActionPanelOnionStatusLight
+  //           isSelected={false}
+  //           handleClick={()=>{}}
+  //           id={''}
+  //           size="tiny"
+  //         />
+  //       </Hops>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   function Moon() {
     return (
@@ -152,7 +187,7 @@ export const LeftPaneSectionHeader = () => {
 
   function Settings() {
     return (
-      <span style={{ marginRight: '15px',marginTop:'8px' }}>
+      <span style={{ marginRight: '15px' }}>
         <BchatIconButton
           iconSize="large"
           iconType="walletSetting"
@@ -167,34 +202,47 @@ export const LeftPaneSectionHeader = () => {
     );
   }
   return (
-    <Flex flexDirection="column">
-      <div
-        className="module-left-pane__header"
-        style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
-      >
-        {showBackButton && (
-          <BchatIconButton
-            onClick={() => {
-              dispatch(setOverlayMode(undefined));
-            }}
-            iconType="chevron"
-            iconRotation={90}
-            iconSize="medium"
-            margin="0 0 var(--margins-xs) var(--margins-xs)"
+    <>
+      <Flex flexDirection="column">
+        <div
+          className="module-left-pane__header"
+          style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
+        >
+          {showBackButton && (
+            <BchatIconButton
+              onClick={() => {
+                dispatch(setOverlayMode(undefined));
+              }}
+              iconType="chevron"
+              iconRotation={90}
+              iconSize="medium"
+              margin="0 0 var(--margins-xs) var(--margins-xs)"
+            />
+          )}
+
+          <div className="">{verifyScreens()}</div>
+
+          {/* <div>
+          <input
+            style={{ width: '130px' }}
+            value={bnsName} // ...force the select's value to match the state variable...
+            onChange={e => setBnsName(e.target.value)} // ... and update the state variable on any change!
+            placeholder="enter your bdx"
           />
-        )}
-
-        <div className="">{verifyScreens()}</div>
-
-        <div className="module-left-pane__header__title">{label}</div>
-        {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
+          <button onClick={() => printlog()}>submit</button>
+        </div> */}
+          <div className="module-left-pane__header__title">
+            {label} 
+            {/* <IsOnline /> */}
+          </div>
+          {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
           <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
         </div> */}
-        <IsOnline />
-        <Moon />
-        <Settings />
 
-        {/* {isMessageSection && !isMessageRequestOverlay && (
+          <Moon />
+          <Settings />
+
+          {/* {isMessageSection && !isMessageRequestOverlay && (
           <div
             onClick={props.buttonClicked}
             className="addContact"
@@ -202,13 +250,15 @@ export const LeftPaneSectionHeader = () => {
             data-offset="{'right':60}"
             data-place="bottom"
           > */}
-            {/* <div className='addContactIcon'></div> */}
-            {/* <img className="addContactIcon" /> */}
+          {/* <div className='addContactIcon'></div> */}
+          {/* <img className="addContactIcon" /> */}
           {/* </div>
         )} */}
-      </div>
-      <BchatToolTip effect="solid" />
-    </Flex>
+        </div>
+        <BchatToolTip effect="solid" />
+      </Flex>
+      
+    </>
   );
 };
 
@@ -301,8 +351,8 @@ const StyledBannerInner = styled.div`
     margin-top: var(--margins-sm);
   }
 `;
-const Hops = styled.div`
-  position: absolute;
-  left: 47px;
-  top: 43px;
-`;
+// const Hops = styled.div`
+//   margin-left: 15px;
+//   display: flex;
+//   align-content: center;
+// `;

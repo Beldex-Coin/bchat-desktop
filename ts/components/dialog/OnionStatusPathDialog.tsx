@@ -38,7 +38,7 @@ const OnionCountryDisplay = ({
       <div>
         {index === 1 ? 'Entry Node' : index !== 0 && index !== 4 ? 'Master Node' : labelText}
       </div>
-      <span style={{ fontSize: '11px' }}>
+      <span className='ip-country'>
         {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
       </span>
     </div>
@@ -66,15 +66,17 @@ const OnionPathModalInner = () => {
   ];
 
   return (
-    <>
-      <Flex
+    <div className='hopes'>
+      {/* <Flex style={{backgroundColor:'#202329'}}
         container={true}
         flexDirection="column"
         alignItems="center"
-        height="70vh"
+        height="62vh"
         justifyContent="center"
-      >
-        <p className="onion__description">{window.i18n('onionPathIndicatorDescription')}</p>
+        margin="auto"
+      > */}
+      <div className='layer'>
+        <div className="onion__description">{window.i18n('onionPathIndicatorDescription')}</div>
         <div className="onion__node-list">
           <Flex container={true}>
             <div className="onion__node-list-lights">
@@ -107,8 +109,9 @@ const OnionPathModalInner = () => {
             </Flex>
           </Flex>
         </div>
-      </Flex>
-    </>
+      </div>
+      {/* </Flex> */}
+    </div>
   );
 };
 
@@ -127,7 +130,7 @@ export const OnionNodeStatusLight = (props: OnionNodeStatusLightType): JSX.Eleme
     <ModalStatusLight
       glowDuration={glowDuration}
       glowStartDelay={glowStartDelay}
-      color={'var(--color-accent)'}
+      color={'#108D32'}
     />
   );
 };

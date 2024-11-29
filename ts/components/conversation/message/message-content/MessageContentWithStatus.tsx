@@ -31,7 +31,6 @@ export const MessageContentWithStatuses = (props: Props) => {
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
   const dispatch = useDispatch();
-//  console.log('MessageContentWithStatuses ::',contentProps,props)
   const multiSelectMode = useSelector(isMessageSelectionMode);
 
   const onClickOnMessageOuterContainer = useCallback(
@@ -68,8 +67,6 @@ export const MessageContentWithStatuses = (props: Props) => {
     return null;
   }
   const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload } = contentProps;
-  // console.log("isDeleted isDeleted::",isDeleted);
-  
   const isIncoming = direction === 'incoming';
 
   return (
@@ -82,20 +79,22 @@ export const MessageContentWithStatuses = (props: Props) => {
       data-testid={dataTestId}
     >
       <MessageStatus
-        dataTestId="msg-status-incoming"
+        dataTestId="msg-status-outgoing"
         messageId={messageId}
-        isCorrectSide={isIncoming}
+        isCorrectSide={!isIncoming}
       />
+      
       <div>
         <MessageAuthorText messageId={messageId} />
 
         <MessageContent messageId={messageId} isDetailView={isDetailView} />
       </div>
       <MessageStatus
-        dataTestId="msg-status-outgoing"
+        dataTestId="msg-status-incoming"
         messageId={messageId}
-        isCorrectSide={!isIncoming}
+        isCorrectSide={isIncoming}
       />
+      
       {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
     </div>
   );

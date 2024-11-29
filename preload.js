@@ -42,7 +42,11 @@ const ipc = ipcRenderer;
 const localeMessages = ipc.sendSync('locale-data');
 
 window.updateZoomFactor = () => {
-  const zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
+  let zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
+  
+  if (window.screen.width <= 1440) {
+    zoomFactor = zoomFactor - 15;
+  }
   window.setZoomFactor(zoomFactor / 100);
 };
 
@@ -176,6 +180,16 @@ window.setSettingValue = async (settingID, value) => {
   await Storage.put(settingID, value);
 };
 
+
+window.getLocalValue = (localId) => {
+  const bchatVal = Storage.get(localId);
+  return bchatVal;
+};
+window.setLocalValue = async (localId, value) => {
+  // For auto updating we need to pass the value to the main process
+  await Storage.put(localId, value);
+};
+
 window.getMediaPermissions = () => ipc.sendSync('get-media-permissions');
 window.setMediaPermissions = value => {
   ipc.send('set-media-permissions', !!value);
@@ -236,7 +250,7 @@ window.ReactDOM = require('react-dom');
 window.clipboard = clipboard;
 
 window.networkType = 'mainnet';
-
+// window.networkType = 'testnet';
 if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
@@ -245,18 +259,18 @@ if (window.networkType == 'mainnet') {
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
         'https://publicnode4.rpcnode.stream:443',
-        'https://publicnode5.rpcnode.stream:443',
+        // 'https://publicnode5.rpcnode.stream:443',
       ]
       : [
         'https://publicnode1.rpcnode.stream:443',
         'https://publicnode2.rpcnode.stream:443',
         'https://publicnode3.rpcnode.stream:443',
         'https://publicnode4.rpcnode.stream:443',
-        'https://publicnode5.rpcnode.stream:443',
+        // 'https://publicnode5.rpcnode.stream:443',
       ];
 
   const remotes = [
-   
+
     {
       host: 'publicnode1.rpcnode.stream',
       port: '29095',

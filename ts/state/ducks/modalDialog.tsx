@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BchatConfirmDialogProps } from '../../components/dialog/BchatConfirm';
 import { PasswordAction } from '../../components/dialog/BchatPasswordDialog';
+import { MessagePropsDetails } from './conversations';
 export type BanType = 'ban' | 'unban';
 
 export type ConfirmModalState = BchatConfirmDialogProps | null;
@@ -17,9 +18,11 @@ export type UpdateGroupNameModalState = InviteContactModalState;
 export type ChangeNickNameModalState = InviteContactModalState;
 export type AdminLeaveClosedGroupModalState = InviteContactModalState;
 export type EditProfileModalState = {} | null;
+export type BnsLinkModalState={} | null;
 export type OnionPathModalState = EditProfileModalState;
 export type RecoveryPhraseModalState = EditProfileModalState;
 export type DeleteAccountModalState = EditProfileModalState;
+export type MessageMoreInfoState=MessagePropsDetails | null;
 
 export type BchatPasswordModalState = { passwordAction: PasswordAction; onOk: () => void } | null;
 
@@ -39,10 +42,14 @@ export type walletSettingMiniModalState={
 } | null;
 
 export type TransactionInitModalState={} | null;
+export type InsufficientBalanceModalState={} |  null;
 export type WalletSendConfirmState=any | null;
 export type BchatUpdateInstruntionState=any | null;
 export type BchatWalletPasswordModalState={from?:string} |null;
+export type BchatWalletForgotPasswordModalState={}|null;
 export type BchatAlertConfirmModalState=any |null;
+export type AboutBnsModalState={} | null;
+export type CommunityGuidelinesModalState={} | null;
 
 
 
@@ -57,6 +64,7 @@ export type ModalState = {
   userDetailsModal: UserDetailsModalState;
   nickNameModal: ChangeNickNameModalState;
   editProfileModal: EditProfileModalState;
+  bnsLinkModal:BnsLinkModalState;
   onionPathModal: OnionPathModalState;
   recoveryPhraseModal: RecoveryPhraseModalState;
   adminLeaveClosedGroup: AdminLeaveClosedGroupModalState;
@@ -65,10 +73,15 @@ export type ModalState = {
   ChangePasswordModal:ChangePasswordModalState;
   walletSettingMiniModal:walletSettingMiniModalState;
   transactionInitModal:TransactionInitModalState;
+  insufficientBalanceModal:InsufficientBalanceModalState;
   walletSendConfirm:WalletSendConfirmState;
   BchatUpdateInstruntion:BchatUpdateInstruntionState;
   BchatWalletPasswordModal:BchatWalletPasswordModalState;
+  BchatWalletForgotPasswordModal:BchatWalletForgotPasswordModalState;
   BchatAlertConfirmModal:BchatAlertConfirmModalState;
+  aboutBnsModal:AboutBnsModalState;
+  messageMoreInfo:MessageMoreInfoState;
+  communityGuidelinesModal:CommunityGuidelinesModalState;
 };
 
 export const initialModalState: ModalState = {
@@ -82,6 +95,7 @@ export const initialModalState: ModalState = {
   userDetailsModal: null,
   nickNameModal: null,
   editProfileModal: null,
+  bnsLinkModal:null,
   onionPathModal: null,
   recoveryPhraseModal: null,
   adminLeaveClosedGroup: null,
@@ -90,10 +104,15 @@ export const initialModalState: ModalState = {
   ChangePasswordModal:null,
   walletSettingMiniModal:null,
   transactionInitModal:null,
+  insufficientBalanceModal:null,
   walletSendConfirm:null,
   BchatUpdateInstruntion:null,
   BchatWalletPasswordModal:null,
-  BchatAlertConfirmModal:null
+  BchatWalletForgotPasswordModal:null,
+  BchatAlertConfirmModal:null,
+  aboutBnsModal:null,
+  messageMoreInfo:null,
+  communityGuidelinesModal:null
 };
 
 const ModalSlice = createSlice({
@@ -130,6 +149,9 @@ const ModalSlice = createSlice({
     editProfileModal(state, action: PayloadAction<EditProfileModalState | null>) {
       return { ...state, editProfileModal: action.payload };
     },
+    bnsLinkModal(state, action: PayloadAction<BnsLinkModalState | null>) {
+      return { ...state, bnsLinkModal: action.payload };
+    },
     onionPathModal(state, action: PayloadAction<OnionPathModalState | null>) {
       return { ...state, onionPathModal: action.payload };
     },
@@ -157,6 +179,10 @@ const ModalSlice = createSlice({
     {
       return { ...state, transactionInitModal: action.payload };
     },
+    updateInsufficientBalanceModal(state,action:PayloadAction<InsufficientBalanceModalState>)
+    {
+      return { ...state, insufficientBalanceModal: action.payload };
+    },
     updateSendConfirmModal(state,action:PayloadAction<WalletSendConfirmState>)
     {
       return { ...state, walletSendConfirm: action.payload };
@@ -169,11 +195,26 @@ const ModalSlice = createSlice({
     {
       return { ...state, BchatWalletPasswordModal: action.payload};
     },
+    updateBchatWalletForgotPasswordModal(state,action:PayloadAction<BchatWalletForgotPasswordModalState>)
+    {
+      return { ...state, BchatWalletForgotPasswordModal: action.payload};
+    },
     updateBchatAlertConfirmModal(state,action:PayloadAction<BchatAlertConfirmModalState>)
     {
       return { ...state, BchatAlertConfirmModal: action.payload};
+    },
+    updateAboutBnsModal(state,action:PayloadAction<AboutBnsModalState>)
+    {
+      return { ...state, aboutBnsModal: action.payload};
+    },
+    updateMessageMoreInfoModal(state,action:PayloadAction<MessageMoreInfoState>)
+    {
+      return { ...state, messageMoreInfo: action.payload};
+    },
+    updateCommunityGuidelinesModal(state,action:PayloadAction<CommunityGuidelinesModalState>)
+    {
+      return { ...state, communityGuidelinesModal: action.payload};
     }
-
   },
 });
 
@@ -188,6 +229,7 @@ export const {
   updateUserDetailsModal,
   changeNickNameModal,
   editProfileModal,
+  bnsLinkModal,
   onionPathModal,
   recoveryPhraseModal,
   adminLeaveClosedGroup,
@@ -197,9 +239,14 @@ export const {
   ChangePasswordModal,
   walletSettingMiniModal,
   updateTransactionInitModal,
+  updateInsufficientBalanceModal,
   updateSendConfirmModal,
   updateBchatUpgradeInstructionModal,
   updateBchatWalletPasswordModal,
-  updateBchatAlertConfirmModal
+  updateBchatWalletForgotPasswordModal,
+  updateBchatAlertConfirmModal,
+  updateAboutBnsModal,
+  updateMessageMoreInfoModal,
+  updateCommunityGuidelinesModal
 } = actions;
 export const modalReducer = reducer;

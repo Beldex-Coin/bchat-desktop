@@ -17,11 +17,15 @@ import {
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
 import {
-  showMessageDetailsView,
+  // MessagePropsDetails,
+  // showMessageDetailsView,
   toggleSelectedMessageId,
 } from '../../../../state/ducks/conversations';
 import { getMessageContextMenuProps } from '../../../../state/selectors/conversations';
 import { saveAttachmentToDisk } from '../../../../util/attachmentsUtil';
+import { BchatIcon } from '../../../icon';
+import CopyIcon from '../../../icon/CopyIcon';
+import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -91,7 +95,8 @@ export const MessageContextMenu = (props: Props) => {
     const found = await getMessageById(messageId);
     if (found) {
       const messageDetailsProps = await found.getPropsForMessageDetail();
-      dispatch(showMessageDetailsView(messageDetailsProps));
+      // dispatch(showMessageDetailsView(messageDetailsProps));
+      dispatch(updateMessageMoreInfoModal(messageDetailsProps));
     } else {
       window.log.warn(`Message ${messageId} not found in db`);
     }
@@ -183,28 +188,45 @@ export const MessageContextMenu = (props: Props) => {
       animation={animation.fade}
     >
       {attachments?.length ? (
-        <Item onClick={saveAttachment}>{window.i18n('downloadAttachment')}</Item>
+        <Item onClick={saveAttachment}>
+          <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
+        </Item>
       ) : null}
-
-      <Item onClick={copyText}>{window.i18n('copyMessage')}</Item>
-      {(isSent || !isOutgoing) && <Item onClick={onReply}>{window.i18n('replyToMessage')}</Item>}
-      {(!isPublic || isOutgoing) && (
-        <Item onClick={onShowDetail}>{window.i18n('moreInformation')}</Item>
+      {!attachments?.length  &&  
+      <Item onClick={copyText}>
+        <CopyIcon color={'var(--color-text)'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
+      </Item>}
+      {(isSent || !isOutgoing) && (
+        <Item onClick={onReply}>
+          <BchatIcon iconType={'reply'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
+        </Item>
       )}
-      {showRetry ? <Item onClick={onRetry}>{window.i18n('resend')}</Item> : null}
+      {(!isPublic || isOutgoing) && (
+        <Item onClick={onShowDetail}>
+          <BchatIcon iconType={'infoCircle'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
+      )}
+      {showRetry ? <Item onClick={onRetry}> <BchatIcon iconType={'resend'} iconSize={18}  />
+      <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span></Item> : null}
       {isDeletable ? (
         <>
-          <Item onClick={onSelect}>{selectMessageText}</Item>
+          <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
+            <span style={{ marginLeft: '10px' }}>{selectMessageText}</span></Item>
         </>
       ) : null}
       {isDeletable && !isPublic ? (
         <>
-          <Item onClick={onDelete}>{deleteMessageJustForMeText}</Item>
+          <Item onClick={onDelete}><BchatIcon iconType={'delete'} iconSize={18} iconColor='#FF3E3E' />
+            <span style={{ marginLeft: '10px', color: "#FF3E3E" }}>{deleteMessageJustForMeText}</span></Item>
         </>
       ) : null}
       {isDeletableForEveryone ? (
         <>
-          <Item onClick={onDeleteForEveryone}>{unsendMessageText}</Item>
+          <Item onClick={onDeleteForEveryone}><BchatIcon iconType={'twoMember'} iconSize={18} iconColor='#FF3E3E' />
+            <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span></Item>
         </>
       ) : null}
       {weAreAdmin && isPublic ? <Item onClick={onBan}>{window.i18n('banUser')}</Item> : null}
@@ -220,3 +242,6 @@ export const MessageContextMenu = (props: Props) => {
     </Menu>
   );
 };
+
+
+

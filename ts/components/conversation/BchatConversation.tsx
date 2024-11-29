@@ -15,13 +15,12 @@ import { perfEnd, perfStart } from '../../bchat/utils/Performance';
 const DEFAULT_JPEG_QUALITY = 0.85;
 // import classNames from 'classnames';
 
-
 import { BchatMessagesListContainer } from './BchatMessagesListContainer';
 
 import { BchatFileDropzone } from './BchatFileDropzone';
 
 import { InConversationCallContainer } from '../calling/InConversationCallContainer';
-import { SplitViewContainer } from '../SplitViewContainer';
+// import { SplitViewContainer } from '../SplitViewContainer';
 import { LightboxGallery, MediaItemType } from '../lightbox/LightboxGallery';
 import { getLastMessageInConversation, getPubkeysInPublicConversation } from '../../data/data';
 import { getConversationController } from '../../bchat/conversations';
@@ -34,16 +33,16 @@ import {
   SortedMessageModelProps,
   updateMentionsMembers,
 } from '../../state/ducks/conversations';
-import { updateConfirmModal } from '../../state/ducks/modalDialog';
+import { updateCommunityGuidelinesModal, updateConfirmModal } from '../../state/ducks/modalDialog';
 import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAttachments';
 import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util';
-import { BchatButtonColor } from '../basic/BchatButton';
-import { MessageView } from '../MainViewController';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
 import { ConversationHeaderWithDetails } from './ConversationHeader';
-import { MessageDetail } from './message/message-item/MessageDetail';
+// import { MessageDetail } from './message/message-item/MessageDetail';
 import {
   makeImageThumbnailBuffer,
   makeVideoScreenshot,
@@ -51,14 +50,19 @@ import {
 } from '../../types/attachments/VisualAttachment';
 import { blobToArrayBuffer } from 'blob-util';
 import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
-import { ConversationMessageRequestButtons } from './ConversationRequestButtons';
+// import { ConversationMessageRequestButtons } from './ConversationRequestButtons';
 import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
-import { BchatRightPanelWithDetails } from './BchatRightPanel';
+// import { BchatRightPanelWithDetails } from './BchatRightPanel';
 // import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
-import { SettingsKey } from '../../data/settings-key';
-import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+// import { SettingsKey } from '../../data/settings-key';
+// import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
+import { SectionType } from '../../state/ducks/section';
+import { BchatScrollButton } from '../BchatScrollButton';
+import { Flex } from '../basic/Flex';
+import { BchatIcon } from '../icon';
+import styled from 'styled-components';
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -82,12 +86,14 @@ interface Props {
   showMessageDetails: boolean;
   isRightPanelShowing: boolean;
   hasOngoingCallWithFocusedConvo: boolean;
-  isMe:boolean;
+  isMe: boolean;
 
   // lightbox options
   lightBoxOptions?: LightBoxOptions;
 
   stagedAttachments: Array<StagedAttachmentType>;
+  convoList: any;
+  focusedSection: any;
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -196,9 +202,23 @@ export class BchatConversation extends React.Component<Props, State> {
     if (msg.body.replace(/\s/g, '').includes(recoveryPhrase.replace(/\s/g, ''))) {
       window.inboxStore?.dispatch(
         updateConfirmModal({
-          title: window.i18n('sendRecoveryPhraseTitle'),
-          message: window.i18n('sendRecoveryPhraseMessage'),
+          // title: window.i18n('sendRecoveryPhraseTitle'),
+          title: 'Warning',
+          // message: window.i18n('sendRecoveryPhraseMessage'),
+          message:
+            'This is your recovery phrase. if you send it to someone they will have full access to your account.',
           okTheme: BchatButtonColor.Danger,
+          okText: window.i18n('send'),
+          iconShow: true,
+          customIcon: (
+            <BchatIcon
+              iconType="warningCircle"
+              iconSize={30}
+              iconColor="#F0AF13"
+              clipRule="evenodd"
+              fillRule="evenodd"
+            />
+          ),
           onClickOk: () => {
             void sendAndScroll();
           },
@@ -223,37 +243,39 @@ export class BchatConversation extends React.Component<Props, State> {
     const {
       selectedConversation,
       messagesProps,
-      showMessageDetails,
+      // showMessageDetails,
       selectedMessages,
-      isRightPanelShowing,
+      // isRightPanelShowing,
       lightBoxOptions,
-      isMe
+      // isMe,
+      convoList,
+      focusedSection,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
-    const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-
+    // const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
+    if (
+      convoList?.conversations?.length == 0 &&
+      (!selectedConversation || !messagesProps) &&
+      focusedSection !== SectionType.Opengroup &&
+      focusedSection !== SectionType.NewChat
+    ) {
+      return <AddNewContactInEmptyConvo />;
+    }
     if (!selectedConversation || !messagesProps) {
-
       // return an empty message view
       return <MessageView />;
     }
-    // const belAddress = useConversationBeldexAddress(selectedConversation.id); 
-    const syncbarCondition=chatWithWallet && selectedConversation?.isPrivate && !isMe && selectedConversation?.didApproveMe && selectedConversation?.isApproved
-    // const msgProps={ amount:'0.1',
-    //   txnId: "1234567890",
-    //   direction: 'outgoing',
-    //   acceptUrl: "qwerty",
-    //   messageId: "qwert12345",
-    //   receivedAt: "123456",
-    //   isUnread: true,
-    // }
+    // const belAddress = useConversationBeldexAddress(selectedConversation.id);
+    // const syncbarCondition =
+    //   chatWithWallet &&
+    //   selectedConversation?.isPrivate &&
+    //   !isMe &&
+    //   selectedConversation?.didApproveMe &&
+    //   selectedConversation?.isApproved;
 
-    // console.log("selectedConversation ::",syncbarCondition,selectedConversation)
-   
     return (
       <BchatTheme>
-
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
@@ -263,50 +285,85 @@ export class BchatConversation extends React.Component<Props, State> {
           tabIndex={0}
           onKeyDown={this.onKeyDown}
           role="navigation"
-        > 
-          <div>
-           {syncbarCondition &&<ConditionalSyncBar />} 
-          </div>
-          <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
+        >
+          {selectedConversation?.isPublic && (
+            <div className="pinned-msg">
+              <Flex container={true} alignItems="center" justifyContent="space-between">
+                <Flex container={true} alignItems="center">
+                  <VerticalLine />
+                  <div>
+                    <div className="msg-title">Pinned Message</div>
+                    <div className="msg-sub-title">Community guidelines</div>
+                  </div>
+                </Flex>
+                <BchatButton
+                  buttonType={BchatButtonType.Brand}
+                  buttonColor={BchatButtonColor.Secondary}
+                  style={{
+                    minWidth: '106px',
+                    height: '31px',
+                    fontSize: '14px',
+                    padding: '0 0px',
+                    borderRadius: '6px',
+                  }}
+                  text="Read More"
+                  onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
+                />
+              </Flex>
+            </div>
+          )}
+          {/* <div>{syncbarCondition && <ConditionalSyncBar />}</div> */}
+          {/* <div className={classNames('conversation-info-panel', showMessageDetails && 'show')}>
             <MessageDetail />
-          </div>
+          </div> */}
           {lightBoxOptions?.media && this.renderLightBox(lightBoxOptions)}
 
           <div className="conversation-messages">
-            <ConversationMessageRequestButtons />
-            <SplitViewContainer
+            {/* <ConversationMessageRequestButtons /> */}
+            {this.props.hasOngoingCallWithFocusedConvo && (
+              <Flex container={true} justifyContent="center" alignItems="center" height="465px">
+                {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
+                <InConversationCallContainer /> {/* </div> */}
+              </Flex>
+            )}
+
+            {/* <SplitViewContainer
               top={<InConversationCallContainer />}
               bottom={
                 <>
-                <BchatMessagesListContainer
-                  messageContainerRef={this.messageContainerRef}
-                  scrollToNow={this.scrollToNow}
-                />
-                {/* <div><PaymentMessage key={'122334'} {...msgProps} /></div> */}
+                  <BchatMessagesListContainer
+                    messageContainerRef={this.messageContainerRef}
+                    scrollToNow={this.scrollToNow}
+                  />
                 </>
               }
               disableTop={!this.props.hasOngoingCallWithFocusedConvo}
+            /> */}
+            <BchatMessagesListContainer
+              messageContainerRef={this.messageContainerRef}
+              scrollToNow={this.scrollToNow}
             />
 
             {isDraggingFile && <BchatFileDropzone />}
           </div>
 
           <ConversationRequestinfo />
-
+          <BchatScrollButton
+            onClickScrollBottom={this.scrollToNow}
+            key="scroll-down-button"
+            unreadCount={selectedConversation.unreadCount}
+          />
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
             onChoseAttachments={this.onChoseAttachments}
           />
-
         </div>
-        <div
+        {/* <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
-
         >
           <BchatRightPanelWithDetails />
-        </div>
-
+        </div> */}
       </BchatTheme>
     );
   }
@@ -519,7 +576,8 @@ export class BchatConversation extends React.Component<Props, State> {
     const allPubKeys = await getPubkeysInPublicConversation(this.props.selectedConversationKey);
 
     window?.log?.debug(
-      `[perf] getPubkeysInPublicConversation returned '${allPubKeys?.length
+      `[perf] getPubkeysInPublicConversation returned '${
+        allPubKeys?.length
       }' members in ${Date.now() - start}ms`
     );
 
@@ -625,4 +683,10 @@ const renderImagePreview = async (contentType: string, file: File, fileName: str
   };
 };
 
-
+const VerticalLine = styled.div`
+  width: 5px;
+  background-color: var(--color-untrusted-vertical-bar);
+  height: 38px;
+  border-radius: 10px;
+  margin-right: 10px;
+`;

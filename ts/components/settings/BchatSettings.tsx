@@ -26,6 +26,9 @@ import { WalletMainPanel, } from '../wallet/BchatWalletMainPanel';
 import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { WalletSettings } from '../wallet/BchatWalletSettings';
+import { updateBchatAlertConfirmModal } from '../../state/ducks/modalDialog';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 // import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
 // import { startWallet } from "../../mains/wallet-rpc"
 
@@ -50,7 +53,8 @@ export enum BchatSettingCategory {
   Hops = 'hops',
   Wallet = 'wallet',
   WalletSettings = 'walletSettings',
- 
+  ClearData = 'clearData'
+
 }
 
 export interface SettingsViewProps {
@@ -89,28 +93,45 @@ export const PasswordLock = ({
   pwdLockError: string | null;
   validatePasswordLock: () => Promise<boolean>;
 }) => {
+  const darkMode = useSelector(getTheme) === 'dark';
   return (
     <div className="bchat-settings__password-lock">
-      <div className="bchat-settings__password-lock-box">
-        <h3>{window.i18n('password')}</h3>
-        <input
-          type="password"
-          id="password-lock-input"
-          defaultValue=""
-          placeholder=""
-          style={{ borderBottom: '2px solid var(--color-password-borderBottom)', borderRadius: 0 }}
-          data-testid="password-lock-input"
-        />
+      <div className='bchat-settings__password-lock-box'>
+       <div style={{borderRadius:'16px',overflow:'hidden'}}>
+       <div className="subBox">
+          <img src={darkMode?'images/bchat/passwordIcon.svg':'images/bchat/passwordIconWhite.svg'} width={"130px"} height={"130px"}></img>
+          <div className='subtext'>{window.i18n('password')}</div>
+          <input
+            type="password"
+            id="password-lock-input"
+            defaultValue=""
+            placeholder="Enter your password"
+            // style={{height:'60px' }}
+            data-testid="password-lock-input"
+          />
 
-        {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
-        <div className="confirm-Button">
+          {/* {pwdLockError && <div className="bchat-label warningBg">{pwdLockError}</div>} */}
+          {/* <div className="confirm-Button">
           <BchatButton
             buttonType={BchatButtonType.BrandOutline}
             buttonColor={BchatButtonColor.Green}
             text={window.i18n('ok')}
             onClick={validatePasswordLock}
           />
+        </div> */}
         </div>
+        <div className='bchat-modal-footer'>
+          <BchatButton
+            text={window.i18n('ok')}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            // disabled={okButton?.disabled}
+            onClick={validatePasswordLock}
+          // dataTestId={okButton?.dataTestId ? okButton.dataTestId : "Bchat-confirm-ok-button"}
+          // style={{ width: '120px', height: '35px' }}
+          />
+        </div>
+       </div>
       </div>
     </div>
   );
@@ -184,6 +205,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
           <BchatRecoverySeed
             onPasswordUpdated={this.onPasswordUpdated}
             passwordLock={this.state.hasPassword}
+            onClickCancel={() => this.onClickCancel()}
+
           />
         );
       }
@@ -207,9 +230,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     if (category === BchatSettingCategory.WalletSettings) {
 
       return (
-            <div>         
-              <WalletSettings />
-            </div>      
+        <div>
+          <WalletSettings />
+        </div>
       );
     }
     if (category === BchatSettingCategory.Notifications) {
@@ -275,13 +298,13 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
                 ? 'hops'
                 : category === BchatSettingCategory.Chat
                   ? 'Chat'
-                : category === BchatSettingCategory.WalletSettings
-                  ? 'WalletSettingsTitle'
-                  : category === BchatSettingCategory.Wallet
-                  ? 'WalletSettingsTitle'
-                  : category === BchatSettingCategory.Notifications
-                    ? 'notificationsSettingsTitle'
-                      : 'privacySettingsTitle';
+                  : category === BchatSettingCategory.WalletSettings
+                    ? 'WalletSettingsTitle'
+                    : category === BchatSettingCategory.Wallet
+                      ? 'WalletSettingsTitle'
+                      : category === BchatSettingCategory.Notifications
+                        ? 'notificationsSettingsTitle'
+                        : 'privacySettingsTitle';
 
     return (
       <div className="bchat-settings">
@@ -330,6 +353,10 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
         hasPassword: false,
       });
     }
+  }
+
+  public onClickCancel() {
+    window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null))
   }
 
   private async onKeyUp(event: any) {

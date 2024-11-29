@@ -5,6 +5,7 @@ import { Spinner } from '../basic/Spinner';
 import { AttachmentType, AttachmentTypeWithPath } from '../../types/Attachment';
 import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
+import {  BchatIconButton } from '../icon';
 
 type Props = {
   alt: string;
@@ -139,17 +140,31 @@ export const Image = (props: Props) => {
         )}
       />
       {closeButton ? (
-        <div
-          role="button"
+        // <div
+        //   role="button"
+        //   onClick={(e: any) => {
+        //     e.stopPropagation();
+        //     if (onClickClose) {
+        //       onClickClose(attachment);
+        //     }
+        //   }}
+        //   className="module-image__close-button"
+        // />
+        <div className="module-image__close-button">
+        <BchatIconButton
+          iconType={'xWithCircle'}
+          iconSize={16}
+          iconColor='#fff'
           onClick={(e: any) => {
             e.stopPropagation();
             if (onClickClose) {
               onClickClose(attachment);
             }
           }}
-          className="module-image__close-button"
         />
-      ) : null}
+        </div>
+      ) : // <BchatIcon iconType={'xWithCircle'} iconSize={16} />
+      null}
       {bottomOverlay ? <div className={classNames('module-image__bottom-overlay')} /> : null}
       {!(pending || loading) && playIconOverlay ? (
         <div className="module-image__play-overlay__circle">

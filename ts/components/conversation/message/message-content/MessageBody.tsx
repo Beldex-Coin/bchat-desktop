@@ -12,6 +12,7 @@ import { MessageInteraction } from '../../../../interactions';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { LinkPreviews } from '../../../../util/linkPreviews';
 import { BchatButtonColor } from '../../../basic/BchatButton';
+import { BchatIcon } from '../../../icon/BchatIcon';
 
 const linkify = LinkifyIt();
 
@@ -157,10 +158,12 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       updateConfirmModal({
         title: window.i18n('linkVisitWarningTitle'),
         message: window.i18n('linkVisitWarningMessage', url),
-        okText: window.i18n('open'),
+        okText: window.i18n('openLink'),
         cancelText: window.i18n('editMenuCopy'),
         showExitIcon: true,
-        okTheme:BchatButtonColor.Green,
+        iconShow: true,
+        customIcon: <BchatIcon iconType='openLink' iconSize={30} />,
+        okTheme: BchatButtonColor.Primary,
         onClickOk: openLink,
         onClickClose: () => {
           dispatch(updateConfirmModal(null));
@@ -169,6 +172,8 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         onClickCancel: () => {
           MessageInteraction.copyBodyToClipboard(url);
         },
+        okIcon: { icon: "openLinkBtn", size: 20 },
+        cancelIcon: { icon: "copy", size: 20 }
       })
     );
   }, []);

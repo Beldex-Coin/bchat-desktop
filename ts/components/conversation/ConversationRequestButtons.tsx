@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { getMessageCountByType } from '../../data/data';
 import {
@@ -11,12 +11,13 @@ import { getConversationController } from '../../bchat/conversations';
 import { getSelectedConversation } from '../../state/selectors/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { setOverlayMode } from '../../state/ducks/section';
+import DeclineMessageRequest from '../icon/DeclineMessageRequest';
 
 export const ConversationMessageRequestButtons = () => {
   const selectedConversation = useSelector(getSelectedConversation);
   const [hasIncoming, setHasIncomingMsgs] = useState(false);
   const [incomingChecked, setIncomingChecked] = useState(false);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getIncomingMessages() {
@@ -38,6 +39,7 @@ export const ConversationMessageRequestButtons = () => {
     getIncomingMessages();
   }, []);
 
+
   if (!selectedConversation || !hasIncoming || !incomingChecked) {
     return null;
   }
@@ -46,18 +48,20 @@ export const ConversationMessageRequestButtons = () => {
   const showMsgRequestUI = convoModel && convoModel.isIncomingRequest();
 
   const handleDeclineConversationRequest = () => {
-    declineConversationWithConfirm(selectedConversation.id, true);
+    console.log("handleDeclineConversationRequest:")
+    const customIcon = <DeclineMessageRequest iconSize={30} />
+    declineConversationWithConfirm(selectedConversation.id, true, customIcon);
   };
 
   const handleAcceptConversationRequest = async () => {
-    
+
     const { id } = selectedConversation;
     const convo = getConversationController().get(selectedConversation.id);
     await convo.setDidApproveMe(true);
     await convo.addOutgoingApprovalMessage(Date.now());
     dispatch(setOverlayMode(undefined));
     await approveConvoAndSendResponse(id, true);
-   
+
   };
 
   if (!showMsgRequestUI) {
@@ -68,7 +72,7 @@ export const ConversationMessageRequestButtons = () => {
     <ConversationRequestBanner>
       Allow this person to chat with you?
       <ConversationBannerRow>
-        
+
         <BchatButton
           buttonColor={BchatButtonColor.Danger}
           buttonType={BchatButtonType.Default}

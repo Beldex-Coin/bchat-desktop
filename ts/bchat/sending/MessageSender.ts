@@ -84,7 +84,7 @@ export async function send(
         networkTimestamp,
       } = overwriteOutgoingTimestampWithNetworkTimestamp(message);
 
-      const { envelopeType, cipherText } = await MessageEncrypter.encrypt(
+      const { envelopeType, cipherText,isBnsHolder } = await MessageEncrypter.encrypt(
         recipient,
         overRiddenTimestampBuffer,
         encryption
@@ -94,9 +94,10 @@ export async function send(
         envelopeType,
         recipient.key,
         networkTimestamp,
-        cipherText
-      );
+        cipherText,
+        isBnsHolder
 
+      );
       const data = wrapEnvelope(envelope);
       // make sure to update the local sent_at timestamp, because sometimes, we will get the just pushed message in the receiver side
       // before we return from the await below.
@@ -162,6 +163,8 @@ export async function sendMessageToSnode(
     isSyncMessage, // I don't think that's of any use
     messageId, // I don't think that's of any use
     namespace,
+    // isBnsHolder:false
+
   };
 
   const usedNodes = _.slice(swarm, 0, DEFAULT_CONNECTIONS);
@@ -230,7 +233,8 @@ async function buildEnvelope(
   type: SignalService.Envelope.Type,
   sskSource: string | undefined,
   timestamp: number,
-  content: Uint8Array
+  content: Uint8Array,
+  isBnsHolder?:boolean
 ): Promise<SignalService.Envelope> {
   let source: string | undefined;
 
@@ -243,6 +247,7 @@ async function buildEnvelope(
     source,
     timestamp,
     content,
+    isBnsHolder,
   });
 }
 

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 
 import _ from 'lodash';
-import {SpacerMD } from '../basic/Text';
+import { SpacerLG } from '../basic/Text';
 import { useDispatch } from 'react-redux';
 import { changeNickNameModal } from '../../state/ducks/modalDialog';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { useConversationUsername } from '../../hooks/useParamSelector';
+import { BchatIconButton } from '../icon';
+// import { useConversationUsername } from '../../hooks/useParamSelector';
 
 type Props = {
   conversationId: string;
@@ -16,9 +17,8 @@ type Props = {
 export const BchatNicknameDialog = (props: Props) => {
   const { conversationId } = props;
   const [nickname, setNickname] = useState('');
-  const usernames= String(useConversationUsername(conversationId));
-// console.log("username ::",usernames);
-
+  // const usernames = String(useConversationUsername(conversationId));
+  // console.log("username ::",usernames);
 
   const dispatch = useDispatch();
 
@@ -27,11 +27,9 @@ export const BchatNicknameDialog = (props: Props) => {
    * entered nickname value as the nickname.
    */
   const onNicknameInput = async (event: any) => {
-
     if (event.key === 'Enter') {
       await saveNickname();
-    } else if (event.target.value.length <= 26) 
-    {
+    } else if (event.target.value.length <= 26) {
       const currentNicknameEntered = event.target.value;
       setNickname(currentNicknameEntered);
     }
@@ -59,36 +57,56 @@ export const BchatNicknameDialog = (props: Props) => {
       onClose={onClickClose}
       showExitIcon={false}
       showHeader={true}
+      additionalClassName="nickNameDialog"
+      okButton={{
+        text: window.i18n('ok'),
+        // onClick: { saveNickname },
+        color: BchatButtonColor.Primary,
+        onClickOkHandler: () => saveNickname(),
+      }}
+      cancelButton={{
+        status: true,
+        text: window.i18n('cancel'),
+        buttonColor: BchatButtonColor.Secondary,
+        onClickCancelHandler: () => onClickClose(),
+      }}
     >
-      <SpacerMD />
-      <div className="bchat-modal__centered">
+      <SpacerLG />
+      {/* <div className="bchat-modal__centered">
         <span className="subtle">{window.i18n('changeNicknameMessage',[usernames])}</span>
         <SpacerMD />
+      </div> */}
+
+      <div className="input-wrapper">
+        <input
+          autoFocus={true}
+          className=""
+          type="nickname"
+          id="nickname-modal-input"
+          value={nickname}
+          placeholder={window.i18n('nicknamePlaceholder')}
+          onKeyUp={e => {
+            void onNicknameInput(_.cloneDeep(e));
+          }}
+          onChange={e => {
+            void onNicknameInput(_.cloneDeep(e));
+          }}
+        />
+        <BchatIconButton iconType={'xWithCircle'} iconSize={24} onClick={() => setNickname('')} />
       </div>
-
-      <input
-        autoFocus={true}
-        type="nickname"
-        id="nickname-modal-input"
-        value={nickname}
-        placeholder={window.i18n('nicknamePlaceholder')}
-        onKeyUp={e => {
-          void onNicknameInput(_.cloneDeep(e));
-        }}
-        style={{borderBottom:"1px solid"}}
-        onChange={e => {
-          void onNicknameInput(_.cloneDeep(e));
-        }}
-      />
-
-      <div className="bchat-modal__button-group">
-        <BchatButton text={window.i18n('cancel')} onClick={onClickClose} buttonColor={BchatButtonColor.White}/>
+      <SpacerLG />
+      {/* <div className="bchat-modal__button-group">
+        <BchatButton
+          text={window.i18n('cancel')}
+          onClick={onClickClose}
+          buttonColor={BchatButtonColor.White}
+        />
         <BchatButton
           text={window.i18n('ok')}
           onClick={saveNickname}
           buttonColor={BchatButtonColor.Green}
         />
-      </div>
+      </div> */}
     </BchatWrapperModal>
   );
 };

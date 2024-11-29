@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex } from '../basic/Flex';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD } from '../basic/Text';
 import { AddressBook } from './BchatWalletAddressBook';
 import { WalletBalanceSection } from './BchatWalletBalanceSection';
 import { WalletHeader } from './BchatWalletHeader';
 // import { WalletPassword } from './BchatWalletPassword';
-import { NodeSetting } from './BchatWalletNodeSetting';
 import { WalletPaymentSection } from './BchatWalletPaymentSection';
-import { ReceivedForm } from './BchatWalletReceivedForm';
-import { WalletSettings } from './BchatWalletSettings';
+// import { ReceivedForm } from './BchatWalletReceivedForm';
+
 import { SendForm } from './BchatWalletSendForm';
 import { TransactionSection } from './BchatWalletTransactionSection';
 import { MemoSyncStatusBar } from './BchatWalletSyncSatusBar';
@@ -19,33 +18,34 @@ import { ToastUtils } from '../../bchat/utils';
 // import { walletSettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
-
+import styled from 'styled-components';
+import { ReceivedForm } from './BchatWalletReceivedForm';
+import { walletSettingsKey } from '../../data/settings-key';
 
 export enum WalletPage {
   WalletPassword = 'walletPassword',
   Dashboard = 'dashboard',
   AddressBook = 'addressbook',
-  Setting = 'setting',
-  NodeSetting = 'nodeSetting',
   Contact = 'contact',
 }
 
 export enum WalletDashboard {
   walletSend = 'walletSend',
   walletReceived = 'walletReceived',
-  walletTransaction = 'walletTransaction',
 }
 
 export const WalletMainPanel = () => {
   const dispatch = useDispatch();
-  const focusedsettings = useSelector((state: any) => state.walletFocused);
+  // const focusedsettings = useSelector((state: any) => state.walletFocused);
+  const walletDetails = useSelector((state: any) => state.wallet);
   const [amount, setAmount] = useState('');
   // const [priority, setPriority] = useState(window.i18n('flash'));
   // const [passScreen, setPassScreen] = useState(true);
   const [notes, setNotes] = useState('');
   const BchatWalletPasswordModal = useSelector(getBchatWalletPasswordModal);
-
-
+  let decimalValue: any =
+    window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
+  decimalValue = decimalValue.charAt(0);
   if (!window.globalOnlineStatus) {
     ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
   }
@@ -57,11 +57,14 @@ export const WalletMainPanel = () => {
     }
   }
   function clearStates() {
-    setAmount("");
-    setNotes("");
+    setAmount('');
+    setNotes('');
     let emptyAddress: any = '';
     dispatch(updateSendAddress(emptyAddress));
+  }
 
+  function fillAmount() {
+    setAmount((walletDetails.balance / 1e9).toFixed(decimalValue));
   }
   // if (passScreen) {
   //   return (
@@ -76,67 +79,87 @@ export const WalletMainPanel = () => {
   //     </div>
   //   );
   // }
-  if (WalletPage.AddressBook === focusedsettings) {
-    return (
-      <div className="wallet">
-        <AddressBook from={window.i18n('addressBook')} />
-      </div>
-    );
-  }
-  if (WalletPage.Contact === focusedsettings) {
-    return (
-      <div className="wallet">
-        <AddressBook from={window.i18n('contact')} />
-      </div>
-    );
-  }
-  if (WalletPage.Setting === focusedsettings) {
-    return (
-      <div className="wallet">
-        <WalletSettings />
-      </div>
-    );
-  }
-  if (WalletPage.NodeSetting === focusedsettings) {
-    return (
-      <div className="wallet">
-        <NodeSetting />
-      </div>
-    );
-  }
+  // if (WalletPage.AddressBook === focusedsettings) {
+  //   return (
+  //     <div className="wallet">
+  //       <AddressBook from={window.i18n('addressBook')} />
+  //     </div>
+  //   );
+  // }
+  // if (WalletPage.Contact === focusedsettings) {
+  //   return (
+  //     <div className="wallet">
+  //       <AddressBook isContact={false}/>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className={classNames("wallet",BchatWalletPasswordModal  && 'blurBg')}>
+    <div className={classNames('wallet', BchatWalletPasswordModal && 'blurBg')}>
       {/* {WalletPage.Dashboard === focusedsettings && ( */}
 
-        <Dashboard
-          amount={amount}
-          setAmount={(e: any) => {
-            numberOnly(e);
-          }}
-          // priority={priority}
-          notes={notes}
-          // setPriority={(e: any) => setPriority(e)}
-          setNotes={(e: any) => setNotes(e)}
-          clearStates={() => clearStates()}
-
-        />
+      <Dashboard
+        amount={amount}
+        setAmount={(e: any) => {
+          numberOnly(e);
+        }}
+        // priority={priority}
+        notes={notes}
+        // setPriority={(e: any) => setPriority(e)}
+        setNotes={(e: any) => setNotes(e)}
+        clearStates={() => clearStates()}
+        fillAmount={() => fillAmount()}
+      />
       {/* )} */}
     </div>
   );
 };
 
 export const Dashboard = (props: any) => {
+  const focusedsettings = useSelector((state: any) => state.walletFocused);
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
+  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  console.log('zoomLevel -->',zoomLevel,'window.innerWidth -->',window.innerWidth)
   // daemon.daemonHeartbeat();
   return (
     <>
       <WalletHeader clearStates={props.clearStates} />
       <SpacerLG />
+      <div className="wallet-syncStatusBox">
+        <MemoSyncStatusBar />
+      </div>
+      <SpacerLG />
       <div className="wallet-contentSpace">
-        <BalanceAndsendReceiveAction clearStates={props.clearStates} />
-        <SpacerLG />
+        <Flex container={true} flexDirection="row" width="100%">
+          <Leftpane zoomFactor={zoomLevel}>
+            <WalletBalanceSection />
+            <SpacerMD />
+            {WalletPage.AddressBook === focusedsettings ? (
+              <div className='address-book-wrapper'><AddressBook isContact={false} /></div>
+             
+            ) : (
+              <TransactionSection transactionList={transactions} />
+            )}
+          </Leftpane>
+          <RightPane zoomFactor={zoomLevel}>
+            <WalletPaymentSection clearStates={props.clearStates} />
+            {WalletDashboard.walletSend === focusedInnersection && (
+              <SendForm
+                amount={props.amount}
+                setAmount={props.setAmount}
+                // priority={props.priority}
+                // setPriority={props.setPriority}
+                notes={props.notes}
+                setNotes={props.setNotes}
+                fillAmount={props.fillAmount}
+              />
+            )}
+            {WalletDashboard.walletReceived === focusedInnersection && <ReceivedForm />}
+          </RightPane>
+        </Flex>
+        {/* <BalanceAndsendReceiveAction clearStates={props.clearStates} /> */}
+        {/* <SpacerLG />
         {WalletDashboard.walletSend === focusedInnersection && (
           <SendForm
             amount={props.amount}
@@ -152,12 +175,8 @@ export const Dashboard = (props: any) => {
           <TransactionSection
             transactionList={transactions}
           />
-        )}
+        )} */}
       </div>
-      <div  className='wallet-syncStatusBox'>
-      <MemoSyncStatusBar />
-      </div>
-
     </>
   );
 };
@@ -169,3 +188,25 @@ export const BalanceAndsendReceiveAction = (props: any) => {
     </Flex>
   );
 };
+type RightPaneProps = {
+  zoomFactor:number;
+};
+const Leftpane = styled.div<RightPaneProps>`
+  // width:45vw;
+  height:${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '74vh':props.zoomFactor==150?'73vh' :'79vh'};
+  // height:79vh
+  margin-right: 15px;
+  overflow:${props=>props.zoomFactor>100?'auto':''};
+`;
+
+const RightPane = styled.div<RightPaneProps>`
+  // width: 25vw;
+  width: 50%;
+  min-width:${props=>props.zoomFactor?'260px':'320px'} ;
+
+  height: ${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '73.7vh':props.zoomFactor==150?'73vh':'81vh'} ;
+  // height:78vh;
+  border-radius: 16px;
+  background: var(--color-wallet-inner-bg);
+  overflow:auto;
+`;

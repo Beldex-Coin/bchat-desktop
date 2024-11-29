@@ -110,13 +110,24 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
 
   window.inboxStore?.dispatch(
     updateConfirmModal({
-      title: window.i18n('joinSocialGroupAfterInvitationConfirmationTitle', [roomName || 'Unknown']),
-      message: window.i18n('joinSocialGroupAfterInvitationConfirmationDesc', [roomName || 'Unknown']),
+      title: window.i18n('joinSocialGroupAfterInvitationConfirmationTitle', [
+        roomName || 'Unknown',
+      ]),
+      message: window.i18n('joinSocialGroupAfterInvitationConfirmationDesc', [
+        roomName || 'Unknown',
+      ]),
+
+      okText: 'Yes',
+      okTheme: BchatButtonColor.Primary,
+      cancelText: 'No',
+      iconShow: true,
+      iconSize:30,
+      bchatIcon:'peopleGrp',
+      // customIcon:customIcon,
+
       onClickOk: async () => {
         await joinOpenGroupV2WithUIEvents(completeUrl, true, false);
       },
-      okTheme: BchatButtonColor.Green,
-
       onClickClose,
     })
   );

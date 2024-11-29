@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { SpacerLG } from '../basic/Text';
 import { getConversationController } from '../../bchat/conversations';
 import { adminLeaveClosedGroup } from '../../state/ducks/modalDialog';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { BchatIcon } from '../icon/BchatIcon';
+import styled from 'styled-components';
 
 type Props = {
   conversationId: string;
@@ -32,14 +34,44 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
   };
 
   return (
-    <BchatWrapperModal title={titleText} onClose={closeDialog}>
+    <BchatWrapperModal
+      title={titleText}
+      onClose={closeDialog}
+      okButton={{
+        text: okText,
+        onClickOkHandler: () => onClickOK(),
+        color: BchatButtonColor.Danger,
+        disabled: false,
+      }}
+      cancelButton={{
+        text: cancelText,
+        status: true,
+        color: BchatButtonColor.Secondary,
+        onClickCancelHandler: () => closeDialog(),
+      }}
+      iconShow={true}
+      customIcon={<BchatIcon iconType={'leaveGroup'} iconSize={24} iconColor='#FF3E3E' />}
+    >
+      <ContentWrapper>
+        {warningAsAdmin}
+      </ContentWrapper>
       <SpacerLG />
-      <p style={{maxWidth:"450px",color:'#6A6A77',marginTop:0}}>{warningAsAdmin}</p>
-
-      <div className="bchat-modal__button-group">
+      {/* <div className="bchat-modal__button-group">
         <BchatButton text={cancelText} onClick={closeDialog} buttonColor={BchatButtonColor.White}/>
         <BchatButton text={okText} onClick={onClickOK} buttonColor={BchatButtonColor.Danger} />
-      </div>
+      </div> */}
     </BchatWrapperModal>
   );
 };
+
+const ContentWrapper=styled.p`
+max-width: 450px;
+margin-top: 0px;
+text-align: initial;
+color: #A7A7BA;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+
+`

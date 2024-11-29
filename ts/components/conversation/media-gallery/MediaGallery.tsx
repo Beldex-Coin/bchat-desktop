@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import { AttachmentSection } from './AttachmentSection';
 import { EmptyState } from './EmptyState';
 import { MediaItemType } from '../../lightbox/LightboxGallery';
+import { SpacerMD} from '../../basic/Text';
 
 type Props = {
   documents: Array<MediaItemType>;
   media: Array<MediaItemType>;
+  fullView: boolean;
 };
 
 type TabType = 'media' | 'documents';
@@ -56,7 +58,7 @@ const Sections = (props: Props & { selectedTab: TabType }) => {
 
 export const MediaGallery = (props: Props) => {
   const [selectedTab, setSelectedTab] = useState<TabType>('media');
-
+  const { fullView } = props;
   const isDocumentSelected = selectedTab === 'documents';
   const isMediaSelected = selectedTab === 'media';
 
@@ -70,14 +72,18 @@ export const MediaGallery = (props: Props) => {
 
   return (
     <div className="module-media-gallery">
-      <div className="module-media-gallery__tab-container">
-        <Tab label={window.i18n('media')} isSelected={isMediaSelected} onSelect={setMediaTab} />
-        <Tab
-          label={window.i18n('documents')}
-          isSelected={isDocumentSelected}
-          onSelect={setDocumentsTab}
-        />
-      </div>
+      {fullView && (
+        <div className="module-media-gallery__tab-container">
+          <Tab label={window.i18n('media')} isSelected={isMediaSelected} onSelect={setMediaTab} />
+          <Tab
+            label={window.i18n('documents')}
+            isSelected={isDocumentSelected}
+            onSelect={setDocumentsTab}
+          />
+          <SpacerMD />
+        </div>
+      )}
+
       <div className="module-media-gallery__content">
         <Sections {...props} selectedTab={selectedTab} />
       </div>

@@ -4,7 +4,7 @@ import { reducer as search, SearchStateType } from './ducks/search';
 import { ConversationsStateType, reducer as conversations } from './ducks/conversations';
 import { reducer as user, UserStateType } from './ducks/user';
 import { reducer as theme, ThemeStateType } from './ducks/theme';
-
+import {reducer as isVerifyBnsCalled ,IsVerifyBnsCalledStateType} from './ducks/bnsConfig'
 import {reducer as walletFocused, WalletSectionStateType  } from './ducks/walletSection'
 import {reducer as walletInnerFocused, WalletInnerSectionStateType } from "./ducks/walletInnerSection"
 import { reducer as section, SectionStateType } from './ducks/section';
@@ -28,6 +28,7 @@ export type StateType = {
   user: UserStateType;
   conversations: ConversationsStateType;
   theme: ThemeStateType;
+  isVerifyBnsCalled:IsVerifyBnsCalledStateType;
   wallet: WalletStateType;
   daemon: DaemonStateType;
   section: SectionStateType;
@@ -52,6 +53,7 @@ export const reducers = {
   wallet,
   daemon,
   theme,
+  isVerifyBnsCalled,
   section,
   defaultRooms,
   onionPaths,

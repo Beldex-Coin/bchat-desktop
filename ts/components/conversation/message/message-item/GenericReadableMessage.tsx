@@ -8,10 +8,7 @@ import _ from 'lodash';
 import { removeMessage } from '../../../../data/data';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { getConversationController } from '../../../../bchat/conversations';
-import {
-  messageExpired,
-  toggleSelectedMessageId
-} from '../../../../state/ducks/conversations';
+import { messageExpired, toggleSelectedMessageId } from '../../../../state/ducks/conversations';
 import {
   getGenericReadableMessageSelectorProps,
   getIsMessageSelected,
@@ -23,6 +20,7 @@ import { MessageAvatar } from '../message-content/MessageAvatar';
 import { MessageContentWithStatuses } from '../message-content/MessageContentWithStatus';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
+import { getTheme } from '../../../../state/selectors/theme';
 // import styled from 'styled-components';
 
 export type GenericReadableMessageSelectorProps = Pick<
@@ -112,7 +110,6 @@ export const GenericReadableMessage = (props: Props) => {
   );
   const isSelectionMode = useSelector(isMessageSelectionMode);
 
-
   const expiringProps: ExpiringProps = {
     convoId: msgProps?.convoId,
     expirationLength: msgProps?.expirationLength,
@@ -163,14 +160,18 @@ export const GenericReadableMessage = (props: Props) => {
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
+  const darkMode = useSelector(getTheme) === 'dark';
+  const iconColor=darkMode?'#F0F0F0':selected?'#3E4A53':'#ACACAC';
 
-  const onSelect = useCallback((messageId) => {
-
-    //  if(isSelectionMode)
-    //  {
-    dispatch(toggleSelectedMessageId(messageId));
-    //  }
-  }, [messageId]);
+  const onSelect = useCallback(
+    messageId => {
+      //  if(isSelectionMode)
+      //  {
+      dispatch(toggleSelectedMessageId(messageId));
+      //  }
+    },
+    [messageId]
+  );
 
   return (
     <ReadableMessage
@@ -186,9 +187,20 @@ export const GenericReadableMessage = (props: Props) => {
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
     >
-      <div className='message-box' onClick={() => isSelectionMode && onSelect(messageId)} >
-        <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}>
-          {selected && <div className='isSelected'><BchatIcon iconType="check" iconColor={'#11c119'} iconSize={23} /></div>}
+      <div className="message-box" style={{cursor:isSelectionMode?'pointer':"default" }} onClick={() => isSelectionMode && onSelect(messageId)}>
+        {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
+        <div>
+          {isSelectionMode &&isIncoming && (
+            <div style={{ marginRight: '15px',cursor:'pointer' }}> 
+              <BchatIcon
+                iconType={!selected ? 'checkBox' : 'checkBoxTick'}
+                iconColor={iconColor}
+                clipRule="evenodd"
+                fillRule="evenodd"
+                iconSize={23}
+              />
+            </div>
+          )}
         </div>
         <MessageAvatar messageId={messageId} />
         {expirationLength && expirationTimestamp && (
@@ -211,9 +223,20 @@ export const GenericReadableMessage = (props: Props) => {
             expirationTimestamp={expirationTimestamp}
           />
         )}
+        <div>
+          {!isIncoming && isSelectionMode && (
+            <div style={{ marginLeft: '15px',cursor:'pointer' }}>
+              <BchatIcon
+                iconType={!selected ? 'checkBox' : 'checkBoxTick'}
+                iconColor={iconColor}
+                clipRule="evenodd"
+                fillRule="evenodd"
+                iconSize={23}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </ReadableMessage>
   );
 };
-
-

@@ -7,6 +7,7 @@ import { BchatSpinner } from '../basic/BchatSpinner';
 import { StagedLinkPreviewImage } from './composition/CompositionBox';
 import { isImage } from '../../types/MIME';
 import { fromArrayBufferToBase64 } from '../../bchat/utils/String';
+import { BchatIcon } from '../icon';
 
 type Props = {
   isLoaded: boolean;
@@ -68,7 +69,9 @@ export const StagedLinkPreview = (props: Props) => {
           onClose(url || '');
         }}
         aria-label={window.i18n('close')}
-      />
+      >
+        <BchatIcon iconType={'xWithCircle'} iconSize={24} />
+        </button>
     </div>
   );
 };

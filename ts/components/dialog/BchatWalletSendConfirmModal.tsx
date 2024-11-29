@@ -2,7 +2,7 @@ import React, {  useRef, useState } from 'react';
 // import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
-import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 // import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -50,10 +50,10 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
   const {
     // message = '',
     // messageSub = '',
-    closeTheme = BchatButtonColor.White,
+    // closeTheme = BchatButtonColor.White,
     onClickOk,
     onClickClose,
-    hideCancel = false,
+    // hideCancel = false,
     bchatIcon,
     iconSize,
     shouldShowConfirm,
@@ -149,6 +149,19 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
       onClose={onClickClose}
       showExitIcon={showExitIcon}
       showHeader={true}
+      okButton={{
+        onClickOkHandler: () => onClickOkHandler(),
+        color: BchatButtonColor.Primary,
+        text:confirm ? 'Confirm' : window.i18n('send'),
+        disabled:btndisable ? btndisable : false     
+      }}
+      cancelButton={{
+        text:cancelText,
+        status: true,
+        color: BchatButtonColor.Secondary,
+        onClickCancelHandler: () =>  onClickCancelHandler(),
+      }}
+
     >
       <div className="bchat-modal__centered">
         <SpacerMD />
@@ -163,8 +176,9 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
             <div className="bchat-modal__centered-sendConfirm_content-subHeader">
               Enter your wallet Password
             </div>
+            <SpacerSM />
             <div className="bchat-modal__centered-sendConfirm_content-passwordBox" >
-              <input type="password" autoFocus  value={password} onChange={e => setPassword(e.target.value)} ref={inputRef} />
+              <input type="password" autoFocus  placeholder='Enter Password' value={password} onChange={e => setPassword(e.target.value)} ref={inputRef} />
               {/* <BchatIdEditable  value={password} onChange={e => setPassword(e)}   editable={true}/> */}
             </div>
             <SpacerXS />
@@ -173,25 +187,27 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
           </div>
         ) : (
           <article className="bchat-modal__centered-sendConfirm_content">
-            <div className="senderBox" style={{ display: 'block' }}>
-              <div className="bchat-modal__centered-sendConfirm_content-probTitle">
-                Send to : <div className="senderBox-address senderBox-addressColor">{address}</div>
+            <div className="senderBox box-wrapper" style={{ display: 'block' }}>
+              <div className="" style={{fontWeight:'600',color:'var(--color-text)',fontSize:'16px'}}>
+                Send to  <div className="senderBox-address senderBox-addressColor">{address}</div>
               </div>
             </div>
             <SpacerMD />
-            <div className="senderBox">
-              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Amount : </div>{' '}
-              <div className="senderBox-details">{amount} BDX</div>
+            <div className='box-wrapper'>
+            <div className="senderBox ">
+              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Amount  </div>{' '}
+              <div className="senderBox-details" style={{color: '#108D32'}}>{amount} BDX</div>
             </div>
             <SpacerMD />
             <div className="senderBox">
-              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Fee : </div>{' '}
-              <div className="senderBox-details">{fee} BDX</div>
+              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Estimated Fee  </div>{' '}
+              <div className="senderBox-details " >{fee} BDX</div>
             </div>
             <SpacerMD />
             <div className="senderBox">
-              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Priority : </div>
+              <div className="bchat-modal__centered-sendConfirm_content-probTitle">Priority  </div>
               <div className="senderBox-details">{Priority}</div>
+            </div>
             </div>
             <SpacerMD />
             <SpacerLG />
@@ -199,7 +215,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
         )}
       </div>
 
-      <div className="bchat-modal__button-group">
+      {/* <div className="bchat-modal__button-group">
         {!hideCancel && (
           <BchatButton
             text={cancelText}
@@ -215,7 +231,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
           dataTestId="Bchat-confirm-ok-button"
           disabled={btndisable ? btndisable : false}
         />
-      </div>
+      </div> */}
     </BchatWrapperModal>
   );
 };

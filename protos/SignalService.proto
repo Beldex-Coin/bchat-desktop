@@ -6,7 +6,9 @@ message Envelope {
   enum Type {
     BCHAT_MESSAGE = 6;
     CLOSED_GROUP_MESSAGE = 7;
+
   }
+
 
   // @required
   required Type   type            = 1;
@@ -14,6 +16,7 @@ message Envelope {
   // @required
   required uint64 timestamp       = 5;
   optional bytes  content         = 8;
+  optional bool isBnsHolder       = 9;
 }
 
 message TypingMessage {

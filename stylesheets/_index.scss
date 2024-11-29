@@ -41,10 +41,11 @@
 
   .module-avatar {
     display: block;
-    margin-bottom: 1em;
+    // margin-bottom: 1em;
   }
 
   .avatar-center {
+    margin-left: 25px;
     display: flex;
     justify-content: center;
   }

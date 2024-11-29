@@ -32,7 +32,9 @@ export const MessageItem = (props: { isMessageRequest: boolean }) => {
     return null;
   }
   const { lastMessage, isTyping, unreadCount } = convoProps;
-
+  if (!lastMessage && unreadCount === 1) {
+    return <div style={{ width: '81%' }}></div>;
+  }
   if (!lastMessage && !isTyping) {
     return null;
   }

@@ -1,4 +1,4 @@
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { animation, contextMenu, Item, Menu } from 'react-contexify';
 import { InputItem } from '../../bchat/utils/calling/CallManager';
 import { setFullScreenCall } from '../../state/ducks/call';
@@ -27,6 +27,7 @@ export const VideoInputButton = ({
       <DropDownAndToggleButton
         iconType="camera"
         isMuted={localStreamVideoIsMuted}
+        isSelected={!localStreamVideoIsMuted}
         onMainButtonClick={() => {
           void handleCameraToggle(currentConnectedCameras, localStreamVideoIsMuted);
         }}
@@ -55,6 +56,7 @@ export const AudioInputButton = ({
       <DropDownAndToggleButton
         iconType="microphone"
         isMuted={isAudioMuted}
+        isSelected={isAudioMuted}
         onMainButtonClick={() => {
           void handleMicrophoneToggle(currentConnectedAudioInputs, isAudioMuted);
         }}
@@ -179,7 +181,6 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
   const dispatch = useDispatch();
 
   const showInFullScreen = () => {
-    
     if (isFullScreen) {
       dispatch(setFullScreenCall(false));
     } else {
@@ -212,16 +213,25 @@ export const HangUpButton = () => {
   };
 
   return (
-    <BchatIconButton
-      iconSize={60}
-      iconPadding="20px"
-      iconType="hangup"
-      backgroundColor="#FC3B3B"
-      borderRadius="50%"
+    // <BchatIconButton
+
+    //   btnBgColor="#FC3B3B"
+    //   btnRadius="50%"
+
+    //   iconColor="#FFFFFF"
+    //   margin="10px"
+
+    // />
+    <div
+      className="hangingBtn"
+      role="button"
+      style={{
+        backgroundColor: '#FC3B3B',
+      }}
       onClick={handleEndCall}
-      iconColor="#FFFFFF"
-      margin="10px"
-    />
+    >
+      <BchatIcon iconSize={27} iconType="hangup" clipRule="evenodd" fillRule="evenodd" />
+    </div>
   );
 };
 
@@ -318,25 +328,26 @@ const handleSpeakerToggle = async (
   }
 };
 
-const StyledCallWindowControls = styled.div<{ makeVisible: boolean,isFullScreen:boolean }>`
-  position: absolute;
+const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean }>`
+  // position: absolute;
 
-  bottom: 0px;
-  width: ${props => (props.isFullScreen ? "100vw" :'100%')};
+  // bottom: 0px;
+  width: ${props => (props.isFullScreen ? '100vw' : '100%')};
   height: 100%;
-  align-items: flex-end;
+  // align-items: flex-end;
   padding: 10px;
-  border-radius: 10px;
+  // border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
-  left: 0;
-  right: 0;
-  transition: all 0.25s ease-in-out;
+  // left: 0;
+  // right: 0;
+  // transition: all 0.25s ease-in-out;
 
   display: flex;
 
   justify-content: center;
-  opacity: ${props => (props.makeVisible ? 1 : 0)};
+  align-items:center;
+  // opacity: ${props => (props.makeVisible ? 1 : 0)};
 `;
 
 export const CallWindowControls = ({
@@ -364,7 +375,7 @@ export const CallWindowControls = ({
     setMakeVisible(true);
   };
   const setMakeVisibleFalse = () => {
-    setMakeVisible(false);
+    setMakeVisible(true);
   };
 
   useEffect(() => {
@@ -377,12 +388,14 @@ export const CallWindowControls = ({
       document.removeEventListener('mouseleave', setMakeVisibleFalse);
     };
   }, [isFullScreen]);
-  
   return (
     <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
-
       {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
-
+      <AudioOutputButton
+        currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+        isAudioOutputMuted={isAudioOutputMuted}
+        hideArrowIcon={isFullScreen}
+      />
       <VideoInputButton
         currentConnectedCameras={currentConnectedCameras}
         localStreamVideoIsMuted={localStreamVideoIsMuted}
@@ -393,11 +406,7 @@ export const CallWindowControls = ({
         isAudioMuted={isAudioMuted}
         hideArrowIcon={isFullScreen}
       />
-      <AudioOutputButton
-        currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-        isAudioOutputMuted={isAudioOutputMuted}
-        hideArrowIcon={isFullScreen}
-      />
+     
       <HangUpButton />
     </StyledCallWindowControls>
   );

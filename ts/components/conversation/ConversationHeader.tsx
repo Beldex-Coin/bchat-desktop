@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
@@ -21,6 +21,7 @@ import {
   isMessageDetailView,
   isMessageSelectionMode,
   isRightPanelShowing,
+  // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,7 +31,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
-  closeRightPanel,
+  // closeRightPanel,
   openRightPanel,
   resetSelectedMessageIds,
 } from '../../state/ducks/conversations';
@@ -43,7 +44,7 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
@@ -53,6 +54,9 @@ import { getConversationController } from '../../bchat/conversations';
 import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
+import { getTheme } from '../../state/selectors/theme';
+// import { CustomIconButton } from '../icon/CustomIconButton';
+// import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
@@ -96,6 +100,7 @@ const SelectionOverlay = () => {
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
   const dispatch = useDispatch();
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const { i18n } = window;
 
@@ -120,24 +125,34 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
+      <Flex container={true} alignItems='center'>
+        <div className="close-button">
+          <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
+        </div>
+
+        <div className="seleted-count">
+          <span style={{ marginRight: '5px' }}>{selectedMessageIds.length}</span>
+          <span>Selected</span>
+        </div>
+      </Flex>
+
       <div className="button-group">
         {!isOnlyServerDeletable && (
           <BchatButton
-            buttonType={BchatButtonType.Default}
+            buttonType={BchatButtonType.Medium}
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
+            style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
         <BchatButton
-          buttonType={BchatButtonType.Default}
+          buttonType={BchatButtonType.Medium}
           buttonColor={BchatButtonColor.Red}
           text={deleteForEveryoneMessageButtonText}
           onClick={onDeleteSelectedMessagesForEveryone}
+          style={{ borderRadius: '40px' }}
         />
-      </div>
-      <div className="close-button">
-        <BchatIconButton iconType="exit" iconSize="medium" onClick={onCloseOverlay} />
       </div>
     </div>
   );
@@ -145,13 +160,13 @@ const SelectionOverlay = () => {
 
 const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
   const { showBackButton } = props;
+  const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
     return null;
   }
-  let width = window.innerWidth;
+  let width = isShowing ? window.innerWidth - 370 : window.innerWidth;
   return (
     <div
-      className="threedot-option"
       role="button"
       onClick={(e: any) => {
         contextMenu.show({
@@ -159,13 +174,13 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) =
           event: e,
           position: {
             x: width - 300,
-            y: 55,
+            y: 70,
           },
         });
       }}
       data-testid="three-dots-conversation-options"
     >
-      <BchatIconButton iconType="ellipses" iconSize={22} />
+      <BchatIconButton iconType="ellipses" iconSize={24} />
     </div>
   );
 };
@@ -193,23 +208,30 @@ const ExpirationLength = (props: { expirationSettingName?: string }) => {
 const AvatarHeader = (props: {
   pubkey: string;
   showBackButton: boolean;
+  conversation: any;
   onAvatarClick?: (pubkey: string) => void;
 }) => {
-  const { pubkey, onAvatarClick, showBackButton } = props;
-
+  const { pubkey, onAvatarClick, showBackButton, conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <Avatar
-        size={AvatarSize.S}
-        onAvatarClick={() => {
-          // do not allow right panel to appear if another button is shown on the BchatConversation
-          if (onAvatarClick && !showBackButton) {
-            onAvatarClick(pubkey);
-          }
-        }}
-        pubkey={pubkey}
-        dataTestId="conversation-options-avatar"
-      />
+      <BNSWrapper
+        // size={40}
+        position={{ left: '34px', top: '34px' }}
+        isBnsHolder={conversation?.isBnsHolder}
+        size={{ width: '20', height: '20' }}
+      >
+        <Avatar
+          size={AvatarSize.M}
+          onAvatarClick={() => {
+            // do not allow right panel to appear if another button is shown on the BchatConversation
+            if (onAvatarClick && !showBackButton) {
+              onAvatarClick(pubkey);
+            }
+          }}
+          pubkey={pubkey}
+          dataTestId="conversation-options-avatar"
+        />
+      </BNSWrapper>
     </span>
   );
 };
@@ -246,16 +268,17 @@ const CallButton = () => {
   }
 
   return (
-    <BchatIconButton
-      iconType="phone"
-      iconRotation={270}
-      iconSize="medium"
-      iconPadding="2px"
-      margin="0 10px 0 0"
-      onClick={() => {
+    <div style={{ marginRight: '15px' }}>
+      {/* <CustomIconButton
+        onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }}
+        customIcon={<CallIcon iconSize={24} />}
+      /> */}
+      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
         void callRecipient(selectedConvoKey, canCall);
-      }}
-    />
+      }} />
+    </div>
   );
 };
 
@@ -284,55 +307,26 @@ export type ConversationHeaderTitleProps = {
 };
 
 const ConversationHeaderTitle = () => {
-  // console.log("convertion header 1::")
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
-  // console.log("convertion header 2::",headerTitleProps)
-
-  // const notificationSetting = useSelector(getCurrentNotificationSettingText);
-  const isRightPanelOn = useSelector(isRightPanelShowing);
-  // console.log("convertion header 3::",isRightPanelOn)
-
+  // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-  // console.log("convertion header 4::",convoName)
 
-  const dispatch = useDispatch();
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
-  // console.log("convertion header 5::",convoProps)
-
   const conversationKey: any = useSelector(getSelectedConversationKey);
-  // console.log("convertion header 6::",conversationKey)
-
   const conversation: any = useSelector(getSelectedConversation);
-  // console.log("convertion header 7::",conversation)
-
+  // const dispatch = useDispatch();
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
       conversationKey
     );
   }
-  // console.log("convertion header 8::",displayedName)
-
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
-    return null;
+    return <></>;
   }
-  // console.log("convertion header 9::",activeAt)
-
-  const { isGroup, isPublic, members, subscriberCount, isMe, isKickedFromGroup } = headerTitleProps;
-  // console.log("convertion header 10::",headerTitleProps)
-
+  const { isGroup, isPublic, members, subscriberCount, isKickedFromGroup } = headerTitleProps;
   const { i18n } = window;
-  // console.log("convertion header 11::",isMe)
-
-  if (isMe) {
-    // console.log("convertion header 12::",isMe)
-
-    // return <div className="module-conversation-header__title">{window.i18n('noteToSelf')}</div>;
-    return <div className="module-conversation-header__title">Note to Self</div>;
-
-  }
-  // console.log("convertion header 13::",headerTitleProps)
 
   let memberCount = 0;
   if (isGroup) {
@@ -342,7 +336,6 @@ const ConversationHeaderTitle = () => {
       memberCount = members.length;
     }
   }
-  // console.log("convertion header 14::",headerTitleProps)
 
   const SubTxt = styled.div`
     font-size: 11px;
@@ -358,20 +351,24 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
+  if (conversation?.isMe) {
+    return <div className="module-conversation-header__title">Note to Self</div>;
+  }
 
   return (
-    <div
-      className="module-conversation-header__title"
-      onClick={() => {
-        if (isRightPanelOn) {
-          dispatch(closeRightPanel());
-        } else {
-          dispatch(openRightPanel());
-        }
-      }}
-      role="button"
-    >
-      <span className="module-contact-name__profile-name" data-testid="header-conversation-name">
+    <div className="module-conversation-header__title">
+      <span
+        className="module-contact-name__profile-name"
+        data-testid="header-conversation-name"
+      // onClick={() => {
+      //   if (isRightPanelOn) {
+      //     dispatch(closeRightPanel());
+      //   } else {
+      //     dispatch(openRightPanel());
+      //   }
+      // }}
+      // role="button"
+      >
         {convoName}
         <SubTxt>
           {isGroup ? (
@@ -411,14 +408,20 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 export const ConversationHeaderWithDetails = () => {
   const isSelectionMode = useSelector(isMessageSelectionMode);
   const isMessageDetailOpened = useSelector(isMessageDetailView);
-  const selectedConvoKey = useSelector(getSelectedConversationKey);
+  const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
   const conversation = useSelector(getSelectedConversation);
   const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
   const dispatch = useDispatch();
-   const displayConnectWalletBtn=chatwithWallet && !WalletSyncBarShowInChat && conversation?.type == 'private' && conversation?.isApproved && conversation?.didApproveMe 
+  const displayConnectWalletBtn =
+    chatwithWallet &&
+    !WalletSyncBarShowInChat &&
+    conversation?.type == 'private' &&
+    conversation?.isApproved &&
+    conversation?.didApproveMe &&
+    !conversation?.isMe;
 
   if (!selectedConvoKey) {
     return null;
@@ -431,6 +434,7 @@ export const ConversationHeaderWithDetails = () => {
     : undefined;
 
   const triggerId = 'conversation-header';
+  const isMe = useSelector(getIsSelectedNoteToSelf);
 
   // function displayWalletPassword() {
 
@@ -439,6 +443,7 @@ export const ConversationHeaderWithDetails = () => {
   //     // return;
   //   // }
   // }
+
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -456,37 +461,40 @@ export const ConversationHeaderWithDetails = () => {
                 dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
+              conversation={conversation}
               showBackButton={isMessageDetailOpened}
             />
             <ConversationHeaderTitle />
 
-            { displayConnectWalletBtn && <div
-              className='connectWalletBtn'
-              onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-            >
-              <BchatIcon iconType='wallet' iconSize={"tiny"} iconColor='white' />
-              <div>
-                {window.i18n('connectWallet')}
-              </div>
-              {/* <BchatButtonIcon
-                name={window.i18n('connectWallet')}
-                buttonType={BchatButtonType.Brand}
-                buttonColor={BchatButtonColor.Green}
+            {displayConnectWalletBtn && (
+              // <div
+              //   className="connectWalletBtn"
+              //   onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
+              // >
+              //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
+              //   <div>{window.i18n('connectWallet')}</div>
+              <BchatButton
+                text={window.i18n('connectWallet')}
+                buttonType={BchatButtonType.Medium}
+                buttonColor={BchatButtonColor.Primary}
+                iconType="wallet"
+                iconSize={'small'}
                 style={{
-                  height: '25px',
+                  minWidth: '172px',
+                  height: '40px',
                   borderRadius: '5px',
-                  marginRight: '14px'
+                  marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
               // disabled={!caption}
-              /> */}
-            </div>
-            }
+              />
+              // </div>
+            )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
-            {conversation?.type == 'private' && (
-              <div className="call">
+            {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
+              <div>
                 <CallButton />
               </div>
             )}
