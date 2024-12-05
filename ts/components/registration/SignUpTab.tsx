@@ -47,7 +47,7 @@ export const GoBackMainMenuButton = (props: any) => {
       iconSize="huge"
       iconType="KeyboardBackspaceArrow"
       // iconPadding="5px"
-      iconColor='#A9AEBA'
+      iconColor="#A9AEBA"
       onClick={() => {
         setRegistrationPhase(RegistrationPhase.Start);
         setSignInMode(SignInMode.Default);
@@ -131,10 +131,10 @@ export const SignUpTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: "120px",
-            height: "120px",
-            margin: "0px auto",
-            backgroundSize: "102px"
+            width: '120px',
+            height: '120px',
+            margin: '0px auto',
+            backgroundSize: '102px',
           }}
         ></div>
       </div>
@@ -184,16 +184,22 @@ export const SignUpTab = (props: any) => {
     if (displayNameScreen === 1) {
       setPassword('');
       setRepassword('');
-      props.imageValidator(LeftImage.registration)
+      props.imageValidator(LeftImage.registration);
     }
   };
+  
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>,e:string) =>  {
+    const newValue = e.replace(/\s+/g, '');
+    setter(newValue);
+  };
+
   if (displayNameScreen === 1) {
     return (
       <WalletPassword
         password={password}
         repassword={repassword}
-        setPassword={(e: any) => setPassword(e)}
-        setRepassword={(e: any) => setRepassword(e)}
+        setPassword={(e:string)=>handleInputChange(setPassword,e)}
+        setRepassword={(e:string)=>handleInputChange(setRepassword,e)}
         backArrow={goback}
         submit={passValid}
       />
@@ -213,9 +219,7 @@ export const SignUpTab = (props: any) => {
           <div className="bchat-registration-goback-icon">
             <GoBackMainMenuButton assent={goback} />
           </div>
-          <Flex className="bchat-registration__welcome-bchat">
-            {window.i18n('displayName')}
-          </Flex>
+          <Flex className="bchat-registration__welcome-bchat">{window.i18n('displayName')}</Flex>
         </Flex>
         <RegistrationUserDetails
           showDisplayNameField={true}
@@ -227,19 +231,20 @@ export const SignUpTab = (props: any) => {
           onDisplayNameChanged={(name: string) => {
             const sanitizedName = sanitizeBchatUsername(name);
             const trimName = sanitizedName.trim();
-            setDisplayName(sanitizedName);
+            const alphanumericName=sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+            setDisplayName(alphanumericName);
             setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
           }}
           stealAutoFocus={true}
         />
-        <div style={{ width: '450px', }}>
+        <div style={{ width: '450px' }}>
           <BchatButton
             onClick={() => {
               verifyUserName();
             }}
             buttonType={BchatButtonType.Default}
             buttonColor={BchatButtonColor.Primary}
-            text={window.i18n('continue')} 
+            text={window.i18n('continue')}
             disabled={!displayName}
           />
         </div>

@@ -13,6 +13,7 @@ import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
 import { Flex } from '../basic/Flex';
+import { SpacerLG } from '../basic/Text';
 
 export const MAX_USERNAME_LENGTH = 26;
 // tslint:disable: use-simple-attributes
@@ -247,7 +248,7 @@ export const RegistrationStages = () => {
           flexDirection="row"
           container={true}
           height="100%"
-          width="40%"
+          width="45%"
           justifyContent="flex-end"
         >
           <img src={displayImg()} width={'86%'} height={'80%'}></img>
@@ -259,7 +260,7 @@ export const RegistrationStages = () => {
           flexDirection="column"
           container={true}
           height="100%"
-          width="60%"
+          width="55%"
           justifyContent="center"
         >
           <div style={{ width: '470px' }}>
@@ -288,6 +289,8 @@ export const RegistrationStages = () => {
                   imageValidator={(e: Number) => imageValidator(e)}
                 />
               )}
+              <SpacerLG />
+              {/* <SpacerLG /> */}
               {accent && <TermsAndConditions />}
             </RegistrationContext.Provider>
           </div>

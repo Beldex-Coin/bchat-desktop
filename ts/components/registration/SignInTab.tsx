@@ -21,6 +21,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
 import { Flex } from '../basic/Flex';
+import moment from 'moment';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
 
@@ -107,7 +108,7 @@ const SignInButtons = (props: {
 
 export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
-
+  const today = moment().format('YYYY-MM-DD');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
 
@@ -125,6 +126,7 @@ export const SignInTab = (props: any) => {
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
 
+
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
   // from the configuration message will be used.
@@ -136,7 +138,7 @@ export const SignInTab = (props: any) => {
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
 
-  const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
+  const activateContinueButton = displayNameOK && !loading && (blockheight ||  !moment(restoreDate).isAfter(today) );
   localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {
@@ -247,14 +249,18 @@ export const SignInTab = (props: any) => {
       </>
     );
   }
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>,e:string) =>  {
+    const newValue = e.replace(/\s+/g, '');
+    setter(newValue);
+  };
 
   if (screenName === 2) {
     return (
       <WalletPassword
         password={password}
         repassword={repassword}
-        setPassword={(e: any) => setPassword(e)}
-        setRepassword={(e: any) => setRepassword(e)}
+         setPassword={(e:string)=>handleInputChange(setPassword,e)}
+        setRepassword={(e:string)=>handleInputChange(setRepassword,e)}
         backArrow={() => {
           setScreenName(1);
           props.imageValidator(LeftImage.recoveryseed);
@@ -340,7 +346,8 @@ export const SignInTab = (props: any) => {
             onValueChanged={(name: string) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
-              setDisplayName(sanitizedName.replace(/\s/g, ''));
+              const alphanumericName=sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+              setDisplayName(alphanumericName);
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
             // onEnterPressed={props.handlePressEnter}
@@ -376,6 +383,7 @@ export const SignInTab = (props: any) => {
             <BchatInput
               autoFocus={true}
               type="date"
+              max={today}
               placeholder={'Restore from Date'}
               value={restoreDate}
               maxLength={MAX_USERNAME_LENGTH}

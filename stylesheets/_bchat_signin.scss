@@ -221,7 +221,7 @@
     &-loadingGif {
       background: #101010ad;
       position: absolute;
-      width: 60%;
+      width: 55%;
       height: 100%;
       top: 0px;
       right: 0px;
@@ -343,14 +343,14 @@
 
     &-recovery-phrase-txt {
       color: #f0f0f0;
-      font-size: 14px;
+      font-size: 18px;
       margin: 0;
       padding: 10px 10px 10px 0px;
     }
 
     &-recovery-phrase-hintTxt {
       color: #a9aeba;
-      font-size: 11px;
+      font-size: 16px;
 
       span {
         color: #ff9649;
@@ -359,10 +359,10 @@
   }
 
   &-restore-seed {
-    &__address-container {
+    // &__address-container {
       // width: 90%;
       // margin: 0 auto;
-    }
+    // }
 
     &-parent-box {
       // display: flex;
