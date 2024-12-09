@@ -188,7 +188,7 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder
     <AvatarContainer>
       <BNSWrapper
         // size={40}
-        position={{ left: '23px', top: '23px' }}
+        position={{ left: '33px', top: '33px' }}
         isBnsHolder={isBnsHolder}
         size={{ width: '20', height: '20' }}
       >

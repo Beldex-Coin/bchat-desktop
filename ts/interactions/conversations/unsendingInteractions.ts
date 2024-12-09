@@ -336,6 +336,18 @@ export async function deleteMessagesByIdForEveryone(
     await Promise.all(messageIds.map(m => getMessageById(m, false)))
   );
 
+  const isContainInCommingMsgs = selectedMessages.some(msg => {
+    if (!msg.isOutgoing()) {
+      ToastUtils.pushToastError('', 'Please select an incoming message');
+      return true;
+    }
+    return false;
+  });
+
+  if (isContainInCommingMsgs) {
+    return;
+  }
+
   const messageCount = selectedMessages.length;
   const moreThanOne = messageCount > 1;
 
@@ -371,7 +383,7 @@ export async function deleteMessagesById(messageIds: Array<string>, conversation
   window.inboxStore?.dispatch(
     updateConfirmModal({
       // title: window.i18n('deleteJustForMe'),
-      title:"Delete selected messages?",
+      title: 'Delete selected messages?',
       message: moreThanOne
         ? window.i18n('deleteMessagesQuestion', [messageCount.toString()])
         : window.i18n('deleteMessageQuestion'),

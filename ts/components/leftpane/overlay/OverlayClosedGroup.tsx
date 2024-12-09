@@ -78,7 +78,7 @@ export const OverlayClosedGroup = () => {
       dispatch(setOverlayMode(undefined));
       return;
     }
-    setLoading(false); 
+    setLoading(false);
   }
 
   useKey('Escape', closeOverlay);
@@ -88,7 +88,7 @@ export const OverlayClosedGroup = () => {
   const subtitle = window.i18n('createSecretGroupNamePrompt');
   const placeholder = window.i18n('createSecretGroupPlaceholder');
 
-  const noContactsForClosedGroup = privateContactsPubkeys.length === 0 ;
+  const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
 
   // function addContact() {
   //   dispatch(showLeftPaneSection(0));
@@ -125,40 +125,48 @@ export const OverlayClosedGroup = () => {
                 dataTestId="new-closed-group-name"
               />
             </div>
+
+            <SpacerLG />
+            <div>
+              <label className="module-left-pane-overlay-closed--search-label">
+                {' '}
+                Select Contacts
+              </label>
+              <SpacerXS />
+              <div className="bchat-search-input">
+                <div className="search">
+                  <BchatIcon iconSize={20} iconType="search" />
+                </div>
+                <input
+                  value={currentSearchTerm}
+                  onChange={e => {
+                    handleSearch(e);
+                  }}
+                  placeholder={'Search Contact'}
+                  maxLength={26}
+                />
+              </div>
+            </div>
           </>
         )}
-        <SpacerLG />
-        <div>
-          <label className="module-left-pane-overlay-closed--search-label"> Select Contacts</label>
-          <SpacerXS />
-          <div className="bchat-search-input">
-            <div className="search">
-              <BchatIcon iconSize={20} iconType="search" />
-            </div>
-            <input
-              value={currentSearchTerm}
-              onChange={e => {
-                handleSearch(e);
-              }}
-              placeholder={'Search Contact'}
-              maxLength={26}
-            />
-          </div>
-        </div>
         <SpacerMD />
-        {loading ? (
+        {loading && (
           <Loader darkMode={darkMode}>
-          <BchatSpinner loading={loading} />
+            <BchatSpinner loading={loading} />
           </Loader>
-        ) : (
-          <div className="group-member-list__container"  style={{overflow:zoomLevel>100?"unset":'auto'}} >
-            {noContactsForClosedGroup ? (
-              <div className="group-member-list__no-contacts">
-                <div className="group-member-list__addImg"></div>
-              
-                <h4 className="module-left-pane__empty_contact">{window.i18n('noContactsYet')}</h4>
-                <SpacerMD/>
-                {/* <div style={{ display: 'flex' }}>
+        )}
+        <div
+          style={{ height: '58.5%' }}
+          // className="group-member-list__container"
+          // style={{ overflow: zoomLevel > 100 ? 'unset' : 'auto' }}
+        >
+          {noContactsForClosedGroup ? (
+            <div className="group-member-list__no-contacts">
+              <div className="group-member-list__addImg"></div>
+
+              <h4 className="module-left-pane__empty_contact">{window.i18n('noContactsYet')}</h4>
+              <SpacerMD />
+              {/* <div style={{ display: 'flex' }}>
                   <button
                     className="nextButton"
                     style={{ width: '90%' }}
@@ -167,10 +175,14 @@ export const OverlayClosedGroup = () => {
                     Add Contacts +{' '}
                   </button>
                 </div> */}
-                {/* <BchatButton  text=' Add Contacts +' onClick={} /> */}
-                {/* {window.i18n('noContactsForGroup')} */}
-              </div>
-            ) : (
+              {/* <BchatButton  text=' Add Contacts +' onClick={} /> */}
+              {/* {window.i18n('noContactsForGroup')} */}
+            </div>
+          ) : (
+            <div
+              className="group-member-list__container"
+              style={{ overflow: zoomLevel > 100 ? 'unset' : 'auto' }}
+            >
               <div className="group-member-list__selection">
                 {filteredNames.map((memberPubkey: string) => (
                   <MemberListItem
@@ -186,20 +198,21 @@ export const OverlayClosedGroup = () => {
                   />
                 ))}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
-        <SpacerLG />
+        {/* <SpacerSM /> */}
+        {/* <SpacerLG /> */}
       </div>
 
       {!noContactsForClosedGroup && (
-        <div className="buttonBox">
+        <div className="buttonBox" style={{paddingTop:'5px'}}>
           <BchatButton
             buttonColor={BchatButtonColor.Primary}
             buttonType={BchatButtonType.Brand}
             text={'Create'}
-            disabled={noContactsForClosedGroup|| groupName.trim().length===0}
+            disabled={noContactsForClosedGroup || groupName.trim().length === 0}
             dataTestId="next-button"
             onClick={onEnterPressed}
           />

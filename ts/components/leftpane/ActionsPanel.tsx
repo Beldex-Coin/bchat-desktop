@@ -654,7 +654,7 @@ export const ActionsPanel = () => {
 
           <Section type={SectionType.Settings} />
         </div>
-        <Flex container={true} height="20%" alignItems="flex-end">
+        <Flex container={true} height="25%" alignItems="flex-end">
           <div className="theme-Wrapper ">
             <div
               className={classNames('icon-wrapper', !isdark && 'selected')}

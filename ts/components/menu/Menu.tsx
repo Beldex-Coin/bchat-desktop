@@ -162,10 +162,10 @@ export const MenuWrapper = styled.span`
 /** Menu items standardized */
 
 export const InviteContactMenuItem = (): JSX.Element | null => {
-  console.log("InviteContactMenuItem::")
+  console.log('InviteContactMenuItem::');
   const convoId = useContext(ContextConversationId);
   const isPublic = useIsPublic(convoId);
-  console.log("convoId:", convoId)
+  console.log('convoId:', convoId);
   // console.log("isPublic:", isPublic)
   // console.log("showInviteContact(isPublic):", showInviteContact(isPublic))
   // console.log("showInviteContactByConvoId(convoId):", showInviteContactByConvoId(convoId));
@@ -177,9 +177,8 @@ export const InviteContactMenuItem = (): JSX.Element | null => {
           showInviteContactByConvoId(convoId);
         }}
       >
-        <BchatIcon iconType={'inviteContact'} iconSize={20} fillRule="evenodd" clipRule="evenodd"  />
+        <BchatIcon iconType={'inviteContact'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />
         <MenuWrapper>{window.i18n('inviteContacts')}</MenuWrapper>
-
       </Item>
     );
   }
@@ -302,12 +301,21 @@ export const LeaveGroupMenuItem = () => {
     return (
       <Item
         onClick={() => {
-          showLeaveGroupByConvoId(convoId, username, <BchatIcon iconType='leaveGroup' iconColor='#FF3E3E' iconSize={30} />);
+          showLeaveGroupByConvoId(
+            convoId,
+            username,
+            <BchatIcon iconType="leaveGroup" iconColor="#FF3E3E" iconSize={30} />
+          );
         }}
       >
-        <BchatIcon iconType={'leave'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#FF3E3E' />
+        <BchatIcon
+          iconType={'leave'}
+          iconSize={20}
+          fillRule="evenodd"
+          clipRule="evenodd"
+          iconColor="#FF3E3E"
+        />
         <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('leaveGroup')}</MenuWrapper>
-
       </Item>
     );
   }
@@ -458,7 +466,7 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
   const timerOptions = useSelector(getTimerOptions).timerOptions;
   const isRequest = useIsRequest(convoId);
   const ourNumber = useSelector(getOurNumber);
-  console.log("timerOptions:",timerOptions)
+  console.log('timerOptions:', timerOptions);
   if (ourNumber === convoId) {
     return null;
   }
@@ -482,11 +490,11 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
           </>
         }
         arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
-
       >
         {timerOptions.map(item => (
-          <div className='submenu'>
-            <Item style={{width:'100%'}}
+          <div className="submenu">
+            <Item
+              style={{ width: '100%' }}
               key={item.value}
               onClick={async () => {
                 await setDisappearingMessagesByConvoId(convoId, item.value);
@@ -495,7 +503,6 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
               {item.name}
             </Item>
           </div>
-
         ))}
       </Submenu>
     );
@@ -514,7 +521,13 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isMe = useIsMe(convoId);
 
   if (
-    showNotificationConvo(Boolean(isKickedFromGroup), Boolean(left), Boolean(isBlocked), isRequest, isMe)
+    showNotificationConvo(
+      Boolean(isKickedFromGroup),
+      Boolean(left),
+      Boolean(isBlocked),
+      isRequest,
+      isMe
+    )
   ) {
     // exclude mentions_only settings for private chats as this does not make much sense
     const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>
@@ -525,8 +538,8 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
         n === 'all' || !n
           ? 'notificationForConvo_all'
           : n === 'disabled'
-            ? 'notificationForConvo_disabled'
-            : 'notificationForConvo_mentions_only';
+          ? 'notificationForConvo_disabled'
+          : 'notificationForConvo_mentions_only';
       return { value: n, name: window.i18n(keyToUse) };
     });
 
@@ -545,25 +558,28 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
           </>
         }
         arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
-      // label={window.i18n('notificationForConvo') as any}
+        // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;
 
           return (
-            <div className='submenu'>
-              <Item style={{width:'100%'}}
+            <div className="submenu">
+              <Item
+                style={{ width: '100%' }}
                 key={item.value}
                 onClick={async () => {
                   await setNotificationForConvoId(convoId, item.value);
                 }}
                 // disabled={disabled}
               >
-                <div style={{ marginRight: '10px', color: disabled ? '#108D32' : ' var(--color-action-btn-icon)' }}>
-                  <BchatIcon
-                    iconSize={10}
-                    iconType="circle"
-                  />
+                <div
+                  style={{
+                    marginRight: '10px',
+                    color: disabled ? '#108D32' : ' var(--color-action-btn-icon)',
+                  }}
+                >
+                  <BchatIcon iconSize={10} iconType="circle" />
                 </div>
                 {item.name}
               </Item>
@@ -689,7 +705,14 @@ export const AcceptMenuItem = () => {
           await approveConvoAndSendResponse(convoId, true);
         }}
       >
-        {window.i18n('accept')}
+        <BchatIcon
+          iconType={'accept'}
+          iconSize={20}
+          iconColor="#108D32"
+          clipRule="evenodd"
+          fillRule="evenodd"
+        />
+        <MenuWrapper style={{ color: '#108D32' }}> {window.i18n('accept')}</MenuWrapper>
       </Item>
     );
   }
@@ -699,7 +722,7 @@ export const AcceptMenuItem = () => {
 export const DeclineMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
-  const customIcon = <DeclineMessageRequest iconSize={30} />
+  const customIcon = <DeclineMessageRequest iconSize={30} />;
 
   if (isRequest) {
     return (
@@ -708,7 +731,14 @@ export const DeclineMenuItem = () => {
           declineConversationWithConfirm(convoId, true, customIcon);
         }}
       >
-        {window.i18n('decline')}
+        <BchatIcon
+          iconType={'accept'}
+          iconSize={20}
+          iconColor="#FF3E3E"
+          clipRule="evenodd"
+          fillRule="evenodd"
+        />
+        <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('decline')}</MenuWrapper>
       </Item>
     );
   }

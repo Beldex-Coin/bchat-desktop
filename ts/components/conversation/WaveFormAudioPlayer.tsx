@@ -29,15 +29,16 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
   const darkMode = useSelector(getTheme) === 'dark';
   function validColor() {
     const incomingColors = {
-      waveColor: darkMode ? '#647494' : '#ACACAC',
+      waveColor: darkMode ? '#16191F' : '#ACACAC',
       progressColor: '#2F8FFF',
       cursorColor: '#2F8FFF',
     };
 
     const outgoingColors = {
-      waveColor: '#00AA2E',
-      progressColor: '#00DE16',
-      cursorColor: '#00DE16',
+      waveColor: '#1C581C',
+      progressColor: '#C0FFC9',
+      cursorColor: '#C0FFC9',
+      
     };
 
     const colors = direction === 'incoming' ? incomingColors : outgoingColors;
@@ -50,13 +51,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
     if (waveformRef.current) {
       surfer = WaveSurfer.create({
         container: waveformRef.current,
-
         waveColor: validColor().waveColor,
         progressColor: validColor().progressColor,
         cursorColor: validColor().cursorColor,
 
         barWidth: 3,
-        barRadius: 1, // This is crucial for rounded bars
+        barRadius: 4, // This is crucial for rounded bars
         cursorWidth: 0,
         height: 50,
         barGap: 2,
@@ -64,9 +64,9 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       });
 
       surfer.load(urlToLoad);
-
       surfer.on('ready', () => {
         waveSurferRef.current = surfer;
+
         const remainingTime = (surfer.getDuration() - surfer.getCurrentTime()) / 60;
         setRemainingTime(remainingTime.toFixed(2));
         setPlaybackSpeed(surfer.getPlaybackRate());
@@ -85,8 +85,8 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
           const currentTime = surfer.getCurrentTime();
           const remainingTime = (totalTime - currentTime) / 60;
           if (remainingTime.toFixed(2) == '0.00') {
-            const remainingTime = (surfer.getDuration()) / 60;
-             setRemainingTime(remainingTime.toFixed(2));
+            const remainingTime = surfer.getDuration() / 60;
+            setRemainingTime(remainingTime.toFixed(2));
           } else {
             setRemainingTime(remainingTime.toFixed(2));
           }
@@ -94,7 +94,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       });
       // setWavesurfer(surfer);
     }
-    console.log('surfer', surfer)
+    console.log('surfer', surfer);
     return () => surfer.destroy();
   }, [urlToLoad]);
 
@@ -115,7 +115,13 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
 
   return (
     <div className="audio-message">
-      <Flex container={true} justifyContent="center" alignItems="center" height='40px' margin='10px 0 0 0'>
+      <Flex
+        container={true}
+        justifyContent="center"
+        alignItems="center"
+        height="40px"
+        margin="10px 0 0 0"
+      >
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
@@ -134,8 +140,9 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
           {playbackSpeed}x
         </div>
         <SpacerSM />
-        <div ref={waveformRef} style={{ width: '300px' }}></div>
-        <div className={classNames("timer", `timer-${direction}`)}> {remainingTime}</div>
+        <div id="waveform" ref={waveformRef} style={{ width: '300px' }}></div>
+
+        <div className={classNames('timer', `timer-${direction}`)}> {remainingTime}</div>
         {/* <button onClick={playAndPause}>Play/Pause</button> */}
       </Flex>
     </div>
