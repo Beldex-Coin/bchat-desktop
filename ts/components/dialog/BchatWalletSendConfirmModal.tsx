@@ -145,7 +145,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
 
   return (
     <BchatWrapperModal
-      title={confirm ? 'Password' : 'Confirm Transaction'}
+      title={confirm ? 'Password' : 'Confirm Sending'}
       onClose={onClickClose}
       showExitIcon={showExitIcon}
       showHeader={true}

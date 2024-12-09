@@ -51,8 +51,9 @@ export const WalletMainPanel = () => {
   }
 
   function numberOnly(e: any) {
-    const re = /^\d+\.?\d*$/;
-    if (e === '' || re.test(e)) {
+    // const re = /^\d+\.?\d*$/;
+    const pattern = /^(\d{0,16}(\.\d{1,5})?|(\d{0,16}\.))$/;
+    if (e === '' || pattern.test(e)) {
       setAmount(e);
     }
   }
@@ -120,7 +121,7 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  console.log('zoomLevel -->',zoomLevel,'window.innerWidth -->',window.innerWidth)
+  // console.log('zoomLevel -->',zoomLevel,'window.innerWidth -->',window.innerWidth)
   // daemon.daemonHeartbeat();
   return (
     <>

@@ -174,10 +174,12 @@ export const TransactionSection = (props: any) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="wallet-Transaction" style={{height:zoomLevel>100?'unset':''}}>
+    <div className="wallet-Transaction" style={{ height: zoomLevel > 100 ? 'unset' : '' }}>
       <div style={{ height: '98%' }} onClick={() => (visible ? setVisible(false) : '')}>
-        <Flex container={true} justifyContent="space-between" flexDirection="row">
-          <div className="wallet-Transaction-title">
+        <Flex container={true}  flexDirection="row" width='100%' justifyContent='space-between'>
+          <div className="wallet-Transaction-title" 
+          // style={{width:'30%'}}
+          >
             <BchatIcon
               iconType="oppositeDirDoubleArrow"
               iconSize={20}
@@ -186,9 +188,10 @@ export const TransactionSection = (props: any) => {
             />
             <span style={{ marginLeft: '10px' }}>{window.i18n('transactions')}</span>
           </div>
-          <Flex container={true} justifyContent="flex-end" flexDirection="row" flexWrap='wrap'>
+          <Flex container={true} justifyContent="flex-end" flexDirection="row" flexWrap="wrap" 
+          // style={{width:'70%'}}
+          >
             {transactionsHistory.length !== 0 || searchText ? (
-           
               <div className="wallet-Transaction-filter-wrapper">
                 <input
                   placeholder={window.i18n('filterPlaceHolder')}
@@ -341,8 +344,14 @@ export const TransactionSection = (props: any) => {
                 onClick={() => showdata(item, i)}
                 style={{ cursor: 'pointer' }}
               >
-                <Flex container={true} justifyContent="space-between" flexDirection="row" width='100%' flexWrap='wrap'> 
-                  <Flex container={true} height=" 60px" margin='15px 0 0 0'>
+                <Flex
+                  container={true}
+                  justifyContent="space-between"
+                  flexDirection="row"
+                  width="100%"
+                  flexWrap="wrap"
+                >
+                  <Flex container={true} height=" 60px" margin="15px 0 0 0">
                     <article className="wallet-Transaction-contentBox-sendIndicationBox">
                       <TransactionIndication type={item.type} />
                     </article>
@@ -363,24 +372,35 @@ export const TransactionSection = (props: any) => {
                     </div>
                   </Flex>
 
-                  <section className="wallet-Transaction-contentBox-dateandheight" style={{marginLeft:zoomLevel>125 && innerWidth<1920?'38px':'',marginTop:'15px'}}>
-                    <div
-                      className="wallet-Transaction-contentBox-dateandheight-month"
-                      style={{ marginBottom: '7px',textAlign:zoomLevel>125 && innerWidth<1920?'unset':'right' }}
+                  <Flex container={true}   style={{
+                        marginLeft: zoomLevel > 125 && innerWidth < 1920 ? '38px' : '',
+                        marginTop: '15px',
+                      }} >
+                    <section
+                      className="wallet-Transaction-contentBox-dateandheight"
+                    
                     >
-                      {moment.unix(item.timestamp).format('ll HH:mm')}
-                    </div>
-                    <div className="wallet-Transaction-contentBox-dateandheight-height">
-                      Height : {item.height}{' '}
-                      {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
-                    </div>
-                  </section>
-                  <BchatIconButton
-                  iconColor={darkMode?"#A7A7BA":'#3E4A53'}
-                  iconType="chevron"
-                  iconSize={'medium'}
-                  iconRotation={selected === i ? 178 : 0}
-                />
+                      <div
+                        className="wallet-Transaction-contentBox-dateandheight-month"
+                        style={{
+                          marginBottom: '7px',
+                          textAlign: zoomLevel > 125 && innerWidth < 1920 ? 'unset' : 'right',
+                        }}
+                      >
+                        {moment.unix(item.timestamp).format('ll HH:mm')}
+                      </div>
+                      <div className="wallet-Transaction-contentBox-dateandheight-height">
+                        Height : {item.height}{' '}
+                        {item.type === 'out' || item.type === 'in' ? '(confirmed)' : ''}
+                      </div>
+                    </section>
+                    <BchatIconButton
+                      iconColor={darkMode ? '#A7A7BA' : '#3E4A53'}
+                      iconType="chevron"
+                      iconSize={'medium'}
+                      iconRotation={selected === i ? 178 : 0}
+                    />
+                  </Flex>
                 </Flex>
 
                 {selected === i && (

@@ -455,10 +455,11 @@ class Wallet {
           window.inboxStore?.dispatch(updateWalletHeight(response.result.height));
         } else if (n.method == 'getbalance') {
           let transacationsHistory: any = [];
-          if (type == 'wallet') {
+          // if (type == 'wallet') {
             transacationsHistory = await this.getTransactions();
             transacationsHistory = transacationsHistory.transactions.tx_list;
-          }
+          // }
+          // console.log('transacationsHistory -->',transacationsHistory ,'type --->',type)
           if (
             this.wallet_state.balance == response.result.balance &&
             this.wallet_state.unlocked_balance == response.result.unlocked_balance &&

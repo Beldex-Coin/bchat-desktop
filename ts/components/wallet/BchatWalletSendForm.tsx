@@ -34,7 +34,7 @@ export const SendForm = (props: any) => {
   const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const validZoomLevel=window.screen.width <= 1920 && zoomLevel>100;
-  console.log('validZoomLevel -->',validZoomLevel,window.screen.width,window.screen.width <= 1920)
+  // console.log('validZoomLevel -->',validZoomLevel,window.screen.width,window.screen.width <= 1920)
  
   function clearStateValue() {
     props.setAmount('');

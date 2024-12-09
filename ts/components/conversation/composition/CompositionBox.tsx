@@ -290,14 +290,16 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   sendAmountValidation() {
-    const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
+    const { selectedConversation,
+       WalletSyncBarShowInChat,
+        isMe } = this.props;
     const { draft } = this.state;
     const getSyncStatus = window.getSettingValue('syncStatus');
-    const re = /^\d+\.?\d*$/;
-
+    // const re = /^\d+\.?\d*$/;
+    const re =/^\d+(\.\d{1,5})?$/
     const results =
       selectedConversation?.type === 'private' &&
-      re.test(draft) &&
+      re.test(draft) && Number(draft)>0 &&
       // && (draft.length-1 - draft.indexOf(".")) < 4
       selectedConversation?.isApproved &&
       selectedConversation?.didApproveMe &&
@@ -307,6 +309,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       !isMe &&
       getSyncStatus && draft.length <= 16;
 
+//  console.log(' re.test(draft)  ->', re.test(draft) ,' Number(draft)>0  ->', Number(draft)>0 ,' selectedConversation?.isApproved ->', selectedConversation?.isApproved,'selectedConversation?.didApproveMe ->',selectedConversation?.didApproveMe,' !selectedConversation?.isBlocked ->', !selectedConversation?.isBlocked ,'this.chatwithWallet ->',this.chatwithWallet,'!isMe ->',!isMe,'getSyncStatus ->',getSyncStatus,' draft.length <= 16 ->', draft.length <= 16)
     return results;
   }
   chatWithWalletInstruction() {
@@ -350,7 +353,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         okTheme: BchatButtonColor.Green,
         address: this.props.selectedConversation?.walletAddress,
         amount: messagePlaintext,
-        fee: priority === 'Flash' ? 0.0042 : 0.0014,
+        fee: priority === 'Flash' ? 0.0291: 0.0096,
         Priority: priority,
         onClickOk: async () => {
           await this.sendFund();
@@ -582,7 +585,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ? 0
         : ((100 * currentHeight) / valdatedDaemonHeight).toFixed(1);
 
-    let percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
+    const  percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
+    window.setSettingValue('syncStatus', percentage >= 99);
+
     return percentage;
   }
 

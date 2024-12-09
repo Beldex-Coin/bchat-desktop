@@ -17,6 +17,7 @@ type Props = {
   autoFocus?: boolean;
   ref?: any;
   inputDataTestId?: string;
+  max?:string;
 };
 
 const LabelItem = (props: { inputValue: string; label?: string }) => {
@@ -63,6 +64,7 @@ export const BchatInput = (props: Props) => {
     label,
     onValueChanged,
     inputDataTestId,
+    max
   } = props;
   const [inputValue, setInputValue] = useState('');
   const [forceShow, setForceShow] = useState(false);
@@ -94,6 +96,7 @@ export const BchatInput = (props: Props) => {
         minLength={minLength}
         autoFocus={autoFocus}
         data-testid={inputDataTestId}
+        max={max}
         onChange={updateInputValue}
         className={classNames(enableShowHide ? 'bchat-input-floating-label-show-hide' : '')}
         // just incase onChange isn't triggered
