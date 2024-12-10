@@ -132,7 +132,14 @@ export const AvatarPlaceHolder = (props: Props) => {
   console.log(avatarColors.bgColor, fontSize);
 
   return (
-    <div style={{ width: { diameter } + 'px', height: { diameter } + 'px' }}>
+    <div
+      style={{
+        width: { diameter } + 'px',
+        height: { diameter } + 'px',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
+    >
       <svg
         width="100%"
         height="100%"

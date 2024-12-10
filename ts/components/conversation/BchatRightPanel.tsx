@@ -256,7 +256,7 @@ const HeaderItem = () => {
           isBnsHolder={isBnsHolder}
           size={{ width: '20', height: '20' }}
         >
-          <Avatar size={AvatarSize.XL} pubkey={id} />
+          <Avatar size={isGroup ?AvatarSize.L:AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
         <SpacerXS />
 

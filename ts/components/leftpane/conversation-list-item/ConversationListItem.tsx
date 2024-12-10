@@ -86,12 +86,12 @@ const AvatarItem = () => {
     <div className="module-conversation-list-item__avatar-container">
       <BNSWrapper
         // size={40}
-        position={{ left: '26px', top: '23px' }}
-        isBnsHolder={isBnsHolder}
+        position={{ left: '46px', top: '46px' }}
+        isBnsHolder={isBnsHolder }
         size={{width:'20',height:'20'}}
       >
         <Avatar
-          size={AvatarSize.S}
+          size={AvatarSize.L}
           pubkey={conversationId}
           onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
         />
