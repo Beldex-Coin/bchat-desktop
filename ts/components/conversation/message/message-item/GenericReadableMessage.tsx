@@ -15,7 +15,7 @@ import {
   isMessageSelectionMode,
 } from '../../../../state/selectors/conversations';
 import { getIncrement } from '../../../../util/timer';
-import { ExpireTimer } from '../../ExpireTimer';
+// import { ExpireTimer } from '../../ExpireTimer';
 import { MessageAvatar } from '../message-content/MessageAvatar';
 import { MessageContentWithStatuses } from '../message-content/MessageContentWithStatus';
 import { ReadableMessage } from './ReadableMessage';
@@ -203,26 +203,28 @@ export const GenericReadableMessage = (props: Props) => {
           )}
         </div>
         <MessageAvatar messageId={messageId} />
-        {expirationLength && expirationTimestamp && (
+        {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={!isIncoming}
             expirationLength={expirationLength}
             expirationTimestamp={expirationTimestamp}
           />
-        )}
+        )} */}
         <MessageContentWithStatuses
           ctxMenuID={props.ctxMenuID}
           messageId={messageId}
           isDetailView={isDetailView}
           dataTestId={`message-content-${messageId}`}
+          expirationLength={expirationLength}
+          expirationTimestamp={expirationTimestamp}
         />
-        {expirationLength && expirationTimestamp && (
+        {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={isIncoming}
             expirationLength={expirationLength}
             expirationTimestamp={expirationTimestamp}
           />
-        )}
+        )} */}
         <div>
           {!isIncoming && isSelectionMode && (
             <div style={{ marginLeft: '15px',cursor:'pointer' }}>

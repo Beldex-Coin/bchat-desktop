@@ -42,7 +42,7 @@ export const SettingsHeader = (props: Props) => {
   //     forceUpdate()
   //   }
   // }, [multipleSelectionValue])
-  console.log('categoryTitle -->',category,BchatSettingCategory.Wallet,)
+
   if(category === BchatSettingCategory.Wallet)
   {
     return <></>

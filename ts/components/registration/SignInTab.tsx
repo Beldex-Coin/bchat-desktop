@@ -46,14 +46,18 @@ export enum SignInMode {
 // };
 
 const RestoreUsingRecoveryPhraseButton = (props: { onRecoveryButtonClicked: () => any }) => {
+ 
   return (
+    <div className='signIn-btn'>
     <BchatButton
       onClick={props.onRecoveryButtonClicked}
       buttonType={BchatButtonType.DefaultOutline}
       buttonColor={BchatButtonColor.Primary}
       text={window.i18n('signIn')}
       dataTestId="restore-using-recovery"
+      
     />
+    </div>
   );
 };
 
@@ -126,7 +130,6 @@ export const SignInTab = (props: any) => {
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
 
-
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
   // from the configuration message will be used.
@@ -138,7 +141,8 @@ export const SignInTab = (props: any) => {
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
 
-  const activateContinueButton = displayNameOK && !loading && (blockheight ||  !moment(restoreDate).isAfter(today) );
+  const activateContinueButton =
+    displayNameOK && !loading && (blockheight || !moment(restoreDate).isAfter(today));
   localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {
@@ -249,7 +253,7 @@ export const SignInTab = (props: any) => {
       </>
     );
   }
-  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>,e:string) =>  {
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, e: string) => {
     const newValue = e.replace(/\s+/g, '');
     setter(newValue);
   };
@@ -259,8 +263,8 @@ export const SignInTab = (props: any) => {
       <WalletPassword
         password={password}
         repassword={repassword}
-         setPassword={(e:string)=>handleInputChange(setPassword,e)}
-        setRepassword={(e:string)=>handleInputChange(setRepassword,e)}
+        setPassword={(e: string) => handleInputChange(setPassword, e)}
+        setRepassword={(e: string) => handleInputChange(setRepassword, e)}
         backArrow={() => {
           setScreenName(1);
           props.imageValidator(LeftImage.recoveryseed);
@@ -288,10 +292,10 @@ export const SignInTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: "120px",
-            height: "120px",
-            margin: "0px auto",
-            backgroundSize: "102px"
+            width: '120px',
+            height: '120px',
+            margin: '0px auto',
+            backgroundSize: '102px',
           }}
         ></div>
       </div>
@@ -324,17 +328,21 @@ export const SignInTab = (props: any) => {
           <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div> */}
           <Flex flexDirection="row" container={true} alignItems="center" padding="20px 0px">
             <div className="bchat-registration-goback-icon">
-              <GoBackMainMenuButton assent={() => {
-                props.assent(true);
-                setScreenName(1);
-                setPassword('');
-                setRepassword('');
-                setBlockheight('');
-                setRestoreDate('');
-                props.imageValidator(LeftImage.registration);
-              }} />
+              <GoBackMainMenuButton
+                assent={() => {
+                  props.assent(true);
+                  setScreenName(1);
+                  setPassword('');
+                  setRepassword('');
+                  setBlockheight('');
+                  setRestoreDate('');
+                  props.imageValidator(LeftImage.registration);
+                }}
+              />
             </div>
-            <Flex className="bchat-registration__welcome-bchat">{window.i18n('restoreFromSeed')}</Flex>
+            <Flex className="bchat-registration__welcome-bchat">
+              {window.i18n('restoreFromSeed')}
+            </Flex>
           </Flex>
           <BchatInput
             autoFocus={true}
@@ -346,7 +354,7 @@ export const SignInTab = (props: any) => {
             onValueChanged={(name: string) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
-              const alphanumericName=sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+              const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
               setDisplayName(alphanumericName);
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
@@ -410,7 +418,7 @@ export const SignInTab = (props: any) => {
           setDisplayName('');
           setIsLoading(false);
           props.assent(false);
-          props.imageValidator(LeftImage.recoveryseed)
+          props.imageValidator(LeftImage.recoveryseed);
         }}
         onLinkDeviceButtonClicked={() => {
           setRegistrationPhase(RegistrationPhase.SignIn);

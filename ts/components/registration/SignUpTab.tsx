@@ -22,13 +22,17 @@ export enum SignUpMode {
 }
 
 const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
+  
   return (
+    <div  className='signUp-btn'>
     <BchatButton
       onClick={createBchatID}
       buttonType={BchatButtonType.Default}
       buttonColor={BchatButtonColor.Primary}
       text={window.i18n('createAccount')}
+     
     />
+    </div>
   );
 };
 
@@ -187,8 +191,8 @@ export const SignUpTab = (props: any) => {
       props.imageValidator(LeftImage.registration);
     }
   };
-  
-  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>,e:string) =>  {
+
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, e: string) => {
     const newValue = e.replace(/\s+/g, '');
     setter(newValue);
   };
@@ -198,8 +202,8 @@ export const SignUpTab = (props: any) => {
       <WalletPassword
         password={password}
         repassword={repassword}
-        setPassword={(e:string)=>handleInputChange(setPassword,e)}
-        setRepassword={(e:string)=>handleInputChange(setRepassword,e)}
+        setPassword={(e: string) => handleInputChange(setPassword, e)}
+        setRepassword={(e: string) => handleInputChange(setRepassword, e)}
         backArrow={goback}
         submit={passValid}
       />
@@ -231,7 +235,7 @@ export const SignUpTab = (props: any) => {
           onDisplayNameChanged={(name: string) => {
             const sanitizedName = sanitizeBchatUsername(name);
             const trimName = sanitizedName.trim();
-            const alphanumericName=sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+            const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
             setDisplayName(alphanumericName);
             setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
           }}
