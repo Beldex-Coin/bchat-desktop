@@ -14,7 +14,7 @@ let snodeFailureCount: Record<string, number> = {};
 import { Snode } from '../../../data/data';
 import { ERROR_CODE_NO_CONNECT } from './SNodeAPI';
 import { Onions } from '.';
-import { hrefPnServerDev, hrefPnServerProd } from '../push_notification_api/PnServer';
+import { hrefPnServerProd } from '../push_notification_api/PnServer';
 import { callUtilsWorker } from '../../../webworker/workers/util_worker_interface';
 
 export const resetSnodeFailureCount = () => {
@@ -127,7 +127,8 @@ async function buildOnionCtxs(
       let target = '/beldex/v2/lsrpc';
 
       const isCallToPn =
-        finalRelayOptions?.host === hrefPnServerDev || finalRelayOptions?.host === hrefPnServerProd;
+        finalRelayOptions?.host === hrefPnServerProd.split(':')[0];
+
       if (!isCallToPn) {
         target = '/beldex/v3/lsrpc';
       }
@@ -137,6 +138,8 @@ async function buildOnionCtxs(
         target,
         method: 'POST',
       };
+
+      console.log("desttttttt:", dest)
       // FIXME http Social groups v2 are not working
       // tslint:disable-next-line: no-http-string
       if (finalRelayOptions?.protocol === 'http') {
