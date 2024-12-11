@@ -46,17 +46,15 @@ export enum SignInMode {
 // };
 
 const RestoreUsingRecoveryPhraseButton = (props: { onRecoveryButtonClicked: () => any }) => {
- 
   return (
-    <div className='signIn-btn'>
-    <BchatButton
-      onClick={props.onRecoveryButtonClicked}
-      buttonType={BchatButtonType.DefaultOutline}
-      buttonColor={BchatButtonColor.Primary}
-      text={window.i18n('signIn')}
-      dataTestId="restore-using-recovery"
-      
-    />
+    <div className="signIn-btn">
+      <BchatButton
+        onClick={props.onRecoveryButtonClicked}
+        buttonType={BchatButtonType.DefaultOutline}
+        buttonColor={BchatButtonColor.Primary}
+        text={window.i18n('signIn')}
+        dataTestId="restore-using-recovery"
+      />
     </div>
   );
 };
@@ -140,9 +138,12 @@ export const SignInTab = (props: any) => {
 
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
+  const year = moment(restoreDate).year();
 
   const activateContinueButton =
-    displayNameOK && !loading && (blockheight || !moment(restoreDate).isAfter(today));
+    displayNameOK &&
+    !loading &&
+    (blockheight || (Number(year) > 2018 && !moment(restoreDate).isAfter(today)));
   localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {
@@ -354,8 +355,8 @@ export const SignInTab = (props: any) => {
             onValueChanged={(name: string) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
-              const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
-              setDisplayName(alphanumericName);
+              // const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+              setDisplayName(sanitizedName);
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
             // onEnterPressed={props.handlePressEnter}

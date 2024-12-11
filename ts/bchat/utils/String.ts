@@ -45,7 +45,9 @@ export const stringToUint8Array = (str: string): Uint8Array => {
 };
 
 // Regex to match all characters which are forbidden in display names
-const forbiddenDisplayCharRegex = /\uFFD2*/g;
+// const forbiddenDisplayCharRegex = /\uFFD2*/g ;
+// Regex to match alphanumeric characters which are forbidden in display names
+const forbiddenDisplayCharRegex =/[^a-zA-Z0-9]/g;
 
 /**
  *

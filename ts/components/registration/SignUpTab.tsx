@@ -235,8 +235,8 @@ export const SignUpTab = (props: any) => {
           onDisplayNameChanged={(name: string) => {
             const sanitizedName = sanitizeBchatUsername(name);
             const trimName = sanitizedName.trim();
-            const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
-            setDisplayName(alphanumericName);
+            // const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+            setDisplayName(sanitizedName);
             setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
           }}
           stealAutoFocus={true}
