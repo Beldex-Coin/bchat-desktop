@@ -84,7 +84,6 @@ class Wallet {
 
   startWallet = async (type?: string) => {
     try {
-      // console.log('start wallet rpc :', type);
       let getFiatCurrency = window.getSettingValue(walletSettingsKey.settingsFiatCurrency);
       if (!getFiatCurrency) {
         window.setSettingValue(walletSettingsKey.settingsFiatCurrency, 'USD');
@@ -208,9 +207,7 @@ class Wallet {
       });
       wallet.stdout.on('close', (code: any) => {
         process.stderr.write(`Wallet: exited with code ${code} \n`);
-        // if (code === null) {
-        // console.log("Failed to start wallet RPC");
-        // }
+        
       });
     } catch (error) {
       console.log('failed to start wallet rpc', error);
@@ -459,7 +456,6 @@ class Wallet {
             transacationsHistory = await this.getTransactions();
             transacationsHistory = transacationsHistory.transactions.tx_list;
           // }
-          // console.log('transacationsHistory -->',transacationsHistory ,'type --->',type)
           if (
             this.wallet_state.balance == response.result.balance &&
             this.wallet_state.unlocked_balance == response.result.unlocked_balance &&
@@ -656,7 +652,6 @@ class Wallet {
           };
         })
         .catch((error: any) => {
-          // console.log('ERRORRRRRR:', error);
           return {
             method: method,
             params: params,

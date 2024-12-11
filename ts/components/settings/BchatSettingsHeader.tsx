@@ -27,11 +27,7 @@ export const SettingsHeader = (props: Props) => {
   const multipleSelectionValue = useSelector(getMultipleSelection);
   const blockedNumbers = useSelector(getBlockedPubkeys);
 
-  // console.log("multipleSelectionValue:", multipleSelectionValue);
-  // console.log("blockedNumbers:", blockedNumbers)
   // const temp=useSelector(state=>state)
-  // console.log('multipleSelectionValue', multipleSelectionValue,temp);
-
   // useEffect(() => {
   //   if (multipleSelectionValue) {
   //     color = 'var(--color-text)';

@@ -121,7 +121,6 @@ const ConversationListItem = (props: Props) => {
   // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
 
   // const forceUpdate = useUpdate();
-  // console.log('chatInstruction::', chatInstruction,window.getSettingValue(SettingsKey.settingChatwithWalletInstruction))
   function useHeaderItemProps(conversationId: string) {
     const convoProps = useConversationPropsById(conversationId);
     if (!convoProps) {
@@ -135,15 +134,8 @@ const ConversationListItem = (props: Props) => {
     };
   }
   const convoProps = useHeaderItemProps(conversationId);
-
   const activeAt = convoProps?.activeAt;
-  // console.log("activeAt:",activeAt)
-  // console.log("unreadCount ::",unreadCount);
-
-  //  console.log(activeAt);
-
   const key = `conversation-item-${conversationId}`;
-
   const triggerId = `${key}-ctxmenu`;
 
   const openConvo = useCallback(

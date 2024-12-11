@@ -92,8 +92,6 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
     if (!conversationKey || !conversation) {
       return null;
     }
-    // console.log('conversationKey ::',conversationKey)
-  //  console.log("conversation render",conversation)
     // let displayedName = null;
     // if (conversation.type === ConversationTypeEnum.PRIVATE) {
     //   displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(

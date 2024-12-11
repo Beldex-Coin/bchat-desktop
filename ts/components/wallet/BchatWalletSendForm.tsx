@@ -34,7 +34,6 @@ export const SendForm = (props: any) => {
   const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const validZoomLevel=window.screen.width <= 1920 && zoomLevel>100;
-  // console.log('validZoomLevel -->',validZoomLevel,window.screen.width,window.screen.width <= 1920)
  
   function clearStateValue() {
     props.setAmount('');
@@ -68,7 +67,6 @@ export const SendForm = (props: any) => {
     return event.key === 'Enter';
   });
   async function addressValidation() {
-    // console.log("netConnetion()",netConnetion())
     if (!window.globalOnlineStatus) {
       ToastUtils.pushToastError('internetConnectionError', 'Please check your internet connection');
       return;

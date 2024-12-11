@@ -121,7 +121,6 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  // console.log('zoomLevel -->',zoomLevel,'window.innerWidth -->',window.innerWidth)
   // daemon.daemonHeartbeat();
   return (
     <>

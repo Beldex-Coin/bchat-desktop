@@ -177,7 +177,6 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
     }, 3000);
   }
   // const onClickOK = useCallback(() => {
-  //   console.log('Save icon clicked', selectedConversation);
   //   // Handle the save action
   // }, [profileName]);
 
@@ -328,7 +327,7 @@ export const BchatRightPanelWithDetails = () => {
     existingMembers
   );
   const darkMode = useSelector(getTheme) === 'dark';
-  const { uniqueValues: selectedContacts } = useSet<string>();
+  // const { uniqueValues: selectedContacts } = useSet<string>();
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   useEffect(() => {
     let isRunning = true;
@@ -401,7 +400,6 @@ export const BchatRightPanelWithDetails = () => {
       },
     };
   });
-  // console.log('disappearingMessagesOptions --->', disappearingMessagesOptions);
   const showUpdateGroupNameButton =
     isGroup && (!isPublic || (isPublic && weAreAdmin)) && !commonNoShow;
   const showAddRemoveModeratorsButton = weAreAdmin && !commonNoShow && isPublic;
@@ -517,7 +515,6 @@ export const BchatRightPanelWithDetails = () => {
       setRemoveMem(false);
     }
     if (addMem) {
-      console.log('selectedContacts ...', selectedContacts);
       //  await submitForClosedGroup(id, selectedContacts);
       await ref.current?.onclick();
       setAddMem(false);

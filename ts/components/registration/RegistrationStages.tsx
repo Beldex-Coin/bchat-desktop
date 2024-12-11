@@ -218,11 +218,9 @@ export const RegistrationStages = () => {
   }, []);
 
   const generateMnemonicAndKeyPairaa = async () => {
-    // console.log('registration');
     await wallet.startWallet();
   };
   const imageValidator = (e: any) => {
-    console.log('imageValidator');
     setImageCount(e);
   };
   const displayImg = () => {

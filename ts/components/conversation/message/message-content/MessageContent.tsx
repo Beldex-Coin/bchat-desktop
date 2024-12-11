@@ -174,14 +174,11 @@ export const MessageContent = (props: Props) => {
   }
 
   // const width = getWidth({ previews, attachments });
-  // console.log('width --->',width);
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
   // const hasQuote = !isEmpty(quote);
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-
-  // console.log('isShowingImage->',isShowingImage,'hasText->',hasText,'hasQuote',hasQuote,'attachments->',hasAttachment)
 
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');

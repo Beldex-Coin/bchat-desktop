@@ -24,7 +24,7 @@ module.exports = async function(context) {
     return;
   }
   // eslint-disable-next-line no-console
-  // console.log('afterPack hook triggered', context);
+ 
 
   const executableName = context.packager.executableName;
   const sourceExecutable = path.join(context.appOutDir, executableName);

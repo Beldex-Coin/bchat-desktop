@@ -60,7 +60,6 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   public render() {
     const showResetElements = this.state.errorCount >= MAX_LOGIN_TRIES;
     let checkError: any = this.state.error;
-    // console.log("checkError:",checkError)
     if (checkError) {
       // console.log("checkErrorr:try:",checkError)
     }

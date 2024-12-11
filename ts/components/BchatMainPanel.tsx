@@ -40,9 +40,7 @@ export const BchatMainPanel = () => {
 
   // }, []);
   
-  // const walletPassWordValidation = () => {
-  //   // console.log('WalletSyncInitiatedWithChat ::',WalletSyncInitiatedWithChat);
-    
+  // const walletPassWordValidation = () => {   
   //   if (chatwithWallet && !walletSyncBarShowInChat && !isSettingsView) {
 
   //    dispatch(updateBchatWalletPasswordModal({}))

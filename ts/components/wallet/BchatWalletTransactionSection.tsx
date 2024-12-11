@@ -142,7 +142,6 @@ export const TransactionSection = (props: any) => {
   }
 
   function searchTransaction(filteredTransaction: any) {
-    // console.log("filteredTransaction ::",searchText)
     let data =
       filteredTransaction.length > 0
         ? filteredTransaction.filter(

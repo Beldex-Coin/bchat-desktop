@@ -138,11 +138,7 @@ export const BchatSendConfirm = (props: BchatConfirmDialogProps) => {
   async function passwordVerify() {
     setConfirm(true);  
   }
-
   // useFocusMount(inputRef, true);
- 
-  // console.log('inputRef ::',inputRef)
-
   return (
     <BchatWrapperModal
       title={confirm ? 'Password' : 'Confirm Sending'}

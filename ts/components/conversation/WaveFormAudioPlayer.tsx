@@ -42,7 +42,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
     };
 
     const colors = direction === 'incoming' ? incomingColors : outgoingColors;
-    // console.log(direction, { colors });
     return colors;
   }
 
@@ -94,7 +93,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       });
       // setWavesurfer(surfer);
     }
-    console.log('surfer', surfer);
     return () => surfer.destroy();
   }, [urlToLoad]);
 

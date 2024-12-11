@@ -1712,8 +1712,6 @@ function createOrUpdateItem(data: StorageItem, instance?: BetterSqlite3.Database
   createOrUpdate(ITEMS_TABLE, data, instance);
 }
 function getItemById(id: string) {
-  // console.log('getItemById:::muna');
-  
   return getById(ITEMS_TABLE, id);
 }
 function getAllItems() {
@@ -1972,9 +1970,7 @@ function getConversationById(id: string) {
 
   if (!row) {
     return null;
-  }
-  // console.log('getConversationById',row);
-  
+  }  
   return jsonToObject(row.json);
 }
 
@@ -2899,9 +2895,6 @@ function getAllUnprocessed() {
     .prepare('SELECT * FROM unprocessed ORDER BY timestamp ASC;')
     .all();
 
-    // console.log('getAllUnprocessed ::',rows);
-    // window.log.warn('getAllUnprocessed ::',rows)
-    // window.log.info("getAllUnprocessed dat ::")
   return rows;
 }
 
@@ -3793,8 +3786,6 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
 
 function saveRecipientAddress(data: any) {
   const { tx_hash,address } = data;
-  // console.log("RecipientAddress ::5",data);
-
   // if () {
   //   throw new Error(`saveReceipientAddress: id was falsey: ${id}`);
   // }
@@ -3813,15 +3804,11 @@ function saveRecipientAddress(data: any) {
       address,
       tx_hash,
     });
-    console.log("RecipientAddress ::6 and end",);
-
-    console.log('addRecipientAddress');
   return ;
 }
 
 // function saveRecipientAddressvalid(data:any)
 // {
-//   console.log("RecipientAddress ::2",data);
 //   // data.json=JSON.stringify(data);
 //   const { address } = data;
 
@@ -3830,11 +3817,8 @@ function saveRecipientAddress(data: any) {
 //   .get({
 //     address
 //   });
-//   console.log("RecipientAddress ::3",row);
 
 // if (!row) {
-//   console.log("RecipientAddress ::4",data);
-
 //   saveRecipientAddress(data)
 // }
 // }

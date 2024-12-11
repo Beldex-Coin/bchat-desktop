@@ -162,13 +162,8 @@ export const MenuWrapper = styled.span`
 /** Menu items standardized */
 
 export const InviteContactMenuItem = (): JSX.Element | null => {
-  console.log('InviteContactMenuItem::');
   const convoId = useContext(ContextConversationId);
   const isPublic = useIsPublic(convoId);
-  console.log('convoId:', convoId);
-  // console.log("isPublic:", isPublic)
-  // console.log("showInviteContact(isPublic):", showInviteContact(isPublic))
-  // console.log("showInviteContactByConvoId(convoId):", showInviteContactByConvoId(convoId));
 
   if (showInviteContact(isPublic)) {
     return (
@@ -466,7 +461,6 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
   const timerOptions = useSelector(getTimerOptions).timerOptions;
   const isRequest = useIsRequest(convoId);
   const ourNumber = useSelector(getOurNumber);
-  console.log('timerOptions:', timerOptions);
   if (ourNumber === convoId) {
     return null;
   }
