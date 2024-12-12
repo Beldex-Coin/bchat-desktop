@@ -143,7 +143,7 @@ export const SignInTab = (props: any) => {
   const activateContinueButton =
     displayNameOK &&
     !loading &&
-    (blockheight || (Number(year) > 2018 && !moment(restoreDate).isAfter(today)));
+    (blockheight || (Number(year) > 2019 && !moment(restoreDate).isAfter(today)));
   localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {

@@ -71,7 +71,7 @@ export const WalletModal = (props: any) => {
               <SpacerSM />
             </>
           )}
-          <div className="bchat-modal__walletModel">
+          <div className="bchat-modal__walletModel" style={{height:needSearch?'300px':""}}>
             <div style={{ width: '100%', overflowY: 'auto' }}>
               {data?.length !== 0 &&
                 data.map((item: any, i: any) => (
