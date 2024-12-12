@@ -22,8 +22,8 @@ const cachedHashes = new Map<string, number>();
 
 const avatarPlaceholderColors = [
   {
-    bgColor: '#4AAC67',
-    bodyColor: '#2C7040',
+    bgColor: '#9A58CD',
+    bodyColor: '#623882',
   },
   {
     bgColor: '#A9D1FD',
@@ -93,9 +93,11 @@ function useHashBasedOnPubkey(pubkey: string) {
 }
 
 export const AvatarPlaceHolder = (props: Props) => {
-  const { pubkey, diameter,
-    //  name 
-    } = props;
+  const {
+    pubkey,
+    diameter,
+    //  name
+  } = props;
 
   const { hash, loading } = useHashBasedOnPubkey(pubkey);
 
@@ -131,7 +133,6 @@ export const AvatarPlaceHolder = (props: Props) => {
   const bgColorIndex = hash % avatarPlaceholderColors.length;
 
   const avatarColors = avatarPlaceholderColors[bgColorIndex];
-
 
   return (
     <div

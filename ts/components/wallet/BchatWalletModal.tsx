@@ -48,7 +48,7 @@ export const WalletModal = (props: any) => {
           onClickCancelHandler: props.onClose,
         }}
       >
-        <div className="bchat-modal__centered">
+        <div >
           {needSearch && (
             <>
               <SpacerSM />
