@@ -69,7 +69,6 @@ const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // const convoList = useSelector(getLeftPaneLists);
-// console.log('focusedSection ::',focusedSection)
   if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
   }

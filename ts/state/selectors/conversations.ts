@@ -1073,7 +1073,6 @@ export const getIsMessageSelected = createSelector(
     }
 
     const { id } = props.propsForMessage;
-// console.log('selectedIds selectedIds::',selectedIds)
     return selectedIds.includes(id);
   }
 );

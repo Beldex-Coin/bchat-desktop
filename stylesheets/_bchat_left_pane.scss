@@ -11,10 +11,8 @@ $bchat-compose-margin: 20px;
 }
 
 .module-conversation {
-
   // default conversation list item text color
   &__user__profile {
-
     &-number,
     &-name {
       // font-weight: bold;bchat-noMsgRequest
@@ -141,6 +139,13 @@ $bchat-compose-margin: 20px;
     }
   }
 }
+.appVersion {
+  color: #a7a7ba;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 
 .offline-msg {
   margin: 11px;
@@ -170,7 +175,7 @@ $bchat-compose-margin: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #108D32;
+    color: #108d32;
     margin-right: 10px;
   }
 
@@ -203,7 +208,6 @@ $bchat-compose-margin: 20px;
   }
 
   @keyframes dot-blink {
-
     0%,
     80%,
     100% {
@@ -437,6 +441,7 @@ $bchat-compose-margin: 20px;
       margin: 15px;
       padding: 15px;
       position: relative;
+      height: 475px;
 
       .avatar-Wrapper {
         display: flex;
@@ -797,17 +802,17 @@ $bchat-compose-margin: 20px;
   align-items: center;
 
   // .search {
-    // margin-top: 13px;
-    // display: flex;
-    // justify-content: center;
-    // justify-items: center;
-    // align-items: center;
-    // width: 32px;
-    // height: 32px;
-    // &:hover {
-    //   background-color: var(--color-profile-close);
-    //   border-radius: 20px;
-    // }
+  // margin-top: 13px;
+  // display: flex;
+  // justify-content: center;
+  // justify-items: center;
+  // align-items: center;
+  // width: 32px;
+  // height: 32px;
+  // &:hover {
+  //   background-color: var(--color-profile-close);
+  //   border-radius: 20px;
+  // }
   // }
 
   .bchat-icon-button {
@@ -922,7 +927,6 @@ $bchat-compose-margin: 20px;
 }
 
 .left-pane-contact {
-
   &-section,
   &-content {
     display: flex;
@@ -931,7 +935,6 @@ $bchat-compose-margin: 20px;
     flex: 1;
 
     .module-conversation-list-item {
-
       &__header__date,
       &__message {
         display: none;
@@ -1058,7 +1061,7 @@ $bchat-compose-margin: 20px;
       margin-top: -7px;
     }
 
-    &>div {
+    & > div {
       display: block;
     }
 

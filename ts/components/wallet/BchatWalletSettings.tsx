@@ -195,6 +195,7 @@ export const WalletSettings = () => {
                   headerName: window.i18n('displayCurrency'),
                   content: currenyExt,
                   currency: fiatCurrency,
+                  needSearch:true,
                   onClose: () => dispatch(walletSettingMiniModal(null)),
                   onClick: (e: any) => {
                     window.setSettingValue(walletSettingsKey.settingsFiatCurrency, e);

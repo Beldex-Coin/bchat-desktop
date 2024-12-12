@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getInitials } from '../../../util/getInitials';
+// import { getInitials } from '../../../util/getInitials';
 
 type Props = {
   diameter: number;
@@ -22,8 +22,8 @@ const cachedHashes = new Map<string, number>();
 
 const avatarPlaceholderColors = [
   {
-    bgColor: '#4AAC67',
-    bodyColor: '#2C7040',
+    bgColor: '#9A58CD',
+    bodyColor: '#623882',
   },
   {
     bgColor: '#A9D1FD',
@@ -93,7 +93,11 @@ function useHashBasedOnPubkey(pubkey: string) {
 }
 
 export const AvatarPlaceHolder = (props: Props) => {
-  const { pubkey, diameter, name } = props;
+  const {
+    pubkey,
+    diameter,
+    //  name
+  } = props;
 
   const { hash, loading } = useHashBasedOnPubkey(pubkey);
 
@@ -122,17 +126,23 @@ export const AvatarPlaceHolder = (props: Props) => {
     );
   }
 
-  const initials = getInitials(name);
+  // const initials = getInitials(name);
 
-  const fontSize = Math.floor(initials.length > 1 ? diameter * 0.4 : diameter * 0.5);
+  // const fontSize = Math.floor(initials.length > 1 ? diameter * 0.4 : diameter * 0.5);
 
   const bgColorIndex = hash % avatarPlaceholderColors.length;
 
   const avatarColors = avatarPlaceholderColors[bgColorIndex];
-  console.log(avatarColors.bgColor, fontSize);
 
   return (
-    <div style={{ width: { diameter } + 'px', height: { diameter } + 'px' }}>
+    <div
+      style={{
+        width: { diameter } + 'px',
+        height: { diameter } + 'px',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
+    >
       <svg
         width="100%"
         height="100%"

@@ -81,6 +81,7 @@ export const BchatWalletPasswordModal = (props: any) => {
       return ToastUtils.pushToastError('walletInvalidPassword', openWallet.error?.message);
     } else {
       await wallet.startHeartbeat('inChat');
+      daemon.daemonHeartbeat();
       showSyncBar();
       return;
     }
@@ -102,7 +103,6 @@ export const BchatWalletPasswordModal = (props: any) => {
   });
 
   function backToChat() {
-    // console.log('backToChat');
     dispatch(clearSearch());
     dispatch(setOverlayMode(undefined));
     dispatch(showLeftPaneSection(0));

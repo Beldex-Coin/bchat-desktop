@@ -41,7 +41,6 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
                 currency: value,
                 onClose: () => dispatch(walletSettingMiniModal(null)),
                 onClick: (e: any) => {
-                    // console.log(e);
                     handleSlider(e)
                 },
             })

@@ -293,11 +293,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
     const { draft } = this.state;
     const getSyncStatus = window.getSettingValue('syncStatus');
-    const re = /^\d+\.?\d*$/;
-
+    // const re = /^\d+\.?\d*$/;
+    const re = /^\d+(\.\d{1,5})?$/;
     const results =
       selectedConversation?.type === 'private' &&
       re.test(draft) &&
+      Number(draft) >= 0.1 &&
       // && (draft.length-1 - draft.indexOf(".")) < 4
       selectedConversation?.isApproved &&
       selectedConversation?.didApproveMe &&
@@ -305,7 +306,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.chatwithWallet &&
       WalletSyncBarShowInChat &&
       !isMe &&
-      getSyncStatus && draft.length <= 16;
+      getSyncStatus &&
+      draft.length <= 16;
 
     return results;
   }
@@ -350,7 +352,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         okTheme: BchatButtonColor.Green,
         address: this.props.selectedConversation?.walletAddress,
         amount: messagePlaintext,
-        fee: priority === 'Flash' ? 0.0042 : 0.0014,
+        fee: priority === 'Flash' ? 0.0291 : 0.0096,
         Priority: priority,
         onClickOk: async () => {
           await this.sendFund();
@@ -376,9 +378,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
       // return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance..');
-     return window.inboxStore?.dispatch(updateInsufficientBalanceModal(true));
-
-
+      return window.inboxStore?.dispatch(updateInsufficientBalanceModal(true));
     }
     let decimalValue: any =
       window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
@@ -582,7 +582,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ? 0
         : ((100 * currentHeight) / valdatedDaemonHeight).toFixed(1);
 
-    let percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
+    const percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
+    window.setSettingValue('syncStatus', percentage >= 99);
+
     return percentage;
   }
 
@@ -603,12 +605,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <>
         {selectedConversation?.type === 'private' &&
-          selectedConversation?.isApproved &&
-          selectedConversation?.didApproveMe &&
-          !selectedConversation?.isBlocked &&
-          // re.test(draft) &&
-          this.chatwithWallet &&
-          WalletSyncBarShowInChat ? (
+        selectedConversation?.isApproved &&
+        selectedConversation?.didApproveMe &&
+        !selectedConversation?.isBlocked &&
+        // re.test(draft) &&
+        this.chatwithWallet &&
+        WalletSyncBarShowInChat ? (
           <>{this.renderCurcularBar()}</>
         ) : (
           <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
@@ -623,7 +625,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
   //   const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
   // const getSyncStatus = window.getSettingValue('syncStatus');
 
-  //   console.log("walletSyncStatus:",walletSyncStatus)
   //   if (
   //     selectedConversation?.type === 'private' &&
   //     re.test(draft) &&
@@ -656,13 +657,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
           <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
         ) :  */}
 
-        <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />{/* } */}
+        <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
+        {/* } */}
       </>
     );
   }
 
   private renderCurcularBar(ispopover?: boolean) {
-    // console.log('this.percentageCalc() ----->', this.percentageCalc());
     const pathColor = this.percentageCalc() !== 0 ? '#108D32' : '#FDB12A';
     return (
       <ChangingProgressProvider values={[0, 20, 40, 60, 80, 100]}>
@@ -758,16 +759,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
       this.percentageCalc() === 0
         ? 'Scanning..'
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
-          ? 'Syncronizing..'
-          : 'Synchronized';
+        ? 'Syncronizing..'
+        : 'Synchronized';
 
-    // console.log(
-    //   'stagedAttachments.length!==0 --> ',
-    //   stagedAttachments.length !== 0,
-    //   draft || stagedAttachments.length !== 0,
-    //   'typingEnabled',
-    //   typingEnabled && (draft || stagedAttachments.length !== 0)
-    // );
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
@@ -813,7 +807,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   >
                     {this.renderTextArea()}
 
-                    <div className={classNames(WalletSyncBarShowInChat && !this.sendAmountValidation() && 'circular-bar-wrapper')}>
+                    <div
+                      className={classNames(
+                        WalletSyncBarShowInChat &&
+                          !this.sendAmountValidation() &&
+                          'circular-bar-wrapper'
+                      )}
+                    >
                       {selectedConversation?.isPrivate && typingEnabled && !isMe
                         ? this.bchatWalletView()
                         : ''}

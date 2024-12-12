@@ -83,7 +83,7 @@ import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { Flex } from '../basic/Flex';
-import { SpacerSM } from '../basic/Text';
+import { SpacerLG, SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { getTheme } from '../../state/selectors/theme';
 
@@ -666,7 +666,7 @@ export const ActionsPanel = () => {
                 iconColor={isdark ? '#F0F0F0' : '#333333'}
               />
             </div>
-            <SpacerSM />
+           
             <div
               className={classNames('icon-wrapper', isdark && 'selected')}
               onClick={() => themeChanger('dark')}
@@ -679,7 +679,9 @@ export const ActionsPanel = () => {
             </div>
           </div>
         </Flex>
-
+        <SpacerLG />
+        <div className='appVersion'>V {window.getVersion()}</div>
+        <SpacerSM />
         <BchatToolTip effect="solid" />
         <BchatToastContainer />
         <NetWorkStatusWrapper>

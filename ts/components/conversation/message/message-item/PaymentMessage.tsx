@@ -46,7 +46,6 @@ export const PaymentMessage = (props: any) => {
   }
 
   function HindTxt() {
-    // console.log()
     const iconColor = 'var(--color-text)';
 
     if (props.messageId === '1234-567-7890') {

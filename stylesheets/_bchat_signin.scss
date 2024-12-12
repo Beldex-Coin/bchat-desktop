@@ -72,7 +72,18 @@
     &-registration {
       padding-inline-end: 128px;
     }
+    .signUp-btn {
+      .bchat-button.default.primary:hover {
+        background-color: #00B72A !important;
+      }
 
+    }
+
+    .signIn-btn {
+      .bchat-button.default-outline.primary:hover {
+        background-color: #108d32 !important;
+      }
+    }
     &-header {
       display: flex;
       flex-direction: row;
@@ -135,9 +146,9 @@
       // padding-top: 20px;
       // margin-left: 26px;
       margin-bottom: $bchat-margin-md;
-      width: 417px
+      width: 417px;
     }
-
+   
     &__content1 {
       width: 100%;
       padding-top: 20px;
@@ -221,7 +232,7 @@
     &-loadingGif {
       background: #101010ad;
       position: absolute;
-      width: 60%;
+      width: 55%;
       height: 100%;
       top: 0px;
       right: 0px;
@@ -253,7 +264,7 @@
       .iconBox:hover {
         // transform: scale(1.1);
         // color: #1ced23;
-        background-color: #2E333D;
+        background-color: #2e333d;
         border-radius: 10px;
         // opacity: 0.5;
       }
@@ -343,14 +354,14 @@
 
     &-recovery-phrase-txt {
       color: #f0f0f0;
-      font-size: 14px;
+      font-size: 18px;
       margin: 0;
       padding: 10px 10px 10px 0px;
     }
 
     &-recovery-phrase-hintTxt {
       color: #a9aeba;
-      font-size: 11px;
+      font-size: 16px;
 
       span {
         color: #ff9649;
@@ -359,10 +370,10 @@
   }
 
   &-restore-seed {
-    &__address-container {
-      // width: 90%;
-      // margin: 0 auto;
-    }
+    // &__address-container {
+    // width: 90%;
+    // margin: 0 auto;
+    // }
 
     &-parent-box {
       // display: flex;
@@ -423,7 +434,7 @@
         &:hover {
           // opacity: 0.5;
           // background-color: var(--color-profile-close);
-          background-color: #2E333D;
+          background-color: #2e333d;
         }
       }
     }
@@ -548,7 +559,7 @@
       height: 35px;
       color: white;
       opacity: 1;
-      background-image: url("../images/bchat/calendar.svg");
+      background-image: url('../images/bchat/calendar.svg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: 27px;
@@ -561,7 +572,7 @@
         // width: 35px;
         // height: 35px;
         // padding: 10px;
-        background-color: #2E333D;
+        background-color: #2e333d;
       }
     }
 

@@ -11,8 +11,9 @@ export const ReceivedForm = () => {
   const qrValue = `Beldex:${walletAddress}?tx_amount=${txnAmount}`;
 
   function validator(e: any) {
-    const numbersValidation = /^\d+\.?\d*$/;
-    if (e === '' || numbersValidation.test(e)) {
+    // const numbersValidation = /^\d+\.?\d*$/; 
+    const pattern = /^(\d{0,16}(\.\d{1,5})?|(\d{0,16}\.))$/;
+    if (e === '' || pattern.test(e)) {
       setTxnAmount(e);
     }
   }

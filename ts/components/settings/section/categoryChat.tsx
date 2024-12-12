@@ -51,7 +51,6 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
     function chatWithWallet() {
       window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
       // let contional:any=chatwithWallet;
-      // console.log('contional::',contional)
       // dispatch(updateWalletSyncInitiatedWithChat(contional)) ;
       let data: any = false;
 

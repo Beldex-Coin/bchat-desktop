@@ -30,7 +30,6 @@ export const BchatRecoverySeed = (props: any) => {
   };
 
   const onClickCancelHandler = () => {
-    console.log("sdnksnfksfkjf")
   //   if (props.onClickCancel) {
   //     onClickCancel();
   //   }

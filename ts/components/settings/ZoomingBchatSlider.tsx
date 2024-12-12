@@ -43,7 +43,6 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
 
   const handleSlider = (valueToForward: any) => {
     let value = valueToForward.substring(0, valueToForward.length - 1)
-    console.log("value:",value)
     props?.onSliderChange?.(value);
     window.setSettingValue('zoom-factor-setting', value);
     setValue(value)
@@ -104,7 +103,6 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         currency: value + '%',
         onClose: () => dispatch(walletSettingMiniModal(null)),
         onClick: (e: any) => {
-          console.log(e);
           handleSlider(e)
         },
       })

@@ -273,28 +273,18 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     return basicProps;
   }
   public getPropsForPayment(): PropsForPayment | null {
-    //  console.log("this.istxnDetails() ::0",this.istxnDetails(),!this.isPayment())
 
     if (!this.isPayment() && !this.istxnDetails()) {
-      // console.log("this.istxnDetails() ::1",this.istxnDetails())
       return null;
     }
     // else if (!this.istxnDetails()) {
-    //   console.log("this.istxnDetails() ::1",this.istxnDetails())
     //   return null;
     // }
-
-    // console.log("this.istxnDetails() ::2",this.get('txnDetails'))
-
     const Payment = this.get('payment') || this.get('txnDetails');
-    // console.log("this.istxnDetails() ::3",Payment)
-
     let direction = this.get('direction');
     if (!direction) {
       direction = this.get('type') === 'outgoing' ? 'outgoing' : 'incoming';
     }
-
-    
 
     return {
       amount: Payment.amount,
@@ -1315,7 +1305,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     {
       let amount=this.getMessageModelProps()?.propsForPayment?.amount;
       let direction=this.getMessageModelProps()?.propsForPayment?.direction === "outgoing"?"Send":'Received'
-      // console.log('Payment Details ::',this.isPayment(),this.getMessageModelProps()?.propsForPayment?.amount,`${amount}BDX ${direction}`)
       return `${amount} BDX ${direction}`;
     }
 

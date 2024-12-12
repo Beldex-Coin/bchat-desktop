@@ -126,7 +126,6 @@ export const MessageAttachment = (props: Props) => {
     //  const { loading, urlToLoad } = useEncryptedFileFetch(attachments[0]?.url || '', attachments[0]?.contentType, false);
     // // data will be url if loading is finished and '' if not
     // const srcData = !loading ? urlToLoad : '';
-    // console.log('message__attachment ::',srcData,'displayBgBlur -->',displayBgBlur)
     return (
       <div className={classNames('module-message__attachment-container',displayBgBlur && 'module-message__attachment-container-displayBgBlur')}  >
         <ImageGrid

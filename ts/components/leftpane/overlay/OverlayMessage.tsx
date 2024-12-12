@@ -27,7 +27,7 @@ import { CopyIconButton } from '../../icon/CopyIconButton';
 import { BchatIconButton } from '../../icon';
 import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
-import { getLeftPaneLists } from '../../../state/selectors/conversations';
+// import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
 
 export const OverlayMessage = () => {
@@ -43,10 +43,10 @@ export const OverlayMessage = () => {
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
-  const convoList = useSelector(getLeftPaneLists);
+  // const convoList = useSelector(getLeftPaneLists);
   const walletAddress:any = localStorage.getItem('userAddress');
-  const convolen: boolean =convoList?.contacts?.length === 0 || false;
-  console.log('convolen',convolen)
+  // const convolen: boolean =convoList?.contacts?.length === 0 || false;
+
 
   // const title = window.i18n('newBchat');
   // const buttonText = window.i18n('next');
