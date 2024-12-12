@@ -127,8 +127,7 @@ async function buildOnionCtxs(
       let target = '/beldex/v2/lsrpc';
 
       const isCallToPn =
-        finalRelayOptions?.host === hrefPnServerProd.split(':')[0];
-
+        finalRelayOptions?.host === hrefPnServerProd;
       if (!isCallToPn) {
         target = '/beldex/v3/lsrpc';
       }
@@ -139,7 +138,6 @@ async function buildOnionCtxs(
         method: 'POST',
       };
 
-      console.log("desttttttt:", dest)
       // FIXME http Social groups v2 are not working
       // tslint:disable-next-line: no-http-string
       if (finalRelayOptions?.protocol === 'http') {

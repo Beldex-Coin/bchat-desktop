@@ -3,7 +3,7 @@ import { sendViaOnionToNonSnode } from '../../onions/onionSend';
 
 const pnServerPubkeyHex = '589f8d0d376933e6a48266423235f323dfa4eb4179903314cf5dfb30d6cf794a';
 
-export const hrefPnServerProd = '3.108.79.216:5000';
+export const hrefPnServerProd = 'pushnotificationv1.rpcnode.stream';
 
 const pnServerUrl = `http://${hrefPnServerProd}`;
 export async function notifyPnServer(wrappedEnvelope: ArrayBuffer, sentTo: string) {
