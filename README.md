@@ -5,7 +5,7 @@ Unlike other centralized messaging apps BChat never collect any user data like p
 The message you sent using BChat will be highly secure and anonymous. No one (even us) can have control of your data that has been shared in BChat. 
 Wtih BChat you own your data.
 <br/><br/>
-![BChatDesktop](https://bchat.beldex.io/blog/wp-content/uploads/2022/10/Your-Profile.png)
+![BChatDesktop](https://bchat.beldex.io/img/Profile.png)
 
 Contributing code
 -----------------
