@@ -120,7 +120,8 @@ export const AddNewContactInEmptyConvo = () => {
 const StartConvoWrapper = styled.div`
 width: 24vw;
 max-width: 470px;
-margin-left: 43px;
+// margin-left: 43px;
+margin-left: 100px;
   
 `;
 // /////////////////////////////////////

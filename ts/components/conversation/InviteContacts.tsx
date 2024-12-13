@@ -44,7 +44,6 @@ type Props = {
 //       pubkeyStr,
 //       ConversationTypeEnum.PRIVATE
 //     );
-//      console.log('privateConvo::',privateConvo,groupInvitation)
 //     if (privateConvo) {
 //       void privateConvo.sendMessage({
 //         body: '',

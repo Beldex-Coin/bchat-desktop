@@ -216,12 +216,12 @@ const AvatarHeader = (props: {
     <span className="module-conversation-header__avatar">
       <BNSWrapper
         // size={40}
-        position={{ left: '34px', top: '34px' }}
-        isBnsHolder={conversation?.isBnsHolder}
+        position={{ left: '46px', top: '46px' }}
+        isBnsHolder={conversation?.isBnsHolder }
         size={{ width: '20', height: '20' }}
       >
         <Avatar
-          size={AvatarSize.M}
+          size={AvatarSize.L}
           onAvatarClick={() => {
             // do not allow right panel to appear if another button is shown on the BchatConversation
             if (onAvatarClick && !showBackButton) {

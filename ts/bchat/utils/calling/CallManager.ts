@@ -40,6 +40,7 @@ import {
   showLeftPaneSection,
   showSettingsSection,
 } from '../../../state/ducks/section';
+import moment from 'moment';
 
 // tslint:disable: function-name
 
@@ -1040,10 +1041,9 @@ export async function handleCallTypeOffer(
     }
     window.log.info('handling callMessage OFFER with uuid: ', remoteCallUUID);
 
-    if (!getCallMediaPermissionsSettings()) {
+    if (!getCallMediaPermissionsSettings() ) {
       const cachedMsg = getCachedMessageFromCallMessage(callMessage, incomingOfferTimestamp);
       pushCallMessageToCallCache(sender, remoteCallUUID, cachedMsg);
-
       await handleMissedCall(sender, incomingOfferTimestamp, 'permissions');
       return;
     }
@@ -1131,14 +1131,22 @@ export async function handleMissedCall(
     incomingCallConversation?.getNickname() ||
     incomingCallConversation?.getProfileName() ||
     'Unknown';
-  const openPrivacySettings = () => {
-    window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
-    window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
-  };
+  
+   
+
+    const openPrivacySettings = () => {
+      window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+      window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+    };
+    const momentTimestamp = moment(incomingOfferTimestamp);
+    const currentDate = moment();
+    // Calculate one minute ago from the current date 
+    const oneMinuteAgo = currentDate.subtract(1, 'minutes');
+    const timeValidation=momentTimestamp?.isSameOrAfter(oneMinuteAgo) 
 
   switch (reason) {
     case 'permissions':
-      window.inboxStore?.dispatch(
+      timeValidation&& window.inboxStore?.dispatch(
         updateConfirmModal({
           title: window.i18n('callMissedTitle'),
           message: window.i18n('callMissedCausePermission', [displayname]),
@@ -1154,8 +1162,7 @@ export async function handleMissedCall(
           iconSize: 30,
         })
       );
-
-      ToastUtils.pushedMissedCallCauseOfPermission(displayname);
+    timeValidation && ToastUtils.pushedMissedCallCauseOfPermission(displayname);
       break;
     case 'another-call-ongoing':
       ToastUtils.pushedMissedCall(displayname);

@@ -30,7 +30,6 @@ export function bnsVerificationConvo(
     isPrivateConversationMessage
   ) {
     senderConversationModel.setIsBnsHolder(false);
-    console.log('verify tag disabled');
   } else {
     isPrivateConversationMessage && senderConversationModel.setIsBnsHolder(envelope.isBnsHolder);
   }
@@ -39,7 +38,6 @@ export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
   try {
     const i18n = window.i18n;
     const ourBnsName = bnsName || window.getLocalValue('ourBnsName');
-    console.log(' ourBnsName -------->', ourBnsName);
     if (!ourBnsName) {
       return false;
     }

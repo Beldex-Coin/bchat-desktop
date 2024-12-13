@@ -47,8 +47,8 @@ const StyledConversationListItemIconWrapper = styled.div`
 `;
 const PinWrapper = styled.div`
   position: absolute;
-  top: -6px;
-  right: 12px;
+  top: -7px;
+  right: 0px;
   padding:1px 2px;
   background-color: #2f8fff;
   border-radius: 12px;
@@ -56,7 +56,6 @@ const PinWrapper = styled.div`
 
 function useHeaderItemProps(conversationId: string) {
   const convoProps = useConversationPropsById(conversationId);
-  // console.log();
 
   if (!convoProps) {
     return null;

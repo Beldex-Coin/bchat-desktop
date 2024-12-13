@@ -213,7 +213,6 @@ export async function decryptWithBchatProtocol(
   // await conversation.commit();
 
   // if (getConversation && getConversation.walletAddress) {
-  //   console.log('yes');
   //   if (
   //     getConversation.walletAddress ==
   //     'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
@@ -224,14 +223,14 @@ export async function decryptWithBchatProtocol(
   //         walletAddress: beldexFinalAddress,
   //       };
   //       let updateConversation: any = await updateConversationAddress(data);
-  //       console.log('updateConversation:', updateConversation);
+  //    
   //     }
   //     localStorage.setItem('senderWalletAddress', beldexFinalAddress);
   //   } else {
   //     localStorage.setItem('senderWalletAddress', getConversation.walletAddress);
   //   }
   // } else {
-  //   console.log('no');
+  //  
   //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
   // }
   // if (

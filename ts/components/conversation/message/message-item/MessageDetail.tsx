@@ -105,7 +105,6 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
     messageId,
   } = props;
   // const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
-// console.log('selected -->',selectedMsg)
   // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
   //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')

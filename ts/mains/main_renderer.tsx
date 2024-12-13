@@ -166,8 +166,6 @@ Storage.onready(async () => {
   }
 
   const themeSetting = window.Events.getThemeSetting();
-
-  // console.log("themeSetting ",themeSetting);
   const newThemeSetting = mapOldThemeToNew(themeSetting);
   window.Events.setThemeSetting(newThemeSetting);
 
@@ -407,7 +405,6 @@ async function connect() {
     .catch(err => {
       throw new HTTPError('beldex_rpc_port', err);
     });
-  // console.log('connectCount === 0 && navigator.onLine:', connectCount, navigator.onLine);
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

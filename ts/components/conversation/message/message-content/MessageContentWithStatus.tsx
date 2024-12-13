@@ -6,6 +6,7 @@ import { MessageRenderingProps } from '../../../../models/messageType';
 import { toggleSelectedMessageId } from '../../../../state/ducks/conversations';
 import {
   getMessageContentWithStatusesSelectorProps,
+  getMessageStatusProps,
   isMessageSelectionMode,
 } from '../../../../state/selectors/conversations';
 
@@ -13,6 +14,7 @@ import { MessageAuthorText } from './MessageAuthorText';
 import { MessageContent } from './MessageContent';
 import { MessageContextMenu } from './MessageContextMenu';
 import { MessageStatus } from './MessageStatus';
+import { ExpireTimer } from '../../ExpireTimer';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -24,14 +26,23 @@ type Props = {
   ctxMenuID: string;
   isDetailView?: boolean;
   dataTestId?: string;
+
+  expirationLength?: number | null;
+  expirationTimestamp?: number | null;
 };
 
 export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
+
   const dispatch = useDispatch();
   const multiSelectMode = useSelector(isMessageSelectionMode);
+  const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
+  if (!selected) {
+    return null;
+  }
+  const { status } = selected;
 
   const onClickOnMessageOuterContainer = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -62,7 +73,14 @@ export const MessageContentWithStatuses = (props: Props) => {
     }
   };
 
-  const { messageId, ctxMenuID, isDetailView, dataTestId } = props;
+  const {
+    messageId,
+    ctxMenuID,
+    isDetailView,
+    dataTestId,
+    expirationLength,
+    expirationTimestamp,
+  } = props;
   if (!contentProps) {
     return null;
   }
@@ -78,23 +96,39 @@ export const MessageContentWithStatuses = (props: Props) => {
       style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
       data-testid={dataTestId}
     >
-      <MessageStatus
-        dataTestId="msg-status-outgoing"
-        messageId={messageId}
-        isCorrectSide={!isIncoming}
-      />
-      
+      {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
+        <ExpireTimer
+          isCorrectSide={!isIncoming}
+          expirationLength={expirationLength}
+          expirationTimestamp={expirationTimestamp}
+        />
+      ) : (
+        <MessageStatus
+          dataTestId="msg-status-outgoing"
+          messageId={messageId}
+          isCorrectSide={!isIncoming}
+        />
+      )}
+
       <div>
         <MessageAuthorText messageId={messageId} />
 
         <MessageContent messageId={messageId} isDetailView={isDetailView} />
       </div>
-      <MessageStatus
-        dataTestId="msg-status-incoming"
-        messageId={messageId}
-        isCorrectSide={isIncoming}
-      />
-      
+      {expirationLength && expirationTimestamp  ? (
+        <ExpireTimer
+          isCorrectSide={isIncoming}
+          expirationLength={expirationLength}
+          expirationTimestamp={expirationTimestamp}
+        />
+      ) : (
+        <MessageStatus
+          dataTestId="msg-status-incoming"
+          messageId={messageId}
+          isCorrectSide={isIncoming}
+        />
+      )}
+
       {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
     </div>
   );

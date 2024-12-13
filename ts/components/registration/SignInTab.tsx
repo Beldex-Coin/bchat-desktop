@@ -21,6 +21,7 @@ import { mn_decode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
 import { Flex } from '../basic/Flex';
+import moment from 'moment';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
 
@@ -46,13 +47,15 @@ export enum SignInMode {
 
 const RestoreUsingRecoveryPhraseButton = (props: { onRecoveryButtonClicked: () => any }) => {
   return (
-    <BchatButton
-      onClick={props.onRecoveryButtonClicked}
-      buttonType={BchatButtonType.DefaultOutline}
-      buttonColor={BchatButtonColor.Primary}
-      text={window.i18n('signIn')}
-      dataTestId="restore-using-recovery"
-    />
+    <div className="signIn-btn">
+      <BchatButton
+        onClick={props.onRecoveryButtonClicked}
+        buttonType={BchatButtonType.DefaultOutline}
+        buttonColor={BchatButtonColor.Primary}
+        text={window.i18n('signIn')}
+        dataTestId="restore-using-recovery"
+      />
+    </div>
   );
 };
 
@@ -107,7 +110,7 @@ const SignInButtons = (props: {
 
 export const SignInTab = (props: any) => {
   const { setRegistrationPhase, signInMode, setSignInMode } = useContext(RegistrationContext);
-
+  const today = moment().format('YYYY-MM-DD');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
 
@@ -135,8 +138,12 @@ export const SignInTab = (props: any) => {
 
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
+  const year = moment(restoreDate).year();
 
-  const activateContinueButton = displayNameOK && !loading && (blockheight || restoreDate);
+  const activateContinueButton =
+    displayNameOK &&
+    !loading &&
+    (blockheight || (Number(year) > 2019 && !moment(restoreDate).isAfter(today)));
   localStorage.setItem('walletUserName', displayName);
 
   const continueYourBchat = async () => {
@@ -247,14 +254,18 @@ export const SignInTab = (props: any) => {
       </>
     );
   }
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, e: string) => {
+    const newValue = e.replace(/\s+/g, '');
+    setter(newValue);
+  };
 
   if (screenName === 2) {
     return (
       <WalletPassword
         password={password}
         repassword={repassword}
-        setPassword={(e: any) => setPassword(e)}
-        setRepassword={(e: any) => setRepassword(e)}
+        setPassword={(e: string) => handleInputChange(setPassword, e)}
+        setRepassword={(e: string) => handleInputChange(setRepassword, e)}
         backArrow={() => {
           setScreenName(1);
           props.imageValidator(LeftImage.recoveryseed);
@@ -282,10 +293,10 @@ export const SignInTab = (props: any) => {
         <div
           style={{
             background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: "120px",
-            height: "120px",
-            margin: "0px auto",
-            backgroundSize: "102px"
+            width: '120px',
+            height: '120px',
+            margin: '0px auto',
+            backgroundSize: '102px',
           }}
         ></div>
       </div>
@@ -318,17 +329,21 @@ export const SignInTab = (props: any) => {
           <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div> */}
           <Flex flexDirection="row" container={true} alignItems="center" padding="20px 0px">
             <div className="bchat-registration-goback-icon">
-              <GoBackMainMenuButton assent={() => {
-                props.assent(true);
-                setScreenName(1);
-                setPassword('');
-                setRepassword('');
-                setBlockheight('');
-                setRestoreDate('');
-                props.imageValidator(LeftImage.registration);
-              }} />
+              <GoBackMainMenuButton
+                assent={() => {
+                  props.assent(true);
+                  setScreenName(1);
+                  setPassword('');
+                  setRepassword('');
+                  setBlockheight('');
+                  setRestoreDate('');
+                  props.imageValidator(LeftImage.registration);
+                }}
+              />
             </div>
-            <Flex className="bchat-registration__welcome-bchat">{window.i18n('restoreFromSeed')}</Flex>
+            <Flex className="bchat-registration__welcome-bchat">
+              {window.i18n('restoreFromSeed')}
+            </Flex>
           </Flex>
           <BchatInput
             autoFocus={true}
@@ -340,7 +355,8 @@ export const SignInTab = (props: any) => {
             onValueChanged={(name: string) => {
               const sanitizedName = sanitizeBchatUsername(name);
               const trimName = sanitizedName.trim();
-              setDisplayName(sanitizedName.replace(/\s/g, ''));
+              // const alphanumericName = sanitizedName.replace(/[^a-zA-Z0-9]/g, '');
+              setDisplayName(sanitizedName);
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
             // onEnterPressed={props.handlePressEnter}
@@ -376,6 +392,7 @@ export const SignInTab = (props: any) => {
             <BchatInput
               autoFocus={true}
               type="date"
+              max={today}
               placeholder={'Restore from Date'}
               value={restoreDate}
               maxLength={MAX_USERNAME_LENGTH}
@@ -402,7 +419,7 @@ export const SignInTab = (props: any) => {
           setDisplayName('');
           setIsLoading(false);
           props.assent(false);
-          props.imageValidator(LeftImage.recoveryseed)
+          props.imageValidator(LeftImage.recoveryseed);
         }}
         onLinkDeviceButtonClicked={() => {
           setRegistrationPhase(RegistrationPhase.SignIn);

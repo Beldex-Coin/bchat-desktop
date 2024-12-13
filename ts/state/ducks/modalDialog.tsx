@@ -38,7 +38,8 @@ export type walletSettingMiniModalState={
   content:any,
   onClose:any,
   onClick:any,
-  currency:string
+  currency:string,
+  needSearch?:boolean
 } | null;
 
 export type TransactionInitModalState={} | null;

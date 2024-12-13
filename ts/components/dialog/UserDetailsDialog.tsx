@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 // tslint:disable no-submodule-imports
 
 import useKey from 'react-use/lib/useKey';
@@ -20,9 +20,9 @@ type Props = {
 };
 
 export const UserDetailsDialog = (props: Props) => {
-  const [isEnlargedImageShown, setIsEnlargedImageShown] = useState(false);
+  // const [isEnlargedImageShown, setIsEnlargedImageShown] = useState(false);
   const convo = getConversationController().get(props.conversationId);
-  const size = isEnlargedImageShown ? AvatarSize.HUGE : AvatarSize.XL;
+  // const size = isEnlargedImageShown ? AvatarSize.HUGE : AvatarSize.XL;
   function closeDialog() {
     window.inboxStore?.dispatch(updateUserDetailsModal(null));
   }
@@ -66,17 +66,21 @@ export const UserDetailsDialog = (props: Props) => {
           <BNSWrapper
             // size={isEnlargedImageShown ? 305 : 89}
             position={{
-              left: isEnlargedImageShown ? '288px' : '71px',
-              top: isEnlargedImageShown ? '288px' : '71px',
+              // left: isEnlargedImageShown ? '288px' : '71px',
+              // top: isEnlargedImageShown ? '288px' : '71px',
+
+              left: '288px',
+              top: '288px' ,
             }}
             isBnsHolder={convo?.attributes?.isBnsHolder}
             size={{ width: '20', height: '20' }}
           >
             <Avatar
-              size={size}
-              onAvatarClick={() => {
-                setIsEnlargedImageShown(!isEnlargedImageShown);
-              }}
+            size={AvatarSize.HUGE}
+              // size={size}
+              // onAvatarClick={() => {
+              //   setIsEnlargedImageShown(!isEnlargedImageShown);
+              // }}
               pubkey={props.conversationId}
             />
           </BNSWrapper>

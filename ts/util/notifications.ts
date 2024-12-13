@@ -211,7 +211,6 @@ function update(forceRefresh = false) {
 
   window.drawAttention();
   // if (status.shouldPlayNotificationSound) {
-  //   console.log(sound)
   // if (!sound) {
   //   sound = new Audio('sound/new_message.mp3');
   // }

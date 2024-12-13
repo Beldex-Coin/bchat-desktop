@@ -10,8 +10,8 @@ $borderAvatarColor: unquote(
   // border-radius: 50%;
   flex-shrink: 0;
   // border-radius: 7px;
-  overflow: hidden;
-  border-radius: 12px;
+  // overflow: hidden;
+  // border-radius: 12px;
 
   img {
     object-fit: cover;
@@ -97,11 +97,11 @@ $borderAvatarColor: unquote(
 }
 
 .module-avatar__icon-closed {
-  .module-avatar:first-child{
-    z-index: 1;
-    // box-shadow: 3px 3px 0px 0px rgba(0,0,0 ,75%);
-    box-shadow: 2px 2px 2px 0px var(--color-chatHeader);
-  }
+  // .module-avatar:first-child{
+  //   z-index: 1;
+  //   // box-shadow: 3px 3px 0px 0px rgba(0,0,0 ,75%);
+  //   box-shadow: 2px 2px 2px 0px var(--color-chatHeader);
+  // }
   .module-avatar:last-child {
     position: absolute;
     right: 0px;

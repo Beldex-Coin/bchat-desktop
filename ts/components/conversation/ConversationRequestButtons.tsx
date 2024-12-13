@@ -48,7 +48,6 @@ export const ConversationMessageRequestButtons = () => {
   const showMsgRequestUI = convoModel && convoModel.isIncomingRequest();
 
   const handleDeclineConversationRequest = () => {
-    console.log("handleDeclineConversationRequest:")
     const customIcon = <DeclineMessageRequest iconSize={30} />
     declineConversationWithConfirm(selectedConversation.id, true, customIcon);
   };

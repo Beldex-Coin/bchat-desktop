@@ -46,21 +46,11 @@ class Daemon {
   }
 
   daemonHeartbeat() {
-    // console.log('updateDaemonupdateDaemon::0');
-    // const dispatch = useDispatch();
-    // console.log('updateDaemonupdateDaemon::1');
-
     clearInterval(this.heartbeat);
-    // console.log('updateDaemonupdateDaemon::2');
-
     this.heartbeat = setInterval(() => {
       this.sendRPC('get_info').then(data => {
-        // console.log('updateDaemonupdateDaemon::3', data);
         if (!data.hasOwnProperty('error')) {
-          // console.log('updateDaemonupdateDaemon::4', data.result.height);
           window.inboxStore?.dispatch(updateDaemon({ height: data.result.height }));
-
-          // window dispatch(updateDaemon({ height: data.result.height }));
         }
       });
     }, 3000);
