@@ -410,8 +410,6 @@ export async function innerHandleSwarmContentMessage(
     // When restoring the message, this function is used to validate BNS in the conversation.
     bnsVerificationConvo(senderConversationModel, isPrivateConversationMessage, envelope);
     // const ourPubkey = UserUtils.getOurPubKeyFromCache();
-    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id,'ourPubkey ---> ',ourPubkey.key,"!window.getLocalValue('ourBnsName')--->",!window.getLocalValue('ourBnsName'),"ourBnsName-->",window.getLocalValue('ourBnsName'),'isPrivateConversationMessage --->',isPrivateConversationMessage)
-    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id === ourPubkey.key &&
     // !window.getLocalValue('ourBnsName') &&
     // isPrivateConversationMessage)
     // if (
