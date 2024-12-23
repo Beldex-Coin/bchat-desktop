@@ -3,7 +3,7 @@ import _, { debounce, isEmpty } from 'lodash';
 
 import * as MIME from '../../../types/MIME';
 
-import { BchatEmojiPanel } from '../BchatEmojiPanel';
+import { BchatEmojiPanel, StyledEmojiPanel } from '../BchatEmojiPanel';
 import { BchatRecording } from '../BchatRecording';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
@@ -24,6 +24,7 @@ import {
   SendFundDisableButton,
   SendMessageButton,
   StartRecordingButton,
+  ToggleEmojiButton,
 } from './CompositionButtons';
 import { AttachmentType } from '../../../types/Attachment';
 import { connect } from 'react-redux';
@@ -90,6 +91,7 @@ import classNames from 'classnames';
 // import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { SpacerLG } from '../../basic/Text';
 import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
+import styled from 'styled-components';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -247,6 +249,13 @@ const getSelectionBasedOnMentions = (draft: string, index: number) => {
   // for now, just append it to the end
   return Number.MAX_SAFE_INTEGER;
 };
+const StyledEmojiPanelContainer = styled.div`
+  ${StyledEmojiPanel} {
+    position: absolute;
+    bottom: 68px;
+    right: 0px;
+  }
+`;
 
 class CompositionBoxInner extends React.Component<Props, State> {
   private readonly textarea: React.RefObject<any>;
@@ -547,6 +556,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({
       showEmojiPanel: true,
     });
+  
   }
 
   private hideEmojiPanel() {
@@ -805,6 +815,17 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     alignItems="center"
                     style={{ minHeight: '60px' }}
                   >
+                    <div className='send-message-input__emoji-overlay'>
+                    {typingEnabled && (
+                      <StyledEmojiPanelContainer ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
+                      <ToggleEmojiButton
+                        ref={this.emojiPanelButton}
+                        onClick={this.toggleEmojiPanel}
+                      />
+                      </StyledEmojiPanelContainer>
+                    )}
+                    </div>
+
                     {this.renderTextArea()}
 
                     <div

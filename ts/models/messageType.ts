@@ -2,6 +2,7 @@ import { defaultsDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { CallNotificationType, PropsForMessageWithConvoProps } from '../state/ducks/conversations';
 import { AttachmentTypeWithPath } from '../types/Attachment';
+import { ReactionList,ReactionType } from '../types/Message';
 
 export type MessageModelType = 'incoming' | 'outgoing';
 export type MessageDeliveryStatus = 'sending' | 'sent' | 'read' | 'error';
@@ -108,6 +109,9 @@ export interface MessageAttributes {
   callNotificationType?: CallNotificationType;
   txnDetails?:any;
   payment?:any;
+  //emoji reacts
+  reaction?: ReactionType;
+  reacts?: ReactionList;
 
 }
 
@@ -207,6 +211,8 @@ export interface MessageAttributesOptionals {
   callNotificationType?: CallNotificationType;
   txnDetails?:any;
   payment?:any;
+  reaction?: ReactionType;
+  reacts?: ReactionList;
 }
 
 /**

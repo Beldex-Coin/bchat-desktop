@@ -2152,8 +2152,6 @@ function saveMessage(data: any) {
 
     walletAddress
   } = data;
-console.log('saveMessage',data);
-
   if (!id) {
     throw new Error('id is required');
   }

@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
-import { LokiProfile } from '../../../../types/Message';
+import { LokiProfile, ReactionType } from '../../../../types/Message';
 import { MessageParams } from '../Message';
 
 interface AttachmentPointerCommon {
@@ -67,6 +67,8 @@ export interface VisibleMessageParams extends MessageParams {
   lokiProfile?: LokiProfile;
   preview?: Array<PreviewWithAttachmentUrl>;
   syncTarget?: string; // undefined means it is not a synced message
+  //emoji reaction
+  reaction?: ReactionType;
 }
 
 export class VisibleMessage extends DataMessage {
@@ -79,6 +81,8 @@ export class VisibleMessage extends DataMessage {
   private readonly displayName?: string;
   private readonly avatarPointer?: string;
   private readonly preview?: Array<PreviewWithAttachmentUrl>;
+//emoji reaction
+  private readonly reaction?: ReactionType;
 
   /// In the case of a sync message, the public key of the person the message was targeted at.
   /// - Note: `null or undefined` if this isn't a sync message.
@@ -107,6 +111,8 @@ export class VisibleMessage extends DataMessage {
     this.avatarPointer = params.lokiProfile && params.lokiProfile.avatarPointer;
     this.preview = params.preview;
     this.syncTarget = params.syncTarget;
+
+    this.reaction = params.reaction;
   }
 
   public dataProto(): SignalService.DataMessage {
@@ -183,7 +189,9 @@ export class VisibleMessage extends DataMessage {
         return item;
       });
     }
-
+    if (this.reaction) {
+      dataMessage.reaction = this.reaction;
+    }
     dataMessage.timestamp = this.timestamp;
 
     return dataMessage;

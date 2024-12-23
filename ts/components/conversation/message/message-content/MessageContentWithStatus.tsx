@@ -15,6 +15,7 @@ import { MessageContent } from './MessageContent';
 import { MessageContextMenu } from './MessageContextMenu';
 import { MessageStatus } from './MessageStatus';
 import { ExpireTimer } from '../../ExpireTimer';
+import styled from 'styled-components';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -30,7 +31,16 @@ type Props = {
   expirationLength?: number | null;
   expirationTimestamp?: number | null;
 };
+const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: ${props => (props.direction === 'left' ? 'flex-start' : 'flex-end')};
+  width: 100%;
+  
+`;
 
+const StyledMessageContentWithStatuses = styled.div<{}>``;
 export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
@@ -88,7 +98,8 @@ export const MessageContentWithStatuses = (props: Props) => {
   const isIncoming = direction === 'incoming';
 
   return (
-    <div
+    <StyledMessageContentContainer direction={isIncoming ? 'left' : 'right'}>
+    <StyledMessageContentWithStatuses
       className={classNames('module-message', `module-message--${direction}`)}
       role="button"
       onClick={onClickOnMessageOuterContainer}
@@ -130,6 +141,7 @@ export const MessageContentWithStatuses = (props: Props) => {
       )}
 
       {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
-    </div>
+    </StyledMessageContentWithStatuses>
+    </StyledMessageContentContainer>
   );
 };

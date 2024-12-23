@@ -7,10 +7,16 @@ import {
 } from '../bchat/apis/open_group_api/utils/OpenGroupUtils';
 import { getConversationController } from '../bchat/conversations';
 import { PubKey } from '../bchat/types';
-import { ToastUtils } from '../bchat/utils';
+
 import { BchatButtonColor } from '../components/basic/BchatButton';
 
 import { updateBanOrUnbanUserModal, updateConfirmModal } from '../state/ducks/modalDialog';
+
+import { getMessagesBySentAt, getMessageById } from '../data/data';
+import { MessageModel } from '../models/message';
+import { SignalService } from '../protobuf';
+import { ReactionList } from '../types/Message';
+import { ToastUtils, UserUtils } from '../bchat/utils';
 
 export function banUser(userToBan: string, conversationId: string) {
   let pubKeyToBan: PubKey;
@@ -56,6 +62,93 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
     updateBanOrUnbanUserModal({ banType: 'unban', conversationId, pubkey: pubKeyToUnban.key })
   );
 }
+export const sendMessageReaction = async (messageId: string, emoji: string) => {
+  const found = await getMessageById(messageId);
+  if (found && found.get('sent_at')) {
+    const conversationModel = found?.getConversation();
+    if (!conversationModel) {
+      window.log.warn(`Conversation for ${messageId} not found in db`);
+      return;
+    }
+
+    const author = UserUtils.getOurPubKeyStrFromCache();
+    let action = 0;
+
+    const reacts = found.get('reacts');
+    if (reacts && Object.keys(reacts).includes(emoji) && reacts[emoji].senders.includes(author)) {
+      window.log.info('found matching reaction removing it');
+      action = 1;
+    }
+
+    await conversationModel.sendReaction(messageId, {
+      id: Number(found.get('sent_at')),
+      author,
+      emoji,
+      action,
+    });
+
+    window.log.info(author, 'reacted with a', emoji, 'at', found.get('sent_at'));
+  } else {
+    window.log.warn(`Message ${messageId} not found in db`);
+  }
+};
+/**
+ * Handle reactions on the client by updating the state of the source message
+ *
+ */
+export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction) => {
+  const timestamp = Number(reaction.id);
+
+  if (!reaction.emoji) {
+    window?.log?.warn(`There is no emoji for the reaction ${timestamp}.`);
+    return;
+  }
+
+  const collection = await getMessagesBySentAt(timestamp);
+  const originalMessage = collection.find((item: MessageModel) => {
+    const messageTimestamp = item.get('sent_at');
+    return Boolean(messageTimestamp && messageTimestamp === timestamp);
+  });
+
+  if (!originalMessage) {
+    window?.log?.warn(`We did not find reacted message ${timestamp}.`);
+    return;
+  }
+
+  const reacts: ReactionList = originalMessage.get('reacts') ?? {};
+  reacts[reaction.emoji] = reacts[reaction.emoji] || {};
+  const senders = reacts[reaction.emoji].senders ?? [];
+
+  switch (reaction.action) {
+    // Add reaction
+    case 0:
+      if (senders.includes(reaction.author)) {
+        window?.log?.info('Received duplicate message reaction. Dropping it.');
+        return;
+      }
+      senders.push(reaction.author);
+      break;
+    // Remove reaction
+    case 1:
+    default:
+      if (senders.length > 0) {
+        const deleteIndex = senders.indexOf(reaction.author);
+        // TODO better edge cases
+        senders.splice(deleteIndex, 1);
+      }
+  }
+
+  if (senders.length > 0) {
+    reacts[reaction.emoji].senders = senders;
+  } else {
+    delete reacts[reaction.emoji];
+  }
+  originalMessage.set({
+    reacts,
+  });
+
+  await originalMessage.commit();
+};
 
 export function copyBodyToClipboard(body?: string | null) {
   window.clipboard.writeText(body);
@@ -121,8 +214,8 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
       okTheme: BchatButtonColor.Primary,
       cancelText: 'No',
       iconShow: true,
-      iconSize:30,
-      bchatIcon:'peopleGrp',
+      iconSize: 30,
+      bchatIcon: 'peopleGrp',
       // customIcon:customIcon,
 
       onClickOk: async () => {

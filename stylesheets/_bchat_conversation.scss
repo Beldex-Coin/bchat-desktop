@@ -367,7 +367,7 @@
     background-color: var(--color-composeMsgInput);
     margin: 5px 7px;
     border-radius: 10px;
-    padding: 0 20px;
+    padding: 0 20px 0 15px;
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
@@ -448,14 +448,10 @@
     }
 
     &__emoji-overlay {
-      // Should have identical properties to the textarea above to line up perfectly.
-      position: absolute;
-      font-size: 14px;
-      font-family: $bchat-font-default;
-      margin-left: 2px;
-      line-height: $bchat-font-h2;
-      letter-spacing: 0.5px;
-      color: rgba(0, 0, 0, 0);
+      margin-right:10px;
+      .bchat-icon-button:hover{
+        background-color: var(--color-emoji-icon-hover-bg);
+      }
     }
 
     .circular-bar-wrapper:hover + .wallet-sync-box {
@@ -464,76 +460,92 @@
   }
 }
 
-.bchat-emoji-panel {
-  position: absolute;
-  bottom: 68px;
-  right: 0px;
-  padding: $bchat-margin-lg;
+// .bchat-emoji-panel {
+  // position: absolute;
+  // bottom: 75px;
+  // left: 62px;
 
-  z-index: 5;
-  opacity: 0;
-  visibility: hidden;
-  transition: $bchat-transition-duration;
+  // // padding: $bchat-margin-lg;
+  // z-index: 5;
+  // opacity: 0;
+  // visibility: hidden;
+  // transition: $bchat-transition-duration;
 
-  button:focus {
-    outline: none;
-  }
+  // button:focus {
+  //   outline: none;
+  // }
 
-  &.show {
-    opacity: 1;
-    visibility: visible;
-  }
+  // &.show {
+  //   opacity: 1;
+  //   visibility: visible;
+  // }
 
-  & > section.emoji-mart {
-    font-family: $bchat-font-default;
-    font-size: $bchat-font-sm;
-    background-color: var(--color-cell-background);
-    border: 1px solid var(--color-bchat-border);
-    border-radius: 8px;
-    padding-bottom: $bchat-margin-sm;
+//   & > section.emoji-mart {
+//     font-family: $bchat-font-default;
+//     font-size: $bchat-font-sm;
+//     // background-color: var(--color-cell-background);
+//     background: var(--color-emoji-panel-bg);
+//     border:var(--color-bchat-border);
+//     border-radius: 8px;
+//     padding-bottom: $bchat-margin-sm;
+//     width: 346px !important;
 
-    .emoji-mart-category-label {
-      top: -2px;
+//     .emoji-mart-category-label {
+//       top: -2px;
 
-      span {
-        font-family: $bchat-font-default;
-        padding-top: $bchat-margin-sm;
-        background-color: var(--color-cell-background);
-      }
-    }
+//       span {
+//         font-family: $bchat-font-default;
+//         padding-top: $bchat-margin-sm;
+//         font-size: 16px;
+//         background: var(--color-emoji-panel-bg);
+//         font-weight: 400;
+//         // background-color: var(--color-cell-background);
+//       }
+//     }
+//     .emoji-mart-search input {
+//       border-radius: 12px;
+//       border: 1px solid var(--color-search-border);;
+//       background: var(--color-emoji-panel-bg);
+//       height: 40px;
+//     }
+//     .emoji-mart-search-icon {
+//       top: 11px;
+//       right: 20px;
+    
+//   }
 
-    .emoji-mart-scroll {
-      height: 340px;
-    }
+//     .emoji-mart-scroll {
+//       height: 340px;
+//     }
 
-    .emoji-mart-category .emoji-mart-emoji span {
-      cursor: pointer;
-    }
+//     .emoji-mart-category .emoji-mart-emoji span {
+//       cursor: pointer;
+//     }
 
-    .emoji-mart-bar:last-child {
-      border: none;
+//     .emoji-mart-bar:last-child {
+//       border: none;
 
-      .emoji-mart-preview {
-        display: none;
-      }
-    }
+//       .emoji-mart-preview {
+//         display: none;
+//       }
+//     }
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: calc(100% - 40px);
-      left: calc(100% - 79px);
-      width: 22px;
-      height: 22px;
-      background-color: var(--color-cell-background);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      transform: scaleY(1.4) rotate(45deg);
-      border: 0.7px solid var(--color-bchat-border);
-      clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
-    }
-  }
-}
+//     // &:after {
+//     //   content: '';
+//     //   position: absolute;
+//     //   top: calc(100% - 40px);
+//     //   left: calc(100% - 79px);
+//     //   width: 22px;
+//     //   height: 22px;
+//     //   background-color: var(--color-cell-background);
+//     //   transform: rotate(45deg);
+//     //   border-radius: 3px;
+//     //   transform: scaleY(1.4) rotate(45deg);
+//     //   border: 0.7px solid var(--color-bchat-border);
+//     //   clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
+//     // }
+  // }
+// }
 
 .bchat-progress {
   position: relative;

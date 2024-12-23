@@ -3,6 +3,8 @@ import { BchatIcon, BchatIconButton } from '../../icon';
 import { BchatToolTip } from '../../leftpane/ActionsPanel';
 import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { CustomIconButton } from '../../icon/CustomIconButton';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../state/selectors/theme';
 
 export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
   return (
@@ -34,14 +36,17 @@ export const StartRecordingButton = (props: { onClick: () => void }) => {
 
 export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () => void }>(
   (props, ref) => {
+    const darkMode = useSelector(getTheme) === 'dark';
     return (
       <BchatIconButton
         iconType="emoji"
         ref={ref}
-        backgroundColor="var(--color-compose-view-button-background)"
-        iconSize={'huge2'}
-        borderRadius="300px"
-        iconPadding="6px"
+        iconColor={darkMode ?'#A7A7BA': '#ACACAC'}
+        iconSize={'huge'}
+        // borderRadius="300px"
+     
+        // iconPadding="6px"
+        
         onClick={props.onClick}
       />
     );

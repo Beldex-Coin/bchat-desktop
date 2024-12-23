@@ -34,6 +34,7 @@ import { LightBoxOptions } from '../../components/conversation/BchatConversation
 import { getConversationController } from '../../bchat/conversations';
 import { UserUtils } from '../../bchat/utils';
 import { Storage } from '../../util/storage';
+import { MessageReactsSelectorProps } from '../../components/conversation/message/message-content/MessageReactions';
 
 export const getConversations = (state: StateType): ConversationsStateType => state.conversations;
 
@@ -885,7 +886,19 @@ export const getMessageAvatarProps = createSelector(getMessagePropsByMessageId, 
 
   return messageAvatarProps;
 });
+export const getMessageReactsProps = createSelector(getMessagePropsByMessageId, (props):
+  | MessageReactsSelectorProps
+  | undefined => {
+  if (!props || _.isEmpty(props)) {
+    return undefined;
+  }
 
+  const { reacts } = props.propsForMessage;
+
+  const msgProps: MessageReactsSelectorProps = { reacts };
+
+  return msgProps;
+});
 export const getMessagePreviewProps = createSelector(getMessagePropsByMessageId, (props):
   | MessagePreviewSelectorProps
   | undefined => {

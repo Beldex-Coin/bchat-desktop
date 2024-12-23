@@ -21,6 +21,8 @@ import { isUsFromCache } from '../bchat/utils/User';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { toLogFormat } from '../types/attachments/Errors';
 
+import { handleMessageReaction } from '../interactions/messageInteractions';
+
 function cleanAttachment(attachment: any) {
   return {
     ..._.omit(attachment, 'thumbnail'),
@@ -226,7 +228,8 @@ export async function handleSwarmDataMessage(
       cleanDataMessage.profileKey
     );
   }
-  if (isMessageEmpty(cleanDataMessage)) {
+   // Reactions are empty DataMessages
+   if (!cleanDataMessage.reaction && isMessageEmpty(cleanDataMessage)) {
     window?.log?.warn(`Message ${getEnvelopeId(envelope)} ignored; it was empty`);
     return removeFromCache(envelope);
   }
@@ -300,7 +303,11 @@ async function handleSwarmMessage(
 
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
-
+    if (rawDataMessage.reaction && rawDataMessage.syncTarget) {
+      await handleMessageReaction(rawDataMessage.reaction);
+      confirm();
+      return;
+    }
     const isDuplicate = await isSwarmMessageDuplicate({
       source: msgModel.get('source'),
       sentAt,

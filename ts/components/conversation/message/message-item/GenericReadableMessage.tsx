@@ -21,7 +21,7 @@ import { MessageContentWithStatuses } from '../message-content/MessageContentWit
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
-// import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -102,6 +102,41 @@ type Props = {
 };
 // tslint:disable: use-simple-attributes
 
+const highlightedMessageAnimation = keyframes`
+  1% {
+      background-color: #00f782;
+  }
+`;
+
+const StyledReadableMessage = styled(ReadableMessage)<{
+  selected: boolean;
+  isRightClicked: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  letter-spacing: 0.03em;
+  margin-top: 3px;
+  &.message-highlighted {
+    animation: ${highlightedMessageAnimation} 1s ease-in-out;
+  }
+  ${props =>
+    props.isRightClicked &&
+    `
+    background-color: var(--color-compose-view-button-background);
+  `}
+  ${props =>
+    props.selected &&
+    `
+    &.message-selected {
+      .module-message {
+        &__container {
+          box-shadow: var(--color-bchat-shadow);
+        }
+      }
+    }
+    `}
+`;
 export const GenericReadableMessage = (props: Props) => {
   const dispatch = useDispatch();
 
@@ -123,6 +158,12 @@ export const GenericReadableMessage = (props: Props) => {
     getIsMessageSelected(state as any, props.messageId)
   );
   const multiSelectMode = useSelector(isMessageSelectionMode);
+  const [isRightClicked, setIsRightClicked] = useState(false);
+  const onMessageLoseFocus = useCallback(() => {
+    if (isRightClicked) {
+      setIsRightClicked(false);
+    }
+  }, [isRightClicked]);
 
   const handleContextMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
@@ -131,15 +172,23 @@ export const GenericReadableMessage = (props: Props) => {
       if (enableContextMenu) {
         contextMenu.hideAll();
         contextMenu.show({
-          id: props.ctxMenuID,
+          id:ctxMenuID,
           event: e,
         });
       }
+      setIsRightClicked(enableContextMenu);
     },
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
+  useEffect(() => {
+    document.addEventListener('click', onMessageLoseFocus);
 
-  const { messageId, isDetailView } = props;
+    return () => {
+      document.removeEventListener('click', onMessageLoseFocus);
+    };
+  }, [onMessageLoseFocus]);
+
+  const { ctxMenuID, messageId, isDetailView } = props;
 
   if (!msgProps) {
     return null;
@@ -162,6 +211,7 @@ export const GenericReadableMessage = (props: Props) => {
   const isIncoming = direction === 'incoming';
   const darkMode = useSelector(getTheme) === 'dark';
   const iconColor=darkMode?'#F0F0F0':selected?'#3E4A53':'#ACACAC';
+  
 
   const onSelect = useCallback(
     messageId => {
@@ -172,9 +222,10 @@ export const GenericReadableMessage = (props: Props) => {
     },
     [messageId]
   );
+  
 
   return (
-    <ReadableMessage
+    <StyledReadableMessage
       messageId={messageId}
       className={classNames(
         'bchat-message-wrapper',
@@ -186,6 +237,8 @@ export const GenericReadableMessage = (props: Props) => {
       receivedAt={receivedAt}
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
+      selected={selected}
+      isRightClicked={isRightClicked}
     >
       <div className="message-box" style={{cursor:isSelectionMode?'pointer':"default" }} onClick={() => isSelectionMode && onSelect(messageId)}>
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
@@ -211,7 +264,7 @@ export const GenericReadableMessage = (props: Props) => {
           />
         )} */}
         <MessageContentWithStatuses
-          ctxMenuID={props.ctxMenuID}
+          ctxMenuID={ctxMenuID}
           messageId={messageId}
           isDetailView={isDetailView}
           dataTestId={`message-content-${messageId}`}
@@ -239,6 +292,6 @@ export const GenericReadableMessage = (props: Props) => {
           )}
         </div>
       </div>
-    </ReadableMessage>
+      </StyledReadableMessage>
   );
 };

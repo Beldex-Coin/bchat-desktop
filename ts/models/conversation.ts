@@ -20,6 +20,7 @@ import {
   removeMessage as dataRemoveMessage,
   saveMessages,
   updateConversation,
+  getMessageById,
 } from '../../ts/data/data';
 import { toHex } from '../bchat/utils/String';
 import {
@@ -66,6 +67,10 @@ import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessag
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
+import { ReactionType } from '../types/Message';
+
+
+import { handleMessageReaction } from '../interactions/messageInteractions';
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -122,7 +127,7 @@ export interface ConversationAttributes {
   didApproveMe: boolean;
   walletAddress?: any;
   walletCreatedDaemonHeight?: number | any;
-  isBnsHolder?:Boolean;
+  isBnsHolder?: Boolean;
 }
 
 export interface ConversationAttributesOptionals {
@@ -166,7 +171,7 @@ export interface ConversationAttributesOptionals {
   walletAddress?: any;
   walletUserName?: string | null | any;
   walletCreatedDaemonHeight?: number | null | any;
-  isBnsHolder?:Boolean;
+  isBnsHolder?: Boolean;
 }
 
 /**
@@ -200,7 +205,7 @@ export const fillConvoAttributesWithDefaults = (
     walletAddress: null,
     walletUserName: null,
     walletCreatedDaemonHeight: null,
-    isBnsHolder:false,
+    isBnsHolder: false,
   });
 };
 
@@ -370,7 +375,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const walletAddress = this.isWalletAddress();
     const walletUserName = this.getProfileName();
     const walletCreatedDaemonHeight = this.getwalletCreatedDaemonHeight();
-    const isBnsHolder=this.bnsHolder()
+    const isBnsHolder = this.bnsHolder();
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
     const zombies = this.isGroup() && !isPublic ? this.get('zombies') : [];
@@ -403,7 +408,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       activeAt: this.get('active_at'),
       type: isPrivate ? ConversationTypeEnum.PRIVATE : ConversationTypeEnum.GROUP,
     };
-    toRet.isBnsHolder =isBnsHolder ;
+    toRet.isBnsHolder = isBnsHolder;
 
     if (isPrivate) {
       toRet.isPrivate = true;
@@ -663,6 +668,65 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return getOpenGroupV2FromConversationId(this.id);
   }
 
+  public async sendReactionJob(sourceMessage: MessageModel, reaction: ReactionType) {
+    try {
+      const destination = this.id;
+
+      const sentAt = sourceMessage.get('sent_at');
+
+      if (!sentAt) {
+        throw new Error('sendReactMessageJob() sent_at must be set.');
+      }
+
+      if (this.isPublic() && !this.isOpenGroupV2()) {
+        throw new Error('Only opengroupv2 are supported now');
+      }
+      // TODO move function elsewhere as it is updating the local client before updating the timestamp for the receiving client
+      await handleMessageReaction(reaction);
+
+      // an OpenGroupV2 message is just a visible message
+      const chatMessageParams: VisibleMessageParams = {
+        // body: `Reacted ${reaction.emoji} to: "${message.get('body')}"`,
+        body: '',
+        timestamp: sentAt,
+        reaction,
+        lokiProfile: UserUtils.getOurProfile(),
+      };
+
+      const shouldApprove = !this.isApproved() && this.isPrivate();
+      const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+      const hasIncomingMessages = incomingMessageCount > 0;
+      if (shouldApprove) {
+        await this.setIsApproved(true);
+        if (hasIncomingMessages) {
+          // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+          await this.addOutgoingApprovalMessage(Date.now());
+          if (!this.didApproveMe()) {
+            await this.setDidApproveMe(true);
+          }
+          // should only send once
+          await this.sendMessageRequestResponse(true);
+          void forceSyncConfigurationNowIfNeeded();
+        }
+      }
+
+      const destinationPubkey = new PubKey(destination);
+      if (this.isPrivate()) {
+        const chatMessageMe = new VisibleMessage({ ...chatMessageParams, syncTarget: this.id });
+        await getMessageQueue().sendSyncMessage(chatMessageMe);
+
+        const chatMessagePrivate = new VisibleMessage(chatMessageParams);
+
+        await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
+        return;
+      }
+
+      throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
+    } catch (e) {
+      window.log.error(`Reaction job failed id:${reaction.id} error:`, e);
+      return null;
+    }
+  }
   public async sendMessageJob(message: MessageModel, expireTimer: number | undefined) {
     try {
       const uploads = await message.uploadData();
@@ -729,24 +793,24 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
           return;
         }
 
-         // Handle transaction details Message
-       
-         if (message.get('txnDetails')) {
-          // if (false) {  
-            const txnDetails = message.get('txnDetails');
-            // const txn_detailsMessages = new GroupInvitationMessage({
-            const txnDetailsMessages = new TxnDetailsMessage({
-              identifier: id,
-              timestamp: sentAt,
-              amount: txnDetails.amount,
-              txnId: txnDetails.txnId,
-              expireTimer: this.get('expireTimer'),
-            });
-  
-            // we need the return await so that errors are caught in the catch {}
-            await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
-            return;
-          }
+        // Handle transaction details Message
+
+        if (message.get('txnDetails')) {
+          // if (false) {
+          const txnDetails = message.get('txnDetails');
+          // const txn_detailsMessages = new GroupInvitationMessage({
+          const txnDetailsMessages = new TxnDetailsMessage({
+            identifier: id,
+            timestamp: sentAt,
+            amount: txnDetails.amount,
+            txnId: txnDetails.txnId,
+            expireTimer: this.get('expireTimer'),
+          });
+
+          // we need the return await so that errors are caught in the catch {}
+          await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
+          return;
+        }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
           const groupInvitation = message.get('groupInvitation');
@@ -871,11 +935,11 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote,txnDetails } = msg;
+    const { attachments, body, groupInvitation, preview, quote, txnDetails } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
-    
+
     window?.log?.info(
       'Sending message to conversation',
       this.idForLogging(),
@@ -892,7 +956,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       expireTimer,
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
-      txnDetails
+      txnDetails,
     });
 
     // We're offline!
@@ -915,6 +979,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     await this.queueJob(async () => {
       await this.sendMessageJob(messageModel, expireTimer);
+    });
+  }
+
+  public async sendReaction(sourceId: string, reaction: ReactionType) {
+    const sourceMessage = await getMessageById(sourceId);
+
+    if (!sourceMessage) {
+      // TODO handle better
+      return;
+    }
+    await this.queueJob(async () => {
+      await this.sendReactionJob(sourceMessage, reaction);
     });
   }
 

@@ -65,6 +65,7 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { LinkPreviews } from '../util/linkPreviews';
+import { ReactionList } from '../types/Message';
 // tslint:disable: cyclomatic-complexity
 
 /**
@@ -537,6 +538,10 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (previews && previews.length) {
       props.previews = previews;
     }
+    const reacts = this.getPropsForReacts();
+    if (_.isEmpty(reacts)) {
+      props.reacts = reacts;
+    }
     const quote = this.getPropsForQuote(options);
     if (quote) {
       props.quote = quote;
@@ -553,6 +558,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     return props;
   }
+ 
 
   public createNonBreakingLastSeparator(text: string) {
     const nbsp = '\xa0';
@@ -563,7 +569,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return `${start}${newSpaces}${end}`;
     });
   }
-
+  public getPropsForReacts(): ReactionList | undefined  {
+    return this.get('reacts') || undefined ;
+  }
   public processQuoteAttachment(attachment: any) {
     const { thumbnail } = attachment;
     const path = thumbnail && thumbnail.path && getAbsoluteAttachmentPath(thumbnail.path);
@@ -840,6 +848,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       hasVisualMediaAttachments: 0,
       attachments: undefined,
       preview: undefined,
+      reacts: undefined,
     });
     await this.markRead(Date.now());
     await this.commit();
@@ -895,6 +904,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         preview,
         quote,
         lokiProfile: UserUtils.getOurProfile(),
+        reacts: this.get('reacts'),
+        
       };
       if (!chatParams.lokiProfile) {
         delete chatParams.lokiProfile;

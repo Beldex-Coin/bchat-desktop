@@ -212,6 +212,8 @@ const darkInputText = '#858598';
 const darkIconColor = white;
 const darkInviteCardIconBg = '#202329';
 const darkRadioButton = '#F0F0F0';
+const darkEmojiPanelBg='#202329';
+const darkEmojiIconHoverBg='#2C303D';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -497,6 +499,8 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-icon', darkIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', darkInviteCardIconBg);
   document.documentElement.style.setProperty('--color-radio-icon', darkRadioButton);
+  document.documentElement.style.setProperty('--color-emoji-panel-bg', darkEmojiPanelBg);
+  document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', darkEmojiIconHoverBg);
 };
 
 // LIGHT COLORS
@@ -688,6 +692,8 @@ const lightInputText = '#ACACAC';
 const lightIconColor = '#3E4A53';
 const lightInviteCardIconBg = '#F8F8F8';
 const lightRadioButton = '#ACACAC';
+const lightEmojiPanelBg='#F8F8F8';
+const lightEmojiIconHoverBg='#EBEBEB';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -982,6 +988,9 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-icon', lightIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', lightInviteCardIconBg);
   document.documentElement.style.setProperty('--color-radio-icon', lightRadioButton);
+  document.documentElement.style.setProperty('--color-emoji-panel-bg', lightEmojiPanelBg);
+  document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', lightEmojiIconHoverBg);
+
 };
 
 // default to light theme
@@ -1158,7 +1167,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-icon:${darkIconColor};
     --color-invite-card-icon-bg:${darkInviteCardIconBg};
     --color-radio-icon:${lightRadioButton};
-
+    --color-emoji-panel-bg:${darkEmojiPanelBg};
+    --color-emoji-icon-hover-bg:${darkEmojiIconHoverBg}
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
