@@ -101,7 +101,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   };
 
   const handlePopupClick = () => {
-    dispatch(updateReactListModal({ messageId }));
+    dispatch(updateReactListModal({ reaction: popupReaction, messageId }));
   };
   if (!contentProps) {
     return null;

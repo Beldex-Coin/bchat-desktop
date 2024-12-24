@@ -54,6 +54,7 @@ export type CommunityGuidelinesModalState = {} | null;
 
 export type ReactListModalState = {
   messageId: string;
+  reaction: string;
 } | null;
 
 export type ModalState = {

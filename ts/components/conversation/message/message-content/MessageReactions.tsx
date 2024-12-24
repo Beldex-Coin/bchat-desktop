@@ -32,7 +32,7 @@ const UpArrowSVG = (): ReactElement => (
     />
   </svg>
 );
-export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'reacts'>;
+export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'conversationType' | 'isPublic'| 'reacts'>;
 
 const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
   position: relative;
@@ -53,23 +53,24 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
   ${props => (props.inModal ? '' : 'max-width: 320px;')}
 `;
 
-const StyledReaction = styled.button<{ selected: boolean; inModal: boolean }>`
+const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; showCount: boolean }>`
   display: flex;
-  justify-content: flex-start;
+ justify-content: ${props => (props.showCount ? 'flex-start' : 'center')};
   align-items: center;
   background-color: var(--color-compose-view-button-background);
   border-width: 1px;
   border-style: solid;
   border-color: ${props => (props.selected ? 'var(--color-accent)' : 'transparent')};
   border-radius: 11px;
-  padding: ${props => (props.inModal ? '3px 7px' : '0px 7px')};
+  padding: 0 7px;
+  height: 23px;
   margin: 0 4px var(--margins-sm);
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
 
-  span:last-child {
+  span:nth-child(2) {
     font-size: var(--font-size-xs);
     margin-left: 8px;
   }
@@ -135,7 +136,7 @@ export const MessageReactions = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const { reacts } = msgProps;
+  const { conversationType, reacts } = msgProps;
   const [reactions, setReactions] = useState<ReactionList>({});
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -167,7 +168,12 @@ export const MessageReactions = (props: Props): ReactElement => {
     );
   };
 
-  const renderReaction = (emoji: string) => (
+  const renderReaction = (emoji: string) => {
+    const showCount =
+      reactions[emoji].senders &&
+      (reactions[emoji].senders.length > 1 || conversationType === 'group');
+    return (
+    
     <StyledReactionContainer ref={reactionRef}>
       {popupReaction && popupReaction === emoji && (
         <MessageReactionPopup
@@ -176,15 +182,7 @@ export const MessageReactions = (props: Props): ReactElement => {
           senders={reactions[popupReaction].senders}
           tooltipPosition={tooltipPosition}
           onClick={() => {
-            if (setPopupReaction) {
-              setPopupReaction('');
-            }
-            setPopupX(popupXDefault);
-            setPopupY(popupYDefault);
-            setTooltipPosition('center');
-            if (onPopupClick) {
-              onPopupClick();
-            }
+            handleReactionClick(emoji);
           }}
         />
       )}
@@ -192,6 +190,7 @@ export const MessageReactions = (props: Props): ReactElement => {
         key={emoji}
         selected={selected(emoji)}
         inModal={inModal}
+        showCount={showCount}
         onClick={async () => {
           await handleReactionClick(emoji);
         }}
@@ -222,8 +221,28 @@ export const MessageReactions = (props: Props): ReactElement => {
         <span>{emoji}</span>
         {reactions[emoji].senders && <span>{reactions[emoji].senders.length}</span>}
       </StyledReaction>
+      {conversationType === 'group' && popupReaction && popupReaction === emoji && (
+          <MessageReactionPopup
+            messageId={messageId}
+            emoji={popupReaction}
+            senders={reactions[popupReaction].senders}
+            tooltipPosition={tooltipPosition}
+            onClick={() => {
+              if (setPopupReaction) {
+                setPopupReaction('');
+              }
+              setPopupX(popupXDefault);
+              setPopupY(popupYDefault);
+              setTooltipPosition('center');
+              if (onPopupClick) {
+                onPopupClick();
+              }
+            }}
+          />
+        )}
     </StyledReactionContainer>
   );
+}
 
   const renderReactionList = () => (
     <StyledMessageReactions
