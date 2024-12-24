@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { StateType } from '../../../../state/reducer';
 import { getMessageReactsProps } from '../../../../state/selectors/conversations';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty } from 'lodash';
 import _ from 'lodash';
 import { ReactionList } from '../../../../types/Message';
 
-import { sendMessageReaction } from '../../../../interactions/messageInteractions';
+
 import { UserUtils } from '../../../../bchat/utils';
+import { sendMessageReaction } from '../../../../util/reactions';
+
 
 type Props = {
   messageId: string;
@@ -114,11 +116,15 @@ export const MessageReactions = (props: Props): ReactElement => {
   const handleReactionClick = async (emoji: string) => {
     await sendMessageReaction(messageId, emoji);
   };
+  const includesMe = (emoji: string) =>
+    reactions[emoji].senders &&
+    reactions[emoji].senders.length > 0 &&
+    reactions[emoji].senders.includes(me);
 
   const renderReaction = (emoji: string) => (
     <StyledReaction
       key={emoji}
-      includesMe={reactions[emoji].senders.includes(me)}
+      includesMe={includesMe(emoji)}
       onClick={async () => {
         await handleReactionClick(emoji);
       }}
@@ -187,8 +193,8 @@ export const MessageReactions = (props: Props): ReactElement => {
   };
 
   useEffect(() => {
-    if (reacts && !isEqual(reactions, reacts)) {
-      setReactions(reacts);
+    if (isEmpty(reacts) && !isEmpty(reactions)) {
+      setReactions({});
     }
   }, [reacts, reactions]);
 

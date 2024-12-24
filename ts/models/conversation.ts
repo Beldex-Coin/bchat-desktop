@@ -68,9 +68,10 @@ import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
 import { ReactionType } from '../types/Message';
-
-
 import { handleMessageReaction } from '../interactions/messageInteractions';
+
+
+
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -720,6 +721,21 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
         return;
       }
+      if (this.isMediumGroup()) {
+        const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
+        const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
+          chatMessage: chatMessageMediumGroup,
+          groupId: destination,
+        });
+
+        // we need the return await so that errors are caught in the catch {}
+        await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+        return;
+      }
+
+      if (this.isClosedGroup()) {
+        throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+      }
 
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
     } catch (e) {
@@ -782,6 +798,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
         return;
       }
+     
 
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {

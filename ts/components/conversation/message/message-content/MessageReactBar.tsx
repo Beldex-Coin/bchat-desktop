@@ -1,6 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BchatIconButton } from '../../../icon';
+import { RecentReactions } from '../../../../types/Util';
+
+
+import { getRecentReactions } from '../../../../util/storage';
+
 
 type Props = {
   action: (...args: Array<any>) => void;
@@ -29,18 +34,65 @@ const StyledMessageReactBar = styled.div`
     box-shadow: none !important;
   }
 `;
+const ReactButton=styled.div`
+baakground:red;
+`
 
 export const MessageReactBar = (props: Props): ReactElement => {
     const { action, additionalAction } = props;
+    const [recentReactions, setRecentReactions] = useState<RecentReactions>();
 
+    const renderReactButton = (emoji: string) => (
+      <ReactButton
+        key={emoji}
+        onClick={() => {
+          action(emoji);
+         
+        }}
+      >
+        {emoji}
+      </ReactButton>
+    );
+  
+    const renderReactButtonList = (reactions: Array<string>) => (
+      <>
+        {reactions.map(emoji => {
+          return renderReactButton(emoji);
+        })}
+      </>
+    );
+  
+    const loadRecentReactions = useCallback(async () => {
+      const reactions = new RecentReactions(await getRecentReactions());
+      return reactions;
+    }, []);
+  
+    useEffect(() => {
+      let isCancelled = false;
+      loadRecentReactions()
+        .then(async reactions => {
+          if (isCancelled) {
+            return;
+          }
+          setRecentReactions(reactions);
+        })
+        .catch(() => {
+          if (isCancelled) {
+            return;
+          }
+        });
+  
+      return () => {
+        isCancelled = true;
+      };
+    }, [loadRecentReactions]);
+  
+    if (!recentReactions) {
+      return <></>;
+    }
   return (
     <StyledMessageReactBar>
-      <span onClick={()=>action('😁')}>😁</span>
-      <span onClick={()=>action('😂')}>😂</span>
-      <span onClick={()=>action('🥰')}>🥰</span>
-      <span onClick={()=>action('😁')}>😈</span>
-      <span onClick={()=>action('😎')}>😎</span>
-      <span onClick={()=>action('😜')}>😜</span>
+   {renderReactButtonList(recentReactions.items)}
       <span>
         <BchatIconButton
           iconColor={'var(--color-text)'}

@@ -14,7 +14,7 @@ import {
 import {
   addSenderAsModerator,
   removeSenderFromModerator,
-  sendMessageReaction,
+
 } from '../../../../interactions/messageInteractions';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
@@ -33,6 +33,9 @@ import styled from 'styled-components';
 import { MessageReactBar } from './MessageReactBar';
 import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
 import { useMouse } from 'react-use';
+import { sendMessageReaction } from '../../../../util/reactions';
+
+
 
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,

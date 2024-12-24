@@ -12,11 +12,11 @@ import { BchatButtonColor } from '../components/basic/BchatButton';
 
 import { updateBanOrUnbanUserModal, updateConfirmModal } from '../state/ducks/modalDialog';
 
-import { getMessagesBySentAt, getMessageById } from '../data/data';
+import { getMessagesBySentAt } from '../data/data';
 import { MessageModel } from '../models/message';
 import { SignalService } from '../protobuf';
 import { ReactionList } from '../types/Message';
-import { ToastUtils, UserUtils } from '../bchat/utils';
+import { ToastUtils } from '../bchat/utils';
 
 export function banUser(userToBan: string, conversationId: string) {
   let pubKeyToBan: PubKey;
@@ -62,36 +62,7 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
     updateBanOrUnbanUserModal({ banType: 'unban', conversationId, pubkey: pubKeyToUnban.key })
   );
 }
-export const sendMessageReaction = async (messageId: string, emoji: string) => {
-  const found = await getMessageById(messageId);
-  if (found && found.get('sent_at')) {
-    const conversationModel = found?.getConversation();
-    if (!conversationModel) {
-      window.log.warn(`Conversation for ${messageId} not found in db`);
-      return;
-    }
 
-    const author = UserUtils.getOurPubKeyStrFromCache();
-    let action = 0;
-
-    const reacts = found.get('reacts');
-    if (reacts && Object.keys(reacts).includes(emoji) && reacts[emoji].senders.includes(author)) {
-      window.log.info('found matching reaction removing it');
-      action = 1;
-    }
-
-    await conversationModel.sendReaction(messageId, {
-      id: Number(found.get('sent_at')),
-      author,
-      emoji,
-      action,
-    });
-
-    window.log.info(author, 'reacted with a', emoji, 'at', found.get('sent_at'));
-  } else {
-    window.log.warn(`Message ${messageId} not found in db`);
-  }
-};
 /**
  * Handle reactions on the client by updating the state of the source message
  *
@@ -115,7 +86,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
     return;
   }
 
-  const reacts: ReactionList = originalMessage.get('reacts') ?? {};
+  let reacts: ReactionList = originalMessage.get('reacts') ?? {};
   reacts[reaction.emoji] = reacts[reaction.emoji] || {};
   const senders = reacts[reaction.emoji].senders ?? [];
 
@@ -141,10 +112,11 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   if (senders.length > 0) {
     reacts[reaction.emoji].senders = senders;
   } else {
+    // tslint:disable-next-line: no-dynamic-delete
     delete reacts[reaction.emoji];
   }
   originalMessage.set({
-    reacts,
+    reacts: !_.isEmpty(reacts) ? reacts: undefined,
   });
 
   await originalMessage.commit();
