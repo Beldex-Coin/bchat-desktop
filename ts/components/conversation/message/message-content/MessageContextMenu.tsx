@@ -314,7 +314,7 @@ export const MessageContextMenu = (props: Props) => {
         role="button"
         x={mouseX}
         y={mouseY}>
-          <BchatEmojiPanel onEmojiClicked={onEmojiClick} show={showEmojiPanel} />
+          <BchatEmojiPanel onEmojiClicked={onEmojiClick} show={showEmojiPanel}  isModal={true}/>
         </StyledEmojiPanelContainer>
       )}
       <Menu

@@ -1,9 +1,10 @@
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { replyToMessage } from '../../../../interactions/conversationInteractions';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { toggleSelectedMessageId } from '../../../../state/ducks/conversations';
+import { updateReactListModal } from '../../../../state/ducks/modalDialog';
 import {
   getMessageContentWithStatusesSelectorProps,
   getMessageStatusProps,
@@ -16,6 +17,8 @@ import { MessageContextMenu } from './MessageContextMenu';
 import { MessageStatus } from './MessageStatus';
 import { ExpireTimer } from '../../ExpireTimer';
 import styled from 'styled-components';
+import { MessageReactions } from './MessageReactions';
+import { sendMessageReaction } from '../../../../util/reactions';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -91,6 +94,15 @@ export const MessageContentWithStatuses = (props: Props) => {
     expirationLength,
     expirationTimestamp,
   } = props;
+  const [popupReaction, setPopupReaction] = useState('');
+
+  const handleMessageReaction = async (emoji: string) => {
+    await sendMessageReaction(messageId, emoji);
+  };
+
+  const handlePopupClick = () => {
+    dispatch(updateReactListModal({ messageId }));
+  };
   if (!contentProps) {
     return null;
   }
@@ -98,7 +110,9 @@ export const MessageContentWithStatuses = (props: Props) => {
   const isIncoming = direction === 'incoming';
 
   return (
-    <StyledMessageContentContainer direction={isIncoming ? 'left' : 'right'}>
+    <StyledMessageContentContainer direction={isIncoming ? 'left' : 'right'}  onMouseLeave={() => {
+      setPopupReaction('');
+    }}>
     <StyledMessageContentWithStatuses
       className={classNames('module-message', `module-message--${direction}`)}
       role="button"
@@ -142,6 +156,16 @@ export const MessageContentWithStatuses = (props: Props) => {
 
       {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
     </StyledMessageContentWithStatuses>
+    <MessageReactions
+        messageId={messageId}
+        onClick={handleMessageReaction}
+        popupReaction={popupReaction}
+        setPopupReaction={setPopupReaction}
+        onPopupClick={handlePopupClick}
+        
+      />
     </StyledMessageContentContainer>
   );
 };
+
+

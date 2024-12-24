@@ -30,7 +30,8 @@ import {
   AboutBnsModalState,
   BchatWalletForgotPasswordModalState,
   MessageMoreInfoState,
-  CommunityGuidelinesModalState
+  CommunityGuidelinesModalState,
+  ReactListModalState,
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -162,5 +163,10 @@ export const getMessageMoreInfoModal = createSelector(
 export const getCommunityGuidelinesModal = createSelector(
   getModal,
   (state: ModalState): CommunityGuidelinesModalState => state.communityGuidelinesModal
+);
+
+export const getReactListDialog = createSelector(
+  getModal,
+  (state: ModalState): ReactListModalState => state.reactListModalState
 );
 

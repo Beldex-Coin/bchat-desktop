@@ -546,27 +546,27 @@
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
   }
 
-  button {
-    float: right;
-    margin-inline-start: 10px;
-    background-color: $color-bchat-green;
-    border-radius: 100px;
-    padding: 5px 15px;
-    border: 1px solid $color-bchat-green;
-    color: white;
-    outline: none;
-    user-select: none;
+  // button {
+  //   float: right;
+  //   margin-inline-start: 10px;
+  //   background-color: $color-bchat-green;
+  //   border-radius: 100px;
+  //   padding: 5px 15px;
+  //   border: 1px solid $color-bchat-green;
+  //   color: white;
+  //   outline: none;
+  //   user-select: none;
 
-    &:hover,
-    &:disabled {
-      background-color: $color-bchat-green-dark;
-      border-color: $color-bchat-green-dark;
-    }
+  //   &:hover,
+  //   &:disabled {
+  //     background-color: $color-bchat-green-dark;
+  //     border-color: $color-bchat-green-dark;
+  //   }
 
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
+  //   &:disabled {
+  //     cursor: not-allowed;
+  //   }
+  // }
 
   input {
     width: 100%;
@@ -581,7 +581,17 @@
       outline: none;
     }
   }
-
+  .reaction-list-modal {
+    .bchat-confirm-wrapper {
+      .bchat-modal__body{
+        width: 376px;
+        padding: 0;
+        .bchat-modal__centered {
+          margin: 0;
+        }
+      }
+    }
+  }
   h4 {
     margin-top: 8px;
     margin-bottom: 16px;

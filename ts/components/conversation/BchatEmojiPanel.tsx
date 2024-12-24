@@ -9,8 +9,9 @@ import styled from 'styled-components';
 type Props = {
   onEmojiClicked: (emoji: any) => void;
   show: boolean;
+  isModal?: boolean;
 };
-export const StyledEmojiPanel = styled.div`
+export const StyledEmojiPanel = styled.div<{ isModal: boolean }>`
   padding: var(--margins-lg);
   z-index: 5;
   opacity: 0;
@@ -50,28 +51,32 @@ export const StyledEmojiPanel = styled.div`
         display: none;
       }
     }
-    &:after {
-      content: '';
-      position: absolute;
-      top: calc(100% - 40px);
-      left: calc(100% - 79px);
-      width: 22px;
-      height: 22px;
-      background-color: var(--color-cell-background);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      transform: scaleY(1.4) rotate(45deg);
-      border: 0.7px solid var(--color-session-border);
-      clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
-    }
+    ${props =>
+      !props.isModal &&
+      `
+      &:after {
+        content: '';
+        position: absolute;
+        top: calc(100% - 40px);
+        left: calc(100% - 79px);
+        width: 22px;
+        height: 22px;
+        background-color: var(--color-cell-background);
+        transform: rotate(45deg);
+        border-radius: 3px;
+        transform: scaleY(1.4) rotate(45deg);
+        border: 0.7px solid var(--color-session-border);
+        clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
+      }
+    `}
   }
 `;
 export const BchatEmojiPanel = (props: Props) => {
-  const { onEmojiClicked, show } = props;
+  const { onEmojiClicked, show,isModal = false } = props;
   const darkMode = useSelector(getTheme) === 'dark';
 
   return (
-    <StyledEmojiPanel className={classNames(show && 'show')}>
+    <StyledEmojiPanel className={classNames(show && 'show')} isModal={isModal}>
       <Picker
         backgroundImageFn={() => './images/emoji/emoji-sheet-twitter-32.png'}
         set={'twitter'}
