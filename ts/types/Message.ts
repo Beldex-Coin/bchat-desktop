@@ -59,6 +59,7 @@ export interface ReactionType {
 export type ReactionList = Record<
   string,
   {
+    id?: string;
     senders: Array<string>;
   }
 >;

@@ -115,6 +115,10 @@ export const ReactListModal = (props: Props): ReactElement => {
   const handleRemoveReaction = async (emoji: string) => {
     await sendMessageReaction(messageId, emoji);
   };
+  const handleClearReactions = (event: any) => {
+    event.preventDefault();
+    // TODO once we have the new SOGS endpoints
+  };
   const renderReactionSenders = (items: Array<string>) => {
     return items.map((sender: string) => (
       <StyledReactionSender container={true} justifyContent={'space-between'} alignItems={'center'}>
@@ -214,7 +218,11 @@ export const ReactListModal = (props: Props): ReactElement => {
                 <span>&#8226;</span>
                 <span>{senders.length}</span>
               </p>
-              {isPublic && <StyledClearButton>{window.i18n('clearAll')}</StyledClearButton>}
+              {isPublic && (
+                <StyledClearButton onClick={handleClearReactions}>
+                  {window.i18n('clearAll')}
+                </StyledClearButton>
+              )}
             </StyledReactionBar>
             {senders && senders.length > 0 && renderReactionSenders(senders)}
           </StyledSendersContainer>

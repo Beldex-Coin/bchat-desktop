@@ -21,7 +21,7 @@ import { isUsFromCache } from '../bchat/utils/User';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { toLogFormat } from '../types/attachments/Errors';
 
-import { handleMessageReaction } from '../interactions/messageInteractions';
+import { handleMessageReaction } from '../util/reactions';
 
 function cleanAttachment(attachment: any) {
   return {
@@ -304,7 +304,9 @@ async function handleSwarmMessage(
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
     if (rawDataMessage.reaction && rawDataMessage.syncTarget) {
-      await handleMessageReaction(rawDataMessage.reaction);
+      const messageId = msgModel.get('isPublic') ? String(msgModel.get('serverId')) : messageHash;
+      await handleMessageReaction(rawDataMessage.reaction, messageId);
+
       confirm();
       return;
     }

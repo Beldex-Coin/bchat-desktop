@@ -68,8 +68,9 @@ import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
 import { ReactionType } from '../types/Message';
-import { handleMessageReaction } from '../interactions/messageInteractions';
+// import { handleMessageReaction } from '../interactions/messageInteractions';
 
+import { handleMessageReaction } from '../util/reactions';
 
 
 

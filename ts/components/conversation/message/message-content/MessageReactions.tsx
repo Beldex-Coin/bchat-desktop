@@ -13,6 +13,7 @@ import { UserUtils } from '../../../../bchat/utils';
 import { MessageReactionPopup, StyledPopupContainer, TipPosition } from './MessageReactionPopup';
 import { useMouse } from 'react-use';
 import { Flex } from '../../../basic/Flex';
+import { abbreviateNumber } from '../../../../util/abbreviateNumber';
 
 type Props = {
   messageId: string;
@@ -219,7 +220,7 @@ export const MessageReactions = (props: Props): ReactElement => {
         }}
       >
         <span>{emoji}</span>
-        {reactions[emoji].senders && <span>{reactions[emoji].senders.length}</span>}
+        {showCount && <span>{abbreviateNumber(reactions[emoji].senders.length)}</span>}
       </StyledReaction>
       {conversationType === 'group' && popupReaction && popupReaction === emoji && (
           <MessageReactionPopup

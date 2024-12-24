@@ -54,22 +54,22 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
 /**
  * Handle reactions on the client by updating the state of the source message
  */
-export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction) => {
-  const timestamp = Number(reaction.id);
-
+export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction,messageId?: string) => {
+  window?.log?.warn(`reaction: DataMessage ID: ${messageId}.`);
+  const originalMessageTimestamp = Number(reaction.id);
   if (!reaction.emoji) {
-    window?.log?.warn(`There is no emoji for the reaction ${timestamp}.`);
+    window?.log?.warn(`There is no emoji for the reaction ${originalMessageTimestamp}.`);
     return;
   }
 
-  const collection = await getMessagesBySentAt(timestamp);
+  const collection = await getMessagesBySentAt(originalMessageTimestamp);
   const originalMessage = collection.find((item: MessageModel) => {
     const messageTimestamp = item.get('sent_at');
-    return Boolean(messageTimestamp && messageTimestamp === timestamp);
+    return Boolean(messageTimestamp && messageTimestamp === originalMessageTimestamp);
   });
 
   if (!originalMessage) {
-    window?.log?.warn(`We did not find reacted message ${timestamp}.`);
+    window?.log?.warn(`We did not find reacted message ${originalMessageTimestamp}.`);
     return;
   }
 
@@ -80,6 +80,10 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   switch (reaction.action) {
     // Add reaction
     case 0:
+      if (!reacts[reaction.emoji].id && messageId && messageId !== '') {
+        console.log('Setting reactions id to', messageId);
+        reacts[reaction.emoji].id = messageId;
+      }
       if (senders.includes(reaction.author)) {
         window?.log?.info('Received duplicate message reaction. Dropping it.');
         return;
@@ -104,7 +108,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
     // tslint:disable-next-line: no-dynamic-delete
     delete reacts[reaction.emoji];
   }
-
+  console.log('reaction reacts', reacts);
   originalMessage.set({
     reacts: !_.isEmpty(reacts) ? reacts : undefined,
   });
