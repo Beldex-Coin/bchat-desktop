@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
-import { LokiProfile, ReactionType } from '../../../../types/Message';
+import { LokiProfile, Reaction } from '../../../../types/Message';
 import { MessageParams } from '../Message';
 
 interface AttachmentPointerCommon {
@@ -68,7 +68,7 @@ export interface VisibleMessageParams extends MessageParams {
   preview?: Array<PreviewWithAttachmentUrl>;
   syncTarget?: string; // undefined means it is not a synced message
   //emoji reaction
-  reaction?: ReactionType;
+  reaction?: Reaction;
 }
 
 export class VisibleMessage extends DataMessage {
@@ -82,7 +82,7 @@ export class VisibleMessage extends DataMessage {
   private readonly avatarPointer?: string;
   private readonly preview?: Array<PreviewWithAttachmentUrl>;
 //emoji reaction
-  private readonly reaction?: ReactionType;
+  private readonly reaction?: Reaction;
 
   /// In the case of a sync message, the public key of the person the message was targeted at.
   /// - Note: `null or undefined` if this isn't a sync message.

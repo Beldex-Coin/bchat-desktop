@@ -158,21 +158,16 @@ export const MessageReactions = (props: Props): ReactElement => {
   const handleReactionClick = async (emoji: string) => {
     onClick(emoji);
   };
-  const selected = (emoji: string) => {
+  const selected = (emoji: string, senders: Array<string>) => {
     if (onSelected) {
       return onSelected(emoji);
     }
-    return (
-      reactions[emoji].senders &&
-      reactions[emoji].senders.length > 0 &&
-      reactions[emoji].senders.includes(me)
-    );
+    return senders && senders.length > 0 && senders.includes(me);
   };
 
   const renderReaction = (emoji: string) => {
-    const showCount =
-      reactions[emoji].senders &&
-      (reactions[emoji].senders.length > 1 || conversationType === 'group');
+    const senders = Object.keys(reactions[emoji]);
+    const showCount = senders && (senders.length > 1 || conversationType === 'group');
     return (
     
     <StyledReactionContainer ref={reactionRef}>
@@ -180,7 +175,7 @@ export const MessageReactions = (props: Props): ReactElement => {
         <MessageReactionPopup
           messageId={messageId}
           emoji={popupReaction}
-          senders={reactions[popupReaction].senders}
+          senders={Object.keys(reactions[popupReaction])}
           tooltipPosition={tooltipPosition}
           onClick={() => {
             handleReactionClick(emoji);
@@ -189,7 +184,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       )}
       <StyledReaction
         key={emoji}
-        selected={selected(emoji)}
+        selected={selected(emoji,senders)}
         inModal={inModal}
         showCount={showCount}
         onClick={async () => {
@@ -220,13 +215,13 @@ export const MessageReactions = (props: Props): ReactElement => {
         }}
       >
         <span>{emoji}</span>
-        {showCount && <span>{abbreviateNumber(reactions[emoji].senders.length)}</span>}
+        {showCount && <span>{abbreviateNumber(senders.length)}</span>}
       </StyledReaction>
       {conversationType === 'group' && popupReaction && popupReaction === emoji && (
           <MessageReactionPopup
             messageId={messageId}
             emoji={popupReaction}
-            senders={reactions[popupReaction].senders}
+            senders={Object.keys(reactions[popupReaction])}
             tooltipPosition={tooltipPosition}
             onClick={() => {
               if (setPopupReaction) {

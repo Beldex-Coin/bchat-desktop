@@ -88,7 +88,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
 
   let reacts: ReactionList = originalMessage.get('reacts') ?? {};
   reacts[reaction.emoji] = reacts[reaction.emoji] || {};
-  const senders = reacts[reaction.emoji].senders ?? [];
+  const senders:any = reacts[reaction.emoji].senders ?? [];
 
   switch (reaction.action) {
     // Add reaction

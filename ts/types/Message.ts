@@ -49,7 +49,7 @@ enum Action {
   REMOVE = 1,
 }
 
-export interface ReactionType {
+export interface Reaction {
   id: number; // this is in fact a uint64 so we will have an issue
   author: string;
   emoji: string;
@@ -58,8 +58,5 @@ export interface ReactionType {
 
 export type ReactionList = Record<
   string,
-  {
-    id?: string;
-    senders: Array<string>;
-  }
+  Record<string, string> // <sender pubkey, messageHash or serverId>
 >;

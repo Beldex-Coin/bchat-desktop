@@ -19,7 +19,7 @@ import { LinkPreviews } from '../util/linkPreviews';
 import { GoogleChrome } from '../util';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { handleMessageReaction } from '../util/reactions';
-import { ReactionType } from '../types/Message';
+import { Reaction } from '../types/Message';
 
 
 
@@ -354,7 +354,7 @@ export async function handleMessageJob(
       conversation.isPrivate() &&
       messageModel.get('unread')
     ) {
-      messageModel.set('reaction', regularDataMessage.reaction as ReactionType);
+      messageModel.set('reaction', regularDataMessage.reaction as Reaction);
       conversation.throttledNotify(messageModel);
     }
     confirm?.();

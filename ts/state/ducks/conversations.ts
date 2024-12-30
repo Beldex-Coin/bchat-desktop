@@ -22,7 +22,7 @@ import { ReplyingToMessageProps } from '../../components/conversation/compositio
 import { QuotedAttachmentType } from '../../components/conversation/message/message-content/Quote';
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
-import { ReactionList, ReactionType } from '../../types/Message';
+import { ReactionList, Reaction } from '../../types/Message';
 
 export type CallNotificationType = 'missed-call' | 'started-call' | 'answered-a-call';
 export type PropsForCallNotification = {
@@ -214,7 +214,7 @@ export type PropsForMessageWithoutConvoProps = {
   isExpired?: boolean;
   isTrustedForAttachmentDownload?: boolean;
 
-  reactions?: Array<ReactionType>;
+  reactions?: Array<Reaction>;
   reacts?: ReactionList;
 };
 

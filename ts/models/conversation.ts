@@ -67,7 +67,7 @@ import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessag
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
-import { ReactionType } from '../types/Message';
+import { Reaction } from '../types/Message';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
@@ -670,7 +670,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return getOpenGroupV2FromConversationId(this.id);
   }
 
-  public async sendReactionJob(sourceMessage: MessageModel, reaction: ReactionType) {
+  public async sendReactionJob(sourceMessage: MessageModel, reaction: Reaction) {
     try {
       const destination = this.id;
 
@@ -1000,7 +1000,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     });
   }
 
-  public async sendReaction(sourceId: string, reaction: ReactionType) {
+  public async sendReaction(sourceId: string, reaction: Reaction) {
     const sourceMessage = await getMessageById(sourceId);
 
     if (!sourceMessage) {
