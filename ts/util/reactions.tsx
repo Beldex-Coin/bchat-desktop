@@ -55,7 +55,6 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
  * Handle reactions on the client by updating the state of the source message
  */
 export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction,messageId?: string) => {
-  window?.log?.warn(`reaction: DataMessage ID: ${messageId}.`);
   const originalMessageTimestamp = Number(reaction.id);
   if (!reaction.emoji) {
     window?.log?.warn(`There is no emoji for the reaction ${originalMessageTimestamp}.`);
@@ -81,7 +80,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
     // Add reaction
     case 0:
       if (!reacts[reaction.emoji].id && messageId && messageId !== '') {
-        console.log('Setting reactions id to', messageId);
+        window?.log?.info('Setting reactions id to', messageId);
         reacts[reaction.emoji].id = messageId;
       }
       if (senders.includes(reaction.author)) {

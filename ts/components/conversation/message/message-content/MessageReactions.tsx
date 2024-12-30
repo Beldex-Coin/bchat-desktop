@@ -33,7 +33,7 @@ const UpArrowSVG = (): ReactElement => (
     />
   </svg>
 );
-export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'conversationType' | 'isPublic'| 'reacts'>;
+export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'conversationType' | 'isPublic'| 'reacts'| 'weAreAdmin'>;
 
 const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
   position: relative;

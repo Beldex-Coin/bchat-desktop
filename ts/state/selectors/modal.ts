@@ -31,7 +31,7 @@ import {
   BchatWalletForgotPasswordModalState,
   MessageMoreInfoState,
   CommunityGuidelinesModalState,
-  ReactListModalState,
+  ReactModalsState,
 } from '../ducks/modalDialog';
 
 export const getModal = (state: StateType): ModalState => {
@@ -164,9 +164,13 @@ export const getCommunityGuidelinesModal = createSelector(
   getModal,
   (state: ModalState): CommunityGuidelinesModalState => state.communityGuidelinesModal
 );
-
 export const getReactListDialog = createSelector(
   getModal,
-  (state: ModalState): ReactListModalState => state.reactListModalState
+  (state: ModalState): ReactModalsState => state.reactListModalState
+);
+
+export const getReactClearAllDialog = createSelector(
+  getModal,
+  (state: ModalState): ReactModalsState => state.reactClearAllModalState
 );
 

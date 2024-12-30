@@ -893,8 +893,8 @@ export const getMessageReactsProps = createSelector(getMessagePropsByMessageId, 
     return undefined;
   }
 
-  const { conversationType, isPublic, reacts } = props.propsForMessage;
-  const msgProps: MessageReactsSelectorProps = { conversationType, isPublic, reacts };
+  const { conversationType, isPublic, reacts,weAreAdmin } = props.propsForMessage;
+  const msgProps: MessageReactsSelectorProps = { conversationType, isPublic, reacts,weAreAdmin };
   return msgProps;
 });
 export const getMessagePreviewProps = createSelector(getMessagePropsByMessageId, (props):

@@ -30,6 +30,7 @@ import {
   getMessageMoreInfoModal,
   getCommunityGuidelinesModal,
   getReactListDialog,
+  getReactClearAllDialog,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 // import { InviteContactsDialog } from '../conversation/InviteContacts';
@@ -61,6 +62,9 @@ import { MessageMoreInfoModal } from '../conversation/message/message-item/Messa
 import { InviteContactsDialog } from './InviteContactDialog';
 import { CommunityGuidelinesDialog } from './CommunityGuidelinesDialog';
 import { ReactListModal } from './ReactListModal';
+import { ReactClearAllModal } from './ReactClearAllModal';
+
+
 
 
 export const ModalContainer: any = () => {
@@ -93,7 +97,7 @@ export const ModalContainer: any = () => {
   const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
   const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
   const reactListModalState = useSelector(getReactListDialog);
-
+  const reactClearAllModalState = useSelector(getReactClearAllDialog);
 
   return (
     <>
@@ -133,6 +137,7 @@ export const ModalContainer: any = () => {
       {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}
       {communityGuidelinesModalState && <CommunityGuidelinesDialog  />}
       {reactListModalState && <ReactListModal {...reactListModalState} />}
+      {reactClearAllModalState && <ReactClearAllModal {...reactClearAllModalState} />}
     </>
   );
 };

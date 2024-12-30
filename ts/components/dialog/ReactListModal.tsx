@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
+import { updateReactClearAllModal, updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
 import { ReactionList } from '../../types/Message';
@@ -71,6 +71,7 @@ const StyledClearButton = styled.button`
   color: var(--color-destructive);
   border: none;
 `;
+// tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
 
@@ -82,7 +83,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const { isPublic,reacts } = msgProps;
+  const { isPublic,reacts,weAreAdmin } = msgProps;
   const [reactions, setReactions] = useState<ReactionList>({});
   const [currentReact, setCurrentReact] = useState('');
   const [senders, setSenders] = useState<Array<string>>([]);
@@ -117,7 +118,8 @@ export const ReactListModal = (props: Props): ReactElement => {
   };
   const handleClearReactions = (event: any) => {
     event.preventDefault();
-    // TODO once we have the new SOGS endpoints
+    handleClose();
+    dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
   };
   const renderReactionSenders = (items: Array<string>) => {
     return items.map((sender: string) => (
@@ -218,7 +220,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                 <span>&#8226;</span>
                 <span>{senders.length}</span>
               </p>
-              {isPublic && (
+              {isPublic && weAreAdmin &&(
                 <StyledClearButton onClick={handleClearReactions}>
                   {window.i18n('clearAll')}
                 </StyledClearButton>

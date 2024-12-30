@@ -19,7 +19,7 @@ import { LinkPreviews } from '../util/linkPreviews';
 import { GoogleChrome } from '../util';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { handleMessageReaction } from '../util/reactions';
-
+import { ReactionType } from '../types/Message';
 
 
 
@@ -349,6 +349,14 @@ export async function handleMessageJob(
   if (regularDataMessage.reaction) {
     const messageId = messageModel.get('isPublic') ? String(messageModel.get('serverId')) : messageHash;
     await handleMessageReaction(regularDataMessage.reaction, messageId);
+    if (
+      regularDataMessage.reaction.action === 0 &&
+      conversation.isPrivate() &&
+      messageModel.get('unread')
+    ) {
+      messageModel.set('reaction', regularDataMessage.reaction as ReactionType);
+      conversation.throttledNotify(messageModel);
+    }
     confirm?.();
   } else {
     const sendingDeviceConversation = await getConversationController().getOrCreateAndWait(

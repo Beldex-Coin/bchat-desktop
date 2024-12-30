@@ -2,7 +2,7 @@ const abbreviations = ['k', 'm', 'b', 't'];
 
 export function abbreviateNumber(number: number, decimals: number = 2): string {
   let result = String(number);
-  decimals = Math.pow(10, decimals);
+  const d = Math.pow(10, decimals);
 
   // Go through the array backwards, so we do the largest first
   for (let i = abbreviations.length - 1; i >= 0; i--) {
@@ -13,15 +13,15 @@ export function abbreviateNumber(number: number, decimals: number = 2): string {
     if (size <= number) {
       // Here, we multiply by decimals, round, and then divide by decimals.
       // This gives us nice rounding to a particular decimal place.
-      number = Math.round((number * decimals) / size) / decimals;
+      let n = Math.round((number * d) / size) / d;
 
       // Handle special case where we round up to the next abbreviation
-      if (number == 1000 && i < abbreviations.length - 1) {
-        number = 1;
+      if (n === 1000 && i < abbreviations.length - 1) {
+        n = 1;
         i++;
       }
 
-      result = String(number) + abbreviations[i];
+      result = String(n) + abbreviations[i];
       break;
     }
   }

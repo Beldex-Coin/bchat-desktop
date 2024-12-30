@@ -52,9 +52,9 @@ export type BchatAlertConfirmModalState = any | null;
 export type AboutBnsModalState = {} | null;
 export type CommunityGuidelinesModalState = {} | null;
 
-export type ReactListModalState = {
-  messageId: string;
+export type ReactModalsState = {
   reaction: string;
+  messageId: string;
 } | null;
 
 export type ModalState = {
@@ -86,7 +86,8 @@ export type ModalState = {
   aboutBnsModal: AboutBnsModalState;
   messageMoreInfo: MessageMoreInfoState;
   communityGuidelinesModal: CommunityGuidelinesModalState;
-  reactListModalState: ReactListModalState;
+  reactListModalState: ReactModalsState;
+  reactClearAllModalState: ReactModalsState;
 };
 
 export const initialModalState: ModalState = {
@@ -119,6 +120,7 @@ export const initialModalState: ModalState = {
   messageMoreInfo: null,
   communityGuidelinesModal: null,
   reactListModalState: null,
+  reactClearAllModalState: null,
 };
 
 const ModalSlice = createSlice({
@@ -212,8 +214,11 @@ const ModalSlice = createSlice({
     updateCommunityGuidelinesModal(state, action: PayloadAction<CommunityGuidelinesModalState>) {
       return { ...state, communityGuidelinesModal: action.payload };
     },
-    updateReactListModal(state, action: PayloadAction<ReactListModalState>) {
+    updateReactListModal(state, action: PayloadAction<ReactModalsState>) {
       return { ...state, reactListModalState: action.payload };
+    },
+    updateReactClearAllModal(state, action: PayloadAction<ReactModalsState>) {
+      return { ...state, reactClearAllModalState: action.payload };
     },
   },
 });
@@ -249,5 +254,6 @@ export const {
   updateMessageMoreInfoModal,
   updateCommunityGuidelinesModal,
   updateReactListModal,
+  updateReactClearAllModal,
 } = actions;
 export const modalReducer = reducer;
