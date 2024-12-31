@@ -22,6 +22,9 @@ import { HTTPError } from '../bchat/utils/errors';
 // import { walletSettingsKey } from '../data/settings-key';
 // tslint:disable: max-classes-per-file
 
+import nativeEmojiData from '@emoji-mart/data';
+import { generateEmojiSearchIndexes } from '../util/emoji';
+
 // Globally disable drag and drop
 document.body.addEventListener(
   'dragover',
@@ -170,6 +173,7 @@ Storage.onready(async () => {
   window.Events.setThemeSetting(newThemeSetting);
 
   try {
+    generateEmojiSearchIndexes(nativeEmojiData);
     await AttachmentDownloads.initAttachmentPaths();
 
     await Promise.all([getConversationController().load(), BlockedNumberController.load()]);

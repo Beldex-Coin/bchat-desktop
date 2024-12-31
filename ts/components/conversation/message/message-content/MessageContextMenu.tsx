@@ -113,8 +113,9 @@ export const MessageContextMenu = (props: Props) => {
 
   const emojiPanelRef = useRef(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
-  const [emojiPanelWidth, setEmojiPanelWidth] = useState(-1);
-  const [emojiPanelHeight, setEmojiPanelHeight] = useState(-1);
+  // emoji-mart v5.1 default dimensions
+  const emojiPanelWidth = 354;
+  const emojiPanelHeight = 435;
 
   const contextMenuRef = useRef(null);
   const { docX, docY } = useMouse(contextMenuRef);
@@ -266,34 +267,26 @@ export const MessageContextMenu = (props: Props) => {
   };
 
   useEffect(() => {
-    if (emojiPanelRef.current !== null) {
-      if (emojiPanelWidth === -1 && emojiPanelHeight === -1) {
-        const { offsetWidth, offsetHeight } = (emojiPanelRef.current as HTMLDivElement)
-          .firstChild as HTMLDivElement;
-        setEmojiPanelWidth(offsetWidth);
-        setEmojiPanelHeight(offsetHeight);
-      } else {
-        const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
+    if (emojiPanelRef.current !== null && emojiPanelRef.current) {
+      const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
 
-        if (mouseX + emojiPanelWidth > windowWidth) {
-          let x = mouseX;
-          x = (mouseX + emojiPanelWidth - windowWidth) * 2;
+      if (mouseX + emojiPanelWidth > windowWidth) {
+        let x = mouseX;
+        x = (mouseX + emojiPanelWidth - windowWidth) * 2;
 
-          if (x === mouseX) {
-            return;
-          }
-          setMouseX(mouseX - x);
+        if (x === mouseX) {
+          return;
         }
+        setMouseX(mouseX - x);
+      }
 
-        if (mouseY + emojiPanelHeight > windowHeight) {
-          const y = mouseY + emojiPanelHeight - windowHeight;
+      if (mouseY + emojiPanelHeight > windowHeight) {
+        const y = mouseY + emojiPanelHeight * 1.25 - windowHeight;
 
-          
-          if (y === mouseY) {
-            return;
-          }
-          setMouseY(mouseY - y);
+        if (y === mouseY) {
+          return;
         }
+        setMouseY(mouseY - y);
       }
     }
   }, [emojiPanelRef.current, emojiPanelWidth, emojiPanelHeight, mouseX, mouseY]);

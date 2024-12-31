@@ -93,6 +93,10 @@ import { SpacerLG } from '../../basic/Text';
 import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 import styled from 'styled-components';
 
+// import { BaseEmoji } from 'emoji-mart';
+import { nativeEmojiData } from '../../../util/emoji';
+import { FixedBaseEmoji } from '../../../types/Util';
+
 export interface ReplyingToMessageProps {
   convoId: string;
   id: string;
@@ -556,7 +560,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({
       showEmojiPanel: true,
     });
-  
   }
 
   private hideEmojiPanel() {
@@ -815,15 +818,19 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     alignItems="center"
                     style={{ minHeight: '60px' }}
                   >
-                    <div className='send-message-input__emoji-overlay'>
-                    {typingEnabled && (
-                      <StyledEmojiPanelContainer ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
-                      <ToggleEmojiButton
-                        ref={this.emojiPanelButton}
-                        onClick={this.toggleEmojiPanel}
-                      />
-                      </StyledEmojiPanelContainer>
-                    )}
+                    <div className="send-message-input__emoji-overlay">
+                      {typingEnabled && (
+                        <StyledEmojiPanelContainer
+                          ref={this.emojiPanel}
+                          onKeyDown={this.onKeyDown}
+                          role="button"
+                        >
+                          <ToggleEmojiButton
+                            ref={this.emojiPanelButton}
+                            onClick={this.toggleEmojiPanel}
+                          />
+                        </StyledEmojiPanelContainer>
+                      )}
                     </div>
 
                     {this.renderTextArea()}
@@ -930,14 +937,16 @@ class CompositionBoxInner extends React.Component<Props, State> {
           data={this.fetchUsersForGroup}
           renderSuggestion={renderUserMentionRow}
         />
-        <Mention
-          trigger=":"
-          markup="__id__"
-          appendSpaceOnAdd={true}
-          regex={neverMatchingRegex}
-          data={searchEmojiForQuery}
-          renderSuggestion={renderEmojiQuickResultRow}
-        />
+        {nativeEmojiData && !_.isEmpty(nativeEmojiData) && (
+          <Mention
+            trigger=":"
+            markup="__id__"
+            appendSpaceOnAdd={true}
+            regex={neverMatchingRegex}
+            data={searchEmojiForQuery}
+            renderSuggestion={renderEmojiQuickResultRow}
+          />
+        )}
       </MentionsInput>
     );
   }
@@ -1514,7 +1523,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     updateDraftForConversation({ conversationKey: this.props.selectedConversationKey, draft });
   }
 
-  private onEmojiClick({ native }: any) {
+  private onEmojiClick(emoji: FixedBaseEmoji) {
     if (!this.props.selectedConversationKey) {
       throw new Error('selectedConversationKey is needed');
     }
@@ -1532,7 +1541,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const before = draft.slice(0, realSelectionStart);
     const end = draft.slice(realSelectionStart);
 
-    const newMessage = `${before}${native}${end}`;
+    const newMessage = `${before}${emoji.native}${end}`;
     this.setState({ draft: newMessage });
     updateDraftForConversation({
       conversationKey: this.props.selectedConversationKey,
