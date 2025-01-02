@@ -8,7 +8,7 @@ import { getTheme } from '../../state/selectors/theme';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { nativeEmojiData } from '../../util/emoji';
+
 type Props = {
   reaction: string;
   messageId: string;
@@ -62,14 +62,7 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
     >
       <StyledReactClearAllContainer container={true} flexDirection={'column'} darkMode={darkMode}>
         <p>
-          Are you sure you want to clear all  <span
-            role={'img'}
-            aria-label={
-              nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[reaction] : undefined
-            }
-          >
-            {reaction}
-          </span>?
+          Are you sure you want to clear all  <p>{window.i18n('clearAllReactions', [reaction])}</p>
         </p>
         <hr />
         <div className="Bchat-modal__button-group">

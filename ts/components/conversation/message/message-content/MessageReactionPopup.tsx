@@ -71,12 +71,12 @@ const renderContacts = (_contacts: string) => {
     const [names, others] = _contacts.split('&');
     return (
       <span>
-        {names} & <span style={{ color: 'var(--color-accent' }}>{others}</span> reacted with
+        {names} & <span style={{ color: 'var(--color-accent' }}>{others}</span> {window.i18n('reactionTooltip')}
       </span>
     );
   }
 
-  return <span>{_contacts} reacted with</span>;
+  return <span>{_contacts} {window.i18n('reactionTooltip')}</span>;
 };
 
 

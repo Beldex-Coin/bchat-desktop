@@ -90,6 +90,7 @@ const StyledReactionOverflow = styled.button`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-direction: row-reverse;
 
   span {
     background-color: var(--color-received-message-background);
@@ -100,17 +101,7 @@ const StyledReactionOverflow = styled.button`
     padding: 1px 4.5px;
   }
 
-  span:nth-child(1) {
-    z-index: 3;
-  }
-
-  span:nth-child(2) {
-    z-index: 2;
-  }
-
-  span:nth-child(3) {
-    z-index: 1;
-  }
+  
 `;
 
 const StyledReadLess = styled.span`
@@ -275,6 +266,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       <StyledReactionOverflow onClick={handleExpand}>
         {Object.keys(reactions)
           .slice(4, 7)
+          .reverse()
           .map(emoji => {
             return (
               <span
@@ -297,7 +289,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       {renderReactionList()}
       <StyledReadLess onClick={handleExpand}>
         <UpArrowSVG />
-        Show Less
+        {window.i18n('expandedReactionsText')}
       </StyledReadLess>
     </>
   );

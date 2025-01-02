@@ -16,6 +16,24 @@ type Props = {
   show: boolean;
   isModal?: boolean;
 };
+const pickerProps: FixedPickerProps = {
+  title: '',
+  showPreview: true,
+  autoFocus: true,
+  skinTonePosition: 'preview',
+};
+
+const loadLocale = async () => {
+  if (!window) {
+    return undefined;
+  }
+
+  const lang = (window.i18n as any).getLocale();
+  if (lang !== 'en') {
+    const langData = await import(`@emoji-mart/data/i18n/${lang}.json`);
+    return langData;
+  }
+}
 export const StyledEmojiPanel = styled.div<{ isModal: boolean;theme: 'light' | 'dark' }>`
   padding: var(--margins-lg);
   z-index: 5;
@@ -81,23 +99,37 @@ export const BchatEmojiPanel = (props: Props) => {
   const theme = useSelector(getTheme);
 
   const pickerRef = useRef<HTMLDivElement>(null);
-  const pickerProps: FixedPickerProps = {
-    theme,
-    title: '',
-    showPreview: true,
-    onEmojiSelect: onEmojiClicked,
-    autoFocus: true,
-    skinTonePosition: 'preview',
-  };
 
   useEffect(() => {
+    let isCancelled = false;
     if (pickerRef.current && pickerRef.current.children.length === 0) {
         // tslint:disable-next-line: no-unused-expression
        
-        new Picker({ data:data, ref: pickerRef, ...pickerProps });
+        loadLocale()
+        .then(async i18n => {
+          if (isCancelled) {
+            return;
+          }
+          // tslint:disable-next-line: no-unused-expression
+          new Picker({
+            data,
+            ref: pickerRef,
+            i18n,
+            onEmojiSelect: onEmojiClicked,
+            ...pickerProps,
+          });
+        })
+        .catch(() => {
+          if (isCancelled) {
+            return;
+          }
+        })
       
     }
-  }, [data, pickerProps]);
+    return () => {
+      isCancelled = true;
+    };
+  }, [data, pickerProps,loadLocale]);
 
   return (
     <StyledEmojiPanel
