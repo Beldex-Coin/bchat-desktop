@@ -1,4 +1,4 @@
-import { FixedBaseEmoji } from "../types/Util";
+import { FixedBaseEmoji, NativeEmojiData } from '../types/Util';
 
 export type SizeClassType = 'default' | 'small' | 'medium' | 'large' | 'jumbo';
 
@@ -38,9 +38,10 @@ export function getEmojiSizeClass(str: string): SizeClassType {
     return 'jumbo';
   }
 }
-export let nativeEmojiData: any = {};
+export let nativeEmojiData: NativeEmojiData | null = null;
 
-export function generateEmojiSearchIndexes(data: any) {
+export function initialiseEmojiData(data: any) {
+  const ariaLabels: Record<string, string> = {};
   Object.entries(data.emojis).forEach(([key, value]: [string, any]) => {
     value.search = `,${[
       [value.id, false],
@@ -62,15 +63,19 @@ export function generateEmojiSearchIndexes(data: any) {
       .filter(a => a && a.trim())
       .join(',')})}`;
 
+      (value as FixedBaseEmoji).skins.forEach(skin => {
+        ariaLabels[skin.native] = value.name;
+      });
     data.emojis[key] = value;
   });
+  data.ariaLabels = ariaLabels;
   nativeEmojiData = data;
 }
 
 // Synchronous version of Emoji Mart's SearchIndex.search()
 // If you upgrade the package things will probably break
 export function searchSync(query: string, args?: any): Array<any> {
-  if (!nativeEmojiData || Object.keys(nativeEmojiData).length === 0) {
+  if (!nativeEmojiData) {
     window.log.error('No native emoji data found');
     return [];
   }
@@ -139,4 +144,24 @@ export function searchSync(query: string, args?: any): Array<any> {
     results = results.slice(0, maxResults);
   }
   return results;
+}
+
+// No longer exists on emoji-mart v5.1
+export function getEmojiDataFromNative(nativeString: string): FixedBaseEmoji | null {
+  if (!nativeEmojiData) {
+    return null;
+  }
+
+  const matches = Object.values(nativeEmojiData.emojis).filter((emoji: any) => {
+    const skinMatches = (emoji as FixedBaseEmoji).skins.filter((skin: any) => {
+      return skin.native === nativeString;
+    });
+    return skinMatches.length > 0;
+  });
+
+  if (matches.length === 0) {
+    return null;
+  }
+
+  return matches[0] as FixedBaseEmoji;
 }

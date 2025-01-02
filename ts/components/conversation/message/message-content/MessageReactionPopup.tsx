@@ -2,6 +2,9 @@ import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMessageById } from '../../../../data/data';
 import { readableList } from '../../../../util/readableList';
+import { PubKey } from '../../../../bchat/types/PubKey';
+
+import { nativeEmojiData } from '../../../../util/emoji';
 
 export const StyledPopupContainer = styled.div<{ tooltipPosition: TipPosition }>`
   display: flex;
@@ -59,6 +62,24 @@ type Props = {
 };
 export type TipPosition = 'center' | 'left' | 'right';
 
+const renderContacts = (_contacts: string) => {
+  if (!_contacts) {
+    return <></>;
+  }
+
+  if (_contacts.indexOf('&') !== -1 && _contacts.indexOf('other') !== -1) {
+    const [names, others] = _contacts.split('&');
+    return (
+      <span>
+        {names} & <span style={{ color: 'var(--color-accent' }}>{others}</span> reacted with
+      </span>
+    );
+  }
+
+  return <span>{_contacts} reacted with</span>;
+};
+
+
 export const MessageReactionPopup = (props: Props): ReactElement => {
   const { messageId, emoji, senders, tooltipPosition = 'center', onClick } = props;
 
@@ -70,32 +91,12 @@ export const MessageReactionPopup = (props: Props): ReactElement => {
     if (message) {
       results = senders.map(sender => {
         const contact = message.findAndFormatContact(sender);
-        if (contact.isMe) {
-          // remove pubkey
-          return contact.title ? contact.title.slice(0, -14) : contact.profileName ?? sender;
-        }
-        return contact.profileName ?? sender;
+        return contact?.profileName || contact?.name || PubKey.shorten(sender);
       });
     }
     return results;
   }, [messageId]);
 
-  const renderContacts = (_contacts: string) => {
-    if (!_contacts) {
-      return <></>;
-    }
-
-    if (_contacts.indexOf('&') !== -1 && _contacts.indexOf('other') !== -1) {
-      const [names, others] = _contacts.split('&');
-      return (
-        <span>
-          {names} & <span style={{ color: 'var(--color-accent' }}>{others}</span> reacted with
-        </span>
-      );
-    }
-
-    return <span>{_contacts} reacted with</span>;
-  };
 
   useEffect(() => {
     let isCancelled = false;
@@ -125,7 +126,12 @@ export const MessageReactionPopup = (props: Props): ReactElement => {
       }}
     >
       {renderContacts(contacts)}
-      <StyledEmoji>{emoji}</StyledEmoji>
+      <StyledEmoji
+        role={'img'}
+        aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+      >
+        {emoji}
+      </StyledEmoji>
     </StyledPopupContainer>
   );
 };

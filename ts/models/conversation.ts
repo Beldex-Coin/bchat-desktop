@@ -684,7 +684,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         throw new Error('Only opengroupv2 are supported now');
       }
       // TODO move function elsewhere as it is updating the local client before updating the timestamp for the receiving client
-      await handleMessageReaction(reaction);
+      const sender = UserUtils.getOurPubKeyStrFromCache();
+      await handleMessageReaction(reaction, sender);
 
       // an OpenGroupV2 message is just a visible message
       const chatMessageParams: VisibleMessageParams = {

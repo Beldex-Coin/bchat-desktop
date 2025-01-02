@@ -15,6 +15,8 @@ import { useMouse } from 'react-use';
 import { Flex } from '../../../basic/Flex';
 import { abbreviateNumber } from '../../../../util/abbreviateNumber';
 
+import { nativeEmojiData } from '../../../../util/emoji';
+
 type Props = {
   messageId: string;
   hasReactLimit?: boolean;
@@ -146,7 +148,7 @@ export const MessageReactions = (props: Props): ReactElement => {
   };
 
   const reactionRef = useRef(null);
-  const { docX } = useMouse(reactionRef);
+  const { docX ,elW} = useMouse(reactionRef);
   const popupXDefault = -101;
   const popupYDefault = -90;
   const [popupX, setPopupX] = useState(popupXDefault);
@@ -200,7 +202,7 @@ export const MessageReactions = (props: Props): ReactElement => {
               setPopupX(Math.abs(popupXDefault) * 1.5 * -1);
               setTooltipPosition('right');
               // overflow onto conversations means we lock to the right
-            } else if (docX <= gutterWidth + tooltipMidPoint) {
+            } else if (docX - elW<= gutterWidth + tooltipMidPoint) {
               const offset = -12.5;
               setPopupX(offset);
               setTooltipPosition('left');
@@ -214,7 +216,12 @@ export const MessageReactions = (props: Props): ReactElement => {
           console.log('opening popup at');
         }}
       >
-        <span>{emoji}</span>
+          <span
+            role={'img'}
+            aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+          >
+            {emoji}
+          </span>
         {showCount && <span>{abbreviateNumber(senders.length)}</span>}
       </StyledReaction>
       {conversationType === 'group' && popupReaction && popupReaction === emoji && (
@@ -268,9 +275,19 @@ export const MessageReactions = (props: Props): ReactElement => {
       <StyledReactionOverflow onClick={handleExpand}>
         {Object.keys(reactions)
           .slice(4, 7)
-          .map(emoji => (
-            <span key={emoji}>{emoji}</span>
-          ))}
+          .map(emoji => {
+            return (
+              <span
+                key={emoji}
+                role={'img'}
+                aria-label={
+                  nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined
+                }
+              >
+                {emoji}
+              </span>
+            );
+          })}
       </StyledReactionOverflow>
     </StyledMessageReactions>
   );

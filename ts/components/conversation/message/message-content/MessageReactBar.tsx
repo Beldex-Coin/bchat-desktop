@@ -6,6 +6,8 @@ import { RecentReactions } from '../../../../types/Util';
 
 import { getRecentReactions } from '../../../../util/storage';
 
+import { nativeEmojiData } from '../../../../util/emoji';
+import { isEqual } from 'lodash';
 
 type Props = {
   action: (...args: Array<any>) => void;
@@ -38,34 +40,42 @@ const ReactButton=styled.div`
 baakground:red;
 `
 
+const renderReactButton = (emoji: string, action: (...args: Array<any>) => void) => (
+  <ReactButton
+    key={emoji}
+    role={'img'}
+      aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+    onClick={() => {
+      action(emoji);
+     
+    }}
+  >
+    {emoji}
+  </ReactButton>
+);
+
 export const MessageReactBar = (props: Props): ReactElement => {
     const { action, additionalAction } = props;
     const [recentReactions, setRecentReactions] = useState<RecentReactions>();
 
-    const renderReactButton = (emoji: string) => (
-      <ReactButton
-        key={emoji}
-        onClick={() => {
-          action(emoji);
-         
-        }}
-      >
-        {emoji}
-      </ReactButton>
-    );
-  
-    const renderReactButtonList = (reactions: Array<string>) => (
-      <>
-        {reactions.map(emoji => {
-          return renderReactButton(emoji);
-        })}
-      </>
-    );
-  
+    
     const loadRecentReactions = useCallback(async () => {
       const reactions = new RecentReactions(await getRecentReactions());
       return reactions;
     }, []);
+    
+    const renderReactButtonList = useCallback(
+      () => (
+        <>
+          {recentReactions &&
+            recentReactions.items.map(emoji => {
+              return renderReactButton(emoji, action);
+            })}
+        </>
+      ),
+      [recentReactions, action]
+    );
+   
   
     useEffect(() => {
       let isCancelled = false;
@@ -74,7 +84,9 @@ export const MessageReactBar = (props: Props): ReactElement => {
           if (isCancelled) {
             return;
           }
-          setRecentReactions(reactions);
+          if (reactions && !isEqual(reactions, recentReactions)) {
+            setRecentReactions(reactions);
+          }
         })
         .catch(() => {
           if (isCancelled) {
@@ -85,14 +97,14 @@ export const MessageReactBar = (props: Props): ReactElement => {
       return () => {
         isCancelled = true;
       };
-    }, [loadRecentReactions]);
+    }, [recentReactions,loadRecentReactions]);
   
     if (!recentReactions) {
       return <></>;
     }
   return (
     <StyledMessageReactBar>
-   {renderReactButtonList(recentReactions.items)}
+  {renderReactButtonList()}
       <span>
         <BchatIconButton
           iconColor={'var(--color-text)'}

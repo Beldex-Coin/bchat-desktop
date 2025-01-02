@@ -8,8 +8,24 @@ import { ReactionList } from '../types/Message';
 import { RecentReactions } from '../types/Util';
 import { getMessageById, getMessagesBySentAt } from '../data/data';
 
+const rateCountLimit = 20;
+const rateTimeLimit = 60 * 1000;
+const latestReactionTimestamps: Array<number> = [];
 
 export const sendMessageReaction = async (messageId: string, emoji: string) => {
+  const timestamp = Date.now();
+  latestReactionTimestamps.push(timestamp);
+
+  if (latestReactionTimestamps.length > rateCountLimit) {
+    const firstTimestamp = latestReactionTimestamps[0];
+    if (timestamp - firstTimestamp < rateTimeLimit) {
+      latestReactionTimestamps.pop();
+      return;
+    } else {
+      latestReactionTimestamps.shift();
+    }
+  }
+  
   const found = await getMessageById(messageId);
   if (found && found.get('sent_at')) {
     const conversationModel = found?.getConversation();
@@ -18,15 +34,12 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       return;
     }
 
-    const author = UserUtils.getOurPubKeyStrFromCache();
+    const me = UserUtils.getOurPubKeyStrFromCache();
+    const author = found.get('source');
     let action = 0;
 
     const reacts = found.get('reacts');
-    if (
-      reacts &&
-      Object.keys(reacts).includes(emoji) &&
-      Object.keys(reacts[emoji]).includes(author)
-    ) {
+    if (reacts && Object.keys(reacts).includes(emoji) && Object.keys(reacts[emoji]).includes(me)) {
       window.log.info('found matching reaction removing it');
       action = 1;
     } else {
@@ -43,8 +56,8 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       action,
     });
 
-    window.log.info(
-      author,
+    window.log.info(  
+      me,
       `${action === 0 ? 'added' : 'removed'} a`,
       emoji,
       'reaction at',
@@ -58,9 +71,11 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
 /**
  * Handle reactions on the client by updating the state of the source message
  */
-export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction,messageId?: string) => {
+export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction,sender: string,messageId?: string) => {
   window?.log?.warn(`reaction: DataMessage ID: ${messageId}.`);
   const originalMessageTimestamp = Number(reaction.id);
+  const originalMessageAuthor = reaction.author;
+
   if (!reaction.emoji) {
     window?.log?.warn(`There is no emoji for the reaction ${originalMessageTimestamp}.`);
     return;
@@ -69,7 +84,13 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   const collection = await getMessagesBySentAt(originalMessageTimestamp);
   const originalMessage = collection.find((item: MessageModel) => {
     const messageTimestamp = item.get('sent_at');
-    return Boolean(messageTimestamp && messageTimestamp === originalMessageTimestamp);
+    const author = item.get('source');
+    return Boolean(
+      messageTimestamp &&
+        messageTimestamp === originalMessageTimestamp &&
+        author &&
+        author === originalMessageAuthor
+    );
   });
 
   if (!originalMessage) {
@@ -85,21 +106,19 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   switch (reaction.action) {
     // Add reaction
     case 0:
-      if (senders.includes(reaction.author) && details[reaction.author] !== '') {
-        window?.log?.info(
-          'Received duplicate message reaction. Dropping it. id:',
-          details[reaction.author]
-        );
+      if (senders.includes(sender) && details[sender] !== '') {
+        window?.log?.info('Received duplicate message reaction. Dropping it. id:', details[sender]);
         return;
       }
-      details[reaction.author] = messageId ?? '';
+      details[sender] = messageId ?? '';
       break;
     // Remove reaction
     case 1:
     default:
       if (senders.length > 0) {
-        if (senders.indexOf(reaction.author) >= 0) {
-          delete details[reaction.author];
+        if (senders.indexOf(sender) >= 0) {
+          // tslint:disable-next-line: no-dynamic-delete
+          delete details[sender];
         }
       }
       

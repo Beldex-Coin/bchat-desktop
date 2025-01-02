@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updateReactClearAllModal, updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
+import {
+  updateReactClearAllModal,
+  updateReactListModal,
+  updateUserDetailsModal,
+} from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
 import { ReactionList } from '../../types/Message';
@@ -16,6 +20,8 @@ import { getMessageById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
 import { sendMessageReaction } from '../../util/reactions';
 import { BchatIconButton } from '../icon';
+
+import { nativeEmojiData } from '../../util/emoji';
 
 interface Props {
   messageId: string;
@@ -49,12 +55,17 @@ const StyledReactionBar = styled(Flex)`
   margin: 12px 0 20px 4px;
 
   p {
+    color: var(--color-text-subtle);
     margin: 0;
     span {
       color: var(--color-text-subtle);
     }
     span:nth-child(1) {
       margin: 0 8px;
+      color: var(--color-text);
+    }
+    span:nth-child(2) {
+      margin-right: 8px;
     }
   }
 `;
@@ -83,16 +94,18 @@ export const ReactListModal = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const { isPublic,reacts,weAreAdmin } = msgProps;
+  const { isPublic, reacts, weAreAdmin } = msgProps;
   const [reactions, setReactions] = useState<ReactionList>({});
   const [currentReact, setCurrentReact] = useState('');
   const [senders, setSenders] = useState<Array<string>>([]);
+  const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
 
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
   };
 
   const handleReactionClick = (emoji: string) => {
+    setReactAriaLabel(nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined);
     setCurrentReact(emoji);
   };
   const handleClose = () => {
@@ -153,6 +166,9 @@ export const ReactListModal = (props: Props): ReactElement => {
 
   useEffect(() => {
     if (currentReact === '' && currentReact !== reaction) {
+      setReactAriaLabel(
+        nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[reaction] : undefined
+      );
       setCurrentReact(reaction);
     }
     if (reacts && !isEqual(reactions, reacts)) {
@@ -166,7 +182,6 @@ export const ReactListModal = (props: Props): ReactElement => {
     let _senders = reactions[currentReact] ? Object.keys(reactions[currentReact]) : null;
 
     if (_senders && !isEqual(senders, _senders)) {
-
       if (_senders.length > 1) {
         const meIndex = _senders.indexOf(me);
         if (meIndex >= 0) {
@@ -177,8 +192,7 @@ export const ReactListModal = (props: Props): ReactElement => {
       setSenders(_senders);
     }
 
-   
-    if ( senders.length > 0 && (!reactions[currentReact] || !_senders || _senders.length === 0) ) {
+    if (senders.length > 0 && (!reactions[currentReact] || !_senders || _senders.length === 0)) {
       setSenders([]);
     }
   }, [currentReact, reaction, reacts, reactions, senders]);
@@ -205,17 +219,19 @@ export const ReactListModal = (props: Props): ReactElement => {
             flexDirection={'column'}
             alignItems={'flex-start'}
           >
-             <StyledReactionBar
+            <StyledReactionBar
               container={true}
               justifyContent={'space-between'}
               alignItems={'center'}
             >
               <p>
-                {currentReact}
+                <span role={'img'} aria-label={reactAriaLabel}>
+                  {currentReact}
+                </span>
                 <span>&#8226;</span>
                 <span>{senders.length}</span>
               </p>
-              {isPublic && weAreAdmin &&(
+              {isPublic && weAreAdmin && (
                 <StyledClearButton onClick={handleClearReactions}>
                   {window.i18n('clearAll')}
                 </StyledClearButton>

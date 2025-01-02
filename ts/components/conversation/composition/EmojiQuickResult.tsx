@@ -3,7 +3,9 @@ import { SuggestionDataItem } from 'react-mentions';
 import styled from 'styled-components';
 
 import { searchSync } from '../../../util/emoji.js';
-import {  SearchIndex } from 'emoji-mart'
+import {  SearchIndex } from 'emoji-mart';
+
+
 
 const EmojiQuickResult = styled.span`
   width: 100%;

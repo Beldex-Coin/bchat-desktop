@@ -94,7 +94,7 @@ import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 import styled from 'styled-components';
 
 // import { BaseEmoji } from 'emoji-mart';
-import { nativeEmojiData } from '../../../util/emoji';
+// import { nativeEmojiData } from '../../../util/emoji';
 import { FixedBaseEmoji } from '../../../types/Util';
 
 export interface ReplyingToMessageProps {
@@ -937,7 +937,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           data={this.fetchUsersForGroup}
           renderSuggestion={renderUserMentionRow}
         />
-        {nativeEmojiData && !_.isEmpty(nativeEmojiData) && (
+        {/* {nativeEmojiData && !_.isEmpty(nativeEmojiData) && ( */}
           <Mention
             trigger=":"
             markup="__id__"
@@ -946,7 +946,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             data={searchEmojiForQuery}
             renderSuggestion={renderEmojiQuickResultRow}
           />
-        )}
+        {/* )} */}
       </MentionsInput>
     );
   }
