@@ -1352,7 +1352,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.get('reaction')) {
       const reaction = this.get('reaction');
       if (reaction && reaction.emoji && reaction.emoji !== '') {
-        return `Reacts to a message with ${reaction.emoji}`;
+        return window.i18n('reactionNotification', [reaction.emoji]);
       }
     }
     return this.get('body');

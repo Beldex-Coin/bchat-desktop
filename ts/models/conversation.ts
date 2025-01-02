@@ -695,23 +695,27 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         reaction,
         lokiProfile: UserUtils.getOurProfile(),
       };
-
-      const shouldApprove = !this.isApproved() && this.isPrivate();
-      const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
-      const hasIncomingMessages = incomingMessageCount > 0;
-      if (shouldApprove) {
-        await this.setIsApproved(true);
-        if (hasIncomingMessages) {
-          // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
-          await this.addOutgoingApprovalMessage(Date.now());
-          if (!this.didApproveMe()) {
-            await this.setDidApproveMe(true);
-          }
-          // should only send once
-          await this.sendMessageRequestResponse(true);
-          void forceSyncConfigurationNowIfNeeded();
-        }
+      await this.handleMessageApproval();
+      if (this.isOpenGroupV2()) {
+        await this.handleOpenGroupV2Message(chatMessageParams);
+        return;
       }
+      // const shouldApprove = !this.isApproved() && this.isPrivate();
+      // const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+      // const hasIncomingMessages = incomingMessageCount > 0;
+      // if (shouldApprove) {
+      //   await this.setIsApproved(true);
+      //   if (hasIncomingMessages) {
+      //     // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+      //     await this.addOutgoingApprovalMessage(Date.now());
+      //     if (!this.didApproveMe()) {
+      //       await this.setDidApproveMe(true);
+      //     }
+      //     // should only send once
+      //     await this.sendMessageRequestResponse(true);
+      //     void forceSyncConfigurationNowIfNeeded();
+      //   }
+      // }
 
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {
@@ -724,19 +728,12 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         return;
       }
       if (this.isMediumGroup()) {
-        const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
-        const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
-          chatMessage: chatMessageMediumGroup,
-          groupId: destination,
-        });
-
-        // we need the return await so that errors are caught in the catch {}
-        await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+        await this.handleMediumGroup(chatMessageParams, destination);
         return;
       }
 
       if (this.isClosedGroup()) {
-        throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+        this.handleLegacyClosedGroup();
       }
 
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
@@ -771,33 +768,27 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         quote: uploads.quote,
         lokiProfile: UserUtils.getOurProfile(),
       };
+      await this.handleMessageApproval();
 
-      const shouldApprove = !this.isApproved() && this.isPrivate();
-      const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
-      const hasIncomingMessages = incomingMessageCount > 0;
-      if (shouldApprove) {
-        await this.setIsApproved(true);
-        if (hasIncomingMessages) {
-          // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
-          await this.addOutgoingApprovalMessage(Date.now());
-          if (!this.didApproveMe()) {
-            await this.setDidApproveMe(true);
-          }
-          // should only send once
-          await this.sendMessageRequestResponse(true);
-          void forceSyncConfigurationNowIfNeeded();
-        }
-      }
+      // const shouldApprove = !this.isApproved() && this.isPrivate();
+      // const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+      // const hasIncomingMessages = incomingMessageCount > 0;
+      // if (shouldApprove) {
+      //   await this.setIsApproved(true);
+      //   if (hasIncomingMessages) {
+      //     // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+      //     await this.addOutgoingApprovalMessage(Date.now());
+      //     if (!this.didApproveMe()) {
+      //       await this.setDidApproveMe(true);
+      //     }
+      //     // should only send once
+      //     await this.sendMessageRequestResponse(true);
+      //     void forceSyncConfigurationNowIfNeeded();
+      //   }
+      // }
 
       if (this.isOpenGroupV2()) {
-        const chatMessageOpenGroupV2 = new OpenGroupVisibleMessage(chatMessageParams);
-        const roomInfos = this.toOpenGroupV2();
-        if (!roomInfos) {
-          throw new Error('Could not find this room in db');
-        }
-
-        // we need the return await so that errors are caught in the catch {}
-        await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
+        await this.handleOpenGroupV2Message(chatMessageParams);
         return;
       }
      
@@ -832,16 +823,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
-          const groupInvitation = message.get('groupInvitation');
-          const groupInvitMessage = new GroupInvitationMessage({
-            identifier: id,
-            timestamp: sentAt,
-            name: groupInvitation.name,
-            url: groupInvitation.url,
-            expireTimer: this.get('expireTimer'),
-          });
-          // we need the return await so that errors are caught in the catch {}
-          await getMessageQueue().sendToPubKey(destinationPubkey, groupInvitMessage);
+          await this.handleGroupInvitation(message, sentAt, destinationPubkey);
           return;
         }
         const chatMessagePrivate = new VisibleMessage(chatMessageParams);
@@ -851,20 +833,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       }
 
       if (this.isMediumGroup()) {
-        const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
-        const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
-          chatMessage: chatMessageMediumGroup,
-          groupId: destination,
-        });
-
-        // we need the return await so that errors are caught in the catch {}
-        await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+        await this.handleMediumGroup(chatMessageParams, destination);
         return;
       }
 
       if (this.isClosedGroup()) {
-        throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
-      }
+         // throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+         this.handleLegacyClosedGroup();
+        }
 
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
     } catch (e) {
@@ -1938,6 +1914,65 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     getMessageQueue()
       .sendToPubKey(device, typingMessage)
       .catch(window?.log?.error);
+  }
+
+  private async handleMessageApproval() {
+    const shouldApprove = !this.isApproved() && this.isPrivate();
+    const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+    const hasIncomingMessages = incomingMessageCount > 0;
+    if (shouldApprove) {
+      await this.setIsApproved(true);
+      if (hasIncomingMessages) {
+        // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+        await this.addOutgoingApprovalMessage(Date.now());
+        if (!this.didApproveMe()) {
+          await this.setDidApproveMe(true);
+        }
+        // should only send once
+        await this.sendMessageRequestResponse(true);
+        void forceSyncConfigurationNowIfNeeded();
+      }
+    }
+  }
+  private async handleOpenGroupV2Message(chatMessageParams: VisibleMessageParams) {
+    const chatMessageOpenGroupV2 = new OpenGroupVisibleMessage(chatMessageParams);
+    const roomInfos = this.toOpenGroupV2();
+    if (!roomInfos) {
+      throw new Error('Could not find this room in db');
+    }
+
+    // we need the return await so that errors are caught in the catch {}
+    await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
+  }
+  private async handleGroupInvitation(
+    message: MessageModel,
+    sentAt: number,
+    destinationPubkey: PubKey
+  ) {
+    const groupInvitation = message.get('groupInvitation');
+    const groupInvitMessage = new GroupInvitationMessage({
+      identifier: message.id,
+      timestamp: sentAt,
+      name: groupInvitation.name,
+      url: groupInvitation.url,
+      expireTimer: this.get('expireTimer'),
+    });
+    // we need the return await so that errors are caught in the catch {}
+    await getMessageQueue().sendToPubKey(destinationPubkey, groupInvitMessage);
+  }
+  private async handleMediumGroup(chatMessageParams: VisibleMessageParams, destination: any) {
+    const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
+    const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
+      chatMessage: chatMessageMediumGroup,
+      groupId: destination,
+    });
+
+    // we need the return await so that errors are caught in the catch {}
+    await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+  }
+
+  private handleLegacyClosedGroup() {
+    throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
   }
 }
 

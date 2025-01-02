@@ -134,7 +134,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   originalMessage.set({
     reacts: !_.isEmpty(reacts) ? reacts : undefined,
   });
-
+console.log('originalMessage -->',reacts)
   await originalMessage.commit();
 };
 

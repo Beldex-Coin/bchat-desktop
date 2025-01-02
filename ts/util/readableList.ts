@@ -25,7 +25,11 @@ export const readableList = (arr: Array<string>, conjunction: string = '&', limi
         }
   
         if (others > 0) {
-          result += ` ${conjunction} ${others} other${others > 1 ? 's' : ''}`;
+          result += ` ${conjunction} ${others} ${
+            others > 1
+              ? window.i18n('readableListCounterPlural')
+              : window.i18n('readableListCounterSingular')
+          }`;
         }
   
         return result;
