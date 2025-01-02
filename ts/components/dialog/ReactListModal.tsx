@@ -82,6 +82,74 @@ const StyledClearButton = styled.button`
   color: var(--color-destructive);
   border: none;
 `;
+type ReactionSendersProps = {
+  messageId: string;
+  currentReact: string;
+  senders: Array<string>;
+  me: string;
+  handleClose: () => void;
+}
+
+const ReactionSenders = (props: ReactionSendersProps) => {
+  const { messageId, currentReact, senders, me, handleClose } = props;
+  const dispatch = useDispatch();
+
+  const handleAvatarClick = async (sender: string) => {
+    const message = await getMessageById(messageId);
+    if (message) {
+      handleClose();
+      const contact = message.findAndFormatContact(sender);
+      dispatch(
+        updateUserDetailsModal({
+          conversationId: sender,
+          userName: contact.name || contact.profileName || sender,
+          authorAvatarPath: contact.avatarPath,
+        })
+      );
+    }
+  };
+
+  const handleRemoveReaction = async () => {
+    await sendMessageReaction(messageId, currentReact);
+  };
+
+  return (
+    <>
+      {senders.map((sender: string) => (
+        <StyledReactionSender
+          key={`${messageId}-${sender}`}
+          container={true}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+        >
+          <Flex container={true} alignItems={'center'}>
+            <Avatar
+              size={AvatarSize.XS}
+              pubkey={sender}
+              onAvatarClick={async () => {
+                await handleAvatarClick(sender);
+              }}
+            />
+            <ContactName
+              pubkey={sender}
+              module="module-conversation__user"
+              shouldShowPubkey={false}
+            />
+          </Flex>
+          {sender === me && (
+            <BchatIconButton
+              iconType="exit"
+              iconSize="small"
+              onClick={async () => {
+                await handleRemoveReaction();
+              }}
+            />
+          )}
+        </StyledReactionSender>
+      ))}
+    </>
+  );
+};
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
@@ -112,58 +180,14 @@ export const ReactListModal = (props: Props): ReactElement => {
     dispatch(updateReactListModal(null));
   };
 
-  const handleAvatarClick = async (sender: string) => {
-    const message = await getMessageById(messageId);
-    if (message) {
-      handleClose();
-      const contact = message.findAndFormatContact(sender);
-      dispatch(
-        updateUserDetailsModal({
-          conversationId: sender,
-          userName: contact.name || contact.profileName || sender,
-          authorAvatarPath: contact.avatarPath,
-        })
-      );
-    }
-  };
-  const handleRemoveReaction = async (emoji: string) => {
-    await sendMessageReaction(messageId, emoji);
-  };
+
+ 
   const handleClearReactions = (event: any) => {
     event.preventDefault();
     handleClose();
     dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
   };
-  const renderReactionSenders = (items: Array<string>) => {
-    return items.map((sender: string) => (
-      <StyledReactionSender container={true} justifyContent={'space-between'} alignItems={'center'}>
-        <Flex container={true} alignItems={'center'}>
-          <Avatar
-            size={AvatarSize.XS}
-            pubkey={sender}
-            onAvatarClick={async () => {
-              await handleAvatarClick(sender);
-            }}
-          />
-          <ContactName
-            pubkey={sender}
-            module="module-conversation__user"
-            shouldShowPubkey={false}
-          />
-        </Flex>
-        {sender === me && (
-          <BchatIconButton
-            iconType="exit"
-            iconSize="small"
-            onClick={async () => {
-              await handleRemoveReaction(currentReact);
-            }}
-          />
-        )}
-      </StyledReactionSender>
-    ));
-  };
-
+ 
   useEffect(() => {
     if (currentReact === '' && currentReact !== reaction) {
       setReactAriaLabel(
@@ -237,7 +261,15 @@ export const ReactListModal = (props: Props): ReactElement => {
                 </StyledClearButton>
               )}
             </StyledReactionBar>
-            {senders && senders.length > 0 && renderReactionSenders(senders)}
+            {senders && senders.length > 0 && (
+              <ReactionSenders
+                messageId={messageId}
+                currentReact={currentReact}
+                senders={senders}
+                me={me}
+                handleClose={handleClose}
+              />
+            )}
           </StyledSendersContainer>
         )}
       </StyledReactListContainer>

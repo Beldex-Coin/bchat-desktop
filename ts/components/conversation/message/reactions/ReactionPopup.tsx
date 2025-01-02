@@ -80,7 +80,7 @@ const renderContacts = (_contacts: string) => {
 };
 
 
-export const MessageReactionPopup = (props: Props): ReactElement => {
+export const ReactionPopup = (props: Props): ReactElement => {
   const { messageId, emoji, senders, tooltipPosition = 'center', onClick } = props;
 
   const [contacts, setContacts] = useState('');

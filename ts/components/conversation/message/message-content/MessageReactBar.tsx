@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BchatIconButton } from '../../../icon';
 import { RecentReactions } from '../../../../types/Util';
@@ -40,42 +40,15 @@ const ReactButton=styled.div`
 baakground:red;
 `
 
-const renderReactButton = (emoji: string, action: (...args: Array<any>) => void) => (
-  <ReactButton
-    key={emoji}
-    role={'img'}
-      aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
-    onClick={() => {
-      action(emoji);
-     
-    }}
-  >
-    {emoji}
-  </ReactButton>
-);
+const loadRecentReactions = async () => {
+  const reactions = new RecentReactions(await getRecentReactions());
+  return reactions;
+}
 
 export const MessageReactBar = (props: Props): ReactElement => {
     const { action, additionalAction } = props;
     const [recentReactions, setRecentReactions] = useState<RecentReactions>();
 
-    
-    const loadRecentReactions = useCallback(async () => {
-      const reactions = new RecentReactions(await getRecentReactions());
-      return reactions;
-    }, []);
-    
-    const renderReactButtonList = useCallback(
-      () => (
-        <>
-          {recentReactions &&
-            recentReactions.items.map(emoji => {
-              return renderReactButton(emoji, action);
-            })}
-        </>
-      ),
-      [recentReactions, action]
-    );
-   
   
     useEffect(() => {
       let isCancelled = false;
@@ -104,7 +77,19 @@ export const MessageReactBar = (props: Props): ReactElement => {
     }
   return (
     <StyledMessageReactBar>
-  {renderReactButtonList()}
+  {recentReactions &&
+        recentReactions.items.map(emoji => (
+          <ReactButton
+            key={emoji}
+            role={'img'}
+            aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+            onClick={() => {
+              action(emoji);
+            }}
+          >
+            {emoji}
+          </ReactButton>
+        ))}
       <span>
         <BchatIconButton
           iconColor={'var(--color-text)'}

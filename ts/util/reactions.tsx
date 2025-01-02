@@ -48,13 +48,14 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
         await updateRecentReactions(reactions, emoji);
       }
     }
-
-    await conversationModel.sendReaction(messageId, {
+    const reaction = {
       id: Number(found.get('sent_at')),
       author,
       emoji,
       action,
-    });
+    };
+
+    await conversationModel.sendReaction(messageId, reaction);
 
     window.log.info(  
       me,
@@ -63,8 +64,10 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       'reaction at',
       found.get('sent_at')
     );
+    return reaction;
   } else {
     window.log.warn(`Message ${messageId} not found in db`);
+    return;
   }
 };
 
@@ -136,6 +139,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   });
 console.log('originalMessage -->',reacts)
   await originalMessage.commit();
+  return originalMessage;
 };
 
 export const updateRecentReactions = async (reactions: Array<string>, newReaction: string) => {
