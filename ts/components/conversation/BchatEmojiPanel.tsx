@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, MutableRefObject, useEffect } from 'react';
 import classNames from 'classnames';
 import data from '@emoji-mart/data';
-
-
 
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 import styled from 'styled-components';
 
 import { FixedBaseEmoji, FixedPickerProps } from '../../types/Util.js';
-import { Picker } from 'emoji-mart'
+import { Picker } from 'emoji-mart';
+import { noop } from 'lodash';
+import { loadEmojiPanelI18n } from '../../util/i18n';
 
 type Props = {
   onEmojiClicked: (emoji: FixedBaseEmoji) => void;
@@ -23,18 +23,7 @@ const pickerProps: FixedPickerProps = {
   skinTonePosition: 'preview',
 };
 
-const loadLocale = async () => {
-  if (!window) {
-    return undefined;
-  }
-
-  const lang = (window.i18n as any).getLocale();
-  if (lang !== 'en') {
-    const langData = await import(`@emoji-mart/data/i18n/${lang}.json`);
-    return langData;
-  }
-}
-export const StyledEmojiPanel = styled.div<{ isModal: boolean;theme: 'light' | 'dark' }>`
+export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 'dark' }>`
   padding: var(--margins-lg);
   z-index: 5;
   opacity: 0;
@@ -47,14 +36,14 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean;theme: 'light' | '
     opacity: 1;
     visibility: visible;
   }
- em-emoji-picker {
+  em-emoji-picker {
     font-family: var(--font-default);
     font-size: var(--font-size-sm);
     background-color: var(--color-cell-background);
     border: 1px solid var(--color-session-border);
     border-radius: 8px;
     padding-bottom: var(--margins-sm);
-  ${props => {
+    ${props => {
       switch (props.theme) {
         case 'dark':
           return `
@@ -93,19 +82,18 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean;theme: 'light' | '
     `}
   }
 `;
-export const BchatEmojiPanel = (props: Props) => {
-  const { onEmojiClicked, show,isModal = false } = props;
+export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
+  const { onEmojiClicked, show, isModal = false } = props;
   // const darkMode = useSelector(getTheme) === 'dark';
   const theme = useSelector(getTheme);
-
-  const pickerRef = useRef<HTMLDivElement>(null);
+  const pickerRef = ref as MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
     let isCancelled = false;
     if (pickerRef.current && pickerRef.current.children.length === 0) {
-        // tslint:disable-next-line: no-unused-expression
-       
-        loadLocale()
+      // tslint:disable-next-line: no-unused-expression
+
+      loadEmojiPanelI18n()
         .then(async i18n => {
           if (isCancelled) {
             return;
@@ -113,30 +101,25 @@ export const BchatEmojiPanel = (props: Props) => {
           // tslint:disable-next-line: no-unused-expression
           new Picker({
             data,
-            ref: pickerRef,
+            ref,
             i18n,
             onEmojiSelect: onEmojiClicked,
             ...pickerProps,
           });
         })
-        .catch(() => {
-          if (isCancelled) {
-            return;
-          }
-        })
-      
+        .catch(noop);
     }
     return () => {
       isCancelled = true;
     };
-  }, [data, pickerProps,loadLocale]);
+  }, [data, pickerProps]);
 
   return (
     <StyledEmojiPanel
-    isModal={isModal}
-  theme={theme}
-    className={classNames(show && 'show')}
-    ref={pickerRef}
-  />
+      isModal={isModal}
+      theme={theme}
+      className={classNames(show && 'show')}
+      ref={ref}
+    />
   );
-};
+})  ;

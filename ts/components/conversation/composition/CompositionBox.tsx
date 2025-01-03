@@ -872,7 +872,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             {typingEnabled && (
               <div ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
                 {showEmojiPanel && (
-                  <BchatEmojiPanel onEmojiClicked={this.onEmojiClick} show={showEmojiPanel} />
+                  <BchatEmojiPanel onEmojiClicked={this.onEmojiClick} show={showEmojiPanel} ref={this.emojiPanel} />
                 )}
               </div>
             )}

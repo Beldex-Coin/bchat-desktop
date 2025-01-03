@@ -24,6 +24,7 @@ import { HTTPError } from '../bchat/utils/errors';
 
 import nativeEmojiData from '@emoji-mart/data';
 import { initialiseEmojiData } from '../util/emoji';
+import { loadEmojiPanelI18n } from '../util/i18n';
 
 // Globally disable drag and drop
 document.body.addEventListener(
@@ -176,7 +177,7 @@ Storage.onready(async () => {
     initialiseEmojiData(nativeEmojiData);
     await AttachmentDownloads.initAttachmentPaths();
 
-    await Promise.all([getConversationController().load(), BlockedNumberController.load()]);
+    await Promise.all([getConversationController().load(), BlockedNumberController.load(),loadEmojiPanelI18n()]);
   } catch (error) {
     window.log.error(
       'main_start.js: ConversationController failed to load:',

@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMessageById } from '../../../../data/data';
 import { readableList } from '../../../../util/readableList';
@@ -62,13 +62,24 @@ type Props = {
 };
 export type TipPosition = 'center' | 'left' | 'right';
 
+const generateContacts = async (messageId: string, senders: Array<string>) => {
+  let results = null;
+  const message = await getMessageById(messageId);
+  if (message) {
+    results = senders.map(sender => {
+      const contact = message.findAndFormatContact(sender);
+      return contact?.profileName || contact?.name || PubKey.shorten(sender);
+    });
+  }
+  return results;
+};
 
 const renderContacts = (contacts: string) => {
   if (!contacts) {
     return <></>;
   }
 
-  if (contacts.indexOf('&') !== -1 && contacts.indexOf('other') !== -1) {
+  if (contacts.includes('&') && contacts.includes('other')) {
     const [names, others] = contacts.split('&');
     return (
       <span>
@@ -86,22 +97,12 @@ export const ReactionPopup = (props: Props): ReactElement => {
 
   const [contacts, setContacts] = useState('');
 
-  const generateContacts = useCallback(async () => {
-    let results = null;
-    const message = await getMessageById(messageId);
-    if (message) {
-      results = senders.map(sender => {
-        const contact = message.findAndFormatContact(sender);
-        return contact?.profileName || contact?.name || PubKey.shorten(sender);
-      });
-    }
-    return results;
-  }, [messageId]);
+  
 
 
   useEffect(() => {
     let isCancelled = false;
-    generateContacts()
+    generateContacts(messageId, senders)
       .then(async results => {
         if (isCancelled) {
           return;

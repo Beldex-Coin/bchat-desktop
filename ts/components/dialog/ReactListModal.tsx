@@ -153,7 +153,10 @@ const ReactionSenders = (props: ReactionSendersProps) => {
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
-
+  const [reactions, setReactions] = useState<ReactionList>({});
+  const [currentReact, setCurrentReact] = useState('');
+  const [senders, setSenders] = useState<Array<string>>([]);
+  const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
   const dispatch = useDispatch();
   const me = UserUtils.getOurPubKeyStrFromCache();
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
@@ -163,10 +166,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   }
 
   const { isPublic, reacts, weAreAdmin } = msgProps;
-  const [reactions, setReactions] = useState<ReactionList>({});
-  const [currentReact, setCurrentReact] = useState('');
-  const [senders, setSenders] = useState<Array<string>>([]);
-  const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
+  
 
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;

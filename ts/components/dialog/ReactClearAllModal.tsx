@@ -37,13 +37,14 @@ const StyledReactClearAllContainer = styled(Flex)<{ darkMode: boolean }>`
 export const ReactClearAllModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
-
+  const dispatch = useDispatch();
+  const darkMode = useSelector(getTheme) === 'dark';
+  
   if (!msgProps) {
     return <></>;
   }
 
-  const dispatch = useDispatch();
-  const darkMode = useSelector(getTheme) === 'dark';
+
   const confirmButtonColor = darkMode ? BchatButtonColor.Green : BchatButtonColor.Secondary;
 
   const handleClose = () => {
