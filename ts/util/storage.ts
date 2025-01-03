@@ -1,5 +1,5 @@
 import { createOrUpdateItem, getAllItems, removeItemById } from '../data/channelsItem';
-import { RECENT_REACTS } from '../bchat/constants';
+import { DEFAULT_RECENT_REACTS } from '../bchat/constants';
 
 let ready = false;
 
@@ -137,12 +137,12 @@ export async function saveRecoveryPhrase(mnemonic: string) {
 }
 
 export const Storage = { fetch, put, get, remove, onready, reset };
-export async function getRecentReactions(): Promise<Array<string>> {
+export function getRecentReactions(): Array<string> {
   const reactions = Storage.get('recent_reactions') as string;
   if (reactions) {
     return reactions.split(' ');
   } else {
-    return RECENT_REACTS;
+    return DEFAULT_RECENT_REACTS;
   }
 }
 

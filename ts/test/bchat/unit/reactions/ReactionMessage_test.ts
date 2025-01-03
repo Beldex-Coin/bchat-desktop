@@ -4,7 +4,7 @@ import { handleMessageReaction, sendMessageReaction } from '../../../../util/rea
 import * as Data from '../../../../../ts/data/data';
 import * as Storage from '../../../../util/storage';
 import { generateFakeIncomingPrivateMessage, stubWindowLog } from '../../../test-utils/utils';
-import { RECENT_REACTS } from '../../../../bchat/constants';
+import { DEFAULT_RECENT_REACTS } from '../../../../bchat/constants';
 import { noop } from 'lodash';
 import { UserUtils } from '../../../../bchat/utils';
 import { SignalService } from '../../../../protobuf';
@@ -30,7 +30,7 @@ describe('ReactionMessage', () => {
 
     // sendMessageReaction stubs
     Sinon.stub(Data, 'getMessageById').resolves(originalMessage);
-    Sinon.stub(Storage, 'getRecentReactions').resolves(RECENT_REACTS);
+    Sinon.stub(Storage, 'getRecentReactions').returns(DEFAULT_RECENT_REACTS);
     Sinon.stub(Storage, 'saveRecentReations').resolves();
     Sinon.stub(UserUtils, 'getOurPubKeyStrFromCache').returns(ourNumber);
 

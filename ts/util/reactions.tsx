@@ -1,4 +1,4 @@
-import _ from 'lodash';
+
 
 import { UserUtils } from '../bchat/utils';
 import { getRecentReactions, saveRecentReations } from './storage';
@@ -7,6 +7,7 @@ import { MessageModel } from '../models/message';
 import { ReactionList } from '../types/Message';
 import { RecentReactions } from '../types/Util';
 import { getMessageById, getMessagesBySentAt } from '../data/data';
+import { isEmpty } from 'lodash';
 
 const rateCountLimit = 20;
 const rateTimeLimit = 60 * 1000;
@@ -43,7 +44,7 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       window.log.info('found matching reaction removing it');
       action = 1;
     } else {
-      const reactions = await getRecentReactions();
+      const reactions = getRecentReactions();
       if (reactions) {
         await updateRecentReactions(reactions, emoji);
       }
@@ -135,7 +136,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   }
   console.log('reaction reacts', reacts);
   originalMessage.set({
-    reacts: !_.isEmpty(reacts) ? reacts : undefined,
+    reacts: !isEmpty(reacts) ? reacts : undefined,
   });
 console.log('originalMessage -->',reacts)
   await originalMessage.commit();

@@ -40,13 +40,13 @@ export type ReactionProps = {
   reactions: ReactionList;
   inModal: boolean;
   inGroup: boolean;
-  handlePopupX: (...args: Array<any>) => void;
-  handlePopupY: (...args: Array<any>) => void;
-  onClick: (...args: Array<any>) => void;
+  handlePopupX: (x: number) => void;
+  handlePopupY: (y: number) => void;
+  onClick: (emoji: string) => void;
   popupReaction?: string;
-  onSelected?: (...args: Array<any>) => boolean;
-  handlePopupReaction?: (...args: Array<any>) => void;
-  handlePopupClick?: (...args: Array<any>) => void;
+  onSelected?: (emoji: string) => boolean;
+  handlePopupReaction?: (emoji: string) => void;
+  handlePopupClick?: () => void;
 };
 
 export const Reaction = (props: ReactionProps): ReactElement => {

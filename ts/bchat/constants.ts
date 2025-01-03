@@ -56,4 +56,4 @@ export const UI = {
   },
 };
 
-export const RECENT_REACTS = ['👍', '👎', '😂', '❤️', '🔥', '😮'];
+export const DEFAULT_RECENT_REACTS = ['👍', '👎', '😂', '❤️', '🔥', '😮'];
