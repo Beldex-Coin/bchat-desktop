@@ -65,7 +65,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     handlePopupClick,
   } = props;
   
-  const senders = reactions[emoji].senders ? Object.keys(reactions[emoji].senders) : [];
+  const senders = Object.keys(reactions[emoji].senders);
  
   const showCount = senders && (senders.length > 1 || inGroup);
 
@@ -131,7 +131,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         <ReactionPopup
           messageId={messageId}
           emoji={popupReaction}
-          senders={Object.keys(reactions[popupReaction])}
+          senders={Object.keys(reactions[popupReaction].senders)}
           tooltipPosition={tooltipPosition}
           onClick={() => {
             if (handlePopupReaction) {

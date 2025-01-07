@@ -171,12 +171,10 @@ export const MessageReactions = (props: Props): ReactElement => {
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
-
  
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
-  console.log('msgProps reaction-->',msgProps)
 
   if (!msgProps) {
     return <></>;

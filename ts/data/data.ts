@@ -55,6 +55,94 @@ export type ServerToken = {
   serverUrl: string;
   token: string;
 };
+// we export them like this instead of directly with the `export function` cause this is helping a lot for testing
+export const Data = {
+  shutdown,
+  close,
+  removeDB,
+  getPasswordHash,
+
+  // items table logic
+  createOrUpdateItem,
+  getItemById,
+  getAllItems,
+  removeItemById,
+
+  // guard nodes
+  getGuardNodes,
+  updateGuardNodes,
+  generateAttachmentKeyIfEmpty,
+  getSwarmNodesForPubkey,
+  updateSwarmNodesForPubkey,
+  getAllEncryptionKeyPairsForGroup,
+  getLatestClosedGroupEncryptionKeyPair,
+  addClosedGroupEncryptionKeyPair,
+  removeAllClosedGroupEncryptionKeyPairs,
+  saveConversation,
+  getConversationById,
+  removeConversation,
+  getAllConversations,
+  getPubkeysInPublicConversation,
+  searchConversations,
+  searchMessages,
+  searchMessagesInConversation,
+  cleanSeenMessages,
+  cleanLastHashes,
+  saveSeenMessageHashes,
+  updateLastHash,
+  saveMessage,
+  saveMessages,
+  removeMessage,
+  _removeMessages,
+  getMessageIdsFromServerIds,
+  getMessageById,
+  getMessageBySenderAndSentAt,
+  getMessageByServerId,
+  filterAlreadyFetchedOpengroupMessage,
+  getMessageBySenderAndTimestamp,
+  getUnreadByConversation,
+  getUnreadCountByConversation,
+  getMessageCountByType,
+  getMessagesByConversation,
+  getLastMessagesByConversation,
+  getLastMessageIdInConversation,
+  getLastMessageInConversation,
+  getOldestMessageInConversation,
+  getMessageCount,
+  getFirstUnreadMessageIdInConversation,
+  getFirstUnreadMessageWithMention,
+  hasConversationOutgoingMessage,
+  getLastHashBySnode,
+  getSeenMessagesByHashList,
+  removeAllMessagesInConversation,
+  getMessagesBySentAt,
+  getExpiredMessages,
+  getOutgoingWithoutExpiresAt,
+  getNextExpiringMessage,
+  getUnprocessedCount,
+  getAllUnprocessed,
+  getUnprocessedById,
+  saveUnprocessed,
+  updateUnprocessedAttempts,
+  updateUnprocessedWithData,
+  removeUnprocessed,
+  removeAllUnprocessed,
+  getNextAttachmentDownloadJobs,
+  saveAttachmentDownloadJob,
+  setAttachmentDownloadJobPending,
+  resetAttachmentDownloadPending,
+  removeAttachmentDownloadJob,
+  removeAllAttachmentDownloadJobs,
+  removeAll,
+  removeAllConversations,
+  cleanupOrphanedAttachments,
+  removeOtherData,
+  getMessagesWithVisualMediaAttachments,
+  getMessagesWithFileAttachments,
+  getSnodePoolFromDb,
+  updateSnodePoolOnDb,
+  fillWithTestData,
+};
 
 export const hasSyncedInitialConfigurationItem = 'hasSyncedInitialConfigurationItem';
 export const lastAvatarUploadTimestamp = 'lastAvatarUploadTimestamp';
@@ -428,7 +516,7 @@ export async function getMessageBySenderAndTimestamp({
   return new MessageModel(messages[0]);
 }
 
-export async function getMessageByServerId(
+ async function getMessageByServerId(
   serverId: number,
   skipTimerInit: boolean = false
 ): Promise<MessageModel | null> {
