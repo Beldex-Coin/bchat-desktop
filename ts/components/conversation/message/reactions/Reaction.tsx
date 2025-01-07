@@ -8,6 +8,7 @@ import { useMouse } from 'react-use';
 
 import { popupXDefault, popupYDefault } from '../message-content/MessageReactions';
 import { ReactionPopup, TipPosition } from './ReactionPopup';
+import { isUsAnySogsFromCache } from '../../../../util/reactions';
 
 const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; showCount: boolean }>`
   display: flex;
@@ -64,9 +65,9 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     handlePopupReaction,
     handlePopupClick,
   } = props;
-  
+
   const senders = Object.keys(reactions[emoji].senders);
- 
+
   const showCount = senders && (senders.length > 1 || inGroup);
 
   const reactionRef = useRef<HTMLDivElement>(null);
@@ -77,11 +78,15 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   const [tooltipPosition, setTooltipPosition] = useState<TipPosition>('center');
 
   const me = UserUtils.getOurPubKeyStrFromCache();
+  const isBlindedMe =
+    senders &&
+    senders.length > 0 &&
+    senders.filter(sender => sender.startsWith('15') && isUsAnySogsFromCache(sender)).length > 0;
   const selected = () => {
     if (onSelected) {
       return onSelected(emoji);
     }
-    return senders && senders.length > 0 && senders.includes(me);
+    return senders && senders.length > 0 && (senders.includes(me) || isBlindedMe);
   };
   const handleReactionClick = () => {
     onClick(emoji);

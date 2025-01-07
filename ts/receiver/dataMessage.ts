@@ -304,9 +304,13 @@ async function handleSwarmMessage(
 
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
-    if (rawDataMessage.reaction && rawDataMessage.syncTarget) {
-      const messageId = msgModel.get('isPublic') ? String(msgModel.get('serverId')) : messageHash;
-      await handleMessageReaction(rawDataMessage.reaction, msgModel.get('source'), messageId);
+    if (!msgModel.get('isPublic') && rawDataMessage.reaction && rawDataMessage.syncTarget) {
+      await handleMessageReaction(
+        rawDataMessage.reaction,
+        msgModel.get('source'),
+        false,
+        messageHash
+      );
       confirm();
       return;
     }

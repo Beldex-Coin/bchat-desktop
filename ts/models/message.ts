@@ -66,6 +66,7 @@ import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { LinkPreviews } from '../util/linkPreviews';
 import { ReactionList } from '../types/Reaction';
+import { isUsAnySogsFromCache } from '../util/reactions';
 // tslint:disable: cyclomatic-complexity
 
 /**
@@ -383,7 +384,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     let profileName;
     let isMe = false;
 
-    if (pubkey === UserUtils.getOurPubKeyStrFromCache()) {
+    if (
+      pubkey === UserUtils.getOurPubKeyStrFromCache() ||
+      (pubkey && pubkey.startsWith('bd') && isUsAnySogsFromCache(pubkey))) {
       profileName = window.i18n('you');
       isMe = true;
     } else {

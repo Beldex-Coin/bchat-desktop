@@ -72,8 +72,6 @@ import { Reaction } from '../types/Reaction';
 
 import { handleMessageReaction } from '../util/reactions';
 
-
-
 export enum ConversationTypeEnum {
   GROUP = 'group',
   PRIVATE = 'private',
@@ -684,8 +682,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         throw new Error('Only opengroupv2 are supported now');
       }
       // TODO move function elsewhere as it is updating the local client before updating the timestamp for the receiving client
-      const sender = UserUtils.getOurPubKeyStrFromCache();
-      await handleMessageReaction(reaction, sender);
+      let sender = UserUtils.getOurPubKeyStrFromCache();
 
       // an OpenGroupV2 message is just a visible message
       const chatMessageParams: VisibleMessageParams = {
@@ -696,9 +693,13 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         lokiProfile: UserUtils.getOurProfile(),
       };
       await this.handleMessageApproval();
+
       if (this.isOpenGroupV2()) {
         await this.handleOpenGroupV2Message(chatMessageParams);
+        await handleMessageReaction(reaction, sender, true);
         return;
+      } else {
+        await handleMessageReaction(reaction, sender, false);
       }
       // const shouldApprove = !this.isApproved() && this.isPrivate();
       // const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
@@ -791,7 +792,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         await this.handleOpenGroupV2Message(chatMessageParams);
         return;
       }
-     
 
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {
@@ -838,9 +838,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       }
 
       if (this.isClosedGroup()) {
-         // throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
-         this.handleLegacyClosedGroup();
-        }
+        // throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+        this.handleLegacyClosedGroup();
+      }
 
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
     } catch (e) {
@@ -1486,12 +1486,11 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return _.includes(this.get('members'), pubkey);
   }
 
-
   public hasReactions() {
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
-      window?.log('Emoji reactions are not supported in social groups.')
-      return false
+      window?.log('Emoji reactions are not supported in social groups.');
+      return false;
     } else {
       return true;
     }

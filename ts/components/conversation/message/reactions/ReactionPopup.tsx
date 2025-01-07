@@ -66,10 +66,18 @@ const generateContacts = async (messageId: string, senders: Array<string>) => {
   let results = null;
   const message = await getMessageById(messageId);
   if (message) {
-    results = senders.map(sender => {
+    let meIndex = -1;
+    results = senders.map((sender, index) => {
       const contact = message.findAndFormatContact(sender);
+      if (contact.isMe) {
+        meIndex = index;
+      }
       return contact?.profileName || contact?.name || PubKey.shorten(sender);
     });
+    if (meIndex >= 0) {
+      results.splice(meIndex, 1);
+      results = [window.i18n('you'), ...results];
+    }
   }
   return results;
 };

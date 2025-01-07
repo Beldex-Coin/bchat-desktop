@@ -3,40 +3,68 @@ import { getRecentReactions, saveRecentReations } from './storage';
 import { SignalService } from '../protobuf';
 import { MessageModel } from '../models/message';
 
-import { Data, getMessageById, getMessagesBySentAt } from '../data/data';
-import { isEmpty } from 'lodash';
+import { Data, getMessageById } from '../data/data';
+import { isEmpty, isString } from 'lodash';
 import { OpenGroupReactionList, ReactionList, RecentReactions } from '../types/Reaction';
+import { ConversationModel } from '../models/conversation';
+import { getConversationController } from '../bchat/conversations';
+import { roomHasBlindEnabled } from '../types/sqlSharedTypes';
+import { OpenGroupData } from '../data/opengroups';
+import { PubKey } from '../bchat/types/PubKey';
+
+
+
+export type BlindedIdMapping = {
+  blindedId: string;
+  serverPublicKey: string;
+  realSessionId: string;
+};
+
+// for now, we assume we won't find a lot of blinded keys.
+// So we can store all of those in a single JSON string in the db.
+let cachedKnownMapping: Array<BlindedIdMapping> | null = null;
 
 const rateCountLimit = 20;
 const rateTimeLimit = 60 * 1000;
 const latestReactionTimestamps: Array<number> = [];
 
+/**
+ * Retrieves the original message of a reaction
+ */
 const getMessageByReaction = async (
-  reaction: SignalService.DataMessage.IReaction
+  reaction: SignalService.DataMessage.IReaction,
+  isOpenGroup: boolean
 ): Promise<MessageModel | null> => {
-  const originalMessageTimestamp = Number(reaction.id);
+  let originalMessage = null;
+  const originalMessageId = Number(reaction.id);
   const originalMessageAuthor = reaction.author;
 
-  const collection = await getMessagesBySentAt(originalMessageTimestamp);
-  const originalMessage = collection.find((item: MessageModel) => {
-    const messageTimestamp = item.get('sent_at');
-    const author = item.get('source');
-    return Boolean(
-      messageTimestamp &&
-        messageTimestamp === originalMessageTimestamp &&
-        author &&
-        author === originalMessageAuthor
-    );
-  });
+  if (isOpenGroup) {
+    originalMessage = await Data.getMessageByServerId(originalMessageId);
+  } else {
+    const collection = await Data.getMessagesBySentAt(originalMessageId);
+    originalMessage = collection.find((item: MessageModel) => {
+      const messageTimestamp = item.get('sent_at');
+      const author = item.get('source');
+      return Boolean(
+        messageTimestamp &&
+          messageTimestamp === originalMessageId &&
+          author &&
+          author === originalMessageAuthor
+      );
+    });
+  }
 
   if (!originalMessage) {
-    window?.log?.warn(`Cannot find the original reacted message ${originalMessageTimestamp}.`);
+    window?.log?.warn(`Cannot find the original reacted message ${originalMessageId}.`);
     return null;
   }
 
   return originalMessage;
 };
-
+/**
+ * Sends a Reaction Data Message, don't use for OpenGroups
+ */
 export const sendMessageReaction = async (messageId: string, emoji: string) => {
   const timestamp = Date.now();
   latestReactionTimestamps.push(timestamp);
@@ -52,14 +80,16 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
   }
 
   const found = await getMessageById(messageId);
-  if (found && found.get('sent_at')) {
+  if (found) {
     const conversationModel = found?.getConversation();
     if (!conversationModel) {
       window.log.warn(`Conversation for ${messageId} not found in db`);
       return;
     }
 
-    const me = UserUtils.getOurPubKeyStrFromCache();
+    const isOpenGroup = Boolean(found?.get('isPublic'));
+    const id = (isOpenGroup && found.get('serverId')) || Number(found.get('sent_at'));
+    const me: any = isOpenGroup || UserUtils.getOurPubKeyStrFromCache();
     const author = found.get('source');
     let action = 0;
 
@@ -78,7 +108,7 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       }
     }
     const reaction = {
-      id: Number(found.get('sent_at')),
+      id,
       author,
       emoji,
       action,
@@ -86,12 +116,7 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
 
     await conversationModel.sendReaction(messageId, reaction);
 
-    window.log.info(
-      `${action === 0 ? 'added' : 'removed'} a`,
-      emoji,
-      'reaction at',
-      found.get('sent_at')
-    );
+    window.log.info(`${action === 0 ? 'added' : 'removed'} `, emoji, 'reaction at', id);
     return reaction;
   } else {
     window.log.warn(`Message ${messageId} not found in db`);
@@ -105,6 +130,7 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
 export const handleMessageReaction = async (
   reaction: SignalService.DataMessage.IReaction,
   sender: string,
+  isOpenGroup: boolean,
   messageId?: string
 ) => {
   window?.log?.warn(`reaction: DataMessage ID: ${messageId}.`);
@@ -114,7 +140,7 @@ export const handleMessageReaction = async (
     return;
   }
 
-  const originalMessage = await getMessageByReaction(reaction);
+  const originalMessage = await getMessageByReaction(reaction, isOpenGroup);
 
   if (!originalMessage) {
     return;
@@ -175,30 +201,32 @@ export const handleOpenGroupMessageReactions = async (
   reactions: OpenGroupReactionList,
   serverId: number
 ) => {
-  if (isEmpty(reactions)) {
-    window?.log?.warn(`The reactions state is empty`);
-    return;
-  }
-
   const originalMessage = await Data.getMessageByServerId(serverId);
   if (!originalMessage) {
+    window?.log?.warn(`Cannot find the original reacted message ${serverId}.`);
     return;
   }
-
-  const reacts: ReactionList = {};
-  Object.keys(reactions).forEach(key => {
-    const emoji = decodeURI(key);
-    const senders: Record<string, string> = {};
-    reactions[key].reactors.forEach(reactor => {
-      senders[reactor] = String(serverId);
+  if (isEmpty(reactions)) {
+    if (originalMessage.get('reacts')) {
+      originalMessage.set({
+        reacts: undefined,
+      });
+    }
+  } else {
+    const reacts: ReactionList = {};
+    Object.keys(reactions).forEach(key => {
+      const emoji = decodeURI(key);
+      const senders: Record<string, string> = {};
+      reactions[key].reactors.forEach(reactor => {
+        senders[reactor] = String(serverId);
+      });
+      reacts[emoji] = { count: reactions[key].count, senders };
     });
-    reacts[emoji] = { count: reactions[key].count, senders };
-  });
 
-  originalMessage.set({
-    reacts: !isEmpty(reacts) ? reacts : undefined,
-  });
-
+    originalMessage.set({
+      reacts,
+    });
+  }
   await originalMessage.commit();
   return originalMessage;
 };
@@ -217,3 +245,49 @@ export const updateRecentReactions = async (reactions: Array<string>, newReactio
   }
   await saveRecentReations(recentReactions.items);
 };
+
+/**
+ * This function returns the cached blindedId for us, given a public conversation.
+ */
+export function getUsBlindedInThatServer(convo: ConversationModel | string): string | undefined {
+  if (!convo) {
+    return undefined;
+  }
+  const convoId = isString(convo) ? convo : convo.id;
+
+  if (
+    !getConversationController()
+      .get(convoId)
+      ?.isOpenGroupV2()
+  ) {
+    return undefined;
+  }
+  const room = OpenGroupData.getV2OpenGroupRoom(isString(convo) ? convo : convo.id);
+  if (!room || !roomHasBlindEnabled(room) || !room.serverPublicKey) {
+    return undefined;
+  }
+  const usNaked = UserUtils.getOurPubKeyStrFromCache();
+
+  const found = assertLoaded().find(
+    m => m.serverPublicKey === room.serverPublicKey && m.realSessionId === usNaked
+  );
+  return found?.blindedId;
+}
+function assertLoaded(): Array<BlindedIdMapping> {
+  if (cachedKnownMapping === null) {
+    throw new Error('loadKnownBlindedKeys must be called on app start');
+  }
+  return cachedKnownMapping;
+}
+
+export function isUsAnySogsFromCache(blindedOrNakedId: string): boolean {
+  const usUnblinded = UserUtils.getOurPubKeyStrFromCache();
+
+  if (!PubKey?.isBlinded(blindedOrNakedId)) {
+    return blindedOrNakedId === usUnblinded;
+  }
+  const found = assertLoaded().find(
+    m => m.blindedId === blindedOrNakedId && m.realSessionId === usUnblinded
+  );
+  return Boolean(found);
+}

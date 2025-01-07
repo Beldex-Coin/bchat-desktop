@@ -2,6 +2,20 @@ import { ConversationCollection } from '../models/conversation';
 import { OpenGroupRequestCommonType } from '../bchat/apis/open_group_api/opengroupV2/ApiUtil';
 import { isOpenGroupV2 } from '../bchat/apis/open_group_api/utils/OpenGroupUtils';
 import { channels } from './channels';
+import { cloneDeep } from 'lodash';
+
+export const OpenGroupData = {
+
+  getV2OpenGroupRoom,
+ 
+  saveV2OpenGroupRoom,
+
+  getV2OpenGroupRoomByRoomId,
+  removeV2OpenGroupRoom,
+
+  getAllV2OpenGroupRooms,
+};
+
 
 export type OpenGroupV2Room = {
   serverUrl: string;
@@ -20,6 +34,10 @@ export type OpenGroupV2Room = {
    */
   lastFetchTimestamp?: number;
   token?: string; // currently, the token is on a per room basis
+   /**
+   * This is shared across all rooms in a server.
+   */
+   capabilities?: Array<string>;
 };
 
 export async function getAllV2OpenGroupRooms(): Promise<Map<string, OpenGroupV2Room> | undefined> {
@@ -39,20 +57,22 @@ export async function getAllV2OpenGroupRooms(): Promise<Map<string, OpenGroupV2R
 
   return results;
 }
+// avoid doing fetches and write too often from the db by using a cache on the renderer side.
+let cachedRooms: Array<OpenGroupV2Room> | null = null;
 
-export async function getV2OpenGroupRoom(
-  conversationId: string
-): Promise<OpenGroupV2Room | undefined> {
+export function getV2OpenGroupRoom(conversationId: string): OpenGroupV2Room | undefined {
   if (!isOpenGroupV2(conversationId)) {
     throw new Error(`getV2OpenGroupRoom: this is not a valid v2 id: ${conversationId}`);
   }
-  const opengroupv2Rooms = await channels.getV2OpenGroupRoom(conversationId);
 
-  if (!opengroupv2Rooms) {
-    return undefined;
+  const found = throwIfNotLoaded().find(m => m.conversationId === conversationId);
+  return (found && cloneDeep(found)) || undefined;
+}
+function throwIfNotLoaded() {
+  if (cachedRooms === null) {
+    throw new Error('opengroupRoomsLoad must be called first');
   }
-
-  return opengroupv2Rooms;
+  return cachedRooms;
 }
 
 export async function getV2OpenGroupRoomByRoomId(
