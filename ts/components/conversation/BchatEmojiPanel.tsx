@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 import styled from 'styled-components';
 
-import { FixedBaseEmoji, FixedPickerProps } from '../../types/Util.js';
+import { FixedBaseEmoji, FixedPickerProps } from '../../types/Reaction';
 import { Picker } from 'emoji-mart';
 import { noop } from 'lodash';
 import { loadEmojiPanelI18n } from '../../util/i18n';

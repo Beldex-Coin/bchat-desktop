@@ -1,7 +1,8 @@
 import ByteBuffer from 'bytebuffer';
 import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
-import { LokiProfile, Reaction } from '../../../../types/Message';
+import { LokiProfile } from '../../../../types/Message';
+import { Reaction } from '../../../../types/Reaction';
 import { MessageParams } from '../Message';
 
 interface AttachmentPointerCommon {

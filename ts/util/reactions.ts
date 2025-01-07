@@ -4,10 +4,10 @@ import { UserUtils } from '../bchat/utils';
 import { getRecentReactions, saveRecentReations } from './storage';
 import { SignalService } from '../protobuf';
 import { MessageModel } from '../models/message';
-import { ReactionList } from '../types/Message';
-import { RecentReactions } from '../types/Util';
+
 import { getMessageById, getMessagesBySentAt } from '../data/data';
 import { isEmpty } from 'lodash';
+import { ReactionList, RecentReactions } from '../types/Reaction';
 
 const rateCountLimit = 20;
 const rateTimeLimit = 60 * 1000;
@@ -101,7 +101,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
     window?.log?.warn(`We did not find reacted message ${originalMessageTimestamp}.`);
     return;
   }
-
+console.log('originalMessage.get -->',originalMessage.get('reacts') )
   const reacts: ReactionList = originalMessage.get('reacts') ?? {};
   reacts[reaction.emoji] = reacts[reaction.emoji] || {};
   const details = reacts[reaction.emoji] ?? {};
@@ -109,7 +109,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
 
   switch (reaction.action) {
     // Add reaction
-    case 0:
+    case SignalService.DataMessage.Reaction.Action.REACT:
       if (senders.includes(sender) && details[sender] !== '') {
         window?.log?.info('Received duplicate message reaction. Dropping it. id:', details[sender]);
         return;
@@ -117,7 +117,7 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
       details[sender] = messageId ?? '';
       break;
     // Remove reaction
-    case 1:
+    case SignalService.DataMessage.Reaction.Action.REMOVE:
     default:
       if (senders.length > 0) {
         if (senders.indexOf(sender) >= 0) {
@@ -138,8 +138,9 @@ export const handleMessageReaction = async (reaction: SignalService.DataMessage.
   originalMessage.set({
     reacts: !isEmpty(reacts) ? reacts : undefined,
   });
-console.log('originalMessage -->',reacts)
+
   await originalMessage.commit();
+  console.log('originalMessage -->',originalMessage)
   return originalMessage;
 };
 

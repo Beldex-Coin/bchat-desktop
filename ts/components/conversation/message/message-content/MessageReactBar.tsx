@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BchatIconButton } from '../../../icon';
-import { RecentReactions } from '../../../../types/Util';
+import { RecentReactions } from '../../../../types/Reaction';
 
 
 import { getRecentReactions } from '../../../../util/storage';

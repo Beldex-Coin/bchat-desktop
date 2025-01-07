@@ -4,13 +4,13 @@ import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
-  updateReactClearAllModal,
+ 
   updateReactListModal,
   updateUserDetailsModal,
 } from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
-import { ReactionList } from '../../types/Message';
+import { ReactionList } from '../../types/Reaction';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { Flex } from '../basic/Flex';
 import { ContactName } from '../conversation/ContactName';
@@ -77,11 +77,11 @@ const StyledReactionSender = styled(Flex)`
     margin-right: 12px;
   }
 `;
-const StyledClearButton = styled.button`
-  font-size: var(--font-size-sm);
-  color: var(--color-destructive);
-  border: none;
-`;
+// const StyledClearButton = styled.button`
+//   font-size: var(--font-size-sm);
+//   color: var(--color-destructive);
+//   border: none;
+// `;
 type ReactionSendersProps = {
   messageId: string;
   currentReact: string;
@@ -165,7 +165,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const { isPublic, reacts, weAreAdmin } = msgProps;
+  const {  reacts } = msgProps;
   
 
   const handleSelectedReaction = (emoji: string): boolean => {
@@ -182,11 +182,11 @@ export const ReactListModal = (props: Props): ReactElement => {
 
 
  
-  const handleClearReactions = (event: any) => {
-    event.preventDefault();
-    handleClose();
-    dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
-  };
+  // const handleClearReactions = (event: any) => {
+  //   event.preventDefault();
+  //   handleClose();
+  //   dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
+  // };
  
   useEffect(() => {
     if (currentReact === '' && currentReact !== reaction) {
@@ -255,11 +255,11 @@ export const ReactListModal = (props: Props): ReactElement => {
                 <span>&#8226;</span>
                 <span>{senders.length}</span>
               </p>
-              {isPublic && weAreAdmin && (
+              {/* {isPublic && weAreAdmin && (
                 <StyledClearButton onClick={handleClearReactions}>
                   {window.i18n('clearAll')}
                 </StyledClearButton>
-              )}
+              )} */}
             </StyledReactionBar>
             {senders && senders.length > 0 && (
               <ReactionSenders

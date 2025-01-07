@@ -19,7 +19,7 @@ import { LinkPreviews } from '../util/linkPreviews';
 import { GoogleChrome } from '../util';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { handleMessageReaction } from '../util/reactions';
-import { Reaction } from '../types/Message';
+import { Reaction } from '../types/Reaction';
 
 
 

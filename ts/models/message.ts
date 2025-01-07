@@ -65,7 +65,7 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { LinkPreviews } from '../util/linkPreviews';
-import { ReactionList } from '../types/Message';
+import { ReactionList } from '../types/Reaction';
 // tslint:disable: cyclomatic-complexity
 
 /**

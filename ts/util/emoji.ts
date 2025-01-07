@@ -1,4 +1,4 @@
-import { FixedBaseEmoji, NativeEmojiData } from '../types/Util';
+import { FixedBaseEmoji, NativeEmojiData } from '../types/Reaction';
 
 export type SizeClassType = 'default' | 'small' | 'medium' | 'large' | 'jumbo';
 

@@ -95,7 +95,7 @@ import styled from 'styled-components';
 
 // import { BaseEmoji } from 'emoji-mart';
 // import { nativeEmojiData } from '../../../util/emoji';
-import { FixedBaseEmoji } from '../../../types/Util';
+import { FixedBaseEmoji } from '../../../types/Reaction';
 
 export interface ReplyingToMessageProps {
   convoId: string;

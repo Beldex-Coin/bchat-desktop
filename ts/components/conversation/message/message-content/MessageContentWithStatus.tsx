@@ -33,6 +33,7 @@ type Props = {
 
   expirationLength?: number | null;
   expirationTimestamp?: number | null;
+  enableReactions: boolean;
 };
 const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -93,6 +94,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     dataTestId,
     expirationLength,
     expirationTimestamp,
+    enableReactions
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
 
@@ -154,16 +156,23 @@ export const MessageContentWithStatuses = (props: Props) => {
         />
       )}
 
-      {!isDeleted && <MessageContextMenu messageId={messageId} contextMenuId={ctxMenuID} />}
+{!isDeleted && (
+          <MessageContextMenu
+            messageId={messageId}
+            contextMenuId={ctxMenuID}
+            enableReactions={enableReactions}
+          />
+        )}
     </div>
-    <MessageReactions
-        messageId={messageId}
-        onClick={handleMessageReaction}
-        popupReaction={popupReaction}
-        setPopupReaction={setPopupReaction}
-        onPopupClick={handlePopupClick}
-        
-      />
+    {enableReactions && (
+        <MessageReactions
+          messageId={messageId}
+          onClick={handleMessageReaction}
+          popupReaction={popupReaction}
+          setPopupReaction={setPopupReaction}
+          onPopupClick={handlePopupClick}
+        />
+      )}
     </StyledMessageContentContainer>
   );
 };

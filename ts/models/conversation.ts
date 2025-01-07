@@ -67,7 +67,7 @@ import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessag
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
-import { Reaction } from '../types/Message';
+import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
@@ -1484,6 +1484,17 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
   public hasMember(pubkey: string) {
     return _.includes(this.get('members'), pubkey);
+  }
+
+
+  public hasReactions() {
+    // older open group conversations won't have reaction support
+    if (this.isOpenGroupV2()) {
+      window?.log('Emoji reactions are not supported in social groups.')
+      return false
+    } else {
+      return true;
+    }
   }
   // returns true if this is a closed/medium or Social group
   public isGroup() {

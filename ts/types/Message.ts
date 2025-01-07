@@ -44,19 +44,3 @@ export type LokiProfile = {
   
 };
 
-enum Action {
-  REACT = 0,
-  REMOVE = 1,
-}
-
-export interface Reaction {
-  id: number; // this is in fact a uint64 so we will have an issue
-  author: string;
-  emoji: string;
-  action: Action;
-}
-
-export type ReactionList = Record<
-  string,
-  Record<string, string> // <sender pubkey, messageHash or serverId>
->;

@@ -396,6 +396,8 @@ export async function getMessageBySenderAndSentAt({
   return new MessageModel(messages[0]);
 }
 
+
+
 export async function filterAlreadyFetchedOpengroupMessage(
   msgDetails: MsgDuplicateSearchOpenGroup
 ): Promise<MsgDuplicateSearchOpenGroup> {
@@ -424,6 +426,20 @@ export async function getMessageBySenderAndTimestamp({
   }
 
   return new MessageModel(messages[0]);
+}
+
+export async function getMessageByServerId(
+  serverId: number,
+  skipTimerInit: boolean = false
+): Promise<MessageModel | null> {
+  const message = await channels.getMessageByServerId(serverId);
+  if (!message) {
+    return null;
+  }
+  if (skipTimerInit) {
+    message.skipTimerInit = skipTimerInit;
+  }
+  return new MessageModel(message);
 }
 
 export async function getUnreadByConversation(conversationId: string): Promise<MessageCollection> {

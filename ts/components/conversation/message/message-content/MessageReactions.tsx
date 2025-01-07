@@ -6,7 +6,7 @@ import { StateType } from '../../../../state/reducer';
 import { getMessageReactsProps } from '../../../../state/selectors/conversations';
 import { isEmpty } from 'lodash';
 import _ from 'lodash';
-import { ReactionList } from '../../../../types/Message';
+import { ReactionList } from '../../../../types/Reaction';
 
 import { Flex } from '../../../basic/Flex';
 
@@ -176,6 +176,7 @@ export const MessageReactions = (props: Props): ReactElement => {
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
+  console.log('msgProps reaction-->',msgProps)
 
   if (!msgProps) {
     return <></>;

@@ -56,7 +56,7 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'isDeletableForEveryone'
 >;
 
-type Props = { messageId: string; contextMenuId: string };
+type Props = { messageId: string; contextMenuId: string,enableReactions: boolean };
 const StyledMessageContextMenu = styled.div`
   position: relative;
   .react-contexify {
@@ -104,7 +104,7 @@ export const MessageContextMenu = (props: Props) => {
     isBlocked,
   } = selected;
   
-  const { messageId, contextMenuId } = props;
+  const { messageId, contextMenuId ,enableReactions} = props;
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
@@ -293,7 +293,7 @@ export const MessageContextMenu = (props: Props) => {
 
   return (
     <StyledMessageContextMenu ref={contextMenuRef}>
-        {showEmojiPanel && (
+       {enableReactions && showEmojiPanel && (
         <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
         <BchatEmojiPanel
           ref={emojiPanelRef}
@@ -309,7 +309,9 @@ export const MessageContextMenu = (props: Props) => {
         onHidden={onContextMenuHidden}
         animation={animation.fade}
       >
-        <MessageReactBar action={onEmojiClick} additionalAction={onShowEmoji}/>
+      {enableReactions && (
+          <MessageReactBar action={onEmojiClick} additionalAction={onShowEmoji} />
+        )}
         {attachments?.length ? (
           <Item onClick={saveAttachment}>
             <BchatIcon iconType={'downloadAttachment'} iconSize={18} />

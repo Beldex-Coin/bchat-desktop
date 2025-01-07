@@ -159,6 +159,7 @@ export const GenericReadableMessage = (props: Props) => {
   );
   const multiSelectMode = useSelector(isMessageSelectionMode);
   const [isRightClicked, setIsRightClicked] = useState(false);
+  const [enableReactions, setEnableReactions] = useState(true);
   const onMessageLoseFocus = useCallback(() => {
     if (isRightClicked) {
       setIsRightClicked(false);
@@ -172,7 +173,7 @@ export const GenericReadableMessage = (props: Props) => {
       if (enableContextMenu) {
         contextMenu.hideAll();
         contextMenu.show({
-          id:ctxMenuID,
+          id: ctxMenuID,
           event: e,
         });
       }
@@ -180,13 +181,6 @@ export const GenericReadableMessage = (props: Props) => {
     },
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
-  useEffect(() => {
-    document.addEventListener('click', onMessageLoseFocus);
-
-    return () => {
-      document.removeEventListener('click', onMessageLoseFocus);
-    };
-  }, [onMessageLoseFocus]);
 
   const { ctxMenuID, messageId, isDetailView } = props;
 
@@ -194,6 +188,7 @@ export const GenericReadableMessage = (props: Props) => {
     return null;
   }
   const {
+    convoId,
     direction,
     conversationType,
     receivedAt,
@@ -201,6 +196,21 @@ export const GenericReadableMessage = (props: Props) => {
     expirationLength,
     expirationTimestamp,
   } = msgProps;
+
+  useEffect(() => {
+    const conversationModel = getConversationController().get(convoId);
+    if (conversationModel) {
+      setEnableReactions(conversationModel.hasReactions());
+    }
+  }, [convoId]);
+
+  useEffect(() => {
+    document.addEventListener('click', onMessageLoseFocus);
+
+    return () => {
+      document.removeEventListener('click', onMessageLoseFocus);
+    };
+  }, [onMessageLoseFocus]);
 
   if (isExpired) {
     return null;
@@ -210,8 +220,7 @@ export const GenericReadableMessage = (props: Props) => {
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
   const darkMode = useSelector(getTheme) === 'dark';
-  const iconColor=darkMode?'#F0F0F0':selected?'#3E4A53':'#ACACAC';
-  
+  const iconColor = darkMode ? '#F0F0F0' : selected ? '#3E4A53' : '#ACACAC';
 
   const onSelect = useCallback(
     messageId => {
@@ -222,7 +231,6 @@ export const GenericReadableMessage = (props: Props) => {
     },
     [messageId]
   );
-  
 
   return (
     <StyledReadableMessage
@@ -240,11 +248,15 @@ export const GenericReadableMessage = (props: Props) => {
       selected={selected}
       isRightClicked={isRightClicked}
     >
-      <div className="message-box" style={{cursor:isSelectionMode?'pointer':"default" }} onClick={() => isSelectionMode && onSelect(messageId)}>
+      <div
+        className="message-box"
+        style={{ cursor: isSelectionMode ? 'pointer' : 'default' }}
+        onClick={() => isSelectionMode && onSelect(messageId)}
+      >
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
         <div>
-          {isSelectionMode &&isIncoming && (
-            <div style={{ marginRight: '15px',cursor:'pointer' }}> 
+          {isSelectionMode && isIncoming && (
+            <div style={{ marginRight: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -270,6 +282,7 @@ export const GenericReadableMessage = (props: Props) => {
           dataTestId={`message-content-${messageId}`}
           expirationLength={expirationLength}
           expirationTimestamp={expirationTimestamp}
+          enableReactions={enableReactions}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
@@ -280,7 +293,7 @@ export const GenericReadableMessage = (props: Props) => {
         )} */}
         <div>
           {!isIncoming && isSelectionMode && (
-            <div style={{ marginLeft: '15px',cursor:'pointer' }}>
+            <div style={{ marginLeft: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -292,6 +305,6 @@ export const GenericReadableMessage = (props: Props) => {
           )}
         </div>
       </div>
-      </StyledReadableMessage>
+    </StyledReadableMessage>
   );
 };
