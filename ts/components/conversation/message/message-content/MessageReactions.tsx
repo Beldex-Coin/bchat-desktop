@@ -1,21 +1,20 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+
 import styled from 'styled-components';
 import { MessageRenderingProps } from '../../../../models/messageType';
-import { StateType } from '../../../../state/reducer';
-import { getMessageReactsProps } from '../../../../state/selectors/conversations';
-import { isEmpty } from 'lodash';
+
+import { isEmpty, isEqual } from 'lodash';
 import _ from 'lodash';
-import { ReactionList } from '../../../../types/Reaction';
+import { SortedReactionList } from '../../../../types/Reaction';
 
 import { Flex } from '../../../basic/Flex';
-
 
 import { nativeEmojiData } from '../../../../util/emoji';
 import { StyledPopupContainer } from '../reactions/ReactionPopup';
 
 import { Reaction, ReactionProps } from '../reactions/Reaction';
 import { BchatIcon } from '../../../icon';
+import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
 
 export const popupXDefault = -101;
 export const popupYDefault = -90;
@@ -31,7 +30,10 @@ type Props = {
   onSelected?: (emoji: string) => boolean;
 };
 
-export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'convoId' | 'conversationType' | 'isPublic'| 'reacts'| 'serverId'>;
+export type MessageReactsSelectorProps = Pick<
+  MessageRenderingProps,
+  'convoId' | 'conversationType' | 'isPublic' | 'serverId' | 'reacts' | 'sortedReacts'
+>;
 
 const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
   position: relative;
@@ -52,7 +54,6 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
   ${props => (props.inModal ? '' : 'max-width: 320px;')}
 `;
 
-
 const StyledReactionOverflow = styled.button`
   border: none;
   margin-right: 4px;
@@ -71,8 +72,6 @@ const StyledReactionOverflow = styled.button`
     margin-right: -9px;
     padding: 1px 4.5px;
   }
-
-  
 `;
 
 const StyledReadLess = styled.span`
@@ -94,7 +93,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
     >
-      {Object.keys(reactions).map(emoji => (
+      {reactions.map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
       ))}
     </StyledMessageReactions>
@@ -113,16 +112,14 @@ const CompressedReactions = (props: ExpandReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
     >
-      {Object.keys(reactions)
-        .slice(0, 4)
-        .map(emoji => (
-          <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
-        ))}
+      {reactions.slice(0, 4).map(([emoji, _]) => (
+        <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
+      ))}
       <StyledReactionOverflow onClick={handleExpand}>
-        {Object.keys(reactions)
+        {reactions
           .slice(4, 7)
           .reverse()
-          .map(emoji => {
+          .map(([emoji, _]) => {
             return (
               <span
                 key={`${messageId}-${emoji}`}
@@ -130,23 +127,23 @@ const CompressedReactions = (props: ExpandReactionsProps): ReactElement => {
                 aria-label={
                   nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined
                 }
-                >
-                  {emoji}
-                </span>
-              );
-            })}
-        </StyledReactionOverflow>
-      </StyledMessageReactions>
-    );
-  };
-  const ExpandedReactions = (props: ExpandReactionsProps): ReactElement => {
-    const { handleExpand } = props;
-    return (
-      <>
-        <Reactions {...props} />
-        <StyledReadLess onClick={handleExpand}>
+              >
+                {emoji}
+              </span>
+            );
+          })}
+      </StyledReactionOverflow>
+    </StyledMessageReactions>
+  );
+};
+const ExpandedReactions = (props: ExpandReactionsProps): ReactElement => {
+  const { handleExpand } = props;
+  return (
+    <>
+      <Reactions {...props} />
+      <StyledReadLess onClick={handleExpand}>
         <BchatIcon iconType="chevron" iconSize="medium" iconRotation={180} />
-          {window.i18n('expandedReactionsText')}
+        {window.i18n('expandedReactionsText')}
       </StyledReadLess>
     </>
   );
@@ -164,27 +161,27 @@ export const MessageReactions = (props: Props): ReactElement => {
     onSelected,
   } = props;
 
- 
-  const [reactions, setReactions] = useState<ReactionList>({});
+  const [reactions, setReactions] = useState<SortedReactionList>([]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
- 
+
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
-  const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
+  // const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
+  const msgProps = useMessageReactsPropsById(messageId);
 
   if (!msgProps) {
     return <></>;
   }
 
-  const { conversationType, reacts } = msgProps;
+  const { conversationType, sortedReacts: reacts } = msgProps;
   const inGroup = conversationType === 'group';
 
   const reactLimit = 6;
-  
+
   const reactionsProps = {
     messageId,
     reactions,
@@ -197,13 +194,14 @@ export const MessageReactions = (props: Props): ReactElement => {
     onSelected,
     handlePopupReaction: setPopupReaction,
     handlePopupClick: onPopupClick,
-  }
-
-  
+  };
 
   useEffect(() => {
+    if (reacts && !isEqual(reactions, reacts)) {
+      setReactions(reacts);
+    }
     if (!isEmpty(reactions) && isEmpty(reacts)) {
-      setReactions({});
+      setReactions([]);
     }
   }, [reacts, reactions]);
 
@@ -216,8 +214,9 @@ export const MessageReactions = (props: Props): ReactElement => {
       x={popupX}
       y={popupY}
     >
-      {isEmpty(reactions) &&
-        (!hasReactLimit || Object.keys(reactions).length <= reactLimit ? (
+      {reacts &&
+        !_.isEmpty(reacts) &&
+        (!hasReactLimit || reacts.length <= reactLimit ? (
           <Reactions {...reactionsProps} />
         ) : isExpanded ? (
           <ExpandedReactions handleExpand={handleExpand} {...reactionsProps} />

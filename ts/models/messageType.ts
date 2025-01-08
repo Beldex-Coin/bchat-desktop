@@ -2,7 +2,7 @@ import { defaultsDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { CallNotificationType, PropsForMessageWithConvoProps } from '../state/ducks/conversations';
 import { AttachmentTypeWithPath } from '../types/Attachment';
-import { Reaction, ReactionList } from '../types/Reaction';
+import { Reaction, ReactionList, SortedReactionList } from '../types/Reaction';
 
 export type MessageModelType = 'incoming' | 'outgoing';
 export type MessageDeliveryStatus = 'sending' | 'sent' | 'read' | 'error';
@@ -254,4 +254,5 @@ export type MessageRenderingProps = PropsForMessageWithConvoProps & {
   multiSelectMode: boolean;
   firstMessageOfSeries: boolean;
   lastMessageOfSeries: boolean;
+  sortedReacts?: SortedReactionList;
 };

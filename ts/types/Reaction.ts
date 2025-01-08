@@ -136,5 +136,10 @@ export type ReactionList = Record<
     senders: Record<string, string>; // <sender pubkey, messageHash or serverId>
   }
 >;
+// used when rendering reactions to guarantee sorted order using the index
+export type SortedReactionList = [
+  string,
+  { count: number; index: number; senders: Record<string, string> }
+][];
 
 export type OpenGroupReactionList = Record<string, OpenGroupReaction>;

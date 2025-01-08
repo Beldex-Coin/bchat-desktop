@@ -852,6 +852,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       attachments: undefined,
       preview: undefined,
       reacts: undefined,
+      reactsIndex: undefined,
     });
     await this.markRead(Date.now());
     await this.commit();

@@ -1,4 +1,4 @@
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { updateReactClearAllModal, updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
-import { ReactionList } from '../../types/Reaction';
+import {  SortedReactionList } from '../../types/Reaction';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { Flex } from '../basic/Flex';
 import { ContactName } from '../conversation/ContactName';
@@ -170,7 +170,8 @@ const handleSenders = (senders: Array<string>, me: string) => {
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
-  const [reactions, setReactions] = useState<ReactionList>({});
+  const [reactions, setReactions] = useState<SortedReactionList>([]);
+  const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const [currentReact, setCurrentReact] = useState('');
   const [senders, setSenders] = useState<Array<string>>([]);
   const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
@@ -183,7 +184,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const { convoId, reacts, isPublic } = msgProps;
+  const { convoId, sortedReacts: reacts, isPublic } = msgProps;
   const convo = getConversationController().get(convoId);
   const weAreModerator = convo.getConversationModelProps().weAreModerator;
 
@@ -217,14 +218,14 @@ export const ReactListModal = (props: Props): ReactElement => {
       setReactions(reacts);
     }
 
-    if (Object.keys(reactions).length > 0 && (isEmpty(reacts) || reacts === undefined)) {
-      setReactions({});
+    if ( !isEmpty(reactions) && ( isEmpty(reacts) || isUndefined(reacts) ) ) {
+      setReactions([]);
     }
 
     let _senders =
-      reactions[currentReact] && reactions[currentReact].senders
-        ? Object.keys(reactions[currentReact].senders)
-        : null;
+    reactionsMap && reactionsMap[currentReact] && reactionsMap[currentReact].senders
+      ? Object.keys(reactionsMap[currentReact].senders)
+      : null;
 
     if (_senders && !isEqual(senders, _senders)) {
       if (_senders.length > 0) {
@@ -233,13 +234,10 @@ export const ReactListModal = (props: Props): ReactElement => {
       setSenders(_senders);
     }
 
-    if (
-      senders.length > 0 &&
-      (!reactions[currentReact]?.senders || !_senders || _senders.length === 0)
-    ) {
+    if ( !isEmpty(senders) && ( isEmpty(reactionsMap[currentReact]?.senders) || isNil(_senders) || isEmpty(_senders) ) ) {
       setSenders([]);
     }
-  }, [currentReact, me, reaction, reacts, reactions, senders]);
+  }, [currentReact, me, reaction, reacts, reactions,reactionsMap, senders]);
 
   return (
     <BchatWrapperModal
@@ -257,7 +255,7 @@ export const ReactListModal = (props: Props): ReactElement => {
             onClick={handleReactionClick}
           />
         </StyledReactionsContainer>
-        {currentReact && (
+        {reactionsMap && currentReact && (
           <StyledSendersContainer
             container={true}
             flexDirection={'column'}
@@ -272,10 +270,10 @@ export const ReactListModal = (props: Props): ReactElement => {
                 <span role={'img'} aria-label={reactAriaLabel}>
                   {currentReact}
                 </span>
-                {reactions[currentReact].count && (
+                {reactionsMap[currentReact].count && (
                   <>
                     <span>&#8226;</span>
-                    <span>{reactions[currentReact].count}</span>
+                    <span>{reactionsMap[currentReact].count}</span>
                   </>
                 )}
               </p>
