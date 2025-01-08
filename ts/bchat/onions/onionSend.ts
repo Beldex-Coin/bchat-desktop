@@ -48,9 +48,7 @@ export const endpointRequiresDecoding = (url: string): string => {
 
 const buildSendViaOnionPayload = (url: URL, fetchOptions: OnionFetchOptions): OnionPayloadObj => {
   let tempHeaders = fetchOptions.headers || {};
-  const endpoint = endpointRequiresDecoding(
-    url.search ? `${url.pathname}${url.search}` : url.pathname
-  );
+  const endpoint = endpointRequiresDecoding( `${url.pathname.replace(/^\//, '')}${url.search || ''}` );
   const payloadObj = {
     method: fetchOptions.method || 'GET',
     body: fetchOptions.body || ('' as any),

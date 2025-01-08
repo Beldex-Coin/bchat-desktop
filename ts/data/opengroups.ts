@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash';
 export const OpenGroupData = {
 
   getV2OpenGroupRoom,
- 
+  opengroupRoomsLoad,
   saveV2OpenGroupRoom,
 
   getV2OpenGroupRoomByRoomId,
@@ -59,6 +59,27 @@ export async function getAllV2OpenGroupRooms(): Promise<Map<string, OpenGroupV2R
 }
 // avoid doing fetches and write too often from the db by using a cache on the renderer side.
 let cachedRooms: Array<OpenGroupV2Room> | null = null;
+async function opengroupRoomsLoad() {
+  if (cachedRooms !== null) {
+    return;
+  }
+  const loadedFromDB = (await OpenGroupData.getAllV2OpenGroupRooms()) as
+    | Array<OpenGroupV2Room>
+    | undefined;
+
+  if (loadedFromDB) {
+    cachedRooms = new Array();
+    loadedFromDB.forEach(r => {
+      try {
+        cachedRooms?.push(r as any);
+      } catch (e) {
+        window.log.warn(e.message);
+      }
+    });
+    return;
+  }
+  cachedRooms = [];
+}
 
 export function getV2OpenGroupRoom(conversationId: string): OpenGroupV2Room | undefined {
   if (!isOpenGroupV2(conversationId)) {

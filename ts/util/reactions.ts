@@ -149,7 +149,6 @@ export const handleMessageReaction = async (
   if (originalMessage.get('isPublic')) {
     return;
   }
-  console.log('originalMessage.get -->', originalMessage.get('reacts'));
   const reacts: ReactionList = originalMessage.get('reacts') ?? {};
   reacts[reaction.emoji] = reacts[reaction.emoji] || { count: null, senders: {} };
   const details = reacts[reaction.emoji] ?? {};
@@ -192,13 +191,12 @@ export const handleMessageReaction = async (
     // tslint:disable-next-line: no-dynamic-delete
     delete reacts[reaction.emoji];
   }
-  console.log('reaction reacts', reacts);
+ 
   originalMessage.set({
     reacts: !isEmpty(reacts) ? reacts : undefined,
   });
 
   await originalMessage.commit();
-  console.log('originalMessage -->', originalMessage);
   return originalMessage;
 };
 

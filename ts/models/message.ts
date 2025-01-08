@@ -541,8 +541,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (previews && previews.length) {
       props.previews = previews;
     }
-    const reacts = this.getPropsForReacts();
-    if (_.isEmpty(reacts)) {
+     const reacts = this.getPropsForReacts();
+    if (reacts && Object.keys(reacts).length) {
       props.reacts = reacts;
     }
     const quote = this.getPropsForQuote(options);
@@ -558,7 +558,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (attachmentsProps && attachmentsProps.length) {
       props.attachments = attachmentsProps;
     }
-
     return props;
   }
  
@@ -572,9 +571,10 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return `${start}${newSpaces}${end}`;
     });
   }
-  public getPropsForReacts(): ReactionList | undefined  {
-    return this.get('reacts') || undefined ;
+  public getPropsForReacts(): ReactionList | null {
+    return this.get('reacts') || null;
   }
+
   public processQuoteAttachment(attachment: any) {
     const { thumbnail } = attachment;
     const path = thumbnail && thumbnail.path && getAbsoluteAttachmentPath(thumbnail.path);

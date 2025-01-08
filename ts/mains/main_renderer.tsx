@@ -25,6 +25,7 @@ import { HTTPError } from '../bchat/utils/errors';
 import nativeEmojiData from '@emoji-mart/data';
 import { initialiseEmojiData } from '../util/emoji';
 import { loadEmojiPanelI18n } from '../util/i18n';
+import { OpenGroupData } from '../data/opengroups';
 
 // Globally disable drag and drop
 document.body.addEventListener(
@@ -177,7 +178,12 @@ Storage.onready(async () => {
     initialiseEmojiData(nativeEmojiData);
     await AttachmentDownloads.initAttachmentPaths();
 
-    await Promise.all([getConversationController().load(), BlockedNumberController.load(),loadEmojiPanelI18n()]);
+    await Promise.all([
+      getConversationController().load(),
+      BlockedNumberController.load(),
+      OpenGroupData.opengroupRoomsLoad(),
+      loadEmojiPanelI18n(),
+    ]);
   } catch (error) {
     window.log.error(
       'main_start.js: ConversationController failed to load:',
@@ -364,8 +370,8 @@ function onOffline() {
   window.log.info('offline');
   window.globalOnlineStatus = false;
 
-   window.removeEventListener('offline', onOffline);
-   window.addEventListener('online', onOnline);
+  window.removeEventListener('offline', onOffline);
+  window.addEventListener('online', onOnline);
 
   // We've received logs from Linux where we get an 'offline' event, then 30ms later
   //   we get an online event. This waits a bit after getting an 'offline' event
