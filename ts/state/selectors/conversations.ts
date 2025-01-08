@@ -888,7 +888,7 @@ export const getMessageReactsProps = createSelector(getMessagePropsByMessageId, 
     'conversationType',
     'isPublic',
     'reacts',
-    'convoId',
+    'serverId',
   ]);
   return msgProps;
 });

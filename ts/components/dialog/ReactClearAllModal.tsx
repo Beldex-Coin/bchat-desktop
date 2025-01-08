@@ -41,7 +41,7 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
-  const [deletionInProgress, setDeletionInProgress] = useState(false);
+  const [clearingInProgress, setClearingInProgress] = useState(false);
 
   if (!msgProps) {
     return <></>;
@@ -54,9 +54,9 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
 
   const handleClearAll = async () => {
     if (roomInfos && serverId) {
-      setDeletionInProgress(true);
-      // await deleteSogsReactionByServerId(reaction, serverId, roomInfos);
-      setDeletionInProgress(false);
+      setClearingInProgress(true);
+      // await clearSogsReactionByServerId(reaction, serverId, roomInfos);
+      setClearingInProgress(false);
       handleClose();
     } else {
       window.log.warn('Error for batch removal of', reaction, 'on message', messageId);
@@ -86,17 +86,17 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
             buttonColor={confirmButtonColor}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClearAll}
-            disabled={deletionInProgress}
+            disabled={clearingInProgress}
           />
           <BchatButton
             text={'Cancel'}
             buttonColor={BchatButtonColor.Danger}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClose}
-            disabled={deletionInProgress}
+            disabled={clearingInProgress}
           />
         </div>
-        <BchatSpinner loading={deletionInProgress} />
+        <BchatSpinner loading={clearingInProgress} />
       </StyledReactClearAllContainer>
     </BchatWrapperModal>
   );

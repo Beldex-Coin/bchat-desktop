@@ -155,8 +155,7 @@ export const MessageContentWithStatuses = (props: Props) => {
           isCorrectSide={isIncoming}
         />
       )}
-
-{!isDeleted && (
+ {!isDeleted && (
           <MessageContextMenu
             messageId={messageId}
             contextMenuId={ctxMenuID}

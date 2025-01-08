@@ -216,6 +216,7 @@ export type PropsForMessageWithoutConvoProps = {
 
   reactions?: Array<Reaction>;
   reacts?: ReactionList;
+  reactsIndex?: number;
 };
 
 export type PropsForMessageWithConvoProps = PropsForMessageWithoutConvoProps & {

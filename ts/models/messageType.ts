@@ -112,6 +112,7 @@ export interface MessageAttributes {
   //emoji reacts
   reaction?: Reaction;
   reacts?: ReactionList;
+  reactsIndex?: number;
 
 }
 
@@ -213,6 +214,7 @@ export interface MessageAttributesOptionals {
   payment?:any;
   reaction?: Reaction;
   reacts?: ReactionList;
+  reactsIndex?: number;
 }
 
 /**

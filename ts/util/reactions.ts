@@ -12,8 +12,6 @@ import { roomHasBlindEnabled } from '../types/sqlSharedTypes';
 import { OpenGroupData } from '../data/opengroups';
 import { PubKey } from '../bchat/types/PubKey';
 
-
-
 export type BlindedIdMapping = {
   blindedId: string;
   serverPublicKey: string;
@@ -66,19 +64,6 @@ const getMessageByReaction = async (
  * Sends a Reaction Data Message, don't use for OpenGroups
  */
 export const sendMessageReaction = async (messageId: string, emoji: string) => {
-  const timestamp = Date.now();
-  latestReactionTimestamps.push(timestamp);
-
-  if (latestReactionTimestamps.length > rateCountLimit) {
-    const firstTimestamp = latestReactionTimestamps[0];
-    if (timestamp - firstTimestamp < rateTimeLimit) {
-      latestReactionTimestamps.pop();
-      return;
-    } else {
-      latestReactionTimestamps.shift();
-    }
-  }
-
   const found = await getMessageById(messageId);
   if (found) {
     const conversationModel = found?.getConversation();
@@ -86,7 +71,23 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
       window.log.warn(`Conversation for ${messageId} not found in db`);
       return;
     }
+    if (!conversationModel.hasReactions) {
+      window.log.warn("This conversation doesn't have reaction support");
+      return;
+    }
 
+    const timestamp = Date.now();
+    latestReactionTimestamps.push(timestamp);
+
+    if (latestReactionTimestamps.length > rateCountLimit) {
+      const firstTimestamp = latestReactionTimestamps[0];
+      if (timestamp - firstTimestamp < rateTimeLimit) {
+        latestReactionTimestamps.pop();
+        return;
+      } else {
+        latestReactionTimestamps.shift();
+      }
+    }
     const isOpenGroup = Boolean(found?.get('isPublic'));
     const id = (isOpenGroup && found.get('serverId')) || Number(found.get('sent_at'));
     const me: any = isOpenGroup || UserUtils.getOurPubKeyStrFromCache();
@@ -183,6 +184,10 @@ export const handleMessageReaction = async (
   if (count > 0) {
     reacts[reaction.emoji].count = count;
     reacts[reaction.emoji].senders = details.senders;
+    if (details && details.index === undefined) {
+      reacts[reaction.emoji].index = originalMessage.get('reactsIndex') ?? 0;
+      originalMessage.set('reactsIndex', (originalMessage.get('reactsIndex') ?? 0) + 1);
+    }
   } else {
     // tslint:disable-next-line: no-dynamic-delete
     delete reacts[reaction.emoji];
@@ -220,9 +225,8 @@ export const handleOpenGroupMessageReactions = async (
       reactions[key].reactors.forEach(reactor => {
         senders[reactor] = String(serverId);
       });
-      reacts[emoji] = { count: reactions[key].count, senders };
+      reacts[emoji] = { count: reactions[key].count, index: reactions[key].index, senders };
     });
-
     originalMessage.set({
       reacts,
     });

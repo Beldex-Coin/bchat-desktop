@@ -36,7 +36,7 @@ import { useMouse, useClickAway } from 'react-use';
 import { sendMessageReaction } from '../../../../util/reactions';
 
 
-
+type Props = { messageId: string; contextMenuId: string,enableReactions: boolean };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
   | 'attachments'
@@ -56,7 +56,7 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'isDeletableForEveryone'
 >;
 
-type Props = { messageId: string; contextMenuId: string,enableReactions: boolean };
+
 const StyledMessageContextMenu = styled.div`
   position: relative;
   .react-contexify {

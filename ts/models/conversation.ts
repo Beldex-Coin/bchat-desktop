@@ -71,6 +71,8 @@ import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
+import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
+import { OpenGroupData } from '../data/opengroups';
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -1487,10 +1489,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public hasReactions() {
+     // message requests should not have reactions
+     if (!this.isApproved()) {
+      return false;
+    }
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
-      window?.log('Emoji reactions are not supported in social groups.');
-      return false;
+      const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
+      return roomHasReactionsEnabled(openGroup);
     } else {
       return true;
     }

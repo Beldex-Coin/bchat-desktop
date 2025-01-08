@@ -132,6 +132,7 @@ export type ReactionList = Record<
   string,
   {
     count: number;
+    index: number; // relies on reactsIndex in the message model
     senders: Record<string, string>; // <sender pubkey, messageHash or serverId>
   }
 >;

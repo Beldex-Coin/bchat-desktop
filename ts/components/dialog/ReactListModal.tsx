@@ -147,6 +147,26 @@ const ReactionSenders = (props: ReactionSendersProps) => {
     </>
   );
 };
+const handleSenders = (senders: Array<string>, me: string) => {
+  let updatedSenders = senders;
+  const blindedMe = updatedSenders.filter(
+    sender => sender.startsWith('bd') && isUsAnySogsFromCache(sender)
+  );
+
+  let meIndex = -1;
+  if (blindedMe && blindedMe[0]) {
+    meIndex = updatedSenders.indexOf(blindedMe[0]);
+  } else {
+    meIndex = updatedSenders.indexOf(me);
+  }
+  if (meIndex >= 0) {
+    updatedSenders.splice(meIndex, 1);
+    updatedSenders = [me, ...updatedSenders];
+  }
+
+  return updatedSenders;
+};
+
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
@@ -156,7 +176,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
   const dispatch = useDispatch();
 
-  let me = UserUtils.getOurPubKeyStrFromCache();
+  const me = UserUtils.getOurPubKeyStrFromCache();
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
 
   if (!msgProps) {
@@ -208,19 +228,7 @@ export const ReactListModal = (props: Props): ReactElement => {
 
     if (_senders && !isEqual(senders, _senders)) {
       if (_senders.length > 0) {
-        const blindedMe = _senders.filter(
-          sender => sender.startsWith('15') && isUsAnySogsFromCache(sender)
-        );
-        let meIndex = -1;
-        if (blindedMe && blindedMe[0]) {
-          meIndex = _senders.indexOf(blindedMe[0]);
-        } else {
-          meIndex = _senders.indexOf(me);
-        }
-        if (meIndex >= 0) {
-          _senders.splice(meIndex, 1);
-          _senders = [me, ..._senders];
-        }
+        _senders = handleSenders(_senders, me);
       }
       setSenders(_senders);
     }
