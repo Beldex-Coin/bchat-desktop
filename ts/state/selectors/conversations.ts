@@ -884,10 +884,11 @@ export const getMessageReactsProps = createSelector(getMessagePropsByMessageId, 
   }
 
   const msgProps: MessageReactsSelectorProps = pick(props.propsForMessage, [
+    'convoId',
     'conversationType',
     'isPublic',
     'reacts',
-    'weAreAdmin',
+    'convoId',
   ]);
   return msgProps;
 });
@@ -1036,7 +1037,6 @@ export const getIsMessageSelected = createSelector(
   }
 );
 
-
 export const getMessageContentSelectorProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageContentSelectorProps
   | undefined => {
@@ -1071,7 +1071,7 @@ export const getMessageContentWithStatusesSelectorProps = createSelector(
     const msgProps: MessageContentWithStatusSelectorProps = {
       hasAttachments: Boolean(props.propsForMessage.attachments?.length) || false,
       ...pick(props.propsForMessage, ['direction', 'isDeleted', 'isTrustedForAttachmentDownload']),
-    }
+    };
 
     return msgProps;
   }

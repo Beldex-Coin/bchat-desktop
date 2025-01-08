@@ -31,7 +31,7 @@ type Props = {
   onSelected?: (emoji: string) => boolean;
 };
 
-export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'conversationType' | 'isPublic'| 'reacts'| 'weAreAdmin'>;
+export type MessageReactsSelectorProps = Pick<MessageRenderingProps, 'convoId' | 'conversationType' | 'isPublic'| 'reacts'| 'serverId'>;
 
 const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
   position: relative;

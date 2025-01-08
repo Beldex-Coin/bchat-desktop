@@ -1,4 +1,4 @@
-import React,{ ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updateReactClearAllModal } from '../../state/ducks/modalDialog';
@@ -8,6 +8,8 @@ import { getTheme } from '../../state/selectors/theme';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { getConversationController } from '../../bchat/conversations';
+import { BchatSpinner } from '../basic/BchatSpinner';
 
 type Props = {
   reaction: string;
@@ -39,20 +41,32 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
-  
+  const [deletionInProgress, setDeletionInProgress] = useState(false);
+
   if (!msgProps) {
     return <></>;
   }
 
+  const { convoId, serverId } = msgProps;
+  const roomInfos = getConversationController()
+    .get(convoId)
+    .toOpenGroupV2();
+
+  const handleClearAll = async () => {
+    if (roomInfos && serverId) {
+      setDeletionInProgress(true);
+      // await deleteSogsReactionByServerId(reaction, serverId, roomInfos);
+      setDeletionInProgress(false);
+      handleClose();
+    } else {
+      window.log.warn('Error for batch removal of', reaction, 'on message', messageId);
+    }
+  };
 
   const confirmButtonColor = darkMode ? BchatButtonColor.Green : BchatButtonColor.Secondary;
 
   const handleClose = () => {
     dispatch(updateReactClearAllModal(null));
-  };
-
-  const handleClearAll = () => {
-    // TODO Handle Batch Clearing of Reactions
   };
 
   return (
@@ -61,9 +75,9 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
       showHeader={false}
       onClose={handleClose}
     >
-      <StyledReactClearAllContainer container={true} flexDirection={'column'} darkMode={darkMode}>
+      <StyledReactClearAllContainer container={true} flexDirection={'column'} darkMode={darkMode} alignItems="center">
         <p>
-          Are you sure you want to clear all  <p>{window.i18n('clearAllReactions', [reaction])}</p>
+          Are you sure you want to clear all <p>{window.i18n('clearAllReactions', [reaction])}</p>
         </p>
         <hr />
         <div className="Bchat-modal__button-group">
@@ -72,14 +86,17 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
             buttonColor={confirmButtonColor}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClearAll}
+            disabled={deletionInProgress}
           />
           <BchatButton
             text={'Cancel'}
             buttonColor={BchatButtonColor.Danger}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClose}
+            disabled={deletionInProgress}
           />
         </div>
+        <BchatSpinner loading={deletionInProgress} />
       </StyledReactClearAllContainer>
     </BchatWrapperModal>
   );

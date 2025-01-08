@@ -3,11 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
- 
-  updateReactListModal,
-  updateUserDetailsModal,
-} from '../../state/ducks/modalDialog';
+import { updateReactClearAllModal, updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
 import { ReactionList } from '../../types/Reaction';
@@ -22,6 +18,7 @@ import { isUsAnySogsFromCache, sendMessageReaction } from '../../util/reactions'
 import { BchatIconButton } from '../icon';
 
 import { nativeEmojiData } from '../../util/emoji';
+import { getConversationController } from '../../bchat/conversations';
 
 interface Props {
   messageId: string;
@@ -77,18 +74,18 @@ const StyledReactionSender = styled(Flex)`
     margin-right: 12px;
   }
 `;
-// const StyledClearButton = styled.button`
-//   font-size: var(--font-size-sm);
-//   color: var(--color-destructive);
-//   border: none;
-// `;
+const StyledClearButton = styled.button`
+  font-size: var(--font-size-sm);
+  color: var(--color-destructive);
+  border: none;
+`;
 type ReactionSendersProps = {
   messageId: string;
   currentReact: string;
   senders: Array<string>;
   me: string;
   handleClose: () => void;
-}
+};
 
 const ReactionSenders = (props: ReactionSendersProps) => {
   const { messageId, currentReact, senders, me, handleClose } = props;
@@ -158,7 +155,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const [senders, setSenders] = useState<Array<string>>([]);
   const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
   const dispatch = useDispatch();
-  
+
   let me = UserUtils.getOurPubKeyStrFromCache();
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
 
@@ -166,8 +163,9 @@ export const ReactListModal = (props: Props): ReactElement => {
     return <></>;
   }
 
-  const {  reacts } = msgProps;
-  
+  const { convoId, reacts, isPublic } = msgProps;
+  const convo = getConversationController().get(convoId);
+  const weAreModerator = convo.getConversationModelProps().weAreModerator;
 
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
@@ -181,14 +179,13 @@ export const ReactListModal = (props: Props): ReactElement => {
     dispatch(updateReactListModal(null));
   };
 
+  
+  const handleClearReactions = (event: any) => {
+    event.preventDefault();
+    handleClose();
+    dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
+  };
 
- 
-  // const handleClearReactions = (event: any) => {
-  //   event.preventDefault();
-  //   handleClose();
-  //   dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
-  // };
- 
   useEffect(() => {
     if (currentReact === '' && currentReact !== reaction) {
       setReactAriaLabel(
@@ -205,9 +202,9 @@ export const ReactListModal = (props: Props): ReactElement => {
     }
 
     let _senders =
-    reactions[currentReact] && reactions[currentReact].senders
-      ? Object.keys(reactions[currentReact].senders)
-      : null;
+      reactions[currentReact] && reactions[currentReact].senders
+        ? Object.keys(reactions[currentReact].senders)
+        : null;
 
     if (_senders && !isEqual(senders, _senders)) {
       if (_senders.length > 0) {
@@ -228,10 +225,13 @@ export const ReactListModal = (props: Props): ReactElement => {
       setSenders(_senders);
     }
 
-    if ( senders.length > 0 && (!reactions[currentReact]?.senders || !_senders || _senders.length === 0) ) {
+    if (
+      senders.length > 0 &&
+      (!reactions[currentReact]?.senders || !_senders || _senders.length === 0)
+    ) {
       setSenders([]);
     }
-  }, [currentReact,me, reaction, reacts, reactions, senders]);
+  }, [currentReact, me, reaction, reacts, reactions, senders]);
 
   return (
     <BchatWrapperModal
@@ -264,14 +264,18 @@ export const ReactListModal = (props: Props): ReactElement => {
                 <span role={'img'} aria-label={reactAriaLabel}>
                   {currentReact}
                 </span>
-                <span>&#8226;</span>
-                <span>{senders.length}</span>
+                {reactions[currentReact].count && (
+                  <>
+                    <span>&#8226;</span>
+                    <span>{reactions[currentReact].count}</span>
+                  </>
+                )}
               </p>
-              {/* {isPublic && weAreAdmin && (
+              {isPublic && weAreModerator && (
                 <StyledClearButton onClick={handleClearReactions}>
                   {window.i18n('clearAll')}
                 </StyledClearButton>
-              )} */}
+              )}
             </StyledReactionBar>
             {senders && senders.length > 0 && (
               <ReactionSenders

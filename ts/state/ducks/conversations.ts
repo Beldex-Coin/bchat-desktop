@@ -291,6 +291,7 @@ export interface ReduxConversationType {
   walletUserName?:any;
   walletCreatedDaemonHeight?:number|any;
   isBnsHolder?:boolean;
+  weAreModerator?:boolean
 }
 
 export interface NotificationForConvoOption {
