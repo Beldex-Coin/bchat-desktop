@@ -214,6 +214,7 @@ const darkInviteCardIconBg = '#202329';
 const darkRadioButton = '#F0F0F0';
 const darkEmojiPanelBg='#202329';
 const darkEmojiIconHoverBg='#2C303D';
+const darkEmojiHeaderIcon="white"
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -501,6 +502,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-radio-icon', darkRadioButton);
   document.documentElement.style.setProperty('--color-emoji-panel-bg', darkEmojiPanelBg);
   document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', darkEmojiIconHoverBg);
+  document.documentElement.style.setProperty('--color-emoji-header-icon', darkEmojiHeaderIcon);
 };
 
 // LIGHT COLORS
@@ -694,6 +696,7 @@ const lightInviteCardIconBg = '#F8F8F8';
 const lightRadioButton = '#ACACAC';
 const lightEmojiPanelBg='#F8F8F8';
 const lightEmojiIconHoverBg='#EBEBEB';
+const lightEmojiHeaderIcon='#333';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -990,6 +993,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-radio-icon', lightRadioButton);
   document.documentElement.style.setProperty('--color-emoji-panel-bg', lightEmojiPanelBg);
   document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', lightEmojiIconHoverBg);
+  document.documentElement.style.setProperty('--color-emoji-header-icon', lightEmojiHeaderIcon);
 
 };
 
@@ -1173,7 +1177,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-invite-card-icon-bg:${darkInviteCardIconBg};
     --color-radio-icon:${lightRadioButton};
     --color-emoji-panel-bg:${darkEmojiPanelBg};
-    --color-emoji-icon-hover-bg:${darkEmojiIconHoverBg}
+    --color-emoji-icon-hover-bg:${darkEmojiIconHoverBg};
+    --color-emoji-header-icon:${darkEmojiHeaderIcon};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};
