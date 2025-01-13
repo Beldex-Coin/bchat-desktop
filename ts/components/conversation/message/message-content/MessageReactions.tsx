@@ -51,7 +51,10 @@ const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
 `;
 
 export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
-  ${props => (props.inModal ? '' : 'max-width: 320px;')}
+  ${props =>
+    props.inModal
+      ? ''
+      : 'max-width: 320px;border-radius: 17px;border: 0.5px solid #858598;background:var(--color-emoji-panel-bg);margin-top:-13px'}
 `;
 
 const StyledReactionOverflow = styled.button`
@@ -75,7 +78,7 @@ const StyledReactionOverflow = styled.button`
 `;
 
 const StyledReadLess = styled.span`
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-h2);
   margin-top: 8px;
   svg {
     margin-right: 5px;

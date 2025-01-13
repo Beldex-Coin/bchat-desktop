@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useState } from 'react';
-import {  SortedReactionList } from '../../../../types/Reaction';
+import { SortedReactionList } from '../../../../types/Reaction';
 import { UserUtils } from '../../../../bchat/utils';
 import { abbreviateNumber } from '../../../../util/abbreviateNumber';
 import { nativeEmojiData } from '../../../../util/emoji';
@@ -15,19 +15,25 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
   justify-content: ${props => (props.showCount ? 'flex-start' : 'center')};
   align-items: center;
 
-  background-color: var(--color-received-message-background);
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${props => (props.selected ? 'var(--color-accent)' : 'transparent')};
-  border-radius: 11px;
-  box-sizing: border-box;
-  padding: 0 7px;
-  height: 23px;
-  margin: 0 4px var(--margins-sm);
+  // background-color: var(--color-received-message-background);
+  // border-width: 1px;
+  // border-style: solid;
+  // border-color: ${props => (props.selected ? 'var(--color-accent)' : 'transparent')};
+  // border-radius: 11px;
+    box-sizing: border-box;
+    // padding: 0 2px;
+    // height: 23px;
+    // margin: 0 6px;
+    border: unset;
+    font-size:18px;
+    padding: 3px 5px;
 
   span:nth-child(2) {
-    font-size: var(--font-size-xs);
-    margin-left: 8px;
+    font-size: var(--font-size-sm);
+    color: #A7A7BA;
+    text-align: center;
+    font-weight: 600;
+
   }
 `;
 
@@ -131,7 +137,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         >
           {emoji}
         </span>
-        {showCount && `\u00A0\u00A0${abbreviateNumber(count)}`}
+        {showCount && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
       </StyledReaction>
       {inGroup && popupReaction && popupReaction === emoji && (
         <ReactionPopup

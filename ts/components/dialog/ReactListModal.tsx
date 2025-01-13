@@ -1,24 +1,34 @@
-import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
+// import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
+import { isEqual } from 'lodash';
+
 import React, { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updateReactClearAllModal, updateReactListModal, updateUserDetailsModal } from '../../state/ducks/modalDialog';
+import {
+  updateReactClearAllModal,
+  updateReactListModal,
+  updateUserDetailsModal,
+} from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
-import {  SortedReactionList } from '../../types/Reaction';
+import { SortedReactionList } from '../../types/Reaction';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { Flex } from '../basic/Flex';
 import { ContactName } from '../conversation/ContactName';
 import { MessageReactions } from '../conversation/message/message-content/MessageReactions';
-import { BchatWrapperModal } from '../BchatWrapperModal';
+
 import { getMessageById } from '../../data/data';
 import { UserUtils } from '../../bchat/utils';
-import { isUsAnySogsFromCache, sendMessageReaction } from '../../util/reactions';
+import {
+  // isUsAnySogsFromCache,
+  sendMessageReaction,
+} from '../../util/reactions';
 import { BchatIconButton } from '../icon';
 
-import { nativeEmojiData } from '../../util/emoji';
+// import { nativeEmojiData } from '../../util/emoji';
 import { getConversationController } from '../../bchat/conversations';
+import { BchatButton, BchatButtonType } from '../basic/BchatButton';
 
 interface Props {
   messageId: string;
@@ -26,30 +36,29 @@ interface Props {
 }
 
 const StyledReactListContainer = styled(Flex)`
-  width: 376px;
+  // width: 376px;
 `;
 
-const StyledReactionsContainer = styled.div`
-  background-color: var(--color-cell-background);
-  border-bottom: 1px solid var(--color-session-border);
+const StyledReactionsContainer = styled(Flex)`
+  border-bottom: 1px solid #4B4B64;
   width: 100%;
   overflow-x: auto;
-  padding: 12px 8px 0;
+  padding: 12px 8px 8px;
 `;
 
 const StyledSendersContainer = styled(Flex)`
   width: 100%;
-  min-height: 350px;
+  // min-height: 3px;
   height: 100%;
-  max-height: 496px;
+  max-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0 16px 32px;
+  padding: 14px 16px 32px;
 `;
 
 const StyledReactionBar = styled(Flex)`
   width: 100%;
-  margin: 12px 0 20px 4px;
+  // margin: 12px 0 20px 4px;
 
   p {
     color: var(--color-text-subtle);
@@ -79,16 +88,42 @@ const StyledClearButton = styled.button`
   color: var(--color-destructive);
   border: none;
 `;
+const StyledAllButton = styled.button`
+  border-radius: 17px;
+  border: 0.5px solid #858598;
+  background: #202329;
+  color: #f0f0f0;
+  
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  span {
+    color: #a7a7ba;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+`;
 type ReactionSendersProps = {
   messageId: string;
   currentReact: string;
-  senders: Array<string>;
+  // senders: Array<string>;
   me: string;
   handleClose: () => void;
+  reactedDetailList: Array<reactionListDetailsProps>;
 };
-
+export type reactionListDetailsProps = {
+  sender: string;
+  emoji: any;
+};
 const ReactionSenders = (props: ReactionSendersProps) => {
-  const { messageId, currentReact, senders, me, handleClose } = props;
+  const { messageId, currentReact, me, handleClose, reactedDetailList } = props;
+  const FilteredList = currentReact
+    ? reactedDetailList.filter(({ emoji }) => emoji === currentReact)
+    : reactedDetailList;
   const dispatch = useDispatch();
 
   const handleAvatarClick = async (sender: string) => {
@@ -109,75 +144,80 @@ const ReactionSenders = (props: ReactionSendersProps) => {
   const handleRemoveReaction = async () => {
     await sendMessageReaction(messageId, currentReact);
   };
+  console.log('reacted 2-->', reactedDetailList);
 
   return (
     <>
-      {senders.map((sender: string) => (
+      {FilteredList.map(reactedList => (
         <StyledReactionSender
-          key={`${messageId}-${sender}`}
+          key={`${messageId}-${reactedList.sender}`}
           container={true}
           justifyContent={'space-between'}
           alignItems={'center'}
         >
           <Flex container={true} alignItems={'center'}>
             <Avatar
-              size={AvatarSize.XS}
-              pubkey={sender}
+              size={AvatarSize.S}
+              pubkey={reactedList.sender}
               onAvatarClick={async () => {
-                await handleAvatarClick(sender);
+                await handleAvatarClick(reactedList.sender);
               }}
             />
             <ContactName
-              pubkey={sender}
+              pubkey={reactedList.sender}
               module="module-conversation__user"
               shouldShowPubkey={false}
             />
+            <span role={'img'}> {reactedList.emoji}</span>
           </Flex>
-          {sender === me && (
-            <BchatIconButton
-              iconType="exit"
-              iconSize="small"
-              onClick={async () => {
-                await handleRemoveReaction();
-              }}
-            />
-          )}
+          <Flex container={true} alignItems={'center'}>
+            {reactedList.sender === me && (
+              <BchatButton buttonType={BchatButtonType.BrandOutline} text='Remove'  iconType='delete' onClick={handleRemoveReaction}/>
+             
+              
+            )}
+          </Flex>
         </StyledReactionSender>
       ))}
     </>
   );
 };
-const handleSenders = (senders: Array<string>, me: string) => {
-  let updatedSenders = senders;
-  const blindedMe = updatedSenders.filter(
-    sender => sender.startsWith('bd') && isUsAnySogsFromCache(sender)
-  );
+// const handleSenders = (senders: Array<string>, me: string) => {
+//   let updatedSenders = senders;
+//   const blindedMe = updatedSenders.filter(
+//     sender => sender.startsWith('bd') && isUsAnySogsFromCache(sender)
+//   );
 
-  let meIndex = -1;
-  if (blindedMe && blindedMe[0]) {
-    meIndex = updatedSenders.indexOf(blindedMe[0]);
-  } else {
-    meIndex = updatedSenders.indexOf(me);
-  }
-  if (meIndex >= 0) {
-    updatedSenders.splice(meIndex, 1);
-    updatedSenders = [me, ...updatedSenders];
-  }
+//   let meIndex = -1;
+//   if (blindedMe && blindedMe[0]) {
+//     meIndex = updatedSenders.indexOf(blindedMe[0]);
+//   } else {
+//     meIndex = updatedSenders.indexOf(me);
+//   }
+//   if (meIndex >= 0) {
+//     updatedSenders.splice(meIndex, 1);
+//     updatedSenders = [me, ...updatedSenders];
+//   }
 
-  return updatedSenders;
-};
+//   return updatedSenders;
+// };
 
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
-  const { reaction, messageId } = props;
   const [reactions, setReactions] = useState<SortedReactionList>([]);
-  const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
+  // const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const [currentReact, setCurrentReact] = useState('');
-  const [senders, setSenders] = useState<Array<string>>([]);
-  const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
-  const dispatch = useDispatch();
+  // const [senders, setSenders] = useState<Array<string>>([]);
 
+  // const [reactedDetailList, setReactedDetailList] = useState<Array<reactionListDetailsProps>>([]);
+  // const [reactAriaLabel, setReactAriaLabel] = useState<string | undefined>();
+  const dispatch = useDispatch();
+  const {
+    // reaction,
+    messageId,
+  } = props;
   const me = UserUtils.getOurPubKeyStrFromCache();
+
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
 
   if (!msgProps) {
@@ -187,75 +227,112 @@ export const ReactListModal = (props: Props): ReactElement => {
   const { convoId, sortedReacts: reacts, isPublic } = msgProps;
   const convo = getConversationController().get(convoId);
   const weAreModerator = convo.getConversationModelProps().weAreModerator;
+  const reactedDetailList = sortedSenderAndEmoji();
 
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
   };
 
   const handleReactionClick = (emoji: string) => {
-    setReactAriaLabel(nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined);
+    // setReactAriaLabel(nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined);
     setCurrentReact(emoji);
   };
   const handleClose = () => {
     dispatch(updateReactListModal(null));
   };
 
-  
   const handleClearReactions = (event: any) => {
     event.preventDefault();
     handleClose();
     dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
   };
 
-  useEffect(() => {
-    if (currentReact === '' && currentReact !== reaction) {
-      setReactAriaLabel(
-        nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[reaction] : undefined
-      );
-      setCurrentReact(reaction);
-    }
-    if (reacts && !isEqual(reactions, reacts)) {
-      setReactions(reacts);
-    }
+  function sortedSenderAndEmoji() {
+    const reactedCustomData: Array<reactionListDetailsProps> = [];
+    reacts?.forEach(([emoji, { senders }]) => {
+      Object.keys(senders).forEach(sender => {
+        reactedCustomData.push({ sender, emoji });
+      });
+    });
 
-    if ( !isEmpty(reactions) && ( isEmpty(reacts) || isUndefined(reacts) ) ) {
-      setReactions([]);
-    }
+    console.log('pushedData -->', reactedCustomData);
+    // const FilteredReact = reactedCustomData.filter(({ emoji }) => emoji === currentReact);
+    // const finalData = FilteredReact.length > 0 ? FilteredReact : reactedCustomData;
+    // console.log('finalData -->', finalData,reactAriaLabel);
+    // setReactedDetailList(reactedCustomData);
 
-    let _senders =
-    reactionsMap && reactionsMap[currentReact] && reactionsMap[currentReact].senders
-      ? Object.keys(reactionsMap[currentReact].senders)
-      : null;
+    return reactedCustomData;
+  }
 
-    if (_senders && !isEqual(senders, _senders)) {
-      if (_senders.length > 0) {
-        _senders = handleSenders(_senders, me);
+  useEffect(
+    () => {
+      // if (currentReact === '' && currentReact !== reaction) {
+      //   setReactAriaLabel(
+      //     nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[reaction] : undefined
+      //   );
+      //   setCurrentReact(reaction);
+      // }
+      if (reacts && !isEqual(reactions, reacts)) {
+        setReactions(reacts);
       }
-      setSenders(_senders);
-    }
+      // sortedSenderAndEmoji();
+      // if (!isEmpty(reactions) && (isEmpty(reacts) || isUndefined(reacts))) {
+      //   setReactions([]);
+      // }
+      // let _senders =
+      //   reactionsMap && reactionsMap[currentReact] && reactionsMap[currentReact].senders
+      //     ? Object.keys(reactionsMap[currentReact].senders)
+      //     : null;
+      // console.log('_senders 0 -->', _senders);
+      // if (_senders && !isEqual(senders, _senders)) {
+      //   if (_senders.length > 0) {
+      //     _senders = handleSenders(_senders, me);
+      //   }
+      //   console.log('_senders 1 -->', _senders);
+      //   setSenders(_senders);
+      //   sortedSenderAndEmoji();
+      // }
+      // if (
+      //   !isEmpty(senders) &&
+      //   (isEmpty(reactionsMap[currentReact]?.senders) || isNil(_senders) || isEmpty(_senders))
+      // ) {
+      //   setSenders([]);
+      // }
+    },
 
-    if ( !isEmpty(senders) && ( isEmpty(reactionsMap[currentReact]?.senders) || isNil(_senders) || isEmpty(_senders) ) ) {
-      setSenders([]);
-    }
-  }, [currentReact, me, reaction, reacts, reactions,reactionsMap, senders]);
+    // [currentReact, me, reaction, reacts, reactions, reactionsMap, senders]);
+    [reacts, me]
+  );
 
   return (
-    <BchatWrapperModal
-      additionalClassName={'reaction-list-modal'}
-      showHeader={false}
-      onClose={handleClose}
-    >
-      <StyledReactListContainer container={true} flexDirection={'column'} alignItems={'flex-start'}>
-        <StyledReactionsContainer>
-          <MessageReactions
-            messageId={messageId}
-            hasReactLimit={false}
-            inModal={true}
-            onSelected={handleSelectedReaction}
-            onClick={handleReactionClick}
-          />
-        </StyledReactionsContainer>
-        {reactionsMap && currentReact && (
+    <div className="reaction-list-modal">
+      <div className='reaction-list-innreModal show-modal'> 
+        <StyledReactListContainer
+          container={true}
+          flexDirection={'column'}
+          alignItems={'flex-start'}
+        >
+          <StyledReactionsContainer
+            container={true}
+            flexDirection={'row'}
+            alignItems={'center'}
+            justifyContent="space-between"
+          >
+            <Flex container={true} flexDirection={'row'} alignItems={'center'}>
+              <StyledAllButton onClick={() => setCurrentReact('')}>
+                All <span>{reactedDetailList.length}</span>
+              </StyledAllButton>
+              <MessageReactions
+                messageId={messageId}
+                hasReactLimit={false}
+                inModal={true}
+                onSelected={handleSelectedReaction}
+                onClick={handleReactionClick}
+              />
+            </Flex>
+            <BchatIconButton iconType="xWithCircle" iconSize={'large'}  onClick={handleClose}/>
+          </StyledReactionsContainer>
+          {/* {reactionsMap && ( */}
           <StyledSendersContainer
             container={true}
             flexDirection={'column'}
@@ -266,35 +343,38 @@ export const ReactListModal = (props: Props): ReactElement => {
               justifyContent={'space-between'}
               alignItems={'center'}
             >
-              <p>
-                <span role={'img'} aria-label={reactAriaLabel}>
+              {/* <p> */}
+              {/* <span role={'img'} aria-label={reactAriaLabel}>
                   {currentReact}
-                </span>
-                {reactionsMap[currentReact].count && (
+                </span> */}
+              {/* {reactionsMap[currentReact].count && (
                   <>
                     <span>&#8226;</span>
                     <span>{reactionsMap[currentReact].count}</span>
                   </>
-                )}
-              </p>
+                )} */}
+              {/* </p> */}
               {isPublic && weAreModerator && (
                 <StyledClearButton onClick={handleClearReactions}>
                   {window.i18n('clearAll')}
                 </StyledClearButton>
               )}
             </StyledReactionBar>
-            {senders && senders.length > 0 && (
+
+           
+            {reactedDetailList && reactedDetailList.length > 0 && (
               <ReactionSenders
                 messageId={messageId}
                 currentReact={currentReact}
-                senders={senders}
+                reactedDetailList={reactedDetailList}
                 me={me}
                 handleClose={handleClose}
               />
             )}
           </StyledSendersContainer>
-        )}
-      </StyledReactListContainer>
-    </BchatWrapperModal>
+          {/* )} */}
+        </StyledReactListContainer>
+      </div>
+    </div>
   );
 };

@@ -581,22 +581,62 @@
       outline: none;
     }
   }
-  .reaction-list-modal {
-    .bchat-confirm-wrapper {
-      .bchat-modal__body{
-        width: 376px;
-        padding: 0;
-        .bchat-modal__centered {
-          margin: 0;
-        }
-      }
-    }
-  }
+  
   h4 {
     margin-top: 8px;
     margin-bottom: 16px;
   }
 }
+// .reaction-list-modal {
+//   position: relative;
+//   .reaction-list-innreModal{
+//     position: absolute;
+//     top: -300px;
+//     border-radius: 24px 24px 0px 0px;
+//     background: #202329;
+//     width: 95%;
+//     margin-left: 4%;
+//     transition: top 10s ease-in-out;
+//     height: 300px;
+//     padding: 20px;
+//   }
+// }
+.reaction-list-modal {
+  position: relative;
+
+  &.show-modal {
+    .reaction-list-innreModal {
+      top: 0;
+    }
+  }
+
+  .reaction-list-innreModal {
+    position: absolute;
+    top: -300px;
+    border-radius: 24px 24px 0px 0px;
+    background: #202329;
+    width: 95%;
+    margin-left: 4%;
+    transition: top 1s ease-in-out;
+    height: 300px;
+    padding: 15px;
+  }
+}
+
+/* Adding Keyframes for smooth transition */
+@keyframes slideIn {
+  from {
+    top:0
+  }
+  to {
+    top:  -300px;
+  }
+}
+
+.reaction-list-innreModal {
+  animation: slideIn 1s ease-in-out;
+}
+
 
 .nickname-dialog {
   .message {
@@ -1096,6 +1136,7 @@
     color: #108d32;
   }
 }
+
 .nickNameDialog {
   .input-wrapper {
     width: 420px;
