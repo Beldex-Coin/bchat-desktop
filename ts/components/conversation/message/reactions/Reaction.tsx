@@ -21,12 +21,15 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
   // border-color: ${props => (props.selected ? 'var(--color-accent)' : 'transparent')};
   // border-radius: 11px;
     box-sizing: border-box;
-    // padding: 0 2px;
-    // height: 23px;
-    // margin: 0 6px;
+   
     border: unset;
     font-size:18px;
-    padding: 3px 5px;
+    padding: 2px 7px;
+
+    border-radius: 17px;
+    border: 0.5px solid #858598;
+    background:var(--color-emoji-panel-bg);
+    margin-right:5px;
 
   span:nth-child(2) {
     font-size: var(--font-size-sm);
@@ -54,6 +57,7 @@ export type ReactionProps = {
   onSelected?: (emoji: string) => boolean;
   handlePopupReaction?: (emoji: string) => void;
   handlePopupClick?: () => void;
+  
 };
 
 export const Reaction = (props: ReactionProps): ReactElement => {
@@ -70,6 +74,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     onSelected,
     handlePopupReaction,
     handlePopupClick,
+    
   } = props;
 
   const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
@@ -88,7 +93,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   const isBlindedMe =
     senders &&
     senders.length > 0 &&
-    senders.filter(sender => sender.startsWith('15') && isUsAnySogsFromCache(sender)).length > 0;
+    senders.filter(sender => sender.startsWith('bd') && isUsAnySogsFromCache(sender)).length > 0;
   const selected = () => {
     if (onSelected) {
       return onSelected(emoji);
@@ -96,6 +101,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     return senders && senders.length > 0 && (senders.includes(me) || isBlindedMe);
   };
   const handleReactionClick = () => {
+  
     onClick(emoji);
   };
 
@@ -125,7 +131,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
                 handlePopupX(popupXDefault);
                 setTooltipPosition('center');
               }
-
+              console.log('emoji -->',emoji)
               handlePopupReaction(emoji);
             }
           }
@@ -143,6 +149,8 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         <ReactionPopup
           messageId={messageId}
           emoji={popupReaction}
+          // emoji='🥸'
+          // senders={Object.keys(reactionsMap['🥸'].senders)}
           senders={Object.keys(reactionsMap[popupReaction].senders)}
           tooltipPosition={tooltipPosition}
           onClick={() => {

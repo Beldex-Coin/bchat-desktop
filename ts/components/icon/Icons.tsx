@@ -184,7 +184,8 @@ export type BchatIconType =
   | 'openLink'
   | 'trustDownloadMedia'
   | 'downloadAttachment'
-  | 'openLinkBtn';
+  | 'openLinkBtn'
+  | 'x';
 
 export type BchatIconSize = 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'huge2' | 'max';
 
@@ -1359,4 +1360,10 @@ export const icons = {
     viewBox: '0 0 20 20',
     ratio: 1,
   },
+  x:{
+    path:
+    "M4.12573 3.06445L3.06519 4.125L3.59839 4.65234L10.9402 12L3.06519 19.875L4.12573 20.9355L12.0007 13.0605L19.3425 20.4082L19.8757 20.9355L20.9363 19.875L20.4089 19.3418L13.0613 12L20.9363 4.125L19.8757 3.06445L12.0007 10.9395L4.65308 3.59766L4.12573 3.06445Z",
+  viewBox: '0 0 24 24',
+  ratio: 1,
+  }
 };

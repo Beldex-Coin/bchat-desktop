@@ -28,7 +28,7 @@ import { BchatIconButton } from '../icon';
 
 // import { nativeEmojiData } from '../../util/emoji';
 import { getConversationController } from '../../bchat/conversations';
-import { BchatButton, BchatButtonType } from '../basic/BchatButton';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 
 interface Props {
   messageId: string;
@@ -40,7 +40,7 @@ const StyledReactListContainer = styled(Flex)`
 `;
 
 const StyledReactionsContainer = styled(Flex)`
-  border-bottom: 1px solid #4B4B64;
+  border-bottom: 1px solid #4b4b64;
   width: 100%;
   overflow-x: auto;
   padding: 12px 8px 8px;
@@ -93,7 +93,7 @@ const StyledAllButton = styled.button`
   border: 0.5px solid #858598;
   background: #202329;
   color: #f0f0f0;
-  
+
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
@@ -163,18 +163,37 @@ const ReactionSenders = (props: ReactionSendersProps) => {
                 await handleAvatarClick(reactedList.sender);
               }}
             />
-            <ContactName
-              pubkey={reactedList.sender}
-              module="module-conversation__user"
-              shouldShowPubkey={false}
-            />
-            <span role={'img'}> {reactedList.emoji}</span>
+            {reactedList.sender === me ? (
+              <span> You </span>
+            ) : (
+              <ContactName
+                pubkey={reactedList.sender}
+                module="module-conversation__user"
+                shouldShowPubkey={false}
+              />
+            )}
+            <span style={{ fontSize: '18px', marginLeft: '5px' }} role={'img'}>
+              {' '}
+              {reactedList.emoji}
+            </span>
           </Flex>
           <Flex container={true} alignItems={'center'}>
             {reactedList.sender === me && (
-              <BchatButton buttonType={BchatButtonType.BrandOutline} text='Remove'  iconType='delete' onClick={handleRemoveReaction}/>
-             
-              
+              <BchatButton
+                buttonType={BchatButtonType.BrandOutline}
+                buttonColor={BchatButtonColor.Secondary}
+                text="Remove"
+                iconType="delete"
+                iconSize={14}
+                onClick={handleRemoveReaction}
+                style={{
+                  borderRadius: '7.529px',
+                  border: '0.471px solid #858598',
+                  background: '#202329',
+                  color: '#A7A7BA',
+                  padding: '2px 10px',
+                }}
+              />
             )}
           </Flex>
         </StyledReactionSender>
@@ -306,7 +325,7 @@ export const ReactListModal = (props: Props): ReactElement => {
 
   return (
     <div className="reaction-list-modal">
-      <div className='reaction-list-innreModal show-modal'> 
+      <div className="reaction-list-innreModal show-modal">
         <StyledReactListContainer
           container={true}
           flexDirection={'column'}
@@ -330,7 +349,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                 onClick={handleReactionClick}
               />
             </Flex>
-            <BchatIconButton iconType="xWithCircle" iconSize={'large'}  onClick={handleClose}/>
+            <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
           </StyledReactionsContainer>
           {/* {reactionsMap && ( */}
           <StyledSendersContainer
@@ -361,7 +380,6 @@ export const ReactListModal = (props: Props): ReactElement => {
               )}
             </StyledReactionBar>
 
-           
             {reactedDetailList && reactedDetailList.length > 0 && (
               <ReactionSenders
                 messageId={messageId}

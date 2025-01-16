@@ -5,52 +5,57 @@ import { readableList } from '../../../../util/readableList';
 import { PubKey } from '../../../../bchat/types/PubKey';
 
 import { nativeEmojiData } from '../../../../util/emoji';
+import { useSelector } from 'react-redux';
+import { getMessageTextProps } from '../../../../state/selectors/conversations';
 
-export const StyledPopupContainer = styled.div<{ tooltipPosition: TipPosition }>`
+export const StyledPopupContainer = styled.div<{ tooltipPosition: TipPosition,isIncoming?:boolean }>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 216px;
-  height: 72px;
+  max-height: 72px;
 
-  background-color: var(--color-compose-view-button-background);
-  color: var(--color-pill-divider-text);
+ 
+  color: var(--color-text);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   padding: 16px;
   border-radius: 12px;
   cursor: pointer;
   overflow-wrap: break-word;
+ background-color:#202329;;
 
   &:after {
     content: '';
     position: absolute;
-    top: calc(100% - 18px);
-    left: ${props => {
-      switch (props.tooltipPosition) {
-        case 'left':
-          return '24px';
-        case 'right':
-          return 'calc(100% - 48px)';
-        case 'center':
-        default:
-          return 'calc(100% - 100px)';
-      }
-    }};
-    width: 22px;
-    height: 22px;
-    background-color: var(--color-received-message-background);
+    top: 60px;
+    left: ${props => 
+     props.isIncoming?0:'189px'
+      // switch (props.tooltipPosition) {
+      //   case 'left':
+      //     return '24px';
+      //   case 'right':
+      //     return 'calc(100% - 48px)';
+      //   case 'center':
+      //   default:
+      //     return 'calc(100% - 100px)';
+      // }
+    };
+    width: 27px;
+    height: 27px;
+    background-color: #202329;
     transform: rotate(45deg);
     border-radius: 3px;
-    transform: scaleY(1.4) rotate(45deg);
-    clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
-    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.51); /* theme relative color */
+    transform: scaleY(1) rotate(0deg);
+    // clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
+    // box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.51); /* theme relative color */
+    clip-path:${props => 
+      props.isIncoming?'polygon(71% 0, 0 100%, 1% 0)': 'polygon(34% 0, 100% 100%, 100% 0)'
   }
 `;
 
 const StyledEmoji = styled.span`
-  font-size: 36px;
-  margin-left: 8px;
+  font-size: 28px;
+  margin-right: 8px;
 `;
 
 type Props = {
@@ -59,6 +64,7 @@ type Props = {
   senders: Array<string>;
   onClick: (...args: Array<any>) => void;
   tooltipPosition?: TipPosition;
+ 
 };
 export type TipPosition = 'center' | 'left' | 'right';
 
@@ -91,23 +97,21 @@ const renderContacts = (contacts: string) => {
     const [names, others] = contacts.split('&');
     return (
       <span>
-        {names} & <span style={{ color: 'var(--color-accent' }}>{others}</span> {window.i18n('reactionTooltip')}
+        {names} & <span style={{ color: 'var(--color-text)',fontSize:'12px' }}>{others}</span> {window.i18n('reactionTooltip')}
       </span>
     );
   }
 
-  return <span>{contacts} {window.i18n('reactionTooltip')}</span>;
+  return <span style={{ color: 'var(--color-text)',fontSize:'12px' }}>{contacts} {window.i18n('reactionTooltip')}</span>;
 };
 
 
 export const ReactionPopup = (props: Props): ReactElement => {
   const { messageId, emoji, senders, tooltipPosition = 'center', onClick } = props;
-
   const [contacts, setContacts] = useState('');
-
-  
-
-
+  const messageProps = useSelector(state => getMessageTextProps(state as any, props.messageId));
+  console.log("messageProps -->",messageProps)
+  const isIncoming=messageProps?.direction==='incoming';
   useEffect(() => {
     let isCancelled = false;
     generateContacts(messageId, senders)
@@ -131,17 +135,19 @@ export const ReactionPopup = (props: Props): ReactElement => {
   return (
     <StyledPopupContainer
       tooltipPosition={tooltipPosition}
+      isIncoming={isIncoming}
       onClick={() => {
         onClick();
       }}
     >
-      {renderContacts(contacts)}
       <StyledEmoji
         role={'img'}
         aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
       >
         {emoji}
       </StyledEmoji>
+      {renderContacts(contacts)}
+      
     </StyledPopupContainer>
   );
 };

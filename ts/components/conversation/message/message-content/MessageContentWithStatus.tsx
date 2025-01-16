@@ -170,6 +170,7 @@ export const MessageContentWithStatuses = (props: Props) => {
           popupReaction={popupReaction}
           setPopupReaction={setPopupReaction}
           onPopupClick={handlePopupClick}
+          isIncoming={isIncoming}
         />
       )}
     </StyledMessageContentContainer>

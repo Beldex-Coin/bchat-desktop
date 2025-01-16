@@ -28,6 +28,7 @@ type Props = {
   onPopupClick?: () => void;
   inModal?: boolean;
   onSelected?: (emoji: string) => boolean;
+  isIncoming?:boolean;
 };
 
 export type MessageReactsSelectorProps = Pick<
@@ -35,7 +36,7 @@ export type MessageReactsSelectorProps = Pick<
   'convoId' | 'conversationType' | 'isPublic' | 'serverId' | 'reacts' | 'sortedReacts'
 >;
 
-const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
+const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number,isIncoming?:boolean }>`
   position: relative;
   height: 100%;
 
@@ -43,10 +44,13 @@ const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom:10px;
   ${StyledPopupContainer} {
     position: absolute;
     top: ${props => `${props.y}px;`};
-    left: ${props => `${props.x}px;`};
+    // left: ${props => `${props.isIncoming?props.x+40:36+(-props.x)}px;`};
+    left:${props => `${props.isIncoming?18:-187}px;`}
+  
   }
 `;
 
@@ -54,11 +58,14 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
   ${props =>
     props.inModal
       ? ''
-      : 'max-width: 320px;border-radius: 17px;border: 0.5px solid #858598;background:var(--color-emoji-panel-bg);margin-top:-13px'}
+      : `max-width: 320px;
+     
+     `
+    }
 `;
 
 const StyledReactionOverflow = styled.button`
-  border: none;
+ 
   margin-right: 4px;
   margin-bottom: var(--margins-sm);
 
@@ -89,6 +96,7 @@ type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
 const Reactions = (props: ReactionsProps): ReactElement => {
   const { messageId, reactions, inModal } = props;
+
   return (
     <StyledMessageReactions
       container={true}
@@ -162,6 +170,7 @@ export const MessageReactions = (props: Props): ReactElement => {
     onPopupClick,
     inModal = false,
     onSelected,
+    isIncoming
   } = props;
 
   const [reactions, setReactions] = useState<SortedReactionList>([]);
@@ -197,6 +206,7 @@ export const MessageReactions = (props: Props): ReactElement => {
     onSelected,
     handlePopupReaction: setPopupReaction,
     handlePopupClick: onPopupClick,
+    isIncoming
   };
 
   useEffect(() => {
@@ -216,6 +226,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       alignItems={inModal ? 'flex-start' : 'center'}
       x={popupX}
       y={popupY}
+      isIncoming={isIncoming}
     >
       {reacts &&
         !_.isEmpty(reacts) &&

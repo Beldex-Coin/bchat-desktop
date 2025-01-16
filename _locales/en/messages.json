@@ -592,7 +592,7 @@
 
 
   "clearAllReactions": "Are you sure you want to clear all $emoji$?",
-  "reactionTooltip": "reacted with",
+  "reactionTooltip": "reacted this",
   "expandedReactionsText": "Show Less",
   "reactionNotification": "Reacts to a message with $emoji$",
   "readableListCounterSingular": "other",

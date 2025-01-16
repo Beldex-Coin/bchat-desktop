@@ -617,7 +617,7 @@
     background: #202329;
     width: 95%;
     margin-left: 4%;
-    transition: top 1s ease-in-out;
+    transition: top .5s ease-in-out;
     height: 300px;
     padding: 15px;
   }
@@ -634,7 +634,7 @@
 }
 
 .reaction-list-innreModal {
-  animation: slideIn 1s ease-in-out;
+  animation: slideIn .5s ease-in-out;
 }
 
 
