@@ -1,7 +1,7 @@
 // import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -29,6 +29,7 @@ import { BchatIconButton } from '../icon';
 // import { nativeEmojiData } from '../../util/emoji';
 import { getConversationController } from '../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { getReactListDialog } from '../../state/selectors/modal';
 
 interface Props {
   messageId: string;
@@ -50,7 +51,7 @@ const StyledSendersContainer = styled(Flex)`
   width: 100%;
   // min-height: 3px;
   height: 100%;
-  max-height: 300px;
+  max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 14px 16px 32px;
@@ -88,16 +89,18 @@ const StyledClearButton = styled.button`
   color: var(--color-destructive);
   border: none;
 `;
-const StyledAllButton = styled.button`
+const StyledAllButton = styled.button<{isSelected:boolean}>`
   border-radius: 17px;
-  border: 0.5px solid #858598;
+  border:${props=>props.isSelected?'0.5px solid #858598':'unset'};
   background: #202329;
   color: #f0f0f0;
 
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  padding:2px 10px;
+  margin-right:5px;
   span {
     color: #a7a7ba;
     font-family: Poppins;
@@ -141,16 +144,16 @@ const ReactionSenders = (props: ReactionSendersProps) => {
     }
   };
 
-  const handleRemoveReaction = async () => {
-    await sendMessageReaction(messageId, currentReact);
+  const handleRemoveReaction = async (currentemoji:string) => {
+    await sendMessageReaction(messageId, currentemoji);
+    // handleClose();
   };
-  console.log('reacted 2-->', reactedDetailList);
 
   return (
     <>
-      {FilteredList.map(reactedList => (
+      {FilteredList.map(reacted => (
         <StyledReactionSender
-          key={`${messageId}-${reactedList.sender}`}
+          key={`${messageId}-${reacted.sender}`}
           container={true}
           justifyContent={'space-between'}
           alignItems={'center'}
@@ -158,34 +161,34 @@ const ReactionSenders = (props: ReactionSendersProps) => {
           <Flex container={true} alignItems={'center'}>
             <Avatar
               size={AvatarSize.S}
-              pubkey={reactedList.sender}
+              pubkey={reacted.sender}
               onAvatarClick={async () => {
-                await handleAvatarClick(reactedList.sender);
+                await handleAvatarClick(reacted.sender);
               }}
             />
-            {reactedList.sender === me ? (
+            {reacted.sender === me ? (
               <span> You </span>
             ) : (
               <ContactName
-                pubkey={reactedList.sender}
+                pubkey={reacted.sender}
                 module="module-conversation__user"
                 shouldShowPubkey={false}
               />
             )}
             <span style={{ fontSize: '18px', marginLeft: '5px' }} role={'img'}>
               {' '}
-              {reactedList.emoji}
+              {reacted.emoji}
             </span>
           </Flex>
           <Flex container={true} alignItems={'center'}>
-            {reactedList.sender === me && (
+            {reacted.sender === me && (
               <BchatButton
                 buttonType={BchatButtonType.BrandOutline}
                 buttonColor={BchatButtonColor.Secondary}
                 text="Remove"
                 iconType="delete"
                 iconSize={14}
-                onClick={handleRemoveReaction}
+                onClick={()=>handleRemoveReaction(reacted.emoji)}
                 style={{
                   borderRadius: '7.529px',
                   border: '0.471px solid #858598',
@@ -226,6 +229,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const [reactions, setReactions] = useState<SortedReactionList>([]);
   // const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const [currentReact, setCurrentReact] = useState('');
+  const reactListModalState = useSelector(getReactListDialog)
   // const [senders, setSenders] = useState<Array<string>>([]);
 
   // const [reactedDetailList, setReactedDetailList] = useState<Array<reactionListDetailsProps>>([]);
@@ -247,7 +251,9 @@ export const ReactListModal = (props: Props): ReactElement => {
   const convo = getConversationController().get(convoId);
   const weAreModerator = convo.getConversationModelProps().weAreModerator;
   const reactedDetailList = sortedSenderAndEmoji();
+  const modalRef = useRef<HTMLDivElement|null>(null);
 
+  
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
   };
@@ -259,7 +265,10 @@ export const ReactListModal = (props: Props): ReactElement => {
   const handleClose = () => {
     dispatch(updateReactListModal(null));
   };
-
+  if(isEmpty(reactedDetailList))
+    {
+      handleClose();
+    }
   const handleClearReactions = (event: any) => {
     event.preventDefault();
     handleClose();
@@ -274,12 +283,11 @@ export const ReactListModal = (props: Props): ReactElement => {
       });
     });
 
-    console.log('pushedData -->', reactedCustomData);
     // const FilteredReact = reactedCustomData.filter(({ emoji }) => emoji === currentReact);
     // const finalData = FilteredReact.length > 0 ? FilteredReact : reactedCustomData;
     // console.log('finalData -->', finalData,reactAriaLabel);
     // setReactedDetailList(reactedCustomData);
-
+ 
     return reactedCustomData;
   }
 
@@ -322,9 +330,24 @@ export const ReactListModal = (props: Props): ReactElement => {
     // [currentReact, me, reaction, reacts, reactions, reactionsMap, senders]);
     [reacts, me]
   );
+  useEffect(() => {
+    const handleClickOutside = (event: any): void => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClose()
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
 
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [reactListModalState]);
+
+ 
+  
+  
   return (
-    <div className="reaction-list-modal">
+    <div className="reaction-list-modal" ref={modalRef}>
       <div className="reaction-list-innreModal show-modal">
         <StyledReactListContainer
           container={true}
@@ -338,7 +361,7 @@ export const ReactListModal = (props: Props): ReactElement => {
             justifyContent="space-between"
           >
             <Flex container={true} flexDirection={'row'} alignItems={'center'}>
-              <StyledAllButton onClick={() => setCurrentReact('')}>
+              <StyledAllButton onClick={() => setCurrentReact('')} isSelected={currentReact===''}>
                 All <span>{reactedDetailList.length}</span>
               </StyledAllButton>
               <MessageReactions
@@ -347,6 +370,8 @@ export const ReactListModal = (props: Props): ReactElement => {
                 inModal={true}
                 onSelected={handleSelectedReaction}
                 onClick={handleReactionClick}
+                iscurrentReact={currentReact}
+               
               />
             </Flex>
             <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />

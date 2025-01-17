@@ -110,7 +110,6 @@ export const ReactionPopup = (props: Props): ReactElement => {
   const { messageId, emoji, senders, tooltipPosition = 'center', onClick } = props;
   const [contacts, setContacts] = useState('');
   const messageProps = useSelector(state => getMessageTextProps(state as any, props.messageId));
-  console.log("messageProps -->",messageProps)
   const isIncoming=messageProps?.direction==='incoming';
   useEffect(() => {
     let isCancelled = false;

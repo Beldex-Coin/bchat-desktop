@@ -10,7 +10,7 @@ import { popupXDefault, popupYDefault } from '../message-content/MessageReaction
 import { ReactionPopup, TipPosition } from './ReactionPopup';
 import { isUsAnySogsFromCache } from '../../../../util/reactions';
 
-const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; showCount: boolean }>`
+const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; showCount: boolean,iscurrentReact:boolean }>`
   display: flex;
   justify-content: ${props => (props.showCount ? 'flex-start' : 'center')};
   align-items: center;
@@ -23,11 +23,11 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
     box-sizing: border-box;
    
     border: unset;
-    font-size:18px;
-    padding: 2px 7px;
+    font-size:17px;
+    padding: 2px 10px;
 
     border-radius: 17px;
-    border: 0.5px solid #858598;
+    border:${props => (!props.inModal ||props.iscurrentReact ?'0.5px solid #858598':"")};
     background:var(--color-emoji-panel-bg);
     margin-right:5px;
 
@@ -57,6 +57,7 @@ export type ReactionProps = {
   onSelected?: (emoji: string) => boolean;
   handlePopupReaction?: (emoji: string) => void;
   handlePopupClick?: () => void;
+  iscurrentReact?:string;
   
 };
 
@@ -74,7 +75,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     onSelected,
     handlePopupReaction,
     handlePopupClick,
-    
+    iscurrentReact
   } = props;
 
   const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
@@ -114,6 +115,8 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         onClick={() => {
           handleReactionClick();
         }}
+        className='emoji-reacts'
+        iscurrentReact={iscurrentReact===emoji}
         onMouseEnter={() => {
           if (inGroup) {
             const { innerWidth: windowWidth } = window;
