@@ -63,65 +63,6 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
   );
 }
 
-/**
- * Handle reactions on the client by updating the state of the source message
- *
- */
-// export const handleMessageReaction = async (reaction: SignalService.DataMessage.IReaction) => {
-//   const timestamp = Number(reaction.id);
-
-//   if (!reaction.emoji) {
-//     window?.log?.warn(`There is no emoji for the reaction ${timestamp}.`);
-//     return;
-//   }
-
-//   const collection = await getMessagesBySentAt(timestamp);
-//   const originalMessage = collection.find((item: MessageModel) => {
-//     const messageTimestamp = item.get('sent_at');
-//     return Boolean(messageTimestamp && messageTimestamp === timestamp);
-//   });
-
-//   if (!originalMessage) {
-//     window?.log?.warn(`We did not find reacted message ${timestamp}.`);
-//     return;
-//   }
-
-//   console.log('originalMessage.get -->',originalMessage.get('reacts')  )
-//   let reacts: ReactionList = originalMessage.get('reacts') ?? {};
-//   reacts[reaction.emoji] = reacts[reaction.emoji] || {};
-//   const senders:any = reacts[reaction.emoji].senders ?? [];
-
-//   switch (reaction.action) {
-//     // Add reaction
-//     case 0:
-//       if (senders.includes(reaction.author)) {
-//         window?.log?.info('Received duplicate message reaction. Dropping it.');
-//         return;
-//       }
-//       senders.push(reaction.author);
-//       break;
-//     // Remove reaction
-//     case 1:
-//     default:
-//       if (senders.length > 0) {
-//         const deleteIndex = senders.indexOf(reaction.author);
-//         // TODO better edge cases
-//         senders.splice(deleteIndex, 1);
-//       }
-//   }
-
-//   if (senders.length > 0) {
-//     reacts[reaction.emoji].senders = senders;
-//   } else {
-//     // tslint:disable-next-line: no-dynamic-delete
-//     delete reacts[reaction.emoji];
-//   }
-//   originalMessage.set({
-//     reacts: !_.isEmpty(reacts) ? reacts: undefined,
-//   });
-
-//   await originalMessage.commit();
-// };
 
 export function copyBodyToClipboard(body?: string | null) {
   window.clipboard.writeText(body);

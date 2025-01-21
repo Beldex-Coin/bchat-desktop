@@ -9,11 +9,11 @@ import { SortedReactionList } from '../../../../types/Reaction';
 
 import { Flex } from '../../../basic/Flex';
 
-import { nativeEmojiData } from '../../../../util/emoji';
+// import { nativeEmojiData } from '../../../../util/emoji';
 import { StyledPopupContainer } from '../reactions/ReactionPopup';
 
 import { Reaction, ReactionProps } from '../reactions/Reaction';
-import { BchatIcon } from '../../../icon';
+import {  BchatIconButton } from '../../../icon';
 import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
 
 export const popupXDefault = -101;
@@ -59,37 +59,37 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
   ${props =>
     props.inModal
       ? ''
-      : `max-width: 320px; 
+      : `max-width: 375px;; 
      `
     }
 `;
 
-const StyledReactionOverflow = styled.button`
+// const StyledReactionOverflow = styled.button`
  
-  margin-right: 4px;
-  margin-bottom: var(--margins-sm);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row-reverse;
+//   margin-right: 4px;
+//   margin-bottom: var(--margins-sm);
+//   display: flex;
+//   justify-content: flex-start;
+//   align-items: center;
+//   flex-direction: row-reverse;
 
-  span {
-    background-color: var(--color-received-message-background);
-    border: 1px solid var(--color-inbox-background);
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: -9px;
-    padding: 1px 4.5px;
-  }
-`;
+//   span {
+//     background-color: var(--color-received-message-background);
+//     border: 1px solid var(--color-inbox-background);
+//     border-radius: 50%;
+//     overflow: hidden;
+//     margin-right: -9px;
+//     padding: 1px 4.5px;
+//   }
+// `;
 
-const StyledReadLess = styled.span`
-  font-size: var(--font-size-h2);
-  margin-top: 8px;
-  svg {
-    margin-right: 5px;
-  }
-`;
+// const StyledReadLess = styled.span`
+//   font-size: var(--font-size-h2);
+//   margin-top: 8px;
+//   svg {
+//     margin-right: 5px;
+//   }
+// `;
 
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
@@ -109,12 +109,8 @@ const Reactions = (props: ReactionsProps): ReactElement => {
     </StyledMessageReactions>
   );
 };
-interface ExpandReactionsProps extends ReactionsProps {
-  handleExpand: () => void;
-}
-
-const CompressedReactions = (props: ExpandReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal, handleExpand } = props;
+const CompressedReactions = (props: ReactionsProps): ReactElement => {
+  const { messageId, reactions, inModal,handlePopupClick } = props;
   return (
     <StyledMessageReactions
       container={true}
@@ -122,10 +118,19 @@ const CompressedReactions = (props: ExpandReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
     >
-      {reactions.slice(0, 4).map(([emoji, _]) => (
+      {reactions.slice(0, 5).map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
       ))}
-      <StyledReactionOverflow onClick={handleExpand}>
+      <BchatIconButton
+          iconType={'chevron'}
+          iconSize={20}
+          iconColor="#A7A7BA"
+          btnRadius="40px"
+          btnBgColor="#202329"
+          iconRotation={270}
+          onClick={handlePopupClick}
+        />
+      {/* <StyledReactionOverflow onClick={handleExpand}>
         {reactions
           .slice(4, 7)
           .reverse()
@@ -142,22 +147,22 @@ const CompressedReactions = (props: ExpandReactionsProps): ReactElement => {
               </span>
             );
           })}
-      </StyledReactionOverflow>
+      </StyledReactionOverflow> */}
     </StyledMessageReactions>
   );
 };
-const ExpandedReactions = (props: ExpandReactionsProps): ReactElement => {
-  const { handleExpand } = props;
-  return (
-    <>
-      <Reactions {...props} />
-      <StyledReadLess onClick={handleExpand}>
-        <BchatIcon iconType="chevron" iconSize="medium" iconRotation={180} />
-        {window.i18n('expandedReactionsText')}
-      </StyledReadLess>
-    </>
-  );
-};
+// const ExpandedReactions = (props: ExpandReactionsProps): ReactElement => {
+//   const { handleExpand } = props;
+//   return (
+//     <>
+//       <Reactions {...props} />
+//       <StyledReadLess onClick={handleExpand}>
+//         <BchatIcon iconType="chevron" iconSize="medium" iconRotation={180} />
+//         {window.i18n('expandedReactionsText')}
+//       </StyledReadLess>
+//     </>
+//   );
+// };
 
 export const MessageReactions = (props: Props): ReactElement => {
   const {
@@ -175,10 +180,10 @@ export const MessageReactions = (props: Props): ReactElement => {
 
   const [reactions, setReactions] = useState<SortedReactionList>([]);
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const handleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  // const [isExpanded, setIsExpanded] = useState(false);
+  // const handleExpand = () => {
+  //   setIsExpanded(!isExpanded);
+  // };
 
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
@@ -234,10 +239,12 @@ export const MessageReactions = (props: Props): ReactElement => {
         !_.isEmpty(reacts) &&
         (!hasReactLimit || reacts.length <= reactLimit ? (
           <Reactions {...reactionsProps} />
-        ) : isExpanded ? (
-          <ExpandedReactions handleExpand={handleExpand} {...reactionsProps} />
-        ) : (
-          <CompressedReactions handleExpand={handleExpand} {...reactionsProps} />
+        ) 
+        // : isExpanded ? (
+        //   <ExpandedReactions handleExpand={handleExpand} {...reactionsProps} />
+        // ) 
+        : (
+          <CompressedReactions {...reactionsProps} />
         ))}
     </StyledMessageReactionsContainer>
   );

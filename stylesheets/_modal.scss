@@ -328,28 +328,7 @@
           }
         }
 
-        // &-paste-icon {
-        //   background: url('../images/bchat/paste.svg') no-repeat;
-        //   width: 35px;
-        //   height: 35px;
-        //   // background-color: var(--color-inboxBgColor);
-        //   background-color: var(--color-background-primary);
-        //   background-size: 14px;
-        //   border-radius: 35px;
-        //   background-position: center;
-        //   left: 10px;
-        //   top: 19px;
-        //   position: relative;
-        //   cursor: pointer;
-        //   box-shadow: var(--color-bchat-shadow);
-        // }
-
-        // &-paste-icon:hover {
-        //   // transform: scale(1.1);
-        //   // background-color: var(--color-wallet-copy-hover);
-        //   // color: #1ced23;
-        //   background-color: var(--color-profile-close);
-        // }
+    
         &-password-label {
           display: flex;
           // color: #f0f0f0;
@@ -587,20 +566,7 @@
     margin-bottom: 16px;
   }
 }
-// .reaction-list-modal {
-//   position: relative;
-//   .reaction-list-innreModal{
-//     position: absolute;
-//     top: -300px;
-//     border-radius: 24px 24px 0px 0px;
-//     background: #202329;
-//     width: 95%;
-//     margin-left: 4%;
-//     transition: top 10s ease-in-out;
-//     height: 300px;
-//     padding: 20px;
-//   }
-// }
+
 .reaction-list-modal {
   position: relative;
 
@@ -620,6 +586,7 @@
     transition: top .5s ease-in-out;
     height: 300px;
     padding: 15px;
+    z-index: 2;
   }
 }
 

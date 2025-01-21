@@ -8,7 +8,7 @@ import { nativeEmojiData } from '../../../../util/emoji';
 import { useSelector } from 'react-redux';
 import { getMessageTextProps } from '../../../../state/selectors/conversations';
 
-export const StyledPopupContainer = styled.div<{ tooltipPosition: TipPosition,isIncoming?:boolean }>`
+export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
   display: flex;
   align-items: center;
   width: 216px;
@@ -30,15 +30,6 @@ export const StyledPopupContainer = styled.div<{ tooltipPosition: TipPosition,is
     top: 60px;
     left: ${props => 
      props.isIncoming?0:'189px'
-      // switch (props.tooltipPosition) {
-      //   case 'left':
-      //     return '24px';
-      //   case 'right':
-      //     return 'calc(100% - 48px)';
-      //   case 'center':
-      //   default:
-      //     return 'calc(100% - 100px)';
-      // }
     };
     width: 27px;
     height: 27px;
@@ -63,10 +54,8 @@ type Props = {
   messageId: string;
   senders: Array<string>;
   onClick: (...args: Array<any>) => void;
-  tooltipPosition?: TipPosition;
  
 };
-export type TipPosition = 'center' | 'left' | 'right';
 
 const generateContacts = async (messageId: string, senders: Array<string>) => {
   let results = null;
@@ -107,7 +96,7 @@ const renderContacts = (contacts: string) => {
 
 
 export const ReactionPopup = (props: Props): ReactElement => {
-  const { messageId, emoji, senders, tooltipPosition = 'center', onClick } = props;
+  const { messageId, emoji, senders, onClick } = props;
   const [contacts, setContacts] = useState('');
   const messageProps = useSelector(state => getMessageTextProps(state as any, props.messageId));
   const isIncoming=messageProps?.direction==='incoming';
@@ -133,7 +122,6 @@ export const ReactionPopup = (props: Props): ReactElement => {
   }, [generateContacts]);
   return (
     <StyledPopupContainer
-      tooltipPosition={tooltipPosition}
       isIncoming={isIncoming}
       onClick={() => {
         onClick();

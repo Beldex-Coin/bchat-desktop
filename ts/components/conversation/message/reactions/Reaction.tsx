@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import { SortedReactionList } from '../../../../types/Reaction';
 import { UserUtils } from '../../../../bchat/utils';
 import { abbreviateNumber } from '../../../../util/abbreviateNumber';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { useMouse } from 'react-use';
 
 import { popupXDefault, popupYDefault } from '../message-content/MessageReactions';
-import { ReactionPopup, TipPosition } from './ReactionPopup';
+import { ReactionPopup } from './ReactionPopup';
 import { isUsAnySogsFromCache } from '../../../../util/reactions';
 
 const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; showCount: boolean,iscurrentReact:boolean }>`
@@ -29,7 +29,7 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
     border-radius: 17px;
     border:${props => (!props.inModal ||props.iscurrentReact ?'0.5px solid #858598':"")};
     background:var(--color-emoji-panel-bg);
-    margin-right:5px;
+    margin-right:3px;
 
   span:nth-child(2) {
     font-size: var(--font-size-sm);
@@ -88,7 +88,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
 
   const gutterWidth = 380;
   const tooltipMidPoint = 108; // width is 216px;
-  const [tooltipPosition, setTooltipPosition] = useState<TipPosition>('center');
+ 
 
   const me = UserUtils.getOurPubKeyStrFromCache();
   const isBlindedMe =
@@ -124,17 +124,14 @@ export const Reaction = (props: ReactionProps): ReactElement => {
               // overflow on far right means we shift left
               if (docX + tooltipMidPoint > windowWidth) {
                 handlePopupX(Math.abs(popupXDefault) * 1.5 * -1);
-                setTooltipPosition('right');
                 // overflow onto conversations means we lock to the right
               } else if (docX - elW <= gutterWidth + tooltipMidPoint) {
                 const offset = -12.5;
                 handlePopupX(offset);
-                setTooltipPosition('left');
+
               } else {
                 handlePopupX(popupXDefault);
-                setTooltipPosition('center');
               }
-              console.log('emoji -->',emoji)
               handlePopupReaction(emoji);
             }
           }
@@ -155,14 +152,12 @@ export const Reaction = (props: ReactionProps): ReactElement => {
           // emoji='🥸'
           // senders={Object.keys(reactionsMap['🥸'].senders)}
           senders={Object.keys(reactionsMap[popupReaction].senders)}
-          tooltipPosition={tooltipPosition}
           onClick={() => {
             if (handlePopupReaction) {
               handlePopupReaction('');
             }
             handlePopupX(popupXDefault);
             handlePopupY(popupYDefault);
-            setTooltipPosition('center');
             if (handlePopupClick) {
               handlePopupClick();
             }

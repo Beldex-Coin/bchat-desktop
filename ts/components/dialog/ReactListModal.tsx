@@ -151,9 +151,10 @@ const ReactionSenders = (props: ReactionSendersProps) => {
 
   return (
     <>
-      {FilteredList.map(reacted => (
+      {FilteredList.map((reacted,key) => (
         <StyledReactionSender
-          key={`${messageId}-${reacted.sender}`}
+          // key={`${messageId}-${reacted.sender}`}
+          key={key}
           container={true}
           justifyContent={'space-between'}
           alignItems={'center'}
@@ -281,13 +282,7 @@ export const ReactListModal = (props: Props): ReactElement => {
       Object.keys(senders).forEach(sender => {
         reactedCustomData.push({ sender, emoji });
       });
-    });
-
-    // const FilteredReact = reactedCustomData.filter(({ emoji }) => emoji === currentReact);
-    // const finalData = FilteredReact.length > 0 ? FilteredReact : reactedCustomData;
-    // console.log('finalData -->', finalData,reactAriaLabel);
-    // setReactedDetailList(reactedCustomData);
- 
+    }); 
     return reactedCustomData;
   }
 
