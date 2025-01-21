@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { BchatIconButton } from '../../../icon';
 import { RecentReactions } from '../../../../types/Reaction';
 
-
 import { getRecentReactions } from '../../../../util/storage';
 
 import { nativeEmojiData } from '../../../../util/emoji';
@@ -15,52 +14,46 @@ type Props = {
 };
 
 const StyledMessageReactBar = styled.div`
-  background-color: var(--color-received-message-background);
-  border-radius: 25px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);
-  position: absolute;
-  top: -64px;
   padding: 4px 8px;
   white-space: nowrap;
-  width: 280px;
   display: flex;
   align-items: center;
+  border-radius: 24px;
+  background: var(--color-emoji-panel-bg);
+  font-size: 18px;
   span {
-    font-size: 28px;
+    
     margin: 0 4px;
     cursor: pointer;
   }
   .bchat-icon-button {
     margin-right: 0;
-     border-color: transparent !important;
+    border-color: transparent !important;
     box-shadow: none !important;
   }
 `;
-const ReactButton=styled.div`
-baakground:red;
-`
-
-
+const ReactButton = styled.div`
+  baakground: red;
+`;
 
 export const MessageReactBar = (props: Props): ReactElement => {
-    const { action, additionalAction } = props;
-    const [recentReactions, setRecentReactions] = useState<RecentReactions>();
+  const { action, additionalAction } = props;
+  const [recentReactions, setRecentReactions] = useState<RecentReactions>();
 
-  
-    useEffect(() => {
-      const reactions:any =new RecentReactions( getRecentReactions());
-      if (reactions && !isEqual(reactions, recentReactions)) {
-        setRecentReactions(reactions);
-      }
-    }, [recentReactions]);
-   
-  
-    if (!recentReactions) {
-      return <></>;
+  useEffect(() => {
+    const reactions: any = new RecentReactions(getRecentReactions());
+    if (reactions && !isEqual(reactions, recentReactions)) {
+      setRecentReactions(reactions);
     }
+  }, [recentReactions]);
+
+  if (!recentReactions) {
+    return <></>;
+  }
   return (
-    <StyledMessageReactBar>
-  {recentReactions &&
+    <StyledMessageReactBar >
+      {recentReactions &&
         recentReactions.items.map(emoji => (
           <ReactButton
             key={emoji}
@@ -75,13 +68,10 @@ export const MessageReactBar = (props: Props): ReactElement => {
         ))}
       <span>
         <BchatIconButton
-          iconColor={'var(--color-text)'}
-          iconPadding={'10px'}
-          iconSize={'huge2'}
-          iconType="plusThin"
-          backgroundColor={'var(--color-compose-view-button-background)'}
-          borderRadius="300px"
-          onClick={additionalAction}
+          iconColor={'#858598'}
+          iconSize={20}
+          iconType="plusOuterFilled"
+          onClick={(e)=>additionalAction(e)}
         />
       </span>
     </StyledMessageReactBar>

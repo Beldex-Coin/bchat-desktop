@@ -3942,31 +3942,31 @@ input {
   }
 }
 
-.messages-container {
-  .bchat-icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    opacity: 1;
-    // background-color: var(--color-cell-background);
+// .messages-container {
+//   .bchat-icon-button {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     // height: 40px;
+//     // width: 40px;
+//     border-radius: 50%;
+//     opacity: 1;
+//     // background-color: var(--color-cell-background);
 
-    background-color: #2f8fff;
-    box-shadow: var(--color-bchat-shadow);
+//     // background-color: #2f8fff;
+//     // box-shadow: var(--color-bchat-shadow);
 
-    // svg path {
-    //   transition: $bchat-transition-duration;
-    //   opacity: 0.6;
-    //   fill: var(--color-text);
-    // }
+//     // svg path {
+//     //   transition: $bchat-transition-duration;
+//     //   opacity: 0.6;
+//     //   fill: var(--color-text);
+//     // }
 
-    &:hover svg path {
-      opacity: 0.6;
-    }
-  }
-}
+//     &:hover svg path {
+//       opacity: 0.6;
+//     }
+//   }
+// }
 
 .group-member-list {
   &__container {

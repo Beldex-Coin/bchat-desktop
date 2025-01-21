@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { replyToMessage } from '../../../../interactions/conversationInteractions';
 import { MessageRenderingProps } from '../../../../models/messageType';
@@ -19,6 +19,13 @@ import { ExpireTimer } from '../../ExpireTimer';
 import styled from 'styled-components';
 import { MessageReactions } from './MessageReactions';
 import { sendMessageReaction } from '../../../../util/reactions';
+
+import RecentEmojiIcon from '../../../icon/RecentEmojiIcon';
+import { Flex } from '../../../basic/Flex';
+import { MessageReactBar } from './MessageReactBar';
+import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
+
+import { useClickAway } from 'react-use';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -41,9 +48,100 @@ const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }
   justify-content: flex-start;
   align-items: ${props => (props.direction === 'left' ? 'flex-start' : 'flex-end')};
   width: 100%;
-  
 `;
+type RecentReactsProps = {
+  isIncoming: boolean;
+  recentEmojiBtnVisible: boolean;
+  onEmojiClick: (...args: Array<any>) => void;
+  onRecentEmojiBtnVisible: () => void;
+};
+const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 101;
+  ${StyledEmojiPanel} {
+    position: absolute;
+    left: ${props => `${props.x}px`};
+    top: ${props => `${props.y}px`};
+  }
+`;
+const RecentReacts = (props: RecentReactsProps) => {
+  const { isIncoming, recentEmojiBtnVisible, onEmojiClick,onRecentEmojiBtnVisible } = props;
 
+  if (!recentEmojiBtnVisible) {
+    return null;
+  }
+  const [recentEmoji, setRecentEmoji] = useState(false);
+  const emojiPanelRef = useRef<HTMLDivElement>(null);
+  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
+
+  const emojiPanelWidth = 324;
+  const emojiPanelHeight = 435;
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+  const onShowEmoji = (e: MouseEvent): void => {
+    let x = e.clientX;
+    if (isIncoming) {
+      x -= 186;
+    } else {
+      x -= emojiPanelWidth + 18;
+    }
+    let y = e.clientY - 39;
+    if (y + emojiPanelHeight > window.innerHeight) {
+      y = Math.abs(mouseY - emojiPanelHeight);
+    }
+    setMouseX(x);
+    setMouseY(y);
+    setShowEmojiPanel(true);
+    setRecentEmoji(false);
+  };
+
+  const onEmojiKeyDown = (event: any) => {
+    if (event.key === 'Escape' && showEmojiPanel) {
+      onCloseEmoji();
+    }
+  };
+
+  useClickAway(emojiPanelRef, () => {
+    onCloseEmoji();
+  });
+
+  const onCloseEmoji = () => {
+    setShowEmojiPanel(false);
+    onRecentEmojiBtnVisible();
+    setRecentEmoji(false);
+  };
+
+  const onSubmit = (e: any) => {
+    onEmojiClick(e);
+    onCloseEmoji();
+  };
+
+  return (
+    <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
+      <span style={{ margin: '0 10px',cursor:'pointer' }} onClick={() => setRecentEmoji(!recentEmoji)} role='button'>
+        <RecentEmojiIcon iconSize={26} />
+      </span>
+
+      {recentEmoji && (
+        <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)} />
+      )}
+      {showEmojiPanel && (
+        <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
+          <BchatEmojiPanel
+            ref={emojiPanelRef}
+            onEmojiClicked={onSubmit}
+            show={showEmojiPanel}
+            isModal={true}
+          />
+        </StyledEmojiPanelContainer>
+      )}
+    </Flex>
+  );
+};
 
 export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
@@ -94,9 +192,10 @@ export const MessageContentWithStatuses = (props: Props) => {
     dataTestId,
     expirationLength,
     expirationTimestamp,
-    enableReactions
+    enableReactions,
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
+  const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
 
   const handleMessageReaction = async (emoji: string) => {
     await sendMessageReaction(messageId, emoji);
@@ -105,65 +204,93 @@ export const MessageContentWithStatuses = (props: Props) => {
   const handlePopupClick = () => {
     dispatch(updateReactListModal({ reaction: popupReaction, messageId }));
   };
+
   if (!contentProps) {
     return null;
   }
   const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload } = contentProps;
   const isIncoming = direction === 'incoming';
 
+  const onEmojiClick = async (args: any) => {
+    const emoji = args.native ?? args;
+    await sendMessageReaction(messageId, emoji);
+  };
+
   return (
-    <StyledMessageContentContainer direction={isIncoming ? 'left' : 'right'}  onMouseLeave={() => {
-      setPopupReaction('');
-    }}>
-    <div
-      className={classNames('module-message', `module-message--${direction}`)}
-      role="button"
-      onClick={onClickOnMessageOuterContainer}
-      onDoubleClickCapture={onDoubleClickReplyToMessage}
-      style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
-      data-testid={dataTestId}
+    <StyledMessageContentContainer
+      direction={isIncoming ? 'left' : 'right'}
+      onMouseEnter={() => {
+        setRecentEmojiBtnVisible(true);
+      }}
+      onMouseLeave={() => {
+        setPopupReaction('');
+        setRecentEmojiBtnVisible(false);
+      }}
     >
-      {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
-        <ExpireTimer
-          isCorrectSide={!isIncoming}
-          expirationLength={expirationLength}
-          expirationTimestamp={expirationTimestamp}
-        />
-      ) : (
-        <MessageStatus
-          dataTestId="msg-status-outgoing"
-          messageId={messageId}
-          isCorrectSide={!isIncoming}
-        />
-      )}
+      <div
+        className={classNames('module-message', `module-message--${direction}`)}
+        role="button"
+        onClick={onClickOnMessageOuterContainer}
+        onDoubleClickCapture={onDoubleClickReplyToMessage}
+        style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
+        data-testid={dataTestId}
+      >
+        {!isIncoming && (
+          <RecentReacts
+            isIncoming={isIncoming}
+            recentEmojiBtnVisible={recentEmojiBtnVisible}
+            onEmojiClick={onEmojiClick}
+            onRecentEmojiBtnVisible={()=>setRecentEmojiBtnVisible(false)}
+          />
+        )}
+        {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
+          <ExpireTimer
+            isCorrectSide={!isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        ) : (
+          <MessageStatus
+            dataTestId="msg-status-outgoing"
+            messageId={messageId}
+            isCorrectSide={!isIncoming}
+          />
+        )}
+        <div>
+          <MessageAuthorText messageId={messageId} />
 
-      <div>
-        <MessageAuthorText messageId={messageId} />
-
-        <MessageContent messageId={messageId} isDetailView={isDetailView} />
-      </div>
-      {expirationLength && expirationTimestamp  ? (
-        <ExpireTimer
-          isCorrectSide={isIncoming}
-          expirationLength={expirationLength}
-          expirationTimestamp={expirationTimestamp}
-        />
-      ) : (
-        <MessageStatus
-          dataTestId="msg-status-incoming"
-          messageId={messageId}
-          isCorrectSide={isIncoming}
-        />
-      )}
- {!isDeleted && (
+          <MessageContent messageId={messageId} isDetailView={isDetailView} />
+        </div>
+        {expirationLength && expirationTimestamp ? (
+          <ExpireTimer
+            isCorrectSide={isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        ) : (
+          <MessageStatus
+            dataTestId="msg-status-incoming"
+            messageId={messageId}
+            isCorrectSide={isIncoming}
+          />
+        )}
+        {isIncoming && (
+          <RecentReacts
+            isIncoming={isIncoming}
+            recentEmojiBtnVisible={recentEmojiBtnVisible}
+            onEmojiClick={onEmojiClick}
+            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+          />
+        )}
+        {!isDeleted && (
           <MessageContextMenu
             messageId={messageId}
             contextMenuId={ctxMenuID}
             enableReactions={enableReactions}
           />
         )}
-    </div>
-    {enableReactions && (
+      </div>
+      {enableReactions && (
         <MessageReactions
           messageId={messageId}
           onClick={handleMessageReaction}
@@ -176,5 +303,3 @@ export const MessageContentWithStatuses = (props: Props) => {
     </StyledMessageContentContainer>
   );
 };
-
-

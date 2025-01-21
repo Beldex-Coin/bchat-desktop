@@ -1,7 +1,7 @@
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
-import { animation, Item, Menu, useContextMenu } from 'react-contexify';
+import { animation, Item, Menu,  } from 'react-contexify';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageById } from '../../../../data/data';
@@ -30,10 +30,10 @@ import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 
 import styled from 'styled-components';
-import { MessageReactBar } from './MessageReactBar';
-import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
-import { useMouse, useClickAway } from 'react-use';
-import { sendMessageReaction } from '../../../../util/reactions';
+// import { MessageReactBar } from './MessageReactBar';
+// import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
+// import { useMouse, useClickAway } from 'react-use';
+// import { sendMessageReaction } from '../../../../util/reactions';
 
 
 type Props = { messageId: string; contextMenuId: string,enableReactions: boolean };
@@ -63,25 +63,25 @@ const StyledMessageContextMenu = styled.div`
     margin-left: -80px;
   }
 `;
-const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 101;
-  ${StyledEmojiPanel} {
-    position: absolute;
-    left: ${props => `${props.x}px`};
-    top: ${props => `${props.y}px`};
-  }
-`;
+// const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 101;
+//   ${StyledEmojiPanel} {
+//     position: absolute;
+//     left: ${props => `${props.x}px`};
+//     top: ${props => `${props.y}px`};
+//   }
+// `;
 
 // tslint:disable: max-func-body-length cyclomatic-complexity
 export const MessageContextMenu = (props: Props) => {
   const selected = useSelector(state => getMessageContextMenuProps(state as any, props.messageId));
   const dispatch = useDispatch();
-  const { hideAll } = useContextMenu();
+  // const { hideAll } = useContextMenu();
 
   if (!selected) {
     return null;
@@ -104,23 +104,23 @@ export const MessageContextMenu = (props: Props) => {
     isBlocked,
   } = selected;
   
-  const { messageId, contextMenuId ,enableReactions} = props;
+  const { messageId, contextMenuId } = props;
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
 
 
 
-  const emojiPanelRef = useRef<HTMLDivElement>(null);
+  // const emojiPanelRef = useRef<HTMLDivElement>(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
   // emoji-mart v5.1 default dimensions
-  const emojiPanelWidth = 354;
-  const emojiPanelHeight = 435;
+  // const emojiPanelWidth = 354;
+  // const emojiPanelHeight = 435;
 
   const contextMenuRef = useRef(null);
-  const { docX, docY } = useMouse(contextMenuRef);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
+  // const { docX, docY } = useMouse(contextMenuRef);
+  // const [mouseX, setMouseX] = useState(0);
+  // const [mouseY, setMouseY] = useState(0);
 
   const onContextMenuShown = () => {
     if (showEmojiPanel) {
@@ -228,26 +228,26 @@ export const MessageContextMenu = (props: Props) => {
     void deleteMessagesByIdForEveryone([messageId], convoId);
   }, [convoId, messageId]);
 
-  const onShowEmoji = () => {
-    hideAll();
-    setMouseX(docX);
-    setMouseY(docY);
-    setShowEmojiPanel(true);
-  };
+  // const onShowEmoji = () => {
+  //   hideAll();
+  //   setMouseX(docX);
+  //   setMouseY(docY);
+  //   setShowEmojiPanel(true);
+  // };
 
-  const onCloseEmoji = () => {
-    setShowEmojiPanel(false);
-    hideAll();
-  };
-   const onEmojiLoseFocus = () => {
-    window.log.info('closed due to lost focus');
-    onCloseEmoji();
-  };
-  const onEmojiClick = async(args: any) => {
-    const emoji = args.native ?? args;
-    onCloseEmoji();
-    await sendMessageReaction(messageId, emoji);
-  };
+  // const onCloseEmoji = () => {
+  //   setShowEmojiPanel(false);
+  //   hideAll();
+  // };
+  //  const onEmojiLoseFocus = () => {
+  //   window.log.info('closed due to lost focus');
+  //   onCloseEmoji();
+  // };
+  // const onEmojiClick = async(args: any) => {
+  //   const emoji = args.native ?? args;
+  //   onCloseEmoji();
+  //   await sendMessageReaction(messageId, emoji);
+  // };
 
   // const onEmojiOffClick = (event: any) => {
   //   if (event.target.id === emojiPanelId && showEmojiPanel) {
@@ -256,44 +256,44 @@ export const MessageContextMenu = (props: Props) => {
   //   }
   // };
 
-  const onEmojiKeyDown = (event: any) => {
-    if (event.key === 'Escape' && showEmojiPanel) {
-      onCloseEmoji();
-    }
-  };
+  // const onEmojiKeyDown = (event: any) => {
+  //   if (event.key === 'Escape' && showEmojiPanel) {
+  //     onCloseEmoji();
+  //   }
+  // };
 
-  useClickAway(emojiPanelRef, () => {
-    onEmojiLoseFocus();
-  });
-  useEffect(() => {
-    if (emojiPanelRef.current) {
-      const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
+  // useClickAway(emojiPanelRef, () => {
+  //   onEmojiLoseFocus();
+  // });
+  // useEffect(() => {
+  //   if (emojiPanelRef.current) {
+  //     const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
 
-      if (mouseX + emojiPanelWidth > windowWidth) {
-        let x = mouseX;
-        x = (mouseX + emojiPanelWidth - windowWidth) * 2;
+  //     if (mouseX + emojiPanelWidth > windowWidth) {
+  //       let x = mouseX;
+  //       x = (mouseX + emojiPanelWidth - windowWidth) * 2;
 
-        if (x === mouseX) {
-          return;
-        }
-        setMouseX(mouseX - x);
-      }
+  //       if (x === mouseX) {
+  //         return;
+  //       }
+  //       setMouseX(mouseX - x);
+  //     }
 
-      if (mouseY + emojiPanelHeight > windowHeight) {
-        const y = mouseY + emojiPanelHeight * 1.25 - windowHeight;
+  //     if (mouseY + emojiPanelHeight > windowHeight) {
+  //       const y = mouseY + emojiPanelHeight * 1.25 - windowHeight;
 
-        if (y === mouseY) {
-          return;
-        }
-        setMouseY(mouseY - y);
-      }
-    }
-  }, [emojiPanelRef.current, emojiPanelWidth, emojiPanelHeight, mouseX, mouseY]);
+  //       if (y === mouseY) {
+  //         return;
+  //       }
+  //       setMouseY(mouseY - y);
+  //     }
+  //   }
+  // }, [emojiPanelRef.current, emojiPanelWidth, emojiPanelHeight, mouseX, mouseY]);
 
 
   return (
     <StyledMessageContextMenu ref={contextMenuRef}>
-       {enableReactions && showEmojiPanel && (
+       {/* {enableReactions && showEmojiPanel && (
         <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
         <BchatEmojiPanel
           ref={emojiPanelRef}
@@ -302,16 +302,16 @@ export const MessageContextMenu = (props: Props) => {
           isModal={true}
         />
         </StyledEmojiPanelContainer>
-      )}
+      )} */}
       <Menu
         id={contextMenuId}
         onShown={onContextMenuShown}
         onHidden={onContextMenuHidden}
         animation={animation.fade}
       >
-      {enableReactions && (
+      {/* {enableReactions && (
           <MessageReactBar action={onEmojiClick} additionalAction={onShowEmoji} />
-        )}
+        )} */}
         {attachments?.length ? (
           <Item onClick={saveAttachment}>
             <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
