@@ -4,11 +4,13 @@ import { ToastUtils } from '../../bchat/utils';
 import { Flex } from '../basic/Flex';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { getConversationController } from '../../bchat/conversations';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateAddModeratorsModal } from '../../state/ducks/modalDialog';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { BchatIcon } from '../icon/BchatIcon';
+import { getTheme } from '../../state/selectors/theme';
 
 type Props = {
   conversationId: string;
@@ -22,6 +24,7 @@ export const AddModeratorsDialog = (props: Props) => {
 
   const [inputBoxValue, setInputBoxValue] = useState('');
   const [addingInProgress, setAddingInProgress] = useState(false);
+  const darkMode = useSelector(getTheme) === 'dark';
 
   const addAsModerator = async () => {
     // if we don't have valid data entered by the user
@@ -60,42 +63,48 @@ export const AddModeratorsDialog = (props: Props) => {
   };
 
   const { i18n } = window;
-  const chatName = convo.get('name');
+  // const chatName = convo.get('name');
 
-  const title = `${i18n('addModerators')}: ${chatName}`;
+  // const title = `${i18n('addModerators')}: ${chatName}`;
 
-  const onPubkeyBoxChanges = (e: any) => {
-    const val = e.target.value;
-    setInputBoxValue(val);
-  };
+  // const onPubkeyBoxChanges = (value: any) => {
+  //   setInputBoxValue(value);
+  // };
 
   return (
     <BchatWrapperModal
-      showExitIcon={true}
-      title={title}
-      onClose={() => {
-        dispatch(updateAddModeratorsModal(null));
+      showHeader={false}
+      okButton={{
+        text: i18n('add'),
+        onClickOkHandler: addAsModerator,
+        color: BchatButtonColor.Primary,
+        disabled: addingInProgress
+      }}
+      cancelButton={{
+        text: window.i18n('cancel'),
+        status: true,
+        color: BchatButtonColor.Secondary,
+        onClickCancelHandler: () => {
+          dispatch(updateAddModeratorsModal(null));
+        }
+
       }}
     >
       <Flex container={true} flexDirection="column" alignItems="center">
-        <p>Add Moderator:</p>
-        <input
-          type="text"
-          className="module-main-header__search__input"
-          placeholder={i18n('enterBchatID')}
-          dir="auto"
-          onChange={onPubkeyBoxChanges}
-          disabled={addingInProgress}
-          value={inputBoxValue}
-        />
-        <BchatButton
-          buttonType={BchatButtonType.Brand}
-          buttonColor={BchatButtonColor.Primary}
-          onClick={addAsModerator}
-          text={i18n('add')}
-          disabled={addingInProgress}
-        />
-
+        <div className='moderator-addModeratorBox'>
+          <BchatIcon iconType={'addModeratorIcon'} iconSize={56} fillRule="evenodd" clipRule="evenodd" iconColor={darkMode ? '#F0F0F0' : '#333333'} />
+          <p className='addModeratortext'>Add Moderator</p>
+        </div>
+        <div className='moderator-inputBox'>
+          <input
+            type="text"
+            value={inputBoxValue}
+            placeholder={i18n('enterBchatID')}
+            onChange={event => {
+              setInputBoxValue(event.target.value)
+            }}
+          />
+        </div>
         <BchatSpinner loading={addingInProgress} />
       </Flex>
     </BchatWrapperModal>

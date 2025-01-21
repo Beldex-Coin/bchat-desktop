@@ -356,11 +356,13 @@
           font-size: 16px;
           font-weight: 400;
         }
+
         &-password {
           border-radius: 16px;
           border: 1px solid var(--color-search-border);
           background: var(--color-input-background);
           width: 505px;
+
           input {
             border: none;
             outline: none;
@@ -389,6 +391,51 @@
           text-align: start;
           line-height: 20px;
         }
+      }
+    }
+  }
+
+  .moderator {
+    &-addModeratorBox {
+      margin: 25px 0px 0px;
+
+      .addModeratortext {
+        font-size: 24px;
+        font-weight: 600;
+      }
+    }
+
+    &-removeModeratorBox {
+      width: 450px;
+      margin: 0 auto;
+      max-height: 55vh;
+
+      .innerBox {
+        background-color: var(--color-confirm-modal-inner-bg);
+        width: 100%;
+        border-radius: 15px;
+      }
+
+      .memberListBox {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+
+    &-inputBox {
+      margin: 0 auto;
+      width: 430px;
+      margin-bottom: 15px;
+
+      input {
+        outline: none;
+        border: none;
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid var(--color-search-border);
+        background: var(--color-hop-bg);
+        height: 70px;
+        padding-left: 15px;
       }
     }
   }
@@ -622,7 +669,7 @@
 }
 
 .bchat-dialog {
-  & ~ .index.inbox {
+  &~.index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
@@ -670,6 +717,7 @@
       height: 70px;
       width: 100%;
       padding: 10px;
+
       input {
         background: var(--color-hop-bg);
         height: 100%;
@@ -687,6 +735,7 @@
       height: 70px;
       width: 100%;
       padding: 10px;
+
       input {
         // background-color: #353543;
         background: var(--color-hop-bg);
@@ -980,6 +1029,7 @@
   width: 500px;
   padding-top: 20px;
   text-align: left;
+
   header {
     margin-bottom: 25px;
     margin-top: 15px;
@@ -1014,12 +1064,14 @@
     padding: 0px 25px;
     border-radius: 16px;
     margin-bottom: 15px;
+
     // box-shadow: var(--color-bchat-shadow);
     .id-label {
       // color: #f0f0f0;
       font-size: 16px;
       font-weight: 600;
     }
+
     .id_content {
       color: #108d32;
       font-size: 16px;
@@ -1086,6 +1138,7 @@
     color: #108d32;
   }
 }
+
 .nickNameDialog {
   .input-wrapper {
     width: 420px;
@@ -1097,11 +1150,13 @@
     display: flex;
     padding: 0 13px;
     align-items: center;
+
     input {
       background-color: unset;
     }
   }
 }
+
 .about-bns {
   section {
     text-align: left;
@@ -1148,6 +1203,7 @@
     }
   }
 }
+
 .community-guidelines {
   article {
     font-size: 18px;
@@ -1164,10 +1220,11 @@
     div {
       margin-bottom: 10px;
     }
+
     a {
       color: #108d32;
     }
-    
+
   }
 }
 
@@ -1238,12 +1295,14 @@
     font-size: 20px;
     font-weight: 600;
   }
+
   .user-id-wrapper {
     border-radius: 16px;
     border: 1px solid var(--color-search-border);
     background: var(--color-hop-bg);
     padding: 15px;
     text-align: left;
+
     &-label {
       // color: #f0f0f0;
       font-size: 16px;
@@ -1251,6 +1310,7 @@
       font-weight: 600;
       line-height: normal;
     }
+
     .user-id {
       color: #108d32;
       font-size: 16px;

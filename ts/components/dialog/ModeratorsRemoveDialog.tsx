@@ -7,7 +7,7 @@ import { Flex } from '../basic/Flex';
 import _ from 'lodash';
 import { updateRemoveModeratorsModal } from '../../state/ducks/modalDialog';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { MemberListItem } from '../MemberListItem';
 import { useDispatch } from 'react-redux';
@@ -83,52 +83,51 @@ export const RemoveModeratorsDialog = (props: Props) => {
   const existingMods = convoProps.groupAdmins || [];
   const hasMods = existingMods.length !== 0;
 
-  const title = `${i18n('removeModerators')}: ${convoProps.name}`;
+  const title = `${i18n('removeModerators')}`;
   return (
-    <BchatWrapperModal title={title} onClose={closeDialog}>
-      <Flex container={true} flexDirection="column" alignItems="center">
-        {hasMods ? (
-          <div className="contact-selection-list">
-            {existingMods.map(modId => (
-              <MemberListItem
-                key={modId}
-                pubkey={modId}
-                isSelected={modsToRemove.some(m => m === modId)}
-                onSelect={(selectedMember: string) => {
-                  const updatedList = [...modsToRemove, selectedMember];
-                  setModsToRemove(updatedList);
-                }}
-                onUnselect={(selectedMember: string) => {
-                  const updatedList = modsToRemove.filter(m => m !== selectedMember);
-                  setModsToRemove(updatedList);
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <p>{i18n('noModeratorsToRemove')}</p>
-        )}
-        <BchatSpinner loading={removingInProgress} />
-
-        <div className="bchat-modal__button-group">
-          <BchatButton
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            onClick={removeModsCall}
-            disabled={removingInProgress}
-            text={i18n('ok')}
-          />
-          <BchatButton
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Primary}
-            onClick={closeDialog}
-            disabled={removingInProgress}
-            text={i18n('cancel')}
-          />
-        </div>
-
-        <BchatSpinner loading={removingInProgress} />
-      </Flex>
+    <BchatWrapperModal
+      title={title}
+      okButton={{
+        text: i18n('remove'),
+        onClickOkHandler: removeModsCall,
+        disabled: removingInProgress,
+        color: BchatButtonColor.Primary,
+      }}
+      cancelButton={{
+        status: true,
+        text: i18n('cancel'),
+        disabled: removingInProgress,
+        color: BchatButtonColor.Secondary,
+        onClickCancelHandler: closeDialog,
+      }}>
+      <div className='moderator-removeModeratorBox'>
+        <Flex container={true} flexDirection="column" alignItems="center">
+          {hasMods ? (
+            <div className='innerBox'>
+              <div className='memberListBox'>
+                {existingMods.map(modId => (
+                  <MemberListItem
+                    key={modId}
+                    pubkey={modId}
+                    isSelected={modsToRemove.some(m => m === modId)}
+                    onSelect={(selectedMember: string) => {
+                      const updatedList = [...modsToRemove, selectedMember];
+                      setModsToRemove(updatedList);
+                    }}
+                    onUnselect={(selectedMember: string) => {
+                      const updatedList = modsToRemove.filter(m => m !== selectedMember);
+                      setModsToRemove(updatedList);
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>{i18n('noModeratorsToRemove')}</p>
+          )}
+          <BchatSpinner loading={removingInProgress} />
+        </Flex>
+      </div>
     </BchatWrapperModal>
   );
 };
