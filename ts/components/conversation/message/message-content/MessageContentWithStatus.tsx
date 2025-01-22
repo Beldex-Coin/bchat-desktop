@@ -11,7 +11,7 @@ import {
   isMessageSelectionMode,
 } from '../../../../state/selectors/conversations';
 
-import { MessageAuthorText } from './MessageAuthorText';
+// import { MessageAuthorText } from './MessageAuthorText';
 import { MessageContent } from './MessageContent';
 import { MessageContextMenu } from './MessageContextMenu';
 import { MessageStatus } from './MessageStatus';
@@ -257,7 +257,7 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
         <div>
-          <MessageAuthorText messageId={messageId} />
+          {/* <MessageAuthorText messageId={messageId} /> */}
 
           <MessageContent messageId={messageId} isDetailView={isDetailView} />
         </div>

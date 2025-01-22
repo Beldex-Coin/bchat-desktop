@@ -322,6 +322,17 @@
   text-overflow: ellipsis;
 }
 
+.module-message_grp_author_wrapper{
+
+  .module-message__author{
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 15px;
+    margin-right: 40px;
+    margin-bottom: unset;
+  }
+}
+
 .module-conversation__user__profile-name,
 .module-message__author__profile-name {
   font-style: italic;

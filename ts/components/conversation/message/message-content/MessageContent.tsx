@@ -29,6 +29,7 @@ import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 import { SpacerXS } from '../../../basic/Text';
+import { MessageAuthorText } from './MessageAuthorText';
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -207,6 +208,7 @@ export const MessageContent = (props: Props) => {
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
     >
+      <MessageAuthorText messageId={props.messageId} />
       <InView
         id={`inview-content-${props.messageId}`}
         onChange={onVisible}
