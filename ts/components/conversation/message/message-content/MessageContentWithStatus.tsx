@@ -68,9 +68,14 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
     top: ${props => `${props.y}px`};
   }
 `;
+const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
+  position: absolute;
+  left: ${props => `${props.isIncoming ?0: -190 }px`};
+`;
 const RecentReacts = (props: RecentReactsProps) => {
-  const { isIncoming, recentEmojiBtnVisible, onEmojiClick,onRecentEmojiBtnVisible } = props;
+  const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
 
+  console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
   if (!recentEmojiBtnVisible) {
     return null;
   }
@@ -122,12 +127,20 @@ const RecentReacts = (props: RecentReactsProps) => {
 
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
-      <span style={{ margin: '0 10px',cursor:'pointer' }} onClick={() => setRecentEmoji(!recentEmoji)} role='button'>
+      <span
+        style={{ margin: '0 10px', cursor: 'pointer' }}
+        onClick={() => setRecentEmoji(!recentEmoji)}
+        role="button"
+      >
         <RecentEmojiIcon iconSize={26} />
       </span>
 
       {recentEmoji && (
-        <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)} />
+        <div style={{ position: 'relative', height: '40px' }}>
+          <StyledMessageReactBarInnerWrapper isIncoming={isIncoming} className='Message-ReactBar-Inner'>
+            <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)} />
+          </StyledMessageReactBarInnerWrapper>
+        </div>
       )}
       {showEmojiPanel && (
         <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
@@ -202,6 +215,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   };
 
   const handlePopupClick = () => {
+    setPopupReaction('');
     dispatch(updateReactListModal({ reaction: popupReaction, messageId }));
   };
 
@@ -240,7 +254,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             isIncoming={isIncoming}
             recentEmojiBtnVisible={recentEmojiBtnVisible}
             onEmojiClick={onEmojiClick}
-            onRecentEmojiBtnVisible={()=>setRecentEmojiBtnVisible(false)}
+            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
           />
         )}
         {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (

@@ -94,7 +94,7 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
 const Reactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal } = props;
+  const { messageId, reactions, inModal ,isIncoming} = props;
 
   return (
     <StyledMessageReactions
@@ -102,6 +102,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}
+      flexDirection={isIncoming?"row":'row-reverse'}
     >
       {reactions.map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -110,13 +111,14 @@ const Reactions = (props: ReactionsProps): ReactElement => {
   );
 };
 const CompressedReactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal,handlePopupClick } = props;
+  const { messageId, reactions, inModal,handlePopupClick,isIncoming } = props;
   return (
     <StyledMessageReactions
       container={true}
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}
+      flexDirection={isIncoming?"row":'row-reverse'}
     >
       {reactions.slice(0, 5).map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -127,8 +129,9 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
           iconColor="#A7A7BA"
           btnRadius="40px"
           btnBgColor="#202329"
-          iconRotation={270}
+          iconRotation={isIncoming?270:90}
           onClick={handlePopupClick}
+          margin="0 3px"
         />
       {/* <StyledReactionOverflow onClick={handleExpand}>
         {reactions
@@ -197,7 +200,7 @@ export const MessageReactions = (props: Props): ReactElement => {
   const { conversationType, sortedReacts: reacts } = msgProps;
   const inGroup = conversationType === 'group';
 
-  const reactLimit = 6;
+  const reactLimit = 5;
 
   const reactionsProps = {
     messageId,

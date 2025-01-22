@@ -58,6 +58,7 @@ export type ReactionProps = {
   handlePopupReaction?: (emoji: string) => void;
   handlePopupClick?: () => void;
   iscurrentReact?:string;
+  isIncoming?:boolean
   
 };
 
