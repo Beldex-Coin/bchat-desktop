@@ -51,7 +51,7 @@ const StyledSendersContainer = styled(Flex)`
   width: 100%;
   // min-height: 3px;
   height: 100%;
-  max-height: 200px;
+  max-height: 261px;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 14px 16px 32px;

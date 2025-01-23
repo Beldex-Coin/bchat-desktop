@@ -70,7 +70,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ? 42 : -232}px`};
+  left: ${props => `${props.isIncoming ? 42 : -249}px`};
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -88,17 +88,17 @@ const RecentReacts = (props: RecentReactsProps) => {
   const emojiPanelRef = useRef<HTMLDivElement>(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
-  const emojiPanelWidth = 324;
+  // const emojiPanelWidth = 324;
   const emojiPanelHeight = 435;
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const onShowEmoji = (e: MouseEvent): void => {
     let x = e.clientX;
-    if (isIncoming) {
-      x -= 186;
-    } else {
-      x -= emojiPanelWidth + 18;
-    }
+    // if (isIncoming) {
+      x -= 200;
+    // } else {
+    //   x -= emojiPanelWidth + 18;
+    // }
     let y = e.clientY - 39;
     if (y + emojiPanelHeight > window.innerHeight) {
       y = Math.abs(mouseY - emojiPanelHeight);
@@ -148,7 +148,7 @@ const RecentReacts = (props: RecentReactsProps) => {
             isIncoming={isIncoming}
             className="Message-ReactBar-Inner"
           >
-            <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)} />
+            <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)}  isIncoming={isIncoming} />
           </StyledMessageReactBarInnerWrapper>
         </div>
       )}

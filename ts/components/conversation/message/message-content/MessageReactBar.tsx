@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { BchatIconButton } from '../../../icon';
 import { RecentReactions } from '../../../../types/Reaction';
 
@@ -11,20 +11,47 @@ import { isEqual } from 'lodash';
 type Props = {
   action: (...args: Array<any>) => void;
   additionalAction: (...args: Array<any>) => void;
+  isIncoming: boolean;
 };
-
-const StyledMessageReactBar = styled.div`
+// Define the keyframes for the animation
+const expand = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`;
+const rotateEmoji = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+const rotateEmojiAntiClock = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+`;
+const StyledMessageReactBar = styled.div<{ isIncoming: boolean }>`
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 4px 8px;
   white-space: nowrap;
   display: flex;
   align-items: center;
+  flex-direction: ${props => (props.isIncoming ? 'row' : 'row-reverse')};
   border-radius: 24px;
   background: var(--color-emoji-panel-bg);
   font-size: 18px;
+  animation: ${expand} 0.3s ease-in-out forwards; /* Add animation here */
+  overflow: hidden;
+  float: ${props => (props.isIncoming ? 'left' : 'right')};
   span {
-    
-    margin: 0 4px;
     cursor: pointer;
   }
   .bchat-icon-button {
@@ -33,12 +60,14 @@ const StyledMessageReactBar = styled.div`
     box-shadow: none !important;
   }
 `;
-const ReactButton = styled.div`
-  baakground: red;
+const ReactButton = styled.div<{ isIncoming: boolean }>`
+  margin: 0 2px;
+  animation: ${props => (props.isIncoming ?rotateEmoji:rotateEmojiAntiClock)} 0.4s linear forwards;
+  
 `;
 
 export const MessageReactBar = (props: Props): ReactElement => {
-  const { action, additionalAction } = props;
+  const { action, additionalAction, isIncoming } = props;
   const [recentReactions, setRecentReactions] = useState<RecentReactions>();
 
   useEffect(() => {
@@ -52,10 +81,11 @@ export const MessageReactBar = (props: Props): ReactElement => {
     return <></>;
   }
   return (
-    <StyledMessageReactBar >
+    <StyledMessageReactBar isIncoming={isIncoming}>
       {recentReactions &&
         recentReactions.items.map(emoji => (
           <ReactButton
+            isIncoming={isIncoming}
             key={emoji}
             role={'img'}
             aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
@@ -71,7 +101,7 @@ export const MessageReactBar = (props: Props): ReactElement => {
           iconColor={'#858598'}
           iconSize={20}
           iconType="plusOuterFilled"
-          onClick={(e)=>additionalAction(e)}
+          onClick={e => additionalAction(e)}
         />
       </span>
     </StyledMessageReactBar>
