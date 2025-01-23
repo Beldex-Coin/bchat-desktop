@@ -47,6 +47,7 @@ export type MessageContentSelectorProps = Pick<
 type Props = {
   messageId: string;
   isDetailView?: boolean;
+  onRecentEmojiBtnVisible:()=>void;
 };
 
 // function getIsShowingImage(
@@ -205,6 +206,9 @@ export const MessageContent = (props: Props) => {
       //   width: isShowingImage ? width : undefined,
       // }}
       role="button"
+      onMouseEnter={() => {
+        props.onRecentEmojiBtnVisible()
+      }}
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
     >

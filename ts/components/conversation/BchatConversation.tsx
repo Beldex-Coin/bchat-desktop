@@ -281,6 +281,8 @@ export class BchatConversation extends React.Component<Props, State> {
 
     return (
       <BchatTheme>
+        {reactListModalstate && <ReactListModal  {...reactListModalstate}/> }
+
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
@@ -364,7 +366,6 @@ export class BchatConversation extends React.Component<Props, State> {
             onChoseAttachments={this.onChoseAttachments}
           />
         </div>
-        {reactListModalstate && <ReactListModal  {...reactListModalstate}/> }
         {/* <div
           className={classNames('conversation-item__options-pane', isRightPanelShowing && 'show')}
         >

@@ -70,12 +70,17 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ?0: -190 }px`};
+  left: ${props => `${props.isIncoming ? 42 : -232}px`};
 `;
+const StyledRecentReactionWrapper = styled.div`
+  position: relative;
+`;
+
+
 const RecentReacts = (props: RecentReactsProps) => {
   const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
 
-  console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
+  // console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
   if (!recentEmojiBtnVisible) {
     return null;
   }
@@ -127,17 +132,22 @@ const RecentReacts = (props: RecentReactsProps) => {
 
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
-      <span
-        style={{ margin: '0 10px', cursor: 'pointer' }}
-        onClick={() => setRecentEmoji(!recentEmoji)}
-        role="button"
-      >
-        <RecentEmojiIcon iconSize={26} />
-      </span>
+      <div style={{ position: 'absolute' }}>
+        <span
+          style={{ margin: '0 10px', cursor: 'pointer' }}
+          onClick={() => setRecentEmoji(!recentEmoji)}
+          role="button"
+        >
+          <RecentEmojiIcon iconSize={26} />
+        </span>
+      </div>
 
       {recentEmoji && (
-        <div style={{ position: 'relative', height: '40px' }}>
-          <StyledMessageReactBarInnerWrapper isIncoming={isIncoming} className='Message-ReactBar-Inner'>
+        <div style={{ height: '40px' }}>
+          <StyledMessageReactBarInnerWrapper
+            isIncoming={isIncoming}
+            className="Message-ReactBar-Inner"
+          >
             <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)} />
           </StyledMessageReactBarInnerWrapper>
         </div>
@@ -233,9 +243,6 @@ export const MessageContentWithStatuses = (props: Props) => {
   return (
     <StyledMessageContentContainer
       direction={isIncoming ? 'left' : 'right'}
-      onMouseEnter={() => {
-        setRecentEmojiBtnVisible(true);
-      }}
       onMouseLeave={() => {
         setPopupReaction('');
         setRecentEmojiBtnVisible(false);
@@ -250,12 +257,14 @@ export const MessageContentWithStatuses = (props: Props) => {
         data-testid={dataTestId}
       >
         {!isIncoming && (
-          <RecentReacts
-            isIncoming={isIncoming}
-            recentEmojiBtnVisible={recentEmojiBtnVisible}
-            onEmojiClick={onEmojiClick}
-            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
-          />
+          <StyledRecentReactionWrapper>
+            <RecentReacts
+              isIncoming={isIncoming}
+              recentEmojiBtnVisible={recentEmojiBtnVisible}
+              onEmojiClick={onEmojiClick}
+              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+            />
+          </StyledRecentReactionWrapper>
         )}
         {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
           <ExpireTimer
@@ -273,7 +282,7 @@ export const MessageContentWithStatuses = (props: Props) => {
         <div>
           {/* <MessageAuthorText messageId={messageId} /> */}
 
-          <MessageContent messageId={messageId} isDetailView={isDetailView} />
+          <MessageContent messageId={messageId} isDetailView={isDetailView}  onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}/>
         </div>
         {expirationLength && expirationTimestamp ? (
           <ExpireTimer
@@ -289,12 +298,14 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
         {isIncoming && (
-          <RecentReacts
-            isIncoming={isIncoming}
-            recentEmojiBtnVisible={recentEmojiBtnVisible}
-            onEmojiClick={onEmojiClick}
-            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
-          />
+          <StyledRecentReactionWrapper>
+            <RecentReacts
+              isIncoming={isIncoming}
+              recentEmojiBtnVisible={recentEmojiBtnVisible}
+              onEmojiClick={onEmojiClick}
+              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+            />
+          </StyledRecentReactionWrapper>
         )}
         {!isDeleted && (
           <MessageContextMenu

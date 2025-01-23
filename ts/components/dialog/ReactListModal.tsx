@@ -89,9 +89,9 @@ const StyledClearButton = styled.button`
   color: var(--color-destructive);
   border: none;
 `;
-const StyledAllButton = styled.button<{isSelected:boolean}>`
+const StyledAllButton = styled.button<{ isSelected: boolean }>`
   border-radius: 17px;
-  border:${props=>props.isSelected?'0.5px solid #858598':'unset'};
+  border: ${props => (props.isSelected ? '0.5px solid #858598' : 'unset')};
   background: #202329;
   color: #f0f0f0;
 
@@ -99,8 +99,8 @@ const StyledAllButton = styled.button<{isSelected:boolean}>`
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  padding:2px 10px;
-  margin-right:5px;
+  padding: 2px 10px;
+  margin-right: 5px;
   span {
     color: #a7a7ba;
     font-family: Poppins;
@@ -144,14 +144,14 @@ const ReactionSenders = (props: ReactionSendersProps) => {
     }
   };
 
-  const handleRemoveReaction = async (currentemoji:string) => {
+  const handleRemoveReaction = async (currentemoji: string) => {
     await sendMessageReaction(messageId, currentemoji);
     // handleClose();
   };
 
   return (
     <>
-      {FilteredList.map((reacted,key) => (
+      {FilteredList.map((reacted, key) => (
         <StyledReactionSender
           // key={`${messageId}-${reacted.sender}`}
           key={key}
@@ -189,7 +189,7 @@ const ReactionSenders = (props: ReactionSendersProps) => {
                 text="Remove"
                 iconType="delete"
                 iconSize={14}
-                onClick={()=>handleRemoveReaction(reacted.emoji)}
+                onClick={() => handleRemoveReaction(reacted.emoji)}
                 style={{
                   borderRadius: '7.529px',
                   border: '0.471px solid #858598',
@@ -230,7 +230,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const [reactions, setReactions] = useState<SortedReactionList>([]);
   // const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const [currentReact, setCurrentReact] = useState('');
-  const reactListModalState = useSelector(getReactListDialog)
+  const reactListModalState = useSelector(getReactListDialog);
   // const [senders, setSenders] = useState<Array<string>>([]);
 
   // const [reactedDetailList, setReactedDetailList] = useState<Array<reactionListDetailsProps>>([]);
@@ -252,9 +252,8 @@ export const ReactListModal = (props: Props): ReactElement => {
   const convo = getConversationController().get(convoId);
   const weAreModerator = convo.getConversationModelProps().weAreModerator;
   const reactedDetailList = sortedSenderAndEmoji();
-  const modalRef = useRef<HTMLDivElement|null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
-  
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
   };
@@ -266,10 +265,9 @@ export const ReactListModal = (props: Props): ReactElement => {
   const handleClose = () => {
     dispatch(updateReactListModal(null));
   };
-  if(isEmpty(reactedDetailList))
-    {
-      handleClose();
-    }
+  if (isEmpty(reactedDetailList)) {
+    handleClose();
+  }
   const handleClearReactions = (event: any) => {
     event.preventDefault();
     handleClose();
@@ -282,7 +280,7 @@ export const ReactListModal = (props: Props): ReactElement => {
       Object.keys(senders).forEach(sender => {
         reactedCustomData.push({ sender, emoji });
       });
-    }); 
+    });
     return reactedCustomData;
   }
 
@@ -328,7 +326,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   useEffect(() => {
     const handleClickOutside = (event: any): void => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        handleClose()
+        handleClose();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -338,80 +336,81 @@ export const ReactListModal = (props: Props): ReactElement => {
     };
   }, [reactListModalState]);
 
- 
-  
-  
   return (
-    <div className="reaction-list-modal" ref={modalRef}>
-      <div className="reaction-list-innreModal show-modal">
-        <StyledReactListContainer
-          container={true}
-          flexDirection={'column'}
-          alignItems={'flex-start'}
-        >
-          <StyledReactionsContainer
-            container={true}
-            flexDirection={'row'}
-            alignItems={'center'}
-            justifyContent="space-between"
-          >
-            <Flex container={true} flexDirection={'row'} alignItems={'center'}>
-              <StyledAllButton onClick={() => setCurrentReact('')} isSelected={currentReact===''}>
-                All <span>{reactedDetailList.length}</span>
-              </StyledAllButton>
-              <MessageReactions
-                messageId={messageId}
-                hasReactLimit={false}
-                inModal={true}
-                onSelected={handleSelectedReaction}
-                onClick={handleReactionClick}
-                iscurrentReact={currentReact}
-               
-              />
-            </Flex>
-            <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
-          </StyledReactionsContainer>
-          {/* {reactionsMap && ( */}
-          <StyledSendersContainer
+    <div className="reaction-list-modal" >
+      <div className="innerModal-wrapper">
+        <div className="reaction-list-innreModal show-modal" ref={modalRef}>
+          <StyledReactListContainer
             container={true}
             flexDirection={'column'}
             alignItems={'flex-start'}
           >
-            <StyledReactionBar
+            <StyledReactionsContainer
               container={true}
-              justifyContent={'space-between'}
+              flexDirection={'row'}
               alignItems={'center'}
+              justifyContent="space-between"
             >
-              {/* <p> */}
-              {/* <span role={'img'} aria-label={reactAriaLabel}>
+              <Flex container={true} flexDirection={'row'} alignItems={'center'}>
+                <StyledAllButton
+                  onClick={() => setCurrentReact('')}
+                  isSelected={currentReact === ''}
+                >
+                  All <span>{reactedDetailList.length}</span>
+                </StyledAllButton>
+                <MessageReactions
+                  messageId={messageId}
+                  hasReactLimit={false}
+                  inModal={true}
+                  onSelected={handleSelectedReaction}
+                  onClick={handleReactionClick}
+                  iscurrentReact={currentReact}
+                />
+              </Flex>
+              <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
+            </StyledReactionsContainer>
+            {/* {reactionsMap && ( */}
+            <StyledSendersContainer
+              container={true}
+              flexDirection={'column'}
+              alignItems={'flex-start'}
+            >
+              <StyledReactionBar
+                container={true}
+                justifyContent={'space-between'}
+                alignItems={'center'}
+              >
+                {/* <p> */}
+                {/* <span role={'img'} aria-label={reactAriaLabel}>
                   {currentReact}
                 </span> */}
-              {/* {reactionsMap[currentReact].count && (
+                {/* {reactionsMap[currentReact].count && (
                   <>
                     <span>&#8226;</span>
                     <span>{reactionsMap[currentReact].count}</span>
                   </>
                 )} */}
-              {/* </p> */}
-              {isPublic && weAreModerator && (
-                <StyledClearButton onClick={handleClearReactions}>
-                  {window.i18n('clearAll')}
-                </StyledClearButton>
-              )}
-            </StyledReactionBar>
+                {/* </p> */}
+                {isPublic && weAreModerator && (
+                  <StyledClearButton onClick={handleClearReactions}>
+                    {window.i18n('clearAll')}
+                  </StyledClearButton>
+                )}
+              </StyledReactionBar>
 
-            {reactedDetailList && reactedDetailList.length > 0 && (
-              <ReactionSenders
-                messageId={messageId}
-                currentReact={currentReact}
-                reactedDetailList={reactedDetailList}
-                me={me}
-                handleClose={handleClose}
-              />
-            )}
-          </StyledSendersContainer>
-          {/* )} */}
-        </StyledReactListContainer>
+              {reactedDetailList && reactedDetailList.length > 0 && (
+                <ReactionSenders
+                  messageId={messageId}
+                  currentReact={currentReact}
+                  reactedDetailList={reactedDetailList}
+                  me={me}
+                  handleClose={handleClose}
+                />
+              )}
+            </StyledSendersContainer>
+            {/* )} */}
+          </StyledReactListContainer>
+        </div>
       </div>
     </div>
   );

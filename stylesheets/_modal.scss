@@ -328,7 +328,6 @@
           }
         }
 
-    
         &-password-label {
           display: flex;
           // color: #f0f0f0;
@@ -560,7 +559,7 @@
       outline: none;
     }
   }
-  
+
   h4 {
     margin-top: 8px;
     margin-bottom: 16px;
@@ -572,18 +571,23 @@
 
   &.show-modal {
     .reaction-list-innreModal {
-      top: 0;
+      bottom: -300;
     }
   }
-
+  .innerModal-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 2;
+  }
   .reaction-list-innreModal {
     position: absolute;
-    top: -300px;
+    bottom: 0;
     border-radius: 24px 24px 0px 0px;
     background: #202329;
     width: 95%;
     margin-left: 4%;
-    transition: top .5s ease-in-out;
+    transition: bottom 0.5s ease-in-out;
     height: 300px;
     padding: 15px;
     z-index: 2;
@@ -593,17 +597,16 @@
 /* Adding Keyframes for smooth transition */
 @keyframes slideIn {
   from {
-    top:0
+    bottom: -300px;
   }
   to {
-    top:  -300px;
+    bottom: 0;
   }
 }
 
 .reaction-list-innreModal {
-  animation: slideIn .5s ease-in-out;
+  animation: slideIn 0.5s ease-in-out;
 }
-
 
 .nickname-dialog {
   .message {
@@ -1185,7 +1188,6 @@
     a {
       color: #108d32;
     }
-    
   }
 }
 
