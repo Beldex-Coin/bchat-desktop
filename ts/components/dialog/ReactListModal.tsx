@@ -30,6 +30,7 @@ import { BchatIconButton } from '../icon';
 import { getConversationController } from '../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { getReactListDialog } from '../../state/selectors/modal';
+import { getTheme } from '../../state/selectors/theme';
 
 interface Props {
   messageId: string;
@@ -40,8 +41,8 @@ const StyledReactListContainer = styled(Flex)`
   // width: 376px;
 `;
 
-const StyledReactionsContainer = styled(Flex)`
-  border-bottom: 1px solid #4b4b64;
+const StyledReactionsContainer = styled(Flex)<{bdColor:string}>`
+  border-bottom: 1.5px solid ${props=>props.bdColor};
   width: 100%;
   overflow-x: auto;
   padding: 12px 8px 8px;
@@ -92,22 +93,15 @@ const StyledClearButton = styled.button`
 const StyledAllButton = styled.button<{ isSelected: boolean }>`
   border-radius: 17px;
   border: ${props => (props.isSelected ? '0.5px solid #858598' : 'unset')};
-  background: #202329;
-  color: #f0f0f0;
-
   font-size: 17px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   padding: 2px 10px;
   margin-right: 5px;
+  background-color: ${props => (props.isSelected ? 'var(--color-emoji-panel-bg)' : 'unset')};
   span {
     color: #a7a7ba;
-    font-family: Poppins;
     font-size: 16px;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
   }
 `;
 type ReactionSendersProps = {
@@ -168,7 +162,7 @@ const ReactionSenders = (props: ReactionSendersProps) => {
               }}
             />
             {reacted.sender === me ? (
-              <span> You </span>
+              <span style={{fontWeight: 700}}> You </span>
             ) : (
               <ContactName
                 pubkey={reacted.sender}
@@ -193,9 +187,10 @@ const ReactionSenders = (props: ReactionSendersProps) => {
                 style={{
                   borderRadius: '7.529px',
                   border: '0.471px solid #858598',
-                  background: '#202329',
                   color: '#A7A7BA',
                   padding: '2px 10px',
+                  backgroundColor:"var(--color-emoji-panel-bg)",
+                  fontWeight:400
                 }}
               />
             )}
@@ -243,6 +238,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const me = UserUtils.getOurPubKeyStrFromCache();
 
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
+  const darkMode = useSelector(getTheme) === 'dark';
 
   if (!msgProps) {
     return <></>;
@@ -350,6 +346,7 @@ export const ReactListModal = (props: Props): ReactElement => {
               flexDirection={'row'}
               alignItems={'center'}
               justifyContent="space-between"
+              bdColor={darkMode?'#4b4b64':'#ACACAC'}
             >
               <Flex container={true} flexDirection={'row'} alignItems={'center'}>
                 <StyledAllButton

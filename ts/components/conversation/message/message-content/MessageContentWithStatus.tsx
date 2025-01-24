@@ -20,12 +20,13 @@ import styled from 'styled-components';
 import { MessageReactions } from './MessageReactions';
 import { sendMessageReaction } from '../../../../util/reactions';
 
-import RecentEmojiIcon from '../../../icon/RecentEmojiIcon';
 import { Flex } from '../../../basic/Flex';
 import { MessageReactBar } from './MessageReactBar';
 import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
 
 import { useClickAway } from 'react-use';
+import { BchatIconButton } from '../../../icon';
+import { getTheme } from '../../../../state/selectors/theme';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -76,7 +77,6 @@ const StyledRecentReactionWrapper = styled.div`
   position: relative;
 `;
 
-
 const RecentReacts = (props: RecentReactsProps) => {
   const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
 
@@ -84,6 +84,7 @@ const RecentReacts = (props: RecentReactsProps) => {
   if (!recentEmojiBtnVisible) {
     return null;
   }
+
   const [recentEmoji, setRecentEmoji] = useState(false);
   const emojiPanelRef = useRef<HTMLDivElement>(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
@@ -92,10 +93,11 @@ const RecentReacts = (props: RecentReactsProps) => {
   const emojiPanelHeight = 435;
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
+  const darkMode = useSelector(getTheme) === 'dark';
   const onShowEmoji = (e: MouseEvent): void => {
     let x = e.clientX;
     // if (isIncoming) {
-      x -= 200;
+    x -= 200;
     // } else {
     //   x -= emojiPanelWidth + 18;
     // }
@@ -133,13 +135,15 @@ const RecentReacts = (props: RecentReactsProps) => {
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
       <div style={{ position: 'absolute' }}>
-        <span
-          style={{ margin: '0 10px', cursor: 'pointer' }}
+        <BchatIconButton
+          iconType="smileyEmoji"
+          iconSize={20}
+          iconColor={darkMode ? "#858598":'#ACACAC'}
           onClick={() => setRecentEmoji(!recentEmoji)}
-          role="button"
-        >
-          <RecentEmojiIcon iconSize={26} />
-        </span>
+          margin="0 10px"
+          btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
+          btnRadius='30px'
+        />
       </div>
 
       {recentEmoji && (
@@ -148,7 +152,11 @@ const RecentReacts = (props: RecentReactsProps) => {
             isIncoming={isIncoming}
             className="Message-ReactBar-Inner"
           >
-            <MessageReactBar action={onSubmit} additionalAction={e => onShowEmoji(e)}  isIncoming={isIncoming} />
+            <MessageReactBar
+              action={onSubmit}
+              additionalAction={e => onShowEmoji(e)}
+              isIncoming={isIncoming}
+            />
           </StyledMessageReactBarInnerWrapper>
         </div>
       )}
@@ -282,7 +290,11 @@ export const MessageContentWithStatuses = (props: Props) => {
         <div>
           {/* <MessageAuthorText messageId={messageId} /> */}
 
-          <MessageContent messageId={messageId} isDetailView={isDetailView}  onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}/>
+          <MessageContent
+            messageId={messageId}
+            isDetailView={isDetailView}
+            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+          />
         </div>
         {expirationLength && expirationTimestamp ? (
           <ExpireTimer

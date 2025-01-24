@@ -22,7 +22,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
   border-radius: 12px;
   cursor: pointer;
   overflow-wrap: break-word;
- background-color:#202329;;
+ background-color:var(--color-wallet-inner-bg);
 
   &:after {
     content: '';
@@ -33,7 +33,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
     };
     width: 27px;
     height: 27px;
-    background-color: #202329;
+     background-color:var(--color-wallet-inner-bg);
     transform: rotate(45deg);
     border-radius: 3px;
     transform: scaleY(1) rotate(0deg);

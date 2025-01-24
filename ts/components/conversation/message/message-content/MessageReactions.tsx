@@ -128,7 +128,7 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
           iconSize={20}
           iconColor="#A7A7BA"
           btnRadius="40px"
-          btnBgColor="#202329"
+          btnBgColor="var(--color-emoji-panel-bg)"
           iconRotation={isIncoming?270:90}
           onClick={handlePopupClick}
           margin="0 3px"
@@ -190,7 +190,6 @@ export const MessageReactions = (props: Props): ReactElement => {
 
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
-  // const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const msgProps = useMessageReactsPropsById(messageId);
 
   if (!msgProps) {

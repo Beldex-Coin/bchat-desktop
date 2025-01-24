@@ -28,7 +28,7 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
 
     border-radius: 17px;
     border:${props => (!props.inModal ||props.iscurrentReact ?'0.5px solid #858598':"")};
-    background:var(--color-emoji-panel-bg);
+    background:${props => ((props.inModal && props.iscurrentReact) || !props.inModal ? 'var(--color-emoji-panel-bg)':"")};
     margin-right:3px;
 
   span:nth-child(2) {
