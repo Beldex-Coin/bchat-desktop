@@ -53,6 +53,7 @@ import { BchatButtonColor } from '../basic/BchatButton';
 import { MenuWrapper } from '../menu/Menu';
 import { getTheme } from '../../state/selectors/theme';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
+import { useClickAway } from 'react-use';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -324,6 +325,7 @@ export const BchatRightPanelWithDetails = () => {
   const convoProps = useConversationPropsById(selectedConversation?.id);
   const existingMembers = convoProps?.members || [];
   const ref = useRef<onClickRef>(null);
+  const rightPanelref=useRef<HTMLDivElement | null>(null)
   const { addTo, removeFrom, uniqueValues: membersToKeepWithUpdate } = useSet<string>(
     existingMembers
   );
@@ -366,6 +368,9 @@ export const BchatRightPanelWithDetails = () => {
   if (!selectedConversation) {
     return null;
   }
+  useClickAway(rightPanelref, () => {
+    dispatch(closeRightPanel());
+  });
 
   const {
     id,
@@ -540,6 +545,7 @@ export const BchatRightPanelWithDetails = () => {
   };
   return (
     <div
+    ref={rightPanelref}
       className="group-settings"
       style={{
         position: zoomLevel > 100 ? 'absolute' : 'unset',
