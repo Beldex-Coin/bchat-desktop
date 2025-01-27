@@ -51,6 +51,7 @@ const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number,isIn
     top: ${props => `${props.y}px;`};
     // left: ${props => `${props.x}px;`};
     left:${props => `${props.isIncoming?18:-187}px;`}
+    z-index: 2;
   
   }
 `;

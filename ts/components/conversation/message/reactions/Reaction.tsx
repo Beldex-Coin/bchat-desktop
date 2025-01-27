@@ -78,7 +78,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     handlePopupClick,
     iscurrentReact
   } = props;
-
+  
   const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const senders = reactionsMap[emoji].senders ? Object.keys(reactionsMap[emoji].senders) : [];
   const count = reactionsMap[emoji].count;
@@ -106,7 +106,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   
     onClick(emoji);
   };
-
+// console.log(popupReaction )
   return (
     <StyledReactionContainer ref={reactionRef}>
       <StyledReaction
@@ -146,13 +146,15 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         </span>
         {showCount && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
       </StyledReaction>
+       {/* {inGroup  && '🥸' === emoji && ( */}
       {inGroup && popupReaction && popupReaction === emoji && (
         <ReactionPopup
           messageId={messageId}
           emoji={popupReaction}
+          senders={Object.keys(reactionsMap[popupReaction].senders)}
           // emoji='🥸'
           // senders={Object.keys(reactionsMap['🥸'].senders)}
-          senders={Object.keys(reactionsMap[popupReaction].senders)}
+          
           onClick={() => {
             if (handlePopupReaction) {
               handlePopupReaction('');

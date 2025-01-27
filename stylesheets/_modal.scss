@@ -568,7 +568,7 @@
 
 .reaction-list-modal {
   position: relative;
-
+  z-index: 4;
   &.show-modal {
     .reaction-list-innreModal {
       bottom: -300;

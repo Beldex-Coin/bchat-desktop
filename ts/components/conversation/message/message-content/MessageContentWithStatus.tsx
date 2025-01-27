@@ -70,8 +70,8 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
   }
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
-  position: absolute;
-  left: ${props => `${props.isIncoming ? 42 : -249}px`};
+   position: absolute;
+  left: ${props => `${props.isIncoming ? 55 : -263}px`};
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -138,38 +138,39 @@ const RecentReacts = (props: RecentReactsProps) => {
         <BchatIconButton
           iconType="smileyEmoji"
           iconSize={20}
-          iconColor={darkMode ? "#858598":'#ACACAC'}
+          iconColor={darkMode ? '#858598' : '#ACACAC'}
           onClick={() => setRecentEmoji(!recentEmoji)}
           margin="0 10px"
           btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
-          btnRadius='30px'
+          btnRadius="30px"
+          style={{}}
         />
       </div>
-
-      {recentEmoji && (
-        <div style={{ height: '40px' }}>
-          <StyledMessageReactBarInnerWrapper
-            isIncoming={isIncoming}
-            className="Message-ReactBar-Inner"
-          >
-            <MessageReactBar
-              action={onSubmit}
-              additionalAction={e => onShowEmoji(e)}
+        {recentEmoji && (
+          <div style={{ height: '40px',position:'relative' }}>
+            <StyledMessageReactBarInnerWrapper
               isIncoming={isIncoming}
+              className="Message-ReactBar-Inner"
+            >
+              <MessageReactBar
+                action={onSubmit}
+                additionalAction={e => onShowEmoji(e)}
+                isIncoming={isIncoming}
+              />
+            </StyledMessageReactBarInnerWrapper>
+          </div>
+        )}
+        {showEmojiPanel && (
+          <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
+            <BchatEmojiPanel
+              ref={emojiPanelRef}
+              onEmojiClicked={onSubmit}
+              show={showEmojiPanel}
+              isModal={true}
             />
-          </StyledMessageReactBarInnerWrapper>
-        </div>
-      )}
-      {showEmojiPanel && (
-        <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
-          <BchatEmojiPanel
-            ref={emojiPanelRef}
-            onEmojiClicked={onSubmit}
-            show={showEmojiPanel}
-            isModal={true}
-          />
-        </StyledEmojiPanelContainer>
-      )}
+          </StyledEmojiPanelContainer>
+        )}
+    
     </Flex>
   );
 };
