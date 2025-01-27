@@ -414,6 +414,7 @@
         background-color: var(--color-confirm-modal-inner-bg);
         width: 100%;
         border-radius: 15px;
+        margin: 15px 0px;
       }
 
       .memberListBox {
@@ -436,6 +437,33 @@
         background: var(--color-hop-bg);
         height: 70px;
         padding-left: 15px;
+      }
+    }
+  }
+
+  .banUser {
+    &-title {
+      display: flex;
+      font-size: 20px;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    &-message {
+      margin-top:12px;
+      color: #A7A7BA;
+      font-size: 16px;
+      }
+
+    &-box {
+      width: 100%;
+      padding: 20px 5px;
+
+      .inputBox {
+        padding: 18px 5px;
+        border: 1px solid var(--color-search-border);
+        border-radius: 16px;
+        background-color: var(--color-hop-bg);
       }
     }
   }

@@ -203,7 +203,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             iconType="save_tick"
             iconSize={16}
             onClick={() => onClickOK()}
-            // dataTestId="modal-close-button"
+          // dataTestId="modal-close-button"
           />
         </div>
       </div>
@@ -255,7 +255,7 @@ const HeaderItem = () => {
           isBnsHolder={isBnsHolder}
           size={{ width: '20', height: '20' }}
         >
-          <Avatar size={isGroup ?AvatarSize.L:AvatarSize.XL} pubkey={id} />
+          <Avatar size={isGroup ? AvatarSize.L : AvatarSize.XL} pubkey={id} />
         </BNSWrapper>
         <SpacerXS />
 
@@ -385,10 +385,10 @@ export const BchatRightPanelWithDetails = () => {
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-    ? window.i18n('youGotKickedFromGroup')
-    : left
-    ? window.i18n('youLeftTheGroup')
-    : window.i18n('leaveGroup');
+      ? window.i18n('youGotKickedFromGroup')
+      : left
+        ? window.i18n('youLeftTheGroup')
+        : window.i18n('leaveGroup');
 
   const timerOptions = useSelector(getTimerOptions).timerOptions;
 
@@ -407,13 +407,13 @@ export const BchatRightPanelWithDetails = () => {
 
   const deleteConvoAction = isPublic
     ? () => {
-        deleteAllMessagesByConvoIdWithConfirmation(id);
-      }
+      deleteAllMessagesByConvoIdWithConfirmation(id);
+    }
     : left
-    ? () => {
+      ? () => {
         deleteGroupByConvoId(id, username);
       }
-    : () => {
+      : () => {
         showLeaveGroupByConvoId(
           id,
           username,
@@ -526,8 +526,8 @@ export const BchatRightPanelWithDetails = () => {
       style={{
         position: zoomLevel > 100 ? 'absolute' : 'unset',
         overflowY: zoomLevel > 100 ? 'auto' : 'unset',
-        right:0,
-        zIndex:2
+        right: 0,
+        zIndex: 2
       }}
     >
       {!fullView ? (
@@ -622,34 +622,38 @@ export const BchatRightPanelWithDetails = () => {
           )}
           {showMemberCount && (
             <>
-              <SpacerLG />
+              <SpacerSM />
               <div role="button" className="subtle" style={{ textAlign: 'center' }}>
                 {window.i18n('members', [`${subscriberCount}`])}
               </div>
-              <SpacerLG />
             </>
           )}
           {showAddRemoveModeratorsButton && (
-            <>
-              <div
-                className={classNames('group-settings-item')}
-                role="button"
-                onClick={() => {
-                  showAddModeratorsByConvoId(id);
-                }}
-              >
-                {window.i18n('addModerators')}
-              </div>
-              <div
-                className="group-settings-item"
-                role="button"
-                onClick={() => {
-                  showRemoveModeratorsByConvoId(id);
-                }}
-              >
-                {window.i18n('removeModerators')}
-              </div>
-            </>
+            <div className='group-settings-header-moderator-wholeBox'>
+              <div className='group-settings-header-moderator-txtBox' >Moderators</div>
+              <Flex container={true} flexDirection="row" justifyContent="center" margin="">
+                <div
+                  className="addButton"
+                  role="button"
+                  onClick={() => {
+                    showAddModeratorsByConvoId(id);
+                  }}
+                >
+                  {<span style={{ marginRight: '5px' }}><BchatIcon iconType={'addModerator'} fillRule={'evenodd'} clipRule={'evenodd'} iconSize={20} iconColor={'#F0F0F0'} /></span>}
+                  {<span style={{ color: '#F0F0F0' }}>{window.i18n('add')}</span>}
+                </div>
+                <div
+                  className="removeButton"
+                  role="button"
+                  onClick={() => {
+                    showRemoveModeratorsByConvoId(id);
+                  }}
+                >
+                  {<span style={{ marginRight: '5px' }}><BchatIcon iconType={'removeFromModerators'} fillRule={'evenodd'} clipRule={'evenodd'} iconSize={20} iconColor='#FF3E3E' /></span>}
+                  {'Remove'}
+                </div>
+              </Flex>
+            </div>
           )}
           {showUpdateGroupMembersButton && (
             <div className="grp_btn_wrapper">
