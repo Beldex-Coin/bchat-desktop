@@ -41,8 +41,8 @@ const StyledReactListContainer = styled(Flex)`
   // width: 376px;
 `;
 
-const StyledReactionsContainer = styled(Flex)<{bdColor:string}>`
-  border-bottom: 1.5px solid ${props=>props.bdColor};
+const StyledReactionsContainer = styled(Flex)<{ bdColor: string }>`
+  border-bottom: 1.5px solid ${props => props.bdColor};
   width: 100%;
   overflow-x: auto;
   padding: 12px 8px 8px;
@@ -91,6 +91,9 @@ const StyledClearButton = styled.button`
   border: none;
 `;
 const StyledAllButton = styled.button<{ isSelected: boolean }>`
+  max-width: 100px;
+  min-width: 70px;
+
   border-radius: 17px;
   border: ${props => (props.isSelected ? '0.5px solid #858598' : 'unset')};
   font-size: 17px;
@@ -162,7 +165,7 @@ const ReactionSenders = (props: ReactionSendersProps) => {
               }}
             />
             {reacted.sender === me ? (
-              <span style={{fontWeight: 700}}> You </span>
+              <span style={{ fontWeight: 700 }}> You </span>
             ) : (
               <ContactName
                 pubkey={reacted.sender}
@@ -189,8 +192,8 @@ const ReactionSenders = (props: ReactionSendersProps) => {
                   border: '0.471px solid #858598',
                   color: '#A7A7BA',
                   padding: '2px 10px',
-                  backgroundColor:"var(--color-emoji-panel-bg)",
-                  fontWeight:400
+                  backgroundColor: 'var(--color-emoji-panel-bg)',
+                  fontWeight: 400,
                 }}
               />
             )}
@@ -333,7 +336,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   }, [reactListModalState]);
 
   return (
-    <div className="reaction-list-modal" >
+    <div className="reaction-list-modal">
       <div className="innerModal-wrapper">
         <div className="reaction-list-innreModal show-modal" ref={modalRef}>
           <StyledReactListContainer
@@ -346,7 +349,7 @@ export const ReactListModal = (props: Props): ReactElement => {
               flexDirection={'row'}
               alignItems={'center'}
               justifyContent="space-between"
-              bdColor={darkMode?'#4b4b64':'#ACACAC'}
+              bdColor={darkMode ? '#4b4b64' : '#ACACAC'}
             >
               <Flex container={true} flexDirection={'row'} alignItems={'center'}>
                 <StyledAllButton

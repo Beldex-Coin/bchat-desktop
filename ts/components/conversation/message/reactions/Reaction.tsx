@@ -30,6 +30,10 @@ const StyledReaction = styled.button<{ selected: boolean; inModal: boolean; show
     border:${props => (!props.inModal ||props.iscurrentReact ?'0.5px solid #858598':"")};
     background:${props => ((props.inModal && props.iscurrentReact) || !props.inModal ? 'var(--color-emoji-panel-bg)':"")};
     margin-right:3px;
+    // width:;
+    
+    min-width:${props => (props.inModal?'70px':"unset")};
+    max-width: ${props => (props.inModal?'100px':"unset")};
 
   span:nth-child(2) {
     font-size: var(--font-size-sm);

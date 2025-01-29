@@ -70,7 +70,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
   }
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
-   position: absolute;
+  position: absolute;
   left: ${props => `${props.isIncoming ? 55 : -263}px`};
 `;
 const StyledRecentReactionWrapper = styled.div`
@@ -146,31 +146,30 @@ const RecentReacts = (props: RecentReactsProps) => {
           style={{}}
         />
       </div>
-        {recentEmoji && (
-          <div style={{ height: '40px',position:'relative' }}>
-            <StyledMessageReactBarInnerWrapper
+      {recentEmoji && (
+        <div style={{ height: '40px', position: 'relative' }}>
+          <StyledMessageReactBarInnerWrapper
+            isIncoming={isIncoming}
+            className="Message-ReactBar-Inner"
+          >
+            <MessageReactBar
+              action={onSubmit}
+              additionalAction={e => onShowEmoji(e)}
               isIncoming={isIncoming}
-              className="Message-ReactBar-Inner"
-            >
-              <MessageReactBar
-                action={onSubmit}
-                additionalAction={e => onShowEmoji(e)}
-                isIncoming={isIncoming}
-              />
-            </StyledMessageReactBarInnerWrapper>
-          </div>
-        )}
-        {showEmojiPanel && (
-          <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
-            <BchatEmojiPanel
-              ref={emojiPanelRef}
-              onEmojiClicked={onSubmit}
-              show={showEmojiPanel}
-              isModal={true}
             />
-          </StyledEmojiPanelContainer>
-        )}
-    
+          </StyledMessageReactBarInnerWrapper>
+        </div>
+      )}
+      {showEmojiPanel && (
+        <StyledEmojiPanelContainer onKeyDown={onEmojiKeyDown} role="button" x={mouseX} y={mouseY}>
+          <BchatEmojiPanel
+            ref={emojiPanelRef}
+            onEmojiClicked={onSubmit}
+            show={showEmojiPanel}
+            isModal={true}
+          />
+        </StyledEmojiPanelContainer>
+      )}
     </Flex>
   );
 };
@@ -235,6 +234,7 @@ export const MessageContentWithStatuses = (props: Props) => {
 
   const handlePopupClick = () => {
     setPopupReaction('');
+    setRecentEmojiBtnVisible(false);
     dispatch(updateReactListModal({ reaction: popupReaction, messageId }));
   };
 
