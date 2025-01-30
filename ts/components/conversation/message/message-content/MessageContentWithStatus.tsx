@@ -30,7 +30,7 @@ import { getTheme } from '../../../../state/selectors/theme';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
-  'direction' | 'isDeleted' | 'isTrustedForAttachmentDownload'
+  'direction' | 'isDeleted' | 'isTrustedForAttachmentDownload'| 'isPublic'
 > & { hasAttachments: boolean };
 
 type Props = {
@@ -241,8 +241,9 @@ export const MessageContentWithStatuses = (props: Props) => {
   if (!contentProps) {
     return null;
   }
-  const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload } = contentProps;
+  const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload,isPublic } = contentProps;
   const isIncoming = direction === 'incoming';
+  const emojiIsVisible=!isDeleted && !multiSelectMode && !isPublic ;
 
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
@@ -265,7 +266,7 @@ export const MessageContentWithStatuses = (props: Props) => {
         style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
         data-testid={dataTestId}
       >
-        {!isIncoming && !isDeleted && !multiSelectMode &&(
+        {!isIncoming && emojiIsVisible&&(
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
@@ -310,7 +311,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             isCorrectSide={isIncoming}
           />
         )}
-        {isIncoming && !isDeleted  && !multiSelectMode &&(
+        {isIncoming && emojiIsVisible &&(
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
