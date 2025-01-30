@@ -13,7 +13,7 @@ import { Flex } from '../../../basic/Flex';
 import { StyledPopupContainer } from '../reactions/ReactionPopup';
 
 import { Reaction, ReactionProps } from '../reactions/Reaction';
-import {  BchatIconButton } from '../../../icon';
+import { BchatIconButton } from '../../../icon';
 import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
 
 export const popupXDefault = -101;
@@ -28,8 +28,8 @@ type Props = {
   onPopupClick?: () => void;
   inModal?: boolean;
   onSelected?: (emoji: string) => boolean;
-  isIncoming?:boolean;
-  iscurrentReact?:string;
+  isIncoming?: boolean;
+  iscurrentReact?: string;
 };
 
 export type MessageReactsSelectorProps = Pick<
@@ -37,7 +37,12 @@ export type MessageReactsSelectorProps = Pick<
   'convoId' | 'conversationType' | 'isPublic' | 'serverId' | 'reacts' | 'sortedReacts'
 >;
 
-const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number,isIncoming?:boolean,inModal?:boolean }>`
+const StyledMessageReactionsContainer = styled(Flex)<{
+  x: number;
+  y: number;
+  isIncoming?: boolean;
+  inModal?: boolean;
+}>`
   position: relative;
   height: 100%;
 
@@ -45,12 +50,12 @@ const StyledMessageReactionsContainer = styled(Flex)<{ x: number; y: number,isIn
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom:${props=>props.inModal?'unset':'10px'} ;
+  margin-bottom:${props => (props.inModal ? 'unset' : '10px')} ;
   ${StyledPopupContainer} {
     position: absolute;
     top: ${props => `${props.y}px;`};
     // left: ${props => `${props.x}px;`};
-    left:${props => `${props.isIncoming?18:-187}px;`}
+    left:${props => `${props.isIncoming ? 18 : -187}px;`}
     z-index: 2;
   
   }
@@ -61,12 +66,11 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
     props.inModal
       ? ''
       : `max-width: 375px;; 
-     `
-    }
+     `}
 `;
 
 // const StyledReactionOverflow = styled.button`
- 
+
 //   margin-right: 4px;
 //   margin-bottom: var(--margins-sm);
 //   display: flex;
@@ -95,7 +99,7 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
 const Reactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal ,isIncoming} = props;
+  const { messageId, reactions, inModal, isIncoming } = props;
 
   return (
     <StyledMessageReactions
@@ -103,7 +107,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}
-      flexDirection={isIncoming?"row":'row-reverse'}
+      flexDirection={isIncoming ? 'row' : 'row-reverse'}
     >
       {reactions.map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -112,28 +116,28 @@ const Reactions = (props: ReactionsProps): ReactElement => {
   );
 };
 const CompressedReactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal,handlePopupClick,isIncoming } = props;
+  const { messageId, reactions, inModal, handlePopupClick, isIncoming } = props;
   return (
     <StyledMessageReactions
       container={true}
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}
-      flexDirection={isIncoming?"row":'row-reverse'}
+      flexDirection={isIncoming ? 'row' : 'row-reverse'}
     >
       {reactions.slice(0, 5).map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
       ))}
       <BchatIconButton
-          iconType={'chevron'}
-          iconSize={20}
-          iconColor="#A7A7BA"
-          btnRadius="40px"
-          btnBgColor="var(--color-emoji-panel-bg)"
-          iconRotation={isIncoming?270:90}
-          onClick={handlePopupClick}
-          margin="0 3px"
-        />
+        iconType={'chevron'}
+        iconSize={20}
+        iconColor="#A7A7BA"
+        btnRadius="40px"
+        btnBgColor="var(--color-emoji-panel-bg)"
+        iconRotation={isIncoming ? 270 : 90}
+        onClick={handlePopupClick}
+        margin="0 3px"
+      />
       {/* <StyledReactionOverflow onClick={handleExpand}>
         {reactions
           .slice(4, 7)
@@ -179,7 +183,7 @@ export const MessageReactions = (props: Props): ReactElement => {
     inModal = false,
     onSelected,
     isIncoming,
-    iscurrentReact
+    iscurrentReact,
   } = props;
 
   const [reactions, setReactions] = useState<SortedReactionList>([]);

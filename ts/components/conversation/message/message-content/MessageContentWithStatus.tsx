@@ -265,7 +265,7 @@ export const MessageContentWithStatuses = (props: Props) => {
         style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
         data-testid={dataTestId}
       >
-        {!isIncoming && (
+        {!isIncoming && !isDeleted && !multiSelectMode &&(
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
@@ -310,7 +310,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             isCorrectSide={isIncoming}
           />
         )}
-        {isIncoming && (
+        {isIncoming && !isDeleted  && !multiSelectMode &&(
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
