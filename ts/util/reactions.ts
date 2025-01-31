@@ -95,6 +95,17 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
     let action = 0;
 
     const reacts = found.get('reacts');
+
+    const findEmojiForSender = (data: any, targetKey: string) => {
+      for (const emoji in data) {
+        const { senders } = data[emoji];
+        if (targetKey in senders) {
+          return emoji;
+        }
+      }
+      return null;
+    };
+    const result =reacts? findEmojiForSender(reacts, me):null;
     if (
       reacts &&
       Object.keys(reacts).includes(emoji) &&
@@ -102,12 +113,23 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
     ) {
       window.log.info('found matching reaction removing it');
       action = 1;
-    } else {
+    } else if (result) {
+      let reaction = {
+        id,
+        author,
+        emoji: result,
+        action:1,
+      };
+      window.log.info('found matching reaction removing it, limit user has react one reaction');
+      await conversationModel.sendReaction(messageId, reaction);
+     
+    } 
+    // else {
       const reactions = getRecentReactions();
       if (reactions) {
         await updateRecentReactions(reactions, emoji);
       }
-    }
+    // }
     const reaction = {
       id,
       author,
@@ -191,7 +213,7 @@ export const handleMessageReaction = async (
     // tslint:disable-next-line: no-dynamic-delete
     delete reacts[reaction.emoji];
   }
- 
+
   originalMessage.set({
     reacts: !isEmpty(reacts) ? reacts : undefined,
   });
