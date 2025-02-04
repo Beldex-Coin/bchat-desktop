@@ -243,8 +243,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   }
   const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload,isPublic } = contentProps;
   const isIncoming = direction === 'incoming';
-  const emojiIsVisible=!isDeleted && !multiSelectMode && !isPublic ;
-
+  const emojiIsVisible = !isDeleted && !multiSelectMode && !isPublic && (!hasAttachments || isTrustedForAttachmentDownload);
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
