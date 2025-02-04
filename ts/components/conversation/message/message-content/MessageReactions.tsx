@@ -53,9 +53,9 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   margin-bottom:${props => (props.inModal ? 'unset' : '10px')} ;
   ${StyledPopupContainer} {
     position: absolute;
-    top: ${props => `${props.y}px;`};
+    // top: ${props => `${props.y}px;`};
     // left: ${props => `${props.x}px;`};
-    left:${props => `${props.isIncoming ? 18 : -187}px;`}
+    // left:${props => `${props.isIncoming ? 18 : -187}px;`}
     z-index: 2;
   
   }
@@ -99,7 +99,7 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
 const Reactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal, isIncoming } = props;
+  const { messageId, reactions, inModal, isIncoming,handlePopupReaction } = props;
 
   return (
     <StyledMessageReactions
@@ -108,6 +108,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
       flexDirection={isIncoming ? 'row' : 'row-reverse'}
+      onMouseLeave={()=>handlePopupReaction && handlePopupReaction('')}
     >
       {reactions.map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -116,7 +117,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
   );
 };
 const CompressedReactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal, handlePopupClick, isIncoming } = props;
+  const { messageId, reactions, inModal, handlePopupClick, isIncoming,handlePopupReaction } = props;
   return (
     <StyledMessageReactions
       container={true}
@@ -124,6 +125,7 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
       flexDirection={isIncoming ? 'row' : 'row-reverse'}
+      onMouseLeave={()=>handlePopupReaction && handlePopupReaction('')}
     >
       {reactions.slice(0, 5).map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -241,6 +243,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       y={popupY}
       isIncoming={isIncoming}
       inModal={inModal}
+      
     >
       {reacts &&
         !_.isEmpty(reacts) &&

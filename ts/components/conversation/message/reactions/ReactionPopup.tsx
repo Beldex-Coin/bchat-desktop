@@ -8,7 +8,7 @@ import { nativeEmojiData } from '../../../../util/emoji';
 import { useSelector } from 'react-redux';
 import { getMessageTextProps } from '../../../../state/selectors/conversations';
 
-export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
+export const StyledPopupContainer = styled.div<{ isIncoming?: boolean }>`
   display: flex;
   align-items: center;
   width: 216px;
@@ -28,9 +28,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
     content: '';
     position: absolute;
     top: 60px;
-    left: ${props => 
-     props.isIncoming?0:'189px'
-    };
+    left: ${props => (props.isIncoming ? 0 : '189px')};
     width: 27px;
     height: 27px;
      background-color:var(--color-wallet-inner-bg);
@@ -39,11 +37,17 @@ export const StyledPopupContainer = styled.div<{ isIncoming?:boolean }>`
     transform: scaleY(1) rotate(0deg);
     // clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
     // box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.51); /* theme relative color */
-    clip-path:${props => 
-      props.isIncoming?'polygon(71% 0, 0 100%, 1% 0)': 'polygon(34% 0, 100% 100%, 100% 0)'
-  }
+    clip-path:${props =>
+      props.isIncoming ? 'polygon(71% 0, 0 100%, 1% 0)' : 'polygon(34% 0, 100% 100%, 100% 0)'}
 `;
-
+export const StyledPopupContainerWrapper = styled.div<{ isIncoming: boolean }>`
+  position: absolute;
+  width: 216px;
+  height: 89px;
+  // background-color: red;
+  left: ${props => (props.isIncoming ? '22px' : '-187px')};
+  top: -86px;
+`;
 const StyledEmoji = styled.span`
   font-size: 28px;
   margin-right: 8px;
@@ -54,7 +58,6 @@ type Props = {
   messageId: string;
   senders: Array<string>;
   onClick: (...args: Array<any>) => void;
- 
 };
 
 const generateContacts = async (messageId: string, senders: Array<string>) => {
@@ -86,20 +89,24 @@ const renderContacts = (contacts: string) => {
     const [names, others] = contacts.split('&');
     return (
       <span>
-        {names} & <span style={{ color: 'var(--color-text)',fontSize:'12px' }}>{others}</span> {window.i18n('reactionTooltip')}
+        {names} & <span style={{ color: 'var(--color-text)', fontSize: '12px' }}>{others}</span>{' '}
+        {window.i18n('reactionTooltip')}
       </span>
     );
   }
 
-  return <span style={{ color: 'var(--color-text)',fontSize:'12px' }}>{contacts} {window.i18n('reactionTooltip')}</span>;
+  return (
+    <span style={{ color: 'var(--color-text)', fontSize: '12px' }}>
+      {contacts} {window.i18n('reactionTooltip')}
+    </span>
+  );
 };
-
 
 export const ReactionPopup = (props: Props): ReactElement => {
   const { messageId, emoji, senders, onClick } = props;
   const [contacts, setContacts] = useState('');
   const messageProps = useSelector(state => getMessageTextProps(state as any, props.messageId));
-  const isIncoming=messageProps?.direction==='incoming';
+  const isIncoming = messageProps?.direction === 'incoming';
   useEffect(() => {
     let isCancelled = false;
     generateContacts(messageId, senders)
@@ -121,20 +128,21 @@ export const ReactionPopup = (props: Props): ReactElement => {
     };
   }, [generateContacts]);
   return (
-    <StyledPopupContainer
-      isIncoming={isIncoming}
-      onClick={() => {
-        onClick();
-      }}
-    >
-      <StyledEmoji
-        role={'img'}
-        aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+    <StyledPopupContainerWrapper className="popup-container-wrapper"  isIncoming={isIncoming}>
+      <StyledPopupContainer
+        isIncoming={isIncoming}
+        onClick={() => {
+          onClick();
+        }}
       >
-        {emoji}
-      </StyledEmoji>
-      {renderContacts(contacts)}
-      
-    </StyledPopupContainer>
+        <StyledEmoji
+          role={'img'}
+          aria-label={nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined}
+        >
+          {emoji}
+        </StyledEmoji>
+        {renderContacts(contacts)}
+      </StyledPopupContainer>
+    </StyledPopupContainerWrapper>
   );
 };

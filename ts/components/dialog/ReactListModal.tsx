@@ -226,7 +226,7 @@ const ReactionSenders = (props: ReactionSendersProps) => {
 // tslint:disable-next-line: max-func-body-length
 export const ReactListModal = (props: Props): ReactElement => {
   const [reactions, setReactions] = useState<SortedReactionList>([]);
-  // const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
+  const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const [currentReact, setCurrentReact] = useState('');
   const reactListModalState = useSelector(getReactListDialog);
   // const [senders, setSenders] = useState<Array<string>>([]);
@@ -294,6 +294,9 @@ export const ReactListModal = (props: Props): ReactElement => {
       if (reacts && !isEqual(reactions, reacts)) {
         setReactions(reacts);
       }
+      if (reactionsMap && !reactionsMap[currentReact]) {
+        setCurrentReact('');
+      }
       // sortedSenderAndEmoji();
       // if (!isEmpty(reactions) && (isEmpty(reacts) || isUndefined(reacts))) {
       //   setReactions([]);
@@ -320,7 +323,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     },
 
     // [currentReact, me, reaction, reacts, reactions, reactionsMap, senders]);
-    [reacts, me]
+    [reacts, me,reactionsMap]
   );
   useEffect(() => {
     const handleClickOutside = (event: any): void => {
