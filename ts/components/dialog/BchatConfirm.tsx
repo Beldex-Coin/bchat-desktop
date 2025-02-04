@@ -180,7 +180,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
     >
       {!showHeader && <SpacerLG />}
 
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
         <div className="bchat-modal-bchatConfirm">
           {/* {bchatIcon && iconSize && (
             <>
@@ -199,7 +199,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
 
           <BchatSpinner loading={isLoading} />
         </div>
-      </div>
+      {/* </div> */}
 
       {/* <div className="bchat-modal__button-group">
 
