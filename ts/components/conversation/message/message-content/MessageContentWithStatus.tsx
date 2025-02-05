@@ -71,7 +71,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ? 55 : -263}px`};
+  left: ${props => `${props.isIncoming ? 55 : -302}px`};
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -80,7 +80,7 @@ const StyledRecentReactionWrapper = styled.div`
 const RecentReacts = (props: RecentReactsProps) => {
   const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
 
-  // console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
+  //  console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
   if (!recentEmojiBtnVisible) {
     return null;
   }
@@ -96,11 +96,12 @@ const RecentReacts = (props: RecentReactsProps) => {
   const darkMode = useSelector(getTheme) === 'dark';
   const onShowEmoji = (e: MouseEvent): void => {
     let x = e.clientX;
-    // if (isIncoming) {
-    x -= 200;
-    // } else {
-    //   x -= emojiPanelWidth + 18;
-    // }
+    if (isIncoming) {
+    x -= 240;
+    } else {
+      // x -= emojiPanelWidth + 18;
+      x-=150
+    }
     let y = e.clientY - 39;
     if (y + emojiPanelHeight > window.innerHeight) {
       y = Math.abs(mouseY - emojiPanelHeight);
@@ -147,7 +148,7 @@ const RecentReacts = (props: RecentReactsProps) => {
         />
       </div>
       {recentEmoji && (
-        <div style={{ height: '40px', position: 'relative' }}>
+        <div style={{ height: '46px', position: 'relative' }}>
           <StyledMessageReactBarInnerWrapper
             isIncoming={isIncoming}
             className="Message-ReactBar-Inner"

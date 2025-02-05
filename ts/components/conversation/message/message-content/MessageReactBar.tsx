@@ -40,14 +40,14 @@ const rotateEmojiAntiClock = keyframes`
 `;
 const StyledMessageReactBar = styled.div<{ isIncoming: boolean }>`
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);
-  padding: 4px 8px;
+  padding: 6px 8px;
   white-space: nowrap;
   display: flex;
   align-items: center;
   flex-direction: ${props => (props.isIncoming ? 'row' : 'row-reverse')};
   border-radius: 24px;
   background: var(--color-emoji-panel-bg);
-  font-size: 18px;
+  font-size: 20px;
   animation: ${expand} 0.3s ease-in-out forwards; /* Add animation here */
   overflow: hidden;
   float: ${props => (props.isIncoming ? 'left' : 'right')};
@@ -61,7 +61,7 @@ const StyledMessageReactBar = styled.div<{ isIncoming: boolean }>`
   }
 `;
 const ReactButton = styled.div<{ isIncoming: boolean }>`
-  margin: 0 2px;
+  margin: 0 4px;
   animation: ${props => (props.isIncoming ?rotateEmoji:rotateEmojiAntiClock)} 0.4s linear forwards;
   
 `;
