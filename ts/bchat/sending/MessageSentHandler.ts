@@ -55,7 +55,7 @@ export class MessageSentHandler {
     const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
     const { dataMessage } = contentDecoded;
 
-    console.log('reaction: sent message', fetchedMessage);
+  
     if (dataMessage && dataMessage.reaction) {
       return;
     }
@@ -137,7 +137,6 @@ export class MessageSentHandler {
       expirationStartTimestamp: Date.now(),
       sent_at: effectiveTimestamp,
     });
-    console.log('reaction: original message sent', fetchedMessage);
     await fetchedMessage.commit();
 
     fetchedMessage.getConversation()?.updateLastMessage();

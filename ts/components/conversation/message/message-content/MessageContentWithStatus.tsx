@@ -11,7 +11,6 @@ import {
   isMessageSelectionMode,
 } from '../../../../state/selectors/conversations';
 
-// import { MessageAuthorText } from './MessageAuthorText';
 import { MessageContent } from './MessageContent';
 import { MessageContextMenu } from './MessageContextMenu';
 import { MessageStatus } from './MessageStatus';
@@ -79,8 +78,6 @@ const StyledRecentReactionWrapper = styled.div`
 
 const RecentReacts = (props: RecentReactsProps) => {
   const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
-
-  //  console.log('recentEmojiBtnVisible -->', recentEmojiBtnVisible);
   if (!recentEmojiBtnVisible) {
     return null;
   }
@@ -88,8 +85,6 @@ const RecentReacts = (props: RecentReactsProps) => {
   const [recentEmoji, setRecentEmoji] = useState(false);
   const emojiPanelRef = useRef<HTMLDivElement>(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
-
-  // const emojiPanelWidth = 324;
   const emojiPanelHeight = 435;
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
@@ -99,7 +94,6 @@ const RecentReacts = (props: RecentReactsProps) => {
     if (isIncoming) {
     x -= 240;
     } else {
-      // x -= emojiPanelWidth + 18;
       x-=150
     }
     let y = e.clientY - 39;
@@ -290,8 +284,6 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
         <div>
-          {/* <MessageAuthorText messageId={messageId} /> */}
-
           <MessageContent
             messageId={messageId}
             isDetailView={isDetailView}

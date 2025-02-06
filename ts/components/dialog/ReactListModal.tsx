@@ -203,6 +203,7 @@ const ReactionSenders = (props: ReactionSendersProps) => {
     </>
   );
 };
+//this function work on open group
 // const handleSenders = (senders: Array<string>, me: string) => {
 //   let updatedSenders = senders;
 //   const blindedMe = updatedSenders.filter(
@@ -305,12 +306,11 @@ export const ReactListModal = (props: Props): ReactElement => {
       //   reactionsMap && reactionsMap[currentReact] && reactionsMap[currentReact].senders
       //     ? Object.keys(reactionsMap[currentReact].senders)
       //     : null;
-      // console.log('_senders 0 -->', _senders);
       // if (_senders && !isEqual(senders, _senders)) {
       //   if (_senders.length > 0) {
       //     _senders = handleSenders(_senders, me);
       //   }
-      //   console.log('_senders 1 -->', _senders);
+
       //   setSenders(_senders);
       //   sortedSenderAndEmoji();
       // }
@@ -372,7 +372,6 @@ export const ReactListModal = (props: Props): ReactElement => {
               </Flex>
               <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
             </StyledReactionsContainer>
-            {/* {reactionsMap && ( */}
             <StyledSendersContainer
               container={true}
               flexDirection={'column'}
@@ -383,17 +382,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                 justifyContent={'space-between'}
                 alignItems={'center'}
               >
-                {/* <p> */}
-                {/* <span role={'img'} aria-label={reactAriaLabel}>
-                  {currentReact}
-                </span> */}
-                {/* {reactionsMap[currentReact].count && (
-                  <>
-                    <span>&#8226;</span>
-                    <span>{reactionsMap[currentReact].count}</span>
-                  </>
-                )} */}
-                {/* </p> */}
+              
                 {isPublic && weAreModerator && (
                   <StyledClearButton onClick={handleClearReactions}>
                     {window.i18n('clearAll')}
@@ -410,8 +399,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                   handleClose={handleClose}
                 />
               )}
-            </StyledSendersContainer>
-            {/* )} */}
+            </StyledSendersContainer>   
           </StyledReactListContainer>
         </div>
       </div>

@@ -107,10 +107,8 @@ export const Reaction = (props: ReactionProps): ReactElement => {
     return senders && senders.length > 0 && (senders.includes(me) || isBlindedMe);
   };
   const handleReactionClick = () => {
-  
     onClick(emoji);
   };
-//  console.log(popupReaction )
   return (
     <StyledReactionContainer ref={reactionRef}>
       <StyledReaction
@@ -150,15 +148,11 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         </span>
         {showCount && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
       </StyledReaction>
-       {/* {inGroup  && '😮' === emoji && (  */}
         {inGroup && popupReaction && popupReaction === emoji && (
         <ReactionPopup
           messageId={messageId}
           emoji={popupReaction}
           senders={Object.keys(reactionsMap[popupReaction].senders)}
-          // emoji='😮'
-          // senders={Object.keys(reactionsMap['😮'].senders)}
-          
           onClick={() => {
             if (handlePopupReaction) {
               handlePopupReaction('');
