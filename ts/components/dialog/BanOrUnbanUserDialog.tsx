@@ -8,7 +8,7 @@ import { SpacerLG } from '../basic/Text';
 import { getConversationController } from '../../bchat/conversations/ConversationController';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatSpinner } from '../basic/BchatSpinner';
+
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { ConversationModel } from '../../models/conversation';
 import { useFocusMount } from '../../hooks/useFocusMount';
@@ -24,7 +24,6 @@ async function banOrUnBanUserCall(
 ) {
   // if we don't have valid data entered by the user
   const pubkey = PubKey.from(textValue);
-  const dispatch = useDispatch();
   if (!pubkey) {
     window.log.info(`invalid pubkey for ${banType} user:${textValue}`);
     ToastUtils.pushInvalidPubKey();
@@ -42,12 +41,10 @@ async function banOrUnBanUserCall(
       window?.log?.warn(`failed to ${banType} user: ${isChangeApplied}`);
 
       banType === 'ban' ? ToastUtils.pushUserBanFailure() : ToastUtils.pushUserUnbanSuccess();
-      dispatch(updateBanOrUnbanUserModal(null));
       return false;
     }
     window?.log?.info(`${pubkey.key} user ${banType}ned successfully...`);
     banType === 'ban' ? ToastUtils.pushUserBanSuccess() : ToastUtils.pushUserUnbanSuccess();
-    dispatch(updateBanOrUnbanUserModal(null));
     return true;
   } catch (e) {
     window?.log?.error(`Got error while ${banType}ning user:`, e);
@@ -120,20 +117,22 @@ export const BanOrUnBanUserDialog = (props: {
   return (
     <BchatWrapperModal
       showHeader={false}
+      isloading={inProgress}
       okButton={{
         text: window.i18n('ok'),
         color: BchatButtonColor.Primary,
-        onClickOkHandler: banUser ? banOrUnBanUser : startBanAndDeleteAllSequence
+        onClickOkHandler: banUser ? banOrUnBanUser : startBanAndDeleteAllSequence,
       }}
       cancelButton={{
-        status: true, text: window.i18n('cancel'), onClickCancelHandler: () => {
+        status: true,
+        text: window.i18n('cancel'),
+        onClickCancelHandler: () => {
           dispatch(updateBanOrUnbanUserModal(null));
-        }
-      }
-      }
+        },
+      }}
     >
       <Flex container={true} flexDirection="column" alignItems="center">
-        <Flex container={true} flexDirection='row' width='500px' style={{ marginTop: '30px' }}>
+        <Flex container={true} flexDirection="row" width="500px" style={{ marginTop: '30px' }}>
           <div className="banUnbanPopup">
             <BchatIcon
               iconType={isBan ? 'banUser' : 'unBanUser'}
@@ -145,12 +144,12 @@ export const BanOrUnBanUserDialog = (props: {
           </div>
 
           <div style={{ textAlign: 'left' }}>
-            <div className='banUser-title'>{title}</div>
-            <div className='banUser-message'>{chatName}</div>
+            <div className="banUser-title">{title}</div>
+            <div className="banUser-message">{chatName}</div>
           </div>
         </Flex>
-        <div className='banUser-box' style={{ width: '100%', padding: '20px 5px' }}>
-          <div className='inputBox'>
+        <div className="banUser-box" style={{ width: '100%', padding: '20px 5px' }}>
+          <div className="inputBox">
             <input
               style={{ backgroundColor: 'var(--color-hop-bg)' }}
               ref={inputRef}
@@ -163,8 +162,7 @@ export const BanOrUnBanUserDialog = (props: {
             />
           </div>
           {isBan && <SpacerLG />}
-          <Flex container={true} justifyContent='space-between'>
-
+          <Flex container={true} justifyContent="space-between">
             {isBan && (
               <>
                 <BchatButton
@@ -176,9 +174,13 @@ export const BanOrUnBanUserDialog = (props: {
                   text={buttonText}
                   disabled={inProgress}
                   style={{
-                    width: '230px', height: '60px',
-                    borderRadius: '16px', fontSize: '20px'
+                    width: '230px',
+                    height: '60px',
+                    borderRadius: '16px',
+                    fontSize: '20px',
                   }}
+                  iconType={banUser ? 'dot' : null}
+                  iconSize={10}
                 />
                 <BchatButton
                   buttonType={BchatButtonType.Default}
@@ -189,15 +191,18 @@ export const BanOrUnBanUserDialog = (props: {
                   text={i18n('banUserAndDeleteAll')}
                   disabled={inProgress}
                   style={{
-                    width: '230px', height: '60px',
-                    borderRadius: '16px', fontSize: '20px'
+                    width: '230px',
+                    height: '60px',
+                    borderRadius: '16px',
+                    fontSize: '20px',
                   }}
+                  iconType={!banUser ? 'dot' : null}
+                  iconSize={10}
                 />
               </>
             )}
           </Flex>
         </div>
-        <BchatSpinner loading={inProgress} />
       </Flex>
     </BchatWrapperModal>
   );

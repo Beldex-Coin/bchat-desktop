@@ -332,13 +332,15 @@ export async function deleteMessagesByIdForEveryone(
   conversationId: string
 ) {
   const conversation = getConversationController().getOrThrow(conversationId);
+  const isPublic=conversation.isPublic()
   const selectedMessages = compact(
     await Promise.all(messageIds.map(m => getMessageById(m, false)))
   );
 
-  const isContainInCommingMsgs = selectedMessages.some(msg => {
+
+  const isContainInCommingMsgs =!isPublic && selectedMessages.some(msg => {
     if (!msg.isOutgoing()) {
-      ToastUtils.pushToastError('', 'Please select an incoming message');
+      ToastUtils.pushToastError('', 'Please select an outgoing message only');
       return true;
     }
     return false;

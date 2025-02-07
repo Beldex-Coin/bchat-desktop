@@ -3,7 +3,6 @@ import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
-import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { useKey } from 'react-use';
@@ -177,6 +176,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       }}
       iconShow={iconShow}
       customIcon={validCustomIcon}
+      isloading={isLoading}
     >
       {!showHeader && <SpacerLG />}
 
@@ -197,7 +197,6 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             html={messageSub}
           />
 
-          <BchatSpinner loading={isLoading} />
         </div>
       {/* </div> */}
 
