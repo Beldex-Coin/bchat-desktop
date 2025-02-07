@@ -268,6 +268,10 @@ export function pushInvalidPubKey() {
   pushToastSuccess('invalidPubKey', window.i18n('invalidPubkeyFormat'));
 }
 
+export function pushInvalidBchatId(){
+  pushToastError('invalidBchatId', window.i18n('invalidBchatId'));
+}
+
 export function pushNoCameraFound() {
   pushToastWarning('noCameraFound', window.i18n('noCameraFound'));
 }

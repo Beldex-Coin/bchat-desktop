@@ -31,7 +31,7 @@ export const AddModeratorsDialog = (props: Props) => {
     const pubkey = PubKey.from(inputBoxValue);
     if (!pubkey) {
       window.log.info('invalid pubkey for adding as moderator:', inputBoxValue);
-      ToastUtils.pushInvalidPubKey();
+      ToastUtils.pushInvalidBchatId();
       return;
     }
 
@@ -46,10 +46,11 @@ export const AddModeratorsDialog = (props: Props) => {
 
       if (!isAdded) {
         window?.log?.warn('failed to add moderators:', isAdded);
-
+        dispatch(updateAddModeratorsModal(null));
         ToastUtils.pushFailedToAddAsModerator();
       } else {
         window?.log?.info(`${pubkey.key} added as moderator...`);
+        dispatch(updateAddModeratorsModal(null));
         ToastUtils.pushUserAddedToModerators();
 
         // clear input box
@@ -78,7 +79,7 @@ export const AddModeratorsDialog = (props: Props) => {
         text: i18n('add'),
         onClickOkHandler: addAsModerator,
         color: BchatButtonColor.Primary,
-        disabled: addingInProgress
+        disabled: addingInProgress || !inputBoxValue.length
       }}
       cancelButton={{
         text: window.i18n('cancel'),

@@ -16,7 +16,7 @@ import { BchatWrapperModal } from '../../../BchatWrapperModal';
 import { useDispatch } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 // import { getMessageTextProps } from '../../../../state/selectors/conversations';
-import {  SpacerSM, SpacerXS } from '../../../basic/Text';
+import { SpacerSM, SpacerXS } from '../../../basic/Text';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -93,9 +93,9 @@ const ContactItem = (props: { contact: ContactPropsMessageDetail }) => {
   );
 };
 
-export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
+export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   const { i18n } = window;
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const {
     errors,
     receivedAt,
@@ -113,19 +113,17 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
     return null;
   }
 
-  
-
   return (
     <div className="message-detail-wrapper">
       <BchatWrapperModal
         title={'More Info'}
-        onClose={() => { dispatch(updateMessageMoreInfoModal(null))}}
+        onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}
         headerReverse={false}
         okButton={{
           text: 'Close',
-          onClickOkHandler: () => {dispatch(updateMessageMoreInfoModal(null))},
+          onClickOkHandler: () => { dispatch(updateMessageMoreInfoModal(null)) },
 
           disabled: false,
         }}
@@ -171,8 +169,10 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
             </tbody>
           </table>
           <SpacerSM />
-          <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
-          <SpacerXS/>
+          {props.contacts.length ? (
+            <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
+          ): null}
+          <SpacerXS />
           <ContactsItem contacts={props.contacts} />
         </div>
       </BchatWrapperModal>

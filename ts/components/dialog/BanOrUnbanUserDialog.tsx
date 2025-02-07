@@ -24,6 +24,7 @@ async function banOrUnBanUserCall(
 ) {
   // if we don't have valid data entered by the user
   const pubkey = PubKey.from(textValue);
+  const dispatch = useDispatch();
   if (!pubkey) {
     window.log.info(`invalid pubkey for ${banType} user:${textValue}`);
     ToastUtils.pushInvalidPubKey();
@@ -41,10 +42,12 @@ async function banOrUnBanUserCall(
       window?.log?.warn(`failed to ${banType} user: ${isChangeApplied}`);
 
       banType === 'ban' ? ToastUtils.pushUserBanFailure() : ToastUtils.pushUserUnbanSuccess();
+      dispatch(updateBanOrUnbanUserModal(null));
       return false;
     }
     window?.log?.info(`${pubkey.key} user ${banType}ned successfully...`);
     banType === 'ban' ? ToastUtils.pushUserBanSuccess() : ToastUtils.pushUserUnbanSuccess();
+    dispatch(updateBanOrUnbanUserModal(null));
     return true;
   } catch (e) {
     window?.log?.error(`Got error while ${banType}ning user:`, e);

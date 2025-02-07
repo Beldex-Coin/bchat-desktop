@@ -8,7 +8,6 @@ import _ from 'lodash';
 import { updateRemoveModeratorsModal } from '../../state/ducks/modalDialog';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatButtonColor } from '../basic/BchatButton';
-import { BchatSpinner } from '../basic/BchatSpinner';
 import { MemberListItem } from '../MemberListItem';
 import { useDispatch } from 'react-redux';
 import { useConversationPropsById } from '../../hooks/useParamSelector';
@@ -27,7 +26,6 @@ async function removeMods(convoId: string, modsToRemove: Array<string>) {
   try {
     let res;
     const convo = getConversationController().get(convoId);
-
     const roomInfos = convo.toOpenGroupV2();
     const modsToRemovePubkey = _.compact(modsToRemove.map(m => PubKey.from(m)));
     res = await Promise.all(
@@ -37,10 +35,8 @@ async function removeMods(convoId: string, modsToRemove: Array<string>) {
     );
     // all moderators are removed means all promise resolved with bool= true
     res = res.every(r => !!r);
-
     if (!res) {
       window?.log?.warn('failed to remove moderators:', res);
-
       ToastUtils.pushFailedToRemoveFromModerator();
       return false;
     } else {
@@ -87,10 +83,11 @@ export const RemoveModeratorsDialog = (props: Props) => {
   return (
     <BchatWrapperModal
       title={title}
+      isloading={removingInProgress}
       okButton={{
         text: i18n('remove'),
         onClickOkHandler: removeModsCall,
-        disabled: removingInProgress,
+        disabled: removingInProgress || !modsToRemove.length,
         color: BchatButtonColor.Primary,
       }}
       cancelButton={{
@@ -125,7 +122,6 @@ export const RemoveModeratorsDialog = (props: Props) => {
           ) : (
             <p>{i18n('noModeratorsToRemove')}</p>
           )}
-          <BchatSpinner loading={removingInProgress} />
         </Flex>
       </div>
     </BchatWrapperModal>

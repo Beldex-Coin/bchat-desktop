@@ -94,8 +94,9 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     return (
       <BchatWrapperModal
         title={titleText}
+        showHeader={true}
+        showExitIcon={false}
         // tslint:disable-next-line: no-void-expression
-        onClose={() => this.closeDialog()}
         additionalClassName="update-group-dialog"
         okButton={{
           text: okText,
