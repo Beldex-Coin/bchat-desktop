@@ -26,7 +26,7 @@ async function banOrUnBanUserCall(
   const pubkey = PubKey.from(textValue);
   if (!pubkey) {
     window.log.info(`invalid pubkey for ${banType} user:${textValue}`);
-    ToastUtils.pushInvalidPubKey();
+    ToastUtils.pushInvalidBchatId();
     return false;
   }
   try {

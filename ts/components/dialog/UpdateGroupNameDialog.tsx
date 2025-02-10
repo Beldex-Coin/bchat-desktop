@@ -112,7 +112,8 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         }}
        
       >
-        {this.state.errorDisplayed ? (
+       <div style={{width:'400px'}}>
+       {this.state.errorDisplayed ? (
           <>
             <SpacerMD />
             <p className={errorMessageClasses}>{errorMsg}</p>
@@ -144,6 +145,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
             />{' '}
           </div>
         ) : null}
+       </div>
         <SpacerLG />
 
         {/* <div className="bchat-modal__button-group">
@@ -220,7 +222,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     // tslint:disable: use-simple-attributes
 
     return (
-      <div className="avatar-center">
+      <div className="avatar-center" style={{marginTop: '15px'}}>
         <div className="avatar-center-inner">
           <Avatar
             forcedAvatarPath={newAvatarObjecturl || oldAvatarPath}
