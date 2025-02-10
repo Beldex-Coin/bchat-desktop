@@ -14,20 +14,20 @@ import { MessageRequestsBanner } from './MessageRequestsBanner';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatSearchInput } from '../BchatSearchInput';
 // import { RowRendererParamsType } from './LeftPane';
-// import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
-// import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
-// import { OverlayMessage } from './overlay/OverlayMessage';
-// import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
+import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
+import { OverlayMessageRequest } from './overlay/OverlayMessageRequest';
+import { OverlayMessage } from './overlay/OverlayMessage';
+import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import {
   OverlayMode,
-  SectionType,
+  // SectionType,
   setOverlayMode,
-  showLeftPaneSection,
-  showSettingsSection,
+  // showLeftPaneSection,
+  // showSettingsSection,
 } from '../../state/ducks/section';
 import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
-import { BchatSettingCategory } from '../settings/BchatSettings';
+// import { BchatSettingCategory } from '../settings/BchatSettings';
 // import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
 export interface Props {
@@ -109,7 +109,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   public render(): JSX.Element {
-    // const { overlayMode } = this.props;
+    const { overlayMode } = this.props;
     const { conversations, conversationRequestsUnread, directContact } = this.props;
     const convolen: boolean =
       conversations?.length === 0 && conversationRequestsUnread === 0 && directContact.length === 0;
@@ -121,10 +121,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         // style={{ display: conversations?.length === 0 ? 'none' : 'flex' }}
       >
         {/* <LeftPaneSectionHeader/> */}
-        {/* {overlayMode ? this.renderClosableOverlay() : null} */}
-        {/* {overlayMode ? null : <> */}
-        {this.renderConversations()}
-        {/* </>} */}
+        {overlayMode ? this.renderClosableOverlay() : this.renderConversations()}
       </div>
     );
   }
@@ -143,11 +140,11 @@ export class LeftPaneMessageSection extends React.Component<Props> {
 
         <MessageRequestsBanner
           handleOnClick={() => {
-            // window.inboxStore?.dispatch(setOverlayMode('message-requests'));
+            window.inboxStore?.dispatch(setOverlayMode('message-requests'));
             // show open settings
-            window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
-            window.inboxStore?.dispatch(setOverlayMode(undefined));
-            window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
+            // window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+            // window.inboxStore?.dispatch(setOverlayMode(undefined));
+            // window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
           }}
         />
         {/* <SpacerMD /> */}
@@ -168,24 +165,24 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     );
   }
 
-  //   private renderClosableOverlay() {
-  //     const { overlayMode } = this.props;
-  //     switch (overlayMode) {
-  //       case 'open-group':
-  //         return <OverlayOpenGroup />;
-  //       case 'closed-group':
-  //         return <OverlayClosedGroup />;
+  private renderClosableOverlay() {
+    const { overlayMode } = this.props;
+    switch (overlayMode) {
+      case 'open-group':
+        return <OverlayOpenGroup />;
+      case 'closed-group':
+        return <OverlayClosedGroup />;
 
-  //       case 'message':
-  //         return <OverlayMessage />;
-  //       case 'message-requests':
-  //         return <OverlayMessageRequest leftPane={true} />;
-  //       // case 'wallet':
-  //       //   return <AddressBook from={'leftpane'}  />
-  //       default:
-  //         return null;
-  //     }
-  //   }
+      case 'message':
+        return <OverlayMessage />;
+      case 'message-requests':
+        return <OverlayMessageRequest leftPane={true} />;
+      // case 'wallet':
+      //   return <AddressBook from={'leftpane'}  />
+      default:
+        return null;
+    }
+  }
 
   // private renderBottomButtons(): JSX.Element {
   //   const joinSocialGroup = window.i18n('joinSocialGroup');

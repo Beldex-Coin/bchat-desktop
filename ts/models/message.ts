@@ -65,6 +65,7 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { LinkPreviews } from '../util/linkPreviews';
+import { getAttachmentMetadata } from '../types/message/initializeAttachmentMetadata';
 // tslint:disable: cyclomatic-complexity
 
 /**
@@ -787,7 +788,11 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     const quoteWithData = await loadQuoteData(this.get('quote'));
     const previewWithData = await loadPreviewData(this.get('preview'));
-
+    const { hasAttachments, hasVisualMediaAttachments, hasFileAttachments } = getAttachmentMetadata(
+      this
+    );
+    this.set({ hasAttachments, hasVisualMediaAttachments, hasFileAttachments });
+    await this.commit();
     const conversation = this.getConversation();
 
     let attachmentPromise;
