@@ -52,6 +52,7 @@ import { BchatButtonType } from '../basic/BchatButton';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { MenuWrapper } from '../menu/Menu';
 import { getTheme } from '../../state/selectors/theme';
+import { updateConfirmModal } from '../../state/ducks/modalDialog';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -317,7 +318,7 @@ export const BchatRightPanelWithDetails = () => {
   const [removeMem, setRemoveMem] = useState(false);
   const [addMem, setAddMem] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
+  const dispatch = useDispatch();
   const selectedConversation = useSelector(getSelectedConversation);
   const isShowing = useSelector(isRightPanelShowing);
   const convoProps = useConversationPropsById(selectedConversation?.id);
@@ -511,8 +512,25 @@ export const BchatRightPanelWithDetails = () => {
     // const members = getWouldBeMembers(this.state.contactList).map(d => d.id);
     // do not include zombies here, they are removed by force
     if (removeMem) {
-      await onSubmit(id, membersToKeepWithUpdate);
-      setRemoveMem(false);
+      dispatch(
+        updateConfirmModal({
+          title: 'Remove Users?',
+          message: 'Are you sure you want to remove these users from this group?',
+          okText: 'Remove',
+          iconShow: true,
+          customIcon: (
+            <BchatIcon iconType="avatarX" iconSize={24} clipRule="evenodd" fillRule="evenodd" />
+          ),
+          okTheme: BchatButtonColor.Danger,
+          onClickOk: async () => {
+            await onSubmit(id, membersToKeepWithUpdate);
+            setRemoveMem(false);
+          },
+          onClickClose: () => {
+            dispatch(updateConfirmModal(null));
+          },
+        })
+      );
     }
     if (addMem) {
       //  await submitForClosedGroup(id, selectedContacts);
@@ -527,7 +545,7 @@ export const BchatRightPanelWithDetails = () => {
         position: zoomLevel > 100 ? 'absolute' : 'unset',
         overflowY: zoomLevel > 100 ? 'auto' : 'unset',
         right: 0,
-        zIndex: 2
+        zIndex: 2,
       }}
     >
       {!fullView ? (
