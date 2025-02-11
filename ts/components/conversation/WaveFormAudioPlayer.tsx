@@ -6,8 +6,14 @@ import { BchatIconButton } from '../icon';
 import { SpacerSM } from '../basic/Text';
 import { MessageModelType } from '../../models/messageType';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
+import { getAudioAutoplay } from '../../state/selectors/userConfig';
+import {
+  getNextMessageToPlayId,
+  getSortedMessagesOfSelectedConversation,
+} from '../../state/selectors/conversations';
+import { setNextMessageToPlayId } from '../../state/ducks/conversations';
 
 interface WaveFormAudioPlayerProps {
   src: string;
@@ -17,7 +23,7 @@ interface WaveFormAudioPlayerProps {
 }
 
 const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> = props => {
-  const { contentType, src, direction } = props;
+  const { contentType, src, direction, messageId } = props;
   const { urlToLoad } = useEncryptedFileFetch(src, contentType, false);
   const waveformRef = useRef(null);
 
@@ -27,6 +33,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
   const [remainingTime, setRemainingTime] = useState('0.00');
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const darkMode = useSelector(getTheme) === 'dark';
+  const dispatch = useDispatch();
   function validColor() {
     const incomingColors = {
       waveColor: darkMode ? '#16191F' : '#ACACAC',
@@ -38,12 +45,15 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       waveColor: '#1C581C',
       progressColor: '#C0FFC9',
       cursorColor: '#C0FFC9',
-      
     };
 
     const colors = direction === 'incoming' ? incomingColors : outgoingColors;
     return colors;
   }
+  const autoPlaySetting = useSelector(getAudioAutoplay);
+  const messageProps = useSelector(getSortedMessagesOfSelectedConversation);
+  const nextMessageToPlayId = useSelector(getNextMessageToPlayId);
+
 
   useEffect(() => {
     let surfer: any;
@@ -77,6 +87,9 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       surfer.on('pause', () => {
         setIsPlaying(false);
       });
+      surfer.on('finish', () => {
+        onEnded();
+      });
 
       surfer.on('audioprocess', () => {
         if (surfer.isPlaying()) {
@@ -101,6 +114,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       waveSurferRef.current.playPause();
       setIsPlaying(waveSurferRef.current.isPlaying());
     }
+  
   };
 
   const playSpeed = () => {
@@ -108,6 +122,51 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       let newSpeed = playbackSpeed >= 3 ? 1 : playbackSpeed + 1;
       waveSurferRef.current.setPlaybackRate(newSpeed);
       setPlaybackSpeed(newSpeed);
+    }
+  };
+
+  useEffect(() => {
+    if (messageId !== undefined && messageId === nextMessageToPlayId) {
+      waveSurferRef.current?.play();
+    }
+  }, [messageId, nextMessageToPlayId, waveSurferRef]);
+
+  const triggerPlayNextMessageIfNeeded = (endedMessageId: string) => {
+    const justEndedMessageIndex = messageProps.findIndex(
+      m => m.propsForMessage.id === endedMessageId
+    );
+    if (justEndedMessageIndex === -1) {
+      // make sure that even with switching convo or stuff, the next message to play is unset
+      dispatch(setNextMessageToPlayId(undefined));
+
+      return;
+    }
+
+    const isLastMessage = justEndedMessageIndex === 0;
+
+    // to prevent autoplaying as soon as a message is received.
+    if (isLastMessage) {
+      dispatch(setNextMessageToPlayId(undefined));
+      return;
+    }
+    // justEndedMessageIndex cannot be -1 nor 0, so it is >= 1
+    const nextMessageIndex = justEndedMessageIndex - 1;
+    // stop auto-playing when the audio messages change author.
+    const prevAuthorNumber = messageProps[justEndedMessageIndex].propsForMessage.sender;
+    const nextAuthorNumber = messageProps[nextMessageIndex].propsForMessage.sender;
+    const differentAuthor = prevAuthorNumber !== nextAuthorNumber;
+    if (differentAuthor) {
+      dispatch(setNextMessageToPlayId(undefined));
+    } else {
+      dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));
+    }
+  };
+
+  const onEnded = () => {
+    // if audio autoplay is enabled, call method to start playing
+    // the next playable message
+    if (autoPlaySetting === true && messageId) {
+      triggerPlayNextMessageIfNeeded(messageId);
     }
   };
 
