@@ -8,7 +8,7 @@ import { nativeEmojiData } from '../../../../util/emoji';
 import { useSelector } from 'react-redux';
 import { getMessageTextProps } from '../../../../state/selectors/conversations';
 
-export const StyledPopupContainer = styled.div<{ isIncoming?: boolean }>`
+export const StyledPopupContainer = styled.div<{ isIncoming?: boolean,isPrivate:boolean }>`
   display: flex;
   align-items: center;
   width: 216px;
@@ -20,9 +20,9 @@ export const StyledPopupContainer = styled.div<{ isIncoming?: boolean }>`
   font-weight: 400;
   padding: 16px;
   border-radius: 12px;
-  cursor: pointer;
+  cursor:${props => (props.isPrivate ? 'unset' : 'pointer')} ;
   overflow-wrap: break-word;
- background-color:var(--color-wallet-inner-bg);
+  background-color:var(--color-wallet-inner-bg);
 
   &:after {
     content: '';
@@ -107,6 +107,8 @@ export const ReactionPopup = (props: Props): ReactElement => {
   const [contacts, setContacts] = useState('');
   const messageProps = useSelector(state => getMessageTextProps(state as any, props.messageId));
   const isIncoming = messageProps?.direction === 'incoming';
+  const isPrivate=messageProps?.conversationType==='private';
+  
   useEffect(() => {
     let isCancelled = false;
     generateContacts(messageId, senders)
@@ -131,6 +133,7 @@ export const ReactionPopup = (props: Props): ReactElement => {
     <StyledPopupContainerWrapper className="popup-container-wrapper"  isIncoming={isIncoming}>
       <StyledPopupContainer
         isIncoming={isIncoming}
+        isPrivate={isPrivate}
         onClick={() => {
           onClick();
         }}
