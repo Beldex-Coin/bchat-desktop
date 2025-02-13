@@ -62,8 +62,9 @@ const StyledMessageReactBar = styled.div<{ isIncoming: boolean }>`
 `;
 const ReactButton = styled.div<{ isIncoming: boolean }>`
   margin: 0 4px;
-  animation: ${props => (props.isIncoming ?rotateEmoji:rotateEmojiAntiClock)} 0.4s linear forwards;
-  
+  animation: ${props => (props.isIncoming ? rotateEmoji : rotateEmojiAntiClock)} 0.4s linear forwards;
+  cursor: pointer;
+
 `;
 
 export const MessageReactBar = (props: Props): ReactElement => {
@@ -92,6 +93,7 @@ export const MessageReactBar = (props: Props): ReactElement => {
             onClick={() => {
               action(emoji);
             }}
+            className="recentButton"
           >
             {emoji}
           </ReactButton>

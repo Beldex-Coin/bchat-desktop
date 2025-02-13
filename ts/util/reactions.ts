@@ -12,6 +12,7 @@ import { roomHasBlindEnabled } from '../types/sqlSharedTypes';
 import { OpenGroupData } from '../data/opengroups';
 import { PubKey } from '../bchat/types/PubKey';
 
+
 export type BlindedIdMapping = {
   blindedId: string;
   serverPublicKey: string;
@@ -35,7 +36,8 @@ const getMessageByReaction = async (
 ): Promise<MessageModel | null> => {
   let originalMessage = null;
   const originalMessageId = Number(reaction.id);
-  const originalMessageAuthor = reaction.author;
+  //support only desktop versions
+  // const originalMessageAuthor = reaction.author;
 
   if (isOpenGroup) {
     originalMessage = await Data.getMessageByServerId(originalMessageId);
@@ -43,12 +45,15 @@ const getMessageByReaction = async (
     const collection = await Data.getMessagesBySentAt(originalMessageId);
     originalMessage = collection.find((item: MessageModel) => {
       const messageTimestamp = item.get('sent_at');
-      const author = item.get('source');
+      //support only desktop versions
+      // const author = item.get('source');
       return Boolean(
         messageTimestamp &&
-          messageTimestamp === originalMessageId &&
-          author &&
-          author === originalMessageAuthor
+          messageTimestamp === originalMessageId
+          //support only desktop versions
+          //  &&
+          // author &&
+          // author === originalMessageAuthor
       );
     });
   }
@@ -57,7 +62,6 @@ const getMessageByReaction = async (
     window?.log?.warn(`Cannot find the original reacted message ${originalMessageId}.`);
     return null;
   }
-
   return originalMessage;
 };
 /**
@@ -91,7 +95,8 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
     const isOpenGroup = Boolean(found?.get('isPublic'));
     const id = (isOpenGroup && found.get('serverId')) || Number(found.get('sent_at'));
     const me: any = isOpenGroup || UserUtils.getOurPubKeyStrFromCache();
-    const author = found.get('source');
+    //support only desktop versions
+    // const author = found.get('source');
     let action = 0;
 
     const reacts = found.get('reacts');
@@ -116,7 +121,8 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
     } else if (result) {
       let reaction = {
         id,
-        author,
+        //support for cross platforms
+        author:UserUtils.getOurPubKeyStrFromCache(),
         emoji: result,
         action:1,
       };
@@ -132,11 +138,11 @@ export const sendMessageReaction = async (messageId: string, emoji: string) => {
     // }
     const reaction = {
       id,
-      author,
+      //support for cross platforms
+      author:UserUtils.getOurPubKeyStrFromCache(),
       emoji,
       action,
     };
-
     await conversationModel.sendReaction(messageId, reaction);
 
     window.log.info(`${action === 0 ? 'added' : 'removed'} `, emoji, 'reaction at', id);
