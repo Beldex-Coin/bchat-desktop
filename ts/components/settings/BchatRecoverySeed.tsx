@@ -59,7 +59,7 @@ export const BchatRecoverySeed = (props: any) => {
     iconShow={true}
     customIcon={<BchatIcon iconType="enablePasswordIcon" iconSize={26} />}
     >
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
         <div className="bchat-modal-setPasswordAccess">
           <div className="contentbox">
             <div className="header">{window.i18n('setPassword')}</div>
@@ -83,7 +83,7 @@ export const BchatRecoverySeed = (props: any) => {
             )} 
           </div> */}
         </div>
-      </div>
+      {/* </div> */}
     </BchatWrapperModal>
   );
 

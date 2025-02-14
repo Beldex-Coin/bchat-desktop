@@ -918,7 +918,7 @@ label {
     // overflow-y: auto;
     overflow-x: hidden;
     // max-height: 513px;
-    padding: 0px $bchat-margin-md 0px $bchat-margin-md;
+    padding: 0px $bchat-margin-md 0px 20px;
   }
 
   &__deleteAccountModal {
@@ -1159,7 +1159,7 @@ label {
 
   &-bchatConfirm {
     width: 425px;
-    margin: 0px 0px 25px 5px;
+    margin: 0px 0px 25px 0%;
     font-family: $bchat-font-default;
     font-size: 16px;
     text-align: left;
@@ -1195,7 +1195,7 @@ label {
 
   &-setPasswordAccess {
     width: 400px;
-    margin: 40px 10px 25px;
+    margin: 40px 0px 25px;
     font-family: $bchat-font-default;
 
     .contentbox {
@@ -1835,6 +1835,7 @@ label {
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 .syncStatus {
@@ -3840,6 +3841,20 @@ input {
     border-radius: 10px;
     margin-left: 25px;
     margin-top: 30px;
+    border-radius: 30px;
+  }
+
+  .banUnbanPopup {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-modal-icon-bg);
+    border-radius: 10px;
+    margin-right: 20px;
+    /* margin-top: 30px; */
     border-radius: 30px;
   }
 }

@@ -202,7 +202,7 @@ export const DeleteAccountModal = () => {
       customIcon={<BchatIcon iconType="clearDataIcon" iconSize={26} />}
       isloading={isLoading}
     >
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
         <div className='bchat-modal__deleteAccountModal'>
           <div className='fontSemiBold'>
             {window.i18n('deleteAccountWarning')}
@@ -273,7 +273,7 @@ export const DeleteAccountModal = () => {
         </div>
 
         {/* <BchatSpinner loading={isLoading} /> */}
-      </div>
+      {/* </div> */}
     </BchatWrapperModal>
   );
 };

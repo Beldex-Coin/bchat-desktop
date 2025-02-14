@@ -53,8 +53,7 @@ export const OverlayMessage = () => {
   // const descriptionLong = window.i18n('usersCanShareTheir...');
   // const descriptionLong = window.i18n('shareBchatIdDiscription');
 
-  // const subtitle = window.i18n('enterBchatIDOrBNSName');
-  const placeholder = window.i18n('enterBchatID');
+  const placeholder = window.i18n('enterBchatIDOrBNSName');
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();

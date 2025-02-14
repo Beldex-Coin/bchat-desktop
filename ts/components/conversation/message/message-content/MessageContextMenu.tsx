@@ -193,11 +193,11 @@ export const MessageContextMenu = (props: Props) => {
           <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
         </Item>
       ) : null}
-      {!attachments?.length  &&  
-      <Item onClick={copyText}>
-        <CopyIcon color={'var(--color-text)'} iconSize={18} />
-        <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
-      </Item>}
+      {!attachments?.length &&
+        <Item onClick={copyText}>
+          <CopyIcon color={'var(--color-text)'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
+        </Item>}
       {(isSent || !isOutgoing) && (
         <Item onClick={onReply}>
           <BchatIcon iconType={'reply'} iconSize={18} />
@@ -209,8 +209,8 @@ export const MessageContextMenu = (props: Props) => {
           <BchatIcon iconType={'infoCircle'} iconSize={18} />
           <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
       )}
-      {showRetry ? <Item onClick={onRetry}> <BchatIcon iconType={'resend'} iconSize={18}  />
-      <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span></Item> : null}
+      {showRetry ? <Item onClick={onRetry}> <BchatIcon iconType={'resend'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span></Item> : null}
       {isDeletable ? (
         <>
           <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
@@ -229,15 +229,27 @@ export const MessageContextMenu = (props: Props) => {
             <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span></Item>
         </>
       ) : null}
-      {weAreAdmin && isPublic ? <Item onClick={onBan}>{window.i18n('banUser')}</Item> : null}
+      {weAreAdmin && isPublic ? <Item onClick={onBan}>
+        <BchatIcon iconType={'banIcon'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+        <span style={{ marginLeft: '10px', color: "#FF3E3E" }}>{window.i18n('banUser')}</span>
+      </Item> : null}
       {weAreAdmin && isOpenGroupV2 ? (
-        <Item onClick={onUnban}>{window.i18n('unbanUser')}</Item>
+        <Item onClick={onUnban}>
+          <BchatIcon iconType={'unBanIcon'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('unbanUser')}</span>
+        </Item>
       ) : null}
       {weAreAdmin && isPublic && !isSenderAdmin ? (
-        <Item onClick={addModerator}>{window.i18n('addAsModerator')}</Item>
+        <Item onClick={addModerator}>
+          <BchatIcon iconType={'addModerator'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('addAsModerator')}</span>
+          </Item>
       ) : null}
       {weAreAdmin && isPublic && isSenderAdmin ? (
-        <Item onClick={removeModerator}>{window.i18n('removeFromModerators')}</Item>
+        <Item onClick={removeModerator}>
+          <BchatIcon iconType={'removeFromModerators'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('removeFromModerators')}</span>
+        </Item>
       ) : null}
     </Menu>
   );
