@@ -51,15 +51,6 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'isDeletableForEveryone'
 >;
 
-
-const StyledMessageContextMenu = styled.div`
-  position: relative;
-  .react-contexify {
-    margin-left: -80px;
-  }
-`;
-
-
 // tslint:disable: max-func-body-length cyclomatic-complexity
 export const MessageContextMenu = (props: Props) => {
   const selected = useSelector(state => getMessageContextMenuProps(state as any, props.messageId));
@@ -204,83 +195,77 @@ export const MessageContextMenu = (props: Props) => {
 
 
   return (
-    <StyledMessageContextMenu ref={contextMenuRef}>
-      <Menu
-        id={contextMenuId}
-        onShown={onContextMenuShown}
-        onHidden={onContextMenuHidden}
-        animation={animation.fade}
-      >
-        {attachments?.length ? (
-          <Item onClick={saveAttachment}>
-            <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
+    <Menu
+      id={contextMenuId}
+      onShown={onContextMenuShown}
+      onHidden={onContextMenuHidden}
+      animation={animation.fade}
+    >
+      {attachments?.length ? (
+        <Item onClick={saveAttachment}>
+          <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
+        </Item>
+      ) : null}
+      {!attachments?.length &&
+        <Item onClick={copyText}>
+          <CopyIcon color={'var(--color-text)'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
+        </Item>}
+      {(isSent || !isOutgoing) && (
+        <Item onClick={onReply}>
+          <BchatIcon iconType={'reply'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
+        </Item>
+      )}
+      {(!isPublic || isOutgoing) && (
+        <Item onClick={onShowDetail}>
+          <BchatIcon iconType={'infoCircle'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>
+      )}
+      {showRetry ? <Item onClick={onRetry}> <BchatIcon iconType={'resend'} iconSize={18} />
+        <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span></Item> : null}
+      {isDeletable ? (
+        <>
+          <Item onClick={onSelect}> <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
+            <span style={{ marginLeft: '10px' }}>{selectMessageText}</span></Item>
+        </>
+      ) : null}
+      {isDeletable && !isPublic ? (
+        <>
+          <Item onClick={onDelete}><BchatIcon iconType={'delete'} iconSize={18} iconColor='#FF3E3E' />
+            <span style={{ marginLeft: '10px', color: "#FF3E3E" }}>{deleteMessageJustForMeText}</span></Item>
+        </>
+      ) : null}
+      {isDeletableForEveryone ? (
+        <>
+          <Item onClick={onDeleteForEveryone}><BchatIcon iconType={'twoMember'} iconSize={18} iconColor='#FF3E3E' />
+            <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span></Item>
+        </>
+      ) : null}
+      {weAreAdmin && isPublic ? <Item onClick={onBan}>
+        <BchatIcon iconType={'banIcon'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+        <span style={{ marginLeft: '10px', color: "#FF3E3E" }}>{window.i18n('banUser')}</span>
+      </Item> : null}
+      {weAreAdmin && isOpenGroupV2 ? (
+        <Item onClick={onUnban}>
+          <BchatIcon iconType={'unBanIcon'} iconSize={18} />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('unbanUser')}</span>
+        </Item>
+      ) : null}
+      {weAreAdmin && isPublic && !isSenderAdmin ? (
+        <Item onClick={addModerator}>
+          <BchatIcon iconType={'addModerator'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('addAsModerator')}</span>
           </Item>
-        ) : null}
-        {!attachments?.length && (
-          <Item onClick={copyText}>
-            <CopyIcon color={'var(--color-text)'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
-          </Item>
-        )}
-        {(isSent || !isOutgoing) && (
-          <Item onClick={onReply}>
-            <BchatIcon iconType={'reply'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
-          </Item>
-        )}
-        {(!isPublic || isOutgoing) && (
-          <Item onClick={onShowDetail}>
-            <BchatIcon iconType={'infoCircle'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span>
-          </Item>
-        )}
-        {showRetry ? (
-          <Item onClick={onRetry}>
-            {' '}
-            <BchatIcon iconType={'resend'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span>
-          </Item>
-        ) : null}
-        {isDeletable ? (
-          <>
-            <Item onClick={onSelect}>
-              {' '}
-              <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
-              <span style={{ marginLeft: '10px' }}>{selectMessageText}</span>
-            </Item>
-          </>
-        ) : null}
-        {isDeletable && !isPublic ? (
-          <>
-            <Item onClick={onDelete}>
-              <BchatIcon iconType={'delete'} iconSize={18} iconColor="#FF3E3E" />
-              <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>
-                {deleteMessageJustForMeText}
-              </span>
-            </Item>
-          </>
-        ) : null}
-        {isDeletableForEveryone ? (
-          <>
-            <Item onClick={onDeleteForEveryone}>
-              <BchatIcon iconType={'twoMember'} iconSize={18} iconColor="#FF3E3E" />
-              <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span>
-            </Item>
-          </>
-        ) : null}
-        {weAreAdmin && isPublic ? <Item onClick={onBan}>{window.i18n('banUser')}</Item> : null}
-        {weAreAdmin && isOpenGroupV2 ? (
-          <Item onClick={onUnban}>{window.i18n('unbanUser')}</Item>
-        ) : null}
-        {weAreAdmin && isPublic && !isSenderAdmin ? (
-          <Item onClick={addModerator}>{window.i18n('addAsModerator')}</Item>
-        ) : null}
-        {weAreAdmin && isPublic && isSenderAdmin ? (
-          <Item onClick={removeModerator}>{window.i18n('removeFromModerators')}</Item>
-        ) : null}
-      </Menu>
-    </StyledMessageContextMenu>
+      ) : null}
+      {weAreAdmin && isPublic && isSenderAdmin ? (
+        <Item onClick={removeModerator}>
+          <BchatIcon iconType={'removeFromModerators'} iconSize={18} iconColor='#FF3E3E' fillRule="evenodd" clipRule="evenodd" />
+          <span style={{ marginLeft: '10px' }}>{window.i18n('removeFromModerators')}</span>
+        </Item>
+      ) : null}
+    </Menu>
   );
 };
 

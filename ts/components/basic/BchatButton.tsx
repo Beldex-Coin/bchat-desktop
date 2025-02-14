@@ -37,7 +37,7 @@ type Props = {
   dataTestId?: string;
   icon?: boolean;
   style?: object;
-  iconType?: BchatIconType;
+  iconType?: BchatIconType|null;
   iconSize?: BchatIconSize | number;
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';
