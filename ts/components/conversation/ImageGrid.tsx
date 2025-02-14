@@ -34,7 +34,12 @@ export const ImageGrid = (props: Props) => {
 
   if (attachments.length === 1 || !areAllAttachmentsVisual(attachments)) {
     const { height, width } = getImageDimensionsInAttachment(attachments[0]);
-
+    const finalUrl =
+      isMessageVisible && attachments[0].contentType === 'image/gif'
+        ? attachments[0]?.url
+        : isMessageVisible
+        ? getThumbnailUrl(attachments[0])
+        : undefined;
     return (
       <div className={classNames('module-image-grid', 'module-image-grid--one-image')}>
         <Image
@@ -44,7 +49,7 @@ export const ImageGrid = (props: Props) => {
           playIconOverlay={isVideoAttachment(attachments[0])}
           height={height}
           width={width}
-          url={isMessageVisible ? getThumbnailUrl(attachments[0]) : undefined}
+          url={finalUrl}
           onClick={onClickAttachment}
           onError={onError}
           attachmentIndex={0}

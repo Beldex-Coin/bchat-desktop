@@ -29,6 +29,8 @@ import {
   getBchatWalletForgotPasswordModal,
   getMessageMoreInfoModal,
   getCommunityGuidelinesModal,
+  // getReactListDialog,
+  getReactClearAllDialog,
 } from '../../state/selectors/modal';
 import { AdminLeaveClosedGroupDialog } from './AdminLeaveClosedGroupDialog';
 // import { InviteContactsDialog } from '../conversation/InviteContacts';
@@ -59,6 +61,10 @@ import { BchatWalletForgotPasswordModal } from './BchatWalletForgotPasswordModal
 import { MessageMoreInfoModal } from '../conversation/message/message-item/MessageDetail';
 import { InviteContactsDialog } from './InviteContactDialog';
 import { CommunityGuidelinesDialog } from './CommunityGuidelinesDialog';
+// import { ReactListModal } from './ReactListModal';
+import { ReactClearAllModal } from './ReactClearAllModal';
+
+
 
 
 export const ModalContainer: any = () => {
@@ -90,7 +96,8 @@ export const ModalContainer: any = () => {
   const aboutBnsModalState=useSelector(getAboutBnsModal);
   const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
   const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
-
+  // const reactListModalState = useSelector(getReactListDialog);
+  const reactClearAllModalState = useSelector(getReactClearAllDialog);
 
   return (
     <>
@@ -129,6 +136,8 @@ export const ModalContainer: any = () => {
       {aboutBnsModalState && <AboutBnsDialog />}
       {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}
       {communityGuidelinesModalState && <CommunityGuidelinesDialog  />}
+      {/* {reactListModalState && <ReactListModal {...reactListModalState} />} */}
+      {reactClearAllModalState && <ReactClearAllModal {...reactClearAllModalState} />}
     </>
   );
 };

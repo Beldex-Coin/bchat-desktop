@@ -328,28 +328,6 @@
           }
         }
 
-        // &-paste-icon {
-        //   background: url('../images/bchat/paste.svg') no-repeat;
-        //   width: 35px;
-        //   height: 35px;
-        //   // background-color: var(--color-inboxBgColor);
-        //   background-color: var(--color-background-primary);
-        //   background-size: 14px;
-        //   border-radius: 35px;
-        //   background-position: center;
-        //   left: 10px;
-        //   top: 19px;
-        //   position: relative;
-        //   cursor: pointer;
-        //   box-shadow: var(--color-bchat-shadow);
-        // }
-
-        // &-paste-icon:hover {
-        //   // transform: scale(1.1);
-        //   // background-color: var(--color-wallet-copy-hover);
-        //   // color: #1ced23;
-        //   background-color: var(--color-profile-close);
-        // }
         &-password-label {
           display: flex;
           // color: #f0f0f0;
@@ -621,27 +599,27 @@
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
   }
 
-  button {
-    float: right;
-    margin-inline-start: 10px;
-    background-color: $color-bchat-green;
-    border-radius: 100px;
-    padding: 5px 15px;
-    border: 1px solid $color-bchat-green;
-    color: white;
-    outline: none;
-    user-select: none;
+  // button {
+  //   float: right;
+  //   margin-inline-start: 10px;
+  //   background-color: $color-bchat-green;
+  //   border-radius: 100px;
+  //   padding: 5px 15px;
+  //   border: 1px solid $color-bchat-green;
+  //   color: white;
+  //   outline: none;
+  //   user-select: none;
 
-    &:hover,
-    &:disabled {
-      background-color: $color-bchat-green-dark;
-      border-color: $color-bchat-green-dark;
-    }
+  //   &:hover,
+  //   &:disabled {
+  //     background-color: $color-bchat-green-dark;
+  //     border-color: $color-bchat-green-dark;
+  //   }
 
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
+  //   &:disabled {
+  //     cursor: not-allowed;
+  //   }
+  // }
 
   input {
     width: 100%;
@@ -661,6 +639,48 @@
     margin-top: 8px;
     margin-bottom: 16px;
   }
+}
+
+.reaction-list-modal {
+  position: relative;
+  z-index: 4;
+  &.show-modal {
+    .reaction-list-innreModal {
+      bottom: -300;
+    }
+  }
+  .innerModal-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 2;
+  }
+  .reaction-list-innreModal {
+    position: absolute;
+    bottom: 0;
+    border-radius: 24px 24px 0px 0px;
+    background: var(--color-wallet-inner-bg);
+    width: 95%;
+    margin-left: 4%;
+    transition: bottom 0.5s ease-in-out;
+    height: 337px;
+    padding: 15px;
+    z-index: 2;
+  }
+}
+
+/* Adding Keyframes for smooth transition */
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+  }
+  to {
+    bottom: 0;
+  }
+}
+
+.reaction-list-innreModal {
+  animation: slideIn 0.5s ease-in-out;
 }
 
 .nickname-dialog {
@@ -1252,7 +1272,6 @@
     a {
       color: #108d32;
     }
-
   }
 }
 
@@ -1322,6 +1341,7 @@
     // color: #f0f0f0;
     font-size: 20px;
     font-weight: 600;
+    line-height: 24px;
   }
 
   .user-id-wrapper {

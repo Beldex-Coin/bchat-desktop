@@ -55,3 +55,5 @@ export const UI = {
     GREEN: '#128b17',
   },
 };
+
+export const DEFAULT_RECENT_REACTS = ['😂', '🥰', '😢', '😡', '😮', '😈'];

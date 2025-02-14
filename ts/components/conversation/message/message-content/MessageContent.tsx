@@ -29,6 +29,7 @@ import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 import { SpacerXS } from '../../../basic/Text';
+import { MessageAuthorText } from './MessageAuthorText';
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -46,6 +47,7 @@ export type MessageContentSelectorProps = Pick<
 type Props = {
   messageId: string;
   isDetailView?: boolean;
+  onRecentEmojiBtnVisible:()=>void;
 };
 
 // function getIsShowingImage(
@@ -179,6 +181,7 @@ export const MessageContent = (props: Props) => {
   // const hasQuote = !isEmpty(quote);
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
+  const isGifAttachments=attachments.length===1 && attachments[0].contentType==='image/gif';
 
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
@@ -198,15 +201,20 @@ export const MessageContent = (props: Props) => {
         lastMessageOfSeries || props.isDetailView
           ? `module-message__container--${direction}--last-of-series`
           : '',
-        flashGreen && 'flash-green-once'
+        flashGreen && 'flash-green-once',
+        isGifAttachments && `module-message__container_bg_disabled`
       )}
       // style={{
       //   width: isShowingImage ? width : undefined,
       // }}
       role="button"
+      onMouseEnter={() => {
+        props.onRecentEmojiBtnVisible()
+      }}
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
     >
+      <MessageAuthorText messageId={props.messageId} />
       <InView
         id={`inview-content-${props.messageId}`}
         onChange={onVisible}

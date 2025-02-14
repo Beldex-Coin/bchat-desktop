@@ -593,4 +593,11 @@ export type LocalizerKeys =
   |'openLink'
   |'changeWalletPassword'
   |'enterNewWalletPassword'
+
+  | 'expandedReactionsText'
+  | 'clearAllReactions'
+  | 'reactionNotification'
+  | 'readableListCounterSingular'
+  | 'readableListCounterPlural'
+  | 'reactionTooltip'
   ;

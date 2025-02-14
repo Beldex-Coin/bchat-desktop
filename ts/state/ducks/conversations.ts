@@ -22,12 +22,15 @@ import { ReplyingToMessageProps } from '../../components/conversation/compositio
 import { QuotedAttachmentType } from '../../components/conversation/message/message-content/Quote';
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
+import { Reaction, ReactionList } from '../../types/Reaction';
+
 export type CallNotificationType = 'missed-call' | 'started-call' | 'answered-a-call';
 export type PropsForCallNotification = {
   notificationType: CallNotificationType;
   messageId: string;
   receivedAt: number;
   isUnread: boolean;
+  
 };
 
 export type MessageModelPropsWithoutConvoProps = {
@@ -210,6 +213,10 @@ export type PropsForMessageWithoutConvoProps = {
   expirationTimestamp?: number | null;
   isExpired?: boolean;
   isTrustedForAttachmentDownload?: boolean;
+
+  reactions?: Array<Reaction>;
+  reacts?: ReactionList;
+  reactsIndex?: number;
 };
 
 export type PropsForMessageWithConvoProps = PropsForMessageWithoutConvoProps & {
@@ -285,6 +292,7 @@ export interface ReduxConversationType {
   walletUserName?:any;
   walletCreatedDaemonHeight?:number|any;
   isBnsHolder?:boolean;
+  weAreModerator?:boolean
 }
 
 export interface NotificationForConvoOption {

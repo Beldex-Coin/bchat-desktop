@@ -58,7 +58,7 @@ export const MessageAvatar = (props: Props) => {
   }, [userName, sender, authorAvatarPath]);
 
   if (!lastMessageOfSeries) {
-    return <div style={{ marginInlineEnd: '60px' }} key={`msg-avatar-${sender}`} />;
+    return <div style={{ marginInlineEnd: '50px' }} key={`msg-avatar-${sender}`} />;
   }
 
   return (

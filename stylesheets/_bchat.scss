@@ -626,7 +626,12 @@ label {
 .module-message__container--outgoing--last-of-series {
   border-bottom-right-radius: $bchat_message-container-border-radius;
 }
-
+.module-message__container_bg_disabled {
+  background-color: transparent !important;
+  .timeStamp {
+    color: #858598 !important;
+  }
+}
 .conversation-header {
   .module-avatar img {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.2);
@@ -1178,7 +1183,7 @@ label {
 
     width: 450px;
     background-color: var(--color-confirm-modal-inner-bg);
-    input{
+    input {
       background-color: unset;
     }
   }
@@ -3957,31 +3962,31 @@ input {
   }
 }
 
-.messages-container {
-  .bchat-icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    opacity: 1;
-    // background-color: var(--color-cell-background);
+// .messages-container {
+//   .bchat-icon-button {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     // height: 40px;
+//     // width: 40px;
+//     border-radius: 50%;
+//     opacity: 1;
+//     // background-color: var(--color-cell-background);
 
-    background-color: #2f8fff;
-    box-shadow: var(--color-bchat-shadow);
+//     // background-color: #2f8fff;
+//     // box-shadow: var(--color-bchat-shadow);
 
-    // svg path {
-    //   transition: $bchat-transition-duration;
-    //   opacity: 0.6;
-    //   fill: var(--color-text);
-    // }
+//     // svg path {
+//     //   transition: $bchat-transition-duration;
+//     //   opacity: 0.6;
+//     //   fill: var(--color-text);
+//     // }
 
-    &:hover svg path {
-      opacity: 0.6;
-    }
-  }
-}
+//     &:hover svg path {
+//       opacity: 0.6;
+//     }
+//   }
+// }
 
 .group-member-list {
   &__container {

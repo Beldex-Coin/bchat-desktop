@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
 
-import { animation, Item, Menu } from 'react-contexify';
+import React, { useCallback, useRef, useState } from 'react';
+
+import { animation, Item, Menu,  } from 'react-contexify';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageById } from '../../../../data/data';
@@ -13,12 +14,11 @@ import {
 import {
   addSenderAsModerator,
   removeSenderFromModerator,
+
 } from '../../../../interactions/messageInteractions';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
 import {
-  // MessagePropsDetails,
-  // showMessageDetailsView,
   toggleSelectedMessageId,
 } from '../../../../state/ducks/conversations';
 import { getMessageContextMenuProps } from '../../../../state/selectors/conversations';
@@ -27,6 +27,11 @@ import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 
+import styled from 'styled-components';
+
+
+
+type Props = { messageId: string; contextMenuId: string,enableReactions: boolean };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
   | 'attachments'
@@ -46,13 +51,11 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'isDeletableForEveryone'
 >;
 
-type Props = { messageId: string; contextMenuId: string };
-
 // tslint:disable: max-func-body-length cyclomatic-complexity
 export const MessageContextMenu = (props: Props) => {
   const selected = useSelector(state => getMessageContextMenuProps(state as any, props.messageId));
   const dispatch = useDispatch();
-
+ 
   if (!selected) {
     return null;
   }
@@ -73,14 +76,23 @@ export const MessageContextMenu = (props: Props) => {
     timestamp,
     isBlocked,
   } = selected;
+  
   const { messageId, contextMenuId } = props;
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
 
-  const onContextMenuShown = useCallback(() => {
+  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
+
+  const contextMenuRef = useRef(null);
+
+  const onContextMenuShown = () => {
+    if (showEmojiPanel) {
+      setShowEmojiPanel(false);
+    }
     window.contextMenuShown = true;
-  }, []);
+  };
+  
 
   const onContextMenuHidden = useCallback(() => {
     // This function will called before the click event
@@ -95,7 +107,6 @@ export const MessageContextMenu = (props: Props) => {
     const found = await getMessageById(messageId);
     if (found) {
       const messageDetailsProps = await found.getPropsForMessageDetail();
-      // dispatch(showMessageDetailsView(messageDetailsProps));
       dispatch(updateMessageMoreInfoModal(messageDetailsProps));
     } else {
       window.log.warn(`Message ${messageId} not found in db`);
@@ -180,6 +191,9 @@ export const MessageContextMenu = (props: Props) => {
     void deleteMessagesByIdForEveryone([messageId], convoId);
   }, [convoId, messageId]);
 
+ 
+
+
   return (
     <Menu
       id={contextMenuId}
@@ -254,6 +268,5 @@ export const MessageContextMenu = (props: Props) => {
     </Menu>
   );
 };
-
 
 

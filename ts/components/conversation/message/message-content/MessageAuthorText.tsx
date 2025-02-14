@@ -40,7 +40,7 @@ export const MessageAuthorText = (props: Props) => {
   const displayedPubkey = authorProfileName ? shortenedPubkey : sender;
 
   return (
-    <Flex container={true}>
+    <Flex container={true} className='module-message_grp_author_wrapper'>
       <ContactName
         pubkey={displayedPubkey}
         name={authorName}

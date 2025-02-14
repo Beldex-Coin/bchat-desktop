@@ -63,6 +63,8 @@ import { BchatScrollButton } from '../BchatScrollButton';
 import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon';
 import styled from 'styled-components';
+import { ReactListModal } from '../dialog/ReactListModal';
+
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
@@ -94,6 +96,8 @@ interface Props {
   stagedAttachments: Array<StagedAttachmentType>;
   convoList: any;
   focusedSection: any;
+  reactListModalstate:any;
+ 
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -250,6 +254,7 @@ export class BchatConversation extends React.Component<Props, State> {
       // isMe,
       convoList,
       focusedSection,
+      reactListModalstate
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
@@ -276,6 +281,8 @@ export class BchatConversation extends React.Component<Props, State> {
 
     return (
       <BchatTheme>
+        {reactListModalstate && <ReactListModal  {...reactListModalstate}/> }
+
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>

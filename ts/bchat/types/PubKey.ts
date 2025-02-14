@@ -3,6 +3,32 @@ import { fromHexToArray } from '../utils/String';
 export const getStoragePubKey = (key: string) =>
   window.bchatFeatureFlags.useTestNet ? key.substring(2) : key;
 
+export enum KeyPrefixType {
+  /**
+   * Used for keys which have the blinding update and aren't using blinding
+   */
+  unblinded = '00',
+  /**
+   * Used for identified users, open groups, etc
+   */
+  standard = '05',
+  /**
+   * used for participants in open groups (legacy blinding logic)
+   */
+  blinded15 = '15',
+
+  /**
+   * used for participants in open groups (new blinding logic)
+   */
+  blinded25 = '25',
+
+  /**
+   * used for participants in open groups
+   */
+  groupV3 = '03',
+}
+
+
 export class PubKey {
   public static readonly PUBKEY_LEN = 66;
   public static readonly HEX = '[0-9a-fA-F]';
@@ -175,5 +201,9 @@ export class PubKey {
 
   public withoutPrefixToArray(): Uint8Array {
     return fromHexToArray(PubKey.remove05PrefixIfNeeded(this.key));
+  }
+
+  public static isBlinded(key: string) {
+    return key.startsWith(KeyPrefixType.blinded15) || key.startsWith(KeyPrefixType.blinded25);
   }
 }

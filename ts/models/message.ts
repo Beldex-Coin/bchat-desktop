@@ -65,6 +65,8 @@ import { ExpirationTimerOptions } from '../util/expiringMessages';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
 import { LinkPreviews } from '../util/linkPreviews';
+import { ReactionList } from '../types/Reaction';
+import { isUsAnySogsFromCache } from '../util/reactions';
 import { getAttachmentMetadata } from '../types/message/initializeAttachmentMetadata';
 // tslint:disable: cyclomatic-complexity
 
@@ -383,7 +385,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     let profileName;
     let isMe = false;
 
-    if (pubkey === UserUtils.getOurPubKeyStrFromCache()) {
+    if (
+      pubkey === UserUtils.getOurPubKeyStrFromCache() ||
+      (pubkey && pubkey.startsWith('bd') && isUsAnySogsFromCache(pubkey))) {
       profileName = window.i18n('you');
       isMe = true;
     } else {
@@ -538,6 +542,10 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (previews && previews.length) {
       props.previews = previews;
     }
+     const reacts = this.getPropsForReacts();
+    if (reacts && Object.keys(reacts).length) {
+      props.reacts = reacts;
+    }
     const quote = this.getPropsForQuote(options);
     if (quote) {
       props.quote = quote;
@@ -551,9 +559,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (attachmentsProps && attachmentsProps.length) {
       props.attachments = attachmentsProps;
     }
-
     return props;
   }
+ 
 
   public createNonBreakingLastSeparator(text: string) {
     const nbsp = '\xa0';
@@ -563,6 +571,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         end.length < 12 ? _.reduce(spaces, accumulator => accumulator + nbsp, '') : spaces;
       return `${start}${newSpaces}${end}`;
     });
+  }
+  public getPropsForReacts(): ReactionList | null {
+    return this.get('reacts') || null;
   }
 
   public processQuoteAttachment(attachment: any) {
@@ -845,6 +856,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       hasVisualMediaAttachments: 0,
       attachments: undefined,
       preview: undefined,
+      reacts: undefined,
+      reactsIndex: undefined,
     });
     await this.markRead(Date.now());
     await this.commit();
@@ -900,6 +913,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         preview,
         quote,
         lokiProfile: UserUtils.getOurProfile(),
+        reacts: this.get('reacts'),
+        
       };
       if (!chatParams.lokiProfile) {
         delete chatParams.lokiProfile;
@@ -1342,19 +1357,11 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         return window.i18n('answeredACall', [displayName]);
       }
     }
-    if (this.get('callNotificationType')) {
-      const displayName = getConversationController().getContactProfileNameOrShortenedPubKey(
-        this.get('conversationId')
-      );
-      const callNotificationType = this.get('callNotificationType');
-      if (callNotificationType === 'missed-call') {
-        return window.i18n('callMissed', [displayName]);
-      }
-      if (callNotificationType === 'started-call') {
-        return window.i18n('startedACall', [displayName]);
-      }
-      if (callNotificationType === 'answered-a-call') {
-        return window.i18n('answeredACall', [displayName]);
+    
+    if (this.get('reaction')) {
+      const reaction = this.get('reaction');
+      if (reaction && reaction.emoji && reaction.emoji !== '') {
+        return window.i18n('reactionNotification', [reaction.emoji]);
       }
     }
     return this.get('body');

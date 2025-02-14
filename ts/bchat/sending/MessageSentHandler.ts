@@ -6,8 +6,10 @@ import { OpenGroupVisibleMessage } from '../messages/outgoing/visibleMessage/Ope
 import { RawMessage } from '../types';
 import { UserUtils } from '../utils';
 
+
 // tslint:disable-next-line: no-unnecessary-class
 export class MessageSentHandler {
+
   public static async handlePublicMessageSentSuccess(
     sentMessage: OpenGroupVisibleMessage,
     result: { serverId: number; serverTimestamp: number }
@@ -50,6 +52,13 @@ export class MessageSentHandler {
     if (!fetchedMessage) {
       return;
     }
+    const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
+    const { dataMessage } = contentDecoded;
+
+  
+    if (dataMessage && dataMessage.reaction) {
+      return;
+    }
 
     let sentTo = fetchedMessage.get('sent_to') || [];
 
@@ -74,9 +83,7 @@ export class MessageSentHandler {
     // and the current message was sent to our device (so a sync message)
     const shouldMarkMessageAsSynced = isOurDevice && fetchedMessage.get('sentSync');
 
-    const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
-    const { dataMessage } = contentDecoded;
-
+   
     /**
      * We should hit the notify endpoint for push notification only if:
      *  • It's a one-to-one chat or a closed group
@@ -130,8 +137,8 @@ export class MessageSentHandler {
       expirationStartTimestamp: Date.now(),
       sent_at: effectiveTimestamp,
     });
-
     await fetchedMessage.commit();
+
     fetchedMessage.getConversation()?.updateLastMessage();
   }
 

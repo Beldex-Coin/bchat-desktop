@@ -212,6 +212,9 @@ const darkInputText = '#858598';
 const darkIconColor = white;
 const darkInviteCardIconBg = '#202329';
 const darkRadioButton = '#F0F0F0';
+const darkEmojiPanelBg='#202329';
+const darkEmojiIconHoverBg='#2C303D';
+const darkEmojiHeaderIcon="white"
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -497,6 +500,9 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-icon', darkIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', darkInviteCardIconBg);
   document.documentElement.style.setProperty('--color-radio-icon', darkRadioButton);
+  document.documentElement.style.setProperty('--color-emoji-panel-bg', darkEmojiPanelBg);
+  document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', darkEmojiIconHoverBg);
+  document.documentElement.style.setProperty('--color-emoji-header-icon', darkEmojiHeaderIcon);
 };
 
 // LIGHT COLORS
@@ -688,6 +694,9 @@ const lightInputText = '#ACACAC';
 const lightIconColor = '#3E4A53';
 const lightInviteCardIconBg = '#F8F8F8';
 const lightRadioButton = '#ACACAC';
+const lightEmojiPanelBg='#F8F8F8';
+const lightEmojiIconHoverBg='#EBEBEB';
+const lightEmojiHeaderIcon='#333';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -982,6 +991,10 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-icon', lightIconColor);
   document.documentElement.style.setProperty('--color-invite-card-icon-bg', lightInviteCardIconBg);
   document.documentElement.style.setProperty('--color-radio-icon', lightRadioButton);
+  document.documentElement.style.setProperty('--color-emoji-panel-bg', lightEmojiPanelBg);
+  document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', lightEmojiIconHoverBg);
+  document.documentElement.style.setProperty('--color-emoji-header-icon', lightEmojiHeaderIcon);
+
 };
 
 // default to light theme
@@ -994,6 +1007,11 @@ export const BchatGlobalStyles = createGlobalStyle`
     --font-size-xs:  11px;
     --font-size-sm:  13px;
     --font-size-md:  15px;
+
+        --font-size-h1: 30px;
+    --font-size-h2: 24px;
+    --font-size-h3: 20px;
+    --font-size-h4: 16px;
 
     /* MARGINS */
     --margins-xs:  5px;
@@ -1158,7 +1176,9 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-icon:${darkIconColor};
     --color-invite-card-icon-bg:${darkInviteCardIconBg};
     --color-radio-icon:${lightRadioButton};
-
+    --color-emoji-panel-bg:${darkEmojiPanelBg};
+    --color-emoji-icon-hover-bg:${darkEmojiIconHoverBg};
+    --color-emoji-header-icon:${darkEmojiHeaderIcon};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

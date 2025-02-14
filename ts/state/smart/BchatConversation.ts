@@ -19,6 +19,7 @@ import { getStagedAttachmentsForCurrentConversation } from '../selectors/stagedA
 import { getHasOngoingCallWithFocusedConvo } from '../selectors/call';
 import { BchatConversation } from '../../components/conversation/BchatConversation';
 import { getFocusedSection } from '../selectors/section';
+import { getReactListDialog } from '../selectors/modal';
 
 
 
@@ -37,7 +38,8 @@ const mapStateToProps = (state: StateType) => {
     hasOngoingCallWithFocusedConvo: getHasOngoingCallWithFocusedConvo(state),
     isMe:getIsSelectedNoteToSelf(state),
     convoList:getLeftPaneLists(state),
-    focusedSection : getFocusedSection(state)
+    focusedSection : getFocusedSection(state),
+    reactListModalstate : getReactListDialog(state),
     
   };
 };

@@ -70,6 +70,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         height: 50,
         barGap: 2,
         barHeight: 2,
+      
       });
 
       surfer.load(urlToLoad);
@@ -182,7 +183,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
-          iconColor="#F0F0F0"
+          // iconColor="#F0F0F0"
           onClick={playAndPause}
         />
         <SpacerSM />

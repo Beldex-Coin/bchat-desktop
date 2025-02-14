@@ -7,10 +7,16 @@ import {
 } from '../bchat/apis/open_group_api/utils/OpenGroupUtils';
 import { getConversationController } from '../bchat/conversations';
 import { PubKey } from '../bchat/types';
-import { ToastUtils } from '../bchat/utils';
+
 import { BchatButtonColor } from '../components/basic/BchatButton';
 
 import { updateBanOrUnbanUserModal, updateConfirmModal } from '../state/ducks/modalDialog';
+
+// import { getMessagesBySentAt } from '../data/data';
+// import { MessageModel } from '../models/message';
+// import { SignalService } from '../protobuf';
+// import { ReactionList } from '../types/Message';
+import { ToastUtils } from '../bchat/utils';
 
 export function banUser(userToBan: string, conversationId: string) {
   let pubKeyToBan: PubKey;
@@ -56,6 +62,7 @@ export function unbanUser(userToUnBan: string, conversationId: string) {
     updateBanOrUnbanUserModal({ banType: 'unban', conversationId, pubkey: pubKeyToUnban.key })
   );
 }
+
 
 export function copyBodyToClipboard(body?: string | null) {
   window.clipboard.writeText(body);
@@ -121,8 +128,8 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
       okTheme: BchatButtonColor.Primary,
       cancelText: 'No',
       iconShow: true,
-      iconSize:30,
-      bchatIcon:'peopleGrp',
+      iconSize: 30,
+      bchatIcon: 'peopleGrp',
       // customIcon:customIcon,
 
       onClickOk: async () => {
