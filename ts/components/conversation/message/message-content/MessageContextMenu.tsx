@@ -1,5 +1,5 @@
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { animation, Item, Menu,  } from 'react-contexify';
 
@@ -27,7 +27,7 @@ import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 
-import styled from 'styled-components';
+
 
 
 
@@ -49,6 +49,7 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'timestamp'
   | 'isBlocked'
   | 'isDeletableForEveryone'
+  |'isDeleted'
 >;
 
 // tslint:disable: max-func-body-length cyclomatic-complexity
@@ -75,6 +76,7 @@ export const MessageContextMenu = (props: Props) => {
     serverTimestamp,
     timestamp,
     isBlocked,
+    isDeleted
   } = selected;
   
   const { messageId, contextMenuId } = props;
@@ -84,7 +86,7 @@ export const MessageContextMenu = (props: Props) => {
 
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
-  const contextMenuRef = useRef(null);
+
 
   const onContextMenuShown = () => {
     if (showEmojiPanel) {
@@ -207,18 +209,18 @@ export const MessageContextMenu = (props: Props) => {
           <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
         </Item>
       ) : null}
-      {!attachments?.length &&
+      {!attachments?.length && !isDeleted &&
         <Item onClick={copyText}>
           <CopyIcon color={'var(--color-text)'} iconSize={18} />
           <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
         </Item>}
-      {(isSent || !isOutgoing) && (
+      {(isSent || !isOutgoing) &&!isDeleted && (
         <Item onClick={onReply}>
           <BchatIcon iconType={'reply'} iconSize={18} />
           <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
         </Item>
       )}
-      {(!isPublic || isOutgoing) && (
+      {(!isPublic || isOutgoing) &&  (
         <Item onClick={onShowDetail}>
           <BchatIcon iconType={'infoCircle'} iconSize={18} />
           <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span></Item>

@@ -132,7 +132,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
         <div className="module-message-detail">
           <div >
             {/* <h2>More Info</h2> */}
-            <Message messageId={messageId} isDetailView={false} />
+            <Message messageId={messageId} isDetailView={true} />
             {/* {selectedMsg?.text} */}
           </div>
           <SpacerSM />

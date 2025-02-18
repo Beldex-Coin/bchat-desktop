@@ -978,6 +978,7 @@ export const getMessageContextMenuProps = createSelector(getMessagePropsByMessag
     'timestamp',
     'isBlocked',
     'isDeletableForEveryone',
+    'isDeleted'
   ]);
   return msgProps;
 });

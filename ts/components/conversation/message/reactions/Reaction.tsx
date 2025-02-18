@@ -93,7 +93,8 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   const reactionsMap = (reactions && Object.fromEntries(reactions)) || {};
   const senders = reactionsMap[emoji].senders ? Object.keys(reactionsMap[emoji].senders) : [];
   const count = reactionsMap[emoji].count;
-  const showCount = count !== undefined && (count > 1 || inGroup);
+  // const showCount = count !== undefined && (count > 1 || inGroup);
+  const showCount = count !== undefined && count > 1;
 
   const reactionRef = useRef<HTMLDivElement>(null);
   const { docX, elW } = useMouse(reactionRef);
@@ -151,7 +152,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         >
           {emoji}
         </span>
-        {showCount && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
+        {showCount  && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
       </StyledReaction>
       {popupReaction && popupReaction === emoji && (
         <ReactionPopup

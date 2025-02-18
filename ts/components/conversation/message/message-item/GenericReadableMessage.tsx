@@ -123,7 +123,7 @@ const StyledReadableMessage = styled(ReadableMessage)<{
   ${props =>
     props.isRightClicked &&
     `
-    background-color: var(--color-compose-view-button-background);
+    background-color:var(--color-chat-multi-select-bg);
   `}
   ${props =>
     props.selected &&

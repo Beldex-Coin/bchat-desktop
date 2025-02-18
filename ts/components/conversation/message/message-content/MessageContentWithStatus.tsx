@@ -238,7 +238,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   }
   const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload,isPublic } = contentProps;
   const isIncoming = direction === 'incoming';
-  const emojiIsVisible = !isDeleted && !multiSelectMode && !isPublic && (!hasAttachments || isTrustedForAttachmentDownload);
+  const emojiIsVisible = !isDeleted && !multiSelectMode && !isPublic && (!hasAttachments || isTrustedForAttachmentDownload) && status !=='sending' ;
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
@@ -253,7 +253,7 @@ export const MessageContentWithStatuses = (props: Props) => {
       }}
     >
       <div
-        className={classNames('module-message', `module-message--${direction}`)}
+        className={classNames('module-message', `module-message--${direction}`,isDetailView && 'module-message--detailview')}
         role="button"
         onClick={onClickOnMessageOuterContainer}
         onDoubleClickCapture={onDoubleClickReplyToMessage}
@@ -281,6 +281,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             dataTestId="msg-status-outgoing"
             messageId={messageId}
             isCorrectSide={!isIncoming}
+            status={status}
           />
         )}
         <div>
@@ -301,6 +302,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             dataTestId="msg-status-incoming"
             messageId={messageId}
             isCorrectSide={isIncoming}
+            status={status}
           />
         )}
         {isIncoming && emojiIsVisible &&(
@@ -313,7 +315,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             />
           </StyledRecentReactionWrapper>
         )}
-        {!isDeleted && (
+        { !isDetailView &&(
           <MessageContextMenu
             messageId={messageId}
             contextMenuId={ctxMenuID}
@@ -321,12 +323,12 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
       </div>
-      {enableReactions && (
+      {enableReactions && !isDetailView &&(
         <MessageReactions
           messageId={messageId}
           onClick={handleMessageReaction}
           popupReaction={popupReaction}
-          setPopupReaction={setPopupReaction}
+          setPopupReaction={(e)=>{setPopupReaction(e),setRecentEmojiBtnVisible(false)}}
           onPopupClick={handlePopupClick}
           isIncoming={isIncoming}
         />
