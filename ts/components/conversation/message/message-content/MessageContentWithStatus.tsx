@@ -289,6 +289,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             messageId={messageId}
             isDetailView={isDetailView}
             onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+            isTrustedForAttachmentDownload={isTrustedForAttachmentDownload}
           />
         </div>
         {expirationLength && expirationTimestamp ? (

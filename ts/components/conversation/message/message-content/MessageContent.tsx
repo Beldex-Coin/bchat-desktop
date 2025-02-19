@@ -42,12 +42,14 @@ export type MessageContentSelectorProps = Pick<
   | 'previews'
   | 'quote'
   | 'attachments'
+
 >;
 
 type Props = {
   messageId: string;
   isDetailView?: boolean;
   onRecentEmojiBtnVisible:()=>void;
+  isTrustedForAttachmentDownload?:boolean
 };
 
 // function getIsShowingImage(
@@ -167,7 +169,9 @@ export const MessageContent = (props: Props) => {
     previews,
     // quote,
     attachments=[],
+    
   } = contentProps;
+  const {isTrustedForAttachmentDownload}=props;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
   let isDeleted = false;
@@ -181,8 +185,7 @@ export const MessageContent = (props: Props) => {
   // const hasQuote = !isEmpty(quote);
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-  const isGifAttachments=attachments.length===1 && attachments[0].contentType==='image/gif';
-
+  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif';
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 
@@ -55,6 +55,8 @@ import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
+import { getMessageById } from '../../data/data';
+
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
@@ -102,6 +104,31 @@ const SelectionOverlay = () => {
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
 
+  const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
+
+  useEffect(() => {
+    const isDeleteEveryone = async () => {
+      // Retrieve selected messages
+      const selectedMessages = await Promise.all(
+        selectedMessageIds.map(id => getMessageById(id, false))
+      );
+      // Remove null or undefined messages
+      const compactedMessages = selectedMessages.filter(Boolean);
+
+      // Check if there are any incoming messages in selected messages for private conversations
+      const containsIncomingMessages =
+        !isPublic && compactedMessages.some(msg => !msg?.isOutgoing());
+
+      // Return the negation of containsIncomingMessages
+      return !containsIncomingMessages;
+    };
+
+    // Call isDeleteEveryone and update state
+    isDeleteEveryone().then(result => {
+      setCanDeleteEveryone(result);
+    });
+  }, [selectedMessageIds, isPublic]);
+
   const { i18n } = window;
 
   function onCloseOverlay() {
@@ -125,7 +152,7 @@ const SelectionOverlay = () => {
 
   return (
     <div className="message-selection-overlay">
-      <Flex container={true} alignItems='center'>
+      <Flex container={true} alignItems="center">
         <div className="close-button">
           <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
         </div>
@@ -146,13 +173,15 @@ const SelectionOverlay = () => {
             style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
-        <BchatButton
-          buttonType={BchatButtonType.Medium}
-          buttonColor={BchatButtonColor.Red}
-          text={deleteForEveryoneMessageButtonText}
-          onClick={onDeleteSelectedMessagesForEveryone}
-          style={{ borderRadius: '40px' }}
-        />
+        {canDeleteEveryone && (
+          <BchatButton
+            buttonType={BchatButtonType.Medium}
+            buttonColor={BchatButtonColor.Red}
+            text={deleteForEveryoneMessageButtonText}
+            onClick={onDeleteSelectedMessagesForEveryone}
+            style={{ borderRadius: '40px' }}
+          />
+        )}
       </div>
     </div>
   );
@@ -217,7 +246,7 @@ const AvatarHeader = (props: {
       <BNSWrapper
         // size={40}
         position={{ left: '46px', top: '46px' }}
-        isBnsHolder={conversation?.isBnsHolder }
+        isBnsHolder={conversation?.isBnsHolder}
         size={{ width: '20', height: '20' }}
       >
         <Avatar
@@ -275,9 +304,15 @@ const CallButton = () => {
         }}
         customIcon={<CallIcon iconSize={24} />}
       /> */}
-      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
-        void callRecipient(selectedConvoKey, canCall);
-      }} />
+      <BchatIconButton
+        iconType={'call'}
+        iconSize={24}
+        fillRule="evenodd"
+        clipRule="evenodd"
+        onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }}
+      />
     </div>
   );
 };
@@ -360,14 +395,14 @@ const ConversationHeaderTitle = () => {
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
-      // onClick={() => {
-      //   if (isRightPanelOn) {
-      //     dispatch(closeRightPanel());
-      //   } else {
-      //     dispatch(openRightPanel());
-      //   }
-      // }}
-      // role="button"
+        // onClick={() => {
+        //   if (isRightPanelOn) {
+        //     dispatch(closeRightPanel());
+        //   } else {
+        //     dispatch(openRightPanel());
+        //   }
+        // }}
+        // role="button"
       >
         {convoName}
         <SubTxt>
@@ -486,7 +521,7 @@ export const ConversationHeaderWithDetails = () => {
                   marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // disabled={!caption}
+                // disabled={!caption}
               />
               // </div>
             )}

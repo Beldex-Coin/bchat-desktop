@@ -71,8 +71,8 @@ import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
-import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
-import { OpenGroupData } from '../data/opengroups';
+// import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
+// import { OpenGroupData } from '../data/opengroups';
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -1495,8 +1495,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
-      const openGroup:any = OpenGroupData.getV2OpenGroupRoom(this.id);
-      return roomHasReactionsEnabled(openGroup);
+      // const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
+      // return roomHasReactionsEnabled(openGroup);
+      return false
     } else {
       return true;
     }
