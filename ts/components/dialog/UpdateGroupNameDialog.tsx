@@ -112,7 +112,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         }}
        
       >
-       <div style={{width:'400px'}}>
+       <div style={{minWidth:'400px'}}>
        {this.state.errorDisplayed ? (
           <>
             <SpacerMD />

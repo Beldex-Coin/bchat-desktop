@@ -4,12 +4,12 @@ import { SignalService } from '../protobuf';
 import { MessageModel } from '../models/message';
 
 import { Data, getMessageById } from '../data/data';
-import { isEmpty, isString } from 'lodash';
+import { isEmpty } from 'lodash';
 import { OpenGroupReactionList, ReactionList, RecentReactions } from '../types/Reaction';
-import { ConversationModel } from '../models/conversation';
-import { getConversationController } from '../bchat/conversations';
-import { roomHasBlindEnabled } from '../types/sqlSharedTypes';
-import { OpenGroupData } from '../data/opengroups';
+// import { ConversationModel } from '../models/conversation';
+// import { getConversationController } from '../bchat/conversations';
+// import { roomHasBlindEnabled } from '../types/sqlSharedTypes';
+// import { OpenGroupData } from '../data/opengroups';
 import { PubKey } from '../bchat/types/PubKey';
 
 
@@ -277,32 +277,32 @@ export const updateRecentReactions = async (reactions: Array<string>, newReactio
 };
 
 /**
- * This function returns the cached blindedId for us, given a public conversation.
+ * This function returns the cached blindedId for us, given a public conversation v3.
  */
-export function getUsBlindedInThatServer(convo: ConversationModel | string): string | undefined {
-  if (!convo) {
-    return undefined;
-  }
-  const convoId = isString(convo) ? convo : convo.id;
+// export function getUsBlindedInThatServer(convo: ConversationModel | string): string | undefined {
+//   if (!convo) {
+//     return undefined;
+//   }
+//   const convoId = isString(convo) ? convo : convo.id;
 
-  if (
-    !getConversationController()
-      .get(convoId)
-      ?.isOpenGroupV2()
-  ) {
-    return undefined;
-  }
-  const room = OpenGroupData.getV2OpenGroupRoom(isString(convo) ? convo : convo.id);
-  if (!room || !roomHasBlindEnabled(room) || !room.serverPublicKey) {
-    return undefined;
-  }
-  const usNaked = UserUtils.getOurPubKeyStrFromCache();
+//   if (
+//     !getConversationController()
+//       .get(convoId)
+//       ?.isOpenGroupV2()
+//   ) {
+//     return undefined;
+//   }
+//   const room = OpenGroupData.getV2OpenGroupRoom(isString(convo) ? convo : convo.id);
+//   if (!room || !roomHasBlindEnabled(room) || !room.serverPublicKey) {
+//     return undefined;
+//   }
+//   const usNaked = UserUtils.getOurPubKeyStrFromCache();
 
-  const found = assertLoaded().find(
-    m => m.serverPublicKey === room.serverPublicKey && m.realSessionId === usNaked
-  );
-  return found?.blindedId;
-}
+//   const found = assertLoaded().find(
+//     m => m.serverPublicKey === room.serverPublicKey && m.realSessionId === usNaked
+//   );
+//   return found?.blindedId;
+// }
 function assertLoaded(): Array<BlindedIdMapping> {
   if (cachedKnownMapping === null) {
     throw new Error('loadKnownBlindedKeys must be called on app start');

@@ -498,7 +498,8 @@
 // Module: Message Detail
 
 .module-message-detail {
-  max-width: 650px;
+  // max-width: 650px;
+  min-width: 650px;
   margin-inline-start: auto;
   margin-inline-end: auto;
   // padding: 20px;

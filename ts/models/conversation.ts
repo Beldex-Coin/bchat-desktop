@@ -1495,7 +1495,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
-      const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
+      const openGroup:any = OpenGroupData.getV2OpenGroupRoom(this.id);
       return roomHasReactionsEnabled(openGroup);
     } else {
       return true;

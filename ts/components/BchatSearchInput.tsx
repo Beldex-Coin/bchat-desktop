@@ -39,8 +39,8 @@ export const BchatSearchInput = () => {
 
   const convoCount = useSelector(getConversationsCount);
 
-  // just after onboard we only have a conversation with ourself
-  if (convoCount <= 1) {
+  // just after onboard we only have a conversation 
+  if (convoCount < 1) {
     return null;
   }
   

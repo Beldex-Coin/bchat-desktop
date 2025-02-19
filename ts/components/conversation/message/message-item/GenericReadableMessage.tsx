@@ -168,7 +168,7 @@ export const GenericReadableMessage = (props: Props) => {
 
   const handleContextMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup;
+      const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup && !isDetailView;
 
       if (enableContextMenu) {
         contextMenu.hideAll();
@@ -241,7 +241,7 @@ export const GenericReadableMessage = (props: Props) => {
         isGroup && 'public-chat-message-wrapper',
         isIncoming ? 'bchat-message-wrapper-incoming' : 'bchat-message-wrapper-outgoing'
       )}
-      onContextMenu={handleContextMenu}
+      onContextMenu={ handleContextMenu}
       receivedAt={receivedAt}
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
