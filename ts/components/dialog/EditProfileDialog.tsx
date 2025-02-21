@@ -342,7 +342,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               }}
             >
               <span>
-                <BchatIcon iconType={'bnslogo'} iconSize={26} />
+                <BchatIcon iconType={'bnslogo'} iconSize={26} iconColor='var(--color-text-opposite)' />
               </span>
               {i18n('linkYourBns')}
             </button>
