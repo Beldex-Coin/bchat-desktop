@@ -432,7 +432,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 380px;
+    max-width: 380px;
+    cursor: pointer;
   }
 }
 

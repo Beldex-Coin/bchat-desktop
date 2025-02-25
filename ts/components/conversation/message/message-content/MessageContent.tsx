@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import {
   getMessageContentSelectorProps,
+  getMessageQuoteProps,
   getMessageTextProps,
   getQuotedMessageToAnimate,
   getShouldHighlightMessage,
@@ -132,7 +133,8 @@ export const MessageContent = (props: Props) => {
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
-
+  const quoteMessageprops = useSelector(state => getMessageQuoteProps(state as any, props.messageId));
+  const quote = quoteMessageprops?.quote ;
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
       if (!flashGreen && !didScroll) {
@@ -185,7 +187,7 @@ export const MessageContent = (props: Props) => {
   // const hasQuote = !isEmpty(quote);
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif';
+  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !quote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 

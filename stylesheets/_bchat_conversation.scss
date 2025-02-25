@@ -100,17 +100,16 @@
   }
 
   .message-selection-overlay {
-    position: absolute;
+    
     display: flex;
-    left: 0px;
-    right: 0px;
-    top: 66px;
+    height:65px;
     padding: 0px $bchat-margin-md;
+    margin: 0 2px;
     align-items: center;
     justify-content: space-between;
-    height: $main-view-header-height;
     background: var(--color-chat-multi-select-bg);
     z-index: 93;
+
 
     .close-button {
       float: left;

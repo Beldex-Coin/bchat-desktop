@@ -145,7 +145,7 @@ const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
       isBnsHolder={props.isBnsHolder}
       size={{width:'20',height:'20'}}
     >
-      <Avatar size={AvatarSize.S} pubkey={props.source} />
+      <Avatar size={AvatarSize.L} pubkey={props.source} /> 
     </BNSWrapper>
   );
 };

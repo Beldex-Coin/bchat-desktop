@@ -176,6 +176,7 @@ export const SettingsCategoryPrivacy = (props: {
               }}
               buttonColor={BchatButtonColor.Primary}
               buttonText={window.i18n('changePassword')}
+              iconType="changePasswordSettings"
             />
           )}
           {props.hasPassword && (
@@ -186,9 +187,11 @@ export const SettingsCategoryPrivacy = (props: {
               onClick={() => {
                 displayPasswordModal('remove', props.onPasswordUpdated);
               }}
-              buttonColor={BchatButtonColor.Danger}
+              buttonColor={BchatButtonColor.Red}
               buttonText={window.i18n('removePassword')}
+                iconType="changePasswordSettings"
             />
+            
           )}
         </div>
       </>

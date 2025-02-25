@@ -19,8 +19,7 @@ import {
   getSelectedConversationKey,
   getSelectedMessageIds,
   isMessageDetailView,
-  isMessageSelectionMode,
-  isRightPanelShowing,
+    isRightPanelShowing,
   // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
+
   // closeRightPanel,
   openRightPanel,
   resetSelectedMessageIds,
@@ -97,7 +97,7 @@ export type ConversationHeaderProps = {
   left: boolean;
 };
 
-const SelectionOverlay = () => {
+export const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
@@ -345,11 +345,10 @@ const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
   // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -391,18 +390,18 @@ const ConversationHeaderTitle = () => {
   }
 
   return (
-    <div className="module-conversation-header__title">
+    <div className="module-conversation-header__title" >
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
-        // onClick={() => {
-        //   if (isRightPanelOn) {
-        //     dispatch(closeRightPanel());
-        //   } else {
-        //     dispatch(openRightPanel());
-        //   }
-        // }}
-        // role="button"
+        onClick={() => {
+          // if (isRightPanelOn) {
+          //   dispatch(closeRightPanel());
+          // } else {
+            dispatch(openRightPanel());
+          // }
+        }}
+        role="button"
       >
         {convoName}
         <SubTxt>
@@ -441,7 +440,7 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 };
 
 export const ConversationHeaderWithDetails = () => {
-  const isSelectionMode = useSelector(isMessageSelectionMode);
+  
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
@@ -542,7 +541,7 @@ export const ConversationHeaderWithDetails = () => {
         </div>
       </div>
 
-      {isSelectionMode && <SelectionOverlay />}
+      {/* {isSelectionMode && <SelectionOverlay />} */}
     </div>
   );
 };

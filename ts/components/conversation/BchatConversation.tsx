@@ -41,7 +41,7 @@ import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
-import { ConversationHeaderWithDetails } from './ConversationHeader';
+import { ConversationHeaderWithDetails, SelectionOverlay } from './ConversationHeader';
 // import { MessageDetail } from './message/message-item/MessageDetail';
 import {
   makeImageThumbnailBuffer,
@@ -96,8 +96,7 @@ interface Props {
   stagedAttachments: Array<StagedAttachmentType>;
   convoList: any;
   focusedSection: any;
-  reactListModalstate:any;
- 
+  reactListModalstate: any;
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -254,7 +253,7 @@ export class BchatConversation extends React.Component<Props, State> {
       // isMe,
       convoList,
       focusedSection,
-      reactListModalstate
+      reactListModalstate,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
 
@@ -281,11 +280,16 @@ export class BchatConversation extends React.Component<Props, State> {
 
     return (
       <BchatTheme>
-        {reactListModalstate && <ReactListModal  {...reactListModalstate}/> }
+        {reactListModalstate && <ReactListModal {...reactListModalstate} />}
 
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
+        {selectionMode && (
+          <div className="conversation-header">
+            <SelectionOverlay />
+          </div>
+        )}
         <div
           // if you change the classname, also update it on onKeyDown
           className={classNames('conversation-content', selectionMode && 'selection-mode')}
