@@ -842,9 +842,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
                           'circular-bar-wrapper'
                       )}
                     >
-                      {selectedConversation?.isPrivate && typingEnabled && !isMe
-                        ? this.bchatWalletView()
-                        : ''}
+                      {selectedConversation?.isPrivate && typingEnabled && !isMe && selectedConversation?.didApproveMe
+                        && this.bchatWalletView()
+                        }
                     </div>
                     <div className="wallet-sync-box">
                       <div className="sync-txt">

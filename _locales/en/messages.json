@@ -331,7 +331,7 @@
   "removeAccountPasswordDescription": "Remove the password associated with your account",
   "oldPasswordAndNewPasswordSame": "Please enter a password that you have not used before.",
   "removePasswordDisc": "Enter your password",
-  "enterPassword": "Enter wallet password",
+  "enterPassword": "Enter your password",
   "confirmPassword": "Confirm the password",
   "showRecoveryPhrasePasswordRequest": "Kindly enter your password ",
   "recoveryPhraseSavePromptMain": "Your recovery phrase is the master key to your BChat ID — you can use it to restore your BChat ID if you lose access to your device. Store your recovery phrase in a safe place, and don't give it to anyone.",

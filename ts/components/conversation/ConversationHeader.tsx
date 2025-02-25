@@ -187,7 +187,7 @@ const SelectionOverlay = () => {
   );
 };
 
-const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
+const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) => {
   const { showBackButton } = props;
   const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
@@ -537,7 +537,7 @@ export const ConversationHeaderWithDetails = () => {
         </div>
         <div className="module-conversation-header__title-container">
           <div className="module-conversation-header__title-flex">
-            <TripleDotsMenu triggerId={triggerId} showBackButton={isMessageDetailOpened} />
+            <TripleDotsMenu triggerId={triggerId} showBackButton={(conversation?.type == 'private' ? !conversation?.didApproveMe:false )|| isMessageDetailOpened} />
           </div>
         </div>
       </div>

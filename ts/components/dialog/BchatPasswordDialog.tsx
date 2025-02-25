@@ -69,14 +69,15 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
         : passwordAction === 'remove'
           ? 'removePassword'
           : 'setPassword';
-
+     const btnName=localizedKeyAction==='removePassword'?window.i18n('remove'):window.i18n('save');
+     const btnColor=localizedKeyAction==='removePassword'?BchatButtonColor.Danger:BchatButtonColor.Primary ;
     return (
       <BchatWrapperModal
         title={window.i18n(localizedKeyAction)}
         onClose={this.closeDialog}
         okButton={{
-          text: window.i18n('save'),
-          color: BchatButtonColor.Primary,
+          text:btnName ,
+          color: btnColor,
           onClickOkHandler: this.setPassword
         }}
         cancelButton={{ status: true, text: window.i18n('cancel'), onClickCancelHandler: this.closeDialog }

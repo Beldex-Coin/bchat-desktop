@@ -29,7 +29,7 @@ import { getTheme } from '../../../../state/selectors/theme';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
-  'direction' | 'isDeleted' | 'isTrustedForAttachmentDownload'| 'isPublic'
+  'direction' | 'isDeleted' | 'isTrustedForAttachmentDownload' | 'isPublic'
 > & { hasAttachments: boolean };
 
 type Props = {
@@ -92,9 +92,9 @@ const RecentReacts = (props: RecentReactsProps) => {
   const onShowEmoji = (e: MouseEvent): void => {
     let x = e.clientX;
     if (isIncoming) {
-    x -= 240;
+      x -= 240;
     } else {
-      x-=150
+      x -= 150;
     }
     let y = e.clientY - 39;
     if (y + emojiPanelHeight > window.innerHeight) {
@@ -236,9 +236,23 @@ export const MessageContentWithStatuses = (props: Props) => {
   if (!contentProps) {
     return null;
   }
-  const { direction, isDeleted, hasAttachments, isTrustedForAttachmentDownload,isPublic } = contentProps;
+  const {
+    direction,
+    isDeleted,
+    hasAttachments,
+    isTrustedForAttachmentDownload,
+    isPublic,
+  } = contentProps;
   const isIncoming = direction === 'incoming';
-  const emojiIsVisible = !isDeleted && !multiSelectMode && !isPublic && (!hasAttachments || isTrustedForAttachmentDownload) && status !=='sending' ;
+
+  const emojiIsVisible =
+    !isDeleted &&
+    !multiSelectMode &&
+    !isPublic &&
+    (!hasAttachments || isTrustedForAttachmentDownload) &&
+    status !== 'sending' &&
+    status !== 'error';
+    
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
@@ -253,14 +267,18 @@ export const MessageContentWithStatuses = (props: Props) => {
       }}
     >
       <div
-        className={classNames('module-message', `module-message--${direction}`,isDetailView && 'module-message--detailview')}
+        className={classNames(
+          'module-message',
+          `module-message--${direction}`,
+          isDetailView && 'module-message--detailview'
+        )}
         role="button"
         onClick={onClickOnMessageOuterContainer}
         onDoubleClickCapture={onDoubleClickReplyToMessage}
         style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
         data-testid={dataTestId}
       >
-        {!isIncoming && emojiIsVisible&&(
+        {!isIncoming && emojiIsVisible && (
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
@@ -306,7 +324,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             status={status}
           />
         )}
-        {isIncoming && emojiIsVisible &&(
+        {isIncoming && emojiIsVisible && (
           <StyledRecentReactionWrapper>
             <RecentReacts
               isIncoming={isIncoming}
@@ -316,7 +334,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             />
           </StyledRecentReactionWrapper>
         )}
-        { !isDetailView &&(
+        {!isDetailView && (
           <MessageContextMenu
             messageId={messageId}
             contextMenuId={ctxMenuID}
@@ -324,12 +342,14 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
       </div>
-      {enableReactions && !isDetailView &&(
+      {enableReactions && !isDetailView && (
         <MessageReactions
           messageId={messageId}
           onClick={handleMessageReaction}
           popupReaction={popupReaction}
-          setPopupReaction={(e)=>{setPopupReaction(e),setRecentEmojiBtnVisible(false)}}
+          setPopupReaction={e => {
+            setPopupReaction(e), setRecentEmojiBtnVisible(false);
+          }}
           onPopupClick={handlePopupClick}
           isIncoming={isIncoming}
         />

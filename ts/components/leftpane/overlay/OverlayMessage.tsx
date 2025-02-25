@@ -57,6 +57,11 @@ export const OverlayMessage = () => {
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
+    if(!pubkeyorOnsTrimmed)
+      {
+        ToastUtils.pushToastError('invalidPubKey','please enter the Id or BNS'); // or Bns name
+        return;
+      }
     if(PubKey.validateWithError(pubkeyorOnsTrimmed) && !pubkeyOrOns.toLowerCase().endsWith('.bdx'))
     {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
