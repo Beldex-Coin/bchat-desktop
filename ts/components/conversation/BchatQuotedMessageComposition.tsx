@@ -37,6 +37,7 @@ const Subtle = styled.div`
   -webkit-box-orient: vertical;
   display: -webkit-box;
   color: var(--color-text);
+   margin-right: 9px;
 `;
 const VerticalLine = styled.div`
   width: 5px;

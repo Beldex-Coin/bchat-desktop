@@ -124,7 +124,7 @@ export const Dashboard = (props: any) => {
   // daemon.daemonHeartbeat();
   return (
     <>
-      <WalletHeader clearStates={props.clearStates} />
+      <WalletHeader />
       <SpacerLG />
       <div className="wallet-syncStatusBox">
         <MemoSyncStatusBar />

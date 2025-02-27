@@ -184,10 +184,10 @@ export const MessageContent = (props: Props) => {
   // const width = getWidth({ previews, attachments });
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
-  // const hasQuote = !isEmpty(quote);
+  const hasQuote = !isEmpty(quote);
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !quote ;
+  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 

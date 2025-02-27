@@ -261,6 +261,7 @@ const StyledEmojiPanelContainer = styled.div`
   }
 `;
 
+
 class CompositionBoxInner extends React.Component<Props, State> {
   private readonly textarea: React.RefObject<any>;
   private readonly fileInput: React.RefObject<HTMLInputElement>;
@@ -762,6 +763,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
       </Flex>
     );
   }
+  private renderLeavedGroupBottoms() {
+    return (
+      <Flex container={true} justifyContent="center" alignItems="center" height="90px" >
+        <div className='leaved-scrt-grp-message-container'>You can’t send message to this group because you’re not a member of this group!</div>
+      </Flex>
+    );
+  }
   private renderCompositionView() {
     const { showEmojiPanel } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
@@ -774,12 +782,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
         ? 'Syncronizing..'
         : 'Synchronized';
-
+     const leftTheGroup=selectedConversation?.isGroup && selectedConversation?.left
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
-        {selectedConversation?.isBlocked ? (
+        {leftTheGroup ? this.renderLeavedGroupBottoms() :selectedConversation?.isBlocked ? (
           this.renderBlockedContactBottoms()
+         
         ) : (
           <>
             {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}

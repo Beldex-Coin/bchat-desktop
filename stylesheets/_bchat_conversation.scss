@@ -287,6 +287,13 @@
   scrollbar-width: 4px;
   // padding: $bchat-margin-sm $bchat-margin-lg $bchat-margin-lg;
 }
+.leaved-scrt-grp-message-container{
+  border-radius: 16px;
+  background:var(--color-conversation-item-selected);
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 20px;
+}
 
 .composition-container {
   display: flex;
