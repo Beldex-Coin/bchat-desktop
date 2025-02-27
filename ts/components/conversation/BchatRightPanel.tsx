@@ -716,7 +716,7 @@ export const BchatRightPanelWithDetails = () => {
                       {weAreAdmin && (
                         <BchatIconButton
                           iconType="avatarX"
-                          iconSize={24}
+                          iconSize={26}
                           clipRule="evenodd"
                           fillRule="evenodd"
                           onClick={() => setRemoveMem(true)}

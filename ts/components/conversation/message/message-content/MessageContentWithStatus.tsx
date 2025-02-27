@@ -274,7 +274,7 @@ export const MessageContentWithStatuses = (props: Props) => {
         )}
         role="button"
         onClick={onClickOnMessageOuterContainer}
-        onDoubleClickCapture={onDoubleClickReplyToMessage}
+        
         style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
         data-testid={dataTestId}
       >
@@ -298,11 +298,11 @@ export const MessageContentWithStatuses = (props: Props) => {
           <MessageStatus
             dataTestId="msg-status-outgoing"
             messageId={messageId}
-            isCorrectSide={!isIncoming}
+            isCorrectSide={!isIncoming && !isDetailView }
             status={status}
           />
         )}
-        <div>
+        <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
           <MessageContent
             messageId={messageId}
             isDetailView={isDetailView}

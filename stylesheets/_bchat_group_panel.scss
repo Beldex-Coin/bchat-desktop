@@ -334,7 +334,7 @@
       color: #f0f0f0;
       font-size: 12px;
       font-weight: 500;
-      padding: 5px 7px 5px 0;
+      padding: 10px 7px 10px 0;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -385,7 +385,9 @@
   .img-wrapper {
     .module-media-gallery__content {
       overflow-y: hidden;
-      height: 303px;
+      // height: 303px;
+      height: calc( 100vh - 679px );
+      margin-top: 15px;
     }
   }
 
