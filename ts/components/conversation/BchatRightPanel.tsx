@@ -53,7 +53,7 @@ import { BchatButtonColor } from '../basic/BchatButton';
 import { MenuWrapper } from '../menu/Menu';
 import { getTheme } from '../../state/selectors/theme';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { useClickAway } from 'react-use';
+// import { useClickAway } from 'react-use';
 
 async function getMediaGalleryProps(
   conversationId: string
@@ -368,9 +368,9 @@ export const BchatRightPanelWithDetails = () => {
   if (!selectedConversation) {
     return null;
   }
-  useClickAway(rightPanelref, () => {
-    dispatch(closeRightPanel());
-  });
+  // useClickAway(rightPanelref, () => {
+  //   dispatch(closeRightPanel());
+  // });
 
   const {
     id,

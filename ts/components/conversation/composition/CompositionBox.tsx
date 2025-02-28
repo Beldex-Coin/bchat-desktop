@@ -1367,7 +1367,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       // this does not call call removeAllStagedAttachmentsInConvers
       const { attachments, previews } = await this.getFiles(linkPreview);
       this.props.sendMessage({
-        body: messagePlaintext,
+        body: messagePlaintext.trim(),
         attachments: attachments || [],
         quote: extractedQuotedMessageProps,
         preview: previews,

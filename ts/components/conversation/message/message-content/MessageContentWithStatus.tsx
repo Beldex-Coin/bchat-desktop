@@ -6,6 +6,7 @@ import { MessageRenderingProps } from '../../../../models/messageType';
 import { toggleSelectedMessageId } from '../../../../state/ducks/conversations';
 import { updateReactListModal } from '../../../../state/ducks/modalDialog';
 import {
+  getIsTypingEnabled,
   getMessageContentWithStatusesSelectorProps,
   getMessageStatusProps,
   isMessageSelectionMode,
@@ -173,6 +174,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
+  const typingEnabled= useSelector(getIsTypingEnabled)
 
   const dispatch = useDispatch();
   const multiSelectMode = useSelector(isMessageSelectionMode);
@@ -241,7 +243,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     isDeleted,
     hasAttachments,
     isTrustedForAttachmentDownload,
-    isPublic,
+    isPublic, 
   } = contentProps;
   const isIncoming = direction === 'incoming';
 
@@ -251,7 +253,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     !isPublic &&
     (!hasAttachments || isTrustedForAttachmentDownload) &&
     status !== 'sending' &&
-    status !== 'error';
+    status !== 'error' && typingEnabled;
     
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
