@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 import { BchatIconButton } from '../icon';
 
+import { copyBchatID } from '../dialog/EditProfileDialog';
+
 export const TransactionSection = (props: any) => {
   const transactionsHistory = props.transactionList == undefined ? [] : props.transactionList;
 
@@ -175,9 +177,10 @@ export const TransactionSection = (props: any) => {
   return (
     <div className="wallet-Transaction" style={{ height: zoomLevel > 100 ? 'unset' : '' }}>
       <div style={{ height: '98%' }} onClick={() => (visible ? setVisible(false) : '')}>
-        <Flex container={true}  flexDirection="row" width='100%' justifyContent='space-between'>
-          <div className="wallet-Transaction-title" 
-          // style={{width:'30%'}}
+        <Flex container={true} flexDirection="row" width="100%" justifyContent="space-between">
+          <div
+            className="wallet-Transaction-title"
+            // style={{width:'30%'}}
           >
             <BchatIcon
               iconType="oppositeDirDoubleArrow"
@@ -187,8 +190,12 @@ export const TransactionSection = (props: any) => {
             />
             <span style={{ marginLeft: '10px' }}>{window.i18n('transactions')}</span>
           </div>
-          <Flex container={true} justifyContent="flex-end" flexDirection="row" flexWrap="wrap" 
-          // style={{width:'70%'}}
+          <Flex
+            container={true}
+            justifyContent="flex-end"
+            flexDirection="row"
+            flexWrap="wrap"
+            // style={{width:'70%'}}
           >
             {transactionsHistory.length !== 0 || searchText ? (
               <div className="wallet-Transaction-filter-wrapper">
@@ -362,23 +369,33 @@ export const TransactionSection = (props: any) => {
                         {item.type === 'out' ? '-' : ''}
                         {Number((item.amount / 1e9).toFixed(4))} BDX
                       </div>
-                      <div
-                        className="wallet-Transaction-contentBox-balanceBox-address"
-                        onClick={() => openToExplore(item.txid)}
-                      >
-                        {item.txid}
-                      </div>
+                      <Flex container={true}>
+                        <BchatIconButton
+                          iconType="copy"
+                          iconSize={14}
+                          clipRule="evenodd"
+                          fillRule="evenodd"
+                          iconColor="#108D32"
+                          onClick={() => copyBchatID(item.txid)}
+                        />
+                        <div
+                          className="wallet-Transaction-contentBox-balanceBox-address"
+                          onClick={() => openToExplore(item.txid)}
+                        >
+                          {item.txid}
+                        </div>
+                      </Flex>
                     </div>
                   </Flex>
 
-                  <Flex container={true}   style={{
-                        marginLeft: zoomLevel > 125 && innerWidth < 1920 ? '38px' : '',
-                        marginTop: '15px',
-                      }} >
-                    <section
-                      className="wallet-Transaction-contentBox-dateandheight"
-                    
-                    >
+                  <Flex
+                    container={true}
+                    style={{
+                      marginLeft: zoomLevel > 125 && innerWidth < 1920 ? '38px' : '',
+                      marginTop: '15px',
+                    }}
+                  >
+                    <section className="wallet-Transaction-contentBox-dateandheight">
                       <div
                         className="wallet-Transaction-contentBox-dateandheight-month"
                         style={{

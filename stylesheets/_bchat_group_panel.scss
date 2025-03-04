@@ -15,6 +15,11 @@
   padding: 15px;
   background: var(--color-inbox-background);
 
+  position: absolute;
+  right: 0px;
+  z-index: 2;
+
+
   &-header {
     // margin-top: $bchat-margin-lg;
     // margin-inline-start: $bchat-margin-sm;

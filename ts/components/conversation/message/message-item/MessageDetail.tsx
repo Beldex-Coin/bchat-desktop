@@ -21,7 +21,7 @@ import { SpacerSM, SpacerXS } from '../../../basic/Text';
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
 
-  return <Avatar size={AvatarSize.S} pubkey={pubkey} />;
+  return <Avatar size={AvatarSize.L} pubkey={pubkey} />;
 };
 
 // const DeleteButtonItem = (props: { messageId: string; convoId: string; isDeletable: boolean }) => {
@@ -103,7 +103,9 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
     //  convoId,
     direction,
     messageId,
+    contacts
   } = props;
+  const contactlist=contacts.length?[contacts[0]]:contacts;
   // const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
   // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
@@ -173,7 +175,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
             <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
           ): null}
           <SpacerXS />
-          <ContactsItem contacts={props.contacts} />
+          <ContactsItem contacts={contactlist} />
         </div>
       </BchatWrapperModal>
     </div>

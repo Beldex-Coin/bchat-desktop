@@ -331,7 +331,7 @@ export const BchatRightPanelWithDetails = () => {
   );
   const darkMode = useSelector(getTheme) === 'dark';
   // const { uniqueValues: selectedContacts } = useSet<string>();
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   useEffect(() => {
     let isRunning = true;
 
@@ -547,12 +547,12 @@ export const BchatRightPanelWithDetails = () => {
     <div
     ref={rightPanelref}
       className="group-settings"
-      style={{
-        position: zoomLevel > 100 ? 'absolute' : 'unset',
-        overflowY: zoomLevel > 100 ? 'auto' : 'unset',
-        right: 0,
-        zIndex: 2,
-      }}
+      // style={{
+      //   position: zoomLevel > 100 ? 'absolute' : 'unset',
+      //   overflowY: zoomLevel > 100 ? 'auto' : 'unset',
+      //   right: 0,
+      //   zIndex: 2,
+      // }}
     >
       {!fullView ? (
         <>
