@@ -95,7 +95,7 @@ import styled from 'styled-components';
 
 // import { BaseEmoji } from 'emoji-mart';
 // import { nativeEmojiData } from '../../../util/emoji';
-import { FixedBaseEmoji } from '../../../types/Reaction';
+ import { FixedBaseEmoji } from '../../../types/Reaction';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -1551,7 +1551,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const end = draft.slice(realSelectionStart);
 
     const newMessage = `${before}${emoji.native}${end}`;
-    this.setState({ draft: newMessage });
+    
+    this.setState({ draft: newMessage }, () => {
+      setTimeout(() => {
+        const emojiLength = emoji.native?.length || 0;
+        messageBox.selectionStart = messageBox.selectionEnd = before.length + emojiLength;
+        messageBox.focus();
+      }, 0);
+    });
     updateDraftForConversation({
       conversationKey: this.props.selectedConversationKey,
       draft: newMessage,
