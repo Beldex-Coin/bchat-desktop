@@ -142,7 +142,7 @@
   "deleteMessagesQuestion": "This will permanently delete the  selected $count$ messages.",
   "deleteMessageQuestion": "This will permanently delete the  selected messages.",
   "deleteMessages": "Delete Messages",
-  "deleted": "$count$ deleted",
+  "deleted": "$count$ message deleted",
   "messageDeletedPlaceholder": "This message has been deleted",
   "from": "From:",
   "to": "To:",

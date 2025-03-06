@@ -283,6 +283,8 @@ export const GenericReadableMessage = (props: Props) => {
           expirationLength={expirationLength}
           expirationTimestamp={expirationTimestamp}
           enableReactions={enableReactions}
+          isRightClicked={isRightClicked}
+          onMessageLoseFocus={onMessageLoseFocus}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

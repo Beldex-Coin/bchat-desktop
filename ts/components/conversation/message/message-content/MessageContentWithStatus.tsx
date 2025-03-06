@@ -42,6 +42,8 @@ type Props = {
   expirationLength?: number | null;
   expirationTimestamp?: number | null;
   enableReactions: boolean;
+  isRightClicked:boolean;
+  onMessageLoseFocus:()=>void
 };
 const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -71,7 +73,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ? 55 : -302}px`};
+  left: ${props => `${props.isIncoming ? 55 : -305}px`};
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -90,23 +92,32 @@ const RecentReacts = (props: RecentReactsProps) => {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const darkMode = useSelector(getTheme) === 'dark';
+ 
   const onShowEmoji = (e: MouseEvent): void => {
+    // const panelWidth = 300; // Approximate width of emoji panel
+    const panelHeight = emojiPanelHeight; // Defined as 435
     let x = e.clientX;
+    let y = e.clientY - 39; // Adjust Y to position above the click if needed
+  
     if (isIncoming) {
       x -= 240;
     } else {
       x -= 150;
     }
-    let y = e.clientY - 39;
-    if (y + emojiPanelHeight > window.innerHeight) {
-      y = Math.abs(mouseY - emojiPanelHeight);
+  
+    // Adjust Y to prevent it from overflowing below the screen
+    if (y + panelHeight > window.innerHeight) {
+      y = window.innerHeight - panelHeight - 10; // Keep a margin of 10px
+    } else if (y < 10) {
+      y = 10; // Prevent it from going too high
     }
+  
     setMouseX(x);
     setMouseY(y);
     setShowEmojiPanel(true);
     setRecentEmoji(false);
   };
-
+  
   const onEmojiKeyDown = (event: any) => {
     if (event.key === 'Escape' && showEmojiPanel) {
       onCloseEmoji();
@@ -221,6 +232,8 @@ export const MessageContentWithStatuses = (props: Props) => {
     expirationLength,
     expirationTimestamp,
     enableReactions,
+    isRightClicked,
+    onMessageLoseFocus
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
@@ -247,13 +260,13 @@ export const MessageContentWithStatuses = (props: Props) => {
   } = contentProps;
   const isIncoming = direction === 'incoming';
 
-  const emojiIsVisible =
+  const emojiIsVisible =(
     !isDeleted &&
     !multiSelectMode &&
     !isPublic &&
     (!hasAttachments || isTrustedForAttachmentDownload) &&
     status !== 'sending' &&
-    status !== 'error' && typingEnabled;
+    status !== 'error' && typingEnabled && !isRightClicked ) 
     
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
@@ -341,6 +354,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             messageId={messageId}
             contextMenuId={ctxMenuID}
             enableReactions={enableReactions}
+            onMessageLoseFocus={onMessageLoseFocus}
           />
         )}
       </div>

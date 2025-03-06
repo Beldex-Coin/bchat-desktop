@@ -24,7 +24,7 @@ import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 import { useClickAway } from 'react-use';
 
-type Props = { messageId: string; contextMenuId: string; enableReactions: boolean };
+type Props = { messageId: string; contextMenuId: string; enableReactions: boolean,onMessageLoseFocus:()=>void };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
   | 'attachments'
@@ -56,6 +56,7 @@ export const MessageContextMenu = (props: Props) => {
   }
   useClickAway(contextMenuRef, () => {
     contextMenu.hideAll();
+    props.onMessageLoseFocus();
   });
   const {
     attachments,
