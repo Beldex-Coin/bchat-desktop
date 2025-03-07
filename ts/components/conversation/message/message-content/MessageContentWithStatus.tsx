@@ -107,7 +107,7 @@ const RecentReacts = (props: RecentReactsProps) => {
   
     // Adjust Y to prevent it from overflowing below the screen
     if (y + panelHeight > window.innerHeight) {
-      y = window.innerHeight - panelHeight - 10; // Keep a margin of 10px
+      y = window.innerHeight - panelHeight - 10 - 80; // Keep a margin of 10px
     } else if (y < 10) {
       y = 10; // Prevent it from going too high
     }
