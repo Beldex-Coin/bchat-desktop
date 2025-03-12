@@ -54,6 +54,22 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
   const messageProps = useSelector(getSortedMessagesOfSelectedConversation);
   const nextMessageToPlayId = useSelector(getNextMessageToPlayId);
 
+  const getRemainingTime=(surfer:any)=>{
+    const totalTime = surfer.getDuration(); // Get total duration in seconds
+    const currentTime = surfer.getCurrentTime(); // Get current playtime in seconds
+    let remainingTime =totalTime === currentTime ?totalTime :totalTime - currentTime; // Remaining time in seconds
+    
+    if (remainingTime < 0) {
+      remainingTime = 0; // Prevent negative values
+    }
+
+    // Convert to mm:ss format
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = Math.floor(remainingTime % 60);
+    const result=`${minutes}:${seconds.toString().padStart(2, '0')}`
+    return result;
+    
+  }
 
   useEffect(() => {
     let surfer: any;
@@ -76,33 +92,30 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       surfer.load(urlToLoad);
       surfer.on('ready', () => {
         waveSurferRef.current = surfer;
-
-        const remainingTime = (surfer.getDuration() - surfer.getCurrentTime()) / 60;
-        setRemainingTime(remainingTime.toFixed(2));
+        const remainingTime=getRemainingTime(surfer);
+        setRemainingTime(remainingTime)
         setPlaybackSpeed(surfer.getPlaybackRate());
       });
       surfer.on('play', () => {
         setIsPlaying(true);
+       
       });
 
       surfer.on('pause', () => {
         setIsPlaying(false);
       });
       surfer.on('finish', () => {
+        const remainingTime=getRemainingTime(surfer);
+        setRemainingTime(remainingTime)
+        surfer.seekTo(0);
+
         onEnded();
       });
 
       surfer.on('audioprocess', () => {
         if (surfer.isPlaying()) {
-          const totalTime = surfer.getDuration();
-          const currentTime = surfer.getCurrentTime();
-          const remainingTime = (totalTime - currentTime) / 60;
-          if (remainingTime.toFixed(2) == '0.00') {
-            const remainingTime = surfer.getDuration() / 60;
-            setRemainingTime(remainingTime.toFixed(2));
-          } else {
-            setRemainingTime(remainingTime.toFixed(2));
-          }
+          const remainingTime=getRemainingTime(surfer);
+          setRemainingTime(remainingTime);
         }
       });
       // setWavesurfer(surfer);
@@ -180,11 +193,16 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         height="40px"
         margin="10px 0 0 0"
       >
+
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
           // iconColor="#F0F0F0"
           onClick={playAndPause}
+          btnRadius='40px'
+          btnBgColor='#2F8FFF'
+          padding='7px'
+          
         />
         <SpacerSM />
         <div

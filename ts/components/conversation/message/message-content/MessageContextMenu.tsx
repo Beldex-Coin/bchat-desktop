@@ -82,7 +82,6 @@ export const MessageContextMenu = (props: Props) => {
     isBlocked,
     isDeleted,
   } = selected;
-
   const { messageId, contextMenuId } = props;
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
@@ -209,7 +208,7 @@ export const MessageContextMenu = (props: Props) => {
               <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
             </Item>
           ) : null}
-          {!attachments?.length && !isDeleted && (
+          {(text || !attachments?.length) &&  !isDeleted  && (
             <Item onClick={copyText}>
               <CopyIcon color={'var(--color-text)'} iconSize={18} />
               <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
