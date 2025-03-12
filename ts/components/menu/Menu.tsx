@@ -271,7 +271,7 @@ export const DeleteContactMenuItem = () => {
       <Item onClick={showConfirmationModal}>
         {' '}
         <BchatIcon
-          iconType="deleteContact"
+          iconType={window.i18n('leaveGroup')===menuItemText ?"leaveGroup": "deleteContact"}
           iconSize={20}
           iconColor="#FF3E3E"
           fillRule="evenodd"
