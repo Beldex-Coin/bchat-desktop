@@ -765,11 +765,13 @@
       height: 70px;
       width: 100%;
       padding: 10px;
-
+       span{
+        width: 90%;
+       }
       input {
         background: var(--color-hop-bg);
         height: 100%;
-        width: 430px;
+        // width: 430px;
 
         // margin-bottom: 10px;
         // box-shadow: 1px 2px 5px #00000074;
@@ -783,12 +785,14 @@
       height: 70px;
       width: 100%;
       padding: 10px;
-
+      span{
+        width: 90%;
+       }
       input {
         // background-color: #353543;
         background: var(--color-hop-bg);
         height: 100%;
-        width: 430px;
+        // width: 430px;
         // box-shadow: 1px 2px 5px #00000074;
         // margin-right: 12px;
       }

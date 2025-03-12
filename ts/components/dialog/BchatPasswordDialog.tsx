@@ -108,7 +108,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               placeholder={placeholders[0]}
               enableShowHide={true}
               onValueChanged={this.onPasswordInput}
-              maxLength={26}
+              maxLength={13}
             />
           </div>
           {passwordAction !== 'remove' && (
@@ -130,7 +130,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 placeholder={placeholders[1]}
                 enableShowHide={true}
                 onValueChanged={this.onPasswordConfirmInput}
-                maxLength={26}
+                maxLength={13}
               />
             </div>
           )}
@@ -154,7 +154,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 placeholder={placeholders[2]}
                 enableShowHide={true}
                 onValueChanged={this.onPasswordRetypeInput}
-                maxLength={26}
+                maxLength={13}
               />
             </div>
           )}
