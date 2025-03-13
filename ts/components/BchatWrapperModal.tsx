@@ -97,7 +97,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 >
                   <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
                     <div className="bchat-modal__header__title">{title}</div>
-                    <div className="bchat-modal__header__icons">
+                    <div className={classNames(headerIconButtons && "bchat-modal__header__icons")}>
                       {headerIconButtons
                         ? headerIconButtons.map((iconItem: any) => {
                             return (

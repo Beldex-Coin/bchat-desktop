@@ -169,19 +169,19 @@ const sendMessageStyle = {
   control: {},
   input: {
     overflow: 'auto',
-    maxHeight: '80px',
+    maxHeight: '300px',
     wordBreak: 'break-word',
-    padding: '0px',
+    padding: '0',
     margin: '0px',
   },
   highlighter: {
     boxSizing: 'border-box',
     overflow: 'hidden',
-    maxHeight: '80px',
+    maxHeight: '300px',
   },
   flexGrow: 1,
 
-  maxHeight: '80px',
+  maxHeight: '300px',
   width: '100%',
   ...styleForCompositionBoxSuggestions,
 };
@@ -826,6 +826,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     width="100%"
                     alignItems="center"
                     style={{ minHeight: '60px' }}
+                    padding='10px 0'
                   >
                     <div className="send-message-input__emoji-overlay">
                       {typingEnabled && (

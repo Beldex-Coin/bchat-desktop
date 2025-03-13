@@ -127,10 +127,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   public renderConversations() {
-    // const {
-    //   conversations,
-    //   // directContact
-    //  } = this.props;
+    const { searchResults } = this.props;
     return (
       <div className="module-conversations-list-content">
         <SpacerSM />
@@ -138,15 +135,17 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         <BchatSearchInput />
         {/* } */}
 
-        <MessageRequestsBanner
-          handleOnClick={() => {
-            window.inboxStore?.dispatch(setOverlayMode('message-requests'));
-            // show open settings
-            // window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
-            // window.inboxStore?.dispatch(setOverlayMode(undefined));
-            // window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
-          }}
-        />
+        {!searchResults && (
+          <MessageRequestsBanner
+            handleOnClick={() => {
+              window.inboxStore?.dispatch(setOverlayMode('message-requests'));
+              // show open settings
+              // window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
+              // window.inboxStore?.dispatch(setOverlayMode(undefined));
+              // window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
+            }}
+          />
+        )}
         {/* <SpacerMD /> */}
         {/* {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>

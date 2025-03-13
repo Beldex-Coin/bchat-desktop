@@ -53,6 +53,7 @@ import { BchatButtonColor } from '../basic/BchatButton';
 import { MenuWrapper } from '../menu/Menu';
 import { getTheme } from '../../state/selectors/theme';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
+import { MIME } from '../../types';
 // import { useClickAway } from 'react-use';
 
 async function getMediaGalleryProps(
@@ -103,9 +104,10 @@ async function getMediaGalleryProps(
   // Unlike visual media, only one non-image attachment is supported
   const documents = rawDocuments.map(attributes => {
     // this is to not fail if the attachment is invalid (could be a Long Attachment type which is not supported)
-    if (!attributes.attachments?.length) {
+    if (!attributes.attachments?.length || MIME.isAudio(attributes.attachments[0]?.contentType)) {
       return null;
     }
+    
     const attachment = attributes.attachments[0];
     const { source, id, timestamp, serverTimestamp, received_at } = attributes;
 

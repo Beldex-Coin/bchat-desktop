@@ -9,6 +9,9 @@ import { AUDIO_MP3 } from '../../types/MIME';
 import { Flex } from '../basic/Flex';
 import { Image } from './Image';
 
+import { GoogleChrome } from '../../util';
+import classNames from 'classnames';
+
 const QuotedMessageComposition = styled.div`
   width: 100%;
   margin-top: 15px;
@@ -57,7 +60,6 @@ export const BchatQuotedMessageComposition = () => {
 
   const { text: body, attachments } = quotedMessageProps || {};
   const hasAttachments = attachments && attachments.length > 0;
-
   let hasImageAttachment = false;
 
   let firstImageAttachment;
@@ -65,11 +67,14 @@ export const BchatQuotedMessageComposition = () => {
 
   if (attachments?.length && attachments[0].contentType !== AUDIO_MP3 && attachments[0].thumbnail) {
     firstImageAttachment = attachments[0];
-    hasImageAttachment = true;
+    hasImageAttachment = true; 
   }
 
   const hasAudioAttachment =
     hasAttachments && attachments && attachments.length > 0 && isAudio(attachments);
+  
+    const hasImageAttachmentNotTrusted=attachments && GoogleChrome.isImageTypeSupported(attachments[0].contentType) && !attachments[0].thumbnail;
+    const hasPdfAttachmentNotTrusted=attachments && attachments[0].contentType === 'application/pdf'
 
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
@@ -105,8 +110,20 @@ export const BchatQuotedMessageComposition = () => {
               url={firstImageAttachment.thumbnail.objectUrl}
             />
           )}
-
+         {hasImageAttachmentNotTrusted &&  <div
+            className={classNames(
+              'module-quote__icon-container__icon',
+              `module-quote__icon-container__icon--image`
+            )}
+          /> }
+          {hasPdfAttachmentNotTrusted && <div
+            className={classNames(
+              'module-quote__icon-container__icon',
+              `module-quote__icon-container__icon--file`
+            )}
+          />}
           {hasAudioAttachment && <BchatIcon iconType="microphone" iconSize="huge" />}
+          {}
         </Flex>
       </QuotedMessageCompositionReply>
       <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
