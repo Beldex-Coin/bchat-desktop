@@ -261,7 +261,6 @@ const StyledEmojiPanelContainer = styled.div`
   }
 `;
 
-
 class CompositionBoxInner extends React.Component<Props, State> {
   private readonly textarea: React.RefObject<any>;
   private readonly fileInput: React.RefObject<HTMLInputElement>;
@@ -758,15 +757,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
           text={'Unblock contact'}
-          onClick={() => unblockConvoById(convoId)}
+          onClick={() => {
+            this.setState(getDefaultState());
+            unblockConvoById(convoId);
+          }}
         />
       </Flex>
     );
   }
   private renderLeavedGroupBottoms() {
     return (
-      <Flex container={true} justifyContent="center" alignItems="center" height="90px" >
-        <div className='leaved-scrt-grp-message-container'>You can’t send message to this group because you’re not a member of this group!</div>
+      <Flex container={true} justifyContent="center" alignItems="center" height="90px">
+        <div className="leaved-scrt-grp-message-container">
+          You can’t send message to this group because you’re not a member of this group!
+        </div>
       </Flex>
     );
   }
@@ -782,13 +786,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
         : this.percentageCalc() > 0 && this.percentageCalc() < 98
         ? 'Syncronizing..'
         : 'Synchronized';
-     const leftTheGroup=selectedConversation?.isGroup && selectedConversation?.left
+    const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
     // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
-        {leftTheGroup ? this.renderLeavedGroupBottoms() :selectedConversation?.isBlocked ? (
+        {leftTheGroup ? (
+          this.renderLeavedGroupBottoms()
+        ) : selectedConversation?.isBlocked ? (
           this.renderBlockedContactBottoms()
-         
         ) : (
           <>
             {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
@@ -826,7 +831,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     width="100%"
                     alignItems="center"
                     style={{ minHeight: '60px' }}
-                    padding='10px 0'
+                    padding="10px 0"
                   >
                     <div className="send-message-input__emoji-overlay">
                       {typingEnabled && (
@@ -852,9 +857,11 @@ class CompositionBoxInner extends React.Component<Props, State> {
                           'circular-bar-wrapper'
                       )}
                     >
-                      {selectedConversation?.isPrivate && typingEnabled && !isMe && selectedConversation?.didApproveMe
-                        && this.bchatWalletView()
-                        }
+                      {selectedConversation?.isPrivate &&
+                        typingEnabled &&
+                        !isMe &&
+                        selectedConversation?.didApproveMe &&
+                        this.bchatWalletView()}
                     </div>
                     <div className="wallet-sync-box">
                       <div className="sync-txt">
@@ -882,7 +889,11 @@ class CompositionBoxInner extends React.Component<Props, State> {
             {typingEnabled && (
               <div ref={this.emojiPanel} onKeyDown={this.onKeyDown} role="button">
                 {showEmojiPanel && (
-                  <BchatEmojiPanel onEmojiClicked={this.onEmojiClick} show={showEmojiPanel} ref={this.emojiPanel} />
+                  <BchatEmojiPanel
+                    onEmojiClicked={this.onEmojiClick}
+                    show={showEmojiPanel}
+                    ref={this.emojiPanel}
+                  />
                 )}
               </div>
             )}

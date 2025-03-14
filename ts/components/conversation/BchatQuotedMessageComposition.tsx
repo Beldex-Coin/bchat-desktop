@@ -12,6 +12,7 @@ import { Image } from './Image';
 import { GoogleChrome } from '../../util';
 import classNames from 'classnames';
 
+
 const QuotedMessageComposition = styled.div`
   width: 100%;
   margin-top: 15px;
@@ -73,8 +74,8 @@ export const BchatQuotedMessageComposition = () => {
   const hasAudioAttachment =
     hasAttachments && attachments && attachments.length > 0 && isAudio(attachments);
   
-    const hasImageAttachmentNotTrusted=attachments && GoogleChrome.isImageTypeSupported(attachments[0].contentType) && !attachments[0].thumbnail;
-    const hasPdfAttachmentNotTrusted=attachments && attachments[0].contentType === 'application/pdf'
+    const hasImageAttachmentNotTrusted= hasAttachments  && GoogleChrome.isImageTypeSupported(attachments[0].contentType) && !attachments[0].thumbnail;
+    const hasPdfAttachmentNotTrusted=hasAttachments && attachments[0]?.contentType === 'application/pdf';
 
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));

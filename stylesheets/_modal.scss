@@ -428,10 +428,10 @@
     }
 
     &-message {
-      margin-top:12px;
-      color: #A7A7BA;
+      margin-top: 12px;
+      color: #a7a7ba;
       font-size: 16px;
-      }
+    }
 
     &-box {
       width: 100%;
@@ -521,9 +521,16 @@
   }
 
   .invite-friends-list {
-    width: 400px;
-    max-height: 500px;
-    overflow-y: auto;
+    width: 450px;
+    background-color: var(--color-confirm-modal-inner-bg);
+    padding: 10px;
+    border-radius: 16px;
+
+    .invite-friends-list-inner-wrapper {
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
   }
 }
 
@@ -717,7 +724,7 @@
 }
 
 .bchat-dialog {
-  &~.index.inbox {
+  & ~ .index.inbox {
     // filter: blur(2px); // FIXME enable back once modals are moved to react
     // currently it cause an issues with toast being on the foreground when a modal is shown
     transition: filter 0.1s;
@@ -765,9 +772,9 @@
       height: 70px;
       width: 100%;
       padding: 10px;
-       span{
+      span {
         width: 90%;
-       }
+      }
       input {
         background: var(--color-hop-bg);
         height: 100%;
@@ -785,9 +792,9 @@
       height: 70px;
       width: 100%;
       padding: 10px;
-      span{
+      span {
         width: 90%;
-       }
+      }
       input {
         // background-color: #353543;
         background: var(--color-hop-bg);

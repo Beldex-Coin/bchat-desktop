@@ -181,6 +181,7 @@ const InviteContactsInnerDialog = forwardRef<onClickRef, Props>((props, ref) => 
         <SpacerLG />
 
         <div className="invite-friends-list">
+          <div className='invite-friends-list-inner-wrapper'>
           {hasContacts ? (
             validContactsForInvite.map((member: string) => (
               <MemberListItem
@@ -198,6 +199,7 @@ const InviteContactsInnerDialog = forwardRef<onClickRef, Props>((props, ref) => 
               <SpacerLG />
             </>
           )}
+          </div>
         </div>
         <SpacerLG />
       </BchatWrapperModal>

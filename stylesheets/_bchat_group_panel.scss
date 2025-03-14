@@ -19,7 +19,6 @@
   right: 0px;
   z-index: 2;
 
-
   &-header {
     // margin-top: $bchat-margin-lg;
     // margin-inline-start: $bchat-margin-sm;
@@ -122,7 +121,6 @@
         font-size: 18px;
         font-weight: 500;
       }
-
     }
 
     &-closeBox {
@@ -211,7 +209,7 @@
   }
 
   // no double border (top and bottom) between two elements
-  &-item+&-item {
+  &-item + &-item {
     border-top: none;
   }
 
@@ -353,10 +351,11 @@
       .bchat-member-item {
         height: 60px;
       }
-
-      .bchat-member-item:hover {
-        background: unset !important;
-        cursor: default;
+      .group-member-list {
+        .bchat-member-item:hover {
+          background: unset !important;
+          cursor: default;
+        }
       }
     }
   }
@@ -391,7 +390,7 @@
     .module-media-gallery__content {
       overflow-y: hidden;
       // height: 303px;
-      height: calc( 100vh - 679px );
+      height: calc(100vh - 679px);
       margin-top: 15px;
     }
   }

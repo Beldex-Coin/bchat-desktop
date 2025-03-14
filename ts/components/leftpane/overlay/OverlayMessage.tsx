@@ -29,6 +29,8 @@ import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
 // import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
+import { Loader } from '../../BchatWrapperModal';
+import { getTheme } from '../../../state/selectors/theme';
 
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
@@ -43,6 +45,7 @@ export const OverlayMessage = () => {
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
+  const darkMode = useSelector(getTheme) === 'dark';
   // const convoList = useSelector(getLeftPaneLists);
   const walletAddress:any = localStorage.getItem('userAddress');
   // const convolen: boolean =convoList?.contacts?.length === 0 || false;
@@ -126,9 +129,9 @@ export const OverlayMessage = () => {
             // onPressEnter={handleMessageButtonClick}
           />
           {loading && (
-            <div className="module-left-pane-overlay-loadingWrapper">
+              <Loader darkMode={darkMode}>
               <BchatSpinner loading={true} />
-            </div>
+              </Loader>
           )}
           <SpacerSM />
           <BchatButton

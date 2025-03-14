@@ -197,7 +197,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
-          // iconColor="#F0F0F0"
+          iconColor="#F0F0F0"
           onClick={playAndPause}
           btnRadius='40px'
           btnBgColor='#2F8FFF'

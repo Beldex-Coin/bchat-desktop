@@ -288,7 +288,7 @@ const ClassicMemberList = (props: {
 
   return (
     <>
-      <div className={classNames(removeMem && 'remove-contact-list')}>
+      <div className={classNames(removeMem && 'remove-contact-list',!removeMem && 'group-member-list')}>
         {currentMembers.map(member => {
           const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
           const isAdmin = groupAdmins?.includes(member);
@@ -754,6 +754,7 @@ export const BchatRightPanelWithDetails = () => {
 
               <div className="list-wrapper">
                 {addMem ? (
+                  
                   <InviteContact conversationId={selectedConversation.id} ref={ref} />
                 ) : (
                   <ClassicMemberList
