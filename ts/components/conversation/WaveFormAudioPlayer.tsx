@@ -21,6 +21,8 @@ interface WaveFormAudioPlayerProps {
   messageId: string;
   direction: MessageModelType;
 }
+// Global reference to track the currently playing WaveSurfer instance
+let globalAudioInstance: WaveSurfer | null = null;
 
 const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> = props => {
   const { contentType, src, direction, messageId } = props;
@@ -97,6 +99,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
         setPlaybackSpeed(surfer.getPlaybackRate());
       });
       surfer.on('play', () => {
+         // Stop any currently playing audio before playing this one
+      if (globalAudioInstance && globalAudioInstance !== surfer) {
+        globalAudioInstance.pause();
+      }
+
+      globalAudioInstance = surfer; // Set the new playing instance
         setIsPlaying(true);
        
       });
@@ -120,7 +128,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<WaveFormAudioPlayerProps> =
       });
       // setWavesurfer(surfer);
     }
-    return () => surfer.destroy();
+    return () => {
+      surfer.destroy();
+      if (globalAudioInstance === surfer) {
+        globalAudioInstance = null;
+      }
+    };
   }, [urlToLoad]);
 
   const playAndPause = () => {
