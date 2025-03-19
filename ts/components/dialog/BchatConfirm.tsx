@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -189,7 +189,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             </>
           )} */}
           {Childern}
-
+         <SpacerSM/>
           <BchatHtmlRenderer tag="span" className={messageSubText} html={message} />
           <BchatHtmlRenderer
             tag="span"

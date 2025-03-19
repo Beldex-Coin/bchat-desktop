@@ -12,7 +12,6 @@ import { Image } from './Image';
 import { GoogleChrome } from '../../util';
 import classNames from 'classnames';
 
-
 const QuotedMessageComposition = styled.div`
   width: 100%;
   margin-top: 15px;
@@ -41,7 +40,7 @@ const Subtle = styled.div`
   -webkit-box-orient: vertical;
   display: -webkit-box;
   color: var(--color-text);
-   margin-right: 9px;
+  margin-right: 9px;
 `;
 const VerticalLine = styled.div`
   width: 5px;
@@ -68,14 +67,28 @@ export const BchatQuotedMessageComposition = () => {
 
   if (attachments?.length && attachments[0].contentType !== AUDIO_MP3 && attachments[0].thumbnail) {
     firstImageAttachment = attachments[0];
-    hasImageAttachment = true; 
+    hasImageAttachment = true;
   }
 
   const hasAudioAttachment =
     hasAttachments && attachments && attachments.length > 0 && isAudio(attachments);
-  
-    const hasImageAttachmentNotTrusted= hasAttachments  && GoogleChrome.isImageTypeSupported(attachments[0].contentType) && !attachments[0].thumbnail;
-    const hasPdfAttachmentNotTrusted=hasAttachments && attachments[0]?.contentType === 'application/pdf';
+
+  const hasImageAttachmentNotTrusted =
+    hasAttachments &&
+    GoogleChrome.isImageTypeSupported(attachments[0].contentType) &&
+    !attachments[0].thumbnail;
+  const hasPdfAttachmentNotTrusted =
+    hasAttachments && attachments[0]?.contentType === 'application/pdf';
+  const hasVideoAttachment =
+    hasAttachments && GoogleChrome.isVideoTypeSupported(attachments[0]?.contentType);
+  const getIconType = () => {
+    if (hasImageAttachmentNotTrusted) return 'image';
+    if (hasPdfAttachmentNotTrusted) return 'file';
+    if (!hasImageAttachment && hasVideoAttachment) return 'movie';
+    return null;
+  };
+
+  const iconType = getIconType();
 
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
@@ -92,43 +105,43 @@ export const BchatQuotedMessageComposition = () => {
         justifyContent="space-between"
         flexGrow={1}
         margin={'var(--margins-xs)'}
-        alignItems='center'
+        alignItems="center"
       >
         {/* <ReplyingTo>{window.i18n('replyingToMessage')}</ReplyingTo> */}
-      
-      <QuotedMessageCompositionReply>
-        <Flex container={true} justifyContent="flex-start" margin={'var(--margins-xs)'} alignItems='center'>
-        <VerticalLine />
 
-          <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
+        <QuotedMessageCompositionReply>
+          <Flex
+            container={true}
+            justifyContent="flex-start"
+            margin={'var(--margins-xs)'}
+            alignItems="center"
+          >
+            <VerticalLine />
 
-          {hasImageAttachment && (
-            <Image
-              alt={getAlt(firstImageAttachment)}
-              attachment={firstImageAttachment}
-              height={100}
-              width={100}
-              url={firstImageAttachment.thumbnail.objectUrl}
-            />
-          )}
-         {hasImageAttachmentNotTrusted &&  <div
-            className={classNames(
-              'module-quote__icon-container__icon',
-              `module-quote__icon-container__icon--image`
+            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
+
+            {hasImageAttachment && (
+              <Image
+                alt={getAlt(firstImageAttachment)}
+                attachment={firstImageAttachment}
+                height={100}
+                width={100}
+                url={firstImageAttachment.thumbnail.objectUrl}
+              />
             )}
-          /> }
-          {hasPdfAttachmentNotTrusted && <div
-            className={classNames(
-              'module-quote__icon-container__icon',
-              `module-quote__icon-container__icon--file`
+            {iconType && (
+              <div
+                className={classNames(
+                  'module-quote__icon-container__icon',
+                  `module-quote__icon-container__icon--${iconType}`
+                )}
+              />
             )}
-          />}
-          {hasAudioAttachment && <BchatIcon iconType="microphone" iconSize="huge" />}
-          {}
-        </Flex>
-      </QuotedMessageCompositionReply>
-      <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
 
+            {hasAudioAttachment && <BchatIcon iconType="microphone" iconSize="huge" />}
+          </Flex>
+        </QuotedMessageCompositionReply>
+        <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
       </Flex>
     </QuotedMessageComposition>
   );
