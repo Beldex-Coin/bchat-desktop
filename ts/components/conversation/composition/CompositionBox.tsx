@@ -95,7 +95,7 @@ import styled from 'styled-components';
 
 // import { BaseEmoji } from 'emoji-mart';
 // import { nativeEmojiData } from '../../../util/emoji';
- import { FixedBaseEmoji } from '../../../types/Reaction';
+import { FixedBaseEmoji } from '../../../types/Reaction';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -735,6 +735,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
         onClickOk: async () => {
           await getConversationController().deleteContact(convoId);
+          ToastUtils.pushToastSuccess('', 'Contact has been successfully deleted.');
         },
         okText: 'Delete',
         okTheme: BchatButtonColor.Danger,
@@ -959,14 +960,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
           renderSuggestion={renderUserMentionRow}
         />
         {/* {nativeEmojiData && !_.isEmpty(nativeEmojiData) && ( */}
-          <Mention
-            trigger=":"
-            markup="__id__"
-            appendSpaceOnAdd={true}
-            regex={neverMatchingRegex}
-            data={searchEmojiForQuery}
-            renderSuggestion={renderEmojiQuickResultRow}
-          />
+        <Mention
+          trigger=":"
+          markup="__id__"
+          appendSpaceOnAdd={true}
+          regex={neverMatchingRegex}
+          data={searchEmojiForQuery}
+          renderSuggestion={renderEmojiQuickResultRow}
+        />
         {/* )} */}
       </MentionsInput>
     );

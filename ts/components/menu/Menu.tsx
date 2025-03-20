@@ -259,6 +259,7 @@ export const DeleteContactMenuItem = () => {
         onClickClose,
         onClickOk: async () => {
           await getConversationController().deleteContact(convoId);
+          ToastUtils.pushToastSuccess('', 'Contact has been successfully deleted.');
         },
         okText: menuItemText.slice(0, 5) === 'Leave' ? 'Leave' : 'Delete',
         okTheme: BchatButtonColor.Danger,
@@ -271,7 +272,7 @@ export const DeleteContactMenuItem = () => {
       <Item onClick={showConfirmationModal}>
         {' '}
         <BchatIcon
-          iconType={window.i18n('leaveGroup')===menuItemText ?"leaveGroup": "deleteContact"}
+          iconType={window.i18n('leaveGroup') === menuItemText ? 'leaveGroup' : 'deleteContact'}
           iconSize={20}
           iconColor="#FF3E3E"
           fillRule="evenodd"
@@ -352,7 +353,13 @@ export const RemoveModeratorsMenuItem = (): JSX.Element | null => {
           showRemoveModeratorsByConvoId(convoId);
         }}
       >
-        <BchatIcon  iconType={'removeFromModerators'} iconSize={20} fillRule="evenodd" clipRule="evenodd" iconColor='#FF3E3E'/>
+        <BchatIcon
+          iconType={'removeFromModerators'}
+          iconSize={20}
+          fillRule="evenodd"
+          clipRule="evenodd"
+          iconColor="#FF3E3E"
+        />
         <MenuWrapper>{window.i18n('removeModerators')}</MenuWrapper>
       </Item>
     );
@@ -375,7 +382,6 @@ export const AddModeratorsMenuItem = (): JSX.Element | null => {
       >
         <BchatIcon iconType={'addModerator'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />
         <MenuWrapper>{window.i18n('addModerators')}</MenuWrapper>
-
       </Item>
     );
   }
@@ -416,7 +422,13 @@ export const BanMenuItem = (): JSX.Element | null => {
           showBanUserByConvoId(convoId);
         }}
       >
-        <BchatIcon iconColor="#FF3E3E" iconType={'banIcon'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />
+        <BchatIcon
+          iconColor="#FF3E3E"
+          iconType={'banIcon'}
+          iconSize={20}
+          fillRule="evenodd"
+          clipRule="evenodd"
+        />
         <MenuWrapper style={{ color: '#FF3E3E' }}>{window.i18n('banUser')}</MenuWrapper>
       </Item>
     );
@@ -537,8 +549,8 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
         n === 'all' || !n
           ? 'notificationForConvo_all'
           : n === 'disabled'
-            ? 'notificationForConvo_disabled'
-            : 'notificationForConvo_mentions_only';
+          ? 'notificationForConvo_disabled'
+          : 'notificationForConvo_mentions_only';
       return { value: n, name: window.i18n(keyToUse) };
     });
 
@@ -557,7 +569,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
           </>
         }
         arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
-      // label={window.i18n('notificationForConvo') as any}
+        // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
           const disabled = item.value === currentNotificationSetting;
@@ -570,7 +582,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
                 onClick={async () => {
                   await setNotificationForConvoId(convoId, item.value);
                 }}
-              // disabled={disabled}
+                // disabled={disabled}
               >
                 <div
                   style={{

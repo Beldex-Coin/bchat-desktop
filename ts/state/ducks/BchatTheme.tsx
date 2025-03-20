@@ -216,6 +216,7 @@ const darkEmojiPanelBg='#202329';
 const darkEmojiIconHoverBg='#2C303D';
 const darkEmojiHeaderIcon="white"
 const darkReplyMsgMediaIcon='#A7A7BA';
+const darkLoaderBg='#0000009e';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -505,6 +506,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', darkEmojiIconHoverBg);
   document.documentElement.style.setProperty('--color-emoji-header-icon', darkEmojiHeaderIcon);
   document.documentElement.style.setProperty('--color-reply-msg-media-icon', darkReplyMsgMediaIcon);
+  document.documentElement.style.setProperty('--color-loader-bg', darkLoaderBg);
 
 };
 
@@ -701,6 +703,7 @@ const lightEmojiPanelBg='#F8F8F8';
 const lightEmojiIconHoverBg='#EBEBEB';
 const lightEmojiHeaderIcon='#333';
 const lightReplyMsgMediaIcon='#000';
+const lightLoaderBg='#ffffff9e';
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -850,6 +853,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-profile-close', lightProfileClose);
   document.documentElement.style.setProperty('--color-chat-timestamp', lightChattimestamp);
   document.documentElement.style.setProperty('--color-wallet-copy-hover', lightWalletCopyHover);
+
   document.documentElement.style.setProperty('--image-DayNight', lightDayNight);
   document.documentElement.style.setProperty('--image-addContact', lightNewChat);
 
@@ -999,6 +1003,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-emoji-icon-hover-bg', lightEmojiIconHoverBg);
   document.documentElement.style.setProperty('--color-emoji-header-icon', lightEmojiHeaderIcon);
   document.documentElement.style.setProperty('--color-reply-msg-media-icon', lightReplyMsgMediaIcon);
+  document.documentElement.style.setProperty('--color-loader-bg', lightLoaderBg);
 
 };
 
@@ -1185,6 +1190,7 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-emoji-icon-hover-bg:${darkEmojiIconHoverBg};
     --color-emoji-header-icon:${darkEmojiHeaderIcon};
     --color-reply-msg-media-icon:${darkReplyMsgMediaIcon};
+    --color-loader-bg:${darkLoaderBg};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

@@ -8,8 +8,7 @@ import useKey from 'react-use/lib/useKey';
 import styled from 'styled-components';
 import { BchatSpinner } from './basic/BchatSpinner';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../state/selectors/theme';
+
 
 export type BchatWrapperModalType = {
   title?: string;
@@ -31,14 +30,11 @@ export type BchatWrapperModalType = {
   iconShow?: boolean;
   customIcon?: any;
 };
-interface LoaderProps {
-  darkMode: boolean;
-}
-export const Loader = styled.div<LoaderProps>`
+export const Loader = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: ${props => (props.darkMode ? '#0000009e' : '#ffffff9e')};
+  background-color: var(--color-loader-bg);
   display: flex;
   justify-content: center;
   width: 100%;
@@ -48,7 +44,6 @@ export const Loader = styled.div<LoaderProps>`
 `;
 
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
-  const darkMode = useSelector(getTheme) === 'dark';
   // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const {
     title,
@@ -167,7 +162,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
           </div>
           {isloading && (
             <div>
-              <Loader darkMode={darkMode}>
+              <Loader>
                 <BchatSpinner loading={true} />
               </Loader>
             </div>
