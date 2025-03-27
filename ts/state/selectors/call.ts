@@ -58,12 +58,16 @@ export const getHasOngoingCallWithFocusedConvo = createSelector(
 const getCallStateWithFocusedConvo = createSelector(
   getCallState,
   getSelectedConversationKey,
-  (callState: CallStateType, selectedConvoPubkey?: string): CallStatusEnum => {
+  (callState: CallStateType,
+    //  selectedConvoPubkey?: string
+    ): CallStatusEnum => {
     if (
-      selectedConvoPubkey &&
-      callState.ongoingWith &&
-      selectedConvoPubkey === callState.ongoingWith
+      // selectedConvoPubkey && // for hide the validation for display duration in draggable call modal
+      callState.ongoingWith 
+      // &&
+      // selectedConvoPubkey === callState.ongoingWith
     ) {
+      
       return callState.ongoingCallStatus;
     }
 

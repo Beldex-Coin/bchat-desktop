@@ -97,6 +97,9 @@
     //     border-radius: 20px;
     //   }
     // }
+    .react-contexify__submenu {
+      height: unset !important;
+    }
   }
 
   .message-selection-overlay {
@@ -236,7 +239,20 @@
     z-index: 1;
   }
 }
+.call-bar-expand-view {
+  display: none;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: display 1s ease, opacity 1s ease , width 1s ease;
+}
 
+.call-bar-expand-view.show {
+  display: block; /* Adjust width as needed */
+  width: 121px;
+  opacity: 1;
+}
 .videoCall {
   margin: 10px 0px;
   position: absolute;
