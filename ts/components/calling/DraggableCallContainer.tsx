@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 
 import styled from 'styled-components';
@@ -9,11 +9,12 @@ import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { getSection } from '../../state/selectors/section';
-import { SectionType } from '../../state/ducks/section';
+import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
 import { DurationLabel, StyledCenteredLabel } from './InConversationCallContainer';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
+import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 
 export const DraggableCallWindow = styled.div`
   position: absolute;
@@ -105,7 +106,9 @@ export const DraggableCallContainer = () => {
   const ongoingCallProps = useSelector(getHasOngoingCallWith);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const hasOngoingCall = useSelector(getHasOngoingCall);
+  const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
   const selectedSection = useSelector(getSection);
+  const dispatch=useDispatch();
 
   // the draggable container has a width of 12vw, so we just set it's X to a bit more than this
   const [positionX, setPositionX] = useState(window.innerWidth - (window.innerWidth * 1) / 6);
@@ -117,6 +120,7 @@ export const DraggableCallContainer = () => {
   const [isBarView, setBarView] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const DRAG_THRESHOLD = 5;
+  const isNotInChat=selectedSection.focusedSection === SectionType.Settings || selectedSection.focusedSection === SectionType.Wallet
 
   const ongoingCallPubkey = ongoingCallProps?.id;
   const {
@@ -124,7 +128,7 @@ export const DraggableCallContainer = () => {
     remoteStream,
     localStream,
     localStreamVideoIsMuted,
-  } = useVideoCallEventsListener('DraggableCallContainer', false);
+  } = useVideoCallEventsListener('DraggableCallContainer', true);
   const videoRefRemote = useRef<HTMLVideoElement>(null);
   const videoRefLocal = useRef<HTMLVideoElement>(null);
 
@@ -158,19 +162,21 @@ export const DraggableCallContainer = () => {
     videoRefRemote.current.srcObject = remoteStream;
     videoRefLocal.current.srcObject = localStream;
     }
-  },[remoteStream,videoRefRemote,videoRefLocal,isBarView])
-  
+  },[isBarView])
+
   const openCallingConversation = () => {
-    if (ongoingCallPubkey && ongoingCallPubkey !== selectedConversationKey) {
+    if (ongoingCallPubkey && (ongoingCallPubkey !== selectedConversationKey || isNotInChat)) {
+      dispatch(showLeftPaneSection(SectionType.Message));
+      dispatch(setOverlayMode(undefined));
       void openConversationWithMessages({ conversationKey: ongoingCallPubkey, messageId: null });
     }
   };
-
+ 
   if (
     !hasOngoingCall ||
     !ongoingCallProps ||
     (ongoingCallPubkey === selectedConversationKey &&
-      selectedSection.focusedSection !== SectionType.Settings && selectedSection.focusedSection !== SectionType.Wallet)
+      selectedSection.focusedSection !== SectionType.Settings && selectedSection.focusedSection !== SectionType.Wallet) && !BchatWalletPasswordModalState
   ) {
     return null;
   }
