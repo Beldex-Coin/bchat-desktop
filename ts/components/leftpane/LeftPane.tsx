@@ -18,6 +18,8 @@ import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
 import { OverlayMessage } from './overlay/OverlayMessage';
+import PreventScreenshot from '../../hooks/useScreenProtection';
+
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -129,12 +131,14 @@ const LeftPaneSection = () => {
 // };
 
 export const LeftPane = () => {
+
   return (
     <BchatTheme>
       <div className="module-left-pane-bchat">
         <div className="module-left-pane">
            <ActionsPanel />
           <LeftPaneSection />
+          <ScreenShotProtector />
           {/* <AddContactFloatingIcon /> */}
           
         </div>
@@ -142,3 +146,35 @@ export const LeftPane = () => {
     </BchatTheme>
   );
 };
+
+const  ScreenShotProtector=()=> {
+ const showOverlay=PreventScreenshot()
+
+  return (
+    <div className="app">
+  
+      
+      {showOverlay && (
+        <div className="overlay">
+          {/* Black Screen */}
+        </div>
+       )} 
+
+      <style>
+        {`
+          .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            z-index: 9999;
+          }
+        `}
+      </style>
+    </div>
+  );
+}
+
+

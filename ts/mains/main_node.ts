@@ -9,6 +9,8 @@ import {
   screen,
   shell,
   systemPreferences,
+  
+  
 } from 'electron';
 
 import path, { join } from 'path';
@@ -358,6 +360,26 @@ async function createWindow() {
       return;
     }
     mainWindow.reload();
+  });
+  if (mainWindow) {
+    mainWindow.setContentProtection(true);
+    console.log(`Content Protection: ${true}`);
+  }
+
+     
+  // Register screenshot shortcuts using electron-localshortcut
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+4', () => {
+    mainWindow?.webContents.send('screenshot-detected');
+  });
+
+  electronLocalshortcut.register(mainWindow, 'PrintScreen', () => {
+    mainWindow?.webContents.send('screenshot-detected');
+  });
+
+
+  // MacOS: Detect screenshot
+  mainWindow.on('focus', () => {
+    mainWindow?.webContents.send('remove-black-overlay');
   });
 
   function captureAndSaveWindowStats() {
@@ -1123,3 +1145,8 @@ async function askForMediaAccess() {
 ipc.on('media-access', async () => {
   await askForMediaAccess();
 });
+
+
+
+
+ 
