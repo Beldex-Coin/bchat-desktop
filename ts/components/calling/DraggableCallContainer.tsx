@@ -14,11 +14,11 @@ import { DurationLabel, StyledCenteredLabel } from './InConversationCallContaine
 import { BchatIcon, BchatIconButton } from '../icon';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
-import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
+// import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 
 export const DraggableCallWindow = styled.div`
   position: absolute;
-  z-index: 9;
+  z-index: 999;
   box-shadow: 0px 0px 10px 0px #000000;
   max-height: 300px;
   width: 12vw;
@@ -26,15 +26,21 @@ export const DraggableCallWindow = styled.div`
   flex-direction: column;
   background-color: var(--color-modal-background);
   border: var(--bchat-border);
+  overflow: hidden;
+  border-radius: 10px;
 `;
 
-export const StyledVideoElement = styled.video<{ isVideoMuted: boolean; width?: string ; isLocalOnly?:boolean}>`
+export const StyledVideoElement = styled.video<{
+  isVideoMuted: boolean;
+  width?: string;
+  isLocalOnly?: boolean;
+}>`
   // padding: 0 1rem;
   height: 100%;
   width: ${props => (props.width ? props.width : '100%')};
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
   display: ${props => (props.isVideoMuted ? 'none' : 'block')};
-  object-fit: ${props => (props.isLocalOnly ? 'cover' : 'unset')};
+  object-fit: cover;
   /*Mirror code starts*/
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -67,8 +73,10 @@ const CenteredAvatarInDraggable = styled.div`
   padding-top: 20px;
 `;
 const StyledDurationLabel = styled.div`
-  padding: 10px;
-  z-index:99;
+  position: absolute;
+  bottom: 0;
+  padding: 5px 10px;
+  z-index: 99;
 `;
 const StyledOngoingBar = styled.div`
   border-radius: 14px;
@@ -87,28 +95,32 @@ const StyledText = styled.div`
     font-size: 14px;
   }
 `;
-const StyledCloseIcon = styled.div<{ positionX: number; positionY: number }>`
+// left: ${props => props.positionX + 132}px;
+// top: ${props => props.positionY}px;
+const StyledCloseIcon = styled.div<{ positionX?: number; positionY?: number }>`
   position: absolute;
-  left: ${props => props.positionX + 132}px;
-  top: ${props => props.positionY}px;
+  top: 5px;
+  right: 5px;
   z-index: 99;
   display: flex;
   flex-direction: column;
 `;
-const StyledLocalVideoContainer = styled.div<{isLocalOnly:boolean}>`
+const StyledLocalVideoContainer = styled.div<{ isLocalOnly: boolean }>`
   position: absolute;
-  right: ${props=>props.isLocalOnly?'0':'5'}px;
-  bottom:${props=>props.isLocalOnly?'0':'5'}px;
-  width: ${props=>props.isLocalOnly?'164':'81'}px;
-  height: ${props=>props.isLocalOnly?'146':'81'}px;
+  right: ${props => (props.isLocalOnly ? '0' : '5')}px;
+  bottom: ${props => (props.isLocalOnly ? '0' : '5')}px;
+  width: ${props => (props.isLocalOnly ? '164' : '81')}px;
+  height: ${props => (props.isLocalOnly ? '146' : '81')}px;
+  overflow: hidden;
+  border-radius: 10px;
 `;
 export const DraggableCallContainer = () => {
   const ongoingCallProps = useSelector(getHasOngoingCallWith);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const hasOngoingCall = useSelector(getHasOngoingCall);
-  const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
+  // const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
   const selectedSection = useSelector(getSection);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   // the draggable container has a width of 12vw, so we just set it's X to a bit more than this
   const [positionX, setPositionX] = useState(window.innerWidth - (window.innerWidth * 1) / 6);
@@ -120,7 +132,9 @@ export const DraggableCallContainer = () => {
   const [isBarView, setBarView] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const DRAG_THRESHOLD = 5;
-  const isNotInChat=selectedSection.focusedSection === SectionType.Settings || selectedSection.focusedSection === SectionType.Wallet
+  const isNotInChat =
+    selectedSection.focusedSection === SectionType.Settings ||
+    selectedSection.focusedSection === SectionType.Wallet;
 
   const ongoingCallPubkey = ongoingCallProps?.id;
   const {
@@ -157,12 +171,12 @@ export const DraggableCallContainer = () => {
       videoRefLocal.current.srcObject = localStream;
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     if (videoRefRemote?.current && videoRefLocal?.current) {
-    videoRefRemote.current.srcObject = remoteStream;
-    videoRefLocal.current.srcObject = localStream;
+      videoRefRemote.current.srcObject = remoteStream;
+      videoRefLocal.current.srcObject = localStream;
     }
-  },[isBarView])
+  }, [isBarView]);
 
   const openCallingConversation = () => {
     if (ongoingCallPubkey && (ongoingCallPubkey !== selectedConversationKey || isNotInChat)) {
@@ -171,12 +185,13 @@ export const DraggableCallContainer = () => {
       void openConversationWithMessages({ conversationKey: ongoingCallPubkey, messageId: null });
     }
   };
- 
+
   if (
     !hasOngoingCall ||
     !ongoingCallProps ||
     (ongoingCallPubkey === selectedConversationKey &&
-      selectedSection.focusedSection !== SectionType.Settings && selectedSection.focusedSection !== SectionType.Wallet) && !BchatWalletPasswordModalState
+      selectedSection.focusedSection !== SectionType.Settings &&
+      selectedSection.focusedSection !== SectionType.Wallet)
   ) {
     return null;
   }
@@ -224,7 +239,7 @@ export const DraggableCallContainer = () => {
 
   return (
     <div>
-      {!isDragging && (
+      {!isDragging && false && (
         <StyledCloseIcon positionX={positionX} positionY={positionY}>
           <BchatIconButton
             iconType={'xWithCircle'}
@@ -266,16 +281,38 @@ export const DraggableCallContainer = () => {
         }}
         onStop={(e: DraggableEvent, data: DraggableData) => {
           e.stopPropagation();
-          if (data.x === lastPositionX && data.y === lastPositionY) {
-            // drag did not change anything. Consider this to be a click
-            openCallingConversation();
-          }
+          // if (data.x === lastPositionX && data.y === lastPositionY) {
+          //   // drag did not change anything. Consider this to be a click
+          //   openCallingConversation();
+          // }
           setIsDragging(false);
           setPositionX(data.x);
           setPositionY(data.y);
         }}
       >
         <DraggableCallWindow className="dragHandle">
+          <StyledCloseIcon positionX={positionX} positionY={positionY}>
+            <BchatIconButton
+              iconType={'x'}
+              // iconColor="#FFFFFF"
+              iconSize={22}
+              onClick={e => {
+                e.stopPropagation();
+                if (!isDragging) setBarView(true); // ✅ Prevents drag triggering click
+              }}
+            />
+            <SpacerSM />
+            <BchatIconButton
+              iconType={'replyArrow'}
+              iconSize={22}
+              // btnBgColor="#00BD40"
+              // iconColor="#FFFFFF"
+              btnRadius="50px"
+              onClick={() => {
+                openCallingConversation();
+              }}
+            />
+          </StyledCloseIcon>
           <DraggableCallWindowInner>
             <StyledDraggableVideoElement
               ref={videoRefRemote}
@@ -287,19 +324,20 @@ export const DraggableCallContainer = () => {
                 <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
               </CenteredAvatarInDraggable>
             )}
-            
           </DraggableCallWindowInner>
-          <StyledLocalVideoContainer  isLocalOnly={remoteStreamVideoIsMuted}>
-              <StyledDraggableVideoElement
+          <StyledLocalVideoContainer isLocalOnly={remoteStreamVideoIsMuted}>
+            <StyledDraggableVideoElement
               isLocalOnly={remoteStreamVideoIsMuted}
-                ref={videoRefLocal}
-                autoPlay={true}
-                isVideoMuted={localStreamVideoIsMuted}
-              />
-             
-            </StyledLocalVideoContainer>
+              ref={videoRefLocal}
+              autoPlay={true}
+              isVideoMuted={localStreamVideoIsMuted}
+            />
+          </StyledLocalVideoContainer>
           <StyledDurationLabel>
-            <DurationLabel isDraggable={true}  isVideoCall={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted} />
+            <DurationLabel
+              isDraggable={true}
+              isVideoCall={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
+            />
           </StyledDurationLabel>
         </DraggableCallWindow>
       </Draggable>
