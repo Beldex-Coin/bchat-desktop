@@ -11,6 +11,7 @@ import {
   systemPreferences,
   
   
+  
 } from 'electron';
 
 import path, { join } from 'path';
@@ -148,7 +149,9 @@ if (!process.mas) {
 const windowFromUserConfig = userConfig.get('window');
 const windowFromEphemeral = ephemeralConfig.get('window');
 let windowConfig = windowFromEphemeral || windowFromUserConfig;
+console.log('windowFromUserConfig -->',windowFromUserConfig,'windowFromEphemeral -->',windowFromEphemeral)
 if (windowFromUserConfig) {
+
   userConfig.set('window', null);
   ephemeralConfig.set('window', windowConfig);
 }
@@ -362,8 +365,8 @@ async function createWindow() {
     mainWindow.reload();
   });
   if (mainWindow) {
-    mainWindow.setContentProtection(true);
-    console.log(`Content Protection: ${true}`);
+    mainWindow.setContentProtection(false);
+    console.log(`Content Protection: ${false}`);
   }
 
      
@@ -1146,6 +1149,13 @@ ipc.on('media-access', async () => {
   await askForMediaAccess();
 });
 
+
+ipc.on('toggle-content-protection', (event, isEnabled) => {
+  if (mainWindow) {
+    mainWindow.setContentProtection(isEnabled);
+    console.log(`Content Protection: ${isEnabled},${event}`);
+  }
+});
 
 
 
