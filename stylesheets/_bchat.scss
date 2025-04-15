@@ -1625,7 +1625,8 @@ label {
 
   &.react-contexify__submenu {
     top: 0px !important; // height of an item element
-    height: 105px;
+    min-height: 144px;
+ 
     // right: 300px !important;
     .react-contexify__item__content {
       justify-content: start;
