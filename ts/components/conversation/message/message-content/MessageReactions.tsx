@@ -15,6 +15,8 @@ import { StyledPopupContainer } from '../reactions/ReactionPopup';
 import { Reaction, ReactionProps } from '../reactions/Reaction';
 import { BchatIconButton } from '../../../icon';
 import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
+import { getMessageContentSelectorProps } from '../../../../state/selectors/conversations';
+import { useSelector } from 'react-redux';
 
 export const popupXDefault = -101;
 export const popupYDefault = -90;
@@ -42,6 +44,7 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   y: number;
   isIncoming?: boolean;
   inModal?: boolean;
+  islastSeriesOfMsg?:boolean;
 }>`
   position: relative;
   height: 100%;
@@ -50,7 +53,8 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom:${props => (props.inModal ? 'unset' : '10px')} ;
+  margin-top:5px;
+  margin-bottom:${props => (props.inModal ? 'unset' :props.islastSeriesOfMsg?'15px' : '2px')} ;
   ${StyledPopupContainer} {
     position: absolute;
     // top: ${props => `${props.y}px;`};
@@ -189,7 +193,10 @@ export const MessageReactions = (props: Props): ReactElement => {
   } = props;
 
   const [reactions, setReactions] = useState<SortedReactionList>([]);
-
+  const contentProps = useSelector(state =>
+    getMessageContentSelectorProps(state as any, props.messageId)
+  );
+const islastSeriesOfMsg=contentProps?.lastMessageOfSeries
   // const [isExpanded, setIsExpanded] = useState(false);
   // const handleExpand = () => {
   //   setIsExpanded(!isExpanded);
@@ -233,6 +240,11 @@ export const MessageReactions = (props: Props): ReactElement => {
     }
   }, [reacts, reactions]);
 
+  if(_.isEmpty(reacts))
+  {
+    return <></>;
+  }
+  
   return (
     <StyledMessageReactionsContainer
       container={true}
@@ -243,6 +255,7 @@ export const MessageReactions = (props: Props): ReactElement => {
       y={popupY}
       isIncoming={isIncoming}
       inModal={inModal}
+      islastSeriesOfMsg={islastSeriesOfMsg}
       
     >
       {reacts &&

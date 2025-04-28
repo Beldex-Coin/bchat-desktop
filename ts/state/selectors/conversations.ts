@@ -1062,6 +1062,7 @@ export const getMessageContentSelectorProps = createSelector(getMessagePropsByMe
       'previews',
       'quote',
       'attachments',
+      'reacts'
     ]),
   };
 
@@ -1077,7 +1078,7 @@ export const getMessageContentWithStatusesSelectorProps = createSelector(
 
     const msgProps: MessageContentWithStatusSelectorProps = {
       hasAttachments: Boolean(props.propsForMessage.attachments?.length) || false,
-      ...pick(props.propsForMessage, ['direction', 'isDeleted', 'isTrustedForAttachmentDownload',"isPublic"]),
+      ...pick(props.propsForMessage, ['direction', 'isDeleted', 'isTrustedForAttachmentDownload',"isPublic",]),
     };
 
     return msgProps;

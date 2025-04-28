@@ -600,6 +600,8 @@ pre {
   // To limit messages with things forcing them wider, like long attachment names
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
+  margin-bottom: -5px;
+  padding: 10px 0 ;
 }
 
 label {

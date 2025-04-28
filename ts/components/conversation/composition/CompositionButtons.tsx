@@ -106,7 +106,7 @@ export const SendFundDisableButton = (props: { onClick: () => void }) => {
   return (
     <div onClick={props.onClick}>
       <div
-        data-tip="Chat With Wallet"
+        data-tip="Send BDX"
         className="coin-logo-wrapper"
         data-offset="{'top':10,'right':0}"
       >

@@ -9,6 +9,7 @@ import {
 } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
 import { ContactName } from '../../ContactName';
+import { avatarPlaceholderColors, useHashBasedOnPubkey } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
 
 export type MessageAuthorSelectorProps = Pick<
   MessageRenderingProps,
@@ -38,9 +39,12 @@ export const MessageAuthorText = (props: Props) => {
   const shortenedPubkey = PubKey.shorten(sender);
 
   const displayedPubkey = authorProfileName ? shortenedPubkey : sender;
+  const { hash}:{hash:any} = useHashBasedOnPubkey(sender); 
+  const bgColorIndex = hash % avatarPlaceholderColors.length; 
+  const avatarColors = avatarPlaceholderColors[bgColorIndex];
 
   return (
-    <Flex container={true} className='module-message_grp_author_wrapper'>
+    <Flex container={true} className='module-message_grp_author_wrapper' style={{color:avatarColors?.bgColor || 'var(--color-text)',textTransform: 'capitalize'}}>
       <ContactName
         pubkey={displayedPubkey}
         name={authorName}

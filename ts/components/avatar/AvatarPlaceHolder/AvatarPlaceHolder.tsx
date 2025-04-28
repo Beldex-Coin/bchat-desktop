@@ -20,7 +20,7 @@ const sha512FromPubkey = async (pubkey: string): Promise<string> => {
 // key is the pubkey, value is the hash
 const cachedHashes = new Map<string, number>();
 
-const avatarPlaceholderColors = [
+export const avatarPlaceholderColors = [
   {
     bgColor: '#9A58CD',
     bodyColor: '#623882',
@@ -47,7 +47,7 @@ const avatarPlaceholderColors = [
 
 const avatarBorderColor = '#00000059';
 
-function useHashBasedOnPubkey(pubkey: string) {
+export function useHashBasedOnPubkey(pubkey: string) {
   const [hash, setHash] = useState<number | undefined>(undefined);
   const [loading, setIsLoading] = useState<boolean>(true);
 
