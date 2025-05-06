@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
 // import { OverlayHeader } from './OverlayHeader';
-import { setOverlayMode } from '../../../state/ducks/section';
+import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { PubKey } from '../../../bchat/types';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
@@ -36,6 +36,7 @@ export const OverlayMessage = () => {
   const dispatch = useDispatch();
 
   function closeOverlay() {
+    dispatch(showLeftPaneSection(0));
     dispatch(setOverlayMode(undefined));
   }
 
@@ -81,7 +82,7 @@ export const OverlayMessage = () => {
       await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
       closeOverlay();
     } else {
-      setLoading(true);
+      setLoading(true); 
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {

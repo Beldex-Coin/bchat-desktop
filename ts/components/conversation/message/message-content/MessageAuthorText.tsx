@@ -9,7 +9,8 @@ import {
 } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
 import { ContactName } from '../../ContactName';
-import { avatarPlaceholderColors, useHashBasedOnPubkey } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
+import { cachedHashes } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
+import { avatarPlaceholderColors } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
 
 export type MessageAuthorSelectorProps = Pick<
   MessageRenderingProps,
@@ -36,15 +37,15 @@ export const MessageAuthorText = (props: Props) => {
     return null;
   }
 
-  const shortenedPubkey = PubKey.shorten(sender);
-
-  const displayedPubkey = authorProfileName ? shortenedPubkey : sender;
-  const { hash}:{hash:any} = useHashBasedOnPubkey(sender); 
-  const bgColorIndex = hash % avatarPlaceholderColors.length; 
+  const shortenedPubkey = PubKey.shorten(sender); 
+  const displayedPubkey = authorProfileName ? shortenedPubkey : sender; 
+  const bgColorIndex = (cachedHashes.get(sender) ?? 0) % avatarPlaceholderColors.length;
   const avatarColors = avatarPlaceholderColors[bgColorIndex];
 
+
   return (
-    <Flex container={true} className='module-message_grp_author_wrapper' style={{color:avatarColors?.bgColor || 'var(--color-text)',textTransform: 'capitalize'}}>
+    <Flex container={true} className='module-message_grp_author_wrapper'
+     style={{color:avatarColors?.bgColor || 'var(--color-text)',textTransform: 'capitalize'}}>
       <ContactName
         pubkey={displayedPubkey}
         name={authorName}

@@ -18,7 +18,7 @@ const sha512FromPubkey = async (pubkey: string): Promise<string> => {
 
 // do not do this on every avatar, just cache the values so we can reuse them accross the app
 // key is the pubkey, value is the hash
-const cachedHashes = new Map<string, number>();
+export const cachedHashes = new Map<string, number>();
 
 export const avatarPlaceholderColors = [
   {
@@ -47,7 +47,7 @@ export const avatarPlaceholderColors = [
 
 const avatarBorderColor = '#00000059';
 
-export function useHashBasedOnPubkey(pubkey: string) {
+function useHashBasedOnPubkey(pubkey: string) {
   const [hash, setHash] = useState<number | undefined>(undefined);
   const [loading, setIsLoading] = useState<boolean>(true);
 

@@ -1,7 +1,7 @@
 // import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
 import { isEmpty, isEqual } from 'lodash';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -243,16 +243,18 @@ export const ReactListModal = (props: Props): ReactElement => {
 
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const darkMode = useSelector(getTheme) === 'dark';
-
-  if (!msgProps) {
-    return <></>;
-  }
-
-  const { convoId, sortedReacts: reacts, isPublic } = msgProps;
-  const convo = getConversationController().get(convoId);
-  const weAreModerator = convo.getConversationModelProps().weAreModerator;
-  const reactedDetailList = sortedSenderAndEmoji();
   const modalRef = useRef<HTMLDivElement | null>(null);
+  
+  const reactedDetailList = useMemo(() => {
+    if (!msgProps?.sortedReacts) return [];
+    const reactedCustomData: Array<reactionListDetailsProps> = [];
+    msgProps.sortedReacts.forEach(([emoji, { senders }]) => {
+      Object.keys(senders).forEach(sender => {
+        reactedCustomData.push({ sender, emoji });
+      });
+    });
+    return reactedCustomData;
+  }, [msgProps?.sortedReacts]);
 
   const handleSelectedReaction = (emoji: string): boolean => {
     return currentReact == emoji;
@@ -265,24 +267,18 @@ export const ReactListModal = (props: Props): ReactElement => {
   const handleClose = () => {
     dispatch(updateReactListModal(null));
   };
-  if (isEmpty(reactedDetailList)) {
-    handleClose();
-  }
   const handleClearReactions = (event: any) => {
     event.preventDefault();
     handleClose();
     dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
   };
 
-  function sortedSenderAndEmoji() {
-    const reactedCustomData: Array<reactionListDetailsProps> = [];
-    reacts?.forEach(([emoji, { senders }]) => {
-      Object.keys(senders).forEach(sender => {
-        reactedCustomData.push({ sender, emoji });
-      });
-    });
-    return reactedCustomData;
-  }
+
+  useEffect(() => {
+    if (isEmpty(reactedDetailList)) {
+      handleClose();
+    }
+  }, [reactedDetailList]);
 
   useEffect(
     () => {
@@ -292,8 +288,8 @@ export const ReactListModal = (props: Props): ReactElement => {
       //   );
       //   setCurrentReact(reaction);
       // }
-      if (reacts && !isEqual(reactions, reacts)) {
-        setReactions(reacts);
+      if (msgProps?.sortedReacts && !isEqual(reactions, msgProps?.sortedReacts)) {
+        setReactions(msgProps?.sortedReacts);
       }
       if (reactionsMap && !reactionsMap[currentReact]) {
         setCurrentReact('');
@@ -323,7 +319,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     },
 
     // [currentReact, me, reaction, reacts, reactions, reactionsMap, senders]);
-    [reacts, me,reactionsMap]
+    [msgProps?.sortedReacts, me,reactionsMap]
   );
   useEffect(() => {
     const handleClickOutside = (event: any): void => {
@@ -337,6 +333,12 @@ export const ReactListModal = (props: Props): ReactElement => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [reactListModalState]);
+  if (!msgProps) {
+    return <></>;
+  }
+  const { convoId, isPublic } = msgProps;
+  const convo = getConversationController().get(convoId);
+  const weAreModerator = convo.getConversationModelProps().weAreModerator;
 
   return (
     <div className="reaction-list-modal">
