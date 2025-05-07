@@ -158,7 +158,7 @@ export const OverlayMessageRequest = (props: any) => {
 
 const MessageRequestListContainer = styled.div`
   padding: 15px;
-  height: 73%;
+  max-height:75vh;
   overflow-y: auto;
   // margin-bottom: auto;
 `;

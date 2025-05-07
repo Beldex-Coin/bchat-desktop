@@ -52,7 +52,16 @@ const VerticalLine = styled.div`
 // const ReplyingTo = styled.div`
 //   color: var(--color-text);
 // `;
-
+const StyledIconWrapper=styled.div `
+width:50px;
+height:50px;
+background-color:var(--color-hop-bg);
+display:flex;
+justify-content:center;
+align-items: center;
+margin-right: 15px;
+border-radius: 10px;
+`
 export const BchatQuotedMessageComposition = () => {
   const quotedMessageProps = useSelector(getQuotedMessage);
 
@@ -60,6 +69,8 @@ export const BchatQuotedMessageComposition = () => {
 
   const { text: body, attachments } = quotedMessageProps || {};
   const hasAttachments = attachments && attachments.length > 0;
+  const SUPPORTED_PROTOCOLS = /^(http|https):/i;
+  const isLink = SUPPORTED_PROTOCOLS.test(body || '');
   let hasImageAttachment = false;
 
   let firstImageAttachment;
@@ -116,8 +127,7 @@ export const BchatQuotedMessageComposition = () => {
             margin={'var(--margins-xs)'}
             alignItems="center"
           >
-            <VerticalLine />
-
+            {!isLink ? <VerticalLine /> :<StyledIconWrapper><BchatIcon iconType="openLink" iconSize={20} iconColor='var(--color-modal-disable-txt)'  /></StyledIconWrapper>  }
             <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
 
             {hasImageAttachment && (
