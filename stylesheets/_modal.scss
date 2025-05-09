@@ -1275,7 +1275,7 @@
     // height: 482px;
     width: 581px;
     text-align: left;
-    padding: 0 26px;
+    padding: 0 26px ;
 
     div {
       margin-bottom: 10px;
@@ -1284,6 +1284,9 @@
     a {
       color: #108d32;
     }
+  }
+  .bchat-modal__body{
+   padding-top: 20px;
   }
 }
 

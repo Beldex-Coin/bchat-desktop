@@ -47,7 +47,7 @@ const CrownWrapper = styled.div`
   width: 18px;
   position: absolute;
   top: -12px;
-  left: 22px;
+  left: 15px;
 `;
 
 export const CrownIcon = () => {
