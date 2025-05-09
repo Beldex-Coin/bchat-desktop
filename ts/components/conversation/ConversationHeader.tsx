@@ -101,8 +101,10 @@ export const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
+  const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
+  const convoName = useConversationUsername(selectedConversationKey);
 
   const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
 
@@ -147,8 +149,8 @@ export const SelectionOverlay = () => {
   }
 
   const isOnlyServerDeletable = isPublic;
-  const deleteMessageButtonText = i18n('delete');
-  const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone');
+  const deleteMessageButtonText = i18n('deleteJustForMe');
+  const deleteForEveryoneMessageButtonText =isPrivate?i18n('deleteForMeAndRecipient',[convoName||'recipient']) :i18n('deleteForEveryone');
 
   return (
     <div className="message-selection-overlay">

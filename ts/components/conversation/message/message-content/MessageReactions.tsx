@@ -1,17 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-
 import styled from 'styled-components';
 import { MessageRenderingProps } from '../../../../models/messageType';
-
 import { isEmpty, isEqual } from 'lodash';
 import _ from 'lodash';
 import { SortedReactionList } from '../../../../types/Reaction';
-
 import { Flex } from '../../../basic/Flex';
-
-// import { nativeEmojiData } from '../../../../util/emoji';
 import { StyledPopupContainer } from '../reactions/ReactionPopup';
-
 import { Reaction, ReactionProps } from '../reactions/Reaction';
 import { BchatIconButton } from '../../../icon';
 import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
@@ -44,7 +38,7 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   y: number;
   isIncoming?: boolean;
   inModal?: boolean;
-  islastSeriesOfMsg?:boolean;
+  islastSeriesOfMsg?: boolean;
 }>`
   position: relative;
   height: 100%;
@@ -53,8 +47,8 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top:5px;
-  margin-bottom:${props => (props.inModal ? 'unset' :props.islastSeriesOfMsg?'15px' : '2px')} ;
+  margin-top:3px;
+  margin-bottom:${props => (props.inModal ? 'unset' : props.islastSeriesOfMsg ? '15px' : '6px')} ;
   ${StyledPopupContainer} {
     position: absolute;
     // top: ${props => `${props.y}px;`};
@@ -73,37 +67,10 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
      `}
 `;
 
-// const StyledReactionOverflow = styled.button`
-
-//   margin-right: 4px;
-//   margin-bottom: var(--margins-sm);
-//   display: flex;
-//   justify-content: flex-start;
-//   align-items: center;
-//   flex-direction: row-reverse;
-
-//   span {
-//     background-color: var(--color-received-message-background);
-//     border: 1px solid var(--color-inbox-background);
-//     border-radius: 50%;
-//     overflow: hidden;
-//     margin-right: -9px;
-//     padding: 1px 4.5px;
-//   }
-// `;
-
-// const StyledReadLess = styled.span`
-//   font-size: var(--font-size-h2);
-//   margin-top: 8px;
-//   svg {
-//     margin-right: 5px;
-//   }
-// `;
-
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;
 
 const Reactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal, isIncoming,handlePopupReaction } = props;
+  const { messageId, reactions, inModal, isIncoming, handlePopupReaction } = props;
 
   return (
     <StyledMessageReactions
@@ -112,7 +79,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
       flexDirection={isIncoming ? 'row' : 'row-reverse'}
-      onMouseLeave={()=>handlePopupReaction && handlePopupReaction('')}
+      onMouseLeave={() => handlePopupReaction && handlePopupReaction('')}
     >
       {reactions.map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -121,7 +88,14 @@ const Reactions = (props: ReactionsProps): ReactElement => {
   );
 };
 const CompressedReactions = (props: ReactionsProps): ReactElement => {
-  const { messageId, reactions, inModal, handlePopupClick, isIncoming,handlePopupReaction } = props;
+  const {
+    messageId,
+    reactions,
+    inModal,
+    handlePopupClick,
+    isIncoming,
+    handlePopupReaction,
+  } = props;
   return (
     <StyledMessageReactions
       container={true}
@@ -129,7 +103,7 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
       alignItems={'center'}
       inModal={inModal}
       flexDirection={isIncoming ? 'row' : 'row-reverse'}
-      onMouseLeave={()=>handlePopupReaction && handlePopupReaction('')}
+      onMouseLeave={() => handlePopupReaction && handlePopupReaction('')}
     >
       {reactions.slice(0, 5).map(([emoji, _]) => (
         <Reaction key={`${messageId}-${emoji}`} emoji={emoji} {...props} />
@@ -144,39 +118,9 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
         onClick={handlePopupClick}
         margin="0 3px"
       />
-      {/* <StyledReactionOverflow onClick={handleExpand}>
-        {reactions
-          .slice(4, 7)
-          .reverse()
-          .map(([emoji, _]) => {
-            return (
-              <span
-                key={`${messageId}-${emoji}`}
-                role={'img'}
-                aria-label={
-                  nativeEmojiData?.ariaLabels ? nativeEmojiData.ariaLabels[emoji] : undefined
-                }
-              >
-                {emoji}
-              </span>
-            );
-          })}
-      </StyledReactionOverflow> */}
     </StyledMessageReactions>
   );
 };
-// const ExpandedReactions = (props: ExpandReactionsProps): ReactElement => {
-//   const { handleExpand } = props;
-//   return (
-//     <>
-//       <Reactions {...props} />
-//       <StyledReadLess onClick={handleExpand}>
-//         <BchatIcon iconType="chevron" iconSize="medium" iconRotation={180} />
-//         {window.i18n('expandedReactionsText')}
-//       </StyledReadLess>
-//     </>
-//   );
-// };
 
 export const MessageReactions = (props: Props): ReactElement => {
   const {
@@ -196,12 +140,7 @@ export const MessageReactions = (props: Props): ReactElement => {
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
-const islastSeriesOfMsg=contentProps?.lastMessageOfSeries
-  // const [isExpanded, setIsExpanded] = useState(false);
-  // const handleExpand = () => {
-  //   setIsExpanded(!isExpanded);
-  // };
-
+  const islastSeriesOfMsg = contentProps?.lastMessageOfSeries;
   const [popupX, setPopupX] = useState(popupXDefault);
   const [popupY, setPopupY] = useState(popupYDefault);
   const msgProps = useMessageReactsPropsById(messageId);
@@ -228,7 +167,7 @@ const islastSeriesOfMsg=contentProps?.lastMessageOfSeries
     handlePopupReaction: setPopupReaction,
     handlePopupClick: onPopupClick,
     isIncoming,
-    iscurrentReact
+    iscurrentReact,
   };
 
   useEffect(() => {
@@ -240,11 +179,10 @@ const islastSeriesOfMsg=contentProps?.lastMessageOfSeries
     }
   }, [reacts, reactions]);
 
-  if(_.isEmpty(reacts))
-  {
+  if (_.isEmpty(reacts)) {
     return <></>;
   }
-  
+
   return (
     <StyledMessageReactionsContainer
       container={true}
@@ -256,17 +194,12 @@ const islastSeriesOfMsg=contentProps?.lastMessageOfSeries
       isIncoming={isIncoming}
       inModal={inModal}
       islastSeriesOfMsg={islastSeriesOfMsg}
-      
     >
       {reacts &&
         !_.isEmpty(reacts) &&
         (!hasReactLimit || reacts.length <= reactLimit ? (
           <Reactions {...reactionsProps} />
-        ) 
-        // : isExpanded ? (
-        //   <ExpandedReactions handleExpand={handleExpand} {...reactionsProps} />
-        // ) 
-        : (
+        ) : (
           <CompressedReactions {...reactionsProps} />
         ))}
     </StyledMessageReactionsContainer>

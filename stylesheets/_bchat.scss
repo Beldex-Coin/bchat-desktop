@@ -630,6 +630,7 @@ label {
 }
 .module-message__container_bg_disabled {
   background-color: transparent !important;
+  padding-bottom: 0 !important;
   .timeStamp {
     color: #858598 !important;
   }

@@ -466,6 +466,7 @@ export type LocalizerKeys =
   | 'autoUpdateSettingTitle'
   | 'documentsEmptyState'
   | 'deleteForEveryone'
+  |'deleteForMeAndRecipient'
   | 'createBchatID'
   | 'multipleLeftTheGroup'
   | 'enterBchatIDOrBNSName'

@@ -295,7 +295,7 @@ export class BchatRecording extends React.Component<Props, State> {
       window?.log?.info('Empty audio blob');
       return;
     }
-
+  
     // Is the audio file > attachment filesize limit
     if (this.audioBlobMp3.size > MAX_ATTACHMENT_FILESIZE_BYTES) {
       ToastUtils.pushFileSizeErrorAsByte(MAX_ATTACHMENT_FILESIZE_BYTES);
@@ -333,6 +333,18 @@ export class BchatRecording extends React.Component<Props, State> {
     }
     const [_, blob] = await this.recorder.stop().getMp3();
     this.recorder = undefined;
+
+  // Get the audio duration to validate length
+  const audioURL = window.URL.createObjectURL(blob);
+  const validAudio = new Audio(audioURL);
+
+  validAudio.onloadedmetadata = async () => {
+    if (validAudio.duration < 1) {
+      // Less than 1 second - discard
+      await this.onDeleteVoiceMessage();
+      return;
+    }
+  }
 
     this.audioBlobMp3 = blob;
     this.updateAudioElementAndDuration();
