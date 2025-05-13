@@ -1625,11 +1625,21 @@ label {
     transition: $bchat-transition-duration;
     color: var(--color-text);
   }
-
+ 
+  &.convoListContextMenu{
+    .react-contexify__submenu{
+       min-height: 144px;
+    }
+  } 
+  &.submenu
+  {
+    .react-contexify__submenu{
+      min-height: 103px;
+   }
+  }
   &.react-contexify__submenu {
     top: 0px !important; // height of an item element
-    min-height: 144px;
- 
+   
     // right: 300px !important;
     .react-contexify__item__content {
       justify-content: start;

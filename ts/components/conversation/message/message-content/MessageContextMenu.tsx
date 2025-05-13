@@ -17,12 +17,13 @@ import {
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
 import { toggleSelectedMessageId } from '../../../../state/ducks/conversations';
-import { getMessageContextMenuProps } from '../../../../state/selectors/conversations';
+import { getMessageContextMenuProps, getSelectedConversation } from '../../../../state/selectors/conversations';
 import { saveAttachmentToDisk } from '../../../../util/attachmentsUtil';
 import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 import { useClickAway } from 'react-use';
+import { useConversationUsername } from '../../../../hooks/useParamSelector';
 // import classNames from 'classnames';
 
 type Props = {
@@ -47,7 +48,7 @@ export type MessageContextMenuSelectorProps = Pick<
   | 'serverTimestamp'
   | 'timestamp'
   | 'isBlocked'
-  | 'isDeletableForEveryone'
+  | 'isDeletableForEveryone' 
   | 'isDeleted'
 >;
 
@@ -83,6 +84,8 @@ export const MessageContextMenu = (props: Props) => {
     isDeleted,
   } = selected;
   const { messageId, contextMenuId } = props;
+  const convoName = useConversationUsername(convoId);
+  const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
@@ -117,7 +120,7 @@ export const MessageContextMenu = (props: Props) => {
 
   const selectMessageText = window.i18n('selectMessage');
   const deleteMessageJustForMeText = window.i18n('deleteJustForMe');
-  const unsendMessageText = window.i18n('deleteForEveryone');
+  const unsendMessageText =isPrivate?window.i18n('deleteForMeAndRecipient',[convoName||'recipient']) :window.i18n('deleteForEveryone');
 
   const addModerator = useCallback(() => {
     void addSenderAsModerator(sender, convoId);
