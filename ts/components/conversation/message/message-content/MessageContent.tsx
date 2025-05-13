@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import {
   getMessageContentSelectorProps,
+  getMessageQuoteProps,
   getMessageTextProps,
   getQuotedMessageToAnimate,
   getShouldHighlightMessage,
@@ -29,6 +30,7 @@ import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 import { SpacerXS } from '../../../basic/Text';
+import { MessageAuthorText } from './MessageAuthorText';
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -41,11 +43,15 @@ export type MessageContentSelectorProps = Pick<
   | 'previews'
   | 'quote'
   | 'attachments'
+  | 'reacts'
+
 >;
 
 type Props = {
   messageId: string;
   isDetailView?: boolean;
+  onRecentEmojiBtnVisible:()=>void;
+  isTrustedForAttachmentDownload?:boolean
 };
 
 // function getIsShowingImage(
@@ -101,9 +107,9 @@ export const IsMessageVisibleContext = createContext(false);
 export const MessageContent = (props: Props) => {
   const [flashGreen, setFlashGreen] = useState(false);
   const [didScroll, setDidScroll] = useState(false);
-  const contentProps = useSelector(state =>
-    getMessageContentSelectorProps(state as any, props.messageId)
-  );
+    const contentProps = useSelector(state =>
+      getMessageContentSelectorProps(state as any, props.messageId)
+    );
   const [isMessageVisible, setMessageIsVisible] = useState(false);
 
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
@@ -128,7 +134,8 @@ export const MessageContent = (props: Props) => {
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
-
+  const quoteMessageprops = useSelector(state => getMessageQuoteProps(state as any, props.messageId));
+  const quote = quoteMessageprops?.quote ;
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
       if (!flashGreen && !didScroll) {
@@ -165,7 +172,9 @@ export const MessageContent = (props: Props) => {
     previews,
     // quote,
     attachments=[],
+    
   } = contentProps;
+  const {isTrustedForAttachmentDownload}=props;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
   let isDeleted = false;
@@ -176,10 +185,11 @@ export const MessageContent = (props: Props) => {
   // const width = getWidth({ previews, attachments });
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
-  // const hasQuote = !isEmpty(quote);
+  const hasQuote = !isEmpty(quote);
+  const isReacted=!isEmpty(contentProps?.reacts)
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-
+  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 
@@ -192,21 +202,27 @@ export const MessageContent = (props: Props) => {
         //   ? `module-message__container--${direction}--transparent`
         // :
         `module-message__container--${direction}--opaque`,
-        firstMessageOfSeries || props.isDetailView
+        firstMessageOfSeries && !lastMessageOfSeries || props.isDetailView
           ? `module-message__container--${direction}--first-of-series`
           : '',
-        lastMessageOfSeries || props.isDetailView
+        lastMessageOfSeries  || props.isDetailView
           ? `module-message__container--${direction}--last-of-series`
           : '',
-        flashGreen && 'flash-green-once'
+          !isReacted && lastMessageOfSeries && 'module-message__message-separator',
+        flashGreen && 'flash-green-once',
+        isGifAttachments && `module-message__container_bg_disabled`
       )}
       // style={{
       //   width: isShowingImage ? width : undefined,
       // }}
       role="button"
+      onMouseEnter={() => {
+        props.onRecentEmojiBtnVisible()
+      }}
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
     >
+      <MessageAuthorText messageId={props.messageId} />
       <InView
         id={`inview-content-${props.messageId}`}
         onChange={onVisible}
@@ -237,9 +253,8 @@ export const MessageContent = (props: Props) => {
               </Flex>
             </>
           ) : null}
-          <SpacerXS />
+          <SpacerXS /> 
           <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
-          <SpacerXS />
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>

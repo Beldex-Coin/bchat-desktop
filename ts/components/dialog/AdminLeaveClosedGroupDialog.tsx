@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerSM } from '../basic/Text';
 import { getConversationController } from '../../bchat/conversations';
 import { adminLeaveClosedGroup } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../basic/BchatButton';
@@ -52,6 +52,7 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
       iconShow={true}
       customIcon={<BchatIcon iconType={'leaveGroup'} iconSize={24} iconColor='#FF3E3E' />}
     >
+      <SpacerSM/>
       <ContentWrapper>
         {warningAsAdmin}
       </ContentWrapper>
@@ -72,6 +73,6 @@ color: #A7A7BA;
 font-size: 16px;
 font-style: normal;
 font-weight: 400;
-line-height: normal;
+line-height: 20px;
 
 `

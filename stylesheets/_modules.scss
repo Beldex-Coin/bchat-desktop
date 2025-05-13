@@ -147,6 +147,7 @@
   overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: 231px;
 }
 
 .module-message__generic-attachment__file-size,
@@ -166,7 +167,7 @@
 }
 
 .module-message__link-preview {
-  cursor: pointer;
+  // cursor: pointer;
   border-top-left-radius: $bchat_message-container-border-radius;
   border-top-right-radius: $bchat_message-container-border-radius;
   display: flex;
@@ -322,6 +323,17 @@
   text-overflow: ellipsis;
 }
 
+.module-message_grp_author_wrapper{
+
+  .module-message__author{
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 15px;
+    margin-right: 40px;
+    margin-bottom: unset;
+  }
+}
+
 .module-conversation__user__profile-name,
 .module-message__author__profile-name {
   font-style: italic;
@@ -420,7 +432,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 380px;
+    max-width: 380px;
+    cursor: pointer;
   }
 }
 
@@ -487,7 +500,8 @@
 // Module: Message Detail
 
 .module-message-detail {
-  max-width: 650px;
+  // max-width: 650px;
+  min-width: 650px;
   margin-inline-start: auto;
   margin-inline-end: auto;
   // padding: 20px;

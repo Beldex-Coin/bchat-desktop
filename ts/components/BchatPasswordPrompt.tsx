@@ -179,8 +179,12 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       this.setState({
         errorCount: this.state.errorCount + 1,
       });
-
+   
       this.setState({ error });
+       setTimeout(()=>{
+        this.setState({ error:'' });
+       },1000)
+
       global.setTimeout(() => {
         document.getElementById('password-prompt-input')?.focus();
       }, 50);

@@ -42,15 +42,15 @@ const StyledSearchResulsts = styled.div`
   padding-inline-start: 16px;
   padding-inline-end: 16px;
   min-height: 64px;
-  max-width: 300px;
+  // max-width: 300px;
 
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-
   cursor: pointer;
   &:hover {
     background-color: var(--color-clickable-hovered);
+    border-radius:16px;
   }
 `;
 
@@ -64,8 +64,7 @@ const StyledResultText = styled.div`
 
 const ResultsHeader = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;  
 `;
 
 const StyledMessageResultsHeaderName = styled.span`
@@ -145,7 +144,7 @@ const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
       isBnsHolder={props.isBnsHolder}
       size={{width:'20',height:'20'}}
     >
-      <Avatar size={AvatarSize.S} pubkey={props.source} />
+      <Avatar size={AvatarSize.L} pubkey={props.source} /> 
     </BNSWrapper>
   );
 };
@@ -168,7 +167,7 @@ const ResultBody = styled.div`
 
 const StyledTimestampContaimer = styled.div`
   flex-shrink: 0;
-  margin-inline-start: 6px;
+  // margin-inline-start: 6px;
 
   font-size: 11px;
   line-height: 16px;

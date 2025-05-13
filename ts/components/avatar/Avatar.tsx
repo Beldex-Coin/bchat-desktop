@@ -32,7 +32,7 @@ type Props = {
   dataTestId?: string;
 };
 
-const Identicon = (props: Props) => {
+export const Identicon = (props: Props) => {
   const { size, forcedName, pubkey } = props;
   const displayName = useConversationUsername(pubkey);
   const userName = forcedName || displayName || '0';
@@ -47,7 +47,7 @@ const CrownWrapper = styled.div`
   width: 18px;
   position: absolute;
   top: -12px;
-  left: 22px;
+  left: 15px;
 `;
 
 export const CrownIcon = () => {
@@ -99,6 +99,7 @@ const NoImage = (
     isClosedGroup: boolean;
   }
 ) => {
+  
   const { forcedName, size, pubkey, isClosedGroup } = props;
   // if no image but we have conversations set for the group, renders group members avatars
   if (pubkey && isClosedGroup) {

@@ -21,6 +21,8 @@ import { isUsFromCache } from '../bchat/utils/User';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { toLogFormat } from '../types/attachments/Errors';
 
+import { handleMessageReaction } from '../util/reactions';
+
 function cleanAttachment(attachment: any) {
   return {
     ..._.omit(attachment, 'thumbnail'),
@@ -79,7 +81,7 @@ function cleanAttachments(decrypted: SignalService.DataMessage) {
 }
 
 export function isMessageEmpty(message: SignalService.DataMessage) {
-  const { flags, body, attachments, group, quote, preview, openGroupInvitation,payment } = message;
+  const { flags, body, attachments, group, quote, preview, openGroupInvitation,payment,reaction } = message;
 
   return (
     !flags &&
@@ -90,9 +92,8 @@ export function isMessageEmpty(message: SignalService.DataMessage) {
     _.isEmpty(quote) &&
     _.isEmpty(preview) &&
     _.isEmpty(openGroupInvitation) &&
-    _.isEmpty(payment)
-
-    
+    _.isEmpty(payment) &&
+    _.isEmpty(reaction)
   );
 }
 
@@ -193,9 +194,7 @@ export async function handleSwarmDataMessage(
   if (isSyncedMessage && !isMe) {
     window?.log?.warn('Got a sync message from someone else than me. Dropping it.');
     return removeFromCache(envelope);
-
   } else if (isSyncedMessage) {
-
     // we should create the synTarget convo but I have no idea how to know if this is a private or closed group convo?
   }
   const convoIdToAddTheMessageTo = PubKey.removeTextSecurePrefixIfNeeded(
@@ -226,6 +225,7 @@ export async function handleSwarmDataMessage(
       cleanDataMessage.profileKey
     );
   }
+  // Reactions are empty DataMessages
   if (isMessageEmpty(cleanDataMessage)) {
     window?.log?.warn(`Message ${getEnvelopeId(envelope)} ignored; it was empty`);
     return removeFromCache(envelope);
@@ -238,7 +238,9 @@ export async function handleSwarmDataMessage(
   }
 
   const msgModel =
-    isSyncedMessage || (envelope.senderIdentity && isUsFromCache(envelope.senderIdentity))
+    isSyncedMessage ||
+    (envelope.senderIdentity && isUsFromCache(envelope.senderIdentity)) ||
+      (envelope.source && isUsFromCache(envelope.source))
       ? createSwarmMessageSentFromUs({
           conversationId: convoIdToAddTheMessageTo,
           messageHash,
@@ -291,7 +293,6 @@ async function handleSwarmMessage(
   convoToAddMessageTo: ConversationModel,
   confirm: () => void
 ): Promise<void> {
-
   if (!rawDataMessage || !msgModel) {
     window?.log?.warn('Invalid data passed to handleSwarmMessage.');
     confirm();
@@ -300,7 +301,16 @@ async function handleSwarmMessage(
 
   void convoToAddMessageTo.queueJob(async () => {
     // this call has to be made inside the queueJob!
-
+    if (!msgModel.get('isPublic') && rawDataMessage.reaction && rawDataMessage.syncTarget) {
+      await handleMessageReaction(
+        rawDataMessage.reaction,
+        msgModel.get('source'),
+        false,
+        messageHash
+      );
+      confirm();
+      return;
+    }
     const isDuplicate = await isSwarmMessageDuplicate({
       source: msgModel.get('source'),
       sentAt,

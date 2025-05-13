@@ -16,12 +16,12 @@ import { BchatWrapperModal } from '../../../BchatWrapperModal';
 import { useDispatch } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 // import { getMessageTextProps } from '../../../../state/selectors/conversations';
-import {  SpacerSM, SpacerXS } from '../../../basic/Text';
+import { SpacerSM, SpacerXS } from '../../../basic/Text';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
 
-  return <Avatar size={AvatarSize.S} pubkey={pubkey} />;
+  return <Avatar size={AvatarSize.L} pubkey={pubkey} />;
 };
 
 // const DeleteButtonItem = (props: { messageId: string; convoId: string; isDeletable: boolean }) => {
@@ -93,9 +93,9 @@ const ContactItem = (props: { contact: ContactPropsMessageDetail }) => {
   );
 };
 
-export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
+export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   const { i18n } = window;
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const {
     errors,
     receivedAt,
@@ -103,7 +103,9 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
     //  convoId,
     direction,
     messageId,
+    contacts
   } = props;
+  const contactlist=contacts.length?[contacts[0]]:contacts;
   // const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
   // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
@@ -113,19 +115,17 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
     return null;
   }
 
-  
-
   return (
     <div className="message-detail-wrapper">
       <BchatWrapperModal
         title={'More Info'}
-        onClose={() => { dispatch(updateMessageMoreInfoModal(null))}}
+        onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}
         headerReverse={false}
         okButton={{
           text: 'Close',
-          onClickOkHandler: () => {dispatch(updateMessageMoreInfoModal(null))},
+          onClickOkHandler: () => { dispatch(updateMessageMoreInfoModal(null)) },
 
           disabled: false,
         }}
@@ -134,7 +134,7 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
         <div className="module-message-detail">
           <div >
             {/* <h2>More Info</h2> */}
-            <Message messageId={messageId} isDetailView={false} />
+            <Message messageId={messageId} isDetailView={true} />
             {/* {selectedMsg?.text} */}
           </div>
           <SpacerSM />
@@ -171,9 +171,11 @@ export const MessageMoreInfoModal = (props:MessagePropsDetails) => {
             </tbody>
           </table>
           <SpacerSM />
-          <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
-          <SpacerXS/>
-          <ContactsItem contacts={props.contacts} />
+          {props.contacts.length ? (
+            <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
+          ): null}
+          <SpacerXS />
+          <ContactsItem contacts={contactlist} />
         </div>
       </BchatWrapperModal>
     </div>

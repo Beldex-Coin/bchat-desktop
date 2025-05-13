@@ -1,34 +1,27 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { MessageRenderingProps } from '../../../../models/messageType';
-import { getMessageStatusProps } from '../../../../state/selectors/conversations';
+import { MessageDeliveryStatus, MessageRenderingProps } from '../../../../models/messageType';
 import { OutgoingMessageStatus } from './OutgoingMessageStatus';
 
 type Props = {
   isCorrectSide: boolean;
   messageId: string;
   dataTestId?: string;
- 
+  status?: MessageDeliveryStatus | null;
 };
 
 export type MessageStatusSelectorProps = Pick<MessageRenderingProps, 'direction' | 'status'>;
 
 export const MessageStatus = (props: Props) => {
-  const { isCorrectSide, dataTestId } = props;
-  const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
-  if (!selected) {
-    
-    return null;
-  }
-  const { status, direction } = selected;
-  if (!isCorrectSide) {
-    return null;
-  }
-  const isIncoming = direction === 'incoming';
-  const margin=isIncoming?{marginLeft:'10px'}:{marginRight:'10px'}
+  const { isCorrectSide, dataTestId, status } = props;
+  const isIncoming = !isCorrectSide;
+  const margin = isIncoming ? { marginLeft: '10px' } : { marginRight: '10px' };
   const showStatus = !isIncoming && Boolean(status);
   if (!showStatus) {
     return null;
   }
-  return <span style={margin}><OutgoingMessageStatus dataTestId={dataTestId} status={status} /></span>;
+  return (
+    <span style={margin}>
+      <OutgoingMessageStatus dataTestId={dataTestId} status={status} />
+    </span>
+  );
 };

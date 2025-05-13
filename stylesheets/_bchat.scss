@@ -600,6 +600,8 @@ pre {
   // To limit messages with things forcing them wider, like long attachment names
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
+  margin-bottom: -5px;
+  padding: 10px 0 ;
 }
 
 label {
@@ -626,7 +628,13 @@ label {
 .module-message__container--outgoing--last-of-series {
   border-bottom-right-radius: $bchat_message-container-border-radius;
 }
-
+.module-message__container_bg_disabled {
+  background-color: transparent !important;
+  padding-bottom: 0 !important;
+  .timeStamp {
+    color: #858598 !important;
+  }
+}
 .conversation-header {
   .module-avatar img {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.2);
@@ -918,7 +926,7 @@ label {
     // overflow-y: auto;
     overflow-x: hidden;
     // max-height: 513px;
-    padding: 0px $bchat-margin-md 0px $bchat-margin-md;
+    padding: 0px $bchat-margin-md 0px 20px;
   }
 
   &__deleteAccountModal {
@@ -1159,7 +1167,7 @@ label {
 
   &-bchatConfirm {
     width: 425px;
-    margin: 0px 0px 25px 5px;
+    margin: 0px 0px 25px 0%;
     font-family: $bchat-font-default;
     font-size: 16px;
     text-align: left;
@@ -1178,7 +1186,7 @@ label {
 
     width: 450px;
     background-color: var(--color-confirm-modal-inner-bg);
-    input{
+    input {
       background-color: unset;
     }
   }
@@ -1195,7 +1203,7 @@ label {
 
   &-setPasswordAccess {
     width: 400px;
-    margin: 40px 10px 25px;
+    margin: 40px 0px 25px;
     font-family: $bchat-font-default;
 
     .contentbox {
@@ -1617,9 +1625,21 @@ label {
     transition: $bchat-transition-duration;
     color: var(--color-text);
   }
-
+ 
+  &.convoListContextMenu{
+    .react-contexify__submenu{
+       min-height: 144px;
+    }
+  } 
+  &.submenu
+  {
+    .react-contexify__submenu{
+      min-height: 103px;
+   }
+  }
   &.react-contexify__submenu {
     top: 0px !important; // height of an item element
+   
     // right: 300px !important;
     .react-contexify__item__content {
       justify-content: start;
@@ -1835,6 +1855,7 @@ label {
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 .syncStatus {
@@ -3629,7 +3650,7 @@ label {
             text-overflow: ellipsis;
             white-space: nowrap;
             font-weight: 400;
-            width: 15vw;
+            width: 11vw;
           }
 
           &-address:hover {
@@ -3842,6 +3863,20 @@ input {
     margin-top: 30px;
     border-radius: 30px;
   }
+
+  .banUnbanPopup {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-modal-icon-bg);
+    border-radius: 10px;
+    margin-right: 20px;
+    /* margin-top: 30px; */
+    border-radius: 30px;
+  }
 }
 
 .onion__description {
@@ -3942,31 +3977,31 @@ input {
   }
 }
 
-.messages-container {
-  .bchat-icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    opacity: 1;
-    // background-color: var(--color-cell-background);
+// .messages-container {
+//   .bchat-icon-button {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     // height: 40px;
+//     // width: 40px;
+//     border-radius: 50%;
+//     opacity: 1;
+//     // background-color: var(--color-cell-background);
 
-    background-color: #2f8fff;
-    box-shadow: var(--color-bchat-shadow);
+//     // background-color: #2f8fff;
+//     // box-shadow: var(--color-bchat-shadow);
 
-    // svg path {
-    //   transition: $bchat-transition-duration;
-    //   opacity: 0.6;
-    //   fill: var(--color-text);
-    // }
+//     // svg path {
+//     //   transition: $bchat-transition-duration;
+//     //   opacity: 0.6;
+//     //   fill: var(--color-text);
+//     // }
 
-    &:hover svg path {
-      opacity: 0.6;
-    }
-  }
-}
+//     &:hover svg path {
+//       opacity: 0.6;
+//     }
+//   }
+// }
 
 .group-member-list {
   &__container {

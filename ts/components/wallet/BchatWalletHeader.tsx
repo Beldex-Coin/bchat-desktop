@@ -54,7 +54,7 @@ export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   );
 }
 
-export const WalletHeader = (props: any) => {
+export const WalletHeader = () => {
   const dispatch = useDispatch();
   const ourPubkey: any = UserUtils.getOurPubKeyFromCache();
   const syncStatus = useSelector(getRescaning);
@@ -77,7 +77,8 @@ export const WalletHeader = (props: any) => {
             buttonType={BchatButtonType.Medium}
             buttonColor={BchatButtonColor.Secondary}
             onClick={() => {
-              dispatch(addressbook()), props.clearStates();
+              dispatch(addressbook());
+              // props.clearStates()
             }}
           />
           {/* <WalletButton

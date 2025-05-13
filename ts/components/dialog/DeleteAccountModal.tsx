@@ -12,6 +12,7 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
+import { SpacerSM } from '../basic/Text';
 // import { wallet } from '../../wallet/wallet-rpc';
 // import { kill } from 'cross-port-killer';
 // import { HTTPError } from '../../bchat/utils/errors';
@@ -202,7 +203,8 @@ export const DeleteAccountModal = () => {
       customIcon={<BchatIcon iconType="clearDataIcon" iconSize={26} />}
       isloading={isLoading}
     >
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
+      <SpacerSM/>
         <div className='bchat-modal__deleteAccountModal'>
           <div className='fontSemiBold'>
             {window.i18n('deleteAccountWarning')}
@@ -273,7 +275,7 @@ export const DeleteAccountModal = () => {
         </div>
 
         {/* <BchatSpinner loading={isLoading} /> */}
-      </div>
+      {/* </div> */}
     </BchatWrapperModal>
   );
 };

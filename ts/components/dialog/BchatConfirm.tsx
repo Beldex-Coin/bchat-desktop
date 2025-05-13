@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
-import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { useKey } from 'react-use';
@@ -177,10 +176,11 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
       }}
       iconShow={iconShow}
       customIcon={validCustomIcon}
+      isloading={isLoading}
     >
       {!showHeader && <SpacerLG />}
 
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
         <div className="bchat-modal-bchatConfirm">
           {/* {bchatIcon && iconSize && (
             <>
@@ -189,7 +189,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             </>
           )} */}
           {Childern}
-
+         <SpacerSM/>
           <BchatHtmlRenderer tag="span" className={messageSubText} html={message} />
           <BchatHtmlRenderer
             tag="span"
@@ -197,9 +197,8 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
             html={messageSub}
           />
 
-          <BchatSpinner loading={isLoading} />
         </div>
-      </div>
+      {/* </div> */}
 
       {/* <div className="bchat-modal__button-group">
 

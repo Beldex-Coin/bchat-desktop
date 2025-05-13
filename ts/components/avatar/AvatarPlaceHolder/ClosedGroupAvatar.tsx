@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMembersAvatars } from '../../../hooks/useMembersAvatars';
-import { Avatar } from '../Avatar';
+// import { useMembersAvatars } from '../../../hooks/useMembersAvatars';
+import {  Identicon } from '../Avatar';
 import SecretGrpProfile from '../../icon/SecretGrpProfile';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -31,19 +31,21 @@ type Props = {
 // }
 
 export const ClosedGroupAvatar = (props: Props) => {
-  const { closedGroupId, size, onAvatarClick } = props;
+  const { closedGroupId, size } = props;
   const darkMode = useSelector(getTheme) === 'dark';
 
-  const memberAvatars = useMembersAvatars(closedGroupId);
+  // const memberAvatars = useMembersAvatars(closedGroupId);
   // const avatarsDiameter = getClosedGroupAvatarsSize(size);
-  const avatarsDiameter = size;
+  // const avatarsDiameter = size;
 
-  const firstMemberId = memberAvatars?.[0];
+  // const firstMemberId = memberAvatars?.[0];
+  // console.log(firstMemberId)
   // const secondMemberID = memberAvatars?.[1];
 
   return (
     <div className="module-avatar__icon-closed">
-      <Avatar size={avatarsDiameter} pubkey={firstMemberId || ''} onAvatarClick={onAvatarClick} />
+      {/* <Avatar size={avatarsDiameter} pubkey={  ''} onAvatarClick={onAvatarClick} /> */}
+      <Identicon size={size} forcedName={''} pubkey={closedGroupId} />
       <ScrtGrpProfileWrapper>
         <SecretGrpProfile  isDark={darkMode} />
       </ScrtGrpProfileWrapper>

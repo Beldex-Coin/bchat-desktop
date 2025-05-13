@@ -5,7 +5,7 @@ export interface FlexProps {
   className?: string;
   container?: boolean;
   /****** Container Props ********/
-  flexDirection?: 'row' | 'column';
+  flexDirection?: 'row' | 'column' |'row-reverse';
   justifyContent?:
     | 'flex-start'
     | 'flex-end'

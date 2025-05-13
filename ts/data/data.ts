@@ -55,6 +55,94 @@ export type ServerToken = {
   serverUrl: string;
   token: string;
 };
+// we export them like this instead of directly with the `export function` cause this is helping a lot for testing
+export const Data = {
+  shutdown,
+  close,
+  removeDB,
+  getPasswordHash,
+
+  // items table logic
+  createOrUpdateItem,
+  getItemById,
+  getAllItems,
+  removeItemById,
+
+  // guard nodes
+  getGuardNodes,
+  updateGuardNodes,
+  generateAttachmentKeyIfEmpty,
+  getSwarmNodesForPubkey,
+  updateSwarmNodesForPubkey,
+  getAllEncryptionKeyPairsForGroup,
+  getLatestClosedGroupEncryptionKeyPair,
+  addClosedGroupEncryptionKeyPair,
+  removeAllClosedGroupEncryptionKeyPairs,
+  saveConversation,
+  getConversationById,
+  removeConversation,
+  getAllConversations,
+  getPubkeysInPublicConversation,
+  searchConversations,
+  searchMessages,
+  searchMessagesInConversation,
+  cleanSeenMessages,
+  cleanLastHashes,
+  saveSeenMessageHashes,
+  updateLastHash,
+  saveMessage,
+  saveMessages,
+  removeMessage,
+  _removeMessages,
+  getMessageIdsFromServerIds,
+  getMessageById,
+  getMessageBySenderAndSentAt,
+  getMessageByServerId,
+  filterAlreadyFetchedOpengroupMessage,
+  getMessageBySenderAndTimestamp,
+  getUnreadByConversation,
+  getUnreadCountByConversation,
+  getMessageCountByType,
+  getMessagesByConversation,
+  getLastMessagesByConversation,
+  getLastMessageIdInConversation,
+  getLastMessageInConversation,
+  getOldestMessageInConversation,
+  getMessageCount,
+  getFirstUnreadMessageIdInConversation,
+  getFirstUnreadMessageWithMention,
+  hasConversationOutgoingMessage,
+  getLastHashBySnode,
+  getSeenMessagesByHashList,
+  removeAllMessagesInConversation,
+  getMessagesBySentAt,
+  getExpiredMessages,
+  getOutgoingWithoutExpiresAt,
+  getNextExpiringMessage,
+  getUnprocessedCount,
+  getAllUnprocessed,
+  getUnprocessedById,
+  saveUnprocessed,
+  updateUnprocessedAttempts,
+  updateUnprocessedWithData,
+  removeUnprocessed,
+  removeAllUnprocessed,
+  getNextAttachmentDownloadJobs,
+  saveAttachmentDownloadJob,
+  setAttachmentDownloadJobPending,
+  resetAttachmentDownloadPending,
+  removeAttachmentDownloadJob,
+  removeAllAttachmentDownloadJobs,
+  removeAll,
+  removeAllConversations,
+  cleanupOrphanedAttachments,
+  removeOtherData,
+  getMessagesWithVisualMediaAttachments,
+  getMessagesWithFileAttachments,
+  getSnodePoolFromDb,
+  updateSnodePoolOnDb,
+  fillWithTestData,
+};
 
 export const hasSyncedInitialConfigurationItem = 'hasSyncedInitialConfigurationItem';
 export const lastAvatarUploadTimestamp = 'lastAvatarUploadTimestamp';
@@ -396,6 +484,8 @@ export async function getMessageBySenderAndSentAt({
   return new MessageModel(messages[0]);
 }
 
+
+
 export async function filterAlreadyFetchedOpengroupMessage(
   msgDetails: MsgDuplicateSearchOpenGroup
 ): Promise<MsgDuplicateSearchOpenGroup> {
@@ -424,6 +514,20 @@ export async function getMessageBySenderAndTimestamp({
   }
 
   return new MessageModel(messages[0]);
+}
+
+ async function getMessageByServerId(
+  serverId: number,
+  skipTimerInit: boolean = false
+): Promise<MessageModel | null> {
+  const message = await channels.getMessageByServerId(serverId);
+  if (!message) {
+    return null;
+  }
+  if (skipTimerInit) {
+    message.skipTimerInit = skipTimerInit;
+  }
+  return new MessageModel(message);
 }
 
 export async function getUnreadByConversation(conversationId: string): Promise<MessageCollection> {

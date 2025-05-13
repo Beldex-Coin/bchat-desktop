@@ -147,7 +147,7 @@ export const MessageAttachment = (props: Props) => {
           e.stopPropagation();
           e.preventDefault();
         }}
-        style={{ padding: '5px 10px' }}
+        style={{ padding: '5px 10px 5px 15px' }}
       >
         <WaveFormAudioPlayerWithEncryptedFile src={firstAttachment.url}
           contentType={firstAttachment.contentType}

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 import { CallManager, UserUtils } from '../../bchat/utils';
@@ -31,8 +31,8 @@ const VideoContainer = styled.div`
   height: 100%;
   width: 100%;
   z-index: 0;
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   // padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
 `;
 
@@ -78,17 +78,23 @@ const UserNameTxt = styled.div`
   font-size: 20px;
 `;
 
-const StyledCenteredLabel = styled.div`
+export const StyledCenteredLabel = styled.div`
   // position: absolute;
   // left: 50%;
   // transform: translateX(-50%);
   // height: min-content;
   // white-space: nowrap;
-  color: var(--color-text);
+  // color: var(--color-text);
   // text-shadow: 0px 0px 8px white;
   // z-index: 5;
   font-size: 22px;
   text-align: center;
+`;
+
+const StyledVideoCallLabel = styled.div`
+  font-size: 14px;
+  color: white;
+  z-index:99;
 `;
 
 const RingingLabel = () => {
@@ -111,9 +117,10 @@ const ConnectingLabel = () => {
   return <StyledCenteredLabel>{modulatedStr}</StyledCenteredLabel>;
 };
 
-const DurationLabel = () => {
+export const DurationLabel = (props:{isVideoCall?: boolean,isDraggable?:boolean}) => {
   const [callDuration, setCallDuration] = useState<undefined | number>(undefined);
   const ongoingCallWithFocusedIsConnected = useSelector(getCallWithFocusedConvosIsConnected);
+  const {isVideoCall,isDraggable}=props
 
   useInterval(() => {
     const duration = CallManager.getCurrentCallDuration();
@@ -131,6 +138,9 @@ const DurationLabel = () => {
 
   // tslint:disable-next-line: restrict-plus-operands
   const dateString = Math.floor(d.asHours()) + moment.utc(ms).format(':mm:ss');
+  if (isDraggable && isVideoCall) {
+    return <StyledVideoCallLabel>{dateString}</StyledVideoCallLabel>;
+  }
   return <StyledCenteredLabel>{dateString}</StyledCenteredLabel>;
 };
 
@@ -196,6 +206,13 @@ export const InConversationCallContainer = () => {
     }
   }
 
+  useEffect(()=>{
+    if (videoRefRemote?.current && videoRefLocal?.current) {
+    videoRefRemote.current.srcObject = remoteStream;
+    videoRefLocal.current.srcObject = localStream;
+    }
+  },[remoteStream,videoRefRemote,videoRefLocal])
+
   if (isInFullScreen && videoRefRemote.current) {
     // disable this video element so the one in fullscreen is the only one playing audio
     videoRefRemote.current.muted = true;
@@ -204,7 +221,6 @@ export const InConversationCallContainer = () => {
   if (!ongoingCallWithFocused || !ongoingCallPubkey) {
     return null;
   }
-
 
   const validateMemberName = (memberName: any) => {
     if (memberName == selectedConversation?.id) {
@@ -227,7 +243,7 @@ export const InConversationCallContainer = () => {
                 ref={videoRefRemote}
                 autoPlay={true}
                 isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
-                width='50%'
+                width="50%"
               />
               {remoteStreamVideoIsMuted && (
                 <CenteredAvatarInConversation>
@@ -240,7 +256,11 @@ export const InConversationCallContainer = () => {
                     <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
-                  <UserNameTxt>{validateMemberName(selectedConversation?.profileName || selectedConversation?.id)}</UserNameTxt>
+                  <UserNameTxt>
+                    {validateMemberName(
+                      selectedConversation?.profileName || selectedConversation?.id
+                    )}
+                  </UserNameTxt>
                 </CenteredAvatarInConversation>
               )}
             </VideoContainer>
@@ -266,7 +286,7 @@ export const InConversationCallContainer = () => {
                 autoPlay={true}
                 muted={true}
                 isVideoMuted={localStreamVideoIsMuted || !remoteStreamVideoIsMuted}
-                width='76%'
+                width="76%"
               />
               {localStreamVideoIsMuted && (
                 <CenteredAvatarInConversation>
@@ -279,7 +299,9 @@ export const InConversationCallContainer = () => {
                     <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
-                  <UserNameTxt>{validateMemberName(conversation.attributes.profileName)}</UserNameTxt>
+                  <UserNameTxt>
+                    {validateMemberName(conversation.attributes.profileName)}
+                  </UserNameTxt>
                 </CenteredAvatarInConversation>
               )}
             </VideoContainer>

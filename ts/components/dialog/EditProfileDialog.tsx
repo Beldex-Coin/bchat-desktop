@@ -161,7 +161,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   private renderProfileHeader() {
     return (
       <>
-        <div className="avatar-center">
+        <div className="avatar-center" style={{marginLeft: "25px"}}>
           <div className="avatar-center-inner">
             {this.renderAvatar()}
             <div
@@ -342,7 +342,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               }}
             >
               <span>
-                <BchatIcon iconType={'bnslogo'} iconSize={26} />
+                <BchatIcon iconType={'bnslogo'} iconSize={26} iconColor='var(--color-text-opposite)' />
               </span>
               {i18n('linkYourBns')}
             </button>

@@ -31,6 +31,7 @@ const SearchResultsContainer = styled.div`
   color: var(--color-text);
   flex-grow: 1;
   width: -webkit-fill-available;
+  overflow-x:hidden;
 `;
 const NoResults = styled.div`
   margin-top: 27px;

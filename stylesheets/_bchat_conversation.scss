@@ -97,20 +97,20 @@
     //     border-radius: 20px;
     //   }
     // }
+   
   }
 
   .message-selection-overlay {
-    position: absolute;
+    
     display: flex;
-    left: 0px;
-    right: 0px;
-    top: 66px;
+    height:65px;
     padding: 0px $bchat-margin-md;
+    margin: 0 2px;
     align-items: center;
     justify-content: space-between;
-    height: $main-view-header-height;
     background: var(--color-chat-multi-select-bg);
     z-index: 93;
+
 
     .close-button {
       float: left;
@@ -237,7 +237,20 @@
     z-index: 1;
   }
 }
+.call-bar-expand-view {
+  display: none;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: display 1s ease, opacity 1s ease , width 1s ease;
+}
 
+.call-bar-expand-view.show {
+  display: block; /* Adjust width as needed */
+  width: 121px;
+  opacity: 1;
+}
 .videoCall {
   margin: 10px 0px;
   position: absolute;
@@ -287,6 +300,13 @@
   min-width: 370px;
   scrollbar-width: 4px;
   // padding: $bchat-margin-sm $bchat-margin-lg $bchat-margin-lg;
+}
+.leaved-scrt-grp-message-container{
+  border-radius: 16px;
+  background:var(--color-conversation-item-selected);
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 20px;
 }
 
 .composition-container {
@@ -367,7 +387,7 @@
     background-color: var(--color-composeMsgInput);
     margin: 5px 7px;
     border-radius: 10px;
-    padding: 0 20px;
+    padding: 0 20px 0 15px;
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
@@ -419,6 +439,7 @@
       padding: 7px;
       border-radius: 26px;
       border: 2px solid #888a8d;
+      margin-left: 15px;
     }
 
     // svg:hover {
@@ -448,14 +469,10 @@
     }
 
     &__emoji-overlay {
-      // Should have identical properties to the textarea above to line up perfectly.
-      position: absolute;
-      font-size: 14px;
-      font-family: $bchat-font-default;
-      margin-left: 2px;
-      line-height: $bchat-font-h2;
-      letter-spacing: 0.5px;
-      color: rgba(0, 0, 0, 0);
+      margin-right:10px;
+      .bchat-icon-button:hover{
+        background-color: var(--color-emoji-icon-hover-bg);
+      }
     }
 
     .circular-bar-wrapper:hover + .wallet-sync-box {
@@ -464,76 +481,93 @@
   }
 }
 
-.bchat-emoji-panel {
-  position: absolute;
-  bottom: 68px;
-  right: 0px;
-  padding: $bchat-margin-lg;
 
-  z-index: 5;
-  opacity: 0;
-  visibility: hidden;
-  transition: $bchat-transition-duration;
+// .bchat-emoji-panel {
+  // position: absolute;
+  // bottom: 75px;
+  // left: 62px;
 
-  button:focus {
-    outline: none;
-  }
+  // // padding: $bchat-margin-lg;
+  // z-index: 5;
+  // opacity: 0;
+  // visibility: hidden;
+  // transition: $bchat-transition-duration;
 
-  &.show {
-    opacity: 1;
-    visibility: visible;
-  }
+  // button:focus {
+  //   outline: none;
+  // }
 
-  & > section.emoji-mart {
-    font-family: $bchat-font-default;
-    font-size: $bchat-font-sm;
-    background-color: var(--color-cell-background);
-    border: 1px solid var(--color-bchat-border);
-    border-radius: 8px;
-    padding-bottom: $bchat-margin-sm;
+  // &.show {
+  //   opacity: 1;
+  //   visibility: visible;
+  // }
 
-    .emoji-mart-category-label {
-      top: -2px;
+//   & > section.emoji-mart {
+//     font-family: $bchat-font-default;
+//     font-size: $bchat-font-sm;
+//     // background-color: var(--color-cell-background);
+//     background: var(--color-emoji-panel-bg);
+//     border:var(--color-bchat-border);
+//     border-radius: 8px;
+//     padding-bottom: $bchat-margin-sm;
+//     width: 346px !important;
 
-      span {
-        font-family: $bchat-font-default;
-        padding-top: $bchat-margin-sm;
-        background-color: var(--color-cell-background);
-      }
-    }
+//     .emoji-mart-category-label {
+//       top: -2px;
 
-    .emoji-mart-scroll {
-      height: 340px;
-    }
+//       span {
+//         font-family: $bchat-font-default;
+//         padding-top: $bchat-margin-sm;
+//         font-size: 16px;
+//         background: var(--color-emoji-panel-bg);
+//         font-weight: 400;
+//         // background-color: var(--color-cell-background);
+//       }
+//     }
+//     .emoji-mart-search input {
+//       border-radius: 12px;
+//       border: 1px solid var(--color-search-border);;
+//       background: var(--color-emoji-panel-bg);
+//       height: 40px;
+//     }
+//     .emoji-mart-search-icon {
+//       top: 11px;
+//       right: 20px;
+    
+//   }
 
-    .emoji-mart-category .emoji-mart-emoji span {
-      cursor: pointer;
-    }
+//     .emoji-mart-scroll {
+//       height: 340px;
+//     }
 
-    .emoji-mart-bar:last-child {
-      border: none;
+//     .emoji-mart-category .emoji-mart-emoji span {
+//       cursor: pointer;
+//     }
 
-      .emoji-mart-preview {
-        display: none;
-      }
-    }
+//     .emoji-mart-bar:last-child {
+//       border: none;
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: calc(100% - 40px);
-      left: calc(100% - 79px);
-      width: 22px;
-      height: 22px;
-      background-color: var(--color-cell-background);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      transform: scaleY(1.4) rotate(45deg);
-      border: 0.7px solid var(--color-bchat-border);
-      clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
-    }
-  }
-}
+//       .emoji-mart-preview {
+//         display: none;
+//       }
+//     }
+
+//     // &:after {
+//     //   content: '';
+//     //   position: absolute;
+//     //   top: calc(100% - 40px);
+//     //   left: calc(100% - 79px);
+//     //   width: 22px;
+//     //   height: 22px;
+//     //   background-color: var(--color-cell-background);
+//     //   transform: rotate(45deg);
+//     //   border-radius: 3px;
+//     //   transform: scaleY(1.4) rotate(45deg);
+//     //   border: 0.7px solid var(--color-bchat-border);
+//     //   clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
+//     // }
+  // }
+// }
 
 .bchat-progress {
   position: relative;

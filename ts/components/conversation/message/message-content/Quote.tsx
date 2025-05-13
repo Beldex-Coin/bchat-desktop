@@ -18,6 +18,7 @@ import { ContactName } from '../../ContactName';
 import { MessageBody } from './MessageBody';
 import { useIsPrivate } from '../../../../hooks/useParamSelector';
 import styled from 'styled-components';
+import { BchatIcon } from '../../../icon';
 
 export type QuotePropsWithoutListener = {
   attachment?: QuotedAttachmentType;
@@ -71,21 +72,23 @@ function getObjectUrl(thumbnail: Attachment | undefined): string | undefined {
 function getTypeLabel({
   contentType,
   isVoiceMessage,
+  fileName,
 }: {
   contentType: MIME.MIMEType;
   isVoiceMessage: boolean;
-}): string | undefined {
+  fileName:string;
+}): any| undefined {
   if (GoogleChrome.isVideoTypeSupported(contentType)) {
-    return window.i18n('video');
+    return <span><BchatIcon iconType={'replyPlay'} iconSize={16} /> {fileName || window.i18n('video') } </span> ;
   }
   if (GoogleChrome.isImageTypeSupported(contentType)) {
-    return window.i18n('photo');
+    return <span><BchatIcon iconType={'replyImage'} fillRule='evenodd' clipRule='evenodd' iconSize={16}  /> {fileName || window.i18n('photo') } </span>;
   }
   if (MIME.isAudio(contentType) && isVoiceMessage) {
-    return window.i18n('voiceMessage');
+    return <span><BchatIcon iconType={'microphone'} iconSize={16} /> {window.i18n('voiceMessage')} </span>;
   }
   if (MIME.isAudio(contentType)) {
-    return window.i18n('audio');
+    return <span><BchatIcon iconType={'replyMicrophone'} iconSize={16} /> {window.i18n('audio') } </span>;
   }
 
   return;
@@ -123,7 +126,7 @@ export const QuoteImage = (props: {
 
   const iconElement = icon ? (
     <div className="module-quote__icon-container__inner">
-      <div className="module-quote__icon-container__circle-background">
+      <div className={classNames(`module-quote__icon-container__circle-background`,icon&&'module-quote__icon-container__circle-background-transparent' )}>
         <div
           className={classNames(
             'module-quote__icon-container__icon',
@@ -222,6 +225,9 @@ export const QuoteIconContainer = (
   if (MIME.isAudio(contentType)) {
     return <QuoteIcon icon="microphone" />;
   }
+  if (contentType === 'application/pdf') { 
+    return <QuoteIcon icon="file" />;
+  }
   return null;
 };
 
@@ -251,9 +257,9 @@ export const QuoteText = (
     return null;
   }
 
-  const { contentType, isVoiceMessage } = attachment;
+  const { contentType, isVoiceMessage,fileName } = attachment;
 
-  const typeLabel = getTypeLabel({ contentType, isVoiceMessage });
+  const typeLabel = getTypeLabel({ contentType, isVoiceMessage,fileName });
   if (typeLabel) {
     return (
       <div
@@ -262,7 +268,7 @@ export const QuoteText = (
           isIncoming ? 'module-quote__primary__type-label--incoming' : null
         )}
       >
-        {typeLabel}
+         {typeLabel}
       </div>
     );
   }

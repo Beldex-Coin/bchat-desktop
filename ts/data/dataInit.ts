@@ -59,6 +59,7 @@ const channelsToMake = new Set([
   'getMessageBySenderAndTimestamp',
   'getMessageIdsFromServerIds',
   'getMessageById',
+  'getMessageByServerId',
   'getMessagesBySentAt',
   'getExpiredMessages',
   'getOutgoingWithoutExpiresAt',

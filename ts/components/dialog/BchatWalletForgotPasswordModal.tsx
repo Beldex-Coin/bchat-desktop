@@ -180,8 +180,10 @@ export const BchatWalletForgotPasswordModal = () => {
               <textarea
                 value={seed}
                 onChange={e => {
-                  let trimWhiteSpace = e.target.value.replace(/^\s+|\s+$/g, '');
-                  setSeed(trimWhiteSpace);
+                  const value=e.target.value;
+                  // let trimWhiteSpace = e.target.value.replace(/^\s+|\s+$/g, '');
+                  let trimmedValue =!value.trim()? '':value;
+                  setSeed(trimmedValue);
                 }}
                 placeholder={window.i18n('enterSeed')}
                 autoFocus

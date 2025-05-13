@@ -14,7 +14,7 @@ import { BchatIcon } from '../../icon/BchatIcon';
 import { getConversationController } from '../../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { Loader } from '../../BchatWrapperModal';
-import { getTheme } from '../../../state/selectors/theme';
+
 
 export const OverlayClosedGroup = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,6 @@ export const OverlayClosedGroup = () => {
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
-  const darkMode = useSelector(getTheme) === 'dark';
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
 
   function closeOverlay() {
@@ -151,7 +150,7 @@ export const OverlayClosedGroup = () => {
         )}
         <SpacerMD />
         {loading && (
-          <Loader darkMode={darkMode}>
+          <Loader >
             <BchatSpinner loading={loading} />
           </Loader>
         )}

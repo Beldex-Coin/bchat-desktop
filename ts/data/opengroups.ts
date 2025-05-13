@@ -2,6 +2,21 @@ import { ConversationCollection } from '../models/conversation';
 import { OpenGroupRequestCommonType } from '../bchat/apis/open_group_api/opengroupV2/ApiUtil';
 import { isOpenGroupV2 } from '../bchat/apis/open_group_api/utils/OpenGroupUtils';
 import { channels } from './channels';
+// import { cloneDeep } from 'lodash';
+
+
+export const OpenGroupData = {
+
+  getV2OpenGroupRoom,
+  opengroupRoomsLoad,
+  saveV2OpenGroupRoom,
+
+  getV2OpenGroupRoomByRoomId,
+  removeV2OpenGroupRoom,
+
+  getAllV2OpenGroupRooms,
+};
+
 
 export type OpenGroupV2Room = {
   serverUrl: string;
@@ -20,6 +35,10 @@ export type OpenGroupV2Room = {
    */
   lastFetchTimestamp?: number;
   token?: string; // currently, the token is on a per room basis
+   /**
+   * This is shared across all rooms in a server.
+   */
+   capabilities?: Array<string>;
 };
 
 export async function getAllV2OpenGroupRooms(): Promise<Map<string, OpenGroupV2Room> | undefined> {
@@ -39,6 +58,49 @@ export async function getAllV2OpenGroupRooms(): Promise<Map<string, OpenGroupV2R
 
   return results;
 }
+// avoid doing fetches and write too often from the db by using a cache on the renderer side.
+let cachedRooms: Array<OpenGroupV2Room> | null = null;
+async function opengroupRoomsLoad() {
+  if (cachedRooms !== null) {
+    return;
+  }
+  const loadedFromDB = (await OpenGroupData.getAllV2OpenGroupRooms()) as
+    | Array<OpenGroupV2Room>
+    | undefined;
+
+  if (loadedFromDB) {
+    cachedRooms = new Array();
+    loadedFromDB.forEach(r => {
+      try {
+        cachedRooms?.push(r as any);
+      } catch (e) {
+        window.log.warn(e.message);
+      }
+    });
+    return;
+  }
+  cachedRooms = [];
+}
+
+// this function support only open group v3
+// export  function getV2OpenGroupRoom(conversationId: string): OpenGroupV2Room | undefined  {
+//   if (!isOpenGroupV2(conversationId)) {
+//     throw new Error(`getV2OpenGroupRoom: this is not a valid v2 id: ${conversationId}`);
+//   }
+//   const opengroupv2Rooms = channels.getV2OpenGroupRoom(conversationId).then((val:any)=>val);
+//   const found = throwIfNotLoaded().find(m => m.conversationId === conversationId);
+//   console.log(' foundfound -->',found?.conversationId,conversationId,'opengroupv2Rooms -->',opengroupv2Rooms)
+//   return (found && cloneDeep(found)) || undefined;
+
+// }
+// function throwIfNotLoaded() {
+//   if (cachedRooms === null) {
+//     throw new Error('opengroupRoomsLoad must be called first');
+//   }
+//   console.log('foundfound 0--> ',cachedRooms)
+//   return cachedRooms;
+// }
+
 
 export async function getV2OpenGroupRoom(
   conversationId: string

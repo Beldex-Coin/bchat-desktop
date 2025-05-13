@@ -21,6 +21,8 @@ import {
 } from '../../../state/ducks/conversations';
 import { updateConfirmModal } from '../../../state/ducks/modalDialog';
 import { MemoMessageRequestListSetting } from '../../settings/MessageRequestInSettings';
+import { BchatIconButton } from '../../icon/BchatIconButton';
+import { Flex } from '../../basic/Flex';
 
 export const OverlayMessageRequest = (props: any) => {
   useKey('Escape', closeOverlay);
@@ -95,19 +97,17 @@ export const OverlayMessageRequest = (props: any) => {
   }
   const VerifyScreen = () => {
     if (props.settings) {
-      return <MessageRequestListForSetting />
+      return <MessageRequestListForSetting />;
+    } else {
+      return <MessageRequestList />;
     }
-    else {
-      return <MessageRequestList />
-    }
-
-  }
+  };
 
   return (
     <div className="module-left-pane-overlay"
       style={{
-        width: '100%',
-        maxWidth: '100%',
+        width:props?.settings?'100%':''  ,
+        maxWidth:props?.settings?'100%':'',
         backgroundColor: 'unset'
       }}>
       {convoRequestCount ? (
@@ -115,11 +115,12 @@ export const OverlayMessageRequest = (props: any) => {
           <VerifyScreen />
           <SpacerLG />
           <SpacerLG />
-          <div className='messageRequestButton'>
+          <div className="messageRequestButton">
             <BchatButton
               style={{
-                height: '55px', fontSize: '16px',
-                fontWeight: '500'
+                height: '55px',
+                fontSize: '16px',
+                fontWeight: '500',
               }}
               buttonColor={BchatButtonColor.Danger}
               buttonType={BchatButtonType.Brand}
@@ -134,16 +135,12 @@ export const OverlayMessageRequest = (props: any) => {
         <>
           <SpacerLG />
           {/* <MessageRequestListPlaceholder> */}
-            <div className='bchat-noMsgRequest-box'>
-              <div className={leftPane ? 'bchat-noMsgRequest-leftPane' : 'bchat-noMsgRequest'}>
-              </div>
-              <div className='content-txt'>
-                {window.i18n('noMessageRequestsPending')}
-              </div>
+          <div className="bchat-noMsgRequest-box">
+            <div className={leftPane ? 'bchat-noMsgRequest-leftPane' : 'bchat-noMsgRequest'}></div>
+            <div className="content-txt">{window.i18n('noMessageRequestsPending')}</div>
+          </div>
 
-            </div>
-
-            {/* {window.i18n('noMessageRequestsPending')} */}
+          {/* {window.i18n('noMessageRequestsPending')} */}
           {/* </MessageRequestListPlaceholder> */}
         </>
       )}
@@ -160,8 +157,8 @@ export const OverlayMessageRequest = (props: any) => {
 // `;
 
 const MessageRequestListContainer = styled.div`
-  width: 100%;
-  height:73%;
+  padding: 15px;
+  max-height:75vh;
   overflow-y: auto;
   // margin-bottom: auto;
 `;
@@ -172,8 +169,30 @@ const MessageRequestListContainer = styled.div`
  */
 const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
+  const dispatch = useDispatch();
   return (
     <MessageRequestListContainer>
+      <SpacerLG />
+
+      <Flex
+        container={true}
+        flexDirection={'row'}
+        alignItems='center'
+        className="module-left-pane-overlay-closed--header"
+      >
+        {' '}
+        <BchatIconButton
+          onClick={() => {
+            dispatch(setOverlayMode(undefined));
+          }}
+          iconType="chevron"
+          iconRotation={90}
+          iconSize="large"
+          // margin="0 0 var(--margins-xs) var(--margins-xs)"
+        />
+        <span>{window.i18n('messageRequests')}</span>
+      </Flex>
+      <SpacerLG />
       {conversationRequests.map(conversation => {
         return (
           <MemoConversationListItemWithDetails

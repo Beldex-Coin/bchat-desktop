@@ -1,6 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
-
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { updateGroupNameModal } from '../../state/ducks/modalDialog';
@@ -13,6 +11,7 @@ import { initiateOpenGroupUpdate } from '../../bchat/group/open-group';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 import {  BchatIconButton } from '../icon';
+import { ToastUtils } from '../../bchat/utils';
 
 type Props = {
   conversationId: string;
@@ -20,8 +19,6 @@ type Props = {
 
 interface State {
   groupName: string | undefined;
-  errorDisplayed: boolean;
-  errorMessage: string;
   oldAvatarPath: string | null;
   newAvatarObjecturl: string | null;
 }
@@ -37,8 +34,6 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
 
     this.state = {
       groupName: this.convo.getName(),
-      errorDisplayed: false,
-      errorMessage: 'placeholder',
       oldAvatarPath: this.convo.getAvatarPath(),
       newAvatarObjecturl: null,
     };
@@ -81,12 +76,6 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     const cancelText = window.i18n('cancel');
     const titleText = window.i18n('updateGroupDialogTitle', [this.convo.getName() || 'Unknown']);
 
-    const errorMsg = this.state.errorMessage;
-    const errorMessageClasses = classNames(
-      'error-message',
-      this.state.errorDisplayed ? 'error-shown' : 'error-faded'
-    );
-
     const isAdmin = this.convo.isPublic()
       ? false // disable editing of opengroup rooms as we don't handle them for now
       : true;
@@ -94,8 +83,9 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     return (
       <BchatWrapperModal
         title={titleText}
+        showHeader={true}
+        showExitIcon={false}
         // tslint:disable-next-line: no-void-expression
-        onClose={() => this.closeDialog()}
         additionalClassName="update-group-dialog"
         okButton={{
           text: okText,
@@ -111,14 +101,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         }}
        
       >
-        {this.state.errorDisplayed ? (
-          <>
-            <SpacerMD />
-            <p className={errorMessageClasses}>{errorMsg}</p>
-            <SpacerMD />
-          </>
-        ) : null}
-
+       <div style={{minWidth:'400px'}}>
         {this.renderAvatar()}
         <SpacerMD />
 
@@ -143,36 +126,14 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
             />{' '}
           </div>
         ) : null}
+       </div>
         <SpacerLG />
-
-        {/* <div className="bchat-modal__button-group">
-          <BchatButton text={cancelText} onClick={this.closeDialog} buttonColor={BchatButtonColor.White} />
-
-          <BchatButton
-            text={okText}
-            onClick={this.onClickOK}
-            buttonColor={BchatButtonColor.Green}
-          />
-        </div> */}
       </BchatWrapperModal>
     );
   }
 
   private onShowError(msg: string) {
-    if (this.state.errorDisplayed) {
-      return;
-    }
-
-    this.setState({
-      errorDisplayed: true,
-      errorMessage: msg,
-    });
-
-    setTimeout(() => {
-      this.setState({
-        errorDisplayed: false,
-      });
-    }, 3000);
+    ToastUtils.pushToastError('', msg);
   }
 
   private onKeyUp(event: any) {
@@ -219,7 +180,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     // tslint:disable: use-simple-attributes
 
     return (
-      <div className="avatar-center">
+      <div className="avatar-center" style={{marginTop: '15px'}}>
         <div className="avatar-center-inner">
           <Avatar
             forcedAvatarPath={newAvatarObjecturl || oldAvatarPath}

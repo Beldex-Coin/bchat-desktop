@@ -118,6 +118,7 @@ export const ChangePassword = () => {
                 type={oldPasswordVisible ? 'password' : 'text'}
                 placeholder={window.i18n('currentPassword')}
                 // className="bchat-dialog-oldpassInput"
+                maxLength={13}
               />
             </span>
 
@@ -145,23 +146,20 @@ export const ChangePassword = () => {
                 onChange={e => {
                   setNewPassword(e.target.value);
                 }}
-                placeholder={window.i18n('enterPassword')}
+                placeholder={window.i18n('enterNewPassword')}
                 // className="bchat-dialog-newPassInput"
                 type={newPasswordVisible ? 'password' : 'text'}
                 maxLength={13}
               />
             </span>
-            <span
-              onClick={() => setNewPasswordVisible(!newPasswordVisible)}
-              style={{ cursor: 'pointer' }}
-            >
               <BchatIconButton
-                iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
-                iconSize={'medium'}
-                fillRule="evenodd"
-                clipRule="evenodd"
-              />
-            </span>
+              iconType={!newPasswordVisible ? 'eye_closed' : 'eye'}
+              iconSize={'medium'}
+              fillRule="evenodd"
+              clipRule="evenodd"
+              onClick={() => setNewPasswordVisible(!newPasswordVisible)}
+            />
+           
           </Flex>
           <SpacerSM />
           <Flex
@@ -183,10 +181,6 @@ export const ChangePassword = () => {
                 maxLength={13}
               />
             </span>
-            {/* <span
-             
-              
-            > */}
             <BchatIconButton
               iconType={!confirmPasswordVisible ? 'eye_closed' : 'eye'}
               iconSize={'medium'}
@@ -194,7 +188,6 @@ export const ChangePassword = () => {
               clipRule="evenodd"
               onClick={() => setConfirmNewPasswordVisible(!confirmPasswordVisible)}
             />
-            {/* </span> */}
           </Flex>
         </div>
         <SpacerMD />

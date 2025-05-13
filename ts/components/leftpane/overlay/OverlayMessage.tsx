@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
 // import { OverlayHeader } from './OverlayHeader';
-import { setOverlayMode } from '../../../state/ducks/section';
+import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { PubKey } from '../../../bchat/types';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
@@ -29,11 +29,14 @@ import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
 // import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
+import { Loader } from '../../BchatWrapperModal';
+
 
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
 
   function closeOverlay() {
+    dispatch(showLeftPaneSection(0));
     dispatch(setOverlayMode(undefined));
   }
 
@@ -43,6 +46,7 @@ export const OverlayMessage = () => {
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
+ 
   // const convoList = useSelector(getLeftPaneLists);
   const walletAddress:any = localStorage.getItem('userAddress');
   // const convolen: boolean =convoList?.contacts?.length === 0 || false;
@@ -53,11 +57,15 @@ export const OverlayMessage = () => {
   // const descriptionLong = window.i18n('usersCanShareTheir...');
   // const descriptionLong = window.i18n('shareBchatIdDiscription');
 
-  // const subtitle = window.i18n('enterBchatIDOrBNSName');
-  const placeholder = window.i18n('enterBchatID');
+  const placeholder = window.i18n('enterBchatIDOrBNSName');
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
+    if(!pubkeyorOnsTrimmed)
+      {
+        ToastUtils.pushToastError('invalidPubKey','please enter the Id or BNS'); // or Bns name
+        return;
+      }
     if(PubKey.validateWithError(pubkeyorOnsTrimmed) && !pubkeyOrOns.toLowerCase().endsWith('.bdx'))
     {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
@@ -74,7 +82,7 @@ export const OverlayMessage = () => {
       await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
       closeOverlay();
     } else {
-      setLoading(true);
+      setLoading(true); 
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
@@ -122,9 +130,9 @@ export const OverlayMessage = () => {
             // onPressEnter={handleMessageButtonClick}
           />
           {loading && (
-            <div className="module-left-pane-overlay-loadingWrapper">
+              <Loader >
               <BchatSpinner loading={true} />
-            </div>
+              </Loader>
           )}
           <SpacerSM />
           <BchatButton

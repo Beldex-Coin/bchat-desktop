@@ -75,6 +75,10 @@ export class MessageQueue {
       if (!serverId || serverId === -1) {
         throw new Error(`Invalid serverId returned by server: ${serverId}`);
       }
+      // NOTE Reactions are handled in the MessageSender
+      if (message && message.dataProto().reaction) {
+        return;
+      }
       void MessageSentHandler.handlePublicMessageSentSuccess(message, {
         serverId: serverId,
         serverTimestamp: sentTimestamp,

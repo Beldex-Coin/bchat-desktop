@@ -178,7 +178,14 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
   /* tslint:disable-next-line:max-func-body-length */
   public renderSettingInCategory(passwordLock: any) {
     const { category } = this.props;
-
+    
+    if (category !== BchatSettingCategory.RecoverySeed  && !this.state.shouldLockSettings) {
+      this.setState({
+        hasPassword: true,
+        shouldLockSettings: true,
+        pwdLockError: null,
+      });
+    }
     if (this.state.hasPassword === null) {
       return null;
     }

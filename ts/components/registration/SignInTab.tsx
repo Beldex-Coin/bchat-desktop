@@ -22,6 +22,9 @@ import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
 import { Flex } from '../basic/Flex';
 import moment from 'moment';
+import { BchatIcon } from '../icon/BchatIcon';
+import { BchatConfirm } from '../dialog/BchatConfirm';
+
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
 
@@ -127,6 +130,7 @@ export const SignInTab = (props: any) => {
   const [screenName, setScreenName] = useState(1);
   const [blockheight, setBlockheight] = useState('');
   const [restoreDate, setRestoreDate] = useState('');
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   // show display name input only if we are trying to recover from seed.
   // We don't need a display name when we link a device, as the display name
@@ -138,19 +142,38 @@ export const SignInTab = (props: any) => {
 
   // Seed is mandatory no matter which mode
   // const seedOK = (blockheight && !recoveryPhraseError) || (restoreDate && !recoveryPhraseError);
-  const year = moment(restoreDate).year();
-
-  const activateContinueButton =
-    displayNameOK &&
-    !loading &&
-    (blockheight || (Number(year) > 2019 && !moment(restoreDate).isAfter(today)));
+  // const year = moment(restoreDate).year();
+  const activateContinueButton = displayNameOK && !loading;
+  const confirmProps = {
+    title: 'Blockheight will be set to Zero(0)',
+    message: 'Do you want to proceed Restore by syncing from Blockheight value 0?',
+    okText: 'Proceed',
+    cancelText: 'Cancel',
+    showExitIcon: false,
+    iconShow: true,
+    customIcon: <BchatIcon iconType="blockSync" iconSize={58} fillRule='evenodd' clipRule='evenodd' />,
+    okTheme: BchatButtonColor.Primary,
+    onClickOk: () =>{ setConfirmModalOpen(false),continueYourBchat()},
+    onClickCancel: () => {
+      setConfirmModalOpen(false);
+    },
+  };
   localStorage.setItem('walletUserName', displayName);
+
+
+  const validationForConfirmPopup = () => {
+    if (!restoreDate && !blockheight) {
+      setConfirmModalOpen(true);
+    } else {
+      continueYourBchat();
+    }
+  };
 
   const continueYourBchat = async () => {
     if (isRecovery) {
       setIsLoading(true);
 
-      let refreshDetails = blockheight
+      let refreshDetails = !restoreDate
         ? { refresh_start_timestamp_or_height: blockheight, refresh_type: 'height' }
         : { refresh_start_timestamp_or_height: restoreDate, refresh_type: 'date' };
 
@@ -360,7 +383,7 @@ export const SignInTab = (props: any) => {
               setDisplayNameError(!trimName ? window.i18n('displayNameEmpty') : undefined);
             }}
             // onEnterPressed={props.handlePressEnter}
-            onEnterPressed={continueYourBchat}
+            onEnterPressed={validationForConfirmPopup}
             inputDataTestId="display-name-input"
           />
           <div>
@@ -399,12 +422,13 @@ export const SignInTab = (props: any) => {
               onValueChanged={e => setRestoreDate(e)}
               onEnterPressed={props.handlePressEnter}
               inputDataTestId="display-name-input"
+              min="2020-01-01"
             />
           </div>
           <div style={{ width: '450px' }}>
             <SignInContinueButton
               signInMode={signInMode}
-              handleContinueYourBchatClick={continueYourBchat}
+              handleContinueYourBchatClick={validationForConfirmPopup}
               disabled={!activateContinueButton}
             />
           </div>
@@ -430,6 +454,7 @@ export const SignInTab = (props: any) => {
         }}
       />
       {loading && <LoaderGif />}
+      {confirmModalOpen && <BchatConfirm {...confirmProps} />}
 
       {/* {loading && (
         <Flex

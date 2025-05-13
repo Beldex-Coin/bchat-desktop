@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 
@@ -19,8 +19,7 @@ import {
   getSelectedConversationKey,
   getSelectedMessageIds,
   isMessageDetailView,
-  isMessageSelectionMode,
-  isRightPanelShowing,
+    isRightPanelShowing,
   // isRightPanelShowing,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
+
   // closeRightPanel,
   openRightPanel,
   resetSelectedMessageIds,
@@ -55,6 +55,8 @@ import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
 import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
+import { getMessageById } from '../../data/data';
+
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
 // import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
@@ -95,12 +97,39 @@ export type ConversationHeaderProps = {
   left: boolean;
 };
 
-const SelectionOverlay = () => {
+export const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
+  const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
+  const convoName = useConversationUsername(selectedConversationKey);
+
+  const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
+
+  useEffect(() => {
+    const isDeleteEveryone = async () => {
+      // Retrieve selected messages
+      const selectedMessages = await Promise.all(
+        selectedMessageIds.map(id => getMessageById(id, false))
+      );
+      // Remove null or undefined messages
+      const compactedMessages = selectedMessages.filter(Boolean);
+
+      // Check if there are any incoming messages in selected messages for private conversations
+      const containsIncomingMessages =
+        !isPublic && compactedMessages.some(msg => !msg?.isOutgoing());
+
+      // Return the negation of containsIncomingMessages
+      return !containsIncomingMessages;
+    };
+
+    // Call isDeleteEveryone and update state
+    isDeleteEveryone().then(result => {
+      setCanDeleteEveryone(result);
+    });
+  }, [selectedMessageIds, isPublic]);
 
   const { i18n } = window;
 
@@ -120,12 +149,12 @@ const SelectionOverlay = () => {
   }
 
   const isOnlyServerDeletable = isPublic;
-  const deleteMessageButtonText = i18n('delete');
-  const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone');
+  const deleteMessageButtonText = i18n('deleteJustForMe');
+  const deleteForEveryoneMessageButtonText =isPrivate?i18n('deleteForMeAndRecipient',[convoName||'recipient']) :i18n('deleteForEveryone');
 
   return (
     <div className="message-selection-overlay">
-      <Flex container={true} alignItems='center'>
+      <Flex container={true} alignItems="center">
         <div className="close-button">
           <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
         </div>
@@ -146,19 +175,21 @@ const SelectionOverlay = () => {
             style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
-        <BchatButton
-          buttonType={BchatButtonType.Medium}
-          buttonColor={BchatButtonColor.Red}
-          text={deleteForEveryoneMessageButtonText}
-          onClick={onDeleteSelectedMessagesForEveryone}
-          style={{ borderRadius: '40px' }}
-        />
+        {canDeleteEveryone && (
+          <BchatButton
+            buttonType={BchatButtonType.Medium}
+            buttonColor={BchatButtonColor.Red}
+            text={deleteForEveryoneMessageButtonText}
+            onClick={onDeleteSelectedMessagesForEveryone}
+            style={{ borderRadius: '40px' }}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
+const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) => {
   const { showBackButton } = props;
   const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
@@ -217,7 +248,7 @@ const AvatarHeader = (props: {
       <BNSWrapper
         // size={40}
         position={{ left: '46px', top: '46px' }}
-        isBnsHolder={conversation?.isBnsHolder }
+        isBnsHolder={conversation?.isBnsHolder}
         size={{ width: '20', height: '20' }}
       >
         <Avatar
@@ -275,9 +306,15 @@ const CallButton = () => {
         }}
         customIcon={<CallIcon iconSize={24} />}
       /> */}
-      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
-        void callRecipient(selectedConvoKey, canCall);
-      }} />
+      <BchatIconButton
+        iconType={'call'}
+        iconSize={24}
+        fillRule="evenodd"
+        clipRule="evenodd"
+        onClick={() => {
+          void callRecipient(selectedConvoKey, canCall);
+        }}
+      />
     </div>
   );
 };
@@ -310,11 +347,10 @@ const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
   // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -356,18 +392,18 @@ const ConversationHeaderTitle = () => {
   }
 
   return (
-    <div className="module-conversation-header__title">
+    <div className="module-conversation-header__title" >
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
-      // onClick={() => {
-      //   if (isRightPanelOn) {
-      //     dispatch(closeRightPanel());
-      //   } else {
-      //     dispatch(openRightPanel());
-      //   }
-      // }}
-      // role="button"
+        onClick={() => {
+          // if (isRightPanelOn) {
+          //   dispatch(closeRightPanel());
+          // } else {
+            dispatch(openRightPanel());
+          // }
+        }}
+        role="button"
       >
         {convoName}
         <SubTxt>
@@ -406,7 +442,7 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 };
 
 export const ConversationHeaderWithDetails = () => {
-  const isSelectionMode = useSelector(isMessageSelectionMode);
+  
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
@@ -486,7 +522,7 @@ export const ConversationHeaderWithDetails = () => {
                   marginRight: '14px',
                 }}
                 onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // disabled={!caption}
+                // disabled={!caption}
               />
               // </div>
             )}
@@ -502,12 +538,12 @@ export const ConversationHeaderWithDetails = () => {
         </div>
         <div className="module-conversation-header__title-container">
           <div className="module-conversation-header__title-flex">
-            <TripleDotsMenu triggerId={triggerId} showBackButton={isMessageDetailOpened} />
+            <TripleDotsMenu triggerId={triggerId} showBackButton={(conversation?.type == 'private' ? !conversation?.didApproveMe:false )|| isMessageDetailOpened} />
           </div>
         </div>
       </div>
 
-      {isSelectionMode && <SelectionOverlay />}
+      {/* {isSelectionMode && <SelectionOverlay />} */}
     </div>
   );
 };

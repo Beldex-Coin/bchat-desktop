@@ -29,7 +29,7 @@ const ConversationListItemContextMenu = (props: PropsContextConversationItem) =>
   const { triggerId } = props;
 
   return (
-    <Menu id={triggerId} animation={animation.fade}>
+    <Menu id={triggerId} animation={animation.fade} className={'convoListContextMenu'}>
       <AcceptMenuItem />
       <DeclineMenuItem />
       <NotificationForConvoMenuItem />

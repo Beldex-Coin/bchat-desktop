@@ -2152,8 +2152,6 @@ function saveMessage(data: any) {
 
     walletAddress
   } = data;
-console.log('saveMessage',data);
-
   if (!id) {
     throw new Error('id is required');
   }
@@ -2396,6 +2394,22 @@ function getMessageBySenderAndSentAt({ source, sentAt }: { source: string; sentA
     });
 
   return map(rows, row => jsonToObject(row.json));
+
+}
+
+
+function getMessageByServerId(serverId: number) {
+  const row = assertGlobalInstance()
+    .prepare(`SELECT * FROM ${MESSAGES_TABLE} WHERE serverId = $serverId;`)
+    .get({
+      serverId,
+    });
+
+  if (!row) {
+    return null;
+  }
+
+  return jsonToObject(row.json);
 }
 
 function getMessagesCountBySender({ source }: { source: string }) {
@@ -3899,6 +3913,7 @@ export const sqlNode = {
   getMessageBySenderAndTimestamp,
   getMessageIdsFromServerIds,
   getMessageById,
+  getMessageByServerId,
   getMessagesBySentAt,
   getSeenMessagesByHashList,
   getLastHashBySnode,
