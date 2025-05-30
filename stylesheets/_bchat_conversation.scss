@@ -629,7 +629,18 @@
       }
     }
   }
-
+    &.delete-button
+    {
+      background: #FF3E3E !important;
+      &:hover {
+        background-color: #FF3E3E !important;
+      }
+      .bchat-icon-button:hover {
+        background-color: #FF3E3E !important;
+        color: white;
+        // color: var(--color-text);
+      }
+    }
   .sendBox {
     background-image: url(../images/bchat/send.svg);
     width: 25px;

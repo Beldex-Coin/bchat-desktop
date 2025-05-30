@@ -8,7 +8,7 @@ import MicRecorder from 'mic-recorder-to-mp3';
 import styled from 'styled-components';
 import { Constants } from '../../bchat';
 import { ToastUtils } from '../../bchat/utils';
-import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
+import { DEFAULT_MIN_AUDIO_MEMORY_SIZE, MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
 import { SendMessageButton } from './composition/CompositionButtons';
 import StopIcon from '../icon/StopIcon';
 import { CustomIconButton } from '../icon/CustomIconButton';
@@ -145,7 +145,7 @@ export class BchatRecording extends React.Component<Props, State> {
           ) : null}
 
           <div>
-            {isRecording ? (
+             { isRecording ? (
               <div className={classNames('bchat-recording--timer')}>
                 <div className="bchat-recording--timer-wrapper">
                   <div className="bchat-recording--timer-light" />
@@ -156,7 +156,7 @@ export class BchatRecording extends React.Component<Props, State> {
           </div>
           <div className="bchat-recording--actions">
             <StyledFlexWrapper>
-              {actionPauseAudio && (
+              {actionPauseAudio  && hasRecording && (
                 <BchatIconButton
                   iconType="pause"
                   iconSize="medium"
@@ -164,17 +164,17 @@ export class BchatRecording extends React.Component<Props, State> {
                   iconColor="#277AFB"
                 />
               )}
-              {hasRecordingAndPaused && (
+              {hasRecordingAndPaused &&  (
                 <BchatIconButton
                   iconType="play"
                   iconSize={14}
-                  onClick={this.playAudio}
+                  onClick={()=>hasRecording && this.playAudio()}
                   iconColor="#F0F0F0"
                   btnBgColor="#108D32"
                   padding="8px"
                 />
               )}  
-              {hasRecording && (
+              {!isRecording  && (
                 <BchatIconButton
                   iconType="delete"
                   iconSize="medium"
@@ -198,8 +198,8 @@ export class BchatRecording extends React.Component<Props, State> {
             <CustomIconButton customIcon={<StopIcon iconSize={30} />} onClick={actionPauseFn} />
           )}
         </div>
-        <div className={classNames('send-message-button')}>
-          {!isRecording && (
+        <div className={classNames('send-message-button',!hasRecording && !isRecording && 'delete-button' )}>
+          {!isRecording && hasRecording && (
             <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
           ) 
           // : (
@@ -338,6 +338,11 @@ export class BchatRecording extends React.Component<Props, State> {
   const audioURL = window.URL.createObjectURL(blob);
   const validAudio = new Audio(audioURL);
 
+  if(blob.size<DEFAULT_MIN_AUDIO_MEMORY_SIZE)
+  {
+    await this.onDeleteVoiceMessage();
+    return;
+  }
   validAudio.onloadedmetadata = async () => {
     if (validAudio.duration < 1) {
       // Less than 1 second - discard

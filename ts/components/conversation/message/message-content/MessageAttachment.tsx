@@ -136,7 +136,8 @@ export const MessageAttachment = (props: Props) => {
         />
       </div>
     );
-  } else if ( !firstAttachment.pending && !firstAttachment.error && isAudio(attachments)) {
+  } else if ( !firstAttachment.pending && !firstAttachment.error && isAudio(attachments)  ) {
+   
     return (
       <div
         role="main"
@@ -151,7 +152,7 @@ export const MessageAttachment = (props: Props) => {
       >
         <WaveFormAudioPlayerWithEncryptedFile src={firstAttachment.url}
           contentType={firstAttachment.contentType}
-          messageId={messageId} direction={direction} />
+          messageId={messageId} direction={direction} size={firstAttachment.size} />
         {/* <AudioPlayerWithEncryptedFile
           src={firstAttachment.url}
           contentType={firstAttachment.contentType}
