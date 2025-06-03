@@ -14,6 +14,9 @@ import {
   getSortedMessagesOfSelectedConversation,
 } from '../../state/selectors/conversations';
 import { setNextMessageToPlayId } from '../../state/ducks/conversations';
+import { isAudio } from '../../types/Attachment';
+
+
 
 interface Props {
   src: string;
@@ -60,7 +63,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     const audio = audioRef.current;
     const progvalue = audio ? audio.currentTime / duration : 0;
     drawPeaksWithProgress(peaks, progvalue);
-    // }
   }, [peaks]);
 
   useEffect(() => {
@@ -109,7 +111,9 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
 
         const y = (height - scaled) / 2;
         const x = i * (barWidth + gap);
-        const currentColor = i <= progressBars ? progressColor : waveColor;
+        const shouldHighlight = progressBars > 0 && i <= progressBars;
+        const currentColor = shouldHighlight ? progressColor : waveColor;
+
         if (lastColor !== currentColor) {
           ctx.fillStyle = currentColor;
           lastColor = currentColor;
@@ -153,7 +157,8 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const animateProgress = useCallback(() => {
     const audio = audioRef.current;
     if (!audio || !audio.duration) return;
-    const progress = audio.currentTime / audio.duration;
+    const isAtEnd = audio.currentTime >= audio.duration;
+    const progress = isAtEnd ? 0 : audio.currentTime / audio.duration;    
     setRemainingTime(convertMsToSec(audio.duration, audio.currentTime));
     drawPeaksWithProgress(peaks, progress);
     if (!audio.paused) {
@@ -196,6 +201,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     cancelAnimationFrame(animationFrameRef.current!);
   };
 
+  const beepSound = new Audio('sound/new_message.mp3')
+  const playBeep = () => {
+    beepSound.volume = 0.2;
+    beepSound.play();
+  };
+
   const handleEnded = () => {
     setIsPlaying(false);
     setRemainingTime(convertMsToSec(duration, 0));
@@ -203,9 +214,8 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     cancelAnimationFrame(animationFrameRef.current!);
   };
 
-  const handleSeekStart = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleSeekStart = () => {
     isDraggingRef.current = true;
-    handleCanvasClick(e);
   };
 
   const handleSeekMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -220,7 +230,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   };
 
   const changeSpeed = () => {
-    const nextSpeed = playbackSpeed >= 3 ? 1 : playbackSpeed + 1;
+    const nextSpeed = playbackSpeed >= 2 ? 1 : playbackSpeed + 0.5;
     if (audioRef.current) {
       audioRef.current.playbackRate = nextSpeed;
     }
@@ -231,7 +241,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     const canvas = canvasRef.current;
     const audio = audioRef.current;
     if (!canvas || !audio || !audio.duration) return;
-
     const rect = canvas.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const clickRatio = clickX / rect.width;
@@ -273,7 +282,13 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     if (differentAuthor) {
       dispatch(setNextMessageToPlayId(undefined));
     } else {
-      dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));
+      if(messageProps[nextMessageIndex].propsForMessage.attachments&& isAudio(messageProps[nextMessageIndex].propsForMessage.attachments))
+      {
+        playBeep();
+        setTimeout(()=>{dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));},500)
+      }
+    
+
     }
   };
   const onEnded = () => {
@@ -328,7 +343,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
         <div style={{ wordBreak: 'keep-all', width: '40px', marginLeft: '5px' }}>
           {remainingTime}
         </div>
-
         <audio
           ref={audioRef}
           src={urlToLoad || ''}
