@@ -42,8 +42,8 @@ type Props = {
   expirationLength?: number | null;
   expirationTimestamp?: number | null;
   enableReactions: boolean;
-  isRightClicked:boolean;
-  onMessageLoseFocus:()=>void
+  isRightClicked: boolean;
+  onMessageLoseFocus: () => void;
 };
 const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -92,32 +92,32 @@ const RecentReacts = (props: RecentReactsProps) => {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const darkMode = useSelector(getTheme) === 'dark';
- 
+
   const onShowEmoji = (e: MouseEvent): void => {
     // const panelWidth = 300; // Approximate width of emoji panel
     const panelHeight = emojiPanelHeight; // Defined as 435
     let x = e.clientX;
     let y = e.clientY - 39; // Adjust Y to position above the click if needed
-  
+
     if (isIncoming) {
       x -= 240;
     } else {
       x -= 150;
     }
-  
+
     // Adjust Y to prevent it from overflowing below the screen
     if (y + panelHeight > window.innerHeight) {
       y = window.innerHeight - panelHeight - 10 - 80; // Keep a margin of 10px
     } else if (y < 10) {
       y = 10; // Prevent it from going too high
     }
-  
+
     setMouseX(x);
     setMouseY(y);
     setShowEmojiPanel(true);
     setRecentEmoji(false);
   };
-  
+
   const onEmojiKeyDown = (event: any) => {
     if (event.key === 'Escape' && showEmojiPanel) {
       onCloseEmoji();
@@ -185,7 +185,7 @@ export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
   );
-  const typingEnabled= useSelector(getIsTypingEnabled)
+  const typingEnabled = useSelector(getIsTypingEnabled);
 
   const dispatch = useDispatch();
   const multiSelectMode = useSelector(isMessageSelectionMode);
@@ -233,7 +233,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     expirationTimestamp,
     enableReactions,
     isRightClicked,
-    onMessageLoseFocus
+    onMessageLoseFocus,
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
@@ -256,18 +256,20 @@ export const MessageContentWithStatuses = (props: Props) => {
     isDeleted,
     hasAttachments,
     isTrustedForAttachmentDownload,
-    isPublic, 
+    isPublic,
   } = contentProps;
   const isIncoming = direction === 'incoming';
 
-  const emojiIsVisible =(
+  const emojiIsVisible =
     !isDeleted &&
     !multiSelectMode &&
     !isPublic &&
     (!hasAttachments || isTrustedForAttachmentDownload) &&
     status !== 'sending' &&
-    status !== 'error' && typingEnabled && !isRightClicked ) 
-    
+    status !== 'error' &&
+    typingEnabled &&
+    !isRightClicked;
+
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
@@ -281,83 +283,90 @@ export const MessageContentWithStatuses = (props: Props) => {
         setRecentEmojiBtnVisible(false);
       }}
     >
-      <div
-        className={classNames(
-          'module-message',
-          `module-message--${direction}`,
-          isDetailView && 'module-message--detailview'
-        )}
-        role="button"
-        onClick={onClickOnMessageOuterContainer}
-        
-        style={{ width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto' }}
-        data-testid={dataTestId}
-      >
-        {!isIncoming && emojiIsVisible && (
-          <StyledRecentReactionWrapper>
-            <RecentReacts
-              isIncoming={isIncoming}
-              recentEmojiBtnVisible={recentEmojiBtnVisible}
-              onEmojiClick={onEmojiClick}
-              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+      
+      
+        <div
+          className={classNames(
+            'module-message',
+            `module-message--${direction}`,
+            isDetailView && 'module-message--detailview'
+          )}
+          role="button"
+          onClick={onClickOnMessageOuterContainer}
+          style={{
+            width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto',
+          }}
+          data-testid={dataTestId}
+        >
+        {multiSelectMode &&   <div  className='module-message--multiSelect-overlay' />}
+          {!isIncoming && emojiIsVisible && (
+            <StyledRecentReactionWrapper>
+              <RecentReacts
+                isIncoming={isIncoming}
+                recentEmojiBtnVisible={recentEmojiBtnVisible}
+                onEmojiClick={onEmojiClick}
+                onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+              />
+            </StyledRecentReactionWrapper>
+          )}
+          {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
+            <ExpireTimer
+              isCorrectSide={!isIncoming}
+              expirationLength={expirationLength}
+              expirationTimestamp={expirationTimestamp}
             />
-          </StyledRecentReactionWrapper>
-        )}
-        {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
-          <ExpireTimer
-            isCorrectSide={!isIncoming}
-            expirationLength={expirationLength}
-            expirationTimestamp={expirationTimestamp}
-          />
-        ) : (
-          <MessageStatus
-            dataTestId="msg-status-outgoing"
-            messageId={messageId}
-            isCorrectSide={!isIncoming && !isDetailView }
-            status={status}
-          />
-        )}
-        <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
-          <MessageContent
-            messageId={messageId}
-            isDetailView={isDetailView}
-            onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
-            isTrustedForAttachmentDownload={isTrustedForAttachmentDownload}
-          />
-        </div>
-        {expirationLength && expirationTimestamp ? (
-          <ExpireTimer
-            isCorrectSide={isIncoming}
-            expirationLength={expirationLength}
-            expirationTimestamp={expirationTimestamp}
-          />
-        ) : (
-          <MessageStatus
-            dataTestId="msg-status-incoming"
-            messageId={messageId}
-            isCorrectSide={isIncoming}
-            status={status}
-          />
-        )}
-        {isIncoming && emojiIsVisible && (
-          <StyledRecentReactionWrapper>
-            <RecentReacts
-              isIncoming={isIncoming}
-              recentEmojiBtnVisible={recentEmojiBtnVisible}
-              onEmojiClick={onEmojiClick}
-              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+          ) : (
+            <MessageStatus
+              dataTestId="msg-status-outgoing"
+              messageId={messageId}
+              isCorrectSide={!isIncoming && !isDetailView}
+              status={status}
             />
-          </StyledRecentReactionWrapper>
-        )}
-        {!isDetailView && (
-          <MessageContextMenu
-            messageId={messageId}
-            contextMenuId={ctxMenuID}
-            enableReactions={enableReactions}
-            onMessageLoseFocus={onMessageLoseFocus}
-          />
-        )}
-      </div>
+          )}
+          <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
+            <MessageContent
+              messageId={messageId}
+              isDetailView={isDetailView}
+              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+              isTrustedForAttachmentDownload={isTrustedForAttachmentDownload}
+            />
+          </div>
+          {expirationLength && expirationTimestamp ? (
+            <ExpireTimer
+              isCorrectSide={isIncoming}
+              expirationLength={expirationLength}
+              expirationTimestamp={expirationTimestamp}
+            />
+          ) : (
+            <MessageStatus
+              dataTestId="msg-status-incoming"
+              messageId={messageId}
+              isCorrectSide={isIncoming}
+              status={status}
+            />
+          )}
+          {isIncoming && emojiIsVisible && (
+            <StyledRecentReactionWrapper>
+              <RecentReacts
+                isIncoming={isIncoming}
+                recentEmojiBtnVisible={recentEmojiBtnVisible}
+                onEmojiClick={onEmojiClick}
+                onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+              />
+            </StyledRecentReactionWrapper>
+          )}
+          {!isDetailView && (
+            <MessageContextMenu
+              messageId={messageId}
+              contextMenuId={ctxMenuID}
+              enableReactions={enableReactions}
+              onMessageLoseFocus={onMessageLoseFocus}
+            />
+          )}
+          </div>
+    
+      
+
       {enableReactions && !isDetailView && (
         <MessageReactions
           messageId={messageId}

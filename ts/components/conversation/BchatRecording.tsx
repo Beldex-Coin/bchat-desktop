@@ -60,7 +60,7 @@ export class BchatRecording extends React.Component<Props, State> {
   private audioBlobMp3?: Blob;
   private audioElement?: HTMLAudioElement | null;
   private updateTimerInterval?: NodeJS.Timeout;
-
+  private recordingRef:any; 
   constructor(props: Props) {
     super(props);
     autoBind(this);
@@ -75,11 +75,13 @@ export class BchatRecording extends React.Component<Props, State> {
       startTimestamp: now,
       nowTimestamp: now,
     };
+    this.recordingRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   public componentDidMount() {
     // This turns on the microphone on the system. Later we need to turn it off.
-
+    document.addEventListener("mousedown", this.handleClickOutside);
     void this.initiateRecordingStream();
     // Callback to parent on load complete
 
@@ -93,8 +95,14 @@ export class BchatRecording extends React.Component<Props, State> {
     if (this.updateTimerInterval) {
       clearInterval(this.updateTimerInterval);
     }
+    document.removeEventListener("mousedown", this.handleClickOutside);
   }
 
+  public handleClickOutside(event: MouseEvent) {
+    if (this.recordingRef.current && !this.recordingRef.current.contains(event.target as Node)) {
+      this.stopRecordingStream()
+    }
+  }
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { isPlaying, isPaused, isRecording, startTimestamp, nowTimestamp } = this.state;
@@ -127,7 +135,7 @@ export class BchatRecording extends React.Component<Props, State> {
     const actionPauseFn = isPlaying ? this.pauseAudio : this.stopRecordingStream;
 
     return (
-      <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
+      <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown} ref={this.recordingRef}>
         <div className="bchat-recording-box">
 
           {hasRecording && !isRecording ? (

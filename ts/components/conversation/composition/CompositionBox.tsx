@@ -797,8 +797,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           this.renderBlockedContactBottoms()
         ) : (
           <>
-            {typingEnabled && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
-
+            {typingEnabled  && !this.state.showRecordingView  && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
             <input
               className="hidden"
               placeholder="Attachment"
