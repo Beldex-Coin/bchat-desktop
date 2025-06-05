@@ -169,7 +169,6 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio || !urlToLoad) return;
-
     // Ensure metadata is loaded
     if (audio.readyState >= 3) {
       if (isPlaying) {
@@ -178,6 +177,10 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
         AudioManager.setCurrent(audio); // Pause any other playing audio
         audio.play().catch(err => console.warn('Audio playback failed:', err));
       }
+      if (autoPlaySetting === true && nextMessageToPlayId && !isPlaying){
+        dispatch(setNextMessageToPlayId(undefined));
+      }
+     
     } else {
       // Wait until the audio is ready
       const onCanPlayThrough = () => {
@@ -282,13 +285,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     if (differentAuthor) {
       dispatch(setNextMessageToPlayId(undefined));
     } else {
-      if(messageProps[nextMessageIndex].propsForMessage.attachments&& isAudio(messageProps[nextMessageIndex].propsForMessage.attachments))
+      const attachments=messageProps[nextMessageIndex].propsForMessage.attachments;
+      if(attachments && isAudio(attachments))
       {
         playBeep();
-        setTimeout(()=>{dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));},500)
+       setTimeout(()=>{dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));},500)
       }
-    
-
     }
   };
   const onEnded = () => {
