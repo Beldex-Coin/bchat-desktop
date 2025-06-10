@@ -364,26 +364,6 @@ async function createWindow() {
     }
     mainWindow.reload();
   });
-  if (mainWindow) {
-    mainWindow.setContentProtection(false);
-    console.log(`Content Protection: ${false}`);
-  }
-
-     
-  // Register screenshot shortcuts using electron-localshortcut
-  electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+4', () => {
-    mainWindow?.webContents.send('screenshot-detected');
-  });
-
-  electronLocalshortcut.register(mainWindow, 'PrintScreen', () => {
-    mainWindow?.webContents.send('screenshot-detected');
-  });
-
-
-  // MacOS: Detect screenshot
-  mainWindow.on('focus', () => {
-    mainWindow?.webContents.send('remove-black-overlay');
-  });
 
   function captureAndSaveWindowStats() {
     if (!mainWindow) {
@@ -1122,21 +1102,6 @@ ipc.on('set-auto-update-setting', async (_event, enabled) => {
     isReadyForUpdates = false;
   }
 });
-
-// BChat - Auto updating
-ipc.on('get-screenshot-protection-setting', event => {
-  const configValue = userConfig.get('screenshotProtection');
-  // eslint-disable-next-line no-param-reassign
-  event.returnValue = typeof configValue !== 'boolean' ? true : configValue;
-});
-
-ipc.on('set-screenshot-protection-setting', async (_event, enabled) => {
-  userConfig.set('screenshotProtection', !!enabled);
-  mainWindow?.setContentProtection(!!enabled)
-  console.log('screenshotProtection -->',!!enabled)
- 
-});
-
 
 async function getThemeFromMainWindow() {
   return new Promise(resolve => {

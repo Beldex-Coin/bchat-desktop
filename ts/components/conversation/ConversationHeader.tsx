@@ -56,7 +56,7 @@ import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
-import { BchatToggle } from '../basic/BchatToggle';
+// import { BchatToggle } from '../basic/BchatToggle';
 
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
@@ -351,6 +351,10 @@ const ConversationHeaderTitle = () => {
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
   const dispatch = useDispatch();
+  console.log('headerTitleProps -->',headerTitleProps);
+  console.log('convoProps -->',convoProps);
+  console.log('conversation -->',conversation);
+
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -450,7 +454,7 @@ export const ConversationHeaderWithDetails = () => {
   const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
-  const [contentPrevent,setContentPrevent]=useState(window.getScreenshotProtection());
+  // const [contentPrevent,setContentPrevent]=useState(window.getScreenshotProtection());
 
   const dispatch = useDispatch();
   const displayConnectWalletBtn =
@@ -482,16 +486,19 @@ export const ConversationHeaderWithDetails = () => {
   //   // }
   // }
 
-  const setvalue=()=>{ 
-     if(window.getScreenshotProtection()){
-      window.setScreenshotProtection(false)
-      setContentPrevent(false)
-     }else{
-      window.setScreenshotProtection(true)
-      setContentPrevent(true)
+  useEffect(()=>{
+    window.setScreenshotProtection(conversation?.isBnsHolder||false)
+  },[conversation?.isBnsHolder])
+  // const setvalue=()=>{ 
+  //    if(window.getScreenshotProtection()){
+  //     window.setScreenshotProtection(false)
+  //     setContentPrevent(false)
+  //    }else{
+  //     window.setScreenshotProtection(true)
+  //     setContentPrevent(true)
       
-     }
-  }
+  //    }
+  // }
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -514,10 +521,10 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
             
-             <BchatToggle
+             {/* <BchatToggle
         active={contentPrevent}
         onClick={()=>setvalue()}
-      />
+      /> */}
                
             {displayConnectWalletBtn && (
               // <div
