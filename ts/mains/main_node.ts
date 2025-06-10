@@ -1130,11 +1130,19 @@ ipc.on('media-access', async () => {
 });
 
 
-ipc.on('toggle-content-protection', (event, isEnabled) => {
-  if (mainWindow) {
-    mainWindow.setContentProtection(isEnabled);
-    console.log(`Content Protection: ${isEnabled},${event}`);
-  }
+
+// BChat -screenshot-protection
+ipc.on('get-screenshot-protection-setting', event => {
+  const configValue = userConfig.get('screenshotProtection');
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue = typeof configValue !== 'boolean' ? true : configValue;
+});
+
+ipc.on('set-screenshot-protection-setting', async (_event, enabled) => {
+  userConfig.set('screenshotProtection', !!enabled);
+  mainWindow?.setContentProtection(!!enabled)
+  console.log('screenshotProtection -->',!!enabled)
+ 
 });
 
 
