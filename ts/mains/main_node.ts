@@ -1123,6 +1123,21 @@ ipc.on('set-auto-update-setting', async (_event, enabled) => {
   }
 });
 
+// BChat - Auto updating
+ipc.on('get-screenshot-protection-setting', event => {
+  const configValue = userConfig.get('screenshotProtection');
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue = typeof configValue !== 'boolean' ? true : configValue;
+});
+
+ipc.on('set-screenshot-protection-setting', async (_event, enabled) => {
+  userConfig.set('screenshotProtection', !!enabled);
+  mainWindow?.setContentProtection(!!enabled)
+  console.log('screenshotProtection -->',!!enabled)
+ 
+});
+
+
 async function getThemeFromMainWindow() {
   return new Promise(resolve => {
     ipc.once('get-success-theme-setting', (_event, value) => {

@@ -100,6 +100,8 @@ declare global {
     closeAbout: () => void;
     getAutoUpdateEnabled: () => boolean;
     setAutoUpdateEnabled: (enabled: boolean) => void;
+    getScreenshotProtection:() => boolean;
+    setScreenshotProtection:(enabled: boolean) => void;
     setZoomFactor: (newZoom: number) => void;
     updateZoomFactor: () => void;
 

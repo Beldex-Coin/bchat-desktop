@@ -202,12 +202,19 @@ window.setCallMediaPermissions = value => {
 
 window.askForMediaAccess = () => {
   ipc.send('media-access');
-};
+}; 
 
 // Auto update setting
 window.getAutoUpdateEnabled = () => ipc.sendSync('get-auto-update-setting');
 window.setAutoUpdateEnabled = value => {
   ipc.send('set-auto-update-setting', !!value);
+};
+
+// Screen production setting
+window.getScreenshotProtection = () => ipc.sendSync('get-screenshot-protection-setting');
+window.setScreenshotProtection = value => {
+  console.log('setScreenshotProtection -->',value)
+  ipc.send('set-screenshot-protection-setting', !!value);
 };
 
 ipc.on('get-ready-for-shutdown', async () => {

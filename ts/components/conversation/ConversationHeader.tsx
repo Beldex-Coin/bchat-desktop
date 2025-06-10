@@ -56,6 +56,7 @@ import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
+import { BchatToggle } from '../basic/BchatToggle';
 
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
@@ -162,6 +163,7 @@ export const SelectionOverlay = () => {
           <span>Selected</span>
         </div>
       </Flex>
+     
 
       <div className="button-group">
         {!isOnlyServerDeletable && (
@@ -448,6 +450,8 @@ export const ConversationHeaderWithDetails = () => {
   const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
 
+  const [contentPrevent,setContentPrevent]=useState(window.getScreenshotProtection());
+
   const dispatch = useDispatch();
   const displayConnectWalletBtn =
     chatwithWallet &&
@@ -478,6 +482,16 @@ export const ConversationHeaderWithDetails = () => {
   //   // }
   // }
 
+  const setvalue=()=>{ 
+     if(window.getScreenshotProtection()){
+      window.setScreenshotProtection(false)
+      setContentPrevent(false)
+     }else{
+      window.setScreenshotProtection(true)
+      setContentPrevent(true)
+      
+     }
+  }
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">
@@ -499,7 +513,12 @@ export const ConversationHeaderWithDetails = () => {
               showBackButton={isMessageDetailOpened}
             />
             <ConversationHeaderTitle />
-
+            
+             <BchatToggle
+        active={contentPrevent}
+        onClick={()=>setvalue()}
+      />
+               
             {displayConnectWalletBtn && (
               // <div
               //   className="connectWalletBtn"
