@@ -8,15 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 import { useAudioPeaks } from '../../hooks/useAudioPeaks';
 import { AudioManager } from '../../util/audioManager';
-import { getAudioAutoplay } from '../../state/selectors/userConfig';
+import { getAudioAutoplay, getIsCurrentlyRecording } from '../../state/selectors/userConfig';
 import {
   getNextMessageToPlayId,
   getSortedMessagesOfSelectedConversation,
 } from '../../state/selectors/conversations';
 import { setNextMessageToPlayId } from '../../state/ducks/conversations';
 import { isAudio } from '../../types/Attachment';
-
-
 
 interface Props {
   src: string;
@@ -42,10 +40,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [remainingTime, setRemainingTime] = useState('00:00');
+  const [hasStarted, setHasStarted] = useState(false);
   const isDraggingRef = useRef(false);
   const autoPlaySetting = useSelector(getAudioAutoplay);
   const messageProps = useSelector(getSortedMessagesOfSelectedConversation);
   const nextMessageToPlayId = useSelector(getNextMessageToPlayId);
+  const isCurrentlyRecording=useSelector(getIsCurrentlyRecording);
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
   const waveColor = direction === 'incoming' ? (darkMode ? '#16191F' : '#ACACAC') : '#1C581C';
@@ -168,41 +168,62 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
 
   const togglePlay = () => {
     const audio = audioRef.current;
-    if (!audio || !urlToLoad) return;
-    // Ensure metadata is loaded
+    if (!audio || !urlToLoad || isCurrentlyRecording) return;
+ 
+   const resetWaveform=()=>{
+    audio.currentTime=0;
+    handleEnded();
+   }
+    const playAudio = () => {
+      AudioManager.setCurrent(audio, () => setHasStarted(false),resetWaveform);
+      audio.play()
+        .then(() => {
+          setHasStarted(true);
+          if (autoPlaySetting && nextMessageToPlayId) {
+            dispatch(setNextMessageToPlayId(undefined)); // Reset chain state
+          }
+        })
+        .catch(err => {
+          console.warn('Audio playback failed:', err);
+        });
+    };
+  
     if (audio.readyState >= 3) {
       if (isPlaying) {
         audio.pause();
+        setHasStarted(false);
       } else {
-        AudioManager.setCurrent(audio); // Pause any other playing audio
-        audio.play().catch(err => console.warn('Audio playback failed:', err));
+        playAudio();
       }
-      if (autoPlaySetting === true && nextMessageToPlayId && !isPlaying){
-        dispatch(setNextMessageToPlayId(undefined));
-      }
-     
     } else {
-      // Wait until the audio is ready
       const onCanPlayThrough = () => {
         audio.removeEventListener('canplaythrough', onCanPlayThrough);
-        AudioManager.setCurrent(audio); // Pause any other playing audio
-        audio.play().catch(err => console.warn('Playback failed after ready:', err));
+        playAudio();
       };
       audio.addEventListener('canplaythrough', onCanPlayThrough);
-      audio.load(); // Ensure buffering kicks in
+      audio.load(); // Start buffering
     }
   };
-
+  
   const handlePlay = () => {
     setIsPlaying(true);
     animationFrameRef.current = requestAnimationFrame(animateProgress);
   };
 
   const handlePause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+  
+    if (hasStarted) {
+      audio.currentTime = 0;
+      onEnded(); 
+    }
+  
     setIsPlaying(false);
-    AudioManager.clearCurrent(audioRef.current!);
     cancelAnimationFrame(animationFrameRef.current!);
+    // AudioManager.clearCurrent(audio); // Uncomment if needed
   };
+  
 
   const beepSound = new Audio('sound/new_message.mp3')
   const playBeep = () => {
@@ -211,10 +232,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   };
 
   const handleEnded = () => {
+    AudioManager.clearCurrent(audioRef.current!);
     setIsPlaying(false);
     setRemainingTime(convertMsToSec(duration, 0));
     drawPeaksWithProgress(peaks, 0); // Reset waveform progress
     cancelAnimationFrame(animationFrameRef.current!);
+   
   };
 
   const handleSeekStart = () => {
@@ -257,7 +280,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   };
   useEffect(() => {
     if (messageId !== undefined && messageId === nextMessageToPlayId) {
-      togglePlay()
+      togglePlay();
     }
   }, [messageId, nextMessageToPlayId]);
 
@@ -297,7 +320,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     handleEnded();
     // if audio autoplay is enabled, call method to start playing
     // the next playable message
-    if (autoPlaySetting === true && messageId) {
+    if (autoPlaySetting && messageId) {
       triggerPlayNextMessageIfNeeded(messageId);
     }
   };
@@ -345,6 +368,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
         <div style={{ wordBreak: 'keep-all', width: '40px', marginLeft: '5px' }}>
           {remainingTime}
         </div>
+        
         <audio
           ref={audioRef}
           src={urlToLoad || ''}

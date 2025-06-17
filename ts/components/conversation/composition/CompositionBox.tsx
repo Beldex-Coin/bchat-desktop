@@ -96,6 +96,7 @@ import styled from 'styled-components';
 // import { BaseEmoji } from 'emoji-mart';
 // import { nativeEmojiData } from '../../../util/emoji';
 import { FixedBaseEmoji } from '../../../types/Reaction';
+import { updateIsCurrentlyRecording } from '../../../state/ducks/userConfig';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -1529,6 +1530,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       showRecordingView: true,
       showEmojiPanel: false,
     });
+    window.inboxStore?.dispatch(updateIsCurrentlyRecording(true))
   }
 
   private onExitVoiceNoteView() {

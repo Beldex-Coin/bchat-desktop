@@ -12,6 +12,7 @@ import { DEFAULT_MIN_AUDIO_MEMORY_SIZE, MAX_ATTACHMENT_FILESIZE_BYTES } from '..
 import { SendMessageButton } from './composition/CompositionButtons';
 import StopIcon from '../icon/StopIcon';
 import { CustomIconButton } from '../icon/CustomIconButton';
+import { updateIsCurrentlyRecording } from '../../state/ducks/userConfig';
 
 interface Props {
   onExitVoiceNoteView: () => void;
@@ -60,12 +61,10 @@ export class BchatRecording extends React.Component<Props, State> {
   private audioBlobMp3?: Blob;
   private audioElement?: HTMLAudioElement | null;
   private updateTimerInterval?: NodeJS.Timeout;
-  private recordingRef:any; 
   constructor(props: Props) {
     super(props);
     autoBind(this);
     const now = getTimestamp();
-
     this.state = {
       recordDuration: 0,
       isRecording: true,
@@ -75,13 +74,10 @@ export class BchatRecording extends React.Component<Props, State> {
       startTimestamp: now,
       nowTimestamp: now,
     };
-    this.recordingRef = React.createRef();
-    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   public componentDidMount() {
     // This turns on the microphone on the system. Later we need to turn it off.
-    document.addEventListener("mousedown", this.handleClickOutside);
     void this.initiateRecordingStream();
     // Callback to parent on load complete
 
@@ -95,18 +91,11 @@ export class BchatRecording extends React.Component<Props, State> {
     if (this.updateTimerInterval) {
       clearInterval(this.updateTimerInterval);
     }
-    document.removeEventListener("mousedown", this.handleClickOutside);
   }
 
-  public handleClickOutside(event: MouseEvent) {
-    if (this.recordingRef.current && !this.recordingRef.current.contains(event.target as Node)) {
-      this.stopRecordingStream()
-    }
-  }
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { isPlaying, isPaused, isRecording, startTimestamp, nowTimestamp } = this.state;
-
     const hasRecordingAndPaused = !isRecording && !isPlaying;
     const hasRecording = !!this.audioElement?.duration && this.audioElement?.duration > 0;
     const actionPauseAudio = !isRecording && !isPaused && isPlaying;
@@ -135,7 +124,7 @@ export class BchatRecording extends React.Component<Props, State> {
     const actionPauseFn = isPlaying ? this.pauseAudio : this.stopRecordingStream;
 
     return (
-      <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown} ref={this.recordingRef}>
+      <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
         <div className="bchat-recording-box">
 
           {hasRecording && !isRecording ? (
@@ -339,6 +328,7 @@ export class BchatRecording extends React.Component<Props, State> {
     if (!this.recorder) {
       return;
     }
+    window.inboxStore?.dispatch(updateIsCurrentlyRecording(false))
     const [_, blob] = await this.recorder.stop().getMp3();
     this.recorder = undefined;
 
