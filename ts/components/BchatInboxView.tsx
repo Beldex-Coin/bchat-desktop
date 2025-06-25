@@ -37,6 +37,7 @@ import { initialWalletConfigState } from '../state/ducks/walletConfig';
 // import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
 import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
 import { ProfileInfo } from './BchatProfileInfo';
+import { initialGlobalAudioPlaybackConfigState } from '../state/ducks/globalAudioPlaybackconfig';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -78,17 +79,16 @@ export class BchatInboxView extends React.Component<any, State> {
       <div className="inbox index">
         <Provider store={this.store}>
           <PersistGate loading={null} persistor={persistor}>
-            <div className="gutter">
-              <div className="network-status-container" />
-              {this.renderLeftPane()}
-            </div>
-            <BchatMainPanel />
-            <div className='profile-info'>
-              <div >
-            <ProfileInfo />
+              <div className="gutter">
+                <div className="network-status-container" />
+                {this.renderLeftPane()}
               </div>
-
-            </div>
+              <BchatMainPanel />
+              <div className="profile-info">
+                <div>
+                  <ProfileInfo />
+                </div>
+              </div>
           </PersistGate>
         </Provider>
       </div>
@@ -119,7 +119,7 @@ export class BchatInboxView extends React.Component<any, State> {
       defaultRooms: initialDefaultRoomState,
       search: initialSearchState,
       theme: initialThemeState,
-      isVerifyBnsCalled:initialisVerifyBnsCalledState,
+      isVerifyBnsCalled: initialisVerifyBnsCalledState,
       wallet: initialWalletState,
       daemon: initialDaemonState,
       onionPaths: initialOnionPathState,
@@ -133,6 +133,7 @@ export class BchatInboxView extends React.Component<any, State> {
       },
       stagedAttachments: getEmptyStagedAttachmentsState(),
       call: initialCallState,
+      globalAudioPlaybackConfig:initialGlobalAudioPlaybackConfigState
     };
 
     this.store = createStore(initialState);

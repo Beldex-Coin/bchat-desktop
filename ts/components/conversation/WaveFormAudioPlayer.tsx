@@ -15,6 +15,8 @@ import {
 } from '../../state/selectors/conversations';
 import { setNextMessageToPlayId } from '../../state/ducks/conversations';
 import { isAudio } from '../../types/Attachment';
+import { setCurrentPlayingId, setCurrentTime } from '../../state/ducks/globalAudioPlaybackconfig';
+import { getcurrentPlayingId, getCurrentTime } from '../../state/selectors/globalAudioPlaybackConfig';
 
 interface Props {
   src: string;
@@ -45,7 +47,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const autoPlaySetting = useSelector(getAudioAutoplay);
   const messageProps = useSelector(getSortedMessagesOfSelectedConversation);
   const nextMessageToPlayId = useSelector(getNextMessageToPlayId);
-  const isCurrentlyRecording=useSelector(getIsCurrentlyRecording);
+  const isCurrentlyRecording = useSelector(getIsCurrentlyRecording);
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
   const waveColor = direction === 'incoming' ? (darkMode ? '#16191F' : '#ACACAC') : '#1C581C';
@@ -55,15 +57,18 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const totalBars: number = useMemo(() => Math.floor(300 / (barWidth + gap)), [barWidth, gap]);
   const { peaks, duration } = useAudioPeaks(urlToLoad, totalBars, slicedSrc, size);
 
-  useEffect(() => {
-    setRemainingTime(convertMsToSec(duration, 0));
-  }, [duration]);
+
+  const currentPlayingId = useSelector(getcurrentPlayingId);
+  const currentTime = useSelector(getCurrentTime);
+  const isSameMessage = messageId === currentPlayingId;
 
   useEffect(() => {
     const audio = audioRef.current;
-    const progvalue = audio ? audio.currentTime / duration : 0;
+     const playingTime= isSameMessage  ?  currentTime:audio?.currentTime 
+    const progvalue = playingTime ? playingTime / duration : 0;
     drawPeaksWithProgress(peaks, progvalue);
-  }, [peaks]);
+    setRemainingTime(convertMsToSec(duration, playingTime||0));
+  }, [duration, peaks]);
 
   useEffect(() => {
     return () => {
@@ -72,6 +77,19 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       }
     };
   }, []);
+  useEffect(() => {
+    if (messageId === nextMessageToPlayId) {
+      togglePlay();
+    }
+  }, [messageId, nextMessageToPlayId]);
+
+  useEffect(() => {
+    if (isSameMessage&& (messageId !== nextMessageToPlayId)) {
+      togglePlay();
+    }
+  }, [messageId]);
+
+  
 
   const convertMsToSec = useCallback((duration: number, currentTime: number) => {
     let remainingTime = duration === currentTime ? duration : duration - currentTime; // Remaining time in seconds
@@ -158,39 +176,46 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     const audio = audioRef.current;
     if (!audio || !audio.duration) return;
     const isAtEnd = audio.currentTime >= audio.duration;
-    const progress = isAtEnd ? 0 : audio.currentTime / audio.duration;    
+    const progress = isAtEnd ? 0 : audio.currentTime / audio.duration;
     setRemainingTime(convertMsToSec(audio.duration, audio.currentTime));
     drawPeaksWithProgress(peaks, progress);
+    const resetCurrentTime = isAtEnd ? 0 : audio.currentTime;
+    dispatch(setCurrentTime(resetCurrentTime));
     if (!audio.paused) {
       animationFrameRef.current = requestAnimationFrame(animateProgress);
     }
   }, [convertMsToSec, drawPeaksWithProgress, peaks]);
 
-  const togglePlay = () => {
+  const resetGlobalAudioPlayBack=()=>{
+    dispatch(setCurrentTime(0));
+    dispatch(setCurrentPlayingId(null));
+  }
+
+  const togglePlay = (manualTrigger?:boolean) => {
     const audio = audioRef.current;
     if (!audio || !urlToLoad || isCurrentlyRecording) return;
- 
-   const resetWaveform=()=>{
-    audio.currentTime=0;
-    handleEnded();
-   }
-    const playAudio = () => {
+     const resetWaveform=()=>{
+      audio.currentTime =  0; 
+      handleEnded();
+     }
+    const playAudio = async() => {
+      if (!manualTrigger) {
+        const shouldResume =isSameMessage && (messageId !== nextMessageToPlayId);
+        audio.currentTime = shouldResume ? (currentTime || 0) : 0;
+      }
       AudioManager.setCurrent(audio, () => setHasStarted(false),resetWaveform);
-      audio.play()
-        .then(() => {
-          setHasStarted(true);
-          if (autoPlaySetting && nextMessageToPlayId) {
-            dispatch(setNextMessageToPlayId(undefined)); // Reset chain state
-          }
-        })
-        .catch(err => {
-          console.warn('Audio playback failed:', err);
-        });
+      dispatch(setCurrentPlayingId(messageId));
+      audio.play().catch(console.warn);
+      setHasStarted(true);
+      if (autoPlaySetting && nextMessageToPlayId) {
+        dispatch(setNextMessageToPlayId(undefined)); // Reset chain state
+      }
     };
-  
+
     if (audio.readyState >= 3) {
-      if (isPlaying) {
+      if (isPlaying && manualTrigger) {
         audio.pause();
+        resetGlobalAudioPlayBack()
         setHasStarted(false);
       } else {
         playAudio();
@@ -204,28 +229,26 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       audio.load(); // Start buffering
     }
   };
-  
+ 
   const handlePlay = () => {
     setIsPlaying(true);
     animationFrameRef.current = requestAnimationFrame(animateProgress);
+    
   };
 
   const handlePause = () => {
     const audio = audioRef.current;
     if (!audio) return;
-  
-    if (hasStarted) {
-      audio.currentTime = 0;
-      onEnded(); 
+    if (hasStarted) {    
+      audio.currentTime=0;
+       onEnded();
     }
-  
     setIsPlaying(false);
     cancelAnimationFrame(animationFrameRef.current!);
-    // AudioManager.clearCurrent(audio); // Uncomment if needed
-  };
   
+  };
 
-  const beepSound = new Audio('sound/new_message.mp3')
+  const beepSound = new Audio('sound/new_message.mp3');
   const playBeep = () => {
     beepSound.volume = 0.2;
     beepSound.play();
@@ -233,11 +256,11 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
 
   const handleEnded = () => {
     AudioManager.clearCurrent(audioRef.current!);
+    resetGlobalAudioPlayBack();
     setIsPlaying(false);
     setRemainingTime(convertMsToSec(duration, 0));
     drawPeaksWithProgress(peaks, 0); // Reset waveform progress
     cancelAnimationFrame(animationFrameRef.current!);
-   
   };
 
   const handleSeekStart = () => {
@@ -278,13 +301,14 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       animationFrameRef.current = requestAnimationFrame(animateProgress);
     }
   };
-  useEffect(() => {
-    if (messageId !== undefined && messageId === nextMessageToPlayId) {
-      togglePlay();
-    }
-  }, [messageId, nextMessageToPlayId]);
+  let playNextMessageTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const triggerPlayNextMessageIfNeeded = (endedMessageId: string) => {
+    if (playNextMessageTimeout) {
+      clearTimeout(playNextMessageTimeout);
+      playNextMessageTimeout = null;
+    }
+
     const justEndedMessageIndex = messageProps.findIndex(
       m => m.propsForMessage.id === endedMessageId
     );
@@ -308,11 +332,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     if (differentAuthor) {
       dispatch(setNextMessageToPlayId(undefined));
     } else {
-      const attachments=messageProps[nextMessageIndex].propsForMessage.attachments;
-      if(attachments && isAudio(attachments))
-      {
+      const attachments = messageProps[nextMessageIndex].propsForMessage.attachments;
+      if (attachments && isAudio(attachments)) {
         playBeep();
-       setTimeout(()=>{dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));},500)
+        playNextMessageTimeout=setTimeout(() => {
+          dispatch(setNextMessageToPlayId(messageProps[nextMessageIndex].propsForMessage.id));
+        }, 500);
       }
     }
   };
@@ -337,7 +362,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
           iconType={isPlaying ? 'pause' : 'play'}
           iconSize="medium"
           iconColor="#F0F0F0"
-          onClick={togglePlay}
+          onClick={() => togglePlay(true)}
           btnRadius="40px"
           btnBgColor="#2F8FFF"
           padding="7px"
@@ -368,7 +393,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
         <div style={{ wordBreak: 'keep-all', width: '40px', marginLeft: '5px' }}>
           {remainingTime}
         </div>
-        
+
         <audio
           ref={audioRef}
           src={urlToLoad || ''}
