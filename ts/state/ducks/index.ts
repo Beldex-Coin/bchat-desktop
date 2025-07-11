@@ -13,7 +13,6 @@ import * as walletInnerFocusDucks from './walletInnerSection';
 import * as TimerOptionsDucks from './timerOptions';
 import * as UserDucks from './user';
 import * as UserConfigDucks from './userConfig';
-import * as GlobalAudioPlaybackconfigDuck from './globalAudioPlaybackconfig'
 
 export {
   CallDucks,
@@ -31,5 +30,4 @@ export {
   UserDucks,
   conversationDucks,
   defaultRoomDucks,
-  GlobalAudioPlaybackconfigDuck
 };

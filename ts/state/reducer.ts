@@ -22,7 +22,6 @@ import {
 import { reducer as wallet,WalletStateType } from './ducks/wallet';
 import { reducer as daemon,DaemonStateType } from './ducks/daemon';
 import {reducer as walletConfig, WalletConfigState } from "./ducks/walletConfig"
-import { globalAudioPlaybackConfigReducer as globalAudioPlaybackConfig , GlobalAudioPlaybackConfigStateType } from './ducks/globalAudioPlaybackconfig';
 
 
 export type StateType = {
@@ -45,8 +44,6 @@ export type StateType = {
   walletFocused:WalletSectionStateType
   walletInnerFocused:WalletInnerSectionStateType;
   walletConfig:WalletConfigState
-  globalAudioPlaybackConfig:GlobalAudioPlaybackConfigStateType
-
 
 };
 
@@ -69,7 +66,6 @@ export const reducers = {
   walletFocused,
   walletInnerFocused,
   walletConfig,
-  globalAudioPlaybackConfig
 };
 
 // Making this work would require that our reducer signature supported AnyAction, not

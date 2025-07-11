@@ -9,7 +9,6 @@ import * as ThemeSelectors from './theme';
 import * as TimerOptionsSelectors from './timerOptions';
 import * as UserSelectors from './user';
 import * as UserConfigSelectors from './userConfig';
-import * as GlobalAudioPlaybackConfigSelectors from './globalAudioPlaybackConfig'
 
 export {
   CallSelectors,
@@ -23,5 +22,4 @@ export {
   TimerOptionsSelectors,
   UserConfigSelectors,
   UserSelectors,
-  GlobalAudioPlaybackConfigSelectors
 };

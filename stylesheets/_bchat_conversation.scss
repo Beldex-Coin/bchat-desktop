@@ -824,6 +824,7 @@ $rhap_font-family: inherit !default;
   padding: 0px;
   background-color: transparent;
   box-shadow: none;
+  display: none;
 
   svg {
     transition: fill $bchat-transition-duration;
@@ -934,3 +935,61 @@ $rhap_font-family: inherit !default;
 /* **************** */
 /* END AUDIO PLAYER */
 /* **************** */
+.waveform-container {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  width: 300px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+}
+
+.waveform-bar {
+  width: 2px;
+  margin-right: 2px;
+  background-color: #ACACAC; /* Default waveColor */
+  border-radius: 1px;
+  flex-shrink: 0;
+  transition: background-color 0.1s;
+}
+
+.waveform-bar.incoming.dark {
+  background-color: #16191F;
+}
+
+.waveform-bar.outgoing {
+  background-color: #1C581C;
+}
+
+.waveform-bar.highlighted {
+  background-color: #2F8FFF; /* Default progressColor */
+}
+
+.waveform-bar.highlighted.outgoing {
+  background-color: #C0FFC9;
+}
+
+.waveform-cursor {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #2F8FFF;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: left 0.05s linear;
+  margin-top: -5px;
+}
+
+.waveform-cursor.dragging {
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+}
+
+.waveform-cursor:not(.dragging) {
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+}
+
