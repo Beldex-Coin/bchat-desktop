@@ -42,7 +42,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const darkMode = useSelector(getTheme) === 'dark';
   const { currentPlayingId, playAudio, pauseAudio, seekTo, audioRef,handleAudioEnded } = useAudioPlayer();
   const isSameMessage = messageId == currentPlayingId;
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(isSameMessage ? !audioRef.current?.audio?.current.paused:false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [remainingTime, setRemainingTime] = useState('00:00');
   const [progressTime,setProgressTime] =useState(audioRef.current?.audio?.current.currentTime);
@@ -50,6 +50,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const waveColor = direction === 'incoming' ? (darkMode ? '#16191F' : '#ACACAC') : '#1C581C';
   const progressColor = direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
   const beepRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextDuration=isSameMessage?audioRef.current?.audio?.current.duration:duration;
 
   const convertMsToSec = useCallback((duration: number, currentTime: number) => {
     let remaining = duration === currentTime ? duration : duration - currentTime;
@@ -128,7 +129,9 @@ const resetCurrentAudio=()=>{
     if (isCurrentlyRecording) return;
     if ((manualTrigger && !isPlaying)  || !isSameMessage ) {
       playAudio(messageId, urlToLoad || '',resetCurrentAudio);
-      setIsPlaying(true)
+      setIsPlaying(true);
+      if(nextMessageToPlayId)dispatch(setNextMessageToPlayId(undefined));
+      
     } else {
       pauseAudio();
     }
@@ -216,7 +219,7 @@ const debouncedPlayNextMessage = useMemo(() =>
     }
   };
   const barProgressValue=isSameMessage && progressTime &&(progressTime !== duration )
-  ?progressTime / Math.max(duration, 0)
+  ?progressTime / Math.max(audioContextDuration , 0)
   : 0
 
   return (
