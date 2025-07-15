@@ -95,17 +95,19 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
     if (!isSameMessage || !audioRef.current?.audio?.current) return;
   
     let raf: number;
-  
+    let cancelled = false;
     const updateTime = () => {
       const audio = audioRef.current?.audio?.current;
-      if (!audio || !duration) return;
-      setProgressTime(audioRef.current?.audio?.current.currentTime)
+      if (!audio || !duration || cancelled) return;
+      setProgressTime(audioRef.current?.audio?.current.currentTime);
       setRemainingTime(convertMsToSec(duration, audio.currentTime));
       raf = requestAnimationFrame(updateTime);
     };
   
     raf = requestAnimationFrame(updateTime);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf)};
   }, [isSameMessage, audioRef, duration, convertMsToSec]);
     
 useEffect(() => {
