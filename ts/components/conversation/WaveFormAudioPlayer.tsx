@@ -74,6 +74,11 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   useEffect(() => {
     const audio = audioRef.current?.audio?.current;
     if (!audio || !isSameMessage) return;
+    const handlePlay = () => {
+      if (audio) {
+        audio.playbackRate = playbackSpeed;
+      }
+    };
     const handlePause = () => {
       setIsPlaying(false)
     };
@@ -82,6 +87,8 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       onEnded();
       
     };
+
+    audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
     audio.addEventListener('ended', handleEnded);
   

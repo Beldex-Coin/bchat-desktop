@@ -61,7 +61,7 @@ const WaveformBars: React.FC<WaveformBarsProps> = ({
     onMouseUp={onMouseUp}
     onMouseLeave={onMouseLeave}>
       {bars.map((bar, index) => {
-        const isHighlighted = index <= progressBars;
+        const isHighlighted =progressBars > 0 &&  index <= progressBars;
         return (
           <div
             key={index}

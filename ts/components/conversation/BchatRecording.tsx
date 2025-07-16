@@ -105,10 +105,11 @@ export class BchatRecording extends React.Component<Props, State> {
     // if we are playing ( audioElement?.currentTime is !== 0, use that instead)
     // if we are not playing but we have an audioElement, display its duration
     // otherwise display 0
+    const isNotPlayed=this.audioElement?.currentTime!==this.audioElement?.duration
     const displayTimeMs = isRecording
       ? (nowTimestamp - startTimestamp) * 1000
       : (this.audioElement &&
-        (this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
+        (isNotPlayed && this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
       0;
 
     const displayTimeString = moment.utc(displayTimeMs).format('m:ss');
