@@ -46,10 +46,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [remainingTime, setRemainingTime] = useState('00:00');
   const [progressTime,setProgressTime] =useState(audioRef.current?.audio?.current.currentTime);
+
   const isDraggingRef = useRef(false);
   const waveColor = direction === 'incoming' ? (darkMode ? '#16191F' : '#ACACAC') : '#1C581C';
   const progressColor = direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
   const beepRef = useRef<HTMLAudioElement | null>(null);
+  const isManualTriggerForPause=useRef<boolean>(false)
   const audioContextDuration=isSameMessage?audioRef.current?.audio?.current.duration:duration;
 
   const convertMsToSec = useCallback((duration: number, currentTime: number) => {
@@ -80,6 +82,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       }
     };
     const handlePause = () => {
+      if (audio.ended) return;
+      if(!isManualTriggerForPause.current)
+      {
+        handleEnded();
+      }
+      isManualTriggerForPause.current=false;
       setIsPlaying(false)
     };
     const handleEnded = () => {
@@ -87,16 +95,17 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
       onEnded();
       
     };
-
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
     audio.addEventListener('ended', handleEnded);
   
     return () => {
+
+    audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [audioRef, isSameMessage, convertMsToSec, duration]);
+  }, [audioRef, isSameMessage, convertMsToSec]);
 
   useEffect(() => {
     if (!isSameMessage || !audioRef.current?.audio?.current) return;
@@ -142,6 +151,7 @@ const resetCurrentAudio=()=>{
       if(nextMessageToPlayId)dispatch(setNextMessageToPlayId(undefined));
       
     } else {
+      isManualTriggerForPause.current=true;
       pauseAudio();
     }
   };
@@ -158,6 +168,7 @@ const resetCurrentAudio=()=>{
     if (!isPlaying) return;
     setIsPlaying(false);
     isDraggingRef.current = true;
+    isManualTriggerForPause.current=true;
     audioRef.current?.audio?.current?.pause();
   };
 
@@ -172,6 +183,7 @@ const resetCurrentAudio=()=>{
     setIsPlaying(true);
     isDraggingRef.current = false;
     handleWaveformClick(e);
+    isManualTriggerForPause.current=false;
     audioRef.current?.audio?.current?.play();
   };
 
