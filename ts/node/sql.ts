@@ -49,9 +49,11 @@ const ITEMS_TABLE = 'items';
 const ATTACHMENT_DOWNLOADS_TABLE = 'attachment_downloads';
 const CLOSED_GROUP_V2_KEY_PAIRS_TABLE = 'encryptionKeyPairsForClosedGroupV2';
 const LAST_HASHES_TABLE = 'lastHashes';
- const RECIPIENT_ADDRESS= 'recipient_address'; 
+const RECIPIENT_ADDRESS= 'recipient_address'; 
+const LRU_CACHE_TABLE='lru_cache';
 
 const MAX_PUBKEYS_MEMBERS = 300;
+const MAX_ENTRIES = 1000;
 
 function objectToJSON(data: Record<any, any>) {
   return JSON.stringify(data);
@@ -808,6 +810,7 @@ const BCHAT_SCHEMA_VERSIONS = [
   updateToBchatSchemaVersion21,
   updateToBchatSchemaVersion22,
   updateToBchatSchemaVersion23,
+  updateToBchatSchemaVersion24
 ];
 
 function updateToBchatSchemaVersion1(currentVersion: number, db: BetterSqlite3.Database) {
@@ -1436,6 +1439,26 @@ function updateToBchatSchemaVersion23(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
+function updateToBchatSchemaVersion24(currentVersion: number, db: BetterSqlite3.Database) {
+  const targetVersion = 24;
+  if (currentVersion >= targetVersion) {
+    return;
+  }
+  console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
+
+  db.transaction(() => {
+    db.exec(`
+     CREATE TABLE ${LRU_CACHE_TABLE} (
+    key STRING PRIMARY KEY,
+    value STRING,
+    accessed_at INTEGER
+  );
+    `);
+    writeBchatSchemaVersion(targetVersion, db);
+  })();
+  console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
+}
+
 function writeBchatSchemaVersion(newVersion: number, db: BetterSqlite3.Database) {
   db.prepare(
     `INSERT INTO bchat_schema(
@@ -1941,6 +1964,36 @@ function updateWalletAddressInConversation(data: any, instance?: BetterSqlite3.D
     });
 }
 
+function updateLRUCache(data: any, instance?: BetterSqlite3.Database) {
+  const {key} = data;
+  const value=objectToJSON(data.value)
+  const now = Date.now();
+  assertGlobalInstanceOrInstance(instance)
+    .prepare(`
+      INSERT INTO ${LRU_CACHE_TABLE} (key, value, accessed_at)
+      VALUES ($key, $value, $now)
+    `).run({key, value, now});
+
+
+    const totalRows = assertGlobalInstance().prepare(`
+      SELECT COUNT(*) as count FROM ${LRU_CACHE_TABLE}
+    `).get().count;
+    
+    const overLimit = totalRows - MAX_ENTRIES;
+    
+    if (overLimit > 0) {
+      assertGlobalInstance().prepare(`
+        DELETE FROM ${LRU_CACHE_TABLE}
+        WHERE key IN (
+          SELECT key FROM ${LRU_CACHE_TABLE}
+          ORDER BY accessed_at ASC
+          LIMIT ?
+        )
+      `).run(overLimit);
+    }
+}
+
+
 function removeConversation(id: string | Array<string>) {
   if (!Array.isArray(id)) {
     assertGlobalInstance()
@@ -2184,8 +2237,6 @@ function saveMessage(data: any) {
     // walletUserName,
     walletAddress
   };
-console.log('payload ::',payload);
-
   assertGlobalInstance()
     .prepare(
       `INSERT OR REPLACE INTO ${MESSAGES_TABLE} (
@@ -3851,6 +3902,20 @@ function getRecipientAddress(tx_hash:any)
   
   return row;
 }
+function getLRUCache(key:any)
+{
+  const row = assertGlobalInstance()
+  .prepare(`
+    SELECT value FROM ${LRU_CACHE_TABLE} WHERE key = $key
+  `).get({key});
+  if (row) {
+    // Update access time
+    assertGlobalInstance().prepare(`UPDATE ${LRU_CACHE_TABLE} SET accessed_at = ? WHERE key = ?`)
+      .run(Date.now(), key);
+    return jsonToObject(row.value);
+  }
+  return null;
+}
 
 export type SqlNodeType = typeof sqlNode;
 
@@ -3966,6 +4031,8 @@ export const sqlNode = {
   //wallet
 
     getRecipientAddress,
-   saveRecipientAddress
-  
+   saveRecipientAddress,
+//LRU Cache
+   updateLRUCache,
+   getLRUCache
 };

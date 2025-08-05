@@ -868,3 +868,13 @@ export async function saveRecipientAddress(data: any) {
 export async function getRecipientAddress(data: any) {
   return channels.getRecipientAddress(data);
 }
+
+//LRU-cache
+
+export async function setLRUCache(data: any) {
+  return await channels.updateLRUCache(data);
+}
+export async function getLRUCache(data: any) {
+  return channels.getLRUCache(data);
+}
+

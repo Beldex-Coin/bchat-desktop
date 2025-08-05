@@ -2,13 +2,15 @@
  * This slice is intended for the user configurable settings for the client such as appearance, autoplaying of links etc.
  * Anything setting under the cog wheel tab.
  */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserConfigState {
   audioAutoplay: boolean;
   showRecoveryPhrasePrompt: boolean;
   hideMessageRequests: boolean;
-   multipleSelection:boolean;
+  multipleSelection:boolean;
+  isCurrentlyRecording:boolean;
+
 }
 
 export const initialUserConfigState = {
@@ -16,6 +18,7 @@ export const initialUserConfigState = {
   showRecoveryPhrasePrompt: true,
   hideMessageRequests: false,
   multipleSelection:false,
+  isCurrentlyRecording:false,
 };
 
 const userConfigSlice = createSlice({
@@ -43,6 +46,9 @@ const userConfigSlice = createSlice({
     toggleMultipleSelection: state => {
       state.multipleSelection = !state.multipleSelection;
     },
+    updateIsCurrentlyRecording:(state:UserConfigState,action: PayloadAction<boolean>)=>{
+      state.isCurrentlyRecording=action.payload;
+    }
   },
 });
 
@@ -54,6 +60,7 @@ export const {
   showMessageRequestBanner,
   hideMessageRequestBanner,
   hideMultipleSelection,
-  toggleMultipleSelection
+  toggleMultipleSelection,
+  updateIsCurrentlyRecording,
 } = actions;
 export const userConfigReducer = reducer;

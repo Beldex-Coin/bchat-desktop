@@ -103,6 +103,9 @@ const channelsToMake = new Set([
   // wallet
   'getRecipientAddress',
   'saveRecipientAddress',
+  //LRU cache
+  'updateLRUCache',
+  'getLRUCache'
 ]);
 
 const SQL_CHANNEL_KEY = 'sql-channel';

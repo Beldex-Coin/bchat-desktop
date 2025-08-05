@@ -8,10 +8,11 @@ import MicRecorder from 'mic-recorder-to-mp3';
 import styled from 'styled-components';
 import { Constants } from '../../bchat';
 import { ToastUtils } from '../../bchat/utils';
-import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
+import { DEFAULT_MIN_AUDIO_MEMORY_SIZE, MAX_ATTACHMENT_FILESIZE_BYTES } from '../../bchat/constants';
 import { SendMessageButton } from './composition/CompositionButtons';
 import StopIcon from '../icon/StopIcon';
 import { CustomIconButton } from '../icon/CustomIconButton';
+import { updateIsCurrentlyRecording } from '../../state/ducks/userConfig';
 
 interface Props {
   onExitVoiceNoteView: () => void;
@@ -60,12 +61,10 @@ export class BchatRecording extends React.Component<Props, State> {
   private audioBlobMp3?: Blob;
   private audioElement?: HTMLAudioElement | null;
   private updateTimerInterval?: NodeJS.Timeout;
-
   constructor(props: Props) {
     super(props);
     autoBind(this);
     const now = getTimestamp();
-
     this.state = {
       recordDuration: 0,
       isRecording: true,
@@ -79,7 +78,6 @@ export class BchatRecording extends React.Component<Props, State> {
 
   public componentDidMount() {
     // This turns on the microphone on the system. Later we need to turn it off.
-
     void this.initiateRecordingStream();
     // Callback to parent on load complete
 
@@ -98,7 +96,6 @@ export class BchatRecording extends React.Component<Props, State> {
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { isPlaying, isPaused, isRecording, startTimestamp, nowTimestamp } = this.state;
-
     const hasRecordingAndPaused = !isRecording && !isPlaying;
     const hasRecording = !!this.audioElement?.duration && this.audioElement?.duration > 0;
     const actionPauseAudio = !isRecording && !isPaused && isPlaying;
@@ -108,10 +105,11 @@ export class BchatRecording extends React.Component<Props, State> {
     // if we are playing ( audioElement?.currentTime is !== 0, use that instead)
     // if we are not playing but we have an audioElement, display its duration
     // otherwise display 0
+    const isNotPlayed=this.audioElement?.currentTime!==this.audioElement?.duration
     const displayTimeMs = isRecording
       ? (nowTimestamp - startTimestamp) * 1000
       : (this.audioElement &&
-        (this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
+        (isNotPlayed && this.audioElement?.currentTime * 1000 || this.audioElement?.duration)) ||
       0;
 
     const displayTimeString = moment.utc(displayTimeMs).format('m:ss');
@@ -145,7 +143,7 @@ export class BchatRecording extends React.Component<Props, State> {
           ) : null}
 
           <div>
-            {isRecording ? (
+             { isRecording ? (
               <div className={classNames('bchat-recording--timer')}>
                 <div className="bchat-recording--timer-wrapper">
                   <div className="bchat-recording--timer-light" />
@@ -156,7 +154,7 @@ export class BchatRecording extends React.Component<Props, State> {
           </div>
           <div className="bchat-recording--actions">
             <StyledFlexWrapper>
-              {actionPauseAudio && (
+              {actionPauseAudio  && hasRecording && (
                 <BchatIconButton
                   iconType="pause"
                   iconSize="medium"
@@ -164,17 +162,17 @@ export class BchatRecording extends React.Component<Props, State> {
                   iconColor="#277AFB"
                 />
               )}
-              {hasRecordingAndPaused && (
+              {hasRecordingAndPaused &&  (
                 <BchatIconButton
                   iconType="play"
                   iconSize={14}
-                  onClick={this.playAudio}
+                  onClick={()=>hasRecording && this.playAudio()}
                   iconColor="#F0F0F0"
                   btnBgColor="#108D32"
                   padding="8px"
                 />
               )}  
-              {hasRecording && (
+              {!isRecording  && (
                 <BchatIconButton
                   iconType="delete"
                   iconSize="medium"
@@ -198,8 +196,8 @@ export class BchatRecording extends React.Component<Props, State> {
             <CustomIconButton customIcon={<StopIcon iconSize={30} />} onClick={actionPauseFn} />
           )}
         </div>
-        <div className={classNames('send-message-button')}>
-          {!isRecording && (
+        <div className={classNames('send-message-button',!hasRecording && !isRecording && 'delete-button' )}>
+          {!isRecording && hasRecording && (
             <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
           ) 
           // : (
@@ -331,6 +329,7 @@ export class BchatRecording extends React.Component<Props, State> {
     if (!this.recorder) {
       return;
     }
+    window.inboxStore?.dispatch(updateIsCurrentlyRecording(false))
     const [_, blob] = await this.recorder.stop().getMp3();
     this.recorder = undefined;
 
@@ -338,6 +337,11 @@ export class BchatRecording extends React.Component<Props, State> {
   const audioURL = window.URL.createObjectURL(blob);
   const validAudio = new Audio(audioURL);
 
+  if(blob.size<DEFAULT_MIN_AUDIO_MEMORY_SIZE)
+  {
+    await this.onDeleteVoiceMessage();
+    return;
+  }
   validAudio.onloadedmetadata = async () => {
     if (validAudio.duration < 1) {
       // Less than 1 second - discard

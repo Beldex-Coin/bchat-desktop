@@ -57,3 +57,5 @@ export const UI = {
 };
 
 export const DEFAULT_RECENT_REACTS = ['😂', '🥰', '😢', '😡', '😮', '😈'];
+
+export const DEFAULT_MIN_AUDIO_MEMORY_SIZE=500;

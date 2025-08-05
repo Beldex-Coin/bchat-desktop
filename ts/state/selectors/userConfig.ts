@@ -24,3 +24,9 @@ export const getMultipleSelection = createSelector(
   (state: UserConfigState): boolean => state.multipleSelection
   
 );
+
+export const getIsCurrentlyRecording = createSelector(
+  getUserConfig,
+  (state: UserConfigState): boolean => state.isCurrentlyRecording
+  
+);
