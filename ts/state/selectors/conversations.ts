@@ -37,6 +37,7 @@ import { Storage } from '../../util/storage';
 import { MessageReactsSelectorProps } from '../../components/conversation/message/message-content/MessageReactions';
 
 import { filter, isEmpty, pick } from 'lodash';
+import moment from 'moment';
 
 export const getConversations = (state: StateType): ConversationsStateType => state.conversations;
 
@@ -183,11 +184,14 @@ export type MessagePropsType =
   | 'call-notification'
   | 'payment';
 
+
+
+  
 export const getSortedMessagesTypesOfSelectedConversation = createSelector(
   getSortedMessagesOfSelectedConversation,
   getFirstUnreadMessageId,
   (sortedMessages, firstUnreadId) => {
-    const maxMessagesBetweenTwoDateBreaks = 5;
+    // const maxMessagesBetweenTwoDateBreaks = 24 * 60 ;
     // we want to show the date break if there is a large jump in time
     // remember that messages are sorted from the most recent to the oldest
     return sortedMessages.map((msg, index) => {
@@ -201,10 +205,12 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           : sortedMessages[index + 1].propsForMessage.serverTimestamp ||
             sortedMessages[index + 1].propsForMessage.timestamp;
 
-      const showDateBreak =
-        messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
-          ? messageTimestamp
-          : undefined;
+      // const showDateBreak =
+      //   messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
+      //     ? messageTimestamp
+      //     : undefined;
+      const isSameDay = moment(messageTimestamp).isSame(moment(previousMessageTimestamp), 'day');
+      const showDateBreak =!isSameDay? messageTimestamp: undefined;
 
       if (msg.propsForDataExtractionNotification) {
         return {

@@ -5,6 +5,7 @@ type Props = {
   diameter: number;
   name: string;
   pubkey: string;
+  isGroup?: boolean;
 };
 
 const sha512FromPubkey = async (pubkey: string): Promise<string> => {
@@ -96,6 +97,7 @@ export const AvatarPlaceHolder = (props: Props) => {
   const {
     pubkey,
     diameter,
+    isGroup,
     //  name
   } = props;
 
@@ -133,6 +135,28 @@ export const AvatarPlaceHolder = (props: Props) => {
   const bgColorIndex = hash % avatarPlaceholderColors.length;
 
   const avatarColors = avatarPlaceholderColors[bgColorIndex];
+  if (isGroup) {
+    return (
+      <div
+        style={{
+          width: { diameter } + 'px',
+          height: { diameter } + 'px',
+          borderRadius: '12px',
+          overflow: 'hidden',
+        }}
+      >
+        <svg  width="100%"
+          height="100%"
+          viewBox="0 0 60 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+
+          <rect width="60" height="60" rx="16" fill={avatarColors.bgColor}/>
+          <path d="M30.3627 32.9066C31.7068 32.9066 32.7996 34.0007 32.7996 35.3448V36.2762C32.7993 40.6943 27.7203 42.7073 23.0001 42.7075C20.5203 42.7075 18.1942 42.1779 16.4502 41.2145C14.3543 40.0586 13.1994 38.305 13.1992 36.2762V35.3448C13.1992 34.0008 14.2922 32.9068 15.6362 32.9066H30.3627ZM44.3623 32.9066C45.7059 32.9069 46.7988 33.9999 46.7992 35.3436V36.2762C46.7989 40.6944 41.7187 42.7075 36.9984 42.7075C35.2642 42.7074 33.6058 42.4469 32.1686 41.9616C33.7611 40.6279 34.902 38.7448 34.9022 36.2762V35.3436C34.902 34.4469 34.6403 33.6108 34.1904 32.9066H44.3623ZM23.5377 19.0547C26.3924 19.0547 28.7069 21.3704 28.7069 24.2252C28.7066 27.0796 26.3922 29.3944 23.5377 29.3944C20.6831 29.3944 18.3688 27.0796 18.3684 24.2252C18.3684 21.3704 20.6829 19.0547 23.5377 19.0547ZM37.7531 19.0547C40.6078 19.0547 42.9223 21.3704 42.9223 24.2252C42.922 27.0796 40.6076 29.3944 37.7531 29.3944C34.8985 29.3944 32.5842 27.0796 32.5838 24.2252C32.5838 21.3704 34.8983 19.0547 37.7531 19.0547Z"  fill={avatarColors.bodyColor}/>
+          </svg>
+      </div>
+    );
+  }
 
   return (
     <div

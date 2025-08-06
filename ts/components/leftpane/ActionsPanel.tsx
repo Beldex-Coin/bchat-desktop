@@ -77,7 +77,7 @@ import { clearSearch } from '../../state/ducks/search';
 // import { wallet } from '../../wallet/wallet-rpc';
 import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
-import BchatLogo from '../icon/bchatLogo';
+// import BchatLogo from '../icon/bchatLogo';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
@@ -528,8 +528,8 @@ export const ActionsPanel = () => {
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
 
   const dispatch = useDispatch();
-  const darktheme = useSelector((state: any) => state.theme);
-  const isdark = darktheme === 'dark' ? true : false;
+  // const darktheme = useSelector((state: any) => state.theme);
+  // const darkMode = darktheme === 'dark' ? true : false;
   const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
@@ -608,7 +608,7 @@ export const ActionsPanel = () => {
           isSelected={false}
           handleClick={() => {}}
           id={''}
-          size="small"
+          size="tiny"
         />
       </Hops>
     );
@@ -616,17 +616,20 @@ export const ActionsPanel = () => {
   return (
     <>
       <ModalContainer />
-
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
-        <div className="profile-box">
+        {/* <div className="profile-box">
           <div className="logo-wrapper">
             <IsOnline />
             <BchatLogo />
           </div>
-        </div>
+        </div> */}
 
-        <div className="profile-box" style={{ marginTop: "10px", height: "60px", marginBottom: "10px" }}>
+        <div
+          className="profile-box"
+          style={{ marginTop: '10px', height: '60px', marginBottom: '10px',position:'relative' }}
+        >
+          <IsOnline />
           <BNSWrapper
             // size={52}
             position={{ left: '45px', top: '43px' }}
@@ -654,33 +657,33 @@ export const ActionsPanel = () => {
 
           <Section type={SectionType.Settings} />
         </div>
-        <Flex container={true} height="20%" alignItems="flex-end">
+        <Flex container={true} height="30%" alignItems="flex-end">
           <div className="theme-Wrapper ">
             <div
-              className={classNames('icon-wrapper', !isdark && 'selected')}
+              className={classNames('icon-wrapper', !darkMode && 'selected')}
               onClick={() => themeChanger('light')}
             >
               <BchatIcon
                 iconType={'sun'}
                 iconSize={24}
-                iconColor={isdark ? '#F0F0F0' : '#333333'}
+                iconColor={darkMode ? '#F0F0F0' : '#333333'}
               />
             </div>
-           
+
             <div
-              className={classNames('icon-wrapper', isdark && 'selected')}
+              className={classNames('icon-wrapper', darkMode && 'selected')}
               onClick={() => themeChanger('dark')}
             >
               <BchatIcon
                 iconType={'moon'}
                 iconSize={24}
-                iconColor={isdark ? '#F0F0F0' : '#A7A7BA'}
+                iconColor={darkMode ? '#F0F0F0' : '#A7A7BA'}
               />
             </div>
           </div>
         </Flex>
         <SpacerLG />
-        <div className='appVersion'>V {window.getVersion()}</div>
+        <div className="appVersion">V {window.getVersion()}</div>
         <SpacerSM />
         <BchatToolTip effect="solid" />
         <BchatToastContainer />
@@ -722,8 +725,9 @@ export const ActionsPanel = () => {
 };
 const Hops = styled.div`
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: -5px;
+  bottom: -5px;
+  z-index:1;
 `;
 const NetWorkStatusWrapper = styled.div`
   position: absolute;

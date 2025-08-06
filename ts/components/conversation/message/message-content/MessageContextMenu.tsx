@@ -23,7 +23,7 @@ import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 import { useClickAway } from 'react-use';
-import { useConversationUsername } from '../../../../hooks/useParamSelector';
+// import { useConversationUsername } from '../../../../hooks/useParamSelector';
 // import classNames from 'classnames';
 
 type Props = {
@@ -84,7 +84,7 @@ export const MessageContextMenu = (props: Props) => {
     isDeleted,
   } = selected;
   const { messageId, contextMenuId } = props;
-  const convoName = useConversationUsername(convoId);
+  // const convoName = useConversationUsername(convoId);
   const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
@@ -120,7 +120,9 @@ export const MessageContextMenu = (props: Props) => {
 
   const selectMessageText = window.i18n('selectMessage');
   const deleteMessageJustForMeText = window.i18n('deleteJustForMe');
-  const unsendMessageText =isPrivate?window.i18n('deleteForMeAndRecipient',[convoName||'recipient']) :window.i18n('deleteForEveryone');
+  // const unsendMessageText =isPrivate?window.i18n('deleteForMeAndRecipient',[convoName||'recipient']) :window.i18n('deleteForEveryone');
+  const unsendMessageText =window.i18n('deleteForEveryone');
+
 
   const addModerator = useCallback(() => {
     void addSenderAsModerator(sender, convoId);
@@ -223,7 +225,7 @@ export const MessageContextMenu = (props: Props) => {
               <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
             </Item>
           )}
-          {(!isPublic || isOutgoing) && (
+          {(!isPublic && !isPrivate ) && (
             <Item onClick={onShowDetail}>
               <BchatIcon iconType={'infoCircle'} iconSize={18} />
               <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span>
