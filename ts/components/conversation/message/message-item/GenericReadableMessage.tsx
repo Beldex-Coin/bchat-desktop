@@ -116,7 +116,7 @@ const StyledReadableMessage = styled(ReadableMessage)<{
   align-items: center;
   width: 100%;
   letter-spacing: 0.03em;
-  margin-top: 3px;
+  margin-top: 5px;
   &.message-highlighted {
     animation: ${highlightedMessageAnimation} 1s ease-in-out;
   }
@@ -285,6 +285,7 @@ export const GenericReadableMessage = (props: Props) => {
           enableReactions={enableReactions}
           isRightClicked={isRightClicked}
           onMessageLoseFocus={onMessageLoseFocus}
+          onHandleContextMenu={handleContextMenu}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

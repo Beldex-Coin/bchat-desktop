@@ -47,7 +47,7 @@ const StyledMessageReactionsContainer = styled(Flex)<{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top:3px;
+  // margin-top:3px;
   margin-bottom:${props => (props.inModal ? 'unset' : props.islastSeriesOfMsg ? '15px' : '6px')} ;
   ${StyledPopupContainer} {
     position: absolute;
@@ -65,6 +65,7 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
       ? ''
       : `max-width: 375px;; 
      `}
+     margin :-15px 20px 0 20px;
 `;
 
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;

@@ -29,8 +29,12 @@ import { MessagePreview } from './MessagePreview';
 import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
-import { SpacerXS } from '../../../basic/Text';
+// import { SpacerXS } from '../../../basic/Text';
 import { MessageAuthorText } from './MessageAuthorText';
+import styled from 'styled-components';
+import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
+import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
+
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -46,7 +50,11 @@ export type MessageContentSelectorProps = Pick<
   | 'reacts'
 
 >;
-
+export const StyledSvgWrapper=styled.div`
+    position: absolute;
+    z-index: 19;
+    bottom: 0px;
+`
 type Props = {
   messageId: string;
   isDetailView?: boolean;
@@ -111,9 +119,7 @@ export const MessageContent = (props: Props) => {
       getMessageContentSelectorProps(state as any, props.messageId)
     );
   const [isMessageVisible, setMessageIsVisible] = useState(false);
-
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
-
   const [imageBroken, setImageBroken] = useState(false);
 
   const onVisible = (inView: boolean | Object) => {
@@ -186,14 +192,21 @@ export const MessageContent = (props: Props) => {
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
   const hasQuote = !isEmpty(quote);
-  const isReacted=!isEmpty(contentProps?.reacts)
+  // const isReacted=!isEmpty(contentProps?.reacts)
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-  const isGifAttachments=(direction==='incoming'? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
+  const isIncoming=direction==='incoming'
+  const isGifAttachments=(isIncoming? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
 
+
   return (
+    <div style={{position:'relative'}}>  
+   {lastMessageOfSeries &&isIncoming && <StyledSvgWrapper>
+      <IncomingMsgTailIcon  />
+    </StyledSvgWrapper> }  
+   
     <div
       className={classNames(
         'module-message__container',
@@ -208,7 +221,7 @@ export const MessageContent = (props: Props) => {
         lastMessageOfSeries  || props.isDetailView
           ? `module-message__container--${direction}--last-of-series`
           : '',
-          !isReacted && lastMessageOfSeries && 'module-message__message-separator',
+          // !isReacted && lastMessageOfSeries && 'module-message__message-separator',
         flashGreen && 'flash-green-once',
         isGifAttachments && `module-message__container_bg_disabled`
       )}
@@ -248,16 +261,22 @@ export const MessageContent = (props: Props) => {
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
               )}
               {/* attachment-with-quote class is used to only refer the design validation in css */}
-              <Flex padding="7px 15px 0" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
+              <Flex padding="0 15px" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
             </>
           ) : null}
-          <SpacerXS /> 
+          {/* <SpacerXS />  */}
           <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
+    {lastMessageOfSeries &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
+      <OutgoingMsgTailIcon/>
+    </StyledSvgWrapper> }  
+    
+    </div>
+
   );
 };
 

@@ -11,6 +11,9 @@ import { useSelector } from 'react-redux';
 import { getMessageContentSelectorProps } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
 import moment from 'moment';
+import { StyledSvgWrapper } from '../message-content/MessageContent';
+import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
+import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 
 // export const PaymentMessage = (props: PropsForPayment) => {
 export const PaymentMessage = (props: any) => {
@@ -78,7 +81,14 @@ export const PaymentMessage = (props: any) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
-      <div className="group-invitation-container" id={`msg-${props.messageId}`}>
+      <div className={classNames(`group-invitation-container group-invitation-container-${contentProps?.direction}`)} id={`msg-${props.messageId}`}>
+        
+      <div style={{ position: 'relative' }}>
+        {isIncoming && (
+                      <StyledSvgWrapper>
+                        <IncomingMsgTailIcon />
+                      </StyledSvgWrapper>
+                    )}
         <div className={classNames(`payment-Wrapper-${contentProps?.direction}`)}>
           <MessageStatus
             dataTestId="msg-status-incoming"
@@ -92,7 +102,6 @@ export const PaymentMessage = (props: any) => {
           >
             <div
               className={props.direction === 'outgoing' ? 'contents' : 'contents-incoming'}
-              // onClick={() => { acceptOpenGroupInvitation(props.acceptUrl, props.serverName)}}
             >
               <div>
                 <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
@@ -119,6 +128,12 @@ export const PaymentMessage = (props: any) => {
             </div>
           </div>
         </div>
+        {!isIncoming && (
+                <StyledSvgWrapper style={{ right: 0 }}>
+                  <OutgoingMsgTailIcon />
+                </StyledSvgWrapper>
+              )}
+      </div>
       </div>
     </ReadableMessage>
   );

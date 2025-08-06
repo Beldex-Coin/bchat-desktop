@@ -44,8 +44,9 @@ type Props = {
   enableReactions: boolean;
   isRightClicked: boolean;
   onMessageLoseFocus: () => void;
+  onHandleContextMenu:(e: React.MouseEvent<HTMLElement>)=>void;
 };
-const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
+export const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -73,7 +74,8 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ? 55 : -305}px`};
+  left: ${props => `${props.isIncoming ? 4 : -248}px`};
+  z-index:1;
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -141,13 +143,13 @@ const RecentReacts = (props: RecentReactsProps) => {
 
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
-      <div style={{ position: 'absolute' }}>
+      <div >
         <BchatIconButton
           iconType="smileyEmoji"
           iconSize={20}
           iconColor={darkMode ? '#858598' : '#ACACAC'}
           onClick={() => setRecentEmoji(!recentEmoji)}
-          margin="0 10px"
+          margin="0 5px"
           btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
           btnRadius="30px"
           style={{}}
@@ -181,6 +183,19 @@ const RecentReacts = (props: RecentReactsProps) => {
   );
 };
 
+const ThreeDotsMenu= (props:{darkMode:boolean,onHandleContextMenu:Props["onHandleContextMenu"]})=>{
+
+  const {darkMode,onHandleContextMenu}=props
+  return  <div >
+  <BchatIconButton iconType={'filledThreeDots'}  iconSize={20}
+  iconColor={darkMode ? '#858598' : '#ACACAC'}
+  onClick={onHandleContextMenu}
+  margin="0 2.5px"
+  btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
+  btnRadius="30px"
+  />
+</div>
+}
 export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
@@ -189,6 +204,7 @@ export const MessageContentWithStatuses = (props: Props) => {
 
   const dispatch = useDispatch();
   const multiSelectMode = useSelector(isMessageSelectionMode);
+  const darkMode = useSelector(getTheme) === 'dark';
   const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
   if (!selected) {
     return null;
@@ -234,6 +250,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     enableReactions,
     isRightClicked,
     onMessageLoseFocus,
+    onHandleContextMenu
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
@@ -269,7 +286,9 @@ export const MessageContentWithStatuses = (props: Props) => {
     status !== 'error' &&
     typingEnabled &&
     !isRightClicked;
+  
 
+const threeDotVisible=recentEmojiBtnVisible && !isRightClicked;
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
@@ -283,8 +302,6 @@ export const MessageContentWithStatuses = (props: Props) => {
         setRecentEmojiBtnVisible(false);
       }}
     >
-      
-      
         <div
           className={classNames(
             'module-message',
@@ -298,8 +315,13 @@ export const MessageContentWithStatuses = (props: Props) => {
           }}
           data-testid={dataTestId}
         >
+          
         {multiSelectMode &&   <div  className='module-message--multiSelect-overlay' />}
-          {!isIncoming && emojiIsVisible && (
+        {!isIncoming && <Flex container={true} width='165px' justifyContent='flex-end' >  
+         { threeDotVisible && 
+        <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu}/>
+         } 
+           { emojiIsVisible && 
             <StyledRecentReactionWrapper>
               <RecentReacts
                 isIncoming={isIncoming}
@@ -308,7 +330,9 @@ export const MessageContentWithStatuses = (props: Props) => {
                 onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
               />
             </StyledRecentReactionWrapper>
-          )}
+          } 
+          </Flex>}
+            
           {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
             <ExpireTimer
               isCorrectSide={!isIncoming}
@@ -345,16 +369,20 @@ export const MessageContentWithStatuses = (props: Props) => {
               status={status}
             />
           )}
-          {isIncoming && emojiIsVisible && (
-            <StyledRecentReactionWrapper>
-              <RecentReacts
-                isIncoming={isIncoming}
-                recentEmojiBtnVisible={recentEmojiBtnVisible}
-                onEmojiClick={onEmojiClick}
-                onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
-              />
-            </StyledRecentReactionWrapper>
-          )}
+          {isIncoming && <Flex container={true} width='165px' >          
+              {emojiIsVisible  && (
+              <StyledRecentReactionWrapper>
+                <RecentReacts
+                  isIncoming={isIncoming}
+                  recentEmojiBtnVisible={recentEmojiBtnVisible}
+                  onEmojiClick={onEmojiClick}
+                  onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+                />
+              </StyledRecentReactionWrapper>
+            )}
+            { threeDotVisible  &&<ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />}
+         </Flex>}
+
           {!isDetailView && (
             <MessageContextMenu
               messageId={messageId}
@@ -365,8 +393,6 @@ export const MessageContentWithStatuses = (props: Props) => {
           )}
           </div>
     
-      
-
       {enableReactions && !isDetailView && (
         <MessageReactions
           messageId={messageId}
