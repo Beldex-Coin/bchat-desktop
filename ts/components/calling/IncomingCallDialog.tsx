@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { useConversationBnsHolder, useConversationUsername } from '../../hooks/useParamSelector';
@@ -13,6 +13,7 @@ import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
+import { setIsCallModalType } from '../../state/ducks/call';
 
 export const CallWindow = styled.div`
   position: absolute;
@@ -52,6 +53,7 @@ export const IncomingCallDialog = () => {
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
   const modulatedStr = useModuloWithTripleDots('Incoming...', 3, 1000);
+  const dispatch=useDispatch();
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -78,6 +80,7 @@ export const IncomingCallDialog = () => {
   //#region input handlers
   const handleAcceptIncomingCall = async () => {
     if (incomingCallFromPubkey) {
+      dispatch(setIsCallModalType('inchat'))
       await CallManager.USER_acceptIncomingCallRequest(incomingCallFromPubkey);
     }
   };

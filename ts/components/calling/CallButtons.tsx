@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getHasOngoingCallWithPubkey } from '../../state/selectors/call';
 import { DropDownAndToggleButton } from '../icon/DropDownAndToggleButton';
 import styled from 'styled-components';
+import { Flex } from '../basic/Flex';
+import { ConnectingLabel, DurationLabel, RingingLabel } from './InConversationCallContainer';
 
 const videoTriggerId = 'video-menu-trigger-id';
 const audioTriggerId = 'audio-menu-trigger-id';
@@ -334,20 +336,24 @@ const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen
   // bottom: 0px;
   width: ${props => (props.isFullScreen ? '100vw' : '100%')};
   height: 100%;
-  // align-items: flex-end;
   padding: 10px;
   // border-radius: 10px;
-  margin-left: auto;
-  margin-right: auto;
+  // margin-left: auto;
+  // margin-right: auto;
   // left: 0;
   // right: 0;
   // transition: all 0.25s ease-in-out;
 
   display: flex;
-
-  justify-content: center;
+  justify-content: space-between;
   align-items:center;
+  
   // opacity: ${props => (props.makeVisible ? 1 : 0)};
+`;
+const UserNameTxtBold = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  line-height: normal;
 `;
 
 export const CallWindowControls = ({
@@ -359,6 +365,7 @@ export const CallWindowControls = ({
   remoteStreamVideoIsMuted,
   localStreamVideoIsMuted,
   isFullScreen,
+  selectedName,
 }: {
   isAudioMuted: boolean;
   isAudioOutputMuted: boolean;
@@ -368,6 +375,7 @@ export const CallWindowControls = ({
   currentConnectedAudioOutputs: Array<InputItem>;
   currentConnectedCameras: Array<InputItem>;
   isFullScreen: boolean;
+  selectedName?: string;
 }) => {
   const [makeVisible, setMakeVisible] = useState(true);
 
@@ -390,23 +398,39 @@ export const CallWindowControls = ({
   }, [isFullScreen]);
   return (
     <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
-      {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
-      <AudioOutputButton
-        currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-        isAudioOutputMuted={isAudioOutputMuted}
-        hideArrowIcon={isFullScreen}
-      />
-      <VideoInputButton
-        currentConnectedCameras={currentConnectedCameras}
-        localStreamVideoIsMuted={localStreamVideoIsMuted}
-        hideArrowIcon={isFullScreen}
-      />
-      <AudioInputButton
-        currentConnectedAudioInputs={currentConnectedAudioInputs}
-        isAudioMuted={isAudioMuted}
-        hideArrowIcon={isFullScreen}
-      />
-     
+      <Flex
+        container={true}
+        flexDirection="column"
+        // width="300px"
+        alignItems="flex-start"
+        justifyContent="center"
+      >
+        <UserNameTxtBold>{selectedName}</UserNameTxtBold>
+
+        <RingingLabel />
+        <ConnectingLabel />
+        <DurationLabel />
+      </Flex>
+      <Flex container={true} flexDirection="row">
+        {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
+        <AudioOutputButton
+          currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+          isAudioOutputMuted={isAudioOutputMuted}
+          hideArrowIcon={isFullScreen}
+        />
+        <VideoInputButton
+          currentConnectedCameras={currentConnectedCameras}
+          localStreamVideoIsMuted={localStreamVideoIsMuted}
+          hideArrowIcon={isFullScreen}
+        />
+        <AudioInputButton
+          currentConnectedAudioInputs={currentConnectedAudioInputs}
+          isAudioMuted={isAudioMuted}
+          hideArrowIcon={isFullScreen}
+        />
+        
+      </Flex>
+
       <HangUpButton />
     </StyledCallWindowControls>
   );

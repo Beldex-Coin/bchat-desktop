@@ -56,6 +56,7 @@ import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
+import { setIsCallModalType } from '../../state/ducks/call';
 
 // import { CustomIconButton } from '../icon/CustomIconButton';
 // import CallIcon from '../icon/CallIcon';
@@ -285,6 +286,7 @@ const BackButton = (props: { onGoBack: () => void; showBackButton: boolean }) =>
 };
 
 const CallButton = () => {
+  const dispatch=useDispatch();
   const isPrivate = useSelector(getIsSelectedPrivate);
   const isBlocked = useSelector(getIsSelectedBlocked);
   const isMe = useSelector(getIsSelectedNoteToSelf);
@@ -312,6 +314,7 @@ const CallButton = () => {
         fillRule="evenodd"
         clipRule="evenodd"
         onClick={() => {
+          dispatch(setIsCallModalType('inchat'))
           void callRecipient(selectedConvoKey, canCall);
         }}
       />

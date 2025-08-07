@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { CallStateType, CallStatusEnum } from '../ducks/call';
+import { CallModalType, CallStateType, CallStatusEnum } from '../ducks/call';
 import { ConversationsStateType, ReduxConversationType } from '../ducks/conversations';
 import { StateType } from '../reducer';
 import { getConversations, getSelectedConversationKey } from './conversations';
@@ -108,3 +108,8 @@ export const getCallIsInFullScreen = createSelector(
   getCallState,
   (callState): boolean => callState.callIsInFullScreen
 );
+
+export const getIsCallModalType=createSelector(
+  getCallState,
+  (callState): CallModalType => callState.isCallModalType
+)

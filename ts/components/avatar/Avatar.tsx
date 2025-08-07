@@ -19,6 +19,7 @@ export enum AvatarSize {
   M = 48,
   L = 60,
   XL = 80,
+  XXL=130,
   HUGE = 300,
 }
 
@@ -30,14 +31,15 @@ type Props = {
   base64Data?: string; // if this is not empty, it will be used to render the avatar with base64 encoded data
   onAvatarClick?: () => void;
   dataTestId?: string;
+  isGroup?:boolean
 };
 
 export const Identicon = (props: Props) => {
-  const { size, forcedName, pubkey } = props;
+  const { size, forcedName, pubkey,isGroup } = props;
   const displayName = useConversationUsername(pubkey);
   const userName = forcedName || displayName || '0';
 
-  return <AvatarPlaceHolder diameter={size} name={userName} pubkey={pubkey} />;
+  return <AvatarPlaceHolder diameter={size} name={userName} pubkey={pubkey} isGroup={isGroup} />;
 };
 
 const CrownWrapper = styled.div`

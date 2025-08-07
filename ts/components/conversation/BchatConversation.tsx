@@ -332,10 +332,11 @@ export class BchatConversation extends React.Component<Props, State> {
           <div className="conversation-messages">
             {/* <ConversationMessageRequestButtons /> */}
             {this.props.hasOngoingCallWithFocusedConvo && (
-              <Flex container={true} justifyContent="center" alignItems="center" height="465px">
-                {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
-                <InConversationCallContainer /> {/* </div> */}
-              </Flex>
+              <Flex container={true} justifyContent="center" alignItems="center" >
+                 {/* <div className='In-convo-call-container-wrapper'>  */}
+                <InConversationCallContainer /> 
+                 {/* </div>  */}
+               </Flex>
             )}
 
             {/* <SplitViewContainer

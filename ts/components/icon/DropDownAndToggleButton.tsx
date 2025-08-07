@@ -36,7 +36,7 @@ const StyledRoundedButton = styled.div<{ isMuted: boolean; isSelected?: boolean 
 const StyledContainer = styled(StyledRoundedButton)`
   width: 60px;
   height: 60px;
-  margin: 10px;
+  margin: 5px;
   opacity: 1;
   &:hover {
     tranform: scale(1.1);

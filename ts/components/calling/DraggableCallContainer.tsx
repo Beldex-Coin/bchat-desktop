@@ -4,19 +4,20 @@ import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 
 import styled from 'styled-components';
 import { getSelectedConversationKey } from '../../state/selectors/conversations';
-import { getHasOngoingCall, getHasOngoingCallWith } from '../../state/selectors/call';
+import { getHasOngoingCall, getHasOngoingCallWith, getIsCallModalType } from '../../state/selectors/call';
 import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { getSection } from '../../state/selectors/section';
 import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
-import { DurationLabel, StyledCenteredLabel } from './InConversationCallContainer';
+import { ConnectingLabel, DurationLabel, RingingLabel, StyledCenteredLabel } from './InConversationCallContainer';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { isEmpty } from 'lodash';
+import { setIsCallModalType } from '../../state/ducks/call';
 
 export const DraggableCallWindow = styled.div`
   position: absolute;
@@ -57,7 +58,7 @@ const StyledDraggableVideoElement = styled(StyledVideoElement)`
 
 const DraggableCallWindowInner = styled.div`
   cursor: pointer;
-  min-width: 85px;
+  min-width: 170px;
   min-height: 85px;
 `;
 
@@ -93,9 +94,9 @@ const StyledOngoingBar = styled.div`
 `;
 const StyledText = styled.div`
   color: #fff;
-  width: 55px;
+  min-width:85px;
   ${StyledCenteredLabel} {
-    font-size: 14px;
+    font-size: 16px;
   }
 `;
 // left: ${props => props.positionX + 132}px;
@@ -123,6 +124,7 @@ export const DraggableCallContainer = () => {
   const hasOngoingCall = useSelector(getHasOngoingCall);
   const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
   const selectedSection = useSelector(getSection);
+  const isCallModalType=useSelector(getIsCallModalType);
   const dispatch = useDispatch();
 
   // the draggable container has a width of 12vw, so we just set it's X to a bit more than this
@@ -132,7 +134,6 @@ export const DraggableCallContainer = () => {
   const [lastPositionX, setLastPositionX] = useState(0);
   const [lastPositionY, setLastPositionY] = useState(0);
   const [barExpandView, setBarExpandView] = useState(false);
-  const [isBarView, setBarView] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const DRAG_THRESHOLD = 5;
   const isNotInChat =
@@ -165,6 +166,7 @@ export const DraggableCallContainer = () => {
   }, [positionX, positionY]);
 
   if (videoRefRemote?.current && remoteStream) {
+    
     if (videoRefRemote.current.srcObject !== remoteStream) {
       videoRefRemote.current.srcObject = remoteStream;
     }
@@ -179,31 +181,42 @@ export const DraggableCallContainer = () => {
     if (videoRefRemote?.current && videoRefLocal?.current) {
       videoRefRemote.current.srcObject = remoteStream;
       videoRefLocal.current.srcObject = localStream;
+      
     }
-  }, [isBarView, remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
+  }, [isCallModalType, remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
 
   const openCallingConversation = () => {
-    if (ongoingCallPubkey && (ongoingCallPubkey !== selectedConversationKey || isNotInChat)) {
+    console.log('openCallingConversation -->',ongoingCallPubkey,!isNotInChat)
+    if (ongoingCallPubkey && !isNotInChat) {
       if (!isEmpty(BchatWalletPasswordModalState)) {
         dispatch(updateBchatWalletPasswordModal(null));
       }
+    
+      dispatch(setIsCallModalType('inchat'));
       dispatch(showLeftPaneSection(SectionType.Message));
       dispatch(setOverlayMode(undefined));
       void openConversationWithMessages({ conversationKey: ongoingCallPubkey, messageId: null });
     }
   };
+ 
+  // const isDragCallValidation=ongoingCallPubkey === selectedConversationKey ? isCallModalType === 'inchat' :ongoingCallPubkey === selectedConversationKey
+  const isDragCallValidation = ongoingCallPubkey === selectedConversationKey && isCallModalType === 'inchat';
+  console.log('ongoingCallPubkey === selectedConversationKey --> ',isDragCallValidation,isCallModalType )
   if (
     !hasOngoingCall ||
     !ongoingCallProps ||
-    (ongoingCallPubkey === selectedConversationKey &&
+    //  ongoingCallPubkey === selectedConversationKey ||
+    // isCallModalType === 'inchat' &&
+     isDragCallValidation &&
       selectedSection.focusedSection !== SectionType.Settings &&
       selectedSection.focusedSection !== SectionType.Wallet)
-  ) {
+   
+   {
     return null;
   }
 
 
-  if (isBarView) {
+  if (isCallModalType === 'bar') {
     return (
       <StyledOngoingBar
         onMouseEnter={() => setBarExpandView(true)}
@@ -212,13 +225,12 @@ export const DraggableCallContainer = () => {
         <Flex container={true} justifyContent="center" alignItems="center">
           <BchatIconButton
             iconType={'replyArrow'}
-            iconSize={22}
+            iconSize={24}
             btnBgColor="#00BD40"
             iconColor="#FFFFFF"
             btnRadius="50px"
             onClick={() => {
-              setBarExpandView(false);
-              setBarView(false);
+              dispatch(setIsCallModalType('drag'));
             }}
           />
           <SpacerSM />
@@ -227,7 +239,7 @@ export const DraggableCallContainer = () => {
               <Flex container={true} alignItems="center">
                 <BchatIcon
                   iconType={'call'}
-                  iconSize={14}
+                  iconSize={16}
                   iconColor="#fff"
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -237,7 +249,9 @@ export const DraggableCallContainer = () => {
               </Flex>
             </div>
             <StyledText>
+              <RingingLabel />
               <DurationLabel />
+              <ConnectingLabel />
             </StyledText>
           </div>
         </Flex>
@@ -277,12 +291,11 @@ export const DraggableCallContainer = () => {
         <DraggableCallWindow className="dragHandle">
           <StyledCloseIcon >
             <BchatIconButton
-              iconType={'x'}
-              // iconColor="#FFFFFF"
+              iconType={'xWithSquare'} 
               iconSize={22}
               onClick={e => {
                 e.stopPropagation();
-                if (!isDragging) setBarView(true); // ✅ Prevents drag triggering click
+                if (!isDragging) dispatch(setIsCallModalType('bar')); // ✅ Prevents drag triggering click
               }}
             />
             <SpacerSM />
@@ -318,10 +331,12 @@ export const DraggableCallContainer = () => {
             />
           </StyledLocalVideoContainer>
           <StyledDurationLabel remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}>
+            <RingingLabel isOutSideInConvo={true}/>
             <DurationLabel
               isDraggable={true}
               isVideoCall={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
             />
+            <ConnectingLabel />
           </StyledDurationLabel>
         </DraggableCallWindow>
       </Draggable>

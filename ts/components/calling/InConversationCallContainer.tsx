@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import {
   getCallWithFocusedConvosIsConnecting,
   getHasOngoingCallWithFocusedConvo,
   getHasOngoingCallWithPubkey,
+  getIsCallModalType,
 } from '../../state/selectors/call';
 import { StyledVideoElement } from './DraggableCallContainer';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
@@ -26,6 +27,8 @@ import { getSelectedConversation } from '../../state/selectors/conversations';
 import { getConversationController } from '../../bchat/conversations';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
+import { BchatIconButton } from '../icon';
+import { setIsCallModalType } from '../../state/ducks/call';
 
 const VideoContainer = styled.div`
   height: 100%;
@@ -47,7 +50,7 @@ const InConvoCallWindow = styled.div`
   // align-items: center;
   // flex-grow: 1;
 
-  border-radius: 32px;
+  border-radius: 15px;
   background-color: var(--color-hop-bg);
   height: 100%;
   // margin-top: 20px;
@@ -60,7 +63,7 @@ const RelativeCallWindow = styled.div`
   // flex-grow: 1;
 `;
 
-const CenteredAvatarInConversation = styled.div`
+const CenteredAvatarInConversation = styled.div `
   // top: -50%;
   // transform: translateY(-50%);
   // position: relative;
@@ -69,7 +72,6 @@ const CenteredAvatarInConversation = styled.div`
   // right: 50%;
 
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 157px;
   flex-direction: column;
@@ -77,6 +79,7 @@ const CenteredAvatarInConversation = styled.div`
 const UserNameTxt = styled.div`
   font-size: 20px;
 `;
+
 
 export const StyledCenteredLabel = styled.div`
   // position: absolute;
@@ -87,26 +90,31 @@ export const StyledCenteredLabel = styled.div`
   // color: var(--color-text);
   // text-shadow: 0px 0px 8px white;
   // z-index: 5;
-  font-size: 22px;
-  text-align: center;
+  font-size: 16px;
+  // text-align: center;
 `;
 
 const StyledVideoCallLabel = styled.div`
   font-size: 14px;
   color: white;
-  z-index:99;
+  z-index: 99;
 `;
+type RingingLabelProps = {
+  isOutSideInConvo?: boolean;
+};
 
-const RingingLabel = () => {
+export const RingingLabel = ({ isOutSideInConvo }: RingingLabelProps) => {
   const ongoingCallWithFocusedIsRinging = useSelector(getCallWithFocusedConvoIsOffering);
-  const modulatedStr = useModuloWithTripleDots(window.i18n('ringing'), 3, 1000);
+  const modulatedStr = isOutSideInConvo
+    ? window.i18n('ringing')
+    : useModuloWithTripleDots(window.i18n('ringing'), 3, 1000);
   if (!ongoingCallWithFocusedIsRinging) {
     return null;
   }
   return <StyledCenteredLabel>{modulatedStr}</StyledCenteredLabel>;
 };
 
-const ConnectingLabel = () => {
+export const ConnectingLabel = () => {
   const ongoingCallWithFocusedIsConnecting = useSelector(getCallWithFocusedConvosIsConnecting);
 
   const modulatedStr = useModuloWithTripleDots(window.i18n('establishingConnection'), 3, 1000);
@@ -117,10 +125,10 @@ const ConnectingLabel = () => {
   return <StyledCenteredLabel>{modulatedStr}</StyledCenteredLabel>;
 };
 
-export const DurationLabel = (props:{isVideoCall?: boolean,isDraggable?:boolean}) => {
+export const DurationLabel = (props: { isVideoCall?: boolean; isDraggable?: boolean }) => {
   const [callDuration, setCallDuration] = useState<undefined | number>(undefined);
   const ongoingCallWithFocusedIsConnected = useSelector(getCallWithFocusedConvosIsConnected);
-  const {isVideoCall,isDraggable}=props
+  const { isVideoCall, isDraggable } = props;
 
   useInterval(() => {
     const duration = CallManager.getCurrentCallDuration();
@@ -164,6 +172,7 @@ export const VideoLoadingSpinner = (props: { fullWidth: boolean }) => {
 
 // tslint:disable-next-line: max-func-body-length
 export const InConversationCallContainer = () => {
+  const dispatch = useDispatch();
   const isInFullScreen = useSelector(getCallIsInFullScreen);
 
   const ongoingCallPubkey = useSelector(getHasOngoingCallWithPubkey);
@@ -173,6 +182,9 @@ export const InConversationCallContainer = () => {
   const videoRefLocal = useRef<HTMLVideoElement>(null);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const conversation = getConversationController().get(ourPubkey);
+  const isCallModalType = useSelector(getIsCallModalType);
+
+  // const [isCallModalExpandView,setIsCallModalExpandView]=useState(false)
 
   const {
     currentConnectedAudioInputs,
@@ -206,19 +218,20 @@ export const InConversationCallContainer = () => {
     }
   }
 
-  useEffect(()=>{
+
+  useEffect(() => {
     if (videoRefRemote?.current && videoRefLocal?.current) {
-    videoRefRemote.current.srcObject = remoteStream;
-    videoRefLocal.current.srcObject = localStream;
+      videoRefRemote.current.srcObject = remoteStream;
+      videoRefLocal.current.srcObject = localStream;
     }
-  },[remoteStream,videoRefRemote,videoRefLocal])
+  }, [isCallModalType, remoteStream, videoRefRemote, videoRefLocal]);
 
   if (isInFullScreen && videoRefRemote.current) {
     // disable this video element so the one in fullscreen is the only one playing audio
     videoRefRemote.current.muted = true;
   }
-
-  if (!ongoingCallWithFocused || !ongoingCallPubkey) {
+ 
+  if (isCallModalType !== 'inchat' || !ongoingCallWithFocused || !ongoingCallPubkey) {
     return null;
   }
 
@@ -236,9 +249,17 @@ export const InConversationCallContainer = () => {
       className={!localStreamVideoIsMuted && !remoteStreamVideoIsMuted ? 'videoCall' : 'voiceCall'}
     >
       <InConvoCallWindow>
+        <Flex container={true} justifyContent={'flex-end'}>
+          <BchatIconButton
+            iconType={'callExpand'}
+            iconSize={30}
+            onClick={() =>{ dispatch(setIsCallModalType('drag'))}}
+
+          />
+        </Flex>
         <RelativeCallWindow>
           <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'}>
-            <VideoContainer>
+            <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-end':'center'}}>
               <StyledVideoElement
                 ref={videoRefRemote}
                 autoPlay={true}
@@ -246,14 +267,13 @@ export const InConversationCallContainer = () => {
                 width="50%"
               />
               {remoteStreamVideoIsMuted && (
-                <CenteredAvatarInConversation>
+                <CenteredAvatarInConversation >
                   <BNSWrapper
-                    // size={89}
                     position={{ left: '75px', top: '72px' }}
                     isBnsHolder={selectedConversation?.isBnsHolder}
                     size={{ width: '20', height: '20' }}
                   >
-                    <Avatar size={AvatarSize.XL} pubkey={ongoingCallPubkey} />
+                    <Avatar size={AvatarSize.XXL} pubkey={ongoingCallPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
@@ -280,7 +300,7 @@ export const InConversationCallContainer = () => {
               </CenteredAvatarInConversation>
             )} */}
 
-            <VideoContainer>
+            <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-start':'center'}}>
               <StyledVideoElement
                 ref={videoRefLocal}
                 autoPlay={true}
@@ -289,14 +309,14 @@ export const InConversationCallContainer = () => {
                 width="76%"
               />
               {localStreamVideoIsMuted && (
-                <CenteredAvatarInConversation>
+                <CenteredAvatarInConversation >
                   <BNSWrapper
                     // size={89}
                     position={{ left: '75px', top: '72px' }}
                     isBnsHolder={conversation?.attributes?.isBnsHolder}
                     size={{ width: '20', height: '20' }}
                   >
-                    <Avatar size={AvatarSize.XL} pubkey={ourPubkey} />
+                    <Avatar size={AvatarSize.XXL} pubkey={ourPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
@@ -314,27 +334,29 @@ export const InConversationCallContainer = () => {
                   ref={videoRefRemote}
                   autoPlay={true}
                   isVideoMuted={remoteStreamVideoIsMuted}
-
                 />
               </VideoContainer>
             </div>
           )}
 
           <SpacerLG />
-          <RingingLabel />
-          <ConnectingLabel />
-          <DurationLabel />
+
           <SpacerMD />
-          <CallWindowControls
-            currentConnectedAudioInputs={currentConnectedAudioInputs}
-            currentConnectedCameras={currentConnectedCameras}
-            isAudioMuted={isAudioMuted}
-            currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-            isAudioOutputMuted={isAudioOutputMuted}
-            localStreamVideoIsMuted={localStreamVideoIsMuted}
-            remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-            isFullScreen={isInFullScreen}
-          />
+         
+            <CallWindowControls
+              currentConnectedAudioInputs={currentConnectedAudioInputs}
+              currentConnectedCameras={currentConnectedCameras}
+              isAudioMuted={isAudioMuted}
+              currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+              isAudioOutputMuted={isAudioOutputMuted}
+              localStreamVideoIsMuted={localStreamVideoIsMuted}
+              remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
+              isFullScreen={isInFullScreen}
+              selectedName={validateMemberName(
+                selectedConversation?.profileName || selectedConversation?.id
+              )}
+            />
+         
         </RelativeCallWindow>
       </InConvoCallWindow>
       <div className="local-video">

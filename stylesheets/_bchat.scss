@@ -601,7 +601,7 @@ pre {
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
   margin-bottom: -5px;
-  padding: 10px 0 ;
+  padding: 12px 0 ;
 }
 
 label {
@@ -621,13 +621,13 @@ label {
   padding: 10px 10px 0;
 }
 
-.module-message__container--outgoing--first-of-series {
-  border-top-right-radius: $bchat_message-container-border-radius;
-}
+// .module-message__container--outgoing--first-of-series {
+//   border-top-right-radius: $bchat_message-container-border-radius;
+// }
 
-.module-message__container--outgoing--last-of-series {
-  border-bottom-right-radius: $bchat_message-container-border-radius;
-}
+// .module-message__container--outgoing--last-of-series {
+//   border-bottom-right-radius: $bchat_message-container-border-radius;
+// }
 .module-message__container_bg_disabled {
   background-color: transparent !important;
   padding-bottom: 0 !important;
