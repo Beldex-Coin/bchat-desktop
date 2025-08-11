@@ -37,11 +37,12 @@ export const DraggableCallWindow = styled.div`
 export const StyledVideoElement = styled.video<{
   isVideoMuted: boolean;
   width?: string;
+  height?:string;
   isLocalOnly?: boolean;
   isCallModalExpandView?:boolean;
 }>`
   // padding: 0 1rem;
-  height: ${props => (props.isCallModalExpandView ? '80%' : '100%')};
+  height: ${props => (props.height ? props.height : '100%')};
   width: ${props => (props.width ? props.width : '100%')};
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
   display: ${props => (props.isVideoMuted ? 'none' : 'block')};

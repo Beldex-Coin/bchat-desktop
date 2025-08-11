@@ -1,4 +1,4 @@
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIcon  } from '../icon';
 import { animation, contextMenu, Item, Menu } from 'react-contexify';
 import { InputItem } from '../../bchat/utils/calling/CallManager';
 import { setFullScreenCall } from '../../state/ducks/call';
@@ -29,9 +29,8 @@ export const VideoInputButton = ({
   return (
     <>
       <DropDownAndToggleButton
-        iconType="camera"
+        iconType={localStreamVideoIsMuted?'callCameraDisabled':'callCamera'}
         isMuted={localStreamVideoIsMuted}
-        isSelected={!localStreamVideoIsMuted}
         onMainButtonClick={() => {
           void handleCameraToggle(currentConnectedCameras, localStreamVideoIsMuted);
         }}
@@ -61,9 +60,8 @@ export const AudioInputButton = ({
   return (
     <>
       <DropDownAndToggleButton
-        iconType="microphone"
+        iconType={isAudioMuted?'callMicrophoneDisabled':'callMicrophone'}
         isMuted={isAudioMuted}
-        isSelected={isAudioMuted}
         onMainButtonClick={() => {
           void handleMicrophoneToggle(currentConnectedAudioInputs, isAudioMuted);
         }}
@@ -93,7 +91,7 @@ export const AudioOutputButton = ({
   return (
     <>
       <DropDownAndToggleButton
-        iconType="volume"
+        iconType={isAudioOutputMuted?"callSpeakerDisabled":"callSpeaker"}
         isMuted={isAudioOutputMuted}
         onMainButtonClick={() => {
           void handleSpeakerToggle(currentConnectedAudioOutputs, isAudioOutputMuted);
@@ -188,7 +186,7 @@ const AudioOutputMenu = ({
   );
 };
 
-const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => {
+const ShowInFullScreenButton = ({ isFullScreen,isCallModalExpandView }: { isFullScreen: boolean ,isCallModalExpandView?:boolean}) => {
   const dispatch = useDispatch();
 
   const showInFullScreen = () => {
@@ -200,16 +198,20 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
   };
 
   return (
-    <BchatIconButton
-      iconSize={60}
-      iconPadding="20px"
-      iconType="fullscreen"
-      backgroundColor="white"
-      borderRadius="50%"
-      onClick={showInFullScreen}
-      iconColor="#2879F9"
-      margin="5px"
+
+    <>
+    <DropDownAndToggleButton
+      iconType={'fullscreen'}
+      isMuted={!isFullScreen}
+      onMainButtonClick={() => {
+        showInFullScreen()
+      }}
+      onArrowClick={()=>{}}
+      hidePopoverArrow={true}
+      isCallModalExpandView={isCallModalExpandView}
     />
+  </>
+   
   );
 };
 
@@ -224,15 +226,6 @@ export const HangUpButton = () => {
   };
 
   return (
-    // <BchatIconButton
-
-    //   btnBgColor="#FC3B3B"
-    //   btnRadius="50%"
-
-    //   iconColor="#FFFFFF"
-    //   margin="10px"
-
-    // />
     <div
       className="hangingBtn"
       role="button"
@@ -430,7 +423,7 @@ export const CallWindowControls = ({
         <DurationLabel />
       </Flex>
       <Flex container={true} flexDirection="row">
-        {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
+        {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView} />}
         <AudioOutputButton
           currentConnectedAudioOutputs={currentConnectedAudioOutputs}
           isAudioOutputMuted={isAudioOutputMuted}

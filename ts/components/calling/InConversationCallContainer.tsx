@@ -31,13 +31,13 @@ import { BchatIconButton } from '../icon';
 import { setIsCallModalType } from '../../state/ducks/call';
 import classNames from 'classnames';
 
-const VideoContainer = styled.div <{isCallModalExpandView?:boolean,isTurnOnVideo?:boolean}>`
+const VideoContainer = styled.div <{isJustifyCenter?:boolean}>`
   height: 100%;
   width: 100%;
   z-index: 0;
   display: flex;
-  justify-content:${props=>props.isCallModalExpandView && props.isTurnOnVideo?'center':'flex-end'} ;
   align-items:center;
+  justify-content:${({isJustifyCenter})=>isJustifyCenter?  'center': 'flex-end'};
   // padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
 `;
 const StyledLocalVideoContainer=styled.div <{isCallModalExpandView?:boolean,isTurnOnVideo?:boolean}>`
@@ -48,7 +48,7 @@ const StyledLocalVideoContainer=styled.div <{isCallModalExpandView?:boolean,isTu
   justify-content:${props=>props.isCallModalExpandView && props.isTurnOnVideo?'center':'flex-start'};
   align-items:center;
   position:${props=>props.isCallModalExpandView&&props.isTurnOnVideo?'absolute':'unset'}; 
-  right:10px;
+  right:0px;
 `
 const InConvoCallWindow = styled.div`
   padding: 1rem;
@@ -259,6 +259,7 @@ export const InConversationCallContainer = () => {
     }
     return memberName;
   };
+  const isJustifyCenter=(isCallModalExpandView && (!remoteStreamVideoIsMuted  || !localStreamVideoIsMuted )) || (!isCallModalExpandView && !remoteStreamVideoIsMuted )
 
   return (
     <div
@@ -276,13 +277,14 @@ export const InConversationCallContainer = () => {
         <RelativeCallWindow>
           <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'} height={isCallModalExpandView ?'calc(100vh - 315px)':'unset'}>
             {/* <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-end':'center'}} > */}
-            <VideoContainer  isCallModalExpandView={isCallModalExpandView} isTurnOnVideo={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted }  >
+            <VideoContainer  isJustifyCenter={isJustifyCenter}>
 
               <StyledVideoElement
                 ref={videoRefRemote}
                 autoPlay={true}
                 isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
                 width="90%"
+                height='90%'
                 isCallModalExpandView={isCallModalExpandView}
               
               />
@@ -329,10 +331,11 @@ export const InConversationCallContainer = () => {
                 isVideoMuted={localStreamVideoIsMuted || !remoteStreamVideoIsMuted}
                 // width="80%"
                 width='95%'
+                height='70%'
                 isCallModalExpandView={isCallModalExpandView}
               />
               {localStreamVideoIsMuted && (
-                <CenteredAvatarInConversation isCallModalExpandView={isCallModalExpandView} isNeedBgColor={!remoteStreamVideoIsMuted && localStreamVideoIsMuted}>
+                <CenteredAvatarInConversation isCallModalExpandView={isCallModalExpandView} isNeedBgColor={!remoteStreamVideoIsMuted && localStreamVideoIsMuted && isCallModalExpandView}>
                   <BNSWrapper
                     // size={89}
                     position={{ left: '75px', top: '72px' }}
