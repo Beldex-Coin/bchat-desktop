@@ -38,13 +38,15 @@ export const StyledVideoElement = styled.video<{
   isVideoMuted: boolean;
   width?: string;
   isLocalOnly?: boolean;
+  isCallModalExpandView?:boolean;
 }>`
   // padding: 0 1rem;
-  height: 100%;
+  height: ${props => (props.isCallModalExpandView ? '80%' : '100%')};
   width: ${props => (props.width ? props.width : '100%')};
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
   display: ${props => (props.isVideoMuted ? 'none' : 'block')};
   object-fit: cover;
+  border-radius: ${props => (props.isCallModalExpandView ? '30px' : '16px')};
   /*Mirror code starts*/
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -201,7 +203,6 @@ export const DraggableCallContainer = () => {
  
   // const isDragCallValidation=ongoingCallPubkey === selectedConversationKey ? isCallModalType === 'inchat' :ongoingCallPubkey === selectedConversationKey
   const isDragCallValidation = ongoingCallPubkey === selectedConversationKey && isCallModalType === 'inchat';
-  console.log('ongoingCallPubkey === selectedConversationKey --> ',isDragCallValidation,isCallModalType )
   if (
     !hasOngoingCall ||
     !ongoingCallProps ||

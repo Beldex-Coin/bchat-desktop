@@ -29,16 +29,27 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 import { BchatIconButton } from '../icon';
 import { setIsCallModalType } from '../../state/ducks/call';
+import classNames from 'classnames';
 
-const VideoContainer = styled.div`
+const VideoContainer = styled.div <{isCallModalExpandView?:boolean,isTurnOnVideo?:boolean}>`
   height: 100%;
   width: 100%;
   z-index: 0;
   display: flex;
-  justify-content: center;
+  justify-content:${props=>props.isCallModalExpandView && props.isTurnOnVideo?'center':'flex-end'} ;
+  align-items:center;
   // padding-top: 30px; // leave some space at the top for the connecting/duration of the current call
 `;
-
+const StyledLocalVideoContainer=styled.div <{isCallModalExpandView?:boolean,isTurnOnVideo?:boolean}>`
+ height:${props=>props.isCallModalExpandView&&props.isTurnOnVideo?'80%':'100%'};
+  width:${props=>props.isCallModalExpandView&&props.isTurnOnVideo?'35%':'100%'};
+  z-index: 0;
+  display: flex;
+  justify-content:${props=>props.isCallModalExpandView && props.isTurnOnVideo?'center':'flex-start'};
+  align-items:center;
+  position:${props=>props.isCallModalExpandView&&props.isTurnOnVideo?'absolute':'unset'}; 
+  right:10px;
+`
 const InConvoCallWindow = styled.div`
   padding: 1rem;
   // display: flex;
@@ -63,7 +74,7 @@ const RelativeCallWindow = styled.div`
   // flex-grow: 1;
 `;
 
-const CenteredAvatarInConversation = styled.div `
+const CenteredAvatarInConversation = styled.div <{isCallModalExpandView:boolean,isNeedBgColor?:boolean}>`
   // top: -50%;
   // transform: translateY(-50%);
   // position: relative;
@@ -73,8 +84,13 @@ const CenteredAvatarInConversation = styled.div `
 
   display: flex;
   align-items: center;
-  width: 157px;
+  width:${props=>props.isCallModalExpandView? '250px': '157px'};
   flex-direction: column;
+
+  margin-left: ${props=>props.isNeedBgColor?'auto':'unset'};
+  background-color:  ${props=>props.isNeedBgColor ?'#131313':'unset'};
+  border-radius:  ${props=>props.isNeedBgColor? '16px':'unset'};
+  padding:${props=>props.isNeedBgColor? '31px 0':'unset'} ; 
 `;
 const UserNameTxt = styled.div`
   font-size: 20px;
@@ -184,7 +200,7 @@ export const InConversationCallContainer = () => {
   const conversation = getConversationController().get(ourPubkey);
   const isCallModalType = useSelector(getIsCallModalType);
 
-  // const [isCallModalExpandView,setIsCallModalExpandView]=useState(false)
+  const [isCallModalExpandView,setIsCallModalExpandView]=useState(false)
 
   const {
     currentConnectedAudioInputs,
@@ -246,34 +262,38 @@ export const InConversationCallContainer = () => {
 
   return (
     <div
-      className={!localStreamVideoIsMuted && !remoteStreamVideoIsMuted ? 'videoCall' : 'voiceCall'}
+      className={classNames(!localStreamVideoIsMuted && !remoteStreamVideoIsMuted ? 'videoCall' : 'voiceCall',isCallModalExpandView && 'expandView',)}
     >
       <InConvoCallWindow>
         <Flex container={true} justifyContent={'flex-end'}>
           <BchatIconButton
-            iconType={'callExpand'}
+            iconType={isCallModalExpandView ?'callCollapse':'callExpand'}
             iconSize={30}
-            onClick={() =>{ dispatch(setIsCallModalType('drag'))}}
+            onClick={() =>{false && dispatch(setIsCallModalType('drag')),setIsCallModalExpandView(!isCallModalExpandView)}}
 
           />
         </Flex>
         <RelativeCallWindow>
-          <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'}>
-            <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-end':'center'}}>
+          <Flex container={true} justifyContent="center" alignItems="center" padding={'16px 0 0 0'} height={isCallModalExpandView ?'calc(100vh - 315px)':'unset'}>
+            {/* <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-end':'center'}} > */}
+            <VideoContainer  isCallModalExpandView={isCallModalExpandView} isTurnOnVideo={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted }  >
+
               <StyledVideoElement
                 ref={videoRefRemote}
                 autoPlay={true}
                 isVideoMuted={remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
-                width="50%"
+                width="90%"
+                isCallModalExpandView={isCallModalExpandView}
+              
               />
               {remoteStreamVideoIsMuted && (
-                <CenteredAvatarInConversation >
+                <CenteredAvatarInConversation  isCallModalExpandView={isCallModalExpandView} >
                   <BNSWrapper
                     position={{ left: '75px', top: '72px' }}
                     isBnsHolder={selectedConversation?.isBnsHolder}
                     size={{ width: '20', height: '20' }}
                   >
-                    <Avatar size={AvatarSize.XXL} pubkey={ongoingCallPubkey} />
+                    <Avatar size={isCallModalExpandView ? AvatarSize.XXXL:AvatarSize.XXL} pubkey={ongoingCallPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
@@ -300,23 +320,26 @@ export const InConversationCallContainer = () => {
               </CenteredAvatarInConversation>
             )} */}
 
-            <VideoContainer style={{justifyContent:remoteStreamVideoIsMuted && localStreamVideoIsMuted? 'flex-start':'center'}}>
+            <StyledLocalVideoContainer isCallModalExpandView={isCallModalExpandView} isTurnOnVideo={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted} >
+
               <StyledVideoElement
                 ref={videoRefLocal}
                 autoPlay={true}
                 muted={true}
                 isVideoMuted={localStreamVideoIsMuted || !remoteStreamVideoIsMuted}
-                width="76%"
+                // width="80%"
+                width='95%'
+                isCallModalExpandView={isCallModalExpandView}
               />
               {localStreamVideoIsMuted && (
-                <CenteredAvatarInConversation >
+                <CenteredAvatarInConversation isCallModalExpandView={isCallModalExpandView} isNeedBgColor={!remoteStreamVideoIsMuted && localStreamVideoIsMuted}>
                   <BNSWrapper
                     // size={89}
                     position={{ left: '75px', top: '72px' }}
                     isBnsHolder={conversation?.attributes?.isBnsHolder}
                     size={{ width: '20', height: '20' }}
                   >
-                    <Avatar size={AvatarSize.XXL} pubkey={ourPubkey} />
+                    <Avatar size={isCallModalExpandView ? AvatarSize.XXXL:AvatarSize.XXL} pubkey={ourPubkey} />
                   </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
@@ -324,7 +347,7 @@ export const InConversationCallContainer = () => {
                   </UserNameTxt>
                 </CenteredAvatarInConversation>
               )}
-            </VideoContainer>
+            </StyledLocalVideoContainer>
           </Flex>
 
           {!localStreamVideoIsMuted && !remoteStreamVideoIsMuted && (
@@ -355,6 +378,7 @@ export const InConversationCallContainer = () => {
               selectedName={validateMemberName(
                 selectedConversation?.profileName || selectedConversation?.id
               )}
+              isCallModalExpandView={isCallModalExpandView}
             />
          
         </RelativeCallWindow>

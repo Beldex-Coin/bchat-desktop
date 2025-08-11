@@ -236,11 +236,17 @@
   z-index: 99;
   right: 10px;
   top: 0px;
-
+ 
   .local-video {
     position: relative;
     z-index: 1;
   }
+}
+.expandView{
+  width: 98%;
+  height: 89vh;
+  max-height: unset;
+
 }
 .call-bar-expand-view {
   display: none;
@@ -288,7 +294,7 @@
   align-items: center;
   color: #fff;
   border-radius: 50px;
-  margin: 10px 10px;
+  // margin: 10px 10px;
   cursor: pointer;
 }
 

@@ -94,6 +94,16 @@ $borderAvatarColor: unquote(
     width: 130px;
   }
 }
+
+.module-avatar--200 {
+  height: 200px;
+  width: 200px;
+
+  img {
+    height: 200px;
+    width: 200px;
+  }
+}
 .module-avatar--300 {
   height: 300px;
   width: 300px;

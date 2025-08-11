@@ -14,7 +14,7 @@ import { StyledVideoElement } from './DraggableCallContainer';
 
 const CallInFullScreenVisible = styled.div`
   position: absolute;
-  z-index: 13;
+  z-index: 999;
   top: 0;
   bottom: 0;
   right: 0;

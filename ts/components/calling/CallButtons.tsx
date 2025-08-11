@@ -19,10 +19,12 @@ export const VideoInputButton = ({
   currentConnectedCameras,
   localStreamVideoIsMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedCameras: Array<InputItem>;
   localStreamVideoIsMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
@@ -37,6 +39,7 @@ export const VideoInputButton = ({
           showVideoInputMenu(currentConnectedCameras, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <VideoInputMenu triggerId={videoTriggerId} camerasList={currentConnectedCameras} />
@@ -48,10 +51,12 @@ export const AudioInputButton = ({
   currentConnectedAudioInputs,
   isAudioMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedAudioInputs: Array<InputItem>;
   isAudioMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
@@ -66,6 +71,7 @@ export const AudioInputButton = ({
           showAudioInputMenu(currentConnectedAudioInputs, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <AudioInputMenu triggerId={audioTriggerId} audioInputsList={currentConnectedAudioInputs} />
@@ -77,10 +83,12 @@ export const AudioOutputButton = ({
   currentConnectedAudioOutputs,
   isAudioOutputMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedAudioOutputs: Array<InputItem>;
   isAudioOutputMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
@@ -94,6 +102,7 @@ export const AudioOutputButton = ({
           showAudioOutputMenu(currentConnectedAudioOutputs, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <AudioOutputMenu
@@ -199,7 +208,7 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
       borderRadius="50%"
       onClick={showInFullScreen}
       iconColor="#2879F9"
-      margin="10px"
+      margin="5px"
     />
   );
 };
@@ -330,13 +339,16 @@ const handleSpeakerToggle = async (
   }
 };
 
-const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean }>`
+const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean,isCallModalExpandView?:boolean }>`
   // position: absolute;
 
   // bottom: 0px;
-  width: ${props => (props.isFullScreen ? '100vw' : '100%')};
+  width: ${props => (props.isFullScreen ? '100vw' :props.isCallModalExpandView?'unset':'100%')};
+  min-width:${props => (props.isCallModalExpandView?'525px':'100%')} ;
+  max-width:${props => (props.isCallModalExpandView?'45%':'100%')} ;
+    
   height: 100%;
-  padding: 10px;
+  padding: 10px 25px;
   // border-radius: 10px;
   // margin-left: auto;
   // margin-right: auto;
@@ -347,6 +359,10 @@ const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen
   display: flex;
   justify-content: space-between;
   align-items:center;
+
+  border-radius: 26px;
+  background:${props => (props.isCallModalExpandView?'#2E333D':'unset')} ;
+  margin: auto;
   
   // opacity: ${props => (props.makeVisible ? 1 : 0)};
 `;
@@ -366,6 +382,7 @@ export const CallWindowControls = ({
   localStreamVideoIsMuted,
   isFullScreen,
   selectedName,
+  isCallModalExpandView,
 }: {
   isAudioMuted: boolean;
   isAudioOutputMuted: boolean;
@@ -376,6 +393,7 @@ export const CallWindowControls = ({
   currentConnectedCameras: Array<InputItem>;
   isFullScreen: boolean;
   selectedName?: string;
+  isCallModalExpandView?:boolean;
 }) => {
   const [makeVisible, setMakeVisible] = useState(true);
 
@@ -397,7 +415,7 @@ export const CallWindowControls = ({
     };
   }, [isFullScreen]);
   return (
-    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
+    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView}>
       <Flex
         container={true}
         flexDirection="column"
@@ -417,16 +435,19 @@ export const CallWindowControls = ({
           currentConnectedAudioOutputs={currentConnectedAudioOutputs}
           isAudioOutputMuted={isAudioOutputMuted}
           hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
         />
         <VideoInputButton
           currentConnectedCameras={currentConnectedCameras}
           localStreamVideoIsMuted={localStreamVideoIsMuted}
           hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
         />
         <AudioInputButton
           currentConnectedAudioInputs={currentConnectedAudioInputs}
           isAudioMuted={isAudioMuted}
           hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
         />
         
       </Flex>

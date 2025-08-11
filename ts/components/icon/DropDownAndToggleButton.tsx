@@ -11,9 +11,10 @@ type SProps = {
   hidePopoverArrow?: boolean;
   iconType: 'microphone' | 'camera' | 'volume';
   isSelected?: boolean;
+  isCallModalExpandView?:boolean;
 };
 
-const StyledRoundedButton = styled.div<{ isMuted: boolean; isSelected?: boolean }>`
+const StyledRoundedButton = styled.div<{ isMuted: boolean; isSelected?: boolean,isCallModalExpandView?:boolean }>`
   // background-color:var(--color-clickable-hovered);
   color: ${props => (props.isSelected ? '#FF3E3E' : '#128b17')};
   border-radius: 50%;
@@ -21,10 +22,11 @@ const StyledRoundedButton = styled.div<{ isMuted: boolean; isSelected?: boolean 
   border:1px solid #e6e6e6
   transition-duration: 0.25s;
   border:var(--bchat-border);
-  background-color: ${props =>
-    props.isSelected ? 'var(--color-call-option-btn-hover)' : 'var(--color-clickable-hovered)'};
+  background-color: ${props => props.isSelected ? '#FFBF91':props.isCallModalExpandView ?'var(--color-enable-btn-bg)'
+    : 'var(--color-clickable-hovered)'};
   &:hover {
-    background-color: var(--color-call-option-btn-hover);
+    // background-color: var(--color-call-option-btn-hover);
+  background-color:#FFBF91;
   }
 
   display: flex;
@@ -98,7 +100,7 @@ const MicrophoneIcon = (
 );
 
 export const DropDownAndToggleButton = (props: SProps) => {
-  const { iconType, hidePopoverArrow, onArrowClick, onMainButtonClick, isMuted } = props;
+  const { iconType, hidePopoverArrow, onArrowClick, onMainButtonClick, isMuted,isCallModalExpandView } = props;
   const arrowClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     onArrowClick(e);
@@ -111,21 +113,23 @@ export const DropDownAndToggleButton = (props: SProps) => {
   };
   const iconToRender =
     iconType === 'microphone' ? MicrophoneIcon : iconType === 'camera' ? CameraIcon : SpeakerIcon;
-  const fillColor = props.isSelected
-    ? iconType === 'camera'
-      ? '#00BD40'
-      : '#FF3E3E'
-    : 'var(--color-text)';
+  // const fillColor = props.isSelected
+  //   ? iconType === 'camera'
+  //     ? '#00BD40'
+  //     : '#FF3E3E'
+  //   : 'var(--color-text)';
+  const fillColor= 'var(--color-text)';
   return (
     <StyledContainer
       isMuted={isMuted || false}
       isSelected={props.isSelected}
       onClick={mainButtonClickHandler}
+      isCallModalExpandView={isCallModalExpandView}
     >
       <StyledMainIcon fill={fillColor}>{iconToRender}</StyledMainIcon>
       {!hidePopoverArrow && (
         <StyledArrowIcon isMuted={isMuted || false} onClick={arrowClickHandler}>
-          <BchatIcon iconType="chevron" iconColor="#00BD40" iconSize={20} />
+          <BchatIcon iconType="chevron" iconColor={fillColor} iconSize={20} />
         </StyledArrowIcon>
       )}
     </StyledContainer>
