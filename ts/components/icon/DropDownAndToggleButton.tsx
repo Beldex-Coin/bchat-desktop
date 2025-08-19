@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { contextMenu } from 'react-contexify';
 import { BchatIcon } from './BchatIcon';
 import { BchatIconType } from './Icons';
+import { getCallIsInFullScreen } from '../../state/selectors/call';
+import { useSelector } from 'react-redux';
 
 type SProps = {
   onArrowClick: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -64,6 +66,7 @@ const StyledArrowIcon = styled(StyledRoundedButton)`
 
 export const DropDownAndToggleButton = (props: SProps) => {
   const { iconType, hidePopoverArrow, onArrowClick, onMainButtonClick, isMuted,isCallModalExpandView } = props;
+  const hasOngoingCallFullScreen = useSelector(getCallIsInFullScreen);
   const arrowClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     onArrowClick(e);
@@ -80,7 +83,7 @@ export const DropDownAndToggleButton = (props: SProps) => {
       isMuted={isMuted || false}
       isSelected={isMuted}
       onClick={mainButtonClickHandler}
-      isCallModalExpandView={isCallModalExpandView}
+      isCallModalExpandView={isCallModalExpandView || hasOngoingCallFullScreen}
     >
       <BchatIcon iconType={iconType} iconSize={27} iconColor={isMuted?'#333333':fillColor} />
       {!hidePopoverArrow && (

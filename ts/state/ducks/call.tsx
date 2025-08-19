@@ -2,20 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setIsRinging } from '../../bchat/utils/RingingManager';
 
 export type CallStatusEnum = 'offering' | 'incoming' | 'connecting' | 'ongoing' | undefined;
-export type CallModalType='inchat'|'drag'|'bar';
 
 export type CallStateType = {
   ongoingWith?: string;
   ongoingCallStatus?: CallStatusEnum;
   callIsInFullScreen: boolean;
-  isCallModalType:CallModalType;
 };
 
 export const initialCallState: CallStateType = {
   ongoingWith: undefined,
   ongoingCallStatus: undefined,
   callIsInFullScreen: false,
-  isCallModalType:'inchat'
 };
 
 /**
@@ -122,9 +119,6 @@ const callSlice = createSlice({
       state.callIsInFullScreen = false;
       return state;
     },
-    setIsCallModalType(state: CallStateType, action: PayloadAction<CallModalType>){
-      state.isCallModalType=action.payload;
-    }
   },
 });
 
@@ -137,6 +131,5 @@ export const {
   callReconnecting,
   startingCallWith,
   setFullScreenCall,
-  setIsCallModalType
 } = actions;
 export const callReducer = reducer;

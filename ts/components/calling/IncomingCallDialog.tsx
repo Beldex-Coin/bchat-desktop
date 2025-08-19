@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { useConversationBnsHolder, useConversationUsername } from '../../hooks/useParamSelector';
@@ -8,12 +8,10 @@ import { CallManager } from '../../bchat/utils';
 import { callTimeoutMs } from '../../bchat/utils/calling/CallManager';
 import { getHasIncomingCall, getHasIncomingCallFrom } from '../../state/selectors/call';
 import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
-// import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
-// import { BchatWrapperModal } from '../BchatWrapperModal';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
-import { setIsCallModalType } from '../../state/ducks/call';
+
 
 export const CallWindow = styled.div`
   position: absolute;
@@ -53,7 +51,6 @@ export const IncomingCallDialog = () => {
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
   const modulatedStr = useModuloWithTripleDots('Incoming...', 3, 1000);
-  const dispatch=useDispatch();
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -80,7 +77,6 @@ export const IncomingCallDialog = () => {
   //#region input handlers
   const handleAcceptIncomingCall = async () => {
     if (incomingCallFromPubkey) {
-      dispatch(setIsCallModalType('inchat'))
       await CallManager.USER_acceptIncomingCallRequest(incomingCallFromPubkey);
     }
   };
@@ -99,7 +95,7 @@ export const IncomingCallDialog = () => {
 
   if (hasIncomingCall) {
     return (
-      // <BchatWrapperModal title={window.i18n('incomingCallFrom', [from || 'unknown'])}>
+
       <div className="bchat-dialog modal">
         <div className="bchat-modal">
           <IncomingCallAvatarContainer>
@@ -117,11 +113,6 @@ export const IncomingCallDialog = () => {
           <IncomingTxt>{modulatedStr}</IncomingTxt>
           <SpacerSM />
           <div className="bchat-modal__button-group">
-            {/* <BchatButton
-              text={window.i18n('decline')}
-              buttonColor={BchatButtonColor.Danger}
-              onClick={handleDeclineIncomingCall}
-            /> */}
             <div
               className="hangingBtn"
               role="button"
@@ -132,6 +123,7 @@ export const IncomingCallDialog = () => {
             >
               <BchatIcon iconSize={27} iconType="hangup" clipRule="evenodd" fillRule="evenodd" />
             </div>
+            <SpacerLG/>
             <div
               className="hangingBtn"
               role="button"
@@ -145,9 +137,7 @@ export const IncomingCallDialog = () => {
           </div>
         </div>
       </div>
-      // </BchatWrapperModal>
     );
   }
-  // display spinner while connecting
   return null;
 };

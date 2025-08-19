@@ -233,7 +233,7 @@
   max-height: 450px;
 
   position: absolute;
-  z-index: 99;
+  z-index: 100;
   right: 10px;
   top: 0px;
  
@@ -264,12 +264,8 @@
 }
 .videoCall {
   margin: 10px 0px;
-  position: absolute;
   z-index: 10;
-  /* width: 750px; */
-  display: flex;
-  top: 1%;
-
+  width: 100%;
   .remote-video {
     // background-color: aliceblue;
     height: 500px;

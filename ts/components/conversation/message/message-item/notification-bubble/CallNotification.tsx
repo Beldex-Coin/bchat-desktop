@@ -87,7 +87,6 @@ export const CallNotification = (props: PropsForCallNotification) => {
   const iconColor = styleItem.iconColor;
   // const bgColor = styleItem.bgColor;
 
-  console.log('contentProps -->', contentProps);
   return (
     <ReadableMessage
       messageId={messageId}
@@ -120,9 +119,6 @@ export const CallNotification = (props: PropsForCallNotification) => {
                 className={classNames(
                   'module-message__container',
                   `module-message__container--${direction}`,
-                  // bgShouldBeTransparent
-                  //   ? `module-message__container--${direction}--transparent`
-                  // :
                   `module-message__container--${direction}--opaque`
                 )}
                 style={{ padding: '10px' }}

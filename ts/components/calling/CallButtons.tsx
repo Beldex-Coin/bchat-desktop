@@ -3,7 +3,7 @@ import { animation, contextMenu, Item, Menu } from 'react-contexify';
 import { InputItem } from '../../bchat/utils/calling/CallManager';
 import { setFullScreenCall } from '../../state/ducks/call';
 import { CallManager, ToastUtils } from '../../bchat/utils';
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHasOngoingCallWithPubkey } from '../../state/selectors/call';
 import { DropDownAndToggleButton } from '../icon/DropDownAndToggleButton';
@@ -201,7 +201,7 @@ const ShowInFullScreenButton = ({ isFullScreen,isCallModalExpandView }: { isFull
 
     <>
     <DropDownAndToggleButton
-      iconType={'fullscreen'}
+      iconType={isFullScreen?'fullScreenCollapse':'fullscreen'}
       isMuted={!isFullScreen}
       onMainButtonClick={() => {
         showInFullScreen()
@@ -333,31 +333,29 @@ const handleSpeakerToggle = async (
 };
 
 const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean,isCallModalExpandView?:boolean }>`
-  // position: absolute;
-
-  // bottom: 0px;
-  width: ${props => (props.isFullScreen ? '100vw' :props.isCallModalExpandView?'unset':'100%')};
-  min-width:${props => (props.isCallModalExpandView?'525px':'100%')} ;
+  
+  width: ${props => (props.isFullScreen ? '70%' :props.isCallModalExpandView?'unset':'100%')};
+  min-width:${props => (props.isCallModalExpandView?'570px':'100%')} ;
   max-width:${props => (props.isCallModalExpandView?'45%':'100%')} ;
     
   height: 100%;
   padding: 10px 25px;
-  // border-radius: 10px;
-  // margin-left: auto;
-  // margin-right: auto;
-  // left: 0;
-  // right: 0;
-  // transition: all 0.25s ease-in-out;
+
 
   display: flex;
   justify-content: space-between;
   align-items:center;
 
   border-radius: 26px;
-  background:${props => (props.isCallModalExpandView?'#2E333D':'unset')} ;
+  background:${props => (props.isCallModalExpandView || props.isFullScreen?'#2E333D':'unset')} ;
   margin: auto;
+
+  ${props => props.isFullScreen &&`
+    max-width:668px;
+     min-width:unset;
+    ` }
   
-  // opacity: ${props => (props.makeVisible ? 1 : 0)};
+   opacity: ${props => (props.makeVisible  ? 1 : 0)};
 `;
 const UserNameTxtBold = styled.div`
   font-size: 18px;
@@ -394,25 +392,34 @@ export const CallWindowControls = ({
     setMakeVisible(true);
   };
   const setMakeVisibleFalse = () => {
-    setMakeVisible(true);
+    setMakeVisible(false);
   };
 
   useEffect(() => {
-    setMakeVisibleTrue();
-    document.addEventListener('mouseenter', setMakeVisibleTrue);
-    document.addEventListener('mouseleave', setMakeVisibleFalse);
-
-    return () => {
-      document.removeEventListener('mouseenter', setMakeVisibleTrue);
-      document.removeEventListener('mouseleave', setMakeVisibleFalse);
+    
+    let hideTimer: ReturnType<typeof setTimeout>;
+  
+    const showAndDelayHide = () => {
+      if (!isFullScreen) return;
+      setMakeVisibleTrue();
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        setMakeVisibleFalse();
+      }, 5000); // hide after 5s
     };
-  }, [isFullScreen]);
+  
+    document.addEventListener('mousemove', showAndDelayHide);
+  
+    return () => {
+      document.removeEventListener('mousemove', showAndDelayHide);
+      clearTimeout(hideTimer);
+    };
+  }, [isFullScreen, setMakeVisibleTrue, setMakeVisibleFalse]);
   return (
     <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView}>
       <Flex
         container={true}
         flexDirection="column"
-        // width="300px"
         alignItems="flex-start"
         justifyContent="center"
       >
