@@ -12,12 +12,11 @@ export enum SectionType {
   Opengroup,
   Wallet,
   Settings,
- 
-
   Profile,
   Contact,
   Moon,
   PathIndicator,
+  SubMenu
   
  
 }

@@ -183,11 +183,6 @@ export const ActionPanelOnionStatusLight = (props: {
     iconColor = onionPathsCount >= 2 ? green : onionPathsCount >= 1 ? orange : red;
   }
 
-  // const OuterCircle=styled.div`
-  //   // border: 2px solid ${iconColor};
-  //   // padding: 1px 1px;
-  //   border-radius: 17px;
-  // `
 
   return (
     <BchatIconButton
@@ -195,12 +190,13 @@ export const ActionPanelOnionStatusLight = (props: {
       iconType="circle"
       iconColor={iconColor}
       onClick={handleClick}
-      glowDuration={10}
-      glowStartDelay={0}
-      noScale={true}
+      // glowDuration={10}
+      // glowStartDelay={0}
+      // noScale={true}
       isSelected={isSelected}
       dataTestId={dataTestId}
       id={id}
+      padding='0'
     />
   );
 };

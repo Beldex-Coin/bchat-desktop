@@ -77,35 +77,40 @@ import { clearSearch } from '../../state/ducks/search';
 // import { wallet } from '../../wallet/wallet-rpc';
 import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
 import { updateSendAddress } from '../../state/ducks/walletConfig';
-// import BchatLogo from '../icon/bchatLogo';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { Flex } from '../basic/Flex';
-import { SpacerLG, SpacerSM } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 import { getTheme } from '../../state/selectors/theme';
+import NewChatIcon from '../icon/NewChatIcon';
+import SecretGrpIcon from '../icon/SecretGrpIcon';
+import SocialGrpIcon from '../icon/SocialGrpIcon';
 
-const Section = (props: { type: SectionType }) => {
+const Section = (props: {
+  type: SectionType;
+  isHiddenSubMenus?: boolean;
+  setIsHiddenSubMenus?: any;
+}) => {
   const ourNumber = useSelector(getOurNumber);
   const unreadMessageCount = useSelector(getUnreadMessageCount);
   const dispatch = useDispatch();
-  const { type } = props;
+  const { type, isHiddenSubMenus, setIsHiddenSubMenus } = props;
   const focusedSection = useSelector(getFocusedSection);
   const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
   const darkMode = useSelector(getTheme) === 'dark';
-  // function switchToWalletSec() {
-  //   dispatch(showLeftPaneSection(3));
-  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-  // }
 
-  const handleClick = async () => {
+
+  const handleClick = async (subTypes?: SectionType) => {
     /* tslint:disable:no-void-expression */
     dispatch(closeRightPanel());
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
+    } else if (subTypes === SectionType.SubMenu) {
+      setIsHiddenSubMenus(false);
     } else if (type === SectionType.Moon) {
       const themeFromSettings = window.Events.getThemeSetting();
       const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
@@ -118,16 +123,19 @@ const Section = (props: { type: SectionType }) => {
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
-    } else if (type === SectionType.NewChat) {
+    } else if (subTypes === SectionType.NewChat) {
+      setIsHiddenSubMenus(!isHiddenSubMenus);
       dispatch(showLeftPaneSection(1));
 
       dispatch(setOverlayMode('message'));
-    } else if (type === SectionType.Closedgroup) {
+    } else if (subTypes === SectionType.Closedgroup) {
+      setIsHiddenSubMenus(!isHiddenSubMenus);
       // Show close group
       dispatch(showLeftPaneSection(2));
 
       dispatch(setOverlayMode('closed-group'));
-    } else if (type === SectionType.Opengroup) {
+    } else if (subTypes === SectionType.Opengroup) {
+      setIsHiddenSubMenus(!isHiddenSubMenus);
       // Show open group
       dispatch(showLeftPaneSection(3));
 
@@ -158,13 +166,7 @@ const Section = (props: { type: SectionType }) => {
       dispatch(clearSearch());
       dispatch(setOverlayMode(undefined));
       dispatch(showLeftPaneSection(type));
-      // if (type == BchatSettingCategory.Wallet) {
-      //   // dispatch(setOverlayMode('wallet'));
-
-      //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      // } else {
-      //   dispatch(setOverlayMode(undefined));
-      // }
+  
     }
   };
 
@@ -189,98 +191,117 @@ const Section = (props: { type: SectionType }) => {
             // data-place="right"
             // data-offset="{'top':0}"
             className="btnView"
-            onClick={handleClick}
+            onClick={() => handleClick()}
           >
             <BchatIcon
-              iconSize={28}
+              iconSize={31}
               iconType={'chatBubble'}
-              // isSelected={isSelected}
             />
-            <div className="menu-txt">All Chats</div>
-          </div>
-          {unreadMessageCount !== 0 ? (
-            <div className="unreadCountChatIcon">
-              {unreadMessageCount <= 99 ? (
-                unreadToShow
-              ) : (
-                <span style={{ marginLeft: '-4px' }}>
-                  99
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '-3px',
-                      left: '13px',
-                    }}
-                  >
-                    +
+            {unreadMessageCount !== 0 ? (
+              <div className="unreadCountChatIcon">
+                {unreadMessageCount <= 99 ? (
+                  unreadToShow
+                ) : (
+                  <span >
+                    99+
                   </span>
-                </span>
-              )}
-            </div>
-          ) : null}
+                )}
+              </div>
+            ) : null}
+          </div>
+          <section className="d-visiblity ">
+            <DisplayTitle title="All Chats" top={'186px'} />
+          </section>
         </div>
       );
     case SectionType.NewChat:
+      const isFocused =
+        focusedSection === SectionType.NewChat ||
+        focusedSection === SectionType.Closedgroup ||
+        focusedSection === SectionType.Opengroup;
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+        <div
+          className={classNames(
+            isFocused ? 'isSelected-icon-box' : 'icon-box',
+            !isHiddenSubMenus && 'icon-colored-box'
+          )}
+          onMouseOver={() => setIsHiddenSubMenus(false)}
+          onMouseLeave={() => {
+            setIsHiddenSubMenus(true);
+          }}
+        >
           <div
             // data-tip="New Chat"
             // data-place="right"
             // data-offset="{'top':0}"
             className="btnView"
-            onClick={handleClick}
+            onClick={() => handleClick(SectionType.SubMenu)}
           >
             <BchatIcon
-              iconSize={28}
+              iconSize={31}
               iconType={'newChat'}
-              // isSelected={isSelected}
             />
-            <div className="menu-txt">New Chat</div>
+          
+          </div>
+          <div>
+            <Flex
+              container={true}
+              className={classNames(
+                'sub-menu-box-wrapper',
+                isHiddenSubMenus && 'sub-menu-box-wrapper-disabled'
+              )}
+            >
+              <MarginedDiv>
+                <svg
+                  width="15"
+                  height="38"
+                  viewBox="0 0 15 38"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.99985 7H6.99985C3.68614 7 0.0693359 3.31371 0.0693359 0V37.9182C1.09563 34.191 4.13385 31 7.99985 31C11.8658 31 14.9998 34.134 14.9998 38V0C14.9998 3.86599 11.8658 7 7.99985 7Z"
+                    fill="#2E333D"
+                  />
+                </svg>
+              </MarginedDiv>
+              <div className={'sub-menu-box'} >
+                <SubMenuList
+                  container={true}
+                  padding="17px"
+                  onClick={() => handleClick(SectionType.NewChat)}
+                  isSelected={focusedSection === SectionType.NewChat}
+                >
+                  <NewChatIcon />
+                  <SpacerMD /> <div className="menu-txt">New Chat</div>
+                </SubMenuList>
+                <SpacerMD />
+                <SubMenuList
+                  container={true}
+                  padding="17px"
+                  onClick={() => handleClick(SectionType.Closedgroup)}
+                  isSelected={focusedSection === SectionType.Closedgroup}
+                >
+                  <SecretGrpIcon />
+                  <SpacerMD /> <div className="menu-txt">Secret Group</div>
+                </SubMenuList>
+                <SpacerMD />
+                <SubMenuList
+                  container={true}
+                  padding="17px"
+                  onClick={() => handleClick(SectionType.Opengroup)}
+                  isSelected={focusedSection === SectionType.Opengroup}
+                >
+                  <SocialGrpIcon />
+                  <SpacerMD /> <div className="menu-txt">Social Group</div>{' '}
+                </SubMenuList>
+              </div>
+            </Flex>
           </div>
         </div>
       );
-    case SectionType.Closedgroup:
-      return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div
-            // data-tip="Secret Group"
-            // data-place="right"
-            // data-offset="{'top':0}"
-            className="btnView"
-            onClick={handleClick}
-          >
-            <BchatIcon
-              iconSize={28}
-              // dataTestId="settings-section"
-              iconType={'closedgroup'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
-            />
-            <div className="menu-txt">Secret Group</div>
-          </div>
-        </div>
-      );
-    case SectionType.Opengroup:
-      return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div
-            // data-tip="Social Group"
-            // data-place="right"
-            // data-offset="{'top':0}"
-            className="btnView"
-            onClick={handleClick}
-          >
-            <BchatIcon
-              iconSize={28}
-              // dataTestId="settings-section"
-              iconType={'opengroup'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
-            />
-            <div className="menu-txt">Social Group</div>
-          </div>
-        </div>
-      );
+
+ 
     case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
@@ -289,39 +310,35 @@ const Section = (props: { type: SectionType }) => {
             // data-place="right"
             // data-offset="{'top':0}"
             className="btnView"
-            onClick={handleClick}
+            onClick={() => handleClick()}
           >
             <BchatIcon
-              iconSize={28}
+              iconSize={31}
               // dataTestId="settings-section"
               iconType={'gear'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
             />
-            <div className="menu-txt">Settings</div>
           </div>
+          <section className="d-visiblity ">
+            <DisplayTitle title="Settings" top={'370px'} />
+          </section>
         </div>
       );
 
     case SectionType.Wallet:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div className="grey-border" />
           <div
             // data-tip="Wallet"
             // data-place="right"
             // data-offset="{'top':0}"
             className="btnView"
-            onClick={handleClick}
+            onClick={() => handleClick()}
             style={{ flexDirection: 'column' }}
           >
             <BchatIcon
-              iconSize={28}
+              iconSize={31}
               iconType={'wallet'}
-              // notificationCount={unreadToShow}
-              // isSelected={isSelected}
             />
-            <div className="menu-txt">Wallet</div>
             <Beta>
               <BchatIcon
                 iconSize={34}
@@ -329,34 +346,17 @@ const Section = (props: { type: SectionType }) => {
                 clipRule="evenodd"
                 fillRule="evenodd"
                 iconColor={darkMode ? '#A7A7BA' : '#ACACAC'}
-                // notificationCount={unreadToShow}
-                // isSelected={isSelected}
               />
             </Beta>
-            {/* <div style={{ cursor: 'pointer' }}>
-              <img
-                src="images/wallet/wallet_beta.svg"
-                // className="bchat-text-logo"
-                style={{ width: '20px', height: '20px' }}
-              />
-            </div> */}
-            {/* <div className='beta'>BETA</div> */}
           </div>
-          <div className="grey-border" />
+      
+          <section className="d-visiblity ">
+            <DisplayTitle title="Wallet" top={'278px'} />
+          </section>
         </div>
       );
     default:
       return null;
-    // (
-    // <BchatIconButton
-    //   iconSize="medium"
-    //   iconType={'moon'}
-    //   dataTestId="theme-section"
-    //   iconColor={undefined}
-    //   notificationCount={unreadToShow}
-    //   onClick={handleClick}
-    // />
-    // );
   }
 };
 
@@ -518,18 +518,31 @@ export const BchatToolTip = (props: any) => (
   />
 );
 
+const DisplayTitle = (props: { title: string; top: string }) => (
+  <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
+    <svg width="15" height="38" viewBox="0 0 15 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M7.99985 7H6.99985C3.68614 7 0.0693359 3.31371 0.0693359 0V37.9182C1.09563 34.191 4.13385 31 7.99985 31C11.8658 31 14.9998 34.134 14.9998 38V0C14.9998 3.86599 11.8658 7 7.99985 7Z"
+        fill="#2E333D"
+      />
+    </svg>
+    <div className={'sub-menu-box'}>
+      <div className="menu-txt">{props.title}</div>
+    </div>
+  </StyledTitleWrapper>
+);
+
 /**
  * ActionsPanel is the far left banner (not the left pane).
  * The panel with buttons to switch between the message/contact/settings/theme views
  */
 export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
+  const [isHiddenSubMenus, setIsHiddenSubMenus] = useState(true);
   const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
   const conversation = getConversationController().get(getOurPubKeyStrFromCache());
 
   const dispatch = useDispatch();
-  // const darktheme = useSelector((state: any) => state.theme);
-  // const darkMode = darktheme === 'dark' ? true : false;
   const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
@@ -547,7 +560,6 @@ export const ActionsPanel = () => {
   // wait for cleanUpMediasInterval and then start cleaning up medias
   // this would be way easier to just be able to not trigger a call with the setInterval
   useEffect(() => {
-    // switchHtmlToDarkTheme()
     const timeout = setTimeout(() => setStartCleanUpMedia(true), cleanUpMediasInterval);
 
     return () => clearTimeout(timeout);
@@ -586,7 +598,6 @@ export const ActionsPanel = () => {
 
   const themeChanger = (theme: ThemeStateType) => {
     const themeFromSettings = window.Events.getThemeSetting();
-    // const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
     window.setTheme(theme);
     dispatch(applyTheme(theme));
 
@@ -608,7 +619,7 @@ export const ActionsPanel = () => {
           isSelected={false}
           handleClick={() => {}}
           id={''}
-          size="tiny"
+          size="small"
         />
       </Hops>
     );
@@ -618,16 +629,9 @@ export const ActionsPanel = () => {
       <ModalContainer />
       <CallContainer />
       <LeftPaneSectionContainer data-testid="leftpane-section-container">
-        {/* <div className="profile-box">
-          <div className="logo-wrapper">
-            <IsOnline />
-            <BchatLogo />
-          </div>
-        </div> */}
-
         <div
           className="profile-box"
-          style={{ marginTop: '10px', height: '60px', marginBottom: '10px',position:'relative' }}
+          style={{ marginTop: '10px', height: '60px', position: 'relative' }}
         >
           <IsOnline />
           <BNSWrapper
@@ -644,20 +648,22 @@ export const ActionsPanel = () => {
             />
           </BNSWrapper>
         </div>
-        <div style={{ overflow: 'auto', width: '90%' }}>
+        <SpacerMD />
+        <div style={{ overflow: 'auto', width: '65%', height: 'calc(100vh - 250px)' }}>
+          <Section
+            type={SectionType.NewChat}
+            isHiddenSubMenus={isHiddenSubMenus}
+            setIsHiddenSubMenus={(e: boolean) => setIsHiddenSubMenus(e)}
+          />
+
+          <SpacerMD />
           <Section type={SectionType.Message} />
-
-          <Section type={SectionType.NewChat} />
-
-          <Section type={SectionType.Closedgroup} />
-
-          <Section type={SectionType.Opengroup} />
-
+          <SpacerMD />
           <Section type={SectionType.Wallet} />
-
+          <SpacerMD />
           <Section type={SectionType.Settings} />
         </div>
-        <Flex container={true} height="30%" alignItems="flex-end">
+        <Flex container={true} alignItems="flex-end">
           <div className="theme-Wrapper ">
             <div
               className={classNames('icon-wrapper', !darkMode && 'selected')}
@@ -696,7 +702,6 @@ export const ActionsPanel = () => {
               </span>
             </div>
           )}
-          {/* !pathCon && isOnline */}
           {!pathCon && isOnline && (
             <div className="offline-msg connection-Wrapper ">
               <Flex
@@ -725,9 +730,11 @@ export const ActionsPanel = () => {
 };
 const Hops = styled.div`
   position: absolute;
-  right: -5px;
-  bottom: -5px;
-  z-index:1;
+  right: -7px;
+  top: -4px;
+  z-index: 1;
+  border: 4px solid var(--color-inbox-background);
+  border-radius: 40px;
 `;
 const NetWorkStatusWrapper = styled.div`
   position: absolute;
@@ -739,5 +746,27 @@ const NetWorkStatusWrapper = styled.div`
 const Beta = styled.div`
   svg {
     height: 14px !important;
+  }
+`;
+const MarginedDiv = styled.div`
+  margin-top: 30px;
+`;
+const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
+  ${props => props.isSelected && 'background-color: var(--color-hop-bg);'}
+  cursor:pointer;
+  border-radius: 16px;
+  &:hover {
+    background-color: var(--color-action-btn-bg);
+  }
+`;
+const StyledTitleWrapper = styled(Flex)<{ top: string }>`
+  position: fixed;
+  left: 102px;
+  top: ${props => props.top};
+  z-index: 9;
+  .sub-menu-box {
+    padding: 21px 25px;
+    background-color: var(--color-modal-bg);
+    border-radius: 16px;
   }
 `;

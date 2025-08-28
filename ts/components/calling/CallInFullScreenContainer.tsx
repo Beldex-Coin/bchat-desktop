@@ -13,8 +13,10 @@ import { CallWindowControls } from './CallButtons';
 import { StyledVideoElement } from './DraggableCallContainer';
 import { Flex } from '../basic/Flex';
 import { getSelectedConversation } from '../../state/selectors/conversations';
+import { avatarPlaceholderColors, cachedHashes } from '../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
+import { UserUtils } from '../../bchat/utils';
 
-const CallInFullScreenVisible = styled.div`
+const CallInFullScreenVisible = styled.div<{bgColor:string}> `
   position: absolute;
   z-index: 999;
   top: 0;
@@ -23,14 +25,14 @@ const CallInFullScreenVisible = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-inbox-background);
   opacity: 1;
   width:100vw;
   align-items: center;
 
-  background-image: url('images/bchat/bgBlurLogo.png');
+  background:${props=>props.bgColor};
   height: 100%;
   background-size: cover;
+
   
 `;
 
@@ -54,7 +56,9 @@ export const CallInFullScreenContainer = () => {
   const ongoingCallWithFocused = useSelector(getHasOngoingCallWithFocusedConvo);
   const hasOngoingCallFullScreen = useSelector(getCallIsInFullScreen);
   const selectedConversation = useSelector(getSelectedConversation);
+  const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const [isPortrait,setPortrait]=useState(false)
+
   const {
     remoteStream,
     remoteStreamVideoIsMuted,
@@ -132,9 +136,22 @@ export const CallInFullScreenContainer = () => {
     }
     return memberName;
   };
-    
+
+  const getBgColor = (privateKey?: string, avoidColor?: string): string => {
+    const index = (privateKey ? cachedHashes.get(privateKey) ?? 0 : 0) % avatarPlaceholderColors.length;
+    const { bgColor } = avatarPlaceholderColors[index];
+
+    if (bgColor !== avoidColor) return bgColor;
+
+    const alternatives = avatarPlaceholderColors.filter(c => c.bgColor !== avoidColor);
+    return alternatives[Math.floor(Math.random() * alternatives.length)].bgColor;
+  };
+  
+  const ourPubkeyColor = getBgColor(ourPubkey);
+  const selectedConvoColor = getBgColor(selectedConversation?.id, ourPubkeyColor);
+
   return (
-    <CallInFullScreenVisible className='module-message__attachment-container-displayBgBlur'>
+    <CallInFullScreenVisible className='blur-layer'  bgColor={`linear-gradient(${selectedConvoColor},${ourPubkeyColor})`} >
       <StyledVideoElement
         ref={videoRefRemote}
         autoPlay={true}
