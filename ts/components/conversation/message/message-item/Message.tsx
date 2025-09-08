@@ -9,19 +9,27 @@ import { GenericReadableMessage } from './GenericReadableMessage';
 // Same as MIN_WIDTH in ImageGrid.tsx
 export const MINIMUM_LINK_PREVIEW_IMAGE_WIDTH = 200;
 
-type Props = {
+interface BaseProps {
   messageId: string;
-  isDetailView?: boolean; // when the detail is shown for a message, we disble click and some other stuff
-};
+  isDetailView?: boolean;
+}
+interface GroupInvitationExtraProps {
+  serverName?: string;
+  url?: string;
+  acceptUrl?: string;
+  isUnread?: boolean;
+}
+
+type Props = BaseProps & GroupInvitationExtraProps;
 
 export const Message = (props: Props) => {
-  const msgProps = useSelector(state =>
+  const msgProps = useSelector((state) =>
     getGenericReadableMessageSelectorProps(state as any, props.messageId)
   );
 
   const ctxMenuID = `ctx-menu-message-${uuid()}`;
 
-  if (msgProps?.isDeleted && msgProps.direction === 'outgoing') {
+  if (msgProps?.isDeleted && msgProps.direction === "outgoing") {
     return null;
   }
 
@@ -30,6 +38,10 @@ export const Message = (props: Props) => {
       ctxMenuID={ctxMenuID}
       messageId={props.messageId}
       isDetailView={props.isDetailView}
+      serverName={props.serverName}
+      url={props.url}
+      acceptUrl={props.acceptUrl}
+      isUnread={props.isUnread}
     />
   );
 };

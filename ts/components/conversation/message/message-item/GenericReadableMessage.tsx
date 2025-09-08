@@ -22,6 +22,7 @@ import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
+import { GroupInvitation } from './GroupInvitation';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -99,6 +100,11 @@ type Props = {
   messageId: string;
   ctxMenuID: string;
   isDetailView?: boolean;
+
+  serverName?: string;
+  url?: string;
+  acceptUrl?: string;
+  isUnread?: boolean;
 };
 // tslint:disable: use-simple-attributes
 
@@ -160,6 +166,8 @@ export const GenericReadableMessage = (props: Props) => {
   const multiSelectMode = useSelector(isMessageSelectionMode);
   const [isRightClicked, setIsRightClicked] = useState(false);
   const [enableReactions, setEnableReactions] = useState(true);
+  const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
+
   const onMessageLoseFocus = useCallback(() => {
     if (isRightClicked) {
       setIsRightClicked(false);
@@ -182,7 +190,7 @@ export const GenericReadableMessage = (props: Props) => {
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
 
-  const { ctxMenuID, messageId, isDetailView } = props;
+  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url } = props;
 
   if (!msgProps) {
     return null;
@@ -232,6 +240,18 @@ export const GenericReadableMessage = (props: Props) => {
     [messageId]
   );
 
+  const groupInvitationTag =serverName && (
+    <GroupInvitation
+      serverName={serverName || ''}
+      url={url || ''}
+      direction={'incoming'}
+      acceptUrl={acceptUrl || ''}
+      messageId={messageId}
+      isUnread={props.isUnread || false}
+      onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+    />
+  );
+
   return (
     <StyledReadableMessage
       messageId={messageId}
@@ -241,7 +261,7 @@ export const GenericReadableMessage = (props: Props) => {
         isGroup && 'public-chat-message-wrapper',
         isIncoming ? 'bchat-message-wrapper-incoming' : 'bchat-message-wrapper-outgoing'
       )}
-      onContextMenu={ handleContextMenu}
+      onContextMenu={handleContextMenu}
       receivedAt={receivedAt}
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
@@ -286,6 +306,10 @@ export const GenericReadableMessage = (props: Props) => {
           isRightClicked={isRightClicked}
           onMessageLoseFocus={onMessageLoseFocus}
           onHandleContextMenu={handleContextMenu}
+          acceptUrl={acceptUrl}
+          groupInvitationTag={groupInvitationTag}
+          recentEmojiBtnVisible={recentEmojiBtnVisible}
+          setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

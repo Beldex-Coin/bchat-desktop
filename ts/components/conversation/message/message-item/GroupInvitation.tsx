@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames';
 import { PropsForGroupInvitation } from '../../../../state/ducks/conversations';
 import { acceptOpenGroupInvitation } from '../../../../interactions/messageInteractions';
@@ -14,15 +14,18 @@ import { BchatJoinableRoomAvatar } from '../../../leftpane/overlay/BchatJoinable
 import {
   getMessageContentSelectorProps,
   getMessageStatusProps,
+  getQuotedMessageToAnimate,
+  getShouldHighlightMessage,
+
 } from '../../../../state/selectors/conversations';
 import moment from 'moment';
-import { MessageStatus } from '../message-content/MessageStatus';
 import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
+import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 
 
-interface Room {
+export interface Room {
   completeUrl: string;
   name: string;
   id: string;
@@ -31,29 +34,58 @@ interface Room {
 
 export const GroupInvitation = (props: PropsForGroupInvitation) => {
   const { messageId, receivedAt, isUnread } = props;
+  const [flashGreen, setFlashGreen] = useState(false);
+  const [didScroll, setDidScroll] = useState(false);
+  const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
 
+  const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
+  const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
+  const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
+
+  useLayoutEffect(() => {
+    if (isQuotedMessageToAnimate) {
+      if (!flashGreen && !didScroll) {
+        //scroll to me and flash me
+        scrollToLoadedMessage(props.messageId, 'quote-or-search-result');
+        setDidScroll(true);
+        if (shouldHighlightMessage) {
+          setFlashGreen(true);
+        }
+      }
+      return;
+    }
+    if (flashGreen) {
+      setFlashGreen(false);
+    }
+
+    if (didScroll) {
+      setDidScroll(false);
+    }
+    return;
+  });
+ 
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => props.serverName === item.name
   );
   const isIncoming = contentProps?.direction === 'incoming';
-  const classes = ['group-invitation'];
-  if (props.direction === 'outgoing') {
+  const classes = [`group-invitation ${flashGreen && 'flash-green-once'}`];
+  if (contentProps?.direction === 'outgoing') {
     classes.push('invitation-outgoing');
   }
 
   const socialGroupInvitation = window.i18n('socialGroupInvitation');
-  
 
   const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
+
   if (!selected) {
     return null;
   }
-
-
+  const recentEmojiBtnVisible = () =>
+    props.onRecentEmojiBtnVisible && props.onRecentEmojiBtnVisible();
   return (
     <ReadableMessage
       messageId={messageId}
@@ -61,20 +93,25 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
-      <div className={classNames(`group-invitation-container group-invitation-container-${contentProps?.direction}`)} id={`msg-${props.messageId}`} >
+      <div
+        className={classNames(
+          `group-invitation-container group-invitation-container-${
+            contentProps?.direction
+          }`
+        )}
+        id={`msg-${props.messageId}`}
+        onMouseEnter={() => {
+          recentEmojiBtnVisible();
+        }}
+      >
         <div style={{ position: 'relative' }}>
-                {isIncoming && (
-                  <StyledSvgWrapper>
-                    <IncomingMsgTailIcon />
-                  </StyledSvgWrapper>
-                )}
-                
+          {isIncoming && (
+            <StyledSvgWrapper>
+              <IncomingMsgTailIcon />
+            </StyledSvgWrapper>
+          )}
+
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
-            <MessageStatus
-              dataTestId="msg-status-incoming"
-              messageId={messageId}
-              isCorrectSide={!isIncoming}
-            />
             <div
               className={classNames(classes)}
               onClick={() => {
@@ -84,7 +121,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
               <div className="group-details">
                 <Flex container={true}>
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
-                  <Flex container={true} flexDirection="column" cursor='pointer'>
+                  <Flex container={true} flexDirection="column" cursor="pointer">
                     <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                       {props.serverName}
                     </span>
@@ -93,18 +130,16 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
                     </span>
                   </Flex>
                 </Flex>
-                  <BchatJoinableRoomAvatar
-                    completeUrl={socialGrp[0]?.completeUrl}
-                    name={socialGrp[0]?.name}
-                    roomId={socialGrp[0]?.id}
-                    base64Data={socialGrp[0]?.base64Data}
-                    onClick={() => {
-                      acceptOpenGroupInvitation(props.acceptUrl, props.serverName);
-                    }}
-                    direction={contentProps?.direction}
-                    
-                  />
-              
+                <BchatJoinableRoomAvatar
+                  completeUrl={socialGrp[0]?.completeUrl}
+                  name={socialGrp[0]?.name}
+                  roomId={socialGrp[0]?.id}
+                  base64Data={socialGrp[0]?.base64Data}
+                  onClick={() => {
+                    acceptOpenGroupInvitation(props.acceptUrl, props.serverName);
+                  }}
+                  direction={contentProps?.direction}
+                />
               </div>
               <SpacerMD />
               <span className="group-address" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
@@ -113,25 +148,13 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
               <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
                 {moment(contentProps?.timestamp).format('hh:mm A')}
               </div>
-              {/* <div
-              className="contents"
-              onClick={() => {
-                acceptOpenGroupInvitation(props.acceptUrl, props.serverName);
-              }}
-            >
-              <BchatIconButton iconType="plus" iconColor={'var(--color-accent)'} iconSize={'large'} />
-              <span className="group-details">
-              
-              
-              </span>
-            </div> */}
             </div>
           </div>
           {!isIncoming && (
-                <StyledSvgWrapper style={{ right: 0 }}>
-                  <OutgoingMsgTailIcon />
-                </StyledSvgWrapper>
-              )}
+            <StyledSvgWrapper style={{ right: 0 }}>
+              <OutgoingMsgTailIcon />
+            </StyledSvgWrapper>
+          )}
         </div>
       </div>
     </ReadableMessage>
@@ -140,7 +163,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
 interface VerticalLineProps {
   direcrion?: string;
 }
-export  const VerticalLine = styled.div<VerticalLineProps>`
+export const VerticalLine = styled.div<VerticalLineProps>`
   width: 5px;
   background-color: ${props =>
     props.direcrion === 'incoming' ? 'var(--color-untrusted-vertical-bar)' : ' #f0f0f0'};
@@ -148,7 +171,7 @@ export  const VerticalLine = styled.div<VerticalLineProps>`
   border-radius: 10px;
   margin-right: 10px;
 `;
-export const FontSizeChanger =(fontSize: number)=> {
+export const FontSizeChanger = (fontSize: number) => {
   const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
   let size;
   if (currentValueFromSettings === 'Small') {
@@ -159,5 +182,4 @@ export const FontSizeChanger =(fontSize: number)=> {
     size = fontSize + 4;
   }
   return size;
-}
-
+};

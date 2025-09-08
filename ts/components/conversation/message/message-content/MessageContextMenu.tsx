@@ -31,6 +31,7 @@ type Props = {
   contextMenuId: string;
   enableReactions: boolean;
   onMessageLoseFocus: () => void;
+  acceptUrl?:string;
 };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -83,7 +84,8 @@ export const MessageContextMenu = (props: Props) => {
     isBlocked,
     isDeleted,
   } = selected;
-  const { messageId, contextMenuId } = props;
+
+  const { messageId, contextMenuId,acceptUrl } = props;
   // const convoName = useConversationUsername(convoId);
   const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const isOutgoing = direction === 'outgoing';
@@ -167,7 +169,7 @@ export const MessageContextMenu = (props: Props) => {
     [convoId, sender, timestamp, serverTimestamp, convoId, attachments]
   );
 
-  const copyText = useCallback(() => {
+  const copyText = useCallback((text) => {
     MessageInteraction.copyBodyToClipboard(text);
   }, [text]);
 
@@ -213,10 +215,16 @@ export const MessageContextMenu = (props: Props) => {
               <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
             </Item>
           ) : null}
-          {(text || !attachments?.length) &&  !isDeleted  && (
-            <Item onClick={copyText}>
+          {(text || !attachments?.length) && !acceptUrl&&  !isDeleted  && (
+            <Item onClick={()=>copyText(text)}>
               <CopyIcon color={'var(--color-text)'} iconSize={18} />
               <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
+            </Item>
+          )}
+          { acceptUrl&&  !isDeleted  && (
+            <Item onClick={()=>copyText(acceptUrl)}>
+              <CopyIcon color={'var(--color-text)'} iconSize={18} />
+              <span style={{ marginLeft: '10px' }}>{window.i18n('copyAcceptUrl')}</span>
             </Item>
           )}
           {(isSent || !isOutgoing) && !isDeleted && (

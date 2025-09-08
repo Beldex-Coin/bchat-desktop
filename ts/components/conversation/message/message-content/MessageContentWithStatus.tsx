@@ -44,7 +44,11 @@ type Props = {
   enableReactions: boolean;
   isRightClicked: boolean;
   onMessageLoseFocus: () => void;
-  onHandleContextMenu:(e: React.MouseEvent<HTMLElement>)=>void;
+  onHandleContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
+  acceptUrl?:string;
+  groupInvitationTag?:any;
+  recentEmojiBtnVisible:boolean;
+  setRecentEmojiBtnVisible:(e:boolean) => void
 };
 export const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -75,7 +79,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
   left: ${props => `${props.isIncoming ? 4 : -248}px`};
-  z-index:1;
+  z-index: 1;
 `;
 const StyledRecentReactionWrapper = styled.div`
   position: relative;
@@ -143,7 +147,7 @@ const RecentReacts = (props: RecentReactsProps) => {
 
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
-      <div >
+      <div>
         <BchatIconButton
           iconType="smileyEmoji"
           iconSize={20}
@@ -183,19 +187,25 @@ const RecentReacts = (props: RecentReactsProps) => {
   );
 };
 
-const ThreeDotsMenu= (props:{darkMode:boolean,onHandleContextMenu:Props["onHandleContextMenu"]})=>{
-
-  const {darkMode,onHandleContextMenu}=props
-  return  <div >
-  <BchatIconButton iconType={'filledThreeDots'}  iconSize={20}
-  iconColor={darkMode ? '#858598' : '#ACACAC'}
-  onClick={onHandleContextMenu}
-  margin="0 2.5px"
-  btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
-  btnRadius="30px"
-  />
-</div>
-}
+const ThreeDotsMenu = (props: {
+  darkMode: boolean;
+  onHandleContextMenu: Props['onHandleContextMenu'];
+}) => {
+  const { darkMode, onHandleContextMenu } = props;
+  return (
+    <div>
+      <BchatIconButton
+        iconType={'filledThreeDots'}
+        iconSize={20}
+        iconColor={darkMode ? '#858598' : '#ACACAC'}
+        onClick={onHandleContextMenu}
+        margin="0 2.5px"
+        btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
+        btnRadius="30px"
+      />
+    </div>
+  );
+};
 export const MessageContentWithStatuses = (props: Props) => {
   const contentProps = useSelector(state =>
     getMessageContentWithStatusesSelectorProps(state as any, props.messageId)
@@ -250,10 +260,13 @@ export const MessageContentWithStatuses = (props: Props) => {
     enableReactions,
     isRightClicked,
     onMessageLoseFocus,
-    onHandleContextMenu
+    onHandleContextMenu,
+    acceptUrl,
+    groupInvitationTag,
+    recentEmojiBtnVisible,
+    setRecentEmojiBtnVisible
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
-  const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
 
   const handleMessageReaction = async (emoji: string) => {
     await sendMessageReaction(messageId, emoji);
@@ -286,9 +299,8 @@ export const MessageContentWithStatuses = (props: Props) => {
     status !== 'error' &&
     typingEnabled &&
     !isRightClicked;
-  
 
-const threeDotVisible=recentEmojiBtnVisible && !isRightClicked;
+  const threeDotVisible = recentEmojiBtnVisible && !isRightClicked;
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);
@@ -302,75 +314,26 @@ const threeDotVisible=recentEmojiBtnVisible && !isRightClicked;
         setRecentEmojiBtnVisible(false);
       }}
     >
-        <div
-          className={classNames(
-            'module-message',
-            `module-message--${direction}`,
-            isDetailView && 'module-message--detailview'
-          )}
-          role="button"
-          onClick={onClickOnMessageOuterContainer}
-          style={{
-            width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto',
-          }}
-          data-testid={dataTestId}
-        >
-          
-        {multiSelectMode &&   <div  className='module-message--multiSelect-overlay' />}
-        {!isIncoming && <Flex container={true} width='165px' justifyContent='flex-end' >  
-         { threeDotVisible && 
-        <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu}/>
-         } 
-           { emojiIsVisible && 
-            <StyledRecentReactionWrapper>
-              <RecentReacts
-                isIncoming={isIncoming}
-                recentEmojiBtnVisible={recentEmojiBtnVisible}
-                onEmojiClick={onEmojiClick}
-                onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
-              />
-            </StyledRecentReactionWrapper>
-          } 
-          </Flex>}
-            
-          {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
-            <ExpireTimer
-              isCorrectSide={!isIncoming}
-              expirationLength={expirationLength}
-              expirationTimestamp={expirationTimestamp}
-            />
-          ) : (
-            <MessageStatus
-              dataTestId="msg-status-outgoing"
-              messageId={messageId}
-              isCorrectSide={!isIncoming && !isDetailView}
-              status={status}
-            />
-          )}
-          <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
-            <MessageContent
-              messageId={messageId}
-              isDetailView={isDetailView}
-              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
-              isTrustedForAttachmentDownload={isTrustedForAttachmentDownload}
-            />
-          </div>
-          {expirationLength && expirationTimestamp ? (
-            <ExpireTimer
-              isCorrectSide={isIncoming}
-              expirationLength={expirationLength}
-              expirationTimestamp={expirationTimestamp}
-            />
-          ) : (
-            <MessageStatus
-              dataTestId="msg-status-incoming"
-              messageId={messageId}
-              isCorrectSide={isIncoming}
-              status={status}
-            />
-          )}
-          {isIncoming && <Flex container={true} width='165px' >          
-              {emojiIsVisible  && (
+      <div
+        className={classNames(
+          'module-message',
+          `module-message--${direction}`,
+          isDetailView && 'module-message--detailview'
+        )}
+        role="button"
+        onClick={onClickOnMessageOuterContainer}
+        style={{
+          width: hasAttachments && isTrustedForAttachmentDownload ? 'min-content' : 'auto',
+        }}
+        data-testid={dataTestId}
+      >
+        {multiSelectMode && <div className="module-message--multiSelect-overlay" />}
+        {!isIncoming && (
+          <Flex container={true} width="165px" justifyContent="flex-end">
+            {threeDotVisible && (
+              <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />
+            )}
+            {emojiIsVisible && (
               <StyledRecentReactionWrapper>
                 <RecentReacts
                   isIncoming={isIncoming}
@@ -380,19 +343,78 @@ const threeDotVisible=recentEmojiBtnVisible && !isRightClicked;
                 />
               </StyledRecentReactionWrapper>
             )}
-            { threeDotVisible  &&<ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />}
-         </Flex>}
+          </Flex>
+        )}
 
-          {!isDetailView && (
-            <MessageContextMenu
+        {expirationLength && expirationTimestamp && (status === 'sent' || status === 'read') ? (
+          <ExpireTimer
+            isCorrectSide={!isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        ) : (
+          <MessageStatus
+            dataTestId="msg-status-outgoing"
+            messageId={messageId}
+            isCorrectSide={!isIncoming && !isDetailView}
+            status={status}
+          />
+        )}
+        <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
+          {groupInvitationTag ? (
+            groupInvitationTag
+          ) : (
+            <MessageContent
               messageId={messageId}
-              contextMenuId={ctxMenuID}
-              enableReactions={enableReactions}
-              onMessageLoseFocus={onMessageLoseFocus}
+              isDetailView={isDetailView}
+              onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+              isTrustedForAttachmentDownload={isTrustedForAttachmentDownload}
             />
           )}
-          </div>
-    
+        </div>
+        {expirationLength && expirationTimestamp ? (
+          <ExpireTimer
+            isCorrectSide={isIncoming}
+            expirationLength={expirationLength}
+            expirationTimestamp={expirationTimestamp}
+          />
+        ) : (
+          <MessageStatus
+            dataTestId="msg-status-incoming"
+            messageId={messageId}
+            isCorrectSide={isIncoming}
+            status={status}
+          />
+        )}
+        {isIncoming && (
+          <Flex container={true} width="165px">
+            {emojiIsVisible && (
+              <StyledRecentReactionWrapper>
+                <RecentReacts
+                  isIncoming={isIncoming}
+                  recentEmojiBtnVisible={recentEmojiBtnVisible}
+                  onEmojiClick={onEmojiClick}
+                  onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+                />
+              </StyledRecentReactionWrapper>
+            )}
+            {threeDotVisible && (
+              <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />
+            )}
+          </Flex>
+        )}
+
+        {!isDetailView && (
+          <MessageContextMenu
+            messageId={messageId}
+            contextMenuId={ctxMenuID}
+            enableReactions={enableReactions}
+            onMessageLoseFocus={onMessageLoseFocus}
+            acceptUrl={acceptUrl}
+          />
+        )}
+      </div>
+
       {enableReactions && !isDetailView && (
         <MessageReactions
           messageId={messageId}

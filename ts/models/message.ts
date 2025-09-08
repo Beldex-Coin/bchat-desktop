@@ -664,10 +664,20 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       const quoteAttachment = firstAttachment
         ? this.processQuoteAttachment(firstAttachment)
         : undefined;
-      if (quoteAttachment) {
+      if (quoteAttachment) { 
         // only set attachment if referencedMessageNotFound is false and we have one
         quoteProps.attachment = quoteAttachment;
       }
+    }
+    if(quote.text && quote.text.startsWith(`{"kind"`))
+    {
+      const parsed=JSON.parse(quote.text)
+
+      if(parsed.kind["@type"]==="OpenGroupInvitation")
+      {
+        quoteProps.text='Social group invitation'
+      }
+      
     }
     if (isFromMe) {
       quoteProps.isFromMe = true;

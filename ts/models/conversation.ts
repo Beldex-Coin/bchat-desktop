@@ -646,6 +646,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const preview = quotedMessage.get('preview');
 
     const body = quotedMessage.get('body');
+    const groupInvitation=quotedMessage.get('groupInvitation');
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
@@ -660,6 +661,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       attachments: quotedAttachments,
       timestamp: quotedMessage.get('sent_at') || 0,
       convoId: this.id,
+      groupInvitation:groupInvitation
     };
   }
 

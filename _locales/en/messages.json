@@ -318,6 +318,7 @@
   "failedToAddAsModerator": "Failed to add user as moderator",
   "failedToRemoveFromModerator": "Failed to remove user from the moderator list",
   "copyMessage": "Copy text",
+  "copyAcceptUrl":"Copy Url",
   "selectMessage": "Select",
   "editGroup": "Edit Group",
   "editGroupName": "Edit group name",

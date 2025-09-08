@@ -177,6 +177,7 @@ export type LocalizerKeys =
   | 'voiceMessage'
   | 'changePasswordTitle'
   | 'copyMessage'
+  |'copyAcceptUrl'
   | 'messageDeletionForbidden'
   | 'deleteJustForMe'
   | 'changeAccountPasswordTitle'

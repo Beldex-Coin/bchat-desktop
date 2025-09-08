@@ -105,6 +105,7 @@ export interface ReplyingToMessageProps {
   timestamp: number;
   text?: string;
   attachments?: Array<any>;
+  groupInvitation?:{name:string,url:string}
 }
 
 export type StagedLinkPreviewImage = {
@@ -1360,15 +1361,29 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { quotedMessageProps } = this.props;
 
     const { stagedLinkPreview } = this.state;
-
     // Send message
     const extractedQuotedMessageProps = _.pick(
       quotedMessageProps,
       'id',
       'author',
       'text',
-      'attachments'
+      'attachments',
+      'groupInvitation'
     );
+
+    if(quotedMessageProps?.groupInvitation)
+    {
+      const{name,url} =quotedMessageProps?.groupInvitation
+      const groupInvitation = {
+        kind: {
+          "@type": "OpenGroupInvitation",
+          groupName: name,
+          groupUrl:`${url}`
+        }
+      };
+      extractedQuotedMessageProps.text=JSON.stringify(groupInvitation);
+    }
+
 
     // we consider that a link preview without a title at least is not a preview
     const linkPreview =

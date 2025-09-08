@@ -16,8 +16,6 @@
 .group-invitation-container {
   display: flex;
   flex-direction: column;
-  padding-right: 15px;
-  padding-left: 15px;
   padding-bottom: 3px;
   margin-top: 5px;
 }
@@ -110,6 +108,8 @@
   align-items: center;
   display: flex;
 }
+
+
 
 .group-invitation {
   background: var(--color-received-message-background);

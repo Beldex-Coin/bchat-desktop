@@ -21,8 +21,7 @@ import {
 import { GroupUpdateMessage } from './message/message-item/GroupUpdateMessage';
 import { MessageRequestResponse } from './message/message-item/MessageRequestResponse';
 import { MessageDateBreak } from './message/message-item/DateBreak';
-import { GroupInvitation } from './message/message-item/GroupInvitation';
-import { Message } from './message/message-item/Message';
+import {  Message } from './message/message-item/Message';
 import { CallNotification } from './message/message-item/notification-bubble/CallNotification';
 
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
@@ -102,7 +101,6 @@ export const BchatMessagesList = (props: {
     }
    
   }
-
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -126,7 +124,7 @@ export const BchatMessagesList = (props: {
 
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
-          return [<GroupInvitation key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'payment') {
           const msgProps = messageProps.message.props as PropsForPayment;
