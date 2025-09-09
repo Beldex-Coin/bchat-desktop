@@ -105,7 +105,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
         }}
       >
         <div style={{ position: 'relative' }}>
-          {isIncoming && (
+          { contentProps?.lastMessageOfSeries &&isIncoming && (
             <StyledSvgWrapper>
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
@@ -150,7 +150,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
               </div>
             </div>
           </div>
-          {!isIncoming && (
+          {contentProps?.lastMessageOfSeries && !isIncoming && (
             <StyledSvgWrapper style={{ right: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>

@@ -644,9 +644,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async makeQuote(quotedMessage: MessageModel): Promise<ReplyingToMessageProps | null> {
     const attachments = quotedMessage.get('attachments');
     const preview = quotedMessage.get('preview');
-
+    const direction= quotedMessage.get('direction');
     const body = quotedMessage.get('body');
     const groupInvitation=quotedMessage.get('groupInvitation');
+    const paymentDetails=quotedMessage.get('txnDetails')
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
@@ -661,7 +662,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       attachments: quotedAttachments,
       timestamp: quotedMessage.get('sent_at') || 0,
       convoId: this.id,
-      groupInvitation:groupInvitation
+      direction:direction,
+      groupInvitation:groupInvitation,
+      paymentDetails:paymentDetails
     };
   }
 

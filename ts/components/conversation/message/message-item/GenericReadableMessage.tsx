@@ -23,6 +23,7 @@ import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
+import { PaymentMessage } from './PaymentMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -105,6 +106,9 @@ type Props = {
   url?: string;
   acceptUrl?: string;
   isUnread?: boolean;
+
+  amount?: string;
+  txnId?: string;
 };
 // tslint:disable: use-simple-attributes
 
@@ -190,7 +194,7 @@ export const GenericReadableMessage = (props: Props) => {
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
 
-  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url } = props;
+  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url,amount,txnId } = props;
 
   if (!msgProps) {
     return null;
@@ -240,7 +244,7 @@ export const GenericReadableMessage = (props: Props) => {
     [messageId]
   );
 
-  const groupInvitationTag =serverName && (
+  const groupInvitationTag: JSX.Element | null =serverName ? (
     <GroupInvitation
       serverName={serverName || ''}
       url={url || ''}
@@ -250,7 +254,20 @@ export const GenericReadableMessage = (props: Props) => {
       isUnread={props.isUnread || false}
       onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
     />
-  );
+  ):null;
+
+  const paymentCardTag: JSX.Element | null = txnId
+  ? (
+    <PaymentMessage
+      amount={amount || ""}
+      txnId={txnId || ""}
+      messageId={messageId || ""}
+      direction={direction}
+      isUnread={props.isUnread || false}
+      onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+    />
+  )
+  : null;
 
   return (
     <StyledReadableMessage
@@ -307,7 +324,8 @@ export const GenericReadableMessage = (props: Props) => {
           onMessageLoseFocus={onMessageLoseFocus}
           onHandleContextMenu={handleContextMenu}
           acceptUrl={acceptUrl}
-          groupInvitationTag={groupInvitationTag}
+          txnId={txnId}
+          cardDesignTag={groupInvitationTag||paymentCardTag}
           recentEmojiBtnVisible={recentEmojiBtnVisible}
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
         />

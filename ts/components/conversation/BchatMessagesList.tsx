@@ -27,7 +27,6 @@ import { CallNotification } from './message/message-item/notification-bubble/Cal
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
-import { PaymentMessage } from './message/message-item/PaymentMessage';
 import { getWalletPaymentDetailsSend } from '../../state/selectors/walletConfig';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
@@ -128,7 +127,7 @@ export const BchatMessagesList = (props: {
         }
         if (messageProps.message?.messageType === 'payment') {
           const msgProps = messageProps.message.props as PropsForPayment;
-          return [<PaymentMessage key={messageId} {...msgProps}  />, dateBreak, unreadIndicator];
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'message-request-response') {
           const msgProps = messageProps.message.props as PropsForMessageRequestResponse;

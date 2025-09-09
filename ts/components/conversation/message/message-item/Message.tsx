@@ -5,6 +5,8 @@ import uuid from 'uuid';
 import { useSelector } from 'react-redux';
 import { getGenericReadableMessageSelectorProps } from '../../../../state/selectors/conversations';
 import { GenericReadableMessage } from './GenericReadableMessage';
+import { MessageModelType } from '../../../../models/messageType';
+
 
 // Same as MIN_WIDTH in ImageGrid.tsx
 export const MINIMUM_LINK_PREVIEW_IMAGE_WIDTH = 200;
@@ -20,7 +22,17 @@ interface GroupInvitationExtraProps {
   isUnread?: boolean;
 }
 
-type Props = BaseProps & GroupInvitationExtraProps;
+interface PaymentExtraProps{
+  amount?: string;
+  txnId?: string;
+  direction?: MessageModelType;
+  acceptUrl?: string;
+  messageId?: string;
+  receivedAt?: number;
+  isUnread?: boolean;
+}
+
+type Props = BaseProps & GroupInvitationExtraProps & PaymentExtraProps;
 
 export const Message = (props: Props) => {
   const msgProps = useSelector((state) =>
@@ -42,6 +54,9 @@ export const Message = (props: Props) => {
       url={props.url}
       acceptUrl={props.acceptUrl}
       isUnread={props.isUnread}
+      amount={props.amount}
+      txnId={props.txnId}
+
     />
   );
 };

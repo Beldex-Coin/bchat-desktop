@@ -105,7 +105,9 @@ export interface ReplyingToMessageProps {
   timestamp: number;
   text?: string;
   attachments?: Array<any>;
-  groupInvitation?:{name:string,url:string}
+  direction: 'incoming' | 'outgoing';
+  groupInvitation?: { name: string; url: string };
+  paymentDetails?: { amount: string; txnId: string };
 }
 
 export type StagedLinkPreviewImage = {
@@ -799,7 +801,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
           this.renderBlockedContactBottoms()
         ) : (
           <>
-            {typingEnabled  && !this.state.showRecordingView  && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
+            {typingEnabled && !this.state.showRecordingView && (
+              <AddStagedAttachmentButton onClick={this.onChooseAttachment} />
+            )}
             <input
               className="hidden"
               placeholder="Attachment"
@@ -1368,22 +1372,27 @@ class CompositionBoxInner extends React.Component<Props, State> {
       'author',
       'text',
       'attachments',
-      'groupInvitation'
+      'direction',
+      'groupInvitation',
+      'paymentDetails'
     );
 
-    if(quotedMessageProps?.groupInvitation)
-    {
-      const{name,url} =quotedMessageProps?.groupInvitation
+    if (quotedMessageProps?.groupInvitation) {
+      const { name, url } = quotedMessageProps?.groupInvitation;
       const groupInvitation = {
         kind: {
-          "@type": "OpenGroupInvitation",
+          '@type': 'OpenGroupInvitation',
           groupName: name,
-          groupUrl:`${url}`
-        }
+          groupUrl: `${url}`,
+        },
       };
-      extractedQuotedMessageProps.text=JSON.stringify(groupInvitation);
+      extractedQuotedMessageProps.text = JSON.stringify(groupInvitation);
     }
-
+    if (extractedQuotedMessageProps?.paymentDetails) {
+      const {direction,paymentDetails}=extractedQuotedMessageProps
+      const types=direction==='incoming'?'Received':"Sent"
+      extractedQuotedMessageProps.text =  `${window.i18n('paymentDetails',[types]) } : ${paymentDetails.amount} BDX`;
+    }
 
     // we consider that a link preview without a title at least is not a preview
     const linkPreview =
@@ -1545,7 +1554,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       showRecordingView: true,
       showEmojiPanel: false,
     });
-    window.inboxStore?.dispatch(updateIsCurrentlyRecording(true))
+    window.inboxStore?.dispatch(updateIsCurrentlyRecording(true));
   }
 
   private onExitVoiceNoteView() {
@@ -1580,7 +1589,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const end = draft.slice(realSelectionStart);
 
     const newMessage = `${before}${emoji.native}${end}`;
-    
+
     this.setState({ draft: newMessage }, () => {
       setTimeout(() => {
         const emojiLength = emoji.native?.length || 0;

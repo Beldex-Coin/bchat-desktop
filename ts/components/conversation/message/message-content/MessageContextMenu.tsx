@@ -32,6 +32,7 @@ type Props = {
   enableReactions: boolean;
   onMessageLoseFocus: () => void;
   acceptUrl?:string;
+  txnId?:string;
 };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -85,7 +86,7 @@ export const MessageContextMenu = (props: Props) => {
     isDeleted,
   } = selected;
 
-  const { messageId, contextMenuId,acceptUrl } = props;
+  const { messageId, contextMenuId,acceptUrl,txnId } = props;
   // const convoName = useConversationUsername(convoId);
   const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const isOutgoing = direction === 'outgoing';
@@ -169,9 +170,10 @@ export const MessageContextMenu = (props: Props) => {
     [convoId, sender, timestamp, serverTimestamp, convoId, attachments]
   );
 
-  const copyText = useCallback((text) => {
-    MessageInteraction.copyBodyToClipboard(text);
-  }, [text]);
+  const copyText = useCallback(() => {
+   const copyString= text||acceptUrl|| txnId
+    MessageInteraction.copyBodyToClipboard(copyString);
+  }, [text,acceptUrl,txnId]);
 
   const onRetry = useCallback(async () => {
     const found = await getMessageById(messageId);
@@ -200,6 +202,7 @@ export const MessageContextMenu = (props: Props) => {
     void deleteMessagesByIdForEveryone([messageId], convoId);
   }, [convoId, messageId]);
 
+  const copyTitle=text ?window.i18n('copyMessage'):acceptUrl?window.i18n('copyTxnId'):txnId?window.i18n('copyTxnId') :null
   return (
       <div ref={contextMenuRef}>
         {' '}
@@ -215,16 +218,10 @@ export const MessageContextMenu = (props: Props) => {
               <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
             </Item>
           ) : null}
-          {(text || !attachments?.length) && !acceptUrl&&  !isDeleted  && (
-            <Item onClick={()=>copyText(text)}>
+          {copyTitle &&  !isDeleted  && (
+            <Item onClick={()=>copyText()}>
               <CopyIcon color={'var(--color-text)'} iconSize={18} />
-              <span style={{ marginLeft: '10px' }}>{window.i18n('copyMessage')}</span>
-            </Item>
-          )}
-          { acceptUrl&&  !isDeleted  && (
-            <Item onClick={()=>copyText(acceptUrl)}>
-              <CopyIcon color={'var(--color-text)'} iconSize={18} />
-              <span style={{ marginLeft: '10px' }}>{window.i18n('copyAcceptUrl')}</span>
+              <span style={{ marginLeft: '10px' }}>{copyTitle}</span>
             </Item>
           )}
           {(isSent || !isOutgoing) && !isDeleted && (

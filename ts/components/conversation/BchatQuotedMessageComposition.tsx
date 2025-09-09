@@ -86,7 +86,7 @@ export const BchatQuotedMessageComposition = () => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
 
   const dispatch = useDispatch();
-  const { text: body, attachments, groupInvitation } = quotedMessageProps || {};
+  const { text: body, attachments,direction, groupInvitation, paymentDetails } = quotedMessageProps || {};
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => groupInvitation?.name === item.name
   );
@@ -182,6 +182,21 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </div>
             )}
+
+            {paymentDetails && (
+              <div className="group-details">
+                <Flex container={true} flexDirection="column" cursor="pointer">
+                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                  {window.i18n('paymentDetails',[direction==='incoming'?'Received':"Sent"])}
+                  </span>
+                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                   {paymentDetails.amount} BDX
+                  </span>
+                </Flex>
+
+              </div>
+            )}
+
             {hasImageAttachment && (
               <Image
                 alt={getAlt(firstImageAttachment)}

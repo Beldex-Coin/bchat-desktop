@@ -45,10 +45,11 @@ type Props = {
   isRightClicked: boolean;
   onMessageLoseFocus: () => void;
   onHandleContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
-  acceptUrl?:string;
-  groupInvitationTag?:any;
-  recentEmojiBtnVisible:boolean;
-  setRecentEmojiBtnVisible:(e:boolean) => void
+  acceptUrl?: string;
+  txnId?:string;
+  cardDesignTag: JSX.Element | null;
+  recentEmojiBtnVisible: boolean;
+  setRecentEmojiBtnVisible: (e: boolean) => void;
 };
 export const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -262,9 +263,10 @@ export const MessageContentWithStatuses = (props: Props) => {
     onMessageLoseFocus,
     onHandleContextMenu,
     acceptUrl,
-    groupInvitationTag,
+    txnId,
+    cardDesignTag,
     recentEmojiBtnVisible,
-    setRecentEmojiBtnVisible
+    setRecentEmojiBtnVisible,
   } = props;
   const [popupReaction, setPopupReaction] = useState('');
 
@@ -361,9 +363,7 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
         <div onDoubleClickCapture={onDoubleClickReplyToMessage}>
-          {groupInvitationTag ? (
-            groupInvitationTag
-          ) : (
+          {cardDesignTag ?? (
             <MessageContent
               messageId={messageId}
               isDetailView={isDetailView}
@@ -411,6 +411,8 @@ export const MessageContentWithStatuses = (props: Props) => {
             enableReactions={enableReactions}
             onMessageLoseFocus={onMessageLoseFocus}
             acceptUrl={acceptUrl}
+            txnId={txnId}
+
           />
         )}
       </div>
