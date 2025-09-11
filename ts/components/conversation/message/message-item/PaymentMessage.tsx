@@ -6,7 +6,7 @@ import { PropsForPayment } from '../../../../state/ducks/conversations';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon';
 import { shell } from 'electron/common';
-import { MessageStatus } from '../message-content/MessageStatus';
+// import { MessageStatus } from '../message-content/MessageStatus';
 import { useSelector } from 'react-redux';
 import { getMessageContentSelectorProps, getQuotedMessageToAnimate, getShouldHighlightMessage } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
@@ -18,7 +18,8 @@ import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 
 export const PaymentMessage = (props: PropsForPayment) => {
 
-  const { messageId, receivedAt, isUnread } = props;
+  const { messageId, receivedAt, isUnread,direction,
+    amount,txnId } = props;
   const [flashGreen, setFlashGreen] = useState(false);
   const [didScroll, setDidScroll] = useState(false);
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
@@ -31,9 +32,9 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
-  const isIncoming = contentProps?.direction === 'incoming';
+  const isIncoming = direction === 'incoming';
 
- 
+
 
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
@@ -56,6 +57,10 @@ export const PaymentMessage = (props: PropsForPayment) => {
     }
     return;
   });
+  if (!amount)
+    {
+     return null;
+    }
   
   if (props.direction === 'outgoing') {
     classes.push('invitation-outgoing');
@@ -120,7 +125,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
     >
       <div
         className={classNames(
-          `group-invitation-container group-invitation-container-${contentProps?.direction}`
+          `group-invitation-container group-invitation-container-${direction}`
         )}
         id={`msg-${props.messageId}`}
         onMouseEnter={() => {
@@ -133,23 +138,18 @@ export const PaymentMessage = (props: PropsForPayment) => {
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
           )}
-          <div className={classNames(`payment-Wrapper-${contentProps?.direction}`)}>
-            <MessageStatus
-              dataTestId="msg-status-incoming"
-              messageId={messageId}
-              isCorrectSide={!isIncoming}
-            />
+          <div className={classNames(`payment-Wrapper-${direction}`)}>
             <div
               className={classNames(classes)}
-              onClick={() => (props.txnId ? openToExplore(props.txnId) : '')}
-              style={{ cursor: props.txnId ? 'pointer' : 'unset' }}
+              onClick={() => (txnId ? openToExplore(txnId) : '')}
+              style={{ cursor: txnId ? 'pointer' : 'unset' }}
             >
-              <div className={props.direction === 'outgoing' ? 'contents' : 'contents-incoming'}>
+              <div className={direction === 'outgoing' ? 'contents' : 'contents-incoming'}>
                 <div>
                   <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
                 </div>
                 <div className="amount" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
-                  {props.amount} BDX
+                  {amount} BDX
                 </div>
 
               </div>
@@ -159,7 +159,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
               >
                 <HindTxt />
               </div>
-              <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
+              <div className={classNames('timeStamp', `timeStamp-${direction}`)}>
                 {moment(contentProps?.timestamp).format('hh:mm A')}
               </div>
             </div>

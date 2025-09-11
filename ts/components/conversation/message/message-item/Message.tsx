@@ -26,13 +26,13 @@ interface PaymentExtraProps{
   amount?: string;
   txnId?: string;
   direction?: MessageModelType;
-  acceptUrl?: string;
-  messageId?: string;
-  receivedAt?: number;
-  isUnread?: boolean;
 }
-
-type Props = BaseProps & GroupInvitationExtraProps & PaymentExtraProps;
+interface SharedContactExtraProps{
+  address?: string;
+  name?: string;
+ 
+}
+type Props = BaseProps & GroupInvitationExtraProps & PaymentExtraProps & SharedContactExtraProps;
 
 export const Message = (props: Props) => {
   const msgProps = useSelector((state) =>
@@ -56,6 +56,9 @@ export const Message = (props: Props) => {
       isUnread={props.isUnread}
       amount={props.amount}
       txnId={props.txnId}
+      address={props.address}
+      name={props.name}
+
 
     />
   );

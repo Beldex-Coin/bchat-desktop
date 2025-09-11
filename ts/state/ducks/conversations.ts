@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getConversationController } from '../../bchat/conversations';
 import {
+  // getAllConversations,
+  // getCallMessagesByConversation,
   getFirstUnreadMessageIdInConversation,
   getLastMessageIdInConversation,
   getLastMessageInConversation,
@@ -23,6 +25,8 @@ import { QuotedAttachmentType } from '../../components/conversation/message/mess
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
 import { Reaction, ReactionList } from '../../types/Reaction';
+// import moment from 'moment';
+// import { getDirectContacts } from '../selectors/conversations';
 
 export type CallNotificationType = 'missed-call' | 'started-call' | 'answered-a-call';
 export type PropsForCallNotification = {
@@ -30,7 +34,6 @@ export type PropsForCallNotification = {
   messageId: string;
   receivedAt: number;
   isUnread: boolean;
-  
 };
 
 export type MessageModelPropsWithoutConvoProps = {
@@ -41,8 +44,8 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
-  propsForPayment?:PropsForPayment;
-  
+  propsForPayment?: PropsForPayment;
+  propsForSharedContact?:PropsForSharedContact;
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -141,17 +144,29 @@ export type PropsForGroupInvitation = {
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
+  onRecentEmojiBtnVisible?:()=>void;
+  
 };
 
 export type PropsForPayment = {
   amount: string;
   txnId: string;
   direction: MessageModelType;
-  acceptUrl: string;
+  acceptUrl?: string;
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
+  onRecentEmojiBtnVisible?:()=>void;
 };
+export type PropsForSharedContact={
+  address: string;
+  name: string;
+  direction: MessageModelType;
+  messageId: string;
+  receivedAt?: number;
+  isUnread: boolean;
+  onRecentEmojiBtnVisible?:()=>void;
+}
 export type PropsForAttachment = {
   id: number;
   contentType: string;
@@ -289,10 +304,10 @@ export interface ReduxConversationType {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?:any;
-  walletCreatedDaemonHeight?:number|any;
-  isBnsHolder?:boolean;
-  weAreModerator?:boolean
+  walletUserName?: any;
+  walletCreatedDaemonHeight?: number | any;
+  isBnsHolder?: boolean;
+  weAreModerator?: boolean;
 }
 
 export interface NotificationForConvoOption {
@@ -378,6 +393,7 @@ async function getMessages({
   );
   const time = Date.now() - beforeTimestamp;
   window?.log?.info(`Loading ${messageProps.length} messages took ${time}ms to load.`);
+
   return messageProps;
 }
 
@@ -1007,9 +1023,8 @@ export async function openConversationWithMessages(args: {
   const { conversationKey, messageId, bns } = args;
   const firstUnreadIdOnOpen = await getFirstUnreadMessageIdInConversation(conversationKey);
   const mostRecentMessageIdOnOpen = await getLastMessageIdInConversation(conversationKey);
-  if(bns)
-  {
-    savebnsname(conversationKey,bns)
+  if (bns) {
+    savebnsname(conversationKey, bns);
   }
   const initialMessages = await getMessages({
     conversationKey,
@@ -1026,21 +1041,19 @@ export async function openConversationWithMessages(args: {
   );
 }
 
-  /**
-   * Saves the currently entered nickname.
-   */
-  const savebnsname = async ( conversationKey: string,displayName: any) => {
-    if (!conversationKey) {
-      throw new Error('Cant save without conversation id');
-    }
-    const conversation = await getConversationController().get(conversationKey);
-    if(conversation.getBchatProfile()?.displayName)
-    {
-      return  ;
-    }
-     await conversation.setBchatProfile({ displayName });
-    
-  };
+/**
+ * Saves the currently entered nickname.
+ */
+const savebnsname = async (conversationKey: string, displayName: any) => {
+  if (!conversationKey) {
+    throw new Error('Cant save without conversation id');
+  }
+  const conversation = await getConversationController().get(conversationKey);
+  if (conversation.getBchatProfile()?.displayName) {
+    return;
+  }
+  await conversation.setBchatProfile({ displayName });
+};
 
 export async function openConversationToSpecificMessage(args: {
   conversationKey: string;
@@ -1067,3 +1080,56 @@ export async function openConversationToSpecificMessage(args: {
     })
   );
 }
+
+// export async function openCallHistory(contacts: any) {
+//   const callHistory = (
+//     await Promise.all(contacts.map((item: any) => getCallMessagesByConversation(item.id)))
+//   ).flat();
+
+//   const sortedCallHistory = callHistory.sort((a: any, b: any) => b.received_at - a.received_at);
+
+//   let verify_data: any = null;
+//   const refinedHistory: any[] = [];
+
+//   for (const item of sortedCallHistory) {
+//     const verifyCalls =
+//       verify_data &&
+//       item.conversationId === verify_data.conversationId &&
+//       item.callNotificationType === verify_data.callNotificationType &&
+//       moment(item.received_at).isSame(moment(verify_data.received_at), 'day');
+//     if (verifyCalls) {
+//       verify_data.call_details.push({
+//         callType: item.callNotificationType,
+//         timeStamp: item.received_at,
+//       });
+//     } else {
+//       const newEntry = {
+//         callNotificationType: item.callNotificationType,
+//         conversationId: item.conversationId,
+//         direction: item.direction,
+//         received_at: item.received_at,
+//         call_details: [
+//           {
+//             callType: item.callNotificationType,
+//             timeStamp: item.received_at,
+//           },
+//         ],
+//       };
+
+//       refinedHistory.push(newEntry);
+//       verify_data = newEntry; // keep reference to current group
+//     }
+//   }
+//   //  const  gethistory=await getCallMessagesByConversation(convoId);
+//   //  const  contacts= await getAllConversations();
+//   //  const contact2=(state:any)=>getDirectContacts(state);
+//   console.log(
+//     'gethistory -->',
+//     'contacts ___',
+//     contacts,
+//     'callHistory --.',
+//     sortedCallHistory,
+//     'refinedHistory -->',
+//     refinedHistory
+//   );
+// }

@@ -39,6 +39,7 @@ import {
   PropsForGroupUpdateLeft,
   PropsForGroupUpdateName,
   PropsForMessageWithoutConvoProps,
+  PropsForSharedContact,
 } from '../state/ducks/conversations';
 import { VisibleMessage } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 import { buildSyncMessage } from '../bchat/utils/syncUtils';
@@ -114,6 +115,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
     const propsForPayment=this.getPropsForPayment();
+    const propsForSharedContact=this.getPropsForSharedContact()
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
     const propsForTimerNotification = this.getPropsForTimerNotification();
     const propsForMessageRequestResponse = this.getPropsForMessageRequestResponse();
@@ -129,6 +131,10 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     if (propsForPayment) {
       messageProps.propsForPayment = propsForPayment;
+    }
+    if(propsForSharedContact)
+    {
+      messageProps.propsForSharedContact = propsForSharedContact;
     }
     if (propsForGroupInvitation) {
       messageProps.propsForGroupInvitation = propsForGroupInvitation;
@@ -197,6 +203,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
   public istxnDetails() {
     return !!this.get('txnDetails');
+  }
+  public isSharedContact(){
+    return !!this.get('sharedContact');
   }
   public isGroupInvitation() {
     return !!this.get('groupInvitation');
@@ -299,7 +308,33 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       isUnread: this.isUnread(),
     };
   }
+  
+  public getPropsForSharedContact(): PropsForSharedContact | null {
+  
+     const sharedContact = this.get('sharedContact') ;
+    if (!this.isSharedContact ) {
+      return null;
+    }
+   
+    if(!sharedContact)
+    {
+      return null
+    }
+    
+    let direction = this.get('direction');
+    if (!direction) {
+      direction = this.get('type');
+    }
 
+    return {
+      address: sharedContact.address,
+      name: sharedContact.name,
+      direction,
+      messageId: this.id as string,
+      receivedAt: this.get('received_at'),
+      isUnread: this.isUnread(),
+    };
+  }
   public getPropsForGroupInvitation(): PropsForGroupInvitation | null {
     if (!this.isGroupInvitation()) {
       return null;

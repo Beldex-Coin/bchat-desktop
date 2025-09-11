@@ -186,6 +186,7 @@ export type RegularMessageType = Pick<
   | 'profileKey'
   | 'expireTimer'
   | 'payment'
+  | 'sharedContact'
   | 'reaction'
 > & { isRegularMessage: true };
 
@@ -205,6 +206,7 @@ export function toRegularMessage(rawDataMessage: SignalService.DataMessage): Reg
       'profile',
       'expireTimer',
       'payment',
+      'sharedContact',
       'reaction',
     ]),
     isRegularMessage: true,
@@ -228,7 +230,11 @@ async function handleRegularMessage(
   }
 
   if (rawDataMessage.openGroupInvitation) {
-    message.set({ groupInvitation: rawDataMessage.openGroupInvitation });
+  }
+  if(rawDataMessage.sharedContact)
+  {
+    message.set({ sharedContact: rawDataMessage.sharedContact });
+
   }
 
   handleLinkPreviews(rawDataMessage.body, rawDataMessage.preview, message);

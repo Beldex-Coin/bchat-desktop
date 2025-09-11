@@ -24,6 +24,7 @@ import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
 import { PaymentMessage } from './PaymentMessage';
+import { SharedContactCardMessage } from './SharedContactCardMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -109,6 +110,9 @@ type Props = {
 
   amount?: string;
   txnId?: string;
+
+  address?:string;
+  name?:string;
 };
 // tslint:disable: use-simple-attributes
 
@@ -194,7 +198,7 @@ export const GenericReadableMessage = (props: Props) => {
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
 
-  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url,amount,txnId } = props;
+  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url,amount,txnId,address,name } = props;
 
   if (!msgProps) {
     return null;
@@ -268,6 +272,9 @@ export const GenericReadableMessage = (props: Props) => {
     />
   )
   : null;
+  const SharedContactCardTag:JSX.Element |null=address?(
+    <SharedContactCardMessage address={address} name={name||''} direction={'incoming'} messageId={messageId} isUnread={false}/>
+  ):null;
 
   return (
     <StyledReadableMessage
@@ -325,7 +332,7 @@ export const GenericReadableMessage = (props: Props) => {
           onHandleContextMenu={handleContextMenu}
           acceptUrl={acceptUrl}
           txnId={txnId}
-          cardDesignTag={groupInvitationTag||paymentCardTag}
+          cardDesignTag={groupInvitationTag||paymentCardTag || SharedContactCardTag}
           recentEmojiBtnVisible={recentEmojiBtnVisible}
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
         />

@@ -109,6 +109,7 @@ export interface MessageAttributes {
   callNotificationType?: CallNotificationType;
   txnDetails?:any;
   payment?:any;
+  sharedContact?:{address:string,name:string}
   //emoji reacts
   reaction?: Reaction;
   reacts?: ReactionList;
@@ -212,6 +213,7 @@ export interface MessageAttributesOptionals {
   callNotificationType?: CallNotificationType;
   txnDetails?:any;
   payment?:any;
+  sharedContact?:{address:string,name:string}
   reaction?: Reaction;
   reacts?: ReactionList;
   reactsIndex?: number;

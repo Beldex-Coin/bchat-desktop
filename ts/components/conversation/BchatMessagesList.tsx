@@ -12,6 +12,7 @@ import {
   PropsForGroupInvitation,
   PropsForGroupUpdate,
   PropsForPayment,
+  PropsForSharedContact,
 } from '../../state/ducks/conversations';
 import {
   getOldBottomMessageId,
@@ -100,6 +101,7 @@ export const BchatMessagesList = (props: {
     }
    
   }
+  console.log('messagesProps -->',messagesProps)
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -127,6 +129,10 @@ export const BchatMessagesList = (props: {
         }
         if (messageProps.message?.messageType === 'payment') {
           const msgProps = messageProps.message.props as PropsForPayment;
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
+        }
+        if (messageProps.message?.messageType === 'shared-contact') {
+          const msgProps = messageProps.message.props as PropsForSharedContact;
           return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'message-request-response') {

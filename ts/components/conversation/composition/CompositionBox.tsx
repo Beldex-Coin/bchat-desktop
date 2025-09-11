@@ -89,7 +89,7 @@ import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
 // import MicrophoneIcon from '../../icon/MicrophoneIcon';
-import { SpacerLG } from '../../basic/Text';
+import { SpacerLG, SpacerSM } from '../../basic/Text';
 import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 import styled from 'styled-components';
 
@@ -97,6 +97,8 @@ import styled from 'styled-components';
 // import { nativeEmojiData } from '../../../util/emoji';
 import { FixedBaseEmoji } from '../../../types/Reaction';
 import { updateIsCurrentlyRecording } from '../../../state/ducks/userConfig';
+import MediaFileIcon from '../../icon/MediaFileIcon';
+import ContactsIcon from '../../icon/ContactsIcon';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -141,6 +143,10 @@ export type SendMessageType = {
     amount: any;
     txnId: any;
   };
+  sharedContact?:{
+    address:string,
+    name:string
+  }
 };
 
 interface Props {
@@ -167,6 +173,8 @@ interface State {
   ignoredLink?: string; // set the ignored url when users closed the link preview
   stagedLinkPreview?: StagedLinkPreviewData;
   showCaptionEditor?: AttachmentType;
+  selectionMenuIsVisble:boolean;
+  
 }
 
 const sendMessageStyle = {
@@ -198,6 +206,7 @@ const getDefaultState = (newConvoId?: string) => {
     ignoredLink: undefined,
     stagedLinkPreview: undefined,
     showCaptionEditor: undefined,
+    selectionMenuIsVisble:false
   };
 };
 
@@ -780,8 +789,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
   private renderCompositionView() {
-    const { showEmojiPanel } = this.state;
-    const { typingEnabled, stagedAttachments } = this.props;
+    const { showEmojiPanel,selectionMenuIsVisble } = this.state;
+    const { typingEnabled, stagedAttachments, } = this.props;
 
     const { selectedConversation, isMe, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
@@ -802,7 +811,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ) : (
           <>
             {typingEnabled && !this.state.showRecordingView && (
-              <AddStagedAttachmentButton onClick={this.onChooseAttachment} />
+              <div className={classNames(`attachment-wrapper ${selectionMenuIsVisble && 'seleted'}` ) }> 
+                {selectionMenuIsVisble && <div className='selection-box' onMouseLeave={()=>this.setState({selectionMenuIsVisble:false})}>
+                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center' onClick={this.onChooseAttachment}>
+                     <MediaFileIcon/>
+                     <span>Media Files</span>
+                  </Flex>
+                  <SpacerSM/>
+                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center'>
+                     <ContactsIcon/>
+                     <span>Contacts</span>
+                  </Flex>
+                </div>}
+               <AddStagedAttachmentButton onClick={()=>this.setState({selectionMenuIsVisble:true})} />
+              </div>
             )}
             <input
               className="hidden"
@@ -1243,6 +1265,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       ToastUtils.pushNoMediaUntilApproved();
       return;
     }
+    this.setState({selectionMenuIsVisble:false})
     this.fileInput.current?.click();
   }
 

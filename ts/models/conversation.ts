@@ -71,6 +71,7 @@ import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
+import { SharedContactMessage } from '../bchat/messages/outgoing/visibleMessage/SharedContactMessage';
 // import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
 // import { OpenGroupData } from '../data/opengroups';
 
@@ -822,10 +823,25 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
             amount: txnDetails.amount,
             txnId: txnDetails.txnId,
             expireTimer: this.get('expireTimer'),
-          });
+          }); 
 
           // we need the return await so that errors are caught in the catch {}
           await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
+          return;
+        }
+         // Handle shared contact Message 
+        const sharedContact = message.get('sharedContact'); 
+        if (sharedContact) {
+          const sharedContactMessage = new SharedContactMessage({
+            identifier: id,
+            timestamp: sentAt,
+            address: sharedContact.address,
+            name: sharedContact.name,
+            expireTimer: this.get('expireTimer'),
+          });
+        
+          // we need the return await so that errors are caught in the catch {}
+          await getMessageQueue().sendToPubKey(destinationPubkey, sharedContactMessage);
           return;
         }
         // Handle Group Invitation Message
@@ -936,8 +952,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       .catch(window?.log?.error);
   }
 
-  public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote, txnDetails } = msg;
+  public async sendMessage(msg: SendMessageType) { 
+    const { attachments, body, groupInvitation, preview, quote, txnDetails,sharedContact } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
@@ -959,8 +975,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
       txnDetails,
+      sharedContact
     });
 
+    console.log('messageModel -->',messageModel)
     // We're offline!
     if (!window.isOnline) {
       const error = new Error('Network is not available');
