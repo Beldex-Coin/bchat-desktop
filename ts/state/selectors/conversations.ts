@@ -254,6 +254,17 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
+      if(msg.propsForSharedContact)
+      {
+        return{
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'shared-contact',
+            props: { ...msg.propsForSharedContact, messageId: msg.propsForMessage.id },
+          },
+        }
+      }
       if (msg.propsForGroupUpdateMessage) {
         return {
           showUnreadIndicator: isFirstUnread,
