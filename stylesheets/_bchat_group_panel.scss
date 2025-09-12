@@ -1,4 +1,4 @@
-.group-settings {
+.group-settings,.contact-list {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -481,6 +481,49 @@
   }
 }
 
+.contact-list{
+  padding: 0;
+  min-width: unset;
+  max-width: unset;
+  width: 410px;
+  &-header{
+    padding:10px 15px;
+  }
+  .bchat-search-input{
+    margin:0 15px 10px;
+  }
+  &-inner-wrapper{
+    padding: 0 5px 0 5px;
+    overflow: auto;
+  }
+  .address-content-box{
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px 10px 10px;
+    
+    &:hover{
+      border-radius: 16px;
+      background-color: #202329;
+    }
+    .username{
+      background-color: unset;
+    padding: unset;
+    color: unset;
+    font-size: 16px;
+    font-weight: 400;
+    }
+    .address{
+      color: var(--color-last-msg-txt);
+      font-weight: 300;
+      font-size: 12px;
+    }
+  }
+  .button-wrapper{
+    background-color: #202329;
+  }
+}
 .conversation-content {
   display: flex;
   height: inherit;

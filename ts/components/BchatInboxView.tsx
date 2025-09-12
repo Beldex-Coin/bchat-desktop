@@ -38,6 +38,7 @@ import { initialWalletConfigState } from '../state/ducks/walletConfig';
 import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
 import { ProfileInfo } from './BchatProfileInfo';
 import { AudioPlayerProvider } from './basic/AudioPlayerContext';
+import { BchatContactListPanel } from './conversation/BchatContactListPanel';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -88,7 +89,9 @@ export class BchatInboxView extends React.Component<any, State> {
               <div className="profile-info">
                 <div>
                   <ProfileInfo />
+
                 </div>
+                <BchatContactListPanel/>
               </div>
               </AudioPlayerProvider>
           </PersistGate>
