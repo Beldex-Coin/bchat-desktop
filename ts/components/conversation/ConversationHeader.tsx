@@ -20,7 +20,7 @@ import {
   getSelectedMessageIds,
   isMessageDetailView,
     isRightPanelShowing,
-  // isRightPanelShowing,
+    isShareContact,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,8 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
-
-  // closeRightPanel,
+  closeShareContact,
   openRightPanel,
   resetSelectedMessageIds,
 } from '../../state/ducks/conversations';
@@ -340,7 +339,6 @@ const ConversationHeaderTitle = () => {
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
-  const dispatch = useDispatch();
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
@@ -380,18 +378,17 @@ const ConversationHeaderTitle = () => {
   if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
-
+  const isShared = useSelector(isShareContact);  
   return (
     <div className="module-conversation-header__title" >
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
         onClick={() => {
-          // if (isRightPanelOn) {
-          //   dispatch(closeRightPanel());
-          // } else {
-            dispatch(openRightPanel());
-          // }
+            if(isShared){
+              window.inboxStore?.dispatch(closeShareContact());
+              } 
+            window.inboxStore?.dispatch(openRightPanel());
         }}
         role="button"
       >
@@ -461,6 +458,7 @@ export const ConversationHeaderWithDetails = () => {
 
   const triggerId = 'conversation-header';
   const isMe = useSelector(getIsSelectedNoteToSelf);
+  const isShared = useSelector(isShareContact);  
 
   // function displayWalletPassword() {
 
@@ -506,7 +504,10 @@ export const ConversationHeaderWithDetails = () => {
           <Flex container={true} flexDirection="row" alignItems="center">
             <AvatarHeader
               onAvatarClick={() => {
-                dispatch(openRightPanel());
+                  if(isShared){
+                    window.inboxStore?.dispatch(closeShareContact());
+                  }  
+                window.inboxStore?.dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
               conversation={conversation}

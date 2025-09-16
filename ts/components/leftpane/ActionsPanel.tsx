@@ -88,6 +88,7 @@ import { getTheme } from '../../state/selectors/theme';
 import NewChatIcon from '../icon/NewChatIcon';
 import SecretGrpIcon from '../icon/SecretGrpIcon';
 import SocialGrpIcon from '../icon/SocialGrpIcon';
+import SubMenuConnectIcon from '../icon/SubMenuConnect';
 
 const Section = (props: {
   type: SectionType;
@@ -252,18 +253,7 @@ const Section = (props: {
               )}
             >
               <MarginedDiv>
-                <svg
-                  width="15"
-                  height="38"
-                  viewBox="0 0 15 38"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.99985 7H6.99985C3.68614 7 0.0693359 3.31371 0.0693359 0V37.9182C1.09563 34.191 4.13385 31 7.99985 31C11.8658 31 14.9998 34.134 14.9998 38V0C14.9998 3.86599 11.8658 7 7.99985 7Z"
-                    fill="#2E333D"
-                  />
-                </svg>
+                <SubMenuConnectIcon/>
               </MarginedDiv>
               <div className={'sub-menu-box'} >
                 <SubMenuList
@@ -520,12 +510,7 @@ export const BchatToolTip = (props: any) => (
 
 const DisplayTitle = (props: { title: string; top: string }) => (
   <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
-    <svg width="15" height="38" viewBox="0 0 15 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M7.99985 7H6.99985C3.68614 7 0.0693359 3.31371 0.0693359 0V37.9182C1.09563 34.191 4.13385 31 7.99985 31C11.8658 31 14.9998 34.134 14.9998 38V0C14.9998 3.86599 11.8658 7 7.99985 7Z"
-        fill="#2E333D"
-      />
-    </svg>
+   <SubMenuConnectIcon/>
     <div className={'sub-menu-box'}>
       <div className="menu-txt">{props.title}</div>
     </div>
@@ -751,12 +736,12 @@ const Beta = styled.div`
 const MarginedDiv = styled.div`
   margin-top: 30px;
 `;
-const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
+const SubMenuList = styled(Flex)<{ isSelected: boolean}>`
   ${props => props.isSelected && 'background-color: var(--color-hop-bg);'}
   cursor:pointer;
   border-radius: 16px;
   &:hover {
-    background-color: var(--color-action-btn-bg);
+    background-color: var(--color-theme-selected-bg);
   }
 `;
 const StyledTitleWrapper = styled(Flex)<{ top: string }>`

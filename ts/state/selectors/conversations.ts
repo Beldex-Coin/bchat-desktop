@@ -633,6 +633,10 @@ export const isRightPanelShowing = createSelector(
   (state: ConversationsStateType): boolean => state.showRightPanel
 );
 
+export const isShareContact = createSelector(
+  getConversations,
+  (state: ConversationsStateType): boolean => state.showShareContact
+);
 export const isMessageSelectionMode = createSelector(
   getConversations,
   (state: ConversationsStateType): boolean => Boolean(state.selectedMessageIds.length > 0)

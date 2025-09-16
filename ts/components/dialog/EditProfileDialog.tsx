@@ -354,7 +354,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span> {i18n('bnsVerified')}</span>
+            <span style={{marginRight:'5px'}}> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}

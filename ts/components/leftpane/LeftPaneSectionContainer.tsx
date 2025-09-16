@@ -36,7 +36,7 @@ export const LeftPaneSectionContainer = styled.div`
     cursor: pointer;
     :hover {
       background-color: var(--color-modal-bg);
-      opacity: 0.9;
+      // opacity: 0.9;
     }
 
 

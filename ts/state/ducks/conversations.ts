@@ -145,7 +145,6 @@ export type PropsForGroupInvitation = {
   receivedAt?: number;
   isUnread: boolean;
   onRecentEmojiBtnVisible?:()=>void;
-  
 };
 
 export type PropsForPayment = {
@@ -330,6 +329,7 @@ export type ConversationsStateType = {
   lightBox?: LightBoxOptions;
   quotedMessage?: ReplyingToMessageProps;
   areMoreMessagesBeingFetched: boolean;
+  showShareContact: boolean;
 
   /**
    * oldTopMessageId should only be set when, as the user scroll up we trigger a load of more top messages.
@@ -491,6 +491,7 @@ export function getEmptyConversationState(): ConversationsStateType {
     oldBottomMessageId: null,
     shouldHighlightMessage: false,
     mostRecentMessageId: null,
+    showShareContact: false
   };
 }
 
@@ -603,8 +604,14 @@ const conversationsSlice = createSlice({
     openRightPanel(state: ConversationsStateType) {
       return { ...state, showRightPanel: true };
     },
+    openShareContact(state: ConversationsStateType) {
+      return { ...state, showShareContact: true };
+    },
     closeRightPanel(state: ConversationsStateType) {
       return { ...state, showRightPanel: false };
+    },
+    closeShareContact(state: ConversationsStateType) {
+      return { ...state, showShareContact: false };
     },
     addMessageIdToSelection(state: ConversationsStateType, action: PayloadAction<string>) {
       if (state.selectedMessageIds.some(id => id === action.payload)) {
@@ -782,6 +789,7 @@ const conversationsSlice = createSlice({
 
         areMoreMessagesBeingFetched: false,
         showRightPanel: false,
+        showShareContact: false,
         selectedMessageIds: [],
 
         lightBox: undefined,
@@ -1012,6 +1020,8 @@ export const {
   setNextMessageToPlayId,
   updateMentionsMembers,
   resetConversationExternal,
+  openShareContact,
+  closeShareContact
 } = actions;
 
 export async function openConversationWithMessages(args: {

@@ -13,24 +13,45 @@ import { AvatarItem } from '../wallet/BchatWalletAddressBook';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import ContactEmptyIcon from '../icon/ContactEmptyIcon';
 import styled from 'styled-components';
+import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
+import { getConversationController } from '../../bchat/conversations';
+import { closeShareContact } from '../../state/ducks/conversations';
 
 export const BchatContactListPanel = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
+  const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setCurrentSearchTerm(value);
     setFilteredNames(
       value
         ? privateContactsPubkeys.filter((pubkey: any) => {
-            const memberName = useConversationUsernameOrShorten(pubkey);
+            const convo = getConversationController().get(pubkey);
+            const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
             return memberName?.toLowerCase().includes(value.toLowerCase());
           })
         : privateContactsPubkeys
     );
   };
+
+    function handleSelectMember(memberId: string) {
+    if (selectedMemberIds.includes(memberId)) {
+      return;
+    }
+
+    setSelectedMemberIds([...selectedMemberIds, memberId]);
+  }
+
+  function handleUnselectMember(unselectId: string) {
+    setSelectedMemberIds(
+      selectedMemberIds.filter(id => {
+        return id !== unselectId;
+      })
+    );
+  }
 
   return (
     <div className="contact-list">
@@ -44,7 +65,9 @@ export const BchatContactListPanel = () => {
           className="contact-list-header-title-wrapper"
         >
           <span className="contact-list-header-titleTxt">Share Contacts</span>
-          <span onClick={() => {}} className="contact-list-header-closeBox">
+          <span onClick={() => {
+             window.inboxStore?.dispatch(closeShareContact()); 
+          }} className="contact-list-header-closeBox">
             <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
           </span>
         </Flex>
@@ -68,7 +91,17 @@ export const BchatContactListPanel = () => {
       <div className="contact-list-inner-wrapper">
         {
           filteredNames.length > 0 &&
-          filteredNames.map(item => <ContactList pubkey={item} />)}
+          filteredNames.map(item => <ContactList 
+          pubkey={item}
+          isSelected={selectedMemberIds.some(m => m === item)}
+          onSelect={selectedMember => {
+                      handleSelectMember(selectedMember);
+                    }}
+                    onUnselect={unselectedMember => {
+                      handleUnselectMember(unselectedMember);
+                    }}
+
+            />)}
        {filteredNames.length === 0 && <SearchEmptyScreen />}
       </div>
       <Flex
@@ -83,21 +116,37 @@ export const BchatContactListPanel = () => {
           text={'Send selected Contacts'}
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-        />
+          disabled={ selectedMemberIds.length === 0}
+      />
       </Flex>
     </div>
   );
 };
 
-const ContactList = (props: { pubkey: string }) => {
-  const username = useConversationUsernameOrShorten(props.pubkey);
-  const isBnsHolder = useConversationBnsHolder(props.pubkey);
+const ContactList = (props: { 
+  pubkey: string;
+  isSelected: boolean;
+  onSelect?: (pubkey: string) => void;
+  onUnselect?: (pubkey: string) => void;
+ }) => {
+  const {
+    isSelected,
+    pubkey,
+    onSelect,
+    onUnselect,
+  } = props;
+  const username = useConversationUsernameOrShorten(pubkey);
+  const isBnsHolder = useConversationBnsHolder(pubkey);
+  const selectionValidation= isSelected
 
   return (
     <>
-      <div className={classNames(`address-content-box`)} style={{ cursor: 'pointer' }}>
+      <div className={classNames(`address-content-box`)} style={{ cursor: 'pointer' }}
+      onClick={() => {
+        (isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey));
+      }}>
         <div className="avatarBox">
-          <AvatarItem memberPubkey={props.pubkey} isBnsHolder={isBnsHolder} />
+          <AvatarItem memberPubkey={pubkey} isBnsHolder={isBnsHolder} />
         </div>
 
         <Flex container={true} flexDirection="column" margin="0 15px">
@@ -107,11 +156,17 @@ const ContactList = (props: { pubkey: string }) => {
           <SpacerXS />
 
           <div className={'address'} style={{ cursor: 'pointer' }}>
-            {props.pubkey}
+            {pubkey}
           </div>
         </Flex>
         {/* <BchatIconButton iconType={isSelected?"checkBoxTick":'checkBox'} iconSize={23} /> */}
-        <BchatIconButton iconType={'checkBox'} iconSize={23} />
+        <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>
+          {selectionValidation ? (
+            <CheckBoxTickIcon iconSize={26} />
+          ) : (
+            <BchatIcon iconType={'checkBox'} clipRule="evenodd" fillRule="evenodd" iconSize={26} />
+          )}
+        </span>
       </div>
       <SpacerXS />
     </>

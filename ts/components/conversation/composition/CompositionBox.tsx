@@ -34,7 +34,7 @@ import {
 } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
-import { ReduxConversationType } from '../../../state/ducks/conversations';
+import {  closeRightPanel, openShareContact, ReduxConversationType } from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
 import {
@@ -69,6 +69,7 @@ import {
   updateInsufficientBalanceModal,
   // updateBchatWalletPasswordModal,
   updateSendConfirmModal,
+  // updateShareContactModal,
   updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
 import { SectionType, setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
@@ -801,7 +802,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ? 'Syncronizing..'
         : 'Synchronized';
     const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
-    // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
         {leftTheGroup ? (
@@ -818,7 +818,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
                      <span>Media Files</span>
                   </Flex>
                   <SpacerSM/>
-                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center'>
+                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center' onClick={()=>{
+                    window.inboxStore?.dispatch(closeRightPanel());
+                    window.inboxStore?.dispatch(openShareContact())
+                  }}>
                      <ContactsIcon/>
                      <span>Contacts</span>
                   </Flex>

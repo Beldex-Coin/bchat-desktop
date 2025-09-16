@@ -267,6 +267,7 @@ export const GenericReadableMessage = (props: Props) => {
       txnId={txnId || ""}
       messageId={messageId || ""}
       direction={direction}
+      acceptUrl={acceptUrl || ''}
       isUnread={props.isUnread || false}
       onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
     />
