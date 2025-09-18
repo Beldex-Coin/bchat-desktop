@@ -467,28 +467,7 @@ export const ConversationHeaderWithDetails = () => {
   //     // return;
   //   // }
   // }
-  const sendContact=async()=>{
-    const privateConvo = await getConversationController().getOrCreateAndWait(
-      selectedConvoKey,
-      ConversationTypeEnum.PRIVATE
-    );
-
-   
-    if (privateConvo) {
-      void privateConvo.sendMessage({
-        body: '',
-        attachments: undefined,
-        groupInvitation: undefined,
-        preview: undefined,
-        quote: undefined,
-        txnDetails:undefined,
-        sharedContact:{
-          address:selectedConvoKey,
-          name:'SharedContact'
-        }
-      });
-    }
-  }
+ 
 
   return (
     <div className="module-conversation-header">
@@ -539,13 +518,6 @@ export const ConversationHeaderWithDetails = () => {
               />
               // </div>
             )}
-             <BchatButton
-                text={'send Contact'}
-                buttonType={BchatButtonType.Medium}
-                buttonColor={BchatButtonColor.Primary}
-                onClick={()=>sendContact()}
-                // disabled={!caption}
-              />
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}

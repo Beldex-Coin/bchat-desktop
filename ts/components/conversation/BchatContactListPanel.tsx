@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
-import { getPrivateContactsPubkeys } from '../../state/selectors/conversations';
+import {
+  getPrivateContactsPubkeys,
+  getSelectedConversationKey,
+} from '../../state/selectors/conversations';
 import { useSelector } from 'react-redux';
 import {
   useConversationBnsHolder,
@@ -21,6 +24,8 @@ export const BchatContactListPanel = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
+
+  const selectedConvoKey = useSelector(getSelectedConversationKey);
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +42,7 @@ export const BchatContactListPanel = () => {
     );
   };
 
-    function handleSelectMember(memberId: string) {
+  function handleSelectMember(memberId: string) {
     if (selectedMemberIds.includes(memberId)) {
       return;
     }
@@ -52,6 +57,37 @@ export const BchatContactListPanel = () => {
       })
     );
   }
+  const sendContact =()=> {
+  
+    if (!selectedConvoKey || !selectedMemberIds?.length) return;
+
+    const conversationController = getConversationController();
+    const selectedConvo = conversationController.get(selectedConvoKey);
+    const firstMemberId = selectedMemberIds[0];
+    const memberConvo = conversationController.get(firstMemberId);
+
+    if (!selectedConvo || !memberConvo) return;
+
+    const memberName =
+      memberConvo.getNickname() ||
+      memberConvo.getName() ||
+      memberConvo.getProfileName() ||
+      firstMemberId;
+
+    const sharedContact = { address: firstMemberId, name: memberName };
+    
+    selectedConvo.sendMessage({
+      body: '',
+      attachments: undefined,
+      groupInvitation: undefined,
+      preview: undefined,
+      quote: undefined,
+      txnDetails: undefined,
+      sharedContact,
+    });
+
+    window.inboxStore?.dispatch(closeShareContact());
+  };
 
   return (
     <div className="contact-list">
@@ -65,9 +101,12 @@ export const BchatContactListPanel = () => {
           className="contact-list-header-title-wrapper"
         >
           <span className="contact-list-header-titleTxt">Share Contacts</span>
-          <span onClick={() => {
-             window.inboxStore?.dispatch(closeShareContact()); 
-          }} className="contact-list-header-closeBox">
+          <span
+            onClick={() => {
+              window.inboxStore?.dispatch(closeShareContact());
+            }}
+            className="contact-list-header-closeBox"
+          >
             <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
           </span>
         </Flex>
@@ -89,20 +128,20 @@ export const BchatContactListPanel = () => {
       </div>
       <SpacerSM />
       <div className="contact-list-inner-wrapper">
-        {
-          filteredNames.length > 0 &&
-          filteredNames.map(item => <ContactList 
-          pubkey={item}
-          isSelected={selectedMemberIds.some(m => m === item)}
-          onSelect={selectedMember => {
-                      handleSelectMember(selectedMember);
-                    }}
-                    onUnselect={unselectedMember => {
-                      handleUnselectMember(unselectedMember);
-                    }}
-
-            />)}
-       {filteredNames.length === 0 && <SearchEmptyScreen />}
+        {filteredNames.length > 0 &&
+          filteredNames.map(item => (
+            <ContactList
+              pubkey={item}
+              isSelected={selectedMemberIds.some(m => m === item)}
+              onSelect={selectedMember => {
+                handleSelectMember(selectedMember);
+              }}
+              onUnselect={unselectedMember => {
+                handleUnselectMember(unselectedMember);
+              }}
+            />
+          ))}
+        {filteredNames.length === 0 && <SearchEmptyScreen />}
       </div>
       <Flex
         container={true}
@@ -116,35 +155,34 @@ export const BchatContactListPanel = () => {
           text={'Send selected Contacts'}
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-          disabled={ selectedMemberIds.length === 0}
-      />
+          disabled={selectedMemberIds.length === 0}
+          onClick={sendContact}
+        />
       </Flex>
     </div>
   );
 };
 
-const ContactList = (props: { 
+const ContactList = (props: {
   pubkey: string;
   isSelected: boolean;
   onSelect?: (pubkey: string) => void;
   onUnselect?: (pubkey: string) => void;
- }) => {
-  const {
-    isSelected,
-    pubkey,
-    onSelect,
-    onUnselect,
-  } = props;
+}) => {
+  const { isSelected, pubkey, onSelect, onUnselect } = props;
   const username = useConversationUsernameOrShorten(pubkey);
   const isBnsHolder = useConversationBnsHolder(pubkey);
-  const selectionValidation= isSelected
+  const selectionValidation = isSelected;
 
   return (
     <>
-      <div className={classNames(`address-content-box`)} style={{ cursor: 'pointer' }}
-      onClick={() => {
-        (isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey));
-      }}>
+      <div
+        className={classNames(`address-content-box ${selectionValidation && 'selected'}`)}
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey);
+        }}
+      >
         <div className="avatarBox">
           <AvatarItem memberPubkey={pubkey} isBnsHolder={isBnsHolder} />
         </div>
@@ -160,7 +198,9 @@ const ContactList = (props: {
           </div>
         </Flex>
         {/* <BchatIconButton iconType={isSelected?"checkBoxTick":'checkBox'} iconSize={23} /> */}
-        <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>
+        <span
+          className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}
+        >
           {selectionValidation ? (
             <CheckBoxTickIcon iconSize={26} />
           ) : (

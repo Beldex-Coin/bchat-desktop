@@ -160,7 +160,7 @@ export type PropsForPayment = {
 export type PropsForSharedContact={
   address: string;
   name: string;
-  direction: MessageModelType;
+  direction?: MessageModelType;
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;

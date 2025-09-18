@@ -111,8 +111,8 @@ type Props = {
   amount?: string;
   txnId?: string;
 
-  address?:string;
-  name?:string;
+  address?: string;
+  name?: string;
 };
 // tslint:disable: use-simple-attributes
 
@@ -198,7 +198,18 @@ export const GenericReadableMessage = (props: Props) => {
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
 
-  const { ctxMenuID, messageId, isDetailView, serverName, acceptUrl, url,amount,txnId,address,name } = props;
+  const {
+    ctxMenuID,
+    messageId,
+    isDetailView,
+    serverName,
+    acceptUrl,
+    url,
+    amount,
+    txnId,
+    address,
+    name,
+  } = props;
 
   if (!msgProps) {
     return null;
@@ -248,34 +259,49 @@ export const GenericReadableMessage = (props: Props) => {
     [messageId]
   );
 
-  const groupInvitationTag: JSX.Element | null =serverName ? (
-    <GroupInvitation
-      serverName={serverName || ''}
-      url={url || ''}
-      direction={'incoming'}
-      acceptUrl={acceptUrl || ''}
-      messageId={messageId}
-      isUnread={props.isUnread || false}
-      onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
-    />
-  ):null;
-
-  const paymentCardTag: JSX.Element | null = txnId
-  ? (
-    <PaymentMessage
-      amount={amount || ""}
-      txnId={txnId || ""}
-      messageId={messageId || ""}
-      direction={direction}
-      acceptUrl={acceptUrl || ''}
-      isUnread={props.isUnread || false}
-      onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
-    />
-  )
-  : null;
-  const SharedContactCardTag:JSX.Element |null=address?(
-    <SharedContactCardMessage address={address} name={name||''} direction={'incoming'} messageId={messageId} isUnread={false}/>
-  ):null;
+  const cardDesignTag = (() => {
+    if (serverName) {
+      return (
+        <GroupInvitation
+          serverName={serverName}
+          url={url ||''}
+          direction="incoming"
+          acceptUrl={acceptUrl||''}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    if (txnId && amount) {
+      return (
+        <PaymentMessage
+          amount={amount}
+          txnId={txnId}
+          messageId={messageId}
+          direction={direction}
+          acceptUrl={acceptUrl}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    if (address&&name) {
+      return (
+        <SharedContactCardMessage
+          address={address}
+          name={name}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    return null;
+  })();
 
   return (
     <StyledReadableMessage
@@ -333,7 +359,7 @@ export const GenericReadableMessage = (props: Props) => {
           onHandleContextMenu={handleContextMenu}
           acceptUrl={acceptUrl}
           txnId={txnId}
-          cardDesignTag={groupInvitationTag||paymentCardTag || SharedContactCardTag}
+          cardDesignTag={cardDesignTag}
           recentEmojiBtnVisible={recentEmojiBtnVisible}
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
         />

@@ -358,9 +358,9 @@
     position: relative;
     .selection-box
     {
-      background-color: var(--color-left-pane-bg);
+      background-color: var(--color-emoji-panel-bg);
       border-radius: 20px;
-      box-shadow: 0 0 41.143px 0 #000;
+      box-shadow: var(--color-attachment-box-shadow);
       position: absolute;
       bottom: 75px;
       z-index: 99;
@@ -376,7 +376,7 @@
           margin-left: 3px;
         }
         &:hover{
-          background: #2E333D;
+          background: var(--color-profile-header-bg);
         }
       }
     }

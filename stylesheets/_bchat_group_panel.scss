@@ -17,7 +17,7 @@
 
   position: absolute;
   right: 0px;
-  z-index: 2;
+  z-index: 99;
 
   &-header {
     // margin-top: $bchat-margin-lg;
@@ -505,10 +505,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 5px 10px 10px;
-    
+     
+    &.selected{
+      border-radius: 16px;
+      background-color: var(--color-emoji-panel-bg);
+    }
     &:hover{
       border-radius: 16px;
-      background-color: #202329;
+      background-color: var(--color-emoji-panel-bg);
     }
     .username{
       background-color: unset;
@@ -524,7 +528,7 @@
     }
   }
   .button-wrapper{
-    background-color: #202329;
+    background-color: var(--color-emoji-panel-bg);
   }
 }
 .conversation-content {
