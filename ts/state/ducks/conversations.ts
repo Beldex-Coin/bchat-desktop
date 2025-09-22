@@ -318,6 +318,11 @@ export type ConversationLookupType = {
   [key: string]: ReduxConversationType;
 };
 
+export type  showViewContactPanelTypes = {
+  isIncoming:boolean
+  names:Array<String>;
+  addresses:Array<String>;
+}
 export type ConversationsStateType = {
   conversationLookup: ConversationLookupType;
   selectedConversation?: string;
@@ -330,6 +335,7 @@ export type ConversationsStateType = {
   quotedMessage?: ReplyingToMessageProps;
   areMoreMessagesBeingFetched: boolean;
   showShareContact: boolean;
+  showViewContactPanel:showViewContactPanelTypes |null;
 
   /**
    * oldTopMessageId should only be set when, as the user scroll up we trigger a load of more top messages.
@@ -491,7 +497,8 @@ export function getEmptyConversationState(): ConversationsStateType {
     oldBottomMessageId: null,
     shouldHighlightMessage: false,
     mostRecentMessageId: null,
-    showShareContact: false
+    showShareContact: false,
+    showViewContactPanel:null
   };
 }
 
@@ -613,6 +620,10 @@ const conversationsSlice = createSlice({
     closeShareContact(state: ConversationsStateType) {
       return { ...state, showShareContact: false };
     },
+    updateViewContactPanel(state: ConversationsStateType ,action: PayloadAction<showViewContactPanelTypes| null>) {
+      return { ...state, showViewContactPanel:action.payload  };
+    },
+  
     addMessageIdToSelection(state: ConversationsStateType, action: PayloadAction<string>) {
       if (state.selectedMessageIds.some(id => id === action.payload)) {
         return state;
@@ -790,6 +801,7 @@ const conversationsSlice = createSlice({
         areMoreMessagesBeingFetched: false,
         showRightPanel: false,
         showShareContact: false,
+        showViewContactPanel:null,
         selectedMessageIds: [],
 
         lightBox: undefined,
@@ -1021,7 +1033,8 @@ export const {
   updateMentionsMembers,
   resetConversationExternal,
   openShareContact,
-  closeShareContact
+  closeShareContact,
+  updateViewContactPanel
 } = actions;
 
 export async function openConversationWithMessages(args: {

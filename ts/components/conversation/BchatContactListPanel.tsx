@@ -57,25 +57,28 @@ export const BchatContactListPanel = () => {
       })
     );
   }
-  const sendContact =()=> {
-  
+  const sendContact = () => {
+
     if (!selectedConvoKey || !selectedMemberIds?.length) return;
 
     const conversationController = getConversationController();
     const selectedConvo = conversationController.get(selectedConvoKey);
-    const firstMemberId = selectedMemberIds[0];
-    const memberConvo = conversationController.get(firstMemberId);
+   let selectedMemberNames =[];
+    for (let index = 0; index < selectedMemberIds.length; index++) {
+      const firstMemberId = selectedMemberIds[index];
+      const memberConvo = conversationController.get(firstMemberId);
+      if (!selectedConvo || !memberConvo) return;
 
-    if (!selectedConvo || !memberConvo) return;
+      const memberName =
+        memberConvo.getNickname() ||
+        memberConvo.getName() ||
+        memberConvo.getProfileName() ||
+        firstMemberId;
 
-    const memberName =
-      memberConvo.getNickname() ||
-      memberConvo.getName() ||
-      memberConvo.getProfileName() ||
-      firstMemberId;
-
-    const sharedContact = { address: firstMemberId, name: memberName };
+        selectedMemberNames.push(memberName);
+    }
     
+    const sharedContact = { address: JSON.stringify(selectedMemberIds), name: JSON.stringify(selectedMemberNames) };
     selectedConvo.sendMessage({
       body: '',
       attachments: undefined,

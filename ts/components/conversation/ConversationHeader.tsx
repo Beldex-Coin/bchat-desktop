@@ -339,12 +339,14 @@ const ConversationHeaderTitle = () => {
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
+  const isShared = useSelector(isShareContact);  
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
       conversationKey
     );
   }
+  
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return <></>;
@@ -378,7 +380,7 @@ const ConversationHeaderTitle = () => {
   if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
-  const isShared = useSelector(isShareContact);  
+ 
   return (
     <div className="module-conversation-header__title" >
       <span
