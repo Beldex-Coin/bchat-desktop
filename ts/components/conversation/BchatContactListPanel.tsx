@@ -34,10 +34,10 @@ export const BchatContactListPanel = () => {
     setFilteredNames(
       value
         ? privateContactsPubkeys.filter((pubkey: any) => {
-            const convo = getConversationController().get(pubkey);
-            const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
-            return memberName?.toLowerCase().includes(value.toLowerCase());
-          })
+        const convo = getConversationController().get(pubkey);
+          const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
+          return memberName?.toLowerCase().includes(value.toLowerCase());
+        })
         : privateContactsPubkeys
     );
   };
