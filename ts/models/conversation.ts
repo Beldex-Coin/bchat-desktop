@@ -648,7 +648,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const direction= quotedMessage.get('direction');
     const body = quotedMessage.get('body');
     const groupInvitation=quotedMessage.get('groupInvitation');
-    const paymentDetails=quotedMessage.get('txnDetails')
+    const paymentDetails=quotedMessage.get('txnDetails');
+    const sharedContactList=quotedMessage.get('sharedContact')
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
@@ -665,7 +666,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       convoId: this.id,
       direction:direction,
       groupInvitation:groupInvitation,
-      paymentDetails:paymentDetails
+      paymentDetails:paymentDetails,
+      sharedContactList:sharedContactList
     };
   }
 

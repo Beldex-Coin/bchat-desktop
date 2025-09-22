@@ -202,7 +202,7 @@ export const MessageContextMenu = (props: Props) => {
     void deleteMessagesByIdForEveryone([messageId], convoId);
   }, [convoId, messageId]);
 
-  const copyTitle=text ?window.i18n('copyMessage'):acceptUrl?window.i18n('copyTxnId'):txnId?window.i18n('copyTxnId') :null
+  const copyTitle=text ?window.i18n('copyMessage'):acceptUrl?window.i18n('copyAcceptUrl'):txnId?window.i18n('copyTxnId') :null
   return (
       <div ref={contextMenuRef}>
         {' '}

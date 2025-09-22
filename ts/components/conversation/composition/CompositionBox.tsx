@@ -34,7 +34,11 @@ import {
 } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
-import {  closeRightPanel, openShareContact, ReduxConversationType } from '../../../state/ducks/conversations';
+import {
+  closeRightPanel,
+  openShareContact,
+  ReduxConversationType,
+} from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
 import {
@@ -111,6 +115,7 @@ export interface ReplyingToMessageProps {
   direction: 'incoming' | 'outgoing';
   groupInvitation?: { name: string; url: string };
   paymentDetails?: { amount: string; txnId: string };
+  sharedContactList?: { address: string; name: string };
 }
 
 export type StagedLinkPreviewImage = {
@@ -144,10 +149,10 @@ export type SendMessageType = {
     amount: any;
     txnId: any;
   };
-  sharedContact?:{
-    address:string,
-    name:string
-  }
+  sharedContact?: {
+    address: string;
+    name: string;
+  };
 };
 
 interface Props {
@@ -174,8 +179,7 @@ interface State {
   ignoredLink?: string; // set the ignored url when users closed the link preview
   stagedLinkPreview?: StagedLinkPreviewData;
   showCaptionEditor?: AttachmentType;
-  selectionMenuIsVisble:boolean;
-  
+  selectionMenuIsVisble: boolean;
 }
 
 const sendMessageStyle = {
@@ -207,7 +211,7 @@ const getDefaultState = (newConvoId?: string) => {
     ignoredLink: undefined,
     stagedLinkPreview: undefined,
     showCaptionEditor: undefined,
-    selectionMenuIsVisble:false
+    selectionMenuIsVisble: false,
   };
 };
 
@@ -790,8 +794,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
   private renderCompositionView() {
-    const { showEmojiPanel,selectionMenuIsVisble } = this.state;
-    const { typingEnabled, stagedAttachments, } = this.props;
+    const { showEmojiPanel, selectionMenuIsVisble } = this.state;
+    const { typingEnabled, stagedAttachments } = this.props;
 
     const { selectedConversation, isMe, WalletSyncBarShowInChat } = this.props;
     const { draft } = this.state;
@@ -811,22 +815,43 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ) : (
           <>
             {typingEnabled && !this.state.showRecordingView && (
-              <div className={classNames(`attachment-wrapper ${selectionMenuIsVisble && 'seleted'}` ) }> 
-                {selectionMenuIsVisble && <div className='selection-box' onMouseLeave={()=>this.setState({selectionMenuIsVisble:false})}>
-                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center' onClick={this.onChooseAttachment}>
-                     <MediaFileIcon/>
-                     <span>Media Files</span>
-                  </Flex>
-                  <SpacerSM/>
-                  <Flex container={true} padding='15px' className='content-Wrapper' alignItems='center' onClick={()=>{
-                    window.inboxStore?.dispatch(closeRightPanel());
-                    window.inboxStore?.dispatch(openShareContact())
-                  }}>
-                     <ContactsIcon/>
-                     <span>Contacts</span>
-                  </Flex>
-                </div>}
-               <AddStagedAttachmentButton onClick={()=>this.setState({selectionMenuIsVisble:true})} />
+              <div
+                className={classNames(`attachment-wrapper ${selectionMenuIsVisble && 'seleted'}`)}
+              >
+                {selectionMenuIsVisble && (
+                  <div
+                    className="selection-box"
+                    onMouseLeave={() => this.setState({ selectionMenuIsVisble: false })}
+                  >
+                    <Flex
+                      container={true}
+                      padding="15px"
+                      className="content-Wrapper"
+                      alignItems="center"
+                      onClick={this.onChooseAttachment}
+                    >
+                      <MediaFileIcon />
+                      <span>Media Files</span>
+                    </Flex>
+                    <SpacerSM />
+                    <Flex
+                      container={true}
+                      padding="15px"
+                      className="content-Wrapper"
+                      alignItems="center"
+                      onClick={() => {
+                        window.inboxStore?.dispatch(closeRightPanel());
+                        window.inboxStore?.dispatch(openShareContact());
+                      }}
+                    >
+                      <ContactsIcon />
+                      <span>Contacts</span>
+                    </Flex>
+                  </div>
+                )}
+                <AddStagedAttachmentButton
+                  onClick={() => this.setState({ selectionMenuIsVisble: true })}
+                />
               </div>
             )}
             <input
@@ -1268,7 +1293,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       ToastUtils.pushNoMediaUntilApproved();
       return;
     }
-    this.setState({selectionMenuIsVisble:false})
+    this.setState({ selectionMenuIsVisble: false });
     this.fileInput.current?.click();
   }
 
@@ -1400,7 +1425,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
       'attachments',
       'direction',
       'groupInvitation',
-      'paymentDetails'
+      'paymentDetails',
+      'sharedContactList'
     );
 
     if (quotedMessageProps?.groupInvitation) {
@@ -1415,9 +1441,23 @@ class CompositionBoxInner extends React.Component<Props, State> {
       extractedQuotedMessageProps.text = JSON.stringify(groupInvitation);
     }
     if (extractedQuotedMessageProps?.paymentDetails) {
-      const {direction,paymentDetails}=extractedQuotedMessageProps
-      const types=direction==='incoming'?'Received':"Sent"
-      extractedQuotedMessageProps.text =  `${window.i18n('paymentDetails',[types]) } : ${paymentDetails.amount} BDX`;
+      const { direction, paymentDetails } = extractedQuotedMessageProps;
+      const types = direction === 'incoming' ? 'Received' : 'Sent';
+      extractedQuotedMessageProps.text = `${window.i18n('paymentDetails', [types])} : ${
+        paymentDetails.amount
+      } BDX`;
+    }
+    if (extractedQuotedMessageProps?.sharedContactList) {
+      const { address, name } = extractedQuotedMessageProps.sharedContactList;
+      const sharedContact = {
+        kind: {
+          '@type': 'SharedContact',
+          address: address,
+          name: name,
+        },
+      };
+      extractedQuotedMessageProps.text = JSON.stringify(sharedContact);
+      console.log('extractedQuotedMessageProps.text -->',extractedQuotedMessageProps.text)
     }
 
     // we consider that a link preview without a title at least is not a preview

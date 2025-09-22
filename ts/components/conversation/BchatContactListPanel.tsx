@@ -19,6 +19,7 @@ import styled from 'styled-components';
 import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
 import { closeShareContact } from '../../state/ducks/conversations';
+import { getTheme } from '../../state/selectors/theme';
 
 export const BchatContactListPanel = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
@@ -217,10 +218,11 @@ const ContactList = (props: {
 };
 
 const SearchEmptyScreen = () => {
+  const isDark =  useSelector(getTheme) === 'dark';
   return (
     <SearchEmptyWrapper>
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">
-        <ContactEmptyIcon />
+        <ContactEmptyIcon  isDark={isDark}/>
         <StyledSpan>No Contact Found!</StyledSpan>
       </Flex>
     </SearchEmptyWrapper>

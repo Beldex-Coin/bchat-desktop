@@ -24,14 +24,27 @@ type ContactListProps = {
   userName: String;
   iconColor: string;
   openConfirmModal: (pubkey: string) => void | Promise<void>;
-  isIncoming: boolean;
 };
 
 export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
   const {isIncoming, names, addresses } = props;
   const iconColor = useSelector(getTheme) === 'dark' ? 'white' : '#C5C5C5';
   const dispatch = useDispatch();
+
+  const openConverstation=async(pubKey:string)=>{
+    await getConversationController().getOrCreateAndWait(
+      pubKey,
+      ConversationTypeEnum.PRIVATE
+    );
+    await openConversationWithMessages({ conversationKey: pubKey, messageId: null });
+
+  }
   const openConfirmModal = (pubKey: string) => {
+    if(!isIncoming)
+    {
+       openConverstation(pubKey);
+       return;
+    }
     dispatch(
       updateConfirmModal({
         bchatIcon: 'avatar',
@@ -39,14 +52,8 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
         iconShow: true,
         title: 'Start chat now?',
         message: 'Do you want to chat with this contact now?',
-        onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
-        onClickOk: async () => {
-          await getConversationController().getOrCreateAndWait(
-            pubKey,
-            ConversationTypeEnum.PRIVATE
-          );
-          await openConversationWithMessages({ conversationKey: pubKey, messageId: null });
-        },
+        onClickClose: () => dispatch(updateConfirmModal(null)),
+        onClickOk: () => openConverstation(pubKey),
         okText: 'Start Chatting',
         okTheme: BchatButtonColor.Primary,
       })
@@ -79,7 +86,6 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
         <ContactList
           key={index}
           pubkey={pubkey}
-          isIncoming={isIncoming}
           userName={names?.[index] ?? ''}
           iconColor={iconColor}
           openConfirmModal={openConfirmModal}
@@ -90,14 +96,14 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
 };
 
 const ContactList = (props:ContactListProps) => {
-  const { pubkey, userName, iconColor,openConfirmModal,isIncoming } = props;
+  const { pubkey, userName, iconColor,openConfirmModal } = props;
   const validUserName =
     userName.length >= 65 ? userName.slice(0, 8) + '.....' + userName.slice(-8) : userName;
   return (
     <>
       <div
         className={classNames(`address-content-box `)}
-        style={{ paddingLeft: '20px', paddingRight: '20px' }}
+        style={{ paddingLeft: '10px', paddingRight: '10px',marginLeft:'10px',marginRight:'10px' }}
       >
         <div className="avatarBox">
           <Avatar pubkey={pubkey} size={AvatarSize.M} />
@@ -112,9 +118,9 @@ const ContactList = (props:ContactListProps) => {
           <div className={'address'}>{pubkey}</div>
         </Flex>
 
-        {isIncoming && <div style={{ cursor: 'pointer' }} onClick={()=>openConfirmModal(pubkey)}>
+         <div style={{ cursor: 'pointer' }} onClick={()=>openConfirmModal(pubkey)}>
           <ContactBubbleChatIcon color={iconColor} />
-        </div>}
+        </div>
       </div>
       <SpacerXS />
     </>

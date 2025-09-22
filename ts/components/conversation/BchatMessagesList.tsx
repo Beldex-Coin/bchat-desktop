@@ -101,7 +101,6 @@ export const BchatMessagesList = (props: {
     }
    
   }
-  console.log('messagesProps -->',messagesProps)
   return (
     <>
       {messagesProps.map(messageProps => {
