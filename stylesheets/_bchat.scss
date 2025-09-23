@@ -3490,11 +3490,10 @@ label {
     &-Transaction {
       padding: 15px;
       // height: 66%;
-      margin-bottom: 5px;
       border-radius: 16px;
       background: var(--color-wallet-inner-bg);
       // height: calc(100vh - 460px);
-        height: calc(100vh - 451px);
+        height: calc(100vh - 450px);
 
       &-title {
         display: flex;
