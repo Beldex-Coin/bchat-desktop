@@ -16,6 +16,8 @@ export type BchatIconProps = {
   backgroundColor?: string;
   fillRule?:'iherit'|'evenodd';
   clipRule?:'iherit'|'evenodd';
+  strokeColor?:string;
+  strokeWidth?:string;
 };
 
 const getIconDimensionFromIconSize = (iconSize: BchatIconSize | number) => {
@@ -152,13 +154,19 @@ const BchatSvg = (props: {
   iconPadding?: string;
   fillRule?:string ;
   clipRule?:string;
+  strokeColor?:string;
+  strokeWidth?:string;
 }) => {
-  const colorSvg = props.iconColor;
+  const colorSvg =props.strokeColor ?'none': props.iconColor;
   const pathArray = props.path instanceof Array ? props.path : [props.path];
   const rules:any=props.fillRule?{
     fillRule:props.fillRule,
     clipRule:props.clipRule||"inherit"
   }:{}
+  const strokeDetails=props.strokeColor ?{
+    stroke:props.strokeColor,
+    strokeWidth:props.strokeWidth
+  }:{};
   const propsToPick = {
     width: props.width,
     height: props.height,
@@ -178,7 +186,7 @@ const BchatSvg = (props: {
   return (
     <Svg {...propsToPick}>
       {pathArray.map((path, index) => {
-        return <path key={index} fill={colorSvg} d={path} {...rules}/> ;
+        return <path key={index} fill={colorSvg} d={path} {...rules} {...strokeDetails}/> ;
       })}
       
     </Svg>
@@ -197,8 +205,9 @@ export const BchatIcon = (props: BchatIconProps) => {
     backgroundColor,
     iconPadding,
     fillRule,
-    clipRule
-
+    clipRule,
+    strokeColor,
+    strokeWidth
   } = props;
   let { iconSize, iconRotation } = props;
   iconSize = iconSize || 'medium';
@@ -225,6 +234,8 @@ export const BchatIcon = (props: BchatIconProps) => {
       iconPadding={iconPadding}
       fillRule={fillRule}
       clipRule={clipRule}
+      strokeColor={strokeColor}
+      strokeWidth={strokeWidth}
     />
   );
 };

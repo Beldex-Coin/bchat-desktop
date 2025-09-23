@@ -86,12 +86,11 @@ export const BchatQuotedMessageComposition = () => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
 
   const dispatch = useDispatch();
-  const { text: body, attachments, direction, groupInvitation, paymentDetails, sharedContactList } =
-    quotedMessageProps || {};
-  const namesArray = sharedContactList?.name && JSON.parse(sharedContactList.name);
-  const socialGrp: Room[] = joinableRooms.rooms.filter(
-    (item: Room) => groupInvitation?.name === item.name
-  );
+  const { text: body, attachments } = quotedMessageProps || {};
+  let groupInvitation: { name: string; url: string }| undefined;
+  let sharedContactList:{ address: string; name: string }| undefined;
+  
+
   const hasAttachments = attachments && attachments.length > 0;
   const SUPPORTED_PROTOCOLS = /^(http|https):/i;
   const isLink = SUPPORTED_PROTOCOLS.test(body || '');
@@ -132,7 +131,28 @@ export const BchatQuotedMessageComposition = () => {
   if (!quotedMessageProps?.id) {
     return null;
   }
-
+  if (body && body.startsWith(`{"kind"`)) {
+    const parsed = JSON.parse(body);
+    if (parsed.kind['@type'] === 'OpenGroupInvitation') {
+      groupInvitation={
+        name:parsed.kind.groupName,
+        url:parsed.kind.groupUrl,
+      }
+    }
+    
+    if (parsed.kind['@type'] === 'SharedContact') {
+      sharedContactList={
+        address:parsed.kind.address,
+        name:parsed.kind.name
+      }
+    }
+  }
+  const namesArray = sharedContactList?.name && JSON.parse(sharedContactList.name);
+  const socialGrp: Room[] = joinableRooms.rooms.filter(
+    (item: Room) => groupInvitation?.name === item.name
+  );
+  const validatedBody=!body?.startsWith(`{"kind"`) && body
+ 
   return (
     <QuotedMessageComposition>
       <Flex
@@ -162,7 +182,7 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
+            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||validatedBody }</Subtle>
 
             {groupInvitation && (
               <div className="group-details">
@@ -185,7 +205,7 @@ export const BchatQuotedMessageComposition = () => {
               </div>
             )}
 
-            {paymentDetails && (
+            {/* {paymentDetails && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
@@ -198,7 +218,7 @@ export const BchatQuotedMessageComposition = () => {
                   </span>
                 </Flex>
               </div>
-            )}
+            )} */}
             {sharedContactList && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">

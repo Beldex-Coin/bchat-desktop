@@ -4,6 +4,7 @@ import { SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
 import {
   getPrivateContactsPubkeys,
+  getQuotedMessage,
   getSelectedConversationKey,
 } from '../../state/selectors/conversations';
 import { useSelector } from 'react-redux';
@@ -18,14 +19,14 @@ import ContactEmptyIcon from '../icon/ContactEmptyIcon';
 import styled from 'styled-components';
 import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
-import { closeShareContact } from '../../state/ducks/conversations';
+import { closeShareContact, quoteMessage } from '../../state/ducks/conversations';
 import { getTheme } from '../../state/selectors/theme';
 
 export const BchatContactListPanel = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
-
+  const quotedMessageProps = useSelector(getQuotedMessage);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
@@ -85,11 +86,11 @@ export const BchatContactListPanel = () => {
       attachments: undefined,
       groupInvitation: undefined,
       preview: undefined,
-      quote: undefined,
+      quote: quotedMessageProps, 
       txnDetails: undefined,
       sharedContact,
     });
-
+    window.inboxStore?.dispatch(quoteMessage(undefined));
     window.inboxStore?.dispatch(closeShareContact());
   };
 

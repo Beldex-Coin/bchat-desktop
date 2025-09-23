@@ -28,6 +28,7 @@ import { FontSizeChanger, VerticalLine } from './GroupInvitation';
 import { Avatar, AvatarSize } from '../../../avatar/Avatar';
 import styled from 'styled-components';
 import { BchatIcon } from '../../../icon';
+import { MessageQuote } from '../message-content/MessageQuote';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const { messageId, receivedAt, isUnread, address, name, onRecentEmojiBtnVisible } = props;
@@ -118,9 +119,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
           )}
-
+ 
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
             <div className={classNames(classes)} onClick={updatePanel}>
+            <MessageQuote messageId={props.messageId} />
               <div className="group-details">
                 <Flex container={true}>
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
@@ -131,7 +133,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                     justifyContent="center"
                   >
                     <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                   { namesArray.length > 1 && <BchatIcon iconType={'avatarOutline'} iconSize={13} />}  {userName}
+                   { namesArray.length > 1 && <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'var(--color-text)'} strokeWidth={'1px'} /> }  {userName}
                     </span>
                     <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                       {shortAddress}

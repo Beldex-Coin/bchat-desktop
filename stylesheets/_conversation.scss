@@ -128,7 +128,10 @@
     margin-right: 3px;
     margin-left: unset;
   }
- 
+  .module-quote--outgoing,.module-quote--incoming{
+    margin: unset;
+    margin-bottom: 10px;
+  }
   .group-details {
     display: flex;
     align-items: center;
@@ -144,6 +147,7 @@
       font-weight: 600;
       line-height: normal;
     }
+   
     .group-type {
       overflow: hidden;
 

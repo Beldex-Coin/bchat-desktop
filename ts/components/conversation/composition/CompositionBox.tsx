@@ -113,9 +113,6 @@ export interface ReplyingToMessageProps {
   text?: string;
   attachments?: Array<any>;
   direction: 'incoming' | 'outgoing';
-  groupInvitation?: { name: string; url: string };
-  paymentDetails?: { amount: string; txnId: string };
-  sharedContactList?: { address: string; name: string };
 }
 
 export type StagedLinkPreviewImage = {
@@ -1424,41 +1421,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       'text',
       'attachments',
       'direction',
-      'groupInvitation',
-      'paymentDetails',
-      'sharedContactList'
     );
-
-    if (quotedMessageProps?.groupInvitation) {
-      const { name, url } = quotedMessageProps?.groupInvitation;
-      const groupInvitation = {
-        kind: {
-          '@type': 'OpenGroupInvitation',
-          groupName: name,
-          groupUrl: `${url}`,
-        },
-      };
-      extractedQuotedMessageProps.text = JSON.stringify(groupInvitation);
-    }
-    if (extractedQuotedMessageProps?.paymentDetails) {
-      const { direction, paymentDetails } = extractedQuotedMessageProps;
-      const types = direction === 'incoming' ? 'Received' : 'Sent';
-      extractedQuotedMessageProps.text = `${window.i18n('paymentDetails', [types])} : ${
-        paymentDetails.amount
-      } BDX`;
-    }
-    if (extractedQuotedMessageProps?.sharedContactList) {
-      const { address, name } = extractedQuotedMessageProps.sharedContactList;
-      const sharedContact = {
-        kind: {
-          '@type': 'SharedContact',
-          address: address,
-          name: name,
-        },
-      };
-      extractedQuotedMessageProps.text = JSON.stringify(sharedContact);
-      console.log('extractedQuotedMessageProps.text -->',extractedQuotedMessageProps.text)
-    }
 
     // we consider that a link preview without a title at least is not a preview
     const linkPreview =

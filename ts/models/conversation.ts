@@ -645,18 +645,21 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async makeQuote(quotedMessage: MessageModel): Promise<ReplyingToMessageProps | null> {
     const attachments = quotedMessage.get('attachments');
     const preview = quotedMessage.get('preview');
-    const direction= quotedMessage.get('direction');
+    const direction = quotedMessage.get('direction');
     const body = quotedMessage.get('body');
-    const groupInvitation=quotedMessage.get('groupInvitation');
-    const paymentDetails=quotedMessage.get('txnDetails');
-    const sharedContactList=quotedMessage.get('sharedContact')
+    const groupInvitation = quotedMessage.get('groupInvitation');
+    const paymentDetails = quotedMessage.get('txnDetails');
+    const sharedContactList = quotedMessage.get('sharedContact');
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
       window.log.warn('tried to make a quote without a sent_at timestamp');
       return null;
     }
-    return {
+
+   
+
+    const quoteObj = {
       author: quotedMessage.getSource(),
       id: `${quotedMessage.get('sent_at')}` || '',
       // no need to quote the full message length.
@@ -664,11 +667,38 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       attachments: quotedAttachments,
       timestamp: quotedMessage.get('sent_at') || 0,
       convoId: this.id,
-      direction:direction,
-      groupInvitation:groupInvitation,
-      paymentDetails:paymentDetails,
-      sharedContactList:sharedContactList
+      direction: direction,
     };
+    if (groupInvitation) {
+      const { name, url } = groupInvitation;
+      const groupInviteTypedData = {
+        kind: {
+          '@type': 'OpenGroupInvitation',
+          groupName: name,
+          groupUrl: `${url}`,
+        },
+      };
+      quoteObj.text = JSON.stringify(groupInviteTypedData);
+   
+    }
+    if (paymentDetails) {
+      
+      const types = direction === 'incoming' ? 'Received' : 'Sent';
+      quoteObj.text = `${window.i18n('paymentDetails', [types])} : ${paymentDetails.amount} BDX`;
+    }
+    if (sharedContactList) {
+      const { address, name } =sharedContactList;
+      const sharedContact = {
+        kind: {
+          '@type': 'SharedContact',
+          address: address, 
+          name: name,
+        },
+      };
+      quoteObj.text = JSON.stringify(sharedContact);
+    }
+
+    return quoteObj;
   }
 
   public toOpenGroupV2(): OpenGroupRequestCommonType {
@@ -825,14 +855,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
             amount: txnDetails.amount,
             txnId: txnDetails.txnId,
             expireTimer: this.get('expireTimer'),
-          }); 
+          });
 
           // we need the return await so that errors are caught in the catch {}
           await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
           return;
         }
-         // Handle shared contact Message 
-        const sharedContact = message.get('sharedContact'); 
+        // Handle shared contact Message
+        const sharedContact = message.get('sharedContact');
         if (sharedContact) {
           const sharedContactMessage = new SharedContactMessage({
             identifier: id,
@@ -841,7 +871,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
             name: sharedContact.name,
             expireTimer: this.get('expireTimer'),
           });
-        
+
           // we need the return await so that errors are caught in the catch {}
           await getMessageQueue().sendToPubKey(destinationPubkey, sharedContactMessage);
           return;
@@ -954,8 +984,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       .catch(window?.log?.error);
   }
 
-  public async sendMessage(msg: SendMessageType) { 
-    const { attachments, body, groupInvitation, preview, quote, txnDetails,sharedContact } = msg;
+  public async sendMessage(msg: SendMessageType) {
+    const { attachments, body, groupInvitation, preview, quote, txnDetails, sharedContact } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
@@ -977,10 +1007,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
       txnDetails,
-      sharedContact
+      sharedContact,
     });
 
-    console.log('messageModel -->',messageModel)
     // We're offline!
     if (!window.isOnline) {
       const error = new Error('Network is not available');
@@ -1514,15 +1543,15 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public hasReactions() {
-     // message requests should not have reactions
-     if (this.isPrivate() && !this.isApproved()) {
+    // message requests should not have reactions
+    if (this.isPrivate() && !this.isApproved()) {
       return false;
     }
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
       // const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
       // return roomHasReactionsEnabled(openGroup);
-      return false
+      return false;
     } else {
       return true;
     }
