@@ -19,10 +19,10 @@ import ContactEmptyIcon from '../icon/ContactEmptyIcon';
 import styled from 'styled-components';
 import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
-import { closeShareContact, quoteMessage } from '../../state/ducks/conversations';
+import { closeShareContact } from '../../state/ducks/conversations';
 import { getTheme } from '../../state/selectors/theme';
 
-export const BchatContactListPanel = () => {
+export const BchatContactListPanel = (props: { sendMessage: any }) => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
   const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
@@ -36,10 +36,10 @@ export const BchatContactListPanel = () => {
     setFilteredNames(
       value
         ? privateContactsPubkeys.filter((pubkey: any) => {
-        const convo = getConversationController().get(pubkey);
-          const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
-          return memberName?.toLowerCase().includes(value.toLowerCase());
-        })
+            const convo = getConversationController().get(pubkey);
+            const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
+            return memberName?.toLowerCase().includes(value.toLowerCase());
+          })
         : privateContactsPubkeys
     );
   };
@@ -60,12 +60,11 @@ export const BchatContactListPanel = () => {
     );
   }
   const sendContact = () => {
-
     if (!selectedConvoKey || !selectedMemberIds?.length) return;
 
     const conversationController = getConversationController();
     const selectedConvo = conversationController.get(selectedConvoKey);
-   let selectedMemberNames =[];
+    let selectedMemberNames = [];
     for (let index = 0; index < selectedMemberIds.length; index++) {
       const firstMemberId = selectedMemberIds[index];
       const memberConvo = conversationController.get(firstMemberId);
@@ -77,20 +76,22 @@ export const BchatContactListPanel = () => {
         memberConvo.getProfileName() ||
         firstMemberId;
 
-        selectedMemberNames.push(memberName);
+      selectedMemberNames.push(memberName);
     }
-    
-    const sharedContact = { address: JSON.stringify(selectedMemberIds), name: JSON.stringify(selectedMemberNames) };
-    selectedConvo.sendMessage({
+
+    const sharedContact = {
+      address: JSON.stringify(selectedMemberIds),
+      name: JSON.stringify(selectedMemberNames),
+    };
+    props.sendMessage({
       body: '',
       attachments: undefined,
       groupInvitation: undefined,
       preview: undefined,
-      quote: quotedMessageProps, 
+      quote: quotedMessageProps,
       txnDetails: undefined,
       sharedContact,
     });
-    window.inboxStore?.dispatch(quoteMessage(undefined));
     window.inboxStore?.dispatch(closeShareContact());
   };
 
@@ -219,11 +220,11 @@ const ContactList = (props: {
 };
 
 const SearchEmptyScreen = () => {
-  const isDark =  useSelector(getTheme) === 'dark';
+  const isDark = useSelector(getTheme) === 'dark';
   return (
     <SearchEmptyWrapper>
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">
-        <ContactEmptyIcon  isDark={isDark}/>
+        <ContactEmptyIcon isDark={isDark} />
         <StyledSpan>No Contact Found!</StyledSpan>
       </Flex>
     </SearchEmptyWrapper>

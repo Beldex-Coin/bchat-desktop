@@ -42,9 +42,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
-  console.log("name:",name)
   const namesArray: string[] = JSON.parse(name || '[]');
   const addressesArray: string[] = JSON.parse(address || '[]');
 

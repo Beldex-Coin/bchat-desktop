@@ -5,7 +5,7 @@ import { BchatRightPanelWithDetails } from './conversation/BchatRightPanel';
 import { BchatContactListPanel } from './conversation/BchatContactListPanel';
 import { BchatViewContactPanel } from './conversation/BchatViewContactPanel';
 
-export const ProfileInfo = () => {
+export const ProfileInfo = (props:{sendMessage:any}) => {
   const isShowing: boolean = useSelector(isRightPanelShowing) || false;
   const isShare: boolean = useSelector(isShareContact) || false;
   const selectedConversation = useSelector(getSelectedConversation);
@@ -14,7 +14,7 @@ export const ProfileInfo = () => {
     return <BchatRightPanelWithDetails />;
   }
   if (isShare && selectedConversation) {
-    return <BchatContactListPanel />;
+    return <BchatContactListPanel sendMessage={props.sendMessage} />;
   }
   if(isShowingViewPanel && selectedConversation)
   {

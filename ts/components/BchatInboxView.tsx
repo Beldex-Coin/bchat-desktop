@@ -36,7 +36,6 @@ import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSectio
 import { initialWalletConfigState } from '../state/ducks/walletConfig';
 // import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
 import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
-import { ProfileInfo } from './BchatProfileInfo';
 import { AudioPlayerProvider } from './basic/AudioPlayerContext';
 
 // Default to the locale from env. It will be overriden if moment
@@ -85,12 +84,6 @@ export class BchatInboxView extends React.Component<any, State> {
                 {this.renderLeftPane()}
               </div>
               <BchatMainPanel />
-              <div className="profile-info">
-                <div>
-                  <ProfileInfo />
-
-                </div>
-              </div>
               </AudioPlayerProvider>
           </PersistGate>
         </Provider>
