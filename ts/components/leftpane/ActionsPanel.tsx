@@ -38,7 +38,7 @@ import { DURATION } from '../../bchat/constants';
 import {
   closeRightPanel,
   conversationChanged,
-  conversationRemoved,
+  conversationRemoved
 } from '../../state/ducks/conversations';
 import {
   editProfileModal,
@@ -89,6 +89,7 @@ import NewChatIcon from '../icon/NewChatIcon';
 import SecretGrpIcon from '../icon/SecretGrpIcon';
 import SocialGrpIcon from '../icon/SocialGrpIcon';
 import SubMenuConnectIcon from '../icon/SubMenuConnect';
+import { openCallHistory } from '../../state/ducks/callHistory';
 
 const Section = (props: {
   type: SectionType;
@@ -142,6 +143,11 @@ const Section = (props: {
 
       dispatch(setOverlayMode('open-group'));
       // dispatch(setOverlayMode(undefined))
+    } else if (type === SectionType.CallHistory) {
+      openCallHistory();
+      // Show open group
+      dispatch(showLeftPaneSection(type));
+      dispatch(setOverlayMode('call-history'));
     } else if (type === SectionType.Wallet) {
       let emptyAddress: any = '';
       // Show open wallet
@@ -167,7 +173,6 @@ const Section = (props: {
       dispatch(clearSearch());
       dispatch(setOverlayMode(undefined));
       dispatch(showLeftPaneSection(type));
-  
     }
   };
 
@@ -194,19 +199,10 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick()}
           >
-            <BchatIcon
-              iconSize={31}
-              iconType={'chatBubble'}
-            />
+            <BchatIcon iconSize={31} iconType={'chatBubble'} />
             {unreadMessageCount !== 0 ? (
               <div className="unreadCountChatIcon">
-                {unreadMessageCount <= 99 ? (
-                  unreadToShow
-                ) : (
-                  <span >
-                    99+
-                  </span>
-                )}
+                {unreadMessageCount <= 99 ? unreadToShow : <span>99+</span>}
               </div>
             ) : null}
           </div>
@@ -238,11 +234,7 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick(SectionType.SubMenu)}
           >
-            <BchatIcon
-              iconSize={31}
-              iconType={'newChat'}
-            />
-          
+            <BchatIcon iconSize={31} iconType={'newChat'} />
           </div>
           <div>
             <Flex
@@ -253,9 +245,9 @@ const Section = (props: {
               )}
             >
               <MarginedDiv>
-                <SubMenuConnectIcon/>
+                <SubMenuConnectIcon />
               </MarginedDiv>
-              <div className={'sub-menu-box'} >
+              <div className={'sub-menu-box'}>
                 <SubMenuList
                   container={true}
                   padding="17px"
@@ -290,8 +282,19 @@ const Section = (props: {
           </div>
         </div>
       );
+    case SectionType.CallHistory:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div className="btnView" onClick={() => handleClick()}>
+            <BchatIcon iconSize={31} iconType={'call'} fillRule="evenodd" clipRule="evenodd" />
+          </div>
 
- 
+          <section className="d-visiblity ">
+            <DisplayTitle title="Call History" top={'278px'} />
+          </section>
+        </div>
+      );
+
     case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
@@ -309,7 +312,7 @@ const Section = (props: {
             />
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="Settings" top={'370px'} />
+            <DisplayTitle title="Settings" top={'462px'} />
           </section>
         </div>
       );
@@ -325,10 +328,7 @@ const Section = (props: {
             onClick={() => handleClick()}
             style={{ flexDirection: 'column' }}
           >
-            <BchatIcon
-              iconSize={31}
-              iconType={'wallet'}
-            />
+            <BchatIcon iconSize={31} iconType={'wallet'} />
             <Beta>
               <BchatIcon
                 iconSize={34}
@@ -339,12 +339,13 @@ const Section = (props: {
               />
             </Beta>
           </div>
-      
+
           <section className="d-visiblity ">
-            <DisplayTitle title="Wallet" top={'278px'} />
+            <DisplayTitle title="Wallet" top={'370px'} />
           </section>
         </div>
       );
+
     default:
       return null;
   }
@@ -510,7 +511,7 @@ export const BchatToolTip = (props: any) => (
 
 const DisplayTitle = (props: { title: string; top: string }) => (
   <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
-   <SubMenuConnectIcon/>
+    <SubMenuConnectIcon />
     <div className={'sub-menu-box'}>
       <div className="menu-txt">{props.title}</div>
     </div>
@@ -644,6 +645,8 @@ export const ActionsPanel = () => {
           <SpacerMD />
           <Section type={SectionType.Message} />
           <SpacerMD />
+          <Section type={SectionType.CallHistory} />
+          <SpacerMD />
           <Section type={SectionType.Wallet} />
           <SpacerMD />
           <Section type={SectionType.Settings} />
@@ -736,7 +739,7 @@ const Beta = styled.div`
 const MarginedDiv = styled.div`
   margin-top: 30px;
 `;
-const SubMenuList = styled(Flex)<{ isSelected: boolean}>`
+const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
   ${props => props.isSelected && 'background-color: var(--color-hop-bg);'}
   cursor:pointer;
   border-radius: 16px;

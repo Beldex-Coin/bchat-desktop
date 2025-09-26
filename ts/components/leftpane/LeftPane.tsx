@@ -18,6 +18,7 @@ import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
 import { OverlayMessage } from './overlay/OverlayMessage';
+import { OverlayCallHistory } from './overlay/OverlayCallHistory';
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -76,14 +77,16 @@ const LeftPaneSection = () => {
     return  <OverlayMessage />;
   }
   if (focusedSection === SectionType.Closedgroup) {
-    // if (convoList?.conversations.length === 0 || convoList.contacts.length === 0 ) {
-    //   return<></>;
-    // }
+   
     return <OverlayClosedGroup />;
   }
 
   if (focusedSection === SectionType.Opengroup) {
     return <OverlayOpenGroup />;
+  }
+
+  if (focusedSection === SectionType.CallHistory) {
+    return <OverlayCallHistory />;
   }
 
   if (focusedSection === SectionType.Wallet) {

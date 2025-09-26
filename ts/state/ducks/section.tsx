@@ -16,7 +16,8 @@ export enum SectionType {
   Contact,
   Moon,
   PathIndicator,
-  SubMenu
+  SubMenu,
+  CallHistory
   
  
 }
@@ -65,6 +66,7 @@ export type OverlayMode =
   | 'closed-group'
   | 'message-requests'
   | 'wallet'
+  | 'call-history'
   | undefined;
 
 export function setOverlayMode(overlayMode: OverlayMode): OverlayModeActionType {

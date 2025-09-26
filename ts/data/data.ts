@@ -567,6 +567,15 @@ export async function getMessagesByConversation(
   return new MessageCollection(messages);
 }
 
+export async function  getCallMessagesByConversation( conversationId: string,)
+{
+  const messages = await channels.getMessagesByConversation(conversationId);
+  const callNotifications = messages
+  .filter((item: any) => "callNotificationType" in item)
+  return callNotifications;
+
+}
+
 /**
  * This function should only be used when you don't want to render the messages.
  * It just grabs the last messages of a conversation.

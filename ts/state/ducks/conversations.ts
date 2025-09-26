@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getConversationController } from '../../bchat/conversations';
 import {
   // getAllConversations,
-  // getCallMessagesByConversation,
   getFirstUnreadMessageIdInConversation,
   getLastMessageIdInConversation,
   getLastMessageInConversation,
@@ -25,8 +24,8 @@ import { QuotedAttachmentType } from '../../components/conversation/message/mess
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
 import { Reaction, ReactionList } from '../../types/Reaction';
-// import moment from 'moment';
-// import { getDirectContacts } from '../selectors/conversations';
+
+
 
 export type CallNotificationType = 'missed-call' | 'started-call' | 'answered-a-call';
 export type PropsForCallNotification = {
@@ -45,7 +44,7 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
   propsForPayment?: PropsForPayment;
-  propsForSharedContact?:PropsForSharedContact;
+  propsForSharedContact?: PropsForSharedContact;
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -144,7 +143,7 @@ export type PropsForGroupInvitation = {
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
-  onRecentEmojiBtnVisible?:()=>void;
+  onRecentEmojiBtnVisible?: () => void;
 };
 
 export type PropsForPayment = {
@@ -155,17 +154,17 @@ export type PropsForPayment = {
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
-  onRecentEmojiBtnVisible?:()=>void;
+  onRecentEmojiBtnVisible?: () => void;
 };
-export type PropsForSharedContact={
+export type PropsForSharedContact = {
   address: string;
   name: string;
   direction?: MessageModelType;
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
-  onRecentEmojiBtnVisible?:()=>void;
-}
+  onRecentEmojiBtnVisible?: () => void;
+};
 export type PropsForAttachment = {
   id: number;
   contentType: string;
@@ -318,11 +317,11 @@ export type ConversationLookupType = {
   [key: string]: ReduxConversationType;
 };
 
-export type  showViewContactPanelTypes = {
-  isIncoming:boolean
-  names:Array<String>;
-  addresses:Array<String>;
-}
+export type showViewContactPanelTypes = {
+  isIncoming: boolean;
+  names: Array<String>;
+  addresses: Array<String>;
+};
 export type ConversationsStateType = {
   conversationLookup: ConversationLookupType;
   selectedConversation?: string;
@@ -335,7 +334,7 @@ export type ConversationsStateType = {
   quotedMessage?: ReplyingToMessageProps;
   areMoreMessagesBeingFetched: boolean;
   showShareContact: boolean;
-  showViewContactPanel:showViewContactPanelTypes |null;
+  showViewContactPanel: showViewContactPanelTypes | null;
 
   /**
    * oldTopMessageId should only be set when, as the user scroll up we trigger a load of more top messages.
@@ -367,6 +366,7 @@ export type ConversationsStateType = {
   shouldHighlightMessage: boolean;
   nextMessageToPlayId?: string;
   mentionMembers: MentionsMembersType;
+ 
 };
 
 export type MentionsMembersType = Array<{
@@ -498,7 +498,7 @@ export function getEmptyConversationState(): ConversationsStateType {
     shouldHighlightMessage: false,
     mostRecentMessageId: null,
     showShareContact: false,
-    showViewContactPanel:null
+    showViewContactPanel: null,
   };
 }
 
@@ -620,10 +620,12 @@ const conversationsSlice = createSlice({
     closeShareContact(state: ConversationsStateType) {
       return { ...state, showShareContact: false };
     },
-    updateViewContactPanel(state: ConversationsStateType ,action: PayloadAction<showViewContactPanelTypes| null>) {
-      return { ...state, showViewContactPanel:action.payload  };
+    updateViewContactPanel(
+      state: ConversationsStateType,
+      action: PayloadAction<showViewContactPanelTypes | null>
+    ) {
+      return { ...state, showViewContactPanel: action.payload };
     },
-  
     addMessageIdToSelection(state: ConversationsStateType, action: PayloadAction<string>) {
       if (state.selectedMessageIds.some(id => id === action.payload)) {
         return state;
@@ -801,7 +803,7 @@ const conversationsSlice = createSlice({
         areMoreMessagesBeingFetched: false,
         showRightPanel: false,
         showShareContact: false,
-        showViewContactPanel:null,
+        showViewContactPanel: null,
         selectedMessageIds: [],
 
         lightBox: undefined,
@@ -1034,7 +1036,7 @@ export const {
   resetConversationExternal,
   openShareContact,
   closeShareContact,
-  updateViewContactPanel
+  updateViewContactPanel,
 } = actions;
 
 export async function openConversationWithMessages(args: {
@@ -1078,6 +1080,7 @@ const savebnsname = async (conversationKey: string, displayName: any) => {
   await conversation.setBchatProfile({ displayName });
 };
 
+
 export async function openConversationToSpecificMessage(args: {
   conversationKey: string;
   messageIdToNavigateTo: string;
@@ -1103,56 +1106,3 @@ export async function openConversationToSpecificMessage(args: {
     })
   );
 }
-
-// export async function openCallHistory(contacts: any) {
-//   const callHistory = (
-//     await Promise.all(contacts.map((item: any) => getCallMessagesByConversation(item.id)))
-//   ).flat();
-
-//   const sortedCallHistory = callHistory.sort((a: any, b: any) => b.received_at - a.received_at);
-
-//   let verify_data: any = null;
-//   const refinedHistory: any[] = [];
-
-//   for (const item of sortedCallHistory) {
-//     const verifyCalls =
-//       verify_data &&
-//       item.conversationId === verify_data.conversationId &&
-//       item.callNotificationType === verify_data.callNotificationType &&
-//       moment(item.received_at).isSame(moment(verify_data.received_at), 'day');
-//     if (verifyCalls) {
-//       verify_data.call_details.push({
-//         callType: item.callNotificationType,
-//         timeStamp: item.received_at,
-//       });
-//     } else {
-//       const newEntry = {
-//         callNotificationType: item.callNotificationType,
-//         conversationId: item.conversationId,
-//         direction: item.direction,
-//         received_at: item.received_at,
-//         call_details: [
-//           {
-//             callType: item.callNotificationType,
-//             timeStamp: item.received_at,
-//           },
-//         ],
-//       };
-
-//       refinedHistory.push(newEntry);
-//       verify_data = newEntry; // keep reference to current group
-//     }
-//   }
-//   //  const  gethistory=await getCallMessagesByConversation(convoId);
-//   //  const  contacts= await getAllConversations();
-//   //  const contact2=(state:any)=>getDirectContacts(state);
-//   console.log(
-//     'gethistory -->',
-//     'contacts ___',
-//     contacts,
-//     'callHistory --.',
-//     sortedCallHistory,
-//     'refinedHistory -->',
-//     refinedHistory
-//   );
-// }

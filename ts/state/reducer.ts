@@ -21,7 +21,8 @@ import {
 } from './ducks/stagedAttachments';
 import { reducer as wallet,WalletStateType } from './ducks/wallet';
 import { reducer as daemon,DaemonStateType } from './ducks/daemon';
-import {reducer as walletConfig, WalletConfigState } from "./ducks/walletConfig"
+import {reducer as walletConfig, WalletConfigState } from "./ducks/walletConfig";
+import {reducer as callHistory,CallHistoryState} from "./ducks//callHistory";
 
 
 export type StateType = {
@@ -43,7 +44,8 @@ export type StateType = {
 
   walletFocused:WalletSectionStateType
   walletInnerFocused:WalletInnerSectionStateType;
-  walletConfig:WalletConfigState
+  walletConfig:WalletConfigState;
+  callHistory:CallHistoryState
 
 };
 
@@ -66,6 +68,7 @@ export const reducers = {
   walletFocused,
   walletInnerFocused,
   walletConfig,
+  callHistory
 };
 
 // Making this work would require that our reducer signature supported AnyAction, not
