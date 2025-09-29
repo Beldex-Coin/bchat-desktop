@@ -413,18 +413,23 @@ $bchat-compose-margin: 20px;
       }
     }
     &-call-history {
-      padding: 15px;
+      padding: 5px;
       &--header {
-        font-size: 22px;
+        padding:0 10px;
+        &-txt{
+          font-size: 22px;
+        }
+       
       }
       .content-box-wrapper {
         overflow: auto;
-        height: calc(100vh - 182px);
+        height: calc(100vh - 180px);
+        padding: 5px 10px;
         .content-box {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 10px 5px 10px 10px;
+          padding:10px;
 
           &:hover {
             border-radius: 16px;
@@ -438,6 +443,10 @@ $bchat-compose-margin: 20px;
             font-weight: 300;
             font-size: 14px;
           }
+
+         .bchat-icon-button:hover{
+           color: #108D32;
+         }
         }
       }
     }
