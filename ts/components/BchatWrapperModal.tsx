@@ -29,6 +29,7 @@ export type BchatWrapperModalType = {
   cancelButton?: any;
   iconShow?: boolean;
   customIcon?: any;
+  buttonSizeLg?: boolean;
 };
 export const Loader = styled.div`
   position: absolute;
@@ -57,8 +58,9 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     cancelButton,
     iconShow = false,
     customIcon,
+    buttonSizeLg = false,
   } = props;
-
+   
   useKey(
     'Esc',
     () => {
@@ -145,7 +147,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
                 iconType={cancelButton?.iconType}
                 dataTestId="Bchat-confirm-cancel-button"
-                style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
+                style={{ marginRight: '12px', minWidth: iconShow || buttonSizeLg ? '235px' : '200px' }}
               />
             )}
             <BchatButton
@@ -157,7 +159,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               iconType={okButton?.iconType}
               onClick={okButton?.onClickOkHandler}
               dataTestId={okButton?.dataTestId ? okButton.dataTestId : 'Bchat-confirm-ok-button'}
-              style={{ minWidth: iconShow ? '235px' : '200px' }}
+              style={{ minWidth: iconShow || buttonSizeLg  ? '235px' : '200px' }}
             />
           </div>
           {isloading && (

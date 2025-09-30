@@ -333,7 +333,9 @@ export const MessageContentWithStatuses = (props: Props) => {
         {!isIncoming && (
           <Flex container={true} width="165px" justifyContent="flex-end">
             {threeDotVisible && (
-              <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />
+             <div className='module-message--three-dot'>
+               <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />
+             </div>
             )}
             {emojiIsVisible && (
               <StyledRecentReactionWrapper>

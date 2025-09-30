@@ -323,9 +323,13 @@ export const GenericReadableMessage = (props: Props) => {
         className="message-box"
         style={{ cursor: isSelectionMode ? 'pointer' : 'default' }}
         onClick={() => isSelectionMode && onSelect(messageId)}
+        onMouseLeave={() => {
+        setRecentEmojiBtnVisible(false);
+      }}
+      onMouseOver={() => setRecentEmojiBtnVisible(true)}
       >
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
-        <div>
+        <div style={{margin:'auto'}}>
           {isSelectionMode && isIncoming && (
             <div style={{ marginRight: '15px', cursor: 'pointer' }}>
               <BchatIcon
@@ -370,7 +374,7 @@ export const GenericReadableMessage = (props: Props) => {
             expirationTimestamp={expirationTimestamp}
           />
         )} */}
-        <div>
+        <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
             <div style={{ marginLeft: '15px', cursor: 'pointer' }}>
               <BchatIcon

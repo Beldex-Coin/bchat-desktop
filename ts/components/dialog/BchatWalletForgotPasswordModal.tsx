@@ -141,6 +141,7 @@ export const BchatWalletForgotPasswordModal = () => {
       <BchatWrapperModal
         title={window.i18n('forgotPassword')}
         onClose={() => {}}
+        buttonSizeLg={true}
         showExitIcon={false}
         showHeader={true}
         headerReverse={false}
@@ -209,7 +210,7 @@ export const BchatWalletForgotPasswordModal = () => {
             <div className="wallet-forgotPassword-content-Box-password-label">
               {window.i18n('changeWalletPassword')}
             </div>
-            <SpacerSM />
+            <SpacerLG />
             <Flex
               container={true}
               flexDirection={'row'}

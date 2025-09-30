@@ -185,6 +185,11 @@
   height: 100%;
   z-index: 25;
 }
+.module-message--three-dot{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .bchat-message-wrapper {
   letter-spacing: 0.03em;
   margin-top: 3px;
