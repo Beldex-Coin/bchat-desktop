@@ -186,7 +186,7 @@ const Wrapper = styled.div`
     display: flex;
     position: relative;
 
-    .module-avatar:first-child {
+    .bns-verify-wrapper:first-child {
       z-index: 1;
       box-shadow: 1px 1px 2px 0px var(--color-chatHeader);
       position: absolute;

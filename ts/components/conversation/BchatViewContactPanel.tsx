@@ -18,6 +18,7 @@ import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { getConversationController } from '../../bchat/conversations';
 import { ConversationTypeEnum } from '../../models/conversation';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 
 type ContactListProps = {
   pubkey: any;
@@ -97,6 +98,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
 
 const ContactList = (props:ContactListProps) => {
   const { pubkey, userName, iconColor,openConfirmModal } = props;
+  const isBnsHolder=useConversationBnsHolder(pubkey);
   const validUserName =
     userName.length >= 65 ? userName.slice(0, 8) + '.....' + userName.slice(-8) : userName;
   return (
@@ -106,7 +108,7 @@ const ContactList = (props:ContactListProps) => {
         style={{ paddingLeft: '10px', paddingRight: '10px',marginLeft:'10px',marginRight:'10px' }}
       >
         <div className="avatarBox">
-          <Avatar pubkey={pubkey} size={AvatarSize.M} />
+          <Avatar pubkey={pubkey} size={AvatarSize.M} isBnsHolder={isBnsHolder}/>
         </div>
 
         <Flex container={true} flexDirection="column" margin="0 15px">

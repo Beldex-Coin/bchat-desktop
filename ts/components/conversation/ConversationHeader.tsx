@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
@@ -240,12 +240,6 @@ const AvatarHeader = (props: {
   const { pubkey, onAvatarClick, showBackButton, conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <BNSWrapper
-        // size={40}
-        position={{ left: '46px', top: '46px' }}
-        isBnsHolder={conversation?.isBnsHolder}
-        size={{ width: '20', height: '20' }}
-      >
         <Avatar
           size={AvatarSize.L}
           onAvatarClick={() => {
@@ -256,8 +250,8 @@ const AvatarHeader = (props: {
           }}
           pubkey={pubkey}
           dataTestId="conversation-options-avatar"
+          isBnsHolder={conversation?.isBnsHolder}
         />
-      </BNSWrapper>
     </span>
   );
 };

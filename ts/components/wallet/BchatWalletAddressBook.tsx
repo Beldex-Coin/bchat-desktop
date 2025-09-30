@@ -14,31 +14,12 @@ import {
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 // import { LeftPaneSectionHeader } from '../leftpane/LeftPaneSectionHeader';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
-import styled from 'styled-components';
 import { getConversationController } from '../../bchat/conversations';
 // import { BchatSearchInput } from '../BchatSearchInput';
 
-const AvatarContainer = styled.div`
-  position: relative;
-`;
 
-export const AvatarItem = (props: { memberPubkey: string; isBnsHolder: any }) => {
-  const { memberPubkey, isBnsHolder } = props;
-  return (
-    <AvatarContainer>
-      <BNSWrapper
-        // size={52}
-        position={{ left: '34px', top: '34px' }}
-        isBnsHolder={isBnsHolder}
-        size={{ width: '20', height: '20' }}
-      >
-        <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
-      </BNSWrapper>
-    </AvatarContainer>
-  );
-};
 
 export const AddressBook = (props: { isContact?: boolean }) => {
   const { isContact } = props;
@@ -176,7 +157,7 @@ const AddressContent = (props: { isContact?: boolean; pubkey: string; send: any 
             pubkey={props.pubkey}
           // onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
           /> */}
-          <AvatarItem memberPubkey={props.pubkey} isBnsHolder={isBnsHolder} />
+          <Avatar size={AvatarSize.M} pubkey={props.pubkey} isBnsHolder={isBnsHolder}/>
         </div>
 
         <Flex container={true} flexDirection="column">

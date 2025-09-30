@@ -13,7 +13,6 @@ import {
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 import classNames from 'classnames';
-import { AvatarItem } from '../wallet/BchatWalletAddressBook';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import ContactEmptyIcon from '../icon/ContactEmptyIcon';
 import styled from 'styled-components';
@@ -21,6 +20,7 @@ import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
 import { closeShareContact } from '../../state/ducks/conversations';
 import { getTheme } from '../../state/selectors/theme';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 export const BchatContactListPanel = (props: { sendMessage: any }) => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
@@ -190,7 +190,7 @@ const ContactList = (props: {
         }}
       >
         <div className="avatarBox">
-          <AvatarItem memberPubkey={pubkey} isBnsHolder={isBnsHolder} />
+          <Avatar size={AvatarSize.M} pubkey={pubkey} isBnsHolder={isBnsHolder}/>
         </div>
 
         <Flex container={true} flexDirection="column" margin="0 15px">

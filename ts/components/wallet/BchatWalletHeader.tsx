@@ -14,8 +14,8 @@ import {
 } from '../../state/ducks/walletConfig';
 import { ToastUtils, UserUtils } from '../../bchat/utils';
 import { getRescaning } from '../../state/selectors/walletConfig';
-import { AvatarItem } from './BchatWalletAddressBook';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 export async function rescanModalDialog(rescaning: boolean, dispatch: any) {
   if (!window.globalOnlineStatus) {
@@ -63,7 +63,7 @@ export const WalletHeader = () => {
   return (
     <div className="wallet-header">
       <div className="wallet-header-left-side">
-        <AvatarItem memberPubkey={ourPubkey} isBnsHolder={isBnsHolder} />
+        <Avatar size={AvatarSize.M} pubkey={ourPubkey} isBnsHolder={isBnsHolder}/>
         <span className="header-txt">{window.i18n('WalletSettingsTitle')}</span>
       </div>
       <div className="wallet-header-right-side">

@@ -18,7 +18,6 @@ import useTimeoutFn from 'react-use/lib/useTimeoutFn';
 
 import { getOurNumber } from '../../state/selectors/user';
 import {
-  getOurPrimaryConversation,
   getUnreadMessageCount,
 } from '../../state/selectors/conversations';
 import { ThemeStateType, applyTheme } from '../../state/ducks/theme';
@@ -56,7 +55,7 @@ import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/Ap
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
 import { forceRefreshRandomSnodePool } from '../../bchat/apis/snode_api/snodePool';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { CallInFullScreenContainer } from '../calling/CallInFullScreenContainer';
 import { DraggableCallContainer } from '../calling/DraggableCallContainer';
 import { IncomingCallDialog } from '../calling/IncomingCallDialog';
@@ -90,6 +89,7 @@ import SecretGrpIcon from '../icon/SecretGrpIcon';
 import SocialGrpIcon from '../icon/SocialGrpIcon';
 import SubMenuConnectIcon from '../icon/SubMenuConnect';
 import { openCallHistory } from '../../state/ducks/callHistory';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 
 const Section = (props: {
   type: SectionType;
@@ -525,9 +525,8 @@ const DisplayTitle = (props: { title: string; top: string }) => (
 export const ActionsPanel = () => {
   const [startCleanUpMedia, setStartCleanUpMedia] = useState(false);
   const [isHiddenSubMenus, setIsHiddenSubMenus] = useState(true);
-  const ourPrimaryConversation = useSelector(getOurPrimaryConversation);
-  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
-
+  const ourPrimaryConversation = useSelector(getOurPubKeyStrFromCache);
+  const isBnsHolder=useConversationBnsHolder(ourPrimaryConversation)
   const dispatch = useDispatch();
   const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
@@ -620,19 +619,13 @@ export const ActionsPanel = () => {
           style={{ marginTop: '10px', height: '60px', position: 'relative' }}
         >
           <IsOnline />
-          <BNSWrapper
-            // size={52}
-            position={{ left: '45px', top: '43px' }}
-            isBnsHolder={conversation?.attributes?.isBnsHolder}
-            size={{ width: '25', height: '25' }}
-          >
             <Avatar
               size={AvatarSize.L}
               onAvatarClick={() => dispatch(editProfileModal({}))}
               pubkey={getOurPubKeyStrFromCache()}
               dataTestId="leftpane-primary-avatar"
+              isBnsHolder={isBnsHolder}
             />
-          </BNSWrapper>
         </div>
         <SpacerMD />
         <div style={{ overflow: 'auto', width: '65%', height: 'calc(100vh - 250px)' }}>

@@ -3,7 +3,7 @@ import { SpacerLG, SpacerMD, SpacerXS } from '../../basic/Text';
 import { BchatIcon, BchatIconButton } from '../../icon';
 import classNames from 'classnames';
 import {
-  // useConversationBnsHolder,
+  useConversationBnsHolder,
   useConversationUsernameOrShorten,
 } from '../../../hooks/useParamSelector';
 // import { AvatarItem } from '../../wallet/BchatWalletAddressBook';
@@ -109,7 +109,7 @@ const ContactList = (props: any) => {
     openConverstation,
   } = props;
   const username = useConversationUsernameOrShorten(conversationId);
-  // const isBnsHolder = useConversationBnsHolder(conversationId);
+  const isBnsHolder = useConversationBnsHolder(conversationId);
 
   const styleItem = style[callNotificationType];
   const callCategoryText = styleItem.notificationText;
@@ -127,7 +127,7 @@ const ContactList = (props: any) => {
       <div className={classNames(`content-box`)} >
         <Flex container={true} alignItems='center'>
           <div className="avatarBox">
-          <Avatar size={AvatarSize.L} pubkey={conversationId} />
+          <Avatar size={AvatarSize.L} pubkey={conversationId} isBnsHolder={isBnsHolder}/>
           </div>
 
           <Flex container={true} flexDirection="column" margin="0 15px">

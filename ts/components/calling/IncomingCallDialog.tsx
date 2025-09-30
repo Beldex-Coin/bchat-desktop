@@ -7,7 +7,7 @@ import { ed25519Str } from '../../bchat/onions/onionPath';
 import { CallManager } from '../../bchat/utils';
 import { callTimeoutMs } from '../../bchat/utils/calling/CallManager';
 import { getHasIncomingCall, getHasIncomingCallFrom } from '../../state/selectors/call';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
@@ -100,14 +100,7 @@ export const IncomingCallDialog = () => {
         <div className="bchat-modal">
           <IncomingCallAvatarContainer>
             <SpacerLG />
-            <BNSWrapper
-              // size={52}
-              position={{ left: '73px', top: '73px' }}
-              isBnsHolder={isBnsHolder}
-              size={{ width: '20', height: '20' }}
-            >
-              <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} />
-            </BNSWrapper>
+              <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey}  isBnsHolder={isBnsHolder} /> 
             <UserName>{from}</UserName>
           </IncomingCallAvatarContainer>
           <IncomingTxt>{modulatedStr}</IncomingTxt>

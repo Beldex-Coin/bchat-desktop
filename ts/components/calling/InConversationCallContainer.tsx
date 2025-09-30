@@ -13,7 +13,7 @@ import {
   
 } from '../../state/selectors/call';
 import { StyledVideoElement } from './DraggableCallContainer';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
@@ -346,16 +346,11 @@ export const InConversationCallContainer = () => {
               />
               {remoteStreamVideoIsMuted && (
                 <CenteredAvatarInConversation isCallModalExpandView={isCallModalExpandView }>
-                  <BNSWrapper
-                    position={{ left: '75px', top: '72px' }}
-                    isBnsHolder={selectedConversation?.isBnsHolder}
-                    size={{ width: '20', height: '20' }}
-                  >
                     <Avatar
                       size={isCallModalExpandView ? AvatarSize.XXXL : AvatarSize.XXL}
                       pubkey={ongoingCallPubkey}
+                      isBnsHolder={selectedConversation?.isBnsHolder}
                     />
-                  </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
                     {validateMemberName(
@@ -387,16 +382,11 @@ export const InConversationCallContainer = () => {
                     !remoteStreamVideoIsMuted && localStreamVideoIsMuted 
                   }
                 >
-                  <BNSWrapper
-                    position={{ left: '75px', top: '72px' }}
-                    isBnsHolder={conversation?.attributes?.isBnsHolder}
-                    size={{ width: '20', height: '20' }}
-                  >
                     <Avatar
                       size={isCallModalExpandView ? AvatarSize.XXXL : AvatarSize.XXL}
                       pubkey={ourPubkey}
+                      isBnsHolder={conversation?.attributes?.isBnsHolder}
                     />
-                  </BNSWrapper>
                   <SpacerXS />
                   <UserNameTxt>
                     {validateMemberName(conversation.attributes.profileName)}

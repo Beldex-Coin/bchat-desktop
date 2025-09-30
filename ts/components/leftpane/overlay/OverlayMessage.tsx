@@ -22,7 +22,7 @@ import SmileSymbolIcon from '../../icon/SmileSymbolIcon';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../../basic/Text';
-import { Avatar, AvatarSize, BNSWrapper } from '../../avatar/Avatar';
+import { Avatar, AvatarSize } from '../../avatar/Avatar';
 import { CopyIconButton } from '../../icon/CopyIconButton';
 import { BchatIconButton } from '../../icon';
 import { QRView } from '../../dialog/EditProfileDialog';
@@ -30,7 +30,6 @@ import { Flex } from '../../basic/Flex';
 // import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
 import { Loader } from '../../BchatWrapperModal';
-
 
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
@@ -46,11 +45,10 @@ export const OverlayMessage = () => {
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
   const ourconvo = getConversationController().get(ourNumber);
- 
-  // const convoList = useSelector(getLeftPaneLists);
-  const walletAddress:any = localStorage.getItem('userAddress');
-  // const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
+  // const convoList = useSelector(getLeftPaneLists);
+  const walletAddress: any = localStorage.getItem('userAddress');
+  // const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
   // const title = window.i18n('newBchat');
   // const buttonText = window.i18n('next');
@@ -61,17 +59,18 @@ export const OverlayMessage = () => {
 
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-    if(!pubkeyorOnsTrimmed)
-      {
-        ToastUtils.pushToastError('invalidPubKey','please enter the Id or BNS'); // or Bns name
-        return;
-      }
-    if(PubKey.validateWithError(pubkeyorOnsTrimmed) && !pubkeyOrOns.toLowerCase().endsWith('.bdx'))
-    {
+    if (!pubkeyorOnsTrimmed) {
+      ToastUtils.pushToastError('invalidPubKey', 'please enter the Id or BNS'); // or Bns name
+      return;
+    }
+    if (
+      PubKey.validateWithError(pubkeyorOnsTrimmed) &&
+      !pubkeyOrOns.toLowerCase().endsWith('.bdx')
+    ) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
-    
+
     if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
@@ -82,7 +81,7 @@ export const OverlayMessage = () => {
       await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
       closeOverlay();
     } else {
-      setLoading(true); 
+      setLoading(true);
       try {
         const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
@@ -109,9 +108,9 @@ export const OverlayMessage = () => {
       }
     }
   }
-  
+
   return (
-    <div  className={classNames('module-left-pane-overlay')}>
+    <div className={classNames('module-left-pane-overlay')}>
       {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
       <p className="module-left-pane__chatHeader">
         {' '}
@@ -130,9 +129,9 @@ export const OverlayMessage = () => {
             // onPressEnter={handleMessageButtonClick}
           />
           {loading && (
-              <Loader >
+            <Loader>
               <BchatSpinner loading={true} />
-              </Loader>
+            </Loader>
           )}
           <SpacerSM />
           <BchatButton
@@ -154,14 +153,11 @@ export const OverlayMessage = () => {
           {!dispalyQR ? (
             <>
               <div className="avatar-Wrapper">
-                <BNSWrapper
-                  // size={89}
-                  position={{ left: '72px', top: '72px' }}
+                <Avatar
+                  size={AvatarSize.XL}
+                  pubkey={ourconvo.id}
                   isBnsHolder={ourconvo.attributes.isBnsHolder}
-                  size={{width:'20',height:'20'}}
-                >
-                  <Avatar size={AvatarSize.XL} pubkey={ourconvo.id} />
-                </BNSWrapper>
+                />
                 <div className="profile-name"> {ourconvo.getProfileName() || ''}</div>
               </div>
               <SpacerLG />
@@ -177,11 +173,7 @@ export const OverlayMessage = () => {
               <SpacerXS />
               <div className="id-Wrapper">
                 <p className="blue-color">{walletAddress}</p>
-                <CopyIconButton
-                  content={walletAddress}
-                  iconSize={22}
-                  onClick={() => {}}
-                />
+                <CopyIconButton content={walletAddress} iconSize={22} onClick={() => {}} />
               </div>
               {/* <div className="bchat-description-long">
         Share your BChat ID with your friends. You can find your BChat ID below
