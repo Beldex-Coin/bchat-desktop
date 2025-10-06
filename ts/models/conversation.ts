@@ -679,19 +679,17 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         },
       };
       quoteObj.text = JSON.stringify(groupInviteTypedData);
-   
     }
     if (paymentDetails) {
-      
       const types = direction === 'incoming' ? 'Received' : 'Sent';
       quoteObj.text = `${window.i18n('paymentDetails', [types])} : ${paymentDetails.amount} BDX`;
     }
     if (sharedContactList) {
-      const { address, name } =sharedContactList;
+      const { address, name } = sharedContactList;
       const sharedContact = {
         kind: {
           '@type': 'SharedContact',
-          address: address, 
+          address: address,
           name: name,
         },
       };
@@ -809,6 +807,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         quote: uploads.quote,
         lokiProfile: UserUtils.getOurProfile(),
       };
+      const sharedContact = message.get('sharedContact');
       await this.handleMessageApproval();
 
       // const shouldApprove = !this.isApproved() && this.isPrivate();
@@ -862,7 +861,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
           return;
         }
         // Handle shared contact Message
-        const sharedContact = message.get('sharedContact');
         if (sharedContact) {
           const sharedContactMessage = new SharedContactMessage({
             identifier: id,
@@ -886,8 +884,13 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
         return;
       }
-
       if (this.isMediumGroup()) {
+        if (sharedContact) {
+          chatMessageParams.sharedContact = {
+            address: sharedContact.address,
+            name: sharedContact.name
+          };
+        }
         await this.handleMediumGroup(chatMessageParams, destination);
         return;
       }

@@ -282,41 +282,19 @@ const Section = (props: {
           </div>
         </div>
       );
-    case SectionType.CallHistory:
-      return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div className="btnView" onClick={() => handleClick()}>
-            <BchatIcon iconSize={31} iconType={'call'} fillRule="evenodd" clipRule="evenodd" />
-          </div>
+       {/* *****call history feature implement in future release***** */}
+    // case SectionType.CallHistory:
+    //   return (
+    //     <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+    //       <div className="btnView" onClick={() => handleClick()}>
+    //         <BchatIcon iconSize={31} iconType={'call'} fillRule="evenodd" clipRule="evenodd" />
+    //       </div>
 
-          <section className="d-visiblity ">
-            <DisplayTitle title="Call History" top={'278px'} />
-          </section>
-        </div>
-      );
-
-    case SectionType.Settings:
-      return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div
-            // data-tip="settings"
-            // data-place="right"
-            // data-offset="{'top':0}"
-            className="btnView"
-            onClick={() => handleClick()}
-          >
-            <BchatIcon
-              iconSize={31}
-              // dataTestId="settings-section"
-              iconType={'gear'}
-            />
-          </div>
-          <section className="d-visiblity ">
-            <DisplayTitle title="Settings" top={'462px'} />
-          </section>
-        </div>
-      );
-
+    //       <section className="d-visiblity ">
+    //         <DisplayTitle title="Call History" top={'278px'} />
+    //       </section>
+    //     </div>
+    //   );
     case SectionType.Wallet:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
@@ -341,10 +319,33 @@ const Section = (props: {
           </div>
 
           <section className="d-visiblity ">
-            <DisplayTitle title="Wallet" top={'370px'} />
+            <DisplayTitle title="Wallet" top={'278px'} />
           </section>
         </div>
       );
+    case SectionType.Settings:
+      return (
+        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+          <div
+            // data-tip="settings"
+            // data-place="right"
+            // data-offset="{'top':0}"
+            className="btnView"
+            onClick={() => handleClick()}
+          >
+            <BchatIcon
+              iconSize={31}
+              // dataTestId="settings-section"
+              iconType={'gear'}
+            />
+          </div>
+          <section className="d-visiblity ">
+            <DisplayTitle title="Settings" top={'370px'} />
+          </section>
+        </div>
+      );
+
+   
 
     default:
       return null;
@@ -637,8 +638,9 @@ export const ActionsPanel = () => {
 
           <SpacerMD />
           <Section type={SectionType.Message} />
-          <SpacerMD />
-          <Section type={SectionType.CallHistory} />
+          {/* *****call history feature implement in future release***** */}
+          {/* <SpacerMD />
+          <Section type={SectionType.CallHistory} /> */}
           <SpacerMD />
           <Section type={SectionType.Wallet} />
           <SpacerMD />
