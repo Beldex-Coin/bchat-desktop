@@ -45,7 +45,7 @@ const style: StyleType = {
   'started-call': {
     notificationTextKey: 'startedACall',
     iconType: 'callOutgoing',
-    iconColor: 'var(--color-text)',
+    iconColor: '#FFFFFF',
     bgColor: 'transparent',
   },
   'answered-a-call': {
@@ -133,7 +133,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
                   <Flex container={true} flexDirection="column" width="120px">
                     <span
                       className="group-name"
-                      style={{ fontSize: `${FontSizeChanger(16)}px`, fontWeight: 600 }}
+                      style={{ fontSize: `${FontSizeChanger(16)}px`, fontWeight: 600 ,color:direction=='outgoing'?'#F0F0F0':'var(--color-text)'}}
                     >
                       {notificationText}
                     </span>

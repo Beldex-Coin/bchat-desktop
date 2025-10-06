@@ -131,7 +131,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                     justifyContent="center"
                   >
                     <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                   { namesArray.length > 1 && <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'var(--color-text)'} strokeWidth={'1px'} /> }  {userName}
+                   { namesArray.length > 1 && <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} /> }  {userName}
                     </span>
                     <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                       {shortAddress}

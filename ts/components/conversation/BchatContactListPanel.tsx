@@ -31,18 +31,21 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setCurrentSearchTerm(value);
+    filterContacts(event.target.value);
+  };
+
+  const filterContacts = (searchTxt:string) =>{
+    setCurrentSearchTerm(searchTxt);
     setFilteredNames(
-      value
+      searchTxt
         ? privateContactsPubkeys.filter((pubkey: any) => {
             const convo = getConversationController().get(pubkey);
             const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
-            return memberName?.toLowerCase().includes(value.toLowerCase());
+            return memberName?.toLowerCase().includes(searchTxt.toLowerCase());
           })
         : privateContactsPubkeys
     );
-  };
+  }
 
   function handleSelectMember(memberId: string) {
     if (selectedMemberIds.includes(memberId)) {
@@ -125,12 +128,20 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
         <input
           value={currentSearchTerm}
           onChange={e => {
-            console.log(e);
             handleSearch(e);
           }}
           placeholder={'Search People'}
           maxLength={26}
         />
+         {!!currentSearchTerm.length && (
+                <BchatIconButton
+                  iconSize={24}
+                  iconType="exit"
+                  onClick={() => {
+                    filterContacts('');
+                  }}
+                />
+            )}
       </div>
       <SpacerSM />
       <div className="contact-list-inner-wrapper">
@@ -153,7 +164,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
         container={true}
         justifyContent="center"
         alignItems="center"
-        padding="22px 0"
+        padding="13px 0"
         width="100%"
         className="button-wrapper"
       >

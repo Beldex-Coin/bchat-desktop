@@ -71,7 +71,7 @@ export const OverlayCallHistory = () => {
         <div className="module-left-pane-overlay-call-history--header">
           <div className="module-left-pane-overlay-call-history--header-txt">Call History</div>
           <SpacerMD />
-          <div className="bchat-search-input">
+          <div className="bchat-search-input" style={{paddingRight:'5px'}}>
             <div className="search">
               <BchatIcon iconSize={20} iconType="search" />
             </div>
@@ -83,6 +83,15 @@ export const OverlayCallHistory = () => {
               placeholder={'Search People'}
               maxLength={26}
             />
+            {!!currentSearchTerm.length && (
+              <BchatIconButton
+                iconSize={24}
+                iconType="exit"
+                onClick={() => {
+                  setCurrentSearchTerm('');
+                }}
+              />
+            )}
           </div>
         </div>
         <SpacerMD />
@@ -116,18 +125,16 @@ const ContactList = (props: any) => {
   const iconType = styleItem.iconType;
   const iconColor = styleItem.iconColor;
 
-  const subtext = `${callCategoryText}${
-    call_details.length > 1 ? ` (${call_details.length})` : ''
-  }`;
+  const subtext = `${callCategoryText}${call_details.length > 1 ? ` (${call_details.length})` : ''
+    }`;
   const lastCallMessageId = call_details[0].messageId;
-  
 
   return (
     <>
       <div className={classNames(`content-box`)} >
         <Flex container={true} alignItems='center'>
           <div className="avatarBox">
-          <Avatar size={AvatarSize.L} pubkey={conversationId} isBnsHolder={isBnsHolder}/>
+            <Avatar size={AvatarSize.L} pubkey={conversationId} isBnsHolder={isBnsHolder} />
           </div>
 
           <Flex container={true} flexDirection="column" margin="0 15px">
@@ -138,8 +145,8 @@ const ContactList = (props: any) => {
 
             <div className={'address'} >
               <BchatIcon iconType={iconType} iconSize={14} iconColor={iconColor} />
-              <span style={{ margin: '0 5px',color: iconColor }}>
-              {subtext}
+              <span style={{ margin: '0 5px', color: iconColor }}>
+                {subtext}
               </span>
               - {formatMessageTime(received_at)}
             </div>

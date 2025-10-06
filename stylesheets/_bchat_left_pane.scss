@@ -439,6 +439,9 @@ $bchat-compose-margin: 20px;
             font-size: 18px;
           }
           .address {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--color-last-msg-txt);
             font-weight: 300;
             font-size: 14px;

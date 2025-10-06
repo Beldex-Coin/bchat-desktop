@@ -347,7 +347,7 @@ const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen
   align-items:center;
 
   border-radius: 26px;
-  background:${props => (props.isCallModalExpandView || props.isFullScreen?'#2E333D':'unset')} ;
+  background:${props => (props.isCallModalExpandView || props.isFullScreen?'var(--color-received-message-background)':'unset')} ;
   margin: auto;
 
   ${props => props.isFullScreen &&`
