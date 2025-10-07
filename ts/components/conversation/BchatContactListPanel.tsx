@@ -169,7 +169,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
         className="button-wrapper"
       >
         <BchatButton
-          text={'Send selected Contacts'}
+          text={`Send selected Contacts(${selectedMemberIds.length})`}
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
           disabled={selectedMemberIds.length === 0}

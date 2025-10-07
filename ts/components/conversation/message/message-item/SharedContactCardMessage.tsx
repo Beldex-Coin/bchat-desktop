@@ -1,6 +1,7 @@
 import React, { useContext, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames';
 import {
+  openConversationWithMessages,
   PropsForSharedContact,
   updateViewContactPanel,
 } from '../../../../state/ducks/conversations';
@@ -29,6 +30,10 @@ import { Avatar, AvatarSize } from '../../../avatar/Avatar';
 import styled from 'styled-components';
 import { BchatIcon } from '../../../icon';
 import { MessageQuote } from '../message-content/MessageQuote';
+import { getConversationController } from '../../../../bchat/conversations';
+import { ConversationTypeEnum } from '../../../../models/conversation';
+import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
+import { BchatButtonColor } from '../../../basic/BchatButton';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const { messageId, receivedAt, isUnread, address, name, onRecentEmojiBtnVisible } = props;
@@ -89,10 +94,35 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
     if (!address || address.length <= 16) return address;
     return `${address.slice(0, 10)}.......${address.slice(-8)}`;
   }
+
+  const openConverstation = async (pubKey: string) => {
+    await getConversationController().getOrCreateAndWait(
+      pubKey,
+      ConversationTypeEnum.PRIVATE
+    );
+    await openConversationWithMessages({ conversationKey: pubKey, messageId: null });
+  }
+
   const shortAddress = formatAddress(addressesArray[0]);
   const recentEmojiBtnVisible = () => onRecentEmojiBtnVisible && onRecentEmojiBtnVisible();
-  const updatePanel = () => {
-    dispatch(updateViewContactPanel({isIncoming:isIncoming,names: namesArray,addresses: addressesArray }));
+  const updatePanel = async () => {
+    if (namesArray.length > 1) {
+      dispatch(updateViewContactPanel({ isIncoming: isIncoming, names: namesArray, addresses: addressesArray }));
+    } else {
+      dispatch(
+        updateConfirmModal({
+          bchatIcon: 'avatar',
+          iconSize: 31,
+          iconShow: true,
+          title: 'Start chat now?',
+          message: 'Do you want to chat with this contact now?',
+          onClickOk: () => openConverstation(addressesArray[0]),
+          okText: 'Start Chatting',
+          okTheme: BchatButtonColor.Primary,
+        })
+      );
+    }
+
   };
 
   return (
@@ -117,10 +147,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
           )}
- 
+
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
             <div className={classNames(classes)} onClick={updatePanel}>
-            <MessageQuote messageId={props.messageId} />
+              <MessageQuote messageId={props.messageId} />
               <div className="group-details">
                 <Flex container={true}>
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
@@ -131,7 +161,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                     justifyContent="center"
                   >
                     <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                   { namesArray.length > 1 && <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} /> }  {userName}
+                      {<BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} />}  {userName}
                     </span>
                     <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                       {shortAddress}
