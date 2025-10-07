@@ -34,6 +34,7 @@ import { getConversationController } from '../../../../bchat/conversations';
 import { ConversationTypeEnum } from '../../../../models/conversation';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
+import { useConversationBnsHolder } from '../../../../hooks/useParamSelector';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const { messageId, receivedAt, isUnread, address, name, onRecentEmojiBtnVisible } = props;
@@ -152,13 +153,14 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
             <div className={classNames(classes)} onClick={updatePanel}>
               <MessageQuote messageId={props.messageId} />
               <div className="group-details">
-                <Flex container={true}>
+                <Flex container={true} alignItems='center'>
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                   <Flex
                     container={true}
                     flexDirection="column"
                     cursor="pointer"
                     justifyContent="center"
+
                   >
                     <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                       {<BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} />}  {userName}
@@ -192,25 +194,43 @@ type CustomizedAvatarProps = {
   address: string[];
 };
 
-const CustomizedAvatar: React.FC<CustomizedAvatarProps> = ({ address }) => {
-  if (!address?.length) return null;
+const CustomizedAvatar: React.FC<CustomizedAvatarProps> = ({ address = [] }) => {
+  if (address.length === 0) return null;
+
+  const isBnsHolder = address.map((addr) => useConversationBnsHolder(addr));
+
+  const [first, second] = address;
 
   return (
     <Wrapper className="grouped-avatar">
       {address.length === 1 ? (
-        <Avatar pubkey={address[0]} size={AvatarSize.L} />
+        <Avatar
+          pubkey={first}
+          size={AvatarSize.L}
+          isBnsHolder={isBnsHolder[0]}
+        />
       ) : (
         <div className="inner-wrapper">
-          <Avatar pubkey={address[0]} size={AvatarSize.S} />
-          <Avatar pubkey={address[1]} size={AvatarSize.S} />
+          <Avatar
+            pubkey={first}
+            size={AvatarSize.S}
+            isBnsHolder={isBnsHolder[0]}
+          />
+          <Avatar
+            pubkey={second}
+            size={AvatarSize.S}
+            isBnsHolder={isBnsHolder[1]}
+          />
         </div>
       )}
     </Wrapper>
   );
 };
 
+
 const Wrapper = styled.div`
   position: relative;
+  margin-left: 10px;
 
   .inner-wrapper {
     display: flex;

@@ -1377,7 +1377,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           : 'Received';
       return `${amount} BDX ${direction}`;
     }
-
+      if(this.isSharedContact()){
+        return `Shared contact`;
+      }
     if (this.isDataExtractionNotification()) {
       const dataExtraction = this.get(
         'dataExtractionNotification'

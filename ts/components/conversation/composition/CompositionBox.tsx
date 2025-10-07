@@ -36,6 +36,7 @@ import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
 import {
   closeRightPanel,
+  closeShareContact,
   openShareContact,
   ReduxConversationType,
 } from '../../../state/ducks/conversations';
@@ -1291,6 +1292,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       return;
     }
     this.setState({ selectionMenuIsVisble: false });
+    window.inboxStore?.dispatch(closeShareContact());
     this.fileInput.current?.click();
   }
 
