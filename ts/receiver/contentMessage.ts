@@ -696,12 +696,13 @@ export async function handleDataExtractionNotification(
 ): Promise<void> {
   // we currently don't care about the timestamp included in the field itself, just the timestamp of the envelope
   const { type, timestamp: referencedAttachment } = dataNotificationMessage;
+  const isScreenshotMsg=type === SignalService.DataExtractionNotification.Type.SCREENSHOT;
 
   const { source, timestamp } = envelope;
   await removeFromCache(envelope);
 
   const convo = getConversationController().get(source);
-  if (!convo || !convo.isPrivate() || !Storage.get(SettingsKey.settingsReadReceipt)) {
+  if (!convo || !convo.isPrivate() ||!(isScreenshotMsg || Storage.get(SettingsKey.settingsReadReceipt))) {
     window?.log?.info('Got DataNotification for unknown or non private convo');
     return;
   }
