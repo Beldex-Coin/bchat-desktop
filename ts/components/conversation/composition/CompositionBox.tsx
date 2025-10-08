@@ -837,10 +837,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       padding="15px"
                       className="content-Wrapper"
                       alignItems="center"
-                      onClick={() => {
-                        window.inboxStore?.dispatch(closeRightPanel());
-                        window.inboxStore?.dispatch(openShareContact());
-                      }}
+                      onClick={this.onChooseContacts}
                     >
                       <ContactsIcon />
                       <span>Contacts</span>
@@ -1294,6 +1291,18 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({ selectionMenuIsVisble: false });
     window.inboxStore?.dispatch(closeShareContact());
     this.fileInput.current?.click();
+  }
+
+  private onChooseContacts() {
+    if (
+      !this.props.selectedConversation?.didApproveMe &&
+      this.props.selectedConversation?.isPrivate
+    ) {
+      ToastUtils.pushNoContactUntilApproved();
+      return;
+    }
+    window.inboxStore?.dispatch(closeRightPanel());
+    window.inboxStore?.dispatch(openShareContact());
   }
 
   private async onChoseAttachment() {

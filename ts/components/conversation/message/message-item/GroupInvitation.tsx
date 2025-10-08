@@ -6,7 +6,7 @@ import { acceptOpenGroupInvitation } from '../../../../interactions/messageInter
 import { ReadableMessage } from './ReadableMessage';
 import { Flex } from '../../../basic/Flex';
 import styled from 'styled-components';
-import { SpacerMD } from '../../../basic/Text';
+import { SpacerSM } from '../../../basic/Text';
 
 import { useSelector } from 'react-redux';
 import { StateType } from '../../../../state/reducer';
@@ -145,7 +145,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
                   direction={contentProps?.direction}
                 />
               </div>
-              <SpacerMD />
+              <SpacerSM />
               <span className="group-address" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                 {props.url}
               </span>

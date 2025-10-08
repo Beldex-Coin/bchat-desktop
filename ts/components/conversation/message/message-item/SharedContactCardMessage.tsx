@@ -10,7 +10,6 @@ import {
 import { ReadableMessage } from './ReadableMessage';
 import { Flex } from '../../../basic/Flex';
 
-import { SpacerMD } from '../../../basic/Text';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,6 +34,7 @@ import { ConversationTypeEnum } from '../../../../models/conversation';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { useConversationBnsHolder } from '../../../../hooks/useParamSelector';
+import { SpacerSM } from '../../../basic/Text';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const { messageId, receivedAt, isUnread, address, name, onRecentEmojiBtnVisible } = props;
@@ -110,7 +110,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
     if (namesArray.length > 1) {
       dispatch(updateViewContactPanel({ isIncoming: isIncoming, names: namesArray, addresses: addressesArray }));
     } else {
-      dispatch(
+      if (contentProps?.direction == "outgoing") {
+        return openConverstation(addressesArray[0])
+      }
+      return dispatch(
         updateConfirmModal({
           bchatIcon: 'avatar',
           iconSize: 31,
@@ -173,7 +176,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                 </Flex>
                 <CustomizedAvatar address={addressesArray} />
               </div>
-              <SpacerMD />
+              <SpacerSM />
 
               <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
                 {moment(contentProps?.timestamp).format('hh:mm A')}

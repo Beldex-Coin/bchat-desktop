@@ -603,4 +603,5 @@ export type LocalizerKeys =
   | 'reactionNotification'
   | 'readableListCounterSingular'
   | 'readableListCounterPlural'
-  | 'reactionTooltip';
+  | 'reactionTooltip'
+  | 'noContactUntilApproved';

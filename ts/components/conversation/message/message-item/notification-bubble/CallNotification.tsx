@@ -151,7 +151,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
                   {moment(timestamp).format('hh:mm A')}
                 </div>
               </div>
-              {!isIncoming && (
+              { contentProps?.lastMessageOfSeries && !isIncoming && (
                 <StyledSvgWrapper style={{ right: 0 }} className='outgoingTail'>
                   <OutgoingMsgTailIcon />
                 </StyledSvgWrapper>
