@@ -19,6 +19,7 @@ import { MessageBody } from './MessageBody';
 import { useIsPrivate } from '../../../../hooks/useParamSelector';
 import styled from 'styled-components';
 import { BchatIcon } from '../../../icon';
+import { Flex } from '../../../basic/Flex';
 
 export type QuotePropsWithoutListener = {
   attachment?: QuotedAttachmentType;
@@ -28,6 +29,7 @@ export type QuotePropsWithoutListener = {
   isFromMe: boolean;
   isIncoming: boolean;
   text: string | null;
+  isSharedContact?: boolean;
   referencedMessageNotFound: boolean;
 };
 
@@ -76,19 +78,36 @@ function getTypeLabel({
 }: {
   contentType: MIME.MIMEType;
   isVoiceMessage: boolean;
-  fileName:string;
-}): any| undefined {
+  fileName: string;
+}): any | undefined {
   if (GoogleChrome.isVideoTypeSupported(contentType)) {
-    return <span><BchatIcon iconType={'replyPlay'} iconSize={16} /> {fileName || window.i18n('video') } </span> ;
+    return (
+      <span>
+        <BchatIcon iconType={'replyPlay'} iconSize={16} /> {fileName || window.i18n('video')}{' '}
+      </span>
+    );
   }
   if (GoogleChrome.isImageTypeSupported(contentType)) {
-    return <span><BchatIcon iconType={'replyImage'} fillRule='evenodd' clipRule='evenodd' iconSize={16}  /> {fileName || window.i18n('photo') } </span>;
+    return (
+      <span>
+        <BchatIcon iconType={'replyImage'} fillRule="evenodd" clipRule="evenodd" iconSize={16} />{' '}
+        {fileName || window.i18n('photo')}{' '}
+      </span>
+    );
   }
   if (MIME.isAudio(contentType) && isVoiceMessage) {
-    return <span><BchatIcon iconType={'microphone'} iconSize={16} /> {window.i18n('voiceMessage')} </span>;
+    return (
+      <span>
+        <BchatIcon iconType={'microphone'} iconSize={16} /> {window.i18n('voiceMessage')}{' '}
+      </span>
+    );
   }
   if (MIME.isAudio(contentType)) {
-    return <span><BchatIcon iconType={'replyMicrophone'} iconSize={16} /> {window.i18n('audio') } </span>;
+    return (
+      <span>
+        <BchatIcon iconType={'replyMicrophone'} iconSize={16} /> {window.i18n('audio')}{' '}
+      </span>
+    );
   }
 
   return;
@@ -126,7 +145,12 @@ export const QuoteImage = (props: {
 
   const iconElement = icon ? (
     <div className="module-quote__icon-container__inner">
-      <div className={classNames(`module-quote__icon-container__circle-background`,icon&&'module-quote__icon-container__circle-background-transparent' )}>
+      <div
+        className={classNames(
+          `module-quote__icon-container__circle-background`,
+          icon && 'module-quote__icon-container__circle-background-transparent'
+        )}
+      >
         <div
           className={classNames(
             'module-quote__icon-container__icon',
@@ -225,7 +249,7 @@ export const QuoteIconContainer = (
   if (MIME.isAudio(contentType)) {
     return <QuoteIcon icon="microphone" />;
   }
-  if (contentType === 'application/pdf') { 
+  if (contentType === 'application/pdf') {
     return <QuoteIcon icon="file" />;
   }
   return null;
@@ -257,9 +281,9 @@ export const QuoteText = (
     return null;
   }
 
-  const { contentType, isVoiceMessage,fileName } = attachment;
+  const { contentType, isVoiceMessage, fileName } = attachment;
 
-  const typeLabel = getTypeLabel({ contentType, isVoiceMessage,fileName });
+  const typeLabel = getTypeLabel({ contentType, isVoiceMessage, fileName });
   if (typeLabel) {
     return (
       <div
@@ -268,7 +292,7 @@ export const QuoteText = (
           isIncoming ? 'module-quote__primary__type-label--incoming' : null
         )}
       >
-         {typeLabel}
+        {typeLabel}
       </div>
     );
   }
@@ -356,7 +380,14 @@ export const Quote = (props: QuotePropsWithListener) => {
     return null;
   }
 
-  const { isIncoming, referencedMessageNotFound, attachment, text, onClick } = props;
+  const {
+    isIncoming,
+    referencedMessageNotFound,
+    attachment,
+    text,
+    isSharedContact,
+    onClick,
+  } = props;
 
   return (
     <div className={classNames('module-quote-container')}>
@@ -371,7 +402,7 @@ export const Quote = (props: QuotePropsWithListener) => {
         )}
       >
         <div>
-          <VerticalLine  isIncoming={isIncoming} />
+          <VerticalLine isIncoming={isIncoming} />
         </div>
         <div className="module-quote__primary">
           <QuoteAuthor
@@ -383,7 +414,19 @@ export const Quote = (props: QuotePropsWithListener) => {
             showPubkeyForAuthor={isPublic}
           />
           <QuoteGenericFile {...props} />
-          <QuoteText isIncoming={isIncoming} text={text} attachment={attachment} />
+          <Flex container={true}>
+            {isSharedContact && (
+              <span style={{ marginRight: '5px' }}>
+                <BchatIcon
+                  iconType={'avatarOutline'}
+                  iconSize={11}
+                  strokeColor={'#F0F0F0'}
+                  strokeWidth={'1px'}
+                />
+              </span>
+            )}
+            <QuoteText isIncoming={isIncoming} text={text} attachment={attachment} />
+          </Flex>
         </div>
         <QuoteIconContainer
           attachment={attachment}
@@ -400,11 +443,12 @@ export const Quote = (props: QuotePropsWithListener) => {
 };
 
 type VerticalLineProps = {
-  isIncoming:boolean
-}
+  isIncoming: boolean;
+};
 const VerticalLine = styled.div<VerticalLineProps>`
   width: 5px;
-  background-color:${props=>props.isIncoming?'var(--color-untrusted-vertical-bar)':'#F0F0F0'};
+  background-color: ${props =>
+    props.isIncoming ? 'var(--color-untrusted-vertical-bar)' : '#F0F0F0'};
   height: 100%;
   border-radius: 10px;
 `;

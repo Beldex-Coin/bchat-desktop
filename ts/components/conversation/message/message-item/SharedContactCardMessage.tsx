@@ -152,19 +152,20 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
             <div className={classNames(classes)} onClick={updatePanel}>
               <MessageQuote messageId={props.messageId} />
-              <div className="group-details">
-                <Flex container={true} alignItems='center'>
+              <div className="group-details" >
+                <Flex container={true} >
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                   <Flex
                     container={true}
                     flexDirection="column"
                     cursor="pointer"
                     justifyContent="center"
-
+                   
                   >
-                    <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                      {<BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} />}  {userName}
-                    </span>
+                     <Flex container={true}  className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px`,gap:'6px' }}>
+                      <div><BchatIcon iconType={'avatarOutline'} iconSize={13} strokeColor={'#F0F0F0'} strokeWidth={'1px'} /></div>
+                     <div>{userName}</div> 
+                    </Flex>
                     <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                       {shortAddress}
                     </span>

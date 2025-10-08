@@ -230,6 +230,7 @@ async function handleRegularMessage(
   }
 
   if (rawDataMessage.openGroupInvitation) {
+    message.set({ groupInvitation: rawDataMessage.openGroupInvitation });
   }
   if(rawDataMessage.sharedContact)
   {

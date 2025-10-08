@@ -13,10 +13,11 @@ import { ContactPropsMessageDetail, MessagePropsDetails } from '../../../../stat
 // } from '../../../../state/selectors/conversations';
 import { ContactName } from '../../ContactName';
 import { BchatWrapperModal } from '../../../BchatWrapperModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 // import { getMessageTextProps } from '../../../../state/selectors/conversations';
 import { SpacerSM, SpacerXS } from '../../../basic/Text';
+import { getSortedMessagesTypesOfSelectedConversation } from '../../../../state/selectors/conversations';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -111,6 +112,21 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   // const isDeletable = useSelector(state =>
   //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
   // );
+  const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
+  const sharedContactMessage:any = messagesProps.find(
+    (item) => item.message.props.messageId === messageId
+  );
+  
+  const isSharedContact =
+    sharedContactMessage?.message.messageType === "shared-contact";
+  
+  const contactInfo = isSharedContact
+    ? {
+        name: sharedContactMessage!.message.props.name,
+        address:sharedContactMessage!.message.props.address
+      }
+    : null;
+
   if (!props) {
     return null;
   }
@@ -134,7 +150,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
         <div className="module-message-detail">
           <div >
             {/* <h2>More Info</h2> */}
-            <Message messageId={messageId} isDetailView={true} />
+             <Message messageId={messageId} isDetailView={true} address={contactInfo?.address} name={contactInfo?.name}/>
             {/* {selectedMsg?.text} */}
           </div>
           <SpacerSM />

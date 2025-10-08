@@ -300,9 +300,9 @@ export const MessageContentWithStatuses = (props: Props) => {
     status !== 'sending' &&
     status !== 'error' &&
     typingEnabled &&
-    !isRightClicked;
+    !isRightClicked && !isDetailView;
 
-  const threeDotVisible = recentEmojiBtnVisible && !isRightClicked;
+  const threeDotVisible = recentEmojiBtnVisible && !isRightClicked && !isDetailView ;
   const onEmojiClick = async (args: any) => {
     const emoji = args.native ?? args;
     await sendMessageReaction(messageId, emoji);

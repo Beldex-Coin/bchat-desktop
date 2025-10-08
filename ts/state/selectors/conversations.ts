@@ -211,7 +211,6 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
       //     : undefined;
       const isSameDay = moment(messageTimestamp).isSame(moment(previousMessageTimestamp), 'day');
       const showDateBreak =!isSameDay? messageTimestamp: undefined;
-
       if (msg.propsForDataExtractionNotification) {
         return {
           showUnreadIndicator: isFirstUnread,

@@ -675,6 +675,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       text?: string;
       attachment?: any;
       isFromMe?: boolean;
+      isSharedContact?:boolean
     } = {
       sender: author,
       messageId: id,
@@ -715,6 +716,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
                 namesArray.length > 2 ? 's' : ''
               }`
             : namesArray[0] ?? '';
+            quoteProps.isSharedContact=true;
       }
     }
 
