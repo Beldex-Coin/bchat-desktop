@@ -110,7 +110,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
             style={direction === 'incoming' ? { paddingLeft: '15px' } : { paddingRight: '15px' }}
           >
             <div style={{ position: 'relative' }}>
-              {isIncoming && (
+              {contentProps?.lastMessageOfSeries &&  isIncoming && (
                 <StyledSvgWrapper className='incomingTail'>
                   <IncomingMsgTailIcon />
                 </StyledSvgWrapper>
