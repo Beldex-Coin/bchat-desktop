@@ -21,7 +21,7 @@ import { getConversationController } from '../../bchat/conversations';
 import { closeShareContact } from '../../state/ducks/conversations';
 import { getTheme } from '../../state/selectors/theme';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { PubKey } from '../../bchat/types';
+
 
 export const BchatContactListPanel = (props: { sendMessage: any }) => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
@@ -78,8 +78,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
         memberConvo.getNickname() ||
         memberConvo.getName() ||
         memberConvo.getProfileName() ||
-        (firstMemberId && PubKey.shorten(firstMemberId));
-
+        firstMemberId
       selectedMemberNames.push(memberName);
     }
 

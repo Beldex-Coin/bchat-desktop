@@ -51,11 +51,11 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const namesArray: string[] = JSON.parse(name || '[]');
   const addressesArray: string[] = JSON.parse(address || '[]');
-
+  const validUserName=namesArray[0].length===66?namesArray[0].slice(0,17)+"...":namesArray[0]
   const userName =
     namesArray.length > 1
-      ? `${namesArray[0]} and ${namesArray.length - 1} other${namesArray.length > 2 ? 's' : ''}`
-      : namesArray[0] ?? '';
+      ? `${validUserName} and ${namesArray.length - 1} other${namesArray.length > 2 ? 's' : ''}`
+      : validUserName ?? '';
 
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {

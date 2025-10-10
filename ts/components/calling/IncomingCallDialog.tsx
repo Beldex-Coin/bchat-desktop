@@ -27,15 +27,16 @@ export const CallWindow = styled.div`
 `;
 
 const IncomingCallAvatarContainer = styled.div`
-  padding: 0 0 1rem 0;
-  width: 400px;
-  text-align: center;
+    width: 134px;
+    margin: auto;
 `;
 const UserName = styled.div`
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  text-align: center;
+   padding: 0 0 1rem 0;
 `;
 const IncomingTxt = styled.div`
   color: var(--color-hop-txt);
@@ -90,7 +91,7 @@ export const IncomingCallDialog = () => {
   const from = useConversationUsername(incomingCallFromPubkey);
 
   if (!hasIncomingCall || !incomingCallFromPubkey) {
-    return null;
+     return null;
   }
 
   if (hasIncomingCall) {
@@ -98,11 +99,13 @@ export const IncomingCallDialog = () => {
 
       <div className="bchat-dialog modal">
         <div className="bchat-modal">
+          <div style={{width:'400px'}}>
           <IncomingCallAvatarContainer>
             <SpacerLG />
-              <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey}  isBnsHolder={isBnsHolder} /> 
-            <UserName>{from}</UserName>
+              <Avatar size={AvatarSize.XXL} pubkey={incomingCallFromPubkey}  isBnsHolder={isBnsHolder} /> 
+            
           </IncomingCallAvatarContainer>
+          <UserName>{from}</UserName>
           <IncomingTxt>{modulatedStr}</IncomingTxt>
           <SpacerSM />
           <div className="bchat-modal__button-group">
@@ -127,6 +130,7 @@ export const IncomingCallDialog = () => {
             >
               <BchatIcon iconSize={27} iconType="hangIn" clipRule="evenodd" fillRule="evenodd" />
             </div>
+          </div>
           </div>
         </div>
       </div>

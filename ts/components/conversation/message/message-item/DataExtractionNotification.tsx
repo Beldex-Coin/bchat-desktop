@@ -32,7 +32,7 @@ export const DataExtractionNotification = (props: PropsForDataExtractionNotifica
         margin={'var(--margins-sm)'}
         id={`msg-${messageId}`}
       >
-        {isSavedFile && <BchatIcon iconType="upload" iconSize="small" iconRotation={180} />}
+        {isSavedFile && <BchatIcon iconType="upload" iconSize="small" iconColor='var(--color-text-subtle)'/>}
         <SpacerSM />
         <Text text={contentText} subtle={true} ellipsisOverflow={true} />
       </Flex>
