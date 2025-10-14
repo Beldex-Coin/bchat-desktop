@@ -276,6 +276,9 @@ const buildSyncVisibleMessage = (
   const quote = (dataMessage.quote as Quote) || undefined;
   const preview = (dataMessage.preview as Array<PreviewWithAttachmentUrl>) || [];
   const expireTimer = dataMessage.expireTimer;
+  const sharedContact=dataMessage.sharedContact || undefined;
+  const openGroupInvitation =dataMessage.openGroupInvitation || undefined;
+  const payment=dataMessage.payment || undefined;
 
   return new VisibleMessage({
     identifier,
@@ -286,6 +289,9 @@ const buildSyncVisibleMessage = (
     preview,
     syncTarget,
     expireTimer,
+    sharedContact,
+    openGroupInvitation,
+    txnDetails:payment
   });
 };
 

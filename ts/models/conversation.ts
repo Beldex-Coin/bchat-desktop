@@ -37,7 +37,6 @@ import {
   VisibleMessage,
   VisibleMessageParams,
 } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
-import { GroupInvitationMessage } from '../bchat/messages/outgoing/visibleMessage/GroupInvitationMessage';
 import { ReadReceiptMessage } from '../bchat/messages/outgoing/controlMessage/receipt/ReadReceiptMessage';
 import { OpenGroupUtils } from '../bchat/apis/open_group_api/utils';
 import { OpenGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/OpenGroupVisibleMessage';
@@ -66,12 +65,10 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessage/MessageRequestResponse';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
-import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
 import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
 import { handleMessageReaction } from '../util/reactions';
-import { SharedContactMessage } from '../bchat/messages/outgoing/visibleMessage/SharedContactMessage';
 // import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
 // import { OpenGroupData } from '../data/opengroups';
 
@@ -657,8 +654,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       return null;
     }
 
-   
-
     const quoteObj = {
       author: quotedMessage.getSource(),
       id: `${quotedMessage.get('sent_at')}` || '',
@@ -807,7 +802,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         quote: uploads.quote,
         lokiProfile: UserUtils.getOurProfile(),
       };
-      const sharedContact = message.get('sharedContact');
       await this.handleMessageApproval();
 
       // const shouldApprove = !this.isApproved() && this.isPrivate();
@@ -832,65 +826,33 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         return;
       }
 
+        // Handle shared contact Message
+        if (message.get('sharedContact')) {
+          chatMessageParams.sharedContact = message.get('sharedContact');
+        }
+
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {
         if (this.isMe()) {
           chatMessageParams.syncTarget = this.id;
           const chatMessageMe = new VisibleMessage(chatMessageParams);
-
           await getMessageQueue().sendSyncMessage(chatMessageMe);
           return;
         }
 
         // Handle transaction details Message
-
         if (message.get('txnDetails')) {
-          // if (false) {
-          const txnDetails = message.get('txnDetails');
-          // const txn_detailsMessages = new GroupInvitationMessage({
-          const txnDetailsMessages = new TxnDetailsMessage({
-            identifier: id,
-            timestamp: sentAt,
-            amount: txnDetails.amount,
-            txnId: txnDetails.txnId,
-            expireTimer: this.get('expireTimer'),
-          });
-
-          // we need the return await so that errors are caught in the catch {}
-          await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
-          return;
-        }
-        // Handle shared contact Message
-        if (sharedContact) {
-          const sharedContactMessage = new SharedContactMessage({
-            identifier: id,
-            timestamp: sentAt,
-            address: sharedContact.address,
-            name: sharedContact.name,
-            expireTimer: this.get('expireTimer'),
-          });
-
-          // we need the return await so that errors are caught in the catch {}
-          await getMessageQueue().sendToPubKey(destinationPubkey, sharedContactMessage);
-          return;
+          chatMessageParams.txnDetails = message.get('txnDetails');
         }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
-          await this.handleGroupInvitation(message, sentAt, destinationPubkey);
-          return;
+          chatMessageParams.openGroupInvitation=message.get('groupInvitation');
         }
-        const chatMessagePrivate = new VisibleMessage(chatMessageParams);
-
+         const chatMessagePrivate = new VisibleMessage(chatMessageParams);
         await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
         return;
       }
       if (this.isMediumGroup()) {
-        if (sharedContact) {
-          chatMessageParams.sharedContact = {
-            address: sharedContact.address,
-            name: sharedContact.name
-          };
-        }
         await this.handleMediumGroup(chatMessageParams, destination);
         return;
       }
@@ -999,7 +961,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       'with networkTimestamp: ',
       networkTimestamp
     );
-
+   
     const messageModel = await this.addSingleOutgoingMessage({
       body,
       quote: _.isEmpty(quote) ? undefined : quote,
@@ -2017,22 +1979,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     // we need the return await so that errors are caught in the catch {}
     await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
-  }
-  private async handleGroupInvitation(
-    message: MessageModel,
-    sentAt: number,
-    destinationPubkey: PubKey
-  ) {
-    const groupInvitation = message.get('groupInvitation');
-    const groupInvitMessage = new GroupInvitationMessage({
-      identifier: message.id,
-      timestamp: sentAt,
-      name: groupInvitation.name,
-      url: groupInvitation.url,
-      expireTimer: this.get('expireTimer'),
-    });
-    // we need the return await so that errors are caught in the catch {}
-    await getMessageQueue().sendToPubKey(destinationPubkey, groupInvitMessage);
   }
   private async handleMediumGroup(chatMessageParams: VisibleMessageParams, destination: any) {
     const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);

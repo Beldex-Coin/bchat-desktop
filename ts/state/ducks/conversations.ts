@@ -24,6 +24,7 @@ import { QuotedAttachmentType } from '../../components/conversation/message/mess
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
 import { Reaction, ReactionList } from '../../types/Reaction';
+import { SharedContact } from '../../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 
 
 
@@ -306,6 +307,7 @@ export interface ReduxConversationType {
   walletCreatedDaemonHeight?: number | any;
   isBnsHolder?: boolean;
   weAreModerator?: boolean;
+  sharedContact?:SharedContact
 }
 
 export interface NotificationForConvoOption {

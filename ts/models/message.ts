@@ -675,7 +675,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       text?: string;
       attachment?: any;
       isFromMe?: boolean;
-      isSharedContact?:boolean
+      isSharedContact?: boolean;
     } = {
       sender: author,
       messageId: id,
@@ -716,7 +716,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
                 namesArray.length > 2 ? 's' : ''
               }`
             : namesArray[0] ?? '';
-            quoteProps.isSharedContact=true;
+        quoteProps.isSharedContact = true;
       }
     }
 
@@ -1100,12 +1100,14 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.get('synced') || this.get('sentSync')) {
       return;
     }
-
     // if this message needs to be synced
     if (
       dataMessage.body?.length ||
       dataMessage.attachments.length ||
-      dataMessage.flags === SignalService.DataMessage.Flags.EXPIRATION_TIMER_UPDATE
+      dataMessage.flags === SignalService.DataMessage.Flags.EXPIRATION_TIMER_UPDATE ||
+      dataMessage.sharedContact ||
+      dataMessage.openGroupInvitation ||
+      dataMessage.payment
     ) {
       const conversation = this.getConversation();
       if (!conversation) {
@@ -1379,9 +1381,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           : 'Received';
       return `${amount} BDX ${direction}`;
     }
-      if(this.isSharedContact()){
-        return `Shared contact`;
-      }
+    if (this.isSharedContact()) {
+      return `Shared contact`;
+    }
     if (this.isDataExtractionNotification()) {
       const dataExtraction = this.get(
         'dataExtractionNotification'
