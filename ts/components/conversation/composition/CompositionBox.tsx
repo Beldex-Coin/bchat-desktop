@@ -327,7 +327,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const results =
       selectedConversation?.type === 'private' &&
       re.test(draft) &&
-      Number(draft) >= 0.1 &&
+      Number(draft) >= 0.00001 &&
       // && (draft.length-1 - draft.indexOf(".")) < 4
       selectedConversation?.isApproved &&
       selectedConversation?.didApproveMe &&

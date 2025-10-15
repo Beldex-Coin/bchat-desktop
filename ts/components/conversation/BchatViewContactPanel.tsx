@@ -83,7 +83,8 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
         </Flex>
       </div>
       <SpacerSM />
-      {(addresses ?? []).map((pubkey, index) => (
+      <div className='contact-list-inner-wrapper' style={{padding:'0px'}}>
+        {(addresses ?? []).map((pubkey, index) => (
         <ContactList
           key={index}
           pubkey={pubkey}
@@ -92,6 +93,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
           openConfirmModal={openConfirmModal}
         />
       ))}
+      </div>
     </div>
   );
 };
