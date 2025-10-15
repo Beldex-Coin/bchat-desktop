@@ -35,9 +35,10 @@ import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { useConversationBnsHolder } from '../../../../hooks/useParamSelector';
 import { SpacerSM } from '../../../basic/Text';
+import { getTheme } from '../../../../state/selectors/theme';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
-  const { messageId, receivedAt, isUnread, address, name, onRecentEmojiBtnVisible } = props;
+  const { messageId, receivedAt, isUnread, address, name,isDetailView, onRecentEmojiBtnVisible } = props;
   const dispatch = useDispatch();
   const [flashGreen, setFlashGreen] = useState(false);
   const [didScroll, setDidScroll] = useState(false);
@@ -48,6 +49,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
+  const isDarkAndMoreInfo = useSelector(getTheme) === 'dark' && isDetailView &&contentProps?.direction === 'incoming';
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const namesArray: string[] = JSON.parse(name || '[]');
   const addressesArray: string[] = JSON.parse(address || '[]');
@@ -140,22 +142,23 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
         className={classNames(
           `group-invitation-container group-invitation-container-${contentProps?.direction}`
         )}
+        
         id={`msg-${props.messageId}`}
         onMouseEnter={() => {
           recentEmojiBtnVisible();
         }}
       >
         <div style={{ position: 'relative' }}>
-          {contentProps?.lastMessageOfSeries && isIncoming && (
+          {contentProps?.lastMessageOfSeries && isIncoming&&!isDetailView && (
             <StyledSvgWrapper>
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
           )}
 
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
-            <div className={classNames(classes)} onClick={updatePanel}>
+            <div className={classNames(classes)}style={{backgroundColor:isDarkAndMoreInfo?'#202329':''}}  onClick={updatePanel}>
               <MessageQuote messageId={props.messageId} />
-              <div className="group-details" >
+              <div className="group-details"  >
                 <Flex container={true} >
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                   <Flex
@@ -178,12 +181,12 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
               </div>
               <SpacerSM />
 
-              <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
+            {!isDetailView &&  <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
                 {moment(contentProps?.timestamp).format('hh:mm A')}
-              </div>
+              </div>}
             </div>
           </div>
-          {contentProps?.lastMessageOfSeries && !isIncoming && (
+          {contentProps?.lastMessageOfSeries && !isIncoming &&!isDetailView  && (
             <StyledSvgWrapper style={{ right: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>

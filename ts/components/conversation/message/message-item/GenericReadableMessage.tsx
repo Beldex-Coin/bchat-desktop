@@ -295,6 +295,7 @@ export const GenericReadableMessage = (props: Props) => {
           name={name}
           messageId={messageId}
           isUnread={props.isUnread ?? false}
+          isDetailView={isDetailView}
           onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
         />
       );
@@ -342,7 +343,7 @@ export const GenericReadableMessage = (props: Props) => {
             </div>
           )}
         </div>
-        <MessageAvatar messageId={messageId} />
+       {!isDetailView &&  <MessageAvatar messageId={messageId} />}
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={!isIncoming}

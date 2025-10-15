@@ -3,7 +3,7 @@ import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
 import {
-  getPrivateContactsPubkeys,
+  getPrivateAndBlockedContactsPubkeys,
   getQuotedMessage,
   getSelectedConversationKey,
 } from '../../state/selectors/conversations';
@@ -26,10 +26,10 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 export const BchatContactListPanel = (props: { sendMessage: any }) => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
-  const privateContactsPubkeys = useSelector(getPrivateContactsPubkeys);
+  const privateAndBlockedContactsPubkeys = useSelector(getPrivateAndBlockedContactsPubkeys);
   const quotedMessageProps = useSelector(getQuotedMessage);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
-  const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
+  const [filteredNames, setFilteredNames] = useState<Array<string>>(privateAndBlockedContactsPubkeys);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Array<string>>([]);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     filterContacts(event.target.value);
@@ -39,12 +39,12 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
     setCurrentSearchTerm(searchTxt);
     setFilteredNames(
       searchTxt
-        ? privateContactsPubkeys.filter((pubkey: any) => {
+        ? privateAndBlockedContactsPubkeys.filter((pubkey: any) => {
             const convo = getConversationController().get(pubkey);
             const memberName = convo?.getNickname() || convo?.getName() || convo?.getProfileName();
             return memberName?.toLowerCase().includes(searchTxt.toLowerCase());
           })
-        : privateContactsPubkeys
+        : privateAndBlockedContactsPubkeys
     );
   }
 
@@ -149,6 +149,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
           filteredNames.map(item => (
             <ContactList
               pubkey={item}
+              key={item}
               isSelected={selectedMemberIds.some(m => m === item)}
               onSelect={selectedMember => {
                 handleSelectMember(selectedMember);

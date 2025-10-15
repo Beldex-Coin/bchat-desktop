@@ -203,7 +203,7 @@ export const MessageContent = (props: Props) => {
 
   return (
     <div style={{position:'relative'}}>  
-   {lastMessageOfSeries &&isIncoming && <StyledSvgWrapper>
+   {lastMessageOfSeries &&isIncoming &&!props.isDetailView&& <StyledSvgWrapper>
       <IncomingMsgTailIcon  />
     </StyledSvgWrapper> }  
    
@@ -267,11 +267,11 @@ export const MessageContent = (props: Props) => {
             </>
           ) : null}
           {/* <SpacerXS />  */}
-          <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
+         {!props.isDetailView &&  <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>}
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
-    {lastMessageOfSeries &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
+    {lastMessageOfSeries &&!isIncoming && !props.isDetailView&& <StyledSvgWrapper style={{right:0}}>
       <OutgoingMsgTailIcon/>
     </StyledSvgWrapper> }  
     

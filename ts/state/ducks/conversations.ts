@@ -164,6 +164,7 @@ export type PropsForSharedContact = {
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
+  isDetailView?:boolean;
   onRecentEmojiBtnVisible?: () => void;
 };
 export type PropsForAttachment = {

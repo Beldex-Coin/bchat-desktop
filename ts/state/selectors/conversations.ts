@@ -515,6 +515,19 @@ const _getPrivateContactsPubkeys = (
   }).map(convo => convo.id);
 };
 
+const _getPrivateAndBlockedContactsPubkeys = (
+  sortedConversations: Array<ReduxConversationType>
+): Array<string> => {
+  return filter(sortedConversations, conversation => {
+    return (
+      conversation.isPrivate &&
+      !conversation.isMe &&
+      conversation.didApproveMe &&
+      conversation.isApproved &&
+      Boolean(conversation.activeAt)
+    );
+  }).map(convo => convo.id);
+};
 /**
  * Returns all the conversation ids of private conversations which are
  * - private
@@ -526,6 +539,10 @@ const _getPrivateContactsPubkeys = (
 export const getPrivateContactsPubkeys = createSelector(
   getSortedConversations,
   _getPrivateContactsPubkeys
+);
+export const getPrivateAndBlockedContactsPubkeys = createSelector(
+  getSortedConversations,
+  _getPrivateAndBlockedContactsPubkeys
 );
 
 export const getLeftPaneLists = createSelector(getSortedConversations, _getLeftPaneLists);
