@@ -199,10 +199,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
   public isPayment() {
     return !!this.get('payment');
   }
-
-  public istxnDetails() {
-    return !!this.get('txnDetails');
-  }
   public isSharedContact() {
     return !!this.get('sharedContact');
   }
@@ -284,13 +280,14 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     return basicProps;
   }
   public getPropsForPayment(): PropsForPayment | null {
-    if (!this.isPayment() && !this.istxnDetails()) {
+    if (!this.isPayment()) {
       return null;
     }
-    // else if (!this.istxnDetails()) {
-    //   return null;
-    // }
-    const Payment = this.get('payment') || this.get('txnDetails');
+    const Payment = this.get('payment');
+    if (!Payment) {
+      return null;
+    }
+    
     let direction = this.get('direction');
     if (!direction) {
       direction = this.get('type') === 'outgoing' ? 'outgoing' : 'incoming';
@@ -659,7 +656,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return null;
     }
 
-    const { author, id, referencedMessageNotFound } = quote;
+    const { author, id, referencedMessageNotFound,direction } = quote;
     const contact: ConversationModel = author && getConversationController().get(author);
 
     const authorName = contact ? contact.getContactProfileNameOrShortenedPubKey() : null;
@@ -717,6 +714,12 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
               }`
             : namesArray[0] ?? '';
         quoteProps.isSharedContact = true;
+      }
+
+      if (parsed.kind['@type'] === 'Payment') {
+        const types =direction === 'incoming' ? 'Received' : 'Sent';
+        const amount=parsed?.kind?.amount
+        quoteProps.text = `${window.i18n('paymentDetails', [types])} : ${amount} BDX`;
       }
     }
 
@@ -1373,7 +1376,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.isGroupInvitation()) {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
-    if (this.isPayment() || this.istxnDetails()) {
+    if (this.isPayment()) {
       let amount = this.getMessageModelProps()?.propsForPayment?.amount;
       let direction =
         this.getMessageModelProps()?.propsForPayment?.direction === 'outgoing'

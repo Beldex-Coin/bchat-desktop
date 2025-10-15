@@ -92,7 +92,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
       groupInvitation: undefined,
       preview: undefined,
       quote: quotedMessageProps,
-      txnDetails: undefined,
+      payment: undefined,
       sharedContact,
     });
     window.inboxStore?.dispatch(closeShareContact());

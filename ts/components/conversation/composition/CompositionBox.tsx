@@ -143,9 +143,9 @@ export type SendMessageType = {
   quote: any | undefined;
   preview: any | undefined;
   groupInvitation: { url: string | undefined; name: string } | undefined;
-  txnDetails?: {
-    amount: any;
-    txnId: any;
+  payment?: {
+    amount: string;
+    txnId: string;
   };
   sharedContact?: {
     address: string;
@@ -473,7 +473,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           groupInvitation: undefined,
           preview: undefined,
           quote: undefined,
-          txnDetails: {
+          payment: {
             amount: (data?.result?.amount_list[0] / 1e9).toString(),
             txnId: TransactionHistory.tx_hash,
           },
@@ -857,7 +857,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
               type="file"
               onChange={this.onChoseAttachment}
             />
-
             {this.state.showRecordingView && typingEnabled ? (
               this.renderRecordingView()
             ) : (

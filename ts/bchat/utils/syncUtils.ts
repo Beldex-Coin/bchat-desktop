@@ -291,7 +291,7 @@ const buildSyncVisibleMessage = (
     expireTimer,
     sharedContact,
     openGroupInvitation,
-    txnDetails:payment
+    payment:payment
   });
 };
 

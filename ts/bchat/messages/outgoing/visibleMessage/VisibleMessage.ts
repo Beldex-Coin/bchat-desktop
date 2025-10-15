@@ -68,7 +68,7 @@ export interface OpenGroupInvitation {
   url:string;
   name:string;
 }
-export interface TxnDetails{
+export interface Payment{
   amount: string,
   txnId: string,
 }
@@ -85,7 +85,7 @@ export interface VisibleMessageParams extends MessageParams {
   reaction?: Reaction;
   sharedContact?:SharedContact; 
   openGroupInvitation?:OpenGroupInvitation;
-  txnDetails?:TxnDetails
+  payment?:Payment
 }
 
 export class VisibleMessage extends DataMessage {
@@ -106,7 +106,7 @@ export class VisibleMessage extends DataMessage {
   private readonly syncTarget?: string;
   private readonly sharedContact?:SharedContact;
   private readonly openGroupInvitation?:OpenGroupInvitation;
-  private readonly txnDetails?:TxnDetails;
+  private readonly payment?:Payment;
 
   constructor(params: VisibleMessageParams) {
     super({ timestamp: params.timestamp, identifier: params.identifier });
@@ -135,7 +135,7 @@ export class VisibleMessage extends DataMessage {
     this.reaction = params.reaction;
     this.sharedContact=params.sharedContact;
     this.openGroupInvitation=params.openGroupInvitation;
-    this.txnDetails=params.txnDetails;
+    this.payment=params.payment;
     
   }
 
@@ -223,11 +223,11 @@ export class VisibleMessage extends DataMessage {
       dataMessage.openGroupInvitation.url=this.openGroupInvitation.url;
 
     }
-    if(this.txnDetails)
+    if(this.payment)
     {
       dataMessage.payment=new SignalService.DataMessage.Payment();
-      dataMessage.payment.amount=this.txnDetails.amount
-      dataMessage.payment.txnId=this.txnDetails.txnId
+      dataMessage.payment.amount=this.payment.amount
+      dataMessage.payment.txnId=this.payment.txnId
     }
     if(this.sharedContact)
     {

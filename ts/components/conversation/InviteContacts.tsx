@@ -29,7 +29,7 @@ type Props = {
   ref: onClickRef;
 };
 
-// const submitFortxnDetails = async (conversationId: string, pubkeys: Array<string>) => {
+// const submitForPayment = async (conversationId: string, pubkeys: Array<string>) => {
 //   const completeUrl = await getCompleteUrlForV2ConvoId(conversationId);
 //   const convo = getConversationController().get(conversationId);
 //   if (!convo || !convo.isPublic()) {
@@ -171,7 +171,7 @@ const InviteContactsInner = forwardRef<onClickRef, Props>((props, ref) => {
     if (selectedContacts.length > 0) {
       if (isPublicConvo) {
         void submitForOpenGroup(conversationId, selectedContacts);
-        //  submitFortxnDetails(conversationId, selectedContacts)
+        //  submitForPayment(conversationId, selectedContacts)
       } else {
         void submitForClosedGroup(conversationId, selectedContacts);
       }

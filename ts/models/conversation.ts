@@ -645,7 +645,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const direction = quotedMessage.get('direction');
     const body = quotedMessage.get('body');
     const groupInvitation = quotedMessage.get('groupInvitation');
-    const paymentDetails = quotedMessage.get('txnDetails');
+    const paymentDetails = quotedMessage.get('payment')
     const sharedContactList = quotedMessage.get('sharedContact');
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
@@ -653,7 +653,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       window.log.warn('tried to make a quote without a sent_at timestamp');
       return null;
     }
-
     const quoteObj = {
       author: quotedMessage.getSource(),
       id: `${quotedMessage.get('sent_at')}` || '',
@@ -676,8 +675,16 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       quoteObj.text = JSON.stringify(groupInviteTypedData);
     }
     if (paymentDetails) {
-      const types = direction === 'incoming' ? 'Received' : 'Sent';
-      quoteObj.text = `${window.i18n('paymentDetails', [types])} : ${paymentDetails.amount} BDX`;
+      const {amount,txnId}=paymentDetails
+      const payment= {
+        kind: {
+          '@type': 'Payment',
+          amount: amount,
+          txnId: `${txnId}`
+        },
+      };
+      
+      quoteObj.text = JSON.stringify(payment);
     }
     if (sharedContactList) {
       const { address, name } = sharedContactList;
@@ -690,7 +697,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       };
       quoteObj.text = JSON.stringify(sharedContact);
     }
-
+  
     return quoteObj;
   }
 
@@ -841,8 +848,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         }
 
         // Handle transaction details Message
-        if (message.get('txnDetails')) {
-          chatMessageParams.txnDetails = message.get('txnDetails');
+        if (message.get('payment')) {
+          chatMessageParams.payment = message.get('payment');
         }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
@@ -950,7 +957,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote, txnDetails, sharedContact } = msg;
+    const { attachments, body, groupInvitation, preview, quote, payment, sharedContact } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
@@ -971,7 +978,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       expireTimer,
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
-      txnDetails,
+      payment,
       sharedContact,
     });
 

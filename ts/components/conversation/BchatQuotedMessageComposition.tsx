@@ -86,9 +86,10 @@ export const BchatQuotedMessageComposition = () => {
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
 
   const dispatch = useDispatch();
-  const { text: body, attachments } = quotedMessageProps || {};
+  const { text: body, attachments,direction } = quotedMessageProps || {};
   let groupInvitation: { name: string; url: string }| undefined;
   let sharedContactList:{ address: string; name: string }| undefined;
+  let paymentDetails:{amount:string,txnId:string,msgType:string}|undefined;
   
 
   const hasAttachments = attachments && attachments.length > 0;
@@ -139,7 +140,14 @@ export const BchatQuotedMessageComposition = () => {
         url:parsed.kind.groupUrl,
       }
     }
-    
+    if (parsed.kind['@type'] === 'Payment') {
+      const types =direction === 'incoming' ? 'Received' : 'Sent';
+      paymentDetails={
+        amount:parsed.kind.amount,
+        txnId:parsed.kind.txnId,
+        msgType:types
+      }
+    }
     if (parsed.kind['@type'] === 'SharedContact') {
       sharedContactList={
         address:parsed.kind.address,
@@ -152,7 +160,6 @@ export const BchatQuotedMessageComposition = () => {
     (item: Room) => groupInvitation?.name === item.name
   );
   const validatedBody=!body?.startsWith(`{"kind"`) && body
- 
   return (
     <QuotedMessageComposition>
       <Flex
@@ -205,12 +212,12 @@ export const BchatQuotedMessageComposition = () => {
               </div>
             )}
 
-            {/* {paymentDetails && (
+            {paymentDetails && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                     {window.i18n('paymentDetails', [
-                      direction === 'incoming' ? 'Received' : 'Sent',
+                    paymentDetails.msgType,
                     ])}
                   </span>
                   <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
@@ -218,7 +225,7 @@ export const BchatQuotedMessageComposition = () => {
                   </span>
                 </Flex>
               </div>
-            )} */}
+            )}
             {sharedContactList && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">
