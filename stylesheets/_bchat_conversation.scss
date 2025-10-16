@@ -701,26 +701,23 @@
 }
 
 .bchat-recording {
-  height: $composition-container-height;
+  // height: $composition-container-height;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-grow: 1;
   outline: none;
 
   $actions-element-size: 30px;
 
   &-box {
-    padding: 10px;
     display: flex;
-    width: 100%;
+    // width: 100%;
     border-radius: 10px;
     margin: 5px 7px;
-    // background: #202329;
     background-color: var(--color-composeMsgInput);
-    margin-left: 12px;
-    height: 60px;
-    // border-radius: 13px;
+    // margin-left: 12px;
+    height: 51px;
     justify-content: space-between;
     align-items: center;
   }

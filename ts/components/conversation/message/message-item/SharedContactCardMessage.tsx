@@ -10,7 +10,6 @@ import {
 import { ReadableMessage } from './ReadableMessage';
 import { Flex } from '../../../basic/Flex';
 
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -38,7 +37,15 @@ import { SpacerSM } from '../../../basic/Text';
 import { getTheme } from '../../../../state/selectors/theme';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
-  const { messageId, receivedAt, isUnread, address, name,isDetailView, onRecentEmojiBtnVisible } = props;
+  const {
+    messageId,
+    receivedAt,
+    isUnread,
+    address,
+    name,
+    isDetailView,
+    onRecentEmojiBtnVisible,
+  } = props;
   const dispatch = useDispatch();
   const [flashGreen, setFlashGreen] = useState(false);
   const [didScroll, setDidScroll] = useState(false);
@@ -49,11 +56,13 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-  const isDarkAndMoreInfo = useSelector(getTheme) === 'dark' && isDetailView &&contentProps?.direction === 'incoming';
+  const isDarkAndMoreInfo =
+    useSelector(getTheme) === 'dark' && isDetailView && contentProps?.direction === 'incoming';
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const namesArray: string[] = JSON.parse(name || '[]');
   const addressesArray: string[] = JSON.parse(address || '[]');
-  const validUserName=namesArray[0].length===66?namesArray[0].slice(0,17)+"...":namesArray[0]
+  const validUserName =
+    namesArray[0].length === 66 ? namesArray[0].slice(0, 17) + '...' : namesArray[0];
   const userName =
     namesArray.length > 1
       ? `${validUserName} and ${namesArray.length - 1} other${namesArray.length > 2 ? 's' : ''}`
@@ -99,21 +108,24 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   }
 
   const openConverstation = async (pubKey: string) => {
-    await getConversationController().getOrCreateAndWait(
-      pubKey,
-      ConversationTypeEnum.PRIVATE
-    );
+    await getConversationController().getOrCreateAndWait(pubKey, ConversationTypeEnum.PRIVATE);
     await openConversationWithMessages({ conversationKey: pubKey, messageId: null });
-  }
+  };
 
   const shortAddress = formatAddress(addressesArray[0]);
   const recentEmojiBtnVisible = () => onRecentEmojiBtnVisible && onRecentEmojiBtnVisible();
   const updatePanel = async () => {
     if (namesArray.length > 1) {
-      dispatch(updateViewContactPanel({ isIncoming: isIncoming, names: namesArray, addresses: addressesArray }));
+      dispatch(
+        updateViewContactPanel({
+          isIncoming: isIncoming,
+          names: namesArray,
+          addresses: addressesArray,
+        })
+      );
     } else {
-      if (contentProps?.direction == "outgoing") {
-        return openConverstation(addressesArray[0])
+      if (contentProps?.direction == 'outgoing') {
+        return openConverstation(addressesArray[0]);
       }
       return dispatch(
         updateConfirmModal({
@@ -128,7 +140,6 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
         })
       );
     }
-
   };
 
   return (
@@ -142,36 +153,50 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
         className={classNames(
           `group-invitation-container group-invitation-container-${contentProps?.direction}`
         )}
-        
         id={`msg-${props.messageId}`}
         onMouseEnter={() => {
           recentEmojiBtnVisible();
         }}
       >
         <div style={{ position: 'relative' }}>
-          {contentProps?.lastMessageOfSeries && isIncoming&&!isDetailView && (
+          {contentProps?.lastMessageOfSeries && isIncoming && !isDetailView && (
             <StyledSvgWrapper>
               <IncomingMsgTailIcon />
             </StyledSvgWrapper>
           )}
 
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
-            <div className={classNames(classes)}style={{backgroundColor:isDarkAndMoreInfo?'#202329':''}}  onClick={updatePanel}>
+            <div
+              className={classNames(classes)}
+              style={{ backgroundColor: isDarkAndMoreInfo ? '#202329' : '' }}
+              onClick={updatePanel}
+            >
               <MessageQuote messageId={props.messageId} />
-              <div className="group-details"  >
-                <Flex container={true} >
+              <div className="group-details">
+                <Flex container={true}>
                   <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                   <Flex
                     container={true}
                     flexDirection="column"
                     cursor="pointer"
                     justifyContent="center"
-                   
                   >
-                     <Flex container={true}  className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px`,gap:'6px' }}>
-                      <div><BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={contentProps?.direction=='outgoing'?'#F0F0F0': 'var(--color-text)'}  iconColor={contentProps?.direction=='outgoing'?'#F0F0F0': 'var(--color-text)'} /></div>
-                     <div>{userName}</div> 
-                    </Flex>
+                    <div className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                      <span style={{ marginRight: '5px' }}>
+                        <BchatIcon
+                          iconType={'avatarOutline'}
+                          iconSize={13}
+                          strokeWidth={'1px'}
+                          strokeColor={
+                            contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'
+                          }
+                          iconColor={
+                            contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'
+                          }
+                        />
+                      </span>
+                      {userName}
+                    </div>
                     <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
                       {shortAddress}
                     </span>
@@ -181,12 +206,14 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
               </div>
               <SpacerSM />
 
-            {!isDetailView &&  <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
-                {moment(contentProps?.timestamp).format('hh:mm A')}
-              </div>}
+              {!isDetailView && (
+                <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
+                  {moment(contentProps?.timestamp).format('hh:mm A')}
+                </div>
+              )}
             </div>
           </div>
-          {contentProps?.lastMessageOfSeries && !isIncoming &&!isDetailView  && (
+          {contentProps?.lastMessageOfSeries && !isIncoming && !isDetailView && (
             <StyledSvgWrapper style={{ right: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>
@@ -204,36 +231,23 @@ type CustomizedAvatarProps = {
 const CustomizedAvatar: React.FC<CustomizedAvatarProps> = ({ address = [] }) => {
   if (address.length === 0) return null;
 
-  const isBnsHolder = address.map((addr) => useConversationBnsHolder(addr));
+  const isBnsHolder = address.map(addr => useConversationBnsHolder(addr));
 
   const [first, second] = address;
 
   return (
     <Wrapper className="grouped-avatar">
       {address.length === 1 ? (
-        <Avatar
-          pubkey={first}
-          size={AvatarSize.L}
-          isBnsHolder={isBnsHolder[0]}
-        />
+        <Avatar pubkey={first} size={AvatarSize.L} isBnsHolder={isBnsHolder[0]} />
       ) : (
         <div className="inner-wrapper">
-          <Avatar
-            pubkey={first}
-            size={AvatarSize.S}
-            isBnsHolder={isBnsHolder[0]}
-          />
-          <Avatar
-            pubkey={second}
-            size={AvatarSize.S}
-            isBnsHolder={isBnsHolder[1]}
-          />
+          <Avatar pubkey={first} size={AvatarSize.S} isBnsHolder={isBnsHolder[0]} />
+          <Avatar pubkey={second} size={AvatarSize.S} isBnsHolder={isBnsHolder[1]} />
         </div>
       )}
     </Wrapper>
   );
 };
-
 
 const Wrapper = styled.div`
   position: relative;

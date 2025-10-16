@@ -1535,6 +1535,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       isRaw: true,
       contentType: MIME.AUDIO_MP3,
     });
+
     // { ...savedAudioFile, path: savedAudioFile.path },
     const audioAttachment: StagedAttachmentType = {
       file: new File([], 'bchat-audio-message'), // this is just to emulate a file for the staged attachment type of that audio file
@@ -1548,12 +1549,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
       isVoiceMessage: true,
       path: savedAudioFile.path,
     };
-
+    const { quotedMessageProps } = this.props;
+    const extractedQuotedMessageProps = _.pick(
+      quotedMessageProps,
+      'id',
+      'author',
+      'text',
+      'attachments',
+      'direction',
+    );
     this.props.sendMessage({
       body: '',
       attachments: [audioAttachment],
       preview: undefined,
-      quote: undefined,
+      quote: extractedQuotedMessageProps,
       groupInvitation: undefined,
     });
 
