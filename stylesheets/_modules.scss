@@ -330,7 +330,6 @@
     font-weight: 600;
     margin-left: 15px;
     margin-right: 40px;
-    margin-bottom: unset;
   }
 }
 
@@ -434,6 +433,10 @@
     text-overflow: ellipsis;
     max-width: 380px;
     cursor: pointer;
+
+    .receipient_name {
+     text-transform: capitalize;
+    }
   }
 }
 

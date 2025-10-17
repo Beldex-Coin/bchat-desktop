@@ -416,7 +416,7 @@ export const Quote = (props: QuotePropsWithListener) => {
           <QuoteGenericFile {...props} />
           <Flex container={true}>
             {isSharedContact && (
-              <span style={{ marginRight: '5px' }}>
+              <span className='module-quote__primary__icon'>
                 <BchatIcon
                   iconType={'avatarOutline'}
                   iconSize={11}

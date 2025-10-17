@@ -388,7 +388,7 @@ const ConversationHeaderTitle = () => {
         }}
         role="button"
       >
-        {convoName}
+        <span className='receipient_name'>{convoName}</span>
         <SubTxt>
           {isGroup ? (
             memberCountText

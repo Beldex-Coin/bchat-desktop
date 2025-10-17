@@ -39,6 +39,12 @@
       }
     }
 
+    .module-quote__primary__icon {
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
+    }
+
     .module-quote__icon-container__icon--microphone,
     .module-quote__icon-container__icon--file,
     .module-quote__icon-container__icon--image,.module-quote__icon-container__icon--movie {

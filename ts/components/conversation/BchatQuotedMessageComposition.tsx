@@ -232,7 +232,11 @@ export const BchatQuotedMessageComposition = () => {
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                     Shared contact
                   </span>
+                  
                   <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                    <span style={{marginRight:'5px'}}>
+                      <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={direction=='outgoing'?'#F0F0F0': 'var(--color-text)'}  iconColor={direction=='outgoing'?'#F0F0F0': 'var(--color-text)'} />
+                    </span>
                     {namesArray.length > 1
                       ? `${namesArray[0]} and ${namesArray.length - 1} other${
                           namesArray.length > 2 ? 's' : ''

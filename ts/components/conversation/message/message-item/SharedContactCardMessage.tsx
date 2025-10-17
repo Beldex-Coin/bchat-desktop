@@ -33,8 +33,8 @@ import { ConversationTypeEnum } from '../../../../models/conversation';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { useConversationBnsHolder } from '../../../../hooks/useParamSelector';
-import { SpacerSM } from '../../../basic/Text';
 import { getTheme } from '../../../../state/selectors/theme';
+import { SpacerSM } from '../../../basic/Text';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const {
@@ -56,17 +56,16 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-  const isDarkAndMoreInfo =
-    useSelector(getTheme) === 'dark' && isDetailView && contentProps?.direction === 'incoming';
+  const isDarkAndMoreInfo = useSelector(getTheme) === 'dark' && isDetailView && contentProps?.direction === 'incoming';
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
-  const namesArray: string[] = JSON.parse(name || '[]');
-  const addressesArray: string[] = JSON.parse(address || '[]');
-  const validUserName =
-    namesArray[0].length === 66 ? namesArray[0].slice(0, 17) + '...' : namesArray[0];
+  const sharedContactNameList: string[] = JSON.parse(name || '[]');
+  const sharedContactAddressList: string[] = JSON.parse(address || '[]');
+  const validUserName = sharedContactNameList[0].length === 66 ? sharedContactNameList[0].slice(0, 17) + "..." : sharedContactNameList[0];
+  const firstUserName = validUserName.charAt(0).toUpperCase() + validUserName.slice(1);
   const userName =
-    namesArray.length > 1
-      ? `${validUserName} and ${namesArray.length - 1} other${namesArray.length > 2 ? 's' : ''}`
-      : validUserName ?? '';
+    sharedContactNameList.length > 1
+      ? `${firstUserName} and ${sharedContactNameList.length - 1} other${sharedContactNameList.length > 2 ? 's' : ''}`
+      : firstUserName ?? '';
 
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
@@ -112,20 +111,14 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
     await openConversationWithMessages({ conversationKey: pubKey, messageId: null });
   };
 
-  const shortAddress = formatAddress(addressesArray[0]);
+  const shortAddress = formatAddress(sharedContactAddressList[0]);
   const recentEmojiBtnVisible = () => onRecentEmojiBtnVisible && onRecentEmojiBtnVisible();
   const updatePanel = async () => {
-    if (namesArray.length > 1) {
-      dispatch(
-        updateViewContactPanel({
-          isIncoming: isIncoming,
-          names: namesArray,
-          addresses: addressesArray,
-        })
-      );
+    if (sharedContactNameList.length > 1) {
+      dispatch(updateViewContactPanel({ isIncoming: isIncoming, names: sharedContactNameList, addresses: sharedContactAddressList }));
     } else {
-      if (contentProps?.direction == 'outgoing') {
-        return openConverstation(addressesArray[0]);
+      if (contentProps?.direction == "outgoing") {
+        return openConverstation(sharedContactAddressList[0])
       }
       return dispatch(
         updateConfirmModal({
@@ -134,7 +127,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
           iconShow: true,
           title: 'Start chat now?',
           message: 'Do you want to chat with this contact now?',
-          onClickOk: () => openConverstation(addressesArray[0]),
+          onClickOk: () => openConverstation(sharedContactAddressList[0]),
           okText: 'Start Chatting',
           okTheme: BchatButtonColor.Primary,
         })
@@ -166,11 +159,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
           )}
 
           <div className={classNames(`inviteWrapper-${contentProps?.direction}`)}>
-            <div
-              className={classNames(classes)}
-              style={{ backgroundColor: isDarkAndMoreInfo ? '#202329' : '' }}
-              onClick={updatePanel}
-            >
+            <div className={classNames(classes)} style={{ backgroundColor: isDarkAndMoreInfo ? '#202329' : '' }} onClick={updatePanel}>
               <MessageQuote messageId={props.messageId} />
               <div className="group-details">
                 <Flex container={true}>
@@ -180,32 +169,20 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                     flexDirection="column"
                     cursor="pointer"
                     justifyContent="center"
+
                   >
-                    <div className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                      <span style={{ marginRight: '5px' }}>
-                        <BchatIcon
-                          iconType={'avatarOutline'}
-                          iconSize={13}
-                          strokeWidth={'1px'}
-                          strokeColor={
-                            contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'
-                          }
-                          iconColor={
-                            contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'
-                          }
-                        />
-                      </span>
-                      {userName}
-                    </div>
-                    <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                    <Flex container={true} className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px`, gap: '6px' }}>
+                      <div><BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'} iconColor={contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)'} /></div>
+                      <div>{userName}</div>
+                    </Flex>
+                    <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,marginTop:'5px' }}>
                       {shortAddress}
                     </span>
                   </Flex>
                 </Flex>
-                <CustomizedAvatar address={addressesArray} />
+                <CustomizedAvatar address={sharedContactAddressList} />
               </div>
               <SpacerSM />
-
               {!isDetailView && (
                 <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
                   {moment(contentProps?.timestamp).format('hh:mm A')}

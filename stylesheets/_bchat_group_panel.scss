@@ -50,6 +50,7 @@
         // color: #f0f0f0;
         font-size: 18px;
         font-weight: 600;
+        text-transform: capitalize;
       }
     }
 
@@ -516,11 +517,12 @@
       background-color: var(--color-emoji-panel-bg);
     }
     .username{
-      background-color: unset;
+    background-color: unset;
     padding: unset;
     color: unset;
     font-size: 16px;
     font-weight: 400;
+    text-transform: capitalize;
     }
     .address{
       color: var(--color-last-msg-txt);

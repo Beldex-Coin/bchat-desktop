@@ -133,7 +133,7 @@ export const BnsLinkDialog = () => {
                    
                   }}
                   text={i18n('verify')}
-                  disabled={!regexForBnsName.test(bnsName)}
+                  disabled={!regexForBnsName.test(bnsName.toLowerCase())}
                   buttonType={BchatButtonType.Brand}
                   buttonColor={BchatButtonColor.Primary}
                   onClick={() => verifyBns()}
