@@ -420,7 +420,8 @@ export const Quote = (props: QuotePropsWithListener) => {
                 <BchatIcon
                   iconType={'avatarOutline'}
                   iconSize={11}
-                  strokeColor={'#F0F0F0'}
+                  strokeColor={isIncoming ? 'var(--color-text)':'#F0F0F0'}
+                  iconColor={isIncoming?'var(--color-text)':'#F0F0F0'}
                   strokeWidth={'1px'}
                 />
               </span>

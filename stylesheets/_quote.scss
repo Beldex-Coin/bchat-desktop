@@ -39,11 +39,6 @@
       }
     }
 
-    .module-quote__primary__icon {
-      display: flex;
-      align-items: center;
-      margin-right: 5px;
-    }
 
     .module-quote__icon-container__icon--microphone,
     .module-quote__icon-container__icon--file,
@@ -161,6 +156,12 @@
   padding-inline-end: 8px;
 
   max-width: 100%;
+}
+
+.module-quote__primary__icon {
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
 }
 
 .module-quote__primary__author {
