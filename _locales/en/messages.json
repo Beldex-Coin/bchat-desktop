@@ -602,5 +602,9 @@
   "reactionNotification": "Reacts to a message with $emoji$",
   "readableListCounterSingular": "other",
   "readableListCounterPlural": "others",
-  "noContactUntilApproved": "You cannot send contacts until the conversation is approved"
+  "noContactUntilApproved": "You cannot send contacts until the conversation is approved",
+
+
+  "viewAll":"View all",
+  "viewMessage":"Message"
 }

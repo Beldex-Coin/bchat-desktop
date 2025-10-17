@@ -127,6 +127,10 @@
     color: white;
     margin-right: 3px;
     margin-left: unset;
+
+    .view-Contact{
+      border-top: 0.5px solid #2FA62F;
+    }
   }
   .module-quote--outgoing,.module-quote--incoming{
     margin: unset;
@@ -157,6 +161,7 @@
       font-weight: 300;
       line-height: normal;
     }
+    
   }
   .timeStamp {
     color: #858598;
@@ -208,6 +213,14 @@
     &:hover {
       opacity: 0.7;
     }
+  }
+
+  .view-Contact{
+    border-top: 0.5px solid #46465D;
+    text-align: center;
+    font-size: 16px;
+    padding: 12px;
+    cursor: pointer;
   }
 }
 

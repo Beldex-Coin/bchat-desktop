@@ -604,4 +604,8 @@ export type LocalizerKeys =
   | 'readableListCounterSingular'
   | 'readableListCounterPlural'
   | 'reactionTooltip'
-  | 'noContactUntilApproved';
+  | 'noContactUntilApproved'
+  
+  |'viewAll'
+  |'viewMessage'
+  ;
