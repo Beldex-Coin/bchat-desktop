@@ -602,6 +602,12 @@ pre {
   align-items: center;
   margin-bottom: -5px;
   padding: 12px 0 ;
+
+  &-only-attachment{
+    .timeStamp {
+      margin-top: unset !important;
+    }
+  }
 }
 
 label {

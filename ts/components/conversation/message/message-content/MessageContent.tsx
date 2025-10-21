@@ -199,11 +199,11 @@ export const MessageContent = (props: Props) => {
   const isGifAttachments=(isIncoming? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
-
+  const isTailVisible=lastMessageOfSeries &&!props.isDetailView && !isGifAttachments
 
   return (
     <div style={{position:'relative'}}>  
-   {lastMessageOfSeries &&isIncoming &&!props.isDetailView&& <StyledSvgWrapper>
+   {isTailVisible &&isIncoming && <StyledSvgWrapper>
       <IncomingMsgTailIcon  />
     </StyledSvgWrapper> }  
    
@@ -223,7 +223,8 @@ export const MessageContent = (props: Props) => {
           : '',
           // !isReacted && lastMessageOfSeries && 'module-message__message-separator',
         flashGreen && 'flash-green-once',
-        isGifAttachments && `module-message__container_bg_disabled`
+        isGifAttachments && `module-message__container_bg_disabled`,
+        hasAttachment && !hasText && 'module-message__container-only-attachment'
       )}
       // style={{
       //   width: isShowingImage ? width : undefined,
@@ -271,7 +272,7 @@ export const MessageContent = (props: Props) => {
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
-    {lastMessageOfSeries &&!isIncoming && !props.isDetailView&& <StyledSvgWrapper style={{right:0}}>
+    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
       <OutgoingMsgTailIcon/>
     </StyledSvgWrapper> }  
     

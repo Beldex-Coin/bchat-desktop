@@ -218,7 +218,7 @@ const darkEmojiHeaderIcon="white"
 const darkReplyMsgMediaIcon='#A7A7BA';
 const darkLoaderBg='#0000009e';
 const darkAttachmentBoxShadow="0 0 41.143px 0 #000";
-
+const darkViewContactBorder='#46465D';
 
 
 export const switchHtmlToDarkTheme = () => {
@@ -510,7 +510,7 @@ export const switchHtmlToDarkTheme = () => {
   document.documentElement.style.setProperty('--color-reply-msg-media-icon', darkReplyMsgMediaIcon);
   document.documentElement.style.setProperty('--color-loader-bg', darkLoaderBg);
   document.documentElement.style.setProperty('--color-attachment-box-shadow', darkAttachmentBoxShadow);
-
+  document.documentElement.style.setProperty('--color-view-contact-border', darkViewContactBorder);
 };
 
 // LIGHT COLORS
@@ -708,6 +708,7 @@ const lightEmojiHeaderIcon='#333';
 const lightReplyMsgMediaIcon='#000';
 const lightLoaderBg='#ffffff9e';
 const lightAttachmentBoxShadow='0 0 41.143px 0 rgba(0, 0, 0, 0.10)';
+const lightViewContactBorder='#ACACAC'
 
 export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-body-bg:', lightColorBg);
@@ -1009,6 +1010,7 @@ export const switchHtmlToLightTheme = () => {
   document.documentElement.style.setProperty('--color-reply-msg-media-icon', lightReplyMsgMediaIcon);
   document.documentElement.style.setProperty('--color-loader-bg', lightLoaderBg);
   document.documentElement.style.setProperty('--color-attachment-box-shadow', lightAttachmentBoxShadow);
+  document.documentElement.style.setProperty('--color-view-contact-border', lightViewContactBorder);
 };
 
 // default to light theme
@@ -1195,7 +1197,8 @@ export const BchatGlobalStyles = createGlobalStyle`
     --color-emoji-header-icon:${darkEmojiHeaderIcon};
     --color-reply-msg-media-icon:${darkReplyMsgMediaIcon};
     --color-loader-bg:${darkLoaderBg};
-    --color-attachment-box-shadow:${darkAttachmentBoxShadow}
+    --color-attachment-box-shadow:${darkAttachmentBoxShadow};
+    --color-view-contact-border:${darkViewContactBorder};
     
 
     --image-EmptyChatImg:${darkEmptyChatImg};

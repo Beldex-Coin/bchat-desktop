@@ -29,6 +29,7 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
 import { BchatIconButton } from '../icon';
 import classNames from 'classnames';
+import { getTheme } from '../../state/selectors/theme';
 
 const VideoContainer = styled.div<{ isJustifyCenter?: boolean,isCallModalExpandView?:boolean, isPortrait?: boolean; }>`
 
@@ -84,7 +85,7 @@ const StyledLocalVideoContainer = styled.div<{
       ? '-18px'
       : props.isTurnOnRemoteVideo && props.isTurnOnLocalVideo
       ? '5%'
-      : '-18px'};
+      : '2px'};
   bottom:${props =>
     props.isCallModalExpandView && props.isTurnOnRemoteVideo && props.isTurnOnLocalVideo
       ? 'unset'
@@ -122,23 +123,25 @@ const RelativeCallWindow = styled.div`
   position: relative;
 `;
 
-const CenteredAvatarInConversation = styled.div<{
-  isCallModalExpandView: boolean;
+export const CenteredAvatarInConversation = styled.div<{
+  isCallModalExpandView?: boolean;
   isNeedBgColor?: boolean;
+  avatarBgColor?:string;
+  isFullScreen?:boolean;
 }>`
  
 
   display: flex;
   align-items: center;
-  width: ${props => (props.isCallModalExpandView ? '250px' : '180px')};
+  width: ${props => (props.isFullScreen?'unset':props.isCallModalExpandView ? '250px' : '180px')};
   flex-direction: column;
 
   margin-left: ${props => (props.isNeedBgColor ? 'auto' : 'unset')};
-  background-color: ${props => (props.isNeedBgColor ? '#131313' : 'unset')};
+  background-color: ${props => (props.isNeedBgColor ? props.avatarBgColor : 'unset')};
   border-radius: ${props => (props.isNeedBgColor ? '16px' : 'unset')};
   padding: ${props => (props.isNeedBgColor ? '31px 0' : 'unset')};
 `;
-const UserNameTxt = styled.div`
+export const UserNameTxt = styled.div`
   font-size: 20px;
 `;
 
@@ -235,7 +238,7 @@ export const InConversationCallContainer = () => {
   const videoRefLocal = useRef<HTMLVideoElement>(null);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const conversation = getConversationController().get(ourPubkey);
-
+  const avatarBgColor = useSelector(getTheme) === 'dark'?'#131313':'#FFF';
 
   const [isCallModalExpandView, setIsCallModalExpandView] = useState(false);
   const [isPortrait,setPortrait]=useState(false)
@@ -381,6 +384,7 @@ export const InConversationCallContainer = () => {
                   isNeedBgColor={
                     !remoteStreamVideoIsMuted && localStreamVideoIsMuted 
                   }
+                  avatarBgColor={avatarBgColor}
                 >
                     <Avatar
                       size={isCallModalExpandView ? AvatarSize.XXXL : AvatarSize.XXL}
