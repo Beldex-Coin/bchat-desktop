@@ -414,7 +414,7 @@ export const Quote = (props: QuotePropsWithListener) => {
             showPubkeyForAuthor={isPublic}
           />
           <QuoteGenericFile {...props} />
-          <Flex container={true}>
+          <Flex container={true} width='261px'>
             {isSharedContact && (
               <span className='module-quote__primary__icon'>
                 <BchatIcon

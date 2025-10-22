@@ -26,7 +26,7 @@ import { BchatSpinner } from '../basic/BchatSpinner';
 import { getSelectedConversation } from '../../state/selectors/conversations';
 import { getConversationController } from '../../bchat/conversations';
 import { Flex } from '../basic/Flex';
-import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';
+import { SpacerLG, SpacerXS } from '../basic/Text';
 import { BchatIconButton } from '../icon';
 import classNames from 'classnames';
 import { getTheme } from '../../state/selectors/theme';
@@ -139,16 +139,17 @@ export const CenteredAvatarInConversation = styled.div<{
   margin-left: ${props => (props.isNeedBgColor ? 'auto' : 'unset')};
   background-color: ${props => (props.isNeedBgColor ? props.avatarBgColor : 'unset')};
   border-radius: ${props => (props.isNeedBgColor ? '16px' : 'unset')};
-  padding: ${props => (props.isNeedBgColor ? '31px 0' : 'unset')};
+  padding: ${props => (props.isNeedBgColor ? '31px 0 9px' : 'unset')};
 `;
 export const UserNameTxt = styled.div`
   font-size: 20px;
+  height: 55px;
+  width: 158px;
+  text-align: center;
 `;
 
 export const StyledCenteredLabel = styled.div`
-
   font-size: 16px;
- 
 `;
 
 const StyledVideoCallLabel = styled.div`
@@ -399,11 +400,7 @@ export const InConversationCallContainer = () => {
               )}
             </StyledLocalVideoContainer>
           </Flex>
-
           <SpacerLG />
-
-          <SpacerMD />
-
           <CallWindowControls
             currentConnectedAudioInputs={currentConnectedAudioInputs}
             currentConnectedCameras={currentConnectedCameras}

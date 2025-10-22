@@ -361,6 +361,8 @@ const UserNameTxtBold = styled.div`
   font-size: 18px;
   font-weight: 600;
   line-height: normal;
+  width: 150px;
+  word-break: break-all;
 `;
 
 export const CallWindowControls = ({

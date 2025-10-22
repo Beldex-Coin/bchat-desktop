@@ -65,13 +65,12 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
     sharedContactNameList[0].length === 66
       ? sharedContactNameList[0].slice(0, 17) + '...'
       : sharedContactNameList[0];
-  const firstUserName = validUserName.charAt(0).toUpperCase() + validUserName.slice(1);
   const userName =
     sharedContactNameList.length > 1
-      ? `${firstUserName} and ${sharedContactNameList.length - 1} other${
+      ? `${validUserName} and ${sharedContactNameList.length - 1} other${
           sharedContactNameList.length > 2 ? 's' : ''
         }`
-      : firstUserName ?? '';
+      : validUserName ?? '';
 
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
@@ -185,8 +184,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                   <Flex container={true}>
                     <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                     <Flex container={true} flexDirection="column" justifyContent="center">
-                      <div className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                        <span style={{ marginRight: '5px' }}>
+                      <UserNameWrapper className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                           <BchatIcon
                             iconType={'avatarOutline'}
                             iconSize={13}
@@ -194,9 +192,8 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                             strokeColor={strokeColor}
                             iconColor={strokeColor}
                           />
-                        </span>
                         {userName}
-                      </div>
+                      </UserNameWrapper>
                       <span
                         className="group-type"
                         style={{ fontSize: `${FontSizeChanger(14)}px`, marginTop: '5px' }}
@@ -284,4 +281,14 @@ const SharedContactWrapper = styled.div<{ isDarkAndMoreInfo?: boolean }>`
 `;
 const ContactMessageWrapper = styled.div`
   padding: 15px;
+  padding-bottom: 6px;
 `;
+
+const UserNameWrapper= styled.div`
+    word-break: break-all;
+    text-transform: capitalize;
+    svg{
+    margin-right:5px;
+    }
+
+`

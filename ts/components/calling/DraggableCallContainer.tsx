@@ -118,10 +118,6 @@ export const DraggableCallContainer = () => {
   const [lastPositionX, setLastPositionX] = useState(0);
   const [lastPositionY, setLastPositionY] = useState(0);
   const DRAG_THRESHOLD = 5;
-  const isNotInChat =
-    selectedSection.focusedSection === SectionType.Settings ||
-    selectedSection.focusedSection === SectionType.Wallet;
-
   const ongoingCallPubkey = ongoingCallProps?.id;
   const {
     remoteStreamVideoIsMuted,
@@ -168,7 +164,7 @@ export const DraggableCallContainer = () => {
   }, [ remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
 
   const openCallingConversation = () => {
-    if (ongoingCallPubkey && !isNotInChat) {
+    if (ongoingCallPubkey)  {
       if (!isEmpty(BchatWalletPasswordModalState)) {
         dispatch(updateBchatWalletPasswordModal(null));
       }
