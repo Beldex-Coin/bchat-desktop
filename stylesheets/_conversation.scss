@@ -142,7 +142,10 @@
     justify-content: space-between;
     padding: 15px;
     border-radius: 16px;
-    width: 305px;
+    //width to minwidth need change reply for attachment message
+    min-width: 314px;
+    max-width: 360px;
+
     background-color: var(--color-untrust-media-bg);
     cursor: pointer;
     .group-name {

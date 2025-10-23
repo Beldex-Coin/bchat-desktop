@@ -8,8 +8,8 @@
   align-items: stretch;
   overflow: hidden;
 
-  min-width: 230px;
-
+  // min-width: 230px;
+  min-width: 314px;
   // border-left-width: 4px;
   // border-left-style: solid;
 
@@ -136,13 +136,13 @@
 }
 .module-quote--outgoing {
   background-color: #0a6f0a;
-  margin: 10px;
+  margin: 10px 15px;
   padding: 10px;
   border-radius: 10px;
 }
 .module-quote--incoming {
   background-color: var(--color-untrust-media-bg);
-  margin: 10px;
+  margin: 10px 15px;  
   padding: 10px;
   border-radius: 10px;
 }

@@ -39,7 +39,7 @@ const QuotedMessageCompositionReply = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 15px 0;
-    width: 249px;
+    min-width: 249px;
     .group-name {
       font-weight: 600;
     }
@@ -233,9 +233,9 @@ export const BchatQuotedMessageComposition = () => {
                     Shared contact
                   </span>
                   
-                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
                     <span style={{marginRight:'5px'}}>
-                      <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={direction=='outgoing'?'#F0F0F0': 'var(--color-text)'}  iconColor={direction=='outgoing'?'#F0F0F0': 'var(--color-text)'} />
+                      <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
                     </span>
                     {namesArray.length > 1
                       ? `${namesArray[0]} and ${namesArray.length - 1} other${

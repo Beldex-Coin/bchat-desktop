@@ -77,7 +77,8 @@ const StyledLocalVideoContainer = styled.div<{
   display: flex;
   justify-content:${props =>
     props.isTurnOnRemoteVideo || props.isTurnOnLocalVideo ? 'center' : 'flex-start'};
-  align-items:center;
+  align-items:${props => !props.isCallModalExpandView && props.isTurnOnRemoteVideo? 'flex-end':'center' };
+  padding-bottom:${props => !props.isCallModalExpandView && props.isTurnOnRemoteVideo? '10px':'unset' };
   position:${props =>
     props.isTurnOnRemoteVideo || props.isTurnOnLocalVideo ? 'absolute' : 'unset'}; 
   right:${props =>
