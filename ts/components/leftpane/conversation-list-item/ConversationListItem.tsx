@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import classNames from 'classnames';
 import { contextMenu } from 'react-contexify';
 // import useUpdate from 'react-use/lib/useUpdate';
-import { Avatar, AvatarSize, BNSWrapper } from '../../avatar/Avatar';
+import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
@@ -84,18 +84,13 @@ const AvatarItem = () => {
 
   return (
     <div className="module-conversation-list-item__avatar-container">
-      <BNSWrapper
-        // size={40}
-        position={{ left: '46px', top: '46px' }}
-        isBnsHolder={isBnsHolder }
-        size={{width:'20',height:'20'}}
-      >
         <Avatar
           size={AvatarSize.L}
           pubkey={conversationId}
           onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
+          isBnsHolder={isBnsHolder }
+
         />
-      </BNSWrapper>
     </div>
   );
 };

@@ -7,19 +7,17 @@ interface GroupInvitationMessageParams extends MessageParams {
   name: string;
   // if there is an expire timer set for the conversation, we need to set it.
   // otherwise, it will disable the expire timer on the receiving side.
-  expireTimer?: number;
+
 }
 
 export class GroupInvitationMessage extends DataMessage {
   private readonly url: string;
   private readonly name: string;
-  private readonly expireTimer?: number;
 
   constructor(params: GroupInvitationMessageParams) {
-    super({ timestamp: params.timestamp, identifier: params.identifier });
+    super({ timestamp: params.timestamp});
     this.url = params.url;
     this.name = params.name;
-    this.expireTimer = params.expireTimer;
   }
 
   public dataProto(): SignalService.DataMessage {
@@ -29,8 +27,7 @@ export class GroupInvitationMessage extends DataMessage {
     });
 
     return new SignalService.DataMessage({
-      openGroupInvitation,
-      expireTimer: this.expireTimer,
+      openGroupInvitation
     });
   }
 }

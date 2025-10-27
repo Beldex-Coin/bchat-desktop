@@ -22,6 +22,9 @@ import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
+import { GroupInvitation } from './GroupInvitation';
+import { PaymentMessage } from './PaymentMessage';
+import { SharedContactCardMessage } from './SharedContactCardMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -99,6 +102,17 @@ type Props = {
   messageId: string;
   ctxMenuID: string;
   isDetailView?: boolean;
+
+  serverName?: string;
+  url?: string;
+  acceptUrl?: string;
+  isUnread?: boolean;
+
+  amount?: string;
+  txnId?: string;
+
+  address?: string;
+  name?: string;
 };
 // tslint:disable: use-simple-attributes
 
@@ -116,7 +130,7 @@ const StyledReadableMessage = styled(ReadableMessage)<{
   align-items: center;
   width: 100%;
   letter-spacing: 0.03em;
-  margin-top: 3px;
+  margin-top: 5px;
   &.message-highlighted {
     animation: ${highlightedMessageAnimation} 1s ease-in-out;
   }
@@ -160,6 +174,8 @@ export const GenericReadableMessage = (props: Props) => {
   const multiSelectMode = useSelector(isMessageSelectionMode);
   const [isRightClicked, setIsRightClicked] = useState(false);
   const [enableReactions, setEnableReactions] = useState(true);
+  const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
+
   const onMessageLoseFocus = useCallback(() => {
     if (isRightClicked) {
       setIsRightClicked(false);
@@ -182,7 +198,18 @@ export const GenericReadableMessage = (props: Props) => {
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
 
-  const { ctxMenuID, messageId, isDetailView } = props;
+  const {
+    ctxMenuID,
+    messageId,
+    isDetailView,
+    serverName,
+    acceptUrl,
+    url,
+    amount,
+    txnId,
+    address,
+    name,
+  } = props;
 
   if (!msgProps) {
     return null;
@@ -232,6 +259,51 @@ export const GenericReadableMessage = (props: Props) => {
     [messageId]
   );
 
+  const cardDesignTag = (() => {
+    if (serverName) {
+      return (
+        <GroupInvitation
+          serverName={serverName}
+          url={url ||''}
+          direction="incoming"
+          acceptUrl={acceptUrl||''}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    if (txnId && amount) {
+      return (
+        <PaymentMessage
+          amount={amount}
+          txnId={txnId}
+          messageId={messageId}
+          direction={direction}
+          acceptUrl={acceptUrl}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    if (address&&name) {
+      return (
+        <SharedContactCardMessage
+          address={address}
+          name={name}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          isDetailView={isDetailView}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    return null;
+  })();
+
   return (
     <StyledReadableMessage
       messageId={messageId}
@@ -241,7 +313,7 @@ export const GenericReadableMessage = (props: Props) => {
         isGroup && 'public-chat-message-wrapper',
         isIncoming ? 'bchat-message-wrapper-incoming' : 'bchat-message-wrapper-outgoing'
       )}
-      onContextMenu={ handleContextMenu}
+      onContextMenu={handleContextMenu}
       receivedAt={receivedAt}
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
@@ -252,9 +324,13 @@ export const GenericReadableMessage = (props: Props) => {
         className="message-box"
         style={{ cursor: isSelectionMode ? 'pointer' : 'default' }}
         onClick={() => isSelectionMode && onSelect(messageId)}
+        onMouseLeave={() => {
+        setRecentEmojiBtnVisible(false);
+      }}
+      onMouseOver={() => setRecentEmojiBtnVisible(true)}
       >
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
-        <div>
+        <div style={{margin:'auto'}}>
           {isSelectionMode && isIncoming && (
             <div style={{ marginRight: '15px', cursor: 'pointer' }}>
               <BchatIcon
@@ -267,7 +343,7 @@ export const GenericReadableMessage = (props: Props) => {
             </div>
           )}
         </div>
-        <MessageAvatar messageId={messageId} />
+       {!isDetailView &&  <MessageAvatar messageId={messageId} />}
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={!isIncoming}
@@ -285,6 +361,12 @@ export const GenericReadableMessage = (props: Props) => {
           enableReactions={enableReactions}
           isRightClicked={isRightClicked}
           onMessageLoseFocus={onMessageLoseFocus}
+          onHandleContextMenu={handleContextMenu}
+          acceptUrl={acceptUrl}
+          txnId={txnId}
+          cardDesignTag={cardDesignTag}
+          recentEmojiBtnVisible={recentEmojiBtnVisible}
+          setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
@@ -293,7 +375,7 @@ export const GenericReadableMessage = (props: Props) => {
             expirationTimestamp={expirationTimestamp}
           />
         )} */}
-        <div>
+        <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
             <div style={{ marginLeft: '15px', cursor: 'pointer' }}>
               <BchatIcon

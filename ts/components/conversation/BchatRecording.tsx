@@ -13,6 +13,7 @@ import { SendMessageButton } from './composition/CompositionButtons';
 import StopIcon from '../icon/StopIcon';
 import { CustomIconButton } from '../icon/CustomIconButton';
 import { updateIsCurrentlyRecording } from '../../state/ducks/userConfig';
+import { BchatQuotedMessageComposition } from './BchatQuotedMessageComposition';
 
 interface Props {
   onExitVoiceNoteView: () => void;
@@ -126,6 +127,8 @@ export class BchatRecording extends React.Component<Props, State> {
 
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
+      <div  className="send-message-input">
+        <BchatQuotedMessageComposition />
         <div className="bchat-recording-box">
 
           {hasRecording && !isRecording ? (
@@ -196,13 +199,11 @@ export class BchatRecording extends React.Component<Props, State> {
             <CustomIconButton customIcon={<StopIcon iconSize={30} />} onClick={actionPauseFn} />
           )}
         </div>
+        </div>
         <div className={classNames('send-message-button',!hasRecording && !isRecording && 'delete-button' )}>
           {!isRecording && hasRecording && (
             <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
           ) 
-          // : (
-          //   <SendMessageButton name="Send" onClick={() => { }}  />
-          // )
           }
         </div>
       </div>

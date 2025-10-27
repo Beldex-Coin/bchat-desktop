@@ -260,6 +260,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
     const isValidWithStoredInDB = Boolean(await this.validatePasswordHash(oldPassword));
     if (!isValidWithStoredInDB) {
+      ToastUtils.pushToastError('changePasswordInvalid', window.i18n('changePasswordInvalid'));
       this.setState({
         error: window.i18n('changePasswordInvalid'),
       });

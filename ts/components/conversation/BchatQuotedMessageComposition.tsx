@@ -11,6 +11,9 @@ import { Image } from './Image';
 
 import { GoogleChrome } from '../../util';
 import classNames from 'classnames';
+import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
+import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
+import { StateType } from '../../state/reducer';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -30,6 +33,22 @@ const QuotedMessageCompositionReply = styled.div`
   min-height: 70px;
   width: 100%;
   margin-right: 10px;
+
+  .group-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    min-width: 249px;
+    .group-name {
+      font-weight: 600;
+    }
+    .group-type {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 300;
+    }
+  }
 `;
 
 const Subtle = styled.div`
@@ -52,22 +71,27 @@ const VerticalLine = styled.div`
 // const ReplyingTo = styled.div`
 //   color: var(--color-text);
 // `;
-const StyledIconWrapper=styled.div `
-width:50px;
-height:50px;
-background-color:var(--color-hop-bg);
-display:flex;
-justify-content:center;
-align-items: center;
-margin-right: 15px;
-border-radius: 10px;
-`
+const StyledIconWrapper = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-hop-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  border-radius: 10px;
+`;
 export const BchatQuotedMessageComposition = () => {
   const quotedMessageProps = useSelector(getQuotedMessage);
+  const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
 
   const dispatch = useDispatch();
+  const { text: body, attachments,direction } = quotedMessageProps || {};
+  let groupInvitation: { name: string; url: string }| undefined;
+  let sharedContactList:{ address: string; name: string }| undefined;
+  let paymentDetails:{amount:string,txnId:string,msgType:string}|undefined;
+  
 
-  const { text: body, attachments } = quotedMessageProps || {};
   const hasAttachments = attachments && attachments.length > 0;
   const SUPPORTED_PROTOCOLS = /^(http|https):/i;
   const isLink = SUPPORTED_PROTOCOLS.test(body || '');
@@ -108,7 +132,34 @@ export const BchatQuotedMessageComposition = () => {
   if (!quotedMessageProps?.id) {
     return null;
   }
-
+  if (body && body.startsWith(`{"kind"`)) {
+    const parsed = JSON.parse(body);
+    if (parsed.kind['@type'] === 'OpenGroupInvitation') {
+      groupInvitation={
+        name:parsed.kind.groupName,
+        url:parsed.kind.groupUrl,
+      }
+    }
+    if (parsed.kind['@type'] === 'Payment') {
+      const types =direction === 'incoming' ? 'Received' : 'Sent';
+      paymentDetails={
+        amount:parsed.kind.amount,
+        txnId:parsed.kind.txnId,
+        msgType:types
+      }
+    }
+    if (parsed.kind['@type'] === 'SharedContact') {
+      sharedContactList={
+        address:parsed.kind.address,
+        name:parsed.kind.name
+      }
+    }
+  }
+  const namesArray = sharedContactList?.name && JSON.parse(sharedContactList.name);
+  const socialGrp: Room[] = joinableRooms.rooms.filter(
+    (item: Room) => groupInvitation?.name === item.name
+  );
+  const validatedBody=!body?.startsWith(`{"kind"`) && body
   return (
     <QuotedMessageComposition>
       <Flex
@@ -127,8 +178,74 @@ export const BchatQuotedMessageComposition = () => {
             margin={'var(--margins-xs)'}
             alignItems="center"
           >
-            {!isLink ? <VerticalLine /> :<StyledIconWrapper><BchatIcon iconType="openLink" iconSize={20} iconColor='var(--color-modal-disable-txt)'  /></StyledIconWrapper>  }
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) || body}</Subtle>
+            {!isLink ? (
+              <VerticalLine />
+            ) : (
+              <StyledIconWrapper>
+                <BchatIcon
+                  iconType="openLink"
+                  iconSize={20}
+                  iconColor="var(--color-modal-disable-txt)"
+                />
+              </StyledIconWrapper>
+            )}
+            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||validatedBody }</Subtle>
+
+            {groupInvitation && (
+              <div className="group-details">
+                <Flex container={true} flexDirection="column" cursor="pointer">
+                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                    {groupInvitation.name}
+                  </span>
+                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                    {window.i18n('socialGroupInvitation')}
+                  </span>
+                </Flex>
+
+                <BchatJoinableRoomAvatar
+                  completeUrl={socialGrp[0]?.completeUrl}
+                  name={socialGrp[0]?.name}
+                  roomId={socialGrp[0]?.id}
+                  base64Data={socialGrp[0]?.base64Data}
+                  onClick={() => {}}
+                />
+              </div>
+            )}
+
+            {paymentDetails && (
+              <div className="group-details">
+                <Flex container={true} flexDirection="column" cursor="pointer">
+                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                    {window.i18n('paymentDetails', [
+                    paymentDetails.msgType,
+                    ])}
+                  </span>
+                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+                    {paymentDetails.amount} BDX
+                  </span>
+                </Flex>
+              </div>
+            )}
+            {sharedContactList && (
+              <div className="group-details">
+                <Flex container={true} flexDirection="column" cursor="pointer">
+                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                    Shared contact
+                  </span>
+                  
+                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
+                    <span style={{marginRight:'5px'}}>
+                      <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
+                    </span>
+                    {namesArray.length > 1
+                      ? `${namesArray[0]} and ${namesArray.length - 1} other${
+                          namesArray.length > 2 ? 's' : ''
+                        }`
+                      : namesArray[0] ?? ''}
+                  </span>
+                </Flex>
+              </div>
+            )}
 
             {hasImageAttachment && (
               <Image

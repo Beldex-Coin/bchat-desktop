@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { getHeight } from '../../state/selectors/walletConfig';
 import { Flex } from '../basic/Flex';
 import { updateWalletRescaning } from '../../state/ducks/walletConfig';
@@ -32,6 +32,7 @@ const SyncStatusBar = () => {
   let pct: any =
     currentHeight == 0 || daemonHeight == 0 ? 0 : ((100 * currentHeight) / daemonHeight).toFixed(1);
   let percentage = pct == 100.0 && currentHeight < daemonHeight ? 99.9 : pct;
+    window.setSettingValue('sync_bar', percentage);
 
   const getSyncStatus = window.getSettingValue('syncStatus');
   const syncStatus = getSyncStatus
@@ -44,13 +45,13 @@ const SyncStatusBar = () => {
 
   return (
     <div className="syncStatus" style={{height:zoomLevel>125?'unset':''}}>
-      <div>
+      {/* <div> */}
         <Flex
           container={true}
           justifyContent="space-between"
           alignItems="center"
           padding={'5px 15px'}
-          height={zoomLevel>125?"":"43px"}
+          height={zoomLevel>125?"":"100%"}
         >
           <Flex container={true}>
             <div className="syncStatus-statusTxt-wrapper">
@@ -86,22 +87,22 @@ const SyncStatusBar = () => {
             </div>
           </Flex>
         </Flex>
-        <Indicator
+        {/* <Indicator
           style={{
             width: `${percentage}%`,
             backgroundColor: syncStatus.color,
           }}
-        />
-      </div>
+        /> */}
+      {/* </div> */}
     </div>
   );
 };
 
-const Indicator = styled.div`
-  width: 10%;
-  height: 2px;
-  background-color: #fdb12a;
-  transition: width 3s ease-in-out;
-`;
+// const Indicator = styled.div`
+//   width: 10%;
+//   height: 2px;
+//   background-color: #fdb12a;
+//   transition: width 3s ease-in-out;
+// `;
 
 export const MemoSyncStatusBar = React.memo(SyncStatusBar);

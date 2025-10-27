@@ -37,6 +37,7 @@ import { Storage } from '../../util/storage';
 import { MessageReactsSelectorProps } from '../../components/conversation/message/message-content/MessageReactions';
 
 import { filter, isEmpty, pick } from 'lodash';
+import moment from 'moment';
 
 export const getConversations = (state: StateType): ConversationsStateType => state.conversations;
 
@@ -183,11 +184,14 @@ export type MessagePropsType =
   | 'call-notification'
   | 'payment';
 
+
+
+  
 export const getSortedMessagesTypesOfSelectedConversation = createSelector(
   getSortedMessagesOfSelectedConversation,
   getFirstUnreadMessageId,
   (sortedMessages, firstUnreadId) => {
-    const maxMessagesBetweenTwoDateBreaks = 5;
+    // const maxMessagesBetweenTwoDateBreaks = 24 * 60 ;
     // we want to show the date break if there is a large jump in time
     // remember that messages are sorted from the most recent to the oldest
     return sortedMessages.map((msg, index) => {
@@ -201,11 +205,12 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           : sortedMessages[index + 1].propsForMessage.serverTimestamp ||
             sortedMessages[index + 1].propsForMessage.timestamp;
 
-      const showDateBreak =
-        messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
-          ? messageTimestamp
-          : undefined;
-
+      // const showDateBreak =
+      //   messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
+      //     ? messageTimestamp
+      //     : undefined;
+      const isSameDay = moment(messageTimestamp).isSame(moment(previousMessageTimestamp), 'day');
+      const showDateBreak =!isSameDay? messageTimestamp: undefined;
       if (msg.propsForDataExtractionNotification) {
         return {
           showUnreadIndicator: isFirstUnread,
@@ -247,6 +252,17 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
             props: { ...msg.propsForPayment, messageId: msg.propsForMessage.id },
           },
         };
+      }
+      if(msg.propsForSharedContact)
+      {
+        return{
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'shared-contact',
+            props: { ...msg.propsForSharedContact, messageId: msg.propsForMessage.id },
+          },
+        }
       }
       if (msg.propsForGroupUpdateMessage) {
         return {
@@ -499,6 +515,19 @@ const _getPrivateContactsPubkeys = (
   }).map(convo => convo.id);
 };
 
+const _getPrivateAndBlockedContactsPubkeys = (
+  sortedConversations: Array<ReduxConversationType>
+): Array<string> => {
+  return filter(sortedConversations, conversation => {
+    return (
+      conversation.isPrivate &&
+      !conversation.isMe &&
+      conversation.didApproveMe &&
+      conversation.isApproved &&
+      Boolean(conversation.activeAt)
+    );
+  }).map(convo => convo.id);
+};
 /**
  * Returns all the conversation ids of private conversations which are
  * - private
@@ -510,6 +539,10 @@ const _getPrivateContactsPubkeys = (
 export const getPrivateContactsPubkeys = createSelector(
   getSortedConversations,
   _getPrivateContactsPubkeys
+);
+export const getPrivateAndBlockedContactsPubkeys = createSelector(
+  getSortedConversations,
+  _getPrivateAndBlockedContactsPubkeys
 );
 
 export const getLeftPaneLists = createSelector(getSortedConversations, _getLeftPaneLists);
@@ -616,6 +649,14 @@ export const isRightPanelShowing = createSelector(
   (state: ConversationsStateType): boolean => state.showRightPanel
 );
 
+export const isShareContact = createSelector(
+  getConversations,
+  (state: ConversationsStateType): boolean => state.showShareContact
+);
+export const getViewContactPanel = createSelector(
+  getConversations,
+  (state: ConversationsStateType): any => state.showViewContactPanel
+);
 export const isMessageSelectionMode = createSelector(
   getConversations,
   (state: ConversationsStateType): boolean => Boolean(state.selectedMessageIds.length > 0)

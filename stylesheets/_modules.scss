@@ -65,7 +65,7 @@
 
   border-radius: 16px;
   background: var(--color-untrust-media-bg);
-  margin: 15px 15px 0;
+  margin: 5px 12px 25px;
 }
 
 .module-message__generic-attachment-outgoing {
@@ -330,7 +330,6 @@
     font-weight: 600;
     margin-left: 15px;
     margin-right: 40px;
-    margin-bottom: unset;
   }
 }
 
@@ -434,6 +433,10 @@
     text-overflow: ellipsis;
     max-width: 380px;
     cursor: pointer;
+
+    .receipient_name {
+     text-transform: capitalize;
+    }
   }
 }
 
@@ -1677,4 +1680,19 @@
   // font-style: normal;
   font-weight: 300;
   // line-height: normal;
+}
+
+
+.blur-layer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  // backdrop-filter: blur(14px);
+  z-index: -1; /* Place behind content */
+
+
 }

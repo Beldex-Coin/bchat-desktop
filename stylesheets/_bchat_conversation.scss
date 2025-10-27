@@ -228,14 +228,25 @@
 
 .voiceCall {
   // height: 350px;
-  width: 534px;
+  width: 583px;
   margin: 10px 0;
   max-height: 450px;
 
+  position: absolute;
+  z-index: 100;
+  right: 20px;
+  top: 0px;
+ 
   .local-video {
     position: relative;
     z-index: 1;
   }
+}
+.expandView{
+  width: 96%;
+  height: 89vh;
+  max-height: unset;
+
 }
 .call-bar-expand-view {
   display: none;
@@ -253,12 +264,8 @@
 }
 .videoCall {
   margin: 10px 0px;
-  position: absolute;
   z-index: 10;
-  /* width: 750px; */
-  display: flex;
-  top: 1%;
-
+  width: 100%;
   .remote-video {
     // background-color: aliceblue;
     height: 500px;
@@ -283,7 +290,7 @@
   align-items: center;
   color: #fff;
   border-radius: 50px;
-  margin: 10px 10px;
+  // margin: 10px 10px;
   cursor: pointer;
 }
 
@@ -341,9 +348,42 @@
   //   width: 30px;
   // }
   // }
-
+  .attachment-wrapper
+  {
+    &.seleted{
+     .attachment-box{
+      background-color: var(--color-icon-btn-hover);
+     }
+    }
+    position: relative;
+    .selection-box
+    {
+      background-color: var(--color-emoji-panel-bg);
+      border-radius: 20px;
+      box-shadow: var(--color-attachment-box-shadow);
+      position: absolute;
+      bottom: 75px;
+      z-index: 99;
+      width: 207px;
+      height: 162px;
+      padding: 15px;
+      
+      .content-Wrapper{
+        border-radius: 18px;
+        cursor: pointer;
+        span{
+          font-size: 16px;
+          margin-left: 3px;
+        }
+        &:hover{
+          background: var(--color-profile-header-bg);
+        }
+      }
+    }
+  }
+  
   .attachment-box {
-    padding: 17px 8px;
+    padding: 17px 15px;
     // color: #85858f;
     border-radius: 10px;
     margin-bottom: 5px;
@@ -356,6 +396,7 @@
 
     &:hover {
       background-color: var(--color-icon-btn-hover);
+      opacity: 0.9;
       color: var(--color-text);
     }
   }
@@ -660,26 +701,23 @@
 }
 
 .bchat-recording {
-  height: $composition-container-height;
+  // height: $composition-container-height;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-grow: 1;
   outline: none;
 
   $actions-element-size: 30px;
 
   &-box {
-    padding: 10px;
     display: flex;
-    width: 100%;
+    // width: 100%;
     border-radius: 10px;
     margin: 5px 7px;
-    // background: #202329;
     background-color: var(--color-composeMsgInput);
-    margin-left: 12px;
-    height: 60px;
-    // border-radius: 13px;
+    // margin-left: 12px;
+    height: 51px;
     justify-content: space-between;
     align-items: center;
   }

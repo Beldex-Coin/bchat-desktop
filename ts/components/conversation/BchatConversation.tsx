@@ -64,6 +64,7 @@ import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon';
 import styled from 'styled-components';
 import { ReactListModal } from '../dialog/ReactListModal';
+import { ProfileInfo } from '../BchatProfileInfo';
 
 // import { PaymentMessage } from './message/message-item/PaymentMessage';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
@@ -332,9 +333,10 @@ export class BchatConversation extends React.Component<Props, State> {
           <div className="conversation-messages">
             {/* <ConversationMessageRequestButtons /> */}
             {this.props.hasOngoingCallWithFocusedConvo && (
-              <Flex container={true} justifyContent="center" alignItems="center" height="465px">
-                {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
-                <InConversationCallContainer /> {/* </div> */}
+              <Flex container={true} justifyContent="center" alignItems="center">
+                {/* <div className='In-convo-call-container-wrapper'>  */}
+                <InConversationCallContainer />
+                {/* </div>  */}
               </Flex>
             )}
 
@@ -375,6 +377,9 @@ export class BchatConversation extends React.Component<Props, State> {
         >
           <BchatRightPanelWithDetails />
         </div> */}
+        <div className="profile-info">
+            <ProfileInfo  sendMessage={this.sendMessageFn}/>
+        </div>
       </BchatTheme>
     );
   }

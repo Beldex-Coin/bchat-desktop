@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getConversationController } from '../../bchat/conversations';
 import {
+  // getAllConversations,
   getFirstUnreadMessageIdInConversation,
   getLastMessageIdInConversation,
   getLastMessageInConversation,
@@ -23,6 +24,9 @@ import { QuotedAttachmentType } from '../../components/conversation/message/mess
 import { LightBoxOptions } from '../../components/conversation/BchatConversation';
 
 import { Reaction, ReactionList } from '../../types/Reaction';
+import { SharedContact } from '../../bchat/messages/outgoing/visibleMessage/VisibleMessage';
+
+
 
 export type CallNotificationType = 'missed-call' | 'started-call' | 'answered-a-call';
 export type PropsForCallNotification = {
@@ -30,7 +34,6 @@ export type PropsForCallNotification = {
   messageId: string;
   receivedAt: number;
   isUnread: boolean;
-  
 };
 
 export type MessageModelPropsWithoutConvoProps = {
@@ -41,8 +44,8 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
-  propsForPayment?:PropsForPayment;
-  
+  propsForPayment?: PropsForPayment;
+  propsForSharedContact?: PropsForSharedContact;
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -141,16 +144,28 @@ export type PropsForGroupInvitation = {
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
+  onRecentEmojiBtnVisible?: () => void;
 };
 
 export type PropsForPayment = {
   amount: string;
   txnId: string;
   direction: MessageModelType;
-  acceptUrl: string;
+  acceptUrl?: string;
   messageId: string;
   receivedAt?: number;
   isUnread: boolean;
+  onRecentEmojiBtnVisible?: () => void;
+};
+export type PropsForSharedContact = {
+  address: string;
+  name: string;
+  direction?: MessageModelType;
+  messageId: string;
+  receivedAt?: number;
+  isUnread: boolean;
+  isDetailView?:boolean;
+  onRecentEmojiBtnVisible?: () => void;
 };
 export type PropsForAttachment = {
   id: number;
@@ -289,10 +304,11 @@ export interface ReduxConversationType {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?:any;
-  walletCreatedDaemonHeight?:number|any;
-  isBnsHolder?:boolean;
-  weAreModerator?:boolean
+  walletUserName?: any;
+  walletCreatedDaemonHeight?: number | any;
+  isBnsHolder?: boolean;
+  weAreModerator?: boolean;
+  sharedContact?:SharedContact
 }
 
 export interface NotificationForConvoOption {
@@ -304,6 +320,11 @@ export type ConversationLookupType = {
   [key: string]: ReduxConversationType;
 };
 
+export type showViewContactPanelTypes = {
+  isIncoming: boolean;
+  names: Array<String>;
+  addresses: Array<String>;
+};
 export type ConversationsStateType = {
   conversationLookup: ConversationLookupType;
   selectedConversation?: string;
@@ -315,6 +336,8 @@ export type ConversationsStateType = {
   lightBox?: LightBoxOptions;
   quotedMessage?: ReplyingToMessageProps;
   areMoreMessagesBeingFetched: boolean;
+  showShareContact: boolean;
+  showViewContactPanel: showViewContactPanelTypes | null;
 
   /**
    * oldTopMessageId should only be set when, as the user scroll up we trigger a load of more top messages.
@@ -346,6 +369,7 @@ export type ConversationsStateType = {
   shouldHighlightMessage: boolean;
   nextMessageToPlayId?: string;
   mentionMembers: MentionsMembersType;
+ 
 };
 
 export type MentionsMembersType = Array<{
@@ -378,6 +402,7 @@ async function getMessages({
   );
   const time = Date.now() - beforeTimestamp;
   window?.log?.info(`Loading ${messageProps.length} messages took ${time}ms to load.`);
+
   return messageProps;
 }
 
@@ -475,6 +500,8 @@ export function getEmptyConversationState(): ConversationsStateType {
     oldBottomMessageId: null,
     shouldHighlightMessage: false,
     mostRecentMessageId: null,
+    showShareContact: false,
+    showViewContactPanel: null,
   };
 }
 
@@ -587,8 +614,20 @@ const conversationsSlice = createSlice({
     openRightPanel(state: ConversationsStateType) {
       return { ...state, showRightPanel: true };
     },
+    openShareContact(state: ConversationsStateType) {
+      return { ...state, showShareContact: true };
+    },
     closeRightPanel(state: ConversationsStateType) {
       return { ...state, showRightPanel: false };
+    },
+    closeShareContact(state: ConversationsStateType) {
+      return { ...state, showShareContact: false };
+    },
+    updateViewContactPanel(
+      state: ConversationsStateType,
+      action: PayloadAction<showViewContactPanelTypes | null>
+    ) {
+      return { ...state, showViewContactPanel: action.payload };
     },
     addMessageIdToSelection(state: ConversationsStateType, action: PayloadAction<string>) {
       if (state.selectedMessageIds.some(id => id === action.payload)) {
@@ -766,6 +805,8 @@ const conversationsSlice = createSlice({
 
         areMoreMessagesBeingFetched: false,
         showRightPanel: false,
+        showShareContact: false,
+        showViewContactPanel: null,
         selectedMessageIds: [],
 
         lightBox: undefined,
@@ -996,6 +1037,9 @@ export const {
   setNextMessageToPlayId,
   updateMentionsMembers,
   resetConversationExternal,
+  openShareContact,
+  closeShareContact,
+  updateViewContactPanel,
 } = actions;
 
 export async function openConversationWithMessages(args: {
@@ -1007,9 +1051,8 @@ export async function openConversationWithMessages(args: {
   const { conversationKey, messageId, bns } = args;
   const firstUnreadIdOnOpen = await getFirstUnreadMessageIdInConversation(conversationKey);
   const mostRecentMessageIdOnOpen = await getLastMessageIdInConversation(conversationKey);
-  if(bns)
-  {
-    savebnsname(conversationKey,bns)
+  if (bns) {
+    savebnsname(conversationKey, bns);
   }
   const initialMessages = await getMessages({
     conversationKey,
@@ -1026,21 +1069,20 @@ export async function openConversationWithMessages(args: {
   );
 }
 
-  /**
-   * Saves the currently entered nickname.
-   */
-  const savebnsname = async ( conversationKey: string,displayName: any) => {
-    if (!conversationKey) {
-      throw new Error('Cant save without conversation id');
-    }
-    const conversation = await getConversationController().get(conversationKey);
-    if(conversation.getBchatProfile()?.displayName)
-    {
-      return  ;
-    }
-     await conversation.setBchatProfile({ displayName });
-    
-  };
+/**
+ * Saves the currently entered nickname.
+ */
+const savebnsname = async (conversationKey: string, displayName: any) => {
+  if (!conversationKey) {
+    throw new Error('Cant save without conversation id');
+  }
+  const conversation = await getConversationController().get(conversationKey);
+  if (conversation.getBchatProfile()?.displayName) {
+    return;
+  }
+  await conversation.setBchatProfile({ displayName });
+};
+
 
 export async function openConversationToSpecificMessage(args: {
   conversationKey: string;

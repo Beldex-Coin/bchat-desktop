@@ -10,13 +10,13 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { getSection } from '../../state/selectors/section';
 import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
-import { DurationLabel, StyledCenteredLabel } from './InConversationCallContainer';
-import { BchatIcon, BchatIconButton } from '../icon';
-import { Flex } from '../basic/Flex';
-import { SpacerSM, SpacerXS } from '../basic/Text';
+import { ConnectingLabel, DurationLabel, RingingLabel } from './InConversationCallContainer';
+import {  BchatIconButton } from '../icon';
+
 import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { isEmpty } from 'lodash';
+
 
 export const DraggableCallWindow = styled.div`
   position: absolute;
@@ -36,14 +36,17 @@ export const DraggableCallWindow = styled.div`
 export const StyledVideoElement = styled.video<{
   isVideoMuted: boolean;
   width?: string;
+  height?:string;
   isLocalOnly?: boolean;
+  isCallModalExpandView?:boolean;
 }>`
   // padding: 0 1rem;
-  height: 100%;
+  height: ${props => (props.height ? props.height : '100%')};
   width: ${props => (props.width ? props.width : '100%')};
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
   display: ${props => (props.isVideoMuted ? 'none' : 'block')};
   object-fit: cover;
+  border-radius: ${props => (props.isCallModalExpandView ? '30px' : '16px')};
   /*Mirror code starts*/
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -57,7 +60,7 @@ const StyledDraggableVideoElement = styled(StyledVideoElement)`
 
 const DraggableCallWindowInner = styled.div`
   cursor: pointer;
-  min-width: 85px;
+  min-width: 170px;
   min-height: 85px;
 `;
 
@@ -81,25 +84,8 @@ const StyledDurationLabel = styled.div<{ remoteStreamVideoIsMuted: boolean }>`
   padding: 5px 10px;
   z-index: 99;
 `;
-const StyledOngoingBar = styled.div`
-  border-radius: 14px;
-  background: #108d32;
-  box-shadow: 0px 4px 16px 0px rgb(0 0 0 / 25%);
-  padding: 10px;
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  z-index: 999;
-`;
-const StyledText = styled.div`
-  color: #fff;
-  width: 55px;
-  ${StyledCenteredLabel} {
-    font-size: 14px;
-  }
-`;
-// left: ${props => props.positionX + 132}px;
-// top: ${props => props.positionY}px;
+
+
 const StyledCloseIcon = styled.div`
   position: absolute;
   top: 5px;
@@ -131,14 +117,7 @@ export const DraggableCallContainer = () => {
   const [positionY, setPositionY] = useState(90);
   const [lastPositionX, setLastPositionX] = useState(0);
   const [lastPositionY, setLastPositionY] = useState(0);
-  const [barExpandView, setBarExpandView] = useState(false);
-  const [isBarView, setBarView] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const DRAG_THRESHOLD = 5;
-  const isNotInChat =
-    selectedSection.focusedSection === SectionType.Settings ||
-    selectedSection.focusedSection === SectionType.Wallet;
-
   const ongoingCallPubkey = ongoingCallProps?.id;
   const {
     remoteStreamVideoIsMuted,
@@ -165,6 +144,7 @@ export const DraggableCallContainer = () => {
   }, [positionX, positionY]);
 
   if (videoRefRemote?.current && remoteStream) {
+    
     if (videoRefRemote.current.srcObject !== remoteStream) {
       videoRefRemote.current.srcObject = remoteStream;
     }
@@ -179,71 +159,34 @@ export const DraggableCallContainer = () => {
     if (videoRefRemote?.current && videoRefLocal?.current) {
       videoRefRemote.current.srcObject = remoteStream;
       videoRefLocal.current.srcObject = localStream;
+      
     }
-  }, [isBarView, remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
+  }, [ remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
 
   const openCallingConversation = () => {
-    if (ongoingCallPubkey && (ongoingCallPubkey !== selectedConversationKey || isNotInChat)) {
+    if (ongoingCallPubkey)  {
       if (!isEmpty(BchatWalletPasswordModalState)) {
         dispatch(updateBchatWalletPasswordModal(null));
       }
+    
       dispatch(showLeftPaneSection(SectionType.Message));
       dispatch(setOverlayMode(undefined));
       void openConversationWithMessages({ conversationKey: ongoingCallPubkey, messageId: null });
     }
   };
+ 
+  const isDragCallValidation = ongoingCallPubkey === selectedConversationKey 
   if (
     !hasOngoingCall ||
     !ongoingCallProps ||
-    (ongoingCallPubkey === selectedConversationKey &&
+     isDragCallValidation &&
       selectedSection.focusedSection !== SectionType.Settings &&
       selectedSection.focusedSection !== SectionType.Wallet)
-  ) {
+   
+   {
     return null;
   }
 
-
-  if (isBarView) {
-    return (
-      <StyledOngoingBar
-        onMouseEnter={() => setBarExpandView(true)}
-        onMouseLeave={() => setBarExpandView(false)}
-      >
-        <Flex container={true} justifyContent="center" alignItems="center">
-          <BchatIconButton
-            iconType={'replyArrow'}
-            iconSize={22}
-            btnBgColor="#00BD40"
-            iconColor="#FFFFFF"
-            btnRadius="50px"
-            onClick={() => {
-              setBarExpandView(false);
-              setBarView(false);
-            }}
-          />
-          <SpacerSM />
-          <div>
-            <div className={`call-bar-expand-view ${barExpandView ? 'show' : ''}`}>
-              <Flex container={true} alignItems="center">
-                <BchatIcon
-                  iconType={'call'}
-                  iconSize={14}
-                  iconColor="#fff"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                />
-                <SpacerXS />
-                <StyledText>Ongoing Call</StyledText>
-              </Flex>
-            </div>
-            <StyledText>
-              <DurationLabel />
-            </StyledText>
-          </div>
-        </Flex>
-      </StyledOngoingBar>
-    );
-  }
 
   return (
     <div>
@@ -251,7 +194,6 @@ export const DraggableCallContainer = () => {
         handle=".dragHandle"
         position={{ x: positionX, y: positionY }}
         onStart={(_e: DraggableEvent, data: DraggableData) => {
-          setIsDragging(true);
           setLastPositionX(data.x);
           setLastPositionY(data.y);
         }}
@@ -260,7 +202,6 @@ export const DraggableCallContainer = () => {
             Math.abs(data.x - lastPositionX) > DRAG_THRESHOLD ||
             Math.abs(data.y - lastPositionY) > DRAG_THRESHOLD
           ) {
-            setIsDragging(true);
           }
         }}
         onStop={(e: DraggableEvent, data: DraggableData) => {
@@ -269,7 +210,6 @@ export const DraggableCallContainer = () => {
           //   // drag did not change anything. Consider this to be a click
           //   openCallingConversation();
           // }
-          setIsDragging(false);
           setPositionX(data.x);
           setPositionY(data.y);
         }}
@@ -277,20 +217,8 @@ export const DraggableCallContainer = () => {
         <DraggableCallWindow className="dragHandle">
           <StyledCloseIcon >
             <BchatIconButton
-              iconType={'x'}
-              // iconColor="#FFFFFF"
-              iconSize={22}
-              onClick={e => {
-                e.stopPropagation();
-                if (!isDragging) setBarView(true); // ✅ Prevents drag triggering click
-              }}
-            />
-            <SpacerSM />
-            <BchatIconButton
               iconType={'replyArrow'}
               iconSize={22}
-              // btnBgColor="#00BD40"
-              // iconColor="#FFFFFF"
               btnRadius="50px"
               onClick={() => {
                 openCallingConversation();
@@ -318,10 +246,12 @@ export const DraggableCallContainer = () => {
             />
           </StyledLocalVideoContainer>
           <StyledDurationLabel remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}>
+            <RingingLabel isOutSideInConvo={true}/>
             <DurationLabel
               isDraggable={true}
               isVideoCall={!remoteStreamVideoIsMuted || !localStreamVideoIsMuted}
             />
+            <ConnectingLabel />
           </StyledDurationLabel>
         </DraggableCallWindow>
       </Draggable>

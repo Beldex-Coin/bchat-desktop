@@ -176,7 +176,7 @@ export const TransactionSection = (props: any) => {
 
   return (
     <div className="wallet-Transaction" style={{ height: zoomLevel > 100 ? 'unset' : '' }}>
-      <div style={{ height: '98%' }} onClick={() => (visible ? setVisible(false) : '')}>
+      <div style={{ height: '100%' }} onClick={() => (visible ? setVisible(false) : '')}>
         <Flex container={true} flexDirection="row" width="100%" justifyContent="space-between">
           <div
             className="wallet-Transaction-title"

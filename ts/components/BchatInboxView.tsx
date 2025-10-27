@@ -36,8 +36,8 @@ import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSectio
 import { initialWalletConfigState } from '../state/ducks/walletConfig';
 // import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
 import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
-import { ProfileInfo } from './BchatProfileInfo';
 import { AudioPlayerProvider } from './basic/AudioPlayerContext';
+import { initialCallHistoryState } from '../state/ducks/callHistory';
 
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
@@ -85,11 +85,6 @@ export class BchatInboxView extends React.Component<any, State> {
                 {this.renderLeftPane()}
               </div>
               <BchatMainPanel />
-              <div className="profile-info">
-                <div>
-                  <ProfileInfo />
-                </div>
-              </div>
               </AudioPlayerProvider>
           </PersistGate>
         </Provider>
@@ -135,6 +130,7 @@ export class BchatInboxView extends React.Component<any, State> {
       },
       stagedAttachments: getEmptyStagedAttachmentsState(),
       call: initialCallState,
+      callHistory:initialCallHistoryState
     };
 
     this.store = createStore(initialState);

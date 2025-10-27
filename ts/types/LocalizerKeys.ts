@@ -177,6 +177,8 @@ export type LocalizerKeys =
   | 'voiceMessage'
   | 'changePasswordTitle'
   | 'copyMessage'
+  |'copyAcceptUrl'
+  |'copyTxnId'
   | 'messageDeletionForbidden'
   | 'deleteJustForMe'
   | 'changeAccountPasswordTitle'
@@ -392,6 +394,7 @@ export type LocalizerKeys =
   | 'timerOption_1_day'
   | 'contactsHeader'
   | 'socialGroupInvitation'
+  |'paymentDetails'
   | 'callMissedCausePermission'
   | 'mediaPermissionsDescription'
   | 'media'
@@ -600,4 +603,9 @@ export type LocalizerKeys =
   | 'reactionNotification'
   | 'readableListCounterSingular'
   | 'readableListCounterPlural'
-  | 'reactionTooltip';
+  | 'reactionTooltip'
+  | 'noContactUntilApproved'
+  
+  |'viewAll'
+  |'viewMessage'
+  ;

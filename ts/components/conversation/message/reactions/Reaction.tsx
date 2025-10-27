@@ -28,7 +28,7 @@ const StyledReaction = styled.button<{
     box-sizing: border-box;
    
     border: unset;
-    font-size:17px;
+    font-size:19px;
     padding: 2px 10px;
 
     border-radius: 17px;
@@ -37,7 +37,7 @@ const StyledReaction = styled.button<{
       (props.inModal && props.iscurrentReact) || !props.inModal
         ? 'var(--color-emoji-panel-bg)'
         : ''};
-    margin-right:3px;
+    margin-right:7px;
     // width:;
     
     min-width:${props => (props.inModal ? '70px' : 'unset')};

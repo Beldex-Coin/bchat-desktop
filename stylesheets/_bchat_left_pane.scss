@@ -23,6 +23,7 @@ $bchat-compose-margin: 20px;
       font-size: 18px;
       // font-style: normal;
       font-weight: 400;
+      text-transform: capitalize;
       // line-height: normal;
     }
   }
@@ -381,7 +382,7 @@ $bchat-compose-margin: 20px;
     width: 25vw;
     max-width: 420px;
     position: relative;
-    
+
     &-closed {
       &--header {
         font-size: 24px;
@@ -410,6 +411,47 @@ $bchat-compose-margin: 20px;
         color: #a7a7ba;
         font-size: 18px;
         font-weight: 500;
+      }
+    }
+    &-call-history {
+      padding: 5px;
+      &--header {
+        padding:0 10px;
+        &-txt{
+          font-size: 22px;
+        }
+       
+      }
+      .content-box-wrapper {
+        overflow: auto;
+        height: calc(100vh - 180px);
+        padding: 5px 10px;
+        .content-box {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding:10px;
+
+          &:hover {
+            border-radius: 16px;
+            background: var(--color-clickable-hovered);
+          }
+          .username {
+            font-size: 18px;
+          }
+          .address {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-last-msg-txt);
+            font-weight: 300;
+            font-size: 14px;
+          }
+
+         .bchat-icon-button:hover{
+           color: #108D32;
+         }
+        }
       }
     }
 

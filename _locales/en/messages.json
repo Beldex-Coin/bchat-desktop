@@ -69,6 +69,7 @@
   "viewMenuToggleDevTools": "Toggle Developer Tools",
   "contextMenuNoSuggestions": "No Suggestions",
   "socialGroupInvitation": "Social group invitation",
+  "paymentDetails":"Payment $type$ ",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ social group?",
   "enterBchatID": "Enter BChat ID",
@@ -318,6 +319,8 @@
   "failedToAddAsModerator": "Failed to add user as moderator",
   "failedToRemoveFromModerator": "Failed to remove user from the moderator list",
   "copyMessage": "Copy text",
+  "copyAcceptUrl":"Copy Url",
+  "copyTxnId":"Copy TxnID",
   "selectMessage": "Select",
   "editGroup": "Edit Group",
   "editGroupName": "Edit group name",
@@ -598,5 +601,10 @@
   "expandedReactionsText": "Show Less",
   "reactionNotification": "Reacts to a message with $emoji$",
   "readableListCounterSingular": "other",
-  "readableListCounterPlural": "others"
+  "readableListCounterPlural": "others",
+  "noContactUntilApproved": "You cannot send contacts until the conversation is approved",
+
+
+  "viewAll":"View all",
+  "viewMessage":"Message"
 }

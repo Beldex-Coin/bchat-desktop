@@ -291,3 +291,7 @@ export function pushNoMediaUntilApproved() {
 export function pushMustBeApproved() {
   pushToastError('mustBeApproved', window.i18n('mustBeApproved'));
 }
+
+export function pushNoContactUntilApproved() {
+  pushToastError('noContactUntilApproved', window.i18n('noContactUntilApproved'));
+}

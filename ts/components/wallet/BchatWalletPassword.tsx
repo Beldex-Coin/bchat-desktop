@@ -57,12 +57,13 @@ export const WalletPassword = (props: any) => {
   return (
     <div className="wallet-walletPassword">
       <div className="wallet-walletPassword-contentBox">
+         <SpacerMD />
         <div className="wallet-walletPassword-contentBox-walletImg"></div>
-        <SpacerMD />
+        <SpacerLG />
         <div className="wallet-walletPassword-contentBox-headerBox">
           <span>{window.i18n('enterWalletPassword')}</span>
         </div>
-        <SpacerMD />
+        <SpacerLG />
         <div className="wallet-walletPassword-contentBox-inputBox">
           <input
             type="password"
@@ -84,6 +85,7 @@ export const WalletPassword = (props: any) => {
           </>
         )}
         <SpacerLG />
+        <SpacerMD />
       </div>
     </div>
   );

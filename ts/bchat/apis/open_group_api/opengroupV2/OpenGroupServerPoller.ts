@@ -194,7 +194,6 @@ export class OpenGroupServerPoller {
     }
 
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;
@@ -213,7 +212,6 @@ export class OpenGroupServerPoller {
       return false;
     }
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;
@@ -232,7 +230,6 @@ export class OpenGroupServerPoller {
       return false;
     }
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;

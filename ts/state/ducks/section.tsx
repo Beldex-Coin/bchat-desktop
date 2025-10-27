@@ -12,12 +12,12 @@ export enum SectionType {
   Opengroup,
   Wallet,
   Settings,
- 
-
   Profile,
   Contact,
   Moon,
   PathIndicator,
+  SubMenu,
+  CallHistory
   
  
 }
@@ -66,6 +66,7 @@ export type OverlayMode =
   | 'closed-group'
   | 'message-requests'
   | 'wallet'
+  | 'call-history'
   | undefined;
 
 export function setOverlayMode(overlayMode: OverlayMode): OverlayModeActionType {

@@ -601,7 +601,13 @@ pre {
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
   margin-bottom: -5px;
-  padding: 10px 0 ;
+  padding: 12px 0 ;
+
+  &-only-attachment{
+    .timeStamp {
+      margin-top: unset !important;
+    }
+  }
 }
 
 label {
@@ -621,13 +627,13 @@ label {
   padding: 10px 10px 0;
 }
 
-.module-message__container--outgoing--first-of-series {
-  border-top-right-radius: $bchat_message-container-border-radius;
-}
+// .module-message__container--outgoing--first-of-series {
+//   border-top-right-radius: $bchat_message-container-border-radius;
+// }
 
-.module-message__container--outgoing--last-of-series {
-  border-bottom-right-radius: $bchat_message-container-border-radius;
-}
+// .module-message__container--outgoing--last-of-series {
+//   border-bottom-right-radius: $bchat_message-container-border-radius;
+// }
 .module-message__container_bg_disabled {
   background-color: transparent !important;
   padding-bottom: 0 !important;
@@ -1078,7 +1084,7 @@ label {
 
       &-walletImg {
         width: 25%;
-        height: 103px;
+        height: 115px;
         background-repeat: no-repeat;
         background-size: 100%;
         margin: auto;
@@ -1859,7 +1865,7 @@ label {
 }
 
 .syncStatus {
-  // position: relative;
+  position: relative;
   // height: 30px;
   // // width: 66.5%;
   // bottom: 0;
@@ -1941,6 +1947,27 @@ label {
     font-family: $bchat-font-poppin-semibold;
   }
 }
+// .syncStatus:after {
+//    content: '';
+//   position: absolute;
+//   bottom: 0px;
+//   left: 0%;
+//   width: 50%;
+//   border-bottom: 1px solid red;
+//   border-radius:10px;
+// }
+// .check {
+//    position: relative;
+// }
+// .check:after {
+//   content: '';
+//   position: absolute;
+//   bottom: 0px;
+//   left: 0%;
+//   width: 50%;
+//   border-bottom: 1px solid red;
+//   border-radius:10px;
+// }
 
 .wallet-contact-left-pane-wrapper {
   min-width: 300px;
@@ -1998,6 +2025,7 @@ label {
         // color: #f0f0f0;
         font-size: 16px;
         font-weight: 400;
+        text-transform: capitalize;
       }
 
       &-addresstxt {
@@ -2872,6 +2900,7 @@ label {
         padding: 8px;
         border-radius: 16px;
         border: 1px solid var(--color-search-border);
+        margin-top: 8px;
 
         select {
           width: 100%;
@@ -3403,8 +3432,8 @@ label {
       }
     }
 
-    // &-syncStatusBox {
-    // position: absolute;
+    &-syncStatusBox {
+    position: relative;
     // width: calc(100vw - 417px);
     // height: 45px;
     // background-color: var(--color-walSyncbar);
@@ -3412,7 +3441,7 @@ label {
     /* background-color: var(--color-walSyncbar); */
     // border-radius: 16px;
     // background: #202329;
-    // }
+    }
 
     &-syncStatus {
       // position: relative;
@@ -3468,11 +3497,10 @@ label {
     &-Transaction {
       padding: 15px;
       // height: 66%;
-      margin-bottom: 5px;
       border-radius: 16px;
       background: var(--color-wallet-inner-bg);
-      // height: calc(100vh - 446px);
-      height: calc(100vh - 460px);
+      // height: calc(100vh - 460px);
+        height: calc(100vh - 450px);
 
       &-title {
         display: flex;
@@ -3519,7 +3547,7 @@ label {
       }
 
       &-parentBox {
-        height: 82%;
+        height: 84%;
         overflow-y: auto;
       }
 
@@ -3612,10 +3640,10 @@ label {
         // background-color: #1c1c26;
         // background-color: var(--color-walInputBg);
 
-        padding: 15px;
+        padding: 0px 10px 10px 10px;
         // border-radius: 10px;
         border-bottom: 1px solid var(--color-search-border);
-        padding-top: 0;
+        margin-right: 12px;
 
         &-sendIndicationBox {
           display: flex;
@@ -3662,6 +3690,7 @@ label {
         &-dateandheight {
           display: flex;
           flex-direction: column;
+          margin-right: 12px;
           // justify-content: center;
           // width: 242px;
 
@@ -4203,6 +4232,7 @@ input {
     // color: #f0f0f0;
     font-size: 16px;
     font-weight: 400;
+    text-transform: capitalize;
   }
 
   &__pubkey {
@@ -4244,6 +4274,7 @@ input {
   &__name {
     font-size: $bchat-font-lg;
     font-weight: 500;
+    text-transform: capitalize;
   }
 
   &-selectionBox {

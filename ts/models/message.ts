@@ -39,6 +39,7 @@ import {
   PropsForGroupUpdateLeft,
   PropsForGroupUpdateName,
   PropsForMessageWithoutConvoProps,
+  PropsForSharedContact,
 } from '../state/ducks/conversations';
 import { VisibleMessage } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 import { buildSyncMessage } from '../bchat/utils/syncUtils';
@@ -113,7 +114,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     perfStart(`getPropsMessage-${this.id}`);
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
-    const propsForPayment=this.getPropsForPayment();
+    const propsForPayment = this.getPropsForPayment();
+    const propsForSharedContact = this.getPropsForSharedContact();
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
     const propsForTimerNotification = this.getPropsForTimerNotification();
     const propsForMessageRequestResponse = this.getPropsForMessageRequestResponse();
@@ -130,10 +132,13 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (propsForPayment) {
       messageProps.propsForPayment = propsForPayment;
     }
+    if (propsForSharedContact) {
+      messageProps.propsForSharedContact = propsForSharedContact;
+    }
     if (propsForGroupInvitation) {
       messageProps.propsForGroupInvitation = propsForGroupInvitation;
     }
-    
+
     if (propsForGroupUpdateMessage) {
       messageProps.propsForGroupUpdateMessage = propsForGroupUpdateMessage;
     }
@@ -194,9 +199,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
   public isPayment() {
     return !!this.get('payment');
   }
-
-  public istxnDetails() {
-    return !!this.get('txnDetails');
+  public isSharedContact() {
+    return !!this.get('sharedContact');
   }
   public isGroupInvitation() {
     return !!this.get('groupInvitation');
@@ -276,14 +280,14 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     return basicProps;
   }
   public getPropsForPayment(): PropsForPayment | null {
-
-    if (!this.isPayment() && !this.istxnDetails()) {
+    if (!this.isPayment()) {
       return null;
     }
-    // else if (!this.istxnDetails()) {
-    //   return null;
-    // }
-    const Payment = this.get('payment') || this.get('txnDetails');
+    const Payment = this.get('payment');
+    if (!Payment) {
+      return null;
+    }
+    
     let direction = this.get('direction');
     if (!direction) {
       direction = this.get('type') === 'outgoing' ? 'outgoing' : 'incoming';
@@ -293,13 +297,37 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       amount: Payment.amount,
       txnId: Payment.txnId,
       direction,
-      acceptUrl: "",
+      acceptUrl: '',
       messageId: this.id as string,
       receivedAt: this.get('received_at'),
       isUnread: this.isUnread(),
     };
   }
 
+  public getPropsForSharedContact(): PropsForSharedContact | null {
+    const sharedContact = this.get('sharedContact');
+    if (!this.isSharedContact) {
+      return null;
+    }
+
+    if (!sharedContact) {
+      return null;
+    }
+
+    let direction = this.get('direction');
+    if (!direction) {
+      direction = this.get('type');
+    }
+
+    return {
+      address: sharedContact.address,
+      name: sharedContact.name,
+      direction,
+      messageId: this.id as string,
+      receivedAt: this.get('received_at'),
+      isUnread: this.isUnread(),
+    };
+  }
   public getPropsForGroupInvitation(): PropsForGroupInvitation | null {
     if (!this.isGroupInvitation()) {
       return null;
@@ -387,7 +415,8 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     if (
       pubkey === UserUtils.getOurPubKeyStrFromCache() ||
-      (pubkey && pubkey.startsWith('bd') && isUsAnySogsFromCache(pubkey))) {
+      (pubkey && pubkey.startsWith('bd') && isUsAnySogsFromCache(pubkey))
+    ) {
       profileName = window.i18n('you');
       isMe = true;
     } else {
@@ -542,7 +571,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (previews && previews.length) {
       props.previews = previews;
     }
-     const reacts = this.getPropsForReacts();
+    const reacts = this.getPropsForReacts();
     if (reacts && Object.keys(reacts).length) {
       props.reacts = reacts;
     }
@@ -561,7 +590,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     return props;
   }
- 
 
   public createNonBreakingLastSeparator(text: string) {
     const nbsp = '\xa0';
@@ -628,7 +656,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return null;
     }
 
-    const { author, id, referencedMessageNotFound } = quote;
+    const { author, id, referencedMessageNotFound,direction } = quote;
     const contact: ConversationModel = author && getConversationController().get(author);
 
     const authorName = contact ? contact.getContactProfileNameOrShortenedPubKey() : null;
@@ -644,6 +672,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       text?: string;
       attachment?: any;
       isFromMe?: boolean;
+      isSharedContact?: boolean;
     } = {
       sender: author,
       messageId: id,
@@ -669,6 +698,31 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         quoteProps.attachment = quoteAttachment;
       }
     }
+    if (quote.text && quote.text.startsWith(`{"kind"`)) {
+      const parsed = JSON.parse(quote.text);
+
+      if (parsed.kind['@type'] === 'OpenGroupInvitation') {
+        quoteProps.text = 'Social group invitation';
+      }
+
+      if (parsed.kind['@type'] === 'SharedContact') {
+        const namesArray = JSON.parse(parsed.kind.name);
+        quoteProps.text =
+          namesArray.length > 1
+            ? `${namesArray[0]} and ${namesArray.length - 1} other${
+                namesArray.length > 2 ? 's' : ''
+              }`
+            : namesArray[0] ?? '';
+        quoteProps.isSharedContact = true;
+      }
+
+      if (parsed.kind['@type'] === 'Payment') {
+        const types =direction === 'incoming' ? 'Received' : 'Sent';
+        const amount=parsed?.kind?.amount
+        quoteProps.text = `${window.i18n('paymentDetails', [types])} : ${amount} BDX`;
+      }
+    }
+
     if (isFromMe) {
       quoteProps.isFromMe = true;
     }
@@ -914,7 +968,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         quote,
         lokiProfile: UserUtils.getOurProfile(),
         reacts: this.get('reacts'),
-        
       };
       if (!chatParams.lokiProfile) {
         delete chatParams.lokiProfile;
@@ -1050,12 +1103,14 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.get('synced') || this.get('sentSync')) {
       return;
     }
-
     // if this message needs to be synced
     if (
       dataMessage.body?.length ||
       dataMessage.attachments.length ||
-      dataMessage.flags === SignalService.DataMessage.Flags.EXPIRATION_TIMER_UPDATE
+      dataMessage.flags === SignalService.DataMessage.Flags.EXPIRATION_TIMER_UPDATE ||
+      dataMessage.sharedContact ||
+      dataMessage.openGroupInvitation ||
+      dataMessage.payment
     ) {
       const conversation = this.getConversation();
       if (!conversation) {
@@ -1294,7 +1349,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           getConversationController().getContactProfileNameOrFullPubKey(pubKey)
         );
 
-        if (names.length > 1) {          
+        if (names.length > 1) {
           messages.push(window.i18n('multipleJoinedTheGroup', [names.join(', ')]));
         } else {
           messages.push(window.i18n('joinedTheGroup', names));
@@ -1321,13 +1376,17 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.isGroupInvitation()) {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
-    if(this.isPayment() || this.istxnDetails())
-    {
-      let amount=this.getMessageModelProps()?.propsForPayment?.amount;
-      let direction=this.getMessageModelProps()?.propsForPayment?.direction === "outgoing"?"Send":'Received'
+    if (this.isPayment()) {
+      let amount = this.getMessageModelProps()?.propsForPayment?.amount;
+      let direction =
+        this.getMessageModelProps()?.propsForPayment?.direction === 'outgoing'
+          ? 'Send'
+          : 'Received';
       return `${amount} BDX ${direction}`;
     }
-
+    if (this.isSharedContact()) {
+      return `Shared contact`;
+    }
     if (this.isDataExtractionNotification()) {
       const dataExtraction = this.get(
         'dataExtractionNotification'
@@ -1357,7 +1416,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
         return window.i18n('answeredACall', [displayName]);
       }
     }
-    
+
     if (this.get('reaction')) {
       const reaction = this.get('reaction');
       if (reaction && reaction.emoji && reaction.emoji !== '') {

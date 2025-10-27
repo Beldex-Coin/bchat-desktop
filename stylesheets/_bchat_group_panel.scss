@@ -1,4 +1,4 @@
-.group-settings {
+.group-settings,.contact-list {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -17,7 +17,8 @@
 
   position: absolute;
   right: 0px;
-  z-index: 2;
+  top:0px;
+  z-index: 99;
 
   &-header {
     // margin-top: $bchat-margin-lg;
@@ -49,6 +50,7 @@
         // color: #f0f0f0;
         font-size: 18px;
         font-weight: 600;
+        text-transform: capitalize;
       }
     }
 
@@ -481,6 +483,57 @@
   }
 }
 
+.contact-list{
+  padding: 0;
+  min-width: unset;
+  max-width: unset;
+  width: 410px;
+  &-header{
+    padding:10px 15px;
+  }
+  .bchat-search-input{
+    margin:5px 15px 10px;
+    width: -webkit-fill-available;
+    flex-shrink: 0
+  }
+  &-inner-wrapper{
+    padding: 0 5px 0 5px;
+    overflow: auto;
+    height: 100%;
+  }
+  .address-content-box{
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px 10px 10px;
+     
+    &.selected{
+      border-radius: 16px;
+      background-color: var(--color-emoji-panel-bg);
+    }
+    &:hover{
+      border-radius: 16px;
+      background-color: var(--color-emoji-panel-bg);
+    }
+    .username{
+    background-color: unset;
+    padding: unset;
+    color: unset;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: capitalize;
+    }
+    .address{
+      color: var(--color-last-msg-txt);
+      font-weight: 300;
+      font-size: 12px;
+    }
+  }
+  .button-wrapper{
+    background-color: var(--color-emoji-panel-bg);
+  }
+}
 .conversation-content {
   display: flex;
   height: inherit;

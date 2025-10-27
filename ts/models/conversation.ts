@@ -37,7 +37,6 @@ import {
   VisibleMessage,
   VisibleMessageParams,
 } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
-import { GroupInvitationMessage } from '../bchat/messages/outgoing/visibleMessage/GroupInvitationMessage';
 import { ReadReceiptMessage } from '../bchat/messages/outgoing/controlMessage/receipt/ReadReceiptMessage';
 import { OpenGroupUtils } from '../bchat/apis/open_group_api/utils';
 import { OpenGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/OpenGroupVisibleMessage';
@@ -66,7 +65,6 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessage/MessageRequestResponse';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
-import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
 import { Reaction } from '../types/Reaction';
 // import { handleMessageReaction } from '../interactions/messageInteractions';
 
@@ -644,15 +642,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async makeQuote(quotedMessage: MessageModel): Promise<ReplyingToMessageProps | null> {
     const attachments = quotedMessage.get('attachments');
     const preview = quotedMessage.get('preview');
-
+    const direction = quotedMessage.get('direction');
     const body = quotedMessage.get('body');
+    const groupInvitation = quotedMessage.get('groupInvitation');
+    const paymentDetails = quotedMessage.get('payment')
+    const sharedContactList = quotedMessage.get('sharedContact');
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
       window.log.warn('tried to make a quote without a sent_at timestamp');
       return null;
     }
-    return {
+    const quoteObj = {
       author: quotedMessage.getSource(),
       id: `${quotedMessage.get('sent_at')}` || '',
       // no need to quote the full message length.
@@ -660,7 +661,44 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       attachments: quotedAttachments,
       timestamp: quotedMessage.get('sent_at') || 0,
       convoId: this.id,
+      direction: direction,
     };
+    if (groupInvitation) {
+      const { name, url } = groupInvitation;
+      const groupInviteTypedData = {
+        kind: {
+          '@type': 'OpenGroupInvitation',
+          groupName: name,
+          groupUrl: `${url}`,
+        },
+      };
+      quoteObj.text = JSON.stringify(groupInviteTypedData);
+    }
+    if (paymentDetails) {
+      const {amount,txnId}=paymentDetails
+      const payment= {
+        kind: {
+          '@type': 'Payment',
+          amount: amount,
+          txnId: `${txnId}`
+        },
+      };
+      
+      quoteObj.text = JSON.stringify(payment);
+    }
+    if (sharedContactList) {
+      const { address, name } = sharedContactList;
+      const sharedContact = {
+        kind: {
+          '@type': 'SharedContact',
+          address: address,
+          name: name,
+        },
+      };
+      quoteObj.text = JSON.stringify(sharedContact);
+    }
+  
+    return quoteObj;
   }
 
   public toOpenGroupV2(): OpenGroupRequestCommonType {
@@ -795,45 +833,32 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         return;
       }
 
+        // Handle shared contact Message
+        if (message.get('sharedContact')) {
+          chatMessageParams.sharedContact = message.get('sharedContact');
+        }
+
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {
         if (this.isMe()) {
           chatMessageParams.syncTarget = this.id;
           const chatMessageMe = new VisibleMessage(chatMessageParams);
-
           await getMessageQueue().sendSyncMessage(chatMessageMe);
           return;
         }
 
         // Handle transaction details Message
-
-        if (message.get('txnDetails')) {
-          // if (false) {
-          const txnDetails = message.get('txnDetails');
-          // const txn_detailsMessages = new GroupInvitationMessage({
-          const txnDetailsMessages = new TxnDetailsMessage({
-            identifier: id,
-            timestamp: sentAt,
-            amount: txnDetails.amount,
-            txnId: txnDetails.txnId,
-            expireTimer: this.get('expireTimer'),
-          });
-
-          // we need the return await so that errors are caught in the catch {}
-          await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
-          return;
+        if (message.get('payment')) {
+          chatMessageParams.payment = message.get('payment');
         }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
-          await this.handleGroupInvitation(message, sentAt, destinationPubkey);
-          return;
+          chatMessageParams.openGroupInvitation=message.get('groupInvitation');
         }
-        const chatMessagePrivate = new VisibleMessage(chatMessageParams);
-
+         const chatMessagePrivate = new VisibleMessage(chatMessageParams);
         await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
         return;
       }
-
       if (this.isMediumGroup()) {
         await this.handleMediumGroup(chatMessageParams, destination);
         return;
@@ -932,7 +957,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote, txnDetails } = msg;
+    const { attachments, body, groupInvitation, preview, quote, payment, sharedContact } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
@@ -943,7 +968,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       'with networkTimestamp: ',
       networkTimestamp
     );
-
+   
     const messageModel = await this.addSingleOutgoingMessage({
       body,
       quote: _.isEmpty(quote) ? undefined : quote,
@@ -953,7 +978,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       expireTimer,
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
-      txnDetails,
+      payment,
+      sharedContact,
     });
 
     // We're offline!
@@ -1489,15 +1515,15 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public hasReactions() {
-     // message requests should not have reactions
-     if (this.isPrivate() && !this.isApproved()) {
+    // message requests should not have reactions
+    if (this.isPrivate() && !this.isApproved()) {
       return false;
     }
     // older open group conversations won't have reaction support
     if (this.isOpenGroupV2()) {
       // const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
       // return roomHasReactionsEnabled(openGroup);
-      return false
+      return false;
     } else {
       return true;
     }
@@ -1960,22 +1986,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     // we need the return await so that errors are caught in the catch {}
     await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
-  }
-  private async handleGroupInvitation(
-    message: MessageModel,
-    sentAt: number,
-    destinationPubkey: PubKey
-  ) {
-    const groupInvitation = message.get('groupInvitation');
-    const groupInvitMessage = new GroupInvitationMessage({
-      identifier: message.id,
-      timestamp: sentAt,
-      name: groupInvitation.name,
-      url: groupInvitation.url,
-      expireTimer: this.get('expireTimer'),
-    });
-    // we need the return await so that errors are caught in the catch {}
-    await getMessageQueue().sendToPubKey(destinationPubkey, groupInvitMessage);
   }
   private async handleMediumGroup(chatMessageParams: VisibleMessageParams, destination: any) {
     const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);

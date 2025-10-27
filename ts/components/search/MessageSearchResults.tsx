@@ -3,7 +3,7 @@ import React from 'react';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';
 import { ContactName } from '../conversation/ContactName';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { Timestamp } from '../conversation/Timestamp';
 import { MessageBodyHighlight } from '../basic/MessageBodyHighlight';
 import styled from 'styled-components';
@@ -136,18 +136,7 @@ const FromUserInGroup = (props: { authorPubkey: string; conversationId: string }
   return <StyledConversationFromUserInGroup>{authorConvoName}: </StyledConversationFromUserInGroup>;
 };
 
-const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
-  return (
-    <BNSWrapper
-      // size={40}
-      position={{ left: '23px', top: '23px' }}
-      isBnsHolder={props.isBnsHolder}
-      size={{width:'20',height:'20'}}
-    >
-      <Avatar size={AvatarSize.L} pubkey={props.source} /> 
-    </BNSWrapper>
-  );
-};
+
 
 const ResultBody = styled.div`
   margin-top: 1px;
@@ -229,7 +218,7 @@ export const MessageSearchResult = (props: MessageResultProps) => {
         });
       }}
     >
-      <AvatarItem source={conversationId} isBnsHolder={isBnsHolder} />
+      <Avatar size={AvatarSize.L} pubkey={conversationId} isBnsHolder={isBnsHolder} /> 
       <StyledResultText>
         <ResultsHeader>
           <ConversationHeader source={destination} conversationId={conversationId} />

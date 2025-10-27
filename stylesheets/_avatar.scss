@@ -85,7 +85,25 @@ $borderAvatarColor: unquote(
     width: 85px;
   }
 }
+.module-avatar--130 {
+  height: 130px;
+  width: 130px;
 
+  img {
+    height: 130px;
+    width: 130px;
+  }
+}
+
+.module-avatar--200 {
+  height: 200px;
+  width: 200px;
+
+  img {
+    height: 200px;
+    width: 200px;
+  }
+}
 .module-avatar--300 {
   height: 300px;
   width: 300px;

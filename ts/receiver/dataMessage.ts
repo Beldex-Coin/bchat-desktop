@@ -81,7 +81,7 @@ function cleanAttachments(decrypted: SignalService.DataMessage) {
 }
 
 export function isMessageEmpty(message: SignalService.DataMessage) {
-  const { flags, body, attachments, group, quote, preview, openGroupInvitation,payment,reaction } = message;
+  const { flags, body, attachments, group, quote, preview, openGroupInvitation,payment,sharedContact,reaction } = message;
 
   return (
     !flags &&
@@ -93,6 +93,7 @@ export function isMessageEmpty(message: SignalService.DataMessage) {
     _.isEmpty(preview) &&
     _.isEmpty(openGroupInvitation) &&
     _.isEmpty(payment) &&
+    _.isEmpty(sharedContact)&&
     _.isEmpty(reaction)
   );
 }

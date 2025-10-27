@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ import {
   getSelectedMessageIds,
   isMessageDetailView,
     isRightPanelShowing,
-  // isRightPanelShowing,
+    isShareContact,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,8 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
-
-  // closeRightPanel,
+  closeShareContact,
   openRightPanel,
   resetSelectedMessageIds,
 } from '../../state/ducks/conversations';
@@ -56,10 +55,6 @@ import { SettingsKey } from '../../data/settings-key';
 import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
-
-// import { CustomIconButton } from '../icon/CustomIconButton';
-// import CallIcon from '../icon/CallIcon';
-// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 
 export interface TimerOption {
   name: string;
@@ -101,10 +96,10 @@ export const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
-  const isPrivate= useSelector(getSelectedConversation)?.isPrivate
+  // const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
-  const convoName = useConversationUsername(selectedConversationKey);
+  // const convoName = useConversationUsername(selectedConversationKey);
 
   const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
 
@@ -150,7 +145,7 @@ export const SelectionOverlay = () => {
 
   const isOnlyServerDeletable = isPublic;
   const deleteMessageButtonText = i18n('deleteJustForMe');
-  const deleteForEveryoneMessageButtonText =isPrivate?i18n('deleteForMeAndRecipient',[convoName||'recipient']) :i18n('deleteForEveryone');
+  const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone')
 
   return (
     <div className="message-selection-overlay">
@@ -245,12 +240,6 @@ const AvatarHeader = (props: {
   const { pubkey, onAvatarClick, showBackButton, conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <BNSWrapper
-        // size={40}
-        position={{ left: '46px', top: '46px' }}
-        isBnsHolder={conversation?.isBnsHolder}
-        size={{ width: '20', height: '20' }}
-      >
         <Avatar
           size={AvatarSize.L}
           onAvatarClick={() => {
@@ -261,8 +250,8 @@ const AvatarHeader = (props: {
           }}
           pubkey={pubkey}
           dataTestId="conversation-options-avatar"
+          isBnsHolder={conversation?.isBnsHolder}
         />
-      </BNSWrapper>
     </span>
   );
 };
@@ -300,12 +289,6 @@ const CallButton = () => {
 
   return (
     <div style={{ marginRight: '15px' }}>
-      {/* <CustomIconButton
-        onClick={() => {
-          void callRecipient(selectedConvoKey, canCall);
-        }}
-        customIcon={<CallIcon iconSize={24} />}
-      /> */}
       <BchatIconButton
         iconType={'call'}
         iconSize={24}
@@ -350,13 +333,14 @@ const ConversationHeaderTitle = () => {
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
-  const dispatch = useDispatch();
+  const isShared = useSelector(isShareContact);  
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
       conversationKey
     );
   }
+  
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return <></>;
@@ -390,22 +374,21 @@ const ConversationHeaderTitle = () => {
   if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
-
+ 
   return (
     <div className="module-conversation-header__title" >
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
         onClick={() => {
-          // if (isRightPanelOn) {
-          //   dispatch(closeRightPanel());
-          // } else {
-            dispatch(openRightPanel());
-          // }
+            if(isShared){
+              window.inboxStore?.dispatch(closeShareContact());
+              } 
+            window.inboxStore?.dispatch(openRightPanel());
         }}
         role="button"
       >
-        {convoName}
+        <span className='receipient_name'>{convoName}</span>
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -471,6 +454,7 @@ export const ConversationHeaderWithDetails = () => {
 
   const triggerId = 'conversation-header';
   const isMe = useSelector(getIsSelectedNoteToSelf);
+  const isShared = useSelector(isShareContact);  
 
   // function displayWalletPassword() {
 
@@ -479,6 +463,7 @@ export const ConversationHeaderWithDetails = () => {
   //     // return;
   //   // }
   // }
+ 
 
   return (
     <div className="module-conversation-header">
@@ -494,7 +479,10 @@ export const ConversationHeaderWithDetails = () => {
           <Flex container={true} flexDirection="row" alignItems="center">
             <AvatarHeader
               onAvatarClick={() => {
-                dispatch(openRightPanel());
+                  if(isShared){
+                    window.inboxStore?.dispatch(closeShareContact());
+                  }  
+                window.inboxStore?.dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
               conversation={conversation}

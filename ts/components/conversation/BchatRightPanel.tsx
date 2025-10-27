@@ -24,7 +24,7 @@ import { closeRightPanel } from '../../state/ducks/conversations';
 import { getSelectedConversation, isRightPanelShowing } from '../../state/selectors/conversations';
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 // import { BchatDropdown } from '../basic/BchatDropdown';
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { MediaItemType } from '../lightbox/LightboxGallery';
@@ -107,7 +107,7 @@ async function getMediaGalleryProps(
     if (!attributes.attachments?.length || MIME.isAudio(attributes.attachments[0]?.contentType)) {
       return null;
     }
-    
+
     const attachment = attributes.attachments[0];
     const { source, id, timestamp, serverTimestamp, received_at } = attributes;
 
@@ -207,7 +207,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             iconType="save_tick"
             iconSize={16}
             onClick={() => onClickOK()}
-          // dataTestId="modal-close-button"
+            // dataTestId="modal-close-button"
           />
         </div>
       </div>
@@ -253,14 +253,11 @@ const HeaderItem = () => {
       <SpacerLG />
 
       <div className="group-settings-header-avatarBox">
-        <BNSWrapper
-          //  size={89}
-          position={{ left: '75px', top: '72px' }}
+        <Avatar
+          size={isGroup ? AvatarSize.L : AvatarSize.XL}
+          pubkey={id}
           isBnsHolder={isBnsHolder}
-          size={{ width: '20', height: '20' }}
-        >
-          <Avatar size={isGroup ? AvatarSize.L : AvatarSize.XL} pubkey={id} />
-        </BNSWrapper>
+        />
         <SpacerXS />
 
         <p>{profileName}</p>
@@ -288,7 +285,12 @@ const ClassicMemberList = (props: {
 
   return (
     <>
-      <div className={classNames(removeMem && 'remove-contact-list',!removeMem && 'group-member-list')}>
+      <div
+        className={classNames(
+          removeMem && 'remove-contact-list',
+          !removeMem && 'group-member-list'
+        )}
+      >
         {currentMembers.map(member => {
           const isSelected = (weAreAdmin && selectedMembers.includes(member)) || false;
           const isAdmin = groupAdmins?.includes(member);
@@ -327,7 +329,7 @@ export const BchatRightPanelWithDetails = () => {
   const convoProps = useConversationPropsById(selectedConversation?.id);
   const existingMembers = convoProps?.members || [];
   const ref = useRef<onClickRef>(null);
-  const rightPanelref=useRef<HTMLDivElement | null>(null)
+  const rightPanelref = useRef<HTMLDivElement | null>(null);
   const { addTo, removeFrom, uniqueValues: membersToKeepWithUpdate } = useSet<string>(
     existingMembers
   );
@@ -393,10 +395,10 @@ export const BchatRightPanelWithDetails = () => {
   const leaveGroupString = isPublic
     ? window.i18n('deleteMessages')
     : isKickedFromGroup
-      ? window.i18n('youGotKickedFromGroup')
-      : left
-        ? window.i18n('youLeftTheGroup')
-        : window.i18n('leaveGroup');
+    ? window.i18n('youGotKickedFromGroup')
+    : left
+    ? window.i18n('youLeftTheGroup')
+    : window.i18n('leaveGroup');
 
   const timerOptions = useSelector(getTimerOptions).timerOptions;
 
@@ -415,13 +417,13 @@ export const BchatRightPanelWithDetails = () => {
 
   const deleteConvoAction = isPublic
     ? () => {
-      deleteAllMessagesByConvoIdWithConfirmation(id);
-    }
+        deleteAllMessagesByConvoIdWithConfirmation(id);
+      }
     : left
-      ? () => {
+    ? () => {
         deleteGroupByConvoId(id, username);
       }
-      : () => {
+    : () => {
         showLeaveGroupByConvoId(
           id,
           username,
@@ -547,7 +549,7 @@ export const BchatRightPanelWithDetails = () => {
   };
   return (
     <div
-    ref={rightPanelref}
+      ref={rightPanelref}
       className="group-settings"
       // style={{
       //   position: zoomLevel > 100 ? 'absolute' : 'unset',
@@ -655,8 +657,8 @@ export const BchatRightPanelWithDetails = () => {
             </>
           )}
           {showAddRemoveModeratorsButton && (
-            <div className='group-settings-header-moderator-wholeBox'>
-              <div className='group-settings-header-moderator-txtBox' >Moderators</div>
+            <div className="group-settings-header-moderator-wholeBox">
+              <div className="group-settings-header-moderator-txtBox">Moderators</div>
               <Flex container={true} flexDirection="row" justifyContent="center" margin="">
                 <div
                   className="addButton"
@@ -665,7 +667,17 @@ export const BchatRightPanelWithDetails = () => {
                     showAddModeratorsByConvoId(id);
                   }}
                 >
-                  {<span style={{ marginRight: '5px' }}><BchatIcon iconType={'addModerator'} fillRule={'evenodd'} clipRule={'evenodd'} iconSize={20} iconColor={'#F0F0F0'} /></span>}
+                  {
+                    <span style={{ marginRight: '5px' }}>
+                      <BchatIcon
+                        iconType={'addModerator'}
+                        fillRule={'evenodd'}
+                        clipRule={'evenodd'}
+                        iconSize={20}
+                        iconColor={'#F0F0F0'}
+                      />
+                    </span>
+                  }
                   {<span style={{ color: '#F0F0F0' }}>{window.i18n('add')}</span>}
                 </div>
                 <div
@@ -675,7 +687,17 @@ export const BchatRightPanelWithDetails = () => {
                     showRemoveModeratorsByConvoId(id);
                   }}
                 >
-                  {<span style={{ marginRight: '5px' }}><BchatIcon iconType={'removeFromModerators'} fillRule={'evenodd'} clipRule={'evenodd'} iconSize={20} iconColor='#FF3E3E' /></span>}
+                  {
+                    <span style={{ marginRight: '5px' }}>
+                      <BchatIcon
+                        iconType={'removeFromModerators'}
+                        fillRule={'evenodd'}
+                        clipRule={'evenodd'}
+                        iconSize={20}
+                        iconColor="#FF3E3E"
+                      />
+                    </span>
+                  }
                   {'Remove'}
                 </div>
               </Flex>
@@ -754,7 +776,6 @@ export const BchatRightPanelWithDetails = () => {
 
               <div className="list-wrapper">
                 {addMem ? (
-                  
                   <InviteContact conversationId={selectedConversation.id} ref={ref} />
                 ) : (
                   <ClassicMemberList

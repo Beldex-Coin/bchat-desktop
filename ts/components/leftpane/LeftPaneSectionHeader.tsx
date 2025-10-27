@@ -20,7 +20,7 @@ import {
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 // import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
@@ -31,7 +31,6 @@ import { applyTheme } from '../../state/ducks/theme';
 // import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
-import { getConversationController } from '../../bchat/conversations';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -40,6 +39,7 @@ import { isLinkedBchatIDWithBnsForDeamon } from '../conversation/BnsVerification
 import { updateIsOnline, 
   // updateOnionPaths 
 } from '../../state/ducks/onion';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 // import { OnionPaths } from '../../bchat/onions';
 // import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
@@ -65,7 +65,7 @@ export const LeftPaneSectionHeader = () => {
   const isMessageRequestOverlay = overlayMode === 'message-requests';
   const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
-  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  const isBnsHolder = useConversationBnsHolder(getOurPubKeyStrFromCache());
   useEffect(() => {
     if (isOnline && !IsVerifyBnsCalled) {
       isLinkedBchatIDWithBnsForDeamon();
@@ -126,19 +126,14 @@ export const LeftPaneSectionHeader = () => {
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <BNSWrapper
-          // size={52}
-          position={{ left: '36px', top: '35px' }}
-          isBnsHolder={conversation?.attributes?.isBnsHolder}
-          size={{width:'20',height:'20'}}
-        >
           <Avatar
             size={AvatarSize.M}
             onAvatarClick={() => dispatch(editProfileModal({}))}
             pubkey={bChatId}
             dataTestId="leftpane-primary-avatar"
+          isBnsHolder={isBnsHolder}
+
           />
-        </BNSWrapper>
       );
     } else {
       return (

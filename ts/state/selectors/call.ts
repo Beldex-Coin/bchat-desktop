@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { CallStateType, CallStatusEnum } from '../ducks/call';
+import {  CallStateType, CallStatusEnum } from '../ducks/call';
 import { ConversationsStateType, ReduxConversationType } from '../ducks/conversations';
 import { StateType } from '../reducer';
 import { getConversations, getSelectedConversationKey } from './conversations';
@@ -59,13 +59,10 @@ const getCallStateWithFocusedConvo = createSelector(
   getCallState,
   getSelectedConversationKey,
   (callState: CallStateType,
-    //  selectedConvoPubkey?: string
     ): CallStatusEnum => {
     if (
       // selectedConvoPubkey && // for hide the validation for display duration in draggable call modal
       callState.ongoingWith 
-      // &&
-      // selectedConvoPubkey === callState.ongoingWith
     ) {
       
       return callState.ongoingCallStatus;
@@ -108,3 +105,4 @@ export const getCallIsInFullScreen = createSelector(
   getCallState,
   (callState): boolean => callState.callIsInFullScreen
 );
+

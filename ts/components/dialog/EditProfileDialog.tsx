@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { QRCode } from 'react-qr-svg';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 // import { PillDivider } from '../basic/PillDivider';
 import { SyncUtils, ToastUtils, UserUtils } from '../../bchat/utils';
@@ -354,7 +354,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span> {i18n('bnsVerified')}</span>
+            <span style={{marginRight:'5px'}}> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}
@@ -452,19 +452,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
     // const userName = profileName || this.convo.id;
 
     return (
-      <BNSWrapper
-        // size={89}
-        position={{ left: '65px', top: '62px' }}
-        isBnsHolder={this.convo?.attributes?.isBnsHolder}
-        size={{ width: '30', height: '30' }}
-      >
+      
         <Avatar
           forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
           forcedName={profileName}
           size={AvatarSize.XL}
           pubkey={this.convo.id}
+          isBnsHolder={this.convo?.attributes?.isBnsHolder}
         />
-      </BNSWrapper>
     );
   }
 

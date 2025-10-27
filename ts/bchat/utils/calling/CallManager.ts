@@ -41,6 +41,7 @@ import {
   showSettingsSection,
 } from '../../../state/ducks/section';
 import moment from 'moment';
+import { openCallHistory } from '../../../state/ducks/callHistory';
 
 // tslint:disable: function-name
 
@@ -164,6 +165,8 @@ const iceServersFullArray = [
     credential: 'Bchat@123',
   }
 ];
+
+
 
 const configuration: RTCConfiguration = {
   bundlePolicy: 'max-bundle',
@@ -507,7 +510,7 @@ export async function USER_callRecipient(recipient: string) {
     expireTimer: 0,
     callNotificationType: 'started-call',
   });
-
+  openCallHistory();
   // initiating a call is analgous to sending a message request
   await approveConvoAndSendResponse(recipient, true);
 
@@ -848,6 +851,7 @@ export async function USER_acceptIncomingCallRequest(fromSender: string) {
     callNotificationType: 'answered-a-call',
     unread: 0,
   });
+  openCallHistory();
   await buildAnswerAndSendIt(fromSender);
 
   // consider the conversation completely approved
@@ -1192,6 +1196,7 @@ async function addMissedCallMessage(callerPubkey: string, sentAt: number) {
     callNotificationType: 'missed-call',
     unread: 1,
   });
+  openCallHistory();
 }
 
 function getOwnerOfCallUUID(callUUID: string) {

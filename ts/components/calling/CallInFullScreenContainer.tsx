@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
@@ -11,36 +11,61 @@ import {
 } from '../../state/selectors/call';
 import { CallWindowControls } from './CallButtons';
 import { StyledVideoElement } from './DraggableCallContainer';
+import { Flex } from '../basic/Flex';
+import { getSelectedConversation } from '../../state/selectors/conversations';
+import {
+  avatarPlaceholderColors,
+  cachedHashes,
+} from '../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
+import { UserUtils } from '../../bchat/utils';
+import { CenteredAvatarInConversation, UserNameTxt } from './InConversationCallContainer';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { SpacerXS } from '../basic/Text';
+import { getTheme } from '../../state/selectors/theme';
 
-const CallInFullScreenVisible = styled.div`
+const CallInFullScreenVisible = styled.div<{ bgColor: string }>`
   position: absolute;
-  z-index: 13;
+  z-index: 999;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-inbox-background);
-  // border: var(--bchat-border);
   opacity: 1;
-  width:100vw;
-`;
+  width: 100vw;
+  align-items: center;
 
-const StyledLocalVideoElement = styled.video<{ isVideoMuted: boolean }>`
-  height: 30%;
-  width: 16%;
-  bottom: 0;
-  right: 0;
+  background: ${props => props.bgColor};
+  height: 100%;
+  background-size: cover;
+`;
+const StyledLocalVideoContainer = styled.div`
+  width: 18%;
+  bottom: 30px;
+  right: 10px;
+  border-radius: 16px;
+  overflow: hidden;
   position: absolute;
+`;
+const StyledLocalVideoElement = styled.video<{ isVideoMuted: boolean }>`
+  width:100%;
   transform: rotateY(180deg);
   opacity: ${props => (props.isVideoMuted ? 0 : 1)};
 `;
-
+const StyledFlex = styled(Flex)`
+  position: absolute;
+  bottom: 20px;
+  height: 90px;
+`;
 export const CallInFullScreenContainer = () => {
   const dispatch = useDispatch();
   const ongoingCallWithFocused = useSelector(getHasOngoingCallWithFocusedConvo);
   const hasOngoingCallFullScreen = useSelector(getCallIsInFullScreen);
+  const selectedConversation = useSelector(getSelectedConversation);
+  const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
+  const [isPortrait, setPortrait] = useState(false);
+  const avatarBgColor = useSelector(getTheme) === 'dark' ? '#131313' : '#FFF';
 
   const {
     remoteStream,
@@ -72,6 +97,27 @@ export const CallInFullScreenContainer = () => {
     }
   }, [remoteStreamVideoIsMuted]);
 
+  useEffect(() => {
+    if (!videoRefRemote.current) return;
+
+    const videoEl = videoRefRemote.current;
+
+    const handleVideoResize = () => {
+      if (!videoEl.videoWidth || !videoEl.videoHeight) return;
+      if (videoEl.videoWidth < videoEl.videoHeight) {
+        setPortrait(true); // portrait
+      } else {
+        setPortrait(false); // landscape
+      }
+    };
+
+    // Run once when metadata is loaded
+    videoEl.addEventListener('loadedmetadata', handleVideoResize);
+    return () => {
+      videoEl.removeEventListener('loadedmetadata', handleVideoResize);
+    };
+  }, [remoteStream, hasOngoingCallFullScreen]);
+
   if (!ongoingCallWithFocused || !hasOngoingCallFullScreen) {
     return null;
   }
@@ -88,28 +134,78 @@ export const CallInFullScreenContainer = () => {
     }
   }
 
+  const validateMemberName = (memberName: any) => {
+    if (memberName == selectedConversation?.id) {
+      let staringTwoString = memberName.substring(0, 2);
+      let lastString = memberName.substring(58, 66);
+      return `${staringTwoString}...${lastString}`;
+    }
+    return memberName;
+  };
+
+  const getBgColor = (privateKey?: string, avoidColor?: string): string => {
+    const index =
+      (privateKey ? cachedHashes.get(privateKey) ?? 0 : 0) % avatarPlaceholderColors.length;
+    const { bgColor } = avatarPlaceholderColors[index];
+
+    if (bgColor !== avoidColor) return bgColor;
+
+    const alternatives = avatarPlaceholderColors.filter(c => c.bgColor !== avoidColor);
+    return alternatives[Math.floor(Math.random() * alternatives.length)].bgColor;
+  };
+
+  const ourPubkeyColor = getBgColor(ourPubkey);
+  const selectedConvoColor = getBgColor(selectedConversation?.id, ourPubkeyColor);
+
   return (
-    <CallInFullScreenVisible onClick={toggleFullScreenOFF}>
+    <CallInFullScreenVisible
+      className="blur-layer"
+      bgColor={`linear-gradient(${selectedConvoColor},${ourPubkeyColor})`}
+    >
       <StyledVideoElement
         ref={videoRefRemote}
         autoPlay={true}
         isVideoMuted={remoteStreamVideoIsMuted}
+        width={isPortrait ? '700px' : '100%'}
       />
-      <StyledLocalVideoElement
-        ref={videoRefLocal}
-        autoPlay={true}
-        isVideoMuted={localStreamVideoIsMuted}
-      />
-      <CallWindowControls
-        currentConnectedAudioInputs={currentConnectedAudioInputs}
-        currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-        currentConnectedCameras={currentConnectedCameras}
-        isAudioMuted={isAudioMuted}
-        isAudioOutputMuted={isAudioOutputMuted}
-        localStreamVideoIsMuted={localStreamVideoIsMuted}
-        remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
-        isFullScreen={hasOngoingCallFullScreen}
-      />
+
+      <StyledLocalVideoContainer>
+        <StyledLocalVideoElement
+          ref={videoRefLocal}
+          autoPlay={true}
+          isVideoMuted={localStreamVideoIsMuted}
+        />
+        {localStreamVideoIsMuted && (
+          <CenteredAvatarInConversation
+            isNeedBgColor={!remoteStreamVideoIsMuted && localStreamVideoIsMuted}
+            avatarBgColor={avatarBgColor}
+            isFullScreen={hasOngoingCallFullScreen}
+          >
+            <Avatar
+              size={AvatarSize.XXXL}
+              pubkey={ourPubkey}
+              isBnsHolder={selectedConversation?.isBnsHolder}
+            />
+            <SpacerXS />
+            <UserNameTxt>{validateMemberName(selectedConversation?.profileName)}</UserNameTxt>
+          </CenteredAvatarInConversation>
+        )}
+      </StyledLocalVideoContainer>
+      <StyledFlex container={true} width="100%" justifyContent="center" alignItems="center">
+        <CallWindowControls
+          currentConnectedAudioInputs={currentConnectedAudioInputs}
+          currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+          currentConnectedCameras={currentConnectedCameras}
+          isAudioMuted={isAudioMuted}
+          isAudioOutputMuted={isAudioOutputMuted}
+          localStreamVideoIsMuted={localStreamVideoIsMuted}
+          remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
+          isFullScreen={hasOngoingCallFullScreen}
+          selectedName={validateMemberName(
+            selectedConversation?.profileName || selectedConversation?.id
+          )}
+        />
+      </StyledFlex>
     </CallInFullScreenVisible>
   );
 };

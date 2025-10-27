@@ -129,12 +129,16 @@ message DataMessage {
   }
 
   message Payment {
-      // @required
-      required string amount = 1;
-      // @required
-      required string txnId = 3;
-    }
+    // @required
+    required string amount = 1;
+    // @required
+    required string txnId = 3;
+  }
 
+  message SharedContact {
+    required string         address           = 1;
+    required string         name              = 2;
+  }
   message ClosedGroupControlMessage {
 
 	  enum Type {
@@ -183,6 +187,7 @@ message DataMessage {
   optional ClosedGroupControlMessage closedGroupControlMessage = 104;
   optional string                    syncTarget                = 105;
   optional Payment                   payment                   = 106;
+  optional SharedContact             sharedContact             = 107;
 
 }
 

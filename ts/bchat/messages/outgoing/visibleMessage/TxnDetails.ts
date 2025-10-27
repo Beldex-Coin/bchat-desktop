@@ -2,7 +2,7 @@ import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
 import { MessageParams } from '../Message';
 
-interface TxnDetailsMessageParams extends MessageParams {
+interface PaymentMessageParams extends MessageParams {
     amount: string |any;
   txnId: string | any;
   // if there is an expire timer set for the conversation, we need to set it.
@@ -10,12 +10,12 @@ interface TxnDetailsMessageParams extends MessageParams {
   expireTimer?: number;
 }
 
-export class TxnDetailsMessage extends DataMessage {
+export class PaymentMessage extends DataMessage {
   private readonly amount: string|any;
   private readonly txnId: string|any;
   private readonly expireTimer?: number;
 
-  constructor(params: TxnDetailsMessageParams) {
+  constructor(params: PaymentMessageParams) {
     super({ timestamp: params.timestamp, identifier: params.identifier });
     this.amount = params.amount;
     this.txnId = params.txnId;

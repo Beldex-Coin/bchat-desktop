@@ -34,7 +34,12 @@ import {
 } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
-import { ReduxConversationType } from '../../../state/ducks/conversations';
+import {
+  closeRightPanel,
+  closeShareContact,
+  openShareContact,
+  ReduxConversationType,
+} from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
 import {
@@ -69,6 +74,7 @@ import {
   updateInsufficientBalanceModal,
   // updateBchatWalletPasswordModal,
   updateSendConfirmModal,
+  // updateShareContactModal,
   updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
 import { SectionType, setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
@@ -89,7 +95,7 @@ import { getdaemonHeight } from '../../../state/selectors/daemon';
 import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
 // import MicrophoneIcon from '../../icon/MicrophoneIcon';
-import { SpacerLG } from '../../basic/Text';
+import { SpacerLG, SpacerSM } from '../../basic/Text';
 import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 import styled from 'styled-components';
 
@@ -97,6 +103,8 @@ import styled from 'styled-components';
 // import { nativeEmojiData } from '../../../util/emoji';
 import { FixedBaseEmoji } from '../../../types/Reaction';
 import { updateIsCurrentlyRecording } from '../../../state/ducks/userConfig';
+import MediaFileIcon from '../../icon/MediaFileIcon';
+import ContactsIcon from '../../icon/ContactsIcon';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -105,6 +113,7 @@ export interface ReplyingToMessageProps {
   timestamp: number;
   text?: string;
   attachments?: Array<any>;
+  direction: 'incoming' | 'outgoing';
 }
 
 export type StagedLinkPreviewImage = {
@@ -134,9 +143,13 @@ export type SendMessageType = {
   quote: any | undefined;
   preview: any | undefined;
   groupInvitation: { url: string | undefined; name: string } | undefined;
-  txnDetails?: {
-    amount: any;
-    txnId: any;
+  payment?: {
+    amount: string;
+    txnId: string;
+  };
+  sharedContact?: {
+    address: string;
+    name: string;
   };
 };
 
@@ -164,6 +177,7 @@ interface State {
   ignoredLink?: string; // set the ignored url when users closed the link preview
   stagedLinkPreview?: StagedLinkPreviewData;
   showCaptionEditor?: AttachmentType;
+  selectionMenuIsVisble: boolean;
 }
 
 const sendMessageStyle = {
@@ -195,6 +209,7 @@ const getDefaultState = (newConvoId?: string) => {
     ignoredLink: undefined,
     stagedLinkPreview: undefined,
     showCaptionEditor: undefined,
+    selectionMenuIsVisble: false,
   };
 };
 
@@ -312,7 +327,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const results =
       selectedConversation?.type === 'private' &&
       re.test(draft) &&
-      Number(draft) >= 0.1 &&
+      Number(draft) >= 0.00001 &&
       // && (draft.length-1 - draft.indexOf(".")) < 4
       selectedConversation?.isApproved &&
       selectedConversation?.didApproveMe &&
@@ -458,7 +473,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           groupInvitation: undefined,
           preview: undefined,
           quote: undefined,
-          txnDetails: {
+          payment: {
             amount: (data?.result?.amount_list[0] / 1e9).toString(),
             txnId: TransactionHistory.tx_hash,
           },
@@ -777,7 +792,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
   private renderCompositionView() {
-    const { showEmojiPanel } = this.state;
+    const { showEmojiPanel, selectionMenuIsVisble } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
 
     const { selectedConversation, isMe, WalletSyncBarShowInChat } = this.props;
@@ -789,7 +804,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ? 'Syncronizing..'
         : 'Synchronized';
     const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
-    // const {WalletSyncBarShowInChat}=this.props
     return (
       <>
         {leftTheGroup ? (
@@ -798,7 +812,43 @@ class CompositionBoxInner extends React.Component<Props, State> {
           this.renderBlockedContactBottoms()
         ) : (
           <>
-            {typingEnabled  && !this.state.showRecordingView  && <AddStagedAttachmentButton onClick={this.onChooseAttachment} />}
+            {typingEnabled && !this.state.showRecordingView && (
+              <div
+                className={classNames(`attachment-wrapper ${selectionMenuIsVisble && 'seleted'}`)}
+              >
+                {selectionMenuIsVisble && (
+                  <div
+                    className="selection-box"
+                    onMouseLeave={() => this.setState({ selectionMenuIsVisble: false })}
+                  >
+                    <Flex
+                      container={true}
+                      padding="15px"
+                      className="content-Wrapper"
+                      alignItems="center"
+                      onClick={this.onChooseAttachment}
+                    >
+                      <MediaFileIcon />
+                      <span>Media Files</span>
+                    </Flex>
+                    <SpacerSM />
+                    <Flex
+                      container={true}
+                      padding="15px"
+                      className="content-Wrapper"
+                      alignItems="center"
+                      onClick={this.onChooseContacts}
+                    >
+                      <ContactsIcon />
+                      <span>Contacts</span>
+                    </Flex>
+                  </div>
+                )}
+                <AddStagedAttachmentButton
+                  onClick={() => this.setState({ selectionMenuIsVisble: true })}
+                />
+              </div>
+            )}
             <input
               className="hidden"
               placeholder="Attachment"
@@ -807,7 +857,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
               type="file"
               onChange={this.onChoseAttachment}
             />
-
             {this.state.showRecordingView && typingEnabled ? (
               this.renderRecordingView()
             ) : (
@@ -1238,7 +1287,21 @@ class CompositionBoxInner extends React.Component<Props, State> {
       ToastUtils.pushNoMediaUntilApproved();
       return;
     }
+    this.setState({ selectionMenuIsVisble: false });
+    window.inboxStore?.dispatch(closeShareContact());
     this.fileInput.current?.click();
+  }
+
+  private onChooseContacts() {
+    if (
+      !this.props.selectedConversation?.didApproveMe &&
+      this.props.selectedConversation?.isPrivate
+    ) {
+      ToastUtils.pushNoContactUntilApproved();
+      return;
+    }
+    window.inboxStore?.dispatch(closeRightPanel());
+    window.inboxStore?.dispatch(openShareContact());
   }
 
   private async onChoseAttachment() {
@@ -1360,14 +1423,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { quotedMessageProps } = this.props;
 
     const { stagedLinkPreview } = this.state;
-
     // Send message
     const extractedQuotedMessageProps = _.pick(
       quotedMessageProps,
       'id',
       'author',
       'text',
-      'attachments'
+      'attachments',
+      'direction',
     );
 
     // we consider that a link preview without a title at least is not a preview
@@ -1472,6 +1535,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       isRaw: true,
       contentType: MIME.AUDIO_MP3,
     });
+
     // { ...savedAudioFile, path: savedAudioFile.path },
     const audioAttachment: StagedAttachmentType = {
       file: new File([], 'bchat-audio-message'), // this is just to emulate a file for the staged attachment type of that audio file
@@ -1485,12 +1549,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
       isVoiceMessage: true,
       path: savedAudioFile.path,
     };
-
+    const { quotedMessageProps } = this.props;
+    const extractedQuotedMessageProps = _.pick(
+      quotedMessageProps,
+      'id',
+      'author',
+      'text',
+      'attachments',
+      'direction',
+    );
     this.props.sendMessage({
       body: '',
       attachments: [audioAttachment],
       preview: undefined,
-      quote: undefined,
+      quote: extractedQuotedMessageProps,
       groupInvitation: undefined,
     });
 
@@ -1530,7 +1602,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       showRecordingView: true,
       showEmojiPanel: false,
     });
-    window.inboxStore?.dispatch(updateIsCurrentlyRecording(true))
+    window.inboxStore?.dispatch(updateIsCurrentlyRecording(true));
   }
 
   private onExitVoiceNoteView() {
@@ -1565,7 +1637,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const end = draft.slice(realSelectionStart);
 
     const newMessage = `${before}${emoji.native}${end}`;
-    
+
     this.setState({ draft: newMessage }, () => {
       setTimeout(() => {
         const emojiLength = emoji.native?.length || 0;
