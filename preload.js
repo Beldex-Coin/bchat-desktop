@@ -255,17 +255,17 @@ if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
       ? [
-        'https://publicnode1.rpcnode.stream:443',
-        'https://publicnode2.rpcnode.stream:443',
-        'https://publicnode3.rpcnode.stream:443',
-        'https://publicnode4.rpcnode.stream:443',
+        'http://publicnode1.rpcnode.stream:29095',
+        'http://publicnode2.rpcnode.stream:29095',
+        'http://publicnode3.rpcnode.stream:29095',
+        'http://publicnode4.rpcnode.stream:29095',
         // 'https://publicnode5.rpcnode.stream:443',
       ]
       : [
-        'https://publicnode1.rpcnode.stream:443',
-        'https://publicnode2.rpcnode.stream:443',
-        'https://publicnode3.rpcnode.stream:443',
-        'https://publicnode4.rpcnode.stream:443',
+        'http://publicnode1.rpcnode.stream:29095',
+        'http://publicnode2.rpcnode.stream:29095',
+        'http://publicnode3.rpcnode.stream:29095',
+        'http://publicnode4.rpcnode.stream:29095',
         // 'https://publicnode5.rpcnode.stream:443',
       ];
 
