@@ -15,6 +15,9 @@ import {
 import { AbortController } from 'abort-controller';
 import { BchatQuotedMessageComposition } from '../BchatQuotedMessageComposition';
 import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
+// react-mentions types can conflict with the project's JSX typings; use any-aliases where used in JSX
+const MentionsInputAny: any = (MentionsInput as any);
+const MentionAny: any = (Mention as any);
 import autoBind from 'auto-bind';
 import { getMediaPermissionsSettings } from '../../settings/BchatSettings';
 import { getDraftForConversation, updateDraftForConversation } from '../BchatConversationDrafts';
@@ -983,7 +986,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const neverMatchingRegex = /($a)/;
 
     return (
-      <MentionsInput
+      <MentionsInputAny
         value={draft}
         onChange={this.onChange}
         onKeyDown={this.onKeyDown}
@@ -994,22 +997,22 @@ class CompositionBoxInner extends React.Component<Props, State> {
         disabled={!typingEnabled}
         rows={1}
         data-testid="message-input-text-area"
-        style={sendMessageStyle}
+        style={sendMessageStyle as any}
         suggestionsPortalHost={this.container as any}
         forceSuggestionsAboveCursor={true} // force mentions to be rendered on top of the cursor, this is working with a fork of react-mentions for now
       >
-        <Mention
+        <MentionAny
           appendSpaceOnAdd={true}
           // this will be cleaned on cleanMentions()
           markup="@ￒ__id__ￗ__display__ￒ" // ￒ = \uFFD2 is one of the forbidden char for a display name (check displayNameRegex)
           trigger="@"
           // this is only for the composition box visible content. The real stuff on the backend box is the @markup
-          displayTransform={(_id, display) => `@${display}`}
+          displayTransform={(_id: any, display: any) => `@${display}`}
           data={this.fetchUsersForGroup}
           renderSuggestion={renderUserMentionRow}
         />
         {/* {nativeEmojiData && !_.isEmpty(nativeEmojiData) && ( */}
-        <Mention
+        <MentionAny
           trigger=":"
           markup="__id__"
           appendSpaceOnAdd={true}
@@ -1018,7 +1021,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           renderSuggestion={renderEmojiQuickResultRow}
         />
         {/* )} */}
-      </MentionsInput>
+      </MentionsInputAny>
     );
   }
 
@@ -1171,7 +1174,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       abortController.abort();
     }, LINK_PREVIEW_TIMEOUT);
 
-    getPreview(firstLink, abortController.signal)
+    getPreview(firstLink, (abortController.signal as any))
       .then(ret => {
         // we finished loading the preview, and checking the abortConrtoller, we are still not aborted.
         // => update the staged preview
@@ -1382,6 +1385,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   // tslint:disable-next-line: cyclomatic-complexitysend
   private async onSendMessage() {
+    console.time('onSendMessageTime');
     if (!this.props.selectedConversationKey) {
       throw new Error('selectedConversationKey is needed');
     }

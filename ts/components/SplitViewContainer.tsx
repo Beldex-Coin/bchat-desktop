@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import {ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getCallIsInFullScreen } from '../state/selectors/call';
 
 type SplitViewProps = {
-  top: React.ReactElement;
-  bottom: React.ReactElement;
+  top: ReactElement;
+  bottom:ReactElement |any;
   disableTop: boolean;
 };
 
@@ -45,12 +45,12 @@ const TopSplitViewPanel = ({
   topHeight,
   setTopHeight,
 }: {
-  children: React.ReactNode;
+  children: ReactNode | any;
   topHeight: number | undefined;
   setTopHeight: (value: number) => void;
 }) => {
   const topRef = useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
+  useEffect(() => {
     if (topRef.current) {
       if (!topHeight) {
         setTopHeight(Math.max(MIN_HEIGHT_TOP, topRef.current?.clientHeight / 2));

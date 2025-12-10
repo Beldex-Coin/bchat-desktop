@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import React from 'react';
+// import React from 'react';
 import styled from 'styled-components';
 import { MessageDeliveryStatus } from '../../../../models/messageType';
 import { BchatIcon } from '../../../icon';

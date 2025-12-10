@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import  { ReactElement, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updateReactClearAllModal } from '../../state/ducks/modalDialog';

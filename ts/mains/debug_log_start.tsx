@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { DebugLogView } from '../components/DebugLogView';
 
 global.setTimeout(() => {

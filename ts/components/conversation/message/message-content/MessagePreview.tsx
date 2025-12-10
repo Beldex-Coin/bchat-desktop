@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+// import React from 'react';
 import { isImageAttachment } from '../../../../types/Attachment';
 // import { ImageGrid } from '../../ImageGrid';
 import { Image } from '../../Image';

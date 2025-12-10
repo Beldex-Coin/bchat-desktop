@@ -7,7 +7,7 @@
       "dom", // Required to access `window`
       "es2021"
     ],
-    "jsx": "react", // Specify JSX code generation: 'preserve', 'react-native', or 'react'.
+    "jsx": "react-jsx", // Specify JSX code generation: 'preserve', 'react-native', or 'react-jsx'.
     // "noEmitHelpers": false,
     "rootDir": "./", // Specify the root directory of input files. Use to control the output directory structure with --outDir
     "removeComments": true, // Do not emit comments to output.
@@ -34,6 +34,8 @@
     // "allowSyntheticDefaultImports": true,  // Allow default imports from modules with no default export. This does not affect code emit, just typechecking.
     "useUnknownInCatchVariables": false,
     "esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'.
-    "inlineSourceMap": false // Emit a single file with source maps instead of having a separate file.
+    "inlineSourceMap": false ,// Emit a single file with source maps instead of having a separate file.
+    "typeRoots": ["./node_modules/@types"]
+
   }
 }

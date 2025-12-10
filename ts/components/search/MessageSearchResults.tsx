@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';

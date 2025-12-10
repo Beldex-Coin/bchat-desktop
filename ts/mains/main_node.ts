@@ -192,7 +192,7 @@ function prepareURL(pathSegments: Array<string>, moreKeys?: { theme: any }) {
 }
 
 function handleUrl(event: any, target: string) {
-  event.preventDefault();
+  event?.preventDefault();
   const { protocol } = url.parse(target);
   // tslint:disable-next-line: no-http-string
   if (protocol === 'http:' || protocol === 'https:') {
@@ -202,7 +202,10 @@ function handleUrl(event: any, target: string) {
 
 function captureClicks(window: BrowserWindow) {
   window.webContents.on('will-navigate', handleUrl);
-  window.webContents.on('new-window', handleUrl);
+  window.webContents.setWindowOpenHandler(({ url: urlToOpen }) => {
+    handleUrl(undefined, urlToOpen);
+    return { action: 'deny' };
+  });
 }
 
 function getDefaultWindowSize() {
@@ -755,6 +758,7 @@ async function removeDB() {
 
 async function showMainWindow(sqlKey: string, passwordAttempt = false) {
   const userDataPath = await getRealPath(app.getPath('userData'));
+  console.warn('sql node initialized');
 
   await sqlNode.initializeSql({
     configDir: userDataPath,
@@ -881,9 +885,7 @@ app.on('web-contents-created', (_createEvent, contents) => {
   contents.on('will-attach-webview', attachEvent => {
     attachEvent.preventDefault();
   });
-  contents.on('new-window', newEvent => {
-    newEvent.preventDefault();
-  });
+  contents.setWindowOpenHandler(() => ({ action: 'deny' }));
 });
 
 // Ingested in preload.js via a sendSync call

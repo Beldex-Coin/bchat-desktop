@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { walletSettingsKey } from '../../data/settings-key';
 import { ChangePasswordModal, walletSettingMiniModal } from '../../state/ducks/modalDialog';

@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { BchatSettingCategory, SettingsViewProps } from './BchatSettings';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getOurNumber } from '../../state/selectors/user';

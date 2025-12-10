@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIconButton } from '../icon';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 // import { BchatRadioGroup } from '../basic/BchatRadioGroup';
 import { BchatToggleWithDescription } from './BchatSettingListItem';
 import { Constants } from '../../bchat';

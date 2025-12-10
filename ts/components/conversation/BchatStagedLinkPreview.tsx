@@ -1,7 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import { StagedLinkPreviewData } from './composition/CompositionBox';
 import { default as insecureNodeFetch } from 'node-fetch';
-import { AbortSignal } from 'abort-controller';
+// import { AbortSignal } from 'abort-controller';
 import { arrayBufferFromFile } from '../../types/Attachment';
 import { AttachmentUtil, LinkPreviewUtil } from '../../util';
 import { fetchLinkPreviewImage } from '../../util/linkPreviewFetch';

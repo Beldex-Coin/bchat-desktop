@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -1224,9 +1224,11 @@ export const BchatGlobalStyles = createGlobalStyle`
   };
 `;
 
+const BchatGlobalStylesAny: any = (BchatGlobalStyles as any);
+
 export const BchatTheme = ({ children }: { children: any }) => (
   <>
-    <BchatGlobalStyles />
+    <BchatGlobalStylesAny />
     {children}
   </>
 );

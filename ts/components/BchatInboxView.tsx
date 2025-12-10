@@ -1,5 +1,8 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+// Use a permissive `any`-typed Provider reference to avoid JSX typing
+// conflicts with the new TS React JSX transform and react-redux v7.
+import * as ReactRedux from 'react-redux';
+const Provider: any = (ReactRedux as any).Provider;
 import { LeftPane } from './leftpane/LeftPane';
 
 // tslint:disable-next-line: no-submodule-imports

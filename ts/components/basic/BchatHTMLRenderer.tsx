@@ -11,7 +11,7 @@ interface ReceivedProps {
 // Needed because of https://github.com/microsoft/tslint-microsoft-contrib/issues/339
 type Props = ReceivedProps;
 
-export const BchatHtmlRenderer: React.SFC<Props> = ({ tag = 'div', key, html, className }) => {
+export const BchatHtmlRenderer= ({ tag = 'div', key, html, className }: Props) => {
   const clean = DOMPurify.sanitize(html, {
     USE_PROFILES: { html: true },
     FORBID_ATTR: ['script'],

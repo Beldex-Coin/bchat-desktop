@@ -16,7 +16,7 @@ import { BchatRegistrationView } from '../components/registration/BchatRegistrat
 import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
 import ReactDOM from 'react-dom';
-import React from 'react';
+// import React from 'react';
 import kill from 'cross-port-killer';
 import { HTTPError } from '../bchat/utils/errors';
 // import { walletSettingsKey } from '../data/settings-key';

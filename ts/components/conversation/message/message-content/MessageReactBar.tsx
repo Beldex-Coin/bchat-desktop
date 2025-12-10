@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import  { ReactElement, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BchatIconButton } from '../../../icon';
 import { RecentReactions } from '../../../../types/Reaction';

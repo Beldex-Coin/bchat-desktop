@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { BchatSeedModal } from '../dialog/BchatSeedModal';
 import { useSelector } from 'react-redux';

@@ -351,4 +351,4 @@ const LockImg = () => (
     />
   </svg>
 );
-export const BchatPasswordPrompt = withTheme(BchatPasswordPromptInner);
+export const BchatPasswordPrompt = ((withTheme as any)(BchatPasswordPromptInner) as any);

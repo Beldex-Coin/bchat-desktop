@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 
 import _ from 'lodash';

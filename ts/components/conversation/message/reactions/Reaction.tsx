@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from 'react';
+import { ReactElement, useRef } from 'react';
 import { SortedReactionList } from '../../../../types/Reaction';
 import { UserUtils } from '../../../../bchat/utils';
 import { abbreviateNumber } from '../../../../util/abbreviateNumber';

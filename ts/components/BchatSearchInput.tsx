@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import React, { Dispatch, useState } from 'react';
+import { Dispatch, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch, search, updateSearchTerm } from '../state/ducks/search';
 import { getConversationsCount } from '../state/selectors/conversations';

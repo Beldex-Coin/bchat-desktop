@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 // tslint:disable: no-submodule-imports use-simple-attributes
 
 import { SpacerLG } from '../../basic/Text';

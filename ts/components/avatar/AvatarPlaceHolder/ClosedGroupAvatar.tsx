@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 // import { useMembersAvatars } from '../../../hooks/useMembersAvatars';
 import {  Identicon } from '../Avatar';
 

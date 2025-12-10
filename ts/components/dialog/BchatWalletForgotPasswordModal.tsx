@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';

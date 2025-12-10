@@ -1,5 +1,5 @@
 // import Slider from 'rc-slider';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 // tslint:disable-next-line: no-submodule-imports
 
 import useUpdate from 'react-use/lib/useUpdate';

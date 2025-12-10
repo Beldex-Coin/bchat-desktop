@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useEffect } from 'react';
+import  { forwardRef, MutableRefObject, useEffect } from 'react';
 import classNames from 'classnames';
 import data from '@emoji-mart/data';
 

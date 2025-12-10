@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 import { syncConfigurationIfNeeded } from '../../bchat/utils/syncUtils';
 

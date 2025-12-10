@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import  { useCallback, useRef } from 'react';
 
 import { animation, contextMenu, Item, Menu } from 'react-contexify';
 
@@ -93,12 +93,12 @@ export const MessageContextMenu = (props: Props) => {
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
 
-  const [showEmojiPanel, setShowEmojiPanel] = useState(false);
+  // const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
   const onContextMenuShown = () => {
-    if (showEmojiPanel) {
-      setShowEmojiPanel(false);
-    }
+    // if (showEmojiPanel) {
+    //   setShowEmojiPanel(false);
+    // }
     window.contextMenuShown = true;
   };
 

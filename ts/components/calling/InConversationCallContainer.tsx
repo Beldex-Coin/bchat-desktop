@@ -1,5 +1,5 @@
 import {  useSelector } from 'react-redux';
-import React, { useEffect, useRef, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 import { CallManager, UserUtils } from '../../bchat/utils';

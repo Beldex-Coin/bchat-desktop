@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+// import React from 'react';
 import { BchatInput } from '../basic/BchatInput';
 import { MAX_USERNAME_LENGTH } from './RegistrationStages';
 

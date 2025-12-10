@@ -250,7 +250,7 @@ export const GenericReadableMessage = (props: Props) => {
   const iconColor = darkMode ? '#F0F0F0' : selected ? '#3E4A53' : '#ACACAC';
 
   const onSelect = useCallback(
-    messageId => {
+    (messageId:any) => {
       //  if(isSelectionMode)
       //  {
       dispatch(toggleSelectedMessageId(messageId));

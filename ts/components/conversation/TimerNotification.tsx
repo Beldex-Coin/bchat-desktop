@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { missingCaseError } from '../../util/missingCaseError';
 import { PropsForExpirationTimer } from '../../state/ducks/conversations';

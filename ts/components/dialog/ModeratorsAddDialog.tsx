@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { PubKey } from '../../bchat/types';
 import { ToastUtils } from '../../bchat/utils';
 import { Flex } from '../basic/Flex';

@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { toast } from 'react-toastify';
 import { BchatToast, BchatToastType } from '../../components/basic/BchatToast';
 import { BchatIconType } from '../../components/icon';

@@ -27,13 +27,15 @@ export async function decryptProfile(data: ArrayBuffer, key: ArrayBuffer): Promi
           ciphertext
         )
         .catch(e => {
-          if (e.name === 'OperationError') {
+          if (e && (e as any).name === 'OperationError') {
             // bad mac, basically.
             error.message =
               'Failed to decrypt profile data. Most likely the profile key has changed.';
             error.name = 'ProfileDecryptError';
             throw error;
           }
+          // rethrow other errors so the returned promise stays typed as ArrayBuffer
+          throw e;
         })
     );
 }

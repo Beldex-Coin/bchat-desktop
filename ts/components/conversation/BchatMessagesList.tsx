@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import  { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';

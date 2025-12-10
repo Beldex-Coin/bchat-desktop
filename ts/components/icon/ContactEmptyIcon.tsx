@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 const ContactEmptyIcon = (props:{isDark:boolean}) => {
   const color=props.isDark?'#65656E':'#A3A3B2';

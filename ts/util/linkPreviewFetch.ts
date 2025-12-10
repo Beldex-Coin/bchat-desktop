@@ -1,5 +1,5 @@
 import { RequestInit, Response } from 'node-fetch';
-import { AbortSignal } from 'abort-controller';
+// import { AbortSignal } from 'abort-controller';
 
 import { IMAGE_GIF, IMAGE_ICO, IMAGE_JPEG, IMAGE_PNG, IMAGE_WEBP, MIMEType } from '../types/MIME';
 

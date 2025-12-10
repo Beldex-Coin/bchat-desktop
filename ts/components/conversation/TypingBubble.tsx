@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { TypingAnimation } from './TypingAnimation';
 import styled from 'styled-components';

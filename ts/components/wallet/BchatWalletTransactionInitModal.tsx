@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';

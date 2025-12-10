@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { useDispatch, useSelector } from 'react-redux';

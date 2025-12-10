@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import  { useCallback, useState } from 'react';
 import moment from 'moment';
 
 // tslint:disable-next-line: no-submodule-imports

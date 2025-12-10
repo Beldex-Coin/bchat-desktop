@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { editProfileModal, updateAboutBnsModal } from '../../state/ducks/modalDialog';

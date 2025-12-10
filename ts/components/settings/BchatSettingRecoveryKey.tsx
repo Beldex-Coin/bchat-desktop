@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import {  useState } from 'react';
 import { BchatButton,BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 
 export const BchatSettingRecoveryKey=()=>
