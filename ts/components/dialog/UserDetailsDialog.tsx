@@ -1,5 +1,5 @@
 // import React from 'react';
-// tslint:disable no-submodule-imports
+
 
 import useKey from 'react-use/lib/useKey';
 import { ConversationTypeEnum } from '../../models/conversation';

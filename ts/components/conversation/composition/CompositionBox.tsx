@@ -410,7 +410,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       window.inboxStore?.dispatch(updateSendConfirmModal(null));
       window.inboxStore?.dispatch(updateTransactionInitModal(null));
       // return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance..');
-      return window.inboxStore?.dispatch(updateInsufficientBalanceModal(true));
+      return window.inboxStore?.dispatch(updateInsufficientBalanceModal({}));
     }
     let decimalValue: any =
       window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
@@ -547,6 +547,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     const { items } = e.clipboardData;
     let imgBlob = null;
+     // eslint-disable-next-line no-restricted-syntax
     for (const item of items as any) {
       const pasteType = item.type.split('/')[0];
       if (pasteType === 'image') {
@@ -624,7 +625,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <BchatRecording
         sendVoiceMessage={this.sendVoiceMessage}
-        onLoadVoiceNoteView={this.onLoadVoiceNoteView}
+        onLoadVoiceNoteView={() => void this.onLoadVoiceNoteView()}
         onExitVoiceNoteView={this.onExitVoiceNoteView}
       />
     );
@@ -858,7 +859,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               multiple={true}
               ref={this.fileInput}
               type="file"
-              onChange={this.onChoseAttachment}
+             onChange={() => void this.onChoseAttachment()}
             />
             {this.state.showRecordingView && typingEnabled ? (
               this.renderRecordingView()
@@ -935,7 +936,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                 {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
                   <div className={classNames('send-message-button')}>{this.sendButton()}</div>
                 ) : (
-                  <StartRecordingButton onClick={this.onLoadVoiceNoteView} />
+                  <StartRecordingButton onClick={() => void this.onLoadVoiceNoteView()} />
                 )}
               </>
             )}
@@ -1383,7 +1384,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexitysend
+  
   private async onSendMessage() {
     console.time('onSendMessageTime');
     if (!this.props.selectedConversationKey) {
@@ -1691,4 +1692,4 @@ const mapStateToProps = (state: StateType) => {
 
 const smart = connect(mapStateToProps);
 
-export const CompositionBox = smart(CompositionBoxInner);
+export const CompositionBox:any = smart(CompositionBoxInner);

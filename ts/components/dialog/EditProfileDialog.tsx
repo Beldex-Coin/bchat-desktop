@@ -500,6 +500,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         loading: true,
       },
       async () => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         await commitProfileEdits(setProfileName, newName, newAvatarObjectUrl);
         this.setState({
           loading: false,

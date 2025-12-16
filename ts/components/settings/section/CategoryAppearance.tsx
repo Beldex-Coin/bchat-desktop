@@ -1,7 +1,6 @@
 // import { ipcRenderer, shell } from 'electron';
 // import React from 'react';
 import {  useDispatch, useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
 import os from 'os';
 // import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';

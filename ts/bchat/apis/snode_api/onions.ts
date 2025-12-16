@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-default
 import { default as insecureNodeFetch, RequestInit } from 'node-fetch';
 import https from 'https';
 
@@ -139,7 +140,6 @@ async function buildOnionCtxs(
       };
 
       // FIXME http Social groups v2 are not working
-      // tslint:disable-next-line: no-http-string
       if (finalRelayOptions?.protocol === 'http') {
         dest.protocol = finalRelayOptions.protocol;
         dest.port = finalRelayOptions.port || 80;
@@ -780,7 +780,6 @@ const sendOnionRequest = async ({
   );
 
   const guardNode = nodePath[0];
-
   const guardFetchOptions: RequestInit = {
     method: 'POST',
     body: payload,
@@ -800,7 +799,7 @@ const sendOnionRequest = async ({
   const guardUrl = `https://${guardNode.ip}:${guardNode.port}/onion_req/v2`;
   // no logs for that one insecureNodeFetch as we do need to call insecureNodeFetch to our guardNode
   // window?.log?.info('insecureNodeFetch => plaintext for sendOnionRequest');
-
+  console.timeEnd('onSendMessageTime');
   const response = await insecureNodeFetch(guardUrl, guardFetchOptions);
   return { response, decodingSymmetricKey: destCtx.symmetricKey };
 };

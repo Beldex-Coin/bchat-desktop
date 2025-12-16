@@ -1,6 +1,4 @@
 import  { useState } from 'react';
-// tslint:disable: use-simple-attributes no-submodule-imports
-
 import { useDispatch, useSelector } from 'react-redux';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';

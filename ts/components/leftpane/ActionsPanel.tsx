@@ -12,7 +12,6 @@ import {
 } from '../../data/data';
 import { getMessageQueue } from '../../bchat/sending';
 import { useDispatch, useSelector } from 'react-redux';
-// tslint:disable: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import useTimeoutFn from 'react-use/lib/useTimeoutFn';
 
@@ -48,7 +47,6 @@ import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { ModalContainer } from '../dialog/ModalContainer';
 import { debounce, isEmpty, isString } from 'lodash';
 
-// tslint:disable-next-line: no-import-side-effect no-submodule-imports
 
 import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/ApiUtil';
@@ -107,7 +105,6 @@ const Section = (props: {
 
 
   const handleClick = async (subTypes?: SectionType) => {
-    /* tslint:disable:no-void-expression */
     dispatch(closeRightPanel());
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
@@ -388,7 +385,6 @@ const triggerSyncIfNeeded = async () => {
 const removeAllV1OpenGroups = async () => {
   const allV1Convos = (await getAllOpenGroupV1Conversations()).models || [];
   // do not remove messages of opengroupv1 for now. We have to find a way of doing it without making the whole app extremely slow
-  // tslint:disable-next-line: prefer-for-of
   for (let index = 0; index < allV1Convos.length; index++) {
     const v1Convo = allV1Convos[index];
     try {

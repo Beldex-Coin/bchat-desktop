@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-default
 import { Constants } from '../..';
 import { default as insecureNodeFetch } from 'node-fetch';
 import https from 'https';
@@ -11,7 +12,6 @@ import { SeedNodeAPI } from '.';
 import { allowOnlyOneAtATime } from '../../utils/Promise';
 // import { callapi } from '../../../testHttps/httpsValid';
 
-// tslint:disable: function-name
 
 /**
  * Fetch all snodes from seed nodes.
@@ -104,7 +104,6 @@ const getSslAgentForSeedNode = async (seedNodeHost: string, isSsl = false) => {
   }
 
 
-  // tslint:disable: non-literal-fs-path
   // read the cert each time. We only run this request once for each seed node nevertheless.
   const sslOptions: https.AgentOptions = {
     // as the seed nodes are using a self signed certificate, we have to provide it here.

@@ -25,3 +25,4 @@ playwright.config.js
 
 # Coverage
 release/**
+stylesheets/dist/**

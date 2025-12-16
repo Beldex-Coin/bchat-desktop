@@ -40,7 +40,6 @@ export type ScrollToLoadedReasons =
   | 'load-more-bottom';
 
 export const ScrollToLoadedMessageContext = React.createContext(
-  // tslint:disable-next-line: no-empty
   (_loadedMessageIdToScrollTo: string, _reason: ScrollToLoadedReasons) => {}
 );
 
@@ -272,7 +271,6 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
       return;
     }
 
-    // tslint:disable-next-line: restrict-plus-operands
     messageContainer.scrollBy({
       top: Math.floor(+messageContainer.clientHeight * 2) / 3,
       behavior: 'smooth',
@@ -330,4 +328,4 @@ const mapStateToProps = (state: StateType) => {
 
 const smart = connect(mapStateToProps);
 
-export const BchatMessagesListContainer = smart(BchatMessagesListContainerInner);
+export const BchatMessagesListContainer:any = smart(BchatMessagesListContainerInner);

@@ -1,4 +1,11 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable more/no-then */
+/* eslint-disable no-loop-func */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-unreachable-loop */
+/* eslint-disable no-restricted-syntax */
 
 import chai from 'chai';
 import Sinon, * as sinon from 'sinon';

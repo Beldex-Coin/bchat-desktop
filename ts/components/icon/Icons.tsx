@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-multi-str */
 export type BchatIconType =
   | 'accept'
   | 'addUser'

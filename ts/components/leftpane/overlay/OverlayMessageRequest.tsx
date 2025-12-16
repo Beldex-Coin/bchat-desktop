@@ -1,5 +1,4 @@
 // import React from 'react';
-// tslint:disable: no-submodule-imports use-simple-attributes
 
 import { SpacerLG } from '../../basic/Text';
 import { useDispatch, useSelector } from 'react-redux';

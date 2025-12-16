@@ -5,7 +5,6 @@ import { SettingsHeader } from './BchatSettingsHeader';
 // import { BchatIconButton } from '../icon';
 import autoBind from 'auto-bind';
 import { BchatNotificationGroupSettings } from './BeldexNotificationGroupSettings';
-// tslint:disable-next-line: no-submodule-imports
 import { BlockedUserSettings } from './BlockedUserSettings';
 import { SettingsCategoryPrivacy } from './section/CategoryPrivacy';
 import { SettingsCategoryAppearance } from './section/CategoryAppearance';

@@ -9,7 +9,7 @@ import {
 } from './local_attachments_encrypter';
 
 if (window) {
-  //tslint-disable no-empty
+  //eslint-disable no-empty
 }
 
 // to me, this file is only used in the renderer
@@ -36,7 +36,8 @@ export const createReader = (root: string) => {
     if (!isBuffer(buffer)) {
       throw new TypeError("'bufferIn' must be a buffer");
     }
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     const decryptedData = await decryptAttachmentBufferRenderer(buffer.buffer);
 
     return decryptedData.buffer;

@@ -1,4 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
 
 import chai from 'chai';
 import Sinon, * as sinon from 'sinon';
@@ -22,20 +21,17 @@ import { PubKey } from '../../../../bchat/types';
 import { generateFakeSnodes } from '../../../test-utils/utils';
 import { resetHardForkCachedValues } from '../../../../bchat/apis/snode_api/hfHandling';
 import { sleepFor } from '../../../../bchat/utils/Promise';
-// tslint:disable: chai-vague-errors
 
 chai.use(chaiAsPromised as any);
 chai.should();
 
 const { expect } = chai;
 
-// tslint:disable-next-line: max-func-body-length
 describe('SwarmPolling', () => {
   // Initialize new stubbed cache
   const ourPubkey = TestUtils.generateFakePubKey();
   const ourNumber = ourPubkey.key;
 
-  // tslint:disable-next-line: variable-name
   let pollOnceForKeySpy: Sinon.SinonSpy<any>;
 
   let swarmPolling: SwarmPolling;

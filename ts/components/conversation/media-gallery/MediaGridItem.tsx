@@ -28,7 +28,6 @@ const MediaGridItemContent = (props: Props) => {
   const disableDrag = useDisableDrag();
 
   const onImageError = () => {
-    // tslint:disable-next-line no-console
     setImageBroken(true);
   };
 

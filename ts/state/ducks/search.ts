@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { AdvancedSearchOptions, SearchOptions } from '../../types/Search';
 import { cleanSearchTerm } from '../../util/cleanSearchTerm';
 import { searchConversations, searchMessages } from '../../../ts/data/data';
@@ -38,9 +39,7 @@ type SearchResultsFulfilledActionType = {
 };
 type UpdateSearchTermActionType = {
   type: 'SEARCH_UPDATE';
-  payload: {
-    query: string;
-  };
+  payload: {query: string};
 };
 type ClearSearchActionType = {
   type: 'SEARCH_CLEAR';

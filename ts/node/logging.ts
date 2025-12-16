@@ -15,8 +15,7 @@ import { redactAll } from '../util/privacy';
 
 const LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'];
 let logger: Logger | undefined;
-// tslint:disable: non-literal-fs-path
-// tslint:disable: no-console
+
 
 export type ConsoleCustom = typeof console & {
   _log: (...args: any) => void;
@@ -75,7 +74,7 @@ export async function initializeLogger() {
         }
       );
     });
-
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
     ipc.on('delete-all-logs', async event => {
       try {
         await deleteAllLogs(logPath);

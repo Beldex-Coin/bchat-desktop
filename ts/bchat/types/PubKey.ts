@@ -36,7 +36,7 @@ export class PubKey {
   // This is a temporary fix to allow groupPubkeys created from mobile to be handled correctly
   // They have a different regex to match
   // FIXME move this to a new class which validates group ids and use it in all places where we have group ids (message sending included)
-  // tslint:disable: member-ordering
+
   public static readonly regexForPubkeys = `((bd)?${PubKey.HEX}{64})`;
   public static readonly PREFIX_GROUP_TEXTSECURE = '__textsecure_group__!';
   // prettier-ignore

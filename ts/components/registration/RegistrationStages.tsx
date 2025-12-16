@@ -16,7 +16,6 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
 
 export const MAX_USERNAME_LENGTH = 26;
-// tslint:disable: use-simple-attributes
 
 export async function resetRegistration() {
   await removeAll();

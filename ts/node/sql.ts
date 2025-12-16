@@ -24,9 +24,8 @@ import { PubKey } from '../bchat/types/PubKey'; // checked - only node
 import { StorageItem } from './storage_item'; // checked - only node
 import { getAppRootPath } from './getRootPath';
 import { UpdateLastHashType } from '../types/sqlSharedTypes';
-// tslint:disable: no-console quotemark non-literal-fs-path one-variable-per-declaration
+// eslint:disable: function-name non-literal-fs-path
 const openDbOptions = {
-  // tslint:disable-next-line: no-constant-condition
   verbose: false ? console.log : undefined,
   nativeBinding: path.join(
     getAppRootPath(),
@@ -1314,7 +1313,7 @@ function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.
         `SELECT * FROM ${CONVERSATIONS_TABLE} WHERE type = 'private' AND (name IS NULL or name = '') AND json_extract(json, '$.nickname') <> '';`
       )
       .all();
-    // tslint:disable-next-line: no-void-expression
+   
     (rowsToUpdate || []).forEach(r => {
       const obj = jsonToObject(r.json);
 
@@ -1553,7 +1552,6 @@ function tableExists(tableName: string): boolean {
 
 let databaseFilePath: string | undefined;
 
-// tslint:disable-next-line: function-name
 function _initializePaths(configDir: string) {
   const dbDir = path.join(configDir, 'sql');
   fs.mkdirSync(dbDir, { recursive: true });
@@ -2618,7 +2616,6 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
     const messageFound = getMessageById(messageId || firstUnread);
 
     if (messageFound && messageFound.conversationId === conversationId) {
-      // tslint:disable-next-line: no-shadowed-variable
       const rows = assertGlobalInstance()
         .prepare(
           `WITH cte AS (
@@ -3263,7 +3260,6 @@ function removeKnownAttachments(allAttachments: any) {
     forEach(messages, message => {
       const externalFiles = getExternalFilesForMessage(message);
       forEach(externalFiles, file => {
-        // tslint:disable-next-line: no-dynamic-delete
         delete lookup[file];
       });
     });
@@ -3306,7 +3302,6 @@ function removeKnownAttachments(allAttachments: any) {
     forEach(conversations, conversation => {
       const externalFiles = getExternalFilesForConversation(conversation);
       forEach(externalFiles, file => {
-        // tslint:disable-next-line: no-dynamic-delete
         delete lookup[file];
       });
     });
@@ -3752,7 +3747,6 @@ function cleanUpOldOpengroups() {
   })();
 }
 
-// tslint:disable: binary-expression-operand-order insecure-random
 /**
  * Only using this for development. Populate conversation and message tables.
  */

@@ -1,3 +1,4 @@
+/* eslint-disable more/no-then */
 import { getSodiumRenderer } from '../../bchat/crypto';
 
 const PROFILE_IV_LENGTH = 12; // bytes
@@ -56,6 +57,8 @@ export async function encryptProfile(data: ArrayBuffer, key: ArrayBuffer): Promi
     .importKey('raw', key, { name: 'AES-GCM' }, false, ['encrypt'])
     .then(keyForEncryption =>
       crypto.subtle
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error -- returning Uint8Array intentionally
         .encrypt({ name: 'AES-GCM', iv, tagLength: PROFILE_TAG_LENGTH }, keyForEncryption, data)
         .then(ciphertext => {
           // tslint:disable-next-line: restrict-plus-operands

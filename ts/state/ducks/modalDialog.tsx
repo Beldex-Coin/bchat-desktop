@@ -17,8 +17,8 @@ export type UpdateGroupMembersModalState = InviteContactModalState;
 export type UpdateGroupNameModalState = InviteContactModalState;
 export type ChangeNickNameModalState = InviteContactModalState;
 export type AdminLeaveClosedGroupModalState = InviteContactModalState;
-export type EditProfileModalState = {} | null;
-export type BnsLinkModalState = {} | null;
+export type EditProfileModalState = object | null;
+export type BnsLinkModalState = object | null;
 export type OnionPathModalState = EditProfileModalState;
 export type RecoveryPhraseModalState = EditProfileModalState;
 export type DeleteAccountModalState = EditProfileModalState;
@@ -32,7 +32,7 @@ export type UserDetailsModalState = {
   userName: string;
 } | null;
 
-export type ChangePasswordModalState = {} | null;
+export type ChangePasswordModalState = object | null;
 export type walletSettingMiniModalState = {
   headerName: string;
   content: any;
@@ -42,15 +42,15 @@ export type walletSettingMiniModalState = {
   needSearch?: boolean;
 } | null;
 
-export type TransactionInitModalState = {} | null;
-export type InsufficientBalanceModalState = {} | null;
+export type TransactionInitModalState = object | null;
+export type InsufficientBalanceModalState = object | null;
 export type WalletSendConfirmState = any | null;
 export type BchatUpdateInstruntionState = any | null;
 export type BchatWalletPasswordModalState = { from?: string } | null;
-export type BchatWalletForgotPasswordModalState = {} | null;
+export type BchatWalletForgotPasswordModalState = object | null;
 export type BchatAlertConfirmModalState = any | null;
-export type AboutBnsModalState = {} | null;
-export type CommunityGuidelinesModalState = {} | null;
+export type AboutBnsModalState = object | null;
+export type CommunityGuidelinesModalState = object | null;
 
 export type ReactModalsState = {
   reaction: string;

@@ -16,7 +16,7 @@ import { BchatSpinner } from '../../basic/BchatSpinner';
 import { SpacerXS } from '../../basic/Text';
 import { BchatIcon } from '../../icon/BchatIcon';
 // import { H3 } from '../../basic/Text';
-// tslint:disable: no-void-expression
+
 
 export type JoinableRoomProps = {
   completeUrl: string;
@@ -68,6 +68,7 @@ export const BchatJoinableRoomAvatar = (props: JoinableRoomProps) => {
     } catch (e) {
       window?.log?.warn(e);
     }
+     // eslint-disable-next-line consistent-return
     return () => {
       isCancelled = true;
     };

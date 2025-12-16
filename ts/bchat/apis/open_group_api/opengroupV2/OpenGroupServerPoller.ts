@@ -93,6 +93,7 @@ export class OpenGroupServerPoller {
     });
 
     this.abortController = new AbortController();
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.pollForEverythingTimer = global.setInterval(this.compactPoll, pollForEverythingInterval);
     this.pollForRoomAvatarTimer = global.setInterval(
       this.previewPerRoomPoll,

@@ -33,7 +33,6 @@ function contentTypeSupported(type: string): boolean {
  * You have to call msg.commit() once you are done with the handling of this message
  */
 async function copyFromQuotedMessage(
-  // tslint:disable-next-line: cyclomatic-complexity
   msg: MessageModel,
   quote?: SignalService.DataMessage.IQuote | null
 ): Promise<void> {

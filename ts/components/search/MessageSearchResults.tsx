@@ -204,7 +204,6 @@ export const MessageSearchResult = (props: MessageResultProps) => {
   if (!source && !destination) {
     return null;
   }
-  // tslint:disable: use-simple-attributes
 
   return (
     <StyledSearchResulsts

@@ -218,7 +218,8 @@ export async function handleNewSecretGroup(
 
   if (envelope.senderIdentity === ourNumber.key) {
     window?.log?.warn('Dropping new closed group updatemessage from our other device.');
-    return removeFromCache(envelope);
+    await removeFromCache(envelope);
+    return;
   }
 
   const {
@@ -250,7 +251,6 @@ export async function handleNewSecretGroup(
     // if we did not left this group, just add the keypair we got if not already there
     if (!groupConvo.get('isKickedFromGroup') && !groupConvo.get('left')) {
       const ecKeyPairAlreadyExistingConvo = new ECKeyPair(
-        // tslint:disable: no-non-null-assertion
         encryptionKeyPair!.publicKey,
         encryptionKeyPair!.privateKey
       );
@@ -323,7 +323,6 @@ export async function handleNewSecretGroup(
 
   await convo.commit();
   // sanity checks validate this
-  // tslint:disable: no-non-null-assertion
   const ecKeyPair = new ECKeyPair(encryptionKeyPair!.publicKey, encryptionKeyPair!.privateKey);
   window?.log?.info(`Received the encryptionKeyPair for new group ${groupId}`);
 
@@ -425,6 +424,8 @@ async function handleClosedGroupEncryptionKeyPair(
     perfStart(`encryptionKeyPair-${envelope.id}`);
     const buffer = await decryptWithBchatProtocol(
       envelope,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       ourWrapper.encryptedKeyPair,
       ECKeyPair.fromKeyPair(ourKeyPair)
     );
@@ -494,12 +495,14 @@ async function performIfValid(
   const convo = getConversationController().get(groupPublicKey);
   if (!convo) {
     window?.log?.warn('dropping message for nonexistent group');
-    return removeFromCache(envelope);
+    await removeFromCache(envelope);
+    return;
   }
 
   if (!convo) {
     window?.log?.warn('Ignoring a closed group update message (INFO) for a non-existing group');
-    return removeFromCache(envelope);
+    await removeFromCache(envelope);
+    return;
   }
 
   // Check that the message isn't from before the group was created
@@ -518,7 +521,8 @@ async function performIfValid(
     window?.log?.warn(
       'Got a group update with an older timestamp than when we joined this group last time. Dropping it.'
     );
-    return removeFromCache(envelope);
+    await removeFromCache(envelope);
+    return;
   }
 
   // Check that the sender is a member of the group (before the update)
@@ -907,7 +911,6 @@ async function sendLatestKeyPairToUsers(
 }
 
 export async function createClosedGroup(groupName: string, members: Array<string>) {
-
   const setOfMembers = new Set(members);
 
   const ourNumber = UserUtils.getOurPubKeyFromCache();

@@ -76,7 +76,6 @@ export const BchatToast = (props: Props) => {
   }
 
   return (
-    // tslint:disable-next-line: use-simple-attributes
     <Flex
       container={true}
       alignItems="center"

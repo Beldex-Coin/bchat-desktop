@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-default
 import { default as insecureNodeFetch } from 'node-fetch';
 import pRetry from 'p-retry';
 import { HTTPError, NotFoundError } from '../../utils/errors';
@@ -49,7 +50,10 @@ async function bchatFetch({
       window.bchatFeatureFlags?.useOnionRequests === undefined
         ? true
         : window.bchatFeatureFlags?.useOnionRequests;
-    if (useOnionRequests && targetNode) {
+        console.log(' window.bchatFeatureFlag -->', window.bchatFeatureFlags)
+    // if (useOnionRequests && targetNode) {
+      if (useOnionRequests && targetNode) {
+
       const fetchResult = await bchatOnionFetch({
         targetNode,
         body: fetchOptions.body,
@@ -58,6 +62,8 @@ async function bchatFetch({
       if (!fetchResult) {
         return undefined;
       }
+      
+
       return fetchResult;
     }
 
@@ -122,7 +128,6 @@ export async function snodeRpc(
   // TODO: The jsonrpc and body field will be ignored on storage server
   if (params.pubKey) {
     // Ensure we always take a copy
-    // tslint:disable-next-line no-parameter-reassignment
     params = {
       ...params,
       pubKey: getStoragePubKey(params.pubKey),

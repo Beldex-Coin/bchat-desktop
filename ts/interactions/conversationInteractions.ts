@@ -154,17 +154,20 @@ export const approveConvoAndSendResponse = async (
   }
 };
 
-export const declineConversationWithConfirm = (convoId: string, syncToDevices: boolean = true,customIcon?:any) => {
-  
+export const declineConversationWithConfirm = (
+  convoId: string,
+  syncToDevices: boolean = true,
+  customIcon?: any
+) => {
   window?.inboxStore?.dispatch(
     updateConfirmModal({
-      title:'Decline Request?',
+      title: 'Decline Request?',
       okText: window.i18n('decline'),
       okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
       message: window.i18n('declineRequestMessage'),
       iconShow: true,
-      customIcon:customIcon,
+      customIcon: customIcon,
       onClickOk: async () => {
         await declineConversationWithoutConfirm(convoId, syncToDevices);
         await blockConvoById(convoId);
@@ -256,7 +259,7 @@ export function showLeaveGroupByConvoId(conversationId: string, username: string
         onClickClose,
         okTheme: BchatButtonColor.Danger,
         iconShow: true,
-        customIcon
+        customIcon,
       })
     );
   } else {
@@ -290,7 +293,7 @@ export function deleteGroupByConvoId(conversationId: string, username: string) {
         title,
         message,
         onClickOk: async () => {
-          await getConversationController().deleteContact(conversationId);;
+          await getConversationController().deleteContact(conversationId);
           onClickClose();
         },
         onClickClose,
@@ -307,7 +310,7 @@ export function deleteGroupByConvoId(conversationId: string, username: string) {
   }
 }
 
-export function showInviteContactByConvoId(conversationId: string) { 
+export function showInviteContactByConvoId(conversationId: string) {
   window.inboxStore?.dispatch(updateInviteContactModal({ conversationId }));
 }
 export async function onMarkAllReadByConvoId(conversationId: string) {
@@ -381,7 +384,6 @@ export async function deleteAllMessagesByConvoIdNoConfirmation(conversationId: s
 
   await conversation.commit();
   await removeAllMessagesInConversation(conversationId);
-
 }
 
 export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: string) {
@@ -401,9 +403,8 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       onClickOk,
       okTheme: BchatButtonColor.Danger,
       onClickClose,
-      // okText:window.i18n('leaveGroup')   
-      okText: window.i18n('delete')
-
+      // okText:window.i18n('leaveGroup')
+      okText: window.i18n('delete'),
     })
   );
 }
@@ -480,7 +481,8 @@ export async function uploadOurAvatar(newAvatarDecrypted?: ArrayBuffer) {
     window.log.warn('Could not read content of avatar ...');
     return;
   }
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const encryptedData = await encryptProfile(decryptedAvatarData, profileKey);
 
   const avatarPointer = await FSv2.uploadFileToFsV2(encryptedData);

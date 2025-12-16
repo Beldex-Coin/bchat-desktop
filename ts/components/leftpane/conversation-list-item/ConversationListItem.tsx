@@ -34,7 +34,6 @@ import { Timestamp } from '../../conversation/Timestamp';
 // import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
-// tslint:disable-next-line: no-empty-interface
 export type ConversationListItemProps = Pick<
   ReduxConversationType,
   | 'id'
@@ -56,11 +55,11 @@ type PropsHousekeeping = {
   style?: Object;
   isMessageRequest?: boolean;
 };
-// tslint:disable: use-simple-attributes
+
 
 type Props = ConversationListItemProps & PropsHousekeeping;
 
-const Portal = ({ children }: { children: any }) => {
+const Portal:any = ({ children }: { children: any }) => {
   return createPortal(children, document.querySelector('.inbox.index') as Element);
 };
 
@@ -95,7 +94,7 @@ const AvatarItem = () => {
   );
 };
 
-// tslint:disable: max-func-body-length
+
 const ConversationListItem = (props: Props) => {
   const {
     unreadCount,

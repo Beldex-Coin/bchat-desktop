@@ -28,9 +28,9 @@ function getEncryptionTypeFromMessageType(
     isGroup
   ) {
     return SignalService.Envelope.Type.CLOSED_GROUP_MESSAGE;
-  } else {
-    return SignalService.Envelope.Type.BCHAT_MESSAGE;
   }
+    return SignalService.Envelope.Type.BCHAT_MESSAGE;
+
 }
 
 export async function toRawMessage(
@@ -43,7 +43,6 @@ export async function toRawMessage(
 
   const encryption = getEncryptionTypeFromMessageType(message, isGroup);
 
-  // tslint:disable-next-line: no-unnecessary-local-variable
   const rawMessage: RawMessage = {
     identifier: message.identifier,
     plainTextBuffer,

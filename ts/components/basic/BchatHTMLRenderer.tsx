@@ -20,7 +20,6 @@ export const BchatHtmlRenderer= ({ tag = 'div', key, html, className }: Props) =
   return React.createElement(tag, {
     key,
     className,
-    // tslint:disable-next-line: react-no-dangerous-html
     dangerouslySetInnerHTML: { __html: clean },
   });
 };

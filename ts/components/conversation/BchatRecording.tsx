@@ -94,7 +94,6 @@ export class BchatRecording extends React.Component<Props, State> {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { isPlaying, isPaused, isRecording, startTimestamp, nowTimestamp } = this.state;
     const hasRecordingAndPaused = !isRecording && !isPlaying;
@@ -313,6 +312,7 @@ export class BchatRecording extends React.Component<Props, State> {
     this.recorder = new MicRecorder({
       bitRate: 128,
     });
+    // eslint-disable-next-line more/no-then
     this.recorder
       .start()
       .then(() => {
@@ -331,6 +331,7 @@ export class BchatRecording extends React.Component<Props, State> {
       return;
     }
     window.inboxStore?.dispatch(updateIsCurrentlyRecording(false))
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, blob] = await this.recorder.stop().getMp3();
     this.recorder = undefined;
 

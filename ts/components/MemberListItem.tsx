@@ -50,7 +50,6 @@ export const MemberListItem = (props: {
 
   const selectionValidation=removeMem? !onlyList && !isSelected :!onlyList  &&isSelected
   return (
-    // tslint:disable-next-line: use-simple-attributes
     <div
       className={classNames(
         'bchat-member-item',
@@ -59,6 +58,7 @@ export const MemberListItem = (props: {
         disableBg && 'compact'
       )}
       onClick={() => {
+          // eslint-disable-next-line no-unused-expressions
         !onlyList && (isSelected ? onUnselect?.(pubkey) : onSelect?.(pubkey));
       }}
       style={!disableBg ? {} : {}}

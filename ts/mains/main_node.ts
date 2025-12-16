@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable no-void */
+/* eslint-disable import/first */
+/* eslint-disable import/order */
 /* eslint-disable no-console */
 
 import {
@@ -29,7 +33,6 @@ import packageJson from '../../package.json'; // checked - only node
 setupGlobalErrorHandler();
 import electronLocalshortcut from 'electron-localshortcut';
 
-// tslint:disable: no-console
 
 const getRealPath = pify(fs.realpath);
 
@@ -194,7 +197,6 @@ function prepareURL(pathSegments: Array<string>, moreKeys?: { theme: any }) {
 function handleUrl(event: any, target: string) {
   event?.preventDefault();
   const { protocol } = url.parse(target);
-  // tslint:disable-next-line: no-http-string
   if (protocol === 'http:' || protocol === 'https:') {
     void shell.openExternal(target);
   }
@@ -236,7 +238,6 @@ function isVisible(window: { x: number; y: number; width: number }, bounds: any)
   const BOUNDS_BUFFER = 100;
 
   // requiring BOUNDS_BUFFER pixels on the left or right side
-  // tslint:disable: restrict-plus-operands
   const rightSideClearOfLeftBound = window.x + window.width >= boundsX + BOUNDS_BUFFER;
   const leftSideClearOfRightBound = window.x <= boundsX + boundsWidth - BOUNDS_BUFFER;
 
@@ -258,7 +259,6 @@ function getStartInTray() {
   const usingTrayIcon = startInTray || process.argv.some(arg => arg === '--use-tray-icon');
   return { usingTrayIcon, startInTray };
 }
-// tslint:disable-next-line: max-func-body-length
 async function createWindow() {
   const { minWidth, minHeight, width, height } = getWindowSize();
   windowConfig = windowConfig || {};
@@ -278,7 +278,6 @@ async function createWindow() {
       screen.getPrimaryDisplay().workAreaSize.width - getDefaultWindowSize().defaultWidth;
     const screenHeight =
       screen.getPrimaryDisplay().workAreaSize.height - getDefaultWindowSize().defaultHeight;
-    // tslint:disable: insecure-random
     picked.x = Math.floor(Math.random() * screenWidth);
     picked.y = Math.floor(Math.random() * screenHeight);
   }
@@ -1044,7 +1043,6 @@ ipc.on('save-debug-log', (_event, logText) => {
   console.info(`Trying to save logs to log Desktop ${osSpecificDesktopFolder}`);
 
   const outputPath = path.join(osSpecificDesktopFolder, `bchat_debug_${Date.now()}.log`);
-  // tslint:disable: non-literal-fs-path
   fs.writeFile(outputPath, logText, err => {
     if (err) {
       console.error(`Error saving debug log to ${outputPath}`);

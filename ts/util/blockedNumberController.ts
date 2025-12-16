@@ -6,7 +6,7 @@ import { getConversationController } from '../bchat/conversations';
 const BLOCKED_NUMBERS_ID = 'blocked';
 const BLOCKED_GROUPS_ID = 'blocked-groups';
 
-// tslint:disable-next-line: no-unnecessary-class
+// eslint:disable-next-line: no-unnecessary-class
 export class BlockedNumberController {
   private static loaded: boolean = false;
   private static blockedNumbers: Set<string> = new Set();

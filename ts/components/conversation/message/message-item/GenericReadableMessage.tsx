@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import { contextMenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import _ from 'lodash';
 import { removeMessage } from '../../../../data/data';
@@ -114,7 +113,6 @@ type Props = {
   address?: string;
   name?: string;
 };
-// tslint:disable: use-simple-attributes
 
 const highlightedMessageAnimation = keyframes`
   1% {

@@ -36,7 +36,6 @@ export const requiredSnodesForAgreement = 24;
 
 let randomSnodePool: Array<Data.Snode> = [];
 
-// tslint:disable-next-line: function-name
 export function TEST_resetState() {
   randomSnodePool = [];
   swarmCache.clear();
@@ -178,7 +177,6 @@ export async function getRandomSnodePool(): Promise<Array<Data.Snode>> {
  * It also resets the onionpaths failure count and snode failure count.
  * This function does not throw.
  */
-// tslint:disable: function-name
 export async function TEST_fetchFromSeedWithRetriesAndWriteToDb() {
   const seedNodes = window.getSeedNodeList();
 

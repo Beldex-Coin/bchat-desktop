@@ -148,6 +148,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   );
 };
 
-const Portal = ({ children }: { children: any }) => {
+
+const Portal:any  = ({ children }: { children: any }) => {
   return createPortal(children, document.querySelector('.inbox.index') as Element);
 };

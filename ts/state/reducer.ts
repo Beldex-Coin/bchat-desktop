@@ -49,7 +49,7 @@ export type StateType = {
 
 };
 
-export const reducers = {
+export const reducers:any  = {
   search,
   conversations,
   user,
@@ -73,5 +73,5 @@ export const reducers = {
 
 // Making this work would require that our reducer signature supported AnyAction, not
 //   our restricted actions
-// @ts-ignore
+
 export const rootReducer = combineReducers(reducers);

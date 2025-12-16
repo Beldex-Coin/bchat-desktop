@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-unused-expressions */
 import chai, { expect } from 'chai';
 import Sinon, { useFakeTimers } from 'sinon';
 import { handleMessageReaction, sendMessageReaction } from '../../../../util/reactions';

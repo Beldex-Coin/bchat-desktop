@@ -9,7 +9,7 @@ import { SignInMode } from './SignInTab';
 import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
 import { StringUtils, ToastUtils } from '../../bchat/utils';
 import { wallet } from '../../wallet/wallet-rpc';
-import { mn_decode } from '../../bchat/crypto/mnemonic';
+import { mnDecode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
 import { WalletPassword } from './WalletPass';
 
@@ -22,16 +22,14 @@ export enum SignUpMode {
 }
 
 const CreateBchatIdButton = ({ createBchatID }: { createBchatID: any }) => {
-  
   return (
-    <div  className='signUp-btn'>
-    <BchatButton
-      onClick={createBchatID}
-      buttonType={BchatButtonType.Default}
-      buttonColor={BchatButtonColor.Primary}
-      text={window.i18n('createAccount')}
-     
-    />
+    <div className="signUp-btn">
+      <BchatButton
+        onClick={createBchatID}
+        buttonType={BchatButtonType.Default}
+        buttonColor={BchatButtonColor.Primary}
+        text={window.i18n('createAccount')}
+      />
     </div>
   );
 };
@@ -86,7 +84,7 @@ export const SignUpTab = (props: any) => {
       const mnemonic = await wallet.generateMnemonic(props);
       // let data=await wallet.sendRPC('getheight', {}, 5000);
       //  let  daemonBlockHeight=data.result?.height;
-      let seedHex = mn_decode(mnemonic);
+      let seedHex = mnDecode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;
       if (seedHex.length !== privKeyHexLength) {
@@ -95,6 +93,8 @@ export const SignUpTab = (props: any) => {
       }
       const seed = fromHex(seedHex);
       const keyPair = await bchatGenerateKeyPair(seed);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const newHexPubKey = StringUtils.decode(keyPair.pubKey, 'hex');
       // setDaemonHeight(data.result?.height)
       setGeneratedRecoveryPhrase(mnemonic);

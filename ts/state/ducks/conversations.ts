@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getConversationController } from '../../bchat/conversations';
 import {
@@ -539,7 +540,6 @@ function handleMessagesChangedOrAdded(
   payload: Array<MessageModelPropsWithoutConvoProps>
 ) {
   payload.forEach(element => {
-    // tslint:disable-next-line: no-parameter-reassignment
     state = handleMessageChangedOrAdded(state, element);
   });
 

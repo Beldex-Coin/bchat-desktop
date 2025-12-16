@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import _ from 'lodash';
 import { createOrUpdateItem, getItemById, hasSyncedInitialConfigurationItem } from '../data/data';
 import { ConversationTypeEnum } from '../models/conversation';
@@ -10,6 +11,7 @@ import { SignalService } from '../protobuf';
 import { getConversationController } from '../bchat/conversations';
 import { UserUtils } from '../bchat/utils';
 import { toHex } from '../bchat/utils/String';
+// eslint-disable-next-line import/no-unresolved, import/extensions
 import { configurationMessageReceived, trigger } from '../shims/events';
 import { BlockedNumberController } from '../util';
 import { removeFromCache } from './cache';
@@ -203,7 +205,8 @@ export async function handleConfigurationMessage(
 
   if (envelope.source !== ourPubkey) {
     window?.log?.info('Dropping configuration change from someone else than us.');
-    return removeFromCache(envelope);
+     await removeFromCache(envelope);
+    return;
   }
 
   await handleOurProfileUpdate(envelope.timestamp, configurationMessage);

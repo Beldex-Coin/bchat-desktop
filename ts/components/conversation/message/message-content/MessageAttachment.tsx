@@ -51,9 +51,7 @@ type Props = {
   displayBgBlur:boolean;
   handleImageError: () => void;
 };
-// tslint:disable: use-simple-attributes
 
-// tslint:disable-next-line max-func-body-length cyclomatic-complexity
 export const MessageAttachment = (props: Props) => {
   const { messageId, imageBroken, handleImageError,displayBgBlur } = props;
 

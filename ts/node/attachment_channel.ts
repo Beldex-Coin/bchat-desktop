@@ -6,7 +6,6 @@ import fse from 'fs-extra';
 import pify from 'pify';
 import { default as glob } from 'glob';
 
-// tslint:disable: no-console
 import { sqlNode } from './sql'; // checked - only node
 import { createDeleter, getAttachmentsPath } from '../shared/attachments/shared_attachments';
 
@@ -32,14 +31,12 @@ const deleteAll = async ({
 }) => {
   const deleteFromDisk = createDeleter(getAttachmentsPath(userDataPath));
 
-  // tslint:disable-next-line: one-variable-per-declaration
   for (let index = 0, max = attachments.length; index < max; index += 1) {
     const file = attachments[index];
     // eslint-disable-next-line no-await-in-loop
     await deleteFromDisk(file);
   }
 
-  // tslint:disable-next-line: no-console
   console.log(`deleteAll: deleted ${attachments.length} files`);
 };
 
@@ -81,7 +78,7 @@ export async function initAttachmentsChannel({ userDataPath }: { userDataPath: s
       event.sender.send(`${ERASE_ATTACHMENTS_KEY}-done`, error);
     }
   });
-
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   ipcMain.on(CLEANUP_ORPHANED_ATTACHMENTS_KEY, async event => {
     try {
       await cleanupOrphanedAttachments(userDataPath);

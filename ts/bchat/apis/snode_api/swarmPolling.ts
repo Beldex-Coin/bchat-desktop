@@ -1,3 +1,6 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable more/no-then */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { PubKey } from '../../types';
 import * as snodePool from './snodePool';
 import { ERROR_CODE_NO_CONNECT, retrieveNextMessages } from './SNodeAPI';
@@ -330,10 +333,9 @@ export class SwarmPolling {
         if (window.inboxStore?.getState().onionPaths.isOnline) {
           window.inboxStore?.dispatch(updateIsOnline(false));
         }
-      } else {
-        if (!window.inboxStore?.getState().onionPaths.isOnline) {
+      } else if (!window.inboxStore?.getState().onionPaths.isOnline) {
           window.inboxStore?.dispatch(updateIsOnline(true));
-        }
+        
       }
       window?.log?.info('pollNodeForKey failed with', e.message);
       return null;

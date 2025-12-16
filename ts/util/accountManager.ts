@@ -5,7 +5,7 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { trigger } from '../shims/events';
 
 import { actions as userActions } from '../state/ducks/user';
-import { mn_decode } from '../bchat/crypto/mnemonic';
+import { mnDecode } from '../bchat/crypto/mnemonic';
 import { ConversationTypeEnum } from '../models/conversation';
 import { SettingsKey } from '../data/settings-key';
 import {
@@ -45,7 +45,7 @@ export async function bchatGenerateKeyPair(
 }
 
 const generateKeypair = async (mnemonic: string, mnemonicLanguage: string) => {
-  let seedHex = mn_decode(mnemonic, mnemonicLanguage);
+  let seedHex = mnDecode(mnemonic, mnemonicLanguage);
   // handle shorter than 32 bytes seeds
   const privKeyHexLength = 32 * 2;
   if (seedHex.length !== privKeyHexLength) {
@@ -87,6 +87,8 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
   await setSignInByLinking(true);
   await createAccount(identityKeyPair);
   await saveRecoveryPhrase(mnemonic);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
   // await for the first configuration message to come in.
@@ -122,6 +124,8 @@ export async function registerSingleDevice(
   await saveRecoveryPhrase(generatedMnemonic);
 
   await setLastProfileUpdateTimestamp(Date.now());
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
   await registrationDone(pubKeyString, profileName, deamonHeight);

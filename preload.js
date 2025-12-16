@@ -1,3 +1,4 @@
+// eslint:disable: no-require-imports no-var-requires
 const { clipboard, ipcRenderer, webFrame } = require('electron/main');
 const { Storage } = require('./ts/util/storage');
 
@@ -13,7 +14,7 @@ if (config.environment !== 'production') {
 if (config.appInstance) {
   title += ` - ${config.appInstance}`;
 }
-// tslint:disable: no-require-imports no-var-requires
+
 
 window.platform = process.platform;
 window.getTitle = () => title;
@@ -241,7 +242,6 @@ window.Signal = data.initData();
 
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
-  // tslint:disable-next-line: no-empty
   window.nodeSetImmediate(() => { });
 }, 1000);
 

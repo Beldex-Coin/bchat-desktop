@@ -8,7 +8,6 @@ import {
 } from '../../../../bchat/apis/snode_api/hfHandling';
 import { TestUtils } from '../../../test-utils';
 
-// tslint:disable-next-line: max-func-body-length
 describe('hardfork handling', () => {
   describe('getHasSeenHF170', () => {
     afterEach(() => {
@@ -142,7 +141,6 @@ describe('hardfork handling', () => {
     });
   });
 
-  // tslint:disable-next-line: max-func-body-length
   describe('handleHardforkResult', () => {
     afterEach(() => {
       Sinon.restore();

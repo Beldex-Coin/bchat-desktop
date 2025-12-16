@@ -70,7 +70,7 @@ import { ProfileInfo } from '../BchatProfileInfo';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
 // import { useSelector } from 'react-redux';
-// tslint:disable: jsx-curly-spacing
+
 
 interface State {
   isDraggingFile: boolean;
@@ -369,6 +369,7 @@ export class BchatConversation extends React.Component<Props, State> {
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onChoseAttachments={this.onChoseAttachments}
           />
         </div>
@@ -435,13 +436,11 @@ export class BchatConversation extends React.Component<Props, State> {
       return;
     }
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < attachmentsFileList.length; i++) {
       await this.maybeAddAttachment(attachmentsFileList[i]);
     }
   }
 
-  // tslint:disable: max-func-body-length cyclomatic-complexity
   private async maybeAddAttachment(file: any) {
     if (!file) {
       return;

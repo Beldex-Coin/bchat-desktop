@@ -14,7 +14,6 @@ import { addMessagePadding } from '../../../../bchat/crypto/BufferPadding';
 
 chai.use(chaiBytes);
 
-// tslint:disable-next-line: max-func-body-length
 describe('MessageEncrypter', () => {
   const ourNumber = '0123456789abcdef';
   const ourUserEd25516Keypair = {
@@ -148,9 +147,10 @@ describe('MessageEncrypter', () => {
     });
   });
 
-  // tslint:disable-next-line: max-func-body-length
   describe('BChat Protocol', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       Sinon.stub(UserUtils, 'getIdentityKeyPair').resolves(ourIdentityKeypair);
     });
 
@@ -180,10 +180,7 @@ describe('MessageEncrypter', () => {
       const cryptoSignDetachedSpy = Sinon.spy(sodium, 'crypto_sign_detached');
       const plainText = '123456';
       const plainTextBytes = new Uint8Array(StringUtils.encode(plainText, 'utf8'));
-      const userED25519PubKeyBytes = new Uint8Array(
-        // tslint:disable: no-non-null-assertion
-        StringUtils.fromHex(keypair!.pubKey)
-      );
+      const userED25519PubKeyBytes = new Uint8Array(StringUtils.fromHex(keypair!.pubKey));
       const recipientX25519PublicKeyWithoutPrefix = PubKey.remove05PrefixIfNeeded(recipient.key);
 
       const recipientX25519PublicKey = new Uint8Array(

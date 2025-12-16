@@ -26,11 +26,14 @@ export const cleanUpOtherTest = async () => {
   }
 
   const allAppDataPath = getDirectoriesOfBchatDataPath(parentFolderOfAllDataPath);
-  allAppDataPath.map(folder => {
+  allAppDataPath.forEach(folder => {
     if (!appPath) {
       throw new Error('parentFolderOfAllDataPath unset');
     }
+
     const pathToRemove = join(parentFolderOfAllDataPath, folder);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     rmdirSync(pathToRemove, { recursive: true });
   });
 };

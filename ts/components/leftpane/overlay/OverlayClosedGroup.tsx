@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
 import { MemberListItem } from '../../MemberListItem';
-// tslint:disable: no-submodule-imports use-simple-attributes
+
 
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { getPrivateContactsPubkeys } from '../../../state/selectors/conversations';

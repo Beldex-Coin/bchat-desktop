@@ -21,7 +21,6 @@ describe('MessageSender', () => {
     TestUtils.stubWindowLog();
   });
 
-  // tslint:disable-next-line: max-func-body-length
   describe('send', () => {
     const ourNumber = '0123456789abcdef';
     let bchatMessageAPISendStub: sinon.SinonStub<any>;

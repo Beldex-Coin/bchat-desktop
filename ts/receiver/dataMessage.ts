@@ -1,4 +1,4 @@
-import { SignalService } from './../protobuf';
+  import { SignalService } from './../protobuf';
 import { removeFromCache } from './cache';
 import { EnvelopePlus } from './types';
 import { getEnvelopeId } from './common';
@@ -106,7 +106,7 @@ async function cleanIncomingDataMessage(
   envelope: EnvelopePlus,
   rawDataMessage: SignalService.DataMessage
 ) {
-  /* tslint:disable:no-bitwise */
+
   const FLAGS = SignalService.DataMessage.Flags;
 
   // Now that its decrypted, validate the message and clean it up for consumer
@@ -120,6 +120,7 @@ async function cleanIncomingDataMessage(
   if (rawDataMessage.expireTimer == null) {
     rawDataMessage.expireTimer = 0;
   }
+  // eslint-disable-next-line no-bitwise
   if (rawDataMessage.flags & FLAGS.EXPIRATION_TIMER_UPDATE) {
     rawDataMessage.body = '';
     rawDataMessage.attachments = [];
@@ -156,7 +157,6 @@ async function cleanIncomingDataMessage(
  *        * envelope.source is our pubkey (our other device has the same pubkey as us)
  *        * dataMessage.syncTarget is either the group public key OR the private conversation this message is about.
  */
-// tslint:disable-next-line: cyclomatic-complexity
 export async function handleSwarmDataMessage(
   envelope: EnvelopePlus,
   sentAtTimestamp: number,
@@ -193,8 +193,9 @@ export async function handleSwarmDataMessage(
   const isMe = UserUtils.isUsFromCache(convoIdOfSender);
 
   if (isSyncedMessage && !isMe) {
-    window?.log?.warn('Got a sync message from someone else than me. Dropping it.');
-    return removeFromCache(envelope);
+    window?.log?.warn('Got a sync message from someone else than me. Dropping it.');  
+    await removeFromCache(envelope);
+    return;
   } else if (isSyncedMessage) {
     // we should create the synTarget convo but I have no idea how to know if this is a private or closed group convo?
   }
@@ -229,12 +230,14 @@ export async function handleSwarmDataMessage(
   // Reactions are empty DataMessages
   if (isMessageEmpty(cleanDataMessage)) {
     window?.log?.warn(`Message ${getEnvelopeId(envelope)} ignored; it was empty`);
-    return removeFromCache(envelope);
+    await removeFromCache(envelope);
+    return ;
   }
 
   if (!convoIdToAddTheMessageTo) {
     window?.log?.error('We cannot handle a message without a conversationId');
-    confirm();
+    // confirm();
+    await removeFromCache(envelope);
     return;
   }
 
@@ -261,6 +264,7 @@ export async function handleSwarmDataMessage(
     sentAtTimestamp,
     cleanDataMessage,
     convoToAddMessageTo,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     () => removeFromCache(envelope)
   );
 }
@@ -285,7 +289,6 @@ export async function isSwarmMessageDuplicate({
   }
 }
 
-// tslint:disable:cyclomatic-complexity max-func-body-length */
 async function handleSwarmMessage(
   msgModel: MessageModel,
   messageHash: string,

@@ -1,5 +1,3 @@
-// tslint:disable: no-require-imports no-var-requires one-variable-per-declaration no-void-expression
-// tslint:disable: function-name
 
 import _ from 'lodash';
 import { MessageResultProps } from '../components/search/MessageSearchResults';
@@ -172,7 +170,6 @@ function _cleanData(data: any): any {
     } else if (_.isFunction(value)) {
       // just skip a function which has not a toNumber function. We don't want to save a function to the db.
       // an attachment comes with a toJson() function
-      // tslint:disable-next-line: no-dynamic-delete
       delete data[key];
     } else if (Array.isArray(value)) {
       data[key] = value.map(_cleanData);
@@ -560,6 +557,7 @@ export async function getMessagesByConversation(
     messageId,
   });
   if (skipTimerInit) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const message of messages) {
       message.skipTimerInit = skipTimerInit;
     }
@@ -594,6 +592,7 @@ export async function getLastMessagesByConversation(
 ): Promise<MessageCollection> {
   const messages = await channels.getLastMessagesByConversation(conversationId, limit);
   if (skipTimerInit) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const message of messages) {
       message.skipTimerInit = skipTimerInit;
     }
@@ -852,7 +851,6 @@ export async function fillWithTestData(convs: number, msgs: number) {
   }
 
   for (let msgsAddedCount = 0; msgsAddedCount < msgs; msgsAddedCount++) {
-    // tslint:disable: insecure-random
     const convoToChoose = newConvos[Math.floor(Math.random() * newConvos.length)];
     const direction = Math.random() > 0.5 ? 'outgoing' : 'incoming';
     const body = `spongebob ${new Date().toString()}`;
@@ -861,7 +859,7 @@ export async function fillWithTestData(convs: number, msgs: number) {
         body,
       });
     } else {
-      await convoToChoose.addSingleIncomingMessage({
+      await convoToChoose.addSingleIncomingMessage({  
         source: convoToChoose.id,
         body,
       });

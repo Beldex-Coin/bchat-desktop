@@ -34,7 +34,7 @@ function overwriteOutgoingTimestampWithNetworkTimestamp(message: RawMessage) {
   const { plainTextBuffer } = message;
   const contentDecoded = SignalService.Content.decode(plainTextBuffer);
   const { dataMessage, dataExtractionNotification, typingMessage } = contentDecoded;
-  if (dataMessage && dataMessage.timestamp && dataMessage.timestamp > 0) {
+  if (dataMessage && dataMessage.timestamp && _.toNumber(dataMessage.timestamp) > 0) {
     // this is a sync message, do not overwrite the message timestamp
     if (dataMessage.syncTarget) {
       return {
@@ -47,11 +47,11 @@ function overwriteOutgoingTimestampWithNetworkTimestamp(message: RawMessage) {
   if (
     dataExtractionNotification &&
     dataExtractionNotification.timestamp &&
-    dataExtractionNotification.timestamp > 0
+    _.toNumber(dataExtractionNotification.timestamp)  > 0
   ) {
     dataExtractionNotification.timestamp = networkTimestamp;
   }
-  if (typingMessage && typingMessage.timestamp && typingMessage.timestamp > 0) {
+  if (typingMessage && typingMessage.timestamp && _.toNumber(typingMessage.timestamp) > 0) {
     typingMessage.timestamp = networkTimestamp;
   }
   const overRiddenTimestampBuffer = SignalService.Content.encode(contentDecoded).finish();
@@ -127,7 +127,6 @@ export async function send(
   );
 }
 
-// tslint:disable-next-line: function-name
 export async function sendMessageToSnode(
   pubKey: string,
   data: Uint8Array,

@@ -1,3 +1,4 @@
+/* eslint-disable more/no-then */
 import { EnvelopePlus } from './types';
 export { downloadAttachment } from './attachments';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,8 +26,6 @@ const incomingMessagePromises: Array<Promise<any>> = [];
 
 async function handleSwarmEnvelope(envelope: EnvelopePlus, messageHash: string) {
   if (envelope.content && envelope.content.length > 0) {
-  
-    
     return handleSwarmContentMessage(envelope, messageHash);
   }
 
@@ -99,7 +98,7 @@ async function handleRequestDetail(
     // Sender identity will be lost if we load from cache, because
     // plaintext (and protobuf.Envelope) does not have that field...
     envelope.source = options.conversationId;
-    // tslint:disable-next-line no-parameter-reassignment
+    // eslint-disable-next-line no-param-reassign
     plaintext = SignalService.Envelope.encode(envelope).finish();
     envelope.senderIdentity = senderIdentity;
   }
@@ -113,7 +112,8 @@ async function handleRequestDetail(
     // after we've already processed some of it (thus the
     // need to handle senderIdentity separately)...
     perfStart(`addToCache-${envelope.id}`);
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     await addToCache(envelope, plaintext, messageHash);
     perfEnd(`addToCache-${envelope.id}`, 'addToCache');
 
@@ -134,7 +134,6 @@ async function handleRequestDetail(
 }
 
 export function handleRequest(plaintext: any, options: ReqOptions, messageHash: string): void {
-  // tslint:disable-next-line no-promise-as-boolean
   const lastPromise = _.last(incomingMessagePromises) || Promise.resolve();
 
   const promise = handleRequestDetail(plaintext, options, lastPromise, messageHash).catch(e => {
@@ -144,7 +143,6 @@ export function handleRequest(plaintext: any, options: ReqOptions, messageHash: 
   incomingMessagePromises.push(promise);
 }
 
-// tslint:enable:cyclomatic-complexity max-func-body-length */
 /**
  * Used in main_renderer.js
  */

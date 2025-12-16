@@ -32,7 +32,6 @@ type Props = {
 };
 
 export const Image = (props: Props) => {
-  // tslint:disable-next-line max-func-body-length cyclomatic-complexity
   const {
     alt,
     attachment,

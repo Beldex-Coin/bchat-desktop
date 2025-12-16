@@ -3,7 +3,6 @@ import  { useEffect, useState } from 'react';
 import { BchatRadio } from './BchatRadio';
 
 interface Props {
-  // tslint:disable: react-unused-props-and-state
   initialItem: string;
   items: Array<any>;
   group: string;

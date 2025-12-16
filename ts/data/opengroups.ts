@@ -69,7 +69,7 @@ async function opengroupRoomsLoad() {
     | undefined;
 
   if (loadedFromDB) {
-    cachedRooms = new Array();
+    cachedRooms = [];
     loadedFromDB.forEach(r => {
       try {
         cachedRooms?.push(r as any);

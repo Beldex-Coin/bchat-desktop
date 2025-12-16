@@ -1,5 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
-
 import chai from 'chai';
 import { describe } from 'mocha';
 
@@ -15,12 +13,12 @@ chai.should();
 
 const { expect } = chai;
 
-// tslint:disable-next-line: max-func-body-length
 describe('Padding', () => {
   describe('Attachment padding', () => {
     it('add padding', () => {
       const bufferIn = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const paddedBuffer = addAttachmentPadding(bufferIn);
       expect(paddedBuffer.byteLength).to.equal(541);
       expect(new Uint8Array(paddedBuffer.slice(0, bufferIn.length))).to.equalBytes(bufferIn);
@@ -34,7 +32,8 @@ describe('Padding', () => {
       // padding can be anything after the expected size
       const expectedSize = 10;
       const paddedBuffer = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 5]);
-
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const paddingRemoveBuffer = getUnpaddedAttachment(paddedBuffer, expectedSize);
 
       expect(paddingRemoveBuffer?.byteLength).to.equal(expectedSize);
@@ -80,7 +79,8 @@ describe('Padding', () => {
         0,
         0,
       ]);
-
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const unpaddedMessage = removeMessagePadding(paddedBuffer);
       // for message padding, we have [paddedBuffer, 0x80, 0x00, 0x00, 0x00, ...]
       expect(unpaddedMessage?.byteLength).to.equal(expectedSize);

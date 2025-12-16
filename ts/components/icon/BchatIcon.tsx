@@ -125,7 +125,6 @@ const animation = (props: {
   return;
 };
 
-//tslint:disable no-unnecessary-callback-wrapper
 const Svg = styled.svg<StyledSvgProps>`
   width: ${props => props.width};
   transform: ${props => `rotate(${props.iconRotation}deg)`};
@@ -136,7 +135,7 @@ const Svg = styled.svg<StyledSvgProps>`
   padding: ${props => props.iconPadding ?? ""};
 `;
 
-//tslint:enable no-unnecessary-callback-wrapper
+
 
 const BchatSvg = (props: {
   viewBox: string;
