@@ -1386,7 +1386,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
   
   private async onSendMessage() {
-    console.time('onSendMessageTime');
     if (!this.props.selectedConversationKey) {
       throw new Error('selectedConversationKey is needed');
     }

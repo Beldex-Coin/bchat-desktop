@@ -52,7 +52,7 @@ export const ChangePassword = () => {
     const changePassword = await wallet.changeWalletPassword(oldPassword, newPassword);
     if (changePassword.hasOwnProperty('error')) {
       setLoading(false);
-      return ToastUtils.pushToastError('changePasswordError', changePassword.error.message);
+      return ToastUtils.pushToastError('changePasswordError', changePassword?.error?.message||'Error changing password');
     }
     wallet.wallet_state.password_hash = wallet.passwordEncrypt(newPassword);
     setLoading(false);

@@ -799,7 +799,6 @@ const sendOnionRequest = async ({
   const guardUrl = `https://${guardNode.ip}:${guardNode.port}/onion_req/v2`;
   // no logs for that one insecureNodeFetch as we do need to call insecureNodeFetch to our guardNode
   // window?.log?.info('insecureNodeFetch => plaintext for sendOnionRequest');
-  console.timeEnd('onSendMessageTime');
   const response = await insecureNodeFetch(guardUrl, guardFetchOptions);
   return { response, decodingSymmetricKey: destCtx.symmetricKey };
 };

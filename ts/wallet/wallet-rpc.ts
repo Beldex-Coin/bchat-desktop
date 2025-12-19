@@ -4,7 +4,7 @@ import path from 'path';
 import os from 'os';
 import { default as insecureNodeFetch } from 'node-fetch';
 import { HTTPError } from '../bchat/utils/errors';
-import request from 'request-promise';
+// import request from 'request-promise';
 import { default as http } from 'http';
 import portscanner from 'portscanner';
 import { kill } from 'cross-port-killer';
@@ -21,6 +21,72 @@ import {
 import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
 import { default as queue } from 'promise-queue';
+
+export interface HeartRpcError {
+  code: number;
+  message: string;
+}
+
+export interface HeartRpcResponse<T = any> {
+  result?: T;
+  error?: HeartRpcError;
+  method?: string;
+  params?: any;
+}
+
+export async function RPCFetch(
+  url: string,
+  {
+    method = 'POST',
+    body,
+    auth,
+    timeout = 0,
+    agent,
+  }: {
+    method?: string;
+    body?: any;
+    auth?: { user: string; pass: string };
+    timeout?: number;
+    agent?: http.Agent;
+  }
+) {
+  const controller = new AbortController();
+  let timer: NodeJS.Timeout | undefined;
+
+  if (timeout > 0) {
+    timer = setTimeout(() => controller.abort(), timeout);
+  }
+
+  const headers: any = {
+    'Content-Type': 'application/json',
+  };
+
+  if (auth) {
+    headers.Authorization =
+      'Basic ' + Buffer.from(`${auth.user}:${auth.pass}`).toString('base64');
+  }
+
+  try {
+    const res = await insecureNodeFetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      agent,
+      signal: controller.signal,
+    });
+
+    const json = await res.json();
+
+    return json;
+  } catch (err: any) {
+    if (err.name === 'AbortError') {
+      throw new Error('RPC timeout');
+    }
+    throw err;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
 class Wallet {
   heartbeat: any;
@@ -214,47 +280,98 @@ class Wallet {
     }
   };
 
-  heartRpc = async (method: string, params = {}, timeout = 0) => {
-    try {
-      const options = {
-        uri: `http://localhost:64371/json_rpc`,
-        method: 'POST',
-        json: {
+heartRpc = async (
+  method: string,
+  params: Record<string, any> = {},
+  timeout = 0
+): Promise<HeartRpcResponse> => {
+  try {
+    const data = await RPCFetch(
+      'http://localhost:64371/json_rpc',
+      {
+        body: {
           jsonrpc: '2.0',
           id: '0',
-          method: method,
+          method,
           params,
         },
         auth: {
           user: this.auth[0],
           pass: this.auth[1],
-          sendImmediately: false,
         },
         timeout,
-      };
-
-      let requestData: any = await request(options);
-
-      if (requestData.hasOwnProperty('error')) {
-        if (requestData.error.code === -21) {
-          let walletDir =
-            os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
-          fs.emptyDirSync(walletDir);
-          requestData = await request(options);
-        }
+        agent: this.agent,
       }
-      if (requestData.hasOwnProperty('error')) {
-        return {
-          method: method,
-          params: params,
-          error: requestData.error,
-        };
-      }
-      return requestData;
-    } catch (err) {
-      console.log('ERR:', err);
+    );
+
+    if (data?.error?.code === -21) {
+      let walletDir =
+        os.platform() === 'win32'
+          ? `${this.findDir()}\\bchat`
+          : `${this.findDir()}/bchat`;
+      fs.emptyDirSync(walletDir);
+
+      return await this.heartRpc(method, params, timeout);
     }
-  };
+
+    if (data?.error) {
+      return { method, params, error: data.error };
+    }
+
+    return data;
+  } catch (err) {
+    console.error('RPC error:', err);
+    return {
+      method,
+      params,
+      error: {
+        code: -1,
+        message: 'Cannot connect to wallet-rpc',
+      },
+    };
+  }
+};
+  // heartRpc = async (method: string, params = {}, timeout = 0) => {
+  //   try {
+  //     const options = {
+  //       uri: `http://localhost:64371/json_rpc`,
+  //       method: 'POST',
+  //       json: {
+  //         jsonrpc: '2.0',
+  //         id: '0',
+  //         method: method,
+  //         params,
+  //       },
+  //       auth: {
+  //         user: this.auth[0],
+  //         pass: this.auth[1],
+  //         sendImmediately: false,
+  //       },
+  //       timeout,
+  //     };
+
+  //     let requestData: any = await request(options);
+
+  //     if (requestData.hasOwnProperty('error')) {
+  //       if (requestData.error.code === -21) {
+  //         let walletDir =
+  //           os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
+  //         fs.emptyDirSync(walletDir);
+  //         requestData = await request(options);
+  //       }
+  //     }
+  //     if (requestData.hasOwnProperty('error')) {
+  //       return {
+  //         method: method,
+  //         params: params,
+  //         error: requestData.error,
+  //       };
+  //     }
+  //     return requestData;
+  //   } catch (err) {
+  //     console.log('ERR:', err);
+  //   }
+  // };
 
   generateMnemonic = async (props: any): Promise<any> => {
     try {
@@ -612,58 +729,101 @@ class Wallet {
     }
   };
 
-  sendRPC(method: string, params = {}, timeout = 0) {
-    let id = this.id++;
-    let options: any = {
-      uri: `http://localhost:64371/json_rpc`,
-      method: 'POST',
-      json: {
-        jsonrpc: '2.0',
-        id: `${id}`,
-        method: method,
-      },
-      auth: {
-        user: this.auth[0],
-        pass: this.auth[1],
-        sendImmediately: false,
-      },
-      agent: this.agent,
-    };
-    if (Object.keys(params).length !== 0) {
-      options.json.params = params;
+  // sendRPC(method: string, params = {}, timeout = 0) {
+  //   let id = this.id++;
+  //   let options: any = {
+  //     uri: `http://localhost:64371/json_rpc`,
+  //     method: 'POST',
+  //     json: {
+  //       jsonrpc: '2.0',
+  //       id: `${id}`,
+  //       method: method,
+  //     },
+  //     auth: {
+  //       user: this.auth[0],
+  //       pass: this.auth[1],
+  //       sendImmediately: false,
+  //     },
+  //     agent: this.agent,
+  //   };
+  //   if (Object.keys(params).length !== 0) {
+  //     options.json.params = params;
+  //   }
+  //   if (timeout > 0) {
+  //     options.timeout = timeout;
+  //   }
+  //   return this.queue.add(() => {
+  //     return request(options)
+  //       .then((response: any) => {
+  //         if (response.hasOwnProperty('error')) {
+  //           return {
+  //             method: method,
+  //             params: params,
+  //             error: response.error,
+  //           };
+  //         }
+  //         return {
+  //           method: method,
+  //           params: params,
+  //           result: response.result,
+  //         };
+  //       })
+  //       .catch((error: any) => {
+  //         return {
+  //           method: method,
+  //           params: params,
+  //           error: {
+  //             code: -1,
+  //             message: 'Cannot connect to wallet-rpc',
+  //             cause: error.cause,
+  //           },
+  //         };
+  //       });
+  //   });
+  // }
+sendRPC(
+  method: string,
+  params: Record<string, any> = {},
+  timeout = 0
+): Promise<HeartRpcResponse> {
+  let id = this.id++;
+  return this.queue.add(async () => {
+    try {
+      const data = await RPCFetch(
+        'http://localhost:64371/json_rpc',
+        {
+          body: {
+            jsonrpc: '2.0',
+            id: `${id}`,
+            method,
+            params,
+          },
+          auth: {
+            user: this.auth[0],
+            pass: this.auth[1],
+          },
+          timeout,
+          agent: this.agent,
+        }
+      );
+
+      if (data?.error) {
+        return { method, params, error: data.error };
+      }
+
+      return { method, params, result: data.result };
+    } catch (error: any) {
+      return {
+        method,
+        params,
+        error: {
+          code: -1,
+          message: 'Cannot connect to wallet-rpc',
+        },
+      };
     }
-    if (timeout > 0) {
-      options.timeout = timeout;
-    }
-    return this.queue.add(() => {
-      return request(options)
-        .then((response: any) => {
-          if (response.hasOwnProperty('error')) {
-            return {
-              method: method,
-              params: params,
-              error: response.error,
-            };
-          }
-          return {
-            method: method,
-            params: params,
-            result: response.result,
-          };
-        })
-        .catch((error: any) => {
-          return {
-            method: method,
-            params: params,
-            error: {
-              code: -1,
-              message: 'Cannot connect to wallet-rpc',
-              cause: error.cause,
-            },
-          };
-        });
-    });
-  }
+  });
+}
 
   rescanBlockchain() {
     this.sendRPC('rescan_blockchain');
