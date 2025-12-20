@@ -13,7 +13,7 @@ import { ToastUtils } from '../../../bchat/utils';
 // import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
 import { applyTheme } from '../../../state/ducks/theme';
 // import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
@@ -63,11 +63,11 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
       dispatch(applyTheme(updatedTheme));
       
       window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+      // if (updatedTheme === 'dark') {
+      //   switchHtmlToDarkTheme();
+      // } else {
+      //   switchHtmlToLightTheme();
+      // }
     }
 
     // async function toggleLinkPreviews() {

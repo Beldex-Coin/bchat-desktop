@@ -139,7 +139,9 @@
   
     }
     .module-message__text {
-      color: var(--color-sent-message-text);
+      // color: var(--color-sent-message-text);
+      // background-color: red;
+      color: #FFFFFF;
       // line-height: 17px;
       word-break: break-all;
       a {

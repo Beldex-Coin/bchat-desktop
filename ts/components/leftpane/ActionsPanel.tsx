@@ -48,7 +48,7 @@ import { ModalContainer } from '../dialog/ModalContainer';
 import { debounce, isEmpty, isString } from 'lodash';
 
 
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/ApiUtil';
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
@@ -114,11 +114,11 @@ const Section = (props: {
       const themeFromSettings = window.Events.getThemeSetting();
       const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
       window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+      // if (updatedTheme === 'dark') {
+      //   switchHtmlToDarkTheme();
+      // } else {
+      //   switchHtmlToLightTheme();
+      // }
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
@@ -359,12 +359,12 @@ const fetchReleaseFromFileServerInterval = 1000 * 60; // try to fetch the latest
 const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
 
-  window.setTheme(theme);
-  if (theme === 'dark') {
-    switchHtmlToDarkTheme();
-  } else {
-    switchHtmlToLightTheme();
-  }
+  // window.setTheme(theme);
+  // if (theme === 'dark') {
+  //   switchHtmlToDarkTheme();
+  // } else {
+  //   switchHtmlToLightTheme();
+  // }
 
   const newThemeObject = theme === 'dark' ? 'dark' : 'light';
   window?.inboxStore?.dispatch(applyTheme(newThemeObject));
@@ -579,17 +579,17 @@ export const ActionsPanel = () => {
   }, DURATION.DAYS * 1);
 
   const themeChanger = (theme: ThemeStateType) => {
-    const themeFromSettings = window.Events.getThemeSetting();
+    // const themeFromSettings = window.Events.getThemeSetting();
     window.setTheme(theme);
     dispatch(applyTheme(theme));
 
-    if (themeFromSettings !== theme) {
-      if (theme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
-    }
+    // if (themeFromSettings !== theme) {
+    //   if (theme === 'dark') {
+    //     switchHtmlToDarkTheme();
+    //   } else {
+    //     switchHtmlToLightTheme();
+    //   }
+    // }
   };
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);

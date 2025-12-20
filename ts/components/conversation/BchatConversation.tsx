@@ -34,7 +34,7 @@ import {
   updateMentionsMembers,
 } from '../../state/ducks/conversations';
 import { updateCommunityGuidelinesModal, updateConfirmModal } from '../../state/ducks/modalDialog';
-import { BchatTheme } from '../../state/ducks/BchatTheme';
+import { BchatTheme } from '../../theme/BchatTheme';
 import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAttachments';
 import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
@@ -98,6 +98,7 @@ interface Props {
   convoList: any;
   focusedSection: any;
   reactListModalstate: any;
+  theme: 'light' | 'dark';
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -280,7 +281,7 @@ export class BchatConversation extends React.Component<Props, State> {
     //   selectedConversation?.isApproved;
 
     return (
-      <BchatTheme>
+      <BchatTheme mode={this.props.theme}>
         {reactListModalstate && <ReactListModal {...reactListModalstate} />}
 
         <div className="conversation-header">

@@ -10,7 +10,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   output: {
-    path: path.resolve(__dirname, 'stylesheets', 'dist'),
+    // write built CSS directly to stylesheets/manifest.css so the app picks it up
+    path: path.resolve(__dirname, 'stylesheets'),
   },
   entry: './stylesheets/manifest.scss',
   mode: 'production',
