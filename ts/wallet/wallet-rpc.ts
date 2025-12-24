@@ -287,7 +287,7 @@ heartRpc = async (
 ): Promise<HeartRpcResponse> => {
   try {
     const data = await RPCFetch(
-      'http://localhost:64371/json_rpc',
+      'http://127.0.0.1:64371/json_rpc',
       {
         body: {
           jsonrpc: '2.0',
@@ -790,7 +790,7 @@ sendRPC(
   return this.queue.add(async () => {
     try {
       const data = await RPCFetch(
-        'http://localhost:64371/json_rpc',
+        'http://127.0.0.1:64371/json_rpc',
         {
           body: {
             jsonrpc: '2.0',

@@ -12,7 +12,7 @@ import { OpenGroupRequestCommonType } from '../bchat/apis/open_group_api/opengro
 import { FSv2 } from '../bchat/apis/file_server_api';
 import { getUnpaddedAttachment } from '../bchat/crypto/BufferPadding';
 import { decryptAttachment } from '../util/crypto/attachmentsEncrypter';
-import { callUtilsWorker } from '../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../webworker/workers/browser/util_worker_interface';
 
 export async function downloadAttachment(attachment: {
   url: string;

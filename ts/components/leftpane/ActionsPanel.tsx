@@ -550,33 +550,49 @@ export const ActionsPanel = () => {
   useInterval(cleanUpOldDecryptedMedias, startCleanUpMedia ? cleanUpMediasInterval : null);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     void fetchReleaseFromFSAndUpdateMain();
   }, fetchReleaseFromFileServerInterval);
 
-  if (!ourPrimaryConversation) {
-    window?.log?.warn('ActionsPanel: ourPrimaryConversation is not set');
-    return null;
-  }
-
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     void syncConfigurationIfNeeded();
   }, DURATION.DAYS * 2);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // trigger an updates from the snodes every hour
 
     void forceRefreshRandomSnodePool();
   }, DURATION.HOURS * 1);
 
   useTimeoutFn(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // trigger an updates from the snodes after 5 minutes, once
     void forceRefreshRandomSnodePool();
   }, DURATION.MINUTES * 5);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // this won't be run every days, but if the app stays open for more than 10 days
     void triggerAvatarReUploadIfNeeded();
   }, DURATION.DAYS * 1);
+  if (!ourPrimaryConversation) {
+    window?.log?.warn('ActionsPanel: ourPrimaryConversation is not set');
+    return null;
+  }
+
+ 
 
   const themeChanger = (theme: ThemeStateType) => {
     // const themeFromSettings = window.Events.getThemeSetting();

@@ -11,7 +11,7 @@ import { getCompleteUrlFromRoom } from '../utils/OpenGroupUtils';
 import { parseOpenGroupV2 } from './JoinOpenGroupV2';
 import { getAllRoomInfos } from './OpenGroupAPIV2';
 import { OpenGroupMessageV2 } from './OpenGroupMessageV2';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 
 export type OpenGroupRequestCommonType = {
   serverUrl: string;

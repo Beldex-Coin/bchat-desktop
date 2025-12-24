@@ -2,7 +2,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './ts/webworker/workers/util.worker.ts',
+  entry: './ts/webworker/workers/node/util/util.worker.ts',
   module: {
     rules: [
       {
@@ -23,12 +23,11 @@ module.exports = {
     },
   },
   output: {
-    filename: 'util.worker.js',
-    path: path.resolve(__dirname, 'ts', 'webworker', 'workers'),
-    globalObject: 'self',
-    libraryTarget: 'umd',
+    filename: 'util.worker.compiled.js',
+    path: path.resolve(__dirname, 'ts', 'webworker', 'workers','node', 'util'),
   },
-  target: 'webworker',
+  // target: 'webworker',
+  target: 'node',
   optimization: {
     minimize: true,
   },

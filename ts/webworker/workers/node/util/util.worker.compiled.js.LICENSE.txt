@@ -9,7 +9,7 @@
 
 /**
  * @license bytebuffer.js (c) 2015 Daniel Wirtz <dcode@dcode.io>
- * Backing buffer: ArrayBuffer, Accessor: Uint8Array
+ * Backing buffer / Accessor: node Buffer
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/bytebuffer.js for details
  */

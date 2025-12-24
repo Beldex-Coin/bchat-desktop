@@ -1,7 +1,7 @@
 import Sinon from 'sinon';
 import * as DataShape from '../../../../ts/data/data';
 
-import * as utilWorker from '../../../webworker/workers/util_worker_interface';
+import * as utilWorker from '../../../webworker/workers/browser/util_worker_interface';
 
 const globalAny: any = global;
 

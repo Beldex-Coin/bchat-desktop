@@ -16,7 +16,7 @@ import { Snode } from '../../../data/data';
 import { ERROR_CODE_NO_CONNECT } from './SNodeAPI';
 import { Onions } from '.';
 import { hrefPnServerProd } from '../push_notification_api/PnServer';
-import { callUtilsWorker } from '../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../webworker/workers/browser/util_worker_interface';
 
 export const resetSnodeFailureCount = () => {
   snodeFailureCount = {};

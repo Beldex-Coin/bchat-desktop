@@ -50,7 +50,6 @@ async function bchatFetch({
       window.bchatFeatureFlags?.useOnionRequests === undefined
         ? true
         : window.bchatFeatureFlags?.useOnionRequests;
-        console.log(' window.bchatFeatureFlag -->', window.bchatFeatureFlags)
     // if (useOnionRequests && targetNode) {
       if (useOnionRequests && targetNode) {
 

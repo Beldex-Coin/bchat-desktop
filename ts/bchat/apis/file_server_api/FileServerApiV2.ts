@@ -1,4 +1,4 @@
-import { callUtilsWorker } from '../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../webworker/workers/browser/util_worker_interface';
 import { OpenGroupV2Request } from '../open_group_api/opengroupV2/ApiUtil';
 import { sendApiV2Request } from '../open_group_api/opengroupV2/OpenGroupAPIV2';
 import { parseStatusCodeFromOnionRequest } from '../open_group_api/opengroupV2/OpenGroupAPIV2Parser';

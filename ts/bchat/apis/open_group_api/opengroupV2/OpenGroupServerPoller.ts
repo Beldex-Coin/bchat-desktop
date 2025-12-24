@@ -22,7 +22,7 @@ import { DURATION } from '../../../constants';
 import { processNewAttachment } from '../../../../types/MessageAttachment';
 import { MIME } from '../../../../types';
 import { handleOpenGroupV2Message } from '../../../../receiver/opengroup';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 import { filterDuplicatesFromDbAndIncoming } from './SogsFilterDuplicate';
 
 const pollForEverythingInterval = DURATION.SECONDS * 10;

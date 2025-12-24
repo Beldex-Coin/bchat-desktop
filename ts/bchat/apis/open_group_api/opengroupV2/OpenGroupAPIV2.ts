@@ -17,7 +17,7 @@ import { OpenGroupMessageV2 } from './OpenGroupMessageV2';
 import { isOpenGroupV2Request } from '../../file_server_api/FileServerApiV2';
 import { getAuthToken } from './ApiAuth';
 import pRetry from 'p-retry';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 import { UserUtils } from '../../../utils';
 
 // used to be overwritten by testing
