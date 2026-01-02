@@ -13,6 +13,7 @@ import {
   screen,
   shell,
   systemPreferences,
+  ipcMain,
 } from 'electron';
 
 import path, { join } from 'path';
@@ -160,6 +161,7 @@ import { setLastestRelease } from '../node/latest_desktop_release';
 import { getAppRootPath } from '../node/getRootPath';
 import { HTTPError } from '../bchat/utils/errors';
 import { kill } from 'cross-port-killer';
+import { getPortWorker } from './portWorker';
 
 // Both of these will be set after app fires the 'ready' event
 let logger: Logger | null = null;
@@ -1122,4 +1124,13 @@ async function askForMediaAccess() {
 
 ipc.on('media-access', async () => {
   await askForMediaAccess();
+});
+
+ipcMain.on('kill-port', (event, port: number) => {
+  console.log('kill-port', port);
+  const worker = getPortWorker();
+  // :fire: Non-blocking call
+  worker.postMessage(port);
+  // Reply immediately so renderer never freezes
+  event.reply('kill-port-ack', { started: true });
 });

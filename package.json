@@ -236,7 +236,8 @@
     "loader-utils": "^2.0.4",
     "http-cache-semantics": "^4.1.1",
     "terser": "^5.14.2",
-    "minimatch": "^3.0.5"
+    "minimatch": "^3.0.5",
+    "glob": "^7.2.3"
   },
   "extraResources": [
     "bin"
@@ -246,7 +247,6 @@
     "afterSign": "build/notarize.js",
     "afterPack": "build/afterPackHook.js",
     "artifactName": "${name}-${os}-${arch}-${version}.${ext}",
-    "asar": false,
     "extraResources": [
       "bin",
       {
@@ -367,9 +367,10 @@
       "!build/*.js",
       "build/afterPackHook.js",
       "build/launcher-script.sh",
-      "!node_modules/better-sqlite3/deps/*",
-      "!node_modules/better-sqlite3/src/*",
-      "node_modules/better-sqlite3/build/Release/better_sqlite3.node",
+      "!node_modules/@signalapp/better-sqlite3/deps/*",
+      "!node_modules/@signalapp/better-sqlite3/src/*",
+      "!node_modules/@signalapp/better-sqlite3/build/Release/obj/*",
+      "node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node",
       "!dev-app-update.yml"
     ]
   }

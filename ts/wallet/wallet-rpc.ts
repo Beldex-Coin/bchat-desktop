@@ -21,6 +21,7 @@ import {
 import { workingStatusForDeamon } from './BchatWalletHelper';
 import { walletSettingsKey } from '../data/settings-key';
 import { default as queue } from 'promise-queue';
+const platform = os.platform();
 
 export interface HeartRpcError {
   code: number;
@@ -62,8 +63,7 @@ export async function RPCFetch(
   };
 
   if (auth) {
-    headers.Authorization =
-      'Basic ' + Buffer.from(`${auth.user}:${auth.pass}`).toString('base64');
+    headers.Authorization = 'Basic ' + Buffer.from(`${auth.user}:${auth.pass}`).toString('base64');
   }
 
   try {
@@ -78,7 +78,7 @@ export async function RPCFetch(
     const json = await res.json();
 
     return json;
-  } catch (err: any) {
+  } catch (err) {
     if (err.name === 'AbortError') {
       throw new Error('RPC timeout');
     }
@@ -159,8 +159,8 @@ class Wallet {
         process.platform === 'linux'
           ? '/beldex-wallet-rpc-ubuntu'
           : process.platform === 'win32'
-            ? '/beldex-wallet-rpc-windows'
-            : '/beldex-wallet-rpc-darwin';
+          ? '/beldex-wallet-rpc-windows'
+          : '/beldex-wallet-rpc-darwin';
       let __ryo_bin: string;
       if (process.env.NODE_ENV == 'production') {
         __ryo_bin = path.join(__dirname, '../../../bin'); //production
@@ -180,11 +180,20 @@ class Wallet {
         if (type == 'settings') {
           return;
         }
-        kill(64371)
-          .then()
-          .catch((err: any) => {
-            throw new HTTPError('beldex_rpc_port', err);
+        if (platform === 'win32') {
+          window.ipc.onKillPortAck(data => {
+            window.log.info('Port kill started', data);
           });
+
+          window.ipc.killPort(64371);
+        } else {
+          console.log('port kill in startWallet->wallet-rpc.ts non-windows');
+          kill(64371)
+            .then()
+            .catch(err => {
+              throw new HTTPError('beldex_rpc_port', err);
+            });
+        }
         await this.walletRpc(rpcPath, walletDir);
       } else {
         await this.walletRpc(rpcPath, walletDir);
@@ -242,7 +251,7 @@ class Wallet {
         `${walletDir}/bchat`,
         '--log-file',
         `${walletDir}/bchat/logs/wallet-rpc.log`,
-        '--trusted-daemon'
+        '--trusted-daemon',
       ];
       if (window.networkType == 'testnet') {
         option.push('--testnet');
@@ -273,22 +282,19 @@ class Wallet {
       });
       wallet.stdout.on('close', (code: any) => {
         process.stderr.write(`Wallet: exited with code ${code} \n`);
-        
       });
     } catch (error) {
       console.log('failed to start wallet rpc', error);
     }
   };
 
-heartRpc = async (
-  method: string,
-  params: Record<string, any> = {},
-  timeout = 0
-): Promise<HeartRpcResponse> => {
-  try {
-    const data = await RPCFetch(
-      'http://127.0.0.1:64371/json_rpc',
-      {
+  heartRpc = async (
+    method: string,
+    params: Record<string, any> = {},
+    timeout = 0
+  ): Promise<HeartRpcResponse> => {
+    try {
+      const data = await RPCFetch('http://127.0.0.1:64371/json_rpc', {
         body: {
           jsonrpc: '2.0',
           id: '0',
@@ -301,36 +307,33 @@ heartRpc = async (
         },
         timeout,
         agent: this.agent,
+      });
+
+      if (data?.error?.code === -21) {
+        let walletDir =
+          platform === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}/bchat`;
+        fs.emptyDirSync(walletDir);
+
+        return await this.heartRpc(method, params, timeout);
       }
-    );
 
-    if (data?.error?.code === -21) {
-      let walletDir =
-        os.platform() === 'win32'
-          ? `${this.findDir()}\\bchat`
-          : `${this.findDir()}/bchat`;
-      fs.emptyDirSync(walletDir);
+      if (data?.error) {
+        return { method, params, error: data.error };
+      }
 
-      return await this.heartRpc(method, params, timeout);
+      return data;
+    } catch (err) {
+      console.error('RPC error:', err);
+      return {
+        method,
+        params,
+        error: {
+          code: -1,
+          message: 'Cannot connect to wallet-rpc',
+        },
+      };
     }
-
-    if (data?.error) {
-      return { method, params, error: data.error };
-    }
-
-    return data;
-  } catch (err) {
-    console.error('RPC error:', err);
-    return {
-      method,
-      params,
-      error: {
-        code: -1,
-        message: 'Cannot connect to wallet-rpc',
-      },
-    };
-  }
-};
+  };
   // heartRpc = async (method: string, params = {}, timeout = 0) => {
   //   try {
   //     const options = {
@@ -355,7 +358,7 @@ heartRpc = async (
   //     if (requestData.hasOwnProperty('error')) {
   //       if (requestData.error.code === -21) {
   //         let walletDir =
-  //           os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
+  //           platform === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
   //         fs.emptyDirSync(walletDir);
   //         requestData = await request(options);
   //       }
@@ -426,7 +429,7 @@ heartRpc = async (
     let restore_height = await this.getHeigthFromDateAndUserInput(refreshDetails);
     try {
       let walletDir =
-        os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
+        platform === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
       fs.emptyDirSync(walletDir);
       restoreWallet = await this.heartRpc('restore_deterministic_wallet', {
         restore_height: restore_height,
@@ -448,12 +451,20 @@ heartRpc = async (
         this.wallet_state.password_hash = this.passwordEncrypt(password);
 
         if (!type) {
-          console.log('killed...............:', type);
-          kill(64371)
-            .then(() => console.log('port kill successFull'))
-            .catch(err => {
-              throw new HTTPError('beldex_rpc_port', err);
+          if (platform === 'win32') {
+            window.ipc.onKillPortAck(data => {
+              window.log.info('Port kill started', data);
             });
+
+            window.ipc.killPort(64371);
+          } else {
+            console.log('port kill in restore -> wallet-rpc.ts  non-windows');
+            kill(64371)
+              .then()
+              .catch(err => {
+                throw new HTTPError('beldex_rpc_port', err);
+              });
+          }
         }
       }
       return restoreWallet;
@@ -509,8 +520,7 @@ heartRpc = async (
     refreshDetails: object,
     type?: string
   ): Promise<any> => {
-    let walletDir =
-      os.platform() === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
+    let walletDir = platform === 'win32' ? `${this.findDir()}\\bchat` : `${this.findDir()}//bchat`;
     fs.emptyDirSync(walletDir);
     return await this.restoreWallet(
       displayName,
@@ -523,7 +533,7 @@ heartRpc = async (
 
   findDir = () => {
     let walletDir;
-    if (os.platform() === 'win32') {
+    if (platform === 'win32') {
       walletDir = `${os.homedir()}\\Documents\\Beldex`;
     } else {
       walletDir = path.join(os.homedir(), 'Beldex');
@@ -570,8 +580,8 @@ heartRpc = async (
         } else if (n.method == 'getbalance') {
           let transacationsHistory: any = [];
           // if (type == 'wallet') {
-            transacationsHistory = await this.getTransactions();
-            transacationsHistory = transacationsHistory.transactions.tx_list;
+          transacationsHistory = await this.getTransactions();
+          transacationsHistory = transacationsHistory.transactions.tx_list;
           // }
           if (
             this.wallet_state.balance == response.result.balance &&
@@ -628,7 +638,7 @@ heartRpc = async (
           }
         });
 
-        wallet.transactions.tx_list.sort(function (a: any, b: any) {
+        wallet.transactions.tx_list.sort(function(a: any, b: any) {
           if (a.timestamp < b.timestamp) return 1;
           if (a.timestamp > b.timestamp) return -1;
           return 0;
@@ -654,9 +664,8 @@ heartRpc = async (
           : 0;
       window.inboxStore?.dispatch(updateFiatBalance(FiatBalance));
     } catch (error) {
-      console.log("Uncaught error Fiat Balance", error)
+      console.log('Uncaught error Fiat Balance', error);
     }
-
   };
 
   transfer = async (address: string, amount: number, priority: number, isSweepAll: Boolean) => {
@@ -664,15 +673,15 @@ heartRpc = async (
     // the call coming from the SN page will have address = wallet primary address
     const rpcSpecificParams = isSweepAll
       ? {
-        address,
-        // gui wallet only supports one account currently
-        account_index: 0,
-        // sweep *all* funds from all subaddresses to the address specified
-        subaddr_indices_all: true,
-      }
+          address,
+          // gui wallet only supports one account currently
+          account_index: 0,
+          // sweep *all* funds from all subaddresses to the address specified
+          subaddr_indices_all: true,
+        }
       : {
-        destinations: [{ amount: amount, address: address }],
-      };
+          destinations: [{ amount: amount, address: address }],
+        };
     const params = {
       ...rpcSpecificParams,
       account_index: 0,
@@ -691,7 +700,6 @@ heartRpc = async (
     return crypto.pbkdf2Sync(password, this.auth[2], 1000, 64, 'sha512').toString('hex');
   };
   openWallet = async (filename: string, password: string) => {
-
     const openWallet = await this.heartRpc('open_wallet', {
       filename,
       password,
@@ -707,7 +715,7 @@ heartRpc = async (
         if (data.hasOwnProperty('error') || !data.hasOwnProperty('result')) {
           return;
         }
-        fs.writeFile(address_txt_path, data.result.address, 'utf8', () => { });
+        fs.writeFile(address_txt_path, data.result.address, 'utf8', () => {});
       });
     }
     this.wallet_state.name = filename;
@@ -781,17 +789,15 @@ heartRpc = async (
   //       });
   //   });
   // }
-sendRPC(
-  method: string,
-  params: Record<string, any> = {},
-  timeout = 0
-): Promise<HeartRpcResponse> {
-  let id = this.id++;
-  return this.queue.add(async () => {
-    try {
-      const data = await RPCFetch(
-        'http://127.0.0.1:64371/json_rpc',
-        {
+  sendRPC(
+    method: string,
+    params: Record<string, any> = {},
+    timeout = 0
+  ): Promise<HeartRpcResponse> {
+    let id = this.id++;
+    return this.queue.add(async () => {
+      try {
+        const data = await RPCFetch('http://127.0.0.1:64371/json_rpc', {
           body: {
             jsonrpc: '2.0',
             id: `${id}`,
@@ -804,26 +810,25 @@ sendRPC(
           },
           timeout,
           agent: this.agent,
+        });
+
+        if (data?.error) {
+          return { method, params, error: data.error };
         }
-      );
 
-      if (data?.error) {
-        return { method, params, error: data.error };
+        return { method, params, result: data.result };
+      } catch (error) {
+        return {
+          method,
+          params,
+          error: {
+            code: -1,
+            message: 'Cannot connect to wallet-rpc',
+          },
+        };
       }
-
-      return { method, params, result: data.result };
-    } catch (error: any) {
-      return {
-        method,
-        params,
-        error: {
-          code: -1,
-          message: 'Cannot connect to wallet-rpc',
-        },
-      };
-    }
-  });
-}
+    });
+  }
 
   rescanBlockchain() {
     this.sendRPC('rescan_blockchain');

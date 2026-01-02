@@ -26,14 +26,16 @@ import nativeEmojiData from '@emoji-mart/data';
 import { initialiseEmojiData } from '../util/emoji';
 import { loadEmojiPanelI18n } from '../util/i18n';
 import { OpenGroupData } from '../data/opengroups';
-import { createRoot, Root } from "react-dom/client";
+import { createRoot, Root } from 'react-dom/client';
+import os from 'os';
+const platform = os.platform();
 
 let root: Root | null = null;
 
 function getRoot(): Root | null {
-  const container = document.getElementById("root");
+  const container = document.getElementById('root');
   if (!container) {
-    console.error("Root container not found");
+    console.error('Root container not found');
     return null;
   }
 
@@ -43,7 +45,6 @@ function getRoot(): Root | null {
 
   return root;
 }
-
 
 // Globally disable drag and drop
 document.body.addEventListener(
@@ -215,7 +216,7 @@ Storage.onready(async () => {
 async function manageExpiringData() {
   await Data.cleanSeenMessages();
   await Data.cleanLastHashes();
-   // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setTimeout(manageExpiringData, 1000 * 60 * 60);
 }
 
@@ -249,7 +250,7 @@ async function start() {
   window.log.info('Cleanup: complete');
 
   window.log.info('listening for registration events');
-   // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   WhisperEvents.on('registration_done', async () => {
     window.log.info('handling registration event');
 
@@ -275,7 +276,7 @@ async function start() {
     void getConversationController()
       .loadPromise()
       ?.then(() => {
-         getRoot()?.render(<BchatInboxView />);
+        getRoot()?.render(<BchatInboxView />);
         // ReactDOM.render(<BchatInboxView />, document.getElementById('root'));
       });
   }
@@ -369,7 +370,7 @@ async function start() {
     }
     window.setCallMediaPermissions(enabled);
   };
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   window.openFromNotification = async conversationKey => {
     window.showWindow();
     if (conversationKey) {
@@ -432,11 +433,21 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  kill(64371)
-    .then()
-    .catch(err => {
-      throw new HTTPError('beldex_rpc_port', err);
+  if (platform === 'win32') {
+    window.ipc.onKillPortAck(data => {
+      window.log.info('Port kill started', data);
     });
+
+    window.ipc.killPort(64371);
+  } else {
+    console.log('port kill in main_renderer connect');
+    kill(64371)
+      .then()
+      .catch(err => {
+        throw new HTTPError('beldex_rpc_port', err);
+      });
+  }
+
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);
@@ -489,7 +500,7 @@ class TextScramble {
   public async setText(newText: string) {
     const oldText = this.el.value;
     const length = Math.max(oldText.length, newText.length);
-     // eslint-disable-next-line no-return-assign, no-promise-executor-return
+    // eslint-disable-next-line no-return-assign, no-promise-executor-return
     const promise = new Promise(resolve => (this.resolve = resolve));
     this.queue = [];
 
