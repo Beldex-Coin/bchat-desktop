@@ -22,6 +22,7 @@ const lightColorPillDivider = '#E3E3E3';
 const lightColorLastSeenIndicator = '#000000';
 const lightColorQuoteBottomBarBg = '#f8f8f8';
 const lightColorCellBackground = '#FAFAFA';
+const lightColorCaret='#181821'
 const lightColorReceivedMessageBg = '#F8F8F8';
 const whiteColorReceivedMessageBgHover = '#FAFAFA';
 const lightColorReceivedMessageText = '#000000';
@@ -258,7 +259,7 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   /* Profile / BNS / wallet */
   '--color-profile': lightProfileBgColor,
   '--color-BnsLinkIdBg': lightBnsLinkIdBgColor,
-  '--color-caret': lightColorCellBackground,
+  '--color-caret': lightColorCaret,
   '--color-profile-close': lightProfileClose,
   '--color-chat-timestamp': lightChattimestamp,
   '--color-WalcontentBg': lightWalcontentBg,

@@ -37,6 +37,7 @@ const darkColorPillDivider = '#3E3E4E';
 const darkColorLastSeenIndicator = accentDarkTheme;
 const darkColorQuoteBottomBarBg = '#34323F';
 const darkColorCellBackground = '#181821';
+const darkColorCaret = '#FAFAFA';
 const darkColorReceivedMessageBg = '#2E333D';
 const darkColorReceivedMessageBgHover = '#52505F';
 const darkColorReceivedMessageText = white;
@@ -284,7 +285,7 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
 
   '--color-profile': darkProfileBgColor,
   '--color-BnsLinkIdBg': darkBnsLinkIdBgColor,
-  '--color-caret': darkColorCellBackground,
+  '--color-caret': darkColorCaret,
   '--color-profile-close': darkProfileClose,
   '--color-chat-timestamp': darkChatTimestamp,
   '--color-WalcontentBg': darkWalcontentBg,
