@@ -119,7 +119,7 @@ export const Image = (props: Props) => {
             width: forceSquare ? `${width}px` : '',
             height: forceSquare ? `${height}px` : '',
           }}
-          src={srcData}
+          src={srcData || undefined}
           onDragStart={disableDrag}
         />
       )}

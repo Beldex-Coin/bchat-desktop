@@ -18,7 +18,7 @@ import { SpacerSM } from '../basic/Text';
 // import { HTTPError } from '../../bchat/utils/errors';
 
 export const deleteDbLocally = async (deleteType?: string) => {
-  // wallet
+    // wallet
   // .closeWallet()
   // .then(() => {
   // kill(64371)
@@ -33,19 +33,30 @@ export const deleteDbLocally = async (deleteType?: string) => {
   //   throw new HTTPError('close wallet error', err);
   // });
   window?.log?.info('last message sent successfully. Deleting everything');
-  window.persistStore?.purge();
+  await window.persistStore?.purge();
+  window?.log?.info('store purged');
+
   await deleteAllLogs();
-  if (deleteType === 'oldVersion') {
+  window?.log?.info('deleteAllLogs: done');
+
+    if (deleteType === 'oldVersion') {
     await Data.removeAllWithOutRecipient();
+    window?.log?.info('Data.removeAllWithOutRecipient: done');
   } else {
     await Data.removeAll();
-  }
+ window?.log?.info('Data.removeAll: done');
+   }
+  // await Data.removeAll();
   await Data.close();
+  window?.log?.info('Data.close: done');
   await Data.removeDB();
+  window?.log?.info('Data.removeDB: done');
+
   await Data.removeOtherData();
+  window?.log?.info('Data.removeOtherData: done');
+
   window.localStorage.setItem('restart-reason', 'delete-account');
 };
-
 export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {
   try {
     // DELETE LOCAL DATA ONLY, NOTHING ON NETWORK

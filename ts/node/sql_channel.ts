@@ -17,16 +17,16 @@ export function initializeSqlChannel() {
   ipcMain.on(SQL_CHANNEL_KEY, (event, jobId, callName, ...args) => {
     try {
       // Guard: ensure SQL has been initialized in the main process before dispatching calls
-      if (!(sqlNode as any).isInitialized || !(sqlNode as any).isInitialized()) {
-        const msg = 'SQL node not initialized';
-        console.log(`sql channel rejected call ${callName}: ${msg}`);
-        try {
-          event.sender.send(`${SQL_CHANNEL_KEY}-done`, jobId, msg, null);
-        } catch (e) {
-          console.error('Failed to send sql-channel not-initialized response', e);
-        }
-        return;
-      }
+      // if (!(sqlNode as any).isInitialized || !(sqlNode as any).isInitialized()) {
+      //   const msg = 'SQL node not initialized';
+      //   console.log(`sql channel rejected call ${callName}: ${msg}`);
+      //   try {
+      //     event.sender.send(`${SQL_CHANNEL_KEY}-done`, jobId, msg, null);
+      //   } catch (e) {
+      //     console.error('Failed to send sql-channel not-initialized response', e);
+      //   }
+      //   return;
+      // }
 
       const fn = (sqlNode as any)[callName];
       if (!fn) {
