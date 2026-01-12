@@ -14,6 +14,8 @@ import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
+import { daemon } from '../../wallet/daemon-rpc';
+import os from 'os';
 
 export const MAX_USERNAME_LENGTH = 26;
 
@@ -94,6 +96,7 @@ export async function signInWithRecovery(signInDetails: {
 }) {
   const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
   const trimName = displayNameIsValid(displayName);
+   const platform = os.platform();
   // shows toast to user about the error
   if (!trimName) {
     return;
@@ -107,7 +110,10 @@ export async function signInWithRecovery(signInDetails: {
     );
     localStorage.setItem('userAddress', restoreWallet.result.address);
     const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
-
+    
+      if (platform === 'win32') {
+        daemon.deamontHeight();
+      }
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName, deamonHeight);

@@ -107,9 +107,5 @@ declare global {
     Signal: any;
     WalletAddress: any;
     deamon_list: any;
-    ipc: {
-      killPort: (port: number) => void;
-      onKillPortAck: (cb: (data: any) => void) => void;
-    };
   }
 }

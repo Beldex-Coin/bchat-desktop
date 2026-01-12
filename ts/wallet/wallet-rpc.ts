@@ -180,20 +180,14 @@ class Wallet {
         if (type == 'settings') {
           return;
         }
-        if (platform === 'win32') {
-          window.ipc.onKillPortAck(data => {
-            window.log.info('Port kill started', data);
-          });
-
-          window.ipc.killPort(64371);
-        } else {
-          console.log('port kill in startWallet->wallet-rpc.ts non-windows');
-          kill(64371)
-            .then()
-            .catch(err => {
-              throw new HTTPError('beldex_rpc_port', err);
-            });
-        }
+       if (platform !== 'win32') {
+          console.log('port kill in startWallet...');
+           kill(64371)
+             .then()
+             .catch(err => {
+               throw new HTTPError('beldex_rpc_port', err);
+             });
+         }
         await this.walletRpc(rpcPath, walletDir);
       } else {
         await this.walletRpc(rpcPath, walletDir);
@@ -451,20 +445,14 @@ class Wallet {
         this.wallet_state.password_hash = this.passwordEncrypt(password);
 
         if (!type) {
-          if (platform === 'win32') {
-            window.ipc.onKillPortAck(data => {
-              window.log.info('Port kill started', data);
-            });
-
-            window.ipc.killPort(64371);
-          } else {
-            console.log('port kill in restore -> wallet-rpc.ts  non-windows');
-            kill(64371)
-              .then()
-              .catch(err => {
-                throw new HTTPError('beldex_rpc_port', err);
-              });
-          }
+          if (platform !== 'win32') {
+             console.log('port kill in restoreWallet...');
+              kill(64371)
+                .then()
+                .catch(err => {
+                  throw new HTTPError('beldex_rpc_port', err);
+                });
+            }
         }
       }
       return restoreWallet;

@@ -48,12 +48,17 @@ class Daemon {
   daemonHeartbeat() {
     clearInterval(this.heartbeat);
     this.heartbeat = setInterval(() => {
-      this.sendRPC('get_info').then(data => {
+      this.deamontHeight();
+    }, 3000);
+  }
+
+  deamontHeight()
+  {
+     this.sendRPC('get_info').then(data => {
         if (!data.hasOwnProperty('error')) {
           window.inboxStore?.dispatch(updateDaemon({ height: data.result.height }));
         }
-      });
-    }, 3000);
+      })
   }
   heartbeatAction() {
     throw new Error('Method not implemented.');

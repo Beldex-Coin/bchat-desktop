@@ -433,14 +433,8 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  if (platform === 'win32') {
-    window.ipc.onKillPortAck(data => {
-      window.log.info('Port kill started', data);
-    });
-
-    window.ipc.killPort(64371);
-  } else {
-    console.log('port kill in main_renderer connect');
+  if (platform !== 'win32') {
+   console.log('port kill in main_renderer');
     kill(64371)
       .then()
       .catch(err => {

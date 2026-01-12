@@ -340,12 +340,4 @@ window.addEventListener('contextmenu', e => {
   }
 });
 
-// Blocking
-console.log('preload loaded');
-window.ipc = {
-  onKillPortAck: (cb) =>
-    ipcRenderer.on('kill-port-ack', (_, data) => cb(data)),
-  killPort: (port) =>
-    ipcRenderer.send('kill-port', port),
-};
-console.log('ipc exposed in preload');
+
