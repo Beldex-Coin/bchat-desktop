@@ -173,13 +173,37 @@ export const GenericReadableMessage = (props: Props) => {
   const [isRightClicked, setIsRightClicked] = useState(false);
   const [enableReactions, setEnableReactions] = useState(true);
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
-
   const onMessageLoseFocus = useCallback(() => {
     if (isRightClicked) {
       setIsRightClicked(false);
     }
   }, [isRightClicked]);
+   const {
+    convoId,
+    direction,
+    conversationType,
+    receivedAt,
+    isUnread,
+    expirationLength,
+    expirationTimestamp,
+  } = msgProps||{};
+   useEffect(() => {
+    if(convoId===undefined) return;
+    const conversationModel = getConversationController().get(convoId);
+    if (conversationModel) {
+      setEnableReactions(conversationModel.hasReactions());
+    }
+  }, [convoId]);
 
+  useEffect(() => {
+    document.addEventListener('click', onMessageLoseFocus);
+
+    return () => {
+      document.removeEventListener('click', onMessageLoseFocus);
+    };
+  }, [onMessageLoseFocus]);
+
+  
   const handleContextMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup && !isDetailView;
@@ -208,38 +232,6 @@ export const GenericReadableMessage = (props: Props) => {
     address,
     name,
   } = props;
-
-  if (!msgProps) {
-    return null;
-  }
-  const {
-    convoId,
-    direction,
-    conversationType,
-    receivedAt,
-    isUnread,
-    expirationLength,
-    expirationTimestamp,
-  } = msgProps;
-
-  useEffect(() => {
-    const conversationModel = getConversationController().get(convoId);
-    if (conversationModel) {
-      setEnableReactions(conversationModel.hasReactions());
-    }
-  }, [convoId]);
-
-  useEffect(() => {
-    document.addEventListener('click', onMessageLoseFocus);
-
-    return () => {
-      document.removeEventListener('click', onMessageLoseFocus);
-    };
-  }, [onMessageLoseFocus]);
-
-  if (isExpired) {
-    return null;
-  }
 
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
@@ -272,7 +264,7 @@ export const GenericReadableMessage = (props: Props) => {
       );
     }
   
-    if (txnId && amount) {
+    if (txnId && amount&&direction) {
       return (
         <PaymentMessage
           amount={amount}
@@ -303,6 +295,8 @@ export const GenericReadableMessage = (props: Props) => {
   })();
 
   return (
+    <>
+    {isExpired ? null : 
     <StyledReadableMessage
       messageId={messageId}
       className={classNames(
@@ -388,5 +382,7 @@ export const GenericReadableMessage = (props: Props) => {
         </div>
       </div>
     </StyledReadableMessage>
+    }
+    </>
   );
 };

@@ -106,6 +106,7 @@ export class BchatConversation extends React.Component<Props, State> {
   private dragCounter: number;
   private publicMembersRefreshTimeout?: NodeJS.Timeout;
   private readonly updateMemberList: () => any;
+  private scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(props: any) {
     super(props);
@@ -402,7 +403,16 @@ export class BchatConversation extends React.Component<Props, State> {
       if (!messageContainer) {
         return;
       }
-      messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+      // messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+
+     if (this.scrollTimeout) {
+        clearTimeout(this.scrollTimeout);
+      }
+      this.scrollTimeout = setTimeout(() => {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+          console.log('Scrolled to bottom:', messageContainer.scrollHeight);
+      }, 0);
+
     }
   }
 

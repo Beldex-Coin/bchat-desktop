@@ -165,9 +165,9 @@ export const MessageContent = (props: Props) => {
     return;
   });
 
-  if (!contentProps) {
-    return null;
-  }
+  // if (!contentProps) {
+  //   return null;
+  // }
 
   const {
     direction,
@@ -180,7 +180,7 @@ export const MessageContent = (props: Props) => {
     // quote,
     attachments=[],
     
-  } = contentProps;
+  } = contentProps|| {};
   const {isTrustedForAttachmentDownload}=props;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
@@ -201,6 +201,11 @@ export const MessageContent = (props: Props) => {
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
   const isTailVisible=lastMessageOfSeries &&!props.isDetailView && !isGifAttachments
+
+
+  if (!direction) {
+    return null;
+  }
 
   return (
     <div style={{position:'relative'}}>  
