@@ -106,7 +106,7 @@ export class BchatConversation extends React.Component<Props, State> {
   private dragCounter: number;
   private publicMembersRefreshTimeout?: NodeJS.Timeout;
   private readonly updateMemberList: () => any;
-  private scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+  private scrollTimeout: number | null = null;  
 
   constructor(props: any) {
     super(props);
@@ -387,34 +387,42 @@ export class BchatConversation extends React.Component<Props, State> {
     );
   }
 
-  private async scrollToNow() {
-    if (!this.props.selectedConversationKey) {
-      return;
-    }
-    const mostNowMessage = await getLastMessageInConversation(this.props.selectedConversationKey);
-
-    if (mostNowMessage) {
-      await openConversationToSpecificMessage({
-        conversationKey: this.props.selectedConversationKey,
-        messageIdToNavigateTo: mostNowMessage.id,
-        shouldHighlightMessage: false,
-      });
-      const messageContainer = this.messageContainerRef.current;
-      if (!messageContainer) {
-        return;
-      }
-      // messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
-
-     if (this.scrollTimeout) {
-        clearTimeout(this.scrollTimeout);
-      }
-      this.scrollTimeout = setTimeout(() => {
-          messageContainer.scrollTop = messageContainer.scrollHeight;
-          console.log('Scrolled to bottom:', messageContainer.scrollHeight);
-      }, 0);
-
-    }
+ private async scrollToNow() {
+  if (!this.props.selectedConversationKey) {
+    return;
   }
+
+  const mostNowMessage = await getLastMessageInConversation(
+    this.props.selectedConversationKey
+  );
+
+  if (!mostNowMessage) {
+    return;
+  }
+
+  await openConversationToSpecificMessage({
+    conversationKey: this.props.selectedConversationKey,
+    messageIdToNavigateTo: mostNowMessage.id,
+    shouldHighlightMessage: false,
+  });
+
+  const messageContainer = this.messageContainerRef.current;
+  if (!messageContainer) {
+    return;
+  }
+
+  if (this.scrollTimeout) {
+    clearTimeout(this.scrollTimeout);
+  }
+
+  // ✅ Wait for layout + paint (production safe)
+  this.scrollTimeout = window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      messageContainer.scrollTop =
+        messageContainer.scrollHeight - messageContainer.clientHeight;
+    });
+  });
+}
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ~~~~~~~~~~~ KEYBOARD NAVIGATION ~~~~~~~~~~~~
