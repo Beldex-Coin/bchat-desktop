@@ -67,7 +67,7 @@ export class PendingMessageCache {
 
     // Return if message doesn't exist in cache
     if (!this.find(message)) {
-      return;
+      return undefined;
     }
 
     // Remove item from cache and sync with database

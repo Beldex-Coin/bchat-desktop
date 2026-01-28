@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable more/no-then */
 import { getAllConversations, removeConversation, saveConversation } from '../../data/data';
 import {
   ConversationAttributes,

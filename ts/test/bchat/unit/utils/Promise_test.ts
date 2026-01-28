@@ -1,11 +1,11 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
+
 
 import chai from 'chai';
 import Sinon, * as sinon from 'sinon';
 
 import { PromiseUtils } from '../../../../bchat/utils';
 
-// tslint:disable-next-line: no-require-imports no-var-requires
+
 import chaiAsPromised from 'chai-as-promised';
 import {
   allowOnlyOneAtATime,
@@ -51,8 +51,6 @@ describe('Promise Utils', () => {
     it('will call done on finished', async () => {
       // completionSpy will be called on done
       const completionSpy = Sinon.spy();
-
-      // tslint:disable-next-line: mocha-unneeded-done
       const task = (done: any) => {
         completionSpy();
         done();
@@ -104,8 +102,6 @@ describe('Promise Utils', () => {
     it('can wait for a task', async () => {
       // completionSpy will be called on done
       const completionSpy = Sinon.spy();
-
-      // tslint:disable-next-line: mocha-unneeded-done
       const task = (done: any) => {
         completionSpy();
         done();

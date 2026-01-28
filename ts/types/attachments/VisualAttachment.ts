@@ -24,6 +24,7 @@ export const getImageDimensions = async ({
 }: {
   objectUrl: string;
 }): Promise<{ height: number; width: number }> =>
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   new Promise(async (resolve, reject) => {
     const image = document.createElement('img');
 
@@ -102,6 +103,8 @@ export const makeVideoScreenshot = async ({
   });
 
 export const makeObjectUrl = (data: ArrayBufferLike, contentType: string) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const blob = new Blob([data], {
     type: contentType,
   });

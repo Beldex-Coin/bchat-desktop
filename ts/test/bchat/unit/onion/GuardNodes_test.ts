@@ -1,4 +1,4 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
+
 
 import chai from 'chai';
 import Sinon, * as sinon from 'sinon';
@@ -30,9 +30,7 @@ const fakeSnodePool: Array<Data.Snode> = [
   ...generateFakeSnodes(3),
 ];
 
-// tslint:disable: variable-name
 
-// tslint:disable-next-line: max-func-body-length
 describe('GuardNodes', () => {
   let getSnodePoolFromDBOrFetchFromSeed: sinon.SinonStub;
   let fetchFromSeedWithRetriesAndWriteToDb: sinon.SinonStub;

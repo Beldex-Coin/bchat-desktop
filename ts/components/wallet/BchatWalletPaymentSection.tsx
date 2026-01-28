@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { walletReceivedPage, walletSendPage } from '../../state/ducks/walletInnerSection';
 import { Flex } from '../basic/Flex';

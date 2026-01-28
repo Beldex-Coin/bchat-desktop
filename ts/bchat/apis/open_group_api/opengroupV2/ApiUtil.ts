@@ -11,7 +11,7 @@ import { getCompleteUrlFromRoom } from '../utils/OpenGroupUtils';
 import { parseOpenGroupV2 } from './JoinOpenGroupV2';
 import { getAllRoomInfos } from './OpenGroupAPIV2';
 import { OpenGroupMessageV2 } from './OpenGroupMessageV2';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 
 export type OpenGroupRequestCommonType = {
   serverUrl: string;
@@ -103,7 +103,6 @@ export const parseMessages = async (
   ).sort((a, b) => (a.serverId || 0) - (b.serverId || 0));
 };
 
-// tslint:disable: no-http-string
 const defaultServerUrl = 'http://social.beldex.io';
 const defaultServerPublicKey = '0cfdbcc8bba5989a6787019c6635c08415c103174609360f9c3e4e764ef48073';
 const defaultRoom = `${defaultServerUrl}/main?public_key=${defaultServerPublicKey}`;

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getRecipientAddress } from '../../data/data';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerXS } from '../basic/Text';

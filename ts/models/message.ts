@@ -1,5 +1,4 @@
 import Backbone from 'backbone';
-// tslint:disable-next-line: match-default-export-name
 import filesize from 'filesize';
 import { SignalService } from '../../ts/protobuf';
 import { getMessageQueue, Utils } from '../bchat';
@@ -69,7 +68,6 @@ import { LinkPreviews } from '../util/linkPreviews';
 import { ReactionList } from '../types/Reaction';
 import { isUsAnySogsFromCache } from '../util/reactions';
 import { getAttachmentMetadata } from '../types/message/initializeAttachmentMetadata';
-// tslint:disable: cyclomatic-complexity
 
 /**
  * @returns true if the array contains only a single item being 'You', 'you' or our device pubkey
@@ -170,7 +168,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       return false;
     }
     // eslint-disable-next-line no-bitwise
-    // tslint:disable-next-line: no-bitwise
     return !!(flags & expirationTimerFlag);
   }
 
@@ -433,7 +430,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     };
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public getPropsForGroupUpdateMessage(): PropsForGroupUpdate | null {
     const groupUpdate = this.getGroupUpdateAsArray();
 
@@ -513,7 +509,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     return 'sending';
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public getPropsForMessage(options: any = {}): PropsForMessageWithoutConvoProps {
     const sender = this.getSource();
     const expirationLength = this.get('expireTimer') * 1000;
@@ -612,8 +607,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     const thumbnailWithObjectUrl =
       !path && !objectUrl
         ? null
-        : // tslint:disable: prefer-object-spread
-          Object.assign({}, attachment.thumbnail || {}, {
+        :  Object.assign({}, attachment.thumbnail || {}, {
             objectUrl: path || objectUrl,
           });
 
@@ -621,7 +615,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
       isVoiceMessage: isVoiceMessage(attachment),
       thumbnail: thumbnailWithObjectUrl,
     });
-    // tslint:enable: prefer-object-spread
+   
   }
 
   public getPropsForPreview(): Array<any> | null {
@@ -751,7 +745,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     } = attachment;
 
     const isVoiceMessageBool =
-      // tslint:disable-next-line: no-bitwise
+     // eslint-disable-next-line no-bitwise
       Boolean(flags && flags & SignalService.AttachmentPointer.Flags.VOICE_MESSAGE) || false;
 
     return {

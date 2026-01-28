@@ -1,5 +1,4 @@
 import { filter, isNumber, omit } from 'lodash';
-// tslint:disable-next-line: no-submodule-imports
 import { default as getGuid } from 'uuid/v4';
 import * as Constants from '../constants';
 import {
@@ -19,7 +18,6 @@ import { getAttachmentMetadata } from '../../types/message/initializeAttachmentM
 const MAX_ATTACHMENT_JOB_PARALLELISM = 3;
 
 const TICK_INTERVAL = Constants.DURATION.MINUTES;
-// tslint:disable: function-name
 
 const RETRY_BACKOFF = {
   1: Constants.DURATION.SECONDS * 30,
@@ -94,6 +92,7 @@ export async function addJob(attachment: any, job: any = {}) {
 
 async function _tick() {
   await _maybeStartJob();
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   timeout = setTimeout(_tick, TICK_INTERVAL);
 }
 
@@ -134,14 +133,12 @@ async function _maybeStartJob() {
     Math.min(needed, nextJobsWithoutCurrentlyRunning.length)
   );
 
-  // tslint:disable: one-variable-per-declaration
   for (let i = 0, max = jobs.length; i < max; i += 1) {
     const job = jobs[i];
     _activeAttachmentDownloadJobs[job.id] = _runJob(job);
   }
 }
 
-// tslint:disable-next-line: cyclomatic-complexity
 async function _runJob(job: any) {
   const { id, messageId, attachment, type, index, attempts, isOpenGroupV2, openGroupV2Details } =
     job || {};
@@ -207,6 +204,8 @@ async function _runJob(job: any) {
     if (!attachment.contentType) {
       window.log.warn('incoming attachment has no contentType');
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error -- returning Uint8Array intentionally
     const upgradedAttachment = await processNewAttachment({
       ...downloaded,
       fileName: attachment.fileName,
@@ -226,7 +225,7 @@ async function _runJob(job: any) {
 
     await _finishJob(found, id);
   } catch (error) {
-    // tslint:disable: restrict-plus-operands
+    
     const currentAttempt: 1 | 2 | 3 = (attempts || 0) + 1;
 
     if (currentAttempt >= 3) {
@@ -255,7 +254,7 @@ async function _runJob(job: any) {
     };
 
     await saveAttachmentDownloadJob(failedJob);
-    // tslint:disable-next-line: no-dynamic-delete
+    
     delete _activeAttachmentDownloadJobs[id];
     void _maybeStartJob();
   }
@@ -270,7 +269,6 @@ async function _finishJob(message: MessageModel | null, id: string) {
   }
 
   await removeAttachmentDownloadJob(id);
-  // tslint:disable-next-line: no-dynamic-delete
   delete _activeAttachmentDownloadJobs[id];
   await _maybeStartJob();
 }
@@ -287,7 +285,6 @@ function _markAttachmentAsError(attachment: any) {
   };
 }
 
-// tslint:disable-next-line: cyclomatic-complexity
 function _addAttachmentToMessage(
   message: MessageModel | null | undefined,
   attachment: any,

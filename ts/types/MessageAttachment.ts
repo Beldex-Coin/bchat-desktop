@@ -14,7 +14,6 @@ import {
   replaceUnicodeV2,
 } from './attachments/migrations';
 
-// tslint:disable: prefer-object-spread
 
 // I think this is only used on the renderer side, but how?!
 

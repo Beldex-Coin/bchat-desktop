@@ -33,6 +33,8 @@ import { bnsVerificationConvo } from '../components/conversation/BnsVerification
 
 export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageHash: string) {
   try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     const plaintext = await decrypt(envelope, envelope.content);
 
     if (!plaintext) {
@@ -78,6 +80,7 @@ async function decryptForClosedGroup(envelope: EnvelopePlus, ciphertext: ArrayBu
           throw new Error('No more encryption keypairs to try for message.');
         }
         const encryptionKeyPair = ECKeyPair.fromHexKeyPair(hexEncryptionKeyPair);
+        // eslint-disable-next-line no-await-in-loop
         decryptedContent = await decryptWithBchatProtocol(
           envelope,
           ciphertext,
@@ -195,8 +198,10 @@ export async function decryptWithBchatProtocol(
 
   // set the sender identity on the envelope itself.
   if (isClosedGroup) {
+    // eslint-disable-next-line no-param-reassign
     envelope.senderIdentity = `bd${toHex(senderX25519PublicKey)}`;
   } else {
+    // eslint-disable-next-line no-param-reassign
     envelope.source = `bd${toHex(senderX25519PublicKey)}`;
   }
   perfEnd(`decryptWithBchatProtocol-${envelope.id}`, 'decryptWithBchatProtocol');
@@ -223,14 +228,14 @@ export async function decryptWithBchatProtocol(
   //         walletAddress: beldexFinalAddress,
   //       };
   //       let updateConversation: any = await updateConversationAddress(data);
-  //    
+  //
   //     }
   //     localStorage.setItem('senderWalletAddress', beldexFinalAddress);
   //   } else {
   //     localStorage.setItem('senderWalletAddress', getConversation.walletAddress);
   //   }
   // } else {
-  //  
+  //
   //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
   // }
   // if (
@@ -241,6 +246,8 @@ export async function decryptWithBchatProtocol(
   // }
 
   const message = plaintextWithMetadata.subarray(addressLength, plainTextEnd);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   return message;
 }
 
@@ -298,7 +305,6 @@ async function doDecrypt(
   }
 }
 
-// tslint:disable-next-line: max-func-body-length
 async function decrypt(envelope: EnvelopePlus, ciphertext: ArrayBuffer): Promise<any> {
   try {
     const plaintext = await doDecrypt(envelope, ciphertext);
@@ -511,7 +517,7 @@ export async function innerHandleSwarmContentMessage(
   }
 }
 
-function onReadReceipt(readAt: number, timestamp: number, source: string) {
+async function onReadReceipt(readAt: number, timestamp: number, source: string) {
   window?.log?.info('read receipt', source, timestamp);
 
   if (!Storage.get(SettingsKey.settingsReadReceipt)) {
@@ -536,6 +542,7 @@ async function handleReceiptMessage(
 
   const results = [];
   if (type === SignalService.ReceiptMessage.Type.READ) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const ts of timestamp) {
       const promise = onReadReceipt(
         Lodash.toNumber(envelope.timestamp),
@@ -703,8 +710,7 @@ export async function handleDataExtractionNotification(
 
   const convo = getConversationController().get(source);
   // if (!convo || !convo.isPrivate() ||!(isScreenshotMsg || Storage.get(SettingsKey.settingsReadReceipt))) {
-    if (!convo || !convo.isPrivate()) {
-
+  if (!convo || !convo.isPrivate()) {
     window?.log?.info('Got DataNotification for unknown or non private convo');
     return;
   }

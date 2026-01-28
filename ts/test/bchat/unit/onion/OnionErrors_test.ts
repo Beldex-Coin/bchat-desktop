@@ -1,5 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
-
 import chai from 'chai';
 import Sinon, * as sinon from 'sinon';
 import { describe } from 'mocha';
@@ -35,6 +33,8 @@ const getFakeResponseOnPath = (statusCode?: number, body?: string) => {
 
 const getFakeResponseOnDestination = (statusCode?: number, body?: string) => {
   return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     status: 200 || 0,
     text: async () => {
       return JSON.stringify({ status: statusCode, body: body || '' });
@@ -42,7 +42,6 @@ const getFakeResponseOnDestination = (statusCode?: number, body?: string) => {
   };
 };
 
-// tslint:disable-next-line: max-func-body-length
 describe('OnionPathsErrors', () => {
   // Initialize new stubbed cache
   let updateSwarmSpy: sinon.SinonStub;
@@ -53,7 +52,6 @@ describe('OnionPathsErrors', () => {
   let incrementBadSnodeCountOrDropSpy: sinon.SinonSpy;
 
   let updateGuardNodesStub: sinon.SinonStub;
-  // tslint:disable-next-line: one-variable-per-declaration
   let guardPubkeys: Array<string>,
     otherNodesPubkeys: Array<string>,
     guardNodesArray: Array<Data.Snode>,
@@ -133,6 +131,8 @@ describe('OnionPathsErrors', () => {
       try {
         await processOnionResponse({
           response: getFakeResponseOnPath(),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode: guardSnode1,
           // abortSignal: abortController.signal,
@@ -149,6 +149,8 @@ describe('OnionPathsErrors', () => {
       try {
         await processOnionResponse({
           response: getFakeResponseOnDestination(200),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode: guardSnode1,
         });
@@ -167,6 +169,8 @@ describe('OnionPathsErrors', () => {
       try {
         await processOnionResponse({
           response: getFakeResponseOnDestination(),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode: guardSnode1,
         });
@@ -186,6 +190,8 @@ describe('OnionPathsErrors', () => {
         try {
           await processOnionResponse({
             response: getFakeResponseOnPath(406),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error -- returning Uint8Array intentionally
             symmetricKey: new Uint8Array(),
             guardNode: guardSnode1,
           });
@@ -207,6 +213,8 @@ describe('OnionPathsErrors', () => {
         try {
           await processOnionResponse({
             response: getFakeResponseOnDestination(406),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error -- returning Uint8Array intentionally
             symmetricKey: new Uint8Array(),
             guardNode: guardSnode1,
           });
@@ -234,6 +242,8 @@ describe('OnionPathsErrors', () => {
           try {
             await processOnionResponse({
               response: getFakeResponseOnPath(421),
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error -- returning Uint8Array intentionally
               symmetricKey: new Uint8Array(),
               guardNode: guardSnode1,
               lsrpcEd25519Key: targetNode,
@@ -283,6 +293,8 @@ describe('OnionPathsErrors', () => {
                 421,
                 JSON.stringify({ snodes: resultExpected })
               ),
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error -- returning Uint8Array intentionally
               symmetricKey: new Uint8Array(),
               guardNode: guardSnode1,
               lsrpcEd25519Key: targetNode,
@@ -317,6 +329,8 @@ describe('OnionPathsErrors', () => {
           try {
             await processOnionResponse({
               response: getFakeResponseOnDestination(421, 'THIS IS SOME INVALID JSON'),
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error -- returning Uint8Array intentionally
               symmetricKey: new Uint8Array(),
               guardNode: guardSnode1,
               lsrpcEd25519Key: targetNode,
@@ -355,6 +369,8 @@ describe('OnionPathsErrors', () => {
           try {
             await processOnionResponse({
               response: getFakeResponseOnDestination(421, json),
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error -- returning Uint8Array intentionally
               symmetricKey: new Uint8Array(),
               guardNode: guardSnode1,
               lsrpcEd25519Key: targetNode,
@@ -401,7 +417,7 @@ describe('OnionPathsErrors', () => {
       try {
         await processOnionResponse({
           response: getFakeResponseOnDestination(400, OXEN_SERVER_ERROR),
-          symmetricKey: new Uint8Array(),
+          symmetricKey: new Uint8Array().buffer,
           guardNode: guardSnode1,
           lsrpcEd25519Key: targetNode,
 
@@ -438,6 +454,8 @@ describe('OnionPathsErrors', () => {
             502,
             `${NEXT_NODE_NOT_FOUND_PREFIX}${failingSnode.pubkey_ed25519}`
           ),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode: guardSnode1,
           lsrpcEd25519Key: targetNode,
@@ -479,6 +497,8 @@ describe('OnionPathsErrors', () => {
             502,
             `${NEXT_NODE_NOT_FOUND_PREFIX}${failingSnode.pubkey_ed25519}`
           ),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode: guardSnode1,
           lsrpcEd25519Key: targetNode,
@@ -519,6 +539,8 @@ describe('OnionPathsErrors', () => {
               502,
               `${NEXT_NODE_NOT_FOUND_PREFIX}${failingSnode.pubkey_ed25519}`
             ),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error -- returning Uint8Array intentionally
             symmetricKey: new Uint8Array(),
             guardNode: guardSnode1,
             lsrpcEd25519Key: targetNode,
@@ -561,6 +583,8 @@ describe('OnionPathsErrors', () => {
       try {
         await processOnionResponse({
           response: getFakeResponseOnPath(500),
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error -- returning Uint8Array intentionally
           symmetricKey: new Uint8Array(),
           guardNode,
           lsrpcEd25519Key: targetNode,

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import  { createContext, useEffect, useState } from 'react';
 import { SignUpMode, SignUpTab } from './SignUpTab';
 import { SignInMode, SignInTab } from './SignInTab';
 import { createOrUpdateItem, removeAll } from '../../data/data';
@@ -14,9 +14,10 @@ import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
+import { daemon } from '../../wallet/daemon-rpc';
+import os from 'os';
 
 export const MAX_USERNAME_LENGTH = 26;
-// tslint:disable: use-simple-attributes
 
 export async function resetRegistration() {
   await removeAll();
@@ -95,6 +96,7 @@ export async function signInWithRecovery(signInDetails: {
 }) {
   const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
   const trimName = displayNameIsValid(displayName);
+   const platform = os.platform();
   // shows toast to user about the error
   if (!trimName) {
     return;
@@ -108,7 +110,10 @@ export async function signInWithRecovery(signInDetails: {
     );
     localStorage.setItem('userAddress', restoreWallet.result.address);
     const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
-
+    
+      if (platform === 'win32') {
+        daemon.deamontHeight();
+      }
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName, deamonHeight);

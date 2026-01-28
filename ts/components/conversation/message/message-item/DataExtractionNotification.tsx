@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { PropsForDataExtractionNotification } from '../../../../models/messageType';
 import { SignalService } from '../../../../protobuf';
 import { Flex } from '../../../basic/Flex';

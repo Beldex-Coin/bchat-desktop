@@ -138,7 +138,6 @@ export async function _shutdown() {
     _shutdownCallback = (error: any) => {
       window?.log?.info('data.shutdown: process complete');
       if (error) {
-        // tslint:disable: no-void-expression
         return reject(error);
       }
 
@@ -167,7 +166,6 @@ function makeChannel(fnName: string) {
       });
 
       _jobs[jobId].timer = setTimeout(
-        // tslint:disable: no-void-expression
         () => reject(new Error(`SQL channel job ${jobId} (${fnName}) timed out`)),
         DATABASE_UPDATE_TIMEOUT
       );
@@ -258,7 +256,6 @@ function _removeJob(id: number) {
     _jobs[id].timer = null;
   }
 
-  // tslint:disable-next-line: no-dynamic-delete
   delete _jobs[id];
 
   if (_shutdownCallback) {

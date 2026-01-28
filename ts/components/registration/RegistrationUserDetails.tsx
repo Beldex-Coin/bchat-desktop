@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+// import React from 'react';
 import { BchatInput } from '../basic/BchatInput';
 import { MAX_USERNAME_LENGTH } from './RegistrationStages';
 
@@ -10,7 +10,6 @@ const DisplayNameInput = (props: {
   handlePressEnter: () => any;
 }) => {
   return (
-    // tslint:disable-next-line: use-simple-attributes
     <BchatInput
       autoFocus={props.stealAutoFocus || false}
       type="text"
@@ -33,7 +32,6 @@ const RecoveryPhraseInput = (props: {
   stealAutoFocus?: boolean;
 }) => {
   return (
-    // tslint:disable-next-line: use-simple-attributes
     <BchatInput
       label={window.i18n('recoveryPhrase')}
       type="password"
@@ -49,7 +47,6 @@ const RecoveryPhraseInput = (props: {
 };
 
 export interface Props {
-  // tslint:disable: react-unused-props-and-state
   showDisplayNameField: boolean;
   showSeedField: boolean;
   stealAutoFocus?: boolean;
@@ -76,7 +73,6 @@ export const RegistrationUserDetails = (props: Props) => {
       )}
       <div className="inputfields">
         {props.showDisplayNameField && (
-          // tslint:disable-next-line: use-simple-attributes
           <DisplayNameInput
             stealAutoFocus={!props.showSeedField && props.stealAutoFocus}
             displayName={props.displayName}

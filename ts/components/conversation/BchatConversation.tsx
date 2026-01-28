@@ -34,7 +34,7 @@ import {
   updateMentionsMembers,
 } from '../../state/ducks/conversations';
 import { updateCommunityGuidelinesModal, updateConfirmModal } from '../../state/ducks/modalDialog';
-import { BchatTheme } from '../../state/ducks/BchatTheme';
+import { BchatTheme } from '../../theme/BchatTheme';
 import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAttachments';
 import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
@@ -70,7 +70,7 @@ import { ProfileInfo } from '../BchatProfileInfo';
 // import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
 // import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
 // import { useSelector } from 'react-redux';
-// tslint:disable: jsx-curly-spacing
+
 
 interface State {
   isDraggingFile: boolean;
@@ -98,6 +98,7 @@ interface Props {
   convoList: any;
   focusedSection: any;
   reactListModalstate: any;
+  theme: 'light' | 'dark';
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -105,6 +106,7 @@ export class BchatConversation extends React.Component<Props, State> {
   private dragCounter: number;
   private publicMembersRefreshTimeout?: NodeJS.Timeout;
   private readonly updateMemberList: () => any;
+  private scrollTimeout: number | null = null;  
 
   constructor(props: any) {
     super(props);
@@ -280,7 +282,7 @@ export class BchatConversation extends React.Component<Props, State> {
     //   selectedConversation?.isApproved;
 
     return (
-      <BchatTheme>
+      <BchatTheme mode={this.props.theme}>
         {reactListModalstate && <ReactListModal {...reactListModalstate} />}
 
         <div className="conversation-header">
@@ -369,6 +371,7 @@ export class BchatConversation extends React.Component<Props, State> {
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onChoseAttachments={this.onChoseAttachments}
           />
         </div>
@@ -384,25 +387,42 @@ export class BchatConversation extends React.Component<Props, State> {
     );
   }
 
-  private async scrollToNow() {
-    if (!this.props.selectedConversationKey) {
-      return;
-    }
-    const mostNowMessage = await getLastMessageInConversation(this.props.selectedConversationKey);
-
-    if (mostNowMessage) {
-      await openConversationToSpecificMessage({
-        conversationKey: this.props.selectedConversationKey,
-        messageIdToNavigateTo: mostNowMessage.id,
-        shouldHighlightMessage: false,
-      });
-      const messageContainer = this.messageContainerRef.current;
-      if (!messageContainer) {
-        return;
-      }
-      messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
-    }
+ private async scrollToNow() {
+  if (!this.props.selectedConversationKey) {
+    return;
   }
+
+  const mostNowMessage = await getLastMessageInConversation(
+    this.props.selectedConversationKey
+  );
+
+  if (!mostNowMessage) {
+    return;
+  }
+
+  await openConversationToSpecificMessage({
+    conversationKey: this.props.selectedConversationKey,
+    messageIdToNavigateTo: mostNowMessage.id,
+    shouldHighlightMessage: false,
+  });
+
+  const messageContainer = this.messageContainerRef.current;
+  if (!messageContainer) {
+    return;
+  }
+
+  if (this.scrollTimeout) {
+    clearTimeout(this.scrollTimeout);
+  }
+
+  // ✅ Wait for layout + paint (production safe)
+  this.scrollTimeout = window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      messageContainer.scrollTop =
+        messageContainer.scrollHeight - messageContainer.clientHeight;
+    });
+  });
+}
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ~~~~~~~~~~~ KEYBOARD NAVIGATION ~~~~~~~~~~~~
@@ -435,13 +455,11 @@ export class BchatConversation extends React.Component<Props, State> {
       return;
     }
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < attachmentsFileList.length; i++) {
       await this.maybeAddAttachment(attachmentsFileList[i]);
     }
   }
 
-  // tslint:disable: max-func-body-length cyclomatic-complexity
   private async maybeAddAttachment(file: any) {
     if (!file) {
       return;

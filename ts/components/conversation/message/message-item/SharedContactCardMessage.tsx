@@ -65,12 +65,13 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
     sharedContactNameList[0].length === 66
       ? sharedContactNameList[0].slice(0, 17) + '...'
       : sharedContactNameList[0];
+  const capitalize = (s:string) => s && s[0].toUpperCase() + s.slice(1);
   const userName =
     sharedContactNameList.length > 1
-      ? `${validUserName} and ${sharedContactNameList.length - 1} other${
+      ? `${capitalize(validUserName)} and ${sharedContactNameList.length - 1} other${
           sharedContactNameList.length > 2 ? 's' : ''
         }`
-      : validUserName ?? '';
+      : capitalize(validUserName ?? '');
 
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
@@ -286,7 +287,6 @@ const ContactMessageWrapper = styled.div`
 
 const UserNameWrapper= styled.div`
     word-break: break-all;
-    text-transform: capitalize;
     svg{
     margin-right:5px;
     }

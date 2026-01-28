@@ -1,4 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
 
 import chai from 'chai';
 import Sinon from 'sinon';
@@ -39,7 +38,6 @@ const fakeGuardNodesFromDB: Array<Data.GuardNode> = fakeGuardNodesEd25519.map(ed
   };
 });
 
-// tslint:disable-next-line: max-func-body-length
 describe('OnionPaths', () => {
   // Initialize new stubbed cache
   let oldOnionPaths: Array<Array<Snode>>;
@@ -56,7 +54,6 @@ describe('OnionPaths', () => {
       TestUtils.stubData('getGuardNodes').resolves(fakeGuardNodesFromDB);
       TestUtils.stubData('createOrUpdateItem').resolves();
       TestUtils.stubWindow('getSeedNodeList', () => ['seednode1']);
-      // tslint:disable: no-void-expression no-console
 
       TestUtils.stubWindowLog();
 

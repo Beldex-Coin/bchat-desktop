@@ -1,3 +1,4 @@
+/* eslint-disable more/no-then */
 import { getSodiumRenderer } from '../../bchat/crypto';
 
 const PROFILE_IV_LENGTH = 12; // bytes
@@ -27,13 +28,15 @@ export async function decryptProfile(data: ArrayBuffer, key: ArrayBuffer): Promi
           ciphertext
         )
         .catch(e => {
-          if (e.name === 'OperationError') {
+          if (e && (e as any).name === 'OperationError') {
             // bad mac, basically.
             error.message =
               'Failed to decrypt profile data. Most likely the profile key has changed.';
             error.name = 'ProfileDecryptError';
             throw error;
           }
+          // rethrow other errors so the returned promise stays typed as ArrayBuffer
+          throw e;
         })
     );
 }
@@ -54,6 +57,8 @@ export async function encryptProfile(data: ArrayBuffer, key: ArrayBuffer): Promi
     .importKey('raw', key, { name: 'AES-GCM' }, false, ['encrypt'])
     .then(keyForEncryption =>
       crypto.subtle
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error -- returning Uint8Array intentionally
         .encrypt({ name: 'AES-GCM', iv, tagLength: PROFILE_TAG_LENGTH }, keyForEncryption, data)
         .then(ciphertext => {
           // tslint:disable-next-line: restrict-plus-operands

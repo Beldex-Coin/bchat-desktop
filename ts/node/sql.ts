@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import rimraf from 'rimraf';
-import * as BetterSqlite3 from 'better-sqlite3';
+import * as BetterSqlite3 from '@signalapp/better-sqlite3';
 import { app, clipboard, dialog, Notification } from 'electron';
 
 import {
@@ -24,13 +24,13 @@ import { PubKey } from '../bchat/types/PubKey'; // checked - only node
 import { StorageItem } from './storage_item'; // checked - only node
 import { getAppRootPath } from './getRootPath';
 import { UpdateLastHashType } from '../types/sqlSharedTypes';
-// tslint:disable: no-console quotemark non-literal-fs-path one-variable-per-declaration
+// eslint:disable: function-name non-literal-fs-path
 const openDbOptions = {
-  // tslint:disable-next-line: no-constant-condition
   verbose: false ? console.log : undefined,
   nativeBinding: path.join(
     getAppRootPath(),
     'node_modules',
+    '@signalapp',
     'better-sqlite3',
     'build',
     'Release',
@@ -555,7 +555,7 @@ function updateToSchemaVersion7(currentVersion: number, db: BetterSqlite3.Databa
         number
       ) WHERE number IS NOT NULL;
       INSERT INTO bchats(id, number, json)
-    SELECT "+" || id, number, json FROM bchats_old;
+    SELECT '+' || id, number, json FROM bchats_old;
       DROP TABLE bchats_old;
     `);
 
@@ -1159,9 +1159,9 @@ function updateToBchatSchemaVersion15(currentVersion: number, db: BetterSqlite3.
 
   db.transaction(() => {
     db.exec(`
-      DROP TABLE pairingAuthorisations;
-      DROP TRIGGER messages_on_delete;
-      DROP TRIGGER messages_on_update;
+      DROP TABLE IF EXISTS pairingAuthorisations;
+      DROP TRIGGER IF EXISTS messages_on_delete;
+      DROP TRIGGER IF EXISTS messages_on_update;
     `);
 
     writeBchatSchemaVersion(targetVersion, db);
@@ -1235,36 +1235,31 @@ function dropFtsAndTriggers(db: BetterSqlite3.Database) {
 
 function rebuildFtsTable(db: BetterSqlite3.Database) {
   console.info('rebuildFtsTable');
+  // Create FTS table
+  db.exec(`CREATE VIRTUAL TABLE ${MESSAGES_FTS_TABLE} USING fts5(id UNINDEXED, body);`);
+
+  // Populate FTS table. Try using the physical `body` column first; if it does not
+  // exist, fall back to extracting `body` from the `json` blob.
+  try {
+    db.exec(`INSERT INTO ${MESSAGES_FTS_TABLE}(id, body) SELECT id, body FROM ${MESSAGES_TABLE};`);
+  } catch (e) {
+    console.info('rebuildFtsTable: body column missing, extracting from json');
+    db.exec(`INSERT INTO ${MESSAGES_FTS_TABLE}(id, body) SELECT id, json_extract(json, '$.body') FROM ${MESSAGES_TABLE};`);
+  }
+
+  // Triggers: use json_extract(new.json, '$.body') so they work whether `body` column exists
   db.exec(`
-    -- Then we create our full-text search table and populate it
-    CREATE VIRTUAL TABLE ${MESSAGES_FTS_TABLE}
-      USING fts5(id UNINDEXED, body);
-    INSERT INTO ${MESSAGES_FTS_TABLE}(id, body)
-      SELECT id, body FROM ${MESSAGES_TABLE};
-    -- Then we set up triggers to keep the full-text search table up to date
-    CREATE TRIGGER messages_on_insert AFTER INSERT ON ${MESSAGES_TABLE} BEGIN
-      INSERT INTO ${MESSAGES_FTS_TABLE} (
-        id,
-        body
-      ) VALUES (
-        new.id,
-        new.body
-      );
+    CREATE TRIGGER IF NOT EXISTS messages_on_insert AFTER INSERT ON ${MESSAGES_TABLE} BEGIN
+      INSERT INTO ${MESSAGES_FTS_TABLE} (id, body) VALUES (new.id, json_extract(new.json, '$.body'));
     END;
-    CREATE TRIGGER messages_on_delete AFTER DELETE ON ${MESSAGES_TABLE} BEGIN
+    CREATE TRIGGER IF NOT EXISTS messages_on_delete AFTER DELETE ON ${MESSAGES_TABLE} BEGIN
       DELETE FROM ${MESSAGES_FTS_TABLE} WHERE id = old.id;
     END;
-    CREATE TRIGGER messages_on_update AFTER UPDATE ON ${MESSAGES_TABLE} BEGIN
+    CREATE TRIGGER IF NOT EXISTS messages_on_update AFTER UPDATE ON ${MESSAGES_TABLE} BEGIN
       DELETE FROM ${MESSAGES_FTS_TABLE} WHERE id = old.id;
-      INSERT INTO ${MESSAGES_FTS_TABLE}(
-        id,
-        body
-      ) VALUES (
-        new.id,
-        new.body
-      );
+      INSERT INTO ${MESSAGES_FTS_TABLE} (id, body) VALUES (new.id, json_extract(new.json, '$.body'));
     END;
-    `);
+  `);
   console.info('rebuildFtsTable built');
 }
 
@@ -1318,7 +1313,7 @@ function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.
         `SELECT * FROM ${CONVERSATIONS_TABLE} WHERE type = 'private' AND (name IS NULL or name = '') AND json_extract(json, '$.nickname') <> '';`
       )
       .all();
-    // tslint:disable-next-line: no-void-expression
+   
     (rowsToUpdate || []).forEach(r => {
       const obj = jsonToObject(r.json);
 
@@ -1379,14 +1374,20 @@ function updateToBchatSchemaVersion22(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: starting...`);
 
   db.transaction(() => {
-    db.exec(`DROP INDEX messages_duplicate_check;`);
+    db.exec(`DROP INDEX IF EXISTS messages_duplicate_check;`);
 
-    db.exec(`
-    ALTER TABLE ${MESSAGES_TABLE} DROP sourceDevice;
-    `);
-    db.exec(`
-    ALTER TABLE unprocessed DROP sourceDevice;
-    `);
+    // DROP COLUMN is not supported uniformly across SQLite versions; attempt and ignore failures.
+    try {
+      db.exec(`ALTER TABLE ${MESSAGES_TABLE} DROP COLUMN sourceDevice;`);
+    } catch (e) {
+      console.info('updateToBchatSchemaVersion22: could not drop column sourceDevice from messages', e.message || e);
+    }
+
+    try {
+      db.exec(`ALTER TABLE unprocessed DROP COLUMN sourceDevice;`);
+    } catch (e) {
+      console.info('updateToBchatSchemaVersion22: could not drop column sourceDevice from unprocessed', e.message || e);
+    }
     db.exec(`
     CREATE INDEX messages_duplicate_check ON ${MESSAGES_TABLE} (
       source,
@@ -1538,9 +1539,19 @@ function assertGlobalInstanceOrInstance(
   return globalInstance || (instance as BetterSqlite3.Database);
 }
 
+function isInitialized(): boolean {
+  return !!globalInstance;
+}
+
+function tableExists(tableName: string): boolean {
+  const row = assertGlobalInstance()
+    .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = $name;")
+    .get({ name: tableName });
+  return !!row && !!row.name;
+}
+
 let databaseFilePath: string | undefined;
 
-// tslint:disable-next-line: function-name
 function _initializePaths(configDir: string) {
   const dbDir = path.join(configDir, 'sql');
   fs.mkdirSync(dbDir, { recursive: true });
@@ -2605,7 +2616,6 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
     const messageFound = getMessageById(messageId || firstUnread);
 
     if (messageFound && messageFound.conversationId === conversationId) {
-      // tslint:disable-next-line: no-shadowed-variable
       const rows = assertGlobalInstance()
         .prepare(
           `WITH cte AS (
@@ -3043,33 +3053,60 @@ function setAttachmentDownloadJobPending(id: string, pending: 1 | 0) {
 }
 
 function resetAttachmentDownloadPending() {
+  if (!tableExists(ATTACHMENT_DOWNLOADS_TABLE)) {
+    return;
+  }
   assertGlobalInstance()
     .prepare(`UPDATE ${ATTACHMENT_DOWNLOADS_TABLE} SET pending = 0 WHERE pending != 0;`)
     .run();
 }
 function removeAttachmentDownloadJob(id: string) {
+  if (!tableExists(ATTACHMENT_DOWNLOADS_TABLE)) {
+    return;
+  }
   removeById(ATTACHMENT_DOWNLOADS_TABLE, id);
 }
 function removeAllAttachmentDownloadJobs() {
+  if (!tableExists(ATTACHMENT_DOWNLOADS_TABLE)) {
+    return;
+  }
   assertGlobalInstance().exec(`DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};`);
 }
 
 // All data in database
 function removeAll() {
-  assertGlobalInstance().exec(`
-    DELETE FROM ${IDENTITY_KEYS_TABLE};
-    DELETE FROM ${ITEMS_TABLE};
-    DELETE FROM unprocessed;
-    DELETE FROM ${LAST_HASHES_TABLE};
-    DELETE FROM ${NODES_FOR_PUBKEY_TABLE};
-    DELETE FROM ${CLOSED_GROUP_V2_KEY_PAIRS_TABLE};
-    DELETE FROM seenMessages;
-    DELETE FROM ${CONVERSATIONS_TABLE};
-    DELETE FROM ${MESSAGES_TABLE};
-    DELETE FROM ${ATTACHMENT_DOWNLOADS_TABLE};
-    DELETE FROM ${MESSAGES_FTS_TABLE}; 
-    DELETE FROM ${RECIPIENT_ADDRESS};  
-`);
+  const db = assertGlobalInstance();
+  const tablesToDelete = [
+    IDENTITY_KEYS_TABLE,
+    ITEMS_TABLE,
+    'unprocessed',
+    LAST_HASHES_TABLE,
+    NODES_FOR_PUBKEY_TABLE,
+    CLOSED_GROUP_V2_KEY_PAIRS_TABLE,
+    'seenMessages',
+    CONVERSATIONS_TABLE,
+    MESSAGES_TABLE,
+    ATTACHMENT_DOWNLOADS_TABLE,
+    MESSAGES_FTS_TABLE,
+    RECIPIENT_ADDRESS,
+  ];
+
+  tablesToDelete.forEach(tbl => {
+    try {
+      if (tbl === 'unprocessed' || tbl === 'seenMessages') {
+        // legacy table names that may or may not exist
+        const exists = db
+          .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = $name;")
+          .get({ name: tbl });
+        if (!exists) return;
+      } else if (!tableExists(tbl)) {
+        return;
+      }
+      db.exec(`DELETE FROM ${tbl};`);
+    } catch (e) {
+      console.info(`removeAll: skipping delete for ${tbl}:`, e && e.message ? e.message : e);
+    }
+  });
 }
 
 function removeAllWithOutRecipient() {
@@ -3223,7 +3260,6 @@ function removeKnownAttachments(allAttachments: any) {
     forEach(messages, message => {
       const externalFiles = getExternalFilesForMessage(message);
       forEach(externalFiles, file => {
-        // tslint:disable-next-line: no-dynamic-delete
         delete lookup[file];
       });
     });
@@ -3266,7 +3302,6 @@ function removeKnownAttachments(allAttachments: any) {
     forEach(conversations, conversation => {
       const externalFiles = getExternalFilesForConversation(conversation);
       forEach(externalFiles, file => {
-        // tslint:disable-next-line: no-dynamic-delete
         delete lookup[file];
       });
     });
@@ -3712,7 +3747,6 @@ function cleanUpOldOpengroups() {
   })();
 }
 
-// tslint:disable: binary-expression-operand-order insecure-random
 /**
  * Only using this for development. Populate conversation and message tables.
  */
@@ -4034,5 +4068,6 @@ export const sqlNode = {
    saveRecipientAddress,
 //LRU Cache
    updateLRUCache,
-   getLRUCache
+   getLRUCache,
+  isInitialized
 };

@@ -1,4 +1,4 @@
-import { _electron } from '@playwright/test';
+
 
 export const testUser = {
   userName: 'testUser',

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { BchatIcon, BchatIconButton } from '../icon';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';

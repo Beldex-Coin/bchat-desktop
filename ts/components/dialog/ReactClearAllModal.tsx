@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import  { ReactElement, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updateReactClearAllModal } from '../../state/ducks/modalDialog';
@@ -35,7 +35,7 @@ const StyledReactClearAllContainer = styled(Flex)<{ darkMode: boolean }>`
   }
 `;
 
-// tslint:disable-next-line: max-func-body-length
+
 export const ReactClearAllModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));

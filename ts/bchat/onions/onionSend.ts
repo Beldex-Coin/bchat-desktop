@@ -1,4 +1,4 @@
-// tslint:disable: cyclomatic-complexity
+
 
 import { OnionPaths } from '.';
 import {

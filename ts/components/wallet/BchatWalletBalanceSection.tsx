@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastUtils } from '../../bchat/utils';
 import { getFiatBalance } from '../../state/selectors/walletConfig';
@@ -27,23 +27,26 @@ export const WalletBalanceSection = () => {
     ToastUtils.pushCopiedToClipBoard();
   };
 
-  function disableBalac(values: string | Number) {
-    if (amountVisible) {
-      return values;
-    }
-    let txt: any = String(values);
-    let sliptStr = txt.split('');
-    let dataArray = '';
-    sliptStr.length > 0 &&
-      sliptStr.map((item: any) => {
-        if (item === '.') {
-          dataArray = dataArray + '.';
-          return;
-        }
-        dataArray = dataArray + '*';
-      });
-    return dataArray;
+function disableBalac(value: string | number): string | number {
+  // 🔹 If balance should be visible → return a primitive (string or number)
+  if (amountVisible) {
+    // Always return plain number if possible — no Number objects.
+    if (typeof value === "number") return value;
+    const num = Number(value);
+    return isNaN(num) ? value : num; 
   }
+
+  // 🔹 When masking is needed → convert to string and mask all digits
+  const txt = String(value);
+  let masked = "";
+
+  for (const ch of txt) {
+    masked += ch === "." ? "." : "*";
+  }
+
+  return masked; // Always a string
+}
+
   return (
     <div className="wallet-squarBox-bala" 
     // style={zoomLevel > 100 ? { width: '52%' } : {}}
@@ -55,7 +58,7 @@ export const WalletBalanceSection = () => {
               <BchatIcon iconSize={24} iconType="wallet" />
               {/* <span className="marginLeft"></span> */}
               <div className="wallet-left-balance-Sec-balanceTxt marginLeft">
-                {disableBalac((walletDetails.balance / 1e9).toFixed(decimalValue))}{' '}
+                {disableBalac((walletDetails.balance / 1e9).toFixed(decimalValue))}
                 <span className="marginRight" style={{ color: '#128b17' }}>
                   BDX
                 </span>

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { icons, BchatIconSize, BchatIconType } from '.';
 import styled, { css, keyframes } from 'styled-components';
 
@@ -125,18 +125,17 @@ const animation = (props: {
   return;
 };
 
-//tslint:disable no-unnecessary-callback-wrapper
-const Svg = React.memo(styled.svg<StyledSvgProps>`
+const Svg = styled.svg<StyledSvgProps>`
   width: ${props => props.width};
   transform: ${props => `rotate(${props.iconRotation}deg)`};
   animation: ${props => animation(props)};
-  border-radius: ${props => props.borderRadius};
-  background-color: ${props => (props.backgroundColor ? props.backgroundColor : '')};
-  border-radius: ${props => (props.borderRadius ? props.borderRadius : '')};
-  filter: ${props => (props.noScale ? `drop-shadow(0px 0px 4px ${props.iconColor})` : '')};
-  padding: ${props => (props.iconPadding ? props.iconPadding : '')};
-`);
-//tslint:enable no-unnecessary-callback-wrapper
+  background-color: ${props => props.backgroundColor ?? ""};
+  border-radius: ${props => props.borderRadius ?? ""};
+  filter: ${props => (props.noScale ? `drop-shadow(0px 0px 4px ${props.iconColor})` : "")};
+  padding: ${props => props.iconPadding ?? ""};
+`;
+
+
 
 const BchatSvg = (props: {
   viewBox: string;

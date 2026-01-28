@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';
@@ -204,7 +204,6 @@ export const MessageSearchResult = (props: MessageResultProps) => {
   if (!source && !destination) {
     return null;
   }
-  // tslint:disable: use-simple-attributes
 
   return (
     <StyledSearchResulsts

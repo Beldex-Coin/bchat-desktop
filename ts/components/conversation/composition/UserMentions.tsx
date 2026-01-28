@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { SuggestionDataItem } from 'react-mentions';
 import { MemberListItem } from '../../MemberListItem';
 

@@ -55,4 +55,4 @@ const smart = connect(
     };
   }
 );
-export const SmartBchatConversation = smart(BchatConversation);
+export const SmartBchatConversation:any = smart(BchatConversation);

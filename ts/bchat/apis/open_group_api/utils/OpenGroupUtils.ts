@@ -8,6 +8,7 @@ const dot = '\\.';
 const qMark = '\\?';
 const hostSegment = '[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?';
 const hostnameRegex = new RegExp(`(?:${hostSegment}${dot})+${hostSegment}`);
+// eslint-disable-next-line prefer-regex-literals
 const portRegex = ':[1-9][0-9]{0,4}';
 
 // roomIds allow up to 64 ascii numbers, letters, '_', or '-' chars
@@ -25,6 +26,7 @@ export const openGroupV2ServerUrlRegex = new RegExp(
  * see https://stackoverflow.com/a/9275499/1680951
  */
 export const openGroupV2CompleteURLRegex = new RegExp(
+  // eslint-disable-next-line no-useless-escape
   `^${openGroupV2ServerUrlRegex.source}\/${roomIdV2Regex}${qMark}${publicKeyParam}${publicKeyRegex}$`
 );
 

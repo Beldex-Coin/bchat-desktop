@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { isImageTypeSupported, isVideoTypeSupported } from '../../util/GoogleChrome';
 import { Image } from './Image';

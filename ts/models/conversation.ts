@@ -230,15 +230,16 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     //   our first save to the database. Or first fetch from the database.
     this.initialPromise = Promise.resolve();
     autoBind(this);
-
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.throttledBumpTyping = _.throttle(this.bumpTyping, 300);
     this.updateLastMessage = _.throttle(this.bouncyUpdateLastMessage.bind(this), 1000, {
       trailing: true,
       leading: true,
     });
-
+   // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.throttledNotify = _.debounce(this.notify, 500, { maxWait: 5000, trailing: true });
     //start right away the function is called, and wait 1sec before calling it again
+     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const markReadDebounced = _.debounce(this.markReadBouncy, 1000, {
       leading: true,
       trailing: true,
@@ -368,7 +369,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return groupAdmins && groupAdmins?.length > 0 ? groupAdmins : [];
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public getConversationModelProps(): ReduxConversationType {
     const groupAdmins = this.getGroupAdmins();
     const isPublic = this.isPublic();
@@ -566,11 +566,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async queueJob(callback: () => Promise<void>) {
-    // tslint:disable-next-line: no-promise-as-boolean
     const previous = this.pending || Promise.resolve();
 
     const taskWithTimeout = createTaskWithTimeout(callback, `conversation ${this.idForLogging()}`);
-
+// eslint-disable-next-line more/no-then
     this.pending = previous.then(taskWithTimeout, taskWithTimeout);
     const current = this.pending;
 
@@ -1207,7 +1206,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public async markReadBouncy(newestUnreadDate: number, providedOptions: any = {}) {
     const lastReadTimestamp = this.lastReadTimestamp;
     if (newestUnreadDate < lastReadTimestamp) {
@@ -1228,6 +1226,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     let read = [];
 
     // Build the list of updated message models so we can mark them all as read on a single sqlite call
+     // eslint-disable-next-line no-restricted-syntax
     for (const nowRead of oldUnreadNowRead) {
       nowRead.markReadNoCommit(options.readAt);
 
@@ -1243,7 +1242,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       await saveMessages(oldUnreadNowReadAttrs);
     }
     const allProps: Array<MessageModelPropsWithoutConvoProps> = [];
-
+ // eslint-disable-next-line no-restricted-syntax
     for (const nowRead of oldUnreadNowRead) {
       allProps.push(nowRead.getMessageModelProps());
     }
@@ -1815,7 +1814,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     // we do not trigger a state change here, instead we rely on the caller to do the commit once it is done with the queue of messages
     this.typingTimer = isTyping
-      ? global.setTimeout(this.clearContactTypingTimer.bind(this, sender), 15 * 1000)
+      ? // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      global.setTimeout(this.clearContactTypingTimer.bind(this, sender), 15 * 1000)
       : null;
   }
 

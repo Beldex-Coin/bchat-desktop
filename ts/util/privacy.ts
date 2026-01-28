@@ -1,6 +1,5 @@
 /* eslint-env node */
 
-// tslint:disable-next-line: no-submodule-imports
 import { compose } from 'lodash/fp';
 import { escapeRegExp, isRegExp, isString } from 'lodash';
 import { getAppRootPath } from '../node/getRootPath';

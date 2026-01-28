@@ -1,11 +1,12 @@
 import ByteBuffer from 'bytebuffer';
 import { generateKeyPair, sharedKey, verify } from 'curve25519-js';
+// eslint-disable-next-line import/no-named-default
 import { default as sodiumWrappers } from 'libsodium-wrappers-sumo';
 import _ from 'lodash';
 import {
   decryptAttachmentBufferNode as realDecryptAttachmentBufferNode,
   encryptAttachmentBufferNode as realEncryptAttachmentBufferNode,
-} from '../../node/encrypt_attachment_buffer';
+} from '../../../../node/encrypt_attachment_buffer';
 
 /* eslint-disable no-console */
 /* eslint-disable strict */
@@ -28,8 +29,8 @@ const functions = {
   encryptAttachmentBufferNode,
   bytesFromString,
 };
-// tslint:disable: function-name
-//tslint-disable no-console
+// eslint:disable: function-name
+// eslint:disable: no-console
 onmessage = async (e: any) => {
   const [jobId, fnName, ...args] = e.data;
 
@@ -105,7 +106,7 @@ async function verifyAllSignatures(
         if (valid) {
           return unchecked.base64EncodedData;
         }
-        // tslint:disable: no-console
+        // eslint:disable: no-console
         console.info('got an socialgroup message with an invalid signature');
         return null;
       } catch (e) {
@@ -170,6 +171,8 @@ async function deriveSymmetricKey(x25519PublicKey: Uint8Array, x25519PrivateKey:
   const symmetricKey = await crypto.subtle.sign(
     { name: 'HMAC', hash: 'SHA-256' },
     key,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     ephemeralSecret
   );
 
@@ -199,6 +202,8 @@ async function encryptForPubkey(pubkeyX25519str: string, payloadBytes: Uint8Arra
       pubkeyX25519Buffer,
       new Uint8Array(ephemeral.private)
     );
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     const ciphertext = await EncryptAESGCM(symmetricKey, payloadBytes);
 
     return { ciphertext, symmetricKey, ephemeralKey: ephemeral.public };
@@ -221,7 +226,7 @@ async function EncryptAESGCM(symmetricKey: ArrayBuffer, plaintext: ArrayBuffer) 
     plaintext
   );
 
-  // tslint:disable-next-line: restrict-plus-operands
+  // eslint:disable-next-line: restrict-plus-operands
   const ivAndCiphertext = new Uint8Array(NONCE_LENGTH + ciphertext.byteLength);
 
   ivAndCiphertext.set(nonce);
@@ -238,6 +243,8 @@ async function DecryptAESGCM(symmetricKey: Uint8Array, ivAndCiphertext: Uint8Arr
 
   const nonce = ivAndCiphertext.buffer.slice(0, NONCE_LENGTH);
   const ciphertext = ivAndCiphertext.buffer.slice(NONCE_LENGTH);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const key = await crypto.subtle.importKey(
     'raw',
     symmetricKey.buffer,
@@ -245,6 +252,7 @@ async function DecryptAESGCM(symmetricKey: Uint8Array, ivAndCiphertext: Uint8Arr
     false,
     ['decrypt']
   );
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   return crypto.subtle.decrypt({ name: 'AES-GCM', iv: nonce }, key, ciphertext);
 }

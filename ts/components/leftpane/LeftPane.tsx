@@ -1,8 +1,10 @@
-import React from 'react';
+// import React from 'react';
 
 import { useSelector } from 'react-redux';
 import { SectionType } from '../../state/ducks/section';
-import { BchatTheme } from '../../state/ducks/BchatTheme';
+// import { BchatTheme } from '../../state/ducks/BchatTheme';
+import { BchatTheme } from '../../theme/BchatTheme';
+
 import { getLeftPaneLists, getUnreadConversationRequests } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
@@ -19,6 +21,7 @@ import { getDirectContacts } from '../../state/selectors/conversations';
 import { AddressBook } from '../wallet/BchatWalletAddressBook';
 import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayCallHistory } from './overlay/OverlayCallHistory';
+import { getTheme } from '../../state/selectors/theme';
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -132,8 +135,9 @@ const LeftPaneSection = () => {
 // };
 
 export const LeftPane = () => {
+  const darkMode = useSelector(getTheme);
   return (
-    <BchatTheme>
+    <BchatTheme mode={darkMode}>
       <div className="module-left-pane-bchat">
         <div className="module-left-pane">
            <ActionsPanel />

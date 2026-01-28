@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
 
 import { missingCaseError } from '../../util';
@@ -45,7 +46,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
   public componentDidMount() {
     setTimeout(() => {
-      // tslint:disable-next-line: no-unused-expression
       this.passportInput && this.passportInput.focus();
     }, 1);
   }
@@ -304,7 +304,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     this.closeDialog();
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   private async setPassword() {
     const { passwordAction } = this.props;
     const {

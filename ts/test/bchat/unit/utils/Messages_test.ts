@@ -1,4 +1,4 @@
-// tslint:disable: no-implicit-dependencies
+
 
 import chai from 'chai';
 import { TestUtils } from '../../../test-utils';
@@ -25,7 +25,7 @@ describe('Message Utils', () => {
     Sinon.restore();
   });
 
-  // tslint:disable-next-line: max-func-body-length
+
   describe('toRawMessage', () => {
     it('can convert to raw message', async () => {
       const device = TestUtils.generateFakePubKey();

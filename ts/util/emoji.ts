@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-continue */
+/* eslint-disable no-param-reassign */
+/* eslint-disable import/no-mutable-exports  */
 import { FixedBaseEmoji, NativeEmojiData } from '../types/Reaction';
 
 export type SizeClassType = 'default' | 'small' | 'medium' | 'large' | 'jumbo';

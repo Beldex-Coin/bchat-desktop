@@ -33,7 +33,7 @@ export const StartRecordingButton = (props: { onClick: () => void }) => {
     />
   );
 };
-
+// eslint-disable-next-line react/display-name
 export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () => void }>(
   (props, ref) => {
     const darkMode = useSelector(getTheme) === 'dark';

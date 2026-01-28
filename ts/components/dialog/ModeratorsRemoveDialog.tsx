@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { getConversationController } from '../../bchat/conversations';
 import { PubKey } from '../../bchat/types';

@@ -1,5 +1,5 @@
 import { getV2OpenGroupRoomByRoomId, saveV2OpenGroupRoom } from '../../../../data/opengroups';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 import { allowOnlyOneAtATime } from '../../../utils/Promise';
 import { toHex } from '../../../utils/String';
 import { getIdentityKeyPair, getOurPubKeyStrFromCache } from '../../../utils/User';

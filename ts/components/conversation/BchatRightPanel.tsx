@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BchatIcon, BchatIconButton } from '../icon';
 import _ from 'lodash';
-// tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -313,8 +312,7 @@ const ClassicMemberList = (props: {
   );
 };
 
-// tslint:disable: cyclomatic-complexity
-// tslint:disable: max-func-body-length
+
 export const BchatRightPanelWithDetails = () => {
   const [documents, setDocuments] = useState<Array<MediaItemType>>([]);
   const [media, setMedia] = useState<Array<MediaItemType>>([]);
@@ -791,7 +789,6 @@ export const BchatRightPanelWithDetails = () => {
           )}
 
           {isGroup && (
-            // tslint:disable-next-line: use-simple-attributes
             <div style={{ width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
               <BchatButton
                 text={leaveGroupString}

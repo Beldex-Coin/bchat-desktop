@@ -215,7 +215,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         mode: 'edit',
         loading: false,
       });
-      this.onClickOK();
+      this.onClickOK( scaledAvatarUrl );
     }
   }
 
@@ -320,7 +320,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <BchatIconButton
               iconType="save_tick"
               iconSize="small"
-              onClick={this.onClickOK}
+              onClick={() => this.onClickOK()}
             // dataTestId="modal-close-button"
             />
           </div>
@@ -488,7 +488,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   /**
    * Tidy the profile name input text and save the new profile name and avatar
    */
-  private onClickOK() {
+  private onClickOK(scaledAvatarUrl?: string |undefined) {
     const { newAvatarObjectUrl, profileName, setProfileName } = this.state;
     const newName = profileName.trim()  ? profileName.trim() : setProfileName;
     // if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
@@ -500,7 +500,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
         loading: true,
       },
       async () => {
-        await commitProfileEdits(setProfileName, newName, newAvatarObjectUrl);
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        await commitProfileEdits(setProfileName, newName, scaledAvatarUrl ||newAvatarObjectUrl);
         this.setState({
           loading: false,
           mode: 'default',
@@ -527,7 +528,6 @@ async function commitProfileEdits(
     ourNumber,
     ConversationTypeEnum.PRIVATE
   );
-
   if (scaledAvatarUrl?.length) {
     try {
       const blobContent = await (await fetch(scaledAvatarUrl)).blob();

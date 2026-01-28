@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useMountedState from 'react-use/lib/useMountedState';
 import {
   addVideoEventsListener,

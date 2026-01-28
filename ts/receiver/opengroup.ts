@@ -29,7 +29,8 @@ export async function handleOpenGroupV2Message(
   perfStart(`fromBase64ToArray-${base64EncodedData.length}`);
   const arr = fromBase64ToArray(base64EncodedData);
   perfEnd(`fromBase64ToArray-${base64EncodedData.length}`, 'fromBase64ToArray');
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   const dataUint = new Uint8Array(removeMessagePadding(arr));
 
   const decoded = SignalService.Content.decode(dataUint);

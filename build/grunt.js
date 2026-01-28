@@ -1,2 +1,2 @@
 // because grunt.cmd is totally flakey on windows
-require('grunt').cli();
+// require('grunt').cli();

@@ -71,6 +71,8 @@ export class AttachmentFsV2Utils {
       const iv = new Uint8Array(crypto.randomBytes(16));
 
       const dataToEncrypt = !shouldPad ? attachment.data : addAttachmentPadding(attachment.data);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const data = await encryptAttachment(dataToEncrypt, pointer.key.buffer, iv.buffer);
       pointer.digest = new Uint8Array(data.digest);
       attachmentData = data.ciphertext;

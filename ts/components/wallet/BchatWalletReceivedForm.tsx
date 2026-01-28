@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 // import { QRCode } from "react-qr-svg"
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
 import { QRCode } from 'react-qrcode-logo';

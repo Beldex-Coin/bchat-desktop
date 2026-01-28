@@ -6,10 +6,7 @@ import { OpenGroupVisibleMessage } from '../messages/outgoing/visibleMessage/Ope
 import { RawMessage } from '../types';
 import { UserUtils } from '../utils';
 
-
-// tslint:disable-next-line: no-unnecessary-class
 export class MessageSentHandler {
-
   public static async handlePublicMessageSentSuccess(
     sentMessage: OpenGroupVisibleMessage,
     result: { serverId: number; serverTimestamp: number }
@@ -41,7 +38,6 @@ export class MessageSentHandler {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public static async handleMessageSentSuccess(
     sentMessage: RawMessage,
     effectiveTimestamp: number,
@@ -55,7 +51,6 @@ export class MessageSentHandler {
     const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
     const { dataMessage } = contentDecoded;
 
-  
     if (dataMessage && dataMessage.reaction) {
       return;
     }
@@ -83,7 +78,6 @@ export class MessageSentHandler {
     // and the current message was sent to our device (so a sync message)
     const shouldMarkMessageAsSynced = isOurDevice && fetchedMessage.get('sentSync');
 
-   
     /**
      * We should hit the notify endpoint for push notification only if:
      *  • It's a one-to-one chat or a closed group
@@ -101,6 +95,8 @@ export class MessageSentHandler {
         window?.log?.warn('Should send PN notify but no wrapped envelope set.');
       } else {
         // we do not really care about the result, neither of waiting for it
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error -- returning Uint8Array intentionally
         void PnServer.notifyPnServer(wrappedEnvelope, sentMessage.device);
       }
     }

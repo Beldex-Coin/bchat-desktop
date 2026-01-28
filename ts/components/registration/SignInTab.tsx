@@ -17,7 +17,7 @@ import { GoBackMainMenuButton } from './SignUpTab';
 // import { TermsAndConditions } from './TermsAndConditions';
 import { BchatInput } from '../basic/BchatInput';
 import { DisplaySeed } from './DisplaySeed';
-import { mn_decode } from '../../bchat/crypto/mnemonic';
+import { mnDecode } from '../../bchat/crypto/mnemonic';
 import { ToastUtils } from '../../bchat/utils';
 import { WalletPassword } from './WalletPass';
 import { Flex } from '../basic/Flex';
@@ -33,8 +33,7 @@ export enum SignInMode {
   UsingRecoveryPhrase,
   LinkDevice,
 }
-// tslint:disable: use-simple-attributes
-// tslint:disable: react-unused-props-and-state
+
 
 // const LinkDeviceButton = (props: { onLinkDeviceButtonClicked: () => any }) => {
 //   return (
@@ -228,7 +227,7 @@ export const SignInTab = (props: any) => {
       return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
     } else {
       try {
-        mn_decode(recoveryPhrase, 'english');
+        mnDecode(recoveryPhrase, 'english');
         setScreenName(2);
         props.imageValidator(LeftImage.password);
       } catch (e) {

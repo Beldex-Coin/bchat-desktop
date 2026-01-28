@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatInput } from '../basic/BchatInput';
 import { Flex } from '../basic/Flex';

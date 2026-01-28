@@ -7,7 +7,7 @@ let initialized = false;
 
 const SQL_CHANNEL_KEY = 'sql-channel';
 const ERASE_SQL_KEY = 'erase-sql-key';
-// tslint:disable: no-console
+
 
 export function initializeSqlChannel() {
   if (initialized) {
@@ -16,6 +16,18 @@ export function initializeSqlChannel() {
 
   ipcMain.on(SQL_CHANNEL_KEY, (event, jobId, callName, ...args) => {
     try {
+      // Guard: ensure SQL has been initialized in the main process before dispatching calls
+      // if (!(sqlNode as any).isInitialized || !(sqlNode as any).isInitialized()) {
+      //   const msg = 'SQL node not initialized';
+      //   console.log(`sql channel rejected call ${callName}: ${msg}`);
+      //   try {
+      //     event.sender.send(`${SQL_CHANNEL_KEY}-done`, jobId, msg, null);
+      //   } catch (e) {
+      //     console.error('Failed to send sql-channel not-initialized response', e);
+      //   }
+      //   return;
+      // }
+
       const fn = (sqlNode as any)[callName];
       if (!fn) {
         throw new Error(`sql channel: ${callName} is not an available function`);
@@ -27,6 +39,12 @@ export function initializeSqlChannel() {
     } catch (error) {
       const errorForDisplay = error && error.stack ? error.stack : error;
       console.log(`sql channel error with call ${callName}: ${errorForDisplay}`);
+      // Send error back to caller so the renderer-side promise can reject cleanly
+      try {
+        event.sender.send(`${SQL_CHANNEL_KEY}-done`, jobId, errorForDisplay, null);
+      } catch (e) {
+        console.error('Failed to send sql-channel error response', e);
+      }
     }
   });
 

@@ -14,7 +14,7 @@ import { ConversationModel } from '../../models/conversation';
 import { useFocusMount } from '../../hooks/useFocusMount';
 import { useConversationPropsById } from '../../hooks/useParamSelector';
 import { BchatIcon } from '../icon/BchatIcon';
-// tslint:disable: use-simple-attributes
+
 
 async function banOrUnBanUserCall(
   convo: ConversationModel,
@@ -39,11 +39,12 @@ async function banOrUnBanUserCall(
 
     if (!isChangeApplied) {
       window?.log?.warn(`failed to ${banType} user: ${isChangeApplied}`);
-
+  // eslint-disable-next-line no-unused-expressions
       banType === 'ban' ? ToastUtils.pushUserBanFailure() : ToastUtils.pushUserUnbanSuccess();
       return false;
     }
     window?.log?.info(`${pubkey.key} user ${banType}ned successfully...`);
+    // eslint-disable-next-line no-unused-expressions
     banType === 'ban' ? ToastUtils.pushUserBanSuccess() : ToastUtils.pushUserUnbanSuccess();
     return true;
   } catch (e) {

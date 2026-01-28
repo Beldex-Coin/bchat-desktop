@@ -16,7 +16,5 @@ export class PendingMessageCacheStub extends PendingMessageCache {
     return this.dbData;
   }
 
-  protected async saveToDB() {
-    return;
-  }
+  protected async saveToDB() { }
 }

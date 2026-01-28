@@ -1,4 +1,4 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
+/* eslint-disable no-unused-expressions */
 import chai from 'chai';
 import ByteBuffer from 'bytebuffer';
 
@@ -82,7 +82,7 @@ describe('String Utils', () => {
     });
 
     it('can encode huge string', () => {
-      const stringSize = Math.pow(2, 16);
+      const stringSize =  2 ** 16;
       const testString = Array(stringSize)
         .fill('0')
         .join('');
@@ -137,14 +137,14 @@ describe('String Utils', () => {
       encodings.forEach(encoding => {
         const decoded = StringUtils.decode(buffer, encoding);
 
-        expect(decoded).to.exist;
-        expect(typeof decoded === String.name.toLowerCase());
+     expect(decoded.length).to.exist;
+        expect(typeof decoded === 'string');
         expect(decoded).to.have.length(0);
       });
     });
 
     it('can decode huge buffer', () => {
-      const bytes = Math.pow(2, 16);
+      const bytes =  2 ** 16;
       const bufferString = Array(bytes)
         .fill('A')
         .join('');

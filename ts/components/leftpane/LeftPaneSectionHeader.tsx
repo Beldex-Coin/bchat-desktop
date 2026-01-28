@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -25,7 +25,7 @@ import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 // import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 // import { getIsOnline } from '../../state/selectors/onions';
@@ -111,11 +111,11 @@ export const LeftPaneSectionHeader = () => {
     window.setTheme(updatedTheme);
     dispatch(applyTheme(updatedTheme));
 
-    if (updatedTheme === 'dark') {
-      switchHtmlToDarkTheme();
-    } else {
-      switchHtmlToLightTheme();
-    }
+    // if (updatedTheme === 'dark') {
+    //   switchHtmlToDarkTheme();
+    // } else {
+    //   switchHtmlToLightTheme();
+    // }
   }
 
   // function switchToWalletSec() {

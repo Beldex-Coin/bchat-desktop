@@ -1,7 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import { SuggestionDataItem } from 'react-mentions';
 import styled from 'styled-components';
-
+// eslint-disable-next-line import/extensions
 import { searchSync } from '../../../util/emoji.js';
 import {  SearchIndex } from 'emoji-mart';
 

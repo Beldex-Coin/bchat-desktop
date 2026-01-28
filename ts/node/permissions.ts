@@ -1,6 +1,5 @@
 // The list of permissions is here:
 //   https://electronjs.org/docs/api/session#sessetpermissionrequesthandlerhandler
-// tslint:disable: no-console
 
 import { UserConfig } from './config/user_config';
 import { session } from 'electron';

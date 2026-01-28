@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD } from '../basic/Text';
@@ -121,16 +121,14 @@ export const Dashboard = (props: any) => {
   const focusedInnersection = useSelector((state: any) => state.walletInnerFocused);
   let transactions = useSelector((state: any) => state.wallet.transacations);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
-  const syncBar = window.getSettingValue('sync_bar');
-  const getSyncStatus = window.getSettingValue('syncStatus');
+  // const syncBar = window.getSettingValue('sync_bar');
+  // const getSyncStatus = window.getSettingValue('syncStatus');
   // daemon.daemonHeartbeat();
   return (
     <>
       <WalletHeader />
       <SpacerLG />
-      <SyncStatusBox width={syncBar} color={getSyncStatus}>
         <MemoSyncStatusBar />
-      </SyncStatusBox>
       <SpacerLG />
       <div className="wallet-contentSpace">
         <Flex container={true} flexDirection="row" width="100%">
@@ -193,10 +191,7 @@ export const BalanceAndsendReceiveAction = (props: any) => {
 type RightPaneProps = {
   zoomFactor:number;
 };
-type Syncbar = {
-  width:string;
-  color:string
-};
+
 const Leftpane = styled.div<RightPaneProps>`
   // width:45vw;
   // height:${props=>props.zoomFactor==125?'76vh':props.zoomFactor==150 && window.innerWidth<1100? '74vh':props.zoomFactor==150?'73vh' :'79vh'};
@@ -217,19 +212,3 @@ const RightPane = styled.div<RightPaneProps>`
   overflow:auto;
 `;
 
-const SyncStatusBox = styled.div<Syncbar>`
-  position: relative;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0px;
-    left: ;
-    padding: 10px;
-    width: ${props => (props.width ? `${props.width}%` : '10%')};
-    border-bottom: 2px solid ${props =>(props.color? '#1DBF25':'#FDB12A')};
-    transition: width 3s ease-in-out;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: ${props => ((props.width == '100.0')? '12px'  : 'none')};
-
-`;

@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import { SignalService } from '../protobuf';
-import loadImage, { CropOptions, LoadImageOptions } from 'blueimp-load-image';
+import loadImage, { LoadImageOptions } from 'blueimp-load-image';
 import { getDecryptedMediaUrl } from '../bchat/crypto/DecryptedAttachmentsManager';
 import { sendDataExtractionNotification } from '../bchat/messages/outgoing/controlMessage/DataExtractionNotificationMessage';
 import { AttachmentType, save } from '../types/Attachment';
@@ -140,7 +141,7 @@ async function canvasToBlob(
  * @param attachment The attachment to scale down
  * @param maxMeasurements any of those will be used if set
  */
-// tslint:disable-next-line: cyclomatic-complexity
+
 export async function autoScale<T extends { contentType: string; blob: Blob }>(
   attachment: T,
   maxMeasurements?: MaxScaleSize
@@ -179,14 +180,14 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
     throw new Error(`GIF is too large, required size is ${maxSize}`);
   }
 
-  const crop: CropOptions = {
-    crop: makeSquare,
-  };
+  // const crop: CropOptions = {
+  //   crop: makeSquare,
+  // };
 
   const loadImgOpts: LoadImageOptions = {
     maxWidth: makeSquare ? maxMeasurements?.maxSide : maxWidth,
     maxHeight: makeSquare ? maxMeasurements?.maxSide : maxHeight,
-    ...crop,
+    crop: !!makeSquare,
     orientation: 1,
     aspectRatio: makeSquare ? 1 : undefined,
     canvas: true,
@@ -235,6 +236,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
     window.log.info(`autoscale iteration: [${i}] for:`, attachment);
 
     perfStart(`autoscale-canvasToBlob-${attachment.blob.size}`);
+     // eslint-disable-next-line no-await-in-loop
     const tempBlob = await canvasToBlob(canvas.image as HTMLCanvasElement, 'image/jpeg', quality);
     perfEnd(
       `autoscale-canvasToBlob-${attachment.blob.size}`,

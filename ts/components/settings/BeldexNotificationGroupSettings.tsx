@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import  { useState } from 'react';
 // import { BchatRadioGroup } from '../basic/BchatRadioGroup';
 import { BchatToggleWithDescription } from './BchatSettingListItem';
 import { Constants } from '../../bchat';

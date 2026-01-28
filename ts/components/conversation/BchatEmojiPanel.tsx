@@ -1,4 +1,4 @@
-import React, { forwardRef, MutableRefObject, useEffect } from 'react';
+import  { forwardRef, MutableRefObject, useEffect } from 'react';
 import classNames from 'classnames';
 import data from '@emoji-mart/data';
 
@@ -172,7 +172,7 @@ const categoryIcons = {
 </svg>`,
   },
 };
-
+// eslint-disable-next-line react/display-name
 export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
   const { onEmojiClicked, show, isModal = false } = props;
   // const darkMode = useSelector(getTheme) === 'dark';
@@ -182,14 +182,13 @@ export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, 
   useEffect(() => {
     let isCancelled = false;
     if (pickerRef.current && pickerRef.current.children.length === 0) {
-      // tslint:disable-next-line: no-unused-expression
-
+      
       loadEmojiPanelI18n()
         .then(async i18n => {
           if (isCancelled) {
             return;
           }
-          // tslint:disable-next-line: no-unused-expression
+
           new Picker({
             data,
             ref,

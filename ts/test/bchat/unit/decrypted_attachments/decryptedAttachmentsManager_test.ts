@@ -3,10 +3,8 @@ import { beforeEach } from 'mocha';
 import Sinon from 'sinon';
 import * as DecryptedAttachmentsManager from '../../../../bchat/crypto/DecryptedAttachmentsManager';
 import { TestUtils } from '../../../test-utils';
-// tslint:disable: chai-vague-errors no-unused-expression
 
 describe('DecryptedAttachmentsManager', () => {
-  // tslint:disable-next-line: no-empty
   beforeEach(() => {
     DecryptedAttachmentsManager.resetDecryptedUrlForTesting();
     TestUtils.stubWindowLog();
@@ -134,7 +132,7 @@ describe('DecryptedAttachmentsManager', () => {
         expect(resolved2.startsWith(now2.slice(0, 9))).to.be.true;
       });
     });
-  }); // tslint:disable: no-empty
+  }); 
 
   it.skip('cleanUpOldDecryptedMedias', () => {});
   it.skip('getDecryptedBlob', () => {});

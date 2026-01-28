@@ -217,10 +217,24 @@ export const MessageContentWithStatuses = (props: Props) => {
   const multiSelectMode = useSelector(isMessageSelectionMode);
   const darkMode = useSelector(getTheme) === 'dark';
   const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
-  if (!selected) {
-    return null;
-  }
-  const { status } = selected;
+
+   const {
+    messageId,
+    ctxMenuID,
+    isDetailView,
+    dataTestId,
+    expirationLength,
+    expirationTimestamp,
+    enableReactions,
+    isRightClicked,
+    onMessageLoseFocus,
+    onHandleContextMenu,
+    acceptUrl,
+    txnId,
+    cardDesignTag,
+    recentEmojiBtnVisible,
+    setRecentEmojiBtnVisible,
+  } = props;
 
   const onClickOnMessageOuterContainer = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -232,6 +246,23 @@ export const MessageContentWithStatuses = (props: Props) => {
     },
     [window.contextMenuShown, props?.messageId, multiSelectMode, props?.isDetailView]
   );
+  const [popupReaction, setPopupReaction] = useState('');
+
+   if (!selected) {
+    return null;
+  }
+  
+  if (!contentProps) {
+    return null;
+  }
+    const { status } = selected;
+  const {
+    direction,
+    isDeleted,
+    hasAttachments,
+    isTrustedForAttachmentDownload,
+    isPublic,
+  } = contentProps;
 
   const onDoubleClickReplyToMessage = (e: React.MouseEvent<HTMLDivElement>) => {
     const currentSelection = window.getSelection();
@@ -251,24 +282,8 @@ export const MessageContentWithStatuses = (props: Props) => {
     }
   };
 
-  const {
-    messageId,
-    ctxMenuID,
-    isDetailView,
-    dataTestId,
-    expirationLength,
-    expirationTimestamp,
-    enableReactions,
-    isRightClicked,
-    onMessageLoseFocus,
-    onHandleContextMenu,
-    acceptUrl,
-    txnId,
-    cardDesignTag,
-    recentEmojiBtnVisible,
-    setRecentEmojiBtnVisible,
-  } = props;
-  const [popupReaction, setPopupReaction] = useState('');
+ 
+
 
   const handleMessageReaction = async (emoji: string) => {
     await sendMessageReaction(messageId, emoji);
@@ -280,16 +295,8 @@ export const MessageContentWithStatuses = (props: Props) => {
     dispatch(updateReactListModal({ reaction: popupReaction, messageId }));
   };
 
-  if (!contentProps) {
-    return null;
-  }
-  const {
-    direction,
-    isDeleted,
-    hasAttachments,
-    isTrustedForAttachmentDownload,
-    isPublic,
-  } = contentProps;
+
+
   const isIncoming = direction === 'incoming';
 
   const emojiIsVisible =

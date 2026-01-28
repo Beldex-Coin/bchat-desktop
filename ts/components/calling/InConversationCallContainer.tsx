@@ -1,5 +1,5 @@
 import {  useSelector } from 'react-redux';
-import React, { useEffect, useRef, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 import { CallManager, UserUtils } from '../../bchat/utils';
@@ -19,7 +19,6 @@ import { useVideoCallEventsListener } from '../../hooks/useVideoEventListener';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
 import { CallWindowControls } from './CallButtons';
  import { DEVICE_DISABLED_DEVICE_ID } from '../../bchat/utils/calling/CallManager';
-// tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import moment from 'moment';
 import { BchatSpinner } from '../basic/BchatSpinner';
@@ -203,7 +202,6 @@ export const DurationLabel = (props: { isVideoCall?: boolean; isDraggable?: bool
   const ms = callDuration * 1000;
   const d = moment.duration(ms);
 
-  // tslint:disable-next-line: restrict-plus-operands
   const dateString = Math.floor(d.asHours()) + moment.utc(ms).format(':mm:ss');
   if (isDraggable && isVideoCall) {
     return <StyledVideoCallLabel>{dateString}</StyledVideoCallLabel>;
@@ -229,7 +227,6 @@ export const VideoLoadingSpinner = (props: { fullWidth: boolean }) => {
   );
 };
 
-// tslint:disable-next-line: max-func-body-length
 export const InConversationCallContainer = () => {
   const isInFullScreen = useSelector(getCallIsInFullScreen);
 

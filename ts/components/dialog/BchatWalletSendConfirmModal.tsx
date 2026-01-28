@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from 'react';
+import  {  useRef, useState } from 'react';
 // import { BchatHtmlRenderer } from '../basic/BchatHTMLRenderer';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';

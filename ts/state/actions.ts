@@ -12,7 +12,7 @@ import {action as walletInner}from "./ducks/walletInnerSection"
 import {actions as walletConfig} from "./ducks/walletConfig"
 
 
-export function mapDispatchToProps(dispatch: Dispatch): Object {
+export function mapDispatchToProps(dispatch: Dispatch): object {
   return {
     ...bindActionCreators(
       {

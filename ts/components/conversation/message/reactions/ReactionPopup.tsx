@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import  { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMessageById } from '../../../../data/data';
 import { readableList } from '../../../../util/readableList';

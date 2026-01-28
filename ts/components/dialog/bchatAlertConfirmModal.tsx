@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SpacerMD } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';

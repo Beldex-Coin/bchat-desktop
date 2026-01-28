@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 import { syncConfigurationIfNeeded } from '../../bchat/utils/syncUtils';
 
@@ -12,7 +12,6 @@ import {
 } from '../../data/data';
 import { getMessageQueue } from '../../bchat/sending';
 import { useDispatch, useSelector } from 'react-redux';
-// tslint:disable: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import useTimeoutFn from 'react-use/lib/useTimeoutFn';
 
@@ -48,9 +47,8 @@ import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { ModalContainer } from '../dialog/ModalContainer';
 import { debounce, isEmpty, isString } from 'lodash';
 
-// tslint:disable-next-line: no-import-side-effect no-submodule-imports
 
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { loadDefaultRooms } from '../../bchat/apis/open_group_api/opengroupV2/ApiUtil';
 import { getOpenGroupManager } from '../../bchat/apis/open_group_api/opengroupV2/OpenGroupManagerV2';
 import { getSwarmPollingInstance } from '../../bchat/apis/snode_api';
@@ -107,7 +105,6 @@ const Section = (props: {
 
 
   const handleClick = async (subTypes?: SectionType) => {
-    /* tslint:disable:no-void-expression */
     dispatch(closeRightPanel());
     if (type === SectionType.Profile) {
       dispatch(editProfileModal({}));
@@ -117,11 +114,11 @@ const Section = (props: {
       const themeFromSettings = window.Events.getThemeSetting();
       const updatedTheme = themeFromSettings === 'dark' ? 'light' : 'dark';
       window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+      // if (updatedTheme === 'dark') {
+      //   switchHtmlToDarkTheme();
+      // } else {
+      //   switchHtmlToLightTheme();
+      // }
 
       const newThemeObject = updatedTheme === 'dark' ? 'dark' : 'light';
       dispatch(applyTheme(newThemeObject));
@@ -362,12 +359,12 @@ const fetchReleaseFromFileServerInterval = 1000 * 60; // try to fetch the latest
 const setupTheme = () => {
   const theme = window.Events.getThemeSetting();
 
-  window.setTheme(theme);
-  if (theme === 'dark') {
-    switchHtmlToDarkTheme();
-  } else {
-    switchHtmlToLightTheme();
-  }
+  // window.setTheme(theme);
+  // if (theme === 'dark') {
+  //   switchHtmlToDarkTheme();
+  // } else {
+  //   switchHtmlToLightTheme();
+  // }
 
   const newThemeObject = theme === 'dark' ? 'dark' : 'light';
   window?.inboxStore?.dispatch(applyTheme(newThemeObject));
@@ -388,7 +385,6 @@ const triggerSyncIfNeeded = async () => {
 const removeAllV1OpenGroups = async () => {
   const allV1Convos = (await getAllOpenGroupV1Conversations()).models || [];
   // do not remove messages of opengroupv1 for now. We have to find a way of doing it without making the whole app extremely slow
-  // tslint:disable-next-line: prefer-for-of
   for (let index = 0; index < allV1Convos.length; index++) {
     const v1Convo = allV1Convos[index];
     try {
@@ -554,46 +550,62 @@ export const ActionsPanel = () => {
   useInterval(cleanUpOldDecryptedMedias, startCleanUpMedia ? cleanUpMediasInterval : null);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     void fetchReleaseFromFSAndUpdateMain();
   }, fetchReleaseFromFileServerInterval);
 
-  if (!ourPrimaryConversation) {
-    window?.log?.warn('ActionsPanel: ourPrimaryConversation is not set');
-    return null;
-  }
-
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     void syncConfigurationIfNeeded();
   }, DURATION.DAYS * 2);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // trigger an updates from the snodes every hour
 
     void forceRefreshRandomSnodePool();
   }, DURATION.HOURS * 1);
 
   useTimeoutFn(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // trigger an updates from the snodes after 5 minutes, once
     void forceRefreshRandomSnodePool();
   }, DURATION.MINUTES * 5);
 
   useInterval(() => {
+    if (!ourPrimaryConversation) {
+      return;
+    }
     // this won't be run every days, but if the app stays open for more than 10 days
     void triggerAvatarReUploadIfNeeded();
   }, DURATION.DAYS * 1);
+  if (!ourPrimaryConversation) {
+    window?.log?.warn('ActionsPanel: ourPrimaryConversation is not set');
+    return null;
+  }
+
+ 
 
   const themeChanger = (theme: ThemeStateType) => {
-    const themeFromSettings = window.Events.getThemeSetting();
+    // const themeFromSettings = window.Events.getThemeSetting();
     window.setTheme(theme);
     dispatch(applyTheme(theme));
 
-    if (themeFromSettings !== theme) {
-      if (theme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
-    }
+    // if (themeFromSettings !== theme) {
+    //   if (theme === 'dark') {
+    //     switchHtmlToDarkTheme();
+    //   } else {
+    //     switchHtmlToLightTheme();
+    //   }
+    // }
   };
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);

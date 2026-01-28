@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clone } from 'lodash';
 import { getMessageById } from '../../../../data/data';
@@ -51,9 +51,7 @@ type Props = {
   displayBgBlur:boolean;
   handleImageError: () => void;
 };
-// tslint:disable: use-simple-attributes
 
-// tslint:disable-next-line max-func-body-length cyclomatic-complexity
 export const MessageAttachment = (props: Props) => {
   const { messageId, imageBroken, handleImageError,displayBgBlur } = props;
 

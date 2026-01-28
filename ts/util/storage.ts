@@ -42,7 +42,7 @@ async function remove(key: string) {
     window.log.warn('Called storage.get before storage is ready. key:', key);
   }
 
-  // tslint:disable-next-line: no-dynamic-delete
+  // eslint:disable-next-line: no-dynamic-delete
   delete items[key];
   await removeItemById(key);
 }
@@ -68,7 +68,7 @@ async function fetch() {
   reset();
   const array = await getAllItems();
 
-  // tslint:disable-next-line: one-variable-per-declaration
+  // eslint:disable-next-line: one-variable-per-declaration
   for (let i = 0, max = array.length; i < max; i += 1) {
     const item = array[i];
     const { id } = item;

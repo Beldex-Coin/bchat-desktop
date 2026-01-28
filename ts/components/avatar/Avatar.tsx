@@ -153,8 +153,6 @@ const AvatarInner = (props: Props) => {
         data-testid={dataTestId}
       >
         {hasImage ? (
-          // tslint:disable-next-line: use-simple-attributes
-
           <AvatarImage
             avatarPath={urlToLoad}
             base64Data={base64Data}

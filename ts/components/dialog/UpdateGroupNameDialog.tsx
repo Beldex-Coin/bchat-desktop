@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerMD } from '../basic/Text';
@@ -85,7 +86,6 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         title={titleText}
         showHeader={true}
         showExitIcon={false}
-        // tslint:disable-next-line: no-void-expression
         additionalClassName="update-group-dialog"
         okButton={{
           text: okText,
@@ -177,7 +177,6 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
     if (!isPublic) {
       return undefined;
     }
-    // tslint:disable: use-simple-attributes
 
     return (
       <div className="avatar-center" style={{marginTop: '15px'}}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames';
 
 import { isImageTypeSupported, isVideoTypeSupported } from '../../../util/GoogleChrome';
@@ -28,7 +28,6 @@ const MediaGridItemContent = (props: Props) => {
   const disableDrag = useDisableDrag();
 
   const onImageError = () => {
-    // tslint:disable-next-line no-console
     setImageBroken(true);
   };
 

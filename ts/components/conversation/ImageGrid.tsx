@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import  { useContext } from 'react';
 import classNames from 'classnames';
 
 import {
@@ -20,7 +20,6 @@ type Props = {
   onError: () => void;
   onClickAttachment?: (attachment: AttachmentTypeWithPath | AttachmentType) => void;
 };
-// tslint:disable: cyclomatic-complexity max-func-body-length use-simple-attributes
 export const ImageGrid = (props: Props) => {
   const { attachments, bottomOverlay, onError, onClickAttachment } = props;
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { createSelector } from 'reselect';
 
 import { StateType } from '../reducer';
@@ -359,7 +360,7 @@ export const _getConversationComparator = (testingi18n?: LocalizerType) => {
 export const getConversationComparator = createSelector(getIntl, _getConversationComparator);
 
 // export only because we use it in some of our tests
-// tslint:disable-next-line: cyclomatic-complexity
+
 export const _getLeftPaneLists = (
   sortedConversations: Array<ReduxConversationType>
 ): {

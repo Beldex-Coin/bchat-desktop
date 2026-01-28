@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useSelector } from 'react-redux';
 import { getSelectedConversation, isRightPanelShowing, isShareContact, getViewContactPanel } from '../state/selectors/conversations';
 import { BchatRightPanelWithDetails } from './conversation/BchatRightPanel';
