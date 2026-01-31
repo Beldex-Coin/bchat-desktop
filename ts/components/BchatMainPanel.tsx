@@ -5,25 +5,11 @@ import { useAppIsFocused } from '../hooks/useAppFocused';
 import { getFocusedSettingsSection } from '../state/selectors/section';
 import { SmartBchatConversation } from '../state/smart/BchatConversation';
 import { BchatSettingsView } from './settings/BchatSettings';
-import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
-import { getConversationById } from '../data/data';
-import { updateBchatUpgradeInstructionModal,
-  //  updateBchatWalletPasswordModal 
-   } from '../state/ducks/modalDialog';
 // import { updateBchatUpgradeInstructionModal  } from '../state/ducks/modalDialog';
 
-// import { SettingsKey } from '../data/settings-key';
-// import {  getWalletSyncBarShowInChat } from '../state/selectors/walletConfig';
 
 const FilteredSettingsView = BchatSettingsView as any;
 
-export async function getconverstation() {
-  let userDetails = await getConversationById(getOurPubKeyStrFromCache());
-  let data = userDetails?.attributes;
-  if (data?.walletCreatedDaemonHeight===null) {
-    window.inboxStore?.dispatch(updateBchatUpgradeInstructionModal({}));
-  }
-}
 
 export const BchatMainPanel = () => {
   const focusedSettingsSection = useSelector(getFocusedSettingsSection);

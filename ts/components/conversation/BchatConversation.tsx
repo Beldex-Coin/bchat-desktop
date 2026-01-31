@@ -55,9 +55,6 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 // import { BchatRightPanelWithDetails } from './BchatRightPanel';
-// import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
-// import { SettingsKey } from '../../data/settings-key';
-// import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
 import { SectionType } from '../../state/ducks/section';
 import { BchatScrollButton } from '../BchatScrollButton';
 import { Flex } from '../basic/Flex';
@@ -65,12 +62,6 @@ import { BchatIcon } from '../icon';
 import styled from 'styled-components';
 import { ReactListModal } from '../dialog/ReactListModal';
 import { ProfileInfo } from '../BchatProfileInfo';
-
-// import { PaymentMessage } from './message/message-item/PaymentMessage';
-// import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
-// import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
-// import { useSelector } from 'react-redux';
-
 
 interface State {
   isDraggingFile: boolean;
@@ -271,14 +262,6 @@ export class BchatConversation extends React.Component<Props, State> {
       // return an empty message view
       return <MessageView />;
     }
-    // const belAddress = useConversationBeldexAddress(selectedConversation.id);
-    // const syncbarCondition =
-    //   chatWithWallet &&
-    //   selectedConversation?.isPrivate &&
-    //   !isMe &&
-    //   selectedConversation?.didApproveMe &&
-    //   selectedConversation?.isApproved;
-
     return (
       <BchatTheme mode={this.props.theme}>
         {reactListModalstate && <ReactListModal {...reactListModalstate} />}

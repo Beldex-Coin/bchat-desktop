@@ -114,10 +114,6 @@ export const LeftPaneSectionHeader = () => {
     // }
   }
 
-  // function switchToWalletSec() {
-  //   dispatch(showLeftPaneSection(3));
-  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-  // }
 
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {

@@ -287,7 +287,7 @@ const Section = (props: {
             />
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="Settings" top={'370px'} />
+            <DisplayTitle title="Settings" top={'278px'} />
           </section>
         </div>
       );

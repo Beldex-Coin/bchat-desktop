@@ -393,25 +393,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
       />
     );
   }
-
-
-  // private sendMessageValidation() {
-  //   const { draft } = this.state;
-  //   const re = /^\d+\.?\d*$/;
-  //   const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
-  // const getSyncStatus = window.getSettingValue('syncStatus');
-
-  //   if (
-  //     selectedConversation?.type === 'private' &&
-  //     re.test(draft) &&
-  //     this.chatwithWallet &&
-  //     WalletSyncBarShowInChat
-  //   ) {
-  //     this.sendConfirmModal();
-  //   } else {
-  //     this.onSendMessage();
-  //   }
-  // }
   private sendButton() {
     return (
       <>

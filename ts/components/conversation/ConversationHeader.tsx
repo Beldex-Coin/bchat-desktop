@@ -443,15 +443,6 @@ export const ConversationHeaderWithDetails = () => {
   const isMe = useSelector(getIsSelectedNoteToSelf);
   const isShared = useSelector(isShareContact);  
 
-  // function displayWalletPassword() {
-
-  //   // if (chatwithWallet && !WalletSyncBarShowInChat) {
-  //   dispatch(updateBchatWalletPasswordModal({}));
-  //     // return;
-  //   // }
-  // }
- 
-
   return (
     <div className="module-conversation-header">
       <div className="conversation-header--items-wrapper">

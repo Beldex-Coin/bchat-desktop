@@ -9,16 +9,11 @@ import { TaskTimedOutError } from '../../bchat/utils/Promise';
 import { trigger } from '../../shims/events';
 import { registerSingleDevice, signInByLinkingDevice } from '../../util/accountManager';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
-// import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
-// import { daemon } from '../../wallet/daemon-rpc';
-// import os from 'os';
 const coreBridgeInstance = require('@bdxi/beldex-app-bridge')
-
-
 export const MAX_USERNAME_LENGTH = 26;
 
 export async function resetRegistration() {
@@ -60,12 +55,10 @@ export async function signUp(signUpDetails: {
 
   try {
     await resetRegistration();
-    // let deamonHeight: any = await wallet.getLatestHeight();
     await registerSingleDevice(
       generatedRecoveryPhrase,
       'english',
       trimName,
-      // deamonHeight ? deamonHeight : 0
     );
     await createOrUpdateItem({
       id: 'hasSyncedInitialConfigurationItem',
@@ -101,20 +94,8 @@ export async function signInWithRecovery(signInDetails: {
     return;
   }
   try {
-    // const restoreWallet = await wallet.restoreWallet(
-    //   displayName,
-    //   password,
-    //   userRecoveryPhrase,
-    //   refreshDetails
-    // );
     const restoreWallet = bridgeInstance.seed_and_keys_from_mnemonic(userRecoveryPhrase,NetType.Mainnet);
-    console.log('Restored Wallet Address:', restoreWallet.address_string);
     localStorage.setItem('userAddress', restoreWallet.address_string);
-    // const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
-    
-      // if (platform === 'win32') {
-        // daemon.deamontHeight();
-      // }
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
@@ -224,13 +205,9 @@ export const RegistrationStages = () => {
   const [imageCount, setImageCount] = useState(0);
 
   useEffect(() => {
-    // void generateMnemonicAndKeyPairaa();
     void resetRegistration();
   }, []);
 
-  // const generateMnemonicAndKeyPairaa = async () => {
-  //   await wallet.startWallet();
-  // };
   const imageValidator = (e: any) => {
     setImageCount(e);
   };

@@ -22,6 +22,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatConfirm } from '../dialog/BchatConfirm';
+import { SpacerMD } from '../basic/Text';
 
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
@@ -250,26 +251,6 @@ export const SignInTab = (props: any) => {
     <div className="bchat-registration__content">
       {screenName === 3 && (
         <>
-          {/* <div
-            className="bchat-registration__backbutton"
-          // data-tip="Back"
-          // data-place="right"
-          // data-offset="{top:10}"
-          // style={{ left: '52px' }}
-          >
-            <GoBackMainMenuButton
-              assent={() => {
-                props.assent(true);
-                setScreenName(1);
-                setPassword('');
-                setRepassword('');
-                setBlockheight('');
-                setRestoreDate('');
-                props.imageValidator(LeftImage.registration);
-              }}
-            />
-          </div>
-          <div className="bchat-registration-header">{window.i18n('restoreFromSeed')}</div> */}
           <Flex flexDirection="row" container={true} alignItems="center" padding="20px 0px">
             <div className="bchat-registration-goback-icon">
               <GoBackMainMenuButton
@@ -302,6 +283,7 @@ export const SignInTab = (props: any) => {
             onEnterPressed={validationForConfirmPopup}
             inputDataTestId="display-name-input"
           />
+          <SpacerMD/>
           <div style={{ width: '450px' }}>
             <SignInContinueButton
               signInMode={signInMode}
