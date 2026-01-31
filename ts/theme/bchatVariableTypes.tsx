@@ -51,8 +51,6 @@ export type BchatVariableTypes = {
   '--color-borderBottomColor': string;
   '--color-HintMessageText': string;
   '--color-composeMsgInput': string;
-  '--color-walletNodeHeader': string;
-  '--color-walletSelectOption': string;
   '--color-settingIndication': string;
   '--color-copyModalbtn': string;
   '--color-toggleOff': string;
@@ -68,12 +66,6 @@ export type BchatVariableTypes = {
   '--color-caret': string;
   '--color-profile-close': string;
   '--color-chat-timestamp': string;
-  '--color-WalcontentBg': string;
-  '--color-walInputBg': string;
-  '--color-walTransacBtn': string;
-  '--color-walcancelBtn': string;
-  '--color-walSyncbar': string;
-  '--color-walDownthickArrow': string;
   '--color-disableBtn': string;
   '--color-disableTxt': string;
   '--color-leave-button': string;
@@ -107,7 +99,6 @@ export type BchatVariableTypes = {
   '--color-untrusted-vertical-bar': string;
   '--color-icon-btn-hover': string;
   '--color-context-menu-hover-bg': string;
-  '--color-wallet-Sync-box-bg': string;
   '--color-profile-header-bg': string;
   '--color-chatId-border': string;
   '--color-profile-info-border': string;
@@ -120,16 +111,12 @@ export type BchatVariableTypes = {
   '--color-confirm-modal-hover-bg': string;
   '--color-enable-btn-bg': string;
   '--color-modal-disable-txt': string;
-  '--color-wallet-status-txt-Bg': string;
-  '--color-wallet-unbalance-label': string;
-  '--color-wallet-inner-bg': string;
   '--color-noTxn-txt': string;
   '--color-toast-bg': string;
   '--color-call-option-btn-hover': string;
   '--color-speedPlay-bg': string;
   '--color-moreInfo-incomming-chat-bg': string;
   '--color-camera-hover-bg': string;
-  '--color-setting-wallet-beta-bg': string;
   '--color-offline-content-bg': string;
   '--color-input-text': string;
   '--color-icon': string;
@@ -151,7 +138,6 @@ export type BchatVariableTypes = {
   '--color-request-banner-icon-background': string;
   '--color-request-banner-unread-background': string;
   '--color-request-banner-icon': string;
-  '--color-wallet-copy-hover': string;
   '--color-chatHeader': string;
   '--color-BnsCameraIconBg': string;
   '--color-password-borderBottom': string;
@@ -172,6 +158,4 @@ export type BchatVariableTypes = {
   '--image-emptySearch': string;
   '--image-NoMedia': string;
   '--message-bubbles-received-background-color': string;
-  '--img-walPassword': string;
-  '--img-walDownThickArrow': string;
 };

@@ -80,8 +80,6 @@ const lightNoMedia = 'url("../images/bchat/nomediaWhiteTheme.svg")';
 
 const lightChatHeader = '#F0F0F0';
 const lightComposeMsgInput = '#F8F8F8';
-const lightWalletNodeHeader = '#128B17';
-const lightWalletSelectHover = '#D3D3D3';
 const lightDayNight = 'url("../images/bchat/moon.svg")';
 const lightNewChat = 'url("../images/bchat/newChatwhite.svg")';
 const lightBorderBottomColor = '#E3E3E3';
@@ -98,18 +96,9 @@ const lightDownArrow = '#A8A8C3';
 
 const lightBnsLinkIdBgColor = '#EBEBEB';
 const lightBnsCameraIconBgColor = '#FFFFFF';
-const lightWalcontentBg = '#E8E8E8';
-const lightWalInputBg = '#F8F8F8';
-const lightWalTransacBtn = '#DEDEDE';
-const lightWalcancelBtn = '#F8F8F8';
-const lightWalletSyncBar = '#EBEBEB';
-const lightDownthickArrow = '#8F8FA2';
 const lightDisableBtn = '#DEDEDE';
 const lightDisableTxt = '#B1B1B1';
-const lightWalPassword = 'url("../images/bchat/passwordIconWhite.svg")';
-const lightWalDownThickArrow = 'url("../images/wallet/downThickArrowWhite.svg")';
 const lightLeaveHover = '#D9D9D9';
-const lightWalletCopyHover = '#EBEBEB';
 const lightProfileClose = '#DDDDDD';
 const lightChattimestamp = '#333333';
 const lightBgModalColor = 'rgba(0, 0, 0, 0.6)';
@@ -140,7 +129,6 @@ const lightUntrustMediaBg = '#EBEBEB';
 const lightUntrustedVerticalBar = '#ACACAC';
 const lightIconBtnHover = '#E2E2E2';
 const lightContextMenuHoverBg = '#EBEBEB';
-const lightWalletSyncBoxBg = '#F8F8F8';
 const lightProfileHeaderBg = '#EBEBEB';
 const lightChatIdBorder = '#C5C5C5';
 const lightProfileInfoBorder = '#ACACAC';
@@ -153,16 +141,12 @@ const lightConfirmModalInnerBg = '#EBEBEB';
 const lightConfirmModalHoverBg = '#E4E4E4';
 const lightEnableBtnBg = '#EBEBEB';
 const lightModalDisableTxt = '#ACACAC';
-const lightWalletStatusTxtBg = '#F8F8F8';
-const lightWalletUnBalanceLabel = '#333333';
-const lightWalletInnerBg = '#EBEBEB';
 const lightNoTxnTxt = '#ACACAC';
 const lightToastBg = '#F8F8F8';
 const lightCallOptionBtnHover = '#FFFFFF';
 const lightSpeedPlayBg = '#ACACAC';
 const lightMoreInfoIncommingChatBg = '#F0F0F0';
 const lightCameraHoverBg = '#DADADA';
-const lightSettingWalletBetaBg = '#F8F8F8';
 const lightSecondaryBtnHoverBg = '#FFFFFF';
 const lightPrimaryBtnHoverBg = '#1A973C';
 const lightOfflineContentBg = '#F0F0F0';
@@ -241,8 +225,6 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-borderBottomColor': lightBorderBottomColor,
   '--color-HintMessageText': lightHintMessageText,
   '--color-composeMsgInput': lightComposeMsgInput,
-  '--color-walletNodeHeader': lightWalletNodeHeader,
-  '--color-walletSelectOption': lightWalletSelectHover,
   '--color-settingIndication': lightSettingIndication,
   '--color-copyModalbtn': lightCopyModalbtn,
 
@@ -262,12 +244,6 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-caret': lightColorCaret,
   '--color-profile-close': lightProfileClose,
   '--color-chat-timestamp': lightChattimestamp,
-  '--color-WalcontentBg': lightWalcontentBg,
-  '--color-walInputBg': lightWalInputBg,
-  '--color-walTransacBtn': lightWalTransacBtn,
-  '--color-walcancelBtn': lightWalcancelBtn,
-  '--color-walSyncbar': lightWalletSyncBar,
-  '--color-walDownthickArrow': lightDownthickArrow,
   '--color-disableBtn': lightDisableBtn,
   '--color-disableTxt': lightDisableTxt,
   '--color-leave-button': lightLeaveHover,
@@ -302,7 +278,6 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-untrusted-vertical-bar': lightUntrustedVerticalBar,
   '--color-icon-btn-hover': lightIconBtnHover,
   '--color-context-menu-hover-bg': lightContextMenuHoverBg,
-  '--color-wallet-Sync-box-bg': lightWalletSyncBoxBg,
   '--color-profile-header-bg': lightProfileHeaderBg,
   '--color-chatId-border': lightChatIdBorder,
   '--color-profile-info-border': lightProfileInfoBorder,
@@ -315,16 +290,13 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-confirm-modal-hover-bg': lightConfirmModalHoverBg,
   '--color-enable-btn-bg': lightEnableBtnBg,
   '--color-modal-disable-txt': lightModalDisableTxt,
-  '--color-wallet-status-txt-Bg': lightWalletStatusTxtBg,
-  '--color-wallet-unbalance-label': lightWalletUnBalanceLabel,
-  '--color-wallet-inner-bg': lightWalletInnerBg,
+
   '--color-noTxn-txt': lightNoTxnTxt,
   '--color-toast-bg': lightToastBg,
   '--color-call-option-btn-hover': lightCallOptionBtnHover,
   '--color-speedPlay-bg': lightSpeedPlayBg,
   '--color-moreInfo-incomming-chat-bg': lightMoreInfoIncommingChatBg,
   '--color-camera-hover-bg': lightCameraHoverBg,
-  '--color-setting-wallet-beta-bg': lightSettingWalletBetaBg,
   '--color-offline-content-bg': lightOfflineContentBg,
   '--color-input-text': lightInputText,
   '--color-icon': lightIconColor,
@@ -346,7 +318,6 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-request-banner-icon-background': lightMessageRequestBannerIconBackground,
   '--color-request-banner-unread-background': lightMessageRequestBannerUnreadBackground,
   '--color-request-banner-icon': lightMessageRequestBannerIcon,
-  '--color-wallet-copy-hover': lightWalletCopyHover,
   '--color-chatHeader': lightChatHeader,
   '--color-BnsCameraIconBg': lightBnsCameraIconBgColor,
   '--color-password-borderBottom': lightPasswordBorderBottom,
@@ -367,6 +338,4 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--image-emptySearch': lightEmptyTransaction,
   '--image-NoMedia': lightNoMedia,
   '--message-bubbles-received-background-color': whiteBubbleReceivedBg,
-  '--img-walPassword': lightWalPassword,
-  '--img-walDownThickArrow': lightWalDownThickArrow,
 };

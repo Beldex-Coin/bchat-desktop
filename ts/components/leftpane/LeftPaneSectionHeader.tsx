@@ -9,7 +9,7 @@ import { getFocusedSection, getOverlayMode } from '../../state/selectors/section
 import {
   SectionType,
   setOverlayMode,
-  showLeftPaneSection,
+  // showLeftPaneSection,
   // showSettingsSection,
 } from '../../state/ducks/section';
 import {
@@ -30,7 +30,7 @@ import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 // import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
-import { clearSearch } from '../../state/ducks/search';
+// import { clearSearch } from '../../state/ducks/search';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -176,22 +176,22 @@ export const LeftPaneSectionHeader = () => {
     );
   }
 
-  function Settings() {
-    return (
-      <span style={{ marginRight: '15px' }}>
-        <BchatIconButton
-          iconSize="large"
-          iconType="walletSetting"
-          iconColor="#2879fb"
-          onClick={() => {
-            dispatch(clearSearch());
-            dispatch(showLeftPaneSection(3));
-            dispatch(setOverlayMode(undefined));
-          }}
-        />
-      </span>
-    );
-  }
+  // function Settings() {
+  //   return (
+  //     <span style={{ marginRight: '15px' }}>
+  //       <BchatIconButton
+  //         iconSize="large"
+  //         iconType="walletSetting"
+  //         iconColor="#2879fb"
+  //         onClick={() => {
+  //           dispatch(clearSearch());
+  //           dispatch(showLeftPaneSection(3));
+  //           dispatch(setOverlayMode(undefined));
+  //         }}
+  //       />
+  //     </span>
+  //   );
+  // }
   return (
     <>
       <Flex flexDirection="column">
@@ -231,7 +231,7 @@ export const LeftPaneSectionHeader = () => {
         </div> */}
 
           <Moon />
-          <Settings />
+          {/* <Settings /> */}
 
           {/* {isMessageSection && !isMessageRequestOverlay && (
           <div
