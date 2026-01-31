@@ -50,9 +50,6 @@ import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
 import { TypingBubble } from './TypingBubble';
 import { getConversationController } from '../../bchat/conversations';
-import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
-import { SettingsKey } from '../../data/settings-key';
-import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
 
@@ -430,17 +427,7 @@ export const ConversationHeaderWithDetails = () => {
   const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
   const conversation = useSelector(getSelectedConversation);
-  const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
-  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-
   const dispatch = useDispatch();
-  const displayConnectWalletBtn =
-    chatwithWallet &&
-    !WalletSyncBarShowInChat &&
-    conversation?.type == 'private' &&
-    conversation?.isApproved &&
-    conversation?.didApproveMe &&
-    !conversation?.isMe;
 
   if (!selectedConvoKey) {
     return null;
@@ -489,31 +476,6 @@ export const ConversationHeaderWithDetails = () => {
               showBackButton={isMessageDetailOpened}
             />
             <ConversationHeaderTitle />
-
-            {displayConnectWalletBtn && (
-              // <div
-              //   className="connectWalletBtn"
-              //   onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // >
-              //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
-              //   <div>{window.i18n('connectWallet')}</div>
-              <BchatButton
-                text={window.i18n('connectWallet')}
-                buttonType={BchatButtonType.Medium}
-                buttonColor={BchatButtonColor.Primary}
-                iconType="wallet"
-                iconSize={'small'}
-                style={{
-                  minWidth: '172px',
-                  height: '40px',
-                  borderRadius: '5px',
-                  marginRight: '14px',
-                }}
-                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-                // disabled={!caption}
-              />
-              // </div>
-            )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}

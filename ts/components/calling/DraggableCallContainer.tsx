@@ -13,9 +13,7 @@ import { SectionType, setOverlayMode, showLeftPaneSection } from '../../state/du
 import { ConnectingLabel, DurationLabel, RingingLabel } from './InConversationCallContainer';
 import {  BchatIconButton } from '../icon';
 
-import { getBchatWalletPasswordModal } from '../../state/selectors/modal';
-import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
-import { isEmpty } from 'lodash';
+
 
 
 export const DraggableCallWindow = styled.div`
@@ -107,7 +105,6 @@ export const DraggableCallContainer = () => {
   const ongoingCallProps = useSelector(getHasOngoingCallWith);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const hasOngoingCall = useSelector(getHasOngoingCall);
-  const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
   const selectedSection = useSelector(getSection);
   const dispatch = useDispatch();
 
@@ -164,11 +161,7 @@ export const DraggableCallContainer = () => {
   }, [ remoteStreamVideoIsMuted, localStreamVideoIsMuted]);
 
   const openCallingConversation = () => {
-    if (ongoingCallPubkey)  {
-      if (!isEmpty(BchatWalletPasswordModalState)) {
-        dispatch(updateBchatWalletPasswordModal(null));
-      }
-    
+    if (ongoingCallPubkey)  {  
       dispatch(showLeftPaneSection(SectionType.Message));
       dispatch(setOverlayMode(undefined));
       void openConversationWithMessages({ conversationKey: ongoingCallPubkey, messageId: null });
@@ -180,9 +173,8 @@ export const DraggableCallContainer = () => {
     !hasOngoingCall ||
     !ongoingCallProps ||
      isDragCallValidation &&
-      selectedSection.focusedSection !== SectionType.Settings &&
-      selectedSection.focusedSection !== SectionType.Wallet)
-   
+      selectedSection.focusedSection !== SectionType.Settings
+  )
    {
     return null;
   }

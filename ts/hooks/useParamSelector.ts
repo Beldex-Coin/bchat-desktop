@@ -161,10 +161,6 @@ export function useConversationBeldexAddress(convoId?: string) {
   return convoProps?.walletAddress;
 }
 
-export function useConversationWalletDaemonHeight(convoId?: string) {
-  const convoProps = useConversationPropsById(convoId);
-  return convoProps?.walletCreatedDaemonHeight;
-}
 
 export function useMessageReactsPropsById(messageId?: string) {
   return useSelector((state: StateType) => {

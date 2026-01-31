@@ -126,7 +126,6 @@ export interface ConversationAttributes {
   isApproved: boolean;
   didApproveMe: boolean;
   walletAddress?: any;
-  walletCreatedDaemonHeight?: number | any;
   isBnsHolder?: Boolean;
 }
 
@@ -170,7 +169,6 @@ export interface ConversationAttributesOptionals {
   didApproveMe?: boolean;
   walletAddress?: any;
   walletUserName?: string | null | any;
-  walletCreatedDaemonHeight?: number | null | any;
   isBnsHolder?: Boolean;
 }
 
@@ -204,7 +202,6 @@ export const fillConvoAttributesWithDefaults = (
     didApproveMe: false,
     walletAddress: null,
     walletUserName: null,
-    walletCreatedDaemonHeight: null,
     isBnsHolder: false,
   });
 };
@@ -374,7 +371,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const isPublic = this.isPublic();
     const walletAddress = this.isWalletAddress();
     const walletUserName = this.getProfileName();
-    const walletCreatedDaemonHeight = this.getwalletCreatedDaemonHeight();
     const isBnsHolder = this.bnsHolder();
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
@@ -517,9 +513,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     if (walletUserName) {
       toRet.walletUserName = walletUserName;
-    }
-    if (walletCreatedDaemonHeight) {
-      toRet.walletCreatedDaemonHeight = walletCreatedDaemonHeight;
     }
     return toRet;
   }
@@ -1428,17 +1421,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
-  public async setwalletCreatedDaemonHeight(value: number, shouldCommit: boolean = true) {
-    window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
-    this.set({
-      walletCreatedDaemonHeight: value,
-    });
-
-    if (shouldCommit) {
-      await this.commit();
-    }
-  }
-
   public async setwalletAddress(value: string, shouldCommit: boolean = true) {
     window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
     this.set({
@@ -1559,9 +1541,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return Boolean(this.get('didApproveMe'));
   }
 
-  public walletCreatedDaemonHeight() {
-    return Number(this.get('walletCreatedDaemonHeight'));
-  }
   public isApproved() {
     return Boolean(this.get('isApproved'));
   }
@@ -1629,9 +1608,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       return '';
     }
     return this.id;
-  }
-  public getwalletCreatedDaemonHeight() {
-    return this.get('walletCreatedDaemonHeight');
   }
 
   public isWalletAddress() {

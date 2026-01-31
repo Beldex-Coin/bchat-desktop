@@ -41,7 +41,6 @@ import { updateIsOnline,
 } from '../../state/ducks/onion';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 // import { OnionPaths } from '../../bchat/onions';
-// import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
@@ -86,9 +85,6 @@ export const LeftPaneSectionHeader = () => {
       break;
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
-      break;
-    case SectionType.Wallet:
-      label = window.i18n('wallet');
       break;
     case SectionType.Message:
       label = isMessageRequestOverlay

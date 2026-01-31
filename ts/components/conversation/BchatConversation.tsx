@@ -259,8 +259,6 @@ export class BchatConversation extends React.Component<Props, State> {
       reactListModalstate,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
-
-    // const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
     if (
       convoList?.conversations?.length == 0 &&
       (!selectedConversation || !messagesProps) &&

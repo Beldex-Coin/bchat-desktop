@@ -13,7 +13,7 @@ import { displayPasswordModal } from './section/CategoryPrivacy';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon } from '../icon/BchatIcon';
-// import {  updateConfirmModal } from '../../state/ducks/modalDialog';
+
 
 export const BchatRecoverySeed = (props: any) => {
 
@@ -30,18 +30,7 @@ export const BchatRecoverySeed = (props: any) => {
   };
 
   const onClickCancelHandler = () => {
-  //   if (props.onClickCancel) {
-  //     onClickCancel();
-  //   }
-
-  //   if (onClickClose) {
-  //     onClickClose();
-  //   }
-  // state.recoveryPhraseModal
-  // displayPasswordModal('remove', props.onPasswordUpdated);
   window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Chat));
-
-  // window.inboxStore?.dispatch(updateConfirmModal(null));
 };
 
   return (
@@ -70,18 +59,6 @@ export const BchatRecoverySeed = (props: any) => {
             </div>
             {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}
           </div>
-          {/* <div className="bchat-modal-imgConfirmBox-header">{window.i18n('payYouChat')}</div>
-          <SpacerMD /> */}
-          {/* <div className="bchat-modal-imgConfirmBox-message">
-            {settings ? (
-              window.i18n('warningWalletPassword')
-            ) : (
-              <>
-                Enable pay as you chat from <span>Settings -&gt; Chat -&gt; Pay As You Chat </span>
-                to use this option
-              </>
-            )} 
-          </div> */}
         </div>
       {/* </div> */}
     </BchatWrapperModal>

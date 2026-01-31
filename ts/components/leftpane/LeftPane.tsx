@@ -18,7 +18,6 @@ import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
 import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
-import { AddressBook } from '../wallet/BchatWalletAddressBook';
 import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayCallHistory } from './overlay/OverlayCallHistory';
 import { getTheme } from '../../state/selectors/theme';
@@ -71,7 +70,6 @@ const InnerLeftPaneMessageSection = () => {
 
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // const convoList = useSelector(getLeftPaneLists);
   if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
@@ -90,10 +88,6 @@ const LeftPaneSection = () => {
 
   if (focusedSection === SectionType.CallHistory) {
     return <OverlayCallHistory />;
-  }
-
-  if (focusedSection === SectionType.Wallet) {
-    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'223px':'',width:zoomLevel>100?'20vw':''}}><AddressBook isContact={true} /></div> ;
   }
 
   // if (focusedSection === SectionType.Contact) {

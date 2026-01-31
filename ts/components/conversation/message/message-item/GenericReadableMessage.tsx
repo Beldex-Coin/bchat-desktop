@@ -22,7 +22,6 @@ import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
-import { PaymentMessage } from './PaymentMessage';
 import { SharedContactCardMessage } from './SharedContactCardMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
@@ -227,7 +226,6 @@ export const GenericReadableMessage = (props: Props) => {
     serverName,
     acceptUrl,
     url,
-    amount,
     txnId,
     address,
     name,
@@ -258,20 +256,6 @@ export const GenericReadableMessage = (props: Props) => {
           direction="incoming"
           acceptUrl={acceptUrl||''}
           messageId={messageId}
-          isUnread={props.isUnread ?? false}
-          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
-        />
-      );
-    }
-  
-    if (txnId && amount&&direction) {
-      return (
-        <PaymentMessage
-          amount={amount}
-          txnId={txnId}
-          messageId={messageId}
-          direction={direction}
-          acceptUrl={acceptUrl}
           isUnread={props.isUnread ?? false}
           onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
         />

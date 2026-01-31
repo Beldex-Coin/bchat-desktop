@@ -10,7 +10,6 @@ import {
   PropsForExpirationTimer,
   PropsForGroupInvitation,
   PropsForGroupUpdate,
-  PropsForPayment,
   PropsForSharedContact,
 } from '../../state/ducks/conversations';
 import {
@@ -27,7 +26,6 @@ import { CallNotification } from './message/message-item/notification-bubble/Cal
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
-import { getWalletPaymentDetailsSend } from '../../state/selectors/walletConfig';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -47,9 +45,6 @@ export const BchatMessagesList = (props: {
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
   const oldTopMessageId = useSelector(getOldTopMessageId);
   const oldBottomMessageId = useSelector(getOldBottomMessageId);
-    
-  const transactionInitiatDetails = useSelector(getWalletPaymentDetailsSend);
-
   useLayoutEffect(() => {
     const newTopMessageId = messagesProps.length
       ? messagesProps[messagesProps.length - 1].message.props.messageId
@@ -88,18 +83,6 @@ export const BchatMessagesList = (props: {
     }
   });
 
-  
-  if(props.pubkey===transactionInitiatDetails?.message?.props?.id)
-  {
-    function checkKey(key:any) {
-      return key?.message?.props?.messageId === transactionInitiatDetails?.message?.props?.messageId;
-    }
-    if(!messagesProps.find(checkKey))
-    {
-      messagesProps.unshift(transactionInitiatDetails)
-    }
-   
-  }
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -123,10 +106,6 @@ export const BchatMessagesList = (props: {
 
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
-          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
-        }
-        if (messageProps.message?.messageType === 'payment') {
-          const msgProps = messageProps.message.props as PropsForPayment;
           return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'shared-contact') {

@@ -60,44 +60,7 @@
     flex-grow: 1;
     align-items: center;
     justify-content: center;
-    width: 100%;
-
-    // .connectWalletBtn {
-    //   display: flex;
-    //   width: 155px;
-    //   justify-content: space-evenly;
-    //   align-items: center;
-    //   font-size: 10px;
-    //   font-family: $bchat-font-poppin-medium;
-    //   background-color: #128817;
-    //   color: white;
-    //   height: 35px;
-    //   border-radius: 10px;
-    //   margin-right: 14px;
-    //   cursor: pointer;
-    // }
-    // .connectWalletBtn:hover {
-    //   background-color: #00a705;
-    // }
-
-    // .call {
-    //   // margin-top: 10px;
-    //   margin-right: 14px;
-    //   padding-left: 14px;
-    //   display: flex;
-    //   justify-content: center;
-    //   justify-items: center;
-    //   align-items: center;
-    //   width: 35px;
-    //   height: 35px;
-    //   cursor: pointer;
-
-    //   &:hover {
-    //     background-color: var(--color-profile-close);
-    //     border-radius: 20px;
-    //   }
-    // }
-   
+    width: 100%; 
   }
 
   .message-selection-overlay {
@@ -432,48 +395,6 @@
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
-    .wallet-sync-box,
-    .amount-tap-box {
-      border-radius: 16px;
-      border: 2px solid #108d32;
-      background-color: var(--color-wallet-Sync-box-bg);
-      width: 254px;
-      height: 66px;
-      flex-shrink: 0;
-      position: absolute;
-      right: 0px;
-      top: -74px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      z-index: 2;
-
-      .sync-txt {
-        // color: #f0f0f0;
-        font-family: $bchat-font-open-sans;
-        font-size: 18px;
-        font-weight: 600;
-        margin-right: 21px;
-      }
-
-      .inner-perc-txt {
-        // color: #f0f0f0;
-        text-align: center;
-        font-size: 12px;
-        font-weight: 700;
-      }
-    }
-
-    .amount-tap-box {
-      display: block;
-      min-width: 224px;
-      width: unset;
-      cursor: pointer;
-      .sync-txt {
-        margin-right: unset;
-      }
-    }
 
     .coin-logo-wrapper {
       cursor: pointer;
@@ -516,9 +437,6 @@
       }
     }
 
-    .circular-bar-wrapper:hover + .wallet-sync-box {
-      display: flex;
-    }
   }
 }
 

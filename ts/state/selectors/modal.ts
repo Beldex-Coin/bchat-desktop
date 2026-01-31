@@ -20,15 +20,9 @@ import {
   UserDetailsModalState,
   ChangePasswordModalState,
   walletSettingMiniModalState,
-  TransactionInitModalState,
-  InsufficientBalanceModalState,
-  WalletSendConfirmState,
   BchatUpdateInstruntionState,
-  BchatWalletPasswordModalState,
-  BchatAlertConfirmModalState,
   BnsLinkModalState,
   AboutBnsModalState,
-  BchatWalletForgotPasswordModalState,
   MessageMoreInfoState,
   CommunityGuidelinesModalState,
   ReactModalsState,
@@ -125,32 +119,9 @@ export const getwalletSettingMiniModalState = createSelector(
   getModal,
   (state: ModalState): walletSettingMiniModalState => state.walletSettingMiniModal
 );
-export const getTransactionInitModal = createSelector(
-  getModal,
-  (state: ModalState): TransactionInitModalState => state.transactionInitModal
-);
-export const getInsufficientBalanceModal = createSelector(
-  getModal,
-  (state: ModalState): InsufficientBalanceModalState => state.insufficientBalanceModal
-);
-export const getwalletSendConfirmModal = createSelector(
-  getModal,
-  (state: ModalState): WalletSendConfirmState => state.walletSendConfirm
-);
 export const getBchatUpdateInstruntion = createSelector(
   getModal,
   (state: ModalState): BchatUpdateInstruntionState => state.BchatUpdateInstruntion
-);
-export const getBchatWalletPasswordModal = createSelector(
-  getModal,
-  (state: ModalState): BchatWalletPasswordModalState => state.BchatWalletPasswordModal
-);
-export const getBchatWalletForgotPasswordModal=createSelector(
-  getModal,(state:ModalState):BchatWalletForgotPasswordModalState=>state.BchatWalletForgotPasswordModal
-)
-export const getBchatAlertConfirmModal = createSelector(
-  getModal,
-  (state: ModalState): BchatAlertConfirmModalState => state.BchatAlertConfirmModal
 );
 export const getAboutBnsModal = createSelector(
   getModal,

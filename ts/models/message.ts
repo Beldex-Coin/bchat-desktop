@@ -30,7 +30,6 @@ import {
   PropsForAttachment,
   PropsForExpirationTimer,
   PropsForGroupInvitation,
-  PropsForPayment,
   PropsForGroupUpdate,
   PropsForGroupUpdateAdd,
   PropsForGroupUpdateGeneral,
@@ -112,7 +111,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     perfStart(`getPropsMessage-${this.id}`);
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
-    const propsForPayment = this.getPropsForPayment();
     const propsForSharedContact = this.getPropsForSharedContact();
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
     const propsForTimerNotification = this.getPropsForTimerNotification();
@@ -126,9 +124,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     if (propsForMessageRequestResponse) {
       messageProps.propsForMessageRequestResponse = propsForMessageRequestResponse;
-    }
-    if (propsForPayment) {
-      messageProps.propsForPayment = propsForPayment;
     }
     if (propsForSharedContact) {
       messageProps.propsForSharedContact = propsForSharedContact;
@@ -276,30 +271,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     return basicProps;
   }
-  public getPropsForPayment(): PropsForPayment | null {
-    if (!this.isPayment()) {
-      return null;
-    }
-    const Payment = this.get('payment');
-    if (!Payment) {
-      return null;
-    }
-    
-    let direction = this.get('direction');
-    if (!direction) {
-      direction = this.get('type') === 'outgoing' ? 'outgoing' : 'incoming';
-    }
 
-    return {
-      amount: Payment.amount,
-      txnId: Payment.txnId,
-      direction,
-      acceptUrl: '',
-      messageId: this.id as string,
-      receivedAt: this.get('received_at'),
-      isUnread: this.isUnread(),
-    };
-  }
 
   public getPropsForSharedContact(): PropsForSharedContact | null {
     const sharedContact = this.get('sharedContact');
@@ -1369,14 +1341,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     }
     if (this.isGroupInvitation()) {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
-    }
-    if (this.isPayment()) {
-      let amount = this.getMessageModelProps()?.propsForPayment?.amount;
-      let direction =
-        this.getMessageModelProps()?.propsForPayment?.direction === 'outgoing'
-          ? 'Send'
-          : 'Received';
-      return `${amount} BDX ${direction}`;
     }
     if (this.isSharedContact()) {
       return `Shared contact`;

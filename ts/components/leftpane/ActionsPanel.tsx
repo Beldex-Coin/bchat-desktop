@@ -26,7 +26,6 @@ import {
   SectionType,
   setOverlayMode,
   showLeftPaneSection,
-  showSettingsSection,
   // showSettingsSection,
 } from '../../state/ducks/section';
 
@@ -40,7 +39,6 @@ import {
 } from '../../state/ducks/conversations';
 import {
   editProfileModal,
-  updateBchatWalletPasswordModal,
   updateConfirmModal,
 } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
@@ -69,11 +67,7 @@ import { SettingsKey } from '../../data/settings-key';
 import classNames from 'classnames';
 
 import ReactTooltip from 'react-tooltip';
-import { BchatSettingCategory } from '../settings/BchatSettings';
 import { clearSearch } from '../../state/ducks/search';
-// import { wallet } from '../../wallet/wallet-rpc';
-import { getWalletPasswordPopUpFlag } from '../../state/selectors/walletConfig';
-import { updateSendAddress } from '../../state/ducks/walletConfig';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
@@ -99,9 +93,7 @@ const Section = (props: {
   const dispatch = useDispatch();
   const { type, isHiddenSubMenus, setIsHiddenSubMenus } = props;
   const focusedSection = useSelector(getFocusedSection);
-  const walletPasswordPopUp = useSelector(getWalletPasswordPopUpFlag);
   const isSelected = focusedSection === props.type;
-  const darkMode = useSelector(getTheme) === 'dark';
 
 
   const handleClick = async (subTypes?: SectionType) => {
@@ -145,21 +137,7 @@ const Section = (props: {
       // Show open group
       dispatch(showLeftPaneSection(type));
       dispatch(setOverlayMode('call-history'));
-    } else if (type === SectionType.Wallet) {
-      let emptyAddress: any = '';
-      // Show open wallet
-      dispatch(showLeftPaneSection(type));
-      // wallet.startWallet('settings');
-
-      dispatch(setOverlayMode('wallet'));
-      dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-      dispatch(updateSendAddress(emptyAddress));
-      if (walletPasswordPopUp) {
-        dispatch(updateBchatWalletPasswordModal({ from: 'wallet' }));
-      }
-
-      // dispatch(setOverlayMode(undefined))
-    } else if (type === SectionType.Settings) {
+    }else if (type === SectionType.Settings) {
       // show open settings
       dispatch(showLeftPaneSection(type));
 
@@ -292,34 +270,6 @@ const Section = (props: {
     //       </section>
     //     </div>
     //   );
-    case SectionType.Wallet:
-      return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
-          <div
-            // data-tip="Wallet"
-            // data-place="right"
-            // data-offset="{'top':0}"
-            className="btnView"
-            onClick={() => handleClick()}
-            style={{ flexDirection: 'column' }}
-          >
-            <BchatIcon iconSize={31} iconType={'wallet'} />
-            <Beta>
-              <BchatIcon
-                iconSize={34}
-                iconType={'beta'}
-                clipRule="evenodd"
-                fillRule="evenodd"
-                iconColor={darkMode ? '#A7A7BA' : '#ACACAC'}
-              />
-            </Beta>
-          </div>
-
-          <section className="d-visiblity ">
-            <DisplayTitle title="Wallet" top={'278px'} />
-          </section>
-        </div>
-      );
     case SectionType.Settings:
       return (
         <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
@@ -654,8 +604,6 @@ export const ActionsPanel = () => {
           {/* <SpacerMD />
           <Section type={SectionType.CallHistory} /> */}
           <SpacerMD />
-          <Section type={SectionType.Wallet} />
-          <SpacerMD />
           <Section type={SectionType.Settings} />
         </div>
         <Flex container={true} alignItems="flex-end">
@@ -737,11 +685,6 @@ const NetWorkStatusWrapper = styled.div`
   width: 338px;
   left: 141px;
   z-index: 99;
-`;
-const Beta = styled.div`
-  svg {
-    height: 14px !important;
-  }
 `;
 const MarginedDiv = styled.div`
   margin-top: 30px;

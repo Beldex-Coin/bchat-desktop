@@ -28,29 +28,6 @@ export async function getconverstation() {
 export const BchatMainPanel = () => {
   const focusedSettingsSection = useSelector(getFocusedSettingsSection);
   const isSettingsView = focusedSettingsSection !== undefined;
-  //  const dispatch = useDispatch();
-  // const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
-//  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
-//  const WalletPasswordPopUpFlag=useSelector(getWalletPasswordPopUpFlag);
-  
-  // useEffect(() => {
-  //   getconverstation();
-  //   validation()
-
-  // }, []);
-  
-  // const walletPassWordValidation = () => {   
-  //   if (chatwithWallet && !walletSyncBarShowInChat && !isSettingsView) {
-
-  //    dispatch(updateBchatWalletPasswordModal({}))
-  //   }
-
-  // }
-  // const validation = () => {
-  //   walletPassWordValidation();
-  //   // chatInstruction && chatWithWalletInstruction();
-  // }
   // even if it looks like this does nothing, this does update the redux store.
   useAppIsFocused();
   if (isSettingsView) {

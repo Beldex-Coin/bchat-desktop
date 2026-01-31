@@ -45,7 +45,6 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
-  propsForPayment?: PropsForPayment;
   propsForSharedContact?: PropsForSharedContact;
 };
 
@@ -148,16 +147,6 @@ export type PropsForGroupInvitation = {
   onRecentEmojiBtnVisible?: () => void;
 };
 
-export type PropsForPayment = {
-  amount: string;
-  txnId: string;
-  direction: MessageModelType;
-  acceptUrl?: string;
-  messageId: string;
-  receivedAt?: number;
-  isUnread: boolean;
-  onRecentEmojiBtnVisible?: () => void;
-};
 export type PropsForSharedContact = {
   address: string;
   name: string;
@@ -306,7 +295,6 @@ export interface ReduxConversationType {
   didApproveMe?: boolean;
   walletAddress?: any;
   walletUserName?: any;
-  walletCreatedDaemonHeight?: number | any;
   isBnsHolder?: boolean;
   weAreModerator?: boolean;
   sharedContact?:SharedContact

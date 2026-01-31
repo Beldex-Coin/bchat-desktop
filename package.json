@@ -44,6 +44,7 @@
     "build:worker": "webpack  --config=./utils.worker.config.js"
   },
   "dependencies": {
+    "@bdxi/beldex-app-bridge": "^2.0.0",
     "@emoji-mart/data": "^1.2.1",
     "@reduxjs/toolkit": "^1.4.0",
     "@signalapp/better-sqlite3": "8.4.3",
@@ -303,8 +304,6 @@
       "node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node",
       "ts/mains/main_node.js",
       "ts/webworker/workers/node/**/*.js"
-
-
     ],
     "deb": {
       "depends": [
