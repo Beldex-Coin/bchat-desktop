@@ -46,6 +46,7 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
   propsForSharedContact?: PropsForSharedContact;
+   propsForPayment?: PropsForPayment;
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -147,6 +148,16 @@ export type PropsForGroupInvitation = {
   onRecentEmojiBtnVisible?: () => void;
 };
 
+export type PropsForPayment = {
+  amount: string;
+  txnId: string;
+  direction: MessageModelType;
+  acceptUrl?: string;
+  messageId: string;
+  receivedAt?: number;
+  isUnread: boolean;
+  onRecentEmojiBtnVisible?: () => void;
+};
 export type PropsForSharedContact = {
   address: string;
   name: string;

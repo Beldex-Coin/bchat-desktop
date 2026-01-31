@@ -23,6 +23,7 @@ import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
 import { SharedContactCardMessage } from './SharedContactCardMessage';
+import { PaymentMessage } from './PaymentMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -227,6 +228,7 @@ export const GenericReadableMessage = (props: Props) => {
     acceptUrl,
     url,
     txnId,
+    amount,
     address,
     name,
   } = props;
@@ -256,6 +258,20 @@ export const GenericReadableMessage = (props: Props) => {
           direction="incoming"
           acceptUrl={acceptUrl||''}
           messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+
+      if (txnId && amount&&direction) {
+      return (
+        <PaymentMessage
+          amount={amount}
+          txnId={txnId}
+          messageId={messageId}
+          direction={direction}
+          acceptUrl={acceptUrl}
           isUnread={props.isUnread ?? false}
           onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
         />

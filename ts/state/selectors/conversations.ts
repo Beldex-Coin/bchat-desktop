@@ -244,6 +244,16 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
+        if (msg.propsForPayment) {
+        return {
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'payment',
+            props: { ...msg.propsForPayment, messageId: msg.propsForMessage.id },
+          },
+        };
+      }
       if(msg.propsForSharedContact)
       {
         return{

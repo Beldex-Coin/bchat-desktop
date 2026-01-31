@@ -10,6 +10,7 @@ import {
   PropsForExpirationTimer,
   PropsForGroupInvitation,
   PropsForGroupUpdate,
+  PropsForPayment,
   PropsForSharedContact,
 } from '../../state/ducks/conversations';
 import {
@@ -106,6 +107,10 @@ export const BchatMessagesList = (props: {
 
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
+        }
+           if (messageProps.message?.messageType === 'payment') {
+          const msgProps = messageProps.message.props as PropsForPayment;
           return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'shared-contact') {
