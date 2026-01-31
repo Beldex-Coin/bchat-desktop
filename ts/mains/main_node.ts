@@ -456,7 +456,6 @@ async function createWindow() {
 
       return;
     }
-    //  await wallet.closeWallet();
     await requestShutdown();
     if (mainWindow) {
       readyForShutdown = true;
