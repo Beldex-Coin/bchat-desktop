@@ -64,7 +64,6 @@
     "component-classes": "1.2.6",
     "config": "1.28.1",
     "country-code-lookup": "^0.0.19",
-    "cross-port-killer": "^1.4.0",
     "curve25519-js": "^0.0.4",
     "dompurify": "^2.0.7",
     "electron-is-dev": "^1.1.0",

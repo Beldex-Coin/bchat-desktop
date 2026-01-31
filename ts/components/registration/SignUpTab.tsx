@@ -8,10 +8,8 @@ import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
 import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
 import { StringUtils, ToastUtils } from '../../bchat/utils';
-// import { wallet } from '../../wallet/wallet-rpc';
 import { mnDecode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
-// import { WalletPassword } from './WalletPass';
 
 
 const coreBridgeInstance = require('@bdxi/beldex-app-bridge')
@@ -82,13 +80,11 @@ export const SignUpTab = (props: any) => {
   const getWalletDetails = async () => {
     const bridgeInstance = await coreBridgeInstance({});
     const walletdetails = bridgeInstance.newly_created_wallet('english',NetType.Mainnet);
-    console.log("Wallet Details:", walletdetails);
     return walletdetails;
         // params address and network type (MAINNET 1 TESTNET 0)    
   }
-  const generateMnemonicAndKeyPairCreate = async (props: any) => {
+  const generateMnemonicAndKeyPairCreate = async () => {
     if (generatedRecoveryPhrase === '') {
-      // const mnemonic = await wallet.generateMnemonic(props);
       const walletDetails = await getWalletDetails();
       const mnemonic = walletDetails.mnemonic_string;
       const walletAddress = walletDetails.address_string;
@@ -105,8 +101,6 @@ export const SignUpTab = (props: any) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error -- returning Uint8Array intentionally
       const newHexPubKey = StringUtils.decode(keyPair.pubKey, 'hex');
-      // setDaemonHeight(data.result?.height)
-      console.log('Generated BchatID seed: ', props, mnemonic,walletAddress);
       setGeneratedRecoveryPhrase(mnemonic);
       setHexGeneratedPubKey(newHexPubKey); // our 'frontend' bchatID
       localStorage.setItem('userAddress', walletAddress);
@@ -166,10 +160,7 @@ export const SignUpTab = (props: any) => {
       window?.log?.warn('invalid trimmed name for registration');
       ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
     } else {
-      // setDisplayNameScreen(1);
-      // props.imageValidator(LeftImage.password);
-       const walletData = { displayName };
-      void generateMnemonicAndKeyPairCreate(walletData);
+      void generateMnemonicAndKeyPairCreate();
       setDisplayNameScreen(2);
       props.imageValidator(LeftImage.address);
     }
