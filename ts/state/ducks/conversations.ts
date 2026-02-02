@@ -305,7 +305,6 @@ export interface ReduxConversationType {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?: any;
   isBnsHolder?: boolean;
   weAreModerator?: boolean;
   sharedContact?:SharedContact

@@ -168,7 +168,6 @@ export interface ConversationAttributesOptionals {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?: string | null | any;
   isBnsHolder?: Boolean;
 }
 
@@ -201,7 +200,6 @@ export const fillConvoAttributesWithDefaults = (
     isApproved: false,
     didApproveMe: false,
     walletAddress: null,
-    walletUserName: null,
     isBnsHolder: false,
   });
 };
@@ -370,7 +368,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const groupAdmins = this.getGroupAdmins();
     const isPublic = this.isPublic();
     const walletAddress = this.isWalletAddress();
-    const walletUserName = this.getProfileName();
     const isBnsHolder = this.bnsHolder();
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
@@ -510,9 +507,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     if (walletAddress) {
       toRet.walletAddress = walletAddress;
-    }
-    if (walletUserName) {
-      toRet.walletUserName = walletUserName;
     }
     return toRet;
   }

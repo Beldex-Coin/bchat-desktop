@@ -99,10 +99,7 @@ export class ConversationController {
 
     const create = async () => {
       try {
-        // conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
-        conversation.attributes.walletUserName = localStorage.getItem('walletUserName');
         await saveConversation(conversation.attributes);
-        localStorage.setItem('walletUserName', '');
       } catch (error) {
         window?.log?.error(
           'Conversation save failed! ',

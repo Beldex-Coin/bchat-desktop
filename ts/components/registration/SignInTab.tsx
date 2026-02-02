@@ -150,7 +150,6 @@ export const SignInTab = (props: any) => {
       setConfirmModalOpen(false);
     },
   };
-  localStorage.setItem('walletUserName', displayName);
 
 
   const validationForConfirmPopup = () => {
