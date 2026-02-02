@@ -65,10 +65,10 @@ const lightLeaveGrpBtn = '#F2F2F2';
 
 const lightEmptyChatImg = 'url("../images/bchat/emptyMessageWhite.svg")';
 //  const lightBgDoodle = 'url("../images/bchat/doodledark.svg")';
-const lightMsgReqImg = 'url("../images/bchat/nomessagerequest.svg")';
-const lightBlockedContact = 'url("../images/bchat/noblockedcontacts.svg")';
-const lightAddContact = 'url("../images/bchat/addcontactwhitetheme.svg")';
-const lightEmptyContact = 'url("../images/bchat/emptyaddressbookWhite.svg")';
+const lightMsgReqImg = 'url("../images/bchat/no_message_request.svg")';
+const lightBlockedContact = 'url("../images/bchat/no_blocked_contacts.svg")';
+const lightAddContact = 'url("../images/bchat/add_contact_white_theme.svg")';
+const lightEmptyContact = 'url("../images/bchat/empty_address_book_White.svg")';
 const lightEmptyAddressBook = lightEmptyContact;
 const lightEmptyTransHistory = 'url("../images/bchat/notxhistorywhite.svg")';
 const lightIncomingTransHistory = 'url("../images/bchat/noincomingtransactionwhite.svg")';
@@ -76,7 +76,7 @@ const whiteOutgoingTransHistory = 'url("../images/bchat/nooutgoingwhite.svg")';
 const lightPendingTransHistory = 'url("../images/bchat/pendingtxhistorywhite.svg")';
 const lightFailedTransHistory = 'url("../images/bchat/failedtxhistorywhite.svg")';
 const lightEmptyTransaction = 'url("../images/bchat/notransactionsfoundwhite.svg")';
-const lightNoMedia = 'url("../images/bchat/nomediaWhiteTheme.svg")';
+const lightNoMedia = 'url("../images/bchat/no_mediaWhiteTheme.svg")';
 
 const lightChatHeader = '#F0F0F0';
 const lightComposeMsgInput = '#F8F8F8';

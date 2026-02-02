@@ -19,7 +19,7 @@ import {
   UpdateGroupNameModalState,
   UserDetailsModalState,
   ChangePasswordModalState,
-  walletSettingMiniModalState,
+  SettingMiniModalState,
   BchatUpdateInstruntionState,
   BnsLinkModalState,
   AboutBnsModalState,
@@ -115,9 +115,9 @@ export const getChangePasswordModalState = createSelector(
   getModal,
   (state: ModalState): ChangePasswordModalState => state.ChangePasswordModal
 );
-export const getwalletSettingMiniModalState = createSelector(
+export const getSettingMiniModalState = createSelector(
   getModal,
-  (state: ModalState): walletSettingMiniModalState => state.walletSettingMiniModal
+  (state: ModalState): SettingMiniModalState => state.SettingMiniModal
 );
 export const getBchatUpdateInstruntion = createSelector(
   getModal,

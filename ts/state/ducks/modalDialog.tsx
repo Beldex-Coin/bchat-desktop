@@ -33,13 +33,12 @@ export type UserDetailsModalState = {
 } | null;
 
 export type ChangePasswordModalState = object | null;
-export type walletSettingMiniModalState = {
+export type SettingMiniModalState = {
   headerName: string;
-  content: any;
-  onClose: any;
-  onClick: any;
-  currency: string;
-  needSearch?: boolean;
+  content: string[];
+  onClose: () => void;
+  onClick: (selected: string) => void;
+  selectedItem: string;
 } | null;
 
 export type BchatUpdateInstruntionState = any | null;
@@ -69,7 +68,7 @@ export type ModalState = {
   bchatPasswordModal: BchatPasswordModalState;
   deleteAccountModal: DeleteAccountModalState;
   ChangePasswordModal: ChangePasswordModalState;
-  walletSettingMiniModal: walletSettingMiniModalState;
+  SettingMiniModal: SettingMiniModalState;
   BchatUpdateInstruntion: BchatUpdateInstruntionState;
   aboutBnsModal: AboutBnsModalState;
   messageMoreInfo: MessageMoreInfoState;
@@ -96,7 +95,7 @@ export const initialModalState: ModalState = {
   bchatPasswordModal: null,
   deleteAccountModal: null,
   ChangePasswordModal: null,
-  walletSettingMiniModal: null,
+  SettingMiniModal: null,
   BchatUpdateInstruntion: null,
   aboutBnsModal: null,
   messageMoreInfo: null,
@@ -160,8 +159,8 @@ const ModalSlice = createSlice({
     ChangePasswordModal(state, action: PayloadAction<ChangePasswordModalState>) {
       return { ...state, ChangePasswordModal: action.payload };
     },
-    walletSettingMiniModal(state, action: PayloadAction<walletSettingMiniModalState>) {
-      return { ...state, walletSettingMiniModal: action.payload };
+    SettingMiniModal(state, action: PayloadAction<SettingMiniModalState>) {
+      return { ...state, SettingMiniModal: action.payload };
     },
     updateBchatUpgradeInstructionModal(state, action: PayloadAction<BchatUpdateInstruntionState>) {
       return { ...state, BchatUpdateInstruntion: action.payload };
@@ -203,7 +202,7 @@ export const {
   updateDeleteAccountModal,
   updateBanOrUnbanUserModal,
   ChangePasswordModal,
-  walletSettingMiniModal, 
+  SettingMiniModal, 
   updateBchatUpgradeInstructionModal,
   updateAboutBnsModal,
   updateMessageMoreInfoModal,

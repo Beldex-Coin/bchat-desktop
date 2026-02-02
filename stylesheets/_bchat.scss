@@ -1114,7 +1114,7 @@ label {
       background-color: unset;
     }
   }
-  &__walletModel {
+  &__settingMiniModel {
     width: 450px;
     margin: 10px 4px 25px;
     // font-family: 'Poppins';
@@ -1311,7 +1311,7 @@ label {
       //   color: #1ced23;
       // }
 
-      &-walletModalContent {
+      &-SettingMiniModalContent {
         align-items: center;
         // justify-content: center;
         width: 100%;
@@ -1343,7 +1343,7 @@ label {
         }
       }
 
-      &-walletModalContent:hover {
+      &-SettingMiniModalContent:hover {
         background-color: var(--color-confirm-modal-hover-bg);
         cursor: pointer;
       }

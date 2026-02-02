@@ -16,7 +16,7 @@ import {
   getUpdateGroupMembersModal,
   getUpdateGroupNameModal,
   getUserDetailsModal,
-  getwalletSettingMiniModalState,
+  getSettingMiniModalState,
   getBchatUpdateInstruntion,
   getBnsLinkDialog,
   getAboutBnsModal,
@@ -41,7 +41,7 @@ import { UpdateGroupNameDialog } from './UpdateGroupNameDialog';
 import { BchatNicknameDialog } from './BchatNicknameDialog';
 import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
 
-import { WalletModal } from '../wallet/BchatWalletModal';
+import { BchatSettingMiniModal } from './BchatSettingMiniModal';
 
 import BchatUpdateInstruntion from './updateInstructionModal';
 import {BnsLinkDialog} from './BnsLinkDialog'
@@ -72,7 +72,7 @@ export const ModalContainer: any = () => {
   const bchatPasswordModalState = useSelector(getBchatPasswordDialog);
   const deleteAccountModalState = useSelector(getDeleteAccountModalState);
   const banOrUnbanUserModalState = useSelector(getBanOrUnbanUserModalState);
-  const walletSettingMiniModal = useSelector(getwalletSettingMiniModalState);
+  const settingMiniModalState = useSelector(getSettingMiniModalState);
   const BchatUpdateInstruntionState = useSelector(getBchatUpdateInstruntion);
   const aboutBnsModalState=useSelector(getAboutBnsModal);
   const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
@@ -103,7 +103,7 @@ export const ModalContainer: any = () => {
       {bchatPasswordModalState && <BchatPasswordDialog {...bchatPasswordModalState} />}
       {deleteAccountModalState && <DeleteAccountModal {...deleteAccountModalState} />}
       {confirmModalState && <BchatConfirm {...confirmModalState} />}
-      {walletSettingMiniModal && <WalletModal {...walletSettingMiniModal} />}
+      {settingMiniModalState && <BchatSettingMiniModal {...settingMiniModalState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
       {aboutBnsModalState && <AboutBnsDialog />}
       {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}

@@ -11,7 +11,7 @@ import { BchatSettingsItemWrapper } from './BchatSettingListItem';
 
 // import Select from 'react-select'
 import { useDispatch } from 'react-redux';
-import { walletSettingMiniModal } from '../../state/ducks/modalDialog';
+import { SettingMiniModal } from '../../state/ducks/modalDialog';
 import { BchatIcon } from '../icon';
 
 
@@ -47,7 +47,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     window.setSettingValue('zoom-factor-setting', value);
     setValue(value)
     window.updateZoomFactor();
-    dispatch(walletSettingMiniModal(null))
+    dispatch(SettingMiniModal(null))
     forceUpdate();
 
   };
@@ -97,11 +97,11 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   // }
   function displayPopUp() {
     dispatch(
-      walletSettingMiniModal({
+      SettingMiniModal({
         headerName: 'Zoom Level',
         content: option,
-        currency: value + '%',
-        onClose: () => dispatch(walletSettingMiniModal(null)),
+        selectedItem: value + '%',
+        onClose: () => dispatch(SettingMiniModal(null)),
         onClick: (e: any) => {
           handleSlider(e)
         },
