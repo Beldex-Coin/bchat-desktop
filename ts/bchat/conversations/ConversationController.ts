@@ -17,9 +17,6 @@ import { getOpenGroupManager } from '../apis/open_group_api/opengroupV2/OpenGrou
 
 import { deleteAllMessagesByConvoIdNoConfirmation } from '../../interactions/conversationInteractions';
 // import { useSelector } from 'react-redux';
-// import { getHeight } from '../../state/selectors/walletConfig';
-
-// const height=useSelector(getHeight)
 let instance: ConversationController | null;
 
 export const getConversationController = () => {

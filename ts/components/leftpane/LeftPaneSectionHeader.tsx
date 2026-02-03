@@ -172,22 +172,6 @@ export const LeftPaneSectionHeader = () => {
     );
   }
 
-  // function Settings() {
-  //   return (
-  //     <span style={{ marginRight: '15px' }}>
-  //       <BchatIconButton
-  //         iconSize="large"
-  //         iconType="walletSetting"
-  //         iconColor="#2879fb"
-  //         onClick={() => {
-  //           dispatch(clearSearch());
-  //           dispatch(showLeftPaneSection(3));
-  //           dispatch(setOverlayMode(undefined));
-  //         }}
-  //       />
-  //     </span>
-  //   );
-  // }
   return (
     <>
       <Flex flexDirection="column">
