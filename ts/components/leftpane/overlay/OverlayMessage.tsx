@@ -45,7 +45,6 @@ export const OverlayMessage = () => {
   const ourconvo = getConversationController().get(ourNumber);
 
   // const convoList = useSelector(getLeftPaneLists);
-  const walletAddress: any = localStorage.getItem('userAddress');
   // const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
   // const title = window.i18n('newBchat');
@@ -166,27 +165,6 @@ export const OverlayMessage = () => {
                 <p>{ourconvo.id}</p>
                 <CopyIconButton content={ourconvo.id} iconSize={22} onClick={() => {}} />
               </div>
-              <SpacerMD />
-              <label className="label-txt">Beldex Address</label>
-              <SpacerXS />
-              <div className="id-Wrapper">
-                <p className="blue-color">{walletAddress}</p>
-                <CopyIconButton content={walletAddress} iconSize={22} onClick={() => {}} />
-              </div>
-              {/* <div className="bchat-description-long">
-        Share your BChat ID with your friends. You can find your BChat ID below
-      </div> */}
-              {/* <BchatIdEditable
-        // editable={!loading}
-        value={ourNumber}
-        // onChange={setPubkeyOrOns}
-        dataTestId="new-bchat-conversation"
-      /> */}
-
-              {/* <button className="nextButton" onClick={handleMessageButtonClick}>
-        {buttonText}
-      </button> */}
-
               <SpacerMD />
 
               <BchatButton

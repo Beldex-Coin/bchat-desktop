@@ -362,7 +362,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
     );
   }
   private renderAddressView(props: any) {
-    let walletAddress = localStorage.getItem('userAddress');
     return (
       <div>
         {/* <p className="profile-header">{window.i18n('BchatID')}</p> */}
@@ -382,47 +381,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
             onClick={() => copyBchatID(props.bchatID)}
           >
             <CopyIconButton content={props.bchatID} iconSize={18}
-            />
-          </div>
-        </div>
-
-        {/* <p className="profile-header">{window.i18n('profileBeldexAddres')}</p> */}
-        <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
-        >
-          <div className="profile-value" style={{ color: 'var(--color-text)'}}>
-            <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400',color:'#2F8FFF' }}>
-              {walletAddress}
-            </p>
-          </div>
-          {/* <div
-            onClick={() => copyBchatID(walletAddress)}
-            data-tip="Copy"
-            data-place="right"
-            data-offset="{'top':17}"
-            className="bchat-id-section-display-icon"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 18.151 18.151"
-            >
-              <path
-                id="copy_icon"
-                d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z"
-                transform="translate(-2 -2)"
-              />
-            </svg>
-          </div> */}
-          <div
-            className="bchat-id-section-display-icon"
-            data-tip="Copy"
-            data-place="right"
-            data-offset="{'top':17}"
-            onClick={() => copyBchatID(walletAddress)}
-          >
-            <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
             />
           </div>
         </div>
