@@ -22,7 +22,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?: boolean,isPrivate:
   border-radius: 12px;
   cursor:${props => (props.isPrivate ? 'unset' : 'pointer')} ;
   overflow-wrap: break-word;
-  background-color:var(--color-wallet-inner-bg);
+  background-color:var(--color-reaction-hover-bg);
 
   &:after {
     content: '';
@@ -31,7 +31,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?: boolean,isPrivate:
     left: ${props => (props.isIncoming ? 0 : '189px')};
     width: 27px;
     height: 27px;
-     background-color:var(--color-wallet-inner-bg);
+     background-color:var(--color-reaction-hover-bg);
     transform: rotate(45deg);
     border-radius: 3px;
     transform: scaleY(1) rotate(0deg);

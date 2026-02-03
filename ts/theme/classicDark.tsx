@@ -191,6 +191,7 @@ const darkReplyMsgMediaIcon = '#A7A7BA';
 const darkLoaderBg = '#0000009e';
 const darkAttachmentBoxShadow = '0 0 41.143px 0 #000';
 const darkViewContactBorder = '#46465D';
+const darkReactionHoverBg = '#202329';
 
 // adjust this path/import to your actual file
 
@@ -343,6 +344,7 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-password-borderBottom': darkPasswordBorderBottom,
   '--color-chatHeader': darkChatHeader,
   '--color-BnsCameraIconBg': darkBnsCameraIconBgColor,
+  '--color-reaction-hover-bg': darkReactionHoverBg,
   /* Images / icons */
   '--image-EmptyChatImg': darkEmptyChatImg,
   '--image-DayNight': darkDayNight,
