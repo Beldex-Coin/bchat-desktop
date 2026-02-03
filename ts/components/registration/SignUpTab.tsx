@@ -77,17 +77,17 @@ export const SignUpTab = (props: any) => {
     }
   }, [signUpMode]);
 
-  const getWalletDetails = async () => {
+  const getAccountDetails = async () => {
     const bridgeInstance = await coreBridgeInstance({});
-    const walletdetails = bridgeInstance.newly_created_wallet('english',NetType.Mainnet);
-    return walletdetails;
+    const accountDetails = bridgeInstance.newly_created_wallet('english',NetType.Mainnet);
+    return accountDetails;
         // params address and network type (MAINNET 1 TESTNET 0)    
   }
   const generateMnemonicAndKeyPairCreate = async () => {
     if (generatedRecoveryPhrase === '') {
-      const walletDetails = await getWalletDetails();
-      const mnemonic = walletDetails.mnemonic_string;
-      const walletAddress = walletDetails.address_string;
+      const accountDetails = await getAccountDetails();
+      const mnemonic = accountDetails.mnemonic_string;
+      const walletAddress = accountDetails.address_string;
      
       let seedHex = mnDecode(mnemonic);
       // handle shorter than 32 bytes seeds
@@ -234,7 +234,6 @@ export const SignUpTab = (props: any) => {
             props.imageValidator(LeftImage.recoveryseed);
           }}
           pubKey={hexGeneratedPubKey}
-          walletAddress={localStorage.getItem('userAddress')}
           assentAndGoBack={() => {
             props.assent(true);
             clickGoBack();

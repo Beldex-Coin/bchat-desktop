@@ -1416,7 +1416,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async setwalletAddress(value: string, shouldCommit: boolean = true) {
-    window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
     this.set({
       walletAddress: value,
     });

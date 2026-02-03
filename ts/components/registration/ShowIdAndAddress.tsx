@@ -23,16 +23,6 @@ export const DisplayIdAndAddress = (props: any) => (
       <p style={{ color: '#00A638' }}>{props.pubKey}</p>
     </div>
     <p className="bchat-registration-welcome-screen-chat-content">{window.i18n('yourBchatName')}</p>
-    <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('beldexAddress')}</h6>
-    <div className="bchat-registration-welcome-screen-chat-value">
-      {/* <p style={{color:"#1782FF"}}>{props.walletAddress}</p> */}
-      <p style={{ color: '#2D81FF' }}>{props.walletAddress}</p>
-
-      {/* </div> */}
-    </div>
-    <p className="bchat-registration-welcome-screen-chat-content">
-      {window.i18n('beldexAddressConnection')}
-    </p>
     <SpacerLG />
     <SpacerLG />
     <BchatButton

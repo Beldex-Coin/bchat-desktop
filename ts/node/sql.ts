@@ -4051,10 +4051,8 @@ export const sqlNode = {
   getV2OpenGroupRoomByRoomId,
   removeV2OpenGroupRoom,
 
-  //wallet
-
-    getRecipientAddress,
-   saveRecipientAddress,
+  getRecipientAddress,
+  saveRecipientAddress,
 //LRU Cache
    updateLRUCache,
    getLRUCache,

@@ -93,7 +93,6 @@ export async function encryptUsingBchatProtocol(
   const userED25519PubKeyBytes = fromHexToArray(userED25519KeyPairHex.pubKey);
   const userED25519SecretKeyBytes = fromHexToArray(userED25519KeyPairHex.privKey);
 
-  // const walletAddress="bxdis3VF318i2QDjvqwoG9GyfP4sVjTvwZyf1JGLNFyTJ8fbtBgzW6ieyKnpbMw5bU9dggbAiznaPGay96WAmx1Z2B32B86PE";
   let walletAddress: any = localStorage.getItem('userAddress');
 
   let utf8Encode = new TextEncoder();

@@ -239,7 +239,7 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-disableText': lightDisableTxt || ligntDisableText,
   '--color-blockseletedUserBg': lightBlockseletedUserBg,
 
-  /* Profile / BNS / wallet */
+  /* Profile / BNS  */
   '--color-profile': lightProfileBgColor,
   '--color-BnsLinkIdBg': lightBnsLinkIdBgColor,
   '--color-caret': lightColorCaret,

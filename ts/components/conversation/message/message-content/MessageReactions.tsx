@@ -65,7 +65,7 @@ export const StyledMessageReactions = styled(Flex)<{ inModal: boolean }>`
       ? ''
       : `max-width: 375px;; 
      `}
-     margin :-15px 20px 0 20px;
+     margin : ${props => props.inModal ? '0px 20px 0 20px' : '-15px 20px 0 20px'};
 `;
 
 type ReactionsProps = Omit<ReactionProps, 'emoji'>;

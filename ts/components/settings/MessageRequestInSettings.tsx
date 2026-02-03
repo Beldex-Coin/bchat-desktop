@@ -103,7 +103,6 @@ const MessageRequestListSetting = (props: Props) => {
     style,
     // mentionedUs,
     isMessageRequest,
-    // walletAddress,
     profileName
     
   } = props;
@@ -167,9 +166,6 @@ const MessageRequestListSetting = (props: Props) => {
             <ConversationListItemHeaderItem />
              <div className='bchat-settings-messageRequest-profileName' >{profileName}</div>
             <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
-            {/* <div style={{fontSize:'12px'}}>
-             {walletAddress}
-          </div> */}
           </div>
           {/* <button style={{background:"green"}} onClick={handleAcceptConversationRequest}>{window.i18n('accept')}</button> */}
           {/* <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>

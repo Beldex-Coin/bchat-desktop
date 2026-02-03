@@ -206,10 +206,6 @@ export const LeftPaneSectionHeader = () => {
             {label} 
             {/* <IsOnline /> */}
           </div>
-          {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
-          <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
-        </div> */}
-
           <Moon />
           {/* <Settings /> */}
 

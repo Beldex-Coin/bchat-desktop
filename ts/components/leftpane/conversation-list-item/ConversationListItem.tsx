@@ -100,10 +100,8 @@ const ConversationListItem = (props: Props) => {
     id: conversationId,
     isSelected,
     isBlocked,
-    // style,
     mentionedUs,
     isMessageRequest,
-    // walletAddress
   } = props;
   function useHeaderItemProps(conversationId: string) {
     const convoProps = useConversationPropsById(conversationId);
@@ -245,8 +243,6 @@ const ConversationListItem = (props: Props) => {
                   momentFromNow={true}
                 />
               </div>
-
-              {/* <div style={{ fontSize: '12px' }}>{walletAddress}</div> */}
             </div>
           </div>
           <Portal>

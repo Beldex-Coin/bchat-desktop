@@ -1153,7 +1153,6 @@ public getPropsForPayment(): PropsForPayment | null {
 
     perfStart(`messageCommit-${this.attributes.id}`);
     // because the saving to db calls _cleanData which mutates the field for cleaning, we need to save a copy
-    // this.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
     const id = await saveMessage(_.cloneDeep(this.attributes));
     if (triggerUIUpdate) {
       this.dispatchMessageUpdate();

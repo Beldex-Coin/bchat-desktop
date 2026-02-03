@@ -292,7 +292,7 @@
 
 .reaction-list-modal {
   position: relative;
-  z-index: 4;
+  z-index: 999;
   &.show-modal {
     .reaction-list-innreModal {
       bottom: -300;
@@ -302,7 +302,7 @@
     position: absolute;
     width: 100%;
     height: 100vh;
-    z-index: 2;
+    z-index: 999;
   }
   .reaction-list-innreModal {
     position: absolute;
@@ -314,7 +314,7 @@
     transition: bottom 0.5s ease-in-out;
     height: 337px;
     padding: 15px;
-    z-index: 2;
+    z-index: 999;
   }
 }
 

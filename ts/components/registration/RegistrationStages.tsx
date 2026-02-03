@@ -94,8 +94,8 @@ export async function signInWithRecovery(signInDetails: {
     return;
   }
   try {
-    const restoreWallet = bridgeInstance.seed_and_keys_from_mnemonic(userRecoveryPhrase,NetType.Mainnet);
-    localStorage.setItem('userAddress', restoreWallet.address_string);
+    const restoreAccount = bridgeInstance.seed_and_keys_from_mnemonic(userRecoveryPhrase,NetType.Mainnet);
+    localStorage.setItem('userAddress', restoreAccount.address_string);
     await resetRegistration();
 
     await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
