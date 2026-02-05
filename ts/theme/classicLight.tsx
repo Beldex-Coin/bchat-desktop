@@ -165,6 +165,7 @@ const lightViewContactBorder = '#ACACAC';
 const lightBackgroundPrimary = '#E8E8E8';
 const lightButtonGreen = '#FFFFFF';
 const lightReactionHoverBg = '#EBEBEB';
+const lightReadMoreBtnBg='#EBEBEB';
 
 // Light theme body background
 const bodyBgLight = '#FFFFFF';
@@ -322,7 +323,10 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-chatHeader': lightChatHeader,
   '--color-BnsCameraIconBg': lightBnsCameraIconBgColor,
   '--color-password-borderBottom': lightPasswordBorderBottom,
-   '--color-reaction-hover-bg': lightReactionHoverBg,
+  '--color-reaction-hover-bg': lightReactionHoverBg,
+  '--color-read-more-btn-bg': lightReadMoreBtnBg,
+
+
   '--image-EmptyChatImg': lightEmptyChatImg,
   '--image-DayNight': lightDayNight,
   '--image-addContact': lightNewChat,

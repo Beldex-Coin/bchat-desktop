@@ -231,6 +231,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
             style={{
               display: 'flex',
               width: '86%',
+              height:'25px',
+              margin:'5px 0',
               justifyContent: 'center',
             }}
           >
@@ -238,6 +240,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <BchatIconButton
               iconType="pencil"
               iconSize="medium"
+              padding="0 5px"
               iconColor="#128b17"
               onClick={() => {
                 this.setState({ mode: 'edit' });

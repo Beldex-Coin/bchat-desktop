@@ -142,6 +142,7 @@ export type BchatVariableTypes = {
   '--color-BnsCameraIconBg': string;
   '--color-password-borderBottom': string;
   '--color-reaction-hover-bg': string;
+  '--color-read-more-btn-bg': string;
 
   '--image-EmptyChatImg': string;
   '--image-DayNight': string;

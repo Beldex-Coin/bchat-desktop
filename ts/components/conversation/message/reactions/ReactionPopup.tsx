@@ -47,6 +47,7 @@ export const StyledPopupContainerWrapper = styled.div<{ isIncoming: boolean }>`
   // background-color: red;
   left: ${props => (props.isIncoming ? '22px' : '-187px')};
   top: -86px;
+  z-index: 4;
 `;
 const StyledEmoji = styled.span`
   font-size: 28px;

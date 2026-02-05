@@ -12,7 +12,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
       className="attachment-box"
       data-tip="Attachment"
       data-place="top"
-      data-offset="{'right':60}"
+      data-offset="{'right':10}"
       onClick={props.onClick}
     >
       <BchatToolTip effect="solid" />

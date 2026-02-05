@@ -481,7 +481,7 @@ export const ActionsPanel = () => {
   const darkMode = useSelector(getTheme) === 'dark';
   const imgsrc: any = darkMode
     ? 'images/bchat/connect_loading_dark.gif'
-    : 'images/bchat/connect_loading_light.gif';
+    : 'images/bchat/connect_loading_white.gif';
 
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin

@@ -171,6 +171,9 @@
     background: var(--color-invite-card-icon-bg);
     margin: 15px;
     padding: 10px 15px;
+    .bchat-button.brand.secondary {
+    background: var(--color-read-more-btn-bg);
+    }
     .msg-title {
       font-size: 14px;
       font-style: normal;
