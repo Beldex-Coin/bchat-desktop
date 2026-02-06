@@ -173,9 +173,12 @@ export const GenericReadableMessage = (props: Props) => {
   const [isRightClicked, setIsRightClicked] = useState(false);
   const [enableReactions, setEnableReactions] = useState(true);
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
+   const [recentEmoji, setRecentEmoji] = useState(false);
   const onMessageLoseFocus = useCallback(() => {
     if (isRightClicked) {
       setIsRightClicked(false);
+       setRecentEmojiBtnVisible(false);
+       setRecentEmoji(false);
     }
   }, [isRightClicked]);
    const {
@@ -214,8 +217,11 @@ export const GenericReadableMessage = (props: Props) => {
           id: ctxMenuID,
           event: e,
         });
+        setIsRightClicked(enableContextMenu);
+    
       }
-      setIsRightClicked(enableContextMenu);
+      console.log('enableContextMenu', enableContextMenu);
+       
     },
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
   );
@@ -318,6 +324,7 @@ export const GenericReadableMessage = (props: Props) => {
         onClick={() => isSelectionMode && onSelect(messageId)}
         onMouseLeave={() => {
         setRecentEmojiBtnVisible(false);
+        setRecentEmoji(false);
       }}
       onMouseOver={() => setRecentEmojiBtnVisible(true)}
       >
@@ -359,6 +366,8 @@ export const GenericReadableMessage = (props: Props) => {
           cardDesignTag={cardDesignTag}
           recentEmojiBtnVisible={recentEmojiBtnVisible}
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
+          recentEmoji={recentEmoji}
+          setRecentEmoji={e => setRecentEmoji(e)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

@@ -238,6 +238,7 @@ export const SignUpTab = (props: any) => {
             props.assent(true);
             clickGoBack();
           }}
+          walletAddress={localStorage.getItem('userAddress') || ''}
         />
       </>
     );
