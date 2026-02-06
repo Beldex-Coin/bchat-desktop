@@ -66,7 +66,7 @@ nvm install # install the current node version used in this project
 nvm use # use the current node version used in this project
 npm install -g yarn # install yarn globally for this node version
 yarn install --frozen-lockfile # install all dependecies of this project
-yarn grunt # transpile and assemble files
+yarn build-all # transpile and assemble files
 yarn start-prod # start the app on production mode (currently this is the only one supported)
 ```
 
@@ -116,7 +116,7 @@ nvm install # install the current node version used in this project
 nvm use # use the current node version used in this project
 npm install -g yarn # install yarn globally for this node version
 yarn install --frozen-lockfile # install all dependecies of this project
-yarn grunt # transpile and assemble files
+yarn build-all # transpile and assemble files
 yarn start-prod # start the app on production mode (currently this is the only one supported)
 ```
 
