@@ -10,7 +10,7 @@ import { ConversationTypeEnum } from '../models/conversation';
 import { SettingsKey } from '../data/settings-key';
 import {
   saveRecoveryPhrase,
-  setLastProfileUpdateTimestamp,
+  // setLastProfileUpdateTimestamp,
   setLocalPubKey,
   setSignInByLinking,
   Storage,
@@ -131,7 +131,7 @@ export async function registerSingleDevice(
 
   await saveRecoveryPhrase(generatedMnemonic);
 
-  await setLastProfileUpdateTimestamp(Date.now());
+  // await setLastProfileUpdateTimestamp(Date.now());
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error -- returning Uint8Array intentionally
   const pubKeyString = toHex(identityKeyPair.pubKey);
