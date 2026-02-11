@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import React, { Dispatch, useState } from 'react';
+import { Dispatch, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch, search, updateSearchTerm } from '../state/ducks/search';
 import { getConversationsCount } from '../state/selectors/conversations';
@@ -39,8 +39,8 @@ export const BchatSearchInput = () => {
 
   const convoCount = useSelector(getConversationsCount);
 
-  // just after onboard we only have a conversation with ourself
-  if (convoCount <= 1) {
+  // just after onboard we only have a conversation 
+  if (convoCount < 1) {
     return null;
   }
   

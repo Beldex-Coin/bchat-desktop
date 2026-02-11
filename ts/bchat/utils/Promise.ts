@@ -1,3 +1,7 @@
+/* eslint-disable no-promise-executor-return */
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 import { Snode } from '../../data/data';
 type SimpleFunction<T> = (arg: T) => void;
 type Return<T> = Promise<T> | T;
@@ -31,7 +35,6 @@ export async function allowOnlyOneAtATime(
       if (timeoutMs) {
         timeoutTimer = setTimeout(() => {
           window?.log?.warn(`allowOnlyOneAtATime - TIMEDOUT after ${timeoutMs}ms`);
-          // tslint:disable-next-line: no-dynamic-delete
           delete oneAtaTimeRecord[name]; // clear lock
           reject();
         }, timeoutMs);
@@ -54,7 +57,6 @@ export async function allowOnlyOneAtATime(
             timeoutTimer = null;
           }
         }
-        // tslint:disable-next-line: no-dynamic-delete
         delete oneAtaTimeRecord[name]; // clear lock
         reject(e);
       }
@@ -65,7 +67,6 @@ export async function allowOnlyOneAtATime(
           timeoutTimer = null;
         }
       }
-      // tslint:disable-next-line: no-dynamic-delete
       delete oneAtaTimeRecord[name]; // clear lock
       // release the kraken
       resolve(innerRetVal);
@@ -207,10 +208,9 @@ export async function delay(timeoutMs: number = 2000): Promise<Boolean> {
   });
 }
 
-// tslint:disable: no-string-based-set-timeout
 export const sleepFor = async (ms: number, showLog = false) => {
   if (showLog) {
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     console.info(`sleeping for ${ms}ms...`);
   }
   return new Promise(resolve => {
@@ -226,7 +226,7 @@ export const firstTrue = async (ps: Array<Promise<any>>) => {
     async p =>
       new Promise(
         // eslint-disable more/no-then
-        // tslint:disable: no-void-expression
+        // eslint-disable-next-line more/no-then
         (resolve, reject) => p.then(v => v && resolve(v), reject)
       )
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { unblockConvoById } from '../../interactions/conversationInteractions';
 // import { getConversationController } from '../../bchat/conversations';
@@ -15,7 +15,7 @@ import useUpdate from 'react-use/lib/useUpdate';
 import styled from 'styled-components';
 // import { MemberListItem } from '../MemberListItem';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
-import { Avatar, AvatarSize, BNSWrapper, CrownIcon } from '../avatar/Avatar';
+import { Avatar, AvatarSize, CrownIcon } from '../avatar/Avatar';
 import {
   useConversationBnsHolder,
   useConversationUsernameOrShorten,
@@ -186,15 +186,8 @@ const AvatarItem = (props: { memberPubkey: string; isAdmin: boolean; isBnsHolder
   const { memberPubkey, isAdmin, isBnsHolder } = props;
   return (
     <AvatarContainer>
-      <BNSWrapper
-        // size={40}
-        position={{ left: '33px', top: '33px' }}
-        isBnsHolder={isBnsHolder}
-        size={{ width: '20', height: '20' }}
-      >
-        <Avatar size={AvatarSize.M} pubkey={memberPubkey} />
+        <Avatar size={AvatarSize.M} pubkey={memberPubkey}  isBnsHolder={isBnsHolder}/>
         {isAdmin && <CrownIcon />}
-      </BNSWrapper>
     </AvatarContainer>
   );
 };

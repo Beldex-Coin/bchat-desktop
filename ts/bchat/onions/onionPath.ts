@@ -1,6 +1,9 @@
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable no-await-in-loop */
 import * as Data from '../../data/data';
 import * as SnodePool from '../apis/snode_api/snodePool';
 import _ from 'lodash';
+// eslint-disable-next-line import/no-named-default
 import { default as insecureNodeFetch } from 'node-fetch';
 import { UserUtils } from '../utils';
 import { incrementBadSnodeCountOrDrop, snodeHttpsAgent } from '../apis/snode_api/onions';
@@ -24,12 +27,10 @@ export let onionPaths: Array<Array<Data.Snode>> = [];
  * @returns a copy of the onion path currently used by the app.
  *
  */
-// tslint:disable-next-line: variable-name
 export const TEST_getTestOnionPath = () => {
   return _.cloneDeep(onionPaths);
 };
 
-// tslint:disable-next-line: variable-name
 export const TEST_getTestguardNodes = () => {
   return _.cloneDeep(guardNodes);
 };
@@ -50,7 +51,6 @@ export const clearTestOnionPath = () => {
  */
 export let pathFailureCount: Record<string, number> = {};
 
-// tslint:disable-next-line: variable-name
 export const resetPathFailureCount = () => {
   pathFailureCount = {};
 };
@@ -222,7 +222,6 @@ export async function incrementBadPathCountOrDrop(snodeEd25519: string) {
   window?.log?.info('handling bad path for path index', pathWithSnodeIndex);
   const oldPathFailureCount = pathFailureCount[guardNodeEd25519] || 0;
 
-  // tslint:disable: prefer-for-of
 
   const newPathFailureCount = oldPathFailureCount + 1;
   // skip the first one as the first one is the guard node.

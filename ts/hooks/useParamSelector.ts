@@ -4,6 +4,7 @@ import { ConversationModel } from '../models/conversation';
 import { PubKey } from '../bchat/types';
 import { UserUtils } from '../bchat/utils';
 import { StateType } from '../state/reducer';
+import { getMessageReactsProps } from '../state/selectors/conversations';
 
 export function useAvatarPath(convoId: string | undefined) {
   const convoProps = useConversationPropsById(convoId);
@@ -160,7 +161,16 @@ export function useConversationBeldexAddress(convoId?: string) {
   return convoProps?.walletAddress;
 }
 
-export function useConversationWalletDaemonHeight(convoId?: string) {
-  const convoProps = useConversationPropsById(convoId);
-  return convoProps?.walletCreatedDaemonHeight;
+
+export function useMessageReactsPropsById(messageId?: string) {
+  return useSelector((state: StateType) => {
+    if (!messageId) {
+      return null;
+    }
+    const messageReactsProps = getMessageReactsProps(state, messageId);
+    if (!messageReactsProps) {
+      return null;
+    }
+    return messageReactsProps;
+  });
 }

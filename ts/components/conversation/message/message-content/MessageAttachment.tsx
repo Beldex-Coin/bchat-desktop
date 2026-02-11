@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clone } from 'lodash';
 import { getMessageById } from '../../../../data/data';
@@ -51,9 +51,7 @@ type Props = {
   displayBgBlur:boolean;
   handleImageError: () => void;
 };
-// tslint:disable: use-simple-attributes
 
-// tslint:disable-next-line max-func-body-length cyclomatic-complexity
 export const MessageAttachment = (props: Props) => {
   const { messageId, imageBroken, handleImageError,displayBgBlur } = props;
 
@@ -136,7 +134,8 @@ export const MessageAttachment = (props: Props) => {
         />
       </div>
     );
-  } else if ( !firstAttachment.pending && !firstAttachment.error && isAudio(attachments)) {
+  } else if ( !firstAttachment.pending && !firstAttachment.error && isAudio(attachments)  ) {
+   
     return (
       <div
         role="main"
@@ -147,11 +146,11 @@ export const MessageAttachment = (props: Props) => {
           e.stopPropagation();
           e.preventDefault();
         }}
-        style={{ padding: '5px 10px' }}
+        style={{ padding: '5px 10px 5px 15px' }}
       >
         <WaveFormAudioPlayerWithEncryptedFile src={firstAttachment.url}
           contentType={firstAttachment.contentType}
-          messageId={messageId} direction={direction} />
+          messageId={messageId} direction={direction} size={firstAttachment.size} />
         {/* <AudioPlayerWithEncryptedFile
           src={firstAttachment.url}
           contentType={firstAttachment.contentType}

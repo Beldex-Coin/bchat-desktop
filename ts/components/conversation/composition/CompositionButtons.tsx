@@ -3,6 +3,8 @@ import { BchatIcon, BchatIconButton } from '../../icon';
 import { BchatToolTip } from '../../leftpane/ActionsPanel';
 import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { CustomIconButton } from '../../icon/CustomIconButton';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../state/selectors/theme';
 
 export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
   return (
@@ -10,7 +12,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
       className="attachment-box"
       data-tip="Attachment"
       data-place="top"
-      data-offset="{'right':60}"
+      data-offset="{'right':10}"
       onClick={props.onClick}
     >
       <BchatToolTip effect="solid" />
@@ -31,17 +33,20 @@ export const StartRecordingButton = (props: { onClick: () => void }) => {
     />
   );
 };
-
+// eslint-disable-next-line react/display-name
 export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () => void }>(
   (props, ref) => {
+    const darkMode = useSelector(getTheme) === 'dark';
     return (
       <BchatIconButton
         iconType="emoji"
         ref={ref}
-        backgroundColor="var(--color-compose-view-button-background)"
-        iconSize={'huge2'}
-        borderRadius="300px"
-        iconPadding="6px"
+        iconColor={darkMode ?'#A7A7BA': '#ACACAC'}
+        iconSize={'huge'}
+        // borderRadius="300px"
+     
+        // iconPadding="6px"
+        
         onClick={props.onClick}
       />
     );
@@ -51,7 +56,6 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 export const SendMessageButton = (props: { onClick: () => void; name?: string}) => {
   return (
     <div  onClick={props.onClick}>
-      {/* {props.name === 'Send' ? ( */}
         <BchatIconButton
           iconType="send"
           // iconColor="#fff"
@@ -61,47 +65,14 @@ export const SendMessageButton = (props: { onClick: () => void; name?: string}) 
           
           dataTestId="send-message-button"
         />
-      {/* )  */}
-      {/* : (
-        <img
-          src="images/wallet/beldex_send.svg"
-          className="bchat-text-logo"
-          style={{ width: '20px', height: '20px' }}
-        ></img>
-      )}
-      <div className="text">{props.name}</div> */}
     </div>
   );
 };
-// export const SendFundButton = (props: any) => {
-//   return (
-//     <div onClick={props.onClick}>
-//       {/* <BchatIconButton
-//         iconType="beldexCoinLogo"
-//         iconColor='#159B24'
-//         iconSize={32}
-//         iconRotation={361}
-//         borderRadius="300px"
-//         // iconPadding="5px 0 0 5px"
-//         onClick={props.onClick}
-//         backgroundColor='black'
-//         dataTestId="send-message-button"
-//       /> */}
-//       <div style={{ cursor: 'pointer' }}>
-//         <img
-//           src="images/wallet/beldexCoin.png"
-//           className="bchat-text-logo"
-//           style={{ width: '30px', height: '30px' }}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
 export const SendFundDisableButton = (props: { onClick: () => void }) => {
   return (
     <div onClick={props.onClick}>
       <div
-        data-tip="Chat With Wallet"
+        data-tip="Send BDX"
         className="coin-logo-wrapper"
         data-offset="{'top':10,'right':0}"
       >

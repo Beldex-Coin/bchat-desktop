@@ -1,4 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
 
 import chai from 'chai';
 import { v4 as uuid } from 'uuid';

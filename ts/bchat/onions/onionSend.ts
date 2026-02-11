@@ -1,4 +1,4 @@
-// tslint:disable: cyclomatic-complexity
+
 
 import { OnionPaths } from '.';
 import {
@@ -35,20 +35,32 @@ export type FinalDestinationOptions = {
   headers?: Record<string, string>;
   body?: string;
 };
+// NOTE some endpoints require decoded strings
+const endpointExceptions = ['/reaction'];
+export const endpointRequiresDecoding = (url: string): string => {
+  for (let i = 0; i < endpointExceptions.length; i++) {
+    if (url.includes(endpointExceptions[i])) {
+      return decodeURIComponent(url);
+    }
+  }
+  return url;
+};
 
 const buildSendViaOnionPayload = (url: URL, fetchOptions: OnionFetchOptions): OnionPayloadObj => {
   let tempHeaders = fetchOptions.headers || {};
+  const endpoint = endpointRequiresDecoding( `${url.pathname.replace(/^\//, '')}${url.search || ''}` );
   const payloadObj = {
     method: fetchOptions.method || 'GET',
     body: fetchOptions.body || ('' as any),
     // safety issue with file server, just safer to have this
     // no initial /
-    endpoint: url.pathname.replace(/^\//, ''),
+    // endpoint: url.pathname.replace(/^\//, ''),
+    endpoint,
     headers: {},
   };
-  if (url.search) {
-    payloadObj.endpoint += url.search;
-  }
+  // if (url.search) {
+  //   payloadObj.endpoint += url.search;
+  // }
 
   // from https://github.com/sindresorhus/is-stream/blob/master/index.js
   if (

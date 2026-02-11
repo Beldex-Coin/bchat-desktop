@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useSelector } from 'react-redux';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { PubKey } from '../../../../bchat/types';
@@ -9,6 +9,8 @@ import {
 } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
 import { ContactName } from '../../ContactName';
+import { cachedHashes } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
+import { avatarPlaceholderColors } from '../../../avatar/AvatarPlaceHolder/AvatarPlaceHolder';
 
 export type MessageAuthorSelectorProps = Pick<
   MessageRenderingProps,
@@ -35,12 +37,15 @@ export const MessageAuthorText = (props: Props) => {
     return null;
   }
 
-  const shortenedPubkey = PubKey.shorten(sender);
+  const shortenedPubkey = PubKey.shorten(sender); 
+  const displayedPubkey = authorProfileName ? shortenedPubkey : sender; 
+  const bgColorIndex = (cachedHashes.get(sender) ?? 0) % avatarPlaceholderColors.length;
+  const avatarColors = avatarPlaceholderColors[bgColorIndex];
 
-  const displayedPubkey = authorProfileName ? shortenedPubkey : sender;
 
   return (
-    <Flex container={true}>
+    <Flex container={true} className='module-message_grp_author_wrapper'
+     style={{color:avatarColors?.bgColor || 'var(--color-text)',textTransform: 'capitalize'}}>
       <ContactName
         pubkey={displayedPubkey}
         name={authorName}

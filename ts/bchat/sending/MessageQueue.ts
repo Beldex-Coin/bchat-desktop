@@ -75,6 +75,10 @@ export class MessageQueue {
       if (!serverId || serverId === -1) {
         throw new Error(`Invalid serverId returned by server: ${serverId}`);
       }
+      // NOTE Reactions are handled in the MessageSender
+      if (message && message.dataProto().reaction) {
+        return;
+      }
       void MessageSentHandler.handlePublicMessageSentSuccess(message, {
         serverId: serverId,
         serverTimestamp: sentTimestamp,
@@ -96,7 +100,7 @@ export class MessageQueue {
   ): Promise<void> {
     let destinationPubKey: PubKey | undefined = groupPubKey;
     if (message instanceof ExpirationTimerUpdateMessage || message instanceof ClosedGroupMessage) {
-      destinationPubKey = groupPubKey ? groupPubKey : message.groupId;
+      destinationPubKey = groupPubKey || message.groupId;
     }
 
     if (!destinationPubKey) {
@@ -162,6 +166,7 @@ export class MessageQueue {
     const messages = await this.pendingMessageCache.getForDevice(device);
 
     const jobQueue = this.getJobQueue(device);
+     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     messages.forEach(async message => {
       const messageId = message.identifier;
 

@@ -6,9 +6,9 @@ import {
   hasVisualMediaAttachmentInMessage,
 } from '../../types/message/initializeAttachmentMetadata';
 import { generateFakeIncomingPrivateMessage, stubWindowLog } from '../test-utils/utils';
-// tslint:disable: chai-vague-errors no-unused-expression
+// eslint:disable: chai-vague-errors no-unused-expression
 
-// tslint:disable-next-line: max-func-body-length
+// eslint:disable-next-line: max-func-body-length
 describe('initializeAttachmentMetadata', () => {
   beforeEach(() => {
     stubWindowLog();

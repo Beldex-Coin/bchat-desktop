@@ -15,12 +15,31 @@ import Backbone from 'backbone';
 import { BchatRegistrationView } from '../components/registration/BchatRegistrationView';
 import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
-import ReactDOM from 'react-dom';
-import React from 'react';
-import kill from 'cross-port-killer';
-import { HTTPError } from '../bchat/utils/errors';
-// import { walletSettingsKey } from '../data/settings-key';
-// tslint:disable: max-classes-per-file
+// import ReactDOM from 'react-dom';
+// import React from 'react';
+
+import nativeEmojiData from '@emoji-mart/data';
+import { initialiseEmojiData } from '../util/emoji';
+import { loadEmojiPanelI18n } from '../util/i18n';
+import { OpenGroupData } from '../data/opengroups';
+import { createRoot, Root } from 'react-dom/client';
+
+
+let root: Root | null = null;
+
+function getRoot(): Root | null {
+  const container = document.getElementById('root');
+  if (!container) {
+    console.error('Root container not found');
+    return null;
+  }
+
+  if (!root) {
+    root = createRoot(container);
+  }
+
+  return root;
+}
 
 // Globally disable drag and drop
 document.body.addEventListener(
@@ -43,7 +62,6 @@ document.body.addEventListener(
 // Load these images now to ensure that they don't flicker on first use
 const images = [];
 function preload(list: Array<string>) {
-  // tslint:disable-next-line: one-variable-per-declaration
   for (let index = 0, max = list.length; index < max; index += 1) {
     const image = new Image();
     image.src = `./images/${list[index]}`;
@@ -108,6 +126,7 @@ function mapOldThemeToNew(theme: string) {
 // We need this 'first' check because we don't want to start the app up any other time
 //   than the first time. And storage.fetch() will cause onready() to fire.
 let first = true;
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 Storage.onready(async () => {
   if (!first) {
     return;
@@ -170,9 +189,15 @@ Storage.onready(async () => {
   window.Events.setThemeSetting(newThemeSetting);
 
   try {
+    initialiseEmojiData(nativeEmojiData);
     await AttachmentDownloads.initAttachmentPaths();
 
-    await Promise.all([getConversationController().load(), BlockedNumberController.load()]);
+    await Promise.all([
+      getConversationController().load(),
+      BlockedNumberController.load(),
+      OpenGroupData.opengroupRoomsLoad(),
+      loadEmojiPanelI18n(),
+    ]);
   } catch (error) {
     window.log.error(
       'main_start.js: ConversationController failed to load:',
@@ -186,10 +211,10 @@ Storage.onready(async () => {
 async function manageExpiringData() {
   await Data.cleanSeenMessages();
   await Data.cleanLastHashes();
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setTimeout(manageExpiringData, 1000 * 60 * 60);
 }
 
-// tslint:disable-next-line: max-func-body-length
 async function start() {
   void manageExpiringData();
   window.dispatchEvent(new Event('storage_ready'));
@@ -220,6 +245,7 @@ async function start() {
   window.log.info('Cleanup: complete');
 
   window.log.info('listening for registration events');
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   WhisperEvents.on('registration_done', async () => {
     window.log.info('handling registration event');
 
@@ -241,15 +267,18 @@ async function start() {
     const hideMenuBar = Storage.get('hide-menu-bar', true) as boolean;
     window.setAutoHideMenuBar(hideMenuBar);
     window.setMenuBarVisibility(!hideMenuBar);
-    getConversationController()
+    // eslint-disable-next-line more/no-then
+    void getConversationController()
       .loadPromise()
       ?.then(() => {
-        ReactDOM.render(<BchatInboxView />, document.getElementById('root'));
+        getRoot()?.render(<BchatInboxView />);
+        // ReactDOM.render(<BchatInboxView />, document.getElementById('root'));
       });
   }
 
   function openStandAlone() {
-    ReactDOM.render(<BchatRegistrationView />, document.getElementById('root'));
+    getRoot()?.render(<BchatRegistrationView />);
+    // ReactDOM.render(<BchatRegistrationView />, document.getElementById('root'));
   }
   ExpirationTimerOptions.initExpiringMessageListener();
 
@@ -269,7 +298,6 @@ async function start() {
 
   // Set user's launch count.
   const prevLaunchCount = window.getSettingValue('launch-count');
-  // tslint:disable-next-line: restrict-plus-operands
   const launchCount = !prevLaunchCount ? 1 : prevLaunchCount + 1;
   window.setSettingValue('launch-count', launchCount);
 
@@ -337,7 +365,7 @@ async function start() {
     }
     window.setCallMediaPermissions(enabled);
   };
-
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   window.openFromNotification = async conversationKey => {
     window.showWindow();
     if (conversationKey) {
@@ -359,8 +387,8 @@ function onOffline() {
   window.log.info('offline');
   window.globalOnlineStatus = false;
 
-   window.removeEventListener('offline', onOffline);
-   window.addEventListener('online', onOnline);
+  window.removeEventListener('offline', onOffline);
+  window.addEventListener('online', onOnline);
 
   // We've received logs from Linux where we get an 'offline' event, then 30ms later
   //   we get an online event. This waits a bit after getting an 'offline' event
@@ -400,11 +428,6 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  kill(64371)
-    .then()
-    .catch(err => {
-      throw new HTTPError('beldex_rpc_port', err);
-    });
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);
@@ -453,13 +476,11 @@ class TextScramble {
     this.chars = '0123456789abcdef';
     this.update = this.update.bind(this);
   }
-  // tslint:disable: insecure-random
 
   public async setText(newText: string) {
     const oldText = this.el.value;
     const length = Math.max(oldText.length, newText.length);
-    // eslint-disable-next-line no-return-assign
-    // tslint:disable-next-line: promise-must-complete
+    // eslint-disable-next-line no-return-assign, no-promise-executor-return
     const promise = new Promise(resolve => (this.resolve = resolve));
     this.queue = [];
 
@@ -486,7 +507,6 @@ class TextScramble {
     let output = '';
     let complete = 0;
 
-    // tslint:disable-next-line: one-variable-per-declaration
     for (let i = 0, n = this.queue.length; i < n; i++) {
       const { from, to, start: startNumber, end } = this.queue[i];
       let { char } = this.queue[i];

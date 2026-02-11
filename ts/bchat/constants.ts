@@ -1,4 +1,3 @@
-// tslint:disable: binary-expression-operand-order
 
 const seconds = 1000;
 const minutes = seconds * 60;
@@ -25,7 +24,6 @@ export const SWARM_POLLING_TIMEOUT = {
 };
 
 export const PROTOCOLS = {
-  // tslint:disable-next-line: no-http-string
   HTTP: 'http:',
   HTTPS: 'https:',
 };
@@ -55,3 +53,7 @@ export const UI = {
     GREEN: '#128b17',
   },
 };
+
+export const DEFAULT_RECENT_REACTS = ['😂', '🥰', '😢', '😡', '😮', '😈'];
+
+export const DEFAULT_MIN_AUDIO_MEMORY_SIZE=500;

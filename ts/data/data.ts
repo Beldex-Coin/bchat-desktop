@@ -1,5 +1,3 @@
-// tslint:disable: no-require-imports no-var-requires one-variable-per-declaration no-void-expression
-// tslint:disable: function-name
 
 import _ from 'lodash';
 import { MessageResultProps } from '../components/search/MessageSearchResults';
@@ -55,6 +53,94 @@ export type ServerToken = {
   serverUrl: string;
   token: string;
 };
+// we export them like this instead of directly with the `export function` cause this is helping a lot for testing
+export const Data = {
+  shutdown,
+  close,
+  removeDB,
+  getPasswordHash,
+
+  // items table logic
+  createOrUpdateItem,
+  getItemById,
+  getAllItems,
+  removeItemById,
+
+  // guard nodes
+  getGuardNodes,
+  updateGuardNodes,
+  generateAttachmentKeyIfEmpty,
+  getSwarmNodesForPubkey,
+  updateSwarmNodesForPubkey,
+  getAllEncryptionKeyPairsForGroup,
+  getLatestClosedGroupEncryptionKeyPair,
+  addClosedGroupEncryptionKeyPair,
+  removeAllClosedGroupEncryptionKeyPairs,
+  saveConversation,
+  getConversationById,
+  removeConversation,
+  getAllConversations,
+  getPubkeysInPublicConversation,
+  searchConversations,
+  searchMessages,
+  searchMessagesInConversation,
+  cleanSeenMessages,
+  cleanLastHashes,
+  saveSeenMessageHashes,
+  updateLastHash,
+  saveMessage,
+  saveMessages,
+  removeMessage,
+  _removeMessages,
+  getMessageIdsFromServerIds,
+  getMessageById,
+  getMessageBySenderAndSentAt,
+  getMessageByServerId,
+  filterAlreadyFetchedOpengroupMessage,
+  getMessageBySenderAndTimestamp,
+  getUnreadByConversation,
+  getUnreadCountByConversation,
+  getMessageCountByType,
+  getMessagesByConversation,
+  getLastMessagesByConversation,
+  getLastMessageIdInConversation,
+  getLastMessageInConversation,
+  getOldestMessageInConversation,
+  getMessageCount,
+  getFirstUnreadMessageIdInConversation,
+  getFirstUnreadMessageWithMention,
+  hasConversationOutgoingMessage,
+  getLastHashBySnode,
+  getSeenMessagesByHashList,
+  removeAllMessagesInConversation,
+  getMessagesBySentAt,
+  getExpiredMessages,
+  getOutgoingWithoutExpiresAt,
+  getNextExpiringMessage,
+  getUnprocessedCount,
+  getAllUnprocessed,
+  getUnprocessedById,
+  saveUnprocessed,
+  updateUnprocessedAttempts,
+  updateUnprocessedWithData,
+  removeUnprocessed,
+  removeAllUnprocessed,
+  getNextAttachmentDownloadJobs,
+  saveAttachmentDownloadJob,
+  setAttachmentDownloadJobPending,
+  resetAttachmentDownloadPending,
+  removeAttachmentDownloadJob,
+  removeAllAttachmentDownloadJobs,
+  removeAll,
+  removeAllConversations,
+  cleanupOrphanedAttachments,
+  removeOtherData,
+  getMessagesWithVisualMediaAttachments,
+  getMessagesWithFileAttachments,
+  getSnodePoolFromDb,
+  updateSnodePoolOnDb,
+  fillWithTestData,
+};
 
 export const hasSyncedInitialConfigurationItem = 'hasSyncedInitialConfigurationItem';
 export const lastAvatarUploadTimestamp = 'lastAvatarUploadTimestamp';
@@ -84,7 +170,6 @@ function _cleanData(data: any): any {
     } else if (_.isFunction(value)) {
       // just skip a function which has not a toNumber function. We don't want to save a function to the db.
       // an attachment comes with a toJson() function
-      // tslint:disable-next-line: no-dynamic-delete
       delete data[key];
     } else if (Array.isArray(value)) {
       data[key] = value.map(_cleanData);
@@ -396,6 +481,8 @@ export async function getMessageBySenderAndSentAt({
   return new MessageModel(messages[0]);
 }
 
+
+
 export async function filterAlreadyFetchedOpengroupMessage(
   msgDetails: MsgDuplicateSearchOpenGroup
 ): Promise<MsgDuplicateSearchOpenGroup> {
@@ -424,6 +511,20 @@ export async function getMessageBySenderAndTimestamp({
   }
 
   return new MessageModel(messages[0]);
+}
+
+ async function getMessageByServerId(
+  serverId: number,
+  skipTimerInit: boolean = false
+): Promise<MessageModel | null> {
+  const message = await channels.getMessageByServerId(serverId);
+  if (!message) {
+    return null;
+  }
+  if (skipTimerInit) {
+    message.skipTimerInit = skipTimerInit;
+  }
+  return new MessageModel(message);
 }
 
 export async function getUnreadByConversation(conversationId: string): Promise<MessageCollection> {
@@ -456,11 +557,21 @@ export async function getMessagesByConversation(
     messageId,
   });
   if (skipTimerInit) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const message of messages) {
       message.skipTimerInit = skipTimerInit;
     }
   }
   return new MessageCollection(messages);
+}
+
+export async function  getCallMessagesByConversation( conversationId: string,)
+{
+  const messages = await channels.getMessagesByConversation(conversationId);
+  const callNotifications = messages
+  .filter((item: any) => "callNotificationType" in item)
+  return callNotifications;
+
 }
 
 /**
@@ -481,6 +592,7 @@ export async function getLastMessagesByConversation(
 ): Promise<MessageCollection> {
   const messages = await channels.getLastMessagesByConversation(conversationId, limit);
   if (skipTimerInit) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const message of messages) {
       message.skipTimerInit = skipTimerInit;
     }
@@ -739,7 +851,6 @@ export async function fillWithTestData(convs: number, msgs: number) {
   }
 
   for (let msgsAddedCount = 0; msgsAddedCount < msgs; msgsAddedCount++) {
-    // tslint:disable: insecure-random
     const convoToChoose = newConvos[Math.floor(Math.random() * newConvos.length)];
     const direction = Math.random() > 0.5 ? 'outgoing' : 'incoming';
     const body = `spongebob ${new Date().toString()}`;
@@ -748,7 +859,7 @@ export async function fillWithTestData(convs: number, msgs: number) {
         body,
       });
     } else {
-      await convoToChoose.addSingleIncomingMessage({
+      await convoToChoose.addSingleIncomingMessage({  
         source: convoToChoose.id,
         body,
       });
@@ -756,7 +867,6 @@ export async function fillWithTestData(convs: number, msgs: number) {
   }
 }
 
-//wallet integration
 export async function saveRecipientAddress(data: any) {
   return await channels.saveRecipientAddress(data);
 }
@@ -764,3 +874,13 @@ export async function saveRecipientAddress(data: any) {
 export async function getRecipientAddress(data: any) {
   return channels.getRecipientAddress(data);
 }
+
+//LRU-cache
+
+export async function setLRUCache(data: any) {
+  return await channels.updateLRUCache(data);
+}
+export async function getLRUCache(data: any) {
+  return channels.getLRUCache(data);
+}
+

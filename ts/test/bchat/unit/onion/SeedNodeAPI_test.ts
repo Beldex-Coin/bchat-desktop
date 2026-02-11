@@ -1,4 +1,3 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
 
 import chai from 'chai';
 import Sinon from 'sinon';
@@ -39,9 +38,7 @@ const fakeSnodePoolFromSeedNode: Array<SnodeFromSeed> = fakeSnodePool.map(m => {
     pubkey_ed25519: m.pubkey_ed25519,
   };
 });
-// tslint:disable: variable-name
 
-// tslint:disable-next-line: max-func-body-length
 describe('SeedNodeAPI', () => {
   // Initialize new stubbed cache
 

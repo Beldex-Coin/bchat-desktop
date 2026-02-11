@@ -33,6 +33,8 @@ import { bnsVerificationConvo } from '../components/conversation/BnsVerification
 
 export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageHash: string) {
   try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     const plaintext = await decrypt(envelope, envelope.content);
 
     if (!plaintext) {
@@ -78,6 +80,7 @@ async function decryptForClosedGroup(envelope: EnvelopePlus, ciphertext: ArrayBu
           throw new Error('No more encryption keypairs to try for message.');
         }
         const encryptionKeyPair = ECKeyPair.fromHexKeyPair(hexEncryptionKeyPair);
+        // eslint-disable-next-line no-await-in-loop
         decryptedContent = await decryptWithBchatProtocol(
           envelope,
           ciphertext,
@@ -195,52 +198,24 @@ export async function decryptWithBchatProtocol(
 
   // set the sender identity on the envelope itself.
   if (isClosedGroup) {
+    // eslint-disable-next-line no-param-reassign
     envelope.senderIdentity = `bd${toHex(senderX25519PublicKey)}`;
   } else {
+    // eslint-disable-next-line no-param-reassign
     envelope.source = `bd${toHex(senderX25519PublicKey)}`;
   }
   perfEnd(`decryptWithBchatProtocol-${envelope.id}`, 'decryptWithBchatProtocol');
   const addressLength = window.networkType == 'mainnet' ? 97 : 95;
   const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0, addressLength));
 
-  //  sender wallet Address
-
   const conversation = await getConversationController().getOrCreateAndWait(
     envelope.source,
     ConversationTypeEnum.PRIVATE
   );
   await conversation.setwalletAddress(beldexFinalAddress);
-  // await conversation.commit();
-
-  // if (getConversation && getConversation.walletAddress) {
-  //   if (
-  //     getConversation.walletAddress ==
-  //     'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
-  //   ) {
-  //     if (beldexFinalAddress != getConversation.walletAddress) {
-  //       let data = {
-  //         id: envelope.source,
-  //         walletAddress: beldexFinalAddress,
-  //       };
-  //       let updateConversation: any = await updateConversationAddress(data);
-  //    
-  //     }
-  //     localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  //   } else {
-  //     localStorage.setItem('senderWalletAddress', getConversation.walletAddress);
-  //   }
-  // } else {
-  //  
-  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  // }
-  // if (
-  //   beldexFinalAddress !=
-  //   'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
-  // ) {
-  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  // }
-
   const message = plaintextWithMetadata.subarray(addressLength, plainTextEnd);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error -- returning Uint8Array intentionally
   return message;
 }
 
@@ -298,7 +273,6 @@ async function doDecrypt(
   }
 }
 
-// tslint:disable-next-line: max-func-body-length
 async function decrypt(envelope: EnvelopePlus, ciphertext: ArrayBuffer): Promise<any> {
   try {
     const plaintext = await doDecrypt(envelope, ciphertext);
@@ -408,10 +382,8 @@ export async function innerHandleSwarmContentMessage(
     );
 
     // When restoring the message, this function is used to validate BNS in the conversation.
-    bnsVerificationConvo(senderConversationModel,isPrivateConversationMessage,envelope);
+    bnsVerificationConvo(senderConversationModel, isPrivateConversationMessage, envelope);
     // const ourPubkey = UserUtils.getOurPubKeyFromCache();
-    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id,'ourPubkey ---> ',ourPubkey.key,"!window.getLocalValue('ourBnsName')--->",!window.getLocalValue('ourBnsName'),"ourBnsName-->",window.getLocalValue('ourBnsName'),'isPrivateConversationMessage --->',isPrivateConversationMessage)
-    // console.log(" private validatio 1------>",senderConversationModel?.attributes?.id === ourPubkey.key &&
     // !window.getLocalValue('ourBnsName') &&
     // isPrivateConversationMessage)
     // if (
@@ -513,7 +485,7 @@ export async function innerHandleSwarmContentMessage(
   }
 }
 
-function onReadReceipt(readAt: number, timestamp: number, source: string) {
+async function onReadReceipt(readAt: number, timestamp: number, source: string) {
   window?.log?.info('read receipt', source, timestamp);
 
   if (!Storage.get(SettingsKey.settingsReadReceipt)) {
@@ -538,6 +510,7 @@ async function handleReceiptMessage(
 
   const results = [];
   if (type === SignalService.ReceiptMessage.Type.READ) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const ts of timestamp) {
       const promise = onReadReceipt(
         Lodash.toNumber(envelope.timestamp),
@@ -698,11 +671,13 @@ export async function handleDataExtractionNotification(
 ): Promise<void> {
   // we currently don't care about the timestamp included in the field itself, just the timestamp of the envelope
   const { type, timestamp: referencedAttachment } = dataNotificationMessage;
+  // const isScreenshotMsg=type === SignalService.DataExtractionNotification.Type.SCREENSHOT;
 
   const { source, timestamp } = envelope;
   await removeFromCache(envelope);
 
   const convo = getConversationController().get(source);
+  // if (!convo || !convo.isPrivate() ||!(isScreenshotMsg || Storage.get(SettingsKey.settingsReadReceipt))) {
   if (!convo || !convo.isPrivate()) {
     window?.log?.info('Got DataNotification for unknown or non private convo');
     return;

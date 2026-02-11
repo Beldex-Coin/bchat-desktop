@@ -1,3 +1,4 @@
+// eslint:disable: no-require-imports no-var-requires
 const { clipboard, ipcRenderer, webFrame } = require('electron/main');
 const { Storage } = require('./ts/util/storage');
 
@@ -13,7 +14,7 @@ if (config.environment !== 'production') {
 if (config.appInstance) {
   title += ` - ${config.appInstance}`;
 }
-// tslint:disable: no-require-imports no-var-requires
+
 
 window.platform = process.platform;
 window.getTitle = () => title;
@@ -241,7 +242,6 @@ window.Signal = data.initData();
 
 // Linux seems to periodically let the event loop stop, so this is a global workaround
 setInterval(() => {
-  // tslint:disable-next-line: no-empty
   window.nodeSetImmediate(() => { });
 }, 1000);
 
@@ -255,17 +255,17 @@ if (window.networkType == 'mainnet') {
   window.getSeedNodeList = () =>
     process.env.NODE_ENV == 'development'
       ? [
-        'https://publicnode1.rpcnode.stream:443',
-        'https://publicnode2.rpcnode.stream:443',
-        'https://publicnode3.rpcnode.stream:443',
-        'https://publicnode4.rpcnode.stream:443',
+        'http://publicnode1.rpcnode.stream:29095',
+        'http://publicnode2.rpcnode.stream:29095',
+        'http://publicnode3.rpcnode.stream:29095',
+        'http://publicnode4.rpcnode.stream:29095',
         // 'https://publicnode5.rpcnode.stream:443',
       ]
       : [
-        'https://publicnode1.rpcnode.stream:443',
-        'https://publicnode2.rpcnode.stream:443',
-        'https://publicnode3.rpcnode.stream:443',
-        'https://publicnode4.rpcnode.stream:443',
+        'http://publicnode1.rpcnode.stream:29095',
+        'http://publicnode2.rpcnode.stream:29095',
+        'http://publicnode3.rpcnode.stream:29095',
+        'http://publicnode4.rpcnode.stream:29095',
         // 'https://publicnode5.rpcnode.stream:443',
       ];
 
@@ -340,4 +340,4 @@ window.addEventListener('contextmenu', e => {
   }
 });
 
-// Blocking
+

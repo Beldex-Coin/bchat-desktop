@@ -9,7 +9,6 @@ import {
 
 describe('state/selectors/conversations', () => {
   describe('#getSortedConversationsList', () => {
-    // tslint:disable-next-line: max-func-body-length
     it('sorts conversations based on timestamp then by intl-friendly title', () => {
       const i18n = (key: string) => key;
       const data: ConversationLookupType = {
@@ -170,7 +169,6 @@ describe('state/selectors/conversations', () => {
   });
 
   describe('#getSortedConversationsWithPinned', () => {
-    // tslint:disable-next-line: max-func-body-length
     it('sorts conversations based on pin, timestamp then by intl-friendly title', () => {
       const i18n = (key: string) => key;
       const data: ConversationLookupType = {

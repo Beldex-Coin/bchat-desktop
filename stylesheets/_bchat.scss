@@ -600,6 +600,14 @@ pre {
   // To limit messages with things forcing them wider, like long attachment names
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
+  margin-bottom: -5px;
+  padding: 12px 0 ;
+
+  &-only-attachment{
+    .timeStamp {
+      margin-top: unset !important;
+    }
+  }
 }
 
 label {
@@ -619,14 +627,20 @@ label {
   padding: 10px 10px 0;
 }
 
-.module-message__container--outgoing--first-of-series {
-  border-top-right-radius: $bchat_message-container-border-radius;
-}
+// .module-message__container--outgoing--first-of-series {
+//   border-top-right-radius: $bchat_message-container-border-radius;
+// }
 
-.module-message__container--outgoing--last-of-series {
-  border-bottom-right-radius: $bchat_message-container-border-radius;
+// .module-message__container--outgoing--last-of-series {
+//   border-bottom-right-radius: $bchat_message-container-border-radius;
+// }
+.module-message__container_bg_disabled {
+  background-color: transparent !important;
+  padding-bottom: 0 !important;
+  .timeStamp {
+    color: #858598 !important;
+  }
 }
-
 .conversation-header {
   .module-avatar img {
     box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.2);
@@ -918,7 +932,7 @@ label {
     // overflow-y: auto;
     overflow-x: hidden;
     // max-height: 513px;
-    padding: 0px $bchat-margin-md 0px $bchat-margin-md;
+    padding: 0px $bchat-margin-md 0px 20px;
   }
 
   &__deleteAccountModal {
@@ -1053,88 +1067,6 @@ label {
     width: 87%;
   }
 
-  &-walletPassword {
-    align-items: center;
-    display: flex;
-    width: 100%;
-    // height: 87vh;
-    // background-color: aliceblue;
-    flex-direction: column;
-    justify-content: center;
-
-    &-contentBox {
-      width: 500px;
-      // background-color: #2d2d3b;
-      // background-color: var(--color-WalcontentBg);
-      border-radius: 10px;
-
-      &-walletImg {
-        width: 25%;
-        height: 103px;
-        background-repeat: no-repeat;
-        background-size: 100%;
-        margin: auto;
-        // background-image: url('../images/wallet/Password_image.svg');
-        background-image: var(--img-walPassword);
-      }
-
-      &-headerBox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        span {
-          font-family: $bchat-font-poppins-bold;
-          margin-left: 10px;
-          font-size: 18px;
-        }
-      }
-
-      &-inputBox {
-        margin: 0 auto;
-        width: 73%;
-
-        input {
-          outline: none;
-          border: none;
-          width: 100%;
-          border-bottom: 1px solid #444455;
-          text-align: center;
-        }
-      }
-
-      &-loader,
-      &-forgotpasswordLoader {
-        width: 500px;
-        height: 343px;
-        background-color: rgba(0, 0, 0, 0.8);
-        border-radius: 10px;
-        z-index: 99;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-      }
-
-      &-forgotpasswordLoader {
-        width: 590px;
-        height: 476px;
-      }
-
-      &-forgotTxt {
-        text-align: center;
-        color: #1bb51e;
-        font-size: 12px;
-        text-decoration: underline;
-      }
-
-      .bchat-button.brand-outline.green {
-        width: 33%;
-        margin: auto;
-        height: 45px;
-        border-radius: 10px;
-      }
-    }
-  }
 
   &-imgConfirmBox {
     width: 400px;
@@ -1159,7 +1091,7 @@ label {
 
   &-bchatConfirm {
     width: 425px;
-    margin: 0px 0px 25px 5px;
+    margin: 0px 0px 25px 0%;
     font-family: $bchat-font-default;
     font-size: 16px;
     text-align: left;
@@ -1178,11 +1110,11 @@ label {
 
     width: 450px;
     background-color: var(--color-confirm-modal-inner-bg);
-    input{
+    input {
       background-color: unset;
     }
   }
-  &__walletModel {
+  &__settingMiniModel {
     width: 450px;
     margin: 10px 4px 25px;
     // font-family: 'Poppins';
@@ -1195,7 +1127,7 @@ label {
 
   &-setPasswordAccess {
     width: 400px;
-    margin: 40px 10px 25px;
+    margin: 40px 0px 25px;
     font-family: $bchat-font-default;
 
     .contentbox {
@@ -1316,29 +1248,6 @@ label {
   flex-direction: column;
 }
 
-.walletPassword .bchat-modal__body {
-  padding: 0;
-}
-
-.walletPassword .exitBtn {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 12px;
-  margin-top: 10px;
-
-  article {
-    display: flex;
-    width: 30px;
-    height: 30px;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.walletPassword .exitBtn article:hover {
-  background-color: var(--color-profile-close);
-  border-radius: 20px;
-}
 
 .blurBg {
   filter: blur(10px);
@@ -1402,7 +1311,7 @@ label {
       //   color: #1ced23;
       // }
 
-      &-walletModalContent {
+      &-SettingMiniModalContent {
         align-items: center;
         // justify-content: center;
         width: 100%;
@@ -1434,7 +1343,7 @@ label {
         }
       }
 
-      &-walletModalContent:hover {
+      &-SettingMiniModalContent:hover {
         background-color: var(--color-confirm-modal-hover-bg);
         cursor: pointer;
       }
@@ -1617,9 +1526,21 @@ label {
     transition: $bchat-transition-duration;
     color: var(--color-text);
   }
-
+ 
+  &.convoListContextMenu{
+    .react-contexify__submenu{
+       min-height: 144px;
+    }
+  } 
+  &.submenu
+  {
+    .react-contexify__submenu{
+      min-height: 103px;
+   }
+  }
   &.react-contexify__submenu {
     top: 0px !important; // height of an item element
+   
     // right: 300px !important;
     .react-contexify__item__content {
       justify-content: start;
@@ -1835,215 +1756,9 @@ label {
   width: 100%;
   min-height: 50%;
   flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
-.syncStatus {
-  // position: relative;
-  // height: 30px;
-  // // width: 66.5%;
-  // bottom: 0;
-  // position: absolute;
-  // width: calc(100vw - 417px);
-  // height: 30px;
-  // bottom: 0;
-  // background-color: var(--color-walSyncbar);
-  // &-subParent {
-  //   padding: 0 18px;
-  // }
-
-  height: 50px;
-  border-radius: 10px;
-  background: var(--color-walSyncbar);
-  overflow: hidden;
-
-  .per-Wrapper {
-    // color: #f0f0f0;
-    font-weight: 600;
-    border-radius: 33px;
-    background: var(--color-wallet-status-txt-Bg);
-    padding: 0px 15px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  &-statusTxt-wrapper {
-    .txt {
-      // color: #f0f0f0;
-      font-weight: 400;
-      border-radius: 33px;
-      background: var(--color-wallet-status-txt-Bg);
-      padding: 5px 15px;
-      margin-right: 10px;
-    }
-
-    &-greenTxt {
-      color: #f0f0f0;
-      font-weight: 600;
-    }
-  }
-
-  &-statusvalue {
-    // font-size: 12px;
-    // color: #9393b1;
-    padding: 3px 10px;
-    border-radius: 16px;
-    border: 1px solid var(--color-search-border);
-
-    .type-txt {
-      color: var(--color-modal-disable-txt);
-      font-weight: 400;
-    }
-
-    .type-value {
-      // color: #f0f0f0;
-      font-size: 12px;
-      font-weight: 600;
-    }
-  }
-
-  &-balance {
-    color: #00c10d;
-    font-size: 12px;
-    font-family: $bchat-font-poppin-semibold;
-  }
-
-  &-unlocked-Balance {
-    color: #0093ff;
-    font-size: 12px;
-    font-family: $bchat-font-poppin-semibold;
-  }
-
-  &-disableBalance {
-    color: var(--color-text);
-    font-size: 12px;
-    font-family: $bchat-font-poppin-semibold;
-  }
-}
-
-.wallet-contact-left-pane-wrapper {
-  min-width: 300px;
-  width: 24vw;
-  max-width: 420px;
-  height: 100vh;
-  background-color: var(--color-left-pane-bg);
-}
-
-.address-book-wrapper {
-  background-color: var(--color-wallet-inner-bg);
-  border-radius: 16px;
-}
-
-.addressBook {
-  padding: 15px;
-
-  &-header {
-    &-txt {
-      // color: #f0f0f0;
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 25px;
-      /* 125% */
-    }
-  }
-
-  &-wholeBox {
-    overflow: auto;
-
-    &-contentBox {
-      // background-color: var(--color-WalcontentBg);
-      border-radius: 10px;
-      // padding: 6px 15px;
-      padding: 6px 15px 6px 0;
-      display: flex;
-      justify-content: space-between;
-
-      // &-nameBtn {
-      //   display: inline-block;
-      //   min-width: 130px;
-      //   background-color: #159b24;
-      //   padding: 4px 27px;
-      //   border-radius: 3px;
-      //   /* margin-bottom: 10px; */
-      //   // font-family: 'poppin-semibold';
-      //   color: #fff;
-      // }
-
-      .contact {
-        // font-family: $bchat-font-poppin-medium;
-        background-color: unset;
-        padding: unset;
-        color: unset;
-        // color: #f0f0f0;
-        font-size: 16px;
-        font-weight: 400;
-      }
-
-      &-addresstxt {
-        // font-family: $bchat-font-poppin-light;
-        // font-size: 11px;
-        // margin-right: 12px;
-
-        // overflow: hidden;
-        color: var(--color-last-msg-txt);
-        // text-overflow: ellipsis;
-        // white-space: nowrap;
-        // font-size: 14px;
-        font-weight: 300;
-      }
-
-      .avatarBox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 10px;
-      }
-
-      // .ellipse {
-      //   width: 321px;
-      //   white-space: nowrap;
-      //   overflow: hidden;
-      //   text-overflow: ellipsis;
-      // }
-    }
-  }
-
-  &-emptyAddressBook {
-    margin: 0 auto;
-    background-image: var(--image-EmptyAddressBook);
-    // height: 100%;
-    height: 42%;
-    // height: 27%;
-
-    width: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 90% 98%;
-
-    &-content {
-      .address-txt {
-        color: #a7a7ba;
-        font-family: $bchat-font-open-sans;
-        font-size: 18px;
-        text-align: center;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-      }
-
-      .address-hint-txt {
-        color: #82828d;
-        text-align: center;
-        font-weight: 400;
-      }
-    }
-  }
-
-  .partition:not(:last-child) {
-    border-bottom: 0.5px solid var(--color-search-border);
-    border-radius: unset;
-  }
-}
 
 .bchat-settings {
   width: 100%;
@@ -2489,1231 +2204,6 @@ label {
   //   }
   // }
 
-  .wallet {
-    .marginLeft {
-      margin-left: 10px;
-    }
-
-    .marginRight {
-      margin-right: 10px;
-    }
-
-    .font-medium {
-      font-family: $bchat-font-poppin-medium;
-    }
-
-    .flexCenter {
-      display: flex;
-      align-items: center;
-    }
-
-    &-header {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      height: 70px;
-      border-bottom: 1px solid #202329;
-
-      &-left-side,
-      &-right-side {
-        display: flex;
-        align-items: center;
-      }
-
-      &-left-side {
-        .header-txt {
-          margin-left: 10px;
-          // color: #f0f0f0;
-          font-size: 22px;
-          font-weight: 400;
-        }
-      }
-    }
-
-    &-button {
-      // background-color: var(--color-WalcontentBg);
-      // border-radius: 50px;
-      // padding: 10px 14px;
-      padding: 14px 18px;
-      cursor: pointer;
-
-      border-radius: 16px;
-      background: var(--color-secondary-btn-bg);
-    }
-
-    &-button:hover {
-      background-color: var(--color-secondary-btn-hover-bg);
-    }
-
-    &-squarBox-bala,
-    &-squarBox-tran {
-      // background-color: var(--color-WalcontentBg);
-      // border-radius: 10px;
-      // padding: 17px 30px 17px 30px;
-      border-radius: 16px;
-      background: var(--color-wallet-inner-bg);
-      padding: 15px;
-    }
-
-    &-squarBox-bala {
-      .innerWrapper {
-        border-radius: 16px;
-        background: var(--color-wallet-status-txt-Bg);
-        padding: 15px;
-      }
-
-      .flexWrap {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
-    }
-
-    &-squarBox-tran {
-      // width: 35.4%;
-      background-color: unset;
-    }
-
-    &-btn-wrapper {
-      border-radius: 16px;
-      background: var(--color-modal-bg);
-      padding: 10px 0;
-    }
-
-    &-contentSpace {
-      // height: calc(100vh - 200px);
-      overflow: auto;
-    }
-
-    &-left-balance-Sec {
-      &-balanceTxt {
-        // color: #ebebeb;
-        font-size: 24px;
-        font-weight: 700;
-      }
-
-      // &-fiatCurrency {
-      //   font-size: 14px;
-      //   color: #8f8fa2;
-      // }
-      .currencyExt {
-        border-radius: 33px;
-        background: var(--color-wallet-inner-bg);
-        color: var(--color-hop-txt);
-        font-weight: 600;
-        padding: 2px 15px;
-      }
-
-      .currencyVal {
-        color: var(--color-hop-txt);
-        font-size: 18px;
-        font-weight: 700;
-        margin-left: 10px;
-      }
-    }
-
-    &-right-Button-Sec {
-      &-fetch-btn {
-        background-color: #2879fb;
-        width: 100%;
-        height: 45px;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        border-radius: 6px;
-        font-family: 'poppin-medium';
-        font-size: 10px;
-      }
-
-      &-unlockbal-box {
-        // height: 60px;
-        // display: flex;
-        // align-items: center;
-        // border-radius: 10px;
-        // margin-top: 5px;
-        // padding: 0 20px;
-
-        &--Text {
-          // font-size: 11px;
-          // margin-right: 10px;
-
-          color: var(--color-wallet-unbalance-label);
-          font-size: 18px;
-          font-weight: 400;
-        }
-
-        .unBalance {
-          // font-size: 16px;
-          // margin-left: 10px;
-          // text-align: center;
-          // font-family: 'poppin-semibold';
-          // color: #a7a7ba;
-          color: var(--color-hop-txt);
-          text-align: right;
-          font-size: 22px;
-          font-weight: 600;
-        }
-
-        // .bdx {
-        //   font-family: 'poppin-semibold';
-        //   font-size: 18px;
-        //   color: #a2a2af;
-        //   margin-left: 7px;
-        // }
-      }
-    }
-
-    &-walletPassword {
-      align-items: center;
-      display: flex;
-      width: 100%;
-      height: 87vh;
-      flex-direction: column;
-      justify-content: center;
-
-      &-contentBox {
-        width: 500px;
-        background-color: var(--color-WalcontentBg);
-        border-radius: 10px;
-
-        &-walletImg {
-          width: 25%;
-          height: 103px;
-          background-repeat: no-repeat;
-          background-size: 100%;
-          margin: auto;
-          background-image: var(--img-walPassword);
-        }
-
-        &-headerBox {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          span {
-            font-family: $bchat-font-poppins-bold;
-            margin-left: 10px;
-            font-size: 18px;
-          }
-        }
-
-        &-inputBox {
-          margin: 0 auto;
-          width: 73%;
-
-          input {
-            outline: none;
-            border: none;
-            width: 100%;
-            border-bottom: 1px solid #444455;
-            text-align: center;
-          }
-        }
-
-        &-loader,
-        &-forgotpasswordLoader {
-          width: 500px;
-          height: 343px;
-          background-color: rgba(0, 0, 0, 0.8);
-          border-radius: 10px;
-          z-index: 99;
-          justify-content: center;
-          display: flex;
-          align-items: center;
-        }
-
-        &-forgotpasswordLoader {
-          width: 590px;
-          height: 476px;
-        }
-
-        &-forgotTxt {
-          text-align: center;
-          color: #1bb51e;
-          font-size: 12px;
-          text-decoration: underline;
-        }
-
-        .bchat-button.brand-outline.green {
-          width: 33%;
-          margin: auto;
-          height: 45px;
-          border-radius: 10px;
-        }
-      }
-    }
-
-    &-progressSync {
-      &-presentage {
-        text-align: center;
-        font-family: $bchat-font-poppins-bold;
-        font-size: 20px;
-        color: #128b17;
-      }
-
-      &-barBg {
-        width: 100%;
-        height: 10px;
-        background-color: var(--color-walSyncbar);
-        padding-top: 2px;
-
-        .bar {
-          background-color: #1bb51e;
-          width: 40%;
-          height: 4px;
-          margin-top: 1px;
-        }
-      }
-
-      &-reloadTxt {
-        text-align: center;
-        font-family: $bchat-font-poppin-semibold;
-        font-size: 14px;
-      }
-
-      &-bRemaing {
-        text-align: center;
-      }
-    }
-
-    &-myAddress-Box {
-      display: flex;
-      width: 100%;
-      padding: 15px;
-      border-radius: 12px;
-      background: var(--color-wallet-inner-bg);
-      justify-content: space-between;
-      align-items: center;
-
-      &-content {
-        width: 88%;
-        margin-right: 10px;
-
-        .addres-title {
-          // color: #f0f0f0;
-          font-size: 16px;
-          font-weight: 600;
-        }
-
-        .address-txt {
-          color: #108d32;
-          font-size: 16px;
-          font-weight: 400;
-        }
-      }
-
-      &-copyIcon-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 40px;
-        background-color: var(--color-secondary-btn-bg);
-        border-radius: 12px;
-        cursor: pointer;
-      }
-
-      &-copyIcon-box:hover {
-        // transform: scale(1.1);
-        // color: #1ced23;
-        background-color: var(--color-secondary-btn-hover-bg);
-      }
-    }
-
-    &-sendForm {
-      // background-color: #303041;
-      // background-color: var(--color-WalcontentBg);
-
-      width: 100%;
-      border-radius: 10px;
-      padding: 15px;
-
-      &-label {
-        // width: 77px;
-        // width: calc(20% + 30px);
-        width: 90px;
-        color: var(--color-text);
-        /* font-family: Poppins; */
-        font-size: 18px;
-        /* font-style: normal; */
-        font-weight: 400;
-      }
-
-      &-inputBox {
-        width: 100%;
-        // height: 60px;
-        // background-color: #1c1c26;
-        // background-color: var(--color-walInputBg);
-        // border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 8px;
-        border-radius: 16px;
-        border: 1px solid var(--color-search-border);
-
-        select {
-          width: 100%;
-          border: none;
-          outline: none;
-          padding: 8px;
-          height: 55px;
-          background-image: var(--img-walDownThickArrow);
-          background-origin: content-box;
-
-          // -webkit-appearance: button;
-          // -webkit-border-radius: 2px;
-          // -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-          // -webkit-padding-end: 20px;
-          // -webkit-padding-start: 2px;
-          // -webkit-user-select: none;
-        }
-
-        option {
-          background-color: var(--color-walInputBg);
-          padding: 8px;
-
-          i {
-            padding: 8px;
-            height: 40px;
-          }
-        }
-
-        .bchat-button.brand.green {
-          height: 35px;
-          border-radius: 6px;
-          width: 139px;
-        }
-
-        input {
-          border: none;
-          outline: none;
-          width: 100%;
-          height: 40px;
-          font-size: 18px;
-          font-weight: 400;
-        }
-
-        // input::-webkit-outer-spin-button,
-        // input::-webkit-inner-spin-button {
-        //   -webkit-appearance: none;
-        //   margin: 0;
-        // }
-      }
-
-      &-priorty-wrapper {
-        border-radius: 16px;
-        background: var(--color-modal-bg);
-        width: 110px;
-        height: 46px;
-        flex-shrink: 0;
-        margin-left: 10px;
-        display: flex;
-        /* justify-content: center; */
-        align-items: center;
-        padding: 15px;
-
-        .txt {
-          color: var(--color-hop-txt);
-          font-size: 18px;
-          font-weight: 500;
-          margin-left: 5px;
-        }
-      }
-
-      &-textArea {
-        width: 100%;
-        border: 0px;
-        height: 100px;
-        resize: none;
-        outline: none;
-        font-size: 18px;
-        font-weight: 400;
-      }
-
-      &-sendBtnBox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-
-        .bchat-button.brand.green {
-          width: 10px;
-          height: 44px;
-        }
-      }
-    }
-
-    &-receivedForm {
-      align-items: center;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 15px;
-
-      &-title {
-        color: var(--color-text);
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0;
-      }
-
-      &-qrBox {
-        // width: 210px;
-        // height: 210px;
-        padding: 15px;
-        // border-radius: 10px;
-        border-radius: 16px;
-        background: var(--color-qr-outer-bg);
-
-        &-qrView {
-          display: flex;
-          justify-content: center;
-          /* border-radius: 30px; */
-          width: 177px;
-          height: 185px;
-          padding: 0.2rem;
-          background-color: #d9d9d9;
-          border-radius: 16px;
-          overflow: hidden;
-        }
-      }
-
-      &-rightSide {
-        // margin-left: 26px;
-        width: 100%;
-
-        &-Title {
-          font-size: 28px;
-        }
-
-        &-label {
-          // color: #f0f0f0;
-          font-size: 17px;
-          font-weight: 400;
-        }
-
-        &-input {
-          border: none;
-          outline: none;
-          width: 100%;
-          height: 70px;
-          padding-left: 20px;
-          border-radius: 16px;
-          border: 1px solid var(--color-search-border);
-        }
-      }
-    }
-
-    &-forgotPassword {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-
-      &-content-Box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        // width: 538px;
-        width: 580px;
-
-        // height: 417px;
-        // background-color: #2d2d3b;
-        background-color: var(--color-WalcontentBg);
-        border-radius: 10px;
-        margin: 5% 0px;
-
-        &-title {
-          text-align: center;
-          font-size: 18px;
-          font-family: $bchat-font-poppins-bold;
-          padding-top: 20px;
-        }
-
-        &-seed {
-          display: flex;
-          flex-direction: row;
-
-          textarea {
-            border: none;
-            outline: none;
-            resize: none;
-            // width: 435px;
-            // height: 126px;
-            width: 500px;
-            height: 97px;
-            // background-color: #353543;
-            background-color: var(--color-walInputBg);
-
-            padding: 15px;
-            // box-shadow: 1px 2px 5px #00000074;
-            border-radius: 10px;
-          }
-        }
-
-        &-password {
-          input {
-            border: none;
-            outline: none;
-            // background-color: #353543;
-            background-color: var(--color-walInputBg);
-
-            // width: 438px;
-            width: 500px;
-            height: 45px;
-            // box-shadow: 1px 2px 5px #00000074;
-            margin-right: 10px;
-            border-radius: 10px;
-            padding: 10px;
-          }
-        }
-
-        &-disClaimerBox {
-          // width: 86%;
-          // padding-top: 12px;
-          padding-bottom: 25px;
-          font-size: 13px;
-          display: flex;
-          justify-content: center;
-        }
-      }
-    }
-
-    &-settings {
-      &-tabBox {
-        background-color: #202329;
-        // background-color: var(--color-WalcontentBg);
-        padding: 20px;
-        border-radius: 10px;
-        background-color: var(--color-settings-right-pane-option);
-
-        &-disableText {
-          color: #a7a7ba;
-          padding-right: 12px;
-        }
-
-        &-title {
-          font-family: $bchat-font-default;
-          font-size: 18px;
-          font-weight: 500;
-        }
-
-        &-subtle {
-          font-family: $bchat-font-default;
-          font-size: 16px;
-          font-weight: 400;
-        }
-
-        &-checkBox {
-          display: block;
-          border: 2px solid var(--color-text);
-          width: 15px;
-          height: 15px;
-          border-radius: 3px;
-        }
-
-        .subBox {
-          padding: 0px 10px;
-          border-radius: 7px;
-
-          &:hover {
-            // background-color: var(--color-settings-options-hover);
-            background-color: var(--color-context-menu-bg);
-            // background-color: #1b1e23;
-          }
-        }
-      }
-
-      &-nodeSetting {
-        &-contentBox {
-          // background-color: #202329;
-          background-color: var(--color-settings-right-pane-option);
-          // background-color: var(--color-WalcontentBg);
-          border-radius: 10px;
-          padding: 25px 20px 20px;
-        }
-
-        &-FlexBox {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-
-          &-outlineCircle {
-            border: 2px solid var(--color-text);
-            /* padding: 2px; */
-            width: 19px;
-            height: 19px;
-            padding: 3px;
-            border-radius: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-
-          &-radio-label {
-            // color: #f0f0f0;
-            font-size: 20px;
-            font-weight: 400;
-          }
-        }
-
-        // .bchat-modal__centered {
-        //   text-align: unset;
-        //   align-items: unset;
-        // }
-
-        &-notesTxt {
-          color: #a7a7ba;
-          font-size: 18px;
-          font-weight: 400;
-        }
-
-        &-dropDownHeaderTxt {
-          background-color: var(--color-conversation-item-selected);
-          padding: 20px;
-          border-radius: 16px;
-          height: 50px;
-          align-items: center;
-
-          .text {
-            font-size: 14px;
-            font-weight: 300;
-          }
-        }
-
-        &-horizontalLine {
-          background-color: #707070;
-          width: 100%;
-          height: 1.5px;
-        }
-
-        &-dropDownModal,
-        &-sendDropDown {
-          position: absolute;
-          // background-color: #1c1c26;
-          // background-color: var(--color-walInputBg);
-          width: 95%;
-          top: 2px;
-          // padding: 19px;
-          // border-radius: 10px;
-          box-shadow: 1px -1px 10px #00000074;
-          // max-height: 140px;
-          max-height: 171px;
-          overflow: auto;
-          padding: 15px;
-          border-radius: 16px;
-          background: var(--color-context-menu-bg);
-
-          &-items {
-            margin-bottom: 5px;
-            display: flex;
-            align-items: baseline;
-            padding: 10px 19px;
-          }
-
-          &-items:hover {
-            border-radius: 16px;
-            background: var(--color-context-menu-hover-bg);
-          }
-        }
-
-        &-sendDropDown {
-          width: 186px;
-          top: 7px;
-          right: -10px;
-          max-height: 260px;
-          padding: 14px;
-          font-weight: 300;
-          z-index: 1;
-
-          .dropDownItem {
-            cursor: pointer;
-            // color: #f0f0f0;
-            font-size: 16px;
-            font-weight: 300;
-            padding: 10px;
-
-            &-selected {
-              border-radius: 16px;
-              background: var(--color-context-menu-hover-bg);
-            }
-
-            &-checkedCircle {
-              display: inline-block;
-              width: 13px;
-              height: 13px;
-              border: 1.5px solid var(--color-text);
-              border-radius: 10px;
-              margin-right: 5px;
-            }
-
-            &-blockAndMargin {
-              display: inline-block;
-              margin-right: 5px;
-            }
-          }
-
-          .fontSemiBold {
-            font-weight: 600;
-            margin-bottom: 8px;
-          }
-
-          .fontRegular {
-            font-weight: 100;
-          }
-        }
-
-        &-remoteContentBox {
-          display: flex;
-          align-items: center;
-          width: 50%;
-
-          &-content-hidden-Box {
-            display: none;
-            transition: display 2s;
-          }
-
-          .d-block {
-            display: block;
-          }
-
-          &-labelTxt {
-            // width: 20%;
-            // color: #f0f0f0;
-            font-size: 16px;
-            font-weight: 500;
-            width: 163px;
-          }
-
-          &-inputBox {
-            border: none;
-            outline: none;
-            width: 57%;
-            // background-color: #1c1c26;
-            // background-color: var(--color-walInputBg);
-
-            height: 60px;
-            border-radius: 10px;
-            padding-left: 20px;
-            display: flex;
-            justify-content: flex-end;
-
-            align-items: center;
-            border-radius: 16px;
-            background-color: var(--color-conversation-item-selected);
-
-            &-dropDownBtn {
-              display: flex;
-              width: 30px;
-              height: 30px;
-              // background-color: #0d9e14;
-              justify-content: center;
-              align-items: center;
-              // margin-top: 10px;
-              margin-right: 10px;
-              // border-radius: 5px;
-              // color: #fff;
-              cursor: pointer;
-            }
-
-            &-dropdown {
-              border: none;
-              outline: none;
-              width: 88%;
-              // background-color: #1c1c26;
-              // background-color: var(--color-walInputBg);
-
-              height: 50px;
-              border-radius: 10px;
-              padding-left: 20px;
-              text-overflow: ellipsis;
-            }
-
-            &-input {
-              border: none;
-              outline: none;
-              border-radius: 16px;
-              border: 1px solid var(--color-search-border);
-              background-color: var(--color-conversation-item-selected);
-              height: 60px;
-              padding: 15px;
-              width: 57%;
-            }
-          }
-
-          &-warning-box {
-            text-align: center;
-            margin-top: 14px;
-            height: 28px;
-
-            .result {
-              // font-family: 'poppin-semibold';
-              border-radius: 33px;
-              background: var(--color-setting-wallet-beta-bg);
-              padding: 6px 15px;
-              color: #108d32;
-              font-weight: 600;
-              margin-right: 5px;
-            }
-
-            .result-msg {
-              border-radius: 16px;
-              border: 1px solid var(--color-search-border);
-              // background: #202329;
-              padding: 6px 15px;
-              color: #a7a7ba;
-              font-size: 14px;
-              font-weight: 400;
-              margin-right: 5px;
-            }
-
-            .error-msg {
-              // color: #f0f0f0;
-              font-size: 13px;
-              font-weight: 600;
-              color: var(--color-text);
-            }
-          }
-        }
-      }
-    }
-
-    // &-syncStatusBox {
-    // position: absolute;
-    // width: calc(100vw - 417px);
-    // height: 45px;
-    // background-color: var(--color-walSyncbar);
-    /* bottom: 0; */
-    /* background-color: var(--color-walSyncbar); */
-    // border-radius: 16px;
-    // background: #202329;
-    // }
-
-    &-syncStatus {
-      // position: relative;
-      // height: 30px;
-      // // width: 66.5%;
-      // bottom: 0;
-      &-subParent {
-        padding: 0px 18px;
-      }
-
-      &-statusTxt {
-        font-size: 12px;
-
-        &-greenTxt {
-          color: #00bf25;
-        }
-      }
-
-      &-statusvalue {
-        font-size: 12px;
-        color: #9393b1;
-      }
-    }
-
-    &-syncing {
-      text-align: center;
-      // width: 46%;
-      // height: 32%;
-      // background-position: center;
-      // background-size: 98% 98%;
-      // margin: 0 auto;
-      // background-repeat: no-repeat;
-
-      &-title {
-        color: var(--color-noTxn-txt);
-        font-family: $bchat-font-open-sans;
-        font-size: 18px;
-        font-weight: 600;
-        margin: 0;
-        text-align: center;
-        padding: 0;
-      }
-
-      &-content {
-        color: #858598;
-        font-size: 14px;
-        font-weight: 300;
-        margin: 0;
-        text-align: center;
-      }
-    }
-
-    &-Transaction {
-      padding: 15px;
-      // height: 66%;
-      margin-bottom: 5px;
-      border-radius: 16px;
-      background: var(--color-wallet-inner-bg);
-      // height: calc(100vh - 446px);
-      height: calc(100vh - 460px);
-
-      &-title {
-        display: flex;
-        align-items: center;
-        // color: #f0f0f0;
-        font-size: 18px;
-        font-weight: 600;
-      }
-
-      &-filter-wrapper {
-        border-radius: 16px;
-        border: 1px solid var(--color-search-border);
-        padding: 0 15px;
-      }
-
-      &-filterInput {
-        // width: 315px;
-        // width: 150px;
-        width: 220px;
-        border: none;
-        outline: none;
-        height: 40px;
-        // background-color: #1c1c26;
-        // padding-left: 13px;
-        margin-right: 10px;
-      }
-
-      &-filterWithIcon {
-        width: 150px;
-        height: 40px;
-        margin-left: 15px;
-        border-radius: 16px;
-        border: 1px solid var(--color-search-border);
-        padding: 5px 15px;
-
-        &-inputBox {
-          display: inline-block;
-          width: 80%;
-          height: 100%;
-          // color: #f0f0f0;
-          font-size: 18px;
-          font-weight: 600;
-        }
-      }
-
-      &-parentBox {
-        height: 82%;
-        overflow-y: auto;
-      }
-
-      &-empty-parentBox {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      &-all {
-        width: 240px;
-        // height: 190px;
-        height: 161px;
-        // background-position: center;
-        background-size: 98% 89%;
-        margin: 0 auto;
-        background-image: var(--image-emptyTransHistory);
-        background-repeat: no-repeat;
-        // padding-top: 32px;
-        padding-left: 45px;
-        padding-top: 0.5px;
-      }
-
-      &-failed,
-      &-search,
-      &-outgoing,
-      &-incoming,
-      &-pending {
-        // width: 128px;
-        // height: 128px;
-        width: 60px;
-        height: 60px;
-        background-position: center;
-        margin: 0 auto;
-        background-size: 97% 98%;
-        background-image: var(--image-failedTransHistory);
-        background-repeat: no-repeat;
-      }
-
-      &-search {
-        // width: 300px;
-        // height: 200px;
-        // background-position: center;
-        // margin: 0 auto;
-        background-image: var(--image-emptySearch);
-        // background-repeat: no-repeat;
-      }
-
-      &-outgoing {
-        // width: 300px;
-        // height: 200px;
-        // background-position: center;
-        // margin: 0 auto;
-        background-image: var(--image-outgoingTransHistory);
-        // background-repeat: no-repeat;
-      }
-
-      &-incoming {
-        background-image: var(--image-incomingTransHistory);
-      }
-
-      &-pending {
-        // width: 300px;
-        // height: 200px;
-        // background-position: center;
-        // margin: 0 auto;
-        background-image: var(--image-pendingTransHistory);
-        // background-repeat: no-repeat;
-      }
-
-      &-content {
-        color: var(--color-noTxn-txt);
-        /* text-align: right; */
-        font-family: $bchat-font-open-sans;
-        font-size: 18px;
-        font-weight: 600;
-        text-align: center;
-      }
-
-      &-subContent {
-        color: #858598;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 400;
-      }
-
-      &-contentBox {
-        // background-color: #1c1c26;
-        // background-color: var(--color-walInputBg);
-
-        padding: 15px;
-        // border-radius: 10px;
-        border-bottom: 1px solid var(--color-search-border);
-        padding-top: 0;
-
-        &-sendIndicationBox {
-          display: flex;
-          // width: 15%;
-          // width: 110px;
-          /* text-align: center; */
-          flex-direction: column;
-          align-items: center;
-          // justify-content: center;
-
-          div {
-            font-size: 12px;
-            margin-top: 3px;
-          }
-        }
-
-        &-balanceBox {
-          // width: 605px;
-          // width: 75%;
-          margin-left: 15px;
-
-          &-amount {
-            cursor: pointer;
-            // color: #f0f0f0;
-            font-size: 18px;
-            font-weight: 700;
-          }
-
-          &-address {
-            overflow: hidden;
-            color: #858598;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 400;
-            width: 15vw;
-          }
-
-          &-address:hover {
-            color: var(--button-color);
-            text-decoration: underline;
-          }
-        }
-
-        &-dateandheight {
-          display: flex;
-          flex-direction: column;
-          // justify-content: center;
-          // width: 242px;
-
-          &-month {
-            // color: #f0f0f0;
-            text-align: right;
-            font-size: 16px;
-            font-weight: 400;
-          }
-
-          &-height {
-            color: #858598;
-            text-align: right;
-            font-weight: 400;
-          }
-
-          &-title,
-          &-content {
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 20px;
-          }
-
-          &-title {
-            color: #838894;
-          }
-
-          &-content {
-            color: var(--color-text);
-          }
-        }
-      }
-
-      &-contentBox:hover {
-        border-radius: 16px;
-        background: var(--color-clickable-hovered);
-      }
-
-      &-recipitentBox {
-        &-adddressBox {
-          // width: 601px;
-          width: 40%;
-          padding-right: 10px;
-          word-break: break-all;
-          color: #858598;
-          font-size: 12px;
-          font-weight: 400;
-          line-height: 21px;
-
-          &-address {
-            // font-family: $bchat-font-poppin-light;
-            // font-size: 12px;
-            color: var(--color-text);
-          }
-        }
-
-        &-transactionFee-header,
-        &-transactionFee-text {
-          font-size: 12px;
-          font-weight: 400;
-          line-height: 20px;
-        }
-
-        &-transactionFee-header {
-          color: #858598;
-        }
-
-        &-transactionFee-text {
-          color: var(--color-text);
-        }
-      }
-    }
-  }
 }
 
 #qr svg,
@@ -3842,6 +2332,20 @@ input {
     margin-top: 30px;
     border-radius: 30px;
   }
+
+  .banUnbanPopup {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-modal-icon-bg);
+    border-radius: 10px;
+    margin-right: 20px;
+    /* margin-top: 30px; */
+    border-radius: 30px;
+  }
 }
 
 .onion__description {
@@ -3942,31 +2446,31 @@ input {
   }
 }
 
-.messages-container {
-  .bchat-icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    opacity: 1;
-    // background-color: var(--color-cell-background);
+// .messages-container {
+//   .bchat-icon-button {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     // height: 40px;
+//     // width: 40px;
+//     border-radius: 50%;
+//     opacity: 1;
+//     // background-color: var(--color-cell-background);
 
-    background-color: #2f8fff;
-    box-shadow: var(--color-bchat-shadow);
+//     // background-color: #2f8fff;
+//     // box-shadow: var(--color-bchat-shadow);
 
-    // svg path {
-    //   transition: $bchat-transition-duration;
-    //   opacity: 0.6;
-    //   fill: var(--color-text);
-    // }
+//     // svg path {
+//     //   transition: $bchat-transition-duration;
+//     //   opacity: 0.6;
+//     //   fill: var(--color-text);
+//     // }
 
-    &:hover svg path {
-      opacity: 0.6;
-    }
-  }
-}
+//     &:hover svg path {
+//       opacity: 0.6;
+//     }
+//   }
+// }
 
 .group-member-list {
   &__container {
@@ -4168,6 +2672,7 @@ input {
     // color: #f0f0f0;
     font-size: 16px;
     font-weight: 400;
+    text-transform: capitalize;
   }
 
   &__pubkey {
@@ -4209,6 +2714,7 @@ input {
   &__name {
     font-size: $bchat-font-lg;
     font-weight: 500;
+    text-transform: capitalize;
   }
 
   &-selectionBox {

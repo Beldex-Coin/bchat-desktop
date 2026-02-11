@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
 
 import { missingCaseError } from '../../util';
@@ -45,7 +46,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
   public componentDidMount() {
     setTimeout(() => {
-      // tslint:disable-next-line: no-unused-expression
       this.passportInput && this.passportInput.focus();
     }, 1);
   }
@@ -69,14 +69,15 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
         : passwordAction === 'remove'
           ? 'removePassword'
           : 'setPassword';
-
+     const btnName=localizedKeyAction==='removePassword'?window.i18n('remove'):window.i18n('save');
+     const btnColor=localizedKeyAction==='removePassword'?BchatButtonColor.Danger:BchatButtonColor.Primary ;
     return (
       <BchatWrapperModal
         title={window.i18n(localizedKeyAction)}
         onClose={this.closeDialog}
         okButton={{
-          text: window.i18n('save'),
-          color: BchatButtonColor.Primary,
+          text:btnName ,
+          color: btnColor,
           onClickOkHandler: this.setPassword
         }}
         cancelButton={{ status: true, text: window.i18n('cancel'), onClickCancelHandler: this.closeDialog }
@@ -107,7 +108,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               placeholder={placeholders[0]}
               enableShowHide={true}
               onValueChanged={this.onPasswordInput}
-              maxLength={26}
+              maxLength={13}
             />
           </div>
           {passwordAction !== 'remove' && (
@@ -129,7 +130,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 placeholder={placeholders[1]}
                 enableShowHide={true}
                 onValueChanged={this.onPasswordConfirmInput}
-                maxLength={26}
+                maxLength={13}
               />
             </div>
           )}
@@ -153,7 +154,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 placeholder={placeholders[2]}
                 enableShowHide={true}
                 onValueChanged={this.onPasswordRetypeInput}
-                maxLength={26}
+                maxLength={13}
               />
             </div>
           )}
@@ -259,6 +260,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
     const isValidWithStoredInDB = Boolean(await this.validatePasswordHash(oldPassword));
     if (!isValidWithStoredInDB) {
+      ToastUtils.pushToastError('changePasswordInvalid', window.i18n('changePasswordInvalid'));
       this.setState({
         error: window.i18n('changePasswordInvalid'),
       });
@@ -302,7 +304,6 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     this.closeDialog();
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   private async setPassword() {
     const { passwordAction } = this.props;
     const {

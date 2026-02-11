@@ -1,4 +1,4 @@
-import { AbortController } from 'abort-controller';
+// import { AbortController } from 'abort-controller';
 import { getConversationController } from '../../../conversations';
 import { getOpenGroupV2ConversationId } from '../utils/OpenGroupUtils';
 import { OpenGroupRequestCommonType } from './ApiUtil';
@@ -22,7 +22,7 @@ import { DURATION } from '../../../constants';
 import { processNewAttachment } from '../../../../types/MessageAttachment';
 import { MIME } from '../../../../types';
 import { handleOpenGroupV2Message } from '../../../../receiver/opengroup';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 import { filterDuplicatesFromDbAndIncoming } from './SogsFilterDuplicate';
 
 const pollForEverythingInterval = DURATION.SECONDS * 10;
@@ -93,6 +93,7 @@ export class OpenGroupServerPoller {
     });
 
     this.abortController = new AbortController();
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.pollForEverythingTimer = global.setInterval(this.compactPoll, pollForEverythingInterval);
     this.pollForRoomAvatarTimer = global.setInterval(
       this.previewPerRoomPoll,
@@ -194,7 +195,6 @@ export class OpenGroupServerPoller {
     }
 
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;
@@ -213,7 +213,6 @@ export class OpenGroupServerPoller {
       return false;
     }
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;
@@ -232,7 +231,6 @@ export class OpenGroupServerPoller {
       return false;
     }
     if (!window.getGlobalOnlineStatus()) {
-      window?.log?.info('OpenGroupServerPoller: offline');
       return false;
     }
     return true;

@@ -23,6 +23,7 @@ import {
   getSelectedConversationKey,
   getSortedMessagesOfSelectedConversation,
 } from '../../state/selectors/conversations';
+import styled from 'styled-components';
 // import { TypingBubble } from './TypingBubble';
 
 export type BchatMessageListProps = {
@@ -39,7 +40,6 @@ export type ScrollToLoadedReasons =
   | 'load-more-bottom';
 
 export const ScrollToLoadedMessageContext = React.createContext(
-  // tslint:disable-next-line: no-empty
   (_loadedMessageIdToScrollTo: string, _reason: ScrollToLoadedReasons) => {}
 );
 
@@ -51,7 +51,35 @@ type Props = BchatMessageListProps & {
   animateQuotedMessageId: string | undefined;
   scrollToNow: () => Promise<void>;
 };
-
+const StyledMessagesContainer = styled.div<{}>`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column-reverse;
+  position: relative;
+  overflow-x: hidden;
+  min-width: 370px;
+  scrollbar-width: 4px;
+  padding: var(--margins-sm) 0 var(--margins-lg);
+  .session-icon-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    opacity: 1;
+    background-color: var(--color-cell-background);
+    box-shadow: var(--color-session-shadow);
+    svg path {
+      transition: var(--default-duration);
+      opacity: 0.6;
+      fill: var(--color-text);
+    }
+    &:hover svg path {
+      opacity: 1;
+    }
+  }
+`;
 class BchatMessagesListContainerInner extends React.Component<Props> {
   private timeoutResetQuotedScroll: NodeJS.Timeout | null = null;
 
@@ -100,7 +128,7 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
     // }
 
     return (
-      <div
+      <StyledMessagesContainer
         className="messages-container"
         id={messageContainerDomID}
         onScroll={this.handleScroll}
@@ -140,7 +168,7 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
           unreadCount={conversation.unreadCount}
         /> */}
 
-      </div>
+      </StyledMessagesContainer>
     );
   }
 
@@ -243,7 +271,6 @@ class BchatMessagesListContainerInner extends React.Component<Props> {
       return;
     }
 
-    // tslint:disable-next-line: restrict-plus-operands
     messageContainer.scrollBy({
       top: Math.floor(+messageContainer.clientHeight * 2) / 3,
       behavior: 'smooth',
@@ -301,4 +328,4 @@ const mapStateToProps = (state: StateType) => {
 
 const smart = connect(mapStateToProps);
 
-export const BchatMessagesListContainer = smart(BchatMessagesListContainerInner);
+export const BchatMessagesListContainer:any = smart(BchatMessagesListContainerInner);

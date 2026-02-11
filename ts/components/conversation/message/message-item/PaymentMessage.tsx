@@ -1,30 +1,73 @@
-import React from 'react';
+import  { useContext, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames';
-// import { PropsForPayment } from '../../../../state/ducks/conversations';
+import { PropsForPayment } from '../../../../state/ducks/conversations';
 // import { acceptOpenGroupInvitation } from '../../../../interactions/messageInteractions';
 // import { BchatIconButton } from '../../../icon';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon';
 import { shell } from 'electron/common';
-import { MessageStatus } from '../message-content/MessageStatus';
+// import { MessageStatus } from '../message-content/MessageStatus';
 import { useSelector } from 'react-redux';
-import { getMessageContentSelectorProps } from '../../../../state/selectors/conversations';
+import { getMessageContentSelectorProps, getQuotedMessageToAnimate, getShouldHighlightMessage } from '../../../../state/selectors/conversations';
 import { Flex } from '../../../basic/Flex';
 import moment from 'moment';
+import { StyledSvgWrapper } from '../message-content/MessageContent';
+import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
+import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
+import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 
-// export const PaymentMessage = (props: PropsForPayment) => {
-export const PaymentMessage = (props: any) => {
-  const { messageId, receivedAt, isUnread } = props;
-  const classes = ['payment'];
+export const PaymentMessage = (props: PropsForPayment) => {
+
+  const { messageId, receivedAt, isUnread,direction,
+    amount,txnId } = props;
+  const [flashGreen, setFlashGreen] = useState(false);
+  const [didScroll, setDidScroll] = useState(false);
+  const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
+  const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
+  const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
+  const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
+
+  const classes = [`payment ${flashGreen && 'flash-green-once'}`];
   const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
-  const isIncoming = contentProps?.direction === 'incoming';
+  const isIncoming = direction === 'incoming';
 
+
+
+  useLayoutEffect(() => {
+    if (isQuotedMessageToAnimate) {
+      if (!flashGreen && !didScroll) {
+        //scroll to me and flash me
+        scrollToLoadedMessage(props.messageId, 'quote-or-search-result');
+        setDidScroll(true);
+        if (shouldHighlightMessage) {
+          setFlashGreen(true);
+        }
+      }
+      return;
+    }
+    if (flashGreen) {
+      setFlashGreen(false);
+    }
+
+    if (didScroll) {
+      setDidScroll(false);
+    }
+    return;
+  });
+  if (!amount)
+    {
+     return null;
+    }
+  
   if (props.direction === 'outgoing') {
     classes.push('invitation-outgoing');
   }
+  const recentEmojiBtnVisible = () =>
+    props.onRecentEmojiBtnVisible && props.onRecentEmojiBtnVisible();
+
   //   const socialGroupInvitation = window.i18n('socialGroupInvitation');
   function openToExplore(traxId: string) {
     if (window.networkType === 'mainnet') {
@@ -64,8 +107,10 @@ export const PaymentMessage = (props: any) => {
       );
     } else {
       return (
-        <Flex container={true} alignItems="center" color='#108D32'>
-          <span className="txn-status" style={{ color:'#108D32'}}>Received Successfully!</span>
+        <Flex container={true} alignItems="center" color="#108D32">
+          <span className="txn-status" style={{ color: '#108D32' }}>
+            Received Successfully!
+          </span>
           <BchatIcon iconColor={'#108D32'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
@@ -78,46 +123,52 @@ export const PaymentMessage = (props: any) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
-      <div className="group-invitation-container" id={`msg-${props.messageId}`}>
-        <div className={classNames(`payment-Wrapper-${contentProps?.direction}`)}>
-          <MessageStatus
-            dataTestId="msg-status-incoming"
-            messageId={messageId}
-            isCorrectSide={!isIncoming}
-          />
-          <div
-            className={classNames(classes)}
-            onClick={() => (props.txnId ? openToExplore(props.txnId) : '')}
-            style={{ cursor: props.txnId ? 'pointer' : 'unset' }}
-          >
+      <div
+        className={classNames(
+          `group-invitation-container group-invitation-container-${direction}`
+        )}
+        id={`msg-${props.messageId}`}
+        onMouseEnter={() => {
+          recentEmojiBtnVisible();
+        }}
+      >
+        <div style={{ position: 'relative' }}>
+          {contentProps?.lastMessageOfSeries && isIncoming && (
+            <StyledSvgWrapper>
+              <IncomingMsgTailIcon />
+            </StyledSvgWrapper>
+          )}
+          <div className={classNames(`payment-Wrapper-${direction}`)}>
             <div
-              className={props.direction === 'outgoing' ? 'contents' : 'contents-incoming'}
-              // onClick={() => { acceptOpenGroupInvitation(props.acceptUrl, props.serverName)}}
+              className={classNames(classes)}
+              onClick={() => (txnId ? openToExplore(txnId) : '')}
+              style={{ cursor: txnId ? 'pointer' : 'unset' }}
             >
-              <div>
-                <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
-              </div>
-              <div className="amount" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
-                {props.amount} BDX
-              </div>
+              <div className={direction === 'outgoing' ? 'contents' : 'contents-incoming'}>
+                <div>
+                  <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
+                </div>
+                <div className="amount" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
+                  {amount} BDX
+                </div>
 
-              {/* <span className="group-details">
-              <span className="group-name">{props.amount}</span>
-              <span className="group-type">welcome</span>
-              <span className="group-address">{props.txnId}</span>
-            </span> */}
-            </div>
-            <div
-              className={props.direction === 'outgoing' ? 'hint-out' : 'hintTxt'}
-              style={{ fontSize: `${FontSizeChanger(12)}px` }}
-            >
-              {/* {props.direction === 'outgoing'?"Sent Successfully!":"Received successfully"} */}
-              <HindTxt />
-            </div>
-            <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
-              {moment(contentProps?.timestamp).format('hh:mm A')}
+              </div>
+              <div
+                className={props.direction === 'outgoing' ? 'hint-out' : 'hintTxt'}
+                style={{ fontSize: `${FontSizeChanger(12)}px` }}
+              >
+                <HindTxt />
+              </div>
+              <div className={classNames('timeStamp', `timeStamp-${direction}`)}>
+                {moment(contentProps?.timestamp).format('hh:mm A')}
+              </div>
             </div>
           </div>
+          {contentProps?.lastMessageOfSeries && !isIncoming && (
+            <StyledSvgWrapper style={{ right: 0 }}>
+              <OutgoingMsgTailIcon />
+            </StyledSvgWrapper>
+          )}
         </div>
       </div>
     </ReadableMessage>

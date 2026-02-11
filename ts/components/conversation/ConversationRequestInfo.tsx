@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getMessageCountByType } from '../../data/data';
@@ -14,6 +14,7 @@ export const ConversationRequestinfo = () => {
   const [hasIncomingMessages, setHasIncomingMessages] = useState(false);
   const [incomingChecked, setIncomingChecked] = useState(false);
 
+ 
   useEffect(() => {
     async function getIncomingMessages() {
       const id = selectedConversation?.id;
@@ -32,11 +33,14 @@ export const ConversationRequestinfo = () => {
     }
     // tslint:disable-next-line: no-floating-promises
     getIncomingMessages();
-  }, []);
+  }, [selectedConversation]);
+
+  // console.log('!showMsgRequestUI -->',!showMsgRequestUI,'!hasIncomingMessages -->',!hasIncomingMessages,'!incomingChecked -->',!incomingChecked)
 
   if (!showMsgRequestUI || !hasIncomingMessages || !incomingChecked) {
     return null;
   }
+
 
   return (
     <ConversationRequestTextBottom>

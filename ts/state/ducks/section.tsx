@@ -10,14 +10,13 @@ export enum SectionType {
   NewChat,
   Closedgroup,
   Opengroup,
-  Wallet,
   Settings,
- 
-
   Profile,
   Contact,
   Moon,
   PathIndicator,
+  SubMenu,
+  CallHistory
   
  
 }
@@ -65,7 +64,7 @@ export type OverlayMode =
   | 'open-group'
   | 'closed-group'
   | 'message-requests'
-  | 'wallet'
+  | 'call-history'
   | undefined;
 
 export function setOverlayMode(overlayMode: OverlayMode): OverlayModeActionType {
@@ -119,6 +118,7 @@ export const reducer = (
 
     case FOCUS_SECTION:
       // if we change to something else than settings, reset the focused settings section
+        // eslint-disable-next-line no-case-declarations
       const castedPayload = (payload as unknown) as SectionType;
 
       if (castedPayload !== SectionType.Settings) {

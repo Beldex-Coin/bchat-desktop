@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import classNames from 'classnames';
 
 import { BchatIconButton } from './icon';
@@ -8,8 +8,7 @@ import useKey from 'react-use/lib/useKey';
 import styled from 'styled-components';
 import { BchatSpinner } from './basic/BchatSpinner';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../state/selectors/theme';
+
 
 export type BchatWrapperModalType = {
   title?: string;
@@ -30,15 +29,13 @@ export type BchatWrapperModalType = {
   cancelButton?: any;
   iconShow?: boolean;
   customIcon?: any;
+  buttonSizeLg?: boolean;
 };
-interface LoaderProps {
-  darkMode: boolean;
-}
-export const Loader = styled.div<LoaderProps>`
+export const Loader = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: ${props => (props.darkMode ? '#0000009e' : '#ffffff9e')};
+  background-color: var(--color-loader-bg);
   display: flex;
   justify-content: center;
   width: 100%;
@@ -48,7 +45,6 @@ export const Loader = styled.div<LoaderProps>`
 `;
 
 export const BchatWrapperModal = (props: BchatWrapperModalType) => {
-  const darkMode = useSelector(getTheme) === 'dark';
   // const zoomLevel = window.getSettingValue('zoom-factor-setting');
   const {
     title,
@@ -62,8 +58,9 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
     cancelButton,
     iconShow = false,
     customIcon,
+    buttonSizeLg = false,
   } = props;
-
+   
   useKey(
     'Esc',
     () => {
@@ -97,7 +94,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 >
                   <div className={classNames('bchat-modal__header', headerReverse && 'reverse')}>
                     <div className="bchat-modal__header__title">{title}</div>
-                    <div className="bchat-modal__header__icons">
+                    <div className={classNames(headerIconButtons && "bchat-modal__header__icons")}>
                       {headerIconButtons
                         ? headerIconButtons.map((iconItem: any) => {
                             return (
@@ -150,7 +147,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
                 iconType={cancelButton?.iconType}
                 dataTestId="Bchat-confirm-cancel-button"
-                style={{ marginRight: '12px', minWidth: iconShow ? '235px' : '200px' }}
+                style={{ marginRight: '12px', minWidth: iconShow || buttonSizeLg ? '235px' : '200px' }}
               />
             )}
             <BchatButton
@@ -162,12 +159,12 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               iconType={okButton?.iconType}
               onClick={okButton?.onClickOkHandler}
               dataTestId={okButton?.dataTestId ? okButton.dataTestId : 'Bchat-confirm-ok-button'}
-              style={{ minWidth: iconShow ? '235px' : '200px' }}
+              style={{ minWidth: iconShow || buttonSizeLg  ? '235px' : '200px' }}
             />
           </div>
           {isloading && (
             <div>
-              <Loader darkMode={darkMode}>
+              <Loader>
                 <BchatSpinner loading={true} />
               </Loader>
             </div>

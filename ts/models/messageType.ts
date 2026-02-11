@@ -2,6 +2,8 @@ import { defaultsDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { CallNotificationType, PropsForMessageWithConvoProps } from '../state/ducks/conversations';
 import { AttachmentTypeWithPath } from '../types/Attachment';
+import { Reaction, ReactionList, SortedReactionList } from '../types/Reaction';
+import { Payment, SharedContact } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 
 export type MessageModelType = 'incoming' | 'outgoing';
 export type MessageDeliveryStatus = 'sending' | 'sent' | 'read' | 'error';
@@ -106,8 +108,12 @@ export interface MessageAttributes {
   isDeleted?: boolean;
 
   callNotificationType?: CallNotificationType;
-  txnDetails?:any;
-  payment?:any;
+  payment?:Payment;
+  sharedContact?:SharedContact;
+  //emoji reacts
+  reaction?: Reaction;
+  reacts?: ReactionList;
+  reactsIndex?: number;
 
 }
 
@@ -205,8 +211,12 @@ export interface MessageAttributesOptionals {
   messageHash?: string;
   isDeleted?: boolean;
   callNotificationType?: CallNotificationType;
-  txnDetails?:any;
-  payment?:any;
+  payment?:Payment;
+
+  sharedContact?:SharedContact;
+  reaction?: Reaction;
+  reacts?: ReactionList;
+  reactsIndex?: number;
 }
 
 /**
@@ -246,4 +256,5 @@ export type MessageRenderingProps = PropsForMessageWithConvoProps & {
   multiSelectMode: boolean;
   firstMessageOfSeries: boolean;
   lastMessageOfSeries: boolean;
+  sortedReacts?: SortedReactionList;
 };

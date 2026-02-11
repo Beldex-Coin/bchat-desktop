@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import { contextMenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useInterval from 'react-use/lib/useInterval';
 import _ from 'lodash';
 import { removeMessage } from '../../../../data/data';
@@ -21,7 +20,10 @@ import { MessageContentWithStatuses } from '../message-content/MessageContentWit
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
 import { getTheme } from '../../../../state/selectors/theme';
-// import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { GroupInvitation } from './GroupInvitation';
+import { SharedContactCardMessage } from './SharedContactCardMessage';
+import { PaymentMessage } from './PaymentMessage';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -99,9 +101,54 @@ type Props = {
   messageId: string;
   ctxMenuID: string;
   isDetailView?: boolean;
-};
-// tslint:disable: use-simple-attributes
 
+  serverName?: string;
+  url?: string;
+  acceptUrl?: string;
+  isUnread?: boolean;
+
+  amount?: string;
+  txnId?: string;
+
+  address?: string;
+  name?: string;
+};
+
+const highlightedMessageAnimation = keyframes`
+  1% {
+      background-color: #00f782;
+  }
+`;
+
+const StyledReadableMessage = styled(ReadableMessage)<{
+  selected: boolean;
+  isRightClicked: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  letter-spacing: 0.03em;
+  margin-top: 5px;
+  &.message-highlighted {
+    animation: ${highlightedMessageAnimation} 1s ease-in-out;
+  }
+  ${props =>
+    props.isRightClicked &&
+    `
+    background-color:var(--color-chat-multi-select-bg);
+  `}
+  ${props =>
+    props.selected &&
+    `
+    &.message-selected {
+      .module-message {
+        &__container {
+          box-shadow: var(--color-bchat-shadow);
+        }
+      }
+    }
+    `}
+`;
 export const GenericReadableMessage = (props: Props) => {
   const dispatch = useDispatch();
 
@@ -123,48 +170,83 @@ export const GenericReadableMessage = (props: Props) => {
     getIsMessageSelected(state as any, props.messageId)
   );
   const multiSelectMode = useSelector(isMessageSelectionMode);
-
-  const handleContextMenu = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup;
-
-      if (enableContextMenu) {
-        contextMenu.hideAll();
-        contextMenu.show({
-          id: props.ctxMenuID,
-          event: e,
-        });
-      }
-    },
-    [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
-  );
-
-  const { messageId, isDetailView } = props;
-
-  if (!msgProps) {
-    return null;
-  }
-  const {
+  const [isRightClicked, setIsRightClicked] = useState(false);
+  const [enableReactions, setEnableReactions] = useState(true);
+  const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
+   const [recentEmoji, setRecentEmoji] = useState(false);
+  const onMessageLoseFocus = useCallback(() => {
+    if (isRightClicked) {
+      setIsRightClicked(false);
+       setRecentEmojiBtnVisible(false);
+       setRecentEmoji(false);
+    }
+  }, [isRightClicked]);
+   const {
+    convoId,
     direction,
     conversationType,
     receivedAt,
     isUnread,
     expirationLength,
     expirationTimestamp,
-  } = msgProps;
+  } = msgProps||{};
+   useEffect(() => {
+    if(convoId===undefined) return;
+    const conversationModel = getConversationController().get(convoId);
+    if (conversationModel) {
+      setEnableReactions(conversationModel.hasReactions());
+    }
+  }, [convoId]);
 
-  if (isExpired) {
-    return null;
-  }
+  useEffect(() => {
+    document.addEventListener('click', onMessageLoseFocus);
+
+    return () => {
+      document.removeEventListener('click', onMessageLoseFocus);
+    };
+  }, [onMessageLoseFocus]);
+
+  
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup && !isDetailView;
+
+      if (enableContextMenu) {
+        contextMenu.hideAll();
+        contextMenu.show({
+          id: ctxMenuID,
+          event: e,
+        });
+        setIsRightClicked(enableContextMenu);
+    
+      }
+      console.log('enableContextMenu', enableContextMenu);
+       
+    },
+    [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
+  );
+
+  const {
+    ctxMenuID,
+    messageId,
+    isDetailView,
+    serverName,
+    acceptUrl,
+    url,
+    txnId,
+    amount,
+    address,
+    name,
+  } = props;
 
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
   const darkMode = useSelector(getTheme) === 'dark';
-  const iconColor=darkMode?'#F0F0F0':selected?'#3E4A53':'#ACACAC';
+  const iconColor = darkMode ? '#F0F0F0' : selected ? '#3E4A53' : '#ACACAC';
 
   const onSelect = useCallback(
-    messageId => {
+    (messageId:any) => {
       //  if(isSelectionMode)
       //  {
       dispatch(toggleSelectedMessageId(messageId));
@@ -173,8 +255,55 @@ export const GenericReadableMessage = (props: Props) => {
     [messageId]
   );
 
+  const cardDesignTag = (() => {
+    if (serverName) {
+      return (
+        <GroupInvitation
+          serverName={serverName}
+          url={url ||''}
+          direction="incoming"
+          acceptUrl={acceptUrl||''}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+
+      if (txnId && amount&&direction) {
+      return (
+        <PaymentMessage
+          amount={amount}
+          txnId={txnId}
+          messageId={messageId}
+          direction={direction}
+          acceptUrl={acceptUrl}
+          isUnread={props.isUnread ?? false}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    if (address&&name) {
+      return (
+        <SharedContactCardMessage
+          address={address}
+          name={name}
+          messageId={messageId}
+          isUnread={props.isUnread ?? false}
+          isDetailView={isDetailView}
+          onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(true)}
+        />
+      );
+    }
+  
+    return null;
+  })();
+
   return (
-    <ReadableMessage
+    <>
+    {isExpired ? null : 
+    <StyledReadableMessage
       messageId={messageId}
       className={classNames(
         'bchat-message-wrapper',
@@ -186,12 +315,23 @@ export const GenericReadableMessage = (props: Props) => {
       receivedAt={receivedAt}
       isUnread={!!isUnread}
       key={`readable-message-${messageId}`}
+      selected={selected}
+      isRightClicked={isRightClicked}
     >
-      <div className="message-box" style={{cursor:isSelectionMode?'pointer':"default" }} onClick={() => isSelectionMode && onSelect(messageId)}>
+      <div
+        className="message-box"
+        style={{ cursor: isSelectionMode ? 'pointer' : 'default' }}
+        onClick={() => isSelectionMode && onSelect(messageId)}
+        onMouseLeave={() => {
+        setRecentEmojiBtnVisible(false);
+        setRecentEmoji(false);
+      }}
+      onMouseOver={() => setRecentEmojiBtnVisible(true)}
+      >
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
-        <div>
-          {isSelectionMode &&isIncoming && (
-            <div style={{ marginRight: '15px',cursor:'pointer' }}> 
+        <div style={{margin:'auto'}}>
+          {isSelectionMode && isIncoming && (
+            <div style={{ marginRight: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -202,7 +342,7 @@ export const GenericReadableMessage = (props: Props) => {
             </div>
           )}
         </div>
-        <MessageAvatar messageId={messageId} />
+       {!isDetailView &&  <MessageAvatar messageId={messageId} />}
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={!isIncoming}
@@ -211,12 +351,23 @@ export const GenericReadableMessage = (props: Props) => {
           />
         )} */}
         <MessageContentWithStatuses
-          ctxMenuID={props.ctxMenuID}
+          ctxMenuID={ctxMenuID}
           messageId={messageId}
           isDetailView={isDetailView}
           dataTestId={`message-content-${messageId}`}
           expirationLength={expirationLength}
           expirationTimestamp={expirationTimestamp}
+          enableReactions={enableReactions}
+          isRightClicked={isRightClicked}
+          onMessageLoseFocus={onMessageLoseFocus}
+          onHandleContextMenu={handleContextMenu}
+          acceptUrl={acceptUrl}
+          txnId={txnId}
+          cardDesignTag={cardDesignTag}
+          recentEmojiBtnVisible={recentEmojiBtnVisible}
+          setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
+          recentEmoji={recentEmoji}
+          setRecentEmoji={e => setRecentEmoji(e)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
@@ -225,9 +376,9 @@ export const GenericReadableMessage = (props: Props) => {
             expirationTimestamp={expirationTimestamp}
           />
         )} */}
-        <div>
+        <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
-            <div style={{ marginLeft: '15px',cursor:'pointer' }}>
+            <div style={{ marginLeft: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -239,6 +390,8 @@ export const GenericReadableMessage = (props: Props) => {
           )}
         </div>
       </div>
-    </ReadableMessage>
+    </StyledReadableMessage>
+    }
+    </>
   );
 };

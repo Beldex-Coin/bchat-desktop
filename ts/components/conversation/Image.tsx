@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import classNames from 'classnames';
 
 import { Spinner } from '../basic/Spinner';
@@ -32,7 +32,6 @@ type Props = {
 };
 
 export const Image = (props: Props) => {
-  // tslint:disable-next-line max-func-body-length cyclomatic-complexity
   const {
     alt,
     attachment,
@@ -120,7 +119,7 @@ export const Image = (props: Props) => {
             width: forceSquare ? `${width}px` : '',
             height: forceSquare ? `${height}px` : '',
           }}
-          src={srcData}
+          src={srcData || undefined}
           onDragStart={disableDrag}
         />
       )}

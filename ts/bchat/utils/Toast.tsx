@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { toast } from 'react-toastify';
 import { BchatToast, BchatToastType } from '../../components/basic/BchatToast';
 import { BchatIconType } from '../../components/icon';
@@ -268,6 +268,10 @@ export function pushInvalidPubKey() {
   pushToastSuccess('invalidPubKey', window.i18n('invalidPubkeyFormat'));
 }
 
+export function pushInvalidBchatId(){
+  pushToastError('invalidBchatId', window.i18n('invalidBchatId'));
+}
+
 export function pushNoCameraFound() {
   pushToastWarning('noCameraFound', window.i18n('noCameraFound'));
 }
@@ -286,4 +290,8 @@ export function pushNoMediaUntilApproved() {
 
 export function pushMustBeApproved() {
   pushToastError('mustBeApproved', window.i18n('mustBeApproved'));
+}
+
+export function pushNoContactUntilApproved() {
+  pushToastError('noContactUntilApproved', window.i18n('noContactUntilApproved'));
 }

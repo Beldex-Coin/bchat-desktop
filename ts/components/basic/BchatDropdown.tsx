@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { BchatIcon, BchatIconType } from '../icon';
 
 import { BchatDropdownItem, BchatDropDownItemType } from './BchatDropdownItem';
@@ -42,7 +42,7 @@ export const BchatDropdown = (props: Props) => {
               <MenuWrapper>{label}</MenuWrapper>
             </>
           ) : (
-            { label }
+            <MenuWrapper>{label}</MenuWrapper>
           )}
         </div>
         <BchatIcon iconType="chevron" iconSize="small" iconRotation={chevronOrientation} />

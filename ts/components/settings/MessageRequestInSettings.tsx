@@ -3,7 +3,7 @@ import classNames from 'classnames';
 // import { contextMenu } from 'react-contexify';
 // import { useSelector } from 'react-redux';
 
-import { Avatar, AvatarSize, BNSWrapper } from '.././avatar/Avatar';
+import { Avatar, AvatarSize } from '.././avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
@@ -83,18 +83,12 @@ const AvatarItem = () => {
 
   return (
     <div className="module-conversation-list-item__avatar-container">
-       <BNSWrapper
-        // size={52}
-        position={{ left: '34px', top: '34px' }}
-        isBnsHolder={isBnsHolder}
-        size={{width:'20',height:'20'}}
-      >
       <Avatar
         size={AvatarSize.M}
         pubkey={conversationId}
         onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
+        isBnsHolder={isBnsHolder}
       />
-      </BNSWrapper>
     </div>
   );
 };
@@ -109,7 +103,6 @@ const MessageRequestListSetting = (props: Props) => {
     style,
     // mentionedUs,
     isMessageRequest,
-    // walletAddress,
     profileName
     
   } = props;
@@ -173,9 +166,6 @@ const MessageRequestListSetting = (props: Props) => {
             <ConversationListItemHeaderItem />
              <div className='bchat-settings-messageRequest-profileName' >{profileName}</div>
             <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
-            {/* <div style={{fontSize:'12px'}}>
-             {walletAddress}
-          </div> */}
           </div>
           {/* <button style={{background:"green"}} onClick={handleAcceptConversationRequest}>{window.i18n('accept')}</button> */}
           {/* <div role="button" className='bchat-settings-messageRequest-acceptButton' onClick={handleAcceptConversationRequest}>

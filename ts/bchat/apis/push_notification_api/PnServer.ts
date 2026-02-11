@@ -1,4 +1,4 @@
-import { callUtilsWorker } from '../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../webworker/workers/browser/util_worker_interface';
 import { sendViaOnionToNonSnode } from '../../onions/onionSend';
 
 const pnServerPubkeyHex = '589f8d0d376933e6a48266423235f323dfa4eb4179903314cf5dfb30d6cf794a';

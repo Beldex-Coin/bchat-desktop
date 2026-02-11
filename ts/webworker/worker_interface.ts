@@ -109,7 +109,7 @@ export class WorkerInterface {
     if (this._DEBUG) {
       this._jobs[id].complete = true;
     } else {
-      // tslint:disable-next-line: no-dynamic-delete
+      // eslint:disable-next-line: no-dynamic-delete
       delete this._jobs[id];
     }
   }

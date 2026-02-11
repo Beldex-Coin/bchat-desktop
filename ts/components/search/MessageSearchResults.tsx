@@ -1,9 +1,9 @@
-import React from 'react';
+// import React from 'react';
 
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';
 import { ContactName } from '../conversation/ContactName';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { Timestamp } from '../conversation/Timestamp';
 import { MessageBodyHighlight } from '../basic/MessageBodyHighlight';
 import styled from 'styled-components';
@@ -42,15 +42,15 @@ const StyledSearchResulsts = styled.div`
   padding-inline-start: 16px;
   padding-inline-end: 16px;
   min-height: 64px;
-  max-width: 300px;
+  // max-width: 300px;
 
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-
   cursor: pointer;
   &:hover {
     background-color: var(--color-clickable-hovered);
+    border-radius:16px;
   }
 `;
 
@@ -64,8 +64,7 @@ const StyledResultText = styled.div`
 
 const ResultsHeader = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;  
 `;
 
 const StyledMessageResultsHeaderName = styled.span`
@@ -137,18 +136,7 @@ const FromUserInGroup = (props: { authorPubkey: string; conversationId: string }
   return <StyledConversationFromUserInGroup>{authorConvoName}: </StyledConversationFromUserInGroup>;
 };
 
-const AvatarItem = (props: { source: string; isBnsHolder: any }) => {
-  return (
-    <BNSWrapper
-      // size={40}
-      position={{ left: '23px', top: '23px' }}
-      isBnsHolder={props.isBnsHolder}
-      size={{width:'20',height:'20'}}
-    >
-      <Avatar size={AvatarSize.S} pubkey={props.source} />
-    </BNSWrapper>
-  );
-};
+
 
 const ResultBody = styled.div`
   margin-top: 1px;
@@ -168,7 +156,7 @@ const ResultBody = styled.div`
 
 const StyledTimestampContaimer = styled.div`
   flex-shrink: 0;
-  margin-inline-start: 6px;
+  // margin-inline-start: 6px;
 
   font-size: 11px;
   line-height: 16px;
@@ -216,7 +204,6 @@ export const MessageSearchResult = (props: MessageResultProps) => {
   if (!source && !destination) {
     return null;
   }
-  // tslint:disable: use-simple-attributes
 
   return (
     <StyledSearchResulsts
@@ -230,7 +217,7 @@ export const MessageSearchResult = (props: MessageResultProps) => {
         });
       }}
     >
-      <AvatarItem source={conversationId} isBnsHolder={isBnsHolder} />
+      <Avatar size={AvatarSize.L} pubkey={conversationId} isBnsHolder={isBnsHolder} /> 
       <StyledResultText>
         <ResultsHeader>
           <ConversationHeader source={destination} conversationId={conversationId} />

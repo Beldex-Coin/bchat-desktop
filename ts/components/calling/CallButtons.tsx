@@ -1,13 +1,15 @@
-import { BchatIcon, BchatIconButton } from '../icon';
+import { BchatIcon  } from '../icon';
 import { animation, contextMenu, Item, Menu } from 'react-contexify';
 import { InputItem } from '../../bchat/utils/calling/CallManager';
 import { setFullScreenCall } from '../../state/ducks/call';
 import { CallManager, ToastUtils } from '../../bchat/utils';
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHasOngoingCallWithPubkey } from '../../state/selectors/call';
 import { DropDownAndToggleButton } from '../icon/DropDownAndToggleButton';
 import styled from 'styled-components';
+import { Flex } from '../basic/Flex';
+import { ConnectingLabel, DurationLabel, RingingLabel } from './InConversationCallContainer';
 
 const videoTriggerId = 'video-menu-trigger-id';
 const audioTriggerId = 'audio-menu-trigger-id';
@@ -17,17 +19,18 @@ export const VideoInputButton = ({
   currentConnectedCameras,
   localStreamVideoIsMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedCameras: Array<InputItem>;
   localStreamVideoIsMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
       <DropDownAndToggleButton
-        iconType="camera"
+        iconType={localStreamVideoIsMuted?'callCameraDisabled':'callCamera'}
         isMuted={localStreamVideoIsMuted}
-        isSelected={!localStreamVideoIsMuted}
         onMainButtonClick={() => {
           void handleCameraToggle(currentConnectedCameras, localStreamVideoIsMuted);
         }}
@@ -35,6 +38,7 @@ export const VideoInputButton = ({
           showVideoInputMenu(currentConnectedCameras, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <VideoInputMenu triggerId={videoTriggerId} camerasList={currentConnectedCameras} />
@@ -46,17 +50,18 @@ export const AudioInputButton = ({
   currentConnectedAudioInputs,
   isAudioMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedAudioInputs: Array<InputItem>;
   isAudioMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
       <DropDownAndToggleButton
-        iconType="microphone"
+        iconType={isAudioMuted?'callMicrophoneDisabled':'callMicrophone'}
         isMuted={isAudioMuted}
-        isSelected={isAudioMuted}
         onMainButtonClick={() => {
           void handleMicrophoneToggle(currentConnectedAudioInputs, isAudioMuted);
         }}
@@ -64,6 +69,7 @@ export const AudioInputButton = ({
           showAudioInputMenu(currentConnectedAudioInputs, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <AudioInputMenu triggerId={audioTriggerId} audioInputsList={currentConnectedAudioInputs} />
@@ -75,15 +81,17 @@ export const AudioOutputButton = ({
   currentConnectedAudioOutputs,
   isAudioOutputMuted,
   hideArrowIcon = false,
+  isCallModalExpandView
 }: {
   currentConnectedAudioOutputs: Array<InputItem>;
   isAudioOutputMuted: boolean;
   hideArrowIcon?: boolean;
+  isCallModalExpandView?:boolean;
 }) => {
   return (
     <>
       <DropDownAndToggleButton
-        iconType="volume"
+        iconType={isAudioOutputMuted?"callSpeakerDisabled":"callSpeaker"}
         isMuted={isAudioOutputMuted}
         onMainButtonClick={() => {
           void handleSpeakerToggle(currentConnectedAudioOutputs, isAudioOutputMuted);
@@ -92,6 +100,7 @@ export const AudioOutputButton = ({
           showAudioOutputMenu(currentConnectedAudioOutputs, e);
         }}
         hidePopoverArrow={hideArrowIcon}
+        isCallModalExpandView={isCallModalExpandView}
       />
 
       <AudioOutputMenu
@@ -177,7 +186,7 @@ const AudioOutputMenu = ({
   );
 };
 
-const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => {
+const ShowInFullScreenButton = ({ isFullScreen,isCallModalExpandView }: { isFullScreen: boolean ,isCallModalExpandView?:boolean}) => {
   const dispatch = useDispatch();
 
   const showInFullScreen = () => {
@@ -189,16 +198,20 @@ const ShowInFullScreenButton = ({ isFullScreen }: { isFullScreen: boolean }) => 
   };
 
   return (
-    <BchatIconButton
-      iconSize={60}
-      iconPadding="20px"
-      iconType="fullscreen"
-      backgroundColor="white"
-      borderRadius="50%"
-      onClick={showInFullScreen}
-      iconColor="#2879F9"
-      margin="10px"
+
+    <>
+    <DropDownAndToggleButton
+      iconType={isFullScreen?'fullScreenCollapse':'fullscreen'}
+      isMuted={!isFullScreen}
+      onMainButtonClick={() => {
+        showInFullScreen()
+      }}
+      onArrowClick={()=>{}}
+      hidePopoverArrow={true}
+      isCallModalExpandView={isCallModalExpandView}
     />
+  </>
+   
   );
 };
 
@@ -213,15 +226,6 @@ export const HangUpButton = () => {
   };
 
   return (
-    // <BchatIconButton
-
-    //   btnBgColor="#FC3B3B"
-    //   btnRadius="50%"
-
-    //   iconColor="#FFFFFF"
-    //   margin="10px"
-
-    // />
     <div
       className="hangingBtn"
       role="button"
@@ -328,26 +332,37 @@ const handleSpeakerToggle = async (
   }
 };
 
-const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean }>`
-  // position: absolute;
-
-  // bottom: 0px;
-  width: ${props => (props.isFullScreen ? '100vw' : '100%')};
+const StyledCallWindowControls = styled.div<{ makeVisible: boolean; isFullScreen: boolean,isCallModalExpandView?:boolean }>`
+  
+  width: ${props => (props.isFullScreen ? '70%' :props.isCallModalExpandView?'unset':'100%')};
+  min-width:${props => (props.isCallModalExpandView?'570px':'100%')} ;
+  max-width:${props => (props.isCallModalExpandView?'45%':'100%')} ;
+    
   height: 100%;
-  // align-items: flex-end;
-  padding: 10px;
-  // border-radius: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  // left: 0;
-  // right: 0;
-  // transition: all 0.25s ease-in-out;
+  padding: 10px 25px;
+
 
   display: flex;
-
-  justify-content: center;
+  justify-content: space-between;
   align-items:center;
-  // opacity: ${props => (props.makeVisible ? 1 : 0)};
+
+  border-radius: 26px;
+  background:${props => (props.isCallModalExpandView || props.isFullScreen?'var(--color-received-message-background)':'unset')} ;
+  margin: auto;
+
+  ${props => props.isFullScreen &&`
+    max-width:668px;
+     min-width:unset;
+    ` }
+  
+   opacity: ${props => (props.makeVisible  ? 1 : 0)};
+`;
+const UserNameTxtBold = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  line-height: normal;
+  width: 150px;
+  word-break: break-all;
 `;
 
 export const CallWindowControls = ({
@@ -359,6 +374,8 @@ export const CallWindowControls = ({
   remoteStreamVideoIsMuted,
   localStreamVideoIsMuted,
   isFullScreen,
+  selectedName,
+  isCallModalExpandView,
 }: {
   isAudioMuted: boolean;
   isAudioOutputMuted: boolean;
@@ -368,6 +385,8 @@ export const CallWindowControls = ({
   currentConnectedAudioOutputs: Array<InputItem>;
   currentConnectedCameras: Array<InputItem>;
   isFullScreen: boolean;
+  selectedName?: string;
+  isCallModalExpandView?:boolean;
 }) => {
   const [makeVisible, setMakeVisible] = useState(true);
 
@@ -375,38 +394,66 @@ export const CallWindowControls = ({
     setMakeVisible(true);
   };
   const setMakeVisibleFalse = () => {
-    setMakeVisible(true);
+    setMakeVisible(false);
   };
 
   useEffect(() => {
-    setMakeVisibleTrue();
-    document.addEventListener('mouseenter', setMakeVisibleTrue);
-    document.addEventListener('mouseleave', setMakeVisibleFalse);
-
-    return () => {
-      document.removeEventListener('mouseenter', setMakeVisibleTrue);
-      document.removeEventListener('mouseleave', setMakeVisibleFalse);
+    
+    let hideTimer: ReturnType<typeof setTimeout>;
+  
+    const showAndDelayHide = () => {
+      if (!isFullScreen) return;
+      setMakeVisibleTrue();
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        setMakeVisibleFalse();
+      }, 5000); // hide after 5s
     };
-  }, [isFullScreen]);
+  
+    document.addEventListener('mousemove', showAndDelayHide);
+  
+    return () => {
+      document.removeEventListener('mousemove', showAndDelayHide);
+      clearTimeout(hideTimer);
+    };
+  }, [isFullScreen, setMakeVisibleTrue, setMakeVisibleFalse]);
   return (
-    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen}>
-      {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} />}
-      <AudioOutputButton
-        currentConnectedAudioOutputs={currentConnectedAudioOutputs}
-        isAudioOutputMuted={isAudioOutputMuted}
-        hideArrowIcon={isFullScreen}
-      />
-      <VideoInputButton
-        currentConnectedCameras={currentConnectedCameras}
-        localStreamVideoIsMuted={localStreamVideoIsMuted}
-        hideArrowIcon={isFullScreen}
-      />
-      <AudioInputButton
-        currentConnectedAudioInputs={currentConnectedAudioInputs}
-        isAudioMuted={isAudioMuted}
-        hideArrowIcon={isFullScreen}
-      />
-     
+    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView}>
+      <Flex
+        container={true}
+        flexDirection="column"
+        alignItems="flex-start"
+        justifyContent="center"
+      >
+        <UserNameTxtBold>{selectedName}</UserNameTxtBold>
+
+        <RingingLabel />
+        <ConnectingLabel />
+        <DurationLabel />
+      </Flex>
+      <Flex container={true} flexDirection="row">
+        {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView} />}
+        <AudioOutputButton
+          currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+          isAudioOutputMuted={isAudioOutputMuted}
+          hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
+        />
+        <VideoInputButton
+          currentConnectedCameras={currentConnectedCameras}
+          localStreamVideoIsMuted={localStreamVideoIsMuted}
+          hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
+        />
+        <AudioInputButton
+          currentConnectedAudioInputs={currentConnectedAudioInputs}
+          isAudioMuted={isAudioMuted}
+          hideArrowIcon={isFullScreen}
+          isCallModalExpandView={isCallModalExpandView}
+        />
+        
+      </Flex>
+
       <HangUpButton />
     </StyledCallWindowControls>
   );

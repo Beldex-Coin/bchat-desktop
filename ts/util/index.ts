@@ -1,7 +1,7 @@
 import * as GoogleChrome from './GoogleChrome';
 import { arrayBufferToObjectURL } from './arrayBufferToObjectURL';
 import { missingCaseError } from './missingCaseError';
-import { makeLookup } from './makeLookup';
+// import { makeLookup } from './makeLookup';
 import * as AttachmentUtil from './attachmentsUtil';
 import * as LinkPreviewUtil from './linkPreviewFetch';
 
@@ -10,7 +10,7 @@ export * from './blockedNumberController';
 export {
   arrayBufferToObjectURL,
   GoogleChrome,
-  makeLookup,
+  // makeLookup,
   missingCaseError,
   AttachmentUtil,
   LinkPreviewUtil,

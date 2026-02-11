@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+// import React from 'react';
 import { useSelector } from 'react-redux';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import {
@@ -73,6 +73,7 @@ export const MessageText = (props: Props) => {
           disableJumbomoji={false}
           isGroup={conversationType === 'group'}
         />
+        <span className='spacer'></span>
       </div>
       {/* {isDeleted && <BchatIcon iconType="delete" iconSize="small" />}
       <MessageBody

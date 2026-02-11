@@ -1,7 +1,10 @@
-import React from 'react';
+// import React from 'react';
 
 import { MemoConversationListItemWithDetails } from './conversation-list-item/ConversationListItem';
-import { AutoSizer, List } from 'react-virtualized';
+import { AutoSizer as AutoSizerOriginal, List as ListOriginal } from 'react-virtualized';
+// react-virtualized typings can conflict with JSX typing expectations; use any aliases when rendering
+const AutoSizer: any = (AutoSizerOriginal as any);
+const List: any = (ListOriginal as any);
 import { LeftPaneSectionHeader } from './LeftPaneSectionHeader';
 import { useSelector } from 'react-redux';
 import { getDirectContacts } from '../../state/selectors/conversations';
@@ -33,7 +36,7 @@ const ContactListItemSection = () => {
   return (
     <div className="module-left-pane__list" key={0}>
       <AutoSizer>
-        {({ height, width }) => (
+        {({ height, width }: { height: number; width: number }) => (
           <List
             className="module-left-pane__virtual-list"
             height={height}

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import  { ReactNode } from 'react';
 import classNames from 'classnames';
 import { BchatIcon, BchatIconSize, BchatIconType } from '../icon';
 
@@ -37,7 +37,7 @@ type Props = {
   dataTestId?: string;
   icon?: boolean;
   style?: object;
-  iconType?: BchatIconType;
+  iconType?: BchatIconType|null;
   iconSize?: BchatIconSize | number;
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';

@@ -1,6 +1,6 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+// import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
 import { SettingsKey } from '../../../data/settings-key';
 import { CallManager, ToastUtils } from '../../../bchat/utils';
@@ -176,6 +176,7 @@ export const SettingsCategoryPrivacy = (props: {
               }}
               buttonColor={BchatButtonColor.Primary}
               buttonText={window.i18n('changePassword')}
+              iconType="changePasswordSettings"
             />
           )}
           {props.hasPassword && (
@@ -186,9 +187,11 @@ export const SettingsCategoryPrivacy = (props: {
               onClick={() => {
                 displayPasswordModal('remove', props.onPasswordUpdated);
               }}
-              buttonColor={BchatButtonColor.Danger}
+              buttonColor={BchatButtonColor.Red}
               buttonText={window.i18n('removePassword')}
+                iconType="changePasswordSettings"
             />
+            
           )}
         </div>
       </>

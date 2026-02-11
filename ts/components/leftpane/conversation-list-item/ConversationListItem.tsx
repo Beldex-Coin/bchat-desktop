@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import classNames from 'classnames';
 import { contextMenu } from 'react-contexify';
 // import useUpdate from 'react-use/lib/useUpdate';
-import { Avatar, AvatarSize, BNSWrapper } from '../../avatar/Avatar';
+import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 import { createPortal } from 'react-dom';
 import {
@@ -31,10 +31,8 @@ import _ from 'lodash';
 import { Timestamp } from '../../conversation/Timestamp';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
 // import { SettingsKey } from '../../../data/settings-key';
-// import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
-// tslint:disable-next-line: no-empty-interface
 export type ConversationListItemProps = Pick<
   ReduxConversationType,
   | 'id'
@@ -56,11 +54,11 @@ type PropsHousekeeping = {
   style?: Object;
   isMessageRequest?: boolean;
 };
-// tslint:disable: use-simple-attributes
+
 
 type Props = ConversationListItemProps & PropsHousekeeping;
 
-const Portal = ({ children }: { children: any }) => {
+const Portal:any = ({ children }: { children: any }) => {
   return createPortal(children, document.querySelector('.inbox.index') as Element);
 };
 
@@ -84,43 +82,27 @@ const AvatarItem = () => {
 
   return (
     <div className="module-conversation-list-item__avatar-container">
-      <BNSWrapper
-        // size={40}
-        position={{ left: '46px', top: '46px' }}
-        isBnsHolder={isBnsHolder }
-        size={{width:'20',height:'20'}}
-      >
         <Avatar
           size={AvatarSize.L}
           pubkey={conversationId}
           onAvatarClick={isPrivate ? onPrivateAvatarClick : undefined}
+          isBnsHolder={isBnsHolder }
+
         />
-      </BNSWrapper>
     </div>
   );
 };
 
-// tslint:disable: max-func-body-length
+
 const ConversationListItem = (props: Props) => {
   const {
     unreadCount,
     id: conversationId,
     isSelected,
     isBlocked,
-    // style,
     mentionedUs,
     isMessageRequest,
-    // walletAddress
   } = props;
-  //   const dispatch = useDispatch();
-  //   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  //   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
-  //  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
-
-  // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
-  // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
-
-  // const forceUpdate = useUpdate();
   function useHeaderItemProps(conversationId: string) {
     const convoProps = useConversationPropsById(conversationId);
     if (!convoProps) {
@@ -261,8 +243,6 @@ const ConversationListItem = (props: Props) => {
                   momentFromNow={true}
                 />
               </div>
-
-              {/* <div style={{ fontSize: '12px' }}>{walletAddress}</div> */}
             </div>
           </div>
           <Portal>

@@ -53,7 +53,7 @@ async function unsendMessagesForEveryone(
     // sending to recipient all the messages separately for now
     await Promise.all(
       unsendMsgObjects.map(unsendObject => {
-        getMessageQueue()
+       return getMessageQueue()
           .sendToGroup(unsendObject, undefined, new PubKey(destinationId))
           .catch(window?.log?.error);
       })
@@ -332,21 +332,10 @@ export async function deleteMessagesByIdForEveryone(
   conversationId: string
 ) {
   const conversation = getConversationController().getOrThrow(conversationId);
+  // const isPublic=conversation.isPublic()
   const selectedMessages = compact(
     await Promise.all(messageIds.map(m => getMessageById(m, false)))
   );
-
-  const isContainInCommingMsgs = selectedMessages.some(msg => {
-    if (!msg.isOutgoing()) {
-      ToastUtils.pushToastError('', 'Please select an incoming message');
-      return true;
-    }
-    return false;
-  });
-
-  if (isContainInCommingMsgs) {
-    return;
-  }
 
   const messageCount = selectedMessages.length;
   const moreThanOne = messageCount > 1;

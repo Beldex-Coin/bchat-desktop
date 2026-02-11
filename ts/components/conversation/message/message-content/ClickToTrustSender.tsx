@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import styled from 'styled-components';
 import { getLastMessagesByConversation, getMessageById } from '../../../../data/data';
 import { getConversationController } from '../../../../bchat/conversations';
@@ -84,9 +84,7 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
         title: window.i18n('trustThisContactDialogTitle', [
           convo.getContactProfileNameOrShortenedPubKey(),
         ]),
-        message: window.i18n('trustThisContactDialogDescription', [
-          convo.getContactProfileNameOrShortenedPubKey(),
-        ]),
+        message:`${window.i18n('trustThisContactDialogDescription')}<div style="color:#EBEBEB; font-weight:400;text-transform: capitalize;">${convo.getContactProfileNameOrShortenedPubKey()} ?</div>`,
         okTheme: BchatButtonColor.Primary,
         okText: window.i18n('autoUpdateDownloadButtonLabel'),
         iconShow: true,

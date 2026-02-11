@@ -82,7 +82,7 @@ export function getExtensionForDisplay({
   }
 
   if (!contentType) {
-    return;
+    return undefined;
   }
 
   const slash = contentType.indexOf('/');
@@ -90,7 +90,7 @@ export function getExtensionForDisplay({
     return contentType.slice(slash + 1);
   }
 
-  return;
+  return undefined;
 }
 
 export function isAudio(attachments?: Array<AttachmentType>) {
@@ -306,7 +306,7 @@ export const isFile = (attachment: Attachment): boolean => {
 export const isVoiceMessage = (attachment: Attachment): boolean => {
   const flag = SignalService.AttachmentPointer.Flags.VOICE_MESSAGE;
   const hasFlag =
-    // tslint:disable-next-line no-bitwise
+    // eslint:disable-next-line no-bitwise
     !isUndefined(attachment.flags) && (attachment.flags & flag) === flag;
   if (hasFlag) {
     return true;
@@ -376,9 +376,8 @@ export const getFileExtension = (attachment: AttachmentType): string | undefined
       const dotLastIndex = attachment.fileName.lastIndexOf('.');
       if (dotLastIndex !== -1) {
         return attachment.fileName.substring(dotLastIndex + 1);
-      } else {
+      } 
         return undefined;
-      }
     }
     return undefined;
   }

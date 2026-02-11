@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable no-console */
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as os from 'os';
@@ -211,7 +213,7 @@ async function canAutoUpdate(): Promise<boolean> {
   const appUpdateConfigPath = path.join(basePath, updateFile);
   return new Promise(resolve => {
     try {
-      // tslint:disable-next-line: non-literal-fs-path
+      // eslint:disable-next-line: non-literal-fs-path
       const exists = fs.existsSync(appUpdateConfigPath);
       resolve(exists);
     } catch (e) {

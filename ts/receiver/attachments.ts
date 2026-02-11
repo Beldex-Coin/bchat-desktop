@@ -12,7 +12,7 @@ import { OpenGroupRequestCommonType } from '../bchat/apis/open_group_api/opengro
 import { FSv2 } from '../bchat/apis/file_server_api';
 import { getUnpaddedAttachment } from '../bchat/crypto/BufferPadding';
 import { decryptAttachment } from '../util/crypto/attachmentsEncrypter';
-import { callUtilsWorker } from '../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../webworker/workers/browser/util_worker_interface';
 
 export async function downloadAttachment(attachment: {
   url: string;
@@ -125,6 +125,8 @@ export async function downloadAttachmentOpenGroupV2(
   if (attachment.size !== dataUint.length) {
     // we might have padding, check that all the remaining bytes are padding bytes
     // otherwise we have an error.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error -- returning Uint8Array intentionally
     const unpaddedData = getUnpaddedAttachment(dataUint.buffer, attachment.size);
     if (!unpaddedData) {
       throw new Error(
@@ -227,7 +229,7 @@ async function processQuoteAttachments(
       }
 
       addedCount += 1;
-
+      // eslint-disable-next-line no-await-in-loop
       const thumbnail = await AttachmentDownloads.addJob(item.thumbnail, {
         messageId: message.id,
         type: 'quote',

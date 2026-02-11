@@ -5,7 +5,6 @@ import { SettingsHeader } from './BchatSettingsHeader';
 // import { BchatIconButton } from '../icon';
 import autoBind from 'auto-bind';
 import { BchatNotificationGroupSettings } from './BeldexNotificationGroupSettings';
-// tslint:disable-next-line: no-submodule-imports
 import { BlockedUserSettings } from './BlockedUserSettings';
 import { SettingsCategoryPrivacy } from './section/CategoryPrivacy';
 import { SettingsCategoryAppearance } from './section/CategoryAppearance';
@@ -21,16 +20,10 @@ import { BchatRecoverySeed } from './BchatRecoverySeed';
 import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest';
 import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
-import { WalletMainPanel, } from '../wallet/BchatWalletMainPanel';
-// import { wallet } from '../../wallet/wallet-rpc'
-import { deamonvalidation } from '../../wallet/BchatWalletHelper';
 import { SettingsCategoryChat } from './section/categoryChat';
-import { WalletSettings } from '../wallet/BchatWalletSettings';
-import { updateBchatAlertConfirmModal } from '../../state/ducks/modalDialog';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
-// import { NodeSetting } from '../wallet/BchatWalletNodeSetting';
-// import { startWallet } from "../../mains/wallet-rpc"
+
 
 export function getMediaPermissionsSettings() {
   return window.getSettingValue('media-permissions');
@@ -51,8 +44,6 @@ export enum BchatSettingCategory {
   RecoveryKey = 'recoveryKey',
   // ViewMessageRequest="viewMessageRequest",
   Hops = 'hops',
-  Wallet = 'wallet',
-  WalletSettings = 'walletSettings',
   ClearData = 'clearData'
 
 }
@@ -160,8 +151,6 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentDidMount() {
     window.addEventListener('keyup', this.onKeyUp);
-    deamonvalidation();
-
     const mediaSetting = getMediaPermissionsSettings();
     const callMediaSetting = getCallMediaPermissionsSettings();
     this.setState({ mediaSetting, callMediaSetting });
@@ -171,14 +160,20 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentWillUnmount() {
     window.removeEventListener('keyup', this.onKeyUp);
-    deamonvalidation();
 
   }
 
   /* tslint:disable-next-line:max-func-body-length */
   public renderSettingInCategory(passwordLock: any) {
     const { category } = this.props;
-
+    
+    if (category !== BchatSettingCategory.RecoverySeed  && !this.state.shouldLockSettings) {
+      this.setState({
+        hasPassword: true,
+        shouldLockSettings: true,
+        pwdLockError: null,
+      });
+    }
     if (this.state.hasPassword === null) {
       return null;
     }
@@ -222,18 +217,6 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
     if (category === BchatSettingCategory.Hops) {
       return <BchatOnionPathScreen />;
-    }
-    if (category === BchatSettingCategory.Wallet) {
-      // deamonvalidation();
-      return <WalletMainPanel />;
-    }
-    if (category === BchatSettingCategory.WalletSettings) {
-
-      return (
-        <div>
-          <WalletSettings />
-        </div>
-      );
     }
     if (category === BchatSettingCategory.Notifications) {
       return <BchatNotificationGroupSettings hasPassword={this.state.hasPassword} />;
@@ -297,10 +280,6 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
                 ? 'hops'
                 : category === BchatSettingCategory.Chat
                   ? 'Chat'
-                  : category === BchatSettingCategory.WalletSettings
-                    ? 'WalletSettingsTitle'
-                    : category === BchatSettingCategory.Wallet
-                      ? 'WalletSettingsTitle'
                       : category === BchatSettingCategory.Notifications
                         ? 'notificationsSettingsTitle'
                         : 'privacySettingsTitle';
@@ -355,7 +334,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
   }
 
   public onClickCancel() {
-    window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null))
+    // window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null))
+    console.log('cancel clicked');
   }
 
   private async onKeyUp(event: any) {

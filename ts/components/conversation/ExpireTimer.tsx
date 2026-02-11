@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import  { useCallback, useState } from 'react';
 
 import { getTimerBucketIcon } from '../../util/timer';
 
@@ -19,6 +19,9 @@ const ExpireTimerCount = styled.div<{
   color: string;
   isdark: boolean;
 }>`
+  width: 60px;
+  text-align: center;
+  word-break: keep-all;
   margin-inline-end: 10px;
   margin-inline-start: 10px;
   font-size: 14px;

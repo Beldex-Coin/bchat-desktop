@@ -1,10 +1,11 @@
+// eslint-disable-next-line import/no-unresolved
 import {} from 'styled-components/cssprop';
 
-import { LocalizerType } from '../ts/types/Util';
+import { LocalizerType } from './types/Util';
 
 import { Store } from 'redux';
 
-import { ConversationCollection, ConversationModel } from './models/conversation';
+import { ConversationCollection } from './models/conversation';
 import { ConversationType } from './state/ducks/conversations';
 
 export interface LibTextsecure {
@@ -105,6 +106,5 @@ declare global {
 
     Signal: any;
     WalletAddress: any;
-    deamon_list: any;
   }
 }

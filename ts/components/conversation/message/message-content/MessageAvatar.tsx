@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react';
+import  { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { updateUserDetailsModal } from '../../../../state/ducks/modalDialog';
 import { getMessageAvatarProps } from '../../../../state/selectors/conversations';
 import { Avatar, AvatarSize, CrownIcon } from '../../../avatar/Avatar';
+import styled from 'styled-components';
+import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
+import { isEmpty } from 'lodash';
 // tslint:disable: use-simple-attributes
 
 export type MessageAvatarSelectorProps = Pick<
@@ -21,11 +24,20 @@ export type MessageAvatarSelectorProps = Pick<
 
 type Props = { messageId: string };
 
+const StyledAvatarWrapper = styled.div <{enableReactions:boolean}>`
+  display: flex;
+  align-self: flex-end;
+  margin-bottom:${(props)=>props.enableReactions?'52px':'16px'};
+`;
+
 export const MessageAvatar = (props: Props) => {
   const { messageId } = props;
 
   const dispatch = useDispatch();
   const avatarProps = useSelector(state => getMessageAvatarProps(state as any, messageId));
+  const msgProps = useMessageReactsPropsById(messageId);
+  const reacts=!isEmpty( msgProps?.reacts);
+  
 
   if (!avatarProps) {
     return null;
@@ -58,17 +70,19 @@ export const MessageAvatar = (props: Props) => {
   }, [userName, sender, authorAvatarPath]);
 
   if (!lastMessageOfSeries) {
-    return <div style={{ marginInlineEnd: '60px' }} key={`msg-avatar-${sender}`} />;
+    return <div style={{ marginInlineEnd: '63px' }} key={`msg-avatar-${sender}`} />;
   }
 
   return (
-    <div className="module-message__author-avatar" key={`msg-avatar-${sender}`}>
-      <Avatar
-        size={AvatarSize.S}
-        onAvatarClick={(!isPublic && onMessageAvatarClick) || undefined}
-        pubkey={sender}
-      />
-      {isSenderAdmin && <CrownIcon />}
-    </div>
+    <StyledAvatarWrapper enableReactions={reacts}>
+      <div className="module-message__author-avatar" key={`msg-avatar-${sender}`}>
+        <Avatar
+          size={AvatarSize.M}
+          onAvatarClick={(!isPublic && onMessageAvatarClick) || undefined}
+          pubkey={sender}
+        />
+        {isSenderAdmin && <CrownIcon />}
+      </div>
+    </StyledAvatarWrapper>
   );
 };

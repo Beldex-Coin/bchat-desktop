@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { createSelector } from 'reselect';
 
 import { StateType } from '../reducer';
@@ -17,7 +18,7 @@ import { BlockedNumberController } from '../../util';
 import { ConversationModel, ConversationTypeEnum } from '../../models/conversation';
 import { LocalizerType } from '../../types/Util';
 import { ConversationHeaderTitleProps } from '../../components/conversation/ConversationHeader';
-import _ from 'lodash';
+
 import { ReplyingToMessageProps } from '../../components/conversation/composition/CompositionBox';
 import { MessageAttachmentSelectorProps } from '../../components/conversation/message/message-content/MessageAttachment';
 import { MessageAuthorSelectorProps } from '../../components/conversation/message/message-content/MessageAuthorText';
@@ -34,6 +35,10 @@ import { LightBoxOptions } from '../../components/conversation/BchatConversation
 import { getConversationController } from '../../bchat/conversations';
 import { UserUtils } from '../../bchat/utils';
 import { Storage } from '../../util/storage';
+import { MessageReactsSelectorProps } from '../../components/conversation/message/message-content/MessageReactions';
+
+import { filter, isEmpty, pick } from 'lodash';
+import moment from 'moment';
 
 export const getConversations = (state: StateType): ConversationsStateType => state.conversations;
 
@@ -180,11 +185,14 @@ export type MessagePropsType =
   | 'call-notification'
   | 'payment';
 
+
+
+  
 export const getSortedMessagesTypesOfSelectedConversation = createSelector(
   getSortedMessagesOfSelectedConversation,
   getFirstUnreadMessageId,
   (sortedMessages, firstUnreadId) => {
-    const maxMessagesBetweenTwoDateBreaks = 5;
+    // const maxMessagesBetweenTwoDateBreaks = 24 * 60 ;
     // we want to show the date break if there is a large jump in time
     // remember that messages are sorted from the most recent to the oldest
     return sortedMessages.map((msg, index) => {
@@ -198,11 +206,12 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           : sortedMessages[index + 1].propsForMessage.serverTimestamp ||
             sortedMessages[index + 1].propsForMessage.timestamp;
 
-      const showDateBreak =
-        messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
-          ? messageTimestamp
-          : undefined;
-
+      // const showDateBreak =
+      //   messageTimestamp - previousMessageTimestamp > maxMessagesBetweenTwoDateBreaks * 60 * 1000
+      //     ? messageTimestamp
+      //     : undefined;
+      const isSameDay = moment(messageTimestamp).isSame(moment(previousMessageTimestamp), 'day');
+      const showDateBreak =!isSameDay? messageTimestamp: undefined;
       if (msg.propsForDataExtractionNotification) {
         return {
           showUnreadIndicator: isFirstUnread,
@@ -235,7 +244,7 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
-      if (msg.propsForPayment) {
+        if (msg.propsForPayment) {
         return {
           showUnreadIndicator: isFirstUnread,
           showDateBreak,
@@ -244,6 +253,17 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
             props: { ...msg.propsForPayment, messageId: msg.propsForMessage.id },
           },
         };
+      }
+      if(msg.propsForSharedContact)
+      {
+        return{
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'shared-contact',
+            props: { ...msg.propsForSharedContact, messageId: msg.propsForMessage.id },
+          },
+        }
       }
       if (msg.propsForGroupUpdateMessage) {
         return {
@@ -340,7 +360,7 @@ export const _getConversationComparator = (testingi18n?: LocalizerType) => {
 export const getConversationComparator = createSelector(getIntl, _getConversationComparator);
 
 // export only because we use it in some of our tests
-// tslint:disable-next-line: cyclomatic-complexity
+
 export const _getLeftPaneLists = (
   sortedConversations: Array<ReduxConversationType>
 ): {
@@ -451,7 +471,7 @@ export const getSortedConversations = createSelector(
 const _getConversationRequests = (
   sortedConversations: Array<ReduxConversationType>
 ): Array<ReduxConversationType> => {
-  return _.filter(sortedConversations, conversation => {
+  return filter(sortedConversations, conversation => {
     const { isApproved, isBlocked, isPrivate, isMe } = conversation;
     const isRequest = ConversationModel.hasValidIncomingRequestValues({
       isApproved,
@@ -471,7 +491,7 @@ export const getConversationRequests = createSelector(
 const _getUnreadConversationRequests = (
   sortedConversationRequests: Array<ReduxConversationType>
 ): Array<ReduxConversationType> => {
-  return _.filter(sortedConversationRequests, conversation => {
+  return filter(sortedConversationRequests, conversation => {
     return conversation && conversation.unreadCount && conversation.unreadCount > 0;
   });
 };
@@ -484,7 +504,7 @@ export const getUnreadConversationRequests = createSelector(
 const _getPrivateContactsPubkeys = (
   sortedConversations: Array<ReduxConversationType>
 ): Array<string> => {
-  return _.filter(sortedConversations, conversation => {
+  return filter(sortedConversations, conversation => {
     return (
       conversation.isPrivate &&
       !conversation.isBlocked &&
@@ -496,6 +516,19 @@ const _getPrivateContactsPubkeys = (
   }).map(convo => convo.id);
 };
 
+const _getPrivateAndBlockedContactsPubkeys = (
+  sortedConversations: Array<ReduxConversationType>
+): Array<string> => {
+  return filter(sortedConversations, conversation => {
+    return (
+      conversation.isPrivate &&
+      !conversation.isMe &&
+      conversation.didApproveMe &&
+      conversation.isApproved &&
+      Boolean(conversation.activeAt)
+    );
+  }).map(convo => convo.id);
+};
 /**
  * Returns all the conversation ids of private conversations which are
  * - private
@@ -507,6 +540,10 @@ const _getPrivateContactsPubkeys = (
 export const getPrivateContactsPubkeys = createSelector(
   getSortedConversations,
   _getPrivateContactsPubkeys
+);
+export const getPrivateAndBlockedContactsPubkeys = createSelector(
+  getSortedConversations,
+  _getPrivateAndBlockedContactsPubkeys
 );
 
 export const getLeftPaneLists = createSelector(getSortedConversations, _getLeftPaneLists);
@@ -613,6 +650,14 @@ export const isRightPanelShowing = createSelector(
   (state: ConversationsStateType): boolean => state.showRightPanel
 );
 
+export const isShareContact = createSelector(
+  getConversations,
+  (state: ConversationsStateType): boolean => state.showShareContact
+);
+export const getViewContactPanel = createSelector(
+  getConversations,
+  (state: ConversationsStateType): any => state.showViewContactPanel
+);
 export const isMessageSelectionMode = createSelector(
   getConversations,
   (state: ConversationsStateType): boolean => Boolean(state.selectedMessageIds.length > 0)
@@ -854,51 +899,58 @@ export const getMessagePropsByMessageId = createSelector(
 export const getMessageAvatarProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageAvatarSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const {
-    authorAvatarPath,
-    authorName,
-    sender,
-    authorProfileName,
-    conversationType,
-    direction,
-    isPublic,
-    isSenderAdmin,
-  } = props.propsForMessage;
-
-  const { lastMessageOfSeries } = props;
-
   const messageAvatarProps: MessageAvatarSelectorProps = {
-    authorAvatarPath,
-    authorName,
-    sender,
-    authorProfileName,
-    conversationType,
-    direction,
-    isPublic,
-    isSenderAdmin,
-    lastMessageOfSeries,
+    lastMessageOfSeries: props.lastMessageOfSeries,
+    ...pick(props.propsForMessage, [
+      'authorAvatarPath',
+      'authorName',
+      'sender',
+      'authorProfileName',
+      'conversationType',
+      'direction',
+      'isPublic',
+      'isSenderAdmin',
+    ]),
   };
-
   return messageAvatarProps;
 });
+export const getMessageReactsProps = createSelector(getMessagePropsByMessageId, (props):
+  | MessageReactsSelectorProps
+  | undefined => {
+  if (!props || isEmpty(props)) {
+    return undefined;
+  }
 
+  const msgProps: MessageReactsSelectorProps = pick(props.propsForMessage, [
+    'convoId',
+    'conversationType',
+    'isPublic',
+    'reacts',
+    'serverId',
+  ]);
+  if (msgProps.reacts) {
+    const sortedReacts = Object.entries(msgProps.reacts).sort((a, b) => {
+      return a[1].index < b[1].index ? -1 : a[1].index > b[1].index ? 1 : 0;
+    });
+    msgProps.sortedReacts = sortedReacts;
+  }
+  return msgProps;
+});
 export const getMessagePreviewProps = createSelector(getMessagePropsByMessageId, (props):
   | MessagePreviewSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const { attachments, previews } = props.propsForMessage;
-
-  const msgProps: MessagePreviewSelectorProps = {
-    attachments,
-    previews,
-  };
+  const msgProps: MessagePreviewSelectorProps = pick(props.propsForMessage, [
+    'attachments',
+    'previews',
+  ]);
 
   return msgProps;
 });
@@ -906,16 +958,11 @@ export const getMessagePreviewProps = createSelector(getMessagePropsByMessageId,
 export const getMessageQuoteProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageQuoteSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const { direction, quote } = props.propsForMessage;
-
-  const msgProps: MessageQuoteSelectorProps = {
-    direction,
-    quote,
-  };
+  const msgProps: MessageQuoteSelectorProps = pick(props.propsForMessage, ['direction', 'quote']);
 
   return msgProps;
 });
@@ -923,16 +970,11 @@ export const getMessageQuoteProps = createSelector(getMessagePropsByMessageId, (
 export const getMessageStatusProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageStatusSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const { direction, status } = props.propsForMessage;
-
-  const msgProps: MessageStatusSelectorProps = {
-    direction,
-    status,
-  };
+  const msgProps: MessageStatusSelectorProps = pick(props.propsForMessage, ['direction', 'status']);
 
   return msgProps;
 });
@@ -940,19 +982,17 @@ export const getMessageStatusProps = createSelector(getMessagePropsByMessageId, 
 export const getMessageTextProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageTextSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const { direction, status, text, isDeleted, conversationType } = props.propsForMessage;
-
-  const msgProps: MessageTextSelectorProps = {
-    direction,
-    status,
-    text,
-    isDeleted,
-    conversationType,
-  };
+  const msgProps: MessageTextSelectorProps = pick(props.propsForMessage, [
+    'direction',
+    'status',
+    'text',
+    'isDeleted',
+    'conversationType',
+  ]);
 
   return msgProps;
 });
@@ -960,65 +1000,41 @@ export const getMessageTextProps = createSelector(getMessagePropsByMessageId, (p
 export const getMessageContextMenuProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageContextMenuSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const {
-    attachments,
-    sender,
-    convoId,
-    direction,
-    status,
-    isDeletable,
-    isPublic,
-    isOpenGroupV2,
-    weAreAdmin,
-    isSenderAdmin,
-    text,
-    serverTimestamp,
-    timestamp,
-    isBlocked,
-    isDeletableForEveryone,
-  } = props.propsForMessage;
-
-  const msgProps: MessageContextMenuSelectorProps = {
-    attachments,
-    sender,
-    convoId,
-    direction,
-    status,
-    isDeletable,
-    isPublic,
-    isOpenGroupV2,
-    weAreAdmin,
-    isSenderAdmin,
-    text,
-    serverTimestamp,
-    timestamp,
-    isBlocked,
-    isDeletableForEveryone,
-  };
-
+  const msgProps: MessageContextMenuSelectorProps = pick(props.propsForMessage, [
+    'attachments',
+    'sender',
+    'convoId',
+    'direction',
+    'status',
+    'isDeletable',
+    'isPublic',
+    'isOpenGroupV2',
+    'weAreAdmin',
+    'isSenderAdmin',
+    'text',
+    'serverTimestamp',
+    'timestamp',
+    'isBlocked',
+    'isDeletableForEveryone',
+    'isDeleted'
+  ]);
   return msgProps;
 });
 
 export const getMessageAuthorProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageAuthorSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const { authorName, sender, authorProfileName, direction } = props.propsForMessage;
-  const { firstMessageOfSeries } = props;
-
   const msgProps: MessageAuthorSelectorProps = {
-    authorName,
-    sender,
-    authorProfileName,
-    direction,
-    firstMessageOfSeries,
+    firstMessageOfSeries: props.firstMessageOfSeries,
+    ...pick(props.propsForMessage, ['authorName', 'sender', 'authorProfileName', 'direction']),
   };
 
   return msgProps;
@@ -1027,7 +1043,7 @@ export const getMessageAuthorProps = createSelector(getMessagePropsByMessageId, 
 export const getMessageIsDeletable = createSelector(
   getMessagePropsByMessageId,
   (props): boolean => {
-    if (!props || _.isEmpty(props)) {
+    if (!props || isEmpty(props)) {
       return false;
     }
 
@@ -1038,27 +1054,20 @@ export const getMessageIsDeletable = createSelector(
 export const getMessageAttachmentProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageAttachmentSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const {
-    attachments,
-    direction,
-    isTrustedForAttachmentDownload,
-    timestamp,
-    serverTimestamp,
-    sender,
-    convoId,
-  } = props.propsForMessage;
   const msgProps: MessageAttachmentSelectorProps = {
-    attachments: attachments || [],
-    direction,
-    isTrustedForAttachmentDownload,
-    timestamp,
-    serverTimestamp,
-    sender,
-    convoId,
+    attachments: props.propsForMessage.attachments || [],
+    ...pick(props.propsForMessage, [
+      'direction',
+      'isTrustedForAttachmentDownload',
+      'timestamp',
+      'serverTimestamp',
+      'sender',
+      'convoId',
+    ]),
   };
 
   return msgProps;
@@ -1068,7 +1077,7 @@ export const getIsMessageSelected = createSelector(
   getMessagePropsByMessageId,
   getSelectedMessageIds,
   (props, selectedIds): boolean => {
-    if (!props || _.isEmpty(props)) {
+    if (!props || isEmpty(props)) {
       return false;
     }
 
@@ -1077,35 +1086,26 @@ export const getIsMessageSelected = createSelector(
   }
 );
 
-
 export const getMessageContentSelectorProps = createSelector(getMessagePropsByMessageId, (props):
   | MessageContentSelectorProps
   | undefined => {
-  if (!props || _.isEmpty(props)) {
+  if (!props || isEmpty(props)) {
     return undefined;
   }
 
-  const {
-    text,
-    direction,
-    timestamp,
-    serverTimestamp,
-    previews,
-    attachments,
-    quote,
-  } = props.propsForMessage;
-
-  const { firstMessageOfSeries, lastMessageOfSeries } = props;
   const msgProps: MessageContentSelectorProps = {
-    direction,
-    firstMessageOfSeries,
-    lastMessageOfSeries,
-    serverTimestamp,
-    text,
-    timestamp,
-    previews,
-    quote,
-    attachments,
+    firstMessageOfSeries: props.firstMessageOfSeries,
+    lastMessageOfSeries: props.lastMessageOfSeries,
+    ...pick(props.propsForMessage, [
+      'direction',
+      'serverTimestamp',
+      'text',
+      'timestamp',
+      'previews',
+      'quote',
+      'attachments',
+      'reacts'
+    ]),
   };
 
   return msgProps;
@@ -1114,22 +1114,13 @@ export const getMessageContentSelectorProps = createSelector(getMessagePropsByMe
 export const getMessageContentWithStatusesSelectorProps = createSelector(
   getMessagePropsByMessageId,
   (props): MessageContentWithStatusSelectorProps | undefined => {
-    if (!props || _.isEmpty(props)) {
+    if (!props || isEmpty(props)) {
       return undefined;
     }
 
-    const {
-      direction,
-      isDeleted,
-      attachments,
-      isTrustedForAttachmentDownload,
-    } = props.propsForMessage;
-
     const msgProps: MessageContentWithStatusSelectorProps = {
-      direction,
-      isDeleted,
-      hasAttachments: Boolean(attachments?.length) || false,
-      isTrustedForAttachmentDownload,
+      hasAttachments: Boolean(props.propsForMessage.attachments?.length) || false,
+      ...pick(props.propsForMessage, ['direction', 'isDeleted', 'isTrustedForAttachmentDownload',"isPublic",]),
     };
 
     return msgProps;
@@ -1139,34 +1130,22 @@ export const getMessageContentWithStatusesSelectorProps = createSelector(
 export const getGenericReadableMessageSelectorProps = createSelector(
   getMessagePropsByMessageId,
   (props): GenericReadableMessageSelectorProps | undefined => {
-    if (!props || _.isEmpty(props)) {
+    if (!props || isEmpty(props)) {
       return undefined;
     }
 
-    const {
-      direction,
-      conversationType,
-      expirationLength,
-      expirationTimestamp,
-      isExpired,
-      isUnread,
-      receivedAt,
-      isKickedFromGroup,
-      isDeleted,
-    } = props.propsForMessage;
-
-    const msgProps: GenericReadableMessageSelectorProps = {
-      direction,
-      conversationType,
-      expirationLength,
-      expirationTimestamp,
-      isUnread,
-      isExpired,
-      convoId: props.propsForMessage.convoId,
-      receivedAt,
-      isKickedFromGroup,
-      isDeleted,
-    };
+    const msgProps: GenericReadableMessageSelectorProps = pick(props.propsForMessage, [
+      'direction',
+      'conversationType',
+      'expirationLength',
+      'expirationTimestamp',
+      'isUnread',
+      'isExpired',
+      'convoId',
+      'receivedAt',
+      'isKickedFromGroup',
+      'isDeleted',
+    ]);
 
     return msgProps;
   }

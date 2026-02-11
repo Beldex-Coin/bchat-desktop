@@ -38,6 +38,11 @@ export const AddNewContactInEmptyConvo = () => {
   const [bchatId, setBchatId] = useState('');
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = bchatId.trim();
+    if(!pubkeyorOnsTrimmed)
+    {
+      ToastUtils.pushToastError('invalidPubKey','Please enter the Id or BNS'); // or Bns name
+      return;
+    }
     if (
       (!pubkeyorOnsTrimmed || pubkeyorOnsTrimmed.length !== 66) &&
       !pubkeyorOnsTrimmed.toLowerCase().endsWith('.bdx')

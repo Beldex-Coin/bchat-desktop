@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { getConversationController } from '../../bchat/conversations';
 import { PubKey } from '../../bchat/types';
@@ -7,8 +7,7 @@ import { Flex } from '../basic/Flex';
 import _ from 'lodash';
 import { updateRemoveModeratorsModal } from '../../state/ducks/modalDialog';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatSpinner } from '../basic/BchatSpinner';
+import { BchatButtonColor } from '../basic/BchatButton';
 import { MemberListItem } from '../MemberListItem';
 import { useDispatch } from 'react-redux';
 import { useConversationPropsById } from '../../hooks/useParamSelector';
@@ -27,7 +26,6 @@ async function removeMods(convoId: string, modsToRemove: Array<string>) {
   try {
     let res;
     const convo = getConversationController().get(convoId);
-
     const roomInfos = convo.toOpenGroupV2();
     const modsToRemovePubkey = _.compact(modsToRemove.map(m => PubKey.from(m)));
     res = await Promise.all(
@@ -37,10 +35,8 @@ async function removeMods(convoId: string, modsToRemove: Array<string>) {
     );
     // all moderators are removed means all promise resolved with bool= true
     res = res.every(r => !!r);
-
     if (!res) {
       window?.log?.warn('failed to remove moderators:', res);
-
       ToastUtils.pushFailedToRemoveFromModerator();
       return false;
     } else {
@@ -83,52 +79,51 @@ export const RemoveModeratorsDialog = (props: Props) => {
   const existingMods = convoProps.groupAdmins || [];
   const hasMods = existingMods.length !== 0;
 
-  const title = `${i18n('removeModerators')}: ${convoProps.name}`;
+  const title = `${i18n('removeModerators')}`;
   return (
-    <BchatWrapperModal title={title} onClose={closeDialog}>
-      <Flex container={true} flexDirection="column" alignItems="center">
-        {hasMods ? (
-          <div className="contact-selection-list">
-            {existingMods.map(modId => (
-              <MemberListItem
-                key={modId}
-                pubkey={modId}
-                isSelected={modsToRemove.some(m => m === modId)}
-                onSelect={(selectedMember: string) => {
-                  const updatedList = [...modsToRemove, selectedMember];
-                  setModsToRemove(updatedList);
-                }}
-                onUnselect={(selectedMember: string) => {
-                  const updatedList = modsToRemove.filter(m => m !== selectedMember);
-                  setModsToRemove(updatedList);
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <p>{i18n('noModeratorsToRemove')}</p>
-        )}
-        <BchatSpinner loading={removingInProgress} />
-
-        <div className="bchat-modal__button-group">
-          <BchatButton
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Green}
-            onClick={removeModsCall}
-            disabled={removingInProgress}
-            text={i18n('ok')}
-          />
-          <BchatButton
-            buttonType={BchatButtonType.Brand}
-            buttonColor={BchatButtonColor.Primary}
-            onClick={closeDialog}
-            disabled={removingInProgress}
-            text={i18n('cancel')}
-          />
-        </div>
-
-        <BchatSpinner loading={removingInProgress} />
-      </Flex>
+    <BchatWrapperModal
+      title={title}
+      isloading={removingInProgress}
+      okButton={{
+        text: i18n('remove'),
+        onClickOkHandler: removeModsCall,
+        disabled: removingInProgress || !modsToRemove.length,
+        color: BchatButtonColor.Primary,
+      }}
+      cancelButton={{
+        status: true,
+        text: i18n('cancel'),
+        disabled: removingInProgress,
+        color: BchatButtonColor.Secondary,
+        onClickCancelHandler: closeDialog,
+      }}>
+      <div className='moderator-removeModeratorBox'>
+        <Flex container={true} flexDirection="column" alignItems="center">
+          {hasMods ? (
+            <div className='innerBox'>
+              <div className='memberListBox'>
+                {existingMods.map(modId => (
+                  <MemberListItem
+                    key={modId}
+                    pubkey={modId}
+                    isSelected={modsToRemove.some(m => m === modId)}
+                    onSelect={(selectedMember: string) => {
+                      const updatedList = [...modsToRemove, selectedMember];
+                      setModsToRemove(updatedList);
+                    }}
+                    onUnselect={(selectedMember: string) => {
+                      const updatedList = modsToRemove.filter(m => m !== selectedMember);
+                      setModsToRemove(updatedList);
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>{i18n('noModeratorsToRemove')}</p>
+          )}
+        </Flex>
+      </div>
     </BchatWrapperModal>
   );
 };

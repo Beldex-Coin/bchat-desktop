@@ -22,7 +22,7 @@ export async function showDownloadUpdateDialog(
   const DOWNLOAD_BUTTON = 0;
   const LATER_BUTTON = 1;
   const options = {
-    type: 'info',
+    type: 'info' as const,
     buttons: [messages.autoUpdateDownloadButtonLabel, messages.autoUpdateLaterButtonLabel],
     title: messages.autoUpdateNewVersionTitle,
     message: messages.autoUpdateNewVersionMessage,
@@ -31,7 +31,7 @@ export async function showDownloadUpdateDialog(
     cancelId: DOWNLOAD_BUTTON,
   };
 
-  const ret = await dialog.showMessageBox(mainWindow, options);
+  const ret = await dialog.showMessageBox(mainWindow as any, options as any);
 
   return ret.response === DOWNLOAD_BUTTON;
 }
@@ -43,7 +43,7 @@ export async function showUpdateDialog(
   const RESTART_BUTTON = 0;
   const LATER_BUTTON = 1;
   const options = {
-    type: 'info',
+    type: 'info' as const,
     buttons: [messages.autoUpdateRestartButtonLabel, messages.autoUpdateLaterButtonLabel],
     title: messages.autoUpdateNewVersionTitle,
     message: messages.autoUpdateDownloadedMessage,
@@ -51,7 +51,7 @@ export async function showUpdateDialog(
     defaultId: LATER_BUTTON,
     cancelId: RESTART_BUTTON,
   };
-  const ret = await dialog.showMessageBox(mainWindow, options);
+  const ret = await dialog.showMessageBox(mainWindow as any, options as any);
 
   return ret.response === RESTART_BUTTON;
 }
@@ -63,7 +63,7 @@ export async function showCannotUpdateDialog(mainWindow: BrowserWindow, messages
     title: messages.cannotUpdate,
     message: messages.cannotUpdateDetail,
   };
-  await dialog.showMessageBox(mainWindow, options);
+  await dialog.showMessageBox(mainWindow as any, options as any);
 }
 
 export function getPrintableError(error: Error) {

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+
 import { MessageCollection } from '../models/message';
 
 import * as Data from '../data/data';

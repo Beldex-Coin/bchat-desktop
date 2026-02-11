@@ -1,7 +1,6 @@
 // import { ipcRenderer, shell } from 'electron';
-import React from 'react';
+// import React from 'react';
 import {  useDispatch, useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useUpdate from 'react-use/lib/useUpdate';
 import os from 'os';
 // import { createOrUpdateItem, hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
@@ -14,7 +13,7 @@ import { ToastUtils } from '../../../bchat/utils';
 // import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../../state/ducks/BchatTheme';
 import { applyTheme } from '../../../state/ducks/theme';
 // import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
@@ -37,12 +36,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   // const audioAutoPlay = useSelector(getAudioAutoplay);
-  const darktheme=useSelector((state:any)=>state.theme);
-
-  //  const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    
-  
- 
+  const darktheme=useSelector((state:any)=>state.theme); 
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
@@ -64,11 +58,11 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
       dispatch(applyTheme(updatedTheme));
       
       window.setTheme(updatedTheme);
-      if (updatedTheme === 'dark') {
-        switchHtmlToDarkTheme();
-      } else {
-        switchHtmlToLightTheme();
-      }
+      // if (updatedTheme === 'dark') {
+      //   switchHtmlToDarkTheme();
+      // } else {
+      //   switchHtmlToLightTheme();
+      // }
     }
 
     // async function toggleLinkPreviews() {
@@ -137,15 +131,6 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('linkPreviewsTitle')}
           description={window.i18n('linkPreviewDescription')}
           active={isLinkPreviewsOn}
-        /> */}
-        {/* <BchatToggleWithDescription
-          onClickToggle={async () => {
-           window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
-           forceUpdate();
-          }}
-          title={window.i18n('chatWithWallet')}
-          description={''}
-          active={chatwithWallet}
         /> */}
         {os.platform() !== "darwin" &&
           <BchatToggleWithDescription

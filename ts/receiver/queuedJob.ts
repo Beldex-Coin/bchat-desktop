@@ -7,8 +7,9 @@ import { getConversationController } from '../bchat/conversations';
 import { ConversationModel, ConversationTypeEnum } from '../models/conversation';
 import { MessageModel, sliceQuoteText } from '../models/message';
 import {
-  //  getMessageCountByType, 
-   getMessagesBySentAt } from '../../ts/data/data';
+  //  getMessageCountByType,
+  getMessagesBySentAt,
+} from '../../ts/data/data';
 
 import { SignalService } from '../protobuf';
 import { UserUtils } from '../bchat/utils';
@@ -17,6 +18,10 @@ import { UserUtils } from '../bchat/utils';
 import { LinkPreviews } from '../util/linkPreviews';
 import { GoogleChrome } from '../util';
 import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
+import { handleMessageReaction } from '../util/reactions';
+import { Reaction } from '../types/Reaction';
+
+
 
 function contentTypeSupported(type: string): boolean {
   const Chrome = GoogleChrome;
@@ -28,7 +33,6 @@ function contentTypeSupported(type: string): boolean {
  * You have to call msg.commit() once you are done with the handling of this message
  */
 async function copyFromQuotedMessage(
-  // tslint:disable-next-line: cyclomatic-complexity
   msg: MessageModel,
   quote?: SignalService.DataMessage.IQuote | null
 ): Promise<void> {
@@ -181,6 +185,8 @@ export type RegularMessageType = Pick<
   | 'profileKey'
   | 'expireTimer'
   | 'payment'
+  | 'sharedContact'
+  | 'reaction'
 > & { isRegularMessage: true };
 
 /**
@@ -198,7 +204,9 @@ export function toRegularMessage(rawDataMessage: SignalService.DataMessage): Reg
       'quote',
       'profile',
       'expireTimer',
-      'payment'
+      'payment',
+      'sharedContact',
+      'reaction',
     ]),
     isRegularMessage: true,
   };
@@ -222,6 +230,11 @@ async function handleRegularMessage(
 
   if (rawDataMessage.openGroupInvitation) {
     message.set({ groupInvitation: rawDataMessage.openGroupInvitation });
+  }
+  if(rawDataMessage.sharedContact)
+  {
+    message.set({ sharedContact: rawDataMessage.sharedContact });
+
   }
 
   handleLinkPreviews(rawDataMessage.body, rawDataMessage.preview, message);
@@ -332,111 +345,124 @@ export async function handleMessageJob(
   source: string,
   messageHash: string
 ) {
-
-
   window?.log?.info(
     `Starting handleMessageJob for message ${messageModel.idForLogging()}, ${messageModel.get(
       'serverTimestamp'
     ) || messageModel.get('timestamp')} in conversation ${conversation.idForLogging()}`
   );
+    
 
-  const sendingDeviceConversation = await getConversationController().getOrCreateAndWait(
-    source,
-    ConversationTypeEnum.PRIVATE
-  );
-  try {
-    messageModel.set({ flags: regularDataMessage.flags });
-
-    if (messageModel.isExpirationTimerUpdate()) {
-      const { expireTimer } = regularDataMessage;
-      const oldValue = conversation.get('expireTimer');
-      if (expireTimer === oldValue) {
-        confirm?.();
-        window?.log?.info(
-          'Dropping ExpireTimerUpdate message as we already have the same one set.'
-        );
-        return;
-      }
-      await handleExpirationTimerUpdateNoCommit(conversation, messageModel, source, expireTimer);
-    } else {
-
-      // this does not commit to db nor UI unless we need to approve a convo
-      await handleRegularMessage(
-        conversation,
-        sendingDeviceConversation,
-        messageModel,
-        regularDataMessage,
-        source,
-        messageHash
-      );
-    }
-
-    // save the message model to the db and it save the messageId generated to our in-memory copy
-    const id = await messageModel.commit();
-    messageModel.set({ id });
-
-    // Note that this can save the message again, if jobs were queued. We need to
-    //   call it after we have an id for this message, because the jobs refer back
-    //   to their source message.
-
-    const unreadCount = await conversation.getUnreadCount();
-    conversation.set({ unreadCount });
-    // this is a throttled call and will only run once every 1 sec at most
-    conversation.updateLastMessage();
-    await conversation.commit();
-
-    if (conversation.id !== sendingDeviceConversation.id) {
-      await sendingDeviceConversation.commit();
-    }
-
-    void queueAttachmentDownloads(messageModel, conversation);
-    // Check if we need to update any profile names
-    // the only profile we don't update with what is coming here is ours,
-    // as our profile is shared accross our devices with a ConfigurationMessage
-    if (messageModel.isIncoming() && regularDataMessage.profile) {
-      void appendFetchAvatarAndProfileJob(
-        sendingDeviceConversation,
-        regularDataMessage.profile,
-        regularDataMessage.profileKey
-      );
-    }
-
-    // even with all the warnings, I am very sus about if this is usefull or not
-    // try {
-    //   // We go to the database here because, between the message save above and
-    //   // the previous line's trigger() call, we might have marked all messages
-    //   // unread in the database. This message might already be read!
-    //   const fetched = await getMessageById(messageModel.get('id'));
-
-    //   const previousUnread = messageModel.get('unread');
-
-    //   // Important to update message with latest read state from database
-    //   messageModel.merge(fetched);
-
-    //   if (previousUnread !== messageModel.get('unread')) {
-    //     window?.log?.warn(
-    //       'Caught race condition on new message read state! ' + 'Manually starting timers.'
-    //     );
-    //     // We call markRead() even though the message is already
-    //     // marked read because we need to start expiration
-    //     // timers, etc.
-    //     await messageModel.markRead(Date.now());
-    //   }
-    // } catch (error) {
-    //   window?.log?.warn(
-    //     'handleMessageJob: Message',
-    //     messageModel.idForLogging(),
-    //     'was deleted'
-    //   );
-    // }
-
-    if (messageModel.get('unread')) {
+  if (!messageModel.get('isPublic') && regularDataMessage.reaction) {
+    await handleMessageReaction(regularDataMessage.reaction, source, false, messageHash);
+    if (
+      regularDataMessage.reaction.action === 0 &&
+      conversation.isPrivate() &&
+      messageModel.get('unread')
+    ) {
+      messageModel.set('reaction', regularDataMessage.reaction as Reaction);
       conversation.throttledNotify(messageModel);
     }
-
     confirm?.();
-  } catch (error) {
-    const errorForLog = error && error.stack ? error.stack : error;
-    window?.log?.error('handleMessageJob', messageModel.idForLogging(), 'error:', errorForLog);
+  } else {
+    const sendingDeviceConversation = await getConversationController().getOrCreateAndWait(
+      source,
+      ConversationTypeEnum.PRIVATE
+    );
+
+    try {
+      messageModel.set({ flags: regularDataMessage.flags });
+
+      if (messageModel.isExpirationTimerUpdate()) {
+        const { expireTimer } = regularDataMessage;
+        const oldValue = conversation.get('expireTimer');
+        if (expireTimer === oldValue) {
+          confirm?.();
+          window?.log?.info(
+            'Dropping ExpireTimerUpdate message as we already have the same one set.'
+          );
+          return;
+        }
+        await handleExpirationTimerUpdateNoCommit(conversation, messageModel, source, expireTimer);
+      } else {
+        // this does not commit to db nor UI unless we need to approve a convo
+        await handleRegularMessage(
+          conversation,
+          sendingDeviceConversation,
+          messageModel,
+          regularDataMessage,
+          source,
+          messageHash
+        );
+      }
+
+      // save the message model to the db and it save the messageId generated to our in-memory copy
+      const id = await messageModel.commit();
+      messageModel.set({ id });
+
+      // Note that this can save the message again, if jobs were queued. We need to
+      //   call it after we have an id for this message, because the jobs refer back
+      //   to their source message.
+
+      const unreadCount = await conversation.getUnreadCount();
+      conversation.set({ unreadCount });
+      // this is a throttled call and will only run once every 1 sec at most
+      conversation.updateLastMessage();
+      await conversation.commit();
+
+      if (conversation.id !== sendingDeviceConversation.id) {
+        await sendingDeviceConversation.commit();
+      }
+
+      void queueAttachmentDownloads(messageModel, conversation);
+      // Check if we need to update any profile names
+      // the only profile we don't update with what is coming here is ours,
+      // as our profile is shared accross our devices with a ConfigurationMessage
+      if (messageModel.isIncoming() && regularDataMessage.profile) {
+        void appendFetchAvatarAndProfileJob(
+          sendingDeviceConversation,
+          regularDataMessage.profile,
+          regularDataMessage.profileKey
+        );
+      }
+
+      // even with all the warnings, I am very sus about if this is usefull or not
+      // try {
+      //   // We go to the database here because, between the message save above and
+      //   // the previous line's trigger() call, we might have marked all messages
+      //   // unread in the database. This message might already be read!
+      //   const fetched = await getMessageById(messageModel.get('id'));
+
+      //   const previousUnread = messageModel.get('unread');
+
+      //   // Important to update message with latest read state from database
+      //   messageModel.merge(fetched);
+
+      //   if (previousUnread !== messageModel.get('unread')) {
+      //     window?.log?.warn(
+      //       'Caught race condition on new message read state! ' + 'Manually starting timers.'
+      //     );
+      //     // We call markRead() even though the message is already
+      //     // marked read because we need to start expiration
+      //     // timers, etc.
+      //     await messageModel.markRead(Date.now());
+      //   }
+      // } catch (error) {
+      //   window?.log?.warn(
+      //     'handleMessageJob: Message',
+      //     messageModel.idForLogging(),
+      //     'was deleted'
+      //   );
+      // }
+
+      if (messageModel.get('unread')) {
+        conversation.throttledNotify(messageModel);
+      }
+
+      confirm?.();
+    } catch (error) {
+      const errorForLog = error && error.stack ? error.stack : error;
+      window?.log?.error('handleMessageJob', messageModel.idForLogging(), 'error:', errorForLog);
+    }
+
   }
 }

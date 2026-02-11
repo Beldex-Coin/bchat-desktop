@@ -1,9 +1,7 @@
-// tslint:disable:react-a11y-anchors
 
 import React, { useRef } from 'react';
 
 // useCss has some issues on our setup. so import it directly
-// tslint:disable-next-line: no-submodule-imports
 import useUnmount from 'react-use/lib/useUnmount';
 import { useDispatch } from 'react-redux';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
@@ -212,7 +210,6 @@ const Icon = ({
   />
 );
 
-// tslint:disable-next-line: max-func-body-length
 export const LightboxObject = ({
   objectURL,
   contentType,
@@ -278,7 +275,6 @@ export const LightboxObject = ({
     return <Icon url={iconUrl} onClick={onObjectClick} />;
   }
 
-  // tslint:disable-next-line no-console
 
   return <Icon onClick={onObjectClick} url="images/file.svg" />;
 };

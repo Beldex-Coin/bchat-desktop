@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useMountedState from 'react-use/lib/useMountedState';
 import {
   addVideoEventsListener,
@@ -11,6 +10,7 @@ import {
 } from '../bchat/utils/calling/CallManager';
 import { getSelectedConversationKey } from '../state/selectors/conversations';
 import { getCallIsInFullScreen, getHasOngoingCallWithPubkey } from '../state/selectors/call';
+
 
 export function useVideoCallEventsListener(uniqueId: string, onSame: boolean) {
   const selectedConversationKey = useSelector(getSelectedConversationKey);
@@ -39,7 +39,8 @@ export function useVideoCallEventsListener(uniqueId: string, onSame: boolean) {
   useEffect(() => {
     if (
       (onSame && ongoingCallPubkey === selectedConversationKey) ||
-      (!onSame && ongoingCallPubkey !== selectedConversationKey)
+      (!onSame && ongoingCallPubkey !== selectedConversationKey) ||
+      (!onSame && ongoingCallPubkey === selectedConversationKey)
     ) {
       addVideoEventsListener(uniqueId, (options: CallManagerOptionsType) => {
         const {
@@ -72,7 +73,6 @@ export function useVideoCallEventsListener(uniqueId: string, onSame: boolean) {
       removeVideoEventsListener(uniqueId);
     };
   }, [ongoingCallPubkey, selectedConversationKey, isFullScreen]);
-
   return {
     currentConnectedAudioInputs,
     currentConnectedAudioOutputs,

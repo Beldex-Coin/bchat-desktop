@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Slide, ToastContainer, ToastContainerProps } from 'react-toastify';
 import styled from 'styled-components';
 import { BchatIconButton } from './icon';

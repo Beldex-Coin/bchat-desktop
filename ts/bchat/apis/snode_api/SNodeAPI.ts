@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-restricted-syntax */
 import { snodeRpc } from './bchatRpc';
 
 import {
@@ -368,7 +370,6 @@ export async function getSnodePoolFromSnodes() {
  * This function won't try to rebuild a path if at some point we don't have enough snodes.
  * This is exported for testing purpose only
  */
-// tslint:disable-next-line: function-name
 export async function TEST_getSnodePoolFromSnode(targetNode: Snode): Promise<Array<Snode>> {
   const params = {
     endpoint: 'get_master_nodes',
@@ -569,7 +570,6 @@ export async function retrieveNextMessages(
  * @param snode Snode to send request to
  * @returns timestamp of the response from snode
  */
-// tslint:disable-next-line: variable-name
 export const getNetworkTime = async (snode: Snode): Promise<string | number> => {
   const response: any = await snodeRpc({ method: 'info', params: {}, targetNode: snode });
   const body = JSON.parse(response.body);
@@ -580,7 +580,6 @@ export const getNetworkTime = async (snode: Snode): Promise<string | number> => 
   return timestamp;
 };
 
-// tslint:disable-next-line: max-func-body-length
 export const forceNetworkDeletion = async (): Promise<Array<string> | null> => {
   const sodium = await getSodiumRenderer();
   const userX25519PublicKey = UserUtils.getOurPubKeyStrFromCache();
@@ -742,13 +741,11 @@ export const forceNetworkDeletion = async (): Promise<Array<string> | null> => {
   }
 };
 
-// tslint:disable-next-line: variable-name
 export const TEST_getMinTimeout = () => 500;
 
 /**
  * Locally deletes message and deletes message on the network (all nodes that contain the message)
  */
-// tslint:disable-next-line: max-func-body-length
 export const networkDeleteMessages = async (
   hashes: Array<string>
 ): Promise<Array<string> | null> => {

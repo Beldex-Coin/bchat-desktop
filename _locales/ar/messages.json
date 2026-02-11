@@ -35,7 +35,7 @@
   "socialGroupInvitation": "دعوة المجموعة المفتوحة",
   "joinSocialGroupAfterInvitationConfirmationTitle": "انضَم إلى $roomName$؟",
   "joinSocialGroupAfterInvitationConfirmationDesc": "هل أنت متأكد من أنك تريد الانضمام إلى المجموعة المفتوحة $roomName$؟",
-  "enterBchatIDOrBNSName": "أدخل عنوان التعريف أو اسم BNS",
+  "enterBchatID": "أدخل عنوان التعريف أو اسم BNS",
   "loading": "جاري التحميل",
   "optimizingApplication": "تحسين التطبيق...",
   "done": "تم",
@@ -365,7 +365,7 @@
   "welcomeToYourBchat": "مرحباً بك في BChat",
   "newBchat": "ابدا محادثة جديدة",
   "searchFor...": "اِبحث عن محادثات أو متصلين",
-  "enterBchatID": "أدخِل عنوان التعريف",
+  "enterBchatIDOrBNSName": "أدخِل عنوان التعريف",
   "enterBchatIDOfRecipient": "أدخل عنوان التعريف أو اسم BNS للمتصل",
   "usersCanShareTheir...": "يمكن للمستخدمين مشاركة عنوان تعريفهم بالذهاب إلى الإعدادات ثم و الضغط على \"مشاركة عنوان التعريف\"، او عبر مشاركة كود QR.",
   "message": "رسالة",
@@ -478,7 +478,5 @@
   "paymentID": "Payment ID",
   "allow": "Allow",
   "deny": "Deny",
-  "openLink": "Open Link",
-  "changeWalletPassword":"Change Wallet password",
-  "enterNewWalletPassword":"Enter New Wallet Password"
+  "openLink": "Open Link"
 }

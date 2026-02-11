@@ -1,6 +1,5 @@
-import React, { useLayoutEffect } from 'react';
+import  { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
-// tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
 import {
   PropsForDataExtractionNotification,
@@ -12,6 +11,7 @@ import {
   PropsForGroupInvitation,
   PropsForGroupUpdate,
   PropsForPayment,
+  PropsForSharedContact,
 } from '../../state/ducks/conversations';
 import {
   getOldBottomMessageId,
@@ -21,15 +21,12 @@ import {
 import { GroupUpdateMessage } from './message/message-item/GroupUpdateMessage';
 import { MessageRequestResponse } from './message/message-item/MessageRequestResponse';
 import { MessageDateBreak } from './message/message-item/DateBreak';
-import { GroupInvitation } from './message/message-item/GroupInvitation';
-import { Message } from './message/message-item/Message';
+import {  Message } from './message/message-item/Message';
 import { CallNotification } from './message/message-item/notification-bubble/CallNotification';
 
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
-import { PaymentMessage } from './message/message-item/PaymentMessage';
-import { getWalletPaymentDetailsSend } from '../../state/selectors/walletConfig';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -49,9 +46,6 @@ export const BchatMessagesList = (props: {
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
   const oldTopMessageId = useSelector(getOldTopMessageId);
   const oldBottomMessageId = useSelector(getOldBottomMessageId);
-    
-  const transactionInitiatDetails = useSelector(getWalletPaymentDetailsSend);
-
   useLayoutEffect(() => {
     const newTopMessageId = messagesProps.length
       ? messagesProps[messagesProps.length - 1].message.props.messageId
@@ -90,19 +84,6 @@ export const BchatMessagesList = (props: {
     }
   });
 
-  
-  if(props.pubkey===transactionInitiatDetails?.message?.props?.id)
-  {
-    function checkKey(key:any) {
-      return key?.message?.props?.messageId === transactionInitiatDetails?.message?.props?.messageId;
-    }
-    if(!messagesProps.find(checkKey))
-    {
-      messagesProps.unshift(transactionInitiatDetails)
-    }
-   
-  }
-
   return (
     <>
       {messagesProps.map(messageProps => {
@@ -126,11 +107,15 @@ export const BchatMessagesList = (props: {
 
         if (messageProps.message?.messageType === 'group-invitation') {
           const msgProps = messageProps.message.props as PropsForGroupInvitation;
-          return [<GroupInvitation key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
-        if (messageProps.message?.messageType === 'payment') {
+           if (messageProps.message?.messageType === 'payment') {
           const msgProps = messageProps.message.props as PropsForPayment;
-          return [<PaymentMessage key={messageId} {...msgProps}  />, dateBreak, unreadIndicator];
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
+        }
+        if (messageProps.message?.messageType === 'shared-contact') {
+          const msgProps = messageProps.message.props as PropsForSharedContact;
+          return[<Message  key={messageId} {...msgProps}  />, dateBreak, unreadIndicator]
         }
         if (messageProps.message?.messageType === 'message-request-response') {
           const msgProps = messageProps.message.props as PropsForMessageRequestResponse;

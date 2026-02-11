@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 import { DocumentListItem } from './DocumentListItem';
 import { MediaGridItem } from './MediaGridItem';

@@ -1,3 +1,7 @@
+/* eslint-disable import/no-import-module-exports */
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable no-restricted-syntax */
 /**
  * This file handles attachments for us.
  * If the attachment filepath is an encrypted one. It will decrypt it, cache it, and return the blob url to it.
@@ -94,6 +98,8 @@ export const getDecryptedMediaUrl = async (
           try {
             const encryptedFileContent = await readFileContent(url);
             const decryptedContent = await decryptAttachmentBufferRenderer(
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error -- returning Uint8Array intentionally
               encryptedFileContent.buffer
             );
             if (decryptedContent?.length) {

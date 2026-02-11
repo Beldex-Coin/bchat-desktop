@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import  { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ed25519Str } from '../../bchat/onions/onionPath';
 import { forceNetworkDeletion } from '../../bchat/apis/snode_api/SNodeAPI';
@@ -12,39 +12,35 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
-// import { wallet } from '../../wallet/wallet-rpc';
-// import { kill } from 'cross-port-killer';
-// import { HTTPError } from '../../bchat/utils/errors';
+import { SpacerSM } from '../basic/Text';
+
 
 export const deleteDbLocally = async (deleteType?: string) => {
-  // wallet
-  // .closeWallet()
-  // .then(() => {
-  // kill(64371)
-  //     .then(() => {
-  //       console.log('killed port.....');
-  //     })
-  //     .catch(err => {
-  //       throw new HTTPError('beldex_rpc_port', err);
-  //     });
-  // })
-  // .catch(err => {
-  //   throw new HTTPError('close wallet error', err);
-  // });
   window?.log?.info('last message sent successfully. Deleting everything');
-  window.persistStore?.purge();
+  await window.persistStore?.purge();
+  window?.log?.info('store purged');
+
   await deleteAllLogs();
-  if (deleteType === 'oldVersion') {
+  window?.log?.info('deleteAllLogs: done');
+
+    if (deleteType === 'oldVersion') {
     await Data.removeAllWithOutRecipient();
+    window?.log?.info('Data.removeAllWithOutRecipient: done');
   } else {
     await Data.removeAll();
-  }
+ window?.log?.info('Data.removeAll: done');
+   }
+  // await Data.removeAll();
   await Data.close();
+  window?.log?.info('Data.close: done');
   await Data.removeDB();
+  window?.log?.info('Data.removeDB: done');
+
   await Data.removeOtherData();
+  window?.log?.info('Data.removeOtherData: done');
+
   window.localStorage.setItem('restart-reason', 'delete-account');
 };
-
 export async function sendConfigMessageAndDeleteEverything(deleteType?: string) {
   try {
     // DELETE LOCAL DATA ONLY, NOTHING ON NETWORK
@@ -202,7 +198,8 @@ export const DeleteAccountModal = () => {
       customIcon={<BchatIcon iconType="clearDataIcon" iconSize={26} />}
       isloading={isLoading}
     >
-      <div className="bchat-modal__centered">
+      {/* <div className="bchat-modal__centered"> */}
+      <SpacerSM/>
         <div className='bchat-modal__deleteAccountModal'>
           <div className='fontSemiBold'>
             {window.i18n('deleteAccountWarning')}
@@ -273,7 +270,7 @@ export const DeleteAccountModal = () => {
         </div>
 
         {/* <BchatSpinner loading={isLoading} /> */}
-      </div>
+      {/* </div> */}
     </BchatWrapperModal>
   );
 };

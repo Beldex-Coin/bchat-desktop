@@ -19,7 +19,7 @@ interface SProps extends BchatIconProps {
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';
 }
-
+// eslint-disable-next-line react/display-name
 const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, ref) => {
   const {
     iconType,

@@ -1,5 +1,9 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { fromPairs, map } from 'lodash';
+// Use a permissive `any`-typed Provider reference to avoid JSX typing
+// conflicts with the new TS React JSX transform and react-redux v7.
+import * as ReactRedux from 'react-redux';
+const Provider: any = (ReactRedux as any).Provider;
 import { LeftPane } from './leftpane/LeftPane';
 
 // tslint:disable-next-line: no-submodule-imports
@@ -19,25 +23,27 @@ import { initialSearchState } from '../state/ducks/search';
 import { initialSectionState } from '../state/ducks/section';
 import { getEmptyStagedAttachmentsState } from '../state/ducks/stagedAttachments';
 import { initialThemeState } from '../state/ducks/theme';
-import { initialWalletState } from '../state/ducks/wallet';
 import { TimerOptionsArray } from '../state/ducks/timerOptions';
 import { initialUserConfigState } from '../state/ducks/userConfig';
 import { StateType } from '../state/reducer';
-import { makeLookup } from '../util';
+// import { makeLookup } from '../util';
 import { BchatMainPanel } from './BchatMainPanel';
 import { createStore } from '../state/createStore';
 import { ExpirationTimerOptions } from '../util/expiringMessages';
 
 // moment does not support es-419 correctly (and cause white screen on app start)
 import moment from 'moment';
-import { initialWalletSectionState } from '../state/ducks/walletSection';
-import { initialDaemonState } from '../state/ducks/daemon';
-import { initialWalletInnerSectionState } from '../state/ducks/walletInnerSection';
-import { initialWalletConfigState } from '../state/ducks/walletConfig';
 // import { isLinkedBchatIDWithBnsForDeamon } from './conversation/BnsVerification';
 import { initialisVerifyBnsCalledState } from '../state/ducks/bnsConfig';
-import { ProfileInfo } from './BchatProfileInfo';
+import { AudioPlayerProvider } from './basic/AudioPlayerContext';
+import { initialCallHistoryState } from '../state/ducks/callHistory';
 
+function makeLookup<T>(items: Array<T>, key: string): { [key: string]: T } {
+  // Yep, we can't index into item without knowing what it is. True. But we want to.
+  const pairs = map(items, item => [(item as any)[key] as string, item]);
+
+  return fromPairs(pairs);
+}
 // Default to the locale from env. It will be overriden if moment
 // does not recognize it with what moment knows which is the closest.
 // i.e. es-419 will return 'es'.
@@ -78,17 +84,13 @@ export class BchatInboxView extends React.Component<any, State> {
       <div className="inbox index">
         <Provider store={this.store}>
           <PersistGate loading={null} persistor={persistor}>
-            <div className="gutter">
-              <div className="network-status-container" />
-              {this.renderLeftPane()}
-            </div>
-            <BchatMainPanel />
-            <div className='profile-info'>
-              <div >
-            <ProfileInfo />
+            <AudioPlayerProvider>
+              <div className="gutter">
+                <div className="network-status-container" />
+                {this.renderLeftPane()}
               </div>
-
-            </div>
+              <BchatMainPanel />
+              </AudioPlayerProvider>
           </PersistGate>
         </Provider>
       </div>
@@ -119,20 +121,16 @@ export class BchatInboxView extends React.Component<any, State> {
       defaultRooms: initialDefaultRoomState,
       search: initialSearchState,
       theme: initialThemeState,
-      isVerifyBnsCalled:initialisVerifyBnsCalledState,
-      wallet: initialWalletState,
-      daemon: initialDaemonState,
+      isVerifyBnsCalled: initialisVerifyBnsCalledState,
       onionPaths: initialOnionPathState,
       modals: initialModalState,
       userConfig: initialUserConfigState,
-      walletConfig: initialWalletConfigState,
-      walletFocused: initialWalletSectionState,
-      walletInnerFocused: initialWalletInnerSectionState,
       timerOptions: {
         timerOptions,
       },
       stagedAttachments: getEmptyStagedAttachmentsState(),
       call: initialCallState,
+      callHistory:initialCallHistoryState
     };
 
     this.store = createStore(initialState);

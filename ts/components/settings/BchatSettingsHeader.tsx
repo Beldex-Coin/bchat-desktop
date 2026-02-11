@@ -1,7 +1,5 @@
-import React from 'react';
-import { BchatSettingCategory, SettingsViewProps } from './BchatSettings';
-// import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
-// import { editProfileModal } from '../../state/ducks/modalDialog';
+// import React from 'react';
+import {  SettingsViewProps } from './BchatSettings';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getOurNumber } from '../../state/selectors/user';
 import { BchatIconButton } from '../icon/BchatIconButton';
@@ -16,7 +14,7 @@ type Props = Pick<SettingsViewProps, 'category'> & {
 };
 
 export const SettingsHeader = (props: Props) => {
-  const { categoryTitle,category } = props;
+  const { categoryTitle } = props;
   // const forceUpdate = useUpdate();
 
   const dispatch = useDispatch();
@@ -39,28 +37,10 @@ export const SettingsHeader = (props: Props) => {
   //   }
   // }, [multipleSelectionValue])
 
-  if(category === BchatSettingCategory.Wallet)
-  {
-    return <></>
-  }
+
 
   return (
     <div className="bchat-settings-header">
-      {/* <div style={{ paddingLeft: '15px' }}>
-        <BNSWrapper
-          // size={52}
-          position={{ left: '34px', top: '34px' }}
-          isBnsHolder={converstation?.attributes?.isBnsHolder}
-          size={{width:'20',height:'20'}}
-        >
-          <Avatar
-            size={AvatarSize.M}
-            onAvatarClick={() => dispatch(editProfileModal({}))}
-            pubkey={ourNumber}
-            dataTestId="leftpane-primary-avatar"
-          />
-        </BNSWrapper>
-      </div> */}
       <div className="bchat-settings-header-title">{categoryTitle}</div>
       {window.i18n('blockedSettingsTitle') === categoryTitle && blockedNumbers.length != 0 && (
         <div className="bchat-settings-header-selectionBox">

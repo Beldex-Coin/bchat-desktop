@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { icons, BchatIconSize, BchatIconType } from '.';
 import styled, { css, keyframes } from 'styled-components';
 
@@ -16,6 +16,8 @@ export type BchatIconProps = {
   backgroundColor?: string;
   fillRule?:'iherit'|'evenodd';
   clipRule?:'iherit'|'evenodd';
+  strokeColor?:string;
+  strokeWidth?:string;
 };
 
 const getIconDimensionFromIconSize = (iconSize: BchatIconSize | number) => {
@@ -123,18 +125,17 @@ const animation = (props: {
   return;
 };
 
-//tslint:disable no-unnecessary-callback-wrapper
-const Svg = React.memo(styled.svg<StyledSvgProps>`
+const Svg = styled.svg<StyledSvgProps>`
   width: ${props => props.width};
   transform: ${props => `rotate(${props.iconRotation}deg)`};
   animation: ${props => animation(props)};
-  border-radius: ${props => props.borderRadius};
-  background-color: ${props => (props.backgroundColor ? props.backgroundColor : '')};
-  border-radius: ${props => (props.borderRadius ? props.borderRadius : '')};
-  filter: ${props => (props.noScale ? `drop-shadow(0px 0px 4px ${props.iconColor})` : '')};
-  padding: ${props => (props.iconPadding ? props.iconPadding : '')};
-`);
-//tslint:enable no-unnecessary-callback-wrapper
+  background-color: ${props => props.backgroundColor ?? ""};
+  border-radius: ${props => props.borderRadius ?? ""};
+  filter: ${props => (props.noScale ? `drop-shadow(0px 0px 4px ${props.iconColor})` : "")};
+  padding: ${props => props.iconPadding ?? ""};
+`;
+
+
 
 const BchatSvg = (props: {
   viewBox: string;
@@ -152,13 +153,19 @@ const BchatSvg = (props: {
   iconPadding?: string;
   fillRule?:string ;
   clipRule?:string;
+  strokeColor?:string;
+  strokeWidth?:string;
 }) => {
-  const colorSvg = props.iconColor;
+  const colorSvg =props.strokeColor ?'none': props.iconColor;
   const pathArray = props.path instanceof Array ? props.path : [props.path];
   const rules:any=props.fillRule?{
     fillRule:props.fillRule,
     clipRule:props.clipRule||"inherit"
   }:{}
+  const strokeDetails=props.strokeColor ?{
+    stroke:props.strokeColor,
+    strokeWidth:props.strokeWidth
+  }:{};
   const propsToPick = {
     width: props.width,
     height: props.height,
@@ -178,7 +185,7 @@ const BchatSvg = (props: {
   return (
     <Svg {...propsToPick}>
       {pathArray.map((path, index) => {
-        return <path key={index} fill={colorSvg} d={path} {...rules}/> ;
+        return <path key={index} fill={colorSvg} d={path} {...rules} {...strokeDetails}/> ;
       })}
       
     </Svg>
@@ -197,8 +204,9 @@ export const BchatIcon = (props: BchatIconProps) => {
     backgroundColor,
     iconPadding,
     fillRule,
-    clipRule
-
+    clipRule,
+    strokeColor,
+    strokeWidth
   } = props;
   let { iconSize, iconRotation } = props;
   iconSize = iconSize || 'medium';
@@ -225,6 +233,8 @@ export const BchatIcon = (props: BchatIconProps) => {
       iconPadding={iconPadding}
       fillRule={fillRule}
       clipRule={clipRule}
+      strokeColor={strokeColor}
+      strokeWidth={strokeWidth}
     />
   );
 };

@@ -1,4 +1,3 @@
-// tslint:disable: no-implicit-dependencies no-unused-expression no-http-string  max-func-body-length
 
 import chai, { expect } from 'chai';
 import { describe } from 'mocha';

@@ -6,7 +6,6 @@ import { OpenGroupVisibleMessage } from '../messages/outgoing/visibleMessage/Ope
 import { RawMessage } from '../types';
 import { UserUtils } from '../utils';
 
-// tslint:disable-next-line: no-unnecessary-class
 export class MessageSentHandler {
   public static async handlePublicMessageSentSuccess(
     sentMessage: OpenGroupVisibleMessage,
@@ -39,7 +38,6 @@ export class MessageSentHandler {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public static async handleMessageSentSuccess(
     sentMessage: RawMessage,
     effectiveTimestamp: number,
@@ -48,6 +46,12 @@ export class MessageSentHandler {
     // The wrappedEnvelope will be set only if the message is not one of OpenGroupV2Message type.
     let fetchedMessage = await MessageSentHandler.fetchHandleMessageSentData(sentMessage);
     if (!fetchedMessage) {
+      return;
+    }
+    const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
+    const { dataMessage } = contentDecoded;
+
+    if (dataMessage && dataMessage.reaction) {
       return;
     }
 
@@ -74,9 +78,6 @@ export class MessageSentHandler {
     // and the current message was sent to our device (so a sync message)
     const shouldMarkMessageAsSynced = isOurDevice && fetchedMessage.get('sentSync');
 
-    const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
-    const { dataMessage } = contentDecoded;
-
     /**
      * We should hit the notify endpoint for push notification only if:
      *  • It's a one-to-one chat or a closed group
@@ -94,6 +95,8 @@ export class MessageSentHandler {
         window?.log?.warn('Should send PN notify but no wrapped envelope set.');
       } else {
         // we do not really care about the result, neither of waiting for it
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error -- returning Uint8Array intentionally
         void PnServer.notifyPnServer(wrappedEnvelope, sentMessage.device);
       }
     }
@@ -130,8 +133,8 @@ export class MessageSentHandler {
       expirationStartTimestamp: Date.now(),
       sent_at: effectiveTimestamp,
     });
-
     await fetchedMessage.commit();
+
     fetchedMessage.getConversation()?.updateLastMessage();
   }
 

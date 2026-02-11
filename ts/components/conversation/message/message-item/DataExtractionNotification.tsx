@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { PropsForDataExtractionNotification } from '../../../../models/messageType';
 import { SignalService } from '../../../../protobuf';
 import { Flex } from '../../../basic/Flex';
@@ -10,7 +10,8 @@ export const DataExtractionNotification = (props: PropsForDataExtractionNotifica
   const { name, type, source, messageId, isUnread, receivedAt } = props;
 
   let contentText: string;
-  if (type === SignalService.DataExtractionNotification.Type.MEDIA_SAVED) {
+  const isSavedFile = type === SignalService.DataExtractionNotification.Type.MEDIA_SAVED;
+  if (isSavedFile) {
     contentText = window.i18n('savedTheFile', [name || source]);
   } else {
     contentText = window.i18n('tookAScreenshot', [name || source]);
@@ -31,7 +32,7 @@ export const DataExtractionNotification = (props: PropsForDataExtractionNotifica
         margin={'var(--margins-sm)'}
         id={`msg-${messageId}`}
       >
-        <BchatIcon iconType="upload" iconSize="small" iconRotation={180} />
+        {isSavedFile && <BchatIcon iconType="upload" iconSize="small" iconColor='var(--color-text-subtle)'/>}
         <SpacerSM />
         <Text text={contentText} subtle={true} ellipsisOverflow={true} />
       </Flex>

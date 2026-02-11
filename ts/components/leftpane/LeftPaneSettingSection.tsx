@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { showSettingsSection } from '../../state/ducks/section';
@@ -18,7 +18,6 @@ export interface getCategories {
   id: any;
   title: string;
   icon: BchatIconType;
-  extraId?: string;
 }
 
 const getCategories: Array<getCategories> = [
@@ -26,12 +25,6 @@ const getCategories: Array<getCategories> = [
     id: BchatSettingCategory.Chat,
     title: window.i18n('Chat'),
     icon: 'chat',
-  },
-  {
-    id: BchatSettingCategory.WalletSettings,
-    title: window.i18n('WalletSettingsTitle'),
-    icon: 'wallet',
-    extraId: 'BETA',
   },
   {
     id: BchatSettingCategory.Privacy,
@@ -129,7 +122,6 @@ const LeftPaneSettingsCategoryRow = () =>
             >
               {item.title}
             </span>
-            {item.extraId && <span className="beta">BETA</span>}
           </div>
         ))}
 

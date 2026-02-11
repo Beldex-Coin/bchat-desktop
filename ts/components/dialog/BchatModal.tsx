@@ -9,6 +9,7 @@ interface Props {
   showExitIcon?: boolean;
   showHeader?: boolean;
   headerReverse?: boolean;
+  children: React.ReactNode;
   //Maximum of two icons or buttons in header
   headerIconButtons?: Array<{
     iconType: BchatIconType;
@@ -19,6 +20,7 @@ interface Props {
     buttonType: BchatButtonType;
     buttonColor: BchatButtonColor;
     text: string;
+
     onClick?: any;
   }>;
 }

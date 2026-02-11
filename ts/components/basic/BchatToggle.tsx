@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import classNames from 'classnames';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { useDispatch } from 'react-redux';

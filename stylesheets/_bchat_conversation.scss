@@ -60,57 +60,20 @@
     flex-grow: 1;
     align-items: center;
     justify-content: center;
-    width: 100%;
-
-    // .connectWalletBtn {
-    //   display: flex;
-    //   width: 155px;
-    //   justify-content: space-evenly;
-    //   align-items: center;
-    //   font-size: 10px;
-    //   font-family: $bchat-font-poppin-medium;
-    //   background-color: #128817;
-    //   color: white;
-    //   height: 35px;
-    //   border-radius: 10px;
-    //   margin-right: 14px;
-    //   cursor: pointer;
-    // }
-    // .connectWalletBtn:hover {
-    //   background-color: #00a705;
-    // }
-
-    // .call {
-    //   // margin-top: 10px;
-    //   margin-right: 14px;
-    //   padding-left: 14px;
-    //   display: flex;
-    //   justify-content: center;
-    //   justify-items: center;
-    //   align-items: center;
-    //   width: 35px;
-    //   height: 35px;
-    //   cursor: pointer;
-
-    //   &:hover {
-    //     background-color: var(--color-profile-close);
-    //     border-radius: 20px;
-    //   }
-    // }
+    width: 100%; 
   }
 
   .message-selection-overlay {
-    position: absolute;
+    
     display: flex;
-    left: 0px;
-    right: 0px;
-    top: 66px;
+    height:65px;
     padding: 0px $bchat-margin-md;
+    margin: 0 2px;
     align-items: center;
     justify-content: space-between;
-    height: $main-view-header-height;
     background: var(--color-chat-multi-select-bg);
     z-index: 93;
+
 
     .close-button {
       float: left;
@@ -208,6 +171,9 @@
     background: var(--color-invite-card-icon-bg);
     margin: 15px;
     padding: 10px 15px;
+    .bchat-button.brand.secondary {
+    background: var(--color-read-more-btn-bg);
+    }
     .msg-title {
       font-size: 14px;
       font-style: normal;
@@ -228,24 +194,44 @@
 
 .voiceCall {
   // height: 350px;
-  width: 534px;
+  width: 583px;
   margin: 10px 0;
   max-height: 450px;
 
+  position: absolute;
+  z-index: 100;
+  right: 20px;
+  top: 0px;
+ 
   .local-video {
     position: relative;
     z-index: 1;
   }
 }
+.expandView{
+  width: 96%;
+  height: 89vh;
+  max-height: unset;
 
+}
+.call-bar-expand-view {
+  display: none;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: display 1s ease, opacity 1s ease , width 1s ease;
+}
+
+.call-bar-expand-view.show {
+  display: block; /* Adjust width as needed */
+  width: 121px;
+  opacity: 1;
+}
 .videoCall {
   margin: 10px 0px;
-  position: absolute;
   z-index: 10;
-  /* width: 750px; */
-  display: flex;
-  top: 1%;
-
+  width: 100%;
   .remote-video {
     // background-color: aliceblue;
     height: 500px;
@@ -270,7 +256,7 @@
   align-items: center;
   color: #fff;
   border-radius: 50px;
-  margin: 10px 10px;
+  // margin: 10px 10px;
   cursor: pointer;
 }
 
@@ -287,6 +273,13 @@
   min-width: 370px;
   scrollbar-width: 4px;
   // padding: $bchat-margin-sm $bchat-margin-lg $bchat-margin-lg;
+}
+.leaved-scrt-grp-message-container{
+  border-radius: 16px;
+  background:var(--color-conversation-item-selected);
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 20px;
 }
 
 .composition-container {
@@ -321,9 +314,42 @@
   //   width: 30px;
   // }
   // }
-
+  .attachment-wrapper
+  {
+    &.seleted{
+     .attachment-box{
+      background-color: var(--color-icon-btn-hover);
+     }
+    }
+    position: relative;
+    .selection-box
+    {
+      background-color: var(--color-emoji-panel-bg);
+      border-radius: 20px;
+      box-shadow: var(--color-attachment-box-shadow);
+      position: absolute;
+      bottom: 75px;
+      z-index: 99;
+      width: 207px;
+      height: 162px;
+      padding: 15px;
+      
+      .content-Wrapper{
+        border-radius: 18px;
+        cursor: pointer;
+        span{
+          font-size: 16px;
+          margin-left: 3px;
+        }
+        &:hover{
+          background: var(--color-profile-header-bg);
+        }
+      }
+    }
+  }
+  
   .attachment-box {
-    padding: 17px 8px;
+    padding: 17px 15px;
     // color: #85858f;
     border-radius: 10px;
     margin-bottom: 5px;
@@ -336,6 +362,7 @@
 
     &:hover {
       background-color: var(--color-icon-btn-hover);
+      opacity: 0.9;
       color: var(--color-text);
     }
   }
@@ -367,58 +394,17 @@
     background-color: var(--color-composeMsgInput);
     margin: 5px 7px;
     border-radius: 10px;
-    padding: 0 20px;
+    padding: 0 20px 0 15px;
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
-    .wallet-sync-box,
-    .amount-tap-box {
-      border-radius: 16px;
-      border: 2px solid #108d32;
-      background-color: var(--color-wallet-Sync-box-bg);
-      width: 254px;
-      height: 66px;
-      flex-shrink: 0;
-      position: absolute;
-      right: 0px;
-      top: -74px;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      z-index: 2;
-
-      .sync-txt {
-        // color: #f0f0f0;
-        font-family: $bchat-font-open-sans;
-        font-size: 18px;
-        font-weight: 600;
-        margin-right: 21px;
-      }
-
-      .inner-perc-txt {
-        // color: #f0f0f0;
-        text-align: center;
-        font-size: 12px;
-        font-weight: 700;
-      }
-    }
-
-    .amount-tap-box {
-      display: block;
-      min-width: 224px;
-      width: unset;
-      cursor: pointer;
-      .sync-txt {
-        margin-right: unset;
-      }
-    }
 
     .coin-logo-wrapper {
       cursor: pointer;
       padding: 7px;
       border-radius: 26px;
       border: 2px solid #888a8d;
+      margin-left: 15px;
     }
 
     // svg:hover {
@@ -448,92 +434,102 @@
     }
 
     &__emoji-overlay {
-      // Should have identical properties to the textarea above to line up perfectly.
-      position: absolute;
-      font-size: 14px;
-      font-family: $bchat-font-default;
-      margin-left: 2px;
-      line-height: $bchat-font-h2;
-      letter-spacing: 0.5px;
-      color: rgba(0, 0, 0, 0);
-    }
-
-    .circular-bar-wrapper:hover + .wallet-sync-box {
-      display: flex;
-    }
-  }
-}
-
-.bchat-emoji-panel {
-  position: absolute;
-  bottom: 68px;
-  right: 0px;
-  padding: $bchat-margin-lg;
-
-  z-index: 5;
-  opacity: 0;
-  visibility: hidden;
-  transition: $bchat-transition-duration;
-
-  button:focus {
-    outline: none;
-  }
-
-  &.show {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  & > section.emoji-mart {
-    font-family: $bchat-font-default;
-    font-size: $bchat-font-sm;
-    background-color: var(--color-cell-background);
-    border: 1px solid var(--color-bchat-border);
-    border-radius: 8px;
-    padding-bottom: $bchat-margin-sm;
-
-    .emoji-mart-category-label {
-      top: -2px;
-
-      span {
-        font-family: $bchat-font-default;
-        padding-top: $bchat-margin-sm;
-        background-color: var(--color-cell-background);
+      margin-right:10px;
+      .bchat-icon-button:hover{
+        background-color: var(--color-emoji-icon-hover-bg);
       }
     }
 
-    .emoji-mart-scroll {
-      height: 340px;
-    }
-
-    .emoji-mart-category .emoji-mart-emoji span {
-      cursor: pointer;
-    }
-
-    .emoji-mart-bar:last-child {
-      border: none;
-
-      .emoji-mart-preview {
-        display: none;
-      }
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: calc(100% - 40px);
-      left: calc(100% - 79px);
-      width: 22px;
-      height: 22px;
-      background-color: var(--color-cell-background);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      transform: scaleY(1.4) rotate(45deg);
-      border: 0.7px solid var(--color-bchat-border);
-      clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
-    }
   }
 }
+
+
+// .bchat-emoji-panel {
+  // position: absolute;
+  // bottom: 75px;
+  // left: 62px;
+
+  // // padding: $bchat-margin-lg;
+  // z-index: 5;
+  // opacity: 0;
+  // visibility: hidden;
+  // transition: $bchat-transition-duration;
+
+  // button:focus {
+  //   outline: none;
+  // }
+
+  // &.show {
+  //   opacity: 1;
+  //   visibility: visible;
+  // }
+
+//   & > section.emoji-mart {
+//     font-family: $bchat-font-default;
+//     font-size: $bchat-font-sm;
+//     // background-color: var(--color-cell-background);
+//     background: var(--color-emoji-panel-bg);
+//     border:var(--color-bchat-border);
+//     border-radius: 8px;
+//     padding-bottom: $bchat-margin-sm;
+//     width: 346px !important;
+
+//     .emoji-mart-category-label {
+//       top: -2px;
+
+//       span {
+//         font-family: $bchat-font-default;
+//         padding-top: $bchat-margin-sm;
+//         font-size: 16px;
+//         background: var(--color-emoji-panel-bg);
+//         font-weight: 400;
+//         // background-color: var(--color-cell-background);
+//       }
+//     }
+//     .emoji-mart-search input {
+//       border-radius: 12px;
+//       border: 1px solid var(--color-search-border);;
+//       background: var(--color-emoji-panel-bg);
+//       height: 40px;
+//     }
+//     .emoji-mart-search-icon {
+//       top: 11px;
+//       right: 20px;
+    
+//   }
+
+//     .emoji-mart-scroll {
+//       height: 340px;
+//     }
+
+//     .emoji-mart-category .emoji-mart-emoji span {
+//       cursor: pointer;
+//     }
+
+//     .emoji-mart-bar:last-child {
+//       border: none;
+
+//       .emoji-mart-preview {
+//         display: none;
+//       }
+//     }
+
+//     // &:after {
+//     //   content: '';
+//     //   position: absolute;
+//     //   top: calc(100% - 40px);
+//     //   left: calc(100% - 79px);
+//     //   width: 22px;
+//     //   height: 22px;
+//     //   background-color: var(--color-cell-background);
+//     //   transform: rotate(45deg);
+//     //   border-radius: 3px;
+//     //   transform: scaleY(1.4) rotate(45deg);
+//     //   border: 0.7px solid var(--color-bchat-border);
+//     //   clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
+//     // }
+  // }
+// }
 
 .bchat-progress {
   position: relative;
@@ -595,7 +591,18 @@
       }
     }
   }
-
+    &.delete-button
+    {
+      background: #FF3E3E !important;
+      &:hover {
+        background-color: #FF3E3E !important;
+      }
+      .bchat-icon-button:hover {
+        background-color: #FF3E3E !important;
+        color: white;
+        // color: var(--color-text);
+      }
+    }
   .sendBox {
     background-image: url(../images/bchat/send.svg);
     width: 25px;
@@ -615,26 +622,23 @@
 }
 
 .bchat-recording {
-  height: $composition-container-height;
+  // height: $composition-container-height;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-grow: 1;
   outline: none;
 
   $actions-element-size: 30px;
 
   &-box {
-    padding: 10px;
     display: flex;
-    width: 100%;
+    // width: 100%;
     border-radius: 10px;
     margin: 5px 7px;
-    // background: #202329;
     background-color: var(--color-composeMsgInput);
-    margin-left: 12px;
-    height: 60px;
-    // border-radius: 13px;
+    // margin-left: 12px;
+    height: 51px;
     justify-content: space-between;
     align-items: center;
   }
@@ -779,6 +783,7 @@ $rhap_font-family: inherit !default;
   padding: 0px;
   background-color: transparent;
   box-shadow: none;
+  display: none;
 
   svg {
     transition: fill $bchat-transition-duration;
@@ -889,3 +894,61 @@ $rhap_font-family: inherit !default;
 /* **************** */
 /* END AUDIO PLAYER */
 /* **************** */
+.waveform-container {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  width: 300px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+}
+
+.waveform-bar {
+  width: 2px;
+  margin-right: 2px;
+  background-color: #ACACAC; /* Default waveColor */
+  border-radius: 1px;
+  flex-shrink: 0;
+  transition: background-color 0.1s;
+}
+
+.waveform-bar.incoming.dark {
+  background-color: #16191F;
+}
+
+.waveform-bar.outgoing {
+  background-color: #1C581C;
+}
+
+.waveform-bar.highlighted {
+  background-color: #2F8FFF; /* Default progressColor */
+}
+
+.waveform-bar.highlighted.outgoing {
+  background-color: #C0FFC9;
+}
+
+.waveform-cursor {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #2F8FFF;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: left 0.05s linear;
+  margin-top: -5px;
+}
+
+.waveform-cursor.dragging {
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+}
+
+.waveform-cursor:not(.dragging) {
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+}
+

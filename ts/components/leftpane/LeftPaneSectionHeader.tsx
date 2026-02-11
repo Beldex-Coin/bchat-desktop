@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
@@ -9,7 +9,7 @@ import { getFocusedSection, getOverlayMode } from '../../state/selectors/section
 import {
   SectionType,
   setOverlayMode,
-  showLeftPaneSection,
+  // showLeftPaneSection,
   // showSettingsSection,
 } from '../../state/ducks/section';
 import {
@@ -20,18 +20,17 @@ import {
 import { BchatIcon, BchatIconButton } from '../icon';
 import { isSignWithRecoveryPhrase } from '../../util/storage';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { getOurNumber } from '../../state/selectors/user';
 import { editProfileModal } from '../../state/ducks/modalDialog';
 // import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 
-import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
+// import { switchHtmlToDarkTheme, switchHtmlToLightTheme } from '../../state/ducks/BchatTheme';
 import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 // import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
-import { clearSearch } from '../../state/ducks/search';
-import { getConversationController } from '../../bchat/conversations';
+// import { clearSearch } from '../../state/ducks/search';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -40,8 +39,8 @@ import { isLinkedBchatIDWithBnsForDeamon } from '../conversation/BnsVerification
 import { updateIsOnline, 
   // updateOnionPaths 
 } from '../../state/ducks/onion';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 // import { OnionPaths } from '../../bchat/onions';
-// import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
@@ -65,7 +64,7 @@ export const LeftPaneSectionHeader = () => {
   const isMessageRequestOverlay = overlayMode === 'message-requests';
   const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
-  const conversation = getConversationController().get(getOurPubKeyStrFromCache());
+  const isBnsHolder = useConversationBnsHolder(getOurPubKeyStrFromCache());
   useEffect(() => {
     if (isOnline && !IsVerifyBnsCalled) {
       isLinkedBchatIDWithBnsForDeamon();
@@ -86,9 +85,6 @@ export const LeftPaneSectionHeader = () => {
       break;
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
-      break;
-    case SectionType.Wallet:
-      label = window.i18n('wallet');
       break;
     case SectionType.Message:
       label = isMessageRequestOverlay
@@ -111,34 +107,25 @@ export const LeftPaneSectionHeader = () => {
     window.setTheme(updatedTheme);
     dispatch(applyTheme(updatedTheme));
 
-    if (updatedTheme === 'dark') {
-      switchHtmlToDarkTheme();
-    } else {
-      switchHtmlToLightTheme();
-    }
+    // if (updatedTheme === 'dark') {
+    //   switchHtmlToDarkTheme();
+    // } else {
+    //   switchHtmlToLightTheme();
+    // }
   }
 
-  // function switchToWalletSec() {
-  //   dispatch(showLeftPaneSection(3));
-  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-  // }
 
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
       return (
-        <BNSWrapper
-          // size={52}
-          position={{ left: '36px', top: '35px' }}
-          isBnsHolder={conversation?.attributes?.isBnsHolder}
-          size={{width:'20',height:'20'}}
-        >
           <Avatar
             size={AvatarSize.M}
             onAvatarClick={() => dispatch(editProfileModal({}))}
             pubkey={bChatId}
             dataTestId="leftpane-primary-avatar"
+          isBnsHolder={isBnsHolder}
+
           />
-        </BNSWrapper>
       );
     } else {
       return (
@@ -185,22 +172,6 @@ export const LeftPaneSectionHeader = () => {
     );
   }
 
-  function Settings() {
-    return (
-      <span style={{ marginRight: '15px' }}>
-        <BchatIconButton
-          iconSize="large"
-          iconType="walletSetting"
-          iconColor="#2879fb"
-          onClick={() => {
-            dispatch(clearSearch());
-            dispatch(showLeftPaneSection(3));
-            dispatch(setOverlayMode(undefined));
-          }}
-        />
-      </span>
-    );
-  }
   return (
     <>
       <Flex flexDirection="column">
@@ -235,12 +206,8 @@ export const LeftPaneSectionHeader = () => {
             {label} 
             {/* <IsOnline /> */}
           </div>
-          {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
-          <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
-        </div> */}
-
           <Moon />
-          <Settings />
+          {/* <Settings /> */}
 
           {/* {isMessageSection && !isMessageRequestOverlay && (
           <div

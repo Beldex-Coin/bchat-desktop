@@ -179,8 +179,12 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       this.setState({
         errorCount: this.state.errorCount + 1,
       });
-
+   
       this.setState({ error });
+       setTimeout(()=>{
+        this.setState({ error:'' });
+       },1000)
+
       global.setTimeout(() => {
         document.getElementById('password-prompt-input')?.focus();
       }, 50);
@@ -347,4 +351,4 @@ const LockImg = () => (
     />
   </svg>
 );
-export const BchatPasswordPrompt = withTheme(BchatPasswordPromptInner);
+export const BchatPasswordPrompt = ((withTheme as any)(BchatPasswordPromptInner) as any);

@@ -81,6 +81,7 @@ export const ReadableMessage = (props: ReadableMessageProps) => {
   // if this unread-indicator is rendered,
   // we want to scroll here only if the conversation was not opened to a specific message
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (
       props.messageId === youngestMessageId &&
@@ -97,8 +98,7 @@ export const ReadableMessage = (props: ReadableMessageProps) => {
   });
 
   const onVisible = useCallback(
-    // tslint:disable-next-line: cyclomatic-complexity
-    async (inView: boolean | Object) => {
+    async (inView: boolean | object) => {
       // we are the most recent message
       if (mostRecentMessageId === messageId && selectedConversationKey) {
         // make sure the app is focused, because we mark message as read here
@@ -176,7 +176,6 @@ export const ReadableMessage = (props: ReadableMessageProps) => {
   );
 
   return (
-    // tslint:disable-next-line: use-simple-attributes
     <InView
       id={`msg-${messageId}`}
       onContextMenu={onContextMenu}

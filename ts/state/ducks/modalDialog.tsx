@@ -17,12 +17,12 @@ export type UpdateGroupMembersModalState = InviteContactModalState;
 export type UpdateGroupNameModalState = InviteContactModalState;
 export type ChangeNickNameModalState = InviteContactModalState;
 export type AdminLeaveClosedGroupModalState = InviteContactModalState;
-export type EditProfileModalState = {} | null;
-export type BnsLinkModalState={} | null;
+export type EditProfileModalState = object | null;
+export type BnsLinkModalState = object | null;
 export type OnionPathModalState = EditProfileModalState;
 export type RecoveryPhraseModalState = EditProfileModalState;
 export type DeleteAccountModalState = EditProfileModalState;
-export type MessageMoreInfoState=MessagePropsDetails | null;
+export type MessageMoreInfoState = MessagePropsDetails | null;
 
 export type BchatPasswordModalState = { passwordAction: PasswordAction; onOk: () => void } | null;
 
@@ -32,27 +32,23 @@ export type UserDetailsModalState = {
   userName: string;
 } | null;
 
-export type ChangePasswordModalState={} | null;
-export type walletSettingMiniModalState={
-  headerName:string,
-  content:any,
-  onClose:any,
-  onClick:any,
-  currency:string,
-  needSearch?:boolean
+export type ChangePasswordModalState = object | null;
+export type SettingMiniModalState = {
+  headerName: string;
+  content: string[];
+  onClose: () => void;
+  onClick: (selected: string) => void;
+  selectedItem: string;
 } | null;
 
-export type TransactionInitModalState={} | null;
-export type InsufficientBalanceModalState={} |  null;
-export type WalletSendConfirmState=any | null;
-export type BchatUpdateInstruntionState=any | null;
-export type BchatWalletPasswordModalState={from?:string} |null;
-export type BchatWalletForgotPasswordModalState={}|null;
-export type BchatAlertConfirmModalState=any |null;
-export type AboutBnsModalState={} | null;
-export type CommunityGuidelinesModalState={} | null;
+export type BchatUpdateInstruntionState = any | null;
+export type AboutBnsModalState = object | null;
+export type CommunityGuidelinesModalState = object | null;
 
-
+export type ReactModalsState = {
+  reaction: string;
+  messageId: string;
+} | null;
 
 export type ModalState = {
   confirmModal: ConfirmModalState;
@@ -65,24 +61,20 @@ export type ModalState = {
   userDetailsModal: UserDetailsModalState;
   nickNameModal: ChangeNickNameModalState;
   editProfileModal: EditProfileModalState;
-  bnsLinkModal:BnsLinkModalState;
+  bnsLinkModal: BnsLinkModalState;
   onionPathModal: OnionPathModalState;
   recoveryPhraseModal: RecoveryPhraseModalState;
   adminLeaveClosedGroup: AdminLeaveClosedGroupModalState;
   bchatPasswordModal: BchatPasswordModalState;
   deleteAccountModal: DeleteAccountModalState;
-  ChangePasswordModal:ChangePasswordModalState;
-  walletSettingMiniModal:walletSettingMiniModalState;
-  transactionInitModal:TransactionInitModalState;
-  insufficientBalanceModal:InsufficientBalanceModalState;
-  walletSendConfirm:WalletSendConfirmState;
-  BchatUpdateInstruntion:BchatUpdateInstruntionState;
-  BchatWalletPasswordModal:BchatWalletPasswordModalState;
-  BchatWalletForgotPasswordModal:BchatWalletForgotPasswordModalState;
-  BchatAlertConfirmModal:BchatAlertConfirmModalState;
-  aboutBnsModal:AboutBnsModalState;
-  messageMoreInfo:MessageMoreInfoState;
-  communityGuidelinesModal:CommunityGuidelinesModalState;
+  ChangePasswordModal: ChangePasswordModalState;
+  SettingMiniModal: SettingMiniModalState;
+  BchatUpdateInstruntion: BchatUpdateInstruntionState;
+  aboutBnsModal: AboutBnsModalState;
+  messageMoreInfo: MessageMoreInfoState;
+  communityGuidelinesModal: CommunityGuidelinesModalState;
+  reactListModalState: ReactModalsState;
+  reactClearAllModalState: ReactModalsState;
 };
 
 export const initialModalState: ModalState = {
@@ -96,24 +88,20 @@ export const initialModalState: ModalState = {
   userDetailsModal: null,
   nickNameModal: null,
   editProfileModal: null,
-  bnsLinkModal:null,
+  bnsLinkModal: null,
   onionPathModal: null,
   recoveryPhraseModal: null,
   adminLeaveClosedGroup: null,
   bchatPasswordModal: null,
   deleteAccountModal: null,
-  ChangePasswordModal:null,
-  walletSettingMiniModal:null,
-  transactionInitModal:null,
-  insufficientBalanceModal:null,
-  walletSendConfirm:null,
-  BchatUpdateInstruntion:null,
-  BchatWalletPasswordModal:null,
-  BchatWalletForgotPasswordModal:null,
-  BchatAlertConfirmModal:null,
-  aboutBnsModal:null,
-  messageMoreInfo:null,
-  communityGuidelinesModal:null
+  ChangePasswordModal: null,
+  SettingMiniModal: null,
+  BchatUpdateInstruntion: null,
+  aboutBnsModal: null,
+  messageMoreInfo: null,
+  communityGuidelinesModal: null,
+  reactListModalState: null,
+  reactClearAllModalState: null,
 };
 
 const ModalSlice = createSlice({
@@ -168,54 +156,30 @@ const ModalSlice = createSlice({
     updateDeleteAccountModal(state, action: PayloadAction<DeleteAccountModalState>) {
       return { ...state, deleteAccountModal: action.payload };
     },
-    ChangePasswordModal(state,action:PayloadAction<ChangePasswordModalState>)
-    {
+    ChangePasswordModal(state, action: PayloadAction<ChangePasswordModalState>) {
       return { ...state, ChangePasswordModal: action.payload };
     },
-    walletSettingMiniModal(state,action:PayloadAction<walletSettingMiniModalState>)
-    {
-      return { ...state, walletSettingMiniModal: action.payload };
+    SettingMiniModal(state, action: PayloadAction<SettingMiniModalState>) {
+      return { ...state, SettingMiniModal: action.payload };
     },
-    updateTransactionInitModal(state,action:PayloadAction<TransactionInitModalState>)
-    {
-      return { ...state, transactionInitModal: action.payload };
+    updateBchatUpgradeInstructionModal(state, action: PayloadAction<BchatUpdateInstruntionState>) {
+      return { ...state, BchatUpdateInstruntion: action.payload };
     },
-    updateInsufficientBalanceModal(state,action:PayloadAction<InsufficientBalanceModalState>)
-    {
-      return { ...state, insufficientBalanceModal: action.payload };
+    updateAboutBnsModal(state, action: PayloadAction<AboutBnsModalState>) {
+      return { ...state, aboutBnsModal: action.payload };
     },
-    updateSendConfirmModal(state,action:PayloadAction<WalletSendConfirmState>)
-    {
-      return { ...state, walletSendConfirm: action.payload };
+    updateMessageMoreInfoModal(state, action: PayloadAction<MessageMoreInfoState>) {
+      return { ...state, messageMoreInfo: action.payload };
     },
-    updateBchatUpgradeInstructionModal(state,action:PayloadAction<BchatUpdateInstruntionState>)
-    {
-      return { ...state, BchatUpdateInstruntion: action.payload};
+    updateCommunityGuidelinesModal(state, action: PayloadAction<CommunityGuidelinesModalState>) {
+      return { ...state, communityGuidelinesModal: action.payload };
     },
-    updateBchatWalletPasswordModal(state,action:PayloadAction<BchatWalletPasswordModalState>)
-    {
-      return { ...state, BchatWalletPasswordModal: action.payload};
+    updateReactListModal(state, action: PayloadAction<ReactModalsState>) {
+      return { ...state, reactListModalState: action.payload };
     },
-    updateBchatWalletForgotPasswordModal(state,action:PayloadAction<BchatWalletForgotPasswordModalState>)
-    {
-      return { ...state, BchatWalletForgotPasswordModal: action.payload};
+    updateReactClearAllModal(state, action: PayloadAction<ReactModalsState>) {
+      return { ...state, reactClearAllModalState: action.payload };
     },
-    updateBchatAlertConfirmModal(state,action:PayloadAction<BchatAlertConfirmModalState>)
-    {
-      return { ...state, BchatAlertConfirmModal: action.payload};
-    },
-    updateAboutBnsModal(state,action:PayloadAction<AboutBnsModalState>)
-    {
-      return { ...state, aboutBnsModal: action.payload};
-    },
-    updateMessageMoreInfoModal(state,action:PayloadAction<MessageMoreInfoState>)
-    {
-      return { ...state, messageMoreInfo: action.payload};
-    },
-    updateCommunityGuidelinesModal(state,action:PayloadAction<CommunityGuidelinesModalState>)
-    {
-      return { ...state, communityGuidelinesModal: action.payload};
-    }
   },
 });
 
@@ -238,16 +202,12 @@ export const {
   updateDeleteAccountModal,
   updateBanOrUnbanUserModal,
   ChangePasswordModal,
-  walletSettingMiniModal,
-  updateTransactionInitModal,
-  updateInsufficientBalanceModal,
-  updateSendConfirmModal,
+  SettingMiniModal, 
   updateBchatUpgradeInstructionModal,
-  updateBchatWalletPasswordModal,
-  updateBchatWalletForgotPasswordModal,
-  updateBchatAlertConfirmModal,
   updateAboutBnsModal,
   updateMessageMoreInfoModal,
-  updateCommunityGuidelinesModal
+  updateCommunityGuidelinesModal,
+  updateReactListModal,
+  updateReactClearAllModal,
 } = actions;
 export const modalReducer = reducer;

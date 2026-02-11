@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { PubKey } from '../../bchat/types';
 import { UserUtils } from '../../bchat/utils';
 import { getConversationController } from '../../bchat/conversations';
-import React from 'react';
+// import React from 'react';
 
 interface MentionProps {
   key: string;

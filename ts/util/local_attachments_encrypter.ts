@@ -1,6 +1,6 @@
 import { isArrayBuffer } from 'lodash';
 import { fromHexToArray } from '../bchat/utils/String';
-import { callUtilsWorker } from '../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../webworker/workers/browser/util_worker_interface';
 import { getItemById } from '../data/channelsItem';
 
 export const encryptAttachmentBufferRenderer = async (bufferIn: ArrayBuffer) => {

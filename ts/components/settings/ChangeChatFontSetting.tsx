@@ -1,5 +1,5 @@
 // import Slider from 'rc-slider';
-import React, { useState } from 'react';
+import { useState } from 'react';
 // tslint:disable-next-line: no-submodule-imports
 
 import useUpdate from 'react-use/lib/useUpdate';
@@ -11,7 +11,7 @@ import { BchatSettingsItemWrapper } from './BchatSettingListItem';
 
 // import Select from 'react-select'
 import { useDispatch } from 'react-redux';
-import { walletSettingMiniModal } from '../../state/ducks/modalDialog';
+import { SettingMiniModal } from '../../state/ducks/modalDialog';
 import { BchatIcon } from '../icon';
 
 const option = ["Small", 'Medium', 'large']
@@ -29,17 +29,17 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
         window.setSettingValue('font-size-setting', valueToForward);
         setValue(valueToForward)
         // window.updateZoomFactor();
-        dispatch(walletSettingMiniModal(null))
+        dispatch(SettingMiniModal(null))
         forceUpdate();
 
     };
     function displayPopUp() {
         dispatch(
-            walletSettingMiniModal({
+            SettingMiniModal({
                 headerName: window.i18n('chatFontSize'),
                 content: option,
-                currency: value,
-                onClose: () => dispatch(walletSettingMiniModal(null)),
+                selectedItem: value,
+                onClose: () => dispatch(SettingMiniModal(null)),
                 onClick: (e: any) => {
                     handleSlider(e)
                 },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 // tslint:disable no-submodule-imports
 
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -108,7 +108,7 @@ export const BnsLinkDialog = () => {
             <SpacerSM />
             <div className="inputBox-wrapper" style={{border:verifyError?' 1px solid #FF3E3E':''}}>
               <input
-                style={{ color:verifyError?'#FF3E3E':'#0BB70F' }}
+                style={{ color:isVerify?'#0BB70F':verifyError?'#FF3E3E':'' }}
                 type="text"
                 className="inputBox"
                 disabled={isVerify}
@@ -133,7 +133,7 @@ export const BnsLinkDialog = () => {
                    
                   }}
                   text={i18n('verify')}
-                  disabled={!regexForBnsName.test(bnsName)}
+                  disabled={!regexForBnsName.test(bnsName.toLowerCase())}
                   buttonType={BchatButtonType.Brand}
                   buttonColor={BchatButtonColor.Primary}
                   onClick={() => verifyBns()}

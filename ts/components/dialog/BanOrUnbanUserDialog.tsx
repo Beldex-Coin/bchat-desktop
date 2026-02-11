@@ -4,16 +4,17 @@ import { ToastUtils } from '../../bchat/utils';
 import { Flex } from '../basic/Flex';
 import { useDispatch } from 'react-redux';
 import { BanType, updateBanOrUnbanUserModal } from '../../state/ducks/modalDialog';
-import { SpacerSM } from '../basic/Text';
+import { SpacerLG } from '../basic/Text';
 import { getConversationController } from '../../bchat/conversations/ConversationController';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { BchatSpinner } from '../basic/BchatSpinner';
+
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { ConversationModel } from '../../models/conversation';
 import { useFocusMount } from '../../hooks/useFocusMount';
 import { useConversationPropsById } from '../../hooks/useParamSelector';
-// tslint:disable: use-simple-attributes
+import { BchatIcon } from '../icon/BchatIcon';
+
 
 async function banOrUnBanUserCall(
   convo: ConversationModel,
@@ -25,7 +26,7 @@ async function banOrUnBanUserCall(
   const pubkey = PubKey.from(textValue);
   if (!pubkey) {
     window.log.info(`invalid pubkey for ${banType} user:${textValue}`);
-    ToastUtils.pushInvalidPubKey();
+    ToastUtils.pushInvalidBchatId();
     return false;
   }
   try {
@@ -38,11 +39,12 @@ async function banOrUnBanUserCall(
 
     if (!isChangeApplied) {
       window?.log?.warn(`failed to ${banType} user: ${isChangeApplied}`);
-
+  // eslint-disable-next-line no-unused-expressions
       banType === 'ban' ? ToastUtils.pushUserBanFailure() : ToastUtils.pushUserUnbanSuccess();
       return false;
     }
     window?.log?.info(`${pubkey.key} user ${banType}ned successfully...`);
+    // eslint-disable-next-line no-unused-expressions
     banType === 'ban' ? ToastUtils.pushUserBanSuccess() : ToastUtils.pushUserUnbanSuccess();
     return true;
   } catch (e) {
@@ -68,7 +70,7 @@ export const BanOrUnBanUserDialog = (props: {
   const wasGivenAPubkey = Boolean(pubkey?.length);
   const [inputBoxValue, setInputBoxValue] = useState('');
   const [inProgress, setInProgress] = useState(false);
-
+  const [banUser, setBanUser] = useState(true);
   const sourceConvoProps = useConversationPropsById(pubkey);
 
   const inputTextToDisplay =
@@ -89,16 +91,16 @@ export const BanOrUnBanUserDialog = (props: {
     if (isBanned) {
       // clear input box
       setInputBoxValue('');
-      if (wasGivenAPubkey) {
-        dispatch(updateBanOrUnbanUserModal(null));
-      }
+      // if (wasGivenAPubkey) {
+      dispatch(updateBanOrUnbanUserModal(null));
+      // }
     }
 
     setInProgress(false);
   };
 
   const chatName = convo.get('name');
-  const title = `${isBan ? window.i18n('banUser') : window.i18n('unbanUser')}: ${chatName}`;
+  const title = `${isBan ? window.i18n('banUser') : window.i18n('unbanUser')}`;
 
   const onPubkeyBoxChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputBoxValue(e.target.value?.trim() || '');
@@ -115,45 +117,93 @@ export const BanOrUnBanUserDialog = (props: {
 
   return (
     <BchatWrapperModal
-      showExitIcon={true}
-      title={title}
-      onClose={() => {
-        dispatch(updateBanOrUnbanUserModal(null));
+      showHeader={false}
+      isloading={inProgress}
+      okButton={{
+        text: window.i18n('ok'),
+        color: BchatButtonColor.Primary,
+        onClickOkHandler: banUser ? banOrUnBanUser : startBanAndDeleteAllSequence,
+      }}
+      cancelButton={{
+        status: true,
+        text: window.i18n('cancel'),
+        onClickCancelHandler: () => {
+          dispatch(updateBanOrUnbanUserModal(null));
+        },
       }}
     >
       <Flex container={true} flexDirection="column" alignItems="center">
-        <input
-          ref={inputRef}
-          type="text"
-          className="module-main-header__search__input"
-          placeholder={i18n('enterBchatID')}
-          dir="auto"
-          onChange={onPubkeyBoxChanges}
-          disabled={inProgress || wasGivenAPubkey}
-          value={wasGivenAPubkey ? inputTextToDisplay : inputBoxValue}
-        />
-        <Flex container={true}>
-          <BchatButton
-            buttonType={BchatButtonType.Square}
-            buttonColor={BchatButtonColor.Primary}
-            onClick={banOrUnBanUser}
-            text={buttonText}
-            disabled={inProgress}
-          />
-          {isBan && (
-            <>
-              <SpacerSM />
-              <BchatButton
-                buttonType={BchatButtonType.Square}
-                buttonColor={BchatButtonColor.Danger}
-                onClick={startBanAndDeleteAllSequence}
-                text={i18n('banUserAndDeleteAll')}
-                disabled={inProgress}
-              />
-            </>
-          )}
+        <Flex container={true} flexDirection="row" width="500px" style={{ marginTop: '30px' }}>
+          <div className="banUnbanPopup">
+            <BchatIcon
+              iconType={isBan ? 'banUser' : 'unBanUser'}
+              iconSize={30}
+              iconColor={isBan ? '#FF3E3E' : 'var(--color-icon)'}
+              fillRule="evenodd"
+              clipRule="evenodd"
+            />
+          </div>
+
+          <div style={{ textAlign: 'left' }}>
+            <div className="banUser-title">{title}</div>
+            <div className="banUser-message">{chatName}</div>
+          </div>
         </Flex>
-        <BchatSpinner loading={inProgress} />
+        <div className="banUser-box" style={{ width: '100%', padding: '20px 5px' }}>
+          <div className="inputBox">
+            <input
+              style={{ backgroundColor: 'var(--color-hop-bg)' }}
+              ref={inputRef}
+              type="text"
+              placeholder={i18n('enterBchatID')}
+              dir="auto"
+              onChange={onPubkeyBoxChanges}
+              disabled={inProgress || wasGivenAPubkey}
+              value={wasGivenAPubkey ? inputTextToDisplay : inputBoxValue}
+            />
+          </div>
+          {isBan && <SpacerLG />}
+          <Flex container={true} justifyContent="space-between">
+            {isBan && (
+              <>
+                <BchatButton
+                  buttonType={BchatButtonType.Default}
+                  buttonColor={banUser ? BchatButtonColor.Danger : BchatButtonColor.Enable}
+                  onClick={() => {
+                    setBanUser(true);
+                  }}
+                  text={buttonText}
+                  disabled={inProgress}
+                  style={{
+                    width: '230px',
+                    height: '60px',
+                    borderRadius: '16px',
+                    fontSize: '20px',
+                  }}
+                  iconType={banUser ? 'dot' : null}
+                  iconSize={10}
+                />
+                <BchatButton
+                  buttonType={BchatButtonType.Default}
+                  buttonColor={!banUser ? BchatButtonColor.Danger : BchatButtonColor.Enable}
+                  onClick={() => {
+                    setBanUser(false);
+                  }}
+                  text={i18n('banUserAndDeleteAll')}
+                  disabled={inProgress}
+                  style={{
+                    width: '230px',
+                    height: '60px',
+                    borderRadius: '16px',
+                    fontSize: '20px',
+                  }}
+                  iconType={!banUser ? 'dot' : null}
+                  iconSize={10}
+                />
+              </>
+            )}
+          </Flex>
+        </div>
       </Flex>
     </BchatWrapperModal>
   );

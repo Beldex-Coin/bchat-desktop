@@ -479,7 +479,5 @@
   "paymentID": "Payment ID",
   "allow": "Allow",
   "deny": "Deny",
-  "openLink": "Open Link",
-  "changeWalletPassword":"Change Wallet password",
-  "enterNewWalletPassword":"Enter New Wallet Password"
+  "openLink": "Open Link"
 }

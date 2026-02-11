@@ -16,7 +16,6 @@ function getLocaleMessages(locale: string): LocaleMessagesType {
   // const onDiskLocale = locale.replace('-', '_');
 
   const targetFile = path.join(getAppRootPath(), '_locales', 'en', 'messages.json');
-  // tslint:disable-next-line: non-literal-fs-path
   return JSON.parse(fs.readFileSync(targetFile, 'utf-8'));
 }
 export type LocaleMessagesType = Record<string, string>;

@@ -1,4 +1,4 @@
-// tslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
+// eslint:disable: no-implicit-dependencies max-func-body-length no-unused-expression
 
 import { expect } from 'chai';
 import { BlockedNumberController } from '../../util/blockedNumberController';
@@ -7,7 +7,7 @@ import { PubKey } from '../../bchat/types';
 import { UserUtils } from '../../bchat/utils';
 import Sinon from 'sinon';
 
-// tslint:disable-next-line: max-func-body-length
+// eslint:disable-next-line: max-func-body-length
 describe('BlockedNumberController', () => {
   let memoryDB: { [key: string]: any };
   beforeEach(() => {

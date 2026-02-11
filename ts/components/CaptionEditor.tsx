@@ -1,4 +1,4 @@
-// tslint:disable:react-a11y-anchors
+
 
 import React from 'react';
 import * as GoogleChrome from '../util/GoogleChrome';

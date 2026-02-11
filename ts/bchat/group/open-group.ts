@@ -47,17 +47,21 @@ export async function initiateOpenGroupUpdate(
       url = new URL(uploadedFileDetails.fileUrl);
 
       const pathname = url.pathname;
-      const downloaded = await downloadDataFromOpenGroupV2(pathname, roomInfos);
+      const downloaded: any = await downloadDataFromOpenGroupV2(pathname, roomInfos);
       if (!(downloaded instanceof Uint8Array)) {
         const typeFound = typeof downloaded;
         throw new Error(`Expected a plain Uint8Array but got ${typeFound}`);
       }
 
       const upgraded = await processNewAttachment({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error -- returning Uint8Array intentionally
         data: downloaded.buffer,
         isRaw: true,
         contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.
       });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error -- returning Uint8Array intentionally
       const newHash = sha256(fromArrayBufferToBase64(downloaded.buffer));
       await convo.setBchatProfile({
         displayName: groupName || convo.get('name') || 'Unknown',

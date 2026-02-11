@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 // import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatToolTip } from '../leftpane/ActionsPanel';

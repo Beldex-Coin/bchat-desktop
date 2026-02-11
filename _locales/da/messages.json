@@ -365,7 +365,7 @@
   "welcomeToYourBchat": "Velkommen til BChat",
   "newBchat": "Ny BChat",
   "searchFor...": "Søg efter samtaler eller kontakter",
-  "enterBchatID": "Enter a BChat ID or BNS Name",
+  "enterBchatID": "Enter a BChat ID",
   "enterBchatIDOfRecipient": "Enter BChat ID or BNS name of recipient",
   "usersCanShareTheir...": "Users can share their BChat ID by going into their account settings and tapping \"Share BChat ID\", or by sharing their QR code.",
   "message": "Message",
@@ -478,6 +478,5 @@
   "paymentID": "Payment ID",
   "allow": "Allow",
   "deny": "Deny",
-  "changeWalletPassword":"Change Wallet password",
-  "enterNewWalletPassword":"Enter New Wallet Password"
+  
 }

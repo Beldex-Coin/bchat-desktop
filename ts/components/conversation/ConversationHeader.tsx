@@ -1,6 +1,6 @@
-import React from 'react';
+import  { useEffect, useState } from 'react';
 
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
@@ -19,9 +19,8 @@ import {
   getSelectedConversationKey,
   getSelectedMessageIds,
   isMessageDetailView,
-  isMessageSelectionMode,
-  isRightPanelShowing,
-  // isRightPanelShowing,
+    isRightPanelShowing,
+    isShareContact,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,7 +30,7 @@ import {
 } from '../../interactions/conversations/unsendingInteractions';
 import {
   closeMessageDetailsView,
-  // closeRightPanel,
+  closeShareContact,
   openRightPanel,
   resetSelectedMessageIds,
 } from '../../state/ducks/conversations';
@@ -51,13 +50,8 @@ import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
 import { TypingBubble } from './TypingBubble';
 import { getConversationController } from '../../bchat/conversations';
-import { getWalletSyncBarShowInChat } from '../../state/selectors/walletConfig';
-import { SettingsKey } from '../../data/settings-key';
-import { updateBchatWalletPasswordModal } from '../../state/ducks/modalDialog';
 import { getTheme } from '../../state/selectors/theme';
-// import { CustomIconButton } from '../icon/CustomIconButton';
-// import CallIcon from '../icon/CallIcon';
-// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
+import { getMessageById } from '../../data/data';
 
 export interface TimerOption {
   name: string;
@@ -95,12 +89,39 @@ export type ConversationHeaderProps = {
   left: boolean;
 };
 
-const SelectionOverlay = () => {
+export const SelectionOverlay = () => {
   const selectedMessageIds = useSelector(getSelectedMessageIds);
   const selectedConversationKey = useSelector(getSelectedConversationKey);
   const isPublic = useSelector(getSelectedConversationIsPublic);
+  // const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
+  // const convoName = useConversationUsername(selectedConversationKey);
+
+  const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
+
+  useEffect(() => {
+    const isDeleteEveryone = async () => {
+      // Retrieve selected messages
+      const selectedMessages = await Promise.all(
+        selectedMessageIds.map(id => getMessageById(id, false))
+      );
+      // Remove null or undefined messages
+      const compactedMessages = selectedMessages.filter(Boolean);
+
+      // Check if there are any incoming messages in selected messages for private conversations
+      const containsIncomingMessages =
+        !isPublic && compactedMessages.some(msg => !msg?.isOutgoing());
+
+      // Return the negation of containsIncomingMessages
+      return !containsIncomingMessages;
+    };
+
+    // Call isDeleteEveryone and update state
+    isDeleteEveryone().then(result => {
+      setCanDeleteEveryone(result);
+    });
+  }, [selectedMessageIds, isPublic]);
 
   const { i18n } = window;
 
@@ -120,12 +141,12 @@ const SelectionOverlay = () => {
   }
 
   const isOnlyServerDeletable = isPublic;
-  const deleteMessageButtonText = i18n('delete');
-  const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone');
+  const deleteMessageButtonText = i18n('deleteJustForMe');
+  const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone')
 
   return (
     <div className="message-selection-overlay">
-      <Flex container={true} alignItems='center'>
+      <Flex container={true} alignItems="center">
         <div className="close-button">
           <BchatIconButton iconType="xWithCircle" iconSize={24} onClick={onCloseOverlay} />
         </div>
@@ -146,19 +167,21 @@ const SelectionOverlay = () => {
             style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
           />
         )}
-        <BchatButton
-          buttonType={BchatButtonType.Medium}
-          buttonColor={BchatButtonColor.Red}
-          text={deleteForEveryoneMessageButtonText}
-          onClick={onDeleteSelectedMessagesForEveryone}
-          style={{ borderRadius: '40px' }}
-        />
+        {canDeleteEveryone && (
+          <BchatButton
+            buttonType={BchatButtonType.Medium}
+            buttonColor={BchatButtonColor.Red}
+            text={deleteForEveryoneMessageButtonText}
+            onClick={onDeleteSelectedMessagesForEveryone}
+            style={{ borderRadius: '40px' }}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-const TripleDotsMenu = (props: { triggerId: string; showBackButton: boolean }) => {
+const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) => {
   const { showBackButton } = props;
   const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
@@ -214,12 +237,6 @@ const AvatarHeader = (props: {
   const { pubkey, onAvatarClick, showBackButton, conversation } = props;
   return (
     <span className="module-conversation-header__avatar">
-      <BNSWrapper
-        // size={40}
-        position={{ left: '46px', top: '46px' }}
-        isBnsHolder={conversation?.isBnsHolder }
-        size={{ width: '20', height: '20' }}
-      >
         <Avatar
           size={AvatarSize.L}
           onAvatarClick={() => {
@@ -230,8 +247,8 @@ const AvatarHeader = (props: {
           }}
           pubkey={pubkey}
           dataTestId="conversation-options-avatar"
+          isBnsHolder={conversation?.isBnsHolder}
         />
-      </BNSWrapper>
     </span>
   );
 };
@@ -269,15 +286,15 @@ const CallButton = () => {
 
   return (
     <div style={{ marginRight: '15px' }}>
-      {/* <CustomIconButton
+      <BchatIconButton
+        iconType={'call'}
+        iconSize={24}
+        fillRule="evenodd"
+        clipRule="evenodd"
         onClick={() => {
           void callRecipient(selectedConvoKey, canCall);
         }}
-        customIcon={<CallIcon iconSize={24} />}
-      /> */}
-      <BchatIconButton iconType={'call'} iconSize={24} fillRule='evenodd' clipRule='evenodd' onClick={() => {
-        void callRecipient(selectedConvoKey, canCall);
-      }} />
+      />
     </div>
   );
 };
@@ -310,17 +327,17 @@ const ConversationHeaderTitle = () => {
   const headerTitleProps = useSelector(getConversationHeaderTitleProps);
   // const isRightPanelOn = useSelector(isRightPanelShowing);
   const convoName = useConversationUsername(headerTitleProps?.conversationKey);
-
   const convoProps = useConversationPropsById(headerTitleProps?.conversationKey);
   const conversationKey: any = useSelector(getSelectedConversationKey);
   const conversation: any = useSelector(getSelectedConversation);
-  // const dispatch = useDispatch();
+  const isShared = useSelector(isShareContact);  
   let displayedName = null;
   if (conversation?.type === ConversationTypeEnum.PRIVATE) {
     displayedName = getConversationController().getContactProfileNameOrShortenedPubKey(
       conversationKey
     );
   }
+  
   const activeAt = convoProps?.activeAt;
   if (!headerTitleProps) {
     return <></>;
@@ -354,22 +371,21 @@ const ConversationHeaderTitle = () => {
   if (conversation?.isMe) {
     return <div className="module-conversation-header__title">Note to Self</div>;
   }
-
+ 
   return (
-    <div className="module-conversation-header__title">
+    <div className="module-conversation-header__title" >
       <span
         className="module-contact-name__profile-name"
         data-testid="header-conversation-name"
-      // onClick={() => {
-      //   if (isRightPanelOn) {
-      //     dispatch(closeRightPanel());
-      //   } else {
-      //     dispatch(openRightPanel());
-      //   }
-      // }}
-      // role="button"
+        onClick={() => {
+            if(isShared){
+              window.inboxStore?.dispatch(closeShareContact());
+              } 
+            window.inboxStore?.dispatch(openRightPanel());
+        }}
+        role="button"
       >
-        {convoName}
+        <span className='receipient_name'>{convoName}</span>
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -406,22 +422,12 @@ export const ConversationHeaderSubtitle = (props: { text?: string | null }): JSX
 };
 
 export const ConversationHeaderWithDetails = () => {
-  const isSelectionMode = useSelector(isMessageSelectionMode);
+  
   const isMessageDetailOpened = useSelector(isMessageDetailView);
   const selectedConvoKey: any = useSelector(getSelectedConversationKey);
 
   const conversation = useSelector(getSelectedConversation);
-  const WalletSyncBarShowInChat = useSelector(getWalletSyncBarShowInChat);
-  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-
   const dispatch = useDispatch();
-  const displayConnectWalletBtn =
-    chatwithWallet &&
-    !WalletSyncBarShowInChat &&
-    conversation?.type == 'private' &&
-    conversation?.isApproved &&
-    conversation?.didApproveMe &&
-    !conversation?.isMe;
 
   if (!selectedConvoKey) {
     return null;
@@ -435,14 +441,7 @@ export const ConversationHeaderWithDetails = () => {
 
   const triggerId = 'conversation-header';
   const isMe = useSelector(getIsSelectedNoteToSelf);
-
-  // function displayWalletPassword() {
-
-  //   // if (chatwithWallet && !WalletSyncBarShowInChat) {
-  //   dispatch(updateBchatWalletPasswordModal({}));
-  //     // return;
-  //   // }
-  // }
+  const isShared = useSelector(isShareContact);  
 
   return (
     <div className="module-conversation-header">
@@ -458,38 +457,16 @@ export const ConversationHeaderWithDetails = () => {
           <Flex container={true} flexDirection="row" alignItems="center">
             <AvatarHeader
               onAvatarClick={() => {
-                dispatch(openRightPanel());
+                  if(isShared){
+                    window.inboxStore?.dispatch(closeShareContact());
+                  }  
+                window.inboxStore?.dispatch(openRightPanel());
               }}
               pubkey={selectedConvoKey}
               conversation={conversation}
               showBackButton={isMessageDetailOpened}
             />
             <ConversationHeaderTitle />
-
-            {displayConnectWalletBtn && (
-              // <div
-              //   className="connectWalletBtn"
-              //   onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // >
-              //   <BchatIcon iconType="wallet" iconSize={'tiny'} iconColor="white" />
-              //   <div>{window.i18n('connectWallet')}</div>
-              <BchatButton
-                text={window.i18n('connectWallet')}
-                buttonType={BchatButtonType.Medium}
-                buttonColor={BchatButtonColor.Primary}
-                iconType="wallet"
-                iconSize={'small'}
-                style={{
-                  minWidth: '172px',
-                  height: '40px',
-                  borderRadius: '5px',
-                  marginRight: '14px',
-                }}
-                onClick={() => dispatch(updateBchatWalletPasswordModal({}))}
-              // disabled={!caption}
-              />
-              // </div>
-            )}
             {!isKickedFromGroup && (
               <ExpirationLength expirationSettingName={expirationSettingName} />
             )}
@@ -502,12 +479,12 @@ export const ConversationHeaderWithDetails = () => {
         </div>
         <div className="module-conversation-header__title-container">
           <div className="module-conversation-header__title-flex">
-            <TripleDotsMenu triggerId={triggerId} showBackButton={isMessageDetailOpened} />
+            <TripleDotsMenu triggerId={triggerId} showBackButton={(conversation?.type == 'private' ? !conversation?.didApproveMe:false )|| isMessageDetailOpened} />
           </div>
         </div>
       </div>
 
-      {isSelectionMode && <SelectionOverlay />}
+      {/* {isSelectionMode && <SelectionOverlay />} */}
     </div>
   );
 };

@@ -34,14 +34,14 @@ import {
   updateMentionsMembers,
 } from '../../state/ducks/conversations';
 import { updateCommunityGuidelinesModal, updateConfirmModal } from '../../state/ducks/modalDialog';
-import { BchatTheme } from '../../state/ducks/BchatTheme';
+import { BchatTheme } from '../../theme/BchatTheme';
 import { addStagedAttachmentsInConversation } from '../../state/ducks/stagedAttachments';
 import { MIME } from '../../types';
 import { AttachmentTypeWithPath } from '../../types/Attachment';
 import { arrayBufferToObjectURL, AttachmentUtil, GoogleChrome } from '../../util';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { AddNewContactInEmptyConvo, MessageView } from '../MainViewController';
-import { ConversationHeaderWithDetails } from './ConversationHeader';
+import { ConversationHeaderWithDetails, SelectionOverlay } from './ConversationHeader';
 // import { MessageDetail } from './message/message-item/MessageDetail';
 import {
   makeImageThumbnailBuffer,
@@ -55,19 +55,13 @@ import { ConversationRequestinfo } from './ConversationRequestInfo';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import loadImage from 'blueimp-load-image';
 // import { BchatRightPanelWithDetails } from './BchatRightPanel';
-// import { SyncStatusBar } from '../wallet/BchatWalletSyncSatusBar';
-// import { SettingsKey } from '../../data/settings-key';
-// import ConditionalSyncBar from './BchatConditionalSyncStatusBar';
 import { SectionType } from '../../state/ducks/section';
 import { BchatScrollButton } from '../BchatScrollButton';
 import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon';
 import styled from 'styled-components';
-// import { PaymentMessage } from './message/message-item/PaymentMessage';
-// import { useConversationBeldexAddress } from '../../hooks/useParamSelector';
-// import { getWalletSyncInitiatedWithChat } from '../../state/selectors/walletConfig';
-// import { useSelector } from 'react-redux';
-// tslint:disable: jsx-curly-spacing
+import { ReactListModal } from '../dialog/ReactListModal';
+import { ProfileInfo } from '../BchatProfileInfo';
 
 interface State {
   isDraggingFile: boolean;
@@ -94,6 +88,8 @@ interface Props {
   stagedAttachments: Array<StagedAttachmentType>;
   convoList: any;
   focusedSection: any;
+  reactListModalstate: any;
+  theme: 'light' | 'dark';
 }
 
 export class BchatConversation extends React.Component<Props, State> {
@@ -101,6 +97,7 @@ export class BchatConversation extends React.Component<Props, State> {
   private dragCounter: number;
   private publicMembersRefreshTimeout?: NodeJS.Timeout;
   private readonly updateMemberList: () => any;
+  private scrollTimeout: number | null = null;  
 
   constructor(props: any) {
     super(props);
@@ -250,10 +247,9 @@ export class BchatConversation extends React.Component<Props, State> {
       // isMe,
       convoList,
       focusedSection,
+      reactListModalstate,
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
-
-    // const chatWithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
     if (
       convoList?.conversations?.length == 0 &&
       (!selectedConversation || !messagesProps) &&
@@ -266,19 +262,18 @@ export class BchatConversation extends React.Component<Props, State> {
       // return an empty message view
       return <MessageView />;
     }
-    // const belAddress = useConversationBeldexAddress(selectedConversation.id);
-    // const syncbarCondition =
-    //   chatWithWallet &&
-    //   selectedConversation?.isPrivate &&
-    //   !isMe &&
-    //   selectedConversation?.didApproveMe &&
-    //   selectedConversation?.isApproved;
-
     return (
-      <BchatTheme>
+      <BchatTheme mode={this.props.theme}>
+        {reactListModalstate && <ReactListModal {...reactListModalstate} />}
+
         <div className="conversation-header">
           <ConversationHeaderWithDetails />
         </div>
+        {selectionMode && (
+          <div className="conversation-header">
+            <SelectionOverlay />
+          </div>
+        )}
         <div
           // if you change the classname, also update it on onKeyDown
           className={classNames('conversation-content', selectionMode && 'selection-mode')}
@@ -321,9 +316,10 @@ export class BchatConversation extends React.Component<Props, State> {
           <div className="conversation-messages">
             {/* <ConversationMessageRequestButtons /> */}
             {this.props.hasOngoingCallWithFocusedConvo && (
-              <Flex container={true} justifyContent="center" alignItems="center" height="465px">
-                {/* <div style={{ height: '320px', width: '534px', margin: '10px 0' }}> */}{' '}
-                <InConversationCallContainer /> {/* </div> */}
+              <Flex container={true} justifyContent="center" alignItems="center">
+                {/* <div className='In-convo-call-container-wrapper'>  */}
+                <InConversationCallContainer />
+                {/* </div>  */}
               </Flex>
             )}
 
@@ -356,6 +352,7 @@ export class BchatConversation extends React.Component<Props, State> {
           <CompositionBox
             sendMessage={this.sendMessageFn}
             stagedAttachments={this.props.stagedAttachments}
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onChoseAttachments={this.onChoseAttachments}
           />
         </div>
@@ -364,29 +361,49 @@ export class BchatConversation extends React.Component<Props, State> {
         >
           <BchatRightPanelWithDetails />
         </div> */}
+        <div className="profile-info">
+            <ProfileInfo  sendMessage={this.sendMessageFn}/>
+        </div>
       </BchatTheme>
     );
   }
 
-  private async scrollToNow() {
-    if (!this.props.selectedConversationKey) {
-      return;
-    }
-    const mostNowMessage = await getLastMessageInConversation(this.props.selectedConversationKey);
-
-    if (mostNowMessage) {
-      await openConversationToSpecificMessage({
-        conversationKey: this.props.selectedConversationKey,
-        messageIdToNavigateTo: mostNowMessage.id,
-        shouldHighlightMessage: false,
-      });
-      const messageContainer = this.messageContainerRef.current;
-      if (!messageContainer) {
-        return;
-      }
-      messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
-    }
+ private async scrollToNow() {
+  if (!this.props.selectedConversationKey) {
+    return;
   }
+
+  const mostNowMessage = await getLastMessageInConversation(
+    this.props.selectedConversationKey
+  );
+
+  if (!mostNowMessage) {
+    return;
+  }
+
+  await openConversationToSpecificMessage({
+    conversationKey: this.props.selectedConversationKey,
+    messageIdToNavigateTo: mostNowMessage.id,
+    shouldHighlightMessage: false,
+  });
+
+  const messageContainer = this.messageContainerRef.current;
+  if (!messageContainer) {
+    return;
+  }
+
+  if (this.scrollTimeout) {
+    clearTimeout(this.scrollTimeout);
+  }
+
+  // ✅ Wait for layout + paint (production safe)
+  this.scrollTimeout = window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      messageContainer.scrollTop =
+        messageContainer.scrollHeight - messageContainer.clientHeight;
+    });
+  });
+}
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ~~~~~~~~~~~ KEYBOARD NAVIGATION ~~~~~~~~~~~~
@@ -419,13 +436,11 @@ export class BchatConversation extends React.Component<Props, State> {
       return;
     }
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < attachmentsFileList.length; i++) {
       await this.maybeAddAttachment(attachmentsFileList[i]);
     }
   }
 
-  // tslint:disable: max-func-body-length cyclomatic-complexity
   private async maybeAddAttachment(file: any) {
     if (!file) {
       return;

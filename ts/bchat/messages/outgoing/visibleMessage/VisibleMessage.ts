@@ -2,7 +2,9 @@ import ByteBuffer from 'bytebuffer';
 import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
 import { LokiProfile } from '../../../../types/Message';
+import { Reaction } from '../../../../types/Reaction';
 import { MessageParams } from '../Message';
+
 
 interface AttachmentPointerCommon {
   contentType?: string;
@@ -58,6 +60,18 @@ export interface Quote {
   text?: string;
   attachments?: Array<QuotedAttachmentWithUrl>;
 }
+export interface SharedContact {
+  address:string;
+  name:string;
+}
+export interface OpenGroupInvitation {
+  url:string;
+  name:string;
+}
+export interface Payment{
+  amount: string,
+  txnId: string,
+}
 
 export interface VisibleMessageParams extends MessageParams {
   attachments?: Array<AttachmentPointerWithUrl>;
@@ -67,6 +81,11 @@ export interface VisibleMessageParams extends MessageParams {
   lokiProfile?: LokiProfile;
   preview?: Array<PreviewWithAttachmentUrl>;
   syncTarget?: string; // undefined means it is not a synced message
+  //emoji reaction
+  reaction?: Reaction;
+  sharedContact?:SharedContact; 
+  openGroupInvitation?:OpenGroupInvitation;
+  payment?:Payment
 }
 
 export class VisibleMessage extends DataMessage {
@@ -79,10 +98,15 @@ export class VisibleMessage extends DataMessage {
   private readonly displayName?: string;
   private readonly avatarPointer?: string;
   private readonly preview?: Array<PreviewWithAttachmentUrl>;
+//emoji reaction
+  private readonly reaction?: Reaction;
 
   /// In the case of a sync message, the public key of the person the message was targeted at.
   /// - Note: `null or undefined` if this isn't a sync message.
   private readonly syncTarget?: string;
+  private readonly sharedContact?:SharedContact;
+  private readonly openGroupInvitation?:OpenGroupInvitation;
+  private readonly payment?:Payment;
 
   constructor(params: VisibleMessageParams) {
     super({ timestamp: params.timestamp, identifier: params.identifier });
@@ -107,6 +131,12 @@ export class VisibleMessage extends DataMessage {
     this.avatarPointer = params.lokiProfile && params.lokiProfile.avatarPointer;
     this.preview = params.preview;
     this.syncTarget = params.syncTarget;
+
+    this.reaction = params.reaction;
+    this.sharedContact=params.sharedContact;
+    this.openGroupInvitation=params.openGroupInvitation;
+    this.payment=params.payment;
+    
   }
 
   public dataProto(): SignalService.DataMessage {
@@ -183,7 +213,30 @@ export class VisibleMessage extends DataMessage {
         return item;
       });
     }
+    if (this.reaction) {
+      dataMessage.reaction = this.reaction;
+    }
+    if(this.openGroupInvitation)
+    {
+      dataMessage.openGroupInvitation=new SignalService.DataMessage.OpenGroupInvitation();
+      dataMessage.openGroupInvitation.name=this.openGroupInvitation.name;
+      dataMessage.openGroupInvitation.url=this.openGroupInvitation.url;
 
+    }
+    if(this.payment)
+    {
+      dataMessage.payment=new SignalService.DataMessage.Payment();
+      dataMessage.payment.amount=this.payment.amount
+      dataMessage.payment.txnId=this.payment.txnId
+    }
+    if(this.sharedContact)
+    {
+
+      dataMessage.sharedContact= new SignalService.DataMessage.SharedContact();
+      dataMessage.sharedContact.address=this.sharedContact.address;
+      dataMessage.sharedContact.name=this.sharedContact.name;
+
+    }
     dataMessage.timestamp = this.timestamp;
 
     return dataMessage;

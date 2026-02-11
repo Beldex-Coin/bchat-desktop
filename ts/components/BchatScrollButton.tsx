@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getShowScrollButton } from '../state/selectors/conversations';
@@ -7,7 +7,7 @@ import { BchatIcon } from './icon';
 
 const BchatScrollButtonDiv = styled.div`
   position: absolute;
-  z-index: 2;
+  z-index: 99;
   right: 26px;
   animation: fadein var(--default-duration);
   bottom: 88px;

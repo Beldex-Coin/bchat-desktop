@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import  { useState } from 'react';
 // import { BchatRadioGroup } from '../basic/BchatRadioGroup';
 import { BchatToggleWithDescription } from './BchatSettingListItem';
 import { Constants } from '../../bchat';
@@ -10,7 +11,6 @@ import styled from 'styled-components';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Notifications } from '../../util/notifications';
-// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 // import { BchatToggle } from '../basic/BchatToggle';
 
 const StyledButtonContainer = styled.div`

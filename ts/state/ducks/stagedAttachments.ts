@@ -60,7 +60,6 @@ const stagedAttachmentsSlice = createSlice({
           URL.revokeObjectURL(attachment.videoUrl);
         }
       });
-      // tslint:disable-next-line: no-dynamic-delete
       delete state.stagedAttachments[conversationKey];
       return state;
     },

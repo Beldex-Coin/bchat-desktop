@@ -1,6 +1,6 @@
 import { sign } from 'curve25519-js';
 import { BchatKeyPair } from '../../../../receiver/keypairs';
-import { callUtilsWorker } from '../../../../webworker/workers/util_worker_interface';
+import { callUtilsWorker } from '../../../../webworker/workers/browser/util_worker_interface';
 import { fromBase64ToArray } from '../../../utils/String';
 
 export class OpenGroupMessageV2 {

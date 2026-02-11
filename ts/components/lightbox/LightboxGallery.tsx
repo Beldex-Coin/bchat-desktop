@@ -1,7 +1,5 @@
-/**
- * @prettier
- */
-import React, { useCallback, useEffect, useState } from 'react';
+
+import { useCallback, useEffect, useState } from 'react';
 
 import { Lightbox } from './Lightbox';
 
@@ -40,6 +38,7 @@ export const LightboxGallery = (props: Props) => {
   // just run once, when the component is mounted. It's to show the lightbox on the specified index at start.
   useEffect(() => {
     setCurrentIndex(props.selectedIndex);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedMedia = media[currentIndex];
@@ -96,7 +95,6 @@ export const LightboxGallery = (props: Props) => {
 
   const caption = attachment?.caption;
   return (
-    // tslint:disable: use-simple-attributes
     <Lightbox
       onPrevious={hasPrevious ? onPrevious : undefined}
       onNext={hasNext ? onNext : undefined}

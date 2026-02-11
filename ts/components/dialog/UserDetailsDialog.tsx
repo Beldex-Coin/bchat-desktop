@@ -1,5 +1,5 @@
-import React from 'react';
-// tslint:disable no-submodule-imports
+// import React from 'react';
+
 
 import useKey from 'react-use/lib/useKey';
 import { ConversationTypeEnum } from '../../models/conversation';
@@ -7,7 +7,7 @@ import { getConversationController } from '../../bchat/conversations';
 import { ToastUtils } from '../../bchat/utils';
 import { openConversationWithMessages } from '../../state/ducks/conversations';
 import { updateUserDetailsModal } from '../../state/ducks/modalDialog';
-import { Avatar, AvatarSize, BNSWrapper } from '../avatar/Avatar';
+import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { Flex } from '../basic/Flex';
@@ -63,18 +63,6 @@ export const UserDetailsDialog = (props: Props) => {
     >
       <div style={{ width: '500px', paddingTop: '20px' }}>
         <Flex container={true} justifyContent="center" >
-          <BNSWrapper
-            // size={isEnlargedImageShown ? 305 : 89}
-            position={{
-              // left: isEnlargedImageShown ? '288px' : '71px',
-              // top: isEnlargedImageShown ? '288px' : '71px',
-
-              left: '288px',
-              top: '288px' ,
-            }}
-            isBnsHolder={convo?.attributes?.isBnsHolder}
-            size={{ width: '20', height: '20' }}
-          >
             <Avatar
             size={AvatarSize.HUGE}
               // size={size}
@@ -82,8 +70,8 @@ export const UserDetailsDialog = (props: Props) => {
               //   setIsEnlargedImageShown(!isEnlargedImageShown);
               // }}
               pubkey={props.conversationId}
+              isBnsHolder={convo?.attributes?.isBnsHolder}
             />
-          </BNSWrapper>
         </Flex>
         <SpacerSM />
         <div className="user-name">{props.userName}</div>

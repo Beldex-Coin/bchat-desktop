@@ -7,7 +7,6 @@ import {
 import { perfEnd, perfStart } from '../bchat/utils/Performance';
 
 export const useEncryptedFileFetch = (url: string, contentType: string, isAvatar: boolean) => {
-  // tslint:disable-next-line: no-bitwise
   const [urlToLoad, setUrlToLoad] = useState('');
   const [loading, setLoading] = useState(false);
 

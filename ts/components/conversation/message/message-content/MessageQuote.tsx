@@ -27,7 +27,7 @@ export const MessageQuote = (props: Props) => {
   const multiSelectMode = useSelector(isMessageSelectionMode);
   const isMessageDetailViewMode = useSelector(isMessageDetailView);
 
-  const quote = selected ? selected.quote : undefined;
+  const quote:any = selected ? selected.quote : undefined;
   const direction = selected ? selected.direction : undefined;
 
   const onQuoteClick = useCallback(
@@ -96,6 +96,7 @@ export const MessageQuote = (props: Props) => {
       sender={displayedPubkey}
       authorProfileName={quote.authorProfileName}
       authorName={quote.authorName}
+      isSharedContact={quote?.isSharedContact}
       referencedMessageNotFound={quote.referencedMessageNotFound || false}
       isFromMe={quote.isFromMe || false}
     />

@@ -5,8 +5,6 @@ import { ConversationsStateType, reducer as conversations } from './ducks/conver
 import { reducer as user, UserStateType } from './ducks/user';
 import { reducer as theme, ThemeStateType } from './ducks/theme';
 import {reducer as isVerifyBnsCalled ,IsVerifyBnsCalledStateType} from './ducks/bnsConfig'
-import {reducer as walletFocused, WalletSectionStateType  } from './ducks/walletSection'
-import {reducer as walletInnerFocused, WalletInnerSectionStateType } from "./ducks/walletInnerSection"
 import { reducer as section, SectionStateType } from './ducks/section';
 import { defaultRoomReducer as defaultRooms, DefaultRoomsState } from './ducks/defaultRooms';
 import { callReducer as call, CallStateType } from './ducks/call';
@@ -19,9 +17,8 @@ import {
   reducer as stagedAttachments,
   StagedAttachmentsStateType,
 } from './ducks/stagedAttachments';
-import { reducer as wallet,WalletStateType } from './ducks/wallet';
-import { reducer as daemon,DaemonStateType } from './ducks/daemon';
-import {reducer as walletConfig, WalletConfigState } from "./ducks/walletConfig"
+import {reducer as callHistory,CallHistoryState} from "./ducks//callHistory";
+
 
 export type StateType = {
   search: SearchStateType;
@@ -29,8 +26,6 @@ export type StateType = {
   conversations: ConversationsStateType;
   theme: ThemeStateType;
   isVerifyBnsCalled:IsVerifyBnsCalledStateType;
-  wallet: WalletStateType;
-  daemon: DaemonStateType;
   section: SectionStateType;
   defaultRooms: DefaultRoomsState;
   onionPaths: OnionState;
@@ -39,19 +34,14 @@ export type StateType = {
   timerOptions: TimerOptionsState;
   stagedAttachments: StagedAttachmentsStateType;
   call: CallStateType;
-
-  walletFocused:WalletSectionStateType
-  walletInnerFocused:WalletInnerSectionStateType;
-  walletConfig:WalletConfigState
+  callHistory:CallHistoryState
 
 };
 
-export const reducers = {
+export const reducers:any  = {
   search,
   conversations,
   user,
-  wallet,
-  daemon,
   theme,
   isVerifyBnsCalled,
   section,
@@ -62,12 +52,10 @@ export const reducers = {
   timerOptions,
   stagedAttachments,
   call,
-  walletFocused,
-  walletInnerFocused,
-  walletConfig
+  callHistory
 };
 
 // Making this work would require that our reducer signature supported AnyAction, not
 //   our restricted actions
-// @ts-ignore
+
 export const rootReducer = combineReducers(reducers);

@@ -2,7 +2,9 @@ import React from 'react';
 
 import { RegistrationStages } from './RegistrationStages';
 import { BchatToastContainer } from '../BchatToastContainer';
-import { BchatTheme } from '../../state/ducks/BchatTheme';
+// import { BchatTheme } from '../../state/ducks/BchatTheme';
+import { BchatTheme } from '../../theme/BchatTheme';
+
 // import { Flex } from '../basic/Flex';
 import { setSignInByLinking } from '../../util/storage';
 
@@ -14,7 +16,7 @@ export const BchatRegistrationView = () => {
   return (
     <div className="bchat-fullscreen">
       <div className="bchat-full-screen-flow bchat-fullscreen">
-        <BchatTheme>
+        <BchatTheme mode={window.inboxStore?.getState().theme || 'dark'}>
           <div className='bchat_conversation-doodle'>
           {/* <Flex
             flexDirection="row"

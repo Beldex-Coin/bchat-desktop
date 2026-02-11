@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useContext } from 'react';
+import  { useContext } from 'react';
 import { isEmpty } from 'lodash';
 import { useConversationPropsById, useIsPrivate } from '../../../hooks/useParamSelector';
 import { MessageBody } from '../../conversation/message/message-content/MessageBody';

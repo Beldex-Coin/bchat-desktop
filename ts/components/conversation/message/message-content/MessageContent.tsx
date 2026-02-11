@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import {
   getMessageContentSelectorProps,
+  getMessageQuoteProps,
   getMessageTextProps,
   getQuotedMessageToAnimate,
   getShouldHighlightMessage,
@@ -28,7 +29,12 @@ import { MessagePreview } from './MessagePreview';
 import { MessageQuote } from './MessageQuote';
 import { MessageText } from './MessageText';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
-import { SpacerXS } from '../../../basic/Text';
+// import { SpacerXS } from '../../../basic/Text';
+import { MessageAuthorText } from './MessageAuthorText';
+import styled from 'styled-components';
+import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
+import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
+
 
 export type MessageContentSelectorProps = Pick<
   MessageRenderingProps,
@@ -41,11 +47,19 @@ export type MessageContentSelectorProps = Pick<
   | 'previews'
   | 'quote'
   | 'attachments'
->;
+  | 'reacts'
 
+>;
+export const StyledSvgWrapper=styled.div`
+    position: absolute;
+    z-index: 19;
+    bottom: 0px;
+`
 type Props = {
   messageId: string;
   isDetailView?: boolean;
+  onRecentEmojiBtnVisible:()=>void;
+  isTrustedForAttachmentDownload?:boolean
 };
 
 // function getIsShowingImage(
@@ -92,6 +106,7 @@ function onClickOnMessageInnerContainer(event: React.MouseEvent<HTMLDivElement>)
   // User clicked on message body
   const target = event.target as HTMLDivElement;
   if (target.className === 'text-selectable' || window.contextMenuShown) {
+     // eslint-disable-next-line no-useless-return
     return;
   }
 }
@@ -101,13 +116,11 @@ export const IsMessageVisibleContext = createContext(false);
 export const MessageContent = (props: Props) => {
   const [flashGreen, setFlashGreen] = useState(false);
   const [didScroll, setDidScroll] = useState(false);
-  const contentProps = useSelector(state =>
-    getMessageContentSelectorProps(state as any, props.messageId)
-  );
+    const contentProps = useSelector(state =>
+      getMessageContentSelectorProps(state as any, props.messageId)
+    );
   const [isMessageVisible, setMessageIsVisible] = useState(false);
-
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
-
   const [imageBroken, setImageBroken] = useState(false);
 
   const onVisible = (inView: boolean | Object) => {
@@ -128,7 +141,8 @@ export const MessageContent = (props: Props) => {
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
-
+  const quoteMessageprops = useSelector(state => getMessageQuoteProps(state as any, props.messageId));
+  const quote = quoteMessageprops?.quote ;
   useLayoutEffect(() => {
     if (isQuotedMessageToAnimate) {
       if (!flashGreen && !didScroll) {
@@ -151,9 +165,9 @@ export const MessageContent = (props: Props) => {
     return;
   });
 
-  if (!contentProps) {
-    return null;
-  }
+  // if (!contentProps) {
+  //   return null;
+  // }
 
   const {
     direction,
@@ -165,7 +179,9 @@ export const MessageContent = (props: Props) => {
     previews,
     // quote,
     attachments=[],
-  } = contentProps;
+    
+  } = contentProps|| {};
+  const {isTrustedForAttachmentDownload}=props;
 
   const selectedMsg = useSelector(state => getMessageTextProps(state as any, props.messageId));
   let isDeleted = false;
@@ -176,14 +192,27 @@ export const MessageContent = (props: Props) => {
   // const width = getWidth({ previews, attachments });
   // const isShowingImage = getIsShowingImage({ attachments, imageBroken, previews, text });
   const hasText = Boolean(text);
-  // const hasQuote = !isEmpty(quote);
+  const hasQuote = !isEmpty(quote);
+  // const isReacted=!isEmpty(contentProps?.reacts)
   const hasAttachment=attachments.length>0;
   const hasContentAfterAttachmentAndQuote = !isEmpty(previews) || !isEmpty(text);
-
+  const isIncoming=direction==='incoming'
+  const isGifAttachments=(isIncoming? isTrustedForAttachmentDownload :true) && attachments.length===1 && attachments[0].contentType==='image/gif' && !hasText && !hasQuote ;
   // const bgShouldBeTransparent = isShowingImage && !hasText && !hasQuote;
   const toolTipTitle = moment(serverTimestamp || timestamp).format('llll');
+  const isTailVisible=lastMessageOfSeries &&!props.isDetailView && !isGifAttachments
+
+
+  if (!direction) {
+    return null;
+  }
 
   return (
+    <div style={{position:'relative'}}>  
+   {isTailVisible &&isIncoming && <StyledSvgWrapper>
+      <IncomingMsgTailIcon  />
+    </StyledSvgWrapper> }  
+   
     <div
       className={classNames(
         'module-message__container',
@@ -192,21 +221,28 @@ export const MessageContent = (props: Props) => {
         //   ? `module-message__container--${direction}--transparent`
         // :
         `module-message__container--${direction}--opaque`,
-        firstMessageOfSeries || props.isDetailView
+        firstMessageOfSeries && !lastMessageOfSeries || props.isDetailView
           ? `module-message__container--${direction}--first-of-series`
           : '',
-        lastMessageOfSeries || props.isDetailView
+        lastMessageOfSeries  || props.isDetailView
           ? `module-message__container--${direction}--last-of-series`
           : '',
-        flashGreen && 'flash-green-once'
+          // !isReacted && lastMessageOfSeries && 'module-message__message-separator',
+        flashGreen && 'flash-green-once',
+        isGifAttachments && `module-message__container_bg_disabled`,
+        hasAttachment && !hasText && 'module-message__container-only-attachment'
       )}
       // style={{
       //   width: isShowingImage ? width : undefined,
       // }}
       role="button"
+      onMouseEnter={() => {
+        props.onRecentEmojiBtnVisible()
+      }}
       onClick={onClickOnMessageInnerContainer}
       title={toolTipTitle}
     >
+      <MessageAuthorText messageId={props.messageId} />
       <InView
         id={`inview-content-${props.messageId}`}
         onChange={onVisible}
@@ -232,17 +268,22 @@ export const MessageContent = (props: Props) => {
                 <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
               )}
               {/* attachment-with-quote class is used to only refer the design validation in css */}
-              <Flex padding="7px 15px 0" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
+              <Flex padding="0 15px" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
             </>
           ) : null}
-          <SpacerXS />
-          <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>
-          <SpacerXS />
+          {/* <SpacerXS />  */}
+         {!props.isDetailView &&  <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>}
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
+    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
+      <OutgoingMsgTailIcon/>
+    </StyledSvgWrapper> }  
+    
+    </div>
+
   );
 };
 

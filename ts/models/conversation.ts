@@ -20,6 +20,7 @@ import {
   removeMessage as dataRemoveMessage,
   saveMessages,
   updateConversation,
+  getMessageById,
 } from '../../ts/data/data';
 import { toHex } from '../bchat/utils/String';
 import {
@@ -36,7 +37,6 @@ import {
   VisibleMessage,
   VisibleMessageParams,
 } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
-import { GroupInvitationMessage } from '../bchat/messages/outgoing/visibleMessage/GroupInvitationMessage';
 import { ReadReceiptMessage } from '../bchat/messages/outgoing/controlMessage/receipt/ReadReceiptMessage';
 import { OpenGroupUtils } from '../bchat/apis/open_group_api/utils';
 import { OpenGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/OpenGroupVisibleMessage';
@@ -65,7 +65,12 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { MessageRequestResponse } from '../bchat/messages/outgoing/controlMessage/MessageRequestResponse';
 import { Notifications } from '../util/notifications';
 import { Storage } from '../util/storage';
-import { TxnDetailsMessage } from '../bchat/messages/outgoing/visibleMessage/TxnDetails';
+import { Reaction } from '../types/Reaction';
+// import { handleMessageReaction } from '../interactions/messageInteractions';
+
+import { handleMessageReaction } from '../util/reactions';
+// import { roomHasReactionsEnabled } from '../types/sqlSharedTypes';
+// import { OpenGroupData } from '../data/opengroups';
 
 export enum ConversationTypeEnum {
   GROUP = 'group',
@@ -121,8 +126,7 @@ export interface ConversationAttributes {
   isApproved: boolean;
   didApproveMe: boolean;
   walletAddress?: any;
-  walletCreatedDaemonHeight?: number | any;
-  isBnsHolder?:Boolean;
+  isBnsHolder?: Boolean;
 }
 
 export interface ConversationAttributesOptionals {
@@ -164,9 +168,7 @@ export interface ConversationAttributesOptionals {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?: string | null | any;
-  walletCreatedDaemonHeight?: number | null | any;
-  isBnsHolder?:Boolean;
+  isBnsHolder?: Boolean;
 }
 
 /**
@@ -198,9 +200,7 @@ export const fillConvoAttributesWithDefaults = (
     isApproved: false,
     didApproveMe: false,
     walletAddress: null,
-    walletUserName: null,
-    walletCreatedDaemonHeight: null,
-    isBnsHolder:false,
+    isBnsHolder: false,
   });
 };
 
@@ -225,15 +225,16 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     //   our first save to the database. Or first fetch from the database.
     this.initialPromise = Promise.resolve();
     autoBind(this);
-
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.throttledBumpTyping = _.throttle(this.bumpTyping, 300);
     this.updateLastMessage = _.throttle(this.bouncyUpdateLastMessage.bind(this), 1000, {
       trailing: true,
       leading: true,
     });
-
+   // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.throttledNotify = _.debounce(this.notify, 500, { maxWait: 5000, trailing: true });
     //start right away the function is called, and wait 1sec before calling it again
+     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const markReadDebounced = _.debounce(this.markReadBouncy, 1000, {
       leading: true,
       trailing: true,
@@ -363,14 +364,11 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return groupAdmins && groupAdmins?.length > 0 ? groupAdmins : [];
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public getConversationModelProps(): ReduxConversationType {
     const groupAdmins = this.getGroupAdmins();
     const isPublic = this.isPublic();
     const walletAddress = this.isWalletAddress();
-    const walletUserName = this.getProfileName();
-    const walletCreatedDaemonHeight = this.getwalletCreatedDaemonHeight();
-    const isBnsHolder=this.bnsHolder()
+    const isBnsHolder = this.bnsHolder();
 
     const members = this.isGroup() && !isPublic ? this.get('members') : [];
     const zombies = this.isGroup() && !isPublic ? this.get('zombies') : [];
@@ -403,7 +401,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       activeAt: this.get('active_at'),
       type: isPrivate ? ConversationTypeEnum.PRIVATE : ConversationTypeEnum.GROUP,
     };
-    toRet.isBnsHolder =isBnsHolder ;
+    toRet.isBnsHolder = isBnsHolder;
 
     if (isPrivate) {
       toRet.isPrivate = true;
@@ -510,12 +508,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     if (walletAddress) {
       toRet.walletAddress = walletAddress;
     }
-    if (walletUserName) {
-      toRet.walletUserName = walletUserName;
-    }
-    if (walletCreatedDaemonHeight) {
-      toRet.walletCreatedDaemonHeight = walletCreatedDaemonHeight;
-    }
     return toRet;
   }
 
@@ -561,11 +553,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async queueJob(callback: () => Promise<void>) {
-    // tslint:disable-next-line: no-promise-as-boolean
     const previous = this.pending || Promise.resolve();
 
     const taskWithTimeout = createTaskWithTimeout(callback, `conversation ${this.idForLogging()}`);
-
+// eslint-disable-next-line more/no-then
     this.pending = previous.then(taskWithTimeout, taskWithTimeout);
     const current = this.pending;
 
@@ -637,15 +628,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public async makeQuote(quotedMessage: MessageModel): Promise<ReplyingToMessageProps | null> {
     const attachments = quotedMessage.get('attachments');
     const preview = quotedMessage.get('preview');
-
+    const direction = quotedMessage.get('direction');
     const body = quotedMessage.get('body');
+    const groupInvitation = quotedMessage.get('groupInvitation');
+    const paymentDetails = quotedMessage.get('payment')
+    const sharedContactList = quotedMessage.get('sharedContact');
     const quotedAttachments = await this.getQuoteAttachment(attachments, preview);
 
     if (!quotedMessage.get('sent_at')) {
       window.log.warn('tried to make a quote without a sent_at timestamp');
       return null;
     }
-    return {
+    const quoteObj = {
       author: quotedMessage.getSource(),
       id: `${quotedMessage.get('sent_at')}` || '',
       // no need to quote the full message length.
@@ -653,7 +647,44 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       attachments: quotedAttachments,
       timestamp: quotedMessage.get('sent_at') || 0,
       convoId: this.id,
+      direction: direction,
     };
+    if (groupInvitation) {
+      const { name, url } = groupInvitation;
+      const groupInviteTypedData = {
+        kind: {
+          '@type': 'OpenGroupInvitation',
+          groupName: name,
+          groupUrl: `${url}`,
+        },
+      };
+      quoteObj.text = JSON.stringify(groupInviteTypedData);
+    }
+    if (paymentDetails) {
+      const {amount,txnId}=paymentDetails
+      const payment= {
+        kind: {
+          '@type': 'Payment',
+          amount: amount,
+          txnId: `${txnId}`
+        },
+      };
+      
+      quoteObj.text = JSON.stringify(payment);
+    }
+    if (sharedContactList) {
+      const { address, name } = sharedContactList;
+      const sharedContact = {
+        kind: {
+          '@type': 'SharedContact',
+          address: address,
+          name: name,
+        },
+      };
+      quoteObj.text = JSON.stringify(sharedContact);
+    }
+  
+    return quoteObj;
   }
 
   public toOpenGroupV2(): OpenGroupRequestCommonType {
@@ -663,6 +694,81 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return getOpenGroupV2FromConversationId(this.id);
   }
 
+  public async sendReactionJob(sourceMessage: MessageModel, reaction: Reaction) {
+    try {
+      const destination = this.id;
+
+      const sentAt = sourceMessage.get('sent_at');
+
+      if (!sentAt) {
+        throw new Error('sendReactMessageJob() sent_at must be set.');
+      }
+
+      if (this.isPublic() && !this.isOpenGroupV2()) {
+        throw new Error('Only opengroupv2 are supported now');
+      }
+      // TODO move function elsewhere as it is updating the local client before updating the timestamp for the receiving client
+      let sender = UserUtils.getOurPubKeyStrFromCache();
+
+      // an OpenGroupV2 message is just a visible message
+      const chatMessageParams: VisibleMessageParams = {
+        // body: `Reacted ${reaction.emoji} to: "${message.get('body')}"`,
+        body: '',
+        timestamp: sentAt,
+        reaction,
+        lokiProfile: UserUtils.getOurProfile(),
+      };
+      await this.handleMessageApproval();
+
+      if (this.isOpenGroupV2()) {
+        await this.handleOpenGroupV2Message(chatMessageParams);
+        await handleMessageReaction(reaction, sender, true);
+        return;
+      } else {
+        await handleMessageReaction(reaction, sender, false);
+      }
+      // const shouldApprove = !this.isApproved() && this.isPrivate();
+      // const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+      // const hasIncomingMessages = incomingMessageCount > 0;
+      // if (shouldApprove) {
+      //   await this.setIsApproved(true);
+      //   if (hasIncomingMessages) {
+      //     // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+      //     await this.addOutgoingApprovalMessage(Date.now());
+      //     if (!this.didApproveMe()) {
+      //       await this.setDidApproveMe(true);
+      //     }
+      //     // should only send once
+      //     await this.sendMessageRequestResponse(true);
+      //     void forceSyncConfigurationNowIfNeeded();
+      //   }
+      // }
+
+      const destinationPubkey = new PubKey(destination);
+      if (this.isPrivate()) {
+        const chatMessageMe = new VisibleMessage({ ...chatMessageParams, syncTarget: this.id });
+        await getMessageQueue().sendSyncMessage(chatMessageMe);
+
+        const chatMessagePrivate = new VisibleMessage(chatMessageParams);
+
+        await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
+        return;
+      }
+      if (this.isMediumGroup()) {
+        await this.handleMediumGroup(chatMessageParams, destination);
+        return;
+      }
+
+      if (this.isClosedGroup()) {
+        this.handleLegacyClosedGroup();
+      }
+
+      throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
+    } catch (e) {
+      window.log.error(`Reaction job failed id:${reaction.id} error:`, e);
+      return null;
+    }
+  }
   public async sendMessageJob(message: MessageModel, expireTimer: number | undefined) {
     try {
       const uploads = await message.uploadData();
@@ -689,98 +795,64 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         quote: uploads.quote,
         lokiProfile: UserUtils.getOurProfile(),
       };
+      await this.handleMessageApproval();
 
-      const shouldApprove = !this.isApproved() && this.isPrivate();
-      const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
-      const hasIncomingMessages = incomingMessageCount > 0;
-      if (shouldApprove) {
-        await this.setIsApproved(true);
-        if (hasIncomingMessages) {
-          // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
-          await this.addOutgoingApprovalMessage(Date.now());
-          if (!this.didApproveMe()) {
-            await this.setDidApproveMe(true);
-          }
-          // should only send once
-          await this.sendMessageRequestResponse(true);
-          void forceSyncConfigurationNowIfNeeded();
-        }
-      }
+      // const shouldApprove = !this.isApproved() && this.isPrivate();
+      // const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+      // const hasIncomingMessages = incomingMessageCount > 0;
+      // if (shouldApprove) {
+      //   await this.setIsApproved(true);
+      //   if (hasIncomingMessages) {
+      //     // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+      //     await this.addOutgoingApprovalMessage(Date.now());
+      //     if (!this.didApproveMe()) {
+      //       await this.setDidApproveMe(true);
+      //     }
+      //     // should only send once
+      //     await this.sendMessageRequestResponse(true);
+      //     void forceSyncConfigurationNowIfNeeded();
+      //   }
+      // }
 
       if (this.isOpenGroupV2()) {
-        const chatMessageOpenGroupV2 = new OpenGroupVisibleMessage(chatMessageParams);
-        const roomInfos = this.toOpenGroupV2();
-        if (!roomInfos) {
-          throw new Error('Could not find this room in db');
-        }
-
-        // we need the return await so that errors are caught in the catch {}
-        await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
+        await this.handleOpenGroupV2Message(chatMessageParams);
         return;
       }
+
+        // Handle shared contact Message
+        if (message.get('sharedContact')) {
+          chatMessageParams.sharedContact = message.get('sharedContact');
+        }
 
       const destinationPubkey = new PubKey(destination);
       if (this.isPrivate()) {
         if (this.isMe()) {
           chatMessageParams.syncTarget = this.id;
           const chatMessageMe = new VisibleMessage(chatMessageParams);
-
           await getMessageQueue().sendSyncMessage(chatMessageMe);
           return;
         }
 
-         // Handle transaction details Message
-       
-         if (message.get('txnDetails')) {
-          // if (false) {  
-            const txnDetails = message.get('txnDetails');
-            // const txn_detailsMessages = new GroupInvitationMessage({
-            const txnDetailsMessages = new TxnDetailsMessage({
-              identifier: id,
-              timestamp: sentAt,
-              amount: txnDetails.amount,
-              txnId: txnDetails.txnId,
-              expireTimer: this.get('expireTimer'),
-            });
-  
-            // we need the return await so that errors are caught in the catch {}
-            await getMessageQueue().sendToPubKey(destinationPubkey, txnDetailsMessages);
-            return;
-          }
+        // Handle transaction details Message
+        if (message.get('payment')) {
+          chatMessageParams.payment = message.get('payment');
+        }
         // Handle Group Invitation Message
         if (message.get('groupInvitation')) {
-          const groupInvitation = message.get('groupInvitation');
-          const groupInvitMessage = new GroupInvitationMessage({
-            identifier: id,
-            timestamp: sentAt,
-            name: groupInvitation.name,
-            url: groupInvitation.url,
-            expireTimer: this.get('expireTimer'),
-          });
-          // we need the return await so that errors are caught in the catch {}
-          await getMessageQueue().sendToPubKey(destinationPubkey, groupInvitMessage);
-          return;
+          chatMessageParams.openGroupInvitation=message.get('groupInvitation');
         }
-        const chatMessagePrivate = new VisibleMessage(chatMessageParams);
-
+         const chatMessagePrivate = new VisibleMessage(chatMessageParams);
         await getMessageQueue().sendToPubKey(destinationPubkey, chatMessagePrivate);
         return;
       }
-
       if (this.isMediumGroup()) {
-        const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
-        const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
-          chatMessage: chatMessageMediumGroup,
-          groupId: destination,
-        });
-
-        // we need the return await so that errors are caught in the catch {}
-        await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+        await this.handleMediumGroup(chatMessageParams, destination);
         return;
       }
 
       if (this.isClosedGroup()) {
-        throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+        // throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+        this.handleLegacyClosedGroup();
       }
 
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
@@ -871,18 +943,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   public async sendMessage(msg: SendMessageType) {
-    const { attachments, body, groupInvitation, preview, quote,txnDetails } = msg;
+    const { attachments, body, groupInvitation, preview, quote, payment, sharedContact } = msg;
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
-    
+
     window?.log?.info(
       'Sending message to conversation',
       this.idForLogging(),
       'with networkTimestamp: ',
       networkTimestamp
     );
-
+   
     const messageModel = await this.addSingleOutgoingMessage({
       body,
       quote: _.isEmpty(quote) ? undefined : quote,
@@ -892,7 +964,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       expireTimer,
       serverTimestamp: this.isPublic() ? Date.now() : undefined,
       groupInvitation,
-      txnDetails
+      payment,
+      sharedContact,
     });
 
     // We're offline!
@@ -915,6 +988,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     await this.queueJob(async () => {
       await this.sendMessageJob(messageModel, expireTimer);
+    });
+  }
+
+  public async sendReaction(sourceId: string, reaction: Reaction) {
+    const sourceMessage = await getMessageById(sourceId);
+
+    if (!sourceMessage) {
+      // TODO handle better
+      return;
+    }
+    await this.queueJob(async () => {
+      await this.sendReactionJob(sourceMessage, reaction);
     });
   }
 
@@ -1108,7 +1193,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public async markReadBouncy(newestUnreadDate: number, providedOptions: any = {}) {
     const lastReadTimestamp = this.lastReadTimestamp;
     if (newestUnreadDate < lastReadTimestamp) {
@@ -1129,6 +1213,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     let read = [];
 
     // Build the list of updated message models so we can mark them all as read on a single sqlite call
+     // eslint-disable-next-line no-restricted-syntax
     for (const nowRead of oldUnreadNowRead) {
       nowRead.markReadNoCommit(options.readAt);
 
@@ -1144,7 +1229,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       await saveMessages(oldUnreadNowReadAttrs);
     }
     const allProps: Array<MessageModelPropsWithoutConvoProps> = [];
-
+ // eslint-disable-next-line no-restricted-syntax
     for (const nowRead of oldUnreadNowRead) {
       allProps.push(nowRead.getMessageModelProps());
     }
@@ -1330,19 +1415,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
-  public async setwalletCreatedDaemonHeight(value: number, shouldCommit: boolean = true) {
-    window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
-    this.set({
-      walletCreatedDaemonHeight: value,
-    });
-
-    if (shouldCommit) {
-      await this.commit();
-    }
-  }
-
   public async setwalletAddress(value: string, shouldCommit: boolean = true) {
-    window?.log?.info(`Setting ${ed25519Str(this.id)} walletCreatedDaemonHeight to: ${value}`);
     this.set({
       walletAddress: value,
     });
@@ -1414,6 +1487,21 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public hasMember(pubkey: string) {
     return _.includes(this.get('members'), pubkey);
   }
+
+  public hasReactions() {
+    // message requests should not have reactions
+    if (this.isPrivate() && !this.isApproved()) {
+      return false;
+    }
+    // older open group conversations won't have reaction support
+    if (this.isOpenGroupV2()) {
+      // const openGroup = OpenGroupData.getV2OpenGroupRoom(this.id);
+      // return roomHasReactionsEnabled(openGroup);
+      return false;
+    } else {
+      return true;
+    }
+  }
   // returns true if this is a closed/medium or Social group
   public isGroup() {
     return this.get('type') === ConversationTypeEnum.GROUP;
@@ -1446,9 +1534,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return Boolean(this.get('didApproveMe'));
   }
 
-  public walletCreatedDaemonHeight() {
-    return Number(this.get('walletCreatedDaemonHeight'));
-  }
   public isApproved() {
     return Boolean(this.get('isApproved'));
   }
@@ -1516,9 +1601,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       return '';
     }
     return this.id;
-  }
-  public getwalletCreatedDaemonHeight() {
-    return this.get('walletCreatedDaemonHeight');
   }
 
   public isWalletAddress() {
@@ -1701,7 +1783,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     // we do not trigger a state change here, instead we rely on the caller to do the commit once it is done with the queue of messages
     this.typingTimer = isTyping
-      ? global.setTimeout(this.clearContactTypingTimer.bind(this, sender), 15 * 1000)
+      ? // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      global.setTimeout(this.clearContactTypingTimer.bind(this, sender), 15 * 1000)
       : null;
   }
 
@@ -1843,6 +1926,49 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     getMessageQueue()
       .sendToPubKey(device, typingMessage)
       .catch(window?.log?.error);
+  }
+
+  private async handleMessageApproval() {
+    const shouldApprove = !this.isApproved() && this.isPrivate();
+    const incomingMessageCount = await getMessageCountByType(this.id, MessageDirection.incoming);
+    const hasIncomingMessages = incomingMessageCount > 0;
+    if (shouldApprove) {
+      await this.setIsApproved(true);
+      if (hasIncomingMessages) {
+        // have to manually add approval for local client here as DB conditional approval check in config msg handling will prevent this from running
+        await this.addOutgoingApprovalMessage(Date.now());
+        if (!this.didApproveMe()) {
+          await this.setDidApproveMe(true);
+        }
+        // should only send once
+        await this.sendMessageRequestResponse(true);
+        void forceSyncConfigurationNowIfNeeded();
+      }
+    }
+  }
+  private async handleOpenGroupV2Message(chatMessageParams: VisibleMessageParams) {
+    const chatMessageOpenGroupV2 = new OpenGroupVisibleMessage(chatMessageParams);
+    const roomInfos = this.toOpenGroupV2();
+    if (!roomInfos) {
+      throw new Error('Could not find this room in db');
+    }
+
+    // we need the return await so that errors are caught in the catch {}
+    await getMessageQueue().sendToOpenGroupV2(chatMessageOpenGroupV2, roomInfos);
+  }
+  private async handleMediumGroup(chatMessageParams: VisibleMessageParams, destination: any) {
+    const chatMessageMediumGroup = new VisibleMessage(chatMessageParams);
+    const closedGroupVisibleMessage = new ClosedGroupVisibleMessage({
+      chatMessage: chatMessageMediumGroup,
+      groupId: destination,
+    });
+
+    // we need the return await so that errors are caught in the catch {}
+    await getMessageQueue().sendToGroup(closedGroupVisibleMessage);
+  }
+
+  private handleLegacyClosedGroup() {
+    throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
   }
 }
 

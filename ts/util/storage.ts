@@ -1,4 +1,5 @@
 import { createOrUpdateItem, getAllItems, removeItemById } from '../data/channelsItem';
+import { DEFAULT_RECENT_REACTS } from '../bchat/constants';
 
 let ready = false;
 
@@ -41,7 +42,7 @@ async function remove(key: string) {
     window.log.warn('Called storage.get before storage is ready. key:', key);
   }
 
-  // tslint:disable-next-line: no-dynamic-delete
+  // eslint:disable-next-line: no-dynamic-delete
   delete items[key];
   await removeItemById(key);
 }
@@ -67,7 +68,7 @@ async function fetch() {
   reset();
   const array = await getAllItems();
 
-  // tslint:disable-next-line: one-variable-per-declaration
+  // eslint:disable-next-line: one-variable-per-declaration
   for (let i = 0, max = array.length; i < max; i += 1) {
     const item = array[i];
     const { id } = item;
@@ -136,3 +137,15 @@ export async function saveRecoveryPhrase(mnemonic: string) {
 }
 
 export const Storage = { fetch, put, get, remove, onready, reset };
+export function getRecentReactions(): Array<string> {
+  const reactions = Storage.get('recent_reactions') as string;
+  if (reactions) {
+    return reactions.split(' ');
+  } else {
+    return DEFAULT_RECENT_REACTS;
+  }
+}
+
+export async function saveRecentReations(reactions: Array<string>) {
+  return Storage.put('recent_reactions', reactions.join(' '));
+}
