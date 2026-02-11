@@ -45,8 +45,8 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;
-  propsForPayment?: PropsForPayment;
   propsForSharedContact?: PropsForSharedContact;
+   propsForPayment?: PropsForPayment;
 };
 
 export type MessageModelPropsWithConvoProps = SortedMessageModelProps & {
@@ -305,8 +305,6 @@ export interface ReduxConversationType {
   isApproved?: boolean;
   didApproveMe?: boolean;
   walletAddress?: any;
-  walletUserName?: any;
-  walletCreatedDaemonHeight?: number | any;
   isBnsHolder?: boolean;
   weAreModerator?: boolean;
   sharedContact?:SharedContact

@@ -9,14 +9,11 @@ import { TaskTimedOutError } from '../../bchat/utils/Promise';
 import { trigger } from '../../shims/events';
 import { registerSingleDevice, signInByLinkingDevice } from '../../util/accountManager';
 import { setSignInByLinking, setSignWithRecoveryPhrase, Storage } from '../../util/storage';
-import { wallet } from '../../wallet/wallet-rpc';
 import { AccentText } from './AccentText';
 import { TermsAndConditions } from './TermsAndConditions';
 import { Flex } from '../basic/Flex';
 import { SpacerLG } from '../basic/Text';
-import { daemon } from '../../wallet/daemon-rpc';
-import os from 'os';
-
+const coreBridgeInstance = require('@bdxi/beldex-app-bridge')
 export const MAX_USERNAME_LENGTH = 26;
 
 export async function resetRegistration() {
@@ -58,12 +55,10 @@ export async function signUp(signUpDetails: {
 
   try {
     await resetRegistration();
-    let deamonHeight: any = await wallet.getLatestHeight();
     await registerSingleDevice(
       generatedRecoveryPhrase,
       'english',
       trimName,
-      deamonHeight ? deamonHeight : 0
     );
     await createOrUpdateItem({
       id: 'hasSyncedInitialConfigurationItem',
@@ -87,36 +82,23 @@ export async function signUp(signUpDetails: {
  */
 export async function signInWithRecovery(signInDetails: {
   displayName: string;
-  password: string;
+  // password: string;
   userRecoveryPhrase: string;
-  refreshDetails: {
-    refresh_type: string;
-    refresh_start_timestamp_or_height: string;
-  };
 }) {
-  const { displayName, password, userRecoveryPhrase, refreshDetails } = signInDetails;
+  const { displayName, userRecoveryPhrase } = signInDetails;
   const trimName = displayNameIsValid(displayName);
-   const platform = os.platform();
+  const bridgeInstance = await coreBridgeInstance({});
+  //  const platform = os.platform();
   // shows toast to user about the error
   if (!trimName) {
     return;
   }
   try {
-    const restoreWallet = await wallet.restoreWallet(
-      displayName,
-      password,
-      userRecoveryPhrase,
-      refreshDetails
-    );
-    localStorage.setItem('userAddress', restoreWallet.result.address);
-    const deamonHeight: any | number = await wallet.getHeigthFromDateAndUserInput(refreshDetails);
-    
-      if (platform === 'win32') {
-        daemon.deamontHeight();
-      }
+    const restoreAccount = bridgeInstance.seed_and_keys_from_mnemonic(userRecoveryPhrase,NetType.Mainnet);
+    localStorage.setItem('userAddress', restoreAccount.address_string);
     await resetRegistration();
 
-    await registerSingleDevice(userRecoveryPhrase, 'english', trimName, deamonHeight);
+    await registerSingleDevice(userRecoveryPhrase, 'english', trimName);
 
     await setSignWithRecoveryPhrase(true);
 
@@ -185,6 +167,11 @@ export enum RegistrationPhase {
   SignUp,
 }
 
+export enum NetType {
+  Mainnet,
+  Testnet
+}
+
 export enum LeftImage {
   registration,
   password,
@@ -218,13 +205,9 @@ export const RegistrationStages = () => {
   const [imageCount, setImageCount] = useState(0);
 
   useEffect(() => {
-    void generateMnemonicAndKeyPairaa();
     void resetRegistration();
   }, []);
 
-  const generateMnemonicAndKeyPairaa = async () => {
-    await wallet.startWallet();
-  };
   const imageValidator = (e: any) => {
     setImageCount(e);
   };

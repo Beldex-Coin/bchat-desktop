@@ -1,5 +1,5 @@
 // import React from 'react';
-import { BchatSettingCategory, SettingsViewProps } from './BchatSettings';
+import {  SettingsViewProps } from './BchatSettings';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getOurNumber } from '../../state/selectors/user';
 import { BchatIconButton } from '../icon/BchatIconButton';
@@ -14,7 +14,7 @@ type Props = Pick<SettingsViewProps, 'category'> & {
 };
 
 export const SettingsHeader = (props: Props) => {
-  const { categoryTitle,category } = props;
+  const { categoryTitle } = props;
   // const forceUpdate = useUpdate();
 
   const dispatch = useDispatch();
@@ -37,10 +37,7 @@ export const SettingsHeader = (props: Props) => {
   //   }
   // }, [multipleSelectionValue])
 
-  if(category === BchatSettingCategory.Wallet)
-  {
-    return <></>
-  }
+
 
   return (
     <div className="bchat-settings-header">

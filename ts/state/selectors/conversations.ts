@@ -244,7 +244,7 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           },
         };
       }
-      if (msg.propsForPayment) {
+        if (msg.propsForPayment) {
         return {
           showUnreadIndicator: isFirstUnread,
           showDateBreak,

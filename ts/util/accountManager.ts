@@ -5,12 +5,12 @@ import { getOurPubKeyStrFromCache } from '../bchat/utils/User';
 import { trigger } from '../shims/events';
 
 import { actions as userActions } from '../state/ducks/user';
-import { mnDecode } from '../bchat/crypto/mnemonic';
+import { mnDecode, mnEncode } from '../bchat/crypto/mnemonic';
 import { ConversationTypeEnum } from '../models/conversation';
 import { SettingsKey } from '../data/settings-key';
 import {
   saveRecoveryPhrase,
-  setLastProfileUpdateTimestamp,
+  // setLastProfileUpdateTimestamp,
   setLocalPubKey,
   setSignInByLinking,
   Storage,
@@ -43,6 +43,14 @@ export async function bchatGenerateKeyPair(
 
   return x25519KeyPair;
 }
+export async function generateMnemonic() {
+  // Note: 4 bytes are converted into 3 seed words, so length 12 seed words
+  // (13 - 1 checksum) are generated using 12 * 4 / 3 = 16 bytes.
+  const seedSize = 32;
+  const seed = (await getSodiumRenderer()).randombytes_buf(seedSize);
+  const hex = toHex(seed);
+  return mnEncode(hex);
+}
 
 const generateKeypair = async (mnemonic: string, mnemonicLanguage: string) => {
   let seedHex = mnDecode(mnemonic, mnemonicLanguage);
@@ -67,7 +75,7 @@ export async function signInWithRecovery(
   mnemonicLanguage: string,
   profileName: string
 ) {
-  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName, 0);
+  return registerSingleDevice(mnemonic, mnemonicLanguage, profileName);
 }
 
 /**
@@ -92,7 +100,7 @@ export async function signInByLinkingDevice(mnemonic: string, mnemonicLanguage: 
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
   // await for the first configuration message to come in.
-  await registrationDone(pubKeyString, '', 0);
+  await registrationDone(pubKeyString, '');
   return pubKeyString;
 }
 /**
@@ -105,7 +113,7 @@ export async function registerSingleDevice(
   generatedMnemonic: string,
   mnemonicLanguage: string,
   profileName: string,
-  deamonHeight: number
+  // deamonHeight: number
 ) {
   if (!generatedMnemonic) {
     throw new Error('BChat always needs a mnemonic. Either generated or given by the user');
@@ -123,12 +131,12 @@ export async function registerSingleDevice(
 
   await saveRecoveryPhrase(generatedMnemonic);
 
-  await setLastProfileUpdateTimestamp(Date.now());
+  // await setLastProfileUpdateTimestamp(Date.now());
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error -- returning Uint8Array intentionally
   const pubKeyString = toHex(identityKeyPair.pubKey);
 
-  await registrationDone(pubKeyString, profileName, deamonHeight);
+  await registrationDone(pubKeyString, profileName);
 }
 
 async function createAccount(identityKeyPair: any) {
@@ -170,7 +178,7 @@ async function createAccount(identityKeyPair: any) {
   await setLocalPubKey(pubKeyString);
 }
 
-async function registrationDone(ourPubkey: string, displayName: string, deamonHeight: number) {
+async function registrationDone(ourPubkey: string, displayName: string) {
   window?.log?.info('registration done');
 
   await Storage.put('primaryDevicePubKey', ourPubkey);
@@ -183,8 +191,6 @@ async function registrationDone(ourPubkey: string, displayName: string, deamonHe
   await conversation.setBchatProfile({ displayName });
   await conversation.setIsApproved(true);
   await conversation.setDidApproveMe(true);
-  await conversation.setwalletCreatedDaemonHeight(deamonHeight);
-
   await conversation.commit();
   const user = {
     ourNumber: getOurPubKeyStrFromCache(),

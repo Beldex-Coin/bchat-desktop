@@ -27,8 +27,6 @@ import {
 } from '../../state/ducks/section';
 import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
-// import { BchatSettingCategory } from '../settings/BchatSettings';
-// import { AddressBook } from '../wallet/BchatWalletAddressBook';
 
 export interface Props {
   contacts: Array<ReduxConversationType>;
@@ -176,8 +174,6 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         return <OverlayMessage />;
       case 'message-requests':
         return <OverlayMessageRequest leftPane={true} />;
-      // case 'wallet':
-      //   return <AddressBook from={'leftpane'}  />
       default:
         return null;
     }

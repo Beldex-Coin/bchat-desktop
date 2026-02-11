@@ -259,7 +259,8 @@ export const DeleteContactMenuItem = () => {
         onClickClose,
         onClickOk: async () => {
           await getConversationController().deleteContact(convoId);
-          ToastUtils.pushToastSuccess('', 'Contact has been successfully deleted.');
+          const message = isPrivate?'Contact has been successfully deleted.':'You’ve successfully left the group.';
+          ToastUtils.pushToastSuccess('', message);
         },
         okText: menuItemText.slice(0, 5) === 'Leave' ? 'Leave' : 'Delete',
         okTheme: BchatButtonColor.Danger,

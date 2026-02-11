@@ -147,7 +147,10 @@ export const MessageContextMenu = (props: Props) => {
     (e: any) => {
       // this is quite dirty but considering that we want the context menu of the message to show on click on the attachment
       // and the context menu save attachment item to save the right attachment I did not find a better way for now.
-      let targetAttachmentIndex = e.triggerEvent.path[1].getAttribute('data-attachmentindex');
+      // let targetAttachmentIndex = e.triggerEvent.path[1].getAttribute('data-attachmentindex');
+      const path = e.triggerEvent.composedPath?.();
+      let targetAttachmentIndex =
+      path?.[1]?.getAttribute?.('data-attachmentindex');
       e.event.stopPropagation();
       if (!attachments?.length) {
         return;

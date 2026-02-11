@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import { SpacerLG, SpacerMD } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Notifications } from '../../util/notifications';
-// import { BchatButtonIcon } from '../wallet/BchatWalletPaymentSection';
 // import { BchatToggle } from '../basic/BchatToggle';
 
 const StyledButtonContainer = styled.div`

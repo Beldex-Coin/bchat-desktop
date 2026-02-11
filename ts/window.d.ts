@@ -106,6 +106,5 @@ declare global {
 
     Signal: any;
     WalletAddress: any;
-    deamon_list: any;
   }
 }

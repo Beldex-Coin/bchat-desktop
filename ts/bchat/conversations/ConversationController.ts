@@ -17,9 +17,6 @@ import { getOpenGroupManager } from '../apis/open_group_api/opengroupV2/OpenGrou
 
 import { deleteAllMessagesByConvoIdNoConfirmation } from '../../interactions/conversationInteractions';
 // import { useSelector } from 'react-redux';
-// import { getHeight } from '../../state/selectors/walletConfig';
-
-// const height=useSelector(getHeight)
 let instance: ConversationController | null;
 
 export const getConversationController = () => {
@@ -99,10 +96,7 @@ export class ConversationController {
 
     const create = async () => {
       try {
-        // conversation.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
-        conversation.attributes.walletUserName = localStorage.getItem('walletUserName');
         await saveConversation(conversation.attributes);
-        localStorage.setItem('walletUserName', '');
       } catch (error) {
         window?.log?.error(
           'Conversation save failed! ',

@@ -50,6 +50,9 @@ type Props = {
   cardDesignTag: JSX.Element | null;
   recentEmojiBtnVisible: boolean;
   setRecentEmojiBtnVisible: (e: boolean) => void;
+  recentEmoji: boolean;
+  setRecentEmoji: (e: boolean) => void;
+  
 };
 export const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
   display: flex;
@@ -63,6 +66,8 @@ type RecentReactsProps = {
   recentEmojiBtnVisible: boolean;
   onEmojiClick: (...args: Array<any>) => void;
   onRecentEmojiBtnVisible: () => void;
+  recentEmoji: boolean;
+  setRecentEmoji: (e: boolean) => void;
 };
 const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
   position: fixed;
@@ -86,19 +91,23 @@ const StyledRecentReactionWrapper = styled.div`
   position: relative;
 `;
 
-const RecentReacts = (props: RecentReactsProps) => {
-  const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible } = props;
-  if (!recentEmojiBtnVisible) {
-    return null;
-  }
+const   RecentReacts = (props: RecentReactsProps) => {
+  const { isIncoming, recentEmojiBtnVisible, onEmojiClick, onRecentEmojiBtnVisible, recentEmoji, setRecentEmoji } = props;
+ 
 
-  const [recentEmoji, setRecentEmoji] = useState(false);
+ 
   const emojiPanelRef = useRef<HTMLDivElement>(null);
   const [showEmojiPanel, setShowEmojiPanel] = useState(false);
   const emojiPanelHeight = 435;
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const darkMode = useSelector(getTheme) === 'dark';
+
+
+  useClickAway(emojiPanelRef, () => {
+    onCloseEmoji();
+  });
+
 
   const onShowEmoji = (e: MouseEvent): void => {
     // const panelWidth = 300; // Approximate width of emoji panel
@@ -131,9 +140,6 @@ const RecentReacts = (props: RecentReactsProps) => {
     }
   };
 
-  useClickAway(emojiPanelRef, () => {
-    onCloseEmoji();
-  });
 
   const onCloseEmoji = () => {
     setShowEmojiPanel(false);
@@ -145,7 +151,9 @@ const RecentReacts = (props: RecentReactsProps) => {
     onEmojiClick(e);
     onCloseEmoji();
   };
-
+   if (!recentEmojiBtnVisible) {
+    return null;
+  }
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
       <div>
@@ -234,6 +242,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     cardDesignTag,
     recentEmojiBtnVisible,
     setRecentEmojiBtnVisible,
+    recentEmoji,  setRecentEmoji,
   } = props;
 
   const onClickOnMessageOuterContainer = useCallback(
@@ -319,8 +328,9 @@ export const MessageContentWithStatuses = (props: Props) => {
     <StyledMessageContentContainer
       direction={isIncoming ? 'left' : 'right'}
       onMouseLeave={() => {
+         setRecentEmojiBtnVisible(false);
         setPopupReaction('');
-        setRecentEmojiBtnVisible(false);
+       
       }}
     >
       <div
@@ -351,6 +361,8 @@ export const MessageContentWithStatuses = (props: Props) => {
                   recentEmojiBtnVisible={recentEmojiBtnVisible}
                   onEmojiClick={onEmojiClick}
                   onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+                  recentEmoji={recentEmoji}   
+                  setRecentEmoji={e => setRecentEmoji(e)}
                 />
               </StyledRecentReactionWrapper>
             )}
@@ -404,6 +416,8 @@ export const MessageContentWithStatuses = (props: Props) => {
                   recentEmojiBtnVisible={recentEmojiBtnVisible}
                   onEmojiClick={onEmojiClick}
                   onRecentEmojiBtnVisible={() => setRecentEmojiBtnVisible(false)}
+                  recentEmoji={recentEmoji}   
+                  setRecentEmoji={e => setRecentEmoji(e)}
                 />
               </StyledRecentReactionWrapper>
             )}

@@ -312,9 +312,12 @@ $loading-height: 16px;
   &.place-bottom {
     &:after {
       border: none !important;
+      background-color: #F7F7F7 !important;
+    }
+    &:before{
+    width: 0 !important;
     }
   }
-
   &.place-right {
 
     //  display: none;

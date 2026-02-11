@@ -5,7 +5,6 @@ import * as MIME from '../../../types/MIME';
 
 import { BchatEmojiPanel, StyledEmojiPanel } from '../BchatEmojiPanel';
 import { BchatRecording } from '../BchatRecording';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
 import {
   getPreview,
@@ -23,8 +22,6 @@ import { getMediaPermissionsSettings } from '../../settings/BchatSettings';
 import { getDraftForConversation, updateDraftForConversation } from '../BchatConversationDrafts';
 import {
   AddStagedAttachmentButton,
-  // SendFundButton,
-  SendFundDisableButton,
   SendMessageButton,
   StartRecordingButton,
   ToggleEmojiButton,
@@ -70,36 +67,16 @@ import {
 } from './UserMentions';
 import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
-import { SettingsKey, walletSettingsKey } from '../../../data/settings-key';
 import {
-  updateBchatAlertConfirmModal,
-  updateConfirmModal,
-  updateInsufficientBalanceModal,
-  // updateBchatWalletPasswordModal,
-  updateSendConfirmModal,
+
+  updateConfirmModal
   // updateShareContactModal,
-  updateTransactionInitModal,
 } from '../../../state/ducks/modalDialog';
-import { SectionType, setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
-import {
-  getHeight,
-  getRescaning,
-  getWalletSyncBarShowInChat,
-} from '../../../state/selectors/walletConfig';
-import { wallet } from '../../../wallet/wallet-rpc';
-import { saveRecipientAddress } from '../../../data/data';
-import { ConversationTypeEnum } from '../../../models/conversation';
-import { pushToastError } from '../../../bchat/utils/Toast';
-import { updateWalletPaymentDetailsSend } from '../../../state/ducks/walletConfig';
-import { getBchatAlertConfirmModal } from '../../../state/selectors/modal';
 import { BchatIcon } from '../../icon/BchatIcon';
-import { getdaemonHeight } from '../../../state/selectors/daemon';
-import ChangingProgressProvider from '../../basic/ChangingProgressProvider';
 import classNames from 'classnames';
 // import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { SpacerLG, SpacerSM } from '../../basic/Text';
-import BeldexCoinLogo from '../../icon/BeldexCoinLogo';
 import styled from 'styled-components';
 
 // import { BaseEmoji } from 'emoji-mart';
@@ -161,16 +138,10 @@ interface Props {
   selectedConversationKey?: string;
   selectedConversation: ReduxConversationType | undefined;
   typingEnabled: boolean;
-  WalletSyncBarShowInChat: boolean;
-  walletSyncStatus: boolean;
   isMe: boolean;
   quotedMessageProps?: ReplyingToMessageProps;
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
-  walletDetails: any;
-  BchatAlertConfirmModal: any;
-  walletHeight: any;
-  deamonHeight: any;
 }
 
 interface State {
@@ -288,7 +259,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private linkPreviewAbortController?: AbortController;
   private container: HTMLDivElement | null;
   private lastBumpTypingMessageLength: number = 0;
-  private readonly chatwithWallet: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -303,7 +273,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.emojiPanelButton = React.createRef();
     autoBind(this);
     this.toggleEmojiPanel = debounce(this.toggleEmojiPanel.bind(this), 100);
-    this.chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
   }
 
   public componentDidMount() {
@@ -320,189 +289,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const div = this.container;
     div?.removeEventListener('paste', this.handlePaste);
   }
-
-  sendAmountValidation() {
-    const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
-    const { draft } = this.state;
-    const getSyncStatus = window.getSettingValue('syncStatus');
-    // const re = /^\d+\.?\d*$/;
-    const re = /^\d+(\.\d{1,5})?$/;
-    const results =
-      selectedConversation?.type === 'private' &&
-      re.test(draft) &&
-      Number(draft) >= 0.00001 &&
-      // && (draft.length-1 - draft.indexOf(".")) < 4
-      selectedConversation?.isApproved &&
-      selectedConversation?.didApproveMe &&
-      !selectedConversation?.isBlocked &&
-      this.chatwithWallet &&
-      WalletSyncBarShowInChat &&
-      !isMe &&
-      getSyncStatus &&
-      draft.length <= 16;
-
-    return results;
-  }
-  chatWithWalletInstruction() {
-    const { WalletSyncBarShowInChat } = this.props;
-    // if (this.chatwithWallet && !WalletSyncBarShowInChat) {
-    //   window.inboxStore?.dispatch(updateBchatWalletPasswordModal({}));
-    //   return;
-    // }
-    if (!this.chatwithWallet && !WalletSyncBarShowInChat) {
-      window.inboxStore?.dispatch(
-        updateBchatAlertConfirmModal({
-          onClickOk: async () => {
-            window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null));
-            window.inboxStore?.dispatch(showLeftPaneSection(SectionType.Settings));
-
-            // dispatch(setOverlayMode());
-            window.inboxStore?.dispatch(setOverlayMode(undefined));
-            // window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null));
-            // window.inboxStore?.dispatch(showLeftPaneSection(3));
-            // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false);
-            // forceUpdate();
-          },
-          onClickCancel: () => window.inboxStore?.dispatch(updateBchatAlertConfirmModal(null)),
-        })
-      );
-    }
-  }
-
-  sendConfirmModal() {
-    const messagePlaintext = cleanMentions(this.state.draft);
-    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || 'Flash';
-
-    if (!this.props.selectedConversation?.walletAddress) {
-      return pushToastError(
-        '',
-        'To send & receive BDX in-chat, start a conversation with your friend first.'
-      );
-    }
-    window.inboxStore?.dispatch(
-      updateSendConfirmModal({
-        okTheme: BchatButtonColor.Green,
-        address: this.props.selectedConversation?.walletAddress,
-        amount: messagePlaintext,
-        fee: priority === 'Flash' ? 0.0291 : 0.0096,
-        Priority: priority,
-        onClickOk: async () => {
-          await this.sendFund();
-          // window.inboxStore?.dispatch(updateTransactionInitModal({}));
-        },
-        onClickClose: () => {
-          window.inboxStore?.dispatch(updateSendConfirmModal(null));
-        },
-      })
-    );
-  }
-
-  sendFund = async () => {
-    const draft: any = this.state.draft;
-    const priority = window.getSettingValue(walletSettingsKey.settingsPriority) || 'Flash';
-
-    if (draft == 0) {
-      window.inboxStore?.dispatch(updateSendConfirmModal(null));
-      window.inboxStore?.dispatch(updateTransactionInitModal(null));
-      return ToastUtils.pushToastError('zeroAmount', 'Amount must be greater than zero');
-    }
-    if (draft > this.props.walletDetails.unlocked_balance / 1e9) {
-      window.inboxStore?.dispatch(updateSendConfirmModal(null));
-      window.inboxStore?.dispatch(updateTransactionInitModal(null));
-      // return ToastUtils.pushToastError('notEnoughBalance', 'Not enough unlocked balance..');
-      return window.inboxStore?.dispatch(updateInsufficientBalanceModal({}));
-    }
-    let decimalValue: any =
-      window.getSettingValue(walletSettingsKey.settingsDecimal) || '2 - Two (0.00)';
-    const isSweepAll =
-      draft === (this.props.walletDetails.unlocked_balance / 1e9).toFixed(decimalValue.charAt(0));
-    window.inboxStore?.dispatch(updateSendConfirmModal(null));
-    window.inboxStore?.dispatch(updateTransactionInitModal({}));
-
-    let transactionInitiatDetails: any = {
-      message: {
-        messageType: 'payment',
-        props: {
-          id: this.props.selectedConversation?.id,
-          acceptUrl: '',
-          amount: this.state.draft,
-          direction: 'outgoing',
-          isUnread: false,
-          messageId: '1234-567-7890',
-          receivedAt: 1678799702674,
-          txnId: '',
-        },
-
-        showDateBreak: 1678799702809,
-        showUnreadIndicator: false,
-      },
-    };
-    window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(transactionInitiatDetails));
-    let data: any = await wallet.transfer(
-      this.props.selectedConversation?.walletAddress,
-      draft * 1e9,
-      priority === 'Flash' ? 0 : 1,
-      isSweepAll
-    );
-    if (data.result) {
-      const TransactionHistory = {
-        tx_hash: data.result.tx_hash_list[0],
-        address: this.props.selectedConversation?.walletAddress,
-      };
-      let getSettingvalue = window.getSettingValue(walletSettingsKey.settingSaveRecipient);
-      if (getSettingvalue) {
-        await saveRecipientAddress(TransactionHistory);
-      }
-      // let sendViaMsg = `Amount:${draft},Transaction_hash:${`https://explorer.beldex.io/tx/`}${TransactionHistory.tx_hash
-      //   }`;
-      // this.setState({ draft: sendViaMsg });
-
-      window.inboxStore?.dispatch(updateSendConfirmModal(null));
-      window.inboxStore?.dispatch(updateTransactionInitModal(null));
-      ToastUtils.pushToastSuccess('successfully-sended', `Your transaction was successful.`);
-      let selectedConversationKey: any = this.props.selectedConversationKey;
-
-      const privateConvo = await getConversationController().getOrCreateAndWait(
-        selectedConversationKey,
-        ConversationTypeEnum.PRIVATE
-      );
-
-      window.inboxStore?.dispatch(updateWalletPaymentDetailsSend(null));
-
-      if (privateConvo) {
-        void privateConvo.sendMessage({
-          body: '',
-          attachments: undefined,
-          groupInvitation: undefined,
-          preview: undefined,
-          quote: undefined,
-          payment: {
-            amount: (data?.result?.amount_list[0] / 1e9).toString(),
-            txnId: TransactionHistory.tx_hash,
-          },
-        });
-
-        // Empty composition box and stagedAttachments
-        this.setState({
-          showEmojiPanel: false,
-          stagedLinkPreview: undefined,
-          ignoredLink: undefined,
-          draft: '',
-        });
-        updateDraftForConversation({
-          conversationKey: selectedConversationKey,
-          draft: '',
-        });
-      }
-      // dispatch(walletTransactionPage());
-    } else {
-      // clearStateValue();
-      window.inboxStore?.dispatch(updateSendConfirmModal(null));
-      window.inboxStore?.dispatch(updateTransactionInitModal(null));
-
-      return data;
-    }
-  };
 
   public componentDidUpdate(prevProps: Props, _prevState: State) {
     // reset the state on new conversation key
@@ -598,29 +384,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
   }
 
-  private percentageCalc() {
-    const { walletHeight, deamonHeight } = this.props;
-    let currentHeight = 0;
-    let valdatedDaemonHeight = 0;
-    const currentDaemon = window.getSettingValue(walletSettingsKey.settingsCurrentDeamon);
-    if (currentDaemon?.type === 'Local') {
-      currentHeight = Number(deamonHeight);
-      valdatedDaemonHeight = Number(walletHeight);
-    } else {
-      currentHeight = walletHeight;
-      valdatedDaemonHeight = deamonHeight;
-    }
-    let pct: any =
-      currentHeight == 0 || valdatedDaemonHeight == 0
-        ? 0
-        : ((100 * currentHeight) / valdatedDaemonHeight).toFixed(1);
-
-    const percentage = pct == 100.0 && currentHeight < valdatedDaemonHeight ? 99.9 : pct;
-    window.setSettingValue('syncStatus', percentage >= 99);
-
-    return percentage;
-  }
-
   private renderRecordingView() {
     return (
       <BchatRecording
@@ -630,122 +393,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
       />
     );
   }
-
-  private bchatWalletView() {
-    const { selectedConversation, WalletSyncBarShowInChat } = this.props;
-    // const { draft } = this.state;
-    // const re = /^\d+\.?\d*$/;
-    return (
-      <>
-        {selectedConversation?.type === 'private' &&
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        // re.test(draft) &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat ? (
-          <>{this.renderCurcularBar()}</>
-        ) : (
-          <SendFundDisableButton onClick={() => this.chatWithWalletInstruction()} />
-        )}
-      </>
-    );
-  }
-
-  // private sendMessageValidation() {
-  //   const { draft } = this.state;
-  //   const re = /^\d+\.?\d*$/;
-  //   const { selectedConversation, isMe, WalletSyncBarShowInChat ,walletSyncStatus} = this.props;
-  // const getSyncStatus = window.getSettingValue('syncStatus');
-
-  //   if (
-  //     selectedConversation?.type === 'private' &&
-  //     re.test(draft) &&
-  //     this.chatwithWallet &&
-  //     WalletSyncBarShowInChat
-  //   ) {
-  //     this.sendConfirmModal();
-  //   } else {
-  //     this.onSendMessage();
-  //   }
-  // }
   private sendButton() {
-    // const { selectedConversation, WalletSyncBarShowInChat, isMe } = this.props;
-    // const { draft } = this.state;
-    // const getSyncStatus = window.getSettingValue('syncStatus');
-    // const re = /^\d+\.?\d*$/;
     return (
       <>
-        {/* {selectedConversation?.type === 'private' &&
-        re.test(draft) &&
-        // && (draft.length-1 - draft.indexOf(".")) < 4
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        !selectedConversation?.isBlocked &&
-        this.chatwithWallet &&
-        WalletSyncBarShowInChat &&
-        !isMe &&
-        getSyncStatus ? ( */}
-        {/* {this.sendAmountValidation() ? (
-          <SendMessageButton name="Pay" onClick={() => this.sendConfirmModal()} />
-        ) :  */}
-
         <SendMessageButton name="Send" onClick={() => this.onSendMessage()} />
-        {/* } */}
       </>
     );
   }
 
-  private renderCurcularBar(ispopover?: boolean) {
-    const pathColor = this.percentageCalc() !== 0 ? '#108D32' : '#FDB12A';
-    return (
-      <ChangingProgressProvider values={[0, 20, 40, 60, 80, 100]}>
-        {() => (
-          <CircularProgressbarWithChildren
-            value={this.percentageCalc()}
-            styles={{
-              // Customize the root svg element
-              root: {
-                width: ispopover ? '47px' : '40px',
-              },
-              // Customize the path, i.e. the "completed progress"
-              path: {
-                // Path color
-                stroke: `${pathColor}`,
-                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                strokeLinecap: 'butt',
-                // Customize transition animation
-                transition: 'stroke-dashoffset 0.5s ease 0s',
-                // Rotate the path
-                // transform: 'rotate(0.25turn)',
-                transformOrigin: 'center center',
-              },
-              // Customize the circle behind the path, i.e. the "total progress"
-              trail: {
-                // Trail color
-                // stroke: '#108D32',
-                stroke: '#888A8D',
-
-                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                strokeLinecap: 'butt',
-                // Rotate the trail
-                transform: 'rotate(0.25turn)',
-                transformOrigin: 'center center',
-              },
-            }}
-          >
-            {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
-
-            {ispopover ? (
-              <span className="inner-perc-txt">{Math.floor(this.percentageCalc())}%</span>
-            ) : (
-              <BchatIcon iconType={'beldexCoinLogo'} iconSize={20} iconColor=" #888A8D" />
-            )}
-          </CircularProgressbarWithChildren>
-        )}
-      </ChangingProgressProvider>
-    );
-  }
   deleteContact() {
     const convoId: any = this.props.selectedConversationKey;
     window?.inboxStore?.dispatch(
@@ -799,14 +454,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { showEmojiPanel, selectionMenuIsVisble } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
 
-    const { selectedConversation, isMe, WalletSyncBarShowInChat } = this.props;
+    const { selectedConversation} = this.props;
     const { draft } = this.state;
-    const syncStatus =
-      this.percentageCalc() === 0
-        ? 'Scanning..'
-        : this.percentageCalc() > 0 && this.percentageCalc() < 98
-        ? 'Syncronizing..'
-        : 'Synchronized';
+   
     const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
     return (
       <>
@@ -903,34 +553,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     </div>
 
                     {this.renderTextArea()}
-
-                    <div
-                      className={classNames(
-                        WalletSyncBarShowInChat &&
-                          !this.sendAmountValidation() &&
-                          'circular-bar-wrapper'
-                      )}
-                    >
-                      {selectedConversation?.isPrivate &&
-                        typingEnabled &&
-                        !isMe &&
-                        selectedConversation?.didApproveMe &&
-                        this.bchatWalletView()}
-                    </div>
-                    <div className="wallet-sync-box">
-                      <div className="sync-txt">
-                        Wallet <span> {syncStatus}</span>
-                      </div>
-                      <div>{this.renderCurcularBar(true)}</div>
-                    </div>
-                    {this.sendAmountValidation() && (
-                      <div className="amount-tap-box" onClick={() => this.sendConfirmModal()}>
-                        <div className="sync-txt" style={{ marginRight: 'unset' }}>
-                          Tap to send <BeldexCoinLogo iconSize={22} /> <span> {draft} </span>BDX{' '}
-                          <BchatIcon iconType="send" iconSize={20} iconColor="#0B9E3C" />
-                        </div>
-                      </div>
-                    )}
                   </Flex>
                 </div>
                 {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
@@ -1329,33 +951,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
-      // await this.onSendMessage();
-      const {
-        selectedConversation,
-        WalletSyncBarShowInChat,
-        isMe,
-        BchatAlertConfirmModal,
-      } = this.props;
-      const getSyncStatus = window.getSettingValue('syncStatus');
-      const { draft } = this.state;
-      const re = /^\d+\.?\d*$/;
-      // const { WalletSyncBarShowInChat } = this.props;
-      if (
-        selectedConversation?.type === 'private' &&
-        re.test(draft) &&
-        this.chatwithWallet &&
-        selectedConversation?.isApproved &&
-        selectedConversation?.didApproveMe &&
-        WalletSyncBarShowInChat &&
-        !isMe &&
-        getSyncStatus
-      ) {
-        await this.sendConfirmModal();
-      } else {
-        if (!BchatAlertConfirmModal) {
-          await this.onSendMessage();
-        }
-      }
+       await this.onSendMessage();        
     } else if (event.key === 'Escape' && this.state.showEmojiPanel) {
       this.hideEmojiPanel();
     } else if (event.key === 'PageUp' || event.key === 'PageDown') {
@@ -1680,12 +1276,6 @@ const mapStateToProps = (state: StateType) => {
     selectedConversationKey: getSelectedConversationKey(state),
     typingEnabled: getIsTypingEnabled(state),
     isMe: getIsSelectedNoteToSelf(state),
-    WalletSyncBarShowInChat: getWalletSyncBarShowInChat(state),
-    walletSyncStatus: getRescaning(state),
-    walletDetails: state.wallet,
-    BchatAlertConfirmModal: getBchatAlertConfirmModal(state),
-    deamonHeight: getdaemonHeight(state),
-    walletHeight: getHeight(state),
   };
 };
 

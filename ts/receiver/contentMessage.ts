@@ -208,43 +208,11 @@ export async function decryptWithBchatProtocol(
   const addressLength = window.networkType == 'mainnet' ? 97 : 95;
   const beldexFinalAddress = new TextDecoder().decode(plaintext.subarray(0, addressLength));
 
-  //  sender wallet Address
-
   const conversation = await getConversationController().getOrCreateAndWait(
     envelope.source,
     ConversationTypeEnum.PRIVATE
   );
   await conversation.setwalletAddress(beldexFinalAddress);
-  // await conversation.commit();
-
-  // if (getConversation && getConversation.walletAddress) {
-  //   if (
-  //     getConversation.walletAddress ==
-  //     'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
-  //   ) {
-  //     if (beldexFinalAddress != getConversation.walletAddress) {
-  //       let data = {
-  //         id: envelope.source,
-  //         walletAddress: beldexFinalAddress,
-  //       };
-  //       let updateConversation: any = await updateConversationAddress(data);
-  //
-  //     }
-  //     localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  //   } else {
-  //     localStorage.setItem('senderWalletAddress', getConversation.walletAddress);
-  //   }
-  // } else {
-  //
-  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  // }
-  // if (
-  //   beldexFinalAddress !=
-  //   'bxbxYJsQ5G9PUgHnD89PwTRLxxUKG16uCeVXKY4s1a8ihiXDCiiohJoKQL5nxPjfWk5hz9Xztr6XX7yBsgtfiXuQ2qkZLiWPn'
-  // ) {
-  //   localStorage.setItem('senderWalletAddress', beldexFinalAddress);
-  // }
-
   const message = plaintextWithMetadata.subarray(addressLength, plainTextEnd);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error -- returning Uint8Array intentionally

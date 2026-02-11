@@ -258,7 +258,6 @@ function updateToSchemaVersion1(currentVersion: number, db: BetterSqlite3.Databa
       hasAttachments INTEGER,
       hasFileAttachments INTEGER,
       hasVisualMediaAttachments INTEGER,
-      walletUserName STRING,
       walletAddress STRING
     );
 
@@ -417,9 +416,7 @@ function updateToSchemaVersion4(currentVersion: number, db: BetterSqlite3.Databa
       members TEXT,
       name TEXT,
       profileName TEXT,
-      walletUserName STRING,
-      walletAddress STRING,
-      walletCreatedDaemonHeight INTEGER
+      walletAddress STRING
     );
 
     CREATE INDEX conversations_active ON ${CONVERSATIONS_TABLE} (
@@ -1858,7 +1855,7 @@ function getConversationCount() {
 }
 
 function saveConversation(data: any, instance?: BetterSqlite3.Database) {
-  const { id, active_at, type, members, name, profileName,walletUserName,walletCreatedDaemonHeight } = data;
+  const { id, active_at, type, members, name, profileName } = data;
   assertGlobalInstanceOrInstance(instance)
     .prepare(
       `INSERT INTO ${CONVERSATIONS_TABLE} (
@@ -1868,9 +1865,7 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
     type,
     members,
     name,
-    profileName,
-    walletUserName,
-    walletCreatedDaemonHeight
+    profileName
    
   ) values (
     $id,
@@ -1879,9 +1874,7 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
     $type,
     $members,
     $name,
-    $profileName,
-    $walletUserName,
-    $walletCreatedDaemonHeight
+    $profileName
     
   );`
     )
@@ -1893,9 +1886,7 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
       type,
       members: members ? members.join(' ') : null,
       name,
-      profileName,
-      walletUserName,
-      walletCreatedDaemonHeight
+      profileName
      
     });
 }
@@ -2224,7 +2215,6 @@ function saveMessage(data: any) {
     throw new Error('conversationId is required');
   }
 
-  // let walletUserName=walletAddress
   const payload = {
     id,
     json: objectToJSON(data),
@@ -2245,7 +2235,6 @@ function saveMessage(data: any) {
     source,
     type: type || '',
     unread,
-    // walletUserName,
     walletAddress
   };
   assertGlobalInstance()
@@ -4062,10 +4051,8 @@ export const sqlNode = {
   getV2OpenGroupRoomByRoomId,
   removeV2OpenGroupRoom,
 
-  //wallet
-
-    getRecipientAddress,
-   saveRecipientAddress,
+  getRecipientAddress,
+  saveRecipientAddress,
 //LRU Cache
    updateLRUCache,
    getLRUCache,

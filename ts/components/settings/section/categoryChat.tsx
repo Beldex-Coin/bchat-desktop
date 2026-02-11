@@ -4,20 +4,18 @@ import useUpdate from 'react-use/lib/useUpdate';
 import { createOrUpdateItem } from '../../../data/channelsItem';
 import { hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
 import { SettingsKey } from '../../../data/settings-key';
-import { updateBchatAlertConfirmModal, updateConfirmModal } from '../../../state/ducks/modalDialog';
+import { updateConfirmModal } from '../../../state/ducks/modalDialog';
 import { toggleAudioAutoplay } from '../../../state/ducks/userConfig';
 import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
-import { updatewalletSyncBarShowInChat } from '../../../state/ducks/walletConfig';
 import { BchatIcon } from '../../icon';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
-  const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
 
   if (props.hasPassword !== null) {
@@ -48,47 +46,10 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
       }
     }
 
-    function chatWithWallet() {
-      window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
-      // let contional:any=chatwithWallet;
-      // dispatch(updateWalletSyncInitiatedWithChat(contional)) ;
-      let data: any = false;
-
-      dispatch(updatewalletSyncBarShowInChat(data));
-      // dispatch(updateWalletPasswordPopUpFlag(data))
-      // window.setSettingValue(SettingsKey.settingChatwithWalletInstruction,false)
-
-      forceUpdate();
-    }
-
-    function dispatchConfirmModal() {
-      if (!chatwithWallet) {
-        dispatch(
-          updateBchatAlertConfirmModal({
-            settings: true,
-            onClickOk: async () => {
-              chatWithWallet();
-              dispatch(updateBchatAlertConfirmModal(null));
-            },
-            onClickCancel: () => dispatch(updateBchatAlertConfirmModal(null)),
-          })
-        );
-      } else {
-        chatWithWallet();
-      }
-    }
-
     return (
       <>
         <div className='bgWrapper'> 
           {' '}
-          <BchatToggleWithDescription
-            onClickToggle={() => dispatchConfirmModal()}
-            title={window.i18n('chatWithWallet')}
-            description={window.i18n('chatWithWalletDisc')}
-            active={chatwithWallet}
-            iconType={'chatWithLogo'}
-          />
           <ChangeChatFontSetting />
           <BchatToggleWithDescription
             onClickToggle={() => {

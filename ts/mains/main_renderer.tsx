@@ -17,18 +17,13 @@ import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
 // import ReactDOM from 'react-dom';
 // import React from 'react';
-import kill from 'cross-port-killer';
-import { HTTPError } from '../bchat/utils/errors';
-
-// import { walletSettingsKey } from '../data/settings-key';
 
 import nativeEmojiData from '@emoji-mart/data';
 import { initialiseEmojiData } from '../util/emoji';
 import { loadEmojiPanelI18n } from '../util/i18n';
 import { OpenGroupData } from '../data/opengroups';
 import { createRoot, Root } from 'react-dom/client';
-import os from 'os';
-const platform = os.platform();
+
 
 let root: Root | null = null;
 
@@ -433,15 +428,6 @@ function disconnect() {
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
-  if (platform !== 'win32') {
-   console.log('port kill in main_renderer');
-    kill(64371)
-      .then()
-      .catch(err => {
-        throw new HTTPError('beldex_rpc_port', err);
-      });
-  }
-
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);

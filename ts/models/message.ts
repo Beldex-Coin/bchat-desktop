@@ -30,7 +30,6 @@ import {
   PropsForAttachment,
   PropsForExpirationTimer,
   PropsForGroupInvitation,
-  PropsForPayment,
   PropsForGroupUpdate,
   PropsForGroupUpdateAdd,
   PropsForGroupUpdateGeneral,
@@ -39,6 +38,7 @@ import {
   PropsForGroupUpdateName,
   PropsForMessageWithoutConvoProps,
   PropsForSharedContact,
+  PropsForPayment,
 } from '../state/ducks/conversations';
 import { VisibleMessage } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 import { buildSyncMessage } from '../bchat/utils/syncUtils';
@@ -112,11 +112,11 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     perfStart(`getPropsMessage-${this.id}`);
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
-    const propsForPayment = this.getPropsForPayment();
     const propsForSharedContact = this.getPropsForSharedContact();
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
     const propsForTimerNotification = this.getPropsForTimerNotification();
     const propsForMessageRequestResponse = this.getPropsForMessageRequestResponse();
+    const propsForPayment = this.getPropsForPayment();
     const callNotificationType = this.get('callNotificationType');
     const messageProps: MessageModelPropsWithoutConvoProps = {
       propsForMessage: this.getPropsForMessage(),
@@ -127,7 +127,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (propsForMessageRequestResponse) {
       messageProps.propsForMessageRequestResponse = propsForMessageRequestResponse;
     }
-    if (propsForPayment) {
+       if (propsForPayment) {
       messageProps.propsForPayment = propsForPayment;
     }
     if (propsForSharedContact) {
@@ -276,7 +276,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     return basicProps;
   }
-  public getPropsForPayment(): PropsForPayment | null {
+public getPropsForPayment(): PropsForPayment | null {
     if (!this.isPayment()) {
       return null;
     }
@@ -1153,7 +1153,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
     perfStart(`messageCommit-${this.attributes.id}`);
     // because the saving to db calls _cleanData which mutates the field for cleaning, we need to save a copy
-    // this.attributes.walletAddress=localStorage.getItem("senderWalletAddress");
     const id = await saveMessage(_.cloneDeep(this.attributes));
     if (triggerUIUpdate) {
       this.dispatchMessageUpdate();
@@ -1370,6 +1369,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     if (this.isGroupInvitation()) {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
+    if (this.isSharedContact()) {
+      return `Shared contact`;
+    }
     if (this.isPayment()) {
       let amount = this.getMessageModelProps()?.propsForPayment?.amount;
       let direction =
@@ -1377,9 +1379,6 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
           ? 'Send'
           : 'Received';
       return `${amount} BDX ${direction}`;
-    }
-    if (this.isSharedContact()) {
-      return `Shared contact`;
     }
     if (this.isDataExtractionNotification()) {
       const dataExtraction = this.get(

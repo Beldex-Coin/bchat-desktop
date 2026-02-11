@@ -69,11 +69,6 @@ const darkMessageRequestBannerBackground = '#131313';
 const darkMessageRequestBannerIconBackground = '#2879FB';
 const darkMessageRequestBannerUnreadBackground = grey67;
 const darkMessageRequestBannerIcon = '#adadad';
-
-const darkWalletNodeHeader = '#108D32';
-const darkWalletSelectHover = '#545469';
-
-const darkWalletCopyHover = '#52505F';
 const darkProfileClose = '#4C4C64';
 const darkChatTimestamp = '#858598';
 
@@ -129,12 +124,6 @@ export const buttonColor = forestGreenColor;
 // Seed color
 const darkBnsLinkIdBgColor = '#202329';
 const darkBnsCameraIconBgColor = '#22222E';
-const darkWalcontentBg = '#303041';
-const darkWalInputBg = '#1c1c26';
-const darkWalTransacBtn = '#444455';
-const darkWalcancelBtn = '#403e4b';
-const darkWalletSyncBar = '#202329';
-const darkDownthickArrow = '#fff';
 const darkDisableBtn = '#444455';
 const darkDisableTxt = '#8F8FA2';
 const darkDownArrowBg = '#525262';
@@ -142,9 +131,6 @@ const darkDownArrow = '#CACAD8';
 const darkLeaveHover = '#4f4f65';
 
 const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
-
-const darkWalDownThickArrow = `url("../images/wallet/downThickarrow.svg")`;
-const darkWalPassword = `url("../images/bchat/passwordIcon.svg")`;
 const darkBnsTransactionColor = '#FFFFFF';
 const darklogoBg = darkGrey;
 const darkActionBtnBg = darkGrey;
@@ -173,7 +159,6 @@ const darkUntrustMediaBg = '#131313';
 const darkUntrustedVerticalBar = '#858598';
 const darkIconBtnHover = '#3D424C';
 const darkContextMenuHoverBg = '#333842';
-const darkWalletSyncBoxBg = '#202329';
 const darkProfileHeaderBg = '#2E333D';
 const darkChatIdBorder = '#3A3A41';
 const darkProfileInfoBorder = '#2E333D';
@@ -186,9 +171,6 @@ const darkConfirmModalInnerBg = '#1B1E23';
 const darkConfirmModalHoverBg = '#202329';
 const darkEnableBtnBg = '#202329';
 const darkModalDisableTxt = '#a7a7ba';
-const darkWalletStatusTxtBg = '#131313';
-const darkWalletUnBalanceLabel = '#858598';
-const darkWalletInnerBg = '#202329';
 const darkNoTxnTxt = '#A7A7BA';
 const darkToastBg = '#131313';
 // const bodyBg = '#131313'
@@ -196,7 +178,6 @@ const darkCallOptionBtnHover = '#424751';
 const darkSpeedPlayBg = '#202329';
 const darkMoreInfoIncommingChatBg = '#202329';
 const darkCameraHoverBg = '#46465D';
-const darkSettingWalletBetaBg = '#131313';
 const darkPrimaryBtnHoverBg = '#1A973C';
 const darkOfflineContentBg = '#131313';
 const darkInputText = '#858598';
@@ -210,6 +191,8 @@ const darkReplyMsgMediaIcon = '#A7A7BA';
 const darkLoaderBg = '#0000009e';
 const darkAttachmentBoxShadow = '0 0 41.143px 0 #000';
 const darkViewContactBorder = '#46465D';
+const darkReactionHoverBg = '#202329';
+const darkReadMoreBtnBg = '#2e333d';
 
 // adjust this path/import to your actual file
 
@@ -269,8 +252,6 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-borderBottomColor': darkBorderBottomColor,
   '--color-HintMessageText': darkHintMessage,
   '--color-composeMsgInput': darkComposeMsgInput,
-  '--color-walletNodeHeader': darkWalletNodeHeader,
-  '--color-walletSelectOption': darkWalletSelectHover,
   '--color-settingIndication': darkSettingIndication,
   '--color-copyModalbtn': darkCopyModalbtn,
 
@@ -288,12 +269,6 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-caret': darkColorCaret,
   '--color-profile-close': darkProfileClose,
   '--color-chat-timestamp': darkChatTimestamp,
-  '--color-WalcontentBg': darkWalcontentBg,
-  '--color-walInputBg': darkWalInputBg,
-  '--color-walTransacBtn': darkWalTransacBtn,
-  '--color-walcancelBtn': darkWalcancelBtn,
-  '--color-walSyncbar': darkWalletSyncBar,
-  '--color-walDownthickArrow': darkDownthickArrow,
   '--color-disableBtn': darkDisableBtn,
   '--color-disableTxt': darkDisableTxt,
   '--color-leave-button': darkLeaveHover,
@@ -327,7 +302,6 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-untrusted-vertical-bar': darkUntrustedVerticalBar,
   '--color-icon-btn-hover': darkIconBtnHover,
   '--color-context-menu-hover-bg': darkContextMenuHoverBg,
-  '--color-wallet-Sync-box-bg': darkWalletSyncBoxBg,
   '--color-profile-header-bg': darkProfileHeaderBg,
   '--color-chatId-border': darkChatIdBorder,
   '--color-profile-info-border': darkProfileInfoBorder,
@@ -340,16 +314,12 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-confirm-modal-hover-bg': darkConfirmModalHoverBg,
   '--color-enable-btn-bg': darkEnableBtnBg,
   '--color-modal-disable-txt': darkModalDisableTxt,
-  '--color-wallet-status-txt-Bg': darkWalletStatusTxtBg,
-  '--color-wallet-unbalance-label': darkWalletUnBalanceLabel,
-  '--color-wallet-inner-bg': darkWalletInnerBg,
   '--color-noTxn-txt': darkNoTxnTxt,
   '--color-toast-bg': darkToastBg,
   '--color-call-option-btn-hover': darkCallOptionBtnHover,
   '--color-speedPlay-bg': darkSpeedPlayBg,
   '--color-moreInfo-incomming-chat-bg': darkMoreInfoIncommingChatBg,
   '--color-camera-hover-bg': darkCameraHoverBg,
-  '--color-setting-wallet-beta-bg': darkSettingWalletBetaBg,
   '--color-offline-content-bg': darkOfflineContentBg,
   '--color-input-text': darkInputText,
   '--color-icon': darkIconColor,
@@ -371,11 +341,12 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-request-banner-icon-background': darkMessageRequestBannerIconBackground,
   '--color-request-banner-unread-background': darkMessageRequestBannerUnreadBackground,
   '--color-request-banner-icon': darkMessageRequestBannerIcon,
-  '--color-wallet-copy-hover': darkWalletCopyHover,
   '--color-body-bg': darkColorBg,
   '--color-password-borderBottom': darkPasswordBorderBottom,
   '--color-chatHeader': darkChatHeader,
   '--color-BnsCameraIconBg': darkBnsCameraIconBgColor,
+  '--color-reaction-hover-bg': darkReactionHoverBg,
+  '--color-read-more-btn-bg': darkReadMoreBtnBg,
   /* Images / icons */
   '--image-EmptyChatImg': darkEmptyChatImg,
   '--image-DayNight': darkDayNight,
@@ -393,6 +364,4 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--image-emptySearch': darkEmptyTransaction,
   '--image-NoMedia': darkNoMedia,
   '--message-bubbles-received-background-color': darkbubbleReceivedBg,
-  '--img-walPassword': darkWalPassword,
-  '--img-walDownThickArrow': darkWalDownThickArrow,
 };

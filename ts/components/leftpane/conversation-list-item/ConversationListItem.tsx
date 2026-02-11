@@ -31,7 +31,6 @@ import _ from 'lodash';
 import { Timestamp } from '../../conversation/Timestamp';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
 // import { SettingsKey } from '../../../data/settings-key';
-// import { getWalletSyncBarShowInChat} from '../../../state/selectors/walletConfig';
 // import { Timestamp } from '../../conversation/Timestamp';
 
 export type ConversationListItemProps = Pick<
@@ -101,20 +100,9 @@ const ConversationListItem = (props: Props) => {
     id: conversationId,
     isSelected,
     isBlocked,
-    // style,
     mentionedUs,
     isMessageRequest,
-    // walletAddress
   } = props;
-  //   const dispatch = useDispatch();
-  //   const chatwithWallet = window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-  //   // const WalletSyncInitiatedWithChat=useSelector(getWalletSyncInitiatedWithChat)
-  //  const walletSyncBarShowInChat=useSelector(getWalletSyncBarShowInChat);
-
-  // const chatInstruction = window.getSettingValue(SettingsKey.settingChatwithWalletInstruction)!==undefined ?
-  // window.getSettingValue(SettingsKey.settingChatwithWalletInstruction) : true;
-
-  // const forceUpdate = useUpdate();
   function useHeaderItemProps(conversationId: string) {
     const convoProps = useConversationPropsById(conversationId);
     if (!convoProps) {
@@ -255,8 +243,6 @@ const ConversationListItem = (props: Props) => {
                   momentFromNow={true}
                 />
               </div>
-
-              {/* <div style={{ fontSize: '12px' }}>{walletAddress}</div> */}
             </div>
           </div>
           <Portal>

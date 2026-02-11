@@ -11,10 +11,6 @@ const channelsToMakeForOpengroupV2 = [
   'getAllOpenGroupV2Conversations',
 ];
 
-// const channelsToMakeForWallet=[
-//   'getRecipientAddress',
-//   // 'saveRecipientAddressvalid'
-// ]
 const channelsToMake = new Set([
   'shutdown',
   'close',
@@ -99,8 +95,6 @@ const channelsToMake = new Set([
   'removeAllClosedGroupEncryptionKeyPairs',
   'fillWithTestData',
   ...channelsToMakeForOpengroupV2,
-  // ...channelsToMakeForWallet,
-  // wallet
   'getRecipientAddress',
   'saveRecipientAddress',
   //LRU cache

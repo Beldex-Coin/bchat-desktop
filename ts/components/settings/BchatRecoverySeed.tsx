@@ -13,7 +13,7 @@ import { displayPasswordModal } from './section/CategoryPrivacy';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon } from '../icon/BchatIcon';
-// import {  updateConfirmModal } from '../../state/ducks/modalDialog';
+
 
 export const BchatRecoverySeed = (props: any) => {
 
@@ -30,18 +30,7 @@ export const BchatRecoverySeed = (props: any) => {
   };
 
   const onClickCancelHandler = () => {
-  //   if (props.onClickCancel) {
-  //     onClickCancel();
-  //   }
-
-  //   if (onClickClose) {
-  //     onClickClose();
-  //   }
-  // state.recoveryPhraseModal
-  // displayPasswordModal('remove', props.onPasswordUpdated);
   window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Chat));
-
-  // window.inboxStore?.dispatch(updateConfirmModal(null));
 };
 
   return (
@@ -70,44 +59,10 @@ export const BchatRecoverySeed = (props: any) => {
             </div>
             {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}
           </div>
-          {/* <div className="bchat-modal-imgConfirmBox-header">{window.i18n('payYouChat')}</div>
-          <SpacerMD /> */}
-          {/* <div className="bchat-modal-imgConfirmBox-message">
-            {settings ? (
-              window.i18n('warningWalletPassword')
-            ) : (
-              <>
-                Enable pay as you chat from <span>Settings -&gt; Chat -&gt; Pay As You Chat </span>
-                to use this option
-              </>
-            )} 
-          </div> */}
         </div>
       {/* </div> */}
     </BchatWrapperModal>
   );
-
-  // if(true)
-  // {
-  // return <WarningUnSetPassword onPasswordUpdated={props.onPasswordUpdated}/>
-  // }
-
-  // return <div className='bchat-settings-recovery-seed'>
-  //   <img src="images/bchat/warning.svg" className="bchat-settings-recovery-seed-danger " />
-  //   <p className="bchat-settings-recovery-seed-bold">IMPORTANT</p>
-  //   <p className="bchat-settings-recovery-seed-red">Never Give your Seed to Anyone!</p>
-  //   <p className="bchat-settings-recovery-seed-para">Never input your Seeds into any software or website other than the official beldex wallet or BChat directly from the play store, the beldex website or the beldex GitHub.</p>
-  //   <p className="bchat-settings-recovery-seed-note">Are you sure you want to access your seed?</p>
-  //   <div className='bchat-settings-recovery-seed-button'>
-  //     <BchatButton
-  //       text={"Yes, I am sure!"}
-  //       onClick={() => setVerify(true)}
-  //       buttonType={BchatButtonType.Brand}
-  //       buttonColor={BchatButtonColor.Green}
-  //     />
-  //   </div>
-
-  // </div>
 };
 
 // const WarningUnSetPassword = (props:any) => <div className='bchat-settings-warnUnsetpass'>

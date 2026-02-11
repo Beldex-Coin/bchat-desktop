@@ -36,12 +36,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
   const dispatch = useDispatch();
   const forceUpdate = useUpdate();
   // const audioAutoPlay = useSelector(getAudioAutoplay);
-  const darktheme=useSelector((state:any)=>state.theme);
-
-  //  const chatwithWallet= window.getSettingValue(SettingsKey.settingsChatWithWallet) || false;
-    
-  
- 
+  const darktheme=useSelector((state:any)=>state.theme); 
   if (props.hasPassword !== null) {
     // const isHideMenuBarActive =
     //   window.getSettingValue(SettingsKey.settingsMenuBar) === undefined
@@ -136,15 +131,6 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           title={window.i18n('linkPreviewsTitle')}
           description={window.i18n('linkPreviewDescription')}
           active={isLinkPreviewsOn}
-        /> */}
-        {/* <BchatToggleWithDescription
-          onClickToggle={async () => {
-           window.setSettingValue(SettingsKey.settingsChatWithWallet, !chatwithWallet);
-           forceUpdate();
-          }}
-          title={window.i18n('chatWithWallet')}
-          description={''}
-          active={chatwithWallet}
         /> */}
         {os.platform() !== "darwin" &&
           <BchatToggleWithDescription

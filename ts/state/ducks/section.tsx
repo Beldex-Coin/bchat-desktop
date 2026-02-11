@@ -10,7 +10,6 @@ export enum SectionType {
   NewChat,
   Closedgroup,
   Opengroup,
-  Wallet,
   Settings,
   Profile,
   Contact,
@@ -65,7 +64,6 @@ export type OverlayMode =
   | 'open-group'
   | 'closed-group'
   | 'message-requests'
-  | 'wallet'
   | 'call-history'
   | undefined;
 

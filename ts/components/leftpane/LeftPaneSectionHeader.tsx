@@ -9,7 +9,7 @@ import { getFocusedSection, getOverlayMode } from '../../state/selectors/section
 import {
   SectionType,
   setOverlayMode,
-  showLeftPaneSection,
+  // showLeftPaneSection,
   // showSettingsSection,
 } from '../../state/ducks/section';
 import {
@@ -30,7 +30,7 @@ import { BchatToolTip } from './ActionsPanel';
 import { applyTheme } from '../../state/ducks/theme';
 // import { getIsOnline } from '../../state/selectors/onions';
 // import { BchatSettingCategory } from '../settings/BchatSettings';
-import { clearSearch } from '../../state/ducks/search';
+// import { clearSearch } from '../../state/ducks/search';
 // import { ConversationTypeEnum } from '../../models/conversation';
 import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -41,7 +41,6 @@ import { updateIsOnline,
 } from '../../state/ducks/onion';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 // import { OnionPaths } from '../../bchat/onions';
-// import { isLinkedBchatIDWithBnsForDeamon } from '../../wallet/BchatWalletHelper';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
 
@@ -87,9 +86,6 @@ export const LeftPaneSectionHeader = () => {
     case SectionType.Settings:
       label = window.i18n('settingsHeader');
       break;
-    case SectionType.Wallet:
-      label = window.i18n('wallet');
-      break;
     case SectionType.Message:
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')
@@ -118,10 +114,6 @@ export const LeftPaneSectionHeader = () => {
     // }
   }
 
-  // function switchToWalletSec() {
-  //   dispatch(showLeftPaneSection(3));
-  //   dispatch(showSettingsSection(BchatSettingCategory.Wallet));
-  // }
 
   function verifyScreens() {
     if (SectionType.Settings !== focusedSection) {
@@ -180,22 +172,6 @@ export const LeftPaneSectionHeader = () => {
     );
   }
 
-  function Settings() {
-    return (
-      <span style={{ marginRight: '15px' }}>
-        <BchatIconButton
-          iconSize="large"
-          iconType="walletSetting"
-          iconColor="#2879fb"
-          onClick={() => {
-            dispatch(clearSearch());
-            dispatch(showLeftPaneSection(3));
-            dispatch(setOverlayMode(undefined));
-          }}
-        />
-      </span>
-    );
-  }
   return (
     <>
       <Flex flexDirection="column">
@@ -230,12 +206,8 @@ export const LeftPaneSectionHeader = () => {
             {label} 
             {/* <IsOnline /> */}
           </div>
-          {/* <div onClick={() => switchToWalletSec()} style={{ marginRight: '19px', cursor: 'pointer' }}>
-          <BchatIcon iconSize={18} iconType="wallet" iconColor="#16A51C" />
-        </div> */}
-
           <Moon />
-          <Settings />
+          {/* <Settings /> */}
 
           {/* {isMessageSection && !isMessageRequestOverlay && (
           <div

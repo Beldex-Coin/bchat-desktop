@@ -18,7 +18,6 @@ import { OverlayOpenGroup } from './overlay/OverlayOpenGroup';
 import { OverlayClosedGroup } from './overlay/OverlayClosedGroup';
 
 import { getDirectContacts } from '../../state/selectors/conversations';
-import { AddressBook } from '../wallet/BchatWalletAddressBook';
 import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayCallHistory } from './overlay/OverlayCallHistory';
 import { getTheme } from '../../state/selectors/theme';
@@ -71,7 +70,6 @@ const InnerLeftPaneMessageSection = () => {
 
 const LeftPaneSection = () => {
   const focusedSection = useSelector(getFocusedSection);
-  const zoomLevel = window.getSettingValue('zoom-factor-setting');
   // const convoList = useSelector(getLeftPaneLists);
   if (focusedSection === SectionType.Message) { 
     return <InnerLeftPaneMessageSection />;
@@ -92,10 +90,6 @@ const LeftPaneSection = () => {
     return <OverlayCallHistory />;
   }
 
-  if (focusedSection === SectionType.Wallet) {
-    return <div className='wallet-contact-left-pane-wrapper' style={{minWidth:zoomLevel>100?'223px':'',width:zoomLevel>100?'20vw':''}}><AddressBook isContact={true} /></div> ;
-  }
-
   // if (focusedSection === SectionType.Contact) {
   //   return <InnerLeftPaneContactSection />;
   // }
@@ -105,35 +99,6 @@ const LeftPaneSection = () => {
   return null;
 };
 
-// const AddContactFloatingIcon = () => {
-//   const focusedSection = useSelector(getFocusedSection);
-//   const overlayMode = useSelector(getOverlayMode);
-//   const visibleFloatIcon=focusedSection === SectionType.Message && overlayMode !== 'message' && overlayMode !=='message-requests' 
- 
-
-//   if (visibleFloatIcon) {
-//     // return <InnerLeftPaneMessageSection />;
-//     return (
-//       <div className="addContactFloating">
-//         <div
-//           className="addContactFloating-content"
-//           data-tip="Add Contacts"
-//           //  data-offset="{'right':60}"
-//           data-offset="{'top':80,'right':80}"
-//           data-place="bottom"
-//           onClick={() => window.inboxStore?.dispatch(setOverlayMode('message'))}
-//         >
-//           <img src="images/wallet/addNewChat.svg" style={{ width: '23px', height: '23px' }} />
-
-//           {/* <BchatIcon iconSize={23} iconType="addContact" /> */}
-//           {/* <img src={"addNewChat.svg"} /> */}
-//         </div>
-//       </div>
-//     );
-//   }
-//   return <></>;
-// };
-
 export const LeftPane = () => {
   const darkMode = useSelector(getTheme);
   return (
@@ -142,8 +107,6 @@ export const LeftPane = () => {
         <div className="module-left-pane">
            <ActionsPanel />
           <LeftPaneSection />
-          {/* <AddContactFloatingIcon /> */}
-          
         </div>
       </div>
     </BchatTheme>

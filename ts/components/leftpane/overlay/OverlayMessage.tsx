@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
@@ -124,7 +124,7 @@ export const OverlayMessage = () => {
             onChange={setPubkeyOrOns}
             maxLength={66}
             dataTestId="new-bchat-conversation"
-            // onPressEnter={handleMessageButtonClick}
+          // onPressEnter={handleMessageButtonClick}
           />
           {loading && (
             <Loader>
@@ -164,31 +164,17 @@ export const OverlayMessage = () => {
               <SpacerXS />
               <div className="id-Wrapper">
                 <p>{ourconvo.id}</p>
-                <CopyIconButton content={ourconvo.id} iconSize={22} onClick={() => {}} />
+                <CopyIconButton content={ourconvo.id} iconSize={22} onClick={() => { }} />
               </div>
               <SpacerMD />
+
               <label className="label-txt">Beldex Address</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p className="blue-color">{walletAddress}</p>
-                <CopyIconButton content={walletAddress} iconSize={22} onClick={() => {}} />
+                <CopyIconButton content={walletAddress} iconSize={22} onClick={() => { }} />
               </div>
-              {/* <div className="bchat-description-long">
-        Share your BChat ID with your friends. You can find your BChat ID below
-      </div> */}
-              {/* <BchatIdEditable
-        // editable={!loading}
-        value={ourNumber}
-        // onChange={setPubkeyOrOns}
-        dataTestId="new-bchat-conversation"
-      /> */}
-
-              {/* <button className="nextButton" onClick={handleMessageButtonClick}>
-        {buttonText}
-      </button> */}
-
               <SpacerMD />
-
               <BchatButton
                 buttonColor={BchatButtonColor.Secondary}
                 buttonType={BchatButtonType.Default}

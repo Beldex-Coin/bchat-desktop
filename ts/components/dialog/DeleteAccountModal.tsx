@@ -13,25 +13,9 @@ import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
 import { SpacerSM } from '../basic/Text';
-// import { wallet } from '../../wallet/wallet-rpc';
-// import { kill } from 'cross-port-killer';
-// import { HTTPError } from '../../bchat/utils/errors';
+
 
 export const deleteDbLocally = async (deleteType?: string) => {
-    // wallet
-  // .closeWallet()
-  // .then(() => {
-  // kill(64371)
-  //     .then(() => {
-  //       console.log('killed port.....');
-  //     })
-  //     .catch(err => {
-  //       throw new HTTPError('beldex_rpc_port', err);
-  //     });
-  // })
-  // .catch(err => {
-  //   throw new HTTPError('close wallet error', err);
-  // });
   window?.log?.info('last message sent successfully. Deleting everything');
   await window.persistStore?.purge();
   window?.log?.info('store purged');

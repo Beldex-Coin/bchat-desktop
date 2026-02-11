@@ -41,10 +41,10 @@ export default function BchatUpdateInstruntion() {
             <SpacerLG />
             <img src='images/bchat/Update_icon.svg' className="modal-UpdateModal-icon"></img>
             <SpacerMD />
-            <div className="modal-UpdateModal-header">BChat Wallet Update</div>
+            <div className="modal-UpdateModal-header">BChat Update</div>
             <SpacerLG />
             <div className="modal-UpdateModal-discription">
-                The Beldex wallet has been integrated to BChat. Restore your app to gain access your BChat account.
+             Restore your app to gain access your BChat account.
                 First, copy your recovery seed by clicking <span className="modal-UpdateModal-discription-fontMedium">'Copy Seed'</span>. Save your recovery seed. Then click <span className="modal-UpdateModal-discription-fontMedium">'Restore'</span> to restore your
                 account using the seed.
             </div>

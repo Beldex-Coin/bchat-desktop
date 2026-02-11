@@ -108,7 +108,7 @@ export const BnsLinkDialog = () => {
             <SpacerSM />
             <div className="inputBox-wrapper" style={{border:verifyError?' 1px solid #FF3E3E':''}}>
               <input
-                style={{ color:verifyError?'#FF3E3E':'#0BB70F' }}
+                style={{ color:isVerify?'#0BB70F':verifyError?'#FF3E3E':'' }}
                 type="text"
                 className="inputBox"
                 disabled={isVerify}

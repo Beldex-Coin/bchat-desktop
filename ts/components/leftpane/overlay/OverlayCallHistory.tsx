@@ -6,7 +6,6 @@ import {
   useConversationBnsHolder,
   useConversationUsernameOrShorten,
 } from '../../../hooks/useParamSelector';
-// import { AvatarItem } from '../../wallet/BchatWalletAddressBook';
 import { Flex } from '../../basic/Flex';
 import { useSelector } from 'react-redux';
 

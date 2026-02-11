@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import  { useContext, useEffect, useState } from 'react';
 import { fromHex, sanitizeBchatUsername } from '../../bchat/utils/String';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatIconButton } from '../icon';
-import { LeftImage, RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
+import { LeftImage, NetType, RegistrationContext, RegistrationPhase, signUp } from './RegistrationStages';
 import { RegistrationUserDetails } from './RegistrationUserDetails';
 import { SignInMode } from './SignInTab';
 import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
 import { StringUtils, ToastUtils } from '../../bchat/utils';
-import { wallet } from '../../wallet/wallet-rpc';
 import { mnDecode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
-import { WalletPassword } from './WalletPass';
+
+
+const coreBridgeInstance = require('@bdxi/beldex-app-bridge')
 
 // const { clipboard } = require('electron');
 
@@ -66,11 +67,8 @@ export const SignUpTab = (props: any) => {
   const [displayName, setDisplayName] = useState('');
   const [displayNameError, setDisplayNameError] = useState<undefined | string>('');
   const [displayNameScreen, setDisplayNameScreen] = useState(0);
-  const [password, setPassword] = useState('');
-  const [repassword, setRepassword] = useState('');
   const [generatedRecoveryPhrase, setGeneratedRecoveryPhrase] = useState('');
   const [showSeedLoading, setShowSeedLoading] = useState(false);
-  // const [daemonHeight,setDaemonHeight]=useState(0);
   const [hexGeneratedPubKey, setHexGeneratedPubKey] = useState('');
 
   useEffect(() => {
@@ -79,11 +77,18 @@ export const SignUpTab = (props: any) => {
     }
   }, [signUpMode]);
 
-  const generateMnemonicAndKeyPairCreate = async (props: any) => {
+  const getAccountDetails = async () => {
+    const bridgeInstance = await coreBridgeInstance({});
+    const accountDetails = bridgeInstance.newly_created_wallet('english',NetType.Mainnet);
+    return accountDetails;
+        // params address and network type (MAINNET 1 TESTNET 0)    
+  }
+  const generateMnemonicAndKeyPairCreate = async () => {
     if (generatedRecoveryPhrase === '') {
-      const mnemonic = await wallet.generateMnemonic(props);
-      // let data=await wallet.sendRPC('getheight', {}, 5000);
-      //  let  daemonBlockHeight=data.result?.height;
+      const accountDetails = await getAccountDetails();
+      const mnemonic = accountDetails.mnemonic_string;
+      const walletAddress = accountDetails.address_string;
+     
       let seedHex = mnDecode(mnemonic);
       // handle shorter than 32 bytes seeds
       const privKeyHexLength = 32 * 2;
@@ -96,9 +101,10 @@ export const SignUpTab = (props: any) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error -- returning Uint8Array intentionally
       const newHexPubKey = StringUtils.decode(keyPair.pubKey, 'hex');
-      // setDaemonHeight(data.result?.height)
       setGeneratedRecoveryPhrase(mnemonic);
       setHexGeneratedPubKey(newHexPubKey); // our 'frontend' bchatID
+      localStorage.setItem('userAddress', walletAddress);
+      
     }
   };
 
@@ -122,7 +128,6 @@ export const SignUpTab = (props: any) => {
   const enableCompleteSignUp = displayNameOK;
   const signUpWithDetails = async () => {
     setShowSeedLoading(true);
-    localStorage.setItem('walletUserName', displayName);
     await signUp({
       displayName,
       generatedRecoveryPhrase: generatedRecoveryPhrase,
@@ -154,61 +159,20 @@ export const SignUpTab = (props: any) => {
       window?.log?.warn('invalid trimmed name for registration');
       ToastUtils.pushToastError('invalidDisplayName', window.i18n('displayNameEmpty'));
     } else {
-      setDisplayNameScreen(1);
-      props.imageValidator(LeftImage.password);
+      void generateMnemonicAndKeyPairCreate();
+      setDisplayNameScreen(2);
+      props.imageValidator(LeftImage.address);
     }
   };
 
-  const passValid = () => {
-    if (!password || !repassword) {
-      ToastUtils.pushToastError('invalidPassword', 'Please Enter Password !');
-    } else if (
-      (password.length < 4 && repassword.length < 4) ||
-      (password.length > 13 && repassword.length > 13)
-    ) {
-      ToastUtils.pushToastError(
-        'walletPasswordLengthError',
-        window.i18n('walletPasswordLengthError')
-      );
-    } else if (password !== repassword) {
-      window?.log?.warn('invalid password');
-      ToastUtils.pushToastError('invalidPassword', 'Please Enter Same Password !');
-    } else {
-      const walletData = { displayName, password };
-      void generateMnemonicAndKeyPairCreate(walletData);
-      setDisplayNameScreen(2);
-      props.imageValidator(LeftImage.address);
-      setRepassword('');
-      setPassword('');
-    }
-  };
+  
   const goback = () => {
     props.assent(true);
     clickGoBack();
     if (displayNameScreen === 1) {
-      setPassword('');
-      setRepassword('');
       props.imageValidator(LeftImage.registration);
     }
   };
-
-  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, e: string) => {
-    const newValue = e.replace(/\s+/g, '');
-    setter(newValue);
-  };
-
-  if (displayNameScreen === 1) {
-    return (
-      <WalletPassword
-        password={password}
-        repassword={repassword}
-        setPassword={(e: string) => handleInputChange(setPassword, e)}
-        setRepassword={(e: string) => handleInputChange(setRepassword, e)}
-        backArrow={goback}
-        submit={passValid}
-      />
-    );
-  }
 
   if (displayNameScreen === 0) {
     return (
@@ -270,11 +234,11 @@ export const SignUpTab = (props: any) => {
             props.imageValidator(LeftImage.recoveryseed);
           }}
           pubKey={hexGeneratedPubKey}
-          walletAddress={localStorage.getItem('userAddress')}
           assentAndGoBack={() => {
             props.assent(true);
             clickGoBack();
           }}
+          walletAddress={localStorage.getItem('userAddress') || ''}
         />
       </>
     );

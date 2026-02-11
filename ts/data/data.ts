@@ -867,7 +867,6 @@ export async function fillWithTestData(convs: number, msgs: number) {
   }
 }
 
-//wallet integration
 export async function saveRecipientAddress(data: any) {
   return await channels.saveRecipientAddress(data);
 }

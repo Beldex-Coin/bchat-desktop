@@ -16,17 +16,10 @@ import {
   getUpdateGroupMembersModal,
   getUpdateGroupNameModal,
   getUserDetailsModal,
-  getChangePasswordModalState,
-  getwalletSettingMiniModalState,
-  getTransactionInitModal,
-  getInsufficientBalanceModal,
-  getwalletSendConfirmModal,
+  getSettingMiniModalState,
   getBchatUpdateInstruntion,
-  getBchatWalletPasswordModal,
-  getBchatAlertConfirmModal,
   getBnsLinkDialog,
   getAboutBnsModal,
-  getBchatWalletForgotPasswordModal,
   getMessageMoreInfoModal,
   getCommunityGuidelinesModal,
   // getReactListDialog,
@@ -47,17 +40,12 @@ import { UpdateGroupMembersDialog } from './UpdateGroupMembersDialog';
 import { UpdateGroupNameDialog } from './UpdateGroupNameDialog';
 import { BchatNicknameDialog } from './BchatNicknameDialog';
 import { BanOrUnBanUserDialog } from './BanOrUnbanUserDialog';
-import { ChangePassword } from '../wallet/BchatWalletChangePassword';
-import { WalletModal } from '../wallet/BchatWalletModal';
-import { TransactionInitModal } from '../wallet/BchatWalletTransactionInitModal';
-import { InsufficientBalanceModal } from '../wallet/BchatWalletInsufficientBalanceModal';
-import { BchatSendConfirm } from './BchatWalletSendConfirmModal';
+
+import { BchatSettingMiniModal } from './BchatSettingMiniModal';
+
 import BchatUpdateInstruntion from './updateInstructionModal';
-import { BchatWalletPasswordModal } from './BchatWalletPasswordModal';
-import { BchatAlertConfirmModal } from './bchatAlertConfirmModal';
 import {BnsLinkDialog} from './BnsLinkDialog'
 import { AboutBnsDialog } from './AboutBnsDialog';
-import { BchatWalletForgotPasswordModal } from './BchatWalletForgotPasswordModal';
 import { MessageMoreInfoModal } from '../conversation/message/message-item/MessageDetail';
 import { InviteContactsDialog } from './InviteContactDialog';
 import { CommunityGuidelinesDialog } from './CommunityGuidelinesDialog';
@@ -84,15 +72,8 @@ export const ModalContainer: any = () => {
   const bchatPasswordModalState = useSelector(getBchatPasswordDialog);
   const deleteAccountModalState = useSelector(getDeleteAccountModalState);
   const banOrUnbanUserModalState = useSelector(getBanOrUnbanUserModalState);
-  const ChangePasswordModalState = useSelector(getChangePasswordModalState);
-  const walletSettingMiniModal = useSelector(getwalletSettingMiniModalState);
-  const TransactionInitModalState = useSelector(getTransactionInitModal);
-  const InsufficientBalanceModalState = useSelector(getInsufficientBalanceModal);
-  const BchatSendConfirmState = useSelector(getwalletSendConfirmModal);
+  const settingMiniModalState = useSelector(getSettingMiniModalState);
   const BchatUpdateInstruntionState = useSelector(getBchatUpdateInstruntion);
-  const BchatWalletPasswordModalState = useSelector(getBchatWalletPasswordModal);
-  const BchatWalletForgotPasswordModalState=useSelector(getBchatWalletForgotPasswordModal)
-  const BchatAlertConfirmModalState = useSelector(getBchatAlertConfirmModal);
   const aboutBnsModalState=useSelector(getAboutBnsModal);
   const messageMoreInfoState=useSelector(getMessageMoreInfoModal);
   const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
@@ -122,17 +103,8 @@ export const ModalContainer: any = () => {
       {bchatPasswordModalState && <BchatPasswordDialog {...bchatPasswordModalState} />}
       {deleteAccountModalState && <DeleteAccountModal {...deleteAccountModalState} />}
       {confirmModalState && <BchatConfirm {...confirmModalState} />}
-      {ChangePasswordModalState && <ChangePassword />}
-      {walletSettingMiniModal && <WalletModal {...walletSettingMiniModal} />}
-      {TransactionInitModalState && <TransactionInitModal />}
-      {InsufficientBalanceModalState && <InsufficientBalanceModal/>}
-      {BchatSendConfirmState && <BchatSendConfirm {...BchatSendConfirmState} />}
+      {settingMiniModalState && <BchatSettingMiniModal {...settingMiniModalState} />}
       {BchatUpdateInstruntionState && <BchatUpdateInstruntion {...BchatUpdateInstruntionState} />}
-      {BchatWalletPasswordModalState && (
-        <BchatWalletPasswordModal {...BchatWalletPasswordModalState} />
-      )}
-      {BchatWalletForgotPasswordModalState && <BchatWalletForgotPasswordModal {...BchatWalletForgotPasswordModalState}/> }
-      {BchatAlertConfirmModalState && <BchatAlertConfirmModal {...BchatAlertConfirmModalState} />}
       {aboutBnsModalState && <AboutBnsDialog />}
       {messageMoreInfoState && <MessageMoreInfoModal {...messageMoreInfoState}/>}
       {communityGuidelinesModalState && <CommunityGuidelinesDialog  />}

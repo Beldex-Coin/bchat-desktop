@@ -20,7 +20,7 @@ import { sanitizeBchatUsername } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { CopyIconButton } from '../icon/CopyIconButton'
-import {  SpacerXS } from '../basic/Text';
+import { SpacerXS } from '../basic/Text';
 
 interface State {
   profileName: string;
@@ -103,9 +103,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
             showExitIcon={true}
             isloading={this.state.loading}
             okButton={{
-              text:this.state.mode == 'qr'?'Show ID' :'Show QR',
+              text: this.state.mode == 'qr' ? 'Show ID' : 'Show QR',
               iconSize: 26,
-              iconType:this.state.mode == 'qr'?'KeyboardBackspaceArrow': 'qr_code'
+              iconType: this.state.mode == 'qr' ? 'KeyboardBackspaceArrow' : 'qr_code'
               , onClickOkHandler: this.qrStatusUpdate
             }}
             buttons={<button
@@ -161,7 +161,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   private renderProfileHeader() {
     return (
       <>
-        <div className="avatar-center" style={{marginLeft: "25px"}}>
+        <div className="avatar-center" style={{ marginLeft: "25px" }}>
           <div className="avatar-center-inner">
             {this.renderAvatar()}
             <div
@@ -196,7 +196,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 // backgroundColor="var(--color-BnsCameraIconBg)"
                 // borderRadius="20px"
                 iconSize={16}
-                // iconPadding="7px"
+              // iconPadding="7px"
               />
               <BchatToolTip place="top" effect="solid" />
             </div>
@@ -215,7 +215,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         mode: 'edit',
         loading: false,
       });
-      this.onClickOK( scaledAvatarUrl );
+      this.onClickOK(scaledAvatarUrl);
     }
   }
 
@@ -231,6 +231,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
             style={{
               display: 'flex',
               width: '86%',
+              height:'25px',
+              margin:'5px 0',
               justifyContent: 'center',
             }}
           >
@@ -238,6 +240,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <BchatIconButton
               iconType="pencil"
               iconSize="medium"
+              padding="0 5px"
               iconColor="#128b17"
               onClick={() => {
                 this.setState({ mode: 'edit' });
@@ -354,7 +357,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span style={{marginRight:'5px'}}> {i18n('bnsVerified')}</span>
+            <span style={{ marginRight: '5px' }}> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}
@@ -365,12 +368,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
     let walletAddress = localStorage.getItem('userAddress');
     return (
       <div>
-        {/* <p className="profile-header">{window.i18n('BchatID')}</p> */}
         <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}
         >
           <div className="profile-value">
-            <div style={{ marginTop: '10px', color: 'var(--color-text)'}}>{window.i18n('BchatID')}</div>
-            <p style={{ margin: '10px 0px',fontWeight: '400' }}>
+            <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('BchatID')}</div>
+            <p style={{ margin: '10px 0px', fontWeight: '400' }}>
               {props.bchatID}
             </p>
           </div>
@@ -385,36 +387,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
             />
           </div>
         </div>
-
-        {/* <p className="profile-header">{window.i18n('profileBeldexAddres')}</p> */}
         <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
         >
-          <div className="profile-value" style={{ color: 'var(--color-text)'}}>
+          <div className="profile-value" style={{ color: 'var(--color-text)' }}>
             <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400',color:'#2F8FFF' }}>
+            <p style={{ margin: '10px 0px', fontWeight: '400', color: '#2F8FFF' }}>
               {walletAddress}
             </p>
           </div>
-          {/* <div
-            onClick={() => copyBchatID(walletAddress)}
-            data-tip="Copy"
-            data-place="right"
-            data-offset="{'top':17}"
-            className="bchat-id-section-display-icon"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 18.151 18.151"
-            >
-              <path
-                id="copy_icon"
-                d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z"
-                transform="translate(-2 -2)"
-              />
-            </svg>
-          </div> */}
           <div
             className="bchat-id-section-display-icon"
             data-tip="Copy"
@@ -452,14 +432,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
     // const userName = profileName || this.convo.id;
 
     return (
-      
-        <Avatar
-          forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
-          forcedName={profileName}
-          size={AvatarSize.XL}
-          pubkey={this.convo.id}
-          isBnsHolder={this.convo?.attributes?.isBnsHolder}
-        />
+
+      <Avatar
+        forcedAvatarPath={newAvatarObjectUrl || oldAvatarPath}
+        forcedName={profileName}
+        size={AvatarSize.XL}
+        pubkey={this.convo.id}
+        isBnsHolder={this.convo?.attributes?.isBnsHolder}
+      />
     );
   }
 
@@ -488,9 +468,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
   /**
    * Tidy the profile name input text and save the new profile name and avatar
    */
-  private onClickOK(scaledAvatarUrl?: string |undefined) {
+  private onClickOK(scaledAvatarUrl?: string | undefined) {
     const { newAvatarObjectUrl, profileName, setProfileName } = this.state;
-    const newName = profileName.trim()  ? profileName.trim() : setProfileName;
+    const newName = profileName.trim() ? profileName.trim() : setProfileName;
     // if (newName.length === 0 || newName.length > MAX_USERNAME_LENGTH) {
     //   ToastUtils.pushToastError('invalid name', 'invalid name');
     //   return;
@@ -501,7 +481,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
       },
       async () => {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        await commitProfileEdits(setProfileName, newName, scaledAvatarUrl ||newAvatarObjectUrl);
+        await commitProfileEdits(setProfileName, newName, scaledAvatarUrl || newAvatarObjectUrl);
         this.setState({
           loading: false,
           mode: 'default',
