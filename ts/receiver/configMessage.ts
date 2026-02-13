@@ -36,8 +36,10 @@ async function handleOurProfileUpdate(
       displayName,
       profilePicture,
     };
-    await updateOurProfileSync(bchatProfile, profileKey);
     await setLastProfileUpdateTimestamp(_.toNumber(sentAt));
+    await updateOurProfileSync(bchatProfile, profileKey);
+    
+   
     // do not trigger a signin by linking if the display name is empty
     if (displayName) {
       trigger(configurationMessageReceived, displayName);
@@ -202,15 +204,12 @@ export async function handleConfigurationMessage(
   if (!ourPubkey) {
     return;
   }
-
   if (envelope.source !== ourPubkey) {
     window?.log?.info('Dropping configuration change from someone else than us.');
      await removeFromCache(envelope);
     return;
   }
-
   await handleOurProfileUpdate(envelope.timestamp, configurationMessage);
-
   await handleGroupsAndContactsFromConfigMessage(envelope, configurationMessage);
 
   await removeFromCache(envelope);

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { downloadAttachment } from './attachments';
 
-import { allowOnlyOneAtATime, hasAlreadyOneAtaTimeMatching } from '../bchat/utils/Promise';
+import {  allowOnlyLatestProcess, allowOnlyOneAtATime, hasAlreadyOneAtaTimeMatching } from '../bchat/utils/Promise';
 import { toHex } from '../bchat/utils/String';
 import { processNewAttachment } from '../types/MessageAttachment';
 import { MIME } from '../types';
@@ -63,10 +63,16 @@ export async function updateOurProfileSync(
     window?.log?.warn('[profile-update] Cannot update our profile with empty convoid');
     return;
   }
-  const oneAtaTimeStr = `appendFetchAvatarAndProfileJob:${ourConvo.id}`;
-  return allowOnlyOneAtATime(oneAtaTimeStr, async () => {
-    return createOrUpdateProfile(ourConvo, profile, profileKey);
-  });
+   const oneAtaTimeStr = `appendFetchAvatarAndProfileJob:${ourConvo.id}`;
+  return allowOnlyLatestProcess(oneAtaTimeStr, async (signal) => {
+  return createOrUpdateProfile(
+    ourConvo,
+    profile,
+    profileKey,
+    signal
+  );
+ });
+
 }
 
 /**
@@ -75,76 +81,108 @@ export async function updateOurProfileSync(
 async function createOrUpdateProfile(
   conversation: ConversationModel,
   profile: SignalService.DataMessage.ILokiProfile,
-  profileKey?: Uint8Array | null
+  profileKey?: Uint8Array | null,
+  signal?: AbortSignal
 ) {
-  // Retain old values unless changed:
-  const newProfile = conversation.get('profile') || {};
+  try {
+    throwIfAborted(signal);
 
-  let changes = false;
-  if (newProfile.displayName !== profile.displayName) {
-    changes = true;
-  }
-  newProfile.displayName = profile.displayName;
+    const newProfile = conversation.get('profile') || {};
+    let changes = false;
 
-  if (profile.profilePicture && profileKey) {
-    const prevPointer = conversation.get('avatarPointer');
-    const needsUpdate = !prevPointer || !_.isEqual(prevPointer, profile.profilePicture);
+    if (newProfile.displayName !== profile.displayName) {
+      changes = true;
+    }
+    newProfile.displayName = profile.displayName;
 
-    if (needsUpdate) {
-      try {
-        window.log.debug(`[profile-update] starting downloading task for  ${conversation.id}`);
+    if (profile.profilePicture && profileKey) {
+      const prevPointer = conversation.get('avatarPointer');
+      const needsUpdate =
+        !prevPointer || !_.isEqual(prevPointer, profile.profilePicture);
+
+      if (needsUpdate) {
+        throwIfAborted(signal);
+
+        window.log.debug(
+          `[profile-update] starting downloading task for ${conversation.id}`
+        );
+
         const downloaded = await downloadAttachment({
           url: profile.profilePicture,
           isRaw: true,
+          signal,
         });
 
-        // null => use placeholder with color and first letter
-        let path = null;
-        if (profileKey) {
-          // Convert profileKey to ArrayBuffer, if needed
-          const encoding = typeof profileKey === 'string' ? 'base64' : undefined;
-          try {
-            const profileKeyArrayBuffer = ByteBuffer.wrap(profileKey, encoding).toArrayBuffer();
-            const decryptedData = await decryptProfile(downloaded.data, profileKeyArrayBuffer);
-            window.log.info(
-              `[profile-update] about to auto scale avatar for convo ${conversation.id}`
-            );
+        throwIfAborted(signal);
 
-            const scaledData = await autoScaleForIncomingAvatar(decryptedData);
-            const upgraded = await processNewAttachment({
-              data: await scaledData.blob.arrayBuffer(),
-              contentType: MIME.IMAGE_UNKNOWN, // contentType is mostly used to generate previews and screenshot. We do not care for those in this case.
-            });
-            // Only update the convo if the download and decrypt is a success
-            conversation.set('avatarPointer', profile.profilePicture);
-            conversation.set('profileKey', toHex(profileKey));
-            ({ path } = upgraded);
-          } catch (e) {
-            window?.log?.error(`[profile-update] Could not decrypt profile image: ${e}`);
-          }
-        }
-        newProfile.avatar = path;
-        changes = true;
-      } catch (e) {
-        window.log.warn(
-          `[profile-update] Failed to download attachment at ${profile.profilePicture}. Maybe it expired? ${e.message}`
+        const profileKeyArrayBuffer = ByteBuffer
+          .wrap(profileKey)
+          .toArrayBuffer();
+
+        throwIfAborted(signal);
+
+        const decryptedData = await decryptProfile(
+          downloaded.data,
+          profileKeyArrayBuffer
         );
-        // do not return here, we still want to update the display name even if the avatar failed to download
+
+        throwIfAborted(signal);
+
+        const scaledData = await autoScaleForIncomingAvatar(decryptedData);
+
+        throwIfAborted(signal);
+
+        const upgraded = await processNewAttachment({
+          data: await scaledData.blob.arrayBuffer(),
+          contentType: MIME.IMAGE_UNKNOWN,
+        });
+
+        throwIfAborted(signal);
+
+        // Only update if successful
+        conversation.set('avatarPointer', profile.profilePicture);
+        conversation.set('profileKey', toHex(profileKey));
+        newProfile.avatar = upgraded.path;
+        changes = true;
       }
     }
-  } else if (profileKey) {
-    if (newProfile.avatar !== null) {
-      changes = true;
-    }
-    newProfile.avatar = null;
-  }
 
-  const conv = await getConversationController().getOrCreateAndWait(
-    conversation.id,
-    ConversationTypeEnum.PRIVATE
-  );
-  await conv.setBchatProfile(newProfile);
-  if (changes) {
-    await conv.commit();
+    const conv = await getConversationController().getOrCreateAndWait(
+      conversation.id,
+      ConversationTypeEnum.PRIVATE
+    );
+
+    throwIfAborted(signal);
+
+    await conv.setBchatProfile(newProfile);
+
+    if (changes) {
+      throwIfAborted(signal);
+      await conv.commit();
+    }
+
+  } catch (e: any) {
+    // Ignore abort errors silently
+    if (e?.name === 'AbortError') {
+      window?.log?.debug(
+        `[profile-update] aborted for conversation ${conversation.id}`
+      );
+      return;
+    }
+
+    // Log real errors
+    window?.log?.error(
+      `[profile-update] failed for conversation ${conversation.id}: ${
+        e?.message || e
+      }`
+    );
+
+    throw e; // rethrow so caller can handle if needed
+  }
+}
+
+export function throwIfAborted(signal?: AbortSignal) {
+  if (signal?.aborted) {
+    throw new DOMException('Aborted', 'AbortError');
   }
 }
