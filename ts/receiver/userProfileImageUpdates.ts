@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { downloadAttachment } from './attachments';
 
-import { allowOnlyOneAtATime, hasAlreadyOneAtaTimeMatching } from '../bchat/utils/Promise';
+import {  allowOnlyLatestProcess, allowOnlyOneAtATime, hasAlreadyOneAtaTimeMatching } from '../bchat/utils/Promise';
 import { toHex } from '../bchat/utils/String';
 import { processNewAttachment } from '../types/MessageAttachment';
 import { MIME } from '../types';
@@ -63,23 +63,31 @@ export async function updateOurProfileSync(
     window?.log?.warn('[profile-update] Cannot update our profile with empty convoid');
     return;
   }
-  const oneAtaTimeStr = `appendFetchAvatarAndProfileJob:${ourConvo.id}`;
-  return allowOnlyOneAtATime(oneAtaTimeStr, async () => {
-    return createOrUpdateProfile(ourConvo, profile, profileKey);
-  });
+   const oneAtaTimeStr = `appendFetchAvatarAndProfileJob:${ourConvo.id}`;
+  return allowOnlyLatestProcess(oneAtaTimeStr, async (signal) => {
+  return createOrUpdateProfile(
+    ourConvo,
+    profile,
+    profileKey,
+    signal
+  );
+ });
+
 }
 
 /**
  * Creates a new profile from the profile provided. Creates the profile if it doesn't exist.
  */
+
 async function createOrUpdateProfile(
   conversation: ConversationModel,
   profile: SignalService.DataMessage.ILokiProfile,
-  profileKey?: Uint8Array | null
+  profileKey?: Uint8Array | null,
+  signal?: AbortSignal
 ) {
   // Retain old values unless changed:
   const newProfile = conversation.get('profile') || {};
-
+  throwIfAborted(signal);
   let changes = false;
   if (newProfile.displayName !== profile.displayName) {
     changes = true;
@@ -93,6 +101,7 @@ async function createOrUpdateProfile(
     if (needsUpdate) {
       try {
         window.log.debug(`[profile-update] starting downloading task for  ${conversation.id}`);
+         throwIfAborted(signal);
         const downloaded = await downloadAttachment({
           url: profile.profilePicture,
           isRaw: true,
@@ -125,6 +134,7 @@ async function createOrUpdateProfile(
         }
         newProfile.avatar = path;
         changes = true;
+         throwIfAborted(signal);
       } catch (e) {
         window.log.warn(
           `[profile-update] Failed to download attachment at ${profile.profilePicture}. Maybe it expired? ${e.message}`
@@ -143,8 +153,19 @@ async function createOrUpdateProfile(
     conversation.id,
     ConversationTypeEnum.PRIVATE
   );
+  throwIfAborted(signal);
   await conv.setBchatProfile(newProfile);
   if (changes) {
+    throwIfAborted(signal);
     await conv.commit();
   }
 }
+
+export function throwIfAborted(signal?: AbortSignal) {
+  if (signal?.aborted) {
+    throw new DOMException('Aborted', 'AbortError');
+  }
+}
+
+
+
