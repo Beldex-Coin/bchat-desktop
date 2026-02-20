@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { contextMenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import useInterval from 'react-use/lib/useInterval';
-import _ from 'lodash';
+import _, { isNil, isString, toNumber } from 'lodash';
 import { removeMessage } from '../../../../data/data';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { getConversationController } from '../../../../bchat/conversations';
@@ -210,17 +210,25 @@ export const GenericReadableMessage = (props: Props) => {
   const handleContextMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup && !isDetailView;
-
+      const attachmentIndexStr = (e?.target as any)?.parentElement?.getAttribute?.(
+        'data-attachmentindex'
+      );
+      const attachmentIndex =
+          isString(attachmentIndexStr) && !isNil(toNumber(attachmentIndexStr))
+          ? toNumber(attachmentIndexStr)
+          : 0;
       if (enableContextMenu) {
         contextMenu.hideAll();
         contextMenu.show({
           id: ctxMenuID,
           event: e,
+          props: {
+            dataAttachmentIndex: attachmentIndex,
+          },
         });
         setIsRightClicked(enableContextMenu);
     
       }
-      console.log('enableContextMenu', enableContextMenu);
        
     },
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]

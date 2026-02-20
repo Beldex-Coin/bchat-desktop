@@ -1,6 +1,6 @@
 import  { useCallback, useRef } from 'react';
 
-import { animation, contextMenu, Item, Menu } from 'react-contexify';
+import { useContextMenu, Item, Menu } from 'react-contexify';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getMessageById } from '../../../../data/data';
@@ -59,12 +59,13 @@ export const MessageContextMenu = (props: Props) => {
   const selected = useSelector(state => getMessageContextMenuProps(state as any, props.messageId));
   const dispatch = useDispatch();
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
+   const { hideAll } = useContextMenu();
 
   if (!selected) {
     return null;
   }
   useClickAway(contextMenuRef, () => {
-    contextMenu.hideAll();
+    hideAll();
     props.onMessageLoseFocus();
   });
   const {
@@ -95,21 +96,21 @@ export const MessageContextMenu = (props: Props) => {
 
   // const [showEmojiPanel, setShowEmojiPanel] = useState(false);
 
-  const onContextMenuShown = () => {
-    // if (showEmojiPanel) {
-    //   setShowEmojiPanel(false);
-    // }
-    window.contextMenuShown = true;
-  };
-
-  const onContextMenuHidden = useCallback(() => {
-    // This function will called before the click event
-    // on the message would trigger (and I was unable to
-    // prevent propagation in this case), so use a short timeout
-    setTimeout(() => {
-      window.contextMenuShown = false;
-    }, 100);
-  }, []);
+  const onVisibilityChange = useCallback(
+    (isVisible: boolean) => {
+      if (isVisible) {
+        window.contextMenuShown = true;
+        return;
+      }
+      // This function will called before the click event
+      // on the message would trigger (and I was unable to
+      // prevent propagation in this case), so use a short timeout
+      setTimeout(() => {
+        window.contextMenuShown = false;
+      }, 100);
+    },
+    []
+  );
 
   const onShowDetail = async () => {
     const found = await getMessageById(messageId);
@@ -211,9 +212,8 @@ export const MessageContextMenu = (props: Props) => {
         {' '}
         <Menu
           id={contextMenuId}
-          onShown={onContextMenuShown}
-          onHidden={onContextMenuHidden}
-          animation={animation.fade}
+          onVisibilityChange={onVisibilityChange}
+          animation='fade'
         >
           {attachments?.length ? (
             <Item onClick={saveAttachment}>
