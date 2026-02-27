@@ -175,11 +175,11 @@ export const GenericReadableMessage = (props: Props) => {
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
    const [recentEmoji, setRecentEmoji] = useState(false);
   const onMessageLoseFocus = useCallback(() => {
-    if (isRightClicked) {
+    // if (isRightClicked) {
       setIsRightClicked(false);
        setRecentEmojiBtnVisible(false);
        setRecentEmoji(false);
-    }
+    // }
   }, [isRightClicked]);
    const {
     convoId,
@@ -198,13 +198,13 @@ export const GenericReadableMessage = (props: Props) => {
     }
   }, [convoId]);
 
-  useEffect(() => {
-    document.addEventListener('click', onMessageLoseFocus);
+  // useEffect(() => {
+  //   document.addEventListener('click', onMessageLoseFocus);
 
-    return () => {
-      document.removeEventListener('click', onMessageLoseFocus);
-    };
-  }, [onMessageLoseFocus]);
+  //   return () => {
+  //     document.removeEventListener('click', onMessageLoseFocus);
+  //   };
+  // }, [onMessageLoseFocus]);
 
   
   const handleContextMenu = useCallback(
