@@ -389,7 +389,14 @@ const doAppStartUp = () => {
   debounce(triggerAvatarReUploadIfNeeded, 200);
 
   void askEnablingOpengroupPruningIfNeeded();
+  void setSettingsKeepChatArchivedDefaultValue();
 };
+
+const setSettingsKeepChatArchivedDefaultValue = () => {
+  if (window.getSettingValue(SettingsKey.settingsKeepChatArchived) === undefined) {
+    window.setSettingValue(SettingsKey.settingsKeepChatArchived, true);
+  }
+}
 
 const CallContainer = () => {
   return (

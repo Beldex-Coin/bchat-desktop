@@ -307,7 +307,8 @@ export interface ReduxConversationType {
   walletAddress?: any;
   isBnsHolder?: boolean;
   weAreModerator?: boolean;
-  sharedContact?:SharedContact
+  sharedContact?:SharedContact;
+  isArchived?: boolean;
 }
 
 export interface NotificationForConvoOption {

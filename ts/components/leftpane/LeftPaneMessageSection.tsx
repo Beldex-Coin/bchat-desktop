@@ -27,6 +27,8 @@ import {
 } from '../../state/ducks/section';
 import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
+import { ArchivedBanner } from './ArchivedBanner';
+import OverlayArchivedMessage from './overlay/OverlayArchivedMessage';
 
 export interface Props {
   contacts: Array<ReduxConversationType>;
@@ -47,10 +49,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
   }
 
   // public renderRow = ({ index, key, style }: RowRendererParamsType): JSX.Element | null => {
-  public renderRow = (item: any, key: any): JSX.Element | null => {
+  public renderRow = (conversation: any, key: any): JSX.Element | null => {
     // const { conversations } = this.props;
-    const conversation = item;
-
+    if(conversation.isArchived) {
+      return null;
+    }
+    
     //assume conversations that have been marked unapproved should be filtered out by selector.
     // if (!conversations) {
     //   throw new Error('renderRow: Tried to render without conversations');
@@ -144,6 +148,13 @@ export class LeftPaneMessageSection extends React.Component<Props> {
             }}
           />
         )}
+        {!searchResults && (
+          <ArchivedBanner
+            handleOnClick={() => {
+              window.inboxStore?.dispatch(setOverlayMode('archived'));
+            }}
+          />
+        )}
         {/* <SpacerMD /> */}
         {/* {directContact.length === 0 && conversations?.length === 0 ?
           <div className='bchatEmptyScrBox'>
@@ -174,6 +185,8 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         return <OverlayMessage />;
       case 'message-requests':
         return <OverlayMessageRequest leftPane={true} />;
+      case 'archived':
+        return <OverlayArchivedMessage />;
       default:
         return null;
     }

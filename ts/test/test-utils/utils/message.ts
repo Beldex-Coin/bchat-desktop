@@ -107,6 +107,8 @@ export class MockConversation {
       isPinned: false,
       isApproved: false,
       didApproveMe: false,
+      isArchived: false,
+
     };
   }
 

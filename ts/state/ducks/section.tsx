@@ -16,9 +16,8 @@ export enum SectionType {
   Moon,
   PathIndicator,
   SubMenu,
-  CallHistory
-  
- 
+  CallHistory,
+  Archived
 }
 
 type FocusSectionActionType = {
@@ -65,6 +64,7 @@ export type OverlayMode =
   | 'closed-group'
   | 'message-requests'
   | 'call-history'
+  | 'archived'
   | undefined;
 
 export function setOverlayMode(overlayMode: OverlayMode): OverlayModeActionType {

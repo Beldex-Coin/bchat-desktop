@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   useConversationUsername,
   useHasNickname,
+  useIsArchived,
   useIsBlocked,
   useIsKickedFromGroup,
   useIsLeft,
@@ -72,9 +73,10 @@ function showNotificationConvo(
   left: boolean,
   isBlocked: boolean,
   isRequest: boolean,
-  isMe: boolean
+  isMe: boolean,
+  isArchived: boolean
 ): boolean {
-  return !left && !isKickedFromGroup && !isBlocked && !isRequest && !isMe;
+  return !left && !isKickedFromGroup && !isBlocked && !isRequest && !isMe && !isArchived;
 }
 
 function showBlock(isMe: boolean, isPrivate: boolean, isRequest: boolean): boolean {
@@ -205,6 +207,42 @@ export const PinConversationMenuItem = (): JSX.Element | null => {
     const menuText = isPinned ? window.i18n('unpinConversation') : window.i18n('pinConversation');
     return (
       <Item onClick={togglePinConversation}>
+        <BchatIcon iconType="pinSubMenu" iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <MenuWrapper>{menuText}</MenuWrapper>
+      </Item>
+    );
+  }
+  return null;
+};
+
+export const ArchivedConversationMenuItem = (): JSX.Element | null => {
+  const conversationId = useContext(ContextConversationId);
+  const isMessagesSection = useSelector(getFocusedSection) === SectionType.Message;
+  const isRequest = useIsRequest(conversationId);
+  if (isMessagesSection && !isRequest) {
+    const conversation = getConversationController().get(conversationId);
+    const isArchived = conversation?.isArchived() || false;
+    const toggleArchiveConversation = async () => {
+      if ((!isArchived)) {
+        await conversation?.setIsArchived(true);
+        await setNotificationForConvoId(conversationId, 'disabled');
+         ToastUtils.pushToastWarning(
+          'archiveConversationLimitToast',
+          'Archive Conversation'
+        );
+      } else {
+      await conversation?.setIsArchived(false);
+      await setNotificationForConvoId(conversationId, 'all');
+       ToastUtils.pushToastWarning(
+          'archiveConversationLimitToast',
+          'Unarchive Conversation'
+        );
+      }
+    };
+
+    const menuText = isArchived ? window.i18n('unarchiveConversation') : window.i18n('archiveConversation');
+    return (
+      <Item onClick={toggleArchiveConversation}>
         <BchatIcon iconType="pinSubMenu" iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
         <MenuWrapper>{menuText}</MenuWrapper>
       </Item>
@@ -531,6 +569,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
   const isMe = useIsMe(convoId);
+  const isArchived = useIsArchived(convoId);
 
   if (
     showNotificationConvo(
@@ -538,7 +577,8 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
       Boolean(left),
       Boolean(isBlocked),
       isRequest,
-      isMe
+      isMe,
+      isArchived
     )
   ) {
     // exclude mentions_only settings for private chats as this does not make much sense

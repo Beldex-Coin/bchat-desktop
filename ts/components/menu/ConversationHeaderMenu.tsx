@@ -3,6 +3,7 @@ import { animation, Menu } from 'react-contexify';
 import {
   AcceptMenuItem,
   AddModeratorsMenuItem,
+  ArchivedConversationMenuItem,
   BanMenuItem,
   BlockMenuItem,
   ChangeNicknameMenuItem,
@@ -46,6 +47,7 @@ export const ConversationHeaderMenu = (props: PropsConversationHeaderMenu) => {
         <DisappearingMessageMenuItem />
         <NotificationForConvoMenuItem />
         <PinConversationMenuItem />
+        <ArchivedConversationMenuItem/>
         <BlockMenuItem />
         <CopyMenuItem />
         <MarkAllReadMenuItem />

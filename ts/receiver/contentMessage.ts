@@ -30,6 +30,7 @@ import {
   deleteMessagesFromSwarmAndMarkAsDeletedLocally,
 } from '../interactions/conversations/unsendingInteractions';
 import { bnsVerificationConvo } from '../components/conversation/BnsVerification';
+import { setNotificationForConvoId } from '../interactions/conversationInteractions';
 
 export async function handleSwarmContentMessage(envelope: EnvelopePlus, messageHash: string) {
   try {
@@ -383,6 +384,8 @@ export async function innerHandleSwarmContentMessage(
 
     // When restoring the message, this function is used to validate BNS in the conversation.
     bnsVerificationConvo(senderConversationModel, isPrivateConversationMessage, envelope);
+    await handleUndoArchivedChatMessage(senderConversationModel);
+
     // const ourPubkey = UserUtils.getOurPubKeyFromCache();
     // !window.getLocalValue('ourBnsName') &&
     // isPrivateConversationMessage)
@@ -705,5 +708,17 @@ export async function handleDataExtractionNotification(
       expireTimer: 0,
     });
     convo.updateLastMessage();
+  }
+}
+
+async function handleUndoArchivedChatMessage( senderConversationModel: any) {
+  const keepChatArchived = window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+   const convoId =senderConversationModel?.attributes?.id;
+  if(!keepChatArchived && convoId){
+    const convo = getConversationController().get(convoId);
+    if(convo?.isArchived()){
+      await convo.setIsArchived(false);
+       await setNotificationForConvoId(convoId, 'all');
+    }
   }
 }

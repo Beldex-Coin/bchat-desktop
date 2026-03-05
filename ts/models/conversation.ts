@@ -127,6 +127,7 @@ export interface ConversationAttributes {
   didApproveMe: boolean;
   walletAddress?: any;
   isBnsHolder?: Boolean;
+  isArchived: boolean;
 }
 
 export interface ConversationAttributesOptionals {
@@ -169,6 +170,7 @@ export interface ConversationAttributesOptionals {
   didApproveMe?: boolean;
   walletAddress?: any;
   isBnsHolder?: Boolean;
+  isArchived: boolean;
 }
 
 /**
@@ -201,6 +203,7 @@ export const fillConvoAttributesWithDefaults = (
     didApproveMe: false,
     walletAddress: null,
     isBnsHolder: false,
+    isArchived: false,
   });
 };
 
@@ -393,7 +396,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const left = !!this.get('left');
     const expireTimer = this.get('expireTimer');
     const currentNotificationSetting = this.get('triggerNotificationsFor');
-
+    const isArchived = this.isArchived();
     // To reduce the redux store size, only set fields which cannot be undefined.
     // For instance, a boolean can usually be not set if false, etc
     const toRet: ReduxConversationType = {
@@ -507,6 +510,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     if (walletAddress) {
       toRet.walletAddress = walletAddress;
+    }
+    if (isArchived){
+      toRet.isArchived = isArchived;
     }
     return toRet;
   }
@@ -1389,6 +1395,15 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
+  public async setIsArchived(value: boolean) {
+    if (value !== this.isArchived()) {
+      this.set({
+        isArchived: value,
+      });
+      await this.commit();
+    }
+  }
+
   public async setIsApproved(value: boolean, shouldCommit: boolean = true) {
     if (value !== this.isApproved()) {
       window?.log?.info(`Setting ${ed25519Str(this.id)} isApproved to: ${value}`);
@@ -1528,6 +1543,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
   public isPinned() {
     return Boolean(this.get('isPinned'));
+  }
+  public isArchived() {
+    return Boolean(this.get('isArchived'));
   }
 
   public didApproveMe() {

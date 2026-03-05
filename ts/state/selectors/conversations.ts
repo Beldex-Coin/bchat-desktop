@@ -49,6 +49,10 @@ export const getConversationLookup = createSelector(
   }
 );
 
+export const getArchivedConversations = createSelector(getConversations, (state: ConversationsStateType): Array<ReduxConversationType> => {
+  return filter(state.conversationLookup, { isArchived: true });
+});
+
 export const getConversationsCount = createSelector(getConversationLookup, (state): number => {
   return Object.values(state).length;
 });

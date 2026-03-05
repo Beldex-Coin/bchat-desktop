@@ -174,3 +174,8 @@ export function useMessageReactsPropsById(messageId?: string) {
     return messageReactsProps;
   });
 }
+
+export function useIsArchived(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+  return Boolean(convoProps && convoProps.isArchived);
+}

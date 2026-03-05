@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import {
   AcceptMenuItem,
+  ArchivedConversationMenuItem,
   BanMenuItem,
   BlockMenuItem,
   ChangeNicknameMenuItem,
@@ -34,6 +35,7 @@ const ConversationListItemContextMenu = (props: PropsContextConversationItem) =>
       <DeclineMenuItem />
       <NotificationForConvoMenuItem />
       <PinConversationMenuItem />
+      <ArchivedConversationMenuItem/>
       <BlockMenuItem />
       <CopyMenuItem />
       <MarkAllReadMenuItem />

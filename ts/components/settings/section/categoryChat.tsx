@@ -17,6 +17,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
+  const isKeepChatArchivedOn = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
 
   if (props.hasPassword !== null) {
     // const isSpellCheckActive =
@@ -45,6 +46,11 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
         );
       }
     }
+      async function toggleKeepChatArchived() {
+        const newValue = !window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+        window.setSettingValue(SettingsKey.settingsKeepChatArchived,newValue);
+        forceUpdate();
+      }
 
     return (
       <>
@@ -69,6 +75,16 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             title={window.i18n('linkPreviewsTitle')}
             description={window.i18n('linkPreviewDescription')}
             active={isLinkPreviewsOn}
+            iconType="chainLink"
+          />
+           <BchatToggleWithDescription
+            onClickToggle={async () => {
+              await toggleKeepChatArchived();
+              forceUpdate();
+            }}
+            title={window.i18n('keepChatArchived')}
+            description={window.i18n('keepChatArchivedDescription')}
+            active={isKeepChatArchivedOn}
             iconType="chainLink"
           />
           {/* <BchatToggleWithDescription

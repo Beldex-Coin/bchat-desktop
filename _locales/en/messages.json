@@ -586,5 +586,12 @@
 
 
   "viewAll":"View all",
-  "viewMessage":"Message"
+  "viewMessage":"Message",
+  "unarchiveConversation":"Unarchive Conversation",
+  "archiveConversation":"Archive Conversation",
+  "archived":"Archived",
+  "archivedDescription":"Chat automatically moves back to the main chat list when a new message comes.",
+  "archivedKeepChatDescription":"Chat will stay in the archived section even when new messages come.",
+  "keepChatArchived": "Keep Chat Archived",
+  "keepChatArchivedDescription": "Archived chats will remain archived when you receive a new message."
 }
