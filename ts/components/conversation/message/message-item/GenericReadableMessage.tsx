@@ -175,11 +175,11 @@ export const GenericReadableMessage = (props: Props) => {
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
    const [recentEmoji, setRecentEmoji] = useState(false);
   const onMessageLoseFocus = useCallback(() => {
-    // if (isRightClicked) {
+     if (isRightClicked) {
       setIsRightClicked(false);
        setRecentEmojiBtnVisible(false);
        setRecentEmoji(false);
-    // }
+     }
   }, [isRightClicked]);
    const {
     convoId,
@@ -226,7 +226,7 @@ export const GenericReadableMessage = (props: Props) => {
             dataAttachmentIndex: attachmentIndex,
           },
         });
-        setIsRightClicked(enableContextMenu);
+         setIsRightClicked(enableContextMenu);
     
       }
        
@@ -307,7 +307,6 @@ export const GenericReadableMessage = (props: Props) => {
   
     return null;
   })();
-
   return (
     <>
     {isExpired ? null : 
@@ -376,6 +375,7 @@ export const GenericReadableMessage = (props: Props) => {
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
           recentEmoji={recentEmoji}
           setRecentEmoji={e => setRecentEmoji(e)}
+          disableRightClicked={()=> setIsRightClicked(false)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

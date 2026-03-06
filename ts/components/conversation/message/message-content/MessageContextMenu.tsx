@@ -36,6 +36,7 @@ type Props = {
   onMessageLoseFocus: () => void;
   acceptUrl?: string;
   txnId?: string;
+  disableRightClicked: () => void;
 };
 export type MessageContextMenuSelectorProps = Pick<
   MessageRenderingProps,
@@ -90,7 +91,7 @@ export const MessageContextMenu = (props: Props) => {
     isDeleted,
   } = selected;
 
-  const { messageId, contextMenuId, acceptUrl, txnId } = props;
+  const { messageId, contextMenuId, acceptUrl, txnId,disableRightClicked } = props;
   // const convoName = useConversationUsername(convoId);
   const isPrivate = useSelector(getSelectedConversation)?.isPrivate;
   const isOutgoing = direction === 'outgoing';
@@ -174,8 +175,8 @@ export const MessageContextMenu = (props: Props) => {
 
   const copyText = useCallback(() => {
     const copyString = text || acceptUrl || txnId;
-    props.onMessageLoseFocus();
     MessageInteraction.copyBodyToClipboard(copyString);
+    disableRightClicked();
   }, [text, acceptUrl, txnId]);
 
   const onRetry = useCallback(async () => {

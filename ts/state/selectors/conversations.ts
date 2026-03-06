@@ -387,9 +387,9 @@ export const _getLeftPaneLists = (
       continue;
     }
 
-    if (conversation.isBlocked) {
-      continue;
-    }
+    // if (conversation.isBlocked) {
+    //   continue;
+    // }
 
     if (
       unreadCount < 9 &&
@@ -452,7 +452,6 @@ export const _getSortedConversations = (
 
     sortedConversations.push(conversation);
   }
-
   return sortedConversations;
 };
 
