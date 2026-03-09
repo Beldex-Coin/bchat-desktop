@@ -19,14 +19,14 @@ const StyledArchiveBanner = styled.div`
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
-  background: var(--color-request-banner-background);
+  background: var(--color-clickable-hovered);
 
   transition: var(--bchat-transition-duration);
   margin-top:10px;
   border-radius:22px;
 
   &:hover {
-    background: var(--color-clickable-hovered);
+    opacity: 0.8;
   }
 `;
 
@@ -84,9 +84,9 @@ export const ArchivedBanner = (props: { handleOnClick: () => any }) => {
         }}
         data-testid="ArchivedBanner"
       >
-        <BchatIcon  iconSize="medium" iconType="messageRequest" />
+        <BchatIcon  iconSize={24} iconType="archivedChat" fillRule='evenodd' clipRule='evenodd'  />
         <StyledArchiveBannerHeader>
-          {window.i18n('archived')}
+          {window.i18n('archivedChat')}
         </StyledArchiveBannerHeader>
         <StyledUnreadCounter>
           <div>{archivedConversations||0}</div>

@@ -83,7 +83,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
               forceUpdate();
             }}
             title={window.i18n('keepChatArchived')}
-            description={window.i18n('keepChatArchivedDescription')}
+            description={window.i18n('archivedKeepChatDescription')}
             active={isKeepChatArchivedOn}
             iconType="chainLink"
           />

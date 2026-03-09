@@ -143,6 +143,9 @@ export type BchatVariableTypes = {
   '--color-password-borderBottom': string;
   '--color-reaction-hover-bg': string;
   '--color-read-more-btn-bg': string;
+  '--color-unfilled-back-btn': string;
+  '--color-archived-setting-popup-bg': string;
+  '--color-archived-setting-popup-desc': string;
 
   '--image-EmptyChatImg': string;
   '--image-DayNight': string;

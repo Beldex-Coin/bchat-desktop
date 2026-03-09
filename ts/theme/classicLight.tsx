@@ -166,6 +166,9 @@ const lightBackgroundPrimary = '#E8E8E8';
 const lightButtonGreen = '#FFFFFF';
 const lightReactionHoverBg = '#EBEBEB';
 const lightReadMoreBtnBg='#EBEBEB';
+const lightUnfilledBackBtn = '#ACACAC';
+const lightArchivedSettingPopupBg = '#FFFFFF';
+const lightArchivedSettingPopupDesc = '#858598';
 
 // Light theme body background
 const bodyBgLight = '#FFFFFF';
@@ -325,7 +328,9 @@ export const BCHAT_CLASSIC_LIGHT_COLORS: BchatVariableTypes = {
   '--color-password-borderBottom': lightPasswordBorderBottom,
   '--color-reaction-hover-bg': lightReactionHoverBg,
   '--color-read-more-btn-bg': lightReadMoreBtnBg,
-
+  '--color-unfilled-back-btn': lightUnfilledBackBtn,
+  '--color-archived-setting-popup-bg': lightArchivedSettingPopupBg,
+  '--color-archived-setting-popup-desc': lightArchivedSettingPopupDesc,
 
   '--image-EmptyChatImg': lightEmptyChatImg,
   '--image-DayNight': lightDayNight,

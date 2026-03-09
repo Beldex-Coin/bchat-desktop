@@ -1,57 +1,78 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getArchivedConversations } from '../../../state/selectors/conversations';
 import styled from 'styled-components';
-import { SpacerLG } from '../../basic/Text';
+import { SpacerLG, SpacerSM } from '../../basic/Text';
 import { BchatIconButton } from '../../icon/BchatIconButton';
-import { SectionType, setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
+import { setOverlayMode } from '../../../state/ducks/section';
 import { MemoConversationListItemWithDetails } from '../conversation-list-item/ConversationListItem';
 import { Flex } from '../../basic/Flex';
+import { SettingsKey } from '../../../data/settings-key';
+import { BchatToggle } from '../../basic/BchatToggle';
+import { useClickAway, useUpdate } from 'react-use';
+import { useRef, useState } from 'react';
+
 
 const ArchivedListContainer = styled.div`
-  padding: 15px;
   max-height: 75vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: none;
+  min-width: 300px;
+  width: 25vw;
+  max-width: 420px;
+  padding: 15px;
+  position: relative;
   // margin-bottom: auto;
 `;
 const OverlayArchivedMessage = () => {
   const archivedConversations = useSelector(getArchivedConversations);
   const dispatch = useDispatch();
-  const keepChatArchived = Boolean(window.getSettingValue('settingsKeepChatArchived'));
+  const [isopenPopup, setIsOpenPopup] = useState(false);
+  const popUpRef = useRef<HTMLDivElement>(null);
+  const keepChatArchived = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
   const archivedDiscription = keepChatArchived
     ? window.i18n('archivedKeepChatDescription')
     : window.i18n('archivedDescription');
-    const openSettings = () => {
-      // show open settings
-      dispatch(showLeftPaneSection(SectionType.Settings));
-      dispatch(setOverlayMode(undefined));
-    }
-  return (
-    <ArchivedListContainer>
-      <SpacerLG />
 
+  useClickAway(popUpRef, () => {
+    setIsOpenPopup(false);
+  });
+  const openPopUp=() => {
+    setIsOpenPopup(true);
+  }
+  return (
+    <ArchivedListContainer >
+       <KeepChatArchivedPopup isopenPopup={isopenPopup} popUpRef={popUpRef} />
+      <SpacerLG />
       <Flex
         container={true}
         flexDirection={'row'}
         alignItems="center"
+        justifyContent="space-between"
         className="module-left-pane-overlay-closed--header"
       >
-        {' '}
-        <BchatIconButton
-          onClick={() => {
-            dispatch(setOverlayMode(undefined));
-          }}
-          iconType="chevron"
-          iconRotation={90}
-          iconSize="large"
-          // margin="0 0 var(--margins-xs) var(--margins-xs)"
-        />
-        <span>{window.i18n('archived')}</span>
-      </Flex>
+        <Flex container={true} alignItems="center" flexDirection="row">
+          <BchatIconButton
+            onClick={() => {
+              dispatch(setOverlayMode(undefined));
+            }}
+            iconType="backArrowInlineUnfilled"
+            iconSize={25}
+            iconColor='var(--color-unfilled-back-btn)'
+          />
+          <SpacerSM />
+          <StyledHeader>{window.i18n('archivedChat')}</StyledHeader>
+          </Flex>
+          <BchatIconButton iconType="ellipses" iconSize={24}  onClick={openPopUp} />
+        </Flex>
       <SpacerLG />
-      <div style={{ wordBreak: 'break-all', maxWidth: '290px' }}>
-        {archivedDiscription},
-        <span style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={openSettings}>Tap to change</span>
-      </div>
+      <StyledArchiveDescription className="archivedDesc">
+        {archivedDiscription}
+        <span onClick={openPopUp}>{window.i18n('tapToChange')}</span>
+      </StyledArchiveDescription>
       <SpacerLG />
       {archivedConversations.map(conversation => {
         return (
@@ -65,5 +86,83 @@ const OverlayArchivedMessage = () => {
     </ArchivedListContainer>
   );
 };
+const KeepChatArchivedPopup = ({ isopenPopup, popUpRef }: { isopenPopup: boolean; popUpRef: React.RefObject<HTMLDivElement> }) => {
+  const forceUpdate = useUpdate();
+  const isKeepChatArchivedOn = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
+   async function toggleKeepChatArchived() {
+        const newValue = !window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+        window.setSettingValue(SettingsKey.settingsKeepChatArchived,newValue);
+        forceUpdate();
+      }
+  return (
+    <StyledKeepChatArchivedPopupWrapper className='keepchatSettingWrapper' isopenPopup={isopenPopup} >
+     <StyledKeepChatArchivedPopup ref={popUpRef}>
+      <Flex container={true} justifyContent="center" alignItems="center" flexDirection="row">
+        <div>
+          <div className="title">{window.i18n('keepChatArchived')}</div>
+          <div className="desc">{window.i18n('keepChatArchivedDescription')}</div>
+        </div>
+        <BchatToggle
+          active={isKeepChatArchivedOn}
+          onClick={async () => {
+              await toggleKeepChatArchived();
+              forceUpdate();
+            }}
+        />
+      </Flex>
+    </StyledKeepChatArchivedPopup>
+    </StyledKeepChatArchivedPopupWrapper>
+  );
+};
 
 export default OverlayArchivedMessage;
+
+const StyledHeader = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+`;
+const StyledArchiveDescription = styled.div`
+  word-break: break-word;
+  // max-width: 290px;
+  border: 1px solid var(--color-profile-info-border);
+  padding: 9px;
+  border-radius: 20px;
+  color: #a7a7ba;
+  font-size: 16px;
+  span {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+const StyledKeepChatArchivedPopup = styled.div`
+
+position: absolute;
+background: var(--color-archived-setting-popup-bg);
+margin: 0 15px;
+margin-top: 83px;
+z-index: 9;
+border-radius: 19px;
+padding: 15px;
+.title{
+  font-weight: 300;
+  font-size: 16px;
+}
+  .desc{
+    font-weight: 300;
+    font-size: 14px;
+    margin-top: 5px;
+    color: var(--color-archived-setting-popup-desc);
+`;
+
+const StyledKeepChatArchivedPopupWrapper = styled.div <{ isopenPopup: boolean }>`
+  display: ${props => (props.isopenPopup ? 'flex' : 'none')};
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9;
+
+` 

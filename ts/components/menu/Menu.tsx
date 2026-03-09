@@ -226,24 +226,25 @@ export const ArchivedConversationMenuItem = (): JSX.Element | null => {
       if ((!isArchived)) {
         await conversation?.setIsArchived(true);
         await setNotificationForConvoId(conversationId, 'disabled');
-         ToastUtils.pushToastWarning(
-          'archiveConversationLimitToast',
-          'Archive Conversation'
+         ToastUtils.pushToastSuccess(
+          'archiveConversationToast',
+          window.i18n('archiveConversationToast')
         );
       } else {
       await conversation?.setIsArchived(false);
       await setNotificationForConvoId(conversationId, 'all');
-       ToastUtils.pushToastWarning(
-          'archiveConversationLimitToast',
-          'Unarchive Conversation'
+       ToastUtils.pushToastSuccess(
+          'UnarchivedConversationtToast',
+          window.i18n('unarchiveConversationToast')
         );
       }
     };
 
     const menuText = isArchived ? window.i18n('unarchiveConversation') : window.i18n('archiveConversation');
+    const iconType = isArchived ? 'unarchivedChat' : 'archivedChat';
     return (
       <Item onClick={toggleArchiveConversation}>
-        <BchatIcon iconType="pinSubMenu" iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
+        <BchatIcon iconType={iconType} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}
         <MenuWrapper>{menuText}</MenuWrapper>
       </Item>
     );

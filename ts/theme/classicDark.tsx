@@ -193,6 +193,9 @@ const darkAttachmentBoxShadow = '0 0 41.143px 0 #000';
 const darkViewContactBorder = '#46465D';
 const darkReactionHoverBg = '#202329';
 const darkReadMoreBtnBg = '#2e333d';
+const darkUnfilledBackBtn = '#E0E0E0';
+const darkArchivedSettingPopupBg = '#1B1E23';
+const darkArchivedSettingPopupDesc = '#A7A7BA';
 
 // adjust this path/import to your actual file
 
@@ -347,6 +350,9 @@ export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--color-BnsCameraIconBg': darkBnsCameraIconBgColor,
   '--color-reaction-hover-bg': darkReactionHoverBg,
   '--color-read-more-btn-bg': darkReadMoreBtnBg,
+  '--color-unfilled-back-btn': darkUnfilledBackBtn,
+  '--color-archived-setting-popup-bg': darkArchivedSettingPopupBg,
+  '--color-archived-setting-popup-desc':darkArchivedSettingPopupDesc,
   /* Images / icons */
   '--image-EmptyChatImg': darkEmptyChatImg,
   '--image-DayNight': darkDayNight,

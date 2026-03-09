@@ -593,9 +593,13 @@ export type LocalizerKeys =
   |'viewMessage'
   |'unarchiveConversation'
   |'archiveConversation'
-  |'archived'
+  |'archivedChat'
   |'archivedDescription'
   |'archivedKeepChatDescription'
   |'keepChatArchived'
   |'keepChatArchivedDescription'
+  |'tapToChange'
+  |'archiveConversationToast'
+  |'unarchiveConversationToast'
+  
   ;
