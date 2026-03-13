@@ -13,9 +13,7 @@ import { useRef, useState } from 'react';
 
 
 const ArchivedListContainer = styled.div`
-  max-height: 75vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: 99vh;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -44,7 +42,7 @@ const OverlayArchivedMessage = () => {
     setIsOpenPopup(true);
   }
   return (
-    <ArchivedListContainer >
+    <ArchivedListContainer className='archivedList'>
        <KeepChatArchivedPopup isopenPopup={isopenPopup} popUpRef={popUpRef} />
       <SpacerLG />
       <Flex
@@ -74,6 +72,7 @@ const OverlayArchivedMessage = () => {
         <span onClick={openPopUp}>{window.i18n('tapToChange')}</span>
       </StyledArchiveDescription>
       <SpacerLG />
+      <ListContainer className='list-container'>
       {archivedConversations.map(conversation => {
         return (
           <MemoConversationListItemWithDetails
@@ -83,6 +82,7 @@ const OverlayArchivedMessage = () => {
           />
         );
       })}
+      </ListContainer>
     </ArchivedListContainer>
   );
 };
@@ -131,6 +131,7 @@ const StyledArchiveDescription = styled.div`
   font-size: 16px;
   span {
     cursor: pointer;
+    font-weight: 600;
     &:hover {
       text-decoration: underline;
     }
@@ -140,6 +141,7 @@ const StyledKeepChatArchivedPopup = styled.div`
 
 position: absolute;
 background: var(--color-archived-setting-popup-bg);
+box-shadow: var(--color-bchat-shadow);
 margin: 0 15px;
 margin-top: 83px;
 z-index: 9;
@@ -166,3 +168,9 @@ const StyledKeepChatArchivedPopupWrapper = styled.div <{ isopenPopup: boolean }>
   z-index: 9;
 
 ` 
+
+const ListContainer = styled.div`
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  `

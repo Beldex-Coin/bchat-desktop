@@ -3,7 +3,7 @@ import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getFirstUnreadMessageWithMention } from '../../../data/data';
-import { useConversationPropsById, useIsPinned } from '../../../hooks/useParamSelector';
+import { useConversationPropsById, useIsArchived, useIsPinned } from '../../../hooks/useParamSelector';
 import { UserUtils } from '../../../bchat/utils';
 import {
   openConversationToSpecificMessage,
@@ -17,11 +17,13 @@ import { BchatIcon } from '../../icon';
 import { ContextConversationId } from './ConversationListItem';
 import { UserItem } from './UserItem';
 
+
 const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
   const convoId = useContext(ContextConversationId);
   const convoSetting = useConversationPropsById(convoId)?.currentNotificationSetting;
+  const isArchived = useIsArchived(convoId);
 
-  if (!props.isMessagesSection) {
+  if (!props.isMessagesSection || isArchived) {
     return null;
   }
 

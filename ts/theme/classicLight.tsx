@@ -167,7 +167,7 @@ const lightButtonGreen = '#FFFFFF';
 const lightReactionHoverBg = '#EBEBEB';
 const lightReadMoreBtnBg='#EBEBEB';
 const lightUnfilledBackBtn = '#ACACAC';
-const lightArchivedSettingPopupBg = '#FFFFFF';
+const lightArchivedSettingPopupBg = '#EBEBEB';
 const lightArchivedSettingPopupDesc = '#858598';
 
 // Light theme body background

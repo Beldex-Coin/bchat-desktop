@@ -589,7 +589,7 @@
   "viewMessage":"Message",
   "unarchiveConversation":"Unarchive Chat",
   "archiveConversation":"Archive Chat",
-  "archivedChat":"Archieved Chats",
+  "archivedChat":"Archived Chats",
   "archivedDescription":"Chats will automatically Unarchived when new messages are received.",
   "archivedKeepChatDescription":"These chats stay archived when new messages are received. ",
   "keepChatArchived": "Keep Chats Archived",

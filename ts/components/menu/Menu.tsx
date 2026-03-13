@@ -187,8 +187,9 @@ export const PinConversationMenuItem = (): JSX.Element | null => {
   const isMessagesSection = useSelector(getFocusedSection) === SectionType.Message;
   const nbOfAlreadyPinnedConvos = useSelector(getNumberOfPinnedConversations);
   const isRequest = useIsRequest(conversationId);
+  const isArchived = useIsArchived(conversationId);
 
-  if (isMessagesSection && !isRequest) {
+  if (isMessagesSection && !isRequest && !isArchived) {
     const conversation = getConversationController().get(conversationId);
     const isPinned = conversation?.isPinned() || false;
 
@@ -225,6 +226,7 @@ export const ArchivedConversationMenuItem = (): JSX.Element | null => {
     const toggleArchiveConversation = async () => {
       if ((!isArchived)) {
         await conversation?.setIsArchived(true);
+         await conversation?.setIsPinned(false);
         await setNotificationForConvoId(conversationId, 'disabled');
          ToastUtils.pushToastSuccess(
           'archiveConversationToast',

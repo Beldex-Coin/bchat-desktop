@@ -22,6 +22,8 @@ import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { toLogFormat } from '../types/attachments/Errors';
 
 import { handleMessageReaction } from '../util/reactions';
+import { setNotificationForConvoId } from '../interactions/conversationInteractions';
+import { SettingsKey } from '../data/settings-key';
 
 function cleanAttachment(attachment: any) {
   return {
@@ -257,7 +259,7 @@ export async function handleSwarmDataMessage(
           sentAt: sentAtTimestamp,
         });
 
-
+  await handleUndoArchivedChatMessage(msgModel,rawDataMessage );
   await handleSwarmMessage(
     msgModel,
     messageHash,
@@ -334,4 +336,19 @@ async function handleSwarmMessage(
       messageHash
     );
   });
+}
+
+async function handleUndoArchivedChatMessage(msgModel: MessageModel,rawDataMessage: SignalService.DataMessage) {
+  const senderConversationModel = getConversationController().get(msgModel.attributes.conversationId);
+  const {flags} = rawDataMessage;
+  const isOnlyExpirationTimerUpdate=flags === SignalService.DataMessage.Flags.EXPIRATION_TIMER_UPDATE;
+  const keepChatArchived = window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+  const convoId =senderConversationModel?.attributes?.id;
+  if(!keepChatArchived && convoId && !isOnlyExpirationTimerUpdate){
+    const convo = getConversationController().get(convoId);
+    if(convo?.isArchived()){
+      await convo.setIsArchived(false);
+       await setNotificationForConvoId(convoId, 'all');
+    }
+  }
 }
