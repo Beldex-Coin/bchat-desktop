@@ -93,11 +93,11 @@ async function createOrUpdateProfile(
     changes = true;
   }
   newProfile.displayName = profile.displayName;
-
+  const prevAvatarPointer = conversation.get('avatarPointer');
+  const prevAvatarPointerExists = !!prevAvatarPointer;
   if (profile.profilePicture && profileKey) {
     const prevPointer = conversation.get('avatarPointer');
     const needsUpdate = !prevPointer || !_.isEqual(prevPointer, profile.profilePicture);
-
     if (needsUpdate) {
       try {
         window.log.debug(`[profile-update] starting downloading task for  ${conversation.id}`);
@@ -148,7 +148,12 @@ async function createOrUpdateProfile(
     }
     newProfile.avatar = null;
   }
-
+  else if (!profile.profilePicture && prevAvatarPointerExists) {
+    changes = true;
+    newProfile.avatar = null;
+    conversation.set({avatar:null, avatarPointer: undefined, profileKey: undefined});
+  }
+console.log('newProfile', newProfile,changes);
   const conv = await getConversationController().getOrCreateAndWait(
     conversation.id,
     ConversationTypeEnum.PRIVATE

@@ -216,8 +216,8 @@ export async function handleSwarmDataMessage(
   if (
     !isMe &&
     senderConversationModel &&
-    cleanDataMessage.profile &&
-    cleanDataMessage.profileKey?.length
+    cleanDataMessage.profile
+    //  &&    cleanDataMessage.profileKey?.length
   ) {
 
     // do not await this

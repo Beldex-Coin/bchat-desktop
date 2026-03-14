@@ -1668,7 +1668,7 @@ label {
   // }
 }
 
-.camera {
+.editActionBtn {
   background-color: var(--color-modal-icon-bg);
   border-radius: 20px;
   width: 34px;
@@ -1676,8 +1676,6 @@ label {
   position: relative;
   justify-content: center;
   background-size: 32px;
-  top: 29px;
-  left: 10px;
   align-items: center;
   display: flex;
   cursor: pointer;

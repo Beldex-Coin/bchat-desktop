@@ -72,6 +72,14 @@ export const BchatMessagesList = (props: {
     props.onPageDownPressed();
   });
 
+  useKey('ArrowUp', () => {
+    props.onPageUpPressed();
+  });
+  
+  useKey('ArrowDown', () => {
+    props.onPageDownPressed();
+  });
+
   useKey('Home', e => {
     if (isNotTextboxEvent(e)) {
       props.onHomePressed();
