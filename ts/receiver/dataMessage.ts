@@ -22,7 +22,7 @@ import { appendFetchAvatarAndProfileJob } from './userProfileImageUpdates';
 import { toLogFormat } from '../types/attachments/Errors';
 
 import { handleMessageReaction } from '../util/reactions';
-import { setNotificationForConvoId } from '../interactions/conversationInteractions';
+// import { setNotificationForConvoId } from '../interactions/conversationInteractions';
 import { SettingsKey } from '../data/settings-key';
 
 function cleanAttachment(attachment: any) {
@@ -348,7 +348,7 @@ async function handleUndoArchivedChatMessage(msgModel: MessageModel,rawDataMessa
     const convo = getConversationController().get(convoId);
     if(convo?.isArchived()){
       await convo.setIsArchived(false);
-       await setNotificationForConvoId(convoId, 'all');
+      //  await setNotificationForConvoId(convoId, 'all');
     }
   }
 }

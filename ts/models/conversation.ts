@@ -1670,7 +1670,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       return;
     }
     const conversationId = this.id;
+    const isArchived=this.isArchived();
+    const keepChatArchived=window.getSettingValue(SettingsKey.settingsKeepChatArchived)
 
+    if(keepChatArchived && isArchived)
+    {
+      console.log('this message is turned on the keep chat in archived')
+      return
+    }
     let friendRequestText;
     if (!this.isApproved()) {
       window?.log?.info('notification cancelled for unapproved convo', this.idForLogging());

@@ -594,6 +594,7 @@
   "archivedKeepChatDescription":"These chats stay archived when new messages are received. ",
   "keepChatArchived": "Keep Chats Archived",
   "keepChatArchivedDescription": "Archived chats will remain archived when you receive a new message.",
+  "keepChatArchivedSettingDescription":"Archived chats stays archived when new message received",
   "tapToChange":"Tap to change",
   "archiveConversationToast":"Chat archived",
   "unarchiveConversationToast":"Chat unarchived"

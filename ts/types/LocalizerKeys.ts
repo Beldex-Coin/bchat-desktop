@@ -598,6 +598,7 @@ export type LocalizerKeys =
   |'archivedKeepChatDescription'
   |'keepChatArchived'
   |'keepChatArchivedDescription'
+  |'keepChatArchivedSettingDescription'
   |'tapToChange'
   |'archiveConversationToast'
   |'unarchiveConversationToast'

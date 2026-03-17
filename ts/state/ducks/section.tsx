@@ -59,7 +59,7 @@ export function setIsAppFocused(focused: boolean): IsAppFocusedActionType {
 
 export type OverlayMode =
   | 'message'
-  |'new-Chat'
+  | 'new-Chat'
   | 'open-group'
   | 'closed-group'
   | 'message-requests'

@@ -1,4 +1,4 @@
-import  { useContext } from 'react';
+import  {  useContext } from 'react';
 
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { changeNickNameModal, updateConfirmModal } from '../../state/ducks/modalDialog';
 import { SectionType } from '../../state/ducks/section';
 import { hideMessageRequestBanner } from '../../state/ducks/userConfig';
-import { getNumberOfPinnedConversations } from '../../state/selectors/conversations';
+import { getLeftPaneLists, getNumberOfPinnedConversations, getSelectedConversation } from '../../state/selectors/conversations';
 import { getFocusedSection } from '../../state/selectors/section';
 import { getTimerOptions } from '../../state/selectors/timerOptions';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
@@ -55,6 +55,8 @@ import { BchatIcon } from '../icon/BchatIcon';
 // import CopyIcon from '../icon/CopyIcon';
 import styled from 'styled-components';
 import DeclineMessageRequest from '../icon/DeclineMessageRequest';
+import { SettingsKey } from '../../data/settings-key';
+import { openConversationWithMessages } from '../../state/ducks/conversations';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -220,21 +222,27 @@ export const ArchivedConversationMenuItem = (): JSX.Element | null => {
   const conversationId = useContext(ContextConversationId);
   const isMessagesSection = useSelector(getFocusedSection) === SectionType.Message;
   const isRequest = useIsRequest(conversationId);
+
+  const lists = useSelector(getLeftPaneLists);
+  const selectedconvokey=useSelector(getSelectedConversation);
+  const conversationList = lists?.conversations ?? [];
+  const convoId = useContext(ContextConversationId);
   if (isMessagesSection && !isRequest) {
     const conversation = getConversationController().get(conversationId);
     const isArchived = conversation?.isArchived() || false;
     const toggleArchiveConversation = async () => {
       if ((!isArchived)) {
         await conversation?.setIsArchived(true);
-         await conversation?.setIsPinned(false);
-        await setNotificationForConvoId(conversationId, 'disabled');
+        await conversation?.setIsPinned(false);
+          useOpenNextConversation(conversationList,selectedconvokey?.id,convoId);
+        // await setNotificationForConvoId(conversationId, 'disabled');
          ToastUtils.pushToastSuccess(
           'archiveConversationToast',
           window.i18n('archiveConversationToast')
         );
       } else {
       await conversation?.setIsArchived(false);
-      await setNotificationForConvoId(conversationId, 'all');
+      // await setNotificationForConvoId(conversationId, 'all');
        ToastUtils.pushToastSuccess(
           'UnarchivedConversationtToast',
           window.i18n('unarchiveConversationToast')
@@ -252,6 +260,34 @@ export const ArchivedConversationMenuItem = (): JSX.Element | null => {
     );
   }
   return null;
+};
+
+
+
+const useOpenNextConversation = async (
+  convoList: any[],
+  selectedconvokey?: string,
+  convoId?: string
+) => {
+  const conversationId = selectedconvokey;
+
+  if (convoId === conversationId) {
+    const currentIndex = convoList.findIndex((c: any) => c.id === conversationId);
+
+    if (currentIndex === -1) return;
+
+    // find next non-archived conversation
+    const nextConversation =
+      convoList.slice(currentIndex + 1).find((c: any) => !c.isArchived) ??
+      convoList.slice(0, currentIndex).reverse().find((c: any) => !c.isArchived);
+
+    if (nextConversation) {
+      await openConversationWithMessages({
+        conversationKey: nextConversation.id,
+        messageId: null,
+      });
+    }
+  }
 };
 
 export const DeleteContactMenuItem = () => {
@@ -572,8 +608,8 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
   const isMe = useIsMe(convoId);
-  const isArchived = useIsArchived(convoId);
-
+  const isArchived = useIsArchived(convoId) && window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+  
   if (
     showNotificationConvo(
       Boolean(isKickedFromGroup),

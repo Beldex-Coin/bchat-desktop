@@ -9,7 +9,7 @@ import { Flex } from '../../basic/Flex';
 import { SettingsKey } from '../../../data/settings-key';
 import { BchatToggle } from '../../basic/BchatToggle';
 import { useClickAway, useUpdate } from 'react-use';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 
 const ArchivedListContainer = styled.div`
@@ -35,6 +35,10 @@ const OverlayArchivedMessage = () => {
     ? window.i18n('archivedKeepChatDescription')
     : window.i18n('archivedDescription');
 
+  useEffect(()=>{
+    if(archivedConversations.length===0)
+     window.inboxStore?.dispatch(setOverlayMode(undefined));
+  },[archivedConversations])
   useClickAway(popUpRef, () => {
     setIsOpenPopup(false);
   });
@@ -156,6 +160,7 @@ padding: 15px;
     font-size: 14px;
     margin-top: 5px;
     color: var(--color-archived-setting-popup-desc);
+    margin-right:10px;
 `;
 
 const StyledKeepChatArchivedPopupWrapper = styled.div <{ isopenPopup: boolean }>`
@@ -173,4 +178,7 @@ const ListContainer = styled.div`
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+   &::-webkit-scrollbar {
+  display: none; /* or width: 0; height: 0; */
+}
   `

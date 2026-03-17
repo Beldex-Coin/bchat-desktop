@@ -49,9 +49,7 @@ export const getConversationLookup = createSelector(
   }
 );
 
-export const getArchivedConversations = createSelector(getConversations, (state: ConversationsStateType): Array<ReduxConversationType> => {
-  return filter(state.conversationLookup, { isArchived: true });
-});
+
 
 export const getConversationsCount = createSelector(getConversationLookup, (state): number => {
   return Object.values(state).length;
@@ -467,6 +465,9 @@ export const getSortedConversations = createSelector(
   _getSortedConversations
 );
 
+export const getArchivedConversations = createSelector(getSortedConversations, (state): Array<ReduxConversationType> => {
+  return filter(state, { isArchived: true });
+});
 /**
  *
  * @param sortedConversations List of conversations that are valid for both requests and regular conversation inbox

@@ -85,7 +85,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             title={window.i18n('keepChatArchived')}
             description={window.i18n('archivedKeepChatDescription')}
             active={isKeepChatArchivedOn}
-            iconType="chainLink"
+            iconType="archivedChat"
           />
           {/* <BchatToggleWithDescription
           onClickToggle={() => {
