@@ -16,13 +16,14 @@ import { BchatIcon, BchatIconButton } from '../icon';
 import { MAX_USERNAME_LENGTH } from '../registration/RegistrationStages';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
-import { sanitizeBchatUsername } from '../../bchat/utils/String';
+import { sanitizeBchatUsername, toHex } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { CopyIconButton } from '../icon/CopyIconButton'
 import {  SpacerXS } from '../basic/Text';
 import { Flex } from '../basic/Flex';
 import { BchatButtonColor } from '../basic/BchatButton';
+import { getSodiumRenderer } from '../../bchat/crypto';
 
 interface State {
   profileName: string;
@@ -511,7 +512,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
           ourNumber,
           ConversationTypeEnum.PRIVATE
         );
-        conversation.set({avatar:null, avatarPointer: undefined, profileKey: undefined});
+        const profileKey = (await getSodiumRenderer()).randombytes_buf(32);
+        conversation.set({avatar:null, avatarPointer: undefined,profileKey:toHex(profileKey) });
         await conversation.commit();
         await setLastProfileUpdateTimestamp(Date.now());
         await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
@@ -520,6 +522,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           loading: false,
           mode: 'default',
           oldAvatarPath: '',
+          newAvatarObjectUrl:null
         });
       }
     );

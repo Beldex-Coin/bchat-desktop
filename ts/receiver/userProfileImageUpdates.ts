@@ -93,8 +93,7 @@ async function createOrUpdateProfile(
     changes = true;
   }
   newProfile.displayName = profile.displayName;
-  const prevAvatarPointer = conversation.get('avatarPointer');
-  const prevAvatarPointerExists = !!prevAvatarPointer;
+  const  convoProfilekey=conversation?.attributes?.profileKey
   if (profile.profilePicture && profileKey) {
     const prevPointer = conversation.get('avatarPointer');
     const needsUpdate = !prevPointer || !_.isEqual(prevPointer, profile.profilePicture);
@@ -142,17 +141,18 @@ async function createOrUpdateProfile(
         // do not return here, we still want to update the display name even if the avatar failed to download
       }
     }
-  } else if (profileKey) {
+  }else if (profileKey && (toHex(profileKey) !== convoProfilekey)) {
+    changes = true;
+    newProfile.avatar = null;
+    conversation.set({avatar:null, avatarPointer: undefined, profileKey: toHex(profileKey)});
+  }
+   else if (profileKey) {
     if (newProfile.avatar !== null) {
       changes = true;
     }
     newProfile.avatar = null;
   }
-  else if (!profile.profilePicture && prevAvatarPointerExists) {
-    changes = true;
-    newProfile.avatar = null;
-    conversation.set({avatar:null, avatarPointer: undefined, profileKey: undefined});
-  }
+  
 console.log('newProfile', newProfile,changes);
   const conv = await getConversationController().getOrCreateAndWait(
     conversation.id,
