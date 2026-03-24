@@ -5,8 +5,8 @@ import { createOrUpdateItem } from '../../../data/channelsItem';
 import { hasLinkPreviewPopupBeenDisplayed } from '../../../data/data';
 import { SettingsKey } from '../../../data/settings-key';
 import { updateConfirmModal } from '../../../state/ducks/modalDialog';
-import { toggleAudioAutoplay } from '../../../state/ducks/userConfig';
-import { getAudioAutoplay } from '../../../state/selectors/userConfig';
+import { toggleAudioAutoplay, updateIsKeepChatArchived } from '../../../state/ducks/userConfig';
+import { getAudioAutoplay, getIsKeepChatArchived } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
@@ -17,7 +17,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
-  const isKeepChatArchivedOn = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
+  const isKeepChatArchivedOn = Boolean(useSelector(getIsKeepChatArchived));
 
   if (props.hasPassword !== null) {
     // const isSpellCheckActive =
@@ -47,8 +47,9 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
       }
     }
       async function toggleKeepChatArchived() {
-        const newValue = !window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+        const newValue = !isKeepChatArchivedOn;
         window.setSettingValue(SettingsKey.settingsKeepChatArchived,newValue);
+        dispatch(updateIsKeepChatArchived(newValue));
         forceUpdate();
       }
 
@@ -83,7 +84,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
               forceUpdate();
             }}
             title={window.i18n('keepChatArchived')}
-            description={window.i18n('archivedKeepChatDescription')}
+            description={window.i18n('keepChatArchivedSettingDescription')}
             active={isKeepChatArchivedOn}
             iconType="archivedChat"
           />

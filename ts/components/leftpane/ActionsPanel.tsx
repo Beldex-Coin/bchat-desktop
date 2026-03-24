@@ -82,6 +82,7 @@ import SocialGrpIcon from '../icon/SocialGrpIcon';
 import SubMenuConnectIcon from '../icon/SubMenuConnect';
 import { openCallHistory } from '../../state/ducks/callHistory';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { updateIsKeepChatArchived } from '../../state/ducks/userConfig';
 
 const Section = (props: {
   type: SectionType;
@@ -393,8 +394,10 @@ const doAppStartUp = () => {
 };
 
 const setSettingsKeepChatArchivedDefaultValue = () => {
+
   if (window.getSettingValue(SettingsKey.settingsKeepChatArchived) === undefined) {
     window.setSettingValue(SettingsKey.settingsKeepChatArchived, true);
+    window.inboxStore?.dispatch(updateIsKeepChatArchived(true))
   }
 }
 

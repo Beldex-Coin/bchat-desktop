@@ -16,13 +16,15 @@ import { getFocusedSection } from '../../../state/selectors/section';
 import { BchatIcon } from '../../icon';
 import { ContextConversationId } from './ConversationListItem';
 import { UserItem } from './UserItem';
-import { SettingsKey } from '../../../data/settings-key';
+// import { SettingsKey } from '../../../data/settings-key';
+import { getIsKeepChatArchived } from '../../../state/selectors/userConfig';
 
 
 const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
   const convoId = useContext(ContextConversationId);
   const convoSetting = useConversationPropsById(convoId)?.currentNotificationSetting;
-  const isArchived = useIsArchived(convoId) && window.getSettingValue(SettingsKey.settingsKeepChatArchived);
+  const isKeepChatArchived=useSelector(getIsKeepChatArchived);
+  const isArchived = useIsArchived(convoId) && isKeepChatArchived;
 
   if (!props.isMessagesSection || isArchived) {
     return null;

@@ -3,6 +3,7 @@
  * Anything setting under the cog wheel tab.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SettingsKey } from '../../data/settings-key';
 
 export interface UserConfigState {
   audioAutoplay: boolean;
@@ -10,6 +11,7 @@ export interface UserConfigState {
   hideMessageRequests: boolean;
   multipleSelection:boolean;
   isCurrentlyRecording:boolean;
+  isKeepChatArchived:boolean;
 
 }
 
@@ -19,6 +21,7 @@ export const initialUserConfigState = {
   hideMessageRequests: false,
   multipleSelection:false,
   isCurrentlyRecording:false,
+  isKeepChatArchived:window.getSettingValue(SettingsKey.settingsKeepChatArchived)
 };
 
 const userConfigSlice = createSlice({
@@ -48,6 +51,9 @@ const userConfigSlice = createSlice({
     },
     updateIsCurrentlyRecording:(state:UserConfigState,action: PayloadAction<boolean>)=>{
       state.isCurrentlyRecording=action.payload;
+    },
+    updateIsKeepChatArchived:(state:UserConfigState,action: PayloadAction<boolean>)=>{
+      state.isKeepChatArchived=action.payload
     }
   },
 });
@@ -62,5 +68,6 @@ export const {
   hideMultipleSelection,
   toggleMultipleSelection,
   updateIsCurrentlyRecording,
+  updateIsKeepChatArchived
 } = actions;
 export const userConfigReducer = reducer;

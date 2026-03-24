@@ -10,6 +10,8 @@ import { SettingsKey } from '../../../data/settings-key';
 import { BchatToggle } from '../../basic/BchatToggle';
 import { useClickAway, useUpdate } from 'react-use';
 import { useEffect, useRef, useState } from 'react';
+import { updateIsKeepChatArchived } from '../../../state/ducks/userConfig';
+import { getIsKeepChatArchived } from '../../../state/selectors/userConfig';
 
 
 const ArchivedListContainer = styled.div`
@@ -30,7 +32,7 @@ const OverlayArchivedMessage = () => {
   const dispatch = useDispatch();
   const [isopenPopup, setIsOpenPopup] = useState(false);
   const popUpRef = useRef<HTMLDivElement>(null);
-  const keepChatArchived = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
+  const keepChatArchived = Boolean(useSelector(getIsKeepChatArchived));
   const archivedDiscription = keepChatArchived
     ? window.i18n('archivedKeepChatDescription')
     : window.i18n('archivedDescription');
@@ -90,13 +92,18 @@ const OverlayArchivedMessage = () => {
     </ArchivedListContainer>
   );
 };
-const KeepChatArchivedPopup = ({ isopenPopup, popUpRef }: { isopenPopup: boolean; popUpRef: React.RefObject<HTMLDivElement> }) => {
+type KeepChatArchivedPopupProps = {
+  isopenPopup: boolean;
+  popUpRef: React.RefObject<HTMLDivElement>;
+};
+
+const KeepChatArchivedPopup = ({ isopenPopup, popUpRef }:KeepChatArchivedPopupProps) => {
   const forceUpdate = useUpdate();
-  const isKeepChatArchivedOn = Boolean(window.getSettingValue(SettingsKey.settingsKeepChatArchived));
+  const dispatch=useDispatch()
+  const isKeepChatArchivedOn =  Boolean(useSelector(getIsKeepChatArchived));
    async function toggleKeepChatArchived() {
-        const newValue = !window.getSettingValue(SettingsKey.settingsKeepChatArchived);
-        window.setSettingValue(SettingsKey.settingsKeepChatArchived,newValue);
-        forceUpdate();
+        window.setSettingValue(SettingsKey.settingsKeepChatArchived,!isKeepChatArchivedOn);
+        dispatch(updateIsKeepChatArchived(!isKeepChatArchivedOn))
       }
   return (
     <StyledKeepChatArchivedPopupWrapper className='keepchatSettingWrapper' isopenPopup={isopenPopup} >

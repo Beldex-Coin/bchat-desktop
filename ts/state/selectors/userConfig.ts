@@ -30,3 +30,8 @@ export const getIsCurrentlyRecording = createSelector(
   (state: UserConfigState): boolean => state.isCurrentlyRecording
   
 );
+export const getIsKeepChatArchived=createSelector(
+  getUserConfig,
+  (state: UserConfigState): boolean => state.isKeepChatArchived
+  
+);
