@@ -1488,7 +1488,7 @@ label {
   }
 }
 
-.react-contexify {
+.contexify {
   // be sure it is more than the one set for the More Infos screen of messages
   z-index: 30;
   min-width: 215 px;
@@ -1499,22 +1499,22 @@ label {
   // background: var(--color-cell-background);
   // border-radius: 10px;
 
-  .react-contexify__item {
+  .contexify_item {
     // background: var(--color-cell-background);
     margin: 5px 15px;
     font-size: 16px;
     font-weight: 300;
   }
 
-  .react-contexify__item:not(.react-contexify__item--disabled):focus
-    > .react-contexify__item__content,
-  .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+  .contexify_item:not(.contexify_item--disabled):focus
+    > .contexify_itemContent,
+  .contexify_item:not(.contexify_item--disabled):hover
+    > .contexify_itemContent {
     background-color: var(--color-context-menu-hover-bg) !important;
     border-radius: 14px;
   }
-  .react-contexify__item:not(.react-contexify__item--disabled):hover
-    > .react-contexify__item__content {
+  .contexify_item:not(.contexify_item--disabled):hover
+    > .contexify_itemContent {
     border-radius: 14px;
     // background: #333842;
     // color: var(--color-text-menu-highlighted);
@@ -1522,32 +1522,32 @@ label {
     color: var(--color-text);
   }
 
-  .react-contexify__item__content {
+  .contexify_itemContent {
     transition: $bchat-transition-duration;
     color: var(--color-text);
   }
  
   &.convoListContextMenu{
-    .react-contexify__submenu{
+    .contexify_submenu{
        min-height: 144px;
     }
   } 
   &.submenu
   {
-    .react-contexify__submenu{
+    .contexify_submenu{
       min-height: 103px;
    }
   }
-  &.react-contexify__submenu {
+  &.contexify_submenu {
     top: 0px !important; // height of an item element
    
     // right: 300px !important;
-    .react-contexify__item__content {
+    .contexify_itemContent {
       justify-content: start;
     }
   }
 
-  .react-contexify__submenu-arrow {
+  .contexify_submenu-arrow {
     line-height: 16px; // center the arrow for submenu
   }
 }

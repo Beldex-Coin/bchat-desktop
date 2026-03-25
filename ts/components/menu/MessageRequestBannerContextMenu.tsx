@@ -1,5 +1,5 @@
 import React from 'react';
-import { animation, Menu } from 'react-contexify';
+import {  Menu } from 'react-contexify';
 import _ from 'lodash';
 
 import { HideBannerMenuItem } from './Menu';
@@ -12,7 +12,7 @@ const MessageRequestBannerContextMenu = (props: PropsContextConversationItem) =>
   const { triggerId } = props;
 
   return (
-    <Menu id={triggerId} animation={animation.fade}>
+    <Menu id={triggerId} animation="fade">
       <HideBannerMenuItem />
     </Menu>
   );

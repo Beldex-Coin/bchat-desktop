@@ -52,6 +52,7 @@ type Props = {
   setRecentEmojiBtnVisible: (e: boolean) => void;
   recentEmoji: boolean;
   setRecentEmoji: (e: boolean) => void;
+  disableRightClicked: () => void;
   
 };
 export const StyledMessageContentContainer = styled.div<{ direction: 'left' | 'right' }>`
@@ -243,6 +244,7 @@ export const MessageContentWithStatuses = (props: Props) => {
     recentEmojiBtnVisible,
     setRecentEmojiBtnVisible,
     recentEmoji,  setRecentEmoji,
+    disableRightClicked
   } = props;
 
   const onClickOnMessageOuterContainer = useCallback(
@@ -435,6 +437,7 @@ export const MessageContentWithStatuses = (props: Props) => {
             onMessageLoseFocus={onMessageLoseFocus}
             acceptUrl={acceptUrl}
             txnId={txnId}
+            disableRightClicked={disableRightClicked}
 
           />
         )}

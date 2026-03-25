@@ -70,7 +70,7 @@ export const MemberListItem = (props: {
         <Avatar size={AvatarSize.M} pubkey={pubkey} isBnsHolder={isBnsHolder}/>
 
         </span>
-        <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px', marginBottom: '15px' }}>
+        <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px' }}>
           {validateMemberName(memberName)}
         </span>
         {/* <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span> */}
