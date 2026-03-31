@@ -13,10 +13,6 @@ import {
 } from '../BchatStagedLinkPreview';
 import { AbortController } from 'abort-controller';
 import { BchatQuotedMessageComposition } from '../BchatQuotedMessageComposition';
-import { Mention, MentionsInput, SuggestionDataItem } from 'react-mentions';
-// react-mentions types can conflict with the project's JSX typings; use any-aliases where used in JSX
-const MentionsInputAny: any = (MentionsInput as any);
-const MentionAny: any = (Mention as any);
 import autoBind from 'auto-bind';
 import { getMediaPermissionsSettings } from '../../settings/BchatSettings';
 import { getDraftForConversation, updateDraftForConversation } from '../BchatConversationDrafts';
@@ -61,15 +57,12 @@ import {
 } from '../../../util/attachmentsUtil';
 import {
   cleanMentions,
-  mentionsRegex,
   renderUserMentionRow,
-  styleForCompositionBoxSuggestions,
 } from './UserMentions';
-import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
+// import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
 import {
-
-  updateConfirmModal
+  updateConfirmModal,
   // updateShareContactModal,
 } from '../../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
@@ -85,6 +78,30 @@ import { FixedBaseEmoji } from '../../../types/Reaction';
 import { updateIsCurrentlyRecording } from '../../../state/ducks/userConfig';
 import MediaFileIcon from '../../icon/MediaFileIcon';
 import ContactsIcon from '../../icon/ContactsIcon';
+
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useEffect } from 'react';
+import {
+  $getSelection,
+  $isRangeSelection,
+  TextNode,
+  $createTextNode,
+  $getRoot,
+  LexicalNode,
+  $isTextNode,
+  $isElementNode,
+  $createParagraphNode,
+} from 'lexical';
+import MentionPlugin from '../MentionPlugin';
+import { MentionNode } from '../MentionNode';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -152,28 +169,10 @@ interface State {
   stagedLinkPreview?: StagedLinkPreviewData;
   showCaptionEditor?: AttachmentType;
   selectionMenuIsVisble: boolean;
+  items: any;
 }
 
-const sendMessageStyle = {
-  control: {},
-  input: {
-    overflow: 'auto',
-    maxHeight: '300px',
-    wordBreak: 'break-word',
-    padding: '0',
-    margin: '0px',
-  },
-  highlighter: {
-    boxSizing: 'border-box',
-    overflow: 'hidden',
-    maxHeight: '300px',
-  },
-  flexGrow: 1,
 
-  maxHeight: '300px',
-  width: '100%',
-  ...styleForCompositionBoxSuggestions,
-};
 
 const getDefaultState = (newConvoId?: string) => {
   return {
@@ -184,65 +183,11 @@ const getDefaultState = (newConvoId?: string) => {
     stagedLinkPreview: undefined,
     showCaptionEditor: undefined,
     selectionMenuIsVisble: false,
+    items: {},
   };
 };
 
-const getSelectionBasedOnMentions = (draft: string, index: number) => {
-  // we have to get the real selectionStart/end of an index in the mentions box.
-  // this is kind of a pain as the mentions box has two inputs, one with the real text, and one with the extracted mentions
 
-  // the index shown to the user is actually just the visible part of the mentions (so the part between ￗ...ￒ
-  const matches = draft.match(mentionsRegex);
-
-  let lastMatchStartIndex = 0;
-  let lastMatchEndIndex = 0;
-  let lastRealMatchEndIndex = 0;
-
-  if (!matches) {
-    return index;
-  }
-  const mapStartToLengthOfMatches = matches.map(match => {
-    const displayNameStart = match.indexOf('\uFFD7') + 1;
-    const displayNameEnd = match.lastIndexOf('\uFFD2');
-    const displayName = match.substring(displayNameStart, displayNameEnd);
-
-    const currentMatchStartIndex = draft.indexOf(match) + lastMatchStartIndex;
-    lastMatchStartIndex = currentMatchStartIndex;
-    lastMatchEndIndex = currentMatchStartIndex + match.length;
-
-    const realLength = displayName.length + 1;
-    lastRealMatchEndIndex = lastRealMatchEndIndex + realLength;
-
-    // the +1 is for the @
-    return {
-      length: displayName.length + 1,
-      lastRealMatchEndIndex,
-      start: lastMatchStartIndex,
-      end: lastMatchEndIndex,
-    };
-  });
-
-  const beforeFirstMatch = index < mapStartToLengthOfMatches[0].start;
-  if (beforeFirstMatch) {
-    // those first char are always just char, so the mentions logic does not come into account
-    return index;
-  }
-  const lastMatchMap = _.last(mapStartToLengthOfMatches);
-
-  if (!lastMatchMap) {
-    return Number.MAX_SAFE_INTEGER;
-  }
-
-  const indexIsAfterEndOfLastMatch = lastMatchMap.lastRealMatchEndIndex <= index;
-  if (indexIsAfterEndOfLastMatch) {
-    const lastEnd = lastMatchMap.end;
-    const diffBetweenEndAndLastRealEnd = index - lastMatchMap.lastRealMatchEndIndex;
-    return lastEnd + diffBetweenEndAndLastRealEnd - 1;
-  }
-  // now this is the hard part, the cursor is currently between the end of the first match and the start of the last match
-  // for now, just append it to the end
-  return Number.MAX_SAFE_INTEGER;
-};
 const StyledEmojiPanelContainer = styled.div`
   ${StyledEmojiPanel} {
     position: absolute;
@@ -258,7 +203,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private readonly emojiPanelButton: any;
   private linkPreviewAbortController?: AbortController;
   private container: HTMLDivElement | null;
-  private lastBumpTypingMessageLength: number = 0;
+  // private lastBumpTypingMessageLength: number = 0;
+  private editorRef: any = null;
+  public containerRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: Props) {
     super(props);
@@ -271,6 +218,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     // Emojis
     this.emojiPanel = React.createRef();
     this.emojiPanelButton = React.createRef();
+    this.containerRef = React.createRef();
     autoBind(this);
     this.toggleEmojiPanel = debounce(this.toggleEmojiPanel.bind(this), 100);
   }
@@ -290,21 +238,78 @@ class CompositionBoxInner extends React.Component<Props, State> {
     div?.removeEventListener('paste', this.handlePaste);
   }
 
-  public componentDidUpdate(prevProps: Props, _prevState: State) {
-    // reset the state on new conversation key
-    if (prevProps.selectedConversationKey !== this.props.selectedConversationKey) {
-      this.setState(getDefaultState(this.props.selectedConversationKey), this.focusCompositionBox);
-      this.lastBumpTypingMessageLength = 0;
-    } else if (this.props.stagedAttachments?.length !== prevProps.stagedAttachments?.length) {
-      // if number of staged attachment changed, focus the composition box for a more natural UI
-      this.focusCompositionBox();
+ public componentDidUpdate(prevProps: Props) {
+  const convoChanged =
+    prevProps.selectedConversationKey !== this.props.selectedConversationKey;
+  // Conversation switched
+  if (convoChanged) {
+    const newDraft = getDraftForConversation(this.props.selectedConversationKey);
+    this.setState(
+      {
+        ...getDefaultState(this.props.selectedConversationKey),
+        draft: newDraft || '',
+      },
+      () => {
+        this.focusCompositionBox();
+
+        //  IMPORTANT: sync draft to Lexical
+        this.updateLexicalFromDraft(this.state.draft);
+      }
+    );
+
+    return; // stop here
+  }
+
+  // attachments change
+  if (
+    this.props.stagedAttachments?.length !==
+    prevProps.stagedAttachments?.length
+  ) {
+    this.focusCompositionBox();
+  }
+
+  // reply change
+  if (!_.isEqual(prevProps.quotedMessageProps, this.props.quotedMessageProps)) {
+    this.focusCompositionBox();
+  }
+
+}
+updateLexicalFromDraft = (draft: string) => {
+  if (!this.editorRef) return;
+
+  this.editorRef.update(() => {
+    const root = $getRoot();
+    root.clear();
+
+    const paragraph = $createParagraphNode();
+    root.append(paragraph);
+
+    if (!draft) {
+      paragraph.selectEnd();
+      return;
     }
 
-    // focus the composition box when user clicks start to reply to a message
-    if (!_.isEqual(prevProps.quotedMessageProps, this.props.quotedMessageProps)) {
-      this.focusCompositionBox();
-    }
-  }
+    // Split text + mentions
+    const parts = draft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
+
+    parts.forEach(part => {
+      const match = part.match(/@ￒ(.*?)ￗ(.*?)ￒ/);
+
+      if (match) {
+        const [, id, display] = match;
+
+        //  Create MentionNode
+        const mentionNode = new MentionNode(id, display);
+        paragraph.append(mentionNode);
+      } else if (part) {
+        // Normal text
+        paragraph.append($createTextNode(part));
+      }
+    });
+
+    paragraph.selectEnd();
+  });
+};
 
   public render() {
     return (
@@ -333,7 +338,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     const { items } = e.clipboardData;
     let imgBlob = null;
-     // eslint-disable-next-line no-restricted-syntax
+    // eslint-disable-next-line no-restricted-syntax
     for (const item of items as any) {
       const pasteType = item.type.split('/')[0];
       if (pasteType === 'image') {
@@ -454,9 +459,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const { showEmojiPanel, selectionMenuIsVisble } = this.state;
     const { typingEnabled, stagedAttachments } = this.props;
 
-    const { selectedConversation} = this.props;
+    const { selectedConversation } = this.props;
     const { draft } = this.state;
-   
+
     const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
     return (
       <>
@@ -509,7 +514,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
               multiple={true}
               ref={this.fileInput}
               type="file"
-             onChange={() => void this.onChoseAttachment()}
+              onChange={() => void this.onChoseAttachment()}
             />
             {this.state.showRecordingView && typingEnabled ? (
               this.renderRecordingView()
@@ -579,157 +584,170 @@ class CompositionBoxInner extends React.Component<Props, State> {
     );
   }
 
+  private onEmojiClick(emoji: FixedBaseEmoji) {
+    const editor = this.editorRef; //  store editor ref from LexicalComposer
+
+    editor.update(() => {
+      const selection = $getSelection();
+
+      if ($isRangeSelection(selection)) {
+        emoji.native && selection.insertText(emoji.native); //  inserts at cursor
+      }
+    });
+  }
+
   private renderTextArea() {
-    const { i18n } = window;
-    const { draft } = this.state;
+    const { selectedConversation, typingEnabled } = this.props;
 
-    if (!this.props.selectedConversation) {
-      return null;
-    }
+    if (!selectedConversation) return null;
 
-    const makeMessagePlaceHolderText = () => {
-      if (isKickedFromGroup) {
-        return i18n('youGotKickedFromGroup');
-      }
-      if (left) {
-        return i18n('youLeftTheGroup');
-      }
-      if (isBlocked && isPrivate) {
-        return i18n('unblockToSend');
-      }
-      if (isBlocked && !isPrivate) {
-        return i18n('unblockGroupToSend');
-      }
-      return i18n('sendMessage');
+    const { isKickedFromGroup, left, isPrivate, isBlocked, } = selectedConversation;
+
+    const getPlaceholder = () => {
+      if (isKickedFromGroup) return window.i18n('youGotKickedFromGroup');
+      if (left) return window.i18n('youLeftTheGroup');
+      if (isBlocked && isPrivate) return window.i18n('unblockToSend');
+      if (isBlocked && !isPrivate) return window.i18n('unblockGroupToSend');
+      return window.i18n('sendMessage');
     };
 
-    const { isKickedFromGroup, left, isPrivate, isBlocked } = this.props.selectedConversation;
-    const messagePlaceHolder = makeMessagePlaceHolderText();
-    const { typingEnabled } = this.props;
-    const neverMatchingRegex = /($a)/;
+    const placeholder = getPlaceholder();
+
+    const editorConfig = {
+      namespace: 'ChatEditor',
+      theme: {
+        text: {
+          bold: 'editor-text-bold',
+          italic: 'editor-text-italic',
+          strikethrough: 'editor-text-strikethrough', // ✅ IMPORTANT
+          code: 'editor-text-code',
+        },
+      },
+      nodes: [MentionNode], // ✅ important
+      onError(error: any) {
+        console.error(error);
+      },
+    };
 
     return (
-      <MentionsInputAny
-        value={draft}
-        onChange={this.onChange}
-        onKeyDown={this.onKeyDown}
-        onKeyUp={this.onKeyUp}
-        placeholder={messagePlaceHolder}
-        spellCheck={true}
-        inputRef={this.textarea}
-        disabled={!typingEnabled}
-        rows={1}
-        data-testid="message-input-text-area"
-        style={sendMessageStyle as any}
-        suggestionsPortalHost={this.container as any}
-        forceSuggestionsAboveCursor={true} // force mentions to be rendered on top of the cursor, this is working with a fork of react-mentions for now
-      >
-        <MentionAny
-          appendSpaceOnAdd={true}
-          // this will be cleaned on cleanMentions()
-          markup="@ￒ__id__ￗ__display__ￒ" // ￒ = \uFFD2 is one of the forbidden char for a display name (check displayNameRegex)
-          trigger="@"
-          // this is only for the composition box visible content. The real stuff on the backend box is the @markup
-          displayTransform={(_id: any, display: any) => `@${display}`}
-          data={this.fetchUsersForGroup}
-          renderSuggestion={renderUserMentionRow}
-        />
-        {/* {nativeEmojiData && !_.isEmpty(nativeEmojiData) && ( */}
-        <MentionAny
-          trigger=":"
-          markup="__id__"
-          appendSpaceOnAdd={true}
-          regex={neverMatchingRegex}
-          data={searchEmojiForQuery}
-          renderSuggestion={renderEmojiQuickResultRow}
-        />
-        {/* )} */}
-      </MentionsInputAny>
+      <LexicalComposer initialConfig={editorConfig}>
+        <div className="chat-input-wrapper" ref={this.containerRef}>
+          <div className="editor-container">
+            <EditorRefPlugin
+              onReady={(editor: any) => {
+                this.editorRef = editor;
+              }}
+            />
+            <RichTextPlugin
+              contentEditable={
+                <ContentEditable
+                  className="editor-input"
+                  contentEditable={typingEnabled}
+                  // aria-placeholder={placeholder}
+                />
+              }
+              placeholder={<div className="editor-placeholder">{placeholder}</div>}
+              ErrorBoundary={LexicalErrorBoundary}
+            />
+
+            <HistoryPlugin />
+            <TextFormatingPlugin />
+            <MentionPlugin
+              fetchUsers={this.fetchUsersForGroup}
+              renderSuggestion={renderUserMentionRow}
+              containerRef={this.containerRef}
+              draft={this.state.draft}
+            />
+
+            <OnChangePlugin
+              onChange={editorState => {
+                editorState.read(() => {
+                  const text:string = serializeEditor();
+                  this.setState({ draft: text });
+                   updateDraftForConversation({ conversationKey: selectedConversation.id, draft:text });
+                });
+              }}
+            />
+          </div>
+        </div>
+      </LexicalComposer>
     );
   }
 
-  private fetchUsersForOpenGroup(
-    query: string,
-    callback: (data: Array<SuggestionDataItem>) => void
-  ) {
+  private fetchUsersForOpenGroup = async (query: string) => {
     const mentionsInput = getMentionsInput(window?.inboxStore?.getState() || []);
+
     const filtered =
       mentionsInput
-        .filter(d => !!d)
+        ?.filter(Boolean)
         .filter(d => d.authorProfileName !== 'Anonymous')
         .filter(d => d.authorProfileName?.toLowerCase()?.includes(query.toLowerCase()))
-        // Transform the users to what react-mentions expects
-        .map(user => {
-          return {
-            display: user.authorProfileName,
-            id: user.id,
-          };
-        }) || [];
+        .map(user => ({
+          id: user.id,
+          value: user.authorProfileName, // ✅ display → value
+        })) || [];
 
-    callback(filtered);
-  }
+    return filtered;
+  };
+  private fetchUsersForGroup = async (query: string) => {
+    let overridenQuery = query || '';
 
-  private fetchUsersForGroup(query: string, callback: (data: Array<SuggestionDataItem>) => void) {
-    let overridenQuery = query;
-    if (!query) {
-      overridenQuery = '';
-    }
     if (!this.props.selectedConversation) {
-      return;
+      return [];
     }
 
     if (this.props.selectedConversation.isPublic) {
-      this.fetchUsersForOpenGroup(overridenQuery, callback);
-      return;
+      return this.fetchUsersForOpenGroup(overridenQuery);
     }
-    if (!this.props.selectedConversation.isPrivate) {
-      this.fetchUsersForClosedGroup(overridenQuery, callback);
-      return;
-    }
-  }
 
-  private fetchUsersForClosedGroup(query: any, callback: any) {
+    if (!this.props.selectedConversation.isPrivate) {
+      return this.fetchUsersForClosedGroup(overridenQuery);
+    }
+
+    return [];
+  };
+
+  private fetchUsersForClosedGroup = async (query: string) => {
     const { selectedConversation } = this.props;
-    if (!selectedConversation) {
-      return;
-    }
+    if (!selectedConversation) return [];
+
     const allPubKeys = selectedConversation.members;
-    if (!allPubKeys || allPubKeys.length === 0) {
-      return;
-    }
+    if (!allPubKeys || allPubKeys.length === 0) return [];
 
     const allMembers = allPubKeys.map(pubKey => {
       const conv = getConversationController().get(pubKey);
       let profileName = 'Anonymous';
+
       if (conv) {
         profileName = conv.getProfileName() || 'Anonymous';
       }
+
       return {
         id: pubKey,
         authorProfileName: profileName,
       };
     });
-    // keep anonymous members so we can still quote them with their id
+
     const members = allMembers
-      .filter(d => !!d)
+      .filter(Boolean)
       .filter(
         d =>
           d.authorProfileName?.toLowerCase()?.includes(query.toLowerCase()) || !d.authorProfileName
       );
 
-    // Transform the users to what react-mentions expects
-    const mentionsData = members.map(user => ({
-      display: user.authorProfileName || window.i18n('anonymous'),
+    // ✅ Convert to Lexical format
+    return members.map(user => ({
       id: user.id,
+      value: user.authorProfileName || window.i18n('anonymous'),
     }));
-    callback(mentionsData);
-  }
+  };
 
   private renderStagedLinkPreview(): JSX.Element | null {
     // Don't generate link previews if user has turned them off
     if (!(window.getSettingValue('link-preview-setting') || false)) {
       return null;
     }
+    this.fetchUsersForGroup('');
 
     const { stagedAttachments, quotedMessageProps } = this.props;
     const { ignoredLink } = this.state;
@@ -797,7 +815,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       abortController.abort();
     }, LINK_PREVIEW_TIMEOUT);
 
-    getPreview(firstLink, (abortController.signal as any))
+    getPreview(firstLink, abortController.signal as any)
       .then(ret => {
         // we finished loading the preview, and checking the abortConrtoller, we are still not aborted.
         // => update the staged preview
@@ -951,7 +969,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
       event.preventDefault();
-       await this.onSendMessage();        
+      await this.onSendMessage();
     } else if (event.key === 'Escape' && this.state.showEmojiPanel) {
       this.hideEmojiPanel();
     } else if (event.key === 'PageUp' || event.key === 'PageDown') {
@@ -961,26 +979,25 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
   }
 
-  private async onKeyUp() {
-    if (!this.props.selectedConversationKey) {
-      throw new Error('selectedConversationKey is needed');
-    }
-    const { draft } = this.state;
-    // Called whenever the user changes the message composition field. But only
-    //   fires if there's content in the message field after the change.
-    // Also, check for a message length change before firing it up, to avoid
-    // catching ESC, tab, or whatever which is not typing
-    if (draft && draft.length && draft.length !== this.lastBumpTypingMessageLength) {
-      const conversationModel = getConversationController().get(this.props.selectedConversationKey);
-      if (!conversationModel) {
-        return;
-      }
-      conversationModel.throttledBumpTyping();
-      this.lastBumpTypingMessageLength = draft.length;
-    }
-  }
+  // private async onKeyUp() {
+  //   if (!this.props.selectedConversationKey) {
+  //     throw new Error('selectedConversationKey is needed');
+  //   }
+  //   const { draft } = this.state;
+  //   // Called whenever the user changes the message composition field. But only
+  //   //   fires if there's content in the message field after the change.
+  //   // Also, check for a message length change before firing it up, to avoid
+  //   // catching ESC, tab, or whatever which is not typing
+  //   if (draft && draft.length && draft.length !== this.lastBumpTypingMessageLength) {
+  //     const conversationModel = getConversationController().get(this.props.selectedConversationKey);
+  //     if (!conversationModel) {
+  //       return;
+  //     }
+  //     conversationModel.throttledBumpTyping();
+  //     this.lastBumpTypingMessageLength = draft.length;
+  //   }
+  // }
 
-  
   private async onSendMessage() {
     if (!this.props.selectedConversationKey) {
       throw new Error('selectedConversationKey is needed');
@@ -1030,7 +1047,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       'author',
       'text',
       'attachments',
-      'direction',
+      'direction'
     );
 
     // we consider that a link preview without a title at least is not a preview
@@ -1062,6 +1079,19 @@ class CompositionBoxInner extends React.Component<Props, State> {
         ignoredLink: undefined,
         draft: '',
       });
+      if (this.editorRef) {
+        this.editorRef.update(() => {
+          const root = $getRoot();
+          root.clear();
+
+          const paragraph = $createParagraphNode();
+          root.append(paragraph);
+          paragraph.select();
+        });
+        setTimeout(() => {
+          this.editorRef.focus();
+        }, 0);
+      }
       updateDraftForConversation({
         conversationKey: this.props.selectedConversationKey,
         draft: '',
@@ -1156,7 +1186,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
       'author',
       'text',
       'attachments',
-      'direction',
+      'direction'
     );
     this.props.sendMessage({
       body: '',
@@ -1209,59 +1239,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({ showRecordingView: false });
   }
 
-  private onChange(event: any) {
-    if (!this.props.selectedConversationKey) {
-      throw new Error('selectedConversationKey is needed');
-    }
-    const draft = event.target.value ?? '';
-    this.setState({ draft });
-    updateDraftForConversation({ conversationKey: this.props.selectedConversationKey, draft });
-  }
-
-  private onEmojiClick(emoji: FixedBaseEmoji) {
-    if (!this.props.selectedConversationKey) {
-      throw new Error('selectedConversationKey is needed');
-    }
-    const messageBox = this.textarea.current;
-    if (!messageBox) {
-      return;
-    }
-
-    const { draft } = this.state;
-
-    const currentSelectionStart = Number(messageBox.selectionStart);
-
-    const realSelectionStart = getSelectionBasedOnMentions(draft, currentSelectionStart);
-
-    const before = draft.slice(0, realSelectionStart);
-    const end = draft.slice(realSelectionStart);
-
-    const newMessage = `${before}${emoji.native}${end}`;
-
-    this.setState({ draft: newMessage }, () => {
-      setTimeout(() => {
-        const emojiLength = emoji.native?.length || 0;
-        messageBox.selectionStart = messageBox.selectionEnd = before.length + emojiLength;
-        messageBox.focus();
-      }, 0);
-    });
-    updateDraftForConversation({
-      conversationKey: this.props.selectedConversationKey,
-      draft: newMessage,
-    });
-
-    // update our selection because updating text programmatically
-    // will put the selection at the end of the textarea
-    // const selectionStart = currentSelectionStart + Number(1);
-    // messageBox.selectionStart = selectionStart;
-    // messageBox.selectionEnd = selectionStart;
-
-    // // Sometimes, we have to repeat the set of the selection position with a timeout to be effective
-    // setTimeout(() => {
-    //   messageBox.selectionStart = selectionStart;
-    //   messageBox.selectionEnd = selectionStart;
-    // }, 20);
-  }
+ 
 
   private focusCompositionBox() {
     // Focus the textarea when user clicks anywhere in the composition box
@@ -1281,4 +1259,118 @@ const mapStateToProps = (state: StateType) => {
 
 const smart = connect(mapStateToProps);
 
-export const CompositionBox:any = smart(CompositionBoxInner);
+export const CompositionBox: any = smart(CompositionBoxInner);
+
+// type FormatType = "bold" | "italic" | "strikethrough" | "code";
+export default function TextFormatingPlugin(): null {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    return editor.registerTextContentListener(() => {
+      editor.update(() => {
+        const selection = $getSelection();
+
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
+          return;
+        }
+
+        const node = selection.anchor.getNode();
+        if (!(node instanceof TextNode)) return;
+
+        if (!node.isSimpleText()) return;
+
+        const text = node.getTextContent();
+
+        const patterns = [
+          { regex: /\*(.*?)\*/, format: 'bold', symbol: '*' },
+          { regex: /_(.*?)_/, format: 'italic', symbol: '_' },
+          { regex: /~(.*?)~/, format: 'strikethrough', symbol: '~' },
+          { regex: /```(.*?)```/, format: 'code', symbol: '```' },
+        ];
+
+        for (const { regex, format, symbol } of patterns) {
+          const match = regex.exec(text);
+
+          if (match) {
+            const before = text.slice(0, match.index);
+            const inside = match[1];
+            const after = text.slice(match.index + match[0].length);
+
+            const nodes: TextNode[] = [];
+
+            if (before) nodes.push($createTextNode(before));
+
+            // optional: keep symbols faint
+            const open = $createTextNode(symbol);
+            open.setStyle('opacity:0.5;');
+            nodes.push(open);
+
+            const formatted = $createTextNode(inside);
+            formatted.toggleFormat(format as any);
+            nodes.push(formatted);
+
+            const close = $createTextNode(symbol);
+            close.setStyle('opacity:0.5;');
+            nodes.push(close);
+
+            if (after) nodes.push($createTextNode(after));
+
+            node.replace(nodes[0]);
+
+            let current = nodes[0];
+            for (let i = 1; i < nodes.length; i++) {
+              current.insertAfter(nodes[i]);
+              current = nodes[i];
+            }
+
+            current.selectEnd();
+            break;
+          }
+        }
+      });
+    });
+  }, [editor]);
+
+  return null;
+}
+
+export function EditorRefPlugin({ onReady }: any) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    onReady(editor);
+  }, [editor]);
+
+  return null;
+}
+
+function $isMentionNode(node: LexicalNode): node is MentionNode {
+  return node.getType() === 'mention';
+}
+
+const serializeNode = (node: LexicalNode): string => {
+  // ✅ Mention
+  if ($isMentionNode(node)) {
+    return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
+  }
+
+  // ✅ Text
+  if ($isTextNode(node)) {
+    return node.getTextContent();
+  }
+
+  // ✅ Children (recursive)
+  // ✅ Element node (safe access to children)
+  if ($isElementNode(node)) {
+    return node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
+  }
+
+  return '';
+};
+
+export const serializeEditor = () => {
+  return serializeNode($getRoot());
+};

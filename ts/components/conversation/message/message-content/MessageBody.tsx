@@ -25,14 +25,11 @@ type Props = {
   isGroup: boolean;
 };
 
-const renderMentions: RenderTextCallbackType = ({ text, key, isGroup }) => (
-  <AddMentions key={key} text={text} isGroup={isGroup} />
-);
 
 export const renderTextDefault: RenderTextCallbackType = ({ text }) => <>{text}</>;
 
 const renderNewLines: RenderTextCallbackType = ({ text: textWithNewLines, key, isGroup }) => {
-  const renderOther = isGroup ? renderMentions : renderTextDefault;
+  const renderOther = isGroup ? renderFormattedFirst : renderFormatted;
 
   return (
     <AddNewLines
@@ -43,7 +40,19 @@ const renderNewLines: RenderTextCallbackType = ({ text: textWithNewLines, key, i
     />
   );
 };
-
+const renderFormattedFirst: RenderTextCallbackType = ({ text, key, isGroup }) => {
+  return (
+    <span key={key}>
+      {formatText(text).map((part, i) =>
+        typeof part === 'string' ? (
+          <AddMentions key={i} text={part} isGroup={isGroup} />
+        ) : (
+          part
+        )
+      )}
+    </span>
+  );
+};
 const renderEmoji = ({
   text,
   key,
@@ -104,9 +113,6 @@ export const MessageBody = (props: Props) => {
     );
   }
 
-  if (text && text.startsWith('```') && text.endsWith('```')) {
-    return <pre className="text-selectable">{text.substring(4, text.length - 3)}</pre>;
-  }
 
   return JsxSelectable(
     <Linkify
@@ -208,4 +214,69 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
   }
 
   return <>{results}</>;
+};
+
+const renderFormatted: RenderTextCallbackType = ({ text, key }) => {
+  return <span key={key}>{formatText(text)}</span>;
+};
+
+const formatText = (text: string): (string | JSX.Element)[] => {
+  const parts: (string | JSX.Element)[] = [];
+
+  // ✅ Improved regex (supports multiline + inline code)
+  const regex = /(```[\s\S]*?```|`[^`]+`|\*[^*]+\*|_[^_]+_|~[^~]+~)/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+
+    const token = match[0];
+
+    // 🔹 Block code
+    if (token.startsWith('```')) {
+      const content = token.slice(3, -3);
+      parts.push(
+        <pre key={match.index} className="code-block">
+          <code>{content}</code>
+        </pre>
+      );
+    }
+
+    // 🔹 Inline code
+    else if (token.startsWith('`')) {
+      const content = token.slice(1, -1);
+      parts.push(
+        <code key={match.index} className="inline-code">
+          {content}
+        </code>
+      );
+    }
+
+    // 🔹 Bold
+    else if (token.startsWith('*')) {
+      parts.push(<strong key={match.index}>{token.slice(1, -1)}</strong>);
+    }
+
+    // 🔹 Italic
+    else if (token.startsWith('_')) {
+      parts.push(<em key={match.index}>{token.slice(1, -1)}</em>);
+    }
+
+    // 🔹 Strikethrough
+    else if (token.startsWith('~')) {
+      parts.push(<del key={match.index}>{token.slice(1, -1)}</del>);
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts;
 };
