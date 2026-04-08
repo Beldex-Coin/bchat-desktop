@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
+import { formatText } from './message/message-content/MessageBody';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -160,6 +161,7 @@ export const BchatQuotedMessageComposition = () => {
     (item: Room) => groupInvitation?.name === item.name
   );
   const validatedBody=!body?.startsWith(`{"kind"`) && body
+  const formattedText = validatedBody ? formatText(validatedBody) : [];
   return (
     <QuotedMessageComposition>
       <Flex
@@ -189,7 +191,7 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||validatedBody }</Subtle>
+            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||formattedText }</Subtle>
 
             {groupInvitation && (
               <div className="group-details">

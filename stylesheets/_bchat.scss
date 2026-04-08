@@ -2826,7 +2826,7 @@ input {
 }
 
 .editor-input code {
-   background: rgba(0,0,0,0.1);
+   background: var(--color-MsgReqModal-bg);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: monospace;
@@ -2895,9 +2895,15 @@ input {
 }
 
 .code-block {
-  padding:5px 10px;
-  border-radius: 6px;
+
+  padding: 12px;
+  border-radius: 8px;
   overflow-x: auto;
   margin: 6px 0;
   font-family: monospace;
+  font-size: 13px;
+  line-height: 1.5;
+
+  white-space: pre-wrap;   /* preserves lines + allows wrap if needed */
+  tab-size: 2;             /* proper indentation */
 }

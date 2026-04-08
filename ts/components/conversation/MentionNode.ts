@@ -1,7 +1,5 @@
 import {
   DecoratorNode,
-  EditorConfig,
-  
 } from "lexical";
 
 export class MentionNode extends DecoratorNode<JSX.Element> {
@@ -30,8 +28,7 @@ getDisplay(): string {
     this.__display = display;
   }
 
-  createDOM(config: EditorConfig): HTMLElement {
-    console.log(config)
+  createDOM(): HTMLElement {
     const span = document.createElement("span");
     span.className = "mention-node";
     span.textContent = `@${this.__display}`;

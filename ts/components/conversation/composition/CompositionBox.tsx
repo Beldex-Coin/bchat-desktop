@@ -55,10 +55,7 @@ import {
   StagedAttachmentImportedType,
   StagedPreviewImportedType,
 } from '../../../util/attachmentsUtil';
-import {
-  cleanMentions,
-  renderUserMentionRow,
-} from './UserMentions';
+import { cleanMentions, renderUserMentionRow } from './UserMentions';
 // import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
 import {
@@ -92,16 +89,19 @@ import { useEffect } from 'react';
 import {
   $getSelection,
   $isRangeSelection,
-  TextNode,
   $createTextNode,
   $getRoot,
   LexicalNode,
   $isTextNode,
   $isElementNode,
   $createParagraphNode,
+  // COMMAND_PRIORITY_HIGH,
+  // KEY_BACKSPACE_COMMAND,
+  // $applyNodeReplacement,
 } from 'lexical';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
+import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -172,8 +172,6 @@ interface State {
   items: any;
 }
 
-
-
 const getDefaultState = (newConvoId?: string) => {
   return {
     draft: getDraftForConversation(newConvoId),
@@ -186,7 +184,6 @@ const getDefaultState = (newConvoId?: string) => {
     items: {},
   };
 };
-
 
 const StyledEmojiPanelContainer = styled.div`
   ${StyledEmojiPanel} {
@@ -238,78 +235,73 @@ class CompositionBoxInner extends React.Component<Props, State> {
     div?.removeEventListener('paste', this.handlePaste);
   }
 
- public componentDidUpdate(prevProps: Props) {
-  const convoChanged =
-    prevProps.selectedConversationKey !== this.props.selectedConversationKey;
-  // Conversation switched
-  if (convoChanged) {
-    const newDraft = getDraftForConversation(this.props.selectedConversationKey);
-    this.setState(
-      {
-        ...getDefaultState(this.props.selectedConversationKey),
-        draft: newDraft || '',
-      },
-      () => {
-        this.focusCompositionBox();
+  public componentDidUpdate(prevProps: Props) {
+    const convoChanged = prevProps.selectedConversationKey !== this.props.selectedConversationKey;
+    // Conversation switched
+    if (convoChanged) {
+      const newDraft = getDraftForConversation(this.props.selectedConversationKey);
+      this.setState(
+        {
+          ...getDefaultState(this.props.selectedConversationKey),
+          draft: newDraft || '',
+        },
+        () => {
+          this.focusCompositionBox();
 
-        //  IMPORTANT: sync draft to Lexical
-        this.updateLexicalFromDraft(this.state.draft);
-      }
-    );
+          //  IMPORTANT: sync draft to Lexical
+          this.updateLexicalFromDraft(this.state.draft);
+        }
+      );
 
-    return; // stop here
-  }
-
-  // attachments change
-  if (
-    this.props.stagedAttachments?.length !==
-    prevProps.stagedAttachments?.length
-  ) {
-    this.focusCompositionBox();
-  }
-
-  // reply change
-  if (!_.isEqual(prevProps.quotedMessageProps, this.props.quotedMessageProps)) {
-    this.focusCompositionBox();
-  }
-
-}
-updateLexicalFromDraft = (draft: string) => {
-  if (!this.editorRef) return;
-
-  this.editorRef.update(() => {
-    const root = $getRoot();
-    root.clear();
-
-    const paragraph = $createParagraphNode();
-    root.append(paragraph);
-
-    if (!draft) {
-      paragraph.selectEnd();
-      return;
+      return; // stop here
     }
 
-    // Split text + mentions
-    const parts = draft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
+    // attachments change
+    if (this.props.stagedAttachments?.length !== prevProps.stagedAttachments?.length) {
+      this.focusCompositionBox();
+    }
 
-    parts.forEach(part => {
-      const match = part.match(/@ￒ(.*?)ￗ(.*?)ￒ/);
+    // reply change
+    if (!_.isEqual(prevProps.quotedMessageProps, this.props.quotedMessageProps)) {
+      this.focusCompositionBox();
+    }
+  }
+  updateLexicalFromDraft = (draft: string) => {
+    if (!this.editorRef) return;
 
-      if (match) {
-        const [, id, display] = match;
+    this.editorRef.update(() => {
+      const root = $getRoot();
+      root.clear();
 
-        //  Create MentionNode
-        const mentionNode = new MentionNode(id, display);
-        paragraph.append(mentionNode);
-      } else if (part) {
-        // Normal text
-        paragraph.append($createTextNode(part));
+      const paragraph = $createParagraphNode();
+      root.append(paragraph);
+
+      if (!draft) {
+        paragraph.selectEnd();
+        return;
       }
-    });
 
-    paragraph.selectEnd();
-  });
-};
+      // Split text + mentions
+      const parts = draft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
+
+      parts.forEach(part => {
+        const match = part.match(/@ￒ(.*?)ￗ(.*?)ￒ/);
+
+        if (match) {
+          const [, id, display] = match;
+
+          //  Create MentionNode
+          const mentionNode = new MentionNode(id, display);
+          paragraph.append(mentionNode);
+        } else if (part) {
+          // Normal text
+          paragraph.append($createTextNode(part));
+        }
+      });
+
+      paragraph.selectEnd();
+    });
+  };
 
   public render() {
     return (
@@ -601,7 +593,7 @@ updateLexicalFromDraft = (draft: string) => {
 
     if (!selectedConversation) return null;
 
-    const { isKickedFromGroup, left, isPrivate, isBlocked, } = selectedConversation;
+    const { isKickedFromGroup, left, isPrivate, isBlocked } = selectedConversation;
 
     const getPlaceholder = () => {
       if (isKickedFromGroup) return window.i18n('youGotKickedFromGroup');
@@ -623,7 +615,7 @@ updateLexicalFromDraft = (draft: string) => {
           code: 'editor-text-code',
         },
       },
-      nodes: [MentionNode], // ✅ important
+      nodes: [MentionNode, CodeBlockNode], // ✅ important
       onError(error: any) {
         console.error(error);
       },
@@ -631,7 +623,15 @@ updateLexicalFromDraft = (draft: string) => {
 
     return (
       <LexicalComposer initialConfig={editorConfig}>
-        <div className="chat-input-wrapper" ref={this.containerRef}>
+        <div
+          className="chat-input-wrapper"
+          ref={this.containerRef}
+          onKeyDown={e => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+              e.stopPropagation(); // Prevents parent containers from seeing the arrow keys
+            }
+          }}
+        >
           <div className="editor-container">
             <EditorRefPlugin
               onReady={(editor: any) => {
@@ -662,9 +662,12 @@ updateLexicalFromDraft = (draft: string) => {
             <OnChangePlugin
               onChange={editorState => {
                 editorState.read(() => {
-                  const text:string = serializeEditor();
+                  const text: string = serializeEditor();
                   this.setState({ draft: text });
-                   updateDraftForConversation({ conversationKey: selectedConversation.id, draft:text });
+                  updateDraftForConversation({
+                    conversationKey: selectedConversation.id,
+                    draft: text,
+                  });
                 });
               }}
             />
@@ -1239,8 +1242,6 @@ updateLexicalFromDraft = (draft: string) => {
     this.setState({ showRecordingView: false });
   }
 
- 
-
   private focusCompositionBox() {
     // Focus the textarea when user clicks anywhere in the composition box
     this.textarea.current?.focus();
@@ -1260,79 +1261,6 @@ const mapStateToProps = (state: StateType) => {
 const smart = connect(mapStateToProps);
 
 export const CompositionBox: any = smart(CompositionBoxInner);
-
-// type FormatType = "bold" | "italic" | "strikethrough" | "code";
-export default function TextFormatingPlugin(): null {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    return editor.registerTextContentListener(() => {
-      editor.update(() => {
-        const selection = $getSelection();
-
-        if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
-          return;
-        }
-
-        const node = selection.anchor.getNode();
-        if (!(node instanceof TextNode)) return;
-
-        if (!node.isSimpleText()) return;
-
-        const text = node.getTextContent();
-
-        const patterns = [
-          { regex: /\*(.*?)\*/, format: 'bold', symbol: '*' },
-          { regex: /_(.*?)_/, format: 'italic', symbol: '_' },
-          { regex: /~(.*?)~/, format: 'strikethrough', symbol: '~' },
-          { regex: /```(.*?)```/, format: 'code', symbol: '```' },
-        ];
-
-        for (const { regex, format, symbol } of patterns) {
-          const match = regex.exec(text);
-
-          if (match) {
-            const before = text.slice(0, match.index);
-            const inside = match[1];
-            const after = text.slice(match.index + match[0].length);
-
-            const nodes: TextNode[] = [];
-
-            if (before) nodes.push($createTextNode(before));
-
-            // optional: keep symbols faint
-            const open = $createTextNode(symbol);
-            open.setStyle('opacity:0.5;');
-            nodes.push(open);
-
-            const formatted = $createTextNode(inside);
-            formatted.toggleFormat(format as any);
-            nodes.push(formatted);
-
-            const close = $createTextNode(symbol);
-            close.setStyle('opacity:0.5;');
-            nodes.push(close);
-
-            if (after) nodes.push($createTextNode(after));
-
-            node.replace(nodes[0]);
-
-            let current = nodes[0];
-            for (let i = 1; i < nodes.length; i++) {
-              current.insertAfter(nodes[i]);
-              current = nodes[i];
-            }
-
-            current.selectEnd();
-            break;
-          }
-        }
-      });
-    });
-  }, [editor]);
-
-  return null;
-}
 
 export function EditorRefPlugin({ onReady }: any) {
   const [editor] = useLexicalComposerContext();
@@ -1354,13 +1282,22 @@ const serializeNode = (node: LexicalNode): string => {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
   }
 
+  // ✅ CodeBlock (🔥 FIX)
+  if (node instanceof CodeBlockNode) {
+    const content = node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
+
+    return `\`\`\`${content}\`\`\``;
+  }
+
   // ✅ Text
   if ($isTextNode(node)) {
     return node.getTextContent();
   }
 
-  // ✅ Children (recursive)
-  // ✅ Element node (safe access to children)
+  // ✅ Element
   if ($isElementNode(node)) {
     return node
       .getChildren()
