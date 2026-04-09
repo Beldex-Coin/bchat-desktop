@@ -7,17 +7,13 @@ import {
   TextFormatType,
   TextNode,
   LexicalNode,
-  // $applyNodeReplacement,
   COMMAND_PRIORITY_HIGH,
   KEY_ENTER_COMMAND,
   ElementNode,
 } from 'lexical';
 
-// import { $createCodeBlockNode } from './your-code-node-path';
-
-// function $createCodeBlockNode() {
-//   return $applyNodeReplacement(new CodeBlockNode());
-// }
+import { $createQuoteNode } from '@lexical/rich-text';
+import { $createListNode, $createListItemNode } from '@lexical/list';
 
 export default function TextFormatingPlugin(): null {
   const [editor] = useLexicalComposerContext();
@@ -119,7 +115,8 @@ export default function TextFormatingPlugin(): null {
       if (!node.isAttached()) return;
       if (!node.isSimpleText() || node.isToken()) return;
 
-      if (node.getParent()?.getType() === 'codeblock') {
+      const parent = node.getParent();
+      if (parent?.getType() === 'codeblock') {
         return;
       }
 
@@ -137,7 +134,7 @@ export default function TextFormatingPlugin(): null {
       const nodes: TextNode[] = [];
       let current: LexicalNode | null = firstNode;
       let fullText = '';
-      let hasMarker = false;
+      let hasInlineMarker = false;
 
       while (current instanceof TextNode) {
         nodes.push(current);
@@ -145,65 +142,78 @@ export default function TextFormatingPlugin(): null {
         fullText += text;
 
         if (/[`*_~]/.test(text) || current.isToken()) {
-          hasMarker = true;
+          hasInlineMarker = true;
         }
 
         if (current.is(lastNode)) break;
         current = current.getNextSibling();
       }
 
-      if (!hasMarker) return;
+      // 🔥 NEW: Check for Block Markers (Lists, Quotes) at the start of a paragraph
+      const isFirstChild = firstNode.getPreviousSibling() === null;
+      let isBlockMarker = false;
 
-      const parent = firstNode.getParent();
-      if (!parent) return;
+      if (isFirstChild && parent && parent.getType() === 'paragraph') {
+        // Matches "> ", "- ", "* ", or "1. "
+        if (/^(> |[-*] |\d+\. )/.test(fullText)) {
+          isBlockMarker = true;
+        }
+      }
 
-      /* ================= MULTI-LINE CODE BLOCK ================= */
-      // const tripleRegex = /```([\s\S]*?)```/;
-      // const match = fullText.match(tripleRegex);
+      if (!hasInlineMarker && !isBlockMarker) return;
 
-      // if (match) {
-      //   if (parent.getType() === 'codeblock') return;
+    /* ================= BLOCK AST (Lists & Quotes) ================= */
+      if (isBlockMarker && parent && parent.getType() === 'paragraph') {
+        const matchQuote = fullText.match(/^> ([\s\S]*)$/);
+        const matchBullet = fullText.match(/^[-*] ([\s\S]*)$/);
+        const matchNumber = fullText.match(/^(\d+)\. ([\s\S]*)$/);
 
-      //   const before = fullText.slice(0, match.index);
-      //   const inside = match[1];
-      //   const after = fullText.slice(match.index! + match[0].length);
+        let newBlockNode = null;
 
-      //   const newNodes: LexicalNode[] = [];
+        if (matchQuote) {
+          newBlockNode = $createQuoteNode();
+          newBlockNode.append($createTextNode(matchQuote[1]));
+        } else if (matchBullet) {
+          newBlockNode = $createListNode('bullet');
+          const listItem = $createListItemNode();
+          listItem.append($createTextNode(matchBullet[1]));
+          newBlockNode.append(listItem);
+        } else if (matchNumber) {
+          newBlockNode = $createListNode('number');
+          newBlockNode.setStart(parseInt(matchNumber[1], 10));
+          const listItem = $createListItemNode();
+          listItem.append($createTextNode(matchNumber[2]));
+          newBlockNode.append(listItem);
+        }
 
-      //   // BEFORE
-      //   if (before) {
-      //     newNodes.push(...processText(before));
-      //   }
+        if (newBlockNode) {
+          // 🔥 1. Check if the cursor is currently inside the paragraph we are destroying
+          const selection = $getSelection();
+          let hasCursor = false;
 
-      //   // CODE BLOCK
-      //   // @ts-ignore
-      //   const codeNode = $createCodeBlockNode();
+          if ($isRangeSelection(selection)) {
+            let curr: LexicalNode | null = selection.anchor.getNode();
+            // Traverse up the tree to see if our anchor node lives inside 'parent'
+            while (curr !== null) {
+              if (curr.is(parent)) {
+                hasCursor = true;
+                break;
+              }
+              curr = curr.getParent();
+            }
+          }
 
-      //   inside.split('\n').forEach((line, i, arr) => {
-      //     codeNode.append($createTextNode(line));
-      //     if (i !== arr.length - 1) {
-      //       codeNode.append($createTextNode('\n'));
-      //     }
-      //   });
+          // 2. Replace the old paragraph with the new Block
+          parent.replace(newBlockNode);
 
-      //   newNodes.push(codeNode);
+          // 🔥 3. If the cursor was in the old paragraph, move it to the end of the new block
+          if (hasCursor) {
+            newBlockNode.selectEnd();
+          }
 
-      //   // AFTER
-      //   if (after) {
-      //     newNodes.push(...processText(after));
-      //   }
-
-      //   // Replace safely
-      //   firstNode.replace(newNodes[0]);
-      //   for (let i = 1; i < newNodes.length; i++) {
-      //     newNodes[i - 1].insertAfter(newNodes[i]);
-      //   }
-
-      //   nodes.forEach(n => n.remove());
-
-      //   return;
-      // }
-
+          return;
+        }
+      }
       /* ================= INLINE AST ================= */
       const astNodes = processText(fullText);
 
@@ -252,7 +262,7 @@ export default function TextFormatingPlugin(): null {
         nodes[i].remove();
       }
 
-      /* -------- Restore Cursor -------- */
+     /* -------- Restore Cursor -------- */
       if (absoluteOffset !== -1) {
         let length = 0;
 
@@ -266,8 +276,19 @@ export default function TextFormatingPlugin(): null {
 
           length += size;
         }
+      } else {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+          const anchorNode = selection.anchor.getNode();
+          const wasRemoved = nodes.some(n => n.is(anchorNode));
+          
+          if (wasRemoved && astNodes.length > 0) {
+            astNodes[astNodes.length - 1].selectEnd();
+          }
+        }
       }
     });
+
     const removeEnter = editor.registerCommand(
       KEY_ENTER_COMMAND,
       (event: any) => {

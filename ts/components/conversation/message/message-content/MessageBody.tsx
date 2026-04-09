@@ -49,7 +49,7 @@ const renderNewLines: RenderTextCallbackType = ({
 const renderFormattedFirst: RenderTextCallbackType = ({ text, key, isGroup, isConvoListItem }) => {
   return (
     <span key={key}>
-      {formatText(text, isConvoListItem).map((part, i) =>
+      {renderMarkdownBlocks(text, isConvoListItem).map((part, i) =>
         typeof part === 'string' ? <AddMentions key={i} text={part} isGroup={isGroup} /> : part
       )}
     </span>
@@ -231,7 +231,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
 };
 
 const renderFormatted: RenderTextCallbackType = ({ text, key, isConvoListItem }) => {
-  return <span key={key}>{formatText(text, isConvoListItem)}</span>;
+  return <span key={key}>{renderMarkdownBlocks(text, isConvoListItem)}</span>;
 };
 const isValidBoundary = (text: string, start: number, end: number) => {
   const before = start === 0 ? '' : text[start - 1];
@@ -362,13 +362,13 @@ const isValidBoundary = (text: string, start: number, end: number) => {
 // };
 
 export const formatText = (
-  text: string, 
-  isConvoListItem?: boolean, 
-  parentKey: string = "root"
+  text: string,
+  isConvoListItem?: boolean,
+  parentKey: string = 'root'
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
   // const regex = /(`[^`]+`|\*(?=\S).+\*|_+.+_+|~+.+~+)/g;
-const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
+  const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
   let lastIndex = 0;
   let match;
 
@@ -376,9 +376,7 @@ const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
     // 1. Wrap plain text before the match in a keyed span
     if (match.index > lastIndex) {
       const plainText = text.slice(lastIndex, match.index);
-      parts.push(
-        <span key={`${parentKey}-txt-${lastIndex}`}>{plainText}</span>
-      );
+      parts.push(<span key={`${parentKey}-txt-${lastIndex}`}>{plainText}</span>);
     }
 
     const token = match[0];
@@ -402,29 +400,18 @@ const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
     // 🔹 FORMATTING LOGIC
     if (token.startsWith('`')) {
       parts.push(
-        <code key={currentKey} className="inline-code">{inner}</code>
+        <code key={currentKey} className="inline-code">
+          {inner}
+        </code>
       );
-    }
-    else if (token.startsWith('*')) {
+    } else if (token.startsWith('*')) {
       parts.push(
-        <strong key={currentKey}>
-          {formatText(inner, isConvoListItem, currentKey)}
-        </strong>
+        <strong key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</strong>
       );
-    }
-    else if (token.startsWith('_')) {
-      parts.push(
-        <em key={currentKey}>
-          {formatText(inner, isConvoListItem, currentKey)}
-        </em>
-      );
-    }
-    else if (token.startsWith('~')) {
-      parts.push(
-        <del key={currentKey}>
-          {formatText(inner, isConvoListItem, currentKey)}
-        </del>
-      );
+    } else if (token.startsWith('_')) {
+      parts.push(<em key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</em>);
+    } else if (token.startsWith('~')) {
+      parts.push(<del key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</del>);
     }
 
     lastIndex = regex.lastIndex;
@@ -432,10 +419,130 @@ const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
 
   // 2. Wrap the remaining trailing plain text in a keyed span
   if (lastIndex < text.length) {
-    parts.push(
-      <span key={`${parentKey}-txt-end`}>{text.slice(lastIndex)}</span>
-    );
+    parts.push(<span key={`${parentKey}-txt-end`}>{text.slice(lastIndex)}</span>);
   }
 
   return parts;
+};
+
+export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): JSX.Element[] => {
+  if (!text) return [];
+
+  const lines = text.split('\n');
+  const blocks: JSX.Element[] = [];
+
+  let currentListItems: JSX.Element[] = [];
+  let currentListType: 'ul' | 'ol' | null = null;
+  let listStartIndex = 1;
+
+  // 🔥 NEW: State trackers for multiline code blocks
+  let inCodeBlock = false;
+  let codeBlockContent: string[] = [];
+
+  const pushPendingList = () => {
+    if (currentListItems.length > 0) {
+      const ListTag = currentListType!;
+      const props =
+        currentListType === 'ol' && listStartIndex !== 1 ? { start: listStartIndex } : {};
+      blocks.push(
+        <ListTag key={`list-${blocks.length}`} {...props} className="markdown-list">
+          {currentListItems}
+        </ListTag>
+      );
+      currentListItems = [];
+      currentListType = null;
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // 🔥 NEW: Catch Multi-line Code Block bounds
+    if (line.trim().startsWith('```')) {
+      if (inCodeBlock) {
+        // Close the block
+        blocks.push(
+          <pre key={`pre-${i}`} className="code-block">
+            <code>{codeBlockContent.join('\n')}</code>
+          </pre>
+        );
+        inCodeBlock = false;
+        codeBlockContent = [];
+      } else {
+        // Open the block
+        pushPendingList();
+        inCodeBlock = true;
+      }
+      continue;
+    }
+
+    // 🔥 NEW: If we are inside a code block, just store the text and skip other parsing
+    if (inCodeBlock) {
+      codeBlockContent.push(line);
+      continue;
+    }
+
+    // Check for unordered list item (- or *)
+    const bulletMatch = line.match(/^[-*]\s+(.*)/);
+    if (bulletMatch) {
+      if (currentListType === 'ol') pushPendingList();
+      currentListType = 'ul';
+      currentListItems.push(
+        <li key={`li-${i}`}>{formatText(bulletMatch[1], isConvoListItem, `li-${i}`)}</li>
+      );
+      continue;
+    }
+
+    // Check for ordered list item (1., 2., etc)
+    const numberMatch = line.match(/^(\d+)\.\s+(.*)/);
+    if (numberMatch) {
+      if (currentListType === 'ul') pushPendingList();
+      if (currentListItems.length === 0) listStartIndex = parseInt(numberMatch[1], 10);
+      currentListType = 'ol';
+      currentListItems.push(
+        <li key={`li-${i}`}>{formatText(numberMatch[2], isConvoListItem, `li-${i}`)}</li>
+      );
+      continue;
+    }
+
+    pushPendingList();
+
+    // Check for blockquote (> quote)
+    const quoteMatch = line.match(/^>\s+(.*)/);
+    if (quoteMatch) {
+      if(isConvoListItem){
+         blocks.push( <span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>  );
+        continue;
+      }
+      blocks.push(
+        <blockquote key={`quote-${i}`} className="markdown-quote">
+          {formatText(quoteMatch[1], false, `quote-${i}`)}
+        </blockquote>
+      );
+      continue;
+    }
+
+    // Standard paragraph or empty line
+    if (line.trim() === '') {
+      blocks.push(<br key={`br-${i}`} />);
+    } else {
+      blocks.push(
+        // <p key={`p-${i}`} className="markdown-p">
+        <>{formatText(line, false, `p-${i}`)}</>
+        // </p>
+      );
+    }
+  }
+
+  // Flush any open blocks at the end of the text
+  pushPendingList();
+  if (inCodeBlock && codeBlockContent.length > 0) {
+    blocks.push(
+      <pre key="pre-end" className="code-block">
+        <code>{codeBlockContent.join('\n')}</code>
+      </pre>
+    );
+  }
+
+  return blocks;
 };

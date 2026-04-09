@@ -95,13 +95,19 @@ import {
   $isTextNode,
   $isElementNode,
   $createParagraphNode,
+  $isParagraphNode,
+  $isLineBreakNode,
   // COMMAND_PRIORITY_HIGH,
   // KEY_BACKSPACE_COMMAND,
   // $applyNodeReplacement,
 } from 'lexical';
+import { ListNode, ListItemNode, $isListNode, $isListItemNode } from '@lexical/list';
+import { $isQuoteNode, QuoteNode } from '@lexical/rich-text';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
 import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
+
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -614,8 +620,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
           strikethrough: 'editor-text-strikethrough', // ✅ IMPORTANT
           code: 'editor-text-code',
         },
+        quote: 'markdown-quote',
       },
-      nodes: [MentionNode, CodeBlockNode], // ✅ important
+      nodes: [MentionNode, CodeBlockNode, ListNode, ListItemNode, QuoteNode], // ✅ important
       onError(error: any) {
         console.error(error);
       },
@@ -652,6 +659,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
             <HistoryPlugin />
             <TextFormatingPlugin />
+            <ListPlugin />
             <MentionPlugin
               fetchUsers={this.fetchUsersForGroup}
               renderSuggestion={renderUserMentionRow}
@@ -1276,33 +1284,73 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
   return node.getType() === 'mention';
 }
 
-const serializeNode = (node: LexicalNode): string => {
+export const serializeNode = (node: LexicalNode): string => {
   // ✅ Mention
   if ($isMentionNode(node)) {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
   }
 
-  // ✅ CodeBlock (🔥 FIX)
+  // ✅ Multi-line CodeBlock
   if (node instanceof CodeBlockNode) {
-    const content = node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
-
-    return `\`\`\`${content}\`\`\``;
+    const content = node.getChildren().map(serializeNode).join('');
+    // Ensure multiline code blocks wrap the content with newlines
+    return `\`\`\`\n${content}\n\`\`\``;
   }
 
-  // ✅ Text
+  // ✅ Lists (Ordered & Unordered)
+  if ($isListNode(node)) {
+    const listType = node.getListType(); // 'bullet' or 'number'
+    const start = node.getStart() ?? 1;
+    
+    // Map through children to inject the correct prefix per item
+    return node.getChildren().map((child, index) => {
+      if ($isListItemNode(child)) {
+        const prefix = listType === 'number' ? `${start + index}. ` : '- ';
+        const content = child.getChildren().map(serializeNode).join('');
+        return `${prefix}${content}`;
+      }
+      return serializeNode(child);
+    }).join('\n') + '\n';
+  }
+
+  // ✅ Quotes
+  if ($isQuoteNode(node)) {
+    const content = node.getChildren().map(serializeNode).join('');
+    return `> ${content}\n`;
+  }
+
+  // ✅ Line Breaks (Shift+Enter)
+  if ($isLineBreakNode(node)) {
+    return '\n';
+  }
+
+  // ✅ Text (Now with inline Markdown formatting!)
   if ($isTextNode(node)) {
-    return node.getTextContent();
+    let text = node.getTextContent();
+    
+    // If it's inline code, ignore other formats
+    if (node.hasFormat('code')) {
+      return `\`${text}\``;
+    } 
+    
+    // Otherwise, wrap it in your AST markdown markers
+    if (node.hasFormat('bold')) text = `*${text}*`;
+    if (node.hasFormat('italic')) text = `_${text}_`;
+    if (node.hasFormat('strikethrough')) text = `~${text}~`;
+    
+    return text;
   }
 
-  // ✅ Element
+  // ✅ Paragraphs (Add newline at the end of block)
+  if ($isParagraphNode(node)) {
+    const content = node.getChildren().map(serializeNode).join('');
+    // If paragraph is empty, just return a newline, otherwise append it
+    return content ? `${content}\n` : '\n';
+  }
+
+  // ✅ Generic Element Fallback
   if ($isElementNode(node)) {
-    return node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
+    return node.getChildren().map(serializeNode).join('');
   }
 
   return '';

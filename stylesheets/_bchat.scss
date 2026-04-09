@@ -2805,6 +2805,11 @@ input {
   p {
     margin:0 !important;
   }
+
+  ul{
+    padding-left: 20px;
+    margin: 0px !important;
+  }
 }
 
 .editor-placeholder {
@@ -2906,4 +2911,25 @@ input {
 
   white-space: pre-wrap;   /* preserves lines + allows wrap if needed */
   tab-size: 2;             /* proper indentation */
+}
+
+.markdown-list {
+  padding: 0 20px;
+  margin: 0;
+}
+
+.markdown-quote {
+  background-color: var(--color-untrust-media-bg);
+  border-left: 4px solid var(--color-untrusted-vertical-bar);
+  padding: 8px 10px;
+  margin: 10px 0;
+  line-height: 1.5;
+  border-radius: 6px;
+}
+
+.module-message__text.module-message__text--outgoing {
+  .markdown-quote {
+  background-color: #0a6f0a;
+  border-color:#F0F0F0;
+  }
 }
