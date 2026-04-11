@@ -9,11 +9,33 @@ type Props = {
   isConvoListItem?: boolean;
 };
 
+// export const AddNewLines = (props: Props) => {
+//   const { text, renderNonNewLine, isGroup,isConvoListItem } = props;
+//   const rendered = renderNonNewLine({ text, key: 0, isGroup,isConvoListItem });
+//   if (typeof rendered === 'string') {
+//     return <>{rendered}</>;
+//   }
+//   return rendered;
+// };
+
 export const AddNewLines = (props: Props) => {
-  const { text, renderNonNewLine, isGroup,isConvoListItem } = props;
-  const rendered = renderNonNewLine({ text, key: 0, isGroup,isConvoListItem });
-  if (typeof rendered === 'string') {
-    return <>{rendered}</>;
-  }
-  return rendered;
+  const { text, renderNonNewLine, isGroup, isConvoListItem } = props;
+
+  const lines = text.split('\n');
+
+  return (
+    <>
+      {lines.map((line, index) => (
+        <span key={index}>
+          {renderNonNewLine({
+            text: line,
+            key: index,
+            isGroup,
+            isConvoListItem,
+          })}
+          {index !== lines.length - 1 && <br />}
+        </span>
+      ))}
+    </>
+  );
 };

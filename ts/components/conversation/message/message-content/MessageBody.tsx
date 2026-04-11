@@ -13,6 +13,7 @@ import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { LinkPreviews } from '../../../../util/linkPreviews';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { BchatIcon } from '../../../icon/BchatIcon';
+import React from 'react';
 
 const linkify = LinkifyIt();
 
@@ -35,7 +36,6 @@ const renderNewLines: RenderTextCallbackType = ({
   isConvoListItem,
 }) => {
   const renderOther = isGroup ? renderFormattedFirst : renderFormatted;
-
   return (
     <AddNewLines
       key={key}
@@ -46,12 +46,27 @@ const renderNewLines: RenderTextCallbackType = ({
     />
   );
 };
-const renderFormattedFirst: RenderTextCallbackType = ({ text, key, isGroup, isConvoListItem }) => {
+export const renderFormattedFirst: RenderTextCallbackType = ({
+  text,
+  key,
+  isGroup,
+  isConvoListItem,
+}) => {
   return (
     <span key={key}>
-      {renderMarkdownBlocks(text, isConvoListItem).map((part, i) =>
-        typeof part === 'string' ? <AddMentions key={i} text={part} isGroup={isGroup} /> : part
-      )}
+      <AddMentions
+        text={text}
+        isGroup={isGroup}
+        renderOther={({ text, key }) => (
+          <>
+            {renderMarkdownBlocks(text, isConvoListItem).map((part, i) => (
+              <React.Fragment key={`${key}-${i}`}>
+                {typeof part === 'string' ? part : part}
+              </React.Fragment>
+            ))}
+          </>
+        )}
+      />
     </span>
   );
 };
@@ -107,7 +122,6 @@ const JsxSelectable = (jsx: JSX.Element): JSX.Element => {
 export const MessageBody = (props: Props) => {
   const { text, disableJumbomoji, disableLinks, isGroup, isConvoListItem } = props;
   const sizeClass: SizeClassType = disableJumbomoji ? 'default' : getEmojiSizeClass(text);
-
   if (disableLinks) {
     return JsxSelectable(
       renderEmoji({
@@ -368,7 +382,7 @@ export const formatText = (
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
   // const regex = /(`[^`]+`|\*(?=\S).+\*|_+.+_+|~+.+~+)/g;
-  const regex = /(`[^`]+`|\*[\s\S]+\*|_+.+_+|~+.+~+)/g;
+  const regex = /(`[^`]+`|\*[\s\S]+?\*|_+.+?_+|~+.+?~+)/g;
   let lastIndex = 0;
   let match;
 
@@ -396,6 +410,31 @@ export const formatText = (
       lastIndex = regex.lastIndex;
       continue;
     }
+    // =========================
+    // 🔹 BLOCK CODE ```
+    // =========================
+    // if (token.startsWith('```')) {
+    //   const content = token.slice(3, -3);
+
+    //   if (!content.trim()) {
+    //     lastIndex = regex.lastIndex;
+    //     continue;
+    //   }
+
+    //   if (isConvoListItem) {
+    //     parts.push(
+    //       <code key={match.index} className="inline-code">
+    //         {content}
+    //       </code>
+    //     );
+    //   } else {
+    //     parts.push(
+    //       <pre key={match.index} className="code-block">
+    //         <code>{content}</code>
+    //       </pre>
+    //     );
+    //   }
+    // }
 
     // 🔹 FORMATTING LOGIC
     if (token.startsWith('`')) {
@@ -405,9 +444,9 @@ export const formatText = (
         </code>
       );
     } else if (token.startsWith('*')) {
-      parts.push(
-        <strong key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</strong>
-      );
+        parts.push(
+          <strong key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</strong>
+        );
     } else if (token.startsWith('_')) {
       parts.push(<em key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</em>);
     } else if (token.startsWith('~')) {
@@ -458,7 +497,7 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
     const line = lines[i];
 
     // 🔥 NEW: Catch Multi-line Code Block bounds
-    if (line.trim().startsWith('```')) {
+    if (line.trim().startsWith('```') && !isConvoListItem) {
       if (inCodeBlock) {
         // Close the block
         blocks.push(
@@ -510,8 +549,8 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
     // Check for blockquote (> quote)
     const quoteMatch = line.match(/^>\s+(.*)/);
     if (quoteMatch) {
-      if(isConvoListItem){
-         blocks.push( <span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>  );
+      if (isConvoListItem) {
+        blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
         continue;
       }
       blocks.push(

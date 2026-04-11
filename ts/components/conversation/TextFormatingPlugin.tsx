@@ -10,10 +10,17 @@ import {
   COMMAND_PRIORITY_HIGH,
   KEY_ENTER_COMMAND,
   ElementNode,
+  $applyNodeReplacement,
+  $createParagraphNode,
+  KEY_BACKSPACE_COMMAND,
 } from 'lexical';
 
 import { $createQuoteNode } from '@lexical/rich-text';
 import { $createListNode, $createListItemNode } from '@lexical/list';
+
+function $createCodeBlockNode() {
+  return $applyNodeReplacement(new CodeBlockNode());
+}
 
 export default function TextFormatingPlugin(): null {
   const [editor] = useLexicalComposerContext();
@@ -37,12 +44,58 @@ export default function TextFormatingPlugin(): null {
         { char: '~', format: 'strikethrough' },
       ];
 
-      let earliestMarker: any = null;
-      let firstIndex = -1;
-      let lastIndex = -1;
+      /* ---------- ✅ Boundary Fix ---------- */
+      const isValidBoundary = (text: string, start: number, end: number) => {
+        const before = text[start - 1];
+        const after = text[end];
+
+        const charAfterOpen = text[start + 1];
+        const charBeforeClose = text[end - 1];
+
+        if (charAfterOpen === ' ') return false;
+        if (charBeforeClose === ' ') return false;
+
+        const isStartValid = start === 0 || /\s|[*_~`]/.test(before);
+        const isEndValid = end === text.length || /\s|[*_~`]/.test(after);
+
+        return isStartValid && isEndValid;
+      };
+
+      /* ---------- ✅ Correct Closing Finder (non-greedy + safe) ---------- */
+      const findClosingIndex = (text: string, start: number, char: string) => {
+        let depth = 0;
+
+        for (let i = start; i < text.length; i++) {
+          // skip ```
+          if (text.startsWith('```', i)) {
+            i += 2;
+            continue;
+          }
+
+          if (text[i] === char) {
+            // handle repeated markers like **
+            if (text[i + 1] === char) {
+              depth++;
+              i++;
+              continue;
+            }
+
+            if (depth === 0) return i;
+            depth--;
+          }
+        }
+
+        return -1;
+      };
+
+      /* ---------- ✅ Find BEST match (not first match) ---------- */
+      let bestMatch: {
+        marker: any;
+        start: number;
+        end: number;
+      } | null = null;
 
       for (let i = 0; i < text.length; i++) {
-        // skip ``` block markers
         if (text.startsWith('```', i)) {
           i += 2;
           continue;
@@ -50,58 +103,69 @@ export default function TextFormatingPlugin(): null {
 
         for (const marker of MARKERS) {
           if (text.startsWith(marker.char, i)) {
-            const prevChar = i === 0 ? ' ' : text[i - 1];
+            const closeIdx = findClosingIndex(text, i + 1, marker.char);
 
-            // ❌ must not be attached to previous word
-            if (!/\s/.test(prevChar)) continue;
-
-            const closeIdx = text.indexOf(marker.char, i + 1);
-
-            if (closeIdx !== -1) {
-              const nextChar = closeIdx + 1 >= text.length ? ' ' : text[closeIdx + 1];
-
-              // ❌ must not be attached to next word
-              if (!/\s/.test(nextChar)) continue;
-
-              earliestMarker = marker;
-              firstIndex = i;
-              lastIndex = closeIdx;
-              break;
+            if (closeIdx !== -1 && isValidBoundary(text, i, closeIdx + 1)) {
+              if (!bestMatch || i < bestMatch.start) {
+                bestMatch = {
+                  marker,
+                  start: i,
+                  end: closeIdx,
+                };
+              }
             }
           }
         }
-        if (earliestMarker) break;
       }
 
-      if (!earliestMarker) {
+      /* ---------- ❌ No marker ---------- */
+      if (!bestMatch) {
         const node = $createTextNode(text);
-        currentFormats.forEach(f => node.toggleFormat(f));
+        currentFormats.forEach(f => {
+          if (!node.hasFormat(f)) {
+            node.toggleFormat(f);
+          }
+        });
         return [node];
       }
 
+      const { marker: earliestMarker, start: firstIndex, end: lastIndex } = bestMatch;
+
       const nodes: TextNode[] = [];
 
+      /* ---------- Left ---------- */
       if (firstIndex > 0) {
         nodes.push(...processText(text.slice(0, firstIndex), currentFormats));
       }
 
-      // opening token
+      /* ---------- Opening token ---------- */
       nodes.push($createTextNode(earliestMarker.char).setMode('token'));
 
       const inside = text.slice(firstIndex + 1, lastIndex);
 
+      /* ---------- Inside ---------- */
       if (earliestMarker.noNest) {
         const node = $createTextNode(inside);
         node.toggleFormat(earliestMarker.format);
         currentFormats.forEach(f => node.toggleFormat(f));
         nodes.push(node);
       } else {
-        nodes.push(...processText(inside, [...currentFormats, earliestMarker.format]));
+        const innerNodes = processText(inside, [...currentFormats, earliestMarker.format]);
+
+        // 🔥 APPLY FORMAT TO ALL CHILD NODES
+        innerNodes.forEach(n => {
+          if (!n.hasFormat(earliestMarker.format)) {
+            n.toggleFormat(earliestMarker.format);
+          }
+        });
+
+        nodes.push(...innerNodes);
       }
 
-      // closing token
+      /* ---------- Closing token ---------- */
       nodes.push($createTextNode(earliestMarker.char).setMode('token'));
 
+      /* ---------- Right ---------- */
       if (lastIndex + 1 < text.length) {
         nodes.push(...processText(text.slice(lastIndex + 1), currentFormats));
       }
@@ -149,6 +213,26 @@ export default function TextFormatingPlugin(): null {
         current = current.getNextSibling();
       }
 
+      /* ================= CODE BLOCK AST ================= */
+
+      if (parent && parent.getType() === 'paragraph' && fullText.trim() === '```') {
+        const codeBlock = $createCodeBlockNode();
+        codeBlock.append($createTextNode(''));
+
+        parent.replace(codeBlock);
+        codeBlock.selectEnd();
+        return;
+      }
+
+      if (parent && parent.getType() === 'codeblock') {
+        if (fullText.trim() === '```') {
+          const paragraph = $createParagraphNode();
+          parent.replace(paragraph);
+          paragraph.selectEnd();
+          return;
+        }
+      }
+
       // 🔥 NEW: Check for Block Markers (Lists, Quotes) at the start of a paragraph
       const isFirstChild = firstNode.getPreviousSibling() === null;
       let isBlockMarker = false;
@@ -162,7 +246,7 @@ export default function TextFormatingPlugin(): null {
 
       if (!hasInlineMarker && !isBlockMarker) return;
 
-    /* ================= BLOCK AST (Lists & Quotes) ================= */
+      /* ================= BLOCK AST (Lists & Quotes) ================= */
       if (isBlockMarker && parent && parent.getType() === 'paragraph') {
         const matchQuote = fullText.match(/^> ([\s\S]*)$/);
         const matchBullet = fullText.match(/^[-*] ([\s\S]*)$/);
@@ -262,7 +346,7 @@ export default function TextFormatingPlugin(): null {
         nodes[i].remove();
       }
 
-     /* -------- Restore Cursor -------- */
+      /* -------- Restore Cursor -------- */
       if (absoluteOffset !== -1) {
         let length = 0;
 
@@ -281,7 +365,7 @@ export default function TextFormatingPlugin(): null {
         if ($isRangeSelection(selection)) {
           const anchorNode = selection.anchor.getNode();
           const wasRemoved = nodes.some(n => n.is(anchorNode));
-          
+
           if (wasRemoved && astNodes.length > 0) {
             astNodes[astNodes.length - 1].selectEnd();
           }
@@ -313,10 +397,52 @@ export default function TextFormatingPlugin(): null {
       },
       COMMAND_PRIORITY_HIGH
     );
+    const removeBackspace = editor.registerCommand(
+      KEY_BACKSPACE_COMMAND,
+      (event: KeyboardEvent) => {
+        const selection = $getSelection();
+
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
+          return false;
+        }
+
+        const anchor = selection.anchor;
+        const anchorNode = anchor.getNode();
+
+        // We check the parent, or the parent of the parent in case of nested text
+        const parent = anchorNode.getParent();
+        const codeBlock =
+          parent?.getType() === 'codeblock' ? parent : anchorNode.getTopLevelElement();
+
+        if (!codeBlock || codeBlock.getType() !== 'codeblock') {
+          return false;
+        }
+
+        const rawContent = codeBlock.getTextContent();
+
+        const isEmpty = rawContent.trim() === '';
+
+        const isAtAbsoluteStart = anchor.offset === 0 && anchorNode.getPreviousSibling() === null;
+
+        if (isEmpty && isAtAbsoluteStart) {
+          event.preventDefault();
+
+          const paragraph = $createParagraphNode();
+          codeBlock.replace(paragraph);
+
+          paragraph.select();
+          return true;
+        }
+
+        return false;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
 
     return () => {
       removeTransform();
-      removeEnter(); // 🔥 important
+      removeEnter();
+      removeBackspace();
     };
   }, [editor]);
 

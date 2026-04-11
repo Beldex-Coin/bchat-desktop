@@ -108,7 +108,6 @@ import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
 import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
 
-
 export interface ReplyingToMessageProps {
   convoId: string;
   id: string;
@@ -767,8 +766,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
     if (stagedAttachments.length !== 0 || quotedMessageProps?.id) {
       return null;
     }
+    const normalizedDraft = normalizeForLinkDetection(this.state.draft);
+    const links = LinkPreviews.findLinks(normalizedDraft, undefined);
     // we try to match the first link found in the current message
-    const links = LinkPreviews.findLinks(this.state.draft, undefined);
+    // const links = LinkPreviews.findLinks(this.state.draft, undefined);
     if (!links || links.length === 0 || ignoredLink === links[0]) {
       if (this.state.stagedLinkPreview) {
         this.setState({
@@ -1270,6 +1271,12 @@ const smart = connect(mapStateToProps);
 
 export const CompositionBox: any = smart(CompositionBoxInner);
 
+const normalizeForLinkDetection = (text: string) => {
+  return text
+    .replace(/[\*_~]/g, '') // remove all markdown symbols
+    .replace(/`([^`]+)`/g, '$1');
+};
+
 export function EditorRefPlugin({ onReady }: any) {
   const [editor] = useLexicalComposerContext();
 
@@ -1285,6 +1292,9 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
 }
 
 export const serializeNode = (node: LexicalNode): string => {
+  if ($isTextNode(node) && node.isToken()) {
+    return ''; 
+  }
   // ✅ Mention
   if ($isMentionNode(node)) {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
@@ -1292,7 +1302,10 @@ export const serializeNode = (node: LexicalNode): string => {
 
   // ✅ Multi-line CodeBlock
   if (node instanceof CodeBlockNode) {
-    const content = node.getChildren().map(serializeNode).join('');
+    const content = node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
     // Ensure multiline code blocks wrap the content with newlines
     return `\`\`\`\n${content}\n\`\`\``;
   }
@@ -1301,21 +1314,32 @@ export const serializeNode = (node: LexicalNode): string => {
   if ($isListNode(node)) {
     const listType = node.getListType(); // 'bullet' or 'number'
     const start = node.getStart() ?? 1;
-    
+
     // Map through children to inject the correct prefix per item
-    return node.getChildren().map((child, index) => {
-      if ($isListItemNode(child)) {
-        const prefix = listType === 'number' ? `${start + index}. ` : '- ';
-        const content = child.getChildren().map(serializeNode).join('');
-        return `${prefix}${content}`;
-      }
-      return serializeNode(child);
-    }).join('\n') + '\n';
+    return (
+      node
+        .getChildren()
+        .map((child, index) => {
+          if ($isListItemNode(child)) {
+            const prefix = listType === 'number' ? `${start + index}. ` : '- ';
+            const content = child
+              .getChildren()
+              .map(serializeNode)
+              .join('');
+            return `${prefix}${content}`;
+          }
+          return serializeNode(child);
+        })
+        .join('\n') + '\n'
+    );
   }
 
   // ✅ Quotes
   if ($isQuoteNode(node)) {
-    const content = node.getChildren().map(serializeNode).join('');
+    const content = node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
     return `> ${content}\n`;
   }
 
@@ -1325,32 +1349,44 @@ export const serializeNode = (node: LexicalNode): string => {
   }
 
   // ✅ Text (Now with inline Markdown formatting!)
+  // ✅ Text (Fixed for AST Token compatibility)
   if ($isTextNode(node)) {
     let text = node.getTextContent();
-    
-    // If it's inline code, ignore other formats
+
+    // Apply formats in order. 
+    // Because we skipped "tokens" above, 'text' here is just "mun"
     if (node.hasFormat('code')) {
-      return `\`${text}\``;
-    } 
-    
-    // Otherwise, wrap it in your AST markdown markers
-    if (node.hasFormat('bold')) text = `*${text}*`;
-    if (node.hasFormat('italic')) text = `_${text}_`;
-    if (node.hasFormat('strikethrough')) text = `~${text}~`;
-    
+      text = `\`${text}\``;
+    }
+    if (node.hasFormat('italic')) {
+      text = `_${text}_`;
+    }
+    if (node.hasFormat('bold')) {
+      text = `*${text}*`; // This adds the * back correctly
+    }
+    if (node.hasFormat('strikethrough')) {
+      text = `~${text}~`;
+    }
+
     return text;
   }
 
   // ✅ Paragraphs (Add newline at the end of block)
   if ($isParagraphNode(node)) {
-    const content = node.getChildren().map(serializeNode).join('');
+    const content = node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
     // If paragraph is empty, just return a newline, otherwise append it
     return content ? `${content}\n` : '\n';
   }
 
   // ✅ Generic Element Fallback
   if ($isElementNode(node)) {
-    return node.getChildren().map(serializeNode).join('');
+    return node
+      .getChildren()
+      .map(serializeNode)
+      .join('');
   }
 
   return '';
