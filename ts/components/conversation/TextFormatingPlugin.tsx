@@ -239,7 +239,7 @@ export default function TextFormatingPlugin(): null {
 
       if (isFirstChild && parent && parent.getType() === 'paragraph') {
         // Matches "> ", "- ", "* ", or "1. "
-        if (/^(> |[-*] |\d+\. )/.test(fullText)) {
+        if (/^(>[ \u00A0]|[-*][ \u00A0]|\d+\.[ \u00A0])/.test(fullText)) {
           isBlockMarker = true;
         }
       }
@@ -248,9 +248,9 @@ export default function TextFormatingPlugin(): null {
 
       /* ================= BLOCK AST (Lists & Quotes) ================= */
       if (isBlockMarker && parent && parent.getType() === 'paragraph') {
-        const matchQuote = fullText.match(/^> ([\s\S]*)$/);
-        const matchBullet = fullText.match(/^[-*] ([\s\S]*)$/);
-        const matchNumber = fullText.match(/^(\d+)\. ([\s\S]*)$/);
+        const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/);
+        const matchBullet = fullText.match(/^[-*][ \u00A0]([\s\S]*)$/);
+        const matchNumber = fullText.match(/^(\d+)\.[ \u00A0]([\s\S]*)$/);
 
         let newBlockNode = null;
 
@@ -271,13 +271,11 @@ export default function TextFormatingPlugin(): null {
         }
 
         if (newBlockNode) {
-          // 🔥 1. Check if the cursor is currently inside the paragraph we are destroying
           const selection = $getSelection();
           let hasCursor = false;
 
           if ($isRangeSelection(selection)) {
             let curr: LexicalNode | null = selection.anchor.getNode();
-            // Traverse up the tree to see if our anchor node lives inside 'parent'
             while (curr !== null) {
               if (curr.is(parent)) {
                 hasCursor = true;
@@ -287,10 +285,37 @@ export default function TextFormatingPlugin(): null {
             }
           }
 
-          // 2. Replace the old paragraph with the new Block
+          // ✅ NEW: Check if previous sibling is already a list of the same type
+          // If so, append the new list item into it instead of creating a new <ol>/<ul>
+          const prevSibling = parent.getPreviousSibling();
+          const newBlockType = newBlockNode.getType(); // 'list'
+
+          if (prevSibling && prevSibling.getType() === 'list' && newBlockType === 'list') {
+            const prevList = prevSibling as any;
+            const newList = newBlockNode as any;
+
+            // Only merge if same list style (bullet vs number)
+            if (prevList.getListType() === newList.getListType()) {
+              // Move all list items from newBlockNode into prevSibling
+              const newItems = newList.getChildren();
+              newItems.forEach((item: LexicalNode) => {
+                prevList.append(item);
+              });
+
+              // Remove the now-empty paragraph
+              parent.remove();
+
+              if (hasCursor) {
+                prevList.selectEnd();
+              }
+
+              return;
+            }
+          }
+
+          // Default: no previous list to merge into, just replace as before
           parent.replace(newBlockNode);
 
-          // 🔥 3. If the cursor was in the old paragraph, move it to the end of the new block
           if (hasCursor) {
             newBlockNode.selectEnd();
           }

@@ -25,17 +25,35 @@ export const AddNewLines = (props: Props) => {
 
   return (
     <>
-      {lines.map((line, index) => (
-        <span key={index}>
-          {renderNonNewLine({
-            text: line,
-            key: index,
-            isGroup,
-            isConvoListItem,
-          })}
-          {index !== lines.length - 1 && <br />}
-        </span>
-      ))}
+      {lines.map((line, index) => {
+        // ✅ Check if this line is a list item (ordered or unordered)
+        const isListLine =
+          /^[-*]\s+/.test(line) ||   // unordered: - item or * item
+          /^\d+\.\s+/.test(line);    // ordered: 1. item
+
+        // ✅ Check if next line is also a list item
+        const nextLine = lines[index + 1] ?? '';
+        const isNextListLine =
+          /^[-*]\s+/.test(nextLine) ||
+          /^\d+\.\s+/.test(nextLine);
+
+        const showBr =
+          index !== lines.length - 1 && // not last line
+          !isListLine &&                 // current line is not a list item
+          !isNextListLine;               // next line is not a list item
+
+        return (
+          <span key={index}>
+            {renderNonNewLine({
+              text: line,
+              key: index,
+              isGroup,
+              isConvoListItem,
+            })}
+            {showBr && <br />}
+          </span>
+        );
+      })}
     </>
   );
 };

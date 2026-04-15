@@ -161,7 +161,8 @@ export const BchatQuotedMessageComposition = () => {
     (item: Room) => groupInvitation?.name === item.name
   );
   const validatedBody=!body?.startsWith(`{"kind"`) && body
-  const formattedText = validatedBody ? formatText(validatedBody) : [];
+  const formattedText = validatedBody ? formatText(validatedBody) : null;
+  const quotedMessagetxt = !!body && body.startsWith('> ')?body.slice(2):null;
   return (
     <QuotedMessageComposition>
       <Flex
@@ -179,6 +180,7 @@ export const BchatQuotedMessageComposition = () => {
             justifyContent="flex-start"
             margin={'var(--margins-xs)'}
             alignItems="center"
+            className='QuotedMessageCompositionReply'
           >
             {!isLink ? (
               <VerticalLine />
@@ -191,8 +193,8 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||formattedText }</Subtle>
-
+            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||quotedMessagetxt ||formattedText }</Subtle>
+            
             {groupInvitation && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">

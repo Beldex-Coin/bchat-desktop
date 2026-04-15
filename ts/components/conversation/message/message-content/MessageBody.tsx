@@ -35,6 +35,13 @@ const renderNewLines: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
+  if (!isConvoListItem && textWithNewLines.includes('```')) {
+    return (
+      <span key={key}>
+        {renderMarkdownBlocks(textWithNewLines, isConvoListItem)}
+      </span>
+    );
+  }
   const renderOther = isGroup ? renderFormattedFirst : renderFormatted;
   return (
     <AddNewLines
@@ -52,6 +59,13 @@ export const renderFormattedFirst: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
+   if (!isConvoListItem && text.includes('```')) {
+    return (
+      <span key={key}>
+        {renderMarkdownBlocks(text, isConvoListItem)}
+      </span>
+    );
+  }
   return (
     <span key={key}>
       <AddMentions
@@ -122,6 +136,54 @@ const JsxSelectable = (jsx: JSX.Element): JSX.Element => {
 export const MessageBody = (props: Props) => {
   const { text, disableJumbomoji, disableLinks, isGroup, isConvoListItem } = props;
   const sizeClass: SizeClassType = disableJumbomoji ? 'default' : getEmojiSizeClass(text);
+
+  if (!isConvoListItem && text.includes('```')) {
+    const segments: { content: string; isCode: boolean }[] = [];
+    const parts = text.split(/(```[\s\S]*?```)/g);
+
+    parts.forEach(part => {
+      if (part.startsWith('```') && part.endsWith('```')) {
+        segments.push({ content: part, isCode: true });
+      } else {
+        segments.push({ content: part, isCode: false });
+      }
+    });
+
+    return JsxSelectable(
+      <span>
+        {segments.map((seg, i) => {
+          if (seg.isCode) {
+            // Render code block via renderMarkdownBlocks — safe, no linkify
+            return (
+              <React.Fragment key={i}>
+                {renderMarkdownBlocks(seg.content, isConvoListItem)}
+              </React.Fragment>
+            );
+          }
+          // Non-code segment — render normally through Linkify + emoji
+          if (!seg.content) return null;
+          return (
+            <Linkify
+              key={i}
+              text={seg.content}
+              isGroup={isGroup}
+              isConvoListItem={isConvoListItem}
+              renderNonLink={({ key, text: nonLinkText, isConvoListItem }) =>
+                renderEmoji({
+                  text: nonLinkText,
+                  sizeClass,
+                  key,
+                  renderNonEmoji: params =>
+                    renderNewLines({ ...params, isGroup, isConvoListItem }),
+                  isGroup,
+                })
+              }
+            />
+          );
+        })}
+      </span>
+    );
+  }
   if (disableLinks) {
     return JsxSelectable(
       renderEmoji({
@@ -176,13 +238,9 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
   const matchData = linkify.match(text) || [];
   let last = 0;
 
-  // disable click on <a> elements so clicking a message containing a link doesn't
-  // select the message. The link will still be opened in the browser.
-  const handleClick = useCallback((e: any) => {
+  const handleClick = useCallback((e: any, url: any) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const url = e.target.href;
 
     const openLink = () => {
       void shell.openExternal(url);
@@ -212,6 +270,67 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     );
   }, []);
 
+  const renderFormattedInner = (
+    innerText: string,
+    Wrapper: 'strong' | 'em' | 'del',
+    key: number
+  ) => {
+    const innerMatches = linkify.match(innerText) || [];
+
+    if (innerMatches.length === 0) {
+      // No links inside, just wrap as formatted text
+      return (
+        <Wrapper key={key}>
+          {renderNonLink({ text: innerText, key, isGroup, isConvoListItem })}
+        </Wrapper>
+      );
+    }
+
+    // Mix of text and links inside formatted block
+    const innerParts: Array<any> = [];
+    let innerLast = 0;
+    let innerCount = 0;
+
+    innerMatches.forEach((m: { index: number; url: string; lastIndex: number; text: string }) => {
+      // Plain text before this link
+      if (innerLast < m.index) {
+        const plainText = innerText.slice(innerLast, m.index);
+        innerParts.push(
+          renderNonLink({ text: plainText, key: innerCount++, isGroup, isConvoListItem })
+        );
+      }
+
+      const isValidLink = SUPPORTED_PROTOCOLS.test(m.url) && !LinkPreviews.isLinkSneaky(m.url);
+      if (isValidLink) {
+        innerParts.push(
+          <a key={innerCount++} href={m.url} onClick={(e: any) => handleClick(e, m.url)}>
+            {m.text}
+          </a>
+        );
+      } else {
+        innerParts.push(
+          renderNonLink({ text: m.text, key: innerCount++, isGroup, isConvoListItem })
+        );
+      }
+
+      innerLast = m.lastIndex;
+    });
+
+    // Remaining plain text after last link
+    if (innerLast < innerText.length) {
+      innerParts.push(
+        renderNonLink({
+          text: innerText.slice(innerLast),
+          key: innerCount++,
+          isGroup,
+          isConvoListItem,
+        })
+      );
+    }
+
+    return <Wrapper key={key}>{innerParts}</Wrapper>;
+  };
+
   if (matchData.length === 0) {
     return renderNonLink({ text, key: 0, isGroup });
   }
@@ -219,14 +338,106 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
   matchData.forEach((match: { index: number; url: string; lastIndex: number; text: string }) => {
     if (last < match.index) {
       const textWithNoLink = text.slice(last, match.index);
+
+      // ✅ Check if this non-link segment starts a formatting marker
+      // and the closing marker comes after the link
+      const boldMatch = textWithNoLink.match(/^(.*)\*([^*]*)$/);
+      const italicMatch = textWithNoLink.match(/^(.*)_([^_]*)$/);
+      const strikeMatch = textWithNoLink.match(/^(.*)~([^~]*)$/);
+
+      const orderedPrefix = textWithNoLink.match(/^([\s\S]*?\n|)((\d+)\.\s+)$/);
+      const bulletPrefix = textWithNoLink.match(/^([\s\S]*?\n|)([-*]\s+)$/);
+
+      const charAfter = match.lastIndex < text.length ? text[match.lastIndex] : '';
+
+      if (orderedPrefix) {
+        // Push everything before the list prefix as normal
+        if (orderedPrefix[1]) {
+          results.push(
+            renderNonLink({ text: orderedPrefix[1], isGroup, isConvoListItem, key: count++ })
+          );
+        }
+        // Render the list item WITH the link inline
+        const num = orderedPrefix[3];
+        results.push(
+          <ol key={count++} start={parseInt(num, 10)} className="markdown-list">
+            <li>
+              <a href={match.url} onClick={(e: any) => handleClick(e, match.url)}>
+                {match.text}
+              </a>
+            </li>
+          </ol>
+        );
+        last = match.lastIndex;
+        return;
+      }
+      if (bulletPrefix) {
+        if (bulletPrefix[1]) {
+          results.push(
+            renderNonLink({ text: bulletPrefix[1], isGroup, isConvoListItem, key: count++ })
+          );
+        }
+        results.push(
+          <ul key={count++} className="markdown-list">
+            <li>
+              <a href={match.url} onClick={(e: any) => handleClick(e, match.url)}>
+                {match.text}
+              </a>
+            </li>
+          </ul>
+        );
+        last = match.lastIndex;
+        return;
+      }
+
+      if (boldMatch && charAfter === '*') {
+        // Push text before the opening *
+        if (boldMatch[1]) {
+          results.push(
+            renderNonLink({ text: boldMatch[1], isGroup, isConvoListItem, key: count++ })
+          );
+        }
+        // The inner text before the URL (e.g. "dev ")
+        const innerBefore = boldMatch[2];
+        const innerText = innerBefore + match.text;
+        results.push(renderFormattedInner(innerText, 'strong', count++));
+        last = match.lastIndex + 1; // skip closing *
+        return;
+      }
+
+      if (italicMatch && charAfter === '_') {
+        if (italicMatch[1]) {
+          results.push(
+            renderNonLink({ text: italicMatch[1], isGroup, isConvoListItem, key: count++ })
+          );
+        }
+        const innerText = italicMatch[2] + match.text;
+        results.push(renderFormattedInner(innerText, 'em', count++));
+        last = match.lastIndex + 1;
+        return;
+      }
+
+      if (strikeMatch && charAfter === '~') {
+        if (strikeMatch[1]) {
+          results.push(
+            renderNonLink({ text: strikeMatch[1], isGroup, isConvoListItem, key: count++ })
+          );
+        }
+        const innerText = strikeMatch[2] + match.text;
+        results.push(renderFormattedInner(innerText, 'del', count++));
+        last = match.lastIndex + 1;
+        return;
+      }
+
       results.push(renderNonLink({ text: textWithNoLink, isGroup, isConvoListItem, key: count++ }));
     }
 
     const { url, text: originalText } = match;
     const isLink = SUPPORTED_PROTOCOLS.test(url) && !LinkPreviews.isLinkSneaky(url);
+
     if (isLink) {
       results.push(
-        <a key={count++} href={url} onClick={handleClick}>
+        <a key={count++} href={url} onClick={(e: any) => handleClick(e, url)}>
           {originalText}
         </a>
       );
@@ -251,11 +462,8 @@ const isValidBoundary = (text: string, start: number, end: number) => {
   const before = start === 0 ? '' : text[start - 1];
   const after = end >= text.length ? '' : text[end];
 
-  // ✅ Allowed boundaries:
-  // - start/end of string
-  // - whitespace
-  // - punctuation / brackets
-  const boundaryRegex = /[\s.,!?()[\]{}"'`]/;
+  // ✅ Add formatting markers as valid boundaries
+  const boundaryRegex = /[\s.,!?()[\]{}"'`*_~]/;
 
   const isStartValid = start === 0 || boundaryRegex.test(before);
   const isEndValid = end === text.length || boundaryRegex.test(after);
@@ -381,13 +589,15 @@ export const formatText = (
   parentKey: string = 'root'
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
-  // const regex = /(`[^`]+`|\*(?=\S).+\*|_+.+_+|~+.+~+)/g;
-  const regex = /(`[^`]+`|\*[\s\S]+?\*|_+.+?_+|~+.+?~+)/g;
+
+  // ✅ Strict regex — each marker only matches its own closing marker, no crossing
+  const regex = /(`[^`]+`|\*([^*]+)\*|_([^_]+)_|~([^~]+)~)/g;
+
   let lastIndex = 0;
   let match;
 
   while ((match = regex.exec(text)) !== null) {
-    // 1. Wrap plain text before the match in a keyed span
+    // Plain text before match
     if (match.index > lastIndex) {
       const plainText = text.slice(lastIndex, match.index);
       parts.push(<span key={`${parentKey}-txt-${lastIndex}`}>{plainText}</span>);
@@ -404,69 +614,64 @@ export const formatText = (
       continue;
     }
 
-    const inner = token.slice(1, -1);
-    if (!inner || inner.trim().length === 0) {
-      parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
-      lastIndex = regex.lastIndex;
-      continue;
-    }
-    // =========================
-    // 🔹 BLOCK CODE ```
-    // =========================
-    // if (token.startsWith('```')) {
-    //   const content = token.slice(3, -3);
-
-    //   if (!content.trim()) {
-    //     lastIndex = regex.lastIndex;
-    //     continue;
-    //   }
-
-    //   if (isConvoListItem) {
-    //     parts.push(
-    //       <code key={match.index} className="inline-code">
-    //         {content}
-    //       </code>
-    //     );
-    //   } else {
-    //     parts.push(
-    //       <pre key={match.index} className="code-block">
-    //         <code>{content}</code>
-    //       </pre>
-    //     );
-    //   }
-    // }
-
-    // 🔹 FORMATTING LOGIC
+    // ✅ Inline code `
     if (token.startsWith('`')) {
-      parts.push(
-        <code key={currentKey} className="inline-code">
-          {inner}
-        </code>
-      );
-    } else if (token.startsWith('*')) {
+      const inner = token.slice(1, -1);
+      if (!inner.trim()) {
+        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+      } else {
+        parts.push(
+          <code key={currentKey} className="inline-code">
+            {inner}
+          </code>
+        );
+      }
+    }
+
+    // ✅ Bold *
+    else if (token.startsWith('*')) {
+      const inner = match[2]; // captured group — no asterisks
+      if (!inner || !inner.trim()) {
+        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+      } else {
         parts.push(
           <strong key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</strong>
         );
-    } else if (token.startsWith('_')) {
-      parts.push(<em key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</em>);
-    } else if (token.startsWith('~')) {
-      parts.push(<del key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</del>);
+      }
+    }
+
+    // ✅ Italic _
+    else if (token.startsWith('_')) {
+      const inner = match[3]; // captured group — no underscores
+      if (!inner || !inner.trim()) {
+        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+      } else {
+        parts.push(<em key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</em>);
+      }
+    }
+
+    // ✅ Strikethrough ~
+    else if (token.startsWith('~')) {
+      const inner = match[4]; // captured group — no tildes
+      if (!inner || !inner.trim()) {
+        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+      } else {
+        parts.push(<del key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</del>);
+      }
     }
 
     lastIndex = regex.lastIndex;
   }
 
-  // 2. Wrap the remaining trailing plain text in a keyed span
+  // Remaining trailing text
   if (lastIndex < text.length) {
     parts.push(<span key={`${parentKey}-txt-end`}>{text.slice(lastIndex)}</span>);
   }
 
   return parts;
 };
-
 export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): JSX.Element[] => {
   if (!text) return [];
-
   const lines = text.split('\n');
   const blocks: JSX.Element[] = [];
 

@@ -557,7 +557,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     {this.renderTextArea()}
                   </Flex>
                 </div>
-                {typingEnabled && (draft || stagedAttachments.length !== 0) ? (
+                {typingEnabled && (draft.trim() || stagedAttachments.length !== 0) ? (
                   <div className={classNames('send-message-button')}>{this.sendButton()}</div>
                 ) : (
                   <StartRecordingButton onClick={() => void this.onLoadVoiceNoteView()} />
@@ -1292,9 +1292,9 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
 }
 
 export const serializeNode = (node: LexicalNode): string => {
-  if ($isTextNode(node) && node.isToken()) {
-    return ''; 
-  }
+  // if ($isTextNode(node) && node.isToken()) {
+  //   return ''; 
+  // }
   // ✅ Mention
   if ($isMentionNode(node)) {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;

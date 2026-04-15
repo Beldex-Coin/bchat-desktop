@@ -601,9 +601,9 @@ pre {
   max-width: calc(100vw - 380px - 100px);
   align-items: center;
   margin-bottom: -5px;
-  padding: 12px 0 ;
+  padding: 12px 0;
 
-  &-only-attachment{
+  &-only-attachment {
     .timeStamp {
       margin-top: unset !important;
     }
@@ -1067,7 +1067,6 @@ label {
     width: 87%;
   }
 
-
   &-imgConfirmBox {
     width: 400px;
     margin: 35px 20px 25px;
@@ -1247,7 +1246,6 @@ label {
   display: flex;
   flex-direction: column;
 }
-
 
 .blurBg {
   filter: blur(10px);
@@ -1506,15 +1504,12 @@ label {
     font-weight: 300;
   }
 
-  .contexify_item:not(.contexify_item--disabled):focus
-    > .contexify_itemContent,
-  .contexify_item:not(.contexify_item--disabled):hover
-    > .contexify_itemContent {
+  .contexify_item:not(.contexify_item--disabled):focus > .contexify_itemContent,
+  .contexify_item:not(.contexify_item--disabled):hover > .contexify_itemContent {
     background-color: var(--color-context-menu-hover-bg) !important;
     border-radius: 14px;
   }
-  .contexify_item:not(.contexify_item--disabled):hover
-    > .contexify_itemContent {
+  .contexify_item:not(.contexify_item--disabled):hover > .contexify_itemContent {
     border-radius: 14px;
     // background: #333842;
     // color: var(--color-text-menu-highlighted);
@@ -1526,21 +1521,20 @@ label {
     transition: $bchat-transition-duration;
     color: var(--color-text);
   }
- 
-  &.convoListContextMenu{
-    .contexify_submenu{
-       min-height: 144px;
+
+  &.convoListContextMenu {
+    .contexify_submenu {
+      min-height: 144px;
     }
-  } 
-  &.submenu
-  {
-    .contexify_submenu{
+  }
+  &.submenu {
+    .contexify_submenu {
       min-height: 103px;
-   }
+    }
   }
   &.contexify_submenu {
     top: 0px !important; // height of an item element
-   
+
     // right: 300px !important;
     .contexify_itemContent {
       justify-content: start;
@@ -1756,7 +1750,6 @@ label {
   flex-shrink: 0;
   margin-bottom: 10px;
 }
-
 
 .bchat-settings {
   width: 100%;
@@ -2201,7 +2194,6 @@ label {
   //     justify-content: center;
   //   }
   // }
-
 }
 
 #qr svg,
@@ -2779,7 +2771,6 @@ input {
   }
 }
 
-
 .chat-input-wrapper {
   display: flex;
   align-items: center;
@@ -2803,10 +2794,10 @@ input {
   padding: 10px 12px;
   border-radius: 20px;
   p {
-    margin:0 !important;
+    margin: 0 !important;
   }
 
-  ul{
+  ul,ol {
     padding-left: 20px;
     margin: 0px !important;
   }
@@ -2820,29 +2811,28 @@ input {
   pointer-events: none;
 }
 
-
-
 .editor-input strong {
   font-weight: 900;
 }
 
-.editor-input em {
+.editor-input em,.editor-text-italic {
   font-style: italic;
 }
 
+
 .editor-input code {
-   background: var(--color-MsgReqModal-bg);
+  background: var(--color-MsgReqModal-bg);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: monospace;
   font-size: 0.95em;
 }
-.editor-text-strikethrough{
-  text-decoration: line-through
+.editor-text-strikethrough {
+  text-decoration: line-through;
 }
 
 .mention-dropdown {
-   background: var(--color-left-pane-bg);
+  background: var(--color-left-pane-bg);
   border-radius: 14px;
   padding: 6px;
 
@@ -2853,7 +2843,7 @@ input {
   max-height: 220px;
   overflow-y: auto;
 
-  box-shadow:var(--color-bchat-shadow);
+  box-shadow: var(--color-bchat-shadow);
 }
 
 /* Item */
@@ -2867,12 +2857,9 @@ input {
   transition: background 0.15s ease;
 }
 
-
 .mention-dropdown::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
-
-
 
 /* Item */
 .mention-item {
@@ -2889,7 +2876,6 @@ input {
   background: var(--color-conversation-item-selected);
 }
 
-
 .inline-code {
   display: inline-block;
   backdrop-filter: brightness(0.8);
@@ -2900,7 +2886,6 @@ input {
 }
 
 .code-block {
-
   padding: 12px;
   border-radius: 8px;
   overflow-x: auto;
@@ -2909,8 +2894,8 @@ input {
   font-size: 13px;
   line-height: 1.5;
 
-  white-space: pre-wrap;   /* preserves lines + allows wrap if needed */
-  tab-size: 2;             /* proper indentation */
+  white-space: pre-wrap; /* preserves lines + allows wrap if needed */
+  tab-size: 2; /* proper indentation */
 }
 
 .markdown-list {
@@ -2929,7 +2914,16 @@ input {
 
 .module-message__text.module-message__text--outgoing {
   .markdown-quote {
-  background-color: #0a6f0a;
-  border-color:#F0F0F0;
+    background-color: #0a6f0a;
+    border-color: #f0f0f0;
+  }
+}
+
+.module-quote__primary__text {
+  .markdown-quote {
+    margin: 0 0 10px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
   }
 }
