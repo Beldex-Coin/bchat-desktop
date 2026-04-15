@@ -1292,9 +1292,9 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
 }
 
 export const serializeNode = (node: LexicalNode): string => {
-  // if ($isTextNode(node) && node.isToken()) {
-  //   return ''; 
-  // }
+  if ($isTextNode(node) && node.isToken()) {
+    return ''; 
+  }
   // ✅ Mention
   if ($isMentionNode(node)) {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
