@@ -10,17 +10,17 @@ import {
   COMMAND_PRIORITY_HIGH,
   KEY_ENTER_COMMAND,
   ElementNode,
-  $applyNodeReplacement,
+  // $applyNodeReplacement,
   $createParagraphNode,
   KEY_BACKSPACE_COMMAND,
 } from 'lexical';
 
-import { $createQuoteNode } from '@lexical/rich-text';
+// import { $createQuoteNode } from '@lexical/rich-text';
 import { $createListNode, $createListItemNode } from '@lexical/list';
 
-function $createCodeBlockNode() {
-  return $applyNodeReplacement(new CodeBlockNode());
-}
+// function $createCodeBlockNode() {
+//   return $applyNodeReplacement(new CodeBlockNode());
+// }
 
 export default function TextFormatingPlugin(): null {
   const [editor] = useLexicalComposerContext();
@@ -38,7 +38,7 @@ export default function TextFormatingPlugin(): null {
       }
 
       const MARKERS = [
-        { char: '`', format: 'code', noNest: true },
+        // { char: '`', format: 'code', noNest: true },
         { char: '*', format: 'bold' },
         { char: '_', format: 'italic' },
         { char: '~', format: 'strikethrough' },
@@ -55,8 +55,8 @@ export default function TextFormatingPlugin(): null {
         if (charAfterOpen === ' ') return false;
         if (charBeforeClose === ' ') return false;
 
-        const isStartValid = start === 0 || /\s|[*_~`]/.test(before);
-        const isEndValid = end === text.length || /\s|[*_~`]/.test(after);
+        const isStartValid = start === 0 || /\s|[*_~]/.test(before);
+        const isEndValid = end === text.length || /\s|[*_~]/.test(after);
 
         return isStartValid && isEndValid;
       };
@@ -67,10 +67,10 @@ export default function TextFormatingPlugin(): null {
 
         for (let i = start; i < text.length; i++) {
           // skip ```
-          if (text.startsWith('```', i)) {
-            i += 2;
-            continue;
-          }
+          // if (text.startsWith('```', i)) {
+          //   i += 2;
+          //   continue;
+          // }
 
           if (text[i] === char) {
             // handle repeated markers like **
@@ -96,10 +96,10 @@ export default function TextFormatingPlugin(): null {
       } | null = null;
 
       for (let i = 0; i < text.length; i++) {
-        if (text.startsWith('```', i)) {
-          i += 2;
-          continue;
-        }
+        // if (text.startsWith('```', i)) {
+        //   i += 2;
+        //   continue;
+        // }
 
         for (const marker of MARKERS) {
           if (text.startsWith(marker.char, i)) {
@@ -205,7 +205,7 @@ export default function TextFormatingPlugin(): null {
         const text = current.getTextContent();
         fullText += text;
 
-        if (/[`*_~]/.test(text) || current.isToken()) {
+        if (/[*_~]/.test(text) || current.isToken()) {
           hasInlineMarker = true;
         }
 
@@ -215,23 +215,23 @@ export default function TextFormatingPlugin(): null {
 
       /* ================= CODE BLOCK AST ================= */
 
-      if (parent && parent.getType() === 'paragraph' && fullText.trim() === '```') {
-        const codeBlock = $createCodeBlockNode();
-        codeBlock.append($createTextNode(''));
+      // if (parent && parent.getType() === 'paragraph' && fullText.trim() === '```') {
+      //   const codeBlock = $createCodeBlockNode();
+      //   codeBlock.append($createTextNode(''));
 
-        parent.replace(codeBlock);
-        codeBlock.selectEnd();
-        return;
-      }
+      //   parent.replace(codeBlock);
+      //   codeBlock.selectEnd();
+      //   return;
+      // }
 
-      if (parent && parent.getType() === 'codeblock') {
-        if (fullText.trim() === '```') {
-          const paragraph = $createParagraphNode();
-          parent.replace(paragraph);
-          paragraph.selectEnd();
-          return;
-        }
-      }
+      // if (parent && parent.getType() === 'codeblock') {
+      //   if (fullText.trim() === '```') {
+      //     const paragraph = $createParagraphNode();
+      //     parent.replace(paragraph);
+      //     paragraph.selectEnd();
+      //     return;
+      //   }
+      // }
 
       // 🔥 NEW: Check for Block Markers (Lists, Quotes) at the start of a paragraph
       const isFirstChild = firstNode.getPreviousSibling() === null;
@@ -248,16 +248,17 @@ export default function TextFormatingPlugin(): null {
 
       /* ================= BLOCK AST (Lists & Quotes) ================= */
       if (isBlockMarker && parent && parent.getType() === 'paragraph') {
-        const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/);
+        // const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/);
         const matchBullet = fullText.match(/^[-*][ \u00A0]([\s\S]*)$/);
         const matchNumber = fullText.match(/^(\d+)\.[ \u00A0]([\s\S]*)$/);
 
         let newBlockNode = null;
 
-        if (matchQuote) {
-          newBlockNode = $createQuoteNode();
-          newBlockNode.append($createTextNode(matchQuote[1]));
-        } else if (matchBullet) {
+        // if (matchQuote) {
+        //   newBlockNode = $createQuoteNode();
+        //   newBlockNode.append($createTextNode(matchQuote[1]));
+        // } else 
+          if (matchBullet) {
           newBlockNode = $createListNode('bullet');
           const listItem = $createListItemNode();
           listItem.append($createTextNode(matchBullet[1]));

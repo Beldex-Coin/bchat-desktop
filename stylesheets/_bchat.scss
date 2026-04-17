@@ -2797,9 +2797,14 @@ input {
     margin: 0 !important;
   }
 
-  ul,ol {
+  ul,
+  ol {
     padding-left: 20px;
     margin: 0px !important;
+    li::marker {
+      font-size: 1em !important; /* or 16px or match your text */
+      font-weight: normal;
+    }
   }
 }
 
@@ -2815,10 +2820,10 @@ input {
   font-weight: 900;
 }
 
-.editor-input em,.editor-text-italic {
+.editor-input em,
+.editor-text-italic {
   font-style: italic;
 }
-
 
 .editor-input code {
   background: var(--color-MsgReqModal-bg);

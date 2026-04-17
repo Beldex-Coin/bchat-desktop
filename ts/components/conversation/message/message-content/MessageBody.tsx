@@ -35,13 +35,13 @@ const renderNewLines: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
-  if (!isConvoListItem && textWithNewLines.includes('```')) {
-    return (
-      <span key={key}>
-        {renderMarkdownBlocks(textWithNewLines, isConvoListItem)}
-      </span>
-    );
-  }
+  // if (!isConvoListItem && textWithNewLines.includes('```')) {
+  //   return (
+  //     <span key={key}>
+  //       {renderMarkdownBlocks(textWithNewLines, isConvoListItem)}
+  //     </span>
+  //   );
+  // }
   const renderOther = isGroup ? renderFormattedFirst : renderFormatted;
   return (
     <AddNewLines
@@ -59,13 +59,13 @@ export const renderFormattedFirst: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
-   if (!isConvoListItem && text.includes('```')) {
-    return (
-      <span key={key}>
-        {renderMarkdownBlocks(text, isConvoListItem)}
-      </span>
-    );
-  }
+  //  if (!isConvoListItem && text.includes('```')) {
+  //   return (
+  //     <span key={key}>
+  //       {renderMarkdownBlocks(text, isConvoListItem)}
+  //     </span>
+  //   );
+  // }
   return (
     <span key={key}>
       <AddMentions
@@ -137,53 +137,53 @@ export const MessageBody = (props: Props) => {
   const { text, disableJumbomoji, disableLinks, isGroup, isConvoListItem } = props;
   const sizeClass: SizeClassType = disableJumbomoji ? 'default' : getEmojiSizeClass(text);
 
-  if (!isConvoListItem && text.includes('```')) {
-    const segments: { content: string; isCode: boolean }[] = [];
-    const parts = text.split(/(```[\s\S]*?```)/g);
+  // if (!isConvoListItem && text.includes('```')) {
+  //   const segments: { content: string; isCode: boolean }[] = [];
+  //   const parts = text.split(/(```[\s\S]*?```)/g);
 
-    parts.forEach(part => {
-      if (part.startsWith('```') && part.endsWith('```')) {
-        segments.push({ content: part, isCode: true });
-      } else {
-        segments.push({ content: part, isCode: false });
-      }
-    });
+  //   parts.forEach(part => {
+  //     if (part.startsWith('```') && part.endsWith('```')) {
+  //       segments.push({ content: part, isCode: true });
+  //     } else {
+  //       segments.push({ content: part, isCode: false });
+  //     }
+  //   });
 
-    return JsxSelectable(
-      <span>
-        {segments.map((seg, i) => {
-          if (seg.isCode) {
-            // Render code block via renderMarkdownBlocks — safe, no linkify
-            return (
-              <React.Fragment key={i}>
-                {renderMarkdownBlocks(seg.content, isConvoListItem)}
-              </React.Fragment>
-            );
-          }
-          // Non-code segment — render normally through Linkify + emoji
-          if (!seg.content) return null;
-          return (
-            <Linkify
-              key={i}
-              text={seg.content}
-              isGroup={isGroup}
-              isConvoListItem={isConvoListItem}
-              renderNonLink={({ key, text: nonLinkText, isConvoListItem }) =>
-                renderEmoji({
-                  text: nonLinkText,
-                  sizeClass,
-                  key,
-                  renderNonEmoji: params =>
-                    renderNewLines({ ...params, isGroup, isConvoListItem }),
-                  isGroup,
-                })
-              }
-            />
-          );
-        })}
-      </span>
-    );
-  }
+  //   return JsxSelectable(
+  //     <span>
+  //       {segments.map((seg, i) => {
+  //         if (seg.isCode) {
+  //           // Render code block via renderMarkdownBlocks — safe, no linkify
+  //           return (
+  //             <React.Fragment key={i}>
+  //               {renderMarkdownBlocks(seg.content, isConvoListItem)}
+  //             </React.Fragment>
+  //           );
+  //         }
+  //         // Non-code segment — render normally through Linkify + emoji
+  //         if (!seg.content) return null;
+  //         return (
+  //           <Linkify
+  //             key={i}
+  //             text={seg.content}
+  //             isGroup={isGroup}
+  //             isConvoListItem={isConvoListItem}
+  //             renderNonLink={({ key, text: nonLinkText, isConvoListItem }) =>
+  //               renderEmoji({
+  //                 text: nonLinkText,
+  //                 sizeClass,
+  //                 key,
+  //                 renderNonEmoji: params =>
+  //                   renderNewLines({ ...params, isGroup, isConvoListItem }),
+  //                 isGroup,
+  //               })
+  //             }
+  //           />
+  //         );
+  //       })}
+  //     </span>
+  //   );
+  // }
   if (disableLinks) {
     return JsxSelectable(
       renderEmoji({
@@ -591,7 +591,7 @@ export const formatText = (
   const parts: (string | JSX.Element)[] = [];
 
   // ✅ Strict regex — each marker only matches its own closing marker, no crossing
-  const regex = /(`[^`]+`|\*([^*]+)\*|_([^_]+)_|~([^~]+)~)/g;
+  const regex = /(\*([^*]+)\*|_([^_]+)_|~([^~]+)~)/g;
 
   let lastIndex = 0;
   let match;
@@ -702,23 +702,23 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
     const line = lines[i];
 
     // 🔥 NEW: Catch Multi-line Code Block bounds
-    if (line.trim().startsWith('```') && !isConvoListItem) {
-      if (inCodeBlock) {
-        // Close the block
-        blocks.push(
-          <pre key={`pre-${i}`} className="code-block">
-            <code>{codeBlockContent.join('\n')}</code>
-          </pre>
-        );
-        inCodeBlock = false;
-        codeBlockContent = [];
-      } else {
-        // Open the block
-        pushPendingList();
-        inCodeBlock = true;
-      }
-      continue;
-    }
+    // if (line.trim().startsWith('```') && !isConvoListItem) {
+    //   if (inCodeBlock) {
+    //     // Close the block
+    //     blocks.push(
+    //       <pre key={`pre-${i}`} className="code-block">
+    //         <code>{codeBlockContent.join('\n')}</code>
+    //       </pre>
+    //     );
+    //     inCodeBlock = false;
+    //     codeBlockContent = [];
+    //   } else {
+    //     // Open the block
+    //     pushPendingList();
+    //     inCodeBlock = true;
+    //   }
+    //   continue;
+    // }
 
     // 🔥 NEW: If we are inside a code block, just store the text and skip other parsing
     if (inCodeBlock) {
@@ -752,19 +752,19 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
     pushPendingList();
 
     // Check for blockquote (> quote)
-    const quoteMatch = line.match(/^>\s+(.*)/);
-    if (quoteMatch) {
-      if (isConvoListItem) {
-        blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
-        continue;
-      }
-      blocks.push(
-        <blockquote key={`quote-${i}`} className="markdown-quote">
-          {formatText(quoteMatch[1], false, `quote-${i}`)}
-        </blockquote>
-      );
-      continue;
-    }
+    // const quoteMatch = line.match(/^>\s+(.*)/);
+    // if (quoteMatch) {
+    //   if (isConvoListItem) {
+    //     blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
+    //     continue;
+    //   }
+    //   blocks.push(
+    //     <blockquote key={`quote-${i}`} className="markdown-quote">
+    //       {formatText(quoteMatch[1], false, `quote-${i}`)}
+    //     </blockquote>
+    //   );
+    //   continue;
+    // }
 
     // Standard paragraph or empty line
     if (line.trim() === '') {

@@ -273,7 +273,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
   updateLexicalFromDraft = (draft: string) => {
     if (!this.editorRef) return;
-
+    const cleanDraft = draft.replace(/\n+$/, '')
     this.editorRef.update(() => {
       const root = $getRoot();
       root.clear();
@@ -281,13 +281,15 @@ class CompositionBoxInner extends React.Component<Props, State> {
       const paragraph = $createParagraphNode();
       root.append(paragraph);
 
-      if (!draft) {
-        paragraph.selectEnd();
-        return;
-      }
+     
+    if (!cleanDraft) {
+      paragraph.selectEnd();
+      return;
+    }
+
 
       // Split text + mentions
-      const parts = draft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
+      const parts = cleanDraft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
 
       parts.forEach(part => {
         const match = part.match(/@ￒ(.*?)ￗ(.*?)ￒ/);
@@ -1301,14 +1303,14 @@ export const serializeNode = (node: LexicalNode): string => {
   }
 
   // ✅ Multi-line CodeBlock
-  if (node instanceof CodeBlockNode) {
-    const content = node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
-    // Ensure multiline code blocks wrap the content with newlines
-    return `\`\`\`\n${content}\n\`\`\``;
-  }
+  // if (node instanceof CodeBlockNode) {
+  //   const content = node
+  //     .getChildren()
+  //     .map(serializeNode)
+  //     .join('');
+  //   // Ensure multiline code blocks wrap the content with newlines
+  //   return `\`\`\`\n${content}\n\`\`\``;
+  // }
 
   // ✅ Lists (Ordered & Unordered)
   if ($isListNode(node)) {
@@ -1351,25 +1353,25 @@ export const serializeNode = (node: LexicalNode): string => {
   // ✅ Text (Now with inline Markdown formatting!)
   // ✅ Text (Fixed for AST Token compatibility)
   if ($isTextNode(node)) {
-    let text = node.getTextContent();
+  let text = node.getTextContent();
 
-    // Apply formats in order. 
-    // Because we skipped "tokens" above, 'text' here is just "mun"
-    if (node.hasFormat('code')) {
-      text = `\`${text}\``;
-    }
-    if (node.hasFormat('italic')) {
-      text = `_${text}_`;
-    }
-    if (node.hasFormat('bold')) {
-      text = `*${text}*`; // This adds the * back correctly
-    }
-    if (node.hasFormat('strikethrough')) {
-      text = `~${text}~`;
-    }
+  // ✅ CODE (triple backtick)
+  // if (node.hasFormat('code')) {
+  //   return `\`\`\`${text}\`\`\``;
+  // }
 
-    return text;
+  if (node.hasFormat('italic')) {
+    text = `_${text}_`;
   }
+  if (node.hasFormat('bold')) {
+    text = `*${text}*`;
+  }
+  if (node.hasFormat('strikethrough')) {
+    text = `~${text}~`;
+  }
+
+  return text;
+}
 
   // ✅ Paragraphs (Add newline at the end of block)
   if ($isParagraphNode(node)) {
