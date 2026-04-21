@@ -234,7 +234,7 @@ const ConversationListItem = (props: Props) => {
               <ConversationListItemHeaderItem />
 
               <div className="module-conversation-list-item__content__messageBox">
-                <MessageItem isMessageRequest={Boolean(isMessageRequest)} />
+                <MessageItem isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
                 {/* {unreadCountDiv}
               {atSymbol} */}
                 <Timestamp

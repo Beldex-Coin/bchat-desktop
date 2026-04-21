@@ -586,5 +586,6 @@
 
 
   "viewAll":"View all",
-  "viewMessage":"Message"
+  "viewMessage":"Message",
+  "quoteMessage":"Quote Message"
 }

@@ -21,7 +21,7 @@ function useMessageItemProps(convoId: string) {
   };
 }
 
-export const MessageItem = (props: { isMessageRequest: boolean }) => {
+export const MessageItem = (props: { isMessageRequest: boolean,isConvoListItem?:boolean }) => {
   const conversationId = useContext(ContextConversationId);
   const convoProps = useMessageItemProps(conversationId);
 
@@ -54,7 +54,7 @@ export const MessageItem = (props: { isMessageRequest: boolean }) => {
         {isTyping ? (
           <TypingAnimation />
         ) : (
-          <MessageBody text={text} disableJumbomoji={true} disableLinks={true} isGroup={isGroup} />
+          <MessageBody text={text} disableJumbomoji={true} disableLinks={true} isGroup={isGroup} isConvoListItem={props.isConvoListItem} />
         )}
       </div>
       {!isSearchingMode && lastMessage && lastMessage.status && !props.isMessageRequest ? (
