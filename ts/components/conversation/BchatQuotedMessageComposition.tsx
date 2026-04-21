@@ -160,7 +160,7 @@ export const BchatQuotedMessageComposition = () => {
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => groupInvitation?.name === item.name
   );
-  const validatedBody=!body?.startsWith(`{"kind"`) && body
+  const validatedBody=!body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
   const formattedText = validatedBody ? formatText(validatedBody) : null;
   const quotedMessagetxt = !!body && body.startsWith('> ')?body.slice(2):null;
   return (
@@ -277,3 +277,36 @@ export const BchatQuotedMessageComposition = () => {
     </QuotedMessageComposition>
   );
 };
+
+const FORMAT_SYMBOLS = ['*', '_', '~'];
+
+
+export function validateForBrokenFormat(text: string, limit = 100): string {
+  if (!text) return text;
+
+  // Step 1: take only first 100 chars
+  let preview = text.slice(0, limit);
+
+  const firstChar = preview[0];
+
+  // Step 2: must start with symbol
+  if (!FORMAT_SYMBOLS.includes(firstChar)) {
+    return preview;
+  }
+
+  // Step 3: count occurrences inside preview ONLY
+  const regex = new RegExp(`\\${firstChar}`, 'g');
+  const count = (preview.match(regex) || []).length;
+
+  // Step 4: if odd → unclosed → fix it
+  if (count % 2 !== 0) {
+    const insertIndex = Math.min(100, preview.length);
+
+    preview =
+      preview.slice(0, insertIndex) +
+      firstChar +
+      preview.slice(insertIndex);
+  }
+
+  return preview;
+}

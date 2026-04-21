@@ -129,9 +129,10 @@ export const MessageBodyHighlight = (props: { text: string; isGroup: boolean }) 
   }
 
   if (last < text.length) {
+     const afterText = getPlainText(text.slice(last)); 
     results.push(
       renderEmoji({
-        text: text.slice(last),
+        text: afterText,
         sizeClass,
         key: count++,
         renderNonEmoji: renderNewLines,
