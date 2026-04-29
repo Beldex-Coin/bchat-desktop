@@ -2827,9 +2827,8 @@ input {
 
 .editor-input code {
   background: var(--color-MsgReqModal-bg);
-  padding: 2px 6px;
+  padding: 4px 10px;
   border-radius: 4px;
-  font-family: monospace;
   font-size: 0.95em;
 }
 .editor-text-strikethrough {
@@ -2850,7 +2849,9 @@ input {
 
   box-shadow: var(--color-bchat-shadow);
 }
-
+.mention-node{
+  font-weight: bold;
+}
 /* Item */
 .mention-item {
   display: flex;
@@ -2881,26 +2882,17 @@ input {
   background: var(--color-conversation-item-selected);
 }
 
-.inline-code {
+.inline-code,.code-block {
   display: inline-block;
   backdrop-filter: brightness(0.8);
   opacity: 0.8;
   padding: 0 6px;
   border-radius: 6px;
-  font-family: Roboto monospace;
+  font-family: $bchat-font-default;
 }
 
 .code-block {
-  padding: 12px;
-  border-radius: 8px;
-  overflow-x: auto;
-  margin: 6px 0;
-  font-family: Roboto monospace;
-  font-size: 13px;
-  line-height: 1.5;
-
-  white-space: pre-wrap; /* preserves lines + allows wrap if needed */
-  tab-size: 2; /* proper indentation */
+  font-family: $bchat-font-mono;
 }
 
 .markdown-list {

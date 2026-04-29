@@ -278,35 +278,43 @@ export const BchatQuotedMessageComposition = () => {
   );
 };
 
-const FORMAT_SYMBOLS = ['*', '_', '~'];
-
+const FORMAT_SYMBOLS = ['```', '`', '*', '_', '~'];
+// const LIST_SYMBOLS = ['-', '* ', '>']; // Added list and quote indicators
 
 export function validateForBrokenFormat(text: string, limit = 100): string {
   if (!text) return text;
 
-  // Step 1: take only first 100 chars
+  // Step 1: Slice the text to your limit
   let preview = text.slice(0, limit);
 
+  /**
+   * Step 2: Fix Single-Line Lists
+   * This looks for a space followed by a hyphen (e.g., " -") 
+   * and replaces it with a newline + hyphen ("\n-").
+   */
+  if (preview.includes(' -')) {
+    preview = preview.replace(/\s-/g, '\n-');
+  }
+
+  // Step 3: Handle Triple Backticks (Code Blocks)
+  if (preview.includes('```')) {
+    const tripleBacktickCount = (preview.match(/```/g) || []).length;
+    if (tripleBacktickCount % 2 !== 0) {
+      preview = preview + '```';
+    }
+  }
+
+  // Step 4: Handle single-character wrap symbols (*, _, ~, `)
   const firstChar = preview[0];
+  if (FORMAT_SYMBOLS.includes(firstChar) && firstChar !== '`') {
+    const regex = new RegExp(`\\${firstChar}`, 'g');
+    const count = (preview.match(regex) || []).length;
 
-  // Step 2: must start with symbol
-  if (!FORMAT_SYMBOLS.includes(firstChar)) {
-    return preview;
+    if (count % 2 !== 0) {
+      preview = preview + firstChar;
+    }
   }
 
-  // Step 3: count occurrences inside preview ONLY
-  const regex = new RegExp(`\\${firstChar}`, 'g');
-  const count = (preview.match(regex) || []).length;
-
-  // Step 4: if odd → unclosed → fix it
-  if (count % 2 !== 0) {
-    const insertIndex = Math.min(100, preview.length);
-
-    preview =
-      preview.slice(0, insertIndex) +
-      firstChar +
-      preview.slice(insertIndex);
-  }
-
-  return preview;
+  // Always end with a newline to ensure the quote box doesn't break layout
+  return preview + '\n';
 }

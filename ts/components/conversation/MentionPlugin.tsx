@@ -1,4 +1,4 @@
-import { $getSelection, $isRangeSelection, $isTextNode, TextNode } from 'lexical';
+import { $getSelection, $isRangeSelection, $isTextNode, TextNode, $getNodeByKey } from 'lexical';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { MentionNode } from './MentionNode';
@@ -27,33 +27,118 @@ export default function MentionPlugin({
     const rect = container.getBoundingClientRect();
 
     const left = rect.left + 10;
-    const top = rect.top; // anchor point ONLY
+    const top = rect.top; 
 
     setPosition({
       top: top + window.scrollY,
       left: left + window.scrollX,
     });
   };
+
   useLayoutEffect(() => {
     if (show) {
       updatePosition();
     }
   }, [results, show]);
 
+  // ✅ NEW: NodeTransform to instantly parse pasted pubkeys and serialized strings back into Mentions
+  useEffect(() => {
+    const removeTransform = editor.registerNodeTransform(TextNode, (node) => {
+      // Ignore if it's already a MentionNode to prevent infinite formatting loops
+      if (node.getType() === 'mention') return;
+
+      const text = node.getTextContent();
+
+      // 1. Check for serialized draft format (e.g., @ￒidￗdisplayￒ)
+      const serializedMatch = text.match(/@ￒ(.*?)ￗ(.*?)ￒ/);
+      if (serializedMatch) {
+        const [fullMatch, id, display] = serializedMatch;
+        const index = serializedMatch.index!;
+
+        let targetNode = node;
+        if (index > 0) {
+          [, targetNode] = targetNode.splitText(index);
+        }
+        if (targetNode.getTextContent().length > fullMatch.length) {
+          [targetNode] = targetNode.splitText(fullMatch.length);
+        }
+        targetNode.replace(new MentionNode(id, display));
+        return;
+      }
+
+      // 2. Check for raw pubkey format (from message history copy/paste)
+      const pubkeyMatch = text.match(/@([a-fA-F0-9]{64,})/);
+      if (pubkeyMatch) {
+        const fullMatch = pubkeyMatch[0];
+        const pubKey = pubkeyMatch[1];
+        const nodeKey = node.getKey();
+
+        // Fetch all users async to resolve the pasted ID back to the display name
+        fetchUsers('').then((users) => {
+          const matchedUser = users.find((u: any) => u.id === pubKey);
+          if (matchedUser) {
+            editor.update(() => {
+              const latestNode = $getNodeByKey(nodeKey);
+              if ($isTextNode(latestNode) && latestNode.getType() !== 'mention') {
+                const currentText = latestNode.getTextContent();
+                const matchIdx = currentText.indexOf(fullMatch);
+                
+                if (matchIdx !== -1) {
+                  let target = latestNode;
+                  if (matchIdx > 0) {
+                    [, target] = target.splitText(matchIdx);
+                  }
+                  if (target.getTextContent().length > fullMatch.length) {
+                    [target] = target.splitText(fullMatch.length);
+                  }
+                  target.replace(new MentionNode(matchedUser.id, matchedUser.value));
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+
+    return () => {
+      removeTransform();
+    };
+  }, [editor, fetchUsers]);
+
+  // ORIGINAL KEYSTROKE LISTENER
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const selection = $getSelection();
-        if (!$isRangeSelection(selection)) return;
+        
+        // ✅ FIX: If selection is lost, close the popup
+        if (!$isRangeSelection(selection)) {
+          setShow(false);
+          return;
+        }
 
         const node = selection.anchor.getNode();
-        if (!$isTextNode(node)) return;
+        
+        // ✅ FIX: When the '@' is deleted, the TextNode is destroyed. 
+        // We must close the popup instead of just returning early.
+        if (!$isTextNode(node)) {
+          setShow(false);
+          return;
+        }
 
-        const text = node.getTextContent();
-        const match = text.match(/@(\w*)$/);
+        // ✅ FIX: Slice the text up to the cursor offset. 
+        // This makes it work perfectly even if you type mid-sentence.
+        const textBeforeCursor = node.getTextContent().slice(0, selection.anchor.offset);
+        const match = textBeforeCursor.match(/@(\w*)$/);
 
         if (match) {
           const query = match[1];
+
+          // Prevent the dropdown from flashing open if we just pasted a raw pubkey
+          if (/^[a-fA-F0-9]{64,}$/.test(query)) {
+            setShow(false);
+            return;
+          }
 
           setShow(true);
 
@@ -61,7 +146,7 @@ export default function MentionPlugin({
             setResults(res);
 
             requestAnimationFrame(() => {
-              updatePosition(); // Ensure position is updated after DOM changes
+              updatePosition(); 
             });
           });
           updatePosition();

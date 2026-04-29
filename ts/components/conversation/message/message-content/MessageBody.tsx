@@ -19,9 +19,7 @@ const linkify = LinkifyIt();
 
 type Props = {
   text: string;
-  /** If set, all emoji will be the same size. Otherwise, just one emoji will be large. */
   disableJumbomoji: boolean;
-  /** If set, links will be left alone instead of turned into clickable `<a>` tags. Used in quotes, convo list item, etc */
   disableLinks: boolean;
   isGroup: boolean;
   isConvoListItem?: boolean;
@@ -35,13 +33,12 @@ const renderNewLines: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
-  // if (!isConvoListItem && textWithNewLines.includes('```')) {
-  //   return (
-  //     <span key={key}>
-  //       {renderMarkdownBlocks(textWithNewLines, isConvoListItem)}
-  //     </span>
-  //   );
-  // }
+  if (!isConvoListItem && textWithNewLines.includes('```')) {
+    return (
+      <span key={key}>{renderMarkdownBlocks(textWithNewLines, isConvoListItem, isGroup)}</span>
+    );
+  }
+
   const renderOther = isGroup ? renderFormattedFirst : renderFormatted;
   return (
     <AddNewLines
@@ -53,37 +50,29 @@ const renderNewLines: RenderTextCallbackType = ({
     />
   );
 };
+
 export const renderFormattedFirst: RenderTextCallbackType = ({
   text,
   key,
   isGroup,
   isConvoListItem,
 }) => {
-  //  if (!isConvoListItem && text.includes('```')) {
-  //   return (
-  //     <span key={key}>
-  //       {renderMarkdownBlocks(text, isConvoListItem)}
-  //     </span>
-  //   );
-  // }
+  if (!text) return <></>;
+
   return (
     <span key={key}>
-      <AddMentions
-        text={text}
-        isGroup={isGroup}
-        renderOther={({ text, key }) => (
-          <>
-            {renderMarkdownBlocks(text, isConvoListItem).map((part, i) => (
-              <React.Fragment key={`${key}-${i}`}>
-                {typeof part === 'string' ? part : part}
-              </React.Fragment>
-            ))}
-          </>
-        )}
-      />
+      {renderMarkdownBlocks(text, isConvoListItem, isGroup).map((part, i) => (
+        <React.Fragment key={`${key}-${i}`}>{part}</React.Fragment>
+      ))}
     </span>
   );
 };
+
+const renderFormatted: RenderTextCallbackType = ({ text, key, isGroup, isConvoListItem }) => {
+  if (!text) return <></>;
+  return <span key={key}>{renderMarkdownBlocks(text, isConvoListItem, isGroup)}</span>;
+};
+
 const renderEmoji = ({
   text,
   key,
@@ -111,13 +100,6 @@ const renderEmoji = ({
   );
 };
 
-/**
- * This component makes it very easy to use all three of our message formatting
- * components: `Emojify`, `Linkify`, and `AddNewLines`. Because each of them is fully
- * configurable with their `renderXXX` props, this component will assemble all three of
- * them for you.
- */
-
 const JsxSelectable = (jsx: JSX.Element): JSX.Element => {
   return (
     <span
@@ -137,53 +119,6 @@ export const MessageBody = (props: Props) => {
   const { text, disableJumbomoji, disableLinks, isGroup, isConvoListItem } = props;
   const sizeClass: SizeClassType = disableJumbomoji ? 'default' : getEmojiSizeClass(text);
 
-  // if (!isConvoListItem && text.includes('```')) {
-  //   const segments: { content: string; isCode: boolean }[] = [];
-  //   const parts = text.split(/(```[\s\S]*?```)/g);
-
-  //   parts.forEach(part => {
-  //     if (part.startsWith('```') && part.endsWith('```')) {
-  //       segments.push({ content: part, isCode: true });
-  //     } else {
-  //       segments.push({ content: part, isCode: false });
-  //     }
-  //   });
-
-  //   return JsxSelectable(
-  //     <span>
-  //       {segments.map((seg, i) => {
-  //         if (seg.isCode) {
-  //           // Render code block via renderMarkdownBlocks — safe, no linkify
-  //           return (
-  //             <React.Fragment key={i}>
-  //               {renderMarkdownBlocks(seg.content, isConvoListItem)}
-  //             </React.Fragment>
-  //           );
-  //         }
-  //         // Non-code segment — render normally through Linkify + emoji
-  //         if (!seg.content) return null;
-  //         return (
-  //           <Linkify
-  //             key={i}
-  //             text={seg.content}
-  //             isGroup={isGroup}
-  //             isConvoListItem={isConvoListItem}
-  //             renderNonLink={({ key, text: nonLinkText, isConvoListItem }) =>
-  //               renderEmoji({
-  //                 text: nonLinkText,
-  //                 sizeClass,
-  //                 key,
-  //                 renderNonEmoji: params =>
-  //                   renderNewLines({ ...params, isGroup, isConvoListItem }),
-  //                 isGroup,
-  //               })
-  //             }
-  //           />
-  //         );
-  //       })}
-  //     </span>
-  //   );
-  // }
   if (disableLinks) {
     return JsxSelectable(
       renderEmoji({
@@ -197,32 +132,69 @@ export const MessageBody = (props: Props) => {
     );
   }
 
+ const segments: { content: string; isCode: boolean }[] = [];
+  // 1. Enforce a newline so we ONLY split true multiline code blocks
+  const codeRegex = /(```[\s\S]*?\n[\s\S]*?```)/g;
+
+  const parts = text.split(codeRegex);
+
+  parts.forEach(part => {
+    if (!part) return;
+    // 2. Ensure we strictly identify the multiline code blocks
+    if (part.startsWith('```') && part.endsWith('```') && part.includes('\n')) {
+      segments.push({ content: part, isCode: true });
+    } else {
+      segments.push({ content: part, isCode: false });
+    }
+  });
+
   return JsxSelectable(
-    <Linkify
-      text={text}
-      isGroup={isGroup}
-      isConvoListItem={isConvoListItem}
-      renderNonLink={({ key, text: nonLinkText, isConvoListItem }) => {
-        return renderEmoji({
-          text: nonLinkText,
-          sizeClass,
-          key,
-          renderNonEmoji: params =>
-            renderNewLines({
-              ...params,
-              isGroup,
-              isConvoListItem,
-            }),
-          isGroup,
-        });
-      }}
-    />
+    <span>
+      {segments.map((seg, i) => {
+        if (seg.isCode) {
+          return (
+            <React.Fragment key={i}>
+              {renderEmoji({
+                text: seg.content,
+                sizeClass,
+                key: i,
+                renderNonEmoji: params => renderNewLines({ ...params, isGroup, isConvoListItem }),
+                isGroup,
+                isConvoListItem,
+              })}
+            </React.Fragment>
+          );
+        }
+
+        return (
+          <Linkify
+            key={i}
+            text={seg.content}
+            isGroup={isGroup}
+            isConvoListItem={isConvoListItem}
+            renderNonLink={({ key, text: nonLinkText, isConvoListItem }) => {
+              return renderEmoji({
+                text: nonLinkText,
+                sizeClass,
+                key,
+                renderNonEmoji: params =>
+                  renderNewLines({
+                    ...params,
+                    isGroup,
+                    isConvoListItem,
+                  }),
+                isGroup,
+              });
+            }}
+          />
+        );
+      })}
+    </span>
   );
 };
 
 type LinkifyProps = {
   text: string;
-  /** Allows you to customize now non-links are rendered. Simplest is just a <span>. */
   renderNonLink: RenderTextCallbackType;
   isGroup: boolean;
   isConvoListItem?: boolean;
@@ -260,7 +232,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         onClickClose: () => {
           dispatch(updateConfirmModal(null));
         },
-
         onClickCancel: () => {
           MessageInteraction.copyBodyToClipboard(url);
         },
@@ -278,7 +249,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     const innerMatches = linkify.match(innerText) || [];
 
     if (innerMatches.length === 0) {
-      // No links inside, just wrap as formatted text
       return (
         <Wrapper key={key}>
           {renderNonLink({ text: innerText, key, isGroup, isConvoListItem })}
@@ -286,13 +256,11 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       );
     }
 
-    // Mix of text and links inside formatted block
     const innerParts: Array<any> = [];
     let innerLast = 0;
     let innerCount = 0;
 
     innerMatches.forEach((m: { index: number; url: string; lastIndex: number; text: string }) => {
-      // Plain text before this link
       if (innerLast < m.index) {
         const plainText = innerText.slice(innerLast, m.index);
         innerParts.push(
@@ -316,7 +284,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       innerLast = m.lastIndex;
     });
 
-    // Remaining plain text after last link
     if (innerLast < innerText.length) {
       innerParts.push(
         renderNonLink({
@@ -339,8 +306,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     if (last < match.index) {
       const textWithNoLink = text.slice(last, match.index);
 
-      // ✅ Check if this non-link segment starts a formatting marker
-      // and the closing marker comes after the link
       const boldMatch = textWithNoLink.match(/^(.*)\*([^*]*)$/);
       const italicMatch = textWithNoLink.match(/^(.*)_([^_]*)$/);
       const strikeMatch = textWithNoLink.match(/^(.*)~([^~]*)$/);
@@ -351,13 +316,11 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       const charAfter = match.lastIndex < text.length ? text[match.lastIndex] : '';
 
       if (orderedPrefix) {
-        // Push everything before the list prefix as normal
         if (orderedPrefix[1]) {
           results.push(
             renderNonLink({ text: orderedPrefix[1], isGroup, isConvoListItem, key: count++ })
           );
         }
-        // Render the list item WITH the link inline
         const num = orderedPrefix[3];
         results.push(
           <ol key={count++} start={parseInt(num, 10)} className="markdown-list">
@@ -389,19 +352,16 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         last = match.lastIndex;
         return;
       }
-
       if (boldMatch && charAfter === '*') {
-        // Push text before the opening *
         if (boldMatch[1]) {
           results.push(
             renderNonLink({ text: boldMatch[1], isGroup, isConvoListItem, key: count++ })
           );
         }
-        // The inner text before the URL (e.g. "dev ")
         const innerBefore = boldMatch[2];
         const innerText = innerBefore + match.text;
         results.push(renderFormattedInner(innerText, 'strong', count++));
-        last = match.lastIndex + 1; // skip closing *
+        last = match.lastIndex + 1;
         return;
       }
 
@@ -455,14 +415,10 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
   return <>{results}</>;
 };
 
-const renderFormatted: RenderTextCallbackType = ({ text, key, isConvoListItem }) => {
-  return <span key={key}>{renderMarkdownBlocks(text, isConvoListItem)}</span>;
-};
 const isValidBoundary = (text: string, start: number, end: number) => {
   const before = start === 0 ? '' : text[start - 1];
   const after = end >= text.length ? '' : text[end];
 
-  // ✅ Add formatting markers as valid boundaries
   const boundaryRegex = /[\s.,!?()[\]{}"'`*_~]/;
 
   const isStartValid = start === 0 || boundaryRegex.test(before);
@@ -471,136 +427,38 @@ const isValidBoundary = (text: string, start: number, end: number) => {
   return isStartValid && isEndValid;
 };
 
-// export const formatText = (text: string, isConvoListItem?: boolean): (string | JSX.Element)[] => {
-//   const parts: (string | JSX.Element)[] = [];
-
-//   // ✅ Supports multiple symbols on both sides
-//   // it allow to multiple line code block support like ```code```
-//   // const regex = /(```[\s\S]*?```|`[^`]+`|\*+[^*]+\*+|_+[^_]+_+|~+[^~]+~+)/g;
-//   const regex = /(`[^`]+`|\*+[^*]+\*+|_+[^_]+_+|~+[^~]+~+)/g;
-
-//   let lastIndex = 0;
-//   let match;
-
-//   while ((match = regex.exec(text)) !== null) {
-//     // Push normal text
-//     if (match.index > lastIndex) {
-//       parts.push(text.slice(lastIndex, match.index));
-//     }
-
-//     const token = match[0];
-//     const start = match.index;
-//     const end = regex.lastIndex;
-
-//     // 🚫 Skip formatting if not valid boundary
-//     if (!isValidBoundary(text, start, end)) {
-//       parts.push(token);
-//       lastIndex = regex.lastIndex;
-//       continue;
-//     }
-//     // ✅ NEW: empty content check
-//     const inner = token.slice(1, -1);
-//     if (!inner || inner.trim().length === 0) {
-//       parts.push(token);
-//       lastIndex = regex.lastIndex;
-//       continue;
-//     }
-
-//     // =========================
-//     // 🔹 BLOCK CODE ```
-//     // =========================
-//     // if (token.startsWith('```')) {
-//     //   const content = token.slice(3, -3);
-
-//     //   if (!content.trim()) {
-//     //     lastIndex = regex.lastIndex;
-//     //     continue;
-//     //   }
-
-//     //   if (isConvoListItem) {
-//     //     parts.push(
-//     //       <code key={match.index} className="inline-code">
-//     //         {content}
-//     //       </code>
-//     //     );
-//     //   } else {
-//     //     parts.push(
-//     //       <pre key={match.index} className="code-block">
-//     //         <code>{content}</code>
-//     //       </pre>
-//     //     );
-//     //   }
-//     // }
-
-//     // =========================
-//     // 🔹 INLINE CODE `
-//     // =========================
-//      if (token.startsWith('`')) {
-//       const content = token.slice(1, -1);
-
-//       parts.push(
-//         <code key={match.index} className="inline-code">
-//           {content}
-//         </code>
-//       );
-//     }
-
-//     // =========================
-//     // 🔹 BOLD (*)
-//     // =========================
-//     else if (token.startsWith('*')) {
-//       const content = token.substring(1, token.length - 1);
-
-//       parts.push(<strong key={match.index}>{formatText(content, isConvoListItem)}</strong>);
-//     }
-
-//     // =========================
-//     // 🔹 ITALIC (_)
-//     // =========================
-//     else if (token.startsWith('_')) {
-//       const content = token.substring(1, token.length - 1);
-
-//       parts.push(<em key={match.index}>{formatText(content, isConvoListItem)}</em>);
-//     }
-
-//     // =========================
-//     // 🔹 STRIKETHROUGH (~)
-//     // =========================
-//     else if (token.startsWith('~')) {
-//       const content = token.substring(1, token.length - 1);
-
-//       parts.push(<del key={match.index}>{formatText(content, isConvoListItem)}</del>);
-//     }
-
-//     lastIndex = regex.lastIndex;
-//   }
-
-//   // Push remaining text
-//   if (lastIndex < text.length) {
-//     parts.push(text.slice(lastIndex));
-//   }
-
-//   return parts;
-// };
-
 export const formatText = (
   text: string,
   isConvoListItem?: boolean,
-  parentKey: string = 'root'
+  parentKey: string = 'root',
+  isGroup: boolean = false
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
 
-  // ✅ Strict regex — each marker only matches its own closing marker, no crossing
-  const regex = /(\*([^*]+)\*|_([^_]+)_|~([^~]+)~)/g;
+  const regex = /(?<!\\)(```(.*?)```|`([^`]+)`|\*(?!\s)([^*]+?)(?<!\s)\*|_(?!\s)([^_]+?)(?<!\s)_|~(?!\s)([^~]+?)(?<!\s)~)/g;
 
   let lastIndex = 0;
   let match;
 
+  const renderPlainText = (txt: string, key: string) => {
+    const cleanTxt = txt.replace(/\\([*_\~`])/g, '$1');
+    return isGroup ? (
+      <AddMentions
+        key={key}
+        text={cleanTxt}
+        isGroup={isGroup}
+        renderOther={({ text }) => <>{text}</>}
+      />
+    ) : (
+      <span key={key}>{cleanTxt}</span>
+    );
+  };
+
   while ((match = regex.exec(text)) !== null) {
-    // Plain text before match
     if (match.index > lastIndex) {
-      const plainText = text.slice(lastIndex, match.index);
-      parts.push(<span key={`${parentKey}-txt-${lastIndex}`}>{plainText}</span>);
+      parts.push(
+        renderPlainText(text.slice(lastIndex, match.index), `${parentKey}-txt-${lastIndex}`)
+      );
     }
 
     const token = match[0];
@@ -609,16 +467,26 @@ export const formatText = (
     const currentKey = `${parentKey}-${start}`;
 
     if (!isValidBoundary(text, start, end)) {
-      parts.push(<span key={`${currentKey}-invalid`}>{token}</span>);
+      parts.push(renderPlainText(token, `${currentKey}-invalid`));
       lastIndex = regex.lastIndex;
       continue;
     }
 
-    // ✅ Inline code `
-    if (token.startsWith('`')) {
-      const inner = token.slice(1, -1);
-      if (!inner.trim()) {
-        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+    if (token.startsWith('```')) {
+      const inner = match[2];
+      if (!inner || !inner.trim()) {
+        parts.push(renderPlainText(token, `${currentKey}-empty`));
+      } else {
+        parts.push(
+          <code key={currentKey} className="code-block">
+            {inner}
+          </code>
+        );
+      }
+    } else if (token.startsWith('`')) {
+      const inner = match[3];
+      if (!inner || !inner.trim()) {
+        parts.push(renderPlainText(token, `${currentKey}-empty`));
       } else {
         parts.push(
           <code key={currentKey} className="inline-code">
@@ -626,51 +494,52 @@ export const formatText = (
           </code>
         );
       }
-    }
-
-    // ✅ Bold *
-    else if (token.startsWith('*')) {
-      const inner = match[2]; // captured group — no asterisks
+    } else if (token.startsWith('*')) {
+      const inner = match[4];
       if (!inner || !inner.trim()) {
-        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+        parts.push(renderPlainText(token, `${currentKey}-empty`));
       } else {
         parts.push(
-          <strong key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</strong>
+          <strong key={currentKey}>
+            {formatText(inner, isConvoListItem, currentKey, isGroup)}
+          </strong>
         );
       }
-    }
-
-    // ✅ Italic _
-    else if (token.startsWith('_')) {
-      const inner = match[3]; // captured group — no underscores
+    } else if (token.startsWith('_')) {
+      const inner = match[5];
       if (!inner || !inner.trim()) {
-        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+        parts.push(renderPlainText(token, `${currentKey}-empty`));
       } else {
-        parts.push(<em key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</em>);
+        parts.push(
+          <em key={currentKey}>{formatText(inner, isConvoListItem, currentKey, isGroup)}</em>
+        );
       }
-    }
-
-    // ✅ Strikethrough ~
-    else if (token.startsWith('~')) {
-      const inner = match[4]; // captured group — no tildes
+    } else if (token.startsWith('~')) {
+      const inner = match[6];
       if (!inner || !inner.trim()) {
-        parts.push(<span key={`${currentKey}-empty`}>{token}</span>);
+        parts.push(renderPlainText(token, `${currentKey}-empty`));
       } else {
-        parts.push(<del key={currentKey}>{formatText(inner, isConvoListItem, currentKey)}</del>);
+        parts.push(
+          <del key={currentKey}>{formatText(inner, isConvoListItem, currentKey, isGroup)}</del>
+        );
       }
     }
 
     lastIndex = regex.lastIndex;
   }
 
-  // Remaining trailing text
   if (lastIndex < text.length) {
-    parts.push(<span key={`${parentKey}-txt-end`}>{text.slice(lastIndex)}</span>);
+    parts.push(renderPlainText(text.slice(lastIndex), `${parentKey}-txt-end`));
   }
 
   return parts;
 };
-export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): JSX.Element[] => {
+
+export const renderMarkdownBlocks = (
+  text: string,
+  isConvoListItem?: boolean,
+  isGroup: boolean = false
+): JSX.Element[] => {
   if (!text) return [];
   const lines = text.split('\n');
   const blocks: JSX.Element[] = [];
@@ -679,7 +548,6 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
   let currentListType: 'ul' | 'ol' | null = null;
   let listStartIndex = 1;
 
-  // 🔥 NEW: State trackers for multiline code blocks
   let inCodeBlock = false;
   let codeBlockContent: string[] = [];
 
@@ -700,85 +568,113 @@ export const renderMarkdownBlocks = (text: string, isConvoListItem?: boolean): J
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+    const trimmedLine = line.trim();
 
-    // 🔥 NEW: Catch Multi-line Code Block bounds
-    // if (line.trim().startsWith('```') && !isConvoListItem) {
-    //   if (inCodeBlock) {
-    //     // Close the block
-    //     blocks.push(
-    //       <pre key={`pre-${i}`} className="code-block">
-    //         <code>{codeBlockContent.join('\n')}</code>
-    //       </pre>
-    //     );
-    //     inCodeBlock = false;
-    //     codeBlockContent = [];
-    //   } else {
-    //     // Open the block
-    //     pushPendingList();
-    //     inCodeBlock = true;
-    //   }
-    //   continue;
-    // }
-
-    // 🔥 NEW: If we are inside a code block, just store the text and skip other parsing
-    if (inCodeBlock) {
-      codeBlockContent.push(line);
+    // ✅ FIX: Process codeblocks properly to prevent single-line ```code``` from being swallowed
+    if (trimmedLine.startsWith('```') && !isConvoListItem) {
+      if (inCodeBlock) {
+        // Find closing backticks if they are appended to code on the same line
+        const endIdx = line.indexOf('```');
+        if (endIdx > 0) {
+          codeBlockContent.push(line.slice(0, endIdx));
+        }
+        blocks.push(
+          // <pre className="code-block">
+            <code key={`pre-${i}`} className="code-block">
+              {codeBlockContent.join('\n')}
+            </code>
+          // </pre>
+        );
+        inCodeBlock = false;
+        codeBlockContent = [];
+      } else {
+        pushPendingList();
+        // Check if it's a completely single-line block (e.g. ```code```)
+        if (trimmedLine.length >= 6 && trimmedLine.endsWith('```')) {
+          const content = trimmedLine.slice(3, -3);
+          blocks.push(
+            <code key={`pre-${i}`} className="code-block">
+              {content}
+            </code>
+          );
+        } else {
+          inCodeBlock = true;
+          // Capture potential code situated directly after the opening ```
+          const startContent = line.slice(line.indexOf('```') + 3);
+          if (startContent.trim()) {
+            codeBlockContent.push(startContent);
+          }
+        }
+      }
       continue;
     }
 
-    // Check for unordered list item (- or *)
+    if (inCodeBlock) {
+      // ✅ FIX: Allows the closing ``` to sit at the end of a populated line
+      if (trimmedLine.endsWith('```')) {
+        const endIdx = line.lastIndexOf('```');
+        if (endIdx > 0) {
+          codeBlockContent.push(line.slice(0, endIdx));
+        }
+        blocks.push(
+          <pre key={`pre-${i}`} className="code-block">
+            <code>{codeBlockContent.join('\n')}</code>
+          </pre>
+        );
+        inCodeBlock = false;
+        codeBlockContent = [];
+      } else {
+        codeBlockContent.push(line);
+      }
+      continue;
+    }
+
     const bulletMatch = line.match(/^[-*]\s+(.*)/);
     if (bulletMatch) {
       if (currentListType === 'ol') pushPendingList();
       currentListType = 'ul';
       currentListItems.push(
-        <li key={`li-${i}`}>{formatText(bulletMatch[1], isConvoListItem, `li-${i}`)}</li>
+        <li key={`li-${i}`}>{formatText(bulletMatch[1], isConvoListItem, `li-${i}`, isGroup)}</li>
       );
       continue;
     }
 
-    // Check for ordered list item (1., 2., etc)
     const numberMatch = line.match(/^(\d+)\.\s+(.*)/);
     if (numberMatch) {
       if (currentListType === 'ul') pushPendingList();
       if (currentListItems.length === 0) listStartIndex = parseInt(numberMatch[1], 10);
       currentListType = 'ol';
       currentListItems.push(
-        <li key={`li-${i}`}>{formatText(numberMatch[2], isConvoListItem, `li-${i}`)}</li>
+        <li key={`li-${i}`}>{formatText(numberMatch[2], isConvoListItem, `li-${i}`, isGroup)}</li>
       );
       continue;
     }
 
     pushPendingList();
 
-    // Check for blockquote (> quote)
-    // const quoteMatch = line.match(/^>\s+(.*)/);
-    // if (quoteMatch) {
-    //   if (isConvoListItem) {
-    //     blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
-    //     continue;
-    //   }
-    //   blocks.push(
-    //     <blockquote key={`quote-${i}`} className="markdown-quote">
-    //       {formatText(quoteMatch[1], false, `quote-${i}`)}
-    //     </blockquote>
-    //   );
-    //   continue;
-    // }
+    const quoteMatch = line.match(/^>\s+(.*)/);
+    if (quoteMatch) {
+      if (isConvoListItem) {
+        blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
+        continue;
+      }
+      blocks.push(
+        <blockquote key={`quote-${i}`} className="markdown-quote">
+          {formatText(quoteMatch[1], false, `quote-${i}`, isGroup)}
+        </blockquote>
+      );
+      continue;
+    }
 
-    // Standard paragraph or empty line
-    if (line.trim() === '') {
+    if (line === '') {
       blocks.push(<br key={`br-${i}`} />);
     } else {
       blocks.push(
-        // <p key={`p-${i}`} className="markdown-p">
-        <>{formatText(line, false, `p-${i}`)}</>
-        // </p>
+        <React.Fragment key={`p-${i}`}>{formatText(line, false, `p-${i}`, isGroup)}</React.Fragment>
       );
     }
   }
 
-  // Flush any open blocks at the end of the text
   pushPendingList();
   if (inCodeBlock && codeBlockContent.length > 0) {
     blocks.push(

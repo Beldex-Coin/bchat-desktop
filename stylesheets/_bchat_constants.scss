@@ -11,10 +11,10 @@ $bchat-font-poppin-medium: 'poppin-medium';
 $bchat-font-poppin-regular: 'poppin-regular';
 $bchat-font-open-sans:'OpenSans';
 // $bchat-font-open-sans-light:'OpenSans-light';
-// @font-face {
-//   font-family: $bchat-font-mono;
-//   src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
-// }
+@font-face {
+  font-family: $bchat-font-mono;
+  src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
+}
 
 // Roboto is an open replacement for $bchat-font-default
 // @font-face {

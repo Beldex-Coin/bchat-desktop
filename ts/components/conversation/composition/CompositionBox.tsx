@@ -273,7 +273,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
   updateLexicalFromDraft = (draft: string) => {
     if (!this.editorRef) return;
-    const cleanDraft = draft.replace(/\n+$/, '')
+    const cleanDraft = draft.replace(/\n+$/, '');
     this.editorRef.update(() => {
       const root = $getRoot();
       root.clear();
@@ -281,12 +281,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
       const paragraph = $createParagraphNode();
       root.append(paragraph);
 
-     
-    if (!cleanDraft) {
-      paragraph.selectEnd();
-      return;
-    }
-
+      if (!cleanDraft) {
+        paragraph.selectEnd();
+        return;
+      }
 
       // Split text + mentions
       const parts = cleanDraft.split(/(@ￒ.*?ￗ.*?ￒ)/g);
@@ -623,7 +621,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         },
         quote: 'markdown-quote',
       },
-      nodes: [MentionNode, CodeBlockNode, ListNode, ListItemNode, QuoteNode], // ✅ important
+      nodes: [MentionNode, ListNode, ListItemNode, QuoteNode, CodeBlockNode], // ✅ important
       onError(error: any) {
         console.error(error);
       },
@@ -651,6 +649,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                 <ContentEditable
                   className="editor-input"
                   contentEditable={typingEnabled}
+                  // onKeyDown={this.onKeyDown}
                   // aria-placeholder={placeholder}
                 />
               }
@@ -659,8 +658,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
             />
 
             <HistoryPlugin />
-            <TextFormatingPlugin />
             <ListPlugin />
+            <TextFormatingPlugin onSendMessage={this.onSendMessage} />
             <MentionPlugin
               fetchUsers={this.fetchUsersForGroup}
               renderSuggestion={renderUserMentionRow}
@@ -979,17 +978,11 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.props.onChoseAttachments(attachmentsFileList);
   }
 
+  // Inside CompositionBoxInner class in CompositionBox.tsx
+
   private async onKeyDown(event: any) {
-    if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
-      // If shift, newline. If in IME composing mode, leave it to IME. Else send message.
-      event.preventDefault();
-      await this.onSendMessage();
-    } else if (event.key === 'Escape' && this.state.showEmojiPanel) {
+    if (event.key === 'Escape' && this.state.showEmojiPanel) {
       this.hideEmojiPanel();
-    } else if (event.key === 'PageUp' || event.key === 'PageDown') {
-      // swallow pageUp events if they occurs on the composition box (it breaks the app layout)
-      event.preventDefault();
-      event.stopPropagation();
     }
   }
 
@@ -1086,7 +1079,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
           conversationKey: this.props.selectedConversationKey,
         })
       );
-      // Empty composition box and stagedAttachments
       this.setState({
         showEmojiPanel: false,
         stagedLinkPreview: undefined,
@@ -1101,6 +1093,12 @@ class CompositionBoxInner extends React.Component<Props, State> {
           const paragraph = $createParagraphNode();
           root.append(paragraph);
           paragraph.select();
+
+          // Clear any lingering formatting state from the previous selection
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            selection.format = 0;
+          }
         });
         setTimeout(() => {
           this.editorRef.focus();
@@ -1295,45 +1293,33 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
 
 export const serializeNode = (node: LexicalNode): string => {
   if ($isTextNode(node) && node.isToken()) {
-    return ''; 
+    return '';
   }
+
   // ✅ Mention
   if ($isMentionNode(node)) {
     return `@ￒ${node.getId()}ￗ${node.getDisplay()}ￒ`;
   }
 
-  // ✅ Multi-line CodeBlock
-  // if (node instanceof CodeBlockNode) {
-  //   const content = node
-  //     .getChildren()
-  //     .map(serializeNode)
-  //     .join('');
-  //   // Ensure multiline code blocks wrap the content with newlines
-  //   return `\`\`\`\n${content}\n\`\`\``;
-  // }
-
   // ✅ Lists (Ordered & Unordered)
   if ($isListNode(node)) {
-    const listType = node.getListType(); // 'bullet' or 'number'
+    const listType = node.getListType();
     const start = node.getStart() ?? 1;
 
-    // Map through children to inject the correct prefix per item
-    return (
-      node
-        .getChildren()
-        .map((child, index) => {
-          if ($isListItemNode(child)) {
-            const prefix = listType === 'number' ? `${start + index}. ` : '- ';
-            const content = child
-              .getChildren()
-              .map(serializeNode)
-              .join('');
-            return `${prefix}${content}`;
-          }
-          return serializeNode(child);
-        })
-        .join('\n') + '\n'
-    );
+    return node
+      .getChildren()
+      .map((child, index) => {
+        if ($isListItemNode(child)) {
+          const prefix = listType === 'number' ? `${start + index}. ` : '- ';
+          const content = child
+            .getChildren()
+            .map(serializeNode)
+            .join('');
+          return `${prefix}${content}`;
+        }
+        return serializeNode(child);
+      })
+      .join('\n');
   }
 
   // ✅ Quotes
@@ -1345,41 +1331,49 @@ export const serializeNode = (node: LexicalNode): string => {
     return `> ${content}\n`;
   }
 
-  // ✅ Line Breaks (Shift+Enter)
+  // ✅ Line Breaks
   if ($isLineBreakNode(node)) {
     return '\n';
   }
 
-  // ✅ Text (Now with inline Markdown formatting!)
-  // ✅ Text (Fixed for AST Token compatibility)
+  // ✅ Text (Fixed for Inline Code and Empty Strings)
+  // ✅ Text (Fixed for Inline Code and Empty Strings)
   if ($isTextNode(node)) {
-  let text = node.getTextContent();
+    let text = node.getTextContent();
 
-  // ✅ CODE (triple backtick)
-  // if (node.hasFormat('code')) {
-  //   return `\`\`\`${text}\`\`\``;
-  // }
+    // If text is empty, return early
+    if (!text) return '';
 
-  if (node.hasFormat('italic')) {
-    text = `_${text}_`;
+    // 1. Handle Code first (Code usually excludes other formatting in chat apps)
+    if (node.hasFormat('code')) {
+      const style = node.getStyle() || '';
+      if (style.includes('data-triple-backtick: true')) {
+        return `\`\`\`${text}\`\`\``;
+      }
+      return `\`${text}\``;
+    }
+
+    // 2. Apply formatting to the raw text content
+    // Order: Strikethrough -> Italic -> Bold (standard markdown nesting)
+    if (node.hasFormat('strikethrough')) {
+      text = `~${text}~`;
+    }
+    if (node.hasFormat('italic')) {
+      text = `_${text}_`;
+    }
+    if (node.hasFormat('bold')) {
+      text = `*${text}*`;
+    }
+
+    return text;
   }
-  if (node.hasFormat('bold')) {
-    text = `*${text}*`;
-  }
-  if (node.hasFormat('strikethrough')) {
-    text = `~${text}~`;
-  }
 
-  return text;
-}
-
-  // ✅ Paragraphs (Add newline at the end of block)
+  // ✅ Paragraphs
   if ($isParagraphNode(node)) {
     const content = node
       .getChildren()
       .map(serializeNode)
       .join('');
-    // If paragraph is empty, just return a newline, otherwise append it
     return content ? `${content}\n` : '\n';
   }
 

@@ -13,16 +13,22 @@ import {
   // $applyNodeReplacement,
   $createParagraphNode,
   KEY_BACKSPACE_COMMAND,
+  INSERT_LINE_BREAK_COMMAND,
+  INSERT_PARAGRAPH_COMMAND,
 } from 'lexical';
 
-// import { $createQuoteNode } from '@lexical/rich-text';
-import { $createListNode, $createListItemNode } from '@lexical/list';
+import { $createQuoteNode } from '@lexical/rich-text';
+import { $createListNode, $createListItemNode, $isListItemNode } from '@lexical/list';
 
 // function $createCodeBlockNode() {
 //   return $applyNodeReplacement(new CodeBlockNode());
 // }
 
-export default function TextFormatingPlugin(): null {
+export default function TextFormatingPlugin({
+  onSendMessage,
+}: {
+  onSendMessage: () => void;
+}): null {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -38,20 +44,22 @@ export default function TextFormatingPlugin(): null {
       }
 
       const MARKERS = [
-        // { char: '`', format: 'code', noNest: true },
+        { char: '```', format: 'codeblock', noNest: true },
+        { char: '`', format: 'code', noNest: true }, // ✅ Restored Inline Code
         { char: '*', format: 'bold' },
         { char: '_', format: 'italic' },
         { char: '~', format: 'strikethrough' },
       ];
 
       /* ---------- ✅ Boundary Fix ---------- */
-      const isValidBoundary = (text: string, start: number, end: number) => {
+      const isValidBoundary = (text: string, start: number, end: number, markerLength: number) => {
         const before = text[start - 1];
         const after = text[end];
 
-        const charAfterOpen = text[start + 1];
-        const charBeforeClose = text[end - 1];
+        const charAfterOpen = text[start + markerLength];
+        const charBeforeClose = text[end - markerLength - 1];
 
+        // Prevents formatting * hello *
         if (charAfterOpen === ' ') return false;
         if (charBeforeClose === ' ') return false;
 
@@ -61,113 +69,73 @@ export default function TextFormatingPlugin(): null {
         return isStartValid && isEndValid;
       };
 
-      /* ---------- ✅ Correct Closing Finder (non-greedy + safe) ---------- */
-      const findClosingIndex = (text: string, start: number, char: string) => {
-        let depth = 0;
-
-        for (let i = start; i < text.length; i++) {
-          // skip ```
-          // if (text.startsWith('```', i)) {
-          //   i += 2;
-          //   continue;
-          // }
-
-          if (text[i] === char) {
-            // handle repeated markers like **
-            if (text[i + 1] === char) {
-              depth++;
-              i++;
-              continue;
-            }
-
-            if (depth === 0) return i;
-            depth--;
-          }
-        }
-
-        return -1;
+      const findClosingIndex = (text: string, start: number, marker: string) => {
+        return text.indexOf(marker, start);
       };
-
-      /* ---------- ✅ Find BEST match (not first match) ---------- */
-      let bestMatch: {
-        marker: any;
-        start: number;
-        end: number;
-      } | null = null;
+      let bestMatch: { marker: any; start: number; end: number } | null = null;
 
       for (let i = 0; i < text.length; i++) {
-        // if (text.startsWith('```', i)) {
-        //   i += 2;
-        //   continue;
-        // }
-
         for (const marker of MARKERS) {
           if (text.startsWith(marker.char, i)) {
-            const closeIdx = findClosingIndex(text, i + 1, marker.char);
-
-            if (closeIdx !== -1 && isValidBoundary(text, i, closeIdx + 1)) {
+            const startInner = i + marker.char.length;
+            const closeIdx = findClosingIndex(text, startInner, marker.char);
+            
+            // ✅ FIX: Ensure there is actual content between the markers (closeIdx > startInner). 
+            // This prevents empty pairs like **, __, or ~~ from being stripped into empty AST nodes.
+            if (
+              closeIdx > startInner && 
+              isValidBoundary(text, i, closeIdx + marker.char.length, marker.char.length)
+            ) {
               if (!bestMatch || i < bestMatch.start) {
-                bestMatch = {
-                  marker,
-                  start: i,
-                  end: closeIdx,
-                };
+                bestMatch = { marker, start: i, end: closeIdx };
               }
             }
           }
         }
       }
-
-      /* ---------- ❌ No marker ---------- */
       if (!bestMatch) {
         const node = $createTextNode(text);
         currentFormats.forEach(f => {
-          if (!node.hasFormat(f)) {
-            node.toggleFormat(f);
-          }
+          if (!node.hasFormat(f)) node.toggleFormat(f);
         });
         return [node];
       }
 
       const { marker: earliestMarker, start: firstIndex, end: lastIndex } = bestMatch;
-
       const nodes: TextNode[] = [];
 
-      /* ---------- Left ---------- */
       if (firstIndex > 0) {
         nodes.push(...processText(text.slice(0, firstIndex), currentFormats));
       }
 
-      /* ---------- Opening token ---------- */
       nodes.push($createTextNode(earliestMarker.char).setMode('token'));
+      const inside = text.slice(firstIndex + earliestMarker.char.length, lastIndex);
 
-      const inside = text.slice(firstIndex + 1, lastIndex);
-
-      /* ---------- Inside ---------- */
       if (earliestMarker.noNest) {
         const node = $createTextNode(inside);
-        node.toggleFormat(earliestMarker.format);
+
+        // ✅ FIX: triple backtick inline handling
+        if (earliestMarker.char === '```') {
+          node.toggleFormat('code');
+          node.setStyle('font-family: monospace; data-triple-backtick: true;');
+        } else {
+          node.toggleFormat(earliestMarker.format);
+        }
+
         currentFormats.forEach(f => node.toggleFormat(f));
         nodes.push(node);
       } else {
-        const innerNodes = processText(inside, [...currentFormats, earliestMarker.format]);
-
-        // 🔥 APPLY FORMAT TO ALL CHILD NODES
-        innerNodes.forEach(n => {
-          if (!n.hasFormat(earliestMarker.format)) {
-            n.toggleFormat(earliestMarker.format);
-          }
-        });
-
-        nodes.push(...innerNodes);
+        // ✅ FIX: Recursively process the inner text so it formats instead of deleting
+        const newFormats = [...currentFormats, earliestMarker.format];
+        nodes.push(...processText(inside, newFormats));
       }
 
-      /* ---------- Closing token ---------- */
       nodes.push($createTextNode(earliestMarker.char).setMode('token'));
 
-      /* ---------- Right ---------- */
-      if (lastIndex + 1 < text.length) {
-        nodes.push(...processText(text.slice(lastIndex + 1), currentFormats));
+      const endOfMarker = lastIndex + earliestMarker.char.length;
+
+      if (endOfMarker < text.length) {
+        nodes.push(...processText(text.slice(endOfMarker), currentFormats));
       }
 
       return nodes;
@@ -175,16 +143,12 @@ export default function TextFormatingPlugin(): null {
 
     /* ================= TRANSFORM ================= */
     const removeTransform = editor.registerNodeTransform(TextNode, node => {
-      // ✅ Safety guards
       if (!node.isAttached()) return;
       if (!node.isSimpleText() || node.isToken()) return;
 
       const parent = node.getParent();
-      if (parent?.getType() === 'codeblock') {
-        return;
-      }
+      if (parent?.getType() === 'codeblock') return;
 
-      /* -------- Collect full text -------- */
       let firstNode = node;
       while (firstNode.getPreviousSibling() instanceof TextNode) {
         firstNode = firstNode.getPreviousSibling() as TextNode;
@@ -205,7 +169,7 @@ export default function TextFormatingPlugin(): null {
         const text = current.getTextContent();
         fullText += text;
 
-        if (/[*_~]/.test(text) || current.isToken()) {
+        if (/[*_~`]/.test(text) || current.isToken()) {
           hasInlineMarker = true;
         }
 
@@ -213,32 +177,10 @@ export default function TextFormatingPlugin(): null {
         current = current.getNextSibling();
       }
 
-      /* ================= CODE BLOCK AST ================= */
-
-      // if (parent && parent.getType() === 'paragraph' && fullText.trim() === '```') {
-      //   const codeBlock = $createCodeBlockNode();
-      //   codeBlock.append($createTextNode(''));
-
-      //   parent.replace(codeBlock);
-      //   codeBlock.selectEnd();
-      //   return;
-      // }
-
-      // if (parent && parent.getType() === 'codeblock') {
-      //   if (fullText.trim() === '```') {
-      //     const paragraph = $createParagraphNode();
-      //     parent.replace(paragraph);
-      //     paragraph.selectEnd();
-      //     return;
-      //   }
-      // }
-
-      // 🔥 NEW: Check for Block Markers (Lists, Quotes) at the start of a paragraph
       const isFirstChild = firstNode.getPreviousSibling() === null;
       let isBlockMarker = false;
 
       if (isFirstChild && parent && parent.getType() === 'paragraph') {
-        // Matches "> ", "- ", "* ", or "1. "
         if (/^(>[ \u00A0]|[-*][ \u00A0]|\d+\.[ \u00A0])/.test(fullText)) {
           isBlockMarker = true;
         }
@@ -248,17 +190,16 @@ export default function TextFormatingPlugin(): null {
 
       /* ================= BLOCK AST (Lists & Quotes) ================= */
       if (isBlockMarker && parent && parent.getType() === 'paragraph') {
-        // const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/);
+        const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/); // ✅ Restored Quote
         const matchBullet = fullText.match(/^[-*][ \u00A0]([\s\S]*)$/);
         const matchNumber = fullText.match(/^(\d+)\.[ \u00A0]([\s\S]*)$/);
 
         let newBlockNode = null;
 
-        // if (matchQuote) {
-        //   newBlockNode = $createQuoteNode();
-        //   newBlockNode.append($createTextNode(matchQuote[1]));
-        // } else 
-          if (matchBullet) {
+        if (matchQuote) {
+          newBlockNode = $createQuoteNode();
+          newBlockNode.append($createTextNode(matchQuote[1]));
+        } else if (matchBullet) {
           newBlockNode = $createListNode('bullet');
           const listItem = $createListItemNode();
           listItem.append($createTextNode(matchBullet[1]));
@@ -286,47 +227,32 @@ export default function TextFormatingPlugin(): null {
             }
           }
 
-          // ✅ NEW: Check if previous sibling is already a list of the same type
-          // If so, append the new list item into it instead of creating a new <ol>/<ul>
           const prevSibling = parent.getPreviousSibling();
-          const newBlockType = newBlockNode.getType(); // 'list'
+          const newBlockType = newBlockNode.getType();
 
           if (prevSibling && prevSibling.getType() === 'list' && newBlockType === 'list') {
             const prevList = prevSibling as any;
             const newList = newBlockNode as any;
 
-            // Only merge if same list style (bullet vs number)
             if (prevList.getListType() === newList.getListType()) {
-              // Move all list items from newBlockNode into prevSibling
               const newItems = newList.getChildren();
               newItems.forEach((item: LexicalNode) => {
                 prevList.append(item);
               });
-
-              // Remove the now-empty paragraph
               parent.remove();
-
-              if (hasCursor) {
-                prevList.selectEnd();
-              }
-
+              if (hasCursor) prevList.selectEnd();
               return;
             }
           }
 
-          // Default: no previous list to merge into, just replace as before
           parent.replace(newBlockNode);
-
-          if (hasCursor) {
-            newBlockNode.selectEnd();
-          }
-
+          if (hasCursor) newBlockNode.selectEnd();
           return;
         }
       }
+
       /* ================= INLINE AST ================= */
       const astNodes = processText(fullText);
-
       let isDifferent = nodes.length !== astNodes.length;
 
       if (!isDifferent) {
@@ -344,14 +270,12 @@ export default function TextFormatingPlugin(): null {
 
       if (!isDifferent) return;
 
-      /* -------- Cursor Preserve -------- */
       const selection = $getSelection();
       let absoluteOffset = -1;
 
       if ($isRangeSelection(selection) && selection.isCollapsed()) {
         const anchorNode = selection.anchor.getNode();
         let length = 0;
-
         for (const n of nodes) {
           if (n.is(anchorNode)) {
             absoluteOffset = length + selection.anchor.offset;
@@ -361,29 +285,22 @@ export default function TextFormatingPlugin(): null {
         }
       }
 
-      /* -------- Replace -------- */
       firstNode.replace(astNodes[0]);
-
       for (let i = 1; i < astNodes.length; i++) {
         astNodes[i - 1].insertAfter(astNodes[i]);
       }
-
       for (let i = 1; i < nodes.length; i++) {
         nodes[i].remove();
       }
 
-      /* -------- Restore Cursor -------- */
       if (absoluteOffset !== -1) {
         let length = 0;
-
         for (const n of astNodes) {
           const size = n.getTextContentSize();
-
           if (absoluteOffset <= length + size) {
             n.select(absoluteOffset - length, absoluteOffset - length);
             break;
           }
-
           length += size;
         }
       } else {
@@ -391,7 +308,6 @@ export default function TextFormatingPlugin(): null {
         if ($isRangeSelection(selection)) {
           const anchorNode = selection.anchor.getNode();
           const wasRemoved = nodes.some(n => n.is(anchorNode));
-
           if (wasRemoved && astNodes.length > 0) {
             astNodes[astNodes.length - 1].selectEnd();
           }
@@ -399,67 +315,70 @@ export default function TextFormatingPlugin(): null {
       }
     });
 
+    // Inside TextFormatingPlugin.tsx -> useEffect
     const removeEnter = editor.registerCommand(
       KEY_ENTER_COMMAND,
-      (event: any) => {
+      (event: KeyboardEvent) => {
         const selection = $getSelection();
-
         if (!$isRangeSelection(selection)) return false;
 
         const anchorNode = selection.anchor.getNode();
         const parent = anchorNode.getParent();
+        const isInList = $isListItemNode(anchorNode) || $isListItemNode(parent);
 
-        // ✅ Only inside CodeBlockNode
-        if (parent && parent.getType() === 'codeblock') {
-          event.preventDefault();
+        // --- SHIFT + ENTER ---
+        if (event.shiftKey) {
+          event.preventDefault(); // Prevent the browser's default <br>
 
-          // ✅ Insert newline
-          selection.insertNodes([$createTextNode('\n')]);
-
-          return true;
+          if (isInList) {
+            // Rule 2: Shift+Enter in list item → continue numbering.
+            // We manually dispatch a paragraph insertion, which ListPlugin intercepts
+            // to create the next list item (e.g., '2. ', '3. ').
+            editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
+            return true;
+          } else {
+            // Rule 3: Shift+Enter in normal text → inserts a line break.
+            editor.dispatchCommand(INSERT_LINE_BREAK_COMMAND, false);
+            return true;
+          }
         }
 
-        return false;
+        // --- ENTER (No Shift) ---
+        else {
+          // Rule 1 & 4: Enter in list item OR normal text → sends the message.
+          event.preventDefault();
+          onSendMessage();
+          return true;
+        }
       },
       COMMAND_PRIORITY_HIGH
     );
+
     const removeBackspace = editor.registerCommand(
       KEY_BACKSPACE_COMMAND,
       (event: KeyboardEvent) => {
         const selection = $getSelection();
-
-        if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
-          return false;
-        }
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) return false;
 
         const anchor = selection.anchor;
         const anchorNode = anchor.getNode();
-
-        // We check the parent, or the parent of the parent in case of nested text
         const parent = anchorNode.getParent();
         const codeBlock =
           parent?.getType() === 'codeblock' ? parent : anchorNode.getTopLevelElement();
 
-        if (!codeBlock || codeBlock.getType() !== 'codeblock') {
-          return false;
-        }
+        if (!codeBlock || codeBlock.getType() !== 'codeblock') return false;
 
         const rawContent = codeBlock.getTextContent();
-
         const isEmpty = rawContent.trim() === '';
-
         const isAtAbsoluteStart = anchor.offset === 0 && anchorNode.getPreviousSibling() === null;
 
         if (isEmpty && isAtAbsoluteStart) {
           event.preventDefault();
-
           const paragraph = $createParagraphNode();
           codeBlock.replace(paragraph);
-
           paragraph.select();
           return true;
         }
-
         return false;
       },
       COMMAND_PRIORITY_HIGH
@@ -470,7 +389,7 @@ export default function TextFormatingPlugin(): null {
       removeEnter();
       removeBackspace();
     };
-  }, [editor]);
+  }, [editor, onSendMessage]);
 
   return null;
 }
@@ -486,7 +405,7 @@ export class CodeBlockNode extends ElementNode {
 
   createDOM() {
     const code = document.createElement('code');
-    code.style = 'display: block; border-radius: 6px;';
+    code.style = 'display: inline-block; border-radius: 6px;';
     return code;
   }
 
