@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
-import { formatText } from './message/message-content/MessageBody';
+import {  renderMarkdownBlocks } from './message/message-content/MessageBody';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -52,13 +52,14 @@ const QuotedMessageCompositionReply = styled.div`
   }
 `;
 
-const Subtle = styled.div`
+const Subtle = styled.div<{isquotedMessage:boolean}>`
+  font-size: ${props => props.isquotedMessage ? '14px' : '16px'};
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  display: -webkit-box;
+  display:${props => props.isquotedMessage ? 'flex' : '-webkit-box'} ;
   color: var(--color-text);
   margin-right: 9px;
 `;
@@ -161,8 +162,8 @@ export const BchatQuotedMessageComposition = () => {
     (item: Room) => groupInvitation?.name === item.name
   );
   const validatedBody=!body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
-  const formattedText = validatedBody ? formatText(validatedBody) : null;
-  const quotedMessagetxt = !!body && body.startsWith('> ')?body.slice(2):null;
+  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody) : null;
+  const isquotedMessage = !!body && body.startsWith('> ');
   return (
     <QuotedMessageComposition>
       <Flex
@@ -193,8 +194,10 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||quotedMessagetxt ||formattedText }</Subtle>
-            
+            <Subtle isquotedMessage={isquotedMessage}>
+              {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
+            </Subtle>
+
             {groupInvitation && (
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">

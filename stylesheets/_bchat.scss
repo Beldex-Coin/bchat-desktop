@@ -2882,16 +2882,18 @@ input {
   background: var(--color-conversation-item-selected);
 }
 
-.inline-code,.code-block {
+.inline-code {
   display: inline-block;
   backdrop-filter: brightness(0.8);
   opacity: 0.8;
   padding: 0 6px;
   border-radius: 6px;
+  padding: 0 6px;
   font-family: $bchat-font-default;
 }
 
 .code-block {
+   display: inline-block;
   font-family: $bchat-font-mono;
 }
 
@@ -2901,26 +2903,23 @@ input {
 }
 
 .markdown-quote {
-  background-color: var(--color-untrust-media-bg);
+  // background-color: var(--color-untrust-media-bg);
   border-left: 4px solid var(--color-untrusted-vertical-bar);
   padding: 8px 10px;
-  margin: 10px 0;
+  margin: 0;
   line-height: 1.5;
   border-radius: 6px;
 }
 
-.module-message__text.module-message__text--outgoing {
-  .markdown-quote {
-    background-color: #0a6f0a;
-    border-color: #f0f0f0;
-  }
-}
+// .module-message__text.module-message__text--outgoing {
+//   .markdown-quote {
+//     // background-color: #0a6f0a;
+//     border-color: #f0f0f0;
+//   }
+// }
 
 .module-quote__primary__text {
   .markdown-quote {
     margin: 0 0 10px;
-    background-color: transparent;
-    border: none;
-    padding: 0;
   }
 }

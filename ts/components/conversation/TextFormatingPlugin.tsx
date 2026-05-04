@@ -30,7 +30,7 @@ export default function TextFormatingPlugin({
   onSendMessage: () => void;
 }): null {
   const [editor] = useLexicalComposerContext();
-
+  let isBulletListYmbols = '-';
   useEffect(() => {
     /* ================= AST ENGINE ================= */
     const processText = (text: string, currentFormats: TextFormatType[] = []): TextNode[] => {
@@ -79,11 +79,11 @@ export default function TextFormatingPlugin({
           if (text.startsWith(marker.char, i)) {
             const startInner = i + marker.char.length;
             const closeIdx = findClosingIndex(text, startInner, marker.char);
-            
-            // ✅ FIX: Ensure there is actual content between the markers (closeIdx > startInner). 
+
+            // ✅ FIX: Ensure there is actual content between the markers (closeIdx > startInner).
             // This prevents empty pairs like **, __, or ~~ from being stripped into empty AST nodes.
             if (
-              closeIdx > startInner && 
+              closeIdx > startInner &&
               isValidBoundary(text, i, closeIdx + marker.char.length, marker.char.length)
             ) {
               if (!bestMatch || i < bestMatch.start) {
@@ -200,11 +200,13 @@ export default function TextFormatingPlugin({
           newBlockNode = $createQuoteNode();
           newBlockNode.append($createTextNode(matchQuote[1]));
         } else if (matchBullet) {
+          isBulletListYmbols = fullText[0];
           newBlockNode = $createListNode('bullet');
           const listItem = $createListItemNode();
           listItem.append($createTextNode(matchBullet[1]));
           newBlockNode.append(listItem);
         } else if (matchNumber) {
+          isBulletListYmbols = `${matchNumber[1]}.`;
           newBlockNode = $createListNode('number');
           newBlockNode.setStart(parseInt(matchNumber[1], 10));
           const listItem = $createListItemNode();
@@ -354,6 +356,7 @@ export default function TextFormatingPlugin({
       COMMAND_PRIORITY_HIGH
     );
 
+    // REPLACE only your current removeBackspace command with below code
     const removeBackspace = editor.registerCommand(
       KEY_BACKSPACE_COMMAND,
       (event: KeyboardEvent) => {
@@ -363,22 +366,98 @@ export default function TextFormatingPlugin({
         const anchor = selection.anchor;
         const anchorNode = anchor.getNode();
         const parent = anchorNode.getParent();
+
+        /* ================= CODE BLOCK BACKSPACE ================= */
         const codeBlock =
           parent?.getType() === 'codeblock' ? parent : anchorNode.getTopLevelElement();
 
-        if (!codeBlock || codeBlock.getType() !== 'codeblock') return false;
+        if (codeBlock && codeBlock.getType() === 'codeblock') {
+          const rawContent = codeBlock.getTextContent();
+          const isEmpty = rawContent.trim() === '';
+          const isAtAbsoluteStart = anchor.offset === 0 && anchorNode.getPreviousSibling() === null;
 
-        const rawContent = codeBlock.getTextContent();
-        const isEmpty = rawContent.trim() === '';
-        const isAtAbsoluteStart = anchor.offset === 0 && anchorNode.getPreviousSibling() === null;
-
-        if (isEmpty && isAtAbsoluteStart) {
-          event.preventDefault();
-          const paragraph = $createParagraphNode();
-          codeBlock.replace(paragraph);
-          paragraph.select();
-          return true;
+          if (isEmpty && isAtAbsoluteStart) {
+            event.preventDefault();
+            const paragraph = $createParagraphNode();
+            codeBlock.replace(paragraph);
+            paragraph.select();
+            return true;
+          }
         }
+
+        // REPLACE only this whole "BULLET LIST BACKSPACE" block inside removeBackspace
+
+        /* ================= BULLET / QUOTE BACKSPACE ================= */
+        const topLevel = anchorNode.getTopLevelElement();
+
+        /* ---------- LIST revert ---------- */
+        const listItem = $isListItemNode(anchorNode)
+          ? anchorNode
+          : $isListItemNode(parent)
+          ? parent
+          : null;
+
+        if (listItem && anchor.offset === 0) {
+          const text = listItem.getTextContent();
+          const isSingleLine = !text.includes('\n');
+          const listParent = listItem.getParent();
+
+          if (isSingleLine && text.trim() === '' && listParent?.getType() === 'list') {
+            event.preventDefault();
+
+            const paragraph = $createParagraphNode();
+            const listType =
+              typeof (listParent as any).getListType === 'function'
+                ? (listParent as any).getListType()
+                : 'bullet';
+            // WITH this
+            if (listType === 'number') {
+              const start =
+                typeof (listParent as any).getStart === 'function'
+                  ? (listParent as any).getStart()
+                  : 1;
+
+              const index =
+                typeof listItem.getIndexWithinParent === 'function'
+                  ? listItem.getIndexWithinParent()
+                  : listParent.getChildren().indexOf(listItem);
+
+              const currentNumber = start + index;
+
+              isBulletListYmbols = `${currentNumber}.`;
+            }
+
+            paragraph.append($createTextNode(isBulletListYmbols));
+
+            listParent.insertAfter(paragraph);
+            listItem.remove();
+
+            if (listParent.getChildrenSize() === 0) {
+              listParent.remove();
+            }
+
+            paragraph.selectEnd();
+            return true;
+          }
+        }
+
+        /* ---------- QUOTE revert ---------- */
+        if (topLevel && topLevel.getType() === 'quote' && anchor.offset === 0) {
+          const text = topLevel.getTextContent();
+          const isSingleLine = !text.includes('\n');
+
+          if (isSingleLine && text.trim() === '') {
+            event.preventDefault();
+
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode('>'));
+
+            topLevel.replace(paragraph);
+            paragraph.selectEnd();
+            return true;
+          }
+        }
+
         return false;
       },
       COMMAND_PRIORITY_HIGH
