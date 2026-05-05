@@ -50,6 +50,9 @@ const QuotedMessageCompositionReply = styled.div`
       font-weight: 300;
     }
   }
+  .inline-code{
+  backdrop-filter: brightness(2);
+  }
 `;
 
 const Subtle = styled.div<{isquotedMessage:boolean}>`

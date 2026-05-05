@@ -2849,7 +2849,7 @@ input {
 
   box-shadow: var(--color-bchat-shadow);
 }
-.mention-node{
+.mention-node {
   font-weight: bold;
 }
 /* Item */
@@ -2893,7 +2893,7 @@ input {
 }
 
 .code-block {
-   display: inline-block;
+  display: inline-block;
   font-family: $bchat-font-mono;
 }
 
@@ -2903,13 +2903,36 @@ input {
 }
 
 .markdown-quote {
-  // background-color: var(--color-untrust-media-bg);
-  border-left: 4px solid var(--color-untrusted-vertical-bar);
-  padding: 8px 10px;
+  position: relative; /* Required to position the 'border' */
+  padding-left: 10px;
   margin: 0;
-  line-height: 1.5;
-  border-radius: 6px;
 }
+
+.markdown-quote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0%;
+  height: 22px;
+  width: 4px;
+  border-radius: 10px; /* This is your border thickness */
+  background: var(--color-untrusted-vertical-bar);
+}
+
+.module-message__container {
+  .markdown-quote::before{
+    height: 100%;
+  }
+}
+
+// .markdown-quote {
+//   // background-color: var(--color-untrust-media-bg);
+//   border-left: 4px solid var(--color-untrusted-vertical-bar);
+//   padding: 8px 10px;
+//   margin: 0;
+//   line-height: 1.5;
+//   border-radius: 6px;
+// }
 
 // .module-message__text.module-message__text--outgoing {
 //   .markdown-quote {

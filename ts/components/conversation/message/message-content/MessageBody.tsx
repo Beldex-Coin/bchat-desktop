@@ -33,7 +33,9 @@ const renderNewLines: RenderTextCallbackType = ({
   isGroup,
   isConvoListItem,
 }) => {
-  if (!isConvoListItem && textWithNewLines.includes('```')) {
+  const hasBlockMarkdown = /(^|\n)(```|>\s|[-*]\s|\d+\.\s)/.test(textWithNewLines);
+  
+  if (!isConvoListItem && hasBlockMarkdown) {
     return (
       <span key={key}>{renderMarkdownBlocks(textWithNewLines, isConvoListItem, isGroup)}</span>
     );
@@ -654,6 +656,7 @@ export const renderMarkdownBlocks = (
 
     const quoteMatch = line.match(/^>\s+(.*)/);
     if (quoteMatch) {
+      console.log('Quote match:', quoteMatch[1]);
       if (isConvoListItem) {
         blocks.push(<span key={`quote-${i}`}> {window.i18n('quoteMessage')} </span>);
         continue;
@@ -672,6 +675,14 @@ export const renderMarkdownBlocks = (
       blocks.push(
         <React.Fragment key={`p-${i}`}>{formatText(line, false, `p-${i}`, isGroup)}</React.Fragment>
       );
+      
+      if (i < lines.length - 1) {
+        const nextLine = lines[i + 1];
+        const isNextLineBlock = /^```|^>\s|^[-*]\s|^\d+\.\s/.test(nextLine.trim());
+        if (!isNextLineBlock) {
+          blocks.push(<br key={`br-auto-${i}`} />);
+        }
+      }
     }
   }
 

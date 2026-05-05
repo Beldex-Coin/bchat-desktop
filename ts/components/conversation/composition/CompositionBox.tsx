@@ -1328,7 +1328,10 @@ export const serializeNode = (node: LexicalNode): string => {
       .getChildren()
       .map(serializeNode)
       .join('');
-    return `> ${content}\n`;
+      
+    const cleanContent = content.replace(/\n+$/, ''); 
+    const lines = cleanContent.split('\n');
+    return lines.map(line => `> ${line}`).join('\n') + '\n';
   }
 
   // ✅ Line Breaks
@@ -1336,7 +1339,6 @@ export const serializeNode = (node: LexicalNode): string => {
     return '\n';
   }
 
-  // ✅ Text (Fixed for Inline Code and Empty Strings)
   // ✅ Text (Fixed for Inline Code and Empty Strings)
   if ($isTextNode(node)) {
     let text = node.getTextContent();

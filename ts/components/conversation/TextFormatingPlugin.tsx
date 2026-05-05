@@ -13,7 +13,7 @@ import {
   // $applyNodeReplacement,
   $createParagraphNode,
   KEY_BACKSPACE_COMMAND,
-  INSERT_LINE_BREAK_COMMAND,
+  // INSERT_LINE_BREAK_COMMAND,
   INSERT_PARAGRAPH_COMMAND,
 } from 'lexical';
 
@@ -117,7 +117,7 @@ export default function TextFormatingPlugin({
         // ✅ FIX: triple backtick inline handling
         if (earliestMarker.char === '```') {
           node.toggleFormat('code');
-          node.setStyle('font-family: monospace; data-triple-backtick: true;');
+          node.setStyle('font-family: monospace; data-triple-backtick: true;background: none;');
         } else {
           node.toggleFormat(earliestMarker.format);
         }
@@ -318,36 +318,20 @@ export default function TextFormatingPlugin({
     });
 
     // Inside TextFormatingPlugin.tsx -> useEffect
-    const removeEnter = editor.registerCommand(
+   const removeEnter = editor.registerCommand(
       KEY_ENTER_COMMAND,
       (event: KeyboardEvent) => {
         const selection = $getSelection();
         if (!$isRangeSelection(selection)) return false;
-
-        const anchorNode = selection.anchor.getNode();
-        const parent = anchorNode.getParent();
-        const isInList = $isListItemNode(anchorNode) || $isListItemNode(parent);
-
         // --- SHIFT + ENTER ---
         if (event.shiftKey) {
           event.preventDefault(); // Prevent the browser's default <br>
-
-          if (isInList) {
-            // Rule 2: Shift+Enter in list item → continue numbering.
-            // We manually dispatch a paragraph insertion, which ListPlugin intercepts
-            // to create the next list item (e.g., '2. ', '3. ').
-            editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
-            return true;
-          } else {
-            // Rule 3: Shift+Enter in normal text → inserts a line break.
-            editor.dispatchCommand(INSERT_LINE_BREAK_COMMAND, false);
-            return true;
-          }
+          editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
+          return true;
         }
 
         // --- ENTER (No Shift) ---
         else {
-          // Rule 1 & 4: Enter in list item OR normal text → sends the message.
           event.preventDefault();
           onSendMessage();
           return true;
