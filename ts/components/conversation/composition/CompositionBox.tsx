@@ -1271,7 +1271,7 @@ const smart = connect(mapStateToProps);
 
 export const CompositionBox: any = smart(CompositionBoxInner);
 
-const normalizeForLinkDetection = (text: string) => {
+export const normalizeForLinkDetection = (text: string) => {
   return text
     .replace(/[\*_~]/g, '') // remove all markdown symbols
     .replace(/`([^`]+)`/g, '$1');
@@ -1328,8 +1328,7 @@ export const serializeNode = (node: LexicalNode): string => {
       .getChildren()
       .map(serializeNode)
       .join('');
-      
-    const cleanContent = content.replace(/\n+$/, ''); 
+    const cleanContent = content.replace(/\n+$/, '');
     const lines = cleanContent.split('\n');
     return lines.map(line => `> ${line}`).join('\n') + '\n';
   }
@@ -1339,52 +1338,105 @@ export const serializeNode = (node: LexicalNode): string => {
     return '\n';
   }
 
-  // ✅ Text (Fixed for Inline Code and Empty Strings)
+  // ✅ Text fallback (if called directly on TextNode instead of ElementNode)
   if ($isTextNode(node)) {
     let text = node.getTextContent();
-
-    // If text is empty, return early
     if (!text) return '';
-
-    // 1. Handle Code first (Code usually excludes other formatting in chat apps)
     if (node.hasFormat('code')) {
       const style = node.getStyle() || '';
-      if (style.includes('data-triple-backtick: true')) {
-        return `\`\`\`${text}\`\`\``;
-      }
-      return `\`${text}\``;
+      return style.includes('data-triple-backtick: true') ? `\`\`\`${text}\`\`\`` : `\`${text}\``;
     }
-
-    // 2. Apply formatting to the raw text content
-    // Order: Strikethrough -> Italic -> Bold (standard markdown nesting)
-    if (node.hasFormat('strikethrough')) {
-      text = `~${text}~`;
-    }
-    if (node.hasFormat('italic')) {
-      text = `_${text}_`;
-    }
-    if (node.hasFormat('bold')) {
-      text = `*${text}*`;
-    }
-
+    if (node.hasFormat('strikethrough')) text = `~${text}~`;
+    if (node.hasFormat('italic')) text = `_${text}_`;
+    if (node.hasFormat('bold')) text = `*${text}*`;
     return text;
   }
 
-  // ✅ Paragraphs
-  if ($isParagraphNode(node)) {
-    const content = node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
-    return content ? `${content}\n` : '\n';
-  }
-
-  // ✅ Generic Element Fallback
+  // ✅ Paragraphs & Generic Elements (Flawless contiguous format wrapping)
   if ($isElementNode(node)) {
-    return node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
+    const children = node.getChildren();
+    let content = '';
+
+    let currentBold = false;
+    let currentItalic = false;
+    let currentStrike = false;
+    let currentCode = false;
+
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+
+      if ($isTextNode(child)) {
+        if (child.isToken()) continue;
+
+        let text = child.getTextContent();
+        if (!text) continue;
+
+        const isBold = child.hasFormat('bold');
+        const isItalic = child.hasFormat('italic');
+        const isStrike = child.hasFormat('strikethrough');
+        const isCode = child.hasFormat('code');
+
+        // Open markers based on what changed
+        let prefix = '';
+        if (isBold && !currentBold) prefix += '*';
+        if (isItalic && !currentItalic) prefix += '_';
+        if (isStrike && !currentStrike) prefix += '~';
+        if (isCode && !currentCode) {
+          const style = child.getStyle() || '';
+          prefix += style.includes('data-triple-backtick: true') ? '```' : '`';
+        }
+
+        currentBold = isBold;
+        currentItalic = isItalic;
+        currentStrike = isStrike;
+        currentCode = isCode;
+
+        // ✅ FIX: Look ahead to find the next TRUE text node (skipping tokens)
+        let nextValidNode = null;
+        for (let j = i + 1; j < children.length; j++) {
+          const next = children[j];
+          if ($isTextNode(next) && next.isToken()) {
+            continue; // Skip the hidden token nodes
+          }
+          nextValidNode = next;
+          break;
+        }
+
+        // Use the type guard directly inline so TypeScript knows it's a TextNode
+        const nextBold = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('bold') : false;
+        const nextItalic = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('italic') : false;
+        const nextStrike = $isTextNode(nextValidNode)
+          ? nextValidNode.hasFormat('strikethrough')
+          : false;
+        const nextCode = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('code') : false;
+
+        // Close markers by checking the TRUE next node
+        let suffix = '';
+        if (currentCode && !nextCode) {
+          const style = child.getStyle() || '';
+          suffix += style.includes('data-triple-backtick: true') ? '```' : '`';
+        }
+        if (currentStrike && !nextStrike) suffix += '~';
+        if (currentItalic && !nextItalic) suffix += '_';
+        if (currentBold && !nextBold) suffix += '*';
+
+        content += prefix + text + suffix;
+      } else {
+        // Close all active formats before rendering a non-text node
+        if (currentCode) content += '`';
+        if (currentStrike) content += '~';
+        if (currentItalic) content += '_';
+        if (currentBold) content += '*';
+        currentBold = currentItalic = currentStrike = currentCode = false;
+
+        content += serializeNode(child);
+      }
+    }
+
+    if ($isParagraphNode(node)) {
+      return content ? `${content}\n` : '\n';
+    }
+    return content;
   }
 
   return '';

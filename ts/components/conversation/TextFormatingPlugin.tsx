@@ -52,19 +52,23 @@ export default function TextFormatingPlugin({
       ];
 
       /* ---------- ✅ Boundary Fix ---------- */
-      const isValidBoundary = (text: string, start: number, end: number, markerLength: number) => {
+     const isValidBoundary = (text: string, start: number, end: number, markerLength: number, markerChar: string) => {
         const before = text[start - 1];
         const after = text[end];
+
+        const isStartValid = start === 0 || /\s|[*_~`]/.test(before);
+        const isEndValid = end === text.length || /\s|[*_~`]/.test(after);
+
+        if (markerChar === '`' || markerChar === '```') {
+          return isStartValid && isEndValid;
+        }
 
         const charAfterOpen = text[start + markerLength];
         const charBeforeClose = text[end - markerLength - 1];
 
-        // Prevents formatting * hello *
-        if (charAfterOpen === ' ') return false;
-        if (charBeforeClose === ' ') return false;
-
-        const isStartValid = start === 0 || /\s|[*_~]/.test(before);
-        const isEndValid = end === text.length || /\s|[*_~]/.test(after);
+        // Prevents formatting * hello * but allows ` hello `
+        if (/\s/.test(charAfterOpen)) return false;
+        if (/\s/.test(charBeforeClose)) return false;
 
         return isStartValid && isEndValid;
       };
@@ -77,18 +81,51 @@ export default function TextFormatingPlugin({
       for (let i = 0; i < text.length; i++) {
         for (const marker of MARKERS) {
           if (text.startsWith(marker.char, i)) {
-            const startInner = i + marker.char.length;
-            const closeIdx = findClosingIndex(text, startInner, marker.char);
 
-            // ✅ FIX: Ensure there is actual content between the markers (closeIdx > startInner).
-            // This prevents empty pairs like **, __, or ~~ from being stripped into empty AST nodes.
-            if (
+            if (marker.char === '`') {
+              let backtickCount = 0;
+              let scanIdx = i;
+              // Count all consecutive backticks at this position
+              while (scanIdx >= 0 && text[scanIdx] === '`') { backtickCount++; scanIdx--; }
+              scanIdx = i + 1;
+              while (scanIdx < text.length && text[scanIdx] === '`') { backtickCount++; scanIdx++; }
+
+              // If it's part of a cluster of 3 or more, ignore it for the single-backtick rule
+              if (backtickCount >= 3) {
+                continue;
+              }
+            }
+
+            const startInner = i + marker.char.length;
+            let closeIdx = findClosingIndex(text, startInner, marker.char);
+
+            while (closeIdx !== -1) {
+              
+              if (marker.char === '`') {
+                let closeCount = 0;
+                let scanIdx = closeIdx;
+                while (scanIdx >= 0 && text[scanIdx] === '`') { closeCount++; scanIdx--; }
+                scanIdx = closeIdx + 1;
+                while (scanIdx < text.length && text[scanIdx] === '`') { closeCount++; scanIdx++; }
+
+                if (closeCount >= 3) {
+                  // Skip past this entire block of triple backticks and look for the next one
+                  closeIdx = text.indexOf(marker.char, closeIdx + closeCount);
+                  continue;
+                }
+              }
+
+              if (
               closeIdx > startInner &&
-              isValidBoundary(text, i, closeIdx + marker.char.length, marker.char.length)
+              isValidBoundary(text, i, closeIdx + marker.char.length, marker.char.length, marker.char)
             ) {
               if (!bestMatch || i < bestMatch.start) {
                 bestMatch = { marker, start: i, end: closeIdx };
               }
+              break; // Found a valid pair, stop searching for this marker
+            }
+              // Look for the next occurrence
+              closeIdx = text.indexOf(marker.char, closeIdx + marker.char.length);
             }
           }
         }
@@ -318,7 +355,7 @@ export default function TextFormatingPlugin({
     });
 
     // Inside TextFormatingPlugin.tsx -> useEffect
-   const removeEnter = editor.registerCommand(
+    const removeEnter = editor.registerCommand(
       KEY_ENTER_COMMAND,
       (event: KeyboardEvent) => {
         const selection = $getSelection();
