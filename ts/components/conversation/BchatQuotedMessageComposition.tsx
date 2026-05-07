@@ -62,9 +62,10 @@ const Subtle = styled.div<{isquotedMessage:boolean}>`
   word-break: break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  display:${props => props.isquotedMessage ? 'flex' : '-webkit-box'} ;
+  display: flex ;
   color: var(--color-text);
   margin-right: 9px;
+  align-items: center;
 `;
 const VerticalLine = styled.div`
   width: 5px;

@@ -15,6 +15,7 @@ import {
   KEY_BACKSPACE_COMMAND,
   // INSERT_LINE_BREAK_COMMAND,
   INSERT_PARAGRAPH_COMMAND,
+  KEY_SPACE_COMMAND,
 } from 'lexical';
 
 import { $createQuoteNode } from '@lexical/rich-text';
@@ -51,13 +52,18 @@ export default function TextFormatingPlugin({
         { char: '~', format: 'strikethrough' },
       ];
 
-      /* ---------- ✅ Boundary Fix ---------- */
-     const isValidBoundary = (text: string, start: number, end: number, markerLength: number, markerChar: string) => {
+      const isValidBoundary = (
+        text: string,
+        start: number,
+        end: number,
+        markerLength: number,
+        markerChar: string
+      ) => {
         const before = text[start - 1];
         const after = text[end];
 
-        const isStartValid = start === 0 || /\s|[*_~`]/.test(before);
-        const isEndValid = end === text.length || /\s|[*_~`]/.test(after);
+        const isStartValid = start === 0 || /[\s]|[^\w\s]/.test(before);
+        const isEndValid = end === text.length || /[\s]|[^\w\s]/.test(after);
 
         if (markerChar === '`' || markerChar === '```') {
           return isStartValid && isEndValid;
@@ -66,7 +72,6 @@ export default function TextFormatingPlugin({
         const charAfterOpen = text[start + markerLength];
         const charBeforeClose = text[end - markerLength - 1];
 
-        // Prevents formatting * hello * but allows ` hello `
         if (/\s/.test(charAfterOpen)) return false;
         if (/\s/.test(charBeforeClose)) return false;
 
@@ -81,14 +86,19 @@ export default function TextFormatingPlugin({
       for (let i = 0; i < text.length; i++) {
         for (const marker of MARKERS) {
           if (text.startsWith(marker.char, i)) {
-
             if (marker.char === '`') {
               let backtickCount = 0;
               let scanIdx = i;
               // Count all consecutive backticks at this position
-              while (scanIdx >= 0 && text[scanIdx] === '`') { backtickCount++; scanIdx--; }
+              while (scanIdx >= 0 && text[scanIdx] === '`') {
+                backtickCount++;
+                scanIdx--;
+              }
               scanIdx = i + 1;
-              while (scanIdx < text.length && text[scanIdx] === '`') { backtickCount++; scanIdx++; }
+              while (scanIdx < text.length && text[scanIdx] === '`') {
+                backtickCount++;
+                scanIdx++;
+              }
 
               // If it's part of a cluster of 3 or more, ignore it for the single-backtick rule
               if (backtickCount >= 3) {
@@ -100,13 +110,18 @@ export default function TextFormatingPlugin({
             let closeIdx = findClosingIndex(text, startInner, marker.char);
 
             while (closeIdx !== -1) {
-              
               if (marker.char === '`') {
                 let closeCount = 0;
                 let scanIdx = closeIdx;
-                while (scanIdx >= 0 && text[scanIdx] === '`') { closeCount++; scanIdx--; }
+                while (scanIdx >= 0 && text[scanIdx] === '`') {
+                  closeCount++;
+                  scanIdx--;
+                }
                 scanIdx = closeIdx + 1;
-                while (scanIdx < text.length && text[scanIdx] === '`') { closeCount++; scanIdx++; }
+                while (scanIdx < text.length && text[scanIdx] === '`') {
+                  closeCount++;
+                  scanIdx++;
+                }
 
                 if (closeCount >= 3) {
                   // Skip past this entire block of triple backticks and look for the next one
@@ -116,14 +131,20 @@ export default function TextFormatingPlugin({
               }
 
               if (
-              closeIdx > startInner &&
-              isValidBoundary(text, i, closeIdx + marker.char.length, marker.char.length, marker.char)
-            ) {
-              if (!bestMatch || i < bestMatch.start) {
-                bestMatch = { marker, start: i, end: closeIdx };
+                closeIdx > startInner &&
+                isValidBoundary(
+                  text,
+                  i,
+                  closeIdx + marker.char.length,
+                  marker.char.length,
+                  marker.char
+                )
+              ) {
+                if (!bestMatch || i < bestMatch.start) {
+                  bestMatch = { marker, start: i, end: closeIdx };
+                }
+                break; // Found a valid pair, stop searching for this marker
               }
-              break; // Found a valid pair, stop searching for this marker
-            }
               // Look for the next occurrence
               closeIdx = text.indexOf(marker.char, closeIdx + marker.char.length);
             }
@@ -150,8 +171,6 @@ export default function TextFormatingPlugin({
 
       if (earliestMarker.noNest) {
         const node = $createTextNode(inside);
-
-        // ✅ FIX: triple backtick inline handling
         if (earliestMarker.char === '```') {
           node.toggleFormat('code');
           node.setStyle('font-family: monospace; data-triple-backtick: true;background: none;');
@@ -162,7 +181,6 @@ export default function TextFormatingPlugin({
         currentFormats.forEach(f => node.toggleFormat(f));
         nodes.push(node);
       } else {
-        // ✅ FIX: Recursively process the inner text so it formats instead of deleting
         const newFormats = [...currentFormats, earliestMarker.format];
         nodes.push(...processText(inside, newFormats));
       }
@@ -200,7 +218,6 @@ export default function TextFormatingPlugin({
       let current: LexicalNode | null = firstNode;
       let fullText = '';
       let hasInlineMarker = false;
-
       while (current instanceof TextNode) {
         nodes.push(current);
         const text = current.getTextContent();
@@ -225,69 +242,105 @@ export default function TextFormatingPlugin({
 
       if (!hasInlineMarker && !isBlockMarker) return;
 
-      /* ================= BLOCK AST (Lists & Quotes) ================= */
-      if (isBlockMarker && parent && parent.getType() === 'paragraph') {
-        const matchQuote = fullText.match(/^>[ \u00A0]([\s\S]*)$/); // ✅ Restored Quote
-        const matchBullet = fullText.match(/^[-*][ \u00A0]([\s\S]*)$/);
-        const matchNumber = fullText.match(/^(\d+)\.[ \u00A0]([\s\S]*)$/);
+      const topLevel = firstNode.getTopLevelElement();
+      if (topLevel?.getType() === 'list') {
+        const list = topLevel;
+        const firstItem = list.getFirstChild();
 
-        let newBlockNode = null;
+        if ($isListItemNode(firstItem)) {
+          const text = firstItem.getTextContent();
+          if (/^$/.test(text)) {
+            const raw = isBulletListYmbols + '  '; // "*  "
 
-        if (matchQuote) {
-          newBlockNode = $createQuoteNode();
-          newBlockNode.append($createTextNode(matchQuote[1]));
-        } else if (matchBullet) {
-          isBulletListYmbols = fullText[0];
-          newBlockNode = $createListNode('bullet');
-          const listItem = $createListItemNode();
-          listItem.append($createTextNode(matchBullet[1]));
-          newBlockNode.append(listItem);
-        } else if (matchNumber) {
-          isBulletListYmbols = `${matchNumber[1]}.`;
-          newBlockNode = $createListNode('number');
-          newBlockNode.setStart(parseInt(matchNumber[1], 10));
-          const listItem = $createListItemNode();
-          listItem.append($createTextNode(matchNumber[2]));
-          newBlockNode.append(listItem);
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode(raw));
+
+            list.replace(paragraph);
+            paragraph.selectEnd();
+            return;
+          }
         }
+      }
 
-        if (newBlockNode) {
-          const selection = $getSelection();
-          let hasCursor = false;
+      if (topLevel?.getType() === 'quote') {
+        const text = topLevel.getTextContent();
+        if (text === '') {
+          const paragraph = $createParagraphNode();
+          paragraph.append($createTextNode('>  '));
 
-          if ($isRangeSelection(selection)) {
-            let curr: LexicalNode | null = selection.anchor.getNode();
-            while (curr !== null) {
-              if (curr.is(parent)) {
-                hasCursor = true;
-                break;
-              }
-              curr = curr.getParent();
-            }
-          }
-
-          const prevSibling = parent.getPreviousSibling();
-          const newBlockType = newBlockNode.getType();
-
-          if (prevSibling && prevSibling.getType() === 'list' && newBlockType === 'list') {
-            const prevList = prevSibling as any;
-            const newList = newBlockNode as any;
-
-            if (prevList.getListType() === newList.getListType()) {
-              const newItems = newList.getChildren();
-              newItems.forEach((item: LexicalNode) => {
-                prevList.append(item);
-              });
-              parent.remove();
-              if (hasCursor) prevList.selectEnd();
-              return;
-            }
-          }
-
-          parent.replace(newBlockNode);
-          if (hasCursor) newBlockNode.selectEnd();
+          topLevel.replace(paragraph);
+          paragraph.selectEnd();
           return;
         }
+      }
+
+      /* ================= BLOCK AST (Optimized) ================= */
+      if (isBlockMarker && parent?.getType() === 'paragraph') {
+        let newBlockNode = null;
+
+        if (
+          /^[-*][ \u00A0]{2,}/.test(fullText) || // *  or -
+          /^\d+\.[ \u00A0]{2,}/.test(fullText) || // 1.
+          /^>[ \u00A0]{2,}/.test(fullText) // >
+        ) {
+          return;
+        }
+
+        const bulletMatch = fullText.match(/^([-*])[ \u00A0]([\s\S]*)$/);
+        const numberMatch = fullText.match(/^(\d+)\.[ \u00A0]([\s\S]*)$/);
+        const quoteMatch = fullText.match(/^>[ \u00A0]([\s\S]*)$/);
+
+        // 🚫 Ensure NOT double space again (extra safety)
+        const isValidBullet = bulletMatch && !/^[\u00A0 ]/.test(bulletMatch[2]);
+
+        const isValidNumber = numberMatch && !/^[\u00A0 ]/.test(numberMatch[2]);
+
+        const isValidQuote = quoteMatch && !/^[\u00A0 ]/.test(quoteMatch[1]);
+
+        if (isValidQuote) {
+          newBlockNode = $createQuoteNode();
+          newBlockNode.append($createTextNode(quoteMatch[1]));
+        } else if (isValidBullet) {
+          isBulletListYmbols = bulletMatch[1];
+
+          newBlockNode = $createListNode('bullet');
+          const li = $createListItemNode();
+          li.append($createTextNode(bulletMatch[2]));
+          newBlockNode.append(li);
+        } else if (isValidNumber) {
+          const num = numberMatch[1];
+          isBulletListYmbols = `${num}.`;
+
+          newBlockNode = $createListNode('number');
+          newBlockNode.setStart(parseInt(num, 10));
+
+          const li = $createListItemNode();
+          li.append($createTextNode(numberMatch[2]));
+          newBlockNode.append(li);
+        }
+
+        if (!newBlockNode) return;
+
+        const prevSibling = parent.getPreviousSibling();
+
+        if (prevSibling && prevSibling.getType() === 'list' && newBlockNode.getType() === 'list') {
+          const prevList = prevSibling as any;
+          const newList = newBlockNode as any;
+
+          if (prevList.getListType() === newList.getListType()) {
+            newList.getChildren().forEach((item: LexicalNode) => {
+              prevList.append(item);
+            });
+
+            parent.remove();
+            prevList.selectEnd();
+            return;
+          }
+        }
+
+        parent.replace(newBlockNode);
+        newBlockNode.selectEnd();
+        return;
       }
 
       /* ================= INLINE AST ================= */
@@ -354,7 +407,6 @@ export default function TextFormatingPlugin({
       }
     });
 
-    // Inside TextFormatingPlugin.tsx -> useEffect
     const removeEnter = editor.registerCommand(
       KEY_ENTER_COMMAND,
       (event: KeyboardEvent) => {
@@ -365,10 +417,7 @@ export default function TextFormatingPlugin({
           event.preventDefault(); // Prevent the browser's default <br>
           editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
           return true;
-        }
-
-        // --- ENTER (No Shift) ---
-        else {
+        } else {
           event.preventDefault();
           onSendMessage();
           return true;
@@ -377,7 +426,6 @@ export default function TextFormatingPlugin({
       COMMAND_PRIORITY_HIGH
     );
 
-    // REPLACE only your current removeBackspace command with below code
     const removeBackspace = editor.registerCommand(
       KEY_BACKSPACE_COMMAND,
       (event: KeyboardEvent) => {
@@ -405,8 +453,6 @@ export default function TextFormatingPlugin({
             return true;
           }
         }
-
-        // REPLACE only this whole "BULLET LIST BACKSPACE" block inside removeBackspace
 
         /* ================= BULLET / QUOTE BACKSPACE ================= */
         const topLevel = anchorNode.getTopLevelElement();
@@ -483,11 +529,67 @@ export default function TextFormatingPlugin({
       },
       COMMAND_PRIORITY_HIGH
     );
+    const removeSpace = editor.registerCommand(
+      KEY_SPACE_COMMAND,
+      (event: KeyboardEvent) => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) return false;
 
+        const anchor = selection.anchor;
+        const anchorNode = anchor.getNode();
+        const parent = anchorNode.getParent();
+
+        /* ================= LIST ================= */
+        const listItem = $isListItemNode(anchorNode)
+          ? anchorNode
+          : $isListItemNode(parent)
+          ? parent
+          : null;
+
+        if (listItem) {
+          const text = listItem.getTextContent();
+
+          if (text === '') {
+            event.preventDefault();
+
+            const listParent = listItem.getParent();
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode(isBulletListYmbols + '  '));
+
+            listParent?.replace(paragraph);
+            paragraph.selectEnd();
+            return true;
+          }
+        }
+
+        /* =================  QUOTE  ================= */
+        const topLevel = anchorNode.getTopLevelElement();
+
+        if (topLevel?.getType() === 'quote') {
+          const text = topLevel.getTextContent();
+
+          // 🚫 second space → revert
+          if (text === '') {
+            event.preventDefault();
+
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode('>  '));
+
+            topLevel.replace(paragraph);
+            paragraph.selectEnd();
+            return true;
+          }
+        }
+
+        return false;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
     return () => {
       removeTransform();
       removeEnter();
       removeBackspace();
+      removeSpace();
     };
   }, [editor, onSendMessage]);
 
