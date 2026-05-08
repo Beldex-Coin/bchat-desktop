@@ -62,10 +62,10 @@ const Subtle = styled.div<{isquotedMessage:boolean}>`
   word-break: break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  display: flex ;
+  display: ${props => props.isquotedMessage ? 'flex' : 'block'};
   color: var(--color-text);
   margin-right: 9px;
-  align-items: center;
+  flex-direction: ${props => props.isquotedMessage ? 'column' : 'row'};
 `;
 const VerticalLine = styled.div`
   width: 5px;
@@ -165,6 +165,7 @@ export const BchatQuotedMessageComposition = () => {
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => groupInvitation?.name === item.name
   );
+
   const validatedBody=!body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
   const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
@@ -322,6 +323,5 @@ export function validateForBrokenFormat(text: string, limit = 100): string {
     }
   }
 
-  // Always end with a newline to ensure the quote box doesn't break layout
-  return preview + '\n';
+  return preview ;
 }

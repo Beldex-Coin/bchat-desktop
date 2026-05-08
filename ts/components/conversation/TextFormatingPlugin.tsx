@@ -200,6 +200,7 @@ export default function TextFormatingPlugin({
     const removeTransform = editor.registerNodeTransform(TextNode, node => {
       if (!node.isAttached()) return;
       if (!node.isSimpleText() || node.isToken()) return;
+      if (node.hasFormat('code')) return;
 
       const parent = node.getParent();
       if (parent?.getType() === 'codeblock') return;
@@ -412,9 +413,34 @@ export default function TextFormatingPlugin({
       (event: KeyboardEvent) => {
         const selection = $getSelection();
         if (!$isRangeSelection(selection)) return false;
-        // --- SHIFT + ENTER ---
+
+        const anchorNode = selection.anchor.getNode();
+        const parent = anchorNode.getParent();
+
+        const isInsideCode =
+          (anchorNode instanceof TextNode && anchorNode.hasFormat('code')) ||
+          parent?.getType() === 'codeblock';
+
         if (event.shiftKey) {
-          event.preventDefault(); // Prevent the browser's default <br>
+          event.preventDefault();
+
+          if (isInsideCode) {
+            editor.update(() => {
+              const sel = $getSelection();
+              if (!$isRangeSelection(sel)) return;
+              const anchor = sel.anchor;
+              const node = anchor.getNode();
+              if (node instanceof TextNode) {
+                const offset = anchor.offset;
+                const text = node.getTextContent();
+                const newText = text.slice(0, offset) + '\n' + text.slice(offset);
+                node.setTextContent(newText);
+                node.select(offset + 1, offset + 1);
+              }
+            });
+            return true;
+          }
+
           editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
           return true;
         } else {

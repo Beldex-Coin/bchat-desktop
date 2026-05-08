@@ -135,8 +135,7 @@ export const MessageBody = (props: Props) => {
   }
 
   const segments: { content: string; isCode: boolean }[] = [];
-  // 1. Enforce a newline so we ONLY split true multiline code blocks
-  const codeRegex = /(```[\s\S]*?\n[\s\S]*?```)/g;
+ const codeRegex = /((?:^|\n)```\n[\s\S]*?\n```(?:\n|$))/g;
 
   const parts = text.split(codeRegex);
 
@@ -302,7 +301,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     return renderNonLink({ text, key: 0, isGroup });
   }
   matchData.forEach((match: { index: number; url: string; lastIndex: number; text: string }) => {
-    // 1. Create mutable variables for the match data
     let mText = match.text;
     let mUrl = match.url;
     let mLastIndex = match.lastIndex;
@@ -337,7 +335,6 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       const orderedPrefix = textWithNoLink.match(/^([\s\S]*?\n|)((\d+)\.\s+)$/);
       const bulletPrefix = textWithNoLink.match(/^([\s\S]*?\n|)([-*]\s+)$/);
 
-      // Use the newly adjusted mLastIndex here
       const charAfter = mLastIndex < text.length ? text[mLastIndex] : '';
 
       if (mdLinkMatch && charAfter === ')') {
@@ -506,7 +503,6 @@ export const formatText = (
     );
   };
 
-  // Helper to ensure links inside formatting are clickable
   const renderInnerContent = (inner: string, key: string) => {
     const hasLink = linkify.test(inner);
     if (hasLink) {
@@ -637,30 +633,115 @@ export const renderMarkdownBlocks = (
     const line = lines[i];
     const trimmedLine = line.trim();
 
+    const earlyBulletMatch =
+      !/^[-*]\s{2,}/.test(line) && (/^[-*]\s$/.test(line) || /^[-*]\s[^\s]/.test(line))
+        ? line.match(/^[-*]\s+(.*)/)
+        : null;
+    const earlyNumberMatch =
+      !/^\d+\.\s{2,}/.test(line) && (/^\d+\.\s$/.test(line) || /^\d+\.\s[^\s]/.test(line))
+        ? line.match(/^(\d+)\.\s+(.*)/)
+        : null;
+
+    if (earlyBulletMatch) {
+      if (currentListType === 'ol') pushPendingList();
+      currentListType = 'ul';
+      currentListItems.push(
+        <li key={`li-${i}`}>{formatText(earlyBulletMatch[1], isConvoListItem, `li-${i}`, isGroup)}</li>
+      );
+      continue;
+    }
+
+    if (earlyNumberMatch) {
+      if (currentListType === 'ul') pushPendingList();
+      if (currentListItems.length === 0) listStartIndex = parseInt(earlyNumberMatch[1], 10);
+      currentListType = 'ol';
+      currentListItems.push(
+        <li key={`li-${i}`}>{formatText(earlyNumberMatch[2], isConvoListItem, `li-${i}`, isGroup)}</li>
+      );
+      continue;
+    }
+
     if (trimmedLine.startsWith('```') && !isConvoListItem) {
       if (inCodeBlock) {
         const endIdx = line.indexOf('```');
         if (endIdx > 0) {
           codeBlockContent.push(line.slice(0, endIdx));
         }
-        blocks.push(
-          // <pre className="code-block">
+        
+        const codeElement = (
           <code key={`pre-${i}`} className="code-block">
             {codeBlockContent.join('\n')}
           </code>
-          // </pre>
         );
+        
+        if (currentListType !== null) {
+          currentListItems.push(
+            <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
+              {codeElement}
+            </li>
+          );
+        } else {
+          blocks.push(codeElement);
+        }
+
         inCodeBlock = false;
         codeBlockContent = [];
+        
+        const remainingText = line.slice(endIdx + 3);
+        if (remainingText.length > 0) {
+          const textElement = (
+            <React.Fragment key={`post-code-${i}`}>
+              {formatText(remainingText, false, `post-code-${i}`, isGroup)}
+            </React.Fragment>
+          );
+          if (currentListType !== null) {
+            currentListItems.push(
+              <li key={`li-post-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
+                {textElement}
+              </li>
+            );
+          } else {
+            blocks.push(textElement);
+          }
+        }
       } else {
-        pushPendingList();
-        if (trimmedLine.length >= 6 && trimmedLine.endsWith('```')) {
-          const content = trimmedLine.slice(3, -3);
-          blocks.push(
+        const closingTicksIndex = line.indexOf('```', line.indexOf('```') + 3);
+        
+        if (closingTicksIndex !== -1) {
+          const content = line.slice(line.indexOf('```') + 3, closingTicksIndex);
+          const codeElement = (
             <code key={`pre-${i}`} className="code-block">
               {content}
             </code>
           );
+          
+          if (currentListType !== null) {
+            currentListItems.push(
+              <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
+                {codeElement}
+              </li>
+            );
+          } else {
+            blocks.push(codeElement);
+          }
+          
+          const remainingText = line.slice(closingTicksIndex + 3);
+          if (remainingText.length > 0) {
+            const textElement = (
+              <React.Fragment key={`post-code-${i}`}>
+                {formatText(remainingText, false, `post-code-${i}`, isGroup)}
+              </React.Fragment>
+            );
+            if (currentListType !== null) {
+              currentListItems.push(
+                <li key={`li-post-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
+                  {textElement}
+                </li>
+              );
+            } else {
+              blocks.push(textElement);
+            }
+          }
         } else {
           inCodeBlock = true;
           const startContent = line.slice(line.indexOf('```') + 3);
@@ -678,13 +759,23 @@ export const renderMarkdownBlocks = (
         if (endIdx > 0) {
           codeBlockContent.push(line.slice(0, endIdx));
         }
-        blocks.push(
-          // <pre key={`pre-${i}`} className="code-block">
+        
+        const codeElement = (
           <code key={`pre-${i}`} className="code-block">
             {codeBlockContent.join('\n')}
           </code>
-          // </pre>
         );
+        
+        if (currentListType !== null) {
+          currentListItems.push(
+            <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
+              {codeElement}
+            </li>
+          );
+        } else {
+          blocks.push(codeElement);
+        }
+
         inCodeBlock = false;
         codeBlockContent = [];
       } else {
@@ -693,44 +784,10 @@ export const renderMarkdownBlocks = (
       continue;
     }
 
-    let bulletMatch: RegExpMatchArray | null = null;
-
-    if (!/^[-*]\s{2,}/.test(line)) {
-      if (/^[-*]\s$/.test(line) || /^[-*]\s[^\s]/.test(line)) {
-        bulletMatch = line.match(/^[-*]\s+(.*)/);
-      }
-    }
-    if (bulletMatch) {
-      if (currentListType === 'ol') pushPendingList();
-      currentListType = 'ul';
-      currentListItems.push(
-        <li key={`li-${i}`}>{formatText(bulletMatch[1], isConvoListItem, `li-${i}`, isGroup)}</li>
-      );
-      continue;
-    }
-
-    let numberMatch: RegExpMatchArray | null = null;
-
-    if (!/^\d+\.\s{2,}/.test(line)) {
-      if (/^\d+\.\s$/.test(line) || /^\d+\.\s[^\s]/.test(line)) {
-        numberMatch = line.match(/^(\d+)\.\s+(.*)/);
-      }
-    }
-    if (numberMatch) {
-      if (currentListType === 'ul') pushPendingList();
-      if (currentListItems.length === 0) listStartIndex = parseInt(numberMatch[1], 10);
-      currentListType = 'ol';
-      currentListItems.push(
-        <li key={`li-${i}`}>{formatText(numberMatch[2], isConvoListItem, `li-${i}`, isGroup)}</li>
-      );
-      continue;
-    }
-
     pushPendingList();
 
     let quoteMatch: RegExpMatchArray | null = null;
 
-    // 🚫 BLOCK: ">  " or ">  text"
     if (!/^>\s{2,}/.test(line)) {
       if (/^>\s$/.test(line) || /^>\s[^\s]/.test(line)) {
         quoteMatch = line.match(/^>\s+(.*)/);
@@ -769,9 +826,7 @@ export const renderMarkdownBlocks = (
   pushPendingList();
   if (inCodeBlock && codeBlockContent.length > 0) {
     blocks.push(
-      // <pre key="pre-end" className="code-block">
       <code>{codeBlockContent.join('\n')}</code>
-      // </pre>
     );
   }
 
