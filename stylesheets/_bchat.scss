@@ -2900,9 +2900,32 @@ input {
   font-family: $bchat-font-mono;
 }
 
-.markdown-list {
-  padding: 0 20px;
+ul{
+  padding-left:20px;
+  margin: 0px !important;
+}
+ ol {
+  padding: 0;
   margin: 0;
+  list-style-type: none;
+  counter-reset: custom-counter;
+}
+
+ ol li {
+  counter-increment: custom-counter;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+ ol li::before {
+  content: counter(custom-counter) ".";
+  min-width: 24px; 
+  display: inline-block;
+  flex-shrink: 0; 
+  text-align: right; 
+   font-family: $bchat-font-mono;
+
 }
 
 .markdown-quote {
