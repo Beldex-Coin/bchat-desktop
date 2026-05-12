@@ -293,10 +293,9 @@ export function validateForBrokenFormat(text: string, limit = 100): string {
   if (!text) return text;
 
   // Step 1: Slice the text to your limit
-  let preview = text.slice(0, limit);
+  let preview = text.slice(0, limit).trim();
 
   /**
-   * Step 2: Fix Single-Line Lists
    * This looks for a space followed by a hyphen (e.g., " -") 
    * and replaces it with a newline + hyphen ("\n-").
    */

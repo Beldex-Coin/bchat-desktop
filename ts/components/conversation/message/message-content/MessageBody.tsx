@@ -485,7 +485,7 @@ export const formatText = (
   isGroup: boolean = false
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
-  const regex = /(?<!\\)(```(.*?)```|`([^`]+)`|\*(?!\s)(.+?)(?<!\s)\*(?=[^a-zA-Z0-9]|$)|_(?!\s)(.+?)(?<!\s)_(?=[^a-zA-Z0-9]|$)|~(?!\s)(.+?)(?<!\s)~(?=[^a-zA-Z0-9]|$))/g;
+  const regex = /(```(.*?)```|`([^`]+)`|\*(?!\s)(.+?)(?<!\s)\*(?=[^a-zA-Z0-9]|$)|_(?!\s)(.+?)(?<!\s)_(?=[^a-zA-Z0-9]|$)|~(?!\s)(.+?)(?<!\s)~(?=[^a-zA-Z0-9]|$))/g;
   let lastIndex = 0;
   let match;
 
