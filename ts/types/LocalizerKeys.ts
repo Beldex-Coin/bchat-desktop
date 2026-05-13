@@ -592,4 +592,5 @@ export type LocalizerKeys =
   |'viewAll'
   |'viewMessage'
   |'quoteMessage'
+  |'createSecretGroupNameError'
   ;
