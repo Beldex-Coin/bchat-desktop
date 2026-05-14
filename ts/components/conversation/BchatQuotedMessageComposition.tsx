@@ -14,7 +14,8 @@ import classNames from 'classnames';
 import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
-import {  renderMarkdownBlocks } from './message/message-content/MessageBody';
+import { renderMarkdownBlocks } from './message/message-content/MessageBody';
+import { useIsPrivate } from '../../hooks/useParamSelector';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -131,6 +132,8 @@ export const BchatQuotedMessageComposition = () => {
 
   const iconType = getIconType();
 
+  const isGroupConversation = !useIsPrivate(quotedMessageProps?.convoId);
+
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
   }, []);
@@ -166,8 +169,8 @@ export const BchatQuotedMessageComposition = () => {
     (item: Room) => groupInvitation?.name === item.name
   );
 
-  const validatedBody=!body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
-  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody) : null;
+  const validatedBody = !body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
+  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, false, isGroupConversation) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
   return (
     <QuotedMessageComposition>

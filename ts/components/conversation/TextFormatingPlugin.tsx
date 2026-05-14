@@ -443,8 +443,10 @@ export default function TextFormatingPlugin({
 
           editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
           return true;
-        } else {
+        } 
+        else {
           event.preventDefault();
+          event.stopPropagation();
           onSendMessage();
           return true;
         }
