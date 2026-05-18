@@ -170,7 +170,7 @@ export const BchatQuotedMessageComposition = () => {
   );
 
   const validatedBody = !body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
-  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, false, isGroupConversation) : null;
+  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, true, isGroupConversation) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
   return (
     <QuotedMessageComposition>

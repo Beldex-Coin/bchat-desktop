@@ -135,7 +135,7 @@ export const MessageBody = (props: Props) => {
   }
 
   const segments: { content: string; isCode: boolean }[] = [];
- const codeRegex = /((?:^|\n)```\n[\s\S]*?\n```(?:\n|$))/g;
+  const codeRegex = /((?:^|\n)```\n[\s\S]*?\n```(?:\n|$))/g;
 
   const parts = text.split(codeRegex);
 
@@ -490,7 +490,9 @@ export const formatText = (
   let match;
 
   const renderPlainText = (txt: string, key: string) => {
-    const cleanTxt = txt.replace(/\\([*_\~`])/g, '$1');
+    const cleanTxt = txt
+      .replace(/\\([*_\~`])/g, '$1')
+      .replace(/\u00A0/g, ' ')
     return isGroup ? (
       <AddMentions
         key={key}
@@ -646,7 +648,9 @@ export const renderMarkdownBlocks = (
       if (currentListType === 'ol') pushPendingList();
       currentListType = 'ul';
       currentListItems.push(
-        <li key={`li-${i}`}>{formatText(earlyBulletMatch[1], isConvoListItem, `li-${i}`, isGroup)}</li>
+        <li key={`li-${i}`}>
+          {formatText(earlyBulletMatch[1], isConvoListItem, `li-${i}`, isGroup)}
+        </li>
       );
       continue;
     }
@@ -656,24 +660,28 @@ export const renderMarkdownBlocks = (
       if (currentListItems.length === 0) listStartIndex = parseInt(earlyNumberMatch[1], 10);
       currentListType = 'ol';
       currentListItems.push(
-        <li key={`li-${i}`}>{formatText(earlyNumberMatch[2], isConvoListItem, `li-${i}`, isGroup)}</li>
+        <li key={`li-${i}`}>
+          {formatText(earlyNumberMatch[2], isConvoListItem, `li-${i}`, isGroup)}
+        </li>
       );
       continue;
     }
-
-    if (trimmedLine.startsWith('```') && !isConvoListItem) {
+    const hasClosingTag =
+      line.indexOf('```', line.indexOf('```') + 3) !== -1 ||
+      lines.slice(i + 1).some(l => l.includes('```'));
+    if (trimmedLine.startsWith('```') && !isConvoListItem && (inCodeBlock || hasClosingTag)) {
       if (inCodeBlock) {
         const endIdx = line.indexOf('```');
         if (endIdx > 0) {
           codeBlockContent.push(line.slice(0, endIdx));
         }
-        
+
         const codeElement = (
           <code key={`pre-${i}`} className="code-block">
             {codeBlockContent.join('\n')}
           </code>
         );
-        
+
         if (currentListType !== null) {
           currentListItems.push(
             <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
@@ -686,7 +694,7 @@ export const renderMarkdownBlocks = (
 
         inCodeBlock = false;
         codeBlockContent = [];
-        
+
         const remainingText = line.slice(endIdx + 3);
         if (remainingText.length > 0) {
           const textElement = (
@@ -706,7 +714,7 @@ export const renderMarkdownBlocks = (
         }
       } else {
         const closingTicksIndex = line.indexOf('```', line.indexOf('```') + 3);
-        
+
         if (closingTicksIndex !== -1) {
           const content = line.slice(line.indexOf('```') + 3, closingTicksIndex);
           const codeElement = (
@@ -714,7 +722,7 @@ export const renderMarkdownBlocks = (
               {content}
             </code>
           );
-          
+
           if (currentListType !== null) {
             currentListItems.push(
               <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
@@ -724,7 +732,7 @@ export const renderMarkdownBlocks = (
           } else {
             blocks.push(codeElement);
           }
-          
+
           const remainingText = line.slice(closingTicksIndex + 3);
           if (remainingText.length > 0) {
             const textElement = (
@@ -759,13 +767,13 @@ export const renderMarkdownBlocks = (
         if (endIdx > 0) {
           codeBlockContent.push(line.slice(0, endIdx));
         }
-        
+
         const codeElement = (
           <code key={`pre-${i}`} className="code-block">
             {codeBlockContent.join('\n')}
           </code>
         );
-        
+
         if (currentListType !== null) {
           currentListItems.push(
             <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
@@ -825,9 +833,7 @@ export const renderMarkdownBlocks = (
 
   pushPendingList();
   if (inCodeBlock && codeBlockContent.length > 0) {
-    blocks.push(
-      <code>{codeBlockContent.join('\n')}</code>
-    );
+    blocks.push(<code>{codeBlockContent.join('\n')}</code>);
   }
 
   return blocks;
