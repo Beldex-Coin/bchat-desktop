@@ -443,8 +443,7 @@ export default function TextFormatingPlugin({
 
           editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
           return true;
-        } 
-        else {
+        } else {
           event.preventDefault();
           event.stopPropagation();
           onSendMessage();
@@ -577,14 +576,40 @@ export default function TextFormatingPlugin({
         if (listItem) {
           const text = listItem.getTextContent();
 
-          if (text === '') {
+          const listParent = listItem.getParent();
+
+          const isLastItem = listParent?.getLastChild() && listParent.getLastChild()?.is(listItem);
+          if (text === '' && isLastItem) {
             event.preventDefault();
 
-            const listParent = listItem.getParent();
-            const paragraph = $createParagraphNode();
-            paragraph.append($createTextNode(isBulletListYmbols + '  '));
+            let marker = isBulletListYmbols;
 
-            listParent?.replace(paragraph);
+            // preserve current number for numbered list
+            if (
+              listParent &&
+              typeof (listParent as any).getListType === 'function' &&
+              (listParent as any).getListType() === 'number'
+            ) {
+              const start =
+                typeof (listParent as any).getStart === 'function'
+                  ? (listParent as any).getStart()
+                  : 1;
+
+              const index =
+                typeof listItem.getIndexWithinParent === 'function'
+                  ? listItem.getIndexWithinParent()
+                  : listParent.getChildren().indexOf(listItem);
+
+              marker = `${start + index}.`;
+            }
+
+            const paragraph = $createParagraphNode();
+            paragraph.append($createTextNode(marker + '  '));
+            listItem.insertAfter(paragraph);
+            listItem.remove();
+            if (listParent?.getChildrenSize() === 0) {
+              listParent.remove();
+            }
             paragraph.selectEnd();
             return true;
           }

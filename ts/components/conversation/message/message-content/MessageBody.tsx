@@ -490,9 +490,7 @@ export const formatText = (
   let match;
 
   const renderPlainText = (txt: string, key: string) => {
-    const cleanTxt = txt
-      .replace(/\\([*_\~`])/g, '$1')
-      .replace(/\u00A0/g, ' ')
+    const cleanTxt = txt.replace(/\\([*_\~`])/g, '$1').replace(/\u00A0/g, ' ');
     return isGroup ? (
       <AddMentions
         key={key}
@@ -606,7 +604,7 @@ export const renderMarkdownBlocks = (
   isGroup: boolean = false
 ): JSX.Element[] => {
   if (!text) return [];
-  const lines = text.split('\n');
+  const lines = isConvoListItem ? text.split('\n').slice(0, 3) : text.split('\n');
   const blocks: JSX.Element[] = [];
 
   let currentListItems: JSX.Element[] = [];
@@ -666,10 +664,11 @@ export const renderMarkdownBlocks = (
       );
       continue;
     }
-    const hasClosingTag =
-      line.indexOf('```', line.indexOf('```') + 3) !== -1 ||
-      lines.slice(i + 1).some(l => l.includes('```'));
-    if (trimmedLine.startsWith('```') && !isConvoListItem && (inCodeBlock || hasClosingTag)) {
+    const inlineCodeBlockRegex = /^```[^`\s][^`]*```$/;
+
+    const isValidInlineCodeBlock = inlineCodeBlockRegex.test(trimmedLine);
+
+    if (isValidInlineCodeBlock && !isConvoListItem) {
       if (inCodeBlock) {
         const endIdx = line.indexOf('```');
         if (endIdx > 0) {

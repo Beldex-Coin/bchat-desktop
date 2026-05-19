@@ -1306,20 +1306,25 @@ export const serializeNode = (node: LexicalNode): string => {
     const listType = node.getListType();
     const start = node.getStart() ?? 1;
 
-    return node
+    const listContent = node
       .getChildren()
       .map((child, index) => {
         if ($isListItemNode(child)) {
           const prefix = listType === 'number' ? `${start + index}. ` : '- ';
+
           const content = child
             .getChildren()
             .map(serializeNode)
-            .join('');
+            .join('')
+            .replace(/\n+$/, '');
+
           return `${prefix}${content}`;
         }
+
         return serializeNode(child);
       })
       .join('\n');
+    return `${listContent}\n`;
   }
 
   // ✅ Quotes
