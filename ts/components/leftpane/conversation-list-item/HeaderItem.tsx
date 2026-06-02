@@ -88,28 +88,25 @@ const ListItemIcons = () => {
 };
 
 const MentionAtSymbol = styled.span`
-  background-color: var(--color-accent);
-
-  color: black;
-  text-align: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-top: 1px;
-  padding-inline-start: 3px;
-  padding-inline-end: 3px;
-
-  position: static;
-  margin-inline-start: 5px;
-
-  font-weight: 300;
-  font-size: 11px;
-  letter-spacing: 0.25px;
-
-  height: 16px;
-  min-width: 16px;
-  border-radius: 8px;
-  /* transition: filter 0.25s linear; */
-  cursor: pointer;
+    background-color: var(--color-accent);
+    color: black;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-right: 5px;
+    margin-top: 1px;
+    padding: 0px 1px 6px 1px;
+    position: static;
+    margin-inline-start: 5px;
+    font-weight: 300;
+    font-size: 11px;
+    -webkit-letter-spacing: 0.25px;
+    -moz-letter-spacing: 0.25px;
+    -ms-letter-spacing: 0.25px;
+    /* letter-spacing: 0.25px; */
+    height: 18px;
+    min-width: 18px;
+    border-radius: 8px;
+    cursor: pointer;
 
   :hover {
     filter: grayscale(0.7);

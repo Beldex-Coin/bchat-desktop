@@ -587,5 +587,6 @@
 
   "viewAll":"View all",
   "viewMessage":"Message",
-  "quoteMessage":"Quote Message"
+  "quoteMessage":"Quote Message",
+  "createSecretGroupNameError":"Group name can only contain letters and numbers"
 }

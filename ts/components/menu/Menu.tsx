@@ -3,6 +3,7 @@ import  { useContext } from 'react';
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  useConversationPropsById,
   useConversationUsername,
   useHasNickname,
   useIsBlocked,
@@ -458,7 +459,8 @@ export const MarkAllReadMenuItem = (): JSX.Element | null => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
   const isMe = useIsMe(convoId);
-  if (!isRequest && !isMe) {
+  const convoProps = useConversationPropsById(convoId);
+  if (!isRequest && !isMe && convoProps?.unreadCount) {
     return (
       <Item onClick={() => markAllReadByConvoId(convoId)}>
         <BchatIcon iconType={'markRead'} iconSize={20} fillRule="evenodd" clipRule="evenodd" />{' '}

@@ -36,6 +36,9 @@ textarea {
   // caret-color: var(--color-caret) !important;
   caret-color: var(--color-caret) !important;
 }
+a {
+  color: var(--color-text);
+}
 
 * {
   user-select: none;
@@ -2849,8 +2852,9 @@ input {
 
   box-shadow: var(--color-bchat-shadow);
 }
-.mention-node{
-  font-weight: bold;
+.mention-node {
+  // font-weight: bold;
+  color: #00b504;
 }
 /* Item */
 .mention-item {
@@ -2893,23 +2897,70 @@ input {
 }
 
 .code-block {
-   display: inline-block;
+  display: inline-block;
   font-family: $bchat-font-mono;
 }
 
-.markdown-list {
-  padding: 0 20px;
+ul{
+  padding-left:20px;
+  margin: 0px !important;
+}
+ ol {
+  padding: 0;
   margin: 0;
+  list-style-type: none;
+  counter-reset: custom-counter;
+}
+
+ ol li {
+  counter-increment: custom-counter;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0px;
+}
+
+ ol li::before {
+  content: counter(custom-counter) ".";
+  min-width: 24px; 
+  display: inline-block;
+  flex-shrink: 0; 
+  text-align: right; 
+   font-family: $bchat-font-mono;
+
 }
 
 .markdown-quote {
-  // background-color: var(--color-untrust-media-bg);
-  border-left: 4px solid var(--color-untrusted-vertical-bar);
-  padding: 8px 10px;
+  position: relative; /* Required to position the 'border' */
+  padding-left: 10px;
   margin: 0;
-  line-height: 1.5;
-  border-radius: 6px;
+  margin-bottom: 5px;
 }
+
+.markdown-quote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0%;
+  height: 100%;
+  width: 4px;
+  border-radius: 10px; /* This is your border thickness */
+  background: var(--color-untrusted-vertical-bar);
+}
+
+.editor-input {
+  .markdown-quote::before{
+    height: 22px;
+  }
+}
+
+// .markdown-quote {
+//   // background-color: var(--color-untrust-media-bg);
+//   border-left: 4px solid var(--color-untrusted-vertical-bar);
+//   padding: 8px 10px;
+//   margin: 0;
+//   line-height: 1.5;
+//   border-radius: 6px;
+// }
 
 // .module-message__text.module-message__text--outgoing {
 //   .markdown-quote {
@@ -2923,3 +2974,4 @@ input {
     margin: 0 0 10px;
   }
 }
+

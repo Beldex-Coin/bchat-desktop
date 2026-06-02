@@ -14,7 +14,8 @@ import classNames from 'classnames';
 import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
-import {  renderMarkdownBlocks } from './message/message-content/MessageBody';
+import { renderMarkdownBlocks } from './message/message-content/MessageBody';
+import { useIsPrivate } from '../../hooks/useParamSelector';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -50,6 +51,9 @@ const QuotedMessageCompositionReply = styled.div`
       font-weight: 300;
     }
   }
+  .inline-code{
+  backdrop-filter: brightness(2);
+  }
 `;
 
 const Subtle = styled.div<{isquotedMessage:boolean}>`
@@ -59,9 +63,10 @@ const Subtle = styled.div<{isquotedMessage:boolean}>`
   word-break: break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  display:${props => props.isquotedMessage ? 'flex' : '-webkit-box'} ;
+  display: ${props => props.isquotedMessage ? 'flex' : 'block'};
   color: var(--color-text);
   margin-right: 9px;
+  flex-direction: ${props => props.isquotedMessage ? 'column' : 'row'};
 `;
 const VerticalLine = styled.div`
   width: 5px;
@@ -127,6 +132,8 @@ export const BchatQuotedMessageComposition = () => {
 
   const iconType = getIconType();
 
+  const isGroupConversation = !useIsPrivate(quotedMessageProps?.convoId);
+
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
   }, []);
@@ -161,8 +168,9 @@ export const BchatQuotedMessageComposition = () => {
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => groupInvitation?.name === item.name
   );
-  const validatedBody=!body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
-  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody) : null;
+
+  const validatedBody = !body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
+  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, true, isGroupConversation) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
   return (
     <QuotedMessageComposition>
@@ -288,10 +296,9 @@ export function validateForBrokenFormat(text: string, limit = 100): string {
   if (!text) return text;
 
   // Step 1: Slice the text to your limit
-  let preview = text.slice(0, limit);
+  let preview = text.slice(0, limit).trim();
 
   /**
-   * Step 2: Fix Single-Line Lists
    * This looks for a space followed by a hyphen (e.g., " -") 
    * and replaces it with a newline + hyphen ("\n-").
    */
@@ -318,6 +325,5 @@ export function validateForBrokenFormat(text: string, limit = 100): string {
     }
   }
 
-  // Always end with a newline to ensure the quote box doesn't break layout
-  return preview + '\n';
+  return preview ;
 }
