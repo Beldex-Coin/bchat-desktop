@@ -109,7 +109,7 @@ export const AddNewContactInEmptyConvo = () => {
             <SpacerLG />
             <div>
               <BchatButton
-                text={'Let’s Bchat'}
+                text={window.i18n('letsBchat')}
                 buttonType={BchatButtonType.Default}
                 buttonColor={BchatButtonColor.Primary}
                 onClick={() => handleMessageButtonClick()}

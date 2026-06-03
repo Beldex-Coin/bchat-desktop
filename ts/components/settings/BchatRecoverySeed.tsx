@@ -54,8 +54,8 @@ export const BchatRecoverySeed = (props: any) => {
             <div className="header">{window.i18n('setPassword')}</div>
             <SpacerLG />
             <div className='fontSemiBold'>
-              Set a Password before accessing the Recovery Phrase. You can set your password from{' '}
-              <span className='span'>Settings -&gt; Privacy -&gt; Set Account Password.</span> 
+              {window.i18n('setPasswordDesc')}
+              <span className='span'>{window.i18n('setPasswordPath')}</span> 
             </div>
             {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}
           </div>

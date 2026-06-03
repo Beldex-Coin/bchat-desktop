@@ -29,6 +29,7 @@ import { Flex } from '../../basic/Flex';
 import classNames from 'classnames';
 import { Loader } from '../../BchatWrapperModal';
 
+
 export const OverlayMessage = () => {
   const dispatch = useDispatch();
 
@@ -58,7 +59,7 @@ export const OverlayMessage = () => {
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
     if (!pubkeyorOnsTrimmed) {
-      ToastUtils.pushToastError('invalidPubKey', 'please enter the Id or BNS'); // or Bns name
+      ToastUtils.pushToastError('invalidPubKey', window.i18n('errMsgCreateConvo')); // or Bns name
       return;
     }
     if (
@@ -133,7 +134,7 @@ export const OverlayMessage = () => {
           )}
           <SpacerSM />
           <BchatButton
-            text={'Let’s Bchat'}
+            text={window.i18n('letsBchat')}
             buttonType={BchatButtonType.Default}
             buttonColor={BchatButtonColor.Primary}
             onClick={() => handleMessageButtonClick()}
@@ -144,7 +145,7 @@ export const OverlayMessage = () => {
 
         <article className="ourDetails_wrapper">
           <p className="module-left-pane__subHeader" style={{ marginBottom: '10px' }}>
-            Your ID
+           {window.i18n('yourID')}
           </p>
 
           <SpacerLG />
@@ -160,7 +161,7 @@ export const OverlayMessage = () => {
               </div>
               <SpacerLG />
 
-              <label className="label-txt">your BChat ID</label>
+              <label className="label-txt">{window.i18n('yourBChatID')}</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p>{ourconvo.id}</p>
@@ -168,7 +169,7 @@ export const OverlayMessage = () => {
               </div>
               <SpacerMD />
 
-              <label className="label-txt">Beldex Address</label>
+              <label className="label-txt">{window.i18n('beldexAddress')}</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p className="blue-color">{walletAddress}</p>
@@ -178,7 +179,7 @@ export const OverlayMessage = () => {
               <BchatButton
                 buttonColor={BchatButtonColor.Secondary}
                 buttonType={BchatButtonType.Default}
-                text={'Show QR'}
+                text={window.i18n('showQR')}
                 disabled={false}
                 iconType="qr"
                 iconSize={24}
@@ -195,7 +196,7 @@ export const OverlayMessage = () => {
                   iconColor="#A9AEBA"
                   onClick={() => setDispalyQR(false)}
                 />
-                <span className="back-btn-txt">Your QR</span>
+                <span className="back-btn-txt">{window.i18n('yourQR')}</span>
               </Flex>
               <SpacerLG />
               <SpacerLG />
@@ -210,7 +211,7 @@ export const OverlayMessage = () => {
                   <QRView bchatID={ourconvo.id} />
                 </span>
                 <SpacerXS />
-                <span className="qr-txt ">Scan QR to start the Chat</span>
+                <span className="qr-txt ">{window.i18n('scanQr')}</span>
               </Flex>
               <SpacerLG />
               <SpacerLG />

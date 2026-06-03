@@ -108,7 +108,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
             forceUpdate();
           }}
           // title={window.i18n('spellCheckTitle')}
-          title={"Dark Mode"}
+          title={window.i18n('themeTitle')}
 
           // description={window.i18n('spellCheckDescription')}
           active={isdark}

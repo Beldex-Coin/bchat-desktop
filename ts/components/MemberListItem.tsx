@@ -84,7 +84,7 @@ export const MemberListItem = (props: {
           )}
         </span>
       )}
-      {isAdmin && <span className="bchat-member-item_admin-txt">Admin</span>}
+      {isAdmin && <span className="bchat-member-item_admin-txt">{window.i18n('admin')}</span>}
     </div>
   );
 };

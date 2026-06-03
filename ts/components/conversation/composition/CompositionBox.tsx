@@ -485,7 +485,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       onClick={this.onChooseAttachment}
                     >
                       <MediaFileIcon />
-                      <span>Media Files</span>
+                      <span>{window.i18n('mediaFiles')}</span>
                     </Flex>
                     <SpacerSM />
                     <Flex
@@ -496,7 +496,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       onClick={this.onChooseContacts}
                     >
                       <ContactsIcon />
-                      <span>Contacts</span>
+                      <span>{window.i18n('contacts')}</span>
                     </Flex>
                   </div>
                 )}

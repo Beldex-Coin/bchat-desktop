@@ -181,7 +181,7 @@ export const SignInTab = (props: any) => {
 
   const seedValidation = () => {
     if (!recoveryPhrase) {
-      return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
+      return ToastUtils.pushToastError('registrationError', `${window.i18n('emptySeedErrMsg')}`);
     } else {
       try {
         mnDecode(recoveryPhrase, 'english');
@@ -191,7 +191,7 @@ export const SignInTab = (props: any) => {
         setScreenName(1);
         ToastUtils.pushToastError(
           'registrationError',
-          `Error: ${e.message || 'Something went wrong'}`
+          `Error: ${e.message || window.i18n('somthingWentWrong')}`
         );
         window?.log?.warn('exception during registration:', e);
       }

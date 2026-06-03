@@ -287,8 +287,8 @@ export class BchatConversation extends React.Component<Props, State> {
                 <Flex container={true} alignItems="center">
                   <VerticalLine />
                   <div>
-                    <div className="msg-title">Pinned Message</div>
-                    <div className="msg-sub-title">Community guidelines</div>
+                    <div className="msg-title">{window.i18n('pinnedMessage')}</div>
+                    <div className="msg-sub-title">{window.i18n('communityGuidelines')}</div>
                   </div>
                 </Flex>
                 <BchatButton
@@ -301,7 +301,7 @@ export class BchatConversation extends React.Component<Props, State> {
                     padding: '0 0px',
                     borderRadius: '6px',
                   }}
-                  text="Read More"
+                  text={window.i18n('readMore')}
                   onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
                 />
               </Flex>

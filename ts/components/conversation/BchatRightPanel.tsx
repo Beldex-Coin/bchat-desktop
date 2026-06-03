@@ -240,7 +240,7 @@ const HeaderItem = () => {
         className="group-settings-header-title-wrapper"
       >
         <span className="group-settings-header-titleTxt">
-          {isGroup ? 'Group Info' : 'Profile Info'}
+          {isGroup ? window.i18n('groupInfo') : window.i18n('profileInfo')}
         </span>
         <span
           onClick={() => dispatch(closeRightPanel())}
@@ -561,7 +561,7 @@ export const BchatRightPanelWithDetails = () => {
           <HeaderItem />
           {isPrivate && (
             <div className="group-settings-header-chatIdBox">
-              <p>BChat ID</p>
+              <p>{window.i18n('bChatID')}</p>
               <SpacerXS />
               <div className="id-wrapper">
                 <Flex container={true} flexDirection="row" alignItems="flex-start">
@@ -765,7 +765,7 @@ export const BchatRightPanelWithDetails = () => {
                           }}
                         ></div>
                         {/* {window.i18n('addingContacts')} */}
-                        Add +
+                        {window.i18n('add')} +
                       </div>
                     </>
                   )}
@@ -812,7 +812,7 @@ export const BchatRightPanelWithDetails = () => {
           <SpacerMD />
           <div className="hr-line" />
           <Flex container={true} justifyContent="space-between" width="100%">
-            <span className="group-settings-media-txt">Media, docs</span>
+            <span className="group-settings-media-txt">{window.i18n('mediaDocs')}</span>
             <BchatIconButton
               iconType={'chevron'}
               iconSize={14}
@@ -850,7 +850,7 @@ export const BchatRightPanelWithDetails = () => {
                 iconColor={darkMode ? '#A9AEBA' : '#3E4A53'}
               />
             </span>
-            <span className="group-settings-header-titleTxt">Media & Documents</span>
+            <span className="group-settings-header-titleTxt">{window.i18n('media')+'&'+window.i18n('documents')}</span>
           </Flex>
           <SpacerSM />
           <MediaGallery documents={documents} media={media} fullView={true} />

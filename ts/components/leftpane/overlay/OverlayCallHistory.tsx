@@ -79,7 +79,7 @@ export const OverlayCallHistory = () => {
               onChange={e => {
                 handleSearch(e);
               }}
-              placeholder={'Search People'}
+              placeholder={window.i18n('searchPeople')}
               maxLength={26}
             />
             {!!currentSearchTerm.length && (

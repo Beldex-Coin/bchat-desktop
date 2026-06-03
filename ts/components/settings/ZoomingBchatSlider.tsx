@@ -98,7 +98,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   function displayPopUp() {
     dispatch(
       SettingMiniModal({
-        headerName: 'Zoom Level',
+        headerName: window.i18n('zoomFactorSettingTitle'),
         content: option,
         selectedItem: value + '%',
         onClose: () => dispatch(SettingMiniModal(null)),

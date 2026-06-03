@@ -182,7 +182,7 @@ const Section = (props: {
             ) : null}
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="All Chats" top={'186px'} />
+            <DisplayTitle title={window.i18n('allChats')} top={'186px'} />
           </section>
         </div>
       );
@@ -230,7 +230,7 @@ const Section = (props: {
                   isSelected={focusedSection === SectionType.NewChat}
                 >
                   <NewChatIcon />
-                  <SpacerMD /> <div className="menu-txt">New Chat</div>
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('newChat')}</div>
                 </SubMenuList>
                 <SpacerMD />
                 <SubMenuList
@@ -240,7 +240,7 @@ const Section = (props: {
                   isSelected={focusedSection === SectionType.Closedgroup}
                 >
                   <SecretGrpIcon />
-                  <SpacerMD /> <div className="menu-txt">Secret Group</div>
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('secretGroup')}</div>
                 </SubMenuList>
                 <SpacerMD />
                 <SubMenuList
@@ -250,7 +250,7 @@ const Section = (props: {
                   isSelected={focusedSection === SectionType.Opengroup}
                 >
                   <SocialGrpIcon />
-                  <SpacerMD /> <div className="menu-txt">Social Group</div>{' '}
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('socialGroup')}</div>{' '}
                 </SubMenuList>
               </div>
             </Flex>
@@ -287,7 +287,7 @@ const Section = (props: {
             />
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="Settings" top={'278px'} />
+            <DisplayTitle title={window.i18n('settingsHeader')} top={'278px'} />
           </section>
         </div>
       );

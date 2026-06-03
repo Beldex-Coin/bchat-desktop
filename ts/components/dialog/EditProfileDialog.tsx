@@ -106,7 +106,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             showExitIcon={true}
             isloading={this.state.loading}
             okButton={{
-              text: this.state.mode == 'qr' ? 'Show ID' : 'Show QR',
+              text: this.state.mode == 'qr' ? i18n('showID') : i18n('showQR'),
               iconSize: 26,
               iconType: this.state.mode == 'qr' ? 'KeyboardBackspaceArrow' : 'qr_code'
               , onClickOkHandler: this.qrStatusUpdate
@@ -134,9 +134,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <span style={{ marginRight: '5px' }}>
                 <BchatIcon iconType={'qr_code'} iconSize={26} />
               </span>
-              {'Show QR'}
+              {i18n('showQR')}
             </button>}
-          >
+          >   
             <div className="profileHeader">
               <div className="profileClose">
                 <BchatIconButton

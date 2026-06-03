@@ -17,7 +17,7 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
   if (!currentValue) {
     window.inboxStore?.dispatch(
       updateConfirmModal({
-        title:'Turn on Voice/Video Call',
+        title: window.i18n('turnOnVoiceVideoCalls'),
         message: window.i18n('callMediaPermissionsDialogContent'),
         okTheme: BchatButtonColor.Primary,
         onClickOk: async () => {
