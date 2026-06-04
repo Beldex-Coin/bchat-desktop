@@ -70,6 +70,17 @@ export class BchatInboxView extends React.Component<any, State> {
   public componentDidMount() {
     this.setupLeftPane();
     // isLinkedBchatIDWithBnsForDeamon();
+    // Update moment locale when app locale changes
+    (this as any).updateMomentLocale = () => {
+      moment.locale((window.i18n as any).getLocale());
+    };
+    window.addEventListener('app-locale-changed', (this as any).updateMomentLocale);
+  }
+
+  public componentWillUnmount() {
+    if ((this as any).updateMomentLocale) {
+      window.removeEventListener('app-locale-changed', (this as any).updateMomentLocale);
+    }
   }
 
   public render() {

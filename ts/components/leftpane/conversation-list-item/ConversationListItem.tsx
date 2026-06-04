@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { contextMenu } from 'react-contexify';
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -117,7 +117,14 @@ const ConversationListItem = (props: Props) => {
   }
   const convoProps = useHeaderItemProps(conversationId);
   const activeAt = convoProps?.activeAt;
-  const key = `conversation-item-${conversationId}`;
+  const [localeVersion, setLocaleVersion] = useState(0);
+  useEffect(() => {
+    const handler = () => setLocaleVersion((v) => v + 1);
+    window.addEventListener('app-locale-changed', handler);
+    return () => window.removeEventListener('app-locale-changed', handler);
+  }, []);
+
+  const key = `conversation-item-${conversationId}-${localeVersion}`;
   const triggerId = `${key}-ctxmenu`;
 
   const openConvo = useCallback(
@@ -234,10 +241,11 @@ const ConversationListItem = (props: Props) => {
               <ConversationListItemHeaderItem />
 
               <div className="module-conversation-list-item__content__messageBox">
-                <MessageItem isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
+                <MessageItem key={`message-${conversationId}-${localeVersion}`} isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
                 {/* {unreadCountDiv}
               {atSymbol} */}
                 <Timestamp
+                  key={`timestamp-${conversationId}-${localeVersion}`}
                   timestamp={activeAt}
                   isConversationListItem={true}
                   momentFromNow={true}

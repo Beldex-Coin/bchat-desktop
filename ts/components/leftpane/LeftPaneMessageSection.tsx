@@ -39,9 +39,17 @@ export interface Props {
   conversationRequestsUnread: any;
 }
 
-export class LeftPaneMessageSection extends React.Component<Props> {
+interface State {
+  localeRefreshVersion: number;
+}
+
+export class LeftPaneMessageSection extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
+
+    this.state = {
+      localeRefreshVersion: 0,
+    };
 
     autoBind(this);
   }
@@ -61,7 +69,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       throw new Error('renderRow: conversations selector returned element containing falsy value.');
     }
 
-    return <MemoConversationListItemWithDetails key={key} {...conversation} />;
+    return (
+      <MemoConversationListItemWithDetails
+        key={`${conversation.id}-${key}-${this.state.localeRefreshVersion}`}
+        {...conversation}
+      />
+    );
   };
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
@@ -76,7 +89,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     }
 
     // const length = conversations.length;
-    const listKey = 0;
+    const listKey = this.state.localeRefreshVersion;
 
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
@@ -104,6 +117,14 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     );
 
     return [list];
+  }
+
+  public componentDidMount() {
+    window.addEventListener('app-locale-changed', this.onLocaleChanged);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('app-locale-changed', this.onLocaleChanged);
   }
 
   public render(): JSX.Element {
@@ -177,6 +198,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       default:
         return null;
     }
+  }
+
+  public onLocaleChanged() {
+    this.setState(prevState => ({
+      localeRefreshVersion: prevState.localeRefreshVersion + 1,
+    }));
   }
 
   // private renderBottomButtons(): JSX.Element {

@@ -704,7 +704,8 @@ app.on('ready', async () => {
   assertLogger().info('app ready');
   assertLogger().info(`starting version ${packageJson.version}`);
   if (!locale) {
-    const appLocale = app.getLocale() || 'en';
+    const savedLocale = userConfig.get('appLocale') as string;
+    const appLocale = savedLocale || app.getLocale() || 'en';
     locale = loadLocale({ appLocale, logger });
   }
 
@@ -878,6 +879,30 @@ app.on('web-contents-created', (_createEvent, contents) => {
 ipc.on('locale-data', event => {
   // eslint-disable-next-line no-param-reassign
   event.returnValue = locale.messages;
+});
+
+ipc.on('get-app-locale', event => {
+  const savedLocale = userConfig.get('appLocale') as string;
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue = typeof savedLocale === 'string' && savedLocale ? savedLocale : locale?.name || 'en';
+});
+
+ipc.on('set-app-locale', (event, appLocale: string) => {
+  if (typeof appLocale === 'string' && appLocale) {
+    userConfig.set('appLocale', appLocale);
+    try {
+      locale = loadLocale({ appLocale, logger: assertLogger() });
+      setupMenu();
+      if (tray) {
+        tray.destroy();
+        tray = createTrayIcon(getMainWindow, locale.messages);
+      }
+    } catch (error) {
+      assertLogger().error('Failed to reload locale after app locale change:', error);
+    }
+  }
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue = undefined;
 });
 
 ipc.on('draw-attention', () => {

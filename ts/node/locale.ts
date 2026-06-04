@@ -12,10 +12,8 @@ function normalizeLocaleName(locale: string) {
 }
 
 function getLocaleMessages(locale: string): LocaleMessagesType {
-  console.log(locale)
-  // const onDiskLocale = locale.replace('-', '_');
-
-  const targetFile = path.join(getAppRootPath(), '_locales', 'en', 'messages.json');
+  const onDiskLocale = locale.replace('-', '_');
+  const targetFile = path.join(getAppRootPath(), '_locales', onDiskLocale, 'messages.json');
   return JSON.parse(fs.readFileSync(targetFile, 'utf-8'));
 }
 export type LocaleMessagesType = Record<string, string>;

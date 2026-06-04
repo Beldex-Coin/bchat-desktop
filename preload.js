@@ -42,6 +42,19 @@ window.versionInfo = {
 const ipc = ipcRenderer;
 const localeMessages = ipc.sendSync('locale-data');
 
+window.setAppLocale = locale => {
+  ipc.sendSync('set-app-locale', locale);
+};
+
+window.getAppLocale = () => ipc.sendSync('get-app-locale');
+
+window.refreshAppLocale = () => {
+  const locale = window.getAppLocale ? window.getAppLocale() : 'en';
+  const localeMessages = ipc.sendSync('locale-data');
+  window.i18n = setupi18n(locale || 'en', localeMessages);
+  return locale;
+};
+
 window.updateZoomFactor = () => {
   let zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
   
@@ -329,7 +342,9 @@ if (window.networkType == 'mainnet') {
 }
 
 const { locale: localFromEnv } = config;
-window.i18n = setupi18n(localFromEnv || 'en', localeMessages);
+const localeFromApp = ipc.sendSync('get-app-locale');
+const localeToUse = localeFromApp || localFromEnv || 'en';
+window.i18n = setupi18n(localeToUse, localeMessages);
 
 window.addEventListener('contextmenu', e => {
   const editable = e && e.target.closest('textarea, input, [contenteditable="true"]');

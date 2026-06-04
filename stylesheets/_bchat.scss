@@ -2975,3 +2975,78 @@ ul{
   }
 }
 
+
+/* Container Modal styling */
+.bchat-language-screen {
+  background-color: #1e222b;
+  border-radius: 12px;
+  padding: 24px;
+  width: 360px;
+  // max-height: 550px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: auto;
+  // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Scrollable list styling */
+.bchat-language-list {
+  width: 100%;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 4px;
+}
+
+
+/* Individual list row */
+.bchat-modal__centered-SettingMiniModalContent {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.bchat-modal__centered-SettingMiniModalContent:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Active selected row state */
+.bchat-modal__centered-SettingMiniModalContent.isSelect {
+  background-color: #2d323f;
+}
+
+/* Radio circle base style */
+.bchat-modal__centered-SettingMiniModalContent-circle {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #a0aec0;
+  border-radius: 50%;
+  margin-right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Radio circle active style */
+.bchat-modal__centered-SettingMiniModalContent-circle.selected {
+  border-color: #159a3a; /* Green matching the save button */
+}
+
+/* Text styling */
+.language-text {
+  font-size: 20px;
+}
+
+/* Save Button Footer section */
+.bchat-language-footer {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+

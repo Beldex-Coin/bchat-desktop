@@ -1,5 +1,5 @@
 import { debounce } from 'lodash';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch, search, updateSearchTerm } from '../state/ducks/search';
 import { getConversationsCount } from '../state/selectors/conversations';
@@ -35,9 +35,21 @@ function updateSearch(dispatch: Dispatch<any>, searchTerm: string) {
 }
 export const BchatSearchInput = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [, setLocaleRefreshVersion] = useState(0);
   const dispatch = useDispatch();
 
   const convoCount = useSelector(getConversationsCount);
+
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      setLocaleRefreshVersion(prev => prev + 1);
+    };
+
+    window.addEventListener('app-locale-changed', handleLocaleChange);
+    return () => {
+      window.removeEventListener('app-locale-changed', handleLocaleChange);
+    };
+  }, []);
 
   // just after onboard we only have a conversation 
   if (convoCount < 1) {

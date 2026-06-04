@@ -11,6 +11,7 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
 import { getTheme } from '../../state/selectors/theme';
+import { useState, useEffect } from 'react';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -20,7 +21,7 @@ export interface getCategories {
   icon: BchatIconType;
 }
 
-const getCategories: Array<getCategories> = [
+const getCategories = (): Array<getCategories> => [
   {
     id: BchatSettingCategory.Chat,
     title: window.i18n('Chat'),
@@ -51,7 +52,11 @@ const getCategories: Array<getCategories> = [
     title: window.i18n('showRecoveryPhrase'),
     icon: 'recoverykey',
   },
-
+ {
+    id: BchatSettingCategory.Languages,
+    title: window.i18n('languages'),
+    icon: 'languages',
+  },
   {
     id: BchatSettingCategory.MessageRequests,
     title: window.i18n('openMessageRequestInbox'),
@@ -59,12 +64,12 @@ const getCategories: Array<getCategories> = [
   },
   {
     id: BchatSettingCategory.Hops,
-    title: 'Hops',
+    title: window.i18n('hops'),
     icon: 'hops',
   },
   {
     id: BchatSettingCategory.ClearData,
-    title: 'Clear Data',
+    title: window.i18n('clearAllData'),
     icon: 'clearData',
   },
 ];
@@ -88,7 +93,7 @@ const LeftPaneSettingsCategoryRow = () =>
 
     return (
       <>
-        {getCategories.map((item) => (
+        {getCategories().map((item) => (
           <div
           key={item.id}
             data-testid={dataTestId}
@@ -202,6 +207,19 @@ const LeftPaneSettingsCategories = () => {
 // };
 
 export const LeftPaneSettingSection = () => {
+  const [, setLocaleVersion] = useState(0);
+
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      setLocaleVersion(prev => prev + 1);
+    };
+
+    window.addEventListener('app-locale-changed', handleLocaleChange);
+    return () => {
+      window.removeEventListener('app-locale-changed', handleLocaleChange);
+    };
+  }, []);
+
   return (
     <div className="left-pane-setting-section">
       <SpacerLG />

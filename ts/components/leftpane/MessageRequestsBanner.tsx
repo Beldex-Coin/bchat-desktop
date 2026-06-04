@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { contextMenu } from 'react-contexify';
 import { createPortal } from 'react-dom';
 import { useSelector } from 'react-redux';
@@ -102,8 +102,21 @@ export const CirclularIcon = () => {
 
 export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   const { handleOnClick } = props; 
+  const [localeRefreshVersion, setLocaleRefreshVersion] = useState(0);
   const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
   const hideRequestBanner = useSelector(getHideMessageRequestBanner); 
+
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      setLocaleRefreshVersion(prev => prev + 1);
+    };
+
+    window.addEventListener('app-locale-changed', handleLocaleChange);
+    return () => {
+      window.removeEventListener('app-locale-changed', handleLocaleChange);
+    };
+  }, []);
+
   if (hideRequestBanner || !conversationRequestsUnread ) {
     return null;
   }
@@ -124,6 +137,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   return (
     <>
       <StyledMessageRequestBanner
+        key={localeRefreshVersion}
         onContextMenu={handleOnContextMenu}
         onClick={openRequests}
         onMouseUp={e => {
