@@ -659,4 +659,20 @@ export type LocalizerKeys =
   |'guidelinesDescription6'
   |'guidelinesDescription7'
   |'readMore'
+  |'enterBChatIDorBNS'
+  |"errConenctionStatus"
+  |"deleteContact"
+  |'unblock'
+  |'warnNoLongerParticipate'
+  |'attachment'
+  |'deleteProfilePic'
+  |'deleteProfilePicMessage'
+  |'toastMessageDelprofilePic'
+  |'CopyYourRecoverySeed...'
+  |'permanentlyDelete...'
+  |'deleteContactSuccessMessage'
+  |'successMessageGrpLeft'
+  |'warnDeleteMessageForMe'
+  |'edit'
+  |'declineRequest'
   ;

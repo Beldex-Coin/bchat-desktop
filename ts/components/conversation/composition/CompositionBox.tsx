@@ -408,13 +408,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
     window?.inboxStore?.dispatch(
       updateConfirmModal({
         title: window.i18n('editMenuDeleteContact'),
-        message: 'Permanently delete the Contact?',
+        message:window.i18n('permanentlyDelete...'),
         onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
         onClickOk: async () => {
           await getConversationController().deleteContact(convoId);
-          ToastUtils.pushToastSuccess('', 'Contact has been successfully deleted.');
+          ToastUtils.pushToastSuccess('', window.i18n('deleteContactSuccessMessage'));
         },
-        okText: 'Delete',
+        okText: window.i18n('delete'),
         okTheme: BchatButtonColor.Danger,
       })
     );
@@ -427,14 +427,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Danger}
-          text={'Delete this contact'}
+          text={window.i18n('deleteContact')}
           onClick={() => this.deleteContact()}
         />
         <SpacerLG />
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-          text={'Unblock contact'}
+          text={window.i18n('unblock')}
           onClick={() => {
             this.setState(getDefaultState());
             unblockConvoById(convoId);
@@ -447,7 +447,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <Flex container={true} justifyContent="center" alignItems="center" height="90px">
         <div className="leaved-scrt-grp-message-container">
-          You can’t send message to this group because you’re not a member of this group!
+          {window.i18n('warnNoLongerParticipate')}
         </div>
       </Flex>
     );
@@ -507,7 +507,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
             )}
             <input
               className="hidden"
-              placeholder="Attachment"
+              placeholder={window.i18n('attachment')}
               multiple={true}
               ref={this.fileInput}
               type="file"

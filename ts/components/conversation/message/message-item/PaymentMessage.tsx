@@ -28,7 +28,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   const classes = [`payment ${flashGreen && 'flash-green-once'}`];
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || window.i18n('small');
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
@@ -78,9 +78,9 @@ export const PaymentMessage = (props: PropsForPayment) => {
   }
   function FontSizeChanger(fontSize: number) {
     let size;
-    if (currentValueFromSettings === 'Small') {
+    if (currentValueFromSettings === window.i18n('small')) {
       size = fontSize;
-    } else if (currentValueFromSettings === 'Medium') {
+    } else if (currentValueFromSettings === window.i18n('medium')) {
       size = fontSize + 2;
     } else {
       size = fontSize + 4;

@@ -18,7 +18,7 @@ const option = [window.i18n('small'), window.i18n('medium'), window.i18n('large'
 
 
 export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) => void }) => {
-    const currentValueFromSettings = window.getSettingValue('font-size-setting') || "Small";
+    const currentValueFromSettings = window.getSettingValue('font-size-setting') || window.i18n('small');
     const forceUpdate = useUpdate();
     // const zoomSize=options.filter((item)=>item.value===currentValueFromSettings)
     const [value, setValue] = useState(currentValueFromSettings);

@@ -175,7 +175,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             />
             <Flex container={true} flexDirection="column" alignItems="center" justifyContent="center" width='53px'>
               <div
-                data-tip="Edit"
+                data-tip={window.i18n('edit')}
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.fireInputEvent}
@@ -191,7 +191,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <SpacerXS />
             {(newAvatarObjectUrl || oldAvatarPath )&& (
               <div
-                data-tip="Delete"
+                data-tip={window.i18n('delete')}
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.removepicPopup}
@@ -517,7 +517,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         await conversation.commit();
         await setLastProfileUpdateTimestamp(Date.now());
         await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
-        ToastUtils.pushToastSuccess('', 'Profile picture deleted successfully.');
+        ToastUtils.pushToastSuccess('', window.i18n('toastMessageDelprofilePic'));
         this.setState({
           loading: false,
           mode: 'default',
@@ -530,13 +530,13 @@ export class EditProfileDialog extends React.Component<{}, State> {
   private removepicPopup() {
    window?.inboxStore?.dispatch(
         updateConfirmModal({
-          title: 'Delete Profile Picture',
-          message: 'Are you sure you want to delete the Profile Picture?',
+          title: window.i18n('deleteProfilePic'),
+          message: window.i18n('deleteProfilePicMessage'),
           onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
           onClickOk: async () => {
             this.removeProfilePic()
           },
-          okText: 'Delete',
+          okText: window.i18n('delete'),
           okTheme: BchatButtonColor.Danger,
         })
       );

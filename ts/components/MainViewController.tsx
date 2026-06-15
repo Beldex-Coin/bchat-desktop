@@ -98,7 +98,7 @@ export const AddNewContactInEmptyConvo = () => {
             <div>
               <BchatIdEditable
                 editable={true}
-                placeholder={'Enter BChat ID or BNS'}
+                placeholder={window.i18n('enterBChatIDorBNS')}
                 value={bchatId}
                 isGroup={false}
                 maxLength={66}

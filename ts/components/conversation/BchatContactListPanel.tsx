@@ -237,7 +237,7 @@ const SearchEmptyScreen = () => {
     <SearchEmptyWrapper>
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">
         <ContactEmptyIcon isDark={isDark} />
-        <StyledSpan>No Contact Found!</StyledSpan>
+        <StyledSpan>{window.i18n('noContactsYet')}</StyledSpan>
       </Flex>
     </SearchEmptyWrapper>
   );

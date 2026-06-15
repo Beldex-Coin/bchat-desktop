@@ -94,7 +94,7 @@ export const AddModeratorsDialog = (props: Props) => {
       <Flex container={true} flexDirection="column" alignItems="center">
         <div className='moderator-addModeratorBox'>
           <BchatIcon iconType={'addModeratorIcon'} iconSize={56} fillRule="evenodd" clipRule="evenodd" iconColor={darkMode ? '#F0F0F0' : '#333333'} />
-          <p className='addModeratortext'>Add Moderator</p>
+          <p className='addModeratortext'>{window.i18n('addModerators')}</p>
         </div>
         <div className='moderator-inputBox'>
           <input

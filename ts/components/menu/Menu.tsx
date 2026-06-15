@@ -242,28 +242,28 @@ export const DeleteContactMenuItem = () => {
     const showConfirmationModal = () => {
       let notetoSelf = {
         title: menuItemText,
-        message: "This chat is for your self reference.So can't be deleted.",
+        message: window.i18n('warnDeleteMessageForMe'),
         onClickClose,
         okTheme: BchatButtonColor.Primary,
         onClickOk: async () => {
           onClickClose;
         },
-        okText: 'OK',
+        okText: window.i18n('warnDeleteMessageForMe'),
         hideCancel: true,
       };
 
       let contactDelete = {
         title: menuItemText,
         message: isPrivate
-          ? 'Permanently delete the Contact?'
+          ? window.i18n('permanentlyDelete...')
           : window.i18n('leaveGroupConfirmation', [username]),
         onClickClose,
         onClickOk: async () => {
           await getConversationController().deleteContact(convoId);
-          const message = isPrivate?'Contact has been successfully deleted.':'You’ve successfully left the group.';
+          const message = isPrivate?window.i18n('deleteContactSuccessMessage'):window.i18n('successMessageGrpLeft');
           ToastUtils.pushToastSuccess('', message);
         },
-        okText: menuItemText.slice(0, 5) === 'Leave' ? 'Leave' : 'Delete',
+        okText: menuItemText.slice(0, 5) === window.i18n('leaveAndRemoveForEveryone') ? window.i18n('leaveAndRemoveForEveryone'): window.i18n('delete'),
         okTheme: BchatButtonColor.Danger,
       };
       dispatch(updateConfirmModal(ourNumber === convoId ? notetoSelf : contactDelete));

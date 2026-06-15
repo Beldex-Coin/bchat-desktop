@@ -10,7 +10,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
   return (
     <div
       className="attachment-box"
-      data-tip="Attachment"
+      data-tip={window.i18n('attachment')}
       data-place="top"
       data-offset="{'right':10}"
       onClick={props.onClick}

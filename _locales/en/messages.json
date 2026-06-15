@@ -652,7 +652,22 @@
   "guidelinesDescription5":"Be civil. You can share your opinions and constructive criticisms but harassment is not permitted. Don't promote or shill your token/project. This group is dedicated to BChat and the Beldex ecosystem. Spammers will be banned.",
   "guidelinesDescription6":"Do not share NSFW content or use profane language.",
   "guidelinesDescription7":"Beware of scammers. Admins will not DM you first.",
-  "readMore": "Read more"
+  "readMore": "Read more",
+  "CopyYourRecoverySeed...":"Copy your Recovery Seed and keep it safe",
+  "enterBChatIDorBNS":"Enter BChat ID or BNS",
 
-
+  "errConenctionStatus":"You are not connected to the Hop. Check your internet connection or Restart the app!",
+  "warnNoLongerParticipate":"You can’t send message to this group because you’re not a member of this group",
+  "attachment":"Attachment",
+  "deleteProfilePic":"Delete Profile Picture",
+  "deleteProfilePicMessage":"Are you sure you want to delete the Profile Picture?",
+  "toastMessageDelprofilePic":"Profile picture deleted successfully",
+  "permanentlyDelete...":"Permanently delete the Contact?",
+  "deleteContactSuccessMessage":"Contact has been successfully deleted.",
+  "successMessageGrpLeft":"You’ve successfully left the group.",
+  "warnDeleteMessageForMe" :"This chat is for your self reference.So can't be deleted",
+  "warnSeedInMessage...":"This is your recovery phrase. if you send it to someone they will have full access to your account",
+  "edit":"edit",
+  "declineRequest":"Decline Request?",
+  "unblock":"Unblock"
 }

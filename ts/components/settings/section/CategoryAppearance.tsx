@@ -139,8 +139,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
               forceUpdate();
             }}
             title={window.i18n('startInTrayTitle')}
-            // description={window.i18n('startInTrayDescription')}
-            description={"After closing the window, BChat runs in the background"}
+             description={window.i18n('startInTrayDescription')}
             active={isStartInTrayActive}
             iconType='bgProcess'
           />

@@ -77,7 +77,7 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
     >
       <StyledReactClearAllContainer container={true} flexDirection={'column'} darkMode={darkMode} alignItems="center">
         <p>
-          Are you sure you want to clear all <p>{window.i18n('clearAllReactions', [reaction])}</p>
+          {window.i18n('clearAllReactions', [reaction])}
         </p>
         <hr />
         <div className="Bchat-modal__button-group">

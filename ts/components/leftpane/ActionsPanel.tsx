@@ -95,6 +95,7 @@ const Section = (props: {
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
 
+  
 
   const handleClick = async (subTypes?: SectionType) => {
     dispatch(closeRightPanel());
@@ -641,7 +642,7 @@ export const ActionsPanel = () => {
             <div className="offline-msg">
               <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
               <span className="txt">
-                You are not connected to the Hop. Check your internet connection or Restart the app!
+                {window.i18n('errConenctionStatus')}
               </span>
             </div>
           )}

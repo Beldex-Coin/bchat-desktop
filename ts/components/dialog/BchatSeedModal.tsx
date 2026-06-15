@@ -41,7 +41,7 @@ const Seed = (props: SeedProps) => {
             <i data-testid="recovery-phrase-seed-modal" className="bchat-modal__text-highlight">
               {recoveryPhrase}
             </i>
-            <p className='subText'>Copy your Recovery Seed and keep it safe.</p>
+            <p className='subText'>{window.i18n('CopyYourRecoverySeed...')}</p>
           </div>
         </div>
         <div className='bchat-modal-footer'>

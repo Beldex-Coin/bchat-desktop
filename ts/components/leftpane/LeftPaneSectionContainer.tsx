@@ -61,7 +61,7 @@ export const LeftPaneSectionContainer = styled.div`
 
       padding: 10px;
       width: 247px;
-      height: 243px;
+      // height: 243px;
       border-radius: 26px;
     }
   }

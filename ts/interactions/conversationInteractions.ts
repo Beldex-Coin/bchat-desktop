@@ -161,7 +161,7 @@ export const declineConversationWithConfirm = (
 ) => {
   window?.inboxStore?.dispatch(
     updateConfirmModal({
-      title: 'Decline Request?',
+      title: window.i18n('declineRequest'),
       okText: window.i18n('decline'),
       okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
