@@ -134,7 +134,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   return (
     <div className="message-detail-wrapper">
       <BchatWrapperModal
-        title={'More Info'}
+        title={window.i18n('moreInformation')}
         onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}

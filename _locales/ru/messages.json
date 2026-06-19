@@ -654,5 +654,18 @@
   "guidelinesDescription7":"Остерегайтесь мошенников. Администраторы не будут писать вам в личные сообщения первыми.",
   "readMore": "Read more",
   "CopyYourRecoverySeed...":"Скопируйте свою резервную фразу и храните её в ",
-  "enterBChatIDorBNS":"Введите BChat ID или BNS" 
+  "enterBChatIDorBNS":"Введите BChat ID или BNS" ,
+  "errConenctionStatus":"You are not connected to the Hop. Check your internet connection or Restart the app!",
+  "warnNoLongerParticipate":"You can’t send message to this group because you’re not a member of this group",
+  "attachment":"Attachment",
+  "deleteProfilePic":"Delete Profile Picture",
+  "deleteProfilePicMessage":"Are you sure you want to delete the Profile Picture?",
+  "toastMessageDelprofilePic":"Profile picture deleted successfully",
+  "permanentlyDelete...":"Permanently delete the Contact?",
+  "deleteContactSuccessMessage":"Contact has been successfully deleted.",
+  "successMessageGrpLeft":"You’ve successfully left the group.",
+  "warnDeleteMessageForMe" :"This chat is for your self reference.So can't be deleted",
+  "edit":"edit",
+  "declineRequest":"Decline Request?",
+  "unblock":"Unblock"
 }

@@ -82,6 +82,7 @@ import SocialGrpIcon from '../icon/SocialGrpIcon';
 import SubMenuConnectIcon from '../icon/SubMenuConnect';
 import { openCallHistory } from '../../state/ducks/callHistory';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { LocalizerKeys } from '../../types/LocalizerKeys';
 
 const Section = (props: {
   type: SectionType;
@@ -183,7 +184,7 @@ const Section = (props: {
             ) : null}
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title={window.i18n('allChats')} top={'186px'} />
+            <DisplayTitle titleKey={'allChats'} top={'186px'} />
           </section>
         </div>
       );
@@ -288,7 +289,7 @@ const Section = (props: {
             />
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title={window.i18n('settingsHeader')} top={'278px'} />
+            <DisplayTitle titleKey={'settingsHeader'} top={'278px'} />
           </section>
         </div>
       );
@@ -457,14 +458,30 @@ export const BchatToolTip = (props: any) => (
   />
 );
 
-const DisplayTitle = (props: { title: string; top: string }) => (
-  <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
-    <SubMenuConnectIcon />
-    <div className={'sub-menu-box'}>
-      <div className="menu-txt">{props.title}</div>
-    </div>
-  </StyledTitleWrapper>
-);
+const DisplayTitle = (props: {titleKey: LocalizerKeys; top: string }) => {
+  const { titleKey } = props;
+  const [text, setText] = useState<string>(window.i18n(titleKey));
+
+  useEffect(() => {
+    const handleLocaleChange = () => {
+      if (titleKey) {
+        setText(window.i18n(titleKey));
+      }
+    };
+
+    window.addEventListener('app-locale-changed', handleLocaleChange);
+    return () => window.removeEventListener('app-locale-changed', handleLocaleChange);
+  }, [titleKey]);
+
+  return (
+    <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
+      <SubMenuConnectIcon />
+      <div className={'sub-menu-box'}>
+        <div className="menu-txt">{text}</div>
+      </div>
+    </StyledTitleWrapper>
+  );
+};
 
 /**
  * ActionsPanel is the far left banner (not the left pane).

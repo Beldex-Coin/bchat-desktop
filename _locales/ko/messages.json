@@ -654,6 +654,19 @@
   "guidelinesDescription7":"사기꾼을 주의하세요. 관리자들은 먼저 개인 메시지를 보내지 않습니다.",
   "readMore": "Read more",
   "CopyYourRecoverySeed...":"복구 시드를 복사하여 안전하게 보관하세요",
-  "enterBChatIDorBNS":"Enter BChat ID or BNS"
+  "enterBChatIDorBNS":"Enter BChat ID or BNS",
+  "errConenctionStatus":"You are not connected to the Hop. Check your internet connection or Restart the app!",
+  "warnNoLongerParticipate":"You can’t send message to this group because you’re not a member of this group",
+  "attachment":"Attachment",
+  "deleteProfilePic":"Delete Profile Picture",
+  "deleteProfilePicMessage":"Are you sure you want to delete the Profile Picture?",
+  "toastMessageDelprofilePic":"Profile picture deleted successfully",
+  "permanentlyDelete...":"Permanently delete the Contact?",
+  "deleteContactSuccessMessage":"Contact has been successfully deleted.",
+  "successMessageGrpLeft":"You’ve successfully left the group.",
+  "warnDeleteMessageForMe" :"This chat is for your self reference.So can't be deleted",
+  "edit":"edit",
+  "declineRequest":"Decline Request?",
+  "unblock":"Unblock"
 
 }
