@@ -169,7 +169,7 @@ const AvatarInner = (props: Props) => {
             className="module-avatar-verify-wrapper-verify-tag"
             style={{ bottom: -7, right: -7 }}
           >
-            <VerifyPadgeIcon />
+            <VerifyPadgeIcon  size={size < 48 ? 18 :undefined }/>
           </span>
         )}
       </div>

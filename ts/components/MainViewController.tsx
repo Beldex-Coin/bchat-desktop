@@ -38,9 +38,8 @@ export const AddNewContactInEmptyConvo = () => {
   const [bchatId, setBchatId] = useState('');
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = bchatId.trim();
-    if(!pubkeyorOnsTrimmed)
-    {
-      ToastUtils.pushToastError('invalidPubKey','Please enter the Id or BNS'); // or Bns name
+    if (!pubkeyorOnsTrimmed) {
+      ToastUtils.pushToastError('invalidPubKey', 'Please enter the Id or BNS'); // or Bns name
       return;
     }
     if (
@@ -123,11 +122,10 @@ export const AddNewContactInEmptyConvo = () => {
   );
 };
 const StartConvoWrapper = styled.div`
-width: 24vw;
-max-width: 470px;
-// margin-left: 43px;
-margin-left: 100px;
-  
+  width: 24vw;
+  max-width: 470px;
+  // margin-left: 43px;
+  margin-left: 100px;
 `;
 // /////////////////////////////////////
 // //////////// Management /////////////
@@ -141,12 +139,16 @@ async function createClosedGroup(
   groupMemberIds: Array<string>
 ): Promise<boolean> {
   // Validate groupName and groupMembers length
+  const regex = /^[a-zA-Z0-9\s]*$/;
   if (groupName.length === 0) {
     ToastUtils.pushToastError('invalidGroupName', window.i18n('invalidGroupNameTooShort'));
 
     return false;
   } else if (groupName.length > VALIDATION.MAX_GROUP_NAME_LENGTH) {
     ToastUtils.pushToastError('invalidGroupName', window.i18n('invalidGroupNameTooLong'));
+    return false;
+  } else if (!regex.test(groupName)) {
+    ToastUtils.pushToastError('invalidGroupName', window.i18n('createSecretGroupNameError'));
     return false;
   }
 

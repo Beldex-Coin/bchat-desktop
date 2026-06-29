@@ -13,6 +13,7 @@ import { FSv2 } from '../bchat/apis/file_server_api';
 import { getUnpaddedAttachment } from '../bchat/crypto/BufferPadding';
 import { decryptAttachment } from '../util/crypto/attachmentsEncrypter';
 import { callUtilsWorker } from '../webworker/workers/browser/util_worker_interface';
+import { throwIfAborted } from './userProfileImageUpdates';
 
 export async function downloadAttachment(attachment: {
   url: string;
@@ -21,10 +22,11 @@ export async function downloadAttachment(attachment: {
   key?: string;
   digest?: string;
   size?: number;
+  signal?: AbortSignal;
 }) {
   const asURL = new URL(attachment.url);
   const serverUrl = asURL.origin;
-
+throwIfAborted(attachment.signal);
   // is it an attachment hosted on the file server v2 ?
   const defaultFsV2 = _.startsWith(serverUrl, FSv2.fileServerV2URL);
 
@@ -64,7 +66,7 @@ export async function downloadAttachment(attachment: {
 
     const keyBuffer = (await callUtilsWorker('fromBase64ToArrayBuffer', key)) as ArrayBuffer;
     const digestBuffer = (await callUtilsWorker('fromBase64ToArrayBuffer', digest)) as ArrayBuffer;
-
+    throwIfAborted(attachment.signal);
     data = await decryptAttachment(data, keyBuffer, digestBuffer);
 
     if (size !== data.byteLength) {

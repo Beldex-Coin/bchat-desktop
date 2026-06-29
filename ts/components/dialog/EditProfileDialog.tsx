@@ -10,17 +10,20 @@ import { ConversationModel, ConversationTypeEnum } from '../../models/conversati
 
 import { getConversationController } from '../../bchat/conversations';
 import autoBind from 'auto-bind';
-import { bnsLinkModal, editProfileModal, updateAboutBnsModal } from '../../state/ducks/modalDialog';
+import { bnsLinkModal, editProfileModal, updateAboutBnsModal, updateConfirmModal } from '../../state/ducks/modalDialog';
 import { uploadOurAvatar } from '../../interactions/conversationInteractions';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { MAX_USERNAME_LENGTH } from '../registration/RegistrationStages';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
-import { sanitizeBchatUsername } from '../../bchat/utils/String';
+import { sanitizeBchatUsername, toHex } from '../../bchat/utils/String';
 import { setLastProfileUpdateTimestamp } from '../../util/storage';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { CopyIconButton } from '../icon/CopyIconButton'
-import { SpacerXS } from '../basic/Text';
+import {  SpacerXS } from '../basic/Text';
+import { Flex } from '../basic/Flex';
+import { BchatButtonColor } from '../basic/BchatButton';
+import { getSodiumRenderer } from '../../bchat/crypto';
 
 interface State {
   profileName: string;
@@ -159,6 +162,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   }
 
   private renderProfileHeader() {
+    const {newAvatarObjectUrl, oldAvatarPath} = this.state;
     return (
       <>
         <div className="avatar-center" style={{ marginLeft: "25px" }}>
@@ -169,37 +173,40 @@ export class EditProfileDialog extends React.Component<{}, State> {
               role="button"
               data-testid="image-upload-section"
             />
-            <div
-              data-tip="Edit"
-              data-place="right"
-              data-offset="{'top':15,'left':10}"
-              className='camera'
-              // style={{
-              //   backgroundColor: `red`,
-              //   borderRadius:'20px',
-              //   width: '30px',
-              //   height: '30px',
-              //   position: 'relative',
-              //   justifyContent: 'center',
-              //   backgroundSize: '32px',
-              //   top: '29px',
-              //   left: '10px',
-              //   alignItems: 'center',
-              //   cursor: 'pointer',
-              // }}
-              onClick={this.fireInputEvent}
-              role="button"
-              data-testid="image-upload-section"
-            >
-              <BchatIcon
-                iconType="camera"
-                // backgroundColor="var(--color-BnsCameraIconBg)"
-                // borderRadius="20px"
-                iconSize={16}
-              // iconPadding="7px"
-              />
-              <BchatToolTip place="top" effect="solid" />
-            </div>
+            <Flex container={true} flexDirection="column" alignItems="center" justifyContent="center" width='53px'>
+              <div
+                data-tip="Edit"
+                data-place="right"
+                className='editActionBtn'
+                onClick={this.fireInputEvent}
+                role="button"
+                data-testid="image-upload-section"
+              >
+                <BchatIcon
+                  iconType="camera"
+                  iconSize={16}
+                />
+                <BchatToolTip place="top" effect="solid" />
+              </div>
+              <SpacerXS />
+            {(newAvatarObjectUrl || oldAvatarPath )&& (
+              <div
+                data-tip="Delete"
+                data-place="right"
+                className='editActionBtn'
+                onClick={this.removepicPopup}
+                role="button"
+                data-testid="image-remove-section"
+              >
+                <BchatIcon
+                  iconType="delete"
+                  iconSize={16}
+                  iconColor='#f00'
+                />
+                <BchatToolTip place="top" effect="solid" />
+              </div>
+           )}
+            </Flex>
           </div>
         </div>
       </>
@@ -490,6 +497,49 @@ export class EditProfileDialog extends React.Component<{}, State> {
         });
       }
     );
+  }
+
+   private removeProfilePic() {
+    
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        const ourNumber = UserUtils.getOurPubKeyStrFromCache();
+        const conversation = await getConversationController().getOrCreateAndWait(
+          ourNumber,
+          ConversationTypeEnum.PRIVATE
+        );
+        const profileKey = (await getSodiumRenderer()).randombytes_buf(32);
+        conversation.set({avatar:null, avatarPointer: undefined,profileKey:toHex(profileKey) });
+        await conversation.commit();
+        await setLastProfileUpdateTimestamp(Date.now());
+        await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
+        ToastUtils.pushToastSuccess('', 'Profile picture deleted successfully.');
+        this.setState({
+          loading: false,
+          mode: 'default',
+          oldAvatarPath: '',
+          newAvatarObjectUrl:null
+        });
+      }
+    );
+  }
+  private removepicPopup() {
+   window?.inboxStore?.dispatch(
+        updateConfirmModal({
+          title: 'Delete Profile Picture',
+          message: 'Are you sure you want to delete the Profile Picture?',
+          onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
+          onClickOk: async () => {
+            this.removeProfilePic()
+          },
+          okText: 'Delete',
+          okTheme: BchatButtonColor.Danger,
+        })
+      );
   }
 
   private closeDialog() {
