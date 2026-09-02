@@ -9,6 +9,7 @@ import { SettingsKey } from '../../../data/settings-key';
 import {
   ERROR_421_HANDLED_RETRY_REQUEST,
   bchatOnionFetch,
+  incrementBadSnodeCountOrDrop,
   processOnionRequestErrorAtDestination,
   snodeHttpsAgent,
   SnodeResponse,
@@ -101,6 +102,17 @@ async function bchatFetch({
       status: response.status,
     };
   } catch (e) {
+    if (targetNode && (e.type === 'system' || e.code === 'ENOTFOUND')) {
+      // node-fetch marks any underlying network failure this way (connection refused, timed
+      // out, host unreachable, DNS failure, etc.) - we never got a response from this node at
+      // all, so processOnionRequestErrorAtDestination never runs for it. Record it as a
+      // failure here so a genuinely dead/unreachable node gets dropped from the swarm and
+      // snode pool after repeated failures instead of being retried indefinitely.
+      await incrementBadSnodeCountOrDrop({
+        snodeEd25519: targetNode.pubkey_ed25519,
+        associatedWith,
+      });
+    }
     if (e.code === 'ENOTFOUND') {
       throw new NotFoundError('Failed to resolve address', e);
     }
