@@ -4,10 +4,12 @@ import pRetry from 'p-retry';
 import { HTTPError, NotFoundError } from '../../utils/errors';
 import { Snode } from '../../../data/data';
 import { getStoragePubKey } from '../../types';
+import { SettingsKey } from '../../../data/settings-key';
 
 import {
   ERROR_421_HANDLED_RETRY_REQUEST,
   bchatOnionFetch,
+  processOnionRequestErrorAtDestination,
   snodeHttpsAgent,
   SnodeResponse,
 } from './onions';
@@ -46,13 +48,12 @@ async function bchatFetch({
   try {
     // Absence of targetNode indicates that we want a direct connection
     // (e.g. to connect to a seed node for the first time)
+    // The user-facing "Onion Routing" setting (Settings > Chat) is the sole source of truth here,
+    // and defaults to OFF (direct connection) until the user explicitly opts in.
+    const onionRoutingSetting = window.getSettingValue(SettingsKey.settingsOnionRouting);
     const useOnionRequests =
-      window.bchatFeatureFlags?.useOnionRequests === undefined
-        ? true
-        : window.bchatFeatureFlags?.useOnionRequests;
-    // if (useOnionRequests && targetNode) {
-      if (useOnionRequests && targetNode) {
-
+      onionRoutingSetting === undefined ? false : Boolean(onionRoutingSetting);
+    if (useOnionRequests && targetNode) { 
       const fetchResult = await bchatOnionFetch({
         targetNode,
         body: fetchOptions.body,
@@ -65,7 +66,6 @@ async function bchatFetch({
 
       return fetchResult;
     }
-
     if (url.match(/https:\/\//)) {
       // import that this does not get set in bchatFetch fetchOptions
       fetchOptions.agent = snodeHttpsAgent;
@@ -79,11 +79,22 @@ async function bchatFetch({
     window?.log?.warn(`insecureNodeFetch => bchatFetch of ${url}`);
 
     const response = await insecureNodeFetch(url, fetchOptions);
+    const result = await response.text();
 
     if (!response.ok) {
+      if (targetNode) {
+        // Mirrors what the onion path already does with the destination's response
+        // (swarm redirects on 421, clock-skew on 406, etc.) so a direct request gets the
+        // same recovery instead of just failing outright.
+        await processOnionRequestErrorAtDestination({
+          statusCode: response.status,
+          body: result,
+          destinationEd25519: targetNode.pubkey_ed25519,
+          associatedWith,
+        });
+      }
       throw new HTTPError('beldex_rpc error', response);
     }
-    const result = await response.text();
 
     return {
       body: result,

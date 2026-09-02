@@ -246,7 +246,7 @@ async function process421Error(
  *
  * If destinationEd25519 is set, we will increment the failure count of the specified snode
  */
-async function processOnionRequestErrorAtDestination({
+export async function processOnionRequestErrorAtDestination({
   statusCode,
   body,
   destinationEd25519,

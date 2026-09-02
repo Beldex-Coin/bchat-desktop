@@ -8,6 +8,7 @@ const settingsLinkPreview = 'link-preview-setting';
 const settingsStartInTray = 'start-in-tray-setting';
 const settingsOpengroupPruning = 'prune-setting';
 const settingsAudioNotification = 'audio-notification-setting';
+const settingsOnionRouting = 'onion-routing-setting';
 
 
 
@@ -21,4 +22,5 @@ export const SettingsKey = {
   settingsStartInTray,
   settingsOpengroupPruning,
   settingsAudioNotification,
+  settingsOnionRouting,
 };

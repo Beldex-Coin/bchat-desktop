@@ -17,12 +17,21 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
+  const storedOnionRoutingValue = window.getSettingValue(SettingsKey.settingsOnionRouting);
+  // Onion routing now defaults to OFF (direct connection) until the user opts in.
+  const isOnionRoutingOn =
+    storedOnionRoutingValue === undefined ? false : Boolean(storedOnionRoutingValue);
 
   if (props.hasPassword !== null) {
     // const isSpellCheckActive =
     //   window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsSpellCheck);
+
+    function toggleOnionRouting() {
+      window.setSettingValue(SettingsKey.settingsOnionRouting, !isOnionRoutingOn);
+      forceUpdate();
+    }
 
     async function toggleLinkPreviews() {
       const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
@@ -70,6 +79,19 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             description={window.i18n('linkPreviewDescription')}
             active={isLinkPreviewsOn}
             iconType="chainLink"
+          />
+          <BchatToggleWithDescription
+            onClickToggle={toggleOnionRouting}
+            title={window.i18n('onionRoutingTitle')}
+            description={window.i18n('onionRoutingDescription')}
+            active={isOnionRoutingOn}
+            iconType="hops"
+            confirmationDialogParams={{
+              shouldShowConfirm: isOnionRoutingOn,
+              title: window.i18n('onionRoutingConfirmTitle'),
+              message: window.i18n('onionRoutingConfirmMessage'),
+              okTheme: BchatButtonColor.Danger,
+            }}
           />
           {/* <BchatToggleWithDescription
           onClickToggle={() => {
