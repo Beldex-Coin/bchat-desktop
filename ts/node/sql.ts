@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import rimraf from 'rimraf';
-import * as BetterSqlite3 from '@signalapp/better-sqlite3';
+import Database from '@signalapp/sqlcipher';
 import { app, clipboard, dialog, Notification } from 'electron';
 
 import {
@@ -22,21 +22,52 @@ import { redactAll } from '../util/privacy'; // checked - only node
 import { LocaleMessagesType } from './locale'; // checked - only node
 import { PubKey } from '../bchat/types/PubKey'; // checked - only node
 import { StorageItem } from './storage_item'; // checked - only node
-import { getAppRootPath } from './getRootPath';
 import { UpdateLastHashType } from '../types/sqlSharedTypes';
 // eslint:disable: function-name non-literal-fs-path
 const openDbOptions = {
-  verbose: false ? console.log : undefined,
-  nativeBinding: path.join(
-    getAppRootPath(),
-    'node_modules',
-    '@signalapp',
-    'better-sqlite3',
-    'build',
-    'Release',
-    'better_sqlite3.node'
-  ),
+  cacheStatements: false,
 };
+
+// @signalapp/sqlcipher rejects 'undefined' as a bound param value ('Failed to
+// bind param name, error unexpected type undefined'), where the previous
+// @signalapp/better-sqlite3 fork silently treated 'undefined' as SQL NULL.
+// This file relies on that leniency throughout - most .run()/.get()/.all()
+// calls build their named-param object straight from loosely-typed
+// 'data: any' conversation/message objects where a field may legitimately
+// be absent. Rather than auditing every call site, patch the (unexported)
+// Statement prototype once at module load to coerce undefined -> null
+// before binding, restoring the old behavior exactly.
+(function patchUndefinedParamBinding() {
+  const probeDb = new Database(':memory:');
+  try {
+    const probeStatement = probeDb.prepare('SELECT 1');
+    const statementProto = Object.getPrototypeOf(probeStatement);
+
+    const sanitize = (params: any) => {
+      if (!params || typeof params !== 'object') {
+        return params;
+      }
+      if (Array.isArray(params)) {
+        return params.map((value: any) => (value === undefined ? null : value));
+      }
+      Object.keys(params).forEach(key => {
+        if (params[key] === undefined) {
+          params[key] = null;
+        }
+      });
+      return params;
+    };
+
+    (['run', 'get', 'all'] as const).forEach(method => {
+      const original = statementProto[method];
+      statementProto[method] = function patchedStatementMethod(params?: any) {
+        return original.call(this, sanitize(params));
+      };
+    });
+  } finally {
+    probeDb.close();
+  }
+})();
 
 const CONVERSATIONS_TABLE = 'conversations';
 const MESSAGES_TABLE = 'messages';
@@ -62,20 +93,20 @@ function jsonToObject(json: string): Record<string, any> {
   return JSON.parse(json);
 }
 
-function getSQLiteVersion(db: BetterSqlite3.Database) {
-  const { sqlite_version } = db.prepare('select sqlite_version() as sqlite_version').get();
+function getSQLiteVersion(db: Database) {
+  const { sqlite_version } = db.prepare('select sqlite_version() as sqlite_version').get<any>();
   return sqlite_version;
 }
 
-function getSchemaVersion(db: BetterSqlite3.Database) {
-  return db.pragma('schema_version', { simple: true });
+function getSchemaVersion(db: Database) {
+  return db.pragma('schema_version', { simple: true }) as number;
 }
 
-function getSQLCipherVersion(db: BetterSqlite3.Database) {
+function getSQLCipherVersion(db: Database) {
   return db.pragma('cipher_version', { simple: true });
 }
 
-function getSQLCipherIntegrityCheck(db: BetterSqlite3.Database) {
+function getSQLCipherIntegrityCheck(db: Database) {
   const rows = db.pragma('cipher_integrity_check');
   if (rows.length === 0) {
     return undefined;
@@ -83,7 +114,7 @@ function getSQLCipherIntegrityCheck(db: BetterSqlite3.Database) {
   return rows.map((row: any) => row.cipher_integrity_check);
 }
 
-function keyDatabase(db: BetterSqlite3.Database, key: string) {
+function keyDatabase(db: Database, key: string) {
   // https://www.zetetic.net/sqlcipher/sqlcipher-api/#key
   // If the password isn't hex then we need to derive a key from it
 
@@ -96,13 +127,13 @@ function keyDatabase(db: BetterSqlite3.Database, key: string) {
   db.pragma(pragramToRun);
 }
 
-function switchToWAL(db: BetterSqlite3.Database) {
+function switchToWAL(db: Database) {
   // https://sqlite.org/wal.html
   db.pragma('journal_mode = WAL');
   db.pragma('synchronous = FULL');
 }
 
-function getSQLIntegrityCheck(db: BetterSqlite3.Database) {
+function getSQLIntegrityCheck(db: Database) {
   const checkResult = db.pragma('quick_check', { simple: true });
   if (checkResult !== 'ok') {
     return checkResult;
@@ -113,7 +144,7 @@ function getSQLIntegrityCheck(db: BetterSqlite3.Database) {
 
 const HEX_KEY = /[^0-9A-Fa-f]/;
 
-function migrateSchemaVersion(db: BetterSqlite3.Database) {
+function migrateSchemaVersion(db: Database) {
   const userVersion = getUserVersion(db);
   if (userVersion > 0) {
     return;
@@ -129,16 +160,16 @@ function migrateSchemaVersion(db: BetterSqlite3.Database) {
   setUserVersion(db, newUserVersion);
 }
 
-function getUserVersion(db: BetterSqlite3.Database) {
+function getUserVersion(db: Database) {
   try {
-    return db.pragma('user_version', { simple: true });
+    return db.pragma('user_version', { simple: true }) as number;
   } catch (e) {
     console.error('getUserVersion error', e);
     return 0;
   }
 }
 
-function setUserVersion(db: BetterSqlite3.Database, version: number) {
+function setUserVersion(db: Database, version: number) {
   if (!isNumber(version)) {
     throw new Error(`setUserVersion: version ${version} is not a number`);
   }
@@ -151,7 +182,7 @@ function openAndMigrateDatabase(filePath: string, key: string) {
 
   // First, we try to open the database without any cipher changes
   try {
-    db = new (BetterSqlite3 as any).default(filePath, openDbOptions);
+    db = new Database(filePath, openDbOptions);
 
     keyDatabase(db, key);
     switchToWAL(db);
@@ -171,7 +202,7 @@ function openAndMigrateDatabase(filePath: string, key: string) {
 
   let db1;
   try {
-    db1 = new (BetterSqlite3 as any).default(filePath, openDbOptions);
+    db1 = new Database(filePath, openDbOptions);
     keyDatabase(db1, key);
 
     // https://www.zetetic.net/blog/2018/11/30/sqlcipher-400-release/#compatability-sqlcipher-4-0-0
@@ -189,7 +220,7 @@ function openAndMigrateDatabase(filePath: string, key: string) {
   //   migrate to the latest ciphers after we've modified the defaults.
   let db2;
   try {
-    db2 = new (BetterSqlite3 as any).default(filePath, openDbOptions);
+    db2 = new Database(filePath, openDbOptions);
     keyDatabase(db2, key);
 
     db2.pragma('cipher_migrate');
@@ -223,7 +254,7 @@ function setSQLPassword(password: string) {
   globalInstance.pragma(`rekey = ${value}`);
 }
 
-function vacuumDatabase(db: BetterSqlite3.Database) {
+function vacuumDatabase(db: Database) {
   if (!db) {
     throw new Error('vacuum: db is not initialized');
   }
@@ -233,7 +264,7 @@ function vacuumDatabase(db: BetterSqlite3.Database) {
   console.info(`Vacuuming DB Finished in ${Date.now() - start}ms.`);
 }
 
-function updateToSchemaVersion1(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion1(currentVersion: number, db: Database) {
   if (currentVersion >= 1) {
     return;
   }
@@ -329,7 +360,7 @@ function updateToSchemaVersion1(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion1: success!');
 }
 
-function updateToSchemaVersion2(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion2(currentVersion: number, db: Database) {
   if (currentVersion >= 2) {
     return;
   }
@@ -365,7 +396,7 @@ function updateToSchemaVersion2(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion2: success!');
 }
 
-function updateToSchemaVersion3(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion3(currentVersion: number, db: Database) {
   if (currentVersion >= 3) {
     return;
   }
@@ -397,7 +428,7 @@ function updateToSchemaVersion3(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion3: success!');
 }
 
-function updateToSchemaVersion4(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion4(currentVersion: number, db: Database) {
   if (currentVersion >= 4) {
     return;
   }
@@ -434,7 +465,7 @@ function updateToSchemaVersion4(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion4: success!');
 }
 
-function updateToSchemaVersion6(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion6(currentVersion: number, db: Database) {
   if (currentVersion >= 6) {
     return;
   }
@@ -530,7 +561,7 @@ function updateToSchemaVersion6(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion6: success!');
 }
 
-function updateToSchemaVersion7(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion7(currentVersion: number, db: Database) {
   if (currentVersion >= 7) {
     return;
   }
@@ -562,7 +593,7 @@ function updateToSchemaVersion7(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion7: success!');
 }
 
-function updateToSchemaVersion8(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion8(currentVersion: number, db: Database) {
   if (currentVersion >= 8) {
     return;
   }
@@ -616,7 +647,7 @@ function updateToSchemaVersion8(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion8: success!');
 }
 
-function updateToSchemaVersion9(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion9(currentVersion: number, db: Database) {
   if (currentVersion >= 9) {
     return;
   }
@@ -646,7 +677,7 @@ function updateToSchemaVersion9(currentVersion: number, db: BetterSqlite3.Databa
   console.log('updateToSchemaVersion9: success!');
 }
 
-function updateToSchemaVersion10(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion10(currentVersion: number, db: Database) {
   if (currentVersion >= 10) {
     return;
   }
@@ -707,7 +738,7 @@ function updateToSchemaVersion10(currentVersion: number, db: BetterSqlite3.Datab
   console.log('updateToSchemaVersion10: success!');
 }
 
-function updateToSchemaVersion11(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToSchemaVersion11(currentVersion: number, db: Database) {
   if (currentVersion >= 11) {
     return;
   }
@@ -722,7 +753,7 @@ function updateToSchemaVersion11(currentVersion: number, db: BetterSqlite3.Datab
   console.log('updateToSchemaVersion11: success!');
 }
 
-// function updateToSchemaVersion12(currentVersion: number, db: BetterSqlite3.Database) {
+// function updateToSchemaVersion12(currentVersion: number, db: Database) {
 //   console.log("currentVersion ::",currentVersion);
   
 //   if (currentVersion >= 12) {
@@ -762,7 +793,7 @@ const SCHEMA_VERSIONS = [
   //  updateToSchemaVersion12
 ];
 
-function updateSchema(db: BetterSqlite3.Database) {
+function updateSchema(db: Database) {
   const sqliteVersion = getSQLiteVersion(db);
   const sqlcipherVersion = getSQLCipherVersion(db);
   const userVersion = getUserVersion(db);
@@ -810,7 +841,7 @@ const BCHAT_SCHEMA_VERSIONS = [
   updateToBchatSchemaVersion24
 ];
 
-function updateToBchatSchemaVersion1(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion1(currentVersion: number, db: Database) {
   const targetVersion = 1;
   if (currentVersion >= targetVersion) {
     return;
@@ -832,7 +863,7 @@ function updateToBchatSchemaVersion1(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 } 
 
-function updateToBchatSchemaVersion2(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion2(currentVersion: number, db: Database) {
   const targetVersion = 2;
 
   if (currentVersion >= targetVersion) {
@@ -856,7 +887,7 @@ function updateToBchatSchemaVersion2(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion3(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion3(currentVersion: number, db: Database) {
   const targetVersion = 3;
 
   if (currentVersion >= targetVersion) {
@@ -878,7 +909,7 @@ function updateToBchatSchemaVersion3(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion4(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion4(currentVersion: number, db: Database) {
   const targetVersion = 4;
   if (currentVersion >= targetVersion) {
     return;
@@ -904,7 +935,7 @@ function updateToBchatSchemaVersion4(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion5(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion5(currentVersion: number, db: Database) {
   const targetVersion = 5;
   if (currentVersion >= targetVersion) {
     return;
@@ -925,7 +956,7 @@ function updateToBchatSchemaVersion5(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion6(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion6(currentVersion: number, db: Database) {
   const targetVersion = 6;
   if (currentVersion >= targetVersion) {
     return;
@@ -946,7 +977,7 @@ function updateToBchatSchemaVersion6(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion7(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion7(currentVersion: number, db: Database) {
   const targetVersion = 7;
   if (currentVersion >= targetVersion) {
     return;
@@ -965,7 +996,7 @@ function updateToBchatSchemaVersion7(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion8(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion8(currentVersion: number, db: Database) {
   const targetVersion = 8;
   if (currentVersion >= targetVersion) {
     return;
@@ -983,7 +1014,7 @@ function updateToBchatSchemaVersion8(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion9(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion9(currentVersion: number, db: Database) {
   const targetVersion = 9;
   if (currentVersion >= targetVersion) {
     return;
@@ -998,13 +1029,13 @@ function updateToBchatSchemaVersion9(currentVersion: number, db: BetterSqlite3.D
       id LIKE '__textsecure_group__!%';
     `
       )
-      .all();
+      .all<any>();
 
     const objs = map(rows, row => jsonToObject(row.json));
 
     const conversationIdRows = db
       .prepare(`SELECT id FROM ${CONVERSATIONS_TABLE} ORDER BY id ASC;`)
-      .all();
+      .all<any>();
 
     const allOldConversationIds = map(conversationIdRows, row => row.id);
     objs.forEach(o => {
@@ -1050,7 +1081,7 @@ function updateToBchatSchemaVersion9(currentVersion: number, db: BetterSqlite3.D
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion10(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion10(currentVersion: number, db: Database) {
   const targetVersion = 10;
   if (currentVersion >= targetVersion) {
     return;
@@ -1072,7 +1103,7 @@ function updateToBchatSchemaVersion10(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion11(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion11(currentVersion: number, db: Database) {
   const targetVersion = 11;
   if (currentVersion >= targetVersion) {
     return;
@@ -1086,7 +1117,7 @@ function updateToBchatSchemaVersion11(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion12(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion12(currentVersion: number, db: Database) {
   const targetVersion = 12;
   if (currentVersion >= targetVersion) {
     return;
@@ -1109,7 +1140,7 @@ function updateToBchatSchemaVersion12(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion13(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion13(currentVersion: number, db: Database) {
   const targetVersion = 13;
   if (currentVersion >= targetVersion) {
     return;
@@ -1125,7 +1156,7 @@ function updateToBchatSchemaVersion13(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion14(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion14(currentVersion: number, db: Database) {
   const targetVersion = 14;
   if (currentVersion >= targetVersion) {
     return;
@@ -1147,7 +1178,7 @@ function updateToBchatSchemaVersion14(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion15(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion15(currentVersion: number, db: Database) {
   const targetVersion = 15;
   if (currentVersion >= targetVersion) {
     return;
@@ -1166,7 +1197,7 @@ function updateToBchatSchemaVersion15(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion16(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion16(currentVersion: number, db: Database) {
   const targetVersion = 16;
   if (currentVersion >= targetVersion) {
     return;
@@ -1197,7 +1228,7 @@ function updateToBchatSchemaVersion16(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion17(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion17(currentVersion: number, db: Database) {
   const targetVersion = 17;
   if (currentVersion >= targetVersion) {
     return;
@@ -1219,7 +1250,7 @@ function updateToBchatSchemaVersion17(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function dropFtsAndTriggers(db: BetterSqlite3.Database) {
+function dropFtsAndTriggers(db: Database) {
   console.info('dropping fts5 table');
 
   db.exec(`
@@ -1230,7 +1261,7 @@ function dropFtsAndTriggers(db: BetterSqlite3.Database) {
 `);
 }
 
-function rebuildFtsTable(db: BetterSqlite3.Database) {
+function rebuildFtsTable(db: Database) {
   console.info('rebuildFtsTable');
   // Create FTS table
   db.exec(`CREATE VIRTUAL TABLE ${MESSAGES_FTS_TABLE} USING fts5(id UNINDEXED, body);`);
@@ -1260,7 +1291,7 @@ function rebuildFtsTable(db: BetterSqlite3.Database) {
   console.info('rebuildFtsTable built');
 }
 
-function updateToBchatSchemaVersion18(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion18(currentVersion: number, db: Database) {
   const targetVersion = 18;
   if (currentVersion >= targetVersion) {
     return;
@@ -1278,7 +1309,7 @@ function updateToBchatSchemaVersion18(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion19(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion19(currentVersion: number, db: Database) {
   const targetVersion = 19;
   if (currentVersion >= targetVersion) {
     return;
@@ -1296,7 +1327,7 @@ function updateToBchatSchemaVersion19(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion20(currentVersion: number, db: Database) {
   const targetVersion = 20;
   if (currentVersion >= targetVersion) {
     return;
@@ -1309,7 +1340,7 @@ function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.
       .prepare(
         `SELECT * FROM ${CONVERSATIONS_TABLE} WHERE type = 'private' AND (name IS NULL or name = '') AND json_extract(json, '$.nickname') <> '';`
       )
-      .all();
+      .all<any>();
    
     (rowsToUpdate || []).forEach(r => {
       const obj = jsonToObject(r.json);
@@ -1326,7 +1357,7 @@ function updateToBchatSchemaVersion20(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion21(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion21(currentVersion: number, db: Database) {
   const targetVersion = 21;
   if (currentVersion >= targetVersion) {
     return;
@@ -1363,7 +1394,7 @@ function updateToBchatSchemaVersion21(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion22(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion22(currentVersion: number, db: Database) {
   const targetVersion = 22;
   if (currentVersion >= targetVersion) {
     return;
@@ -1406,7 +1437,7 @@ function updateToBchatSchemaVersion22(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion23(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion23(currentVersion: number, db: Database) {
   const targetVersion = 23;
   if (currentVersion >= targetVersion) {
     return;
@@ -1437,7 +1468,7 @@ function updateToBchatSchemaVersion23(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function updateToBchatSchemaVersion24(currentVersion: number, db: BetterSqlite3.Database) {
+function updateToBchatSchemaVersion24(currentVersion: number, db: Database) {
   const targetVersion = 24;
   if (currentVersion >= targetVersion) {
     return;
@@ -1457,7 +1488,7 @@ function updateToBchatSchemaVersion24(currentVersion: number, db: BetterSqlite3.
   console.log(`updateToBchatSchemaVersion${targetVersion}: success!`);
 }
 
-function writeBchatSchemaVersion(newVersion: number, db: BetterSqlite3.Database) {
+function writeBchatSchemaVersion(newVersion: number, db: Database) {
   db.prepare(
     `INSERT INTO bchat_schema(
       version
@@ -1467,10 +1498,10 @@ function writeBchatSchemaVersion(newVersion: number, db: BetterSqlite3.Database)
   ).run({ newVersion });
 }
 
-function updateBchatSchema(db: BetterSqlite3.Database) {
+function updateBchatSchema(db: Database) {
   const result = db
     .prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name='bchat_schema';`)
-    .get();
+    .get<any>();
 
   if (!result) {
     createBchatSchemaTable(db);
@@ -1487,21 +1518,21 @@ function updateBchatSchema(db: BetterSqlite3.Database) {
   }
 }
 
-function getBchatSchemaVersion(db: BetterSqlite3.Database) {
+function getBchatSchemaVersion(db: Database) {
   const result = db
     .prepare(
       `
     SELECT MAX(version) as version FROM bchat_schema;
     `
     )
-    .get();
+    .get<any>();
   if (!result || !result.version) {
     return 0;
   }
   return result.version;
 }
 
-function createBchatSchemaTable(db: BetterSqlite3.Database) {
+function createBchatSchemaTable(db: Database) {
   db.transaction(() => {
     db.exec(`
     CREATE TABLE bchat_schema(
@@ -1516,9 +1547,9 @@ function createBchatSchemaTable(db: BetterSqlite3.Database) {
     `);
   })();
 }
-let globalInstance: BetterSqlite3.Database | null = null;
+let globalInstance: Database | null = null;
 
-function assertGlobalInstance(): BetterSqlite3.Database {
+function assertGlobalInstance(): Database {
   if (!globalInstance) {
     throw new Error('globalInstance is not initialized.');
   }
@@ -1526,14 +1557,14 @@ function assertGlobalInstance(): BetterSqlite3.Database {
 }
 
 function assertGlobalInstanceOrInstance(
-  instance?: BetterSqlite3.Database | null
-): BetterSqlite3.Database {
+  instance?: Database | null
+): Database {
   // if none of them are initialized, throw
   if (!globalInstance && !instance) {
     throw new Error('neither globalInstance nor initialized is initialized.');
   }
   // otherwise, return which ever is true, priority to the global one
-  return globalInstance || (instance as BetterSqlite3.Database);
+  return globalInstance || (instance as Database);
 }
 
 function isInitialized(): boolean {
@@ -1543,7 +1574,7 @@ function isInitialized(): boolean {
 function tableExists(tableName: string): boolean {
   const row = assertGlobalInstance()
     .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = $name;")
-    .get({ name: tableName });
+    .get<any>({ name: tableName });
   return !!row && !!row.name;
 }
 
@@ -1706,14 +1737,14 @@ function removePasswordHash() {
   removeItemById(PASS_HASH_ID);
 }
 
-function getIdentityKeyById(id: string, instance: BetterSqlite3.Database) {
+function getIdentityKeyById(id: string, instance: Database) {
   return getById(IDENTITY_KEYS_TABLE, id, instance);
 }
 
 function getGuardNodes() {
   const nodes = assertGlobalInstance()
     .prepare(`SELECT ed25519PubKey FROM ${GUARD_NODE_TABLE};`)
-    .all();
+    .all<any>();
 
   if (!nodes) {
     return null;
@@ -1739,7 +1770,7 @@ function updateGuardNodes(nodes: Array<string>) {
   })();
 }
 
-function createOrUpdateItem(data: StorageItem, instance?: BetterSqlite3.Database) {
+function createOrUpdateItem(data: StorageItem, instance?: Database) {
   createOrUpdate(ITEMS_TABLE, data, instance);
 }
 function getItemById(id: string) {
@@ -1748,7 +1779,7 @@ function getItemById(id: string) {
 function getAllItems() {
   const rows = assertGlobalInstance()
     .prepare(`SELECT json FROM ${ITEMS_TABLE} ORDER BY id ASC;`)
-    .all();
+    .all<any>();
   return map(rows, row => jsonToObject(row.json));
 }
 function removeItemById(id: string) {
@@ -1756,7 +1787,7 @@ function removeItemById(id: string) {
   return;
 }
 
-function createOrUpdate(table: string, data: StorageItem, instance?: BetterSqlite3.Database) {
+function createOrUpdate(table: string, data: StorageItem, instance?: Database) {
   const { id } = data;
   if (!id) {
     throw new Error('createOrUpdate: Provided data did not have a truthy id');
@@ -1778,10 +1809,10 @@ function createOrUpdate(table: string, data: StorageItem, instance?: BetterSqlit
     });
 }
 
-function getById(table: string, id: string, instance?: BetterSqlite3.Database) {
+function getById(table: string, id: string, instance?: Database) {
   const row = assertGlobalInstanceOrInstance(instance)
     .prepare(`SELECT * FROM ${table} WHERE id = $id;`)
-    .get({
+    .get<any>({
       id,
     });
 
@@ -1815,7 +1846,7 @@ function removeById(table: string, id: string) {
 function getSwarmNodesForPubkey(pubkey: string) {
   const row = assertGlobalInstance()
     .prepare(`SELECT * FROM ${NODES_FOR_PUBKEY_TABLE} WHERE pubkey = $pubkey;`)
-    .get({
+    .get<any>({
       pubkey,
     });
 
@@ -1846,7 +1877,7 @@ function updateSwarmNodesForPubkey(pubkey: string, snodeEdKeys: Array<string>) {
 function getConversationCount() {
   const row = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${CONVERSATIONS_TABLE};`)
-    .get();
+    .get<any>();
   if (!row) {
     throw new Error(`getConversationCount: Unable to get count of ${CONVERSATIONS_TABLE}`);
   }
@@ -1854,7 +1885,7 @@ function getConversationCount() {
   return row['count(*)'];
 }
 
-function saveConversation(data: any, instance?: BetterSqlite3.Database) {
+function saveConversation(data: any, instance?: Database) {
   const { id, active_at, type, members, name, profileName } = data;
   assertGlobalInstanceOrInstance(instance)
     .prepare(
@@ -1891,7 +1922,7 @@ function saveConversation(data: any, instance?: BetterSqlite3.Database) {
     });
 }
 
-function updateConversation(data: any, instance?: BetterSqlite3.Database) {
+function updateConversation(data: any, instance?: Database) {
   const {
     id,
     // eslint-disable-next-line camelcase
@@ -1926,7 +1957,7 @@ function updateConversation(data: any, instance?: BetterSqlite3.Database) {
     });
 }
 
-function updateConversationAddress(data: any, instance?: BetterSqlite3.Database) {
+function updateConversationAddress(data: any, instance?: Database) {
   const {
     id,
     walletAddress,
@@ -1946,7 +1977,7 @@ function updateConversationAddress(data: any, instance?: BetterSqlite3.Database)
 
 // For use update incoming user wallet address to store in update converstation table 
 
-function updateWalletAddressInConversation(data: any, instance?: BetterSqlite3.Database) {
+function updateWalletAddressInConversation(data: any, instance?: Database) {
   const {
     id,
     // eslint-disable-next-line camelcase
@@ -1966,7 +1997,7 @@ function updateWalletAddressInConversation(data: any, instance?: BetterSqlite3.D
     });
 }
 
-function updateLRUCache(data: any, instance?: BetterSqlite3.Database) {
+function updateLRUCache(data: any, instance?: Database) {
   const {key} = data;
   const value=objectToJSON(data.value)
   const now = Date.now();
@@ -1979,7 +2010,7 @@ function updateLRUCache(data: any, instance?: BetterSqlite3.Database) {
 
     const totalRows = assertGlobalInstance().prepare(`
       SELECT COUNT(*) as count FROM ${LRU_CACHE_TABLE}
-    `).get().count;
+    `).get<any>().count;
     
     const overLimit = totalRows - MAX_ENTRIES;
     
@@ -1991,7 +2022,7 @@ function updateLRUCache(data: any, instance?: BetterSqlite3.Database) {
           ORDER BY accessed_at ASC
           LIMIT ?
         )
-      `).run(overLimit);
+      `).run([overLimit]);
     }
 }
 
@@ -2019,7 +2050,7 @@ function removeConversation(id: string | Array<string>) {
 function getConversationById(id: string) {
   const row = assertGlobalInstance()
     .prepare(`SELECT * FROM ${CONVERSATIONS_TABLE} WHERE id = $id;`)
-    .get({
+    .get<any>({
       id,
     });
 
@@ -2032,7 +2063,7 @@ function getConversationById(id: string) {
 function getAllConversations() {
   const rows = assertGlobalInstance()
     .prepare(`SELECT json FROM ${CONVERSATIONS_TABLE} ORDER BY id ASC;`)
-    .all();
+    .all<any>();
   return map(rows, row => jsonToObject(row.json));
 }
 
@@ -2044,7 +2075,7 @@ function getAllOpenGroupV1Conversations() {
       id LIKE 'publicChat:1@%'
      ORDER BY id ASC;`
     )
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -2060,7 +2091,7 @@ function getAllOpenGroupV2Conversations() {
       id LIKE 'publicChat:__%@%'
      ORDER BY id ASC;`
     )
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -2072,7 +2103,7 @@ function getPubkeysInPublicConversation(conversationId: string) {
       conversationId = $conversationId
      ORDER BY received_at DESC LIMIT ${MAX_PUBKEYS_MEMBERS};`
     )
-    .all({
+    .all<any>({
       conversationId,
     });
 
@@ -2087,7 +2118,7 @@ function getAllGroupsInvolvingId(id: string) {
       members LIKE $id
      ORDER BY id ASC;`
     )
-    .all({
+    .all<any>({
       id: `%${id}%`,
     });
 
@@ -2105,7 +2136,7 @@ function searchConversations(query: string) {
      ORDER BY active_at DESC
      LIMIT $limit`
     )
-    .all({
+    .all<any>({
       name: `%${query}%`,
       profileName: `%${query}%`,
       limit: 50,
@@ -2134,7 +2165,7 @@ function searchMessages(query: string, limit: number) {
     ${orderByMessageCoalesceClause}
     LIMIT $limit;`
     )
-    .all({
+    .all<any>({
       query,
       limit,
     });
@@ -2159,7 +2190,7 @@ function searchMessagesInConversation(query: string, conversationId: string, lim
     ${orderByMessageCoalesceClause}
       LIMIT $limit;`
     )
-    .all({
+    .all<any>({
       query,
       conversationId,
       limit: limit || 100,
@@ -2174,7 +2205,7 @@ function searchMessagesInConversation(query: string, conversationId: string, lim
 function getMessageCount() {
   const row = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE};`)
-    .get();
+    .get<any>();
 
   if (!row) {
     throw new Error(`getMessageCount: Unable to get count of ${MESSAGES_TABLE}`);
@@ -2368,7 +2399,7 @@ function saveMessages(arrayOfMessages: Array<any>) {
   })();
 }
 
-function removeMessage(id: string, instance?: BetterSqlite3.Database) {
+function removeMessage(id: string, instance?: Database) {
   if (!Array.isArray(id)) {
     assertGlobalInstanceOrInstance(instance)
       .prepare(`DELETE FROM ${MESSAGES_TABLE} WHERE id = $id;`)
@@ -2407,7 +2438,7 @@ function getMessageIdsFromServerIds(serverIds: Array<string | number>, conversat
     serverId IN (${validIds.join(',')}) AND
     conversationId = $conversationId;`
     )
-    .all({
+    .all<any>({
       conversationId,
     });
 
@@ -2419,7 +2450,7 @@ function getMessageIdsFromServerIds(serverIds: Array<string | number>, conversat
 function getMessageById(id: string) {
   const row = assertGlobalInstance()
     .prepare(`SELECT * FROM ${MESSAGES_TABLE} WHERE id = $id;`)
-    .get({
+    .get<any>({
       id,
     });
 
@@ -2439,7 +2470,7 @@ function getMessageBySenderAndSentAt({ source, sentAt }: { source: string; sentA
       source = $source AND
       sent_at = $sent_at;`
     )
-    .all({
+    .all<any>({
       source,
       sent_at: sentAt,
     });
@@ -2452,7 +2483,7 @@ function getMessageBySenderAndSentAt({ source, sentAt }: { source: string; sentA
 function getMessageByServerId(serverId: number) {
   const row = assertGlobalInstance()
     .prepare(`SELECT * FROM ${MESSAGES_TABLE} WHERE serverId = $serverId;`)
-    .get({
+    .get<any>({
       serverId,
     });
 
@@ -2472,7 +2503,7 @@ function getMessagesCountBySender({ source }: { source: string }) {
       `SELECT count(*) FROM ${MESSAGES_TABLE} WHERE
       source = $source;`
     )
-    .get({
+    .get<any>({
       source,
     });
   if (!count) {
@@ -2495,7 +2526,7 @@ function getMessageBySenderAndTimestamp({
       source = $source AND
       sent_at = $timestamp;`
     )
-    .all({
+    .all<any>({
       source,
       timestamp,
     });
@@ -2513,7 +2544,7 @@ function filterAlreadyFetchedOpengroupMessage(
       source = $sender AND
       serverTimestamp = $serverTimestamp;`
       )
-      .all({
+      .all<any>({
         sender: msg.sender,
         serverTimestamp: msg.serverTimestamp,
       });
@@ -2535,7 +2566,7 @@ function getUnreadByConversation(conversationId: string) {
       conversationId = $conversationId
      ORDER BY received_at DESC;`
     )
-    .all({
+    .all<any>({
       unread: 1,
       conversationId,
     });
@@ -2551,7 +2582,7 @@ function getUnreadCountByConversation(conversationId: string) {
     conversationId = $conversationId
     ORDER BY received_at DESC;`
     )
-    .get({
+    .get<any>({
       unread: 1,
       conversationId,
     });
@@ -2572,7 +2603,7 @@ function getMessageCountByType(conversationId: string, type = '%') {
       WHERE conversationId = $conversationId
       AND type = $type;`
     )
-    .get({
+    .get<any>({
       conversationId,
       type,
     });
@@ -2622,7 +2653,7 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
           ORDER BY cte.row_number;
           `
         )
-        .all({
+        .all<any>({
           conversationId,
           messageId: messageId || firstUnread,
           limit:
@@ -2652,7 +2683,7 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
     LIMIT $limit;
     `
     )
-    .all({
+    .all<any>({
       conversationId,
       limit,
     });
@@ -2674,7 +2705,7 @@ function getLastMessagesByConversation(conversationId: string, limit: number) {
     LIMIT $limit;
     `
     )
-    .all({
+    .all<any>({
       conversationId,
       limit,
     });
@@ -2694,7 +2725,7 @@ function getOldestMessageInConversation(conversationId: string) {
     LIMIT $limit;
     `
     )
-    .all({
+    .all<any>({
       conversationId,
       limit: 1,
     });
@@ -2710,7 +2741,7 @@ function hasConversationOutgoingMessage(conversationId: string) {
       type IS 'outgoing'
     `
     )
-    .get({
+    .get<any>({
       conversationId,
     });
   if (!row) {
@@ -2731,7 +2762,7 @@ function getFirstUnreadMessageIdInConversation(conversationId: string) {
     LIMIT 1;
     `
     )
-    .all({
+    .all<any>({
       conversationId,
       unread: 1,
     });
@@ -2759,7 +2790,7 @@ function getFirstUnreadMessageWithMention(conversationId: string, ourpubkey: str
     LIMIT 1;
     `
     )
-    .all({
+    .all<any>({
       conversationId,
       unread: 1,
       likeMatch,
@@ -2778,7 +2809,7 @@ function getMessagesBySentAt(sentAt: number) {
      WHERE sent_at = $sent_at
      ORDER BY received_at DESC;`
     )
-    .all({
+    .all<any>({
       sent_at: sentAt,
     });
 
@@ -2793,7 +2824,7 @@ function getLastHashBySnode(convoId: string, snode: string, namespace: number) {
     .prepare(
       `SELECT * FROM ${LAST_HASHES_TABLE} WHERE snode = $snode AND id = $id AND namespace = $namespace;`
     )
-    .get({
+    .get<any>({
       snode,
       id: convoId,
       namespace,
@@ -2809,7 +2840,7 @@ function getLastHashBySnode(convoId: string, snode: string, namespace: number) {
 function getSeenMessagesByHashList(hashes: Array<string>) {
   const rows = assertGlobalInstance()
     .prepare(`SELECT * FROM seenMessages WHERE hash IN ( ${hashes.map(() => '?').join(', ')} );`)
-    .all(hashes);
+    .all<any>(hashes);
 
   return map(rows, row => row.hash);
 }
@@ -2824,7 +2855,7 @@ function getExpiredMessages() {
       expires_at <= $expires_at
      ORDER BY expires_at ASC;`
     )
-    .all({
+    .all<any>({
       expires_at: now,
     });
 
@@ -2843,7 +2874,7 @@ function getOutgoingWithoutExpiresAt() {
     ORDER BY expires_at ASC;
   `
     )
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -2858,7 +2889,7 @@ function getNextExpiringMessage() {
     LIMIT 1;
   `
     )
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -2935,7 +2966,7 @@ function updateUnprocessedWithData(id: string, data: any = {}) {
 function getUnprocessedById(id: string) {
   const row = assertGlobalInstance()
     .prepare('SELECT * FROM unprocessed WHERE id = $id;')
-    .get({
+    .get<any>({
       id,
     });
 
@@ -2945,7 +2976,7 @@ function getUnprocessedById(id: string) {
 function getUnprocessedCount() {
   const row = assertGlobalInstance()
     .prepare('SELECT count(*) from unprocessed;')
-    .get();
+    .get<any>();
 
   if (!row) {
     throw new Error('getMessageCount: Unable to get count of unprocessed');
@@ -2957,7 +2988,7 @@ function getUnprocessedCount() {
 function getAllUnprocessed() {
   const rows = assertGlobalInstance()
     .prepare('SELECT * FROM unprocessed ORDER BY timestamp ASC;')
-    .all();
+    .all<any>();
 
   return rows;
 }
@@ -2996,7 +3027,7 @@ function getNextAttachmentDownloadJobs(limit: number) {
     ORDER BY timestamp DESC
     LIMIT $limit;`
     )
-    .all({
+    .all<any>({
       limit,
       timestamp,
     });
@@ -3086,7 +3117,7 @@ function removeAll() {
         // legacy table names that may or may not exist
         const exists = db
           .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = $name;")
-          .get({ name: tbl });
+          .get<any>({ name: tbl });
         if (!exists) return;
       } else if (!tableExists(tbl)) {
         return;
@@ -3129,9 +3160,9 @@ function getMessagesWithVisualMediaAttachments(conversationId: string, limit?: n
      ORDER BY received_at DESC
      LIMIT $limit;`
     )
-    .all({
+    .all<any>({
       conversationId,
-      limit,
+      limit: limit ?? null,
     });
 
   return map(rows, row => jsonToObject(row.json));
@@ -3146,7 +3177,7 @@ function getMessagesWithFileAttachments(conversationId: string, limit: number) {
      ORDER BY received_at DESC
      LIMIT $limit;`
     )
-    .all({
+    .all<any>({
       conversationId,
       limit,
     });
@@ -3240,7 +3271,7 @@ function removeKnownAttachments(allAttachments: any) {
        ORDER BY id ASC
        LIMIT $chunkSize;`
       )
-      .all({
+      .all<any>({
         id,
         chunkSize,
       });
@@ -3282,7 +3313,7 @@ function removeKnownAttachments(allAttachments: any) {
        ORDER BY id ASC
        LIMIT $chunkSize;`
       )
-      .all({
+      .all<any>({
         id,
         chunkSize,
       });
@@ -3310,16 +3341,16 @@ function removeKnownAttachments(allAttachments: any) {
 
 function getMessagesCountByConversation(
   conversationId: string,
-  instance?: BetterSqlite3.Database | null
+  instance?: Database | null
 ): number {
   const row = assertGlobalInstanceOrInstance(instance)
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE} WHERE conversationId = $conversationId;`)
-    .get({ conversationId });
+    .get<any>({ conversationId });
 
   return row ? row['count(*)'] : 0;
 }
 
-function getAllClosedGroupConversations(instance?: BetterSqlite3.Database) {
+function getAllClosedGroupConversations(instance?: Database) {
   const rows = assertGlobalInstanceOrInstance(instance)
     .prepare(
       `SELECT json FROM ${CONVERSATIONS_TABLE} WHERE
@@ -3327,7 +3358,7 @@ function getAllClosedGroupConversations(instance?: BetterSqlite3.Database) {
       id NOT LIKE 'publicChat:%'
       ORDER BY id ASC;`
     )
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -3339,7 +3370,7 @@ function remove05PrefixFromStringIfNeeded(str: string) {
   return str;
 }
 
-function updateExistingClosedGroupV1ToClosedGroupV2(db: BetterSqlite3.Database) {
+function updateExistingClosedGroupV1ToClosedGroupV2(db: Database) {
   // the migration is called only once, so all current groups not being Social groups are v1 closed group.
   const allClosedGroupV1 = getAllClosedGroupConversations(db) || [];
 
@@ -3394,8 +3425,8 @@ function getAllEncryptionKeyPairsForGroupRaw(groupPublicKey: string | PubKey) {
     .prepare(
       `SELECT * FROM ${CLOSED_GROUP_V2_KEY_PAIRS_TABLE} WHERE groupPublicKey = $groupPublicKey ORDER BY timestamp ASC;`
     )
-    .all({
-      groupPublicKey: pubkeyAsString,
+    .all<any>({
+      groupPublicKey: pubkeyAsString as string,
     });
 
   return rows;
@@ -3412,7 +3443,7 @@ function getLatestClosedGroupEncryptionKeyPair(groupPublicKey: string) {
 function addClosedGroupEncryptionKeyPair(
   groupPublicKey: string,
   keypair: object,
-  instance?: BetterSqlite3.Database
+  instance?: Database
 ) {
   const timestamp = Date.now();
 
@@ -3451,7 +3482,7 @@ function removeAllClosedGroupEncryptionKeyPairs(groupPublicKey: string) {
 function getAllV2OpenGroupRooms() {
   const rows = assertGlobalInstance()
     .prepare(`SELECT json FROM ${OPEN_GROUP_ROOMS_V2_TABLE};`)
-    .all();
+    .all<any>();
 
   return map(rows, row => jsonToObject(row.json));
 }
@@ -3459,7 +3490,7 @@ function getAllV2OpenGroupRooms() {
 function getV2OpenGroupRoom(conversationId: string) {
   const row = assertGlobalInstance()
     .prepare(`SELECT * FROM ${OPEN_GROUP_ROOMS_V2_TABLE} WHERE conversationId = $conversationId;`)
-    .get({
+    .get<any>({
       conversationId,
     });
 
@@ -3475,7 +3506,7 @@ function getV2OpenGroupRoomByRoomId(serverUrl: string, roomId: string) {
     .prepare(
       `SELECT * FROM ${OPEN_GROUP_ROOMS_V2_TABLE} WHERE serverUrl = $serverUrl AND roomId = $roomId;`
     )
-    .get({
+    .get<any>({
       serverUrl,
       roomId,
     });
@@ -3526,7 +3557,7 @@ function getEntriesCountInTable(tbl: string) {
   try {
     const row = assertGlobalInstance()
       .prepare(`SELECT count(*) from ${tbl};`)
-      .get();
+      .get<any>();
     return row['count(*)'];
   } catch (e) {
     console.warn(e);
@@ -3576,13 +3607,13 @@ function cleanUpUnusedNodeForKeyEntries() {
         `SELECT id FROM ${CONVERSATIONS_TABLE} WHERE id NOT LIKE 'publicChat:1@%'
     `
       )
-      .all()
+      .all<any>()
       .map(m => m.id) || [];
 
   const allEntriesInSnodeForPubkey =
     assertGlobalInstance()
       .prepare(`SELECT pubkey FROM ${NODES_FOR_PUBKEY_TABLE};`)
-      .all()
+      .all<any>()
       .map(m => m.pubkey) || [];
 
   const swarmUnused = difference(allEntriesInSnodeForPubkey, allIdsToKeep);
@@ -3667,7 +3698,7 @@ function cleanUpOldOpengroups() {
           .prepare(
             `SELECT count(*) from ${MESSAGES_TABLE} WHERE serverTimestamp <= $serverTimestamp AND conversationId = $conversationId;`
           )
-          .get({ conversationId: convoId, serverTimestamp: limitTimestamp })['count(*)'];
+          .get<any>({ conversationId: convoId, serverTimestamp: limitTimestamp })['count(*)'];
         const start = Date.now();
 
         assertGlobalInstance()
@@ -3699,7 +3730,7 @@ function cleanUpOldOpengroups() {
         `
     SELECT id FROM ${CONVERSATIONS_TABLE} WHERE type = 'private' AND (active_at IS NULL OR active_at = 0)`
       )
-      .all();
+      .all<any>();
 
     const ourPubkey = ourNumber.value.split('.')[0];
 
@@ -3742,7 +3773,7 @@ function cleanUpOldOpengroups() {
 function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
   const convoBeforeCount = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${CONVERSATIONS_TABLE};`)
-    .get()['count(*)'];
+    .get<any>()['count(*)'];
 
   const lipsum =
     // eslint:disable-next-line max-line-length
@@ -3781,7 +3812,7 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
 
   const msgBeforeCount = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE};`)
-    .get()['count(*)'];
+    .get<any>()['count(*)'];
 
   console.info('==== fillWithTestData ====');
   console.info({
@@ -3860,11 +3891,11 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
 
   const convoAfterCount = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${CONVERSATIONS_TABLE};`)
-    .get()['count(*)'];
+    .get<any>()['count(*)'];
 
   const msgAfterCount = assertGlobalInstance()
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE};`)
-    .get()['count(*)'];
+    .get<any>()['count(*)'];
 
   console.info({ convoAfterCount, msgAfterCount });
   return convosIdsAdded;
@@ -3902,7 +3933,7 @@ function saveRecipientAddress(data: any) {
 
 //   const row = assertGlobalInstance()
 //   .prepare(`SELECT * FROM ${RECIPIENT_ADDRESS} WHERE address = $address;`)
-//   .get({
+//   .get<any>({
 //     address
 //   });
 
@@ -3916,7 +3947,7 @@ function getRecipientAddress(tx_hash:any)
 
   const row = assertGlobalInstance()
   .prepare(`SELECT * FROM ${RECIPIENT_ADDRESS} WHERE tx_hash = $tx_hash;`)
-  .get({
+  .get<any>({
     tx_hash,
   });  
   if (!row) {
@@ -3930,11 +3961,11 @@ function getLRUCache(key:any)
   const row = assertGlobalInstance()
   .prepare(`
     SELECT value FROM ${LRU_CACHE_TABLE} WHERE key = $key
-  `).get({key});
+  `).get<any>({key});
   if (row) {
     // Update access time
     assertGlobalInstance().prepare(`UPDATE ${LRU_CACHE_TABLE} SET accessed_at = ? WHERE key = ?`)
-      .run(Date.now(), key);
+      .run([Date.now(), key]);
     return jsonToObject(row.value);
   }
   return null;

@@ -19,7 +19,7 @@
     "start-dev": "cross-env NODE_ENV=development NODE_APP_INSTANCE=devprod$MULTI electron .",
     "build-all": "yarn clean && yarn protobuf && yarn sass && tsc && yarn build:worker",
     "build-release": "run-script-os",
-    "build-release-non-linux": "yarn generate && cross-env SIGNAL_ENV=production electron-builder --config.extraMetadata.environment=production --publish=never --config.directories.output=release",
+    "build-release-non-linux": "yarn build-all && cross-env SIGNAL_ENV=production electron-builder --config.extraMetadata.environment=production --publish=never --config.directories.output=release",
     "build-release:win32": "yarn build-release-non-linux",
     "build-release:macos": "yarn build-release-non-linux",
     "build-release:linux": "yarn sedtoDeb; yarn build-release-non-linux && yarn sedtoAppImage && yarn build-release-non-linux && yarn sedtoDeb",
@@ -52,7 +52,7 @@
     "@lexical/selection": "^0.42.0",
     "@lexical/utils": "^0.42.0",
     "@reduxjs/toolkit": "^1.4.0",
-    "@signalapp/better-sqlite3": "8.4.3",
+    "@signalapp/sqlcipher": "^4.1.0",
     "@types/portscanner": "^2.1.1",
     "@types/promise-queue": "^2.2.0",
     "abort-controller": "3.0.0",
@@ -134,7 +134,6 @@
     "@electron/notarize": "^2.3.2",
     "@playwright/test": "1.16.3",
     "@types/backbone": "1.4.2",
-    "@types/better-sqlite3": "7.4.0",
     "@types/blueimp-load-image": "5.14.4",
     "@types/buffer-crc32": "^0.2.0",
     "@types/bunyan": "^1.8.8",
@@ -221,7 +220,7 @@
     "webpack-cli": "^5.0.1"
   },
   "engines": {
-    "node": "18.15.0"
+    "node": "24.18.0"
   },
   "resolutions": {
     "minimist": "^1.2.6",
@@ -307,7 +306,7 @@
       ]
     },
     "asarUnpack": [
-      "node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node",
+      "node_modules/@signalapp/sqlcipher/prebuilds/${platform}-${arch}/*.node",
       "ts/mains/main_node.js",
       "ts/webworker/workers/node/**/*.js"
     ],
@@ -370,10 +369,8 @@
       "!build/*.js",
       "build/afterPackHook.js",
       "build/launcher-script.sh",
-      "!node_modules/@signalapp/better-sqlite3/deps/*",
-      "!node_modules/@signalapp/better-sqlite3/src/*",
-      "!node_modules/@signalapp/better-sqlite3/build/Release/obj/*",
-      "node_modules/@signalapp/better-sqlite3/build/Release/better_sqlite3.node",
+      "!node_modules/@signalapp/sqlcipher/prebuilds/*",
+      "node_modules/@signalapp/sqlcipher/prebuilds/${platform}-${arch}/*.node",
       "!dev-app-update.yml"
     ]
   }
