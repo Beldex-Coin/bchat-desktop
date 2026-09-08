@@ -238,7 +238,7 @@ const AvatarHeader = (props: {
   return (
     <span className="module-conversation-header__avatar">
         <Avatar
-          size={AvatarSize.L}
+          size={AvatarSize.M}
           onAvatarClick={() => {
             // do not allow right panel to appear if another button is shown on the BchatConversation
             if (onAvatarClick && !showBackButton) {

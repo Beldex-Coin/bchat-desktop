@@ -52,12 +52,14 @@ export const LeftPaneSectionContainer = styled.div`
   }
 
   .sub-menu-box-wrapper {
+    /* NOIR: the menu grows out of the rail — flush against its edge,
+       aligned with the trigger, no hover gap to fall through */
     position: fixed;
-    left: 100px;
-    top: 82px;
+    left: 95px;
+    top: 96px;
     z-index: 9;
 
-    /* NOIR: drop the speech-bubble connector — the menu is a clean plate */
+    /* drop the speech-bubble connector — the plate meets the rail directly */
     > div:first-child {
       display: none;
     }
@@ -65,7 +67,8 @@ export const LeftPaneSectionContainer = styled.div`
     .sub-menu-box {
       background-color: var(--color-context-menu-bg);
       border: 1px solid var(--color-settings-right-pane-option-border);
-      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+      border-left: none; /* merged with the rail edge */
+      box-shadow: 12px 18px 60px rgba(0, 0, 0, 0.6);
       clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 
       padding: 6px;

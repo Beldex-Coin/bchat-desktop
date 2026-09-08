@@ -275,6 +275,17 @@ textarea {
   outline-offset: 1px;
 }
 
+// …except where a bordered wrapper already carries the focus state —
+// one green line, never two
+.inbox .bchat-id-editable textarea:focus-visible,
+.inbox .bchat-id-editable textarea:focus,
+.inbox .composition-container textarea:focus-visible,
+.inbox .bchat-search-input input:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 // ---------------------------------------------------------------
 // 8. MODALS — chamfered top-right, hairline border, hard shadow.
 // ---------------------------------------------------------------
@@ -818,6 +829,153 @@ textarea {
 
     &:hover {
       border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+  }
+}
+
+// ---------------------------------------------------------------
+// 19. PROFILE DIALOG — the identity card.
+// ---------------------------------------------------------------
+
+.edit-profile-dialog {
+  // id / address rows are data plates
+  .bchat-id-section-display {
+    border-radius: 0 !important;
+    background-color: var(--color-input-background) !important;
+    border: 1px solid var(--color-settings-right-pane-option-border);
+    box-shadow: none !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    color: var(--color-text-accent) !important;
+    align-items: center;
+    padding: 10px 12px !important;
+    min-height: 52px !important;
+
+    .profile-value {
+      font-family: $bchat-font-mono;
+      font-size: 11px !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+    }
+  }
+
+  .bchat-id-section-display-icon {
+    border-radius: 0 !important;
+    background-color: var(--color-cell-background) !important;
+    border: 1px solid var(--color-settings-right-pane-option-border);
+
+    &:hover {
+      border-color: var(--color-accent);
+    }
+  }
+
+  // display name
+  .profile-name-uneditable p {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .profile-name input {
+    border-radius: 0 !important;
+    border: 1px solid var(--color-settings-right-pane-option-border) !important;
+    font-family: $bchat-font-default;
+
+    &:focus {
+      border-color: var(--color-accent) !important;
+      outline: none !important;
+    }
+  }
+
+  // link-BNS is the brand CTA: white block, mono label
+  .link_bns_Btn {
+    border-radius: 0;
+    background-color: var(--color-sent-message-background);
+    color: var(--color-sent-message-text);
+    font-family: $bchat-font-mono;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    &:hover {
+      background-color: var(--color-accent);
+      color: #0a0a0a;
+    }
+  }
+
+  .hintTxt {
+    font-family: $bchat-font-mono;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--color-HintMessageText);
+    text-transform: uppercase;
+  }
+
+  .bnsVerfiedTxt {
+    font-family: $bchat-font-mono;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent) !important;
+  }
+
+  // QR affordance on the avatar: square white chip
+  .avatar-center-inner .qr-view-button {
+    border-radius: 0 !important;
+    clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+  }
+
+  // QR panel sits on a white plate
+  .qr-image,
+  .qr-box-view {
+    background: #ffffff;
+    border-radius: 0 !important;
+    border: 1px solid var(--color-settings-right-pane-option-border);
+    padding: 8px;
+  }
+}
+
+// ---------------------------------------------------------------
+// 20. CONVERSATION TOP BAR — identity plate + data line.
+// ---------------------------------------------------------------
+
+.module-conversation-header {
+  padding: 6px 8px;
+
+  &__title {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+
+    // long BChat IDs read as data, not as a display headline
+    .receipient_name {
+      display: inline-block;
+      max-width: 46vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
+
+    // BNS tag: green-bordered chip instead of the white pill
+    .module-contact-name-bns-tag {
+      background-color: transparent !important;
+      color: var(--color-accent) !important;
+      border: 1px solid var(--color-accent);
+      font-family: $bchat-font-mono;
+      font-weight: 700 !important;
+      font-size: 9px !important;
+      letter-spacing: 0.12em;
+      padding: 2px 6px;
+      border-radius: 0 !important;
+    }
+  }
+
+  // action icons: quiet, green on hover
+  .bchat-icon-button {
+    color: var(--color-action-btn-icon);
+
+    &:hover {
       color: var(--color-accent);
     }
   }
