@@ -1199,6 +1199,77 @@ textarea {
   text-align: left;
 }
 
+// placeholder surfaces center their content on the field
+.conversation.placeholder .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+}
+
+// first-contact prompt (empty state with no conversations yet)
+.noir-first-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 470px;
+  max-width: 84%;
+
+  .noir-id-field {
+    width: 100%;
+    margin-top: 8px;
+    background: var(--color-input-background);
+    border: 1px solid var(--color-settings-right-pane-option-border);
+    padding: 4px 8px;
+
+    &:focus-within {
+      border-color: var(--color-accent);
+    }
+
+    .bchat-id-editable {
+      padding: 10px;
+      background: transparent;
+
+      textarea {
+        width: 100%;
+        font-family: $bchat-font-mono;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+
+        &::placeholder {
+          font-family: $bchat-font-mono;
+          font-size: 11px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--color-HintMessageText);
+        }
+      }
+    }
+  }
+
+  // the CTA is the white brand block here too
+  .bchat-button.default.primary {
+    background: var(--color-sent-message-background);
+    color: var(--color-sent-message-text);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    &:hover {
+      background: var(--color-accent);
+      color: #0a0a0a;
+    }
+  }
+
+  &__foot {
+    font-family: $bchat-font-mono;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    color: var(--color-HintMessageText);
+    margin-top: 26px;
+    user-select: none;
+  }
+}
+
 // the empty conversation surface — nothing, on brand
 .noir-void {
   display: flex;

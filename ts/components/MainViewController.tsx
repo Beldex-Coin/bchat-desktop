@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { ToastUtils } from '../bchat/utils';
 import { createClosedGroup as createClosedGroupV2 } from '../receiver/closedGroups';
 import { VALIDATION } from '../bchat/constants';
-import SmileSymbolIcon from './icon/SmileSymbolIcon';
 // import { BchatInput } from './basic/BchatInput';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 import { SpacerLG } from './basic/Text';
@@ -13,7 +12,6 @@ import { getConversationController } from '../bchat/conversations';
 import { ConversationTypeEnum } from '../models/conversation';
 import { openConversationWithMessages } from '../state/ducks/conversations';
 import { SNodeAPI } from '../bchat/apis/snode_api';
-import styled from 'styled-components';
 
 export class MessageView extends React.Component {
   public render() {
@@ -93,50 +91,49 @@ export const AddNewContactInEmptyConvo = () => {
       }
     }
   }
+  // NOIR: no illustration — first contact is a terminal prompt on the field.
   return (
     <div className="conversation placeholder">
       <div className="conversation-header" />
       <div className="container">
-        <div className="content bchat-full-logo">
-          <div className="bchat-text-logo"></div>
-          <StartConvoWrapper>
-            <div className="bchat-text">
-              {window.i18n('startConversation')} <SmileSymbolIcon />
-            </div>
-            <SpacerLG />
-            {/* <SpacerLG /> */}
-            <div>
-              <BchatIdEditable
-                editable={true}
-                placeholder={'Enter BChat ID or BNS'}
-                value={bchatId}
-                isGroup={false}
-                maxLength={66}
-                onChange={setBchatId}
-                dataTestId="new-closed-group-name"
-              />
-            </div>
-            <SpacerLG />
-            <div>
-              <BchatButton
-                text={'Let’s Bchat'}
-                buttonType={BchatButtonType.Default}
-                buttonColor={BchatButtonColor.Primary}
-                onClick={() => handleMessageButtonClick()}
-              />
-            </div>
-          </StartConvoWrapper>
+        <div className="noir-first-contact">
+          <div className="noir-step-line">FIRST CONTACT // DIRECT MESSAGE</div>
+          <h1 className="noir-onb-h">
+            Start a new chat<span className="noir-cursor">_</span>
+          </h1>
+          <p className="noir-onb-p">
+            Reach anyone by their BChat ID or BNS name. No phone number. No email.
+          </p>
+          <SpacerLG />
+          <label className="noir-data-label">BCHAT ID / BNS NAME</label>
+          <div className="noir-id-field">
+            <BchatIdEditable
+              editable={true}
+              placeholder={'ENTER A BCHAT ID OR BNS NAME'}
+              value={bchatId}
+              isGroup={false}
+              maxLength={66}
+              onChange={setBchatId}
+              dataTestId="new-closed-group-name"
+            />
+          </div>
+          <SpacerLG />
+          <div>
+            <BchatButton
+              text={'Start chat'}
+              buttonType={BchatButtonType.Default}
+              buttonColor={BchatButtonColor.Primary}
+              onClick={() => handleMessageButtonClick()}
+            />
+          </div>
+          <div className="noir-first-contact__foot">
+            END-TO-END ENCRYPTED // ROUTED OVER THE BELDEX NETWORK
+          </div>
         </div>
       </div>
     </div>
   );
 };
-const StartConvoWrapper = styled.div`
-  width: 24vw;
-  max-width: 470px;
-  // margin-left: 43px;
-  margin-left: 100px;
-`;
 // /////////////////////////////////////
 // //////////// Management /////////////
 // /////////////////////////////////////
