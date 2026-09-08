@@ -597,6 +597,48 @@ textarea {
   padding-top: 4px;
 }
 
+// filter chips under the search bar — mono lenses on the list
+.noir-filters {
+  display: flex;
+  gap: 8px;
+  padding: 12px 18px 8px;
+}
+
+.noir-chip {
+  font-family: $bchat-font-mono;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--color-last-msg-txt);
+  border: 1px solid var(--color-borderBottomColor);
+  padding: 5px 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--default-duration), border-color var(--default-duration),
+    background-color var(--default-duration);
+
+  &:hover {
+    border-color: var(--color-settings-right-pane-option-border);
+    color: var(--color-text);
+  }
+
+  &.on {
+    color: #0a0a0a;
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    font-weight: 700;
+  }
+}
+
+.noir-filter-empty {
+  font-family: $bchat-font-mono;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--color-HintMessageText);
+  text-align: center;
+  padding: 40px 20px;
+  user-select: none;
+}
+
 // ---------------------------------------------------------------
 // 16b. PANE HEADER — CHATS wordmark + the white new-chat block.
 // ---------------------------------------------------------------

@@ -39,11 +39,60 @@ export interface Props {
   conversationRequestsUnread: any;
 }
 
-export class LeftPaneMessageSection extends React.Component<Props> {
+// NOIR: chat-list filters — every conversation kind gets its own lens.
+type ChatFilter = 'all' | 'dms' | 'groups' | 'social';
+
+export class LeftPaneMessageSection extends React.Component<Props, { chatFilter: ChatFilter }> {
   public constructor(props: Props) {
     super(props);
+    this.state = { chatFilter: 'all' };
 
     autoBind(this);
+  }
+
+  public renderFilters(): JSX.Element {
+    const { chatFilter } = this.state;
+    const chips: Array<{ key: ChatFilter; label: string }> = [
+      { key: 'all', label: 'ALL' },
+      { key: 'dms', label: 'DMS' },
+      { key: 'groups', label: 'GROUPS' },
+      { key: 'social', label: 'SOCIAL' },
+    ];
+    return (
+      <div className="noir-filters">
+        {chips.map(chip => (
+          <div
+            key={chip.key}
+            role="button"
+            className={classNames('noir-chip', chatFilter === chip.key && 'on')}
+            onClick={() => {
+              this.setState({ chatFilter: chip.key });
+            }}
+          >
+            {chip.label}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  private filterConversations(
+    conversations: Array<ConversationListItemProps>
+  ): Array<ConversationListItemProps> {
+    const { chatFilter } = this.state;
+    if (chatFilter === 'all') {
+      return conversations;
+    }
+    return conversations.filter((convo: any) => {
+      if (chatFilter === 'dms') {
+        return convo.type === 'private';
+      }
+      if (chatFilter === 'groups') {
+        return convo.type === 'group' && !convo.isPublic;
+      }
+      // social
+      return Boolean(convo.isPublic);
+    });
   }
 
   // public renderRow = ({ index, key, style }: RowRendererParamsType): JSX.Element | null => {
@@ -75,6 +124,8 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       throw new Error('render: must provided conversations if no search results are provided');
     }
 
+    const filteredConversations = this.filterConversations(conversations);
+
     // const length = conversations.length;
     const listKey = 0;
 
@@ -99,7 +150,10 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           )}
         </AutoSizer>
    */}
-        {conversations.map((item, key) => this.renderRow(item, key))}
+        {filteredConversations.map((item, key) => this.renderRow(item, key))}
+        {filteredConversations.length === 0 && (
+          <div className="noir-filter-empty">NOTHING HERE // TRY ANOTHER FILTER</div>
+        )}
       </div>
     );
 
@@ -147,6 +201,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
         {/* {conversations?.length !== 0 && */}
         <BchatSearchInput />
         {/* } */}
+        {!searchResults && this.renderFilters()}
 
         {!searchResults && (
           <MessageRequestsBanner
