@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 export type BchatThemeGlobals = {
   '--font-default': string;
   '--font-accent': string;
+  '--font-display': string;
   '--font-mono': string;
   '--font-size-xs': string;
   '--font-size-sm': string;
@@ -16,9 +17,10 @@ export type BchatThemeGlobals = {
 };
 
 export const BCHAT_THEME_GLOBALS: BchatThemeGlobals = {
-  '--font-default': 'Poppins',
-  '--font-accent': 'Loor',
-  '--font-mono': 'SpaceMono',
+  '--font-default': "'ChakraPetch', 'Poppins', sans-serif",
+  '--font-accent': "'Michroma', 'Loor', sans-serif",
+  '--font-display': "'Michroma', 'Poppins', sans-serif",
+  '--font-mono': "'SpaceMono', monospace",
   '--font-size-xs': '11px',
   '--font-size-sm': '13px',
   '--font-size-md': '15px',

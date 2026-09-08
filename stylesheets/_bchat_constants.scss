@@ -2,8 +2,16 @@
 // /////////////////// Fonts ////////////////////
 // //////////////////////////////////////////////
 
-$bchat-font-default: 'Poppins';
-$bchat-font-poppins-bold: 'Poppins';
+// NOIR PROTOCOL type system:
+//   display — Michroma (squared brand face, headings/labels)
+//   ui      — Chakra Petch (all running UI text; Poppins kept as non-latin fallback)
+//   mono    — SpaceMono (data: timestamps, ids, seeds, routes)
+$bchat-font-poppins: 'Poppins';
+$bchat-font-chakra: 'ChakraPetch';
+$bchat-font-michroma: 'Michroma';
+$bchat-font-default: 'ChakraPetch', 'Poppins', sans-serif;
+$bchat-font-display: 'Michroma', 'Poppins', sans-serif;
+$bchat-font-poppins-bold: 'ChakraPetch', 'Poppins', sans-serif;
 $bchat-font-mono: 'SpaceMono';
 $bchat-font-poppin-semibold: 'poppin-semibold';
 $bchat-font-poppin-light: 'poppin-light';
@@ -11,6 +19,40 @@ $bchat-font-poppin-medium: 'poppin-medium';
 $bchat-font-poppin-regular: 'poppin-regular';
 $bchat-font-open-sans:'OpenSans';
 // $bchat-font-open-sans-light:'OpenSans-light';
+
+// Michroma — display face
+@font-face {
+  font-family: $bchat-font-michroma;
+  src: url('../fonts/michroma-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+}
+
+// Chakra Petch — UI face
+@font-face {
+  font-family: $bchat-font-chakra;
+  src: url('../fonts/chakra-petch-latin-300-normal.woff2') format('woff2');
+  font-weight: 300;
+}
+@font-face {
+  font-family: $bchat-font-chakra;
+  src: url('../fonts/chakra-petch-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: $bchat-font-chakra;
+  src: url('../fonts/chakra-petch-latin-500-normal.woff2') format('woff2');
+  font-weight: 500;
+}
+@font-face {
+  font-family: $bchat-font-chakra;
+  src: url('../fonts/chakra-petch-latin-600-normal.woff2') format('woff2');
+  font-weight: 600;
+}
+@font-face {
+  font-family: $bchat-font-chakra;
+  src: url('../fonts/chakra-petch-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+}
 @font-face {
   font-family: $bchat-font-mono;
   src: url('../fonts/SpaceMono-Regular.ttf') format('truetype');
@@ -64,34 +106,34 @@ $bchat-font-open-sans:'OpenSans';
 // popins font includes
 
 @font-face {
-  font-family:$bchat-font-default;
+  font-family: $bchat-font-poppins;
   src: url('../fonts/Poppins-Light.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 300;
 }
 
 @font-face {
-  font-family: $bchat-font-default;
+  font-family: $bchat-font-poppins;
   src: url('../fonts/Poppins-Regular.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 400;
 }
 
 @font-face {
-  font-family: $bchat-font-default;
+  font-family: $bchat-font-poppins;
   src: url('../fonts/Poppins-Medium.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 500;
 }
 
 @font-face {
-  font-family: $bchat-font-default;
+  font-family: $bchat-font-poppins;
   src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 600;
 }
 @font-face {
-  font-family: $bchat-font-default;
+  font-family: $bchat-font-poppins;
   src: url('../fonts/Poppins-Bold.ttf') format('truetype');
   line-height: 1.4rem;
   font-weight: 700;
@@ -103,7 +145,7 @@ $bchat-font-open-sans:'OpenSans';
 // //////////////////////////////////////////////
 
 // Brand
-$bchat-color-green: #00b504;
+$bchat-color-green: #1BB51E;
 
 // Shades
 $bchat-shade-1: #0c0c0c;
@@ -140,7 +182,7 @@ $bchat-password-color-black: #16161d;
 
 // Semantic Colors
 $bchat-color-info: $bchat-shade-10;
-$bchat-color-success: #159b24;
+$bchat-color-success: #0E9711;
 $bchat-color-error: #edd422;
 $bchat-color-warning: $bchat-shade-17;
 $bchat-color-warning-alt: #ff9d00;
@@ -172,8 +214,8 @@ $bchat-font-h4: 16px;
 
 // Button
 
-$bchat-button-green-color: #00A638;
-$bchat-button-hovor-color: #00a705;
+$bchat-button-green-color: #1BB51E;
+$bchat-button-hovor-color: #18A31B;
 $bchat-button-gray-color: #403e4b;
 $bchat-button-gray-hover-color: #52505f;
 

@@ -462,7 +462,7 @@ a {
   }
 
   &.warningBg {
-    background-color: #2879fb;
+    background-color: var(--color-accent);
     font-size: 12px;
     font-family: $bchat-font-poppin-regular;
   }
@@ -587,7 +587,7 @@ a {
 //right: 17px;
 //top: -12px;
 // border-left: 15px solid transparent;
-//border-bottom: 15px solid #2879FB;
+//border-bottom: 15px solid var(--color-accent);
 //}
 
 pre {
@@ -1350,7 +1350,7 @@ label {
       }
 
       .isSelect {
-        // background-color: #2879fb;
+        // background-color: var(--color-accent);
         background-color: var(--color-icon-btn-hover);
         cursor: pointer;
         // color: #f0f0f0;

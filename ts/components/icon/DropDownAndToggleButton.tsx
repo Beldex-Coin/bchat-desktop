@@ -59,7 +59,7 @@ const StyledArrowIcon = styled(StyledRoundedButton)`
   position: absolute;
   &:hover {
     background-color: #ffffff;
-    color: #2879f9;
+    color: var(--color-accent);
   }
 `;
 

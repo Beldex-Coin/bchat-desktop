@@ -1,0 +1,382 @@
+// ///////////////////////////////////////////////////////////////
+// NOIR PROTOCOL — design revamp override layer.
+// Imported last so it wins the cascade over legacy Signal/BChat css.
+//
+// The system in one breath:
+//   one black ground · layered panels · hairline borders
+//   chamfered corners (cut from the Beldex hexagon — no radius anywhere)
+//   Michroma for display · Chakra Petch for UI · SpaceMono for data
+//   green is the only live color: network, presence, unread, focus
+// ///////////////////////////////////////////////////////////////
+
+// The signature chamfer — one clipped corner, echoing the hex logo.
+@mixin noir-chamfer($size: 10px) {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - #{$size}) 0, 100% #{$size}, 100% 100%, 0 100%);
+}
+
+@mixin noir-chamfer-bl($size: 12px) {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, #{$size} 100%, 0 calc(100% - #{$size}));
+}
+
+@mixin noir-chamfer-br($size: 12px) {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - #{$size}), calc(100% - #{$size}) 100%, 0 100%);
+}
+
+// The dot-grid field from the brand site.
+@mixin noir-dotgrid($alpha: 0.05, $cell: 26px) {
+  background-image: radial-gradient(rgba(244, 244, 244, $alpha) 1px, transparent 1px);
+  background-size: $cell $cell;
+}
+
+// Mono data text — timestamps, ids, counters, routes.
+@mixin noir-data($size: 11px) {
+  font-family: $bchat-font-mono;
+  font-size: $size;
+  letter-spacing: 0.08em;
+}
+
+// ---------------------------------------------------------------
+// 1. GROUND — kill radii app-wide, lay the dot field.
+// ---------------------------------------------------------------
+
+// Sharp geometry everywhere. Radius does not exist in this system;
+// the only rounded things left are things that must read as dots
+// (presence, typing, path-lights), re-rounded explicitly below.
+.inbox *,
+.bchat-fullscreen * {
+  border-radius: 0 !important;
+}
+
+.inbox {
+  @include noir-dotgrid(0.045, 28px);
+}
+
+// registration / sign-in flow lives on the same field
+.bchat-fullscreen {
+  @include noir-dotgrid(0.05, 28px);
+  background-color: var(--color-body-bg);
+}
+
+// left pane + conversation get their own, fainter field
+.module-left-pane {
+  @include noir-dotgrid(0.03, 24px);
+}
+
+.bchat-conversation {
+  @include noir-dotgrid(0.04, 26px);
+}
+
+// things that must stay circular
+.inbox,
+.bchat-fullscreen {
+  .module-avatar img,
+  .bchat-loader div,
+  .module-typing-animation__dot,
+  .bchat-modal__body .bchat-toggle .knob,
+  .bchat-radio input,
+  .path-light,
+  .green-dot,
+  .red-dot,
+  .onion__node,
+  .module-contact-name__online-dot {
+    border-radius: 50% !important;
+  }
+}
+
+// ---------------------------------------------------------------
+// 2. TYPE — display face on headers, mono on data.
+// ---------------------------------------------------------------
+
+.module-conversation-header__title,
+.module-left-pane__title,
+.bchat-settings-header-title,
+.modal-header-title,
+.bchat-modal__header__title {
+  font-family: $bchat-font-display;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+// data layer: timestamps, ids, counters
+.module-timestamp,
+.timeStamp,
+.module-conversation-list-item__header__date,
+.bchat-id-editable textarea,
+.bchat-id-editable-textarea,
+.module-message__metadata__date,
+.your-bchat-id-pill,
+.bchat-modal__bchat-id,
+.messageRequest-btn-txt,
+.date-break-container .date-break-text {
+  font-family: $bchat-font-mono !important;
+  letter-spacing: 0.06em;
+}
+
+// ---------------------------------------------------------------
+// 3. MESSAGES — sent = white block, received = bordered panel.
+// ---------------------------------------------------------------
+
+.module-message {
+  &__container--incoming {
+    @include noir-chamfer-bl(12px);
+
+    &--opaque {
+      border: 1px solid var(--color-borderBottomColor);
+      &:hover {
+        opacity: 1;
+        background: var(--color-received-message-background-hover);
+      }
+    }
+  }
+
+  &__container--outgoing {
+    @include noir-chamfer-br(12px);
+
+    &--opaque {
+      // white block — the brand CTA material; text flips via tokens
+      box-shadow: none;
+    }
+  }
+}
+
+// selection / highlight runs on the live color
+.bchat-message-wrapper.message-selected {
+  border-left: 2px solid var(--color-accent);
+}
+
+// ---------------------------------------------------------------
+// 4. BUTTONS — mono label, hard blocks. Solid = white brand CTA.
+// ---------------------------------------------------------------
+
+.bchat-button {
+  font-family: $bchat-font-mono;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 0 !important;
+  transition: background-color var(--default-duration), color var(--default-duration),
+    border-color var(--default-duration);
+
+  &.green,
+  &.primary:not(.brand-outline):not(.default-outline):not(.square-outline) {
+    &:hover {
+      filter: brightness(1.08);
+    }
+  }
+
+  &.danger {
+    background-color: var(--color-destructive);
+    color: #ffffff;
+  }
+}
+
+// ---------------------------------------------------------------
+// 5. LEFT PANE — rail, list, search.
+// ---------------------------------------------------------------
+
+.module-left-pane {
+  border-right: 1px solid var(--color-borderBottomColor);
+}
+
+// selected conversation carries the live edge
+.module-conversation-list-item {
+  border-left: 2px solid transparent;
+
+  &--is-selected {
+    border-left: 2px solid var(--color-accent) !important;
+  }
+}
+
+// unread badge: hard green square, mono count
+.module-conversation-list-item__unread-count,
+.unreadCountChatIcon,
+.bchat-notification-count {
+  background: var(--color-accent) !important;
+  color: #0a0a0a !important;
+  font-family: $bchat-font-mono !important;
+  font-weight: 700 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+// search reads as a terminal prompt
+.bchat-search-input {
+  border: 1px solid var(--color-search-border);
+  background: var(--color-input-background);
+
+  input {
+    font-family: $bchat-font-mono;
+    letter-spacing: 0.06em;
+
+    &::placeholder {
+      font-family: $bchat-font-mono;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--color-accent);
+  }
+}
+
+// ---------------------------------------------------------------
+// 6. AVATARS — chamfered identity plates (images stay round for now
+//    via the circular exception above; placeholder plates go sharp).
+// ---------------------------------------------------------------
+
+.module-avatar {
+  .module-avatar__label {
+    font-family: $bchat-font-display;
+  }
+}
+
+// ---------------------------------------------------------------
+// 7. INPUTS & COMPOSER
+// ---------------------------------------------------------------
+
+.composition-container,
+.send-message-input {
+  border-radius: 0 !important;
+}
+
+.composition-container {
+  border: 1px solid var(--color-borderBottomColor);
+
+  &:focus-within {
+    border-color: var(--color-accent);
+  }
+}
+
+.send-message-input textarea::placeholder,
+.composition-container [contenteditable]:empty::before {
+  font-family: $bchat-font-mono;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-HintMessageText);
+}
+
+input,
+textarea {
+  caret-color: var(--color-caret) !important;
+}
+
+// focus is a live-green hairline, everywhere
+.inbox input:focus-visible,
+.inbox textarea:focus-visible,
+.inbox [role='button']:focus-visible,
+.inbox button:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+// ---------------------------------------------------------------
+// 8. MODALS — chamfered top-right, hairline border, hard shadow.
+// ---------------------------------------------------------------
+
+.bchat-modal {
+  @include noir-chamfer(16px);
+  border: 1px solid var(--color-settings-right-pane-option-border) !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85);
+}
+
+.bchat-confirm-wrapper .bchat-modal {
+  border-color: var(--color-settings-right-pane-option-border) !important;
+}
+
+// ---------------------------------------------------------------
+// 9. SCROLLBARS — thin hairline instruments.
+// ---------------------------------------------------------------
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-bar-thumb);
+  border-radius: 0;
+
+  &:hover {
+    background: var(--color-accent);
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scroll-bar-track);
+}
+
+// ---------------------------------------------------------------
+// 10. TOGGLES — square track, square knob, green when live.
+// ---------------------------------------------------------------
+
+.bchat-toggle {
+  border-radius: 0 !important;
+
+  .knob {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  &.active {
+    background-color: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+
+    .knob {
+      background-color: #0a0a0a !important;
+    }
+  }
+}
+
+// ---------------------------------------------------------------
+// 11. TOASTS, TOOLTIPS, CONTEXT MENUS
+// ---------------------------------------------------------------
+
+.Toastify__toast {
+  @include noir-chamfer(10px);
+  border: 1px solid var(--color-borderBottomColor);
+  font-family: $bchat-font-default;
+}
+
+.contexify,
+.react-contexify {
+  border-radius: 0 !important;
+  border: 1px solid var(--color-settings-right-pane-option-border);
+  background: var(--color-context-menu-bg);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+// ---------------------------------------------------------------
+// 12. SETTINGS — active category carries the live edge.
+// ---------------------------------------------------------------
+
+.bchat-settings-item,
+.left-pane-setting-category-list-item {
+  border-left: 2px solid transparent;
+
+  &.active,
+  &--selected {
+    border-left-color: var(--color-accent);
+  }
+}
+
+// ---------------------------------------------------------------
+// 13. LINK / ACCENT DISCIPLINE — text links underline, no blue.
+// ---------------------------------------------------------------
+
+.inbox a {
+  color: var(--color-text-accent);
+  text-underline-offset: 3px;
+}
+
+// selection color = live green over ink
+::selection {
+  background: var(--color-accent);
+  color: #0a0a0a;
+}

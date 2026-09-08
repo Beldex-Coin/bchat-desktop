@@ -1,101 +1,89 @@
 // src/styles/bchat/classicDark.ts
+// NOIR PROTOCOL — dark theme tokens.
+// One ground (#0A0A0A), layered panels, hairline borders, a single live color (network green).
 import {
-  accentDarkTheme,
-  baseColor,
-  //   black,
-  darkGrey,
   destructive,
-  forestGreenColor,
   greenColor,
-  //   lightGreyColor,
+  netGreen,
   warning,
   white,
 } from './BchatThemeConstants';
 import { BchatVariableTypes } from './bchatVariableTypes';
 
-// Import all the dark theme constants from your Bchat theme file
 // main accent & text
-// DARK COLORS
-const darkColorAccent = baseColor;
-const darkColorAccentButton = accentDarkTheme;
+const darkColorAccent = netGreen;
+const darkColorAccentButton = netGreen;
 const darkColorText = white;
 const darkColorTextOpposite = white;
 
 const darkColorTextSubtle = `${white}99`;
-const darkColorTextAccent = accentDarkTheme;
-const darkColorBchatShadow = `0px 3px 5px 0px #00000029`;
-const darkColorComposeViewBg = '#232323';
-const darkColorSentMessageBg = accentDarkTheme;
-const darkSettingsleftPaneHover = '#303041';
-const darkSettingsHover = '#4A4A62';
-const darkColorSentMessageText = white;
-const darkColorClickableHovered = '#2e333d';
-const darkColorBchatBorder = `2px solid #1A1A24`;
-// const darkColorBchatBorderColor = borderDarkThemeColor;
-const darkColorRecoveryPhraseBannerBg = '#1f1f1f';
-const darkColorPillDivider = '#3E3E4E';
-const darkColorLastSeenIndicator = accentDarkTheme;
-const darkColorQuoteBottomBarBg = '#34323F';
-const darkColorCellBackground = '#181821';
-const darkColorCaret = '#FAFAFA';
-const darkColorReceivedMessageBg = '#2E333D';
-const darkColorReceivedMessageBgHover = '#52505F';
-const darkColorReceivedMessageText = white;
+const darkColorTextAccent = netGreen;
+const darkColorBchatShadow = `0px 3px 5px 0px #00000066`;
+const darkColorComposeViewBg = '#141414';
+// Sent messages are white blocks — the brand CTA material. Text flips to ink.
+const darkColorSentMessageBg = '#F4F4F4';
+const darkSettingsleftPaneHover = '#141414';
+const darkSettingsHover = '#1F1F1F';
+const darkColorSentMessageText = '#0A0A0A';
+const darkColorClickableHovered = '#1A1A1A';
+const darkColorBchatBorder = `1px solid #1F1F1F`;
+const darkColorRecoveryPhraseBannerBg = '#101010';
+const darkColorPillDivider = '#2A2A2A';
+const darkColorLastSeenIndicator = netGreen;
+const darkColorQuoteBottomBarBg = '#141414';
+const darkColorCellBackground = '#101010';
+const darkColorCaret = netGreen;
+const darkColorReceivedMessageBg = '#141414';
+const darkColorReceivedMessageBgHover = '#1A1A1A';
+const darkColorReceivedMessageText = '#DADADA';
 
-const darkColorPillDividerText = '#a0a0a0';
-// const darkInputBackground = darkColorCellBackground;
-const darkInputBackground = '#202329';
+const darkColorPillDividerText = '#8F8F8F';
+const darkInputBackground = '#111111';
 
 const darkFilterBchatText = 'none';
-const darkUnreadBorder = `4px solid ${accentDarkTheme}`;
+const darkUnreadBorder = `2px solid ${netGreen}`;
 
-const darkScrollbarThumb = '#858598';
-const darkScrollbarTrack = '#131313';
-const darkFakeChatBubbleBg = '#212121';
+const darkScrollbarThumb = '#2A2A2A';
+const darkScrollbarTrack = '#0A0A0A';
+const darkFakeChatBubbleBg = '#141414';
 
-const darkInboxBackground = '#131313';
+const darkInboxBackground = '#0A0A0A';
 const darkLeftPaneOverlayBg = darkInboxBackground;
-const darkConversationItemSelected = '#2e333d';
-const darkConversationItemHasUnread = '#2e333d';
-const darkConversationList = darkScrollbarTrack;
+const darkConversationItemSelected = '#161616';
+const darkConversationItemHasUnread = '#121212';
+const darkConversationList = darkInboxBackground;
 
-const darkTextHighlight = `${white}88`;
-const darkBackgroundPrimary = '#3A3A4E';
-const darkButtonGreen = baseColor;
-const darkModalBackground = '#101011';
+const darkTextHighlight = `${netGreen}55`;
+const darkBackgroundPrimary = '#141414';
+const darkButtonGreen = netGreen;
+const darkModalBackground = '#0D0D0D';
 
-const grey67 = '#1BB51E';
-const darkMessageRequestBannerBackground = '#131313';
-const darkMessageRequestBannerIconBackground = '#2879FB';
-const darkMessageRequestBannerUnreadBackground = grey67;
-const darkMessageRequestBannerIcon = '#adadad';
-const darkProfileClose = '#4C4C64';
-const darkChatTimestamp = '#858598';
+const darkMessageRequestBannerBackground = '#0A0A0A';
+const darkMessageRequestBannerIconBackground = netGreen;
+const darkMessageRequestBannerUnreadBackground = netGreen;
+const darkMessageRequestBannerIcon = '#8F8F8F';
+const darkProfileClose = '#2A2A2A';
+const darkChatTimestamp = '#8F8F8F';
 
 // for bchat
-const darkColorBg = '#131313';
-// const darkunreadBg="#39394A";
-const darkBorderBottomColor = '#1A1A24';
-const darkHintMessage = '#7B7B86';
-const darkSettingIndication = '#2E333D';
-const darkProfileBgColor = '#2A2A3B';
-const darkSinginTextColor = '#128B17';
-// const darkHintColor = lightGreyColor;
-// const darkCopyIcon = '#fff';
-// const darkCopyIconBg = '#353543';
-const darkCopyModalbtn = '#444455';
-const darkChatHeader = '#131313';
-const darkToggleOff = '#363645';
-const darkClearBtn = '#3D3D4D';
-const darkLeaveGrpBtn = '#20202F';
-const darkSmModalBg = '#2A2A3B';
-const darkMsgReqModalBg = 'rgba(0,0,0,0.4)';
+const darkColorBg = '#0A0A0A';
+const darkBorderBottomColor = '#1F1F1F';
+const darkHintMessage = '#565656';
+const darkSettingIndication = '#141414';
+const darkProfileBgColor = '#141414';
+const darkSinginTextColor = netGreen;
+const darkCopyModalbtn = '#1F1F1F';
+const darkChatHeader = '#0A0A0A';
+const darkToggleOff = '#2A2A2A';
+const darkClearBtn = '#1F1F1F';
+const darkLeaveGrpBtn = '#141414';
+const darkSmModalBg = '#141414';
+const darkMsgReqModalBg = 'rgba(0,0,0,0.6)';
 
-const darkleftHeaderBg = '#1C1C26';
-const darkCancelBtnBg = '#3D3D4E';
-const darkDisableText = '#545469';
+const darkleftHeaderBg = '#000000';
+const darkCancelBtnBg = '#1F1F1F';
+const darkDisableText = '#565656';
 const darkEmptyChatImg = `url("../images/bchat/emptyMessage.svg")`;
-// const darkBgDoodle = `url("../images/bchat/doodle_white.svg")`;
 const darkEmptyContact = `url("../images/bchat/empty_address_book_dark.svg")`;
 const darkEmptyAddressBook = `url("../images/bchat/empty_address_book_dark.svg")`;
 const darkEmptyTransHistory = `url("../images/bchat/no_tx_history_dark.svg")`;
@@ -104,7 +92,7 @@ const darkOutgoingTransHistory = `url("../images/bchat/no_outgoing_dark.svg")`;
 const darkIncomingTransHistory = `url("../images/bchat/no_incoming_transaction_dark.svg")`;
 const darkFailedTransHistory = `url("../images/bchat/failed_tx_history_dark.svg")`;
 const darkEmptyTransaction = `url("../images/bchat/no_transactions_found_dark.svg")`;
-const darkComposeMsgInput = '#202329';
+const darkComposeMsgInput = '#111111';
 const darkDayNight = `url("../images/bchat/light_theme.svg")`;
 const darkNewChat = `url("../images/bchat/newChat_dark.svg")`;
 const darkMsgReqImg = `url("../images/bchat/no_message_request_dark_theme.svg")`;
@@ -112,89 +100,85 @@ const darkBlockedContact = `url("../images/bchat/no_blocked_contacts_dark_theme.
 const darkAddContact = `url("../images/bchat/add_contact.svg")`;
 const darkNoMedia = `url("../images/bchat/no_mediaDarkTheme.svg")`;
 
-const darkBlockUserBg = '#202329';
-const darkBlockseletedUserBg = '#2C2C3E';
+const darkBlockUserBg = '#111111';
+const darkBlockseletedUserBg = '#1A1A1A';
 
-const darkPasswordBorderBottom = '#444455';
-const darkbubbleReceivedBg = '#2e333d';
+const darkPasswordBorderBottom = '#2A2A2A';
+const darkbubbleReceivedBg = '#141414';
 
-export const buttonColor = forestGreenColor;
-// const buttonColor = "linear-gradient(to bottom , #13B71A, #006004)";
+export const buttonColor = netGreen;
 
 // Seed color
-const darkBnsLinkIdBgColor = '#202329';
-const darkBnsCameraIconBgColor = '#22222E';
-const darkDisableBtn = '#444455';
-const darkDisableTxt = '#8F8FA2';
-const darkDownArrowBg = '#525262';
-const darkDownArrow = '#CACAD8';
-const darkLeaveHover = '#4f4f65';
+const darkBnsLinkIdBgColor = '#111111';
+const darkBnsCameraIconBgColor = '#141414';
+const darkDisableBtn = '#1F1F1F';
+const darkDisableTxt = '#565656';
+const darkDownArrowBg = '#1F1F1F';
+const darkDownArrow = '#8F8F8F';
+const darkLeaveHover = '#2A2A2A';
 
 const darkBgModalColor = 'rgba(0, 0, 0, 0.8)';
-const darkBnsTransactionColor = '#FFFFFF';
-const darklogoBg = darkGrey;
-const darkActionBtnBg = darkGrey;
-const darkActionBtnicon = '#a7a7ba';
-const darkActionBtnTxt = '#a7a7ba';
-const darkThemeSelectedBg = '#242B38';
-const darkLeftPaneBg = '#202329';
-const darkSearchBorder = '#46465d';
-const darkLastMsgTxt = '#A7A7BA';
-const darkContextMenuBg = '#1B1E23';
-const darkProfileIdBg = '#1C1F25';
-const darkProfileIDBorder = '#3A3A41';
-const darkSecondaryBtnBg = '#2e333d';
-const darkSecondaryBtnHoverBg = '#383D47';
+const darkBnsTransactionColor = '#F4F4F4';
+const darklogoBg = '#000000';
+const darkActionBtnBg = '#101010';
+const darkActionBtnicon = '#8F8F8F';
+const darkActionBtnTxt = '#8F8F8F';
+const darkThemeSelectedBg = '#0F1F10';
+const darkLeftPaneBg = '#0D0D0D';
+const darkSearchBorder = '#2A2A2A';
+const darkLastMsgTxt = '#8F8F8F';
+const darkContextMenuBg = '#101010';
+const darkProfileIdBg = '#111111';
+const darkProfileIDBorder = '#2A2A2A';
+const darkSecondaryBtnBg = '#141414';
+const darkSecondaryBtnHoverBg = '#1F1F1F';
 
-const darkQrOuterBg = '#282836';
-const darkSettingsRightPaneOption = '#202329';
-const darksettingHeaderBorder = '#202329';
-const darkToggleBtn = '#9595B5';
-const darkSettingsRightPaneOptionBorder = '#4B4B64';
-const darkHopBg = '#202329';
-const darkHopTxt = '#A7A7BA';
-const darkRecoverySeedBg = '#202329';
-const darkModalFooter = '#202329';
-const darkUntrustMediaBg = '#131313';
-const darkUntrustedVerticalBar = '#858598';
-const darkIconBtnHover = '#3D424C';
-const darkContextMenuHoverBg = '#333842';
-const darkProfileHeaderBg = '#2E333D';
-const darkChatIdBorder = '#3A3A41';
-const darkProfileInfoBorder = '#2E333D';
-const darkDisappearTimeHover = '#2E333D';
-const darkProfileInfoMediaTitle = '#A7A7BA';
-const darkModalBg = '#2e333d';
-const darkModalIconBg = '#202329';
-const darkChatMultiSelectBg = '#202329';
-const darkConfirmModalInnerBg = '#1B1E23';
-const darkConfirmModalHoverBg = '#202329';
-const darkEnableBtnBg = '#202329';
-const darkModalDisableTxt = '#a7a7ba';
-const darkNoTxnTxt = '#A7A7BA';
-const darkToastBg = '#131313';
-// const bodyBg = '#131313'
-const darkCallOptionBtnHover = '#424751';
-const darkSpeedPlayBg = '#202329';
-const darkMoreInfoIncommingChatBg = '#202329';
-const darkCameraHoverBg = '#46465D';
-const darkPrimaryBtnHoverBg = '#1A973C';
-const darkOfflineContentBg = '#131313';
-const darkInputText = '#858598';
+const darkQrOuterBg = '#141414';
+const darkSettingsRightPaneOption = '#111111';
+const darksettingHeaderBorder = '#1F1F1F';
+const darkToggleBtn = '#8F8F8F';
+const darkSettingsRightPaneOptionBorder = '#2A2A2A';
+const darkHopBg = '#111111';
+const darkHopTxt = '#8F8F8F';
+const darkRecoverySeedBg = '#111111';
+const darkModalFooter = '#101010';
+const darkUntrustMediaBg = '#0A0A0A';
+const darkUntrustedVerticalBar = '#2A2A2A';
+const darkIconBtnHover = '#1F1F1F';
+const darkContextMenuHoverBg = '#1A1A1A';
+const darkProfileHeaderBg = '#141414';
+const darkChatIdBorder = '#2A2A2A';
+const darkProfileInfoBorder = '#1F1F1F';
+const darkDisappearTimeHover = '#1A1A1A';
+const darkProfileInfoMediaTitle = '#8F8F8F';
+const darkModalBg = '#141414';
+const darkModalIconBg = '#101010';
+const darkChatMultiSelectBg = '#101010';
+const darkConfirmModalInnerBg = '#101010';
+const darkConfirmModalHoverBg = '#1A1A1A';
+const darkEnableBtnBg = '#141414';
+const darkModalDisableTxt = '#565656';
+const darkNoTxnTxt = '#8F8F8F';
+const darkToastBg = '#101010';
+const darkCallOptionBtnHover = '#1F1F1F';
+const darkSpeedPlayBg = '#1F1F1F';
+const darkMoreInfoIncommingChatBg = '#141414';
+const darkCameraHoverBg = '#2A2A2A';
+const darkPrimaryBtnHoverBg = '#18A31B';
+const darkOfflineContentBg = '#0A0A0A';
+const darkInputText = '#8F8F8F';
 const darkIconColor = white;
-const darkInviteCardIconBg = '#202329';
-const darkRadioButton = '#F0F0F0';
-const darkEmojiPanelBg = '#202329';
-const darkEmojiIconHoverBg = '#2C303D';
-const darkEmojiHeaderIcon = 'white';
-const darkReplyMsgMediaIcon = '#A7A7BA';
-const darkLoaderBg = '#0000009e';
+const darkInviteCardIconBg = '#141414';
+const darkRadioButton = '#F4F4F4';
+const darkEmojiPanelBg = '#101010';
+const darkEmojiIconHoverBg = '#1A1A1A';
+const darkEmojiHeaderIcon = '#F4F4F4';
+const darkReplyMsgMediaIcon = '#8F8F8F';
+const darkLoaderBg = '#000000b3';
 const darkAttachmentBoxShadow = '0 0 41.143px 0 #000';
-const darkViewContactBorder = '#46465D';
-const darkReactionHoverBg = '#202329';
-const darkReadMoreBtnBg = '#2e333d';
-
-// adjust this path/import to your actual file
+const darkViewContactBorder = '#2A2A2A';
+const darkReactionHoverBg = '#1A1A1A';
+const darkReadMoreBtnBg = '#1F1F1F';
 
 export const BCHAT_CLASSIC_DARK_COLORS: BchatVariableTypes = {
   '--margins-xs': '5px',
