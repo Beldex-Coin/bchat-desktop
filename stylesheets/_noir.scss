@@ -1120,7 +1120,17 @@ textarea {
   text-align: center;
 }
 
-// loading state: BChat's own animated mark, centered
+// loading state: BChat's own animated mark, centered.
+// The gifs ship with a baked-in background — blend it away so the mark
+// floats on the field (dark gif on dark ground: screen; light: multiply).
+.noir-loader-mark {
+  mix-blend-mode: screen;
+
+  &.light {
+    mix-blend-mode: multiply;
+  }
+}
+
 .bchat-registration-loadingGif {
   display: flex;
   justify-content: center;
@@ -1601,50 +1611,50 @@ textarea {
     text-align: center;
   }
 
-  // password pips: square cells that fill as you type; the real input is
-  // invisible on top so typing and Enter work as before
-  .noir-pip-field {
-    position: relative;
+  // the password field is the Noir terminal text box: dark inset, hairline
+  // border, mono uppercase placeholder, one green line on focus
+  .input-wrapper {
     display: flex;
-    justify-content: center;
-    cursor: text;
-    padding: 6px 0;
-    margin-bottom: 34px;
+    align-items: center;
+    width: 100% !important;
+    border-radius: 0 !important;
+    border: 1px solid var(--color-settings-right-pane-option-border, #2a2a2a) !important;
+    background: var(--color-input-background, #111111) !important;
+    padding: 6px 10px 6px 16px !important;
+    margin: 0 0 34px !important;
 
-    .noir-pip-input {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-      outline: none;
-      caret-color: transparent;
-      color: transparent;
+    &:focus-within {
+      border-color: var(--color-accent, #1bb51e) !important;
     }
 
-    .noir-pips {
-      display: flex;
-      gap: 13px;
-      pointer-events: none;
+    input {
+      flex: 1;
+      font-family: $bchat-font-mono !important;
+      font-size: 13px;
+      letter-spacing: 0.24em;
+      color: var(--color-text, #f4f4f4);
+      border: none !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      outline: none !important;
+      height: 40px;
+      caret-color: var(--color-accent, #1bb51e);
 
-      i {
-        width: 22px;
-        height: 22px;
-        border: 1px solid var(--color-settings-right-pane-option-border, #2a2a2a);
-        display: block;
-        transition: background-color 0.12s, border-color 0.12s;
-
-        &.f {
-          background: var(--color-accent, #1bb51e);
-          border-color: var(--color-accent, #1bb51e);
-        }
+      &::placeholder {
+        font-family: $bchat-font-mono;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-HintMessageText, #565656);
       }
     }
 
-    &:focus-within .noir-pips i:not(.f) {
-      border-color: var(--color-settings-right-pane-option-border, #2a2a2a);
+    .bchat-icon-button {
+      color: var(--color-HintMessageText, #565656);
+
+      &:hover {
+        color: var(--color-accent, #1bb51e);
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { BchatIcon } from './icon';
+import { BchatIcon, BchatIconButton } from './icon';
 import { withTheme } from 'styled-components';
 import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
@@ -14,7 +14,7 @@ interface State {
   errorCount: number;
   clearDataView: boolean;
   loading: boolean;
-  passLen: number;
+  PasswordVisible: boolean;
 }
 
 export const MAX_LOGIN_TRIES = 3;
@@ -24,14 +24,17 @@ type Props = {
 const BchatSpinner = (props: Props) => {
   const { loading } = props;
  
-  const imgsrc='images/bchat/BChat_animi_logo.gif';
+  const isLight = (window as any).theme === 'light';
+  const imgsrc = isLight
+    ? 'images/bchat/BChat_animi_logo.gif'
+    : 'images/bchat/BChat_animi_black_logo.gif';
   return loading ? (
     <div className="bchat-loader" data-testid="loading-spinner">
       <div>
-      <img src={imgsrc}  style={{width:'110px',height:'110px',display:'flex',}}/>
+      <img src={imgsrc} className={isLight ? 'noir-loader-mark light' : 'noir-loader-mark'} style={{width:'110px',height:'110px',display:'flex',}}/>
       </div>
     </div>
-  
+
   ) : null;
 };
 class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
@@ -45,7 +48,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       errorCount: 0,
       clearDataView: false,
       loading: false,
-      passLen: 0,
+      PasswordVisible: true,
     };
 
     autoBind(this);
@@ -79,32 +82,26 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const featureElement = this.state.clearDataView ? (
       <p className="text-center">{window.i18n('deleteAccountWarning')}</p>
     ) : (
-      <div
-        className="noir-pip-field"
-        onClick={() => {
-          this.inputRef?.focus();
-        }}
-      >
+      <div className="input-wrapper">
         <input
           id="password-prompt-input"
-          className="noir-pip-input"
-          type="password"
+          type={this.state.PasswordVisible ? 'password' : 'text'}
           defaultValue=""
+          placeholder={'ENTER PASSWORD'}
           minLength={4}
           maxLength={26}
           onKeyUp={this.onKeyUp}
-          onChange={e => {
-            this.setState({ passLen: e.target.value.length });
-          }}
           ref={input => {
             this.inputRef = input;
           }}
         />
-        <div className="noir-pips">
-          {Array.from({ length: Math.max(6, this.state.passLen) }).map((_, i) => (
-            <i key={`pip-${i}`} className={i < this.state.passLen ? 'f' : ''} />
-          ))}
-        </div>
+        <BchatIconButton
+          iconType={!this.state.PasswordVisible ? 'eye_closed' : 'eye'}
+          iconSize={'medium'}
+          fillRule="evenodd"
+          clipRule="evenodd"
+          onClick={() => this.setState({ PasswordVisible: !this.state.PasswordVisible })}
+        />
       </div>
     );
     // const infoIcon = this.state.clearDataView ? (
