@@ -75,7 +75,7 @@ export async function initiateClosedGroupUpdate(
   );
 
   if (!convo.isMediumGroup()) {
-    throw new Error('Legacy group are not supported anymore.');
+    throw new Error(window.i18n('legacyGroupNotSupportedRecreate'));
   }
 
   // do not give an admins field here. We don't want to be able to update admins and

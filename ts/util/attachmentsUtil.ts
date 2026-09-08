@@ -158,7 +158,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
   }
 
   if (maxMeasurements?.maxSide && (maxMeasurements?.maxHeight || maxMeasurements?.maxWidth)) {
-    throw new Error('Cannot have maxSide and another dimension set together');
+    throw new Error(window.i18n('autoScaleMaxSideConflict'));
   }
 
   // Make sure the asked max size is not more than whatever
@@ -177,7 +177,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
   }
 
   if (blob.type === IMAGE_GIF && blob.size > maxSize) {
-    throw new Error(`GIF is too large, required size is ${maxSize}`);
+    throw new Error(window.i18n('gifTooLarge', [`${maxSize}`]));
   }
 
   // const crop: CropOptions = {
@@ -198,7 +198,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
   const canvas = await loadImage(blob, loadImgOpts);
   perfEnd(`loadimage-*${blob.size}`, `loadimage-*${blob.size}`);
   if (!canvas || !canvas.originalWidth || !canvas.originalHeight) {
-    throw new Error('failed to scale image');
+    throw new Error(window.i18n('failedToScaleImage'));
   }
 
   let readAndResizedBlob = blob;
@@ -244,7 +244,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
     );
 
     if (!tempBlob) {
-      throw new Error('Failed to get blob during canvasToBlob.');
+      throw new Error(window.i18n('failedToGetBlobFromCanvas'));
     }
     readAndResizedBlob = tempBlob;
     quality = (quality * maxSize) / readAndResizedBlob.size;
@@ -255,7 +255,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
   } while (i > 0 && readAndResizedBlob.size > maxSize);
 
   if (readAndResizedBlob.size > maxSize) {
-    throw new Error('Cannot add this attachment even after trying to scale it down.');
+    throw new Error(window.i18n('cannotScaleAttachmentDown'));
   }
   window.log.debug(`[perf] autoscale took ${Date.now() - start}ms `);
 

@@ -1187,9 +1187,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       await leaveClosedGroup(this.id);
     } else {
       window?.log?.error('Cannot leave a non-medium group conversation');
-      throw new Error(
-        'Legacy group are not supported anymore. You need to create this group again.'
-      );
+      throw new Error(window.i18n('legacyGroupNotSupportedCreate'));
     }
   }
 
@@ -1546,7 +1544,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
       return this.get('name') || name;
     }
-    return this.get('name') || 'Unknown group';
+    return this.get('name') || window.i18n('unknownGroup');
   }
 
   /**
@@ -1968,7 +1966,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   }
 
   private handleLegacyClosedGroup() {
-    throw new Error('Legacy group are not supported anymore. You need to recreate this group.');
+    throw new Error(window.i18n('legacyGroupNotSupportedRecreate'));
   }
 }
 

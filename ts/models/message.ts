@@ -670,7 +670,7 @@ public getPropsForPayment(): PropsForPayment | null {
     } = {
       sender: author,
       messageId: id,
-      authorName: authorName || 'Unknown',
+      authorName: authorName || window.i18n('unknown'),
     };
 
     if (referencedMessageNotFound) {
@@ -696,22 +696,23 @@ public getPropsForPayment(): PropsForPayment | null {
       const parsed = JSON.parse(quote.text);
 
       if (parsed.kind['@type'] === 'OpenGroupInvitation') {
-        quoteProps.text = 'Social group invitation';
+        quoteProps.text = window.i18n('socialGroupInvitation');
       }
 
       if (parsed.kind['@type'] === 'SharedContact') {
         const namesArray = JSON.parse(parsed.kind.name);
         quoteProps.text =
           namesArray.length > 1
-            ? `${namesArray[0]} and ${namesArray.length - 1} other${
-                namesArray.length > 2 ? 's' : ''
-              }`
+            ? window.i18n(
+                namesArray.length > 2 ? 'sharedContactAndOthers' : 'sharedContactAndOther',
+                [namesArray[0], String(namesArray.length - 1)]
+              )
             : namesArray[0] ?? '';
         quoteProps.isSharedContact = true;
       }
 
       if (parsed.kind['@type'] === 'Payment') {
-        const types =direction === 'incoming' ? 'Received' : 'Sent';
+        const types = direction === 'incoming' ? window.i18n('paymentDirectionReceived') : window.i18n('sent');
         const amount=parsed?.kind?.amount
         quoteProps.text = `${window.i18n('paymentDetails', [types])} : ${amount} BDX`;
       }
@@ -1370,14 +1371,14 @@ public getPropsForPayment(): PropsForPayment | null {
       return `😎 ${window.i18n('socialGroupInvitation')}`;
     }
     if (this.isSharedContact()) {
-      return `Shared contact`;
+      return window.i18n('sharedContactLabel');
     }
     if (this.isPayment()) {
       let amount = this.getMessageModelProps()?.propsForPayment?.amount;
       let direction =
         this.getMessageModelProps()?.propsForPayment?.direction === 'outgoing'
-          ? 'Send'
-          : 'Received';
+          ? window.i18n('paymentDirectionSend')
+          : window.i18n('paymentDirectionReceived');
       return `${amount} BDX ${direction}`;
     }
     if (this.isDataExtractionNotification()) {
