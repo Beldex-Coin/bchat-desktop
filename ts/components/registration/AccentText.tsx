@@ -1,12 +1,14 @@
 import React from 'react';
-import ChatwithTxtIcon from '../icon/chatwithTxtIcon';
 
+// NOIR: the first screen states the thesis in brand voice.
 export const AccentText: React.FC = () => (
   <div className="bchat-content-accent-text">
-    <ChatwithTxtIcon />
-    <div className="bchat-content-accent-text title"> Hello, <br></br>Welcome Back!</div>
-    <div className="bchat-content-accent-text title2">Welcome to BChat, your private haven for seamless communication and connection.</div>
-   
-
+    <div className="noir-onb-kicker">BELDEX NETWORK // BCHAT</div>
+    <div className="bchat-content-accent-text title">
+      Privacy, in every message<span className="noir-cursor">_</span>
+    </div>
+    <div className="bchat-content-accent-text title2">
+      NO PHONE NUMBER // NO EMAIL // NO TRACE
+    </div>
   </div>
 );

@@ -980,3 +980,218 @@ textarea {
     }
   }
 }
+
+// ---------------------------------------------------------------
+// 21. TYPE SCALE — exact sizes from the mockup, everywhere.
+//   display 14-15 / body 14 / meta 12.5 / data 10-11 mono
+// ---------------------------------------------------------------
+
+// message text: 14px on 1.55 (was 16)
+.module-message .module-message__text,
+.module-message__container--incoming .module-message__text,
+.module-message__container--outgoing .module-message__text {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+// in-bubble timestamps: mono 10px
+.module-message .timeStamp {
+  font-size: 10px !important;
+  letter-spacing: 0.06em;
+}
+
+// list row: name 14 / preview 12.5 / date mono 10
+.module-conversation-list-item__header__name {
+  font-size: 14px !important;
+}
+
+.module-conversation-list-item__header__date {
+  font-size: 10px !important;
+  color: var(--color-HintMessageText) !important;
+}
+
+// unread counters: mono 10
+.module-conversation-list-item__unread-count,
+.unreadCountChatIcon,
+.bchat-notification-count {
+  font-size: 10px !important;
+}
+
+// search: input mono 12, placeholder mono 11
+.bchat-search-input input {
+  font-size: 12px;
+
+  &::placeholder {
+    font-size: 11px;
+  }
+}
+
+// conversation header: name 15 / sub mono 10 (set in components)
+// composer: input 14, placeholder mono 12
+.send-message-input {
+  font-size: 14px;
+}
+
+// settings: nav mono 11 (set) / section heading 18 / item title 14, desc 12
+.bchat-settings-header-title {
+  font-size: 18px !important;
+}
+
+// modal titles: display 15
+.bchat-modal__header__title {
+  font-size: 15px !important;
+}
+
+// ---------------------------------------------------------------
+// 22. ONBOARDING — the gate, in brand voice.
+// ---------------------------------------------------------------
+
+.noir-onb-kicker {
+  font-family: $bchat-font-mono;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 18px;
+}
+
+.noir-cursor {
+  color: var(--color-accent);
+  animation: noir-pulse 1.4s infinite;
+}
+
+.bchat-fullscreen {
+  // welcome headline: Michroma, the site's voice
+  .bchat-content-accent-text {
+    font-family: $bchat-font-default;
+    width: 440px;
+
+    .title {
+      font-family: $bchat-font-display;
+      font-size: 34px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--color-text);
+    }
+
+    .title2 {
+      font-family: $bchat-font-mono;
+      font-size: 12px;
+      line-height: 1.8;
+      letter-spacing: 0.2em;
+      color: var(--color-HintMessageText);
+      font-weight: 400;
+      margin-top: 18px;
+    }
+  }
+
+  // section headings inside the flow (display name, restore, seed…)
+  .bchat-registration__welcome-bchat {
+    font-family: $bchat-font-display !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .bchat-head {
+    font-family: $bchat-font-display;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text);
+  }
+
+  // primary/secondary CTAs: brand blocks with mono labels
+  .signUp-btn .bchat-button.default.primary,
+  .signUp-btn .bchat-button.default.primary:hover {
+    background-color: var(--color-sent-message-background) !important;
+    color: var(--color-sent-message-text) !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  .signUp-btn .bchat-button.default.primary:hover {
+    background-color: var(--color-accent) !important;
+    color: #0a0a0a !important;
+  }
+
+  .signIn-btn .bchat-button.default-outline.primary {
+    background: transparent !important;
+    border: 1px solid var(--color-settings-right-pane-option-border) !important;
+    color: var(--color-text) !important;
+  }
+
+  .signIn-btn .bchat-button.default-outline.primary:hover {
+    background: transparent !important;
+    border-color: var(--color-accent) !important;
+    color: var(--color-accent) !important;
+  }
+
+  // inputs are terminal fields
+  input,
+  textarea {
+    border-radius: 0 !important;
+    font-family: $bchat-font-mono;
+    letter-spacing: 0.05em;
+
+    &::placeholder {
+      font-family: $bchat-font-mono;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-HintMessageText);
+    }
+  }
+
+  // restore-seed entry
+  .bchat-restore-seed-parent-box,
+  .bchat-restore-seed-text-box {
+    border-radius: 0 !important;
+  }
+
+  .bchat-restore-seed-text-area {
+    font-family: $bchat-font-mono !important;
+    font-size: 13px !important;
+    line-height: 2 !important;
+  }
+
+  // seed display: mono evidence, green on ink
+  .display-seed,
+  .bchat-registration__content .seed,
+  .seed-dialog__seed {
+    font-family: $bchat-font-mono !important;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    line-height: 2.1;
+    color: var(--color-accent);
+  }
+
+  // warnings stay red, but read as system lines
+  .warning-notes {
+    font-family: $bchat-font-mono !important;
+    font-size: 11px !important;
+    line-height: 2 !important;
+    letter-spacing: 0.05em;
+
+    span {
+      color: var(--color-destructive) !important;
+      font-size: 11px !important;
+    }
+
+    strong {
+      font-size: 11px !important;
+      color: var(--color-text) !important;
+    }
+  }
+
+  // t&c line
+  .bchat-terms-conditions-agreement,
+  .bchat-description-long {
+    font-family: $bchat-font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--color-HintMessageText);
+  }
+}
