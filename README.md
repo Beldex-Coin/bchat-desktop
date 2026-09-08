@@ -7,44 +7,66 @@ With BChat, you own your data.
 <br/><br/>
 ![BChatDesktop](https://bchat.beldex.io/img/Profile.png)
 
-Noir design revamp
-------------------
+Features
+--------
 
-The `design-revamp` branch carries a ground-up redesign of the desktop app — the **Noir Protocol** design system, drawn from the Beldex brand identity:
+- **No identifiers** — accounts are created from a recovery seed; no phone number or email required. Your BChat ID can optionally be linked to a human-readable BNS name.
+- **End-to-end encryption** — private one-to-one chats, secret groups, and public social groups.
+- **Onion routing** — traffic is relayed through Beldex masternodes ("hops"), so no single node knows both who you are and who you're talking to.
+- **Voice and video calls**, message requests, disappearing messages, attachments, and reactions.
 
-- **One black ground** (`#0A0A0A`) with a subtle dot-grid field, layered panels, and hairline borders.
-- **One live color** — network green (`#1BB51E`) — used strictly for state: presence, unread, focus, route, active selection. Sent messages are white blocks with ink text; the light "Ghost" theme is the inverse.
-- **Chamfered geometry** — corners cut from the Beldex hexagon; no border radius anywhere.
-- **Three type roles** — [Michroma](https://fonts.google.com/specimen/Michroma) for display headings, [Chakra Petch](https://fonts.google.com/specimen/Chakra+Petch) for UI text (Poppins kept as the non-Latin fallback), and SpaceMono for the data layer (timestamps, IDs, seeds, routes).
+Building from source
+--------------------
 
-Key implementation points:
+BChat Desktop is an Electron app written in TypeScript/React, built with Yarn 1.
+**Use `yarn`, not `npm`** — the project relies on `resolutions` and its postinstall scripts, and `npm install` will fail on peer dependencies.
 
-- Theme tokens live in `ts/theme/` (`classicDark.tsx` = Noir, `classicLight.tsx` = Ghost, shared constants in `BchatThemeConstants.ts`); they are painted as CSS variables at runtime.
-- `stylesheets/_noir.scss` is the revamp override layer, imported last in `manifest.scss`. New-surface styles and legacy overrides live there — prefer extending it over editing legacy SCSS.
-- Redesigned surfaces include onboarding (welcome gate, three-step sign-up with the seed ceremony), the app-lock password window, chat list with filters (ALL / DMS / GROUPS / SOCIAL), conversation view, new-chat overlay and rail submenu, settings with the hops route diagram, profile dialog, and the empty states (all static illustrations removed).
+### Prerequisites
 
-Build and run
--------------
+- [Node.js](https://nodejs.org) matching the version in [`.nvmrc`](.nvmrc) — with [nvm](https://github.com/nvm-sh/nvm), run `nvm install && nvm use`
+- [Yarn 1.x](https://classic.yarnpkg.com) (`npm install -g yarn`)
+- Python 3 and build tools for native modules (`node-gyp`): Xcode Command Line Tools on macOS, `build-essential` on Linux, or Visual Studio Build Tools on Windows
 
-This is a Yarn 1 project (npm will fail on peer dependencies).
+### Build and run
 
 ```bash
-nvm use            # node 18.15.0 (.nvmrc)
-yarn install
-yarn build-all     # protobuf + sass + tsc + workers
-yarn start-prod
+git clone https://github.com/Beldex-Coin/bchat-desktop
+cd bchat-desktop
+yarn install       # also runs patch-package and electron-builder deps
+yarn build-all     # protobuf + sass + tsc + web workers
+yarn start-prod    # launch the app
 ```
 
-See [BUILDING.md](BUILDING.md) for full platform-specific instructions.
+For development, use `yarn start-dev` instead. To run a second instance side by side, set `MULTI`, e.g. `MULTI=1 yarn start-dev`.
+
+### Tests and linting
+
+```bash
+yarn test          # unit tests (mocha)
+yarn lint-full     # prettier + eslint
+```
+
+### Packaging release binaries
+
+```bash
+yarn build-release
+```
+
+Binaries are written to the `release/` directory (deb/rpm/AppImage on Linux, dmg on macOS, exe on Windows). See [BUILDING.md](BUILDING.md) for platform-specific details, including macOS signing/notarization and CI builds.
+
+Debian Repository
+-----------------
+Please find it here : https://deb.beldex.io/
 
 Contributing code
 -----------------
 
 Code contributions should be sent via Github as pull requests, from feature branches [as explained here](https://help.github.com/articles/using-pull-requests)
 
-Debian Repository
------------------
-Please find it here : https://deb.beldex.io/
+License
+-------
+
+[GPL-3.0](LICENSE)
 
 Credits
 -------
