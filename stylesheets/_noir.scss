@@ -1072,37 +1072,162 @@ textarea {
   text-align: center;
 }
 
-// loading state: three live squares, no gif
-.noir-loader {
+// loading state: BChat's own animated mark, centered
+.bchat-registration-loadingGif {
   display: flex;
-  gap: 8px;
   justify-content: center;
   align-items: center;
-  height: 120px;
+  padding: 20px 0;
+}
+
+// step line — where you are in the ceremony
+.noir-step-line {
+  font-family: $bchat-font-mono;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 22px;
+  user-select: none;
+}
+
+// onboarding headline + paragraph (per the seed-screen mockup)
+.noir-onb-h {
+  font-family: $bchat-font-display;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.noir-onb-p {
+  font-family: $bchat-font-mono;
+  font-size: 12.5px;
+  line-height: 2;
+  letter-spacing: 0.02em;
+  color: var(--color-HintMessageText);
+  max-width: 52ch;
+  margin-top: 16px;
+}
+
+// seed ceremony: numbered mono chips in a hard grid
+.noir-seed-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 28px 0 8px;
+  width: 100%;
+}
+
+.noir-seed {
+  font-family: $bchat-font-mono;
+  font-size: 12px;
+  color: var(--color-text);
+  background: var(--color-cell-background);
+  border: 1px solid var(--color-borderBottomColor);
+  padding: 9px 10px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   i {
-    width: 10px;
-    height: 10px;
-    background: var(--color-accent);
-    animation: noir-loader-blink 1.2s infinite;
-
-    &:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    &:nth-child(3) {
-      animation-delay: 0.4s;
-    }
+    color: var(--color-HintMessageText);
+    font-size: 9px;
+    font-style: normal;
+    flex: none;
   }
 }
 
-@keyframes noir-loader-blink {
-  0%,
-  100% {
-    opacity: 0.2;
+.noir-seed-warn {
+  font-family: $bchat-font-mono;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--color-destructive);
+  margin-top: 10px;
+}
+
+// identity data plates (step 02)
+.noir-data-label {
+  font-family: $bchat-font-mono;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-HintMessageText);
+}
+
+.noir-data-plate {
+  font-family: $bchat-font-mono;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  color: var(--color-text-subtle);
+  background: var(--color-input-background);
+  border: 1px solid var(--color-settings-right-pane-option-border);
+  padding: 10px 12px;
+  word-break: break-all;
+  user-select: text;
+  width: 100%;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+  &.is-accent {
+    color: var(--color-text-accent);
   }
-  50% {
-    opacity: 1;
+}
+
+.noir-data-hint {
+  font-family: $bchat-font-mono;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--color-HintMessageText);
+  margin: 8px 0 4px;
+}
+
+.noir-onb-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 470px;
+  max-width: 92vw;
+  text-align: left;
+}
+
+// the empty conversation surface — nothing, on brand
+.noir-void {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-HintMessageText);
+
+  svg {
+    margin-bottom: 22px;
+  }
+
+  &__title {
+    font-family: $bchat-font-display;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--color-last-msg-txt);
+  }
+
+  &__hint {
+    font-family: $bchat-font-mono;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin-top: 12px;
+
+    b {
+      color: var(--color-accent);
+    }
   }
 }
 
@@ -1177,6 +1302,35 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-text);
+  }
+
+  // any primary CTA in the flow is the white brand block…
+  .bchat-button.default.primary {
+    background-color: var(--color-sent-message-background) !important;
+    color: var(--color-sent-message-text) !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    &:hover {
+      background-color: var(--color-accent) !important;
+      color: #0a0a0a !important;
+    }
+
+    &.disabled {
+      background-color: var(--color-disableBtn) !important;
+      color: var(--color-disableTxt) !important;
+    }
+  }
+
+  // …and any secondary is the ghost outline
+  .bchat-button.default.secondary {
+    background: transparent !important;
+    border: 1px solid var(--color-settings-right-pane-option-border) !important;
+    color: var(--color-text) !important;
+
+    &:hover {
+      border-color: var(--color-accent) !important;
+      color: var(--color-accent) !important;
+    }
   }
 
   // primary/secondary CTAs: brand blocks with mono labels

@@ -137,7 +137,7 @@ export const SignUpTab = (props: any) => {
   const LoaderGif = () => {
     return (
       <div className="bchat-registration-loadingGif">
-        <div className="noir-loader"><i></i><i></i><i></i></div>
+        <img src="images/bchat/BChat_animi_logo.gif" width={110} height={110} alt="Loading" />
       </div>
     );
   };
@@ -169,6 +169,7 @@ export const SignUpTab = (props: any) => {
   if (displayNameScreen === 0) {
     return (
       <div className="bchat-registration__content" style={{ paddingTop: '0px' }}>
+        <div className="noir-step-line">STEP 01 / 03 // DISPLAY NAME</div>
         <Flex
           flexDirection="row"
           container={true}

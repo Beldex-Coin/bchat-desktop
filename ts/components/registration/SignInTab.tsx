@@ -233,7 +233,7 @@ export const SignInTab = (props: any) => {
   const LoaderGif = () => {
     return (
       <div className="bchat-registration-loadingGif">
-        <div className="noir-loader"><i></i><i></i><i></i></div>
+        <img src="images/bchat/BChat_animi_logo.gif" width={110} height={110} alt="Loading" />
       </div>
     );
   };

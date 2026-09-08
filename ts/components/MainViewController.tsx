@@ -17,15 +17,25 @@ import styled from 'styled-components';
 
 export class MessageView extends React.Component {
   public render() {
+    // NOIR: no illustration — a quiet system void with one glyph and a hint.
     return (
       <div className="conversation placeholder">
         <div className="conversation-header" />
         <div className="container">
-          <div className="content bchat-full-logo">
-            <div className="bchat-text-logo">
-              {/* <p className="bchat-text">
-                Much empty. Such wow.<br></br> Get some friends to BChat!
-              </p> */}
+          <div className="noir-void">
+            <svg
+              width="42"
+              height="42"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            >
+              <path d="M4 5h16v12H8l-4 4z" />
+            </svg>
+            <div className="noir-void__title">NO CONVERSATION SELECTED</div>
+            <div className="noir-void__hint">
+              PICK A CHAT // OR PRESS <b>+</b> TO START ONE
             </div>
           </div>
         </div>

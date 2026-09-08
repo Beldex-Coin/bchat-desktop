@@ -1,39 +1,29 @@
 import { useState } from 'react';
+import { clipboard } from 'electron';
 
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
-// import { GoBackMainMenuButton } from './SignUpTab';
-import { SpacerLG } from '../basic/Text';
+import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../basic/Text';
+import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 
-import {CopyIconButton} from '../icon/CopyIconButton';
-// import { BchatIconButton } from '../icon/BchatIconButton';
-
+// NOIR: step 02 — the identity handed over as data plates.
 export const DisplayIdAndAddress = (props: any) => (
-  <div className="bchat-registration-welcome-screen-container">
-    {/* <div className='bchat-registration-welcome-screen-goback'>
-          <GoBackMainMenuButton assent={()=>{props.assentAndGoBack()}} />
-        </div> */}
-    <h1 className="bchat-head">{window.i18n('welcome')}!</h1>
-    <SpacerLG />
-    {/* <div className='bchat-registration-welcome-screen-back'> */}
-    <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('bChatID')}</h6>
-    <div className="bchat-registration-welcome-screen-chat-value">
-      {/* <p style={{color: "#0BB70F"}}>{props.pubKey}</p> */}
-      <p style={{ color: '#00A638' }}>{props.pubKey}</p>
-    </div>
-    <p className="bchat-registration-welcome-screen-chat-content">{window.i18n('yourBchatName')}</p>
-    <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('beldexAddress')}</h6>
-    <div className="bchat-registration-welcome-screen-chat-value">
-      {/* <p style={{color:"#1782FF"}}>{props.walletAddress}</p> */}
-      <p style={{ color: '#2D81FF' }}>{props.walletAddress}</p>
-
-      {/* </div> */}
-    </div>
-    <p className="bchat-registration-welcome-screen-chat-content">
-      {window.i18n('beldexAddressConnection')}
-    </p>
-    <SpacerLG />
+  <div className="bchat-registration-welcome-screen-container noir-onb-screen">
+    <div className="noir-step-line">STEP 02 / 03 // YOUR IDENTITY</div>
+    <h1 className="noir-onb-h">
+      Welcome to BChat<span className="noir-cursor">_</span>
+    </h1>
+    <SpacerMD />
+    <label className="noir-data-label">BCHAT ID</label>
+    <SpacerXS />
+    <div className="noir-data-plate is-accent">{props.pubKey}</div>
+    <p className="noir-data-hint">{window.i18n('yourBchatName')}</p>
+    <SpacerSM />
+    <label className="noir-data-label">BELDEX ADDRESS</label>
+    <SpacerXS />
+    <div className="noir-data-plate">{props.walletAddress}</div>
+    <p className="noir-data-hint">{window.i18n('beldexAddressConnection')}</p>
     <SpacerLG />
     <BchatButton
       onClick={props.nextFunc}
@@ -44,108 +34,64 @@ export const DisplayIdAndAddress = (props: any) => (
   </div>
 );
 
-// export const Icons = (props: any) => (
-//   <div
-//     onClick={() => props.onClick()}
-//     data-tip="Copy"
-//     data-place="right"
-//     data-offset="{'top':30,'left':15}"
-//     className="iconBox"
-//   >
-//     <svg
-//       xmlns="http://www.w3.org/2000/svg"
-//       width="18.151"
-//       height="18.151"
-//       viewBox="0 0 18.151 18.151"
-//     >
-//       <path
-//         id="copy_icon"
-//         d="M3.815,2A1.815,1.815,0,0,0,2,3.815V16.521H3.815V3.815H16.521V2Zm3.63,3.63A1.815,1.815,0,0,0,5.63,7.445V18.336a1.815,1.815,0,0,0,1.815,1.815H18.336a1.815,1.815,0,0,0,1.815-1.815V7.445A1.815,1.815,0,0,0,18.336,5.63Zm0,1.815H18.336V18.336H7.445Z"
-//         transform="translate(-2 -2)"
-//       />
-//     </svg>
-//   </div>
-// );
+// BChat's own animated mark as the loading state.
 const LoaderGif = () => {
   return (
     <div className="bchat-registration-loadingGif">
-      <div className="noir-loader"><i></i><i></i><i></i></div>
+      <img src="images/bchat/BChat_animi_logo.gif" width={110} height={110} alt="Loading" />
     </div>
   );
 };
 
+// NOIR: step 03 — the seed ceremony. Numbered mono chips, one red rule.
 export const ShowRecoveryPhase = (props: any) => {
   const [seedCopied, setSeedCopied] = useState(false);
+  const words: Array<string> = (props.mnemonic || '').trim().split(/\s+/).filter(Boolean);
+
+  const handleCopy = () => {
+    clipboard.writeText(props.mnemonic, 'clipboard');
+    pushUserCopySuccess();
+    setSeedCopied(true);
+  };
+
   return (
-    <div className="bchat-registration-welcome-screen-container">
+    <div className="bchat-registration-welcome-screen-container noir-onb-screen">
       {props.loading && <LoaderGif />}
-      <Flex flexDirection="row" container={true} height="100%">
-        <Flex
-          alignItems="center"
-          flexDirection="row"
-          // height="100%"
-          // width="86%"
-          justifyContent="center"
-        >
-          {/* <div className="bchat-registration-welcome-screen-goback">
-            <GoBackMainMenuButton
-              assent={() => {
-                props.assentAndGoBack();
-              }}
-            />
-          </div> */}
-          <h1 className="bchat-head">{window.i18n('recoveryPhrase')}</h1>
-          <SpacerLG />
-          <div className="bchat-registration-recovery-phrase">
-            <p className="bchat-registration-recovery-phrase-txt">
-              {props.mnemonic}
-            </p>
-            {/* <textarea
-              className="bchat-registration-recovery-phrase-textarea"
-              rows={4}
-              cols={60}
-              name="text"
-              // value={props.mnemonic}
-              value={
-                'rockets tossed dewdrop unnoticed memoir gleeful skirting vexed syllabus wept baffles sash raking shuffled tusks  kangaroo afield loudly necklace mittens pager nabbing eluded faked faked'
-              }
-              placeholder="Enter your recovery seed to restore your account"
-            ></textarea> */}
-            <div>
-              {/* <BchatIconButton
-          iconType="arrow"
-          iconSize={18}
-          iconColor='var(--color-downArrow)'
-          onClick={props.onClickScrollBottom}
-          dataTestId="scroll-to-bottom-button"
-        // iconRotation={3}
-        /> */}
-              <div
-                data-tip="Copy"
-                data-place="right"
-                data-offset="{'top':30,'left':15}"
-                className="iconBox"
-              >
-                <CopyIconButton  content={props.mnemonic}  iconSize={22} onClick={() => {
-                 setSeedCopied(true);
-                }}/>
-              </div>
-            </div>
+      <div className="noir-step-line">STEP 03 / 03 // RECOVERY SEED</div>
+      <h1 className="noir-onb-h">
+        Your keys.
+        <br />
+        Your identity.
+      </h1>
+      <p className="noir-onb-p">
+        No phone number. No email. This seed is the only way back into your BChat ID — store it
+        offline.
+      </p>
+      <div className="noir-seed-grid">
+        {words.map((word, i) => (
+          <div className="noir-seed" key={`${word}-${i}`}>
+            <i>{String(i + 1).padStart(2, '0')}</i>
+            {word}
           </div>
-          <p className="bchat-registration-recovery-phrase-hintTxt">
-            <span>Note :</span> {window.i18n('saveYourRecoveryPhrase')}
-            {window.i18n('copyToContinueRecovery')}
-            </p>
-            <SpacerLG/>
-            {/* <SpacerLG/> */}
-          <BchatButton
-            onClick={props.nextFunc}
-            buttonType={BchatButtonType.Default}
-            buttonColor={BchatButtonColor.Primary}
-            text={window.i18n('continue')}
-            disabled={!seedCopied}
-          />
-        </Flex>
+        ))}
+      </div>
+      <div className="noir-seed-warn">▲ NEVER SHARE. ANYONE WITH THIS SEED IS YOU.</div>
+      <SpacerLG />
+      <Flex container={true} flexDirection="row" alignItems="center">
+        <BchatButton
+          onClick={props.nextFunc}
+          buttonType={BchatButtonType.Default}
+          buttonColor={BchatButtonColor.Primary}
+          text={'I saved my seed'}
+          disabled={!seedCopied}
+        />
+        <div style={{ width: '14px' }} />
+        <BchatButton
+          onClick={handleCopy}
+          buttonType={BchatButtonType.Default}
+          buttonColor={BchatButtonColor.Secondary}
+          text={'Copy'}
+        />
       </Flex>
       <BchatToolTip effect="solid" />
     </div>
