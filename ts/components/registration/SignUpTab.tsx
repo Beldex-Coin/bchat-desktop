@@ -137,15 +137,7 @@ export const SignUpTab = (props: any) => {
   const LoaderGif = () => {
     return (
       <div className="bchat-registration-loadingGif">
-        <div
-          style={{
-            background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '120px',
-            height: '120px',
-            margin: '0px auto',
-            backgroundSize: '102px',
-          }}
-        ></div>
+        <div className="noir-loader"><i></i><i></i><i></i></div>
       </div>
     );
   };

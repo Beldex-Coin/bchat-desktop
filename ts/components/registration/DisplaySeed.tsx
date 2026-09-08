@@ -41,16 +41,15 @@ export const ClearIcon = (props: any) => (
     className="paste-icon"
     data-offset="{'right':35,'left':5}"
     style={{
-      background: `url(images/bchat/clear.svg) no-repeat`,
-      width: '10px',
-      height: '10px',
       position: 'relative',
       top: '8px',
       marginLeft: '408px',
       cursor: 'pointer',
-      backgroundSize: 'cover',
+      fontFamily: 'var(--font-mono)',
+      fontSize: '12px',
+      color: 'var(--color-HintMessageText)',
     }}
-  ></div>
+  >✕</div>
 );
 
 export const DisplaySeed = (props: any) => {

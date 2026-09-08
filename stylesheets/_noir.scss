@@ -1046,6 +1046,22 @@ textarea {
 // 22. ONBOARDING — the gate, in brand voice.
 // ---------------------------------------------------------------
 
+// centered single-column gate — no illustrations, the mark and the field
+.noir-onb-col {
+  width: 470px;
+  max-width: 92vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noir-onb-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 26px;
+  animation: noir-pulse 3s infinite;
+}
+
 .noir-onb-kicker {
   font-family: $bchat-font-mono;
   font-size: 11px;
@@ -1053,6 +1069,41 @@ textarea {
   text-transform: uppercase;
   color: var(--color-accent);
   margin-bottom: 18px;
+  text-align: center;
+}
+
+// loading state: three live squares, no gif
+.noir-loader {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+
+  i {
+    width: 10px;
+    height: 10px;
+    background: var(--color-accent);
+    animation: noir-loader-blink 1.2s infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes noir-loader-blink {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .noir-cursor {
@@ -1061,29 +1112,53 @@ textarea {
 }
 
 .bchat-fullscreen {
-  // welcome headline: Michroma, the site's voice
+  // welcome headline: Michroma, the site's voice — centered on the field
   .bchat-content-accent-text {
     font-family: $bchat-font-default;
-    width: 440px;
+    width: 100%;
+    text-align: center;
 
     .title {
       font-family: $bchat-font-display;
-      font-size: 34px;
+      font-size: 30px;
       line-height: 1.25;
       text-transform: uppercase;
       letter-spacing: 0.02em;
       color: var(--color-text);
+      text-wrap: balance;
     }
 
     .title2 {
       font-family: $bchat-font-mono;
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.8;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       color: var(--color-HintMessageText);
       font-weight: 400;
       margin-top: 18px;
+      margin-bottom: 10px;
     }
+  }
+
+  // gate CTAs stack, centered, mockup width
+  .signUp-btn,
+  .signIn-btn {
+    display: flex;
+    justify-content: center;
+
+    .bchat-button {
+      width: 320px;
+      text-align: center;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  // step screens (display name / restore / seed) center their column
+  .bchat-registration__content {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   // section headings inside the flow (display name, restore, seed…)

@@ -202,54 +202,28 @@ export const RegistrationStages = () => {
   const [signInMode, setSignInMode] = useState(SignInMode.Default);
   const [signUpMode, setSignUpMode] = useState(SignUpMode.Default);
   const [accent, setAccent] = useState(true);
-  const [imageCount, setImageCount] = useState(0);
 
   useEffect(() => {
     void resetRegistration();
   }, []);
 
-  const imageValidator = (e: any) => {
-    setImageCount(e);
-  };
-  const displayImg = () => {
-    let path;
-    if (imageCount === LeftImage.recoveryseed) {
-      path = 'images/bchat/loginPageSeed.png';
-    } else if (imageCount === LeftImage.password) {
-      path = 'images/bchat/loginPagePassword.png';
-    } else if (imageCount === LeftImage.address) {
-      path = 'images/bchat/loginPageAddress.png';
-    } else {
-      path = 'images/bchat/loginpage.png';
-    }
+  // NOIR: onboarding carries no illustrations — the dot-grid field and the
+  // brand mark are the whole picture. Kept as a no-op for the tab props.
+  const imageValidator = (_e: any) => undefined;
 
-    return path;
-  };
   return (
     <div className="bchat-registration-container">
       <Flex flexDirection="row" container={true} height="100%" width="100%">
-        <Flex
-          className="bchat-content-left"
-          alignItems="center"
-          flexDirection="row"
-          container={true}
-          height="100%"
-          width="45%"
-          justifyContent="flex-end"
-        >
-          <img src={displayImg()} width={'86%'} height={'80%'}></img>
-        </Flex>
-
         <Flex
           className="bchat-content"
           alignItems="center"
           flexDirection="column"
           container={true}
           height="100%"
-          width="55%"
+          width="100%"
           justifyContent="center"
         >
-          <div style={{ width: '470px' }}>
+          <div className="noir-onb-col">
             <RegistrationContext.Provider
               value={{
                 registrationPhase,
