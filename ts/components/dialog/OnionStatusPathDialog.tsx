@@ -10,9 +10,6 @@ import {
   getIsOnline,
   getOnionPathsCount,
 } from '../../state/selectors/onions';
-import { Flex } from '../basic/Flex';
-// tslint:disable-next-line: no-submodule-imports
-import useHover from 'react-use/lib/useHover';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
 // import styled from 'styled-components';
@@ -24,33 +21,9 @@ export type StatusLightType = {
   color?: string;
 };
 
-const OnionCountryDisplay = ({
-  index,
-  labelText,
-  snodeIp,
-}: {
-  snodeIp?: string;
-  labelText: string;
-  index: number;
-}) => {
-  const element = () => (
-    <div className="onion__node__country" key={`country-${index}`}>
-      <div>
-        {index === 1 ? 'Entry Node' : index !== 0 && index !== 4 ? 'Master Node' : labelText}
-      </div>
-      <span className='ip-country'>
-        {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
-      </span>
-    </div>
-  );
-  const [hoverable] = useHover(element);
-  return hoverable;
-};
-
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
   const isOnline = useSelector(getIsOnline);
-  const glowDuration = onionPath.length + 2;
   if (!isOnline || !onionPath || onionPath.length === 0) {
     return <BchatSpinner loading={true} />;
   }
@@ -65,52 +38,63 @@ const OnionPathModalInner = () => {
     },
   ];
 
+  // NOIR: the route as a live diagram — diamond nodes on a dashed stem,
+  // mono labels, and a stats line. Proof of privacy, not decoration.
   return (
-    <div className='hopes'>
-      {/* <Flex style={{backgroundColor:'#202329'}}
-        container={true}
-        flexDirection="column"
-        alignItems="center"
-        height="62vh"
-        justifyContent="center"
-        margin="auto"
-      > */}
-      <div className='layer'>
-        <div className="onion__description">{window.i18n('onionPathIndicatorDescription')}</div>
-        <div className="onion__node-list">
-          <Flex container={true}>
-            <div className="onion__node-list-lights">
-              <div className="onion__vertical-line" />
-
-              <Flex container={true} flexDirection="column" alignItems="center" height="100%">
-                {nodes.map((_snode: Snode | any, index: number) => {
-                  return (
-                    <OnionNodeStatusLight
-                      glowDuration={glowDuration}
-                      glowStartDelay={index}
-                      key={`light-${index}`}
-                    />
-                  );
-                })}
-              </Flex>
+    <div className="hopes noir-hops">
+      <div className="noir-hops__head">Onion route</div>
+      <div className="noir-hops__sub">{window.i18n('onionPathIndicatorDescription')}</div>
+      <div className="noir-hops__path">
+        {nodes.map((snode: Snode | any, index: number) => {
+          const isFirst = index === 0;
+          const isLast = index === nodes.length - 1;
+          let country = snode.label
+            ? snode.label
+            : `${countryLookup.byIso(ip2country(snode.ip))?.country}`;
+          if (!country || country === 'undefined') {
+            country = window.i18n('unknownCountry');
+          }
+          const tag = isFirst
+            ? 'ORIGIN'
+            : isLast
+            ? 'DESTINATION'
+            : `HOP ${String(index).padStart(2, '0')}`;
+          const value = isFirst ? 'You' : isLast ? 'Swarm' : country;
+          const note = isFirst
+            ? '// this device'
+            : isLast
+            ? '// encrypted'
+            : snode.ip
+            ? `// ${snode.ip}`
+            : '';
+          return (
+            <div className="noir-hops__node" key={`node-${index}`}>
+              <div className="pin">
+                <div className={isFirst ? 'dot you' : 'dot'} />
+                {!isLast && <div className="stem" />}
+              </div>
+              <div className="nd">
+                <div className="nl">{tag}</div>
+                <div className="nv">
+                  {value} <span>{note}</span>
+                </div>
+              </div>
             </div>
-            <Flex container={true} flexDirection="column" alignItems="flex-start">
-              {nodes.map((snode: Snode | any, index: number) => {
-                let labelText = snode.label
-                  ? snode.label
-                  : `${countryLookup.byIso(ip2country(snode.ip))?.country}`;
-                if (!labelText) {
-                  labelText = window.i18n('unknownCountry');
-                }
-                return labelText ? (
-                  <OnionCountryDisplay index={index} labelText={labelText} snodeIp={snode.ip} />
-                ) : null;
-              })}
-            </Flex>
-          </Flex>
+          );
+        })}
+      </div>
+      <div className="noir-hops__stat">
+        <div className="st">
+          <div className="k">STATUS</div>
+          <div className="v">
+            <i>●</i> LIVE
+          </div>
+        </div>
+        <div className="st">
+          <div className="k">HOPS</div>
+          <div className="v">{String(onionPath.length).padStart(2, '0')}</div>
         </div>
       </div>
-      {/* </Flex> */}
     </div>
   );
 };

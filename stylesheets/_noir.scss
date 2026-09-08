@@ -1495,3 +1495,259 @@ textarea {
     color: var(--color-HintMessageText);
   }
 }
+
+// ---------------------------------------------------------------
+// 23. PASSWORD — the airlock.
+// ---------------------------------------------------------------
+
+.password {
+  .password-prompt-wrapper {
+    background: var(--color-body-bg);
+    @include noir-dotgrid(0.05, 28px);
+  }
+
+  .password-prompt-container {
+    background: var(--color-modal-background);
+    border: 1px solid var(--color-borderBottomColor);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    padding: 44px 40px;
+    width: 430px;
+    max-width: 92vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .password-info-area h1 {
+    font-family: $bchat-font-display;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    margin-top: 22px;
+  }
+
+  .noir-pass-sub {
+    font-family: $bchat-font-mono;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--color-HintMessageText);
+    margin: 10px 0 24px;
+    text-transform: uppercase;
+  }
+
+  .input-wrapper {
+    border: 1px solid var(--color-settings-right-pane-option-border) !important;
+    border-radius: 0 !important;
+    background: var(--color-input-background);
+
+    &:focus-within {
+      border-color: var(--color-accent) !important;
+    }
+
+    input {
+      font-family: $bchat-font-mono !important;
+      letter-spacing: 0.3em;
+      border: none !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      outline: none !important;
+
+      &::placeholder {
+        font-family: $bchat-font-mono;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-HintMessageText);
+      }
+    }
+  }
+
+  // unlock = white brand block; danger stays red
+  .unlock-button .bchat-button.brand.primary {
+    background: var(--color-sent-message-background) !important;
+    background-image: none !important;
+    color: var(--color-sent-message-text) !important;
+    font-family: $bchat-font-mono;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    &:hover:not(.disabled) {
+      background: var(--color-accent) !important;
+      color: #0a0a0a !important;
+    }
+  }
+
+  .unlock-button .bchat-button.brand-outline.green,
+  .unlock-button .bchat-button.default-outline.green,
+  .unlock-button .bchat-button.square-outline.green {
+    background-image: none !important;
+    background: var(--color-sent-message-background) !important;
+    color: var(--color-sent-message-text) !important;
+  }
+
+  .password-prompt-error-section .bchat-label {
+    border-radius: 0 !important;
+    font-family: $bchat-font-mono !important;
+    font-size: 11px !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    &.primary {
+      background-color: transparent !important;
+      border: 1px solid var(--color-destructive);
+      color: var(--color-destructive) !important;
+    }
+  }
+
+  .clearData-title {
+    font-family: $bchat-font-display;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 15px;
+    color: var(--color-destructive);
+  }
+
+  .clearData-content {
+    font-family: $bchat-font-mono;
+    font-size: 11px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+  }
+}
+
+// ---------------------------------------------------------------
+// 24. HOPS — the route as a live diagram.
+// ---------------------------------------------------------------
+
+.noir-hops {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 42px 44px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+
+  &__head {
+    font-family: $bchat-font-display;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+  }
+
+  &__sub {
+    font-family: $bchat-font-mono;
+    font-size: 11.5px;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+    color: var(--color-HintMessageText);
+    margin-top: 12px;
+    max-width: 48ch;
+    text-align: left;
+  }
+
+  &__path {
+    display: flex;
+    flex-direction: column;
+    margin: 36px 0 8px;
+    padding-left: 6px;
+  }
+
+  &__node {
+    display: flex;
+    gap: 18px;
+    align-items: stretch;
+
+    .pin {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: none;
+      width: 16px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: var(--color-inbox-background);
+      border: 2px solid var(--color-accent);
+      transform: rotate(45deg);
+      flex: none;
+      border-radius: 0 !important;
+      margin-top: 2px;
+
+      &.you {
+        background: var(--color-accent);
+      }
+    }
+
+    .stem {
+      width: 2px;
+      flex: 1;
+      min-height: 30px;
+      background: repeating-linear-gradient(
+        180deg,
+        var(--color-accent) 0 4px,
+        transparent 4px 9px
+      );
+      opacity: 0.5;
+    }
+
+    .nd {
+      padding-bottom: 24px;
+    }
+
+    .nl {
+      font-family: $bchat-font-mono;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--color-accent);
+    }
+
+    .nv {
+      font-family: $bchat-font-mono;
+      font-size: 13px;
+      color: var(--color-text);
+      margin-top: 3px;
+
+      span {
+        color: var(--color-HintMessageText);
+      }
+    }
+  }
+
+  &__stat {
+    display: flex;
+    gap: 34px;
+    border-top: 1px solid var(--color-borderBottomColor);
+    padding-top: 20px;
+    margin-top: 12px;
+    width: 100%;
+
+    .st .k {
+      font-family: $bchat-font-mono;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--color-HintMessageText);
+    }
+
+    .st .v {
+      font-family: $bchat-font-display;
+      font-size: 16px;
+      color: var(--color-text);
+      margin-top: 6px;
+
+      i {
+        color: var(--color-accent);
+        font-style: normal;
+        animation: noir-pulse 2s infinite;
+      }
+    }
+  }
+}
