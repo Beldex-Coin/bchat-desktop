@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { BchatIcon, BchatIconButton } from './icon';
+import { BchatIcon } from './icon';
 import { withTheme } from 'styled-components';
 import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
@@ -14,7 +14,7 @@ interface State {
   errorCount: number;
   clearDataView: boolean;
   loading: boolean;
-  PasswordVisible: boolean;
+  passLen: number;
 }
 
 export const MAX_LOGIN_TRIES = 3;
@@ -45,7 +45,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       errorCount: 0,
       clearDataView: false,
       loading: false,
-      PasswordVisible: true,
+      passLen: 0,
     };
 
     autoBind(this);
@@ -79,26 +79,32 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const featureElement = this.state.clearDataView ? (
       <p className="text-center">{window.i18n('deleteAccountWarning')}</p>
     ) : (
-      <div className="input-wrapper">
+      <div
+        className="noir-pip-field"
+        onClick={() => {
+          this.inputRef?.focus();
+        }}
+      >
         <input
           id="password-prompt-input"
-          type={this.state.PasswordVisible ?"password":''}
+          className="noir-pip-input"
+          type="password"
           defaultValue=""
-          placeholder={'Enter password'}
           minLength={4}
           maxLength={26}
           onKeyUp={this.onKeyUp}
+          onChange={e => {
+            this.setState({ passLen: e.target.value.length });
+          }}
           ref={input => {
             this.inputRef = input;
           }}
         />
-        <BchatIconButton
-          iconType={!this.state.PasswordVisible ? 'eye_closed' : 'eye'}
-          iconSize={'medium'}
-          fillRule="evenodd"
-          clipRule="evenodd"
-          onClick={() => this.setState({ PasswordVisible: !this.state.PasswordVisible })}
-        />
+        <div className="noir-pips">
+          {Array.from({ length: Math.max(6, this.state.passLen) }).map((_, i) => (
+            <i key={`pip-${i}`} className={i < this.state.passLen ? 'f' : ''} />
+          ))}
+        </div>
       </div>
     );
     // const infoIcon = this.state.clearDataView ? (
@@ -144,9 +150,9 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
                 </div>
 
                 <div className={infoAreaClass}>
-                  <h1>{window.i18n('passwordViewTitle')}</h1>
-                  <div className="noir-pass-sub">THIS DEVICE IS ENCRYPTED AT REST</div>
+                  <h1>ENTER PASSWORD</h1>
                 </div>
+                <div className="noir-pass-sub">THIS DEVICE IS ENCRYPTED AT REST</div>
                 {spinner || featureElement}
                 {errorSection}
               </>
@@ -154,6 +160,15 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
               clearDataView
             )}
             <div className="btn-grp-wrapper"> {buttonGroup}</div>
+            {!this.state.clearDataView && (
+              <div
+                className="noir-pass-hint"
+                role="button"
+                onClick={this.initClearDataView}
+              >
+                FORGOT? RESTORE WITH YOUR RECOVERY SEED →
+              </div>
+            )}
           </div>
         </div>
       </div>

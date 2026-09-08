@@ -1559,12 +1559,13 @@ textarea {
     @include noir-dotgrid(0.05, 28px);
   }
 
+  // The mockup has no card — the airlock lives directly on the field,
+  // one centered column.
   .password-prompt-container {
-    background: var(--color-modal-background, #0d0d0d);
-    border: 1px solid var(--color-borderBottomColor, #1f1f1f);
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
-    padding: 44px 40px;
-    width: 430px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 460px;
     max-width: 92vw;
     display: flex;
     flex-direction: column;
@@ -1572,64 +1573,131 @@ textarea {
     text-align: center;
   }
 
-  .password-info-area h1 {
-    font-family: $bchat-font-display;
-    font-size: 20px;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text);
-    margin-top: 22px;
+  // title centered under the lock, one line
+  .password-info-area {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+      font-family: $bchat-font-display;
+      font-size: 24px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--color-text, #f4f4f4) !important;
+      margin-top: 28px;
+      white-space: nowrap;
+    }
   }
 
   .noir-pass-sub {
     font-family: $bchat-font-mono;
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: var(--color-HintMessageText);
-    margin: 10px 0 24px;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--color-HintMessageText, #565656);
+    margin: 14px 0 34px;
     text-transform: uppercase;
+    text-align: center;
   }
 
-  .input-wrapper {
-    border: 1px solid var(--color-settings-right-pane-option-border) !important;
-    border-radius: 0 !important;
-    background: var(--color-input-background);
+  // password pips: square cells that fill as you type; the real input is
+  // invisible on top so typing and Enter work as before
+  .noir-pip-field {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    cursor: text;
+    padding: 6px 0;
+    margin-bottom: 34px;
 
-    &:focus-within {
-      border-color: var(--color-accent) !important;
+    .noir-pip-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      outline: none;
+      caret-color: transparent;
+      color: transparent;
     }
 
-    input {
-      font-family: $bchat-font-mono !important;
-      letter-spacing: 0.3em;
-      border: none !important;
-      background: transparent !important;
-      border-radius: 0 !important;
-      outline: none !important;
+    .noir-pips {
+      display: flex;
+      gap: 13px;
+      pointer-events: none;
 
-      &::placeholder {
-        font-family: $bchat-font-mono;
-        font-size: 11px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--color-HintMessageText);
+      i {
+        width: 22px;
+        height: 22px;
+        border: 1px solid var(--color-settings-right-pane-option-border, #2a2a2a);
+        display: block;
+        transition: background-color 0.12s, border-color 0.12s;
+
+        &.f {
+          background: var(--color-accent, #1bb51e);
+          border-color: var(--color-accent, #1bb51e);
+        }
+      }
+    }
+
+    &:focus-within .noir-pips i:not(.f) {
+      border-color: var(--color-settings-right-pane-option-border, #2a2a2a);
+    }
+  }
+
+  // kill the legacy grey band behind the buttons; unlock spans the column
+  .btn-grp-wrapper {
+    background-color: transparent !important;
+    width: 100% !important;
+    height: auto !important;
+
+    > div {
+      width: 100%;
+    }
+
+    .unlock-button {
+      width: 100%;
+
+      .bchat-button {
+        width: 100%;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
       }
     }
   }
 
-  // unlock = white brand block; danger stays red
+  .noir-pass-hint {
+    font-family: $bchat-font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: var(--color-HintMessageText, #565656);
+    margin-top: 22px;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color: var(--color-accent, #1bb51e);
+    }
+  }
+
+  // unlock = white brand block (flat rectangle, per the mockup); danger stays red
   .unlock-button .bchat-button.brand.primary {
-    background: var(--color-sent-message-background) !important;
+    background: var(--color-sent-message-background, #f4f4f4) !important;
     background-image: none !important;
-    color: var(--color-sent-message-text) !important;
+    color: var(--color-sent-message-text, #0a0a0a) !important;
     font-family: $bchat-font-mono;
     font-weight: 700;
+    font-size: 15px;
     letter-spacing: 0.08em;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
 
     &:hover:not(.disabled) {
-      background: var(--color-accent) !important;
+      background: var(--color-accent, #1bb51e) !important;
       color: #0a0a0a !important;
     }
   }
