@@ -109,15 +109,21 @@ export const OverlayMessage = () => {
 
   return (
     <div className={classNames('module-left-pane-overlay')}>
-      {/* <OverlayHeader  subtitle={"Enter the Bchat"} /> */}
-      <p className="module-left-pane__chatHeader">
-        {' '}
-        {window.i18n('startConversation')} <SmileSymbolIcon />
-      </p>
-      {/* <p className="module-left-pane__subHeader" >{window.i18n('BchatID')}</p> */}
-      {/* <div className="bchat-description-long">{descriptionLong}</div> */}
+      {/* NOIR: overlay header — display wordmark + mono system line */}
+      <div className="noir-overlay-header">
+        <span className="noir-overlay-header__title">NEW CHAT</span>
+        <BchatIconButton
+          iconSize="medium"
+          iconType="exit"
+          iconPadding="5px"
+          onClick={closeOverlay}
+        />
+      </div>
+      <div className="noir-overlay-sub">DIRECT MESSAGE // END-TO-END ENCRYPTED</div>
       <section>
         <article className="bchatId_input_wrapper">
+          <label className="label-txt">BCHAT ID / BNS NAME</label>
+          <SpacerXS />
           <BchatIdEditable
             editable={!loading}
             placeholder={placeholder}
@@ -133,7 +139,7 @@ export const OverlayMessage = () => {
           )}
           <SpacerSM />
           <BchatButton
-            text={'Let’s Bchat'}
+            text={'Start chat'}
             buttonType={BchatButtonType.Default}
             buttonColor={BchatButtonColor.Primary}
             onClick={() => handleMessageButtonClick()}
@@ -143,11 +149,9 @@ export const OverlayMessage = () => {
         {/* <SpacerLG /> */}
 
         <article className="ourDetails_wrapper">
-          <p className="module-left-pane__subHeader" style={{ marginBottom: '10px' }}>
-            Your ID
-          </p>
+          <div className="noir-overlay-label">YOUR IDENTITY</div>
 
-          <SpacerLG />
+          <SpacerSM />
           {!dispalyQR ? (
             <>
               <div className="avatar-Wrapper">
@@ -160,7 +164,7 @@ export const OverlayMessage = () => {
               </div>
               <SpacerLG />
 
-              <label className="label-txt">your BChat ID</label>
+              <label className="label-txt">BCHAT ID</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p>{ourconvo.id}</p>
@@ -168,7 +172,7 @@ export const OverlayMessage = () => {
               </div>
               <SpacerMD />
 
-              <label className="label-txt">Beldex Address</label>
+              <label className="label-txt">BELDEX ADDRESS</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p className="blue-color">{walletAddress}</p>
@@ -195,7 +199,7 @@ export const OverlayMessage = () => {
                   iconColor="#A9AEBA"
                   onClick={() => setDispalyQR(false)}
                 />
-                <span className="back-btn-txt">Your QR</span>
+                <span className="back-btn-txt">YOUR QR</span>
               </Flex>
               <SpacerLG />
               <SpacerLG />
@@ -210,7 +214,7 @@ export const OverlayMessage = () => {
                   <QRView bchatID={ourconvo.id} />
                 </span>
                 <SpacerXS />
-                <span className="qr-txt ">Scan QR to start the Chat</span>
+                <span className="qr-txt ">SCAN TO START A CHAT</span>
               </Flex>
               <SpacerLG />
               <SpacerLG />

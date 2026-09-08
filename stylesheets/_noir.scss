@@ -576,3 +576,179 @@ textarea {
 .module-conversation-header__title .receipient_name {
   letter-spacing: 0.04em;
 }
+
+// ---------------------------------------------------------------
+// 18. NEW CHAT OVERLAY — terminal card over the identity dossier.
+// ---------------------------------------------------------------
+
+.noir-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 18px 4px;
+
+  &__title {
+    font-family: $bchat-font-display;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    user-select: none;
+  }
+}
+
+.noir-overlay-sub {
+  font-family: $bchat-font-mono;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding: 0 18px 10px;
+  user-select: none;
+}
+
+.noir-overlay-label {
+  font-family: $bchat-font-mono;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  user-select: none;
+}
+
+.module-left-pane-overlay {
+  background-color: var(--color-inbox-background) !important;
+
+  // input card — a bordered plate with the chamfer
+  .bchatId_input_wrapper {
+    padding: 15px;
+    border: 1px solid var(--color-borderBottomColor);
+    background: var(--color-cell-background);
+    margin: 12px;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+
+    .bchat-id-editable {
+      background: var(--color-input-background);
+      border: 1px solid var(--color-settings-right-pane-option-border);
+      padding: 4px 8px;
+
+      &:focus-within {
+        border-color: var(--color-accent);
+      }
+
+      textarea {
+        font-family: $bchat-font-mono;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+
+        &::placeholder {
+          font-family: $bchat-font-mono;
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--color-HintMessageText);
+        }
+      }
+    }
+  }
+
+  // identity dossier card
+  .ourDetails_wrapper {
+    border: 1px solid var(--color-borderBottomColor);
+    background-color: var(--color-cell-background);
+    margin: 12px;
+    padding: 16px 15px;
+    height: auto;
+    min-height: 0;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+
+    .profile-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .label-txt {
+      font-family: $bchat-font-mono;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-HintMessageText);
+    }
+
+    .id-Wrapper {
+      border: 1px solid var(--color-settings-right-pane-option-border);
+      background: var(--color-input-background);
+      padding: 10px 12px;
+      align-items: center;
+      gap: 8px;
+
+      p {
+        font-family: $bchat-font-mono;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        color: var(--color-text-accent);
+      }
+
+      // beldex address was hardcoded blue — it is data like everything else
+      .blue-color {
+        color: var(--color-text-subtle);
+      }
+    }
+
+    .back-btn-txt {
+      font-family: $bchat-font-mono;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      font-weight: 400;
+    }
+
+    .qr-wrapper {
+      border: 1px solid var(--color-settings-right-pane-option-border);
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    .qr-txt {
+      font-family: $bchat-font-mono;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-HintMessageText);
+    }
+  }
+
+  // input-card label spacing
+  .bchatId_input_wrapper .label-txt {
+    font-family: $bchat-font-mono;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-HintMessageText);
+  }
+
+  // CTA: primary = the white brand block; secondary = ghost outline
+  .bchat-button.default.primary {
+    background: var(--color-sent-message-background);
+    color: var(--color-sent-message-text);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    &:hover {
+      background: var(--color-accent);
+      color: #0a0a0a;
+    }
+  }
+
+  .bchat-button.default.secondary {
+    background: transparent;
+    border: 1px solid var(--color-settings-right-pane-option-border);
+    color: var(--color-text);
+
+    &:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+  }
+}
