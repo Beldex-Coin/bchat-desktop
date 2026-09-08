@@ -74,6 +74,40 @@ export async function allowOnlyOneAtATime(
   }
   return oneAtaTimeRecord[name];
 }
+const oneAtATimeAbortMap: Record<
+  string,
+  {
+    controller: AbortController;
+  }
+> = {};
+
+export async function allowOnlyLatestProcess(
+  name: string,
+  process: (signal: AbortSignal) => Promise<any>
+) {
+  // Abort existing process
+  if (oneAtATimeAbortMap[name]) {
+    oneAtATimeAbortMap[name].controller.abort();
+  }
+
+  const controller = new AbortController();
+  oneAtATimeAbortMap[name] = { controller };
+
+  try {
+    return await process(controller.signal);
+  } catch (e: any) {
+    if (e?.name === 'AbortError') {
+      window?.log?.debug(`Process "${name}" aborted`);
+      return;
+    }
+    throw e;
+  } finally {
+    // Cleanup only if this is still the active controller
+    if (oneAtATimeAbortMap[name]?.controller === controller) {
+      delete oneAtATimeAbortMap[name];
+    }
+  }
+}
 
 export function hasAlreadyOneAtaTimeMatching(text: string): boolean {
   return Boolean(oneAtaTimeRecord[text]);

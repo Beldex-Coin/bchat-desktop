@@ -1,7 +1,7 @@
 // import { isEmpty, isEqual, isNil, isUndefined } from 'lodash';
 import { isEmpty, isEqual } from 'lodash';
 
-import  { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -31,6 +31,8 @@ import { getConversationController } from '../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { getReactListDialog } from '../../state/selectors/modal';
 import { getTheme } from '../../state/selectors/theme';
+import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { SpacerSM } from '../basic/Text';
 
 interface Props {
   messageId: string;
@@ -81,9 +83,7 @@ const StyledReactionBar = styled(Flex)`
 const StyledReactionSender = styled(Flex)`
   width: 100%;
   margin-bottom: 12px;
-  .module-avatar {
-    margin-right: 12px;
-  }
+ 
 `;
 const StyledClearButton = styled.button`
   font-size: var(--font-size-sm);
@@ -148,61 +148,20 @@ const ReactionSenders = (props: ReactionSendersProps) => {
 
   return (
     <>
-      {FilteredList.map((reacted, key) => (
-        <StyledReactionSender
-          // key={`${messageId}-${reacted.sender}`}
-          key={key}
-          container={true}
-          justifyContent={'space-between'}
-          alignItems={'center'}
-        >
-          <Flex container={true} alignItems={'center'}>
-            <Avatar
-              size={AvatarSize.S}
-              pubkey={reacted.sender}
-              onAvatarClick={async () => {
-                await handleAvatarClick(reacted.sender);
-              }}
-            />
-            {reacted.sender === me ? (
-              <span style={{ fontWeight: 700 }}> You </span>
-            ) : (
-              <ContactName
-                pubkey={reacted.sender}
-                module="module-conversation__user"
-                shouldShowPubkey={false}
-              />
-            )}
-            <span style={{ fontSize: '18px', marginLeft: '5px' }} role={'img'}>
-              {' '}
-              {reacted.emoji}
-            </span>
-          </Flex>
-          <Flex container={true} alignItems={'center'}>
-            {reacted.sender === me && (
-              <BchatButton
-                buttonType={BchatButtonType.BrandOutline}
-                buttonColor={BchatButtonColor.Secondary}
-                text="Remove"
-                iconType="delete"
-                iconSize={14}
-                onClick={() => handleRemoveReaction(reacted.emoji)}
-                style={{
-                  borderRadius: '7.529px',
-                  border: '0.471px solid #858598',
-                  color: '#A7A7BA',
-                  padding: '2px 10px',
-                  backgroundColor: 'var(--color-emoji-panel-bg)',
-                  fontWeight: 400,
-                }}
-              />
-            )}
-          </Flex>
-        </StyledReactionSender>
+      {FilteredList.map(reacted => (
+        <ReactionSenderItem
+          key={`${messageId}-${reacted.sender}`}
+          sender={reacted.sender}
+          emoji={reacted.emoji}
+          me={me}
+          onAvatarClick={handleAvatarClick}
+          onRemove={handleRemoveReaction}
+        />
       ))}
     </>
   );
 };
+
 //this function work on open group
 // const handleSenders = (senders: Array<string>, me: string) => {
 //   let updatedSenders = senders;
@@ -224,6 +183,72 @@ const ReactionSenders = (props: ReactionSendersProps) => {
 //   return updatedSenders;
 // };
 
+interface ReactionSenderItemProps {
+  sender: string;
+  emoji: string;
+  me: string;
+  onAvatarClick: (sender: string) => Promise<void>;
+  onRemove: (emoji: string) => void;
+}
+
+const ReactionSenderItem = ({
+  sender,
+  emoji,
+  me,
+  onAvatarClick,
+  onRemove,
+}: ReactionSenderItemProps) => {
+  const isBnsHolder = useConversationBnsHolder(sender);
+  return (
+    <StyledReactionSender container justifyContent="space-between" alignItems="center">
+      <Flex container alignItems="center">
+        <Avatar
+          size={AvatarSize.S}
+          pubkey={sender}
+          onAvatarClick={() => onAvatarClick(sender)}
+          isBnsHolder={isBnsHolder}
+        />
+        <SpacerSM />
+
+        {sender === me ? (
+          <span style={{ fontWeight: 700 }}>You</span>
+        ) : (
+          <ContactName
+            pubkey={sender}
+            module="module-conversation__user"
+            shouldShowPubkey={false}
+          />
+        )}
+
+        <span style={{ fontSize: '18px', marginLeft: '5px' }} role="img">
+          {emoji}
+        </span>
+      </Flex>
+
+      <Flex container alignItems="center">
+        {sender === me && (
+          <BchatButton
+            buttonType={BchatButtonType.BrandOutline}
+            buttonColor={BchatButtonColor.Secondary}
+            text="Remove"
+            iconType="delete"
+            iconSize={14}
+            onClick={() => onRemove(emoji)}
+            style={{
+              borderRadius: '7.529px',
+              border: '0.471px solid #858598',
+              color: '#A7A7BA',
+              padding: '2px 10px',
+              backgroundColor: 'var(--color-emoji-panel-bg)',
+              fontWeight: 400,
+            }}
+          />
+        )}
+      </Flex>
+    </StyledReactionSender>
+  );
+};
+
 
 export const ReactListModal = (props: Props): ReactElement => {
   const [reactions, setReactions] = useState<SortedReactionList>([]);
@@ -244,7 +269,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const darkMode = useSelector(getTheme) === 'dark';
   const modalRef = useRef<HTMLDivElement | null>(null);
-  
+
   const reactedDetailList = useMemo(() => {
     if (!msgProps?.sortedReacts) return [];
     const reactedCustomData: Array<reactionListDetailsProps> = [];
@@ -272,7 +297,6 @@ export const ReactListModal = (props: Props): ReactElement => {
     handleClose();
     dispatch(updateReactClearAllModal({ reaction: currentReact, messageId }));
   };
-
 
   useEffect(() => {
     if (isEmpty(reactedDetailList)) {
@@ -319,7 +343,7 @@ export const ReactListModal = (props: Props): ReactElement => {
     },
 
     // [currentReact, me, reaction, reacts, reactions, reactionsMap, senders]);
-    [msgProps?.sortedReacts, me,reactionsMap]
+    [msgProps?.sortedReacts, me, reactionsMap]
   );
   useEffect(() => {
     const handleClickOutside = (event: any): void => {
@@ -384,7 +408,6 @@ export const ReactListModal = (props: Props): ReactElement => {
                 justifyContent={'space-between'}
                 alignItems={'center'}
               >
-              
                 {isPublic && weAreModerator && (
                   <StyledClearButton onClick={handleClearReactions}>
                     {window.i18n('clearAll')}
@@ -401,7 +424,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                   handleClose={handleClose}
                 />
               )}
-            </StyledSendersContainer>   
+            </StyledSendersContainer>
           </StyledReactListContainer>
         </div>
       </div>

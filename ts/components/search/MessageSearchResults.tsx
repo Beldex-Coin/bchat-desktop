@@ -209,6 +209,7 @@ export const MessageSearchResult = (props: MessageResultProps) => {
     <StyledSearchResulsts
       key={`div-msg-searchresult-${id}`}
       role="button"
+      className='message-search-results'
       onClick={() => {
         void openConversationToSpecificMessage({
           conversationKey: conversationId,

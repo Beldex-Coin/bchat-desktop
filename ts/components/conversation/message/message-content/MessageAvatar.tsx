@@ -5,7 +5,7 @@ import { updateUserDetailsModal } from '../../../../state/ducks/modalDialog';
 import { getMessageAvatarProps } from '../../../../state/selectors/conversations';
 import { Avatar, AvatarSize, CrownIcon } from '../../../avatar/Avatar';
 import styled from 'styled-components';
-import { useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
+import { useConversationBnsHolder, useMessageReactsPropsById } from '../../../../hooks/useParamSelector';
 import { isEmpty } from 'lodash';
 // tslint:disable: use-simple-attributes
 
@@ -37,6 +37,7 @@ export const MessageAvatar = (props: Props) => {
   const avatarProps = useSelector(state => getMessageAvatarProps(state as any, messageId));
   const msgProps = useMessageReactsPropsById(messageId);
   const reacts=!isEmpty( msgProps?.reacts);
+    const isBnsHolder = useConversationBnsHolder(avatarProps?.sender || '');
   
 
   if (!avatarProps) {
@@ -80,6 +81,7 @@ export const MessageAvatar = (props: Props) => {
           size={AvatarSize.M}
           onAvatarClick={(!isPublic && onMessageAvatarClick) || undefined}
           pubkey={sender}
+          isBnsHolder={isBnsHolder}
         />
         {isSenderAdmin && <CrownIcon />}
       </div>

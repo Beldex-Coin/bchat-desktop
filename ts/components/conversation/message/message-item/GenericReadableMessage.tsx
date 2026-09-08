@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { contextMenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
 import useInterval from 'react-use/lib/useInterval';
-import _ from 'lodash';
+import _, { isNil, isString, toNumber } from 'lodash';
 import { removeMessage } from '../../../../data/data';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { getConversationController } from '../../../../bchat/conversations';
@@ -175,11 +175,11 @@ export const GenericReadableMessage = (props: Props) => {
   const [recentEmojiBtnVisible, setRecentEmojiBtnVisible] = useState(false);
    const [recentEmoji, setRecentEmoji] = useState(false);
   const onMessageLoseFocus = useCallback(() => {
-    if (isRightClicked) {
+     if (isRightClicked) {
       setIsRightClicked(false);
        setRecentEmojiBtnVisible(false);
        setRecentEmoji(false);
-    }
+     }
   }, [isRightClicked]);
    const {
     convoId,
@@ -198,29 +198,37 @@ export const GenericReadableMessage = (props: Props) => {
     }
   }, [convoId]);
 
-  useEffect(() => {
-    document.addEventListener('click', onMessageLoseFocus);
+  // useEffect(() => {
+  //   document.addEventListener('click', onMessageLoseFocus);
 
-    return () => {
-      document.removeEventListener('click', onMessageLoseFocus);
-    };
-  }, [onMessageLoseFocus]);
+  //   return () => {
+  //     document.removeEventListener('click', onMessageLoseFocus);
+  //   };
+  // }, [onMessageLoseFocus]);
 
   
   const handleContextMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       const enableContextMenu = !multiSelectMode && !msgProps?.isKickedFromGroup && !isDetailView;
-
+      const attachmentIndexStr = (e?.target as any)?.parentElement?.getAttribute?.(
+        'data-attachmentindex'
+      );
+      const attachmentIndex =
+          isString(attachmentIndexStr) && !isNil(toNumber(attachmentIndexStr))
+          ? toNumber(attachmentIndexStr)
+          : 0;
       if (enableContextMenu) {
         contextMenu.hideAll();
         contextMenu.show({
           id: ctxMenuID,
           event: e,
+          props: {
+            dataAttachmentIndex: attachmentIndex,
+          },
         });
-        setIsRightClicked(enableContextMenu);
+         setIsRightClicked(enableContextMenu);
     
       }
-      console.log('enableContextMenu', enableContextMenu);
        
     },
     [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
@@ -299,7 +307,6 @@ export const GenericReadableMessage = (props: Props) => {
   
     return null;
   })();
-
   return (
     <>
     {isExpired ? null : 
@@ -368,6 +375,7 @@ export const GenericReadableMessage = (props: Props) => {
           setRecentEmojiBtnVisible={e => setRecentEmojiBtnVisible(e)}
           recentEmoji={recentEmoji}
           setRecentEmoji={e => setRecentEmoji(e)}
+          disableRightClicked={()=> setIsRightClicked(false)}
         />
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer

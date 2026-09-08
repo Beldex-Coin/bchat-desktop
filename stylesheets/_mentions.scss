@@ -12,12 +12,12 @@
     min-width: 20px;
   }
   .bchat-member-item:hover {
-    cursor:pointer !important;
+    cursor: pointer !important;
   }
 }
-.remove-contact-list{
+.remove-contact-list {
   .bchat-member-item:hover {
-    cursor:pointer !important;
+    cursor: pointer !important;
   }
 }
 
@@ -38,7 +38,8 @@
   // margin: 2px;
   // padding: 2px;
   user-select: none;
-  font-weight: bold;
+  font-weight: 600;
+  color: black;
 }
 
 .mention-profile-name-us {

@@ -20,6 +20,7 @@ import { useIsPrivate } from '../../../../hooks/useParamSelector';
 import styled from 'styled-components';
 import { BchatIcon } from '../../../icon';
 import { Flex } from '../../../basic/Flex';
+import { validateForBrokenFormat } from '../../BchatQuotedMessageComposition';
 
 export type QuotePropsWithoutListener = {
   attachment?: QuotedAttachmentType;
@@ -426,7 +427,7 @@ export const Quote = (props: QuotePropsWithListener) => {
                 />
               </span>
             )}
-            <QuoteText isIncoming={isIncoming} text={text} attachment={attachment} />
+            <QuoteText isIncoming={isIncoming} text={validateForBrokenFormat(text||'')} attachment={attachment} />
           </Flex>
         </div>
         <QuoteIconContainer

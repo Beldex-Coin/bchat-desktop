@@ -1,5 +1,5 @@
 // import React from 'react';
-import { animation, Menu } from 'react-contexify';
+import {  Menu } from 'react-contexify';
 import {
   AcceptMenuItem,
   AddModeratorsMenuItem,
@@ -40,7 +40,7 @@ export const ConversationHeaderMenu = (props: PropsConversationHeaderMenu) => {
   }
   return (
     <ContextConversationId.Provider value={selectedConversation}>
-      <Menu id={triggerId} animation={animation.fade}>
+      <Menu id={triggerId} animation="fade">
         <AcceptMenuItem />
         <DeclineMenuItem />
         <DisappearingMessageMenuItem />

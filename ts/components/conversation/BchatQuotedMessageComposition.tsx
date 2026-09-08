@@ -14,6 +14,8 @@ import classNames from 'classnames';
 import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
+import { renderMarkdownBlocks } from './message/message-content/MessageBody';
+import { useIsPrivate } from '../../hooks/useParamSelector';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -49,17 +51,22 @@ const QuotedMessageCompositionReply = styled.div`
       font-weight: 300;
     }
   }
+  .inline-code{
+  backdrop-filter: brightness(2);
+  }
 `;
 
-const Subtle = styled.div`
+const Subtle = styled.div<{isquotedMessage:boolean}>`
+  font-size: ${props => props.isquotedMessage ? '14px' : '16px'};
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  display: -webkit-box;
+  display: ${props => props.isquotedMessage ? 'flex' : 'block'};
   color: var(--color-text);
   margin-right: 9px;
+  flex-direction: ${props => props.isquotedMessage ? 'column' : 'row'};
 `;
 const VerticalLine = styled.div`
   width: 5px;
@@ -125,6 +132,8 @@ export const BchatQuotedMessageComposition = () => {
 
   const iconType = getIconType();
 
+  const isGroupConversation = !useIsPrivate(quotedMessageProps?.convoId);
+
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
   }, []);
@@ -159,7 +168,10 @@ export const BchatQuotedMessageComposition = () => {
   const socialGrp: Room[] = joinableRooms.rooms.filter(
     (item: Room) => groupInvitation?.name === item.name
   );
-  const validatedBody=!body?.startsWith(`{"kind"`) && body
+
+  const validatedBody = !body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
+  const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, true, isGroupConversation) : null;
+  const isquotedMessage = !!body && body.startsWith('> ');
   return (
     <QuotedMessageComposition>
       <Flex
@@ -177,6 +189,7 @@ export const BchatQuotedMessageComposition = () => {
             justifyContent="flex-start"
             margin={'var(--margins-xs)'}
             alignItems="center"
+            className='QuotedMessageCompositionReply'
           >
             {!isLink ? (
               <VerticalLine />
@@ -189,7 +202,9 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle>{(hasAttachments && window.i18n('mediaMessage')) ||validatedBody }</Subtle>
+            <Subtle isquotedMessage={isquotedMessage}>
+              {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
+            </Subtle>
 
             {groupInvitation && (
               <div className="group-details">
@@ -273,3 +288,42 @@ export const BchatQuotedMessageComposition = () => {
     </QuotedMessageComposition>
   );
 };
+
+const FORMAT_SYMBOLS = ['```', '`', '*', '_', '~'];
+// const LIST_SYMBOLS = ['-', '* ', '>']; // Added list and quote indicators
+
+export function validateForBrokenFormat(text: string, limit = 100): string {
+  if (!text) return text;
+
+  // Step 1: Slice the text to your limit
+  let preview = text.slice(0, limit).trim();
+
+  /**
+   * This looks for a space followed by a hyphen (e.g., " -") 
+   * and replaces it with a newline + hyphen ("\n-").
+   */
+  if (preview.includes(' -')) {
+    preview = preview.replace(/\s-/g, '\n-');
+  }
+
+  // Step 3: Handle Triple Backticks (Code Blocks)
+  if (preview.includes('```')) {
+    const tripleBacktickCount = (preview.match(/```/g) || []).length;
+    if (tripleBacktickCount % 2 !== 0) {
+      preview = preview + '```';
+    }
+  }
+
+  // Step 4: Handle single-character wrap symbols (*, _, ~, `)
+  const firstChar = preview[0];
+  if (FORMAT_SYMBOLS.includes(firstChar) && firstChar !== '`') {
+    const regex = new RegExp(`\\${firstChar}`, 'g');
+    const count = (preview.match(regex) || []).length;
+
+    if (count % 2 !== 0) {
+      preview = preview + firstChar;
+    }
+  }
+
+  return preview ;
+}

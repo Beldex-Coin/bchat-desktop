@@ -192,10 +192,10 @@ function update(forceRefresh = false) {
         // eslint-disable-next-line prefer-destructuring
         title = lastNotification.title;
         // eslint-disable-next-line prefer-destructuring
-        message = lastNotification.message;
+        message = cleanNotificationText(lastNotification.message);
       } else {
         title = newMessageCountLabel;
-        message = `${window.i18n('notificationMostRecent')} ${lastNotification.message}`;
+        message = `${window.i18n('notificationMostRecent')} ${cleanNotificationText(lastNotification.message)}`;
       }
       // eslint-disable-next-line prefer-destructuring
       iconUrl = lastNotification.iconUrl;
@@ -247,4 +247,26 @@ export const Notifications = {
   addPreviewNotification,
   clearByConversationID,
   clearByMessageId,
+};
+
+export const cleanNotificationText = (input: string): string => {
+  if (!input) return '';
+
+  let text = input.trim();
+
+  // Remove blockquote ("> ")
+  text = text.replace(/^>\s+/, '');
+
+  // Remove ordered list (e.g., "1. ")
+  text = text.replace(/^\d+\.\s+/, '');
+
+  // Remove unordered list ("- " or "* ")
+  text = text.replace(/^[-*]\s+/, '');
+
+  // Remove wrapping formatting (*, ~, _, etc.)
+  text = text.replace(/^([*_~`]+)(.*?)\1$/, '$2');
+  
+  text = text.replace(/^([*_~`]+)(.*?)([*_~`]+)$/, '$2');
+
+  return text.trim();
 };

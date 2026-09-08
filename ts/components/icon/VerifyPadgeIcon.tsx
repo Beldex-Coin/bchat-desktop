@@ -1,14 +1,14 @@
-import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 
-const VerifyPadgeIcon: React.FC = () => {
+const VerifyPadgeIcon = (Props:{size?:number}) => {
 const color = useSelector(getTheme) === 'dark'?'#2A2A3B':'#F8F8F8';
 
   return (
     <svg
-    width={25}
-    height={25}
+    width={Props.size || 25}
+    height={Props.size || 25}
     viewBox="0 0 30 30"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { animation, Menu } from 'react-contexify';
+import { Menu } from 'react-contexify';
 import _ from 'lodash';
 
 import {
@@ -29,7 +29,7 @@ const ConversationListItemContextMenu = (props: PropsContextConversationItem) =>
   const { triggerId } = props;
 
   return (
-    <Menu id={triggerId} animation={animation.fade} className={'convoListContextMenu'}>
+    <Menu id={triggerId} animation="fade" className={'convoListContextMenu'}>
       <AcceptMenuItem />
       <DeclineMenuItem />
       <NotificationForConvoMenuItem />

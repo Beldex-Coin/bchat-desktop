@@ -211,7 +211,7 @@ export const OverlayClosedGroup = () => {
             buttonColor={BchatButtonColor.Primary}
             buttonType={BchatButtonType.Brand}
             text={'Create'}
-            disabled={noContactsForClosedGroup || groupName.trim().length === 0}
+            disabled={noContactsForClosedGroup}
             dataTestId="next-button"
             onClick={onEnterPressed}
           />
