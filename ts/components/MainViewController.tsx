@@ -39,7 +39,7 @@ export const AddNewContactInEmptyConvo = () => {
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = bchatId.trim();
     if (!pubkeyorOnsTrimmed) {
-      ToastUtils.pushToastError('invalidPubKey', 'Please enter the Id or BNS'); // or Bns name
+      ToastUtils.pushToastError('invalidPubKey', window.i18n('errMsgCreateConvo')); // or Bns name
       return;
     }
     if (

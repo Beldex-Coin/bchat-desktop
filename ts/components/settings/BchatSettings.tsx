@@ -99,7 +99,7 @@ export const PasswordLock = ({
             type="password"
             id="password-lock-input"
             defaultValue=""
-            placeholder="Enter your password"
+            placeholder={window.i18n('enterPassword')}
             // style={{height:'60px' }}
             data-testid="password-lock-input"
           />

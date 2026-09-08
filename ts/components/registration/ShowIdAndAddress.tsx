@@ -129,7 +129,7 @@ export const ShowRecoveryPhase = (props: any) => {
         // iconRotation={3}
         /> */}
               <div
-                data-tip="Copy"
+                data-tip={window.i18n('editMenuCopy')}
                 data-place="right"
                 data-offset="{'top':30,'left':15}"
                 className="iconBox"
@@ -141,7 +141,7 @@ export const ShowRecoveryPhase = (props: any) => {
             </div>
           </div>
           <p className="bchat-registration-recovery-phrase-hintTxt">
-            <span>Note :</span> {window.i18n('saveYourRecoveryPhrase')}
+            <span>{window.i18n('noteLabel')}</span> {window.i18n('saveYourRecoveryPhrase')}
             {window.i18n('copyToContinueRecovery')}
             </p>
             <SpacerLG/>

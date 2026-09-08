@@ -36,7 +36,7 @@ import { GoBackMainMenuButton } from './SignUpTab';
 export const ClearIcon = (props: any) => (
   <div
     onClick={() => props.removeRecoveryPhrase()}
-    data-tip="Clear"
+    data-tip={window.i18n('clear')}
     data-place="top"
     className="paste-icon"
     data-offset="{'right':35,'left':5}"
@@ -76,14 +76,14 @@ export const DisplaySeed = (props: any) => {
               name="text"
               onPaste={handlePaste}
               value={props.recoveryPhrase}
-              placeholder="Enter your recover seed"
+              placeholder={window.i18n('enterSeed')}
               onChange={e => props.assignRecoveryPhase(e.target.value)}
             ></textarea>
             <div className="bchat-restore-seed-icon-box">
               <div
                 onClick={() => props.paste()}
                 className="paste-icon"
-                data-tip="Paste"
+                data-tip={window.i18n('editMenuPaste')}
                 data-offset="{'top':30,'left':15}"
                 data-place="right"
               >

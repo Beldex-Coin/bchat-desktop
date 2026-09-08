@@ -137,10 +137,10 @@ export const SignInTab = (props: any) => {
   // const year = moment(restoreDate).year();
   const activateContinueButton = displayNameOK && !loading;
   const confirmProps = {
-    title: 'Blockheight will be set to Zero(0)',
-    message: 'Do you want to proceed Restore by syncing from Blockheight value 0?',
-    okText: 'Proceed',
-    cancelText: 'Cancel',
+    title: window.i18n('blockheightZeroTitle'),
+    message: window.i18n('blockheightZeroConfirmation'),
+    okText: window.i18n('proceed'),
+    cancelText: window.i18n('cancel'),
     showExitIcon: false,
     iconShow: true,
     customIcon: <BchatIcon iconType="blockSync" iconSize={58} fillRule='evenodd' clipRule='evenodd' />,
@@ -191,7 +191,7 @@ export const SignInTab = (props: any) => {
         setScreenName(1);
         ToastUtils.pushToastError(
           'registrationError',
-          `Error: ${e.message || window.i18n('somthingWentWrong')}`
+          window.i18n('errorWithReason', [e.message || window.i18n('somthingWentWrong')])
         );
         window?.log?.warn('exception during registration:', e);
       }

@@ -577,7 +577,7 @@ export const ActionsPanel = () => {
   };
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
-    const status = isOnline ? 'Online' : 'Offline';
+    const status = isOnline ? window.i18n('online') : window.i18n('offline');
 
     return (
       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
@@ -676,7 +676,7 @@ export const ActionsPanel = () => {
                   <div className="dotIcon">
                     <BchatIcon iconSize={'small'} iconType="circle" />
                   </div>
-                  <div>Connecting..</div>
+                  <div>{window.i18n('connectingToServer')}</div>
                 </div>
                 <div>
                   <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex' }} />

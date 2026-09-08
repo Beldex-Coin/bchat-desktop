@@ -23,18 +23,18 @@ import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
 const style: any = {
   'missed-call': {
-    notificationText: 'Missed Call',
+    notificationTextKey: 'callMissed',
     iconType: 'callMissed',
     iconColor: '#FF3E3E',
 
   },
   'started-call': {
-    notificationText: 'Outgoing',
+    notificationTextKey: 'filterOutgoing',
     iconType: 'callOutgoing',
     iconColor: 'var(--color-text)',
   },
   'answered-a-call': {
-    notificationText: 'Incoming',
+    notificationTextKey: 'filterIncoming',
     iconType: 'callIncoming',
     iconColor: 'var(--color-text)',
   },
@@ -68,7 +68,7 @@ export const OverlayCallHistory = () => {
       <div className="module-left-pane-overlay-call-history">
         <SpacerLG />
         <div className="module-left-pane-overlay-call-history--header">
-          <div className="module-left-pane-overlay-call-history--header-txt">Call History</div>
+          <div className="module-left-pane-overlay-call-history--header-txt">{window.i18n('callHistory')}</div>
           <SpacerMD />
           <div className="bchat-search-input" style={{paddingRight:'5px'}}>
             <div className="search">
@@ -120,7 +120,7 @@ const ContactList = (props: any) => {
   const isBnsHolder = useConversationBnsHolder(conversationId);
 
   const styleItem = style[callNotificationType];
-  const callCategoryText = styleItem.notificationText;
+  const callCategoryText = window.i18n(styleItem.notificationTextKey);
   const iconType = styleItem.iconType;
   const iconColor = styleItem.iconColor;
 

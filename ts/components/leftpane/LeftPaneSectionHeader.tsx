@@ -165,7 +165,7 @@ export const LeftPaneSectionHeader = () => {
         // style={{ marginRight: '13px' }}
         className="dayAndNightIcon"
         onClick={handleClick}
-        data-tip="Themes"
+        data-tip={window.i18n('themesTooltip')}
         data-offset="{'right':43}"
         data-place="bottom"
       ></div>

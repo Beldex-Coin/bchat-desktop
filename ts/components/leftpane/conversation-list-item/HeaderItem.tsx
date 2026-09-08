@@ -163,7 +163,7 @@ export const ConversationListItemHeaderItem = () => {
   let unreadCountDiv = null;
   if (unreadCount > 0) {
     atSymbol = mentionedUs ? (
-      <MentionAtSymbol title="Open to latest mention" onMouseDown={openConvoToLastMention}>
+      <MentionAtSymbol title={window.i18n('openToLatestMention')} onMouseDown={openConvoToLastMention}>
         @
       </MentionAtSymbol>
     ) : null;

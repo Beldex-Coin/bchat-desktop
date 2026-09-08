@@ -4,19 +4,20 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { Constants } from '../../bchat';
 import { SpacerSM } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
+import { LocalizerKeys } from '../../types/LocalizerKeys';
 
-const languageOptions = [
-  { label: 'Arabic', code: 'ar' },
-  { label: 'Chinese (Simplified)', code: 'zh_CN' },
-  { label: 'English', code: 'en' },
-  { label: 'German', code: 'de' },
-  { label: 'Japanese', code: 'ja' },
-  { label: 'Korean', code: 'ko' },
-  { label: 'Portuguese (Brazil)', code: 'pt_BR' },
-  { label: 'Russian', code: 'ru' },
-  { label: 'Spanish', code: 'es' },
-  { label: 'Turkish', code: 'tr' },
-  { label: 'Vietnamese', code: 'vi' },
+const languageOptions: Array<{ labelKey: LocalizerKeys; code: string }> = [
+  { labelKey: 'languageArabic', code: 'ar' },
+  { labelKey: 'languageChineseSimplified', code: 'zh_CN' },
+  { labelKey: 'languageEnglish', code: 'en' },
+  { labelKey: 'languageGerman', code: 'de' },
+  { labelKey: 'languageJapanese', code: 'ja' },
+  { labelKey: 'languageKorean', code: 'ko' },
+  { labelKey: 'languagePortugueseBrazil', code: 'pt_BR' },
+  { labelKey: 'languageRussian', code: 'ru' },
+  { labelKey: 'languageSpanish', code: 'es' },
+  { labelKey: 'languageTurkish', code: 'tr' },
+  { labelKey: 'languageVietnamese', code: 'vi' },
 ];
 
 export const BchatLanguageScreen = () => {
@@ -74,7 +75,7 @@ export const BchatLanguageScreen = () => {
                   />
                 )}
               </div>
-              <span className="language-text">{item.label}</span>
+              <span className="language-text">{window.i18n(item.labelKey)}</span>
             </div>
             <SpacerSM />
           </React.Fragment>
