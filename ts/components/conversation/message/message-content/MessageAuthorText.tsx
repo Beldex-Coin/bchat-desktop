@@ -45,7 +45,7 @@ export const MessageAuthorText = (props: Props) => {
 
   return (
     <Flex container={true} className='module-message_grp_author_wrapper'
-     style={{color:avatarColors?.bgColor || 'var(--color-text)',textTransform: 'capitalize'}}>
+     style={{color:(avatarColors as any)?.letterColor || 'var(--color-text)',textTransform: 'capitalize'}}>
       <ContactName
         pubkey={displayedPubkey}
         name={authorName}

@@ -354,14 +354,16 @@ const ConversationHeaderTitle = () => {
     }
   }
 
+  // NOIR: the subtitle is data — mono, spaced, quiet.
   const SubTxt = styled.div`
-    font-size: 11px;
+    font-family: var(--font-mono);
+    font-size: 10px;
     line-height: 16px;
-    letter-spacing: 0.3px;
-    // text-transform: uppercase;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     user-select: none;
-    font-weight: 100;
-    color: var(--color-text-subtle);
+    font-weight: 400;
+    color: var(--color-chat-timestamp);
   `;
   let memberCountText = '';
   if (isGroup && memberCount > 0 && !isKickedFromGroup) {

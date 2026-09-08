@@ -12,27 +12,25 @@ const DateBreakContainer = styled.div`
   // background: #2e333d;
 `;
 
+// NOIR: the day break is a mono chip on a hairline — system log, not decoration.
 const DateBreakText = styled.div`
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
-  // letter-spacing: 0.6px;
-  // font-size: 0.8rem;
-  // font-weight: bold;
-  // text-align: center;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
   color: var(--color-chat-timestamp);
-  background-color: var(--message-bubbles-received-background-color);
-  border-radius: 40px;
+  background-color: var(--color-inbox-background);
+  border: 1px solid var(--color-borderBottomColor);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 20px; 
+  padding: 4px 18px;
 
-  height: 40px;
-  // margin-top: -20px;
-  border-radius: 22px;
+  height: 28px;
 
-  font-size: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
 `;
 
 export const MessageDateBreak = (props: { timestamp: number; messageId: string }) => {

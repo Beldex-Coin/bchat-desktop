@@ -209,9 +209,10 @@ export const MessageContent = (props: Props) => {
 
   return (
     <div style={{position:'relative'}}>  
-   {isTailVisible &&isIncoming && <StyledSvgWrapper>
+   {/* NOIR: bubble tails removed — the chamfered corner is the direction cue */}
+   {false && isTailVisible &&isIncoming && <StyledSvgWrapper>
       <IncomingMsgTailIcon  />
-    </StyledSvgWrapper> }  
+    </StyledSvgWrapper> }
    
     <div
       className={classNames(
@@ -278,9 +279,9 @@ export const MessageContent = (props: Props) => {
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
-    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
+    {false && isTailVisible &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
       <OutgoingMsgTailIcon/>
-    </StyledSvgWrapper> }  
+    </StyledSvgWrapper> }
     
     </div>
 

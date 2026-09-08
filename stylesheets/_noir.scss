@@ -72,7 +72,6 @@
 // things that must stay circular
 .inbox,
 .bchat-fullscreen {
-  .module-avatar img,
   .bchat-loader div,
   .module-typing-animation__dot,
   .bchat-modal__body .bchat-toggle .knob,
@@ -379,4 +378,132 @@ textarea {
 ::selection {
   background: var(--color-accent);
   color: #0a0a0a;
+}
+
+// ---------------------------------------------------------------
+// 14. ACTION RAIL — black column, live edge on the active section.
+// ---------------------------------------------------------------
+
+.module-left-pane__sections-container {
+  background: var(--color-leftHeaderBg);
+  border-right: 1px solid var(--color-borderBottomColor);
+}
+
+.icon-box,
+.isSelected-icon-box {
+  border-radius: 0 !important;
+  position: relative;
+
+  .btnView {
+    color: var(--color-action-btn-icon);
+  }
+}
+
+.isSelected-icon-box {
+  background: var(--color-theme-selected-bg) !important;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+  }
+
+  .btnView {
+    color: var(--color-accent);
+  }
+}
+
+.appVersion {
+  font-family: $bchat-font-mono;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--color-HintMessageText);
+  text-transform: uppercase;
+}
+
+// ---------------------------------------------------------------
+// 15. NETWORK STATUS — reads as a system line, not a card.
+// ---------------------------------------------------------------
+
+.offline-msg {
+  border-radius: 0;
+  border: 1px solid var(--color-borderBottomColor);
+  background-color: var(--color-leftHeaderBg);
+
+  .txt {
+    font-family: $bchat-font-mono;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.connection-Wrapper {
+  border-radius: 0 !important;
+  font-family: $bchat-font-mono;
+  font-size: 11px !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 15px !important;
+  color: var(--color-accent);
+
+  .dotIcon {
+    color: var(--color-accent);
+
+    svg {
+      animation: noir-pulse 2s infinite;
+    }
+  }
+}
+
+@keyframes noir-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// ---------------------------------------------------------------
+// 16. CONVERSATION LIST ROWS — name / mono time / grey preview.
+// ---------------------------------------------------------------
+
+.module-conversation-list-item {
+  &__header__name {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  &__message__text {
+    color: var(--color-last-msg-txt);
+    font-size: 12.5px;
+  }
+}
+
+// ---------------------------------------------------------------
+// 17. BUBBLE PRESENCE — blocks, not slivers.
+// ---------------------------------------------------------------
+
+.module-message__container--incoming--opaque,
+.module-message__container--outgoing--opaque {
+  min-width: 64px;
+  padding: 2px 4px;
+}
+
+.module-message__container--outgoing--opaque {
+  .module-message__text {
+    font-weight: 500;
+  }
+}
+
+// header identity: BNS/state chip next to the name reads as data
+.module-conversation-header__title .receipient_name {
+  letter-spacing: 0.04em;
 }

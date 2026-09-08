@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const LeftPaneSectionContainer = styled.div`
-  width: 125px;
+  width: 96px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -53,7 +53,7 @@ export const LeftPaneSectionContainer = styled.div`
  
   .sub-menu-box-wrapper {
     position: fixed;
-    left: 102px;
+    left: 100px;
     top: 82px;
     z-index: 9;
     .sub-menu-box {
@@ -84,7 +84,7 @@ export const LeftPaneSectionContainer = styled.div`
     .btnView {
       background-color: var(--color-modal-bg);
       svg {
-        fill: #108d32;
+        fill: var(--color-accent);
       }
     }
 
@@ -116,14 +116,14 @@ export const LeftPaneSectionContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-default);
-    border-radius: 12px;
-    font-weight: 600;
-    background: var(--color-destructive);
+    font-family: var(--font-mono);
+    border-radius: 0;
+    font-weight: 700;
+    background: var(--color-accent);
     transition: var(--default-duration);
     opacity: 1;
     text-align: center;
-    color: white;
+    color: #0a0a0a;
   }
 
   .module-avatar {
@@ -133,7 +133,7 @@ export const LeftPaneSectionContainer = styled.div`
   }
   .theme-Wrapper {
     border-radius: 70px;
-    border: 1.5px solid #46465d;
+    border: 1px solid var(--color-borderBottomColor);
     padding: 5px 4px;
     .selected {
       background-color: var(--color-theme-selected-bg);
