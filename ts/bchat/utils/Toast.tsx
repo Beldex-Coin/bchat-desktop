@@ -64,7 +64,11 @@ export function pushLoadAttachmentFailure(message?: string) {
 }
 
 export function pushFileSizeError(limit: number, units: string) {
-  pushToastError('fileSizeWarning', window.i18n('fileSizeWarning'), `Max size: ${limit} ${units}`);
+  pushToastError(
+    'fileSizeWarning',
+    window.i18n('fileSizeWarning'),
+    window.i18n('maxFileSizeLimit', [limit.toString(), units])
+  );
 }
 
 export function pushFileSizeErrorAsByte(bytesCount: number) {
@@ -220,7 +224,7 @@ export function pushYouLeftTheGroup() {
 }
 
 export function someDeletionsFailed() {
-  pushToastWarning('deletionError', 'Deletion error');
+  pushToastWarning('deletionError', window.i18n('deletionErrorGeneric'));
 }
 
 export function pushDeleted(messageCount: number) {

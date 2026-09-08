@@ -191,7 +191,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             type="text"
             className="profile-name-input"
             value={profileName}
-            placeholder={'Enter a group name'}
+            placeholder={window.i18n('emptyGroupNameError')}
             onChange={onNameEdited}
             maxLength={MAX_USERNAME_LENGTH - 1}
             tabIndex={0}
@@ -513,7 +513,7 @@ export const BchatRightPanelWithDetails = () => {
       memberAfterUpdate => !_.includes(membersToRemove, memberAfterUpdate)
     );
 
-    void initiateClosedGroupUpdate(convoId, convoProps.name || 'Unknown', filteredMembers);
+    void initiateClosedGroupUpdate(convoId, convoProps.name || window.i18n('unknown'), filteredMembers);
   }
   const onClickOK = async () => {
     // const members = getWouldBeMembers(this.state.contactList).map(d => d.id);
@@ -521,9 +521,9 @@ export const BchatRightPanelWithDetails = () => {
     if (removeMem) {
       dispatch(
         updateConfirmModal({
-          title: 'Remove Users?',
-          message: 'Are you sure you want to remove these users from this group?',
-          okText: 'Remove',
+          title: window.i18n('removeUsersTitle'),
+          message: window.i18n('removeUsersConfirmation'),
+          okText: window.i18n('remove'),
           iconShow: true,
           customIcon: (
             <BchatIcon iconType="avatarX" iconSize={24} clipRule="evenodd" fillRule="evenodd" />
@@ -656,7 +656,7 @@ export const BchatRightPanelWithDetails = () => {
           )}
           {showAddRemoveModeratorsButton && (
             <div className="group-settings-header-moderator-wholeBox">
-              <div className="group-settings-header-moderator-txtBox">Moderators</div>
+              <div className="group-settings-header-moderator-txtBox">{window.i18n('moderators')}</div>
               <Flex container={true} flexDirection="row" justifyContent="center" margin="">
                 <div
                   className="addButton"
@@ -696,7 +696,7 @@ export const BchatRightPanelWithDetails = () => {
                       />
                     </span>
                   }
-                  {'Remove'}
+                  {window.i18n('remove')}
                 </div>
               </Flex>
             </div>

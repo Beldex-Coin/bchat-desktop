@@ -94,14 +94,14 @@ export const PaymentMessage = (props: PropsForPayment) => {
     if (props.messageId === '1234-567-7890') {
       return (
         <Flex container={true} alignItems="center">
-          <span className="txn-status">Initiating transaction</span>
+          <span className="txn-status">{window.i18n('initiatingTransaction')}</span>
           <BchatIcon rotateDuration={2} iconColor={iconColor} iconType="loading" iconSize="tiny" />
         </Flex>
       );
     } else if (props.direction === 'outgoing') {
       return (
         <Flex container={true} alignItems="center">
-          <span className="txn-status">Sent Successfully!</span>
+          <span className="txn-status">{window.i18n('paymentSentSuccessfully')}</span>
           <BchatIcon iconColor={'#f0f0f0'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
@@ -109,7 +109,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
       return (
         <Flex container={true} alignItems="center" color="#108D32">
           <span className="txn-status" style={{ color: '#108D32' }}>
-            Received Successfully!
+            {window.i18n('paymentReceivedSuccessfully')}
           </span>
           <BchatIcon iconColor={'#108D32'} iconType="circleWithTick" iconSize={16} />
         </Flex>

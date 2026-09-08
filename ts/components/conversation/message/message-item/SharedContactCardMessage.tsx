@@ -141,10 +141,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
           bchatIcon: 'avatar',
           iconSize: 31,
           iconShow: true,
-          title: 'Start chat now?',
-          message: 'Do you want to chat with this contact now?',
+          title: window.i18n('startChatNowTitle'),
+          message: window.i18n('startChatNowConfirmation'),
           onClickOk: () => openConverstation(sharedContactAddressList[0]),
-          okText: 'Start Chatting',
+          okText: window.i18n('startChatting'),
           okTheme: BchatButtonColor.Primary,
         })
       );

@@ -691,7 +691,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     const filtered =
       mentionsInput
         ?.filter(Boolean)
-        .filter(d => d.authorProfileName !== 'Anonymous')
+        .filter(d => d.authorProfileName !== window.i18n('anonymous'))
         .filter(d => d.authorProfileName?.toLowerCase()?.includes(query.toLowerCase()))
         .map(user => ({
           id: user.id,
@@ -727,10 +727,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
 
     const allMembers = allPubKeys.map(pubKey => {
       const conv = getConversationController().get(pubKey);
-      let profileName = 'Anonymous';
+      let profileName = window.i18n('anonymous');
 
       if (conv) {
-        profileName = conv.getProfileName() || 'Anonymous';
+        profileName = conv.getProfileName() || window.i18n('anonymous');
       }
 
       return {

@@ -211,7 +211,7 @@ const ReactionSenderItem = ({
         <SpacerSM />
 
         {sender === me ? (
-          <span style={{ fontWeight: 700 }}>You</span>
+          <span style={{ fontWeight: 700 }}>{window.i18n('you')}</span>
         ) : (
           <ContactName
             pubkey={sender}
@@ -230,7 +230,7 @@ const ReactionSenderItem = ({
           <BchatButton
             buttonType={BchatButtonType.BrandOutline}
             buttonColor={BchatButtonColor.Secondary}
-            text="Remove"
+            text={window.i18n('remove')}
             iconType="delete"
             iconSize={14}
             onClick={() => onRemove(emoji)}

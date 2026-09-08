@@ -82,14 +82,14 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
         <hr />
         <div className="Bchat-modal__button-group">
           <BchatButton
-            text={'Clear'}
+            text={window.i18n('clear')}
             buttonColor={confirmButtonColor}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClearAll}
             disabled={clearingInProgress}
           />
           <BchatButton
-            text={'Cancel'}
+            text={window.i18n('cancel')}
             buttonColor={BchatButtonColor.Danger}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClose}

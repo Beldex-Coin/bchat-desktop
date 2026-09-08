@@ -245,7 +245,7 @@ export const BchatQuotedMessageComposition = () => {
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                    Shared contact
+                    {window.i18n('sharedContactLabel')}
                   </span>
                   
                   <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>

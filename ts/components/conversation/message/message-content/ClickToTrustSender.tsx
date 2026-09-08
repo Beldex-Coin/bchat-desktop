@@ -53,10 +53,10 @@ export const ClickToTrustSender =(props: { messageId: string, attachments: Array
 const {attachments}=props;
 
 const attachmentProps: { [key: string]: AttachmentTypeProps } = {
-  image: { txt: "Image", icon: "gallery" },
+  image: { txt: window.i18n('attachmentTypeImage'), icon: "gallery" },
   audio: { txt: "Audio", icon: "audio" },
   video: { txt: "Video", icon: "video" },
-  document: { txt: "Document", icon: "document" }
+  document: { txt: window.i18n('attachmentTypeDocument'), icon: "document" }
 };
 
 const getAttachmentType = (attachments: any): AttachmentTypeProps => {

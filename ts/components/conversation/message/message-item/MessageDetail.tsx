@@ -140,7 +140,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
         showHeader={true}
         headerReverse={false}
         okButton={{
-          text: 'Close',
+          text: window.i18n('close'),
           onClickOkHandler: () => { dispatch(updateMessageMoreInfoModal(null)) },
 
           disabled: false,

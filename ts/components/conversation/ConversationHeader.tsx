@@ -153,7 +153,7 @@ export const SelectionOverlay = () => {
 
         <div className="seleted-count">
           <span style={{ marginRight: '5px' }}>{selectedMessageIds.length}</span>
-          <span>Selected</span>
+          <span>{window.i18n('selected')}</span>
         </div>
       </Flex>
 
@@ -369,7 +369,7 @@ const ConversationHeaderTitle = () => {
     memberCountText = i18n('members', [count]);
   }
   if (conversation?.isMe) {
-    return <div className="module-conversation-header__title">Note to Self</div>;
+    return <div className="module-conversation-header__title">{i18n('noteToSelf')}</div>;
   }
  
   return (

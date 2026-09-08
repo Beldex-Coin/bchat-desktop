@@ -69,7 +69,7 @@ export const ConversationMessageRequestButtons = () => {
 
   return (
     <ConversationRequestBanner>
-      Allow this person to chat with you?
+      {window.i18n('allowChatRequestQuestion')}
       <ConversationBannerRow>
 
         <BchatButton

@@ -41,24 +41,22 @@ export default function BchatUpdateInstruntion() {
             <SpacerLG />
             <img src='images/bchat/Update_icon.svg' className="modal-UpdateModal-icon"></img>
             <SpacerMD />
-            <div className="modal-UpdateModal-header">BChat Update</div>
+            <div className="modal-UpdateModal-header">{window.i18n('bchatUpdateTitle')}</div>
             <SpacerLG />
             <div className="modal-UpdateModal-discription">
-             Restore your app to gain access your BChat account.
-                First, copy your recovery seed by clicking <span className="modal-UpdateModal-discription-fontMedium">'Copy Seed'</span>. Save your recovery seed. Then click <span className="modal-UpdateModal-discription-fontMedium">'Restore'</span> to restore your
-                account using the seed.
+                {window.i18n('bchatUpdateRestoreInstructions')}
             </div>
             <SpacerLG />
 
             <div className="modal-UpdateModal-btnBox">
                 <BchatButton
-                    text="Copy Seed"
+                    text={window.i18n('copySeed')}
                     buttonColor={BchatButtonColor.Green}
                     onClick={() => copyToClipboard()}
                 />
                 <SpacerMD />
                 <BchatButton
-                    text="Restore"
+                    text={window.i18n('restore')}
                     buttonColor={BchatButtonColor.Primary}
                     onClick={() => clearData()}
                     disabled={!copied}

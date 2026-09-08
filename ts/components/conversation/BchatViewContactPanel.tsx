@@ -51,11 +51,11 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
         bchatIcon: 'avatar',
         iconSize: 31,
         iconShow: true,
-        title: 'Start chat now?',
-        message: 'Do you want to chat with this contact now?',
+        title: window.i18n('startChatNowTitle'),
+        message: window.i18n('startChatNowConfirmation'),
         onClickClose: () => dispatch(updateConfirmModal(null)),
         onClickOk: () => openConverstation(pubKey),
-        okText: 'Start Chatting',
+        okText: window.i18n('startChatting'),
         okTheme: BchatButtonColor.Primary,
       })
     );
@@ -71,7 +71,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
           padding="25px"
           className="contact-list-header-title-wrapper"
         >
-          <span className="contact-list-header-titleTxt">View Contacts</span>
+          <span className="contact-list-header-titleTxt">{window.i18n('viewContacts')}</span>
           <span
             onClick={() => {
               window.inboxStore?.dispatch(updateViewContactPanel(null));

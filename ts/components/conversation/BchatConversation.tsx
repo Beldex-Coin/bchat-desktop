@@ -199,11 +199,8 @@ export class BchatConversation extends React.Component<Props, State> {
     if (msg.body.replace(/\s/g, '').includes(recoveryPhrase.replace(/\s/g, ''))) {
       window.inboxStore?.dispatch(
         updateConfirmModal({
-          // title: window.i18n('sendRecoveryPhraseTitle'),
-          title: 'Warning',
-          // message: window.i18n('sendRecoveryPhraseMessage'),
-          message:
-            'This is your recovery phrase. if you send it to someone they will have full access to your account.',
+          title: window.i18n('warning'),
+          message: window.i18n('warnSeedInMessage...'),
           okTheme: BchatButtonColor.Danger,
           okText: window.i18n('send'),
           iconShow: true,
@@ -598,7 +595,7 @@ export class BchatConversation extends React.Component<Props, State> {
 
     const allMembers = allPubKeys.map((pubKey: string) => {
       const conv = getConversationController().get(pubKey);
-      const profileName = conv?.getProfileName() || 'Anonymous';
+      const profileName = conv?.getProfileName() || window.i18n('anonymous');
 
       return {
         id: pubKey,

@@ -385,7 +385,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </div>
           <div
             className="bchat-id-section-display-icon"
-            data-tip="Copy"
+            data-tip={window.i18n('editMenuCopy')}
             data-place="right"
             data-offset="{'top':17}"
             onClick={() => copyBchatID(props.bchatID)}
@@ -404,7 +404,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </div>
           <div
             className="bchat-id-section-display-icon"
-            data-tip="Copy"
+            data-tip={window.i18n('editMenuCopy')}
             data-place="right"
             data-offset="{'top':17}"
             onClick={() => copyBchatID(walletAddress)}
@@ -562,7 +562,7 @@ async function commitProfileEdits(
     try {
       const blobContent = await (await fetch(scaledAvatarUrl)).blob();
       if (!blobContent || !blobContent.size) {
-        throw new Error('Failed to fetch blob content from scaled avatar');
+        throw new Error(window.i18n('failedToFetchScaledAvatarBlob'));
       }
       await uploadOurAvatar(await blobContent.arrayBuffer());
     } catch (error) {
