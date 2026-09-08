@@ -23,10 +23,9 @@ export const LeftPaneSectionContainer = styled.div`
   }
   .isSelected-icon-box .btnView,
   .icon-box .btnView {
-    // border-radius: 66px;
-    border-radius: 26px;
+    border-radius: 0;
     width: 100%;
-    height: 77px;
+    height: 56px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,22 +46,39 @@ export const LeftPaneSectionContainer = styled.div`
     }
   }
   .menu-txt {
-    font-size: 20px;
-    font-weight: 400;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
   }
- 
+
   .sub-menu-box-wrapper {
     position: fixed;
     left: 100px;
     top: 82px;
     z-index: 9;
-    .sub-menu-box {
-      background-color: var(--color-modal-bg);
 
-      padding: 10px;
-      width: 247px;
-      height: 243px;
-      border-radius: 26px;
+    /* NOIR: drop the speech-bubble connector — the menu is a clean plate */
+    > div:first-child {
+      display: none;
+    }
+
+    .sub-menu-box {
+      background-color: var(--color-context-menu-bg);
+      border: 1px solid var(--color-settings-right-pane-option-border);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+
+      padding: 6px;
+      width: 200px;
+      height: auto;
+      border-radius: 0;
+
+      /* compact rows, small icons */
+      svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+      }
     }
   }
   .sub-menu-box-wrapper-disabled {

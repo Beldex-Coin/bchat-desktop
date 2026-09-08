@@ -16,7 +16,6 @@ import useKey from 'react-use/lib/useKey';
 
 import { getOurNumber } from '../../../state/selectors/user';
 import { ToastUtils } from '../../../bchat/utils';
-import SmileSymbolIcon from '../../icon/SmileSymbolIcon';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 
 import { SpacerLG, SpacerMD, SpacerSM, SpacerXS } from '../../basic/Text';

@@ -352,17 +352,87 @@ textarea {
 }
 
 // ---------------------------------------------------------------
-// 12. SETTINGS — active category carries the live edge.
+// 12. SETTINGS — mono nav with the live edge, plated options.
 // ---------------------------------------------------------------
 
-.bchat-settings-item,
+// category nav (left column)
 .left-pane-setting-category-list-item {
   border-left: 2px solid transparent;
+  border-radius: 0 !important;
+  padding: 13px 18px !important;
+  margin: 0 8px 2px !important;
+  transition: background-color var(--default-duration);
 
-  &.active,
-  &--selected {
-    border-left-color: var(--color-accent);
+  &-span {
+    font-family: $bchat-font-mono !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase;
   }
+
+  &:hover {
+    background: var(--color-clickable-hovered) !important;
+    border-radius: 0 !important;
+  }
+
+  &.active {
+    background: var(--color-theme-selected-bg) !important;
+    border-left: 2px solid var(--color-accent);
+    border-radius: 0 !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+    .left-pane-setting-category-list-item-span {
+      color: var(--color-accent) !important;
+    }
+
+    svg {
+      fill: var(--color-accent);
+    }
+  }
+}
+
+// main pane
+.bchat-settings {
+  background: var(--color-inbox-background);
+  @include noir-dotgrid(0.035, 26px);
+}
+
+.bchat-settings-header {
+  border-bottom: 1px solid var(--color-borderBottomColor);
+  background: var(--color-chatHeader);
+}
+
+// each option is a bordered plate, like the conversation tiles
+.bchat-settings-item {
+  border: 1px solid var(--color-borderBottomColor) !important;
+  border-bottom: 1px solid var(--color-borderBottomColor) !important;
+  background: var(--color-cell-background);
+  margin: 0 14px 10px !important;
+  padding: 14px 18px !important;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+
+  &__title {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+  }
+
+  &__description {
+    font-size: 12px !important;
+    color: var(--color-last-msg-txt) !important;
+    letter-spacing: 0.01em;
+  }
+}
+
+.bchat-settings-item:last-child {
+  border-bottom: 1px solid var(--color-borderBottomColor) !important;
+}
+
+// grouped option boxes (e.g. notifications) drop their pill look
+.notification-setting .notify-option-wrapper,
+.notification-setting .bchat-settings-item {
+  border-radius: 0 !important;
 }
 
 // ---------------------------------------------------------------

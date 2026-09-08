@@ -174,7 +174,7 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick()}
           >
-            <BchatIcon iconSize={31} iconType={'chatBubble'} />
+            <BchatIcon iconSize={24} iconType={'chatBubble'} />
             {unreadMessageCount !== 0 ? (
               <div className="unreadCountChatIcon">
                 {unreadMessageCount <= 99 ? unreadToShow : <span>99+</span>}
@@ -209,7 +209,7 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick(SectionType.SubMenu)}
           >
-            <BchatIcon iconSize={31} iconType={'newChat'} />
+            <BchatIcon iconSize={24} iconType={'newChat'} />
           </div>
           <div>
             <Flex
@@ -225,27 +225,25 @@ const Section = (props: {
               <div className={'sub-menu-box'}>
                 <SubMenuList
                   container={true}
-                  padding="17px"
+                  padding="10px 12px"
                   onClick={() => handleClick(SectionType.NewChat)}
                   isSelected={focusedSection === SectionType.NewChat}
                 >
                   <NewChatIcon />
                   <SpacerMD /> <div className="menu-txt">New Chat</div>
                 </SubMenuList>
-                <SpacerMD />
                 <SubMenuList
                   container={true}
-                  padding="17px"
+                  padding="10px 12px"
                   onClick={() => handleClick(SectionType.Closedgroup)}
                   isSelected={focusedSection === SectionType.Closedgroup}
                 >
                   <SecretGrpIcon />
                   <SpacerMD /> <div className="menu-txt">Secret Group</div>
                 </SubMenuList>
-                <SpacerMD />
                 <SubMenuList
                   container={true}
-                  padding="17px"
+                  padding="10px 12px"
                   onClick={() => handleClick(SectionType.Opengroup)}
                   isSelected={focusedSection === SectionType.Opengroup}
                 >
@@ -262,7 +260,7 @@ const Section = (props: {
     //   return (
     //     <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
     //       <div className="btnView" onClick={() => handleClick()}>
-    //         <BchatIcon iconSize={31} iconType={'call'} fillRule="evenodd" clipRule="evenodd" />
+    //         <BchatIcon iconSize={24} iconType={'call'} fillRule="evenodd" clipRule="evenodd" />
     //       </div>
 
     //       <section className="d-visiblity ">
@@ -281,7 +279,7 @@ const Section = (props: {
             onClick={() => handleClick()}
           >
             <BchatIcon
-              iconSize={31}
+              iconSize={24}
               // dataTestId="settings-section"
               iconType={'gear'}
             />
@@ -692,9 +690,11 @@ const MarginedDiv = styled.div`
 const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
   ${props => props.isSelected && 'background-color: var(--color-hop-bg);'}
   cursor:pointer;
-  border-radius: 16px;
+  border-radius: 0;
+  align-items: center;
+  border-left: 2px solid ${props => (props.isSelected ? 'var(--color-accent)' : 'transparent')};
   &:hover {
-    background-color: var(--color-theme-selected-bg);
+    background-color: var(--color-clickable-hovered);
   }
 `;
 const StyledTitleWrapper = styled(Flex)<{ top: string }>`
