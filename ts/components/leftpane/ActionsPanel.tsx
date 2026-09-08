@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 import { syncConfigurationIfNeeded } from '../../bchat/utils/syncUtils';
 
@@ -94,6 +94,22 @@ const Section = (props: {
   const { type, isHiddenSubMenus, setIsHiddenSubMenus } = props;
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
+
+  // NOIR: grace-period hide for the submenu — the pointer gets 250ms to
+  // travel from the rail trigger onto the menu plate before it closes.
+  const hideSubMenuTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelSubMenuHide = () => {
+    if (hideSubMenuTimer.current) {
+      clearTimeout(hideSubMenuTimer.current);
+      hideSubMenuTimer.current = null;
+    }
+  };
+  const scheduleSubMenuHide = () => {
+    cancelSubMenuHide();
+    hideSubMenuTimer.current = setTimeout(() => {
+      setIsHiddenSubMenus?.(true);
+    }, 250);
+  };
 
 
   const handleClick = async (subTypes?: SectionType) => {
@@ -197,10 +213,11 @@ const Section = (props: {
             isFocused ? 'isSelected-icon-box' : 'icon-box',
             !isHiddenSubMenus && 'icon-colored-box'
           )}
-          onMouseOver={() => setIsHiddenSubMenus(false)}
-          onMouseLeave={() => {
-            setIsHiddenSubMenus(true);
+          onMouseOver={() => {
+            cancelSubMenuHide();
+            setIsHiddenSubMenus(false);
           }}
+          onMouseLeave={scheduleSubMenuHide}
         >
           <div
             // data-tip="New Chat"
@@ -222,7 +239,11 @@ const Section = (props: {
               <MarginedDiv>
                 <SubMenuConnectIcon />
               </MarginedDiv>
-              <div className={'sub-menu-box'}>
+              <div
+                className={'sub-menu-box'}
+                onMouseEnter={cancelSubMenuHide}
+                onMouseLeave={scheduleSubMenuHide}
+              >
                 <SubMenuList
                   container={true}
                   padding="10px 12px"
