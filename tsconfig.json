@@ -24,6 +24,7 @@
     "noImplicitReturns": true, // Report error when not all code paths in function return a value.
     "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statement.
     "moduleResolution": "node", // Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6).
+    "ignoreDeprecations": "5.0", // Silences the moduleResolution=node10 deprecation warning (installed TS 5.9.3 only accepts "5.0" here) until a full migration to node16/nodenext/bundler is done.
     "resolveJsonModule": true,
     // Module Resolution Options
     // "baseUrl": "./",                       // Base directory to resolve non-absolute module names.

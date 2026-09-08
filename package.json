@@ -73,7 +73,7 @@
     "dompurify": "^2.0.7",
     "electron-is-dev": "^1.1.0",
     "electron-localshortcut": "^3.2.1",
-    "electron-updater": "^4.2.2",
+    "electron-updater": "^6.8.9",
     "emoji-mart": "^5.6.0",
     "filesize": "3.6.1",
     "firstline": "1.2.1",
@@ -182,8 +182,8 @@
     "cross-env": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "css-loader": "^6",
-    "electron": "25.3.0",
-    "electron-builder": "23.0.8",
+    "electron": "42.4.1",
+    "electron-builder": "26.15.3",
     "esbuild": "^0.14.29",
     "eslint": "8.45.0",
     "eslint-config-airbnb-base": "12.1.0",
@@ -220,7 +220,7 @@
     "webpack-cli": "^5.0.1"
   },
   "engines": {
-    "node": "24.18.0"
+    "node": ">=24.15.0 <25"
   },
   "resolutions": {
     "minimist": "^1.2.6",
@@ -280,7 +280,6 @@
     },
     "win": {
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
-      "publisherName": "Beldex team",
       "verifyUpdateCodeSignature": false,
       "icon": "build/bchat.ico",
       "target": [
@@ -295,7 +294,9 @@
     "linux": {
       "category": "Network",
       "desktop": {
-        "StartupWMClass": "BChat"
+        "entry": {
+          "StartupWMClass": "BChat"
+        }
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
       "target": [
@@ -306,7 +307,7 @@
       ]
     },
     "asarUnpack": [
-      "node_modules/@signalapp/sqlcipher/prebuilds/${platform}-${arch}/*.node",
+      "node_modules/@signalapp/sqlcipher/prebuilds/**/*",
       "ts/mains/main_node.js",
       "ts/webworker/workers/node/**/*.js"
     ],
@@ -369,8 +370,7 @@
       "!build/*.js",
       "build/afterPackHook.js",
       "build/launcher-script.sh",
-      "!node_modules/@signalapp/sqlcipher/prebuilds/*",
-      "node_modules/@signalapp/sqlcipher/prebuilds/${platform}-${arch}/*.node",
+      "node_modules/@signalapp/sqlcipher/prebuilds/**/*",
       "!dev-app-update.yml"
     ]
   }

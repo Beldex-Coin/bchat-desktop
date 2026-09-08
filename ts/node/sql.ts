@@ -28,46 +28,58 @@ const openDbOptions = {
   cacheStatements: false,
 };
 
-// @signalapp/sqlcipher rejects 'undefined' as a bound param value ('Failed to
-// bind param name, error unexpected type undefined'), where the previous
-// @signalapp/better-sqlite3 fork silently treated 'undefined' as SQL NULL.
-// This file relies on that leniency throughout - most .run()/.get()/.all()
-// calls build their named-param object straight from loosely-typed
-// 'data: any' conversation/message objects where a field may legitimately
-// be absent. Rather than auditing every call site, patch the (unexported)
-// Statement prototype once at module load to coerce undefined -> null
-// before binding, restoring the old behavior exactly.
-(function patchUndefinedParamBinding() {
-  const probeDb = new Database(':memory:');
-  try {
-    const probeStatement = probeDb.prepare('SELECT 1');
-    const statementProto = Object.getPrototypeOf(probeStatement);
-
-    const sanitize = (params: any) => {
-      if (!params || typeof params !== 'object') {
-        return params;
-      }
-      if (Array.isArray(params)) {
-        return params.map((value: any) => (value === undefined ? null : value));
-      }
-      Object.keys(params).forEach(key => {
-        if (params[key] === undefined) {
-          params[key] = null;
-        }
-      });
-      return params;
-    };
-
-    (['run', 'get', 'all'] as const).forEach(method => {
-      const original = statementProto[method];
-      statementProto[method] = function patchedStatementMethod(params?: any) {
-        return original.call(this, sanitize(params));
-      };
-    });
-  } finally {
-    probeDb.close();
+// @signalapp/sqlcipher rejects `undefined` as a bound parameter (it throws
+// "Failed to bind param <name>, error unexpected type undefined"), whereas
+// @signalapp/better-sqlite3 silently treated `undefined` as SQL NULL. A large
+// number of call sites in this file (and in code that calls into it) rely on
+// that historical behavior, so normalize `undefined` -> `null` in bound
+// parameters centrally rather than hunting down every call site.
+function sanitizeUndefinedParams(params: unknown): unknown {
+  if (params === undefined || params === null) {
+    return params;
   }
-})();
+  if (Array.isArray(params)) {
+    return params.map(value => (value === undefined ? null : value));
+  }
+  if (typeof params === 'object') {
+    const sanitized: Record<string, unknown> = {};
+    for (const key of Object.keys(params as Record<string, unknown>)) {
+      const value = (params as Record<string, unknown>)[key];
+      sanitized[key] = value === undefined ? null : value;
+    }
+    return sanitized;
+  }
+  return params;
+}
+
+{
+  // `Statement` is exported as a type only (`export { type Statement }`), so
+  // there is no runtime constructor to reach its prototype directly. Probe a
+  // throwaway in-memory database to get a real Statement instance instead,
+  // then patch run/get/all on its prototype - this covers every Statement
+  // this process ever creates, since they all share the same prototype.
+  const probeDb = new Database(':memory:');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const statementProto: any = Object.getPrototypeOf(probeDb.prepare('SELECT 1'));
+  probeDb.close();
+
+  const originalRun = statementProto.run;
+  const originalGet = statementProto.get;
+  const originalAll = statementProto.all;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  statementProto.run = function patchedRun(this: any, params?: unknown) {
+    return originalRun.call(this, sanitizeUndefinedParams(params));
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  statementProto.get = function patchedGet(this: any, params?: unknown) {
+    return originalGet.call(this, sanitizeUndefinedParams(params));
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  statementProto.all = function patchedAll(this: any, params?: unknown) {
+    return originalAll.call(this, sanitizeUndefinedParams(params));
+  };
+}
 
 const CONVERSATIONS_TABLE = 'conversations';
 const MESSAGES_TABLE = 'messages';
@@ -89,21 +101,21 @@ const MAX_ENTRIES = 1000;
 function objectToJSON(data: Record<any, any>) {
   return JSON.stringify(data);
 }
-function jsonToObject(json: string): Record<string, any> {
-  return JSON.parse(json);
+function jsonToObject(json: unknown): Record<string, any> {
+  return JSON.parse(json as string);
 }
 
 function getSQLiteVersion(db: Database) {
-  const { sqlite_version } = db.prepare('select sqlite_version() as sqlite_version').get<any>();
-  return sqlite_version;
+  const row = db.prepare('select sqlite_version() as sqlite_version').get() as any;
+  return row.sqlite_version;
 }
 
-function getSchemaVersion(db: Database) {
+function getSchemaVersion(db: Database): number {
   return db.pragma('schema_version', { simple: true }) as number;
 }
 
 function getSQLCipherVersion(db: Database) {
-  return db.pragma('cipher_version', { simple: true });
+  return db.pragma('cipher_version', { simple: true }) as string;
 }
 
 function getSQLCipherIntegrityCheck(db: Database) {
@@ -134,7 +146,7 @@ function switchToWAL(db: Database) {
 }
 
 function getSQLIntegrityCheck(db: Database) {
-  const checkResult = db.pragma('quick_check', { simple: true });
+  const checkResult = db.pragma('quick_check', { simple: true }) as string;
   if (checkResult !== 'ok') {
     return checkResult;
   }
@@ -160,7 +172,7 @@ function migrateSchemaVersion(db: Database) {
   setUserVersion(db, newUserVersion);
 }
 
-function getUserVersion(db: Database) {
+function getUserVersion(db: Database): number {
   try {
     return db.pragma('user_version', { simple: true }) as number;
   } catch (e) {
@@ -1518,14 +1530,14 @@ function updateBchatSchema(db: Database) {
   }
 }
 
-function getBchatSchemaVersion(db: Database) {
+function getBchatSchemaVersion(db: Database): number {
   const result = db
     .prepare(
       `
     SELECT MAX(version) as version FROM bchat_schema;
     `
     )
-    .get<any>();
+    .get() as any;
   if (!result || !result.version) {
     return 0;
   }
@@ -2008,11 +2020,11 @@ function updateLRUCache(data: any, instance?: Database) {
     `).run({key, value, now});
 
 
-    const totalRows = assertGlobalInstance().prepare(`
+    const totalRowsResult = assertGlobalInstance().prepare(`
       SELECT COUNT(*) as count FROM ${LRU_CACHE_TABLE}
-    `).get<any>().count;
+    `).get() as any;
     
-    const overLimit = totalRows - MAX_ENTRIES;
+    const overLimit = (totalRowsResult.count as number) - MAX_ENTRIES;
     
     if (overLimit > 0) {
       assertGlobalInstance().prepare(`
@@ -2633,7 +2645,8 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
   const floorLoadAllMessagesInConvo = 70;
 
   if (messageId || firstUnread) {
-    const messageFound = getMessageById(messageId || firstUnread);
+    const resolvedMessageId = (messageId || firstUnread) as string;
+    const messageFound = getMessageById(resolvedMessageId);
 
     if (messageFound && messageFound.conversationId === conversationId) {
       const rows = assertGlobalInstance()
@@ -2655,7 +2668,7 @@ function getMessagesByConversation(conversationId: string, { messageId = null } 
         )
         .all<any>({
           conversationId,
-          messageId: messageId || firstUnread,
+          messageId: resolvedMessageId,
           limit:
             numberOfMessagesInConvo < floorLoadAllMessagesInConvo
               ? floorLoadAllMessagesInConvo
@@ -3347,7 +3360,7 @@ function getMessagesCountByConversation(
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE} WHERE conversationId = $conversationId;`)
     .get<any>({ conversationId });
 
-  return row ? row['count(*)'] : 0;
+  return row ? (row['count(*)'] as number) : 0;
 }
 
 function getAllClosedGroupConversations(instance?: Database) {
@@ -3425,8 +3438,8 @@ function getAllEncryptionKeyPairsForGroupRaw(groupPublicKey: string | PubKey) {
     .prepare(
       `SELECT * FROM ${CLOSED_GROUP_V2_KEY_PAIRS_TABLE} WHERE groupPublicKey = $groupPublicKey ORDER BY timestamp ASC;`
     )
-    .all<any>({
-      groupPublicKey: pubkeyAsString as string,
+    .all({
+      groupPublicKey: String(pubkeyAsString),
     });
 
   return rows;
@@ -3557,8 +3570,8 @@ function getEntriesCountInTable(tbl: string) {
   try {
     const row = assertGlobalInstance()
       .prepare(`SELECT count(*) from ${tbl};`)
-      .get<any>();
-    return row['count(*)'];
+      .get() as any;
+    return row ? row['count(*)'] : 0;
   } catch (e) {
     console.warn(e);
     return 0;
@@ -3694,11 +3707,11 @@ function cleanUpOldOpengroups() {
         const minute = 1000 * 60;
         const sixMonths = minute * 60 * 24 * 30 * 6;
         const limitTimestamp = Date.now() - sixMonths;
-        const countToRemove = assertGlobalInstance()
+        const countToRemove = (assertGlobalInstance()
           .prepare(
             `SELECT count(*) from ${MESSAGES_TABLE} WHERE serverTimestamp <= $serverTimestamp AND conversationId = $conversationId;`
           )
-          .get<any>({ conversationId: convoId, serverTimestamp: limitTimestamp })['count(*)'];
+          .get({ conversationId: convoId, serverTimestamp: limitTimestamp }) as any)['count(*)'];
         const start = Date.now();
 
         assertGlobalInstance()
@@ -3771,9 +3784,9 @@ function cleanUpOldOpengroups() {
  * Only using this for development. Populate conversation and message tables.
  */
 function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
-  const convoBeforeCount = assertGlobalInstance()
+  const convoBeforeCount = (assertGlobalInstance()
     .prepare(`SELECT count(*) from ${CONVERSATIONS_TABLE};`)
-    .get<any>()['count(*)'];
+    .get() as any)['count(*)'];
 
   const lipsum =
     // eslint:disable-next-line max-line-length
@@ -3810,9 +3823,9 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
     aliquet sollicitudin.
     `;
 
-  const msgBeforeCount = assertGlobalInstance()
+  const msgBeforeCount = (assertGlobalInstance()
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE};`)
-    .get<any>()['count(*)'];
+    .get() as any)['count(*)'];
 
   console.info('==== fillWithTestData ====');
   console.info({
@@ -3889,13 +3902,13 @@ function fillWithTestData(numConvosToAdd: number, numMsgsToAdd: number) {
     }
   }
 
-  const convoAfterCount = assertGlobalInstance()
+  const convoAfterCount = (assertGlobalInstance()
     .prepare(`SELECT count(*) from ${CONVERSATIONS_TABLE};`)
-    .get<any>()['count(*)'];
+    .get() as any)['count(*)'];
 
-  const msgAfterCount = assertGlobalInstance()
+  const msgAfterCount = (assertGlobalInstance()
     .prepare(`SELECT count(*) from ${MESSAGES_TABLE};`)
-    .get<any>()['count(*)'];
+    .get() as any)['count(*)'];
 
   console.info({ convoAfterCount, msgAfterCount });
   return convosIdsAdded;
