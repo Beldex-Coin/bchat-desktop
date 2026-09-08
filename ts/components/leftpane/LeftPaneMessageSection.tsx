@@ -129,6 +129,21 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     return (
       <div className="module-conversations-list-content">
         <SpacerSM />
+        {/* NOIR: pane header — display-face wordmark + white new-chat block */}
+        <div className="noir-pane-header">
+          <div className="noir-pane-header__title">CHATS</div>
+          <div
+            className="noir-pane-header__new"
+            role="button"
+            data-tip="New chat"
+            data-place="bottom"
+            onClick={() => {
+              window.inboxStore?.dispatch(setOverlayMode('message'));
+            }}
+          >
+            +
+          </div>
+        </div>
         {/* {conversations?.length !== 0 && */}
         <BchatSearchInput />
         {/* } */}

@@ -472,10 +472,34 @@ textarea {
 }
 
 // ---------------------------------------------------------------
-// 16. CONVERSATION LIST ROWS — name / mono time / grey preview.
+// 16. CONVERSATION LIST — tiles are bordered plates, not bare rows.
 // ---------------------------------------------------------------
 
 .module-conversation-list-item {
+  margin: 0 10px 8px !important;
+  padding: 12px 14px !important;
+  background: var(--color-cell-background);
+  border: 1px solid var(--color-borderBottomColor) !important;
+  border-left: 2px solid transparent !important;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  transition: background-color var(--default-duration), border-color var(--default-duration);
+
+  &:hover {
+    background: var(--color-clickable-hovered);
+    border-color: var(--color-settings-right-pane-option-border) !important;
+    border-left-color: transparent !important;
+  }
+
+  &--is-selected {
+    background: var(--color-conversation-item-selected) !important;
+    border-color: var(--color-settings-right-pane-option-border) !important;
+    border-left: 2px solid var(--color-accent) !important;
+  }
+
+  &--has-unread {
+    border-left: 2px solid var(--color-accent) !important;
+  }
+
   &__header__name {
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -487,14 +511,59 @@ textarea {
   }
 }
 
+// the list column itself: black ground, room for the plates
+.module-left-pane__list {
+  padding-top: 4px;
+}
+
+// ---------------------------------------------------------------
+// 16b. PANE HEADER — CHATS wordmark + the white new-chat block.
+// ---------------------------------------------------------------
+
+.noir-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+
+  &__title {
+    font-family: $bchat-font-display;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--color-text);
+    user-select: none;
+  }
+
+  &__new {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-sent-message-background);
+    color: var(--color-sent-message-text);
+    font-family: $bchat-font-mono;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color var(--default-duration);
+
+    &:hover {
+      background: var(--color-accent);
+    }
+  }
+}
+
 // ---------------------------------------------------------------
 // 17. BUBBLE PRESENCE — blocks, not slivers.
 // ---------------------------------------------------------------
 
 .module-message__container--incoming--opaque,
 .module-message__container--outgoing--opaque {
-  min-width: 64px;
-  padding: 2px 4px;
+  min-width: 72px;
+  padding: 7px 12px;
 }
 
 .module-message__container--outgoing--opaque {
