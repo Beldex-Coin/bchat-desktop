@@ -42,6 +42,12 @@
 // 1. GROUND — kill radii app-wide, lay the dot field.
 // ---------------------------------------------------------------
 
+// The ground is never white: every window boots on ink (or the theme's
+// body token once variables are painted).
+body {
+  background: var(--color-body-bg, #0a0a0a);
+}
+
 // Sharp geometry everywhere. Radius does not exist in this system;
 // the only rounded things left are things that must read as dots
 // (presence, typing, path-lights), re-rounded explicitly below.
@@ -1543,14 +1549,19 @@ textarea {
 // ---------------------------------------------------------------
 
 .password {
+  // hard fallbacks: this window paints its own theme tokens at boot, but the
+  // ground must never flash white even if a variable is missing
+  background: var(--color-body-bg, #0a0a0a);
+  color: var(--color-text, #f4f4f4);
+
   .password-prompt-wrapper {
-    background: var(--color-body-bg);
+    background: var(--color-body-bg, #0a0a0a);
     @include noir-dotgrid(0.05, 28px);
   }
 
   .password-prompt-container {
-    background: var(--color-modal-background);
-    border: 1px solid var(--color-borderBottomColor);
+    background: var(--color-modal-background, #0d0d0d);
+    border: 1px solid var(--color-borderBottomColor, #1f1f1f);
     clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
     padding: 44px 40px;
     width: 430px;
