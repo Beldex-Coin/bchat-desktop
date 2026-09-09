@@ -61,18 +61,16 @@ export function mnDecode(str: string, wordsetName: string = MN_DEFAULT_WORDSET):
   const wlist = trimWhiteSpace.split(' ');
   let checksumWord = '';
   if (wlist.length < 24) {
-    throw new MnemonicError("You've entered too few words, please try again");
+    throw new MnemonicError(window.i18n('seedTooFewWords'));
   }
   if (
     (wordset.prefixLen === 0 && wlist.length % 3 !== 0) ||
     (wordset.prefixLen > 0 && wlist.length % 3 === 2)
   ) {
-    throw new MnemonicError("You've entered too few words, please try again");
+    throw new MnemonicError(window.i18n('seedTooFewWords'));
   }
   if (wordset.prefixLen > 0 && wlist.length % 3 === 0) {
-    throw new MnemonicError(
-      'You seem to be missing the last word in your private key, please try again'
-    );
+    throw new MnemonicError(window.i18n('seedMissingLastWord'));
   }
   if (wordset.prefixLen > 0) {
     // Pop checksum from mnemonic
@@ -91,13 +89,11 @@ export function mnDecode(str: string, wordsetName: string = MN_DEFAULT_WORDSET):
       w3 = wordset.truncWords.indexOf(wlist[i + 2].slice(0, wordset.prefixLen));
     }
     if (w1 === -1 || w2 === -1 || w3 === -1) {
-      throw new MnemonicError('invalid word in mnemonic');
+      throw new MnemonicError(window.i18n('seedInvalidWord'));
     }
     const x = w1 + n * ((n - w1 + w2) % n) + n * n * ((n - w2 + w3) % n);
     if (x % n !== w1) {
-      throw new MnemonicError(
-        'Something went wrong when decoding your private key, please try again'
-      );
+      throw new MnemonicError(window.i18n('seedDecodeChecksumMismatch'));
     }
     out += mn_swap_endian_4byte(`0000000${x.toString(16)}`.slice(-8));
   }
@@ -108,9 +104,7 @@ export function mnDecode(str: string, wordsetName: string = MN_DEFAULT_WORDSET):
     if (
       expectedChecksumWord.slice(0, wordset.prefixLen) !== checksumWord.slice(0, wordset.prefixLen)
     ) {
-      throw new MnemonicError(
-        'Your private key could not be verified, please verify the checksum word'
-      );
+      throw new MnemonicError(window.i18n('seedChecksumWordInvalid'));
     }
   }
   return out;
