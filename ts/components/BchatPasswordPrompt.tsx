@@ -6,7 +6,6 @@ import { withTheme } from 'styled-components';
 import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 // import { Constants } from '../bchat';
-import { Flex } from './basic/Flex';
 // import { ToastUtils } from '../bchat/utils';
 
 interface State {
@@ -18,25 +17,6 @@ interface State {
 }
 
 export const MAX_LOGIN_TRIES = 3;
-type Props = {
-  loading: boolean;
-};
-const BchatSpinner = (props: Props) => {
-  const { loading } = props;
- 
-  const isLight = (window as any).theme === 'light';
-  const imgsrc = isLight
-    ? 'images/bchat/BChat_animi_logo.gif'
-    : 'images/bchat/BChat_animi_black_logo.gif';
-  return loading ? (
-    <div className="bchat-loader" data-testid="loading-spinner">
-      <div>
-      <img src={imgsrc} className={isLight ? 'noir-loader-mark light' : 'noir-loader-mark'} style={{width:'110px',height:'110px',display:'flex',}}/>
-      </div>
-    </div>
-
-  ) : null;
-};
 class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   private inputRef?: any;
 
@@ -121,20 +101,14 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       </>
     );
     const clearDataView = this.state.clearDataView && (
-      <div>
-        <Flex container={true} alignItems='baseline' padding={'20px 30px'}>
-          <div className="clearData-icon-wrapper">
-            <BchatIcon iconType={'warning'} iconSize={25} iconColor="#FF3E3E" />
-          </div>
-
-          <div>
-            <p className="clearData-title">{window.i18n('clearAllData')}</p>
-            <p className="clearData-content">{window.i18n('deleteAccountWarning')}</p>
-          </div>
-        </Flex>
+      <div className="clearData-view">
+        <div className="clearData-icon-wrapper">
+          <BchatIcon iconType={'warning'} iconSize={25} iconColor="#FF3E3E" />
+        </div>
+        <p className="clearData-title">{window.i18n('clearAllData')}</p>
+        <p className="clearData-content">{window.i18n('deleteAccountWarning')}</p>
       </div>
     );
-    const spinner = this.state.loading ? <BchatSpinner loading={true} /> : null;
 
     return (
       <div className="password">
@@ -150,7 +124,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
                   <h1>ENTER PASSWORD</h1>
                 </div>
                 <div className="noir-pass-sub">THIS DEVICE IS ENCRYPTED AT REST</div>
-                {spinner || featureElement}
+                {featureElement}
                 {errorSection}
               </>
             ) : (

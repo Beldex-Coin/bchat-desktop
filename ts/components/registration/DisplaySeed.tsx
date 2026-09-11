@@ -93,7 +93,7 @@ export const DisplaySeed = (props: any) => {
         </div>
       </>
 
-      <div style={{ width: '95.5%' }}>
+      <div style={{ width: '100%' }}>
         <BchatButton
           onClick={props.onNext}
           buttonType={BchatButtonType.Default}

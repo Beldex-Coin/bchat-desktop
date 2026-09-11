@@ -306,6 +306,68 @@ textarea {
   border-color: var(--color-settings-right-pane-option-border) !important;
 }
 
+// "Set a password" notice (Settings -> Recovery Phrase, no password yet) —
+// mirrors the home-screen password airlock: centered column, line-icon,
+// uppercase display heading, mono body copy. Was left in the old row-layout
+// / Poppins-gray legacy style with no Noir override at all.
+.noir-set-password-modal {
+  .model-layer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 6px;
+  }
+
+  .bchat-modal-setPasswordAccess {
+    width: 380px;
+    max-width: 92vw;
+    margin: 6px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .contentbox {
+      text-align: center;
+    }
+  }
+
+  .noir-setpw-icon {
+    margin-bottom: 16px;
+  }
+
+  .header {
+    font-family: $bchat-font-display;
+    font-size: 19px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+  }
+
+  .noir-setpw-sub {
+    font-family: $bchat-font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    color: var(--color-HintMessageText);
+    text-transform: uppercase;
+    margin: 12px 0 0;
+  }
+
+  .fontSemiBold {
+    font-family: $bchat-font-mono !important;
+    font-size: 12px !important;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+    color: var(--color-HintMessageText) !important;
+  }
+
+  .span {
+    color: var(--color-accent) !important;
+    font-weight: 700;
+  }
+}
+
 // ---------------------------------------------------------------
 // 9. SCROLLBARS — thin hairline instruments.
 // ---------------------------------------------------------------
@@ -1747,6 +1809,129 @@ textarea {
     font-size: 11px;
     line-height: 1.9;
     letter-spacing: 0.04em;
+  }
+
+  // clear-data confirm — stack icon/title/body as one centered column
+  // (was a left icon + right text row that threw the whole block off
+  // the panel's actual center).
+  .clearData-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 30px;
+  }
+
+  .clearData-view .clearData-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin: 0 0 16px;
+  }
+
+  .clearData-view .clearData-title {
+    margin: 0 0 10px;
+  }
+
+  .clearData-view .clearData-content {
+    margin: 0;
+  }
+}
+
+// ---------------------------------------------------------------
+// 23b. PASSWORD LOCK (Settings re-entry) — same airlock language as the
+//      home-screen password prompt: line-icon, uppercase display heading,
+//      mono subtitle, square inset field, white CTA block. This screen had
+//      no Noir override at all (old rounded card + colored padlock icon).
+// ---------------------------------------------------------------
+
+.bchat-settings__password-lock {
+  &-box {
+    width: 460px;
+    max-width: 92vw;
+  }
+
+  .noir-pwlock-frame {
+    background: var(--color-modal-bg);
+    @include noir-chamfer(16px);
+    border: 1px solid var(--color-settings-right-pane-option-border);
+  }
+
+  .subBox {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 42px 40px 32px;
+  }
+
+  .noir-pwlock-icon {
+    margin-bottom: 18px;
+  }
+
+  .subtext {
+    font-family: $bchat-font-display;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text);
+    margin-bottom: 0 !important;
+  }
+
+  .noir-pwlock-sub {
+    font-family: $bchat-font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    color: var(--color-HintMessageText);
+    text-transform: uppercase;
+    margin: 12px 0 28px;
+    text-align: center;
+  }
+
+  input {
+    border-radius: 0 !important;
+    border: 1px solid var(--color-settings-right-pane-option-border) !important;
+    background: var(--color-input-background) !important;
+    color: var(--color-text) !important;
+    height: 52px !important;
+    font-family: $bchat-font-mono !important;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+
+    &:focus {
+      border-color: var(--color-accent) !important;
+    }
+
+    &::placeholder {
+      font-family: $bchat-font-mono;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-HintMessageText);
+    }
+  }
+
+  .bchat-modal-footer {
+    background: transparent !important;
+    padding: 0 40px 36px !important;
+
+    .bchat-button.brand.primary {
+      width: 100%;
+      height: 54px;
+      background: var(--color-sent-message-background) !important;
+      background-image: none !important;
+      color: var(--color-sent-message-text) !important;
+      font-family: $bchat-font-mono;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      border-radius: 0 !important;
+
+      &:hover:not(.disabled) {
+        background: var(--color-accent) !important;
+        color: #0a0a0a !important;
+      }
+    }
   }
 }
 

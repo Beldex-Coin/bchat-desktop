@@ -21,8 +21,6 @@ import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest
 import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
 import { SettingsCategoryChat } from './section/categoryChat';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
 
 
 export function getMediaPermissionsSettings() {
@@ -84,14 +82,21 @@ export const PasswordLock = ({
   pwdLockError: string | null;
   validatePasswordLock: () => Promise<boolean>;
 }) => {
-  const darkMode = useSelector(getTheme) === 'dark';
   return (
     <div className="bchat-settings__password-lock">
       <div className='bchat-settings__password-lock-box'>
-       <div style={{borderRadius:'16px',overflow:'hidden'}}>
+       <div className="noir-pwlock-frame">
        <div className="subBox">
-          <img src={darkMode?'images/bchat/passwordIcon.svg':'images/bchat/passwordIconWhite.svg'} width={"130px"} height={"130px"}></img>
+          {/* NOIR: same airlock glyph as the home-screen password prompt */}
+          <div className="noir-pwlock-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="1.4">
+              <rect x="5" y="11" width="14" height="9" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              <circle cx="12" cy="15.5" r="1.1" fill="var(--color-accent)" stroke="none" />
+            </svg>
+          </div>
           <div className='subtext'>{window.i18n('password')}</div>
+          <div className="noir-pwlock-sub">CONFIRM YOUR PASSWORD TO CONTINUE</div>
           <input
             type="password"
             id="password-lock-input"

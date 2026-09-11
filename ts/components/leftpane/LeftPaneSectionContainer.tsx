@@ -46,7 +46,7 @@ export const LeftPaneSectionContainer = styled.div`
     }
   }
   .menu-txt {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 500;
     letter-spacing: 0.03em;
   }
@@ -71,15 +71,14 @@ export const LeftPaneSectionContainer = styled.div`
       box-shadow: 12px 18px 60px rgba(0, 0, 0, 0.6);
       clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 
-      padding: 6px;
-      width: 200px;
+      padding: 12px;
+      width: 280px;
       height: auto;
       border-radius: 0;
 
-      /* compact rows, small icons */
       svg {
-        width: 18px;
-        height: 18px;
+        width: 24px;
+        height: 24px;
         flex: none;
       }
     }
@@ -124,13 +123,24 @@ export const LeftPaneSectionContainer = styled.div`
       display: none; // hidden by default
     }
   }
+  /* NOIR: tight positioning box the same size as the 24px icon, so the
+     unread badge anchors to the icon's corner instead of the wider
+     56px-tall button — previously the badge (30x20) was sized for the
+     old 31px icon / 77px button and ended up bigger than the icon itself. */
+  .chatIconWrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
   .unreadCountChatIcon {
     position: absolute;
-    width: 30px;
-    height: 20px;
-    font-size: 12px;
-    top: 11px;
-    right: 13px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    font-size: 9px;
+    top: -6px;
+    right: -9px;
     opacity: 1;
     display: flex;
     align-items: center;
@@ -140,9 +150,9 @@ export const LeftPaneSectionContainer = styled.div`
     font-weight: 700;
     background: var(--color-accent);
     transition: var(--default-duration);
-    opacity: 1;
     text-align: center;
     color: #0a0a0a;
+    line-height: 1;
   }
 
   .module-avatar {

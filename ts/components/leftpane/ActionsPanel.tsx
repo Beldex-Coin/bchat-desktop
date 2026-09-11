@@ -190,12 +190,14 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick()}
           >
-            <BchatIcon iconSize={24} iconType={'chatBubble'} />
-            {unreadMessageCount !== 0 ? (
-              <div className="unreadCountChatIcon">
-                {unreadMessageCount <= 99 ? unreadToShow : <span>99+</span>}
-              </div>
-            ) : null}
+            <div className="chatIconWrap">
+              <BchatIcon iconSize={24} iconType={'chatBubble'} />
+              {unreadMessageCount !== 0 ? (
+                <div className="unreadCountChatIcon">
+                  {unreadMessageCount <= 99 ? unreadToShow : <span>99+</span>}
+                </div>
+              ) : null}
+            </div>
           </div>
           <section className="d-visiblity ">
             <DisplayTitle title="All Chats" top={'186px'} />
@@ -246,7 +248,7 @@ const Section = (props: {
               >
                 <SubMenuList
                   container={true}
-                  padding="10px 12px"
+                  padding="16px 18px"
                   onClick={() => handleClick(SectionType.NewChat)}
                   isSelected={focusedSection === SectionType.NewChat}
                 >
@@ -255,7 +257,7 @@ const Section = (props: {
                 </SubMenuList>
                 <SubMenuList
                   container={true}
-                  padding="10px 12px"
+                  padding="16px 18px"
                   onClick={() => handleClick(SectionType.Closedgroup)}
                   isSelected={focusedSection === SectionType.Closedgroup}
                 >
@@ -264,7 +266,7 @@ const Section = (props: {
                 </SubMenuList>
                 <SubMenuList
                   container={true}
-                  padding="10px 12px"
+                  padding="16px 18px"
                   onClick={() => handleClick(SectionType.Opengroup)}
                   isSelected={focusedSection === SectionType.Opengroup}
                 >
