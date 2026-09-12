@@ -24,7 +24,11 @@ import { EmptySwarmError } from '../utils/errors';
 import ByteBuffer from 'bytebuffer';
 import { getHasSeenHF170, getHasSeenHF180 } from '../apis/snode_api/hfHandling';
 
-const DEFAULT_CONNECTIONS = 1;
+// Try this many swarm nodes in parallel for a single store attempt. Was 1 (no redundancy at
+// all - one unreachable/slow node failed the whole attempt); firstTrue() now correctly waits
+// for every candidate to fail before giving up, so raising this actually buys resilience
+// instead of just racing to the first rejection.
+const DEFAULT_CONNECTIONS = 2;
 
 // ================ SNODE STORE ================
 
@@ -200,13 +204,22 @@ export async function sendMessageToSnode(
   let snode: Snode | undefined;
   try {
     const firstSuccessSnode = await firstTrue(promises);
-    snode = firstSuccessSnode;
+    snode = firstSuccessSnode || undefined;
   } catch (e) {
     const snodeStr = snode ? `${snode.ip}:${snode.port}` : 'null';
     window?.log?.warn(
       `bchat_message:::sendMessage - ${e.code} ${e.message} to ${pubKey} via snode:${snodeStr}`
     );
     throw e;
+  }
+
+  if (!snode) {
+    // Every candidate resolved falsy without throwing (storeOnNode() returned false/undefined
+    // rather than raising) - none of them actually confirmed the store. Treat this the same as
+    // a thrown error instead of crashing below on snode.ip of an undefined snode.
+    throw new Error(
+      `bchat_message:::sendMessage - No snode confirmed storing the message to ${pubKey}`
+    );
   }
 
   // If message also has a sync message, save that hash. Otherwise save the hash from the regular message send i.e. only closed groups in this case.

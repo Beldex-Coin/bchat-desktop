@@ -577,7 +577,8 @@ async function handle421InvalidSwarm({
 /**
  * Handle a bad snode result.
  * The `snodeFailureCount` for that node is incremented. If it's more than `snodeFailureThreshold`,
- * we drop this node from the snode pool and from the associatedWith publicKey swarm if this is set.
+ * we drop this node from the associatedWith publicKey swarm if this is set, and - for a real
+ * protocol-level failure - from the whole local snode pool too.
  *
  * So after this call, if the snode keeps getting errors, we won't contact it again
  *
@@ -585,26 +586,43 @@ async function handle421InvalidSwarm({
  * @param guardNodeEd25519 the guard node ed25519 of the current path in use. a nodeNoteFound ed25519 is not part of any path, so we fallback to this one if we need to increment the bad path count of the current path in use
  * @param associatedWith if set, we will drop this snode from the swarm of the pubkey too
  * @param isNodeNotFound if set, we will drop this snode right now as this is an invalid node for the network.
+ * @param isConnectionError if set, the failure was a raw connection-level error (ECONNREFUSED,
+ * ENOTFOUND, ...) - we never even reached the node to find out if it's healthy. On a network
+ * that can't route directly to this node at all (e.g. onion routing disabled behind a
+ * restrictive firewall), *every* node fails this exact same way, so permanently blacklisting
+ * each one from the whole local pool just bleeds the pool dry for no reason. We still drop it
+ * from this one swarm (so a retry within this send picks a different member of the same
+ * swarm), but we leave it in the pool for other swarms/pubkeys to still consider.
  */
 export async function incrementBadSnodeCountOrDrop({
   snodeEd25519,
   associatedWith,
+  isConnectionError,
 }: {
   snodeEd25519: string;
   associatedWith?: string;
+  isConnectionError?: boolean;
 }) {
   const oldFailureCount = snodeFailureCount[snodeEd25519] || 0;
   const newFailureCount = oldFailureCount + 1;
   snodeFailureCount[snodeEd25519] = newFailureCount;
   if (newFailureCount >= snodeFailureThreshold) {
-    window?.log?.warn(
-      `Failure threshold reached for snode: ${ed25519Str(snodeEd25519)}; dropping it.`
-    );
-
     if (associatedWith) {
       await dropSnodeFromSwarmIfNeeded(associatedWith, snodeEd25519);
     }
-    await dropSnodeFromSnodePool(snodeEd25519);
+
+    if (isConnectionError) {
+      window?.log?.warn(
+        `Failure threshold reached for snode: ${ed25519Str(
+          snodeEd25519
+        )}; dropping it from this swarm only (connection-level failure - keeping it in the local pool).`
+      );
+    } else {
+      window?.log?.warn(
+        `Failure threshold reached for snode: ${ed25519Str(snodeEd25519)}; dropping it.`
+      );
+      await dropSnodeFromSnodePool(snodeEd25519);
+    }
     snodeFailureCount[snodeEd25519] = 0;
 
     await OnionPaths.dropSnodeFromPath(snodeEd25519);

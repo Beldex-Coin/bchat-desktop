@@ -194,7 +194,22 @@ export class MessageQueue {
             }
             this.pendingMessageCache.callbacks.delete(message.identifier);
           } catch (error) {
-            void MessageSentHandler.handleMessageSentFailure(message, error);
+            if (isSyncMessage) {
+              // buildSyncMessage() intentionally reuses the *original* message's id for its
+              // sync-to-self copy, so that a successful sync can flip `synced`/`sentSync` on
+              // that same row (see MessageSentHandler.handleMessageSentSuccess). But that same
+              // shared id means handleMessageSentFailure() here would call saveErrors() on that
+              // same row too - flipping an already-delivered message to "error" just because
+              // the sync copy (to our own other devices) failed, potentially minutes later once
+              // this per-device queue works through a backlog. The recipient already has the
+              // message at this point; only log it, don't corrupt its delivered status.
+              window?.log?.warn(
+                `Failed to send sync copy of message ${messageId} to our other devices (delivery to the recipient is unaffected):`,
+                error
+              );
+            } else {
+              void MessageSentHandler.handleMessageSentFailure(message, error);
+            }
           } finally {
             // Remove from the cache because retrying is done in the sender
             void this.pendingMessageCache.remove(message);

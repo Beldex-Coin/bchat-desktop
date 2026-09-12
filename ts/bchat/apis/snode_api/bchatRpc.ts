@@ -106,11 +106,15 @@ async function bchatFetch({
       // node-fetch marks any underlying network failure this way (connection refused, timed
       // out, host unreachable, DNS failure, etc.) - we never got a response from this node at
       // all, so processOnionRequestErrorAtDestination never runs for it. Record it as a
-      // failure here so a genuinely dead/unreachable node gets dropped from the swarm and
-      // snode pool after repeated failures instead of being retried indefinitely.
+      // failure here so a genuinely dead/unreachable node gets dropped from the swarm after
+      // repeated failures instead of being retried indefinitely. isConnectionError: true means
+      // this won't also blacklist the node from the whole local pool - a connection-level
+      // failure like this one doesn't prove the node itself is bad (it could just as easily be
+      // this network unable to reach it directly), unlike a real protocol-level failure.
       await incrementBadSnodeCountOrDrop({
         snodeEd25519: targetNode.pubkey_ed25519,
         associatedWith,
+        isConnectionError: true,
       });
     }
     if (e.code === 'ENOTFOUND') {

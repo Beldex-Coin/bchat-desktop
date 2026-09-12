@@ -2,7 +2,6 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { Snode } from '../../data/data';
 type SimpleFunction<T> = (arg: T) => void;
 type Return<T> = Promise<T> | T;
 
@@ -255,16 +254,42 @@ export const sleepFor = async (ms: number, showLog = false) => {
 // Taken from https://stackoverflow.com/questions/51160260/clean-way-to-wait-for-first-true-returned-by-promise
 // The promise returned by this function will resolve true when the first promise
 // in ps resolves true *or* it will resolve false when all of ps resolve false
-export const firstTrue = async (ps: Array<Promise<any>>) => {
-  const newPs = ps.map(
-    async p =>
-      new Promise(
-        // eslint-disable more/no-then
-        // eslint-disable-next-line more/no-then
-        (resolve, reject) => p.then(v => v && resolve(v), reject)
-      )
-  );
-  // eslint-disable-next-line more/no-then
-  newPs.push(Promise.all(ps).then(() => false));
-  return Promise.race(newPs) as Promise<Snode>;
+//
+// NOTE: a single candidate rejecting must NOT short-circuit the others - we're racing
+// several snodes on purpose (see MessageSender.DEFAULT_CONNECTIONS) so that one unreachable
+// node doesn't sink the whole send when another candidate could still succeed. We only give
+// up (and surface the last error) once every candidate has failed or resolved falsy.
+export const firstTrue = async (ps: Array<Promise<any>>): Promise<any> => {
+  if (ps.length === 0) {
+    return false;
+  }
+
+  let lastError: any;
+
+  return new Promise<any>((resolve, reject) => {
+    let remaining = ps.length;
+    ps.forEach(p => {
+      // eslint-disable-next-line more/no-then
+      p.then(
+        v => {
+          if (v) {
+            resolve(v);
+            return;
+          }
+          remaining -= 1;
+          if (remaining === 0) {
+            resolve(false);
+          }
+        },
+        e => {
+          lastError = e;
+          remaining -= 1;
+          if (remaining === 0) {
+            // every candidate failed; surface the last error like a normal rejection would
+            reject(lastError);
+          }
+        }
+      );
+    });
+  });
 };
