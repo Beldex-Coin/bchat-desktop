@@ -46,6 +46,15 @@ export type InputItem = { deviceId: string; label: string };
 
 export const callTimeoutMs = 60000;
 
+// Mid-call reconnection tuning. Mirrors bchat-android's WebRtcCallService
+// (RECONNECT_SECONDS / MAX_RECONNECTS / TIMEOUT_SECONDS): when an established call's connection
+// drops, the caller retries a fixed number of times a few seconds apart, and either side gives
+// up and hangs up automatically if the call never comes back - instead of the call silently
+// dying, or the "Reconnecting..." UI staying up forever with nothing actually happening.
+const RECONNECT_INTERVAL_MS = 5000; // how often the caller retries (Android: RECONNECT_SECONDS = 5)
+const MAX_RECONNECT_ATTEMPTS = 5; // how many times the caller retries (Android: MAX_RECONNECTS = 5)
+const RECONNECT_GIVE_UP_MS = 30000; // final watchdog before we hang up (Android: TIMEOUT_SECONDS = 30)
+
 /**
  * This uuid is set only once we accepted a call or started one.
  */
@@ -134,6 +143,15 @@ let makingOffer = false;
 let ignoreOffer = false;
 let isSettingRemoteAnswerPending = false;
 let lastOutgoingOfferTimestamp = -Infinity;
+
+// Mid-call reconnection state (see RECONNECT_* constants above). reconnectAttemptCount and the
+// two timers only ever apply to the current call; they're reset whenever the connection comes
+// back, and implicitly abandoned by closeVideoCall() ending the call (a stale timer firing after
+// that just no-ops, guarded by currentCallUUID/peerConnection checks below).
+let reconnectAttemptCount = 0;
+let reconnectRetryTimer: ReturnType<typeof global.setTimeout> | null = null;
+let reconnectGiveUpTimer: ReturnType<typeof global.setTimeout> | null = null;
+let reconnectInProgress = false;
 
 /**
  * This array holds all of the ice servers BChat can contact.
@@ -606,9 +624,16 @@ function handleSignalingStateChangeEvent() {
 function handleConnectionStateChanged(pubkey: string) {
   window.log.info('handleConnectionStateChanged :', peerConnection?.connectionState);
 
-  if (peerConnection?.signalingState === 'closed' || peerConnection?.connectionState === 'failed') {
+  if (peerConnection?.signalingState === 'closed') {
     window.inboxStore?.dispatch(callReconnecting({ pubkey }));
+  } else if (peerConnection?.connectionState === 'failed') {
+    // 'failed' can be reached directly (e.g. ICE never found a working candidate pair on the
+    // first attempt) without ever passing through the ICE-level 'disconnected' state below, so
+    // this needs to trigger the same reconnect flow, not just flip the UI to "Reconnecting...".
+    startReconnectFlow(pubkey);
   } else if (peerConnection?.connectionState === 'connected') {
+    clearReconnectState();
+
     const firstAudioInput = audioInputsList?.[0].deviceId || undefined;
     if (firstAudioInput) {
       void selectAudioInputByDeviceId(firstAudioInput);
@@ -627,6 +652,7 @@ function handleConnectionStateChanged(pubkey: string) {
 
 function closeVideoCall() {
   window.log.info('closingVideoCall ');
+  clearReconnectState();
   currentCallStartTimestamp = undefined;
   weAreCallerOnCurrentCall = undefined;
   if (peerConnection) {
@@ -715,6 +741,117 @@ function onDataChannelOnOpen() {
   sendVideoStatusViaDataChannel();
 }
 
+function clearReconnectState() {
+  if (reconnectRetryTimer) {
+    global.clearTimeout(reconnectRetryTimer);
+    reconnectRetryTimer = null;
+  }
+  if (reconnectGiveUpTimer) {
+    global.clearTimeout(reconnectGiveUpTimer);
+    reconnectGiveUpTimer = null;
+  }
+  reconnectAttemptCount = 0;
+  reconnectInProgress = false;
+}
+
+function scheduleReconnectGiveUp(withPubkey: string) {
+  const callUUIDAtScheduleTime = currentCallUUID;
+  if (reconnectGiveUpTimer) {
+    global.clearTimeout(reconnectGiveUpTimer);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  reconnectGiveUpTimer = global.setTimeout(async () => {
+    reconnectGiveUpTimer = null;
+    if (!reconnectInProgress || currentCallUUID !== callUUIDAtScheduleTime) {
+      return; // call ended, or a different call started, since this was scheduled
+    }
+    if (peerConnection?.connectionState === 'connected') {
+      clearReconnectState();
+      return;
+    }
+    window.log.warn(
+      `scheduleReconnectGiveUp: call ${callUUIDAtScheduleTime} did not recover in time; hanging up automatically`
+    );
+    clearReconnectState();
+    await USER_hangup(withPubkey);
+  }, RECONNECT_GIVE_UP_MS);
+}
+
+function scheduleNextCallerAttempt(withPubkey: string) {
+  const callUUIDAtScheduleTime = currentCallUUID;
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  reconnectRetryTimer = global.setTimeout(async () => {
+    reconnectRetryTimer = null;
+    if (!reconnectInProgress || currentCallUUID !== callUUIDAtScheduleTime) {
+      return; // call ended or already recovered
+    }
+    if (peerConnection?.connectionState === 'connected') {
+      clearReconnectState();
+      return;
+    }
+    await attemptCallerReconnect(withPubkey);
+  }, RECONNECT_INTERVAL_MS);
+}
+
+async function attemptCallerReconnect(withPubkey: string) {
+  const callUUIDAtAttemptStart = currentCallUUID;
+  reconnectAttemptCount += 1;
+  window.log.info(
+    `attemptCallerReconnect: attempt ${reconnectAttemptCount}/${MAX_RECONNECT_ATTEMPTS} for call ${callUUIDAtAttemptStart}`
+  );
+
+  if (peerConnection) {
+    // ICE restart on the existing connection, then re-signal a fresh offer over the message
+    // layer so the other side actually gets it - restartIce() alone only helps if the local
+    // ICE agent can still reach the peer at all.
+    (peerConnection as any).restartIce();
+  }
+  await createOfferAndSendIt(withPubkey);
+
+  if (!reconnectInProgress || currentCallUUID !== callUUIDAtAttemptStart) {
+    return; // call ended, or already recovered/replaced, while we were sending the offer
+  }
+
+  if (reconnectAttemptCount >= MAX_RECONNECT_ATTEMPTS) {
+    // no retries left - give this last attempt a chance to land, then hang up if it didn't.
+    scheduleReconnectGiveUp(withPubkey);
+    return;
+  }
+
+  scheduleNextCallerAttempt(withPubkey);
+}
+
+/**
+ * Called when an established call's connection drops (ICE state 'disconnected'/'failed', or the
+ * aggregate connectionState 'failed'). Mirrors bchat-android's onIceConnectionChange +
+ * networkReestablished(): the caller actively retries (ICE restart + a freshly signaled offer),
+ * a bounded number of times a few seconds apart, while the callee just waits for that new offer
+ * to arrive - it already answers any mid-call offer automatically (see "Got a new offer message
+ * from our ongoing call" in handleCallTypeOffer below). Either side gives up and hangs up
+ * automatically if the call never recovers, instead of leaving it stuck showing
+ * "Reconnecting..." forever with nothing actually happening.
+ */
+function startReconnectFlow(withPubkey: string) {
+  if (reconnectInProgress || !currentCallUUID) {
+    return;
+  }
+  reconnectInProgress = true;
+  window.inboxStore?.dispatch(callReconnecting({ pubkey: withPubkey }));
+
+  if (weAreCallerOnCurrentCall === true) {
+    // Don't act on the very first sign of trouble instantly - a lot of "disconnected"/"failed"
+    // blips (a brief wifi hiccup, a network handover) clear up on their own within a second or
+    // two without any help. Wait one interval before the first real attempt (ICE restart + a
+    // re-signaled offer), same cadence bchat-android uses before its first reconnect check.
+    scheduleNextCallerAttempt(withPubkey);
+  } else {
+    // We're the callee: there's nothing for us to actively send - we'll automatically answer
+    // the new offer once the caller's retry reaches us. Just guard against the call hanging
+    // forever if that offer never arrives at all.
+    scheduleReconnectGiveUp(withPubkey);
+  }
+}
+
 function createOrGetPeerConnection(withPubkey: string) {
   if (peerConnection) {
     return peerConnection;
@@ -755,23 +892,18 @@ function createOrGetPeerConnection(withPubkey: string) {
       peerConnection?.iceConnectionState
     );
 
-    if (peerConnection && peerConnection?.iceConnectionState === 'disconnected') {
-      //this will trigger a negotation event with iceRestart set to true in the createOffer options set
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      global.setTimeout(async () => {
-        window.log.info('onconnectionstatechange disconnected: restartIce()');
-
-        if (
-          peerConnection?.iceConnectionState === 'disconnected' &&
-          withPubkey?.length &&
-          weAreCallerOnCurrentCall === true
-        ) {
-          // we are the caller and the connection got dropped out, we need to send a new offer with iceRestart set to true.
-          // the recipient will get that new offer and send us a response back if he still online
-          (peerConnection as any).restartIce();
-          await createOfferAndSendIt(withPubkey);
-        }
-      }, 2000);
+    if (
+      peerConnection &&
+      (peerConnection.iceConnectionState === 'disconnected' ||
+        peerConnection.iceConnectionState === 'failed') &&
+      withPubkey?.length
+    ) {
+      startReconnectFlow(withPubkey);
+    } else if (
+      peerConnection?.iceConnectionState === 'connected' ||
+      peerConnection?.iceConnectionState === 'completed'
+    ) {
+      clearReconnectState();
     }
   };
 
