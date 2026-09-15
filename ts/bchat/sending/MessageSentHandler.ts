@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { getMessageById } from '../../data/data';
+import { trackFailedSend, untrackFailedSend } from './FailedSendRetry';
 import { SignalService } from '../../protobuf';
 import { PnServer } from '../apis/push_notification_api';
 import { OpenGroupVisibleMessage } from '../messages/outgoing/visibleMessage/OpenGroupVisibleMessage';
@@ -48,6 +49,8 @@ export class MessageSentHandler {
     if (!fetchedMessage) {
       return;
     }
+    // this message just went through - it's no longer a failed send waiting on a reconnect retry.
+    untrackFailedSend(fetchedMessage.id);
     const contentDecoded = SignalService.Content.decode(sentMessage.plainTextBuffer);
     const { dataMessage } = contentDecoded;
 
@@ -173,6 +176,13 @@ export class MessageSentHandler {
 
     await fetchedMessage.commit();
     await fetchedMessage.getConversation()?.updateLastMessage();
+
+    // if this send is genuinely in an error state, remember it so we can automatically retry
+    // it (same as the manual "Resend" menu item does) as soon as we're back online - see
+    // retryAllFailedSendsOnReconnect() / onOnline() in main_renderer.tsx.
+    if (fetchedMessage.hasErrors()) {
+      trackFailedSend(fetchedMessage.id);
+    }
   }
 
   /**

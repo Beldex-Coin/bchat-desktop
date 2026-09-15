@@ -15,6 +15,7 @@ import Backbone from 'backbone';
 import { BchatRegistrationView } from '../components/registration/BchatRegistrationView';
 import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
+import { retryAllFailedSendsOnReconnect } from '../bchat/sending/FailedSendRetry';
 // import ReactDOM from 'react-dom';
 // import React from 'react';
 
@@ -407,6 +408,8 @@ function onOnline() {
     window.log.warn('Already online. Had a blip in online/offline status.');
     clearTimeout(disconnectTimer);
     disconnectTimer = null;
+    // we were still within the 1s debounce below onOffline() before actually disconnecting,
+    // so any in-flight sends never really lost their connection - nothing to retry.
     return;
   }
   if (disconnectTimer) {
@@ -415,6 +418,10 @@ function onOnline() {
   }
 
   void connect();
+  // Retry any message that failed to send while we were offline - mirrors bchat-android's
+  // automatic resend-on-reconnect behavior, which desktop otherwise has no equivalent of
+  // (a failed send here previously just sat there until the user manually clicked "Resend").
+  void retryAllFailedSendsOnReconnect();
 }
 
 function disconnect() {
