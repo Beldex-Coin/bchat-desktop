@@ -504,8 +504,17 @@ export async function processOnionResponse({
   }
 }
 
+// keepAlive was unset here (defaults to false), so every direct (non-onion) request to a
+// storage node opened a brand new TCP connection and did a full TLS handshake from scratch,
+// then tore the socket down - on every single send. bchat-android's HTTP client (OkHttp,
+// libsignal/utilities/HTTP.kt) instead builds one client and reuses its connection pool (5 idle
+// connections kept alive) across requests, paying that handshake cost once per node instead of
+// once per message. Turning keepAlive on here gives desktop the same connection-reuse behavior;
+// maxFreeSockets mirrors OkHttp's default pool size of 5 idle connections per host.
 export const snodeHttpsAgent = new https.Agent({
   rejectUnauthorized: false,
+  keepAlive: true,
+  maxFreeSockets: 5,
 });
 
 export type FinalRelayOptions = {
