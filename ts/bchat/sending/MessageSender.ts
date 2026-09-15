@@ -71,10 +71,18 @@ export function getMinRetryTimeout() {
  *
  * @param message The message to send.
  * @param attempts The amount of times to attempt sending. Minimum value is 1.
+ *
+ * Was 3. The Android app retries the equivalent send up to 7 times total (see
+ * bchat-android's retryIfNeeded(maxRetryCount = 6), same flat 1s interval we use here) before
+ * giving up, and doesn't otherwise select nodes any differently than we do (both platforms pick
+ * a random swarm/guard node and pass/fail test it - no speed-based selection on either side).
+ * Matching Android's attempt budget gives transient connection issues (slow/flaky network path,
+ * a node that's briefly unreachable) the same number of chances to clear up before we surface a
+ * failure to the user, instead of giving up more than twice as early.
  */
 export async function send(
   message: RawMessage,
-  attempts: number = 3,
+  attempts: number = 7,
   retryMinTimeout?: number, // in ms
   isSyncMessage?: boolean
 ): Promise<{ wrappedEnvelope: Uint8Array; effectiveTimestamp: number }> {
