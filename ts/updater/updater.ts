@@ -111,7 +111,7 @@ async function checkForUpdates(
     const result = await autoUpdater.checkForUpdates();
     logger.info('[updater] checkForUpdates got github response back ');
 
-    if (!result.updateInfo) {
+    if (!result || !result.updateInfo) {
       logger.info('[updater] no update info received');
 
       return;
@@ -137,7 +137,8 @@ async function checkForUpdates(
         return;
       }
       insertInto(`[updater] shouldDownload:",${shouldDownload}`);
-      autoUpdater.on('update-downloaded', async (event, releaseNotes, releaseName) => {
+      autoUpdater.on('update-downloaded', async event => {
+        const { releaseNotes, releaseName } = event;
         insertInto(`update-downloaded-releasename",${releaseName}`);
         console.log('event, releaseNotes, releaseName:', event, releaseNotes, releaseName);
         await autoUpdater.quitAndInstall(false);
