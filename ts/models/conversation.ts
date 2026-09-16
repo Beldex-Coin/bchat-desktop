@@ -1,6 +1,7 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 import { getMessageQueue } from '../bchat';
+import { trackFailedSend } from '../bchat/sending/FailedSendRetry';
 import { getConversationController } from '../bchat/conversations';
 import { ClosedGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/ClosedGroupVisibleMessage';
 import { PubKey } from '../bchat/types';
@@ -858,6 +859,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
     } catch (e) {
       await message.saveErrors(e);
+      // uploadData() (attachment upload) failing lands here, not in
+      // MessageSentHandler.handleMessageSentFailure() - track it too, so
+      // retryAllFailedSendsOnReconnect() actually picks this failure up.
+      trackFailedSend(message.id);
       return null;
     }
   }
@@ -974,6 +979,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       error.name = 'SendMessageNetworkError';
       (error as any).number = this.id;
       await messageModel.saveErrors([error]);
+      trackFailedSend(messageModel.id);
       await this.commit();
 
       return;

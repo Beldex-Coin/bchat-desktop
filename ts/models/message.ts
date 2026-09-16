@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import filesize from 'filesize';
 import { SignalService } from '../../ts/protobuf';
 import { getMessageQueue, Utils } from '../bchat';
+import { trackFailedSend } from '../bchat/sending/FailedSendRetry';
 import { getConversationController } from '../bchat/conversations';
 import { DataMessage } from '../bchat/messages/outgoing';
 import { ClosedGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/ClosedGroupVisibleMessage';
@@ -996,6 +997,7 @@ public getPropsForPayment(): PropsForPayment | null {
       return getMessageQueue().sendToGroup(closedGroupVisibleMessage);
     } catch (e) {
       await this.saveErrors(e);
+      trackFailedSend(this.id);
       return null;
     }
   }

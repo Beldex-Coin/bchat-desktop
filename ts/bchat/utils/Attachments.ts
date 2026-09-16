@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import pRetry from 'p-retry';
 import { Attachment } from '../../types/Attachment';
 
 import {
@@ -80,17 +81,41 @@ export class AttachmentFsV2Utils {
 
     // use file server v2
     if (FSv2.useFileServerAPIV2Sending) {
-      const uploadToV2Result = await FSv2.uploadFileToFsV2(attachmentData);
-      if (uploadToV2Result) {
-        const pointerWithUrl: AttachmentPointerWithUrl = {
-          ...pointer,
-          id: uploadToV2Result.fileId,
-          url: uploadToV2Result.fileUrl,
-        };
-        return pointerWithUrl;
-      }
-      window?.log?.warn('upload to file server v2 failed');
-      throw new Error(`upload to file server v2 of ${attachment.fileName} failed`);
+      // uploadFileToFsV2() is a single HTTP request with no retry of its own - unlike
+      // MessageSender.send()'s 7 attempts for a text message, or postMessage()'s 3 retries for
+      // an open-group text post, a single transient network blip here failed the whole
+      // attachment (and therefore the whole message) outright, with no second chance to
+      // recover. Attachments take longer to transfer than a text message, so they're more
+      // exposed to exactly this kind of blip. Wrap it the same way postMessage() already does.
+      const uploadToV2Result = await pRetry(
+        async () => {
+          const result = await FSv2.uploadFileToFsV2(attachmentData);
+          if (!result) {
+            // uploadFileToFsV2() reports failure by resolving null rather than throwing -
+            // turn that into a rejection so pRetry actually retries it.
+            throw new Error(`upload to file server v2 of ${attachment.fileName} failed`);
+          }
+          return result;
+        },
+        {
+          retries: 3,
+          factor: 2,
+          minTimeout: 1000,
+          maxTimeout: 4000,
+          onFailedAttempt: e => {
+            window?.log?.warn(
+              `uploadToFsV2 attempt #${e.attemptNumber} failed for ${attachment.fileName}. ${e.retriesLeft} retries left...`
+            );
+          },
+        }
+      );
+
+      const pointerWithUrl: AttachmentPointerWithUrl = {
+        ...pointer,
+        id: uploadToV2Result.fileId,
+        url: uploadToV2Result.fileUrl,
+      };
+      return pointerWithUrl;
     }
     throw new Error('Only v2 fileserver upload is supported');
   }

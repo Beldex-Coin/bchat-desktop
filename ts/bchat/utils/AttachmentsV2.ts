@@ -1,3 +1,4 @@
+import pRetry from 'p-retry';
 import { Attachment } from '../../types/Attachment';
 
 import { OpenGroupRequestCommonType } from '../apis/open_group_api/opengroupV2/ApiUtil';
@@ -43,11 +44,32 @@ export async function uploadV2(params: UploadParamsV2): Promise<AttachmentPointe
     ? addAttachmentPadding(attachment.data)
     : attachment.data;
 
-  const fileDetails = await uploadFileOpenGroupV2(new Uint8Array(paddedAttachment), openGroup);
-
-  if (!fileDetails) {
-    throw new Error(`upload to fileopengroupv2 of ${attachment.fileName} failed`);
-  }
+  // Same gap as the non-open-group upload path (Attachments.ts's uploadToFsV2): a single HTTP
+  // request with no retry of its own, unlike postMessage()'s 3 retries for open-group text.
+  // Wrap it the same way, so a transient network blip during an attachment upload doesn't fail
+  // the whole message outright.
+  const fileDetails = await pRetry(
+    async () => {
+      const result = await uploadFileOpenGroupV2(new Uint8Array(paddedAttachment), openGroup);
+      if (!result) {
+        // uploadFileOpenGroupV2() reports failure by resolving null rather than throwing -
+        // turn that into a rejection so pRetry actually retries it.
+        throw new Error(`upload to fileopengroupv2 of ${attachment.fileName} failed`);
+      }
+      return result;
+    },
+    {
+      retries: 3,
+      factor: 2,
+      minTimeout: 1000,
+      maxTimeout: 4000,
+      onFailedAttempt: e => {
+        window?.log?.warn(
+          `uploadV2 attempt #${e.attemptNumber} failed for ${attachment.fileName}. ${e.retriesLeft} retries left...`
+        );
+      },
+    }
+  );
 
   return {
     ...pointer,
