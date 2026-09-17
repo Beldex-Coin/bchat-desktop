@@ -41,7 +41,10 @@ import {
   PropsForSharedContact,
   PropsForPayment,
 } from '../state/ducks/conversations';
-import { VisibleMessage } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
+import {
+  VisibleMessage,
+  VisibleMessageParams,
+} from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 import { buildSyncMessage } from '../bchat/utils/syncUtils';
 import {
   uploadAttachmentsV2,
@@ -968,7 +971,19 @@ public getPropsForPayment(): PropsForPayment | null {
         delete chatParams.lokiProfile;
       }
 
-      const chatMessage = new VisibleMessage(chatParams);
+      // sendMessageJob() attaches these on the original send (conversation.ts) - a retry
+      // rebuilds the outgoing message from scratch, so without carrying them over here too,
+      // retrying a failed contact share / payment / group invitation silently drops its
+      // actual content and just resends an empty shell.
+      const extraParams: Partial<VisibleMessageParams> = {};
+      if (this.get('sharedContact')) {
+        extraParams.sharedContact = this.get('sharedContact');
+      }
+      if (this.get('groupInvitation')) {
+        extraParams.openGroupInvitation = this.get('groupInvitation');
+      }
+
+      const chatMessage = new VisibleMessage({ ...chatParams, ...extraParams });
 
       // Special-case the self-send case - we send only a sync message
       if (conversation.isMe()) {
