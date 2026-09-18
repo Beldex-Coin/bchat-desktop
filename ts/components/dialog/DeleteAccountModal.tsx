@@ -13,12 +13,19 @@ import * as Data from '../../data/data';
 import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
 import { SpacerSM } from '../basic/Text';
+import { clearFailedSendRegistry } from '../../bchat/sending/FailedSendRetry';
 
 
 export const deleteDbLocally = async (deleteType?: string) => {
   window?.log?.info('last message sent successfully. Deleting everything');
   await window.persistStore?.purge();
   window?.log?.info('store purged');
+
+  // These message ids are about to be meaningless - the messages they point to are being
+  // deleted below - and this app is about to relaunch anyway, but there's a window between
+  // now and that relaunch where the periodic retry sweep in FailedSendRetry.ts could still
+  // fire and try to look one of them up.
+  clearFailedSendRegistry();
 
   await deleteAllLogs();
   window?.log?.info('deleteAllLogs: done');

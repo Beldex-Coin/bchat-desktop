@@ -18,9 +18,11 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
   const storedOnionRoutingValue = window.getSettingValue(SettingsKey.settingsOnionRouting);
-  // Onion routing now defaults to OFF (direct connection) until the user opts in.
+  // Unset (never touched the toggle) must read as ON - onion routing was always on before this
+  // setting existed, and this must match the same default used in bchatRpc.ts, which is what
+  // actually decides whether requests go through onion routing or direct.
   const isOnionRoutingOn =
-    storedOnionRoutingValue === undefined ? false : Boolean(storedOnionRoutingValue);
+    storedOnionRoutingValue === undefined ? true : Boolean(storedOnionRoutingValue);
 
   if (props.hasPassword !== null) {
     // const isSpellCheckActive =
@@ -28,8 +30,8 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsSpellCheck);
 
-    function toggleOnionRouting() {
-      window.setSettingValue(SettingsKey.settingsOnionRouting, !isOnionRoutingOn);
+    async function toggleOnionRouting() {
+      await window.setSettingValue(SettingsKey.settingsOnionRouting, !isOnionRoutingOn);
       forceUpdate();
     }
 

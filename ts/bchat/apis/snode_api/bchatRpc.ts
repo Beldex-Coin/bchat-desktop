@@ -49,12 +49,15 @@ async function bchatFetch({
   try {
     // Absence of targetNode indicates that we want a direct connection
     // (e.g. to connect to a seed node for the first time)
-    // The user-facing "Onion Routing" setting (Settings > Chat) is the sole source of truth here,
-    // and defaults to OFF (direct connection) until the user explicitly opts in.
+    // The user-facing "Onion Routing" setting (Settings > Chat) is the sole source of truth here.
+    // Before this setting existed, onion routing was always on (bchatFeatureFlags.useOnionRequests
+    // was hardcoded true in preload.js) - a user who has never touched the toggle has no stored
+    // value for it, and that must still mean ON, not OFF. Defaulting unset to false silently
+    // dropped every existing user to direct connections on update.
     const onionRoutingSetting = window.getSettingValue(SettingsKey.settingsOnionRouting);
     const useOnionRequests =
-      onionRoutingSetting === undefined ? false : Boolean(onionRoutingSetting);
-    if (useOnionRequests && targetNode) { 
+      onionRoutingSetting === undefined ? true : Boolean(onionRoutingSetting);
+    if (useOnionRequests && targetNode) {
       const fetchResult = await bchatOnionFetch({
         targetNode,
         body: fetchOptions.body,
@@ -63,7 +66,7 @@ async function bchatFetch({
       if (!fetchResult) {
         return undefined;
       }
-      
+
 
       return fetchResult;
     }
@@ -102,15 +105,31 @@ async function bchatFetch({
       status: response.status,
     };
   } catch (e) {
-    if (targetNode && (e.type === 'system' || e.code === 'ENOTFOUND')) {
-      // node-fetch marks any underlying network failure this way (connection refused, timed
-      // out, host unreachable, DNS failure, etc.) - we never got a response from this node at
-      // all, so processOnionRequestErrorAtDestination never runs for it. Record it as a
-      // failure here so a genuinely dead/unreachable node gets dropped from the swarm after
-      // repeated failures instead of being retried indefinitely. isConnectionError: true means
-      // this won't also blacklist the node from the whole local pool - a connection-level
-      // failure like this one doesn't prove the node itself is bad (it could just as easily be
-      // this network unable to reach it directly), unlike a real protocol-level failure.
+    // If our own internet is down, this exact failure happens for every node we talk to,
+    // regardless of that node's actual health - it's not evidence against this node in
+    // particular. This runs on every poll (which never stops), so a real outage can rack up
+    // enough "failures" in minutes to drop this node from our swarm below, even though it's
+    // perfectly healthy. Skip counting the failure entirely when we already know it's our own
+    // connectivity that's the problem.
+    const ourOwnConnectivityIsDown =
+      e.code === 'ENETUNREACH' || e.code === 'ENETDOWN' || navigator.onLine === false;
+    if (
+      targetNode &&
+      !ourOwnConnectivityIsDown &&
+      (e.type === 'system' || e.type === 'request-timeout' || e.code === 'ENOTFOUND')
+    ) {
+      // node-fetch marks any underlying network failure this way (connection refused, host
+      // unreachable, DNS failure, etc. -> type: 'system') and reports a timeout separately as
+      // type: 'request-timeout', not 'system' - a node sitting behind a firewall typically times
+      // out rather than refusing the connection, so without this check it was never counted as a
+      // connection failure and got retried forever instead of eventually being dropped. Either
+      // way, we never got a response from this node at all, so
+      // processOnionRequestErrorAtDestination never runs for it. Record it as a failure here so
+      // a genuinely dead/unreachable node gets dropped from the swarm after repeated failures
+      // instead of being retried indefinitely. isConnectionError: true means this won't also
+      // blacklist the node from the whole local pool - a connection-level failure like this one
+      // doesn't prove the node itself is bad (it could just as easily be this network unable to
+      // reach it directly), unlike a real protocol-level failure.
       await incrementBadSnodeCountOrDrop({
         snodeEd25519: targetNode.pubkey_ed25519,
         associatedWith,

@@ -511,10 +511,22 @@ export async function processOnionResponse({
 // connections kept alive) across requests, paying that handshake cost once per node instead of
 // once per message. Turning keepAlive on here gives desktop the same connection-reuse behavior;
 // maxFreeSockets mirrors OkHttp's default pool size of 5 idle connections per host.
+//
+// keepAlive alone has no timeout, so a pooled idle socket is kept forever - including across a
+// laptop sleep or a Wi-Fi network change, after which the socket is actually dead but the agent
+// doesn't know that yet. The next request that reuses it either hangs until the OS-level TCP
+// timeout finally fires (far longer than any of our own request timeouts), or gets ECONNRESET
+// if the server happens to close its end of that same stale connection right as we try to reuse
+// it - and incrementBadSnodeCountOrDrop() then blames the node for what is really just a dead
+// local socket, dropping perfectly healthy nodes (see the isConnectionError comments below).
+// `timeout` bounds how long a socket from this agent can sit idle before the agent destroys it
+// itself and a fresh connection (and TLS handshake) is made instead - trading a little of the
+// keepAlive reuse savings above for not reusing sockets that have likely gone stale.
 export const snodeHttpsAgent = new https.Agent({
   rejectUnauthorized: false,
   keepAlive: true,
   maxFreeSockets: 5,
+  timeout: 30000,
 });
 
 export type FinalRelayOptions = {
@@ -693,7 +705,21 @@ export const sendOnionRequestHandlingSnodeEject = async ({
     decodingSymmetricKey = result.decodingSymmetricKey;
   } catch (e) {
     window?.log?.warn('sendOnionRequest error message: ', e.message);
-    if (e.code === 'ENETUNREACH' || e.message === 'ENETUNREACH') {
+    // If our own internet is down, every path/node fails this exact same way regardless of
+    // which nodes are actually involved - that's not evidence any of them are bad. Falling
+    // through to processOnionResponse() below with no response would otherwise blame the guard
+    // and relay nodes of whatever path we tried (processOnionRequestErrorOnPath ->
+    // incrementBadPathCountOrDrop), and since polling retries constantly, a real outage could
+    // rack up enough "failures" in minutes to drop perfectly healthy nodes from the whole local
+    // snode pool - which in turn can leave a swarm with too few known-good nodes and nothing to
+    // refresh it with, since fetching a replacement list needs the network too. Bail out before
+    // any of that runs.
+    if (
+      e.code === 'ENETUNREACH' ||
+      e.code === 'ENETDOWN' ||
+      e.message === 'ENETUNREACH' ||
+      navigator.onLine === false
+    ) {
       throw e;
     }
   }

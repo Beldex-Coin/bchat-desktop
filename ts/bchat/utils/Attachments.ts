@@ -1,5 +1,4 @@
 import * as crypto from 'crypto';
-import pRetry from 'p-retry';
 import { Attachment } from '../../types/Attachment';
 
 import {
@@ -13,6 +12,7 @@ import { FSv2 } from '../apis/file_server_api';
 import { addAttachmentPadding } from '../crypto/BufferPadding';
 import _ from 'lodash';
 import { encryptAttachment } from '../../util/crypto/attachmentsEncrypter';
+import { uploadWithRetry } from './UploadRetry';
 
 interface UploadParams {
   attachment: Attachment;
@@ -81,33 +81,9 @@ export class AttachmentFsV2Utils {
 
     // use file server v2
     if (FSv2.useFileServerAPIV2Sending) {
-      // uploadFileToFsV2() is a single HTTP request with no retry of its own - unlike
-      // MessageSender.send()'s 7 attempts for a text message, or postMessage()'s 3 retries for
-      // an open-group text post, a single transient network blip here failed the whole
-      // attachment (and therefore the whole message) outright, with no second chance to
-      // recover. Attachments take longer to transfer than a text message, so they're more
-      // exposed to exactly this kind of blip. Wrap it the same way postMessage() already does.
-      const uploadToV2Result = await pRetry(
-        async () => {
-          const result = await FSv2.uploadFileToFsV2(attachmentData);
-          if (!result) {
-            // uploadFileToFsV2() reports failure by resolving null rather than throwing -
-            // turn that into a rejection so pRetry actually retries it.
-            throw new Error(`upload to file server v2 of ${attachment.fileName} failed`);
-          }
-          return result;
-        },
-        {
-          retries: 3,
-          factor: 2,
-          minTimeout: 1000,
-          maxTimeout: 4000,
-          onFailedAttempt: e => {
-            window?.log?.warn(
-              `uploadToFsV2 attempt #${e.attemptNumber} failed for ${attachment.fileName}. ${e.retriesLeft} retries left...`
-            );
-          },
-        }
+      // See UploadRetry.ts's uploadWithRetry() for why this needs a retry wrapper at all.
+      const uploadToV2Result = await uploadWithRetry('uploadToFsV2', attachment.fileName, () =>
+        FSv2.uploadFileToFsV2(attachmentData)
       );
 
       const pointerWithUrl: AttachmentPointerWithUrl = {

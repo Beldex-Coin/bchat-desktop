@@ -1,4 +1,3 @@
-import pRetry from 'p-retry';
 import { Attachment } from '../../types/Attachment';
 
 import { OpenGroupRequestCommonType } from '../apis/open_group_api/opengroupV2/ApiUtil';
@@ -14,6 +13,7 @@ import { addAttachmentPadding } from '../crypto/BufferPadding';
 import { RawPreview, RawQuote } from './Attachments';
 import _ from 'lodash';
 import { AttachmentsV2Utils } from '.';
+import { uploadWithRetry } from './UploadRetry';
 
 interface UploadParamsV2 {
   attachment: Attachment;
@@ -44,31 +44,14 @@ export async function uploadV2(params: UploadParamsV2): Promise<AttachmentPointe
     ? addAttachmentPadding(attachment.data)
     : attachment.data;
 
-  // Same gap as the non-open-group upload path (Attachments.ts's uploadToFsV2): a single HTTP
-  // request with no retry of its own, unlike postMessage()'s 3 retries for open-group text.
-  // Wrap it the same way, so a transient network blip during an attachment upload doesn't fail
-  // the whole message outright.
-  const fileDetails = await pRetry(
-    async () => {
-      const result = await uploadFileOpenGroupV2(new Uint8Array(paddedAttachment), openGroup);
-      if (!result) {
-        // uploadFileOpenGroupV2() reports failure by resolving null rather than throwing -
-        // turn that into a rejection so pRetry actually retries it.
-        throw new Error(`upload to fileopengroupv2 of ${attachment.fileName} failed`);
-      }
-      return result;
-    },
-    {
-      retries: 3,
-      factor: 2,
-      minTimeout: 1000,
-      maxTimeout: 4000,
-      onFailedAttempt: e => {
-        window?.log?.warn(
-          `uploadV2 attempt #${e.attemptNumber} failed for ${attachment.fileName}. ${e.retriesLeft} retries left...`
-        );
-      },
-    }
+  // Computed once here rather than inside the retry below - it was previously re-built with
+  // `new Uint8Array(paddedAttachment)` on every attempt, wastefully redoing that copy for
+  // attempt 2/3/4 of the exact same bytes that didn't change between attempts.
+  const paddedAttachmentBytes = new Uint8Array(paddedAttachment);
+
+  // See UploadRetry.ts's uploadWithRetry() for why this needs a retry wrapper at all.
+  const fileDetails = await uploadWithRetry('uploadV2', attachment.fileName, () =>
+    uploadFileOpenGroupV2(paddedAttachmentBytes, openGroup)
   );
 
   return {

@@ -974,8 +974,15 @@ public getPropsForPayment(): PropsForPayment | null {
       // sendMessageJob() attaches these on the original send (conversation.ts) - a retry
       // rebuilds the outgoing message from scratch, so without carrying them over here too,
       // retrying a failed contact share / payment / group invitation silently drops its
-      // actual content and just resends an empty shell.
+      // actual content and just resends an empty shell. payment was missing here even though
+      // the comment above already called it out - a failed payment message got silently
+      // "resent" as empty, and since this same retrySend() is now also what the automatic
+      // reconnect retry (retryAllFailedSendsOnReconnect(), see FailedSendRetry.ts) calls, that
+      // happened without the user ever choosing to resend anything themselves.
       const extraParams: Partial<VisibleMessageParams> = {};
+      if (this.get('payment')) {
+        extraParams.payment = this.get('payment');
+      }
       if (this.get('sharedContact')) {
         extraParams.sharedContact = this.get('sharedContact');
       }

@@ -186,6 +186,36 @@ export class MessageSentHandler {
   }
 
   /**
+   * A real sync-to-our-other-devices copy of a message failed to send (see
+   * MessageQueue.processPending()'s `isSyncMessage && !isNoteToSelfSend` branch). The recipient
+   * already has the original message, so we deliberately don't call handleMessageSentFailure()/
+   * saveErrors() for this - that would flip an already-delivered message into an error state the
+   * user would see and could "Resend", which would just needlessly re-send to the recipient again.
+   *
+   * But models/message.ts's sendSyncMessage() sets `sentSync: true` optimistically as soon as it
+   * queues the sync copy, before knowing whether that send actually succeeds - it relies on a
+   * later, successful handleMessageSentSuccess() call (for the sync copy itself) to confirm that
+   * by setting `synced: true`. If the sync copy's send fails and we leave `sentSync` as `true`,
+   * sendSyncMessage()'s own guard (`if (this.get('synced') || this.get('sentSync')) return;`)
+   * then thinks the sync already happened and never retries it - our other devices then never get
+   * this message at all. Reset `sentSync` back to `false` here so a future attempt isn't skipped,
+   * without touching the message's errors/sent state the way handleMessageSentFailure() would.
+   */
+  public static async handleSyncMessageSendFailure(sentMessage: RawMessage) {
+    const fetchedMessage = await MessageSentHandler.fetchHandleMessageSentData(sentMessage);
+    if (!fetchedMessage) {
+      return;
+    }
+
+    const isOurDevice = UserUtils.isUsFromCache(sentMessage.device);
+    // Mirrors the same guard handleMessageSentFailure() uses before resetting sentSync.
+    if (isOurDevice && !fetchedMessage.get('sync')) {
+      fetchedMessage.set({ sentSync: false });
+      await fetchedMessage.commit();
+    }
+  }
+
+  /**
    * This function tries to find a message by messageId by first looking on the MessageController.
    * The MessageController holds all messages being in memory.
    * Those are the messages sent recently, recieved recently, or the one shown to the user.
