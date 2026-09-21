@@ -662,7 +662,6 @@
   "readMore": "Read more",
   "CopyYourRecoverySeed...":"Copy your Recovery Seed and keep it safe",
   "enterBChatIDorBNS":"Enter BChat ID or BNS",
-
   "errConenctionStatus":"You are not connected to the Hop. Check your internet connection or Restart the app!",
   "warnNoLongerParticipate":"You can’t send message to this group because you’re not a member of this group",
   "attachment":"Attachment",
@@ -752,5 +751,8 @@
   "sharedContactAndOther": "$name$ and $count$ other",
   "sharedContactAndOthers": "$name$ and $count$ others",
   "paymentDirectionSend": "Send",
-  "paymentDirectionReceived": "Received"
+  "paymentDirectionReceived": "Received",
+  "pickFileForAvatarError": "An error happened while picking/resizing the image",
+  "attachmentTypeImages": "Images",
+  "and": "and" 
 }

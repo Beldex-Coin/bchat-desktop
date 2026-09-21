@@ -385,7 +385,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                   onClick={() => setCurrentReact('')}
                   isSelected={currentReact === ''}
                 >
-                  All <span>{reactedDetailList.length}</span>
+                  {window.i18n('filterAll')} <span>{reactedDetailList.length}</span>
                 </StyledAllButton>
                 <MessageReactions
                   messageId={messageId}

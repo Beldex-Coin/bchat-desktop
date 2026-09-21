@@ -760,4 +760,7 @@ export type LocalizerKeys =
   |'paymentDirectionSend'
   |'paymentDirectionReceived'
   |'warnSeedInMessage...'
+  |'pickFileForAvatarError'
+  |'attachmentTypeImages'
+  |'and'
   ;

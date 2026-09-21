@@ -54,7 +54,7 @@ export const AboutBnsDialog = () => {
               </li>
             </ul>
             <div className="about-bns-txt-bold">
-              <span>{window.i18n('pricingHeader')}:</span> {window.i18n('subscriptionDescription')} <span>650 BDX, 1000 BDX, 2000 BDX,</span> and <span>4000 BDX</span> {window.i18n('subscriptionDescriptionTail')}
+              <span>{window.i18n('pricingHeader')}:</span> {window.i18n('subscriptionDescription')} <span>650 BDX, 1000 BDX, 2000 BDX,</span> {window.i18n('and')} <span>4000 BDX</span> {window.i18n('subscriptionDescriptionTail')}
             </div>
             <div className="about-bns-txt">
               {window.i18n('aboutBNSDescription2')}
