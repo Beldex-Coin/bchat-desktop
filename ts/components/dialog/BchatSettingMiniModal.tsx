@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -33,24 +33,23 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
       >
           <div className="bchat-modal__settingMiniModel">
             <div style={{ width: '100%', overflowY: 'auto' }}>
-              { data.map((item: string, i: number) => (
-                  <>
+              { data.map((item: { value: string; label: string }) => (
+                  <Fragment key={item.value}>
                     <div
                       className={classNames(
                         'bchat-modal__centered-SettingMiniModalContent',
-                        select === item && 'isSelect'
+                        select === item.value && 'isSelect'
                       )}
-                      key={i}
-                      onClick={() => setSelect(item)}
+                      onClick={() => setSelect(item.value)}
                     >
                       <div
                         className={
-                          select !== item
+                          select !== item.value
                             ? 'bchat-modal__centered-SettingMiniModalContent-circle'
                             : 'selected'
                         }
                       >
-                        {select === item && (
+                        {select === item.value && (
                           <BchatIcon
                             iconType="circle"
                             iconSize={10}
@@ -58,10 +57,10 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
                           />
                         )}
                       </div>
-                      {item}
+                      {item.label}
                     </div>
                     <SpacerSM />
-                  </>
+                  </Fragment>
                 ))}
             </div>
           </div>

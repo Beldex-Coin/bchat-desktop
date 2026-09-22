@@ -22,16 +22,16 @@ export const MessageText = (props: Props) => {
   const selected = useSelector(state => getMessageTextProps(state as any, props.messageId));
   const multiSelectMode = useSelector(isMessageSelectionMode);
 
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') ||window.i18n('small');
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
 
   function FontSizeChanger()
   {
     let size;
-   if(currentValueFromSettings===window.i18n('small'))
+   if(currentValueFromSettings==='small')
    {
     size="14px"
    }
-   else if(currentValueFromSettings=== window.i18n('medium'))
+   else if(currentValueFromSettings=== 'medium')
    {
     size="16px"
    }

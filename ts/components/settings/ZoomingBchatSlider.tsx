@@ -23,7 +23,13 @@ import { BchatIcon } from '../icon';
 //   { value: 150, label: '150%' },
 
 // ]
-const option = ['50%', '75%', '100%', '125%', '150%']
+const option = [
+  { value: '50', label: '50%' },
+  { value: '75', label: '75%' },
+  { value: '100', label: '100%' },
+  { value: '125', label: '125%' },
+  { value: '150', label: '150%' },
+]
 
 export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => void }) => {
   const currentValueFromSettings = window.getSettingValue('zoom-factor-setting') || 100;
@@ -42,10 +48,9 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
   // };
 
   const handleSlider = (valueToForward: any) => {
-    let value = valueToForward.substring(0, valueToForward.length - 1)
-    props?.onSliderChange?.(value);
-    window.setSettingValue('zoom-factor-setting', value);
-    setValue(value)
+    props?.onSliderChange?.(valueToForward);
+    window.setSettingValue('zoom-factor-setting', valueToForward);
+    setValue(valueToForward)
     window.updateZoomFactor();
     dispatch(SettingMiniModal(null))
     forceUpdate();
@@ -100,7 +105,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
       SettingMiniModal({
         headerName: window.i18n('zoomFactorSettingTitle'),
         content: option,
-        selectedItem: value + '%',
+        selectedItem: String(value),
         onClose: () => dispatch(SettingMiniModal(null)),
         onClick: (e: any) => {
           handleSlider(e)

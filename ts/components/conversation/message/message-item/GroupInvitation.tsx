@@ -176,11 +176,11 @@ export const VerticalLine = styled.div<VerticalLineProps>`
   margin-right: 10px;
 `;
 export const FontSizeChanger = (fontSize: number) => {
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || window.i18n('small');
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
   let size;
-  if (currentValueFromSettings === window.i18n('small')) {
+  if (currentValueFromSettings === 'small') {
     size = fontSize;
-  } else if (currentValueFromSettings === window.i18n('medium')) {
+  } else if (currentValueFromSettings === 'medium') {
     size = fontSize + 2;
   } else {
     size = fontSize + 4;
