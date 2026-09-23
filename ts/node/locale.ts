@@ -3,18 +3,29 @@ import fs from 'fs';
 import _ from 'lodash';
 import { getAppRootPath } from './getRootPath';
 
+function getLocaleMessagesPath(locale: string) {
+  const onDiskLocale = locale.replace('-', '_');
+  return path.join(getAppRootPath(), '_locales', onDiskLocale, 'messages.json');
+}
+
 function normalizeLocaleName(locale: string) {
   if (/^en-/.test(locale)) {
     return 'en';
+  }
+
+const baseLocale = locale.split(/[-_]/)[0];
+  if (
+    !fs.existsSync(getLocaleMessagesPath(locale)) &&
+    fs.existsSync(getLocaleMessagesPath(baseLocale))
+  ) {
+    return baseLocale;
   }
 
   return locale;
 }
 
 function getLocaleMessages(locale: string): LocaleMessagesType {
-  const onDiskLocale = locale.replace('-', '_');
-  const targetFile = path.join(getAppRootPath(), '_locales', onDiskLocale, 'messages.json');
-  return JSON.parse(fs.readFileSync(targetFile, 'utf-8'));
+  return JSON.parse(fs.readFileSync(getLocaleMessagesPath(locale), 'utf-8'));
 }
 export type LocaleMessagesType = Record<string, string>;
 export type LocaleMessagesWithNameType = { messages: LocaleMessagesType; name: string };

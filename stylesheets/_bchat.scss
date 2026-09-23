@@ -2978,7 +2978,7 @@ ul{
 
 /* Container Modal styling */
 .bchat-language-screen {
-  background-color: #1e222b;
+  background-color: var(--color-hop-bg);
   border-radius: 12px;
   padding: 24px;
   width: 360px;
@@ -3000,7 +3000,7 @@ ul{
 
 
 /* Individual list row */
-.bchat-modal__centered-SettingMiniModalContent {
+.bchat-language-row {
   display: flex;
   align-items: center;
   padding: 10px 16px;
@@ -3009,20 +3009,20 @@ ul{
   transition: background-color 0.2s ease;
 }
 
-.bchat-modal__centered-SettingMiniModalContent:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+.bchat-language-row:hover {
+  background-color: var(--color-confirm-modal-hover-bg);
 }
 
 /* Active selected row state */
-.bchat-modal__centered-SettingMiniModalContent.isSelect {
-  background-color: #2d323f;
+.bchat-language-row.isSelect {
+  background-color: var(--color-icon-btn-hover);
 }
 
 /* Radio circle base style */
-.bchat-modal__centered-SettingMiniModalContent-circle {
+.bchat-language-row__circle {
   width: 16px;
   height: 16px;
-  border: 1.5px solid #a0aec0;
+  border: 1.5px solid var(--color-radio-icon);
   border-radius: 50%;
   margin-right: 14px;
   display: flex;
@@ -3032,8 +3032,8 @@ ul{
 }
 
 /* Radio circle active style */
-.bchat-modal__centered-SettingMiniModalContent-circle.selected {
-  border-color: #159a3a; /* Green matching the save button */
+.bchat-language-row__circle.selected {
+  border-color: var(--color-accent);
 }
 
 /* Text styling */

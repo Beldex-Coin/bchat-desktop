@@ -11,7 +11,6 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
 import { getTheme } from '../../state/selectors/theme';
-import { useState, useEffect } from 'react';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -207,19 +206,6 @@ const LeftPaneSettingsCategories = () => {
 // };
 
 export const LeftPaneSettingSection = () => {
-  const [, setLocaleVersion] = useState(0);
-
-  useEffect(() => {
-    const handleLocaleChange = () => {
-      setLocaleVersion(prev => prev + 1);
-    };
-
-    window.addEventListener('app-locale-changed', handleLocaleChange);
-    return () => {
-      window.removeEventListener('app-locale-changed', handleLocaleChange);
-    };
-  }, []);
-
   return (
     <div className="left-pane-setting-section">
       <SpacerLG />

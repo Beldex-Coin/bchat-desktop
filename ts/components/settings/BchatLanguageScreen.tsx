@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { BchatIcon } from '../icon/BchatIcon';
 import { Constants } from '../../bchat';
 import { SpacerSM } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
+import { updateConfirmModal } from '../../state/ducks/modalDialog';
 
 const languageOptions: Array<{ labelKey: LocalizerKeys; code: string }> = [
   { labelKey: 'languageArabic', code: 'ar' },
@@ -23,30 +24,26 @@ const languageOptions: Array<{ labelKey: LocalizerKeys; code: string }> = [
 export const BchatLanguageScreen = () => {
   const currentLocale = (window as any)?.i18n?.getLocale?.() || 'en';
   const [select, setSelect] = useState<string>(currentLocale);
-  const [, setLocaleRefresh] = useState(0);
-
-  useEffect(() => {
-    const handleLocaleChange = () => {
-      setLocaleRefresh(prev => prev + 1);
-    };
-
-    window.addEventListener('app-locale-changed', handleLocaleChange);
-    return () => {
-      window.removeEventListener('app-locale-changed', handleLocaleChange);
-    };
-  }, []);
 
   const handleSave = () => {
     const locale = select || 'en';
 
-    if ((window as any).setAppLocale) {
-      (window as any).setAppLocale(locale);
+    if (locale === currentLocale) {
+      return;
     }
-    if ((window as any).refreshAppLocale) {
-      (window as any).refreshAppLocale();
-    }
-
-    window.dispatchEvent(new Event('app-locale-changed'));
+    window.inboxStore?.dispatch(
+      updateConfirmModal({
+        title: window.i18n('languagesSettingsTitle'),
+        message: window.i18n('spellCheckDirty'),
+        okText: window.i18n('continue'),
+        okTheme: BchatButtonColor.Primary,
+        cancelText: window.i18n('cancel'),
+        onClickOk: () => {
+          window.setAppLocale(locale);
+          window.restart();
+        },
+      })
+    );
   };
 
   return (
@@ -56,14 +53,14 @@ export const BchatLanguageScreen = () => {
           <React.Fragment key={item.code || i}>
             <div
               className={classNames(
-                'bchat-modal__centered-SettingMiniModalContent',
+                'bchat-language-row',
                 select === item.code && 'isSelect'
               )}
               onClick={() => setSelect(item.code)}
             >
               <div
                 className={classNames(
-                  'bchat-modal__centered-SettingMiniModalContent-circle',
+                  'bchat-language-row__circle',
                   select === item.code && 'selected'
                 )}
               >

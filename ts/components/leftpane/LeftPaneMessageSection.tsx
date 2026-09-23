@@ -39,17 +39,9 @@ export interface Props {
   conversationRequestsUnread: any;
 }
 
-interface State {
-  localeRefreshVersion: number;
-}
-
-export class LeftPaneMessageSection extends React.Component<Props, State> {
+export class LeftPaneMessageSection extends React.Component<Props> {
   public constructor(props: Props) {
     super(props);
-
-    this.state = {
-      localeRefreshVersion: 0,
-    };
 
     autoBind(this);
   }
@@ -71,7 +63,7 @@ export class LeftPaneMessageSection extends React.Component<Props, State> {
 
     return (
       <MemoConversationListItemWithDetails
-        key={`${conversation.id}-${key}-${this.state.localeRefreshVersion}`}
+        key={`${conversation.id}-${key}`}
         {...conversation}
       />
     );
@@ -89,13 +81,11 @@ export class LeftPaneMessageSection extends React.Component<Props, State> {
     }
 
     // const length = conversations.length;
-    const listKey = this.state.localeRefreshVersion;
-
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
     const list = (
-      <div className="module-left-pane__list" key={listKey}>
+      <div className="module-left-pane__list">
         {/*  <AutoSizer>
           {({height,  width }) => (
             <List
@@ -117,14 +107,6 @@ export class LeftPaneMessageSection extends React.Component<Props, State> {
     );
 
     return [list];
-  }
-
-  public componentDidMount() {
-    window.addEventListener('app-locale-changed', this.onLocaleChanged);
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener('app-locale-changed', this.onLocaleChanged);
   }
 
   public render(): JSX.Element {
@@ -198,12 +180,6 @@ export class LeftPaneMessageSection extends React.Component<Props, State> {
       default:
         return null;
     }
-  }
-
-  public onLocaleChanged() {
-    this.setState(prevState => ({
-      localeRefreshVersion: prevState.localeRefreshVersion + 1,
-    }));
   }
 
   // private renderBottomButtons(): JSX.Element {

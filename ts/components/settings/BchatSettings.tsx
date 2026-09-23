@@ -61,7 +61,6 @@ interface State {
   callMediaSetting: boolean | null;
   shouldLockSettings: boolean | null;
   nodeSetting: boolean | null;
-  localeChangeVersion: number;
 }
 
 // const BchatInfo = () => {
@@ -133,7 +132,6 @@ export const PasswordLock = ({
 
 export class BchatSettingsView extends React.Component<SettingsViewProps, State> {
   public settingsViewRef: React.RefObject<HTMLDivElement>;
-  private localeChangeHandler: () => void;
 
   public constructor(props: any) {
     super(props);
@@ -145,25 +143,16 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
       callMediaSetting: null,
       shouldLockSettings: true,
       nodeSetting: false,
-      localeChangeVersion: 0,
     };
 
     this.settingsViewRef = React.createRef();
     autoBind(this);
-    
-    // Create arrow function handler to ensure correct 'this' binding
-    this.localeChangeHandler = () => {
-      this.setState(prevState => ({
-        localeChangeVersion: prevState.localeChangeVersion + 1,
-      }));
-    };
 
     void this.hasPassword();
   }
 
   public componentDidMount() {
     window.addEventListener('keyup', this.onKeyUp);
-    window.addEventListener('app-locale-changed', this.localeChangeHandler);
     const mediaSetting = getMediaPermissionsSettings();
     const callMediaSetting = getCallMediaPermissionsSettings();
     this.setState({ mediaSetting, callMediaSetting });
@@ -173,7 +162,6 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentWillUnmount() {
     window.removeEventListener('keyup', this.onKeyUp);
-    window.removeEventListener('app-locale-changed', this.localeChangeHandler);
   }
 
   /* tslint:disable-next-line:max-func-body-length */

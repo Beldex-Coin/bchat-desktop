@@ -45,6 +45,8 @@ declare global {
     onLogin: any;
     persistStore?: Persistor;
     restart: any;
+    setAppLocale: (locale: string) => void;
+    getAppLocale: () => string;
     getSeedNodeList: () => Array<string> | undefined;
     getDaemonNodeRandomlyPick: () => Object;
     networkType: string;

@@ -1,18 +1,44 @@
-
 import { BrowserWindow, Menu } from 'electron';
-import { sync as osLocaleSync } from 'os-locale';
+import { LocaleMessagesType } from './locale';
+import { getLogger } from './logging';
+import { resolveSpellCheckerLanguages } from './spell_check_languages';
 
-export const setup = (browserWindow: BrowserWindow, messages: any) => {
+const setSpellCheckerLocale = (
+  browserWindow: BrowserWindow,
+  appLocale: string,
+  spellCheckEnabled: boolean
+) => {
   const { session } = browserWindow.webContents;
-  const userLocale = osLocaleSync().replace(/_/g, '-');
-  const userLocales = [userLocale, userLocale.split('-')[0]];
+  const logger = getLogger();
+
+   if (process.platform === 'darwin') {
+    session.setSpellCheckerEnabled(spellCheckEnabled);
+    return;
+  }
 
   const available = session.availableSpellCheckerLanguages;
-  const languages = userLocales.filter(l => available.includes(l));
-  console.log(`spellcheck: user locale: ${userLocale}`);
-  console.log('spellcheck: available spellchecker languages: ', available);
-  console.log('spellcheck: setting languages to: ', languages);
+  const languages = resolveSpellCheckerLanguages(available, appLocale);
+  logger.info(`spellcheck: app locale: ${appLocale}`);
+  logger.info('spellcheck: available spellchecker languages:', available);
+  logger.info('spellcheck: setting languages to:', languages);
+
+  if (!languages.length) {
+    logger.info(`spellcheck: no dictionary for ${appLocale}, disabling the spellchecker`);
+    session.setSpellCheckerEnabled(false);
+    return;
+  }
+
   session.setSpellCheckerLanguages(languages);
+  session.setSpellCheckerEnabled(spellCheckEnabled);
+};
+
+export const setup = (
+  browserWindow: BrowserWindow,
+  messages: LocaleMessagesType,
+  appLocale: string,
+  spellCheckEnabled: boolean
+) => {
+  setSpellCheckerLocale(browserWindow, appLocale, spellCheckEnabled);
 
   browserWindow.webContents.on('context-menu', (_event: any, params: any) => {
     const { editFlags } = params;

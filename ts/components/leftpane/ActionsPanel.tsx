@@ -460,18 +460,7 @@ export const BchatToolTip = (props: any) => (
 
 const DisplayTitle = (props: {titleKey: LocalizerKeys; top: string }) => {
   const { titleKey } = props;
-  const [text, setText] = useState<string>(window.i18n(titleKey));
-
-  useEffect(() => {
-    const handleLocaleChange = () => {
-      if (titleKey) {
-        setText(window.i18n(titleKey));
-      }
-    };
-
-    window.addEventListener('app-locale-changed', handleLocaleChange);
-    return () => window.removeEventListener('app-locale-changed', handleLocaleChange);
-  }, [titleKey]);
+  const text = window.i18n(titleKey);
 
   return (
     <StyledTitleWrapper container={true} alignItems="center" top={props.top}>

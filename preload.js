@@ -48,13 +48,6 @@ window.setAppLocale = locale => {
 
 window.getAppLocale = () => ipc.sendSync('get-app-locale');
 
-window.refreshAppLocale = () => {
-  const locale = window.getAppLocale ? window.getAppLocale() : 'en';
-  const localeMessages = ipc.sendSync('locale-data');
-  window.i18n = setupi18n(locale || 'en', localeMessages);
-  return locale;
-};
-
 window.updateZoomFactor = () => {
   let zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
   
