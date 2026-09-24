@@ -15,6 +15,7 @@ import { Flex } from '../basic/Flex';
 import useHover from 'react-use/lib/useHover';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
+import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
 // import styled from 'styled-components';
 // import { BchatWrapperModal } from '../BchatWrapperModal';
 
@@ -28,18 +29,18 @@ const OnionCountryDisplay = ({
   index,
   labelText,
   snodeIp,
+  role,
 }: {
   snodeIp?: string;
   labelText: string;
+  role: string;
   index: number;
 }) => {
   const element = () => (
     <div className="onion__node__country" key={`country-${index}`}>
-      <div>
-        {index === 1 ? 'Entry Node' : index !== 0 && index !== 4 ? 'Master Node' : labelText}
-      </div>
+      <div>{role}</div>
       <span className='ip-country'>
-        {index !== 0 && index !== 4 ? labelText + '(' + snodeIp + ')' : <div></div>}
+        {snodeIp ? labelText + '(' + snodeIp + ')' : <div></div>}
       </span>
     </div>
   );
@@ -51,9 +52,38 @@ const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
   const isOnline = useSelector(getIsOnline);
   const glowDuration = onionPath.length + 2;
+
+  // getEffectiveOnionRoutingHops() reads the hop count chosen from the "Onion Routing" picker in
+  // Settings > Chat (0 / 1 / 3) - the same source of truth bchatFetch() uses to pick between the
+  // raw request, bchatOneHopOnionFetch, and bchatOnionFetch.
+  const onionRoutingHops = getEffectiveOnionRoutingHops();
+
+  if (onionRoutingHops === 0) {
+    // 0 hops: bchatFetch() sends every request as a plain direct call with no onion encryption
+    // at all (see bchatRpc.ts) - there's no path of any kind to report.
+    // state.onionPaths.snodePaths is never touched for this mode, so it can only ever hold stale
+    // data from a previous session with a higher hop count - render a dedicated message instead
+    // of trusting/displaying that.
+    return (
+      <div className='hopes'>
+        <div className='layer'>
+          <div className="onion__description">
+            {window.i18n('onionPathIndicatorDescriptionZero')}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!isOnline || !onionPath || onionPath.length === 0) {
     return <BchatSpinner loading={true} />;
   }
+
+  // With "1 hop" chosen, bchatOneHopOnionFetch() sends a single onion-encrypted request
+  // straight to the storage node instead of building a 3-hop path via
+  // OnionPaths.getOnionPath() - there's no separate entry/relay node to show, the one node in
+  // the path *is* the destination.
+  const isDirectSingleHop = onionRoutingHops === 1 && onionPath.length === 1;
 
   const nodes = [
     {
@@ -64,6 +94,11 @@ const OnionPathModalInner = () => {
       label: window.i18n('destination'),
     },
   ];
+  const lastIndex = nodes.length - 1;
+
+  const description = isDirectSingleHop
+    ? window.i18n('onionPathIndicatorDescriptionOneHop')
+    : window.i18n('onionPathIndicatorDescription');
 
   return (
     <div className='hopes'>
@@ -76,7 +111,7 @@ const OnionPathModalInner = () => {
         margin="auto"
       > */}
       <div className='layer'>
-        <div className="onion__description">{window.i18n('onionPathIndicatorDescription')}</div>
+        <div className="onion__description">{description}</div>
         <div className="onion__node-list">
           <Flex container={true}>
             <div className="onion__node-list-lights">
@@ -102,8 +137,26 @@ const OnionPathModalInner = () => {
                 if (!labelText) {
                   labelText = window.i18n('unknownCountry');
                 }
+
+                // Endpoints (You / Destination) keep their own label. A single-node direct path
+                // has nothing to call an "Entry Node" - it's the destination itself, reached in
+                // one hop. Otherwise, fall back to the original entry/relay convention.
+                const role =
+                  index === 0 || index === lastIndex
+                    ? labelText
+                    : isDirectSingleHop
+                    ? window.i18n('storageNode')
+                    : index === 1
+                    ? 'Entry Node'
+                    : 'Master Node';
+
                 return labelText ? (
-                  <OnionCountryDisplay index={index} labelText={labelText} snodeIp={snode.ip} />
+                  <OnionCountryDisplay
+                    index={index}
+                    labelText={labelText}
+                    snodeIp={snode.ip}
+                    role={role}
+                  />
                 ) : null;
               })}
             </Flex>
@@ -176,11 +229,28 @@ export const ActionPanelOnionStatusLight = (props: {
   const green = 'var(--green-color)';
   const orange = 'var(--color-warning)';
 
-  // start with red
+  // Red here reads to users as "BChat isn't connected to the internet" - that's only true when
+  // we're actually offline, so red is reserved for that. It must never be the resting color for
+  // a mode that's working correctly.
   let iconColor = red;
-  //if we are not online or the first path is not valid, we keep red as color
-  if (isOnline && firstPathLength > 1) {
-    iconColor = onionPathsCount >= 2 ? green : onionPathsCount >= 1 ? orange : red;
+
+  const onionRoutingHops = getEffectiveOnionRoutingHops();
+
+  if (onionRoutingHops === 3) {
+    // Full 3-hop onion routing: color reflects path redundancy - how many alternate 3-hop paths
+    // are currently built (2+ = green, 1 = orange), not just "are we online". A valid path needs
+    // at least 2 nodes (guard + relay/destination, by OnionPaths' own minimumGuardCount).
+    if (isOnline && firstPathLength >= 2) {
+      iconColor = onionPathsCount >= 2 ? green : orange;
+    }
+  } else {
+    // 0 or 1 hop: bchatFetch() makes a single direct connection with no path-redundancy concept
+    // to report (see bchatRpc.ts) - there's nothing here that should ever read as "1 of
+    // however-many paths are up". The only meaningful signal is whether the app is actually
+    // online, so: green while online, red only when it's not.
+    if (isOnline) {
+      iconColor = green;
+    }
   }
 
 

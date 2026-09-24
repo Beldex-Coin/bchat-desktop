@@ -323,6 +323,14 @@ export async function testGuardNode(snode: Data.Snode) {
       window?.log?.warn('no network on node,', snode);
       throw new pRetry.AbortError(ERROR_CODE_NO_CONNECT);
     }
+    // Previously this branch discarded the real failure reason (connection refused, TLS
+    // handshake failure, DNS failure, non-timeout network errors, etc.), so when every guard
+    // candidate failed here, getOnionPath()'s "Failed to build enough onion paths, current
+    // count: 0" error gave no clue why. Log it so the actual cause is visible next time.
+    window?.log?.warn(
+      `guard node test failed for ${ed25519Str(snode.pubkey_ed25519)} (${snode.ip}:${snode.port}):`,
+      e?.code || e?.type || e?.message || e
+    );
     return false;
   }
 
@@ -468,8 +476,29 @@ async function buildNewOnionPathsWorker() {
         throw new Error('Too few nodes to build an onion path. Even after fetching from seed.');
       }
 
+      // Some entries coming from the db cache or a seed node response can be missing a valid
+      // `ip` (e.g. a decommissioned/edge node, or stale/corrupt local snode pool data). Grouping
+      // by subnet below calls e.ip.lastIndexOf(), which throws "Cannot read properties of
+      // undefined (reading 'lastIndexOf')" for any such entry - and since the same bad entry is
+      // still in the (cached) pool on every pRetry attempt, that crash was killing every single
+      // one of the 10 attempts in getOnionPath(), surfacing as "Failed to build enough onion
+      // paths, current count: 0" with no indication anything was actually wrong with a node.
+      const validNodes = allNodes.filter(e => typeof e.ip === 'string' && e.ip.length > 0);
+      if (validNodes.length !== allNodes.length) {
+        window?.log?.warn(
+          `buildNewOnionPathsWorker: dropping ${
+            allNodes.length - validNodes.length
+          } snode pool entries with a missing/invalid ip`
+        );
+      }
+      if (validNodes.length <= SnodePool.minSnodePoolCount) {
+        throw new Error(
+          `Too few nodes with a valid ip to build an onion path: ${validNodes.length}`
+        );
+      }
+
       // make sure to not reuse multiple times the same subnet /24
-      const allNodesGroupedBySubnet24 = _.groupBy(allNodes, e => {
+      const allNodesGroupedBySubnet24 = _.groupBy(validNodes, e => {
         const lastDot = e.ip.lastIndexOf('.');
         return e.ip.substr(0, lastDot);
       });

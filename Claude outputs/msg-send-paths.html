@@ -1,0 +1,330 @@
+<title>Onion Hop Paths</title>
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --panel: #ffffff;
+    --panel-2: #fbfaf8;
+    --ink: #1f2430;
+    --muted: #6b7280;
+    --border: #d8d4cc;
+    --accent: #0f766e;
+    --accent-soft: #e3f3f1;
+    --warn: #b3261e;
+    --warn-soft: #fbe9e7;
+    --neutral-row: #4b5563;
+    --neutral-soft: #eceef1;
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171c;
+      --panel: #1b1f26;
+      --panel-2: #20242c;
+      --ink: #e8e6e1;
+      --muted: #9aa1ad;
+      --border: #30353f;
+      --accent: #2dd4bf;
+      --accent-soft: #163430;
+      --warn: #f87171;
+      --warn-soft: #3a1d1b;
+      --neutral-row: #9aa4b2;
+      --neutral-soft: #262b33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171c;
+    --panel: #1b1f26;
+    --panel-2: #20242c;
+    --ink: #e8e6e1;
+    --muted: #9aa1ad;
+    --border: #30353f;
+    --accent: #2dd4bf;
+    --accent-soft: #163430;
+    --warn: #f87171;
+    --warn-soft: #3a1d1b;
+    --neutral-row: #9aa4b2;
+    --neutral-soft: #262b33;
+  }
+
+  body { background: var(--bg); color: var(--ink); }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 36px 56px;
+  }
+
+  .diagram-scroll {
+    overflow-x: auto;
+  }
+  .diagram-scroll svg {
+    min-width: 860px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .kicker {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  .intro {
+    max-width: 66ch;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0 0 28px;
+  }
+  .intro code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    background: var(--neutral-soft);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: var(--ink);
+  }
+
+  figure {
+    margin: 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 20px 16px;
+  }
+  figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .legend {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 700px) {
+    .legend { grid-template-columns: 1fr; }
+  }
+  .legend-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .legend-card .dot {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    margin-right: 7px;
+    position: relative;
+    top: -1px;
+  }
+  .legend-card .lt { font-weight: 600; font-size: 0.86rem; }
+  .legend-card p {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .legend-card code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.78em;
+    background: var(--neutral-soft);
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+
+  .row-neutral { color: var(--neutral-row); }
+  .row-warn { color: var(--warn); }
+  .row-accent { color: var(--accent); }
+
+  text { font-family: 'IBM Plex Sans', sans-serif; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+</style>
+
+<div class="wrap">
+  <p class="kicker">bchat-desktop &middot; snode_api</p>
+  <h1>Zero-, one-, and three-hop onion</h1>
+  <p class="intro">
+    Two legs, every message: the sender <strong>stores</strong> it on a node in the recipient's
+    swarm, then the recipient's app <strong>polls that node and retrieves</strong> it &mdash; both
+    legs go through the same <code>bchatFetch()</code> in <code>bchatRpc.ts</code>, so both use
+    whichever transport that person's own onion-routing setting picks. The message content itself
+    is already end-to-end encrypted between the two people chatting either way &mdash; what
+    differs below is only that transport: <strong>zero-hop</strong> (no onion layer at all &mdash;
+    the old direct-mode behavior), <strong>one-hop onion</strong> (the current fix, encrypted
+    straight to the node), and <strong>three-hop onion</strong> (full routing through a guard and
+    a relay). Each row assumes both people have the same setting, just to keep one row readable
+    &mdash; in reality each side's toggle is independent.
+  </p>
+
+  <figure>
+    <div class="diagram-scroll">
+    <svg viewBox="0 0 1400 640" role="img" aria-label="Three full send-and-receive paths in ascending hop count. Zero-hop: sender stores and receiver retrieves with no onion layer and no certificate check, before the fix. One-hop onion: sender stores and receiver retrieves, each encrypted straight to the swarm node's key, the current fix. Three-hop onion: sender stores through a guard and a relay so only the guard sees the sender's IP, and the receiver retrieves through its own guard and relay.">
+      <defs>
+        <marker id="arrow-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--neutral-row)" />
+        </marker>
+        <marker id="arrow-warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--warn)" />
+        </marker>
+        <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+        </marker>
+      </defs>
+
+      <!-- ===== BAND 1 : ZERO-HOP (no onion, before fix) ===== -->
+      <rect x="8" y="20" width="4" height="150" rx="2" fill="var(--warn)" />
+      <text x="24" y="36" class="mono row-warn" font-size="11" letter-spacing="0.04em">ZERO-HOP (no onion)</text>
+      <text x="24" y="54" font-size="15" font-weight="650">Before the fix</text>
+      <text x="24" y="72" font-size="11" fill="var(--muted)">onion routing OFF &middot; vulnerable</text>
+
+      <rect x="40" y="90" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="95" y="114" text-anchor="middle" font-size="12" font-weight="600">Your app</text>
+      <text x="95" y="130" text-anchor="middle" font-size="10.5" fill="var(--muted)">sender</text>
+
+      <rect x="620" y="86" width="140" height="64" rx="10" fill="var(--warn-soft)" stroke="var(--warn)" />
+      <text x="690" y="108" text-anchor="middle" font-size="12" font-weight="600">Swarm node</text>
+      <text x="690" y="123" text-anchor="middle" font-size="10" fill="var(--muted)">runs store /</text>
+      <text x="690" y="135" text-anchor="middle" font-size="10" fill="var(--muted)">retrieve</text>
+
+      <rect x="1250" y="90" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="1305" y="114" text-anchor="middle" font-size="12" font-weight="600">Recipient's app</text>
+      <text x="1305" y="130" text-anchor="middle" font-size="10.5" fill="var(--muted)">receiver</text>
+
+      <line x1="150" y1="118" x2="615" y2="118" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#arrow-warn)" />
+      <text x="382" y="104" text-anchor="middle" font-size="10.5" fill="var(--warn)">store &mdash; plaintext JSON body</text>
+      <text x="382" y="138" text-anchor="middle" font-size="9.5" class="mono" fill="var(--muted)">rejectUnauthorized: false</text>
+
+      <line x1="760" y1="118" x2="1245" y2="118" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#arrow-warn)" />
+      <text x="1002" y="104" text-anchor="middle" font-size="10.5" fill="var(--warn)">receiver polls &mdash; plaintext GET</text>
+      <text x="1002" y="138" text-anchor="middle" font-size="9.5" class="mono" fill="var(--muted)">cert unchecked here too</text>
+
+      <text x="690" y="164" text-anchor="middle" font-size="9.5" fill="var(--warn)">MITM can read either leg &amp; forge the reply</text>
+
+      <line x1="8" y1="186" x2="1382" y2="186" stroke="var(--border)" stroke-width="1" />
+
+      <!-- ===== BAND 2 : ONE-HOP ONION (after fix) ===== -->
+      <rect x="8" y="206" width="4" height="150" rx="2" fill="var(--accent)" />
+      <text x="24" y="222" class="mono row-accent" font-size="11" letter-spacing="0.04em">ONE-HOP ONION</text>
+      <text x="24" y="240" font-size="15" font-weight="650">After the fix</text>
+      <text x="24" y="258" font-size="11" fill="var(--muted)">onion routing OFF &middot; current</text>
+
+      <rect x="40" y="276" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="95" y="300" text-anchor="middle" font-size="12" font-weight="600">Your app</text>
+      <text x="95" y="316" text-anchor="middle" font-size="10.5" fill="var(--muted)">sender</text>
+
+      <rect x="620" y="272" width="140" height="64" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" />
+      <text x="690" y="294" text-anchor="middle" font-size="12" font-weight="600">Swarm node</text>
+      <text x="690" y="309" text-anchor="middle" font-size="10" fill="var(--muted)">own guard +</text>
+      <text x="690" y="321" text-anchor="middle" font-size="10" fill="var(--muted)">destination</text>
+
+      <rect x="1250" y="276" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="1305" y="300" text-anchor="middle" font-size="12" font-weight="600">Recipient's app</text>
+      <text x="1305" y="316" text-anchor="middle" font-size="10.5" fill="var(--muted)">receiver</text>
+
+      <line x1="150" y1="304" x2="615" y2="304" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-accent)" />
+      <text x="382" y="290" text-anchor="middle" font-size="10.5" fill="var(--accent)">store &mdash; encrypted to node's x25519 key</text>
+      <text x="382" y="324" text-anchor="middle" font-size="9.5" class="mono" fill="var(--muted)">bchatOneHopOnionFetch()</text>
+
+      <line x1="760" y1="304" x2="1245" y2="304" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-accent)" />
+      <text x="1002" y="290" text-anchor="middle" font-size="10.5" fill="var(--accent)">receiver polls &mdash; 1-hop onion</text>
+      <text x="1002" y="324" text-anchor="middle" font-size="9.5" class="mono" fill="var(--muted)">same fetch, own request</text>
+
+      <text x="690" y="350" text-anchor="middle" font-size="9.5" fill="var(--muted)">MITM sees only ciphertext on either leg</text>
+
+      <line x1="8" y1="372" x2="1382" y2="372" stroke="var(--border)" stroke-width="1" />
+
+      <!-- ===== BAND 3 : THREE-HOP ONION ===== -->
+      <rect x="8" y="392" width="4" height="140" rx="2" fill="var(--neutral-row)" />
+      <text x="24" y="408" class="mono row-neutral" font-size="11" letter-spacing="0.04em">THREE-HOP ONION</text>
+      <text x="24" y="426" font-size="15" font-weight="650">Full routing</text>
+      <text x="24" y="444" font-size="11" fill="var(--muted)">onion routing ON &middot; unchanged</text>
+
+      <!-- sender -->
+      <rect x="40" y="452" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="95" y="476" text-anchor="middle" font-size="12" font-weight="600">Your app</text>
+      <text x="95" y="492" text-anchor="middle" font-size="10.5" fill="var(--muted)">sender</text>
+
+      <!-- guard -->
+      <rect x="260" y="452" width="90" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="305" y="476" text-anchor="middle" font-size="12" font-weight="600">Guard</text>
+      <text x="305" y="492" text-anchor="middle" font-size="10.5" fill="var(--muted)">1st hop</text>
+
+      <!-- relay -->
+      <rect x="430" y="452" width="90" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="475" y="476" text-anchor="middle" font-size="12" font-weight="600">Relay</text>
+      <text x="475" y="492" text-anchor="middle" font-size="10.5" fill="var(--muted)">2nd hop</text>
+
+      <!-- destination -->
+      <rect x="620" y="448" width="140" height="64" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" />
+      <text x="690" y="470" text-anchor="middle" font-size="12" font-weight="600">Swarm node</text>
+      <text x="690" y="485" text-anchor="middle" font-size="10" fill="var(--muted)">runs store /</text>
+      <text x="690" y="497" text-anchor="middle" font-size="10" fill="var(--muted)">retrieve</text>
+
+      <!-- receiver -->
+      <rect x="1250" y="452" width="110" height="56" rx="10" fill="var(--panel-2)" stroke="var(--border)" />
+      <text x="1305" y="476" text-anchor="middle" font-size="12" font-weight="600">Recipient's app</text>
+      <text x="1305" y="492" text-anchor="middle" font-size="10.5" fill="var(--muted)">receiver</text>
+
+      <!-- arrows band3 : store leg -->
+      <line x1="150" y1="480" x2="255" y2="480" stroke="var(--neutral-row)" stroke-width="1.6" marker-end="url(#arrow-ink)" />
+      <text x="202" y="470" text-anchor="middle" font-size="10">3-layer blob</text>
+      <text x="202" y="494" text-anchor="middle" font-size="9.5" fill="var(--muted)">Guard sees your IP</text>
+
+      <line x1="350" y1="480" x2="425" y2="480" stroke="var(--neutral-row)" stroke-width="1.6" marker-end="url(#arrow-ink)" />
+      <text x="387" y="470" text-anchor="middle" font-size="10">peels 1</text>
+
+      <line x1="520" y1="480" x2="615" y2="480" stroke="var(--neutral-row)" stroke-width="1.6" marker-end="url(#arrow-ink)" />
+      <text x="567" y="470" text-anchor="middle" font-size="10">peels 2nd</text>
+      <text x="567" y="494" text-anchor="middle" font-size="9.5" fill="var(--muted)">dest never sees IP</text>
+
+      <!-- arrow band3 : retrieve leg -->
+      <line x1="760" y1="480" x2="1245" y2="480" stroke="var(--neutral-row)" stroke-width="1.6" marker-end="url(#arrow-ink)" />
+      <text x="1002" y="466" text-anchor="middle" font-size="10.5">receiver polls &mdash; 3-hop onion</text>
+      <text x="1002" y="494" text-anchor="middle" font-size="9.5" fill="var(--muted)">via receiver's own guard + relay, not pictured</text>
+    </svg>
+    </div>
+
+    <figcaption>
+      Every row shows the full round trip: the sender's store request on the left, the same
+      swarm node in the middle, the recipient's retrieve request on the right. Zero-hop and
+      one-hop are both what "onion routing off" sends &mdash; before and after the fix &mdash; one
+      network round trip per leg either way, just encrypted or not. Three-hop is what "onion
+      routing on" has always done on both legs, unchanged by the fix.
+    </figcaption>
+  </figure>
+
+  <div class="legend">
+    <div class="legend-card">
+      <div class="lt"><span class="dot" style="background:var(--warn)"></span>Zero-hop</div>
+      <p>No onion layer on either leg &mdash; the old direct-mode behavior. Plain JSON over <code>snodeHttpsAgent</code> with <code>rejectUnauthorized: false</code>: both the store and the retrieve are readable and forgeable by anyone on the network path.</p>
+    </div>
+    <div class="legend-card">
+      <div class="lt"><span class="dot" style="background:var(--accent)"></span>One-hop onion</div>
+      <p>Same round trips as zero-hop, but each leg is now encrypted to the swarm node's x25519 key via <code>bchatOneHopOnionFetch()</code>, so the unverified TLS layer underneath no longer matters.</p>
+    </div>
+    <div class="legend-card">
+      <div class="lt"><span class="dot" style="background:var(--neutral-row)"></span>Three-hop onion</div>
+      <p>Full routing on both legs, each through its own guard and relay. Only that leg's guard node ever learns the requester's IP; the swarm node never does.</p>
+    </div>
+  </div>
+</div>

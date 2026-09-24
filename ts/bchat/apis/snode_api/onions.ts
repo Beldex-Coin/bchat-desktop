@@ -5,6 +5,7 @@ import https from 'https';
 import { dropSnodeFromSnodePool, dropSnodeFromSwarmIfNeeded, updateSwarmFor } from './snodePool';
 import ByteBuffer from 'bytebuffer';
 import { OnionPaths } from '../../onions';
+import { updateOnionPaths } from '../../../state/ducks/onion';
 import { toHex } from '../../utils/String';
 import pRetry from 'p-retry';
 import { ed25519Str, incrementBadPathCountOrDrop } from '../../onions/onionPath';
@@ -912,6 +913,88 @@ export async function bchatOnionFetch({
     return retriedResult;
   } catch (e) {
     window?.log?.warn('onionFetchRetryable failed ', e.message);
+    if (e?.errno === 'ENETUNREACH') {
+      // better handle the no connection state
+      throw new Error(ERROR_CODE_NO_CONNECT);
+    }
+    if (e?.message === CLOCK_OUT_OF_SYNC_MESSAGE_ERROR) {
+      window?.log?.warn('Its a clock out of sync error ');
+      throw new pRetry.AbortError(CLOCK_OUT_OF_SYNC_MESSAGE_ERROR);
+    }
+    throw e;
+  }
+}
+
+/**
+ * Security review finding: when the user turns "Onion Routing" off (see bchatFetch() in
+ * bchatRpc.ts), every request to a storage node used to fall through to a raw HTTPS POST made
+ * with snodeHttpsAgent, which has rejectUnauthorized: false - the app never checks the node's
+ * TLS certificate on that path. With onion routing on, that didn't matter: the request/response
+ * bodies are separately encrypted with the destination node's own x25519 key, so even a network
+ * position that fully controls the TLS connection (shared Wi-Fi, the ISP, a corporate proxy)
+ * only ever sees opaque ciphertext. In direct mode there was no such encryption - the JSON body
+ * went out as plaintext over a connection whose certificate was never verified. A
+ * man-in-the-middle there could read every request (exposing our BChat ID, our contacts' BChat
+ * IDs, and when we send messages) and tamper with responses undetected: forge a BNS lookup
+ * result to silently swap in an attacker's BChat ID when the user adds "name.bdx", or fake a
+ * "stored OK" reply so a message shows as sent but is never actually delivered.
+ *
+ * This sends a one-hop onion request straight to targetNode instead of a raw fetch: targetNode
+ * acts as both the guard and the final destination (no relay through other nodes), so it's still
+ * a single network round trip - no slower than the direct request it replaces - but the body is
+ * encrypted with targetNode's own x25519 key exactly like the final hop of a full onion request
+ * is (see sendOnionRequestSnodeDest -> encryptForPubKey). The outer HTTPS transport still isn't
+ * certificate-verified, but that no longer matters: an attacker in the middle sees only
+ * ciphertext they cannot read, and cannot forge a response that decrypts successfully without
+ * targetNode's private key.
+ */
+export async function bchatOneHopOnionFetch({
+  targetNode,
+  associatedWith,
+  body,
+}: {
+  targetNode: Snode;
+  body?: string;
+  associatedWith?: string;
+}): Promise<SnodeResponse | undefined> {
+  try {
+    const retriedResult = await pRetry(
+      async () => {
+        // No path to build - targetNode is both the node we send the HTTPS request to and the
+        // node the encrypted payload is addressed to.
+        const result = await sendOnionRequestSnodeDest(
+          [targetNode],
+          targetNode,
+          body,
+          associatedWith
+        );
+        return result;
+      },
+      {
+        retries: 3,
+        factor: 1,
+        minTimeout: 100,
+        onFailedAttempt: e => {
+          window?.log?.warn(
+            `oneHopOnionFetchRetryable attempt #${e.attemptNumber} failed. ${e.retriesLeft} retries left...`
+          );
+        },
+      }
+    );
+
+    // Settings > Hops (OnionStatusPathDialog) reads state.onionPaths.snodePaths, which
+    // bchatOnionFetch() keeps current via getOnionPath()'s own dispatch - but this function never
+    // calls getOnionPath(), so without this the UI would keep showing whatever 3-hop path was
+    // last built (e.g. from before Onion Routing was turned off) instead of the single node this
+    // request actually used. Mirror that dispatch here with the real one-hop path.
+    const onePath = [{ ip: targetNode.ip }];
+    if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths?.[0], onePath)) {
+      window.inboxStore?.dispatch(updateOnionPaths([onePath]));
+    }
+
+    return retriedResult;
+  } catch (e) {
+    window?.log?.warn('oneHopOnionFetchRetryable failed ', e.message);
     if (e?.errno === 'ENETUNREACH') {
       // better handle the no connection state
       throw new Error(ERROR_CODE_NO_CONNECT);

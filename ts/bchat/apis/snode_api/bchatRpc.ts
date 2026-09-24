@@ -4,11 +4,12 @@ import pRetry from 'p-retry';
 import { HTTPError, NotFoundError } from '../../utils/errors';
 import { Snode } from '../../../data/data';
 import { getStoragePubKey } from '../../types';
-import { SettingsKey } from '../../../data/settings-key';
+import { getEffectiveOnionRoutingHops } from '../../../data/settings-key';
 
 import {
   ERROR_421_HANDLED_RETRY_REQUEST,
   bchatOnionFetch,
+  bchatOneHopOnionFetch,
   incrementBadSnodeCountOrDrop,
   processOnionRequestErrorAtDestination,
   snodeHttpsAgent,
@@ -49,15 +50,15 @@ async function bchatFetch({
   try {
     // Absence of targetNode indicates that we want a direct connection
     // (e.g. to connect to a seed node for the first time)
-    // The user-facing "Onion Routing" setting (Settings > Chat) is the sole source of truth here.
-    // Before this setting existed, onion routing was always on (bchatFeatureFlags.useOnionRequests
-    // was hardcoded true in preload.js) - a user who has never touched the toggle has no stored
-    // value for it, and that must still mean ON, not OFF. Defaulting unset to false silently
-    // dropped every existing user to direct connections on update.
-    const onionRoutingSetting = window.getSettingValue(SettingsKey.settingsOnionRouting);
-    const useOnionRequests =
-      onionRoutingSetting === undefined ? true : Boolean(onionRoutingSetting);
-    if (useOnionRequests && targetNode) {
+    // The "Onion Routing" picker in Settings > Chat (0 / 1 / 3 hops - see
+    // getEffectiveOnionRoutingHops() in settings-key.ts) is the single source of truth here:
+    //  - 3 hops -> bchatOnionFetch, the full onion-routed path.
+    //  - 1 hop -> bchatOneHopOnionFetch, a single round trip straight to targetNode, but the
+    //    body is encrypted to its x25519 key.
+    //  - 0 hops -> falls straight through to the raw insecureNodeFetch request below, no onion
+    //    encryption at all - the same request shape as before any onion-request code existed.
+    const onionRoutingHops = targetNode ? getEffectiveOnionRoutingHops() : 0;
+    if (onionRoutingHops === 3 && targetNode) {
       const fetchResult = await bchatOnionFetch({
         targetNode,
         body: fetchOptions.body,
@@ -67,9 +68,26 @@ async function bchatFetch({
         return undefined;
       }
 
+      return fetchResult;
+    }
+    if (onionRoutingHops === 1 && targetNode) {
+      const fetchResult = await bchatOneHopOnionFetch({
+        targetNode,
+        body: fetchOptions.body,
+        associatedWith,
+      });
+      if (!fetchResult) {
+        return undefined;
+      }
 
       return fetchResult;
     }
+    // 0 hops (or there's no targetNode, e.g. a seed-node bootstrap call) - fall through to the
+    // raw request below. Note: at 0 hops, this reintroduces the exact gap the earlier security
+    // review flagged - snodeHttpsAgent below has rejectUnauthorized: false, so the TLS
+    // certificate isn't checked and the JSON body goes out unencrypted at this layer. That's an
+    // explicit, user-chosen product tradeoff for this setting (fastest, least private) - "1 hop"
+    // above is the encrypted-but-still-single-round-trip alternative.
     if (url.match(/https:\/\//)) {
       // import that this does not get set in bchatFetch fetchOptions
       fetchOptions.agent = snodeHttpsAgent;
@@ -84,7 +102,6 @@ async function bchatFetch({
 
     const response = await insecureNodeFetch(url, fetchOptions);
     const result = await response.text();
-
     if (!response.ok) {
       if (targetNode) {
         // Mirrors what the onion path already does with the destination's response

@@ -10,6 +10,7 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
+import { ChangeOnionRoutingSetting } from '../ChangeOnionRoutingSetting';
 import { BchatIcon } from '../../icon';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
@@ -17,23 +18,12 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
   const forceUpdate = useUpdate();
   const audioAutoPlay = useSelector(getAudioAutoplay);
   const isLinkPreviewsOn = Boolean(window.getSettingValue(SettingsKey.settingsLinkPreview));
-  const storedOnionRoutingValue = window.getSettingValue(SettingsKey.settingsOnionRouting);
-  // Unset (never touched the toggle) must read as ON - onion routing was always on before this
-  // setting existed, and this must match the same default used in bchatRpc.ts, which is what
-  // actually decides whether requests go through onion routing or direct.
-  const isOnionRoutingOn =
-    storedOnionRoutingValue === undefined ? true : Boolean(storedOnionRoutingValue);
 
   if (props.hasPassword !== null) {
     // const isSpellCheckActive =
     //   window.getSettingValue(SettingsKey.settingsSpellCheck) === undefined
     //     ? true
     //     : window.getSettingValue(SettingsKey.settingsSpellCheck);
-
-    async function toggleOnionRouting() {
-      await window.setSettingValue(SettingsKey.settingsOnionRouting, !isOnionRoutingOn);
-      forceUpdate();
-    }
 
     async function toggleLinkPreviews() {
       const newValue = !window.getSettingValue(SettingsKey.settingsLinkPreview);
@@ -82,19 +72,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             active={isLinkPreviewsOn}
             iconType="chainLink"
           />
-          <BchatToggleWithDescription
-            onClickToggle={toggleOnionRouting}
-            title={window.i18n('onionRoutingTitle')}
-            description={window.i18n('onionRoutingDescription')}
-            active={isOnionRoutingOn}
-            iconType="hops"
-            confirmationDialogParams={{
-              shouldShowConfirm: isOnionRoutingOn,
-              title: window.i18n('onionRoutingConfirmTitle'),
-              message: window.i18n('onionRoutingConfirmMessage'),
-              okTheme: BchatButtonColor.Danger,
-            }}
-          />
+          <ChangeOnionRoutingSetting />
           {/* <BchatToggleWithDescription
           onClickToggle={() => {
             window.toggleSpellCheck();
