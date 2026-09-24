@@ -34,7 +34,7 @@ const QuotedMessageCompositionReply = styled.div`
   border-radius: 16px;
   min-height: 70px;
   width: 100%;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 
   .group-details {
     display: flex;
@@ -65,7 +65,7 @@ const Subtle = styled.div<{isquotedMessage:boolean}>`
   -webkit-box-orient: vertical;
   display: ${props => props.isquotedMessage ? 'flex' : 'block'};
   color: var(--color-text);
-  margin-right: 9px;
+  margin-inline-end: 9px;
   flex-direction: ${props => props.isquotedMessage ? 'column' : 'row'};
 `;
 const VerticalLine = styled.div`
@@ -73,7 +73,7 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;
 // const ReplyingTo = styled.div`
 //   color: var(--color-text);
@@ -85,7 +85,7 @@ const StyledIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 15px;
+  margin-inline-end: 15px;
   border-radius: 10px;
 `;
 export const BchatQuotedMessageComposition = () => {
@@ -249,7 +249,7 @@ export const BchatQuotedMessageComposition = () => {
                   </span>
                   
                   <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
-                    <span style={{marginRight:'5px'}}>
+                    <span style={{marginInlineEnd:'5px'}}>
                       <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
                     </span>
                     {namesArray.length > 1

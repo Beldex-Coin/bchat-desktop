@@ -220,32 +220,32 @@ export const MessageContextMenu = (props: Props) => {
         {attachments?.length ? (
           <Item onClick={saveAttachment}>
             <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('downloadAttachment')}</span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('downloadAttachment')}</span>
           </Item>
         ) : null}
         {copyTitle && !isDeleted && (
           <Item onClick={() => copyText()}>
             <CopyIcon color={'var(--color-text)'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{copyTitle}</span>
+            <span style={{ marginInlineStart: '10px' }}>{copyTitle}</span>
           </Item>
         )}
         {(isSent || !isOutgoing) && !isDeleted && (
           <Item onClick={onReply}>
             <BchatIcon iconType={'reply'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('replyToMessage')}</span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('replyToMessage')}</span>
           </Item>
         )}
         {!isPublic && !isPrivate && (
           <Item onClick={onShowDetail}>
             <BchatIcon iconType={'infoCircle'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('moreInformation')} </span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('moreInformation')} </span>
           </Item>
         )}
         {showRetry ? (
           <Item onClick={onRetry}>
             {' '}
             <BchatIcon iconType={'resend'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('resend')} </span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('resend')} </span>
           </Item>
         ) : null}
         {isDeletable ? (
@@ -253,7 +253,7 @@ export const MessageContextMenu = (props: Props) => {
             <Item onClick={onSelect}>
               {' '}
               <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
-              <span style={{ marginLeft: '10px' }}>{selectMessageText}</span>
+              <span style={{ marginInlineStart: '10px' }}>{selectMessageText}</span>
             </Item>
           </>
         ) : null}
@@ -261,7 +261,7 @@ export const MessageContextMenu = (props: Props) => {
           <>
             <Item onClick={onDelete}>
               <BchatIcon iconType={'delete'} iconSize={18} iconColor="#FF3E3E" />
-              <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>
+              <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>
                 {deleteMessageJustForMeText}
               </span>
             </Item>
@@ -271,7 +271,7 @@ export const MessageContextMenu = (props: Props) => {
           <>
             <Item onClick={onDeleteForEveryone}>
               <BchatIcon iconType={'twoMember'} iconSize={18} iconColor="#FF3E3E" />
-              <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span>
+              <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span>
             </Item>
           </>
         ) : null}
@@ -284,13 +284,13 @@ export const MessageContextMenu = (props: Props) => {
               fillRule="evenodd"
               clipRule="evenodd"
             />
-            <span style={{ marginLeft: '10px', color: '#FF3E3E' }}>{window.i18n('banUser')}</span>
+            <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>{window.i18n('banUser')}</span>
           </Item>
         ) : null}
         {weAreAdmin && isOpenGroupV2 ? (
           <Item onClick={onUnban}>
             <BchatIcon iconType={'unBanIcon'} iconSize={18} />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('unbanUser')}</span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('unbanUser')}</span>
           </Item>
         ) : null}
         {weAreAdmin && isPublic && !isSenderAdmin ? (
@@ -302,7 +302,7 @@ export const MessageContextMenu = (props: Props) => {
               fillRule="evenodd"
               clipRule="evenodd"
             />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('addAsModerator')}</span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('addAsModerator')}</span>
           </Item>
         ) : null}
         {weAreAdmin && isPublic && isSenderAdmin ? (
@@ -314,7 +314,7 @@ export const MessageContextMenu = (props: Props) => {
               fillRule="evenodd"
               clipRule="evenodd"
             />
-            <span style={{ marginLeft: '10px' }}>{window.i18n('removeFromModerators')}</span>
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('removeFromModerators')}</span>
           </Item>
         ) : null}
       </Menu>

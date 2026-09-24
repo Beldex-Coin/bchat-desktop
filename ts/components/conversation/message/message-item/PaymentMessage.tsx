@@ -148,7 +148,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
                 <div>
                   <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
                 </div>
-                <div className="amount" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
+                <div className="amount" dir="ltr" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
                   {amount} BDX
                 </div>
 
@@ -165,7 +165,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
             </div>
           </div>
           {contentProps?.lastMessageOfSeries && !isIncoming && (
-            <StyledSvgWrapper style={{ right: 0 }}>
+            <StyledSvgWrapper style={{ insetInlineEnd: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>
           )}

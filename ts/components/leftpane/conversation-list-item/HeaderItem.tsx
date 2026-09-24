@@ -48,7 +48,7 @@ const StyledConversationListItemIconWrapper = styled.div`
 const PinWrapper = styled.div`
   position: absolute;
   top: -7px;
-  right: 0px;
+  inset-inline-end: 0px;
   padding:1px 2px;
   background-color: #2f8fff;
   border-radius: 12px;
@@ -92,7 +92,7 @@ const MentionAtSymbol = styled.span`
     color: black;
     text-align: center;
     margin-bottom: 0px;
-    margin-right: 5px;
+    margin-inline-end: 5px;
     margin-top: 1px;
     padding: 0px 1px 6px 1px;
     position: static;

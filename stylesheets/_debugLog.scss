@@ -39,6 +39,7 @@
     $open-pad-y: ($open-height - $button-height - 2) / 2;
     .open {
       float: left;
+      html[dir='rtl'] & { float: right; }
       display: inline-block;
       width: $open-width;
       height: $open-height;
@@ -59,13 +60,14 @@
     .link {
       border-radius: $border-radius 0 0 $border-radius;
       float: left;
+      html[dir='rtl'] & { float: right; }
       width: calc(100% - #{$open-width});
       max-width: $link-max-width;
       height: $open-height;
       padding: 0 10px;
       outline-offset: -4px;
       border: solid 1px #ccc;
-      border-right: none;
+      border-inline-end: none;
     }
   }
 }

@@ -36,10 +36,10 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;
 const ImageTxt = styled.span`
-  margin-left: 5px;
+  margin-inline-start: 5px;
   // color: #f0f0f0;
   font-family: Poppins;
   font-size: 16px;

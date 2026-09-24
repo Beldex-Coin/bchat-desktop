@@ -194,7 +194,7 @@ const StyledEmojiPanelContainer = styled.div`
   ${StyledEmojiPanel} {
     position: absolute;
     bottom: 68px;
-    right: 0px;
+    inset-inline-end: 0px;
   }
 `;
 

@@ -700,5 +700,5 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 38px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;

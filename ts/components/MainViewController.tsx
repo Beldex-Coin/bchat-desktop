@@ -125,7 +125,7 @@ const StartConvoWrapper = styled.div`
   width: 24vw;
   max-width: 470px;
   // margin-left: 43px;
-  margin-left: 100px;
+  margin-inline-start: 100px;
 `;
 // /////////////////////////////////////
 // //////////// Management /////////////

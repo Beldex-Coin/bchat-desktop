@@ -20,13 +20,13 @@ export const DisplayIdAndAddress = (props: any) => (
     <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('bChatID')}</h6>
     <div className="bchat-registration-welcome-screen-chat-value">
       {/* <p style={{color: "#0BB70F"}}>{props.pubKey}</p> */}
-      <p style={{ color: '#00A638' }}>{props.pubKey}</p>
+      <p style={{ color: '#00A638' }} dir="ltr">{props.pubKey}</p>
     </div>
     <p className="bchat-registration-welcome-screen-chat-content">{window.i18n('yourBchatName')}</p>
     <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('beldexAddress')}</h6>
     <div className="bchat-registration-welcome-screen-chat-value">
       {/* <p style={{color:"#1782FF"}}>{props.walletAddress}</p> */}
-      <p style={{ color: '#2D81FF' }}>{props.walletAddress}</p>
+      <p style={{ color: '#2D81FF' }} dir="ltr">{props.walletAddress}</p>
 
       {/* </div> */}
     </div>

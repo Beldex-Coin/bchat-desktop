@@ -75,7 +75,7 @@ const StyledReactionBar = styled(Flex)`
       color: var(--color-text);
     }
     span:nth-child(2) {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
   }
 `;
@@ -99,7 +99,7 @@ const StyledAllButton = styled.button<{ isSelected: boolean }>`
   font-size: 17px;
   font-weight: 600;
   padding: 2px 10px;
-  margin-right: 5px;
+  margin-inline-end: 5px;
   background-color: ${props => (props.isSelected ? 'var(--color-emoji-panel-bg)' : 'unset')};
   span {
     color: #a7a7ba;
@@ -220,7 +220,7 @@ const ReactionSenderItem = ({
           />
         )}
 
-        <span style={{ fontSize: '18px', marginLeft: '5px' }} role="img">
+        <span style={{ fontSize: '18px', marginInlineStart: '5px' }} role="img">
           {emoji}
         </span>
       </Flex>

@@ -131,7 +131,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 // props.qrStatus?.(true)
               }}
             >
-              <span style={{ marginRight: '5px' }}>
+              <span style={{ marginInlineEnd: '5px' }}>
                 <BchatIcon iconType={'qr_code'} iconSize={26} />
               </span>
               {i18n('showQR')}
@@ -165,7 +165,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const {newAvatarObjectUrl, oldAvatarPath} = this.state;
     return (
       <>
-        <div className="avatar-center" style={{ marginLeft: "25px" }}>
+        <div className="avatar-center" style={{ marginInlineStart: "25px" }}>
           <div className="avatar-center-inner">
             {this.renderAvatar()}
             <div
@@ -364,7 +364,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span style={{ marginRight: '5px' }}> {i18n('bnsVerified')}</span>
+            <span style={{ marginInlineEnd: '5px' }}> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}
@@ -379,7 +379,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         >
           <div className="profile-value">
             <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('BchatID')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400' }}>
+            <p style={{ margin: '10px 0px', fontWeight: '400' }} dir="ltr">
               {props.bchatID}
             </p>
           </div>
@@ -398,7 +398,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         >
           <div className="profile-value" style={{ color: 'var(--color-text)' }}>
             <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400', color: '#2F8FFF' }}>
+            <p style={{ margin: '10px 0px', fontWeight: '400', color: '#2F8FFF' }} dir="ltr">
               {walletAddress}
             </p>
           </div>

@@ -662,7 +662,7 @@ label {
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    padding-left: 10px;
+    padding-inline-start: 10px;
   }
 
   .timer-outgoing {
@@ -695,7 +695,8 @@ label {
 
 .module-conversation-header {
   position: relative;
-  padding: 0px $bchat-margin-lg 0px $bchat-margin-sm;
+  padding-block: 0px;
+  padding-inline: $bchat-margin-sm $bchat-margin-lg;
 }
 
 .title-wrapper {
@@ -720,16 +721,17 @@ label {
 
   .Toastify__close-button {
     color: white;
-    padding: 1px 5px 3px 6px;
+    padding-block: 1px 3px;
+    padding-inline: 6px 5px;
     background-color: #3f3c4b;
     border-radius: 24px;
     margin-top: 11px;
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
 
   @mixin set-toast-theme($color) {
     border-radius: 16px;
-    border-left: 4px solid $color;
+    border-inline-start: 4px solid $color;
     background: var(--color-toast-bg);
   }
 
@@ -794,10 +796,12 @@ label {
 
       .bchat-modal__header__close > div {
         float: right;
+        html[dir='rtl'] & { float: left; }
       }
 
       .bchat-modal__header__icons > div {
         float: left;
+        html[dir='rtl'] & { float: right; }
         padding-inline-start: 0px;
         padding-inline-end: 10px;
       }
@@ -815,7 +819,7 @@ label {
       justify-content: center;
       width: 30px;
       height: 30px;
-      margin-right: 20px;
+      margin-inline-end: 20px;
 
       &:hover {
         background-color: var(--color-profile-close);
@@ -829,22 +833,26 @@ label {
 
     &__icons {
       float: right;
+      html[dir='rtl'] & { float: left; }
     }
 
     &__close > div {
       float: left;
+      html[dir='rtl'] & { float: right; }
       padding: $bchat-margin-xs;
       margin: 0px;
     }
 
     &__icons > div {
       float: right;
+      html[dir='rtl'] & { float: left; }
       padding-inline-start: 10px;
     }
   }
 
   &__body {
-    padding: 0px $bchat-margin-sm 0px $bchat-margin-xs;
+    padding-block: 0px;
+    padding-inline: $bchat-margin-xs $bchat-margin-sm;
     font-family: $bchat-font-default;
     line-height: $bchat-font-md;
     font-size: $bchat-font-md;
@@ -935,12 +943,13 @@ label {
     // overflow-y: auto;
     overflow-x: hidden;
     // max-height: 513px;
-    padding: 0px $bchat-margin-md 0px 20px;
+    padding-block: 0px;
+    padding-inline: 20px $bchat-margin-md;
   }
 
   &__deleteAccountModal {
     width: 550px;
-    text-align: left;
+    text-align: start;
 
     .fontSemiBold {
       font-family: $bchat-font-default;
@@ -948,7 +957,7 @@ label {
       font-size: 15px;
       line-height: 20px;
       color: #a7a7ba;
-      text-align: left;
+      text-align: start;
       display: inline-grid;
     }
 
@@ -1093,10 +1102,11 @@ label {
 
   &-bchatConfirm {
     width: 425px;
-    margin: 0px 0px 25px 0%;
+    margin-block: 0px 25px;
+    margin-inline: 0% 0px;
     font-family: $bchat-font-default;
     font-size: 16px;
-    text-align: left;
+    text-align: start;
   }
   .currency-search {
     height: 60px;
@@ -1133,7 +1143,7 @@ label {
     font-family: $bchat-font-default;
 
     .contentbox {
-      text-align: left;
+      text-align: start;
       // width: 60%;
       // width: 414px;
       // background-color: var(--color-WalcontentBg);
@@ -1178,7 +1188,7 @@ label {
     font-family: $bchat-font-default;
 
     .contentbox {
-      text-align: left;
+      text-align: start;
       // width: 60%;
       // width: 414px;
       // background-color: var(--color-WalcontentBg);
@@ -1320,7 +1330,7 @@ label {
         font-family: $bchat-font-default;
         display: flex;
         border-radius: 10px;
-        padding-left: 15px;
+        padding-inline-start: 15px;
         font-size: 16px;
 
         &-circle,
@@ -1332,7 +1342,7 @@ label {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-right: 10px;
+          margin-inline-end: 10px;
 
           &:hover {
             border: 2px solid #008e00;
@@ -1464,7 +1474,7 @@ label {
   .knob {
     position: absolute;
     top: 5px;
-    left: 5.5px;
+    inset-inline-start: 5.5px;
     height: 25px;
     width: 25px;
     border-radius: 28px;
@@ -1482,9 +1492,12 @@ label {
 
     .knob {
       transform: translateX(20px);
+      html[dir='rtl'] & {
+        transform: translateX(-20px);
+      }
       // background-color: $bchat-color-green;
       background-color: #4e8e35;
-      left: 14px;
+      inset-inline-start: 14px;
     }
   }
 }
@@ -1581,8 +1594,8 @@ label {
     display: block;
     position: absolute;
     top: 50px;
-    left: 0px;
-    right: 0px;
+    inset-inline-start: 0px;
+    inset-inline-end: 0px;
     list-style: none;
     padding: 0px;
     margin: 0px;
@@ -1736,8 +1749,9 @@ label {
 .conversation-loader {
   position: absolute;
   top: 50%;
-  left: 50%;
-  margin: -40px 0 0 -40px;
+  inset-inline-start: 50%;
+  margin-block: -40px 0;
+  margin-inline: -40px 0;
 
   & > div {
     display: block;
@@ -1920,13 +1934,14 @@ label {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      padding-left: 10px;
+      padding-inline-start: 10px;
       cursor: pointer;
     }
 
     &-font-Change {
       width: 110px;
-      padding: 0 0px 0 10px;
+      padding-block: 0;
+      padding-inline: 10px 0px;
       justify-content: space-around;
       // height: 30px;
     }
@@ -1937,9 +1952,9 @@ label {
 
     &-notification {
       display: flex;
-      padding-left: 25px;
+      padding-inline-start: 25px;
       margin-bottom: 15px;
-      margin-left: 10px;
+      margin-inline-start: 10px;
       align-items: center;
 
       &-circle,
@@ -1951,7 +1966,7 @@ label {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 10px;
+        margin-inline-end: 10px;
 
         &:hover {
           border: 2px solid #008e00;
@@ -2111,7 +2126,7 @@ label {
       color: white;
       padding: 8px 25px;
       border-radius: 8px;
-      margin-right: 20px;
+      margin-inline-end: 20px;
       cursor: pointer;
 
       &:hover {
@@ -2321,7 +2336,7 @@ input {
     height: 60px;
     background-color: var(--color-modal-icon-bg);
     border-radius: 10px;
-    margin-left: 25px;
+    margin-inline-start: 25px;
     margin-top: 30px;
     border-radius: 30px;
   }
@@ -2335,7 +2350,7 @@ input {
     height: 60px;
     background-color: var(--color-modal-icon-bg);
     border-radius: 10px;
-    margin-right: 20px;
+    margin-inline-end: 20px;
     /* margin-top: 30px; */
     border-radius: 30px;
   }
@@ -2551,7 +2566,7 @@ input {
     padding: 0px 6px;
     font-size: 10px;
     border-radius: 8px;
-    right: 6px;
+    inset-inline-end: 6px;
     top: 41px;
     font-weight: 600;
     color: white;
@@ -2802,7 +2817,7 @@ input {
 
   ul,
   ol {
-    padding-left: 20px;
+    padding-inline-start: 20px;
     margin: 0px !important;
     li::marker {
       font-size: 1em !important; /* or 16px or match your text */
@@ -2814,7 +2829,7 @@ input {
 .editor-placeholder {
   position: absolute;
   top: 10px;
-  left: 12px;
+  inset-inline-start: 12px;
   // color: #8696a0;
   pointer-events: none;
 }
@@ -2902,7 +2917,7 @@ input {
 }
 
 ul{
-  padding-left:20px;
+  padding-inline-start:20px;
   margin: 0px !important;
 }
  ol {
@@ -2924,14 +2939,14 @@ ul{
   min-width: 24px; 
   display: inline-block;
   flex-shrink: 0; 
-  text-align: right; 
+  text-align: end; 
    font-family: $bchat-font-mono;
 
 }
 
 .markdown-quote {
   position: relative; /* Required to position the 'border' */
-  padding-left: 10px;
+  padding-inline-start: 10px;
   margin: 0;
   margin-bottom: 5px;
 }
@@ -2939,7 +2954,7 @@ ul{
 .markdown-quote::before {
   content: '';
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0%;
   height: 100%;
   width: 4px;
@@ -2995,7 +3010,7 @@ ul{
   width: 100%;
   overflow-y: auto;
   flex-grow: 1;
-  padding-right: 4px;
+  padding-inline-end: 4px;
 }
 
 
@@ -3024,7 +3039,7 @@ ul{
   height: 16px;
   border: 1.5px solid var(--color-radio-icon);
   border-radius: 50%;
-  margin-right: 14px;
+  margin-inline-end: 14px;
   display: flex;
   align-items: center;
   justify-content: center;

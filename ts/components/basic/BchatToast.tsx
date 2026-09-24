@@ -82,7 +82,7 @@ export const BchatToast = (props: Props) => {
       onClick={props?.onToastClick || noop}
       data-testid="bchat-toast"
     >
-      <IconDiv style={{ paddingLeft: '10px', paddingRight: '13px' }}>
+      <IconDiv style={{ paddingInlineStart: '10px', paddingInlineEnd: '13px' }}>
         <BchatIcon iconType={toastIcon} iconSize={toastIconSize} iconColor={toastColor} />
       </IconDiv>
       <Flex

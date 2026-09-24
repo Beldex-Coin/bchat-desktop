@@ -216,7 +216,7 @@ export const DeleteAccountModal = () => {
 
               }}
               // disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
-              style={{ marginRight: '25px', minWidth: '240px', height: '55px',fontWeight: 500 }}
+              style={{ marginInlineEnd: '25px', minWidth: '240px', height: '55px',fontWeight: 500 }}
               iconType={deleteDeviceOnly ? "circle" : undefined}
               iconSize="tiny"
             />
@@ -228,7 +228,7 @@ export const DeleteAccountModal = () => {
                 setDeleteDeviceOnly(false);
               }}
               // disabled={deleteEverythingWithNetwork || deleteDeviceOnly}
-              style={{ marginRight: '12px', minWidth: '240px', height: '55px',fontWeight: 500 }}
+              style={{ marginInlineEnd: '12px', minWidth: '240px', height: '55px',fontWeight: 500 }}
               iconType={deleteEverythingWithNetwork ? "circle" : undefined}
               iconSize="tiny"
             />
@@ -250,7 +250,7 @@ export const DeleteAccountModal = () => {
           )}
           {(deleteDeviceOnly || deleteEverythingWithNetwork) && (
 
-            <div className="buttons" style={{ marginLeft: '110px', height: "90px", marginBottom: '10px' }}>
+            <div className="buttons" style={{ marginInlineStart: '110px', height: "90px", marginBottom: '10px' }}>
 
               <BchatButton
                 text={window.i18n('iAmSure')}
@@ -263,7 +263,7 @@ export const DeleteAccountModal = () => {
                   }
                 }}
                 // disabled={isLoading}
-                style={{ marginRight: '25px', minWidth: '240px', height: '55px' }}
+                style={{ marginInlineEnd: '25px', minWidth: '240px', height: '55px' }}
               />
             </div>
           )}

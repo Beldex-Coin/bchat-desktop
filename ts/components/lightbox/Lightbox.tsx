@@ -44,9 +44,9 @@ const styles = {
     position: 'fixed',
     width: '100vw',
     height: '100vh',
-    left: 0,
+    insetInlineStart: 0,
     zIndex: 31,
-    right: 0,
+    insetInlineEnd: 0,
     top: 0,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -56,8 +56,8 @@ const styles = {
     flexDirection: 'row',
     flexGrow: 1,
     paddingTop: 40,
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingInlineStart: 40,
+    paddingInlineEnd: 40,
     paddingBottom: 0,
     minHeight: 0,
     overflow: 'hidden',
@@ -84,18 +84,18 @@ const styles = {
   caption: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    insetInlineStart: 0,
+    insetInlineEnd: 0,
     textAlign: 'center',
     color: 'black',
     padding: '1em',
-    paddingLeft: '3em',
-    paddingRight: '3em',
+    paddingInlineStart: '3em',
+    paddingInlineEnd: '3em',
     backgroundColor: 'rgba(192, 192, 192, .40)',
   } as React.CSSProperties,
   controlsOffsetPlaceholder: {
     width: CONTROLS_WIDTH,
-    marginRight: CONTROLS_SPACING,
+    marginInlineEnd: CONTROLS_SPACING,
     flexShrink: 0,
   },
   headers: {
@@ -110,7 +110,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: '15px',
+    marginInlineEnd: '15px',
   } as React.CSSProperties,
   navigationContainer: {
     flexShrink: 0,
@@ -119,7 +119,7 @@ const styles = {
     justifyContent: 'center',
     padding: 10,
     position: 'absolute',
-    right: '23px',
+    insetInlineEnd: '23px',
     top: '50%',
   } as React.CSSProperties,
   saveButton: {
@@ -313,7 +313,7 @@ export const Lightbox = (props: Props) => {
               {onSave ? (
                 <IconButton type="save" onClick={onSave} style={styles.saveButton} />
               ) : null}
-              <div style={{ marginLeft: '10px' }}>
+              <div style={{ marginInlineStart: '10px' }}>
                 {' '}
                 <IconButton
                   type="close"

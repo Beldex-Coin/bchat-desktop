@@ -16,7 +16,7 @@
   background: var(--color-inbox-background);
 
   position: absolute;
-  right: 0px;
+  inset-inline-end: 0px;
   top:0px;
   z-index: 99;
 
@@ -111,7 +111,7 @@
           justify-content: center;
           padding: 10px 30px;
           font-size: 18px;
-          margin-left: 10px;
+          margin-inline-start: 10px;
         }
       }
 
@@ -126,7 +126,7 @@
     }
 
     &-closeBox {
-      margin-left: 10px;
+      margin-inline-start: 10px;
       display: flex;
       cursor: pointer;
       width: 28px;
@@ -152,7 +152,7 @@
     align-items: center;
 
     h2 {
-      margin-right: 10px;
+      margin-inline-end: 10px;
     }
   }
 
@@ -228,7 +228,7 @@
     .inputBox {
       display: flex;
       // width: 200px;
-      padding-left: 45px;
+      padding-inline-start: 45px;
     }
 
     .saveIcon {
@@ -236,7 +236,7 @@
       color: var(--color-accent);
       cursor: pointer;
       // margin: auto 0;
-      margin-left: 7px;
+      margin-inline-start: 7px;
     }
 
     input {
@@ -255,13 +255,13 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      margin-right: 25px;
+      margin-inline-end: 25px;
       font-family: $bchat-font-default;
 
       p {
         font-size: 16px;
         padding: 0px $bchat-margin-sm;
-        margin-left: 33px;
+        margin-inline-start: 33px;
         line-height: 22px;
       }
 
@@ -302,7 +302,7 @@
     grid-template-columns: auto auto auto auto;
     gap: 7px;
     margin: 15px 0;
-    text-align: left;
+    text-align: start;
 
     span {
       padding: 0 10px;
@@ -339,7 +339,8 @@
       color: #f0f0f0;
       font-size: 12px;
       font-weight: 500;
-      padding: 10px 7px 10px 0;
+      padding-block: 10px;
+      padding-inline: 0 7px;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -506,7 +507,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5px 10px 10px;
+    padding-block: 10px;
+    padding-inline: 10px 5px;
      
     &.selected{
       border-radius: 16px;

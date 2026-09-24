@@ -323,8 +323,8 @@ export const SignInTab = (props: any) => {
             position: 'absolute',
             top: 0,
             bottom: 0,
-            left: 0,
-            right: 0,
+            insetInlineStart: 0,
+            insetInlineEnd: 0,
             pointerEvents: 'all',
             backgroundColor: '#00000088',
           }}

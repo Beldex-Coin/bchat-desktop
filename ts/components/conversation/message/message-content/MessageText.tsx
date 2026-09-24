@@ -58,7 +58,6 @@ export const MessageText = (props: Props) => {
 
   return (
     <div
-      dir="auto"
       className={classNames(
         'module-message__text',
         `module-message__text--${direction}`,

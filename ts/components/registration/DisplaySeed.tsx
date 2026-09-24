@@ -46,7 +46,7 @@ export const ClearIcon = (props: any) => (
       height: '10px',
       position: 'relative',
       top: '8px',
-      marginLeft: '408px',
+      marginInlineStart: '408px',
       cursor: 'pointer',
       backgroundSize: 'cover',
     }}
@@ -73,6 +73,7 @@ export const DisplaySeed = (props: any) => {
             {/* <ClearIcon removeRecoveryPhrase={() => props.assignRecoveryPhase('')}></ClearIcon> */}
             <textarea
               className="bchat-restore-seed-text-area"
+              dir="ltr"
               name="text"
               onPaste={handlePaste}
               value={props.recoveryPhrase}

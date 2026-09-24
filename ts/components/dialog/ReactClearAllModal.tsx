@@ -24,7 +24,7 @@ const StyledReactClearAllContainer = styled(Flex)<{ darkMode: boolean }>`
     font-weight: bold;
 
     span {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 

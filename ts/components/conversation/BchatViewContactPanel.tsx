@@ -107,7 +107,7 @@ const ContactList = (props:ContactListProps) => {
     <>
       <div
         className={classNames(`address-content-box `)}
-        style={{ paddingLeft: '10px', paddingRight: '10px',marginLeft:'10px',marginRight:'10px' }}
+        style={{ paddingInlineStart: '10px', paddingInlineEnd: '10px',marginInlineStart:'10px',marginInlineEnd:'10px' }}
       >
         <div className="avatarBox">
           <Avatar pubkey={pubkey} size={AvatarSize.M} isBnsHolder={isBnsHolder}/>

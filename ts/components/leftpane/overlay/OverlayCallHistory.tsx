@@ -70,7 +70,7 @@ export const OverlayCallHistory = () => {
         <div className="module-left-pane-overlay-call-history--header">
           <div className="module-left-pane-overlay-call-history--header-txt">{window.i18n('callHistory')}</div>
           <SpacerMD />
-          <div className="bchat-search-input" style={{paddingRight:'5px'}}>
+          <div className="bchat-search-input" style={{paddingInlineEnd:'5px'}}>
             <div className="search">
               <BchatIcon iconSize={20} iconType="search" />
             </div>

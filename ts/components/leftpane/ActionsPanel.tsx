@@ -680,7 +680,7 @@ export const ActionsPanel = () => {
 };
 const Hops = styled.div`
   position: absolute;
-  right: -7px;
+  inset-inline-end: -7px;
   top: -4px;
   z-index: 1;
   border: 4px solid var(--color-inbox-background);
@@ -690,7 +690,7 @@ const NetWorkStatusWrapper = styled.div`
   position: absolute;
   bottom: 10px;
   width: 338px;
-  left: 141px;
+  inset-inline-start: 141px;
   z-index: 99;
 `;
 const MarginedDiv = styled.div`
@@ -706,7 +706,7 @@ const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
 `;
 const StyledTitleWrapper = styled(Flex)<{ top: string }>`
   position: fixed;
-  left: 102px;
+  inset-inline-start: 102px;
   top: ${props => props.top};
   z-index: 9;
   .sub-menu-box {

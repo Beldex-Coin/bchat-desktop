@@ -8,7 +8,7 @@ import { BchatIcon } from './icon';
 const BchatScrollButtonDiv = styled.div`
   position: absolute;
   z-index: 99;
-  right: 26px;
+  inset-inline-end: 26px;
   animation: fadein var(--default-duration);
   bottom: 88px;
 `;

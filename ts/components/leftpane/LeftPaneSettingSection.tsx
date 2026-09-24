@@ -217,7 +217,7 @@ export const LeftPaneSettingSection = () => {
       </div>
       {/* <span
         className="text-selectable"
-        style={{ color: '#797984', marginLeft: '20px', marginTop: '27px' }}
+        style={{ color: '#797984', marginInlineStart: '20px', marginTop: '27px' }}
       >
         {window.i18n('BChat')} v{window.getVersion()}
       </span> */}

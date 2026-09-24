@@ -11,7 +11,7 @@ const StyledCountContainer = styled.div<{ shouldRender: boolean }>`
   height: 20px;
   font-size: 18px;
   top: -4px;
-  left: 17px;
+  inset-inline-start: 17px;
   padding: 7px;
   opacity: 1;
   display: flex;
@@ -32,7 +32,7 @@ const StyledCount = styled.div<{ countOverflow: boolean }>`
   position: relative;
   font-size: ${props => (props.countOverflow ? '0.5em' : '0.6em')};
   margin-top: ${props => (props.countOverflow ? '0.35em' : '0em')};
-  margin-left: ${props => (props.countOverflow ? '-0.45em' : '0em')};
+  margin-inline-start: ${props => (props.countOverflow ? '-0.45em' : '0em')};
 `;
 
 const StyledCountSup = styled.div`

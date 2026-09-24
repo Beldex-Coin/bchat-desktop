@@ -117,7 +117,7 @@ a {
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     cursor: pointer;
     z-index: -100;
   }
@@ -151,10 +151,11 @@ $unread-badge-size: 21px;
 
   position: absolute;
   top: 25px;
-  right: 30px;
-  left: 30px;
+  inset-inline-end: 30px;
+  inset-inline-start: 30px;
 
-  padding: 5px 25px 5px 10px;
+  padding-block: 5px;
+  padding-inline: 10px 25px;
 
   text-align: center;
   border-radius: 10px;
@@ -171,7 +172,7 @@ $unread-badge-size: 21px;
 
   .dismiss {
     position: absolute;
-    right: 3px;
+    inset-inline-end: 3px;
     top: 3px;
 
     height: 23px;
@@ -207,6 +208,7 @@ $loading-height: 16px;
 .x {
   display: inline-block;
   float: right;
+  html[dir='rtl'] & { float: left; }
   cursor: pointer;
   border-radius: 50%;
   width: 22px;
@@ -237,8 +239,8 @@ $loading-height: 16px;
 .app-loading-screen {
   z-index: 99;
   position: absolute;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   top: 0;
   bottom: 0;
   display: flex;
@@ -273,6 +275,7 @@ $loading-height: 16px;
     border: 3px solid $color-white;
     border-radius: 50%;
     float: left;
+    html[dir='rtl'] & { float: right; }
     margin: 0 6px;
     transform: scale(0);
 

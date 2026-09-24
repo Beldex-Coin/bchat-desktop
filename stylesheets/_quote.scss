@@ -162,7 +162,7 @@
 .module-quote__primary__icon {
       display: flex;
       align-items: center;
-      margin-right: 5px;
+      margin-inline-end: 5px;
 }
 
 .module-quote__primary__author {
@@ -219,7 +219,7 @@
 .module-quote__close-container {
   position: absolute;
   top: 4px;
-  right: 4px;
+  inset-inline-end: 4px;
   height: 16px;
   width: 16px;
 
@@ -250,9 +250,9 @@
   &__inner {
     position: absolute;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
 
     text-align: center;
     display: flex;

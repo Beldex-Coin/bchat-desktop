@@ -167,14 +167,14 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
               ))}
               <tr>
                 <td className="module-message-detail__label">{i18n('send')}</td>
-                <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                <td className="module-message-detail__label" style={{ paddingInlineStart: '10px' }}>
                   {moment(sentAt).format('LLLL')}
                 </td>
               </tr>
               {receivedAt ? (
                 <tr>
                   <td className="module-message-detail__label">{i18n('received')}</td>
-                  <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                  <td className="module-message-detail__label" style={{ paddingInlineStart: '10px' }}>
                     {moment(receivedAt).format('LLLL')}
                   </td>
                 </tr>
