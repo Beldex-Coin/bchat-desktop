@@ -72,7 +72,7 @@ export async function signUp(signUpDetails: {
 
     ToastUtils.pushToastError(
       'registrationError',
-      window.i18n('errorWithReason', [e.message || window.i18n('somthingWentWrong')])
+      window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
     );
     window?.log?.warn('exception during registration:', e);
   }
@@ -110,7 +110,7 @@ export async function signInWithRecovery(signInDetails: {
     await resetRegistration();
     ToastUtils.pushToastError(
       'registrationError',
-      window.i18n('errorWithReason', [e.message || window.i18n('somthingWentWrong')])
+      window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
     );
     window?.log?.warn('exception during registration:', e);
   }
@@ -145,7 +145,7 @@ export async function signInWithLinking(signInDetails: { userRecoveryPhrase: str
       window?.log?.info('We got a displayName from network: ');
     } else {
       window?.log?.info('Got a config message from network but without a displayName...');
-      throw new Error(window.i18n('configMessageWithoutDisplayName'));
+      throw new Error('Got a config message from network but without a displayName...');
     }
     // Do not set the lastProfileUpdateTimestamp.
     // We expect to get a display name from a configuration message while we are loading messages of this user
@@ -160,7 +160,7 @@ export async function signInWithLinking(signInDetails: { userRecoveryPhrase: str
     } else {
       ToastUtils.pushToastError(
         'registrationError',
-        window.i18n('errorWithReason', [e.message || window.i18n('somthingWentWrong')])
+        window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
       );
     }
     window?.log?.warn('exception during registration:', e);

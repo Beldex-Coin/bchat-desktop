@@ -115,7 +115,7 @@ export const OverlayMessage = () => {
         {' '}
         {window.i18n('startConversation')} <SmileSymbolIcon />
       </p>
-      {/* <p className="module-left-pane__subHeader" >{window.i18n('BchatID')}</p> */}
+      {/* <p className="module-left-pane__subHeader" >{window.i18n('bChatID')}</p> */}
       {/* <div className="bchat-description-long">{descriptionLong}</div> */}
       <section>
         <article className="bchatId_input_wrapper">
@@ -161,7 +161,7 @@ export const OverlayMessage = () => {
               </div>
               <SpacerLG />
 
-              <label className="label-txt">{window.i18n('yourBChatID')}</label>
+              <label className="label-txt">{window.i18n('yourBchatID')}</label>
               <SpacerXS />
               <div className="id-Wrapper">
                 <p>{ourconvo.id}</p>

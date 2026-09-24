@@ -437,6 +437,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       toRet.name = name;
     }
 
+    if (this.get('name')) {
+      toRet.hasName = true;
+    }
+
     if (profileName) {
       toRet.profileName = profileName;
     }

@@ -434,7 +434,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-          text={window.i18n('unblock')}
+          text={window.i18n('unblockUser')}
           onClick={() => {
             this.setState(getDefaultState());
             unblockConvoById(convoId);
@@ -496,7 +496,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       onClick={this.onChooseContacts}
                     >
                       <ContactsIcon />
-                      <span>{window.i18n('contacts')}</span>
+                      <span>{window.i18n('contactsHeader')}</span>
                     </Flex>
                   </div>
                 )}

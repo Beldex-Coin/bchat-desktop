@@ -1377,7 +1377,7 @@ public getPropsForPayment(): PropsForPayment | null {
       let amount = this.getMessageModelProps()?.propsForPayment?.amount;
       let direction =
         this.getMessageModelProps()?.propsForPayment?.direction === 'outgoing'
-          ? window.i18n('paymentDirectionSend')
+          ? window.i18n('sent')
           : window.i18n('paymentDirectionReceived');
       return `${amount} BDX ${direction}`;
     }

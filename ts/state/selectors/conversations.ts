@@ -440,7 +440,8 @@ export const _getSortedConversations = (
     }
 
     // Add Social Group to list as soon as the name has been set
-    if (conversation.isPublic && (!conversation.name || conversation.name === window.i18n('unknownGroup'))) {
+    if (conversation.isPublic && !conversation.hasName) {
+
       continue;
     }
 

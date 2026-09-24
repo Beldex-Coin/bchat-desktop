@@ -22,7 +22,7 @@ const languageOptions: Array<{ labelKey: LocalizerKeys; code: string }> = [
 ];
 
 export const BchatLanguageScreen = () => {
-  const currentLocale = (window as any)?.i18n?.getLocale?.() || 'en';
+  const currentLocale = window.i18n.getLocale() || 'en';
   const [select, setSelect] = useState<string>(currentLocale);
 
   const handleSave = () => {

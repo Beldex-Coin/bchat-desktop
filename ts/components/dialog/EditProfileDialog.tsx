@@ -378,7 +378,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}
         >
           <div className="profile-value">
-            <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('BchatID')}</div>
+            <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('bChatID')}</div>
             <p style={{ margin: '10px 0px', fontWeight: '400' }} dir="ltr">
               {props.bchatID}
             </p>

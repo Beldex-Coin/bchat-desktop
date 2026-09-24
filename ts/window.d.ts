@@ -35,7 +35,7 @@ declare global {
     setSettingValue: (id: string, value: any) => void;
     getLocalValue: (id: string) => any;
     setLocalValue: (id: string, value: any) => void;
-    i18n: LocalizerType;
+    i18n: LocalizerType & { getLocale: () => string };
     log: any;
     bchatFeatureFlags: {
       useOnionRequests: boolean;

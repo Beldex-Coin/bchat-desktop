@@ -191,7 +191,7 @@ export const SignInTab = (props: any) => {
         setScreenName(1);
         ToastUtils.pushToastError(
           'registrationError',
-          window.i18n('errorWithReason', [e.message || window.i18n('somthingWentWrong')])
+          window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
         );
         window?.log?.warn('exception during registration:', e);
       }

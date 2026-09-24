@@ -158,7 +158,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
   }
 
   if (maxMeasurements?.maxSide && (maxMeasurements?.maxHeight || maxMeasurements?.maxWidth)) {
-    throw new Error(window.i18n('autoScaleMaxSideConflict'));
+    throw new Error('Cannot have maxSide and another dimension set together');
   }
 
   // Make sure the asked max size is not more than whatever
@@ -244,7 +244,7 @@ export async function autoScale<T extends { contentType: string; blob: Blob }>(
     );
 
     if (!tempBlob) {
-      throw new Error(window.i18n('failedToGetBlobFromCanvas'));
+      throw new Error('Failed to get blob during canvasToBlob.');
     }
     readAndResizedBlob = tempBlob;
     quality = (quality * maxSize) / readAndResizedBlob.size;

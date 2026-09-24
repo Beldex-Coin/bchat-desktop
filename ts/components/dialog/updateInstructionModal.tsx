@@ -9,6 +9,29 @@ import styled from "styled-components";
 
 
 
+const COPY_SEED_MARKER = '\u0001';
+const RESTORE_MARKER = '\u0002';
+
+// Fills the button-label placeholders with markers, then swaps each marker for the
+// translated label in bold, so the text always matches the buttons below it.
+const RestoreInstructions = () => {
+    const labels: Record<string, string> = {
+        [COPY_SEED_MARKER]: window.i18n('copySeed'),
+        [RESTORE_MARKER]: window.i18n('restore'),
+    };
+    const parts = window
+        .i18n('bchatUpdateRestoreInstructions', [COPY_SEED_MARKER, RESTORE_MARKER])
+        .split(new RegExp(`(${COPY_SEED_MARKER}|${RESTORE_MARKER})`));
+
+    return <>
+        {parts.map((part, index) =>
+            labels[part]
+                ? <span key={index} className="modal-UpdateModal-discription-fontMedium">{labels[part]}</span>
+                : part
+        )}
+    </>;
+};
+
 export default function BchatUpdateInstruntion() {
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -44,7 +67,7 @@ export default function BchatUpdateInstruntion() {
             <div className="modal-UpdateModal-header">{window.i18n('bchatUpdateTitle')}</div>
             <SpacerLG />
             <div className="modal-UpdateModal-discription">
-                {window.i18n('bchatUpdateRestoreInstructions')}
+                <RestoreInstructions />
             </div>
             <SpacerLG />
 

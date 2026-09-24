@@ -200,7 +200,7 @@ export class BchatConversation extends React.Component<Props, State> {
       window.inboxStore?.dispatch(
         updateConfirmModal({
           title: window.i18n('warning'),
-          message: window.i18n('warnSeedInMessage...'),
+          message: window.i18n('warnSeedInMessage'),
           okTheme: BchatButtonColor.Danger,
           okText: window.i18n('send'),
           iconShow: true,
