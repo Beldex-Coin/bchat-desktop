@@ -138,7 +138,7 @@ function showRemoveModerators(
 function showUpdateGroupName(
   weAreAdmin: boolean,
   isKickedFromGroup: boolean,
-  left: boolean
+  left: boolean 
 ): boolean {
   return !isKickedFromGroup && !left && weAreAdmin;
 }
@@ -157,8 +157,8 @@ function showInviteContact(isPublic: boolean): boolean {
 }
 
 export const MenuWrapper = styled.span`
-  margin-left: 12px;
-  margin-right: 10px;
+  margin-inline-start: 12px;
+  margin-inline-end: 10px;
 `;
 /** Menu items standardized */
 
@@ -503,7 +503,7 @@ export const DisappearingMessageMenuItem = (): JSX.Element | null => {
             <MenuWrapper>{window.i18n('disappearingMessages')}</MenuWrapper>
           </>
         }
-        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
+        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} flipInRtl={true} />}
       >
         {timerOptions.map(item => (
           <div className="submenu">
@@ -571,7 +571,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
             <MenuWrapper>{window.i18n('notificationForConvo') as any}</MenuWrapper>
           </>
         }
-        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} />}
+        arrow={<BchatIcon iconType="chevron" iconSize="small" iconRotation={268} flipInRtl={true} />}
         // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
@@ -589,7 +589,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
               >
                 <div
                   style={{
-                    marginRight: '10px',
+                    marginInlineEnd: '10px',
                     color: disabled ? '#108D32' : ' var(--color-action-btn-icon)',
                   }}
                 >

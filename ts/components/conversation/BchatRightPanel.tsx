@@ -620,7 +620,7 @@ export const BchatRightPanelWithDetails = () => {
                     {window.i18n('disappearingMessages')}
                   </MenuWrapper>
                 </Flex>
-                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} />
+                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} flipInRtl={true} />
                 {/* <BchatDropdown
                 labelIcon={'chatTimer'}
                 label={window.i18n('disappearingMessages')}
@@ -666,7 +666,7 @@ export const BchatRightPanelWithDetails = () => {
                   }}
                 >
                   {
-                    <span style={{ marginRight: '5px' }}>
+                    <span style={{ marginInlineEnd: '5px' }}>
                       <BchatIcon
                         iconType={'addModerator'}
                         fillRule={'evenodd'}
@@ -686,7 +686,7 @@ export const BchatRightPanelWithDetails = () => {
                   }}
                 >
                   {
-                    <span style={{ marginRight: '5px' }}>
+                    <span style={{ marginInlineEnd: '5px' }}>
                       <BchatIcon
                         iconType={'removeFromModerators'}
                         fillRule={'evenodd'}
@@ -711,7 +711,7 @@ export const BchatRightPanelWithDetails = () => {
                   //   await showUpdateGroupMembersByConvoId(id);
                   // }}
                 >
-                  <div className="invite-friends-container" style={{ marginRight: '10px' }}></div>
+                  <div className="invite-friends-container" style={{ marginInlineEnd: '10px' }}></div>
                   {window.i18n('groupMembers')}
                 </div>
                 <Flex container={true} flexDirection="row">
@@ -747,7 +747,7 @@ export const BchatRightPanelWithDetails = () => {
                       <div
                         className="add-btn"
                         role="button"
-                        style={{ marginLeft: '5px' }}
+                        style={{ marginInlineStart: '5px' }}
                         onClick={() => {
                           setAddMem(true);
                           // if (selectedConversation) {
@@ -757,7 +757,7 @@ export const BchatRightPanelWithDetails = () => {
                       >
                         <div
                           className="invite-friends-container"
-                          style={{ marginRight: '10px' }}
+                          style={{ marginInlineEnd: '10px' }}
                           onClick={() => {
                             if (selectedConversation) {
                               showInviteContactByConvoId(selectedConversation.id);
@@ -817,6 +817,7 @@ export const BchatRightPanelWithDetails = () => {
               iconType={'chevron'}
               iconSize={14}
               iconRotation={268}
+              flipInRtl={true}
               iconColor="#A7A7BA"
               onClick={() => dispalyMedia(true)}
             />
@@ -842,7 +843,7 @@ export const BchatRightPanelWithDetails = () => {
             <span
               onClick={() => dispalyMedia(false)}
               className="group-settings-header-closeBox"
-              style={{ marginRight: '10px' }}
+              style={{ marginInlineEnd: '10px' }}
             >
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}

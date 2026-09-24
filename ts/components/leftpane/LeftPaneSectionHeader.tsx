@@ -186,6 +186,7 @@ export const LeftPaneSectionHeader = () => {
               }}
               iconType="chevron"
               iconRotation={90}
+              flipInRtl={true}
               iconSize="medium"
               margin="0 0 var(--margins-xs) var(--margins-xs)"
             />

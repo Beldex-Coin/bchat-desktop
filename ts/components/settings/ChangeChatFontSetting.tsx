@@ -57,7 +57,7 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
                 <div>
                     {window.i18n(value)}
                 </div>
-                <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
+                <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
             </div>
         </BchatSettingsItemWrapper>
     );

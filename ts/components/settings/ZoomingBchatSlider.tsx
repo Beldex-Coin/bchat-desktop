@@ -142,7 +142,7 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         <div >
           {value}%
         </div>
-        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
+        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
 
       </div>
 
