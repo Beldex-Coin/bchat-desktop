@@ -23,6 +23,7 @@ import { initialiseEmojiData } from '../util/emoji';
 import { loadEmojiPanelI18n } from '../util/i18n';
 import { OpenGroupData } from '../data/opengroups';
 import { createRoot, Root } from 'react-dom/client';
+import { applyDocumentDirection } from '../util/applyDocumentDirection';
 
 
 let root: Root | null = null;
@@ -216,6 +217,7 @@ async function manageExpiringData() {
 }
 
 async function start() {
+  applyDocumentDirection((window.i18n as any).getLocale());
   void manageExpiringData();
   window.dispatchEvent(new Event('storage_ready'));
 
@@ -258,12 +260,6 @@ async function start() {
   });
 
   function openInbox() {
-    const rtlLocales = ['fa', 'ar', 'he'];
-
-    const loc = (window.i18n as any).getLocale();
-    if (rtlLocales.includes(loc) && !document.getElementById('body')?.classList.contains('rtl')) {
-      document.getElementById('body')?.classList.add('rtl');
-    }
     const hideMenuBar = Storage.get('hide-menu-bar', true) as boolean;
     window.setAutoHideMenuBar(hideMenuBar);
     window.setMenuBarVisibility(!hideMenuBar);

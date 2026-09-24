@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { DebugLogView } from "../components/DebugLogView";
+import { applyDocumentDirection } from '../util/applyDocumentDirection';
 
 global.setTimeout(() => {
   const container = document.getElementById("root");
@@ -9,6 +10,7 @@ global.setTimeout(() => {
     return;
   }
 
+  applyDocumentDirection((window.i18n as any).getLocale());
   const root = createRoot(container);
   root.render(<DebugLogView />);
 }, 1000);
