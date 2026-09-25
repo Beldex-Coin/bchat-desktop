@@ -40,7 +40,7 @@ const OnionCountryDisplay = ({
     <div className="onion__node__country" key={`country-${index}`}>
       <div>{role}</div>
       <span className='ip-country'>
-        {snodeIp ? labelText + '(' + snodeIp + ')' : <div></div>}
+        {snodeIp ? `${labelText} (${snodeIp})` : <div></div>}
       </span>
     </div>
   );

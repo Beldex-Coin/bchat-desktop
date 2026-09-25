@@ -48,6 +48,9 @@ export type SettingMiniModalState = {
   // "Save" for every caller (Font Size included), but the Hops picker's design wants "OK"
   // instead. Omit it to keep the existing "Save" default.
   confirmButtonText?: string;
+  // Optional, parallel to `content` by index: muted text shown after an option's label, e.g.
+  // "(Default)" after "1 Hop". Display only - selection still uses the plain `content` label.
+  contentSuffixes?: Array<string | undefined>;
 } | null;
 
 export type BchatUpdateInstruntionState = any | null;

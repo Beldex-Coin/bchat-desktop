@@ -488,7 +488,7 @@
   "device": "You",
   "destination": "Destination",
   "onionPathIndicatorDescriptionZero": "No Hops sends your messages directly to the destination without routing them through Beldex masternodes.",
-  "onionPathIndicatorDescriptionOneHop": "Your messages are routed through one intermediary Beldex masternode before reaching the destination..",
+  "onionPathIndicatorDescriptionOneHop": "Your messages are routed through one intermediary Beldex masternode before reaching the destination.",
   "entryNode": "Entry Node",
   "learnMore": "Learn more",
   "linkVisitWarningTitle": "Open Link?",

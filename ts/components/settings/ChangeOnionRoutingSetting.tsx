@@ -86,6 +86,11 @@ export const ChangeOnionRoutingSetting = () => {
         headerName: window.i18n('onionRoutingHopsTitle'),
         content: labelsByHop,
         descriptions: HOP_OPTIONS.map(hopPopupDescription),
+        // "1 Hop (Default)" in the list, with "(Default)" muted like on the Settings row. Kept out of
+        // the label itself so labelToHop()/selectedItem keep matching on the plain "1 Hop".
+        contentSuffixes: HOP_OPTIONS.map(h =>
+          h === 1 ? window.i18n('onionRoutingHopsDefaultSuffix') : undefined
+        ),
         // The shared picker modal defaults this button to "Save" (fine for Font Size), but the
         // Hops design calls for "OK".
         confirmButtonText: window.i18n('ok'),

@@ -72,6 +72,11 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
                         )}
                       </div>
                       {item}
+                      {props?.contentSuffixes?.[i] && (
+                        <span className="bchat-modal__centered-SettingMiniModalContent-suffix">
+                          {props.contentSuffixes[i]}
+                        </span>
+                      )}
                     </div>
                     <SpacerSM />
                   </>
