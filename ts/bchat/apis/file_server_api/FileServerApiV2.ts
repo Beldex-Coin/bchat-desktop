@@ -1,3 +1,4 @@
+import pRetry from 'p-retry';
 import { callUtilsWorker } from '../../../webworker/workers/browser/util_worker_interface';
 import { OpenGroupV2Request } from '../open_group_api/opengroupV2/ApiUtil';
 import { sendApiV2Request } from '../open_group_api/opengroupV2/OpenGroupAPIV2';
@@ -34,7 +35,12 @@ export const uploadFileToFsV2 = async (
   fileContent: ArrayBuffer
 ): Promise<{ fileId: number; fileUrl: string } | null> => {
   if (!fileContent || !fileContent.byteLength) {
-    return null;
+    // An empty file is never going to succeed no matter how many times this is retried - it's not
+    // a transient failure, the request itself is invalid. The caller (Attachments.ts's
+    // uploadToFsV2) wraps this in a 3-attempt pRetry that only sees "resolved null" and can't
+    // tell a permanent failure from a transient one, so it's on us to say so here rather than
+    // letting it burn 3 retries on something no retry can fix.
+    throw new pRetry.AbortError('uploadFileToFsV2: cannot upload an empty file');
   }
   const queryParams = {
     file: await callUtilsWorker('arrayBufferToStringBase64', fileContent),
@@ -48,6 +54,16 @@ export const uploadFileToFsV2 = async (
   const result = await sendApiV2Request(request);
   console.log('FILES_ENDPOINT:result:', result);
   const statusCode = parseStatusCodeFromOnionRequest(result);
+  if (statusCode === 413) {
+    // Payload Too Large: this exact file is never going to fit no matter how many times we send
+    // the exact same request - same reasoning as the empty-file case above. Other non-200 codes
+    // below are left as a plain "return null" (retryable), since those can plausibly be transient
+    // (a bad exit node/path, a momentary server hiccup, ...); 413 is the one status here that's
+    // fundamentally about this file, not about the request happening to fail this time.
+    throw new pRetry.AbortError(
+      `uploadFileToFsV2: file too large (413), size:${fileContent.byteLength}`
+    );
+  }
   if (statusCode !== 200) {
     return null;
   }

@@ -5,6 +5,7 @@ import https from 'https';
 import { dropSnodeFromSnodePool, dropSnodeFromSwarmIfNeeded, updateSwarmFor } from './snodePool';
 import ByteBuffer from 'bytebuffer';
 import { OnionPaths } from '../../onions';
+import { updateOnionPaths } from '../../../state/ducks/onion';
 import { toHex } from '../../utils/String';
 import pRetry from 'p-retry';
 import { ed25519Str, incrementBadPathCountOrDrop } from '../../onions/onionPath';
@@ -246,7 +247,7 @@ async function process421Error(
  *
  * If destinationEd25519 is set, we will increment the failure count of the specified snode
  */
-async function processOnionRequestErrorAtDestination({
+export async function processOnionRequestErrorAtDestination({
   statusCode,
   body,
   destinationEd25519,
@@ -504,8 +505,29 @@ export async function processOnionResponse({
   }
 }
 
+// keepAlive was unset here (defaults to false), so every direct (non-onion) request to a
+// storage node opened a brand new TCP connection and did a full TLS handshake from scratch,
+// then tore the socket down - on every single send. bchat-android's HTTP client (OkHttp,
+// libsignal/utilities/HTTP.kt) instead builds one client and reuses its connection pool (5 idle
+// connections kept alive) across requests, paying that handshake cost once per node instead of
+// once per message. Turning keepAlive on here gives desktop the same connection-reuse behavior;
+// maxFreeSockets mirrors OkHttp's default pool size of 5 idle connections per host.
+//
+// keepAlive alone has no timeout, so a pooled idle socket is kept forever - including across a
+// laptop sleep or a Wi-Fi network change, after which the socket is actually dead but the agent
+// doesn't know that yet. The next request that reuses it either hangs until the OS-level TCP
+// timeout finally fires (far longer than any of our own request timeouts), or gets ECONNRESET
+// if the server happens to close its end of that same stale connection right as we try to reuse
+// it - and incrementBadSnodeCountOrDrop() then blames the node for what is really just a dead
+// local socket, dropping perfectly healthy nodes (see the isConnectionError comments below).
+// `timeout` bounds how long a socket from this agent can sit idle before the agent destroys it
+// itself and a fresh connection (and TLS handshake) is made instead - trading a little of the
+// keepAlive reuse savings above for not reusing sockets that have likely gone stale.
 export const snodeHttpsAgent = new https.Agent({
   rejectUnauthorized: false,
+  keepAlive: true,
+  maxFreeSockets: 5,
+  timeout: 30000,
 });
 
 export type FinalRelayOptions = {
@@ -577,7 +599,8 @@ async function handle421InvalidSwarm({
 /**
  * Handle a bad snode result.
  * The `snodeFailureCount` for that node is incremented. If it's more than `snodeFailureThreshold`,
- * we drop this node from the snode pool and from the associatedWith publicKey swarm if this is set.
+ * we drop this node from the associatedWith publicKey swarm if this is set, and - for a real
+ * protocol-level failure - from the whole local snode pool too.
  *
  * So after this call, if the snode keeps getting errors, we won't contact it again
  *
@@ -585,26 +608,43 @@ async function handle421InvalidSwarm({
  * @param guardNodeEd25519 the guard node ed25519 of the current path in use. a nodeNoteFound ed25519 is not part of any path, so we fallback to this one if we need to increment the bad path count of the current path in use
  * @param associatedWith if set, we will drop this snode from the swarm of the pubkey too
  * @param isNodeNotFound if set, we will drop this snode right now as this is an invalid node for the network.
+ * @param isConnectionError if set, the failure was a raw connection-level error (ECONNREFUSED,
+ * ENOTFOUND, ...) - we never even reached the node to find out if it's healthy. On a network
+ * that can't route directly to this node at all (e.g. onion routing disabled behind a
+ * restrictive firewall), *every* node fails this exact same way, so permanently blacklisting
+ * each one from the whole local pool just bleeds the pool dry for no reason. We still drop it
+ * from this one swarm (so a retry within this send picks a different member of the same
+ * swarm), but we leave it in the pool for other swarms/pubkeys to still consider.
  */
 export async function incrementBadSnodeCountOrDrop({
   snodeEd25519,
   associatedWith,
+  isConnectionError,
 }: {
   snodeEd25519: string;
   associatedWith?: string;
+  isConnectionError?: boolean;
 }) {
   const oldFailureCount = snodeFailureCount[snodeEd25519] || 0;
   const newFailureCount = oldFailureCount + 1;
   snodeFailureCount[snodeEd25519] = newFailureCount;
   if (newFailureCount >= snodeFailureThreshold) {
-    window?.log?.warn(
-      `Failure threshold reached for snode: ${ed25519Str(snodeEd25519)}; dropping it.`
-    );
-
     if (associatedWith) {
       await dropSnodeFromSwarmIfNeeded(associatedWith, snodeEd25519);
     }
-    await dropSnodeFromSnodePool(snodeEd25519);
+
+    if (isConnectionError) {
+      window?.log?.warn(
+        `Failure threshold reached for snode: ${ed25519Str(
+          snodeEd25519
+        )}; dropping it from this swarm only (connection-level failure - keeping it in the local pool).`
+      );
+    } else {
+      window?.log?.warn(
+        `Failure threshold reached for snode: ${ed25519Str(snodeEd25519)}; dropping it.`
+      );
+      await dropSnodeFromSnodePool(snodeEd25519);
+    }
     snodeFailureCount[snodeEd25519] = 0;
 
     await OnionPaths.dropSnodeFromPath(snodeEd25519);
@@ -666,7 +706,21 @@ export const sendOnionRequestHandlingSnodeEject = async ({
     decodingSymmetricKey = result.decodingSymmetricKey;
   } catch (e) {
     window?.log?.warn('sendOnionRequest error message: ', e.message);
-    if (e.code === 'ENETUNREACH' || e.message === 'ENETUNREACH') {
+    // If our own internet is down, every path/node fails this exact same way regardless of
+    // which nodes are actually involved - that's not evidence any of them are bad. Falling
+    // through to processOnionResponse() below with no response would otherwise blame the guard
+    // and relay nodes of whatever path we tried (processOnionRequestErrorOnPath ->
+    // incrementBadPathCountOrDrop), and since polling retries constantly, a real outage could
+    // rack up enough "failures" in minutes to drop perfectly healthy nodes from the whole local
+    // snode pool - which in turn can leave a swarm with too few known-good nodes and nothing to
+    // refresh it with, since fetching a replacement list needs the network too. Bail out before
+    // any of that runs.
+    if (
+      e.code === 'ENETUNREACH' ||
+      e.code === 'ENETDOWN' ||
+      e.message === 'ENETUNREACH' ||
+      navigator.onLine === false
+    ) {
       throw e;
     }
   }
@@ -859,6 +913,88 @@ export async function bchatOnionFetch({
     return retriedResult;
   } catch (e) {
     window?.log?.warn('onionFetchRetryable failed ', e.message);
+    if (e?.errno === 'ENETUNREACH') {
+      // better handle the no connection state
+      throw new Error(ERROR_CODE_NO_CONNECT);
+    }
+    if (e?.message === CLOCK_OUT_OF_SYNC_MESSAGE_ERROR) {
+      window?.log?.warn('Its a clock out of sync error ');
+      throw new pRetry.AbortError(CLOCK_OUT_OF_SYNC_MESSAGE_ERROR);
+    }
+    throw e;
+  }
+}
+
+/**
+ * Security review finding: when the user turns "Onion Routing" off (see bchatFetch() in
+ * bchatRpc.ts), every request to a storage node used to fall through to a raw HTTPS POST made
+ * with snodeHttpsAgent, which has rejectUnauthorized: false - the app never checks the node's
+ * TLS certificate on that path. With onion routing on, that didn't matter: the request/response
+ * bodies are separately encrypted with the destination node's own x25519 key, so even a network
+ * position that fully controls the TLS connection (shared Wi-Fi, the ISP, a corporate proxy)
+ * only ever sees opaque ciphertext. In direct mode there was no such encryption - the JSON body
+ * went out as plaintext over a connection whose certificate was never verified. A
+ * man-in-the-middle there could read every request (exposing our BChat ID, our contacts' BChat
+ * IDs, and when we send messages) and tamper with responses undetected: forge a BNS lookup
+ * result to silently swap in an attacker's BChat ID when the user adds "name.bdx", or fake a
+ * "stored OK" reply so a message shows as sent but is never actually delivered.
+ *
+ * This sends a one-hop onion request straight to targetNode instead of a raw fetch: targetNode
+ * acts as both the guard and the final destination (no relay through other nodes), so it's still
+ * a single network round trip - no slower than the direct request it replaces - but the body is
+ * encrypted with targetNode's own x25519 key exactly like the final hop of a full onion request
+ * is (see sendOnionRequestSnodeDest -> encryptForPubKey). The outer HTTPS transport still isn't
+ * certificate-verified, but that no longer matters: an attacker in the middle sees only
+ * ciphertext they cannot read, and cannot forge a response that decrypts successfully without
+ * targetNode's private key.
+ */
+export async function bchatOneHopOnionFetch({
+  targetNode,
+  associatedWith,
+  body,
+}: {
+  targetNode: Snode;
+  body?: string;
+  associatedWith?: string;
+}): Promise<SnodeResponse | undefined> {
+  try {
+    const retriedResult = await pRetry(
+      async () => {
+        // No path to build - targetNode is both the node we send the HTTPS request to and the
+        // node the encrypted payload is addressed to.
+        const result = await sendOnionRequestSnodeDest(
+          [targetNode],
+          targetNode,
+          body,
+          associatedWith
+        );
+        return result;
+      },
+      {
+        retries: 3,
+        factor: 1,
+        minTimeout: 100,
+        onFailedAttempt: e => {
+          window?.log?.warn(
+            `oneHopOnionFetchRetryable attempt #${e.attemptNumber} failed. ${e.retriesLeft} retries left...`
+          );
+        },
+      }
+    );
+
+    // Settings > Hops (OnionStatusPathDialog) reads state.onionPaths.snodePaths, which
+    // bchatOnionFetch() keeps current via getOnionPath()'s own dispatch - but this function never
+    // calls getOnionPath(), so without this the UI would keep showing whatever 3-hop path was
+    // last built (e.g. from before Onion Routing was turned off) instead of the single node this
+    // request actually used. Mirror that dispatch here with the real one-hop path.
+    const onePath = [{ ip: targetNode.ip }];
+    if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths?.[0], onePath)) {
+      window.inboxStore?.dispatch(updateOnionPaths([onePath]));
+    }
+
+    return retriedResult;
+  } catch (e) {
+    window?.log?.warn('oneHopOnionFetchRetryable failed ', e.message);
     if (e?.errno === 'ENETUNREACH') {
       // better handle the no connection state
       throw new Error(ERROR_CODE_NO_CONNECT);

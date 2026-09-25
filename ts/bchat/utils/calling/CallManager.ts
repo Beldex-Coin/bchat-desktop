@@ -46,6 +46,27 @@ export type InputItem = { deviceId: string; label: string };
 
 export const callTimeoutMs = 60000;
 
+// Mid-call reconnection tuning. Mirrors bchat-android's WebRtcCallService
+// (RECONNECT_SECONDS / TIMEOUT_SECONDS): when an established call's connection drops, the caller
+// retries every RECONNECT_INTERVAL_MS, and either side gives up and hangs up automatically once
+// RECONNECT_TIME_LIMIT_MS has passed since the drop - instead of the call silently dying, or the
+// "Reconnecting..." UI staying up forever with nothing actually happening.
+//
+// There is deliberately only ONE time limit here, not a separate "how many attempts" budget that
+// is expected to fit inside it. An earlier version used a fixed attempt count (5, at
+// RECONNECT_INTERVAL_MS apart) as the caller's stopping condition, sized to *usually* finish
+// before the give-up watchdog fired 30s after the drop. In practice each attempt does a real
+// network round trip (createOfferAndSendIt), which is not instant, so the attempt loop could run
+// past the watchdog's deadline - the caller would keep trying (and the callee would have already
+// hung up and sent END_CALL, wasting those last tries) because nothing in the attempt loop itself
+// was actually bounded by the same deadline the watchdog uses; the two were only related by an
+// assumption (5 * 5s < 30s) that real network latency could - and did - break.
+// reconnectDeadlineAt below is the single shared deadline both the caller's attempt loop and
+// scheduleReconnectGiveUp() are computed against, on both sides, so there is exactly one place
+// that decides when reconnecting is over.
+const RECONNECT_INTERVAL_MS = 5000; // how often the caller retries (Android: RECONNECT_SECONDS = 5)
+const RECONNECT_TIME_LIMIT_MS = 30000; // shared deadline before we hang up (Android: TIMEOUT_SECONDS = 30)
+
 /**
  * This uuid is set only once we accepted a call or started one.
  */
@@ -134,6 +155,26 @@ let makingOffer = false;
 let ignoreOffer = false;
 let isSettingRemoteAnswerPending = false;
 let lastOutgoingOfferTimestamp = -Infinity;
+
+// Mid-call reconnection state (see RECONNECT_* constants above). reconnectDeadlineAt, the attempt
+// counter and the two timers only ever apply to the current call; they're reset whenever the
+// connection comes back, and implicitly abandoned by closeVideoCall() ending the call (a stale
+// timer firing after that just no-ops, guarded by currentCallUUID/peerConnection checks below).
+//
+// reconnectDeadlineAt is set once, when startReconnectFlow() first runs for a given drop, to
+// Date.now() + RECONNECT_TIME_LIMIT_MS - a fixed point in time, not a duration. Both
+// scheduleReconnectGiveUp() and the caller's attempt loop (scheduleNextCallerAttempt /
+// attemptCallerReconnect) read this same value to decide how much time is left, instead of each
+// independently counting down its own RECONNECT_TIME_LIMIT_MS from whenever it happens to run.
+// That's what keeps them from drifting apart: whether scheduleReconnectGiveUp() is (re-)invoked
+// once or several times, it always targets the one shared deadline rather than restarting a fresh
+// countdown, and the attempt loop stops scheduling more attempts once that same deadline is close
+// rather than after some fixed number of attempts that merely assumed it would fit in time.
+let reconnectAttemptCount = 0;
+let reconnectDeadlineAt: number | undefined;
+let reconnectRetryTimer: ReturnType<typeof global.setTimeout> | null = null;
+let reconnectGiveUpTimer: ReturnType<typeof global.setTimeout> | null = null;
+let reconnectInProgress = false;
 
 /**
  * This array holds all of the ice servers BChat can contact.
@@ -381,7 +422,7 @@ export async function selectAudioOutputByDeviceId(audioOutputDeviceId: string) {
   }
 }
 
-async function createOfferAndSendIt(recipient: string) {
+async function createOfferAndSendIt(recipient: string, attempts?: number) {
   try {
     makingOffer = true;
     window.log.info('got createOfferAndSendIt event. creating offer');
@@ -418,7 +459,8 @@ async function createOfferAndSendIt(recipient: string) {
       window.log.info(`sending '${offer.type}'' with callUUID: ${currentCallUUID}`);
       const negotiationOfferSendResult = await getMessageQueue().sendToPubKeyNonDurably(
         PubKey.cast(recipient),
-        offerMessage
+        offerMessage,
+        attempts
       );
       if (typeof negotiationOfferSendResult === 'number') {
         // window.log?.warn('setting last sent timestamp');
@@ -606,9 +648,23 @@ function handleSignalingStateChangeEvent() {
 function handleConnectionStateChanged(pubkey: string) {
   window.log.info('handleConnectionStateChanged :', peerConnection?.connectionState);
 
-  if (peerConnection?.signalingState === 'closed' || peerConnection?.connectionState === 'failed') {
-    window.inboxStore?.dispatch(callReconnecting({ pubkey }));
+  if (peerConnection?.signalingState === 'closed') {
+    // signalingState only ever becomes 'closed' as a result of calling RTCPeerConnection.close()
+    // ourselves (there's no negotiation path or remote action that reaches it) - so seeing it here
+    // means we are already the ones ending this call, not that the connection dropped and might
+    // come back. Dispatching callReconnecting() was wrong: it told the UI to show
+    // "Reconnecting...", but nothing is going to reconnect a connection we just closed. Match
+    // handleSignalingStateChangeEvent()'s handling of this exact same condition and end the call
+    // instead.
+    closeVideoCall();
+  } else if (peerConnection?.connectionState === 'failed') {
+    // 'failed' can be reached directly (e.g. ICE never found a working candidate pair on the
+    // first attempt) without ever passing through the ICE-level 'disconnected' state below, so
+    // this needs to trigger the same reconnect flow, not just flip the UI to "Reconnecting...".
+    startReconnectFlow(pubkey);
   } else if (peerConnection?.connectionState === 'connected') {
+    clearReconnectState();
+
     const firstAudioInput = audioInputsList?.[0].deviceId || undefined;
     if (firstAudioInput) {
       void selectAudioInputByDeviceId(firstAudioInput);
@@ -627,6 +683,7 @@ function handleConnectionStateChanged(pubkey: string) {
 
 function closeVideoCall() {
   window.log.info('closingVideoCall ');
+  clearReconnectState();
   currentCallStartTimestamp = undefined;
   weAreCallerOnCurrentCall = undefined;
   if (peerConnection) {
@@ -715,6 +772,166 @@ function onDataChannelOnOpen() {
   sendVideoStatusViaDataChannel();
 }
 
+function clearReconnectState() {
+  if (reconnectRetryTimer) {
+    global.clearTimeout(reconnectRetryTimer);
+    reconnectRetryTimer = null;
+  }
+  if (reconnectGiveUpTimer) {
+    global.clearTimeout(reconnectGiveUpTimer);
+    reconnectGiveUpTimer = null;
+  }
+  reconnectAttemptCount = 0;
+  reconnectDeadlineAt = undefined;
+  reconnectInProgress = false;
+}
+
+function scheduleReconnectGiveUp(withPubkey: string) {
+  const callUUIDAtScheduleTime = currentCallUUID;
+  if (reconnectGiveUpTimer) {
+    global.clearTimeout(reconnectGiveUpTimer);
+  }
+  // Always target the one shared reconnectDeadlineAt, not a fresh RECONNECT_TIME_LIMIT_MS from
+  // whenever this happens to run - see the reconnectDeadlineAt comment above for why that
+  // matters. Guard against it somehow being called after the deadline (or without one set) by
+  // firing on the next tick rather than passing a negative delay.
+  const remainingMs = Math.max((reconnectDeadlineAt ?? Date.now()) - Date.now(), 0);
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  reconnectGiveUpTimer = global.setTimeout(async () => {
+    reconnectGiveUpTimer = null;
+    if (!reconnectInProgress || currentCallUUID !== callUUIDAtScheduleTime) {
+      return; // call ended, or a different call started, since this was scheduled
+    }
+    if (peerConnection?.connectionState === 'connected') {
+      clearReconnectState();
+      return;
+    }
+    window.log.warn(
+      `scheduleReconnectGiveUp: call ${callUUIDAtScheduleTime} did not recover in time; hanging up automatically`
+    );
+    clearReconnectState();
+    await USER_hangup(withPubkey);
+  }, remainingMs);
+}
+
+function scheduleNextCallerAttempt(withPubkey: string) {
+  const callUUIDAtScheduleTime = currentCallUUID;
+  // Don't bother scheduling an attempt that would only fire at or after the shared deadline -
+  // scheduleReconnectGiveUp() already owns hanging up at that point, so there's nothing for this
+  // attempt to usefully do; the callee may well have already hung up and sent END_CALL by then.
+  const remainingMs = (reconnectDeadlineAt ?? 0) - Date.now();
+  if (remainingMs <= RECONNECT_INTERVAL_MS) {
+    return;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  reconnectRetryTimer = global.setTimeout(async () => {
+    reconnectRetryTimer = null;
+    if (!reconnectInProgress || currentCallUUID !== callUUIDAtScheduleTime) {
+      return; // call ended or already recovered
+    }
+    if (peerConnection?.connectionState === 'connected') {
+      clearReconnectState();
+      return;
+    }
+    await attemptCallerReconnect(withPubkey);
+  }, RECONNECT_INTERVAL_MS);
+}
+
+async function attemptCallerReconnect(withPubkey: string) {
+  const callUUIDAtAttemptStart = currentCallUUID;
+
+  // Belt-and-suspenders check against the same shared deadline scheduleNextCallerAttempt already
+  // checked before arming this timer: if enough real time has passed since then (e.g. the previous
+  // attempt's own network round trip ran long), skip this attempt rather than sending an offer the
+  // other side has likely already given up waiting for.
+  if (reconnectDeadlineAt !== undefined && Date.now() >= reconnectDeadlineAt) {
+    return;
+  }
+
+  reconnectAttemptCount += 1;
+  const remainingMs = (reconnectDeadlineAt ?? 0) - Date.now();
+  window.log.info(
+    `attemptCallerReconnect: attempt ${reconnectAttemptCount} for call ${callUUIDAtAttemptStart}, ${remainingMs}ms left before shared give-up deadline`
+  );
+
+  if (peerConnection) {
+    // ICE restart on the existing connection, then re-signal a fresh offer over the message
+    // layer so the other side actually gets it - restartIce() alone only helps if the local
+    // ICE agent can still reach the peer at all.
+    (peerConnection as any).restartIce();
+  }
+  // Send with a single attempt (instead of MessageSender's default of 7) here. Each attempt is
+  // RECONNECT_INTERVAL_MS apart and all bounded by the shared reconnectDeadlineAt (see
+  // startReconnectFlow()) - letting a single attempt retry internally up to 7 times (each try can
+  // itself take up to ~100s, e.g. over onion routing) could by itself burn through the entire
+  // give-up budget, so the outer loop never even gets a second try. A quick failure here just
+  // means the next scheduled attempt (or the callee answering once an offer does land) tries
+  // again instead.
+  await createOfferAndSendIt(withPubkey, 1);
+
+  if (!reconnectInProgress || currentCallUUID !== callUUIDAtAttemptStart) {
+    return; // call ended, or already recovered/replaced, while we were sending the offer
+  }
+
+  // scheduleNextCallerAttempt() itself checks the shared deadline before arming another timer -
+  // there's no separate attempt-count limit here anymore, on purpose (see the RECONNECT_* comment
+  // above): the one shared deadline is what decides when the caller stops trying, same as it's
+  // what decides when either side hangs up.
+  scheduleNextCallerAttempt(withPubkey);
+}
+
+/**
+ * Called when an established call's connection drops (ICE state 'disconnected'/'failed', or the
+ * aggregate connectionState 'failed'). Mirrors bchat-android's onIceConnectionChange +
+ * networkReestablished(): the caller actively retries (ICE restart + a freshly signaled offer),
+ * every RECONNECT_INTERVAL_MS until the shared deadline, while the callee just waits for that new offer
+ * to arrive - it already answers any mid-call offer automatically (see "Got a new offer message
+ * from our ongoing call" in handleCallTypeOffer below). Either side gives up and hangs up
+ * automatically if the call never recovers, instead of leaving it stuck showing
+ * "Reconnecting..." forever with nothing actually happening.
+ *
+ * This is specifically for a call that WAS connected and then dropped - not for the initial
+ * connection attempt, which can hit these same connectionState/iceConnectionState values (e.g.
+ * ICE never finding a working pair on the very first try) while still just setting up. That
+ * initial phase already has its own give-up behaviour (callTimeoutMs, 60s, in USER_callRecipient)
+ * and its own "still ringing/connecting" UI. currentCallStartTimestamp is only ever set once the
+ * connection actually reaches 'connected' for the first time (see handleConnectionStateChanged
+ * below) and cleared on hangup, so it's a direct signal for "has this call ever connected" -
+ * without checking it here, an initial-connection failure would incorrectly show "Reconnecting..."
+ * and, for the callee, hang up after RECONNECT_TIME_LIMIT_MS (30s) instead of the normal 60s.
+ */
+function startReconnectFlow(withPubkey: string) {
+  if (reconnectInProgress || !currentCallUUID || !currentCallStartTimestamp) {
+    return;
+  }
+  reconnectInProgress = true;
+  // Set the one shared deadline this whole flow is measured against, on both sides - see the
+  // reconnectDeadlineAt comment above. Both this call's watchdog and the caller's attempt loop
+  // read it back rather than each counting down their own RECONNECT_TIME_LIMIT_MS.
+  reconnectDeadlineAt = Date.now() + RECONNECT_TIME_LIMIT_MS;
+  window.inboxStore?.dispatch(callReconnecting({ pubkey: withPubkey }));
+
+  // Start the overall give-up watchdog immediately, for both roles, instead of only scheduling
+  // it once the caller's attempt count is exhausted. The caller's own attempts are not
+  // guaranteed to run their full course within RECONNECT_TIME_LIMIT_MS - each one sends an offer
+  // that can itself take a while - so gating this behind "no retries left" meant a slow attempt
+  // could keep the call stuck showing "Reconnecting..." far longer than the 30s this watchdog is
+  // meant to cap things at. Starting it here means the call auto-hangs-up at the shared deadline
+  // no matter how far the attempt loop below has gotten.
+  scheduleReconnectGiveUp(withPubkey);
+
+  if (weAreCallerOnCurrentCall === true) {
+    // Don't act on the very first sign of trouble instantly - a lot of "disconnected"/"failed"
+    // blips (a brief wifi hiccup, a network handover) clear up on their own within a second or
+    // two without any help. Wait one interval before the first real attempt (ICE restart + a
+    // re-signaled offer), same cadence bchat-android uses before its first reconnect check.
+    scheduleNextCallerAttempt(withPubkey);
+  }
+  // We're the callee: there's nothing for us to actively send - we'll automatically answer the
+  // new offer once the caller's retry reaches us. The give-up watchdog scheduled above already
+  // guards against the call hanging forever if that offer never arrives at all.
+}
+
 function createOrGetPeerConnection(withPubkey: string) {
   if (peerConnection) {
     return peerConnection;
@@ -755,23 +972,18 @@ function createOrGetPeerConnection(withPubkey: string) {
       peerConnection?.iceConnectionState
     );
 
-    if (peerConnection && peerConnection?.iceConnectionState === 'disconnected') {
-      //this will trigger a negotation event with iceRestart set to true in the createOffer options set
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      global.setTimeout(async () => {
-        window.log.info('onconnectionstatechange disconnected: restartIce()');
-
-        if (
-          peerConnection?.iceConnectionState === 'disconnected' &&
-          withPubkey?.length &&
-          weAreCallerOnCurrentCall === true
-        ) {
-          // we are the caller and the connection got dropped out, we need to send a new offer with iceRestart set to true.
-          // the recipient will get that new offer and send us a response back if he still online
-          (peerConnection as any).restartIce();
-          await createOfferAndSendIt(withPubkey);
-        }
-      }, 2000);
+    if (
+      peerConnection &&
+      (peerConnection.iceConnectionState === 'disconnected' ||
+        peerConnection.iceConnectionState === 'failed') &&
+      withPubkey?.length
+    ) {
+      startReconnectFlow(withPubkey);
+    } else if (
+      peerConnection?.iceConnectionState === 'connected' ||
+      peerConnection?.iceConnectionState === 'completed'
+    ) {
+      clearReconnectState();
     }
   };
 

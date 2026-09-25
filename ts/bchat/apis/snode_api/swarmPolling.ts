@@ -22,6 +22,7 @@ import { getConversationController } from '../../conversations';
 import { perfEnd, perfStart } from '../../utils/Performance';
 import { ed25519Str } from '../../onions/onionPath';
 import { updateIsOnline } from '../../../state/ducks/onion';
+import { retryAllFailedSendsOnReconnect } from '../../sending/FailedSendRetry';
 import pRetry from 'p-retry';
 import { getHasSeenHF170, getHasSeenHF180 } from './hfHandling';
 
@@ -298,7 +299,7 @@ export class SwarmPolling {
     const pkStr = pubkey.key;
 
     try {
-      return await pRetry(
+      const result = await pRetry(
         async () => {
           const prevHash = await this.getLastHash(edkey, pkStr, namespace || 0);
           const messages = await retrieveNextMessages(node, prevHash, pkStr, namespace);
@@ -328,6 +329,20 @@ export class SwarmPolling {
           },
         }
       );
+
+      // A poll just round-tripped to a snode and back - that's hard evidence we have real
+      // connectivity again, independent of (and more reliable than) the browser's online/offline
+      // events that main_renderer.tsx's onOnline() otherwise depends on for
+      // retryAllFailedSendsOnReconnect(). Those events are known to be flaky on some platforms
+      // (delayed, missed, or not fired at all), which left failed sends stuck with no way to
+      // recover until a manual resend if that was the only trigger. Mirror the same recovery
+      // here as a second, platform-independent path.
+      if (window.inboxStore?.getState().onionPaths.isOnline === false) {
+        window.inboxStore?.dispatch(updateIsOnline(true));
+        void retryAllFailedSendsOnReconnect();
+      }
+
+      return result;
     } catch (e) {
       if (e.message === ERROR_CODE_NO_CONNECT) {
         if (window.inboxStore?.getState().onionPaths.isOnline) {
@@ -335,7 +350,7 @@ export class SwarmPolling {
         }
       } else if (!window.inboxStore?.getState().onionPaths.isOnline) {
           window.inboxStore?.dispatch(updateIsOnline(true));
-        
+          void retryAllFailedSendsOnReconnect();
       }
       window?.log?.info('pollNodeForKey failed with', e.message);
       return null;

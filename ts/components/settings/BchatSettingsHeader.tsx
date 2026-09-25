@@ -11,10 +11,12 @@ import { getBlockedPubkeys } from '../../state/selectors/conversations';
 
 type Props = Pick<SettingsViewProps, 'category'> & {
   categoryTitle: string;
+  // Optional muted text after the title, e.g. the Hops page's current mode: "Hops (1 hop)".
+  categoryTitleSuffix?: string;
 };
 
 export const SettingsHeader = (props: Props) => {
-  const { categoryTitle } = props;
+  const { categoryTitle, categoryTitleSuffix } = props;
   // const forceUpdate = useUpdate();
 
   const dispatch = useDispatch();
@@ -41,7 +43,12 @@ export const SettingsHeader = (props: Props) => {
 
   return (
     <div className="bchat-settings-header">
-      <div className="bchat-settings-header-title">{categoryTitle}</div>
+      <div className="bchat-settings-header-title">
+        {categoryTitle}
+        {categoryTitleSuffix && (
+          <span className="bchat-settings-header-title-suffix">{categoryTitleSuffix}</span>
+        )}
+      </div>
       {window.i18n('blockedSettingsTitle') === categoryTitle && blockedNumbers.length != 0 && (
         <div className="bchat-settings-header-selectionBox">
           {multipleSelectionValue ? (
