@@ -506,6 +506,8 @@ $bchat-compose-margin: 20px;
           text-overflow: ellipsis;
           font-weight: 500;
           font-size: 16px;
+          direction: ltr;
+          unicode-bidi: isolate;
         }
 
         .blue-color {

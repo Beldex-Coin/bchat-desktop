@@ -54,8 +54,8 @@ const {attachments}=props;
 
 const attachmentProps: { [key: string]: AttachmentTypeProps } = {
   image: { txt: window.i18n('attachmentTypeImage'), icon: "gallery" },
-  audio: { txt: "Audio", icon: "audio" },
-  video: { txt: "Video", icon: "video" },
+  audio: { txt: window.i18n("audio"), icon: "audio" },
+  video: { txt: window.i18n("video")  , icon: "video" },
   document: { txt: window.i18n('attachmentTypeDocument'), icon: "document" }
 };
 

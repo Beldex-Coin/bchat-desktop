@@ -2693,12 +2693,13 @@ input {
   }
 
   &_admin-txt {
-    width: 58px;
+    width: 180px;
     display: flex;
     align-items: center;
     color: #108d32;
     font-size: 14px;
     font-weight: 500;
+    justify-content: flex-end;
   }
 }
 
@@ -2813,6 +2814,13 @@ input {
   border-radius: 20px;
   p {
     margin: 0 !important;
+  }
+
+  // Lexical gives each paragraph dir="auto", which Chromium 114 resolves to ltr when the
+  // paragraph is empty. Keep the caret on the RTL side until the user types something;
+  // after that dir="auto" follows the first strong character (Arabic → rtl, Latin → ltr).
+  html[dir='rtl'] & > :has(> br:only-child) {
+    direction: rtl;
   }
 
   ul,
@@ -2991,13 +2999,22 @@ ul{
 }
 
 
+/* Centers the language panel in the settings pane */
+.bchat-language-screen-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 /* Container Modal styling */
 .bchat-language-screen {
   background-color: var(--color-hop-bg);
   border-radius: 12px;
   padding: 24px;
-  width: 360px;
-  // max-height: 550px;
+  width: 415px;
+  height: 80%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -3010,7 +3027,7 @@ ul{
   width: 100%;
   overflow-y: auto;
   flex-grow: 1;
-  padding-inline-end: 4px;
+  padding-inline-end: 14px;
 }
 
 
@@ -3054,6 +3071,11 @@ ul{
 /* Text styling */
 .language-text {
   font-size: 20px;
+}
+
+.language-subtext {
+  font-size: 14px;
+  color: var(--color-text-subtle);
 }
 
 /* Save Button Footer section */

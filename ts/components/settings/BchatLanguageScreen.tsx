@@ -4,21 +4,20 @@ import { BchatIcon } from '../icon/BchatIcon';
 import { Constants } from '../../bchat';
 import { SpacerSM } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 
-const languageOptions: Array<{ labelKey: LocalizerKeys; code: string }> = [
-  { labelKey: 'languageArabic', code: 'ar' },
-  { labelKey: 'languageChineseSimplified', code: 'zh_CN' },
-  { labelKey: 'languageEnglish', code: 'en' },
-  { labelKey: 'languageGerman', code: 'de' },
-  { labelKey: 'languageJapanese', code: 'ja' },
-  { labelKey: 'languageKorean', code: 'ko' },
-  { labelKey: 'languagePortugueseBrazil', code: 'pt_BR' },
-  { labelKey: 'languageRussian', code: 'ru' },
-  { labelKey: 'languageSpanish', code: 'es' },
-  { labelKey: 'languageTurkish', code: 'tr' },
-  { labelKey: 'languageVietnamese', code: 'vi' },
+const languageOptions: Array<{ englishName: string; code: string; nativeName: string }> = [
+  { englishName: 'Arabic', code: 'ar', nativeName: 'العربية' },
+  { englishName: 'Chinese (Simplified)', code: 'zh_CN', nativeName: '简体中文' },
+  { englishName: 'English', code: 'en', nativeName: 'English' },
+  { englishName: 'German', code: 'de', nativeName: 'Deutsch' },
+  { englishName: 'Japanese', code: 'ja', nativeName: '日本語' },
+  { englishName: 'Korean', code: 'ko', nativeName: '한국어' },
+  { englishName: 'Portuguese (Brazil)', code: 'pt_BR', nativeName: 'Português (Brasil)' },
+  { englishName: 'Russian', code: 'ru', nativeName: 'Русский' },
+  { englishName: 'Spanish', code: 'es', nativeName: 'Español' },
+  { englishName: 'Turkish', code: 'tr', nativeName: 'Türkçe' },
+  { englishName: 'Vietnamese', code: 'vi', nativeName: 'Tiếng Việt' },
 ];
 
 export const BchatLanguageScreen = () => {
@@ -47,48 +46,48 @@ export const BchatLanguageScreen = () => {
   };
 
   return (
-    <div className="bchat-language-screen">
-      <div className="bchat-language-list">
-        {languageOptions.map((item, i) => (
-          <React.Fragment key={item.code || i}>
-            <div
-              className={classNames(
-                'bchat-language-row',
-                select === item.code && 'isSelect'
-              )}
-              onClick={() => setSelect(item.code)}
-            >
+    <div className="bchat-language-screen-wrapper">
+      <div className="bchat-language-screen">
+        <div className="bchat-language-list">
+          {languageOptions.map((item, i) => (
+            <React.Fragment key={item.code || i}>
               <div
-                className={classNames(
-                  'bchat-language-row__circle',
-                  select === item.code && 'selected'
-                )}
+                className={classNames('bchat-language-row', select === item.code && 'isSelect')}
+                onClick={() => setSelect(item.code)}
               >
-                {select === item.code && (
-                  <BchatIcon
-                    iconType="circle"
-                    iconSize={8}
-                    iconColor={Constants?.UI?.COLORS?.GREEN || '#10b981'}
-                  />
-                )}
+                <div
+                  className={classNames(
+                    'bchat-language-row__circle',
+                    select === item.code && 'selected'
+                  )}
+                >
+                  {select === item.code && (
+                    <BchatIcon
+                      iconType="circle"
+                      iconSize={8}
+                      iconColor={Constants?.UI?.COLORS?.GREEN || '#10b981'}
+                    />
+                  )}
+                </div>
+                <div>
+                  <div className="language-text">{item.nativeName}</div>
+                  <div className="language-subtext">{item.englishName}</div>
+                </div>
               </div>
-              <span className="language-text">{window.i18n(item.labelKey)}</span>
-            </div>
-            <SpacerSM />
-          </React.Fragment>
-        ))}
-      </div>
-      
-      <div className="bchat-language-footer">
-        <BchatButton
-                  buttonColor={BchatButtonColor.Primary}
-                  buttonType={BchatButtonType.Brand}
-                  onClick={handleSave}
-                  text={window.i18n('save')}
-                  dataTestId="accept-message-request"
-                />
-          
-        
+              <SpacerSM />
+            </React.Fragment>
+          ))}
+        </div>
+
+        <div className="bchat-language-footer">
+          <BchatButton
+            buttonColor={BchatButtonColor.Primary}
+            buttonType={BchatButtonType.Brand}
+            onClick={handleSave}
+            text={window.i18n('save')}
+            dataTestId="accept-message-request"
+          />
+        </div>
       </div>
     </div>
   );

@@ -518,7 +518,9 @@ public getPropsForPayment(): PropsForPayment | null {
 
     const attachments = this.get('attachments') || [];
     const isTrustedForAttachmentDownload = this.isTrustedForAttachmentDownload();
-    const body = this.get('body');
+    const body = this.get('isDeleted')
+      ? window.i18n('messageDeletedPlaceholder')
+      : this.get('body');
     const props: PropsForMessageWithoutConvoProps = {
       id: this.id,
       direction: (this.isIncoming() ? 'incoming' : 'outgoing') as MessageModelType,
@@ -1316,6 +1318,9 @@ public getPropsForPayment(): PropsForPayment | null {
   }
 
   private getDescription() {
+    if (this.get('isDeleted')) {
+      return window.i18n('messageDeletedPlaceholder');
+    }
     const groupUpdate = this.getGroupUpdateAsArray();
     if (groupUpdate) {
       if (arrayContainsUsOnly(groupUpdate.kicked)) {
