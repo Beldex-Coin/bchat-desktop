@@ -24,19 +24,38 @@ function hopLabel(hops: OnionRoutingHops): string {
   }
 }
 
-// Shown under the title in Settings > Chat (the .bchat-settings-item__description element
-// BchatSettingsItemWrapper renders) - changes with the current selection so the tradeoff of
-// whichever mode is active is always visible, not just at the moment it's picked.
-function hopDescription(hops: OnionRoutingHops): string {
+// Live description shown in the popup itself, under the radio list - updates as the user
+// clicks through 0/1/3 Hop, before they hit OK. Distinct from onionRoutingDescriptionStable
+// (the fixed row description in Settings > Chat, which no longer changes per hop count) and
+// from the older, now-unused per-hop onionRoutingDescription{Zero,One,Three} keys.
+function hopPopupDescription(hops: OnionRoutingHops): string {
   switch (hops) {
     case 0:
-      return window.i18n('onionRoutingDescriptionZero');
+      return window.i18n('onionRoutingHopsPopupDescriptionZero');
     case 1:
-      return window.i18n('onionRoutingDescriptionOne');
+      return window.i18n('onionRoutingHopsPopupDescriptionOne');
     case 3:
     default:
-      return window.i18n('onionRoutingDescriptionThree');
+      return window.i18n('onionRoutingHopsPopupDescriptionThree');
   }
+}
+
+// The closed row's value (not the popup's radio list, which stays plain "1 Hop"/"0 Hop"/
+// "3 Hops" per the earlier request to drop this text from there) marks 1 hop with a muted
+// "(Default)" suffix, since it's the default for new selections and for the live-build
+// migration in getEffectiveOnionRoutingHops().
+function hopValueNode(hops: OnionRoutingHops) {
+  if (hops === 1) {
+    return (
+      <>
+        {window.i18n('onionRoutingHopsOneHop')}{' '}
+        <span className="bchat-settings-item-hops-Change__default">
+          {window.i18n('onionRoutingHopsDefaultSuffix')}
+        </span>
+      </>
+    );
+  }
+  return hopLabel(hops);
 }
 
 /**
@@ -66,6 +85,10 @@ export const ChangeOnionRoutingSetting = () => {
       SettingMiniModal({
         headerName: window.i18n('onionRoutingHopsTitle'),
         content: labelsByHop,
+        descriptions: HOP_OPTIONS.map(hopPopupDescription),
+        // The shared picker modal defaults this button to "Save" (fine for Font Size), but the
+        // Hops design calls for "OK".
+        confirmButtonText: window.i18n('ok'),
         selectedItem: hopLabel(hops),
         onClose: () => dispatch(SettingMiniModal(null)),
         onClick: (selected: string) => {
@@ -108,10 +131,13 @@ export const ChangeOnionRoutingSetting = () => {
       title={window.i18n('onionRoutingTitle')}
       inline={true}
       iconType="hops"
-      description={hopDescription(hops)}
+      // Fixed regardless of the selected hop count - the per-mode tradeoff used to live here
+      // but that made this row's text change every time the picker below it changed. It's now a
+      // single stable description regardless of the picked hop count.
+      description={window.i18n('onionRoutingDescriptionStable')}
     >
-      <div className="bchat-settings-item-font-Change" onClick={() => displayPopUp()}>
-        <div>{hopLabel(hops)}</div>
+      <div className="bchat-settings-item-hops-Change" onClick={() => displayPopUp()}>
+        <div>{hopValueNode(hops)}</div>
         <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
       </div>
     </BchatSettingsItemWrapper>

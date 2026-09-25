@@ -14,6 +14,7 @@ const desiredGuardCount = 3;
 const minimumGuardCount = 2;
 
 import { updateOnionPaths } from '../../state/ducks/onion';
+import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
 import { ERROR_CODE_NO_CONNECT } from '../apis/snode_api/SNodeAPI';
 import { getStoragePubKey } from '../types/PubKey';
 
@@ -154,18 +155,29 @@ export async function getOnionPath({
     }
   }
 
-  if (onionPaths.length === 0) {
-    if (!_.isEmpty(window.inboxStore?.getState().onionPaths.snodePaths)) {
-      window.inboxStore?.dispatch(updateOnionPaths([]));
-    }
-  } else {
-    const ipsOnly = onionPaths.map(m =>
-      m.map(c => {
-        return { ip: c.ip };
-      })
-    );
-    if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths, ipsOnly)) {
-      window.inboxStore?.dispatch(updateOnionPaths(ipsOnly));
+  // state.onionPaths.snodePaths is what Settings > Hops and the status dot display, and it's
+  // meant to describe how *message* traffic is routed in the mode the user picked. But this
+  // function also runs in 0/1-hop mode, for traffic that is always 3-hop regardless of the setting
+  // (file server, community groups, push, the update check - see sendViaOnionToNonSnode() in
+  // onionSend.ts). Publishing its path then would overwrite the 1-hop view with a 3-node path
+  // (or blank it) until the next 1-hop request put it back - the Hops page flipping between
+  // modes. So only publish when 3 hops is actually the selected mode; in 1-hop mode
+  // bchatOneHopOnionFetch() publishes the single node it really used. (Only the publishing is
+  // skipped - the path itself is still selected and returned below for the caller to use.)
+  if (getEffectiveOnionRoutingHops() === 3) {
+    if (onionPaths.length === 0) {
+      if (!_.isEmpty(window.inboxStore?.getState().onionPaths.snodePaths)) {
+        window.inboxStore?.dispatch(updateOnionPaths([]));
+      }
+    } else {
+      const ipsOnly = onionPaths.map(m =>
+        m.map(c => {
+          return { ip: c.ip };
+        })
+      );
+      if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths, ipsOnly)) {
+        window.inboxStore?.dispatch(updateOnionPaths(ipsOnly));
+      }
     }
   }
 

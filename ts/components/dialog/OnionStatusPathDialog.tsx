@@ -51,31 +51,21 @@ const OnionCountryDisplay = ({
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
   const isOnline = useSelector(getIsOnline);
-  const glowDuration = onionPath.length + 2;
 
   // getEffectiveOnionRoutingHops() reads the hop count chosen from the "Onion Routing" picker in
   // Settings > Chat (0 / 1 / 3) - the same source of truth bchatFetch() uses to pick between the
   // raw request, bchatOneHopOnionFetch, and bchatOnionFetch.
   const onionRoutingHops = getEffectiveOnionRoutingHops();
+  const isNoHops = onionRoutingHops === 0;
 
-  if (onionRoutingHops === 0) {
-    // 0 hops: bchatFetch() sends every request as a plain direct call with no onion encryption
-    // at all (see bchatRpc.ts) - there's no path of any kind to report.
-    // state.onionPaths.snodePaths is never touched for this mode, so it can only ever hold stale
-    // data from a previous session with a higher hop count - render a dedicated message instead
-    // of trusting/displaying that.
-    return (
-      <div className='hopes'>
-        <div className='layer'>
-          <div className="onion__description">
-            {window.i18n('onionPathIndicatorDescriptionZero')}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Only ever display a path that matches the selected mode: exactly one node for 1 hop, a real
+  // multi-node path for 3 hops. Anything else is left over from before a mode switch and would
+  // show the wrong mode - show the loading state until a request in the current mode publishes
+  // fresh data (swarm polling does that within a few seconds).
+  // 0 hops needs no path at all: requests go straight to the destination, so it never waits.
+  const pathMatchesMode = onionRoutingHops === 1 ? onionPath?.length === 1 : onionPath?.length > 1;
 
-  if (!isOnline || !onionPath || onionPath.length === 0) {
+  if (!isNoHops && (!isOnline || !onionPath || onionPath.length === 0 || !pathMatchesMode)) {
     return <BchatSpinner loading={true} />;
   }
 
@@ -83,20 +73,28 @@ const OnionPathModalInner = () => {
   // straight to the storage node instead of building a 3-hop path via
   // OnionPaths.getOnionPath() - there's no separate entry/relay node to show, the one node in
   // the path *is* the destination.
-  const isDirectSingleHop = onionRoutingHops === 1 && onionPath.length === 1;
+  const isDirectSingleHop = onionRoutingHops === 1;
+
+  // 0 hops: same card as the other modes, just You -> Destination with nothing in between.
+  // (state.onionPaths.snodePaths isn't used for this mode and can only hold stale data from a
+  // previous mode, so it's deliberately ignored here.)
+  const pathToShow = isNoHops ? [] : onionPath;
+  const glowDuration = pathToShow.length + 2;
 
   const nodes = [
     {
       label: window.i18n('device'),
     },
-    ...onionPath,
+    ...pathToShow,
     {
       label: window.i18n('destination'),
     },
   ];
   const lastIndex = nodes.length - 1;
 
-  const description = isDirectSingleHop
+  const description = isNoHops
+    ? window.i18n('onionPathIndicatorDescriptionZero')
+    : isDirectSingleHop
     ? window.i18n('onionPathIndicatorDescriptionOneHop')
     : window.i18n('onionPathIndicatorDescription');
 
@@ -131,12 +129,13 @@ const OnionPathModalInner = () => {
             </div>
             <Flex container={true} flexDirection="column" alignItems="flex-start">
               {nodes.map((snode: Snode | any, index: number) => {
-                let labelText = snode.label
-                  ? snode.label
-                  : `${countryLookup.byIso(ip2country(snode.ip))?.country}`;
-                if (!labelText) {
-                  labelText = window.i18n('unknownCountry');
-                }
+                // No template literal here: `${undefined}` is the string "undefined", which is
+                // truthy, so a failed lookup used to render "undefined(65.109.88.141)" instead of
+                // falling back to "Unknown Country".
+                const labelText: string =
+                  snode.label ||
+                  countryLookup.byIso(ip2country(snode.ip))?.country ||
+                  window.i18n('unknownCountry');
 
                 // Endpoints (You / Destination) keep their own label. A single-node direct path
                 // has nothing to call an "Entry Node" - it's the destination itself, reached in
@@ -145,7 +144,7 @@ const OnionPathModalInner = () => {
                   index === 0 || index === lastIndex
                     ? labelText
                     : isDirectSingleHop
-                    ? window.i18n('storageNode')
+                    ? window.i18n('entryNode')
                     : index === 1
                     ? 'Entry Node'
                     : 'Master Node';
