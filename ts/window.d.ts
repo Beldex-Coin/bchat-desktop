@@ -38,7 +38,6 @@ declare global {
     i18n: LocalizerType;
     log: any;
     bchatFeatureFlags: {
-      useOnionRequests: boolean;
       useTestNet: boolean;
     };
     bchatSnodeAPI: bchatSnodeAPI;

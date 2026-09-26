@@ -26,7 +26,6 @@ window.getCommitHash = () => configAny.commitHash;
 window.getNodeVersion = () => configAny.node_version;
 
 window.bchatFeatureFlags = {
-  useOnionRequests: true,
   useTestNet: Boolean(
     process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('mainnet')
   ),

@@ -10,6 +10,7 @@ import { getAudioAutoplay } from '../../../state/selectors/userConfig';
 import { BchatButtonColor } from '../../basic/BchatButton';
 import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
+import { ChangeOnionRoutingSetting } from '../ChangeOnionRoutingSetting';
 import { BchatIcon } from '../../icon';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
@@ -71,6 +72,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             active={isLinkPreviewsOn}
             iconType="chainLink"
           />
+          <ChangeOnionRoutingSetting />
           {/* <BchatToggleWithDescription
           onClickToggle={() => {
             window.toggleSpellCheck();

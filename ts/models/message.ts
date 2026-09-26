@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 import filesize from 'filesize';
 import { SignalService } from '../../ts/protobuf';
 import { getMessageQueue, Utils } from '../bchat';
+import { trackFailedSend } from '../bchat/sending/FailedSendRetry';
 import { getConversationController } from '../bchat/conversations';
 import { DataMessage } from '../bchat/messages/outgoing';
 import { ClosedGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/ClosedGroupVisibleMessage';
@@ -40,7 +41,10 @@ import {
   PropsForSharedContact,
   PropsForPayment,
 } from '../state/ducks/conversations';
-import { VisibleMessage } from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
+import {
+  VisibleMessage,
+  VisibleMessageParams,
+} from '../bchat/messages/outgoing/visibleMessage/VisibleMessage';
 import { buildSyncMessage } from '../bchat/utils/syncUtils';
 import {
   uploadAttachmentsV2,
@@ -967,7 +971,26 @@ public getPropsForPayment(): PropsForPayment | null {
         delete chatParams.lokiProfile;
       }
 
-      const chatMessage = new VisibleMessage(chatParams);
+      // sendMessageJob() attaches these on the original send (conversation.ts) - a retry
+      // rebuilds the outgoing message from scratch, so without carrying them over here too,
+      // retrying a failed contact share / payment / group invitation silently drops its
+      // actual content and just resends an empty shell. payment was missing here even though
+      // the comment above already called it out - a failed payment message got silently
+      // "resent" as empty, and since this same retrySend() is now also what the automatic
+      // reconnect retry (retryAllFailedSendsOnReconnect(), see FailedSendRetry.ts) calls, that
+      // happened without the user ever choosing to resend anything themselves.
+      const extraParams: Partial<VisibleMessageParams> = {};
+      if (this.get('payment')) {
+        extraParams.payment = this.get('payment');
+      }
+      if (this.get('sharedContact')) {
+        extraParams.sharedContact = this.get('sharedContact');
+      }
+      if (this.get('groupInvitation')) {
+        extraParams.openGroupInvitation = this.get('groupInvitation');
+      }
+
+      const chatMessage = new VisibleMessage({ ...chatParams, ...extraParams });
 
       // Special-case the self-send case - we send only a sync message
       if (conversation.isMe()) {
@@ -996,6 +1019,7 @@ public getPropsForPayment(): PropsForPayment | null {
       return getMessageQueue().sendToGroup(closedGroupVisibleMessage);
     } catch (e) {
       await this.saveErrors(e);
+      trackFailedSend(this.id);
       return null;
     }
   }
