@@ -601,9 +601,8 @@
   "keyBenefits1": "統合されたアイデンティティ：BChat ID、Beldex ウォレットアドレス、BelNet ID を単一の BNS 名に接続。Beldex エコシステム内のやり取りを簡素化します。",
   "keyBenefits2": "使いやすさ：複雑な英数字の文字列はもう不要。BNS 名があれば、メッセージ送信や取引が直感的で簡単になります。",
   "keyBenefits3": "信頼のバッジ：BChat ID を BNS 名にリンクし、認証プロセスを完了することで BNS バッジを取得可能。コミュニティ内で信頼と認識のレイヤーを追加できます。",
-  "pricingHeader": "料金",
-  "subscriptionDescription": "：BNS 名は 1 年、2 年、5 年、10 年単位で登録可能で、料金はそれぞれ",
-  "subscriptionDescriptionTail": "それぞれ",
+  "pricingHeader": "料金：",
+  "bnsPricingDescription": "BNS 名は 1 年、2 年、5 年、10 年単位で登録可能で、料金はそれぞれ $p1$ BDX、$p2$ BDX、$p3$ BDX、$p4$ BDX です。",
   "aboutBNSDescription2": "BNS 名を使用すると、プライバシー、セキュリティ、利便性が向上します。メッセージ送信、取引、分散型サービスの利用時にも、一貫性のあるシンプルな体験が可能です。",
   "aboutBNSFooter": "今日から BNS 名を使い始め、Beldex のすべてのサービスで分散型アイデンティティのメリットを体験しましょう！",
   "showQR": "QR を表示",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ と他 $count$ 人",
   "paymentDirectionReceived": "受信",
   "pickFileForAvatarError": "画像の選択またはサイズ変更中にエラーが発生しました",
-  "attachmentTypeImages": "画像",
-  "and": "と"
+  "attachmentTypeImages": "画像"
 }

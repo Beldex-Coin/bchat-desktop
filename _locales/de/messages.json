@@ -601,9 +601,8 @@
   "keyBenefits1": "Einheitliche Identität: Verbinde deine BChat-ID, deine Beldex-Wallet-Adresse und deine BelNet-ID mit einem einzigen BNS-Namen. Das vereinfacht deine Interaktionen im gesamten Beldex-Ökosystem.",
   "keyBenefits2": "Einfache Nutzung: Verabschiede dich von komplizierten alphanumerischen Zeichenfolgen. Mit deinem BNS-Namen werden Nachrichten und Transaktionen einfach und benutzerfreundlich.",
   "keyBenefits3": "Vertrauensabzeichen: Verknüpfe deine BChat-ID mit deinem BNS-Namen und schließe den Verifizierungsprozess ab, um ein BNS-Badge zu erhalten. Dieses Abzeichen schafft zusätzliches Vertrauen und Wiedererkennung innerhalb der Community.",
-  "pricingHeader": "Preise",
-  "subscriptionDescription": "Nutzer können ihre BNS-Namen für 1, 2, 5 oder 10 Jahre registrieren – bereits ab",
-  "subscriptionDescriptionTail": "entsprechend",
+  "pricingHeader": "Preise:",
+  "bnsPricingDescription": "Nutzer können ihre BNS-Namen für 1, 2, 5 oder 10 Jahre registrieren – bereits ab $p1$ BDX, $p2$ BDX, $p3$ BDX bzw. $p4$ BDX.",
   "aboutBNSDescription2": "Die Nutzung von BNS-Namen verbessert deine Privatsphäre, Sicherheit und Benutzerfreundlichkeit. Egal, ob du eine Nachricht sendest, eine Transaktion durchführst oder dezentrale Dienste nutzt – dein BNS-Name sorgt für ein einheitliches und vereinfachtes Erlebnis.",
   "aboutBNSFooter": "Starte noch heute mit deinem BNS-Namen und profitiere von einer dezentralen Identität über alle deine Beldex-Dienste hinweg!",
   "showQR": "QR anzeigen",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ und $count$ weitere",
   "paymentDirectionReceived": "Empfangen",
   "pickFileForAvatarError": "Beim Auswählen oder Ändern der Bildgröße ist ein Fehler aufgetreten",
-  "attachmentTypeImages": "Bilder",
-  "and": "und"
+  "attachmentTypeImages": "Bilder"
 }

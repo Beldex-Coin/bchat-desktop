@@ -601,9 +601,8 @@
   "keyBenefits1": "Identidade Unificada: Conecte seu BChat ID, endereço da carteira Beldex e BelNet ID a um único nome BNS. Isso simplifica suas interações em todo o ecossistema Beldex.",
   "keyBenefits2": "Facilidade de Uso: Diga adeus às longas sequências alfanuméricas complicadas. Com seu nome BNS, mensagens e transações tornam-se simples e fáceis de usar.",
   "keyBenefits3": "Selo de Confiança: Vincule seu BChat ID ao seu nome BNS e conclua o processo de verificação para receber um selo BNS. Esse selo adiciona uma camada de confiança e reconhecimento dentro da comunidade..",
-  "pricingHeader": "Preços",
-  "subscriptionDescription": "Os usuários podem registrar seus nomes BNS por 1, 2, 5 e 10 anos por valores a partir de",
-  "subscriptionDescriptionTail": "respectivamente.",
+  "pricingHeader": "Preços:",
+  "bnsPricingDescription": "Os usuários podem registrar seus nomes BNS por 1, 2, 5 e 10 anos por valores a partir de $p1$ BDX, $p2$ BDX, $p3$ BDX e $p4$ BDX, respectivamente.",
   "aboutBNSDescription2": "Usar nomes BNS melhora sua privacidade, segurança e conveniência. Seja para enviar uma mensagem, realizar uma transação ou usar serviços descentralizados, seu nome BNS garante uma experiência consistente e simplificada.",
   "aboutBNSFooter": "Comece hoje mesmo com seu nome BNS e aproveite os benefícios de uma identidade descentralizada em todos os serviços Beldex!",
   "showQR": "Mostrar QR",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ e mais $count$",
   "paymentDirectionReceived": "Recebido",
   "pickFileForAvatarError": "Ocorreu um erro ao selecionar/redimensionar a imagem",
-  "attachmentTypeImages": "Imagens",
-  "and": "e"
+  "attachmentTypeImages": "Imagens"
 }

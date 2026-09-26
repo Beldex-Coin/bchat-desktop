@@ -23,6 +23,7 @@ import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
+import { FontSizeChanger } from '../../../settings/ChangeChatFontSetting';
 
 
 export interface Room {
@@ -175,15 +176,3 @@ export const VerticalLine = styled.div<VerticalLineProps>`
   border-radius: 10px;
   margin-inline-end: 10px;
 `;
-export const FontSizeChanger = (fontSize: number) => {
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
-  let size;
-  if (currentValueFromSettings === 'small') {
-    size = fontSize;
-  } else if (currentValueFromSettings === 'medium') {
-    size = fontSize + 2;
-  } else {
-    size = fontSize + 4;
-  }
-  return size;
-};

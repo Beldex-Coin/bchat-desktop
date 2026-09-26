@@ -603,8 +603,7 @@ export type LocalizerKeys =
   |'keyBenefits2'
   |'keyBenefits3'
   |'pricingHeader'
-  |'subscriptionDescription'
-  |'subscriptionDescriptionTail'
+  |'bnsPricingDescription'
   |'aboutBNSDescription2'
   |'aboutBNSFooter'
   |'showQR'
@@ -729,5 +728,4 @@ export type LocalizerKeys =
   |'warnSeedInMessage'
   |'pickFileForAvatarError'
   |'attachmentTypeImages'
-  |'and'
   ;

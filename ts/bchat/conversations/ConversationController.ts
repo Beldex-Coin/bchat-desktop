@@ -281,10 +281,13 @@ export class ConversationController {
         // lastMessage is stored already translated, so rebuild it when the app locale changed
         const currentLocale = window.i18n.getLocale();
         const localeChanged = Storage.get('lastMessageLocale') !== currentLocale;
+        const staleConversations: Array<ConversationModel> = [];
         this.conversations.forEach((conversation: ConversationModel) => {
-          if (!conversation.get('lastMessage') || localeChanged) {
+          if (!conversation.get('lastMessage')) {
             // tslint:disable-next-line: no-void-expression
             promises.push(conversation.updateLastMessage());
+          } else if (localeChanged) {
+            staleConversations.push(conversation);
           }
 
           promises.concat([conversation.updateProfileName()]);
@@ -292,7 +295,14 @@ export class ConversationController {
 
         await Promise.all(promises);
         if (localeChanged) {
-          await Storage.put('lastMessageLocale', currentLocale);
+          // Rebuild translated previews in the background, one at a time, so startup is not held up
+          void (async () => {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const conversation of staleConversations) {
+              await conversation.updateLastMessage();
+            }
+            await Storage.put('lastMessageLocale', currentLocale);
+          })().catch(e => window?.log?.error('ConversationController: preview rebuild failed', e));
         }
         window?.log?.info(
           `ConversationController: done with initial fetch in ${Date.now() - start}ms.`

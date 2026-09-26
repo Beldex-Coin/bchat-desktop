@@ -19,7 +19,8 @@ import { StyledMessageContentContainer } from '../../message-content/MessageCont
 import { SpacerSM } from '../../../../basic/Text';
 import moment from 'moment';
 import { Flex } from '../../../../basic/Flex';
-import { FontSizeChanger, VerticalLine } from '../GroupInvitation';
+import { VerticalLine } from '../GroupInvitation';
+import { FontSizeChanger } from '../../../../settings/ChangeChatFontSetting';
 import IncomingMsgTailIcon from '../../../../icon/IncomingMsgTailIcon';
 import { StyledSvgWrapper } from '../../message-content/MessageContent';
 import OutgoingMsgTailIcon from '../../../../icon/OutgoingMsgTailIcon';

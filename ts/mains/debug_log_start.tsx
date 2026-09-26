@@ -10,7 +10,7 @@ global.setTimeout(() => {
     return;
   }
 
-  applyDocumentDirection((window.i18n as any).getLocale());
+  applyDocumentDirection(window.i18n.getLocale());
   const root = createRoot(container);
   root.render(<DebugLogView />);
 }, 1000);

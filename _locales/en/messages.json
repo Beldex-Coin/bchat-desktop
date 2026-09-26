@@ -601,9 +601,8 @@
   "keyBenefits1": "Unified Identity: Connect your BChat ID, Beldex Wallet Address, and BelNet ID to a single BNS name. This simplifies your interactions across the Beldex ecosystem.",
   "keyBenefits2": " Ease of Use: Say goodbye to complicated alphanumeric strings. With your BNS name, messaging and transactions become straightforward and user-friendly.",
   "keyBenefits3": "Badge of Trust: Link your BChat ID to your BNS name and complete the verification process to earn a BNS badge. This badge adds a layer of trust and recognition within the community..",
-  "pricingHeader": "Pricing",
-  "subscriptionDescription": "Users can register their BNS names for 1, 2, 5, and 10 years for as low as",
-  "subscriptionDescriptionTail": "respectively.",
+  "pricingHeader": "Pricing:",
+  "bnsPricingDescription": "Users can register their BNS names for 1, 2, 5, and 10 years for as low as $p1$ BDX, $p2$ BDX, $p3$ BDX, and $p4$ BDX respectively.",
   "aboutBNSDescription2": "Using BNS names enhances your privacy, security, and convenience. Whether you’re sending a message, making a transaction, or using decentralized services, your BNS name ensures a consistent and simplified experience.",
   "aboutBNSFooter": "Get started with your BNS name today and enjoy the benefits of a decentralized identity across all your Beldex services!",
   "showQR": "Show QR",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ and $count$ others",
   "paymentDirectionReceived": "Received",
   "pickFileForAvatarError": "An error happened while picking/resizing the image",
-  "attachmentTypeImages": "Images",
-  "and": "and" 
+  "attachmentTypeImages": "Images" 
 }

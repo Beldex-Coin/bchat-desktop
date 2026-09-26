@@ -11,7 +11,8 @@ import { Image } from './Image';
 
 import { GoogleChrome } from '../../util';
 import classNames from 'classnames';
-import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
+import { Room } from './message/message-item/GroupInvitation';
+import { FontSizeChanger } from '../settings/ChangeChatFontSetting';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
 import { renderMarkdownBlocks } from './message/message-content/MessageBody';

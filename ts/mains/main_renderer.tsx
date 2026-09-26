@@ -217,7 +217,7 @@ async function manageExpiringData() {
 }
 
 async function start() {
-  applyDocumentDirection((window.i18n as any).getLocale());
+  applyDocumentDirection(window.i18n.getLocale());
   void manageExpiringData();
   window.dispatchEvent(new Event('storage_ready'));
 

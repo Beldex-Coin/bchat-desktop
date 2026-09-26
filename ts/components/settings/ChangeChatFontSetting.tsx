@@ -15,14 +15,25 @@ import { SettingMiniModal } from '../../state/ducks/modalDialog';
 import { BchatIcon } from '../icon';
 
 const fontSizeOptions = () => [
-    { value: 'small', label: window.i18n('small') },
-    { value: 'medium', label: window.i18n('medium') },
-    { value: 'large', label: window.i18n('large') },
+    { value: 'Small', label: window.i18n('small') },
+    { value: 'Medium', label: window.i18n('medium') },
+    { value: 'Large', label: window.i18n('large') },
 ];
+
+export const FontSizeChanger = (fontSize: number) => {
+    const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
+    if (currentValueFromSettings === 'Medium') {
+        return fontSize + 2;
+    }
+    if (currentValueFromSettings === 'Large') {
+        return fontSize + 4;
+    }
+    return fontSize;
+};
 
 
 export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) => void }) => {
-    const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
+    const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
     const forceUpdate = useUpdate();
     // const zoomSize=options.filter((item)=>item.value===currentValueFromSettings)
     const [value, setValue] = useState(currentValueFromSettings);
@@ -55,7 +66,7 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
         <BchatSettingsItemWrapper title={window.i18n('chatFontSize')} inline={true} iconType='coverWithA' description={window.i18n('fontsizeDesc')}>
             <div className="bchat-settings-item-font-Change"  onClick={() => displayPopUp()}>
                 <div>
-                    {window.i18n(value)}
+                    {fontSizeOptions().find(option => option.value === value)?.label ?? window.i18n('small')}
                 </div>
                 <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
             </div>

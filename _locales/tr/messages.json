@@ -601,9 +601,8 @@
   "keyBenefits1": "Birleşik Kimlik: BChat ID’nizi, Beldex Cüzdan Adresinizi ve BelNet ID’nizi tek bir BNS adıyla bağlayabilirsiniz. Bu, Beldex ekosistemi genelindeki etkileşimlerinizi kolaylaştırır.",
   "keyBenefits2": " Kullanım Kolaylığı: Karmaşık alfanümerik dizilere veda edin. BNS adınız sayesinde mesajlaşma ve işlemler daha basit ve kullanıcı dostu hale gelir.",
   "keyBenefits3": "Güven Rozeti: BChat ID’nizi BNS adınıza bağlayıp doğrulama sürecini tamamladığınızda BNS rozeti kazanabilirsiniz. Bu rozet, topluluk içinde ek bir güven ve tanınırlık katmanı sağlar..",
-  "pricingHeader": "Fiyatlandırma",
-  "subscriptionDescription": "Kullanıcılar BNS adlarını şu süreler için kaydedebilir 1, 2, 5,10 yıl",
-  "subscriptionDescriptionTail": "sırasıyla.",
+  "pricingHeader": "Fiyatlandırma:",
+  "bnsPricingDescription": "Kullanıcılar BNS adlarını şu süreler için kaydedebilir: 1 yıl: $p1$ BDX, 2 yıl: $p2$ BDX, 5 yıl: $p3$ BDX, 10 yıl: $p4$ BDX.",
   "aboutBNSDescription2": "BNS isimleri kullanmak gizliliğinizi, güvenliğinizi ve kullanım kolaylığınızı artırır. İster mesaj gönderiyor olun, ister işlem yapıyor olun ya da merkeziyetsiz hizmetleri kullanıyor olun, BNS adınız tutarlı ve basitleştirilmiş bir deneyim sağlar.",
   "aboutBNSFooter": "Bugün BNS adınızı oluşturun ve tüm Beldex hizmetlerinde merkeziyetsiz kimliğin avantajlarından yararlanmaya başlayın!",
   "showQR": "QR Göster",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ ve $count$ diğer kişi",
   "paymentDirectionReceived": "Alındı",
   "pickFileForAvatarError": "Görsel seçilirken/boyutlandırılırken bir hata oluştu",
-  "attachmentTypeImages": "Görseller",
-  "and": "ve"
+  "attachmentTypeImages": "Görseller"
 }

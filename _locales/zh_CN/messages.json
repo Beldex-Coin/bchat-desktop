@@ -601,9 +601,8 @@
   "keyBenefits1": "统一身份： 将您的 BChat ID、Beldex 钱包地址和 BelNet ID 连接到同一个 BNS 名称，使您在整个 Beldex 生态系统中的使用更加简单便捷。",
   "keyBenefits2": "易于使用： 不再需要复杂的字母和数字组合。使用您的 BNS 名称后，消息发送和交易都将更加简单、直观。",
   "keyBenefits3": "信任标识： 将您的 BChat ID 关联到您的 BNS 名称并完成验证流程，即可获得 BNS 徽章。该徽章可在社区中增加可信度和识别度。",
-  "pricingHeader": "价格",
-  "subscriptionDescription": "用户可以注册 BNS 名称，期限分别为 1 年、2 年、5 年和 10 年，",
-  "subscriptionDescriptionTail": "分别为",
+  "pricingHeader": "价格：",
+  "bnsPricingDescription": "用户可以注册 BNS 名称，期限分别为 1 年、2 年、5 年和 10 年，费用分别为 $p1$ BDX、$p2$ BDX、$p3$ BDX 和 $p4$ BDX 起。",
 
   "aboutBNSDescription2": "使用 BNS 名称可以提升您的隐私性、安全性和使用便利性。无论是发送消息、进行交易还是使用去中心化服务，您的 BNS 名称都能为您提供一致且简化的体验。",
   "aboutBNSFooter": "立即创建您的 BNS 名称，享受在所有 Beldex 服务中的去中心化身份体验！",
@@ -728,6 +727,5 @@
   "sharedContactAndOthers": "$name$ 和其他 $count$ 人",
   "paymentDirectionReceived": "已接收",
   "pickFileForAvatarError": "选择/调整图片大小时发生错误",
-  "attachmentTypeImages": "图片",
-  "and": "和"
+  "attachmentTypeImages": "图片"
 }

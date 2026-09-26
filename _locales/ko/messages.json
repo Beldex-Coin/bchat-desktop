@@ -601,9 +601,8 @@
   "keyBenefits1": "통합 신원: BChat ID, Beldex 지갑 주소, BelNet ID를 하나의 BNS 이름에 연결할 수 있습니다. 이를 통해 Beldex 생태계 전반에서의 상호작용이 더욱 간편해집니다.",
   "keyBenefits2": "사용 편의성: 복잡한 영숫자 문자열을 사용할 필요가 없습니다. BNS 이름을 사용하면 메시지 전송과 거래가 더욱 간단하고 사용자 친화적으로 이루어집니다.",
   "keyBenefits3": "신뢰의 배지: BChat ID를 BNS 이름에 연결하고 인증 절차를 완료하면 BNS 배지를 받을 수 있습니다. 이 배지는 커뮤니티 내에서 신뢰와 인지도를 높여줍니다.",
-  "pricingHeader": "가격",
-  "subscriptionDescription": "사용자는 BNS 이름을 1년, 2년, 5년, 10년 기간으로 등록할 수 있으며 각각 최소 ",
-  "subscriptionDescriptionTail": "각각",
+  "pricingHeader": "가격:",
+  "bnsPricingDescription": "사용자는 BNS 이름을 1년, 2년, 5년, 10년 기간으로 등록할 수 있으며 각각 최소 $p1$ BDX, $p2$ BDX, $p3$ BDX, $p4$ BDX의 비용이 발생합니다.",
   "aboutBNSDescription2": "BNS 이름을 사용하면 개인정보 보호, 보안, 그리고 편의성이 향상됩니다. 메시지를 보내거나 거래를 하거나 탈중앙화 서비스를 이용할 때 BNS 이름을 통해 일관되고 간편한 경험을 제공받을 수 있습니다.",
   "aboutBNSFooter": "지금 바로 BNS 이름을 시작하고 Beldex 서비스 전반에서 탈중앙화 신원의 이점을 경험해 보세요.",
   "showQR": "QR 코드 표시",
@@ -727,6 +726,5 @@
   "sharedContactAndOthers": "$name$ 및 다른 $count$명",
   "paymentDirectionReceived": "수신됨",
   "pickFileForAvatarError": "이미지를 선택하거나 크기를 조정하는 동안 오류가 발생했습니다",
-  "attachmentTypeImages": "이미지",
-  "and": "및"
+  "attachmentTypeImages": "이미지"
 }

@@ -601,9 +601,8 @@
   "keyBenefits1": "Danh tính Thống nhất: Kết nối ID BChat, Địa chỉ Ví Beldex và ID BelNet của bạn với một tên BNS duy nhất. Điều này đơn giản hóa các tương tác của bạn trong toàn bộ hệ sinh thái Beldex.",
   "keyBenefits2": "Dễ sử dụng: Tạm biệt các chuỗi ký tự chữ và số phức tạp. Với tên BNS của bạn, việc nhắn tin và giao dịch trở nên đơn giản và thân thiện với người dùng.",
   "keyBenefits3": "Biểu tượng Uy tín: Liên kết ID BChat của bạn với tên BNS và hoàn tất quá trình xác minh để nhận biểu tượng BNS. Biểu tượng này tăng thêm sự tin cậy và công nhận trong cộng đồng..",
-  "pricingHeader": "Giá cả",
-  "subscriptionDescription": "Giá cả: Người dùng có thể đăng ký tên BNS của mình trong 1, 2, 5 hoặc 10 năm với mức phí lần lượt là 650 BDX, 1000 BDX, 2000 BDX và 4000 BDX.",
-  "subscriptionDescriptionTail": "tương ứng.",
+  "pricingHeader": "Giá cả:",
+  "bnsPricingDescription": "Người dùng có thể đăng ký tên BNS của mình trong 1, 2, 5 hoặc 10 năm với mức phí lần lượt là $p1$ BDX, $p2$ BDX, $p3$ BDX và $p4$ BDX.",
 
   "aboutBNSDescription2": "Việc sử dụng tên BNS nâng cao quyền riêng tư, bảo mật và sự tiện lợi của bạn. Dù bạn đang gửi tin nhắn, thực hiện giao dịch, hay sử dụng các dịch vụ phi tập trung, tên BNS của bạn đảm bảo một trải nghiệm nhất quán và đơn giản hóa.",
   "aboutBNSFooter": "Bắt đầu với tên BNS của bạn ngay hôm nay và tận hưởng lợi ích của danh tính phi tập trung trên tất cả các dịch vụ Beldex của bạn!",
@@ -728,7 +727,6 @@
   "sharedContactAndOthers": "$name$ và $count$ người khác",
   "paymentDirectionReceived": "Đã nhận",
   "pickFileForAvatarError": "Đã xảy ra lỗi khi chọn/thay đổi kích thước hình ảnh",
-  "attachmentTypeImages": "Hình ảnh",
-  "and": "và"
+  "attachmentTypeImages": "Hình ảnh"
 
 }
