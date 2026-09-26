@@ -53,7 +53,7 @@ export const LeftPaneSectionContainer = styled.div`
  
   .sub-menu-box-wrapper {
     position: fixed;
-    left: 102px;
+    inset-inline-start: 102px;
     top: 82px;
     z-index: 9;
     .sub-menu-box {
@@ -61,7 +61,7 @@ export const LeftPaneSectionContainer = styled.div`
 
       padding: 10px;
       width: 247px;
-      height: 243px;
+      // height: 243px;
       border-radius: 26px;
     }
   }
@@ -111,7 +111,7 @@ export const LeftPaneSectionContainer = styled.div`
     height: 20px;
     font-size: 12px;
     top: 11px;
-    right: 13px;
+    inset-inline-end: 13px;
     opacity: 1;
     display: flex;
     align-items: center;

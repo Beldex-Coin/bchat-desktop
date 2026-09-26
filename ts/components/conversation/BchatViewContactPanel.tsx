@@ -51,11 +51,11 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
         bchatIcon: 'avatar',
         iconSize: 31,
         iconShow: true,
-        title: 'Start chat now?',
-        message: 'Do you want to chat with this contact now?',
+        title: window.i18n('startChatNowTitle'),
+        message: window.i18n('startChatNowConfirmation'),
         onClickClose: () => dispatch(updateConfirmModal(null)),
         onClickOk: () => openConverstation(pubKey),
-        okText: 'Start Chatting',
+        okText: window.i18n('startChatting'),
         okTheme: BchatButtonColor.Primary,
       })
     );
@@ -71,7 +71,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
           padding="25px"
           className="contact-list-header-title-wrapper"
         >
-          <span className="contact-list-header-titleTxt">View Contacts</span>
+          <span className="contact-list-header-titleTxt">{window.i18n('viewContacts')}</span>
           <span
             onClick={() => {
               window.inboxStore?.dispatch(updateViewContactPanel(null));
@@ -107,7 +107,7 @@ const ContactList = (props:ContactListProps) => {
     <>
       <div
         className={classNames(`address-content-box `)}
-        style={{ paddingLeft: '10px', paddingRight: '10px',marginLeft:'10px',marginRight:'10px' }}
+        style={{ paddingInlineStart: '10px', paddingInlineEnd: '10px',marginInlineStart:'10px',marginInlineEnd:'10px' }}
       >
         <div className="avatarBox">
           <Avatar pubkey={pubkey} size={AvatarSize.M} isBnsHolder={isBnsHolder}/>

@@ -118,15 +118,15 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('joinSocialGroupAfterInvitationConfirmationTitle', [
-        roomName || 'Unknown',
+        roomName || window.i18n('unknown'),
       ]),
       message: window.i18n('joinSocialGroupAfterInvitationConfirmationDesc', [
-        roomName || 'Unknown',
+        roomName || window.i18n('unknown'),
       ]),
 
-      okText: 'Yes',
+      okText: window.i18n('yes'),
       okTheme: BchatButtonColor.Primary,
-      cancelText: 'No',
+      cancelText: window.i18n('no'),
       iconShow: true,
       iconSize: 30,
       bchatIcon: 'peopleGrp',

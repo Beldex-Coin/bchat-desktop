@@ -137,10 +137,10 @@ export const SignInTab = (props: any) => {
   // const year = moment(restoreDate).year();
   const activateContinueButton = displayNameOK && !loading;
   const confirmProps = {
-    title: 'Blockheight will be set to Zero(0)',
-    message: 'Do you want to proceed Restore by syncing from Blockheight value 0?',
-    okText: 'Proceed',
-    cancelText: 'Cancel',
+    title: window.i18n('blockheightZeroTitle'),
+    message: window.i18n('blockheightZeroConfirmation'),
+    okText: window.i18n('proceed'),
+    cancelText: window.i18n('cancel'),
     showExitIcon: false,
     iconShow: true,
     customIcon: <BchatIcon iconType="blockSync" iconSize={58} fillRule='evenodd' clipRule='evenodd' />,
@@ -181,7 +181,7 @@ export const SignInTab = (props: any) => {
 
   const seedValidation = () => {
     if (!recoveryPhrase) {
-      return ToastUtils.pushToastError('registrationError', `Please enter the seed`);
+      return ToastUtils.pushToastError('registrationError', `${window.i18n('emptySeedErrMsg')}`);
     } else {
       try {
         mnDecode(recoveryPhrase, 'english');
@@ -191,7 +191,7 @@ export const SignInTab = (props: any) => {
         setScreenName(1);
         ToastUtils.pushToastError(
           'registrationError',
-          `Error: ${e.message || 'Something went wrong'}`
+          window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
         );
         window?.log?.warn('exception during registration:', e);
       }
@@ -323,8 +323,8 @@ export const SignInTab = (props: any) => {
             position: 'absolute',
             top: 0,
             bottom: 0,
-            left: 0,
-            right: 0,
+            insetInlineStart: 0,
+            insetInlineEnd: 0,
             pointerEvents: 'all',
             backgroundColor: '#00000088',
           }}

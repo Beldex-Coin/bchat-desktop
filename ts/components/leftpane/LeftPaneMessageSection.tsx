@@ -61,7 +61,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
       throw new Error('renderRow: conversations selector returned element containing falsy value.');
     }
 
-    return <MemoConversationListItemWithDetails key={key} {...conversation} />;
+    return (
+      <MemoConversationListItemWithDetails
+        key={`${conversation.id}-${key}`}
+        {...conversation}
+      />
+    );
   };
 
   public renderList(): JSX.Element | Array<JSX.Element | null> {
@@ -76,13 +81,11 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     }
 
     // const length = conversations.length;
-    const listKey = 0;
-
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
     const list = (
-      <div className="module-left-pane__list" key={listKey}>
+      <div className="module-left-pane__list">
         {/*  <AutoSizer>
           {({height,  width }) => (
             <List

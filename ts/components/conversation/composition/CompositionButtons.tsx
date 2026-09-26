@@ -10,7 +10,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
   return (
     <div
       className="attachment-box"
-      data-tip="Attachment"
+      data-tip={window.i18n('attachment')}
       data-place="top"
       data-offset="{'right':10}"
       onClick={props.onClick}
@@ -58,6 +58,7 @@ export const SendMessageButton = (props: { onClick: () => void; name?: string}) 
     <div  onClick={props.onClick}>
         <BchatIconButton
           iconType="send"
+          flipInRtl={true}
           // iconColor="#fff"
           iconSize={30}
           padding="15px 13px"
@@ -72,7 +73,7 @@ export const SendFundDisableButton = (props: { onClick: () => void }) => {
   return (
     <div onClick={props.onClick}>
       <div
-        data-tip="Send BDX"
+        data-tip={window.i18n('sendBDXTooltip')}
         className="coin-logo-wrapper"
         data-offset="{'top':10,'right':0}"
       >

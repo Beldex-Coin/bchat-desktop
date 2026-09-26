@@ -18,7 +18,7 @@ export const CommunityGuidelinesDialog = () => {
         onClose={closeDialog}
         showExitIcon={false}
         isloading={false}
-        title="Community Guidelines"
+        title={window.i18n('communityGuidelines')}
         okButton={{
           text: window.i18n('close'),
           onClickOkHandler: closeDialog,
@@ -27,34 +27,25 @@ export const CommunityGuidelinesDialog = () => {
         <section>
           <article>
             <div>
-              BChat is a decentralized messaging platform that protects your privacy. When you're
-              using BChat, you own your conversations and data. It does not collect or store any of
-              your personal information. BChat is where you chat with freedom.
+              {window.i18n('guidelinesDescription')}
             </div>
             <div>
-              BChat is also more than a messaging application. You can send and receive BDX right
-              from your chat box.
+              {window.i18n('guidelinesDescription2')}
             </div>
             <div>
-              BChat is built on top of the Beldex network. Masternodes on the Beldex network store
-              and relay encrypted messages between clients. Other projects that are currently being
-              researched or developed by Beldex include BelNet (a decentralized VPN service), Beldex
-              Browser (an ad-free Web3 browser), and the Beldex Privacy Protocol (to anonymize every
-              other asset).
+              {window.i18n('guidelinesDescription3')}
             </div>
-            <div>To know more, visit:<a onClick={()=>openLink('https://www.beldex.io')} style={{textDecoration: "underline"}}> https://www.beldex.io</a></div>
-            <div>For collabs or marketing proposals, contact <a>marketing@beldex.io.</a></div>
-            <div>For investments, contact <a >invest.bchat@beldex.io</a></div>
+            <div>{window.i18n('toKnowMore')}:<a onClick={()=>openLink('https://www.beldex.io')} style={{textDecoration: "underline"}}> https://www.beldex.io</a></div>
+            <div>{window.i18n('marketingprop')} <a>marketing@beldex.io.</a></div>
+            <div>{window.i18n('forInvest..')} <a >invest.bchat@beldex.io</a></div>
             <div>
-              To protect and preserve this community, kindly follow the group rules and guidelines.
+              {window.i18n('guidelinesDescription4')}
             </div>
             <div>
-              Be civil. You can share your opinions and constructive criticisms but harassment is
-              not permitted. Don't promote or shill your token/project. This group is dedicated to
-              BChat and the Beldex ecosystem. Spammers will be banned.
+              {window.i18n('guidelinesDescription5')}
             </div>
-            <div>Do not share NSFW content or use profane language.</div>
-            <div>Beware of scammers. Admins will not DM you first.</div>
+            <div>{window.i18n('guidelinesDescription6')}</div>
+            <div>{window.i18n('guidelinesDescription7')}</div>
           </article>
         </section>
       </BchatWrapperModal>

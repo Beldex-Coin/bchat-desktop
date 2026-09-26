@@ -1,7 +1,7 @@
 .modal {
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.3);
@@ -56,7 +56,7 @@
         border: 1px solid var(--color-search-border);
         background: var(--color-hop-bg);
         height: 70px;
-        padding-left: 15px;
+        padding-inline-start: 15px;
       }
     }
   }
@@ -171,7 +171,7 @@
     .invite-friends-list-inner-wrapper {
       max-height: 380px;
       overflow-y: auto;
-      padding-right: 10px;
+      padding-inline-end: 10px;
     }
   }
 }
@@ -310,7 +310,7 @@
     border-radius: 24px 24px 0px 0px;
     background: var(--color-reaction-hover-bg);
     width: 95%;
-    margin-left: 4%;
+    margin-inline-start: 4%;
     transition: bottom 0.5s ease-in-out;
     height: 337px;
     padding: 15px;
@@ -491,7 +491,7 @@
       align-items: center;
       justify-content: center;
       position: absolute;
-      right: -3px;
+      inset-inline-end: -3px;
       height: 30px;
       width: 30px;
       border-radius: 50%;
@@ -521,13 +521,14 @@
 
     &-display {
       user-select: text;
-      text-align: left;
+      text-align: start;
       word-break: break-all;
       font-size: $bchat-font-md;
       // background-color: var(--color-background-primary);
       background-color: var(--color-hop-bg);
       border-radius: 10px;
-      padding: 0px 10px 10px 14px;
+      padding-block: 0px 10px;
+      padding-inline: 14px 10px;
       font-family: $bchat-font-default;
       font-weight: 100;
       color: #0bb70f;
@@ -580,7 +581,7 @@
   .profileClose {
     display: flex;
     // justify-content: center;
-    margin-left: 20px;
+    margin-inline-start: 20px;
     margin-top: 12px;
     width: 28px;
     height: 28px;
@@ -602,7 +603,7 @@
     .inputBox {
       display: flex;
       width: 200px;
-      padding-left: 45px;
+      padding-inline-start: 45px;
     }
 
     .saveIcon {
@@ -610,7 +611,7 @@
       color: var(--color-accent);
       cursor: pointer;
       margin: auto 0;
-      margin-left: 7px;
+      margin-inline-start: 7px;
     }
 
     input {
@@ -628,14 +629,14 @@
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      margin-right: 25px;
+      margin-inline-end: 25px;
       font-family: $bchat-font-default;
 
       p {
         font-size: 16px;
         padding: 0px $bchat-margin-sm;
         margin: 0;
-        margin-left: 33px;
+        margin-inline-start: 33px;
         line-height: 22px;
       }
 
@@ -707,7 +708,7 @@
 .bns_link_modal {
   width: 500px;
   padding-top: 20px;
-  text-align: left;
+  text-align: start;
 
   header {
     margin-bottom: 25px;
@@ -838,7 +839,7 @@
 
 .about-bns {
   section {
-    text-align: left;
+    text-align: start;
     width: 600px;
     height: 450px;
     overflow: auto;
@@ -893,7 +894,7 @@
     overflow-x: hidden;
     // height: 482px;
     width: 581px;
-    text-align: left;
+    text-align: start;
     padding: 0 26px ;
 
     div {
@@ -951,8 +952,8 @@
         p {
           margin-bottom: 0 !important;
           margin-top: 0;
-          margin-left: 2em;
-          text-align: left;
+          margin-inline-start: 2em;
+          text-align: start;
         }
 
         .dot {
@@ -983,7 +984,7 @@
     border: 1px solid var(--color-search-border);
     background: var(--color-hop-bg);
     padding: 15px;
-    text-align: left;
+    text-align: start;
 
     &-label {
       // color: #f0f0f0;
@@ -999,7 +1000,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: 17px;
-      padding-right: 20px;
+      padding-inline-end: 20px;
     }
   }
 }

@@ -79,8 +79,8 @@ export const UserDetailsDialog = (props: Props) => {
         <div className="user-id-wrapper">
           <Flex container={true} alignItems='baseline'>
             <div>
-              <div className="user-id-wrapper-label">BChat Id</div>
-              <div className="user-id">{convo.id}</div>
+              <div className="user-id-wrapper-label">{window.i18n('bChatID')}</div>
+              <div className="user-id" dir="ltr">{convo.id}</div>
             </div>
             <BchatIconButton
               iconType="copy"

@@ -73,9 +73,9 @@ type RecentReactsProps = {
 const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
   position: fixed;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 101;
   ${StyledEmojiPanel} {
     position: absolute;
@@ -85,7 +85,7 @@ const StyledEmojiPanelContainer = styled.div<{ x: number; y: number }>`
 `;
 const StyledMessageReactBarInnerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
-  left: ${props => `${props.isIncoming ? 4 : -248}px`};
+  inset-inline-start: ${props => `${props.isIncoming ? 4 : -248}px`};
   z-index: 1;
 `;
 const StyledRecentReactionWrapper = styled.div`

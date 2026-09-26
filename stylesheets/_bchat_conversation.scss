@@ -38,7 +38,7 @@
   height: 100%;
   // right: 0vw;
   top: 64px;
-  left: 387px;
+  inset-inline-start: 387px;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-3%);
   will-change: transform;
@@ -77,7 +77,10 @@
 
     .close-button {
       float: left;
-      padding-right: 10px;
+      padding-inline-end: 10px;
+      html[dir='rtl'] & {
+        float: right;
+      }
     }
 
     .seleted-count {
@@ -145,7 +148,7 @@
     outline: none;
     position: relative;
 
-    border-left: var(--border-bchat);
+    border-inline-start: var(--border-bchat);
     border-top: var(--border-bchat);
   }
 
@@ -179,7 +182,7 @@
       font-style: normal;
       font-weight: 600;
       line-height: normal;
-      margin-left: 5px;
+      margin-inline-start: 5px;
     }
     .msg-sub-title {
       color: #a7a7ba;
@@ -187,7 +190,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: normal;
-      margin-left: 5px;
+      margin-inline-start: 5px;
     }
   }
 }
@@ -200,7 +203,7 @@
 
   position: absolute;
   z-index: 100;
-  right: 20px;
+  inset-inline-end: 20px;
   top: 0px;
  
   .local-video {
@@ -330,8 +333,8 @@
       position: absolute;
       bottom: 75px;
       z-index: 99;
-      width: 207px;
-      height: 162px;
+      width: 219px;
+      // height: 162px;
       padding: 15px;
       
       .content-Wrapper{
@@ -339,7 +342,7 @@
         cursor: pointer;
         span{
           font-size: 16px;
-          margin-left: 3px;
+          margin-inline-start: 3px;
         }
         &:hover{
           background: var(--color-profile-header-bg);
@@ -389,12 +392,13 @@
     /* min-height: 60px; */
     padding: 5px 0;
     /* z-index: 1; */
-    /* margin-left: 27px; */
+    /* margin-inline-start: 27px; */
     border-radius: 16px;
     background-color: var(--color-composeMsgInput);
     margin: 5px 7px;
     border-radius: 10px;
-    padding: 0 20px 0 15px;
+    padding-block: 0;
+    padding-inline: 15px 20px;
     position: relative;
     //  box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 20%);
 
@@ -404,7 +408,7 @@
       padding: 7px;
       border-radius: 26px;
       border: 2px solid #888a8d;
-      margin-left: 15px;
+      margin-inline-start: 15px;
     }
 
     // svg:hover {
@@ -419,7 +423,7 @@
       font-family: $bchat-font-default;
       min-height: $composition-container-height / 3;
       max-height: 3 * $composition-container-height;
-      margin-right: $bchat-margin-md;
+      margin-inline-end: $bchat-margin-md;
       color: var(--color-text);
 
       background: transparent;
@@ -434,7 +438,7 @@
     }
 
     &__emoji-overlay {
-      margin-right:10px;
+      margin-inline-end:10px;
       .bchat-icon-button:hover{
         background-color: var(--color-emoji-icon-hover-bg);
       }
@@ -540,7 +544,7 @@
 
     width: 100%;
     position: absolute;
-    left: 0px;
+    inset-inline-start: 0px;
     font-size: 0px;
     height: 1px;
 
@@ -687,9 +691,9 @@
     display: flex;
     justify-content: center;
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     z-index: 2;
-    right: 0;
+    inset-inline-end: 0;
     bottom: $composition-container-height + $bchat-margin-md;
 
     .bchat-button {
@@ -736,7 +740,7 @@
       justify-content: center;
       width: 35px;
       height: 35px;
-      margin-right: 10px;
+      margin-inline-end: 10px;
       color: var(--color-icon);
       background-color: var(--color-disappear-time-hover);
       border-radius: 10px;
@@ -746,7 +750,7 @@
       border: 1px solid red;
       padding: 3px;
       border-radius: 36px;
-      margin-right: 10px;
+      margin-inline-end: 10px;
     }
 
     &-light {
@@ -799,7 +803,8 @@ $rhap_font-family: inherit !default;
 }
 
 .rhap_current-time {
-  margin: 0 0px 0 10px;
+  margin-block: 0;
+  margin-inline: 10px 0px;
   flex-shrink: 0;
 }
 
@@ -841,7 +846,7 @@ $rhap_font-family: inherit !default;
 .rhap_progress-filled {
   background-color: rgba(var(--color-accent), 0.6);
 
-  padding-left: 5px;
+  padding-inline-start: 5px;
 }
 
 .rhap_download-progress {
@@ -858,7 +863,7 @@ $rhap_font-family: inherit !default;
   width: 15px;
   height: 15px;
   top: -5px;
-  margin-left: -10px;
+  margin-inline-start: -10px;
   background: $bchat-color-green;
   box-shadow: none;
   box-shadow: rgba($rhap_theme-color, 0.5) 0 0 5px;
@@ -888,7 +893,7 @@ $rhap_font-family: inherit !default;
   font-size: 20px;
   width: 20px;
   height: 20px;
-  margin-right: 0px;
+  margin-inline-end: 0px;
 }
 
 /* **************** */
@@ -906,7 +911,7 @@ $rhap_font-family: inherit !default;
 
 .waveform-bar {
   width: 2px;
-  margin-right: 2px;
+  margin-inline-end: 2px;
   background-color: #ACACAC; /* Default waveColor */
   border-radius: 1px;
   flex-shrink: 0;
@@ -943,12 +948,12 @@ $rhap_font-family: inherit !default;
 .waveform-cursor.dragging {
   width: 16px;
   height: 16px;
-  margin-left: -8px;
+  margin-inline-start: -8px;
 }
 
 .waveform-cursor:not(.dragging) {
   width: 10px;
   height: 10px;
-  margin-left: -5px;
+  margin-inline-start: -5px;
 }
 

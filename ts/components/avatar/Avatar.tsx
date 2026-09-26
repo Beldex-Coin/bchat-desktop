@@ -52,7 +52,7 @@ const CrownWrapper = styled.div`
   width: 18px;
   position: absolute;
   top: -12px;
-  left: 15px;
+  inset-inline-start: 15px;
 `;
 
 export const CrownIcon = () => {
@@ -167,7 +167,7 @@ const AvatarInner = (props: Props) => {
         {!!isBnsHolder && (
           <span
             className="module-avatar-verify-wrapper-verify-tag"
-            style={{ bottom: -7, right: -7 }}
+            style={{ bottom: -7, insetInlineEnd: -7 }}
           >
             <VerifyPadgeIcon  size={size < 48 ? 18 :undefined }/>
           </span>

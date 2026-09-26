@@ -35,7 +35,7 @@ export type UserDetailsModalState = {
 export type ChangePasswordModalState = object | null;
 export type SettingMiniModalState = {
   headerName: string;
-  content: string[];
+  content: Array<{ value: string; label: string }>;
   onClose: () => void;
   onClick: (selected: string) => void;
   selectedItem: string;

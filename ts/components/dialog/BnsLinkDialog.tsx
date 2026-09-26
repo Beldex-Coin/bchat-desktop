@@ -110,6 +110,7 @@ export const BnsLinkDialog = () => {
               <input
                 style={{ color:isVerify?'#0BB70F':verifyError?'#FF3E3E':'' }}
                 type="text"
+                dir="ltr"
                 className="inputBox"
                 disabled={isVerify}
                 value={bnsName}
@@ -141,7 +142,7 @@ export const BnsLinkDialog = () => {
               ) : (
                 // </div>
                 <div className="bchat-btn-struct">
-                  <span style={{ marginRight: '4px' }}>{i18n('verified')}</span>
+                  <span style={{ marginInlineEnd: '4px' }}>{i18n('verified')}</span>
                   <span style={{ display: 'flex' }}>
                     <BchatIcon iconType="circleWithTick" iconSize={16} iconColor="#0B9E3C" />
                   </span>
@@ -151,7 +152,7 @@ export const BnsLinkDialog = () => {
               <BchatButton
                 style={{
                   width: '245px',
-                 marginLeft:'10px'
+                 marginInlineStart:'10px'
                 }}
                 text={i18n('linkBNS')}
                 disabled={!isVerify}

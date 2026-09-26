@@ -54,6 +54,9 @@ export const StyledSvgWrapper=styled.div`
     position: absolute;
     z-index: 19;
     bottom: 0px;
+    html[dir='rtl'] & svg {
+      transform: scaleX(-1);
+    }
 `
 type Props = {
   messageId: string;
@@ -262,23 +265,29 @@ export const MessageContent = (props: Props) => {
               />
             </>
           )}
-          {hasContentAfterAttachmentAndQuote ? (
-            <>
-              {!isDeleted && (
-                <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
-              )}
-              {/* attachment-with-quote class is used to only refer the design validation in css */}
+          {hasContentAfterAttachmentAndQuote && !isDeleted && (
+            <MessagePreview messageId={props.messageId} handleImageError={handleImageError} direction={direction} />
+          )}
+          {/* the text's .spacer and the overlapping timestamp must resolve to the same side,
+              so both share the direction of the message text (bdi keeps the time out of it) */}
+          <div dir={hasText ? 'auto' : undefined}>
+            {hasContentAfterAttachmentAndQuote ? (
+              // attachment-with-quote class is used to only refer the design validation in css
               <Flex padding="0 15px" container={true} flexDirection="column" className={classNames(hasAttachment && hasText && 'attachment-with-quote')}>
                 <MessageText messageId={props.messageId} />
               </Flex>
-            </>
-          ) : null}
-          {/* <SpacerXS />  */}
-         {!props.isDetailView &&  <div className="timeStamp">{moment(timestamp).format('hh:mm A')}</div>}
+            ) : null}
+            {/* <SpacerXS />  */}
+            {!props.isDetailView && (
+              <div className="timeStamp">
+                <bdi>{moment(timestamp).format('hh:mm A')}</bdi>
+              </div>
+            )}
+          </div>
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
-    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{right:0}}>
+    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{insetInlineEnd:0}}>
       <OutgoingMsgTailIcon/>
     </StyledSvgWrapper> }  
     

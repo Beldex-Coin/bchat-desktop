@@ -20,13 +20,13 @@ export const DisplayIdAndAddress = (props: any) => (
     <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('bChatID')}</h6>
     <div className="bchat-registration-welcome-screen-chat-value">
       {/* <p style={{color: "#0BB70F"}}>{props.pubKey}</p> */}
-      <p style={{ color: '#00A638' }}>{props.pubKey}</p>
+      <p style={{ color: '#00A638' }} dir="ltr">{props.pubKey}</p>
     </div>
     <p className="bchat-registration-welcome-screen-chat-content">{window.i18n('yourBchatName')}</p>
     <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('beldexAddress')}</h6>
     <div className="bchat-registration-welcome-screen-chat-value">
       {/* <p style={{color:"#1782FF"}}>{props.walletAddress}</p> */}
-      <p style={{ color: '#2D81FF' }}>{props.walletAddress}</p>
+      <p style={{ color: '#2D81FF' }} dir="ltr">{props.walletAddress}</p>
 
       {/* </div> */}
     </div>
@@ -129,7 +129,7 @@ export const ShowRecoveryPhase = (props: any) => {
         // iconRotation={3}
         /> */}
               <div
-                data-tip="Copy"
+                data-tip={window.i18n('editMenuCopy')}
                 data-place="right"
                 data-offset="{'top':30,'left':15}"
                 className="iconBox"
@@ -141,7 +141,7 @@ export const ShowRecoveryPhase = (props: any) => {
             </div>
           </div>
           <p className="bchat-registration-recovery-phrase-hintTxt">
-            <span>Note :</span> {window.i18n('saveYourRecoveryPhrase')}
+            <span>{window.i18n('noteLabel')}</span> {window.i18n('saveYourRecoveryPhrase')}
             {window.i18n('copyToContinueRecovery')}
             </p>
             <SpacerLG/>

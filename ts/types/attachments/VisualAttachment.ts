@@ -126,7 +126,7 @@ export async function autoScaleAvatarBlob(file: File) {
   } catch (e) {
     ToastUtils.pushToastError(
       'pickFileForAvatar',
-      'An error happened while picking/resizing the image',
+      window.i18n('pickFileForAvatarError'),
       e.message || ''
     );
     window.log.error(e);
@@ -163,7 +163,7 @@ export async function pickFileForAvatar(): Promise<string | null> {
     const [fileHandle] = await (window as any).showOpenFilePicker({
       types: [
         {
-          description: 'Images',
+          description: window.i18n('attachmentTypeImages'),
           accept: {
             'image/*': ['.png', '.gif', '.jpeg', '.jpg'],
           },

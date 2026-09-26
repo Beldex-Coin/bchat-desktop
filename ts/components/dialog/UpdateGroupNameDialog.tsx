@@ -75,7 +75,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
   public render() {
     const okText = window.i18n('ok');
     const cancelText = window.i18n('cancel');
-    const titleText = window.i18n('updateGroupDialogTitle', [this.convo.getName() || 'Unknown']);
+    const titleText = window.i18n('updateGroupDialogTitle', [this.convo.getName() || window.i18n('unknown')]);
 
     const isAdmin = this.convo.isPublic()
       ? false // disable editing of opengroup rooms as we don't handle them for now

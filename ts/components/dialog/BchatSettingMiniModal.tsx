@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -17,7 +17,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   // keeps the plain radio list with no note.
   const descriptions = props?.descriptions;
   const hasNotes = !!descriptions && descriptions.length > 0;
-  const selectedIndex = data.indexOf(select);
+  const selectedIndex = data.findIndex(option => option.value === select);
   return (
     <div>
       <BchatWrapperModal
@@ -46,24 +46,23 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
             )}
           >
             <div style={{ width: '100%', overflowY: 'auto' }}>
-              { data.map((item: string, i: number) => (
-                  <>
+              { data.map((item: { value: string; label: string }, i: number) => (
+                  <Fragment key={item.value}>
                     <div
                       className={classNames(
                         'bchat-modal__centered-SettingMiniModalContent',
-                        select === item && 'isSelect'
+                        select === item.value && 'isSelect'
                       )}
-                      key={i}
-                      onClick={() => setSelect(item)}
+                      onClick={() => setSelect(item.value)}
                     >
                       <div
                         className={
-                          select !== item
+                          select !== item.value
                             ? 'bchat-modal__centered-SettingMiniModalContent-circle'
                             : 'selected'
                         }
                       >
-                        {select === item && (
+                        {select === item.value && (
                           <BchatIcon
                             iconType="circle"
                             iconSize={10}
@@ -71,7 +70,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
                           />
                         )}
                       </div>
-                      {item}
+                      {item.label}
                       {props?.contentSuffixes?.[i] && (
                         <span className="bchat-modal__centered-SettingMiniModalContent-suffix">
                           {props.contentSuffixes[i]}
@@ -79,7 +78,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
                       )}
                     </div>
                     <SpacerSM />
-                  </>
+                  </Fragment>
                 ))}
             </div>
           </div>

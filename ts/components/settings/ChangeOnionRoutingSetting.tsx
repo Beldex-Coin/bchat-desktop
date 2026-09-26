@@ -73,31 +73,33 @@ export const ChangeOnionRoutingSetting = () => {
   const dispatch = useDispatch();
   const [hops, setHops] = useState<OnionRoutingHops>(getEffectiveOnionRoutingHops());
 
-  const labelsByHop = HOP_OPTIONS.map(hopLabel);
+  // Picker options use the hop count itself ('0' / '1' / '3') as the stable value and the
+  // localized "0 Hop" / "1 Hop" / "3 Hops" as the label - same { value, label } shape as the Font
+  // Size picker.
+  const hopOptions = HOP_OPTIONS.map(h => ({ value: String(h), label: hopLabel(h) }));
 
-  const labelToHop = (label: string): OnionRoutingHops => {
-    const index = labelsByHop.indexOf(label);
-    return HOP_OPTIONS[index === -1 ? 1 : index];
+  const valueToHop = (value: string): OnionRoutingHops => {
+    const parsed = Number(value);
+    return parsed === 0 || parsed === 3 ? parsed : 1;
   };
 
   const displayPopUp = () => {
     dispatch(
       SettingMiniModal({
         headerName: window.i18n('onionRoutingHopsTitle'),
-        content: labelsByHop,
+        content: hopOptions,
         descriptions: HOP_OPTIONS.map(hopPopupDescription),
-        // "1 Hop (Default)" in the list, with "(Default)" muted like on the Settings row. Kept out of
-        // the label itself so labelToHop()/selectedItem keep matching on the plain "1 Hop".
+        // "1 Hop (Default)" in the list, with "(Default)" muted like on the Settings row.
         contentSuffixes: HOP_OPTIONS.map(h =>
           h === 1 ? window.i18n('onionRoutingHopsDefaultSuffix') : undefined
         ),
         // The shared picker modal defaults this button to "Save" (fine for Font Size), but the
         // Hops design calls for "OK".
         confirmButtonText: window.i18n('ok'),
-        selectedItem: hopLabel(hops),
+        selectedItem: String(hops),
         onClose: () => dispatch(SettingMiniModal(null)),
         onClick: (selected: string) => {
-          const chosenHops = labelToHop(selected);
+          const chosenHops = valueToHop(selected);
           window.setSettingValue(SettingsKey.settingsOnionRoutingHops, chosenHops);
           setHops(chosenHops);
           dispatch(SettingMiniModal(null));

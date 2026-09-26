@@ -28,7 +28,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   const classes = [`payment ${flashGreen && 'flash-green-once'}`];
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
+  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
@@ -78,9 +78,9 @@ export const PaymentMessage = (props: PropsForPayment) => {
   }
   function FontSizeChanger(fontSize: number) {
     let size;
-    if (currentValueFromSettings === 'Small') {
+    if (currentValueFromSettings === 'small') {
       size = fontSize;
-    } else if (currentValueFromSettings === 'Medium') {
+    } else if (currentValueFromSettings === 'medium') {
       size = fontSize + 2;
     } else {
       size = fontSize + 4;
@@ -94,14 +94,14 @@ export const PaymentMessage = (props: PropsForPayment) => {
     if (props.messageId === '1234-567-7890') {
       return (
         <Flex container={true} alignItems="center">
-          <span className="txn-status">Initiating transaction</span>
+          <span className="txn-status">{window.i18n('initiatingTransaction')}</span>
           <BchatIcon rotateDuration={2} iconColor={iconColor} iconType="loading" iconSize="tiny" />
         </Flex>
       );
     } else if (props.direction === 'outgoing') {
       return (
         <Flex container={true} alignItems="center">
-          <span className="txn-status">Sent Successfully!</span>
+          <span className="txn-status">{window.i18n('paymentSentSuccessfully')}</span>
           <BchatIcon iconColor={'#f0f0f0'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
@@ -109,7 +109,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
       return (
         <Flex container={true} alignItems="center" color="#108D32">
           <span className="txn-status" style={{ color: '#108D32' }}>
-            Received Successfully!
+            {window.i18n('paymentReceivedSuccessfully')}
           </span>
           <BchatIcon iconColor={'#108D32'} iconType="circleWithTick" iconSize={16} />
         </Flex>
@@ -148,7 +148,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
                 <div>
                   <BchatIcon iconType={'borderWithBeldex'} iconSize={34} />
                 </div>
-                <div className="amount" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
+                <div className="amount" dir="ltr" style={{ fontSize: `${FontSizeChanger(24)}px` }}>
                   {amount} BDX
                 </div>
 
@@ -165,7 +165,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
             </div>
           </div>
           {contentProps?.lastMessageOfSeries && !isIncoming && (
-            <StyledSvgWrapper style={{ right: 0 }}>
+            <StyledSvgWrapper style={{ insetInlineEnd: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>
           )}

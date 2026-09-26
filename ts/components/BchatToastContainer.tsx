@@ -3,17 +3,19 @@ import { Slide, ToastContainer, ToastContainerProps } from 'react-toastify';
 import styled from 'styled-components';
 import { BchatIconButton } from './icon';
 import { Flex } from './basic/Flex';
+import { isRtlLocale } from '../util/localeDirection';
 
 const BchatToastContainerPrivate = () => {
+  const isRtl = isRtlLocale((window.i18n as any).getLocale());
   return (
     <WrappedToastContainer
-      position="bottom-right"
+      position={isRtl ? 'bottom-left' : 'bottom-right'}
       // position='top-right'
       autoClose={5000}
       hideProgressBar={true}
       newestOnTop={true}
       closeOnClick={true}
-      rtl={false}
+      rtl={isRtl}
       pauseOnFocusLoss={false}
       draggable={false}
       pauseOnHover={true}

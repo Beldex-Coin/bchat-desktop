@@ -49,7 +49,7 @@ export const loadEmojiPanelI18n = async () => {
     return undefined;
   }
 
-  const lang = (window.i18n as any).getLocale();
+  const lang = window.i18n.getLocale();
   if (lang !== 'en') {
     try {
       const langData = await import(`@emoji-mart/data/i18n/${lang}.json`);

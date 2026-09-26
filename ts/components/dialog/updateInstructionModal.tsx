@@ -9,6 +9,29 @@ import styled from "styled-components";
 
 
 
+const COPY_SEED_MARKER = '\u0001';
+const RESTORE_MARKER = '\u0002';
+
+// Fills the button-label placeholders with markers, then swaps each marker for the
+// translated label in bold, so the text always matches the buttons below it.
+const RestoreInstructions = () => {
+    const labels: Record<string, string> = {
+        [COPY_SEED_MARKER]: window.i18n('copySeed'),
+        [RESTORE_MARKER]: window.i18n('restore'),
+    };
+    const parts = window
+        .i18n('bchatUpdateRestoreInstructions', [COPY_SEED_MARKER, RESTORE_MARKER])
+        .split(new RegExp(`(${COPY_SEED_MARKER}|${RESTORE_MARKER})`));
+
+    return <>
+        {parts.map((part, index) =>
+            labels[part]
+                ? <span key={index} className="modal-UpdateModal-discription-fontMedium">{labels[part]}</span>
+                : part
+        )}
+    </>;
+};
+
 export default function BchatUpdateInstruntion() {
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -41,24 +64,22 @@ export default function BchatUpdateInstruntion() {
             <SpacerLG />
             <img src='images/bchat/Update_icon.svg' className="modal-UpdateModal-icon"></img>
             <SpacerMD />
-            <div className="modal-UpdateModal-header">BChat Update</div>
+            <div className="modal-UpdateModal-header">{window.i18n('bchatUpdateTitle')}</div>
             <SpacerLG />
             <div className="modal-UpdateModal-discription">
-             Restore your app to gain access your BChat account.
-                First, copy your recovery seed by clicking <span className="modal-UpdateModal-discription-fontMedium">'Copy Seed'</span>. Save your recovery seed. Then click <span className="modal-UpdateModal-discription-fontMedium">'Restore'</span> to restore your
-                account using the seed.
+                <RestoreInstructions />
             </div>
             <SpacerLG />
 
             <div className="modal-UpdateModal-btnBox">
                 <BchatButton
-                    text="Copy Seed"
+                    text={window.i18n('copySeed')}
                     buttonColor={BchatButtonColor.Green}
                     onClick={() => copyToClipboard()}
                 />
                 <SpacerMD />
                 <BchatButton
-                    text="Restore"
+                    text={window.i18n('restore')}
                     buttonColor={BchatButtonColor.Primary}
                     onClick={() => clearData()}
                     disabled={!copied}

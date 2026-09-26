@@ -141,10 +141,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
           bchatIcon: 'avatar',
           iconSize: 31,
           iconShow: true,
-          title: 'Start chat now?',
-          message: 'Do you want to chat with this contact now?',
+          title: window.i18n('startChatNowTitle'),
+          message: window.i18n('startChatNowConfirmation'),
           onClickOk: () => openConverstation(sharedContactAddressList[0]),
-          okText: 'Start Chatting',
+          okText: window.i18n('startChatting'),
           okTheme: BchatButtonColor.Primary,
         })
       );
@@ -218,7 +218,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
             </SharedContactWrapper>
           </div>
           {contentProps?.lastMessageOfSeries && !isIncoming && !isDetailView && (
-            <StyledSvgWrapper style={{ right: 0 }}>
+            <StyledSvgWrapper style={{ insetInlineEnd: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>
           )}
@@ -255,7 +255,7 @@ const CustomizedAvatar: React.FC<CustomizedAvatarProps> = ({ address = [] }) => 
 
 const Wrapper = styled.div`
   position: relative;
-  margin-left: 10px;
+  margin-inline-start: 10px;
 
   .inner-wrapper {
     display: flex;
@@ -265,7 +265,7 @@ const Wrapper = styled.div`
       z-index: 1;
       box-shadow: 1px 1px 2px 0px var(--color-chatHeader);
       position: absolute;
-      right: 9px;
+      inset-inline-end: 9px;
       bottom: 10px;
       border-radius: 14px;
     }
@@ -288,7 +288,7 @@ const ContactMessageWrapper = styled.div`
 const UserNameWrapper= styled.div`
     word-break: break-all;
     svg{
-    margin-right:5px;
+    margin-inline-end:5px;
     }
 
 `

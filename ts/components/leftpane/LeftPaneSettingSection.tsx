@@ -20,7 +20,7 @@ export interface getCategories {
   icon: BchatIconType;
 }
 
-const getCategories: Array<getCategories> = [
+const getCategories = (): Array<getCategories> => [
   {
     id: BchatSettingCategory.Chat,
     title: window.i18n('Chat'),
@@ -51,7 +51,11 @@ const getCategories: Array<getCategories> = [
     title: window.i18n('showRecoveryPhrase'),
     icon: 'recoverykey',
   },
-
+ {
+    id: BchatSettingCategory.Languages,
+    title: window.i18n('languages'),
+    icon: 'languages',
+  },
   {
     id: BchatSettingCategory.MessageRequests,
     title: window.i18n('openMessageRequestInbox'),
@@ -59,12 +63,12 @@ const getCategories: Array<getCategories> = [
   },
   {
     id: BchatSettingCategory.Hops,
-    title: 'Hops',
+    title: window.i18n('hops'),
     icon: 'hops',
   },
   {
     id: BchatSettingCategory.ClearData,
-    title: 'Clear Data',
+    title: window.i18n('clearAllData'),
     icon: 'clearData',
   },
 ];
@@ -88,7 +92,7 @@ const LeftPaneSettingsCategoryRow = () =>
 
     return (
       <>
-        {getCategories.map((item) => (
+        {getCategories().map((item) => (
           <div
           key={item.id}
             data-testid={dataTestId}
@@ -213,7 +217,7 @@ export const LeftPaneSettingSection = () => {
       </div>
       {/* <span
         className="text-selectable"
-        style={{ color: '#797984', marginLeft: '20px', marginTop: '27px' }}
+        style={{ color: '#797984', marginInlineStart: '20px', marginTop: '27px' }}
       >
         {window.i18n('BChat')} v{window.getVersion()}
       </span> */}

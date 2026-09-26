@@ -24,6 +24,7 @@ import { ToastUtils } from '../../bchat/utils';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
+import { BchatLanguageScreen } from './BchatLanguageScreen';
 
 
 
@@ -58,6 +59,7 @@ export enum BchatSettingCategory {
   Blocked = 'blocked',
   RecoverySeed = 'recoverySeed',
   RecoveryKey = 'recoveryKey',
+  Languages= 'languages',
   // ViewMessageRequest="viewMessageRequest",
   Hops = 'hops',
   ClearData = 'clearData'
@@ -112,7 +114,7 @@ export const PasswordLock = ({
             type="password"
             id="password-lock-input"
             defaultValue=""
-            placeholder="Enter your password"
+            placeholder={window.i18n('enterPassword')}
             // style={{height:'60px' }}
             data-testid="password-lock-input"
           />
@@ -176,7 +178,6 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
   public componentWillUnmount() {
     window.removeEventListener('keyup', this.onKeyUp);
-
   }
 
   /* tslint:disable-next-line:max-func-body-length */
@@ -226,7 +227,9 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
     // if (category === BchatSettingCategory.RecoveryKey) {
     //   return <BchatSettingRecoveryKey  />;
     // }
-
+   if (category === BchatSettingCategory.Languages) {
+      return <BchatLanguageScreen />;
+    }
     if (category === BchatSettingCategory.MessageRequests) {
       return <OverlayMessageRequest settings={'true'} />;
     }
@@ -296,6 +299,8 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
                 ? 'hops'
                 : category === BchatSettingCategory.Chat
                   ? 'Chat'
+                  :category === BchatSettingCategory.Languages
+                  ?"languagesSettingsTitle"
                       : category === BchatSettingCategory.Notifications
                         ? 'notificationsSettingsTitle'
                         : 'privacySettingsTitle';

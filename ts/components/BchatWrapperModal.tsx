@@ -34,7 +34,7 @@ export type BchatWrapperModalType = {
 export const Loader = styled.div`
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   background-color: var(--color-loader-bg);
   display: flex;
   justify-content: center;
@@ -147,7 +147,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
                 iconType={cancelButton?.iconType}
                 dataTestId="Bchat-confirm-cancel-button"
-                style={{ marginRight: '12px', minWidth: iconShow || buttonSizeLg ? '235px' : '200px' }}
+                style={{ marginInlineEnd: '12px', minWidth: iconShow || buttonSizeLg ? '235px' : '200px' }}
               />
             )}
             <BchatButton

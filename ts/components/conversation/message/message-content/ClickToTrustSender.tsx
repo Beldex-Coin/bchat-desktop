@@ -36,10 +36,10 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;
 const ImageTxt = styled.span`
-  margin-left: 5px;
+  margin-inline-start: 5px;
   // color: #f0f0f0;
   font-family: Poppins;
   font-size: 16px;
@@ -53,10 +53,10 @@ export const ClickToTrustSender =(props: { messageId: string, attachments: Array
 const {attachments}=props;
 
 const attachmentProps: { [key: string]: AttachmentTypeProps } = {
-  image: { txt: "Image", icon: "gallery" },
-  audio: { txt: "Audio", icon: "audio" },
-  video: { txt: "Video", icon: "video" },
-  document: { txt: "Document", icon: "document" }
+  image: { txt: window.i18n('attachmentTypeImage'), icon: "gallery" },
+  audio: { txt: window.i18n("audio"), icon: "audio" },
+  video: { txt: window.i18n("video")  , icon: "video" },
+  document: { txt: window.i18n('attachmentTypeDocument'), icon: "document" }
 };
 
 const getAttachmentType = (attachments: any): AttachmentTypeProps => {

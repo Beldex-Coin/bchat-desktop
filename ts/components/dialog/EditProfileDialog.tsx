@@ -106,7 +106,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             showExitIcon={true}
             isloading={this.state.loading}
             okButton={{
-              text: this.state.mode == 'qr' ? 'Show ID' : 'Show QR',
+              text: this.state.mode == 'qr' ? i18n('showID') : i18n('showQR'),
               iconSize: 26,
               iconType: this.state.mode == 'qr' ? 'KeyboardBackspaceArrow' : 'qr_code'
               , onClickOkHandler: this.qrStatusUpdate
@@ -131,12 +131,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 // props.qrStatus?.(true)
               }}
             >
-              <span style={{ marginRight: '5px' }}>
+              <span style={{ marginInlineEnd: '5px' }}>
                 <BchatIcon iconType={'qr_code'} iconSize={26} />
               </span>
-              {'Show QR'}
+              {i18n('showQR')}
             </button>}
-          >
+          >   
             <div className="profileHeader">
               <div className="profileClose">
                 <BchatIconButton
@@ -165,7 +165,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
     const {newAvatarObjectUrl, oldAvatarPath} = this.state;
     return (
       <>
-        <div className="avatar-center" style={{ marginLeft: "25px" }}>
+        <div className="avatar-center" style={{ marginInlineStart: "25px" }}>
           <div className="avatar-center-inner">
             {this.renderAvatar()}
             <div
@@ -175,7 +175,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             />
             <Flex container={true} flexDirection="column" alignItems="center" justifyContent="center" width='53px'>
               <div
-                data-tip="Edit"
+                data-tip={window.i18n('edit')}
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.fireInputEvent}
@@ -191,7 +191,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <SpacerXS />
             {(newAvatarObjectUrl || oldAvatarPath )&& (
               <div
-                data-tip="Delete"
+                data-tip={window.i18n('delete')}
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.removepicPopup}
@@ -364,7 +364,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
           </>
         ) : (
           <div className="bnsVerfiedTxt">
-            <span style={{ marginRight: '5px' }}> {i18n('bnsVerified')}</span>
+            <span style={{ marginInlineEnd: '5px' }}> {i18n('bnsVerified')}</span>
             <BchatIcon iconType="circleWithTick" iconSize={14} iconColor="#0BB70F" />
           </div>
         )}
@@ -378,14 +378,14 @@ export class EditProfileDialog extends React.Component<{}, State> {
         <div className="bchat-id-section-display" style={{ marginBottom: "10px" }}
         >
           <div className="profile-value">
-            <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('BchatID')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400' }}>
+            <div style={{ marginTop: '10px', color: 'var(--color-text)' }}>{window.i18n('bChatID')}</div>
+            <p style={{ margin: '10px 0px', fontWeight: '400' }} dir="ltr">
               {props.bchatID}
             </p>
           </div>
           <div
             className="bchat-id-section-display-icon"
-            data-tip="Copy"
+            data-tip={window.i18n('editMenuCopy')}
             data-place="right"
             data-offset="{'top':17}"
             onClick={() => copyBchatID(props.bchatID)}
@@ -398,13 +398,13 @@ export class EditProfileDialog extends React.Component<{}, State> {
         >
           <div className="profile-value" style={{ color: 'var(--color-text)' }}>
             <div style={{ marginTop: '10px', }}>{window.i18n('beldexAddress')}</div>
-            <p style={{ margin: '10px 0px', fontWeight: '400', color: '#2F8FFF' }}>
+            <p style={{ margin: '10px 0px', fontWeight: '400', color: '#2F8FFF' }} dir="ltr">
               {walletAddress}
             </p>
           </div>
           <div
             className="bchat-id-section-display-icon"
-            data-tip="Copy"
+            data-tip={window.i18n('editMenuCopy')}
             data-place="right"
             data-offset="{'top':17}"
             onClick={() => copyBchatID(walletAddress)}
@@ -517,7 +517,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
         await conversation.commit();
         await setLastProfileUpdateTimestamp(Date.now());
         await SyncUtils.forceSyncConfigurationNowIfNeeded(true);
-        ToastUtils.pushToastSuccess('', 'Profile picture deleted successfully.');
+        ToastUtils.pushToastSuccess('', window.i18n('toastMessageDelprofilePic'));
         this.setState({
           loading: false,
           mode: 'default',
@@ -530,13 +530,13 @@ export class EditProfileDialog extends React.Component<{}, State> {
   private removepicPopup() {
    window?.inboxStore?.dispatch(
         updateConfirmModal({
-          title: 'Delete Profile Picture',
-          message: 'Are you sure you want to delete the Profile Picture?',
+          title: window.i18n('deleteProfilePic'),
+          message: window.i18n('deleteProfilePicMessage'),
           onClickClose: () => window?.inboxStore?.dispatch(updateConfirmModal(null)),
           onClickOk: async () => {
             this.removeProfilePic()
           },
-          okText: 'Delete',
+          okText: window.i18n('delete'),
           okTheme: BchatButtonColor.Danger,
         })
       );
@@ -562,7 +562,7 @@ async function commitProfileEdits(
     try {
       const blobContent = await (await fetch(scaledAvatarUrl)).blob();
       if (!blobContent || !blobContent.size) {
-        throw new Error('Failed to fetch blob content from scaled avatar');
+        throw new Error(window.i18n('failedToFetchScaledAvatarBlob'));
       }
       await uploadOurAvatar(await blobContent.arrayBuffer());
     } catch (error) {

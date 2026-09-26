@@ -165,7 +165,7 @@ export const LeftPaneSectionHeader = () => {
         // style={{ marginRight: '13px' }}
         className="dayAndNightIcon"
         onClick={handleClick}
-        data-tip="Themes"
+        data-tip={window.i18n('themesTooltip')}
         data-offset="{'right':43}"
         data-place="bottom"
       ></div>
@@ -186,6 +186,7 @@ export const LeftPaneSectionHeader = () => {
               }}
               iconType="chevron"
               iconRotation={90}
+              flipInRtl={true}
               iconSize="medium"
               margin="0 0 var(--margins-xs) var(--margins-xs)"
             />

@@ -199,11 +199,8 @@ export class BchatConversation extends React.Component<Props, State> {
     if (msg.body.replace(/\s/g, '').includes(recoveryPhrase.replace(/\s/g, ''))) {
       window.inboxStore?.dispatch(
         updateConfirmModal({
-          // title: window.i18n('sendRecoveryPhraseTitle'),
-          title: 'Warning',
-          // message: window.i18n('sendRecoveryPhraseMessage'),
-          message:
-            'This is your recovery phrase. if you send it to someone they will have full access to your account.',
+          title: window.i18n('warning'),
+          message: window.i18n('warnSeedInMessage'),
           okTheme: BchatButtonColor.Danger,
           okText: window.i18n('send'),
           iconShow: true,
@@ -287,8 +284,8 @@ export class BchatConversation extends React.Component<Props, State> {
                 <Flex container={true} alignItems="center">
                   <VerticalLine />
                   <div>
-                    <div className="msg-title">Pinned Message</div>
-                    <div className="msg-sub-title">Community guidelines</div>
+                    <div className="msg-title">{window.i18n('pinnedMessage')}</div>
+                    <div className="msg-sub-title">{window.i18n('communityGuidelines')}</div>
                   </div>
                 </Flex>
                 <BchatButton
@@ -301,7 +298,7 @@ export class BchatConversation extends React.Component<Props, State> {
                     padding: '0 0px',
                     borderRadius: '6px',
                   }}
-                  text="Read More"
+                  text={window.i18n('readMore')}
                   onClick={() => window.inboxStore?.dispatch(updateCommunityGuidelinesModal({}))}
                 />
               </Flex>
@@ -598,7 +595,7 @@ export class BchatConversation extends React.Component<Props, State> {
 
     const allMembers = allPubKeys.map((pubKey: string) => {
       const conv = getConversationController().get(pubKey);
-      const profileName = conv?.getProfileName() || 'Anonymous';
+      const profileName = conv?.getProfileName() || window.i18n('anonymous');
 
       return {
         id: pubKey,
@@ -703,5 +700,5 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 38px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;

@@ -37,6 +37,7 @@ export const OverlayHeader = ({ subtitle, title,hideExit }: { title: string; sub
        iconSize="small"
        iconType="chevron"
        iconRotation={90}
+       flipInRtl={true}
        onClick={() => {
          dispatch(setOverlayMode(undefined));
        }}
@@ -54,7 +55,7 @@ export const OverlayHeader = ({ subtitle, title,hideExit }: { title: string; sub
       />
     
 
-      <h2 style={{marginLeft:"10px"}}>{title}</h2>
+      <h2 style={{marginInlineStart:"10px"}}>{title}</h2>
       </Header>
       <h3>
         {subtitle}

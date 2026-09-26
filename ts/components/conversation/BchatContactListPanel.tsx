@@ -109,7 +109,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
           padding="25px"
           className="contact-list-header-title-wrapper"
         >
-          <span className="contact-list-header-titleTxt">Share Contacts</span>
+          <span className="contact-list-header-titleTxt">{window.i18n('shareContacts')}</span>
           <span
             onClick={() => {
               window.inboxStore?.dispatch(closeShareContact());
@@ -130,7 +130,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
           onChange={e => {
             handleSearch(e);
           }}
-          placeholder={'Search People'}
+          placeholder={window.i18n('searchPeople')}
           maxLength={26}
         />
          {!!currentSearchTerm.length && (
@@ -237,7 +237,7 @@ const SearchEmptyScreen = () => {
     <SearchEmptyWrapper>
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">
         <ContactEmptyIcon isDark={isDark} />
-        <StyledSpan>No Contact Found!</StyledSpan>
+        <StyledSpan>{window.i18n('noContactsYet')}</StyledSpan>
       </Flex>
     </SearchEmptyWrapper>
   );

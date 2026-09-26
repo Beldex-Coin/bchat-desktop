@@ -84,7 +84,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
           id="password-prompt-input"
           type={this.state.PasswordVisible ?"password":''}
           defaultValue=""
-          placeholder={'Enter password'}
+          placeholder={window.i18n('password')}
           minLength={4}
           maxLength={26}
           onKeyUp={this.onKeyUp}

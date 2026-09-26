@@ -8,6 +8,7 @@ import {
   ConversationTypeEnum,
 } from '../../models/conversation';
 import { BlockedNumberController } from '../../util';
+import { Storage } from '../../util/storage';
 import { getSwarmFor } from '../apis/snode_api/snodePool';
 import { PubKey } from '../types';
 import { actions as conversationActions } from '../../state/ducks/conversations';
@@ -277,8 +278,11 @@ export class ConversationController {
 
         this._initialFetchComplete = true;
         const promises: any = [];
+        // lastMessage is stored already translated, so rebuild it when the app locale changed
+        const currentLocale = window.i18n.getLocale();
+        const localeChanged = Storage.get('lastMessageLocale') !== currentLocale;
         this.conversations.forEach((conversation: ConversationModel) => {
-          if (!conversation.get('lastMessage')) {
+          if (!conversation.get('lastMessage') || localeChanged) {
             // tslint:disable-next-line: no-void-expression
             promises.push(conversation.updateLastMessage());
           }
@@ -287,6 +291,9 @@ export class ConversationController {
         });
 
         await Promise.all(promises);
+        if (localeChanged) {
+          await Storage.put('lastMessageLocale', currentLocale);
+        }
         window?.log?.info(
           `ConversationController: done with initial fetch in ${Date.now() - start}ms.`
         );

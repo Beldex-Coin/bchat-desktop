@@ -107,7 +107,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
           <div
             className={classNames('module-message', `module-message--${direction}`)}
             role="button"
-            style={direction === 'incoming' ? { paddingLeft: '15px' } : { paddingRight: '15px' }}
+            style={direction === 'incoming' ? { paddingInlineStart: '15px' } : { paddingInlineEnd: '15px' }}
           >
             <div style={{ position: 'relative' }}>
               {contentProps?.lastMessageOfSeries &&  isIncoming && (
@@ -152,7 +152,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
                 </div>
               </div>
               { contentProps?.lastMessageOfSeries && !isIncoming && (
-                <StyledSvgWrapper style={{ right: 0 }} className='outgoingTail'>
+                <StyledSvgWrapper style={{ insetInlineEnd: 0 }} className='outgoingTail'>
                   <OutgoingMsgTailIcon />
                 </StyledSvgWrapper>
               )}

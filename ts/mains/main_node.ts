@@ -33,7 +33,6 @@ import packageJson from '../../package.json'; // checked - only node
 setupGlobalErrorHandler();
 import electronLocalshortcut from 'electron-localshortcut';
 
-
 const getRealPath = pify(fs.realpath);
 
 // FIXME Hardcoding appId to prevent build failures on release.
@@ -91,14 +90,14 @@ const isTestIntegration =
   Boolean(
     process.env.NODE_APP_INSTANCE && process.env.NODE_APP_INSTANCE.includes('test-integration')
   );
-async function getSpellCheckSetting() {
+function getSpellCheckSetting(): boolean {
   const json = sqlNode.getItemById('spell-check');
   // Default to `true` if setting doesn't exist yet
   if (!json) {
     return true;
   }
 
-  return json.value;
+  return Boolean(json.value);
 }
 
 function showWindow() {
@@ -259,6 +258,7 @@ function getStartInTray() {
 }
 async function createWindow() {
   const { minWidth, minHeight, width, height } = getWindowSize();
+  const spellCheckEnabled = getSpellCheckSetting();
   windowConfig = windowConfig || {};
   const picked = {
     maximized: (windowConfig as any).maximized || false,
@@ -294,7 +294,7 @@ async function createWindow() {
       contextIsolation: false,
       preload: path.join(getAppRootPath(), 'preload.js'),
       nativeWindowOpen: true,
-      spellcheck: await getSpellCheckSetting(),
+      spellcheck: spellCheckEnabled,
     },
     ...picked,
     // don't setup icon, the executable one will be used by default
@@ -333,7 +333,7 @@ async function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowOptions);
-  setupSpellChecker(mainWindow, locale.messages);
+  setupSpellChecker(mainWindow, locale.messages, locale.name, spellCheckEnabled);
 
   const setWindowFocus = () => {
     if (!mainWindow) {
@@ -704,7 +704,8 @@ app.on('ready', async () => {
   assertLogger().info('app ready');
   assertLogger().info(`starting version ${packageJson.version}`);
   if (!locale) {
-    const appLocale = app.getLocale() || 'en';
+    const savedLocale = userConfig.get('appLocale') as string;
+    const appLocale = savedLocale || 'en';
     locale = loadLocale({ appLocale, logger });
   }
 
@@ -757,7 +758,7 @@ async function showMainWindow(sqlKey: string, passwordAttempt = false) {
     messages: locale.messages,
     passwordAttempt,
   });
-  appStartInitialSpellcheckSetting = await getSpellCheckSetting();
+  appStartInitialSpellcheckSetting = getSpellCheckSetting();
   sqlChannels.initializeSqlChannel();
 
   sqlNode.cleanUpOldOpengroups();
@@ -878,6 +879,21 @@ app.on('web-contents-created', (_createEvent, contents) => {
 ipc.on('locale-data', event => {
   // eslint-disable-next-line no-param-reassign
   event.returnValue = locale.messages;
+});
+
+ipc.on('get-app-locale', event => {
+  const savedLocale = userConfig.get('appLocale') as string;
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue =
+    typeof savedLocale === 'string' && savedLocale ? savedLocale : locale?.name || 'en';
+});
+
+ipc.on('set-app-locale', (event, appLocale: string) => {
+  if (typeof appLocale === 'string' && appLocale) {
+    userConfig.set('appLocale', appLocale);
+  }
+  // eslint-disable-next-line no-param-reassign
+  event.returnValue = undefined;
 });
 
 ipc.on('draw-attention', () => {

@@ -12,19 +12,19 @@ export const BchatSettingRecoveryKey=()=>
     viewKey=JSON.parse(viewKey);
     let data=[
         {
-            title:"View Key (public):",
+            title:window.i18n('recoveryKeyViewKeyPublic'),
             key:viewKey.result.pubkey
         },
         {
-            title:"View Key (private):",
+            title:window.i18n('recoveryKeyViewKeyPrivate'),
             key:viewKey.result.key
         },
         {
-            title:"Spend Key (public):",
+            title:window.i18n('recoveryKeySpendKeyPublic'),
             key:spendKey.result.pubkey
         },
         {
-            title:"Spend Key (private):",
+            title:window.i18n('recoveryKeySpendKeyPrivate'),
             key:spendKey.result.key
         }]
 
@@ -44,13 +44,13 @@ export const BchatSettingRecoveryKey=()=>
     
     return <div className='bchat-settings-recovery-seed'>
              <img  src="images/bchat/warning.svg"   className="bchat-settings-recovery-seed-danger "/>
-             <p className="bchat-settings-recovery-seed-bold">IMPORTANT</p>
-             <p className="bchat-settings-recovery-seed-red">Never Give your Key to Anyone!</p>
-             <p className="bchat-settings-recovery-seed-para">Never input your Key into any software or website other than the official beldex wallet or bchat directly from the play store, the beldex website or the beldex GitHub.</p>
-             <p className="bchat-settings-recovery-seed-note">Are you sure you want to access your Key?</p>
+             <p className="bchat-settings-recovery-seed-bold">{window.i18n('important')}</p>
+             <p className="bchat-settings-recovery-seed-red">{window.i18n('neverGiveKeyWarning')}</p>
+             <p className="bchat-settings-recovery-seed-para">{window.i18n('neverInputKeyWarning')}</p>
+             <p className="bchat-settings-recovery-seed-note">{window.i18n('confirmAccessKeyQuestion')}</p>
              <div className='bchat-settings-recovery-seed-button'>
              <BchatButton
-              text={"Yes, I am sure!"}
+              text={window.i18n('yesIAmSure')}
               onClick={()=>{setVerify(true)}}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Green}

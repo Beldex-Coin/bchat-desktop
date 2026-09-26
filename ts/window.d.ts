@@ -35,7 +35,7 @@ declare global {
     setSettingValue: (id: string, value: any) => void;
     getLocalValue: (id: string) => any;
     setLocalValue: (id: string, value: any) => void;
-    i18n: LocalizerType;
+    i18n: LocalizerType & { getLocale: () => string };
     log: any;
     bchatFeatureFlags: {
       useTestNet: boolean;
@@ -44,6 +44,8 @@ declare global {
     onLogin: any;
     persistStore?: Persistor;
     restart: any;
+    setAppLocale: (locale: string) => void;
+    getAppLocale: () => string;
     getSeedNodeList: () => Array<string> | undefined;
     getDaemonNodeRandomlyPick: () => Object;
     networkType: string;

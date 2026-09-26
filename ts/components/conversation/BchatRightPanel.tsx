@@ -191,7 +191,7 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
             type="text"
             className="profile-name-input"
             value={profileName}
-            placeholder={'Enter a group name'}
+            placeholder={window.i18n('emptyGroupNameError')}
             onChange={onNameEdited}
             maxLength={MAX_USERNAME_LENGTH - 1}
             tabIndex={0}
@@ -240,7 +240,7 @@ const HeaderItem = () => {
         className="group-settings-header-title-wrapper"
       >
         <span className="group-settings-header-titleTxt">
-          {isGroup ? 'Group Info' : 'Profile Info'}
+          {isGroup ? window.i18n('groupInfo') : window.i18n('profileInfo')}
         </span>
         <span
           onClick={() => dispatch(closeRightPanel())}
@@ -513,7 +513,7 @@ export const BchatRightPanelWithDetails = () => {
       memberAfterUpdate => !_.includes(membersToRemove, memberAfterUpdate)
     );
 
-    void initiateClosedGroupUpdate(convoId, convoProps.name || 'Unknown', filteredMembers);
+    void initiateClosedGroupUpdate(convoId, convoProps.name || window.i18n('unknown'), filteredMembers);
   }
   const onClickOK = async () => {
     // const members = getWouldBeMembers(this.state.contactList).map(d => d.id);
@@ -521,9 +521,9 @@ export const BchatRightPanelWithDetails = () => {
     if (removeMem) {
       dispatch(
         updateConfirmModal({
-          title: 'Remove Users?',
-          message: 'Are you sure you want to remove these users from this group?',
-          okText: 'Remove',
+          title: window.i18n('removeUsersTitle'),
+          message: window.i18n('removeUsersConfirmation'),
+          okText: window.i18n('remove'),
           iconShow: true,
           customIcon: (
             <BchatIcon iconType="avatarX" iconSize={24} clipRule="evenodd" fillRule="evenodd" />
@@ -561,7 +561,7 @@ export const BchatRightPanelWithDetails = () => {
           <HeaderItem />
           {isPrivate && (
             <div className="group-settings-header-chatIdBox">
-              <p>BChat ID</p>
+              <p>{window.i18n('bChatID')}</p>
               <SpacerXS />
               <div className="id-wrapper">
                 <Flex container={true} flexDirection="row" alignItems="flex-start">
@@ -620,7 +620,7 @@ export const BchatRightPanelWithDetails = () => {
                     {window.i18n('disappearingMessages')}
                   </MenuWrapper>
                 </Flex>
-                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} />
+                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} flipInRtl={true} />
                 {/* <BchatDropdown
                 labelIcon={'chatTimer'}
                 label={window.i18n('disappearingMessages')}
@@ -656,7 +656,7 @@ export const BchatRightPanelWithDetails = () => {
           )}
           {showAddRemoveModeratorsButton && (
             <div className="group-settings-header-moderator-wholeBox">
-              <div className="group-settings-header-moderator-txtBox">Moderators</div>
+              <div className="group-settings-header-moderator-txtBox">{window.i18n('moderators')}</div>
               <Flex container={true} flexDirection="row" justifyContent="center" margin="">
                 <div
                   className="addButton"
@@ -666,7 +666,7 @@ export const BchatRightPanelWithDetails = () => {
                   }}
                 >
                   {
-                    <span style={{ marginRight: '5px' }}>
+                    <span style={{ marginInlineEnd: '5px' }}>
                       <BchatIcon
                         iconType={'addModerator'}
                         fillRule={'evenodd'}
@@ -686,7 +686,7 @@ export const BchatRightPanelWithDetails = () => {
                   }}
                 >
                   {
-                    <span style={{ marginRight: '5px' }}>
+                    <span style={{ marginInlineEnd: '5px' }}>
                       <BchatIcon
                         iconType={'removeFromModerators'}
                         fillRule={'evenodd'}
@@ -696,7 +696,7 @@ export const BchatRightPanelWithDetails = () => {
                       />
                     </span>
                   }
-                  {'Remove'}
+                  {window.i18n('remove')}
                 </div>
               </Flex>
             </div>
@@ -711,7 +711,7 @@ export const BchatRightPanelWithDetails = () => {
                   //   await showUpdateGroupMembersByConvoId(id);
                   // }}
                 >
-                  <div className="invite-friends-container" style={{ marginRight: '10px' }}></div>
+                  <div className="invite-friends-container" style={{ marginInlineEnd: '10px' }}></div>
                   {window.i18n('groupMembers')}
                 </div>
                 <Flex container={true} flexDirection="row">
@@ -747,7 +747,7 @@ export const BchatRightPanelWithDetails = () => {
                       <div
                         className="add-btn"
                         role="button"
-                        style={{ marginLeft: '5px' }}
+                        style={{ marginInlineStart: '5px' }}
                         onClick={() => {
                           setAddMem(true);
                           // if (selectedConversation) {
@@ -757,7 +757,7 @@ export const BchatRightPanelWithDetails = () => {
                       >
                         <div
                           className="invite-friends-container"
-                          style={{ marginRight: '10px' }}
+                          style={{ marginInlineEnd: '10px' }}
                           onClick={() => {
                             if (selectedConversation) {
                               showInviteContactByConvoId(selectedConversation.id);
@@ -765,7 +765,7 @@ export const BchatRightPanelWithDetails = () => {
                           }}
                         ></div>
                         {/* {window.i18n('addingContacts')} */}
-                        Add +
+                        {window.i18n('add')} +
                       </div>
                     </>
                   )}
@@ -812,11 +812,12 @@ export const BchatRightPanelWithDetails = () => {
           <SpacerMD />
           <div className="hr-line" />
           <Flex container={true} justifyContent="space-between" width="100%">
-            <span className="group-settings-media-txt">Media, docs</span>
+            <span className="group-settings-media-txt">{window.i18n('mediaDocs')}</span>
             <BchatIconButton
               iconType={'chevron'}
               iconSize={14}
               iconRotation={268}
+              flipInRtl={true}
               iconColor="#A7A7BA"
               onClick={() => dispalyMedia(true)}
             />
@@ -842,7 +843,7 @@ export const BchatRightPanelWithDetails = () => {
             <span
               onClick={() => dispalyMedia(false)}
               className="group-settings-header-closeBox"
-              style={{ marginRight: '10px' }}
+              style={{ marginInlineEnd: '10px' }}
             >
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}
@@ -850,7 +851,7 @@ export const BchatRightPanelWithDetails = () => {
                 iconColor={darkMode ? '#A9AEBA' : '#3E4A53'}
               />
             </span>
-            <span className="group-settings-header-titleTxt">Media & Documents</span>
+            <span className="group-settings-header-titleTxt">{window.i18n('media')+'&'+window.i18n('documents')}</span>
           </Flex>
           <SpacerSM />
           <MediaGallery documents={documents} media={media} fullView={true} />
