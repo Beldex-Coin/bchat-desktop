@@ -344,13 +344,14 @@ export class SwarmPolling {
 
       return result;
     } catch (e) {
-      if (e.message === ERROR_CODE_NO_CONNECT) {
-        if (window.inboxStore?.getState().onionPaths.isOnline) {
-          window.inboxStore?.dispatch(updateIsOnline(false));
-        }
-      } else if (!window.inboxStore?.getState().onionPaths.isOnline) {
-          window.inboxStore?.dispatch(updateIsOnline(true));
-          void retryAllFailedSendsOnReconnect();
+      // Only the success path above is allowed to declare us back online. Any other failure
+      // (421 swarm change, decode error, bad path, clock skew...) is not proof the network
+      // works, and treating it as such would kick off a resend sweep that burns retry attempts.
+      if (
+        e.message === ERROR_CODE_NO_CONNECT &&
+        window.inboxStore?.getState().onionPaths.isOnline
+      ) {
+        window.inboxStore?.dispatch(updateIsOnline(false));
       }
       window?.log?.info('pollNodeForKey failed with', e.message);
       return null;

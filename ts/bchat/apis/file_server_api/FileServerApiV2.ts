@@ -29,7 +29,9 @@ export const useFileServerAPIV2Sending = true;
 /**
  * Upload a file to the file server v2
  * @param fileContent the data to send
- * @returns null or the fileID and complete URL to share this file
+ * @returns the fileID and complete URL to share this file, or null on a failure that may be
+ * transient (worth retrying)
+ * @throws pRetry.AbortError on a failure no retry can fix (empty file, 413 Payload Too Large)
  */
 export const uploadFileToFsV2 = async (
   fileContent: ArrayBuffer

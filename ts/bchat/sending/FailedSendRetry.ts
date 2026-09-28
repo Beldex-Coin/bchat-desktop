@@ -125,11 +125,11 @@ export function clearFailedSendRegistry() {
  * Retries every message currently tracked as failed, one at a time with a short stagger so
  * reconnecting doesn't fire a burst of sends all at once. Safe to call anytime, from any of the
  * triggers described in the file comment above - it's a no-op when nothing is tracked, a no-op
- * if a sweep is already in progress (rather than running a second one concurrently), and
- * Message.retrySend() itself is a no-op if we're not actually online yet.
+ * if a sweep is already in progress (rather than running a second one concurrently), and a
+ * no-op while offline (so an outage of any length costs no retry attempts).
  */
 export async function retryAllFailedSendsOnReconnect() {
-  if (!failedSendMessageIds.size || sweepInProgress) {
+  if (!failedSendMessageIds.size || sweepInProgress || !window.isOnline) {
     return;
   }
   sweepInProgress = true;
@@ -165,6 +165,13 @@ export async function retryAllFailedSendsOnReconnect() {
           untrackFailedSend(messageId);
           // eslint-disable-next-line no-continue
           continue;
+        }
+        // Message.retrySend() is a no-op while offline, so counting an attempt here would burn
+        // the retry budget without sending anything - a longer outage would then write the
+        // message off before the network ever came back. Checked here, right before the attempt
+        // is counted, since we may have gone offline mid-sweep. Leave the rest for a later sweep.
+        if (!window.isOnline) {
+          break;
         }
         autoRetryAttemptCounts.set(messageId, attemptsSoFar + 1);
         // eslint-disable-next-line no-await-in-loop

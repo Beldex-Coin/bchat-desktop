@@ -20,6 +20,7 @@ import {
   startFailedSendRetryTimer,
 } from '../bchat/sending/FailedSendRetry';
 import { snodeHttpsAgent } from '../bchat/apis/snode_api/onions';
+import { updateIsOnline } from '../state/ducks/onion';
 // import ReactDOM from 'react-dom';
 // import React from 'react';
 
@@ -456,13 +457,17 @@ function disconnect() {
   // socket/TLS handshake will be made for the next request either way.
   snodeHttpsAgent.destroy();
 
-  // connect() sets this back to true only once it's actually finished reconnecting - this is its
-  // mirror image. Without it, window.isOnline only ever gets set once (to true, on the very first
-  // connect()) and never back to false, which makes the "are we offline" checks that read it
-  // (conversation.ts's sendMessage(), message.ts's retrySend()) effectively dead: they can't ever
-  // see us as offline after the app's initial startup, no matter how long the connection has
-  // actually been down.
+  // connect() sets this back to true when we reconnect - this is its mirror image. Without it,
+  // window.isOnline only ever gets set once (to true, on the very first connect()) and never back
+  // to false, which makes the "are we offline" checks that read it (conversation.ts's
+  // sendMessage(), message.ts's retrySend()) effectively dead: they can't ever see us as offline
+  // after the app's initial startup, no matter how long the connection has actually been down.
   window.isOnline = false;
+
+  // Flip the status light to red. swarmPolling only does this for one specific error code, which
+  // a dropped connection often doesn't produce (DNS failures, timeouts...), leaving it green while
+  // offline. The next successful poll after we reconnect sets it back to true (green).
+  window.inboxStore?.dispatch(updateIsOnline(false));
 }
 
 let connectCount = 0;
@@ -489,18 +494,27 @@ async function connect() {
     return;
   }
 
+  // Set this before any of the awaits below, not after them: disconnect() is now the only other
+  // code that touches this flag, so if one of those awaits threw and this came last, it would
+  // stay false forever - every send and resend would fail with "Network is not available" and
+  // the FailedSendRetry sweep would never run, until the app was restarted.
+  window.isOnline = true;
+
   connectCount += 1;
   Notifications.disable(); // avoid notification flood until empty
   setTimeout(() => {
     Notifications.enable();
   }, 10 * 1000); // 10 sec
 
-  await queueAllCached();
-  await AttachmentDownloads.start({
-    logger: window.log,
-  });
-
-  window.isOnline = true;
+  // connect() is always fire-and-forget (void connect()), so nothing upstream would catch this.
+  try {
+    await queueAllCached();
+    await AttachmentDownloads.start({
+      logger: window.log,
+    });
+  } catch (e) {
+    window.log.error('connect: failed to finish reconnecting', e?.message || e);
+  }
 }
 
 function onEmpty() {
