@@ -699,6 +699,12 @@ export async function getOutgoingWithoutExpiresAt(): Promise<MessageCollection> 
   return new MessageCollection(messages);
 }
 
+export async function getRecentFailedOutgoingMessageIds(
+  sinceTimestamp: number
+): Promise<Array<string>> {
+  return channels.getRecentFailedOutgoingMessageIds(sinceTimestamp);
+}
+
 export async function getNextExpiringMessage(): Promise<MessageCollection> {
   const messages = await channels.getNextExpiringMessage();
   return new MessageCollection(messages);

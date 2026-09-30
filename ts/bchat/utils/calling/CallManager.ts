@@ -521,6 +521,13 @@ export async function USER_callRecipient(recipient: string) {
     ToastUtils.pushVideoCallPermissionNeeded();
     return;
   }
+  // Offline, the pre-offer can't be sent, so the call popup would open only to fail. Check before
+  // dispatching startingCallWith() below, which is what opens it. navigator.onLine covers the 1s
+  // debounce before disconnect() flips window.isOnline.
+  if (!window.isOnline || !window.navigator.onLine) {
+    ToastUtils.pushToastError('checkInternetConnection', window.i18n('checkInternetConnection'));
+    return;
+  }
   if (currentCallUUID) {
     window.log.warn(
       'Looks like we are already in a call as in USER_callRecipient is not undefined'

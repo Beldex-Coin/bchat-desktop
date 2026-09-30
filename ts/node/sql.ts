@@ -2848,6 +2848,30 @@ function getOutgoingWithoutExpiresAt() {
   return map(rows, row => jsonToObject(row.json));
 }
 
+/**
+ * Ids of outgoing messages that are still in the "failed to send" state (a non-empty `errors`
+ * array in their json) and were sent after `sinceTimestamp`, excluding group update messages (their
+ * errors come from control messages like secret group invites, retried separately). Used on startup to re-seed the
+ * in-memory auto-retry registry (FailedSendRetry.ts), which is otherwise lost on app restart.
+ */
+function getRecentFailedOutgoingMessageIds(sinceTimestamp: number) {
+  const rows = assertGlobalInstance()
+    .prepare(
+      `
+    SELECT id FROM ${MESSAGES_TABLE}
+    WHERE
+      type IS 'outgoing' AND
+      COALESCE(sent_at, received_at) >= $sinceTimestamp AND
+      json_array_length(json_extract(json, '$.errors')) > 0 AND
+      json_extract(json, '$.group_update') IS NULL
+    ORDER BY COALESCE(sent_at, received_at) ASC;
+  `
+    )
+    .all({ sinceTimestamp });
+
+  return map(rows, row => row.id as string);
+}
+
 function getNextExpiringMessage() {
   const rows = assertGlobalInstance()
     .prepare(
@@ -4007,6 +4031,7 @@ export const sqlNode = {
   getLastHashBySnode,
   getExpiredMessages,
   getOutgoingWithoutExpiresAt,
+  getRecentFailedOutgoingMessageIds,
   getNextExpiringMessage,
   getMessagesByConversation,
   getLastMessagesByConversation,

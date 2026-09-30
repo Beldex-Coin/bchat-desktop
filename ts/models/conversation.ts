@@ -8,6 +8,7 @@ import { PubKey } from '../bchat/types';
 import { UserUtils } from '../bchat/utils';
 import { BlockedNumberController } from '../util';
 import { leaveClosedGroup } from '../bchat/group/closed-group';
+import { ensureCanSendInClosedGroup } from '../receiver/closedGroups';
 import { SignalService } from '../protobuf';
 import { MessageModel } from './message';
 import { MessageAttributesOptionals, MessageDirection } from './messageType';
@@ -952,6 +953,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     this.clearTypingTimers();
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
+
+    // A secret group we created only gets its encryption keypair once every invite was sent (see
+    // createClosedGroup() in receiver/closedGroups.ts). Before that, sending can only fail at
+    // encryption, so don't add a message that goes straight to error. The composer already checks
+    // this before clearing its draft; this covers every other caller.
+    if (!(await ensureCanSendInClosedGroup(this.id))) {
+      return;
+    }
 
     window?.log?.info(
       'Sending message to conversation',
