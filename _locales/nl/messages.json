@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Oproep gemist van '$name$' omdat je de 'Spraak- en video-oproep' permissie nodig hebt in de privacy-instellingen.",
   "callMissedNotApproved": "Oproep gemist van '$name$' omdat je dit gesprek nog niet hebt goedgekeurd. Stuur hem eerst een bericht.",
   "callMediaPermissionsDescription": "Sta toegang toe tot het accepteren van spraak- en video-oproepen van andere gebruikers",
-  "callMediaPermissionsDialogContent": "De huidige implementatie van spraak / video-oproepen zal uw IP-adres blootstellen aan de Oxen Foundation servers en de bel/gebelde gebruiker.",
+  "callMediaPermissionsDialogContent": "De huidige implementatie van spraak / video-oproepen zal uw IP-adres blootstellen aan de Beldex-servers en de bel/gebelde gebruiker.",
   "menuCall": "Bellen",
   "startedACall": "Je belde $name$",
   "answeredACall": "Bel met $name$",

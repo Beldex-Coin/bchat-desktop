@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Zmeškaný hovor od '$name$' pretože potrebujete zapnúť povolenie 'Hlasové a video hovory' v Nastaveniach Súkromia.",
   "callMissedNotApproved": "Zmeškaný hovor od '$name$', keďže ste túto konverzáciu ešte neschválili. Pošlite mu najprv správu.",
   "callMediaPermissionsDescription": "Povoliť prístup na príjmanie hlasových a video hovorov od ostatných používateľov",
-  "callMediaPermissionsDialogContent": "Súčasná implementácia hlasových/video hovorov odhalí vašu IP adresu serverom Oxen Foundation a volajúcemu/volanému používateľovi.",
+  "callMediaPermissionsDialogContent": "Súčasná implementácia hlasových/video hovorov odhalí vašu IP adresu serverom Beldex a volajúcemu/volanému používateľovi.",
   "menuCall": "Hovor",
   "startedACall": "Volali ste $name$",
   "answeredACall": "Volať z $name$",

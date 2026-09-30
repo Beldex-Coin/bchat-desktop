@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Połączenie nieodebrane od '$name$' ponieważ musisz włączyć uprawnienie 'Połączenia głosowe i wideo' w Ustawieniach Prywatności.",
   "callMissedNotApproved": "Połączenie nieodebrane od '$name$' ponieważ nie zatwierdziłeś/aś jeszcze tej rozmowy. Najpierw wyślij do niego wiadomość.",
   "callMediaPermissionsDescription": "Zezwala na dostęp do przyjmowania połączeń głosowych i wideo od innych użytkowników",
-  "callMediaPermissionsDialogContent": "Obecna implementacja połączeń głosowych/wideo wyświetli Twój adres IP na serwerach Fundacji Oxen i użytkownikowi do którego dzwonisz/dzwoni.",
+  "callMediaPermissionsDialogContent": "Obecna implementacja połączeń głosowych/wideo wyświetli Twój adres IP na serwerach Beldex i użytkownikowi do którego dzwonisz/dzwoni.",
   "menuCall": "Zadzwoń",
   "startedACall": "Zadzwoniłeś/aś do $name$",
   "answeredACall": "Połączenie z $name$",

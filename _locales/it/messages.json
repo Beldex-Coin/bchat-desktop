@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Chiamata persa da '$name$' perché è necessario abilitare l'autorizzazione 'Voce e videochiamate' nelle Impostazioni Privacy.",
   "callMissedNotApproved": "Call missed from '$name$' as you haven't approved this conversation yet. Send a message to him first.",
   "callMediaPermissionsDescription": "Consente l'accesso per accettare chiamate vocali e video da altri utenti",
-  "callMediaPermissionsDialogContent": "L'attuale implementazione di chiamate vocali/video esporrà il tuo indirizzo IP ai server Oxen Foundation e all'utente chiamante/chiamato.",
+  "callMediaPermissionsDialogContent": "L'attuale implementazione di chiamate vocali/video esporrà il tuo indirizzo IP ai server Beldex e all'utente chiamante/chiamato.",
   "menuCall": "Chiamata",
   "startedACall": "Hai chiamato $name$",
   "answeredACall": "Chiamata con $name$",

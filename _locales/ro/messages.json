@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Apel pierdut de la „$name$” deoarece trebuie să oferi permisiunea pentru „Apeluri vocale și video” din setările de confidențialitate.",
   "callMissedNotApproved": "Apel pierdut de la '$name$' deoarece nu ai aprobat încă această conversație. Trimite-i un mesaj mai întâi.",
   "callMediaPermissionsDescription": "Permite accesul la apeluri vocale și video de la alți utilizatori",
-  "callMediaPermissionsDialogContent": "Implementarea curentă a apelurilor vocale/video va expune adresa ta IP la serverele Fundației Oxen, precum și numele utilizatorului apelant si cel apelat.",
+  "callMediaPermissionsDialogContent": "Implementarea curentă a apelurilor vocale/video va expune adresa ta IP la serverele Beldex, precum și numele utilizatorului apelant si cel apelat.",
   "menuCall": "Apelează",
   "startedACall": "Ai sunat pe $name$",
   "answeredACall": "Apel cu $name$",

@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Missade ett samtal från \"$name$\" eftersom du måste aktivera behörigheten \"Röst- och videosamtal\" i Sekretessinställningarna.",
   "callMissedNotApproved": "Missade ett samtal från '$name$' eftersom du inte har godkänt denna konversation än. Skicka ett meddelande till honom först.",
   "callMediaPermissionsDescription": "Tillåter åtkomst att acceptera röst- och videosamtal från andra användare",
-  "callMediaPermissionsDialogContent": "Den nuvarande implementeringen av röst-/videosamtal kommer att avslöja din IP-adress för Oxen Foundations servrar och den samtalande användaren.",
+  "callMediaPermissionsDialogContent": "Den nuvarande implementeringen av röst-/videosamtal kommer att avslöja din IP-adress för Beldex-servrarna och den samtalande användaren.",
   "menuCall": "Ring",
   "startedACall": "Du ringde $name$",
   "answeredACall": "Samtal med $name$",

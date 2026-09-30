@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Nem fogadott hívás '$name$' -től, mert előbb engedélyezned kell a 'Hang és videó hívásokat' a Biztonsági beállításokban.",
   "callMissedNotApproved": "Nem fogadott hívás '$name$' -tól mert még nem engedélyezted a beszélgetéseteket. Írj valamit neki előbb.",
   "callMediaPermissionsDescription": "Engedélyezz hozzáférést ahhoz, hogy fogadhass hang és videó hívásokat másoktól",
-  "callMediaPermissionsDialogContent": "A mostani megoldás a hang/videó hívásoknak megmutatja az IP címed az Oxen Foundation szervereknek és a másik félnek a hívásban.",
+  "callMediaPermissionsDialogContent": "A mostani megoldás a hang/videó hívásoknak megmutatja az IP címed a Beldex szervereknek és a másik félnek a hívásban.",
   "menuCall": "Hívás",
   "startedACall": "Felhívtad $name$",
   "answeredACall": "Hívás $name$ -al",

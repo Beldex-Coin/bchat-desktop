@@ -467,7 +467,7 @@
   "callMissedCausePermission": "Appel manqué de '$name$' car vous devez activer la permission 'Appels vocaux et vidéo' dans les paramètres de confidentialité.",
   "callMissedNotApproved": "Appel manqué de '$name$' car vous n'avez pas encore approuvé cette conversation. Envoyez-lui un message d'abord.",
   "callMediaPermissionsDescription": "Autorise l'accès à accepter les appels vocaux et vidéo d'autres utilisateurs",
-  "callMediaPermissionsDialogContent": "La mise en œuvre actuelle des appels vocaux/vidéo exposera votre adresse IP aux serveurs de la Fondation Oxen et aux utilisateurs appelés.",
+  "callMediaPermissionsDialogContent": "La mise en œuvre actuelle des appels vocaux/vidéo exposera votre adresse IP aux serveurs Beldex et aux utilisateurs appelés.",
   "menuCall": "Appeler",
   "startedACall": "Vous avez appelé $name$",
   "answeredACall": "Appel avec $name$",
