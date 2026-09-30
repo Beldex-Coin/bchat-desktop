@@ -38,6 +38,7 @@ import {
 } from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
+import { getTheme } from '../../../state/selectors/theme';
 import {
   getIsSelectedNoteToSelf,
   getIsTypingEnabled,
@@ -50,12 +51,15 @@ import { AttachmentUtil } from '../../../util';
 import { Flex } from '../../basic/Flex';
 import { CaptionEditor } from '../../CaptionEditor';
 import { StagedAttachmentList } from '../StagedAttachmentList';
+import { StagedAttachmentPreview } from '../StagedAttachmentPreview';
+import { createPortal } from 'react-dom';
+import { isImageTypeSupported, isVideoTypeSupported } from '../../../util/GoogleChrome';
 import { processNewAttachment } from '../../../types/MessageAttachment';
 import {
   StagedAttachmentImportedType,
   StagedPreviewImportedType,
 } from '../../../util/attachmentsUtil';
-import { cleanMentions, renderUserMentionRow } from './UserMentions';
+import { cleanMentions, isMentionedInDraft, renderUserMentionRow } from './UserMentions';
 // import { renderEmojiQuickResultRow, searchEmojiForQuery } from './EmojiQuickResult';
 import { LinkPreviews } from '../../../util/linkPreviews';
 import {
@@ -164,6 +168,7 @@ interface Props {
   quotedMessageProps?: ReplyingToMessageProps;
   stagedAttachments: Array<StagedAttachmentType>;
   onChoseAttachments: (newAttachments: Array<File>) => void;
+  darkMode?: boolean;
 }
 
 interface State {
@@ -389,6 +394,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderRecordingView() {
     return (
       <BchatRecording
+        darkMode={!!this.props.darkMode}
         sendVoiceMessage={this.sendVoiceMessage}
         onLoadVoiceNoteView={() => void this.onLoadVoiceNoteView()}
         onExitVoiceNoteView={this.onExitVoiceNoteView}
@@ -423,7 +429,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private renderBlockedContactBottoms() {
     const convoId: any = this.props.selectedConversationKey;
     return (
-      <Flex container={true} justifyContent="center" alignItems="center" height="90px">
+      <Flex
+        container={true}
+        justifyContent="center"
+        alignItems="center"
+        height="90px"
+        className="blocked-contact-actions"
+      >
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Danger}
@@ -452,23 +464,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
       </Flex>
     );
   }
-  private renderCompositionView() {
-    const { showEmojiPanel, selectionMenuIsVisble } = this.state;
-    const { typingEnabled, stagedAttachments } = this.props;
-
-    const { selectedConversation } = this.props;
-    const { draft } = this.state;
-
-    const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
+  private renderAttachmentMenu() {
+    const { selectionMenuIsVisble } = this.state;
     return (
-      <>
-        {leftTheGroup ? (
-          this.renderLeavedGroupBottoms()
-        ) : selectedConversation?.isBlocked ? (
-          this.renderBlockedContactBottoms()
-        ) : (
-          <>
-            {typingEnabled && !this.state.showRecordingView && (
               <div
                 className={classNames(`attachment-wrapper ${selectionMenuIsVisble && 'seleted'}`)}
               >
@@ -484,7 +482,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       alignItems="center"
                       onClick={this.onChooseAttachment}
                     >
-                      <MediaFileIcon />
+                      <MediaFileIcon mono={!!this.props.darkMode} />
                       <span>{window.i18n('mediaFiles')}</span>
                     </Flex>
                     <SpacerSM />
@@ -495,7 +493,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                       alignItems="center"
                       onClick={this.onChooseContacts}
                     >
-                      <ContactsIcon />
+                      <ContactsIcon mono={!!this.props.darkMode} />
                       <span>{window.i18n('contactsHeader')}</span>
                     </Flex>
                   </div>
@@ -504,7 +502,30 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   onClick={() => this.setState({ selectionMenuIsVisble: true })}
                 />
               </div>
-            )}
+    );
+  }
+
+  private renderCompositionView() {
+    const { showEmojiPanel } = this.state;
+    const { typingEnabled, stagedAttachments } = this.props;
+
+    const { selectedConversation } = this.props;
+    const { draft } = this.state;
+
+    const leftTheGroup = selectedConversation?.isGroup && selectedConversation?.left;
+    return (
+      <>
+        {leftTheGroup ? (
+          this.renderLeavedGroupBottoms()
+        ) : selectedConversation?.isBlocked ? (
+          this.renderBlockedContactBottoms()
+        ) : (
+          <>
+            {/* Dark theme: the attach button lives inside the input (Figma 234:294) */}
+            {!this.props.darkMode &&
+              typingEnabled &&
+              !this.state.showRecordingView &&
+              this.renderAttachmentMenu()}
             <input
               className="hidden"
               placeholder={window.i18n('attachment')}
@@ -539,6 +560,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
                     style={{ minHeight: '60px' }}
                     padding="10px 0"
                   >
+                    {this.props.darkMode && typingEnabled && this.renderAttachmentMenu()}
                     <div className="send-message-input__emoji-overlay">
                       {typingEnabled && (
                         <StyledEmojiPanelContainer
@@ -662,9 +684,20 @@ class CompositionBoxInner extends React.Component<Props, State> {
             <TextFormatingPlugin onSendMessage={this.onSendMessage} />
             <MentionPlugin
               fetchUsers={this.fetchUsersForGroup}
-              renderSuggestion={renderUserMentionRow}
+              renderSuggestion={(user: any) =>
+                renderUserMentionRow(
+                  user,
+                  this.props.darkMode ? isMentionedInDraft(this.state.draft, user.id) : undefined
+                )
+              }
               containerRef={this.containerRef}
               draft={this.state.draft}
+              darkMode={!!this.props.darkMode}
+              isSelected={
+                this.props.darkMode
+                  ? (user: any) => isMentionedInDraft(this.state.draft, user.id)
+                  : undefined
+              }
             />
 
             <OnChangePlugin
@@ -888,6 +921,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   private renderCaptionEditor(attachment?: AttachmentType) {
+    if (attachment && this.props.darkMode) {
+      return this.renderStagedPreview(attachment);
+    }
     if (attachment) {
       const onSave = (caption: string) => {
         // eslint-disable-next-line no-param-reassign
@@ -915,6 +951,33 @@ class CompositionBoxInner extends React.Component<Props, State> {
       );
     }
     return null;
+  }
+
+  // Dark theme (Figma 1:49963): the clicked staged image / video shows big over the messages,
+  // with previous / next between the staged visual attachments and no caption field.
+  private renderStagedPreview(attachment: AttachmentType) {
+    const visual = (this.props.stagedAttachments || []).filter(
+      a => isImageTypeSupported(a.contentType) || isVideoTypeSupported(a.contentType)
+    );
+    const index = visual.findIndex(a => a === attachment);
+    if (index < 0) {
+      return null;
+    }
+    const preview = (
+      <StagedAttachmentPreview
+        attachments={visual}
+        index={index}
+        onChangeIndex={(next: number) => {
+          this.setState({ showCaptionEditor: visual[next] });
+        }}
+        onClose={() => {
+          this.setState({ showCaptionEditor: undefined });
+        }}
+      />
+    );
+    // shown over the message list (not the composer), like the Figma frame
+    const target = document.querySelector('.conversation-content .conversation-messages');
+    return target ? createPortal(preview, target) : preview;
   }
 
   private renderAttachmentsStaged() {
@@ -1264,6 +1327,7 @@ const mapStateToProps = (state: StateType) => {
     selectedConversationKey: getSelectedConversationKey(state),
     typingEnabled: getIsTypingEnabled(state),
     isMe: getIsSelectedNoteToSelf(state),
+    darkMode: getTheme(state) === 'dark',
   };
 };
 

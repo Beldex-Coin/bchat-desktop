@@ -1719,6 +1719,251 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   }
 }
 
+// ---- Composer (Figma 234:294 idle, 1:48628 typing, 1:44434 / 1:44968 voice) ----
+// One 60px field: "+" attach square, emoji, text. Mic / send are separate 60px squares on the
+// right; everything bottom-aligned so a multi-line draft grows upwards only.
+$dark-composer-fill: linear-gradient(90deg, #121212 0%, #1b1b1b 42.8%, #121212 100%);
+$dark-composer-h: 60px;
+
+#{$dark} .composition-container {
+  gap: 14px;
+  padding: 0 20px 20px;
+  align-items: flex-end;
+
+  .send-message-input {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: 16px 20px;
+    background: $dark-composer-fill;
+    border: 0;
+    // inset hairline keeps the field exactly 60px tall (a real border would add 1px)
+    box-shadow: inset 0 0 0 1px #333;
+  }
+  .send-message-input > div[style*='min-height'] {
+    gap: 12px;
+    padding: 0 !important;
+    min-height: $dark-composer-h !important;
+  }
+
+  // "+" attach: small outlined square inside the field
+  .attachment-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  .attachment-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    margin: 0;
+    background: rgba(34, 34, 34, 0.5);
+    border: 0.5px solid #444;
+    cursor: pointer;
+
+    &:hover {
+      background: $dark-raised;
+      border-color: #666;
+    }
+  }
+  // attach menu (Figma 71:9206): 155x108 -> 207x144 glass card, left edge on the "+" button,
+  // 7.7 -> 10px above the input box; 138x37.5 -> 184x50 rows, 16px apart, 22.5 -> 30px grey icon
+  // 21.8 -> 29px in, Roboto Mono 12 -> 16 label 10px after it; the hovered row gets the glass plate
+  .attachment-wrapper .selection-box {
+    bottom: 53px;
+    inset-inline-start: 0;
+    width: 207px;
+    padding: 12px 12px 16px;
+    background-color: rgba(26, 26, 26, 0.2);
+    border: 1px solid #262626;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+
+    // the Spacer between the two rows - the rows' own margin replaces it
+    > div:not(.content-Wrapper) {
+      display: none;
+    }
+    .content-Wrapper {
+      height: 50px;
+      gap: 10px;
+      padding: 0 17px !important;
+      border: 1px solid transparent;
+      border-radius: 0;
+
+      + .content-Wrapper,
+      + div + .content-Wrapper {
+        margin-top: 16px;
+      }
+      svg {
+        flex: 0 0 auto;
+      }
+      span {
+        margin: 0;
+        font-family: $dark-font-data !important;
+        font-size: 16px;
+        font-weight: 400;
+        color: #ebebeb;
+      }
+      &:hover {
+        background: rgba(26, 26, 26, 0.6);
+        border-color: #333;
+      }
+    }
+  }
+  .send-message-input__emoji-overlay {
+    display: flex;
+    align-items: center;
+  }
+
+  // mic (start recording): 60px square matching the field
+  .recorded-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $dark-composer-h;
+    height: $dark-composer-h;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    background: $dark-composer-fill;
+    box-shadow: inset 0 0 0 1px #333;
+    color: #ebebeb;
+
+    &:hover {
+      background: $dark-raised;
+    }
+  }
+  .editor-input {
+    padding: 18px 0;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+  }
+  .editor-placeholder {
+    top: 50%;
+    inset-inline-start: 0;
+    transform: translateY(-50%);
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #737373;
+  }
+}
+// Send: 60px primary white square with the dark plane, same bottom line as the field.
+#{$dark} .send-message-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $dark-composer-h;
+  height: $dark-composer-h;
+  margin: 0;
+  flex-shrink: 0;
+  align-self: flex-end;
+  background: $dark-white;
+  color: #000;
+
+  > div,
+  .bchat-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  svg,
+  svg path {
+    fill: #0b0b0b;
+  }
+  &:hover {
+    background: #d9d9d9;
+  }
+}
+
+// Voice note bar (BchatRecording renders .voice-recorder in dark mode).
+#{$dark} .voice-recorder {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: 14px;
+
+  .send-message-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    min-height: $dark-composer-h;
+    margin: 0;
+    padding: 0 16px 0 20px;
+    background: $dark-composer-fill;
+    border: 0;
+    box-shadow: inset 0 0 0 1px #333;
+  }
+  .voice-recorder__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $dark-composer-h;
+  }
+  .voice-recorder__status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .voice-recorder__time {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+  }
+  .voice-recorder__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .voice-recorder__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    background: $dark-raised;
+    border: 1px solid #444;
+    cursor: pointer;
+
+    &:hover {
+      background: #262626;
+    }
+    &--light {
+      border-color: #acacac;
+    }
+  }
+  // no send slot while recording / nothing recorded
+  .send-message-button.delete-button {
+    display: none;
+  }
+} .send-message-button {
+  width: 60px;
+  height: 60px;
+  margin: 0;
+  background: $dark-white;
+  color: #000;
+
+  &:hover,
+  .bchat-icon-button:hover {
+    background: #d9d9d9;
+    color: #000;
+  }
+  svg {
+    fill: #000;
+  }
+}
+
 // =================================================================================================
 // Fixes from the first run-through (screenshots 26 Sep)
 // =================================================================================================
@@ -3608,6 +3853,203 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 
     &[aria-disabled='true'] {
       cursor: default;
+    }
+  }
+}
+
+// ---- Staged attachment preview (StagedAttachmentPreview, Figma 1:49963 "image view") ----
+// Covers the message list while a staged image / video is open: the media in a glass card
+// (356.5 -> 475px wide in Figma, 7.5 -> 10px inset, #222 line), a 24 -> 32px close square 15 -> 20px
+// above its top-right corner, and 39 -> 52px previous / next squares 30 -> 40px from the sides.
+// Available direction = green (#011701@50%, #00bc33), unavailable = grey (#222@50%, #444, #acacac).
+// No download square - the file is the user's own.
+#{$dark} .staged-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  background-color: $dark-ink;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1.2px);
+  background-size: 12px 12px;
+}
+#{$dark} .staged-preview__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  margin: 0 auto;
+}
+#{$dark} .staged-preview__card {
+  display: flex;
+  padding: 10px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+  backdrop-filter: blur(6px);
+}
+#{$dark} .staged-preview__media {
+  display: block;
+  max-width: min(720px, calc(100cqw - 264px));
+  max-height: calc(100cqh - 120px);
+  object-fit: contain;
+}
+#{$dark} .staged-preview__square {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .staged-preview__square-frame {
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1px;
+  }
+}
+// enabled previous / next
+#{$dark} .staged-preview__nav {
+  .staged-preview__square-frame {
+    fill: rgba(1, 23, 1, 0.5);
+    stroke: #00bc33;
+  }
+  .staged-preview__square-glyph {
+    fill: #00bc33;
+  }
+  &:hover:not(:disabled) .staged-preview__square-frame {
+    fill: rgba(0, 188, 51, 0.15);
+  }
+  &:disabled {
+    cursor: default;
+
+    .staged-preview__square-frame {
+      fill: rgba(34, 34, 34, 0.5);
+      stroke: #444;
+    }
+    .staged-preview__square-glyph {
+      fill: #acacac;
+    }
+  }
+}
+#{$dark} .staged-preview__close {
+  width: 32px;
+  height: 32px;
+
+  .staged-preview__square-frame {
+    fill: rgba(235, 235, 235, 0.8);
+    stroke: #444;
+  }
+  .staged-preview__square-glyph {
+    fill: #0b0b0b;
+  }
+  &:hover .staged-preview__square-frame {
+    fill: #ebebeb;
+  }
+}
+// the scroll-to-bottom button sits over the message list - hide it while the preview is open
+#{$dark} .conversation-content:has(.staged-preview) .floated-downArrow {
+  display: none;
+}
+
+// ---- @mention list (MentionPlugin, Figma 71:12012) ----
+// 420 -> 560px glass card 5.25 -> 7px above the input box, left edges aligned. Rows 51 -> 68px
+// with a 37.5 -> 50px avatar 12 -> 16px in, Roboto Mono 12 -> 16 name 12 -> 16px after it and the
+// square checkbox at the end. A member already mentioned in the draft gets the #1a1a1a@20% plate
+// with the 1.5 -> 2px green leading edge and a ticked green box. 4.5 -> 6px #444 scrollbar.
+#{$dark} .mention-dropdown {
+  max-height: 537px;
+  padding: 24px 22px 13px 9px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+  scrollbar-width: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 0;
+  }
+}
+#{$dark} .mention-dropdown .mention-item {
+  height: 68px;
+  margin-bottom: 4px;
+  padding: 0 19px 0 16px;
+  border-radius: 0;
+  border-left: 2px solid transparent;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+  &:hover {
+    background: rgba(26, 26, 26, 0.6);
+  }
+  &--selected,
+  &--selected:hover {
+    background: rgba(26, 26, 26, 0.2);
+    border-left-color: #00bc33;
+    box-shadow: inset 0 0 0 1px #222;
+    backdrop-filter: blur(6px);
+  }
+
+  .bchat-member-item {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0 !important;
+    background: none !important;
+    border: 0 !important;
+  }
+  .bchat-member-item__info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+  .bchat-member-item__avatar {
+    margin: 0;
+    line-height: 0;
+
+    .module-avatar {
+      width: 50px !important;
+      height: 50px !important;
+    }
+  }
+  .bchat-member-item__name {
+    margin: 0 !important;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchat-member-item__checkmark {
+    display: flex;
+    flex: 0 0 auto;
+    margin: 0;
+
+    .select-box {
+      width: 20px;
+      height: 20px;
     }
   }
 }

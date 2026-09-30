@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { getTheme } from '../../../state/selectors/theme';
 
 export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
+  const darkMode = useSelector(getTheme) === 'dark';
   return (
     <div
       className="attachment-box"
@@ -16,7 +17,12 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
       onClick={props.onClick}
     >
       <BchatToolTip effect="solid" />
-      <BchatIcon iconSize={24} iconType="attachment" iconColor="var(--color-icon)" />
+      {darkMode ? (
+        // Dark theme (Figma 234:295): "+" in a small outlined square, inside the input
+        <BchatIcon iconSize={16} iconType="attachment" iconColor="#ACACAC" />
+      ) : (
+        <BchatIcon iconSize={24} iconType="attachment" iconColor="var(--color-icon)" />
+      )}
     </div>
   );
 };

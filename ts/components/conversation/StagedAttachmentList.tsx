@@ -72,7 +72,9 @@ export const StagedAttachmentList = (props: Props) => {
             const { contentType } = attachment;
             if (isImageTypeSupported(contentType) || isVideoTypeSupported(contentType)) {
               const imageKey = getUrl(attachment) || attachment.fileName || index;
-              const clickCallback = attachments.length > 1 ? onClickAttachment : undefined;
+              // dark: any staged image / video opens the big preview (Figma 1:49963)
+              const clickCallback =
+                attachments.length > 1 || darkMode ? onClickAttachment : undefined;
 
               return (
                 <Image

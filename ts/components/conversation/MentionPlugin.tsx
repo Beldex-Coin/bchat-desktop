@@ -1,18 +1,34 @@
-import { $getSelection, $isRangeSelection, $isTextNode, TextNode, $getNodeByKey } from 'lexical';
+import {
+  $getSelection,
+  $isRangeSelection,
+  $isTextNode,
+  TextNode,
+  $getNodeByKey,
+  $getRoot,
+  $isElementNode,
+  LexicalNode,
+} from 'lexical';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { MentionNode } from './MentionNode';
+import classNames from 'classnames';
 
 export default function MentionPlugin({
   fetchUsers,
   renderSuggestion,
   containerRef,
-  draft
+  draft,
+  darkMode,
+  isSelected,
 }: {
   fetchUsers: (query: string) => Promise<any[]>;
   renderSuggestion: (user: any) => React.ReactNode;
   containerRef: React.RefObject<HTMLDivElement>;
-  draft:string
+  draft:string;
+  // dark theme (Figma 71:12012): the list spans the input box, left edges aligned
+  darkMode?: boolean;
+  // members already mentioned in the draft get the highlighted row + ticked box
+  isSelected?: (user: any) => boolean;
 }) {
   const [editor] = useLexicalComposerContext();
   const [results, setResults] = useState([]);
@@ -24,9 +40,11 @@ export default function MentionPlugin({
     const container = containerRef.current;
     if (!container) return;
 
-    const rect = container.getBoundingClientRect();
+    // dark: line the list up with the whole input box, not the text area inside it
+    const anchor = (darkMode && container.closest('.send-message-input')) || container;
+    const rect = anchor.getBoundingClientRect();
 
-    const left = rect.left + 10;
+    const left = darkMode ? rect.left : rect.left + 10;
     const top = rect.top; 
 
     setPosition({
@@ -177,6 +195,59 @@ export default function MentionPlugin({
     setShow(false);
   };
 
+  // Clicking a member that is already mentioned (ticked row, dark theme) takes the mention out
+  // again: every mention of that member is removed with the space typed after it, and so is the
+  // "@..." that opened the list.
+  const removeMention = (user: any) => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        const node = selection.anchor.getNode();
+        if ($isTextNode(node)) {
+          const offset = selection.anchor.offset;
+          const text = node.getTextContent();
+          const before = text.slice(0, offset).replace(/@\w*$/, '');
+          node.setTextContent(before + text.slice(offset));
+          node.select(before.length, before.length);
+        }
+      }
+
+      const mentions: Array<MentionNode> = [];
+      const collect = (current: LexicalNode) => {
+        if (current instanceof MentionNode) {
+          if (current.getId() === user.id) {
+            mentions.push(current);
+          }
+          return;
+        }
+        if ($isElementNode(current)) {
+          current.getChildren().forEach(collect);
+        }
+      };
+      collect($getRoot());
+
+      mentions.forEach(mention => {
+        const next = mention.getNextSibling();
+        if ($isTextNode(next) && next.getTextContent().startsWith(' ')) {
+          const rest = next.getTextContent().slice(1);
+          if (rest) {
+            next.setTextContent(rest);
+          } else {
+            next.remove();
+          }
+        }
+        mention.remove();
+      });
+
+      const after = $getSelection();
+      if (!$isRangeSelection(after) || !after.anchor.getNode().isAttached()) {
+        $getRoot().selectEnd();
+      }
+    });
+
+    setShow(false);
+  };
+
   if (!show || results.length===0 || draft.length===0) return null;
 
   return (
@@ -187,13 +258,17 @@ export default function MentionPlugin({
         position: 'fixed',
         top: position.top,
         left: position.left,
-        width: 260,
+        width: darkMode ? 560 : 260,
         zIndex: 9999,
-        transform: 'translateY(calc(-100% - 10px))',
+        transform: darkMode ? 'translateY(calc(-100% - 7px))' : 'translateY(calc(-100% - 10px))',
       }}
     >
       {results.map((user: any) => (
-        <div key={user.id} className="mention-item" onClick={() => insertMention(user)}>
+        <div
+          key={user.id}
+          className={classNames('mention-item', isSelected?.(user) && 'mention-item--selected')}
+          onClick={() => (isSelected?.(user) ? removeMention(user) : insertMention(user))}
+        >
           {renderSuggestion(user)}
         </div>
       ))}

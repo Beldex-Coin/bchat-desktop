@@ -23,18 +23,24 @@ export const styleForCompositionBoxSuggestions = {
   },
 };
 
-export const renderUserMentionRow = (suggestion: SuggestionDataItem) => {
+// `mentioned` is only passed in the dark theme (Figma 71:12012): each row then shows the square
+// checkbox, ticked when that member is already mentioned in the draft.
+export const renderUserMentionRow = (suggestion: SuggestionDataItem, mentioned?: boolean) => {
   return (
     <MemberListItem
-      isSelected={false}
+      isSelected={!!mentioned}
       key={suggestion.id}
       pubkey={`${suggestion.id}`}
       disableBg={true}
-      onlyList={true}
+      onlyList={mentioned === undefined}
       dataTestId="mentions-popup-row"
     />
   );
 };
+
+// the draft keeps a mention as @\uFFD2<pubkey>\uFFD7<name>\uFFD2
+export const isMentionedInDraft = (draft: string, pubkey: string) =>
+  draft.includes(`@\uFFD2${pubkey}\uFFD7`);
 
 // this is dirty but we have to replace all @(xxx) by @xxx manually here
 // export function cleanMentions(text: string): string {

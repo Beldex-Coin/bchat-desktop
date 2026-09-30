@@ -173,7 +173,7 @@ export const BchatQuotedMessageComposition = () => {
   const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, true, isGroupConversation) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
   return (
-    <QuotedMessageComposition>
+    <QuotedMessageComposition className="reply-preview">
       <Flex
         container={true}
         justifyContent="space-between"
@@ -183,7 +183,7 @@ export const BchatQuotedMessageComposition = () => {
       >
         {/* <ReplyingTo>{window.i18n('replyingToMessage')}</ReplyingTo> */}
 
-        <QuotedMessageCompositionReply>
+        <QuotedMessageCompositionReply className="reply-preview__card">
           <Flex
             container={true}
             justifyContent="flex-start"
@@ -192,7 +192,7 @@ export const BchatQuotedMessageComposition = () => {
             className='QuotedMessageCompositionReply'
           >
             {!isLink ? (
-              <VerticalLine />
+              <VerticalLine className="reply-preview__bar" />
             ) : (
               <StyledIconWrapper>
                 <BchatIcon
@@ -202,7 +202,7 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle isquotedMessage={isquotedMessage}>
+            <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
               {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
             </Subtle>
 
@@ -283,7 +283,9 @@ export const BchatQuotedMessageComposition = () => {
             {hasAudioAttachment && <BchatIcon iconType="microphone" iconSize="huge" />}
           </Flex>
         </QuotedMessageCompositionReply>
-        <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
+        <span className="reply-preview__close">
+          <BchatIconButton iconType="exit" iconSize={24} onClick={removeQuotedMessage} />
+        </span>
       </Flex>
     </QuotedMessageComposition>
   );

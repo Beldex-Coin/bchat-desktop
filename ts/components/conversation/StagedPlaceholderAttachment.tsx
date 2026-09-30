@@ -1,5 +1,5 @@
 import React from 'react';
-// import { BchatIcon } from '../icon';
+import { BchatIcon } from '../icon';
 
 interface Props {
   onClick: () => void;
@@ -10,6 +10,14 @@ export class StagedPlaceholderAttachment extends React.Component<Props> {
   public render() {
     const { onClick, darkMode } = this.props;
 
+    // Dark theme: green square "+" (Figma 1:48628)
+    if (darkMode) {
+      return (
+        <div className="module-staged-placeholder-attachment" role="button" onClick={onClick}>
+          <BchatIcon iconType="newChat" iconSize={22} iconColor="#1BB51E" />
+        </div>
+      );
+    }
     return (
       <div className="module-staged-placeholder-attachment" role="button" onClick={onClick}>
         {/* <div className="module-staged-placeholder-attachment__plus-icon"> */}

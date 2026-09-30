@@ -19,6 +19,7 @@ interface Props {
   onExitVoiceNoteView: () => void;
   onLoadVoiceNoteView: () => void;
   sendVoiceMessage: (audioBlob: Blob) => Promise<void>;
+  darkMode?: boolean;
 }
 
 interface State {
@@ -123,6 +124,80 @@ export class BchatRecording extends React.Component<Props, State> {
     }
 
     const actionPauseFn = isPlaying ? this.pauseAudio : this.stopRecordingStream;
+
+    if (this.props.darkMode) {
+      // Dark theme (Figma 1:44434 recording, 1:44968 recorded): one bar with the status on the left
+      // (red record dot + timer / mic + position) and square outlined actions on the right.
+      return (
+        <div role="main" className="bchat-recording voice-recorder" tabIndex={0} onKeyDown={this.onKeyDown}>
+          <div className="send-message-input">
+            <BchatQuotedMessageComposition />
+            <div className="voice-recorder__bar">
+              <div className="voice-recorder__status">
+                {isRecording ? (
+                  <>
+                    <BchatIcon iconType="recordingDot" iconSize={16} iconColor="#FF3E3E" />
+                    <span className="voice-recorder__time">{displayTimeString}</span>
+                  </>
+                ) : hasRecording ? (
+                  <>
+                    <BchatIcon iconType="recordMicrophone" iconSize={18} iconColor="#EBEBEB" />
+                    <span className="voice-recorder__time">
+                      {displayTimeString + remainingTimeString}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+              <div className="voice-recorder__actions">
+                {!isRecording && (
+                  <button
+                    type="button"
+                    className="voice-recorder__btn"
+                    aria-label={window.i18n('delete')}
+                    onClick={this.onDeleteVoiceMessage}
+                  >
+                    <BchatIcon iconType="trash" iconSize={17} iconColor="#FF3E3E" />
+                  </button>
+                )}
+                {isRecording && (
+                  <button type="button" className="voice-recorder__btn" onClick={actionPauseFn}>
+                    <BchatIcon iconType="stop" iconSize={13} iconColor="#EBEBEB" />
+                  </button>
+                )}
+                {actionPauseAudio && hasRecording && (
+                  <button
+                    type="button"
+                    className="voice-recorder__btn voice-recorder__btn--light"
+                    onClick={actionPauseFn}
+                  >
+                    <BchatIcon iconType="pause" iconSize={13} iconColor="#EBEBEB" />
+                  </button>
+                )}
+                {hasRecordingAndPaused && hasRecording && (
+                  <button
+                    type="button"
+                    className="voice-recorder__btn voice-recorder__btn--light"
+                    onClick={() => void this.playAudio()}
+                  >
+                    <BchatIcon iconType="play" iconSize={12} iconColor="#EBEBEB" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+          <div
+            className={classNames(
+              'send-message-button',
+              !hasRecording && !isRecording && 'delete-button'
+            )}
+          >
+            {!isRecording && hasRecording && (
+              <SendMessageButton name="Send" onClick={this.onSendVoiceMessage} />
+            )}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div role="main" className="bchat-recording" tabIndex={0} onKeyDown={this.onKeyDown}>
