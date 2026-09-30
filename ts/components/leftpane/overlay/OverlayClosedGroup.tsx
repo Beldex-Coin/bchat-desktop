@@ -14,6 +14,7 @@ import { BchatIcon } from '../../icon/BchatIcon';
 import { getConversationController } from '../../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { Loader } from '../../BchatWrapperModal';
+import { getTheme } from '../../../state/selectors/theme';
 
 
 export const OverlayClosedGroup = () => {
@@ -29,9 +30,13 @@ export const OverlayClosedGroup = () => {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateContactsPubkeys);
   const zoomLevel = window.getSettingValue('zoom-factor-setting');
+  const isDark = useSelector(getTheme) === 'dark';
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
+    // back to the chats section (as the Social Group overlay does), so the main view doesn't keep
+    // showing the Secret Group illustration after Esc
+    dispatch(showLeftPaneSection(0));
   }
 
   function handleSelectMember(memberId: string) {
@@ -88,6 +93,88 @@ export const OverlayClosedGroup = () => {
   const placeholder = window.i18n('createSecretGroupPlaceholder');
 
   const noContactsForClosedGroup = privateContactsPubkeys.length === 0;
+
+  // dark theme (Figma 73:4300 / 421:2 "empty contact"): title, "Secret Group Name" field, "Select
+  // Contacts" search, 60px contact rows with green square checkboxes (or the "No contacts Yet!" art),
+  // Create pinned to the bottom - grey until a name is typed and a contact is picked. Same logic.
+  if (isDark) {
+    const canCreate =
+      !noContactsForClosedGroup && groupName.trim().length > 0 && selectedMemberIds.length > 0;
+    return (
+      <div className="module-left-pane-overlay secret-group-overlay">
+        <div className="secret-group-overlay__body">
+          <div className="secret-group-overlay__title">{title}</div>
+          <div className="secret-group-overlay__label">{subtitle}</div>
+          <div className="create-group-name-input">
+            <BchatIdEditable
+              editable={!noContactsForClosedGroup}
+              placeholder={placeholder}
+              value={groupName}
+              isGroup={true}
+              maxLength={32}
+              onChange={setGroupName}
+              onPressEnter={onEnterPressed}
+              dataTestId="new-closed-group-name"
+            />
+          </div>
+          <div className="secret-group-overlay__label secret-group-overlay__label--contacts">
+            {window.i18n('selectContacts')}
+          </div>
+          <div className="bchat-search-input">
+            <div className="search">
+              <BchatIcon iconSize={20} iconType="search" />
+            </div>
+            <input
+              value={currentSearchTerm}
+              onChange={e => {
+                handleSearch(e);
+              }}
+              placeholder={window.i18n('searchContact')}
+              maxLength={26}
+              disabled={noContactsForClosedGroup}
+            />
+          </div>
+          {loading && (
+            <Loader>
+              <BchatSpinner loading={loading} />
+            </Loader>
+          )}
+          {noContactsForClosedGroup ? (
+            <div className="secret-group-overlay__empty">
+              <span className="secret-group-overlay__empty-art" aria-hidden="true" />
+              <div className="secret-group-overlay__empty-text">{window.i18n('noContactsYet')}</div>
+            </div>
+          ) : (
+            <div className="secret-group-overlay__list">
+              {filteredNames.map((memberPubkey: string) => (
+                <MemberListItem
+                  pubkey={memberPubkey}
+                  isSelected={selectedMemberIds.some(m => m === memberPubkey)}
+                  key={memberPubkey}
+                  onSelect={selectedMember => {
+                    handleSelectMember(selectedMember);
+                  }}
+                  onUnselect={unselectedMember => {
+                    handleUnselectMember(unselectedMember);
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="buttonBox">
+          <BchatButton
+            buttonColor={BchatButtonColor.Primary}
+            buttonType={BchatButtonType.Brand}
+            text={window.i18n('create')}
+            disabled={!canCreate}
+            dataTestId="next-button"
+            onClick={onEnterPressed}
+          />
+        </div>
+      </div>
+    );
+  }
 
   // function addContact() {
   //   dispatch(showLeftPaneSection(0));

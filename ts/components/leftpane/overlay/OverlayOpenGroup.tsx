@@ -4,7 +4,9 @@ import  { useState } from 'react';
 import { BchatJoinableRooms } from './BchatJoinableDefaultRooms';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../../state/selectors/theme';
+import { BchatIcon } from '../../icon';
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { joinOpenGroupV2WithUIEvents } from '../../../bchat/apis/open_group_api/opengroupV2/JoinOpenGroupV2';
 import { openGroupV2CompleteURLRegex } from '../../../bchat/apis/open_group_api/utils/OpenGroupUtils';
@@ -34,6 +36,7 @@ export const OverlayOpenGroup = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [groupUrl, setGroupUrl] = useState('');
+  const isDark = useSelector(getTheme) === 'dark';
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -64,6 +67,54 @@ export const OverlayOpenGroup = () => {
   const buttonText = window.i18n('next');
   const subtitle = window.i18n('openSocialURL');
   const placeholder = window.i18n('enterAnSocialGroupURL');
+
+  // dark theme (Figma 4:839 / 1:57355): back arrow + "Social Group" title, "Social Group URL" label,
+  // one 404x80 "JOIN BY URL" field, grey hint, "or Join here" room tiles, NEXT pinned to the bottom.
+  // Joining logic is the same as below.
+  if (isDark) {
+    return (
+      <div className="module-left-pane-overlay social-group-overlay">
+        <div className="social-group-overlay__header">
+          <button
+            type="button"
+            className="social-group-overlay__back"
+            aria-label={window.i18n('close')}
+            onClick={closeOverlay}
+          >
+            <BchatIcon iconType="KeyboardBackspaceArrow" iconSize={28} iconColor="#ACACAC" flipInRtl={true} />
+          </button>
+          <span className="social-group-overlay__title">{window.i18n('socialGroup')}</span>
+        </div>
+        <div className="social-group-overlay__body">
+          <div className="social-group-overlay__label">{subtitle}</div>
+          <div className="create-group-name-input">
+            <BchatIdEditable
+              editable={true}
+              placeholder={window.i18n('joinByUrl')}
+              value={groupUrl}
+              isGroup={true}
+              maxLength={300}
+              onChange={setGroupUrl}
+              onPressEnter={onEnterPressed}
+            />
+          </div>
+          <div className="social-group-overlay__hint">{window.i18n('socialGroupDescription')}</div>
+          <BchatSpinner loading={loading} />
+          <BchatJoinableRooms onRoomClicked={closeOverlay} />
+        </div>
+        <div className="buttonBox">
+          <BchatButton
+            buttonColor={BchatButtonColor.Primary}
+            buttonType={BchatButtonType.Brand}
+            text={buttonText}
+            dataTestId="next-button"
+            onClick={onEnterPressed}
+            disabled={!groupUrl.startsWith('http://social.beldex.io/')}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="module-left-pane-overlay">

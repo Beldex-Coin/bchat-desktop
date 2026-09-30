@@ -1398,6 +1398,509 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// Create Secret Group (Figma 1:8154) and Social Group join (4:839) overlays
+// =================================================================================================
+#{$dark} .module-left-pane-overlay {
+  background-color: $dark-ink;
+
+  .module-left-pane-overlay-closed--header {
+    padding: 0 26px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .module-left-pane-overlay-closed--subHeader,
+  .module-left-pane-overlay-closed--search-label,
+  .module-left-pane-overlay-open-title {
+    font-family: $dark-font-data !important;
+    font-size: 17px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .module-left-pane-overlay-open-title {
+    font-family: $dark-font-ui !important;
+    margin: 12px 0;
+  }
+  .module-left-pane-overlay-openhint-message {
+    font-family: $dark-font-data !important;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #acacac;
+  }
+
+  // name / URL fields
+  .create-group-name-input .bchat-id-editable {
+    background: #111;
+    border: 1px solid #444;
+
+    textarea {
+      padding: 22px 18px;
+      background: transparent;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      color: #ebebeb;
+    }
+    textarea::placeholder {
+      text-transform: uppercase;
+      color: #737373;
+    }
+  }
+  // contact search: a boxed field here, not the full-bleed band of the chat list
+  .bchat-search-input {
+    width: auto;
+    height: 60px;
+    margin: 8px 0 12px;
+    padding-inline: 18px;
+    background: #111;
+    border: 1px solid #444;
+  }
+
+  // contact rows with the square green checkbox
+  .bchat-member-item {
+    padding: 10px 0;
+    background: transparent !important;
+
+    &:hover {
+      background: transparent !important;
+    }
+  }
+  .bchat-member-item__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+
+  // bottom action: centred chamfer button, dimmed until the form is valid
+  .buttonBox .bchat-button {
+    min-width: 250px;
+    height: 60px;
+  }
+}
+#{$dark} .select-box--green.select-box--checked {
+  background: $dark-green;
+  border-color: $dark-green;
+}
+
+// "or Join here" room tiles: dark squares, icon in a raised well, mono caption.
+#{$dark} .room-grid {
+  gap: 8px;
+
+  > * > div {
+    width: 100%;
+    height: 128px;
+    padding: 14px 6px !important;
+    background: #141414;
+    border: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+
+    &:hover {
+      background: $dark-raised;
+    }
+  }
+  .room-name {
+    justify-content: center;
+    font-family: $dark-font-data !important;
+    font-size: 13px;
+    color: #ebebeb;
+  }
+}
+
+// ---- Social Group overlay (Figma 4:839 empty / 1:57355 filled), left pane 337.5 -> 450px ----
+// back arrow 23px in + Inter 22 title 65px in, 45px from the top; mono 18 "Social Group URL" label;
+// 404x80 #111 / #444 field (mono Medium 19 uppercase #737373 placeholder); mono 16/24 #8d8d8d hint;
+// Inter Medium 18 #acacac "or Join here"; 128px #111 room tiles 8px apart (64px icon, mono 14 name);
+// 250x60 NEXT 51px from the bottom - #1a1a1a / #737373 until a valid URL is typed.
+#{$dark} .social-group-overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  // keeps the pane's own width (25vw, max 420px) so it doesn't jump against the chat list;
+  // only the 15px base padding goes - the sections carry their own Figma insets
+  padding: 0;
+
+  .social-group-overlay__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 42px 23px 0;
+  }
+  .social-group-overlay__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+
+    &:hover svg path {
+      fill: #ebebeb;
+    }
+  }
+  .social-group-overlay__title {
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #ebebeb;
+  }
+  .social-group-overlay__body {
+    flex: 1;
+    min-height: 0;
+    padding: 33px 23px 130px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .social-group-overlay__label {
+    padding-inline-start: 4px;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    line-height: 24px;
+    color: #ebebeb;
+  }
+  .create-group-name-input {
+    width: 100%;
+    margin: 19px 0 0;
+    padding: 0;
+
+    .bchat-id-editable {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 80px;
+      min-height: 80px;
+      padding: 0;
+    }
+    // one line, vertically centred in the 80px box
+    // the group textarea has a base margin-top: 15px, which pushed the text below the middle
+    .bchat-id-editable textarea {
+      width: 100%;
+      height: 24px;
+      min-height: 0;
+      margin: 0;
+      padding: 0 21px;
+      overflow: hidden;
+      font-size: 19px;
+      line-height: 24px;
+      white-space: nowrap;
+      resize: none;
+    }
+    .bchat-id-editable textarea::placeholder {
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #737373;
+    }
+  }
+  .social-group-overlay__hint {
+    margin-top: 13px;
+    padding-inline-start: 4px;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    line-height: 24px;
+    color: #8d8d8d;
+  }
+  // BchatJoinableRooms: the Flex wrapper is 93% wide by default
+  .social-group-overlay__body > div:last-child {
+    width: 100% !important;
+  }
+  .module-left-pane-overlay-open-title {
+    margin: 23px 0 17px;
+    padding-inline-start: 4px;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 500;
+    color: #acacac;
+  }
+  // three equal square tiles that fit the pane (it is 25vw, max 420px - fixed 128px tiles ran into
+  // the right edge and made the pane scroll sideways); icon and name centred in each tile
+  .room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+
+    > * {
+      min-width: 0;
+    }
+    // height follows the content (icon + name) so the name is never cut off; at least square-ish
+    > * > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: auto;
+      min-height: 120px;
+      margin: 0;
+      padding: 16px 6px 14px !important;
+      gap: 10px;
+      overflow: visible;
+      background: #111;
+    }
+    // the SpacerXS between icon and name - the gap above does that job
+    > * > div > div:not(.room-name):not(.bns-verify-wrapper):empty {
+      display: none;
+    }
+    .bns-verify-wrapper {
+      flex-shrink: 0;
+      line-height: 0;
+    }
+    .module-avatar,
+    .module-avatar img {
+      width: 64px !important;
+      height: 64px !important;
+    }
+    .room-name {
+      display: block !important;
+      flex-shrink: 0;
+      width: 100%;
+      padding: 0 4px;
+      line-height: 20px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: center;
+      font-size: 14px;
+      color: #acacac;
+    }
+  }
+  .buttonBox {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 51px;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+
+    .bchat-button {
+      width: 250px;
+      min-width: 250px;
+      height: 60px;
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .bchat-button.disabled,
+    .bchat-button[disabled] {
+      background: #1a1a1a !important;
+      color: #737373 !important;
+      opacity: 1;
+    }
+  }
+}
+
+// ---- Secret Group overlay (Figma 73:4300 contacts / 421:2 empty), left pane 337.5 -> 450px ----
+// Inter 22 title 34px from the top, 25px side inset; mono 18 #acacac labels; 400x80 #111 / #444
+// name field (uppercase mono 18 #737373 placeholder, 16px in); 400x60 search (20px icon, 12px gap);
+// contact rows 60px on an 86px pitch - 60px #1a1a1a initials avatar, Inter SemiBold 16 name, green
+// square checkbox at the end; "No contacts Yet!" art 267px + mono 18 #555 line; 250x60 Create 36px
+// from the bottom, #1a1a1a / #666 until it can be pressed.
+#{$dark} .secret-group-overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  // keeps the pane's own width (25vw, max 420px) so it doesn't jump against the chat list;
+  // only the 15px base padding goes - the sections carry their own Figma insets
+  padding: 0;
+
+  .secret-group-overlay__body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 34px 25px 110px;
+    overflow-y: auto;
+  }
+  .secret-group-overlay__title {
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #ebebeb;
+  }
+  .secret-group-overlay__label {
+    margin-top: 27px;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    line-height: 24px;
+    color: #acacac;
+
+    &--contacts {
+      margin-top: 32px;
+    }
+  }
+  .create-group-name-input {
+    width: 100%;
+    margin: 16px 0 0;
+    padding: 0;
+
+    .bchat-id-editable {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 80px;
+      min-height: 80px;
+      padding: 0;
+    }
+    // the group textarea has a base margin-top: 15px, which pushed the text below the middle
+    .bchat-id-editable textarea {
+      width: 100%;
+      height: 24px;
+      min-height: 0;
+      margin: 0;
+      padding: 0 16px;
+      overflow: hidden;
+      font-size: 18px;
+      line-height: 24px;
+      white-space: nowrap;
+      resize: none;
+    }
+  }
+  .bchat-search-input {
+    flex-shrink: 0;
+    width: 100%;
+    height: 60px;
+    margin: 13px 0 0;
+    padding: 0 20px;
+    gap: 12px;
+    background: #111;
+    border: 1px solid #444;
+
+    input {
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      color: #ebebeb;
+
+      &::placeholder {
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+  }
+  .secret-group-overlay__list {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    margin-top: 28px;
+  }
+  .bchat-member-item {
+    min-height: 60px;
+    margin: 0;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+  .bchat-member-item__info {
+    gap: 16px;
+  }
+  .bchat-member-item__avatar {
+    margin: 0;
+
+    .module-avatar {
+      width: 60px !important;
+      height: 60px !important;
+    }
+  }
+  .bchat-member-item__name {
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .bchat-member-item__checkmark .select-box {
+    width: 24px;
+    height: 24px;
+  }
+  .secret-group-overlay__empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    min-height: 220px;
+  }
+  .secret-group-overlay__empty-art {
+    display: block;
+    width: 270px;
+    aspect-ratio: 203 / 82;
+    background: url('../images/dark-theme/no-contacts.svg') center / contain no-repeat;
+  }
+  .secret-group-overlay__empty-text {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #555;
+  }
+  .buttonBox {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 36px;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+
+    .bchat-button {
+      width: 250px;
+      min-width: 250px;
+      height: 60px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .bchat-button.disabled {
+      background: #1a1a1a !important;
+      color: #666 !important;
+      opacity: 1;
+    }
+  }
+}
+
+// main view while the Secret Group overlay is open (Figma 73:4300): 600x468 -> 800px lock
+// illustration (vector redraw, images/dark-theme/secret-group.svg), then the description
+// (mono 16.5 -> 22/30 #acacac, 800px wide, left aligned) 13px below
+#{$dark} .conversation.placeholder .empty-chat.empty-chat--secret {
+  gap: 13px;
+  width: 800px;
+
+  .empty-chat__art {
+    width: min(800px, 100%);
+    aspect-ratio: 600 / 468;
+    background-image: url('../images/dark-theme/secret-group.svg');
+    opacity: 1;
+  }
+  .empty-chat__note {
+    width: 100%;
+    color: #acacac;
+  }
+}
+
+// main view while the Social Group overlay is open (Figma 4:839): 820x433 -> 1093px illustration
+// (vector redraw of the raster in images/dark-theme/social-group.svg), 27 -> 36px gap, then the
+// description (mono 16.5 -> 22/30, #8d8d8d) with "Social groups" in #ebebeb, 1037px wide
+#{$dark} .conversation.placeholder .empty-chat.empty-chat--social {
+  gap: 36px;
+  width: 1093px;
+
+  .empty-chat__art {
+    width: min(1093px, 100%);
+    aspect-ratio: 820 / 433;
+    background-image: url('../images/dark-theme/social-group.svg');
+    opacity: 1;
+  }
+  .empty-chat__note {
+    width: min(1037px, 100%);
+  }
+  .empty-chat__lead {
+    color: #ebebeb;
+  }
+}
+
+// =================================================================================================
 // Message requests (Figma 1:37618 "5 s"): request rows with Decline / Accept, Clear all
 // =================================================================================================
 // rows 1007x67.5 -> 90px, 9 -> 12px apart, #111@20% with the glass edge (like the Notifications

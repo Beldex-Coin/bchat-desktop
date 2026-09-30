@@ -120,7 +120,7 @@ const IconWrapper = styled.div<VerticalLineProps>`
   border-radius: 10px;
 `;
 const BchatJoinableRoomName = (props: JoinableRoomProps) => {
-  return <StyledRoomName>{props.name}</StyledRoomName>;
+  return <StyledRoomName className="room-name">{props.name}</StyledRoomName>;
 };
 
 const BchatJoinableRoomRow = (props: JoinableRoomProps) => {
@@ -180,7 +180,7 @@ export const BchatJoinableRooms = (props: { onRoomClicked: () => void }) => {
       <div className="module-left-pane-overlay-open-title">{window.i18n('orJoinOneOfThese')}</div>
       {/* <H3 text={window.i18n('orJoinOneOfThese')} /> */}
       {/* <Flex container={true} flexGrow={1}  justifyContent="center" flexDirection="row" flexWrap='wrap'> */}
-      <Grid>{componentToRender}</Grid>
+      <Grid className="room-grid">{componentToRender}</Grid>
       {/* </Flex> */}
     </Flex>
   );
