@@ -483,7 +483,7 @@
   "audioMessageAutoplayDescription": "Голосовые сообщения будут воспроизводиться автоматически",
   "clickToTrustContact": "Нажмите, чтобы загрузить медиафайл",
   "trustThisContactDialogTitle": "Доверие $name$?",
-  "trustThisContactDialogDescription": "Вы уверены, что хотите загрузить медиафайлы, отправленные пользователем? ",
+  "trustThisContactDialogDescription": "Вы уверены, что хотите загрузить медиафайлы, отправленные пользователем ",
   "pinConversation": "Закрепить беседу",
   "unpinConversation": "Открепить беседу",
   "pinConversationLimitTitle": "Лимит закреплённых бесед",

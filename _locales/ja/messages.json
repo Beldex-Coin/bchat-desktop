@@ -483,7 +483,7 @@
   "audioMessageAutoplayDescription": "音声メッセージは自動的に再生されます",
   "clickToTrustContact": "メディアをダウンロードするにはクリックしてください",
   "trustThisContactDialogTitle": "$name$ を信頼しますか？",
-  "trustThisContactDialogDescription": "「」から送信されたメディアをダウンロードしてもよろしいですか？ ",
+  "trustThisContactDialogDescription": "「」から送信されたメディアをダウンロードしてもよろしいですか",
   "pinConversation": "固定",
   "unpinConversation": "会話のピン留めを解除",
   "pinConversationLimitTitle": "ピン留めできる会話の上限",

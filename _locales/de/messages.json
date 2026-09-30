@@ -483,7 +483,7 @@
   "audioMessageAutoplayDescription": "Audionachrichten werden automatisch abgespielt",
   "clickToTrustContact": "Zum Herunterladen der Medien klicken",
   "trustThisContactDialogTitle": "Vertrauen $name$?",
-  "trustThisContactDialogDescription": "Möchtest du die von … gesendeten Medien wirklich herunterladen? ",
+  "trustThisContactDialogDescription": "Möchtest du die von … gesendeten Medien wirklich herunterladen ",
   "pinConversation": "Unterhaltung anheften",
   "unpinConversation": "Konversation lösen",
   "pinConversationLimitTitle": "Maximale Anzahl angepinnter Konversationen erreicht",

@@ -483,7 +483,7 @@
   "audioMessageAutoplayDescription": "语音消息将自动播放.",
   "clickToTrustContact": "点击下载媒体文件",
   "trustThisContactDialogTitle": "信任 $name$?",
-  "trustThisContactDialogDescription": "您确定要下载 发送的媒体吗？ ",
+  "trustThisContactDialogDescription": "您确定要下载 发送的媒体吗 ",
   "pinConversation": "置顶会话",
   "unpinConversation": "取消置顶对话",
   "pinConversationLimitTitle": "置顶对话数量上限",

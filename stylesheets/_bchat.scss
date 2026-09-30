@@ -1240,6 +1240,8 @@ label {
     justify-content: center;
     background-color: var(--color-modal-footer);
     align-items: center;
+    box-sizing: border-box;
+    padding-inline: var(--margins-lg);
   }
 }
 
