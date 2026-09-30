@@ -1,5 +1,6 @@
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { disableRecoveryPhrasePrompt } from '../../state/ducks/userConfig';
 // import { getShowRecoveryPhrasePrompt } from '../../state/selectors/userConfig';
@@ -40,6 +41,8 @@ import { updateIsOnline,
   // updateOnionPaths 
 } from '../../state/ducks/onion';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { getTheme } from '../../state/selectors/theme';
+import { NewChatMenu } from './NewChatMenu';
 // import { OnionPaths } from '../../bchat/onions';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -65,6 +68,7 @@ export const LeftPaneSectionHeader = () => {
   const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
   const isBnsHolder = useConversationBnsHolder(getOurPubKeyStrFromCache());
+  const isDark = useSelector(getTheme) === 'dark';
   useEffect(() => {
     if (isOnline && !IsVerifyBnsCalled) {
       isLinkedBchatIDWithBnsForDeamon();
@@ -89,6 +93,8 @@ export const LeftPaneSectionHeader = () => {
     case SectionType.Message:
       label = isMessageRequestOverlay
         ? window.i18n('messageRequests')
+        : isDark
+        ? window.i18n('chatsHeader')
         : // : window.i18n('messagesHeader');
           'BChat';
 
@@ -176,7 +182,10 @@ export const LeftPaneSectionHeader = () => {
     <>
       <Flex flexDirection="column">
         <div
-          className="module-left-pane__header"
+          className={classNames(
+            'module-left-pane__header',
+            SectionType.Settings === focusedSection && 'settings-header'
+          )}
           style={SectionType.Settings == focusedSection ? { boxShadow: 'none' } : {}}
         >
           {showBackButton && (
@@ -192,7 +201,7 @@ export const LeftPaneSectionHeader = () => {
             />
           )}
 
-          <div className="">{verifyScreens()}</div>
+          <div className="header-avatar">{verifyScreens()}</div>
 
           {/* <div>
           <input
@@ -208,6 +217,7 @@ export const LeftPaneSectionHeader = () => {
             {/* <IsOnline /> */}
           </div>
           <Moon />
+          {isDark && isMessageSection && !isMessageRequestOverlay && <NewChatMenu />}
           {/* <Settings /> */}
 
           {/* {isMessageSection && !isMessageRequestOverlay && (
@@ -227,6 +237,23 @@ export const LeftPaneSectionHeader = () => {
       </Flex>
       
     </>
+  );
+};
+
+/**
+ * Dark theme only: "Chats" title bar with the "+" new-chat menu, shown above the search
+ * in the chat list (the classic header isn't rendered in the message section).
+ */
+export const ChatsHeader = () => {
+  const isDark = useSelector(getTheme) === 'dark';
+  if (!isDark) {
+    return null;
+  }
+  return (
+    <div className="chats-header">
+      <h1 className="chats-header__title">{window.i18n('chatsHeader')}</h1>
+      <NewChatMenu />
+    </div>
   );
 };
 

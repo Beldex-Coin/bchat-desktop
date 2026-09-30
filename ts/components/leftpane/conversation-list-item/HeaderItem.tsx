@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { getTheme } from '../../../state/selectors/theme';
 import { getFirstUnreadMessageWithMention } from '../../../data/data';
 import { useConversationPropsById, useIsPinned } from '../../../hooks/useParamSelector';
 import { UserUtils } from '../../../bchat/utils';
@@ -21,6 +22,7 @@ const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
   const convoId = useContext(ContextConversationId);
   const convoSetting = useConversationPropsById(convoId)?.currentNotificationSetting;
 
+  const isDark = useSelector(getTheme) === 'dark';
   if (!props.isMessagesSection) {
     return null;
   }
@@ -29,7 +31,12 @@ const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
     case 'all':
       return null;
     case 'disabled':
-      return <BchatIcon iconType="mute" iconColor={'#A7A7BA'} iconSize="medium" />;
+      // dark (Figma 1:16721): 13.5 -> 18px #ACACAC
+      return isDark ? (
+        <BchatIcon iconType="mute" iconColor="#ACACAC" iconSize={18} />
+      ) : (
+        <BchatIcon iconType="mute" iconColor={'#A7A7BA'} iconSize="medium" />
+      );
     case 'mentions_only':
       return <BchatIcon iconType="bell" iconColor={'var(--color-text-subtle)'} iconSize="medium" />;
     default:
@@ -72,11 +79,12 @@ const ListItemIcons = () => {
   const isMessagesSection = useSelector(getFocusedSection) === SectionType.Message;
   const conversationId = useContext(ContextConversationId);
   const isPinned = useIsPinned(conversationId);
+  const isDark = useSelector(getTheme) === 'dark';
 
   const pinIcon =
     isMessagesSection && isPinned ? (
-      <PinWrapper>
-        <BchatIcon iconType="pin" iconColor={'#F0F0F0'} iconSize={14} />
+      <PinWrapper className="pin-badge">
+        <BchatIcon iconType="pin" iconColor={isDark ? '#0B0B0B' : '#F0F0F0'} iconSize={14} />
       </PinWrapper>
     ) : null;
   return (

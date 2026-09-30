@@ -15,8 +15,41 @@ import { openConversationWithMessages } from '../state/ducks/conversations';
 import { SNodeAPI } from '../bchat/apis/snode_api';
 import styled from 'styled-components';
 
-export class MessageView extends React.Component {
+export class MessageView extends React.Component<{ variant?: 'social' | 'secret' }> {
   public render() {
+    // dark theme, Social Group overlay open (Figma 4:839): social-group illustration + the
+    // description with "Social groups" picked out in white
+    // same for the Secret Group overlay (Figma 73:4300): lock illustration + description
+    if (this.props.variant === 'social' || this.props.variant === 'secret') {
+      const secret = this.props.variant === 'secret';
+      const text = window.i18n(secret ? 'secretGroupDescription' : 'socialGroupDescription');
+      const lead = 'Social groups';
+      const hasLead = text.startsWith(lead);
+      return (
+        <div className="conversation placeholder">
+          <div className="conversation-header" />
+          <div className="container">
+            <div className="content">
+              <div className={`empty-chat empty-chat--${this.props.variant}`}>
+                <div className="empty-chat__art" aria-hidden="true" />
+                <p className="empty-chat__note">
+                  {secret ? (
+                    text
+                  ) : hasLead ? (
+                    <>
+                      <span className="empty-chat__lead">{lead}</span>
+                      {text.slice(lead.length)}
+                    </>
+                  ) : (
+                    text
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="conversation placeholder">
         <div className="conversation-header" />
@@ -26,6 +59,11 @@ export class MessageView extends React.Component {
               {/* <p className="bchat-text">
                 Much empty. Such wow.<br></br> Get some friends to BChat!
               </p> */}
+            </div>
+            {/* Dark theme (Figma 1:56419): illustration + privacy note; hidden in light */}
+            <div className="empty-chat">
+              <div className="empty-chat__art" aria-hidden="true" />
+              <p className="empty-chat__note">{window.i18n('emptyChatPrivacyNote')}</p>
             </div>
           </div>
         </div>

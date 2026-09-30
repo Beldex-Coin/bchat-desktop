@@ -125,6 +125,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   return (
     <>
       <StyledMessageRequestBanner
+        className="requests-banner"
         onContextMenu={handleOnContextMenu}
         onClick={openRequests}
         onMouseUp={e => {
@@ -134,13 +135,20 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
         data-testid="message-request-banner"
       >
         {/* <CirclularIcon iconType="messageRequest" iconSize="medium" /> */}
-        <BchatIcon  iconSize="medium" iconType="messageRequest" />
-        <StyledMessageRequestBannerHeader>
+        {/* dark: Figma 89:10343 at 19.5 -> 26px, #ACACAC */}
+        <span className="requests-banner__icon">
+          <BchatIcon iconSize="medium" iconType="messageRequest" />
+        </span>
+        <StyledMessageRequestBannerHeader className="requests-banner__title">
           {window.i18n('messageRequests')}
         </StyledMessageRequestBannerHeader>
-        <StyledUnreadCounter>
+        <StyledUnreadCounter className="requests-banner__count">
           <div>{conversationRequestsUnread || 0}</div>
         </StyledUnreadCounter>
+        {/* Dark theme: trailing arrow. Hidden unless _dark_overrides.scss shows it. */}
+        <span className="requests-banner__arrow" aria-hidden="true">
+          <BchatIcon iconType="arrowRight" iconSize={18} iconColor="#00BC33" flipInRtl={true} />
+        </span>
       </StyledMessageRequestBanner>
       <Portal>
         <MemoMessageRequestBannerContextMenu triggerId={triggerId} />

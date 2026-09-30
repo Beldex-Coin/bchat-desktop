@@ -49,6 +49,7 @@ const InnerLeftPaneMessageSection = () => {
   const overlayMode = useSelector(getOverlayMode);
   const directContact = useSelector(getDirectContacts);
   const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length; 
+  const isDark = useSelector(getTheme) === 'dark';
 
   return (
     // tslint:disable-next-line: use-simple-attributes
@@ -60,6 +61,7 @@ const InnerLeftPaneMessageSection = () => {
       overlayMode={overlayMode}
       directContact={directContact}
       conversationRequestsUnread={conversationRequestsUnread}
+      darkMode={isDark}
     />
   );
 };

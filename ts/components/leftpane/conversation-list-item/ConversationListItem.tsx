@@ -225,7 +225,8 @@ const ConversationListItem = (props: Props) => {
                 ? 'module-conversation-list-item--mentioned-us'
                 : null,
               isSelected ? 'module-conversation-list-item--is-selected' : null,
-              isBlocked ? 'module-conversation-list-item--is-blocked' : null
+              isBlocked ? 'module-conversation-list-item--is-blocked' : null,
+              convoProps?.isPinned ? 'module-conversation-list-item--is-pinned' : null
             )}
           >
             <div className="verticalLine"></div>

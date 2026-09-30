@@ -103,7 +103,10 @@ export const OverlayMessageRequest = (props: any) => {
   };
 
   return (
-    <div className="module-left-pane-overlay"
+    <div
+      className={`module-left-pane-overlay${
+        leftPane ? ' message-requests-overlay message-requests-overlay--left' : ''
+      }`}
       style={{
         width:props?.settings?'100%':''  ,
         maxWidth:props?.settings?'100%':'',

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getConversationController } from '../../bchat/conversations';
 import { syncConfigurationIfNeeded } from '../../bchat/utils/syncUtils';
 
@@ -83,6 +83,7 @@ import SubMenuConnectIcon from '../icon/SubMenuConnect';
 import { openCallHistory } from '../../state/ducks/callHistory';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
+import { NewChatMenuList, useDismissOnOutside } from './NewChatMenu';
 
 const Section = (props: {
   type: SectionType;
@@ -95,6 +96,40 @@ const Section = (props: {
   const { type, isHiddenSubMenus, setIsHiddenSubMenus } = props;
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
+  // Dark theme swaps in the new icon set; colour comes from the button via currentColor.
+  const isDark = useSelector(getTheme) === 'dark';
+  // Dark theme: hovering the Chats button opens the New Chat / Secret Group / Social Group flyout
+  // (Figma 234:248). It is position:fixed because the rail clips overflow. The flyout is a child of
+  // the button box, so moving the mouse onto it keeps it open; leaving both closes it after a short
+  // grace period (so crossing a pixel gap doesn't close it).
+  const [flyoutPos, setFlyoutPos] = useState<{ top: number; side: number } | null>(null);
+  const flyoutRef = useRef<HTMLDivElement>(null);
+  const flyoutCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelFlyoutClose = () => {
+    if (flyoutCloseTimer.current) {
+      clearTimeout(flyoutCloseTimer.current);
+      flyoutCloseTimer.current = null;
+    }
+  };
+  const closeFlyout = () => {
+    cancelFlyoutClose();
+    setFlyoutPos(null);
+  };
+  const openFlyout = (button: HTMLElement) => {
+    cancelFlyoutClose();
+    const rect = button.getBoundingClientRect();
+    const isRtl = document.documentElement.dir === 'rtl';
+    setFlyoutPos({
+      top: rect.top,
+      side: isRtl ? window.innerWidth - rect.left : rect.right,
+    });
+  };
+  const scheduleFlyoutClose = () => {
+    cancelFlyoutClose();
+    flyoutCloseTimer.current = setTimeout(() => setFlyoutPos(null), 150);
+  };
+  useEffect(() => cancelFlyoutClose, []);
+  useDismissOnOutside(!!flyoutPos, open => !open && closeFlyout(), flyoutRef);
 
   
 
@@ -168,24 +203,54 @@ const Section = (props: {
   switch (type) {
     case SectionType.Message:
       return (
-        <div className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}>
+        <div
+          className={classNames(isSelected ? 'isSelected-icon-box' : 'icon-box')}
+          ref={flyoutRef}
+          onMouseLeave={() => {
+            if (isDark) {
+              scheduleFlyoutClose();
+            }
+          }}
+          onMouseEnter={cancelFlyoutClose}
+        >
           <div
             // data-tip="Chat"
             // data-place="right"
             // data-offset="{'top':0}"
             className="btnView"
-            onClick={() => handleClick()}
+            onMouseEnter={e => {
+              if (isDark) {
+                openFlyout(e.currentTarget);
+              }
+            }}
+            onClick={() => {
+              void handleClick();
+            }}
           >
-            <BchatIcon iconSize={31} iconType={'chatBubble'} />
+            {isDark ? (
+              <BchatIcon iconSize={28} iconType="chatBubble" iconColor="currentColor" />
+            ) : (
+              <BchatIcon iconSize={31} iconType={'chatBubble'} />
+            )}
             {unreadMessageCount !== 0 ? (
               <div className="unreadCountChatIcon">
                 {unreadMessageCount <= 99 ? unreadToShow : <span>99+</span>}
               </div>
             ) : null}
           </div>
-          <section className="d-visiblity ">
-            <DisplayTitle titleKey={'allChats'} top={'186px'} />
-          </section>
+          {!flyoutPos && (
+            <section className="d-visiblity ">
+              <DisplayTitle titleKey={'allChats'} top={'186px'} />
+            </section>
+          )}
+          {isDark && flyoutPos && (
+            <div
+              className="nav-rail-flyout"
+              style={{ top: flyoutPos.top, insetInlineStart: flyoutPos.side }}
+            >
+              <NewChatMenuList onPicked={closeFlyout} />
+            </div>
+          )}
         </div>
       );
     case SectionType.NewChat:
@@ -197,7 +262,8 @@ const Section = (props: {
         <div
           className={classNames(
             isFocused ? 'isSelected-icon-box' : 'icon-box',
-            !isHiddenSubMenus && 'icon-colored-box'
+            !isHiddenSubMenus && 'icon-colored-box',
+            'nav-rail-newchat'
           )}
           onMouseOver={() => setIsHiddenSubMenus(false)}
           onMouseLeave={() => {
@@ -282,11 +348,15 @@ const Section = (props: {
             className="btnView"
             onClick={() => handleClick()}
           >
-            <BchatIcon
-              iconSize={31}
-              // dataTestId="settings-section"
-              iconType={'gear'}
-            />
+            {isDark ? (
+              <BchatIcon iconSize={28} iconType="gear" iconColor="currentColor" />
+            ) : (
+              <BchatIcon
+                iconSize={31}
+                // dataTestId="settings-section"
+                iconType={'gear'}
+              />
+            )}
           </div>
           <section className="d-visiblity ">
             <DisplayTitle titleKey={'settingsHeader'} top={'278px'} />
@@ -583,7 +653,8 @@ export const ActionsPanel = () => {
     <>
       <ModalContainer />
       <CallContainer />
-      <LeftPaneSectionContainer data-testid="leftpane-section-container">
+      <LeftPaneSectionContainer className="nav-rail" data-testid="leftpane-section-container">
+        <img className="nav-rail-logo" src="images/dark-theme/logo.svg" alt="" aria-hidden="true" />
         <div
           className="profile-box"
           style={{ marginTop: '10px', height: '60px', position: 'relative' }}
@@ -598,7 +669,10 @@ export const ActionsPanel = () => {
             />
         </div>
         <SpacerMD />
-        <div style={{ overflow: 'auto', width: '65%', height: 'calc(100vh - 250px)' }}>
+        <div
+          className="nav-rail-nav"
+          style={{ overflow: 'auto', width: '65%', height: 'calc(100vh - 250px)' }}
+        >
           <Section
             type={SectionType.NewChat}
             isHiddenSubMenus={isHiddenSubMenus}
@@ -617,23 +691,25 @@ export const ActionsPanel = () => {
           <div className="theme-Wrapper ">
             <div
               className={classNames('icon-wrapper', !darkMode && 'selected')}
+              data-theme-option="light"
               onClick={() => themeChanger('light')}
             >
               <BchatIcon
                 iconType={'sun'}
-                iconSize={24}
-                iconColor={darkMode ? '#F0F0F0' : '#333333'}
+                iconSize={darkMode ? 22 : 24}
+                iconColor={darkMode ? 'currentColor' : '#333333'}
               />
             </div>
 
             <div
               className={classNames('icon-wrapper', darkMode && 'selected')}
+              data-theme-option="dark"
               onClick={() => themeChanger('dark')}
             >
               <BchatIcon
                 iconType={'moon'}
-                iconSize={24}
-                iconColor={darkMode ? '#F0F0F0' : '#A7A7BA'}
+                iconSize={darkMode ? 22 : 24}
+                iconColor={darkMode ? 'currentColor' : '#A7A7BA'}
               />
             </div>
           </div>

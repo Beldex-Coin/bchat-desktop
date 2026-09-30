@@ -530,3 +530,1103 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
 #{$dark} ::-webkit-scrollbar-track {
   background-color: $dark-ink;
 }
+
+// =================================================================================================
+// Main surface - left rail + Chats list (Figma node 28:9680)
+// The Figma screens are drawn at 1440x810 = 0.75x of the 1920x1080 reference frames, and the app
+// already uses the 1920 sizes (60px avatars etc.), so every value below is the Figma value / 0.75.
+// =================================================================================================
+
+// The banner arrow only exists in the dark theme - hidden everywhere else (light theme included).
+.requests-banner__arrow {
+  display: none;
+}
+
+// ---- Rail (ActionsPanel / LeftPaneSectionContainer) ----
+#{$dark} .nav-rail {
+  width: 83px;
+  padding: 20px 0;
+  background-color: $dark-ink;
+  border-inline-end: 1px solid $dark-hair;
+
+  // Own avatar: 60px chamfer-free square; the online dot stays round (ActionPanelOnionStatusLight
+  // draws it as an SVG circle, which the no-radius rule doesn't touch).
+  .profile-box {
+    margin-top: 0 !important;
+  }
+
+  // Nav buttons span the rail; selected = dark green fill + 1px green bar on the leading edge.
+  .nav-rail-nav {
+    width: 100% !important;
+  }
+  .icon-box .btnView,
+  .isSelected-icon-box .btnView {
+    height: 68px;
+    color: $dark-muted;
+    border-inline-start: 1px solid transparent;
+
+    &:hover {
+      background-color: $dark-raised;
+    }
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+  .isSelected-icon-box .btnView,
+  .icon-colored-box .btnView {
+    background-color: #011701;
+    border-inline-start-color: $dark-green;
+    color: $dark-green;
+
+    svg {
+      fill: $dark-green;
+    }
+  }
+
+  // Unread count on the Chats button: solid green square, black digits.
+  .unreadCountChatIcon {
+    top: 10px;
+    inset-inline-end: 8px;
+    width: auto;
+    min-width: 22px;
+    height: 18px;
+    padding: 0 4px;
+    background: $dark-green;
+    color: #000;
+    font-family: $dark-font-data !important;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  // "New chat" flyout sits against the narrower rail.
+  .sub-menu-box-wrapper {
+    inset-inline-start: 83px;
+
+    .sub-menu-box {
+      background-color: $dark-panel;
+      border: 1px solid $dark-line;
+      padding: 0;
+    }
+  }
+  .menu-txt {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: $dark-white;
+  }
+
+  // Theme switch: stacked sun / moon in a hairline box, selected one on a raised square.
+  .theme-Wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px;
+    border: 1.5px solid $dark-line;
+
+    .icon-wrapper {
+      width: 38px;
+      height: 38px;
+    }
+    .selected {
+      background-color: #222;
+    }
+  }
+
+  .appVersion {
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    color: #acacac;
+  }
+}
+
+// ---- Chats list pane ----
+#{$dark} .module-left-pane {
+  background-color: $dark-ink;
+  border-inline-end: 1px solid $dark-line;
+}
+#{$dark} .module-left-pane__header {
+  height: auto;
+  padding: 30px 20px 18px;
+  background-color: $dark-ink;
+  box-shadow: none;
+
+  .module-left-pane__header__title {
+    padding: 0;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+}
+
+// Search: full-width band with hairlines top and bottom, mono uppercase placeholder.
+#{$dark} .bchat-search-input {
+  height: 80px;
+  padding-inline-start: 26px;
+  background-color: rgba(17, 17, 17, 0.5);
+  border: 0;
+  border-top: 1px solid $dark-line;
+  border-bottom: 1px solid $dark-line;
+
+  input {
+    background: transparent;
+    color: $dark-white;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+  }
+  input::placeholder {
+    color: #737373;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+}
+
+// Message Requests: green-tinted band, mono label, square count, arrow.
+#{$dark} .requests-banner {
+  height: 80px;
+  margin: 16px 0 0;
+  padding: 0 27px;
+  gap: 16px;
+  justify-content: flex-start;
+  background: rgba(6, 19, 6, 0.5);
+  border-top: 0.5px solid $dark-green;
+  border-bottom: 0.5px solid $dark-green;
+
+  &:hover {
+    background: rgba(6, 19, 6, 0.85);
+  }
+  // Figma 89:10340: 26x23 #acacac bubble icon, 16px before the Roboto Mono 18 title
+  .requests-banner__icon {
+    display: flex;
+    line-height: 0;
+
+    svg {
+      width: 26px;
+      height: 23px;
+    }
+    svg path {
+      fill: #acacac;
+    }
+  }
+  .requests-banner__title {
+    flex: 1;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #ebebeb;
+  }
+  // count: 21x15 -> 28x20 #00bc33 box, Inter SemiBold 9 -> 12 #0b0b0b
+  .requests-banner__count {
+    justify-content: center;
+    margin-inline-start: 0;
+    min-width: 28px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 0;
+    line-height: 20px;
+    background-color: #00bc33;
+    color: #0b0b0b;
+    font-family: $dark-font-ui !important;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  // thin green arrow (Figma "Left Arrow 1", 13.5 -> 18px), 16px after the count
+  .requests-banner__arrow {
+    display: flex;
+    line-height: 0;
+  }
+}
+
+// Chat rows: 90px, 30px side padding, mono name + time, light preview.
+// pinned chat (Figma 89:10174 "Frame 1546"): the row gets a #1a1a1a@20% plate with a 1px #ebebeb
+// leading edge, and a 19.5 -> 26px #0b9e3c badge with the dark pin (10.4 -> 14px) sits on the row's
+// top-right corner (Figma lets it hang half outside; the list clips, so it stays inside on the
+// right and the list gets 10px of top room for the first row)
+#{$dark} .pin-badge {
+  top: -9px !important;
+  inset-inline-end: 0 !important;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0 !important;
+  background-color: #0b9e3c !important;
+  border-radius: 50% !important;
+
+  svg {
+    margin: 0 !important;
+  }
+}
+#{$dark} .module-conversations-list-content .module-left-pane__list {
+  padding-top: 10px;
+}
+#{$dark} .module-conversation-list-item--is-pinned {
+  background-color: rgba(26, 26, 26, 0.2);
+  border-inline-start-color: #ebebeb;
+}
+#{$dark} .module-conversation-list-item {
+  min-height: 90px;
+  padding: 0 30px;
+  gap: 17px;
+  background-color: transparent;
+  border-inline-start: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(17, 17, 17, 0.6);
+  }
+  &--is-selected,
+  &--is-selected:hover {
+    background-color: rgba(17, 17, 17, 0.2);
+    border-inline-start-color: #ebebeb;
+    border-top: 1px solid $dark-hair;
+    border-bottom: 1px solid $dark-hair;
+  }
+
+  .module-conversation-list-item__header,
+  .module-conversation__user__profile-name,
+  .module-conversation__user__profile-number {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #ebebeb;
+  }
+  .module-conversation-list-item__message {
+    font-size: 16px;
+    font-weight: 300;
+    color: #acacac;
+  }
+  .module-conversation-list-item__header__date,
+  .module-conversation-list-item__header__date--has-unread {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #8d8d8d;
+  }
+  // @ / mute icons and the unread count: 6.7 -> 9px apart (Figma 1:16721 secret group row)
+  .module-conversation-list-item_unread-count_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  // the count text sat in the top-left corner of the green box (message requests list)
+  .module-conversation-list-item__unread-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    line-height: 1;
+    min-width: 28px;
+    height: 20px;
+    padding: 0 6px;
+    background-color: $dark-green;
+    color: #000;
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+// Avatars: square. The placeholder is an SVG whose <rect> has rx="16" - an attribute, which the
+// border-radius rule can't reach - so the rect's rx is overridden here (Chromium supports rx in CSS).
+#{$dark} .module-avatar svg rect {
+  rx: 0;
+}
+
+// ---- All / Social / Groups filter pills (Figma 28:9763) ----
+#{$dark} .chat-filters {
+  display: flex;
+  gap: 14px;
+  padding: 26px 30px 12px;
+}
+#{$dark} .chat-filter {
+  padding: 8px 10px;
+  background-color: rgba(26, 26, 26, 0.2);
+  border: 0.5px solid #737373;
+  color: #737373;
+  font-family: $dark-font-data !important;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: $dark-white;
+    border-color: $dark-muted;
+  }
+  &:focus-visible {
+    outline: 1px solid $dark-green;
+    outline-offset: 2px;
+  }
+  &--active,
+  &--active:hover {
+    background-color: rgba(0, 188, 51, 0.1);
+    border-color: $dark-green;
+    color: $dark-green;
+  }
+}
+
+// "Social" / "Groups" filter with nothing in it (Figma 328:6136 "empty_social"): the two-bubble
+// artwork (130x111 -> 173x149, images/dark-theme/empty-chats.svg) centred in the rest of the pane
+#{$dark} .chat-filter-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding-bottom: 60px;
+
+  &__art {
+    display: block;
+    width: 173px;
+    aspect-ratio: 130 / 112;
+    background: url('../images/dark-theme/empty-chats.svg') center / contain no-repeat;
+  }
+}
+
+// ---- Chamfer shape (style guide: top-right corner cut at 21.7% of the width) ----
+$dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
+
+// ---- Rail: logo, new icon set, new-chat entry moved to the Chats header ----
+// Both elements only exist in the dark theme; hidden in the light theme.
+.nav-rail-logo {
+  display: none;
+}
+#{$dark} .nav-rail {
+  // Figma 1:56419 rail: logo mark 41px from the top, 52px down to the avatar (31 / 39 in Figma)
+  .nav-rail-logo {
+    display: block;
+    width: 32px;
+    height: 31px;
+    margin: 21px auto 52px;
+    flex-shrink: 0;
+  }
+
+  // The "+" in the Chats header replaces the rail's New Chat flyout.
+  .nav-rail-newchat {
+    display: none;
+  }
+  // Nav buttons: 23px below the avatar, 18px apart (Figma 17 / 13.5); the old spacers between them go.
+  .nav-rail-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .nav-rail-nav > :not(.icon-box):not(.isSelected-icon-box) {
+    display: none;
+  }
+
+  // Icons come from Icons.tsx (chatBubble / gear / sun / moon) and use currentColor,
+  // so the button colour below drives them.
+  .icon-wrapper[data-theme-option] {
+    color: $dark-muted;
+
+    &.selected {
+      color: $dark-white;
+    }
+  }
+  // The new design is dark-only for now: the rail shows just the dark (moon) option. Light mode is still
+  // reachable from Settings > Appearance.
+  .icon-wrapper[data-theme-option='light'] {
+    display: none;
+  }
+}
+
+// ---- Chats header: title left, "+" new-chat menu right; no avatar / theme button ----
+#{$dark} .module-left-pane__header {
+  .dayAndNightIcon {
+    display: none;
+  }
+  .header-avatar:has(.module-avatar) {
+    display: none;
+  }
+  .module-left-pane__header__title {
+    flex: 1;
+  }
+}
+#{$dark} .new-chat-launcher {
+  position: relative;
+  display: flex;
+
+  &__button {
+    display: flex;
+    padding: 4px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+    &:focus-visible {
+      outline: 1px solid $dark-green;
+      outline-offset: 2px;
+    }
+  }
+  // Matches the New Chat flyout in Figma 234:248: #444-outlined panel, icon + mono label rows,
+  // hovered/focused row gets the green leading bar on a faint raised fill.
+  &__menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    inset-inline-end: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+    padding: 0;
+    gap: 14px;
+    background-color: rgba(11, 11, 11, 0.95);
+    border: 1px solid #444;
+    backdrop-filter: blur(6px);
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 46px 18px 18px;
+    background: transparent;
+    border: 0;
+    border-inline-start: 1px solid transparent;
+    color: #acacac;
+    font-family: $dark-font-data !important;
+    font-size: 20px;
+    text-align: start;
+    white-space: nowrap;
+    cursor: pointer;
+
+    svg {
+      flex-shrink: 0;
+      width: 29px;
+      height: 29px;
+    }
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background-color: rgba(34, 34, 34, 0.2);
+      border-inline-start-color: $dark-green;
+      color: #ebebeb;
+    }
+  }
+}
+
+// ---- Avatars: initials on a chamfered tile (AvatarPlaceHolder renders .initials-avatar in dark) ----
+#{$dark} .module-avatar--no-image {
+  background: transparent;
+  border: 0;
+}
+#{$dark} .module-avatar img {
+  clip-path: $dark-chamfer;
+}
+#{$dark} .initials-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #272727; // #444 at 50% over ink = the Figma hairline
+  clip-path: $dark-chamfer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: $dark-raised;
+    clip-path: $dark-chamfer;
+  }
+  &__initials {
+    position: relative;
+    font-weight: 600;
+    line-height: 1;
+    color: $dark-muted;
+  }
+  &__group-badge {
+    position: absolute;
+    inset-inline-end: 7%;
+    bottom: 7%;
+    width: 30%;
+    height: auto;
+    color: $dark-muted;
+  }
+
+  &--self {
+    background: linear-gradient(180deg, #00d239 0%, #003a00 100%);
+
+    &::before {
+      background: linear-gradient(180deg, #0b2e0b 0%, #041504 100%);
+    }
+    .initials-avatar__initials {
+      color: $dark-green;
+    }
+  }
+}
+
+// =================================================================================================
+// Fixes from the first run-through (screenshots 26 Sep)
+// =================================================================================================
+
+// Chat list: full-bleed column (the classic layout pads it 15px), "Chats" bar above the search.
+#{$dark} .module-conversations-list-content {
+  padding: 0;
+  justify-content: flex-start;
+}
+#{$dark} .chats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 20px 18px;
+
+  &__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+}
+#{$dark} .bchat-search-input {
+  width: 100%;
+  margin: 0;
+  padding-inline: 26px 16px;
+  gap: 14px;
+
+  input {
+    min-width: 0;
+    font-size: 14px;
+    text-overflow: ellipsis;
+  }
+}
+
+// Settings list title ("Settings" h6 in LeftPaneSettingSection).
+#{$dark} .left-pane-setting-section h6 {
+  padding-inline: 28px;
+  font-family: $dark-font-display !important;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $dark-white;
+}
+
+// Voice recording: the send slot is empty while recording - don't show a blank white square.
+#{$dark} .send-message-button:empty {
+  display: none;
+}
+
+// ---- Rail Chats button flyout: New Chat / Secret Group / Social Group (Figma 234:248) ----
+// Opened by clicking the Chats icon in the rail; fixed so the rail's overflow doesn't clip it.
+// Its top edge lines up with the Chats button, flush against the rail.
+#{$dark} .nav-rail-flyout {
+  position: fixed;
+  z-index: 60;
+
+  .new-chat-launcher__menu {
+    position: static;
+    min-width: 290px;
+  }
+  // first entry reads as the current one, as in the design (until another row is hovered)
+  .new-chat-launcher__menu:not(:hover) .new-chat-launcher__item:first-child {
+    background-color: rgba(34, 34, 34, 0.2);
+    border-inline-start-color: $dark-green;
+    color: #ebebeb;
+  }
+}
+
+// =================================================================================================
+// Start a New Chat (Figma 1:56419 "09.2 new chat") + empty conversation view
+// =================================================================================================
+$dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+
+// Chamfered card frame drawn on pseudo-elements, so children (like the "Your ID" tab) can overhang.
+@mixin dark-card-frame($fill: #0e0e0e, $line: $dark-line) {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  border: 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    clip-path: $dark-cut-card;
+    pointer-events: none;
+  }
+  &::before {
+    inset: 0;
+    z-index: -2;
+    background: $line;
+  }
+  &::after {
+    inset: 1px;
+    z-index: -1;
+    background: $fill;
+  }
+}
+
+#{$dark} .module-left-pane-overlay {
+  .module-left-pane__chatHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 30px 28px 22px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchatId_input_wrapper {
+    @include dark-card-frame;
+    margin: 12px 28px;
+    padding: 26px;
+
+    .bchat-id-editable {
+      background: #111;
+      border: 1px solid #444;
+    }
+    textarea {
+      min-height: 90px;
+      padding: 18px 22px;
+      background: transparent;
+      color: #ebebeb;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      resize: none;
+    }
+    textarea::placeholder {
+      text-transform: uppercase;
+      color: #737373;
+    }
+    .bchat-button {
+      width: 100%;
+      height: 62px;
+      margin-top: 14px;
+    }
+  }
+  // Figma 1:56419 / 1:57656: the "Your ID" and "Your QR" states share one 385.5x412.5 card -> 514x550,
+  // so switching between them doesn't resize it.
+  .ourDetails_wrapper {
+    @include dark-card-frame;
+    box-sizing: border-box;
+    height: 550px; // no overflow clipping: the "Your ID" tab sits half outside the top edge
+    margin: 44px 28px 20px;
+    padding: 44px 26px 26px;
+
+    // "Your ID" tab sitting on the card's top edge
+    > .module-left-pane__subHeader {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 1;
+      margin: 0 !important;
+      padding: 8px 26px;
+      transform: translate(-50%, -50%);
+      background: #1a1a1a;
+      border: 1px solid $dark-line;
+      font-size: 20px;
+      font-weight: 400;
+      color: #ebebeb;
+      white-space: nowrap;
+    }
+    .profile-name {
+      font-size: 21px;
+      font-weight: 600;
+      color: $dark-white;
+    }
+    .label-txt {
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      font-weight: 400;
+      color: #acacac;
+    }
+    .id-Wrapper {
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: #111;
+      border: 1px solid #444;
+
+      p {
+        margin: 0;
+        font-family: $dark-font-data !important;
+        font-size: 15px;
+        font-weight: 400;
+        color: $dark-green;
+      }
+      .blue-color {
+        color: #ebebeb;
+      }
+    }
+    > .bchat-button {
+      width: 100%;
+      height: 62px;
+    }
+    .back-btn-txt,
+    .qr-txt {
+      font-family: $dark-font-data !important;
+    }
+    .qr-wrapper {
+      background: #fff;
+      padding: 14px;
+    }
+  }
+}
+
+// Start a New Chat -> "Your QR" (Figma 1:57656): 42px #222 back square + mono 26 title; the code
+// sits on a 206px #cccccc plate inside a 232px #1a1a1a box on a #444 line; mono 24 #acacac caption.
+// (174 / 154.4 / 31.5 / 19.5 / 18 in Figma -> / 0.75)
+#{$dark} .module-left-pane-overlay .ourDetails_wrapper {
+  > div > div:first-child > .bchat-icon-button {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #222;
+    border-radius: 0 !important;
+
+    &:hover {
+      background: #2a2a2a;
+    }
+    svg {
+      width: 28px !important;
+      height: 28px !important;
+      padding: 0 !important;
+    }
+    path {
+      fill: #acacac;
+    }
+  }
+  .back-btn-txt {
+    margin-inline-start: 15px;
+    font-family: $dark-font-data !important;
+    font-size: 26px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .qr-wrapper {
+    width: 232px;
+    height: 232px;
+    margin-top: 15px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a !important;
+    border: 1px solid #444;
+    border-radius: 0 !important;
+
+    .qr-image {
+      width: 206px;
+      height: 206px;
+      padding: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #cccccc;
+      border: 0;
+      border-radius: 0;
+
+      svg {
+        width: 180px !important;
+        height: 180px !important;
+        border-radius: 0;
+      }
+      // the code's own white background takes the plate colour
+      svg path:first-child {
+        fill: #cccccc;
+      }
+    }
+  }
+  .qr-txt {
+    margin-top: 16px;
+    font-family: $dark-font-data !important;
+    font-size: 24px;
+    font-weight: 400;
+    color: #acacac;
+  }
+}
+
+// Empty conversation view: lock illustration + privacy note (Figma 1:56419, right side).
+// The artwork is a raster in Figma (168:8449); it is redrawn as a vector in images/dark-theme/empty-chat.svg.
+.empty-chat {
+  display: none;
+}
+// Figma 1:56419 "Frame 1703": a 730 -> 973px group centred in the right panel - the 700 -> 933px
+// artwork on top, 37 -> 50px gap, then the note (Roboto Mono 16.5/22.5 -> 22/30, #8d8d8d) spanning
+// the group's full width. The window background shows through (see the window background below).
+#{$dark} .conversation.placeholder {
+  width: 100%;
+  background: transparent;
+
+  .container {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+  .bchat-text-logo {
+    display: none;
+  }
+  .empty-chat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    width: 973px;
+    max-width: calc(100% - 80px);
+    margin: 0 auto;
+    padding: 0;
+  }
+  .empty-chat__art {
+    width: min(933px, 100%);
+    aspect-ratio: 700 / 364;
+    background: url('../images/dark-theme/empty-chat.svg') center / contain no-repeat;
+    // the Figma image layer is at 40% opacity over the frame; the vector is drawn a bit darker
+    // already, so it only needs part of that
+    opacity: 0.7;
+  }
+  .empty-chat__note {
+    width: 100%;
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 22px;
+    line-height: 30px;
+    color: #8d8d8d;
+    text-align: start;
+  }
+}
+
+// =================================================================================================
+// Message requests (Figma 1:37618 "5 s"): request rows with Decline / Accept, Clear all
+// =================================================================================================
+// rows 1007x67.5 -> 90px, 9 -> 12px apart, #111@20% with the glass edge (like the Notifications
+// boxes); 31.5 -> 42px #111 / #444@50% initials avatar 25px in, Inter Regular 15 -> 20 name 33px
+// after it; Decline #290f0f / #ff3e3e and Accept #ebebeb / #0b0b0b 96x42 -> 128x56 (Roboto Mono
+// SemiBold 16.5 -> 22), 21px apart, 37px from the end
+#{$dark} .bchat-settings-messageRequest-list-item {
+  display: flex;
+  align-items: center;
+  gap: 21px;
+  min-height: 90px;
+  margin: 0 0 12px;
+  padding: 0 37px 0 25px;
+  background: rgba(17, 17, 17, 0.2);
+  border: 1px solid;
+  border-color: #1a1a1a #1f1f1f #282828 #303030;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    background: rgba(26, 26, 26, 0.35);
+  }
+  .module-conversation-list-item__avatar-container {
+    flex-shrink: 0;
+    margin-inline-end: 12px;
+
+    .module-avatar {
+      width: 42px !important;
+      height: 42px !important;
+    }
+    .initials-avatar {
+      font-size: 13px;
+    }
+  }
+  .module-conversation-list-item__content {
+    flex: 1;
+    min-width: 0;
+  }
+  .bchat-settings-messageRequest-profileName {
+    font-family: $dark-font-ui !important;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchat-button {
+    min-width: 128px !important;
+    height: 56px !important;
+    margin: 0 !important;
+    padding: 0 12px;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0;
+  }
+  .bchat-button.danger {
+    background-color: #290f0f;
+    color: #ff3e3e;
+  }
+}
+// Blocked Contacts (Figma 1:36933 "5 s"): same rows as Message Requests - 90px #111@20% glass
+// rows 12px apart, 42px initials avatar 25px in, Inter Regular 20 name 33px after it - with one
+// 128x56 Unblock (#290f0f on a #ff3e3e hairline, red Roboto Mono SemiBold 22) 37px from the end
+#{$dark} .blocked-list {
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+#{$dark} .blocked-list__scroll {
+  overflow: visible;
+}
+#{$dark} .bchat-blockedMember-item {
+  display: flex;
+  align-items: center;
+  min-height: 90px;
+  margin: 0 0 12px;
+  padding: 0 37px 0 25px;
+  background: rgba(17, 17, 17, 0.2);
+  border: 1px solid;
+  border-color: #1a1a1a #1f1f1f #282828 #303030;
+  border-radius: 0;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    background: rgba(26, 26, 26, 0.35);
+  }
+  .bchat-member-item__info {
+    display: flex;
+    align-items: center;
+    gap: 33px;
+  }
+  .bchat-member-item__avatar {
+    margin: 0;
+
+    .module-avatar {
+      width: 42px !important;
+      height: 42px !important;
+    }
+    .initials-avatar {
+      font-size: 13px;
+    }
+  }
+  .bchat-blockedMember-item__name {
+    font-family: $dark-font-ui !important;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchat-button {
+    min-width: 128px !important;
+    height: 56px !important;
+    margin: 0 !important;
+    padding: 0 12px;
+    background-color: #ff3e3e;
+    color: #ff3e3e;
+    font-family: $dark-font-data !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0;
+
+    // the hairline is the button's own fill showing 0.5px around the ::before plate
+    &::before {
+      inset: 0.5px;
+      background-color: #290f0f;
+    }
+  }
+}
+
+// Clear all: 146.6x46.5 -> 195x62 #1a1a1a with Roboto Mono SemiBold 15 -> 20 #ebebeb, centred 40px
+// under the list; hover turns the fill dark red (#290f0f)
+// Message Requests in the left pane: the list fills the pane and Clear All sits at the bottom,
+// 36px up (same place as Create / Next on the group overlays)
+#{$dark} .message-requests-overlay--left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > .messageRequestButton {
+    margin-top: auto;
+    padding: 20px 0 36px;
+  }
+}
+#{$dark} .messageRequestButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+
+  .bchat-button {
+    min-width: 195px;
+    height: 62px !important;
+    background-color: #1a1a1a;
+    color: #ebebeb;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0;
+    text-transform: none;
+
+    &::before {
+      background-color: #1a1a1a;
+    }
+    &:hover:not(.disabled) {
+      background-color: #290f0f;
+      color: #ebebeb;
+
+      &::before {
+        background-color: #290f0f;
+      }
+    }
+  }
+}
+
+// =================================================================================================
+// Empty states from the screens: Message Requests (Figma 1:37839, 600x400 box artwork + mono line)
+// and Blocked Contacts (1:37354, 150px warning glyph + mono line). Roboto Mono 18 #8D8D8D -> 24px.
+// =================================================================================================
+.empty-glyph {
+  display: none;
+}
+#{$dark} .bchat-noMsgRequest-box,
+#{$dark} .noBlockedContacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+
+  .content-txt,
+  .noBlockedContacts-txt {
+    font-family: $dark-font-data !important;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #8d8d8d;
+  }
+}
+// the box artwork is raster (images/dark-theme/empty-requests.png, transparent)
+#{$dark} .bchat-noMsgRequest-box {
+  .bchat-noMsgRequest,
+  .bchat-noMsgRequest-leftPane {
+    display: block;
+    width: 800px;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    margin: 0 auto 36px;
+    background: url('../images/dark-theme/empty-requests.png') center / contain no-repeat;
+  }
+  .bchat-noMsgRequest-leftPane {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+#{$dark} .noBlockedContacts {
+  gap: 0;
+  // .bchat-settings-view has no height, so the base height:100% collapses to the content and the
+  // glyph sat at the top; fill the page below the 100px header (+10px list padding) instead
+  width: 100%;
+  height: calc(100vh - 112px);
+
+  .noBlockedContacts-img {
+    display: none;
+  }
+  .empty-glyph {
+    display: block;
+    line-height: 0;
+    // the glyph's art ends ~20% above its box, so the line tucks up under it (Figma 147/150)
+    margin-bottom: -4px;
+  }
+}
+

@@ -27,6 +27,8 @@ import {
 } from '../../state/ducks/section';
 import { SpacerSM } from '../basic/Text';
 import classNames from 'classnames';
+import { ChatFilter, ChatFilterBar, ChatFilterEmpty, conversationMatchesFilter } from './ChatFilterBar';
+import { ChatsHeader } from './LeftPaneSectionHeader';
 
 export interface Props {
   contacts: Array<ReduxConversationType>;
@@ -37,11 +39,15 @@ export interface Props {
   overlayMode: OverlayMode;
   directContact: any;
   conversationRequestsUnread: any;
+  darkMode?: boolean;
 }
 
-export class LeftPaneMessageSection extends React.Component<Props> {
+type State = { chatFilter: ChatFilter };
+
+export class LeftPaneMessageSection extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
+    this.state = { chatFilter: 'all' };
 
     autoBind(this);
   }
@@ -84,6 +90,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     // Note: conversations is not a known prop for List, but it is required to ensure that
     //   it re-renders when our conversation data changes. Otherwise it would just render
     //   on startup and scroll.
+    const { chatFilter } = this.state;
+    const visible = conversations.filter(item => conversationMatchesFilter(item.id, chatFilter));
+    // dark: "Social" / "Groups" with nothing in them get an empty state instead of a blank pane
+    if (chatFilter !== 'all' && visible.length === 0) {
+      return [<ChatFilterEmpty key="chat-filter-empty" filter={chatFilter} />];
+    }
     const list = (
       <div className="module-left-pane__list">
         {/*  <AutoSizer>
@@ -102,7 +114,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
           )}
         </AutoSizer>
    */}
-        {conversations.map((item, key) => this.renderRow(item, key))}
+        {visible.map((item, key) => this.renderRow(item, key))}
       </div>
     );
 
@@ -114,6 +126,15 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     const { conversations, conversationRequestsUnread, directContact } = this.props;
     const convolen: boolean =
       conversations?.length === 0 && conversationRequestsUnread === 0 && directContact.length === 0;
+    // Dark theme (Figma 1:56419): with no chats yet the pane shows the Start a New Chat panel,
+    // and the main view shows the privacy illustration (see BchatConversation).
+    if (convolen && this.props.darkMode && !overlayMode) {
+      return (
+        <div className="bchat-left-pane-section-content">
+          <OverlayMessage />
+        </div>
+      );
+    }
     return (
       <div
         className={classNames('bchat-left-pane-section-content', convolen && 'd-none')}
@@ -131,6 +152,7 @@ export class LeftPaneMessageSection extends React.Component<Props> {
     const { searchResults } = this.props;
     return (
       <div className="module-conversations-list-content">
+        <ChatsHeader />
         <SpacerSM />
         {/* {conversations?.length !== 0 && */}
         <BchatSearchInput />
@@ -145,6 +167,12 @@ export class LeftPaneMessageSection extends React.Component<Props> {
               // window.inboxStore?.dispatch(setOverlayMode(undefined));
               // window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.MessageRequests));
             }}
+          />
+        )}
+        {!searchResults && (
+          <ChatFilterBar
+            value={this.state.chatFilter}
+            onChange={chatFilter => this.setState({ chatFilter })}
           />
         )}
         {/* <SpacerMD /> */}
