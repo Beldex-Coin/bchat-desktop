@@ -654,6 +654,10 @@ export const isShareContact = createSelector(
   getConversations,
   (state: ConversationsStateType): boolean => state.showShareContact
 );
+export const getForwardMessageIds = createSelector(
+  getConversations,
+  (state: ConversationsStateType): Array<string> | null => state.forwardMessageIds || null
+);
 export const getViewContactPanel = createSelector(
   getConversations,
   (state: ConversationsStateType): any => state.showViewContactPanel

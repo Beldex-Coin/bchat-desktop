@@ -18,15 +18,36 @@ import ContactEmptyIcon from '../icon/ContactEmptyIcon';
 import styled from 'styled-components';
 import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
-import { closeShareContact } from '../../state/ducks/conversations';
+import { closeForwardPanel, closeShareContact } from '../../state/ducks/conversations';
+import { forwardMessagesToConversations } from '../../interactions/forwardMessages';
 import { getTheme } from '../../state/selectors/theme';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 
 
-export const BchatContactListPanel = (props: { sendMessage: any }) => {
+/**
+ * Contact picker panel on the right of the conversation. `share` (default) sends the picked contacts
+ * as a shared-contact message; `forward` (Figma 71:13217) sends copies of `forwardMessageIds` to
+ * each picked contact.
+ */
+export const BchatContactListPanel = (props: {
+  sendMessage: any;
+  mode?: 'share' | 'forward';
+  forwardMessageIds?: Array<string>;
+}) => {
+  const isForward = props.mode === 'forward';
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [isForwarding, setIsForwarding] = useState(false);
 
-  const privateAndBlockedContactsPubkeys = useSelector(getPrivateAndBlockedContactsPubkeys);
+  const allContactsPubkeys = useSelector(getPrivateAndBlockedContactsPubkeys);
+  // blocked contacts can't receive a forwarded message
+  const privateAndBlockedContactsPubkeys = isForward
+    ? allContactsPubkeys.filter(
+        (pubkey: string) => !getConversationController().get(pubkey)?.isBlocked()
+      )
+    : allContactsPubkeys;
+  const closePanel = () => {
+    window.inboxStore?.dispatch(isForward ? closeForwardPanel() : closeShareContact());
+  };
   const quotedMessageProps = useSelector(getQuotedMessage);
   const selectedConvoKey = useSelector(getSelectedConversationKey);
   const [filteredNames, setFilteredNames] = useState<Array<string>>(privateAndBlockedContactsPubkeys);
@@ -63,7 +84,23 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
       })
     );
   }
+  const forwardToSelected = async () => {
+    if (!props.forwardMessageIds?.length || !selectedMemberIds.length || isForwarding) {
+      return;
+    }
+    setIsForwarding(true);
+    try {
+      await forwardMessagesToConversations(props.forwardMessageIds, selectedMemberIds);
+    } finally {
+      setIsForwarding(false);
+      closePanel();
+    }
+  };
   const sendContact = () => {
+    if (isForward) {
+      void forwardToSelected();
+      return;
+    }
     if (!selectedConvoKey || !selectedMemberIds?.length) return;
 
     const conversationController = getConversationController();
@@ -99,7 +136,7 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
   };
 
   return (
-    <div className="contact-list">
+    <div className={classNames('contact-list', isForward && 'contact-list--forward')}>
       <div className="contact-list-header">
         <Flex
           container={true}
@@ -109,14 +146,20 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
           padding="25px"
           className="contact-list-header-title-wrapper"
         >
-          <span className="contact-list-header-titleTxt">{window.i18n('shareContacts')}</span>
+          <span className="contact-list-header-titleTxt">
+            {window.i18n(isForward ? 'forward' : 'shareContacts')}
+          </span>
           <span
-            onClick={() => {
-              window.inboxStore?.dispatch(closeShareContact());
-            }}
+            onClick={closePanel}
             className="contact-list-header-closeBox"
           >
-            <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+            <span className="light-only-inline">
+              <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+            </span>
+            {/* dark theme: Figma 71:13217 light-grey X in a #222 square */}
+            <span className="dark-only-inline">
+              <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+            </span>
           </span>
         </Flex>
       </div>
@@ -170,10 +213,10 @@ export const BchatContactListPanel = (props: { sendMessage: any }) => {
         className="button-wrapper"
       >
         <BchatButton
-          text={window.i18n('send')}
+          text={window.i18n(isForward ? 'forwardToSelected' : 'send')}
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-          disabled={selectedMemberIds.length === 0}
+          disabled={selectedMemberIds.length === 0 || isForwarding}
           onClick={sendContact}
         />
       </Flex>
@@ -191,6 +234,7 @@ const ContactList = (props: {
   const username = useConversationUsernameOrShorten(pubkey);
   const isBnsHolder = useConversationBnsHolder(pubkey);
   const selectionValidation = isSelected;
+  const isDark = useSelector(getTheme) === 'dark';
 
   return (
     <>
@@ -219,7 +263,20 @@ const ContactList = (props: {
         <span
           className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}
         >
-          {selectionValidation ? (
+          {isDark ? (
+            // dark theme (Figma 71:13217): green square with a dark tick, outlined when not picked
+            <span
+              className={classNames(
+                'select-box',
+                'select-box--green',
+                selectionValidation && 'select-box--checked'
+              )}
+            >
+              {selectionValidation && (
+                <BchatIcon iconType="check" iconSize={14} strokeColor="#0A0A0A" strokeWidth="2" />
+              )}
+            </span>
+          ) : selectionValidation ? (
             <CheckBoxTickIcon iconSize={26} />
           ) : (
             <BchatIcon iconType={'checkBox'} clipRule="evenodd" fillRule="evenodd" iconSize={26} />

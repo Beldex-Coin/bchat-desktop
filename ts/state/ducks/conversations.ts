@@ -341,6 +341,8 @@ export type ConversationsStateType = {
   areMoreMessagesBeingFetched: boolean;
   showShareContact: boolean;
   showViewContactPanel: showViewContactPanelTypes | null;
+  /** messages picked for Forward; the contact picker panel shows while this is set */
+  forwardMessageIds: Array<string> | null;
 
   /**
    * oldTopMessageId should only be set when, as the user scroll up we trigger a load of more top messages.
@@ -505,6 +507,7 @@ export function getEmptyConversationState(): ConversationsStateType {
     mostRecentMessageId: null,
     showShareContact: false,
     showViewContactPanel: null,
+    forwardMessageIds: null,
   };
 }
 
@@ -614,10 +617,22 @@ const conversationsSlice = createSlice({
     },
 
     openRightPanel(state: ConversationsStateType) {
-      return { ...state, showRightPanel: true };
+      return { ...state, showRightPanel: true, forwardMessageIds: null };
     },
     openShareContact(state: ConversationsStateType) {
-      return { ...state, showShareContact: true };
+      return { ...state, showShareContact: true, forwardMessageIds: null };
+    },
+    openForwardPanel(state: ConversationsStateType, action: PayloadAction<Array<string>>) {
+      return {
+        ...state,
+        forwardMessageIds: action.payload,
+        showRightPanel: false,
+        showShareContact: false,
+        showViewContactPanel: null,
+      };
+    },
+    closeForwardPanel(state: ConversationsStateType) {
+      return { ...state, forwardMessageIds: null };
     },
     closeRightPanel(state: ConversationsStateType) {
       return { ...state, showRightPanel: false };
@@ -809,6 +824,7 @@ const conversationsSlice = createSlice({
         showRightPanel: false,
         showShareContact: false,
         showViewContactPanel: null,
+        forwardMessageIds: null,
         selectedMessageIds: [],
 
         lightBox: undefined,
@@ -1041,6 +1057,8 @@ export const {
   resetConversationExternal,
   openShareContact,
   closeShareContact,
+  openForwardPanel,
+  closeForwardPanel,
   updateViewContactPanel,
 } = actions;
 

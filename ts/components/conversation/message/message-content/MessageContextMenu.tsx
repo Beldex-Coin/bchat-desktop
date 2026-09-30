@@ -3,6 +3,7 @@ import { useCallback, useRef } from 'react';
 import { useContextMenu, Item, Menu } from 'react-contexify';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../../../state/selectors/theme';
 import { getMessageById } from '../../../../data/data';
 import { MessageInteraction } from '../../../../interactions';
 import { replyToMessage } from '../../../../interactions/conversationInteractions';
@@ -16,7 +17,7 @@ import {
 } from '../../../../interactions/messageInteractions';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { pushUnblockToSend } from '../../../../bchat/utils/Toast';
-import { toggleSelectedMessageId } from '../../../../state/ducks/conversations';
+import { openForwardPanel, toggleSelectedMessageId } from '../../../../state/ducks/conversations';
 import {
   getMessageContextMenuProps,
   getSelectedConversation,
@@ -94,6 +95,8 @@ export const MessageContextMenu = (props: Props) => {
   const { messageId, contextMenuId, acceptUrl, txnId,disableRightClicked } = props;
   // const convoName = useConversationUsername(convoId);
   const isPrivate = useSelector(getSelectedConversation)?.isPrivate;
+  // dark theme: Figma 71:12824 line icons
+  const isDark = useSelector(getTheme) === 'dark';
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
@@ -198,6 +201,10 @@ export const MessageContextMenu = (props: Props) => {
     dispatch(toggleSelectedMessageId(messageId));
   }, [messageId]);
 
+  const onForward = useCallback(() => {
+    dispatch(openForwardPanel([messageId]));
+  }, [messageId]);
+
   const onDelete = useCallback(() => {
     void deleteMessagesById([messageId], convoId);
   }, [convoId, messageId]);
@@ -219,25 +226,48 @@ export const MessageContextMenu = (props: Props) => {
       <Menu id={contextMenuId} onVisibilityChange={onVisibilityChange} animation="fade">
         {attachments?.length ? (
           <Item onClick={saveAttachment}>
-            <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
+            {isDark ? (
+              <BchatIcon iconType="downloadAttachment" iconSize={20} iconColor="#EBEBEB" />
+            ) : (
+              <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
+            )}
             <span style={{ marginInlineStart: '10px' }}>{window.i18n('downloadAttachment')}</span>
           </Item>
         ) : null}
         {copyTitle && !isDeleted && (
           <Item onClick={() => copyText()}>
-            <CopyIcon color={'var(--color-text)'} iconSize={18} />
+            {isDark ? (
+              <BchatIcon iconType="copy" iconSize={18} iconColor="#EBEBEB" />
+            ) : (
+              <CopyIcon color={'var(--color-text)'} iconSize={18} />
+            )}
             <span style={{ marginInlineStart: '10px' }}>{copyTitle}</span>
           </Item>
         )}
         {(isSent || !isOutgoing) && !isDeleted && (
           <Item onClick={onReply}>
-            <BchatIcon iconType={'reply'} iconSize={18} />
+            {isDark ? (
+              <BchatIcon iconType="reply" iconSize={18} iconColor="#EBEBEB" />
+            ) : (
+              <BchatIcon iconType={'reply'} iconSize={18} />
+            )}
             <span style={{ marginInlineStart: '10px' }}>{window.i18n('replyToMessage')}</span>
           </Item>
         )}
+        {/* dark theme: Figma 71:12824 "Forward" */}
+        {isDark && !isDeleted && (text || attachments?.length) ? (
+          <Item onClick={onForward}>
+            <BchatIcon iconType="forwardMessage" iconSize={20} iconColor="#EBEBEB" />
+            <span style={{ marginInlineStart: '10px' }}>{window.i18n('forward')}</span>
+          </Item>
+        ) : null}
         {!isPublic && !isPrivate && (
           <Item onClick={onShowDetail}>
-            <BchatIcon iconType={'infoCircle'} iconSize={18} />
+            {isDark ? (
+              <BchatIcon iconType="info" iconSize={17} iconColor="#EBEBEB" />
+            ) : (
+              <BchatIcon iconType={'infoCircle'} iconSize={18} />
+            )}
             <span style={{ marginInlineStart: '10px' }}>{window.i18n('moreInformation')} </span>
           </Item>
         )}
@@ -252,7 +282,11 @@ export const MessageContextMenu = (props: Props) => {
           <>
             <Item onClick={onSelect}>
               {' '}
-              <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
+              {isDark ? (
+                <BchatIcon iconType="tickBoxCurve" iconSize={16} iconColor="#EBEBEB" />
+              ) : (
+                <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
+              )}
               <span style={{ marginInlineStart: '10px' }}>{selectMessageText}</span>
             </Item>
           </>
@@ -260,7 +294,11 @@ export const MessageContextMenu = (props: Props) => {
         {isDeletable && !isPublic ? (
           <>
             <Item onClick={onDelete}>
-              <BchatIcon iconType={'delete'} iconSize={18} iconColor="#FF3E3E" />
+              {isDark ? (
+                <BchatIcon iconType="delete" iconSize={18} iconColor="#FF3E3E" />
+              ) : (
+                <BchatIcon iconType={'delete'} iconSize={18} iconColor="#FF3E3E" />
+              )}
               <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>
                 {deleteMessageJustForMeText}
               </span>

@@ -1965,6 +1965,130 @@ $dark-composer-h: 60px;
 }
 
 // =================================================================================================
+// Contact picker panel: Forward (Figma 71:13217) and Share Contacts use the same markup.
+// Panel 322.5 -> 430; header bar 300x61 -> 400x81; search 299x46.5 -> 399x62; rows 64.5 -> 86;
+// "Forward to selected" 186x45 -> 248x60. Figma / 0.75.
+// =================================================================================================
+$dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+
+#{$dark} .contact-list.contact-list {
+  padding: 16px 0 0;
+  border-inline-start: 1px solid #444;
+
+  .contact-list-header {
+    padding: 0 15px;
+  }
+  .contact-list-header-title-wrapper {
+    height: 81px;
+    padding: 0 20px 0 24px;
+    background: rgba(17, 17, 17, 0.75);
+  }
+  .contact-list-header-titleTxt {
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .contact-list-header-closeBox {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 34, 34, 0.5);
+    border: 1px solid #444;
+    cursor: pointer;
+
+    &:hover {
+      background: #2a2a2a;
+    }
+  }
+  > .bchat-search-input {
+    width: calc(100% - 30px);
+    height: 62px;
+    margin: 24px 15px 19px;
+    padding: 0 20px;
+    background: $dark-raised;
+    border: 1px solid #333;
+    border-radius: 0;
+
+    .search svg path {
+      fill: #737373;
+    }
+    input {
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      font-weight: 300;
+      color: #ebebeb;
+    }
+    input::placeholder {
+      text-transform: uppercase;
+      color: #737373;
+    }
+  }
+  .contact-list-inner-wrapper {
+    padding: 0;
+  }
+  .address-content-box {
+    min-height: 86px;
+    padding: 0 30px 0 20px;
+    border-radius: 0 !important;
+    border-block: 1px solid transparent;
+    border-inline-start: 2px solid transparent;
+    background: transparent;
+
+    &:hover {
+      background: rgba(26, 26, 26, 0.6);
+    }
+    &.selected {
+      background: rgba(26, 26, 26, 0.4);
+      border-block-color: #222;
+      border-inline-start-color: #00bc33;
+    }
+    .username {
+      font-family: $dark-font-ui !important;
+      font-size: 16px;
+      text-transform: none;
+      color: #ebebeb;
+    }
+    .address {
+      max-width: 237px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-family: $dark-font-data !important;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 21px;
+      word-break: break-all;
+      color: #acacac;
+    }
+  }
+  .button-wrapper {
+    padding: 20px 0 35px !important;
+    background: transparent;
+
+    .bchat-button {
+      min-width: 248px;
+      height: 60px;
+      background: #ebebeb;
+      border: 0;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: #0b0b0b;
+      clip-path: $dark-cut-panel-btn;
+
+      &.disabled {
+        background: $dark-raised;
+        color: #737373;
+      }
+    }
+  }
+}
+
+// =================================================================================================
 // Fixes from the first run-through (screenshots 26 Sep)
 // =================================================================================================
 
@@ -4083,6 +4207,73 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 #{$dark} .message-hover-actions--outgoing {
   padding-inline-end: 12px;
+}
+
+// ---- Contact picker panel (Forward, Figma 71:13217) - rows / spacing pass ----
+// Rows run the full panel width (the base panel centres its children, which inset them), 64.5 -> 86px
+// plates 93.5px apart, a 44.3 -> 59px avatar 15 -> 20px in, text 12 -> 16px after it, the box
+// 21 -> 28px from the edge. Header bar 16px down, search 23px under it, first row 18px under that.
+#{$dark} .contact-list.contact-list {
+  // the Spacer divs between header / search / list add their own gaps - the margins below replace them
+  > .contact-list-header + div,
+  > .bchat-search-input + div {
+    height: 0;
+  }
+  .contact-list-header-closeBox {
+    width: 32px;
+    height: 32px;
+  }
+  > .bchat-search-input {
+    margin: 23px 15px 18px;
+    padding: 0 16px 0 19px;
+    gap: 11px;
+
+    .search {
+      display: flex;
+      margin: 0;
+      line-height: 0;
+    }
+    input {
+      margin: 0;
+      padding: 0;
+    }
+  }
+  .contact-list-inner-wrapper {
+    align-self: stretch;
+    width: 100%;
+    padding: 0;
+  }
+  .address-content-box {
+    min-height: 86px;
+    margin-bottom: 7px;
+    padding: 0 28px 0 18px;
+
+    + div {
+      height: 0;
+    }
+    .avatarBox {
+      flex: 0 0 auto;
+      line-height: 0;
+
+      .module-avatar {
+        width: 59px !important;
+        height: 59px !important;
+      }
+    }
+    .avatarBox + div {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin: 0 16px !important;
+
+      > div:nth-child(2) {
+        height: 7px;
+      }
+    }
+    .bchat-member-item__checkmark {
+      flex: 0 0 auto;
+      display: flex;
+    }
+  }
 }
 
 // ---- Reactions under the time (Figma 71:6232 / 71:6760) ----
