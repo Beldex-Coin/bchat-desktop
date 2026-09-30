@@ -2108,6 +2108,210 @@ $dark-composer-h: 60px;
   }
 }
 
+// =================================================================================================
+// Gate screens: password unlock (Figma 71:15363), welcome / onboarding (71:14624 ...)
+// =================================================================================================
+$dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1.2px) 0 0 / 12px 12px,
+  radial-gradient(ellipse at 50% 40%, #161616 0%, $dark-ink 70%);
+
+.password-lock,
+.password-subtitle,
+.password-forgot {
+  display: none;
+}
+#{$dark} .password {
+  .password-lock-light {
+    display: none;
+  }
+  .password-subtitle,
+  .password-forgot {
+    display: block;
+  }
+  .password-lock {
+    display: block;
+    margin-bottom: 30px;
+    line-height: 0;
+  }
+  .password-prompt-wrapper {
+    background: $dark-gate-bg;
+  }
+  // Figma 174:23 / 71:15454: 394.5x60 field -> 526x80, green line while typing, red on error
+  .password-prompt-container {
+    width: 526px;
+    min-width: 0;
+    background: transparent;
+    overflow: visible;
+
+    .password-info-area h1,
+    .warning-info-area h1 {
+      margin: 0;
+      font-family: $dark-font-display !important;
+      font-size: 29px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: $dark-white;
+    }
+    // Figma 71:15363: "ENTER PASSWORD" on one line, centred over the subtitle
+    .password-info-area h1 {
+      white-space: nowrap;
+      text-align: center;
+    }
+    .password-info-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .password-subtitle {
+      margin: 8px 0 0;
+      font-family: $dark-font-data !important;
+      font-size: 19px;
+      text-transform: uppercase;
+      text-align: center;
+      color: #737373;
+    }
+    .input-wrapper {
+      width: 100%;
+      height: 80px;
+      margin: 40px 0 35px;
+      padding: 0 14px 0 27px;
+      align-items: center;
+      background: #111;
+      border: 1px solid #444;
+
+      &:focus-within {
+        border-color: #00bc33;
+      }
+      &.has-error {
+        margin-bottom: 16px;
+        border-color: $dark-danger;
+      }
+      .bchat-icon-button path {
+        fill: #ebebeb;
+      }
+    }
+    .password-forgot {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      margin-top: 30px;
+      font-family: $dark-font-data !important;
+      font-size: 19px;
+      text-transform: uppercase;
+      color: #737373;
+      cursor: pointer;
+
+      &:hover {
+        color: #acacac;
+      }
+    }
+    #password-prompt-input {
+      width: 100%;
+      padding: 0;
+      background: transparent;
+      font-family: $dark-font-data !important;
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: #acacac;
+
+      // Figma 13.5 -> 18px
+      &::placeholder {
+        font-size: 18px;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+    #password-prompt-input::placeholder {
+      text-transform: uppercase;
+      color: #737373;
+    }
+    .btn-grp-wrapper {
+      width: 100%;
+      height: auto;
+      background: transparent;
+    }
+    .clearData-icon-wrapper {
+      background-color: $dark-raised;
+    }
+    .clearData-title {
+      font-family: $dark-font-display !important;
+      text-transform: uppercase;
+    }
+    .clearData-content {
+      font-family: $dark-font-data !important;
+      font-size: 15px;
+      color: $dark-muted;
+    }
+  }
+  // "Invalid password" tag: 140x30 -> 187x40, #290f0f on a faint red line
+  .password-prompt-error-section {
+    margin-bottom: 19px;
+  }
+  // after too many tries the base shows a blue "Invalid Password. Would you like to reset the
+  // database?" box; the design has no such box (the red field + Reset Database say it), so hide it
+  .password-prompt-error-section:has(.warningBg) {
+    display: none;
+  }
+  .password-prompt-error-section .bchat-label {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+
+    &.primary {
+      min-width: 187px;
+      height: 40px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #290f0f;
+      border: 1px solid rgba(255, 62, 62, 0.2);
+      border-radius: 0;
+      color: $dark-danger;
+    }
+  }
+  // error state (71:15454): Unlock greys out while the tag shows
+  .password-prompt-container.has-error .unlock-button .bchat-button {
+    background: #222 !important;
+    color: #737373;
+  }
+  // The unlock action is the one green button in the design (237.5x46.5, 14.25 cuts -> 317x62, 19px).
+  .unlock-button .bchat-button {
+    min-width: 317px;
+    height: 62px;
+    background: #00bc33 !important;
+    background-image: none !important;
+    border: 0;
+    color: #0b0b0b;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0;
+    clip-path: $dark-cut-popup-btn;
+
+    &:hover:not(.disabled) {
+      background: $dark-green-hover !important;
+    }
+  }
+}
+
+// ---- Window background (every Figma screen frame: #0b0b0b + dot pattern + radial #222 glow) ----
+// Same layer as the registration and password screens. It sits on the whole inbox window; the rail
+// and the chats / settings list keep their solid ink, and the right-hand side (conversation,
+// empty state, settings pages) is transparent so the pattern and glow show through.
+#{$dark} .inbox {
+  background: $dark-gate-bg;
+}
+#{$dark} .bchat-conversation,
+#{$dark} .conversation-content,
+#{$dark} .conversation-messages,
+#{$dark} .messages-container,
+#{$dark} .conversation-header,
+#{$dark} .module-conversation-header,
+#{$dark} .bchat-settings,
+#{$dark} .bchat-settings-header {
+  background: transparent !important;
+}
+
 // ---- Settings > Notifications (Figma 1:35230 "4 s") ----
 // Two boxes 16px apart (Figma 1007x174 and 1007x66 -> 232 / 88 tall): #111@20% fill with Figma's
 // glass edge (brighter on the left / bottom, dim on top / right). The title rows carry the icon
@@ -2228,6 +2432,407 @@ $dark-composer-h: 60px;
       margin-top: 7px;
     }
   }
+}
+
+// ---- Registration flow (Figma 71:14624 welcome, 71:14646 display name, 71:15198 BChat ID,
+// 71:15306 recovery seed, 71:14712 restore from seed, 71:15115 restore display name).
+// One centred 450px column (Figma 337.5) on the gate background, no side illustration.
+// Buttons 337.5x60 with ~18 cuts -> 450x80, 24px cuts. Figma / 0.75.
+$dark-cut-reg-btn: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+
+#{$dark} .bchat-fullscreen,
+#{$dark} .bchat_conversation-doodle {
+  background: $dark-gate-bg;
+}
+#{$dark} .bchat-registration-container {
+  position: relative;
+  margin: 0;
+
+  .bchat-content-left {
+    display: none !important;
+  }
+  .bchat-content {
+    width: 100% !important;
+
+    // the 470px wrapper (inline width) around every step
+    > div {
+      width: 450px !important;
+    }
+  }
+  .bchat-registration__content {
+    width: 450px;
+    margin-bottom: 0;
+  }
+
+  // every registration button: full-width 80px chamfered block, Roboto Mono SemiBold 22
+  .bchat-button {
+    width: 100%;
+    height: 80px;
+    min-height: 80px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0;
+    clip-path: $dark-cut-reg-btn;
+
+    &::before {
+      clip-path: $dark-cut-reg-btn;
+    }
+    &.primary,
+    &.green {
+      background-color: #ebebeb;
+      border: 0;
+      color: #0b0b0b;
+
+      &:hover:not(.disabled) {
+        background-color: #dcdcdc;
+      }
+    }
+    &.disabled {
+      background-color: $dark-raised !important;
+      border: 0;
+      color: #737373;
+      cursor: default;
+    }
+  }
+  // "Restore Account": #111 fill on a #737373 line
+  .signIn-btn .bchat-button {
+    position: relative;
+    isolation: isolate;
+    background-color: #737373 !important;
+    color: #f0f0f0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background-color: #111;
+    }
+    &:hover::before {
+      background-color: $dark-raised;
+    }
+  }
+  .signUp-btn {
+    margin-bottom: 16px;
+  }
+}
+
+// welcome: logo, "WELCOME TO BCHAT_", mono intro line
+#{$dark} .bchat-content-accent-text {
+  width: auto;
+  font-family: $dark-font-ui !important;
+  font-weight: 400;
+  text-align: center;
+
+  > svg {
+    display: block;
+    width: 221px;
+    height: auto;
+    margin: 0 auto;
+  }
+  // Figma sets this in Conthrax 24 (468px wide in the app); Michroma is wider, so 27px keeps
+  // the line at the design's width.
+  &.title {
+    margin: 61px -20px 16px;
+    font-family: $dark-font-display !important;
+    font-size: 27px;
+    line-height: 48px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: #ebebeb;
+
+    // the blinking-cursor underscore from the welcome screen
+    &::after {
+      content: '_';
+      color: #00bc33;
+    }
+  }
+  &.title2 {
+    width: 468px;
+    margin: 0 auto 41px;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 26px;
+    color: #acacac;
+  }
+}
+#{$dark} .bchat-terms-conditions-agreement {
+  position: absolute;
+  bottom: 41px;
+  inset-inline-start: 0;
+  width: 100%;
+  font-family: $dark-font-data !important;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #acacac;
+
+  a {
+    color: #acacac;
+
+    &:hover {
+      color: #ebebeb;
+    }
+  }
+}
+
+// step header: 42px #222 back square + Inter 22 title
+#{$dark} .bchat-registration-goback-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  margin-inline-end: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222;
+
+  &:hover {
+    background-color: #2a2a2a;
+  }
+  .bchat-icon-button {
+    display: flex;
+  }
+  svg {
+    width: 28px !important;
+    height: 28px !important;
+
+    path {
+      fill: #acacac;
+    }
+  }
+}
+#{$dark} .bchat-registration__welcome-bchat {
+  padding: 0;
+  font-family: $dark-font-ui !important;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 27px;
+  text-align: start;
+  color: #ebebeb;
+}
+#{$dark} .registration-title-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .bchat-registration-goback-icon {
+    margin-inline-end: 15px;
+  }
+}
+
+// text fields (display name, restore display name): 450x80 #111 on #444, mono uppercase hint
+#{$dark} .bchat-registration-container .bchat-input-with-label-container {
+  width: 450px;
+  height: 80px;
+
+  input {
+    padding-inline: 23px;
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 0;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #ebebeb;
+  }
+  input::placeholder {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: #737373;
+  }
+}
+#{$dark} .bchat-registration__entry-fields {
+  padding: 31px 0 25px;
+}
+
+// BChat ID + Beldex address (71:15198)
+#{$dark} .bchat-head {
+  margin: 0 0 15px;
+  font-family: $dark-font-display !important;
+  font-size: 22px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #ebebeb;
+}
+#{$dark} .bchat-registration-welcome-screen-container {
+  > .bchat-head::after {
+    content: '_';
+    color: #00bc33;
+  }
+}
+#{$dark} .bchat-registration-welcome-screen-chat {
+  margin: 0 0 8px;
+  padding: 0;
+  font-family: $dark-font-data !important;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #8d8d8d;
+}
+#{$dark} .bchat-registration-welcome-screen-chat-value {
+  min-height: 88px;
+  padding: 13px 19px;
+  align-items: center;
+  background: #111;
+  border: 1px solid #444;
+  border-radius: 0;
+
+  p {
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 30px;
+    word-break: break-all;
+    color: #00bc33 !important;
+  }
+  // the second box is the Beldex address (white in the design)
+  ~ .bchat-registration-welcome-screen-chat-value p {
+    color: #ebebeb !important;
+  }
+}
+#{$dark} .bchat-registration-welcome-screen-chat-content {
+  margin: 16px 0 31px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+  font-family: $dark-font-ui !important;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  color: #acacac;
+}
+
+// recovery seed (71:15306): 552px box, green copy icon in the corner, centred 343px Continue
+#{$dark} .recovery-seed-step {
+  width: 552px;
+
+  > div > div {
+    width: 100%;
+  }
+  .registration-title-row {
+    display: flex;
+    margin-bottom: 6px;
+  }
+  .bchat-button {
+    width: 343px;
+    margin: 15px auto 0;
+  }
+}
+#{$dark} .bchat-registration-recovery-phrase {
+  position: relative;
+  min-height: 147px;
+  padding: 13px 52px 13px 23px;
+  background: #111;
+  border: 1px solid #444;
+  border-radius: 0;
+
+  .iconBox {
+    position: absolute;
+    top: 13px;
+    inset-inline-end: 15px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+
+    &:hover {
+      background-color: #222;
+      border-radius: 0;
+    }
+  }
+}
+#{$dark} .bchat-registration-recovery-phrase-txt {
+  padding: 0;
+  font-family: $dark-font-data !important;
+  font-size: 16px;
+  line-height: 30px;
+  color: #ebebeb;
+}
+#{$dark} .bchat-registration-recovery-phrase-hintTxt {
+  margin: 21px 0 0;
+  font-family: $dark-font-data !important;
+  font-size: 16px;
+  line-height: 21px;
+  color: #acacac;
+
+  span {
+    color: #ff8a00;
+  }
+}
+
+// restore from seed (71:14712): 450x140 box, #222 paste square top-end
+#{$dark} .bchat-restore-seed__address-container {
+  width: 450px;
+
+  > div[style*='95.5'] {
+    width: 100% !important;
+  }
+}
+#{$dark} .bchat-restore-seed-parent-box {
+  margin: 14px 0 24px;
+  background: transparent;
+  border: 0;
+}
+#{$dark} .bchat-restore-seed-text-box {
+  width: 450px;
+  height: 140px;
+  padding: 13px 13px 13px 23px;
+  background: #111;
+  border: 1px solid #444;
+  border-radius: 0;
+}
+#{$dark} .bchat-restore-seed-text-area {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  padding: 8px 0 0;
+  background: transparent;
+  font-family: $dark-font-data !important;
+  font-size: 18px;
+  line-height: 26px;
+  color: #ebebeb;
+  overflow-y: auto;
+
+  &::placeholder {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #8d8d8d;
+  }
+}
+#{$dark} .bchat-restore-seed-icon-box {
+  width: auto;
+  align-items: flex-start;
+
+  .paste-icon {
+    width: 38px;
+    height: 38px;
+    background-color: #222;
+    border-radius: 0;
+
+    &:hover {
+      background-color: #2a2a2a;
+    }
+  }
+}
+
+// loading overlay covers the whole window now that the side illustration is gone
+#{$dark} .bchat-registration-loadingGif {
+  width: 100%;
+  inset-inline-end: 0;
+  background: rgba(11, 11, 11, 0.8);
 }
 
 // =================================================================================================
@@ -4662,6 +5267,185 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
 
 
 // =================================================================================================
+// Confirm card: clear data / delete account (Figma 71:15512 "clear_data" on the password gate,
+// 1:28188 "Clear all data" and 1:29337 "Delete entire account" over the app). ConfirmCard.tsx.
+// Figma 435x206 card, 44px icon well, 188x47 buttons -> / 0.75.
+// =================================================================================================
+.confirm-card {
+  display: none;
+}
+#{$dark} .password .clear-data-light {
+  display: none !important;
+}
+#{$dark} .confirm-card {
+  position: relative;
+  display: block;
+  width: 580px;
+  max-width: calc(100vw - 32px);
+  padding: 31px 32px 23px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+
+  &--gate {
+    background: rgba(11, 11, 11, 0.5);
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  &__icon {
+    flex: 0 0 59px;
+    width: 59px;
+    height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $dark-raised;
+    line-height: 0;
+  }
+  &__text {
+    min-width: 0;
+    max-width: 424px;
+    padding-top: 1px;
+  }
+  &__title {
+    margin: 0 0 8px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  &__message {
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: 0;
+    color: #acacac;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+
+    .bchat-button {
+      width: 100%;
+      min-width: 0;
+      height: 63px;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .bchat-button.secondary {
+      background-color: #333;
+      color: #ebebeb;
+
+      &::before {
+        background-color: #111;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: $dark-raised;
+      }
+    }
+    .bchat-button.danger {
+      background-color: rgba(255, 62, 62, 0.7);
+      color: $dark-danger;
+
+      &::before {
+        background-color: #290f0f;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #3a1212;
+      }
+    }
+  }
+
+  &__loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+// Settings -> Clear Data choice (Figma 1:38280 / 1:38518): 576x229 -> 768px card; the two
+// 207x46.5 -> 276x62 buttons start under the text, both neutral (#111 on #737373); the hovered one
+// turns red with a red dot in a dark circle.
+#{$dark} .confirm-card--choice {
+  width: 768px;
+
+  .confirm-card__text {
+    max-width: 626px;
+  }
+  .confirm-card__actions {
+    display: flex;
+    gap: 21px;
+    padding-inline-start: 79px;
+
+    .bchat-button,
+    .bchat-button.secondary,
+    .bchat-button.danger {
+      width: 276px;
+      height: 62px;
+      background-color: #737373;
+      font-size: 20px;
+      color: #ebebeb;
+
+      &::before {
+        background-color: #111;
+      }
+      // red dot shown on hover (a flex item ahead of the label)
+      &::after {
+        content: '';
+        order: -1;
+        display: none;
+        width: 9px;
+        height: 9px;
+        margin-inline-end: 12px;
+        border-radius: 50% !important;
+        background: $dark-danger;
+        box-shadow: 0 0 0 6px #111;
+      }
+      &:hover:not(.disabled) {
+        background-color: rgba(255, 62, 62, 0.38);
+
+        &::before {
+          background-color: #290f0f;
+        }
+        &::after {
+          display: block;
+        }
+      }
+    }
+  }
+}
+// The gate container is 540px for the unlock form; let the card keep its own width.
+#{$dark} .password .password-prompt-container:has(.confirm-card) {
+  width: auto;
+}
+// in-app it floats centred over the blurred conversation
+#{$dark} .bchat-confirm-wrapper > .confirm-card {
+  margin: auto;
+}
+// on the gate the Cancel plate is the raised grey (Figma #1a1a1a)
+#{$dark} .confirm-card--gate .confirm-card__actions .bchat-button.secondary {
+  &::before {
+    background-color: $dark-raised;
+  }
+  &:hover:not(.disabled)::before {
+    background-color: #242424;
+  }
+}
+
+// =================================================================================================
 // Settings pickers: Chat Font Size trigger + the shared radio picker (BchatSettingMiniModal, used by
 // Font Size / Zoom / Hops). Figma 1:34208 "Font Size" (434x285 card, 402x164 list, 378x47 rows,
 // 188x47 buttons) and the 120x42 "Small ⌄" box on 1:31639 -> / 0.75.
@@ -4880,6 +5664,153 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
 }
 
+// ---- Set Password prompt before the Recovery Phrase (Figma 1:38756): card family, lock icon,
+// grey message with the settings path in white ----
+#{$dark} .set-password-access {
+  .bchat-modal-setPasswordAccess {
+    width: auto;
+    margin: 0;
+
+    .contentbox {
+      text-align: start;
+
+      > div:not(.header):not(.fontSemiBold) {
+        height: 8px !important;
+      }
+    }
+    .header {
+      font-family: $dark-font-ui !important;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 27px;
+      color: #ebebeb;
+    }
+    .fontSemiBold {
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 26px;
+      letter-spacing: 0;
+      color: #acacac;
+    }
+    .span {
+      color: #ebebeb;
+    }
+  }
+}
+
+// ---- Set / Change / Remove password form (BchatPasswordDialog, Figma 1:73437 "Change Password"):
+// 494px card -> 659, bold title, 80px fields 11px apart with the eye inside, two 251px buttons
+// centred (not stretched) ----
+#{$dark} .card-dialog--form {
+  .bchat-modal {
+    width: 659px;
+    padding: 23px 31px 32px;
+  }
+  .bchat-modal__header {
+    margin: 0 0 24px;
+    padding-inline-start: 4px;
+  }
+  .bchat-modal__header__title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 32px;
+  }
+  .bchat-modal__body,
+  .bchat-modal__centered,
+  .model-layer > div {
+    width: 100%;
+  }
+  .bchat-modal-setPassword {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+
+    > div {
+      margin: 0 !important;
+    }
+  }
+  .bchat-input-with-label-container {
+    width: 100%;
+    height: 80px;
+    padding: 0 20px 0 27px;
+    gap: 12px;
+
+    input {
+      font-size: 18px;
+
+      &::placeholder {
+        font-size: 16px;
+        color: #8d8d8d;
+      }
+    }
+    .bchat-icon-button {
+      flex: 0 0 auto;
+      color: #acacac;
+
+      svg {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  }
+  .bchat-modal-footer {
+    grid-auto-columns: 251px;
+    justify-content: center;
+    margin-top: 31px;
+  }
+}
+
+// ---- Set password (BchatPasswordDialog 'set', Figma 1:34843 "2 s"): 493.5x364.5 -> 658px card,
+// Inter Regular 22 title 35px in, dark 32px close square (#222@50% / #444, #acacac X) 20px from the
+// top / 19px from the end, 80px fields 30px in and 11px apart with mixed-case mono 18 #8d8d8d
+// placeholders and the eye 25px from the end, one centred 250x62 Save 40px below ----
+#{$dark} .card-dialog--form.card-dialog--set {
+  .bchat-modal {
+    width: 658px;
+    padding: 27px 30px 37px;
+  }
+  .bchat-modal__body {
+    position: static !important;
+  }
+  .bchat-modal__header {
+    margin: 0 0 31px;
+    padding: 0 0 0 5px;
+  }
+  .bchat-modal__header__title {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+  }
+  // the base form has 10 / 15px margins; Figma: title -> first field 31px, last field -> Save 40px
+  .bchat-modal-setPassword {
+    margin: 0;
+  }
+  .bchat-input-with-label-container {
+    padding: 0 25px 0 27px;
+
+    input::placeholder {
+      font-size: 18px;
+      text-transform: none;
+      color: #8d8d8d;
+    }
+    .bchat-icon-button svg {
+      width: 26px;
+      height: 26px;
+    }
+  }
+  .bchat-modal-footer {
+    grid-auto-columns: 250px;
+    margin-top: 40px;
+
+    .bchat-button {
+      height: 62px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+}
 // ---- Change group name (UpdateGroupNameDialog, Figma 1:63151 / 109:9107): 435x206 -> 580px card,
 // Inter 16.5 -> 22 title 29px in, one 80px #111/#444 field 20px under it with the square clear icon
 // 19px from its end, then Cancel + Ok (250x62, 15px apart) 31px below, left-aligned with the field ----
@@ -5040,6 +5971,209 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   font-size: 16px;
   line-height: 21px;
   color: #ebebeb;
+}
+
+// ---- Recovery Phrase password lock (PasswordLock, Figma 1:32666 "1 s"): 435x277 -> 580x369 card
+// (#0b0b0b@75%, #222 line) centred in the page; 58px green lock 26px from the top, Inter 22 title
+// 21px below, a 526x80 #111 / #444 field (uppercase mono 18 #737373 placeholder, 25px in) 32px
+// below that, then Cancel / Continue (250x62, 16px apart) 33px below; 27 / 30px card padding ----
+#{$dark} .password-lock-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 112px);
+  padding-bottom: 50px;
+}
+#{$dark} .password-lock-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 580px;
+  max-width: 100%;
+  padding: 26px 27px 30px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+
+  &__icon {
+    display: block;
+    line-height: 0;
+  }
+  &__title {
+    margin-top: 21px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #ebebeb;
+  }
+  &__input {
+    width: 100%;
+    height: 80px;
+    margin: 32px 0 0;
+    padding: 0 25px;
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 0;
+    outline: 0;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #ebebeb;
+
+    &:focus {
+      border-color: #00bc33;
+    }
+    &::placeholder {
+      text-transform: uppercase;
+      color: #737373;
+    }
+  }
+  &__buttons {
+    display: grid;
+    grid-template-columns: 250px 250px;
+    gap: 16px;
+    margin-top: 33px;
+
+    .bchat-button {
+      width: 250px;
+      min-width: 0;
+      height: 62px;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+}
+
+// ---- Recovery Phrase (BchatSeedModal, Figma 1:32965 "1 s"): 451.5x404 -> 602px card centred in the
+// page (#0b0b0b@75%, #222 line); Inter 22 title 64px from the top, 77px two-colour icon 31px below,
+// 552px #111 / #444 seed box 37px below that (mono 18, centred, 459px text column), amber Inter
+// SemiBold 18 note 14px under it, then the 250x62 Copy button 25px below; 30px bottom padding ----
+#{$dark} .seed-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 112px);
+  padding: 20px 0 50px;
+}
+#{$dark} .seed-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 602px;
+  max-width: 100%;
+  padding: 64px 25px 30px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+
+  &__title {
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #ebebeb;
+  }
+  &__icon {
+    display: block;
+    margin-top: 31px;
+    line-height: 0;
+  }
+  &__seed {
+    width: 100%;
+    margin-top: 37px;
+    padding: 13px 46px;
+    background: #111;
+    border: 1px solid #444;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    font-style: normal;
+    line-height: 24px;
+    text-align: center;
+    color: #ebebeb;
+    user-select: text;
+  }
+  &__note {
+    margin: 14px 0 0;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+    color: #f0af13;
+  }
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+
+    .bchat-button {
+      width: 250px;
+      min-width: 0;
+      height: 62px;
+      margin: 0;
+      gap: 10px;
+      font-family: $dark-font-ui !important;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}
+
+// ---- Seed warning before the Recovery Phrase (Figma 1:32394): 593x382 -> 791px card; amber warning
+// 59px 40px from the top, "Important" Inter 24 amber, Inter SemiBold 22 title, Roboto Mono Light
+// 22/30 body (670px column), one 242x60 "Yes, I'm Sure!" 31px below; 40px bottom padding ----
+#{$dark} .seed-warning-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 791px;
+  max-width: 100%;
+  padding: 40px 60px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+  text-align: center;
+
+  &__icon {
+    display: block;
+    line-height: 0;
+  }
+  &__label {
+    margin-top: 6px;
+    font-family: $dark-font-ui !important;
+    font-size: 24px;
+    line-height: 29px;
+    color: #f0af13;
+  }
+  &__title {
+    margin-top: 23px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 27px;
+    color: #ebebeb;
+  }
+  &__body {
+    max-width: 670px;
+    margin: 18px 0 0;
+    font-family: $dark-font-data !important;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 30px;
+    color: #ebebeb;
+  }
+  // one blank line (30px) between the warning and the question, as in Figma
+  .seed-warning-card__body + .seed-warning-card__body {
+    margin-top: 30px;
+  }
+  .bchat-button {
+    width: 242px;
+    min-width: 0;
+    height: 60px;
+    margin-top: 31px;
+    font-size: 22px;
+    font-weight: 600;
+  }
 }
 
 // ---- Right panel remove-members mode (Figma 1:62093): small cancel / confirm squares ----

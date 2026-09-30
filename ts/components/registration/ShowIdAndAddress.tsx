@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GoBackMainMenuButton } from './SignUpTab';
 
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { Flex } from '../basic/Flex';
@@ -14,7 +15,10 @@ export const DisplayIdAndAddress = (props: any) => (
     {/* <div className='bchat-registration-welcome-screen-goback'>
           <GoBackMainMenuButton assent={()=>{props.assentAndGoBack()}} />
         </div> */}
-    <h1 className="bchat-head">{window.i18n('welcome')}!</h1>
+    <h1 className="bchat-head">
+      {window.i18n('welcome')}
+      <span className="light-only-inline">!</span>
+    </h1>
     <SpacerLG />
     {/* <div className='bchat-registration-welcome-screen-back'> */}
     <h6 className="bchat-registration-welcome-screen-chat">{window.i18n('bChatID')}</h6>
@@ -84,8 +88,10 @@ const LoaderGif = () => {
 
 export const ShowRecoveryPhase = (props: any) => {
   const [seedCopied, setSeedCopied] = useState(false);
+  // the registration window has no redux Provider, so read the theme BchatTheme put on <html>
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   return (
-    <div className="bchat-registration-welcome-screen-container">
+    <div className="bchat-registration-welcome-screen-container recovery-seed-step">
       {props.loading && <LoaderGif />}
       <Flex flexDirection="row" container={true} height="100%">
         <Flex
@@ -102,7 +108,14 @@ export const ShowRecoveryPhase = (props: any) => {
               }}
             />
           </div> */}
-          <h1 className="bchat-head">{window.i18n('recoveryPhrase')}</h1>
+          <h1 className="bchat-head light-only-inline">{window.i18n('recoveryPhrase')}</h1>
+          {/* dark theme: Figma 71:15306 - back square + title, like the other registration steps */}
+          <div className="dark-only-inline registration-title-row">
+            <div className="bchat-registration-goback-icon">
+              <GoBackMainMenuButton assent={() => props.assentAndGoBack()} />
+            </div>
+            <div className="bchat-registration__welcome-bchat">{window.i18n('recoveryPhrase')}</div>
+          </div>
           <SpacerLG />
           <div className="bchat-registration-recovery-phrase">
             <p className="bchat-registration-recovery-phrase-txt">
@@ -134,7 +147,12 @@ export const ShowRecoveryPhase = (props: any) => {
                 data-offset="{'top':30,'left':15}"
                 className="iconBox"
               >
-                <CopyIconButton  content={props.mnemonic}  iconSize={22} onClick={() => {
+                <CopyIconButton
+                  content={props.mnemonic}
+                  iconSize={isDark ? 17 : 22}
+                  iconType={isDark ? 'copy' : undefined}
+                  iconColor="#00BC33"
+                  onClick={() => {
                  setSeedCopied(true);
                 }}/>
               </div>

@@ -13,12 +13,14 @@ import { displayPasswordModal } from './section/CategoryPrivacy';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon } from '../icon/BchatIcon';
+import { getTheme } from '../../state/selectors/theme';
 
 
 export const BchatRecoverySeed = (props: any) => {
 
   //  const [verify, setVerify] = useState(false)
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
+  const isDark = useSelector(getTheme) === 'dark';
 
   if (props.passwordLock) {
     return <BchatSeedModal {...recoveryPhraseModalState} />;
@@ -35,6 +37,8 @@ export const BchatRecoverySeed = (props: any) => {
 
   return (
     <BchatWrapperModal title={''} showExitIcon={false} showHeader={false}
+    // dark: Figma 1:38756 "Set Password" card
+    additionalClassName="card-dialog set-password-access"
     okButton={{
       text: window.i18n('ok'),
       onClickOkHandler,
@@ -46,7 +50,13 @@ export const BchatRecoverySeed = (props: any) => {
       onClickCancelHandler
     }}
     iconShow={true}
-    customIcon={<BchatIcon iconType="enablePasswordIcon" iconSize={26} />}
+    customIcon={
+      isDark ? (
+        <BchatIcon iconType="lock" iconSize={34} iconColor="#EBEBEB" />
+      ) : (
+        <BchatIcon iconType="enablePasswordIcon" iconSize={26} />
+      )
+    }
     >
       {/* <div className="bchat-modal__centered"> */}
         <div className="bchat-modal-setPasswordAccess">
@@ -54,7 +64,7 @@ export const BchatRecoverySeed = (props: any) => {
             <div className="header">{window.i18n('setPassword')}</div>
             <SpacerLG />
             <div className='fontSemiBold'>
-              {window.i18n('setPasswordDesc')}
+              {window.i18n('setPasswordDesc')}{' '}
               <span className='span'>{window.i18n('setPasswordPath')}</span> 
             </div>
             {/* <div className="fontSemiBold">Settings -&gt; Privacy -&gt; Set Account Password.</div> */}

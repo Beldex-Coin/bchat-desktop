@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { getTheme } from '../../state/selectors/theme';
+import RecoveryPhraseIcon from '../icon/RecoveryPhraseIcon';
+import { BchatIcon } from '../icon';
 // import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 
@@ -20,6 +22,9 @@ const Seed = (props: SeedProps) => {
   const i18n = window.i18n;
   const dispatch = useDispatch();
   const darkMode = useSelector(getTheme) === 'dark';
+  // dark theme: the "Never Give your Seed to Anyone!" warning (Figma 1:32394) comes first; the seed
+  // only shows after "Yes, I'm Sure!". Resets every time the Recovery Phrase page is opened.
+  const [seedWarningAccepted, setSeedWarningAccepted] = useState(false);
 
   const copyRecoveryPhrase = (recoveryPhraseToCopy: string) => {
     window.clipboard.writeText(recoveryPhraseToCopy);
@@ -29,6 +34,60 @@ const Seed = (props: SeedProps) => {
     }
     dispatch(recoveryPhraseModal(null));
   };
+
+  // dark theme (Figma 1:32965): 602px card centred in the page - Inter title, two-colour page icon,
+  // mono seed in a #111 / #444 box, amber note, Copy. Figma also draws a Share button; the app has
+  // no share action, so it is left out.
+  if (darkMode && !seedWarningAccepted) {
+    return (
+      <div className="seed-page">
+        <div className="seed-warning-card">
+          <span className="seed-warning-card__icon" aria-hidden="true">
+            <BchatIcon iconType="warning" iconSize={59} iconColor="#F0AF13" />
+          </span>
+          <div className="seed-warning-card__label">{i18n('importantTitle')}</div>
+          <div className="seed-warning-card__title">{i18n('neverGiveSeedWarning')}</div>
+          <p className="seed-warning-card__body">{i18n('neverInputSeedWarning')}</p>
+          <p className="seed-warning-card__body">{i18n('confirmAccessSeedQuestion')}</p>
+          <BchatButton
+            text={i18n('yesImSure')}
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            onClick={() => setSeedWarningAccepted(true)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (darkMode) {
+    return (
+      <div className="seed-page">
+        <div className="seed-card">
+          <div className="seed-card__title">{i18n('recoveryPhrase')}</div>
+          <span className="seed-card__icon" aria-hidden="true">
+            <RecoveryPhraseIcon iconSize={77} />
+          </span>
+          <div data-testid="recovery-phrase-seed-modal" className="seed-card__seed" dir="ltr">
+            {recoveryPhrase}
+          </div>
+          <p className="seed-card__note">{window.i18n('CopyYourRecoverySeed...')}</p>
+          <div className="seed-card__buttons">
+            <BchatButton
+              text={window.i18n('editMenuCopy')}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={BchatButtonColor.Primary}
+              iconSize={20}
+              iconType={'copy'}
+              onClick={() => {
+                copyRecoveryPhrase(recoveryPhrase);
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='bchat-modal__seedPhrase'>

@@ -1,5 +1,6 @@
 import  { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import useKey from 'react-use/lib/useKey';
 import { ed25519Str } from '../../bchat/onions/onionPath';
 import { forceNetworkDeletion } from '../../bchat/apis/snode_api/SNodeAPI';
 import { forceSyncConfigurationNowIfNeeded } from '../../bchat/utils/syncUtils';
@@ -14,6 +15,8 @@ import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
 import { SpacerSM } from '../basic/Text';
 import { clearFailedSendRegistry } from '../../bchat/sending/FailedSendRetry';
+import { getTheme } from '../../state/selectors/theme';
+import { ConfirmCard } from './ConfirmCard';
 
 
 export const deleteDbLocally = async (deleteType?: string) => {
@@ -192,6 +195,77 @@ export const DeleteAccountModal = () => {
   const onClickCancelHandler = useCallback(() => {
     dispatch(updateDeleteAccountModal(null));
   }, []);
+
+  // ---- dark theme: Figma 1:38280 choice card, then 1:28188 / 1:29337 confirmation ----
+  const isDark = useSelector(getTheme) === 'dark';
+  const [clearStep, setClearStep] = useState<'choose' | 'device' | 'network'>('choose');
+  const closeIfIdle = () => {
+    if (!isLoading) {
+      onClickCancelHandler();
+    }
+  };
+  useKey('Escape', () => isDark && closeIfIdle(), undefined, [isDark, isLoading]);
+
+  if (isDark) {
+    let card: JSX.Element;
+    if (clearStep === 'device') {
+      card = (
+        <ConfirmCard
+          icon="erase"
+          iconSize={31}
+          title={window.i18n('clearAllDataTitle')}
+          message={window.i18n('clearDeviceDataConfirm')}
+          secondaryText={window.i18n('cancel')}
+          onSecondary={closeIfIdle}
+          dangerText={window.i18n('clear')}
+          onDanger={() => void onDeleteEverythingLocallyOnly()}
+          loading={isLoading}
+        />
+      );
+    } else if (clearStep === 'network') {
+      card = (
+        <ConfirmCard
+          icon="avatarX"
+          evenOdd={true}
+          title={window.i18n('deleteEntireAccount')}
+          message={window.i18n('clearNetworkDataConfirm')}
+          secondaryText={window.i18n('cancel')}
+          onSecondary={closeIfIdle}
+          dangerText={window.i18n('clear')}
+          onDanger={() => void onDeleteEverythingAndNetworkData()}
+          loading={isLoading}
+        />
+      );
+    } else {
+      card = (
+        <ConfirmCard
+          className="confirm-card--choice"
+          icon="erase"
+          iconSize={33}
+          title={window.i18n('clearAllData')}
+          message={window.i18n('deleteAccountWarning')}
+          secondaryText={window.i18n('deviceOnly')}
+          onSecondary={() => setClearStep('device')}
+          dangerText={window.i18n('entireAccount')}
+          onDanger={() => setClearStep('network')}
+        />
+      );
+    }
+    return (
+      <div className="bchat-dialog modal confirm-overlay">
+        <div
+          className="bchat-confirm-wrapper"
+          onMouseDown={e => {
+            if (e.target === e.currentTarget) {
+              closeIfIdle();
+            }
+          }}
+        >
+          {card}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <BchatWrapperModal

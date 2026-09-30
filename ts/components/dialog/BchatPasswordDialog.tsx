@@ -12,6 +12,7 @@ import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { matchesHash, validatePassword } from '../../util/passwordUtils';
 import { BchatInput } from '../basic/BchatInput';
+import { BchatIcon } from '../icon';
 // import { BchatInput } from '../basic/BchatInput';
 
 export type PasswordAction = 'set' | 'change' | 'remove';
@@ -52,8 +53,14 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
   public render() {
     const { passwordAction } = this.props;
+    // dark theme "Set password" (Figma 1:34843): square close, Save only, "Enter new password"
+    const isDarkSet =
+      passwordAction === 'set' &&
+      document.documentElement.getAttribute('data-theme') === 'dark';
     const placeholders =
-      passwordAction === 'change'
+      isDarkSet
+        ? [window.i18n('enterNewPassword'), window.i18n('confirmPassword')]
+        : passwordAction === 'change'
         ? [
           window.i18n('currentPassword'),
           window.i18n('enterPassword'),
@@ -75,14 +82,29 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
       <BchatWrapperModal
         title={window.i18n(localizedKeyAction)}
         onClose={this.closeDialog}
+        additionalClassName={
+          isDarkSet ? 'card-dialog card-dialog--form card-dialog--set' : 'card-dialog card-dialog--form'
+        }
         okButton={{
           text:btnName ,
           color: btnColor,
           onClickOkHandler: this.setPassword
         }}
-        cancelButton={{ status: true, text: window.i18n('cancel'), onClickCancelHandler: this.closeDialog }
-        }
+        cancelButton={{
+          status: !isDarkSet,
+          text: window.i18n('cancel'),
+          onClickCancelHandler: this.closeDialog,
+        }}
       >
+        {isDarkSet && (
+          <button
+            className="close-square close-square--dark"
+            onClick={this.closeDialog}
+            aria-label={window.i18n('close')}
+          >
+            <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+          </button>
+        )}
         {/* <SpacerSM /> */}
         <div className="bchat-modal-setPassword">
 

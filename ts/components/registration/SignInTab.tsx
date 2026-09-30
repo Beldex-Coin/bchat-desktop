@@ -261,7 +261,9 @@ export const SignInTab = (props: any) => {
               />
             </div>
             <Flex className="bchat-registration__welcome-bchat">
-              {window.i18n('restoreFromSeed')}
+              <span className="light-only-inline">{window.i18n('restoreFromSeed')}</span>
+              {/* dark theme: Figma 71:15115 titles this step "Display Name" */}
+              <span className="dark-only-inline">{window.i18n('displayName')}</span>
             </Flex>
           </Flex>
           <BchatInput

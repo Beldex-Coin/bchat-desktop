@@ -7,6 +7,7 @@ import autoBind from 'auto-bind';
 import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatButton';
 // import { Constants } from '../bchat';
 import { Flex } from './basic/Flex';
+import { ConfirmCard } from './dialog/ConfirmCard';
 // import { ToastUtils } from '../bchat/utils';
 
 interface State {
@@ -79,12 +80,17 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     const featureElement = this.state.clearDataView ? (
       <p className="text-center">{window.i18n('deleteAccountWarning')}</p>
     ) : (
-      <div className="input-wrapper">
+      <div className={classNames('input-wrapper', this.state.error && 'has-error')}>
         <input
           id="password-prompt-input"
           type={this.state.PasswordVisible ?"password":''}
           defaultValue=""
-          placeholder={window.i18n('password')}
+          // dark theme (Figma 71:15363): "Enter your password"; light keeps "Enter Password"
+          placeholder={
+            document.documentElement.getAttribute('data-theme') === 'dark'
+              ? window.i18n('enterPassword')
+              : window.i18n('password')
+          }
           minLength={4}
           maxLength={26}
           onKeyUp={this.onKeyUp}
@@ -118,7 +124,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
       </>
     );
     const clearDataView = this.state.clearDataView && (
-      <div>
+      <div className="clear-data-light">
         <Flex container={true} alignItems='baseline' padding={'20px 30px'}>
           <div className="clearData-icon-wrapper">
             <BchatIcon iconType={'warning'} iconSize={25} iconColor="#FF3E3E" />
@@ -136,23 +142,72 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
     return (
       <div className="password">
         <div className={'password-prompt-wrapper'}>
-          <div className={'password-prompt-container'}>
+          <div
+            className={classNames(
+              'password-prompt-container',
+              !this.state.clearDataView && this.state.error && 'has-error'
+            )}
+          >
             {!this.state.clearDataView ? (
               <>
-                <div>
+                <div className="password-lock-light">
                   <LockImg />
                 </div>
+                <span className="password-lock" aria-hidden="true">
+                  <BchatIcon iconType="lock" iconSize={58} iconColor="#1BB51E" />
+                </span>
 
                 <div className={infoAreaClass}>
-                  <h1>{window.i18n('passwordViewTitle')}</h1>
+                  {/* dark theme (Figma 71:15363): one-line "Enter Password" title */}
+                  <h1>
+                    <span className="light-only-inline">{window.i18n('passwordViewTitle')}</span>
+                    <span className="dark-only-inline">{window.i18n('password')}</span>
+                  </h1>
+                  {/* dark theme: Figma 174:23 subtitle */}
+                  <p className="password-subtitle">{window.i18n('deviceEncryptedAtRest')}</p>
                 </div>
                 {spinner || featureElement}
                 {errorSection}
               </>
             ) : (
-              clearDataView
+              <>
+                {clearDataView}
+                {/* dark theme: Figma 71:15512 "clear_data" card */}
+                <ConfirmCard
+                  className="confirm-card--gate"
+                  icon="warning"
+                  iconColor="#FF3E3E"
+                  evenOdd={true}
+                  title={window.i18n('clearAllData')}
+                  message={window.i18n('deleteAccountWarning')}
+                  secondaryText={window.i18n('cancel')}
+                  onSecondary={() => {
+                    this.setState({ clearDataView: false });
+                  }}
+                  dangerText={window.i18n('clearAllData')}
+                  onDanger={window.clearLocalData}
+                />
+              </>
             )}
-            <div className="btn-grp-wrapper"> {buttonGroup}</div>
+            <div
+              className={classNames('btn-grp-wrapper', this.state.clearDataView && 'clear-data-light')}
+            >
+              {' '}
+              {buttonGroup}
+            </div>
+            {/* dark theme: Figma 174:23 - opens the same clear-data step as "Reset database" */}
+            {!this.state.clearDataView && (
+              <div className="password-forgot" role="button" onClick={this.initClearDataView}>
+                {window.i18n('forgotRestoreWithSeed')}
+                <BchatIcon
+                  iconType="KeyboardBackspaceArrow"
+                  iconSize={19}
+                  iconRotation={180}
+                  iconColor="#737373"
+                  flipInRtl={true}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

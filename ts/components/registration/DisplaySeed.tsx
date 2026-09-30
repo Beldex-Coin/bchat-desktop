@@ -5,6 +5,7 @@ import { BchatToolTip } from '../leftpane/ActionsPanel';
 import PasteIcon from '../icon/PasteIcon';
 import { Flex } from '../basic/Flex';
 import { GoBackMainMenuButton } from './SignUpTab';
+import { BchatIcon } from '../icon/BchatIcon';
 
 // export const Icons = (props: any) => (
 //   <div
@@ -88,7 +89,12 @@ export const DisplaySeed = (props: any) => {
                 data-offset="{'top':30,'left':15}"
                 data-place="right"
               >
-                <PasteIcon iconSize={18} />
+                <span className="light-only-inline">
+                  <PasteIcon iconSize={18} />
+                </span>
+                <span className="dark-only-inline">
+                  <BchatIcon iconType="paste" iconSize={18} iconColor="#EBEBEB" />
+                </span>
               </div>
             </div>
           </div>
