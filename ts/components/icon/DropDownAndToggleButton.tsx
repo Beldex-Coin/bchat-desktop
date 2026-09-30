@@ -80,6 +80,8 @@ export const DropDownAndToggleButton = (props: SProps) => {
   const fillColor= 'var(--color-text)';
   return (
     <StyledContainer
+      // call-toggle*: dark theme hooks (Figma 1:59453 call controls)
+      className={`call-toggle${isMuted ? ' call-toggle--muted' : ''}`}
       isMuted={isMuted || false}
       isSelected={isMuted}
       onClick={mainButtonClickHandler}
@@ -87,7 +89,7 @@ export const DropDownAndToggleButton = (props: SProps) => {
     >
       <BchatIcon iconType={iconType} iconSize={27} iconColor={isMuted?'#333333':fillColor} />
       {!hidePopoverArrow && (
-        <StyledArrowIcon isMuted={isMuted || false} onClick={arrowClickHandler}>
+        <StyledArrowIcon className="call-toggle__arrow" isMuted={isMuted || false} onClick={arrowClickHandler}>
           <BchatIcon iconType="chevron" iconColor={fillColor} iconSize={20} />
         </StyledArrowIcon>
       )}

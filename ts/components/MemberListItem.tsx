@@ -8,6 +8,8 @@ import {
 } from '../hooks/useParamSelector';
 import CheckBoxTickIcon from './icon/CheckBoxTickIcon';
 import { BchatIcon } from './icon';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../state/selectors/theme';
 
 
 export const MemberListItem = (props: {
@@ -49,6 +51,7 @@ export const MemberListItem = (props: {
   }
 
   const selectionValidation=removeMem? !onlyList && !isSelected :!onlyList  &&isSelected
+  const isDark = useSelector(getTheme) === 'dark';
   return (
     <div
       className={classNames(
@@ -77,7 +80,20 @@ export const MemberListItem = (props: {
       </div>
       {!onlyList && !isAdmin && (
         <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>
-          {selectionValidation ? (
+          {isDark ? (
+            // Dark theme (Figma 1:8154): square box, green fill with a black tick when selected
+            <span
+              className={classNames(
+                'select-box',
+                'select-box--green',
+                selectionValidation && 'select-box--checked'
+              )}
+            >
+              {selectionValidation && (
+                <BchatIcon iconType="check" iconSize={14} strokeColor="#0A0A0A" strokeWidth="2" />
+              )}
+            </span>
+          ) : selectionValidation ? (
             <CheckBoxTickIcon iconSize={26} />
           ) : (
             <BchatIcon iconType={'checkBox'} clipRule="evenodd" fillRule="evenodd" iconSize={26} />

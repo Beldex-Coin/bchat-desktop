@@ -3,6 +3,8 @@ import { clipboard } from 'electron';
 import React from 'react';
 import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import _ from 'lodash';
+import { BchatIcon } from './BchatIcon';
+import { BchatIconType } from './Icons';
 
 interface SProps{
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -15,6 +17,9 @@ interface SProps{
   style?: any;
   iconSize:number;
   content:string ;
+  /** draw this Icons.tsx icon instead of the built-in outline (dark theme uses the Figma copy icon) */
+  iconType?: BchatIconType;
+  iconColor?: string;
 }
 const CopyIconButtonInner=React.forwardRef<HTMLDivElement, SProps>((props, ref) => {
   const {
@@ -46,6 +51,9 @@ const CopyIconButtonInner=React.forwardRef<HTMLDivElement, SProps>((props, ref) 
       style={{ display: isHidden ? 'none' : 'flex', margin: margin ? margin : '',alignItems:"center" }}
       data-testid={dataTestId}
     >
+    {props.iconType ? (
+      <BchatIcon iconType={props.iconType} iconSize={iconSize} iconColor={props.iconColor} />
+    ) : (
     <svg xmlns="http://www.w3.org/2000/svg"  width={iconSize} height={iconSize} viewBox="0 0 20 22" fill="none">
     <path d="M14.0249 12.2832V15.0332C14.0249 18.6998 12.7049 20.1665 9.4049 20.1665H6.2699C2.9699 20.1665 1.6499 18.6998 1.6499 15.0332V11.5498C1.6499 7.88317 2.9699 6.4165 6.2699 6.4165H8.7449" stroke="#00A638" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M14.0251 12.2832H11.3851C9.40512 12.2832 8.74512 11.5498 8.74512 9.34984V6.4165L14.0251 12.2832Z" stroke="#00A638" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -54,6 +62,7 @@ const CopyIconButtonInner=React.forwardRef<HTMLDivElement, SProps>((props, ref) 
     <path d="M18.1498 7.3335V13.0077C18.1498 14.4285 17.1103 15.5835 15.8315 15.5835" stroke="#00A638" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M18.1502 7.3335H15.6752C13.8189 7.3335 13.2002 6.646 13.2002 4.5835V1.8335L18.1502 7.3335Z" stroke="#00A638" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
+    )}
     </div>
   );
 });
