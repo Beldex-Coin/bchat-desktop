@@ -1965,6 +1965,272 @@ $dark-composer-h: 60px;
 }
 
 // =================================================================================================
+// Settings (style guide SECONDARY 26:6921, "FIG. B // SETTINGS")
+// Category list = uppercase mono labels, selected = green tint + leading bar; page title in the
+// display face.
+// =================================================================================================
+#{$dark} .settings-header {
+  .module-left-pane__header_gearIcon {
+    display: none;
+  }
+  .module-left-pane__header__title {
+    font-family: $dark-font-display !important;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $dark-white;
+  }
+}
+#{$dark} .left-pane-setting-section {
+  padding: 8px 0;
+  background: $dark-ink;
+  border-inline-end: 1px solid $dark-line;
+}
+// Settings menu (Figma 1:31639): 24px line icon + Roboto Mono 20px, rows on a 75px pitch; the
+// selected row gets a faint plate and a 1px green leading edge.
+#{$dark} .left-pane-setting-category-list-item {
+  height: 75px;
+  margin: 0;
+  padding: 0 25px;
+  border-radius: 0 !important;
+  border-inline-start: 1px solid transparent;
+  transition: none !important;
+
+  .left-pane-setting-category-list-item-icons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    margin: 0 24px 0 0;
+    margin-inline: 0 24px;
+    line-height: 0;
+  }
+  .left-pane-setting-category-list-item-span {
+    font-family: $dark-font-data !important;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #ebebeb !important;
+  }
+  &:hover {
+    background: $dark-raised;
+  }
+  // selected (Figma 1:35230 Frame 1576): glass plate (#1a1a1a@20%, lit top edge #323232 / bottom
+  // #262626) with a 0.75 -> 1px #0b9e3c leading edge. Figma also opens a gap around the selected
+  // row, but that made every row below jump when switching options, so the plate stays within the
+  // row's own 75px and nothing moves.
+  &.active,
+  &.active:hover {
+    background: rgba(26, 26, 26, 0.2);
+    border-inline-start-color: #0b9e3c;
+    box-shadow: inset 0 1px 0 #323232, inset 0 -1px 0 #262626;
+    backdrop-filter: blur(3px);
+  }
+  // Clear Data keeps its danger colour (set inline as #FF3E3E).
+  .left-pane-setting-category-list-item-span[style*='255, 62, 62'] {
+    color: $dark-danger !important;
+  }
+}
+
+#{$dark} .bchat-settings {
+  background-color: $dark-ink;
+}
+#{$dark} .bchat-settings-header {
+  height: 100px;
+  padding-inline: 40px;
+  background-color: $dark-ink;
+  border-bottom: 1px solid #222;
+
+  // Figma 1:31639 / 1:34508: centred Inter SemiBold 18 -> 24 page title
+  .bchat-settings-header-title {
+    flex: 1;
+    text-align: center;
+    font-family: $dark-font-ui !important;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  // "(3 Hops)" after the Hops title (Figma 324:4824: Inter SemiBold, a size down, grey)
+  .bchat-settings-header-title-suffix {
+    font-family: $dark-font-ui !important;
+    font-size: 17px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: $dark-muted;
+  }
+}
+#{$dark} .bchat-settings-list {
+  margin: 0;
+  padding: 10px 40px 0;
+
+  // Framed option list; rows are inset from the frame so icons and toggles don't touch it.
+  .bgWrapper {
+    margin-top: 20px;
+    padding: 0 28px;
+    background: transparent;
+    border: 1px solid $dark-line;
+
+    > .bchat-settings-item:last-child {
+      border-bottom: 0;
+    }
+  }
+  .hopes .layer {
+    background-color: $dark-panel;
+    border: 1px solid $dark-line;
+  }
+}
+#{$dark} .bchat-settings-item {
+  padding: 26px 0;
+  border-bottom: 1px solid $dark-hair;
+
+  // Figma row: Inter 15 -> 20 title, Roboto Mono 12 -> 16 description, 18 -> 24px line icon
+  .bchat-settings-item__title {
+    font-family: $dark-font-ui !important;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchat-settings-item__description {
+    margin-top: 6px;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    line-height: 1.5;
+    color: $dark-muted;
+  }
+  > div > span:first-child svg path {
+    fill: #ebebeb;
+  }
+}
+
+// ---- Settings > Notifications (Figma 1:35230 "4 s") ----
+// Two boxes 16px apart (Figma 1007x174 and 1007x66 -> 232 / 88 tall): #111@20% fill with Figma's
+// glass edge (brighter on the left / bottom, dim on top / right). The title rows carry the icon
+// 35px in (Figma 26) and the toggle 35px from the end; the three options sit under the title
+// text (radio 81px in, Figma 61), 44px apart (Figma 33): 20px frame with a 13px #ebebeb ring
+// (1.5px), picked = green ring + 8px green dot; label Roboto Mono 16 (Figma 12) 19px after.
+// The 150x47 -> 200x62 Preview button sits 27px below, centred.
+#{$dark} .notification-setting {
+  display: flex;
+  flex-direction: column;
+
+  .notify-option-wrapper,
+  > .bchat-settings-item {
+    background: rgba(17, 17, 17, 0.2) !important;
+    border: 1px solid;
+    border-color: #1a1a1a #1f1f1f #282828 #303030;
+    border-radius: 0 !important;
+    backdrop-filter: blur(6px);
+  }
+  .notify-option-wrapper {
+    // Figma: last option centre -> box bottom 38 (row half 16.5 + 21.5 -> 29px)
+    padding-bottom: 29px;
+    overflow: visible;
+  }
+  .bchat-settings-item {
+    min-height: 86px;
+    margin: 0;
+    padding: 0 35px;
+    border: 0;
+    border-radius: 0 !important;
+
+    .bchat-settings-item__title {
+      font-size: 20px;
+    }
+    // icon -> title gap: Figma 20 -> 27px (inline 15px), so the title text lines up with the radios
+    > div > span:first-child {
+      margin-inline-end: 27px !important;
+    }
+  }
+  // the title row inside the options box shares the box's fill and has no frame of its own;
+  // Figma: title centre 34 -> 45px below the box top, first option 36 -> 48px below that
+  .notify-option-wrapper .bchat-settings-item {
+    min-height: 0;
+    height: 52px;
+    margin-top: 19px;
+    background: transparent !important;
+    border: 0 !important;
+    backdrop-filter: none;
+  }
+  // (after the generic row rule above, which clears row borders)
+  > .bchat-settings-item {
+    height: 88px;
+    min-height: 0;
+    border: 1px solid !important;
+    border-color: #1a1a1a #1f1f1f #282828 #303030 !important;
+  }
+  .bchat-settings-item-notification {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    margin: 0;
+    padding: 0 0 0 81px;
+    gap: 19px;
+    cursor: pointer;
+
+    .bchat-settings-item-notification-circle,
+    .selected {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      background: transparent;
+      border: 0 !important;
+      border-radius: 0 !important;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 13px;
+        height: 13px;
+        box-sizing: border-box;
+        border: 1.5px solid #ebebeb;
+        border-radius: 50% !important;
+        transform: translate(-50%, -50%);
+      }
+    }
+    &:hover .bchat-settings-item-notification-circle::before,
+    .selected::before {
+      border-color: #00bc33;
+    }
+    .selected svg {
+      position: relative;
+      width: 8px;
+      height: 8px;
+    }
+  }
+  .bchat-settings-item-notification-title {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+  }
+  // Preview: centred under the boxes
+  .notify-option-wrapper ~ div:last-child,
+  > div:last-child {
+    align-self: center;
+    width: auto;
+    padding: 0;
+
+    .bchat-button {
+      min-width: 200px;
+      height: 62px;
+      margin-top: 7px;
+    }
+  }
+}
+
+// =================================================================================================
 // Contact picker panel: Forward (Figma 71:13217) and Share Contacts use the same markup.
 // Panel 322.5 -> 430; header bar 300x61 -> 400x81; search 299x46.5 -> 399x62; rows 64.5 -> 86;
 // "Forward to selected" 186x45 -> 248x60. Figma / 0.75.
@@ -3657,6 +3923,88 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// Appearance: theme cards (Figma 26:7734 "FIG. M")
+// =================================================================================================
+#{$dark} .theme-picker {
+  padding: 26px 0;
+  border-bottom: 1px solid $dark-hair;
+
+  &__label {
+    margin-bottom: 14px;
+    font-family: $dark-font-data !important;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #737373;
+  }
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 260px));
+    gap: 16px;
+  }
+}
+#{$dark} .theme-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px;
+  text-align: start;
+  background: #0e0e0e;
+  border: 1px solid $dark-line;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #555;
+  }
+  &--selected,
+  &--selected:hover {
+    border-color: $dark-green;
+    box-shadow: 0 0 24px rgba(27, 181, 30, 0.12) !important;
+  }
+  &__preview {
+    display: block;
+    height: 86px;
+  }
+  &--noir .theme-card__preview {
+    background:
+      linear-gradient($dark-white, $dark-white) right 12px bottom 12px / 36px 14px no-repeat,
+      linear-gradient(#222, #222) left 12px bottom 12px / 36px 14px no-repeat,
+      #0a0a0a;
+  }
+  &--ghost .theme-card__preview {
+    background:
+      linear-gradient(#111, #111) right 12px bottom 12px / 36px 14px no-repeat,
+      linear-gradient(#fff, #fff) left 12px bottom 12px / 36px 14px no-repeat,
+      #e9e9e9;
+    box-shadow: inset 0 0 0 1px #d0d0d0;
+  }
+  &__name {
+    font-family: $dark-font-data !important;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $dark-muted;
+  }
+  &--selected .theme-card__name {
+    color: $dark-green;
+  }
+  &__dot {
+    position: absolute;
+    inset-inline-end: 14px;
+    bottom: 18px;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #737373;
+    border-radius: 50% !important;
+  }
+  &--selected .theme-card__dot {
+    background: $dark-green;
+    border-color: $dark-green;
+  }
+}
+
+// =================================================================================================
 // Empty states from the screens: Message Requests (Figma 1:37839, 600x400 box artwork + mono line)
 // and Blocked Contacts (1:37354, 150px warning glyph + mono line). Roboto Mono 18 #8D8D8D -> 24px.
 // =================================================================================================
@@ -3719,6 +4067,326 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   }
 }
 
+
+// =================================================================================================
+// Settings pickers: Chat Font Size trigger + the shared radio picker (BchatSettingMiniModal, used by
+// Font Size / Zoom / Hops). Figma 1:34208 "Font Size" (434x285 card, 402x164 list, 378x47 rows,
+// 188x47 buttons) and the 120x42 "Small ⌄" box on 1:31639 -> / 0.75.
+// =================================================================================================
+#{$dark} .bchat-settings-item-font-Change {
+  width: 160px;
+  height: 56px;
+  padding: 0 16px 0 20px;
+  justify-content: space-between;
+  background-color: rgba(26, 26, 26, 0.2);
+  border: 1px solid $dark-line;
+  font-family: $dark-font-ui !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ebebeb;
+  line-height: 0;
+
+  > div {
+    line-height: normal;
+  }
+  &:hover {
+    background-color: $dark-raised;
+  }
+}
+
+// Popup buttons (Figma "Rectangle 28", 188x47 with 14.25 cuts -> 251x63, 19px cuts).
+// Font Size list box (402x164, cuts 17x18 top-end / 14 bottom-start) and picked row (378x47,
+// cuts 12.6 / 11.5) -> / 0.75.
+$dark-cut-picker-box: polygon(0 0, calc(100% - 22px) 0, 100% 24px, 100% 100%, 19px 100%, 0 calc(100% - 19px));
+$dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+
+#{$dark} .option-picker__actions .bchat-button,
+#{$dark} .confirm-card__actions .bchat-button,
+#{$dark} .card-dialog .bchat-modal-footer .bchat-button {
+  clip-path: $dark-cut-popup-btn;
+
+  &::before {
+    clip-path: $dark-cut-popup-btn;
+  }
+}
+
+// Figma 1:34208: card 434x285 -> 579x380; list inset 16 (21px), title 19 (25px), buttons 20 (27px).
+#{$dark} .option-picker {
+  position: relative;
+  width: 579px;
+  max-width: calc(100vw - 32px);
+  margin: auto;
+  padding: 19px 21px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+
+  &__title {
+    margin: 0 0 15px;
+    padding-inline-start: 4px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  // chamfered list box: the box is the #222 line, ::before is the #111 fill
+  &__box {
+    position: relative;
+    isolation: isolate;
+    background-color: #222;
+    clip-path: $dark-cut-picker-box;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background-color: #111;
+      clip-path: $dark-cut-picker-box;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 5px 16px 15px;
+  }
+  &__option {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 12px;
+    height: 63px;
+    padding: 0 21px;
+    cursor: pointer;
+    clip-path: $dark-cut-picker-row;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background-color: #111;
+      clip-path: $dark-cut-picker-row;
+    }
+    &:hover::before {
+      background-color: #161616;
+    }
+    // picked row: green line (0.375 in Figma, so a softened 1px) around the #111 plate
+    &.is-selected {
+      background-color: rgba(0, 188, 51, 0.7);
+    }
+    &.is-selected::before {
+      background-color: #111;
+    }
+  }
+  &__label {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  &__suffix {
+    color: $dark-muted;
+  }
+  &__active {
+    flex: 0 0 auto;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 300;
+    color: #00bc33;
+  }
+  // option note (Hops): only the selected option's note shows; all share one grid cell so the
+  // card keeps the height of the longest note
+  &__note {
+    display: grid;
+    margin: 15px 6px 0;
+    font-family: $dark-font-data !important;
+    font-size: 15px;
+    line-height: 22px;
+    color: #acacac;
+
+    > span {
+      grid-area: 1 / 1;
+    }
+    > .is-hidden {
+      visibility: hidden;
+    }
+  }
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 6px 0;
+
+    .bchat-button {
+      width: 100%;
+      min-width: 0;
+      height: 63px;
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .bchat-button.secondary {
+      background-color: #333;
+      color: #ebebeb;
+
+      &::before {
+        background-color: $dark-raised;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #242424;
+      }
+    }
+    .bchat-button.primary {
+      background-color: #ebebeb;
+      border-color: #ebebeb;
+      color: #0b0b0b;
+
+      &:hover:not(.disabled) {
+        background-color: #d6d6d6;
+        border-color: #d6d6d6;
+      }
+    }
+  }
+}
+
+// Radio (Figma "Frame 17/18"): 10px ring, grey 0.75px off; green 1.125px ring + 6px dot on.
+#{$dark} .radio-dot {
+  position: relative;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 3.5px;
+    border: 1px solid #737373;
+    border-radius: 50% !important;
+  }
+}
+#{$dark} .option-picker__option.is-selected .radio-dot {
+  &::before {
+    border: 1.5px solid #2ebc4f;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    background-color: #00bc33;
+    border-radius: 50% !important;
+  }
+}
+
+// ---- Settings > Hops (Figma 324:4824 "3 hops", 324:4968 "1 hop", 324:5105 "no hops") ----
+// The card (755 -> 1007px, #0b0b0b@75% on a #222 line) sits centred in the page below the header,
+// a little above the middle (Figma ~38 -> 50px). 53px side padding, mono 20/34 #acacac description,
+// then a #111 / #222 path box 38px below it: dots 16px (the entry node 20px with a soft glow) 45px
+// in, joined by a 1px #737373 line; labels 24px after the dot, Inter 20 role + mono 16 location,
+// 62px between rows (Figma 46.5). The loading gif is centred in the same area.
+#{$dark} .hops-page,
+#{$dark} .bchat-settings-list > .bchat-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 112px);
+  min-height: 0;
+  margin: 0;
+}
+#{$dark} .hops-page {
+  padding-bottom: 50px;
+  overflow-y: auto;
+}
+#{$dark} .hops-card {
+  width: 1007px;
+  max-width: 100%;
+  margin: auto 0;
+  padding: 37px 53px 45px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+}
+#{$dark} .hops-card__description {
+  margin: 0 0 38px;
+  font-family: $dark-font-data !important;
+  font-size: 20px;
+  line-height: 34px;
+  color: #acacac;
+}
+#{$dark} .hops-path {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 62px;
+  margin: 0;
+  padding: 41px 45px 47px;
+  list-style: none;
+  background: #111;
+  border: 1px solid #222;
+
+  // the line runs from the first dot's centre to the last one's (rows at the ends are one 24px line)
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(41px + 12px);
+    bottom: calc(47px + 12px);
+    left: calc(45px + 8px);
+    width: 1px;
+    background: #737373;
+  }
+}
+#{$dark} .hops-path__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+}
+#{$dark} .hops-path__dot {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  background: #737373;
+  border-radius: 50% !important;
+}
+#{$dark} .hops-path__row--you .hops-path__dot {
+  background: #ebebeb;
+}
+#{$dark} .hops-path__row--destination .hops-path__dot {
+  background: #00bc33;
+}
+// Figma draws the entry node a size up (15 vs 12) with a drop shadow
+#{$dark} .hops-path__row--entry .hops-path__dot {
+  flex-basis: 20px;
+  width: 20px;
+  height: 20px;
+  margin-inline: -2px;
+  box-shadow: 0 0 8px rgba(115, 115, 115, 0.6) !important;
+}
+#{$dark} .hops-path__role {
+  font-family: $dark-font-ui !important;
+  font-size: 20px;
+  line-height: 24px;
+  color: #ebebeb;
+}
+#{$dark} .hops-path__ip {
+  margin-top: 6px;
+  font-family: $dark-font-data !important;
+  font-size: 16px;
+  line-height: 21px;
+  color: #ebebeb;
+}
 
 // =================================================================================================
 // Context menus (Figma 71:12824 message menu; applies to every contexify menu in dark):

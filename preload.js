@@ -48,7 +48,8 @@ window.setAppLocale = locale => {
 window.getAppLocale = () => ipc.sendSync('get-app-locale');
 
 window.updateZoomFactor = () => {
-  let zoomFactor = window.getSettingValue('zoom-factor-setting') || 100;
+  // 80% is the default zoom until the user picks another one (keep in sync with ZoomingBchatSlider)
+  let zoomFactor = window.getSettingValue('zoom-factor-setting') || 80;
   
   if (window.screen.width <= 1440) {
     zoomFactor = zoomFactor - 15;

@@ -10,7 +10,8 @@ import { BchatSettingsItemWrapper } from './BchatSettingListItem';
 // import 'react-dropdown/style.css';
 
 // import Select from 'react-select'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 import { SettingMiniModal } from '../../state/ducks/modalDialog';
 import { BchatIcon } from '../icon';
 
@@ -27,6 +28,7 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
     // const zoomSize=options.filter((item)=>item.value===currentValueFromSettings)
     const [value, setValue] = useState(currentValueFromSettings);
     const dispatch = useDispatch();
+    const isDark = useSelector(getTheme) === 'dark';
 
     const handleSlider = (valueToForward: any) => {
         props?.onSliderChange?.(valueToForward);
@@ -57,7 +59,16 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
                 <div>
                     {window.i18n(value)}
                 </div>
-                <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
+                {isDark ? (
+                    <BchatIcon
+                        iconSize={20}
+                        iconType="chevronDown"
+                        strokeColor="#EBEBEB"
+                        strokeWidth="1.125"
+                    />
+                ) : (
+                    <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
+                )}
             </div>
         </BchatSettingsItemWrapper>
     );

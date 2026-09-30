@@ -22,7 +22,9 @@ import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest
 import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
 import { SettingsCategoryChat } from './section/categoryChat';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { BchatIcon } from '../icon';
+import { showSettingsSection } from '../../state/ducks/section';
 import { getTheme } from '../../state/selectors/theme';
 import { BchatLanguageScreen } from './BchatLanguageScreen';
 
@@ -103,6 +105,44 @@ export const PasswordLock = ({
   validatePasswordLock: () => Promise<boolean>;
 }) => {
   const darkMode = useSelector(getTheme) === 'dark';
+  const dispatch = useDispatch();
+  // dark theme (Figma 1:32666): 435x277 -> 580px card - green lock, Inter title, one 526x80 field,
+  // Cancel (back to Chat settings) / Continue. The input keeps its id: validatePasswordLock and the
+  // Enter-key handler read it by id.
+  if (darkMode) {
+    return (
+      <div className="password-lock-page">
+        <div className="password-lock-card">
+          <span className="password-lock-card__icon" aria-hidden="true">
+            <BchatIcon iconType="lock" iconSize={58} iconColor="#00BC33" />
+          </span>
+          <div className="password-lock-card__title">{window.i18n('password')}</div>
+          <input
+            type="password"
+            id="password-lock-input"
+            className="password-lock-card__input"
+            defaultValue=""
+            placeholder={window.i18n('enterPassword')}
+            data-testid="password-lock-input"
+          />
+          <div className="password-lock-card__buttons">
+            <BchatButton
+              text={window.i18n('cancel')}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={BchatButtonColor.Secondary}
+              onClick={() => dispatch(showSettingsSection(BchatSettingCategory.Chat))}
+            />
+            <BchatButton
+              text={window.i18n('continue')}
+              buttonType={BchatButtonType.Brand}
+              buttonColor={BchatButtonColor.Primary}
+              onClick={validatePasswordLock}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bchat-settings__password-lock">
       <div className='bchat-settings__password-lock-box'>

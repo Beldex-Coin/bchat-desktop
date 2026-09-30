@@ -50,7 +50,7 @@ function hopValueNode(hops: OnionRoutingHops) {
       <>
         {window.i18n('onionRoutingHopsOneHop')}{' '}
         <span className="bchat-settings-item-hops-Change__default">
-          {window.i18n('onionRoutingHopsDefaultSuffix')}
+          {window.i18n('defaultSuffix')}
         </span>
       </>
     );
@@ -91,7 +91,7 @@ export const ChangeOnionRoutingSetting = () => {
         descriptions: HOP_OPTIONS.map(hopPopupDescription),
         // "1 Hop (Default)" in the list, with "(Default)" muted like on the Settings row.
         contentSuffixes: HOP_OPTIONS.map(h =>
-          h === 1 ? window.i18n('onionRoutingHopsDefaultSuffix') : undefined
+          h === 1 ? window.i18n('defaultSuffix') : undefined
         ),
         // The shared picker modal defaults this button to "Save" (fine for Font Size), but the
         // Hops design calls for "OK".

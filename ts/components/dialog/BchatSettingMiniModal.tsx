@@ -1,12 +1,15 @@
 import classNames from 'classnames';
 import { Fragment, useState } from 'react';
-import { BchatButtonColor } from '../basic/BchatButton';
+import { useSelector } from 'react-redux';
+import useKey from 'react-use/lib/useKey';
+import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 // import { useKey } from 'react-use';
 import { BchatIcon } from '../icon';
 import { Constants } from '../../bchat';
 import { SettingMiniModalState } from '../../state/ducks/modalDialog';
+import { getTheme } from '../../state/selectors/theme';
 
 export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   const [select, setSelect] = useState(props?.selectedItem||'');
@@ -18,6 +21,82 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   const descriptions = props?.descriptions;
   const hasNotes = !!descriptions && descriptions.length > 0;
   const selectedIndex = data.findIndex(option => option.value === select);
+  const isDark = useSelector(getTheme) === 'dark';
+  useKey('Escape', () => isDark && props?.onClose?.(), undefined, [isDark, props?.onClose]);
+
+  // Dark theme: Figma 1:34208 "Font Size" picker - radio rows in a boxed list, the
+  // picked row framed in green, the saved value tagged "Active", Cancel / Save underneath.
+  if (isDark) {
+    const saved = props?.selectedItem || '';
+    return (
+      <div className="bchat-dialog modal option-picker-overlay">
+        <div
+          className="bchat-confirm-wrapper"
+          onMouseDown={e => {
+            if (e.target === e.currentTarget) {
+              props?.onClose?.();
+            }
+          }}
+        >
+          <div className="option-picker" role="dialog" aria-label={props?.headerName}>
+            <p className="option-picker__title">{props?.headerName}</p>
+            <div className="option-picker__box">
+            <div className="option-picker__list" role="radiogroup">
+              {data.map((item: { value: string; label: string }, i: number) => (
+                <div
+                  key={item.value}
+                  role="radio"
+                  aria-checked={select === item.value}
+                  className={classNames('option-picker__option', select === item.value && 'is-selected')}
+                  onClick={() => setSelect(item.value)}
+                >
+                  <span className="radio-dot" aria-hidden="true" />
+                  <span className="option-picker__label">
+                    {item.label}
+                    {props?.contentSuffixes?.[i] && (
+                      <span className="option-picker__suffix"> {props.contentSuffixes[i]}</span>
+                    )}
+                  </span>
+                  {saved === item.value && (
+                    <span className="option-picker__active">{window.i18n('pickerActive')}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            </div>
+            {hasNotes && (
+              <div className="option-picker__note">
+                {descriptions?.map((description, i) => (
+                  <span
+                    key={i}
+                    aria-hidden={i !== selectedIndex}
+                    className={classNames(i !== selectedIndex && 'is-hidden')}
+                  >
+                    {description}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="option-picker__actions">
+              <BchatButton
+                text={window.i18n('cancel')}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Secondary}
+                onClick={props?.onClose}
+              />
+              <BchatButton
+                text={props?.confirmButtonText || window.i18n('save')}
+                buttonType={BchatButtonType.Brand}
+                buttonColor={BchatButtonColor.Primary}
+                onClick={() => props?.onClick(select)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <BchatWrapperModal

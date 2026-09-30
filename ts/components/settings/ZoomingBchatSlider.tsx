@@ -26,13 +26,17 @@ import { BchatIcon } from '../icon';
 const option = [
   { value: '50', label: '50%' },
   { value: '75', label: '75%' },
+  { value: '80', label: '80%' },
   { value: '100', label: '100%' },
   { value: '125', label: '125%' },
   { value: '150', label: '150%' },
 ]
 
+const DEFAULT_ZOOM = '80';
+
 export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => void }) => {
-  const currentValueFromSettings = window.getSettingValue('zoom-factor-setting') || 100;
+  // 80% is the default zoom until the user picks another one (keep in sync with preload.js)
+  const currentValueFromSettings = window.getSettingValue('zoom-factor-setting') || Number(DEFAULT_ZOOM);
   const forceUpdate = useUpdate();
   // const zoomSize=options.filter((item)=>item.value===currentValueFromSettings)
   const [value, setValue] = useState(currentValueFromSettings);
@@ -104,7 +108,12 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
     dispatch(
       SettingMiniModal({
         headerName: window.i18n('zoomFactorSettingTitle'),
-        content: option,
+        // the default level is marked "80% (Default)"
+        content: option.map(item =>
+          item.value === DEFAULT_ZOOM
+            ? { ...item, label: `${item.label} ${window.i18n('defaultSuffix')}` }
+            : item
+        ),
         selectedItem: String(value),
         onClose: () => dispatch(SettingMiniModal(null)),
         onClick: (e: any) => {
@@ -139,8 +148,8 @@ export const ZoomingBchatSlider = (props: { onSliderChange?: (value: number) => 
         isSearchable={false}
         placeholder={""}
     /> */}
-        <div >
-          {value}%
+        <div>
+          {value}%{String(value) === DEFAULT_ZOOM ? ` ${window.i18n('defaultSuffix')}` : ''}
         </div>
         <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
 

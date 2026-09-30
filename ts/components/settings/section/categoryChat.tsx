@@ -12,6 +12,7 @@ import { BchatToggleWithDescription } from '../BchatSettingListItem';
 import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 import { ChangeOnionRoutingSetting } from '../ChangeOnionRoutingSetting';
 import { BchatIcon } from '../../icon';
+import LinkPreviewIcon from '../../icon/LinkPreviewIcon';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,13 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
               forceUpdate();
             },
             iconShow: true,
-            customIcon: <BchatIcon iconType="linkPreview" iconSize={26} />
+            // dark theme: the Figma "Link 4" icon (1:39199, 24 -> 32px); light keeps linkPreview
+            customIcon:
+              document.documentElement.getAttribute('data-theme') === 'dark' ? (
+                <LinkPreviewIcon iconSize={32} />
+              ) : (
+                <BchatIcon iconType="linkPreview" iconSize={26} />
+              ),
           })
         );
       }

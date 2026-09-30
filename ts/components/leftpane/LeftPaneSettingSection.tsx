@@ -115,9 +115,12 @@ const LeftPaneSettingsCategoryRow = () =>
           >
             <i className="left-pane-setting-category-list-item-icons">
               <BchatIcon
-                iconSize={20}
+                iconSize={darkMode ? 24 : 20}
                 iconType={item.icon}
-                iconColor={item.id === BchatSettingCategory.ClearData ? '#FF3E3E' :iconColor}
+                iconColor={
+                  item.id === BchatSettingCategory.ClearData ? '#FF3E3E' : darkMode ? '#EBEBEB' : iconColor
+                }
+                strokeWidth={item.icon === 'languages' ? '0.75' : undefined}
               />
             </i>
             <span

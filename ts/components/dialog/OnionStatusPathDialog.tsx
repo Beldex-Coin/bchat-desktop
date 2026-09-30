@@ -16,6 +16,7 @@ import useHover from 'react-use/lib/useHover';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
 import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
+import { getTheme } from '../../state/selectors/theme';
 // import styled from 'styled-components';
 // import { BchatWrapperModal } from '../BchatWrapperModal';
 
@@ -51,6 +52,7 @@ const OnionCountryDisplay = ({
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
   const isOnline = useSelector(getIsOnline);
+  const isDark = useSelector(getTheme) === 'dark';
 
   // getEffectiveOnionRoutingHops() reads the hop count chosen from the "Onion Routing" picker in
   // Settings > Chat (0 / 1 / 3) - the same source of truth bchatFetch() uses to pick between the
@@ -97,6 +99,48 @@ const OnionPathModalInner = () => {
     : isDirectSingleHop
     ? window.i18n('onionPathIndicatorDescriptionOneHop')
     : window.i18n('onionPathIndicatorDescription');
+
+  // dark theme (Figma 324:4824 / 324:4968 / 324:5105): one row per node - dot + label side by side -
+  // so the dots always line up with their text; the light markup keeps two separate columns
+  if (isDark) {
+    return (
+      <div className="hops-page">
+        <div className="hops-card">
+          <p className="hops-card__description">{description}</p>
+          <div className="hops-path">
+            {nodes.map((snode: Snode | any, index: number) => {
+              const isEnd = index === 0 || index === lastIndex;
+              const labelText: string =
+                snode.label ||
+                countryLookup.byIso(ip2country(snode.ip))?.country ||
+                window.i18n('unknownCountry');
+              const role = isEnd
+                ? labelText
+                : isDirectSingleHop
+                ? window.i18n('entryNode')
+                : index === 1
+                ? 'Entry Node'
+                : 'Master Node';
+              const kind =
+                index === 0 ? 'you' : index === lastIndex ? 'destination' : index === 1 ? 'entry' : 'node';
+
+              return (
+                <div className={`hops-path__row hops-path__row--${kind}`} key={`hop-${index}`}>
+                  <span className="hops-path__dot" />
+                  <div className="hops-path__text">
+                    <div className="hops-path__role">{role}</div>
+                    {!isEnd && snode.ip && (
+                      <div className="hops-path__ip">{`${labelText} (${snode.ip})`}</div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='hopes'>

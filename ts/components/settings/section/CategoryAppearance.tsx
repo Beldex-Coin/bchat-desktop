@@ -102,18 +102,51 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           />
         )} */}
 
-        <BchatToggleWithDescription
-          onClickToggle={() => {
-            handleClick()
-            forceUpdate();
-          }}
-          // title={window.i18n('spellCheckTitle')}
-          title={window.i18n('themeTitle')}
+        {isdark ? (
+          // Dark theme (Figma 26:7734): theme picker cards - Noir (dark) / Ghost (light)
+          <div className="theme-picker">
+            <div className="theme-picker__label">{window.i18n('themeLabel')}</div>
+            <div className="theme-picker__cards" role="radiogroup">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={true}
+                className="theme-card theme-card--noir theme-card--selected"
+              >
+                <span className="theme-card__preview" aria-hidden="true" />
+                <span className="theme-card__name">{window.i18n('themeNoir')}</span>
+                <span className="theme-card__dot" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={false}
+                className="theme-card theme-card--ghost"
+                onClick={() => {
+                  handleClick();
+                  forceUpdate();
+                }}
+              >
+                <span className="theme-card__preview" aria-hidden="true" />
+                <span className="theme-card__name">{window.i18n('themeGhost')}</span>
+                <span className="theme-card__dot" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <BchatToggleWithDescription
+            onClickToggle={() => {
+              handleClick()
+              forceUpdate();
+            }}
+            // title={window.i18n('spellCheckTitle')}
+            title={window.i18n('themeTitle')}
 
-          // description={window.i18n('spellCheckDescription')}
-          active={isdark}
-          iconType='sun'
-        />
+            // description={window.i18n('spellCheckDescription')}
+            active={isdark}
+            iconType='sun'
+          />
+        )}
         {/* <BchatToggleWithDescription
           onClickToggle={() => {
             dispatch(toggleAudioAutoplay());

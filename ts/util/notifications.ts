@@ -104,9 +104,50 @@ function clearByMessageId(messageId: string) {
 /**
  * Special case when we want to display a preview of what notifications looks like
  */
+/**
+ * Settings > Notifications > Preview. Shown straight away, on its own: it used to be pushed onto the
+ * real notification queue and go through update(), so it did nothing while notifications were
+ * still disabled after (re)connecting (the first 10s, or until the message queue is empty), and
+ * every click grew the queue ("2 new messages", "3 new messages" ...) and left the fake entry there
+ * to be merged into the next real notification. It uses the chosen content setting and plays the
+ * message sound when "Notification Sound" is on.
+ */
+let previewSound: HTMLAudioElement | null = null;
 function addPreviewNotification(notif: BchatNotification) {
-  currentNotifications.push(notif);
-  update(true);
+  const userSetting = getUserSetting();
+  if (userSetting === 'off') {
+    return;
+  }
+
+  let title = notif.title;
+  let message = cleanNotificationText(notif.message);
+  if (userSetting === SettingNames.COUNT) {
+    title = 'Bchat';
+    message = `1 ${window.i18n('newMessage')}`;
+  } else if (userSetting === SettingNames.NAME) {
+    title = `1 ${window.i18n('newMessage')}`;
+    message = `${window.i18n('notificationFrom')} ${notif.title}`;
+  }
+
+  const isAudioNotificationEnabled =
+    (Storage.get(SettingsKey.settingsAudioNotification) as boolean) || false;
+  if (isAudioNotificationEnabled && isAudioNotificationSupported()) {
+    if (!previewSound) {
+      previewSound = new Audio('sound/new_message.mp3');
+    }
+    previewSound.currentTime = 0;
+    void previewSound.play().catch(() => undefined);
+  }
+
+  if (lastNotificationDisplayed) {
+    lastNotificationDisplayed.close();
+    lastNotificationDisplayed = null;
+  }
+  lastNotificationDisplayed = new Notification(title || '', {
+    body: window.platform === 'linux' ? filter(message) : message,
+    icon: notif.iconUrl || undefined,
+    silent: true,
+  });
 }
 
 function update(forceRefresh = false) {

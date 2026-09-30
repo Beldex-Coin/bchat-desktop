@@ -21,7 +21,7 @@ import {
   useConversationUsernameOrShorten,
 } from '../../hooks/useParamSelector';
 import classNames from 'classnames';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
@@ -60,7 +60,11 @@ export const BlockedUserSettings = () => {
       // </BchatSettingsItemWrapper>
       <div className="noBlockedContacts">
         <div className="noBlockedContacts-img"></div>
-        {window.i18n('noBlockedContacts')}
+        {/* dark theme glyph (Figma 1:37354); hidden outside dark by the stylesheet */}
+        <span className="empty-glyph" aria-hidden="true">
+          <BchatIcon iconType="emptyWarning" iconSize={200} iconColor="#737373" />
+        </span>
+        <span className="noBlockedContacts-txt">{window.i18n('noBlockedContacts')}</span>
       </div>
     );
   }
@@ -157,8 +161,8 @@ const BlockedEntries = (props: {
     multipleSelection,
   } = props;
   return (
-    <BlockedEntriesRoundedContainer>
-      <BlockedEntriesContainer>
+    <BlockedEntriesRoundedContainer className="blocked-list">
+      <BlockedEntriesContainer className="blocked-list__scroll">
         {blockedNumbers.map(blockedEntry => {
           return (
             <BlockedMemberList
