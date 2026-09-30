@@ -155,15 +155,21 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
   };
 
   return (
-    <StyledTrustSenderUI onClick={openConfirmationModal}>
-      <VerticalLine></VerticalLine>
+    <StyledTrustSenderUI className="attach-card" onClick={openConfirmationModal}>
+      <VerticalLine className="attach-card__bar"></VerticalLine>
       <Flex container={true} flexDirection="column">
         <Flex container={true} flexDirection="row" alignItems="center">
           <BchatIcon iconSize="small" iconType={attachmentType.icon} />
-          <ImageTxt>{attachmentType.txt}</ImageTxt>
+          <ImageTxt className="attach-card__title">{attachmentType.txt}</ImageTxt>
         </Flex>
-        <ClickToDownload>{window.i18n('clickToTrustContact')}</ClickToDownload>
+        <ClickToDownload className="attach-card__hint">
+          {window.i18n('clickToTrustContact')}
+        </ClickToDownload>
       </Flex>
+      {/* Dark theme: type icon in a square well on the right (hidden in light via CSS) */}
+      <span className="attach-card__well" aria-hidden="true">
+        <BchatIcon iconSize={20} iconType={attachmentType.icon} iconColor="#EBEBEB" />
+      </span>
     </StyledTrustSenderUI>
   );
 };

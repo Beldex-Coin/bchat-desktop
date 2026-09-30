@@ -3,12 +3,13 @@ import React, { useRef } from 'react';
 
 // useCss has some issues on our setup. so import it directly
 import useUnmount from 'react-use/lib/useUnmount';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
 import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { showLightBox } from '../../state/ducks/conversations';
 import { GoogleChrome } from '../../util';
-import { BchatIconButton, BchatIconType } from '../icon';
+import { BchatIcon, BchatIconButton, BchatIconType } from '../icon';
 import * as MIME from '../../types/MIME';
 import { isUndefined } from 'lodash';
 
@@ -140,12 +141,40 @@ interface IconButtonProps {
 }
 
 const IconButton = ({ onClick, type }: IconButtonProps) => {
+  const isDark = useSelector(getTheme) === 'dark';
   const clickHandler = (): void => {
     if (!onClick) {
       return;
     }
     onClick();
   };
+  // dark theme (Figma 1:49963): square controls - grey prev, green next, light close,
+  // grey download
+  if (isDark) {
+    return (
+      <span
+        className={`lightbox-btn lightbox-btn--${type}`}
+        role="button"
+        onClick={e => {
+          e.stopPropagation();
+          clickHandler();
+        }}
+      >
+        {type === 'close' ? (
+          <BchatIcon iconType="x" iconSize={12} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+        ) : type === 'save' ? (
+          <BchatIcon iconType="download" iconSize={15} iconColor="#EBEBEB" />
+        ) : (
+          <BchatIcon
+            iconType="backArrow"
+            iconSize={22}
+            iconRotation={type === 'next' ? 180 : 0}
+            iconColor={type === 'next' ? '#00BC33' : '#ACACAC'}
+          />
+        )}
+      </span>
+    );
+  }
   let iconRotation = 0;
   let iconType: BchatIconType;
   let iconColor = 'white';
@@ -297,7 +326,7 @@ export const Lightbox = (props: Props) => {
   };
 
   return (
-    <div style={styles.container as any} role="dialog" onClick={onContainerClick}>
+    <div style={styles.container as any} className="lightbox-frame" role="dialog" onClick={onContainerClick}>
       <div style={styles.mainContainer as any}>
         {/* <div style={styles.controlsOffsetPlaceholder} /> */}
         <div style={{ position: 'absolute', top: '50%' }}>
@@ -324,7 +353,7 @@ export const Lightbox = (props: Props) => {
               </div>
             </div>
           </div>
-          <div style={styles.objectContainer as any}>
+          <div style={styles.objectContainer as any} className="lightbox-object">
             {!isUndefined(contentType) ? (
               <LightboxObject
                 objectURL={objectURL}

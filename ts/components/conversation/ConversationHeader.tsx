@@ -1,4 +1,5 @@
 import  { useEffect, useState } from 'react';
+import { ConversationSearch } from './ConversationSearch';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 
@@ -42,7 +43,7 @@ import {
   useIsKickedFromGroup,
 } from '../../hooks/useParamSelector';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 import { ConversationHeaderMenu } from '../menu/ConversationHeaderMenu';
 import { Flex } from '../basic/Flex';
 import { ExpirationTimerOptions } from '../../util/expiringMessages';
@@ -99,6 +100,8 @@ export const SelectionOverlay = () => {
   // const convoName = useConversationUsername(selectedConversationKey);
 
   const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
+  // Dark theme: the trash icon swaps the count for the two delete choices (Figma 1:10485)
+  const [showDeleteOptions, setShowDeleteOptions] = useState(false);
 
   useEffect(() => {
     const isDeleteEveryone = async () => {
@@ -143,6 +146,69 @@ export const SelectionOverlay = () => {
   const isOnlyServerDeletable = isPublic;
   const deleteMessageButtonText = i18n('deleteJustForMe');
   const deleteForEveryoneMessageButtonText = i18n('deleteForEveryone')
+
+  if (darkMode) {
+    return (
+      <div className="message-selection-overlay selection-bar">
+        {!showDeleteOptions ? (
+          <>
+            <Flex container={true} alignItems="center">
+              <div className="close-button">
+                <BchatIconButton
+                  iconType="xWithCircle"
+                  iconSize={22}
+                  iconColor="#8D8D8D"
+                  onClick={onCloseOverlay}
+                />
+              </div>
+              <div className="seleted-count">
+                <span style={{ marginInlineEnd: '6px' }}>{selectedMessageIds.length}</span>
+                <span>{window.i18n('selected')}</span>
+              </div>
+            </Flex>
+            {(!isOnlyServerDeletable || canDeleteEveryone) && (
+              <BchatIconButton
+                iconType="trash"
+                iconSize={26}
+                iconColor="#FF3E3E"
+                onClick={() => setShowDeleteOptions(true)}
+                dataTestId="selection-delete"
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <div className="selection-bar__actions">
+              {!isOnlyServerDeletable && (
+                <BchatButton
+                  buttonType={BchatButtonType.Medium}
+                  buttonColor={BchatButtonColor.Secondary}
+                  text={deleteMessageButtonText}
+                  onClick={onDeleteSelectedMessages}
+                />
+              )}
+              {canDeleteEveryone && (
+                <BchatButton
+                  buttonType={BchatButtonType.Medium}
+                  buttonColor={BchatButtonColor.Danger}
+                  text={deleteForEveryoneMessageButtonText}
+                  onClick={onDeleteSelectedMessagesForEveryone}
+                />
+              )}
+            </div>
+            <div className="selection-bar__dismiss">
+              <BchatIconButton
+                iconType="exit"
+                iconSize={14}
+                iconColor="#EBEBEB"
+                onClick={() => setShowDeleteOptions(false)}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="message-selection-overlay">
@@ -208,7 +274,7 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) 
   );
 };
 
-const ExpirationLength = (props: { expirationSettingName?: string }) => {
+const ExpirationLength = (props: { expirationSettingName?: string; expirationShort?: string }) => {
   const { expirationSettingName } = props;
 
   if (!expirationSettingName) {
@@ -218,6 +284,11 @@ const ExpirationLength = (props: { expirationSettingName?: string }) => {
   return (
     <div className="module-conversation-header__expiration">
       <div className="module-conversation-header__expiration__clock-icon" />
+      {/* dark (Figma 1:7726): stopwatch with the short setting ("30m") over its lower right */}
+      <span className="expiration-badge" aria-hidden="true">
+        <BchatIcon iconType="stopwatch" iconSize={22} iconColor="#EBEBEB" />
+        <span className="expiration-badge__text">{props.expirationShort}</span>
+      </span>
       <div
         className="module-conversation-header__expiration__setting"
         data-testid="disappearing-messages-indicator"
@@ -386,7 +457,10 @@ const ConversationHeaderTitle = () => {
         }}
         role="button"
       >
-        <span className='receipient_name'>{convoName}</span>
+        <span className="header-name-row">
+          <span className='receipient_name'>{convoName}</span>
+          {convoProps?.isBnsHolder && <span className="bns-tag">BNS</span>}
+        </span>
         <SubTxt>
           {isGroup ? (
             memberCountText
@@ -469,8 +543,14 @@ export const ConversationHeaderWithDetails = () => {
             />
             <ConversationHeaderTitle />
             {!isKickedFromGroup && (
-              <ExpirationLength expirationSettingName={expirationSettingName} />
+              <ExpirationLength
+                expirationSettingName={expirationSettingName}
+                expirationShort={
+                  expireTimerSetting ? ExpirationTimerOptions.getAbbreviated(expireTimerSetting) : ''
+                }
+              />
             )}
+            <ConversationSearch />
             {conversation?.type == 'private' && conversation?.didApproveMe && !isMe && (
               <div>
                 <CallButton />

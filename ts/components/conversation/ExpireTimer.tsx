@@ -70,6 +70,25 @@ export const ExpireTimer = (props: Props) => {
 
   const expireTimerColor = darkMode ? '#A7A7BA' : '#858598';
 
+  // dark (Figma 1:7726): time left in a #1a1a1a box (seconds under a minute, then m / h / d) with
+  // the countdown icon beside it
+  if (darkMode) {
+    const shortLeft =
+      timeLeft <= 60
+        ? `${timeLeft}`
+        : timeLeft < 3600
+        ? `${Math.ceil(timeLeft / 60)}m`
+        : timeLeft < 86400
+        ? `${Math.ceil(timeLeft / 3600)}h`
+        : `${Math.ceil(timeLeft / 86400)}d`;
+    return (
+      <span className="expire-timer">
+        <span className="expire-timer__count">{shortLeft}</span>
+        <BchatIcon iconType="countdown" iconSize={22} iconColor="#EBEBEB" />
+      </span>
+    );
+  }
+
   if (timeLeft <= 60) {
     return (
       <ExpireTimerCount color={expireTimerColor} isdark={darkMode}>

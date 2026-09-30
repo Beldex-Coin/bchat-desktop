@@ -41,7 +41,9 @@ export const TimerNotification = (props: PropsForExpirationTimer) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
+      {/* dark (Figma 1:7726): chamfered chip without the icon - see .notification-bubble--timer */}
       <NotificationBubble
+        className="notification-bubble--timer"
         iconType="stopwatch"
         iconColor="inherit"
         notificationText={textToRender}

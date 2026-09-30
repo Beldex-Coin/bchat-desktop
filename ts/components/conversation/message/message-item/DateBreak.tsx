@@ -1,6 +1,8 @@
 import moment from 'moment';
 // import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../../state/selectors/theme';
 
 const DateBreakContainer = styled.div`
   display: flex;
@@ -46,8 +48,19 @@ export const MessageDateBreak = (props: { timestamp: number; messageId: string }
     lastWeek: '[Last] dddd',
     sameElse: 'DD/MM/YYYY',
   };
+  const isDark = useSelector(getTheme) === 'dark';
   let text: string;
-  if (date.isSame(moment(), 'day')) {
+  if (isDark) {
+    // Figma 71:11592: "Today, 29 May" / "Yesterday, 28 May" / "20 Sep" (year added when it isn't this year)
+    const dayMonth = date.format(date.isSame(moment(), 'year') ? 'D MMM' : 'D MMM YYYY');
+    if (date.isSame(moment(), 'day')) {
+      text = `${window.i18n('today')}, ${dayMonth}`;
+    } else if (date.isSame(moment().subtract(1, 'day'), 'day')) {
+      text = `${window.i18n('yesterday')}, ${dayMonth}`;
+    } else {
+      text = dayMonth;
+    }
+  } else if (date.isSame(moment(), 'day')) {
     text = window.i18n('today');
   } else if (date.isSame(moment().subtract(1, 'day'), 'day')) {
     text = window.i18n('yesterday');
@@ -57,7 +70,7 @@ export const MessageDateBreak = (props: { timestamp: number; messageId: string }
 
   return (
     <DateBreakContainer id={`date-break-${messageId}`}>
-      <DateBreakText>{text}</DateBreakText> 
+      <DateBreakText className="date-break">{text}</DateBreakText> 
     </DateBreakContainer>
   );
 };

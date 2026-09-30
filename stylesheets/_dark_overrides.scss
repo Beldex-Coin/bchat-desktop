@@ -1058,6 +1058,668 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// Conversation screen (Figma 234:40 "Chat_new", 1:10886 "reply", 1:9155 "menus")
+// Values are Figma / 0.75 as above.
+// =================================================================================================
+
+// Chamfer outlines. Each shape is drawn as two layers: the element's own background is the stroke
+// colour, and a ::before inset by 1px (z-index -1 inside an isolated stacking context, so it sits
+// under the content but over the stroke) carries the fill. That way the cut edge keeps its hairline,
+// which a plain border + clip-path would lose.
+$dark-cut-in: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px)); // received: bottom-start
+$dark-cut-out: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%); // sent: top-end
+$dark-cut-in-rtl: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+$dark-cut-out-rtl: polygon(0 26px, 26px 0, 100% 0, 100% 100%, 0 100%);
+$dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100%, 0 calc(100% - 13px));
+
+// Only the dark theme uses these two.
+.bns-tag {
+  display: none;
+}
+
+// ---- Header: 100px bar, name + BNS tag, mono subtitle ----
+#{$dark} .conversation-header,
+#{$dark} .module-conversation-header {
+  background-color: $dark-ink;
+  border-bottom: 1px solid #222;
+  box-shadow: none;
+}
+#{$dark} .module-conversation-header {
+  height: 100px;
+
+  .module-contact-name__profile-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .header-name-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bns-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 5px;
+    background-color: rgba(26, 26, 26, 0.2);
+    border: 0.5px solid $dark-green;
+    color: $dark-green;
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-transform: none;
+  }
+  .module-contact-name__profile-name > div,
+  .module-conversation-header__title-text {
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    font-weight: 400;
+    color: #737373;
+  }
+  .bchat-icon-button {
+    color: $dark-muted;
+
+    &:hover {
+      color: $dark-white;
+      background: transparent;
+    }
+  }
+}
+
+// ---- Message list background: ink with a faint dot grid ----
+#{$dark} .conversation-content,
+#{$dark} .conversation-messages {
+  background-color: $dark-ink;
+}
+#{$dark} .messages-container {
+  background-color: transparent;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1.2px);
+  background-size: 12px 12px;
+}
+
+// ---- Date chip ----
+#{$dark} .date-break {
+  position: relative;
+  isolation: isolate;
+  height: 42px;
+  padding: 0 25px;
+  background: #444;
+  clip-path: $dark-cut-chip;
+  color: #8d8d8d;
+  font-family: $dark-font-data !important;
+  font-size: 14px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0.5px;
+    z-index: -1;
+    background: #121212; // rgba(26,26,26,.5) over ink
+    clip-path: $dark-cut-chip;
+  }
+}
+
+// ---- Disappearing messages (Figma 1:7726 "disappearing message") ----
+// Timer change notices: the date-chip shape (351.8x42 -> auto x 56, #1a1a1a@50% on a #444 hairline),
+// Roboto Mono 10.5 -> 14 #acacac, 23px side padding, no icon.
+#{$dark} .notification-bubble--timer {
+  width: auto;
+  min-height: 0;
+  margin: 12px auto;
+
+  .notification-bubble {
+    position: relative;
+    isolation: isolate;
+    height: 56px;
+    margin: 0 !important;
+    padding: 0 23px;
+    background: #444;
+    border-radius: 0;
+    clip-path: $dark-cut-chip;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0.5px;
+      z-index: -1;
+      background: #121212;
+      clip-path: $dark-cut-chip;
+    }
+  }
+  .notification-bubble__icon {
+    display: none;
+  }
+  .notification-bubble__text {
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    color: #acacac;
+  }
+}
+// Countdown beside a disappearing message: 34.5x19.5 -> 46x26 #1a1a1a box (mono 14 #acacac), 5px,
+// then the 22px #ebebeb countdown icon, 12px before the bubble
+#{$dark} .expire-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-inline: 12px;
+  user-select: none;
+}
+#{$dark} .expire-timer__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 26px;
+  padding: 0 6px;
+  background: #1a1a1a;
+  font-family: $dark-font-data !important;
+  font-size: 14px;
+  color: #acacac;
+}
+// Header indicator: the stopwatch with the short setting ("30m", Inter Bold 10.5 -> 14) over its
+// lower-right corner; no pill behind it
+.expiration-badge {
+  display: none;
+}
+#{$dark} .module-conversation-header__expiration {
+  height: auto;
+  margin-inline-end: 20px;
+  padding: 0;
+  background: transparent;
+
+  .module-conversation-header__expiration__clock-icon,
+  .module-conversation-header__expiration__setting {
+    display: none;
+  }
+}
+#{$dark} .expiration-badge {
+  position: relative;
+  display: inline-flex;
+  padding: 0 20px 8px 0;
+  line-height: 0;
+}
+#{$dark} .expiration-badge__text {
+  position: absolute;
+  inset-inline-start: 12px;
+  bottom: -2px;
+  font-family: $dark-font-ui !important;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  color: #ebebeb;
+}
+
+// ---- Bubbles ----
+#{$dark} .msg-tail {
+  display: none;
+}
+#{$dark} .module-message__container--incoming,
+#{$dark} .module-message__container--outgoing {
+  isolation: isolate;
+  margin-inline: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+  }
+  .module-message__text {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+
+    a {
+      color: $dark-green;
+    }
+  }
+  .timeStamp {
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    letter-spacing: 0;
+    color: #8d8d8d;
+  }
+}
+#{$dark} .module-message__container--incoming--opaque {
+  background: linear-gradient(135deg, #222 0%, #333 100%);
+  clip-path: $dark-cut-in;
+
+  &::before {
+    background: linear-gradient(90deg, #1a1a1a 0%, #202020 42.8%, #1a1a1a 100%);
+    clip-path: $dark-cut-in;
+  }
+  &:hover {
+    opacity: 1;
+  }
+}
+#{$dark} .module-message__container--outgoing--opaque {
+  background: linear-gradient(90deg, #003200 0%, #005417 100%);
+  clip-path: $dark-cut-out;
+
+  &::before {
+    background: linear-gradient(90deg, #0c150c 0%, #0a240a 61.5%, #0c170c 100%);
+    clip-path: $dark-cut-out;
+  }
+}
+:root[data-theme='dark'][dir='rtl'] {
+  .module-message__container--incoming--opaque,
+  .module-message__container--incoming--opaque::before {
+    clip-path: $dark-cut-in-rtl;
+  }
+  .module-message__container--outgoing--opaque,
+  .module-message__container--outgoing--opaque::before {
+    clip-path: $dark-cut-out-rtl;
+  }
+}
+// GIF-only messages keep no bubble at all.
+#{$dark} .module-message__container_bg_disabled {
+  background: transparent !important;
+  clip-path: none !important;
+
+  &::before {
+    display: none;
+  }
+}
+
+// Sender name above the text (groups).
+#{$dark} .module-message__author {
+  font-weight: 600;
+  color: #ebebeb !important;
+}
+
+// Call notices inside a bubble: ink card with a 4px leading bar, square icon well.
+// The component draws its own leading bar (first child); it gets the design colours here.
+#{$dark} .module-message .call-notify-content-wrapper {
+  gap: 14px;
+  padding: 12px 14px 12px 0;
+  background: $dark-ink;
+
+  > div:first-child {
+    align-self: stretch;
+    width: 4px;
+    height: auto;
+    margin: -12px 0;
+    background: #8d8d8d;
+  }
+  // "Outgoing call" etc. on one line
+  > div:nth-child(2) {
+    width: auto !important;
+    min-width: 110px;
+  }
+  // Figma 71:12530: "Call" / "Missed call" in Inter #EBEBEB, 32px -> 43px icon square
+  .group-name {
+    white-space: nowrap;
+    font-family: $dark-font-ui !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    color: #ebebeb !important;
+  }
+  .group-type:not(:empty) {
+    margin-top: 4px;
+    font-family: $dark-font-data !important;
+    font-size: 16px !important;
+    color: #acacac;
+  }
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
+    margin-inline-start: auto;
+    padding: 0;
+    background-color: #222;
+  }
+}
+#{$dark} .module-message__container--outgoing .call-notify-content-wrapper {
+  border: 1px solid #006c1d;
+
+  > div:first-child {
+    background: $dark-green;
+  }
+}
+#{$dark} .incomingTail,
+#{$dark} .outgoingTail {
+  display: none;
+}
+
+// ---- Group invitation, shared contact and payment cards (Figma 71:792 invite, 71:10208 contact) ----
+// Bubble 279x105 -> 372x140 on the chat-bubble gradients; inner card 258x60 -> 344x80 (#0b0b0b,
+// 5px bar #333 / green, sent cards outlined #006c1d); name Inter SemiBold 16 #acacac, second line
+// Inter Light 16 (mono on sent cards). The time sits under the bubble like other messages, so the
+// bubble is drawn on clipped ::before / ::after layers and the element itself is not clipped.
+#{$dark} .group-invitation-container > div > div:not([class*='Wrapper-']) {
+  display: none; // the old rounded tails
+}
+#{$dark} .group-invitation,
+#{$dark} .payment {
+  position: relative;
+  isolation: isolate;
+  min-width: 372px;
+  margin: 0 0 24px !important;
+  padding: 14px 14px 12px;
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    clip-path: $dark-cut-in;
+  }
+  &::before {
+    inset: 0;
+    background: linear-gradient(135deg, #222 0%, #333 100%);
+  }
+  &::after {
+    inset: 1px;
+    background: linear-gradient(90deg, #1a1a1a 0%, #202020 42.8%, #1a1a1a 100%);
+  }
+  &.invitation-outgoing {
+    &::before,
+    &::after {
+      clip-path: $dark-cut-out;
+    }
+    &::before {
+      background: linear-gradient(90deg, #003200 0%, #005417 100%);
+    }
+    &::after {
+      background: linear-gradient(90deg, #0c150c 0%, #0a240a 61.5%, #0c170c 100%);
+    }
+  }
+  .timeStamp {
+    position: absolute;
+    top: 100%;
+    inset-inline-start: 0;
+    width: auto;
+    margin-top: 6px;
+    padding: 0;
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    color: #8d8d8d !important;
+  }
+  &.invitation-outgoing .timeStamp {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+  }
+  .group-details {
+    min-width: 344px;
+    max-width: 344px;
+    min-height: 80px;
+    padding: 0 15px 0 0;
+    align-items: stretch;
+    background: #0b0b0b !important;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: #ebebeb;
+
+    > div:first-child {
+      align-items: stretch;
+
+      // the vertical bar
+      > div:first-child {
+        width: 5px;
+        height: auto;
+        margin-inline-end: 18px;
+        border-radius: 0;
+        background-color: #333;
+      }
+      > div:nth-child(2) {
+        justify-content: center;
+      }
+    }
+    > :last-child {
+      align-self: center;
+    }
+    .group-name {
+      font-family: $dark-font-ui !important;
+      font-size: 16px !important;
+      font-weight: 600;
+      color: #acacac !important;
+    }
+    .group-type {
+      margin-top: 4px;
+      font-family: $dark-font-ui !important;
+      font-size: 16px !important;
+      font-weight: 300;
+      color: #ebebeb !important;
+    }
+  }
+  &.invitation-outgoing .group-details {
+    border-color: #006c1d;
+
+    > div:first-child > div:first-child {
+      background-color: #00bc33;
+    }
+    .group-type {
+      font-family: $dark-font-data !important;
+      font-weight: 400;
+    }
+  }
+  .group-address {
+    display: block;
+    padding-inline: 10px;
+    font-family: $dark-font-data !important;
+    font-size: 16px !important;
+    word-break: break-all;
+    color: #ebebeb;
+  }
+  // shared contact: "View all" / "Message" under the card
+  .view-Contact {
+    padding: 8px 0 2px;
+    border-top: 0 !important;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+
+    &:hover div {
+      text-decoration: underline;
+    }
+  }
+}
+#{$dark} .group-invitation:has(> .view-Contact) {
+  padding: 0;
+
+  // the contact's id is mono (Figma 71:10208)
+  .group-details .group-type {
+    font-family: $dark-font-data !important;
+    font-weight: 300;
+  }
+
+  > div:first-child {
+    padding: 14px 14px 0;
+  }
+}
+#{$dark} .payment {
+  .contents,
+  .contents-incoming {
+    min-height: 80px;
+    background: #0b0b0b;
+    border: 1px solid #333;
+    border-radius: 0;
+  }
+  &.invitation-outgoing .contents {
+    border-color: #006c1d;
+  }
+  .amount {
+    font-family: $dark-font-data !important;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .txn-status {
+    font-family: $dark-font-data !important;
+    font-size: 14px !important;
+    text-transform: uppercase;
+    color: #acacac !important;
+  }
+}
+
+// ---- Link previews in bubbles (Figma 71:2609 "links"): the same #0b0b0b card as invitations,
+// text on the start side, 50px image / link square on the end side ----
+#{$dark} .module-message__link-preview {
+  min-width: 344px;
+  min-height: 80px;
+  margin: 0 10px 8px;
+  padding: 10px 15px 10px 18px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #0b0b0b;
+  border: 1px solid transparent;
+  border-inline-start: 5px solid #333;
+  border-radius: 0;
+
+  > :first-child {
+    flex: 0 0 50px;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 0 !important;
+
+    img {
+      width: 50px !important;
+      height: 50px !important;
+      object-fit: cover;
+      border-radius: 0 !important;
+    }
+  }
+  .noImage {
+    background-color: $dark-raised !important;
+
+    svg path {
+      fill: #acacac;
+    }
+  }
+}
+#{$dark} .module-message__container--outgoing .module-message__link-preview {
+  border-color: #006c1d;
+  border-inline-start-color: #00bc33;
+}
+#{$dark} .module-message__link-preview__content {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  color: #ebebeb;
+}
+#{$dark} .module-message__link-preview__icon_container {
+  display: none;
+}
+#{$dark} .module-message__link-preview__title {
+  margin-top: 0;
+  font-family: $dark-font-ui !important;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: 0;
+  color: #ebebeb;
+}
+#{$dark} .module-message__link-preview__location {
+  height: auto;
+  margin-top: 6px;
+  font-family: $dark-font-ui !important;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #acacac;
+}
+
+// ---- Pinned message bar (Figma 1:43219): 970x61.5 -> 82px, #1a1a1a@20%, 5px #8d8d8d bar ----
+#{$dark} .conversation-content .pinned-msg {
+  min-height: 82px;
+  margin: 12px 24px 0;
+  padding: 0 20px 0 17px;
+  display: flex;
+  align-items: center;
+  background: rgba(26, 26, 26, 0.2);
+  border: 1px solid #222;
+  border-radius: 0;
+
+  > div {
+    width: 100%;
+  }
+  > div > div:first-child > div:first-child {
+    width: 5px;
+    height: 54px;
+    margin-inline-end: 22px;
+    border-radius: 0;
+    background: #8d8d8d;
+  }
+  .msg-title {
+    margin: 0 0 4px;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .msg-sub-title {
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #acacac;
+  }
+  .bchat-button {
+    border-radius: 0 !important;
+    font-size: 14px !important;
+  }
+}
+
+// ---- Blocked contact actions (Figma 1:55543): 217.5x46.5 / 195x46.5 -> 290x62 / 260x62 ----
+#{$dark} .blocked-contact-actions {
+  height: 102px !important;
+
+  .bchat-button {
+    min-width: 260px;
+    height: 62px;
+    padding: 0 26px;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0;
+    clip-path: $dark-cut-popup-btn;
+
+    &::before {
+      clip-path: $dark-cut-popup-btn;
+    }
+    &.danger {
+      min-width: 290px;
+      background-color: rgba(255, 62, 62, 0.38);
+      color: $dark-danger;
+
+      &::before {
+        background-color: #290f0f;
+      }
+    }
+    &.primary {
+      position: relative;
+      isolation: isolate;
+      background-color: #006c1d;
+      border: 0;
+      color: #00bc33;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        z-index: -1;
+        background-color: #031203;
+      }
+      &:hover:not(.disabled) {
+        background-color: #00862a;
+      }
+    }
+  }
+}
+
+// =================================================================================================
 // Fixes from the first run-through (screenshots 26 Sep)
 // =================================================================================================
 
@@ -1106,6 +1768,292 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
 // Voice recording: the send slot is empty while recording - don't show a blank white square.
 #{$dark} .send-message-button:empty {
   display: none;
+}
+
+// ---- Message time + delivery status under the bubble (Figma 1:54541) ----
+// MessageContent renders .msg-meta in dark mode; the in-bubble time and the text's reserved
+// space for it are hidden.
+// Call notices don't go through MessageContent, so they keep their own in-card time.
+#{$dark} .module-message__container--incoming:not(:has(.call-notify-content-wrapper)),
+#{$dark} .module-message__container--outgoing:not(:has(.call-notify-content-wrapper)) {
+  .timeStamp {
+    display: none;
+  }
+  .module-message__text .spacer {
+    display: none;
+  }
+}
+#{$dark} .msg-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-family: $dark-font-data !important;
+  font-size: 12px;
+  line-height: 16px;
+  color: #8d8d8d;
+
+  &--outgoing {
+    justify-content: flex-end;
+  }
+  &--incoming {
+    justify-content: flex-start;
+  }
+}
+#{$dark} .msg-status {
+  display: inline-flex;
+  align-items: center;
+
+  &--error {
+    padding: 0 3px;
+    cursor: pointer;
+  }
+}
+// Bubble text padding to match the design's 16px / 12px insets.
+#{$dark} .module-message__container--incoming--opaque,
+#{$dark} .module-message__container--outgoing--opaque {
+  padding: 14px 4px;
+
+  // the base author wrapper adds a 15px start margin (and a top margin) on top of this padding -
+  // Figma 18:7359: the name starts in line with the text / play button below it
+  .module-message__author {
+    padding-inline: 15px;
+    margin: 0 0 4px;
+    font-size: 16px;
+  }
+}
+
+// =================================================================================================
+// Attachments (Figma 1:47233 media send/recv, 1:46237 download, 1:46937 image send, 1:48628 staged)
+// =================================================================================================
+
+// Only the dark theme shows the icon well on the "click to download" card.
+.attach-card__well {
+  display: none;
+}
+
+// "Click to download" card: ink card, 4px leading bar, type label, square icon well on the right.
+#{$dark} .attach-card {
+  gap: 0;
+  margin: 4px 14px;
+  padding: 14px 16px 14px 0;
+  background: $dark-ink;
+  cursor: pointer;
+
+  .attach-card__bar {
+    align-self: stretch;
+    width: 4px;
+    height: auto;
+    margin: -14px 16px -14px 0;
+    background: #333;
+  }
+  .attach-card__title {
+    margin-inline-start: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .attach-card__hint {
+    margin-top: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #acacac;
+  }
+  .attach-card__well {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-inline-start: auto;
+    padding-inline-start: 0;
+    flex-shrink: 0;
+    background: #222;
+  }
+  &:hover .attach-card__well {
+    background: #2c2c2c;
+  }
+}
+
+// Downloaded document: same card, file name + size on the left, file icon well on the right.
+#{$dark} .module-message__generic-attachment {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 280px;
+  margin: 4px 14px;
+  padding: 14px 16px;
+  background: $dark-ink;
+  border-inline-start: 4px solid #333;
+
+  &-outgoing {
+    background: $dark-ink;
+    border: 1px solid #006c1d;
+    border-inline-start: 4px solid $dark-green;
+  }
+  .module-message__generic-attachment__icon {
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    background: #222 !important;
+  }
+  .module-message__generic-attachment__icon__extension {
+    font-family: $dark-font-data !important;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ebebeb;
+  }
+  .module-message__generic-attachment__file-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb !important;
+  }
+  .module-message__generic-attachment__file-size {
+    margin-top: 4px;
+    font-family: $dark-font-data !important;
+    font-size: 13px;
+    color: #acacac !important;
+  }
+}
+
+// Images inside a bubble: square tiles, 10px inset, 6px gutters; caption below in the bubble text.
+#{$dark} .module-message__attachment-container {
+  padding: 10px 10px 0;
+}
+#{$dark} .module-image-grid {
+  margin: 0;
+  gap: 6px;
+}
+#{$dark} .module-image-grid__column,
+#{$dark} .module-image-grid__row {
+  gap: 6px;
+}
+#{$dark} .module-message__attachment-container .module-image {
+  margin: 0;
+}
+#{$dark} .module-image__border-overlay {
+  box-shadow: none;
+}
+
+// Staged attachments in the composer: thumbnails on an ink strip, green "+" to add more.
+#{$dark} .module-attachments {
+  border-top: 0;
+}
+#{$dark} .module-attachments__rail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 8px;
+  padding: 12px;
+  background: #0e0e0e;
+  border: 1px solid $dark-hair;
+
+  .module-image {
+    margin: 0 10px 0 0;
+    border: 1px solid #333;
+  }
+}
+#{$dark} .module-staged-placeholder-attachment {
+  display: inline-flex;
+  line-height: 0;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+#{$dark} .module-staged-generic-attachment {
+  background-color: $dark-raised;
+  box-shadow: none;
+  border: 1px solid #333;
+}
+
+// =================================================================================================
+// Message selection mode (Figma 1:9682 "message select", 1:10485 delete options)
+// =================================================================================================
+// Bar under the header: panel with close + "N Selected" on the left, red trash on the right; the
+// trash swaps in "Delete for me" / "Delete for Everyone" (centred) and a square close.
+#{$dark} .conversation-header .selection-bar {
+  position: relative;
+  height: 66px;
+  margin: 12px 20px 0;
+  padding: 0 24px;
+  background: #141414;
+  border: 1px solid $dark-line;
+
+  .close-button {
+    display: flex;
+    padding-inline-end: 12px;
+  }
+  .seleted-count {
+    width: auto;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    color: #ebebeb;
+  }
+  .bchat-icon-button:hover {
+    opacity: 0.8;
+  }
+}
+#{$dark} .selection-bar__actions {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 12px;
+
+  .bchat-button {
+    height: 40px;
+    min-width: 0;
+    padding: 0 22px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+}
+#{$dark} .selection-bar__dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: #333;
+
+  &:hover {
+    background: #444;
+  }
+}
+
+// Checkbox beside each message.
+#{$dark} .select-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ebebeb;
+  background: transparent;
+
+  &--checked {
+    background: #ebebeb;
+  }
+}
+
+// Rows: full-width band behind a selected message; no glow on the bubble.
+#{$dark} .conversation-content.selection-mode .bchat-message-wrapper {
+  padding: 8px 20px;
+  margin-top: 0;
+}
+// Figma 1:9682 "message select" (Rectangle 906-908): a solid #111111 band the full width of the
+// conversation - the shadow + clip-path carry it past the message list's side padding
+#{$dark} .bchat-message-wrapper.message-selected {
+  background-color: #111111;
+  box-shadow: 0 0 0 100vmax #111111;
+  clip-path: inset(0 -100vmax);
+
+  .module-message__container {
+    box-shadow: none !important;
+  }
 }
 
 // ---- Rail Chats button flyout: New Chat / Secret Group / Social Group (Figma 234:248) ----
@@ -2071,6 +3019,104 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// Replies: quoted message inside a bubble (Figma 1:12127) and the reply preview in the composer
+// (Figma 1:10886)
+// =================================================================================================
+// Figma 1:12127 "replied messages" (Group 3472): the quote sits 18px in from the bubble's sides and
+// 16px from its top (13.5 / 11.7 in Figma), 14px above the reply text. 534x60 -> 80px #0b0b0b box
+// on a 1px line (#006c1d in a sent bubble, #333 in a received one) with a 3.8 -> 5px leading bar
+// flush to its edge; author Inter SemiBold 12 -> 16 and text Inter Light 12 -> 16, both #acacac,
+// 23px in from the box edge.
+// (the bubble already has 12px top padding and the text a 15px side inset, and the base
+// .module-quote--incoming/--outgoing adds its own 10px 15px margin - so the spacing lives on the
+// quote only: 4px + 12px = 16px from the bubble top, level with the reply text at the sides)
+#{$dark} .module-quote-container {
+  margin: 0;
+}
+#{$dark} .module-quote {
+  margin: 4px 15px 14px !important;
+  border-radius: 0;
+  gap: 18px;
+  min-height: 80px;
+  padding: 14px 16px 14px 0;
+  background: #0b0b0b;
+  border: 1px solid #333;
+
+  &--outgoing {
+    border-color: #006c1d;
+  }
+  // the bar's wrapper spans the box height (minus the vertical padding, taken back here)
+  .quote-bar-wrap {
+    display: flex;
+    flex-shrink: 0;
+    align-self: stretch;
+    margin: -14px 0;
+  }
+  .quote-bar {
+    width: 5px;
+    height: auto;
+    align-self: stretch;
+    background-color: #737373 !important;
+  }
+  &--outgoing .quote-bar {
+    background-color: #006c1d !important;
+  }
+  .module-quote__primary__author {
+    margin-bottom: 6px;
+    font-family: $dark-font-ui !important;
+    font-size: 16px !important;
+    font-weight: 600;
+    color: #acacac !important;
+  }
+  .module-quote__primary__text {
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 300;
+    color: #acacac !important;
+  }
+  .module-quote__icon-container__circle-background {
+    background: #222;
+  }
+}
+
+// Composer reply preview: ink card with a grey leading bar, square close on the right.
+#{$dark} .reply-preview {
+  margin-top: 14px;
+
+  .reply-preview__card {
+    min-height: 0;
+    margin-inline-end: 14px;
+    padding: 0;
+    background: $dark-ink;
+    box-shadow: none;
+  }
+  .reply-preview__bar {
+    align-self: stretch;
+    width: 4px;
+    height: auto;
+    margin-inline-end: 16px;
+    background: #333;
+  }
+  .reply-preview__text {
+    padding: 14px 0;
+    font-family: $dark-font-data !important;
+    color: #acacac;
+  }
+  .reply-preview__close .bchat-icon-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    background: #222;
+    border: 1px solid #333;
+
+    &:hover {
+      background: #2c2c2c;
+    }
+  }
+}
+
+// =================================================================================================
 // Empty states from the screens: Message Requests (Figma 1:37839, 600x400 box artwork + mono line)
 // and Blocked Contacts (1:37354, 150px warning glyph + mono line). Roboto Mono 18 #8D8D8D -> 24px.
 // =================================================================================================
@@ -2133,3 +3179,264 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   }
 }
 
+
+// =================================================================================================
+// Context menus (Figma 71:12824 message menu; applies to every contexify menu in dark):
+// 206px box -> 275, 36px rows -> 48, Roboto Mono 12 -> 16, 15px line icons -> 20, 16px gap.
+// =================================================================================================
+#{$dark} .contexify {
+  min-width: 275px;
+  padding: 12px;
+  background-color: rgba(11, 11, 11, 0.92);
+  border: 1px solid #222;
+  backdrop-filter: blur(6px);
+
+  .contexify_item {
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .contexify_itemContent {
+    min-height: 48px;
+    padding: 0 19px !important;
+    gap: 0;
+    border: 1px solid transparent;
+    color: #ebebeb;
+
+    > span {
+      margin-inline-start: 16px !important;
+    }
+    svg {
+      flex: 0 0 auto;
+    }
+  }
+  .contexify_item:not(.contexify_item--disabled):focus > .contexify_itemContent,
+  .contexify_item:not(.contexify_item--disabled):hover > .contexify_itemContent {
+    background-color: rgba(17, 17, 17, 0.6) !important;
+    border-color: #444;
+    color: #ebebeb;
+  }
+  .contexify_separator {
+    margin: 6px 0;
+    background-color: #222;
+  }
+}
+
+// =================================================================================================
+// Message info (Figma 1:50390 / 1:50835): 435 -> 580 card, square close, preview bubble, Sent /
+// Receive box, From / To contact cards (#111 / #222, 38px avatar -> 51, mono id #ACACAC).
+// =================================================================================================
+#{$dark} .card-dialog.message-info-dialog {
+  .bchat-modal__body {
+    position: static !important;
+    max-height: 70vh;
+  }
+  .bchat-modal-footer {
+    display: none;
+  }
+  .bchat-modal__centered {
+    align-items: stretch;
+  }
+  .module-message-detail {
+    min-width: 0;
+    width: 100%;
+    padding: 0;
+  }
+  .module-message-detail__info {
+    margin-top: 6px;
+    padding: 14px 21px;
+    background: #111;
+    border: 1px solid #222;
+    border-spacing: 0 10px;
+  }
+  .module-message-detail__label,
+  .module-message-detail__direction_label {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #acacac;
+  }
+  .module-message-detail__info td + td.module-message-detail__label {
+    color: #ebebeb;
+    text-align: end;
+  }
+  .module-message-detail__direction_label {
+    margin: 16px 0 8px;
+  }
+  .module-message-detail__contact {
+    align-items: flex-start;
+    gap: 21px;
+    margin-bottom: 10px;
+    padding: 16px 18px;
+    background: #111;
+    border: 1px solid #222;
+  }
+  .module-message-detail__contact__text {
+    margin: 0;
+  }
+  .module-contact-name {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .module-contact-name__profile-name {
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .module-contact-name__profile-number {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    line-height: 22px;
+    color: #acacac;
+    word-break: break-all;
+  }
+  .module-message-detail__contact__status-icon {
+    display: none;
+  }
+}
+
+// =================================================================================================
+// Image viewer (Figma 1:49963): image in a #222-lined frame, square download / close above it,
+// square prev (grey) / next (green) at the sides.
+// =================================================================================================
+#{$dark} .lightbox-frame {
+  background-color: rgba(10, 10, 10, 0.92) !important;
+  backdrop-filter: blur(4px);
+
+  .lightbox-object {
+    flex-grow: 0 !important;
+    align-self: center;
+    margin: 0 auto;
+    padding: 11px;
+    background: rgba(11, 11, 11, 0.75);
+    border: 1px solid #222;
+
+    img,
+    video {
+      max-width: 70vw !important;
+      max-height: 72vh !important;
+    }
+  }
+}
+#{$dark} .lightbox-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  // top-right controls (23px -> 31)
+  &--close,
+  &--save {
+    width: 31px;
+    height: 31px;
+  }
+  &--close {
+    background: rgba(235, 235, 235, 0.8);
+    border: 1px solid #444;
+
+    &:hover {
+      background: #ebebeb;
+    }
+  }
+  &--save {
+    background: rgba(34, 34, 34, 0.5);
+    border: 1px solid #444;
+
+    &:hover {
+      background: #333;
+    }
+  }
+  // side arrows (37px -> 49)
+  &--previous,
+  &--next {
+    width: 49px;
+    height: 49px;
+  }
+  &--previous {
+    background: rgba(34, 34, 34, 0.5);
+    border: 1px solid #444;
+
+    &:hover {
+      background: #333;
+    }
+  }
+  &--next {
+    background: rgba(1, 23, 1, 0.5);
+    border: 1px solid #00bc33;
+
+    &:hover {
+      background: rgba(1, 40, 1, 0.8);
+    }
+  }
+}
+
+// =================================================================================================
+// Search in the conversation (Figma 1:45529): 355x45 -> 473x60 box in the header, clear circle,
+// light "Search" placeholder, count, green down / up arrows.
+// =================================================================================================
+#{$dark} .conversation-search-toggle {
+  display: flex;
+  margin-inline: auto 18px;
+}
+#{$dark} .conversation-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 473px;
+  max-width: 45vw;
+  height: 60px;
+  margin-inline: auto 18px;
+  padding: 0 16px;
+  background: #111;
+  border: 1px solid #444;
+
+  &__clear {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #8d8d8d;
+    border-radius: 50% !important;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #ebebeb;
+    }
+  }
+  &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0 4px;
+    background: transparent;
+    border: 0;
+    outline: none;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 300;
+    color: #ebebeb;
+
+    &::placeholder {
+      color: #acacac;
+    }
+  }
+  &__count {
+    flex: 0 0 auto;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    color: #8d8d8d;
+  }
+  &__nav {
+    display: flex;
+    flex: 0 0 auto;
+    cursor: pointer;
+
+    &[aria-disabled='true'] {
+      cursor: default;
+    }
+  }
+}

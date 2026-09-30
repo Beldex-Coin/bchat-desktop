@@ -18,6 +18,7 @@ import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog'
 // import { getMessageTextProps } from '../../../../state/selectors/conversations';
 import { SpacerSM, SpacerXS } from '../../../basic/Text';
 import { getSortedMessagesTypesOfSelectedConversation } from '../../../../state/selectors/conversations';
+import { BchatIcon } from '../../../icon';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -135,6 +136,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
     <div className="message-detail-wrapper">
       <BchatWrapperModal
         title={window.i18n('moreInformation')}
+        additionalClassName="card-dialog message-info-dialog"
         onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}
@@ -146,6 +148,14 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
           disabled: false,
         }}
       >
+        {/* dark theme: square close in the corner (Figma 1:50390); hidden in light */}
+        <button
+          className="close-square"
+          onClick={() => dispatch(updateMessageMoreInfoModal(null))}
+          aria-label={window.i18n('close')}
+        >
+          <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+        </button>
         <SpacerSM />
         <div className="module-message-detail">
           <div >

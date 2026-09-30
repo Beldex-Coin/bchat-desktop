@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import {
   getMessageContentSelectorProps,
+  getMessageStatusProps,
   getMessageQuoteProps,
   getMessageTextProps,
   getQuotedMessageToAnimate,
@@ -34,6 +35,8 @@ import { MessageAuthorText } from './MessageAuthorText';
 import styled from 'styled-components';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
+import { getTheme } from '../../../../state/selectors/theme';
+import { OutgoingMessageStatus } from './OutgoingMessageStatus';
 
 
 export type MessageContentSelectorProps = Pick<
@@ -122,6 +125,8 @@ export const MessageContent = (props: Props) => {
     const contentProps = useSelector(state =>
       getMessageContentSelectorProps(state as any, props.messageId)
     );
+  const statusProps = useSelector(state => getMessageStatusProps(state as any, props.messageId));
+  const isDark = useSelector(getTheme) === 'dark';
   const [isMessageVisible, setMessageIsVisible] = useState(false);
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
   const [imageBroken, setImageBroken] = useState(false);
@@ -212,7 +217,7 @@ export const MessageContent = (props: Props) => {
 
   return (
     <div style={{position:'relative'}}>  
-   {isTailVisible &&isIncoming && <StyledSvgWrapper>
+   {isTailVisible &&isIncoming && <StyledSvgWrapper className="msg-tail">
       <IncomingMsgTailIcon  />
     </StyledSvgWrapper> }  
    
@@ -287,9 +292,22 @@ export const MessageContent = (props: Props) => {
         </IsMessageVisibleContext.Provider>
       </InView>
     </div>
-    {isTailVisible &&!isIncoming && <StyledSvgWrapper style={{insetInlineEnd:0}}>
+    {isTailVisible &&!isIncoming && <StyledSvgWrapper className="msg-tail" style={{insetInlineEnd:0}}>
       <OutgoingMsgTailIcon/>
     </StyledSvgWrapper> }  
+    {/* Dark theme: status + time under the bubble instead of inside it */}
+    {isDark && !props.isDetailView && (
+      <div className={classNames('msg-meta', `msg-meta--${direction}`)}>
+        {!isIncoming && (
+          <OutgoingMessageStatus
+            underBubble={true}
+            status={statusProps?.status}
+            dataTestId="msg-status-outgoing"
+          />
+        )}
+        <bdi>{moment(timestamp).format('hh:mm A')}</bdi>
+      </div>
+    )}
     
     </div>
 

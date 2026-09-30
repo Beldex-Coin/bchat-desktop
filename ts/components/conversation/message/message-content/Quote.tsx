@@ -402,8 +402,8 @@ export const Quote = (props: QuotePropsWithListener) => {
           referencedMessageNotFound ? 'module-quote--with-reference-warning' : null
         )}
       >
-        <div>
-          <VerticalLine isIncoming={isIncoming} />
+        <div className="quote-bar-wrap">
+          <VerticalLine isIncoming={isIncoming} className="quote-bar" />
         </div>
         <div className="module-quote__primary">
           <QuoteAuthor

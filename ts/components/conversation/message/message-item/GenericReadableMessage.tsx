@@ -150,6 +150,32 @@ const StyledReadableMessage = styled(ReadableMessage)<{
     }
     `}
 `;
+/**
+ * Selection-mode checkbox. Dark theme (Figma 1:9682): 20px square, 1px white outline;
+ * checked = white fill with a black tick.
+ */
+const SelectionCheckbox = (props: { selected: boolean; darkMode: boolean; iconColor: string }) => {
+  const { selected, darkMode, iconColor } = props;
+  if (darkMode) {
+    return (
+      <span className={classNames('select-box', selected && 'select-box--checked')}>
+        {selected && (
+          <BchatIcon iconType="check" iconSize={14} strokeColor="#0A0A0A" strokeWidth="2" />
+        )}
+      </span>
+    );
+  }
+  return (
+    <BchatIcon
+      iconType={!selected ? 'checkBox' : 'checkBoxTick'}
+      iconColor={iconColor}
+      clipRule="evenodd"
+      fillRule="evenodd"
+      iconSize={23}
+    />
+  );
+};
+
 export const GenericReadableMessage = (props: Props) => {
   const dispatch = useDispatch();
 
@@ -340,13 +366,7 @@ export const GenericReadableMessage = (props: Props) => {
         <div style={{margin:'auto'}}>
           {isSelectionMode && isIncoming && (
             <div style={{ marginInlineEnd: '15px', cursor: 'pointer' }}>
-              <BchatIcon
-                iconType={!selected ? 'checkBox' : 'checkBoxTick'}
-                iconColor={iconColor}
-                clipRule="evenodd"
-                fillRule="evenodd"
-                iconSize={23}
-              />
+              <SelectionCheckbox selected={selected} darkMode={darkMode} iconColor={iconColor} />
             </div>
           )}
         </div>
@@ -388,13 +408,7 @@ export const GenericReadableMessage = (props: Props) => {
         <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
             <div style={{ marginInlineStart: '15px', cursor: 'pointer' }}>
-              <BchatIcon
-                iconType={!selected ? 'checkBox' : 'checkBoxTick'}
-                iconColor={iconColor}
-                clipRule="evenodd"
-                fillRule="evenodd"
-                iconSize={23}
-              />
+              <SelectionCheckbox selected={selected} darkMode={darkMode} iconColor={iconColor} />
             </div>
           )}
         </div>

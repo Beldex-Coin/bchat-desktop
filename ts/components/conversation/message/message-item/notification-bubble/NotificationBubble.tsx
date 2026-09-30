@@ -68,15 +68,20 @@ export const NotificationBubble = (props: {
   bgColor?: string;
   callNotification?: Boolean;
   displayText?: string;
+  className?: string;
 }) => {
-  const { notificationText, iconType, iconColor, bgColor, callNotification, displayText } = props;
+  const { notificationText, iconType, iconColor, bgColor, callNotification, displayText, className } =
+    props;
   
   return (
-    <FlexCenter>
+    <FlexCenter className={className}>
      {callNotification  && <HorizontalLine />} 
-      <NotificationBubbleFlex style={{margin:'0.3rem 0rem'}} >
+      <NotificationBubbleFlex style={{margin:'0.3rem 0rem'}} className="notification-bubble">
         {iconType && (
-          <NotificationBubbleIconContainer style={{ backgroundColor: bgColor }}>
+          <NotificationBubbleIconContainer
+            className="notification-bubble__icon"
+            style={{ backgroundColor: bgColor }}
+          >
             <BchatIcon
               iconSize={20}
               iconType={iconType}
@@ -91,7 +96,9 @@ export const NotificationBubble = (props: {
             <span style={{ color: 'var(--color-chat-timestamp)' }}> {displayText}</span>
           </NotificationBubbleText>
         ) : (
-          <NotificationBubbleText>{notificationText}</NotificationBubbleText>
+          <NotificationBubbleText className="notification-bubble__text">
+            {notificationText}
+          </NotificationBubbleText>
         )}
       </NotificationBubbleFlex>
     </FlexCenter>

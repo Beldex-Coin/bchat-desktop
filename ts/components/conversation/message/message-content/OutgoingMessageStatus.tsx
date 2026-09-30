@@ -63,11 +63,51 @@ const MessageStatusError = ({ dataTestId }: { dataTestId?: string }) => {
   );
 };
 
+/**
+ * Dark theme: small status glyph shown next to the time under the bubble (Figma 1:54541).
+ */
+const CompactMessageStatus = (props: { status: MessageDeliveryStatus; dataTestId?: string }) => {
+  const { status, dataTestId } = props;
+  if (status === 'error') {
+    return (
+      <span
+        className="msg-status msg-status--error"
+        data-testid={dataTestId}
+        data-testtype="failed"
+        role="button"
+        title={window.i18n('sendFailed')}
+        onClick={() => ipcRenderer.send('show-debug-log')}
+      >
+        <BchatIcon iconType="error" iconSize={12} iconColor="#FF3E3E" />
+      </span>
+    );
+  }
+  const icon =
+    status === 'sending' ? (
+      <BchatIcon iconType="sending" iconSize={18} iconColor="#ACACAC" />
+    ) : (
+      <BchatIcon
+        iconType="doubleTick"
+        iconSize={18}
+        iconColor={status === 'read' ? '#1BB51E' : '#737373'}
+      />
+    );
+  return (
+    <span className="msg-status" data-testid={dataTestId} data-testtype={status}>
+      {icon}
+    </span>
+  );
+};
+
 export const OutgoingMessageStatus = (props: {
   status?: MessageDeliveryStatus | null;
   dataTestId?: string;
+  underBubble?: boolean;
 }) => {
-  const { status, dataTestId } = props;
+  const { status, dataTestId, underBubble } = props;
+  if (underBubble) {
+    return status ? <CompactMessageStatus status={status} dataTestId={dataTestId} /> : null;
+  }
   switch (status) {
     case 'sending':
       return <MessageStatusSending dataTestId={dataTestId} />;
