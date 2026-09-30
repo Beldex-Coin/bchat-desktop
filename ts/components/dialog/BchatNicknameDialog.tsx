@@ -55,7 +55,7 @@ export const BchatNicknameDialog = (props: Props) => {
       onClose={onClickClose}
       showExitIcon={false}
       showHeader={true}
-      additionalClassName="nickNameDialog"
+      additionalClassName="nickNameDialog card-dialog"
       okButton={{
         text: window.i18n('ok'),
         // onClick: { saveNickname },

@@ -1,5 +1,6 @@
 // import React from 'react';
 import { BchatWrapperModal } from '../BchatWrapperModal';
+import { BchatIcon } from '../icon';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { updateCommunityGuidelinesModal } from '../../state/ducks/modalDialog';
 import { shell } from 'electron';
@@ -19,11 +20,16 @@ export const CommunityGuidelinesDialog = () => {
         showExitIcon={false}
         isloading={false}
         title={window.i18n('communityGuidelines')}
+        // dark: Figma 1:43583 - same scrolling card as About BNS, square close, no footer
+        additionalClassName="card-dialog about-bns-dialog community-guidelines-dialog"
         okButton={{
           text: window.i18n('close'),
           onClickOkHandler: closeDialog,
         }}
       >
+        <button className="close-square" onClick={closeDialog} aria-label={window.i18n('close')}>
+          <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" />
+        </button>
         <section>
           <article>
             <div>

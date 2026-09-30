@@ -155,6 +155,7 @@ export const BchatConfirm = (props: BchatConfirmDialogProps) => {
   return (
     <BchatWrapperModal
       title={title}
+      additionalClassName="card-dialog"
       onClose={onClickClose}
       showExitIcon={showExitIcon}
       showHeader={showHeader}

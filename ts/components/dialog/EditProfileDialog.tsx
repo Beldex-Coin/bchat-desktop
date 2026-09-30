@@ -139,18 +139,46 @@ export class EditProfileDialog extends React.Component<{}, State> {
           >   
             <div className="profileHeader">
               <div className="profileClose">
-                <BchatIconButton
-                  iconType="exit"
-                  iconSize="large"
-                  onClick={this.closeDialog}
-                  dataTestId="modal-close-button"
-                />
+                <span className="light-only-inline">
+                  <BchatIconButton
+                    iconType="exit"
+                    iconSize="large"
+                    onClick={this.closeDialog}
+                    dataTestId="modal-close-button"
+                  />
+                </span>
+                {/* dark theme: plain X in the light square (Figma 1:51366), like the other popups */}
+                <span className="dark-only-inline">
+                  <BchatIconButton iconType="x" iconSize={12} iconColor="#0B0B0B" onClick={this.closeDialog} />
+                </span>
               </div>
             </div>
 
             {(viewDefault || viewQR) && this.renderDefaultView()}
             {viewEdit && this.renderEditView()}
             {this.renderBnsVerified(isBnsHolder)}
+            {/* dark theme: Show IDs / Show QR segmented tabs (Figma 1:51366); the footer toggle is
+                hidden in dark. Hidden outside dark by the stylesheet. */}
+            <div className="id-tabs" role="tablist">
+              <button
+                role="tab"
+                aria-selected={!viewQR}
+                className={`id-tabs__tab${!viewQR ? ' is-active' : ''}`}
+                onClick={() => viewQR && this.qrStatusUpdate()}
+              >
+                <span className="id-tabs__hash">#</span>
+                {i18n('showIDs')}
+              </button>
+              <button
+                role="tab"
+                aria-selected={viewQR}
+                className={`id-tabs__tab${viewQR ? ' is-active' : ''}`}
+                onClick={() => !viewQR && this.qrStatusUpdate()}
+              >
+                <BchatIcon iconType="qr_code" iconSize={16} iconColor="currentColor" />
+                {i18n('showQR')}
+              </button>
+            </div>
             <div className="bchat-id-section">
               {/* <PillDivider /> */}
               {!viewQR ? this.renderAddressView({ bchatID }) : this.renderQrView({ bchatID })}
@@ -182,10 +210,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 role="button"
                 data-testid="image-upload-section"
               >
-                <BchatIcon
-                  iconType="camera"
-                  iconSize={16}
-                />
+                <span className="light-only-inline">
+                  <BchatIcon iconType="camera" iconSize={16} />
+                </span>
+                <span className="dark-only-inline">
+                  <BchatIcon iconType="image" iconSize={18} iconColor="#EBEBEB" />
+                </span>
                 <BchatToolTip place="top" effect="solid" />
               </div>
               <SpacerXS />
@@ -244,16 +274,29 @@ export class EditProfileDialog extends React.Component<{}, State> {
             }}
           >
             <p data-testid="your-profile-name">{name}</p>
-            <BchatIconButton
-              iconType="pencil"
-              iconSize="medium"
-              padding="0 5px"
-              iconColor="#128b17"
-              onClick={() => {
-                this.setState({ mode: 'edit' });
-              }}
-              dataTestId="edit-profile-icon"
-            />
+            <span className="light-only-inline">
+              <BchatIconButton
+                iconType="pencil"
+                iconSize="medium"
+                padding="0 5px"
+                iconColor="#128b17"
+                onClick={() => {
+                  this.setState({ mode: 'edit' });
+                }}
+                dataTestId="edit-profile-icon"
+              />
+            </span>
+            <span className="dark-only-inline">
+              <BchatIconButton
+                iconType="pencil"
+                iconSize={16}
+                padding="0 6px"
+                iconColor="#00BC33"
+                onClick={() => {
+                  this.setState({ mode: 'edit' });
+                }}
+              />
+            </span>
           </div>
 
           {/* <div
@@ -351,8 +394,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 window.inboxStore?.dispatch(bnsLinkModal({}));
               }}
             >
-              <span>
+              <span className="light-only-inline">
                 <BchatIcon iconType={'bnslogo'} iconSize={26} iconColor='var(--color-text-opposite)' />
+              </span>
+              <span className="dark-only-inline">
+                <BchatIcon iconType="bnslogo" iconSize={20} iconColor="#0B0B0B" />
               </span>
               {i18n('linkYourBns')}
             </button>
@@ -392,6 +438,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
           >
             <CopyIconButton content={props.bchatID} iconSize={18}
             />
+            <span className="dark-only-inline">
+              <BchatIcon iconType="copy" iconSize={17} iconColor="#00BC33" />
+            </span>
           </div>
         </div>
         <div className="bchat-id-section-display" style={{ marginBottom: '15px' }}
@@ -411,6 +460,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
           >
             <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
             />
+            <span className="dark-only-inline">
+              <BchatIcon iconType="copy" iconSize={17} iconColor="#00BC33" />
+            </span>
           </div>
         </div>
         <BchatToolTip effect="solid" />

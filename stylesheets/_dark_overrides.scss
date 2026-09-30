@@ -5040,6 +5040,758 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// BNS (dark): profile popup 1:51366 / 1:52755 / 1:51850, Link BNS 1:53219 / 1:53658 / 1:54097,
+// About BNS 1:52332, BNS Linked Successfully 1:61315. Figma values / 0.75.
+// =================================================================================================
+$dark-cut-14: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+$dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 100%, 0 calc(100% - 21px));
+
+// dark-only / light-only inline swaps used in the BNS markup
+.dark-only-inline,
+.close-square,
+.id-tabs {
+  display: none;
+}
+#{$dark} .dark-only-inline {
+  display: inline-flex;
+  align-items: center;
+}
+#{$dark} .light-only-inline {
+  display: none !important;
+}
+
+// square close (Figma "Rectangle 913" 21px, #EBEBEB 80%, dark X)
+#{$dark} .close-square,
+#{$dark} .edit-profile-dialog .profileClose {
+  position: absolute;
+  top: 16px;
+  inset-inline-end: 15px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: rgba(235, 235, 235, 0.8);
+  border: 1px solid #444;
+  cursor: pointer;
+
+  &:hover {
+    background: #ebebeb;
+  }
+}
+#{$dark} .edit-profile-dialog .profileClose {
+  // the whole square is the button: the X fills it, so a click anywhere on it closes
+  > span,
+  .bchat-icon-button {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+  svg path {
+    fill: #0b0b0b;
+  }
+}
+// the close anchors to the card, not the scrolling body
+#{$dark} .bns-link-dialog .bchat-modal__body,
+#{$dark} .about-bns-dialog .bchat-modal__body,
+#{$dark} .edit-profile-dialog .bchat-modal__body {
+  position: static !important;
+}
+
+// ---- Profile popup: 435x497 -> 580 wide ----
+#{$dark} .edit-profile-dialog {
+  .bchat-modal {
+    width: 580px;
+    max-width: calc(100vw - 32px);
+    padding: 53px 28px 28px;
+    background: rgba(11, 11, 11, 0.75);
+    border: 1px solid #222;
+  }
+  // .model-layer is a flex row; its content column otherwise shrinks to the widest child, which in
+  // the Show QR state is only the 179px code (the whole popup collapsed to a narrow column)
+  .model-layer {
+    width: 100%;
+
+    > div {
+      flex: 1 1 auto;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+  .bchat-modal__body,
+  .bchat-modal__centered {
+    width: 100%;
+    padding: 0;
+    align-items: stretch;
+  }
+  // the QR state: code box + caption centred in the card
+  .qr-box-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .bchat-modal-footer {
+    display: none;
+  }
+  // the body used to scroll (65vh cap) and showed a bar in the Show QR state; the card now grows with
+  // its content and only scrolls, without a visible bar, if the window is shorter than the card
+  .bchat-modal {
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  // the base .bchat-modal__centered has overflow-x:hidden, which turns overflow-y into auto: any child
+  // poking past its box (e.g. the name field's negative margin) made it a scroller with its own bar
+  .bchat-modal__body,
+  .bchat-modal__centered {
+    max-height: none;
+    overflow: visible;
+  }
+  .bchat-modal__body *,
+  .bchat-modal__centered {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .profileHeader {
+    height: 0;
+  }
+
+  // avatar centred, image / remove buttons to its right (Figma 27px squares, 8px off the avatar)
+  .avatar-center {
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+  }
+  .avatar-center-inner {
+    position: relative;
+
+    > div:last-child {
+      position: absolute;
+      top: 33px;
+      left: calc(100% + 11px);
+      flex-direction: row !important;
+      gap: 6px;
+      width: auto !important;
+    }
+  }
+  .editActionBtn {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    background: rgba(34, 34, 34, 0.5);
+    border: 1px solid #444;
+
+    &:hover {
+      background: #333;
+    }
+  }
+
+  // name + green pencil, or the inline name field while editing
+  .profile-name-uneditable {
+    display: flex;
+    justify-content: center;
+    margin-top: 13px;
+
+    > div {
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      align-items: center;
+    }
+    p {
+      margin: 0;
+      font-family: $dark-font-ui !important;
+      font-size: 20px;
+      font-weight: 600;
+      color: #ebebeb;
+    }
+  }
+  // edit state (Figma 1:52755): one 118.5x30 -> 158x40 field (#111 on #444, Inter SemiBold 18)
+  // with the green tick 10px after it; field + tick centred under the avatar
+  .profile-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 13px;
+    // Figma: 12 -> 16px from the field to Link your BNS (the wrapper below adds 21px)
+    margin-bottom: -5px;
+
+    .inputBox {
+      display: flex;
+      align-items: center;
+      width: 158px;
+      height: 40px;
+      // the name starts 23 -> 30px in from the field's left edge (Figma 1:52755)
+      padding: 0 12px 0 30px;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 0;
+    }
+    // the base input has its own border / 38px height - it would draw a second box inside
+    input {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      outline: 0;
+      text-align: start;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ebebeb;
+    }
+    .saveIcon {
+      display: flex;
+      align-items: center;
+      width: auto;
+      margin: 0;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+      svg path {
+        fill: #00a638;
+      }
+    }
+  }
+
+  // white "Link your BNS" (171x41 -> 228x55) + "Read more about BNS"
+  .link_bns_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 21px;
+  }
+  .link_bns_Btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 228px;
+    height: 55px;
+    padding: 0;
+    background: #ebebeb;
+    color: #0b0b0b;
+    border: 0;
+    clip-path: $dark-cut-14;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: #d6d6d6;
+    }
+  }
+  .hintTxt {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    color: #acacac;
+  }
+  .bnsVerfiedTxt {
+    display: flex;
+    align-items: center;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 700;
+    color: #00bc33;
+  }
+
+  // Show IDs / Show QR (box 394x47 -> 525x63, tabs 188x35 -> 251x47)
+  .id-tabs {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 24px 0 13px;
+    padding: 8px 9px;
+    background-color: #222;
+    clip-path: $dark-cut-id-tabs;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background-color: #111;
+      clip-path: $dark-cut-id-tabs;
+    }
+  }
+  .id-tabs__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 47px;
+    padding: 0;
+    background: $dark-raised;
+    color: #acacac;
+    border: 0;
+    clip-path: $dark-cut-14;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover:not(.is-active) {
+      background: #222;
+    }
+    &.is-active {
+      background: #ebebeb;
+      color: #0b0b0b;
+    }
+    svg path {
+      fill: currentColor;
+    }
+  }
+  .id-tabs__hash {
+    font-weight: 700;
+  }
+
+  // ID cards (395x80 -> 527x107)
+  .bchat-id-section {
+    width: 100%;
+  }
+  .bchat-id-section-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 107px;
+    margin: 0 0 13px !important;
+    padding: 15px 21px 15px 24px;
+    background: #111;
+    border: 1px solid #444;
+
+    &:last-of-type {
+      margin-bottom: 0 !important;
+    }
+  }
+  .profile-value {
+    min-width: 0;
+  }
+  .profile-value > div:first-child {
+    margin: 0 !important;
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ebebeb !important;
+  }
+  .profile-value p {
+    margin: 10px 0 0 !important;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    line-height: 22px;
+    color: #acacac !important;
+    word-break: break-all;
+  }
+  .bchat-id-section-display-icon {
+    flex: 0 0 auto;
+    padding-top: 6px;
+    cursor: pointer;
+
+    > .bchat-icon-button {
+      display: none !important;
+    }
+  }
+
+  // QR (134px box -> 179, white code inside, mono caption)
+  .qr-box-view {
+    width: 100%;
+    padding-top: 4px;
+
+    .qr-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      height: 160px;
+      padding: 14px;
+      background: $dark-raised;
+      border: 1px solid #444;
+
+      svg {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        padding: 4px;
+      }
+    }
+    p {
+      margin: 15px 0 0;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      color: #acacac;
+    }
+  }
+}
+
+// ---- Link BNS (435x329 -> 580): ID box, BNS name field, Verify / Link Bns ----
+#{$dark} .card-dialog.bns-link-dialog {
+  .bchat-modal {
+    padding: 29px 27px 27px;
+  }
+  // no Cancel footer while linking (Figma has only the close square)
+  &:not(.bns-link-dialog--success) .bchat-modal-footer {
+    display: none;
+  }
+  .bns_link_modal {
+    width: 100%;
+    padding: 0;
+
+    header {
+      margin: 0 0 29px;
+      padding-inline-start: 7px;
+      font-family: $dark-font-ui !important;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 27px;
+      color: #ebebeb;
+    }
+    .id_wrapper {
+      display: block;
+      margin: 0;
+      padding: 16px 27px 20px;
+      background: #111;
+      border: 1px solid #444;
+
+      > div:not(.id-label) {
+        display: none; // spacers
+      }
+    }
+    .id-label {
+      margin-bottom: 9px;
+      font-family: $dark-font-ui !important;
+      font-size: 16px;
+      font-weight: 600;
+      color: #8d8d8d;
+    }
+    .id_content {
+      margin: 0;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      line-height: 22px;
+      color: #ebebeb;
+      word-break: break-all;
+    }
+    .label_input {
+      margin: 17px 0 11px;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      color: #acacac;
+    }
+    .inputBox-wrapper {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      padding: 0 24px;
+      background: #111;
+      border: 1px solid #444;
+    }
+    .inputBox {
+      width: 100%;
+      background: transparent;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 500;
+      color: #ebebeb;
+
+      &::placeholder {
+        font-family: $dark-font-data !important;
+        font-size: 16px;
+        font-weight: 300;
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+  }
+  // Verify (green outline once the name is valid, dimmed before) + Link Bns (white once verified)
+  .divided-btn-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 23px;
+
+    > .bchat-button,
+    > .bchat-btn-struct {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100% !important;
+      height: 60px;
+      margin: 0 !important;
+      font-family: $dark-font-data !important;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0;
+      clip-path: $dark-cut-popup-btn;
+
+      &::before {
+        clip-path: $dark-cut-popup-btn;
+      }
+    }
+    > .bchat-button:first-child,
+    > .bchat-btn-struct {
+      background-color: rgba(0, 188, 51, 0.7);
+      border: 0;
+      color: #00bc33;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        z-index: -1;
+        background-color: #071407;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #0b1f0b;
+      }
+    }
+    > .bchat-button:first-child.disabled {
+      background-color: #333;
+      color: #737373;
+
+      &::before {
+        background-color: #161616;
+      }
+    }
+    > .bchat-button:last-child {
+      background-color: #ebebeb;
+      border: 0;
+      color: #0b0b0b;
+
+      &:hover:not(.disabled) {
+        background-color: #d6d6d6;
+      }
+      &.disabled {
+        background-color: #222;
+        color: #737373;
+      }
+    }
+  }
+}
+// spacers between the blocks; gaps come from the margins above (not in the success view,
+// whose content is an unclassed div)
+#{$dark} .bns-link-dialog:not(.bns-link-dialog--success) .bns_link_modal
+  > div:not(.id_wrapper):not(.label_input):not(.inputBox-wrapper):not(.divided-btn-wrapper) {
+  display: none;
+}
+// success (273x200 -> 364 wide): green badge, one line, small white Ok
+#{$dark} .card-dialog.bns-link-dialog--success {
+  .bchat-modal {
+    width: 364px;
+    padding: 44px 28px 35px;
+    text-align: center;
+  }
+  .model-layer > div:last-child {
+    width: 100%;
+  }
+  .bns-success-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+  .bchat-modal__body {
+    overflow: visible;
+  }
+  .bns_link_modal .linked_bns {
+    margin-top: 27px;
+    padding: 0;
+    line-height: 30px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .bchat-modal-footer {
+    grid-auto-columns: 144px;
+    justify-content: center;
+    margin-top: 21px;
+
+    .bchat-button {
+      height: 55px;
+      clip-path: $dark-cut-14;
+    }
+  }
+}
+
+// ---- About BNS (593x566 -> 791): scrolling article, no footer ----
+#{$dark} .card-dialog.about-bns-dialog {
+  .bchat-modal {
+    width: 791px;
+    padding: 32px 25px 30px 45px;
+  }
+  .bchat-modal__header {
+    margin-bottom: 35px;
+  }
+  .bchat-modal-footer {
+    display: none;
+  }
+  .bchat-modal__body {
+    max-height: none;
+    overflow: visible;
+  }
+  section {
+    width: 100%;
+    height: auto;
+    max-height: min(619px, 62vh);
+    margin: 0;
+    padding-inline-end: 38px;
+    overflow-y: auto;
+    text-align: start;
+
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #222;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #444;
+    }
+  }
+  article {
+    padding: 0;
+  }
+  .about-bns-header {
+    margin: 0 0 12px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  .about-bns-txt,
+  .about-bns-txt-bold {
+    margin: 0 0 24px;
+    font-family: $dark-font-data !important;
+    font-size: 22px;
+    line-height: 30px;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  .about-bns-txt-bold span {
+    font-weight: 700;
+  }
+  ul {
+    margin: 0 0 24px;
+    padding-inline-start: 24px;
+    list-style: none;
+
+    li {
+      position: relative;
+      margin-bottom: 18px;
+
+      &::before {
+        content: '•';
+        position: absolute;
+        inset-inline-start: -24px;
+      }
+    }
+  }
+}
+
+// Community Guidelines (Figma 1:43583) reuses the About BNS card; body is mono 20/32 with green links.
+#{$dark} .card-dialog.community-guidelines-dialog {
+  article > div {
+    margin: 0;
+    font-family: $dark-font-data !important;
+    font-size: 20px;
+    line-height: 32px;
+    letter-spacing: 0;
+    color: #ebebeb;
+  }
+  a {
+    color: #00bc33;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+// Add Moderators: card dialog with the icon in a #1a1a1a well beside the title, 80px id field.
+#{$dark} .card-dialog.moderators-add-dialog {
+  .bchat-modal__body > div {
+    align-items: stretch !important;
+  }
+  .moderator-addModeratorBox {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+
+    svg {
+      box-sizing: content-box;
+      width: 34px !important;
+      height: 34px !important;
+      padding: 12.5px;
+      background: $dark-raised;
+
+      path {
+        fill: #ebebeb;
+      }
+    }
+  }
+  .addModeratortext {
+    margin: 0;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .moderator-inputBox {
+    width: 100%;
+
+    input {
+      width: 100%;
+      height: 80px;
+      padding: 0 23px;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 0;
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      color: #ebebeb;
+      outline: 0;
+
+      &:focus {
+        border-color: #00bc33;
+      }
+      &::placeholder {
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+  }
+}
+
+// =================================================================================================
 // Calls in the conversation (Figma 1:60812 / 1:59453 audio, 1:59070 / 1:58684 video, 4:2963 floating):
 // ink card on a #222 line, chamfered 39px -> 52px control squares (top-end 8px cut, #222@50% on a
 // #444 line, round device-menu badge), red hang-up square, Inter 22 names, mono timer.
@@ -5662,6 +6414,216 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     background-color: #00bc33;
     border-radius: 50% !important;
   }
+}
+
+// =================================================================================================
+// Card dialogs: every confirm-style popup (BchatConfirm - delete message, trust sender, clear chat,
+// unblock, permissions, save/delete media, seed warning, call permission, link previews, voice /
+// video calls, remove users ...) plus Change group name, Nickname, Leave group and Password.
+// Marked with `card-dialog` on the dialog root. Figma 1:20162 "Clear Chat", 1:39199 "Enable Link
+// Previews", 1:25893 "Warning", 1:63151 "Change group name", 1:12537 "Delete message?": 435px
+// card, 44px icon well, Inter 16.5 title, Roboto Mono 13.5 message, 188x47 buttons -> / 0.75.
+// =================================================================================================
+#{$dark} .card-dialog {
+  .bchat-modal {
+    width: 580px;
+    min-width: 0;
+    max-width: calc(100vw - 32px);
+    padding: 31px 32px 25px;
+    background: rgba(11, 11, 11, 0.75);
+    border: 1px solid #222;
+    animation: none;
+  }
+  .model-layer {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+
+    > div:last-child {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+  .mediaPermission {
+    flex: 0 0 59px;
+    width: 59px;
+    height: 59px;
+    margin: 0;
+    background-color: $dark-raised;
+    border: 0;
+
+    svg {
+      max-width: 28px;
+      max-height: 28px;
+    }
+  }
+  .bchat-modal__header {
+    margin: 0 0 8px;
+    padding: 0;
+    line-height: 27px;
+  }
+  .bchat-modal__header__title {
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #ebebeb;
+  }
+  .bchat-modal__header__iconHeader:empty {
+    display: none;
+  }
+  .bchat-modal__body {
+    padding: 0;
+    font-family: $dark-font-data !important;
+  }
+  .bchat-modal__centered {
+    align-items: stretch;
+    padding: 0;
+    text-align: start;
+  }
+  .bchat-modal-bchatConfirm {
+    width: auto;
+    margin: 0;
+    text-align: start;
+  }
+  .bchat-modal-bchatConfirm,
+  .bchat-modal__centered .subtle,
+  .bchat-confirm-main-message,
+  .bchat-confirm-sub-message {
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: 0;
+    text-align: start;
+    color: #acacac;
+  }
+
+  // Cancel (outlined grey) + action button side by side, full width of the card.
+  .bchat-modal-footer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 16px;
+    height: auto;
+    margin-top: 20px;
+    padding: 0;
+    background: none;
+    border: 0;
+
+    .bchat-button {
+      width: 100%;
+      min-width: 0 !important;
+      height: 63px;
+      margin: 0 !important;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+    .bchat-button.secondary,
+    .bchat-button.white,
+    .bchat-button.enable {
+      background-color: #333;
+      color: #ebebeb;
+
+      &::before {
+        background-color: $dark-raised;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #242424;
+      }
+    }
+    .bchat-button.primary,
+    .bchat-button.green {
+      background-color: #ebebeb;
+      border-color: #ebebeb;
+      color: #0b0b0b;
+
+      &:hover:not(.disabled) {
+        background-color: #d6d6d6;
+        border-color: #d6d6d6;
+      }
+    }
+    .bchat-button.danger,
+    .bchat-button.red {
+      background-color: rgba(255, 62, 62, 0.7);
+      color: $dark-danger;
+
+      &::before {
+        background-color: #290f0f;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #3a1212;
+      }
+    }
+    .bchat-button.disabled {
+      opacity: 0.45;
+    }
+  }
+
+  // Text fields (Figma 1:63151): 80px box, #111 fill, #444 line, mono 18px, clear icon inside.
+  .groupNameBox,
+  .input-wrapper {
+    width: 100%;
+    height: 80px;
+    padding: 0 20px 0 27px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #111;
+    border: 1px solid #444;
+
+    input {
+      flex: 1 1 auto;
+      width: auto;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      color: #ebebeb;
+
+      &::placeholder {
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+    .bchat-icon-button {
+      flex: 0 0 auto;
+    }
+  }
+  .bchat-input-with-label-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 80px;
+    padding: 0 20px 0 27px;
+    background: #111;
+    border: 1px solid #444;
+
+    input {
+      flex: 1 1 auto;
+      height: 100%;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      font-family: $dark-font-data !important;
+      font-size: 18px;
+      color: #ebebeb;
+
+      &::placeholder {
+        text-transform: uppercase;
+        color: #737373;
+      }
+    }
+  }
+}
+// the form dialogs (password) have no icon, so their fields span the card
+#{$dark} .card-dialog--form .bchat-modal-setPassword {
+  width: 100%;
 }
 
 // ---- Set Password prompt before the Recovery Phrase (Figma 1:38756): card family, lock icon,

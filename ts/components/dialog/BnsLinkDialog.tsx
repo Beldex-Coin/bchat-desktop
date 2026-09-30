@@ -48,7 +48,14 @@ export const BnsLinkDialog = () => {
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
-          <img src={darkMode?'images/bchat/linked_bns.gif':'images/bchat/linked_bns_white.gif'} style={{ width: '120px', height: '120px' }} />
+          {darkMode ? (
+            // Figma 1:61315: green approval badge instead of the animation
+            <span className="bns-success-icon">
+              <BchatIcon iconType="approval" iconSize={59} iconColor="#00BC33" />
+            </span>
+          ) : (
+            <img src={'images/bchat/linked_bns_white.gif'} style={{ width: '120px', height: '120px' }} />
+          )}
         </div>
         <div className="linked_bns">{i18n('bnsLinkedSuccessfully')}</div>
         {/* <BchatButton
@@ -71,6 +78,7 @@ export const BnsLinkDialog = () => {
   return (
     <BchatWrapperModal
       showHeader={false}
+      additionalClassName={`card-dialog bns-link-dialog${success ? ' bns-link-dialog--success' : ''}`}
       onClose={closeDialog}
       showExitIcon={false}
       isloading={isLoading}
@@ -92,6 +100,10 @@ export const BnsLinkDialog = () => {
       <div className="bns_link_modal">
         {!success ? (
           <>
+            {/* dark theme: square close in the corner (Figma 1:53219); hidden in light */}
+            <button className="close-square" onClick={closeDialog} aria-label={i18n('close')}>
+              <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+            </button>
             <header>{i18n('linkBNS')}</header>
             {/* <div className="label_id"> {i18n('yourBchatID')}</div> */}
             <div className="id_wrapper">
