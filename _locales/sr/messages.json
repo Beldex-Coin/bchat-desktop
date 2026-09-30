@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Uključi / isključi vidljivost sistemskog menija",
   "startConversation": "Start New Chat…",
   "invalidNumberError": "Неисправан број",
-  "failedResolveOns": "Rešavanje BNS imena nije uspelo",
+  "failedResolveBns": "Rešavanje BNS imena nije uspelo",
   "successUnlinked": "Veza sa vašim uređajem je uspešno opozvana",
   "autoUpdateSettingTitle": "Automatsko ažuriranje",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

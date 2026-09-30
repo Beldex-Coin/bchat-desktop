@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Toggle system menu bar visibility",
   "startConversation": "Start New Chat",
   "invalidNumberError": "Invalid BChat ID or BNS Name",
-  "failedResolveOns": "Failed to resolve BNS name",
+  "failedResolveBns": "Failed to resolve BNS name",
   "successUnlinked": "Your device was unlinked successfully",
   "autoUpdateSettingTitle": "Auto Update",
   "autoUpdateSettingDescription": "Enabling this will let BChat automatically check updates and notify you.",

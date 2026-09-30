@@ -8,7 +8,7 @@ import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/sectio
 import { PubKey } from '../../../bchat/types';
 import { ConversationTypeEnum } from '../../../models/conversation';
 import { SNodeAPI } from '../../../bchat/apis/snode_api';
-//  import { onsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
+//  import { bnsNameRegex } from '../../../bchat/apis/snode_api/SNodeAPI';
 import { getConversationController } from '../../../bchat/conversations';
 // import { ToastUtils } from '../../../bchat/utils';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
@@ -39,7 +39,7 @@ export const OverlayMessage = () => {
   }
 
   useKey('Escape', closeOverlay);
-  const [pubkeyOrOns, setPubkeyOrOns] = useState('');
+  const [pubkeyOrBns, setPubkeyOrBns] = useState('');
   const [loading, setLoading] = useState(false);
   const [dispalyQR, setDispalyQR] = useState(false);
   const ourNumber = useSelector(getOurNumber);
@@ -57,32 +57,32 @@ export const OverlayMessage = () => {
   const placeholder = window.i18n('enterBchatIDOrBNSName');
 
   async function handleMessageButtonClick() {
-    const pubkeyorOnsTrimmed = pubkeyOrOns.trim();
-    if (!pubkeyorOnsTrimmed) {
+    const pubkeyOrBnsTrimmed = pubkeyOrBns.trim();
+    if (!pubkeyOrBnsTrimmed) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('errMsgCreateConvo')); // or Bns name
       return;
     }
     if (
-      PubKey.validateWithError(pubkeyorOnsTrimmed) &&
-      !pubkeyOrOns.toLowerCase().endsWith('.bdx')
+      PubKey.validateWithError(pubkeyOrBnsTrimmed) &&
+      !pubkeyOrBns.toLowerCase().endsWith('.bdx')
     ) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
 
-    if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
+    if (!PubKey.validateWithError(pubkeyOrBnsTrimmed)) {
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
-        pubkeyorOnsTrimmed,
+        pubkeyOrBnsTrimmed,
         ConversationTypeEnum.PRIVATE
       );
 
-      await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
+      await openConversationWithMessages({ conversationKey: pubkeyOrBnsTrimmed, messageId: null });
       closeOverlay();
     } else {
       setLoading(true);
       try {
-        const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
+        const resolvedBchatID = await SNodeAPI.getBchatIDForBnsName(pubkeyOrBnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
           throw new Error('Got a resolved BNS but the returned entry is not a valid bchatID');
         }
@@ -94,14 +94,14 @@ export const OverlayMessage = () => {
         await openConversationWithMessages({
           conversationKey: resolvedBchatID,
           messageId: null,
-          bns: pubkeyorOnsTrimmed,
+          bns: pubkeyOrBnsTrimmed,
         });
 
         closeOverlay();
       } catch (e) {
-        window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
+        window?.log?.warn('failed to resolve bns name', pubkeyOrBnsTrimmed, e);
 
-        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
+        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveBns'));
       } finally {
         setLoading(false);
       }
@@ -122,7 +122,7 @@ export const OverlayMessage = () => {
           <BchatIdEditable
             editable={!loading}
             placeholder={placeholder}
-            onChange={setPubkeyOrOns}
+            onChange={setPubkeyOrBns}
             maxLength={66}
             dataTestId="new-bchat-conversation"
           // onPressEnter={handleMessageButtonClick}

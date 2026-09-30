@@ -52,7 +52,7 @@ describe('VisibleMessage', () => {
     };
     const message = new VisibleMessage({
       timestamp: Date.now(),
-      lokiProfile: bchatProfile,
+      bchatProfile: bchatProfile,
     });
     const plainText = message.plainTextBuffer();
     const decoded = SignalService.Content.decode(plainText);

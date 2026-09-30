@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Comută vizibilitatea barei de meniu a sistemului",
   "startConversation": "Pornește o conversație nouă...",
   "invalidNumberError": "Număr invalid",
-  "failedResolveOns": "Eroare la rezolvarea numelui BNS",
+  "failedResolveBns": "Eroare la rezolvarea numelui BNS",
   "successUnlinked": "Dispozitivul dumneavoastră a fost deconectat cu succes",
   "autoUpdateSettingTitle": "Actualizare automată",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

@@ -37,7 +37,7 @@ type ExpirationTimerUpdate = Partial<
   }>
 >;
 
-export type LokiProfile = {
+export type BchatProfile = {
   displayName: string;
   avatarPointer?: string;
   profileKey: Uint8Array | null;

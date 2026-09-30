@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Przełącz widoczność systemowego paska menu",
   "startConversation": "Rozpocznij nową rozmowę...",
   "invalidNumberError": "Nieprawidłowy numer",
-  "failedResolveOns": "Nie udało się ustalić nazwy BNS",
+  "failedResolveBns": "Nie udało się ustalić nazwy BNS",
   "successUnlinked": "Twoje urządzenie zostało rozłączone pomyślnie",
   "autoUpdateSettingTitle": "Automatyczna aktualizacja",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

@@ -265,7 +265,7 @@
   "startConversation": "新しいチャットを開始",
   "shareBchatIdDiscription": "友達のBChat IDを入力して接続してください",
   "invalidNumberError": "無効なBChat IDまたはBNS名です",
-  "failedResolveOns": "BNS名の解決に失敗しました",
+  "failedResolveBns": "BNS名の解決に失敗しました",
   "autoUpdateSettingTitle": "自動更新",
   "autoUpdateSettingDescription": "このオプションを有効にすると、BChat が自動的にアップデートを確認し、通知します。",
   "autoUpdateNewVersionTitle": "BChatのアップデートが利用可能です",

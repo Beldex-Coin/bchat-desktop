@@ -265,7 +265,7 @@
   "startConversation": "Neuen Chat starten",
   "shareBchatIdDiscription": "Gib die BChat-ID deines Freundes ein, um dich zu verbinden",
   "invalidNumberError": "Ungültige BChat-ID oder BNS-Name",
-  "failedResolveOns": "BNS-Name konnte nicht aufgelöst werden",
+  "failedResolveBns": "BNS-Name konnte nicht aufgelöst werden",
   "autoUpdateSettingTitle": "Automatische Updates",
   "autoUpdateSettingDescription": "Durch Aktivieren dieser Option kann BChat automatisch nach Updates suchen und Sie benachrichtigen.",
   "autoUpdateNewVersionTitle": "BChat-Update verfügbar",

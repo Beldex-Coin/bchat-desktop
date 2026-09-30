@@ -265,7 +265,7 @@
   "startConversation": "Bắt đầu cuộc trò chuyện mới",
   "shareBchatIdDiscription": "Nhập ID BChat của bạn bè để kết nối với họ.",
   "invalidNumberError": "ID BChat hoặc tên BNS không hợp lệ",
-  "failedResolveOns": "Không thể phân giải tên BNS",
+  "failedResolveBns": "Không thể phân giải tên BNS",
   "autoUpdateSettingTitle": "Tự động cập nhật",
   "autoUpdateSettingDescription": "Việc bật tùy chọn này sẽ cho phép BChat tự động kiểm tra cập nhật và thông báo cho bạn.",
   "autoUpdateNewVersionTitle": "Đã có bản cập nhật BChat mới disponible",

@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Växla synlighet i system menyfältet",
   "startConversation": "Starta en ny konversation…",
   "invalidNumberError": "Felaktigt nummer",
-  "failedResolveOns": "Misslyckades att lösa BNS-namnet",
+  "failedResolveBns": "Misslyckades att lösa BNS-namnet",
   "successUnlinked": "Din enhet har avkopplats",
   "autoUpdateSettingTitle": "Uppdatera automatiskt",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

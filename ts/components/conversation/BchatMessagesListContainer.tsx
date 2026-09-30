@@ -60,25 +60,6 @@ const StyledMessagesContainer = styled.div<{}>`
   min-width: 370px;
   scrollbar-width: 4px;
   padding: var(--margins-sm) 0 var(--margins-lg);
-  .session-icon-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    opacity: 1;
-    background-color: var(--color-cell-background);
-    box-shadow: var(--color-session-shadow);
-    svg path {
-      transition: var(--default-duration);
-      opacity: 0.6;
-      fill: var(--color-text);
-    }
-    &:hover svg path {
-      opacity: 1;
-    }
-  }
 `;
 class BchatMessagesListContainerInner extends React.Component<Props> {
   private timeoutResetQuotedScroll: NodeJS.Timeout | null = null;

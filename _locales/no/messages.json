@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Vis eller skjul menylinjen",
   "startConversation": "Start ny samtale",
   "invalidNumberError": "Ugyldig BChat-ID eller BNS-navn",
-  "failedResolveOns": "Fant ikke BNS-navnet",
+  "failedResolveBns": "Fant ikke BNS-navnet",
   "successUnlinked": "Lyktes med å fjerne sammenkoblingen med enheten",
   "autoUpdateSettingTitle": "Automatisk oppdatering",
   "autoUpdateSettingDescription": "Se etter oppdateringer automatisk ved oppstart",

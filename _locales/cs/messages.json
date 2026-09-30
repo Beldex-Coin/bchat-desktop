@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Toggle system menu bar visibility",
   "startConversation": "Start New Chat…",
   "invalidNumberError": "Neplatné číslo",
-  "failedResolveOns": "Failed to resolve BNS name",
+  "failedResolveBns": "Failed to resolve BNS name",
   "successUnlinked": "Your device was unlinked successfully",
   "autoUpdateSettingTitle": "Automatické aktualizace",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

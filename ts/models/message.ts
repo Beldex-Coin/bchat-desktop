@@ -945,7 +945,7 @@ public getPropsForPayment(): PropsForPayment | null {
         const openGroupParams = {
           identifier: this.id,
           timestamp: Date.now(),
-          lokiProfile: UserUtils.getOurProfile(),
+          bchatProfile: UserUtils.getOurProfile(),
           ...uploaded,
         };
         const roomInfos = await getV2OpenGroupRoom(conversation.id);
@@ -967,11 +967,11 @@ public getPropsForPayment(): PropsForPayment | null {
         attachments,
         preview,
         quote,
-        lokiProfile: UserUtils.getOurProfile(),
+        bchatProfile: UserUtils.getOurProfile(),
         reacts: this.get('reacts'),
       };
-      if (!chatParams.lokiProfile) {
-        delete chatParams.lokiProfile;
+      if (!chatParams.bchatProfile) {
+        delete chatParams.bchatProfile;
       }
 
       // sendMessageJob() attaches these on the original send (conversation.ts) - a retry

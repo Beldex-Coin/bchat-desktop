@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import { DataMessage } from '..';
 import { SignalService } from '../../../../protobuf';
-import { LokiProfile } from '../../../../types/Message';
+import { BchatProfile } from '../../../../types/Message';
 import { Reaction } from '../../../../types/Reaction';
 import { MessageParams } from '../Message';
 
@@ -78,7 +78,7 @@ export interface VisibleMessageParams extends MessageParams {
   body?: string;
   quote?: Quote;
   expireTimer?: number;
-  lokiProfile?: LokiProfile;
+  bchatProfile?: BchatProfile;
   preview?: Array<PreviewWithAttachmentUrl>;
   syncTarget?: string; // undefined means it is not a synced message
   //emoji reaction
@@ -114,21 +114,21 @@ export class VisibleMessage extends DataMessage {
     this.body = params.body;
     this.quote = params.quote;
     this.expireTimer = params.expireTimer;
-    if (params.lokiProfile && params.lokiProfile.profileKey) {
+    if (params.bchatProfile && params.bchatProfile.profileKey) {
       if (
-        params.lokiProfile.profileKey instanceof Uint8Array ||
-        (params.lokiProfile.profileKey as any) instanceof ByteBuffer
+        params.bchatProfile.profileKey instanceof Uint8Array ||
+        (params.bchatProfile.profileKey as any) instanceof ByteBuffer
       ) {
-        this.profileKey = new Uint8Array(params.lokiProfile.profileKey);
+        this.profileKey = new Uint8Array(params.bchatProfile.profileKey);
       } else {
         this.profileKey = new Uint8Array(
-          ByteBuffer.wrap(params.lokiProfile.profileKey).toArrayBuffer()
+          ByteBuffer.wrap(params.bchatProfile.profileKey).toArrayBuffer()
         );
       }
     }
 
-    this.displayName = params.lokiProfile && params.lokiProfile.displayName;
-    this.avatarPointer = params.lokiProfile && params.lokiProfile.avatarPointer;
+    this.displayName = params.bchatProfile && params.bchatProfile.displayName;
+    this.avatarPointer = params.bchatProfile && params.bchatProfile.avatarPointer;
     this.preview = params.preview;
     this.syncTarget = params.syncTarget;
 
@@ -160,7 +160,7 @@ export class VisibleMessage extends DataMessage {
     }
 
     if (this.avatarPointer || this.displayName) {
-      const profile = new SignalService.DataMessage.LokiProfile();
+      const profile = new SignalService.DataMessage.BchatProfile();
 
       if (this.avatarPointer) {
         profile.profilePicture = this.avatarPointer;

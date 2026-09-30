@@ -16,7 +16,7 @@ import { PubKey } from '../bchat/types/PubKey';
 export type BlindedIdMapping = {
   blindedId: string;
   serverPublicKey: string;
-  realSessionId: string;
+  realBchatId: string;
 };
 
 // for now, we assume we won't find a lot of blinded keys.
@@ -299,7 +299,7 @@ export const updateRecentReactions = async (reactions: Array<string>, newReactio
 //   const usNaked = UserUtils.getOurPubKeyStrFromCache();
 
 //   const found = assertLoaded().find(
-//     m => m.serverPublicKey === room.serverPublicKey && m.realSessionId === usNaked
+//     m => m.serverPublicKey === room.serverPublicKey && m.realBchatId === usNaked
 //   );
 //   return found?.blindedId;
 // }
@@ -317,7 +317,7 @@ export function isUsAnySogsFromCache(blindedOrNakedId: string): boolean {
     return blindedOrNakedId === usUnblinded;
   }
   const found = assertLoaded().find(
-    m => m.blindedId === blindedOrNakedId && m.realSessionId === usUnblinded
+    m => m.blindedId === blindedOrNakedId && m.realBchatId === usUnblinded
   );
   return Boolean(found);
 }

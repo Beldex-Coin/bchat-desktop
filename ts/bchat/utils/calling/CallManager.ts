@@ -939,10 +939,10 @@ function createOrGetPeerConnection(withPubkey: string) {
   remoteStream = new MediaStream();
   const sampleOfICeServers = _.sampleSize(iceServersFullArray, 2);
   peerConnection = new RTCPeerConnection({ ...configuration, iceServers: sampleOfICeServers });
-  dataChannel = peerConnection.createDataChannel('session-datachannel', {
+  dataChannel = peerConnection.createDataChannel('bchat-datachannel', {
     ordered: true,
     negotiated: true,
-    id: 548, // S E S S I O N in ascii code 83*3+69+73+79+78
+    id: 548, // fixed channel id shared with the other BChat apps - must not change
   });
 
   dataChannel.onmessage = onDataChannelReceivedMessage;

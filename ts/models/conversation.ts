@@ -721,7 +721,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         body: '',
         timestamp: sentAt,
         reaction,
-        lokiProfile: UserUtils.getOurProfile(),
+        bchatProfile: UserUtils.getOurProfile(),
       };
       await this.handleMessageApproval();
 
@@ -798,7 +798,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
         expireTimer,
         preview: uploads.preview,
         quote: uploads.quote,
-        lokiProfile: UserUtils.getOurProfile(),
+        bchatProfile: UserUtils.getOurProfile(),
       };
       await this.handleMessageApproval();
 

@@ -265,7 +265,7 @@
   "startConversation": "Yeni Sohbet Başlat",
   "shareBchatIdDiscription": "Bağlantı kurmak için arkadaşınızın BChat Kimliğini girin.",
   "invalidNumberError": "Geçersiz BChat Kimliği veya BNS Adı",
-  "failedResolveOns": "BNS adı çözümlenemedi",
+  "failedResolveBns": "BNS adı çözümlenemedi",
   "autoUpdateSettingTitle": "Otomatik Güncelleme",
   "autoUpdateSettingDescription": "Bu seçenek etkinleştirildiğinde, BChat güncellemeleri otomatik olarak kontrol eder ve sizi bilgilendirir.",
   "autoUpdateNewVersionTitle": "BChat güncellemesi mevcut",

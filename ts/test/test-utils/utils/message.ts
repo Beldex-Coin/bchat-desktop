@@ -24,7 +24,7 @@ export function generateVisibleMessage({
     attachments: undefined,
     quote: undefined,
     expireTimer: undefined,
-    lokiProfile: undefined,
+    bchatProfile: undefined,
     preview: undefined,
   });
 }

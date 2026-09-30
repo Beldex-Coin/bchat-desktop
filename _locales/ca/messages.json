@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Commuta la visibilitat de la barra de menú del sistema",
   "startConversation": "Comença una conversa nova...",
   "invalidNumberError": "El número no és vàlid",
-  "failedResolveOns": "No s'ha pogut resoldre el nom BNS",
+  "failedResolveBns": "No s'ha pogut resoldre el nom BNS",
   "successUnlinked": "El dispositiu s'ha desenllaçat correctament",
   "autoUpdateSettingTitle": "Actualització automàtica",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

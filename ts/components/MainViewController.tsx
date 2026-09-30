@@ -75,31 +75,31 @@ export class MessageView extends React.Component<{ variant?: 'social' | 'secret'
 export const AddNewContactInEmptyConvo = () => {
   const [bchatId, setBchatId] = useState('');
   async function handleMessageButtonClick() {
-    const pubkeyorOnsTrimmed = bchatId.trim();
-    if (!pubkeyorOnsTrimmed) {
+    const pubkeyOrBnsTrimmed = bchatId.trim();
+    if (!pubkeyOrBnsTrimmed) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('errMsgCreateConvo')); // or Bns name
       return;
     }
     if (
-      (!pubkeyorOnsTrimmed || pubkeyorOnsTrimmed.length !== 66) &&
-      !pubkeyorOnsTrimmed.toLowerCase().endsWith('.bdx')
+      (!pubkeyOrBnsTrimmed || pubkeyOrBnsTrimmed.length !== 66) &&
+      !pubkeyOrBnsTrimmed.toLowerCase().endsWith('.bdx')
     ) {
       ToastUtils.pushToastError('invalidPubKey', window.i18n('invalidNumberError')); // or Bns name
       return;
     }
-    if (!PubKey.validateWithError(pubkeyorOnsTrimmed)) {
+    if (!PubKey.validateWithError(pubkeyOrBnsTrimmed)) {
       // this is a pubkey
       await getConversationController().getOrCreateAndWait(
-        pubkeyorOnsTrimmed,
+        pubkeyOrBnsTrimmed,
         ConversationTypeEnum.PRIVATE
       );
 
-      await openConversationWithMessages({ conversationKey: pubkeyorOnsTrimmed, messageId: null });
+      await openConversationWithMessages({ conversationKey: pubkeyOrBnsTrimmed, messageId: null });
       // closeOverlay();
     } else {
       // setLoading(true);
       try {
-        const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(pubkeyorOnsTrimmed);
+        const resolvedBchatID = await SNodeAPI.getBchatIDForBnsName(pubkeyOrBnsTrimmed);
         if (PubKey.validateWithError(resolvedBchatID)) {
           throw new Error('Got a resolved BNS but the returned entry is not a valid bchatID');
         }
@@ -111,12 +111,12 @@ export const AddNewContactInEmptyConvo = () => {
         await openConversationWithMessages({
           conversationKey: resolvedBchatID,
           messageId: null,
-          bns: pubkeyorOnsTrimmed,
+          bns: pubkeyOrBnsTrimmed,
         });
       } catch (e) {
-        window?.log?.warn('failed to resolve bns name', pubkeyorOnsTrimmed, e);
+        window?.log?.warn('failed to resolve bns name', pubkeyOrBnsTrimmed, e);
 
-        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveOns'));
+        ToastUtils.pushToastError('invalidPubKey', window.i18n('failedResolveBns'));
       } finally {
       }
     }

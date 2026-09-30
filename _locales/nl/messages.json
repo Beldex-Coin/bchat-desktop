@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Zichtbaarheid systeemmenu in-/uitschakelen",
   "startConversation": "Begin een nieuw gesprek…",
   "invalidNumberError": "Ongeldig nummer",
-  "failedResolveOns": "Gefaald de BNS naam op te lossen",
+  "failedResolveBns": "Gefaald de BNS naam op te lossen",
   "successUnlinked": "Je apparaat is met succes ontkoppeld",
   "autoUpdateSettingTitle": "Automatisch bijwerken",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

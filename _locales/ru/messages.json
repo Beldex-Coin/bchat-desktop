@@ -265,7 +265,7 @@
   "startConversation": "Начать новый чат",
   "shareBchatIdDiscription": "Введите ID BChat вашего друга, чтобы подключиться к нему.",
   "invalidNumberError": "Недопустимый ID BChat или имя BNS",
-  "failedResolveOns": "Не удалось разрешить имя BNS",
+  "failedResolveBns": "Не удалось разрешить имя BNS",
   "autoUpdateSettingTitle": "Автоматическое обновление",
   "autoUpdateSettingDescription": "Включение этой опции позволит BChat автоматически проверять наличие обновлений и уведомлять вас о них.",
   "autoUpdateNewVersionTitle": "Доступно обновление BChat",

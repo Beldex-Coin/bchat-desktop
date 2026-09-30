@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Prepnúť viditeľnosť systémového panela menu",
   "startConversation": "Začať nový rozhovor…",
   "invalidNumberError": "Neplatné číslo",
-  "failedResolveOns": "Nepodarilo sa vyriešiť BNS meno",
+  "failedResolveBns": "Nepodarilo sa vyriešiť BNS meno",
   "successUnlinked": "Vaše zariadenie bolo úspešne odpojené",
   "autoUpdateSettingTitle": "Auto Akualizácie",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

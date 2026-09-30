@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "تغییر نمایش نوار منوی سیستم",
   "startConversation": "Start New Chat…",
   "invalidNumberError": "شماره نامعتبر",
-  "failedResolveOns": "در حل نام BNS ناموفق بود",
+  "failedResolveBns": "در حل نام BNS ناموفق بود",
   "successUnlinked": "اتصال دستگاه شما با موفقیت قطع شد",
   "autoUpdateSettingTitle": "آپدیت خودکار",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

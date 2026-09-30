@@ -175,9 +175,9 @@ function updateForMac(
   // Remove File menu
   template.shift();
 
-  // Add the OSX-specific Signal Desktop menu at the far left
+  // Add the OSX-specific BChat menu at the far left
   template.unshift({
-    label: messages.sessionMessenger,
+    label: messages.BChat,
     submenu: [
       {
         label: messages.about,

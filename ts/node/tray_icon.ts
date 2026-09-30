@@ -79,7 +79,7 @@ export function createTrayIcon(
 
   tray.on('click', trayAny.showWindow);
 
-  tray.setToolTip(messages.sessionMessenger);
+  tray.setToolTip(messages.BChat);
   trayAny.updateContextMenu();
 
   return tray;

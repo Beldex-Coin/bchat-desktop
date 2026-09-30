@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Спрятать или показать системное меню",
   "startConversation": "Начать новый разговор…",
   "invalidNumberError": "Неверный номер",
-  "failedResolveOns": "Failed to resolve BNS name",
+  "failedResolveBns": "Failed to resolve BNS name",
   "successUnlinked": "Ваше устройство успешно отвязано",
   "autoUpdateSettingTitle": "Автоматические обновления",
   "autoUpdateSettingDescription": "Автоматически проверять на наличие обновлений при запуске",

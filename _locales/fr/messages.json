@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Activer/Désactiver la barre de menu système",
   "startConversation": "Lancer une nouvelle conversation…",
   "invalidNumberError": "Le numéro est invalide",
-  "failedResolveOns": "Échec de résolution du nom BNS",
+  "failedResolveBns": "Échec de résolution du nom BNS",
   "successUnlinked": "Votre appareil a été déconnecté avec succès",
   "autoUpdateSettingTitle": "Mise à jour automatique",
   "autoUpdateSettingDescription": "Rechercher automatiquement les mises à jour au lancement",

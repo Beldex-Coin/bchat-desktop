@@ -26,7 +26,7 @@ queue.on('reject', error => {
 
 export async function appendFetchAvatarAndProfileJob(
   conversation: ConversationModel,
-  profile: SignalService.DataMessage.ILokiProfile,
+  profile: SignalService.DataMessage.IBchatProfile,
   profileKey?: Uint8Array | null // was any
 ) {
   if (!conversation?.id) {
@@ -55,7 +55,7 @@ export async function appendFetchAvatarAndProfileJob(
  * It tries to fetch the profile image, scale it, save it, and update the conversationModel
  */
 export async function updateOurProfileSync(
-  profile: SignalService.DataMessage.ILokiProfile,
+  profile: SignalService.DataMessage.IBchatProfile,
   profileKey?: Uint8Array | null // was any
 ) {
   const ourConvo = getConversationController().get(UserUtils.getOurPubKeyStrFromCache());
@@ -81,7 +81,7 @@ export async function updateOurProfileSync(
 
 async function createOrUpdateProfile(
   conversation: ConversationModel,
-  profile: SignalService.DataMessage.ILokiProfile,
+  profile: SignalService.DataMessage.IBchatProfile,
   profileKey?: Uint8Array | null,
   signal?: AbortSignal
 ) {

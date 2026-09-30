@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Toggle system menu bar visibility",
   "startConversation": "Start New Chat…",
   "invalidNumberError": "หมายเลขไม่ถูกต้อง",
-  "failedResolveOns": "Failed to resolve BNS name",
+  "failedResolveBns": "Failed to resolve BNS name",
   "successUnlinked": "Your device was unlinked successfully",
   "autoUpdateSettingTitle": "Auto Update",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

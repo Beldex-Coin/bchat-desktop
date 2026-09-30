@@ -4,7 +4,7 @@ import { getItemById } from '../../data/data';
 import { PubKey } from '../types';
 import { fromHexToArray, toHex } from './String';
 import { getConversationController } from '../conversations';
-import { LokiProfile } from '../../types/Message';
+import { BchatProfile } from '../../types/Message';
 import { getNumber, Storage } from '../../util/storage';
 import { BchatKeyPair } from '../../receiver/keypairs';
 
@@ -79,7 +79,7 @@ export async function getUserED25519KeyPair(): Promise<HexKeyPair | undefined> {
   return undefined;
 }
 
-export function getOurProfile(): LokiProfile | undefined {
+export function getOurProfile(): BchatProfile | undefined {
   try {
     // Secondary devices have their profile stored
     // in their primary device's conversation

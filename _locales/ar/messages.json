@@ -265,7 +265,7 @@
   "startConversation": "بدء محادثة جديدة",
   "shareBchatIdDiscription": "أدخل معرّف BChat الخاص بصديقك للاتصال به",
   "invalidNumberError": "معرّف BChat أو اسم BNS غير صالح",
-  "failedResolveOns": "تعذر حل اسم BNS",
+  "failedResolveBns": "تعذر حل اسم BNS",
   "autoUpdateSettingTitle": "التحديث التلقائي",
   "autoUpdateSettingDescription": "سيؤدي تمكين هذا الخيار إلى السماح لـ BChat بالتحقق من التحديثات تلقائيًا وإشعارك بها.",
   "autoUpdateNewVersionTitle": "تحديث BChat متوفر",

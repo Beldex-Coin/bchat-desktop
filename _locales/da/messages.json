@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Slå synlighed for systemmenulinjen til/fra",
   "startConversation": "Start ny samtale...",
   "invalidNumberError": "Ugyldigt nummer",
-  "failedResolveOns": "Kunne ikke finde BNS navn",
+  "failedResolveBns": "Kunne ikke finde BNS navn",
   "successUnlinked": "Din enhed blev afkoblet",
   "autoUpdateSettingTitle": "Auto Opdatér",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

@@ -27,7 +27,7 @@ import { handleHardforkResult } from './hfHandling';
 
 // BNS name can have [a-zA-Z0-9_-] except that - is not allowed as start or end
 // do not define a regex but rather create it on the fly to avoid https://stackoverflow.com/questions/3891641/regex-test-only-works-every-other-time
-export const onsNameRegex = '^\\w([\\w-]*[\\w])?$';
+export const bnsNameRegex = '^\\w([\\w-]*[\\w])?$';
 
 export const ERROR_CODE_NO_CONNECT = 'ENETUNREACH: No network connection.';
 
@@ -186,12 +186,12 @@ export async function requestSnodesForPubkey(pubKey: string): Promise<Array<Snod
   }
 }
 
-export async function getBchatIDForOnsName(onsNameCase: string) {
+export async function getBchatIDForBnsName(bnsNameCase: string) {
   const validationCount = 3;
 
-  const onsNameLowerCase = onsNameCase.toLowerCase();
+  const bnsNameLowerCase = bnsNameCase.toLowerCase();
   const sodium = await getSodiumRenderer();
-  const nameAsData = stringToUint8Array(onsNameLowerCase);
+  const nameAsData = stringToUint8Array(bnsNameLowerCase);
   const nameHash = sodium.crypto_generichash(sodium.crypto_generichash_BYTES, nameAsData);
   const base64EncodedNameHash = fromUInt8ArrayToBase64(nameHash);
 
@@ -207,7 +207,7 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     const targetNode = await getRandomSnode();
     const result = await snodeRpc({ method: 'beldexd_request', params, targetNode });
     if (!result || result.status !== 200 || !result.body) {
-      throw new Error('ONSresolve:Failed to resolve BNS');
+      throw new Error('BNSresolve:Failed to resolve BNS');
     }
     let parsedBody;
 
@@ -215,13 +215,13 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
       parsedBody = JSON.parse(result.body);
       handleTimestampOffset('bns_resolve', parsedBody.t);
     } catch (e) {
-      window?.log?.warn('ONSresolve: failed to parse bns result body', result.body);
-      throw new Error('ONSresolve: json BNS resovle');
+      window?.log?.warn('BNSresolve: failed to parse bns result body', result.body);
+      throw new Error('BNSresolve: json BNS resovle');
     }
     const intermediate = parsedBody?.result;
 
     if (!intermediate || !intermediate?.encrypted_value) {
-      throw new Error('ONSresolve: no encrypted_value');
+      throw new Error('BNSresolve: no encrypted_value');
     }
     const hexEncodedCipherText = intermediate?.encrypted_value;
 
@@ -238,7 +238,7 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
       try {
         const keyHex = sodium.crypto_pwhash(
           sodium.crypto_secretbox_KEYBYTES,
-          onsNameLowerCase,
+          bnsNameLowerCase,
           salt,
           sodium.crypto_pwhash_OPSLIMIT_MODERATE,
           sodium.crypto_pwhash_MEMLIMIT_MODERATE,
@@ -246,16 +246,16 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
           'hex'
         );
         if (!keyHex) {
-          throw new Error('ONSresolve: key invalid argon2');
+          throw new Error('BNSresolve: key invalid argon2');
         }
         key = fromHexToArray(keyHex);
       } catch (e) {
-        throw new Error('ONSresolve: Hashing failed');
+        throw new Error('BNSresolve: Hashing failed');
       }
 
       bchatIDAsData = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
       if (!bchatIDAsData) {
-        throw new Error('ONSresolve: Decryption failed');
+        throw new Error('BNSresolve: Decryption failed');
       }
 
       return toHex(bchatIDAsData);
@@ -264,18 +264,18 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     // not argon2Based
     const hexEncodedNonce = intermediate.nonce as string;
     if (!hexEncodedNonce) {
-      throw new Error('ONSresolve: No hexEncodedNonce');
+      throw new Error('BNSresolve: No hexEncodedNonce');
     }
     nonce = fromHexToArray(hexEncodedNonce);
 
     try {
       key = sodium.crypto_generichash(sodium.crypto_generichash_BYTES, nameAsData, nameHash);
       if (!key) {
-        throw new Error('ONSresolve: Hashing failed');
+        throw new Error('BNSresolve: Hashing failed');
       }
     } catch (e) {
-      window?.log?.warn('ONSresolve: hashing failed', e);
-      throw new Error('ONSresolve: Hashing failed');
+      window?.log?.warn('BNSresolve: hashing failed', e);
+      throw new Error('BNSresolve: Hashing failed');
     }
 
     bchatIDAsData = sodium.crypto_aead_xchacha20poly1305_ietf_decrypt(
@@ -287,7 +287,7 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     );
 
     if (!bchatIDAsData) {
-      throw new Error('ONSresolve: Decryption failed');
+      throw new Error('BNSresolve: Decryption failed');
     }
 
     return toHex(bchatIDAsData);
@@ -297,16 +297,16 @@ export async function getBchatIDForOnsName(onsNameCase: string) {
     // if one promise throws, we end un the catch case
     const allResolvedBchatIds = await Promise.all(promises);
     if (allResolvedBchatIds?.length !== validationCount) {
-      throw new Error('ONSresolve: Validation failed');
+      throw new Error('BNSresolve: Validation failed');
     }
 
     // assert all the returned bchat ids are the same
     if (_.uniq(allResolvedBchatIds).length !== 1) {
-      throw new Error('ONSresolve: Validation failed');
+      throw new Error('BNSresolve: Validation failed');
     }
     return allResolvedBchatIds[0];
   } catch (e) {
-    window.log.warn('ONSresolve: error', e);
+    window.log.warn('BNSresolve: error', e);
     throw e;
   }
 }

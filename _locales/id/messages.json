@@ -222,7 +222,7 @@
   "hideMenuBarDescription": "Alihkan visibilitas bilah menu sistem",
   "startConversation": "Start New Chat…",
   "invalidNumberError": "Nomor salah",
-  "failedResolveOns": "Failed to resolve BNS name",
+  "failedResolveBns": "Failed to resolve BNS name",
   "successUnlinked": "Sukses memutus koneksi perangkat",
   "autoUpdateSettingTitle": "Pembaruan Otomatis",
   "autoUpdateSettingDescription": "Automatically check for updates on launch",

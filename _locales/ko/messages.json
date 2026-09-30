@@ -265,7 +265,7 @@
   "startConversation": "새 채팅 시작",
   "shareBchatIdDiscription": "친구의 BChat ID를 입력하여 연결하세요.",
   "invalidNumberError": "유효하지 않은 BChat ID 또는 BNS 이름입니다.",
-  "failedResolveOns": "BNS 이름을 확인할 수 없습니다.",
+  "failedResolveBns": "BNS 이름을 확인할 수 없습니다.",
   "autoUpdateSettingTitle": "자동 업데이트",
   "autoUpdateSettingDescription": "이 옵션을 활성화하면 BChat이 자동으로 업데이트를 확인하고 알려줍니다.",
   "autoUpdateNewVersionTitle": "BChat 업데이트가 있습니다.",

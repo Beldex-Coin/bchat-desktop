@@ -265,7 +265,7 @@
   "startConversation": "发起新聊天",
   "shareBchatIdDiscription": "输入好友的 BChat ID 以建立连接。",
   "invalidNumberError": "无效的 BChat ID 或 BNS 名称",
-  "failedResolveOns": "无法解析 BNS 名称",
+  "failedResolveBns": "无法解析 BNS 名称",
   "autoUpdateSettingTitle": "自动更新",
   "autoUpdateSettingDescription": "启用此选项后，BChat 将自动检查更新并向您发送通知。",
   "autoUpdateNewVersionTitle": "有新的 BChat 更新可用",
