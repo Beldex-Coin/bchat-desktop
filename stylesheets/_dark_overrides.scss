@@ -1770,6 +1770,89 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   display: none;
 }
 
+// ---- Audio message ----
+// Voice note on its own (Figma 18:7359): no inner card - 26px play button 22px in, 14px to a
+// 185px strip of 2px bars (1px apart, #737373 received / green sent, played part white),
+// 12px to the mono 0:30 time. With a caption (Figma 1:47233) the player sits in an ink card
+// (green hairline when sent) above the text.
+#{$dark} .audio-attachment {
+  padding: 0 !important;
+}
+#{$dark} .audio-message {
+  padding: 4px 16px;
+  margin: 0 14px;
+  background: $dark-ink;
+  border: 1px solid transparent;
+
+  &--outgoing {
+    border-color: #006c1d;
+  }
+  // the player row: play, (speed), bars, time
+  > div {
+    justify-content: flex-start !important;
+    gap: 14px;
+    height: 30px !important;
+    margin: 10px 0 !important;
+  }
+  .audio-play-btn {
+    display: flex;
+    flex: 0 0 auto;
+  }
+  .audio-play-btn .bchat-icon-button {
+    width: 26px;
+    height: 26px;
+    border-radius: 50% !important;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+  .play-speed-btn {
+    width: auto;
+    height: auto;
+    padding: 0 2px;
+    background: transparent !important;
+    color: #ebebeb !important;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .waveform-container {
+    flex: 0 0 auto;
+    height: 30px;
+  }
+  .waveform-bar {
+    border-radius: 0;
+  }
+  .waveform-cursor {
+    display: none;
+  }
+  .audio-message__time {
+    flex: 0 0 auto;
+    min-width: 36px;
+    margin-inline-start: -2px;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    line-height: 18px;
+    white-space: nowrap;
+    color: #ebebeb;
+  }
+}
+#{$dark} .module-message__container-only-attachment .audio-message {
+  margin: 0;
+  padding: 0 13px 0 15px;
+  background: none;
+  border: 0;
+
+  > div {
+    margin: 4px 0 !important;
+  }
+}
+
 // ---- Message time + delivery status under the bubble (Figma 1:54541) ----
 // MessageContent renders .msg-meta in dark mode; the in-bubble time and the text's reserved
 // space for it are hidden.
@@ -1967,6 +2050,39 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   background-color: $dark-raised;
   box-shadow: none;
   border: 1px solid #333;
+}
+
+// ---- Message hover actions: react + more buttons and the quick-reaction bar (Figma 71:5772) ----
+#{$dark} .hover-action .bchat-icon-button:hover {
+  background: #2c2c2c !important;
+
+  svg path {
+    fill: $dark-white;
+  }
+}
+#{$dark} .react-bar {
+  gap: 8px;
+  padding: 12px 14px;
+  background: #222;
+  box-shadow: none;
+  font-size: 22px;
+  line-height: 1;
+
+  .recentButton {
+    margin: 0;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+  .bchat-icon-button {
+    padding: 0;
+    background: transparent !important;
+  }
+  .bchat-icon-button:hover svg path {
+    fill: $dark-white;
+  }
 }
 
 // =================================================================================================
@@ -3117,6 +3233,61 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
 // =================================================================================================
+// Reactions (Figma 71:4700): square chips under the bubble, flat "who reacted" tooltip, and the
+// reactors sheet sliding up over the conversation
+// =================================================================================================
+#{$dark} .emoji-reacts {
+  gap: 4px;
+  padding: 4px 10px;
+  margin-inline-end: 6px;
+  background: $dark-raised !important;
+  border: 0.5px solid #333 !important;
+  font-size: 18px;
+
+  span:nth-child(2) {
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    font-weight: 400;
+    color: #acacac;
+  }
+  &:hover {
+    border-color: #555 !important;
+  }
+}
+#{$dark} .popup-container-wrapper > div {
+  padding: 12px 14px;
+  background: #141414;
+  border: 1px solid #333;
+  font-family: $dark-font-data !important;
+  font-size: 12px;
+  color: #ebebeb;
+
+  &::after {
+    display: none;
+  }
+}
+#{$dark} .reaction-list-modal .reaction-list-innreModal {
+  width: 100%;
+  margin-inline-start: 0;
+  padding: 0;
+  background: #0e0e0e;
+  border-top: 1px solid #333;
+  box-shadow: none;
+
+  // "All 22" + per-emoji tabs
+  button span {
+    font-family: $dark-font-data !important;
+    color: #acacac;
+  }
+  .bchat-icon-button {
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    background: #333;
+  }
+}
+
+// =================================================================================================
 // Empty states from the screens: Message Requests (Figma 1:37839, 600x400 box artwork + mono line)
 // and Blocked Contacts (1:37354, 150px warning glyph + mono line). Roboto Mono 18 #8D8D8D -> 24px.
 // =================================================================================================
@@ -3437,6 +3608,82 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 
     &[aria-disabled='true'] {
       cursor: default;
+    }
+  }
+}
+
+// ---- Message hover actions position (Figma 71:4341) ----
+// The react (smiley) and more (dots) squares sit 9 -> 12px beside the bubble, 5.7 -> 8px apart, and
+// are centred on the bubble itself. (Gap between the two widened to 14px on request.) The time / status line under the bubble (.msg-meta, 6px gap
+// + 16px line) is part of the same row, so the actions leave that 22px out of their centring.
+#{$dark} .message-hover-actions {
+  align-self: stretch;
+  align-items: center;
+  gap: 14px;
+
+  .bchat-icon-button {
+    margin: 0 !important;
+  }
+  // the wrappers between the row and the buttons must not add their own spacing
+  > div,
+  .hover-action,
+  .module-message--three-dot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+}
+#{$dark} .module-message:has(.msg-meta) > .message-hover-actions {
+  padding-bottom: 22px;
+}
+#{$dark} .message-hover-actions--incoming {
+  padding-inline-start: 12px;
+}
+#{$dark} .message-hover-actions--outgoing {
+  padding-inline-end: 12px;
+}
+
+// ---- Reactions under the time (Figma 71:6232 / 71:6760) ----
+// The base row is pulled up 15px to tuck under a rounded bubble, which puts it over the time line
+// in the dark layout. Here it sits 3 -> 4px below the time, starting at the bubble's edge.
+// Chips 25.5 -> 34px tall (34.5 -> 46 wide alone, 42 -> 56 with a count), 3.75 -> 5px apart,
+// #1a1a1a on a #444 hairline, count Roboto Mono SemiBold 9 -> 12 #acacac; the "more" square 34px.
+#{$dark} .message-reactions:not(.message-reactions--modal) {
+  margin: 4px 0 0 !important;
+  gap: 5px 0;
+
+  .emoji-reacts {
+    height: 34px;
+    min-width: 46px;
+    margin-inline-end: 5px;
+    padding: 0 8px;
+    justify-content: center;
+    gap: 0;
+    border-radius: 0;
+    background: #1a1a1a !important;
+    border: 0.5px solid #444 !important;
+    font-size: 20px;
+    line-height: 1;
+
+    span:nth-child(2) {
+      margin-inline-start: 2px;
+      font-weight: 600;
+    }
+  }
+  .bchat-icon-button {
+    width: 34px;
+    height: 34px;
+    margin: 0 !important;
+    padding: 0;
+    border-radius: 0 !important;
+    background: #1a1a1a !important;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+    svg path {
+      fill: #acacac;
     }
   }
 }

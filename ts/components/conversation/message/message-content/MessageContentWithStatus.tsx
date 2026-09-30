@@ -157,17 +157,30 @@ const   RecentReacts = (props: RecentReactsProps) => {
   }
   return (
     <Flex container={true} flexDirection={isIncoming ? 'row' : 'row-reverse'} alignItems="center">
-      <div>
-        <BchatIconButton
-          iconType="smileyEmoji"
-          iconSize={20}
-          iconColor={darkMode ? '#858598' : '#ACACAC'}
-          onClick={() => setRecentEmoji(!recentEmoji)}
-          margin="0 5px"
-          btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
-          btnRadius="30px"
-          style={{}}
-        />
+      <div className="hover-action">
+        {darkMode ? (
+          // Dark theme (Figma 71:5772): 26px #222 square with a grey smiley
+          <BchatIconButton
+            iconType="smileyEmoji"
+            iconSize={16}
+            iconColor="#8D8D8D"
+            onClick={() => setRecentEmoji(!recentEmoji)}
+            margin="0 4px"
+            padding="5px"
+            btnBgColor="#222222"
+          />
+        ) : (
+          <BchatIconButton
+            iconType="smileyEmoji"
+            iconSize={20}
+            iconColor={'#ACACAC'}
+            onClick={() => setRecentEmoji(!recentEmoji)}
+            margin="0 5px"
+            btnBgColor={'#F8F8F8'}
+            btnRadius="30px"
+            style={{}}
+          />
+        )}
       </div>
       {recentEmoji && (
         <div style={{ height: '46px', position: 'relative' }}>
@@ -202,6 +215,22 @@ const ThreeDotsMenu = (props: {
   onHandleContextMenu: Props['onHandleContextMenu'];
 }) => {
   const { darkMode, onHandleContextMenu } = props;
+  if (darkMode) {
+    // Dark theme: same 26px #222 square as the react button
+    return (
+      <div className="hover-action">
+        <BchatIconButton
+          iconType={'filledThreeDots'}
+          iconSize={16}
+          iconColor="#ACACAC"
+          onClick={onHandleContextMenu}
+          margin="0 4px"
+          padding="5px"
+          btnBgColor="#222222"
+        />
+      </div>
+    );
+  }
   return (
     <div>
       <BchatIconButton
@@ -350,7 +379,12 @@ export const MessageContentWithStatuses = (props: Props) => {
       >
         {multiSelectMode && <div className="module-message--multiSelect-overlay" />}
         {!isIncoming && (
-          <Flex container={true} width="165px" justifyContent="flex-end">
+          <Flex
+            container={true}
+            width="165px"
+            justifyContent="flex-end"
+            className="message-hover-actions message-hover-actions--outgoing"
+          >
             {threeDotVisible && (
              <div className='module-message--three-dot'>
                <ThreeDotsMenu darkMode={darkMode} onHandleContextMenu={onHandleContextMenu} />
@@ -410,7 +444,11 @@ export const MessageContentWithStatuses = (props: Props) => {
           />
         )}
         {isIncoming && (
-          <Flex container={true} width="165px">
+          <Flex
+            container={true}
+            width="165px"
+            className="message-hover-actions message-hover-actions--incoming"
+          >
             {emojiIsVisible && (
               <StyledRecentReactionWrapper>
                 <RecentReacts

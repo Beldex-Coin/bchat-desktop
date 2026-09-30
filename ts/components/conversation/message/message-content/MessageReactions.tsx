@@ -1,5 +1,6 @@
 import  { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import classNames from 'classnames';
 import { MessageRenderingProps } from '../../../../models/messageType';
 import { isEmpty, isEqual } from 'lodash';
 import _ from 'lodash';
@@ -76,6 +77,7 @@ const Reactions = (props: ReactionsProps): ReactElement => {
   return (
     <StyledMessageReactions
       container={true}
+      className={classNames('message-reactions', inModal && 'message-reactions--modal')}
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}
@@ -100,6 +102,7 @@ const CompressedReactions = (props: ReactionsProps): ReactElement => {
   return (
     <StyledMessageReactions
       container={true}
+      className={classNames('message-reactions', inModal && 'message-reactions--modal')}
       flexWrap={inModal ? 'nowrap' : 'wrap'}
       alignItems={'center'}
       inModal={inModal}

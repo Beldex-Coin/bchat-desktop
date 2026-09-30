@@ -11,6 +11,8 @@ interface WaveformBarsProps {
   progressColor?: string;
   waveColor?: string;
   isDragging?: boolean;
+  // width of the bar strip in px (the number of bars follows from it)
+  width?: number;
   onMouseDown:(e: React.MouseEvent<HTMLDivElement>)=>void;
 // onClick:any;
 onMouseMove:(e: React.MouseEvent<HTMLDivElement>)=>void;
@@ -28,12 +30,13 @@ const WaveformBars: React.FC<WaveformBarsProps> = ({
   progressColor = '#2F8FFF',
   waveColor = '#16191F',
   isDragging = false,
+  width = 300,
   onMouseDown,
   onMouseMove,
   onMouseUp,
   onMouseLeave,
 }) => {
-  const totalBars = useMemo(() => Math.floor(300 / (barWidth + gap)), [barWidth, gap]);
+  const totalBars = useMemo(() => Math.floor(width / (barWidth + gap)), [width, barWidth, gap]);
   const step = useMemo(() => Math.max(1, Math.floor(peaks.length / totalBars)), [peaks, totalBars]);
 
   const bars = useMemo(() => {
@@ -56,7 +59,7 @@ const WaveformBars: React.FC<WaveformBarsProps> = ({
   const cursorX = preventCursorDisable * (barWidth + gap);
 
   return (
-    <div className="waveform-container"  onMouseDown={onMouseDown}
+    <div className="waveform-container" style={width !== 300 ? { width: `${width}px` } : undefined} onMouseDown={onMouseDown}
     onMouseMove={onMouseMove}
     onMouseUp={onMouseUp}
     onMouseLeave={onMouseLeave}>

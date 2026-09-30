@@ -48,8 +48,16 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const [progressTime,setProgressTime] =useState(audioRef.current?.audio?.current.currentTime);
 
   const isDraggingRef = useRef(false);
-  const waveColor = direction === 'incoming' ? (darkMode ? '#16191F' : '#ACACAC') : '#1C581C';
-  const progressColor = direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
+  // Dark theme follows the new design (Figma 1:47233): grey (received) / green (sent) bars,
+  // played part in white.
+  const waveColor = darkMode
+    ? direction === 'incoming'
+      ? '#737373'
+      : '#1BB51E'
+    : direction === 'incoming'
+    ? '#ACACAC'
+    : '#1C581C';
+  const progressColor = darkMode ? '#F4F4F4' : direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
   const beepRef = useRef<HTMLAudioElement | null>(null);
   const isManualTriggerForPause=useRef<boolean>(false)
   const audioContextDuration=isSameMessage?audioRef.current?.audio?.current.duration:duration;
@@ -244,27 +252,48 @@ const debouncedPlayNextMessage = useMemo(() =>
   : 0
 
   return (
-    <div className="audio-message" dir="ltr">
+    <div className={classNames('audio-message', `audio-message--${direction}`)} dir="ltr">
       <Flex container justifyContent="center" alignItems="center" height="30px" margin="10px 0">
-        <BchatIconButton
-          iconType={isPlaying ? 'pause' : 'play'}
-          iconSize="medium"
-          iconColor="#F0F0F0"
-          onClick={()=>handlePlayPause(true) }
-          btnRadius="40px"
-          btnBgColor="#2F8FFF"
-          padding="7px"
-        />
-        <SpacerSM />
-        <div
-          role="button"
-          onClick={changeSpeed}
-          className={classNames('play-speed-btn', direction === 'incoming' && 'play-speed-btn-incoming')}
-        >
-          {playbackSpeed}x
-        </div>
-        <SpacerSM />
+        <span className="audio-play-btn">
+          {darkMode ? (
+            // Figma 18:7359: 26px play button - green on received voice notes, white on sent ones
+            <BchatIconButton
+              iconType={isPlaying ? 'pause' : 'play'}
+              iconSize={12}
+              iconColor="#0B0B0B"
+              onClick={() => handlePlayPause(true)}
+              btnRadius="50%"
+              btnBgColor={direction === 'incoming' ? '#00BC33' : '#F4F4F4'}
+              padding="7px"
+            />
+          ) : (
+            <BchatIconButton
+              iconType={isPlaying ? 'pause' : 'play'}
+              iconSize="medium"
+              iconColor="#F0F0F0"
+              onClick={() => handlePlayPause(true)}
+              btnRadius="40px"
+              btnBgColor="#2F8FFF"
+              padding="7px"
+            />
+          )}
+        </span>
+        {!darkMode && <SpacerSM />}
+        {/* dark: the speed chip only shows while the note plays (or once the speed was changed) */}
+        {(!darkMode || (isSameMessage && isPlaying) || playbackSpeed !== 1) && (
+          <div
+            role="button"
+            onClick={changeSpeed}
+            className={classNames('play-speed-btn', direction === 'incoming' && 'play-speed-btn-incoming')}
+          >
+            {playbackSpeed}x
+          </div>
+        )}
+        {!darkMode && <SpacerSM />}
         <WaveformBars
+          width={darkMode ? 185 : 300}
+          barWidth={darkMode ? 2 : undefined}
+          gap={darkMode ? 1 : undefined}
           peaks={peaks}
           progress={barProgressValue}
           onMouseDown={handleSeekStart}
@@ -275,7 +304,10 @@ const debouncedPlayNextMessage = useMemo(() =>
           waveColor={waveColor}
           progressColor={progressColor}
         />
-        <div style={{ wordBreak: 'keep-all', width: '40px', marginLeft: '5px' }}>
+        <div
+          className="audio-message__time"
+          style={darkMode ? undefined : { wordBreak: 'keep-all', width: '40px', marginLeft: '5px' }}
+        >
           {remainingTime}
         </div>
       </Flex>
