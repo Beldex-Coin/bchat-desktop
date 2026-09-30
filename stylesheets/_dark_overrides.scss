@@ -2707,6 +2707,84 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 }
 
 // =================================================================================================
+// Calls: incoming call card (Figma 1:55967) - labelled chamfer buttons instead of round icons
+// =================================================================================================
+.call-label {
+  display: none;
+}
+#{$dark} .incoming-call {
+  padding: 30px 20px 34px;
+  background: #0e0e0e;
+  border: 1px solid #333;
+
+  .module-avatar {
+    margin: 0 auto;
+  }
+  .bchat-modal__button-group {
+    justify-content: center;
+    gap: 18px;
+  }
+}
+#{$dark} .incoming-call > div > div:nth-of-type(2) {
+  // caller name
+  font-size: 26px;
+  color: $dark-white;
+}
+#{$dark} .incoming-call > div > div:nth-of-type(3) {
+  // "Incoming..." status
+  font-family: $dark-font-data !important;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: $dark-green;
+}
+#{$dark} .hangingBtn--decline,
+#{$dark} .hangingBtn--accept {
+  position: relative;
+  isolation: isolate;
+  width: auto;
+  height: 46px;
+  padding: 0 24px;
+  clip-path: $dark-cut-btn;
+
+  svg {
+    display: none;
+  }
+  .call-label {
+    display: inline;
+    font-family: $dark-font-data !important;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    clip-path: $dark-cut-btn;
+  }
+  &:hover {
+    opacity: 1;
+    filter: brightness(1.2);
+  }
+}
+#{$dark} .hangingBtn--decline {
+  background-color: #6b1b1b !important;
+  color: $dark-danger;
+
+  &::before {
+    background-color: #2a0c0c;
+  }
+}
+#{$dark} .hangingBtn--accept {
+  background-color: #0b6b1d !important;
+  color: $dark-green;
+
+  &::before {
+    background-color: #0a1f0c;
+  }
+}
+
+// =================================================================================================
 // Fixes from the first run-through (screenshots 26 Sep)
 // =================================================================================================
 
@@ -4353,6 +4431,169 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   &--selected .theme-card__dot {
     background: $dark-green;
     border-color: $dark-green;
+  }
+}
+
+// =================================================================================================
+// Calls in the conversation (Figma 1:60812 / 1:59453 audio, 1:59070 / 1:58684 video, 4:2963 floating):
+// ink card on a #222 line, chamfered 39px -> 52px control squares (top-end 8px cut, #222@50% on a
+// #444 line, round device-menu badge), red hang-up square, Inter 22 names, mono timer.
+// =================================================================================================
+$dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+
+#{$dark} .voiceCall {
+  > div {
+    background-color: rgba(11, 11, 11, 0.85);
+    border: 1px solid #222;
+  }
+  // collapse / expand toggle in the card corner
+  > div > div:first-child .bchat-icon-button {
+    width: 36px;
+    height: 36px;
+    background: rgba(34, 34, 34, 0.5) !important;
+    border: 1px solid #444;
+
+    &:hover {
+      background: #333 !important;
+    }
+  }
+  .call-name {
+    height: auto;
+    margin-top: 12px;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  video {
+    border-radius: 0 !important;
+  }
+}
+#{$dark} .dragHandle {
+  background-color: rgba(11, 11, 11, 0.9);
+  border: 1px solid #222;
+}
+
+// control row (name + time on the left, controls, hang-up)
+#{$dark} .call-controls {
+  padding: 10px 18px;
+  background: transparent !important;
+  gap: 16px;
+
+  .call-controls__name {
+    width: auto;
+    max-width: 200px;
+    font-family: $dark-font-data !important;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ebebeb;
+  }
+  > div:first-child > div:not(.call-controls__name) {
+    margin-top: 4px;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #acacac;
+  }
+  > div:nth-child(2) {
+    gap: 13px;
+  }
+}
+// in the full-screen / expanded views the row sits on a dark strip
+#{$dark} .voiceCall.expandView .call-controls,
+#{$dark} .blur-layer ~ * .call-controls {
+  background: rgba(11, 11, 11, 0.85) !important;
+  border: 1px solid #222;
+}
+
+#{$dark} .call-toggle {
+  position: relative;
+  isolation: isolate;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  background: transparent !important;
+  border: 0;
+  opacity: 1;
+
+  // line (::before) + fill (::after), both chamfered, so the device badge can overhang
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    clip-path: $dark-cut-call;
+  }
+  &::before {
+    inset: 0;
+    background: #444;
+  }
+  &::after {
+    inset: 1px;
+    background: #161616;
+  }
+  &:hover::after {
+    background: #262626;
+  }
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+  > svg path {
+    fill: #ebebeb;
+  }
+}
+#{$dark} .call-toggle__arrow {
+  top: auto;
+  bottom: -6px;
+  inset-inline-end: -6px;
+  width: 20px;
+  height: 20px;
+  background: #222 !important;
+  border: 1px solid #0b0b0b;
+  border-radius: 50% !important;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+  svg path {
+    fill: #ebebeb;
+  }
+  &:hover {
+    background: #333 !important;
+  }
+}
+
+// hang-up (Figma "call cut" square: #290f0f on a red line)
+#{$dark} .call-hangup {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background-color: $dark-danger !important;
+  clip-path: $dark-cut-call;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    background: #290f0f;
+    clip-path: $dark-cut-call;
+  }
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+  svg path {
+    fill: $dark-danger;
+  }
+  &:hover {
+    opacity: 1;
+    filter: brightness(1.2);
   }
 }
 

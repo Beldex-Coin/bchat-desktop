@@ -228,7 +228,7 @@ export const HangUpButton = () => {
 
   return (
     <div
-      className="hangingBtn"
+      className="hangingBtn call-hangup"
       role="button"
       style={{
         backgroundColor: '#FC3B3B',
@@ -419,14 +419,19 @@ export const CallWindowControls = ({
     };
   }, [isFullScreen, setMakeVisibleTrue, setMakeVisibleFalse]);
   return (
-    <StyledCallWindowControls makeVisible={makeVisible} isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView}>
+    <StyledCallWindowControls
+      className="call-controls"
+      makeVisible={makeVisible}
+      isFullScreen={isFullScreen}
+      isCallModalExpandView={isCallModalExpandView}
+    >
       <Flex
         container={true}
         flexDirection="column"
         alignItems="flex-start"
         justifyContent="center"
       >
-        <UserNameTxtBold>{selectedName}</UserNameTxtBold>
+        <UserNameTxtBold className="call-controls__name">{selectedName}</UserNameTxtBold>
 
         <RingingLabel />
         <ConnectingLabel />

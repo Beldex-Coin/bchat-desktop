@@ -354,7 +354,7 @@ export const InConversationCallContainer = () => {
                       isBnsHolder={selectedConversation?.isBnsHolder}
                     />
                   <SpacerXS />
-                  <UserNameTxt>
+                  <UserNameTxt className="call-name">
                     {validateMemberName(
                       selectedConversation?.profileName || selectedConversation?.id
                     )}
@@ -391,7 +391,7 @@ export const InConversationCallContainer = () => {
                       isBnsHolder={conversation?.attributes?.isBnsHolder}
                     />
                   <SpacerXS />
-                  <UserNameTxt>
+                  <UserNameTxt className="call-name">
                     {validateMemberName(conversation.attributes.profileName)}
                   </UserNameTxt>
                 </CenteredAvatarInConversation>

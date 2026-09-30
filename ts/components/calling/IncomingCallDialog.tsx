@@ -98,7 +98,7 @@ export const IncomingCallDialog = () => {
     return (
 
       <div className="bchat-dialog modal">
-        <div className="bchat-modal">
+        <div className="bchat-modal incoming-call">
           <div style={{width:'400px'}}>
           <IncomingCallAvatarContainer>
             <SpacerLG />
@@ -110,25 +110,29 @@ export const IncomingCallDialog = () => {
           <SpacerSM />
           <div className="bchat-modal__button-group">
             <div
-              className="hangingBtn"
+              className="hangingBtn hangingBtn--decline"
               role="button"
+              aria-label={window.i18n('decline')}
               style={{
                 backgroundColor: '#FC3B3B',
               }}
               onClick={handleDeclineIncomingCall}
             >
               <BchatIcon iconSize={27} iconType="hangup" clipRule="evenodd" fillRule="evenodd" />
+              <span className="call-label">{window.i18n('decline')}</span>
             </div>
             <SpacerLG/>
             <div
-              className="hangingBtn"
+              className="hangingBtn hangingBtn--accept"
               role="button"
+              aria-label={window.i18n('accept')}
               style={{
                 backgroundColor: '#108D32',
               }}
               onClick={handleAcceptIncomingCall}
             >
               <BchatIcon iconSize={27} iconType="hangIn" clipRule="evenodd" fillRule="evenodd" />
+              <span className="call-label">{window.i18n('accept')}</span>
             </div>
           </div>
           </div>
