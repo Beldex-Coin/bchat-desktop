@@ -16,7 +16,7 @@ import {
   showLeaveGroupByConvoId,
   showRemoveModeratorsByConvoId,
   // showUpdateGroupMembersByConvoId,
-  // showUpdateGroupNameByConvoId,
+  showUpdateGroupNameByConvoId,
 } from '../../interactions/conversationInteractions';
 import { Constants } from '../../bchat';
 import { closeRightPanel } from '../../state/ducks/conversations';
@@ -246,7 +246,12 @@ const HeaderItem = () => {
           onClick={() => dispatch(closeRightPanel())}
           className="group-settings-header-closeBox"
         >
-          <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+          <span className="light-only-inline">
+            <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+          </span>
+          <span className="dark-only-inline">
+            <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+          </span>
         </span>
       </Flex>
       <SpacerLG />
@@ -566,13 +571,18 @@ export const BchatRightPanelWithDetails = () => {
               <div className="id-wrapper">
                 <Flex container={true} flexDirection="row" alignItems="flex-start">
                   <span className="txt">{id}</span>
-                  <BchatIconButton
-                    iconType={'copy'}
-                    iconSize={0}
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    onClick={handleCopy}
-                  />
+                  <span className="light-only-inline">
+                    <BchatIconButton
+                      iconType={'copy'}
+                      iconSize={0}
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      onClick={handleCopy}
+                    />
+                  </span>
+                  <span className="dark-only-inline copy-square" role="button" onClick={handleCopy}>
+                    <BchatIcon iconType="copy" iconSize={17} iconColor="#00BC33" />
+                  </span>
                   {/* <CopyIconButton iconSize={20} content={id} /> */}
                 </Flex>
               </div>
@@ -583,16 +593,30 @@ export const BchatRightPanelWithDetails = () => {
               <h2 data-testid="right-panel-group-name">{name}</h2>
               {showUpdateGroupNameButton && (
                 <div>
-                  <BchatIconButton
-                    iconType="pencil"
-                    iconSize="medium"
-                    iconColor="#128b17"
-                    onClick={() => {
-                      // await showUpdateGroupNameByConvoId(id);
-                      setEdit(true);
-                    }}
-                    dataTestId="edit-profile-icon"
-                  />
+                  <span className="light-only-inline">
+                    <BchatIconButton
+                      iconType="pencil"
+                      iconSize="medium"
+                      iconColor="#128b17"
+                      onClick={() => {
+                        // await showUpdateGroupNameByConvoId(id);
+                        setEdit(true);
+                      }}
+                      dataTestId="edit-profile-icon"
+                    />
+                  </span>
+                  <span className="dark-only-inline">
+                    <BchatIconButton
+                      iconType="pencil"
+                      iconSize={16}
+                      iconColor="#00BC33"
+                      onClick={() => {
+                        // dark: rename in the "Change group name" popup (Figma 1:63151)
+                        void showUpdateGroupNameByConvoId(id);
+                      }}
+                      dataTestId="edit-group-name-icon"
+                    />
+                  </span>
                 </div>
               )}
             </div>
@@ -610,17 +634,34 @@ export const BchatRightPanelWithDetails = () => {
                 onClick={() => setExpanded(!expanded)}
               >
                 <Flex container={true} flexDirection="row" alignItems="center">
-                  <BchatIcon
-                    iconType={'chatTimer'}
-                    iconSize={17}
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  />
+                  <span className="light-only-inline">
+                    <BchatIcon
+                      iconType={'chatTimer'}
+                      iconSize={17}
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                    />
+                  </span>
+                  <span className="dark-only-inline">
+                    <BchatIcon iconType="chatTimer" iconSize={21} iconColor="#EBEBEB" fillRule="evenodd" clipRule="evenodd" />
+                  </span>
                   <MenuWrapper style={{ fontSize: '16px', fontWeight: 300 }}>
                     {window.i18n('disappearingMessages')}
                   </MenuWrapper>
                 </Flex>
-                <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} flipInRtl={true} />
+                <span className="light-only-inline">
+                  <BchatIcon iconType="chevron" iconSize="small" iconRotation={expanded ? 0 : 268} flipInRtl={true} />
+                </span>
+                <span className="dark-only-inline">
+                  <BchatIcon
+                    iconType="chevronRight"
+                    iconSize={15}
+                    iconColor="#ACACAC"
+                    iconRotation={expanded ? 270 : 0}
+                    flipInRtl={true}
+                    fillRule="evenodd" clipRule="evenodd"
+                  />
+                </span>
                 {/* <BchatDropdown
                 labelIcon={'chatTimer'}
                 label={window.i18n('disappearingMessages')}
@@ -717,21 +758,45 @@ export const BchatRightPanelWithDetails = () => {
                 <Flex container={true} flexDirection="row">
                   {removeMem || addMem ? (
                     <>
-                      <BchatIconButton
-                        iconType="xWithCircle"
-                        iconSize={20}
-                        onClick={() => {
-                          setRemoveMem(false);
-                          setAddMem(false);
-                        }}
-                      />
+                      <span className="light-only-inline">
+                        <BchatIconButton
+                          iconType="xWithCircle"
+                          iconSize={20}
+                          onClick={() => {
+                            setRemoveMem(false);
+                            setAddMem(false);
+                          }}
+                        />
 
-                      <BchatIconButton
-                        iconType="circleFillTick"
-                        iconSize={20}
-                        iconColor="#108D32"
-                        onClick={() => onClickOK()}
-                      />
+                        <BchatIconButton
+                          iconType="circleFillTick"
+                          iconSize={20}
+                          iconColor="#108D32"
+                          onClick={() => onClickOK()}
+                        />
+                      </span>
+                      {/* dark (Figma 1:62093): small grey cancel square + green confirm square */}
+                      <span className="dark-only-inline member-actions">
+                        <span
+                          className="mini-square mini-square--cancel"
+                          role="button"
+                          aria-label={window.i18n('cancel')}
+                          onClick={() => {
+                            setRemoveMem(false);
+                            setAddMem(false);
+                          }}
+                        >
+                          <BchatIcon iconType="x" iconSize={8} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+                        </span>
+                        <span
+                          className="mini-square mini-square--ok"
+                          role="button"
+                          aria-label={window.i18n('ok')}
+                          onClick={() => onClickOK()}
+                        >
+                          <BchatIcon iconType="check" iconSize={12} strokeColor="#0A0A0A" strokeWidth="2" />
+                        </span>
+                      </span>
                     </>
                   ) : (
                     <>
@@ -789,7 +854,7 @@ export const BchatRightPanelWithDetails = () => {
           )}
 
           {isGroup && (
-            <div style={{ width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
+            <div className="leave-wrap" style={{ width: '90%', borderRadius: '12px' }} onClick={deleteConvoAction}>
               <BchatButton
                 text={leaveGroupString}
                 iconType={isPublic ? 'delete' : 'leaveGroup'}
@@ -811,16 +876,28 @@ export const BchatRightPanelWithDetails = () => {
           )}
           <SpacerMD />
           <div className="hr-line" />
-          <Flex container={true} justifyContent="space-between" width="100%">
+          <Flex container={true} justifyContent="space-between" alignItems="center" width="100%" className="media-row">
             <span className="group-settings-media-txt">{window.i18n('mediaDocs')}</span>
-            <BchatIconButton
-              iconType={'chevron'}
-              iconSize={14}
-              iconRotation={268}
-              flipInRtl={true}
-              iconColor="#A7A7BA"
-              onClick={() => dispalyMedia(true)}
-            />
+            <span className="light-only-inline">
+              <BchatIconButton
+                iconType={'chevron'}
+                iconSize={14}
+                iconRotation={268}
+                flipInRtl={true}
+                iconColor="#A7A7BA"
+                onClick={() => dispalyMedia(true)}
+              />
+            </span>
+            <span className="dark-only-inline">
+              <BchatIconButton
+                iconType="chevronRight"
+                iconSize={15}
+                iconColor="#ACACAC"
+                flipInRtl={true}
+                onClick={() => dispalyMedia(true)}
+                fillRule="evenodd" clipRule="evenodd"
+              />
+            </span>
           </Flex>
           <SpacerSM />
 
@@ -838,6 +915,7 @@ export const BchatRightPanelWithDetails = () => {
             alignItems="center"
             height="70px"
             width="100%"
+            className="media-header"
             style={{ borderRadius: '16px', background: 'var(--color-profile-header-bg)' }}
           >
             <span
@@ -848,7 +926,9 @@ export const BchatRightPanelWithDetails = () => {
               <BchatIconButton
                 iconType={'KeyboardBackspaceArrow'}
                 iconSize={28}
-                iconColor={darkMode ? '#A9AEBA' : '#3E4A53'}
+                iconColor={darkMode ? '#ACACAC' : '#3E4A53'}
+                fillRule={darkMode ? 'evenodd' : undefined}
+                clipRule={darkMode ? 'evenodd' : undefined}
               />
             </span>
             <span className="group-settings-header-titleTxt">{window.i18n('media')+'&'+window.i18n('documents')}</span>

@@ -1,7 +1,7 @@
 // import React from 'react';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
-import { BchatIconButton } from '../icon';
+import { BchatIconButton, BchatIcon } from '../icon';
 
 import classNames from 'classnames';
 
@@ -78,7 +78,13 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
             }}
             className="contact-list-header-closeBox"
           >
-            <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+            <span className="light-only-inline">
+              <BchatIconButton iconType={'xWithCircle'} iconSize={26} iconColor="var(--color-text)" />
+            </span>
+            {/* dark theme: Figma 71:10208 light-grey X in a #222 square */}
+            <span className="dark-only-inline">
+              <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+            </span>
           </span>
         </Flex>
       </div>

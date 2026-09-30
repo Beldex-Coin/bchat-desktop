@@ -37,6 +37,7 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
     <BchatWrapperModal
       title={titleText}
       onClose={closeDialog}
+      additionalClassName="card-dialog"
       okButton={{
         text: okText,
         onClickOkHandler: () => onClickOK(),

@@ -83,6 +83,7 @@ export const RemoveModeratorsDialog = (props: Props) => {
   return (
     <BchatWrapperModal
       title={title}
+      additionalClassName="card-dialog moderators-dialog"
       isloading={removingInProgress}
       okButton={{
         text: i18n('remove'),

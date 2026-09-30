@@ -75,7 +75,10 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
   public render() {
     const okText = window.i18n('ok');
     const cancelText = window.i18n('cancel');
-    const titleText = window.i18n('updateGroupDialogTitle', [this.convo.getName() || window.i18n('unknown')]);
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const titleText = isDark
+      ? window.i18n('changeGroupName')
+      : window.i18n('updateGroupDialogTitle', [this.convo.getName() || window.i18n('unknown')]);
 
     const isAdmin = this.convo.isPublic()
       ? false // disable editing of opengroup rooms as we don't handle them for now
@@ -86,7 +89,9 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         title={titleText}
         showHeader={true}
         showExitIcon={false}
-        additionalClassName="update-group-dialog"
+        additionalClassName={
+          isDark ? 'update-group-dialog card-dialog card-dialog--rename' : 'update-group-dialog card-dialog'
+        }
         okButton={{
           text: okText,
           onClickOkHandler: () => this.onClickOK(),
@@ -101,9 +106,9 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
         }}
        
       >
-       <div style={{minWidth:'400px'}}>
+       <div style={isDark ? undefined : { minWidth: '400px' }}>
         {this.renderAvatar()}
-        <SpacerMD />
+        {!isDark && <SpacerMD />}
 
         {isAdmin ? (
           <div className="groupNameBox">
@@ -119,15 +124,24 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
               autoFocus={true}
               data-testid="group-name-input"
             />
-            <BchatIconButton
-              onClick={() => this.setState({ groupName: "" })}
-              iconType={'xWithCircle'}
-              iconSize={24}
-            />{' '}
+            {isDark ? (
+              <BchatIconButton
+                onClick={() => this.setState({ groupName: '' })}
+                iconType={'xWithSquare'}
+                iconSize={24}
+                iconColor="#EBEBEB"
+              />
+            ) : (
+              <BchatIconButton
+                onClick={() => this.setState({ groupName: '' })}
+                iconType={'xWithCircle'}
+                iconSize={24}
+              />
+            )}{' '}
           </div>
         ) : null}
        </div>
-        <SpacerLG />
+        {!isDark && <SpacerLG />}
       </BchatWrapperModal>
     );
   }

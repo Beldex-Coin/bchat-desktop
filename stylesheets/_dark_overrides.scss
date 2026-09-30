@@ -2355,6 +2355,358 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 }
 
 // =================================================================================================
+// Right panel: Group Info (Figma 1:72, 1:573), Profile Info (1:54541), Media & Documents (1:1092).
+// Panel 323 wide -> 431; header bar 300x61 -> 400x81; sections 284 -> 379. Figma / 0.75.
+// =================================================================================================
+#{$dark} .group-settings,
+#{$dark} .contact-list {
+  width: 431px;
+  max-width: 431px;
+  padding: 15px 16px;
+  background: #0b0b0b;
+  border: 0;
+  border-inline-start: 1px solid #222;
+}
+#{$dark} .group-settings {
+  overflow-y: auto;
+
+  // header bar: title + light square close
+  .group-settings-header-title-wrapper {
+    height: 81px !important;
+    padding: 0 24px !important;
+    background-color: rgba(26, 26, 26, 0.75);
+    border: 0;
+  }
+  .group-settings-header-titleTxt {
+    font-family: $dark-font-ui !important;
+    font-size: 20px;
+    font-weight: 400;
+    color: #ebebeb;
+  }
+  .group-settings-header-title-wrapper .group-settings-header-closeBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(235, 235, 235, 0.8);
+    border: 1px solid #444;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ebebeb;
+    }
+  }
+  .group-settings-header-avatarBox {
+    margin-top: 24px;
+
+    p {
+      margin-top: 18px;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ebebeb;
+    }
+  }
+
+  // group name + green pencil (and the inline rename field)
+  .group-settings-nameEditBox {
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    h2 {
+      margin: 0;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ebebeb;
+    }
+  }
+  .profile-name {
+    justify-content: center;
+    gap: 8px;
+
+    .inputBox {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 12px;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 0;
+    }
+    // the base input draws its own 42px bordered box - drop it so only the one field line shows
+    input {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      outline: 0;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 600;
+      color: #ebebeb;
+    }
+    .saveIcon svg path {
+      fill: #00a638;
+    }
+  }
+
+  // Profile Info: "Your BChat ID" section (291x152 -> 388x203) with the boxed id (255x96 -> 340x128)
+  .group-settings-header-chatIdBox {
+    width: 100%;
+    margin-top: 24px;
+    padding: 16px 24px 20px;
+    background-color: #0b0b0b;
+    border: 1px solid #222;
+
+    p {
+      margin: 0 0 16px;
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 500;
+      color: #ebebeb;
+    }
+    .id-wrapper {
+      padding: 16px 16px 16px 22px;
+      background: #111;
+      border: 1px solid #444;
+
+      .txt {
+        flex: 1;
+        font-family: $dark-font-ui !important;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 1.6;
+        color: #ebebeb;
+        word-break: break-all;
+      }
+    }
+    .copy-square {
+      margin-inline-start: 10px;
+      cursor: pointer;
+    }
+  }
+
+  // Disappearing message row (284x38 -> 379x51) and its option grid (1:573)
+  .disppear-wrapper {
+    height: 51px;
+    margin-top: 22px;
+    padding: 0 20px 0 22px;
+    background: $dark-raised;
+    border: 0;
+
+    > div {
+      gap: 14px;
+    }
+    div[class*='MenuWrapper'],
+    > div > div:last-child {
+      font-family: $dark-font-ui !important;
+      font-size: 16px !important;
+      font-weight: 300 !important;
+      color: #ebebeb;
+    }
+  }
+  .disappear-option {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px 4px;
+    margin: 14px 0 6px;
+
+    span {
+      padding: 6px 8px;
+      font-family: $dark-font-data !important;
+      font-size: 15px;
+      color: #acacac;
+      white-space: nowrap;
+
+      &:hover {
+        background: $dark-raised;
+        color: #ebebeb;
+      }
+    }
+  }
+
+  // Group Members box (284x263 -> 379x351): title, white "Add +", rows 72px apart
+  .grp_btn_wrapper {
+    margin: 17px 0;
+    padding: 21px 20px 12px 26px;
+    background: #0b0b0b;
+    border: 1px solid $dark-raised;
+
+    .group-settings-item {
+      font-family: $dark-font-ui !important;
+      font-size: 18px;
+      font-weight: 500;
+      color: #ebebeb;
+    }
+    .add-btn {
+      height: 31px;
+      padding: 0 12px 0 10px;
+      background: #ebebeb;
+      color: #0b0b0b;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      font-family: $dark-font-data !important;
+      font-size: 12px;
+      font-weight: 600;
+
+      .invite-friends-container {
+        display: none;
+      }
+      &:hover {
+        background: #d6d6d6;
+      }
+    }
+    .list-wrapper {
+      max-height: 290px;
+      padding-top: 8px;
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #444;
+      }
+    }
+    .bchat-member-item {
+      height: 72px;
+      padding: 0;
+      border-bottom: 1px solid #222;
+      background: transparent !important;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+    .bchat-member-item__name {
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      color: #ebebeb;
+    }
+    .bchat-member-item_admin-txt {
+      margin-inline-end: 10px;
+      font-family: $dark-font-ui !important;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #00d53a;
+    }
+  }
+
+  // Leave Group (137x32 -> 183x43), red chamfer
+  .leave-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100% !important;
+    margin-bottom: 4px;
+
+    .bchat-button {
+      width: 183px;
+      min-width: 0;
+      height: 43px;
+      padding: 0 14px;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0;
+      color: $dark-danger;
+
+      svg path {
+        fill: $dark-danger;
+      }
+    }
+  }
+
+  // divider + "Media, docs" + thumbnails (68 -> 91px, 3 across)
+  .hr-line {
+    height: 4px;
+    margin: 12px 0 18px;
+    background: $dark-raised;
+  }
+  .media-row {
+    padding: 0 6px 0 8px;
+  }
+  .group-settings-media-txt {
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #acacac;
+  }
+  .module-attachment-section__items-media {
+    column-gap: 27px;
+    row-gap: 15px;
+  }
+  .module-media-grid-item,
+  .module-media-grid-item__image {
+    width: 91px !important;
+    height: 89px !important;
+    object-fit: cover;
+  }
+
+  // Media & Documents full view: back arrow header, Media / Documents tabs (150x40 -> 200x53)
+  .media-header {
+    height: 81px !important;
+    padding: 0 20px;
+    background: rgba(26, 26, 26, 0.75) !important;
+
+    .group-settings-header-closeBox {
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border: 0;
+    }
+  }
+  .module-media-gallery__tab-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 17px;
+  }
+  .module-media-gallery__tab {
+    height: 53px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $dark-font-ui !important;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ebebeb;
+    opacity: 1;
+
+    &--active {
+      background: $dark-raised;
+    }
+  }
+
+  // "No Media" (Figma no_media artwork 183x136 -> 244x181, raster-free SVG file)
+  .module-empty-state {
+    font-family: $dark-font-data !important;
+    color: #acacac;
+
+    .noMediaImg {
+      width: 244px;
+      height: 181px;
+      background-image: url('../images/dark-theme/empty-media.svg');
+      background-size: contain;
+    }
+    p {
+      margin-top: 12px;
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #acacac;
+    }
+  }
+}
+
+// =================================================================================================
 // Fixes from the first run-through (screenshots 26 Sep)
 // =================================================================================================
 
@@ -4287,6 +4639,67 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
 }
 
+// ---- Change group name (UpdateGroupNameDialog, Figma 1:63151 / 109:9107): 435x206 -> 580px card,
+// Inter 16.5 -> 22 title 29px in, one 80px #111/#444 field 20px under it with the square clear icon
+// 19px from its end, then Cancel + Ok (250x62, 15px apart) 31px below, left-aligned with the field ----
+#{$dark} .card-dialog.card-dialog--rename {
+  .bchat-modal {
+    width: 580px;
+    padding: 27px 26px 26px 28px;
+  }
+  .bchat-modal__header {
+    margin: 0 0 20px;
+  }
+  .bchat-modal__header__title {
+    font-size: 22px;
+    font-weight: 400;
+  }
+  .bchat-modal__body,
+  .bchat-modal__centered {
+    width: 100%;
+  }
+  .bchat-modal__centered > div {
+    width: 100%;
+  }
+  .groupNameBox {
+    padding: 0 19px 0 27px;
+
+    .bchat-icon-button {
+      padding: 0;
+      background: none;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  .bchat-modal-footer {
+    grid-auto-columns: 250px;
+    justify-content: start;
+    gap: 15px;
+    margin-top: 31px;
+
+    .bchat-button {
+      height: 62px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+}
+#{$dark} .close-square.close-square--dark {
+  top: 20px;
+  inset-inline-end: 19px;
+  width: 32px;
+  height: 32px;
+  background: rgba(34, 34, 34, 0.5);
+  border: 1px solid #444;
+
+  &:hover {
+    background: #333;
+  }
+}
+
 // ---- Settings > Hops (Figma 324:4824 "3 hops", 324:4968 "1 hop", 324:5105 "no hops") ----
 // The card (755 -> 1007px, #0b0b0b@75% on a #222 line) sits centred in the page below the header,
 // a little above the middle (Figma ~38 -> 50px). 53px side padding, mono 20/34 #acacac description,
@@ -4386,6 +4799,90 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   font-size: 16px;
   line-height: 21px;
   color: #ebebeb;
+}
+
+// ---- Right panel remove-members mode (Figma 1:62093): small cancel / confirm squares ----
+#{$dark} .member-actions {
+  gap: 8px;
+}
+#{$dark} .mini-square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  &--cancel {
+    background: #737373;
+
+    &:hover {
+      background: #8d8d8d;
+    }
+  }
+  &--ok {
+    background: $dark-green;
+
+    &:hover {
+      background: $dark-green-hover;
+    }
+  }
+}
+
+// ---- Remove Moderators (Figma 71:7981): boxed member list, picked rows framed green ----
+#{$dark} .card-dialog.moderators-dialog {
+  .moderator-removeModeratorBox,
+  .moderator-removeModeratorBox .innerBox,
+  .moderator-removeModeratorBox .memberListBox {
+    width: 100%;
+    margin: 0;
+  }
+  .moderator-removeModeratorBox .innerBox {
+    position: relative;
+    isolation: isolate;
+    padding: 5px 16px 12px;
+    background-color: #222;
+    clip-path: $dark-cut-picker-box;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background-color: #111;
+      clip-path: $dark-cut-picker-box;
+    }
+  }
+  .memberListBox {
+    max-height: 420px;
+    overflow-y: auto;
+  }
+  .bchat-member-item {
+    position: relative;
+    isolation: isolate;
+    height: 60px;
+    margin: 4px 0;
+    padding: 0 20px 0 12px;
+    background: transparent !important;
+    clip-path: $dark-cut-picker-row;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      z-index: -1;
+      background: #111;
+      clip-path: $dark-cut-picker-row;
+    }
+    &.selected {
+      background: rgba(0, 188, 51, 0.7) !important;
+    }
+  }
+  .bchat-member-item__name {
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    color: #ebebeb;
+  }
 }
 
 // =================================================================================================

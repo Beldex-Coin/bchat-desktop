@@ -75,6 +75,7 @@ export const AddModeratorsDialog = (props: Props) => {
   return (
     <BchatWrapperModal
       showHeader={false}
+      additionalClassName="card-dialog moderators-add-dialog"
       okButton={{
         text: i18n('add'),
         onClickOkHandler: addAsModerator,
