@@ -50,3 +50,6 @@
 @import '_bchat_password';
 
 @import 'bchat_display_seed';
+
+// Dark-theme layer - keep last so it overrides everything above.
+@import 'dark_overrides';

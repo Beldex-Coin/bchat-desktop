@@ -2,6 +2,15 @@
 import { icons, BchatIconSize, BchatIconType } from '.';
 import styled, { css, keyframes } from 'styled-components';
 
+type IconDefinition = {
+  path: string | Array<string>;
+  viewBox: string;
+  ratio: number;
+  evenOdd?: boolean;
+  stroke?: boolean;
+  strokeWidth?: string;
+};
+
 export type BchatIconProps = {
   iconType:BchatIconType;
   iconSize: BchatIconSize | number;
@@ -170,7 +179,9 @@ const BchatSvg = (props: {
   }:{}
   const strokeDetails=props.strokeColor ?{
     stroke:props.strokeColor,
-    strokeWidth:props.strokeWidth
+    strokeWidth:props.strokeWidth,
+    strokeLinecap:'round',
+    strokeLinejoin:'round',
   }:{};
   const propsToPick = {
     width: props.width,
@@ -220,8 +231,12 @@ export const BchatIcon = (props: BchatIconProps) => {
   iconRotation = iconRotation || 0;
 
   const iconDimensions = getIconDimensionFromIconSize(iconSize);
-  const iconDef = icons[iconType];
+  // entries may carry drawing hints: evenOdd (needs fill-rule evenodd) and stroke (the path is a
+  // line, drawn with iconColor as the stroke)
+  const iconDef = icons[iconType] as IconDefinition;
   const ratio = iconDef?.ratio || 1;
+  const defaultFillRule = iconDef?.evenOdd ? 'evenodd' : undefined;
+  const defaultStroke = iconDef?.stroke ? iconColor || 'currentColor' : undefined;
 
   return (
     <BchatSvg
@@ -238,10 +253,10 @@ export const BchatIcon = (props: BchatIconProps) => {
       iconColor={iconColor}
       backgroundColor={backgroundColor}
       iconPadding={iconPadding}
-      fillRule={fillRule}
-      clipRule={clipRule}
-      strokeColor={strokeColor}
-      strokeWidth={strokeWidth}
+      fillRule={fillRule ?? defaultFillRule}
+      clipRule={clipRule ?? defaultFillRule}
+      strokeColor={strokeColor ?? defaultStroke}
+      strokeWidth={strokeWidth ?? iconDef?.strokeWidth}
       flipInRtl={flipInRtl}
     />
   );

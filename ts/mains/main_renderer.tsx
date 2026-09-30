@@ -29,6 +29,9 @@ import { loadEmojiPanelI18n } from '../util/i18n';
 import { OpenGroupData } from '../data/opengroups';
 import { createRoot, Root } from 'react-dom/client';
 import { applyDocumentDirection } from '../util/applyDocumentDirection';
+import { switchBchatTheme } from '../theme/switchTheme';
+import { BCHAT_CLASSIC_DARK_COLORS } from '../theme/classicDark';
+import { BCHAT_CLASSIC_LIGHT_COLORS } from '../theme/classicLight';
 
 
 let root: Root | null = null;
@@ -193,6 +196,13 @@ Storage.onready(async () => {
   const themeSetting = window.Events.getThemeSetting();
   const newThemeSetting = mapOldThemeToNew(themeSetting);
   window.Events.setThemeSetting(newThemeSetting);
+  // Apply the saved theme before anything renders: BchatTheme only sets the colours and the
+  // data-theme attribute after React's first paint, so the first frame of the dashboard used to
+  // come up in the light defaults and then flip to dark.
+  switchBchatTheme(
+    newThemeSetting === 'dark' ? BCHAT_CLASSIC_DARK_COLORS : BCHAT_CLASSIC_LIGHT_COLORS
+  );
+  document.documentElement.setAttribute('data-theme', newThemeSetting === 'dark' ? 'dark' : 'light');
 
   try {
     initialiseEmojiData(nativeEmojiData);
