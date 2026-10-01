@@ -180,7 +180,10 @@ export class MessageSentHandler {
     // if this send is genuinely in an error state, remember it so we can automatically retry
     // it (same as the manual "Resend" menu item does) as soon as we're back online - see
     // retryAllFailedSendsOnReconnect() / onOnline() in main_renderer.tsx.
-    if (fetchedMessage.hasErrors()) {
+    // A group update message only carries the errors of the control messages identified by it
+    // (e.g. secret group invites) - retrySend() would resend it as an empty visible message, and
+    // those control messages have their own retry (see sendToGroupMembers() in closedGroups.ts).
+    if (fetchedMessage.hasErrors() && !fetchedMessage.get('group_update')) {
       trackFailedSend(fetchedMessage.id);
     }
   }

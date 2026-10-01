@@ -298,14 +298,28 @@ async function processAnyOtherErrorOnPath(
   status: number,
   guardNodeEd25519: string,
   ciphertext?: string,
-  associatedWith?: string
+  associatedWith?: string,
+  destinationEd25519?: string
 ) {
   // this test checks for an error in your path.
   if (status !== 200) {
     window?.log?.warn(`[path] Got status: ${status}`);
 
     // If we have a specific node in fault we can exclude just this node.
-    if (ciphertext?.startsWith(NEXT_NODE_NOT_FOUND_PREFIX)) {
+    if (destinationEd25519 && guardNodeEd25519 === destinationEd25519) {
+      // One-hop request (bchatOneHopOnionFetch): the guard *is* the destination swarm node, so
+      // there is no path to blame. incrementBadPathCountOrDrop() would not find it in
+      // onionPaths and fall back to incrementBadSnodeCountOrDrop() without associatedWith -
+      // leaving the dead node in the swarm (so it keeps getting picked) while dropping it from
+      // the whole local pool. Apply the same rule as the 0-hop direct request in bchatFetch()
+      // instead: always drop it from this swarm, and only drop it from the pool if it actually
+      // answered with an error (STATUS_NO_STATUS means we never got a response at all).
+      await Onions.incrementBadSnodeCountOrDrop({
+        snodeEd25519: guardNodeEd25519,
+        associatedWith,
+        isConnectionError: status === STATUS_NO_STATUS,
+      });
+    } else if (ciphertext?.startsWith(NEXT_NODE_NOT_FOUND_PREFIX)) {
       const nodeNotFound = ciphertext.substr(NEXT_NODE_NOT_FOUND_PREFIX.length);
       // we are checking errors on the path, a nodeNotFound on the path should trigger a rebuild
 
@@ -372,7 +386,13 @@ async function processOnionRequestErrorOnPath(
   }
   process406Error(httpStatusCode);
   await process421Error(httpStatusCode, ciphertext, associatedWith, lsrpcEd25519Key);
-  await processAnyOtherErrorOnPath(httpStatusCode, guardNodeEd25519, ciphertext, associatedWith);
+  await processAnyOtherErrorOnPath(
+    httpStatusCode,
+    guardNodeEd25519,
+    ciphertext,
+    associatedWith,
+    lsrpcEd25519Key
+  );
 }
 
 function processAbortedRequest(abortSignal?: AbortSignal) {
@@ -925,6 +945,39 @@ export async function bchatOnionFetch({
   }
 }
 
+const ONE_HOP_PATH_REFRESH_MS = 60 * 1000;
+let lastOneHopPathPublishedAt = 0;
+
+/**
+ * Settings > Hops (OnionStatusPathDialog) reads state.onionPaths.snodePaths, which getOnionPath()
+ * keeps current in 3-hop mode - but bchatOneHopOnionFetch() never calls getOnionPath(), so it has
+ * to publish the node it used itself, or the Hops page would stay on its loading state.
+ *
+ * Polling and sending hit nodes in different swarms all the time, so publishing on every request
+ * meant a redux write (and a Hops page re-render, with the shown node flickering between unrelated
+ * nodes) on nearly every request. Instead, keep showing the node already published and only
+ * replace it when there isn't a one-node path in the store yet (first request, or right after a
+ * mode switch cleared it) or the shown one is over a minute old, so a node that has since been
+ * dropped doesn't linger forever.
+ */
+function publishOneHopPath(targetNode: Snode) {
+  const store = window.inboxStore;
+  if (!store) {
+    return;
+  }
+  const currentPaths = store.getState().onionPaths.snodePaths;
+  const hasOneHopPath = currentPaths?.length === 1 && currentPaths[0]?.length === 1;
+  const isStale = Date.now() - lastOneHopPathPublishedAt > ONE_HOP_PATH_REFRESH_MS;
+  if (hasOneHopPath && !isStale) {
+    return;
+  }
+  lastOneHopPathPublishedAt = Date.now();
+  const onePath = [{ ip: targetNode.ip }];
+  if (!_.isEqual(currentPaths, [onePath])) {
+    store.dispatch(updateOnionPaths([onePath]));
+  }
+}
+
 /**
  * Security review finding: when the user turns "Onion Routing" off (see bchatFetch() in
  * bchatRpc.ts), every request to a storage node used to fall through to a raw HTTPS POST made
@@ -982,15 +1035,7 @@ export async function bchatOneHopOnionFetch({
       }
     );
 
-    // Settings > Hops (OnionStatusPathDialog) reads state.onionPaths.snodePaths, which
-    // bchatOnionFetch() keeps current via getOnionPath()'s own dispatch - but this function never
-    // calls getOnionPath(), so without this the UI would keep showing whatever 3-hop path was
-    // last built (e.g. from before Onion Routing was turned off) instead of the single node this
-    // request actually used. Mirror that dispatch here with the real one-hop path.
-    const onePath = [{ ip: targetNode.ip }];
-    if (!_.isEqual(window.inboxStore?.getState().onionPaths.snodePaths?.[0], onePath)) {
-      window.inboxStore?.dispatch(updateOnionPaths([onePath]));
-    }
+    publishOneHopPath(targetNode);
 
     return retriedResult;
   } catch (e) {

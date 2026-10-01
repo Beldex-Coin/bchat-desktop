@@ -16,6 +16,7 @@ import {
   addClosedGroupEncryptionKeyPair,
   getAllEncryptionKeyPairsForGroup,
   getLatestClosedGroupEncryptionKeyPair,
+  getMessageById,
   removeAllClosedGroupEncryptionKeyPairs,
 } from '../../ts/data/data';
 import {
@@ -24,7 +25,7 @@ import {
 } from '../bchat/messages/outgoing/controlMessage/group/ClosedGroupNewMessage';
 
 import { ECKeyPair, HexKeyPair } from './keypairs';
-import { UserUtils } from '../bchat/utils';
+import { ToastUtils, UserUtils } from '../bchat/utils';
 import { ConversationModel, ConversationTypeEnum } from '../models/conversation';
 import _ from 'lodash';
 import { forceSyncConfigurationNowIfNeeded } from '../bchat/utils/syncUtils';
@@ -32,7 +33,12 @@ import { ClosedGroupEncryptionPairReplyMessage } from '../bchat/messages/outgoin
 import { queueAllCachedFromSource } from './receiver';
 import { openConversationWithMessages } from '../state/ducks/conversations';
 import { getSwarmPollingInstance } from '../bchat/apis/snode_api';
-import { MessageModel } from '../models/message';
+import {
+  getPendingGroupInvites,
+  PendingGroupInvites,
+  removePendingGroupInvites,
+  savePendingGroupInvites,
+} from '../bchat/group/pendingGroupInvites';
 
 import { updateConfirmModal } from '../state/ducks/modalDialog';
 import { perfEnd, perfStart } from '../bchat/utils/Performance';
@@ -964,65 +970,166 @@ export async function createClosedGroup(groupName: string, members: Array<string
   await convo.commit();
   convo.updateLastMessage();
 
-  // Send a closed group update message to all members individually
-  const allInvitesSent = await sendToGroupMembers(
-    listOfMembers,
+  const pendingInvites: PendingGroupInvites = {
     groupPublicKey,
     groupName,
+    members: listOfMembers,
+    membersToInvite: listOfMembers,
     admins,
-    encryptionKeyPair,
-    dbMessage,
-    existingExpireTimer
-  );
+    keypair: encryptionKeyPair.toHexKeyPair(),
+    expireTimer: existingExpireTimer,
+    dbMessageId: dbMessage.id,
+  };
+  // Persisted before the first attempt, so even quitting mid-send leaves the invites retryable.
+  await savePendingGroupInvites(pendingInvites);
 
-  if (allInvitesSent) {
-    const newHexKeypair = encryptionKeyPair.toHexKeyPair();
+  // Send a closed group update message to all members individually
+  const allInvitesSent = await sendToGroupMembers(pendingInvites);
 
-    const isHexKeyPairSaved = await addKeyPairToCacheAndDBIfNeeded(groupPublicKey, newHexKeypair);
-
-    if (isHexKeyPairSaved) {
-      window?.log?.info('Dropping already saved keypair for group', groupPublicKey);
-    }
-
-    // Subscribe to this group id
-    getSwarmPollingInstance().addGroupId(new PubKey(groupPublicKey));
+  // Only once every member actually has the invite (either here or later via the "Retry
+  // invitations" dialog, see sendToGroupMembers()) do we save the group's keypair and start
+  // polling it - that's what lets us send in it. Until then, sendMessage() re-offers the retry.
+  if (!allInvitesSent) {
+    await forceSyncConfigurationNowIfNeeded();
   }
-
-  await forceSyncConfigurationNowIfNeeded();
 
   await openConversationWithMessages({ conversationKey: groupPublicKey, messageId: null });
 }
 
 /**
- * Sends a group invite message to each member of the group.
- * @returns Array of promises for group invite messages sent to group members
+ * Makes a group we just created usable: saves its encryption keypair (needed to encrypt anything
+ * we send to it) and starts polling it. Called only once all group invites were sent.
+ */
+async function activateCreatedClosedGroup(
+  groupPublicKey: string,
+  hexKeyPair: HexKeyPair,
+  dbMessageId: string
+) {
+  // a failed invite attempt saved its error on the "group created" message the invites are
+  // identified by - every member has the invite now, so it shouldn't keep showing as failed
+  const dbMessage = await getMessageById(dbMessageId);
+  if (dbMessage?.hasErrors()) {
+    dbMessage.set({ errors: null });
+    await dbMessage.commit();
+  }
+
+  const isHexKeyPairSaved = await addKeyPairToCacheAndDBIfNeeded(groupPublicKey, hexKeyPair);
+
+  if (isHexKeyPairSaved) {
+    window?.log?.info('Dropping already saved keypair for group', groupPublicKey);
+  }
+
+  // Subscribe to this group id
+  getSwarmPollingInstance().addGroupId(new PubKey(groupPublicKey));
+
+  // the group only makes it into the config sync once its keypair is saved (see syncUtils.ts)
+  await forceSyncConfigurationNowIfNeeded();
+}
+
+// groups whose invites are being sent right now, so a second retry doesn't start on top of one
+const groupInvitesInFlight = new Set<string>();
+
+/**
+ * If this is a secret group we created whose invites haven't all been sent yet, offers the
+ * "Retry invitations" dialog again (or, if a retry is already running, says to wait) and returns
+ * true. The group can't be sent to until then. Returns false for any other group.
+ */
+export function promptRetryPendingGroupInvites(groupPublicKey: string): boolean {
+  const pendingInvites = getPendingGroupInvites(groupPublicKey);
+  if (!pendingInvites) {
+    return false;
+  }
+  if (groupInvitesInFlight.has(groupPublicKey)) {
+    ToastUtils.pushToastError('secretGroupInvitesPending', window.i18n('secretGroupInvitesPending'));
+  } else {
+    showRetryGroupInvitesDialog(pendingInvites);
+  }
+  return true;
+}
+
+/**
+ * Whether anything can be sent in this conversation, as far as secret group invites go - always
+ * true for a conversation that isn't a secret group. For a secret group we created whose invites
+ * haven't all been sent, re-offers "Retry invitations" (see promptRetryPendingGroupInvites()) and
+ * returns false; for any other secret group without an encryption keypair (sending would only fail
+ * at encryption), shows a toast and returns false. The composer calls this before clearing its
+ * draft, so a blocked message isn't lost.
+ */
+export async function ensureCanSendInClosedGroup(conversationId: string): Promise<boolean> {
+  if (!getConversationController().get(conversationId)?.isMediumGroup()) {
+    return true;
+  }
+  if (promptRetryPendingGroupInvites(conversationId)) {
+    return false;
+  }
+  if (!(await getLatestClosedGroupEncryptionKeyPair(conversationId))) {
+    ToastUtils.pushToastError('secretGroupInvitesPending', window.i18n('secretGroupInvitesPending'));
+    return false;
+  }
+  return true;
+}
+
+function showRetryGroupInvitesDialog(pendingInvites: PendingGroupInvites) {
+  const isPlural = pendingInvites.membersToInvite.length > 1;
+  window.inboxStore?.dispatch(
+    updateConfirmModal({
+      title: isPlural
+        ? window.i18n('secretGroupInviteFailTitlePlural')
+        : window.i18n('secretGroupInviteFailTitle'),
+      message: isPlural
+        ? window.i18n('secretGroupInviteFailMessagePlural')
+        : window.i18n('secretGroupInviteFailMessage'),
+      okText: window.i18n('secretGroupInviteOkText'),
+      onClickOk: async () => {
+        await sendToGroupMembers(pendingInvites, true);
+      },
+    })
+  );
+}
+
+/**
+ * Sends a group invite to each member in pendingInvites.membersToInvite. When all went out, the
+ * group is activated and its pending invites are forgotten; otherwise the members still to invite
+ * are persisted and the "Retry invitations" dialog is shown.
+ * @returns whether all invites were sent
  */
 async function sendToGroupMembers(
-  listOfMembers: Array<string>,
-  groupPublicKey: string,
-  groupName: string,
-  admins: Array<string>,
-  encryptionKeyPair: ECKeyPair,
-  dbMessage: MessageModel,
-  existingExpireTimer: number,
+  pendingInvites: PendingGroupInvites,
   isRetry: boolean = false
-): Promise<any> {
-  const promises = createInvitePromises(
-    listOfMembers,
-    groupPublicKey,
-    groupName,
-    admins,
-    encryptionKeyPair,
-    dbMessage,
-    existingExpireTimer
-  );
-  window?.log?.info(`Creating a new group and an encryptionKeyPair for group ${groupPublicKey}`);
+): Promise<boolean> {
+  const { groupPublicKey, membersToInvite, admins } = pendingInvites;
+  // e.g. the "Retry invitations" dialog was opened before an earlier attempt finished
+  if (groupInvitesInFlight.has(groupPublicKey)) {
+    ToastUtils.pushToastError('secretGroupInvitesPending', window.i18n('secretGroupInvitesPending'));
+    return false;
+  }
+  groupInvitesInFlight.add(groupPublicKey);
+  let inviteResults: Array<boolean | number>;
+  try {
+    window?.log?.info(`Sending ${membersToInvite.length} invite(s) for group ${groupPublicKey}`);
+    inviteResults = await Promise.all(createInvitePromises(pendingInvites));
+  } finally {
+    groupInvitesInFlight.delete(groupPublicKey);
+  }
+
+  // the group was left or deleted while the invites were being sent (leaveClosedGroup() drops its
+  // pending invites) - don't save its keypair, poll it, or re-offer a retry for it
+  if (!getPendingGroupInvites(groupPublicKey)) {
+    window?.log?.info(`Group ${groupPublicKey} was left during its invites, not activating it`);
+    return false;
+  }
   // evaluating if all invites sent, if failed give the option to retry failed invites via modal dialog
-  const inviteResults = await Promise.all(promises);
   const allInvitesSent = _.every(inviteResults, inviteResult => inviteResult !== false);
 
   if (allInvitesSent) {
-    // if (true) {
+    // Previously this only ran in createClosedGroup() after the first attempt, so a group whose
+    // invites only succeeded via "Retry invitations" never got its keypair and stayed unusable.
+    await activateCreatedClosedGroup(
+      groupPublicKey,
+      pendingInvites.keypair,
+      pendingInvites.dbMessageId
+    );
+    await removePendingGroupInvites(groupPublicKey);
     if (isRetry) {
       const invitesTitle =
         inviteResults.length > 1
@@ -1037,69 +1144,36 @@ async function sendToGroupMembers(
         })
       );
     }
-    return allInvitesSent;
-  } else {
-    // Confirmation dialog that recursively calls sendToGroupMembers on resolve
-
-    window.inboxStore?.dispatch(
-      updateConfirmModal({
-        title:
-          inviteResults.length > 1
-            ? window.i18n('secretGroupInviteFailTitlePlural')
-            : window.i18n('secretGroupInviteFailTitle'),
-        message:
-          inviteResults.length > 1
-            ? window.i18n('secretGroupInviteFailMessagePlural')
-            : window.i18n('secretGroupInviteFailMessage'),
-        okText: window.i18n('secretGroupInviteOkText'),
-        onClickOk: async () => {
-          const membersToResend: Array<string> = new Array<string>();
-          inviteResults.forEach((result, index) => {
-            const member = listOfMembers[index];
-            // group invite must always contain the admin member.
-            if (result !== true || admins.includes(member)) {
-              membersToResend.push(member);
-            }
-          });
-          if (membersToResend.length > 0) {
-            const isRetrySend = true;
-            await sendToGroupMembers(
-              membersToResend,
-              groupPublicKey,
-              groupName,
-              admins,
-              encryptionKeyPair,
-              dbMessage,
-              existingExpireTimer,
-              isRetrySend
-            );
-          }
-        },
-      })
-    );
+    return true;
   }
-  return allInvitesSent;
+
+  // group invite must always contain the admin member.
+  const remainingInvites: PendingGroupInvites = {
+    ...pendingInvites,
+    membersToInvite: membersToInvite.filter(
+      // a successful send resolves to its timestamp, not `true`
+      (member, index) => inviteResults[index] === false || admins.includes(member)
+    ),
+  };
+  await savePendingGroupInvites(remainingInvites);
+  showRetryGroupInvitesDialog(remainingInvites);
+  return false;
 }
 
-function createInvitePromises(
-  listOfMembers: Array<string>,
-  groupPublicKey: string,
-  groupName: string,
-  admins: Array<string>,
-  encryptionKeyPair: ECKeyPair,
-  dbMessage: MessageModel,
-  existingExpireTimer: number
-) {
-  return listOfMembers.map(async m => {
+function createInvitePromises(pendingInvites: PendingGroupInvites) {
+  const encryptionKeyPair = ECKeyPair.fromHexKeyPair(pendingInvites.keypair);
+  return pendingInvites.membersToInvite.map(async m => {
     const messageParams: ClosedGroupNewMessageParams = {
-      groupId: groupPublicKey,
-      name: groupName,
-      members: listOfMembers,
-      admins,
+      groupId: pendingInvites.groupPublicKey,
+      name: pendingInvites.groupName,
+      // always the full member list - a retry only re-sends to some members, but each invite must
+      // still describe the whole group
+      members: pendingInvites.members,
+      admins: pendingInvites.admins,
       keypair: encryptionKeyPair,
       timestamp: Date.now(),
-      identifier: dbMessage.id,
-      expireTimer: existingExpireTimer,
+      identifier: pendingInvites.dbMessageId,
+      expireTimer: pendingInvites.expireTimer,
     };
     const message = new ClosedGroupNewMessage(messageParams);
     return getMessageQueue().sendToPubKeyNonDurably(PubKey.cast(m), message);

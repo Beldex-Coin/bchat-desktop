@@ -171,17 +171,36 @@ export class MessageQueue {
    * processes pending jobs in the message sending queue.
    * @param device - target device to send to
    */
-  public async processPending(
-    device: PubKey,
-    isSyncMessage: boolean = false,
-    isNoteToSelfSend: boolean = false
-  ) {
+  public async processPending(device: PubKey) {
     const messages = await this.pendingMessageCache.getForDevice(device);
 
     const jobQueue = this.getJobQueue(device);
-     // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    let ourPubKey: string;
+    try {
+      ourPubKey = UserUtils.getOurPubKeyStrFromCache();
+    } catch (e) {
+      // Not logged in yet (e.g. the constructor's processAllPending() ran before our number was
+      // set). Without it we can't tell a sync copy from a normal message, and sending a sync copy
+      // as a normal one would save its failure against the shared id of an already-delivered
+      // message. Leave everything in the cache: doAppStartUp() calls processAllPending() again
+      // once we're logged in.
+      window?.log?.warn('processPending: our pubkey is not set yet, deferring pending messages');
+      return;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     messages.forEach(async message => {
       const messageId = message.identifier;
+      // Worked out per message, not per batch: the queue for our own pubkey can hold a sync copy
+      // and a Note to Self message at the same time, and they must be handled differently on
+      // failure (see the catch block below). process() only lets a message through to our own
+      // pubkey if it's a sync message, so every message queued for ourselves is one.
+      // buildSyncMessage() sets syncTarget to the id of the conversation the *original* message was
+      // sent in (see ts/models/message.ts sendSyncMessage()). For a normal 1-1 chat that's the
+      // other person's pubkey - this copy is just for our other linked devices. For "Note to Self",
+      // the conversation IS our own pubkey, so syncTarget === ourPubKey: there is no other
+      // recipient, this send is the only copy of the message that will ever exist.
+      const isSyncMessage = message.device === ourPubKey;
+      const isNoteToSelfSend = isSyncMessage && message.syncTarget === ourPubKey;
 
       if (!jobQueue.has(messageId)) {
         // We put the event handling inside this job to avoid sending duplicate events
@@ -218,7 +237,7 @@ export class MessageQueue {
               // message at this point; only log it, don't corrupt its delivered status.
               //
               // A "Note to Self" message takes this same code path (its only destination is our
-              // own pubkey, same as a sync copy - see MessageQueue.process()'s isNoteToSelfSend),
+              // own pubkey, same as a sync copy - see isNoteToSelfSend above),
               // but there is no other recipient it was actually delivered to: this send IS the
               // message. Skipping the error here as above would mean it's silently dropped -
               // never shown as failed, never offered a "Resend", and never picked up by
@@ -271,16 +290,6 @@ export class MessageQueue {
   ): Promise<void> {
     // Don't send to ourselves
     const currentDevice = UserUtils.getOurPubKeyFromCache();
-    let isSyncMessage = false;
-    // buildSyncMessage() sets syncTarget to the id of the conversation the *original* message was
-    // sent in (see ts/models/message.ts sendSyncMessage()). For a normal 1-1 chat that's the other
-    // person's pubkey - this copy is just for our other linked devices. For "Note to Self", the
-    // conversation IS our own pubkey, so syncTarget === currentDevice.key: there is no other
-    // recipient, this send is the only copy of the message that will ever exist. Both cases reach
-    // this branch (destination === ourselves), but processPending()'s catch block needs to tell
-    // them apart to decide whether a failure here is safe to just log (real sync copy) or needs to
-    // surface as an error the user can resend (Note to Self) - see isNoteToSelfSend below.
-    let isNoteToSelfSend = false;
     if (currentDevice && destinationPk.isEqual(currentDevice)) {
       // We allow a message for ourselve only if it's a ConfigurationMessage, a ClosedGroupNewMessage,
       // or a message with a syncTarget set.
@@ -292,8 +301,6 @@ export class MessageQueue {
         (message as any).syncTarget?.length > 0
       ) {
         window?.log?.warn('Processing sync message');
-        isSyncMessage = true;
-        isNoteToSelfSend = (message as any).syncTarget === currentDevice.key;
       } else {
         window?.log?.warn('Dropping message in process() to be sent to ourself');
         return;
@@ -301,7 +308,7 @@ export class MessageQueue {
     }
 
     await this.pendingMessageCache.add(destinationPk, message, sentCb, isGroup);
-    void this.processPending(destinationPk, isSyncMessage, isNoteToSelfSend);
+    void this.processPending(destinationPk);
   }
 
   private getJobQueue(device: PubKey): JobQueue {

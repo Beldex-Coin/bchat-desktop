@@ -1,4 +1,4 @@
-import { getMessageById } from '../../data/data';
+import { getMessageById, getRecentFailedOutgoingMessageIds } from '../../data/data';
 
 /**
  * In-memory registry of messages currently sitting in the "failed to send" state
@@ -25,9 +25,11 @@ import { getMessageById } from '../../data/data';
  *     believe now is a good time to retry; the periodic sweep is what makes retrying reliable
  *     even when neither of these fires.
  *
- * This is intentionally the lightweight fix: it does not persist across an app restart the
- * way Android's DB-backed job queue does. A message that fails and the app is closed before
- * we come back online will still need a manual resend, same as today.
+ * The registry itself is in memory only, so it is empty after an app restart. To cover a message
+ * that failed and the app was closed before we came back online (e.g. wifi off -> send -> quit ->
+ * relaunch -> wifi on), startFailedSendRetryTimer() re-seeds it once from the DB with every
+ * outgoing message still in the error state that was sent within FAILED_SEND_RESEED_WINDOW_MS
+ * (see seedFailedSendsFromDb()). The DB's `errors` field is the persistent record here.
  *
  * A message is auto-retried at most MAX_AUTO_RETRY_ATTEMPTS_PER_MESSAGE times before this gives
  * up on it (see that constant below) - some send failures can never succeed no matter how many
@@ -74,6 +76,28 @@ let sweepInProgress = false;
 
 let retryTimerStarted = false;
 
+// On startup, only failed messages sent within this window are re-tracked for auto-retry. Without
+// a bound, launching the app would silently resend any old failed message still sitting in a
+// conversation (weeks old, long since irrelevant); those can still be resent manually.
+const FAILED_SEND_RESEED_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Re-tracks the failed outgoing messages persisted in the DB, so a send that failed before the
+ * app was last closed is auto-retried after relaunch just like one that failed in this session.
+ */
+async function seedFailedSendsFromDb() {
+  try {
+    const ids = await getRecentFailedOutgoingMessageIds(Date.now() - FAILED_SEND_RESEED_WINDOW_MS);
+    ids.forEach(trackFailedSend);
+    if (ids.length) {
+      window?.log?.info(`seedFailedSendsFromDb: tracking ${ids.length} failed message(s) from DB`);
+      void retryAllFailedSendsOnReconnect();
+    }
+  } catch (e) {
+    window?.log?.warn('seedFailedSendsFromDb: failed to load failed messages from DB', e);
+  }
+}
+
 /**
  * Starts the periodic backstop sweep (see the file comment above). Safe to call more than once -
  * only the first call actually starts the timer. Call this once during app startup, not on
@@ -84,6 +108,7 @@ export function startFailedSendRetryTimer() {
     return;
   }
   retryTimerStarted = true;
+  void seedFailedSendsFromDb();
   global.setInterval(() => {
     void retryAllFailedSendsOnReconnect();
   }, RETRY_SWEEP_INTERVAL_MS);
@@ -125,11 +150,11 @@ export function clearFailedSendRegistry() {
  * Retries every message currently tracked as failed, one at a time with a short stagger so
  * reconnecting doesn't fire a burst of sends all at once. Safe to call anytime, from any of the
  * triggers described in the file comment above - it's a no-op when nothing is tracked, a no-op
- * if a sweep is already in progress (rather than running a second one concurrently), and
- * Message.retrySend() itself is a no-op if we're not actually online yet.
+ * if a sweep is already in progress (rather than running a second one concurrently), and a
+ * no-op while offline (so an outage of any length costs no retry attempts).
  */
 export async function retryAllFailedSendsOnReconnect() {
-  if (!failedSendMessageIds.size || sweepInProgress) {
+  if (!failedSendMessageIds.size || sweepInProgress || !window.isOnline) {
     return;
   }
   sweepInProgress = true;
@@ -165,6 +190,13 @@ export async function retryAllFailedSendsOnReconnect() {
           untrackFailedSend(messageId);
           // eslint-disable-next-line no-continue
           continue;
+        }
+        // Message.retrySend() is a no-op while offline, so counting an attempt here would burn
+        // the retry budget without sending anything - a longer outage would then write the
+        // message off before the network ever came back. Checked here, right before the attempt
+        // is counted, since we may have gone offline mid-sweep. Leave the rest for a later sweep.
+        if (!window.isOnline) {
+          break;
         }
         autoRetryAttemptCounts.set(messageId, attemptsSoFar + 1);
         // eslint-disable-next-line no-await-in-loop

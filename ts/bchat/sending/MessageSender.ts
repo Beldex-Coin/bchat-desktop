@@ -66,6 +66,15 @@ export function getMinRetryTimeout() {
   return 1000;
 }
 
+// Don't start another send attempt once this long has passed since the first one began. A single
+// attempt can itself take ~100s when nodes are unreachable (storeOnNode() goes through
+// onionFetchRetryable/oneHopOnionFetchRetryable: 4 tries x 25s guard-node timeout, with
+// DEFAULT_CONNECTIONS nodes in parallel, so the attempt waits for the slowest to fail), so
+// without this cap 7 attempts could leave a message showing "sending" for ~10+ minutes before the
+// error is shown. With it, the worst case is this budget plus one slow attempt (~2 minutes), while
+// attempts that fail fast (e.g. a node rejecting right away) still get the full attempt count.
+const SEND_RETRY_BUDGET_MS = 30 * 1000;
+
 /**
  * Send a message via master nodes.
  *
@@ -78,7 +87,8 @@ export function getMinRetryTimeout() {
  * a random swarm/guard node and pass/fail test it - no speed-based selection on either side).
  * Matching Android's attempt budget gives transient connection issues (slow/flaky network path,
  * a node that's briefly unreachable) the same number of chances to clear up before we surface a
- * failure to the user, instead of giving up more than twice as early.
+ * failure to the user, instead of giving up more than twice as early. The attempts are also capped
+ * by SEND_RETRY_BUDGET_MS, since unlike Android's, one of our attempts can take ~100s.
  */
 export async function send(
   message: RawMessage,
@@ -86,6 +96,7 @@ export async function send(
   retryMinTimeout?: number, // in ms
   isSyncMessage?: boolean
 ): Promise<{ wrappedEnvelope: Uint8Array; effectiveTimestamp: number }> {
+  const startedAt = Date.now();
   return pRetry(
     async () => {
       const recipient = PubKey.cast(message.device);
@@ -135,6 +146,15 @@ export async function send(
       retries: Math.max(attempts - 1, 0),
       factor: 1,
       minTimeout: retryMinTimeout || MessageSender.getMinRetryTimeout(),
+      onFailedAttempt: e => {
+        // throwing here makes pRetry reject with this error instead of scheduling another attempt
+        if (e.retriesLeft > 0 && Date.now() - startedAt >= SEND_RETRY_BUDGET_MS) {
+          window?.log?.warn(
+            `MessageSender.send: giving up after attempt #${e.attemptNumber}, retry budget of ${SEND_RETRY_BUDGET_MS}ms used`
+          );
+          throw e;
+        }
+      },
     }
   );
 }

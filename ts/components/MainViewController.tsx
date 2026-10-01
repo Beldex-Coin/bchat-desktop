@@ -201,6 +201,15 @@ async function createClosedGroup(
     return false;
   }
 
+  // Offline, every invite fails, so the group's encryption keypair is never saved and it's never
+  // polled (see createClosedGroup() in receiver/closedGroups.ts): we'd create a group nobody else
+  // knows about and that we can't send in. Refuse up front instead. navigator.onLine covers the
+  // 1s debounce before disconnect() flips window.isOnline.
+  if (!window.isOnline || !window.navigator.onLine) {
+    ToastUtils.pushToastError('checkInternetConnection', window.i18n('checkInternetConnection'));
+    return false;
+  }
+
   await createClosedGroupV2(groupName, groupMemberIds);
 
   return true;

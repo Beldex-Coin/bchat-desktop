@@ -74,6 +74,12 @@ let currentCallUUID: string | undefined;
 
 let currentCallStartTimestamp: number | undefined;
 
+/**
+ * True once the current call has reached 'connected' at least once. Kept separate from
+ * currentCallStartTimestamp so that "has this call ever connected" doesn't depend on the timer.
+ */
+let currentCallHasConnected = false;
+
 let weAreCallerOnCurrentCall: boolean | undefined;
 
 const rejectedCallUUIDS: Set<string> = new Set();
@@ -515,6 +521,13 @@ export async function USER_callRecipient(recipient: string) {
     ToastUtils.pushVideoCallPermissionNeeded();
     return;
   }
+  // Offline, the pre-offer can't be sent, so the call popup would open only to fail. Check before
+  // dispatching startingCallWith() below, which is what opens it. navigator.onLine covers the 1s
+  // debounce before disconnect() flips window.isOnline.
+  if (!window.isOnline || !window.navigator.onLine) {
+    ToastUtils.pushToastError('checkInternetConnection', window.i18n('checkInternetConnection'));
+    return;
+  }
   if (currentCallUUID) {
     window.log.warn(
       'Looks like we are already in a call as in USER_callRecipient is not undefined'
@@ -675,7 +688,12 @@ function handleConnectionStateChanged(pubkey: string) {
       void selectAudioOutputByDeviceId(firstAudioOutput);
     }
 
-    currentCallStartTimestamp = Date.now();
+    // Only start the timer on the first connection - a reconnect must keep the original start time,
+    // otherwise the on-screen duration resets to 00:00 every time the call recovers.
+    if (!currentCallStartTimestamp) {
+      currentCallStartTimestamp = Date.now();
+    }
+    currentCallHasConnected = true;
 
     window.inboxStore?.dispatch(callConnected({ pubkey }));
   }
@@ -685,6 +703,7 @@ function closeVideoCall() {
   window.log.info('closingVideoCall ');
   clearReconnectState();
   currentCallStartTimestamp = undefined;
+  currentCallHasConnected = false;
   weAreCallerOnCurrentCall = undefined;
   if (peerConnection) {
     peerConnection.ontrack = null;
@@ -894,14 +913,14 @@ async function attemptCallerReconnect(withPubkey: string) {
  * connection attempt, which can hit these same connectionState/iceConnectionState values (e.g.
  * ICE never finding a working pair on the very first try) while still just setting up. That
  * initial phase already has its own give-up behaviour (callTimeoutMs, 60s, in USER_callRecipient)
- * and its own "still ringing/connecting" UI. currentCallStartTimestamp is only ever set once the
+ * and its own "still ringing/connecting" UI. currentCallHasConnected is only ever set once the
  * connection actually reaches 'connected' for the first time (see handleConnectionStateChanged
  * below) and cleared on hangup, so it's a direct signal for "has this call ever connected" -
  * without checking it here, an initial-connection failure would incorrectly show "Reconnecting..."
  * and, for the callee, hang up after RECONNECT_TIME_LIMIT_MS (30s) instead of the normal 60s.
  */
 function startReconnectFlow(withPubkey: string) {
-  if (reconnectInProgress || !currentCallUUID || !currentCallStartTimestamp) {
+  if (reconnectInProgress || !currentCallUUID || !currentCallHasConnected) {
     return;
   }
   reconnectInProgress = true;

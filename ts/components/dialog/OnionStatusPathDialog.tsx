@@ -17,6 +17,7 @@ import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
 import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
 import { getTheme } from '../../state/selectors/theme';
+import useNetworkStatus from '../../hooks/useNetworkStatus';
 // import styled from 'styled-components';
 // import { BchatWrapperModal } from '../BchatWrapperModal';
 
@@ -67,7 +68,13 @@ const OnionPathModalInner = () => {
   // 0 hops needs no path at all: requests go straight to the destination, so it never waits.
   const pathMatchesMode = onionRoutingHops === 1 ? onionPath?.length === 1 : onionPath?.length > 1;
 
-  if (!isNoHops && (!isOnline || !onionPath || onionPath.length === 0 || !pathMatchesMode)) {
+  // Offline applies to every hop setting (including 0 hops), otherwise this page would show a
+  // healthy path while the side-panel status light is red.
+  if (!isOnline) {
+    return <BchatSpinner loading={true} />;
+  }
+
+  if (!isNoHops && (!onionPath || onionPath.length === 0 || !pathMatchesMode)) {
     return <BchatSpinner loading={true} />;
   }
 
@@ -265,7 +272,10 @@ export const ActionPanelOnionStatusLight = (props: {
 
   const onionPathsCount = useSelector(getOnionPathsCount);
   const firstPathLength = useSelector(getFirstOnionPathLength);
-  const isOnline = useSelector(getIsOnline);
+  // The browser's offline event reacts instantly, while the redux flag only changes after a poll
+  // or disconnect() runs - require both so the light turns red as soon as the network drops.
+  const hasNetwork = useNetworkStatus();
+  const isOnline = useSelector(getIsOnline) && hasNetwork;
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';
