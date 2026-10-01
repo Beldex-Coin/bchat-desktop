@@ -28,6 +28,7 @@ import { ClosedGroupNewMessage } from '../messages/outgoing/controlMessage/group
 import { ClosedGroupRemovedMembersMessage } from '../messages/outgoing/controlMessage/group/ClosedGroupRemovedMembersMessage';
 import { getSwarmPollingInstance } from '../apis/snode_api';
 import { getNowWithNetworkOffset } from '../apis/snode_api/SNodeAPI';
+import { removePendingGroupInvites } from './pendingGroupInvites';
 
 export type GroupInfo = {
   id: string;
@@ -304,6 +305,9 @@ export async function leaveClosedGroup(groupId: string) {
   convo.set({ members });
   convo.set({ groupAdmins: admins });
   await convo.commit();
+  // a group we created whose invites never all went out - an invite retry still running sees
+  // this is gone and stops there, rather than activating a group we just left
+  await removePendingGroupInvites(groupId);
 
   const source = UserUtils.getOurPubKeyStrFromCache();
   const networkTimestamp = getNowWithNetworkOffset();

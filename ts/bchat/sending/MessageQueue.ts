@@ -135,15 +135,24 @@ export class MessageQueue {
    * Sends a message that awaits until the message is completed sending
    * @param user user pub key to send to
    * @param message Message to be sent
+   * @param attempts optional override for how many times MessageSender.send should retry before
+   * giving up (defaults to MessageSender.send's own default, currently 7). A caller that has its
+   * own outer retry loop with its own time budget - e.g. CallManager's mid-call reconnect flow -
+   * should pass a small value here so a single call to this function can't by itself burn through
+   * that whole budget.
    */
   public async sendToPubKeyNonDurably(
     user: PubKey,
-    message: ClosedGroupNewMessage | CallMessage
+    message: ClosedGroupNewMessage | CallMessage,
+    attempts?: number
   ): Promise<boolean | number> {
     let rawMessage;
     try {
       rawMessage = await MessageUtils.toRawMessage(user, message);
-      const { wrappedEnvelope, effectiveTimestamp } = await MessageSender.send(rawMessage);
+      const { wrappedEnvelope, effectiveTimestamp } = await MessageSender.send(
+        rawMessage,
+        attempts
+      );
       await MessageSentHandler.handleMessageSentSuccess(
         rawMessage,
         effectiveTimestamp,
@@ -162,13 +171,36 @@ export class MessageQueue {
    * processes pending jobs in the message sending queue.
    * @param device - target device to send to
    */
-  public async processPending(device: PubKey, isSyncMessage: boolean = false) {
+  public async processPending(device: PubKey) {
     const messages = await this.pendingMessageCache.getForDevice(device);
 
     const jobQueue = this.getJobQueue(device);
-     // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    let ourPubKey: string;
+    try {
+      ourPubKey = UserUtils.getOurPubKeyStrFromCache();
+    } catch (e) {
+      // Not logged in yet (e.g. the constructor's processAllPending() ran before our number was
+      // set). Without it we can't tell a sync copy from a normal message, and sending a sync copy
+      // as a normal one would save its failure against the shared id of an already-delivered
+      // message. Leave everything in the cache: doAppStartUp() calls processAllPending() again
+      // once we're logged in.
+      window?.log?.warn('processPending: our pubkey is not set yet, deferring pending messages');
+      return;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     messages.forEach(async message => {
       const messageId = message.identifier;
+      // Worked out per message, not per batch: the queue for our own pubkey can hold a sync copy
+      // and a Note to Self message at the same time, and they must be handled differently on
+      // failure (see the catch block below). process() only lets a message through to our own
+      // pubkey if it's a sync message, so every message queued for ourselves is one.
+      // buildSyncMessage() sets syncTarget to the id of the conversation the *original* message was
+      // sent in (see ts/models/message.ts sendSyncMessage()). For a normal 1-1 chat that's the
+      // other person's pubkey - this copy is just for our other linked devices. For "Note to Self",
+      // the conversation IS our own pubkey, so syncTarget === ourPubKey: there is no other
+      // recipient, this send is the only copy of the message that will ever exist.
+      const isSyncMessage = message.device === ourPubKey;
+      const isNoteToSelfSend = isSyncMessage && message.syncTarget === ourPubKey;
 
       if (!jobQueue.has(messageId)) {
         // We put the event handling inside this job to avoid sending duplicate events
@@ -194,7 +226,38 @@ export class MessageQueue {
             }
             this.pendingMessageCache.callbacks.delete(message.identifier);
           } catch (error) {
-            void MessageSentHandler.handleMessageSentFailure(message, error);
+            if (isSyncMessage && !isNoteToSelfSend) {
+              // buildSyncMessage() intentionally reuses the *original* message's id for its
+              // sync-to-self copy, so that a successful sync can flip `synced`/`sentSync` on
+              // that same row (see MessageSentHandler.handleMessageSentSuccess). But that same
+              // shared id means handleMessageSentFailure() here would call saveErrors() on that
+              // same row too - flipping an already-delivered message to "error" just because
+              // the sync copy (to our own other devices) failed, potentially minutes later once
+              // this per-device queue works through a backlog. The recipient already has the
+              // message at this point; only log it, don't corrupt its delivered status.
+              //
+              // A "Note to Self" message takes this same code path (its only destination is our
+              // own pubkey, same as a sync copy - see isNoteToSelfSend above),
+              // but there is no other recipient it was actually delivered to: this send IS the
+              // message. Skipping the error here as above would mean it's silently dropped -
+              // never shown as failed, never offered a "Resend", and never picked up by
+              // retryAllFailedSendsOnReconnect() (see FailedSendRetry.ts), since none of those
+              // rely on anything other than handleMessageSentFailure() having run. So a real
+              // sync-to-other-devices failure is only logged, but a Note to Self failure still
+              // goes through handleMessageSentFailure() below like any other message to another
+              // person.
+              window?.log?.warn(
+                `Failed to send sync copy of message ${messageId} to our other devices (delivery to the recipient is unaffected):`,
+                error
+              );
+              // Still undo the optimistic sentSync:true set by sendSyncMessage() so a future
+              // attempt isn't skipped - see handleSyncMessageSendFailure()'s comment. We don't
+              // call saveErrors() (hence not handleMessageSentFailure() itself) for this, since
+              // that would wrongly mark the already-delivered message as failed.
+              void MessageSentHandler.handleSyncMessageSendFailure(message);
+            } else {
+              void MessageSentHandler.handleMessageSentFailure(message, error);
+            }
           } finally {
             // Remove from the cache because retrying is done in the sender
             void this.pendingMessageCache.remove(message);
@@ -227,7 +290,6 @@ export class MessageQueue {
   ): Promise<void> {
     // Don't send to ourselves
     const currentDevice = UserUtils.getOurPubKeyFromCache();
-    let isSyncMessage = false;
     if (currentDevice && destinationPk.isEqual(currentDevice)) {
       // We allow a message for ourselve only if it's a ConfigurationMessage, a ClosedGroupNewMessage,
       // or a message with a syncTarget set.
@@ -239,7 +301,6 @@ export class MessageQueue {
         (message as any).syncTarget?.length > 0
       ) {
         window?.log?.warn('Processing sync message');
-        isSyncMessage = true;
       } else {
         window?.log?.warn('Dropping message in process() to be sent to ourself');
         return;
@@ -247,7 +308,7 @@ export class MessageQueue {
     }
 
     await this.pendingMessageCache.add(destinationPk, message, sentCb, isGroup);
-    void this.processPending(destinationPk, isSyncMessage);
+    void this.processPending(destinationPk);
   }
 
   private getJobQueue(device: PubKey): JobQueue {

@@ -1127,6 +1127,52 @@ label {
     overflow-x: hidden;
   }
 
+  // Tighter gap under the options box when a note follows it (Hops picker); callers without a
+  // note (Font Size) keep the original 25px.
+  &__settingMiniModel--withNote {
+    margin-bottom: 16px;
+  }
+
+  // Live per-option note under the options box - on the modal's own background, left-aligned,
+  // icon pinned to the first line of text (not vertically centered: the text area below reserves
+  // the height of the longest note, so centering would push the icon down beside the last line
+  // whenever a shorter note is showing).
+  &__settingMiniModel-note {
+    width: 450px;
+    margin: 0 4px 22px;
+    padding: 0 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    color: var(--color-text);
+    opacity: 0.85;
+    font-size: 13px;
+    line-height: 19px;
+
+    > *:first-child {
+      flex-shrink: 0;
+      // nudge the icon down to sit on the first text line's center (19px line-height)
+      margin-top: 2px;
+    }
+  }
+
+  // Every option's note stacked in one grid cell; only the selected one is visible, but the
+  // hidden ones still take up space, so this cell is always as tall as the longest note and the
+  // popup height stays constant across selections.
+  &__settingMiniModel-note-text {
+    display: grid;
+    flex: 1;
+
+    > span {
+      grid-area: 1 / 1;
+    }
+
+    > .is-hidden {
+      visibility: hidden;
+    }
+  }
+
   &-setPasswordAccess {
     width: 400px;
     margin: 40px 0px 25px;
@@ -1322,6 +1368,12 @@ label {
         border-radius: 10px;
         padding-left: 15px;
         font-size: 16px;
+
+        // muted suffix after an option label, e.g. the "(Default)" in "1 Hop (Default)"
+        &-suffix {
+          margin-left: 5px;
+          color: #a7a7ba;
+        }
 
         &-circle,
         .selected {
@@ -1832,6 +1884,14 @@ label {
       flex-grow: 1;
       font-size: 24px;
       font-weight: 600;
+
+      // e.g. the "(1 hop)" after "Hops" - smaller, regular weight, muted
+      &-suffix {
+        margin-left: 8px;
+        font-size: 18px;
+        font-weight: 400;
+        color: #a7a7ba;
+      }
     }
 
     // &-selectionBox {
@@ -1911,7 +1971,8 @@ label {
     }
 
     &__dropdownValue,
-    &-font-Change {
+    &-font-Change,
+    &-hops-Change {
       width: 100px;
       height: 45px;
       border-radius: 12px;
@@ -1929,6 +1990,26 @@ label {
       padding: 0 0px 0 10px;
       justify-content: space-around;
       // height: 30px;
+    }
+
+    &-hops-Change {
+      // "1 Hop (Default)" is longer than "Small"/"Medium", so this pill sizes to its content
+      // instead of -font-Change's fixed 110px, with that as a floor so "0 Hop" still reads as a
+      // button.
+      width: auto;
+      min-width: 110px;
+      padding: 0 14px;
+      justify-content: space-between;
+      gap: 8px;
+      // Keep the label and the chevron on one line: without these, the settings row's flex
+      // layout can squeeze the pill and push the chevron (or "(Default)") onto a second line.
+      white-space: nowrap;
+      flex-shrink: 0;
+
+      &__default {
+        color: #a7a7ba;
+        font-weight: 400;
+      }
     }
 
     .react-select-container {

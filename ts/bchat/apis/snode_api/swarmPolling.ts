@@ -22,6 +22,7 @@ import { getConversationController } from '../../conversations';
 import { perfEnd, perfStart } from '../../utils/Performance';
 import { ed25519Str } from '../../onions/onionPath';
 import { updateIsOnline } from '../../../state/ducks/onion';
+import { retryAllFailedSendsOnReconnect } from '../../sending/FailedSendRetry';
 import pRetry from 'p-retry';
 import { getHasSeenHF170, getHasSeenHF180 } from './hfHandling';
 
@@ -46,6 +47,15 @@ export function processMessage(message: string, options: any = {}, messageHash: 
     };
     window?.log?.warn('HTTP-Resources Failed to handle message:', info);
   }
+}
+
+// main_renderer.tsx registers its onOnline() here, so that a successful poll while
+// window.isOnline is false runs the exact same recovery as the browser's 'online' event would have
+// (see the success path in pollNodeForKey() below). Kept as a callback rather than an import to
+// avoid a dependency from this module back onto main_renderer.
+let pollReconnectHandler: (() => void) | undefined;
+export function setPollReconnectHandler(handler: () => void) {
+  pollReconnectHandler = handler;
 }
 
 let instance: SwarmPolling | undefined;
@@ -298,7 +308,7 @@ export class SwarmPolling {
     const pkStr = pubkey.key;
 
     try {
-      return await pRetry(
+      const result = await pRetry(
         async () => {
           const prevHash = await this.getLastHash(edkey, pkStr, namespace || 0);
           const messages = await retrieveNextMessages(node, prevHash, pkStr, namespace);
@@ -328,14 +338,41 @@ export class SwarmPolling {
           },
         }
       );
-    } catch (e) {
-      if (e.message === ERROR_CODE_NO_CONNECT) {
-        if (window.inboxStore?.getState().onionPaths.isOnline) {
-          window.inboxStore?.dispatch(updateIsOnline(false));
+
+      // A poll just round-tripped to a snode and back - that's hard evidence we have real
+      // connectivity again, independent of (and more reliable than) the browser's online/offline
+      // events that main_renderer.tsx's onOnline() otherwise depends on for
+      // retryAllFailedSendsOnReconnect(). Those events are known to be flaky on some platforms
+      // (delayed, missed, or not fired at all), which left failed sends stuck with no way to
+      // recover until a manual resend if that was the only trigger. Mirror the same recovery
+      // here as a second, platform-independent path.
+      //
+      // This has to key off window.isOnline, not the redux flag: retrieveNextMessages() has
+      // already set redux back to true by the time we get here, so a redux check would never fire.
+      // And window.isOnline is what actually gates sends, resends and the retry sweep - it's only
+      // ever set by connect()/disconnect(), so if the 'online' event was missed, nothing else
+      // would ever set it back to true.
+      if (!window.isOnline) {
+        window?.log?.info('pollNodeForKey: poll succeeded while marked offline; reconnecting');
+        window.inboxStore?.dispatch(updateIsOnline(true));
+        if (pollReconnectHandler) {
+          pollReconnectHandler();
+        } else {
+          window.isOnline = true;
+          void retryAllFailedSendsOnReconnect();
         }
-      } else if (!window.inboxStore?.getState().onionPaths.isOnline) {
-          window.inboxStore?.dispatch(updateIsOnline(true));
-        
+      }
+
+      return result;
+    } catch (e) {
+      // Only the success path above is allowed to declare us back online. Any other failure
+      // (421 swarm change, decode error, bad path, clock skew...) is not proof the network
+      // works, and treating it as such would kick off a resend sweep that burns retry attempts.
+      if (
+        e.message === ERROR_CODE_NO_CONNECT &&
+        window.inboxStore?.getState().onionPaths.isOnline
+      ) {
+        window.inboxStore?.dispatch(updateIsOnline(false));
       }
       window?.log?.info('pollNodeForKey failed with', e.message);
       return null;

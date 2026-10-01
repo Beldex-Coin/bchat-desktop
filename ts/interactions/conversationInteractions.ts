@@ -485,7 +485,15 @@ export async function uploadOurAvatar(newAvatarDecrypted?: ArrayBuffer) {
   // @ts-expect-error -- returning Uint8Array intentionally
   const encryptedData = await encryptProfile(decryptedAvatarData, profileKey);
 
-  const avatarPointer = await FSv2.uploadFileToFsV2(encryptedData);
+  let avatarPointer: Awaited<ReturnType<typeof FSv2.uploadFileToFsV2>>;
+  try {
+    avatarPointer = await FSv2.uploadFileToFsV2(encryptedData);
+  } catch (e) {
+    // uploadFileToFsV2 throws (rather than resolving null) on permanent failures like a 413.
+    // The 14-day reupload is fire-and-forget, so keep this a quiet failure like the null case.
+    window.log.warn('failed to upload avatar to fsv2:', e?.message || e);
+    return;
+  }
   let fileUrl;
   if (!avatarPointer) {
     window.log.warn('failed to upload avatar to fsv2');

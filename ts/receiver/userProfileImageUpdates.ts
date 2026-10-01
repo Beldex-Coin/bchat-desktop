@@ -153,7 +153,6 @@ async function createOrUpdateProfile(
     newProfile.avatar = null;
   }
   
-console.log('newProfile', newProfile,changes);
   const conv = await getConversationController().getOrCreateAndWait(
     conversation.id,
     ConversationTypeEnum.PRIVATE
