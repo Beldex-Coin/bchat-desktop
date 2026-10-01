@@ -525,7 +525,7 @@
   "noAudioInputFound": "No se encontró entrada de audio",
   "noAudioOutputFound": "No se encontró salida de audio",
   "callMediaPermissionsTitle": "Llamadas de voz/video",
-  "callMissedCausePermission": "Call missed from '$name$' as you haven't approved this conversation yet. Send a message to them first.",
+  "callMissedCausePermission": "Llamada perdida de '$name$' porque aún no has aprobado esta conversación. Envíale primero un mensaje.",
   "callMissedNotApproved": "Llamada perdida de '$name$' porque aún no has aprobado esta conversación. Envíale primero un mensaje.",
   "callMediaPermissionsDescription": "Al habilitar esta opción podrás recibir llamadas de voz y video.",
   "callMediaPermissionsDialogContent": "La implementación actual de llamadas de voz expondrá tu dirección IP a los servidores de Beldex y al usuario que llama/recibe la llamada.",
@@ -547,7 +547,7 @@
   "mustBeApproved": "Esta conversación debe ser aceptada para usar esta función.",
   "youHaveANewFriendRequest": "Tienes una nueva solicitud de amistad.",
   "clearAllConfirmationTitle": "Borrar todas las solicitudes de mensajes",
-  "clearAllConfirmationBody": "Do you want to erase all message requests",
+  "clearAllConfirmationBody": "¿Deseas eliminar todas las solicitudes de mensajes?",
   "hideBanner": "Ocultar",
   "openMessageRequestInboxDescription": "Ver tu bandeja de solicitudes de mensajes",
   "BChat": "BChat",
@@ -597,9 +597,8 @@
   "keyBenefits1":"Identidad Unificada: Conecta tu BChat ID, Dirección de la Cartera Beldex y BelNet ID a un solo nombre BNS. Esto simplifica tus interacciones dentro del ecosistema Beldex.",
   "keyBenefits2":" Facilidad de Uso: Olvídate de complicadas cadenas alfanuméricas. Con tu nombre BNS, enviar mensajes y realizar transacciones se vuelve sencillo y amigable.",
   "keyBenefits3":" Sello de Confianza: Vincula tu BChat ID a tu nombre BNS y completa el proceso de verificación para obtener una insignia BNS. Esta insignia añade una capa de confianza y reconocimiento dentro de la comunidad.",
-  "pricingHeader":"Precios",
-  "subscriptionDescription": "Los usuarios pueden registrar sus nombres BNS por 1, 2, 5 y 10 años por tan solo",
-  "subscriptionDescriptionTail":"respectivamente.",
+  "pricingHeader":"Precios:",
+  "bnsPricingDescription": "Los usuarios pueden registrar sus nombres BNS por 1, 2, 5 y 10 años por tan solo $p1$ BDX, $p2$ BDX, $p3$ BDX y $p4$ BDX, respectivamente.",
   "aboutBNSDescription2":"Usar nombres BNS mejora tu privacidad, seguridad y comodidad. Ya sea que envíes un mensaje, realices una transacción o uses servicios descentralizados, tu nombre BNS garantiza una experiencia consistente y simplificada.",
   "aboutBNSFooter":"¡Comienza hoy con tu nombre BNS y disfruta de los beneficios de una identidad descentralizada en todos tus servicios Beldex!",
   "showQR":"Mostrar QR",    
@@ -729,6 +728,5 @@
   "sharedContactAndOthers": "$name$ y $count$ más",
   "paymentDirectionReceived": "Recibido",
   "pickFileForAvatarError": "Se produjo un error al seleccionar o cambiar el tamaño de la imagen",
-  "attachmentTypeImages": "Imágenes",
-  "and": "y"
+  "attachmentTypeImages": "Imágenes"
 }

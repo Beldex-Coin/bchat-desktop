@@ -6,7 +6,7 @@ import { Flex } from './basic/Flex';
 import { isRtlLocale } from '../util/localeDirection';
 
 const BchatToastContainerPrivate = () => {
-  const isRtl = isRtlLocale((window.i18n as any).getLocale());
+  const isRtl = isRtlLocale(window.i18n.getLocale());
   return (
     <WrappedToastContainer
       position={isRtl ? 'bottom-left' : 'bottom-right'}

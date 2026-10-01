@@ -15,6 +15,7 @@ import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
+import { FontSizeChanger } from '../../../settings/ChangeChatFontSetting';
 
 export const PaymentMessage = (props: PropsForPayment) => {
 
@@ -28,7 +29,6 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   const classes = [`payment ${flashGreen && 'flash-green-once'}`];
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'small';
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, props.messageId)
   );
@@ -76,18 +76,6 @@ export const PaymentMessage = (props: PropsForPayment) => {
       void shell.openExternal(`http://154.26.139.105/tx/${traxId}`);
     }
   }
-  function FontSizeChanger(fontSize: number) {
-    let size;
-    if (currentValueFromSettings === 'small') {
-      size = fontSize;
-    } else if (currentValueFromSettings === 'medium') {
-      size = fontSize + 2;
-    } else {
-      size = fontSize + 4;
-    }
-    return size;
-  }
-
   function HindTxt() {
     const iconColor = 'var(--color-text)';
 

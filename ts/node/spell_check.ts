@@ -9,12 +9,13 @@ const setSpellCheckerLocale = (
   spellCheckEnabled: boolean
 ) => {
   const { session } = browserWindow.webContents;
-  const logger = getLogger();
 
    if (process.platform === 'darwin') {
     session.setSpellCheckerEnabled(spellCheckEnabled);
     return;
   }
+
+  const logger = getLogger();
 
   const available = session.availableSpellCheckerLanguages;
   const languages = resolveSpellCheckerLanguages(available, appLocale);

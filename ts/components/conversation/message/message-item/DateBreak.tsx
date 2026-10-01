@@ -42,10 +42,10 @@ export const MessageDateBreak = (props: { timestamp: number; messageId: string }
   const date = moment(timestamp);
   const calendarFormat = {
     sameDay: '[Today]',
-    nextDay: '[Tomorrow]',
+    nextDay: 'dddd',
     nextWeek: 'dddd',
     lastDay: '[Yesterday]',
-    lastWeek: '[Last] dddd',
+    lastWeek: 'dddd',
     sameElse: 'DD/MM/YYYY',
   };
   const isDark = useSelector(getTheme) === 'dark';

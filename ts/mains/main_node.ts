@@ -155,6 +155,7 @@ if (windowFromUserConfig) {
 
 // import {load as loadLocale} from '../..'
 import { load as loadLocale, LocaleMessagesWithNameType } from '../node/locale';
+import { resolveAppLocale } from '../node/app_languages';
 import { setLastestRelease } from '../node/latest_desktop_release';
 import { getAppRootPath } from '../node/getRootPath';
 
@@ -705,7 +706,8 @@ app.on('ready', async () => {
   assertLogger().info(`starting version ${packageJson.version}`);
   if (!locale) {
     const savedLocale = userConfig.get('appLocale') as string;
-    const appLocale = savedLocale || 'en';
+    // Until the user picks a language, follow the OS language when we have a full translation for it
+    const appLocale = savedLocale || resolveAppLocale(app.getLocale());
     locale = loadLocale({ appLocale, logger });
   }
 

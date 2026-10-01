@@ -49,7 +49,8 @@ export const loadEmojiPanelI18n = async () => {
     return undefined;
   }
 
-  const lang = window.i18n.getLocale();
+  // emoji-mart only ships base-language files (pt, zh, es...), not regional ones (pt_BR, zh_CN, es_419)
+  const lang = window.i18n.getLocale().split(/[-_]/)[0];
   if (lang !== 'en') {
     try {
       const langData = await import(`@emoji-mart/data/i18n/${lang}.json`);

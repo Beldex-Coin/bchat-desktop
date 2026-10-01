@@ -84,7 +84,7 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
         title: window.i18n('trustThisContactDialogTitle', [
           convo.getContactProfileNameOrShortenedPubKey(),
         ]),
-        message:`${window.i18n('trustThisContactDialogDescription')}<div style="color:#EBEBEB; font-weight:400;text-transform: capitalize;">${convo.getContactProfileNameOrShortenedPubKey()} ?</div>`,
+        message:`${window.i18n('trustThisContactDialogDescription')}<span style="text-transform: capitalize;">${convo.getContactProfileNameOrShortenedPubKey()} ?</span>`,
         okTheme: BchatButtonColor.Primary,
         okText: window.i18n('autoUpdateDownloadButtonLabel'),
         iconShow: true,

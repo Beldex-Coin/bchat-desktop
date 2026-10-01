@@ -15,6 +15,7 @@ if (!container) {
     'data-theme',
     (window as any).theme === 'light' ? 'light' : 'dark'
   );
+  applyDocumentDirection(window.i18n.getLocale());
   root = createRoot(container);
   root.render(<BchatPasswordPrompt />);
 }
