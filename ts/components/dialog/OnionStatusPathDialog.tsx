@@ -49,9 +49,21 @@ const OnionCountryDisplay = ({
   return hoverable;
 };
 
+/**
+ * Single source of truth for "are we online" on the Hops page and the side-panel status light, so
+ * the two can never disagree. The browser's offline event reacts instantly, while the redux flag
+ * only changes after a poll or disconnect() runs - require both so we flip to offline as soon as
+ * the network drops.
+ */
+const useIsOnionOnline = () => {
+  const hasNetwork = useNetworkStatus();
+  const pathOnline = useSelector(getIsOnline);
+  return pathOnline && hasNetwork;
+};
+
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
-  const isOnline = useSelector(getIsOnline);
+  const isOnline = useIsOnionOnline();
 
   // getEffectiveOnionRoutingHops() reads the hop count chosen from the "Onion Routing" picker in
   // Settings > Chat (0 / 1 / 3) - the same source of truth bchatFetch() uses to pick between the
@@ -228,10 +240,7 @@ export const ActionPanelOnionStatusLight = (props: {
 
   const onionPathsCount = useSelector(getOnionPathsCount);
   const firstPathLength = useSelector(getFirstOnionPathLength);
-  // The browser's offline event reacts instantly, while the redux flag only changes after a poll
-  // or disconnect() runs - require both so the light turns red as soon as the network drops.
-  const hasNetwork = useNetworkStatus();
-  const isOnline = useSelector(getIsOnline) && hasNetwork;
+  const isOnline = useIsOnionOnline();
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';

@@ -407,7 +407,6 @@
   "notificationForConvo_all": "Alle",
   "notificationForConvo_disabled": "Deaktiviert",
   "notificationForConvo_mentions_only": "Nur Erwähnungen",
-  "onionPathIndicatorTitle": "Pfad",
   "onionPathIndicatorDescription": "BChat verbirgt deine IP-Adresse, indem deine Nachrichten über mehrere Dienstknoten im dezentralen BChat-Netzwerk weitergeleitet werden. Dies sind die Länder, durch die deine Verbindung derzeit weitergeleitet wird",
   "unknownCountry": "Unbekanntes Land",
   "device": "Gerät",

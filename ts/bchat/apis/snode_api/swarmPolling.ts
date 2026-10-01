@@ -49,6 +49,15 @@ export function processMessage(message: string, options: any = {}, messageHash: 
   }
 }
 
+// main_renderer.tsx registers its onOnline() here, so that a successful poll while
+// window.isOnline is false runs the exact same recovery as the browser's 'online' event would have
+// (see the success path in pollNodeForKey() below). Kept as a callback rather than an import to
+// avoid a dependency from this module back onto main_renderer.
+let pollReconnectHandler: (() => void) | undefined;
+export function setPollReconnectHandler(handler: () => void) {
+  pollReconnectHandler = handler;
+}
+
 let instance: SwarmPolling | undefined;
 export const getSwarmPollingInstance = () => {
   if (!instance) {
@@ -337,9 +346,21 @@ export class SwarmPolling {
       // (delayed, missed, or not fired at all), which left failed sends stuck with no way to
       // recover until a manual resend if that was the only trigger. Mirror the same recovery
       // here as a second, platform-independent path.
-      if (window.inboxStore?.getState().onionPaths.isOnline === false) {
+      //
+      // This has to key off window.isOnline, not the redux flag: retrieveNextMessages() has
+      // already set redux back to true by the time we get here, so a redux check would never fire.
+      // And window.isOnline is what actually gates sends, resends and the retry sweep - it's only
+      // ever set by connect()/disconnect(), so if the 'online' event was missed, nothing else
+      // would ever set it back to true.
+      if (!window.isOnline) {
+        window?.log?.info('pollNodeForKey: poll succeeded while marked offline; reconnecting');
         window.inboxStore?.dispatch(updateIsOnline(true));
-        void retryAllFailedSendsOnReconnect();
+        if (pollReconnectHandler) {
+          pollReconnectHandler();
+        } else {
+          window.isOnline = true;
+          void retryAllFailedSendsOnReconnect();
+        }
       }
 
       return result;

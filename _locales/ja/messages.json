@@ -407,7 +407,6 @@
   "notificationForConvo_all": "すべて",
   "notificationForConvo_disabled": "無効",
   "notificationForConvo_mentions_only": "コメントのみ",
-  "onionPathIndicatorTitle": "パス",
   "onionPathIndicatorDescription": "BChat は、BChatの分散型ネットワークの複数のサービスノードを介してメッセージをバウンスすることにより、IP を隠します。以下は現在接続がバウンスされている国です。",
   "unknownCountry": "不明な国",
   "device": "デバイス",

@@ -407,7 +407,6 @@
   "notificationForConvo_all": "كل",
   "notificationForConvo_disabled": "معطل",
   "notificationForConvo_mentions_only": "فقط عندما يتم ذكر اسم",
-  "onionPathIndicatorTitle": "مسار",
   "onionPathIndicatorDescription": "يقوم BChat باخفاء عنوانك IP بتمرير الرسائل عبر عدة خوادم في الشبكة اللامركزية. هذه هي الدول التي يمر عبرها اتصالك",
   "unknownCountry": "بلد مجهول",
   "device": "جهاز",

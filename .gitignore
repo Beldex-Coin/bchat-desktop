@@ -16,8 +16,6 @@ sql/
 
 # generated files
 stylesheets/*.css
-# empty JS chunk webpack emits alongside manifest.css when running `yarn sass` (sass.config.js)
-stylesheets/main.js
 
 # React / TypeScript
 ts/**/*.js

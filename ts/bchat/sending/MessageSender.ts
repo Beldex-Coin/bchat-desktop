@@ -71,9 +71,13 @@ export function getMinRetryTimeout() {
 // onionFetchRetryable/oneHopOnionFetchRetryable: 4 tries x 25s guard-node timeout, with
 // DEFAULT_CONNECTIONS nodes in parallel, so the attempt waits for the slowest to fail), so
 // without this cap 7 attempts could leave a message showing "sending" for ~10+ minutes before the
-// error is shown. With it, the worst case is this budget plus one slow attempt (~2 minutes), while
+// error is shown. With it, the worst case is roughly two slow attempts (~3-4 minutes), while
 // attempts that fail fast (e.g. a node rejecting right away) still get the full attempt count.
-const SEND_RETRY_BUDGET_MS = 30 * 1000;
+const SEND_RETRY_BUDGET_MS = 60 * 1000;
+// Always allow at least this many attempts, even if the budget is already used up. Otherwise, on a
+// weak connection, one slow first attempt would use up the whole budget and the message would
+// never be tried again on different swarm nodes. Those are the users who need the retry most.
+const MIN_SEND_ATTEMPTS = 2;
 
 /**
  * Send a message via master nodes.
@@ -148,7 +152,11 @@ export async function send(
       minTimeout: retryMinTimeout || MessageSender.getMinRetryTimeout(),
       onFailedAttempt: e => {
         // throwing here makes pRetry reject with this error instead of scheduling another attempt
-        if (e.retriesLeft > 0 && Date.now() - startedAt >= SEND_RETRY_BUDGET_MS) {
+        if (
+          e.retriesLeft > 0 &&
+          e.attemptNumber >= MIN_SEND_ATTEMPTS &&
+          Date.now() - startedAt >= SEND_RETRY_BUDGET_MS
+        ) {
           window?.log?.warn(
             `MessageSender.send: giving up after attempt #${e.attemptNumber}, retry budget of ${SEND_RETRY_BUDGET_MS}ms used`
           );

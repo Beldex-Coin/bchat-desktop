@@ -20,6 +20,7 @@ import {
   startFailedSendRetryTimer,
 } from '../bchat/sending/FailedSendRetry';
 import { snodeHttpsAgent } from '../bchat/apis/snode_api/onions';
+import { setPollReconnectHandler } from '../bchat/apis/snode_api/swarmPolling';
 import { updateIsOnline } from '../state/ducks/onion';
 // import ReactDOM from 'react-dom';
 // import React from 'react';
@@ -478,6 +479,11 @@ async function connect() {
     // FailedSendRetry.ts's file comment for why a periodic sweep is needed at all in addition
     // to onOnline()'s fast-path retry.
     startFailedSendRetryTimer();
+    // A successful snode poll while window.isOnline is false means the 'online' event was missed
+    // (or is late). Run the same recovery it would have: connect() sets window.isOnline back to
+    // true and restarts attachment downloads, the listeners are swapped back so the next real
+    // outage is still detected, and failed sends get retried.
+    setPollReconnectHandler(onOnline);
   }
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {

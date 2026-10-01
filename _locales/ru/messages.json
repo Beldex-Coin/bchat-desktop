@@ -407,7 +407,6 @@
   "notificationForConvo_all": "Все",
   "notificationForConvo_disabled": "Выключено",
   "notificationForConvo_mentions_only": "Только упоминания",
-  "onionPathIndicatorTitle": "Путь",
   "onionPathIndicatorDescription": "BChat скрывает ваш IP, перенаправляя ваши сообщения через несколько сервисных узлов своей децентрализованной сети. Страны, через которые в данный момент проходит ваше подключение",
   "unknownCountry": "Неизвестная страна",
   "device": "Устройство",
