@@ -227,6 +227,7 @@ const Section = (props: {
               <div className={'sub-menu-box'}>
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.NewChat)}
                   isSelected={focusedSection === SectionType.NewChat}
@@ -237,6 +238,7 @@ const Section = (props: {
                 <SpacerMD />
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.Closedgroup)}
                   isSelected={focusedSection === SectionType.Closedgroup}
@@ -247,6 +249,7 @@ const Section = (props: {
                 <SpacerMD />
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.Opengroup)}
                   isSelected={focusedSection === SectionType.Opengroup}
