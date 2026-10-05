@@ -160,7 +160,7 @@ export const ShowRecoveryPhase = (props: any) => {
           </div>
           <p className="bchat-registration-recovery-phrase-hintTxt">
             <span>{window.i18n('noteLabel')}</span> {window.i18n('saveYourRecoveryPhrase')}
-            {window.i18n('copyToContinueRecovery')}
+            {/* {window.i18n('copyToContinueRecovery')} */}
             </p>
             <SpacerLG/>
             {/* <SpacerLG/> */}

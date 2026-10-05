@@ -414,7 +414,7 @@
   "beldexAddressConnection": "あなたのBChatアドレスはBChat IDに紐づいています。このアドレスを使ってBDXを受け取ることができます。",
   "anonymous": "匿名",
   "removeResidueMembers": "OKを押すと、すでに退出したメンバーもグループから削除されます。",
-  "enterDisplayName": "名前を入力",
+  "enterDisplayName": "表示名を入力してください",
   "continueYourBchat": "BChatを続ける",
   "linkDevice": "デバイスをリンク",
   "restoreUsingRecoveryPhrase": "アカウントを復元",
