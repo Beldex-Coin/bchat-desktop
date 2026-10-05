@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Social group invitation",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
-  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "BChat ID அல்லது BNS பெயரை உள்ளிடவும்",
   "loading": "ஏற்றபடுகின்றது...",
   "optimizingApplication": "Optimizing application...",
   "done": "முடிந்தது",

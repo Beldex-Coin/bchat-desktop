@@ -69,6 +69,7 @@
   "enterBchatID": "BChat ID 입력",
   "scanQr": "QR 코드를 스캔하여 채팅 시작",
   "emptyChatScreen": "너무 비어 있네요. 놀라울 정도로요.<br></br> 친구들을 BChat으로 초대해 보세요!",
+  "enterBchatIDOrBNSName": "BChat ID 또는 BNS 이름을 입력하세요",
   "loading": "불러오는 중...",
   "done": "완료",
   "youLeftTheGroup": "그룹에서 나갔습니다.",

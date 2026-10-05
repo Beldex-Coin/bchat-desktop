@@ -3908,17 +3908,26 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     margin: 12px 28px;
     padding: 26px;
 
+    // Figma 5296:28831: 343.5x75 -> 100px #111 box on #444; the text / placeholder starts at the
+    // top-left, 16.5 -> 22px in and 12.75 -> 17px down (the base box padding of 20px is dropped,
+    // it doubled the inset); Roboto Mono Medium 14 -> 18, placeholder uppercase #737373
     .bchat-id-editable {
+      padding: 0;
       background: #111;
       border: 1px solid #444;
     }
     textarea {
-      min-height: 90px;
-      padding: 18px 22px;
+      height: 98px;
+      min-height: 98px;
+      margin: 0;
+      padding: 17px 22px;
       background: transparent;
       color: #ebebeb;
       font-family: $dark-font-data !important;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: start;
       resize: none;
     }
     textarea::placeholder {
@@ -3933,8 +3942,9 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   }
   // Figma 1:56419 / 1:57656: the "Your ID" and "Your QR" states share one 385.5x412.5 card -> 514x550,
   // so switching between them doesn't resize it.
+  // Figma 5296:28834: #0b0b0b@50% card on a 1px #222 line
   .ourDetails_wrapper {
-    @include dark-card-frame;
+    @include dark-card-frame(#0b0b0b, #222);
     box-sizing: border-box;
     height: 550px; // no overflow clipping: the "Your ID" tab sits half outside the top edge
     margin: 44px 28px 20px;
@@ -3950,20 +3960,22 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       padding: 8px 26px;
       transform: translate(-50%, -50%);
       background: #1a1a1a;
-      border: 1px solid $dark-line;
-      font-size: 20px;
+      border: 0.5px solid #444;
+      font-size: 22px;
       font-weight: 400;
       color: #ebebeb;
       white-space: nowrap;
     }
+    // Figma 5296:28870: Inter Bold 18 -> 24 #ebebeb
     .profile-name {
-      font-size: 21px;
-      font-weight: 600;
-      color: $dark-white;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ebebeb;
     }
+    // Figma: Roboto Mono 13.5 -> 18 #acacac
     .label-txt {
       font-family: $dark-font-data !important;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 400;
       color: #acacac;
     }
@@ -3974,15 +3986,36 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       background: #111;
       border: 1px solid #444;
 
+      // Figma 5296:28844 / 28855: Inter Medium 12 -> 16; BChat ID #00bc33, address #ebebeb,
+      // both copy icons #00bc33
       p {
         margin: 0;
-        font-family: $dark-font-data !important;
-        font-size: 15px;
-        font-weight: 400;
-        color: $dark-green;
+        font-family: $dark-font-ui !important;
+        font-size: 16px;
+        font-weight: 500;
+        color: #00bc33;
       }
       .blue-color {
         color: #ebebeb;
+      }
+      .bchat-icon-button svg path {
+        fill: #00bc33;
+      }
+    }
+    // Show QR (Figma 5296:28872): #111 fill on a #737373 hairline, #ebebeb label and icon
+    > .bchat-button.secondary,
+    > .bchat-button.white {
+      background-color: #737373;
+      color: #ebebeb;
+
+      &::before {
+        background-color: #111;
+      }
+      &:hover:not(.disabled)::before {
+        background-color: #1a1a1a;
+      }
+      svg path {
+        fill: #ebebeb;
       }
     }
     > .bchat-button {
@@ -7820,5 +7853,50 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     svg path {
       fill: #acacac;
     }
+  }
+}
+
+// ---- Start a New Chat (Figma 5296:28766) ----
+// "Let's Bchat" stays off until something is typed: #111 square, #696969 label (Figma 5296 frame).
+#{$dark} .module-left-pane-overlay .bchatId_input_wrapper .bchat-button.disabled {
+  opacity: 1;
+  background-color: #111 !important;
+  color: #696969 !important;
+  cursor: default;
+
+  &::before {
+    background-color: #111 !important;
+  }
+}
+
+// "Your ID" card avatar (Figma 5296:28862): a plain 63 -> 84px tile - #1a1a1a on the #444@50%
+// hairline, Inter SemiBold 21.75 -> 29 #8d8d8d initials - not the green "self" tile used in the rail;
+// the name follows 14.25 -> 19px after it.
+#{$dark} .module-left-pane-overlay .ourDetails_wrapper .avatar-Wrapper {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+
+  .module-avatar,
+  .initials-avatar {
+    width: 84px !important;
+    height: 84px !important;
+  }
+  .initials-avatar {
+    font-size: 29px !important;
+  }
+  .initials-avatar--self {
+    background: #272727;
+
+    &::before {
+      background: $dark-raised;
+    }
+    .initials-avatar__initials {
+      color: #8d8d8d;
+    }
+  }
+  .profile-name {
+    margin: 0;
+    padding: 0;
   }
 }

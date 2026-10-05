@@ -35,7 +35,7 @@
   "socialGroupInvitation": "Social group invitation",
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
-  "enterBchatIDOrBNSName": "Enter BChat ID or BNS name",
+  "enterBchatIDOrBNSName": "Vnesite BChat ID ali BNS ime",
   "loading": "Nalagam ...",
   "optimizingApplication": "Optimiziranje nastavitev ...",
   "done": "Končano",

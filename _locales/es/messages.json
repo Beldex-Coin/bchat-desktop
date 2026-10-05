@@ -424,7 +424,7 @@
   "bChatID": "ID de BChat",
   "newBchat": "Nuevo BChat",
   "searchFor...": "Buscar personas y grupos",
-  "enterBchatIDOrBNSName": "Introduce el ID de BChat o el nombre BNS del destinatario",
+  "enterBchatIDOrBNSName": "Introduce el ID de BChat o el nombre BNS",
   "enterBchatIDOfRecipient": "Introduce el ID de BChat o nombre BNS del destinatario",
   "usersCanShareTheir...": "Los usuarios pueden compartir su ID de BChat entrando en la configuración de su cuenta y tocando \"Compartir ID de BChat\", o compartiendo su código QR.",
   "message": "Escribe un mensaje…",

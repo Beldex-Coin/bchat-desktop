@@ -27,6 +27,7 @@ import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
 // import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
+import { getTheme } from '../../../state/selectors/theme';
 import { Loader } from '../../BchatWrapperModal';
 
 
@@ -47,6 +48,7 @@ export const OverlayMessage = () => {
 
   // const convoList = useSelector(getLeftPaneLists);
   const walletAddress: any = localStorage.getItem('userAddress');
+  const isDark = useSelector(getTheme) === 'dark';
   // const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
   // const title = window.i18n('newBchat');
@@ -137,6 +139,7 @@ export const OverlayMessage = () => {
             text={window.i18n('letsBchat')}
             buttonType={BchatButtonType.Default}
             buttonColor={BchatButtonColor.Primary}
+            disabled={!pubkeyOrBns.trim()}
             onClick={() => handleMessageButtonClick()}
           />
         </article>
@@ -165,7 +168,14 @@ export const OverlayMessage = () => {
               <SpacerXS />
               <div className="id-Wrapper">
                 <p>{ourconvo.id}</p>
-                <CopyIconButton content={ourconvo.id} iconSize={22} onClick={() => { }} />
+                <CopyIconButton
+                  content={ourconvo.id}
+                  // dark: the Figma copy glyph (5296:28850), green
+                  iconType={isDark ? 'copy' : undefined}
+                  iconColor={isDark ? '#00BC33' : undefined}
+                  iconSize={isDark ? 18 : 22}
+                  onClick={() => {}}
+                />
               </div>
               <SpacerMD />
 
@@ -173,7 +183,14 @@ export const OverlayMessage = () => {
               <SpacerXS />
               <div className="id-Wrapper">
                 <p className="blue-color">{walletAddress}</p>
-                <CopyIconButton content={walletAddress} iconSize={22} onClick={() => { }} />
+                <CopyIconButton
+                  content={walletAddress}
+                  // dark: the Figma copy glyph (5296:28850), green
+                  iconType={isDark ? 'copy' : undefined}
+                  iconColor={isDark ? '#00BC33' : undefined}
+                  iconSize={isDark ? 18 : 22}
+                  onClick={() => {}}
+                />
               </div>
               <SpacerMD />
               <BchatButton
