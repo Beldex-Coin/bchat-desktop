@@ -379,7 +379,7 @@
   "joinSocialGroup": "Pridružite se otvorenoj grupi",
   "newSecretGroup": "Nova zatvorena grupa",
   "createSecretGroupNamePrompt": "Naziv grupe",
-  "createSecretGroupPlaceholder": "Unesite naziv grupe",
+  "createSecretGroupPlaceholder": "Unesite naziv tajne grupe",
   "openSocialURL": "URL otvorene grupe",
   "enterAnSocialGroupURL": "Unesite URL otvorene grupe",
   "next": "Dalje",

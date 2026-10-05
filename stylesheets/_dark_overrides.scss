@@ -4344,13 +4344,16 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     margin: 19px 0 0;
     padding: 0;
 
+    // the side inset sits on the box, not on the textarea: a one-line textarea scrolls its own
+    // padding away, so long values ran into the box edges
     .bchat-id-editable {
       display: flex;
       align-items: center;
       width: 100%;
       height: 80px;
       min-height: 80px;
-      padding: 0;
+      padding: 0 21px;
+      box-sizing: border-box;
     }
     // one line, vertically centred in the 80px box
     // the group textarea has a base margin-top: 15px, which pushed the text below the middle
@@ -4359,7 +4362,7 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       height: 24px;
       min-height: 0;
       margin: 0;
-      padding: 0 21px;
+      padding: 0;
       overflow: hidden;
       font-size: 19px;
       line-height: 24px;
@@ -4516,13 +4519,16 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     margin: 16px 0 0;
     padding: 0;
 
+    // the side inset sits on the box, not on the textarea: a one-line textarea scrolls its own
+    // padding away, so long values ran into the box edges
     .bchat-id-editable {
       display: flex;
       align-items: center;
       width: 100%;
       height: 80px;
       min-height: 80px;
-      padding: 0;
+      padding: 0 16px;
+      box-sizing: border-box;
     }
     // the group textarea has a base margin-top: 15px, which pushed the text below the middle
     .bchat-id-editable textarea {
@@ -4530,7 +4536,7 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       height: 24px;
       min-height: 0;
       margin: 0;
-      padding: 0 16px;
+      padding: 0;
       overflow: hidden;
       font-size: 18px;
       line-height: 24px;
@@ -4577,12 +4583,19 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   .bchat-member-item__avatar {
     margin: 0;
 
-    .module-avatar {
+    // Figma 5296:3625: 45 -> 60px tile; the initials tile carries its own inline 48px size
+    .module-avatar,
+    .initials-avatar {
       width: 60px !important;
       height: 60px !important;
     }
+    .initials-avatar {
+      font-size: 21px !important;
+    }
   }
   .bchat-member-item__name {
+    // Figma: 12 -> 16px between the avatar and the name (the flex gap); no extra margin
+    margin-inline-start: 0;
     font-family: $dark-font-ui !important;
     font-size: 16px;
     font-weight: 600;
@@ -7907,5 +7920,22 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   .profile-name {
     margin: 0;
     padding: 0;
+  }
+}
+
+// ---- Empty main views (new chat, Secret Group, Social Group): centred in the right pane ----
+// The placeholder keeps an empty header strip at the top, which pushed the illustration + note
+// below the pane's middle; it holds nothing here, so it's dropped. The note is centred under the art.
+#{$dark} .conversation.placeholder:has(.empty-chat) {
+  > .conversation-header {
+    display: none;
+  }
+  .container {
+    height: 100%;
+  }
+}
+#{$dark} .conversation.placeholder .empty-chat {
+  .empty-chat__note {
+    text-align: center;
   }
 }

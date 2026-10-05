@@ -379,7 +379,7 @@
   "joinSocialGroup": "به گروه باز بپیوندید",
   "newSecretGroup": "گروه خصوصی جدید",
   "createSecretGroupNamePrompt": "نام گروه",
-  "createSecretGroupPlaceholder": "نام گروه را وارد کنید",
+  "createSecretGroupPlaceholder": "نام گروه مخفی را وارد کنید",
   "openSocialURL": "باز کردن آدرس گروه",
   "enterAnSocialGroupURL": "آدرس یک گروه باز(عمومی) را وارد کنید",
   "next": "بعدی",

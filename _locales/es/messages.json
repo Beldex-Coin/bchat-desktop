@@ -437,7 +437,7 @@
   "joinSocialGroup": "Únete al grupo abierto",
   "newSecretGroup": "Nuevo grupo cerrado",
   "createSecretGroupNamePrompt": "Nombre Del Grupo",
-  "createSecretGroupPlaceholder": "Ingresa un nombre de grupo",
+  "createSecretGroupPlaceholder": "Introduce el nombre del grupo secreto",
   "openSocialURL": "URL de grupo abierto",
   "enterAnSocialGroupURL": "Ingresa una URL de grupo abierto",
   "next": "Siguiente",

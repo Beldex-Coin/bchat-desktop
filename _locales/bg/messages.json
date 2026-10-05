@@ -380,7 +380,7 @@
   "joinSocialGroup": "Присоединиться к открытой группе",
   "newSecretGroup": "Новая закрытая группа",
   "createSecretGroupNamePrompt": "Название Группы",
-  "createSecretGroupPlaceholder": "Введите название группы",
+  "createSecretGroupPlaceholder": "Въведете име на тайната група",
   "openSocialURL": "URL открытой группы",
   "enterAnSocialGroupURL": "Введите URL открытой группы",
   "next": "Далее",

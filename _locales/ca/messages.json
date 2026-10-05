@@ -379,7 +379,7 @@
   "joinSocialGroup": "Unir-se a group obert",
   "newSecretGroup": "Nou grup tancat",
   "createSecretGroupNamePrompt": "Nom del grup",
-  "createSecretGroupPlaceholder": "Introdueix nom de grup",
+  "createSecretGroupPlaceholder": "Introdueix el nom del grup secret",
   "openSocialURL": "URL del grup obert",
   "enterAnSocialGroupURL": "Introdueix un URL de grup obert",
   "next": "Següent",

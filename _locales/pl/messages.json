@@ -379,7 +379,7 @@
   "joinSocialGroup": "Dołącz do Social Group",
   "newSecretGroup": "Nowa grupa zamknięta",
   "createSecretGroupNamePrompt": "Nazwa grupy",
-  "createSecretGroupPlaceholder": "Wpisz nazwę grupy",
+  "createSecretGroupPlaceholder": "Wpisz nazwę tajnej grupy",
   "openSocialURL": "Otwórz adres URL grupy",
   "enterAnSocialGroupURL": "Wprowadź adres URL otwartej grupy",
   "next": "Dalej",

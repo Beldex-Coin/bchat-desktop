@@ -379,7 +379,7 @@
   "joinSocialGroup": "Pripojiť do Verejnej Skupiny",
   "newSecretGroup": "Nová Súkromná Skupina",
   "createSecretGroupNamePrompt": "Meno Skupiny",
-  "createSecretGroupPlaceholder": "Zadajte meno skupiny",
+  "createSecretGroupPlaceholder": "Zadajte názov tajnej skupiny",
   "openSocialURL": "Otvoriť URL Skupiny",
   "enterAnSocialGroupURL": "Zadajte URL verejnej skupiny",
   "next": "Ďalej",

@@ -379,7 +379,7 @@
   "joinSocialGroup": "Csatlakozz egy nyitott csoporthoz",
   "newSecretGroup": "Új Zárt Csoport",
   "createSecretGroupNamePrompt": "Csoport neve",
-  "createSecretGroupPlaceholder": "Enter a secret group name",
+  "createSecretGroupPlaceholder": "Adja meg a titkos csoport nevét",
   "openSocialURL": "Social Group URL",
   "enterAnSocialGroupURL": "Enter a social group URL",
   "next": "Tovább",

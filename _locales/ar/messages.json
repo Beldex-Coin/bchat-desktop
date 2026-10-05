@@ -442,7 +442,7 @@
   "joinSocialGroup": "الانضمام إلى مجموعة اجتماعية",
   "newSecretGroup": "مجموعة سرية",
   "createSecretGroupNamePrompt": "اسم المجموعة السرية",
-  "createSecretGroupPlaceholder": " أدخل اسم المجموعة السرية",
+  "createSecretGroupPlaceholder": "أدخل اسم المجموعة السرية",
   "openSocialURL": "رابط المجموعة الاجتماعية",
   "enterAnSocialGroupURL": "أدخل عنوان URL للمجموعة الاجتماعية",
   "next": "التالي",
