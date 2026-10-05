@@ -2534,6 +2534,15 @@ $dark-cut-reg-btn: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 
     width: 221px;
     height: auto;
     margin: 0 auto;
+
+    // Figma 5296:7969 "BChat_logo": green / blue mark, "BChat" wordmark in #ebebeb
+    // (paths: 1 green flag, 2 blue bubble, 3-7 the letters B, C, h, a, t)
+    path:nth-child(1) {
+      fill: #00bc33;
+    }
+    path:nth-child(n + 3) {
+      fill: #ebebeb;
+    }
   }
   // Figma sets this in Conthrax 24 (468px wide in the app); Michroma is wider, so 27px keeps
   // the line at the design's width.
