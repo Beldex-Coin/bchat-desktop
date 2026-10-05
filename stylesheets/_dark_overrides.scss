@@ -5157,6 +5157,18 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     fill: #0b0b0b;
   }
 }
+// the square itself is the hover feedback: drop the generic icon-button hover (dark rounded
+// patch) that otherwise paints over the light square
+#{$dark} .close-square .bchat-icon-button,
+#{$dark} .edit-profile-dialog .profileClose .bchat-icon-button {
+  padding: 0;
+  border-radius: 0;
+
+  &:hover {
+    background: transparent;
+    border-radius: 0;
+  }
+}
 // the close anchors to the card, not the scrolling body
 #{$dark} .bns-link-dialog .bchat-modal__body,
 #{$dark} .about-bns-dialog .bchat-modal__body,
@@ -5290,14 +5302,14 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     margin-top: 13px;
     // Figma: 12 -> 16px from the field to Link your BNS (the wrapper below adds 21px)
     margin-bottom: -5px;
+    margin-left: 12px;
 
     .inputBox {
       display: flex;
       align-items: center;
-      width: 158px;
-      height: 40px;
-      // the name starts 23 -> 30px in from the field's left edge (Figma 1:52755)
-      padding: 0 12px 0 30px;
+      width: 150px;
+      height: 44px;
+      padding: 0 16px;
       background: #111;
       border: 1px solid #444;
       border-radius: 0;
@@ -5312,11 +5324,22 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
       border: 0;
       border-radius: 0;
       outline: 0;
-      text-align: start;
+      text-align: center;
       font-family: $dark-font-ui !important;
       font-size: 18px;
       font-weight: 600;
       color: #ebebeb;
+
+      // the global placeholder style is small dim mono; keep it readable in this field
+      &::placeholder {
+        font-family: $dark-font-ui !important;
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: normal;
+        text-transform: none;
+        color: #8d8d8d;
+        opacity: 1;
+      }
     }
     .saveIcon {
       display: flex;
