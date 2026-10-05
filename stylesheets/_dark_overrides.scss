@@ -565,8 +565,10 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
     color: $dark-muted;
     border-inline-start: 1px solid transparent;
 
+    // hover (Figma 5368:1455): #1A1A1A with the 1px #EBEBEB bar on the leading edge
     &:hover {
-      background-color: $dark-raised;
+      background-color: #1a1a1a;
+      border-inline-start-color: #ebebeb;
     }
     svg {
       width: 28px;
@@ -771,8 +773,13 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
   background-color: transparent;
   border-inline-start: 1px solid transparent;
 
+  // hover (Figma 5368:1520): glass - #1A1A1A 20% over a blurred backdrop, a light edge from the
+  // glass highlight, and the 1px #EBEBEB bar on the leading edge
   &:hover {
-    background-color: rgba(17, 17, 17, 0.6);
+    background: linear-gradient(135deg, rgba(235, 235, 235, 0.06), rgba(26, 26, 26, 0.2) 45%);
+    backdrop-filter: blur(4px);
+    border-inline-start-color: #ebebeb;
+    box-shadow: inset 0 1px 0 rgba(235, 235, 235, 0.08), inset 0 -1px 0 rgba(235, 235, 235, 0.04);
   }
   &--is-selected,
   &--is-selected:hover {
@@ -972,15 +979,17 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
     min-width: 280px;
     padding: 0;
     gap: 14px;
-    background-color: rgba(11, 11, 11, 0.95);
+    // Figma 5296:52214: glass panel - #0B0B0B 75% over a blurred backdrop, 1px #444 outline
+    background-color: rgba(11, 11, 11, 0.75);
     border: 1px solid #444;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(8px);
   }
   &__item {
     display: flex;
     align-items: center;
     gap: 18px;
-    padding: 18px 46px 18px 18px;
+    // 51.7 -> 69px rows, icon 15 -> 20px in
+    padding: 20px 46px 20px 20px;
     background: transparent;
     border: 0;
     border-inline-start: 1px solid transparent;
@@ -999,8 +1008,10 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
     &:hover,
     &:focus-visible {
       outline: none;
-      background-color: rgba(34, 34, 34, 0.2);
+      // glass row (Figma 5296:52215): #222 20% with a faint light edge, green leading bar
+      background: linear-gradient(135deg, rgba(235, 235, 235, 0.06), rgba(34, 34, 34, 0.2) 50%);
       border-inline-start-color: $dark-green;
+      box-shadow: inset 0 1px 0 rgba(235, 235, 235, 0.06), inset 0 -1px 0 rgba(235, 235, 235, 0.1);
       color: #ebebeb;
     }
   }
@@ -3860,12 +3871,14 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 
   .new-chat-launcher__menu {
     position: static;
-    min-width: 290px;
+    // Figma 193.7 -> 258px
+    min-width: 258px;
   }
   // first entry reads as the current one, as in the design (until another row is hovered)
   .new-chat-launcher__menu:not(:hover) .new-chat-launcher__item:first-child {
-    background-color: rgba(34, 34, 34, 0.2);
+    background: linear-gradient(135deg, rgba(235, 235, 235, 0.06), rgba(34, 34, 34, 0.2) 50%);
     border-inline-start-color: $dark-green;
+    box-shadow: inset 0 1px 0 rgba(235, 235, 235, 0.06), inset 0 -1px 0 rgba(235, 235, 235, 0.1);
     color: #ebebeb;
   }
 }
@@ -7989,4 +8002,35 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   .receipient_name--id {
     text-transform: none;
   }
+}
+
+// ---- Left pane width (Chats list, Settings list and the overlays: new chat, secret / social group,
+// message requests) ----
+// The base sizes each of these columns at 25vw capped at 420px. Width: 26% of the window, no cap,
+// applied to all three so the pane keeps one width when switching between them.
+#{$dark} .module-conversations-list-content,
+#{$dark} .left-pane-setting-section,
+#{$dark} .module-left-pane-overlay {
+  min-width: 340px;
+  width: 26vw;
+  max-width: none;
+}
+
+// Rail hover label ("Settings", Figma 5368:1784): a glass chip 9px right of the rail, 11px below the
+// button's top - #1A1A1A 20% over a blurred backdrop, Roboto Mono 18 #EBEBEB, 10 x 16px padding.
+// Fixed-positioned from ActionsPanel so the rail's overflow doesn't clip it.
+#{$dark} .nav-rail-tip {
+  position: fixed;
+  z-index: 60;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(235, 235, 235, 0.08), rgba(26, 26, 26, 0.2) 55%);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(235, 235, 235, 0.14);
+  box-shadow: inset 0 1px 0 rgba(235, 235, 235, 0.1), 0 4px 16px rgba(0, 0, 0, 0.35);
+  font-family: $dark-font-data !important;
+  font-size: 18px;
+  line-height: 24px;
+  color: #ebebeb;
+  white-space: nowrap;
+  pointer-events: none;
 }

@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { OverlayMode, SectionType, setOverlayMode, showLeftPaneSection } from '../../state/ducks/section';
@@ -10,7 +10,7 @@ import SocialGrpIcon from '../icon/SocialGrpIcon';
 
 /**
  * Dark theme: New Chat / Secret Group / Social Group menu (Figma 234:248).
- * Used by the "+" in the Chats header and by the Chats button in the left rail.
+ * Used by the Chats button in the left rail; the "+" in the Chats header opens New Chat directly.
  */
 
 /** Close an open popup on an outside mouse-down or Escape. */
@@ -86,25 +86,27 @@ export const NewChatMenuList = (props: { onPicked: () => void; className?: strin
   );
 };
 
-/** "+" button in the Chats header. */
+/** "+" button in the Chats header: opens the New Chat page directly (no menu). */
 export const NewChatMenu = () => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  useDismissOnOutside(open, setOpen, ref);
+  const dispatch = useDispatch();
+
+  const openNewChat = () => {
+    dispatch(closeRightPanel());
+    dispatch(showLeftPaneSection(SectionType.NewChat));
+    dispatch(setOverlayMode('message'));
+  };
 
   return (
-    <div className="new-chat-launcher" ref={ref}>
+    <div className="new-chat-launcher">
       <button
         type="button"
         className="new-chat-launcher__button"
         aria-label={window.i18n('newChat')}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
+        title={window.i18n('newChat')}
+        onClick={openNewChat}
       >
         <BchatIcon iconType="newChat" iconSize={22} iconColor="#EBEBEB" />
       </button>
-      {open && <NewChatMenuList onPicked={() => setOpen(false)} />}
     </div>
   );
 };

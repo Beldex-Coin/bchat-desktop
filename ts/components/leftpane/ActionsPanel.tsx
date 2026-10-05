@@ -103,6 +103,16 @@ const Section = (props: {
   // the button box, so moving the mouse onto it keeps it open; leaving both closes it after a short
   // grace period (so crossing a pixel gap doesn't close it).
   const [flyoutPos, setFlyoutPos] = useState<{ top: number; side: number } | null>(null);
+  // dark theme: where the glass hover label sits (beside the hovered rail button)
+  const [tipPos, setTipPos] = useState<{ top: number; side: number } | null>(null);
+  const showTip = (button: HTMLElement) => {
+    const rect = button.getBoundingClientRect();
+    const isRtl = document.documentElement.dir === 'rtl';
+    setTipPos({
+      top: rect.top,
+      side: isRtl ? window.innerWidth - rect.left : rect.right,
+    });
+  };
   const flyoutRef = useRef<HTMLDivElement>(null);
   const flyoutCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelFlyoutClose = () => {
@@ -347,6 +357,12 @@ const Section = (props: {
             // data-offset="{'top':0}"
             className="btnView"
             onClick={() => handleClick()}
+            onMouseEnter={e => {
+              if (isDark) {
+                showTip(e.currentTarget);
+              }
+            }}
+            onMouseLeave={() => setTipPos(null)}
           >
             {isDark ? (
               <BchatIcon iconSize={28} iconType="gear" iconColor="currentColor" />
@@ -358,9 +374,20 @@ const Section = (props: {
               />
             )}
           </div>
-          <section className="d-visiblity ">
-            <DisplayTitle titleKey={'settingsHeader'} top={'278px'} />
-          </section>
+          {isDark ? (
+            tipPos && (
+              <div
+                className="nav-rail-tip"
+                style={{ top: tipPos.top + 11, insetInlineStart: tipPos.side + 9 }}
+              >
+                {window.i18n('settingsHeader')}
+              </div>
+            )
+          ) : (
+            <section className="d-visiblity ">
+              <DisplayTitle titleKey={'settingsHeader'} top={'278px'} />
+            </section>
+          )}
         </div>
       );
 
