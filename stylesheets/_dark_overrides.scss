@@ -4816,8 +4816,9 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   }
 }
 
-// Clear all: 146.6x46.5 -> 195x62 #1a1a1a with Roboto Mono SemiBold 15 -> 20 #ebebeb, centred 40px
-// under the list; hover turns the fill dark red (#290f0f)
+// Clear all (Figma 5296:33743 / 33740): 178.5x46.5 -> 238x62 danger button - #290f0f fill on a
+// #ff3e3e hairline, "CLEAR ALL" Roboto Mono SemiBold 15 -> 20 #ff3e3e, centred 28.5 -> 38px under the
+// list; hover fills it #ff3e3e with an #ebebeb label
 // Message Requests in the left pane: the list fills the pane and Clear All sits at the bottom,
 // 36px up (same place as Create / Next on the group overlays)
 #{$dark} .message-requests-overlay--left {
@@ -4833,27 +4834,29 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 #{$dark} .messageRequestButton {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 38px;
 
   .bchat-button {
-    min-width: 195px;
+    min-width: 238px;
     height: 62px !important;
-    background-color: #1a1a1a;
-    color: #ebebeb;
+    background-color: #ff3e3e;
+    color: #ff3e3e;
+    font-family: $dark-font-data !important;
     font-size: 20px !important;
     font-weight: 600 !important;
     letter-spacing: 0;
-    text-transform: none;
+    text-transform: uppercase;
 
     &::before {
-      background-color: #1a1a1a;
+      inset: 0.5px;
+      background-color: #290f0f;
     }
     &:hover:not(.disabled) {
-      background-color: #290f0f;
+      background-color: #ff3e3e;
       color: #ebebeb;
 
       &::before {
-        background-color: #290f0f;
+        background-color: #ff3e3e;
       }
     }
   }
