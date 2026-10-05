@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import  { useEffect, useState } from 'react';
 import { ConversationSearch } from './ConversationSearch';
 
@@ -458,7 +459,15 @@ const ConversationHeaderTitle = () => {
         role="button"
       >
         <span className="header-name-row">
-          <span className='receipient_name'>{convoName}</span>
+          <span
+            className={classNames(
+              'receipient_name',
+              // no name yet: the header shows the BChat ID itself, which must stay as typed
+              convoName === headerTitleProps?.conversationKey && 'receipient_name--id'
+            )}
+          >
+            {convoName}
+          </span>
           {convoProps?.isBnsHolder && <span className="bns-tag">BNS</span>}
         </span>
         <SubTxt>

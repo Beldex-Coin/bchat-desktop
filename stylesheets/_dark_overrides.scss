@@ -7939,3 +7939,28 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     text-align: center;
   }
 }
+
+// ---- Conversation header title: show a contact's full BChat ID ----
+// A contact with no name shows its 66-character ID as the title. The base style capped the title at
+// 380px (cutting the ID short) and capitalised it (turning "bd…" into "Bd…"); the title now uses the
+// header's free width, and an ID keeps its own letters.
+#{$dark} .module-conversation-header {
+  .module-conversation-header__title,
+  .module-contact-name__profile-name {
+    max-width: none;
+    min-width: 0;
+  }
+  .header-name-row {
+    max-width: 100%;
+    min-width: 0;
+  }
+  .receipient_name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .receipient_name--id {
+    text-transform: none;
+  }
+}
