@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { getV2OpenGroupRoomByRoomId, OpenGroupV2Room } from '../../../../data/opengroups';
 import { openConversationWithMessages } from '../../../../state/ducks/conversations';
 import { getConversationController } from '../../../conversations';
@@ -129,6 +130,15 @@ export async function joinOpenGroupV2WithUIEvents(
       }
       return false;
     }
+    // Offline the join can only fail (after the 20s timeout), so say why up front instead of
+    // showing "Connecting..." followed by "Couldn't join group". navigator.onLine covers the 1s
+    // debounce before disconnect() flips window.isOnline.
+    if (!window.isOnline || !window.navigator.onLine) {
+      if (showToasts) {
+        ToastUtils.pushToastError('checkInternetConnection', window.i18n('checkInternetConnection'));
+      }
+      return false;
+    }
     if (showToasts) {
       ToastUtils.pushToastInfo('connectingToServer', window.i18n('connectingToServer'));
     }
@@ -160,6 +170,8 @@ export async function joinOpenGroupV2WithUIEvents(
       ToastUtils.pushToastError('connectToServerFail', window.i18n('connectToServerFail'));
     }
   } finally {
+    // the result toast (success or failure) replaces it
+    toast.dismiss('connectingToServer');
     if (uiCallback) {
       uiCallback(false);
     }

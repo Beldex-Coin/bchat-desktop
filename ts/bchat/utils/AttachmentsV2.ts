@@ -13,6 +13,7 @@ import { addAttachmentPadding } from '../crypto/BufferPadding';
 import { RawPreview, RawQuote } from './Attachments';
 import _ from 'lodash';
 import { AttachmentsV2Utils } from '.';
+import { uploadWithRetry } from './UploadRetry';
 
 interface UploadParamsV2 {
   attachment: Attachment;
@@ -43,11 +44,15 @@ export async function uploadV2(params: UploadParamsV2): Promise<AttachmentPointe
     ? addAttachmentPadding(attachment.data)
     : attachment.data;
 
-  const fileDetails = await uploadFileOpenGroupV2(new Uint8Array(paddedAttachment), openGroup);
+  // Computed once here rather than inside the retry below - it was previously re-built with
+  // `new Uint8Array(paddedAttachment)` on every attempt, wastefully redoing that copy for
+  // attempt 2/3/4 of the exact same bytes that didn't change between attempts.
+  const paddedAttachmentBytes = new Uint8Array(paddedAttachment);
 
-  if (!fileDetails) {
-    throw new Error(`upload to fileopengroupv2 of ${attachment.fileName} failed`);
-  }
+  // See UploadRetry.ts's uploadWithRetry() for why this needs a retry wrapper at all.
+  const fileDetails = await uploadWithRetry('uploadV2', attachment.fileName, () =>
+    uploadFileOpenGroupV2(paddedAttachmentBytes, openGroup)
+  );
 
   return {
     ...pointer,

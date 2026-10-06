@@ -1,12 +1,14 @@
 import Backbone from 'backbone';
 import _ from 'lodash';
 import { getMessageQueue } from '../bchat';
+import { trackFailedSend } from '../bchat/sending/FailedSendRetry';
 import { getConversationController } from '../bchat/conversations';
 import { ClosedGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMessage/ClosedGroupVisibleMessage';
 import { PubKey } from '../bchat/types';
 import { UserUtils } from '../bchat/utils';
 import { BlockedNumberController } from '../util';
 import { leaveClosedGroup } from '../bchat/group/closed-group';
+import { ensureCanSendInClosedGroup } from '../receiver/closedGroups';
 import { SignalService } from '../protobuf';
 import { MessageModel } from './message';
 import { MessageAttributesOptionals, MessageDirection } from './messageType';
@@ -858,6 +860,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       throw new TypeError(`Invalid conversation type: '${this.get('type')}'`);
     } catch (e) {
       await message.saveErrors(e);
+      // uploadData() (attachment upload) failing lands here, not in
+      // MessageSentHandler.handleMessageSentFailure() - track it too, so
+      // retryAllFailedSendsOnReconnect() actually picks this failure up.
+      trackFailedSend(message.id);
       return null;
     }
   }
@@ -948,6 +954,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const expireTimer = this.get('expireTimer');
     const networkTimestamp = getNowWithNetworkOffset();
 
+    // A secret group we created only gets its encryption keypair once every invite was sent (see
+    // createClosedGroup() in receiver/closedGroups.ts). Before that, sending can only fail at
+    // encryption, so don't add a message that goes straight to error. The composer already checks
+    // this before clearing its draft; this covers every other caller.
+    if (!(await ensureCanSendInClosedGroup(this.id))) {
+      return;
+    }
+
     window?.log?.info(
       'Sending message to conversation',
       this.idForLogging(),
@@ -974,6 +988,16 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       error.name = 'SendMessageNetworkError';
       (error as any).number = this.id;
       await messageModel.saveErrors([error]);
+      trackFailedSend(messageModel.id);
+      // Without active_at (and approval, for a private chat) the left pane filters this
+      // conversation out, so a new chat started offline vanishes as soon as it's deselected.
+      // The online path gets both below / in sendMessageJob(); the auto-retry (retrySend()) doesn't.
+      this.set({
+        lastMessage: messageModel.getNotificationText(),
+        lastMessageStatus: 'error',
+        active_at: networkTimestamp,
+      });
+      await this.handleMessageApproval();
       await this.commit();
 
       return;

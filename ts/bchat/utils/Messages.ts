@@ -51,5 +51,10 @@ export async function toRawMessage(
     encryption,
   };
 
+  const syncTarget = (message as any).syncTarget;
+  if (typeof syncTarget === 'string' && syncTarget.length > 0) {
+    rawMessage.syncTarget = syncTarget;
+  }
+
   return rawMessage;
 }
