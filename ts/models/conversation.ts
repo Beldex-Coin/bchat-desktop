@@ -993,6 +993,15 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       (error as any).number = this.id;
       await messageModel.saveErrors([error]);
       trackFailedSend(messageModel.id);
+      // Without active_at (and approval, for a private chat) the left pane filters this
+      // conversation out, so a new chat started offline vanishes as soon as it's deselected.
+      // The online path gets both below / in sendMessageJob(); the auto-retry (retrySend()) doesn't.
+      this.set({
+        lastMessage: messageModel.getNotificationText(),
+        lastMessageStatus: 'error',
+        active_at: networkTimestamp,
+      });
+      await this.handleMessageApproval();
       await this.commit();
 
       return;

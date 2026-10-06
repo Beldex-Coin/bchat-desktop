@@ -16,7 +16,6 @@ import useHover from 'react-use/lib/useHover';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatIcon, BchatIconButton, BchatIconSize } from '../icon';
 import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
-import { getTheme } from '../../state/selectors/theme';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
 // import styled from 'styled-components';
 // import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -50,10 +49,21 @@ const OnionCountryDisplay = ({
   return hoverable;
 };
 
+/**
+ * Single source of truth for "are we online" on the Hops page and the side-panel status light, so
+ * the two can never disagree. The browser's offline event reacts instantly, while the redux flag
+ * only changes after a poll or disconnect() runs - require both so we flip to offline as soon as
+ * the network drops.
+ */
+const useIsOnionOnline = () => {
+  const hasNetwork = useNetworkStatus();
+  const pathOnline = useSelector(getIsOnline);
+  return pathOnline && hasNetwork;
+};
+
 const OnionPathModalInner = () => {
   const onionPath = useSelector(getFirstOnionPath);
-  const isOnline = useSelector(getIsOnline);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isOnline = useIsOnionOnline();
 
   // getEffectiveOnionRoutingHops() reads the hop count chosen from the "Onion Routing" picker in
   // Settings > Chat (0 / 1 / 3) - the same source of truth bchatFetch() uses to pick between the
@@ -107,49 +117,7 @@ const OnionPathModalInner = () => {
     ? window.i18n('onionPathIndicatorDescriptionOneHop')
     : window.i18n('onionPathIndicatorDescription');
 
-  // dark theme (Figma 324:4824 / 324:4968 / 324:5105): one row per node - dot + label side by side -
-  // so the dots always line up with their text; the light markup keeps two separate columns
-  if (isDark) {
-    return (
-      <div className="hops-page">
-        <div className="hops-card">
-          <p className="hops-card__description">{description}</p>
-          <div className="hops-path">
-            {nodes.map((snode: Snode | any, index: number) => {
-              const isEnd = index === 0 || index === lastIndex;
-              const labelText: string =
-                snode.label ||
-                countryLookup.byIso(ip2country(snode.ip))?.country ||
-                window.i18n('unknownCountry');
-              const role = isEnd
-                ? labelText
-                : isDirectSingleHop
-                ? window.i18n('entryNode')
-                : index === 1
-                ? 'Entry Node'
-                : 'Master Node';
-              const kind =
-                index === 0 ? 'you' : index === lastIndex ? 'destination' : index === 1 ? 'entry' : 'node';
-
-              return (
-                <div className={`hops-path__row hops-path__row--${kind}`} key={`hop-${index}`}>
-                  <span className="hops-path__dot" />
-                  <div className="hops-path__text">
-                    <div className="hops-path__role">{role}</div>
-                    {!isEnd && snode.ip && (
-                      <div className="hops-path__ip">{`${labelText} (${snode.ip})`}</div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
+   return (
     <div className='hopes'>
       {/* <Flex style={{backgroundColor:'#202329'}}
         container={true}
@@ -272,10 +240,7 @@ export const ActionPanelOnionStatusLight = (props: {
 
   const onionPathsCount = useSelector(getOnionPathsCount);
   const firstPathLength = useSelector(getFirstOnionPathLength);
-  // The browser's offline event reacts instantly, while the redux flag only changes after a poll
-  // or disconnect() runs - require both so the light turns red as soon as the network drops.
-  const hasNetwork = useNetworkStatus();
-  const isOnline = useSelector(getIsOnline) && hasNetwork;
+  const isOnline = useIsOnionOnline();
 
   // Set icon color based on result
   const red = 'var(--color-destructive)';
