@@ -36,7 +36,9 @@ export const BchatScrollButton = (props: {
             />
            
           </div>
-           <div className="floated-downArrow-unreadCountBox">{props.unreadCount}</div>
+           {!!props.unreadCount && (
+             <div className="floated-downArrow-unreadCountBox">{props.unreadCount}</div>
+           )}
            </>
         )}
       </div>

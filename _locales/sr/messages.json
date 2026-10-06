@@ -246,6 +246,7 @@
   "multipleKickedFromTheGroup": "$name$ je izbrisan iz grupe.",
   "blockUser": "Blokiraj korisnika",
   "unblockUser": "Odblokirajte",
+  "unblockContact": "Odblokiraj kontakt",
   "unblocked": "Odblokirajte",
   "blocked": "Blokiran",
   "blockedSettingsTitle": "Blokirani kontakti",

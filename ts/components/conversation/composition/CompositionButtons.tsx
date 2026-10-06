@@ -18,8 +18,15 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
     >
       <BchatToolTip effect="solid" />
       {darkMode ? (
-        // Dark theme (Figma 234:295): "+" in a small outlined square, inside the input
-        <BchatIcon iconSize={16} iconType="attachment" iconColor="#ACACAC" />
+        // Dark theme (Figma 5296:30566 "Attach"): the "Add New" glyph - a thin outlined square with a
+        // "+" in it - on its own, no box behind it (the box only appears on hover / menu open)
+        <svg className="attachment-box__glyph" viewBox="0 0 11.77 11.77" aria-hidden="true">
+          <path
+            fillRule="evenodd"
+            d="M0 0V11.769H11.769V0H0ZM0.692 0.692H11.077V11.077H0.692V0.692ZM5.525 2.783V5.538H2.769V6.231H5.525V8.986H6.217V6.231H8.973V5.538H6.217V2.783H5.525Z"
+            fill="currentColor"
+          />
+        </svg>
       ) : (
         <BchatIcon iconSize={24} iconType="attachment" iconColor="var(--color-icon)" />
       )}

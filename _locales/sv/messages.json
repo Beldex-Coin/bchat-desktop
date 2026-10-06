@@ -246,6 +246,7 @@
   "multipleKickedFromTheGroup": "$name$ vart borttagen från gruppen.",
   "blockUser": "Blockera",
   "unblockUser": "Avblockera",
+  "unblockContact": "Avblockera kontakt",
   "unblocked": "Avblockerad",
   "blocked": "Blockerad",
   "blockedSettingsTitle": "Blockerade kontakter",

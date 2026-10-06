@@ -447,7 +447,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Primary}
-          text={window.i18n('unblockUser')}
+          text={window.i18n('unblockContact')}
           onClick={() => {
             this.setState(getDefaultState());
             unblockConvoById(convoId);

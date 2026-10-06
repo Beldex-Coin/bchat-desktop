@@ -1599,6 +1599,35 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   > div:first-child {
     padding: 14px 14px 0;
   }
+
+  // Figma 5296:48224: 279 x 103.5 -> 372 x 138 bubble; the card sits 14px in, "Message" (Roboto Mono
+  // Regular 12 -> 16 #ebebeb) is centred 10px under the card with 14px left below it
+  > div:first-child > .group-details ~ div:not(.timeStamp) {
+    display: none; // the spacer under the card - the label's own padding sets the gap
+  }
+  // the id stays on one line (Figma), cut with an ellipsis if it doesn't fit beside the avatar
+  .group-details > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    > div:nth-child(2) {
+      min-width: 0;
+    }
+  }
+  .group-details .group-type {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .view-Contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 14px 14px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: center;
+  }
 }
 #{$dark} .payment {
   .contents,
@@ -1823,17 +1852,47 @@ $dark-composer-h: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    // Figma 5296:30566: 24 -> 32px hit area, 11.8 -> 16px #acacac glyph, no box of its own
+    width: 32px;
+    height: 32px;
     padding: 0;
     margin: 0;
-    background: rgba(34, 34, 34, 0.5);
-    border: 0.5px solid #444;
-    cursor: pointer;
+    color: #acacac;
+    background: transparent;
+    border: 0.5px solid transparent;
 
+    .attachment-box__glyph {
+      width: 16px;
+      height: 16px;
+    }
+    // Figma "Rectangle 913": the square's top-right corner is cut (20 of 24 along the top)
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    svg path {
+      transition: fill 0.15s ease;
+    }
+    // hover (Figma 5296:31826): #222 50% square on a #444 line, the glyph turns #ebebeb
     &:hover {
-      background: $dark-raised;
-      border-color: #666;
+      background: rgba(34, 34, 34, 0.5);
+      border-color: #444;
+      color: #ebebeb;
+
+      svg path {
+        fill: #ebebeb;
+      }
+    }
+  }
+  // menu open (Figma 5296:47772): solid #ebebeb square, dark #0b0b0b glyph
+  .attachment-wrapper.seleted .attachment-box,
+  .attachment-wrapper.seleted .attachment-box:hover {
+    background: #ebebeb;
+    border-color: #444;
+    color: #0b0b0b;
+
+    svg path {
+      fill: #0b0b0b;
     }
   }
   // attach menu (Figma 71:9206): 155x108 -> 207x144 glass card, left edge on the "+" button,
@@ -8205,3 +8264,57 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 #{$dark} .bchat-conversation:has(.profile-info .contact-list) {
   padding-inline-end: 431px;
 }
+
+// ---- Scroll-to-bottom button (BchatScrollButton) ----
+// The unread count hung under the button (top: 41px) and ran into the mic square below it. The
+// count now sits on the button's top-end corner as a small green tag, and the button keeps a 16px
+// gap above the message box, so nothing overlaps the composer.
+#{$dark} div:has(> .floated-downArrow) {
+  bottom: 96px !important;
+}
+#{$dark} .floated-downArrow {
+  position: relative;
+
+  .floated-downArrow-btn-wrapper {
+    width: 44px;
+    height: 44px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 0;
+
+    svg path {
+      fill: #ebebeb;
+    }
+    &:hover {
+      background: #222;
+      border-color: #737373;
+
+      svg path {
+        fill: #ebebeb;
+      }
+    }
+  }
+  .floated-downArrow-unreadCountBox {
+    top: -9px;
+    inset-inline-end: -9px;
+    min-width: 22px;
+    height: 18px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00bc33;
+    border-radius: 0;
+    font-family: $dark-font-data !important;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    color: #0b0b0b;
+    pointer-events: none;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
