@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SettingsHeader } from './BchatSettingsHeader';
+import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
 // import { shell } from 'electron';
 // import { BchatIconButton } from '../icon';
 import autoBind from 'auto-bind';
@@ -25,6 +26,21 @@ import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
 import { BchatLanguageScreen } from './BchatLanguageScreen';
 
+
+
+// "(No hops)" / "(1 hop)" / "(3 hops)" shown after the Hops page title, from the same hop count
+// Settings > Chat > Onion Routing sets and bchatFetch() routes by.
+function hopsTitleSuffix(): string {
+  switch (getEffectiveOnionRoutingHops()) {
+    case 0:
+      return window.i18n('hopsTitleSuffixZero');
+    case 1:
+      return window.i18n('hopsTitleSuffixOne');
+    case 3:
+    default:
+      return window.i18n('hopsTitleSuffixThree');
+  }
+}
 
 export function getMediaPermissionsSettings() {
   return window.getSettingValue('media-permissions');
@@ -291,7 +307,13 @@ export class BchatSettingsView extends React.Component<SettingsViewProps, State>
 
     return (
       <div className="bchat-settings">
-        <SettingsHeader category={category} categoryTitle={window.i18n(categoryLocalized)} />
+        <SettingsHeader
+          category={category}
+          categoryTitle={window.i18n(categoryLocalized)}
+          categoryTitleSuffix={
+            category === BchatSettingCategory.Hops ? hopsTitleSuffix() : undefined
+          }
+        />
 
         <div className="bchat-settings-view">
           {/* {shouldRenderPasswordLock ? (

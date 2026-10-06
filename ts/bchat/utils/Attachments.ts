@@ -12,6 +12,7 @@ import { FSv2 } from '../apis/file_server_api';
 import { addAttachmentPadding } from '../crypto/BufferPadding';
 import _ from 'lodash';
 import { encryptAttachment } from '../../util/crypto/attachmentsEncrypter';
+import { uploadWithRetry } from './UploadRetry';
 
 interface UploadParams {
   attachment: Attachment;
@@ -80,17 +81,17 @@ export class AttachmentFsV2Utils {
 
     // use file server v2
     if (FSv2.useFileServerAPIV2Sending) {
-      const uploadToV2Result = await FSv2.uploadFileToFsV2(attachmentData);
-      if (uploadToV2Result) {
-        const pointerWithUrl: AttachmentPointerWithUrl = {
-          ...pointer,
-          id: uploadToV2Result.fileId,
-          url: uploadToV2Result.fileUrl,
-        };
-        return pointerWithUrl;
-      }
-      window?.log?.warn('upload to file server v2 failed');
-      throw new Error(`upload to file server v2 of ${attachment.fileName} failed`);
+      // See UploadRetry.ts's uploadWithRetry() for why this needs a retry wrapper at all.
+      const uploadToV2Result = await uploadWithRetry('uploadToFsV2', attachment.fileName, () =>
+        FSv2.uploadFileToFsV2(attachmentData)
+      );
+
+      const pointerWithUrl: AttachmentPointerWithUrl = {
+        ...pointer,
+        id: uploadToV2Result.fileId,
+        url: uploadToV2Result.fileUrl,
+      };
+      return pointerWithUrl;
     }
     throw new Error('Only v2 fileserver upload is supported');
   }

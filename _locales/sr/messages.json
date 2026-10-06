@@ -405,7 +405,6 @@
   "notificationForConvo_all": "Sve",
   "notificationForConvo_disabled": "Onemogućeno",
   "notificationForConvo_mentions_only": "Samo pominjanja",
-  "onionPathIndicatorTitle": "Putanja",
   "onionPathIndicatorDescription": "BChat sakriva vašu IP adresu prebacivanjem poruka kroz nekoliko uslužnih čvorova u svojoj decentralizovanoj mreži. Ovo su zemlje kroz koje se trenutno uspostavlja vaša veza",
   "unknownCountry": "Nepoznata zemlja",
   "device": "Uređaj",

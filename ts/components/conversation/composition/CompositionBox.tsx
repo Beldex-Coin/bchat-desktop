@@ -107,6 +107,7 @@ import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
 import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
+import { ensureCanSendInClosedGroup } from '../../../receiver/closedGroups';
 
 export interface ReplyingToMessageProps {
   convoId: string;
@@ -1043,6 +1044,11 @@ class CompositionBoxInner extends React.Component<Props, State> {
       ToastUtils.pushYouLeftTheGroup();
       return;
     }
+    // secret group whose invites haven't all been sent yet - checked before the draft is cleared
+    // below, so the typed message is kept for after the invites are retried
+    if (!(await ensureCanSendInClosedGroup(this.props.selectedConversationKey))) {
+      return;
+    }
 
     const { quotedMessageProps } = this.props;
 
@@ -1170,6 +1176,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     if (selectedConversation?.isBlocked && !selectedConversation?.isPrivate) {
       ToastUtils.pushUnblockToSendGroup();
+      return;
+    }
+    // same as onSendMessage(): keep the recording rather than dropping it
+    if (
+      this.props.selectedConversationKey &&
+      !(await ensureCanSendInClosedGroup(this.props.selectedConversationKey))
+    ) {
       return;
     }
     const savedAudioFile = await processNewAttachment({

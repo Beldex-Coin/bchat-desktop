@@ -174,7 +174,7 @@ function _cleanData(data: any): any {
     } else if (Array.isArray(value)) {
       data[key] = value.map(_cleanData);
     } else if (_.isObject(value) && value instanceof File) {
-      data[key] = { name: value.name, path: value.path, size: value.size, type: value.type };
+      data[key] = { name: value.name, path: (value as any).path, size: value.size, type: value.type };
     } else if (_.isObject(value) && value instanceof ArrayBuffer) {
       window.log.error(
         'Trying to save an ArrayBuffer to the db is most likely an error. This specific field should be removed before the cleanData call'
@@ -697,6 +697,12 @@ export async function getExpiredMessages(): Promise<MessageCollection> {
 export async function getOutgoingWithoutExpiresAt(): Promise<MessageCollection> {
   const messages = await channels.getOutgoingWithoutExpiresAt();
   return new MessageCollection(messages);
+}
+
+export async function getRecentFailedOutgoingMessageIds(
+  sinceTimestamp: number
+): Promise<Array<string>> {
+  return channels.getRecentFailedOutgoingMessageIds(sinceTimestamp);
 }
 
 export async function getNextExpiringMessage(): Promise<MessageCollection> {

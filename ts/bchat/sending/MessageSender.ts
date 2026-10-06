@@ -24,7 +24,11 @@ import { EmptySwarmError } from '../utils/errors';
 import ByteBuffer from 'bytebuffer';
 import { getHasSeenHF170, getHasSeenHF180 } from '../apis/snode_api/hfHandling';
 
-const DEFAULT_CONNECTIONS = 1;
+// Try this many swarm nodes in parallel for a single store attempt. Was 1 (no redundancy at
+// all - one unreachable/slow node failed the whole attempt); firstTrue() now correctly waits
+// for every candidate to fail before giving up, so raising this actually buys resilience
+// instead of just racing to the first rejection.
+const DEFAULT_CONNECTIONS = 2;
 
 // ================ SNODE STORE ================
 
@@ -62,18 +66,41 @@ export function getMinRetryTimeout() {
   return 1000;
 }
 
+// Don't start another send attempt once this long has passed since the first one began. A single
+// attempt can itself take ~100s when nodes are unreachable (storeOnNode() goes through
+// onionFetchRetryable/oneHopOnionFetchRetryable: 4 tries x 25s guard-node timeout, with
+// DEFAULT_CONNECTIONS nodes in parallel, so the attempt waits for the slowest to fail), so
+// without this cap 7 attempts could leave a message showing "sending" for ~10+ minutes before the
+// error is shown. With it, the worst case is roughly two slow attempts (~3-4 minutes), while
+// attempts that fail fast (e.g. a node rejecting right away) still get the full attempt count.
+const SEND_RETRY_BUDGET_MS = 60 * 1000;
+// Always allow at least this many attempts, even if the budget is already used up. Otherwise, on a
+// weak connection, one slow first attempt would use up the whole budget and the message would
+// never be tried again on different swarm nodes. Those are the users who need the retry most.
+const MIN_SEND_ATTEMPTS = 2;
+
 /**
  * Send a message via master nodes.
  *
  * @param message The message to send.
  * @param attempts The amount of times to attempt sending. Minimum value is 1.
+ *
+ * Was 3. The Android app retries the equivalent send up to 7 times total (see
+ * bchat-android's retryIfNeeded(maxRetryCount = 6), same flat 1s interval we use here) before
+ * giving up, and doesn't otherwise select nodes any differently than we do (both platforms pick
+ * a random swarm/guard node and pass/fail test it - no speed-based selection on either side).
+ * Matching Android's attempt budget gives transient connection issues (slow/flaky network path,
+ * a node that's briefly unreachable) the same number of chances to clear up before we surface a
+ * failure to the user, instead of giving up more than twice as early. The attempts are also capped
+ * by SEND_RETRY_BUDGET_MS, since unlike Android's, one of our attempts can take ~100s.
  */
 export async function send(
   message: RawMessage,
-  attempts: number = 3,
+  attempts: number = 7,
   retryMinTimeout?: number, // in ms
   isSyncMessage?: boolean
 ): Promise<{ wrappedEnvelope: Uint8Array; effectiveTimestamp: number }> {
+  const startedAt = Date.now();
   return pRetry(
     async () => {
       const recipient = PubKey.cast(message.device);
@@ -123,6 +150,19 @@ export async function send(
       retries: Math.max(attempts - 1, 0),
       factor: 1,
       minTimeout: retryMinTimeout || MessageSender.getMinRetryTimeout(),
+      onFailedAttempt: e => {
+        // throwing here makes pRetry reject with this error instead of scheduling another attempt
+        if (
+          e.retriesLeft > 0 &&
+          e.attemptNumber >= MIN_SEND_ATTEMPTS &&
+          Date.now() - startedAt >= SEND_RETRY_BUDGET_MS
+        ) {
+          window?.log?.warn(
+            `MessageSender.send: giving up after attempt #${e.attemptNumber}, retry budget of ${SEND_RETRY_BUDGET_MS}ms used`
+          );
+          throw e;
+        }
+      },
     }
   );
 }
@@ -200,13 +240,22 @@ export async function sendMessageToSnode(
   let snode: Snode | undefined;
   try {
     const firstSuccessSnode = await firstTrue(promises);
-    snode = firstSuccessSnode;
+    snode = firstSuccessSnode || undefined;
   } catch (e) {
     const snodeStr = snode ? `${snode.ip}:${snode.port}` : 'null';
     window?.log?.warn(
       `bchat_message:::sendMessage - ${e.code} ${e.message} to ${pubKey} via snode:${snodeStr}`
     );
     throw e;
+  }
+
+  if (!snode) {
+    // Every candidate resolved falsy without throwing (storeOnNode() returned false/undefined
+    // rather than raising) - none of them actually confirmed the store. Treat this the same as
+    // a thrown error instead of crashing below on snode.ip of an undefined snode.
+    throw new Error(
+      `bchat_message:::sendMessage - No snode confirmed storing the message to ${pubKey}`
+    );
   }
 
   // If message also has a sync message, save that hash. Otherwise save the hash from the regular message send i.e. only closed groups in this case.

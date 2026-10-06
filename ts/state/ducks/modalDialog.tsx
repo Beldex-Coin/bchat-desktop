@@ -39,6 +39,18 @@ export type SettingMiniModalState = {
   onClose: () => void;
   onClick: (selected: string) => void;
   selectedItem: string;
+  // Optional, parallel to `content` by index. When present, BchatSettingMiniModal shows an info
+  // row below the radio list with the description for whichever option is currently selected -
+  // updating live as the user clicks through options, before they hit OK. Omit it (as the Font
+  // Size picker does) to get the plain radio list with no description row.
+  descriptions?: string[];
+  // Optional override for the confirm button's label - BchatSettingMiniModal defaults this to
+  // "Save" for every caller (Font Size included), but the Hops picker's design wants "OK"
+  // instead. Omit it to keep the existing "Save" default.
+  confirmButtonText?: string;
+  // Optional, parallel to `content` by index: muted text shown after an option's label, e.g.
+  // "(Default)" after "1 Hop". Display only - selection still uses the plain `content` label.
+  contentSuffixes?: Array<string | undefined>;
 } | null;
 
 export type BchatUpdateInstruntionState = any | null;

@@ -16,6 +16,7 @@ import {
   Storage,
 } from './storage';
 import { Registration } from './registration';
+import { clearFailedSendRegistry } from '../bchat/sending/FailedSendRetry';
 // import { getConversationById } from '../data/data';
 
 /**
@@ -140,6 +141,14 @@ export async function registerSingleDevice(
 }
 
 async function createAccount(identityKeyPair: any) {
+  // Whatever this Set still had tracked belongs to whichever account/identity was active
+  // before this call (a fresh signup has nothing tracked yet, so this is a no-op there; a
+  // recovery or device-linking restore is the case that actually matters - see
+  // signInWithRecovery()/registerSingleDevice() and signInByLinkingDevice() above, both of
+  // which funnel through here). Those message ids point at rows that belong to the previous
+  // identity, if any - not messages this (possibly different) account should ever retry-send.
+  clearFailedSendRegistry();
+
   const sodium = await getSodiumRenderer();
   let password = fromArrayBufferToBase64(sodium.randombytes_buf(16));
   password = password.substring(0, password.length - 2);

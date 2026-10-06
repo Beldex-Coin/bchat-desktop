@@ -15,6 +15,13 @@ import Backbone from 'backbone';
 import { BchatRegistrationView } from '../components/registration/BchatRegistrationView';
 import { BchatInboxView } from '../components/BchatInboxView';
 import { deleteAllLogs } from '../node/logs';
+import {
+  retryAllFailedSendsOnReconnect,
+  startFailedSendRetryTimer,
+} from '../bchat/sending/FailedSendRetry';
+import { snodeHttpsAgent } from '../bchat/apis/snode_api/onions';
+import { setPollReconnectHandler } from '../bchat/apis/snode_api/swarmPolling';
+import { updateIsOnline } from '../state/ducks/onion';
 // import ReactDOM from 'react-dom';
 // import React from 'react';
 
@@ -379,6 +386,11 @@ async function start() {
 // window.removeEventListener('offline', onOffline);
 //   window.addEventListener('online', onOnline);
 let disconnectTimer: NodeJS.Timeout | null = null;
+
+// How long to wait after the browser's 'online' event before attempting the failed-send retry
+// below - see its comment.
+const ONLINE_RETRY_DELAY_MS = 5000;
+
 function onOffline() {
   window.log.info('offline');
   window.globalOnlineStatus = false;
@@ -403,6 +415,8 @@ function onOnline() {
     window.log.warn('Already online. Had a blip in online/offline status.');
     clearTimeout(disconnectTimer);
     disconnectTimer = null;
+    // we were still within the 1s debounce below onOffline() before actually disconnecting,
+    // so any in-flight sends never really lost their connection - nothing to retry.
     return;
   }
   if (disconnectTimer) {
@@ -411,6 +425,18 @@ function onOnline() {
   }
 
   void connect();
+  // Retry any message that failed to send while we were offline - mirrors bchat-android's
+  // automatic resend-on-reconnect behavior, which desktop otherwise has no equivalent of
+  // (a failed send here previously just sat there until the user manually clicked "Resend").
+  //
+  // Retrying the instant this event fires is too eager: the OS can report "online" before DNS
+  // or the actual network path is ready, so an immediate attempt often just fails again with
+  // nothing left to try it a second time (the periodic sweep in FailedSendRetry.ts is the
+  // backstop for that, but there's no reason not to give this its own best shot first). Wait a
+  // few seconds to give the connection a chance to actually come up before trying.
+  global.setTimeout(() => {
+    void retryAllFailedSendsOnReconnect();
+  }, ONLINE_RETRY_DELAY_MS);
 }
 
 function disconnect() {
@@ -419,11 +445,42 @@ function disconnect() {
   // Clear timer, since we're only called when the timer is expired
   disconnectTimer = null;
   AttachmentDownloads.stop();
+
+  // We're genuinely offline at this point (the 1s debounce in onOffline() above already ruled
+  // out a brief online/offline blip). Any socket snodeHttpsAgent had pooled for keepAlive reuse
+  // is now presumed dead - the laptop may have slept, or the network path changed entirely - so
+  // destroy them now rather than waiting to discover that the hard way (a hang, or an
+  // ECONNRESET wrongly blamed on the node) on the first request after we reconnect. A fresh
+  // socket/TLS handshake will be made for the next request either way.
+  snodeHttpsAgent.destroy();
+
+  // connect() sets this back to true when we reconnect - this is its mirror image. Without it,
+  // window.isOnline only ever gets set once (to true, on the very first connect()) and never back
+  // to false, which makes the "are we offline" checks that read it (conversation.ts's
+  // sendMessage(), message.ts's retrySend()) effectively dead: they can't ever see us as offline
+  // after the app's initial startup, no matter how long the connection has actually been down.
+  window.isOnline = false;
+
+  // Flip the status light to red. swarmPolling only does this for one specific error code, which
+  // a dropped connection often doesn't produce (DNS failures, timeouts...), leaving it green while
+  // offline. The next successful poll after we reconnect sets it back to true (green).
+  window.inboxStore?.dispatch(updateIsOnline(false));
 }
 
 let connectCount = 0;
 async function connect() {
   window.log.info('connect');
+  if (connectCount === 0) {
+    // Runs independently of the online/offline detection bootstrapped below - see
+    // FailedSendRetry.ts's file comment for why a periodic sweep is needed at all in addition
+    // to onOnline()'s fast-path retry.
+    startFailedSendRetryTimer();
+    // A successful snode poll while window.isOnline is false means the 'online' event was missed
+    // (or is late). Run the same recovery it would have: connect() sets window.isOnline back to
+    // true and restarts attachment downloads, the listeners are swapped back so the next real
+    // outage is still detected, and failed sends get retried.
+    setPollReconnectHandler(onOnline);
+  }
   // Bootstrap our online/offline detection, only the first time we connect
   if (connectCount === 0 && navigator.onLine) {
     window.addEventListener('offline', onOffline);
@@ -439,18 +496,27 @@ async function connect() {
     return;
   }
 
+  // Set this before any of the awaits below, not after them: disconnect() is now the only other
+  // code that touches this flag, so if one of those awaits threw and this came last, it would
+  // stay false forever - every send and resend would fail with "Network is not available" and
+  // the FailedSendRetry sweep would never run, until the app was restarted.
+  window.isOnline = true;
+
   connectCount += 1;
   Notifications.disable(); // avoid notification flood until empty
   setTimeout(() => {
     Notifications.enable();
   }, 10 * 1000); // 10 sec
 
-  await queueAllCached();
-  await AttachmentDownloads.start({
-    logger: window.log,
-  });
-
-  window.isOnline = true;
+  // connect() is always fire-and-forget (void connect()), so nothing upstream would catch this.
+  try {
+    await queueAllCached();
+    await AttachmentDownloads.start({
+      logger: window.log,
+    });
+  } catch (e) {
+    window.log.error('connect: failed to finish reconnecting', e?.message || e);
+  }
 }
 
 function onEmpty() {

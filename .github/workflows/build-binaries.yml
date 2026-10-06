@@ -29,7 +29,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.13.0'
+          node-version: '24.18.0'
 
       - name: Cache Desktop node_modules
         id: cache-desktop-modules
@@ -61,7 +61,7 @@ jobs:
         run: yarn install --frozen-lockfile --network-timeout 600000 --force
 
       - name: Generate and concat files
-        run: yarn generate && yarn transpile
+        run: yarn build-all
 
       - name: Lint Files
         # no need to lint files on all platforms. Just do it once on the quicker one
