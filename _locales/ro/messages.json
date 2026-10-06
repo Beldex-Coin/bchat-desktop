@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Alăturaţi-vă $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Sunteți sigur că doriți să vă alăturați grupului deschis $roomName$?",
   "enterBchatIDOrBNSName": "Introdu ID-ul BChat sau numele BNS",
+  "noContactFound": "Niciun contact găsit!",
+  "sendSelectedContacts": "Trimite contactele selectate",
   "loading": "Se încarcă...",
   "optimizingApplication": "Se optimizează aplicația...",
   "done": "Gata",

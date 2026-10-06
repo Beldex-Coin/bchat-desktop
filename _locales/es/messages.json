@@ -451,6 +451,8 @@
   "userRemovedFromModerators": "Usuario eliminado de la lista de moderadores",
   "orJoinOneOfThese": "o Unirse aquí",
   "noContactsYet": "¡Aún no hay contactos!",
+  "noContactFound": "¡No se encontró ningún contacto!",
+  "sendSelectedContacts": "Enviar contactos seleccionados",
   "helpUsTranslateBchat": "Ayúdanos a traducir BChat",
   "translation": "Traducción",
   "secretGroupInviteFailTitle": "Invitación al grupo fallida",

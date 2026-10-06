@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "جوین شدن به $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "آیا اطمینان دارید که می‌خواهید به گروه باز $roomName$ جوین شوید؟",
   "enterBchatIDOrBNSName": "شناسه BChat یا نام BNS را وارد کنید",
+  "noContactFound": "مخاطبی یافت نشد!",
+  "sendSelectedContacts": "ارسال مخاطبین انتخاب‌شده",
   "loading": "در حال بارگذاری...",
   "optimizingApplication": "بهینه سازی برنامه...",
   "done": "انجام شد",

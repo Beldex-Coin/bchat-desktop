@@ -574,6 +574,8 @@ export type LocalizerKeys =
   | 'scanQr'
   | 'emptyChatScreen'
   | 'noContactsYet'
+  | 'noContactFound'
+  | 'sendSelectedContacts'
   | 'BChat'
   | 'removePasswordDisc'
   | 'passwordFieldEmpty'

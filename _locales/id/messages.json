@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Bergabung ke $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Apakah anda yakin ingin bergabung ke grup terbuka $roomName$?",
   "enterBchatIDOrBNSName": "Masukkan BChat ID atau nama BNS",
+  "noContactFound": "Kontak tidak ditemukan!",
+  "sendSelectedContacts": "Kirim kontak terpilih",
   "loading": "Memuat...",
   "optimizingApplication": "Mengoptimalkan aplikasi...",
   "done": "Selesai",

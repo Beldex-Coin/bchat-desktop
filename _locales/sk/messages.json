@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Pripojiť sa do $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Ste si istí, že sa chcete pripojiť do otvorenej skupiny $roomName$?",
   "enterBchatIDOrBNSName": "Zadajte BChat ID alebo BNS meno",
+  "noContactFound": "Nenašiel sa žiadny kontakt!",
+  "sendSelectedContacts": "Odoslať vybrané kontakty",
   "loading": "Nahrávanie...",
   "optimizingApplication": "Optimalizovanie aplikácie...",
   "done": "Hotovo",

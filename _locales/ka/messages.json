@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "შევიდეთ $roomName$-ში?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "დარწმუნებული ხართ, რომ ღია ჯგუფ $roomName$-ში შესვლა გსურთ?",
   "enterBchatIDOrBNSName": "მიუთითეთ BChat ID ან BNS სახელი",
+  "noContactFound": "კონტაქტი ვერ მოიძებნა!",
+  "sendSelectedContacts": "არჩეული კონტაქტების გაგზავნა",
   "loading": "იტვირთება...",
   "optimizingApplication": "აპლიკაციის ოპტიმიზირება...",
   "done": "შესრულებულია",

@@ -69,6 +69,8 @@
   "enterBchatID": "BChat-ID eingeben",
   "scanQr": "QR-Code scannen, um den Chat zu starten",
   "emptyChatScreen": "Viel leer. So wow.<br></br> Lade dir Freunde zu BChat ein!",
+  "noContactFound": "Kein Kontakt gefunden!",
+  "sendSelectedContacts": "Ausgewählte Kontakte senden",
   "loading": "Wird geladen…",
   "done": "Fertig",
   "youLeftTheGroup": "Du hast die Gruppe verlassen",

@@ -471,6 +471,8 @@
   "userRemovedFromModerators": "User removed from moderator list",
   "orJoinOneOfThese": "or Join here",
   "noContactsYet": "No contacts yet!",
+  "noContactFound": "No Contact Found!",
+  "sendSelectedContacts": "Send selected Contacts",
   "helpUsTranslateBchat": "Help us Translate BChat",
   "translation": "Translation",
   "secretGroupInviteFailTitle": "Group Invitation Failed",

@@ -69,6 +69,8 @@
   "enterBchatID": "Nhập BChat ID",
   "scanQr": "Quét QR để bắt đầu trò chuyện",
   "emptyChatScreen": "Trống trơn. Thật tuyệt.<br></br> Hãy rủ thêm bạn bè đến BChat!",
+  "noContactFound": "Không tìm thấy liên hệ!",
+  "sendSelectedContacts": "Gửi liên hệ đã chọn",
   "loading": "Đang tải...",
   "done": "Xong",
   "youLeftTheGroup": "Bạn đã rời khỏi nhóm.",

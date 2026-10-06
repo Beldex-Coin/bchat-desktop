@@ -202,24 +202,33 @@ export const BchatContactListPanel = (props: {
               }}
             />
           ))}
-        {filteredNames.length === 0 && <SearchEmptyScreen />}
+        {filteredNames.length === 0 && <SearchEmptyScreen isSearching={!!currentSearchTerm.trim()} />}
       </div>
-      <Flex
-        container={true}
-        justifyContent="center"
-        alignItems="center"
-        padding="13px 0"
-        width="100%"
-        className="button-wrapper"
-      >
-        <BchatButton
-          text={window.i18n(isForward ? 'forwardToSelected' : 'send')}
-          buttonType={BchatButtonType.Brand}
-          buttonColor={BchatButtonColor.Primary}
-          disabled={selectedMemberIds.length === 0 || isForwarding}
-          onClick={sendContact}
-        />
-      </Flex>
+      {/* nothing to pick on the empty screen (no contacts / no search match) - no send button */}
+      {filteredNames.length > 0 && (
+        <Flex
+          container={true}
+          justifyContent="center"
+          alignItems="center"
+          padding="13px 0"
+          width="100%"
+          className="button-wrapper"
+        >
+          <BchatButton
+            text={
+              isForward
+                ? window.i18n('forwardToSelected')
+                : `${window.i18n('sendSelectedContacts')}${
+                    selectedMemberIds.length ? `(${selectedMemberIds.length})` : ''
+                  }`
+            }
+            buttonType={BchatButtonType.Brand}
+            buttonColor={BchatButtonColor.Primary}
+            disabled={selectedMemberIds.length === 0 || isForwarding}
+            onClick={sendContact}
+          />
+        </Flex>
+      )}
     </div>
   );
 };
@@ -288,13 +297,16 @@ const ContactList = (props: {
   );
 };
 
-const SearchEmptyScreen = () => {
+// Shown when the list is empty: "No contacts yet!", or "No Contact Found!" when a search matches nobody
+const SearchEmptyScreen = (props: { isSearching?: boolean }) => {
   const isDark = useSelector(getTheme) === 'dark';
   return (
-    <SearchEmptyWrapper>
+    <SearchEmptyWrapper className="contact-list-empty">
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">
         <ContactEmptyIcon isDark={isDark} />
-        <StyledSpan>{window.i18n('noContactsYet')}</StyledSpan>
+        <StyledSpan className="contact-list-empty__text">
+          {window.i18n(props.isSearching ? 'noContactFound' : 'noContactsYet')}
+        </StyledSpan>
       </Flex>
     </SearchEmptyWrapper>
   );

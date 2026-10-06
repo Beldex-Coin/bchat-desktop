@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "groepnaam\n",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Weet je zeker dat je lid wilt worden van de $roomName$ open groep?",
   "enterBchatIDOrBNSName": "Voer BChat ID of BNS-naam in",
+  "noContactFound": "Geen contact gevonden!",
+  "sendSelectedContacts": "Geselecteerde contacten verzenden",
   "loading": "Bezig met laden…",
   "optimizingApplication": "Toepassing aan het optimaliseren…",
   "done": "Gereed",

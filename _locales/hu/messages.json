@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Csatlakozni a $roomName$ nevű szobához?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Biztosan csatlakozni szeretne a(z) $roomName$ nyilvános csoporthoz?",
   "enterBchatIDOrBNSName": "Írja be a BChat azonosítót vagy a BNS nevet",
+  "noContactFound": "Nem található névjegy!",
+  "sendSelectedContacts": "Kiválasztott névjegyek küldése",
   "loading": "Betöltés...",
   "optimizingApplication": "Alkalmazás optimalizálása...",
   "done": "Kész",

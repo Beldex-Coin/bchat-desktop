@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
   "enterBchatIDOrBNSName": "Įveskite BChat ID arba BNS vardą",
+  "noContactFound": "Kontaktas nerastas!",
+  "sendSelectedContacts": "Siųsti pasirinktus kontaktus",
   "loading": "Įkeliama...",
   "optimizingApplication": "Optimizuojama programa...",
   "done": "Atlikta",

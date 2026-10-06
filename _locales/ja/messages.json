@@ -69,6 +69,8 @@
   "enterBchatID": "BChat IDを入力してください",
   "scanQr": "QRをスキャンしてチャットを開始",
   "emptyChatScreen": "何もない…さみしいね。<br></br> 友達をBChatに招待しよう！",
+  "noContactFound": "連絡先が見つかりません！",
+  "sendSelectedContacts": "選択した連絡先を送信",
   "loading": "読み込み中…",
   "done": "完了",
   "youLeftTheGroup": "あなたはグループを退出しました",

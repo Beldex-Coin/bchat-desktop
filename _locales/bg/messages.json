@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ social group?",
   "enterBchatIDOrBNSName": "Въведете BChat ID или BNS име",
+  "noContactFound": "Няма намерен контакт!",
+  "sendSelectedContacts": "Изпрати избраните контакти",
   "loading": "Загрузка...",
   "optimizingApplication": "Оптимизация приложения...",
   "done": "Готово",

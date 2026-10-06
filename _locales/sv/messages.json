@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Gå med i $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Är du säker på att du vill gå med i $roomName$s öppna grupp?",
   "enterBchatIDOrBNSName": "Ange BChat-ID eller BNS-namn",
+  "noContactFound": "Ingen kontakt hittades!",
+  "sendSelectedContacts": "Skicka valda kontakter",
   "loading": "Läser in...",
   "optimizingApplication": "Optimerar applikationen...",
   "done": "Slutfört",

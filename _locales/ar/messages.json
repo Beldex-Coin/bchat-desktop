@@ -69,6 +69,8 @@
   "enterBchatID": "أدخل معرّف BChat",
   "scanQr": "امسح رمز QR لبدء المحادثة",
   "emptyChatScreen": "فارغ جدًا. رائع جدًا.<br></br> اذهب وأحضر بعض الأصدقاء إلى BChat!",
+  "noContactFound": "لم يتم العثور على جهة اتصال!",
+  "sendSelectedContacts": "إرسال جهات الاتصال المحددة",
   "loading": "جارٍ التحميل...",
   "done": "تم",
   "youLeftTheGroup": "لقد غادرت المجموعة",

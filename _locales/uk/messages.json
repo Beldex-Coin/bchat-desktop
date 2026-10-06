@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Приєднатись до $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Ви впевнені, що хочете приєднатись до відкритої групи $roomName$?",
   "enterBchatIDOrBNSName": "Введіть ID BChat або ім'я BNS",
+  "noContactFound": "Контакт не знайдено!",
+  "sendSelectedContacts": "Надіслати вибрані контакти",
   "loading": "Оновлення…",
   "optimizingApplication": "Оптимізація програми...",
   "done": "Готово",

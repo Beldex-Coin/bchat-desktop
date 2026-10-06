@@ -456,6 +456,8 @@
   "userRemovedFromModerators": "Пользователь удалён из списка модераторов",
   "orJoinOneOfThese": "или присоединитесь здесь",
   "noContactsYet": "Пока нет контактов!",
+  "noContactFound": "Контакт не найден!",
+  "sendSelectedContacts": "Отправить выбранные контакты",
   "helpUsTranslateBchat": "Помогите нам перевести BChat",
   "translation": "Перевод",
   "secretGroupInviteFailTitle": "Не удалось пригласить в группу",

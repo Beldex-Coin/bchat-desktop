@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
   "enterBchatIDOrBNSName": "BChat ID ਜਾਂ BNS ਨਾਮ ਦਰਜ ਕਰੋ",
+  "noContactFound": "ਕੋਈ ਸੰਪਰਕ ਨਹੀਂ ਮਿਲਿਆ!",
+  "sendSelectedContacts": "ਚੁਣੇ ਹੋਏ ਸੰਪਰਕ ਭੇਜੋ",
   "loading": "Loading...",
   "optimizingApplication": "Optimizing application...",
   "done": "Done",

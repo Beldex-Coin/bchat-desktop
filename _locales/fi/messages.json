@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Liity huoneeseen $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Oletko varma, että haluat liittyä avoimeen ryhmään nimeltä $roomName$?",
   "enterBchatIDOrBNSName": "Anna BChat ID tai BNS-nimi",
+  "noContactFound": "Yhteystietoa ei löytynyt!",
+  "sendSelectedContacts": "Lähetä valitut yhteystiedot",
   "loading": "Ladataan...",
   "optimizingApplication": "Optimoidaan sovellusta...",
   "done": "Tehty",

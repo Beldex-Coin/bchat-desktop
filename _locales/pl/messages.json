@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Dołączyć do $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Czy na pewno chcesz dołączyć do otwartej grupy $roomName$?",
   "enterBchatIDOrBNSName": "Wprowadź BChat ID lub nazwę BNS",
+  "noContactFound": "Nie znaleziono kontaktu!",
+  "sendSelectedContacts": "Wyślij wybrane kontakty",
   "loading": "Ładowanie...",
   "optimizingApplication": "Optymalizowanie aplikacji...",
   "done": "Gotowe",

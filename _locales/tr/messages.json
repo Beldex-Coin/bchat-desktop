@@ -456,6 +456,8 @@
   "userRemovedFromModerators": "Kullanıcı moderatör listesinden çıkarıldı",
   "orJoinOneOfThese": "veya Buradan katılın",
   "noContactsYet": "Henüz kişi yok!",
+  "noContactFound": "Kişi bulunamadı!",
+  "sendSelectedContacts": "Seçili kişileri gönder",
   "helpUsTranslateBchat": "BChat'i çevirmemize yardımcı olun",
   "translation": "Çeviri",
   "secretGroupInviteFailTitle": "Grup daveti başarısız",

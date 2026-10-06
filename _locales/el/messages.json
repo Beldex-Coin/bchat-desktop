@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ social group?",
   "enterBchatIDOrBNSName": "Εισαγάγετε BChat ID ή όνομα BNS",
+  "noContactFound": "Δεν βρέθηκε επαφή!",
+  "sendSelectedContacts": "Αποστολή επιλεγμένων επαφών",
   "loading": "Λήψη...",
   "optimizingApplication": "Βελτιστοποίηση εφαρμογής",
   "done": "Done",

@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
   "enterBchatIDOrBNSName": "הזן BChat ID או שם BNS",
+  "noContactFound": "לא נמצא איש קשר!",
+  "sendSelectedContacts": "שלח את אנשי הקשר שנבחרו",
   "loading": "טוען...",
   "optimizingApplication": "ממטב יישום...",
   "done": "Done",

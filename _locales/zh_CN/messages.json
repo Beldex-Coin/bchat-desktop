@@ -69,6 +69,8 @@
   "enterBchatID": "输入 BChat ID",
   "scanQr": "扫描二维码开始聊天",
   "emptyChatScreen": "这里空空如也，真是太安静了。<br></br> 快去邀请一些朋友来 BChat 吧！",
+  "noContactFound": "未找到联系人！",
+  "sendSelectedContacts": "发送所选联系人",
   "loading": "正在加载...",
   "done": "完毕",
   "youLeftTheGroup": "您已离开群组。",

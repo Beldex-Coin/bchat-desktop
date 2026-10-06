@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "Join $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "Are you sure you want to join the $roomName$ Social group?",
   "enterBchatIDOrBNSName": "Vnesite BChat ID ali BNS ime",
+  "noContactFound": "Ni najdenih stikov!",
+  "sendSelectedContacts": "Pošlji izbrane stike",
   "loading": "Nalagam ...",
   "optimizingApplication": "Optimiziranje nastavitev ...",
   "done": "Končano",

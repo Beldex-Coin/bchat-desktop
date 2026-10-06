@@ -36,6 +36,8 @@
   "joinSocialGroupAfterInvitationConfirmationTitle": "加入 $roomName$?",
   "joinSocialGroupAfterInvitationConfirmationDesc": "您確定要加入 $roomName$ 公開群組嗎？",
   "enterBchatID": "請輸入您的 ID 或 BNS 的名稱",
+  "noContactFound": "找不到聯絡人！",
+  "sendSelectedContacts": "傳送所選聯絡人",
   "loading": "載入中...",
   "optimizingApplication": "正在最佳化應用程式...",
   "done": "完成",

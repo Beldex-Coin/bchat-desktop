@@ -8034,3 +8034,118 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   white-space: nowrap;
   pointer-events: none;
 }
+
+// Share Contacts / Forward - empty list (Figma 5296:47210): grey list art (82.5 -> 110px wide, #111 tile,
+// #666 lines) centred in the panel, "No Contact Found!" / "No contacts yet!" Inter SemiBold 12 -> 16
+// #666 23px under it.
+#{$dark} .contact-list .contact-list-empty {
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    width: 100%;
+    gap: 23px;
+  }
+  svg {
+    width: 122px;
+    height: auto;
+
+    path[stroke] {
+      stroke: #666;
+    }
+    path:first-child {
+      fill: #111;
+    }
+    circle {
+      fill: #666;
+    }
+    // the cross: grey with a panel-coloured outline
+    path:last-child {
+      fill: #666;
+      stroke: #0b0b0b;
+    }
+  }
+  .contact-list-empty__text {
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+  }
+}
+
+// ---- Share Contacts panel (Figma 5296:46776) - also the Forward panel, which shares the markup ----
+// Header bar #1a1a1a 60% glass, "Share Contacts" Inter 15 -> 20; search box #1a1a1a 20% glass on a
+// #333 line, 18 -> 24px #acacac icon 21px in, "Search people" Roboto Mono 13.5 -> 18 #acacac (not
+// uppercase) 17px after it; picked rows #1a1a1a 20% glass with a 1.5 -> 2px green bar; "Send selected
+// Contacts(n)" 224 x 45 -> 299 x 60 #ebebeb, Roboto Mono Medium 12 -> 16 #0b0b0b, 32px off the bottom.
+#{$dark} .contact-list.contact-list {
+  .contact-list-header-title-wrapper {
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(4px);
+    padding: 0 18px 0 24px;
+  }
+  .contact-list-header-titleTxt {
+    font-size: 20px;
+  }
+  .contact-list-header-closeBox svg path {
+    fill: #acacac;
+  }
+  > .bchat-search-input {
+    padding: 0 16px 0 21px;
+    gap: 17px;
+    background: linear-gradient(135deg, rgba(235, 235, 235, 0.04), rgba(26, 26, 26, 0.2) 50%);
+    backdrop-filter: blur(4px);
+    border: 1px solid #333;
+
+    .search svg {
+      width: 24px;
+      height: 24px;
+
+      path {
+        fill: #acacac;
+      }
+    }
+    input {
+      font-weight: 400;
+      color: #ebebeb;
+    }
+    input::placeholder {
+      text-transform: none;
+      letter-spacing: 0;
+      color: #acacac;
+    }
+  }
+  .address-content-box.selected {
+    background: linear-gradient(135deg, rgba(235, 235, 235, 0.05), rgba(26, 26, 26, 0.2) 50%);
+    border-block-color: rgba(235, 235, 235, 0.08);
+    border-inline-start-color: #00bc33;
+  }
+  .button-wrapper {
+    padding: 20px 0 32px !important;
+
+    .bchat-button {
+      font-family: $dark-font-data !important;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}
+#{$dark} .contact-list.contact-list:not(.contact-list--forward) .button-wrapper .bchat-button {
+  min-width: 299px;
+  padding: 0 22px;
+}
+
+// Share Contacts / Forward panel background (Figma 5296:46776): the panel has no fill - the screen's
+// background design (.inbox: dot grid + glow) shows through it under a 30% #0b0b0b tint, inside a
+// 1px #444 outline.
+#{$dark} .contact-list.contact-list {
+  background-color: rgba(0,0,0,0);
+  background-image: none;
+  backdrop-filter: none;
+  border: 1px solid #444;
+}
+// While Share Contacts / Forward is open the conversation (header, messages, composer) narrows to
+// the space left of the panel instead of running underneath it (Figma 5296:46953 / 5296:47226).
+#{$dark} .bchat-conversation:has(.profile-info .contact-list) {
+  padding-inline-end: 431px;
+}
