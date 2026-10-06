@@ -95,6 +95,7 @@ export type LocalizerKeys =
   | 'onionRoutingHopsOneHop'
   | 'onionRoutingHopsThreeHops'
   | 'defaultSuffix'
+  | 'onionRoutingHopsDefaultSuffix'
   | 'onionRoutingHopsPopupDescriptionZero'
   | 'onionRoutingHopsPopupDescriptionOne'
   | 'onionRoutingHopsPopupDescriptionThree'

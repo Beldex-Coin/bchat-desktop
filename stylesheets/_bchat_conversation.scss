@@ -333,7 +333,8 @@
       position: absolute;
       bottom: 75px;
       z-index: 99;
-      width: 219px;
+      min-width: 219px;
+      width: max-content;
       // height: 162px;
       padding: 15px;
       
@@ -343,6 +344,7 @@
         span{
           font-size: 16px;
           margin-inline-start: 3px;
+          white-space: nowrap;
         }
         &:hover{
           background: var(--color-profile-header-bg);

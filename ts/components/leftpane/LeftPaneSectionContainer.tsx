@@ -60,9 +60,16 @@ export const LeftPaneSectionContainer = styled.div`
       background-color: var(--color-modal-bg);
 
       padding: 10px;
-      width: 247px;
+      width: max-content;
+      min-width: 247px;
       // height: 243px;
       border-radius: 26px;
+      svg {
+        flex-shrink: 0;
+      }
+      .menu-txt {
+        white-space: nowrap;
+      }
     }
   }
   .sub-menu-box-wrapper-disabled {

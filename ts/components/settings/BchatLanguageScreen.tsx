@@ -53,8 +53,12 @@ export const BchatLanguageScreen = () => {
                   )}
                 </div>
                 <div>
-                  <div className="language-text">{item.nativeName}</div>
-                  <div className="language-subtext">{item.englishName}</div>
+                  <div className="language-text" lang={item.code.replace('_', '-')}>
+                    {item.nativeName}
+                  </div>
+                  <div className="language-subtext" lang="en">
+                    {item.englishName}
+                  </div>
                 </div>
               </div>
               <SpacerSM />
