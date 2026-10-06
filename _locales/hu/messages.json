@@ -38,6 +38,7 @@
   "enterBchatIDOrBNSName": "Írja be a BChat azonosítót vagy a BNS nevet",
   "noContactFound": "Nem található névjegy!",
   "sendSelectedContacts": "Kiválasztott névjegyek küldése",
+  "mediaDocs": "Média, Dokumentumok",
   "loading": "Betöltés...",
   "optimizingApplication": "Alkalmazás optimalizálása...",
   "done": "Kész",

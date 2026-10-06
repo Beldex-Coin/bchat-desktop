@@ -38,6 +38,7 @@
   "enterBchatIDOrBNSName": "Введіть ID BChat або ім'я BNS",
   "noContactFound": "Контакт не знайдено!",
   "sendSelectedContacts": "Надіслати вибрані контакти",
+  "mediaDocs": "Медіа, Документи",
   "loading": "Оновлення…",
   "optimizingApplication": "Оптимізація програми...",
   "done": "Готово",

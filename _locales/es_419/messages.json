@@ -38,6 +38,7 @@
   "enterBchatIDOrBNSName": "Introduzca el ID de BChat o el nombre BNS",
   "noContactFound": "¡No se encontró ningún contacto!",
   "sendSelectedContacts": "Enviar contactos seleccionados",
+  "mediaDocs": "Multimedia, Documentos",
   "loading": "Cargando...",
   "optimizingApplication": "Optimizando la aplicación...",
   "done": "Hecho",

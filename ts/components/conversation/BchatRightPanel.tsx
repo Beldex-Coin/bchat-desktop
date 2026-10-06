@@ -931,7 +931,7 @@ export const BchatRightPanelWithDetails = () => {
                 clipRule={darkMode ? 'evenodd' : undefined}
               />
             </span>
-            <span className="group-settings-header-titleTxt">{window.i18n('media')+'&'+window.i18n('documents')}</span>
+            <span className="group-settings-header-titleTxt">{`${window.i18n('media')} & ${window.i18n('documents')}`}</span>
           </Flex>
           <SpacerSM />
           <MediaGallery documents={documents} media={media} fullView={true} />
