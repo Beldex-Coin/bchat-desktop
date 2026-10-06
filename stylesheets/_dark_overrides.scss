@@ -1056,6 +1056,62 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
     color: $dark-muted;
   }
 
+  // Group tile (Figma 5296:31132, 45 -> 60px): a 42/45 chamfered front tile at the top-start with a
+  // second tile's edge peeking out on the end and bottom sides (a 0.5px #444 L), initials centred
+  // in the front tile, and the outline two-person mark (15/45, #acacac with a #1a1a1a outline)
+  // sitting over the front tile's bottom-end corner.
+  &--group {
+    overflow: visible;
+    clip-path: none;
+    // no padding here: a % padding is taken from the parent's width (the whole list row), which
+    // pushed the back tile's edge far out - the initials are placed on the front tile below instead
+    // back tile edge: end-side line from 22% down (below the front tile's cut corner) + bottom line.
+    // (a % background-position would only move it ~5% down, so the start is a gradient stop)
+    background: linear-gradient(to bottom, transparent 22%, #444 22%) right 0 top 0 / 1px 100% no-repeat,
+      linear-gradient(#444, #444) left 0 bottom 0 / 100% 1px no-repeat;
+
+    // front tile: #333 hairline layer + #1a1a1a fill 1px inside it, both chamfered
+    &::before {
+      inset: 0 6.7% 6.7% 0;
+      background: #333;
+      clip-path: $dark-chamfer;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 1px calc(6.7% + 1px) calc(6.7% + 1px) 1px;
+      background: $dark-raised;
+      clip-path: $dark-chamfer;
+      pointer-events: none;
+    }
+    // Inter SemiBold 13.5 on a 45 tile = 30% of the size (the tile's own font-size is 34%)
+    .initials-avatar__initials {
+      position: absolute;
+      inset: 0 6.7% 6.7% 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88em;
+    }
+    // glyph 14.8 x 11.2 of 45: 33% wide, running 2 -> 4.7% past the end edge and 1.5% past the bottom
+    .initials-avatar__group-badge {
+      z-index: 1;
+      inset-inline-end: -4.7%;
+      bottom: -1.5%;
+      width: 33%;
+      color: #acacac;
+      overflow: visible;
+
+      path {
+        stroke: #1a1a1a;
+        stroke-width: 1.4px;
+        paint-order: stroke;
+        stroke-linejoin: round;
+      }
+    }
+  }
+
   &--self {
     background: linear-gradient(180deg, #00d239 0%, #003a00 100%);
 
