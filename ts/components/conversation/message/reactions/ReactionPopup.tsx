@@ -28,7 +28,7 @@ export const StyledPopupContainer = styled.div<{ isIncoming?: boolean,isPrivate:
     content: '';
     position: absolute;
     top: 60px;
-    left: ${props => (props.isIncoming ? 0 : '189px')};
+    inset-inline-start: ${props => (props.isIncoming ? 0 : '189px')};
     width: 27px;
     height: 27px;
      background-color:var(--color-reaction-hover-bg);
@@ -38,20 +38,23 @@ export const StyledPopupContainer = styled.div<{ isIncoming?: boolean,isPrivate:
     // clip-path: polygon(100% 100%, 7.2px 100%, 100% 7.2px);
     // box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.51); /* theme relative color */
     clip-path:${props =>
-      props.isIncoming ? 'polygon(71% 0, 0 100%, 1% 0)' : 'polygon(34% 0, 100% 100%, 100% 0)'}
+      props.isIncoming ? 'polygon(71% 0, 0 100%, 1% 0)' : 'polygon(34% 0, 100% 100%, 100% 0)'};
+    html[dir='rtl'] & {
+      transform: scaleX(-1);
+    }
 `;
 export const StyledPopupContainerWrapper = styled.div<{ isIncoming: boolean }>`
   position: absolute;
   width: 216px;
   height: 89px;
   // background-color: red;
-  left: ${props => (props.isIncoming ? '22px' : '-187px')};
+  inset-inline-start: ${props => (props.isIncoming ? '22px' : '-187px')};
   top: -86px;
   z-index: 4;
 `;
 const StyledEmoji = styled.span`
   font-size: 28px;
-  margin-right: 8px;
+  margin-inline-end: 8px;
 `;
 
 type Props = {

@@ -24,7 +24,7 @@ const StyledReactClearAllContainer = styled(Flex)<{ darkMode: boolean }>`
     font-weight: bold;
 
     span {
-      margin-left: 4px;
+      margin-inline-start: 4px;
     }
   }
 
@@ -77,19 +77,19 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
     >
       <StyledReactClearAllContainer container={true} flexDirection={'column'} darkMode={darkMode} alignItems="center">
         <p>
-          Are you sure you want to clear all <p>{window.i18n('clearAllReactions', [reaction])}</p>
+          {window.i18n('clearAllReactions', [reaction])}
         </p>
         <hr />
         <div className="Bchat-modal__button-group">
           <BchatButton
-            text={'Clear'}
+            text={window.i18n('clear')}
             buttonColor={confirmButtonColor}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClearAll}
             disabled={clearingInProgress}
           />
           <BchatButton
-            text={'Cancel'}
+            text={window.i18n('cancel')}
             buttonColor={BchatButtonColor.Danger}
             buttonType={BchatButtonType.BrandOutline}
             onClick={handleClose}

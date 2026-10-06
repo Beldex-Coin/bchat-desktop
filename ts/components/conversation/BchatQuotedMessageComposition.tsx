@@ -11,7 +11,8 @@ import { Image } from './Image';
 
 import { GoogleChrome } from '../../util';
 import classNames from 'classnames';
-import { FontSizeChanger, Room } from './message/message-item/GroupInvitation';
+import { Room } from './message/message-item/GroupInvitation';
+import { FontSizeChanger } from '../settings/ChangeChatFontSetting';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
 import { renderMarkdownBlocks } from './message/message-content/MessageBody';
@@ -34,7 +35,7 @@ const QuotedMessageCompositionReply = styled.div`
   border-radius: 16px;
   min-height: 70px;
   width: 100%;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 
   .group-details {
     display: flex;
@@ -65,7 +66,7 @@ const Subtle = styled.div<{isquotedMessage:boolean}>`
   -webkit-box-orient: vertical;
   display: ${props => props.isquotedMessage ? 'flex' : 'block'};
   color: var(--color-text);
-  margin-right: 9px;
+  margin-inline-end: 9px;
   flex-direction: ${props => props.isquotedMessage ? 'column' : 'row'};
 `;
 const VerticalLine = styled.div`
@@ -73,7 +74,7 @@ const VerticalLine = styled.div`
   background-color: var(--color-untrusted-vertical-bar);
   height: 60px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;
 // const ReplyingTo = styled.div`
 //   color: var(--color-text);
@@ -85,7 +86,7 @@ const StyledIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 15px;
+  margin-inline-end: 15px;
   border-radius: 10px;
 `;
 export const BchatQuotedMessageComposition = () => {
@@ -245,11 +246,11 @@ export const BchatQuotedMessageComposition = () => {
               <div className="group-details">
                 <Flex container={true} flexDirection="column" cursor="pointer">
                   <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                    Shared contact
+                    {window.i18n('sharedContactLabel')}
                   </span>
                   
                   <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
-                    <span style={{marginRight:'5px'}}>
+                    <span style={{marginInlineEnd:'5px'}}>
                       <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
                     </span>
                     {namesArray.length > 1

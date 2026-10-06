@@ -331,4 +331,36 @@ describe('state/selectors/conversations', () => {
       assert.strictEqual(conversations[3].name, 'B');
     });
   });
+
+  describe('#getSortedConversations social group filter', () => {
+    it('hides social groups whose raw name is not set, even with a translated fallback name', () => {
+      const i18n = (key: string) => key;
+      const data: ConversationLookupType = {
+        unnamed: {
+          id: 'unnamed',
+          activeAt: 10,
+          name: 'Unbekannt',
+          type: ConversationTypeEnum.GROUP,
+          isPublic: true,
+          isGroup: true,
+        },
+        named: {
+          id: 'named',
+          activeAt: 20,
+          name: 'Beldex Community',
+          hasName: true,
+          type: ConversationTypeEnum.GROUP,
+          isPublic: true,
+          isGroup: true,
+        },
+      };
+      const comparator = _getConversationComparator(i18n);
+      const conversations = _getSortedConversations(data, comparator);
+
+      assert.deepEqual(
+        conversations.map(c => c.id),
+        ['named']
+      );
+    });
+  });
 });

@@ -161,7 +161,7 @@ export const declineConversationWithConfirm = (
 ) => {
   window?.inboxStore?.dispatch(
     updateConfirmModal({
-      title: 'Decline Request?',
+      title: window.i18n('declineRequest'),
       okText: window.i18n('decline'),
       okTheme: BchatButtonColor.Red,
       cancelText: window.i18n('cancel'),
@@ -278,7 +278,7 @@ export function deleteGroupByConvoId(conversationId: string, username: string) {
   }
   const title = window.i18n('editMenuDeleteGroup');
   const deletetxt = window.i18n('delete');
-  const message = `Are you sure you want to delete this group,${username}?`;
+  const message = window.i18n('deleteGroupConfirmationWithName', [username]);
   const ourPK = UserUtils.getOurPubKeyStrFromCache();
   const isAdmin = (conversation.get('groupAdmins') || []).includes(ourPK);
   const isClosedGroup = conversation.get('is_medium_group') || false;

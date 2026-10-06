@@ -92,7 +92,7 @@ export const BchatButton = (props: Props) => {
           data-testid={dataTestId}
           style={style}
         >
-          {iconType && iconSize && <span style={{ marginRight: '5px' }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
+          {iconType && iconSize && <span style={{ marginInlineEnd: '5px' }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
           {props.children || text}  
         </div>
       )}

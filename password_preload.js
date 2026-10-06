@@ -6,8 +6,8 @@ const url = require('url');
 const i18n = require('./ts/util/i18n');
 
 const config = url.parse(window.location.toString(), true).query;
-const { locale } = config;
 const localeMessages = ipcRenderer.sendSync('locale-data');
+const locale = ipcRenderer.sendSync('get-app-locale') || config.locale || 'en';
 
 window.React = require('react');
 window.ReactDOM = require('react-dom');

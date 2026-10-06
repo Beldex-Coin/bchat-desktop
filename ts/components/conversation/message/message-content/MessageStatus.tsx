@@ -14,7 +14,7 @@ export type MessageStatusSelectorProps = Pick<MessageRenderingProps, 'direction'
 export const MessageStatus = (props: Props) => {
   const { isCorrectSide, dataTestId, status } = props;
   const isIncoming = !isCorrectSide;
-  const margin = isIncoming ? { marginLeft: '10px' } : { marginRight: '10px' };
+  const margin = isIncoming ? { marginInlineStart: '10px' } : { marginInlineEnd: '10px' };
   const showStatus = !isIncoming && Boolean(status);
   if (!showStatus) {
     return null;

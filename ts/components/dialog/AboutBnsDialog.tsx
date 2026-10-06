@@ -3,6 +3,24 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 // import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { editProfileModal, updateAboutBnsModal } from '../../state/ducks/modalDialog';
 
+// Filled into the $p1$..$p4$ placeholders of bnsPricingDescription; each price (with a following " BDX") renders bold
+const bnsPrices: Record<string, string> = { $p1$: '650', $p2$: '1000', $p3$: '2000', $p4$: '4000' };
+
+// Keeps "650 BDX" as one LTR unit so RTL text (ar) does not split or reorder it
+const renderPricingDescription = () =>
+  window.i18n('bnsPricingDescription')
+    .split(/(\$p[1-4]\$(?: BDX)?)/)
+    .map((part, i) => {
+      const price = bnsPrices[part.slice(0, 4)];
+      return price ? (
+        <span key={i} dir="ltr" style={{ whiteSpace: 'nowrap' }}>
+          {price + part.slice(4)}
+        </span>
+      ) : (
+        part
+      );
+    });
+
 export const AboutBnsDialog = () => {
   function closeDialog() {
     window.inboxStore?.dispatch(updateAboutBnsModal(null));
@@ -15,7 +33,7 @@ export const AboutBnsDialog = () => {
         onClose={closeDialog}
         showExitIcon={false}
         isloading={false}
-        title="About BNS"
+        title={window.i18n('aboutBNS')}
         okButton={{
           text: window.i18n('close'),
           onClickOkHandler: closeDialog,
@@ -34,42 +52,34 @@ export const AboutBnsDialog = () => {
         <section>
           <article>
             <div className="about-bns-header">
-              BNS: Your Decentralized Identity in the Beldex Ecosystem ?
+              {window.i18n('aboutBNSHeader')}
             </div>
             <div className="about-bns-txt">
-              BNS (Beldex Name Service) is your gateway to a seamless experience within the Beldex
-              ecosystem. With BNS, you can create a unique, easy-to-remember name that links to your
-              various Beldex identities.
+              {window.i18n('aboutBNSDescription')}
             </div>
-            <div className="about-bns-header">Key Benefits:</div>
+            <div className="about-bns-header">
+              {window.i18n('keyBenefits')}
+            </div>
             <ul>
               <li className="about-bns-txt">
-                Unified Identity: Connect your BChat ID, Beldex Wallet Address, and BelNet ID to a
-                single BNS name. This simplifies your interactions across the Beldex ecosystem.
+                {window.i18n('keyBenefits1')}
               </li>
               <li className="about-bns-txt">
-                Ease of Use: Say goodbye to complicated alphanumeric strings. With your BNS name,
-                messaging and transactions become straightforward and user-friendly.
+                {window.i18n('keyBenefits2')}
               </li>
               <li className="about-bns-txt">
-                Badge of Trust: Link your BChat ID to your BNS name and complete the verification
-                process to earn a BNS badge. This badge adds a layer of trust and recognition within
-                the community.
+                {window.i18n('keyBenefits3')}
               </li>
             </ul>
             <div className="about-bns-txt-bold">
-              <span>Pricing:</span> Users can register their BNS names for 1, 2, 5, and 10 years for
-              as low as <span>650 BDX, 1000 BDX, 2000 BDX,</span> and <span>4000 BDX</span>
-              respectively.
+              <span>{window.i18n('pricingHeader')}</span>{' '}
+              {renderPricingDescription()}
             </div>
             <div className="about-bns-txt">
-              Using BNS names enhances your privacy, security, and convenience. Whether you’re sending
-              a message, making a transaction, or using decentralized services, your BNS name ensures
-              a consistent and simplified experience.
+              {window.i18n('aboutBNSDescription2')}
             </div>
             <div className="about-bns-txt" style={{marginBottom:'0px'}}>
-              Get started with your BNS name today and enjoy the benefits of a decentralized identity
-              across all your Beldex services!
+              {window.i18n('aboutBNSFooter')}
             </div>
           </article>
         </section>

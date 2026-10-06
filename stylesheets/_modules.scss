@@ -13,7 +13,7 @@
   // text-overflow: ellipsis;
   // overflow-x: hidden;
   width: 100%;
-  text-align: left;
+  text-align: start;
   user-select: none;
 }
 
@@ -46,11 +46,11 @@
 }
 
 .module-message__error--outgoing {
-  left: 8px;
+  inset-inline-start: 8px;
 }
 
 .module-message__error--incoming {
-  right: 8px;
+  inset-inline-end: 8px;
 }
 
 .module-message__img-attachment {
@@ -168,8 +168,8 @@
 
 .module-message__link-preview {
   // cursor: pointer;
-  border-top-left-radius: $bchat_message-container-border-radius;
-  border-top-right-radius: $bchat_message-container-border-radius;
+  border-start-start-radius: $bchat_message-container-border-radius;
+  border-start-end-radius: $bchat_message-container-border-radius;
   display: flex;
   align-items: center;
   margin: 10px 10px 5px 10px;
@@ -230,7 +230,7 @@
   width: 54px;
   max-height: 54px;
   position: relative;
-  margin-left: -2px;
+  margin-inline-start: -2px;
   margin-inline-end: 8px;
 
   img {
@@ -241,9 +241,9 @@
 
   &__inner {
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
 
     text-align: center;
     display: flex;
@@ -324,12 +324,14 @@
 }
 
 .module-message_grp_author_wrapper{
+  // Author names are shown left-to-right, even in RTL locales
+  direction: ltr;
 
   .module-message__author{
     font-size: 16px;
     font-weight: 600;
-    margin-left: 15px;
-    margin-right: 40px;
+    margin-inline-start: 15px;
+    margin-inline-end: 40px;
   }
 }
 
@@ -405,7 +407,8 @@
 }
 
 .module-conversation-header__title {
-  margin: 0px 0px 0px 20px;
+  margin-block: 0px;
+  margin-inline: 20px 0px;
   min-width: 0;
   font-size: 16px;
   line-height: 17px;
@@ -462,14 +465,14 @@
     color: #1c1c26;
     font-size: 10px;
     top: -11px;
-    left: 40px;
+    inset-inline-start: 40px;
     /* letter-spacing: 0px; */
     text-align: center;
     outline: none;
     border: none;
     padding: 1px;
     border-radius: 3px;
-    margin-left: 5px;
+    margin-inline-start: 5px;
   }
 }
 
@@ -480,8 +483,8 @@
   padding-inline-start: 8px;
   padding-inline-end: 18px;
   flex-shrink: 0;
-  margin-right: 15px;
-  padding-left: 15px;
+  margin-inline-end: 15px;
+  padding-inline-start: 15px;
   height: 40px;
   border-radius: 25px;
   background-color: var(--color-input-background);
@@ -492,7 +495,7 @@
   height: 18px;
   width: 18px;
   display: inline-block;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .module-conversation-header__expiration__setting {
@@ -509,8 +512,8 @@
   margin-inline-end: auto;
   // padding: 20px;
   // padding: 0 20px;
-  text-align: left;
-  padding-right: 3px;
+  text-align: start;
+  padding-inline-end: 3px;
 
   .module-message--outgoing {
     margin-inline-end: unset;
@@ -753,8 +756,8 @@
   position: absolute;
   top: 15px;
   bottom: 15px;
-  left: 15px;
-  right: 15px;
+  inset-inline-start: 15px;
+  inset-inline-end: 15px;
 }
 
 .module-media-grid-item__icon-image {
@@ -768,7 +771,7 @@
 
 .module-media-grid-item__circle-overlay {
   position: absolute;
-  left: 50%;
+  inset-inline-start: 50%;
   top: 50%;
 
   transform: translate(-50%, -50%);
@@ -782,7 +785,7 @@
 .module-media-grid-item__play-overlay {
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
 
   height: 36px;
@@ -899,7 +902,7 @@
   }
 
   .bchat-icon-button:first-child {
-    margin-right: $bchat-margin-sm;
+    margin-inline-end: $bchat-margin-sm;
   }
 
   &-button-box {
@@ -974,7 +977,8 @@
   color: $color-dark-05;
   background-color: $color-gray-95;
   border: 1px solid $color-light-60;
-  padding: 0 26px 0 30px;
+  padding-block: 0;
+  padding-inline: 30px 26px;
   margin-inline-start: 8px;
   margin-inline-end: 8px;
   outline: 0;
@@ -1015,7 +1019,7 @@
 .module-image__caption-icon {
   position: absolute;
   top: 6px;
-  left: 6px;
+  inset-inline-start: 6px;
 }
 
 .module-image__with-click-handler {
@@ -1033,8 +1037,8 @@
   top: 0;
   bottom: 0;
   z-index: 1;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
 }
 
 .module-image__border-overlay--dark {
@@ -1066,14 +1070,14 @@
   position: absolute;
   bottom: 0;
   z-index: 1;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
 }
 
 .module-image__play-overlay__circle {
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
 
   width: 48px;
@@ -1085,7 +1089,7 @@
 .module-image__play-overlay__icon {
   position: absolute;
   top: 50%;
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translate(-50%, -50%);
 
   height: 36px;
@@ -1096,8 +1100,8 @@
 .module-image__text-container {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   z-index: 2;
 
@@ -1114,7 +1118,7 @@
   cursor: pointer;
   position: absolute;
   top: 2px;
-  right: 2px;
+  inset-inline-end: 2px;
   //   width: 16px;
   //   height: 16px;
   z-index: 2;
@@ -1162,7 +1166,7 @@
 
 .module-typing-Txt {
   font-size: 12px;
-  margin-right: 3px;
+  margin-inline-end: 3px;
 }
 
 .module-typing-animation__dot {
@@ -1260,7 +1264,7 @@
   cursor: pointer;
   position: absolute;
   top: 8px;
-  right: 16px;
+  inset-inline-end: 16px;
 
   width: 20px;
   height: 20px;
@@ -1292,7 +1296,7 @@
 .module-inner-img-wrapper {
   max-width: calc(100vw - 795px);
   overflow-x: auto;
-  margin-right: 20px;
+  margin-inline-end: 20px;
   cursor: pointer;
 }
 
@@ -1314,7 +1318,7 @@
   cursor: pointer;
   position: absolute;
   top: 5px;
-  right: 5px;
+  inset-inline-end: 5px;
   width: 16px;
   height: 16px;
   z-index: 2;
@@ -1380,8 +1384,8 @@
   z-index: 20;
 
   position: fixed;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   top: 0;
   bottom: 0;
 
@@ -1400,7 +1404,7 @@
   position: absolute;
 
   top: 12px;
-  right: 16px;
+  inset-inline-end: 16px;
   width: 30px;
   height: 30px;
   z-index: 2;
@@ -1603,7 +1607,7 @@
   cursor: pointer;
   position: absolute;
   top: 5px;
-  right: 5px;
+  inset-inline-end: 5px;
   border: none;
 
   // height: 16px;
@@ -1687,7 +1691,7 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.8);

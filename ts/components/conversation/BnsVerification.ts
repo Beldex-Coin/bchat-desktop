@@ -42,7 +42,7 @@ export async function isLinkedBchatIDWithBnsForDeamon(bnsName?: string) {
       return false;
     }
     if (!window.navigator.onLine) {
-      !!bnsName && ToastUtils.pushToastError('invalid', 'Please check your internet connection');
+      !!bnsName && ToastUtils.pushToastError('invalid', i18n('checkInternetConnection'));
       return false;
     }
     const resolvedBchatID = await SNodeAPI.getBchatIDForOnsName(ourBnsName);

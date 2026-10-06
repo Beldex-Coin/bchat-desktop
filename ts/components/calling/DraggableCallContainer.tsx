@@ -87,14 +87,14 @@ const StyledDurationLabel = styled.div<{ remoteStreamVideoIsMuted: boolean }>`
 const StyledCloseIcon = styled.div`
   position: absolute;
   top: 5px;
-  right: 5px;
+  inset-inline-end: 5px;
   z-index: 99;
   display: flex;
   flex-direction: column;
 `;
 const StyledLocalVideoContainer = styled.div<{ isLocalOnly: boolean }>`
   position: absolute;
-  right: ${props => (props.isLocalOnly ? '0' : '5')}px;
+  inset-inline-end: ${props => (props.isLocalOnly ? '0' : '5')}px;
   bottom: ${props => (props.isLocalOnly ? '0' : '5')}px;
   width: ${props => (props.isLocalOnly ? '164' : '81')}px;
   height: ${props => (props.isLocalOnly ? '146' : '81')}px;

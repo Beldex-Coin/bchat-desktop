@@ -39,7 +39,7 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 
       !props.isModal &&
       `
     position: absolute;
-    left: 42px;
+    inset-inline-start: 42px;
     bottom: 61px;
 
       `}
@@ -84,7 +84,7 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 
         content: '';
         position: absolute;
         top: calc(100% - 42px);
-        left: 44px;
+        inset-inline-start: 44px;
         width: 22px;
         height: 22px;
         background-color: var(--color-emoji-panel-bg);

@@ -43,6 +43,7 @@ const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, re
     btnRadius,
     fillRule,
     clipRule,
+    flipInRtl,
   } = props;
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (props.onClick) {
@@ -81,6 +82,7 @@ const BchatIconButtonInner = React.forwardRef<HTMLDivElement, SProps>((props, re
         iconPadding={iconPadding}
         fillRule={fillRule}
         clipRule={clipRule}
+        flipInRtl={flipInRtl}
       />
       {Boolean(notificationCount) && <BchatNotificationCount count={notificationCount} />}
     </div>

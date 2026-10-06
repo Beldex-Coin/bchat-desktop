@@ -18,6 +18,7 @@ export type BchatIconProps = {
   clipRule?:'iherit'|'evenodd';
   strokeColor?:string;
   strokeWidth?:string;
+  flipInRtl?: boolean;
 };
 
 const getIconDimensionFromIconSize = (iconSize: BchatIconSize | number) => {
@@ -57,6 +58,7 @@ type StyledSvgProps = {
   noScale?: boolean;
   iconColor?: string;
   backgroundColor?: string;
+  flipInRtl?: boolean;
 };
 
 const rotate = keyframes`
@@ -127,7 +129,10 @@ const animation = (props: {
 
 const Svg = styled.svg<StyledSvgProps>`
   width: ${props => props.width};
-  transform: ${props => `rotate(${props.iconRotation}deg)`};
+  transform: ${props =>
+    props.flipInRtl
+      ? `scaleX(var(--rtl-mirror, 1)) rotate(${props.iconRotation}deg)`
+      : `rotate(${props.iconRotation}deg)`};
   animation: ${props => animation(props)};
   background-color: ${props => props.backgroundColor ?? ""};
   border-radius: ${props => props.borderRadius ?? ""};
@@ -155,6 +160,7 @@ const BchatSvg = (props: {
   clipRule?:string;
   strokeColor?:string;
   strokeWidth?:string;
+  flipInRtl?: boolean;
 }) => {
   const colorSvg =props.strokeColor ?'none': props.iconColor;
   const pathArray = props.path instanceof Array ? props.path : [props.path];
@@ -179,7 +185,7 @@ const BchatSvg = (props: {
     backgroundColor: props.backgroundColor,
     borderRadius: props.borderRadius,
     iconPadding: props.iconPadding,
-    
+    flipInRtl: props.flipInRtl,
   };
 
   return (
@@ -206,7 +212,8 @@ export const BchatIcon = (props: BchatIconProps) => {
     fillRule,
     clipRule,
     strokeColor,
-    strokeWidth
+    strokeWidth,
+    flipInRtl,
   } = props;
   let { iconSize, iconRotation } = props;
   iconSize = iconSize || 'medium';
@@ -235,6 +242,7 @@ export const BchatIcon = (props: BchatIconProps) => {
       clipRule={clipRule}
       strokeColor={strokeColor}
       strokeWidth={strokeWidth}
+      flipInRtl={flipInRtl}
     />
   );
 };

@@ -371,8 +371,7 @@ export async function deleteMessagesById(messageIds: Array<string>, conversation
 
   window.inboxStore?.dispatch(
     updateConfirmModal({
-      // title: window.i18n('deleteJustForMe'),
-      title: 'Delete selected messages?',
+      title: window.i18n('deleteSelectedMessagesTitle'),
       message: moreThanOne
         ? window.i18n('deleteMessagesQuestion', [messageCount.toString()])
         : window.i18n('deleteMessageQuestion'),

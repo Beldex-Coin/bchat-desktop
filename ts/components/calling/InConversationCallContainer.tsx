@@ -80,7 +80,7 @@ const StyledLocalVideoContainer = styled.div<{
   padding-bottom:${props => !props.isCallModalExpandView && props.isTurnOnRemoteVideo? '10px':'unset' };
   position:${props =>
     props.isTurnOnRemoteVideo || props.isTurnOnLocalVideo ? 'absolute' : 'unset'}; 
-  right:${props =>
+  inset-inline-end:${props =>
     props.isCallModalExpandView && props.isTurnOnRemoteVideo && props.isTurnOnLocalVideo
       ? '-18px'
       : props.isTurnOnRemoteVideo && props.isTurnOnLocalVideo
@@ -136,7 +136,7 @@ export const CenteredAvatarInConversation = styled.div<{
   width: ${props => (props.isFullScreen?'unset':props.isCallModalExpandView ? '250px' : '180px')};
   flex-direction: column;
 
-  margin-left: ${props => (props.isNeedBgColor ? 'auto' : 'unset')};
+  margin-inline-start: ${props => (props.isNeedBgColor ? 'auto' : 'unset')};
   background-color: ${props => (props.isNeedBgColor ? props.avatarBgColor : 'unset')};
   border-radius: ${props => (props.isNeedBgColor ? '16px' : 'unset')};
   padding: ${props => (props.isNeedBgColor ? '31px 0 9px' : 'unset')};

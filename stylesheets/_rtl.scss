@@ -1,23 +1,34 @@
-body.rtl {
-  input,
-  textarea,
-  .module-left-pane,
-  .module-conversation-list-item,
-  .group-settings-item,
-  .contact-selection-list,
-  .group-member-list__selection,
-  .react-contexify__item,
-  .bchat-settings-list {
-    direction: rtl;
-  }
+// Direction comes from <html dir>. Only put overrides here that logical
+// properties cannot express on Chromium 114 (e.g. float, transforms).
+//
+// Styled components read the variables below instead of nesting an
+// `html[dir='rtl'] &` rule: styled-components scopes that rule to the class
+// shared by every instance, so prop-dependent values leak between instances.
+html {
+  --rtl-mirror: 1;
+  --float-inline-start: left;
+  --float-inline-end: right;
+}
 
-  // text inside rtl textarea must be manually right-sided
-  textarea {
-    text-align: right;
+html[dir='rtl'] {
+  --rtl-mirror: -1;
+  --float-inline-start: right;
+  --float-inline-end: left;
+
+  textarea,
+  input {
+    text-align: start;
   }
-  // no matter what, keep left-pane-settings on tlr
-  // because it breaks the UI (arrow and more), and we don't care for now
-  .left-pane-setting-content {
-    direction: ltr;
+}
+
+// react-contexify opens submenus with a physical `left: 100%`. In RTL they open to
+// the left; showContextMenu adds -inline-end when there is no room on that side.
+html[dir='rtl'] .contexify .contexify_submenu {
+  left: unset;
+  inset-inline-start: 100%;
+
+  &.contexify_submenu-inline-end {
+    inset-inline-start: unset;
+    inset-inline-end: 100%;
   }
 }

@@ -70,7 +70,10 @@ export async function signUp(signUpDetails: {
   } catch (e) {
     await resetRegistration();
 
-    ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
+    ToastUtils.pushToastError(
+      'registrationError',
+      window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
+    );
     window?.log?.warn('exception during registration:', e);
   }
 }
@@ -105,7 +108,10 @@ export async function signInWithRecovery(signInDetails: {
     trigger('openInbox');
   } catch (e) {
     await resetRegistration();
-    ToastUtils.pushToastError('registrationError', `Error: ${e.message || 'Something went wrong'}`);
+    ToastUtils.pushToastError(
+      'registrationError',
+      window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
+    );
     window?.log?.warn('exception during registration:', e);
   }
 }
@@ -149,12 +155,12 @@ export async function signInWithLinking(signInDetails: { userRecoveryPhrase: str
     if (e instanceof TaskTimedOutError) {
       ToastUtils.pushToastError(
         'registrationError',
-        'Could not find your display name. Please Sign In by Restoring Your Account instead.'
+        window.i18n('linkDeviceNoDisplayNameError')
       );
     } else {
       ToastUtils.pushToastError(
         'registrationError',
-        `Error: ${e.message || 'Something went wrong'}`
+        window.i18n('errorWithReason', [e.message || window.i18n('somethingWentWrong')])
       );
     }
     window?.log?.warn('exception during registration:', e);

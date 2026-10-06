@@ -1,5 +1,4 @@
 import React from 'react';
-import { contextMenu } from 'react-contexify';
 import { createPortal } from 'react-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -7,6 +6,7 @@ import { getUnreadConversationRequests } from '../../state/selectors/conversatio
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
 import {  BchatIcon } from '../icon';
 import { MemoMessageRequestBannerContextMenu } from '../menu/MessageRequestBannerContextMenu';
+import { showContextMenu } from '../../util/showContextMenu';
 
 const StyledMessageRequestBanner = styled.div`
   height: 74px;
@@ -36,7 +36,7 @@ font-weight: 400;
 `;
 
 const StyledCircleIcon = styled.div`
-  padding-left: var(--margins-xs);
+  padding-inline-start: var(--margins-xs);
 `;
 
 const StyledUnreadCounter = styled.div`
@@ -45,7 +45,7 @@ const StyledUnreadCounter = styled.div`
   border-radius: var(--margins-md);
   font-size: var(--font-size-xs);
   background-color: var(--color-request-banner-unread-background);
-  margin-left: 40px;
+  margin-inline-start: 40px;
   min-width: 23px;
   height: 23px;
   line-height: 25px;
@@ -88,7 +88,7 @@ export const CirclularIcon = () => {
               // justifyContent: 'center',
               // backgroundSize: '32px',
               top: '8px',
-              left: '6px',
+              insetInlineStart: '6px',
               // alignItems: 'center',
               //  backgroundColor:"#353543",
               //  borderRadius:"30px",
@@ -104,12 +104,13 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   const { handleOnClick } = props; 
   const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
   const hideRequestBanner = useSelector(getHideMessageRequestBanner); 
+
   if (hideRequestBanner || !conversationRequestsUnread ) {
     return null;
   }
   const triggerId = 'msg-req-banner';
   const handleOnContextMenu = (e: any) => {
-    contextMenu.show({
+    showContextMenu({
       id: triggerId,
       event: e,
     });

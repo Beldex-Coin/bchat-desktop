@@ -440,7 +440,8 @@ export const _getSortedConversations = (
     }
 
     // Add Social Group to list as soon as the name has been set
-    if (conversation.isPublic && (!conversation.name || conversation.name === 'Unknown group')) {
+    if (conversation.isPublic && !conversation.hasName) {
+
       continue;
     }
 
@@ -886,7 +887,7 @@ export const getMessagePropsByMessageId = createSelector(
         sender,
         authorAvatarPath: foundSenderConversation.avatarPath || null,
         isKickedFromGroup: foundMessageConversation.isKickedFromGroup || false,
-        authorProfileName: authorProfileName || 'Unknown',
+        authorProfileName: authorProfileName || window.i18n('unknown'),
         authorName,
       },
     };

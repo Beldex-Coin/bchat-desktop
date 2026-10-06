@@ -70,10 +70,7 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
     }
     Notifications.addPreviewNotification({
       conversationId: `preview-notification-${Date.now()}`,
-      message:
-        items.find(m => m.value === selected)?.label ||
-        window?.i18n?.('messageBody') ||
-        'Message body',
+      message: items.find(m => m.value === selected)?.label || window.i18n('messageBody'),
       title: window.i18n('notificationPreview'),
       iconUrl: null,
       isExpiringMessage: false,

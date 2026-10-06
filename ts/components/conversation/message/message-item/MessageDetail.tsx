@@ -134,13 +134,13 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   return (
     <div className="message-detail-wrapper">
       <BchatWrapperModal
-        title={'More Info'}
+        title={window.i18n('moreInformation')}
         onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}
         headerReverse={false}
         okButton={{
-          text: 'Close',
+          text: window.i18n('close'),
           onClickOkHandler: () => { dispatch(updateMessageMoreInfoModal(null)) },
 
           disabled: false,
@@ -167,14 +167,14 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
               ))}
               <tr>
                 <td className="module-message-detail__label">{i18n('send')}</td>
-                <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                <td className="module-message-detail__label" style={{ paddingInlineStart: '10px' }}>
                   {moment(sentAt).format('LLLL')}
                 </td>
               </tr>
               {receivedAt ? (
                 <tr>
                   <td className="module-message-detail__label">{i18n('received')}</td>
-                  <td className="module-message-detail__label" style={{ paddingLeft: '10px' }}>
+                  <td className="module-message-detail__label" style={{ paddingInlineStart: '10px' }}>
                     {moment(receivedAt).format('LLLL')}
                   </td>
                 </tr>

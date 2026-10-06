@@ -32,14 +32,14 @@
   box-shadow: none;
   cursor: pointer;
   background: var(--color-received-message-background);
-  margin-left: 2px;
+  margin-inline-start: 2px;
 
   &.invitation-outgoing {
     align-self: flex-end;
     background-color: #108d32;
     color: white;
-    margin-right: 3px;
-    margin-left: unset;
+    margin-inline-end: 3px;
+    margin-inline-start: unset;
   }
   .contents-incoming,
   .contents {
@@ -50,7 +50,7 @@
     margin: 0px 0px 7px;
     background-color: #0a6f0a;
     border-radius: 10px;
-    padding-left: 15px;
+    padding-inline-start: 15px;
     height: 80px;
   }
   .contents-incoming {
@@ -66,14 +66,14 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-left: 10px;
+    margin-inline-start: 10px;
   }
   .hint-out,
   .hintTxt {
     display: flex;
     font-weight: 400;
     .txn-status {
-      margin-right: 10px;
+      margin-inline-end: 10px;
       overflow: hidden;
       color: #f0f0f0;
       text-overflow: ellipsis;
@@ -89,7 +89,7 @@
     font-weight: 400;
     width: 100%;
     text-align: end;
-    padding-right: 18px;
+    padding-inline-end: 18px;
   }
   .timeStamp-outgoing {
     color: #f0f0f0;
@@ -119,14 +119,14 @@
   padding: 15px;
   align-self: flex-start;
   box-shadow: none;
-  margin-left: 2px;
+  margin-inline-start: 2px;
 
   &.invitation-outgoing {
     align-items: center;
     background-color: #108d32;
     color: white;
-    margin-right: 3px;
-    margin-left: unset;
+    margin-inline-end: 3px;
+    margin-inline-start: unset;
 
     .view-Contact{
       border-top: 0.5px solid #2FA62F;

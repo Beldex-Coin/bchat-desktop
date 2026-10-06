@@ -39,7 +39,7 @@ export const AddNewContactInEmptyConvo = () => {
   async function handleMessageButtonClick() {
     const pubkeyorOnsTrimmed = bchatId.trim();
     if (!pubkeyorOnsTrimmed) {
-      ToastUtils.pushToastError('invalidPubKey', 'Please enter the Id or BNS'); // or Bns name
+      ToastUtils.pushToastError('invalidPubKey', window.i18n('errMsgCreateConvo')); // or Bns name
       return;
     }
     if (
@@ -98,7 +98,7 @@ export const AddNewContactInEmptyConvo = () => {
             <div>
               <BchatIdEditable
                 editable={true}
-                placeholder={'Enter BChat ID or BNS'}
+                placeholder={window.i18n('enterBChatIDorBNS')}
                 value={bchatId}
                 isGroup={false}
                 maxLength={66}
@@ -109,7 +109,7 @@ export const AddNewContactInEmptyConvo = () => {
             <SpacerLG />
             <div>
               <BchatButton
-                text={'Let’s Bchat'}
+                text={window.i18n('letsBchat')}
                 buttonType={BchatButtonType.Default}
                 buttonColor={BchatButtonColor.Primary}
                 onClick={() => handleMessageButtonClick()}
@@ -125,7 +125,7 @@ const StartConvoWrapper = styled.div`
   width: 24vw;
   max-width: 470px;
   // margin-left: 43px;
-  margin-left: 100px;
+  margin-inline-start: 100px;
 `;
 // /////////////////////////////////////
 // //////////// Management /////////////

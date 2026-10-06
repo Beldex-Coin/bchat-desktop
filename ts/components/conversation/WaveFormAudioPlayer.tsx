@@ -244,7 +244,7 @@ const debouncedPlayNextMessage = useMemo(() =>
   : 0
 
   return (
-    <div className="audio-message">
+    <div className="audio-message" dir="ltr">
       <Flex container justifyContent="center" alignItems="center" height="30px" margin="10px 0">
         <BchatIconButton
           iconType={isPlaying ? 'pause' : 'play'}

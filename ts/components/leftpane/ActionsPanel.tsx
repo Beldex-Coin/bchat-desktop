@@ -82,6 +82,7 @@ import SocialGrpIcon from '../icon/SocialGrpIcon';
 import SubMenuConnectIcon from '../icon/SubMenuConnect';
 import { openCallHistory } from '../../state/ducks/callHistory';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { LocalizerKeys } from '../../types/LocalizerKeys';
 
 const Section = (props: {
   type: SectionType;
@@ -95,6 +96,7 @@ const Section = (props: {
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
 
+  
 
   const handleClick = async (subTypes?: SectionType) => {
     dispatch(closeRightPanel());
@@ -182,7 +184,7 @@ const Section = (props: {
             ) : null}
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="All Chats" top={'186px'} />
+            <DisplayTitle titleKey={'allChats'} top={'186px'} />
           </section>
         </div>
       );
@@ -225,32 +227,35 @@ const Section = (props: {
               <div className={'sub-menu-box'}>
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.NewChat)}
                   isSelected={focusedSection === SectionType.NewChat}
                 >
                   <NewChatIcon />
-                  <SpacerMD /> <div className="menu-txt">New Chat</div>
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('newChat')}</div>
                 </SubMenuList>
                 <SpacerMD />
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.Closedgroup)}
                   isSelected={focusedSection === SectionType.Closedgroup}
                 >
                   <SecretGrpIcon />
-                  <SpacerMD /> <div className="menu-txt">Secret Group</div>
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('secretGroup')}</div>
                 </SubMenuList>
                 <SpacerMD />
                 <SubMenuList
                   container={true}
+                  alignItems="center"
                   padding="17px"
                   onClick={() => handleClick(SectionType.Opengroup)}
                   isSelected={focusedSection === SectionType.Opengroup}
                 >
                   <SocialGrpIcon />
-                  <SpacerMD /> <div className="menu-txt">Social Group</div>{' '}
+                  <SpacerMD /> <div className="menu-txt">{window.i18n('socialGroup')}</div>{' '}
                 </SubMenuList>
               </div>
             </Flex>
@@ -287,7 +292,7 @@ const Section = (props: {
             />
           </div>
           <section className="d-visiblity ">
-            <DisplayTitle title="Settings" top={'278px'} />
+            <DisplayTitle titleKey={'settingsHeader'} top={'278px'} />
           </section>
         </div>
       );
@@ -456,14 +461,19 @@ export const BchatToolTip = (props: any) => (
   />
 );
 
-const DisplayTitle = (props: { title: string; top: string }) => (
-  <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
-    <SubMenuConnectIcon />
-    <div className={'sub-menu-box'}>
-      <div className="menu-txt">{props.title}</div>
-    </div>
-  </StyledTitleWrapper>
-);
+const DisplayTitle = (props: {titleKey: LocalizerKeys; top: string }) => {
+  const { titleKey } = props;
+  const text = window.i18n(titleKey);
+
+  return (
+    <StyledTitleWrapper container={true} alignItems="center" top={props.top}>
+      <SubMenuConnectIcon />
+      <div className={'sub-menu-box'}>
+        <div className="menu-txt">{text}</div>
+      </div>
+    </StyledTitleWrapper>
+  );
+};
 
 /**
  * ActionsPanel is the far left banner (not the left pane).
@@ -559,7 +569,7 @@ export const ActionsPanel = () => {
   };
   const IsOnline = () => {
     const isOnline = useSelector(getIsOnline);
-    const status = isOnline ? 'Online' : 'Offline';
+    const status = isOnline ? window.i18n('online') : window.i18n('offline');
 
     return (
       <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
@@ -641,7 +651,7 @@ export const ActionsPanel = () => {
             <div className="offline-msg">
               <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
               <span className="txt">
-                You are not connected to the Hop. Check your internet connection or Restart the app!
+                {window.i18n('errConenctionStatus')}
               </span>
             </div>
           )}
@@ -658,7 +668,7 @@ export const ActionsPanel = () => {
                   <div className="dotIcon">
                     <BchatIcon iconSize={'small'} iconType="circle" />
                   </div>
-                  <div>Connecting..</div>
+                  <div>{window.i18n('connectingToServer')}</div>
                 </div>
                 <div>
                   <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex' }} />
@@ -673,7 +683,7 @@ export const ActionsPanel = () => {
 };
 const Hops = styled.div`
   position: absolute;
-  right: -7px;
+  inset-inline-end: -7px;
   top: -4px;
   z-index: 1;
   border: 4px solid var(--color-inbox-background);
@@ -683,7 +693,7 @@ const NetWorkStatusWrapper = styled.div`
   position: absolute;
   bottom: 10px;
   width: 338px;
-  left: 141px;
+  inset-inline-start: 141px;
   z-index: 99;
 `;
 const MarginedDiv = styled.div`
@@ -699,7 +709,7 @@ const SubMenuList = styled(Flex)<{ isSelected: boolean }>`
 `;
 const StyledTitleWrapper = styled(Flex)<{ top: string }>`
   position: fixed;
-  left: 102px;
+  inset-inline-start: 102px;
   top: ${props => props.top};
   z-index: 9;
   .sub-menu-box {

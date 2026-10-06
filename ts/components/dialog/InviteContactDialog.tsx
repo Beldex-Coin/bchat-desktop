@@ -40,7 +40,7 @@ const submitForOpenGroup = async (conversationId: string, pubkeys: Array<string>
   }
   const groupInvitation = {
     url: completeUrl,
-    name: convo.getName() || 'Unknown',
+    name: convo.getName() || window.i18n('unknown'),
   };
   pubkeys.forEach(async pubkeyStr => {
     const privateConvo = await getConversationController().getOrCreateAndWait(

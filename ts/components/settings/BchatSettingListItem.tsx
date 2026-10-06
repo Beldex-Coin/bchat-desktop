@@ -34,7 +34,7 @@ const SettingsTitleAndDescription = (props: {
             pubkey={props.bchatId}
             dataTestId="leftpane-primary-avatar"
           />
-          <div className="bchat-settings-item__title" style={{ marginLeft: '10px' }}>
+          <div className="bchat-settings-item__title" style={{ marginInlineStart: '10px' }}>
             {props.title}
           </div>
         </div>
@@ -64,7 +64,7 @@ export const BchatSettingsItemWrapper = (props: {
   return (
     <div className={classNames('bchat-settings-item', props.inline && 'inline')}>
       <Flex container={true} justifyContent="center" alignItems="center" flexDirection="row">
-        <span style={{ marginRight: '15px' }}>
+        <span style={{ marginInlineEnd: '15px' }}>
           {props.title === window.i18n('removeAccountPasswordTitle') ? (
             <RemovePasswordIcon />
           ) : (

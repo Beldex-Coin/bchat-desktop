@@ -24,6 +24,7 @@ import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
 import { SharedContactCardMessage } from './SharedContactCardMessage';
 import { PaymentMessage } from './PaymentMessage';
+import { showContextMenu } from '../../../../util/showContextMenu';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -219,7 +220,7 @@ export const GenericReadableMessage = (props: Props) => {
           : 0;
       if (enableContextMenu) {
         contextMenu.hideAll();
-        contextMenu.show({
+        showContextMenu({
           id: ctxMenuID,
           event: e,
           props: {
@@ -338,7 +339,7 @@ export const GenericReadableMessage = (props: Props) => {
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
         <div style={{margin:'auto'}}>
           {isSelectionMode && isIncoming && (
-            <div style={{ marginRight: '15px', cursor: 'pointer' }}>
+            <div style={{ marginInlineEnd: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}
@@ -386,7 +387,7 @@ export const GenericReadableMessage = (props: Props) => {
         )} */}
         <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
-            <div style={{ marginLeft: '15px', cursor: 'pointer' }}>
+            <div style={{ marginInlineStart: '15px', cursor: 'pointer' }}>
               <BchatIcon
                 iconType={!selected ? 'checkBox' : 'checkBoxTick'}
                 iconColor={iconColor}

@@ -48,7 +48,7 @@ function makeLookup<T>(items: Array<T>, key: string): { [key: string]: T } {
 // does not recognize it with what moment knows which is the closest.
 // i.e. es-419 will return 'es'.
 // We just need to use what we got from moment in getLocale on the updateLocale below
-moment.locale((window.i18n as any).getLocale());
+moment.locale(window.i18n.getLocale());
 
 // Workaround: A react component's required properties are filtering up through connect()
 //   https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31363

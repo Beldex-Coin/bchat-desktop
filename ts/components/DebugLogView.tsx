@@ -69,7 +69,7 @@ export const DebugLogView = () => {
       <div>
         <button
           className="x close"
-          aria-label="close debug log"
+          aria-label={window.i18n('closeDebugLogAriaLabel')}
           onClick={() => {
             (window as any).closeDebugLog();
           }}

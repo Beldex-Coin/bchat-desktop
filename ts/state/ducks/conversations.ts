@@ -268,6 +268,10 @@ export interface ReduxConversationType {
    */
   name?: string;
   /**
+   * True when the raw `name` attribute is set. `name` above may hold a translated "Unknown" fallback instead.
+   */
+  hasName?: boolean;
+  /**
    * profileName is the bad duck. if a nickname is set, this holds the value of it. Otherwise, it holds the name of that user as he defined it
    */
   profileName?: string;

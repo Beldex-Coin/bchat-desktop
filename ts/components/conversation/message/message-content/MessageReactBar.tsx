@@ -50,12 +50,13 @@ const StyledMessageReactBar = styled.div<{ isIncoming: boolean }>`
   font-size: 20px;
   animation: ${expand} 0.3s ease-in-out forwards; /* Add animation here */
   overflow: hidden;
-  float: ${props => (props.isIncoming ? 'left' : 'right')};
+  // float: inline-start/end needs Chromium 118, so the sides come from _rtl.scss
+  float: ${props => (props.isIncoming ? 'var(--float-inline-start)' : 'var(--float-inline-end)')};
   span {
     cursor: pointer;
   }
   .bchat-icon-button {
-    margin-right: 0;
+    margin-inline-end: 0;
     border-color: transparent !important;
     box-shadow: none !important;
   }

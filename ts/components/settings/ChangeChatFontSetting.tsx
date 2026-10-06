@@ -14,11 +14,26 @@ import { useDispatch } from 'react-redux';
 import { SettingMiniModal } from '../../state/ducks/modalDialog';
 import { BchatIcon } from '../icon';
 
-const option = ["Small", 'Medium', 'large']
+const fontSizeOptions = () => [
+    { value: 'Small', label: window.i18n('small') },
+    { value: 'Medium', label: window.i18n('medium') },
+    { value: 'Large', label: window.i18n('large') },
+];
+
+export const FontSizeChanger = (fontSize: number) => {
+    const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
+    if (currentValueFromSettings === 'Medium') {
+        return fontSize + 2;
+    }
+    if (currentValueFromSettings === 'Large') {
+        return fontSize + 4;
+    }
+    return fontSize;
+};
 
 
 export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) => void }) => {
-    const currentValueFromSettings = window.getSettingValue('font-size-setting') || "Small";
+    const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
     const forceUpdate = useUpdate();
     // const zoomSize=options.filter((item)=>item.value===currentValueFromSettings)
     const [value, setValue] = useState(currentValueFromSettings);
@@ -37,7 +52,7 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
         dispatch(
             SettingMiniModal({
                 headerName: window.i18n('chatFontSize'),
-                content: option,
+                content: fontSizeOptions(),
                 selectedItem: value,
                 onClose: () => dispatch(SettingMiniModal(null)),
                 onClick: (e: any) => {
@@ -48,12 +63,12 @@ export const ChangeChatFontSetting = (props: { onSliderChange?: (value: number) 
     }
 
     return (
-        <BchatSettingsItemWrapper title={window.i18n('chatFontSize')} inline={true} iconType='coverWithA' description='Customize text size on the chat screen'>
+        <BchatSettingsItemWrapper title={window.i18n('chatFontSize')} inline={true} iconType='coverWithA' description={window.i18n('fontsizeDesc')}>
             <div className="bchat-settings-item-font-Change"  onClick={() => displayPopUp()}>
                 <div>
-                    {value}
+                    {fontSizeOptions().find(option => option.value === value)?.label ?? window.i18n('small')}
                 </div>
-                <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
+                <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
             </div>
         </BchatSettingsItemWrapper>
     );

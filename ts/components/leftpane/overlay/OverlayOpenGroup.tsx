@@ -87,8 +87,7 @@ export const OverlayOpenGroup = () => {
         </div>
         <SpacerSM />
         <div className="module-left-pane-overlay-openhint-message">
-          Social groups are similar to public groups. however, you need an invite link to join. Join
-          a social group using the group's URL.
+          {window.i18n('socialGroupDescription')}
         </div>
 
         <BchatSpinner loading={loading} />

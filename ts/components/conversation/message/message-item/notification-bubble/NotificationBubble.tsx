@@ -37,7 +37,7 @@ const NotificationBubbleIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
+  margin-inline-end: 5px;
 `;
 
 const FlexCenter = styled.div`

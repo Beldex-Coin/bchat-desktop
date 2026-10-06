@@ -23,6 +23,7 @@ import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
+import { FontSizeChanger } from '../../../settings/ChangeChatFontSetting';
 
 
 export interface Room {
@@ -155,7 +156,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
             </div>
           </div>
           {contentProps?.lastMessageOfSeries && !isIncoming && (
-            <StyledSvgWrapper style={{ right: 0 }}>
+            <StyledSvgWrapper style={{ insetInlineEnd: 0 }}>
               <OutgoingMsgTailIcon />
             </StyledSvgWrapper>
           )}
@@ -173,17 +174,5 @@ export const VerticalLine = styled.div<VerticalLineProps>`
     props.direcrion === 'incoming' ? 'var(--color-untrusted-vertical-bar)' : ' #f0f0f0'};
   height: 60px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-inline-end: 10px;
 `;
-export const FontSizeChanger = (fontSize: number) => {
-  const currentValueFromSettings = window.getSettingValue('font-size-setting') || 'Small';
-  let size;
-  if (currentValueFromSettings === 'Small') {
-    size = fontSize;
-  } else if (currentValueFromSettings === 'Medium') {
-    size = fontSize + 2;
-  } else {
-    size = fontSize + 4;
-  }
-  return size;
-};

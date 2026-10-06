@@ -128,8 +128,7 @@ export const OverlayClosedGroup = () => {
             <SpacerLG />
             <div>
               <label className="module-left-pane-overlay-closed--search-label">
-                {' '}
-                Select Contacts
+                {window.i18n('selectContacts')}
               </label>
               <SpacerXS />
               <div className="bchat-search-input">
@@ -141,7 +140,7 @@ export const OverlayClosedGroup = () => {
                   onChange={e => {
                     handleSearch(e);
                   }}
-                  placeholder={'Search Contact'}
+                  placeholder={window.i18n('searchContact')}
                   maxLength={26}
                 />
               </div>
@@ -210,7 +209,7 @@ export const OverlayClosedGroup = () => {
           <BchatButton
             buttonColor={BchatButtonColor.Primary}
             buttonType={BchatButtonType.Brand}
-            text={'Create'}
+            text={window.i18n('create')}
             disabled={noContactsForClosedGroup}
             dataTestId="next-button"
             onClick={onEnterPressed}

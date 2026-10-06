@@ -186,6 +186,7 @@ const MessageRequestList = () => {
           }}
           iconType="chevron"
           iconRotation={90}
+          flipInRtl={true}
           iconSize="large"
           // margin="0 0 var(--margins-xs) var(--margins-xs)"
         />

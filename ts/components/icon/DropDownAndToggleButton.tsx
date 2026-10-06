@@ -53,7 +53,7 @@ const StyledArrowIcon = styled(StyledRoundedButton)`
   height: 35%;
   // position: relative;
   top: 39px;
-  right: 0px;
+  inset-inline-end: 0px;
   border: 2px solid var(--color-hop-bg);
 
   position: absolute;

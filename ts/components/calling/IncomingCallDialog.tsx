@@ -51,7 +51,7 @@ export const IncomingCallDialog = () => {
   const hasIncomingCall = useSelector(getHasIncomingCall);
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
-  const modulatedStr = useModuloWithTripleDots('Incoming...', 3, 1000);
+  const modulatedStr = useModuloWithTripleDots(window.i18n('incoming'), 3, 1000);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;

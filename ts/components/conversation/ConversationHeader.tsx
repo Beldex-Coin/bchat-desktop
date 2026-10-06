@@ -2,7 +2,6 @@ import  { useEffect, useState } from 'react';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 
-import { contextMenu } from 'react-contexify';
 import styled from 'styled-components';
 import {
   ConversationNotificationSettingType,
@@ -52,6 +51,7 @@ import { TypingBubble } from './TypingBubble';
 import { getConversationController } from '../../bchat/conversations';
 import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
+import { showContextMenu } from '../../util/showContextMenu';
 
 export interface TimerOption {
   name: string;
@@ -152,8 +152,8 @@ export const SelectionOverlay = () => {
         </div>
 
         <div className="seleted-count">
-          <span style={{ marginRight: '5px' }}>{selectedMessageIds.length}</span>
-          <span>Selected</span>
+          <span style={{ marginInlineEnd: '5px' }}>{selectedMessageIds.length}</span>
+          <span>{window.i18n('selected')}</span>
         </div>
       </Flex>
 
@@ -192,11 +192,11 @@ const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) 
     <div
       role="button"
       onClick={(e: any) => {
-        contextMenu.show({
+        showContextMenu({
           id: props.triggerId,
           event: e,
           position: {
-            x: width - 300,
+            x: document.documentElement.dir === 'rtl' ? window.innerWidth - (width - 300) : width - 300,
             y: 70,
           },
         });
@@ -264,6 +264,7 @@ const BackButton = (props: { onGoBack: () => void; showBackButton: boolean }) =>
       iconType="chevron"
       iconSize="large"
       iconRotation={90}
+      flipInRtl={true}
       onClick={onGoBack}
       dataTestId="back-button-message-details"
     />
@@ -285,7 +286,7 @@ const CallButton = () => {
   }
 
   return (
-    <div style={{ marginRight: '15px' }}>
+    <div style={{ marginInlineEnd: '15px' }}>
       <BchatIconButton
         iconType={'call'}
         iconSize={24}
@@ -369,7 +370,7 @@ const ConversationHeaderTitle = () => {
     memberCountText = i18n('members', [count]);
   }
   if (conversation?.isMe) {
-    return <div className="module-conversation-header__title">Note to Self</div>;
+    return <div className="module-conversation-header__title">{i18n('noteToSelf')}</div>;
   }
  
   return (

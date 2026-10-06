@@ -1,6 +1,5 @@
 import React, { useCallback, useContext } from 'react';
 import classNames from 'classnames';
-import { contextMenu } from 'react-contexify';
 // import useUpdate from 'react-use/lib/useUpdate';
 import { Avatar, AvatarSize } from '../../avatar/Avatar';
 
@@ -32,6 +31,7 @@ import { Timestamp } from '../../conversation/Timestamp';
 // import { showLeftPaneSection } from '../../../state/ducks/section';
 // import { SettingsKey } from '../../../data/settings-key';
 // import { Timestamp } from '../../conversation/Timestamp';
+import { showContextMenu } from '../../../util/showContextMenu';
 
 export type ConversationListItemProps = Pick<
   ReduxConversationType,
@@ -212,7 +212,7 @@ const ConversationListItem = (props: Props) => {
               e.preventDefault();
             }}
             onContextMenu={e => {
-              contextMenu.show({
+              showContextMenu({
                 id: triggerId,
                 event: e,
               });
@@ -234,10 +234,11 @@ const ConversationListItem = (props: Props) => {
               <ConversationListItemHeaderItem />
 
               <div className="module-conversation-list-item__content__messageBox">
-                <MessageItem isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
+                <MessageItem key={`message-${conversationId}`} isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
                 {/* {unreadCountDiv}
               {atSymbol} */}
                 <Timestamp
+                  key={`timestamp-${conversationId}`}
                   timestamp={activeAt}
                   isConversationListItem={true}
                   momentFromNow={true}

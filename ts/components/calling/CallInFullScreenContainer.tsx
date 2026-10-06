@@ -27,8 +27,8 @@ const CallInFullScreenVisible = styled.div<{ bgColor: string }>`
   z-index: 999;
   top: 0;
   bottom: 0;
-  right: 0;
-  left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
   display: flex;
   flex-direction: column;
   opacity: 1;
@@ -42,7 +42,7 @@ const CallInFullScreenVisible = styled.div<{ bgColor: string }>`
 const StyledLocalVideoContainer = styled.div`
   width: 18%;
   bottom: 30px;
-  right: 10px;
+  inset-inline-end: 10px;
   border-radius: 16px;
   overflow: hidden;
   position: absolute;

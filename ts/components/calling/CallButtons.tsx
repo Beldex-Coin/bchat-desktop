@@ -1,5 +1,5 @@
 import { BchatIcon  } from '../icon';
-import {  contextMenu, Item, Menu } from 'react-contexify';
+import { Item, Menu } from 'react-contexify';
 import { InputItem } from '../../bchat/utils/calling/CallManager';
 import { setFullScreenCall } from '../../state/ducks/call';
 import { CallManager, ToastUtils } from '../../bchat/utils';
@@ -10,6 +10,7 @@ import { DropDownAndToggleButton } from '../icon/DropDownAndToggleButton';
 import styled from 'styled-components';
 import { Flex } from '../basic/Flex';
 import { ConnectingLabel, DurationLabel, RingingLabel } from './InConversationCallContainer';
+import { showContextMenu } from '../../util/showContextMenu';
 
 const videoTriggerId = 'video-menu-trigger-id';
 const audioTriggerId = 'audio-menu-trigger-id';
@@ -247,7 +248,7 @@ const showAudioInputMenu = (
     ToastUtils.pushNoAudioInputFound();
     return;
   }
-  contextMenu.show({
+  showContextMenu({
     id: audioTriggerId,
     event: e,
   });
@@ -261,7 +262,7 @@ const showAudioOutputMenu = (
     ToastUtils.pushNoAudioOutputFound();
     return;
   }
-  contextMenu.show({
+  showContextMenu({
     id: audioOutputTriggerId,
     event: e,
   });
@@ -275,7 +276,7 @@ const showVideoInputMenu = (
     ToastUtils.pushNoCameraFound();
     return;
   }
-  contextMenu.show({
+  showContextMenu({
     id: videoTriggerId,
     event: e,
   });
