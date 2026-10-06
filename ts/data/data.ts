@@ -385,7 +385,10 @@ export async function searchMessagesInConversation(
     conversationId,
     limit
   )) as Array<MessageAttributes>;
-  return messages;
+  // the search index can hold several rows for one message (it is re-added each time the message is
+  // saved), so the same message comes back more than once - keep one result per message, as
+  // searchMessages does
+  return _.uniqBy(messages, m => m.id);
 }
 
 // Message
