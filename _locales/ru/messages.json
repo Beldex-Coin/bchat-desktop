@@ -302,7 +302,7 @@
   "leaveGroup": "Покинуть группу",
   "leaveAndRemoveForEveryone": "Покинуть",
   "leaveGroupConfirmation": "Вы уверены, что хотите уйти, $name$?",
-  "leaveGroupConfirmationAdmin": "Поскольку вы являетесь создателем этой группы, она будет удалена для всех. Не подлежит отмене",
+  "leaveGroupConfirmationAdmin": "Поскольку вы являетесь создателем этой группы, она будет удалена для всех. Не подлежит отмене.",
   "cannotRemoveCreatorFromGroup": "Невозможно удалить этого пользователя",
   "cannotRemoveCreatorFromGroupDesc": "Вы не можете удалить этого пользователя, так как он является создателем группы.",
   "noContactsForGroup": "У вас пока нет контактов",

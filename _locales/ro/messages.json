@@ -262,7 +262,7 @@
   "leaveGroup": "Părăsește grupul",
   "leaveAndRemoveForEveryone": "Lăsați grupul și eliminați pentru toată lumea",
   "leaveGroupConfirmation": "Sunteți sigur că doriți să părăsiți acest grup?",
-  "leaveGroupConfirmationAdmin": "Deoarece sunteți administratorul acestui grup, dacă îl lăsați va fi eliminat pentru fiecare membru actual. Ești sigur că vrei să părăsești acest grup?",
+  "leaveGroupConfirmationAdmin": "Deoarece sunteți administratorul acestui grup, dacă îl lăsați va fi eliminat pentru fiecare membru actual. Ești sigur că vrei să părăsești acest grup.",
   "cannotRemoveCreatorFromGroup": "Acest utilizator nu poate fi eliminat",
   "cannotRemoveCreatorFromGroupDesc": "Nu puteți elimina acest utilizator deoarece acesta este creatorul grupului.",
   "noContactsForGroup": "Nu aveți încă persoane de contact",

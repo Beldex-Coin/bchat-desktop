@@ -262,7 +262,7 @@
   "leaveGroup": "Покинуть Группу",
   "leaveAndRemoveForEveryone": "Leave Group and remove for everyone",
   "leaveGroupConfirmation": "Вы уверены, что хотите покинуть эту группу?",
-  "leaveGroupConfirmationAdmin": "Because you are the creator of this group. it will be deleted for everyone. This cannot be undone.?",
+  "leaveGroupConfirmationAdmin": "Because you are the creator of this group. it will be deleted for everyone. This cannot be undone.",
   "cannotRemoveCreatorFromGroup": "Cannot remove this user",
   "cannotRemoveCreatorFromGroupDesc": "You cannot remove this user as they are the creator of the group.",
   "noContactsForGroup": "У вас еще нет контактов",

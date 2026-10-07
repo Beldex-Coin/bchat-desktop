@@ -262,7 +262,7 @@
   "leaveGroup": "Opustiť Skupinu",
   "leaveAndRemoveForEveryone": "Opustiť Skupinu a odstrániť pre všetkých",
   "leaveGroupConfirmation": "Ste si istý že chcete opustiť túto skupinu?",
-  "leaveGroupConfirmationAdmin": "Keďže ste admin tejto skupiny, ak odídete bude odstránená pre každého terajšieho člena. Ste si istý že chcete opustiť skupinu?",
+  "leaveGroupConfirmationAdmin": "Keďže ste admin tejto skupiny, ak odídete bude odstránená pre každého terajšieho člena. Ste si istý že chcete opustiť skupinu.",
   "cannotRemoveCreatorFromGroup": "Nemožno odstrániť tohto používateľa",
   "cannotRemoveCreatorFromGroupDesc": "Nemôžete odstrániť tohto používateľa keďže oni vytvorili túto skupinu.",
   "noContactsForGroup": "Zatiaľ nemáte žiadne kontakty",

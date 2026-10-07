@@ -262,7 +262,7 @@
   "leaveGroup": "Quitter le groupe",
   "leaveAndRemoveForEveryone": "Quitter le groupe et le supprimer pour tout le monde",
   "leaveGroupConfirmation": "Voulez-vous vraiment quitter ce groupe ?",
-  "leaveGroupConfirmationAdmin": "Comme vous êtes l'administrateur de ce groupe, si vous le quittez, il sera supprimé pour tous les membres actuels. Êtes-vous sûr de vouloir quitter ce groupe ?",
+  "leaveGroupConfirmationAdmin": "Comme vous êtes l'administrateur de ce groupe, si vous le quittez, il sera supprimé pour tous les membres actuels. Êtes-vous sûr de vouloir quitter ce groupe.",
   "cannotRemoveCreatorFromGroup": "Impossible de supprimer cet utilisateur",
   "cannotRemoveCreatorFromGroupDesc": "Vous ne pouvez pas supprimer cet utilisateur car il est le créateur du groupe.",
   "noContactsForGroup": "Vous n'avez pas encore de contacts",

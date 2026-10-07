@@ -302,7 +302,7 @@
   "leaveGroup": "Gruptan Ayrıl",
   "leaveAndRemoveForEveryone": "Ayrıl",
   "leaveGroupConfirmation": "Bu $name$ ayrılmak istediğinizden emin misiniz?",
-  "leaveGroupConfirmationAdmin": "Bu grubun oluşturucusu olduğunuz için grup herkes için silinecektir. Bu işlem geri alınamaz",
+  "leaveGroupConfirmationAdmin": "Bu grubun oluşturucusu olduğunuz için grup herkes için silinecektir. Bu işlem geri alınamaz.",
   "cannotRemoveCreatorFromGroup": "Bu kullanıcı kaldırılamıyor",
   "cannotRemoveCreatorFromGroupDesc": "Grubun kurucusu olduğu için bu kullanıcıyı kaldıramazsınız.",
   "noContactsForGroup": "Henüz hiç kişiniz yok",

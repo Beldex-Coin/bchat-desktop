@@ -262,7 +262,7 @@
   "leaveGroup": "Verlaat groep",
   "leaveAndRemoveForEveryone": "Groep verlaten en voor iedereen verwijderen",
   "leaveGroupConfirmation": "Weet je zeker dat je deze groep wilt verlaten?",
-  "leaveGroupConfirmationAdmin": "Je bent de beheerder van deze groep, als je deze verlaat, wordt deze voor alle huidige leden verwijderd. Weet je zeker dat je deze groep wilt verlaten?",
+  "leaveGroupConfirmationAdmin": "Je bent de beheerder van deze groep, als je deze verlaat, wordt deze voor alle huidige leden verwijderd. Weet je zeker dat je deze groep wilt verlaten.",
   "cannotRemoveCreatorFromGroup": "Kan deze gebruiker niet verwijderen",
   "cannotRemoveCreatorFromGroupDesc": "Je kunt deze gebruiker niet verwijderen omdat hij/zij de maker van de groep is.",
   "noContactsForGroup": "Je hebt nog geen contacten",

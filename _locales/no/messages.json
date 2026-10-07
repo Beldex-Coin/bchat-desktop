@@ -262,7 +262,7 @@
   "leaveGroup": "Forlat gruppen",
   "leaveAndRemoveForEveryone": "Forlat gruppen og fjern for alle",
   "leaveGroupConfirmation": "Er du sikker på at du vil forlate denne gruppen?",
-  "leaveGroupConfirmationAdmin": "Ettersom du er administrator for denne gruppen, vil den dersom du forlater den fjernes for alle nåværende medlemmer. Er du sikker på at du vil forlate denne gruppen?",
+  "leaveGroupConfirmationAdmin": "Ettersom du er administrator for denne gruppen, vil den dersom du forlater den fjernes for alle nåværende medlemmer. Er du sikker på at du vil forlate denne gruppen.",
   "cannotRemoveCreatorFromGroup": "Kan ikke fjerne denne brukeren",
   "cannotRemoveCreatorFromGroupDesc": "Du kan ikke fjerne denne brukeren, ettersom vedkommende er skaperen av gruppen.",
   "noContactsForGroup": "Du har ingen kontakter ennå",

@@ -262,7 +262,7 @@
   "leaveGroup": "Marxar del grup",
   "leaveAndRemoveForEveryone": "Eliminar participants i marxar del grup",
   "leaveGroupConfirmation": "Segur que vols abandonar aquest grup?",
-  "leaveGroupConfirmationAdmin": "Com que sou l’administrador d’aquest grup, si el deixeu, s’eliminarà per a tots els membres actuals. Esteu segur que voleu deixar aquest grup?",
+  "leaveGroupConfirmationAdmin": "Com que sou l’administrador d’aquest grup, si el deixeu, s’eliminarà per a tots els membres actuals. Esteu segur que voleu deixar aquest grup.",
   "cannotRemoveCreatorFromGroup": "No podeu eliminar aquest usuari",
   "cannotRemoveCreatorFromGroupDesc": "No podeu eliminar aquest usuari, ja que és el creador del grup.",
   "noContactsForGroup": "Encara no tens cap contacte",

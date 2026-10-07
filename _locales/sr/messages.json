@@ -262,7 +262,7 @@
   "leaveGroup": "Napusti grupu",
   "leaveAndRemoveForEveryone": "Napusti grupu i ukloni za sve korisnike",
   "leaveGroupConfirmation": "Da li ste sigurni da želite da napustite ovu grupu?",
-  "leaveGroupConfirmationAdmin": "Pošto ste administrator ove grupe, ako je napustite, ona će biti uklonjena za sve trenutne članove. Jeste li sigurni da želite da napustite ovu grupu?",
+  "leaveGroupConfirmationAdmin": "Pošto ste administrator ove grupe, ako je napustite, ona će biti uklonjena za sve trenutne članove. Jeste li sigurni da želite da napustite ovu grupu.",
   "cannotRemoveCreatorFromGroup": "Nije moguće ukloniti ovog korisnika",
   "cannotRemoveCreatorFromGroupDesc": "Ne možete ukloniti ovog korisnika jer je on tvorac grupe.",
   "noContactsForGroup": "Još nemate nijedan kontakt",

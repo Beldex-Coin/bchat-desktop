@@ -262,7 +262,7 @@
   "leaveGroup": "Csoport elhagyása",
   "leaveAndRemoveForEveryone": "Csoport elhagyása és mindenki törlése",
   "leaveGroupConfirmation": "Biztosan elhagyod ezt a csoportot?",
-  "leaveGroupConfirmationAdmin": "Mivel te vagy a csoport adminisztrátora, ha elhagyod, minden csoporttagnak is törlődik. Biztosan el akarod hagyni a csoportot?",
+  "leaveGroupConfirmationAdmin": "Mivel te vagy a csoport adminisztrátora, ha elhagyod, minden csoporttagnak is törlődik. Biztosan el akarod hagyni a csoportot.",
   "cannotRemoveCreatorFromGroup": "Nem lehet törölni ezt a felhasználót",
   "cannotRemoveCreatorFromGroupDesc": "Nem tudod eltávolítani a felhasználót, mivel Ő hozta létre a csoportot.",
   "noContactsForGroup": "Még nincsenek ismerőseid",

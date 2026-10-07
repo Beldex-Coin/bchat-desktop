@@ -297,7 +297,7 @@
   "leaveGroup": "Salir del grupo",
   "leaveAndRemoveForEveryone": "Salir",
   "leaveGroupConfirmation": "¿Estás seguro de que quieres salir, $name$?",
-  "leaveGroupConfirmationAdmin": "Debido a que usted es el creador de este grupo, se eliminará para todos. Esto no se puede deshacer",
+  "leaveGroupConfirmationAdmin": "Debido a que usted es el creador de este grupo, se eliminará para todos. Esto no se puede deshacer.",
   "cannotRemoveCreatorFromGroup": "No se puede eliminar a este usuario",
   "cannotRemoveCreatorFromGroupDesc": "No puedes eliminar a este usuario porque es el creador del grupo.",
   "noContactsForGroup": "Aún no tienes ningún contacto",
