@@ -6558,16 +6558,29 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
   // option note (Hops): only the selected option's note shows; all share one grid cell so the
   // card keeps the height of the longest note
+  // Figma 5296:54122: 18px "Info 3" icon, 18 gap, note text beside it, vertically centred
   &__note {
-    display: grid;
+    display: flex;
+    align-items: center;
+    gap: 24px;
     margin: 15px 6px 0;
     font-family: $dark-font-data !important;
     font-size: 15px;
     line-height: 22px;
     color: #acacac;
 
+    > svg {
+      flex: 0 0 auto;
+    }
+  }
+  &__note-text {
+    display: grid;
+    flex: 1 1 auto;
+    min-width: 0;
+
     > span {
       grid-area: 1 / 1;
+      align-self: center;
     }
     > .is-hidden {
       visibility: hidden;

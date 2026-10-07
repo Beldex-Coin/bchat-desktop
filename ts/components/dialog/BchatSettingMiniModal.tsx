@@ -66,15 +66,18 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
             </div>
             {hasNotes && (
               <div className="option-picker__note">
-                {descriptions?.map((description, i) => (
-                  <span
-                    key={i}
-                    aria-hidden={i !== selectedIndex}
-                    className={classNames(i !== selectedIndex && 'is-hidden')}
-                  >
-                    {description}
-                  </span>
-                ))}
+                <BchatIcon iconType="noteInfo" iconSize={24} iconColor="#ACACAC" />
+                <div className="option-picker__note-text">
+                  {descriptions?.map((description, i) => (
+                    <span
+                      key={i}
+                      aria-hidden={i !== selectedIndex}
+                      className={classNames(i !== selectedIndex && 'is-hidden')}
+                    >
+                      {description}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
             <div className="option-picker__actions">
