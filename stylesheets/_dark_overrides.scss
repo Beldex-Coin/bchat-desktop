@@ -2963,8 +2963,11 @@ $dark-cut-reg-btn: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 
   }
 }
 #{$dark} .bchat-restore-seed-icon-box {
+  flex-shrink: 0;
   width: auto;
   align-items: flex-start;
+  // keep the textarea's scrollbar clear of the paste square
+  margin-inline-start: 10px;
 
   .paste-icon {
     width: 38px;
