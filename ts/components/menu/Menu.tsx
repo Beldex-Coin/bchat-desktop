@@ -2,6 +2,7 @@ import  { useContext } from 'react';
 
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 import {
   useConversationPropsById,
   useConversationUsername,
@@ -307,7 +308,7 @@ export const LeaveGroupMenuItem = () => {
         }}
       >
         <BchatIcon
-          iconType={'leave'}
+          iconType={'leaveGroup'}
           iconSize={20}
           fillRule="evenodd"
           clipRule="evenodd"
@@ -709,6 +710,7 @@ export const AcceptMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
   const convo = getConversationController().get(convoId);
+  const isDark = useSelector(getTheme) === 'dark';
 
   if (isRequest) {
     return (
@@ -719,14 +721,24 @@ export const AcceptMenuItem = () => {
           await approveConvoAndSendResponse(convoId, true);
         }}
       >
-        <BchatIcon
-          iconType={'accept'}
-          iconSize={20}
-          iconColor="#108D32"
-          clipRule="evenodd"
-          fillRule="evenodd"
-        />
-        <MenuWrapper style={{ color: '#108D32' }}> {window.i18n('accept')}</MenuWrapper>
+        {isDark ? (
+          // Dark theme (Figma 5296:19284 "Checkmark"): thin circled tick in #ebebeb, like the label
+          <svg width={20} height={20} viewBox="-1.25 -1.25 15 15" aria-hidden="true">
+            <path
+              fill="#EBEBEB"
+              d="M6.25 0C2.803 0 0 2.803 0 6.25C0 9.697 2.803 12.5 6.25 12.5C9.697 12.5 12.5 9.697 12.5 6.25C12.5 2.803 9.697 0 6.25 0ZM6.25 0.625C9.359 0.625 11.875 3.141 11.875 6.25C11.875 9.359 9.359 11.875 6.25 11.875C3.141 11.875 0.625 9.359 0.625 6.25C0.625 3.141 3.141 0.625 6.25 0.625ZM8.939 4.368L5.313 7.995L3.776 6.462L3.555 6.24L3.115 6.68L3.333 6.901L5.313 8.88L9.16 5.033L9.378 4.811L8.939 4.368Z"
+            />
+          </svg>
+        ) : (
+          <BchatIcon
+            iconType={'accept'}
+            iconSize={20}
+            iconColor="#108D32"
+            clipRule="evenodd"
+            fillRule="evenodd"
+          />
+        )}
+        <MenuWrapper style={{ color: isDark ? '#EBEBEB' : '#108D32' }}> {window.i18n('accept')}</MenuWrapper>
       </Item>
     );
   }
