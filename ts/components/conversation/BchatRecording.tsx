@@ -20,6 +20,8 @@ interface Props {
   onLoadVoiceNoteView: () => void;
   sendVoiceMessage: (audioBlob: Blob) => Promise<void>;
   darkMode?: boolean;
+  // dark theme: the composer's attach button, kept at the start of the bar while recording
+  attachmentButton?: React.ReactNode;
 }
 
 interface State {
@@ -133,6 +135,7 @@ export class BchatRecording extends React.Component<Props, State> {
           <div className="send-message-input">
             <BchatQuotedMessageComposition />
             <div className="voice-recorder__bar">
+              {this.props.attachmentButton}
               <div className="voice-recorder__status">
                 {isRecording ? (
                   <>
@@ -156,12 +159,17 @@ export class BchatRecording extends React.Component<Props, State> {
                     aria-label={window.i18n('delete')}
                     onClick={this.onDeleteVoiceMessage}
                   >
-                    <BchatIcon iconType="trash" iconSize={17} iconColor="#FF3E3E" />
+                    <BchatIcon iconType="trash" iconSize={20} iconColor="#FF3E3E" />
                   </button>
                 )}
                 {isRecording && (
-                  <button type="button" className="voice-recorder__btn" onClick={actionPauseFn}>
-                    <BchatIcon iconType="stop" iconSize={13} iconColor="#EBEBEB" />
+                  <button
+                    type="button"
+                    className="voice-recorder__btn voice-recorder__btn--light"
+                    onClick={actionPauseFn}
+                  >
+                    {/* Figma 5296:20839: the dotted two-bar pause glyph */}
+                    <BchatIcon iconType="pause" iconSize={13} iconColor="#EBEBEB" />
                   </button>
                 )}
                 {actionPauseAudio && hasRecording && (
@@ -176,10 +184,10 @@ export class BchatRecording extends React.Component<Props, State> {
                 {hasRecordingAndPaused && hasRecording && (
                   <button
                     type="button"
-                    className="voice-recorder__btn voice-recorder__btn--light"
+                    className="voice-recorder__btn voice-recorder__btn--play"
                     onClick={() => void this.playAudio()}
                   >
-                    <BchatIcon iconType="play" iconSize={12} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="recordPlay" iconSize={17} iconColor="#00BC33" />
                   </button>
                 )}
               </div>

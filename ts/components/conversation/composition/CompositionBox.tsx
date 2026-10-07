@@ -396,6 +396,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     return (
       <BchatRecording
         darkMode={!!this.props.darkMode}
+        attachmentButton={this.props.darkMode ? this.renderAttachmentMenu() : undefined}
         sendVoiceMessage={this.sendVoiceMessage}
         onLoadVoiceNoteView={() => void this.onLoadVoiceNoteView()}
         onExitVoiceNoteView={this.onExitVoiceNoteView}

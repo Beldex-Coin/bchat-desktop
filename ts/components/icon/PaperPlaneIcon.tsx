@@ -1,0 +1,35 @@
+// Dark theme send icon (Figma 5296:20844 "Paper Plane"): a dark #0b0b0b plane with a lighter body
+// and wing panels (drawn at reduced opacity) inside its outline. Multi-tone, so it's a small
+// component rather than an Icons.tsx entry.
+const PaperPlaneIcon = (props: { size?: number }) => {
+  const size = props.size || 34;
+  return (
+    <svg
+      className="paper-plane-icon"
+      width={size}
+      height={size}
+      viewBox="0 0 25.5 25.5"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4.65 21.585V14.874L2.085 12.749L4.65 10.624V3.914C4.986 3.706 5.083 3.646 5.419 3.438L22.979 12.749L5.419 22.06C5.083 21.853 4.986 21.793 4.65 21.585Z"
+        fill="#0B0B0B"
+        fillOpacity={0.15}
+      />
+      <path d="M6.908 19.919L18.422 13.814L6.908 15.149V19.919Z" fill="#0B0B0B" fillOpacity={0.8} />
+      <path d="M6.908 10.352L18.426 11.688L6.908 5.582V10.352Z" fill="#0B0B0B" fillOpacity={0.8} />
+      <path
+        d="M5.313 15.394H6.375V15.66H5.313ZM5.313 16.044H6.375V16.31H5.313ZM5.313 16.695H6.375V16.96H5.313ZM5.313 17.345H6.375V17.61H5.313ZM5.313 17.995H6.375V18.261H5.313ZM5.313 18.645H6.375V18.911H5.313ZM5.313 19.295H6.375V19.561H5.313ZM5.313 19.946H6.375V20.211H5.313ZM5.313 20.596H6.375V20.862H5.313ZM5.313 4.636H6.375V4.902H5.313ZM5.313 5.286H6.375V5.552H5.313ZM5.313 5.937H6.375V6.202H5.313ZM5.313 6.587H6.375V6.853H5.313ZM5.313 7.237H6.375V7.503H5.313ZM5.313 7.887H6.375V8.153H5.313ZM5.313 8.538H6.375V8.803H5.313ZM5.313 9.188H6.375V9.453H5.313ZM5.313 9.838H6.375V10.104H5.313Z"
+        fill="#0B0B0B"
+        fillOpacity={0.8}
+      />
+      <path
+        d="M11.276 19.706L11.43 19.022L18.254 15.404L19.024 15.598L23.508 13.22V12.281L17.743 9.224L16.964 9.413L12.431 7.009L12.284 6.329L5.391 2.674L3.983 3.545V7.219L4.515 7.75V9.873L1.535 12.342V13.16L4.515 15.628V18.016L3.983 18.548V21.957L5.391 22.827L11.276 19.706ZM5.421 3.592L22.452 12.623L4.78 10.574V3.988L5.421 3.592ZM2.37 12.684L4.759 10.705L21.826 12.684H2.37ZM21.827 12.817L4.759 14.795L2.37 12.817H21.827ZM4.78 14.927L22.452 12.878L5.421 21.908L4.78 21.512V14.927Z"
+        fill="#0B0B0B"
+      />
+    </svg>
+  );
+};
+
+export default PaperPlaneIcon;

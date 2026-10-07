@@ -2037,11 +2037,16 @@ $dark-composer-h: 60px;
     border: 0;
     box-shadow: inset 0 0 0 1px #333;
   }
+  // Figma 5296:20823: attach button, then mic + time 18px after it, the action squares at the end
   .voice-recorder__bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 18px;
     height: $dark-composer-h;
+  }
+  .voice-recorder__actions {
+    margin-inline-start: auto;
   }
   .voice-recorder__status {
     display: flex;
@@ -2074,6 +2079,9 @@ $dark-composer-h: 60px;
     }
     &--light {
       border-color: #acacac;
+    }
+    &--play {
+      border-color: #00bc33;
     }
   }
   // no send slot while recording / nothing recorded
@@ -8331,5 +8339,15 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 #{$dark} ::highlight(chat-search) {
   background-color: #d9d9d9;
   color: #0b0b0b;
+}
+
+// Send (Figma 5296:20843): the paper plane at 25.5 -> 34px, centred on the 60px light square
+#{$dark} .send-message-button .send-plane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 

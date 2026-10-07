@@ -5,6 +5,7 @@ import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { CustomIconButton } from '../../icon/CustomIconButton';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../../state/selectors/theme';
+import PaperPlaneIcon from '../../icon/PaperPlaneIcon';
 
 export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
   const darkMode = useSelector(getTheme) === 'dark';
@@ -67,6 +68,21 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 );
 
 export const SendMessageButton = (props: { onClick: () => void; name?: string}) => {
+  const darkMode = useSelector(getTheme) === 'dark';
+  if (darkMode) {
+    // Dark theme (Figma 5296:20844): the paper plane on the 60px light square
+    return (
+      <div
+        className="send-plane"
+        role="button"
+        aria-label={window.i18n('send')}
+        data-testid="send-message-button"
+        onClick={props.onClick}
+      >
+        <PaperPlaneIcon size={34} />
+      </div>
+    );
+  }
   return (
     <div  onClick={props.onClick}>
         <BchatIconButton
