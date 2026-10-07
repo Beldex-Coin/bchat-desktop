@@ -1300,21 +1300,28 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     display: none;
   }
 }
+// Figma 5296:3191: 14.3 x 16.5 -> 19 x 22 timer, the short setting ("30m") Inter Bold 10.5 -> 14
+// #ebebeb starting 9 -> 12px in and 8.3 -> 11px down, so it sits over the timer's lower end corner,
+// cut out of the icon by a 2.25 -> 3px #0b0b0b outline
 #{$dark} .expiration-badge {
   position: relative;
   display: inline-flex;
-  padding: 0 20px 8px 0;
+  padding: 0 20px 7px 0;
   line-height: 0;
 }
 #{$dark} .expiration-badge__text {
   position: absolute;
   inset-inline-start: 12px;
-  bottom: -2px;
+  top: 11px;
   font-family: $dark-font-ui !important;
   font-size: 14px;
   font-weight: 700;
   line-height: 17px;
+  white-space: nowrap;
   color: #ebebeb;
+  // outline drawn under the fill, so only its outer half shows
+  -webkit-text-stroke: 6px #0b0b0b;
+  paint-order: stroke fill;
 }
 
 // ---- Bubbles ----
