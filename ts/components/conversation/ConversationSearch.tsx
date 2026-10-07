@@ -22,6 +22,58 @@ const goToMessage = (conversationKey: string, messageId?: string) => {
   });
 };
 
+// Matched words in the visible messages get a light box with dark text (Figma 5466:1804). This
+// uses the CSS Custom Highlight API: ranges are registered over the existing text nodes, so the
+// message rendering itself is untouched, and they're styled by ::highlight(chat-search) in CSS.
+const HIGHLIGHT_NAME = 'chat-search';
+
+const highlightRegistry = () => (window as any).CSS?.highlights as Map<string, any> | undefined;
+
+const clearSearchHighlights = () => {
+  highlightRegistry()?.delete(HIGHLIGHT_NAME);
+};
+
+const searchTokens = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/([!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+
+const applySearchHighlights = (text: string) => {
+  const registry = highlightRegistry();
+  const HighlightCtor = (window as any).Highlight;
+  if (!registry || !HighlightCtor) {
+    return;
+  }
+  const tokens = searchTokens(text);
+  const root = document.getElementById('messages-container');
+  if (!tokens.length || !root) {
+    registry.delete(HIGHLIGHT_NAME);
+    return;
+  }
+  const ranges: Array<Range> = [];
+  root.querySelectorAll('.module-message__text').forEach(el => {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      const value = (node.nodeValue || '').toLowerCase();
+      tokens.forEach(token => {
+        let at = value.indexOf(token);
+        while (at !== -1) {
+          const range = document.createRange();
+          range.setStart(node as Node, at);
+          range.setEnd(node as Node, at + token.length);
+          ranges.push(range);
+          at = value.indexOf(token, at + token.length);
+        }
+      });
+      node = walker.nextNode();
+    }
+  });
+  registry.set(HIGHLIGHT_NAME, new HighlightCtor(...ranges));
+};
+
 export const ConversationSearch = () => {
   const isDark = useSelector(getTheme) === 'dark';
   const convoId = useSelector(getSelectedConversationKey);
@@ -82,6 +134,33 @@ export const ConversationSearch = () => {
   );
 
   useEffect(() => () => runSearch.cancel(), [runSearch]);
+
+  // keep the matches highlighted while the search is open - re-applied whenever the message list
+  // changes (scrolling loads more, jumping to a result re-renders it)
+  useEffect(() => {
+    if (!isDark || !open || !query.trim()) {
+      clearSearchHighlights();
+      return undefined;
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const refresh = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => applySearchHighlights(query), 80);
+    };
+    refresh();
+    const root = document.getElementById('messages-container');
+    const observer = root ? new MutationObserver(refresh) : undefined;
+    observer?.observe(root as HTMLElement, { childList: true, subtree: true, characterData: true });
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      observer?.disconnect();
+      clearSearchHighlights();
+    };
+  }, [isDark, open, query, convoId]);
 
   if (!isDark || !convoId) {
     return null;

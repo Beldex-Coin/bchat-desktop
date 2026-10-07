@@ -8318,3 +8318,11 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
 }
 
+// ---- In-chat search: matched words (Figma 5466:1804) ----
+// Each match in the message text gets a light #d9d9d9 box with dark #0b0b0b text. The ranges are
+// set by ConversationSearch through the CSS Custom Highlight API.
+#{$dark} ::highlight(chat-search) {
+  background-color: #d9d9d9;
+  color: #0b0b0b;
+}
+
