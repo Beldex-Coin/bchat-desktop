@@ -39,10 +39,10 @@ export const SettingsKey = {
  *
  * settingsOnionRoutingHops (set from the "Onion Routing" picker in Settings > Chat, replacing
  * the old on/off toggle) is the source of truth once the user has actually picked something.
- * Until then it's unset and this returns 1 hop, the default. Before this picker existed, onion
+ * Until then it's unset and this returns 3 hops, the default. Before this picker existed, onion
  * routing wasn't a stored setting at all - it was hardcoded on (3 hops) via
- * window.bchatFeatureFlags.useOnionRequests in preload.js - so every existing user moves from 3
- * hops to 1 hop on upgrade, until they pick something else from the picker.
+ * window.bchatFeatureFlags.useOnionRequests in preload.js - so existing users stay on 3 hops
+ * on upgrade, until they pick something else from the picker.
  *
  * Shared by bchatRpc.ts (picks bchatOnionFetch vs bchatOneHopOnionFetch vs the raw request) and
  * OnionStatusPathDialog.tsx (renders the Settings > Hops screen for whichever mode is live), so
@@ -53,5 +53,5 @@ export function getEffectiveOnionRoutingHops(): 0 | 1 | 3 {
   if (storedHops === 0 || storedHops === 1 || storedHops === 3) {
     return storedHops;
   }
-  return 1;
+  return 3;
 }
