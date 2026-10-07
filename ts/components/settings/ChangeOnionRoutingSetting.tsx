@@ -145,7 +145,7 @@ export const ChangeOnionRoutingSetting = () => {
     >
       <div className="bchat-settings-item-hops-Change" onClick={() => displayPopUp()}>
         <div>{hopValueNode(hops)}</div>
-        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
+        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
       </div>
     </BchatSettingsItemWrapper>
   );

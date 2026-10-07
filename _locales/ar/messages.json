@@ -187,7 +187,7 @@
   "onionRoutingDescriptionStable": "عند التفعيل، سيتم استخدام التوجيه البصلي لتوصيل رسائلك",
   "onionRoutingHopsTitle": "القفزات",
   "onionRoutingHopsZeroHop": "0 قفزة",
-  "onionRoutingHopsOneHop": "قفزة واحدة",
+  "onionRoutingHopsOneHop": "1 قفزة",
   "onionRoutingHopsThreeHops": "3 قفزات",
   "onionRoutingHopsDefaultSuffix": "(افتراضي)",
   "onionRoutingHopsPopupDescriptionZero": "عند تحديد هذا الخيار، سيتم إرسال الرسائل مباشرةً إلى سرب المستلم دون توجيهها عبر عقد وسيطة.",
