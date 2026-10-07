@@ -308,7 +308,7 @@ export const MessageContextMenu = (props: Props) => {
         {isDeletableForEveryone ? (
           <>
             <Item onClick={onDeleteForEveryone}>
-              <BchatIcon iconType={'twoMember'} iconSize={18} iconColor="#FF3E3E" />
+              <BchatIcon iconType={'twoMember'} iconSize={20} iconColor="#FF3E3E" />
               <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span>
             </Item>
           </>
