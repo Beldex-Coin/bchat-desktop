@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getUnreadConversationRequests } from '../../state/selectors/conversations';
+import { getConversationRequests } from '../../state/selectors/conversations';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
 import {  BchatIcon } from '../icon';
 import { MemoMessageRequestBannerContextMenu } from '../menu/MessageRequestBannerContextMenu';
@@ -102,10 +102,12 @@ export const CirclularIcon = () => {
 
 export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
   const { handleOnClick } = props; 
-  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length;
-  const hideRequestBanner = useSelector(getHideMessageRequestBanner); 
+  // Shown while there are requests still waiting to be accepted or deleted - not only while some
+  // are unread, so it doesn't disappear just because the requests list was opened.
+  const pendingRequests = useSelector(getConversationRequests).length;
+  const hideRequestBanner = useSelector(getHideMessageRequestBanner);
 
-  if (hideRequestBanner || !conversationRequestsUnread ) {
+  if (hideRequestBanner || !pendingRequests) {
     return null;
   }
   const triggerId = 'msg-req-banner';
@@ -143,7 +145,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
           {window.i18n('messageRequests')}
         </StyledMessageRequestBannerHeader>
         <StyledUnreadCounter className="requests-banner__count">
-          <div>{conversationRequestsUnread || 0}</div>
+          <div>{pendingRequests}</div>
         </StyledUnreadCounter>
         {/* Dark theme: trailing arrow. Hidden unless _dark_overrides.scss shows it. */}
         <span className="requests-banner__arrow" aria-hidden="true">

@@ -5,7 +5,7 @@ import { SectionType } from '../../state/ducks/section';
 // import { BchatTheme } from '../../state/ducks/BchatTheme';
 import { BchatTheme } from '../../theme/BchatTheme';
 
-import { getLeftPaneLists, getUnreadConversationRequests } from '../../state/selectors/conversations';
+import { getLeftPaneLists, getConversationRequests } from '../../state/selectors/conversations';
 import { getSearchResults, isSearching } from '../../state/selectors/search';
 import { getFocusedSection, getOverlayMode } from '../../state/selectors/section';
 import { getHideMessageRequestBanner } from '../../state/selectors/userConfig';
@@ -48,7 +48,8 @@ const InnerLeftPaneMessageSection = () => {
   const messageRequestsEnabled = useSelector(getHideMessageRequestBanner);
   const overlayMode = useSelector(getOverlayMode);
   const directContact = useSelector(getDirectContacts);
-  const conversationRequestsUnread = useSelector(getUnreadConversationRequests).length; 
+  // pending requests (read or not) keep the chats section - and its requests banner - visible
+  const conversationRequestsUnread = useSelector(getConversationRequests).length;
   const isDark = useSelector(getTheme) === 'dark';
 
   return (
