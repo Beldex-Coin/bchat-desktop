@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, macos-latest, ubuntu-18.04]
+        os: [windows-2019, macos-latest, ubuntu-24.04]
     env:
       SIGNAL_ENV: production
       # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -90,8 +90,10 @@ jobs:
       - name: Build linux production binaries
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y rpm
-          yarn build-release
+          bash build/linux/docker-build.sh
+          bash build/linux/smoke-test.sh
+          mkdir -p release
+          find dist/linux-compat -maxdepth 1 -type f -exec cp {} release/ \;
 
       - name: Remove unpacked files
         run: |

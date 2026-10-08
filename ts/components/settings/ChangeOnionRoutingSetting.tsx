@@ -73,14 +73,13 @@ export const ChangeOnionRoutingSetting = () => {
   const dispatch = useDispatch();
   const [hops, setHops] = useState<OnionRoutingHops>(getEffectiveOnionRoutingHops());
 
-  // Picker options use the hop count itself ('0' / '1' / '3') as the stable value and the
-  // localized "0 Hop" / "1 Hop" / "3 Hops" as the label - same { value, label } shape as the Font
-  // Size picker.
+  // Each option's value is the hop count itself, so the selection doesn't depend on the
+  // (translated) label text.
   const hopOptions = HOP_OPTIONS.map(h => ({ value: String(h), label: hopLabel(h) }));
 
   const valueToHop = (value: string): OnionRoutingHops => {
-    const parsed = Number(value);
-    return parsed === 0 || parsed === 3 ? parsed : 1;
+    const hop = HOP_OPTIONS.find(h => String(h) === value);
+    return hop === undefined ? 1 : hop;
   };
 
   const displayPopUp = () => {
@@ -145,7 +144,7 @@ export const ChangeOnionRoutingSetting = () => {
     >
       <div className="bchat-settings-item-hops-Change" onClick={() => displayPopUp()}>
         <div>{hopValueNode(hops)}</div>
-        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} />
+        <BchatIcon iconSize="small" iconType="chevron" iconRotation={270} flipInRtl={true} />
       </div>
     </BchatSettingsItemWrapper>
   );
