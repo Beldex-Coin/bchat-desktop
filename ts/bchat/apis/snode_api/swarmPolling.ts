@@ -23,7 +23,6 @@ import { perfEnd, perfStart } from '../../utils/Performance';
 import { ed25519Str } from '../../onions/onionPath';
 import { updateIsOnline } from '../../../state/ducks/onion';
 import { retryAllFailedSendsOnReconnect } from '../../sending/FailedSendRetry';
-import pRetry from 'p-retry';
 import { getHasSeenHF170, getHasSeenHF180 } from './hfHandling';
 
 interface Message {
@@ -54,8 +53,32 @@ export function processMessage(message: string, options: any = {}, messageHash: 
 // (see the success path in pollNodeForKey() below). Kept as a callback rather than an import to
 // avoid a dependency from this module back onto main_renderer.
 let pollReconnectHandler: (() => void) | undefined;
-export function setPollReconnectHandler(handler: () => void) {
+export function setPollReconnectHandler(handler: (() => void) | undefined) {
   pollReconnectHandler = handler;
+}
+
+/**
+ * While marked offline, pollForAllKeys() still polls our own swarm once every this many runs
+ * (about a minute), in case the browser wrongly thinks we are offline.
+ */
+export const OFFLINE_PROBE_EVERY_TICKS = 12;
+
+const POLL_SUCCEEDED = 'succeeded';
+const POLL_FAILED = 'failed';
+const POLL_FAILED_NO_CONNECTION = 'failed-no-connection';
+type PollOutcome = typeof POLL_SUCCEEDED | typeof POLL_FAILED | typeof POLL_FAILED_NO_CONNECTION;
+
+/**
+ * The longest we wait between two polls while our swarm keeps failing (like Android's 15s cap).
+ */
+export const POLL_BACKOFF_MAX = 15 * DURATION.SECONDS;
+
+/**
+ * The delay before the next poll after `failures` polls of our own swarm failed in a row: the
+ * normal interval, doubled on each failure up to POLL_BACKOFF_MAX.
+ */
+export function getPollBackoffDelay(failures: number) {
+  return Math.min(SWARM_POLLING_TIMEOUT.ACTIVE * 2 ** failures, POLL_BACKOFF_MAX);
 }
 
 let instance: SwarmPolling | undefined;
@@ -69,10 +92,14 @@ export const getSwarmPollingInstance = () => {
 export class SwarmPolling {
   private groupPolling: Array<{ pubkey: PubKey; lastPolledTimestamp: number }>;
   private readonly lastHashes: Record<string, Record<string, Record<number, string>>>;
+  private offlineRuns: number;
+  private ownSwarmFailures: number;
 
   constructor() {
     this.groupPolling = [];
     this.lastHashes = {};
+    this.offlineRuns = 0;
+    this.ownSwarmFailures = 0;
   }
 
   public async start(waitForFirstPoll = false): Promise<void> {
@@ -151,18 +178,40 @@ export class SwarmPolling {
    * Only public for testing
    */
   public async pollForAllKeys() {
+    const ourPubkey = UserUtils.getOurPubKeyFromCache();
     if (!window.getGlobalOnlineStatus()) {
       window?.log?.error('pollForAllKeys: offline');
+      // Only main_renderer.tsx's onOnline() brings us back online, on the browser's 'online'
+      // event. If that event never comes, we would never poll again until a restart.
+      this.offlineRuns += 1;
+      if (navigator.onLine && pollReconnectHandler) {
+        // the browser already says we are online: the event was missed
+        window?.log?.warn('pollForAllKeys: navigator is online but we are not; reconnecting');
+        pollReconnectHandler();
+      } else if (this.offlineRuns % OFFLINE_PROBE_EVERY_TICKS === 0) {
+        // the browser can also be wrong about being offline: a poll that works reconnects us
+        // (see pollNodeForKey()). Failures while navigator.onLine is false don't count against
+        // the snodes, so this can't get them dropped during a real outage.
+        void this.pollOnceForKey(ourPubkey, false, 0);
+      }
       // Important to set up a new polling
       setTimeout(this.pollForAllKeys.bind(this), SWARM_POLLING_TIMEOUT.ACTIVE);
       return;
     }
+    this.offlineRuns = 0;
     // we always poll as often as possible for our pubkey
-    const ourPubkey = UserUtils.getOurPubKeyFromCache();
     const directPromises = Promise.all([
       this.pollOnceForKey(ourPubkey, false, 0),
       // this.pollOnceForKey(ourPubkey, false, 5), // uncomment, and test me once we store the config messages to the namespace 5
-    ]).then(() => undefined);
+    ]).then(([outcome]) => {
+      // Back off while our swarm keeps failing, so a bad patch isn't hammered every 5s. Not when
+      // our own connection is down: we're marked offline then, and polling stops anyway.
+      if (outcome === POLL_SUCCEEDED) {
+        this.ownSwarmFailures = 0;
+      } else if (outcome === POLL_FAILED) {
+        this.ownSwarmFailures += 1;
+      }
+    });
 
     const now = Date.now();
     const groupPromises = this.groupPolling.map(async group => {
@@ -210,52 +259,52 @@ export class SwarmPolling {
       window?.log?.info('pollForAllKeys exception: ', e);
       throw e;
     } finally {
-      setTimeout(this.pollForAllKeys.bind(this), SWARM_POLLING_TIMEOUT.ACTIVE);
+      const delay = getPollBackoffDelay(this.ownSwarmFailures);
+      if (delay !== SWARM_POLLING_TIMEOUT.ACTIVE) {
+        window?.log?.info(
+          `pollForAllKeys: our swarm failed ${this.ownSwarmFailures} times in a row; next poll in ${delay}ms`
+        );
+      }
+      setTimeout(this.pollForAllKeys.bind(this), delay);
     }
   }
 
   /**
    * Only exposed as public for testing
    */
-  public async pollOnceForKey(pubkey: PubKey, isGroup: boolean, namespace?: number) {
+  public async pollOnceForKey(
+    pubkey: PubKey,
+    isGroup: boolean,
+    namespace?: number
+  ): Promise<PollOutcome> {
     const pkStr = pubkey.key;
 
-    const swarmSnodes = await snodePool.getSwarmFor(pkStr);
+    const firstNode = this.pickNodeToPoll(await snodePool.getSwarmFor(pkStr));
+    let result = firstNode ? await this.pollNodeForKey(firstNode, pubkey, namespace) : null;
 
-    // Select nodes for which we already have lastHashes
-    const alreadyPolled = swarmSnodes.filter((n: Snode) => this.lastHashes[n.pubkey_ed25519]);
-
-    // If we need more nodes, select randomly from the remaining nodes:
-
-    // We only poll from a single node.
-    let nodesToPoll = _.sampleSize(alreadyPolled, 1);
-    if (nodesToPoll.length < 1) {
-      const notPolled = _.difference(swarmSnodes, alreadyPolled);
-
-      const newNodes = _.sampleSize(notPolled, 1);
-
-      nodesToPoll = _.concat(nodesToPoll, newNodes);
+    // Retrying the node that just failed mostly fails again (it's timing out, refusing us, or
+    // was just dropped from the swarm), so try another member of the swarm in this same cycle
+    // instead, like Android does. Not when our own connection is down: every node would fail.
+    if (firstNode && result === POLL_FAILED) {
+      const otherNodes = (await snodePool.getSwarmFor(pkStr)).filter(
+        n => n.pubkey_ed25519 !== firstNode.pubkey_ed25519
+      );
+      const secondNode = this.pickNodeToPoll(otherNodes);
+      if (secondNode) {
+        window?.log?.info(
+          `pollOnceForKey: ${ed25519Str(firstNode.pubkey_ed25519)} failed, trying ${ed25519Str(
+            secondNode.pubkey_ed25519
+          )}`
+        );
+        result = await this.pollNodeForKey(secondNode, pubkey, namespace);
+      }
     }
 
-    // this actually doesn't make much sense as we are at only polling from a single one
-    const promisesSettled = await Promise.allSettled(
-      nodesToPoll.map(async n => {
-        return this.pollNodeForKey(n, pubkey, namespace);
-      })
-    );
+    const pollSucceeded = Array.isArray(result);
+    const messages: Array<any> = Array.isArray(result) ? _.uniqBy(result, (x: any) => x.hash) : [];
 
-    const arrayOfResultsWithNull = promisesSettled.map(entry =>
-      entry.status === 'fulfilled' ? entry.value : null
-    );
-
-    // filter out null (exception thrown)
-    const arrayOfResults = _.compact(arrayOfResultsWithNull);
-
-    // Merge results into one list of unique messages
-    const messages = _.uniqBy(_.flatten(arrayOfResults), (x: any) => x.hash);
-
-    // if all snodes returned an error (null), no need to update the lastPolledTimestamp
-    if (isGroup && arrayOfResults?.length) {
+    // if every node we tried returned an error, no need to update the lastPolledTimestamp
+    if (isGroup && pollSucceeded) {
       window?.log?.info(
         `Polled for group(${ed25519Str(pubkey.key)}):, got ${messages.length} messages back.`
       );
@@ -294,6 +343,20 @@ export class SwarmPolling {
       const options = isGroup ? { conversationId: pkStr } : {};
       processMessage(m.data, options, m.hash);
     });
+
+    if (pollSucceeded) {
+      return POLL_SUCCEEDED;
+    }
+    // no node to poll (an empty swarm) counts as a failure of the swarm
+    return result === POLL_FAILED_NO_CONNECTION ? POLL_FAILED_NO_CONNECTION : POLL_FAILED;
+  }
+
+  /**
+   * Prefer a node we already polled (we have its last hash), otherwise pick a random one.
+   */
+  private pickNodeToPoll(swarmSnodes: Array<Snode>): Snode | undefined {
+    const alreadyPolled = swarmSnodes.filter((n: Snode) => this.lastHashes[n.pubkey_ed25519]);
+    return _.sample(alreadyPolled) || _.sample(swarmSnodes);
   }
 
   // Fetches messages for `pubkey` from `node` potentially updating
@@ -302,42 +365,24 @@ export class SwarmPolling {
     node: Snode,
     pubkey: PubKey,
     namespace?: number
-  ): Promise<Array<any> | null> {
+  ): Promise<Array<any> | typeof POLL_FAILED | typeof POLL_FAILED_NO_CONNECTION> {
     const edkey = node.pubkey_ed25519;
 
     const pkStr = pubkey.key;
 
     try {
-      const result = await pRetry(
-        async () => {
-          const prevHash = await this.getLastHash(edkey, pkStr, namespace || 0);
-          const messages = await retrieveNextMessages(node, prevHash, pkStr, namespace);
-          if (!messages.length) {
-            return [];
-          }
-
-          const lastMessage = _.last(messages);
-
-          await this.updateLastHash({
-            edkey: edkey,
-            pubkey,
-            namespace: namespace || 0,
-            hash: lastMessage.hash,
-            expiration: lastMessage.expiration,
-          });
-          return messages;
-        },
-        {
-          minTimeout: 100,
-          retries: 1,
-
-          onFailedAttempt: e => {
-            window?.log?.warn(
-              `retrieveNextMessages attempt #${e.attemptNumber} failed. ${e.retriesLeft} retries left... ${e.name}`
-            );
-          },
-        }
-      );
+      const prevHash = await this.getLastHash(edkey, pkStr, namespace || 0);
+      const result = await retrieveNextMessages(node, prevHash, pkStr, namespace);
+      const lastMessage = _.last(result);
+      if (lastMessage) {
+        await this.updateLastHash({
+          edkey: edkey,
+          pubkey,
+          namespace: namespace || 0,
+          hash: lastMessage.hash,
+          expiration: lastMessage.expiration,
+        });
+      }
 
       // A poll just round-tripped to a snode and back - that's hard evidence we have real
       // connectivity again, independent of (and more reliable than) the browser's online/offline
@@ -351,8 +396,9 @@ export class SwarmPolling {
       // already set redux back to true by the time we get here, so a redux check would never fire.
       // And window.isOnline is what actually gates sends, resends and the retry sweep - it's only
       // ever set by connect()/disconnect(), so if the 'online' event was missed, nothing else
-      // would ever set it back to true.
-      if (!window.isOnline) {
+      // would ever set it back to true. The global online status is checked too: it goes false
+      // a second before disconnect() sets window.isOnline, and stops all other polling.
+      if (!window.isOnline || window.getGlobalOnlineStatus?.() === false) {
         window?.log?.info('pollNodeForKey: poll succeeded while marked offline; reconnecting');
         window.inboxStore?.dispatch(updateIsOnline(true));
         if (pollReconnectHandler) {
@@ -375,7 +421,14 @@ export class SwarmPolling {
         window.inboxStore?.dispatch(updateIsOnline(false));
       }
       window?.log?.info('pollNodeForKey failed with', e.message);
-      return null;
+      if (e.message === ERROR_CODE_NO_CONNECT) {
+        return POLL_FAILED_NO_CONNECTION;
+      }
+      // getLastHash() cached an entry for this node before the request, which would make
+      // pickNodeToPoll() treat it as a node that works and pick it again next cycle. Forget it,
+      // so a node that just answered is preferred. This only costs a db read of its last hash.
+      delete this.lastHashes[edkey];
+      return POLL_FAILED;
     }
   }
 

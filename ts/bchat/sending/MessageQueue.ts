@@ -36,6 +36,13 @@ type ClosedGroupMessageType =
 
 // ClosedGroupEncryptionPairReplyMessage must be sent to a user pubkey. Not a group.
 
+/**
+ * How many times a message with keepUntilSent (a read receipt) can fail to send before it is
+ * dropped. Every one of those is a full MessageSender.send() with its own retries, and only the
+ * failed-send sweep or an app start send it again (see retryAllFailedSendsOnReconnect()).
+ */
+export const MAX_FAILED_SENDS_KEPT_FOR_RETRY = 10;
+
 export class MessageQueue {
   private readonly jobQueues: Map<string, JobQueue> = new Map();
   private readonly pendingMessageCache: PendingMessageCache;
@@ -205,6 +212,7 @@ export class MessageQueue {
       if (!jobQueue.has(messageId)) {
         // We put the event handling inside this job to avoid sending duplicate events
         const job = async () => {
+          let sent = false;
           try {
             const { wrappedEnvelope, effectiveTimestamp } = await MessageSender.send(
               message,
@@ -213,6 +221,7 @@ export class MessageQueue {
               isSyncMessage
             );
 
+            sent = true;
             await MessageSentHandler.handleMessageSentSuccess(
               message,
               effectiveTimestamp,
@@ -259,8 +268,17 @@ export class MessageQueue {
               void MessageSentHandler.handleMessageSentFailure(message, error);
             }
           } finally {
-            // Remove from the cache because retrying is done in the sender
-            void this.pendingMessageCache.remove(message);
+            // Remove from the cache because retrying is done in the sender, unless this message
+            // is kept to be sent again by a later processPending() (see keepUntilSent).
+            const keepForRetry =
+              !sent &&
+              message.keepUntilSent &&
+              (await this.pendingMessageCache.countFailedSend(message)) <
+                MAX_FAILED_SENDS_KEPT_FOR_RETRY;
+            if (!keepForRetry) {
+              // awaited, so a processPending() can't pick it up again once its job is done
+              await this.pendingMessageCache.remove(message);
+            }
           }
         };
         await jobQueue.addWithId(messageId, job);

@@ -6,6 +6,7 @@ import { ClosedGroupNewMessage } from '../messages/outgoing/controlMessage/group
 import { ClosedGroupEncryptionPairReplyMessage } from '../messages/outgoing/controlMessage/group/ClosedGroupEncryptionPairReplyMessage';
 import { ContentMessage } from '../messages/outgoing';
 import { ExpirationTimerUpdateMessage } from '../messages/outgoing/controlMessage/ExpirationTimerUpdateMessage';
+import { ReadReceiptMessage } from '../messages/outgoing/controlMessage/receipt/ReadReceiptMessage';
 import { SignalService } from '../../protobuf';
 
 function getEncryptionTypeFromMessageType(
@@ -54,6 +55,12 @@ export async function toRawMessage(
   const syncTarget = (message as any).syncTarget;
   if (typeof syncTarget === 'string' && syncTarget.length > 0) {
     rawMessage.syncTarget = syncTarget;
+  }
+
+  // A read receipt is only sent once, when the messages are read: if that send fails, it would
+  // never be sent again. A typing indicator is not kept, sending it late would be wrong.
+  if (message instanceof ReadReceiptMessage) {
+    rawMessage.keepUntilSent = true;
   }
 
   return rawMessage;

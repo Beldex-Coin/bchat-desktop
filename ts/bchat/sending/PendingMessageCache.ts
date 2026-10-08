@@ -81,6 +81,22 @@ export class PendingMessageCache {
     return updatedCache;
   }
 
+  /**
+   * Counts a failed send of a message kept in the cache for a later retry, and saves it so the
+   * count survives a restart. Returns the new count.
+   */
+  public async countFailedSend(message: RawMessage): Promise<number> {
+    await this.loadFromDBIfNeeded();
+    const cached = this.find(message);
+    if (!cached) {
+      return 0;
+    }
+    cached.failedSends = (cached.failedSends || 0) + 1;
+    await this.saveToDB();
+
+    return cached.failedSends;
+  }
+
   public find(message: RawMessage): RawMessage | undefined {
     // Find a message in the cache
     return this.cache.find(m => m.device === message.device && m.identifier === message.identifier);

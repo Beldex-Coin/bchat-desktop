@@ -1,4 +1,5 @@
 import { getMessageById, getRecentFailedOutgoingMessageIds } from '../../data/data';
+import { getMessageQueue } from './MessageQueue';
 
 /**
  * In-memory registry of messages currently sitting in the "failed to send" state
@@ -154,6 +155,11 @@ export function clearFailedSendRegistry() {
  * no-op while offline (so an outage of any length costs no retry attempts).
  */
 export async function retryAllFailedSendsOnReconnect() {
+  if (window.isOnline) {
+    // Read receipts that failed to send are kept in the pending message cache instead (see
+    // keepUntilSent in RawMessage.ts): send them again. Messages still being sent are skipped.
+    void getMessageQueue().processAllPending();
+  }
   if (!failedSendMessageIds.size || sweepInProgress || !window.isOnline) {
     return;
   }
