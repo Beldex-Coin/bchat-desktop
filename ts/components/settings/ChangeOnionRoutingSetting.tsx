@@ -41,14 +41,14 @@ function hopPopupDescription(hops: OnionRoutingHops): string {
 }
 
 // The closed row's value (not the popup's radio list, which stays plain "1 Hop"/"0 Hop"/
-// "3 Hops" per the earlier request to drop this text from there) marks 3 hops with a muted
+// "3 Hops" per the earlier request to drop this text from there) marks 1 hop with a muted
 // "(Default)" suffix, since it's the default for new selections and for the live-build
 // migration in getEffectiveOnionRoutingHops().
 function hopValueNode(hops: OnionRoutingHops) {
-  if (hops === 3) {
+  if (hops === 1) {
     return (
       <>
-        {window.i18n('onionRoutingHopsThreeHops')}{' '}
+        {window.i18n('onionRoutingHopsOneHop')}{' '}
         <span className="bchat-settings-item-hops-Change__default">
           {window.i18n('onionRoutingHopsDefaultSuffix')}
         </span>
@@ -79,7 +79,7 @@ export const ChangeOnionRoutingSetting = () => {
 
   const valueToHop = (value: string): OnionRoutingHops => {
     const hop = HOP_OPTIONS.find(h => String(h) === value);
-    return hop === undefined ? 3 : hop;
+    return hop === undefined ? 1 : hop;
   };
 
   const displayPopUp = () => {
@@ -88,10 +88,10 @@ export const ChangeOnionRoutingSetting = () => {
         headerName: window.i18n('onionRoutingHopsTitle'),
         content: hopOptions,
         descriptions: HOP_OPTIONS.map(hopPopupDescription),
-        // "3 Hops (Default)" in the list, with "(Default)" muted like on the Settings row. Kept out of
-        // the label itself so it stays the plain "3 Hops".
+        // "1 Hop (Default)" in the list, with "(Default)" muted like on the Settings row. Kept out of
+        // the label itself so it stays the plain "1 Hop".
         contentSuffixes: HOP_OPTIONS.map(h =>
-          h === 3 ? window.i18n('onionRoutingHopsDefaultSuffix') : undefined
+          h === 1 ? window.i18n('onionRoutingHopsDefaultSuffix') : undefined
         ),
         // The shared picker modal defaults this button to "Save" (fine for Font Size), but the
         // Hops design calls for "OK".
