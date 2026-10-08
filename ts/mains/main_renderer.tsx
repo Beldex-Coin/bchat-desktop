@@ -263,6 +263,15 @@ async function start() {
   );
   window.log.info('Cleanup: complete');
 
+  // Messages marked read in a batch used to get their disappearing timer started without an
+  // expires_at, which hides them from the expiring messages check. Set it so they get deleted.
+  const startedWithoutExpiresAt = (await Data.getExpirationStartedWithoutExpiresAt()).models;
+  const nowExpiring = startedWithoutExpiresAt.filter(message => message.setToExpireNoCommit());
+  if (nowExpiring.length) {
+    window.log.info(`Cleanup: setting expires_at on ${nowExpiring.length} messages`);
+    await Data.saveMessages(nowExpiring.map(message => message.attributes));
+  }
+
   window.log.info('listening for registration events');
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   WhisperEvents.on('registration_done', async () => {

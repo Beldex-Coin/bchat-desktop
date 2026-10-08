@@ -260,14 +260,14 @@ export async function handleNewSecretGroup(
         encryptionKeyPair!.publicKey,
         encryptionKeyPair!.privateKey
       );
-      const isKeyPairAlreadyHere = await addKeyPairToCacheAndDBIfNeeded(
+      const isNewKeyPair = await addKeyPairToCacheAndDBIfNeeded(
         groupId,
         ecKeyPairAlreadyExistingConvo.toHexKeyPair()
       );
 
       await groupConvo.updateExpireTimer(expireTimer, sender, Date.now());
 
-      if (isKeyPairAlreadyHere) {
+      if (!isNewKeyPair) {
         window.log.info('Dropping already saved keypair for group', groupId);
         await removeFromCache(envelope);
         return;
@@ -278,6 +278,9 @@ export async function handleNewSecretGroup(
       window.log.warn(
         'Closed group message of type NEW: the conversation already exists, but we saved the new encryption keypair'
       );
+      // this is how a linked device's config sync hands us a group keypair we missed: decrypt the
+      // messages of this group that were waiting for it
+      await queueAllCachedFromSource(groupId);
       return;
     }
     // convo exists and we left or got kicked, enable typing and continue processing
@@ -473,12 +476,9 @@ async function handleClosedGroupEncryptionKeyPair(
   // Store it if needed
   const newKeyPairInHex = keyPair.toHexKeyPair();
 
-  const isKeyPairAlreadyHere = await addKeyPairToCacheAndDBIfNeeded(
-    groupPublicKey,
-    newKeyPairInHex
-  );
+  const isNewKeyPair = await addKeyPairToCacheAndDBIfNeeded(groupPublicKey, newKeyPairInHex);
 
-  if (isKeyPairAlreadyHere) {
+  if (!isNewKeyPair) {
     window?.log?.info('Dropping already saved keypair for group', groupPublicKey);
     await removeFromCache(envelope);
     return;
@@ -1013,9 +1013,9 @@ async function activateCreatedClosedGroup(
     await dbMessage.commit();
   }
 
-  const isHexKeyPairSaved = await addKeyPairToCacheAndDBIfNeeded(groupPublicKey, hexKeyPair);
+  const isNewKeyPair = await addKeyPairToCacheAndDBIfNeeded(groupPublicKey, hexKeyPair);
 
-  if (isHexKeyPairSaved) {
+  if (!isNewKeyPair) {
     window?.log?.info('Dropping already saved keypair for group', groupPublicKey);
   }
 

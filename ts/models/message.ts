@@ -1254,25 +1254,33 @@ public getPropsForPayment(): PropsForPayment | null {
   }
 
   public async setToExpire(force = false) {
+    if (this.setToExpireNoCommit(force) && this.get('id')) {
+      await this.commit();
+    }
+  }
+
+  /**
+   * Sets `expires_at` without saving, so a batch of messages can be saved in a single sqlite call.
+   * Returns true if `expires_at` was changed.
+   */
+  public setToExpireNoCommit(force = false) {
     if (this.isExpiring() && (force || !this.get('expires_at'))) {
       const start = this.get('expirationStartTimestamp');
       const delta = this.get('expireTimer') * 1000;
       if (!start) {
-        return;
+        return false;
       }
       const expiresAt = start + delta;
 
       this.set({ expires_at: expiresAt });
-      const id = this.get('id');
-      if (id) {
-        await this.commit();
-      }
 
       window?.log?.info('Set message expiration', {
         expiresAt,
         sentAt: this.get('sent_at'),
       });
+      return true;
     }
+    return false;
   }
 
   public isTrustedForAttachmentDownload() {

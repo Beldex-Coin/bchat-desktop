@@ -116,6 +116,7 @@ export const Data = {
   getMessagesBySentAt,
   getExpiredMessages,
   getOutgoingWithoutExpiresAt,
+  getExpirationStartedWithoutExpiresAt,
   getNextExpiringMessage,
   getUnprocessedCount,
   getAllUnprocessed,
@@ -423,6 +424,7 @@ export async function saveMessage(data: MessageAttributes): Promise<string> {
 
 export async function saveMessages(arrayOfMessages: Array<MessageAttributes>): Promise<void> {
   await channels.saveMessages(_cleanData(arrayOfMessages));
+  ExpirationTimerOptions.updateExpiringMessagesCheck();
 }
 
 export async function removeMessage(id: string): Promise<void> {
@@ -699,6 +701,16 @@ export async function getExpiredMessages(): Promise<MessageCollection> {
 
 export async function getOutgoingWithoutExpiresAt(): Promise<MessageCollection> {
   const messages = await channels.getOutgoingWithoutExpiresAt();
+  return new MessageCollection(messages);
+}
+
+export async function getExpirationStartedWithoutExpiresAt(): Promise<MessageCollection> {
+  const messages = await channels.getExpirationStartedWithoutExpiresAt();
+  // eslint-disable-next-line no-restricted-syntax
+  for (const message of messages) {
+    // the caller sets expires_at on all of them in a single sqlite call
+    message.skipTimerInit = true;
+  }
   return new MessageCollection(messages);
 }
 

@@ -2893,6 +2893,26 @@ function getOutgoingWithoutExpiresAt() {
 }
 
 /**
+ * Messages whose disappearing timer has started but which never got an `expires_at`, so the
+ * expiring messages check can't see them (they were marked read in a batch without it being set).
+ */
+function getExpirationStartedWithoutExpiresAt() {
+  const rows = assertGlobalInstance()
+    .prepare(
+      `
+    SELECT json FROM ${MESSAGES_TABLE}
+    WHERE
+      expireTimer > 0 AND
+      expirationStartTimestamp > 0 AND
+      expires_at IS NULL;
+  `
+    )
+    .all<any>();
+
+  return map(rows, row => jsonToObject(row.json));
+}
+
+/**
  * Ids of outgoing messages that are still in the "failed to send" state (a non-empty `errors`
  * array in their json) and were sent after `sinceTimestamp`, excluding group update messages (their
  * errors come from control messages like secret group invites, retried separately). Used on startup to re-seed the
@@ -4075,6 +4095,7 @@ export const sqlNode = {
   getLastHashBySnode,
   getExpiredMessages,
   getOutgoingWithoutExpiresAt,
+  getExpirationStartedWithoutExpiresAt,
   getRecentFailedOutgoingMessageIds,
   getNextExpiringMessage,
   getMessagesByConversation,
