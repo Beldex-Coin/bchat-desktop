@@ -11,6 +11,7 @@ import {
   removeConversation,
 } from '../../data/data';
 import { getMessageQueue } from '../../bchat/sending';
+import { useUnreadBadge } from '../../hooks/useUnreadBadge';
 import { useDispatch, useSelector } from 'react-redux';
 import useInterval from 'react-use/lib/useInterval';
 import useTimeoutFn from 'react-use/lib/useTimeoutFn';
@@ -589,6 +590,8 @@ export const ActionsPanel = () => {
   const imgsrc: any = darkMode
     ? 'images/bchat/connect_loading_dark.gif'
     : 'images/bchat/connect_loading_white.gif';
+
+  useUnreadBadge();
 
   // this maxi useEffect is called only once: when the component is mounted.
   // For the action panel, it means this is called only one per app start/with a user loggedin

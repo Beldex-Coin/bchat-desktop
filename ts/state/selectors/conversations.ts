@@ -49,6 +49,26 @@ export const getConversationLookup = createSelector(
   }
 );
 
+/**
+ * The number of unread messages shown on the app icon (see useUnreadBadge()). Unlike the left
+ * pane counter it is not capped, and leaves out blocked contacts too. Muted conversations
+ * (including a running timed mute) and message requests are left out like there.
+ */
+export const getUnreadBadgeCount = createSelector(getConversationLookup, (lookup): number => {
+  return Object.values(lookup).reduce((total, conversation) => {
+    if (
+      !conversation.unreadCount ||
+      conversation.unreadCount < 0 ||
+      conversation.isBlocked ||
+      (conversation.isPrivate && !conversation.isApproved) ||
+      conversation.currentNotificationSetting === 'disabled'
+    ) {
+      return total;
+    }
+    return total + conversation.unreadCount;
+  }, 0);
+});
+
 export const getConversationsCount = createSelector(getConversationLookup, (state): number => {
   return Object.values(state).length;
 });

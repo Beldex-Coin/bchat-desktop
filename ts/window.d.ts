@@ -65,6 +65,7 @@ declare global {
     getConversations: () => ConversationCollection;
     readyForUpdates: () => void;
     drawAttention: () => void;
+    setUnreadBadge?: (count: number, overlayDataUrl?: string) => void;
     MediaRecorder: any;
 
     platform: string;

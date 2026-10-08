@@ -9,6 +9,7 @@ import {
   BrowserWindow,
   ipcMain as ipc,
   Menu,
+  nativeImage,
   protocol as electronProtocol,
   screen,
   shell,
@@ -73,6 +74,7 @@ import { initAttachmentsChannel } from '../node/attachment_channel';
 import * as updater from '../updater/index'; // checked - only node
 
 import { createTrayIcon } from '../node/tray_icon'; // checked - only node
+import { applyUnreadBadge } from '../node/unreadBadge';
 import { ephemeralConfig } from '../node/config/ephemeral_config'; // checked - only node
 import { getLogger, initializeLogger } from '../node/logging'; // checked - only node
 import { sqlNode } from '../node/sql'; // checked - only node
@@ -897,6 +899,21 @@ ipc.on('set-app-locale', (event, appLocale: string) => {
   }
   // eslint-disable-next-line no-param-reassign
   event.returnValue = undefined;
+});
+
+ipc.on('set-unread-badge', (_event, count: number, overlayDataUrl?: string) => {
+  try {
+    applyUnreadBadge({
+      platform: process.platform,
+      count,
+      overlayDataUrl,
+      app,
+      mainWindow,
+      createImage: dataUrl => nativeImage.createFromDataURL(dataUrl),
+    });
+  } catch (e) {
+    console.warn('set-unread-badge failed:', e);
+  }
 });
 
 ipc.on('draw-attention', () => {

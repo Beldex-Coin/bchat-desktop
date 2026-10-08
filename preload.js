@@ -126,6 +126,10 @@ window.open = () => null;
 // eslint-disable-next-line no-eval, no-multi-assign
 window.eval = global.eval = () => null;
 
+window.setUnreadBadge = (count, overlayDataUrl) => {
+  ipc.send('set-unread-badge', count, overlayDataUrl);
+};
+
 window.drawAttention = () => {
   // window.log.debug('draw attention');
   ipc.send('draw-attention');
