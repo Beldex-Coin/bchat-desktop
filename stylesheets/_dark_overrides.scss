@@ -2238,6 +2238,9 @@ $dark-composer-h: 60px;
     color: #ebebeb;
   }
   .bchat-settings-item__description {
+    // the base 700px cap broke "Enable Link Previews" onto two lines with room to spare;
+    // descriptions now use the row's full width and only wrap when the window is narrow
+    max-width: none;
     margin-top: 6px;
     font-family: $dark-font-data !important;
     font-size: 16px;
@@ -2246,6 +2249,10 @@ $dark-composer-h: 60px;
   }
   > div > span:first-child svg path {
     fill: #ebebeb;
+  }
+  // Remove Account Password (Figma 5296:15232): the cross keeps its red, only the padlock is #ebebeb
+  > div > span:first-child svg path.remove-password-icon__cross {
+    fill: #ff3e3e;
   }
 }
 
