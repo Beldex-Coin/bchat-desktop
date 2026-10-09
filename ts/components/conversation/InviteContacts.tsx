@@ -210,6 +210,7 @@ const InviteContactsInner = forwardRef<onClickRef, Props>((props, ref) => {
               isSelected={selectedContacts.includes(member)}
               onSelect={addTo}
               onUnselect={removeFrom}
+              lightCheckbox={true}
             />
           ))
         ) : (

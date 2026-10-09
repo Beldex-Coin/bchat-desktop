@@ -16,6 +16,9 @@ export const MemberListItem = (props: {
   pubkey: string;
   isSelected: boolean;
   removeMem?:boolean;
+  // dark theme: the light Figma square checkboxes (Group Info add / remove members) instead of
+  // the green select box used by the other contact pickers
+  lightCheckbox?: boolean;
   onlyList?: boolean;
   // this bool is used to make a zombie appear with less opacity than a normal member
   isZombie?: boolean;
@@ -35,7 +38,8 @@ export const MemberListItem = (props: {
     disableBg,
     dataTestId,
     onlyList,
-    removeMem
+    removeMem,
+    lightCheckbox,
   } = props;
 
   const memberName:any = useConversationUsernameOrShorten(pubkey);
@@ -80,7 +84,15 @@ export const MemberListItem = (props: {
       </div>
       {!onlyList && !isAdmin && (
         <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>
-          {isDark ? (
+          {isDark && (removeMem || lightCheckbox) ? (
+            // Add / remove members in Group Info (Figma 5296:31580): light outlined square, filled
+            // light square with a cut-out tick when ticked
+            <BchatIcon
+              iconType={selectionValidation ? 'selectSquareTick' : 'selectSquare'}
+              iconSize={selectionValidation ? 21 : 19}
+              iconColor="#EBEBEB"
+            />
+          ) : isDark ? (
             // Dark theme (Figma 1:8154): square box, green fill with a black tick when selected
             <span
               className={classNames(
