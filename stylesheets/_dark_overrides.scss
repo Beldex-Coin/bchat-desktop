@@ -6953,11 +6953,15 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     color: #acacac;
   }
 
-  // Cancel (outlined grey) + action button side by side, full width of the card.
+  // Cancel (outlined grey) + action button side by side, full width of the card. Equal widths,
+  // except a label too long for half the card ("Delete for everyone" - Figma 5296:7743, 221.75 vs
+  // 187.5) keeps its own width on one line and the other button takes what is left.
   .bchat-modal-footer {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: 1fr;
+    // equal shares, but never narrower than the label: a column whose label needs more than its
+    // share keeps its own width and the others split what is left
+    grid-auto-columns: minmax(max-content, 1fr);
     gap: 16px;
     height: auto;
     margin-top: 20px;
@@ -6970,9 +6974,11 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
       min-width: 0 !important;
       height: 63px;
       margin: 0 !important;
+      padding: 0 20px;
       font-size: 22px;
       font-weight: 600;
       letter-spacing: 0;
+      white-space: nowrap;
     }
     .bchat-button.secondary,
     .bchat-button.white,
