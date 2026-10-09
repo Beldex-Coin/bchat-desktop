@@ -344,8 +344,8 @@ export async function deleteMessagesByIdForEveryone(
     updateConfirmModal({
       title: window.i18n('deleteForEveryone'),
       message: moreThanOne
-        ? window.i18n('deleteMessagesQuestion', [messageCount.toString()])
-        : window.i18n('deleteMessageQuestion'),
+        ? window.i18n('deleteForEveryoneDescriptionMany', [messageCount.toString()])
+        : window.i18n('deleteForEveryoneDescription'),
       okText: window.i18n('deleteForEveryone'),
       okTheme: BchatButtonColor.Danger,
       onClickOk: async () => {
@@ -366,15 +366,11 @@ export async function deleteMessagesById(messageIds: Array<string>, conversation
     await Promise.all(messageIds.map(m => getMessageById(m, false)))
   );
 
-  const messageCount = selectedMessages.length;
-  const moreThanOne = selectedMessages.length > 1;
-
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('deleteSelectedMessagesTitle'),
-      message: moreThanOne
-        ? window.i18n('deleteMessagesQuestion', [messageCount.toString()])
-        : window.i18n('deleteMessageQuestion'),
+      // Figma 5296:7384: only this device's copy goes - nobody else is affected
+      message: window.i18n('deleteForMeDescription'),
       okText: window.i18n('delete'),
       okTheme: BchatButtonColor.Danger,
       onClickOk: async () => {
