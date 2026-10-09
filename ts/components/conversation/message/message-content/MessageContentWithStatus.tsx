@@ -357,6 +357,7 @@ export const MessageContentWithStatuses = (props: Props) => {
 
   return (
     <StyledMessageContentContainer
+      className={classNames(isDetailView && 'message-content--detail')}
       direction={isIncoming ? 'left' : 'right'}
       onMouseLeave={() => {
          setRecentEmojiBtnVisible(false);

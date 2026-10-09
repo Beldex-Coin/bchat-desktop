@@ -7638,6 +7638,15 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   .module-message-detail__contact__status-icon {
     display: none;
   }
+  // Figma 5296:24280: the previewed bubble starts at the card's content edge (under the title)
+  // for sent and received messages alike; the (empty) 165px hover-action column a sent message
+  // reserves in the chat would otherwise push it to the end.
+  .message-content--detail {
+    align-items: flex-start;
+  }
+  .message-content--detail .message-hover-actions {
+    display: none;
+  }
 }
 
 // =================================================================================================

@@ -19,6 +19,8 @@ import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog'
 import { SpacerSM, SpacerXS } from '../../../basic/Text';
 import { getSortedMessagesTypesOfSelectedConversation } from '../../../../state/selectors/conversations';
 import { BchatIcon } from '../../../icon';
+import { getTheme } from '../../../../state/selectors/theme';
+import { UserUtils } from '../../../../bchat/utils';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -42,6 +44,14 @@ const AvatarItem = (props: { pubkey: string }) => {
 //     </div>
 //   ) : null;
 // };
+
+// A From / To card for a pubkey the message details don't carry (us, or the group); ContactName
+// looks the display name up itself.
+const toDetailContact = (pubkey: string): ContactPropsMessageDetail => ({
+  pubkey,
+  status: undefined,
+  isOutgoingKeyError: false,
+});
 
 const ContactsItem = (props: { contacts: Array<ContactPropsMessageDetail> }) => {
   const { contacts } = props;
@@ -108,6 +118,10 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
     contacts
   } = props;
   const contactlist=contacts.length?[contacts[0]]:contacts;
+  const isDark = useSelector(getTheme) === 'dark';
+  const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
+  const fromPubkey = direction === 'incoming' ? contacts[0]?.pubkey || props.convoId : ourPubkey;
+  const toPubkey = contacts[0]?.pubkey || props.convoId;
   // const selectedMsg = useSelector(state => getMessageTextProps(state as any, messageId));
   // const messageDetailProps = useSelector(getMessageDetailsViewProps);
   // const isDeletable = useSelector(state =>
@@ -197,11 +211,29 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
             </tbody>
           </table>
           <SpacerSM />
-          {props.contacts.length ? (
-            <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
-          ): null}
-          <SpacerXS />
-          <ContactsItem contacts={contactlist} />
+          {isDark ? (
+            // Figma 5296:24280 / 5296:23558: a received message shows who it is From; a sent one
+            // shows From (us) and To (the contact, or the group itself when there is no per-member
+            // recipient list).
+            <>
+              <div className="module-message-detail__direction_label">{i18n('from')}</div>
+              <ContactsItem contacts={[toDetailContact(fromPubkey)]} />
+              {direction !== 'incoming' && toPubkey ? (
+                <>
+                  <div className="module-message-detail__direction_label">{i18n('to')}</div>
+                  <ContactsItem contacts={[toDetailContact(toPubkey)]} />
+                </>
+              ) : null}
+            </>
+          ) : (
+            <>
+              {props.contacts.length ? (
+                <div className='module-message-detail__direction_label'> {direction === 'incoming' ? i18n('from') : i18n('to')}</div>
+              ): null}
+              <SpacerXS />
+              <ContactsItem contacts={contactlist} />
+            </>
+          )}
         </div>
       </BchatWrapperModal>
     </div>
