@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { createElement } from 'react';
 import { MessageUtils, ToastUtils, UserUtils } from '..';
 import { SignalService } from '../../../protobuf';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
@@ -33,6 +34,8 @@ import { getNowWithNetworkOffset } from '../../apis/snode_api/SNodeAPI';
 import { approveConvoAndSendResponse } from '../../../interactions/conversationInteractions';
 import { updateConfirmModal } from '../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../components/basic/BchatButton';
+import MissedCallIcon from '../../../components/icon/MissedCallIcon';
+import { missedCallPermissionHtml } from './missedCallMessage';
 
 import {
   SectionType,
@@ -1381,13 +1384,17 @@ export async function handleMissedCall(
   const oneMinuteAgo = currentDate.subtract(1, 'minutes');
   const timeValidation = momentTimestamp?.isSameOrAfter(oneMinuteAgo);
 
+  const isDark = window.inboxStore?.getState().theme === 'dark';
+
   switch (reason) {
     case 'permissions':
       timeValidation &&
         window.inboxStore?.dispatch(
           updateConfirmModal({
             title: window.i18n('callMissedTitle'),
-            message: window.i18n('callMissedCausePermission', [displayname]),
+            message: isDark
+              ? missedCallPermissionHtml(displayname)
+              : window.i18n('callMissedCausePermission', [displayname]),
             okTheme: BchatButtonColor.Primary,
             onClickOk: async () => {
               openPrivacySettings();
@@ -1396,8 +1403,9 @@ export async function handleMissedCall(
               window.inboxStore?.dispatch(updateConfirmModal(null));
             },
             iconShow: true,
-            bchatIcon: 'callMissedConfirm',
-            iconSize: 30,
+            ...(isDark
+              ? { customIcon: createElement(MissedCallIcon, { iconSize: 27 }) }
+              : { bchatIcon: 'callMissedConfirm', iconSize: 30 }),
           })
         );
       timeValidation && ToastUtils.pushedMissedCallCauseOfPermission(displayname);

@@ -6861,6 +6861,16 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     }
   }
 }
+// Call Missed popup message (Figma 5296:13196): caller's name green, the permission name and
+// "Privacy Settings" in Inter SemiBold #ebebeb
+#{$dark} .card-dialog .missed-call__name {
+  color: #00bd40;
+}
+#{$dark} .card-dialog .missed-call__em {
+  font-family: $dark-font-ui !important;
+  font-weight: 600;
+  color: #ebebeb;
+}
 // the form dialogs (password) have no icon, so their fields span the card
 #{$dark} .card-dialog--form .bchat-modal-setPassword {
   width: 100%;
