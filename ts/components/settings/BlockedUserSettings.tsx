@@ -23,6 +23,7 @@ import {
 import classNames from 'classnames';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
+import { getTheme } from '../../state/selectors/theme';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
 
@@ -31,6 +32,7 @@ export const BlockedUserSettings = () => {
   const forceUpdate = useUpdate();
   const multipleSelection = useSelector(getMultipleSelection);
   const dispatch = useDispatch();
+  const isDark = useSelector(getTheme) === 'dark';
 
   const {
     uniqueValues: selectedIds,
@@ -91,9 +93,9 @@ export const BlockedUserSettings = () => {
         <SpacerLG />
         <SpacerLG />
         {multipleSelection && (
-          <UnBlockedBox>
+          <UnBlockedBox className="blocked-list__unblock-selected">
             <BchatButton
-              buttonColor={BchatButtonColor.Danger}
+              buttonColor={isDark ? BchatButtonColor.Primary : BchatButtonColor.Danger}
               style={{
                 height: '55px', fontSize: '16px',
                 fontWeight: '500'
@@ -223,6 +225,7 @@ export const BlockedMemberList = (props: {
 
   const memberName = useConversationUsernameOrShorten(pubkey);
   const isBnsHolder = useConversationBnsHolder(pubkey);
+  const isDark = useSelector(getTheme) === 'dark';
   return (
     // tslint:disable-next-line: use-simple-attributes
     <div
@@ -257,9 +260,17 @@ export const BlockedMemberList = (props: {
             />
           </div>
         ) : (
-          <div>
+          <div className="bchat-blockedMember-item__check">
           {/* <div className={classNames('bchat-member-item__checkmarkbox')}> */}
-             <BchatIconButton iconType={isSelected?"checkBoxTick":'checkBox'} iconSize={23} />
+            {isDark ? (
+              <BchatIcon
+                iconType={isSelected ? 'selectSquareTick' : 'selectSquare'}
+                iconSize={isSelected ? 21 : 19}
+                iconColor="#EBEBEB"
+              />
+            ) : (
+              <BchatIconButton iconType={isSelected ? 'checkBoxTick' : 'checkBox'} iconSize={23} />
+            )}
           </div>
         )}
       </div>

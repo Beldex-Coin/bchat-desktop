@@ -4962,6 +4962,40 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   }
 }
 
+// Blocked Contacts selection mode (Figma 5296:17074): Check All icon top-end of the header, an
+// 18 / 21px square checkbox 32px from each row's end, and a 202.5x46.5 -> 270x62 light "Unblock
+// Selected" button (Roboto Mono SemiBold 16.5 -> 22 #0b0b0b, 19px cuts) 28.5 -> 38px under the list
+#{$dark} .bchat-settings-header-selectionBox .bchat-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ebebeb;
+}
+#{$dark} .bchat-blockedMember-item__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  margin-inline-end: -5px;
+}
+#{$dark} .blocked-list__unblock-selected {
+  // last row's 12px margin + two 20px spacers above -> 38px
+  margin-top: -14px;
+
+  .bchat-button {
+    min-width: 270px;
+    height: 62px !important;
+    padding: 0 28px;
+    font-family: $dark-font-data !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0;
+    color: #0b0b0b;
+    clip-path: $dark-cut-popup-btn;
+  }
+}
+
 // Clear all (Figma 5296:33743 / 33740): 178.5x46.5 -> 238x62 danger button - #290f0f fill on a
 // #ff3e3e hairline, "CLEAR ALL" Roboto Mono SemiBold 15 -> 20 #ff3e3e, centred 28.5 -> 38px under the
 // list; hover fills it #ff3e3e with an #ebebeb label
