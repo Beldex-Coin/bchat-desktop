@@ -9,6 +9,8 @@ import { useMouse } from 'react-use';
 import { popupXDefault, popupYDefault } from '../message-content/MessageReactions';
 import { ReactionPopup } from './ReactionPopup';
 import { isUsAnySogsFromCache } from '../../../../util/reactions';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../../../state/selectors/theme';
 
 const StyledReaction = styled.button<{
   selected: boolean;
@@ -94,7 +96,9 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   const senders = reactionsMap[emoji].senders ? Object.keys(reactionsMap[emoji].senders) : [];
   const count = reactionsMap[emoji].count;
   // const showCount = count !== undefined && (count > 1 || inGroup);
-  const showCount = count !== undefined && count > 1;
+  const isDark = useSelector(getTheme) === 'dark';
+  // the dark reactors sheet (Figma 5296:43707) shows the count on every tab, "1" included
+  const showCount = count !== undefined && (count > 1 || (inModal && isDark));
 
   const reactionRef = useRef<HTMLDivElement>(null);
   const { docX, elW } = useMouse(reactionRef);
@@ -125,7 +129,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         onClick={() => {
           handleReactionClick();
         }}
-        className="emoji-reacts"
+        className={inModal && iscurrentReact === emoji ? 'emoji-reacts is-current' : 'emoji-reacts'}
         iscurrentReact={iscurrentReact === emoji}
         onMouseEnter={() => {
           // if (inGroup) {
@@ -152,7 +156,13 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         >
           {emoji}
         </span>
-        {showCount  && <span>{`\u00A0\u00A0${abbreviateNumber(count)}`}</span>}
+        {showCount && (
+          <span>
+            {inModal && isDark
+              ? abbreviateNumber(count)
+              : `\u00A0\u00A0${abbreviateNumber(count)}`}
+          </span>
+        )}
       </StyledReaction>
       {popupReaction && popupReaction === emoji && (
         <ReactionPopup

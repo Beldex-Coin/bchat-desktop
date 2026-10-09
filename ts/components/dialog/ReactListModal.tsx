@@ -24,7 +24,7 @@ import {
   // isUsAnySogsFromCache,
   sendMessageReaction,
 } from '../../util/reactions';
-import { BchatIconButton } from '../icon';
+import { BchatIcon, BchatIconButton } from '../icon';
 
 // import { nativeEmojiData } from '../../util/emoji';
 import { getConversationController } from '../../bchat/conversations';
@@ -199,8 +199,14 @@ const ReactionSenderItem = ({
   onRemove,
 }: ReactionSenderItemProps) => {
   const isBnsHolder = useConversationBnsHolder(sender);
+  const darkMode = useSelector(getTheme) === 'dark';
   return (
-    <StyledReactionSender container justifyContent="space-between" alignItems="center">
+    <StyledReactionSender
+      className="react-list__row"
+      container
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <Flex container alignItems="center">
         <Avatar
           size={AvatarSize.S}
@@ -211,7 +217,9 @@ const ReactionSenderItem = ({
         <SpacerSM />
 
         {sender === me ? (
-          <span style={{ fontWeight: 700 }}>{window.i18n('you')}</span>
+          <span className="react-list__you" style={{ fontWeight: 700 }}>
+            {window.i18n('you')}
+          </span>
         ) : (
           <ContactName
             pubkey={sender}
@@ -220,13 +228,24 @@ const ReactionSenderItem = ({
           />
         )}
 
-        <span style={{ fontSize: '18px', marginInlineStart: '5px' }} role="img">
+        <span
+          className="react-list__emoji"
+          style={{ fontSize: '18px', marginInlineStart: '5px' }}
+          role="img"
+        >
           {emoji}
         </span>
+        {/* dark (Figma 5296:43796): small chamfered "Remove" chip right after your reaction */}
+        {sender === me && darkMode && (
+          <button type="button" className="react-list__remove" onClick={() => onRemove(emoji)}>
+            <BchatIcon iconType="trash" iconSize={14} iconColor="#ACACAC" />
+            <span>{window.i18n('remove')}</span>
+          </button>
+        )}
       </Flex>
 
       <Flex container alignItems="center">
-        {sender === me && (
+        {sender === me && !darkMode && (
           <BchatButton
             buttonType={BchatButtonType.BrandOutline}
             buttonColor={BchatButtonColor.Secondary}
@@ -374,6 +393,7 @@ export const ReactListModal = (props: Props): ReactElement => {
             alignItems={'flex-start'}
           >
             <StyledReactionsContainer
+              className="react-list__tabs"
               container={true}
               flexDirection={'row'}
               alignItems={'center'}
@@ -382,6 +402,7 @@ export const ReactListModal = (props: Props): ReactElement => {
             >
               <Flex container={true} flexDirection={'row'} alignItems={'center'}>
                 <StyledAllButton
+                  className={currentReact === '' ? 'react-list__all is-current' : 'react-list__all'}
                   onClick={() => setCurrentReact('')}
                   isSelected={currentReact === ''}
                 >
@@ -396,9 +417,21 @@ export const ReactListModal = (props: Props): ReactElement => {
                   iscurrentReact={currentReact}
                 />
               </Flex>
-              <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
+              <span className="light-only-inline">
+                <BchatIconButton iconType="x" iconSize={'large'} onClick={handleClose} />
+              </span>
+              {/* dark: the square close used by the other sheets (Figma 5296:43701) */}
+              <button
+                type="button"
+                className="close-square react-list__close"
+                onClick={handleClose}
+                aria-label={window.i18n('close')}
+              >
+                <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+              </button>
             </StyledReactionsContainer>
             <StyledSendersContainer
+              className="react-list__senders"
               container={true}
               flexDirection={'column'}
               alignItems={'flex-start'}
