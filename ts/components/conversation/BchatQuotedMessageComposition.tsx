@@ -16,7 +16,9 @@ import { FontSizeChanger } from '../settings/ChangeChatFontSetting';
 import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaultRooms';
 import { StateType } from '../../state/reducer';
 import { renderMarkdownBlocks } from './message/message-content/MessageBody';
-import { useIsPrivate } from '../../hooks/useParamSelector';
+import { useConversationUsernameOrShorten, useIsPrivate } from '../../hooks/useParamSelector';
+import { getTheme } from '../../state/selectors/theme';
+import { UserUtils } from '../../bchat/utils';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -134,6 +136,15 @@ export const BchatQuotedMessageComposition = () => {
   const iconType = getIconType();
 
   const isGroupConversation = !useIsPrivate(quotedMessageProps?.convoId);
+  const isDark = useSelector(getTheme) === 'dark';
+  const authorName = useConversationUsernameOrShorten(quotedMessageProps?.author);
+  // dark, group chats (Figma 5296:5877): who wrote the quoted message, above its text
+  const quotedAuthor =
+    isDark && isGroupConversation && quotedMessageProps?.author
+      ? UserUtils.isUsFromCache(quotedMessageProps.author)
+        ? window.i18n('you')
+        : authorName
+      : undefined;
 
   const removeQuotedMessage = useCallback(() => {
     dispatch(quoteMessage(undefined));
@@ -203,9 +214,18 @@ export const BchatQuotedMessageComposition = () => {
                 />
               </StyledIconWrapper>
             )}
-            <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
-              {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
-            </Subtle>
+            {quotedAuthor ? (
+              <div className="reply-preview__body">
+                <div className="reply-preview__author">{quotedAuthor}</div>
+                <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
+                  {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
+                </Subtle>
+              </div>
+            ) : (
+              <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
+                {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
+              </Subtle>
+            )}
 
             {groupInvitation && (
               <div className="group-details">

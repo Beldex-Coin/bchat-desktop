@@ -5143,6 +5143,28 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     font-family: $dark-font-data !important;
     color: #acacac;
   }
+  // group chats (Figma 5296:5876): sender Inter SemiBold 12 -> 16 over the text, Roboto Mono
+  // 10.5 -> 14, both #acacac, 14px in from the bar and 14px from the card's top and bottom
+  .reply-preview__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 14px 0;
+
+    .reply-preview__text {
+      padding: 0;
+      font-size: 14px;
+      line-height: 19px;
+    }
+  }
+  .reply-preview__author {
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #acacac;
+  }
   .reply-preview__close .bchat-icon-button {
     width: 32px;
     height: 32px;
