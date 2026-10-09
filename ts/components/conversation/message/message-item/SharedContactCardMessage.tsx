@@ -140,7 +140,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
       return dispatch(
         updateConfirmModal({
           bchatIcon: 'avatar',
-          iconSize: 31,
+          iconSize: 24,
           iconShow: true,
           title: window.i18n('startChatNowTitle'),
           message: window.i18n('startChatNowConfirmation'),
