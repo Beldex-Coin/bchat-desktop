@@ -1134,9 +1134,10 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
 // under the content but over the stroke) carries the fill. That way the cut edge keeps its hairline,
 // which a plain border + clip-path would lose.
 $dark-cut-in: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px)); // received: bottom-start
-$dark-cut-out: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%); // sent: top-end
+// sent: bottom-end (Figma 5296:21579 - the 13.5 cut is drawn flipped onto the bottom-right -> 18px)
+$dark-cut-out: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
 $dark-cut-in-rtl: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
-$dark-cut-out-rtl: polygon(0 26px, 26px 0, 100% 0, 100% 100%, 0 100%);
+$dark-cut-out-rtl: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
 $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100%, 0 calc(100% - 13px));
 
 // Only the dark theme uses these two.
@@ -3778,7 +3779,8 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     justify-content: center;
     width: 48px;
     height: 48px;
-    margin-inline-start: auto;
+    // 16px clear of "Click to download" (same gap as the downloaded document card)
+    margin-inline-start: 16px;
     padding-inline-start: 0;
     flex-shrink: 0;
     background: #222;
@@ -3857,14 +3859,22 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 #{$dark} .module-attachments__rail {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   margin: 12px 0 8px;
   padding: 12px;
   background: #0e0e0e;
   border: 1px solid $dark-hair;
 
+  // thumbnails 10px apart, the "+" 16px after the last one (the base 20px wrapper margin plus the
+  // last thumbnail's own margin left a ~40px hole before it)
+  .module-inner-img-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-inline-end: 0;
+  }
   .module-image {
-    margin: 0 10px 0 0;
+    margin: 0;
     border: 1px solid #333;
   }
 }
