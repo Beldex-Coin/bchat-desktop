@@ -35,6 +35,10 @@ export default function MentionPlugin({
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const dropdownRef = useRef<HTMLDivElement>(null);
+  // dark: after a pick the list stays open so more members can be ticked, until the user types,
+  // moves the caret, clicks outside the list or presses Escape
+  const pinnedRef = useRef(false);
+  const MENTION_PICK_TAG = 'mention-pick';
 
   const updatePosition = () => {
     const container = containerRef.current;
@@ -125,7 +129,12 @@ export default function MentionPlugin({
 
   // ORIGINAL KEYSTROKE LISTENER
   useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
+    return editor.registerUpdateListener(({ editorState, tags }) => {
+      // our own insert / remove from the open list: keep it as it is
+      if (tags.has(MENTION_PICK_TAG)) {
+        return;
+      }
+      pinnedRef.current = false;
       editorState.read(() => {
         const selection = $getSelection();
         
@@ -175,6 +184,46 @@ export default function MentionPlugin({
     });
   }, [editor, fetchUsers]);
 
+  // dark: keep the list open with every member listed again after a pick
+  const keepOpenAfterPick = () => {
+    if (!darkMode) {
+      setShow(false);
+      return;
+    }
+    pinnedRef.current = true;
+    void fetchUsers('').then((res: any) => {
+      if (pinnedRef.current) {
+        setResults(res);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!show || !darkMode) {
+      return undefined;
+    }
+    const close = () => {
+      pinnedRef.current = false;
+      setShow(false);
+    };
+    const onMouseDown = (e: MouseEvent) => {
+      if (pinnedRef.current && !dropdownRef.current?.contains(e.target as Node)) {
+        close();
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+      }
+    };
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [show, darkMode]);
+
   const insertMention = (user: any) => {
     editor.update(() => {
       const selection = $getSelection();
@@ -190,9 +239,9 @@ export default function MentionPlugin({
       }
 
       selection.insertNodes([new MentionNode(user.id, user.value), new TextNode(' ')]);
-    });
+    }, { tag: MENTION_PICK_TAG });
 
-    setShow(false);
+    keepOpenAfterPick();
   };
 
   // Clicking a member that is already mentioned (ticked row, dark theme) takes the mention out
@@ -243,12 +292,12 @@ export default function MentionPlugin({
       if (!$isRangeSelection(after) || !after.anchor.getNode().isAttached()) {
         $getRoot().selectEnd();
       }
-    });
+    }, { tag: MENTION_PICK_TAG });
 
-    setShow(false);
+    keepOpenAfterPick();
   };
 
-  if (!show || results.length===0 || draft.length===0) return null;
+  if (!show || results.length === 0 || (draft.length === 0 && !pinnedRef.current)) return null;
 
   return (
     <div
@@ -262,6 +311,8 @@ export default function MentionPlugin({
         zIndex: 9999,
         transform: darkMode ? 'translateY(calc(-100% - 7px))' : 'translateY(calc(-100% - 10px))',
       }}
+      // dark: keep the caret in the input while ticking several members
+      onMouseDown={darkMode ? e => e.preventDefault() : undefined}
     >
       {results.map((user: any) => (
         <div
