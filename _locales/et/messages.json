@@ -251,6 +251,7 @@
   "blockUser": "Block",
   "unblockUser": "Unblock",
   "unblockContact": "Eemalda kontakti blokeering",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Unblocked",
   "blocked": "Blocked",
   "blockedSettingsTitle": "Blocked Contacts",

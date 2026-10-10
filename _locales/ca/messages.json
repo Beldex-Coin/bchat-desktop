@@ -251,6 +251,7 @@
   "blockUser": "Bloca",
   "unblockUser": "Desbloquejar",
   "unblockContact": "Desbloqueja el contacte",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Desbloquejat",
   "blocked": "Blocked",
   "blockedSettingsTitle": "Contactes bloquejats",

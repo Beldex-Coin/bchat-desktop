@@ -251,6 +251,7 @@
   "blockUser": "封鎖",
   "unblockUser": "解除封鎖",
   "unblockContact": "解除封鎖聯絡人",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "解除封鎖",
   "blocked": "已封鎖",
   "blockedSettingsTitle": "已封鎖的聯絡人",

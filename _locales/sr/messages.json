@@ -251,6 +251,7 @@
   "blockUser": "Blokiraj korisnika",
   "unblockUser": "Odblokirajte",
   "unblockContact": "Odblokiraj kontakt",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Odblokirajte",
   "blocked": "Blokiran",
   "blockedSettingsTitle": "Blokirani kontakti",

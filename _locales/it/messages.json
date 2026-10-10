@@ -251,6 +251,7 @@
   "blockUser": "Blocca",
   "unblockUser": "Sblocca",
   "unblockContact": "Sblocca contatto",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Sbloccato",
   "blocked": "Bloccato",
   "blockedSettingsTitle": "Contatti bloccati",

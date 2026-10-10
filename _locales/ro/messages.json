@@ -251,6 +251,7 @@
   "blockUser": "Blochează",
   "unblockUser": "Deblochează",
   "unblockContact": "Deblochează contactul",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Dezblocat",
   "blocked": "Blocat",
   "blockedSettingsTitle": "Contacte blocate",

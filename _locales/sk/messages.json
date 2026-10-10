@@ -251,6 +251,7 @@
   "blockUser": "Blokovať",
   "unblockUser": "Odblokovať",
   "unblockContact": "Odblokovať kontakt",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Odblokovaný",
   "blocked": "Blokovaný",
   "blockedSettingsTitle": "Blokované kontakty",

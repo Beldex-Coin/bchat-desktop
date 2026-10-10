@@ -8,6 +8,8 @@ import { CallManager, SyncUtils, ToastUtils, UserUtils } from '../bchat/utils';
 import { ConversationNotificationSettingType, ConversationTypeEnum } from '../models/conversation';
 
 import _ from 'lodash';
+import React from 'react';
+import UnblockContactIcon from '../components/icon/UnblockContactIcon';
 import { getConversationController } from '../bchat/conversations';
 import { BlockedNumberController } from '../util/blockedNumberController';
 import {
@@ -127,6 +129,40 @@ export async function unblockConvoById(conversationId: string) {
   await promise;
   ToastUtils.pushToastSuccess('unblocked', window.i18n('unblocked'));
   await conversation.commit();
+}
+
+/**
+ * Dark theme: asks first (Figma 5296:10228 "Unblock Contact" - unlock icon, No / Yes) before a
+ * contact is unblocked. Groups and the light theme unblock straight away as before.
+ */
+export function unblockConvoWithConfirm(conversationId: string) {
+  const conversation = getConversationController().get(conversationId);
+  const isDark = window.inboxStore?.getState().theme === 'dark';
+  if (!isDark || (conversation && !conversation.isPrivate())) {
+    void unblockConvoById(conversationId);
+    return;
+  }
+
+  const onClickClose = () => {
+    window.inboxStore?.dispatch(updateConfirmModal(null));
+  };
+
+  window.inboxStore?.dispatch(
+    updateConfirmModal({
+      title: window.i18n('unblockContact'),
+      message: window.i18n('unblockContactConfirmation'),
+      okText: window.i18n('yes'),
+      okTheme: BchatButtonColor.Primary,
+      cancelText: window.i18n('no'),
+      iconShow: true,
+      customIcon: React.createElement(UnblockContactIcon),
+      onClickOk: async () => {
+        await unblockConvoById(conversationId);
+      },
+      onClickCancel: onClickClose,
+      onClickClose,
+    })
+  );
 }
 
 /**

@@ -303,6 +303,7 @@
   "blockUser": "차단",
   "unblockUser": "차단 해제",
   "unblockContact": "연락처 차단 해제",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "선택한 연락처 차단 해제",
   "unblocked": "차단 해제됨",
   "blocked": "차단됨",

@@ -251,6 +251,7 @@
   "blockUser": "مسدود کردن",
   "unblockUser": "دفع مسدودیت",
   "unblockContact": "رفع مسدودی مخاطب",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "رفع مسدودی",
   "blocked": "مسدود شده",
   "blockedSettingsTitle": "مخاطبین مسدود شده",

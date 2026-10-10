@@ -303,6 +303,7 @@
   "blockUser": "ブロック",
   "unblockUser": "ブロック解除",
   "unblockContact": "連絡先のブロックを解除",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "選択した連絡先をブロック解除",
   "unblocked": "ブロック解除済み",
   "blocked": "ブロック済み",

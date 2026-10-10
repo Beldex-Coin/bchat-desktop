@@ -303,6 +303,7 @@
   "blockUser": "Blockieren",
   "unblockUser": "Entsperren",
   "unblockContact": "Kontakt entsperren",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "Entblocken Ausgewählt",
   "unblocked": "Entsperrt",
   "blocked": "Blockiert",

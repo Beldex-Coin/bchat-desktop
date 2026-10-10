@@ -251,6 +251,7 @@
   "blockUser": "අවහිර",
   "unblockUser": "අනවහිර",
   "unblockContact": "සම්බන්ධතාව අවහිර කිරීම ඉවත් කරන්න",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "අනවහිර කළා",
   "blocked": "Blocked",
   "blockedSettingsTitle": "අවහිර කළ සබඳතා",

@@ -1,6 +1,6 @@
 // import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { unblockConvoById } from '../../interactions/conversationInteractions';
+import { unblockConvoWithConfirm } from '../../interactions/conversationInteractions';
 // import { getConversationController } from '../../bchat/conversations';
 import { getBlockedPubkeys } from '../../state/selectors/conversations';
 // import { BchatButtonColor } from '../basic/BchatButton';
@@ -255,7 +255,7 @@ export const BlockedMemberList = (props: {
               style={{ minWidth: '45px', height: '45px', fontWeight: '400', fontSize: '16px', fontFamily: 'Poppins' }}
               buttonColor={BchatButtonColor.Danger}
               text={window.i18n('unblockUser')}
-              onClick={() => unblockConvoById(pubkey)}
+              onClick={() => unblockConvoWithConfirm(pubkey)}
               dataTestId="unblock-button-settings-screen"
             />
           </div>

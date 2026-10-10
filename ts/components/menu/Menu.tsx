@@ -34,7 +34,7 @@ import {
   showRemoveModeratorsByConvoId,
   showUnbanUserByConvoId,
   showUpdateGroupNameByConvoId,
-  unblockConvoById,
+  unblockConvoWithConfirm,
 } from '../../interactions/conversationInteractions';
 import {
   ConversationNotificationSetting,
@@ -623,7 +623,7 @@ export const BlockMenuItem = (): JSX.Element | null => {
   if (showBlock(Boolean(isMe), Boolean(isPrivate), Boolean(isRequest))) {
     const blockTitle = isBlocked ? window.i18n('unblockUser') : window.i18n('blockUser');
     const blockHandler = isBlocked
-      ? () => unblockConvoById(convoId)
+      ? () => unblockConvoWithConfirm(convoId)
       : () => blockConvoById(convoId);
 
     return (

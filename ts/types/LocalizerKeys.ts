@@ -352,6 +352,7 @@ export type LocalizerKeys =
   | 'getStarted'
   | 'unblockUser'
   | 'unblockContact'
+  | 'unblockContactConfirmation'
   | 'unblockUserSelect'
   | 'blockUser'
   | 'clearAllConfirmationTitle'

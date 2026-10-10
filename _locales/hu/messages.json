@@ -251,6 +251,7 @@
   "blockUser": "Letiltás",
   "unblockUser": "Blokkolás feloldása",
   "unblockContact": "Névjegy letiltásának feloldása",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Blokkolás feloldva",
   "blocked": "Blokkolt",
   "blockedSettingsTitle": "Letiltott ismerősök",

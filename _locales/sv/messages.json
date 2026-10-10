@@ -251,6 +251,7 @@
   "blockUser": "Blockera",
   "unblockUser": "Avblockera",
   "unblockContact": "Avblockera kontakt",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Avblockerad",
   "blocked": "Blockerad",
   "blockedSettingsTitle": "Blockerade kontakter",

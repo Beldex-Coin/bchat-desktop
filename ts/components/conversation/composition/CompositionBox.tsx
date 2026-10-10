@@ -26,7 +26,7 @@ import { AttachmentType } from '../../../types/Attachment';
 import { connect } from 'react-redux';
 import {
   showLinkSharingConfirmationModalDialog,
-  unblockConvoById,
+  unblockConvoWithConfirm,
 } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
@@ -451,7 +451,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           text={window.i18n('unblockContact')}
           onClick={() => {
             this.setState(getDefaultState());
-            unblockConvoById(convoId);
+            unblockConvoWithConfirm(convoId);
           }}
         />
       </Flex>

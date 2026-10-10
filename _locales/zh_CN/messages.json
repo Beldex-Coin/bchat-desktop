@@ -303,6 +303,7 @@
   "blockUser": "屏蔽",
   "unblockUser": "解除屏蔽",
   "unblockContact": "解除屏蔽联系人",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "解除所选联系人屏蔽",
   "unblocked": "已解除屏蔽",
   "blocked": "已屏蔽",

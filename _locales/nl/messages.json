@@ -251,6 +251,7 @@
   "blockUser": "Blokkeren",
   "unblockUser": "Blokkering opheffen",
   "unblockContact": "Contact deblokkeren",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Gedeblokkeerd",
   "blocked": "Geblokkeerd",
   "blockedSettingsTitle": "Geblokkeerde contacten",

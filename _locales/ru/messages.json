@@ -301,6 +301,7 @@
   "blockUser": "Заблокировать",
   "unblockUser": "Разблокировать",
   "unblockContact": "Разблокировать контакт",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "Разблокировать выбранные",
   "unblocked": "Разблокирован",
   "blocked": "Заблокирован",

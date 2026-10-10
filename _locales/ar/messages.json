@@ -293,6 +293,7 @@
   "blockUser": "حظر",
   "unblockUser": "إلغاء الحظر",
   "unblockContact": "إلغاء حظر جهة الاتصال",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "إلغاء الحظر المحدد",
   "unblocked": "إلغاء الحظر",
   "blocked": "محظور",

@@ -251,6 +251,7 @@
   "blockUser": "Blokir",
   "unblockUser": "Buka blokir",
   "unblockContact": "Buka blokir kontak",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Unblocked",
   "blocked": "Blocked",
   "blockedSettingsTitle": "Kontak yang diblokir",

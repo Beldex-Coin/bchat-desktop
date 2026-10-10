@@ -251,6 +251,7 @@
   "blockUser": "Block",
   "unblockUser": "Unblock",
   "unblockContact": "בטל חסימת איש קשר",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Unblocked",
   "blocked": "Blocked",
   "blockedSettingsTitle": "Blocked Contacts",

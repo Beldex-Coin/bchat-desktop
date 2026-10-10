@@ -296,6 +296,7 @@
   "blockUser": "Bloquear",
   "unblockUser": "Desbloquear",
   "unblockContact": "Desbloquear contacto",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "Desbloquear seleccionados",
   "unblocked": "Desbloqueado",
   "blocked": "Bloqueado",

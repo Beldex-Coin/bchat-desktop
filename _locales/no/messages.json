@@ -251,6 +251,7 @@
   "blockUser": "Blokker",
   "unblockUser": "Avblokker",
   "unblockContact": "Opphev blokkering av kontakt",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblocked": "Blokkering opphevet",
   "blocked": "Blokkert",
   "blockedSettingsTitle": "Blokkerte kontakter",

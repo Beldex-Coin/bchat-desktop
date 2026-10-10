@@ -303,6 +303,7 @@
   "blockUser": "Chặn",
   "unblockUser": "Bỏ chặn",
   "unblockContact": "Bỏ chặn liên hệ",
+  "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
   "unblockUserSelect": "Bỏ chặn đã chọn",
   "unblocked": "Đã bỏ chặn",
   "blocked": "Đã chặn",
