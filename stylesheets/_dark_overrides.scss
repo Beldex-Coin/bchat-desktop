@@ -6337,13 +6337,28 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
 
 // control row (name + time on the left, controls, hang-up)
 #{$dark} .call-controls {
+  // three fixed tracks: the name / status column can't push the control group around while the
+  // status text changes width (Ringing -> Ringing... -> timer)
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
   padding: 10px 18px;
   background: transparent !important;
   gap: 16px;
 
+  > div:first-child {
+    min-width: 0;
+  }
+  > div:nth-child(2) {
+    justify-self: center;
+  }
+  > .call-hangup {
+    justify-self: end;
+  }
+
   .call-controls__name {
     width: auto;
-    max-width: 200px;
+    max-width: 100%;
     font-family: $dark-font-data !important;
     font-size: 18px;
     font-weight: 600;
