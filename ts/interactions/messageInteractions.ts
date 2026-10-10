@@ -128,7 +128,8 @@ const acceptSocialGroupInvitationV2 = (completeUrl: string, roomName?: string) =
       okTheme: BchatButtonColor.Primary,
       cancelText: window.i18n('no'),
       iconShow: true,
-      iconSize: 30,
+      // Figma 5296:40777: the 21 x 18 people glyph in the 43.5 -> 59px well -> 24px tall
+      iconSize: 24,
       bchatIcon: 'peopleGrp',
       // customIcon:customIcon,
 
