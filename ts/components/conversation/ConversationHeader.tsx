@@ -468,7 +468,15 @@ const ConversationHeaderTitle = () => {
           >
             {convoName}
           </span>
-          {convoProps?.isBnsHolder && <span className="bns-tag">BNS</span>}
+          {convoProps?.isBnsHolder && (
+            <span className="bns-tag">
+              BNS
+              {/* dark (Figma 5296:21072): the verified mark after the label; hidden in light */}
+              <span className="bns-tag__mark">
+                <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="#00BC33" />
+              </span>
+            </span>
+          )}
         </span>
         <SubTxt>
           {isGroup ? (

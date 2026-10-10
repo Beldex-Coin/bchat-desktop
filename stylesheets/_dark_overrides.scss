@@ -1214,18 +1214,30 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     align-items: center;
     gap: 10px;
   }
+  // Figma 5296:21072: 37.25 x 12.75 -> 50 x 17 chip, "BNS" Roboto Mono 9 -> 12 green, then the
+  // 10.5 -> 14px verified mark
   .bns-tag {
     display: inline-flex;
     align-items: center;
-    padding: 1px 5px;
+    gap: 3px;
+    height: 17px;
+    padding: 0 3px 0 5px;
     background-color: rgba(26, 26, 26, 0.2);
     border: 0.5px solid $dark-green;
     color: $dark-green;
     font-family: $dark-font-data !important;
     font-size: 12px;
     font-weight: 400;
-    line-height: 1.2;
+    line-height: 1;
     text-transform: none;
+  }
+  .bns-tag__mark {
+    display: inline-flex;
+    line-height: 0;
+  }
+  // the header avatar of a BNS contact carries no rosette in the design - the tag says it
+  .module-avatar-verify-wrapper-verify-tag {
+    display: none;
   }
   .module-contact-name__profile-name > div,
   .module-conversation-header__title-text {
