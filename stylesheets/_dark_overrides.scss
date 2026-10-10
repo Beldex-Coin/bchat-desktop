@@ -8698,3 +8698,22 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   cursor: pointer;
 }
 
+
+// ---- Popup close (top-right X) ----
+// the 25px circled X sat in a 30px box with 5px padding and read small against the design:
+// 30px glyph in a 36px box, centred, no inner padding
+#{$dark} .bchat-modal__header__close {
+  align-items: center;
+  width: 36px;
+  height: 36px;
+
+  > div {
+    float: none;
+    padding: 0;
+  }
+  .bchat-icon-button,
+  svg {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
