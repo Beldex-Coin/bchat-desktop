@@ -8,7 +8,8 @@ import { updateGroupMembersModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { MemberListItem } from '../MemberListItem';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../state/selectors/theme';
 import { useConversationPropsById, useWeAreAdmin } from '../../hooks/useParamSelector';
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
@@ -169,6 +170,7 @@ export const UpdateGroupMembersDialog = (props: Props) => {
   );
 
   const dispatch = useDispatch();
+  const isDark = useSelector(getTheme) === 'dark';
 
   if (!convoProps || !convoProps.isGroup || convoProps.isPublic) {
     throw new Error('UpdateGroupMembersDialog invalid convoProps');
@@ -228,6 +230,46 @@ export const UpdateGroupMembersDialog = (props: Props) => {
   // const titleText = window.i18n('updateGroupDialogTitle', [convoProps.name || '']);
   const titleText = window.i18n('groupMembers');
 
+
+  if (isDark) {
+    // Figma 5296:46344: same card as Remove Moderators - boxed list, chamfered rows, Close / Remove
+    return (
+      <BchatWrapperModal
+        title={titleText}
+        onClose={closeDialog}
+        additionalClassName="card-dialog moderators-dialog group-members-dialog"
+        okButton={
+          weAreAdmin
+            ? { text: window.i18n('remove'), onClickOkHandler: onClickOK, color: BchatButtonColor.Primary }
+            : { text: window.i18n('close'), onClickOkHandler: closeDialog, color: BchatButtonColor.Secondary }
+        }
+        cancelButton={{
+          status: weAreAdmin,
+          text: window.i18n('close'),
+          color: BchatButtonColor.Secondary,
+          onClickCancelHandler: closeDialog,
+        }}
+      >
+        <div className="moderator-removeModeratorBox">
+          {showNoMembersMessage ? (
+            <p>{window.i18n('noMembersInThisGroup')}</p>
+          ) : (
+            <div className="innerBox">
+              <div className="memberListBox">
+                <ClassicMemberList
+                  convoId={conversationId}
+                  onSelect={onAdd}
+                  onUnselect={onRemove}
+                  selectedMembers={membersToKeepWithUpdate}
+                />
+                <ZombiesList convoId={conversationId} />
+              </div>
+            </div>
+          )}
+        </div>
+      </BchatWrapperModal>
+    );
+  }
 
   return (
     <BchatWrapperModal title={titleText} onClose={closeDialog}>

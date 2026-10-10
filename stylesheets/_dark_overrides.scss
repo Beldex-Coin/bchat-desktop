@@ -7753,6 +7753,19 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     font-size: 16px;
     color: #ebebeb;
   }
+  // Group Members (same card): members' 50px avatars, the admin label in place of a checkbox
+  .bchat-member-item_admin-txt {
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    color: #acacac;
+  }
+  .bchat-member-item .module-avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .bchat-member-item.zombie {
+    opacity: 0.6;
+  }
 }
 
 // =================================================================================================
