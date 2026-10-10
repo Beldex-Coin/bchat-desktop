@@ -4717,7 +4717,7 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: 34px 25px 110px;
+    padding: 34px 25px 24px;
     overflow-y: auto;
   }
   .secret-group-overlay__title {
@@ -4849,13 +4849,14 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     font-size: 18px;
     color: #555;
   }
+  // own row under the scrolling body (not floated over it), so the contact list ends above the
+  // button instead of running underneath it
   .buttonBox {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 36px;
+    position: static;
+    flex: 0 0 auto;
     display: flex;
     justify-content: center;
-    padding: 0;
+    padding: 12px 0 36px;
     background: transparent;
 
     .bchat-button {
