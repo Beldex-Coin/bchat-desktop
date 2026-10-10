@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { isEqual } from 'lodash';
@@ -35,6 +35,9 @@ type Props = {
   dataTestId?: string;
   isGroup?: boolean;
   isBnsHolder?: boolean;
+  // told whether a picture is actually on show (false while the initials placeholder is drawn,
+  // e.g. no picture set, or a stored path that no longer loads)
+  onHasImageChange?: (hasImage: boolean) => void;
 };
 
 export const Identicon = (props: Props) => {
@@ -108,7 +111,16 @@ const AvatarImage = (props: {
 };
 
 const AvatarInner = (props: Props) => {
-  const { base64Data, size, pubkey, forcedAvatarPath, forcedName, dataTestId, isBnsHolder } = props;
+  const {
+    base64Data,
+    size,
+    pubkey,
+    forcedAvatarPath,
+    forcedName,
+    dataTestId,
+    isBnsHolder,
+    onHasImageChange,
+  } = props;
   const [imageBroken, setImageBroken] = useState(false);
 
   const isClosedGroupAvatar = useIsClosedGroup(pubkey);
@@ -128,6 +140,10 @@ const AvatarInner = (props: Props) => {
   };
 
   const hasImage = (base64Data || urlToLoad) && !imageBroken && !isClosedGroupAvatar;
+
+  useEffect(() => {
+    onHasImageChange?.(!!hasImage);
+  }, [hasImage, onHasImageChange]);
 
   const isClickable = !!props.onAvatarClick;
   return (

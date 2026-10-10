@@ -30,6 +30,8 @@ interface State {
   setProfileName: string;
   oldAvatarPath: string;
   newAvatarObjectUrl: string | null;
+  // whether the avatar is showing a real picture (not the initials) - the delete button depends on it
+  avatarShown: boolean;
   mode: 'default' | 'edit' | 'qr';
   loading: boolean;
 }
@@ -57,6 +59,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
       setProfileName: this.convo.getProfileName() || '',
       oldAvatarPath: this.convo.getAvatarPath() || '',
       newAvatarObjectUrl: null,
+      avatarShown: false,
       mode: 'default',
       loading: false,
     };
@@ -190,7 +193,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
   }
 
   private renderProfileHeader() {
-    const {newAvatarObjectUrl, oldAvatarPath} = this.state;
+    const { avatarShown } = this.state;
     return (
       <>
         <div className="avatar-center" style={{ marginInlineStart: "25px" }}>
@@ -219,7 +222,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 <BchatToolTip place="top" effect="solid" />
               </div>
               <SpacerXS />
-            {(newAvatarObjectUrl || oldAvatarPath )&& (
+            {/* only when a picture is actually shown - a stored path that no longer loads falls back
+                to the initials, and there is nothing to delete then */}
+            {avatarShown && (
               <div
                 data-tip={window.i18n('delete')}
                 data-place="right"
@@ -498,8 +503,15 @@ export class EditProfileDialog extends React.Component<{}, State> {
         size={AvatarSize.XL}
         pubkey={this.convo.id}
         isBnsHolder={this.convo?.attributes?.isBnsHolder}
+        onHasImageChange={this.onAvatarImageChange}
       />
     );
+  }
+
+  private onAvatarImageChange(hasImage: boolean) {
+    if (this.state.avatarShown !== hasImage) {
+      this.setState({ avatarShown: hasImage });
+    }
   }
 
   private onNameEdited(event: ChangeEvent<HTMLInputElement>) {
