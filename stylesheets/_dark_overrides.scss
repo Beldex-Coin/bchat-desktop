@@ -6045,12 +6045,14 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
   > div:not(.id_wrapper):not(.label_input):not(.inputBox-wrapper):not(.divided-btn-wrapper) {
   display: none;
 }
-// success (273x200 -> 364 wide): green badge, one line, small white Ok
+// success (Figma 5296:30719, 273x199.5 -> 364 wide): glass card, 44 -> 59px green badge, Inter 22
+// title, 108x41 -> 144x55 white Ok with 13.5 -> 18px cuts
 #{$dark} .card-dialog.bns-link-dialog--success {
   .bchat-modal {
     width: 364px;
-    padding: 44px 28px 35px;
+    padding: 44px 28px 34px;
     text-align: center;
+    backdrop-filter: blur(4px);
   }
   .model-layer > div:last-child {
     width: 100%;
@@ -6078,7 +6080,8 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
 
     .bchat-button {
       height: 55px;
-      clip-path: $dark-cut-14;
+      padding: 0;
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
     }
   }
 }
