@@ -1017,6 +1017,55 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
   }
 }
 
+// ---- BNS-verified avatar (Figma 5296:25216): no rounded green frame, the rosette (25.5/75 of the
+// tile) over the tile's bottom-end corner, hanging 11.3/75 past the end and 9/75 below ----
+#{$dark} .module-avatar-verify-wrapper {
+  border: 0;
+  border-radius: 0;
+}
+#{$dark} .module-avatar-verify-wrapper-verify-tag {
+  bottom: -12% !important;
+  inset-inline-end: -15% !important;
+  z-index: 2;
+  width: 34%;
+  height: 34%;
+  line-height: 0;
+
+  .bns-verify-badge {
+    width: 100%;
+    height: 100%;
+  }
+}
+// BNS-verified avatar with a picture (Figma 5629:1775): the photo fills the chamfered tile inside a
+// green hairline (#00d239 -> #003a00, same as the initials tile). The line is a ::before under the
+// photo so the rosette, which overhangs the tile, is not clipped with it. Not in the conversation
+// header, where a BNS contact is marked by the tag instead.
+#{$dark} .module-avatar-verify-wrapper .module-avatar--with-image {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #00d239 0%, #003a00 100%);
+    clip-path: $dark-chamfer;
+  }
+  img {
+    position: relative;
+    width: calc(100% - 2px) !important;
+    height: calc(100% - 2px) !important;
+    margin: 1px;
+    object-fit: cover;
+  }
+}
+#{$dark} .module-conversation-header .module-avatar-verify-wrapper .module-avatar--with-image {
+  &::before {
+    display: none;
+  }
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0;
+  }
+}
 // ---- Avatars: initials on a chamfered tile (AvatarPlaceHolder renders .initials-avatar in dark) ----
 #{$dark} .module-avatar--no-image {
   background: transparent;
