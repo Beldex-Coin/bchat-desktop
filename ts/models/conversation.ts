@@ -123,6 +123,8 @@ export interface ConversationAttributes {
    */
   profileKey?: string;
   triggerNotificationsFor: ConversationNotificationSettingType;
+  /** while in the future, notifications are muted whatever triggerNotificationsFor is */
+  mutedUntil?: number;
   isTrustedForAttachmentDownload: boolean;
   isPinned: boolean;
   isApproved: boolean;
@@ -165,6 +167,7 @@ export interface ConversationAttributesOptionals {
    */
   profileKey?: string;
   triggerNotificationsFor?: ConversationNotificationSettingType;
+  mutedUntil?: number;
   isTrustedForAttachmentDownload?: boolean;
   isPinned: boolean;
   isApproved?: boolean;
@@ -209,12 +212,12 @@ export const fillConvoAttributesWithDefaults = (
 export class ConversationModel extends Backbone.Model<ConversationAttributes> {
   public updateLastMessage: () => any;
   public throttledBumpTyping: () => void;
-  public throttledNotify: (message: MessageModel) => void;
   public markRead: (newestUnreadDate: number, providedOptions?: any) => void;
   public initialPromise: any;
 
   private typingRefreshTimer?: NodeJS.Timeout | null;
   private typingPauseTimer?: NodeJS.Timeout | null;
+  private muteExpiryTimer?: NodeJS.Timeout | null;
   private typingTimer?: NodeJS.Timeout | null;
   private lastReadTimestamp: number;
 
@@ -233,8 +236,6 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       trailing: true,
       leading: true,
     });
-   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.throttledNotify = _.debounce(this.notify, 500, { maxWait: 5000, trailing: true });
     //start right away the function is called, and wait 1sec before calling it again
      // eslint-disable-next-line @typescript-eslint/no-misused-promises
     const markReadDebounced = _.debounce(this.markReadBouncy, 1000, {
@@ -255,7 +256,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     this.typingRefreshTimer = null;
     this.typingPauseTimer = null;
+    this.muteExpiryTimer = null;
     this.lastReadTimestamp = 0;
+    this.scheduleMuteExpiryRefresh();
     window.inboxStore?.dispatch(
       conversationChanged({ id: this.id, data: this.getConversationModelProps() })
     );
@@ -394,7 +397,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const isKickedFromGroup = !!this.get('isKickedFromGroup');
     const left = !!this.get('left');
     const expireTimer = this.get('expireTimer');
-    const currentNotificationSetting = this.get('triggerNotificationsFor');
+    const currentNotificationSetting = this.getEffectiveNotificationSetting();
+    const mutedUntil = this.getActiveMutedUntil();
 
     // To reduce the redux store size, only set fields which cannot be undefined.
     // For instance, a boolean can usually be not set if false, etc
@@ -500,6 +504,10 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       currentNotificationSetting !== ConversationNotificationSetting[0]
     ) {
       toRet.currentNotificationSetting = currentNotificationSetting;
+    }
+
+    if (mutedUntil) {
+      toRet.mutedUntil = mutedUntil;
     }
 
     const lastMessageText = this.get('lastMessage');
@@ -1164,6 +1172,49 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     return;
   }
 
+  /**
+   * The notification setting in effect right now: 'disabled' while a timed mute runs, the stored
+   * triggerNotificationsFor otherwise (so it comes back on its own when the mute ends).
+   */
+  public getEffectiveNotificationSetting(): ConversationNotificationSettingType {
+    return this.getActiveMutedUntil() ? 'disabled' : this.get('triggerNotificationsFor');
+  }
+
+  /**
+   * The end of the timed mute if one is running, undefined otherwise.
+   */
+  public getActiveMutedUntil(): number | undefined {
+    const mutedUntil = this.get('mutedUntil');
+    return mutedUntil && mutedUntil > Date.now() ? mutedUntil : undefined;
+  }
+
+  /**
+   * Notifications check the mute against the current time, but the UI (the mute icon, the menu)
+   * only updates on a refresh: do one when the timed mute ends. Call it whenever mutedUntil changes.
+   */
+  public scheduleMuteExpiryRefresh() {
+    if (this.muteExpiryTimer) {
+      global.clearTimeout(this.muteExpiryTimer);
+      this.muteExpiryTimer = null;
+    }
+    const mutedUntil = this.getActiveMutedUntil();
+    if (!mutedUntil) {
+      return;
+    }
+    // setTimeout runs on its own clock, which can drift from Date.now() (wall clock changes,
+    // throttled timers): check again at least every minute instead of trusting one long timeout
+    const maxCheckInterval = 60 * 1000;
+    const delay = mutedUntil - Date.now() + 500;
+    this.muteExpiryTimer = global.setTimeout(() => {
+      this.muteExpiryTimer = null;
+      if (this.getActiveMutedUntil()) {
+        this.scheduleMuteExpiryRefresh();
+        return;
+      }
+      this.triggerUIRefresh();
+    }, Math.min(delay, maxCheckInterval));
+  }
+
   public triggerUIRefresh() {
     updatesToDispatch.set(this.id, this.getConversationModelProps());
     throttledAllConversationsDispatch();
@@ -1242,6 +1293,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
      // eslint-disable-next-line no-restricted-syntax
     for (const nowRead of oldUnreadNowRead) {
       nowRead.markReadNoCommit(options.readAt);
+      // markReadNoCommit() starts the disappearing timer; also set expires_at, or the expiring
+      // messages check (which only looks at expires_at) never deletes this message.
+      nowRead.setToExpireNoCommit();
 
       const errors = nowRead.get('errors');
       read.push({
@@ -1673,6 +1727,18 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
   }
 
+  /**
+   * Evaluate one incoming message for a notification. Every message must be evaluated on its own:
+   * `mentions_only` has to inspect each message, so this must NOT be debounced/throttled here.
+   * A trailing debounce would collapse a burst to only its last message and silently drop an
+   * earlier mention. The visible notification is already coalesced downstream by
+   * Notifications.addNotification (its own debounced display update).
+   */
+  public notifyIncomingMessage(message: MessageModel) {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    void this.notify(message);
+  }
+
   public async notify(message: MessageModel) {
     if (!message.isIncoming()) {
       return;
@@ -1707,7 +1773,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
 
     // make sure the notifications are not muted for this convo (and not the source convo)
-    const convNotif = this.get('triggerNotificationsFor');
+    const convNotif = this.getEffectiveNotificationSetting();
     if (convNotif === 'disabled') {
       window?.log?.info('notifications disabled for convo', this.idForLogging());
       return;
@@ -1769,7 +1835,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const conversationId = this.id;
 
     // make sure the notifications are not muted for this convo (and not the source convo)
-    const convNotif = this.get('triggerNotificationsFor');
+    const convNotif = this.getEffectiveNotificationSetting();
     if (convNotif === 'disabled') {
       window?.log?.info(
         'notifyIncomingCall: notifications disabled for convo',

@@ -1347,7 +1347,7 @@ export async function handleCallTypeOffer(
 
       // show a notification
       const callerConvo = getConversationController().get(sender);
-      const convNotif = callerConvo?.get('triggerNotificationsFor') || 'disabled';
+      const convNotif = callerConvo?.getEffectiveNotificationSetting() || 'disabled';
       if (convNotif === 'disabled') {
         window?.log?.info('notifications disabled for convo', ed25519Str(sender));
       } else if (callerConvo) {

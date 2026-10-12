@@ -304,6 +304,8 @@ export interface ReduxConversationType {
    * If this is undefined, it means all notification are enabled
    */
   currentNotificationSetting?: ConversationNotificationSettingType;
+  /** only set while a timed mute runs */
+  mutedUntil?: number;
 
   isPinned?: boolean;
   isApproved?: boolean;

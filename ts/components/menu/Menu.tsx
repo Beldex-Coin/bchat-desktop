@@ -14,6 +14,7 @@ import {
   useIsPrivate,
   useIsPublic,
   useIsRequest,
+  useMutedUntil,
   useNotificationSetting,
   useWeAreAdmin,
 } from '../../hooks/useParamSelector';
@@ -25,6 +26,7 @@ import {
   declineConversationWithConfirm,
   deleteAllMessagesByConvoIdWithConfirmation,
   markAllReadByConvoId,
+  muteConversationFor,
   setDisappearingMessagesByConvoId,
   setNotificationForConvoId,
   showAddModeratorsByConvoId,
@@ -533,6 +535,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isPrivate = useIsPrivate(convoId);
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
+  const mutedUntil = useMutedUntil(convoId);
   const isMe = useIsMe(convoId);
 
   if (
@@ -544,19 +547,51 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
       isMe
     )
   ) {
-    // exclude mentions_only settings for private chats as this does not make much sense
-    const notificationForConvoOptions = ConversationNotificationSetting.filter(n =>
-      isPrivate ? n !== 'mentions_only' : true
+    // exclude the 'all' setting (restored through Unmute) and, for private chats,
+    // the mentions_only setting as it does not make much sense there
+    const settingOptions = ConversationNotificationSetting.filter(n =>
+      n !== 'all' && (isPrivate ? n !== 'mentions_only' : true)
     ).map((n: ConversationNotificationSettingType) => {
       // do this separately so typescript's compiler likes it
       const keyToUse: LocalizerKeys =
-        n === 'all' || !n
-          ? 'notificationForConvo_all'
-          : n === 'disabled'
-          ? 'notificationForConvo_disabled'
-          : 'notificationForConvo_mentions_only';
-      return { value: n, name: window.i18n(keyToUse) };
+        n === 'disabled' ? 'notificationForConvo_disabled' : 'notificationForConvo_mentions_only';
+      return {
+        key: n,
+        name: window.i18n(keyToUse),
+        // while a timed mute runs, the setting in effect is 'disabled', so no row is selected
+        selected: !mutedUntil && n === currentNotificationSetting,
+        onClick: async () => setNotificationForConvoId(convoId, n),
+      };
     });
+    // while a timed mute runs, highlight the duration currently in effect. we only persist the
+    // mute end time, so infer the bucket from the remaining time (durations are sorted ascending).
+    const remainingMuteMs = mutedUntil ? mutedUntil - Date.now() : 0;
+    const muteOptions = timedMuteDurations.map(({ key, durationMs }, index) => {
+      const prevDurationMs = index > 0 ? timedMuteDurations[index - 1].durationMs : 0;
+      return {
+        key,
+        name: window.i18n(key),
+        selected:
+          Boolean(mutedUntil) && remainingMuteMs > prevDurationMs && remainingMuteMs <= durationMs,
+        onClick: async () => muteConversationFor(convoId, durationMs),
+      };
+    });
+    // Unmute restores notifications (setting back to 'all') and clears any timed mute.
+    // Always shown, and selected by default when no mute option is active (the 'all' state).
+    const unmuteOption = {
+      key: 'unmute',
+      name: window.i18n('notificationForConvo_unmute'),
+      selected: !mutedUntil && currentNotificationSetting === 'all',
+      onClick: async () => setNotificationForConvoId(convoId, 'all'),
+    };
+    // Unmute, (Mentions Only), the timed mutes, then Disabled (= mute forever)
+    const disabledOption = settingOptions.filter(o => o.key === 'disabled');
+    const notificationForConvoOptions = [
+      unmuteOption,
+      ...settingOptions.filter(o => o.key !== 'disabled'),
+      ...muteOptions,
+      ...disabledOption,
+    ];
 
     return (
       // Remove the && false to make context menu work with RTL support
@@ -576,25 +611,22 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
         // label={window.i18n('notificationForConvo') as any}
       >
         {(notificationForConvoOptions || []).map(item => {
-          const disabled = item.value === currentNotificationSetting;
-
           return (
-            <div className="submenu">
+            <div className="submenu" key={item.key}>
               <Item
                 style={{ width: '100%' }}
-                key={item.value}
                 onClick={async () => {
-                  await setNotificationForConvoId(convoId, item.value);
+                  await item.onClick();
                 }}
-                // disabled={disabled}
               >
                 <div
                   style={{
                     marginInlineEnd: '10px',
-                    color: disabled ? '#108D32' : ' var(--color-action-btn-icon)',
+                    color: item.selected ? '#108D32' : 'var(--color-action-btn-icon)',
                   }}
                 >
-                  <BchatIcon iconSize={10} iconType="circle" />
+                  {/* iconColor="currentColor" so the dot picks up the div color above */}
+                  <BchatIcon iconSize={10} iconType="circle" iconColor="currentColor" />
                 </div>
                 {item.name}
               </Item>
@@ -606,6 +638,13 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   }
   return null;
 };
+
+const HOUR = 60 * 60 * 1000;
+const timedMuteDurations: Array<{ key: LocalizerKeys; durationMs: number }> = [
+  { key: 'notificationForConvo_mute8Hours', durationMs: 8 * HOUR },
+  { key: 'notificationForConvo_mute24Hours', durationMs: 24 * HOUR },
+  { key: 'notificationForConvo_mute1Week', durationMs: 7 * 24 * HOUR },
+];
 
 export function isRtlBody(): boolean {
   const body = document.getElementsByTagName('body').item(0);

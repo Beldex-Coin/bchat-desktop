@@ -93,6 +93,12 @@ export function useNotificationSetting(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
   return convoProps?.currentNotificationSetting || 'all';
 }
+
+/** the end of the timed mute of this conversation, if one is running */
+export function useMutedUntil(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+  return convoProps?.mutedUntil;
+}
 export function useIsPublic(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
   return Boolean(convoProps && convoProps.isPublic);

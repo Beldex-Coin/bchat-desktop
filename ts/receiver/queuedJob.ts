@@ -360,7 +360,7 @@ export async function handleMessageJob(
       messageModel.get('unread')
     ) {
       messageModel.set('reaction', regularDataMessage.reaction as Reaction);
-      conversation.throttledNotify(messageModel);
+      conversation.notifyIncomingMessage(messageModel);
     }
     confirm?.();
   } else {
@@ -455,7 +455,7 @@ export async function handleMessageJob(
       // }
 
       if (messageModel.get('unread')) {
-        conversation.throttledNotify(messageModel);
+        conversation.notifyIncomingMessage(messageModel);
       }
 
       confirm?.();

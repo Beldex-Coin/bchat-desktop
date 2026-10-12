@@ -390,10 +390,24 @@ export async function setNotificationForConvoId(
   const conversation = getConversationController().get(conversationId);
 
   const existingSettings = conversation.get('triggerNotificationsFor');
-  if (existingSettings !== selected) {
-    conversation.set({ triggerNotificationsFor: selected });
+  // picking a setting also ends a timed mute
+  if (existingSettings !== selected || conversation.get('mutedUntil')) {
+    conversation.set({ triggerNotificationsFor: selected, mutedUntil: undefined });
+    conversation.scheduleMuteExpiryRefresh();
     await conversation.commit();
   }
+}
+
+/**
+ * Mutes the notifications of this conversation for durationMs. Its notification setting is kept
+ * and applies again once the mute ends.
+ */
+export async function muteConversationFor(conversationId: string, durationMs: number) {
+  const conversation = getConversationController().get(conversationId);
+
+  conversation.set({ mutedUntil: Date.now() + durationMs });
+  conversation.scheduleMuteExpiryRefresh();
+  await conversation.commit();
 }
 export async function clearNickNameByConvoId(conversationId: string) {
   const conversation = getConversationController().get(conversationId);
