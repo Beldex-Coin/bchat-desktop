@@ -353,6 +353,8 @@ export type LocalizerKeys =
   | 'unblockUser'
   | 'unblockContact'
   | 'unblockContactConfirmation'
+  | 'saveToStorage'
+  | 'saveToStorageDescription'
   | 'unblockUserSelect'
   | 'blockUser'
   | 'clearAllConfirmationTitle'

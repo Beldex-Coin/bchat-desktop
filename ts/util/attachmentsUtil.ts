@@ -13,6 +13,10 @@ import { THUMBNAIL_SIDE } from '../types/attachments/VisualAttachment';
 import imageType from 'image-type';
 import { MAX_ATTACHMENT_FILESIZE_BYTES } from '../bchat/constants';
 import { perfEnd, perfStart } from '../bchat/utils/Performance';
+import React from 'react';
+import { updateConfirmModal } from '../state/ducks/modalDialog';
+import { BchatButtonColor } from '../components/basic/BchatButton';
+import SaveToStorageIcon from '../components/icon/SaveToStorageIcon';
 
 /**
  * The logic for sending attachments is as follow:
@@ -382,17 +386,52 @@ export async function readAvatarAttachment(attachment: {
   return { attachment, data: dataReadFromBlob, size: dataReadFromBlob.byteLength };
 }
 
-export const saveAttachmentToDisk = async ({
-  attachment,
-  messageTimestamp,
-  messageSender,
-  conversationId,
-}: {
+type SaveAttachmentArgs = {
   attachment: AttachmentType;
   messageTimestamp: number;
   messageSender: string;
   conversationId: string;
-}) => {
+};
+
+/**
+ * Dark theme asks first (Figma 5296:11054 "Save to Storage?" - downloads folder icon, No / Yes);
+ * the light theme saves straight away as before.
+ */
+export const saveAttachmentToDisk = async (args: SaveAttachmentArgs) => {
+  const isDark = window.inboxStore?.getState().theme === 'dark';
+  if (!isDark) {
+    await saveAttachmentToDiskWithoutConfirm(args);
+    return;
+  }
+
+  const onClickClose = () => {
+    window.inboxStore?.dispatch(updateConfirmModal(null));
+  };
+
+  window.inboxStore?.dispatch(
+    updateConfirmModal({
+      title: window.i18n('saveToStorage'),
+      message: window.i18n('saveToStorageDescription'),
+      okText: window.i18n('yes'),
+      okTheme: BchatButtonColor.Primary,
+      cancelText: window.i18n('no'),
+      iconShow: true,
+      customIcon: React.createElement(SaveToStorageIcon),
+      onClickOk: async () => {
+        await saveAttachmentToDiskWithoutConfirm(args);
+      },
+      onClickCancel: onClickClose,
+      onClickClose,
+    })
+  );
+};
+
+const saveAttachmentToDiskWithoutConfirm = async ({
+  attachment,
+  messageTimestamp,
+  messageSender,
+  conversationId,
+}: SaveAttachmentArgs) => {
   const decryptedUrl = await getDecryptedMediaUrl(attachment.url, attachment.contentType, false);
   save({
     attachment: { ...attachment, url: decryptedUrl },

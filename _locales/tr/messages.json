@@ -302,6 +302,8 @@
   "unblockUser": "Engeli Kaldır",
   "unblockContact": "Kişinin engelini kaldır",
   "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
+  "saveToStorage": "Save to Storage?",
+  "saveToStorageDescription": "Saving this media to storage will allow any other apps on your device to access it.",
   "unblockUserSelect": "Seçilenlerin engelini kaldır",
   "unblocked": "Engeli kaldırıldı",
   "blocked": "Engellendi",

@@ -304,6 +304,8 @@
   "unblockUser": "차단 해제",
   "unblockContact": "연락처 차단 해제",
   "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
+  "saveToStorage": "Save to Storage?",
+  "saveToStorageDescription": "Saving this media to storage will allow any other apps on your device to access it.",
   "unblockUserSelect": "선택한 연락처 차단 해제",
   "unblocked": "차단 해제됨",
   "blocked": "차단됨",

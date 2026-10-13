@@ -252,6 +252,8 @@
   "unblockUser": "අනවහිර",
   "unblockContact": "සම්බන්ධතාව අවහිර කිරීම ඉවත් කරන්න",
   "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
+  "saveToStorage": "Save to Storage?",
+  "saveToStorageDescription": "Saving this media to storage will allow any other apps on your device to access it.",
   "unblocked": "අනවහිර කළා",
   "blocked": "Blocked",
   "blockedSettingsTitle": "අවහිර කළ සබඳතා",

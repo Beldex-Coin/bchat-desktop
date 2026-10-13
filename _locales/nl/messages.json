@@ -252,6 +252,8 @@
   "unblockUser": "Blokkering opheffen",
   "unblockContact": "Contact deblokkeren",
   "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
+  "saveToStorage": "Save to Storage?",
+  "saveToStorageDescription": "Saving this media to storage will allow any other apps on your device to access it.",
   "unblocked": "Gedeblokkeerd",
   "blocked": "Geblokkeerd",
   "blockedSettingsTitle": "Geblokkeerde contacten",

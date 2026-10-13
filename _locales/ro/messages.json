@@ -252,6 +252,8 @@
   "unblockUser": "Deblochează",
   "unblockContact": "Deblochează contactul",
   "unblockContactConfirmation": "Are you sure you want to unblock this contact?",
+  "saveToStorage": "Save to Storage?",
+  "saveToStorageDescription": "Saving this media to storage will allow any other apps on your device to access it.",
   "unblocked": "Dezblocat",
   "blocked": "Blocat",
   "blockedSettingsTitle": "Contacte blocate",
