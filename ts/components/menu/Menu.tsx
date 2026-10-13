@@ -58,6 +58,7 @@ import { BchatIcon } from '../icon/BchatIcon';
 // import CopyIcon from '../icon/CopyIcon';
 import styled from 'styled-components';
 import DeclineMessageRequest from '../icon/DeclineMessageRequest';
+import { removeWithRowAnimation } from '../../interactions/rowRemoval';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -262,7 +263,10 @@ export const DeleteContactMenuItem = () => {
           : window.i18n('leaveGroupConfirmation', [username]),
         onClickClose,
         onClickOk: async () => {
-          await getConversationController().deleteContact(convoId);
+          window.inboxStore?.dispatch(updateConfirmModal(null));
+          await removeWithRowAnimation(convoId, () =>
+            getConversationController().deleteContact(convoId)
+          );
           const message = isPrivate?window.i18n('deleteContactSuccessMessage'):window.i18n('successMessageGrpLeft');
           ToastUtils.pushToastSuccess('', message);
         },

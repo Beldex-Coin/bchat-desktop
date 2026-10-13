@@ -893,11 +893,11 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
   min-height: 300px;
   padding-bottom: 60px;
 
+  // the art is now the empty_chat animation (150x130 artboard)
   &__art {
     display: block;
     width: 173px;
-    aspect-ratio: 130 / 112;
-    background: url('../images/dark-theme/empty-chats.svg') center / contain no-repeat;
+    aspect-ratio: 150 / 130;
   }
 }
 
@@ -9021,5 +9021,36 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 
   svg {
     display: block;
+  }
+}
+// blocked contact's row: the red block-person mark at the row's end (44 artboard)
+#{$dark} .row-blocked-mark {
+  width: 30px;
+  height: 30px;
+}
+// deleting a chat: the red bin plays at the row's end, then the row slides out
+#{$dark} .module-conversation-list-item--removing {
+  position: relative;
+  pointer-events: none;
+  animation: bchat-row-out 0.95s ease-in forwards;
+
+  .row-removing-bin {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 24px;
+    width: 40px;
+    height: 40px;
+    transform: translateY(-50%);
+  }
+}
+@keyframes bchat-row-out {
+  0%,
+  55% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40%);
   }
 }

@@ -17,6 +17,7 @@ import { getFocusedSection } from '../../../state/selectors/section';
 import { BchatIcon } from '../../icon';
 import { ContextConversationId } from './ConversationListItem';
 import { UserItem } from './UserItem';
+import { LottieAnimation } from '../../basic/LottieAnimation';
 
 const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
   const convoId = useContext(ContextConversationId);
@@ -80,6 +81,7 @@ const ListItemIcons = () => {
   const conversationId = useContext(ContextConversationId);
   const isPinned = useIsPinned(conversationId);
   const isDark = useSelector(getTheme) === 'dark';
+  const isBlocked = !!useConversationPropsById(conversationId)?.isBlocked;
 
   const pinIcon =
     isMessagesSection && isPinned ? (
@@ -90,6 +92,11 @@ const ListItemIcons = () => {
   return (
     <StyledConversationListItemIconWrapper>
       {pinIcon}
+      {/* dark: a blocked contact's row carries the red block-person mark, drawn in once
+          (images/animations/Block_person.json) */}
+      {isDark && isBlocked && (
+        <LottieAnimation name="Block_person" loop={false} className="row-blocked-mark" />
+      )}
       <NotificationSettingIcon isMessagesSection={isMessagesSection} />
     </StyledConversationListItemIconWrapper>
   );

@@ -1,4 +1,6 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { LottieAnimation } from '../../basic/LottieAnimation';
+import { ROW_REMOVING_EVENT } from '../../../interactions/rowRemoval';
 import classNames from 'classnames';
 // import useUpdate from 'react-use/lib/useUpdate';
 import { Avatar, AvatarSize } from '../../avatar/Avatar';
@@ -120,6 +122,19 @@ const ConversationListItem = (props: Props) => {
   const key = `conversation-item-${conversationId}`;
   const triggerId = `${key}-ctxmenu`;
 
+  // dark: a chat being deleted plays the bin at the row's end and slides the row out before the
+  // conversation goes (see interactions/rowRemoval)
+  const [removing, setRemoving] = useState(false);
+  useEffect(() => {
+    const onRemoving = (e: Event) => {
+      if ((e as CustomEvent<string>).detail === conversationId) {
+        setRemoving(true);
+      }
+    };
+    window.addEventListener(ROW_REMOVING_EVENT, onRemoving);
+    return () => window.removeEventListener(ROW_REMOVING_EVENT, onRemoving);
+  }, [conversationId]);
+
   const openConvo = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
       // mousedown is invoked sooner than onClick, but for both right and left click
@@ -226,6 +241,7 @@ const ConversationListItem = (props: Props) => {
                 : null,
               isSelected ? 'module-conversation-list-item--is-selected' : null,
               isBlocked ? 'module-conversation-list-item--is-blocked' : null,
+              removing ? 'module-conversation-list-item--removing' : null,
               convoProps?.isPinned ? 'module-conversation-list-item--is-pinned' : null
             )}
           >
@@ -246,6 +262,9 @@ const ConversationListItem = (props: Props) => {
                 />
               </div>
             </div>
+            {removing && (
+              <LottieAnimation name="Delete_Bin" loop={false} className="row-removing-bin" />
+            )}
           </div>
           <Portal>
             <MemoConversationListItemContextMenu triggerId={triggerId} />

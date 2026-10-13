@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getTheme } from '../../state/selectors/theme';
 import { getConversationController } from '../../bchat/conversations';
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 export type ChatFilter = 'all' | 'social' | 'groups';
 
@@ -71,7 +72,8 @@ export const ChatFilterBar = (props: { value: ChatFilter; onChange: (value: Chat
 export const ChatFilterEmpty = (_props: { filter: ChatFilter }) => {
   return (
     <div className="chat-filter-empty">
-      <span className="chat-filter-empty__art" aria-hidden="true" />
+      {/* the two-bubble art, animated (images/animations/empty_chat.json) */}
+      <LottieAnimation name="empty_chat" className="chat-filter-empty__art" />
     </div>
   );
 };
