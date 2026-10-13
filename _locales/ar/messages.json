@@ -488,7 +488,7 @@
   "notificationForConvo_mentions_only": "فقط عندما يتم ذكر اسم",
   "notificationForConvo_mute8Hours": "8 ساعات",
   "notificationForConvo_mute24Hours": "24 ساعة",
-  "notificationForConvo_mute1Week": "1 أسبوع",
+  "notificationForConvo_mute1Week": "أسبوع واحد",
   "notificationForConvo_unmute": "إلغاء الكتم",
   "onionPathIndicatorTitle": "المسار",
   "onionPathIndicatorDescription": "يقوم BChat بإخفاء عنوان IP الخاص بك عبر توجيه رسائلك من خلال عقد الماسترنود في شبكة Beldex اللامركزية. يتم حاليًا توجيه رسائلك عبر عقد موجودة في الدول التالية",
