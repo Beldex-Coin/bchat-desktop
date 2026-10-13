@@ -10,6 +10,8 @@ import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVer
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../state/selectors/theme';
+import { createPortal } from 'react-dom';
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 export const BnsLinkDialog = () => {
   
@@ -49,10 +51,15 @@ export const BnsLinkDialog = () => {
       <div style={{ textAlign: 'center' }}>
         <div>
           {darkMode ? (
-            // Figma 1:61315: green approval badge instead of the animation
-            <span className="bns-success-icon">
-              <BchatIcon iconType="approval" iconSize={59} iconColor="#00BC33" />
-            </span>
+            // the verified badge drawn in with its sparks (images/animations/Badge_popup.json), and
+            // a confetti burst over the whole window (Confetti_BNS.json), both once
+            <>
+              <LottieAnimation name="Badge_popup" loop={false} className="bns-success-badge" />
+              {createPortal(
+                <LottieAnimation name="Confetti_BNS" loop={false} fit="cover" className="bns-confetti" />,
+                document.body
+              )}
+            </>
           ) : (
             <img src={'images/bchat/linked_bns_white.gif'} style={{ width: '120px', height: '120px' }} />
           )}
