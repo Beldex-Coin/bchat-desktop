@@ -553,6 +553,18 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
   // draws it as an SVG circle, which the no-radius rule doesn't touch).
   .profile-box {
     margin-top: 0 !important;
+    transition: filter 0.15s ease;
+
+    // suggestion 9037:52732: hover = soft green glow (Figma drop shadow #00BC33 @ 30%, 8px)
+    &:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 188, 51, 0.45));
+    }
+  }
+  // suggestion 9037:52717: the online dot without the black ring around it
+  .nav-rail-status {
+    top: -3px;
+    inset-inline-end: -3px;
+    border: 0;
   }
 
   // Nav buttons span the rail; selected = dark green fill + 1px green bar on the leading edge.
@@ -1036,6 +1048,27 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
   .bns-verify-badge {
     width: 100%;
     height: 100%;
+  }
+}
+// Any avatar with a picture (suggestion 9037:52717): the photo sits inside the same grey hairline as
+// the initials tile (#444 @ 50% on ink = #272727) - a ::before under the photo, 1px proud of it.
+// The BNS rule below swaps the line for the green one.
+#{$dark} .module-avatar--with-image {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #272727;
+    clip-path: $dark-chamfer;
+  }
+  img {
+    position: relative;
+    width: calc(100% - 2px) !important;
+    height: calc(100% - 2px) !important;
+    margin: 1px;
+    object-fit: cover;
   }
 }
 // BNS-verified avatar with a picture (Figma 5629:1775): the photo fills the chamfered tile inside a

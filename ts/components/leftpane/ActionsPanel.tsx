@@ -672,7 +672,7 @@ export const ActionsPanel = () => {
     const status = isOnline ? window.i18n('online') : window.i18n('offline');
 
     return (
-      <Hops data-tip={status} data-offset="{'right':30}" data-place="bottom">
+      <Hops className="nav-rail-status" data-tip={status} data-offset="{'right':30}" data-place="bottom">
         <ActionPanelOnionStatusLight
           isSelected={false}
           handleClick={() => {}}
