@@ -9108,3 +9108,9 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
     z-index: 3;
   }
 }
+// lock screens: the animated lock (100 artboard, lock ~half of it) in the 58px icon's place
+#{$dark} .password-lock-lottie {
+  width: 116px;
+  height: 116px;
+  margin: -29px;
+}

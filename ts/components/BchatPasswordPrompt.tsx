@@ -8,6 +8,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from './basic/BchatBut
 // import { Constants } from '../bchat';
 import { Flex } from './basic/Flex';
 import { ConfirmCard } from './dialog/ConfirmCard';
+import { LottieAnimation } from './basic/LottieAnimation';
 // import { ToastUtils } from '../bchat/utils';
 
 interface State {
@@ -25,11 +26,10 @@ type Props = {
 const BchatSpinner = (props: Props) => {
   const { loading } = props;
  
-  const imgsrc='images/bchat/Load_animation.gif';
   return loading ? (
     <div className="bchat-loader" data-testid="loading-spinner">
       <div>
-      <img src={imgsrc}  style={{width:'150px',height:'150px',display:'flex',}}/>
+        <LottieAnimation name="Loading_animation" style={{ width: '150px', height: '150px' }} />
       </div>
     </div>
   
@@ -153,8 +153,15 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
                 <div className="password-lock-light">
                   <LockImg />
                 </div>
+                {/* dark: the lock animates (images/animations) - a wobble while waiting, red and
+                    shaking after a wrong password (replayed on every attempt) */}
                 <span className="password-lock" aria-hidden="true">
-                  <BchatIcon iconType="lock" iconSize={58} iconColor="#1BB51E" />
+                  <LottieAnimation
+                    key={`lock-${this.state.errorCount}`}
+                    name={this.state.error ? 'Incorrect_PIN' : 'No_PIN'}
+                    loop={false}
+                    className="password-lock-lottie"
+                  />
                 </span>
 
                 <div className={infoAreaClass}>

@@ -23,10 +23,10 @@ import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
 import { SettingsCategoryChat } from './section/categoryChat';
 import { useDispatch, useSelector } from 'react-redux';
-import { BchatIcon } from '../icon';
 import { showSettingsSection } from '../../state/ducks/section';
 import { getTheme } from '../../state/selectors/theme';
 import { BchatLanguageScreen } from './BchatLanguageScreen';
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 
 
@@ -98,7 +98,7 @@ interface State {
 // };
 
 export const PasswordLock = ({
-  // pwdLockError,
+  pwdLockError,
   validatePasswordLock,
 }: {
   pwdLockError: string | null;
@@ -113,8 +113,15 @@ export const PasswordLock = ({
     return (
       <div className="password-lock-page">
         <div className="password-lock-card">
+          {/* the lock animates (images/animations): a wobble while waiting, red after a wrong
+              password */}
           <span className="password-lock-card__icon" aria-hidden="true">
-            <BchatIcon iconType="lock" iconSize={58} iconColor="#00BC33" />
+            <LottieAnimation
+              key={pwdLockError || 'idle'}
+              name={pwdLockError ? 'Incorrect_PIN' : 'No_PIN'}
+              loop={false}
+              className="password-lock-lottie"
+            />
           </span>
           <div className="password-lock-card__title">{window.i18n('password')}</div>
           <input
