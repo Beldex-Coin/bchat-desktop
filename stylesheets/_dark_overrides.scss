@@ -684,7 +684,9 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
 
 // Message Requests: green-tinted band, mono label, square count, arrow.
 #{$dark} .requests-banner {
-  height: 80px;
+  // 56px: the height it was always drawn at with a full chat list (the list used to squeeze the 80px
+  // box); fixed here so the column no longer changes with the list (see .module-conversations-list-content)
+  height: 56px;
   margin: 16px 0 0;
   padding: 0 27px;
   gap: 16px;
@@ -3633,6 +3635,18 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 #{$dark} .module-conversations-list-content {
   padding: 0;
   justify-content: flex-start;
+
+  // only the list (or the empty-filter art) gives up height: with a long list the header, search,
+  // Message Requests bar and filter pills were squeezed a few px each, so switching to an empty
+  // "Social" / "Groups" (nothing to squeeze) made the whole column jump down
+  > * {
+    flex-shrink: 0;
+  }
+  // the list, the empty-filter art or the search results - always the last block
+  > :last-child {
+    flex: 1 1 0;
+    min-height: 0;
+  }
 }
 #{$dark} .chats-header {
   display: flex;
@@ -5102,6 +5116,16 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   > .messageRequestButton {
     margin-top: auto;
     padding: 20px 0 36px;
+  }
+  // the list takes all the height down to Clear All (it was capped at 75vh, leaving a gap) and
+  // the two spacers under it go
+  > .message-requests-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+  }
+  > .message-requests-list ~ :not(.messageRequestButton) {
+    display: none;
   }
 }
 #{$dark} .messageRequestButton {
@@ -8497,13 +8521,14 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 
 // ---- Left pane width (Chats list, Settings list and the overlays: new chat, secret / social group,
 // message requests) ----
-// The base sizes each of these columns at 25vw capped at 420px. Width: 26% of the window, no cap,
+// The base sizes each of these columns at 25vw capped at 420px. Width: 24.5% of the window, no cap,
 // applied to all three so the pane keeps one width when switching between them.
 #{$dark} .module-conversations-list-content,
 #{$dark} .left-pane-setting-section,
 #{$dark} .module-left-pane-overlay {
   min-width: 340px;
-  width: 26vw;
+  // Figma 5296:20241: the list column is 354.75 of 1440 -> ~24.6% of the window (was 26vw)
+  width: 24.5vw;
   max-width: none;
 }
 
@@ -8859,5 +8884,26 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
         background-color: #08110a;
       }
     }
+  }
+}
+
+// chat list (suggestion 9037:52799): the pin badge gets a mild grey ring so it doesn't float;
+// name / message and count / time sit on the avatar's middle, and the count lines up with the
+// time under it on the right edge (an empty date box after the count held it 20px in)
+#{$dark} .pin-badge {
+  box-shadow: 0 0 0 1px #444;
+}
+#{$dark} .module-conversation-list-item {
+  align-items: center;
+
+  .module-conversation-list-item__content {
+    justify-content: center;
+    margin-top: -4px;
+  }
+  .module-conversation-list-item__header__date:empty {
+    display: none;
+  }
+  .module-conversation-list-item_unread-count_wrapper {
+    margin-inline-start: auto;
   }
 }

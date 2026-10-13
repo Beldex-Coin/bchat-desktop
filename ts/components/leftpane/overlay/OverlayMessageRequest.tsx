@@ -173,7 +173,7 @@ const MessageRequestList = () => {
   const conversationRequests = useSelector(getConversationRequests);
   const dispatch = useDispatch();
   return (
-    <MessageRequestListContainer>
+    <MessageRequestListContainer className="message-requests-list">
       <SpacerLG />
 
       <Flex
