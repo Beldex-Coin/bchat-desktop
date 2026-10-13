@@ -27,6 +27,7 @@ import { connect } from 'react-redux';
 import {
   showLinkSharingConfirmationModalDialog,
   unblockConvoWithConfirm,
+  clearChatByConvoIdWithConfirmation,
 } from '../../../interactions/conversationInteractions';
 import { getConversationController } from '../../../bchat/conversations';
 import { ToastUtils } from '../../../bchat/utils';
@@ -438,11 +439,14 @@ class CompositionBoxInner extends React.Component<Props, State> {
         height="90px"
         className="blocked-contact-actions"
       >
+        {/* dark: the messages go, the contact stays (Figma 5296:9862 Clear Chat confirm) */}
         <BchatButton
           buttonType={BchatButtonType.Brand}
           buttonColor={BchatButtonColor.Danger}
-          text={window.i18n('deleteContact')}
-          onClick={() => this.deleteContact()}
+          text={window.i18n(this.props.darkMode ? 'clearChat' : 'deleteContact')}
+          onClick={() =>
+            this.props.darkMode ? clearChatByConvoIdWithConfirmation(convoId) : this.deleteContact()
+          }
         />
         <SpacerLG />
         <BchatButton

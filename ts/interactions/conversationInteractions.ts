@@ -10,6 +10,7 @@ import { ConversationNotificationSettingType, ConversationTypeEnum } from '../mo
 import _ from 'lodash';
 import React from 'react';
 import UnblockContactIcon from '../components/icon/UnblockContactIcon';
+import { BchatIcon } from '../components/icon';
 import { getConversationController } from '../bchat/conversations';
 import { BlockedNumberController } from '../util/blockedNumberController';
 import {
@@ -455,6 +456,34 @@ export function deleteAllMessagesByConvoIdWithConfirmation(conversationId: strin
       onClickClose,
       // okText:window.i18n('leaveGroup')
       okText: window.i18n('delete'),
+    })
+  );
+}
+
+/**
+ * Dark theme, blocked contact (Figma 5296:9862 "Clear Chat"): broom icon, No / red Yes; clears the
+ * messages but keeps the contact.
+ */
+export function clearChatByConvoIdWithConfirmation(conversationId: string) {
+  const onClickClose = () => {
+    window?.inboxStore?.dispatch(updateConfirmModal(null));
+  };
+
+  window?.inboxStore?.dispatch(
+    updateConfirmModal({
+      title: window.i18n('clearChat'),
+      message: window.i18n('clearChatConfirmation'),
+      okText: window.i18n('yes'),
+      okTheme: BchatButtonColor.Danger,
+      cancelText: window.i18n('no'),
+      iconShow: true,
+      customIcon: React.createElement(BchatIcon, { iconType: 'clearChat', iconSize: 24 }),
+      onClickOk: async () => {
+        await deleteAllMessagesByConvoIdNoConfirmation(conversationId);
+        onClickClose();
+      },
+      onClickCancel: onClickClose,
+      onClickClose,
     })
   );
 }

@@ -355,6 +355,8 @@ export type LocalizerKeys =
   | 'unblockContactConfirmation'
   | 'saveToStorage'
   | 'saveToStorageDescription'
+  | 'clearChat'
+  | 'clearChatConfirmation'
   | 'unblockUserSelect'
   | 'blockUser'
   | 'clearAllConfirmationTitle'
