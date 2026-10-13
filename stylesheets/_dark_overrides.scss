@@ -6274,19 +6274,22 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
   article {
     padding: 0;
   }
+  // suggestion 9037:52878 (smaller body): headings Inter SemiBold 12 -> 16, body Roboto Mono
+  // 12 -> 16 on an 18 -> 24px line, one blank line (24px) between paragraphs
   .about-bns-header {
-    margin: 0 0 12px;
+    margin: 0;
     font-family: $dark-font-ui !important;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 600;
+    line-height: 24px;
     color: #ebebeb;
   }
   .about-bns-txt,
   .about-bns-txt-bold {
     margin: 0 0 24px;
     font-family: $dark-font-data !important;
-    font-size: 22px;
-    line-height: 30px;
+    font-size: 16px;
+    line-height: 24px;
     letter-spacing: 0;
     color: #ebebeb;
   }
@@ -6295,17 +6298,17 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
   }
   ul {
     margin: 0 0 24px;
-    padding-inline-start: 24px;
+    padding-inline-start: 18px;
     list-style: none;
 
     li {
       position: relative;
-      margin-bottom: 18px;
+      margin-bottom: 24px;
 
       &::before {
         content: '•';
         position: absolute;
-        inset-inline-start: -24px;
+        inset-inline-start: -18px;
       }
     }
   }
