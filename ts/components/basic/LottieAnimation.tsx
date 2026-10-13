@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import lottie, { AnimationItem } from 'lottie-web';
+import type { AnimationItem, LottiePlayer } from 'lottie-web';
 
 // Lottie animations shipped in images/animations (exported from the motion designs, see the mobile
 // reference video). Dark theme only - callers decide when to show one.
@@ -107,6 +107,18 @@ const prepare = (name: LottieName, source: any) => {
   return data;
 };
 
+// lottie-web draws on a canvas as soon as it is loaded, so it is loaded on first use rather than
+// on import (modules that only import this file, such as the unit tests' jsdom, never need it)
+let player: LottiePlayer | undefined;
+const getPlayer = (): LottiePlayer => {
+  if (!player) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const loaded = require('lottie-web');
+    player = (loaded.default || loaded) as LottiePlayer;
+  }
+  return player;
+};
+
 const cache = new Map<LottieName, any>();
 const animationData = (name: LottieName) => {
   if (!cache.has(name)) {
@@ -140,7 +152,7 @@ export const LottieAnimation = (props: Props) => {
     }
     let anim: AnimationItem | undefined;
     try {
-      anim = lottie.loadAnimation({
+      anim = getPlayer().loadAnimation({
         container: box.current,
         renderer: 'svg',
         loop,
