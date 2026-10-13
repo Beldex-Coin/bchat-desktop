@@ -1209,10 +1209,11 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     font-weight: 600;
     color: #ebebeb;
   }
+  // Figma 5296:20453: the BNS tag sits 4.5 -> 6px after the name
   .header-name-row {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
   }
   // Figma 5296:21072: 37.25 x 12.75 -> 50 x 17 chip, "BNS" Roboto Mono 9 -> 12 green, then the
   // 10.5 -> 14px verified mark
@@ -1245,6 +1246,19 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     font-size: 14px;
     font-weight: 400;
     color: #737373;
+  }
+  // a little air between the name and the member count / last seen line under it
+  .module-contact-name__profile-name > div {
+    margin-top: 6px;
+  }
+  // Figma 5296:20453: the "last seen" time is the same Roboto Mono 10.5 -> 14 #737373 line as the
+  // member count (the timestamp component brought its own 11px)
+  .module-contact-name__profile-name > div > div {
+    font-family: inherit !important;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: 0;
+    color: inherit;
   }
   .bchat-icon-button {
     color: $dark-muted;

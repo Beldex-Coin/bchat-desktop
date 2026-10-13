@@ -441,8 +441,30 @@ const ConversationHeaderTitle = () => {
     const count = String(memberCount);
     memberCountText = i18n('members', [count]);
   }
+  // verified BNS holder: "BNS" chip with the green verified mark after the name (dark, Figma
+  // 5296:21072); the mark is hidden in light
+  const bnsTag = convoProps?.isBnsHolder ? (
+    <span className="bns-tag">
+      BNS
+      <span className="bns-tag__mark">
+        <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="#00BC33" />
+      </span>
+    </span>
+  ) : null;
+
   if (conversation?.isMe) {
-    return <div className="module-conversation-header__title">{i18n('noteToSelf')}</div>;
+    return (
+      <div className="module-conversation-header__title">
+        {bnsTag ? (
+          <span className="header-name-row">
+            <span className="receipient_name">{i18n('noteToSelf')}</span>
+            {bnsTag}
+          </span>
+        ) : (
+          i18n('noteToSelf')
+        )}
+      </div>
+    );
   }
  
   return (
@@ -468,15 +490,7 @@ const ConversationHeaderTitle = () => {
           >
             {convoName}
           </span>
-          {convoProps?.isBnsHolder && (
-            <span className="bns-tag">
-              BNS
-              {/* dark (Figma 5296:21072): the verified mark after the label; hidden in light */}
-              <span className="bns-tag__mark">
-                <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="#00BC33" />
-              </span>
-            </span>
-          )}
+          {bnsTag}
         </span>
         <SubTxt>
           {isGroup ? (
