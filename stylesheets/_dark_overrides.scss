@@ -9009,3 +9009,17 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 #{$dark} .group-settings .subtle {
   margin-bottom: 16px;
 }
+
+// =================================================================================================
+// Animations (images/animations/*.json via LottieAnimation, from the motion designs / mobile
+// reference video). Each box is sized so the drawing matches the still icon it replaced; the
+// artboards carry their own padding, so some boxes hang past their slot with negative margins.
+// =================================================================================================
+.lottie-animation {
+  line-height: 0;
+  pointer-events: none;
+
+  svg {
+    display: block;
+  }
+}
