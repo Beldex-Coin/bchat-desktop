@@ -2373,7 +2373,8 @@ $dark-composer-h: 60px;
 // Gate screens: password unlock (Figma 71:15363), welcome / onboarding (71:14624 ...)
 // =================================================================================================
 $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1.2px) 0 0 / 12px 12px,
-  radial-gradient(ellipse at 50% 40%, #161616 0%, $dark-ink 70%);
+  // suggestion 9037:52799: a little less grey in the middle (was #161616)
+  radial-gradient(ellipse at 50% 40%, #121212 0%, $dark-ink 70%);
 
 .password-lock,
 .password-subtitle,
@@ -8943,6 +8944,33 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 #{$dark} .composition-container svg,
 #{$dark} .voice-recorder svg {
   overflow: visible;
+}
+
+// ---- Corrections & suggestions (Figma 9037:52715) ----
+// image -> caption: 6px between the picture and the text under it
+#{$dark} .attachment-with-quote {
+  padding-top: 6px !important;
+}
+// pinned message "Read More": room on the left and right instead of a label touching the edges
+#{$dark} .conversation-content .pinned-msg .bchat-button {
+  padding: 0 16px !important;
+}
+// group admin crown: the Figma crown (orange, ink outline) on the avatar's top-end corner
+// (14/45 of the tile, hanging 4px above and 2.5px past it) instead of floating above the middle
+#{$dark} .module-message__author-avatar {
+  position: relative;
+}
+#{$dark} .admin-crown {
+  top: -6px;
+  inset-inline-start: auto;
+  inset-inline-end: 1px; // the wrapper has 4px end padding: 3px past the tile
+  width: 19px;
+  height: 19px;
+  background: url('../images/dark-theme/crown.svg') center / contain no-repeat;
+
+  img {
+    display: none;
+  }
 }
 
 // chat list (suggestion 9037:52799): the pin badge gets a mild grey ring so it doesn't float;

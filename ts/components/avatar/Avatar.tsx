@@ -60,7 +60,7 @@ const CrownWrapper = styled.div`
 
 export const CrownIcon = () => {
   return (
-    <CrownWrapper>
+    <CrownWrapper className="admin-crown">
       <img src="images/bchat/Crown.svg" width={'100%'} height={'100%'}></img>
     </CrownWrapper>
   );
