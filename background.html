@@ -35,12 +35,35 @@
     <div id="root">
       <div class="app-loading-screen">
         <div class="content bchat-full-logo">
-          <img src="images/bchat/splash.gif" class="bchat-brand-logo" />
+          <!-- splash: Lottie animation (images/animations/Splash_desktop.json), drawn into this box -->
+          <div id="bchat-splash" class="bchat-brand-logo"></div>
           <!-- <img src="images/bchat/BChat_text.svg"  width="400px" height="100px" /> -->
         </div>
       </div>
     </div>
     <script type="text/javascript">
+      // Splash animation. It plays until the app replaces the loading screen, then is torn down
+      // so it doesn't keep drawing frames in the background.
+      try {
+        const lottie = require('lottie-web');
+        const splashBox = document.getElementById('bchat-splash');
+        const splash = lottie.loadAnimation({
+          container: splashBox,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: require('./images/animations/Splash_desktop.json'),
+        });
+        const stopSplash = new MutationObserver(() => {
+          if (!document.body.contains(splashBox)) {
+            splash.destroy();
+            stopSplash.disconnect();
+          }
+        });
+        stopSplash.observe(document.getElementById('root'), { childList: true, subtree: true });
+      } catch (e) {
+        console.warn('splash animation could not start', e);
+      }
       require('./ts/mains/main_renderer.js');
     </script>
   </body>

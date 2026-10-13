@@ -891,7 +891,10 @@ $bchat-compose-margin: 20px;
 
   // for bchat style
 
+  // the Lottie splash box (background.html); square like the animation's 700x700 artboard
   .bchat-brand-logo {
+    flex-shrink: 0;
+    width: 450px;
     height: 450px;
     // filter: brightness(0) saturate(100%) invert(75%) sepia(84%) saturate(3272%) hue-rotate(103deg) brightness(106%) contrast(103%);
   }
