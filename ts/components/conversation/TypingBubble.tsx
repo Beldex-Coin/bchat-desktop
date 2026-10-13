@@ -1,6 +1,7 @@
 // import React from 'react';
 
 import { TypingAnimation } from './TypingAnimation';
+import { LottieAnimation, isDarkTheme } from '../basic/LottieAnimation';
 import styled from 'styled-components';
 import { ConversationTypeEnum } from '../../models/conversation';
 
@@ -35,7 +36,12 @@ export const TypingBubble = (props: TypingBubbleProps) => {
 
   return (
     <TypingBubbleContainer {...props}>
-      <TypingAnimation />
+      {isDarkTheme() ? (
+        // dark: the three-square typing animation (images/animations/Typing_indicator.json)
+        <LottieAnimation name="Typing_indicator" className="typing-lottie" />
+      ) : (
+        <TypingAnimation />
+      )}
     </TypingBubbleContainer>
   );
 };
