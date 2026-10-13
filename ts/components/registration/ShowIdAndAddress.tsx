@@ -8,6 +8,7 @@ import { BchatToolTip } from '../leftpane/ActionsPanel';
 import { SpacerLG } from '../basic/Text';
 
 import {CopyIconButton} from '../icon/CopyIconButton';
+import { LottieAnimation } from '../basic/LottieAnimation';
 // import { BchatIconButton } from '../icon/BchatIconButton';
 
 export const DisplayIdAndAddress = (props: any) => (
@@ -73,15 +74,8 @@ export const DisplayIdAndAddress = (props: any) => (
 const LoaderGif = () => {
   return (
     <div className="bchat-registration-loadingGif">
-      <div
-        style={{
-          background: 'url(images/bchat/Load_animation.gif) no-repeat',
-          width: "120px",
-          height: "120px",
-          margin: "0px auto",
-          backgroundSize: "102px"
-        }}
-      ></div>
+      {/* the BChat loading animation (images/animations/Loading_animation.json) */}
+        <LottieAnimation name="Loading_animation" style={{ width: '120px', height: '120px', margin: '0px auto' }} />
     </div>
   );
 };

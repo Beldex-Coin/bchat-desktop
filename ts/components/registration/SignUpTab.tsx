@@ -10,6 +10,7 @@ import { DisplayIdAndAddress, ShowRecoveryPhase } from './ShowIdAndAddress';
 import { StringUtils, ToastUtils } from '../../bchat/utils';
 import { mnDecode } from '../../bchat/crypto/mnemonic';
 import { bchatGenerateKeyPair } from '../../util/accountManager';
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 
 const coreBridgeInstance = require('@bdxi/beldex-app-bridge')
@@ -137,15 +138,8 @@ export const SignUpTab = (props: any) => {
   const LoaderGif = () => {
     return (
       <div className="bchat-registration-loadingGif">
-        <div
-          style={{
-            background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '120px',
-            height: '120px',
-            margin: '0px auto',
-            backgroundSize: '102px',
-          }}
-        ></div>
+        {/* the BChat loading animation (images/animations/Loading_animation.json) */}
+        <LottieAnimation name="Loading_animation" style={{ width: '120px', height: '120px', margin: '0px auto' }} />
       </div>
     );
   };

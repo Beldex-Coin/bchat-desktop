@@ -73,6 +73,7 @@ import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
+import { LottieAnimation } from '../basic/LottieAnimation';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -587,9 +588,6 @@ export const ActionsPanel = () => {
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
   const darkMode = useSelector(getTheme) === 'dark';
-  const imgsrc: any = darkMode
-    ? 'images/bchat/connect_loading_dark.gif'
-    : 'images/bchat/connect_loading_white.gif';
 
   useUnreadBadge();
 
@@ -777,7 +775,7 @@ export const ActionsPanel = () => {
                   <div>{window.i18n('connectingToServer')}</div>
                 </div>
                 <div>
-                  <img src={imgsrc} style={{ width: '30px', height: '30px', display: 'flex' }} />
+                  <LottieAnimation name="Loading_animation" style={{ width: '30px', height: '30px' }} />
                 </div>
               </Flex>
             </div>

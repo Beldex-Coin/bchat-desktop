@@ -23,6 +23,7 @@ import { Flex } from '../basic/Flex';
 import { BchatIcon } from '../icon/BchatIcon';
 import { BchatConfirm } from '../dialog/BchatConfirm';
 import { SpacerMD } from '../basic/Text';
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 // import { BchatIconButton } from '../icon/BchatIconButton';
 const { clipboard } = require('electron');
@@ -233,15 +234,8 @@ export const SignInTab = (props: any) => {
   const LoaderGif = () => {
     return (
       <div className="bchat-registration-loadingGif">
-        <div
-          style={{
-            background: 'url(images/bchat/Load_animation.gif) no-repeat',
-            width: '120px',
-            height: '120px',
-            margin: '0px auto',
-            backgroundSize: '102px',
-          }}
-        ></div>
+        {/* the BChat loading animation (images/animations/Loading_animation.json) */}
+        <LottieAnimation name="Loading_animation" style={{ width: '120px', height: '120px', margin: '0px auto' }} />
       </div>
     );
   };

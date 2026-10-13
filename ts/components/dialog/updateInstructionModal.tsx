@@ -6,6 +6,7 @@ import { getCurrentRecoveryPhrase } from "../../util/storage";
 // import { ToastUtils } from "../../bchat/utils";
 import { sendConfigMessageAndDeleteEverything } from "./DeleteAccountModal";
 import styled from "styled-components";
+import { LottieAnimation } from '../basic/LottieAnimation';
 
 
 
@@ -54,10 +55,7 @@ export default function BchatUpdateInstruntion() {
         {loading &&
             <Loader>
                 <div className="modal-UpdateModal-loader">
-                    <img
-                        src={'images/bchat/Load_animation.gif'}
-                        style={{ width: '150px', height: '150px' }}
-                    />
+                    <LottieAnimation name="Loading_animation" style={{ width: '150px', height: '150px' }} />
                 </div>
             </Loader>}
         <section className="contentUpdateModal">
