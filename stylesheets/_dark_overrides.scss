@@ -8746,3 +8746,104 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     }
   }
 }
+
+// ---- Incoming voice call card (Figma 5296:28715) ----
+// 312x239 -> 416x319 glass card (#0b0b0b @ 75%, #222 hairline); 67.5 -> 90px avatar tile 47px from
+// the top; Inter 16.5 -> 22 name 15px under it; Roboto Mono 10.5 -> 14 green "INCOMING VOICE CALL.."
+// 18px lower; 77x30.5 -> 103x41 Reject (#290f0f on a #ff3e3e hairline) and Accept (#061306 on a
+// #00bc33 hairline) chamfered buttons, Roboto Mono SemiBold 13.5 -> 18, 24px apart, 35px off the bottom.
+$dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+
+#{$dark} .bchat-modal.incoming-call--card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 416px;
+  padding: 47px 20px 35px;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+  border-radius: 0;
+  backdrop-filter: blur(6px);
+
+  .incoming-call__avatar {
+    line-height: 0;
+
+    .module-avatar,
+    .initials-avatar {
+      width: 90px !important;
+      height: 90px !important;
+    }
+    .initials-avatar {
+      font-size: 38px !important;
+    }
+  }
+  .incoming-call__name {
+    max-width: 100%;
+    margin-top: 15px;
+    overflow: hidden;
+    font-family: $dark-font-ui !important;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    color: #ebebeb;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .incoming-call__status {
+    margin-top: 18px;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    line-height: 19px;
+    color: #00bc33;
+    text-transform: uppercase;
+  }
+  .incoming-call__actions {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 27px;
+
+    .hangingBtn--decline,
+    .hangingBtn--accept {
+      width: 103px;
+      height: 41px;
+      padding: 0;
+      border-radius: 0;
+      clip-path: $dark-cut-call-btn;
+
+      // the 0.39px Figma stroke renders as a faint line all round: a 1px edge in the stroke colour
+      // at ~40% on the card (a half-pixel inset came out as a full-bright line along the top)
+      &::before {
+        inset: 1px;
+        clip-path: $dark-cut-call-btn;
+      }
+      &:hover {
+        filter: none;
+        opacity: 1;
+      }
+      .call-label {
+        font-family: $dark-font-data !important;
+        font-size: 18px;
+        font-weight: 600;
+        color: inherit;
+      }
+    }
+    .hangingBtn--decline {
+      background-color: #6b2020 !important;
+      color: #ff3e3e;
+
+      &::before {
+        background-color: #290f0f;
+      }
+    }
+    .hangingBtn--accept {
+      background-color: #056520 !important;
+      color: #00bc33;
+
+      &::before {
+        background-color: #08110a;
+      }
+    }
+  }
+}

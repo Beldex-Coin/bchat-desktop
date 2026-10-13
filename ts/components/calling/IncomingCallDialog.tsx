@@ -11,6 +11,7 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
+import { getTheme } from '../../state/selectors/theme';
 
 
 export const CallWindow = styled.div`
@@ -52,6 +53,8 @@ export const IncomingCallDialog = () => {
   const incomingCallFromPubkey = useSelector(getHasIncomingCallFrom);
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
   const modulatedStr = useModuloWithTripleDots(window.i18n('incoming'), 3, 1000);
+  const modulatedVoiceStr = useModuloWithTripleDots(window.i18n('incomingVoiceCall'), 3, 1000);
+  const isDark = useSelector(getTheme) === 'dark';
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -92,6 +95,40 @@ export const IncomingCallDialog = () => {
 
   if (!hasIncomingCall || !incomingCallFromPubkey) {
      return null;
+  }
+
+  // Dark theme (Figma 5296:28715): glass card - 90px avatar tile, name, green "INCOMING VOICE
+  // CALL..", then Reject / Accept chamfered text buttons
+  if (isDark) {
+    return (
+      <div className="bchat-dialog modal">
+        <div className="bchat-modal incoming-call incoming-call--card">
+          <div className="incoming-call__avatar">
+            <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} isBnsHolder={isBnsHolder} />
+          </div>
+          <div className="incoming-call__name">{from}</div>
+          <div className="incoming-call__status">{modulatedVoiceStr}</div>
+          <div className="incoming-call__actions">
+            <div
+              className="hangingBtn hangingBtn--decline"
+              role="button"
+              aria-label={window.i18n('reject')}
+              onClick={handleDeclineIncomingCall}
+            >
+              <span className="call-label">{window.i18n('reject')}</span>
+            </div>
+            <div
+              className="hangingBtn hangingBtn--accept"
+              role="button"
+              aria-label={window.i18n('accept')}
+              onClick={handleAcceptIncomingCall}
+            >
+              <span className="call-label">{window.i18n('accept')}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (hasIncomingCall) {
