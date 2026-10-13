@@ -10,6 +10,8 @@ import { FixedBaseEmoji, FixedPickerProps } from '../../types/Reaction';
 import { Picker } from 'emoji-mart';
 import { noop } from 'lodash';
 import { loadEmojiPanelI18n } from '../../util/i18n';
+import { darkEmojiCategoryIcons } from './emojiPanelDarkIcons';
+import enEmojiI18n from '@emoji-mart/data/i18n/en.json';
 
 type Props = {
   onEmojiClicked: (emoji: FixedBaseEmoji) => void;
@@ -21,6 +23,151 @@ const pickerProps: FixedPickerProps = {
   showPreview: true,
   autoFocus: true,
   skinTonePosition: 'preview',
+};
+
+// Dark theme composer panel (Figma 71:7429, 321x423 -> 428x564): category tabs on top with a green
+// underline, a square search field, 9 emoji per row at 24px on a 44px pitch, mono section titles,
+// no preview footer or skin-tone picker, two rows of recent emoji.
+const darkComposerPickerProps: FixedPickerProps = {
+  title: '',
+  autoFocus: true,
+  theme: 'dark',
+  perLine: 9,
+  emojiSize: 24,
+  emojiButtonSize: 44,
+  maxFrequentRows: 2,
+  navPosition: 'top',
+  searchPosition: 'sticky',
+  previewPosition: 'none',
+  skinTonePosition: 'none',
+};
+
+// The picker draws inside its own shadow root, so the parts the CSS variables don't reach are
+// styled with a sheet adopted by that root.
+const darkComposerPickerCss = `
+  #root {
+    --padding: 14px;
+    --sidebar-width: 18px;
+    border-radius: 0;
+    background: transparent;
+  }
+  #nav {
+    padding: 21px 18px 12px 14px;
+  }
+  #nav:before {
+    top: auto;
+    bottom: 0;
+    left: 19px;
+    right: auto;
+    width: 381px;
+    height: 1px;
+    background: #444;
+  }
+  #nav .relative {
+    height: 22px;
+    align-items: center;
+  }
+  #nav button {
+    height: 22px;
+    align-items: center;
+    color: rgba(235, 235, 235, 0.4);
+  }
+  #nav button:hover,
+  #nav button[aria-selected] {
+    color: #ebebeb;
+  }
+  #nav svg,
+  #nav img {
+    width: auto;
+    height: auto;
+  }
+  #nav .bar {
+    height: 2px;
+    bottom: -12px;
+    border-radius: 0;
+    background: linear-gradient(90deg, transparent 5px, #00bc33 5px, #00bc33 39px, transparent 39px);
+  }
+  #root > .padding-lr {
+    padding: 0 28px 10px 19px;
+  }
+  .spacer {
+    height: 14px;
+  }
+  .search input,
+  .search button {
+    font-size: 16px;
+  }
+  .search input[type='search'] {
+    height: 50px;
+    padding: 0 44px 0 47px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 0;
+    font-family: 'Roboto Mono', monospace;
+    color: #ebebeb;
+  }
+  .search input[type='search']:focus {
+    background: #1a1a1a;
+    border-color: #555;
+    box-shadow: none;
+  }
+  .search input[type='search']::placeholder {
+    color: #737373;
+    opacity: 1;
+    text-transform: uppercase;
+  }
+  .search .icon {
+    color: #acacac;
+  }
+  .search .loupe {
+    left: 16px;
+  }
+  .search .loupe svg {
+    width: 18px;
+    height: 18px;
+  }
+  .search .delete {
+    right: 16px;
+  }
+  .sticky {
+    padding: 5px 10px 6px;
+    background-color: rgba(11, 11, 11, 0.92);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #ebebeb;
+  }
+  .category button .background {
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  .scroll::-webkit-scrollbar {
+    width: 18px;
+  }
+  .scroll::-webkit-scrollbar-thumb,
+  .scroll:hover::-webkit-scrollbar-thumb,
+  .scroll::-webkit-scrollbar-thumb:hover {
+    min-height: 92px;
+    background-color: #333 !important;
+    background-clip: padding-box;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-right: 9px solid transparent;
+    border-radius: 0;
+  }
+`;
+
+const adoptDarkComposerCss = (picker: HTMLElement) => {
+  const root = picker.shadowRoot as (ShadowRoot & { adoptedStyleSheets: Array<CSSStyleSheet> }) | null;
+  if (!root) {
+    return;
+  }
+  const sheet = new CSSStyleSheet() as CSSStyleSheet & { replaceSync: (text: string) => void };
+  sheet.replaceSync(darkComposerPickerCss);
+  root.adoptedStyleSheets = [...root.adoptedStyleSheets, sheet];
 };
 
 export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 'dark' }>`
@@ -189,14 +336,23 @@ export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, 
             return;
           }
 
-          new Picker({
+          const darkComposer = theme === 'dark' && !isModal;
+          // Figma titles the recent row "Recently Used" (emoji-mart's English says "Frequently used")
+          const pickerI18n =
+            darkComposer && !i18n
+              ? { ...enEmojiI18n, categories: { ...enEmojiI18n.categories, frequent: 'Recently Used' } }
+              : i18n;
+          const picker = new Picker({
             data,
             ref,
-            i18n,
+            i18n: pickerI18n,
             onEmojiSelect: onEmojiClicked,
-            ...pickerProps,
-            categoryIcons,
-          });
+            ...(darkComposer ? darkComposerPickerProps : pickerProps),
+            categoryIcons: darkComposer ? darkEmojiCategoryIcons : categoryIcons,
+          }) as unknown as HTMLElement;
+          if (darkComposer) {
+            adoptDarkComposerCss(picker);
+          }
         })
         .catch(noop);
     }
@@ -209,7 +365,7 @@ export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, 
     <StyledEmojiPanel
       isModal={isModal}
       theme={theme}
-      className={classNames(show && 'show','emoji-panel')}
+      className={classNames(show && 'show', 'emoji-panel', !isModal && 'emoji-panel--composer')}
       ref={ref}
     />
   );

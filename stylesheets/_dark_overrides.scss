@@ -8717,3 +8717,32 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     height: 30px !important;
   }
 }
+
+// ---- Emoji panel above the composer (Figma 71:7429) ----
+// 321x423 -> 428x564 glass card (#0b0b0b @ 75%, #444 hairline, square corners), left edge on the
+// input box and 5.25 -> 7px above it; no pointer arrow. The inside of the picker (tabs, search,
+// grid, titles, scrollbar) is styled from BchatEmojiPanel.tsx - it lives in a shadow root.
+#{$dark} .composition-container {
+  position: relative;
+}
+#{$dark} .emoji-panel--composer {
+  &.show {
+    position: absolute;
+    inset-inline-start: 20px;
+    bottom: calc(100% + 7px);
+    padding: 0;
+  }
+  em-emoji-picker {
+    height: 564px;
+    padding: 0;
+    background: rgba(11, 11, 11, 0.75);
+    border: 1px solid #444;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: blur(12px);
+
+    &::after {
+      display: none;
+    }
+  }
+}

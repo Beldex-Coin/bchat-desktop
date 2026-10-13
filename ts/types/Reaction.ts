@@ -58,6 +58,7 @@ export interface FixedPickerProps {
   title?: string | undefined;
   theme?: 'auto' | 'light' | 'dark' | undefined;
   perLine?: number | undefined;
+  emojiSize?: number | undefined;
   stickySearch?: boolean | undefined;
   searchPosition?: 'sticky' | 'static' | 'none' | undefined;
   emojiButtonSize?: number | undefined;
