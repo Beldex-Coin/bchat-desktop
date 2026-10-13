@@ -24,6 +24,7 @@ import {  SpacerXS } from '../basic/Text';
 import { Flex } from '../basic/Flex';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { getSodiumRenderer } from '../../bchat/crypto';
+import { LottieAnimation, isDarkTheme } from '../basic/LottieAnimation';
 
 interface State {
   profileName: string;
@@ -199,6 +200,11 @@ export class EditProfileDialog extends React.Component<{}, State> {
         <div className="avatar-center" style={{ marginInlineStart: "25px" }}>
           <div className="avatar-center-inner">
             {this.renderAvatar()}
+            {/* dark: a verified account's rosette is drawn in with its ring
+                (images/animations/BNS_Tick.json) in place of the still badge */}
+            {isDarkTheme() && !!this.convo?.attributes?.isBnsHolder && (
+              <LottieAnimation name="BNS_Tick" loop={false} className="profile-bns-tick" />
+            )}
             <div
               className="image-upload-section"
               role="button"

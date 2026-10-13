@@ -9091,3 +9091,20 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   inset: 0;
   z-index: 10000;
 }
+// profile popup: the verified rosette drawn in with its ring (60 artboard, rosette ~35%) over the
+// avatar's bottom-end corner, where the still badge sat
+#{$dark} .edit-profile-dialog {
+  .avatar-center-inner .module-avatar-verify-wrapper-verify-tag {
+    visibility: hidden;
+  }
+  // Figma: 30px rosette with a 2px dark edge, centred 98px across / 96px down the 100px avatar
+  // (rosette is 20.6 of the 60 artboard -> 87px box)
+  .profile-bns-tick {
+    position: absolute;
+    top: 52px;
+    left: 55px;
+    width: 87px;
+    height: 87px;
+    z-index: 3;
+  }
+}
