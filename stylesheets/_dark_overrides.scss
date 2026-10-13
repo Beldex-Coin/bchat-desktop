@@ -6767,13 +6767,16 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
       &::before {
         background-color: #111;
       }
-      // red dot shown on hover (a flex item ahead of the label)
+      // red dot shown on hover, 12px ahead of the label; the negative start margin cancels its
+      // 21px so the label stays centred and does not move when the dot appears
       &::after {
         content: '';
         order: -1;
         display: none;
+        flex-shrink: 0;
         width: 9px;
         height: 9px;
+        margin-inline-start: -21px;
         margin-inline-end: 12px;
         border-radius: 50% !important;
         background: $dark-danger;
