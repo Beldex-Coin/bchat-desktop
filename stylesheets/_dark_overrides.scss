@@ -3279,8 +3279,9 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   .group-settings-header-avatarBox {
     margin-top: 24px;
 
+    // suggestion 9037:52864: less room between the group picture and its name
     p {
-      margin-top: 18px;
+      margin-top: 8px;
       font-family: $dark-font-ui !important;
       font-size: 18px;
       font-weight: 600;
@@ -3482,11 +3483,12 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     width: 100% !important;
     margin-bottom: 4px;
 
+    // suggestion 9037:52864: the label no longer touches the ends - 20px each side, width to fit
     .bchat-button {
-      width: 183px;
-      min-width: 0;
+      width: auto;
+      min-width: 183px;
       height: 43px;
-      padding: 0 14px;
+      padding: 0 20px;
       font-family: $dark-font-data !important;
       font-size: 16px;
       font-weight: 600;
@@ -8995,4 +8997,15 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   .module-conversation-list-item_unread-count_wrapper {
     margin-inline-start: auto;
   }
+}
+
+// buttons with a leading icon (Show QR, Delete Messages, Leave Group...): 10px between the icon and
+// the label instead of 5px (suggestion 9037:52864)
+#{$dark} .bchat-button > span:has(svg) {
+  display: inline-flex;
+  margin-inline-end: 10px !important;
+}
+// group info: some room under "287 members" before the Delete Messages / Leave button
+#{$dark} .group-settings .subtle {
+  margin-bottom: 16px;
 }
