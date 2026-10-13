@@ -21,7 +21,7 @@ export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
       {darkMode ? (
         // Dark theme (Figma 5296:30566 "Attach"): the "Add New" glyph - a thin outlined square with a
         // "+" in it - on its own, no box behind it (the box only appears on hover / menu open)
-        <svg className="attachment-box__glyph" viewBox="0 0 11.77 11.77" aria-hidden="true">
+        <svg className="attachment-box__glyph" viewBox="-0.4 -0.4 12.57 12.57" aria-hidden="true">
           <path
             fillRule="evenodd"
             d="M0 0V11.769H11.769V0H0ZM0.692 0.692H11.077V11.077H0.692V0.692ZM5.525 2.783V5.538H2.769V6.231H5.525V8.986H6.217V6.231H8.973V5.538H6.217V2.783H5.525Z"
@@ -53,10 +53,11 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
     const darkMode = useSelector(getTheme) === 'dark';
     return (
       <BchatIconButton
-        iconType="emoji"
+        // dark (suggestion 9037:52750): the square smiley, a little bigger than the attach box glyph
+        iconType={darkMode ? 'emojiSquare' : 'emoji'}
         ref={ref}
-        iconColor={darkMode ?'#A7A7BA': '#ACACAC'}
-        iconSize={'huge'}
+        iconColor="#ACACAC"
+        iconSize={darkMode ? 24 : 'huge'}
         // borderRadius="300px"
      
         // iconPadding="6px"

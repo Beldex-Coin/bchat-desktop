@@ -1946,9 +1946,10 @@ $dark-composer-h: 60px;
     background: transparent;
     border: 0.5px solid transparent;
 
+    // suggestion 9037:52732: "a little bigger" - Add New 15.9/22 at 1440 -> 21px glyph
     .attachment-box__glyph {
-      width: 16px;
-      height: 16px;
+      width: 22px;
+      height: 22px;
     }
     // Figma "Rectangle 913": the square's top-right corner is cut (20 of 24 along the top)
     clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
@@ -2136,10 +2137,11 @@ $dark-composer-h: 60px;
     font-size: 16px;
     color: #ebebeb;
   }
+  // record_1 (suggestion 9037:52892): 25.5 -> 34px squares 7.5 -> 10px apart
   .voice-recorder__actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   .voice-recorder__btn {
     display: flex;
@@ -3948,13 +3950,13 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 #{$dark} .module-attachments__rail {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   margin: 12px 0 8px;
   padding: 12px;
   background: #0e0e0e;
   border: 1px solid $dark-hair;
 
-  // thumbnails 10px apart, the "+" 16px after the last one (the base 20px wrapper margin plus the
+  // thumbnails 10px apart, the "+" 8px after the last one (the base 20px wrapper margin plus the
   // last thumbnail's own margin left a ~40px hole before it)
   .module-inner-img-wrapper {
     display: flex;
@@ -8885,6 +8887,15 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
       }
     }
   }
+}
+
+// ---- Composer / voice note icons at browser zoom below 100% ----
+// The glyphs are drawn edge to edge in tight view boxes (and the play / pause marks are rows of
+// sub-pixel dots), so at 80% zoom the outer strokes fell outside the svg box and were cut off.
+// Let them paint past the box; the play, pause and recording marks are also a little larger.
+#{$dark} .composition-container svg,
+#{$dark} .voice-recorder svg {
+  overflow: visible;
 }
 
 // chat list (suggestion 9037:52799): the pin badge gets a mild grey ring so it doesn't float;

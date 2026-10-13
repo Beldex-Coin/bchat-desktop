@@ -139,12 +139,12 @@ export class BchatRecording extends React.Component<Props, State> {
               <div className="voice-recorder__status">
                 {isRecording ? (
                   <>
-                    <BchatIcon iconType="recordingDot" iconSize={16} iconColor="#FF3E3E" />
+                    <BchatIcon iconType="recordingDot" iconSize={18} iconColor="#FF3E3E" />
                     <span className="voice-recorder__time">{displayTimeString}</span>
                   </>
                 ) : hasRecording ? (
                   <>
-                    <BchatIcon iconType="recordMicrophone" iconSize={18} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="recordMicrophone" iconSize={20} iconColor="#EBEBEB" />
                     <span className="voice-recorder__time">
                       {displayTimeString + remainingTimeString}
                     </span>
@@ -169,7 +169,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     onClick={actionPauseFn}
                   >
                     {/* Figma 5296:20839: the dotted two-bar pause glyph */}
-                    <BchatIcon iconType="pause" iconSize={13} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="pause" iconSize={16} iconColor="#EBEBEB" />
                   </button>
                 )}
                 {actionPauseAudio && hasRecording && (
@@ -178,7 +178,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     className="voice-recorder__btn voice-recorder__btn--light"
                     onClick={actionPauseFn}
                   >
-                    <BchatIcon iconType="pause" iconSize={13} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="pause" iconSize={16} iconColor="#EBEBEB" />
                   </button>
                 )}
                 {hasRecordingAndPaused && hasRecording && (
@@ -187,7 +187,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     className="voice-recorder__btn voice-recorder__btn--play"
                     onClick={() => void this.playAudio()}
                   >
-                    <BchatIcon iconType="recordPlay" iconSize={17} iconColor="#00BC33" />
+                    <BchatIcon iconType="recordPlay" iconSize={20} iconColor="#00BC33" />
                   </button>
                 )}
               </div>
