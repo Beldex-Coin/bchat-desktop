@@ -5708,14 +5708,26 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     justify-content: center;
     margin: 0 !important;
   }
+  // Figma 5296:24786: 75 -> 100px avatar tile centred on the card (initials Inter SemiBold
+  // 26.25 -> 35); the 27 -> 36px image / remove squares hang 10px off its right edge, centred on it
   .avatar-center-inner {
     position: relative;
+    line-height: 0;
 
+    .module-avatar,
+    .initials-avatar {
+      width: 100px !important;
+      height: 100px !important;
+    }
+    .initials-avatar {
+      font-size: 35px !important;
+    }
     > div:last-child {
       position: absolute;
-      top: 33px;
-      left: calc(100% + 11px);
+      top: 32px;
+      left: calc(100% + 10px);
       flex-direction: row !important;
+      align-items: flex-start !important;
       gap: 6px;
       width: auto !important;
     }
@@ -5734,10 +5746,12 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
   }
 
   // name + green pencil, or the inline name field while editing
+  // Figma 5296:24775: Inter SemiBold 15 -> 20 name 14px under the avatar, the 13.7 -> 18px green
+  // pencil 7px after it; the pair centred on the card
   .profile-name-uneditable {
     display: flex;
     justify-content: center;
-    margin-top: 13px;
+    margin-top: 14px;
 
     > div {
       width: auto !important;

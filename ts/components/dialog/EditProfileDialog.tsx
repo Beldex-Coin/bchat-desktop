@@ -294,8 +294,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <span className="dark-only-inline">
               <BchatIconButton
                 iconType="pencil"
-                iconSize={16}
-                padding="0 6px"
+                iconSize={18}
+                padding="0 0 0 7px"
                 iconColor="#00BC33"
                 onClick={() => {
                   this.setState({ mode: 'edit' });
