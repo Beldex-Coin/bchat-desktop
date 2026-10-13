@@ -230,6 +230,7 @@ export class ConversationController {
       // });
       // await conversation.commit();
       await removeConversation(id);
+      conversation.clearMuteExpiryTimer();
       this.conversations.remove(conversation);
       window.inboxStore?.dispatch(conversationActions.conversationRemoved(conversation.id));
     } else {
@@ -238,6 +239,7 @@ export class ConversationController {
       await removeConversation(id);
       window.log.info(`deleteContact !isPrivate, convo removed from DB: ${id}`);
 
+      conversation.clearMuteExpiryTimer();
       this.conversations.remove(conversation);
       // this.conversations.remove(id);
 
@@ -259,6 +261,7 @@ export class ConversationController {
   }
 
   public unsafeDelete(convo: ConversationModel) {
+    convo.clearMuteExpiryTimer();
     this.conversations.remove(convo);
   }
 

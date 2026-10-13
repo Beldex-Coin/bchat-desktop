@@ -125,6 +125,8 @@ export interface ConversationAttributes {
   triggerNotificationsFor: ConversationNotificationSettingType;
   /** while in the future, notifications are muted whatever triggerNotificationsFor is */
   mutedUntil?: number;
+  /** the length of the running timed mute as picked in the menu (8 hours, 24 hours, 1 week) */
+  mutedForMs?: number;
   isTrustedForAttachmentDownload: boolean;
   isPinned: boolean;
   isApproved: boolean;
@@ -168,6 +170,7 @@ export interface ConversationAttributesOptionals {
   profileKey?: string;
   triggerNotificationsFor?: ConversationNotificationSettingType;
   mutedUntil?: number;
+  mutedForMs?: number;
   isTrustedForAttachmentDownload?: boolean;
   isPinned: boolean;
   isApproved?: boolean;
@@ -399,6 +402,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     const expireTimer = this.get('expireTimer');
     const currentNotificationSetting = this.getEffectiveNotificationSetting();
     const mutedUntil = this.getActiveMutedUntil();
+    const mutedForMs = mutedUntil ? this.get('mutedForMs') : undefined;
 
     // To reduce the redux store size, only set fields which cannot be undefined.
     // For instance, a boolean can usually be not set if false, etc
@@ -508,6 +512,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
 
     if (mutedUntil) {
       toRet.mutedUntil = mutedUntil;
+    }
+    if (mutedForMs) {
+      toRet.mutedForMs = mutedForMs;
     }
 
     const lastMessageText = this.get('lastMessage');
@@ -1193,10 +1200,7 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
    * only updates on a refresh: do one when the timed mute ends. Call it whenever mutedUntil changes.
    */
   public scheduleMuteExpiryRefresh() {
-    if (this.muteExpiryTimer) {
-      global.clearTimeout(this.muteExpiryTimer);
-      this.muteExpiryTimer = null;
-    }
+    this.clearMuteExpiryTimer();
     const mutedUntil = this.getActiveMutedUntil();
     if (!mutedUntil) {
       return;
@@ -1213,6 +1217,14 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
       }
       this.triggerUIRefresh();
     }, Math.min(delay, maxCheckInterval));
+  }
+
+  /** Stops the timed mute check, for instance when this conversation is removed. */
+  public clearMuteExpiryTimer() {
+    if (this.muteExpiryTimer) {
+      global.clearTimeout(this.muteExpiryTimer);
+      this.muteExpiryTimer = null;
+    }
   }
 
   public triggerUIRefresh() {
@@ -1735,8 +1747,9 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
    * Notifications.addNotification (its own debounced display update).
    */
   public notifyIncomingMessage(message: MessageModel) {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    void this.notify(message);
+    this.notify(message).catch(e => {
+      window?.log?.warn('notifyIncomingMessage failed:', e?.message || e);
+    });
   }
 
   public async notify(message: MessageModel) {
@@ -1745,34 +1758,8 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
     }
     const conversationId = this.id;
 
-    let friendRequestText;
-    if (!this.isApproved()) {
-      window?.log?.info('notification cancelled for unapproved convo', this.idForLogging());
-      const hadNoRequestsPrior =
-        getConversationController()
-          .getConversations()
-          .filter(conversation => {
-            return (
-              !conversation.isApproved() &&
-              !conversation.isBlocked() &&
-              conversation.isPrivate() &&
-              !conversation.isMe()
-            );
-          }).length === 1;
-      const isFirstMessageOfConvo =
-        (await getMessagesByConversation(this.id, { messageId: null })).length === 1;
-      if (hadNoRequestsPrior && isFirstMessageOfConvo) {
-        friendRequestText = window.i18n('youHaveANewFriendRequest');
-      } else {
-        window?.log?.info(
-          'notification cancelled for as pending requests already exist',
-          this.idForLogging()
-        );
-        return;
-      }
-    }
-
-    // make sure the notifications are not muted for this convo (and not the source convo)
+    // the cheap checks first: every incoming message comes through here, so skip the database
+    // and avatar work below when the convo is muted (and not the source convo)
     const convNotif = this.getEffectiveNotificationSetting();
     if (convNotif === 'disabled') {
       window?.log?.info('notifications disabled for convo', this.idForLogging());
@@ -1795,6 +1782,35 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
           conversationId
         );
 
+        return;
+      }
+    }
+
+    let friendRequestText;
+    if (!this.isApproved()) {
+      window?.log?.info('notification cancelled for unapproved convo', this.idForLogging());
+      const hadNoRequestsPrior =
+        getConversationController()
+          .getConversations()
+          .filter(conversation => {
+            return (
+              !conversation.isApproved() &&
+              !conversation.isBlocked() &&
+              conversation.isPrivate() &&
+              !conversation.isMe()
+            );
+          }).length === 1;
+      // only read this convo's messages when it is the only request
+      const isFirstMessageOfConvo =
+        hadNoRequestsPrior &&
+        (await getMessagesByConversation(this.id, { messageId: null })).length === 1;
+      if (hadNoRequestsPrior && isFirstMessageOfConvo) {
+        friendRequestText = window.i18n('youHaveANewFriendRequest');
+      } else {
+        window?.log?.info(
+          'notification cancelled for as pending requests already exist',
+          this.idForLogging()
+        );
         return;
       }
     }

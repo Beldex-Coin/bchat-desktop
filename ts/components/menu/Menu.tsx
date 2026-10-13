@@ -14,6 +14,7 @@ import {
   useIsPrivate,
   useIsPublic,
   useIsRequest,
+  useMutedForMs,
   useMutedUntil,
   useNotificationSetting,
   useWeAreAdmin,
@@ -540,6 +541,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
   const isRequest = useIsRequest(convoId);
   const currentNotificationSetting = useNotificationSetting(convoId);
   const mutedUntil = useMutedUntil(convoId);
+  const mutedForMs = useMutedForMs(convoId);
   const isMe = useIsMe(convoId);
 
   if (
@@ -567,16 +569,18 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
         onClick: async () => setNotificationForConvoId(convoId, n),
       };
     });
-    // while a timed mute runs, highlight the duration currently in effect. we only persist the
-    // mute end time, so infer the bucket from the remaining time (durations are sorted ascending).
+    // while a timed mute runs, highlight the length that was picked. A mute started before that
+    // was saved only has its end time: fall back to the remaining time (durations are ascending).
     const remainingMuteMs = mutedUntil ? mutedUntil - Date.now() : 0;
     const muteOptions = timedMuteDurations.map(({ key, durationMs }, index) => {
       const prevDurationMs = index > 0 ? timedMuteDurations[index - 1].durationMs : 0;
+      const isPicked = mutedForMs
+        ? mutedForMs === durationMs
+        : remainingMuteMs > prevDurationMs && remainingMuteMs <= durationMs;
       return {
         key,
         name: window.i18n(key),
-        selected:
-          Boolean(mutedUntil) && remainingMuteMs > prevDurationMs && remainingMuteMs <= durationMs,
+        selected: Boolean(mutedUntil) && isPicked,
         onClick: async () => muteConversationFor(convoId, durationMs),
       };
     });

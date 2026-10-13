@@ -306,6 +306,8 @@ export interface ReduxConversationType {
   currentNotificationSetting?: ConversationNotificationSettingType;
   /** only set while a timed mute runs */
   mutedUntil?: number;
+  /** the length picked for the running timed mute */
+  mutedForMs?: number;
 
   isPinned?: boolean;
   isApproved?: boolean;

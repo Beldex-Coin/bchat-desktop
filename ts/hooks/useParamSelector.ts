@@ -99,6 +99,12 @@ export function useMutedUntil(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
   return convoProps?.mutedUntil;
 }
+
+/** the length picked for the running timed mute of this conversation */
+export function useMutedForMs(convoId?: string) {
+  const convoProps = useConversationPropsById(convoId);
+  return convoProps?.mutedForMs;
+}
 export function useIsPublic(convoId?: string) {
   const convoProps = useConversationPropsById(convoId);
   return Boolean(convoProps && convoProps.isPublic);

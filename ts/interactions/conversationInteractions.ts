@@ -393,7 +393,11 @@ export async function setNotificationForConvoId(
   const existingSettings = conversation.get('triggerNotificationsFor');
   // picking a setting also ends a timed mute
   if (existingSettings !== selected || conversation.get('mutedUntil')) {
-    conversation.set({ triggerNotificationsFor: selected, mutedUntil: undefined });
+    conversation.set({
+      triggerNotificationsFor: selected,
+      mutedUntil: undefined,
+      mutedForMs: undefined,
+    });
     conversation.scheduleMuteExpiryRefresh();
     await conversation.commit();
   }
@@ -401,12 +405,18 @@ export async function setNotificationForConvoId(
 
 /**
  * Mutes the notifications of this conversation for durationMs. Its notification setting is kept
- * and applies again once the mute ends.
+ * and applies again once the mute ends - except "Always" (disabled): a timed mute replaces it, so
+ * notifications come back as all when the mute ends.
  */
 export async function muteConversationFor(conversationId: string, durationMs: number) {
   const conversation = getConversationController().get(conversationId);
+  const existing = conversation.get('triggerNotificationsFor');
 
-  conversation.set({ mutedUntil: Date.now() + durationMs });
+  conversation.set({
+    mutedUntil: Date.now() + durationMs,
+    mutedForMs: durationMs,
+    ...(existing === 'disabled' ? { triggerNotificationsFor: 'all' } : {}),
+  });
   conversation.scheduleMuteExpiryRefresh();
   await conversation.commit();
 }

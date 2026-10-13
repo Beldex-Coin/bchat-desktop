@@ -22,7 +22,7 @@ describe('timed mute', () => {
     Sinon.stub(UserUtils, 'getOurPubKeyStrFromCache').returns(TestUtils.generateFakePubKeyStr());
     TestUtils.stubData('saveConversation').resolves();
     TestUtils.stubData('updateConversation').resolves();
-    clock = Sinon.useFakeTimers({ now: 1_000_000_000_000, toFake: ['Date', 'setTimeout'] });
+    clock = Sinon.useFakeTimers({ now: 1_000_000_000_000, toFake: ['Date', 'setTimeout', 'clearTimeout'] });
   });
 
   afterEach(() => {
@@ -76,6 +76,20 @@ describe('timed mute', () => {
       expect(props.mutedUntil).to.equal(undefined);
     });
 
+    it('keeps the picked length while the timed mute runs, and drops it after', () => {
+      const props = makeConvo({
+        mutedUntil: Date.now() + HOUR,
+        mutedForMs: 24 * HOUR,
+      }).getConversationModelProps();
+      const expired = makeConvo({
+        mutedUntil: Date.now() - 1,
+        mutedForMs: 24 * HOUR,
+      }).getConversationModelProps();
+
+      expect(props.mutedForMs).to.equal(24 * HOUR);
+      expect(expired.mutedForMs).to.equal(undefined);
+    });
+
     it('refreshes the UI when the timed mute ends', () => {
       const convo = makeConvo({ mutedUntil: Date.now() + HOUR });
       const refresh = Sinon.stub(convo, 'triggerUIRefresh');
@@ -111,6 +125,16 @@ describe('timed mute', () => {
       clock.tick(60 * 1000);
 
       expect(refresh.called).to.equal(true);
+    });
+
+    it('stops checking the timed mute once the timer is cleared (convo removed)', () => {
+      const convo = makeConvo({ mutedUntil: Date.now() + HOUR });
+      const refresh = Sinon.stub(convo, 'triggerUIRefresh');
+
+      convo.clearMuteExpiryTimer();
+      clock.tick(HOUR + 60 * 1000);
+
+      expect(refresh.called).to.equal(false);
     });
   });
 
@@ -172,6 +196,29 @@ describe('timed mute', () => {
       expect(notifyStub.firstCall.args[0]).to.equal(first);
       expect(notifyStub.secondCall.args[0]).to.equal(second);
     });
+
+    it('logs a failed notification instead of leaving the error unhandled', async () => {
+      const convo = makeConvo();
+      Sinon.stub(convo, 'notify').rejects(new Error('boom'));
+      const warn = Sinon.stub(window.log, 'warn');
+
+      convo.notifyIncomingMessage(incomingMessage());
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(warn.calledOnce).to.equal(true);
+      expect(warn.firstCall.args[1]).to.equal('boom');
+    });
+
+    it('skips the message request lookups when the convo is muted', async () => {
+      const convo = makeConvo({ isApproved: false, mutedUntil: Date.now() + HOUR });
+      const getConversations = Sinon.spy(getConversationController(), 'getConversations');
+
+      await convo.notify(incomingMessage());
+
+      expect(getConversations.called).to.equal(false);
+      expect(addNotification.called).to.equal(false);
+    });
   });
 
   describe('setting it', () => {
@@ -187,6 +234,28 @@ describe('timed mute', () => {
 
       expect(convo.get('mutedUntil')).to.equal(Date.now() + 2 * HOUR);
       expect(convo.get('triggerNotificationsFor')).to.equal('mentions_only');
+    });
+
+    it('saves the picked length, and clears it when a notification setting is picked', async () => {
+      await muteConversationFor(convo.id, 24 * HOUR);
+      expect(convo.get('mutedForMs')).to.equal(24 * HOUR);
+
+      // 20 hours later the menu must still show "24 hours", not a shorter length
+      clock.tick(20 * HOUR);
+      expect(convo.getConversationModelProps().mutedForMs).to.equal(24 * HOUR);
+
+      await setNotificationForConvoId(convo.id, 'all');
+      expect(convo.get('mutedForMs')).to.equal(undefined);
+    });
+
+    it('ends a timed mute started from "Always" with notifications on', async () => {
+      convo.set({ triggerNotificationsFor: 'disabled' });
+
+      await muteConversationFor(convo.id, 8 * HOUR);
+      expect(convo.getEffectiveNotificationSetting()).to.equal('disabled');
+
+      clock.tick(8 * HOUR + 1);
+      expect(convo.getEffectiveNotificationSetting()).to.equal('all');
     });
 
     it('clears a timed mute when a notification setting is picked', async () => {
