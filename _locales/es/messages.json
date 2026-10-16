@@ -102,7 +102,7 @@
   "error": "Error",
   "delete": "Eliminar",
   "messageDeletionForbidden": "No tienes permiso para eliminar los mensajes de otros",
-  "deleteJustForMe": "Eliminar mensaje para mí",
+  "deleteJustForMe": "Eliminar para mí",
   "deleteForEveryone": "Eliminar para todos",
   "deleteForMeAndRecipient": "Eliminar para mí y $recipientName$",
   "deleteForMeDescription": "Esto no afectará a nadie.",

@@ -107,7 +107,7 @@
   "error": "Hata",
   "delete": "Sil",
   "messageDeletionForbidden": "Başkalarının mesajlarını silme izniniz yok",
-  "deleteJustForMe": "Mesajı benim için sil",
+  "deleteJustForMe": "Benden sil",
   "deleteForEveryone": "Herkes İçin Sil",
   "deleteForMeAndRecipient": "Sadece benim için sil Benim için ve $recipientName$ için sil İptal",
   "deleteForMeDescription": "Bu kimseyi etkilemeyecek.",

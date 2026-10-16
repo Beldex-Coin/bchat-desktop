@@ -169,7 +169,7 @@ export const RingingLabel = ({ isOutSideInConvo }: RingingLabelProps) => {
   if (!ongoingCallWithFocusedIsRinging) {
     return null;
   }
-  return <StyledCenteredLabel>{modulatedStr}</StyledCenteredLabel>;
+  return <StyledCenteredLabel className="call-status call-status--pending">{modulatedStr}</StyledCenteredLabel>;
 };
 
 export const ConnectingLabel = () => {
@@ -180,7 +180,7 @@ export const ConnectingLabel = () => {
     return null;
   }
 
-  return <StyledCenteredLabel>{modulatedStr}</StyledCenteredLabel>;
+  return <StyledCenteredLabel className="call-status call-status--pending">{modulatedStr}</StyledCenteredLabel>;
 };
 
 export const DurationLabel = (props: { isVideoCall?: boolean; isDraggable?: boolean }) => {
@@ -202,11 +202,12 @@ export const DurationLabel = (props: { isVideoCall?: boolean; isDraggable?: bool
   const ms = callDuration * 1000;
   const d = moment.duration(ms);
 
-  const dateString = Math.floor(d.asHours()) + moment.utc(ms).format(':mm:ss');
+    const hours = Math.floor(d.asHours());
+  const dateString = (hours > 0 ? `${hours}:` : '') + moment.utc(ms).format('mm:ss');
   if (isDraggable && isVideoCall) {
     return <StyledVideoCallLabel>{dateString}</StyledVideoCallLabel>;
   }
-  return <StyledCenteredLabel>{dateString}</StyledCenteredLabel>;
+  return <StyledCenteredLabel className="call-status">{dateString}</StyledCenteredLabel>;
 };
 
 const StyledSpinner = styled.div<{ fullWidth: boolean }>`
@@ -237,7 +238,8 @@ export const InConversationCallContainer = () => {
   const videoRefLocal = useRef<HTMLVideoElement>(null);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const conversation = getConversationController().get(ourPubkey);
-  const avatarBgColor = useSelector(getTheme) === 'dark'?'#131313':'#FFF';
+  const isDark = useSelector(getTheme) === 'dark';
+  const avatarBgColor = isDark ? '#131313' : '#FFF';
 
   const [isCallModalExpandView, setIsCallModalExpandView] = useState(false);
   const [isPortrait,setPortrait]=useState(false)
@@ -318,6 +320,84 @@ export const InConversationCallContainer = () => {
     return memberName;
   };
   const isJustifyCenter =(!remoteStreamVideoIsMuted || !localStreamVideoIsMuted)
+
+  if (isDark) {
+    const hasRemoteVideo = !remoteStreamVideoIsMuted;
+    const hasLocalVideo = !localStreamVideoIsMuted;
+    const remoteName = validateMemberName(
+      selectedConversation?.profileName || selectedConversation?.id
+    );
+
+    return (
+      <div
+        className={classNames(
+          'call-card',
+          isCallModalExpandView ? 'call-card--expanded' : 'call-card--compact',
+          hasRemoteVideo && 'call-card--remote-video',
+          hasLocalVideo && 'call-card--local-video'
+        )}
+      >
+        <div className="call-card__toggle">
+          <BchatIconButton
+            iconType={isCallModalExpandView ? 'callCardCompress' : 'callCardExpand'}
+            iconSize={isCallModalExpandView ? 26 : 24}
+            onClick={() => setIsCallModalExpandView(!isCallModalExpandView)}
+          />
+        </div>
+        <div className="call-card__stage">
+          <StyledVideoElement
+            className="call-card__remote-video"
+            ref={videoRefRemote}
+            autoPlay={true}
+            isVideoMuted={remoteStreamVideoIsMuted}
+          />
+          {!hasRemoteVideo && (
+            <div className="call-card__person call-card__person--remote">
+              <Avatar
+                size={AvatarSize.XL}
+                pubkey={ongoingCallPubkey}
+                isBnsHolder={selectedConversation?.isBnsHolder}
+              />
+              <div className="call-card__name">{remoteName}</div>
+            </div>
+          )}
+          <div className="call-card__self">
+            <StyledVideoElement
+              ref={videoRefLocal}
+              autoPlay={true}
+              muted={true}
+              isVideoMuted={localStreamVideoIsMuted}
+            />
+            {!hasLocalVideo && (
+              <div className="call-card__person">
+                <Avatar
+                  size={AvatarSize.XL}
+                  pubkey={ourPubkey}
+                  isBnsHolder={conversation?.attributes?.isBnsHolder}
+                />
+                <div className="call-card__name">
+                  {validateMemberName(conversation.attributes.profileName)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <CallWindowControls
+          currentConnectedAudioInputs={currentConnectedAudioInputs}
+          currentConnectedCameras={currentConnectedCameras}
+          isAudioMuted={isAudioMuted}
+          currentConnectedAudioOutputs={currentConnectedAudioOutputs}
+          isAudioOutputMuted={isAudioOutputMuted}
+          localStreamVideoIsMuted={localStreamVideoIsMuted}
+          remoteStreamVideoIsMuted={remoteStreamVideoIsMuted}
+          isFullScreen={isInFullScreen}
+          selectedName={remoteName}
+          isCallModalExpandView={isCallModalExpandView}
+          onToggleExpand={() => setIsCallModalExpandView(!isCallModalExpandView)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={classNames('voiceCall', isCallModalExpandView && 'expandView')}>

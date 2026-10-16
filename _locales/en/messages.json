@@ -107,7 +107,7 @@
   "error": "Error",
   "delete": "Delete",
   "messageDeletionForbidden": "You don’t have permission to delete others’ messages",
-  "deleteJustForMe": "Delete message for me",
+  "deleteJustForMe": "Delete for me",
   "deleteForEveryone": "Delete for everyone",
   "deleteForMeAndRecipient": "Delete for me and $recipientName$",
   "deleteForMeDescription": "No one will be affected by this.",

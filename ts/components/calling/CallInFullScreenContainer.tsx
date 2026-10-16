@@ -21,6 +21,7 @@ import { CenteredAvatarInConversation, UserNameTxt } from './InConversationCallC
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerXS } from '../basic/Text';
 import { getTheme } from '../../state/selectors/theme';
+import classNames from 'classnames';
 
 const CallInFullScreenVisible = styled.div<{ bgColor: string }>`
   position: absolute;
@@ -64,7 +65,8 @@ export const CallInFullScreenContainer = () => {
   const selectedConversation = useSelector(getSelectedConversation);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const [isPortrait, setPortrait] = useState(false);
-  const avatarBgColor = useSelector(getTheme) === 'dark' ? '#131313' : '#FFF';
+  const isDark = useSelector(getTheme) === 'dark';
+  const avatarBgColor = isDark ? '#131313' : '#FFF';
 
   const {
     remoteStream,
@@ -157,24 +159,32 @@ export const CallInFullScreenContainer = () => {
   const selectedConvoColor = getBgColor(selectedConversation?.id, ourPubkeyColor);
 
   return (
+    // call-fullscreen*: dark theme hooks (video letterboxed on ink, name / controls / hang-up bar
+    // along the bottom, our camera above its inline-end corner)
     <CallInFullScreenVisible
-      className="blur-layer"
+      className={classNames('blur-layer', isDark && 'call-fullscreen')}
       bgColor={`linear-gradient(${selectedConvoColor},${ourPubkeyColor})`}
     >
       <StyledVideoElement
+        className="call-fullscreen__remote"
         ref={videoRefRemote}
         autoPlay={true}
         isVideoMuted={remoteStreamVideoIsMuted}
         width={isPortrait ? '700px' : '100%'}
       />
 
-      <StyledLocalVideoContainer>
+      <StyledLocalVideoContainer
+        className={classNames(
+          'call-fullscreen__self',
+          localStreamVideoIsMuted && 'call-fullscreen__self--off'
+        )}
+      >
         <StyledLocalVideoElement
           ref={videoRefLocal}
           autoPlay={true}
           isVideoMuted={localStreamVideoIsMuted}
         />
-        {localStreamVideoIsMuted && (
+        {localStreamVideoIsMuted && !isDark && (
           <CenteredAvatarInConversation
             isNeedBgColor={!remoteStreamVideoIsMuted && localStreamVideoIsMuted}
             avatarBgColor={avatarBgColor}
@@ -190,7 +200,7 @@ export const CallInFullScreenContainer = () => {
           </CenteredAvatarInConversation>
         )}
       </StyledLocalVideoContainer>
-      <StyledFlex container={true} width="100%" justifyContent="center" alignItems="center">
+      <StyledFlex className="call-fullscreen__bar" container={true} width="100%" justifyContent="center" alignItems="center">
         <CallWindowControls
           currentConnectedAudioInputs={currentConnectedAudioInputs}
           currentConnectedAudioOutputs={currentConnectedAudioOutputs}

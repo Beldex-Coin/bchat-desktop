@@ -109,7 +109,7 @@
   "error": "خطأ",
   "delete": "حذف",
   "messageDeletionForbidden": "ليس لديك إذن لحذف رسائل الآخرين",
-  "deleteJustForMe": "حذف الرسالة لدي",
+  "deleteJustForMe": "الحذف لديّ",
   "deleteForEveryone": "حذف للجميع",
   "deleteForMeAndRecipient": "$recipientName$ حذف لي و “”",
   "deleteForMeDescription": "لن يتأثر أحد بهذا.",

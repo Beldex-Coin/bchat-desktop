@@ -109,7 +109,7 @@
   "error": "오류",
   "delete": "삭제",
   "messageDeletionForbidden": "다른 사용자의 메시지를 삭제할 권한이 없습니다.",
-  "deleteJustForMe": "내 메시지 삭제",
+  "deleteJustForMe": "나에게서만 삭제",
   "deleteForEveryone": "모두에게서 삭제",
   "deleteForMeAndRecipient": "나와 $recipientName$ 에게서 삭제",
   "deleteForMeDescription": "이 작업은 다른 사람에게 영향을 주지 않습니다.",

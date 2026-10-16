@@ -109,7 +109,7 @@
   "error": "错误",
   "delete": "删除",
   "messageDeletionForbidden": "您没有权限删除他人的消息",
-  "deleteJustForMe": "仅为我删除消息",
+  "deleteJustForMe": "为我删除",
   "deleteForEveryone": "为所有人删除",
   "deleteForMeAndRecipient": "为我和 $recipientName$ 删除",
   "deleteForMeDescription": "这不会影响任何人。",

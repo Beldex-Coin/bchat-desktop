@@ -109,7 +109,7 @@
   "error": "エラー",
   "delete": "削除",
   "messageDeletionForbidden": "他人のメッセージを削除する権限がありません",
-  "deleteJustForMe": "自分のメッセージとして削除",
+  "deleteJustForMe": "自分のみ削除",
   "deleteForEveryone": "全員のメッセージを削除",
   "deleteForMeAndRecipient": "自分と「」を削除$recipientName$",
   "deleteForMeDescription": "誰にも影響はありません。",

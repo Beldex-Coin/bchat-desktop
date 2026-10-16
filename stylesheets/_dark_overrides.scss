@@ -4891,6 +4891,12 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     font-weight: 600;
     color: #ebebeb;
   }
+  .bchat-member-item__crown {
+    display: flex;
+    align-items: center;
+    margin-inline-start: -8px;
+    line-height: 0;
+  }
   .bchat-member-item__checkmark .select-box {
     width: 24px;
     height: 24px;
@@ -6390,96 +6396,378 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
 }
 
 // =================================================================================================
-// Calls in the conversation (Figma 1:60812 / 1:59453 audio, 1:59070 / 1:58684 video, 4:2963 floating):
-// ink card on a #222 line, chamfered 39px -> 52px control squares (top-end 8px cut, #222@50% on a
-// #444 line, round device-menu badge), red hang-up square, Inter 22 names, mono timer.
+// Calls in the conversation (Figma "Chat_new" - compact card 5296:36349 voice, 5296:36718 voice
+// with our camera, 5296:34919 video; expanded 5296:35622 voice, 5296:35359 our camera, 5296:34235 /
+// 5296:34572 landscape / portrait video, 5296:36005 video with our camera off). Figma px / 0.75:
+// a #0b0b0b@75% glass card on a #222 line; chamfered 64px control squares (#222@50% on a #444
+// line, round device-menu badge), red hang-up square; Inter names, Roboto Mono timer.
 // =================================================================================================
-$dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+$dark-cut-call: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); // 10.5 of 48.1
 
-#{$dark} .voiceCall {
-  > div {
-    background-color: rgba(11, 11, 11, 0.85);
-    border: 1px solid #222;
-  }
-  // collapse / expand toggle in the card corner
-  > div > div:first-child .bchat-icon-button {
-    width: 36px;
-    height: 36px;
-    background: rgba(34, 34, 34, 0.5) !important;
-    border: 1px solid #444;
+#{$dark} .call-card {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: rgba(11, 11, 11, 0.75);
+  border: 1px solid #222;
+  backdrop-filter: blur(6px);
 
-    &:hover {
-      background: #333 !important;
-    }
-  }
-  .call-name {
-    height: auto;
-    margin-top: 12px;
-    font-family: $dark-font-ui !important;
-    font-size: 22px;
-    font-weight: 400;
-    color: #ebebeb;
-  }
   video {
     border-radius: 0 !important;
   }
 }
+// corner toggle: a bare glyph in a 32px box - "Toggle Full Screen" 24px on the card, "Compress"
+// 26px when expanded
+#{$dark} .call-card__toggle {
+  position: absolute;
+  z-index: 2;
+  top: 22px;
+  inset-inline-end: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  line-height: 0;
+  cursor: pointer;
+
+  .bchat-icon-button {
+    padding: 0;
+    background: transparent !important;
+  }
+  svg path {
+    fill: #ebebeb;
+  }
+}
+#{$dark} .call-card__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#{$dark} .call-card__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 160px;
+  line-height: 0;
+
+  .module-avatar,
+  .initials-avatar {
+    width: 128px !important;
+    height: 128px !important;
+  }
+  .initials-avatar {
+    font-size: 28px !important;
+  }
+  // our own tile is a plain grey one here, not the green rail tile
+  .initials-avatar--self {
+    background: #272727;
+
+    &::before {
+      background: $dark-raised;
+    }
+    .initials-avatar__initials {
+      color: #8d8d8d;
+    }
+  }
+}
+#{$dark} .call-card__name {
+  max-width: 100%;
+  margin-top: 10px;
+  overflow: hidden;
+  font-family: $dark-font-ui !important;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 27px;
+  color: #ebebeb;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#{$dark} .call-card__self {
+  line-height: 0;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ---- compact: 437.25 -> 583px wide, 7px under the header, 19px off the end ----
+#{$dark} .call-card--compact {
+  top: 7px;
+  inset-inline-end: 19px;
+  width: 583px;
+  max-width: calc(100% - 38px);
+  padding-bottom: 26px;
+
+  // voice: two 128px tiles 176px apart, 62px from the top; the row 66px under the names
+  .call-card__stage {
+    gap: 16px;
+    padding-top: 62px;
+  }
+  .call-controls {
+    margin-top: 66px;
+  }
+  // our camera on, theirs off: their 108px tile centred, our 160x194 camera at the end
+  &.call-card--local-video:not(.call-card--remote-video) {
+    .call-card__stage {
+      height: 194px;
+      margin-top: 80px;
+      padding-top: 0;
+    }
+    .call-card__person--remote .module-avatar,
+    .call-card__person--remote .initials-avatar {
+      width: 108px !important;
+      height: 108px !important;
+    }
+    .call-card__self {
+      position: absolute;
+      top: 0;
+      inset-inline-end: 17px;
+      width: 160px;
+      height: 194px;
+    }
+    .call-controls {
+      margin-top: 59px;
+    }
+  }
+  // video: their stream 539x331, 70px from the top; our camera 160x194 in its bottom-end corner
+  &.call-card--remote-video {
+    .call-card__stage {
+      height: 331px;
+      margin: 70px 23px 0;
+      padding-top: 0;
+    }
+    .call-card__remote-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .call-card__self {
+      position: absolute;
+      bottom: 0;
+      inset-inline-end: 0;
+      width: 160px;
+      height: 194px;
+    }
+    .call-controls {
+      margin-top: 31px;
+    }
+  }
+  // their camera on, ours off: the mirror of the case above - their 160x194 stream at the end,
+  // our 108px tile and name centred beside it
+  &.call-card--remote-video:not(.call-card--local-video) {
+    .call-card__stage {
+      height: 194px;
+      margin: 80px 0 0;
+    }
+    .call-card__remote-video {
+      position: absolute;
+      top: 0;
+      inset-inline-end: 17px;
+      width: 160px;
+      height: 194px;
+      object-fit: cover;
+    }
+    .call-card__self {
+      position: static;
+      width: auto;
+      height: auto;
+    }
+    .call-card__person .module-avatar,
+    .call-card__person .initials-avatar {
+      width: 108px !important;
+      height: 108px !important;
+    }
+    .call-controls {
+      margin-top: 59px;
+    }
+  }
+}
+
+// ---- expanded: the card fills the message area; compress glyph 29px down, 17px in ----
+#{$dark} .call-card--expanded {
+  inset: 11px 16px;
+
+  .call-card__toggle {
+    top: 29px;
+    inset-inline-end: 17px;
+  }
+  // the middle: everything above the floating bar (100px tall, 34px off the bottom)
+  .call-card__stage {
+    position: absolute;
+    inset: 68px 24px 168px;
+  }
+  .call-card__remote-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .call-card__person--remote {
+    width: 200px;
+
+    .module-avatar,
+    .initials-avatar {
+      width: 140px !important;
+      height: 140px !important;
+    }
+    .initials-avatar {
+      font-size: 38px !important;
+    }
+  }
+  // ours at the end edge, centred on the middle: a 228x278 camera 3px off the card edge, or a
+  // 171x240 tile card 27px off it (the stage sits 24px in)
+  .call-card__self {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: -21px;
+    width: 228px;
+    height: 278px;
+    transform: translateY(-50%);
+  }
+  &:not(.call-card--local-video) .call-card__self {
+    inset-inline-end: 3px;
+    width: 171px;
+    height: 240px;
+    padding-top: 64px;
+    background: rgba(11, 11, 11, 0.75);
+    border: 1px solid #222;
+
+    .call-card__person {
+      width: 100%;
+      padding: 0 8px;
+    }
+  }
+  .call-controls {
+    position: absolute;
+    bottom: 34px;
+    inset-inline: 0;
+    margin-inline: auto;
+  }
+}
+#{$dark} .call-card--expanded .call-controls,
+#{$dark} .call-fullscreen .call-controls {
+  width: 668px;
+  min-width: 0;
+  max-width: calc(100% - 32px);
+  height: 100px;
+  padding-inline: 29px 28px;
+  background: #111 !important;
+  column-gap: 0;
+
+  > div:nth-child(2) {
+    gap: 16px;
+  }
+  > .call-hangup {
+    margin-inline-start: 74px;
+  }
+}
+
+// ---- full screen: the expanded layout over the whole window ----
+#{$dark} .call-fullscreen {
+  background: $dark-ink !important;
+
+  &::before {
+    display: none;
+  }
+  .call-fullscreen__remote {
+    position: absolute;
+    inset: 24px 24px 168px;
+    width: calc(100% - 48px) !important;
+    height: calc(100% - 192px);
+    object-fit: contain;
+    border-radius: 0;
+  }
+  .call-fullscreen__bar {
+    bottom: 34px;
+    height: 100px;
+  }
+  .call-fullscreen__self {
+    top: 50%;
+    bottom: auto;
+    inset-inline-end: 3px;
+    width: 228px;
+    height: 278px;
+    line-height: 0;
+    border-radius: 0;
+    transform: translateY(-50%);
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &--off {
+      display: none;
+    }
+  }
+}
+
 #{$dark} .dragHandle {
   background-color: rgba(11, 11, 11, 0.9);
   border: 1px solid #222;
 }
 
-// control row (name + time on the left, controls, hang-up)
+// ---- name / timer, controls, hang-up row ----
 #{$dark} .call-controls {
-  // three fixed tracks: the name / status column can't push the control group around while the
-  // status text changes width (Ringing -> Ringing... -> timer)
+  // three tracks: the name / status column can't push the controls around while the status text
+  // changes width (Ringing -> Ringing... -> timer)
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  padding: 10px 18px;
+  column-gap: 18px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0 28px;
   background: transparent !important;
-  gap: 16px;
+  border-radius: 0;
 
   > div:first-child {
     min-width: 0;
   }
   > div:nth-child(2) {
-    justify-self: center;
+    gap: 10px;
   }
-  > .call-hangup {
-    justify-self: end;
-  }
-
   .call-controls__name {
     width: auto;
     max-width: 100%;
-    font-family: $dark-font-data !important;
+    overflow: hidden;
+    font-family: $dark-font-ui !important;
     font-size: 18px;
     font-weight: 600;
+    line-height: 22px;
     color: #ebebeb;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  > div:first-child > div:not(.call-controls__name) {
-    margin-top: 4px;
+  .call-status {
+    margin-top: 6px;
     font-family: $dark-font-data !important;
     font-size: 16px;
-    color: #acacac;
+    line-height: 21px;
+    color: #ebebeb;
+    white-space: nowrap;
   }
-  > div:nth-child(2) {
-    gap: 13px;
+  // before the call connects: green uppercase line, as on the incoming card
+  .call-status--pending {
+    font-size: 14px;
+    color: #00bc33;
+    text-transform: uppercase;
   }
-}
-// in the full-screen / expanded views the row sits on a dark strip
-#{$dark} .voiceCall.expandView .call-controls,
-#{$dark} .blur-layer ~ * .call-controls {
-  background: rgba(11, 11, 11, 0.85) !important;
-  border: 1px solid #222;
 }
 
 #{$dark} .call-toggle {
   position: relative;
   isolation: isolate;
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
   margin: 0;
   background: transparent !important;
   border: 0;
@@ -6499,27 +6787,28 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
   }
   &::after {
     inset: 1px;
-    background: #161616;
+    background: #161616; // #222@50% over the card
   }
   &:hover::after {
     background: #262626;
   }
   svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
   > svg path {
     fill: #ebebeb;
   }
 }
+// device-menu badge (Figma Group 3818: 18 -> 24px solid #222 disc, 2px past the bottom-end corner)
 #{$dark} .call-toggle__arrow {
   top: auto;
-  bottom: -6px;
-  inset-inline-end: -6px;
-  width: 20px;
-  height: 20px;
+  bottom: -2px;
+  inset-inline-end: -2px;
+  width: 24px;
+  height: 24px;
   background: #222 !important;
-  border: 1px solid #0b0b0b;
+  border: 0;
   border-radius: 50% !important;
 
   svg {
@@ -6541,8 +6830,8 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
   background-color: $dark-danger !important;
   clip-path: $dark-cut-call;
 
@@ -6555,8 +6844,8 @@ $dark-cut-call: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
     clip-path: $dark-cut-call;
   }
   svg {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
   }
   svg path {
     fill: $dark-danger;
@@ -9116,4 +9405,10 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   width: 116px;
   height: 116px;
   margin: -29px;
+}
+
+// selection mode: the tick box is centred on the whole message row, which includes the time line
+// under the bubble (~16px) - lift it by half of that so it sits on the middle of the bubble
+#{$dark} .message-select-box {
+  transform: translateY(-8px);
 }

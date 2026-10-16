@@ -365,7 +365,7 @@ export const GenericReadableMessage = (props: Props) => {
         {/* <div className={classNames(isSelectionMode && !selected && 'checkedCircle')}> */}
         <div style={{margin:'auto'}}>
           {isSelectionMode && isIncoming && (
-            <div style={{ marginInlineEnd: '15px', cursor: 'pointer' }}>
+            <div className="message-select-box" style={{ marginInlineEnd: '15px', cursor: 'pointer' }}>
               <SelectionCheckbox selected={selected} darkMode={darkMode} iconColor={iconColor} />
             </div>
           )}
@@ -407,7 +407,7 @@ export const GenericReadableMessage = (props: Props) => {
         )} */}
         <div style={{margin:'auto'}}>
           {!isIncoming && isSelectionMode && (
-            <div style={{ marginInlineStart: '15px', cursor: 'pointer' }}>
+            <div className="message-select-box" style={{ marginInlineStart: '15px', cursor: 'pointer' }}>
               <SelectionCheckbox selected={selected} darkMode={darkMode} iconColor={iconColor} />
             </div>
           )}

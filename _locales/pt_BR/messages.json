@@ -107,7 +107,7 @@
   "error": "Erro",
   "delete": "Excluir",
   "messageDeletionForbidden": "Você não tem permissão para excluir mensagens de outros usuários",
-  "deleteJustForMe": "Excluir mensagem para mim",
+  "deleteJustForMe": "Apagar para mim",
   "deleteForEveryone": "Excluir para Todos",
   "deleteForMeAndRecipient": "Excluir para mim e para $recipientName$",
   "deleteForMeDescription": "Ninguém será afetado por isso.",

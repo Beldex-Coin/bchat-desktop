@@ -80,7 +80,12 @@ export const MemberListItem = (props: {
         <span className="bchat-member-item__name" style={{ marginInlineEnd: '5px' }}>
           {validateMemberName(memberName)}
         </span>
-        {/* <span style={{ marginRight: '60px' }}>{isAdmin && <CrownIcon />}</span> */}
+        {isAdmin && isDark && (
+          // admin crown after the name (Figma crown)
+          <span className="bchat-member-item__crown">
+            <img src="images/dark-theme/crown.svg" width={20} height={19} alt="" />
+          </span>
+        )}
       </div>
       {!onlyList && !isAdmin && (
         <span className={classNames('bchat-member-item__checkmark', selectionValidation && 'selected')}>

@@ -109,7 +109,7 @@
   "error": "Fehler",
   "delete": "Löschen",
   "messageDeletionForbidden": "Du hast keine Berechtigung, Nachrichten anderer zu löschen",
-  "deleteJustForMe": "Nachricht für mich löschen",
+  "deleteJustForMe": "Für mich löschen",
   "deleteForEveryone": "Für alle löschen",
   "deleteForMeAndRecipient": "Für mich und  $recipientName$",
   "deleteForMeDescription": "Niemand wird davon betroffen sein.",

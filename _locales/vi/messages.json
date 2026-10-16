@@ -109,7 +109,7 @@
   "error": "Lỗi",
   "delete": "Xóa",
   "messageDeletionForbidden": "Bạn không có quyền xóa tin nhắn của người khác",
-  "deleteJustForMe": "Xóa tin nhắn cho tôi",
+  "deleteJustForMe": "Xóa cho tôi",
   "deleteForEveryone": "Xóa với mọi người",
   "deleteForMeAndRecipient": "Xóa cho tôi và $recipientName$",
   "deleteForMeDescription": "Việc này sẽ không ảnh hưởng đến ai.",

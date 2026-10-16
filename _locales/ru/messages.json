@@ -107,7 +107,7 @@
   "error": "Ошибка",
   "delete": "Удалить",
   "messageDeletionForbidden": "У вас нет прав на удаление сообщений других пользователей",
-  "deleteJustForMe": "Удалить сообщение только у меня",
+  "deleteJustForMe": "Удалить у меня",
   "deleteForEveryone": "Удалить для всех",
   "deleteForMeAndRecipient": "Удалить для меня и $recipientName$",
   "deleteForMeDescription": "Это никого не затронет.",

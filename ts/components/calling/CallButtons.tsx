@@ -377,6 +377,7 @@ export const CallWindowControls = ({
   isFullScreen,
   selectedName,
   isCallModalExpandView,
+  onToggleExpand,
 }: {
   isAudioMuted: boolean;
   isAudioOutputMuted: boolean;
@@ -388,6 +389,8 @@ export const CallWindowControls = ({
   isFullScreen: boolean;
   selectedName?: string;
   isCallModalExpandView?:boolean;
+  // dark theme voice panel: the expand / collapse toggle leads the control row
+  onToggleExpand?: () => void;
 }) => {
   const [makeVisible, setMakeVisible] = useState(true);
 
@@ -439,6 +442,14 @@ export const CallWindowControls = ({
       </Flex>
       <Flex container={true} flexDirection="row">
         {!remoteStreamVideoIsMuted && <ShowInFullScreenButton isFullScreen={isFullScreen} isCallModalExpandView={isCallModalExpandView} />}
+        {remoteStreamVideoIsMuted && onToggleExpand && (
+          <DropDownAndToggleButton
+            iconType={isCallModalExpandView ? 'fullScreenCollapse' : 'fullscreen'}
+            onMainButtonClick={onToggleExpand}
+            onArrowClick={() => {}}
+            hidePopoverArrow={true}
+          />
+        )}
         <AudioOutputButton
           currentConnectedAudioOutputs={currentConnectedAudioOutputs}
           isAudioOutputMuted={isAudioOutputMuted}

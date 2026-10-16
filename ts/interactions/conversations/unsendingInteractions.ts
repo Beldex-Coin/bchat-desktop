@@ -369,9 +369,8 @@ export async function deleteMessagesById(messageIds: Array<string>, conversation
   window.inboxStore?.dispatch(
     updateConfirmModal({
       title: window.i18n('deleteSelectedMessagesTitle'),
-      // Figma 5296:7384: only this device's copy goes - nobody else is affected
       message: window.i18n('deleteForMeDescription'),
-      okText: window.i18n('delete'),
+      okText: window.i18n('deleteJustForMe'),
       okTheme: BchatButtonColor.Danger,
       onClickOk: async () => {
         await doDeleteSelectedMessages({
