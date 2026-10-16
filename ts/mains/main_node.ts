@@ -288,6 +288,7 @@ async function createWindow() {
     fullscreen: false as boolean | undefined,
 
     backgroundColor: '#000',
+    icon: path.join(getAppRootPath(), 'images', 'bchat', 'bchat_logo.png'),
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,

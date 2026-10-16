@@ -17,7 +17,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   // keeps the plain radio list with no note.
   const descriptions = props?.descriptions;
   const hasNotes = !!descriptions && descriptions.length > 0;
-  const selectedIndex = data.indexOf(select);
+  const selectedIndex = data.findIndex(item => item.value === select);
   return (
     <div>
       <BchatWrapperModal
@@ -46,7 +46,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
             )}
           >
             <div style={{ width: '100%', overflowY: 'auto' }}>
-              { data.map((item: { value: string; label: string }) => (
+              { data.map((item, i) => (
                   <Fragment key={item.value}>
                     <div
                       className={classNames(
@@ -70,7 +70,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
                           />
                         )}
                       </div>
-                      {item}
+                      {item.label}
                       {props?.contentSuffixes?.[i] && (
                         <span className="bchat-modal__centered-SettingMiniModalContent-suffix">
                           {props.contentSuffixes[i]}

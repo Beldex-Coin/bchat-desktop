@@ -1,8 +1,9 @@
 {
   "name": "bchat-desktop",
   "productName": "BChat",
+  "desktopName": "bchat-desktop.desktop",
   "description": "Private messaging from your desktop",
-  "version": "2.7.5",
+  "version": "2.8.0",
   "license": "GPL-3.0",
   "author": {
     "name": "Beldex team",
@@ -23,6 +24,8 @@
     "build-release:win32": "yarn build-release-non-linux",
     "build-release:macos": "yarn build-release-non-linux",
     "build-release:linux": "yarn sedtoDeb; yarn build-release-non-linux && yarn sedtoAppImage && yarn build-release-non-linux && yarn sedtoDeb",
+    "build-release:linux-compat": "bash build/linux/docker-build.sh",
+    "smoke-test:linux": "bash build/linux/smoke-test.sh",
     "build-release-publish": "run-script-os",
     "build-release-publish-non-linux": "cross-env SIGNAL_ENV=production electron-builder --config.extraMetadata.environment=$SIGNAL_ENV --publish=always",
     "build-release-publish:win32": "yarn build-release-publish-non-linux",
@@ -295,11 +298,11 @@
       "category": "Network",
       "desktop": {
         "entry": {
-          "StartupWMClass": "BChat"
+          "StartupWMClass": "bchat-desktop"
         }
       },
       "asarUnpack": "node_modules/spellchecker/vendor/hunspell_dictionaries",
-      "target": "AppImage"
+      "target": ["deb", "rpm", "freebsd"]
     },
     "asarUnpack": [
       "node_modules/@signalapp/sqlcipher/prebuilds/**/*",
@@ -308,11 +311,30 @@
     ],
     "deb": {
       "depends": [
+        "libgtk-3-0",
         "libnotify4",
-        "libxtst6",
         "libnss3",
-        "libasound2",
-        "libxss1"
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libsecret-1-0",
+        "libasound2t64 | libasound2",
+        "libgbm1",
+        "libdrm2",
+        "libxkbcommon0",
+        "libxcomposite1",
+        "libxdamage1",
+        "libxrandr2",
+        "libxfixes3",
+        "libcups2",
+        "libatk1.0-0",
+        "libatk-bridge2.0-0",
+        "libpango-1.0-0",
+        "libcairo2",
+        "libexpat1",
+        "libdbus-1-3"
       ]
     },
     "files": [
