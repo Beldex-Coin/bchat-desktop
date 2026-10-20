@@ -20,7 +20,6 @@ import {
   getSelectedConversationKey,
   getSelectedMessageIds,
   isMessageDetailView,
-    isRightPanelShowing,
     isShareContact,
 } from '../../state/selectors/conversations';
 import { useDispatch, useSelector } from 'react-redux';
@@ -250,23 +249,24 @@ export const SelectionOverlay = () => {
 
 const TripleDotsMenu = (props: { triggerId: string; showBackButton?: boolean }) => {
   const { showBackButton } = props;
-  const isShowing: boolean = useSelector(isRightPanelShowing);
   if (showBackButton) {
     return null;
   }
-  let width = isShowing ? window.innerWidth - 370 : window.innerWidth;
   return (
     <div
       role="button"
       onClick={(e: any) => {
-        showContextMenu({
-          id: props.triggerId,
-          event: e,
-          position: {
-            x: document.documentElement.dir === 'rtl' ? window.innerWidth - (width - 300) : width - 300,
-            y: 70,
+        const header = (e.currentTarget as HTMLElement).closest('.module-conversation-header');
+        const rect = (header || e.currentTarget).getBoundingClientRect();
+        const isRtl = document.documentElement.dir === 'rtl';
+        showContextMenu(
+          {
+            id: props.triggerId,
+            event: e,
+            position: { x: isRtl ? rect.left + 16 : rect.right - 16, y: rect.bottom + 6 },
           },
-        });
+          { towardInlineStart: true }
+        );
       }}
       data-testid="three-dots-conversation-options"
     >

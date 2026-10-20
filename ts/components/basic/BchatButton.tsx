@@ -39,6 +39,7 @@ type Props = {
   style?: object;
   iconType?: BchatIconType|null;
   iconSize?: BchatIconSize | number;
+  iconGap?: string;
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';
 };
@@ -54,6 +55,7 @@ export const BchatButton = (props: Props) => {
     onClick,
     iconSize,
     iconType,
+    iconGap = '5px',
     fillRule,
     clipRule
   } = props;
@@ -92,7 +94,7 @@ export const BchatButton = (props: Props) => {
           data-testid={dataTestId}
           style={style}
         >
-          {iconType && iconSize && <span style={{ marginInlineEnd: '5px' }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
+          {iconType && iconSize && <span style={{ marginInlineEnd: iconGap }}><BchatIcon iconType={iconType} fillRule={fillRule} clipRule={clipRule} iconSize={iconSize} /></span>}
           {props.children || text}  
         </div>
       )}

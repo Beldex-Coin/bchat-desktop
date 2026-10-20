@@ -274,7 +274,11 @@ export const MessageContextMenu = (props: Props) => {
         {showRetry ? (
           <Item onClick={onRetry}>
             {' '}
-            <BchatIcon iconType={'resend'} iconSize={18} />
+            {isDark ? (
+              <BchatIcon iconType="resend" iconSize={16} iconColor="#EBEBEB" />
+            ) : (
+              <BchatIcon iconType={'resend'} iconSize={18} />
+            )}
             <span style={{ marginInlineStart: '10px' }}>{window.i18n('resend')} </span>
           </Item>
         ) : null}

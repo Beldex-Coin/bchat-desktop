@@ -146,6 +146,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
                 onClick={cancelButton.onClickCancelHandler}
                 iconSize={cancelButton?.iconSize ? cancelButton.iconSize : 10}
                 iconType={cancelButton?.iconType}
+                iconGap="10px"
                 dataTestId="Bchat-confirm-cancel-button"
                 style={{ marginInlineEnd: '12px', minWidth: iconShow || buttonSizeLg ? '235px' : '200px' }}
               />
@@ -157,6 +158,7 @@ export const BchatWrapperModal = (props: BchatWrapperModalType) => {
               disabled={okButton?.disabled}
               iconSize={okButton?.iconSize ? okButton.iconSize : 10}
               iconType={okButton?.iconType}
+              iconGap="10px"
               onClick={okButton?.onClickOkHandler}
               dataTestId={okButton?.dataTestId ? okButton.dataTestId : 'Bchat-confirm-ok-button'}
               style={{ minWidth: iconShow || buttonSizeLg  ? '235px' : '200px' }}

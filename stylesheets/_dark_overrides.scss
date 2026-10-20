@@ -1517,7 +1517,7 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
 // The component draws its own leading bar (first child); it gets the design colours here.
 #{$dark} .module-message .call-notify-content-wrapper {
   gap: 14px;
-  padding: 12px 14px 12px 0;
+  padding: 12px 14px 12px 12px;
   background: $dark-ink;
 
   > div:first-child {
@@ -8211,6 +8211,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     background-color: #222;
   }
 }
+#{$dark} .contexify.conversation-header-menu {
+  min-width: 313px;
+}
 
 // =================================================================================================
 // Message info (Figma 1:50390 / 1:50835): 435 -> 580 card, square close, preview bubble, Sent /
@@ -9133,23 +9136,31 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
 }
 
-// ---- Incoming voice call card (Figma 5296:28715) ----
-// 312x239 -> 416x319 glass card (#0b0b0b @ 75%, #222 hairline); 67.5 -> 90px avatar tile 47px from
-// the top; Inter 16.5 -> 22 name 15px under it; Roboto Mono 10.5 -> 14 green "INCOMING VOICE CALL.."
-// 18px lower; 77x30.5 -> 103x41 Reject (#290f0f on a #ff3e3e hairline) and Accept (#061306 on a
-// #00bc33 hairline) chamfered buttons, Roboto Mono SemiBold 13.5 -> 18, 24px apart, 35px off the bottom.
+// ---- Incoming voice call card (Figma 5296:37406) ----
+// 279x237 -> 372x316 glass card (#0b0b0b @ 75%, #222 hairline) with the square close top-end;
+// 67.5 -> 90px avatar tile 47px from the top; Inter Medium 18 -> 24 name 15px under it; Roboto Mono
+// 10.5 -> 14 green "INCOMING VOICE CALL.." 8px lower; 77x32.4 -> 103x43 Reject (#290f0f on a #ff3e3e
+// hairline) and Accept (#061306 on a #00bc33 hairline) chamfered buttons, Roboto Mono SemiBold
+// 13.5 -> 18, 29px under the status, 17px apart, 30px off the bottom.
 $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
 
+// the card is see-through glass: the chat stays sharp and only lightly dimmed behind it (the
+// shared dialog backdrop blurs and darkens so much the 75% card read as solid)
+#{$dark} .bchat-dialog.modal:has(> .incoming-call--card) {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: none;
+}
 #{$dark} .bchat-modal.incoming-call--card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 416px;
-  padding: 47px 20px 35px;
+  position: relative;
+  width: 372px;
+  max-width: calc(100vw - 32px);
+  padding: 47px 52px 30px;
   background: rgba(11, 11, 11, 0.75);
   border: 1px solid #222;
   border-radius: 0;
-  backdrop-filter: blur(6px);
 
   .incoming-call__avatar {
     line-height: 0;
@@ -9168,16 +9179,16 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
     margin-top: 15px;
     overflow: hidden;
     font-family: $dark-font-ui !important;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 27px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 29px;
     color: #ebebeb;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .incoming-call__status {
-    margin-top: 18px;
+    margin-top: 8px;
     font-family: $dark-font-data !important;
     font-size: 14px;
     line-height: 19px;
@@ -9187,13 +9198,13 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   .incoming-call__actions {
     display: flex;
     justify-content: center;
-    gap: 24px;
-    margin-top: 27px;
+    gap: 17px;
+    margin-top: 29px;
 
     .hangingBtn--decline,
     .hangingBtn--accept {
       width: 103px;
-      height: 41px;
+      height: 43px;
       padding: 0;
       border-radius: 0;
       clip-path: $dark-cut-call-btn;

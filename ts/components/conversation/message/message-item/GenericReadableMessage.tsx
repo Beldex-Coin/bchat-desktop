@@ -246,19 +246,22 @@ export const GenericReadableMessage = (props: Props) => {
           : 0;
       if (enableContextMenu) {
         contextMenu.hideAll();
-        showContextMenu({
-          id: ctxMenuID,
-          event: e,
-          props: {
-            dataAttachmentIndex: attachmentIndex,
+        showContextMenu(
+          {
+            id: ctxMenuID,
+            event: e,
+            props: {
+              dataAttachmentIndex: attachmentIndex,
+            },
           },
-        });
+          { towardInlineStart: e.type === 'click' && direction === 'outgoing' }
+        );
          setIsRightClicked(enableContextMenu);
     
       }
        
     },
-    [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup]
+    [props.ctxMenuID, multiSelectMode, msgProps?.isKickedFromGroup, direction]
   );
 
   const {

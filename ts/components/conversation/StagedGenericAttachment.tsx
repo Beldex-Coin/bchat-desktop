@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { AttachmentType, getExtensionForDisplay } from '../../types/Attachment';
+import { BchatIcon } from '../icon';
 
 interface Props {
   attachment: AttachmentType;
@@ -16,14 +17,16 @@ export class StagedGenericAttachment extends React.Component<Props> {
     return (
       <div className="module-staged-generic-attachment">
         <div
-          className="module-staged-generic-attachment__close-button"
+          className="module-image__close-button"
           role="button"
           onClick={() => {
             if (onClose) {
               onClose(attachment);
             }
           }}
-        />
+        >
+          <BchatIcon iconType={'xWithCircle'} iconSize={16} iconColor="#fff" />
+        </div>
         <div className="module-staged-generic-attachment__icon">
           {extension ? (
             <div className="module-staged-generic-attachment__icon__extension">{extension}</div>

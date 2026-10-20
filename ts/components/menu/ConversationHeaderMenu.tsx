@@ -40,7 +40,7 @@ export const ConversationHeaderMenu = (props: PropsConversationHeaderMenu) => {
   }
   return (
     <ContextConversationId.Provider value={selectedConversation}>
-      <Menu id={triggerId} animation="fade">
+      <Menu id={triggerId} animation="fade" className="conversation-header-menu">
         <AcceptMenuItem />
         <DeclineMenuItem />
         <DisappearingMessageMenuItem />

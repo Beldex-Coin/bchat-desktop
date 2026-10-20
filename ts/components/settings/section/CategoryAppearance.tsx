@@ -17,6 +17,9 @@ import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 import { applyTheme } from '../../../state/ducks/theme';
 // import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
+// Ghost (light) theme card is hidden for now; flip to true to bring it back.
+const SHOW_GHOST_THEME = false;
+
 async function toggleStartInTray() {
   try {
     const newValue = !(await window.getStartInTray());
@@ -117,6 +120,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
                 <span className="theme-card__name">{window.i18n('themeNoir')}</span>
                 <span className="theme-card__dot" aria-hidden="true" />
               </button>
+              {SHOW_GHOST_THEME && (
               <button
                 type="button"
                 role="radio"
@@ -131,6 +135,7 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
                 <span className="theme-card__name">{window.i18n('themeGhost')}</span>
                 <span className="theme-card__dot" aria-hidden="true" />
               </button>
+              )}
             </div>
           </div>
         ) : (

@@ -10,12 +10,19 @@ const SUBMENU_INLINE_END = 'contexify_submenu-inline-end';
  * and only corrects overflow on the right. In RTL the menu must grow to the left instead:
  * its right edge sits on the anchor and it is kept inside the window on the left.
  *
+ * `towardInlineStart` makes the menu grow the other way (leftwards in LTR, rightwards in RTL),
+ * for an anchor that sits on the inline-start side of what the menu belongs to.
+ *
  * contexify mounts the menu with flushSync, so it can be measured and moved right after
  * `show` returns, before anything is painted.
  */
-export function showContextMenu(params: ShowParams): void {
+export function showContextMenu(
+  params: ShowParams,
+  options: { towardInlineStart?: boolean } = {}
+): void {
   contextMenu.show(params);
-  if (document.documentElement.dir !== 'rtl') {
+  const isRtl = document.documentElement.dir === 'rtl';
+  if (isRtl === !!options.towardInlineStart) {
     return;
   }
 

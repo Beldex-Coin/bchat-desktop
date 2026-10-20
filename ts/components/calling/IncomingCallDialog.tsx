@@ -96,13 +96,24 @@ export const IncomingCallDialog = () => {
   if (!hasIncomingCall || !incomingCallFromPubkey) {
      return null;
   }
-
-  // Dark theme (Figma 5296:28715): glass card - 90px avatar tile, name, green "INCOMING VOICE
-  // CALL..", then Reject / Accept chamfered text buttons
   if (isDark) {
     return (
       <div className="bchat-dialog modal">
         <div className="bchat-modal incoming-call incoming-call--card">
+          <button
+            type="button"
+            className="close-square"
+            onClick={handleDeclineIncomingCall}
+            aria-label={window.i18n('close')}
+          >
+            <BchatIcon
+              iconType="x"
+              iconSize={11}
+              iconColor="#0B0B0B"
+              fillRule="evenodd"
+              clipRule="evenodd"
+            />
+          </button>
           <div className="incoming-call__avatar">
             <Avatar size={AvatarSize.XL} pubkey={incomingCallFromPubkey} isBnsHolder={isBnsHolder} />
           </div>

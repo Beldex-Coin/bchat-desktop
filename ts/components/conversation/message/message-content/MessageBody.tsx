@@ -234,8 +234,8 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         onClickCancel: () => {
           MessageInteraction.copyBodyToClipboard(url);
         },
-        okIcon: { icon: 'openLinkBtn', size: 20 },
-        cancelIcon: { icon: 'copy', size: 20 },
+        okIcon: { icon: 'openLinkBtn', size: 12 },
+        cancelIcon: { icon: 'copy', size: 15 },
       })
     );
   }, []);
