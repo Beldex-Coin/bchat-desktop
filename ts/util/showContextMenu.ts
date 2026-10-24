@@ -22,20 +22,22 @@ export function showContextMenu(
 ): void {
   contextMenu.show(params);
   const isRtl = document.documentElement.dir === 'rtl';
-  if (isRtl === !!options.towardInlineStart) {
-    return;
-  }
-
   const menu = getOpenedMenu();
   if (!menu) {
     return;
   }
-  const anchor = params.position || getEventPoint(params.event);
-  contextMenu.show({
-    ...params,
-    position: { x: Math.max(anchor.x - menu.offsetWidth, 0), y: anchor.y },
-  });
 
+  if (isRtl !== !!options.towardInlineStart) {
+    const anchor = params.position || getEventPoint(params.event);
+    contextMenu.show({
+      ...params,
+      position: { x: Math.max(anchor.x - menu.offsetWidth, 0), y: anchor.y },
+    });
+  }
+
+  if (!isRtl) {
+    return;
+  }
   // Submenus open to the left in RTL; flip the ones that would leave the window.
   menu.querySelectorAll<HTMLElement>('.contexify_submenu').forEach(submenu => {
     const item = submenu.parentElement;

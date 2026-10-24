@@ -179,7 +179,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 className={`id-tabs__tab${viewQR ? ' is-active' : ''}`}
                 onClick={() => !viewQR && this.qrStatusUpdate()}
               >
-                <BchatIcon iconType="qr_code" iconSize={16} iconColor="currentColor" />
+                <BchatIcon iconType="qr_code" iconSize={20} iconColor="currentColor" />
                 {i18n('showQR')}
               </button>
             </div>
@@ -369,6 +369,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               onChange={this.onNameEdited}
               maxLength={MAX_USERNAME_LENGTH - 1}
               tabIndex={0}
+              autoFocus={true}
               required={true}
               aria-required={true}
               data-testid="profile-name-input"
