@@ -1634,7 +1634,7 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     min-width: 344px;
     max-width: 344px;
     min-height: 80px;
-    padding: 0 15px 0 0;
+    padding-inline: 0 15px;
     align-items: stretch;
     background: #0b0b0b !important;
     border: 1px solid transparent;
@@ -3878,17 +3878,25 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 // "Click to download" card: ink card, 4px leading bar, type label, square icon well on the right.
 #{$dark} .attach-card {
   gap: 0;
+  min-width: 280px;
   margin: 4px 14px;
-  padding: 14px 16px 14px 0;
+  padding-block: 14px;
+  padding-inline: 0 16px;
   background: $dark-ink;
   cursor: pointer;
 
   .attach-card__bar {
     align-self: stretch;
+    flex-shrink: 0;
     width: 4px;
     height: auto;
-    margin: -14px 16px -14px 0;
+    margin-block: -14px;
+    margin-inline: 0 16px;
     background: #333;
+  }
+  .attach-card__body {
+    flex: 1;
+    min-width: 0;
   }
   .attach-card__title {
     margin-inline-start: 6px;
@@ -5796,11 +5804,6 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     &:hover {
       background: #333;
     }
-    // the tooltip renders inside the button and would inherit the avatar's line-height: 0
-    .tooltipDesign {
-      line-height: normal;
-      white-space: nowrap;
-    }
   }
 
   // name + green pencil, or the inline name field while editing
@@ -5905,7 +5908,7 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     gap: 10px;
     width: 228px;
     height: 55px;
-    padding: 0;
+    padding: 0 16px;
     background: #ebebeb;
     color: #0b0b0b;
     border: 0;
@@ -5914,6 +5917,16 @@ $dark-cut-id-tabs: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 21px 
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
+
+    > span {
+      flex-shrink: 0;
+    }
+    .link_bns_Btn-label {
+      flex-shrink: 1;
+      min-width: 0;
+      line-height: 1.15;
+      text-align: start;
+    }
 
     &:hover {
       background: #d6d6d6;

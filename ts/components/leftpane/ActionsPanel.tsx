@@ -553,6 +553,7 @@ async function askEnablingOpengroupPruningIfNeeded() {
 
 export const BchatToolTip = (props: any) => (
   <ReactTooltip
+    id={props.id}
     className="tooltipDesign"
     delayShow={500}
     place={props.place}

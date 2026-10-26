@@ -157,7 +157,7 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
   return (
     <StyledTrustSenderUI className="attach-card" onClick={openConfirmationModal}>
       <VerticalLine className="attach-card__bar"></VerticalLine>
-      <Flex container={true} flexDirection="column">
+      <Flex container={true} flexDirection="column" className="attach-card__body">
         <Flex container={true} flexDirection="row" alignItems="center">
           <BchatIcon iconSize="small" iconType={attachmentType.icon} />
           <ImageTxt className="attach-card__title">{attachmentType.txt}</ImageTxt>

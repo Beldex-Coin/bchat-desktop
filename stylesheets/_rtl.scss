@@ -19,6 +19,11 @@ html[dir='rtl'] {
   input {
     text-align: start;
   }
+
+  textarea::placeholder,
+  input::placeholder {
+    text-indent: 6px;
+  }
 }
 
 // react-contexify opens submenus with a physical `left: 100%`. In RTL they open to

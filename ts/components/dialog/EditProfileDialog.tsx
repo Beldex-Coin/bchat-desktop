@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { QRCode } from 'react-qr-svg';
+import ReactTooltip from 'react-tooltip';
 
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 
@@ -68,6 +69,12 @@ export class EditProfileDialog extends React.Component<{}, State> {
 
   public componentDidMount() {
     window.addEventListener('keyup', this.onKeyUp);
+  }
+
+  public componentDidUpdate() {
+    // the avatar buttons and copy icons remount when switching view / edit / QR - rebind them
+    // (they carry data-for, so the app-wide tooltip without an id doesn't pick them up)
+    ReactTooltip.rebuild();
   }
 
   public componentWillUnmount() {
@@ -187,6 +194,9 @@ export class EditProfileDialog extends React.Component<{}, State> {
               {/* <PillDivider /> */}
               {!viewQR ? this.renderAddressView({ bchatID }) : this.renderQrView({ bchatID })}
             </div>
+            {/* one tooltip for the whole dialog - every instance without an id binds to every data-tip,
+                so one per button stacked duplicates */}
+            <BchatToolTip id="edit-profile-tip" effect="solid" />
           </BchatWrapperModal>
         </div>
       </div>
@@ -213,6 +223,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <Flex container={true} flexDirection="column" alignItems="center" justifyContent="center" width='53px'>
               <div
                 data-tip={window.i18n('edit')}
+                data-for="edit-profile-tip"
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.fireInputEvent}
@@ -225,7 +236,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 <span className="dark-only-inline">
                   <BchatIcon iconType="image" iconSize={18} iconColor="#EBEBEB" />
                 </span>
-                <BchatToolTip place="top" effect="solid" />
               </div>
               <SpacerXS />
             {/* only when a picture is actually shown - a stored path that no longer loads falls back
@@ -233,6 +243,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             {avatarShown && (
               <div
                 data-tip={window.i18n('delete')}
+                data-for="edit-profile-tip"
                 data-place="right"
                 className='editActionBtn'
                 onClick={this.removepicPopup}
@@ -244,7 +255,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
                   iconSize={16}
                   iconColor='#f00'
                 />
-                <BchatToolTip place="top" effect="solid" />
               </div>
            )}
             </Flex>
@@ -412,7 +422,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
               <span className="dark-only-inline">
                 <BchatIcon iconType="bnslogo" iconSize={20} iconColor="#0B0B0B" />
               </span>
-              {i18n('linkYourBns')}
+              <span className="link_bns_Btn-label">{i18n('linkYourBns')}</span>
             </button>
             <div className="hintTxt" style={{ cursor: 'pointer' }} role='button' onClick={() => window.inboxStore?.dispatch(updateAboutBnsModal({}))}>
               <span> {i18n('readMoreAboutBNS')} </span>
@@ -430,6 +440,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
     );
   }
   private renderAddressView(props: any) {
+    // the copy icon sits on the card's trailing edge - open the tooltip outward, past that edge
+    const copyTipPlace = document.documentElement.dir === 'rtl' ? 'left' : 'right';
     let walletAddress = localStorage.getItem('userAddress');
     return (
       <div>
@@ -444,8 +456,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
           <div
             className="bchat-id-section-display-icon"
             data-tip={window.i18n('editMenuCopy')}
-            data-place="right"
-            data-offset="{'top':17}"
+            data-for="edit-profile-tip"
+            data-place={copyTipPlace}
             onClick={() => copyBchatID(props.bchatID)}
           >
             <CopyIconButton content={props.bchatID} iconSize={18}
@@ -466,8 +478,8 @@ export class EditProfileDialog extends React.Component<{}, State> {
           <div
             className="bchat-id-section-display-icon"
             data-tip={window.i18n('editMenuCopy')}
-            data-place="right"
-            data-offset="{'top':17}"
+            data-for="edit-profile-tip"
+            data-place={copyTipPlace}
             onClick={() => copyBchatID(walletAddress)}
           >
             <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
@@ -477,7 +489,6 @@ export class EditProfileDialog extends React.Component<{}, State> {
             </span>
           </div>
         </div>
-        <BchatToolTip effect="solid" />
       </div>
     );
   }
