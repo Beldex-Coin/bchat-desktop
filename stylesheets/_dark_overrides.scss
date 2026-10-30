@@ -2402,6 +2402,11 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
   // Figma 174:23 / 71:15454: 394.5x60 field -> 526x80, green line while typing, red on error
   .password-prompt-container {
     width: 526px;
+    // the whole unlock form (lock, title, field, buttons, link) at 75% - the Figma size itself - so
+    // it fits laptop screens; the clear-data card keeps its own size
+    &:not(:has(.confirm-card)) {
+      zoom: 0.75;
+    }
     min-width: 0;
     background: transparent;
     overflow: visible;
@@ -2446,8 +2451,9 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
       &:focus-within {
         border-color: #00bc33;
       }
+      // the gap under the field stays 35px in every state; the "Invalid password" tag pulls
+      // itself up to sit 16px under it (see .password-prompt-error-section)
       &.has-error {
-        margin-bottom: 16px;
         border-color: $dark-danger;
       }
       .bchat-icon-button path {
@@ -2510,7 +2516,7 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
   }
   // "Invalid password" tag: 140x30 -> 187x40, #290f0f on a faint red line
   .password-prompt-error-section {
-    margin-bottom: 19px;
+    margin: -19px 0 19px;
   }
   // after too many tries the base shows a blue "Invalid Password. Would you like to reset the
   // database?" box; the design has no such box (the red field + Reset Database say it), so hide it
@@ -2538,6 +2544,14 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
   .password-prompt-container.has-error .unlock-button .bchat-button {
     background: #222 !important;
     color: #737373;
+  }
+  // after too many tries: Reset Database beside Unlock, the same 62px tall and lined up with it
+  .password-prompt-container .button-group {
+    align-items: center;
+
+    > .bchat-button {
+      height: 62px;
+    }
   }
   // The unlock action is the one green button in the design (237.5x46.5, 14.25 cuts -> 317x62, 19px).
   .unlock-button .bchat-button {
