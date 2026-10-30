@@ -30,6 +30,8 @@ export type UserDetailsModalState = {
   conversationId: string;
   authorAvatarPath: string | null;
   userName: string;
+  /** opened from a group message whose sender is an admin of that group */
+  isAdmin?: boolean;
 } | null;
 
 export type ChangePasswordModalState = object | null;

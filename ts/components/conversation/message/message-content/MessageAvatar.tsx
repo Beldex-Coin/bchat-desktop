@@ -66,9 +66,10 @@ export const MessageAvatar = (props: Props) => {
         conversationId: sender,
         userName,
         authorAvatarPath,
+        isAdmin: !!isSenderAdmin,
       })
     );
-  }, [userName, sender, authorAvatarPath]);
+  }, [userName, sender, authorAvatarPath, isSenderAdmin]);
 
   if (!lastMessageOfSeries) {
     return <div style={{ marginInlineEnd: '63px' }} key={`msg-avatar-${sender}`} />;

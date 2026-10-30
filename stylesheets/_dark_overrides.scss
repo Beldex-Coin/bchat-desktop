@@ -1513,6 +1513,13 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   font-weight: 600;
   color: #ebebeb !important;
 }
+// the base wrapper forces ltr, which left the name on the left of the bubble in RTL locales: it
+// follows the page direction here (the name sits at the start - right in Arabic), while the name
+// itself keeps its own direction (dir="auto"), so Latin names still read left to right
+#{$dark} .module-message_grp_author_wrapper {
+  direction: inherit;
+}
+
 // Call notices (Figma 5296:52006 / 5296:50422 "Calls screen"): a 246px plate on the bubble
 // gradient (184.5 -> 246, 14px / 15px around the card), the #0b0b0b card inside it 163.5x60 ->
 // 218x80 with a full-height leading bar (3 -> 4px #8d8d8d received, 3.8 -> 5px green sent, sent
@@ -3333,11 +3340,23 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 #{$dark} .group-settings {
   overflow-y: auto;
 
-  // header bar: title + light square close
+  // the header's parts sit straight in the scrolling panel, so the title bar can stay pinned to
+  // the top while the avatar and the rest scroll under it
+  .group-settings-header {
+    display: contents;
+  }
+  // header bar: title + light square close; stays at the top of the panel while it scrolls (-15px:
+  // over the panel's top padding, so nothing shows above it)
   .group-settings-header-title-wrapper {
+    position: sticky;
+    top: -15px;
+    z-index: 3;
+    flex-shrink: 0;
+    align-self: stretch;
     height: 81px !important;
     padding: 0 24px !important;
-    background-color: rgba(26, 26, 26, 0.75);
+    // rgba(26, 26, 26, 0.75) on the #0b0b0b panel, solid so the scrolled content doesn't show through
+    background-color: #161616;
     border: 0;
   }
   .group-settings-header-titleTxt {
@@ -3545,13 +3564,25 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
         border-bottom: 0;
       }
     }
+    // the name gives way (ellipsis) so a long "ADMIN" label (Portuguese "ADMINISTRADOR", Spanish
+    // "ADMINISTRADOR") stays on one line
+    .bchat-member-item__info {
+      min-width: 0;
+    }
     .bchat-member-item__name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font-family: $dark-font-data !important;
       font-size: 16px;
       color: #ebebeb;
     }
     .bchat-member-item_admin-txt {
-      margin-inline-end: 10px;
+      flex-shrink: 0;
+      width: auto; // the base 180px box no longer shrinks, so it would squeeze the name
+      margin-inline: 12px 10px;
+      white-space: nowrap;
       font-family: $dark-font-ui !important;
       font-size: 14px;
       font-weight: 600;
@@ -4765,6 +4796,15 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       text-transform: uppercase;
       color: #737373;
     }
+    // a placeholder longer than the box (Portuguese "Digite um nome para o Grupo Secreto",
+    // Russian) wraps onto a second line inside the 80px box instead of being cut off; typed names
+    // stay on one line
+    .bchat-id-editable textarea:placeholder-shown {
+      field-sizing: content; // one line for a short placeholder, two when it wraps
+      height: auto;
+      max-height: 48px;
+      white-space: normal;
+    }
   }
   .social-group-overlay__hint {
     margin-top: 13px;
@@ -4933,6 +4973,15 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       line-height: 24px;
       white-space: nowrap;
       resize: none;
+    }
+    // a placeholder longer than the box (Portuguese "Digite um nome para o Grupo Secreto",
+    // Russian "Введите название секретной группы") wraps onto a second line inside the 80px box
+    // instead of being cut off; a short one stays one line, and typed names stay on one line
+    .bchat-id-editable textarea:placeholder-shown {
+      field-sizing: content;
+      height: auto;
+      max-height: 48px;
+      white-space: normal;
     }
   }
   .bchat-search-input {
@@ -9393,8 +9442,23 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 }
 // group admin crown: the Figma crown (orange, ink outline) on the avatar's top-end corner
 // (14/45 of the tile, hanging 4px above and 2.5px past it) instead of floating above the middle
+// group chats: the sender's avatar lines up with its message box, top and bottom. The base hangs
+// it from the bottom of the message (lifted over the time row by 16px, or 52px with reactions),
+// which put it low - lower still under a reactions row. Here it hangs from the top of the message
+// instead, where the box starts, whatever is under the box (time, reactions); the box is 51px
+// tall for one line, so the avatar is 51px too (was 48)
+#{$dark} .message-box > div:has(> .module-message__author-avatar) {
+  align-self: flex-start;
+  margin-bottom: 0 !important;
+}
 #{$dark} .module-message__author-avatar {
   position: relative;
+
+  .module-avatar,
+  .module-avatar img {
+    width: 51px !important;
+    height: 51px !important;
+  }
 }
 #{$dark} .admin-crown {
   top: -6px;
@@ -9543,6 +9607,33 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 // under the bubble (~16px) - lift it by half of that so it sits on the middle of the bubble
 #{$dark} .message-select-box {
   transform: translateY(-8px);
+}
+// contact details popup (avatar, name, BChat ID): space between the "BChat ID" label and the id
+#{$dark} .user-details .user-id-wrapper .user-id {
+  margin-top: 8px;
+}
+// ...and a group admin's popup: the crown on the picture's top-end corner (like on their avatar in
+// the chat: hanging a little above and past the corner) and the green ADMIN tag under the name
+#{$dark} .user-details {
+  .user-details__avatar {
+    position: relative;
+    display: inline-flex;
+  }
+  .user-details__crown {
+    position: absolute;
+    top: -12px;
+    inset-inline-end: -10px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .user-admin-tag {
+    margin-top: 6px;
+    font-family: $dark-font-ui !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #00d53a;
+  }
 }
 // "Trust <name>?" download confirm (Figma 5296:9137): the sender's name in the message in #ebebeb on
 // the grey text, as written (no forced capital)

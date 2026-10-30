@@ -283,7 +283,7 @@
   "leaveGroup": "مغادرة المجموعة",
   "leaveAndRemoveForEveryone": "مغادرة",
   "leaveGroupConfirmation": "هل أنت متأكد من أنك تريد المغادرة يا $name$؟",
-  "leaveGroupConfirmationAdmin": "ما أنك منشئ هذه المجموعة، فسيتم حذفها للجميع. لا يمكن التراجع عن هذا",
+  "leaveGroupConfirmationAdmin": "بما أنك منشئ هذه المجموعة، فسيتم حذفها للجميع. لا يمكن التراجع عن هذا.",
   "cannotRemoveCreatorFromGroup": "لا يمكن إزالة هذا المستخدم",
   "cannotRemoveCreatorFromGroupDesc": "لا يمكنك إزالة هذا المستخدم لأنه منشئ المجموعة",
   "noContactsForGroup": "لا توجد لديك أي جهات اتصال بعد",

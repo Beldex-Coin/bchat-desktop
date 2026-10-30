@@ -13,7 +13,7 @@ type Props = {
 
 export const AdminLeaveClosedGroupDialog = (props: Props) => {
   // const convo = getConversationController().get(props.conversationId);
-  const titleText = `${window.i18n('leaveGroup')} ?`;
+  const titleText = `${window.i18n('leaveGroup')}${window.i18n('questionMark')}`;
   const warningAsAdmin = `${window.i18n('leaveGroupConfirmationAdmin')}`;
   const okText = window.i18n('leaveAndRemoveForEveryone');
   const cancelText = window.i18n('cancel');
