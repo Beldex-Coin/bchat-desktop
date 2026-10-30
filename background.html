@@ -32,38 +32,70 @@
   </head>
 
   <body id="body">
-    <div id="root">
-      <div class="app-loading-screen">
-        <div class="content bchat-full-logo">
-          <!-- splash: Lottie animation (images/animations/Splash_desktop.json), drawn into this box -->
-          <div id="bchat-splash" class="bchat-brand-logo"></div>
-          <!-- <img src="images/bchat/BChat_text.svg"  width="400px" height="100px" /> -->
-        </div>
+    <div id="root"></div>
+    <!-- splash: Lottie animation (images/animations/Splash_desktop.json). It sits over the app (outside
+         #root, so React does not replace it) until it has played through once and the app is ready -->
+    <div
+      id="bchat-splash-screen"
+      class="app-loading-screen"
+      style="position: fixed; z-index: 100000; transition: opacity 0.3s ease"
+    >
+      <div class="content bchat-full-logo">
+        <div id="bchat-splash" class="bchat-brand-logo"></div>
       </div>
     </div>
     <script type="text/javascript">
-      // Splash animation. It plays until the app replaces the loading screen, then is torn down
-      // so it doesn't keep drawing frames in the background.
-      try {
-        const lottie = require('lottie-web');
-        const splashBox = document.getElementById('bchat-splash');
-        const splash = lottie.loadAnimation({
-          container: splashBox,
-          renderer: 'svg',
-          loop: true,
-          autoplay: true,
-          animationData: require('./images/animations/Splash_desktop.json'),
-        });
-        const stopSplash = new MutationObserver(() => {
-          if (!document.body.contains(splashBox)) {
-            splash.destroy();
-            stopSplash.disconnect();
+      (function startSplash() {
+        const screen = document.getElementById('bchat-splash-screen');
+        const root = document.getElementById('root');
+        let splash;
+        let played = false;
+        let appReady = false;
+        let closed = false;
+
+        const close = () => {
+          if (closed || !played || !appReady) {
+            return;
+          }
+          closed = true;
+          screen.style.opacity = '0';
+          setTimeout(() => {
+            if (splash) {
+              splash.destroy();
+            }
+            screen.remove();
+          }, 300);
+        };
+
+        try {
+          const lottie = require('lottie-web');
+          splash = lottie.loadAnimation({
+            container: document.getElementById('bchat-splash'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('./images/animations/Splash_desktop.json'),
+          });
+          // keeps looping while the app is still loading; closes at the end of a full play
+          splash.addEventListener('loopComplete', () => {
+            played = true;
+            close();
+          });
+        } catch (e) {
+          console.warn('splash animation could not start', e);
+          played = true;
+        }
+
+        // the app is ready once it has rendered into #root
+        const watchApp = new MutationObserver(() => {
+          if (root.childElementCount > 0) {
+            watchApp.disconnect();
+            appReady = true;
+            close();
           }
         });
-        stopSplash.observe(document.getElementById('root'), { childList: true, subtree: true });
-      } catch (e) {
-        console.warn('splash animation could not start', e);
-      }
+        watchApp.observe(root, { childList: true });
+      })();
       require('./ts/mains/main_renderer.js');
     </script>
   </body>

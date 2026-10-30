@@ -73,7 +73,6 @@ import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 import { getIsOnline } from '../../state/selectors/onions';
 import styled from 'styled-components';
 import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
-import { LottieAnimation } from '../basic/LottieAnimation';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
@@ -774,9 +773,6 @@ export const ActionsPanel = () => {
                     <BchatIcon iconSize={'small'} iconType="circle" />
                   </div>
                   <div>{window.i18n('connectingToServer')}</div>
-                </div>
-                <div>
-                  <LottieAnimation name="Loading_animation" style={{ width: '30px', height: '30px' }} />
                 </div>
               </Flex>
             </div>
