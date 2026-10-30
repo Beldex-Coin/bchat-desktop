@@ -81,7 +81,7 @@ export const ConversationSearch = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Array<string>>([]);
   const [index, setIndex] = useState(0);
-  const [searched, setSearched] = useState(false);
+  const [, setSearched] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
@@ -196,11 +196,10 @@ export const ConversationSearch = () => {
     );
   }
 
+  // Figma 5466:1804: the field, then the down (newer) / up (older) arrows - white when there is a
+  // match that way, grey when not - and the close x at the end
   return (
     <div className="conversation-search" role="search">
-      <span className="conversation-search__clear" role="button" aria-label={window.i18n('close')} onClick={close}>
-        <BchatIcon iconType="x" iconSize={7} iconColor="#8D8D8D" fillRule="evenodd" clipRule="evenodd" />
-      </span>
       <input
         ref={inputRef}
         className="conversation-search__input"
@@ -220,12 +219,6 @@ export const ConversationSearch = () => {
           }
         }}
       />
-      {searched && (
-        <span className="conversation-search__count">
-          {results.length ? `${index + 1}/${results.length}` : '0/0'}
-        </span>
-      )}
-      {/* down = newer match, up = older match */}
       <span
         className="conversation-search__nav"
         role="button"
@@ -233,9 +226,10 @@ export const ConversationSearch = () => {
         onClick={() => step(-1)}
       >
         <BchatIcon
-          iconType="arrowCircleDown"
-          iconSize={20}
-          iconColor={index > 0 ? '#00BC33' : '#555555'}
+          iconType="circleArrowUpThin"
+          iconSize={24}
+          iconRotation={180}
+          iconColor={index > 0 ? '#FFFFFF' : '#8D8D8D'}
         />
       </span>
       <span
@@ -245,11 +239,18 @@ export const ConversationSearch = () => {
         onClick={() => step(1)}
       >
         <BchatIcon
-          iconType="arrowCircleDown"
-          iconSize={20}
-          iconRotation={180}
-          iconColor={index < results.length - 1 ? '#00BC33' : '#555555'}
+          iconType="circleArrowUpThin"
+          iconSize={24}
+          iconColor={index < results.length - 1 ? '#FFFFFF' : '#8D8D8D'}
         />
+      </span>
+      <span
+        className="conversation-search__close"
+        role="button"
+        aria-label={window.i18n('close')}
+        onClick={close}
+      >
+        <BchatIcon iconType="closeThin" iconSize={21} iconColor="#ACACAC" />
       </span>
     </div>
   );

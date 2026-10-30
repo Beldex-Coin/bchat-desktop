@@ -8490,8 +8490,10 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 }
 
 // =================================================================================================
-// Search in the conversation (Figma 1:45529): 355x45 -> 473x60 box in the header, clear circle,
-// light "Search" placeholder, count, green down / up arrows.
+// Search in the conversation (Figma 5466:1804): 250x34.3 -> 333x46 box in the header, 9px before the
+// menu, #111@50% on a #444 line; Roboto Mono 12 -> 16 #ebebeb text 13px in; the down / up circle
+// arrows 18.3 -> 24px, 11px apart (white when there is a match that way, #8d8d8d when not), then
+// the thin #acacac close x (16 -> 21px) 11px after them, 13px from the end.
 // =================================================================================================
 #{$dark} .conversation-search-toggle {
   display: flex;
@@ -8500,61 +8502,45 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 #{$dark} .conversation-search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 473px;
+  gap: 11px;
+  width: 333px;
   max-width: 45vw;
-  height: 60px;
-  margin-inline: auto 18px;
-  padding: 0 16px;
-  background: #111;
+  height: 46px;
+  margin-inline: auto 12px;
+  padding: 0 13px;
+  background: rgba(17, 17, 17, 0.5);
   border: 1px solid #444;
 
-  &__clear {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #8d8d8d;
-    border-radius: 50% !important;
-    cursor: pointer;
-
-    &:hover {
-      border-color: #ebebeb;
-    }
-  }
   &__input {
     flex: 1 1 auto;
     min-width: 0;
     height: 100%;
-    padding: 0 4px;
+    padding: 0;
     background: transparent;
     border: 0;
     outline: none;
-    font-family: $dark-font-ui !important;
-    font-size: 18px;
-    font-weight: 300;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    font-weight: 400;
     color: #ebebeb;
 
     &::placeholder {
-      color: #acacac;
+      color: #8d8d8d;
     }
   }
-  &__count {
-    flex: 0 0 auto;
-    font-family: $dark-font-data !important;
-    font-size: 14px;
-    color: #8d8d8d;
-  }
-  &__nav {
+  &__nav,
+  &__close {
     display: flex;
     flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-
-    &[aria-disabled='true'] {
-      cursor: default;
-    }
+  }
+  &__nav[aria-disabled='true'] {
+    cursor: default;
+  }
+  &__close:hover svg path {
+    fill: #ebebeb;
   }
 }
 
