@@ -274,9 +274,10 @@ export const BchatQuotedMessageComposition = () => {
                       <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
                     </span>
                     {namesArray.length > 1
-                      ? `${namesArray[0]} and ${namesArray.length - 1} other${
-                          namesArray.length > 2 ? 's' : ''
-                        }`
+                      ? window.i18n(
+                          namesArray.length > 2 ? 'sharedContactAndOthers' : 'sharedContactAndOther',
+                          [namesArray[0], String(namesArray.length - 1)]
+                        )
                       : namesArray[0] ?? ''}
                   </span>
                 </Flex>

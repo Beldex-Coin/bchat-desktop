@@ -701,7 +701,7 @@
   "clear": "مسح",
   "callHistory": "سجل المكالمات",
   "deleteSelectedMessagesTitle": "حذف الرسائل المحددة؟",
-  "sharedContactAndOther": "$name$ و$count$ آخرون",
+  "sharedContactAndOther": "$name$ و$count$ آخر",
   "sharedContactAndOthers": "$name$ و$count$ آخرون",
   "paymentDirectionReceived": "تم الاستلام",
   "pickFileForAvatarError": "حدث خطأ أثناء اختيار الصورة أو تغيير حجمها",

@@ -8,7 +8,9 @@ import { BchatIcon } from '../../../icon';
 import { shell } from 'electron/common';
 // import { MessageStatus } from '../message-content/MessageStatus';
 import { useSelector } from 'react-redux';
-import { getMessageContentSelectorProps, getQuotedMessageToAnimate, getShouldHighlightMessage } from '../../../../state/selectors/conversations';
+import { getMessageContentSelectorProps, getMessageStatusProps, getQuotedMessageToAnimate, getShouldHighlightMessage } from '../../../../state/selectors/conversations';
+import { OutgoingMessageStatus } from '../message-content/OutgoingMessageStatus';
+import { getTheme } from '../../../../state/selectors/theme';
 import { Flex } from '../../../basic/Flex';
 import moment from 'moment';
 import { StyledSvgWrapper } from '../message-content/MessageContent';
@@ -26,6 +28,8 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
+  const isDarkTheme = useSelector(getTheme) === 'dark';
+  const statusProps = useSelector(state => getMessageStatusProps(state as any, props.messageId));
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   const classes = [`payment ${flashGreen && 'flash-green-once'}`];
@@ -148,7 +152,11 @@ export const PaymentMessage = (props: PropsForPayment) => {
                 <HindTxt />
               </div>
               <div className={classNames('timeStamp', `timeStamp-${direction}`)}>
-                {moment(contentProps?.timestamp).format('hh:mm A')}
+                {/* dark: the delivery status (sending / sent / read) beside the time, like other messages */}
+                {isDarkTheme && direction === 'outgoing' && (
+                  <OutgoingMessageStatus underBubble={true} status={statusProps?.status} dataTestId="msg-status-outgoing" />
+                )}
+                <bdi>{moment(contentProps?.timestamp).format('hh:mm A')}</bdi>
               </div>
             </div>
           </div>

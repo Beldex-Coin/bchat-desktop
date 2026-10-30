@@ -1,4 +1,5 @@
 import React, { useContext, useLayoutEffect, useState } from 'react';
+import { OutgoingMessageStatus } from '../message-content/OutgoingMessageStatus';
 import classNames from 'classnames';
 import {
   openConversationWithMessages,
@@ -59,6 +60,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
   const isDarkAndMoreInfo =
     useSelector(getTheme) === 'dark' && isDetailView && contentProps?.direction === 'incoming';
+  const isDarkTheme = useSelector(getTheme) === 'dark';
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const sharedContactNameList: string[] = JSON.parse(name || '[]');
   const sharedContactAddressList: string[] = JSON.parse(address || '[]');
@@ -69,9 +71,10 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const capitalize = (s:string) => s && s[0].toUpperCase() + s.slice(1);
   const userName =
     sharedContactNameList.length > 1
-      ? `${capitalize(validUserName)} and ${sharedContactNameList.length - 1} other${
-          sharedContactNameList.length > 2 ? 's' : ''
-        }`
+      ? window.i18n(
+          sharedContactNameList.length > 2 ? 'sharedContactAndOthers' : 'sharedContactAndOther',
+          [capitalize(validUserName), String(sharedContactNameList.length - 1)]
+        )
       : capitalize(validUserName ?? '');
 
   useLayoutEffect(() => {
@@ -209,7 +212,11 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                 <SpacerSM />
                 {!isDetailView && (
                   <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
-                    {moment(contentProps?.timestamp).format('hh:mm A')}
+                    {/* dark: the delivery status (sending / sent / read) beside the time, like other messages */}
+                    {isDarkTheme && contentProps?.direction === 'outgoing' && (
+                      <OutgoingMessageStatus underBubble={true} status={selected?.status} dataTestId="msg-status-outgoing" />
+                    )}
+                    <bdi>{moment(contentProps?.timestamp).format('hh:mm A')}</bdi>
                   </div>
                 )}
               </ContactMessageWrapper>

@@ -19,6 +19,8 @@ import {
 
 } from '../../../../state/selectors/conversations';
 import moment from 'moment';
+import { OutgoingMessageStatus } from '../message-content/OutgoingMessageStatus';
+import { getTheme } from '../../../../state/selectors/theme';
 import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
@@ -45,6 +47,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
+  const isDarkTheme = useSelector(getTheme) === 'dark';
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   useLayoutEffect(() => {
@@ -151,7 +154,11 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
                 {props.url}
               </span>
               <div className={classNames('timeStamp', `timeStamp-${contentProps?.direction}`)}>
-                {moment(contentProps?.timestamp).format('hh:mm A')}
+                {/* dark: the delivery status (sending / sent / read) beside the time, like other messages */}
+                {isDarkTheme && contentProps?.direction === 'outgoing' && (
+                  <OutgoingMessageStatus underBubble={true} status={selected?.status} dataTestId="msg-status-outgoing" />
+                )}
+                <bdi>{moment(contentProps?.timestamp).format('hh:mm A')}</bdi>
               </div>
             </div>
           </div>

@@ -1666,9 +1666,14 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     position: absolute;
     top: 100%;
     inset-inline-start: 0;
+    // the delivery status sits 4px ahead of the time on sent cards (as under other messages)
+    display: flex;
+    align-items: center;
+    gap: 4px;
     width: auto;
     margin-top: 6px;
     padding: 0;
+    white-space: nowrap;
     font-family: $dark-font-data !important;
     font-size: 12px;
     color: #8d8d8d !important;
@@ -1681,6 +1686,9 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     min-width: 344px;
     max-width: 344px;
     min-height: 80px;
+    // no top / bottom padding (the base adds 15px): the leading bar runs the card's full height,
+    // the name / id and the avatar stay centred in it
+    padding-block: 0;
     padding-inline: 0 15px;
     align-items: stretch;
     background: #0b0b0b !important;
