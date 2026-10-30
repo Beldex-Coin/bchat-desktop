@@ -458,6 +458,7 @@
   "clickToTrustContact": "Clique para baixar",
   "trustThisContactDialogTitle": "Confiança $name$?",
   "trustThisContactDialogDescription": "Tem certeza de que deseja baixar a mídia enviada por",
+  "questionMark": "?",
   "pinConversation": "Fixar Conversa",
   "unpinConversation": "Desafixar conversa",
   "pinConversationLimitTitle": "Limite de conversas fixadas",

@@ -459,6 +459,7 @@
   "clickToTrustContact": "Click to download",
   "trustThisContactDialogTitle": "Trust $name$?",
   "trustThisContactDialogDescription": "Are you sure you want to download media sent by ",
+  "questionMark": "?",
   "pinConversation": "Pin Conversation",
   "unpinConversation": "Unpin Conversation",
   "pinConversationLimitTitle": "Pinned conversations limit",

@@ -458,6 +458,7 @@
   "clickToTrustContact": "İndirmek için tıklayın",
   "trustThisContactDialogTitle": "Güven $name$?",
   "trustThisContactDialogDescription": "Şu kişi tarafından gönderilen medyayı indirmek istediğinizden emin misiniz ",
+  "questionMark": "?",
   "pinConversation": "Sohbeti Sabitle",
   "unpinConversation": "Sohbeti Sabitlemeyi Kaldır",
   "pinConversationLimitTitle": "Sabitlenmiş sohbet sınırı",

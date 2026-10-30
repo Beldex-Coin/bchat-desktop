@@ -503,6 +503,7 @@ export type LocalizerKeys =
   | 'notificationForConvo_mute1Week'
   | 'notificationForConvo_unmute'
   | 'trustThisContactDialogDescription'
+  | 'questionMark'
   | 'unknownCountry'
   | 'entryNode'
   | 'searchFor...'

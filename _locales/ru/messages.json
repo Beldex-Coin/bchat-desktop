@@ -458,6 +458,7 @@
   "clickToTrustContact": "Нажмите, чтобы загрузить",
   "trustThisContactDialogTitle": "Доверие $name$?",
   "trustThisContactDialogDescription": "Вы уверены, что хотите загрузить медиафайлы, отправленные пользователем ",
+  "questionMark": "?",
   "pinConversation": "Закрепить беседу",
   "unpinConversation": "Открепить беседу",
   "pinConversationLimitTitle": "Лимит закреплённых бесед",

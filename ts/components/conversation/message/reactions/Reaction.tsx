@@ -158,7 +158,8 @@ export const Reaction = (props: ReactionProps): ReactElement => {
         </span>
         {showCount && (
           <span>
-            {inModal && isDark
+            {/* dark: the gap is set in CSS (two non-breaking spaces left a wide hole in mono) */}
+            {isDark
               ? abbreviateNumber(count)
               : `\u00A0\u00A0${abbreviateNumber(count)}`}
           </span>

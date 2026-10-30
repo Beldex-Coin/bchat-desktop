@@ -458,6 +458,7 @@
   "clickToTrustContact": "Nhấn để tải xuống phương tiện ",
   "trustThisContactDialogTitle": "Tin cậy $name$?",
   "trustThisContactDialogDescription": "Bạn có chắc chắn muốn tải xuống phương tiện được gửi bởi",
+  "questionMark": "?",
   "pinConversation": "Ghim cuộc trò chuyệnn",
   "unpinConversation": "Bỏ ghim cuộc trò chuyện",
   "pinConversationLimitTitle": "Giới hạn số cuộc trò chuyện được ghim",

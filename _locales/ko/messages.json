@@ -458,6 +458,7 @@
   "clickToTrustContact": "미디어를 다운로드하려면 클릭하세요",
   "trustThisContactDialogTitle": "신뢰 $name$?",
   "trustThisContactDialogDescription": "가 보낸 미디어를 다운로드하시겠습니까",
+  "questionMark": "?",
   "pinConversation": " 대화 고정",
   "unpinConversation": "대화 고정 해제",
   "pinConversationLimitTitle": "대화 고정 제한",

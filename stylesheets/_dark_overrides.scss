@@ -5316,7 +5316,10 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   border-radius: 0;
   gap: 18px;
   min-height: 80px;
-  padding: 14px 16px 14px 0;
+  // bar flush on the start edge, 16px before the end edge (the image / icon square) - logical sides,
+  // so in right-to-left languages the bar sits on the right and the square keeps its 16px on the left
+  padding: 14px 0;
+  padding-inline-end: 16px;
   background: #0b0b0b;
   border: 1px solid #333;
 
@@ -8861,8 +8864,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     font-size: 20px;
     line-height: 1;
 
+    // the count 6px after the emoji (it used to follow two spaces: a ~16px hole)
     span:nth-child(2) {
-      margin-inline-start: 2px;
+      margin-inline-start: 6px;
       font-weight: 600;
     }
   }
@@ -9447,8 +9451,10 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   width: 40px;
   height: 22px;
 }
-// media / documents empty state (300 / 200 artboards, drawing ~half of it)
-#{$dark} .module-empty-state .noMediaImg--animated {
+// media / documents empty state (300 / 200 artboards, drawing ~half of it). Two classes so it
+// also wins over the right panel's still-picture box (244x181): in that smaller box the drawing
+// shrank and the -30px bottom pulled "No media" / "No document" up over it
+#{$dark} .module-empty-state .noMediaImg.noMediaImg--animated {
   width: 240px;
   height: 240px;
   margin: -30px 0;
@@ -9530,8 +9536,43 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 #{$dark} .message-select-box {
   transform: translateY(-8px);
 }
+// "Trust <name>?" download confirm (Figma 5296:9137): the sender's name in the message in #ebebeb on
+// the grey text, as written (no forced capital)
+#{$dark} .trust-sender-name {
+  color: #ebebeb;
+  text-transform: none !important;
+}
 // confirm popups: words picked out in the message (e.g. Call Permission Required: the setting's
 // name and "Privacy Settings", Figma 5296:11906) in #ebebeb on the grey text
 #{$dark} .confirm-highlight {
   color: #ebebeb;
+}
+// @mentions in messages: the link colour (green) instead of black on the bubble; a mention of you
+// keeps a faint green plate instead of the bright yellow one
+#{$dark} .mention-profile-name {
+  color: $dark-green;
+}
+#{$dark} .mention-profile-name-us {
+  padding: 0 2px;
+  background-color: rgba(0, 188, 51, 0.15);
+  border-radius: 0;
+  color: $dark-green;
+}
+// image + caption bubble (Figma 5296:22033): the picture 6.75 -> 9px from the bubble's top and
+// sides, the caption 7.5 -> 10px under it and 10px above the bubble's bottom (15px in from the
+// side), so the space above and below is the same
+#{$dark} .module-message__container:has(.attachment-with-quote) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+
+  .module-message__attachment-container {
+    padding: 9px 9px 0 !important;
+  }
+  .attachment-with-quote {
+    padding: 10px 15px !important;
+  }
+  .attachment-with-quote .module-message__text {
+    margin: 0;
+    padding: 0;
+  }
 }

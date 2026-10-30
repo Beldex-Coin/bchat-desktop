@@ -458,6 +458,7 @@
   "clickToTrustContact": "クリックしてダウンロード",
   "trustThisContactDialogTitle": "$name$ を信頼しますか？",
   "trustThisContactDialogDescription": "「」から送信されたメディアをダウンロードしてもよろしいですか",
+  "questionMark": "？",
   "pinConversation": "固定",
   "unpinConversation": "会話のピン留めを解除",
   "pinConversationLimitTitle": "ピン留めできる会話の上限",

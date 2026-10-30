@@ -216,6 +216,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     const openLink = () => {
       void shell.openExternal(url);
     };
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
     dispatch(
       updateConfirmModal({
@@ -234,8 +235,10 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         onClickCancel: () => {
           MessageInteraction.copyBodyToClipboard(url);
         },
-        okIcon: { icon: 'openLinkBtn', size: 12 },
-        cancelIcon: { icon: 'copy', size: 15 },
+        // dark (Figma 5296:6640 / 5296:6647): the open-link arrow 11.3 -> 15px, the copy pages
+        // 13.1 -> 18px tall
+        okIcon: { icon: 'openLinkBtn', size: isDark ? 15 : 12 },
+        cancelIcon: { icon: 'copy', size: isDark ? 18 : 15 },
       })
     );
   }, []);
