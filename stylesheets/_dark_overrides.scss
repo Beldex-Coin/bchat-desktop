@@ -1133,7 +1133,8 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
   }
   &__group-badge {
     position: absolute;
-    inset-inline-end: 7%;
+    // physical right in every language: the chamfered tile itself doesn't mirror in RTL
+    right: 7%;
     bottom: 7%;
     width: 30%;
     height: auto;
@@ -1181,7 +1182,7 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
     // glyph 14.8 x 11.2 of 45: 33% wide, running 2 -> 4.7% past the end edge and 1.5% past the bottom
     .initials-avatar__group-badge {
       z-index: 1;
-      inset-inline-end: -4.7%;
+      right: -4.7%; // physical, like the back tile's edge - the same corner in RTL
       bottom: -1.5%;
       width: 33%;
       color: #acacac;
@@ -9404,20 +9405,11 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   width: 30px;
   height: 30px;
 }
-// deleting a chat: the red bin plays at the row's end, then the row slides out
+// deleting a chat: the row slides out
 #{$dark} .module-conversation-list-item--removing {
   position: relative;
   pointer-events: none;
   animation: bchat-row-out 0.95s ease-in forwards;
-
-  .row-removing-bin {
-    position: absolute;
-    top: 50%;
-    inset-inline-end: 24px;
-    width: 40px;
-    height: 40px;
-    transform: translateY(-50%);
-  }
 }
 @keyframes bchat-row-out {
   0%,

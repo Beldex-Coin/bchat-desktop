@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { LottieAnimation } from '../../basic/LottieAnimation';
 import { ROW_REMOVING_EVENT } from '../../../interactions/rowRemoval';
 import classNames from 'classnames';
 // import useUpdate from 'react-use/lib/useUpdate';
@@ -262,9 +261,6 @@ const ConversationListItem = (props: Props) => {
                 />
               </div>
             </div>
-            {removing && (
-              <LottieAnimation name="Delete_Bin" loop={false} className="row-removing-bin" />
-            )}
           </div>
           <Portal>
             <MemoConversationListItemContextMenu triggerId={triggerId} />
