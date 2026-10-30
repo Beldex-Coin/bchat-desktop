@@ -2726,7 +2726,9 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
     align-items: center;
     height: 44px;
     margin: 0;
-    padding: 0 0 0 81px;
+    // the options start under the title, after the icon - on the right in right-to-left languages
+    padding: 0;
+    padding-inline-start: 81px;
     gap: 19px;
     cursor: pointer;
 
@@ -7208,21 +7210,34 @@ $dark-cut-call: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
 // 207x46.5 -> 276x62 buttons start under the text, both neutral (#111 on #737373); the hovered one
 // turns red with a red dot in a dark circle.
 #{$dark} .confirm-card--choice {
-  width: 768px;
+  // 768px as in the design; grows when the buttons' labels need it (Portuguese "Apenas Este
+  // Dispositivo")
+  width: auto;
+  min-width: 768px;
 
   .confirm-card__text {
     max-width: 626px;
   }
+  // two equal buttons, each wide enough for its label on one line (at least the design's 276px)
   .confirm-card__actions {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    justify-content: start;
+    width: max-content; // so the equal columns take the wider label's width, not the card's
     gap: 21px;
     padding-inline-start: 79px;
 
     .bchat-button,
     .bchat-button.secondary,
     .bchat-button.danger {
-      width: 276px;
+      width: auto;
+      min-width: 276px;
       height: 62px;
+      // room on both sides for the red hover dot (9px + 12px ahead of the label) so it stays inside
+      // the button, and the label stays centred
+      padding-inline: 32px;
+      white-space: nowrap;
       background-color: #737373;
       font-size: 20px;
       color: #ebebeb;
@@ -7281,7 +7296,8 @@ $dark-cut-call: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
 // Font Size / Zoom / Hops). Figma 1:34208 "Font Size" (434x285 card, 402x164 list, 378x47 rows,
 // 188x47 buttons) and the 120x42 "Small ⌄" box on 1:31639 -> / 0.75.
 // =================================================================================================
-#{$dark} .bchat-settings-item-font-Change {
+#{$dark} .bchat-settings-item-font-Change,
+#{$dark} .bchat-settings-item__dropdownValue {
   width: 160px;
   height: 56px;
   padding: 0 16px 0 20px;
@@ -7300,6 +7316,14 @@ $dark-cut-call: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
   &:hover {
     background-color: $dark-raised;
   }
+}
+// Appearance -> Zoom Level ("80% (Default) ›"): the same box as Font Size, on one line - the base
+// 100px box wrapped "(Default)" under the value
+#{$dark} .bchat-settings-item__dropdownValue {
+  width: auto;
+  min-width: 160px;
+  gap: 12px;
+  white-space: nowrap;
 }
 
 // Popup buttons (Figma "Rectangle 28", 188x47 with 14.25 cuts -> 251x63, 19px cuts).
@@ -7815,8 +7839,14 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
         color: #8d8d8d;
       }
     }
+    // the eye sits on the field's middle (the base puts it at top: 36%, a few px low here)
     .bchat-icon-button {
+      top: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex: 0 0 auto;
+      transform: translateY(-50%);
       color: #acacac;
 
       svg {
@@ -8236,11 +8266,15 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   .seed-warning-card__body + .seed-warning-card__body {
     margin-top: 30px;
   }
+  // 242px as in the design; a longer label (German, Portuguese, Vietnamese "Yes, I'm Sure!") widens
+  // the button and stays on one line, clear of the cut corners
   .bchat-button {
-    width: 242px;
-    min-width: 0;
+    width: auto;
+    min-width: 242px;
     height: 60px;
     margin-top: 31px;
+    padding-inline: 18px;
+    white-space: nowrap;
     font-size: 22px;
     font-weight: 600;
   }
