@@ -4389,6 +4389,9 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       font-weight: 400;
       color: #ebebeb;
       white-space: nowrap;
+      // left: 50% leaves the tab only half the card to size itself in, so a longer label
+      // (Vietnamese "ID của bạn") ran out of its box on the right: size it to the label instead
+      width: max-content;
     }
     // Figma 5296:28870: Inter Bold 18 -> 24 #ebebeb
     .profile-name {

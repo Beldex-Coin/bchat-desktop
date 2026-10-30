@@ -790,6 +790,12 @@
       background-color: transparent;
     }
   }
+  // right-to-left languages (Arabic...): the field stays left-to-right for the typed BNS name,
+  // but the empty field's placeholder starts on the right like the rest of the popup
+  :root[dir='rtl'] & .inputBox-wrapper input:placeholder-shown {
+    direction: rtl;
+    text-align: right;
+  }
 
   .divided-btn-wrapper {
     align-items: center;
