@@ -97,6 +97,8 @@
   "you": "أنت",
   "audioPermissionNeededTitle": "يتطلب الوصول إلى الميكروفون",
   "audioPermissionNeeded": "هل تريد السماح لتطبيق التسجيل بالوصول لتسجيل الصوت؟",
+  "attachmentPermissionTitle": "الإذن مطلوب!",
+  "attachmentPermissionMessage": "السماح للمرفقات بالوصول إلى الصور ومقاطع الفيديو على هذا الجهاز؟",
   "audio": "صوت",
   "video": "فيديو",
   "photo": "صورة",

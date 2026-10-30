@@ -9,6 +9,7 @@ import {
   LexicalNode,
 } from 'lexical';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { MentionNode } from './MentionNode';
 import classNames from 'classnames';
@@ -299,7 +300,9 @@ export default function MentionPlugin({
 
   if (!show || results.length === 0 || (draft.length === 0 && !pinnedRef.current)) return null;
 
-  return (
+  // rendered on <body>: inside the composer it shared the composer's stacking layer, so chat
+  // items drawn above it (the group welcome notice, the date tag) covered the list
+  return createPortal(
     <div
       ref={dropdownRef} 
       className="mention-dropdown"
@@ -323,6 +326,7 @@ export default function MentionPlugin({
           {renderSuggestion(user)}
         </div>
       ))}
-    </div>
+    </div>,
+    document.body
   );
 }

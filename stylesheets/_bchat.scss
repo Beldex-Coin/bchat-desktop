@@ -2943,6 +2943,19 @@ input {
 .editor-text-strikethrough {
   text-decoration: line-through;
 }
+// the ``` code block box in the message box (Slack style): a full-width bordered box, lines kept
+.editor-input code.composer-code-block {
+  display: block;
+  margin: 4px 0;
+  padding: 8px 12px;
+  min-height: 1.6em;
+  border: 1px solid var(--color-border, #444);
+  border-radius: 4px;
+  font-family: $bchat-font-mono;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
 
 .mention-dropdown {
   background: var(--color-left-pane-bg);

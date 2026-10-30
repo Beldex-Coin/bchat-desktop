@@ -97,6 +97,8 @@
   "you": "您",
   "audioPermissionNeededTitle": "需要麦克风权限",
   "audioPermissionNeeded": "允许录音器访问语音录音吗？",
+  "attachmentPermissionTitle": "需要权限！",
+  "attachmentPermissionMessage": "允许附件访问此设备上的照片和视频吗？",
   "audio": "音频",
   "video": "视频",
   "photo": "照片",

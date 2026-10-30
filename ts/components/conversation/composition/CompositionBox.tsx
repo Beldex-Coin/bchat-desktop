@@ -112,6 +112,12 @@ import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
 import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
+import MicrophoneAccessIcon from '../../icon/MicrophoneAccessIcon';
+import AttachmentPermissionIcon from '../../icon/AttachmentPermissionIcon';
+import { Storage } from '../../../util/storage';
+
+/** set once the user allowed attachments to reach their files (asked the first time only) */
+const ATTACHMENT_PERMISSION_KEY = 'attachment-permission-granted';
 import { ensureCanSendInClosedGroup } from '../../../receiver/closedGroups';
 
 export interface ReplyingToMessageProps {
@@ -372,8 +378,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
   private showEmojiPanel() {
     document.addEventListener('mousedown', this.handleClick, false);
 
+    // one composer menu at a time: opening the emoji panel closes the attach menu
     this.setState({
       showEmojiPanel: true,
+      selectionMenuIsVisble: false,
     });
   }
 
@@ -505,7 +513,13 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   </div>
                 )}
                 <AddStagedAttachmentButton
-                  onClick={() => this.setState({ selectionMenuIsVisble: true })}
+                  onClick={() => {
+                    // one composer menu at a time: opening the attach menu closes the emoji panel
+                    if (this.state.showEmojiPanel) {
+                      this.hideEmojiPanel();
+                    }
+                    this.setState({ selectionMenuIsVisble: true });
+                  }}
                 />
               </div>
     );
@@ -1015,6 +1029,31 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     this.setState({ selectionMenuIsVisble: false });
     window.inboxStore?.dispatch(closeShareContact());
+    // first time only (per account - the flag lives in this account's storage, so it is asked
+    // again after the account is deleted and restored): ask before opening the file picker
+    if (!Storage.get(ATTACHMENT_PERMISSION_KEY)) {
+      window.inboxStore?.dispatch(
+        updateConfirmModal({
+          title: window.i18n('attachmentPermissionTitle'),
+          message: window.i18n('attachmentPermissionMessage'),
+          okText: window.i18n('allow'),
+          cancelText: window.i18n('deny'),
+          okTheme: BchatButtonColor.Primary,
+          iconShow: true,
+          customIcon: <AttachmentPermissionIcon />,
+          onClickOk: async () => {
+            window.inboxStore?.dispatch(updateConfirmModal(null));
+            // open the picker straight from the Allow click (it needs the click's user gesture)
+            this.fileInput.current?.click();
+            await Storage.put(ATTACHMENT_PERMISSION_KEY, true);
+          },
+          onClickClose: () => {
+            window.inboxStore?.dispatch(updateConfirmModal(null));
+          },
+        })
+      );
+      return;
+    }
     this.fileInput.current?.click();
   }
 
@@ -1308,7 +1347,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
           },
           closeAfterInput: false,
           iconShow: true,
-          customIcon: (
+          customIcon: this.props.darkMode ? (
+            <MicrophoneAccessIcon />
+          ) : (
             <BchatIcon
               iconType={'microphone'}
               iconSize={30}
@@ -1407,6 +1448,15 @@ export const serializeNode = (node: LexicalNode): string => {
       })
       .join('\n');
     return `${listContent}\n`;
+  }
+
+  // ``` code block box: its lines as typed, between ``` (the chat shows it as a code block)
+  if (node.getType() === 'codeblock' && $isElementNode(node)) {
+    const code = node
+      .getChildren()
+      .map(child => ($isLineBreakNode(child) ? '\n' : child.getTextContent()))
+      .join('');
+    return code.trim() ? `\`\`\`${code}\`\`\`\n` : '';
   }
 
   // ✅ Quotes

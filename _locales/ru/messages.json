@@ -95,6 +95,8 @@
   "you": "Вы",
   "audioPermissionNeededTitle": "Часто используемые",
   "audioPermissionNeeded": "Разрешить диктофону доступ к записи голоса?",
+  "attachmentPermissionTitle": "Требуется разрешение!",
+  "attachmentPermissionMessage": "Разрешить вложениям доступ к фото и видео на этом устройстве?",
   "audio": "Аудио",
   "video": "Видео",
   "photo": "Фото",

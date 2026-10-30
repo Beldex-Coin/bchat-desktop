@@ -2021,7 +2021,10 @@ $dark-composer-h: 60px;
   .attachment-wrapper .selection-box {
     bottom: 53px;
     inset-inline-start: 0;
-    width: 207px;
+    // 207px as in the design; grows to fit a longer label on one line (Portuguese "Arquivos de
+    // mídia", Spanish, Turkish, Vietnamese)
+    width: max-content;
+    min-width: 207px;
     padding: 12px 12px 16px;
     background-color: rgba(26, 26, 26, 0.2);
     border: 1px solid #262626;
@@ -2049,6 +2052,7 @@ $dark-composer-h: 60px;
       }
       span {
         margin: 0;
+        white-space: nowrap;
         font-family: $dark-font-data !important;
         font-size: 16px;
         font-weight: 400;
@@ -2063,6 +2067,15 @@ $dark-composer-h: 60px;
   .send-message-input__emoji-overlay {
     display: flex;
     align-items: center;
+  }
+  // ``` code block box: dark plate on the #444 line, Roboto Mono, square corners
+  .editor-input code.composer-code-block {
+    background: #161616;
+    border-color: #444;
+    color: #ebebeb;
+    font-family: $dark-font-data !important;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   // mic (start recording): 60px square matching the field

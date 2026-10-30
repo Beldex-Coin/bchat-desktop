@@ -95,6 +95,8 @@
   "you": "Você",
   "audioPermissionNeededTitle": "Acesso ao Microfone Necessário",
   "audioPermissionNeeded": "Permitir que o gravador acesse as gravações de voz?",
+  "attachmentPermissionTitle": "Permissão necessária!",
+  "attachmentPermissionMessage": "Permitir que anexos acessem fotos e vídeos neste dispositivo?",
   "audio": "Áudio",
   "video": "Vídeo",
   "photo": "Foto",

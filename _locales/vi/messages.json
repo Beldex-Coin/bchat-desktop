@@ -97,6 +97,8 @@
   "you": "Bạn",
   "audioPermissionNeededTitle": "Yêu cầu quyền truy cập microphone",
   "audioPermissionNeeded": "Cho phép trình ghi âm truy cập ghi âm giọng nói?",
+  "attachmentPermissionTitle": "Cần cấp quyền!",
+  "attachmentPermissionMessage": "Cho phép tệp đính kèm truy cập ảnh và video trên thiết bị này?",
   "audio": "Âm thanh",
   "video": "Video",
   "photo": "Ảnh",

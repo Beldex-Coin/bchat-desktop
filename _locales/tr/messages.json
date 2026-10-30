@@ -95,6 +95,8 @@
   "you": "Siz",
   "audioPermissionNeededTitle": "Mikrofon Erişimi Gerekli",
   "audioPermissionNeeded": "Ses kaydı için uygulamanın mikrofona erişmesine izin verin?",
+  "attachmentPermissionTitle": "İzin gerekli!",
+  "attachmentPermissionMessage": "Eklerin bu cihazdaki fotoğraflara ve videolara erişmesine izin verilsin mi?",
   "audio": "Ses",
   "video": "Görüntü",
   "photo": "Fotoğraf",

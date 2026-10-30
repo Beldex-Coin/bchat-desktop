@@ -97,6 +97,8 @@
   "you": "나",
   "audioPermissionNeededTitle": "마이크 접근 권한 필요",
   "audioPermissionNeeded": "음성 녹음을 위해 레코더의 접근을 허용합니다?",
+  "attachmentPermissionTitle": "권한이 필요합니다!",
+  "attachmentPermissionMessage": "첨부 파일이 이 기기의 사진 및 동영상에 접근하도록 허용하시겠습니까?",
   "audio": "오디오",
   "video": "비디오",
   "photo": "사진",

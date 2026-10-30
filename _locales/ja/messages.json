@@ -97,6 +97,8 @@
   "you": "あなた",
   "audioPermissionNeededTitle": "マイクへのアクセスが必要です",
   "audioPermissionNeeded": "音声録音へのアクセスを許可してください?",
+  "attachmentPermissionTitle": "許可が必要です！",
+  "attachmentPermissionMessage": "添付ファイルがこのデバイスの写真と動画にアクセスすることを許可しますか？",
   "audio": "音声",
   "video": "動画",
   "photo": "写真",

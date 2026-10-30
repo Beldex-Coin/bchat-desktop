@@ -251,6 +251,8 @@ export type LocalizerKeys =
   | 'displayName'
   | 'invalidBchatId'
   | 'audioPermissionNeeded'
+  | 'attachmentPermissionTitle'
+  | 'attachmentPermissionMessage'
   | 'add'
   | 'messageRequests'
   | 'show'

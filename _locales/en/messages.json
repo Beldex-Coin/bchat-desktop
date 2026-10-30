@@ -95,6 +95,8 @@
   "you": "You",
   "audioPermissionNeededTitle": "Microphone Access Required",
   "audioPermissionNeeded": "Allow Recorder to access voice recording?",
+  "attachmentPermissionTitle": "Permission Required!",
+  "attachmentPermissionMessage": "Allow attachment to access photos and videos on this device?",
   "audio": "Audio",
   "video": "Video",
   "photo": "Photo",

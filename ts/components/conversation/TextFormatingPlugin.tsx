@@ -16,6 +16,9 @@ import {
   // INSERT_LINE_BREAK_COMMAND,
   INSERT_PARAGRAPH_COMMAND,
   KEY_SPACE_COMMAND,
+  KEY_ARROW_DOWN_COMMAND,
+  PASTE_COMMAND,
+  SerializedElementNode,
 } from 'lexical';
 
 import { $createQuoteNode } from '@lexical/rich-text';
@@ -24,6 +27,18 @@ import { $createListNode, $createListItemNode, $isListItemNode } from '@lexical/
 // function $createCodeBlockNode() {
 //   return $applyNodeReplacement(new CodeBlockNode());
 // }
+
+/** The code block (``` box) this node sits in, if any. */
+const $getCodeBlock = (node: LexicalNode | null): ElementNode | null => {
+  let current: LexicalNode | null = node;
+  while (current) {
+    if (current.getType() === 'codeblock') {
+      return current as ElementNode;
+    }
+    current = current.getParent();
+  }
+  return null;
+};
 
 export default function TextFormatingPlugin({
   onSendMessage,
@@ -243,6 +258,34 @@ export default function TextFormatingPlugin({
 
       if (!hasInlineMarker && !isBlockMarker) return;
 
+      /* ================= ``` -> CODE BLOCK ================= */
+      // three backticks typed at the end of a line open a code block box under it (like Slack); a
+      // closed pair (```code```) on one line stays inline code
+      if (
+        parent?.getType() === 'paragraph' &&
+        lastNode.getNextSibling() === null &&
+        !lastNode.isToken() &&
+        lastNode.getTextContent().endsWith('```') &&
+        !/`{4,}$/.test(fullText) &&
+        (fullText.match(/```/g) || []).length === 1
+      ) {
+        const lastText = lastNode.getTextContent();
+        const before = fullText.slice(0, -3);
+        const codeBlock = new CodeBlockNode();
+        if (before.trim() === '') {
+          parent.replace(codeBlock);
+        } else {
+          if (lastText.length > 3) {
+            lastNode.setTextContent(lastText.slice(0, -3));
+          } else {
+            lastNode.remove();
+          }
+          parent.insertAfter(codeBlock);
+        }
+        codeBlock.select(0, 0);
+        return;
+      }
+
       const topLevel = firstNode.getTopLevelElement();
       if (topLevel?.getType() === 'list') {
         const list = topLevel;
@@ -424,6 +467,17 @@ export default function TextFormatingPlugin({
         if (event.shiftKey) {
           event.preventDefault();
 
+          // in the code block box: a new line inside the box
+          if ($getCodeBlock(anchorNode)) {
+            editor.update(() => {
+              const sel = $getSelection();
+              if ($isRangeSelection(sel)) {
+                sel.insertLineBreak();
+              }
+            });
+            return true;
+          }
+
           if (isInsideCode) {
             editor.update(() => {
               const sel = $getSelection();
@@ -470,13 +524,22 @@ export default function TextFormatingPlugin({
         if (codeBlock && codeBlock.getType() === 'codeblock') {
           const rawContent = codeBlock.getTextContent();
           const isEmpty = rawContent.trim() === '';
-          const isAtAbsoluteStart = anchor.offset === 0 && anchorNode.getPreviousSibling() === null;
+          const isAtAbsoluteStart =
+            anchor.offset === 0 &&
+            (anchorNode.is(codeBlock) || anchorNode.getPreviousSibling() === null);
 
           if (isEmpty && isAtAbsoluteStart) {
             event.preventDefault();
-            const paragraph = $createParagraphNode();
-            codeBlock.replace(paragraph);
-            paragraph.select();
+            // an empty box closes: back to the line it was opened from, or an empty line
+            const previous = codeBlock.getPreviousSibling();
+            if (previous && previous.getType() === 'paragraph') {
+              codeBlock.remove();
+              (previous as ElementNode).selectEnd();
+            } else {
+              const paragraph = $createParagraphNode();
+              codeBlock.replace(paragraph);
+              paragraph.select();
+            }
             return true;
           }
         }
@@ -638,17 +701,64 @@ export default function TextFormatingPlugin({
       },
       COMMAND_PRIORITY_HIGH
     );
+    // arrow down at the end of the last code block: leave the box onto a new line under it
+    const removeArrowDown = editor.registerCommand(
+      KEY_ARROW_DOWN_COMMAND,
+      (event: KeyboardEvent) => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) return false;
+        const codeBlock = $getCodeBlock(selection.anchor.getNode());
+        if (!codeBlock || codeBlock.getNextSibling() !== null) return false;
+
+        const lastDescendant = codeBlock.getLastDescendant();
+        const { anchor } = selection;
+        const atEnd =
+          !lastDescendant ||
+          (anchor.getNode().is(lastDescendant) &&
+            anchor.offset === lastDescendant.getTextContentSize()) ||
+          (anchor.getNode().is(codeBlock) && anchor.offset === codeBlock.getChildrenSize());
+        if (!atEnd) return false;
+
+        event.preventDefault();
+        const paragraph = $createParagraphNode();
+        codeBlock.insertAfter(paragraph);
+        paragraph.select();
+        return true;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
+
+    // pasting into the code block keeps it as plain lines inside the box (no rich text blocks)
+    const removePaste = editor.registerCommand(
+      PASTE_COMMAND,
+      (event: ClipboardEvent | KeyboardEvent | InputEvent) => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection) || !$getCodeBlock(selection.anchor.getNode())) {
+          return false;
+        }
+        const text = (event as ClipboardEvent).clipboardData?.getData('text/plain');
+        if (!text) return false;
+        event.preventDefault();
+        selection.insertRawText(text.replace(/\r\n?/g, '\n'));
+        return true;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
+
     return () => {
       removeTransform();
       removeEnter();
       removeBackspace();
       removeSpace();
+      removeArrowDown();
+      removePaste();
     };
   }, [editor, onSendMessage]);
 
   return null;
 }
 
+/** The ``` code block box in the message box. It is sent as ```code``` (see serializeNode). */
 export class CodeBlockNode extends ElementNode {
   static getType() {
     return 'codeblock';
@@ -658,13 +768,26 @@ export class CodeBlockNode extends ElementNode {
     return new CodeBlockNode(node.__key);
   }
 
+  static importJSON(_serialized: SerializedElementNode): CodeBlockNode {
+    return new CodeBlockNode();
+  }
+
+  exportJSON(): SerializedElementNode {
+    return { ...super.exportJSON(), type: 'codeblock', version: 1 };
+  }
+
   createDOM() {
     const code = document.createElement('code');
-    code.style = 'display: inline-block; border-radius: 6px;';
+    code.className = 'composer-code-block';
+    code.spellcheck = false;
     return code;
   }
 
   updateDOM() {
     return false;
+  }
+
+  canBeEmpty() {
+    return true;
   }
 }
