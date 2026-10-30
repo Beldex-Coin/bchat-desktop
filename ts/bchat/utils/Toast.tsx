@@ -4,6 +4,9 @@ import { BchatToast, BchatToastType } from '../../components/basic/BchatToast';
 import { BchatIconType } from '../../components/icon';
 import { BchatSettingCategory } from '../../components/settings/BchatSettings';
 import { SectionType, showLeftPaneSection, showSettingsSection } from '../../state/ducks/section';
+import { updateConfirmModal } from '../../state/ducks/modalDialog';
+import { BchatButtonColor } from '../../components/basic/BchatButton';
+import { BchatIcon } from '../../components/icon';
 
 // if you push a toast manually with toast...() be sure to set the type attribute of the BchatToast component
 export function pushToastError(id: string, title: string, description?: string) {
@@ -178,7 +181,41 @@ export function pushedMissedCallNotApproved(displayName: string) {
   );
 }
 
+/**
+ * Dark theme (Figma 5296:11888): "Call Permission Required!" popup - the setting's name and
+ * "Privacy Settings" picked out in the message, Cancel / Settings (opens the Privacy settings).
+ */
+function showCallPermissionPopup() {
+  const highlight = (text: string) => `<span class="confirm-highlight">${text}</span>`;
+  const message = window
+    .i18n('callPermissionRequiredDescription')
+    .replace('$setting$', highlight(window.i18n('callMediaPermissionsTitle')))
+    .replace('$section$', highlight(window.i18n('callPermissionPrivacySettings')));
+  window.inboxStore?.dispatch(
+    updateConfirmModal({
+      title: window.i18n('callPermissionRequiredTitle'),
+      message,
+      okText: window.i18n('settingsHeader'),
+      okTheme: BchatButtonColor.Primary,
+      cancelText: window.i18n('cancel'),
+      iconShow: true,
+      customIcon: <BchatIcon iconType="callPermissionRequired" iconSize={32} iconColor="#EBEBEB" />,
+      onClickOk: () => {
+        openPrivacySettings();
+        window.inboxStore?.dispatch(updateConfirmModal(null));
+      },
+      onClickClose: () => {
+        window.inboxStore?.dispatch(updateConfirmModal(null));
+      },
+    })
+  );
+}
+
 export function pushVideoCallPermissionNeeded() {
+  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    showCallPermissionPopup();
+    return;
+  }
   pushToastInfo(
     'videoCallPermissionNeeded',
     window.i18n('cameraPermissionNeededTitle'),

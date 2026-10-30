@@ -8,8 +8,11 @@ import {
 } from '../../../../../state/ducks/conversations';
 import {
   getMessageContentSelectorProps,
+  getMessageStatusProps,
   // getSelectedConversation,
 } from '../../../../../state/selectors/conversations';
+import { getTheme } from '../../../../../state/selectors/theme';
+import { OutgoingMessageStatus } from '../../message-content/OutgoingMessageStatus';
 import { LocalizerKeys } from '../../../../../types/LocalizerKeys';
 import { BchatIcon, BchatIconType } from '../../../../icon';
 import { ReadableMessage } from '../ReadableMessage';
@@ -65,6 +68,8 @@ export const CallNotification = (props: PropsForCallNotification) => {
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, messageId)
   );
+  const statusProps = useSelector(state => getMessageStatusProps(state as any, messageId));
+  const isDark = useSelector(getTheme) === 'dark';
   const direction = contentProps?.direction;
   const timestamp = contentProps?.timestamp;
   // const selectedConvoProps = useSelector(getSelectedConversation);
@@ -103,7 +108,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
         iconColor={iconColor}
         callNotification={true}
       /> */}
-      <StyledDiv>
+      <StyledDiv className="call-notification">
         <StyledMessageContentContainer direction={direction === 'incoming' ? 'left' : 'right'}>
           <div
             className={classNames('module-message', `module-message--${direction}`)}
@@ -143,7 +148,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
                       style={{ fontSize: `${FontSizeChanger(14)}px` }}
                     ></span>
                   </Flex>
-                  <div className="icon-wrapper">
+                  <div className={classNames('icon-wrapper', `icon-wrapper--${notificationType}`)}>
                     <BchatIcon iconType={iconType} iconSize={24} iconColor={iconColor} />
                   </div>
                 </Flex>
@@ -159,6 +164,22 @@ export const CallNotification = (props: PropsForCallNotification) => {
               )}
             </div>
           </div>
+          {/* Dark theme (Figma 5296:52006): status + time under the card, like other messages */}
+          {isDark && (
+            <div
+              className={classNames('msg-meta', `msg-meta--${direction}`)}
+              style={isIncoming ? { paddingInlineStart: '15px' } : { paddingInlineEnd: '15px' }}
+            >
+              {!isIncoming && (
+                <OutgoingMessageStatus
+                  underBubble={true}
+                  status={statusProps?.status}
+                  dataTestId="msg-status-outgoing"
+                />
+              )}
+              <bdi>{moment(timestamp).format('hh:mm A')}</bdi>
+            </div>
+          )}
         </StyledMessageContentContainer>
     
       </StyledDiv>

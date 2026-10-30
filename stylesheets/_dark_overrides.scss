@@ -1513,55 +1513,101 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   font-weight: 600;
   color: #ebebeb !important;
 }
+// Call notices (Figma 5296:52006 / 5296:50422 "Calls screen"): a 246px plate on the bubble
+// gradient (184.5 -> 246, 14px / 15px around the card), the #0b0b0b card inside it 163.5x60 ->
+// 218x80 with a full-height leading bar (3 -> 4px #8d8d8d received, 3.8 -> 5px green sent, sent
+// cards outlined #006c1d), "Incoming call" / "Outgoing call" / "Missed call" Inter 13.5 -> 18px
+// #acacac 19px after the bar, the 37.5 -> 50px #222 icon well 17px from the end with a 19.5 -> 26px
+// icon (green call, red missed). The time sits under the plate like other messages (4px), and
+// one call notice is 12px from the next.
+#{$dark} .call-notification {
+  margin: 0 0 12px;
 
-// Call notices inside a bubble: ink card with a 4px leading bar, square icon well.
-// The component draws its own leading bar (first child); it gets the design colours here.
+  .module-message__container--incoming--opaque,
+  .module-message__container--outgoing--opaque {
+    padding: 15px 14px !important;
+  }
+  // the time inside the card: replaced by the one under it
+  .module-message__container > .timeStamp,
+  .module-message__container > div:not(.call-notify-content-wrapper) {
+    display: none;
+  }
+  .msg-meta {
+    margin-top: 4px;
+  }
+}
 #{$dark} .module-message .call-notify-content-wrapper {
-  gap: 14px;
-  padding: 12px 14px 12px 12px;
+  gap: 0;
+  // 218px as in the design; a longer label (other languages) widens the card instead of
+  // running into the icon
+  min-width: 218px;
+  height: 80px;
+  // bar flush on the start edge, the icon square 17px from the end edge - logical sides, so in
+  // right-to-left languages the bar is on the right and the square keeps its 17px on the left
+  padding: 0;
+  padding-inline-end: 17px;
   background: $dark-ink;
 
   > div:first-child {
     align-self: stretch;
+    flex-shrink: 0;
     width: 4px;
     height: auto;
-    margin: -12px 0;
+    margin: 0;
+    border-radius: 0;
     background: #8d8d8d;
   }
-  // "Outgoing call" etc. on one line
+  // "Outgoing call" etc. on one line, 19px after the bar and at least 12px before the icon
   > div:nth-child(2) {
+    flex: 1 1 auto;
     width: auto !important;
-    min-width: 110px;
+    min-width: 0;
+    margin-inline: 19px 12px;
   }
-  // Figma 71:12530: "Call" / "Missed call" in Inter #EBEBEB, 32px -> 43px icon square
   .group-name {
     white-space: nowrap;
     font-family: $dark-font-ui !important;
     font-size: 18px !important;
     font-weight: 400 !important;
-    color: #ebebeb !important;
+    color: #acacac !important;
   }
   .group-type:not(:empty) {
     margin-top: 4px;
     font-family: $dark-font-data !important;
     font-size: 16px !important;
-    color: #acacac;
+    font-weight: 300;
+    color: #ebebeb;
   }
   .icon-wrapper {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 43px;
-    height: 43px;
+    width: 50px;
+    height: 50px;
     margin-inline-start: auto;
     padding: 0;
     background-color: #222;
+
+    svg {
+      width: 26px;
+      height: 26px;
+    }
+  }
+  // calls in either direction get the green call icon (#078720), missed calls stay red
+  .icon-wrapper--started-call svg path,
+  .icon-wrapper--answered-a-call svg path {
+    fill: #078720;
   }
 }
 #{$dark} .module-message__container--outgoing .call-notify-content-wrapper {
   border: 1px solid #006c1d;
+  box-shadow: 0 0 6px rgba(0, 188, 51, 0.15);
 
   > div:first-child {
+    width: 5px;
+    margin-block: -1px;
+    margin-inline-start: -1px;
     background: $dark-green;
   }
 }
@@ -9230,7 +9276,9 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 372px;
+  // 372px as in the design; grows when the buttons' labels need it (German "Akzeptieren")
+  width: auto;
+  min-width: 372px;
   max-width: calc(100vw - 32px);
   padding: 47px 52px 30px;
   background: rgba(11, 11, 11, 0.75);
@@ -9270,17 +9318,24 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
     color: #00bc33;
     text-transform: uppercase;
   }
+  // two equal buttons, each wide enough for its label on one line (at least the design's 103px)
   .incoming-call__actions {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     justify-content: center;
     gap: 17px;
     margin-top: 29px;
 
     .hangingBtn--decline,
     .hangingBtn--accept {
-      width: 103px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 103px;
       height: 43px;
-      padding: 0;
+      padding: 0 14px;
+      white-space: nowrap;
       border-radius: 0;
       clip-path: $dark-cut-call-btn;
 
@@ -9488,4 +9543,9 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 // under the bubble (~16px) - lift it by half of that so it sits on the middle of the bubble
 #{$dark} .message-select-box {
   transform: translateY(-8px);
+}
+// confirm popups: words picked out in the message (e.g. Call Permission Required: the setting's
+// name and "Privacy Settings", Figma 5296:11906) in #ebebeb on the grey text
+#{$dark} .confirm-highlight {
+  color: #ebebeb;
 }
