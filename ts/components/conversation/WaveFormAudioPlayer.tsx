@@ -256,9 +256,10 @@ const debouncedPlayNextMessage = useMemo(() =>
       <Flex container justifyContent="center" alignItems="center" height="30px" margin="10px 0">
         <span className="audio-play-btn">
           {darkMode ? (
-            // Figma 18:7359: 26px play button - green on received voice notes, white on sent ones
+            // Figma 18:7359: 26px play button - green on received voice notes, white on sent ones;
+            // while playing, the two rounded pause bars (Figma 5296:22800)
             <BchatIconButton
-              iconType={isPlaying ? 'pause' : 'play'}
+              iconType={isPlaying ? 'pauseBars' : 'play'}
               iconSize={12}
               iconColor="#0B0B0B"
               onClick={() => handlePlayPause(true)}
