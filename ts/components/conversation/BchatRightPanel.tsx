@@ -189,6 +189,9 @@ const ProfileName = (props: { onCloseEdit: () => void; grpName: any }) => {
         <div className="inputBox">
           <input
             type="text"
+            // the name's own direction: in a right-to-left page a Latin name in this centred field put the
+            // caret before the first letter when clicking after the last one, so Backspace deleted nothing
+            dir="auto"
             className="profile-name-input"
             value={profileName}
             placeholder={window.i18n('emptyGroupNameError')}
