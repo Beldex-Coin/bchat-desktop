@@ -196,10 +196,20 @@ export const ConversationSearch = () => {
     );
   }
 
-  // Figma 5466:1804: the field, then the down (newer) / up (older) arrows - white when there is a
-  // match that way, grey when not - and the close x at the end
+  const isEmpty = !query;
+  // Figma 5466:1796 (empty): the grey magnifier, the SEARCH placeholder and the close x.
+  // Figma 5466:1804 (typing): the text, then the down (newer) / up (older) arrows - white when
+  // there is a match that way, grey when not - and the close x at the end
   return (
-    <div className="conversation-search" role="search">
+    <div
+      className={`conversation-search${isEmpty ? ' conversation-search--empty' : ''}`}
+      role="search"
+    >
+      {isEmpty && (
+        <span className="conversation-search__icon">
+          <BchatIcon iconType="searchThin" iconSize={19} iconColor="#737373" />
+        </span>
+      )}
       <input
         ref={inputRef}
         className="conversation-search__input"
@@ -219,31 +229,35 @@ export const ConversationSearch = () => {
           }
         }}
       />
-      <span
-        className="conversation-search__nav"
-        role="button"
-        aria-disabled={index <= 0}
-        onClick={() => step(-1)}
-      >
-        <BchatIcon
-          iconType="circleArrowUpThin"
-          iconSize={24}
-          iconRotation={180}
-          iconColor={index > 0 ? '#FFFFFF' : '#8D8D8D'}
-        />
-      </span>
-      <span
-        className="conversation-search__nav"
-        role="button"
-        aria-disabled={index >= results.length - 1}
-        onClick={() => step(1)}
-      >
-        <BchatIcon
-          iconType="circleArrowUpThin"
-          iconSize={24}
-          iconColor={index < results.length - 1 ? '#FFFFFF' : '#8D8D8D'}
-        />
-      </span>
+      {!isEmpty && (
+        <>
+          <span
+            className="conversation-search__nav"
+            role="button"
+            aria-disabled={index <= 0}
+            onClick={() => step(-1)}
+          >
+            <BchatIcon
+              iconType="circleArrowUpThin"
+              iconSize={24}
+              iconRotation={180}
+              iconColor={index > 0 ? '#FFFFFF' : '#8D8D8D'}
+            />
+          </span>
+          <span
+            className="conversation-search__nav"
+            role="button"
+            aria-disabled={index >= results.length - 1}
+            onClick={() => step(1)}
+          >
+            <BchatIcon
+              iconType="circleArrowUpThin"
+              iconSize={24}
+              iconColor={index < results.length - 1 ? '#FFFFFF' : '#8D8D8D'}
+            />
+          </span>
+        </>
+      )}
       <span
         className="conversation-search__close"
         role="button"

@@ -8587,10 +8587,13 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 }
 
 // =================================================================================================
-// Search in the conversation (Figma 5466:1804): 250x34.3 -> 333x46 box in the header, 9px before the
-// menu, #111@50% on a #444 line; Roboto Mono 12 -> 16 #ebebeb text 13px in; the down / up circle
-// arrows 18.3 -> 24px, 11px apart (white when there is a match that way, #8d8d8d when not), then
-// the thin #acacac close x (16 -> 21px) 11px after them, 13px from the end.
+// Search in the conversation, #111@50% on a #444 line, 10 -> 13px in from the sides:
+// - empty (Figma 5466:1796): 200x32 -> 267x43, the #737373 thin magnifier (14.5 -> 19px), 8 -> 11px
+//   to the "SEARCH" placeholder (Roboto Mono Light 12 -> 16 #737373 caps), the close x at the end
+// - typing (Figma 5466:1804): 250 -> 333px wide, Roboto Mono 12 -> 16 #ebebeb text; the down / up
+//   circle arrows 18.3 -> 24px, 11px apart (white when there is a match that way, #8d8d8d when
+//   not), then the thin #acacac close x (16 -> 21px) 11px after them.
+//   (Figma's 34.3 height there is only its auto layout hugging the arrows - the box keeps 43px)
 // =================================================================================================
 #{$dark} .conversation-search-toggle {
   display: flex;
@@ -8602,11 +8605,21 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   gap: 11px;
   width: 333px;
   max-width: 45vw;
-  height: 46px;
+  height: 43px;
   margin-inline: auto 12px;
   padding: 0 13px;
   background: rgba(17, 17, 17, 0.5);
   border: 1px solid #444;
+  transition: width 0.15s ease;
+
+  &--empty {
+    width: 267px;
+  }
+  &__icon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
 
   &__input {
     flex: 1 1 auto;
@@ -8622,7 +8635,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     color: #ebebeb;
 
     &::placeholder {
-      color: #8d8d8d;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: #737373;
     }
   }
   &__nav,
