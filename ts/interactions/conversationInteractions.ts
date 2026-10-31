@@ -11,6 +11,7 @@ import _ from 'lodash';
 import React from 'react';
 import UnblockContactIcon from '../components/icon/UnblockContactIcon';
 import { BchatIcon } from '../components/icon';
+import { isDarkTheme } from '../components/basic/LottieAnimation';
 import { getConversationController } from '../bchat/conversations';
 import { BlockedNumberController } from '../util/blockedNumberController';
 import {
@@ -296,7 +297,10 @@ export function showLeaveGroupByConvoId(conversationId: string, username: string
         onClickClose,
         okTheme: BchatButtonColor.Danger,
         iconShow: true,
-        customIcon,
+        // dark (Figma 5296:32276): the red "logout" door in the popup's icon square
+        customIcon: isDarkTheme()
+          ? React.createElement(BchatIcon, { iconType: 'logout', iconSize: 32, iconColor: '#FF3E3E' })
+          : customIcon,
       })
     );
   } else {
