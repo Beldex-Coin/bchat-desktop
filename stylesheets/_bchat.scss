@@ -1605,6 +1605,15 @@ label {
   &.contexify_submenu {
     top: 0px !important; // height of an item element
 
+    // contexify adds -bottom when the submenu would run past the bottom of the window (an item
+    // near the end of the chats list): it then opens upwards, its bottom on the item's bottom.
+    // The forced top above would keep the top too, squeezing the submenu to the item's height
+    // with its options spilling out below it and off the screen.
+    &.contexify_submenu-bottom {
+      top: auto !important;
+      bottom: 0 !important;
+    }
+
     // right: 300px !important;
     .contexify_itemContent {
       justify-content: start;
