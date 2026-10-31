@@ -796,6 +796,7 @@ export const DeclineMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
   const customIcon = <DeclineMessageRequest iconSize={30} />;
+  const isDark = useSelector(getTheme) === 'dark';
 
   if (isRequest) {
     return (
@@ -805,7 +806,8 @@ export const DeclineMenuItem = () => {
         }}
       >
         <BchatIcon
-          iconType={'accept'}
+          // dark (Figma 5296:19290 "Denied"): person with a minus badge, 15 -> 20px
+          iconType={isDark ? 'declineRequest' : 'accept'}
           iconSize={20}
           iconColor="#FF3E3E"
           clipRule="evenodd"

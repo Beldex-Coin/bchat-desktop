@@ -5348,7 +5348,8 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     font-size: 20px !important;
     font-weight: 600 !important;
     letter-spacing: 0;
-    text-transform: uppercase;
+    // the label as written ("Clear All"), not in capitals
+    text-transform: none;
 
     &::before {
       inset: 0.5px;
