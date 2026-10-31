@@ -1239,6 +1239,13 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
 }
 #{$dark} .module-conversation-header {
   height: 100px;
+  // Figma 5296:13206: the avatar 28.5 -> 38px in from the pane's edge (the base gives it 10px),
+  // the name 13.5 -> 18px after it
+  padding-inline-start: 38px;
+
+  .module-conversation-header__title {
+    margin-inline-start: 18px;
+  }
 
   .module-contact-name__profile-name {
     font-size: 18px;
@@ -9225,9 +9232,12 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   backdrop-filter: none;
   border: 1px solid #444;
 }
-// While Share Contacts / Forward is open the conversation (header, messages, composer) narrows to
-// the space left of the panel instead of running underneath it (Figma 5296:46953 / 5296:47226).
-#{$dark} .bchat-conversation:has(.profile-info .contact-list) {
+// While Share Contacts / Forward or the Profile / Group Info panel is open the conversation
+// (header, messages, composer) narrows to the space left of the panel instead of running
+// underneath it (Figma 5296:46953 / 5296:47226, 5296:1418) - the messages, the send / mic button
+// and the header icons all stay in view.
+#{$dark} .bchat-conversation:has(.profile-info .contact-list),
+#{$dark} .bchat-conversation:has(.profile-info .group-settings) {
   padding-inline-end: 431px;
 }
 
