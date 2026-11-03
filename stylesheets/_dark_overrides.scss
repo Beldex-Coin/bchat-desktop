@@ -1302,6 +1302,9 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     line-height: inherit;
     letter-spacing: 0;
     color: inherit;
+    // the timestamp clips sideways only (overflow-x: hidden), which makes it scroll up / down: the
+    // 14px mono text is a little taller than its 16px line, so a scrollbar showed after the time
+    overflow: hidden;
   }
   .bchat-icon-button {
     color: $dark-muted;
