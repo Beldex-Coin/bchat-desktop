@@ -221,7 +221,17 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     dispatch(
       updateConfirmModal({
         title: window.i18n('linkVisitWarningTitle'),
-        message: window.i18n('linkVisitWarningMessage', url),
+        // dark (Figma 5296:6628): the link in #ebebeb on the grey message (the message is HTML, so
+        // the link's own characters are escaped)
+        message: isDark
+          ? window.i18n('linkVisitWarningMessage', [
+              `<span class="confirm-highlight">${String(url)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')}</span>`,
+            ])
+          : window.i18n('linkVisitWarningMessage', url),
         okText: window.i18n('openLink'),
         cancelText: window.i18n('editMenuCopy'),
         showExitIcon: true,
