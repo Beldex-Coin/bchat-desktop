@@ -3404,6 +3404,26 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     }
   }
 
+  // a group's header has no name under the picture (an empty line) - the group name follows the
+  // header instead, so the empty line, the spacer before it and the spacer after the header go, and
+  // the name sits 21 -> 28px under the picture (Figma 5296:1418)
+  .group-settings-header-avatarBox:has(> p:empty) {
+    > p:empty,
+    > div:not(.bns-verify-wrapper) {
+      display: none;
+    }
+    + div {
+      display: none;
+    }
+  }
+  .group-settings-header + .group-settings-nameEditBox {
+    margin-top: 28px;
+  }
+  // removed from the group / left it: the red notice comes straight after the name, 24px under it
+  .group-settings-nameEditBox + .leave-wrap {
+    margin-top: 24px;
+  }
+
   // group name + green pencil (and the inline rename field)
   .group-settings-nameEditBox {
     align-items: center;
