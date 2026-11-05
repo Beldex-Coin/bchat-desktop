@@ -49,6 +49,40 @@ function makeLookup<T>(items: Array<T>, key: string): { [key: string]: T } {
 // i.e. es-419 will return 'es'.
 // We just need to use what we got from moment in getLocale on the updateLocale below
 moment.locale(window.i18n.getLocale());
+// Japanese / Korean relative times ("2 日前", "2 일 전" in the chat list and the chat header):
+// a space between the number and the unit, like the other languages
+const spacedRelativeTime: Record<string, Record<string, string>> = {
+  ja: {
+    ss: '%d 秒',
+    m: '1 分',
+    mm: '%d 分',
+    h: '1 時間',
+    hh: '%d 時間',
+    d: '1 日',
+    dd: '%d 日',
+    M: '1 ヶ月',
+    MM: '%d ヶ月',
+    y: '1 年',
+    yy: '%d 年',
+  },
+  ko: {
+    ss: '%d 초',
+    m: '1 분',
+    mm: '%d 분',
+    hh: '%d 시간',
+    dd: '%d 일',
+    MM: '%d 달',
+    yy: '%d 년',
+  },
+};
+if (spacedRelativeTime[moment.locale()]) {
+  moment.updateLocale(moment.locale(), {
+    relativeTime: {
+      ...((moment.localeData() as any)._config.relativeTime || {}),
+      ...spacedRelativeTime[moment.locale()],
+    },
+  });
+}
 
 // Workaround: A react component's required properties are filtering up through connect()
 //   https://github.com/DefinitelyTyped/DefinitelyTyped/issues/31363
