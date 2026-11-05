@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "신뢰 $name$?",
   "trustThisContactDialogDescription": "가 보낸 미디어를 다운로드하시겠습니까",
   "questionMark": "?",
+  "blockedContactNotice": "$name$ 님을 차단했습니다! 차단을 해제하려면 여기를 클릭하세요.",
+  "unblockedContactNotice": "이 연락처의 차단을 해제했습니다!",
   "pinConversation": " 대화 고정",
   "unpinConversation": "대화 고정 해제",
   "pinConversationLimitTitle": "대화 고정 제한",

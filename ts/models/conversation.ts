@@ -916,6 +916,21 @@ export class ConversationModel extends Backbone.Model<ConversationAttributes> {
    * When you have accepted another users message request
    * @param timestamp for determining the order for this message to appear like a regular message
    */
+  /**
+   * A local notice in this 1:1 chat that we blocked / unblocked the contact (nothing is sent)
+   */
+  public async addBlockNotificationMessage(type: 'blocked' | 'unblocked') {
+    if (!this.isPrivate()) {
+      return;
+    }
+    await this.addSingleOutgoingMessage({
+      sent_at: Date.now(),
+      blockNotification: { type },
+      expireTimer: 0,
+    });
+    this.updateLastMessage();
+  }
+
   public async addOutgoingApprovalMessage(timestamp: number) {
     await this.addSingleOutgoingMessage({
       sent_at: timestamp,

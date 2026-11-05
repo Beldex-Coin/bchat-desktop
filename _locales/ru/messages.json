@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "Доверие $name$?",
   "trustThisContactDialogDescription": "Вы уверены, что хотите загрузить медиафайлы, отправленные пользователем ",
   "questionMark": "?",
+  "blockedContactNotice": "Вы заблокировали $name$! Нажмите здесь, чтобы разблокировать.",
+  "unblockedContactNotice": "Вы разблокировали этот контакт!",
   "pinConversation": "Закрепить беседу",
   "unpinConversation": "Открепить беседу",
   "pinConversationLimitTitle": "Лимит закреплённых бесед",

@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "الثقة بـ $name$؟",
   "trustThisContactDialogDescription": "هل أنت متأكد أنك تريد تنزيل الوسائط المرسلة بواسطة",
   "questionMark": "؟",
+  "blockedContactNotice": "لقد حظرت $name$! انقر هنا لإلغاء الحظر.",
+  "unblockedContactNotice": "لقد ألغيت حظر جهة الاتصال هذه!",
   "pinConversation": "تثبيت المحادثة",
   "unpinConversation": "إلغاء تثبيت المحادثة",
   "pinConversationLimitTitle": "حد المحادثات المثبتة",

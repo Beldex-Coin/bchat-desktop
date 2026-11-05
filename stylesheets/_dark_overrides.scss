@@ -1385,6 +1385,15 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     color: #acacac;
   }
 }
+// Block / unblock notices (Figma 5296:28093) use the same chip (.notification-bubble--timer); the
+// "Click here to Unblock" one is a button while the contact is still blocked
+#{$dark} .block-notification--action {
+  cursor: pointer;
+
+  &:hover .notification-bubble__text {
+    color: #ebebeb;
+  }
+}
 // Countdown beside a disappearing message: 34.5x19.5 -> 46x26 #1a1a1a box (mono 14 #acacac), 5px,
 // then the 22px #ebebeb countdown icon, 12px before the bubble
 #{$dark} .expire-timer {

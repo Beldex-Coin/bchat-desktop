@@ -504,6 +504,8 @@ export type LocalizerKeys =
   | 'notificationForConvo_unmute'
   | 'trustThisContactDialogDescription'
   | 'questionMark'
+  | 'blockedContactNotice'
+  | 'unblockedContactNotice'
   | 'unknownCountry'
   | 'entryNode'
   | 'searchFor...'

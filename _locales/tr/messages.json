@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "Güven $name$?",
   "trustThisContactDialogDescription": "Şu kişi tarafından gönderilen medyayı indirmek istediğinizden emin misiniz ",
   "questionMark": "?",
+  "blockedContactNotice": "$name$ kişisini engellediniz! Engeli kaldırmak için buraya tıklayın.",
+  "unblockedContactNotice": "Bu kişinin engelini kaldırdınız!",
   "pinConversation": "Sohbeti Sabitle",
   "unpinConversation": "Sohbeti Sabitlemeyi Kaldır",
   "pinConversationLimitTitle": "Sabitlenmiş sohbet sınırı",

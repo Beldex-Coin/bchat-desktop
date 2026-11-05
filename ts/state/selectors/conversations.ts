@@ -198,6 +198,7 @@ export type MessagePropsType =
   | 'group-notification'
   | 'group-invitation'
   | 'data-extraction'
+  | 'block-notification'
   | 'message-request-response'
   | 'timer-notification'
   | 'regular-message'
@@ -239,6 +240,17 @@ export const getSortedMessagesTypesOfSelectedConversation = createSelector(
           message: {
             messageType: 'data-extraction',
             props: { ...msg.propsForDataExtractionNotification, messageId: msg.propsForMessage.id },
+          },
+        };
+      }
+
+      if (msg.propsForBlockNotification) {
+        return {
+          showUnreadIndicator: isFirstUnread,
+          showDateBreak,
+          message: {
+            messageType: 'block-notification',
+            props: { ...msg.propsForBlockNotification, messageId: msg.propsForMessage.id },
           },
         };
       }

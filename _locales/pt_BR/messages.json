@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "Confiança $name$?",
   "trustThisContactDialogDescription": "Tem certeza de que deseja baixar a mídia enviada por",
   "questionMark": "?",
+  "blockedContactNotice": "Você bloqueou $name$! Clique aqui para desbloquear.",
+  "unblockedContactNotice": "Você desbloqueou este contato!",
   "pinConversation": "Fixar Conversa",
   "unpinConversation": "Desafixar conversa",
   "pinConversationLimitTitle": "Limite de conversas fixadas",

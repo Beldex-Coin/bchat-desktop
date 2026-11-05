@@ -2,6 +2,7 @@ import  { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useKey from 'react-use/lib/useKey';
 import {
+  PropsForBlockNotification,
   PropsForDataExtractionNotification,
   PropsForMessageRequestResponse,
 } from '../../models/messageType';
@@ -27,6 +28,7 @@ import { CallNotification } from './message/message-item/notification-bubble/Cal
 import { BchatLastSeenIndicator } from './BchatLastSeenIndicator';
 import { TimerNotification } from './TimerNotification';
 import { DataExtractionNotification } from './message/message-item/DataExtractionNotification';
+import { BlockNotification } from './message/message-item/BlockNotification';
 
 function isNotTextboxEvent(e: KeyboardEvent) {
   return (e?.target as any)?.type === undefined;
@@ -143,6 +145,12 @@ export const BchatMessagesList = (props: {
             dateBreak,
             unreadIndicator,
           ];
+        }
+
+        if (messageProps.message?.messageType === 'block-notification') {
+          const msgProps = messageProps.message.props as PropsForBlockNotification;
+
+          return [<BlockNotification key={messageId} {...msgProps} />, dateBreak, unreadIndicator];
         }
 
         if (messageProps.message?.messageType === 'timer-notification') {

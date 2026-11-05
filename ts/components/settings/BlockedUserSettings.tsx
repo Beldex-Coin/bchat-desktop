@@ -1,7 +1,7 @@
 // import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { unblockConvoWithConfirm } from '../../interactions/conversationInteractions';
-// import { getConversationController } from '../../bchat/conversations';
+import { getConversationController } from '../../bchat/conversations';
 import { getBlockedPubkeys } from '../../state/selectors/conversations';
 // import { BchatButtonColor } from '../basic/BchatButton';
 
@@ -44,6 +44,14 @@ export const BlockedUserSettings = () => {
   async function unBlockThoseUsers() {
     if (selectedIds.length) {
       await BlockedNumberController.unblockAll(selectedIds);
+      // dark (Figma 5296:28093): a "You Unblocked this contact!" notice in each contact's chat
+      if (window.inboxStore?.getState().theme === 'dark') {
+        await Promise.all(
+          selectedIds.map(id =>
+            getConversationController().get(id)?.addBlockNotificationMessage('unblocked')
+          )
+        );
+      }
       emptySelected();
       ToastUtils.pushToastSuccess('unblocked', window.i18n('unblocked'));
       forceUpdate();

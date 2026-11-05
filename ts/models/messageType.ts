@@ -98,6 +98,11 @@ export interface MessageAttributes {
   messageRequestResponse?: MessageRequestResponseMsg;
 
   /**
+   * A local notice in a 1:1 chat when we block / unblock the contact ("You Blocked ...")
+   */
+  blockNotification?: BlockNotificationMsg;
+
+  /**
    * This field is used for unsending messages and used in sending unsend message requests.
    */
   messageHash?: string;
@@ -122,6 +127,18 @@ export interface DataExtractionNotificationMsg {
   source: string; // the guy who made a screenshot
   referencedAttachmentTimestamp: number; // the attachment timestamp he screenshot
 }
+
+export interface BlockNotificationMsg {
+  type: 'blocked' | 'unblocked';
+}
+
+export type PropsForBlockNotification = BlockNotificationMsg & {
+  conversationId: string;
+  name: string;
+  messageId: string;
+  receivedAt?: number;
+  isUnread: boolean;
+};
 
 export interface MessageRequestResponseMsg {
   source: string;
@@ -211,6 +228,7 @@ export interface MessageAttributesOptionals {
   messageHash?: string;
   isDeleted?: boolean;
   callNotificationType?: CallNotificationType;
+  blockNotification?: BlockNotificationMsg;
   payment?:Payment;
 
   sharedContact?:SharedContact;

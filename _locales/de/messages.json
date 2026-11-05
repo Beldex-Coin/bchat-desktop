@@ -459,6 +459,8 @@
   "trustThisContactDialogTitle": "Vertrauen $name$?",
   "trustThisContactDialogDescription": "Möchtest du die von … gesendeten Medien wirklich herunterladen ",
   "questionMark": "?",
+  "blockedContactNotice": "Du hast $name$ blockiert! Klicke hier, um die Blockierung aufzuheben.",
+  "unblockedContactNotice": "Du hast diesen Kontakt entsperrt!",
   "pinConversation": "Unterhaltung anheften",
   "unpinConversation": "Konversation lösen",
   "pinConversationLimitTitle": "Maximale Anzahl angepinnter Konversationen erreicht",

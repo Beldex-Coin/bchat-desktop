@@ -16,6 +16,7 @@ import {
 import {
   MessageDeliveryStatus,
   MessageModelType,
+  PropsForBlockNotification,
   PropsForDataExtractionNotification,
   PropsForMessageRequestResponse,
 } from '../../models/messageType';
@@ -42,6 +43,7 @@ export type MessageModelPropsWithoutConvoProps = {
   propsForGroupInvitation?: PropsForGroupInvitation;
   propsForTimerNotification?: PropsForExpirationTimer;
   propsForDataExtractionNotification?: PropsForDataExtractionNotification;
+  propsForBlockNotification?: PropsForBlockNotification;
   propsForGroupUpdateMessage?: PropsForGroupUpdate;
   propsForCallNotification?: PropsForCallNotification;
   propsForMessageRequestResponse?: PropsForMessageRequestResponse;

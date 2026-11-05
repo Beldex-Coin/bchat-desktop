@@ -109,6 +109,10 @@ export async function blockConvoById(conversationId: string) {
     : BlockedNumberController.blockGroup(conversation.id);
   await promise;
   await conversation.commit();
+  // dark (Figma 5296:28093): a "You Blocked <name>!" notice in the chat
+  if (conversation.isPrivate() && window.inboxStore?.getState().theme === 'dark') {
+    await conversation.addBlockNotificationMessage('blocked');
+  }
   ToastUtils.pushToastSuccess('blocked', window.i18n('blocked'));
 }
 
@@ -131,6 +135,10 @@ export async function unblockConvoById(conversationId: string) {
   await promise;
   ToastUtils.pushToastSuccess('unblocked', window.i18n('unblocked'));
   await conversation.commit();
+  // dark (Figma 5296:28093): a "You Unblocked this contact!" notice in the chat
+  if (conversation.isPrivate() && window.inboxStore?.getState().theme === 'dark') {
+    await conversation.addBlockNotificationMessage('unblocked');
+  }
 }
 
 /**

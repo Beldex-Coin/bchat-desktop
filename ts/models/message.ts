@@ -9,12 +9,14 @@ import { ClosedGroupVisibleMessage } from '../bchat/messages/outgoing/visibleMes
 import { PubKey } from '../bchat/types';
 import { UserUtils } from '../bchat/utils';
 import {
+  BlockNotificationMsg,
   DataExtractionNotificationMsg,
   fillMessageAttributesWithDefaults,
   MessageAttributes,
   MessageAttributesOptionals,
   MessageGroupUpdate,
   MessageModelType,
+  PropsForBlockNotification,
   PropsForDataExtractionNotification,
   PropsForMessageRequestResponse,
 } from './messageType';
@@ -115,6 +117,7 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
   public getMessageModelProps(): MessageModelPropsWithoutConvoProps {
     perfStart(`getPropsMessage-${this.id}`);
     const propsForDataExtractionNotification = this.getPropsForDataExtractionNotification();
+    const propsForBlockNotification = this.getPropsForBlockNotification();
     const propsForGroupInvitation = this.getPropsForGroupInvitation();
     const propsForSharedContact = this.getPropsForSharedContact();
     const propsForGroupUpdateMessage = this.getPropsForGroupUpdateMessage();
@@ -127,6 +130,9 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
     };
     if (propsForDataExtractionNotification) {
       messageProps.propsForDataExtractionNotification = propsForDataExtractionNotification;
+    }
+    if (propsForBlockNotification) {
+      messageProps.propsForBlockNotification = propsForBlockNotification;
     }
     if (propsForMessageRequestResponse) {
       messageProps.propsForMessageRequestResponse = propsForMessageRequestResponse;
@@ -212,6 +218,26 @@ export class MessageModel extends Backbone.Model<MessageAttributes> {
 
   public isDataExtractionNotification() {
     return !!this.get('dataExtractionNotification');
+  }
+
+  public isBlockNotification() {
+    return !!this.get('blockNotification');
+  }
+
+  public getPropsForBlockNotification(): PropsForBlockNotification | null {
+    const blockNotification = this.get('blockNotification');
+    if (!blockNotification) {
+      return null;
+    }
+    const conversationId = this.get('conversationId');
+    return {
+      ...blockNotification,
+      conversationId,
+      name: getConversationController().getContactProfileNameOrShortenedPubKey(conversationId),
+      messageId: this.id,
+      receivedAt: this.get('received_at'),
+      isUnread: this.isUnread(),
+    };
   }
 
   public getNotificationText() {
@@ -496,7 +522,11 @@ public getPropsForPayment(): PropsForPayment | null {
       return undefined;
     }
 
-    if (this.isDataExtractionNotification() || this.get('callNotificationType')) {
+    if (
+      this.isDataExtractionNotification() ||
+      this.isBlockNotification() ||
+      this.get('callNotificationType')
+    ) {
       return undefined;
     }
 
@@ -1417,6 +1447,16 @@ public getPropsForPayment(): PropsForPayment | null {
           ? window.i18n('sent')
           : window.i18n('paymentDirectionReceived');
       return `${amount} BDX ${direction}`;
+    }
+    if (this.isBlockNotification()) {
+      const { type } = this.get('blockNotification') as BlockNotificationMsg;
+      return type === 'blocked'
+        ? window.i18n('blockedContactNotice', [
+            getConversationController().getContactProfileNameOrShortenedPubKey(
+              this.get('conversationId')
+            ),
+          ])
+        : window.i18n('unblockedContactNotice');
     }
     if (this.isDataExtractionNotification()) {
       const dataExtraction = this.get(
