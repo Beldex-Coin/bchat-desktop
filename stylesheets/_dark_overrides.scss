@@ -8467,8 +8467,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 }
 #{$dark} .contexify.conversation-header-menu {
   min-width: 313px;
-  // Open over the message-selection bar (z-index 93) that sits right under the header.
-  z-index: 94;
+  // Open over the message-selection bar (z-index 93) that sits right under the header and over the
+  // right panels (99), with its submenus
+  z-index: 120;
 }
 
 // =================================================================================================

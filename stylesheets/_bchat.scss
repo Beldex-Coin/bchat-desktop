@@ -1557,8 +1557,11 @@ label {
 }
 
 .contexify {
-  // be sure it is more than the one set for the More Infos screen of messages
-  z-index: 30;
+  // be sure it is more than the one set for the More Infos screen of messages, and over the
+  // right panels (Profile / Group Info, Share Contacts, Forward: 99) so a submenu such as
+  // Disappearing Messages / Mute notifications opening towards them stays on top - popups
+  // (.bchat-modal, 150) still cover menus
+  z-index: 120;
   min-width: 215 px;
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   border-radius: 16px;

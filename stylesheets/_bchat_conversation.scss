@@ -293,7 +293,11 @@
   padding: 0px $bchat-margin-md;
   min-height: min-content;
   // border-top: var(--border-bchat);
-  z-index: 1;
+  // above everything in the message list: control messages (group updates, the welcome note,
+  // disappearing timer and call notices) sit at z-index 2, reactions at 2, the reaction popup at 4
+  // - at 1 the emoji panel, the attachment menu and the mention list opening up from here went
+  // under them
+  z-index: 10;
 
   // .bchat-icon-button {
   //   // margin-right: $bchat-margin-sm;
