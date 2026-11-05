@@ -3630,6 +3630,8 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     .list-wrapper {
       max-height: 290px;
       padding-top: 8px;
+      // room between the rows (the remove checkboxes, the ADMIN label) and the scrollbar
+      padding-inline-end: 12px;
 
       &::-webkit-scrollbar {
         width: 3px;
