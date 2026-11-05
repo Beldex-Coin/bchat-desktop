@@ -5459,6 +5459,78 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     background: #222;
   }
 }
+// Reply Contact (Figma 6262:1720): a shared contact sent as a reply to a shared contact. The quote is
+// a 258x40 -> 344x53 #0b0b0b strip on a #444 line, as wide as the contact card under it (16px from
+// the bubble's top, 13px above the card), with a 4 -> 5px #444 bar in both directions; the 10.2 ->
+// 14px person outline, 9 -> 12px, then the name ("Liya and 2 others", Inter SemiBold 10.5 -> 14
+// #acacac) on one line - 24px in from the start on a received bubble, set to the end (14px in) on
+// a sent one.
+#{$dark} .group-invitation:has(> .view-Contact) .module-quote {
+  align-items: center;
+  gap: 19px;
+  min-height: 53px;
+  margin: 2px 0 13px !important;
+  padding: 0;
+  padding-inline-end: 14px;
+  border-color: #444;
+
+  .quote-bar-wrap {
+    margin: 0;
+  }
+  .quote-bar {
+    background-color: #444 !important;
+  }
+  .module-quote__primary {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 12px 0;
+  }
+  .module-quote__primary__author {
+    margin-bottom: 4px;
+    font-size: 14px !important;
+  }
+  // the icon + name row (a Flex with a fixed 261px width)
+  .module-quote__primary > div:last-child {
+    align-items: center;
+    gap: 12px;
+    width: auto !important;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .module-quote__primary__icon {
+    flex: 0 0 auto;
+    margin: 0;
+    line-height: 0;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+    svg path {
+      fill: #acacac !important;
+      stroke: #acacac !important;
+    }
+  }
+  .module-quote__primary__text {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  // the quoted contact's name in Inter SemiBold (a quoted text message keeps its own light text)
+  &:has(.module-quote__primary__icon) .module-quote__primary__text {
+    font-family: $dark-font-ui !important;
+    font-weight: 600;
+  }
+}
+#{$dark} .group-invitation.invitation-outgoing:has(> .view-Contact) .module-quote__primary {
+  align-items: flex-end;
+}
 
 // Composer reply preview: ink card with a grey leading bar, square close on the right.
 #{$dark} .reply-preview {
