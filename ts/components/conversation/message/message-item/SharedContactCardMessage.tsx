@@ -199,12 +199,16 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                           />
                         {userName}
                       </UserNameWrapper>
-                      <span
-                        className="group-type"
-                        style={{ fontSize: `${FontSizeChanger(14)}px`, marginTop: '5px' }}
-                      >
-                        {shortAddress}
-                      </span>
+                      {/* dark (Figma 5296:48164): several contacts show only "Liya and 2 others" - the
+                          first contact's BChat ID would read as if it were the only one */}
+                      {!(isDarkTheme && sharedContactNameList.length > 1) && (
+                        <span
+                          className="group-type"
+                          style={{ fontSize: `${FontSizeChanger(14)}px`, marginTop: '5px' }}
+                        >
+                          {shortAddress}
+                        </span>
+                      )}
                     </Flex>
                   </Flex>
                   <CustomizedAvatar address={sharedContactAddressList} />

@@ -107,6 +107,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
 const ContactList = (props:ContactListProps) => {
   const { pubkey, userName, iconColor,openConfirmModal } = props;
   const isBnsHolder=useConversationBnsHolder(pubkey);
+  const isDark = useSelector(getTheme) === 'dark';
   const validUserName =
     userName.length >= 65 ? userName.slice(0, 8) + '.....' + userName.slice(-8) : userName;
   return (
@@ -129,7 +130,12 @@ const ContactList = (props:ContactListProps) => {
         </Flex>
 
          <div style={{ cursor: 'pointer' }} onClick={()=>openConfirmModal(pubkey)}>
-          <ContactBubbleChatIcon color={iconColor} />
+          {isDark ? (
+            // dark (Figma 5296:48483): the green speech bubble with three dots, 16.5 -> 22px
+            <BchatIcon iconType="messageDots" iconSize={22} iconColor="#00BC33" />
+          ) : (
+            <ContactBubbleChatIcon color={iconColor} />
+          )}
         </div>
       </div>
       <SpacerXS />

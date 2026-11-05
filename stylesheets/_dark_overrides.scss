@@ -9034,6 +9034,11 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     width: 100%;
     padding: 0;
   }
+  // View Contacts has no search box: the list starts 18px under the header bar (Figma 5296:48164),
+  // so the first row's hover plate doesn't touch it
+  > .contact-list-header + div + .contact-list-inner-wrapper {
+    margin-top: 18px;
+  }
   .address-content-box {
     min-height: 86px;
     margin-bottom: 7px;
