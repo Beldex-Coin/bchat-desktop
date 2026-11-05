@@ -9898,3 +9898,17 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
     padding: 0;
   }
 }
+// image / video with no caption: the picture 9px from all four sides of the bubble (as in the
+// captioned one) - the bubble's 14px top padding plus the tile's own 10px top inset left a 24px band
+// above it against 14px on the sides and bottom. A sender name (group chats) keeps its room above.
+#{$dark} .module-message__container:has(.module-message__attachment-container .module-image):not(:has(.attachment-with-quote)) {
+  padding: 9px !important;
+
+  .module-message__attachment-container {
+    padding: 0 !important;
+  }
+  .module-message__author {
+    padding-inline: 6px;
+    margin-bottom: 9px;
+  }
+}
