@@ -583,7 +583,7 @@
   "aboutBNS": "BNSについて",
   "aboutBNSHeader": "BNS: Beldex エコシステムにおけるあなたの分散型アイデンティティ",
   "aboutBNSDescription": "BNS（Beldex Name Service）は、Beldex エコシステム内でシームレスに利用できるゲートウェイです。BNS を使うことで、さまざまな Beldex アイデンティティにリンクされた、ユニークで覚えやすい名前を作成できます。",
-  "keyBenefits": "主なメリット",
+  "keyBenefits": "主なメリット：",
   "keyBenefits1": "統合されたアイデンティティ：BChat ID、Beldex ウォレットアドレス、BelNet ID を単一の BNS 名に接続。Beldex エコシステム内のやり取りを簡素化します。",
   "keyBenefits2": "使いやすさ：複雑な英数字の文字列はもう不要。BNS 名があれば、メッセージ送信や取引が直感的で簡単になります。",
   "keyBenefits3": "信頼のバッジ：BChat ID を BNS 名にリンクし、認証プロセスを完了することで BNS バッジを取得可能。コミュニティ内で信頼と認識のレイヤーを追加できます。",
