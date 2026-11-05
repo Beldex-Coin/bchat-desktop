@@ -207,8 +207,9 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
               <div className="password-forgot" role="button" onClick={this.initClearDataView}>
                 {window.i18n('forgotRestoreWithSeed')}
                 <BchatIcon
+                  // the arrow fills ~16 of the icon's 21: 24px draws it 19px wide (Figma 14 -> 19)
                   iconType="KeyboardBackspaceArrow"
-                  iconSize={19}
+                  iconSize={24}
                   iconRotation={180}
                   iconColor="#737373"
                   flipInRtl={true}

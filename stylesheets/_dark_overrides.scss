@@ -2545,11 +2545,18 @@ $dark-gate-bg: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparen
         fill: #ebebeb;
       }
     }
+    // Figma 5296:8211: one line centred under the field, the 14 -> 19px arrow 13 -> 17px after the
+    // text; a longer translation (Portuguese, Russian, Turkish) stays on one line and runs a
+    // little wider than the field instead of wrapping and pushing the arrow to the far edge
     .password-forgot {
       display: flex;
       align-items: center;
+      align-self: center;
       gap: 17px;
+      width: max-content;
+      max-width: none;
       margin-top: 30px;
+      white-space: nowrap;
       font-family: $dark-font-data !important;
       font-size: 19px;
       text-transform: uppercase;
