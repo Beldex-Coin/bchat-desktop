@@ -750,10 +750,21 @@ export const ActionsPanel = () => {
         <SpacerSM />
         <BchatToolTip effect="solid" />
         <BchatToastContainer />
-        <NetWorkStatusWrapper>
+        <NetWorkStatusWrapper className="network-status">
           {!isOnline && !pathCon && (
             <div className="offline-msg">
-              <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
+              {darkMode ? (
+                // Figma 5296:22174: the thin red triangle, 15 -> 20px
+                <BchatIcon
+                  iconType="warningOutline"
+                  iconSize={20}
+                  iconColor="#FF3E3E"
+                  strokeColor="#FF3E3E"
+                  strokeWidth="0.75"
+                />
+              ) : (
+                <BchatIcon iconType={'warning'} iconSize={'huge'} iconColor={'#FF3C3C'} />
+              )}
               <span className="txt">
                 {window.i18n('errConenctionStatus')}
               </span>
