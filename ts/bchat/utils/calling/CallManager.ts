@@ -1408,7 +1408,7 @@ export async function handleMissedCall(
               : { bchatIcon: 'callMissedConfirm', iconSize: 30 }),
           })
         );
-      timeValidation && ToastUtils.pushedMissedCallCauseOfPermission(displayname);
+      // the Call Missed popup above already says this - no toast with the same text as well
       break;
     case 'another-call-ongoing':
       ToastUtils.pushedMissedCall(displayname);
