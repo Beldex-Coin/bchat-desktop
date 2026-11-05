@@ -184,6 +184,69 @@ export const BchatQuotedMessageComposition = () => {
   const validatedBody = !body?.startsWith(`{"kind"`) && validateForBrokenFormat(body||'', 100);
   const formattedText = validatedBody ? renderMarkdownBlocks(validatedBody, true, isGroupConversation) : null;
   const isquotedMessage = !!body && body.startsWith('> ');
+  // the invitation / payment / shared contact card of the quoted message: in a group chat it sits
+  // under "You" / the sender, in place of the (empty) text line
+  const hasKindCard = !!(groupInvitation || paymentDetails || sharedContactList);
+  const kindCard = (
+    <>
+      {groupInvitation && (
+        <div className="group-details">
+          <Flex container={true} flexDirection="column" cursor="pointer">
+            <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+              {groupInvitation.name}
+            </span>
+            <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+              {window.i18n('socialGroupInvitation')}
+            </span>
+          </Flex>
+
+          <BchatJoinableRoomAvatar
+            completeUrl={socialGrp[0]?.completeUrl}
+            name={socialGrp[0]?.name}
+            roomId={socialGrp[0]?.id}
+            base64Data={socialGrp[0]?.base64Data}
+            onClick={() => {}}
+          />
+        </div>
+      )}
+
+      {paymentDetails && (
+        <div className="group-details">
+          <Flex container={true} flexDirection="column" cursor="pointer">
+            <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+              {window.i18n('paymentDetails', [
+              paymentDetails.msgType,
+              ])}
+            </span>
+            <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
+              {paymentDetails.amount} BDX
+            </span>
+          </Flex>
+        </div>
+      )}
+      {sharedContactList && (
+        <div className="group-details">
+          <Flex container={true} flexDirection="column" cursor="pointer">
+            <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+              {window.i18n('sharedContactLabel')}
+            </span>
+            
+            <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
+              <span style={{marginInlineEnd:'5px'}}>
+                <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
+              </span>
+              {namesArray.length > 1
+                ? window.i18n(
+                    namesArray.length > 2 ? 'sharedContactAndOthers' : 'sharedContactAndOther',
+                    [namesArray[0], String(namesArray.length - 1)]
+                  )
+                : namesArray[0] ?? ''}
+            </span>
+          </Flex>
+        </div>
+      )}
+    </>
+  );
   return (
     <QuotedMessageComposition className="reply-preview">
       <Flex
@@ -217,9 +280,13 @@ export const BchatQuotedMessageComposition = () => {
             {quotedAuthor ? (
               <div className="reply-preview__body">
                 <div className="reply-preview__author">{quotedAuthor}</div>
-                <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
-                  {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
-                </Subtle>
+                {hasKindCard ? (
+                  kindCard
+                ) : (
+                  <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
+                    {(hasAttachments && window.i18n('mediaMessage')) || formattedText}
+                  </Subtle>
+                )}
               </div>
             ) : (
               <Subtle isquotedMessage={isquotedMessage} className="reply-preview__text">
@@ -227,62 +294,7 @@ export const BchatQuotedMessageComposition = () => {
               </Subtle>
             )}
 
-            {groupInvitation && (
-              <div className="group-details">
-                <Flex container={true} flexDirection="column" cursor="pointer">
-                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                    {groupInvitation.name}
-                  </span>
-                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
-                    {window.i18n('socialGroupInvitation')}
-                  </span>
-                </Flex>
-
-                <BchatJoinableRoomAvatar
-                  completeUrl={socialGrp[0]?.completeUrl}
-                  name={socialGrp[0]?.name}
-                  roomId={socialGrp[0]?.id}
-                  base64Data={socialGrp[0]?.base64Data}
-                  onClick={() => {}}
-                />
-              </div>
-            )}
-
-            {paymentDetails && (
-              <div className="group-details">
-                <Flex container={true} flexDirection="column" cursor="pointer">
-                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                    {window.i18n('paymentDetails', [
-                    paymentDetails.msgType,
-                    ])}
-                  </span>
-                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px` }}>
-                    {paymentDetails.amount} BDX
-                  </span>
-                </Flex>
-              </div>
-            )}
-            {sharedContactList && (
-              <div className="group-details">
-                <Flex container={true} flexDirection="column" cursor="pointer">
-                  <span className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
-                    {window.i18n('sharedContactLabel')}
-                  </span>
-                  
-                  <span className="group-type" style={{ fontSize: `${FontSizeChanger(14)}px`,textTransform: 'capitalize' }}>
-                    <span style={{marginInlineEnd:'5px'}}>
-                      <BchatIcon iconType={'avatarOutline'} iconSize={13} strokeWidth={'1px'} strokeColor={'var(--color-text)'}  iconColor={'var(--color-text)'} />
-                    </span>
-                    {namesArray.length > 1
-                      ? window.i18n(
-                          namesArray.length > 2 ? 'sharedContactAndOthers' : 'sharedContactAndOther',
-                          [namesArray[0], String(namesArray.length - 1)]
-                        )
-                      : namesArray[0] ?? ''}
-                  </span>
-                </Flex>
-              </div>
-            )}
+            {!quotedAuthor && kindCard}
 
             {hasImageAttachment && (
               <Image

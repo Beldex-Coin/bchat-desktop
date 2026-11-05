@@ -5497,6 +5497,11 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       font-size: 14px;
       line-height: 19px;
     }
+    // a quoted shared contact / invitation / payment: its card under the sender, in line with it
+    .group-details {
+      min-width: 0;
+      padding: 0;
+    }
   }
   .reply-preview__author {
     font-family: $dark-font-ui !important;
