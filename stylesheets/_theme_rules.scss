@@ -9326,9 +9326,15 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     padding: 0;
   }
   em-emoji-picker {
+    // read inside the picker's shadow root (BchatEmojiPanel.tsx): dimmed category tabs, the
+    // sticky section titles' band and the emoji hover square.
+    // white (Figma 5808:43869): #fff @ 50% card on a #d0d0d0 line, #222 @ 40% tabs, plain titles
+    --emoji-tab-colour: #{if($theme-light, rgba(34, 34, 34, 0.4), rgba(235, 235, 235, 0.4))};
+    --emoji-title-bg: #{if($theme-light, rgba(246, 246, 246, 0.96), rgba(11, 11, 11, 0.92))};
+    --emoji-hover-bg: #{if($theme-light, rgba(172, 172, 172, 0.2), rgba(255, 255, 255, 0.08))};
     height: 564px;
     padding: 0;
-    background: c(rgba(11, 11, 11, 0.75), f);
+    background: if($theme-light, rgba(255, 255, 255, 0.5), c(rgba(11, 11, 11, 0.75), f));
     border: 1px solid c(#444, s);
     border-radius: 0;
     box-shadow: none;

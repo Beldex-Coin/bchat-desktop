@@ -61,7 +61,7 @@ const darkComposerPickerCss = `
     right: auto;
     width: 381px;
     height: 1px;
-    background: var(--pal-444444);
+    background: var(--pal-s-444444);
   }
   #nav .relative {
     height: 22px;
@@ -70,7 +70,7 @@ const darkComposerPickerCss = `
   #nav button {
     height: 22px;
     align-items: center;
-    color: rgba(235, 235, 235, 0.4);
+    color: var(--emoji-tab-colour);
   }
   #nav button:hover,
   #nav button[aria-selected] {
@@ -101,7 +101,7 @@ const darkComposerPickerCss = `
     height: 50px;
     padding: 0 44px 0 47px;
     background: var(--pal-1a1a1a);
-    border: 1px solid #444;
+    border: 1px solid var(--pal-s-444444);
     border-radius: 0;
     font-family: 'Roboto Mono', monospace;
     color: var(--pal-t-ebebeb);
@@ -131,7 +131,7 @@ const darkComposerPickerCss = `
   }
   .sticky {
     padding: 5px 10px 6px;
-    background-color: rgba(11, 11, 11, 0.92);
+    background-color: var(--emoji-title-bg);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     font-family: 'Roboto Mono', monospace;
@@ -142,7 +142,7 @@ const darkComposerPickerCss = `
   }
   .category button .background {
     border-radius: 0;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--emoji-hover-bg);
   }
   .scroll::-webkit-scrollbar {
     width: 18px;
@@ -218,7 +218,7 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 
           return `
             --background-color: var(--color-emoji-panel-bg);
             --rgb-background: var(--color-emoji-panel-bg);
-            --rgb-color: 0, 0, 0; // var(--color-text)
+            --rgb-color: 34, 34, 34; // var(--color-text)
             --rgb-input: 249, 249, 249;
             --rgb-accent: 16, 141, 50;
         `;
