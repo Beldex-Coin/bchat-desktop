@@ -18,6 +18,7 @@ function useMessageItemProps(convoId: string) {
     isTyping: !!convoProps.isTyping,
     lastMessage: convoProps.lastMessage,
     unreadCount: convoProps.unreadCount || 0,
+    isBlocked: !!convoProps.isBlocked,
   };
 }
 
@@ -31,7 +32,15 @@ export const MessageItem = (props: { isMessageRequest: boolean,isConvoListItem?:
   if (!convoProps) {
     return null;
   }
-  const { lastMessage, isTyping, unreadCount } = convoProps;
+  const { lastMessage, isTyping, unreadCount, isBlocked } = convoProps;
+  // a blocked contact's row says "Blocked" instead of the last message (Figma 5808:2942)
+  if (isBlocked) {
+    return (
+      <div className="module-conversation-list-item__message">
+        <div className="module-conversation-list-item__message__text">{window.i18n('blocked')}</div>
+      </div>
+    );
+  }
   if (!lastMessage && unreadCount === 1) {
     return <div style={{ width: '81%' }}></div>;
   }

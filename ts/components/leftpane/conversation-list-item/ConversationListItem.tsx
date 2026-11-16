@@ -253,12 +253,15 @@ const ConversationListItem = (props: Props) => {
                 <MessageItem key={`message-${conversationId}`} isMessageRequest={Boolean(isMessageRequest)} isConvoListItem={true} />
                 {/* {unreadCountDiv}
               {atSymbol} */}
-                <Timestamp
-                  key={`timestamp-${conversationId}`}
-                  timestamp={activeAt}
-                  isConversationListItem={true}
-                  momentFromNow={true}
-                />
+                {/* a blocked contact's row has no time: the red block mark sits at its end instead */}
+                {!isBlocked && (
+                  <Timestamp
+                    key={`timestamp-${conversationId}`}
+                    timestamp={activeAt}
+                    isConversationListItem={true}
+                    momentFromNow={true}
+                  />
+                )}
               </div>
             </div>
           </div>

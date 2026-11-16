@@ -9603,10 +9603,31 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   margin: -30px 0;
   background: none;
 }
-// blocked contact's row: the red block-person mark at the row's end (44 artboard)
+// blocked contact's row (Figma 5296 / white 5808:2942): avatar, name and the "Blocked" line at 75%,
+// no time or unread count, and the red block-person mark (44 artboard) centred at the row's end
+// where the time would be
 #{$dark} .row-blocked-mark {
   width: 30px;
   height: 30px;
+}
+#{$dark} .module-conversation-list-item--is-blocked {
+  position: relative;
+
+  .module-conversation-list-item__avatar-container,
+  .module-conversation-list-item__header__name,
+  .module-conversation-list-item__message {
+    opacity: 0.75;
+  }
+  .module-conversation-list-item__unread-count {
+    display: none;
+  }
+  .row-blocked-mark {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 24px;
+    margin: 0;
+    transform: translateY(-50%);
+  }
 }
 // deleting a chat: the row slides out
 #{$dark} .module-conversation-list-item--removing {
