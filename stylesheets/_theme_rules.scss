@@ -4296,7 +4296,8 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     // Show QR (Figma 5296:28872): #111 fill on a #737373 hairline, #ebebeb label and icon
     > .bchat-button.secondary,
     > .bchat-button.white {
-      background-color: c(#737373, f);
+      // white (Figma 5808:30191): #8c8c8c @ 50% line over the #f0f0f0 card
+      background-color: if($theme-light, #bebebe, c(#737373, f));
       color: c(#ebebeb, t);
 
       &::before {
@@ -8982,7 +8983,8 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 #{$dark} .module-left-pane-overlay .bchatId_input_wrapper .bchat-button.disabled {
   opacity: 1;
   background-color: c(#111, f) !important;
-  color: c(#696969, t) !important;
+  // white (Figma 5808:30147): #8d8d8d label
+  color: if($theme-light, #8d8d8d, c(#696969, t)) !important;
   cursor: default;
 
   &::before {
