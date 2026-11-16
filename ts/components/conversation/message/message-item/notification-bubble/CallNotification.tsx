@@ -11,7 +11,6 @@ import {
   getMessageStatusProps,
   // getSelectedConversation,
 } from '../../../../../state/selectors/conversations';
-import { getTheme } from '../../../../../state/selectors/theme';
 import { OutgoingMessageStatus } from '../../message-content/OutgoingMessageStatus';
 import { LocalizerKeys } from '../../../../../types/LocalizerKeys';
 import { BchatIcon, BchatIconType } from '../../../../icon';
@@ -28,6 +27,7 @@ import IncomingMsgTailIcon from '../../../../icon/IncomingMsgTailIcon';
 import { StyledSvgWrapper } from '../../message-content/MessageContent';
 import OutgoingMsgTailIcon from '../../../../icon/OutgoingMsgTailIcon';
 import styled from 'styled-components';
+import { isNewDesign } from '../../../../../theme/newDesign';
 
 type StyleType = Record<
   CallNotificationType,
@@ -43,19 +43,19 @@ const style: StyleType = {
   'missed-call': {
     notificationTextKey: 'callMissed',
     iconType: 'callMissed',
-    iconColor: '#FF3E3E',
+    iconColor: 'var(--pal-t-ff3e3e)',
     bgColor: 'transparent',
   },
   'started-call': {
     notificationTextKey: 'startedACall',
     iconType: 'callOutgoing',
-    iconColor: '#FFFFFF',
+    iconColor: 'var(--pal-t-ffffff)',
     bgColor: 'transparent',
   },
   'answered-a-call': {
     notificationTextKey: 'answeredACall',
     iconType: 'callIncoming',
-    iconColor: '#108D32',
+    iconColor: 'var(--pal-t-108d32)',
     bgColor: 'transparent',
   },
 };
@@ -69,7 +69,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
     getMessageContentSelectorProps(state as any, messageId)
   );
   const statusProps = useSelector(state => getMessageStatusProps(state as any, messageId));
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const direction = contentProps?.direction;
   const timestamp = contentProps?.timestamp;
   // const selectedConvoProps = useSelector(getSelectedConversation);
@@ -139,7 +139,7 @@ export const CallNotification = (props: PropsForCallNotification) => {
                   <Flex container={true} flexDirection="column" width="120px">
                     <span
                       className="group-name"
-                      style={{ fontSize: `${FontSizeChanger(16)}px`, fontWeight: 600 ,color:direction=='outgoing'?'#F0F0F0':'var(--color-text)'}}
+                      style={{ fontSize: `${FontSizeChanger(16)}px`, fontWeight: 600 ,color:direction=='outgoing'?'var(--pal-t-f0f0f0)':'var(--color-text)'}}
                     >
                       {notificationText}
                     </span>

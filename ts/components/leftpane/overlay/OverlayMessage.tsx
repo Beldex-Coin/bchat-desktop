@@ -27,8 +27,8 @@ import { QRView } from '../../dialog/EditProfileDialog';
 import { Flex } from '../../basic/Flex';
 // import { getLeftPaneLists } from '../../../state/selectors/conversations';
 import classNames from 'classnames';
-import { getTheme } from '../../../state/selectors/theme';
 import { Loader } from '../../BchatWrapperModal';
+import { isNewDesign } from '../../../theme/newDesign';
 
 
 export const OverlayMessage = () => {
@@ -48,7 +48,7 @@ export const OverlayMessage = () => {
 
   // const convoList = useSelector(getLeftPaneLists);
   const walletAddress: any = localStorage.getItem('userAddress');
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   // const convolen: boolean =convoList?.contacts?.length === 0 || false;
 
   // const title = window.i18n('newBchat');
@@ -172,7 +172,7 @@ export const OverlayMessage = () => {
                   content={ourconvo.id}
                   // dark: the Figma copy glyph (5296:28850), green
                   iconType={isDark ? 'copy' : undefined}
-                  iconColor={isDark ? '#00BC33' : undefined}
+                  iconColor={isDark ? 'var(--pal-t-00bc33)' : undefined}
                   iconSize={isDark ? 18 : 22}
                   onClick={() => {}}
                 />
@@ -187,7 +187,7 @@ export const OverlayMessage = () => {
                   content={walletAddress}
                   // dark: the Figma copy glyph (5296:28850), green
                   iconType={isDark ? 'copy' : undefined}
-                  iconColor={isDark ? '#00BC33' : undefined}
+                  iconColor={isDark ? 'var(--pal-t-00bc33)' : undefined}
                   iconSize={isDark ? 18 : 22}
                   onClick={() => {}}
                 />

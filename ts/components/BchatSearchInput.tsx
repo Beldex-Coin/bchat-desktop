@@ -3,9 +3,9 @@ import { Dispatch, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch, search, updateSearchTerm } from '../state/ducks/search';
 import { getConversationsCount } from '../state/selectors/conversations';
-import { getTheme } from '../state/selectors/theme';
 import { cleanSearchTerm } from '../util/cleanSearchTerm';
 import { BchatIcon, BchatIconButton } from './icon';
+import { isNewDesign } from '../theme/newDesign';
 
 
 const doTheSearch = (dispatch: Dispatch<any>, cleanedTerm: string) => {
@@ -39,7 +39,7 @@ export const BchatSearchInput = () => {
   const dispatch = useDispatch();
 
   const convoCount = useSelector(getConversationsCount);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   // just after onboard we only have a conversation 
   if (convoCount < 1) {

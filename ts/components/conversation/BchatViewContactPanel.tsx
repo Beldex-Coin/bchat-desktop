@@ -12,13 +12,13 @@ import {
 } from '../../state/ducks/conversations';
 import ContactBubbleChatIcon from '../icon/ContactBubbleChatIcon';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
+import { useDispatch } from 'react-redux';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { getConversationController } from '../../bchat/conversations';
 import { ConversationTypeEnum } from '../../models/conversation';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
+import { isNewDesign } from '../../theme/newDesign';
 
 type ContactListProps = {
   pubkey: any;
@@ -29,7 +29,7 @@ type ContactListProps = {
 
 export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
   const {isIncoming, names, addresses } = props;
-  const iconColor = useSelector(getTheme) === 'dark' ? 'white' : '#C5C5C5';
+  const iconColor = isNewDesign() ? 'white' : '#C5C5C5';
   const dispatch = useDispatch();
 
   const openConverstation=async(pubKey:string)=>{
@@ -83,7 +83,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
             </span>
             {/* dark theme: Figma 71:10208 light-grey X in a #222 square */}
             <span className="dark-only-inline">
-              <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+              <BchatIcon iconType="x" iconSize={12} iconColor="var(--pal-t-acacac)" />
             </span>
           </span>
         </Flex>
@@ -107,7 +107,7 @@ export const BchatViewContactPanel = (props: showViewContactPanelTypes) => {
 const ContactList = (props:ContactListProps) => {
   const { pubkey, userName, iconColor,openConfirmModal } = props;
   const isBnsHolder=useConversationBnsHolder(pubkey);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const validUserName =
     userName.length >= 65 ? userName.slice(0, 8) + '.....' + userName.slice(-8) : userName;
   return (
@@ -132,7 +132,7 @@ const ContactList = (props:ContactListProps) => {
          <div style={{ cursor: 'pointer' }} onClick={()=>openConfirmModal(pubkey)}>
           {isDark ? (
             // dark (Figma 5296:48483): the green speech bubble with three dots, 16.5 -> 22px
-            <BchatIcon iconType="messageDots" iconSize={22} iconColor="#00BC33" />
+            <BchatIcon iconType="messageDots" iconSize={22} iconColor="var(--pal-t-00bc33)" />
           ) : (
             <ContactBubbleChatIcon color={iconColor} />
           )}

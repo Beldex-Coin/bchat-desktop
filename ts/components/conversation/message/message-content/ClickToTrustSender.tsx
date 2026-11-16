@@ -10,7 +10,7 @@ import { Flex } from '../../../basic/Flex';
 import { PropsForAttachment } from '../../../../state/ducks/conversations';
 import { isAudio, isImage, isVideo } from '../../../../types/Attachment';
 import TrustDownloadIcon from '../../../icon/TrustDownloadIcon';
-import { isDarkTheme } from '../../../basic/LottieAnimation';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 const StyledTrustSenderUI = styled.div`
   padding-inline: var(--margins-sm);
@@ -87,11 +87,11 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
           convo.getContactProfileNameOrShortenedPubKey(),
         ]),
         // the sender's name is picked out in the message (dark: white on the grey text, Figma 5296:9137)
-        message: `${window.i18n('trustThisContactDialogDescription')}${' '}<span class="trust-sender-name" style="text-transform: capitalize;">${convo.getContactProfileNameOrShortenedPubKey()}</span>${isDarkTheme() ? '' : ' '}${window.i18n('questionMark')}`,
+        message: `${window.i18n('trustThisContactDialogDescription')}${' '}<span class="trust-sender-name" style="text-transform: capitalize;">${convo.getContactProfileNameOrShortenedPubKey()}</span>${isNewDesign() ? '' : ' '}${window.i18n('questionMark')}`,
         okTheme: BchatButtonColor.Primary,
         okText: window.i18n('autoUpdateDownloadButtonLabel'),
         iconShow: true,
-        customIcon: isDarkTheme() ? (
+        customIcon: isNewDesign() ? (
           <TrustDownloadIcon />
         ) : (
           <BchatIcon iconType="trustDownloadMedia" iconSize={30} />
@@ -175,7 +175,7 @@ const attachmentType: AttachmentTypeProps = getAttachmentType(attachments);
       </Flex>
       {/* Dark theme: type icon in a square well on the right (hidden in light via CSS) */}
       <span className="attach-card__well" aria-hidden="true">
-        <BchatIcon iconSize={20} iconType={attachmentType.icon} iconColor="#EBEBEB" />
+        <BchatIcon iconSize={20} iconType={attachmentType.icon} iconColor="var(--pal-t-ebebeb)" />
       </span>
     </StyledTrustSenderUI>
   );

@@ -62,6 +62,7 @@ import { BchatIcon } from '../icon';
 import styled from 'styled-components';
 import { ReactListModal } from '../dialog/ReactListModal';
 import { ProfileInfo } from '../BchatProfileInfo';
+import { isNewDesign } from '../../theme/newDesign';
 
 interface State {
   isDraggingFile: boolean;
@@ -201,18 +202,18 @@ export class BchatConversation extends React.Component<Props, State> {
         updateConfirmModal({
           title: window.i18n('warning'),
           message: window.i18n('warnSeedInMessage'),
-          okTheme: this.props.theme === 'dark' ? BchatButtonColor.Primary : BchatButtonColor.Danger,
+          okTheme: isNewDesign() ? BchatButtonColor.Primary : BchatButtonColor.Danger,
           okText: window.i18n('send'),
           iconShow: true,
           // dark: Figma 1:25893 amber warning triangle
           customIcon:
-            this.props.theme === 'dark' ? (
-              <BchatIcon iconType="warning" iconSize={26} iconColor="#F0AF13" />
+            isNewDesign() ? (
+              <BchatIcon iconType="warning" iconSize={26} iconColor="var(--pal-t-f0af13)" />
             ) : (
               <BchatIcon
                 iconType="warningCircle"
                 iconSize={30}
-                iconColor="#F0AF13"
+                iconColor="var(--pal-t-f0af13)"
                 clipRule="evenodd"
                 fillRule="evenodd"
               />
@@ -252,10 +253,10 @@ export class BchatConversation extends React.Component<Props, State> {
     } = this.props;
     const selectionMode = selectedMessages.length > 0;
     // dark: while the Social Group overlay is open the main view shows its illustration (Figma 4:839)
-    if (this.props.theme === 'dark' && focusedSection === SectionType.Opengroup) {
+    if (isNewDesign() && focusedSection === SectionType.Opengroup) {
       return <MessageView variant="social" />;
     }
-    if (this.props.theme === 'dark' && focusedSection === SectionType.Closedgroup) {
+    if (isNewDesign() && focusedSection === SectionType.Closedgroup) {
       return <MessageView variant="secret" />;
     }
     if (
@@ -266,7 +267,7 @@ export class BchatConversation extends React.Component<Props, State> {
     ) {
       // dark: the new-chat form lives in the left pane (LeftPaneMessageSection), so the main view
       // only shows the illustration + privacy note (Figma 1:56419)
-      return this.props.theme === 'dark' ? <MessageView /> : <AddNewContactInEmptyConvo />;
+      return isNewDesign() ? <MessageView /> : <AddNewContactInEmptyConvo />;
     }
     if (!selectedConversation || !messagesProps) {
       // return an empty message view

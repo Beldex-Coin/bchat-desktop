@@ -2,7 +2,6 @@ import  { useContext } from 'react';
 
 import { Item, Submenu } from 'react-contexify';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
 import {
   useConversationPropsById,
   useConversationUsername,
@@ -60,6 +59,7 @@ import { BchatIcon } from '../icon/BchatIcon';
 import styled from 'styled-components';
 import DeclineMessageRequest from '../icon/DeclineMessageRequest';
 import { removeWithRowAnimation } from '../../interactions/rowRemoval';
+import { isNewDesign } from '../../theme/newDesign';
 
 const maxNumberOfPinnedConversations = 5;
 
@@ -284,11 +284,11 @@ export const DeleteContactMenuItem = () => {
         <BchatIcon
           iconType={window.i18n('leaveGroup') === menuItemText ? 'leaveGroup' : 'deleteContact'}
           iconSize={20}
-          iconColor="#FF3E3E"
+          iconColor="var(--pal-t-ff3e3e)"
           fillRule="evenodd"
           clipRule="evenodd"
         />{' '}
-        <MenuWrapper style={{ color: '#FF3E3E' }}>{menuItemText}</MenuWrapper>
+        <MenuWrapper style={{ color: 'var(--pal-t-ff3e3e)' }}>{menuItemText}</MenuWrapper>
       </Item>
     );
   }
@@ -310,7 +310,7 @@ export const LeaveGroupMenuItem = () => {
           showLeaveGroupByConvoId(
             convoId,
             username,
-            <BchatIcon iconType="leaveGroup" iconColor="#FF3E3E" iconSize={30} />
+            <BchatIcon iconType="leaveGroup" iconColor="var(--pal-t-ff3e3e)" iconSize={30} />
           );
         }}
       >
@@ -319,9 +319,9 @@ export const LeaveGroupMenuItem = () => {
           iconSize={20}
           fillRule="evenodd"
           clipRule="evenodd"
-          iconColor="#FF3E3E"
+          iconColor="var(--pal-t-ff3e3e)"
         />
-        <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('leaveGroup')}</MenuWrapper>
+        <MenuWrapper style={{ color: 'var(--pal-t-ff3e3e)' }}> {window.i18n('leaveGroup')}</MenuWrapper>
       </Item>
     );
   }
@@ -368,7 +368,7 @@ export const RemoveModeratorsMenuItem = (): JSX.Element | null => {
           iconSize={20}
           fillRule="evenodd"
           clipRule="evenodd"
-          iconColor="#FF3E3E"
+          iconColor="var(--pal-t-ff3e3e)"
         />
         <MenuWrapper>{window.i18n('removeModerators')}</MenuWrapper>
       </Item>
@@ -433,13 +433,13 @@ export const BanMenuItem = (): JSX.Element | null => {
         }}
       >
         <BchatIcon
-          iconColor="#FF3E3E"
+          iconColor="var(--pal-t-ff3e3e)"
           iconType={'banIcon'}
           iconSize={20}
           fillRule="evenodd"
           clipRule="evenodd"
         />
-        <MenuWrapper style={{ color: '#FF3E3E' }}>{window.i18n('banUser')}</MenuWrapper>
+        <MenuWrapper style={{ color: 'var(--pal-t-ff3e3e)' }}>{window.i18n('banUser')}</MenuWrapper>
       </Item>
     );
   }
@@ -630,7 +630,7 @@ export const NotificationForConvoMenuItem = (): JSX.Element | null => {
                 <div
                   style={{
                     marginInlineEnd: '10px',
-                    color: item.selected ? '#108D32' : 'var(--color-action-btn-icon)',
+                    color: item.selected ? 'var(--pal-t-108d32)' : 'var(--color-action-btn-icon)',
                   }}
                 >
                   {/* iconColor="currentColor" so the dot picks up the div color above */}
@@ -734,8 +734,8 @@ export const DeleteMessagesMenuItem = () => {
         deleteAllMessagesByConvoIdWithConfirmation(convoId);
       }}
     >
-      <BchatIcon iconType={'delete'} iconSize={20} iconColor="#FF3E3E" />
-      <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('deleteMessages')}</MenuWrapper>
+      <BchatIcon iconType={'delete'} iconSize={20} iconColor="var(--pal-t-ff3e3e)" />
+      <MenuWrapper style={{ color: 'var(--pal-t-ff3e3e)' }}> {window.i18n('deleteMessages')}</MenuWrapper>
     </Item>
   );
 };
@@ -757,7 +757,7 @@ export const AcceptMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
   const convo = getConversationController().get(convoId);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   if (isRequest) {
     return (
@@ -772,7 +772,7 @@ export const AcceptMenuItem = () => {
           // Dark theme (Figma 5296:19284 "Checkmark"): thin circled tick in #ebebeb, like the label
           <svg width={20} height={20} viewBox="-1.25 -1.25 15 15" aria-hidden="true">
             <path
-              fill="#EBEBEB"
+              fill="var(--pal-t-ebebeb)"
               d="M6.25 0C2.803 0 0 2.803 0 6.25C0 9.697 2.803 12.5 6.25 12.5C9.697 12.5 12.5 9.697 12.5 6.25C12.5 2.803 9.697 0 6.25 0ZM6.25 0.625C9.359 0.625 11.875 3.141 11.875 6.25C11.875 9.359 9.359 11.875 6.25 11.875C3.141 11.875 0.625 9.359 0.625 6.25C0.625 3.141 3.141 0.625 6.25 0.625ZM8.939 4.368L5.313 7.995L3.776 6.462L3.555 6.24L3.115 6.68L3.333 6.901L5.313 8.88L9.16 5.033L9.378 4.811L8.939 4.368Z"
             />
           </svg>
@@ -780,12 +780,12 @@ export const AcceptMenuItem = () => {
           <BchatIcon
             iconType={'accept'}
             iconSize={20}
-            iconColor="#108D32"
+            iconColor="var(--pal-t-108d32)"
             clipRule="evenodd"
             fillRule="evenodd"
           />
         )}
-        <MenuWrapper style={{ color: isDark ? '#EBEBEB' : '#108D32' }}> {window.i18n('accept')}</MenuWrapper>
+        <MenuWrapper style={{ color: isDark ? 'var(--pal-t-ebebeb)' : 'var(--pal-t-108d32)' }}> {window.i18n('accept')}</MenuWrapper>
       </Item>
     );
   }
@@ -796,7 +796,7 @@ export const DeclineMenuItem = () => {
   const convoId = useContext(ContextConversationId);
   const isRequest = useIsRequest(convoId);
   const customIcon = <DeclineMessageRequest iconSize={30} />;
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   if (isRequest) {
     return (
@@ -809,11 +809,11 @@ export const DeclineMenuItem = () => {
           // dark (Figma 5296:19290 "Denied"): person with a minus badge, 15 -> 20px
           iconType={isDark ? 'declineRequest' : 'accept'}
           iconSize={20}
-          iconColor="#FF3E3E"
+          iconColor="var(--pal-t-ff3e3e)"
           clipRule="evenodd"
           fillRule="evenodd"
         />
-        <MenuWrapper style={{ color: '#FF3E3E' }}> {window.i18n('decline')}</MenuWrapper>
+        <MenuWrapper style={{ color: 'var(--pal-t-ff3e3e)' }}> {window.i18n('decline')}</MenuWrapper>
       </Item>
     );
   }

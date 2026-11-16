@@ -3,8 +3,7 @@ import React, { useRef } from 'react';
 
 // useCss has some issues on our setup. so import it directly
 import useUnmount from 'react-use/lib/useUnmount';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
+import { useDispatch } from 'react-redux';
 import { useDisableDrag } from '../../hooks/useDisableDrag';
 import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { showLightBox } from '../../state/ducks/conversations';
@@ -12,10 +11,11 @@ import { GoogleChrome } from '../../util';
 import { BchatIcon, BchatIconButton, BchatIconType } from '../icon';
 import * as MIME from '../../types/MIME';
 import { isUndefined } from 'lodash';
+import { isNewDesign } from '../../theme/newDesign';
 
 const Colors = {
   TEXT_SECONDARY: '#bbb',
-  ICON_SECONDARY: '#ccc',
+  ICON_SECONDARY: 'var(--pal-t-cccccc)',
 };
 
 const colorSVG = (url: string, color: string) => {
@@ -141,7 +141,7 @@ interface IconButtonProps {
 }
 
 const IconButton = ({ onClick, type }: IconButtonProps) => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const clickHandler = (): void => {
     if (!onClick) {
       return;
@@ -161,15 +161,15 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
         }}
       >
         {type === 'close' ? (
-          <BchatIcon iconType="x" iconSize={12} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+          <BchatIcon iconType="x" iconSize={12} iconColor="var(--pal-t-0b0b0b)" fillRule="evenodd" clipRule="evenodd" />
         ) : type === 'save' ? (
-          <BchatIcon iconType="download" iconSize={15} iconColor="#EBEBEB" />
+          <BchatIcon iconType="download" iconSize={15} iconColor="var(--pal-t-ebebeb)" />
         ) : (
           <BchatIcon
             iconType="backArrow"
             iconSize={22}
             iconRotation={type === 'next' ? 180 : 0}
-            iconColor={type === 'next' ? '#00BC33' : '#ACACAC'}
+            iconColor={type === 'next' ? 'var(--pal-t-00bc33)' : 'var(--pal-t-acacac)'}
           />
         )}
       </span>
@@ -183,7 +183,7 @@ const IconButton = ({ onClick, type }: IconButtonProps) => {
     case 'next':
       iconType = 'forwardArrow';
       iconSize = 58;
-      iconColor = '#108D32';
+      iconColor = 'var(--pal-t-108d32)';
       break;
     case 'previous':
       iconType = 'forwardArrow';

@@ -21,6 +21,7 @@ import { getDirectContacts } from '../../state/selectors/conversations';
 import { OverlayMessage } from './overlay/OverlayMessage';
 import { OverlayCallHistory } from './overlay/OverlayCallHistory';
 import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 // import { BchatIcon } from '../icon/BchatIcon';
 
 
@@ -50,7 +51,7 @@ const InnerLeftPaneMessageSection = () => {
   const directContact = useSelector(getDirectContacts);
   // pending requests (read or not) keep the chats section - and its requests banner - visible
   const conversationRequestsUnread = useSelector(getConversationRequests).length;
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   return (
     // tslint:disable-next-line: use-simple-attributes

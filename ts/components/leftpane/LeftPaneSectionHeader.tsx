@@ -41,8 +41,8 @@ import { updateIsOnline,
   // updateOnionPaths 
 } from '../../state/ducks/onion';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
-import { getTheme } from '../../state/selectors/theme';
 import { NewChatMenu } from './NewChatMenu';
+import { isNewDesign } from '../../theme/newDesign';
 // import { OnionPaths } from '../../bchat/onions';
 // import { getOurPubKeyStrFromCache } from '../../bchat/utils/User';
 // import ReactTooltip from 'react-tooltip';
@@ -68,7 +68,7 @@ export const LeftPaneSectionHeader = () => {
   const IsVerifyBnsCalled = useSelector(getIsVerifyBnsCalled);
   const showBackButton = isMessageRequestOverlay && isMessageSection;
   const isBnsHolder = useConversationBnsHolder(getOurPubKeyStrFromCache());
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   useEffect(() => {
     if (isOnline && !IsVerifyBnsCalled) {
       isLinkedBchatIDWithBnsForDeamon();
@@ -245,7 +245,7 @@ export const LeftPaneSectionHeader = () => {
  * in the chat list (the classic header isn't rendered in the message section).
  */
 export const ChatsHeader = () => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   if (!isDark) {
     return null;
   }

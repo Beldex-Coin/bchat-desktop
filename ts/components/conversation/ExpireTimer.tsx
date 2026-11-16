@@ -6,8 +6,7 @@ import { getTimerBucketIcon } from '../../util/timer';
 import useInterval from 'react-use/lib/useInterval';
 import styled from 'styled-components';
 import { BchatIcon } from '../icon/BchatIcon';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   expirationLength: number;
@@ -31,7 +30,7 @@ const ExpireTimerCount = styled.div<{
   user-select: none;
   color: ${props => props.color};
   border-radius: 40px;
-  background: ${props => (props.isdark ? '#202329' : '#F8F8F8')};
+  background: ${props => (props.isdark ? 'var(--pal-202329)' : 'var(--pal-t-f8f8f8)')};
   padding: 3px 10px;
 `;
 
@@ -51,7 +50,7 @@ export const ExpireTimer = (props: Props) => {
 
   const initialTimeLeft = Math.max(Math.round(((expirationTimestamp || 0) - Date.now()) / 1000), 0);
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const update = useCallback(() => {
     if (expirationTimestamp) {
       const newTimeLeft = Math.max(Math.round((expirationTimestamp - Date.now()) / 1000), 0);
@@ -84,7 +83,7 @@ export const ExpireTimer = (props: Props) => {
     return (
       <span className="expire-timer">
         <span className="expire-timer__count">{shortLeft}</span>
-        <BchatIcon iconType="countdown" iconSize={22} iconColor="#EBEBEB" />
+        <BchatIcon iconType="countdown" iconSize={22} iconColor="var(--pal-t-ebebeb)" />
       </span>
     );
   }

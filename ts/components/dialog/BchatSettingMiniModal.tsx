@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Fragment, useState } from 'react';
-import { useSelector } from 'react-redux';
 import useKey from 'react-use/lib/useKey';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerSM } from '../basic/Text';
@@ -9,7 +8,7 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatIcon } from '../icon';
 import { Constants } from '../../bchat';
 import { SettingMiniModalState } from '../../state/ducks/modalDialog';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   const [select, setSelect] = useState(props?.selectedItem||'');
@@ -21,7 +20,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   const descriptions = props?.descriptions;
   const hasNotes = !!descriptions && descriptions.length > 0;
   const selectedIndex = data.findIndex(option => option.value === select);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   useKey('Escape', () => isDark && props?.onClose?.(), undefined, [isDark, props?.onClose]);
 
   // Dark theme: Figma 1:34208 "Font Size" picker - radio rows in a boxed list, the
@@ -66,7 +65,7 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
             </div>
             {hasNotes && (
               <div className="option-picker__note">
-                <BchatIcon iconType="noteInfo" iconSize={24} iconColor="#ACACAC" />
+                <BchatIcon iconType="noteInfo" iconSize={24} iconColor="var(--pal-t-acacac)" />
                 <div className="option-picker__note-text">
                   {descriptions?.map((description, i) => (
                     <span

@@ -7,8 +7,7 @@ import { getRecentReactions } from '../../../../util/storage';
 
 import { nativeEmojiData } from '../../../../util/emoji';
 import { isEqual } from 'lodash';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../../../state/selectors/theme';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 type Props = {
   action: (...args: Array<any>) => void;
@@ -73,7 +72,7 @@ const ReactButton = styled.div<{ isIncoming: boolean }>`
 export const MessageReactBar = (props: Props): ReactElement => {
   const { action, additionalAction, isIncoming } = props;
   const [recentReactions, setRecentReactions] = useState<RecentReactions>();
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
 
   useEffect(() => {
     const reactions: any = new RecentReactions(getRecentReactions());
@@ -104,7 +103,7 @@ export const MessageReactBar = (props: Props): ReactElement => {
         ))}
       <span>
         <BchatIconButton
-          iconColor={darkMode ? '#8D8D8D' : '#858598'}
+          iconColor={darkMode ? 'var(--pal-t-8d8d8d)' : '#858598'}
           iconSize={20}
           iconType={'plusOuterFilled'}
           onClick={e => additionalAction(e)}

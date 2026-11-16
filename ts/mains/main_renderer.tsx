@@ -32,8 +32,7 @@ import { OpenGroupData } from '../data/opengroups';
 import { createRoot, Root } from 'react-dom/client';
 import { applyDocumentDirection } from '../util/applyDocumentDirection';
 import { switchBchatTheme } from '../theme/switchTheme';
-import { BCHAT_CLASSIC_DARK_COLORS } from '../theme/classicDark';
-import { BCHAT_CLASSIC_LIGHT_COLORS } from '../theme/classicLight';
+import { DARK_THEME_VARS, WHITE_THEME_VARS } from '../theme/themeVariables';
 
 
 let root: Root | null = null;
@@ -201,9 +200,7 @@ Storage.onready(async () => {
   // Apply the saved theme before anything renders: BchatTheme only sets the colours and the
   // data-theme attribute after React's first paint, so the first frame of the dashboard used to
   // come up in the light defaults and then flip to dark.
-  switchBchatTheme(
-    newThemeSetting === 'dark' ? BCHAT_CLASSIC_DARK_COLORS : BCHAT_CLASSIC_LIGHT_COLORS
-  );
+  switchBchatTheme(newThemeSetting === 'dark' ? DARK_THEME_VARS : WHITE_THEME_VARS);
   document.documentElement.setAttribute('data-theme', newThemeSetting === 'dark' ? 'dark' : 'light');
 
   try {

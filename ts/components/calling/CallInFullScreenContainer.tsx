@@ -20,8 +20,8 @@ import { UserUtils } from '../../bchat/utils';
 import { CenteredAvatarInConversation, UserNameTxt } from './InConversationCallContainer';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerXS } from '../basic/Text';
-import { getTheme } from '../../state/selectors/theme';
 import classNames from 'classnames';
+import { isNewDesign } from '../../theme/newDesign';
 
 const CallInFullScreenVisible = styled.div<{ bgColor: string }>`
   position: absolute;
@@ -65,8 +65,8 @@ export const CallInFullScreenContainer = () => {
   const selectedConversation = useSelector(getSelectedConversation);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const [isPortrait, setPortrait] = useState(false);
-  const isDark = useSelector(getTheme) === 'dark';
-  const avatarBgColor = isDark ? '#131313' : '#FFF';
+  const isDark = isNewDesign();
+  const avatarBgColor = isDark ? 'var(--pal-131313)' : 'var(--pal-t-ffffff)';
 
   const {
     remoteStream,

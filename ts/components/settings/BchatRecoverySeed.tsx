@@ -13,14 +13,14 @@ import { displayPasswordModal } from './section/CategoryPrivacy';
 import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon } from '../icon/BchatIcon';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 
 export const BchatRecoverySeed = (props: any) => {
 
   //  const [verify, setVerify] = useState(false)
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   if (props.passwordLock) {
     return <BchatSeedModal {...recoveryPhraseModalState} />;
@@ -52,7 +52,7 @@ export const BchatRecoverySeed = (props: any) => {
     iconShow={true}
     customIcon={
       isDark ? (
-        <BchatIcon iconType="lock" iconSize={34} iconColor="#EBEBEB" />
+        <BchatIcon iconType="lock" iconSize={34} iconColor="var(--pal-t-ebebeb)" />
       ) : (
         <BchatIcon iconType="enablePasswordIcon" iconSize={26} />
       )

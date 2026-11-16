@@ -18,7 +18,7 @@ type SProps = {
 
 const StyledRoundedButton = styled.div<{ isMuted: boolean; isSelected?: boolean,isCallModalExpandView?:boolean }>`
   // background-color:var(--color-clickable-hovered);
-  color: ${props => (props.isSelected ? '#FF3E3E' : '#128b17')};
+  color: ${props => (props.isSelected ? 'var(--pal-t-ff3e3e)' : '#128b17')};
   border-radius: 50%;
   cursor: pointer;
   border:1px solid #e6e6e6
@@ -58,7 +58,7 @@ const StyledArrowIcon = styled(StyledRoundedButton)`
 
   position: absolute;
   &:hover {
-    background-color: #ffffff;
+    background-color: var(--pal-ffffff);
     color: #2879f9;
   }
 `;
@@ -87,7 +87,7 @@ export const DropDownAndToggleButton = (props: SProps) => {
       onClick={mainButtonClickHandler}
       isCallModalExpandView={isCallModalExpandView || hasOngoingCallFullScreen}
     >
-      <BchatIcon iconType={iconType} iconSize={27} iconColor={isMuted?'#333333':fillColor} />
+      <BchatIcon iconType={iconType} iconSize={27} iconColor={isMuted?'var(--pal-t-333333)':fillColor} />
       {!hidePopoverArrow && (
         <StyledArrowIcon className="call-toggle__arrow" isMuted={isMuted || false} onClick={arrowClickHandler}>
           <BchatIcon iconType="chevron" iconColor={fillColor} iconSize={20} />

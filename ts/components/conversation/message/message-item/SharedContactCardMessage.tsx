@@ -35,8 +35,8 @@ import { ConversationTypeEnum } from '../../../../models/conversation';
 import { updateConfirmModal } from '../../../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { useConversationBnsHolder } from '../../../../hooks/useParamSelector';
-import { getTheme } from '../../../../state/selectors/theme';
 import { SpacerSM } from '../../../basic/Text';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const {
@@ -59,8 +59,8 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
   const isDarkAndMoreInfo =
-    useSelector(getTheme) === 'dark' && isDetailView && contentProps?.direction === 'incoming';
-  const isDarkTheme = useSelector(getTheme) === 'dark';
+    isNewDesign() && isDetailView && contentProps?.direction === 'incoming';
+  const isDarkTheme = isNewDesign();
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const sharedContactNameList: string[] = JSON.parse(name || '[]');
   const sharedContactAddressList: string[] = JSON.parse(address || '[]');
@@ -101,7 +101,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const isIncoming = contentProps?.direction === 'incoming';
   const viewContactBtnText = sharedContactNameList.length >= 2 ? 'viewAll' : 'viewMessage';
-  const strokeColor = contentProps?.direction == 'outgoing' ? '#F0F0F0' : 'var(--color-text)';
+  const strokeColor = contentProps?.direction == 'outgoing' ? 'var(--pal-t-f0f0f0)' : 'var(--color-text)';
 
   const classes = [`group-invitation ${flashGreen && 'flash-green-once'}`];
   if (contentProps?.direction === 'outgoing') {
@@ -286,7 +286,7 @@ const Wrapper = styled.div`
 
 const SharedContactWrapper = styled.div<{ isDarkAndMoreInfo?: boolean }>`
   padding: 0;
-  background-color: ${props => (props.isDarkAndMoreInfo ? '#202329' : '')};
+  background-color: ${props => (props.isDarkAndMoreInfo ? 'var(--pal-t-202329)' : '')};
   cursor: unset !important;
   .group-details {
     cursor: unset !important;

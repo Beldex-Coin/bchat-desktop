@@ -23,7 +23,7 @@ type Props = {
 };
 
 export const ConfirmCard = (props: Props) => {
-  const { icon, iconColor = '#EBEBEB', iconSize = 28, evenOdd, loading } = props;
+  const { icon, iconColor = 'var(--pal-t-ebebeb)', iconSize = 28, evenOdd, loading } = props;
   return (
     <div className={classNames('confirm-card', props.className)} role="dialog">
       <div className="confirm-card__row">

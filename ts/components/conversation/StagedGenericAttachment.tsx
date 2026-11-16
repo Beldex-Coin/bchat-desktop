@@ -25,7 +25,7 @@ export class StagedGenericAttachment extends React.Component<Props> {
             }
           }}
         >
-          <BchatIcon iconType={'xWithCircle'} iconSize={16} iconColor="#fff" />
+          <BchatIcon iconType={'xWithCircle'} iconSize={16} iconColor="var(--pal-t-ffffff)" />
         </div>
         <div className="module-staged-generic-attachment__icon">
           {extension ? (

@@ -158,7 +158,7 @@ export const Image = (props: Props) => {
             }
           }}
         >
-          <BchatIcon iconType={'xWithCircle'} iconSize={16} iconColor="#fff" />
+          <BchatIcon iconType={'xWithCircle'} iconSize={16} iconColor="var(--pal-t-ffffff)" />
         </div>
       ) : // <BchatIcon iconType={'xWithCircle'} iconSize={16} />
       null}

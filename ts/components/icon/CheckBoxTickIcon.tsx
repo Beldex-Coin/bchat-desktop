@@ -10,11 +10,11 @@ const CheckBoxTickIcon = (props: { iconSize: number }) => (
   >
     <path
       d="M9.4 25H16.6C22.6 25 25 22.6 25 16.6V9.4C25 3.4 22.6 1 16.6 1H9.4C3.4 1 1 3.4 1 9.4V16.6C1 22.6 3.4 25 9.4 25Z"
-      fill="#108D32"
+      fill="var(--pal-t-108d32)"
     />
     <path
       d="M8.39648 12.9999L11.4623 16.0657L17.6048 9.93408"
-      stroke="#F0F0F0"
+      stroke="var(--pal-t-f0f0f0)"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"

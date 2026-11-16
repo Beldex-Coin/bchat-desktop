@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { updateReactClearAllModal } from '../../state/ducks/modalDialog';
 import { StateType } from '../../state/reducer';
 import { getMessageReactsProps } from '../../state/selectors/conversations';
-import { getTheme } from '../../state/selectors/theme';
 import { Flex } from '../basic/Flex';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { getConversationController } from '../../bchat/conversations';
 import { BchatSpinner } from '../basic/BchatSpinner';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   reaction: string;
@@ -40,7 +40,7 @@ export const ReactClearAllModal = (props: Props): ReactElement => {
   const { reaction, messageId } = props;
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
   const dispatch = useDispatch();
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const [clearingInProgress, setClearingInProgress] = useState(false);
 
   if (!msgProps) {

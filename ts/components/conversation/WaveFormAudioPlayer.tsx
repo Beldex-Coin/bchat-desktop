@@ -3,7 +3,6 @@ import { useEncryptedFileFetch } from '../../hooks/useEncryptedFileFetch';
 import { useAudioPeaks } from '../../hooks/useAudioPeaks';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAudioAutoplay, getIsCurrentlyRecording } from '../../state/selectors/userConfig';
-import { getTheme } from '../../state/selectors/theme';
 import { getNextMessageToPlayId, getSortedMessagesOfSelectedConversation } from '../../state/selectors/conversations';
 import { setNextMessageToPlayId } from '../../state/ducks/conversations';
 import { isAudio } from '../../types/Attachment';
@@ -14,6 +13,7 @@ import { SpacerSM } from '../basic/Text';
 import { BchatIconButton } from '../icon';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
+import { isNewDesign } from '../../theme/newDesign';
 
 interface Props {
   src: string;
@@ -39,7 +39,7 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   const nextMessageToPlayId = useSelector(getNextMessageToPlayId);
   const isCurrentlyRecording = useSelector(getIsCurrentlyRecording);
   const autoPlaySetting = useSelector(getAudioAutoplay);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const { currentPlayingId, playAudio, pauseAudio, seekTo, audioRef,handleAudioEnded } = useAudioPlayer();
   const isSameMessage = messageId == currentPlayingId;
   const [isPlaying, setIsPlaying] = useState(isSameMessage ? !audioRef.current?.audio?.current.paused:false);
@@ -52,12 +52,12 @@ const WaveFormAudioPlayerWithEncryptedFile: React.FC<Props> = ({
   // played part in white.
   const waveColor = darkMode
     ? direction === 'incoming'
-      ? '#737373'
-      : '#1BB51E'
+      ? 'var(--pal-t-737373)'
+      : 'var(--pal-t-1bb51e)'
     : direction === 'incoming'
-    ? '#ACACAC'
+    ? 'var(--pal-t-acacac)'
     : '#1C581C';
-  const progressColor = darkMode ? '#F4F4F4' : direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
+  const progressColor = darkMode ? 'var(--pal-t-f4f4f4)' : direction === 'incoming' ? '#2F8FFF' : '#C0FFC9';
   const beepRef = useRef<HTMLAudioElement | null>(null);
   const isManualTriggerForPause=useRef<boolean>(false)
   const audioContextDuration=isSameMessage?audioRef.current?.audio?.current.duration:duration;
@@ -261,17 +261,17 @@ const debouncedPlayNextMessage = useMemo(() =>
             <BchatIconButton
               iconType={isPlaying ? 'pauseBars' : 'play'}
               iconSize={12}
-              iconColor="#0B0B0B"
+              iconColor="var(--pal-t-0b0b0b)"
               onClick={() => handlePlayPause(true)}
               btnRadius="50%"
-              btnBgColor={direction === 'incoming' ? '#00BC33' : '#F4F4F4'}
+              btnBgColor={direction === 'incoming' ? 'var(--pal-00bc33)' : 'var(--pal-t-f4f4f4)'}
               padding="7px"
             />
           ) : (
             <BchatIconButton
               iconType={isPlaying ? 'pause' : 'play'}
               iconSize="medium"
-              iconColor="#F0F0F0"
+              iconColor="var(--pal-t-f0f0f0)"
               onClick={() => handlePlayPause(true)}
               btnRadius="40px"
               btnBgColor="#2F8FFF"

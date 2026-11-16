@@ -1,10 +1,11 @@
 // Dark theme: the chat list plays a short "removed" animation on a row (red bin, row slides out)
+import { isNewDesign } from '../theme/newDesign';
 // before the conversation itself is deleted, like the mobile app (images/animations/Delete_Bin.json).
 
 export const ROW_REMOVING_EVENT = 'bchat-row-removing';
 const ROW_REMOVING_MS = 950;
 
-const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+const isDark = () => isNewDesign();
 
 /**
  * Runs `remove` after the row's animation has played (dark theme), or straight away otherwise.

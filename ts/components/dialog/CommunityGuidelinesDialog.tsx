@@ -28,7 +28,7 @@ export const CommunityGuidelinesDialog = () => {
         }}
       >
         <button className="close-square" onClick={closeDialog} aria-label={window.i18n('close')}>
-          <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" />
+          <BchatIcon iconType="x" iconSize={11} iconColor="var(--pal-t-0b0b0b)" />
         </button>
         <section>
           <article>

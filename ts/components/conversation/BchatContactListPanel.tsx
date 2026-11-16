@@ -20,8 +20,8 @@ import CheckBoxTickIcon from '../icon/CheckBoxTickIcon';
 import { getConversationController } from '../../bchat/conversations';
 import { closeForwardPanel, closeShareContact } from '../../state/ducks/conversations';
 import { forwardMessagesToConversations } from '../../interactions/forwardMessages';
-import { getTheme } from '../../state/selectors/theme';
 import { Avatar, AvatarSize } from '../avatar/Avatar';
+import { isNewDesign } from '../../theme/newDesign';
 
 
 /**
@@ -158,7 +158,7 @@ export const BchatContactListPanel = (props: {
             </span>
             {/* dark theme: Figma 71:13217 light-grey X in a #222 square */}
             <span className="dark-only-inline">
-              <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+              <BchatIcon iconType="x" iconSize={12} iconColor="var(--pal-t-acacac)" />
             </span>
           </span>
         </Flex>
@@ -243,7 +243,7 @@ const ContactList = (props: {
   const username = useConversationUsernameOrShorten(pubkey);
   const isBnsHolder = useConversationBnsHolder(pubkey);
   const selectionValidation = isSelected;
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   return (
     <>
@@ -282,7 +282,7 @@ const ContactList = (props: {
               )}
             >
               {selectionValidation && (
-                <BchatIcon iconType="check" iconSize={14} strokeColor="#0A0A0A" strokeWidth="2" />
+                <BchatIcon iconType="check" iconSize={14} strokeColor="var(--pal-t-0a0a0a)" strokeWidth="2" />
               )}
             </span>
           ) : selectionValidation ? (
@@ -299,7 +299,7 @@ const ContactList = (props: {
 
 // Shown when the list is empty: "No contacts yet!", or "No Contact Found!" when a search matches nobody
 const SearchEmptyScreen = (props: { isSearching?: boolean }) => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   return (
     <SearchEmptyWrapper className="contact-list-empty">
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">

@@ -19,7 +19,7 @@ import {  BchatIconButton } from '../icon';
 export const DraggableCallWindow = styled.div`
   position: absolute;
   z-index: 999;
-  box-shadow: 0px 0px 10px 0px #000000;
+  box-shadow: 0px 0px 10px 0px var(--pal-s-000000);
   max-height: 300px;
   min-width: 8vw;
   max-width: 12vw;

@@ -2,11 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { debounce } from 'lodash';
 import { getSelectedConversationKey } from '../../state/selectors/conversations';
-import { getTheme } from '../../state/selectors/theme';
 import { searchMessagesInConversation } from '../../data/data';
 import { cleanSearchTerm } from '../../util/cleanSearchTerm';
 import { openConversationToSpecificMessage } from '../../state/ducks/conversations';
 import { BchatIcon, BchatIconButton } from '../icon';
+import { isNewDesign } from '../../theme/newDesign';
 
 // Search inside the open conversation (dark theme only, Figma 1:45529): a search icon in
 // the header opens a boxed field with a clear button and down / up arrows that step through the
@@ -75,7 +75,7 @@ const applySearchHighlights = (text: string) => {
 };
 
 export const ConversationSearch = () => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const convoId = useSelector(getSelectedConversationKey);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -188,7 +188,7 @@ export const ConversationSearch = () => {
         <BchatIconButton
           iconType="search"
           iconSize={22}
-          iconColor="#EBEBEB"
+          iconColor="var(--pal-t-ebebeb)"
           onClick={() => setOpen(true)}
           dataTestId="conversation-search-button"
         />
@@ -207,7 +207,7 @@ export const ConversationSearch = () => {
     >
       {isEmpty && (
         <span className="conversation-search__icon">
-          <BchatIcon iconType="searchThin" iconSize={19} iconColor="#737373" />
+          <BchatIcon iconType="searchThin" iconSize={19} iconColor="var(--pal-t-737373)" />
         </span>
       )}
       <input
@@ -241,7 +241,7 @@ export const ConversationSearch = () => {
               iconType="circleArrowUpThin"
               iconSize={24}
               iconRotation={180}
-              iconColor={index > 0 ? '#FFFFFF' : '#8D8D8D'}
+              iconColor={index > 0 ? 'var(--pal-t-ffffff)' : 'var(--pal-t-8d8d8d)'}
             />
           </span>
           <span
@@ -253,7 +253,7 @@ export const ConversationSearch = () => {
             <BchatIcon
               iconType="circleArrowUpThin"
               iconSize={24}
-              iconColor={index < results.length - 1 ? '#FFFFFF' : '#8D8D8D'}
+              iconColor={index < results.length - 1 ? 'var(--pal-t-ffffff)' : 'var(--pal-t-8d8d8d)'}
             />
           </span>
         </>
@@ -264,7 +264,7 @@ export const ConversationSearch = () => {
         aria-label={window.i18n('close')}
         onClick={close}
       >
-        <BchatIcon iconType="closeThin" iconSize={21} iconColor="#ACACAC" />
+        <BchatIcon iconType="closeThin" iconSize={21} iconColor="var(--pal-t-acacac)" />
       </span>
     </div>
   );

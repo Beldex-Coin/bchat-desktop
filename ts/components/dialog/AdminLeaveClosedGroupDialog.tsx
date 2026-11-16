@@ -5,8 +5,8 @@ import { adminLeaveClosedGroup } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatIcon } from '../icon/BchatIcon';
-import { isDarkTheme } from '../basic/LottieAnimation';
 import styled from 'styled-components';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   conversationId: string;
@@ -54,10 +54,10 @@ export const AdminLeaveClosedGroupDialog = (props: Props) => {
       iconShow={true}
       customIcon={
         // dark (Figma 5296:32276): the red "logout" door in the popup's icon square
-        isDarkTheme() ? (
-          <BchatIcon iconType="logout" iconSize={32} iconColor="#FF3E3E" />
+        isNewDesign() ? (
+          <BchatIcon iconType="logout" iconSize={32} iconColor="var(--pal-t-ff3e3e)" />
         ) : (
-          <BchatIcon iconType={'leaveGroup'} iconSize={24} iconColor='#FF3E3E' />
+          <BchatIcon iconType={'leaveGroup'} iconSize={24} iconColor='var(--pal-t-ff3e3e)' />
         )
       }
     >

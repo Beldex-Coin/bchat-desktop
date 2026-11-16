@@ -25,7 +25,8 @@ import {  SpacerXS } from '../basic/Text';
 import { Flex } from '../basic/Flex';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { getSodiumRenderer } from '../../bchat/crypto';
-import { LottieAnimation, isDarkTheme } from '../basic/LottieAnimation';
+import { LottieAnimation } from '../basic/LottieAnimation';
+import { isNewDesign } from '../../theme/newDesign';
 
 interface State {
   profileName: string;
@@ -41,7 +42,7 @@ interface State {
 export const QRView = ({ bchatID }: { bchatID: string }) => {
   return (
     <div className="qr-image">
-      <QRCode value={bchatID} bgColor="#FFFFFF" fgColor="#1B1B1B" level="M" />
+      <QRCode value={bchatID} bgColor="var(--pal-ffffff)" fgColor="var(--pal-t-1b1b1b)" level="M" />
     </div>
   );
 };
@@ -160,7 +161,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 </span>
                 {/* dark theme: plain X in the light square (Figma 1:51366), like the other popups */}
                 <span className="dark-only-inline">
-                  <BchatIconButton iconType="x" iconSize={12} iconColor="#0B0B0B" onClick={this.closeDialog} />
+                  <BchatIconButton iconType="x" iconSize={12} iconColor="var(--pal-t-0b0b0b)" onClick={this.closeDialog} />
                 </span>
               </div>
             </div>
@@ -212,7 +213,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             {this.renderAvatar()}
             {/* dark: a verified account's rosette is drawn in with its ring
                 (images/animations/BNS_Tick.json) in place of the still badge */}
-            {isDarkTheme() && !!this.convo?.attributes?.isBnsHolder && (
+            {isNewDesign() && !!this.convo?.attributes?.isBnsHolder && (
               <LottieAnimation name="BNS_Tick" loop={false} className="profile-bns-tick" />
             )}
             <div
@@ -234,7 +235,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                   <BchatIcon iconType="camera" iconSize={16} />
                 </span>
                 <span className="dark-only-inline">
-                  <BchatIcon iconType="image" iconSize={18} iconColor="#EBEBEB" />
+                  <BchatIcon iconType="image" iconSize={18} iconColor="var(--pal-t-ebebeb)" />
                 </span>
               </div>
               <SpacerXS />
@@ -312,7 +313,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 iconType="pencil"
                 iconSize={18}
                 padding="0 0 0 7px"
-                iconColor="#00BC33"
+                iconColor="var(--pal-t-00bc33)"
                 onClick={() => {
                   this.setState({ mode: 'edit' });
                 }}
@@ -423,7 +424,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
                 <BchatIcon iconType={'bnslogo'} iconSize={26} iconColor='var(--color-text-opposite)' />
               </span>
               <span className="dark-only-inline">
-                <BchatIcon iconType="bnslogo" iconSize={20} iconColor="#0B0B0B" />
+                <BchatIcon iconType="bnslogo" iconSize={20} iconColor="var(--pal-t-0b0b0b)" />
               </span>
               <span className="link_bns_Btn-label">{i18n('linkYourBns')}</span>
             </button>
@@ -466,7 +467,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <CopyIconButton content={props.bchatID} iconSize={18}
             />
             <span className="dark-only-inline">
-              <BchatIcon iconType="copy" iconSize={17} iconColor="#00BC33" />
+              <BchatIcon iconType="copy" iconSize={17} iconColor="var(--pal-t-00bc33)" />
             </span>
           </div>
         </div>
@@ -488,7 +489,7 @@ export class EditProfileDialog extends React.Component<{}, State> {
             <CopyIconButton content={walletAddress ? walletAddress : ''} iconSize={18}
             />
             <span className="dark-only-inline">
-              <BchatIcon iconType="copy" iconSize={17} iconColor="#00BC33" />
+              <BchatIcon iconType="copy" iconSize={17} iconColor="var(--pal-t-00bc33)" />
             </span>
           </div>
         </div>

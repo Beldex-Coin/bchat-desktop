@@ -11,7 +11,6 @@ import _ from 'lodash';
 import React from 'react';
 import UnblockContactIcon from '../components/icon/UnblockContactIcon';
 import { BchatIcon } from '../components/icon';
-import { isDarkTheme } from '../components/basic/LottieAnimation';
 import { getConversationController } from '../bchat/conversations';
 import { BlockedNumberController } from '../util/blockedNumberController';
 import {
@@ -52,6 +51,7 @@ import { MIME } from '../types';
 import { setLastProfileUpdateTimestamp } from '../util/storage';
 import { getSodiumRenderer } from '../bchat/crypto';
 import { encryptProfile } from '../util/crypto/profileEncrypter';
+import { isNewDesign } from '../theme/newDesign';
 
 // import { useConversationUsername } from '../hooks/useParamSelector';
 
@@ -110,7 +110,7 @@ export async function blockConvoById(conversationId: string) {
   await promise;
   await conversation.commit();
   // dark (Figma 5296:28093): a "You Blocked <name>!" notice in the chat
-  if (conversation.isPrivate() && window.inboxStore?.getState().theme === 'dark') {
+  if (conversation.isPrivate() && isNewDesign()) {
     await conversation.addBlockNotificationMessage('blocked');
   }
   ToastUtils.pushToastSuccess('blocked', window.i18n('blocked'));
@@ -136,7 +136,7 @@ export async function unblockConvoById(conversationId: string) {
   ToastUtils.pushToastSuccess('unblocked', window.i18n('unblocked'));
   await conversation.commit();
   // dark (Figma 5296:28093): a "You Unblocked this contact!" notice in the chat
-  if (conversation.isPrivate() && window.inboxStore?.getState().theme === 'dark') {
+  if (conversation.isPrivate() && isNewDesign()) {
     await conversation.addBlockNotificationMessage('unblocked');
   }
 }
@@ -147,7 +147,7 @@ export async function unblockConvoById(conversationId: string) {
  */
 export function unblockConvoWithConfirm(conversationId: string) {
   const conversation = getConversationController().get(conversationId);
-  const isDark = window.inboxStore?.getState().theme === 'dark';
+  const isDark = isNewDesign();
   if (!isDark || (conversation && !conversation.isPrivate())) {
     void unblockConvoById(conversationId);
     return;
@@ -306,8 +306,8 @@ export function showLeaveGroupByConvoId(conversationId: string, username: string
         okTheme: BchatButtonColor.Danger,
         iconShow: true,
         // dark (Figma 5296:32276): the red "logout" door in the popup's icon square
-        customIcon: isDarkTheme()
-          ? React.createElement(BchatIcon, { iconType: 'logout', iconSize: 32, iconColor: '#FF3E3E' })
+        customIcon: isNewDesign()
+          ? React.createElement(BchatIcon, { iconType: 'logout', iconSize: 32, iconColor: 'var(--pal-t-ff3e3e)' })
           : customIcon,
       })
     );

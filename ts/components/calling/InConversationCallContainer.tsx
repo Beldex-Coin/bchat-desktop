@@ -28,7 +28,7 @@ import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerXS } from '../basic/Text';
 import { BchatIconButton } from '../icon';
 import classNames from 'classnames';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 const VideoContainer = styled.div<{ isJustifyCenter?: boolean,isCallModalExpandView?:boolean, isPortrait?: boolean; }>`
 
@@ -238,8 +238,8 @@ export const InConversationCallContainer = () => {
   const videoRefLocal = useRef<HTMLVideoElement>(null);
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const conversation = getConversationController().get(ourPubkey);
-  const isDark = useSelector(getTheme) === 'dark';
-  const avatarBgColor = isDark ? '#131313' : '#FFF';
+  const isDark = isNewDesign();
+  const avatarBgColor = isDark ? 'var(--pal-131313)' : 'var(--pal-t-ffffff)';
 
   const [isCallModalExpandView, setIsCallModalExpandView] = useState(false);
   const [isPortrait,setPortrait]=useState(false)

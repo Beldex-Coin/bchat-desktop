@@ -201,7 +201,7 @@ export const OnionNodeStatusLight = (props: OnionNodeStatusLightType): JSX.Eleme
     <ModalStatusLight
       glowDuration={glowDuration}
       glowStartDelay={glowStartDelay}
-      color={'#108D32'}
+      color={'var(--pal-t-108d32)'}
     />
   );
 };

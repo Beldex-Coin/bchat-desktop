@@ -1,5 +1,5 @@
 import  { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import useKey from 'react-use/lib/useKey';
 import { ed25519Str } from '../../bchat/onions/onionPath';
 import { forceNetworkDeletion } from '../../bchat/apis/snode_api/SNodeAPI';
@@ -15,8 +15,8 @@ import { deleteAllLogs } from '../../node/logs';
 import { BchatIcon } from '../icon/BchatIcon';
 import { SpacerSM } from '../basic/Text';
 import { clearFailedSendRegistry } from '../../bchat/sending/FailedSendRetry';
-import { getTheme } from '../../state/selectors/theme';
 import { ConfirmCard } from './ConfirmCard';
+import { isNewDesign } from '../../theme/newDesign';
 
 
 export const deleteDbLocally = async (deleteType?: string) => {
@@ -197,7 +197,7 @@ export const DeleteAccountModal = () => {
   }, []);
 
   // ---- dark theme: Figma 1:38280 choice card, then 1:28188 / 1:29337 confirmation ----
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const [clearStep, setClearStep] = useState<'choose' | 'device' | 'network'>('choose');
   const closeIfIdle = () => {
     if (!isLoading) {

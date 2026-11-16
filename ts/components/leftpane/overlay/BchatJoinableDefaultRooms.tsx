@@ -111,7 +111,7 @@ interface VerticalLineProps {
 }
 const IconWrapper = styled.div<VerticalLineProps>`
   background-color: ${props =>
-    props.direcrion === 'outgoing' ? '#108d32' : 'var(--color-invite-card-icon-bg)'};
+    props.direcrion === 'outgoing' ? 'var(--pal-t-108d32)' : 'var(--color-invite-card-icon-bg)'};
   width: 60px;
   height: 60px;
   display: flex;

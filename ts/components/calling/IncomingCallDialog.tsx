@@ -11,7 +11,7 @@ import { Avatar, AvatarSize } from '../avatar/Avatar';
 import { SpacerLG, SpacerSM } from '../basic/Text';
 import { BchatIcon } from '../icon';
 import { useModuloWithTripleDots } from '../../hooks/useModuloWithTripleDots';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 
 export const CallWindow = styled.div`
@@ -54,7 +54,7 @@ export const IncomingCallDialog = () => {
   const isBnsHolder = useConversationBnsHolder(incomingCallFromPubkey);
   const modulatedStr = useModuloWithTripleDots(window.i18n('incoming'), 3, 1000);
   const modulatedVoiceStr = useModuloWithTripleDots(window.i18n('incomingVoiceCall'), 3, 1000);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -109,7 +109,7 @@ export const IncomingCallDialog = () => {
             <BchatIcon
               iconType="x"
               iconSize={11}
-              iconColor="#0B0B0B"
+              iconColor="var(--pal-t-0b0b0b)"
               fillRule="evenodd"
               clipRule="evenodd"
             />
@@ -175,7 +175,7 @@ export const IncomingCallDialog = () => {
               role="button"
               aria-label={window.i18n('accept')}
               style={{
-                backgroundColor: '#108D32',
+                backgroundColor: 'var(--pal-108d32)',
               }}
               onClick={handleAcceptIncomingCall}
             >

@@ -8,7 +8,8 @@ import { NotificationBubble } from './notification-bubble/NotificationBubble';
 import { ReadableMessage } from './ReadableMessage';
 import { arrayContainsUsOnly } from '../../../../models/message';
 import { useConversationsUsernameWithQuoteOrFullPubkey } from '../../../../hooks/useParamSelector';
-import { LottieAnimation, isDarkTheme } from '../../../basic/LottieAnimation';
+import { LottieAnimation } from '../../../basic/LottieAnimation';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 // This component is used to display group updates in the conversation view.
 
@@ -88,7 +89,7 @@ export const GroupUpdateMessage = (props: PropsForGroupUpdate) => {
       />
       {/* dark: a fresh "joined the group" notice gets a burst of confetti, once
           (images/animations/Joined_Confetti.json) */}
-      {change.type === 'add' && isDarkTheme() && Date.now() - (receivedAt || 0) < 60 * 1000 && (
+      {change.type === 'add' && isNewDesign() && Date.now() - (receivedAt || 0) < 60 * 1000 && (
         <LottieAnimation name="Joined_Confetti" loop={false} className="group-joined-confetti" />
       )}
     </ReadableMessage>

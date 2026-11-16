@@ -8,14 +8,14 @@ import { updateGroupMembersModal } from '../../state/ducks/modalDialog';
 import { BchatButton, BchatButtonColor } from '../basic/BchatButton';
 import { MemberListItem } from '../MemberListItem';
 import { BchatWrapperModal } from '../BchatWrapperModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
+import { useDispatch } from 'react-redux';
 import { useConversationPropsById, useWeAreAdmin } from '../../hooks/useParamSelector';
 // tslint:disable-next-line: no-submodule-imports
 import useKey from 'react-use/lib/useKey';
 import { useSet } from '../../hooks/useSet';
 import { getConversationController } from '../../bchat/conversations';
 import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   conversationId: string;
@@ -170,7 +170,7 @@ export const UpdateGroupMembersDialog = (props: Props) => {
   );
 
   const dispatch = useDispatch();
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   if (!convoProps || !convoProps.isGroup || convoProps.isPublic) {
     throw new Error('UpdateGroupMembersDialog invalid convoProps');

@@ -16,7 +16,7 @@ import {
   removeStagedAttachmentInConversation,
 } from '../../state/ducks/stagedAttachments';
 import { getSelectedConversationKey } from '../../state/selectors/conversations';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   attachments: Array<AttachmentType>;
@@ -29,7 +29,7 @@ const IMAGE_HEIGHT = 120;
 
 export const StagedAttachmentList = (props: Props) => {
   const { attachments, onAddAttachment, onClickAttachment } = props;
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
 
   const dispatch = useDispatch();
   const conversationKey = useSelector(getSelectedConversationKey);

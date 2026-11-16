@@ -39,7 +39,6 @@ import {
 } from '../../../state/ducks/conversations';
 import { removeAllStagedAttachmentsInConversation } from '../../../state/ducks/stagedAttachments';
 import { StateType } from '../../../state/reducer';
-import { getTheme } from '../../../state/selectors/theme';
 import {
   getIsSelectedNoteToSelf,
   getIsTypingEnabled,
@@ -115,6 +114,7 @@ import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
 import MicrophoneAccessIcon from '../../icon/MicrophoneAccessIcon';
 import AttachmentPermissionIcon from '../../icon/AttachmentPermissionIcon';
 import { Storage } from '../../../util/storage';
+import { isNewDesign } from '../../../theme/newDesign';
 
 /** set once the user allowed attachments to reach their files (asked the first time only) */
 const ATTACHMENT_PERMISSION_KEY = 'attachment-permission-granted';
@@ -1386,7 +1386,7 @@ const mapStateToProps = (state: StateType) => {
     selectedConversationKey: getSelectedConversationKey(state),
     typingEnabled: getIsTypingEnabled(state),
     isMe: getIsSelectedNoteToSelf(state),
-    darkMode: getTheme(state) === 'dark',
+    darkMode: isNewDesign(),
   };
 };
 

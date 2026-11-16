@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getInitials } from '../../../util/getInitials';
-import { getTheme } from '../../../state/selectors/theme';
 import { getOurPubKeyStrFromCache } from '../../../bchat/utils/User';
+import { isNewDesign } from '../../../theme/newDesign';
 
 type Props = {
   diameter: number;
@@ -126,7 +125,7 @@ const InitialsAvatar = (props: Props) => {
 };
 
 export const AvatarPlaceHolder = (props: Props) => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   if (isDark) {
     return <InitialsAvatar {...props} />;
   }

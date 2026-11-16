@@ -61,7 +61,7 @@ const darkComposerPickerCss = `
     right: auto;
     width: 381px;
     height: 1px;
-    background: #444;
+    background: var(--pal-444444);
   }
   #nav .relative {
     height: 22px;
@@ -74,7 +74,7 @@ const darkComposerPickerCss = `
   }
   #nav button:hover,
   #nav button[aria-selected] {
-    color: #ebebeb;
+    color: var(--pal-t-ebebeb);
   }
   #nav svg,
   #nav img {
@@ -85,7 +85,7 @@ const darkComposerPickerCss = `
     height: 2px;
     bottom: -12px;
     border-radius: 0;
-    background: linear-gradient(90deg, transparent 5px, #00bc33 5px, #00bc33 39px, transparent 39px);
+    background: linear-gradient(90deg, transparent 5px, var(--pal-00bc33) 5px, var(--pal-t-00bc33) 39px, transparent 39px);
   }
   #root > .padding-lr {
     padding: 0 28px 10px 19px;
@@ -100,24 +100,24 @@ const darkComposerPickerCss = `
   .search input[type='search'] {
     height: 50px;
     padding: 0 44px 0 47px;
-    background: #1a1a1a;
+    background: var(--pal-1a1a1a);
     border: 1px solid #444;
     border-radius: 0;
     font-family: 'Roboto Mono', monospace;
-    color: #ebebeb;
+    color: var(--pal-t-ebebeb);
   }
   .search input[type='search']:focus {
-    background: #1a1a1a;
-    border-color: #555;
+    background: var(--pal-1a1a1a);
+    border-color: var(--pal-s-555555);
     box-shadow: none;
   }
   .search input[type='search']::placeholder {
-    color: #737373;
+    color: var(--pal-t-737373);
     opacity: 1;
     text-transform: uppercase;
   }
   .search .icon {
-    color: #acacac;
+    color: var(--pal-t-acacac);
   }
   .search .loupe {
     left: 16px;
@@ -138,7 +138,7 @@ const darkComposerPickerCss = `
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
-    color: #ebebeb;
+    color: var(--pal-t-ebebeb);
   }
   .category button .background {
     border-radius: 0;
@@ -151,7 +151,7 @@ const darkComposerPickerCss = `
   .scroll:hover::-webkit-scrollbar-thumb,
   .scroll::-webkit-scrollbar-thumb:hover {
     min-height: 92px;
-    background-color: #333 !important;
+    background-color: var(--pal-333333) !important;
     background-clip: padding-box;
     border: 0;
     border-left: 3px solid transparent;
@@ -246,7 +246,7 @@ export const StyledEmojiPanel = styled.div<{ isModal: boolean; theme: 'light' | 
 `;
 
 // const isDark = () => {
-//   const darkMode =  useSelector(getTheme) === 'dark';
+//   const darkMode =  isNewDesign();
 //   return darkMode;
 // };
 const categoryIcons = {
@@ -322,7 +322,7 @@ const categoryIcons = {
 // eslint-disable-next-line react/display-name
 export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
   const { onEmojiClicked, show, isModal = false } = props;
-  // const darkMode = useSelector(getTheme) === 'dark';
+  // const darkMode = isNewDesign();
   const theme = useSelector(getTheme);
   const pickerRef = ref as MutableRefObject<HTMLDivElement>;
 
@@ -336,7 +336,8 @@ export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, 
             return;
           }
 
-          const darkComposer = theme === 'dark' && !isModal;
+          // the new composer panel in both themes (its colours follow the theme's variables)
+          const darkComposer = !isModal;
           // Figma titles the recent row "Recently Used" (emoji-mart's English says "Frequently used")
           const pickerI18n =
             darkComposer && !i18n
@@ -348,6 +349,7 @@ export const BchatEmojiPanel = forwardRef<HTMLDivElement, Props>((props: Props, 
             i18n: pickerI18n,
             onEmojiSelect: onEmojiClicked,
             ...(darkComposer ? darkComposerPickerProps : pickerProps),
+            ...(darkComposer ? { theme: theme === 'light' ? 'light' : 'dark' } : {}),
             categoryIcons: darkComposer ? darkEmojiCategoryIcons : categoryIcons,
           }) as unknown as HTMLElement;
           if (darkComposer) {

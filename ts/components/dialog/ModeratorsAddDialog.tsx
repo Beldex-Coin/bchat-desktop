@@ -4,13 +4,13 @@ import { ToastUtils } from '../../bchat/utils';
 import { Flex } from '../basic/Flex';
 import { ApiV2 } from '../../bchat/apis/open_group_api/opengroupV2';
 import { getConversationController } from '../../bchat/conversations';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateAddModeratorsModal } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatSpinner } from '../basic/BchatSpinner';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { BchatIcon } from '../icon/BchatIcon';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   conversationId: string;
@@ -24,7 +24,7 @@ export const AddModeratorsDialog = (props: Props) => {
 
   const [inputBoxValue, setInputBoxValue] = useState('');
   const [addingInProgress, setAddingInProgress] = useState(false);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
 
   const addAsModerator = async () => {
     // if we don't have valid data entered by the user
@@ -94,7 +94,7 @@ export const AddModeratorsDialog = (props: Props) => {
     >
       <Flex container={true} flexDirection="column" alignItems="center">
         <div className='moderator-addModeratorBox'>
-          <BchatIcon iconType={'addModeratorIcon'} iconSize={56} fillRule="evenodd" clipRule="evenodd" iconColor={darkMode ? '#F0F0F0' : '#333333'} />
+          <BchatIcon iconType={'addModeratorIcon'} iconSize={56} fillRule="evenodd" clipRule="evenodd" iconColor={darkMode ? 'var(--pal-t-f0f0f0)' : 'var(--pal-t-333333)'} />
           <p className='addModeratortext'>{window.i18n('addModerators')}</p>
         </div>
         <div className='moderator-inputBox'>

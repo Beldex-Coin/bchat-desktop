@@ -15,17 +15,17 @@ import { getConversationController } from '../../../bchat/conversations';
 import { openConversationWithMessages } from '../../../state/ducks/conversations';
 import { getCallHistoryList } from '../../../state/selectors/callHistory';
 import ContactEmptyIcon from '../../icon/ContactEmptyIcon';
-import { getTheme } from '../../../state/selectors/theme';
 import styled from 'styled-components';
 import { getHasIncomingCall, getHasOngoingCall } from '../../../state/selectors/call';
 import { callRecipient } from '../../../interactions/conversationInteractions';
 import { Avatar, AvatarSize } from '../../avatar/Avatar';
+import { isNewDesign } from '../../../theme/newDesign';
 
 const style: any = {
   'missed-call': {
     notificationTextKey: 'callMissed',
     iconType: 'callMissed',
-    iconColor: '#FF3E3E',
+    iconColor: 'var(--pal-t-ff3e3e)',
 
   },
   'started-call': {
@@ -165,7 +165,7 @@ const ContactList = (props: any) => {
 };
 
 const SearchEmptyScreen = () => {
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   return (
     <SearchEmptyWrapper>
       <Flex container={true} flexDirection="column" justifyContent="center" alignItems="center">

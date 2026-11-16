@@ -138,7 +138,7 @@ export const BanOrUnBanUserDialog = (props: {
             <BchatIcon
               iconType={isBan ? 'banUser' : 'unBanUser'}
               iconSize={30}
-              iconColor={isBan ? '#FF3E3E' : 'var(--color-icon)'}
+              iconColor={isBan ? 'var(--pal-t-ff3e3e)' : 'var(--color-icon)'}
               fillRule="evenodd"
               clipRule="evenodd"
             />

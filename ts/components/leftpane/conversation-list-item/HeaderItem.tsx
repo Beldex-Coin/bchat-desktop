@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getTheme } from '../../../state/selectors/theme';
 import { getFirstUnreadMessageWithMention } from '../../../data/data';
 import { useConversationPropsById, useIsPinned } from '../../../hooks/useParamSelector';
 import { UserUtils } from '../../../bchat/utils';
@@ -18,12 +17,13 @@ import { BchatIcon } from '../../icon';
 import { ContextConversationId } from './ConversationListItem';
 import { UserItem } from './UserItem';
 import { LottieAnimation } from '../../basic/LottieAnimation';
+import { isNewDesign } from '../../../theme/newDesign';
 
 const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
   const convoId = useContext(ContextConversationId);
   const convoSetting = useConversationPropsById(convoId)?.currentNotificationSetting;
 
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   if (!props.isMessagesSection) {
     return null;
   }
@@ -34,7 +34,7 @@ const NotificationSettingIcon = (props: { isMessagesSection: boolean }) => {
     case 'disabled':
       // dark (Figma 1:16721): 13.5 -> 18px #ACACAC
       return isDark ? (
-        <BchatIcon iconType="mute" iconColor="#ACACAC" iconSize={18} />
+        <BchatIcon iconType="mute" iconColor="var(--pal-t-acacac)" iconSize={18} />
       ) : (
         <BchatIcon iconType="mute" iconColor={'#A7A7BA'} iconSize="medium" />
       );
@@ -80,13 +80,13 @@ const ListItemIcons = () => {
   const isMessagesSection = useSelector(getFocusedSection) === SectionType.Message;
   const conversationId = useContext(ContextConversationId);
   const isPinned = useIsPinned(conversationId);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const isBlocked = !!useConversationPropsById(conversationId)?.isBlocked;
 
   const pinIcon =
     isMessagesSection && isPinned ? (
       <PinWrapper className="pin-badge">
-        <BchatIcon iconType="pin" iconColor={isDark ? '#0B0B0B' : '#F0F0F0'} iconSize={14} />
+        <BchatIcon iconType="pin" iconColor={isDark ? 'var(--pal-t-0b0b0b)' : 'var(--pal-t-f0f0f0)'} iconSize={14} />
       </PinWrapper>
     ) : null;
   return (

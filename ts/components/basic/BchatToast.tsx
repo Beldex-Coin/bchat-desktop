@@ -60,7 +60,7 @@ export const BchatToast = (props: Props) => {
         break;
       case BchatToastType.Success:
         toastIcon = 'check';
-        toastColor = '#00A638';
+        toastColor = 'var(--pal-t-00a638)';
         break;
       case BchatToastType.Error:
         toastIcon = 'error';
@@ -68,7 +68,7 @@ export const BchatToast = (props: Props) => {
         break;
       case BchatToastType.Warning:
         toastIcon = 'warning';
-        toastColor = '#F0AF13';
+        toastColor = 'var(--pal-t-f0af13)';
         break;
       default:
         toastIcon = 'info';

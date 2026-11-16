@@ -19,12 +19,12 @@ import { MessageAvatar } from '../message-content/MessageAvatar';
 import { MessageContentWithStatuses } from '../message-content/MessageContentWithStatus';
 import { ReadableMessage } from './ReadableMessage';
 import { BchatIcon } from '../../../icon/BchatIcon';
-import { getTheme } from '../../../../state/selectors/theme';
 import styled, { keyframes } from 'styled-components';
 import { GroupInvitation } from './GroupInvitation';
 import { SharedContactCardMessage } from './SharedContactCardMessage';
 import { PaymentMessage } from './PaymentMessage';
 import { showContextMenu } from '../../../../util/showContextMenu';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 export type GenericReadableMessageSelectorProps = Pick<
   MessageRenderingProps,
@@ -160,7 +160,7 @@ const SelectionCheckbox = (props: { selected: boolean; darkMode: boolean; iconCo
     return (
       <span className={classNames('select-box', selected && 'select-box--checked')}>
         {selected && (
-          <BchatIcon iconType="check" iconSize={14} strokeColor="#0A0A0A" strokeWidth="2" />
+          <BchatIcon iconType="check" iconSize={14} strokeColor="var(--pal-t-0a0a0a)" strokeWidth="2" />
         )}
       </span>
     );
@@ -280,8 +280,8 @@ export const GenericReadableMessage = (props: Props) => {
   const selected = isMessageSelected || false;
   const isGroup = conversationType === 'group';
   const isIncoming = direction === 'incoming';
-  const darkMode = useSelector(getTheme) === 'dark';
-  const iconColor = darkMode ? '#F0F0F0' : selected ? '#3E4A53' : '#ACACAC';
+  const darkMode = isNewDesign();
+  const iconColor = darkMode ? 'var(--pal-t-f0f0f0)' : selected ? '#3E4A53' : 'var(--pal-t-acacac)';
 
   const onSelect = useCallback(
     (messageId:any) => {

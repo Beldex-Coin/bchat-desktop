@@ -4,8 +4,7 @@ import  { useState } from 'react';
 import { BchatJoinableRooms } from './BchatJoinableDefaultRooms';
 import { BchatIdEditable } from '../../basic/BchatIdEditable';
 import { BchatSpinner } from '../../basic/BchatSpinner';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../../state/selectors/theme';
+import { useDispatch } from 'react-redux';
 import { BchatIcon } from '../../icon';
 import { setOverlayMode, showLeftPaneSection } from '../../../state/ducks/section';
 import { joinOpenGroupV2WithUIEvents } from '../../../bchat/apis/open_group_api/opengroupV2/JoinOpenGroupV2';
@@ -15,6 +14,7 @@ import useKey from 'react-use/lib/useKey';
 import styled from 'styled-components';
 import { SpacerLG, SpacerSM, SpacerXS } from '../../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
+import { isNewDesign } from '../../../theme/newDesign';
 
 async function joinSocialGroup(serverUrl: string) {
   // guess if this is an open
@@ -36,7 +36,7 @@ export const OverlayOpenGroup = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [groupUrl, setGroupUrl] = useState('');
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   function closeOverlay() {
     dispatch(setOverlayMode(undefined));
@@ -81,7 +81,7 @@ export const OverlayOpenGroup = () => {
             aria-label={window.i18n('close')}
             onClick={closeOverlay}
           >
-            <BchatIcon iconType="KeyboardBackspaceArrow" iconSize={28} iconColor="#ACACAC" flipInRtl={true} />
+            <BchatIcon iconType="KeyboardBackspaceArrow" iconSize={28} iconColor="var(--pal-t-acacac)" flipInRtl={true} />
           </button>
           <span className="social-group-overlay__title">{window.i18n('socialGroup')}</span>
         </div>

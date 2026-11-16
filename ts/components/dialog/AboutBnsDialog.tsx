@@ -53,7 +53,7 @@ export const AboutBnsDialog = () => {
       >
         {/* dark theme: square close in the corner (Figma 1:52332); hidden in light */}
         <button className="close-square" onClick={closeDialog} aria-label={window.i18n('close')}>
-          <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+          <BchatIcon iconType="x" iconSize={11} iconColor="var(--pal-t-0b0b0b)" fillRule="evenodd" clipRule="evenodd" />
         </button>
         <section>
           <article>

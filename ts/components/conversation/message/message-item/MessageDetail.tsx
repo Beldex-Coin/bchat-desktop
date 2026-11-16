@@ -19,8 +19,8 @@ import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog'
 import { SpacerSM, SpacerXS } from '../../../basic/Text';
 import { getSortedMessagesTypesOfSelectedConversation } from '../../../../state/selectors/conversations';
 import { BchatIcon } from '../../../icon';
-import { getTheme } from '../../../../state/selectors/theme';
 import { UserUtils } from '../../../../bchat/utils';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 const AvatarItem = (props: { pubkey: string }) => {
   const { pubkey } = props;
@@ -118,7 +118,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
     contacts
   } = props;
   const contactlist=contacts.length?[contacts[0]]:contacts;
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const ourPubkey = UserUtils.getOurPubKeyStrFromCache();
   const fromPubkey = direction === 'incoming' ? contacts[0]?.pubkey || props.convoId : ourPubkey;
   const toPubkey = contacts[0]?.pubkey || props.convoId;
@@ -168,7 +168,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
           onClick={() => dispatch(updateMessageMoreInfoModal(null))}
           aria-label={window.i18n('close')}
         >
-          <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+          <BchatIcon iconType="x" iconSize={11} iconColor="var(--pal-t-0b0b0b)" fillRule="evenodd" clipRule="evenodd" />
         </button>
         <SpacerSM />
         <div className="module-message-detail">

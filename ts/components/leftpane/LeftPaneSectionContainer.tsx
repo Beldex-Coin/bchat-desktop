@@ -91,7 +91,7 @@ export const LeftPaneSectionContainer = styled.div`
     .btnView {
       background-color: var(--color-modal-bg);
       svg {
-        fill: #108d32;
+        fill: var(--pal-t-108d32);
       }
     }
 

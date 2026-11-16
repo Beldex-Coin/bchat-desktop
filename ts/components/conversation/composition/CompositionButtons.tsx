@@ -3,12 +3,11 @@ import { BchatIcon, BchatIconButton } from '../../icon';
 import { BchatToolTip } from '../../leftpane/ActionsPanel';
 import MicrophoneIcon from '../../icon/MicrophoneIcon';
 import { CustomIconButton } from '../../icon/CustomIconButton';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../../state/selectors/theme';
 import PaperPlaneIcon from '../../icon/PaperPlaneIcon';
+import { isNewDesign } from '../../../theme/newDesign';
 
 export const AddStagedAttachmentButton = (props: { onClick: () => void }) => {
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   return (
     <div
       className="attachment-box"
@@ -50,13 +49,13 @@ export const StartRecordingButton = (props: { onClick: () => void }) => {
 // eslint-disable-next-line react/display-name
 export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () => void }>(
   (props, ref) => {
-    const darkMode = useSelector(getTheme) === 'dark';
+    const darkMode = isNewDesign();
     return (
       <BchatIconButton
         // dark (suggestion 9037:52750): the square smiley, a little bigger than the attach box glyph
         iconType={darkMode ? 'emojiSquare' : 'emoji'}
         ref={ref}
-        iconColor="#ACACAC"
+        iconColor="var(--pal-t-acacac)"
         iconSize={darkMode ? 24 : 'huge'}
         // borderRadius="300px"
      
@@ -69,7 +68,7 @@ export const ToggleEmojiButton = React.forwardRef<HTMLDivElement, { onClick: () 
 );
 
 export const SendMessageButton = (props: { onClick: () => void; name?: string}) => {
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   if (darkMode) {
     // Dark theme (Figma 5296:20844): the paper plane on the 60px light square
     return (

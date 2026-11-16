@@ -139,12 +139,12 @@ export class BchatRecording extends React.Component<Props, State> {
               <div className="voice-recorder__status">
                 {isRecording ? (
                   <>
-                    <BchatIcon iconType="recordingDot" iconSize={18} iconColor="#FF3E3E" />
+                    <BchatIcon iconType="recordingDot" iconSize={18} iconColor="var(--pal-t-ff3e3e)" />
                     <span className="voice-recorder__time">{displayTimeString}</span>
                   </>
                 ) : hasRecording ? (
                   <>
-                    <BchatIcon iconType="recordMicrophone" iconSize={20} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="recordMicrophone" iconSize={20} iconColor="var(--pal-t-ebebeb)" />
                     <span className="voice-recorder__time">
                       {displayTimeString + remainingTimeString}
                     </span>
@@ -159,7 +159,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     aria-label={window.i18n('delete')}
                     onClick={this.onDeleteVoiceMessage}
                   >
-                    <BchatIcon iconType="trash" iconSize={20} iconColor="#FF3E3E" />
+                    <BchatIcon iconType="trash" iconSize={20} iconColor="var(--pal-t-ff3e3e)" />
                   </button>
                 )}
                 {isRecording && (
@@ -169,7 +169,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     onClick={actionPauseFn}
                   >
                     {/* Figma 5296:20839: the dotted two-bar pause glyph */}
-                    <BchatIcon iconType="pause" iconSize={16} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="pause" iconSize={16} iconColor="var(--pal-t-ebebeb)" />
                   </button>
                 )}
                 {actionPauseAudio && hasRecording && (
@@ -178,7 +178,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     className="voice-recorder__btn voice-recorder__btn--light"
                     onClick={actionPauseFn}
                   >
-                    <BchatIcon iconType="pause" iconSize={16} iconColor="#EBEBEB" />
+                    <BchatIcon iconType="pause" iconSize={16} iconColor="var(--pal-t-ebebeb)" />
                   </button>
                 )}
                 {hasRecordingAndPaused && hasRecording && (
@@ -187,7 +187,7 @@ export class BchatRecording extends React.Component<Props, State> {
                     className="voice-recorder__btn voice-recorder__btn--play"
                     onClick={() => void this.playAudio()}
                   >
-                    <BchatIcon iconType="recordPlay" iconSize={20} iconColor="#00BC33" />
+                    <BchatIcon iconType="recordPlay" iconSize={20} iconColor="var(--pal-t-00bc33)" />
                   </button>
                 )}
               </div>
@@ -252,8 +252,8 @@ export class BchatRecording extends React.Component<Props, State> {
                   iconType="play"
                   iconSize={14}
                   onClick={()=>hasRecording && this.playAudio()}
-                  iconColor="#F0F0F0"
-                  btnBgColor="#108D32"
+                  iconColor="var(--pal-t-f0f0f0)"
+                  btnBgColor="var(--pal-108d32)"
                   padding="8px"
                 />
               )}  
@@ -262,8 +262,8 @@ export class BchatRecording extends React.Component<Props, State> {
                   iconType="delete"
                   iconSize="medium"
                   onClick={this.onDeleteVoiceMessage}
-                  iconColor="#F0F0F0"
-                  btnBgColor="#FF3E3E"
+                  iconColor="var(--pal-t-f0f0f0)"
+                  btnBgColor="var(--pal-ff3e3e)"
                   padding="5px"
                 />
               )}

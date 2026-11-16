@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getTheme } from '../../state/selectors/theme';
 import { getConversationController } from '../../bchat/conversations';
 import { LottieAnimation } from '../basic/LottieAnimation';
+import { isNewDesign } from '../../theme/newDesign';
 
 export type ChatFilter = 'all' | 'social' | 'groups';
 
@@ -35,7 +34,7 @@ export function conversationMatchesFilter(conversationId: string, filter: ChatFi
  */
 export const ChatFilterBar = (props: { value: ChatFilter; onChange: (value: ChatFilter) => void }) => {
   const { value, onChange } = props;
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   useEffect(() => {
     if (!isDark && value !== 'all') {

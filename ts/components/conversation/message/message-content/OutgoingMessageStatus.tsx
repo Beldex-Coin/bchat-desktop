@@ -31,7 +31,7 @@ const MessageStatusSent = ({ dataTestId }: { dataTestId?: string }) => {
  
   return (
     <MessageStatusSendingContainer data-testid={dataTestId} data-testtype="sent">
-      <BchatIcon iconColor={'#108D32'} iconType="circleCheck" iconSize="medium" />
+      <BchatIcon iconColor={'var(--pal-t-108d32)'} iconType="circleCheck" iconSize="medium" />
     </MessageStatusSendingContainer>
   );
 };
@@ -41,7 +41,7 @@ const MessageStatusRead = ({ dataTestId }: { dataTestId?: string }) => {
 
   return (
     <MessageStatusSendingContainer data-testid={dataTestId} data-testtype="read">
-      <BchatIcon iconColor={'#108D32'} iconType="doubleCheckCircleFilled" iconSize="medium" />
+      <BchatIcon iconColor={'var(--pal-t-108d32)'} iconType="doubleCheckCircleFilled" iconSize="medium" />
     </MessageStatusSendingContainer>
   );
 };
@@ -58,7 +58,7 @@ const MessageStatusError = ({ dataTestId }: { dataTestId?: string }) => {
       onClick={showDebugLog}
       title={window.i18n('sendFailed')}
     >
-      <BchatIcon iconColor={'#FF3E3E'} iconType="error" iconSize="medium" />
+      <BchatIcon iconColor={'var(--pal-t-ff3e3e)'} iconType="error" iconSize="medium" />
     </MessageStatusSendingContainer>
   );
 };
@@ -78,18 +78,18 @@ const CompactMessageStatus = (props: { status: MessageDeliveryStatus; dataTestId
         title={window.i18n('sendFailed')}
         onClick={() => ipcRenderer.send('show-debug-log')}
       >
-        <BchatIcon iconType="error" iconSize={12} iconColor="#FF3E3E" />
+        <BchatIcon iconType="error" iconSize={12} iconColor="var(--pal-t-ff3e3e)" />
       </span>
     );
   }
   const icon =
     status === 'sending' ? (
-      <BchatIcon iconType="sending" iconSize={18} iconColor="#ACACAC" />
+      <BchatIcon iconType="sending" iconSize={18} iconColor="var(--pal-t-acacac)" />
     ) : (
       <BchatIcon
         iconType="doubleTick"
         iconSize={18}
-        iconColor={status === 'read' ? '#1BB51E' : '#737373'}
+        iconColor={status === 'read' ? 'var(--pal-t-1bb51e)' : 'var(--pal-t-737373)'}
       />
     );
   return (

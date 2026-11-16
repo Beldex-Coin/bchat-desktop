@@ -3,7 +3,6 @@ import { useCallback, useRef } from 'react';
 import { useContextMenu, Item, Menu } from 'react-contexify';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getTheme } from '../../../../state/selectors/theme';
 import { getMessageById } from '../../../../data/data';
 import { MessageInteraction } from '../../../../interactions';
 import { replyToMessage } from '../../../../interactions/conversationInteractions';
@@ -27,6 +26,7 @@ import { BchatIcon } from '../../../icon';
 import CopyIcon from '../../../icon/CopyIcon';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 import { useClickAway } from 'react-use';
+import { isNewDesign } from '../../../../theme/newDesign';
 // import { useConversationUsername } from '../../../../hooks/useParamSelector';
 // import classNames from 'classnames';
 
@@ -96,7 +96,7 @@ export const MessageContextMenu = (props: Props) => {
   // const convoName = useConversationUsername(convoId);
   const isPrivate = useSelector(getSelectedConversation)?.isPrivate;
   // dark theme: Figma 71:12824 line icons
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const isOutgoing = direction === 'outgoing';
   const showRetry = status === 'error' && isOutgoing;
   const isSent = status === 'sent' || status === 'read'; // a read message should be replyable
@@ -227,7 +227,7 @@ export const MessageContextMenu = (props: Props) => {
         {attachments?.length ? (
           <Item onClick={saveAttachment}>
             {isDark ? (
-              <BchatIcon iconType="downloadAttachment" iconSize={20} iconColor="#EBEBEB" />
+              <BchatIcon iconType="downloadAttachment" iconSize={20} iconColor="var(--pal-t-ebebeb)" />
             ) : (
               <BchatIcon iconType={'downloadAttachment'} iconSize={18} />
             )}
@@ -237,7 +237,7 @@ export const MessageContextMenu = (props: Props) => {
         {copyTitle && !isDeleted && (
           <Item onClick={() => copyText()}>
             {isDark ? (
-              <BchatIcon iconType="copy" iconSize={18} iconColor="#EBEBEB" />
+              <BchatIcon iconType="copy" iconSize={18} iconColor="var(--pal-t-ebebeb)" />
             ) : (
               <CopyIcon color={'var(--color-text)'} iconSize={18} />
             )}
@@ -247,7 +247,7 @@ export const MessageContextMenu = (props: Props) => {
         {(isSent || !isOutgoing) && !isDeleted && (
           <Item onClick={onReply}>
             {isDark ? (
-              <BchatIcon iconType="reply" iconSize={18} iconColor="#EBEBEB" />
+              <BchatIcon iconType="reply" iconSize={18} iconColor="var(--pal-t-ebebeb)" />
             ) : (
               <BchatIcon iconType={'reply'} iconSize={18} />
             )}
@@ -257,14 +257,14 @@ export const MessageContextMenu = (props: Props) => {
         {/* dark theme: Figma 71:12824 "Forward" */}
         {isDark && !isDeleted && (text || attachments?.length) ? (
           <Item onClick={onForward}>
-            <BchatIcon iconType="forwardMessage" iconSize={20} iconColor="#EBEBEB" />
+            <BchatIcon iconType="forwardMessage" iconSize={20} iconColor="var(--pal-t-ebebeb)" />
             <span style={{ marginInlineStart: '10px' }}>{window.i18n('forward')}</span>
           </Item>
         ) : null}
         {!isPublic && !isPrivate && (
           <Item onClick={onShowDetail}>
             {isDark ? (
-              <BchatIcon iconType="info" iconSize={17} iconColor="#EBEBEB" />
+              <BchatIcon iconType="info" iconSize={17} iconColor="var(--pal-t-ebebeb)" />
             ) : (
               <BchatIcon iconType={'infoCircle'} iconSize={18} />
             )}
@@ -275,7 +275,7 @@ export const MessageContextMenu = (props: Props) => {
           <Item onClick={onRetry}>
             {' '}
             {isDark ? (
-              <BchatIcon iconType="resend" iconSize={16} iconColor="#EBEBEB" />
+              <BchatIcon iconType="resend" iconSize={16} iconColor="var(--pal-t-ebebeb)" />
             ) : (
               <BchatIcon iconType={'resend'} iconSize={18} />
             )}
@@ -287,7 +287,7 @@ export const MessageContextMenu = (props: Props) => {
             <Item onClick={onSelect}>
               {' '}
               {isDark ? (
-                <BchatIcon iconType="tickBoxCurve" iconSize={16} iconColor="#EBEBEB" />
+                <BchatIcon iconType="tickBoxCurve" iconSize={16} iconColor="var(--pal-t-ebebeb)" />
               ) : (
                 <BchatIcon iconType={'tickBoxCurve'} iconSize={18} />
               )}
@@ -299,11 +299,11 @@ export const MessageContextMenu = (props: Props) => {
           <>
             <Item onClick={onDelete}>
               {isDark ? (
-                <BchatIcon iconType="delete" iconSize={18} iconColor="#FF3E3E" />
+                <BchatIcon iconType="delete" iconSize={18} iconColor="var(--pal-t-ff3e3e)" />
               ) : (
-                <BchatIcon iconType={'delete'} iconSize={18} iconColor="#FF3E3E" />
+                <BchatIcon iconType={'delete'} iconSize={18} iconColor="var(--pal-t-ff3e3e)" />
               )}
-              <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>
+              <span style={{ marginInlineStart: '10px', color: 'var(--pal-t-ff3e3e)' }}>
                 {deleteMessageJustForMeText}
               </span>
             </Item>
@@ -312,8 +312,8 @@ export const MessageContextMenu = (props: Props) => {
         {isDeletableForEveryone ? (
           <>
             <Item onClick={onDeleteForEveryone}>
-              <BchatIcon iconType={'twoMember'} iconSize={20} iconColor="#FF3E3E" />
-              <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>{unsendMessageText}</span>
+              <BchatIcon iconType={'twoMember'} iconSize={20} iconColor="var(--pal-t-ff3e3e)" />
+              <span style={{ marginInlineStart: '10px', color: 'var(--pal-t-ff3e3e)' }}>{unsendMessageText}</span>
             </Item>
           </>
         ) : null}
@@ -322,11 +322,11 @@ export const MessageContextMenu = (props: Props) => {
             <BchatIcon
               iconType={'banIcon'}
               iconSize={18}
-              iconColor="#FF3E3E"
+              iconColor="var(--pal-t-ff3e3e)"
               fillRule="evenodd"
               clipRule="evenodd"
             />
-            <span style={{ marginInlineStart: '10px', color: '#FF3E3E' }}>{window.i18n('banUser')}</span>
+            <span style={{ marginInlineStart: '10px', color: 'var(--pal-t-ff3e3e)' }}>{window.i18n('banUser')}</span>
           </Item>
         ) : null}
         {weAreAdmin && isOpenGroupV2 ? (
@@ -340,7 +340,7 @@ export const MessageContextMenu = (props: Props) => {
             <BchatIcon
               iconType={'addModerator'}
               iconSize={18}
-              iconColor="#FF3E3E"
+              iconColor="var(--pal-t-ff3e3e)"
               fillRule="evenodd"
               clipRule="evenodd"
             />
@@ -352,7 +352,7 @@ export const MessageContextMenu = (props: Props) => {
             <BchatIcon
               iconType={'removeFromModerators'}
               iconSize={18}
-              iconColor="#FF3E3E"
+              iconColor="var(--pal-t-ff3e3e)"
               fillRule="evenodd"
               clipRule="evenodd"
             />

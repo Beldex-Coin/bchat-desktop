@@ -76,7 +76,6 @@ import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { Flex } from '../basic/Flex';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import useNetworkStatus from '../../hooks/useNetworkStatus';
-import { getTheme } from '../../state/selectors/theme';
 import NewChatIcon from '../icon/NewChatIcon';
 import SecretGrpIcon from '../icon/SecretGrpIcon';
 import SocialGrpIcon from '../icon/SocialGrpIcon';
@@ -85,6 +84,8 @@ import { openCallHistory } from '../../state/ducks/callHistory';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 import { LocalizerKeys } from '../../types/LocalizerKeys';
 import { NewChatMenuList, useDismissOnOutside } from './NewChatMenu';
+import { isNewDesign } from '../../theme/newDesign';
+import { getTheme } from '../../state/selectors/theme';
 
 const Section = (props: {
   type: SectionType;
@@ -98,7 +99,7 @@ const Section = (props: {
   const focusedSection = useSelector(getFocusedSection);
   const isSelected = focusedSection === props.type;
   // Dark theme swaps in the new icon set; colour comes from the button via currentColor.
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   // Dark theme: hovering the Chats button opens the New Chat / Secret Group / Social Group flyout
   // (Figma 234:248). It is position:fixed because the rail clips overflow. The flyout is a child of
   // the button box, so moving the mouse onto it keeps it open; leaving both closes it after a short
@@ -587,7 +588,9 @@ export const ActionsPanel = () => {
   const pathCon = useSelector(getIsOnline);
   // const isOnline=window.getGlobalOnlineStatus();
   const isOnline = useNetworkStatus();
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
+  // the theme actually selected (the switcher marks it)
+  const isDarkSelected = useSelector(getTheme) === 'dark';
 
   useUnreadBadge();
 
@@ -721,19 +724,19 @@ export const ActionsPanel = () => {
         <Flex container={true} alignItems="flex-end">
           <div className="theme-Wrapper ">
             <div
-              className={classNames('icon-wrapper', !darkMode && 'selected')}
+              className={classNames('icon-wrapper', !isDarkSelected && 'selected')}
               data-theme-option="light"
               onClick={() => themeChanger('light')}
             >
               <BchatIcon
                 iconType={'sun'}
                 iconSize={darkMode ? 22 : 24}
-                iconColor={darkMode ? 'currentColor' : '#333333'}
+                iconColor={darkMode ? 'currentColor' : 'var(--pal-t-333333)'}
               />
             </div>
 
             <div
-              className={classNames('icon-wrapper', darkMode && 'selected')}
+              className={classNames('icon-wrapper', isDarkSelected && 'selected')}
               data-theme-option="dark"
               onClick={() => themeChanger('dark')}
             >
@@ -758,8 +761,8 @@ export const ActionsPanel = () => {
                 <BchatIcon
                   iconType="warningOutline"
                   iconSize={20}
-                  iconColor="#FF3E3E"
-                  strokeColor="#FF3E3E"
+                  iconColor="var(--pal-t-ff3e3e)"
+                  strokeColor="var(--pal-t-ff3e3e)"
                   strokeWidth="0.75"
                 />
               ) : (

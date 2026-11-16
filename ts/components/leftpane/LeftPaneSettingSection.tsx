@@ -10,7 +10,7 @@ import { BchatSettingCategory } from '../settings/BchatSettings';
 // import { ActionPanelOnionStatusLight } from '../dialog/OnionStatusPathDialog';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 //  import {  onionPathModal,} from '../../state/ducks/modalDialog';
 //  import {OnionPathModal} from "../../components/dialog/OnionStatusPathDialog";
 
@@ -82,7 +82,7 @@ const LeftPaneSettingsCategoryRow = () =>
     // const { id, title,icon} = item;
     const dispatch = useDispatch();
     const focusedSettingsSection = useSelector(getFocusedSettingsSection);
-    const darkMode = useSelector(getTheme) === 'dark';
+    const darkMode = isNewDesign();
 
     // const isMessageRequestSetting = id === BchatSettingCategory.MessageRequests;
 
@@ -118,14 +118,14 @@ const LeftPaneSettingsCategoryRow = () =>
                 iconSize={darkMode ? 24 : 20}
                 iconType={item.icon}
                 iconColor={
-                  item.id === BchatSettingCategory.ClearData ? '#FF3E3E' : darkMode ? '#EBEBEB' : iconColor
+                  item.id === BchatSettingCategory.ClearData ? 'var(--pal-t-ff3e3e)' : darkMode ? 'var(--pal-t-ebebeb)' : iconColor
                 }
                 strokeWidth={item.icon === 'languages' ? '0.75' : undefined}
               />
             </i>
             <span
               className={'left-pane-setting-category-list-item-span'}
-              style={{ color: item.id === BchatSettingCategory.ClearData ?'#FF3E3E':iconColor}}
+              style={{ color: item.id === BchatSettingCategory.ClearData ?'var(--pal-t-ff3e3e)':iconColor}}
             >
               {item.title}
             </span>

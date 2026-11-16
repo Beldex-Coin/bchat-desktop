@@ -105,7 +105,7 @@ export const NewChatMenu = () => {
         title={window.i18n('newChat')}
         onClick={openNewChat}
       >
-        <BchatIcon iconType="newChat" iconSize={22} iconColor="#EBEBEB" />
+        <BchatIcon iconType="newChat" iconSize={22} iconColor="var(--pal-t-ebebeb)" />
       </button>
     </div>
   );

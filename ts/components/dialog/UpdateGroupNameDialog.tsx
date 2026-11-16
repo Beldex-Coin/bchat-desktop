@@ -13,6 +13,7 @@ import { initiateClosedGroupUpdate } from '../../bchat/group/closed-group';
 import { pickFileForAvatar } from '../../types/attachments/VisualAttachment';
 import {  BchatIconButton } from '../icon';
 import { ToastUtils } from '../../bchat/utils';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   conversationId: string;
@@ -75,7 +76,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
   public render() {
     const okText = window.i18n('ok');
     const cancelText = window.i18n('cancel');
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isDark = isNewDesign();
     const titleText = isDark
       ? window.i18n('changeGroupName')
       : window.i18n('updateGroupDialogTitle', [this.convo.getName() || window.i18n('unknown')]);
@@ -129,7 +130,7 @@ export class UpdateGroupNameDialog extends React.Component<Props, State> {
                 onClick={() => this.setState({ groupName: '' })}
                 iconType={'xWithSquare'}
                 iconSize={24}
-                iconColor="#EBEBEB"
+                iconColor="var(--pal-t-ebebeb)"
               />
             ) : (
               <BchatIconButton

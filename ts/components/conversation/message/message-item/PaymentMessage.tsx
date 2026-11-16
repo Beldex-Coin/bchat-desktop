@@ -10,7 +10,6 @@ import { shell } from 'electron/common';
 import { useSelector } from 'react-redux';
 import { getMessageContentSelectorProps, getMessageStatusProps, getQuotedMessageToAnimate, getShouldHighlightMessage } from '../../../../state/selectors/conversations';
 import { OutgoingMessageStatus } from '../message-content/OutgoingMessageStatus';
-import { getTheme } from '../../../../state/selectors/theme';
 import { Flex } from '../../../basic/Flex';
 import moment from 'moment';
 import { StyledSvgWrapper } from '../message-content/MessageContent';
@@ -18,6 +17,7 @@ import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 import { FontSizeChanger } from '../../../settings/ChangeChatFontSetting';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 export const PaymentMessage = (props: PropsForPayment) => {
 
@@ -28,7 +28,7 @@ export const PaymentMessage = (props: PropsForPayment) => {
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-  const isDarkTheme = useSelector(getTheme) === 'dark';
+  const isDarkTheme = isNewDesign();
   const statusProps = useSelector(state => getMessageStatusProps(state as any, props.messageId));
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
@@ -94,16 +94,16 @@ export const PaymentMessage = (props: PropsForPayment) => {
       return (
         <Flex container={true} alignItems="center">
           <span className="txn-status">{window.i18n('paymentSentSuccessfully')}</span>
-          <BchatIcon iconColor={'#f0f0f0'} iconType="circleWithTick" iconSize={16} />
+          <BchatIcon iconColor={'var(--pal-t-f0f0f0)'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
     } else {
       return (
-        <Flex container={true} alignItems="center" color="#108D32">
-          <span className="txn-status" style={{ color: '#108D32' }}>
+        <Flex container={true} alignItems="center" color="var(--pal-t-108d32)">
+          <span className="txn-status" style={{ color: 'var(--pal-t-108d32)' }}>
             {window.i18n('paymentReceivedSuccessfully')}
           </span>
-          <BchatIcon iconColor={'#108D32'} iconType="circleWithTick" iconSize={16} />
+          <BchatIcon iconColor={'var(--pal-t-108d32)'} iconType="circleWithTick" iconSize={16} />
         </Flex>
       );
     }

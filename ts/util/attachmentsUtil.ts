@@ -17,6 +17,7 @@ import React from 'react';
 import { updateConfirmModal } from '../state/ducks/modalDialog';
 import { BchatButtonColor } from '../components/basic/BchatButton';
 import SaveToStorageIcon from '../components/icon/SaveToStorageIcon';
+import { isNewDesign } from '../theme/newDesign';
 
 /**
  * The logic for sending attachments is as follow:
@@ -398,7 +399,7 @@ type SaveAttachmentArgs = {
  * the light theme saves straight away as before.
  */
 export const saveAttachmentToDisk = async (args: SaveAttachmentArgs) => {
-  const isDark = window.inboxStore?.getState().theme === 'dark';
+  const isDark = isNewDesign();
   if (!isDark) {
     await saveAttachmentToDiskWithoutConfirm(args);
     return;

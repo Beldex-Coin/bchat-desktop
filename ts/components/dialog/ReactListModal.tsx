@@ -30,9 +30,9 @@ import { BchatIcon, BchatIconButton } from '../icon';
 import { getConversationController } from '../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { getReactListDialog } from '../../state/selectors/modal';
-import { getTheme } from '../../state/selectors/theme';
 import { useConversationBnsHolder } from '../../hooks/useParamSelector';
 import { SpacerSM } from '../basic/Text';
+import { isNewDesign } from '../../theme/newDesign';
 
 interface Props {
   messageId: string;
@@ -199,7 +199,7 @@ const ReactionSenderItem = ({
   onRemove,
 }: ReactionSenderItemProps) => {
   const isBnsHolder = useConversationBnsHolder(sender);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   return (
     <StyledReactionSender
       className="react-list__row"
@@ -238,7 +238,7 @@ const ReactionSenderItem = ({
         {/* dark (Figma 5296:43796): small chamfered "Remove" chip right after your reaction */}
         {sender === me && darkMode && (
           <button type="button" className="react-list__remove" onClick={() => onRemove(emoji)}>
-            <BchatIcon iconType="trash" iconSize={14} iconColor="#ACACAC" />
+            <BchatIcon iconType="trash" iconSize={14} iconColor="var(--pal-t-acacac)" />
             <span>{window.i18n('remove')}</span>
           </button>
         )}
@@ -286,7 +286,7 @@ export const ReactListModal = (props: Props): ReactElement => {
   const me = UserUtils.getOurPubKeyStrFromCache();
 
   const msgProps = useSelector((state: StateType) => getMessageReactsProps(state, messageId));
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const reactedDetailList = useMemo(() => {
@@ -398,7 +398,7 @@ export const ReactListModal = (props: Props): ReactElement => {
               flexDirection={'row'}
               alignItems={'center'}
               justifyContent="space-between"
-              bdColor={darkMode ? '#4b4b64' : '#ACACAC'}
+              bdColor={darkMode ? '#4b4b64' : 'var(--pal-t-acacac)'}
             >
               <Flex container={true} flexDirection={'row'} alignItems={'center'}>
                 <StyledAllButton
@@ -427,7 +427,7 @@ export const ReactListModal = (props: Props): ReactElement => {
                 onClick={handleClose}
                 aria-label={window.i18n('close')}
               >
-                <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+                <BchatIcon iconType="x" iconSize={11} iconColor="var(--pal-t-0b0b0b)" fillRule="evenodd" clipRule="evenodd" />
               </button>
             </StyledReactionsContainer>
             <StyledSendersContainer

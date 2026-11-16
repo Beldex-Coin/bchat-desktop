@@ -3,12 +3,12 @@ import  { useEffect, useState } from 'react';
 import { ToastUtils } from '../../bchat/utils';
 import { SpacerSM } from '../basic/Text';
 import { recoveryPhraseModal } from '../../state/ducks/modalDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getCurrentRecoveryPhrase } from '../../util/storage';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
-import { getTheme } from '../../state/selectors/theme';
 import RecoveryPhraseIcon from '../icon/RecoveryPhraseIcon';
 import { BchatIcon } from '../icon';
+import { isNewDesign } from '../../theme/newDesign';
 // import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 
@@ -21,7 +21,7 @@ const Seed = (props: SeedProps) => {
   const { recoveryPhrase, onClickCopy } = props;
   const i18n = window.i18n;
   const dispatch = useDispatch();
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   // dark theme: the "Never Give your Seed to Anyone!" warning (Figma 1:32394) comes first; the seed
   // only shows after "Yes, I'm Sure!". Resets every time the Recovery Phrase page is opened.
   const [seedWarningAccepted, setSeedWarningAccepted] = useState(false);
@@ -43,7 +43,7 @@ const Seed = (props: SeedProps) => {
       <div className="seed-page">
         <div className="seed-warning-card">
           <span className="seed-warning-card__icon" aria-hidden="true">
-            <BchatIcon iconType="warning" iconSize={59} iconColor="#F0AF13" />
+            <BchatIcon iconType="warning" iconSize={59} iconColor="var(--pal-t-f0af13)" />
           </span>
           <div className="seed-warning-card__label">{i18n('importantTitle')}</div>
           <div className="seed-warning-card__title">{i18n('neverGiveSeedWarning')}</div>

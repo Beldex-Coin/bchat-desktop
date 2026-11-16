@@ -7,6 +7,7 @@ import { SectionType, showLeftPaneSection, showSettingsSection } from '../../sta
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { BchatButtonColor } from '../../components/basic/BchatButton';
 import { BchatIcon } from '../../components/icon';
+import { isNewDesign } from '../../theme/newDesign';
 
 // if you push a toast manually with toast...() be sure to set the type attribute of the BchatToast component
 export function pushToastError(id: string, title: string, description?: string) {
@@ -199,7 +200,7 @@ function showCallPermissionPopup() {
       okTheme: BchatButtonColor.Primary,
       cancelText: window.i18n('cancel'),
       iconShow: true,
-      customIcon: <BchatIcon iconType="callPermissionRequired" iconSize={32} iconColor="#EBEBEB" />,
+      customIcon: <BchatIcon iconType="callPermissionRequired" iconSize={32} iconColor="var(--pal-t-ebebeb)" />,
       onClickOk: () => {
         openPrivacySettings();
         window.inboxStore?.dispatch(updateConfirmModal(null));
@@ -212,7 +213,7 @@ function showCallPermissionPopup() {
 }
 
 export function pushVideoCallPermissionNeeded() {
-  if (document.documentElement.getAttribute('data-theme') === 'dark') {
+  if (isNewDesign()) {
     showCallPermissionPopup();
     return;
   }

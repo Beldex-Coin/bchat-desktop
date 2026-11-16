@@ -35,8 +35,8 @@ import { MessageAuthorText } from './MessageAuthorText';
 import styled from 'styled-components';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
-import { getTheme } from '../../../../state/selectors/theme';
 import { OutgoingMessageStatus } from './OutgoingMessageStatus';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 
 export type MessageContentSelectorProps = Pick<
@@ -126,7 +126,7 @@ export const MessageContent = (props: Props) => {
       getMessageContentSelectorProps(state as any, props.messageId)
     );
   const statusProps = useSelector(state => getMessageStatusProps(state as any, props.messageId));
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const [isMessageVisible, setMessageIsVisible] = useState(false);
   const scrollToLoadedMessage = useContext(ScrollToLoadedMessageContext);
   const [imageBroken, setImageBroken] = useState(false);

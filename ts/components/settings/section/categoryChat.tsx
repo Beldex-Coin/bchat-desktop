@@ -13,6 +13,7 @@ import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 import { ChangeOnionRoutingSetting } from '../ChangeOnionRoutingSetting';
 import { BchatIcon } from '../../icon';
 import LinkPreviewIcon from '../../icon/LinkPreviewIcon';
+import { isNewDesign } from '../../../theme/newDesign';
 
 export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => {
   const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export const SettingsCategoryChat = (props: { hasPassword: boolean | null }) => 
             iconShow: true,
             // dark theme: the Figma "Link 4" icon (1:39199, 24 -> 32px); light keeps linkPreview
             customIcon:
-              document.documentElement.getAttribute('data-theme') === 'dark' ? (
+              isNewDesign() ? (
                 <LinkPreviewIcon iconSize={32} />
               ) : (
                 <BchatIcon iconType="linkPreview" iconSize={26} />

@@ -33,7 +33,7 @@
 
   <body id="body">
     <div id="root"></div>
-    <!-- splash: Lottie animation (images/animations/Splash_desktop.json). It sits over the app (outside
+    <!-- splash: Lottie animation (images/animations/<black_theme|white_theme>/Splash_desktop.json). It sits over the app (outside
          #root, so React does not replace it) until it has played through once and the app is ready -->
     <div
       id="bchat-splash-screen"
@@ -48,6 +48,17 @@
       (function startSplash() {
         const screen = document.getElementById('bchat-splash-screen');
         const root = document.getElementById('root');
+        // the theme saved by the last session (BchatTheme keeps it in localStorage): the white
+        // splash on its light background, otherwise the black one
+        let isLight = false;
+        try {
+          isLight = window.localStorage.getItem('bchat-theme') === 'light';
+        } catch (e) {
+          isLight = false;
+        }
+        if (isLight) {
+          screen.style.backgroundColor = '#ebebeb';
+        }
         let splash;
         let played = false;
         let appReady = false;
@@ -74,7 +85,9 @@
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            animationData: require('./images/animations/Splash_desktop.json'),
+            animationData: require(
+              `./images/animations/${isLight ? 'white_theme' : 'black_theme'}/Splash_desktop.json`
+            ),
           });
           // keeps looping while the app is still loading; closes at the end of a full play
           splash.addEventListener('loopComplete', () => {

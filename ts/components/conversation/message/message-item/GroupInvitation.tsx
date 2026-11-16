@@ -20,12 +20,12 @@ import {
 } from '../../../../state/selectors/conversations';
 import moment from 'moment';
 import { OutgoingMessageStatus } from '../message-content/OutgoingMessageStatus';
-import { getTheme } from '../../../../state/selectors/theme';
 import { StyledSvgWrapper } from '../message-content/MessageContent';
 import IncomingMsgTailIcon from '../../../icon/IncomingMsgTailIcon';
 import OutgoingMsgTailIcon from '../../../icon/OutgoingMsgTailIcon';
 import { ScrollToLoadedMessageContext } from '../../BchatMessagesListContainer';
 import { FontSizeChanger } from '../../../settings/ChangeChatFontSetting';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 
 export interface Room {
@@ -47,7 +47,7 @@ export const GroupInvitation = (props: PropsForGroupInvitation) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-  const isDarkTheme = useSelector(getTheme) === 'dark';
+  const isDarkTheme = isNewDesign();
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
 
   useLayoutEffect(() => {
@@ -178,7 +178,7 @@ interface VerticalLineProps {
 export const VerticalLine = styled.div<VerticalLineProps>`
   width: 5px;
   background-color: ${props =>
-    props.direcrion === 'incoming' ? 'var(--color-untrusted-vertical-bar)' : ' #f0f0f0'};
+    props.direcrion === 'incoming' ? 'var(--color-untrusted-vertical-bar)' : ' var(--pal-t-f0f0f0)'};
   height: 60px;
   border-radius: 10px;
   margin-inline-end: 10px;

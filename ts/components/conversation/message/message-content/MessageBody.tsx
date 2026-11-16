@@ -14,6 +14,7 @@ import { LinkPreviews } from '../../../../util/linkPreviews';
 import { BchatButtonColor } from '../../../basic/BchatButton';
 import { BchatIcon } from '../../../icon/BchatIcon';
 import React from 'react';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 const linkify = LinkifyIt();
 
@@ -216,7 +217,7 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
     const openLink = () => {
       void shell.openExternal(url);
     };
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const isDark = isNewDesign();
 
     dispatch(
       updateConfirmModal({

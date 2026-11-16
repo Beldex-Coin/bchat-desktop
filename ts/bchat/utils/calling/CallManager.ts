@@ -44,6 +44,7 @@ import {
 } from '../../../state/ducks/section';
 import moment from 'moment';
 import { openCallHistory } from '../../../state/ducks/callHistory';
+import { isNewDesign } from '../../../theme/newDesign';
 
 export type InputItem = { deviceId: string; label: string };
 
@@ -1384,7 +1385,7 @@ export async function handleMissedCall(
   const oneMinuteAgo = currentDate.subtract(1, 'minutes');
   const timeValidation = momentTimestamp?.isSameOrAfter(oneMinuteAgo);
 
-  const isDark = window.inboxStore?.getState().theme === 'dark';
+  const isDark = isNewDesign();
 
   switch (reason) {
     case 'permissions':

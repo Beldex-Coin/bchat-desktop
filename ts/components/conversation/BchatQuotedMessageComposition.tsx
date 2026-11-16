@@ -17,8 +17,8 @@ import { BchatJoinableRoomAvatar } from '../leftpane/overlay/BchatJoinableDefaul
 import { StateType } from '../../state/reducer';
 import { renderMarkdownBlocks } from './message/message-content/MessageBody';
 import { useConversationUsernameOrShorten, useIsPrivate } from '../../hooks/useParamSelector';
-import { getTheme } from '../../state/selectors/theme';
 import { UserUtils } from '../../bchat/utils';
+import { isNewDesign } from '../../theme/newDesign';
 
 const QuotedMessageComposition = styled.div`
   width: 100%;
@@ -136,7 +136,7 @@ export const BchatQuotedMessageComposition = () => {
   const iconType = getIconType();
 
   const isGroupConversation = !useIsPrivate(quotedMessageProps?.convoId);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   const authorName = useConversationUsernameOrShorten(quotedMessageProps?.author);
   // dark, group chats (Figma 5296:5877): who wrote the quoted message, above its text
   const quotedAuthor =

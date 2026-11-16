@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import classNames from 'classnames';
 import { BchatIconButton } from '../icon';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   label?: string;
@@ -50,8 +51,8 @@ const ErrorItem = (props: { error: string | undefined }) => {
 const ShowHideButton = (props: { toggleForceShow: () => void,forceShow:boolean }) => {
   
     // dark theme: the open eye is #EBEBEB, the struck-through one #ACACAC (Figma 1:34843)
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const darkColor = !props.forceShow ? '#EBEBEB' : '#ACACAC';
+    const isDark = isNewDesign();
+    const darkColor = !props.forceShow ? 'var(--pal-t-ebebeb)' : 'var(--pal-t-acacac)';
     return <BchatIconButton iconType={!props.forceShow?"eye":'eye_closed'} iconSize="medium" fillRule="evenodd" clipRule="evenodd" iconColor={isDark ? darkColor : undefined} onClick={props.toggleForceShow} />;
 };
 

@@ -22,11 +22,11 @@ import { OverlayMessageRequest } from '../leftpane/overlay/OverlayMessageRequest
 import { BchatOnionPathScreen } from './BchatOnionPathScreen';
 import { ToastUtils } from '../../bchat/utils';
 import { SettingsCategoryChat } from './section/categoryChat';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { showSettingsSection } from '../../state/ducks/section';
-import { getTheme } from '../../state/selectors/theme';
 import { BchatLanguageScreen } from './BchatLanguageScreen';
 import { LottieAnimation } from '../basic/LottieAnimation';
+import { isNewDesign } from '../../theme/newDesign';
 
 
 
@@ -104,7 +104,7 @@ export const PasswordLock = ({
   pwdLockError: string | null;
   validatePasswordLock: () => Promise<boolean>;
 }) => {
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const dispatch = useDispatch();
   // dark theme (Figma 1:32666): 435x277 -> 580px card - green lock, Inter title, one 526x80 field,
   // Cancel (back to Chat settings) / Continue. The input keeps its id: validatePasswordLock and the

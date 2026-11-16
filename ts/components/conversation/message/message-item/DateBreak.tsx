@@ -1,8 +1,7 @@
 import moment from 'moment';
 // import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../../../state/selectors/theme';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 const DateBreakContainer = styled.div`
   display: flex;
@@ -48,7 +47,7 @@ export const MessageDateBreak = (props: { timestamp: number; messageId: string }
     lastWeek: 'dddd',
     sameElse: 'DD/MM/YYYY',
   };
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   let text: string;
   if (isDark) {
     // Figma 71:11592: "Today, 29 May" / "Yesterday, 28 May" / "20 Sep" (year added when it isn't this year)

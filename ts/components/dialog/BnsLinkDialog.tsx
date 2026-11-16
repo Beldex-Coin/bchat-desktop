@@ -8,10 +8,9 @@ import { bnsLinkModal, editProfileModal } from '../../state/ducks/modalDialog';
 import { UserUtils } from '../../bchat/utils';
 import { isLinkedBchatIDWithBnsForDeamon, linkBns } from '../conversation/BnsVerification';
 import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
 import { createPortal } from 'react-dom';
 import { LottieAnimation } from '../basic/LottieAnimation';
+import { isNewDesign } from '../../theme/newDesign';
 
 export const BnsLinkDialog = () => {
   
@@ -21,7 +20,7 @@ export const BnsLinkDialog = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [verifyError,setVerifyError]=useState(false);
   const ourNumber = UserUtils.getOurPubKeyStrFromCache(); // get our bchat id
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const regexForBnsName = /^(?!-)[A-Za-z0-9-]+(?<!-)\.bdx$/;
   const i18n = window.i18n;
   function closeDialog() {
@@ -109,7 +108,7 @@ export const BnsLinkDialog = () => {
           <>
             {/* dark theme: square close in the corner (Figma 1:53219); hidden in light */}
             <button className="close-square" onClick={closeDialog} aria-label={i18n('close')}>
-              <BchatIcon iconType="x" iconSize={11} iconColor="#0B0B0B" fillRule="evenodd" clipRule="evenodd" />
+              <BchatIcon iconType="x" iconSize={11} iconColor="var(--pal-t-0b0b0b)" fillRule="evenodd" clipRule="evenodd" />
             </button>
             <header>{i18n('linkBNS')}</header>
             {/* <div className="label_id"> {i18n('yourBchatID')}</div> */}
@@ -127,7 +126,7 @@ export const BnsLinkDialog = () => {
             <SpacerSM />
             <div className="inputBox-wrapper" style={{border:verifyError?' 1px solid #FF3E3E':''}}>
               <input
-                style={{ color:isVerify?'#0BB70F':verifyError?'#FF3E3E':'' }}
+                style={{ color:isVerify?'#0BB70F':verifyError?'var(--pal-t-ff3e3e)':'' }}
                 type="text"
                 dir="ltr"
                 className="inputBox"
@@ -163,7 +162,7 @@ export const BnsLinkDialog = () => {
                 <div className="bchat-btn-struct">
                   <span style={{ marginInlineEnd: '4px' }}>{i18n('verified')}</span>
                   <span style={{ display: 'flex' }}>
-                    <BchatIcon iconType="circleWithTick" iconSize={16} iconColor="#0B9E3C" />
+                    <BchatIcon iconType="circleWithTick" iconSize={16} iconColor="var(--pal-t-0b9e3c)" />
                   </span>
                 </div>
               )}

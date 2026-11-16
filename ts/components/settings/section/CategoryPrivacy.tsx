@@ -12,6 +12,7 @@ import { PasswordAction } from '../../dialog/BchatPasswordDialog';
 import { BchatSettingButtonItem, BchatToggleWithDescription } from '../BchatSettingListItem';
 import { BchatIcon } from '../../icon';
 import CallPermissionIcon from '../../icon/CallPermissionIcon';
+import { isNewDesign } from '../../../theme/newDesign';
 
 const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
   const currentValue = window.getCallMediaPermissions();
@@ -33,7 +34,7 @@ const toggleCallMediaPermissions = async (triggerUIUpdate: () => void) => {
         iconShow: true,
         // dark theme: the Figma "Call male" icon (1:38975); light keeps the video camera
         customIcon:
-          document.documentElement.getAttribute('data-theme') === 'dark' ? (
+          isNewDesign() ? (
             <CallPermissionIcon iconSize={30} />
           ) : (
             <BchatIcon iconType="videoCall" iconSize={30} />

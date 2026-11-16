@@ -2,7 +2,8 @@
  * @prettier
  */
 import React from 'react';
-import { LottieAnimation, isDarkTheme } from '../../basic/LottieAnimation';
+import { LottieAnimation } from '../../basic/LottieAnimation';
+import { isNewDesign } from '../../../theme/newDesign';
 
 interface Props {
   label: string;
@@ -15,7 +16,7 @@ export class EmptyState extends React.Component<Props> {
     const { label } = this.props;
     return <div className="module-empty-state">
       <div className='parent'>
-        {isDarkTheme() ? (
+        {isNewDesign() ? (
           <LottieAnimation
             name={this.props.type === 'documents' ? 'No_document' : 'No_Media'}
             className="noMediaImg noMediaImg--animated"

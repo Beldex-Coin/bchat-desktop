@@ -1,8 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { BchatGlobalStyles } from './globals';
 import { switchBchatTheme } from './switchTheme';
-import { BCHAT_CLASSIC_DARK_COLORS } from './classicDark';
-import { BCHAT_CLASSIC_LIGHT_COLORS } from './classicLight';
+import { DARK_THEME_VARS, WHITE_THEME_VARS } from './themeVariables';
 
 type Props = {
   children: React.ReactNode | React.ReactNode[];
@@ -13,15 +12,17 @@ export const BchatTheme: React.FC<Props> = ({ children, mode = 'dark' }) => {
   const darkMode = mode === 'dark';
   // layout effect: applied before the browser paints, so a theme switch never shows a mixed frame
   useLayoutEffect(() => {
-    if (darkMode) {
-      switchBchatTheme(BCHAT_CLASSIC_DARK_COLORS);
-    } else {
-      switchBchatTheme(BCHAT_CLASSIC_LIGHT_COLORS);
-    }
-    // Colours come through the CSS variables above, but the 2026 dark design also changes fonts and
-    // shapes (square corners, new typefaces) for the dark theme only - those rules live in
-    // stylesheets/_dark_overrides.scss and key off this attribute, so light theme is untouched.
+    // the 2026 design in both themes: the white theme's variables are the dark ones mapped to the
+    // white design (ts/theme/themeVariables.ts); fonts, shapes and per-screen rules live in
+    // stylesheets/_theme_rules.scss, compiled once per theme and keyed off data-theme
+    switchBchatTheme(darkMode ? DARK_THEME_VARS : WHITE_THEME_VARS);
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    // read by the splash screen (background.html) before the app has loaded its settings
+    try {
+      window.localStorage.setItem('bchat-theme', darkMode ? 'dark' : 'light');
+    } catch (e) {
+      // the splash falls back to the black animation
+    }
   }, [darkMode]);
 
   return (

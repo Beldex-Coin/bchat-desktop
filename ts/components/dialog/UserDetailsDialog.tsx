@@ -12,8 +12,7 @@ import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
 import { Flex } from '../basic/Flex';
 import { BchatIconButton } from '../icon';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../state/selectors/theme';
+import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
   conversationId: string;
@@ -25,7 +24,7 @@ type Props = {
 export const UserDetailsDialog = (props: Props) => {
   // const [isEnlargedImageShown, setIsEnlargedImageShown] = useState(false);
   const convo = getConversationController().get(props.conversationId);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   // group admin (opened from their message in a group): the crown on the picture's corner and the
   // green ADMIN tag under the name
   const showAdmin = isDark && !!props.isAdmin;
@@ -105,7 +104,7 @@ export const UserDetailsDialog = (props: Props) => {
             <BchatIconButton
               iconType="copy"
               iconSize={18}
-              iconColor="#00A638"
+              iconColor="var(--pal-t-00a638)"
               clipRule="evenodd"
               fillRule="evenodd"
               onClick={() => copyBchatID(convo.id)}

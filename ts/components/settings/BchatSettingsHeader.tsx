@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BchatIconButton } from '../icon/BchatIconButton';
 import { toggleMultipleSelection } from '../../state/ducks/userConfig';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
-import { getTheme } from '../../state/selectors/theme';
 import { getBlockedPubkeys } from '../../state/selectors/conversations';
+import { isNewDesign } from '../../theme/newDesign';
 // import { getConversationController } from '../../bchat/conversations';
 // import { useUpdate } from 'react-use';
 
@@ -27,7 +27,7 @@ export const SettingsHeader = (props: Props) => {
   // let color: any;
   const multipleSelectionValue = useSelector(getMultipleSelection);
   const blockedNumbers = useSelector(getBlockedPubkeys);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   // const temp=useSelector(state=>state)
   // useEffect(() => {

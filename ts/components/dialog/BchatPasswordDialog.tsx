@@ -13,6 +13,7 @@ import { BchatWrapperModal } from '../BchatWrapperModal';
 import { matchesHash, validatePassword } from '../../util/passwordUtils';
 import { BchatInput } from '../basic/BchatInput';
 import { BchatIcon } from '../icon';
+import { isNewDesign } from '../../theme/newDesign';
 // import { BchatInput } from '../basic/BchatInput';
 
 export type PasswordAction = 'set' | 'change' | 'remove';
@@ -56,7 +57,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
     // dark theme "Set password" (Figma 1:34843): square close, Save only, "Enter new password"
     const isDarkSet =
       passwordAction === 'set' &&
-      document.documentElement.getAttribute('data-theme') === 'dark';
+      isNewDesign();
     const placeholders =
       isDarkSet
         ? [window.i18n('enterNewPassword'), window.i18n('confirmPassword')]
@@ -102,7 +103,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
             onClick={this.closeDialog}
             aria-label={window.i18n('close')}
           >
-            <BchatIcon iconType="x" iconSize={12} iconColor="#ACACAC" />
+            <BchatIcon iconType="x" iconSize={12} iconColor="var(--pal-t-acacac)" />
           </button>
         )}
         {/* <SpacerSM /> */}

@@ -26,7 +26,7 @@ import { BchatEmojiPanel, StyledEmojiPanel } from '../../BchatEmojiPanel';
 
 import { useClickAway } from 'react-use';
 import { BchatIconButton } from '../../../icon';
-import { getTheme } from '../../../../state/selectors/theme';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 export type MessageContentWithStatusSelectorProps = Pick<
   MessageRenderingProps,
@@ -102,7 +102,7 @@ const   RecentReacts = (props: RecentReactsProps) => {
   const emojiPanelHeight = 435;
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
 
 
   useClickAway(emojiPanelRef, () => {
@@ -163,20 +163,20 @@ const   RecentReacts = (props: RecentReactsProps) => {
           <BchatIconButton
             iconType="smileyEmoji"
             iconSize={16}
-            iconColor="#8D8D8D"
+            iconColor="var(--pal-t-8d8d8d)"
             onClick={() => setRecentEmoji(!recentEmoji)}
             margin="0 4px"
             padding="5px"
-            btnBgColor="#222222"
+            btnBgColor="var(--pal-222222)"
           />
         ) : (
           <BchatIconButton
             iconType="smileyEmoji"
             iconSize={20}
-            iconColor={'#ACACAC'}
+            iconColor={'var(--pal-t-acacac)'}
             onClick={() => setRecentEmoji(!recentEmoji)}
             margin="0 5px"
-            btnBgColor={'#F8F8F8'}
+            btnBgColor={'var(--pal-f8f8f8)'}
             btnRadius="30px"
             style={{}}
           />
@@ -222,11 +222,11 @@ const ThreeDotsMenu = (props: {
         <BchatIconButton
           iconType={'filledThreeDots'}
           iconSize={16}
-          iconColor="#ACACAC"
+          iconColor="var(--pal-t-acacac)"
           onClick={onHandleContextMenu}
           margin="0 4px"
           padding="5px"
-          btnBgColor="#222222"
+          btnBgColor="var(--pal-222222)"
         />
       </div>
     );
@@ -236,10 +236,10 @@ const ThreeDotsMenu = (props: {
       <BchatIconButton
         iconType={'filledThreeDots'}
         iconSize={20}
-        iconColor={darkMode ? '#858598' : '#ACACAC'}
+        iconColor={darkMode ? '#858598' : 'var(--pal-t-acacac)'}
         onClick={onHandleContextMenu}
         margin="0 2.5px"
-        btnBgColor={darkMode ? '#2E333D' : '#F8F8F8'}
+        btnBgColor={darkMode ? '#2E333D' : 'var(--pal-f8f8f8)'}
         btnRadius="30px"
       />
     </div>
@@ -253,7 +253,7 @@ export const MessageContentWithStatuses = (props: Props) => {
 
   const dispatch = useDispatch();
   const multiSelectMode = useSelector(isMessageSelectionMode);
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   const selected = useSelector(state => getMessageStatusProps(state as any, props.messageId));
 
    const {

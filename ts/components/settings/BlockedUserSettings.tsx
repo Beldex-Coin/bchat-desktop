@@ -23,16 +23,16 @@ import {
 import classNames from 'classnames';
 import { BchatIcon, BchatIconButton } from '../icon';
 import { getMultipleSelection } from '../../state/selectors/userConfig';
-import { getTheme } from '../../state/selectors/theme';
 import { hideMultipleSelection } from '../../state/ducks/userConfig';
 import { SpacerLG } from '../basic/Text';
+import { isNewDesign } from '../../theme/newDesign';
 
 export const BlockedUserSettings = () => {
   const blockedNumbers = useSelector(getBlockedPubkeys);
   const forceUpdate = useUpdate();
   const multipleSelection = useSelector(getMultipleSelection);
   const dispatch = useDispatch();
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
 
   const {
     uniqueValues: selectedIds,
@@ -45,7 +45,7 @@ export const BlockedUserSettings = () => {
     if (selectedIds.length) {
       await BlockedNumberController.unblockAll(selectedIds);
       // dark (Figma 5296:28093): a "You Unblocked this contact!" notice in each contact's chat
-      if (window.inboxStore?.getState().theme === 'dark') {
+      if (isNewDesign()) {
         await Promise.all(
           selectedIds.map(id =>
             getConversationController().get(id)?.addBlockNotificationMessage('unblocked')
@@ -72,7 +72,7 @@ export const BlockedUserSettings = () => {
         <div className="noBlockedContacts-img"></div>
         {/* dark theme glyph (Figma 1:37354); hidden outside dark by the stylesheet */}
         <span className="empty-glyph" aria-hidden="true">
-          <BchatIcon iconType="emptyWarning" iconSize={200} iconColor="#737373" />
+          <BchatIcon iconType="emptyWarning" iconSize={200} iconColor="var(--pal-t-737373)" />
         </span>
         <span className="noBlockedContacts-txt">{window.i18n('noBlockedContacts')}</span>
       </div>
@@ -233,7 +233,7 @@ export const BlockedMemberList = (props: {
 
   const memberName = useConversationUsernameOrShorten(pubkey);
   const isBnsHolder = useConversationBnsHolder(pubkey);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   return (
     // tslint:disable-next-line: use-simple-attributes
     <div
@@ -274,7 +274,7 @@ export const BlockedMemberList = (props: {
               <BchatIcon
                 iconType={isSelected ? 'selectSquareTick' : 'selectSquare'}
                 iconSize={isSelected ? 21 : 19}
-                iconColor="#EBEBEB"
+                iconColor="var(--pal-t-ebebeb)"
               />
             ) : (
               <BchatIconButton iconType={isSelected ? 'checkBoxTick' : 'checkBox'} iconSize={23} />

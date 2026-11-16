@@ -9,8 +9,7 @@ import { useMouse } from 'react-use';
 import { popupXDefault, popupYDefault } from '../message-content/MessageReactions';
 import { ReactionPopup } from './ReactionPopup';
 import { isUsAnySogsFromCache } from '../../../../util/reactions';
-import { useSelector } from 'react-redux';
-import { getTheme } from '../../../../state/selectors/theme';
+import { isNewDesign } from '../../../../theme/newDesign';
 
 const StyledReaction = styled.button<{
   selected: boolean;
@@ -96,7 +95,7 @@ export const Reaction = (props: ReactionProps): ReactElement => {
   const senders = reactionsMap[emoji].senders ? Object.keys(reactionsMap[emoji].senders) : [];
   const count = reactionsMap[emoji].count;
   // const showCount = count !== undefined && (count > 1 || inGroup);
-  const isDark = useSelector(getTheme) === 'dark';
+  const isDark = isNewDesign();
   // the dark reactors sheet (Figma 5296:43707) shows the count on every tab, "1" included
   const showCount = count !== undefined && (count > 1 || (inModal && isDark));
 

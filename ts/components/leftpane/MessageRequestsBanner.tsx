@@ -40,7 +40,7 @@ const StyledCircleIcon = styled.div`
 `;
 
 const StyledUnreadCounter = styled.div`
-  color:#fff;
+  color:var(--pal-t-ffffff);
   font-weight: bold;
   border-radius: var(--margins-md);
   font-size: var(--font-size-xs);
@@ -149,7 +149,7 @@ export const MessageRequestsBanner = (props: { handleOnClick: () => any }) => {
         </StyledUnreadCounter>
         {/* Dark theme: trailing arrow. Hidden unless _dark_overrides.scss shows it. */}
         <span className="requests-banner__arrow" aria-hidden="true">
-          <BchatIcon iconType="arrowRight" iconSize={18} iconColor="#00BC33" flipInRtl={true} />
+          <BchatIcon iconType="arrowRight" iconSize={18} iconColor="var(--pal-t-00bc33)" flipInRtl={true} />
         </span>
       </StyledMessageRequestBanner>
       <Portal>

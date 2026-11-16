@@ -50,9 +50,9 @@ import { ExpirationTimerOptions } from '../../util/expiringMessages';
 import { Timestamp } from './Timestamp';
 import { TypingBubble } from './TypingBubble';
 import { getConversationController } from '../../bchat/conversations';
-import { getTheme } from '../../state/selectors/theme';
 import { getMessageById } from '../../data/data';
 import { showContextMenu } from '../../util/showContextMenu';
+import { isNewDesign } from '../../theme/newDesign';
 
 export interface TimerOption {
   name: string;
@@ -96,7 +96,7 @@ export const SelectionOverlay = () => {
   const isPublic = useSelector(getSelectedConversationIsPublic);
   // const isPrivate= useSelector(getSelectedConversation)?.isPrivate
   const dispatch = useDispatch();
-  const darkMode = useSelector(getTheme) === 'dark';
+  const darkMode = isNewDesign();
   // const convoName = useConversationUsername(selectedConversationKey);
 
   const [canDeleteEveryone, setCanDeleteEveryone] = useState(false);
@@ -157,7 +157,7 @@ export const SelectionOverlay = () => {
                 <BchatIconButton
                   iconType="xWithCircle"
                   iconSize={22}
-                  iconColor="#8D8D8D"
+                  iconColor="var(--pal-t-8d8d8d)"
                   onClick={onCloseOverlay}
                 />
               </div>
@@ -170,7 +170,7 @@ export const SelectionOverlay = () => {
               <BchatIconButton
                 iconType="trash"
                 iconSize={26}
-                iconColor="#FF3E3E"
+                iconColor="var(--pal-t-ff3e3e)"
                 onClick={() => setShowDeleteOptions(true)}
                 dataTestId="selection-delete"
               />
@@ -200,7 +200,7 @@ export const SelectionOverlay = () => {
               <BchatIconButton
                 iconType="exit"
                 iconSize={14}
-                iconColor="#EBEBEB"
+                iconColor="var(--pal-t-ebebeb)"
                 onClick={() => setShowDeleteOptions(false)}
               />
             </div>
@@ -230,7 +230,7 @@ export const SelectionOverlay = () => {
             buttonColor={BchatButtonColor.Danger}
             text={deleteMessageButtonText}
             onClick={onDeleteSelectedMessages}
-            style={{ borderRadius: '40px', background: darkMode ? '#131313' : '' }}
+            style={{ borderRadius: '40px', background: darkMode ? 'var(--pal-131313)' : '' }}
           />
         )}
         {canDeleteEveryone && (
@@ -287,7 +287,7 @@ const ExpirationLength = (props: { expirationSettingName?: string; expirationSho
       <div className="module-conversation-header__expiration__clock-icon" />
       {/* dark (Figma 1:7726): stopwatch with the short setting ("30m") over its lower right */}
       <span className="expiration-badge" aria-hidden="true">
-        <BchatIcon iconType="stopwatch" iconSize={22} iconColor="#EBEBEB" />
+        <BchatIcon iconType="stopwatch" iconSize={22} iconColor="var(--pal-t-ebebeb)" />
         <span className="expiration-badge__text">{props.expirationShort}</span>
       </span>
       <div
@@ -447,7 +447,7 @@ const ConversationHeaderTitle = () => {
     <span className="bns-tag">
       BNS
       <span className="bns-tag__mark">
-        <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="#00BC33" />
+        <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="var(--pal-t-00bc33)" />
       </span>
     </span>
   ) : null;
