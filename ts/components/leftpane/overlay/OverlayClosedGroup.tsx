@@ -15,6 +15,7 @@ import { getConversationController } from '../../../bchat/conversations';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../../basic/BchatButton';
 import { Loader } from '../../BchatWrapperModal';
 import { isNewDesign } from '../../../theme/newDesign';
+import { LottieAnimation } from '../../basic/LottieAnimation';
 
 
 export const OverlayClosedGroup = () => {
@@ -139,9 +140,10 @@ export const OverlayClosedGroup = () => {
               <BchatSpinner loading={loading} />
             </Loader>
           )}
-          {noContactsForClosedGroup ? (
+          {/* no contacts at all, or none matching the search: the same "No contacts Yet!" state */}
+          {noContactsForClosedGroup || filteredNames.length === 0 ? (
             <div className="secret-group-overlay__empty">
-              <span className="secret-group-overlay__empty-art" aria-hidden="true" />
+              <LottieAnimation name="empty_chat" className="secret-group-overlay__empty-art" />
               <div className="secret-group-overlay__empty-text">{window.i18n('noContactsYet')}</div>
             </div>
           ) : (

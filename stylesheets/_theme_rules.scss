@@ -4945,16 +4945,16 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     gap: 26px;
     min-height: 220px;
   }
+  // the empty_chat animation (150x130 artboard, same as the empty Social / Groups filter)
   .secret-group-overlay__empty-art {
     display: block;
-    width: 270px;
-    aspect-ratio: 203 / 82;
-    background: url('#{$theme-images}/no-contacts.svg') center / contain no-repeat;
+    width: 230px;
+    aspect-ratio: 150 / 130;
   }
   .secret-group-overlay__empty-text {
     font-family: $dark-font-data !important;
     font-size: 18px;
-    color: c(#555, t);
+    color: if($theme-light, #acacac, c(#555, t));
   }
   // own row under the scrolling body (not floated over it), so the contact list ends above the
   // button instead of running underneath it
