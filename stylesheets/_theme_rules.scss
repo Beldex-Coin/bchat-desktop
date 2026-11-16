@@ -8746,8 +8746,18 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: c(#444, f);
+    background: if($theme-light, #d4d4d4, c(#444, f));
     border-radius: 0;
+  }
+
+  // white (Figma 5808:48733 / 48735): a #f0f0f0 @ 75% frame (#e6e6e6 line) holding the #fff @ 75%
+  // list card (#e6e6e6 line) 6 -> 8px in; the rows run edge to edge inside that card
+  @if $theme-light {
+    padding: 12px 6px 12px 0;
+    background: rgba(255, 255, 255, 0.75) padding-box;
+    border: 8px solid rgba(240, 240, 240, 0.75);
+    outline: 1px solid #e6e6e6;
+    box-shadow: inset 0 0 0 1px #e6e6e6;
   }
 }
 #{$dark} .mention-dropdown .mention-item {
@@ -8761,11 +8771,12 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     margin-bottom: 0;
   }
   &:hover {
-    background: c(rgba(26, 26, 26, 0.6), f);
+    background: if($theme-light, rgba(172, 172, 172, 0.12), c(rgba(26, 26, 26, 0.6), f));
   }
   &--selected,
   &--selected:hover {
-    background: c(rgba(26, 26, 26, 0.2), f);
+    // white (Figma 5808:48737): #acacac @ 20% plate on the green leading edge
+    background: if($theme-light, rgba(172, 172, 172, 0.2), c(rgba(26, 26, 26, 0.2), f));
     border-left-color: c(#00bc33, s);
     box-shadow: inset 0 0 0 1px c(#222, s);
     backdrop-filter: blur(6px);
