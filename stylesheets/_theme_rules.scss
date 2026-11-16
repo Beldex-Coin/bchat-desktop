@@ -8346,8 +8346,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 #{$dark} .contexify {
   min-width: 275px;
   padding: 12px;
-  background-color: c(rgba(11, 11, 11, 0.92), f);
-  border: 1px solid c(#222, s);
+  // white (Figma 5808:40885): #fff @ 75% glass on a #e6e6e6 line
+  background-color: if($theme-light, rgba(255, 255, 255, 0.75), c(rgba(11, 11, 11, 0.92), f));
+  border: 1px solid if($theme-light, #e6e6e6, c(#222, s));
   backdrop-filter: blur(6px);
 
   .contexify_item {
@@ -8372,8 +8373,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
   .contexify_item:not(.contexify_item--disabled):focus > .contexify_itemContent,
   .contexify_item:not(.contexify_item--disabled):hover > .contexify_itemContent {
-    background-color: c(rgba(17, 17, 17, 0.6), f) !important;
-    border-color: c(#444, s);
+    // white (Figma 5808:40887): #acacac @ 20% row, no outline
+    background-color: if($theme-light, rgba(172, 172, 172, 0.2), c(rgba(17, 17, 17, 0.6), f)) !important;
+    border-color: if($theme-light, transparent, c(#444, s));
     color: c(#ebebeb, t);
   }
   .contexify_separator {
