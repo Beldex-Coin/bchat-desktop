@@ -8411,8 +8411,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   .module-message-detail__info {
     margin-top: 6px;
     padding: 14px 21px;
-    background: c(#111, f);
-    border: 1px solid c(#222, s);
+    // white (Figma 5808:50144 / 50153): #acacac @ 20% boxes on a #e6e6e6 @ 50% line
+    background: if($theme-light, rgba(172, 172, 172, 0.2), c(#111, f));
+    border: 1px solid if($theme-light, rgba(230, 230, 230, 0.5), c(#222, s));
     border-spacing: 0 10px;
   }
   .module-message-detail__label,
@@ -8433,8 +8434,9 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     gap: 21px;
     margin-bottom: 10px;
     padding: 16px 18px;
-    background: c(#111, f);
-    border: 1px solid c(#222, s);
+    // white (Figma 5808:50144 / 50153): #acacac @ 20% boxes on a #e6e6e6 @ 50% line
+    background: if($theme-light, rgba(172, 172, 172, 0.2), c(#111, f));
+    border: 1px solid if($theme-light, rgba(230, 230, 230, 0.5), c(#222, s));
   }
   .module-message-detail__contact__text {
     margin: 0;
