@@ -4973,9 +4973,10 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
       font-size: 22px;
       font-weight: 600;
     }
+    // white (Figma 5808:3767): #e8e8e8 plate, #8d8d8d label
     .bchat-button.disabled {
-      background: c(#1a1a1a, f) !important;
-      color: c(#666, t) !important;
+      background: if($theme-light, #e8e8e8, c(#1a1a1a, f)) !important;
+      color: if($theme-light, #8d8d8d, c(#666, t)) !important;
       opacity: 1;
     }
   }
