@@ -198,9 +198,9 @@ export const SelectionOverlay = () => {
             </div>
             <div className="selection-bar__dismiss">
               <BchatIconButton
-                iconType="exit"
-                iconSize={14}
-                iconColor="var(--pal-t-ebebeb)"
+                iconType="x"
+                iconSize={12}
+                iconColor="var(--pal-t-acacac)"
                 onClick={() => setShowDeleteOptions(false)}
               />
             </div>

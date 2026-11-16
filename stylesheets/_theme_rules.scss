@@ -4051,8 +4051,9 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   height: 66px;
   margin: 12px 20px 0;
   padding: 0 24px;
-  background: c(#141414, f);
-  border: 1px solid $dark-line;
+  // white (Figma 5808:5824): #f0f0f0 @ 75% on a #e6e6e6 line
+  background: if($theme-light, rgba(240, 240, 240, 0.75), c(#141414, f));
+  border: 1px solid if($theme-light, #e6e6e6, $dark-line);
 
   .close-button {
     display: flex;
@@ -4082,17 +4083,31 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     font-weight: 400;
     letter-spacing: 0;
   }
+  // white (Figma 5808:5835): "Delete for me" is a plain #e8e8e8 plate, no outline
+  @if $theme-light {
+    .bchat-button.secondary,
+    .bchat-button.secondary::before {
+      background-color: #e8e8e8;
+    }
+  }
 }
+// Square close (Figma 5296:5664 / white 5808:5825): 24 -> 32px #222 @ 50% (white #fff @ 50%) on a
+// 0.38 -> 0.5px #444 (white #c4c4c4) line, plain 9 -> 12px X in #acacac (white #555)
 #{$dark} .selection-bar__dismiss {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  background: c(#333, f);
+  width: 32px;
+  height: 32px;
+  background: if($theme-light, rgba(255, 255, 255, 0.5), c(rgba(34, 34, 34, 0.5), f));
+  border: 0.5px solid if($theme-light, #c4c4c4, c(#444, s));
 
+  .bchat-icon-button {
+    display: flex;
+    padding: 0;
+  }
   &:hover {
-    background: c(#444, f);
+    background: if($theme-light, #fff, c(#333, f));
   }
 }
 
