@@ -5712,7 +5712,8 @@ $dark-cut-react-remove: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8p
     height: 26px;
     margin-inline-start: 20px;
     padding: 0 14px 0 18px;
-    background: c(#8d8d8d, f);
+    // white (Figma 5808:41346): #ebebeb chip on a faint #727272 @ 35% line, #555 label and bin
+    background: if($theme-light, rgba(114, 114, 114, 0.35), c(#8d8d8d, f));
     border: 0;
     clip-path: $dark-cut-react-remove;
     font-family: $dark-font-data !important;
@@ -5729,7 +5730,14 @@ $dark-cut-react-remove: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8p
       clip-path: $dark-cut-react-remove;
     }
     &:hover::before {
-      background: c(#2c2c2c, f);
+      background: if($theme-light, #e1e1e1, c(#2c2c2c, f));
+    }
+    @if $theme-light {
+      color: #555;
+
+      svg path {
+        fill: #555;
+      }
     }
   }
 }
