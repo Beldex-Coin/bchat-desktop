@@ -1332,6 +1332,8 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   private async onLoadVoiceNoteView() {
+    // the mic closes the attachment options (they stayed open over the recorder)
+    this.setState({ selectionMenuIsVisble: false });
     if (!getMediaPermissionsSettings()) {
       window.inboxStore?.dispatch(
         updateConfirmModal({
@@ -1365,6 +1367,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({
       showRecordingView: true,
       showEmojiPanel: false,
+      selectionMenuIsVisble: false,
     });
     window.inboxStore?.dispatch(updateIsCurrentlyRecording(true));
   }

@@ -730,8 +730,16 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
     border: 0;
     cursor: pointer;
 
-    &:hover {
-      opacity: 0.8;
+    svg path {
+      transition: fill 0.15s ease;
+    }
+    // hover: the square brightens - #ebebeb -> pure white (white theme: #222 -> black) - instead of
+    // dimming
+    &:hover svg path {
+      fill: if($theme-light, #000, #fff);
+    }
+    &:hover svg {
+      filter: if($theme-light, none, drop-shadow(0 0 4px rgba(255, 255, 255, 0.35)));
     }
     &:focus-visible {
       outline: 1px solid $dark-green;
@@ -1905,7 +1913,7 @@ $dark-composer-h: 60px;
     // hover (Figma 5296:31826): #222 50% square on a #444 line, the glyph turns #ebebeb
     &:hover {
       background: c(rgba(34, 34, 34, 0.5), f);
-      border-color: c(#444, s);
+      border-color: if($theme-light, #c4c4c4, c(#444, s));
       color: c(#ebebeb, t);
 
       svg path {
@@ -1935,8 +1943,8 @@ $dark-composer-h: 60px;
     width: max-content;
     min-width: 207px;
     padding: 12px 12px 16px;
-    // white (Figma 5808:45293): #ffffff @ 75%
-    background-color: if($theme-light, rgba(255, 255, 255, 0.75), c(rgba(26, 26, 26, 0.2), f));
+    // white (Figma 5808:51468): #ffffff @ 20% glass over the blurred chat
+    background-color: if($theme-light, rgba(255, 255, 255, 0.2), c(rgba(26, 26, 26, 0.2), f));
     border: 1px solid c(#262626, s);
     border-radius: 0;
     box-shadow: none;
@@ -1968,20 +1976,59 @@ $dark-composer-h: 60px;
         font-weight: 400;
         color: c(#ebebeb, t);
       }
+      // hovered row (Figma 5296:46896 / white 5808:45294): a glass plate with no outline - #1a1a1a
+      // @ 20% (white #acacac @ 20%) over a blurred backdrop with the glass's light edges, like the
+      // chats list rows
+      // white (Figma 5808:51469): a #ffffff @ 20% glass plate - the glass's bright rim and a faint
+      // drop under it are what set it off the menu
       &:hover {
-        background: c(rgba(26, 26, 26, 0.6), f);
-        border-color: c(#333, s);
-        // white (Figma 5808:45294): a #acacac @ 20% plate, no outline
-        @if $theme-light {
-          background: rgba(172, 172, 172, 0.2);
-          border-color: transparent;
-        }
+        background: if(
+          $theme-light,
+          rgba(255, 255, 255, 0.2),
+          linear-gradient(135deg, rgba(235, 235, 235, 0.06), rgba(26, 26, 26, 0.2) 45%)
+        );
+        border-color: transparent;
+        box-shadow: if(
+          $theme-light,
+          (inset 0 0 0 1px rgba(255, 255, 255, 0.85), inset 0 1px 0 #fff, 0 1px 3px rgba(0, 0, 0, 0.08)),
+          (inset 0 1px 0 rgba(235, 235, 235, 0.08), inset 0 -1px 0 rgba(235, 235, 235, 0.04))
+        );
+        backdrop-filter: blur(4px);
       }
     }
   }
   .send-message-input__emoji-overlay {
     display: flex;
     align-items: center;
+  }
+  // the smiley hovers like the "+" next to it (Figma 5296:31826 / white 5808:33144): the cut square,
+  // #222 @ 50% on a #444 line with the glyph turning #ebebeb - white: #fff @ 50% on #c4c4c4, glyph
+  // #222 - instead of the base rounded hover plate
+  .send-message-input__emoji-overlay .bchat-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0.5px solid transparent;
+    border-radius: 0;
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
+    transition: background-color 0.15s ease;
+
+    svg path {
+      transition: fill 0.15s ease;
+    }
+    &:hover {
+      background: if($theme-light, rgba(255, 255, 255, 0.5), c(rgba(34, 34, 34, 0.5), f));
+      border-color: if($theme-light, #c4c4c4, c(#444, s));
+      border-radius: 0;
+      color: c(#ebebeb, t);
+
+      svg path {
+        fill: c(#ebebeb, t);
+      }
+    }
   }
   // ``` code block box: dark plate on the #444 line, Roboto Mono, square corners
   .editor-input code.composer-code-block {
@@ -2003,12 +2050,13 @@ $dark-composer-h: 60px;
     padding: 0;
     margin: 0;
     flex-shrink: 0;
-    background: $dark-composer-fill;
-    box-shadow: inset 0 0 0 1px c(#333, s);
+    // white (Figma 5808:28555 "Frame 1535"): #fff @ 50% x 80% glass on a #ddd -> #8c8c8c line
+    background: if($theme-light, rgba(255, 255, 255, 0.4), $dark-composer-fill);
+    box-shadow: inset 0 0 0 1px if($theme-light, #cfcfcf, c(#333, s));
     color: c(#ebebeb, t);
 
     &:hover {
-      background: $dark-raised;
+      background: if($theme-light, rgba(255, 255, 255, 0.75), $dark-raised);
     }
   }
   .editor-input {
@@ -2039,7 +2087,8 @@ $dark-composer-h: 60px;
   margin: 0;
   flex-shrink: 0;
   align-self: flex-end;
-  background: $dark-white;
+  // white (Figma 5808:6249 "Rectangle 911"): #d4d4d4 square, the plane stays #0b0b0b
+  background: if($theme-light, #d4d4d4, $dark-white);
   color: c(#000, t);
 
   > div,
@@ -2054,10 +2103,10 @@ $dark-composer-h: 60px;
   }
   svg,
   svg path {
-    fill: c(#0b0b0b, t);
+    fill: if($theme-light, #0b0b0b, c(#0b0b0b, t));
   }
   &:hover {
-    background: c(#d9d9d9, f);
+    background: if($theme-light, #c6c6c6, c(#d9d9d9, f));
   }
 }
 
