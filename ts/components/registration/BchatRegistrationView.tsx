@@ -18,7 +18,7 @@ export const BchatRegistrationView = () => {
       <div className="bchat-full-screen-flow bchat-fullscreen">
         {/* registration and restore keep the dark design in both themes - the white theme starts
             once the account is set up */}
-        <BchatTheme mode="dark">
+        <BchatTheme mode="dark" remember={false}>
           <div className='bchat_conversation-doodle'>
           {/* <Flex
             flexDirection="row"
