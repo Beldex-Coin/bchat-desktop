@@ -453,6 +453,10 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
 }
 
 // Message Requests: green-tinted band, mono label, square count, arrow.
+// search fields' magnifier (Figma 5296 / white 5808:2942, 5808:3831): #737373, white #8d8d8d
+#{$dark} .bchat-search-input .search svg path {
+  fill: c(#737373, t);
+}
 #{$dark} .requests-banner {
   // 56px: the height it was always drawn at with a full chat list (the list used to squeeze the 80px
   // box); fixed here so the column no longer changes with the list (see .module-conversations-list-content)

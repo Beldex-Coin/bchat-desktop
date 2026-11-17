@@ -136,7 +136,7 @@ export const ChangeOnionRoutingSetting = () => {
     <BchatSettingsItemWrapper
       title={window.i18n('onionRoutingTitle')}
       inline={true}
-      iconType="hops"
+      iconType="onionRouting"
       // Fixed regardless of the selected hop count - the per-mode tradeoff used to live here
       // but that made this row's text change every time the picker below it changed. It's now a
       // single stable description regardless of the picked hop count.

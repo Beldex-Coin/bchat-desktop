@@ -534,7 +534,7 @@ export const BchatRightPanelWithDetails = () => {
           okText: window.i18n('remove'),
           iconShow: true,
           customIcon: (
-            <BchatIcon iconType="avatarX" iconSize={24} clipRule="evenodd" fillRule="evenodd" />
+            <BchatIcon iconType="removeUser" iconSize={24} iconColor="var(--pal-t-ebebeb)" />
           ),
           okTheme: BchatButtonColor.Danger,
           onClickOk: async () => {
@@ -805,10 +805,9 @@ export const BchatRightPanelWithDetails = () => {
                     <>
                       {weAreAdmin && (
                         <BchatIconButton
-                          iconType="avatarX"
-                          iconSize={26}
-                          clipRule="evenodd"
-                          fillRule="evenodd"
+                          iconType="removeUser"
+                          iconSize={24}
+                          iconColor="var(--pal-t-ebebeb)"
                           onClick={() => setRemoveMem(true)}
                         />
                       )}
