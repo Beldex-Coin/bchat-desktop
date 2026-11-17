@@ -8822,18 +8822,20 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   display: flex;
   align-items: center;
   gap: 11px;
-  width: 333px;
+  // a fixed width that does not give way: a long title (a contact shown by its full BChat ID) used
+  // to squeeze the box down to its content, and the content is wider while typing (two arrows
+  // instead of the magnifier), so the box grew as soon as a letter was typed
+  flex: 0 0 auto;
+  width: 284px;
   max-width: 45vw;
   height: 43px;
   margin-inline: auto 12px;
   padding: 0 13px;
   background: c(rgba(17, 17, 17, 0.5), f);
   border: 1px solid c(#444, s);
-  transition: width 0.15s ease;
 
-  &--empty {
-    width: 267px;
-  }
+  // one width while empty and while typing: the box used to grow from 267px to 333px as soon as
+  // a letter was typed (the arrows replacing the magnifier), shifting the header
   &__icon {
     display: flex;
     flex: 0 0 auto;
@@ -8842,6 +8844,8 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 
   &__input {
     flex: 1 1 auto;
+    // no intrinsic width of its own (a text input asks for ~20 characters), it takes what is left
+    width: 0;
     min-width: 0;
     height: 100%;
     padding: 0;
