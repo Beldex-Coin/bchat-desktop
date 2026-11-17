@@ -4082,6 +4082,22 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 #{$dark} .module-message__attachment-container .module-image {
   margin: 0;
 }
+// a single picture is never wider than its bubble: with a wide screenshot the image kept its own
+// pixel width (inline max-width) and ran past the bubble's padding into the green edge on the
+// right, so the inset was 9px on the left and 0 on the right
+#{$dark} .module-message__attachment-container {
+  max-width: 100%;
+  min-width: 0;
+
+  .module-image-grid,
+  .module-image {
+    max-width: 100% !important;
+  }
+  .module-image__image:not(.module-image__image-cover) {
+    max-width: 100% !important;
+    height: auto;
+  }
+}
 #{$dark} .module-image__border-overlay {
   box-shadow: none;
 }
@@ -9942,7 +9958,7 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
   padding-bottom: 0 !important;
 
   .module-message__attachment-container {
-    padding: 9px 9px 0 !important;
+    padding: 12px 12px 0 !important;
   }
   .attachment-with-quote {
     padding: 10px 15px !important;
@@ -9955,8 +9971,10 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 // image / video with no caption: the picture 9px from all four sides of the bubble (as in the
 // captioned one) - the bubble's 14px top padding plus the tile's own 10px top inset left a 24px band
 // above it against 14px on the sides and bottom. A sender name (group chats) keeps its room above.
+// (12px rather than the design's 9: at 9 the picture's bottom-end corner met the bubble's 18px cut
+// corner exactly, so it looked like it touched the green edge - 12 + 12 clears the cut)
 #{$dark} .module-message__container:has(.module-message__attachment-container .module-image):not(:has(.attachment-with-quote)) {
-  padding: 9px !important;
+  padding: 12px !important;
 
   .module-message__attachment-container {
     padding: 0 !important;
