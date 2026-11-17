@@ -382,7 +382,12 @@ export async function innerHandleSwarmContentMessage(
     );
 
     // When restoring the message, this function is used to validate BNS in the conversation.
-    bnsVerificationConvo(senderConversationModel, isPrivateConversationMessage, envelope);
+    // Only a real message says whether the sender holds a BNS name: receipts, typing indicators and
+    // other control traffic come without the flag, and taking their "false" made the BNS badge
+    // vanish a few seconds after it showed (until the contact's next message brought it back).
+    if (content.dataMessage) {
+      bnsVerificationConvo(senderConversationModel, isPrivateConversationMessage, envelope);
+    }
     // const ourPubkey = UserUtils.getOurPubKeyFromCache();
     // !window.getLocalValue('ourBnsName') &&
     // isPrivateConversationMessage)

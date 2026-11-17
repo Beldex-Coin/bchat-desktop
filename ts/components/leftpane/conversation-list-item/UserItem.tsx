@@ -1,6 +1,7 @@
 import  { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import {
+  useConversationBnsHolder,
   useConversationRealName,
   useConversationUsername,
   useHasNickname,
@@ -10,6 +11,7 @@ import { PubKey } from '../../../bchat/types';
 import { isSearching } from '../../../state/selectors/search';
 import { ContactName } from '../../conversation/ContactName';
 import { ContextConversationId } from './ConversationListItem';
+import { BchatIcon } from '../../icon';
 
 export const UserItem = () => {
   const conversationId = useContext(ContextConversationId);
@@ -22,6 +24,7 @@ export const UserItem = () => {
   const username = useConversationUsername(conversationId);
   const realName = useConversationRealName(conversationId);
   const hasNickname = useHasNickname(conversationId);
+  const isBnsHolder = useConversationBnsHolder(conversationId);
 
   const displayedPubkey = username ? shortenedPubkey : conversationId;
   const displayName = isMe
@@ -45,6 +48,15 @@ export const UserItem = () => {
         boldProfileName={true}
         shouldShowPubkey={shouldShowPubkey}
       />
+      {/* verified BNS holder: the "BNS" chip with the green mark after the name (Figma 5629:1415) */}
+      {isBnsHolder && (
+        <span className="bns-tag">
+          BNS
+          <span className="bns-tag__mark">
+            <BchatIcon iconType="verifiedAccount" iconSize={11} iconColor="var(--pal-t-00bc33)" />
+          </span>
+        </span>
+      )}
     </div>
   );
 };

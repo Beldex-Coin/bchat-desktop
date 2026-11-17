@@ -997,6 +997,41 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   display: none;
 }
 
+// ---- Chats list: the BNS chip after a verified contact's name (Figma 5629:1415 / white 5808:26176)
+// 37.25 x 12.75 -> 50 x 17, 4 -> 5px after the name, which gives way (ellipsis) before the chip does
+#{$dark} .module-conversation-list-item .module-conversation__user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+
+  > :first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bns-tag {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 3px;
+    height: 17px;
+    padding: 0 3px 0 5px;
+    background-color: c(rgba(26, 26, 26, 0.2), f);
+    border: 0.5px solid $dark-green;
+    color: $dark-green;
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .bns-tag__mark {
+    display: inline-flex;
+    line-height: 0;
+  }
+}
+
 // ---- Header: 100px bar, name + BNS tag, mono subtitle ----
 #{$dark} .conversation-header,
 #{$dark} .module-conversation-header {
