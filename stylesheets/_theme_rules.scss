@@ -1210,6 +1210,25 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   font-size: 14px;
   color: c(#acacac, t);
 }
+// the stopwatch's hand sweeps round its centre while the seconds count down (CountdownIcon)
+#{$dark} .countdown-icon {
+  flex: 0 0 auto;
+}
+#{$dark} .countdown-icon--spinning .countdown-icon__hand {
+  transform-box: view-box;
+  transform-origin: 8.25px 8.25px;
+  animation: bchat-countdown-hand 2s linear infinite;
+}
+@keyframes bchat-countdown-hand {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #{$dark} .countdown-icon--spinning .countdown-icon__hand {
+    animation: none;
+  }
+}
 // Header indicator: the stopwatch with the short setting ("30m", Inter Bold 10.5 -> 14) over its
 // lower-right corner; no pill behind it
 .expiration-badge {

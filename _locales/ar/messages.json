@@ -230,7 +230,7 @@
   "timerOption_1_day_abbreviated": "1d",
   "timerOption_1_week_abbreviated": "1w",
   "disappearingMessagesDisabled": "تم تعطيل الرسائل المؤقتة",
-  "disabledDisappearingMessages": "تم تعطيل الرسائل المؤقتة بواسطة $name$",
+  "disabledDisappearingMessages": "قام $name$ بتعطيل الرسائل المؤقتة",
   "youDisabledDisappearingMessages": "قمتَ بتعطيل الرسائل المؤقتة",
   "timerSetTo": "تم ضبط وقت اختفاء الرسائل إلى $time$",
   "noteToSelf": "ملاحظة لنفسي",

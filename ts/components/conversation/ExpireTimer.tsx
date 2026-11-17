@@ -6,6 +6,7 @@ import { getTimerBucketIcon } from '../../util/timer';
 import useInterval from 'react-use/lib/useInterval';
 import styled from 'styled-components';
 import { BchatIcon } from '../icon/BchatIcon';
+import CountdownIcon from '../icon/CountdownIcon';
 import { isNewDesign } from '../../theme/newDesign';
 
 type Props = {
@@ -83,7 +84,12 @@ export const ExpireTimer = (props: Props) => {
     return (
       <span className="expire-timer">
         <span className="expire-timer__count">{shortLeft}</span>
-        <BchatIcon iconType="countdown" iconSize={22} iconColor="var(--pal-t-ebebeb)" />
+        {/* while the last seconds count down (5, 4, 3, ...) the stopwatch's hand turns */}
+        <CountdownIcon
+          iconSize={22}
+          color="var(--pal-t-ebebeb)"
+          spinning={timeLeft > 0 && timeLeft <= 60}
+        />
       </span>
     );
   }
