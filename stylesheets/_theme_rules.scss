@@ -1619,6 +1619,16 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     text-align: center;
   }
 }
+// More Info (Figma 5296:51617 / 5808 More_info): the shared contact card only - 14px all round the
+// contact strip, no "View" / "View all" under it
+#{$dark} .message-info-dialog .group-invitation:has(> .view-Contact) {
+  > div:first-child {
+    padding: 14px;
+  }
+  .view-Contact {
+    display: none;
+  }
+}
 #{$dark} .payment {
   .contents,
   .contents-incoming {
@@ -8458,6 +8468,17 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
 // Message info (Figma 1:50390 / 1:50835): 435 -> 580 card, square close, preview bubble, Sent /
 // Receive box, From / To contact cards (#111 / #222, 38px avatar -> 51, mono id #ACACAC).
 // =================================================================================================
+// white, group chats (Figma 5808:24457 / 24847 "msg info"): the Sent / Receive and From / To boxes
+// are plain #fff on a #d0d0d0 line
+@if $theme-light {
+  #{$dark} .card-dialog.message-info-dialog.message-info-dialog--group {
+    .module-message-detail__info,
+    .module-message-detail__contact {
+      background: #fff;
+      border: 1px solid #d0d0d0;
+    }
+  }
+}
 #{$dark} .card-dialog.message-info-dialog {
   .bchat-modal__body {
     position: static !important;

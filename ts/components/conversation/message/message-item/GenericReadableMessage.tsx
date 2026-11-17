@@ -373,7 +373,8 @@ export const GenericReadableMessage = (props: Props) => {
             </div>
           )}
         </div>
-       {!isDetailView &&  <MessageAvatar messageId={messageId} />}
+       {/* More Info: a shared contact keeps the sender's avatar beside it (Figma 5296:51617) */}
+       {(!isDetailView || (address && name)) && <MessageAvatar messageId={messageId} />}
         {/* {expirationLength && expirationTimestamp && (
           <ExpireTimer
             isCorrectSide={!isIncoming}

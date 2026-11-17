@@ -58,8 +58,8 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
 
   const quotedMessageToAnimate = useSelector(getQuotedMessageToAnimate);
   const shouldHighlightMessage = useSelector(getShouldHighlightMessage);
-  const isDarkAndMoreInfo =
-    isNewDesign() && isDetailView && contentProps?.direction === 'incoming';
+  // the old light design tinted an incoming card in More Info; the new design keeps the chat bubble
+  const isDarkAndMoreInfo = !isNewDesign() && isDetailView && contentProps?.direction === 'incoming';
   const isDarkTheme = isNewDesign();
   const isQuotedMessageToAnimate = quotedMessageToAnimate === props.messageId;
   const sharedContactNameList: string[] = JSON.parse(name || '[]');

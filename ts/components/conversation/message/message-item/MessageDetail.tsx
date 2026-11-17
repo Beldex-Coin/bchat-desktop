@@ -17,7 +17,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateMessageMoreInfoModal } from '../../../../state/ducks/modalDialog';
 // import { getMessageTextProps } from '../../../../state/selectors/conversations';
 import { SpacerSM, SpacerXS } from '../../../basic/Text';
-import { getSortedMessagesTypesOfSelectedConversation } from '../../../../state/selectors/conversations';
+import {
+  getSortedMessagesTypesOfSelectedConversation,
+  isGroupConversation,
+} from '../../../../state/selectors/conversations';
 import { BchatIcon } from '../../../icon';
 import { UserUtils } from '../../../../bchat/utils';
 import { isNewDesign } from '../../../../theme/newDesign';
@@ -128,6 +131,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
   //   getMessageIsDeletable(state as any, messageDetailProps?.messageId || '')
   // );
   const messagesProps = useSelector(getSortedMessagesTypesOfSelectedConversation);
+  const isGroup = useSelector(isGroupConversation);
   const sharedContactMessage:any = messagesProps.find(
     (item) => item.message.props.messageId === messageId
   );
@@ -150,7 +154,7 @@ export const MessageMoreInfoModal = (props: MessagePropsDetails) => {
     <div className="message-detail-wrapper">
       <BchatWrapperModal
         title={window.i18n('moreInformation')}
-        additionalClassName="card-dialog message-info-dialog"
+        additionalClassName={classNames('card-dialog message-info-dialog', isGroup && 'message-info-dialog--group')}
         onClose={() => { dispatch(updateMessageMoreInfoModal(null)) }}
         showExitIcon={false}
         showHeader={true}
