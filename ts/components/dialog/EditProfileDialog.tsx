@@ -42,7 +42,9 @@ interface State {
 export const QRView = ({ bchatID }: { bchatID: string }) => {
   return (
     <div className="qr-image">
-      <QRCode value={bchatID} bgColor="var(--pal-ffffff)" fgColor="var(--pal-t-1b1b1b)" level="M" />
+      {/* fixed dark-on-white in both themes: the white theme's swapped colours made a light-on-dark
+          code that scanners couldn't read */}
+      <QRCode value={bchatID} bgColor="#ffffff" fgColor="#1b1b1b" level="M" />
     </div>
   );
 };
