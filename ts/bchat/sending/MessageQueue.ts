@@ -154,24 +154,29 @@ export class MessageQueue {
     attempts?: number
   ): Promise<boolean | number> {
     let rawMessage;
+    let sent: { wrappedEnvelope: Uint8Array; effectiveTimestamp: number };
     try {
       rawMessage = await MessageUtils.toRawMessage(user, message);
-      const { wrappedEnvelope, effectiveTimestamp } = await MessageSender.send(
-        rawMessage,
-        attempts
-      );
-      await MessageSentHandler.handleMessageSentSuccess(
-        rawMessage,
-        effectiveTimestamp,
-        wrappedEnvelope
-      );
-      return effectiveTimestamp;
+      sent = await MessageSender.send(rawMessage, attempts);
     } catch (error) {
       if (rawMessage) {
         await MessageSentHandler.handleMessageSentFailure(rawMessage, error);
       }
       return false;
     }
+    // The message is out. Bookkeeping that fails after this point (e.g. the group invites all
+    // updating the same "group created" message at once) must not report the send as failed -
+    // that showed "Group Invitation Failed" for a group whose members all got their invite.
+    try {
+      await MessageSentHandler.handleMessageSentSuccess(
+        rawMessage,
+        sent.effectiveTimestamp,
+        sent.wrappedEnvelope
+      );
+    } catch (error) {
+      window?.log?.warn('sendToPubKeyNonDurably: sent, but the success handling failed:', error);
+    }
+    return sent.effectiveTimestamp;
   }
 
   /**

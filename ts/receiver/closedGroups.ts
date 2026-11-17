@@ -41,6 +41,9 @@ import {
 } from '../bchat/group/pendingGroupInvites';
 
 import { updateConfirmModal } from '../state/ducks/modalDialog';
+import React from 'react';
+import { BchatIcon } from '../components/icon';
+import { BchatButtonColor } from '../components/basic/BchatButton';
 import { perfEnd, perfStart } from '../bchat/utils/Performance';
 
 export const distributingClosedGroupEncryptionKeyPairs = new Map<string, ECKeyPair>();
@@ -1080,6 +1083,14 @@ function showRetryGroupInvitesDialog(pendingInvites: PendingGroupInvites) {
         ? window.i18n('secretGroupInviteFailMessagePlural')
         : window.i18n('secretGroupInviteFailMessage'),
       okText: window.i18n('secretGroupInviteOkText'),
+      // Figma 6510:1777: the red person-with-a-cross in the icon square, "Retry Inviting" primary
+      iconShow: true,
+      customIcon: React.createElement(BchatIcon, {
+        iconType: 'inviteFailed',
+        iconSize: 24,
+        iconColor: 'var(--pal-t-ff3e3e)',
+      }),
+      okTheme: BchatButtonColor.Primary,
       onClickOk: async () => {
         await sendToGroupMembers(pendingInvites, true);
       },

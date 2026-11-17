@@ -7949,6 +7949,42 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     }
   }
 }
+// White popups (Figma 6512:1777 "Group Invitation Failed"): white glass card with a #e6e6e6 line,
+// Cancel #e8e8e8 with a #ddd line, the action button #0b0b0b with #ebebeb text
+@if $theme-light {
+  #{$dark} .card-dialog {
+    .bchat-modal {
+      background: rgba(255, 255, 255, 0.55);
+      border-color: #e6e6e6;
+    }
+    .bchat-modal-footer {
+      .bchat-button.secondary,
+      .bchat-button.white,
+      .bchat-button.enable {
+        background-color: #dddddd;
+        color: #222222;
+
+        &::before {
+          background-color: #e8e8e8;
+        }
+        &:hover:not(.disabled)::before {
+          background-color: #dedede;
+        }
+      }
+      .bchat-button.primary,
+      .bchat-button.green {
+        background-color: #0b0b0b;
+        border-color: #0b0b0b;
+        color: #ebebeb;
+
+        &:hover:not(.disabled) {
+          background-color: #2a2a2a;
+          border-color: #2a2a2a;
+        }
+      }
+    }
+  }
+}
 // Call Missed popup message (Figma 5296:13196): caller's name green, the permission name and
 // "Privacy Settings" in Inter SemiBold #ebebeb
 #{$dark} .card-dialog .missed-call__name {
