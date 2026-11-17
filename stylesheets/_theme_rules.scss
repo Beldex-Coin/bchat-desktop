@@ -861,6 +861,8 @@ $dark-chamfer: polygon(0 0, 78.3% 0, 100% 21.7%, 100% 100%, 0 100%);
 }
 #{$dark} .module-avatar img {
   clip-path: $dark-chamfer;
+  // the base sheet's #00000059 ring around avatar photos showed as a dark edge in the white theme
+  border: 0;
 }
 #{$dark} .initials-avatar {
   position: relative;
@@ -4748,6 +4750,20 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     .module-avatar img {
       width: 64px !important;
       height: 64px !important;
+    }
+    // white (Figma 5808:30212): the group pictures sit straight on the tile with rounded corners
+    // (5.2 / 48 -> 7px on 64), no chamfer and no hairline behind them
+    @if $theme-light {
+      .module-avatar--with-image::before {
+        display: none;
+      }
+      .module-avatar img {
+        margin: 0;
+        border-radius: 7px;
+        clip-path: none;
+        width: 64px !important;
+        height: 64px !important;
+      }
     }
     .room-name {
       display: block !important;
