@@ -251,8 +251,19 @@ const debouncedPlayNextMessage = useMemo(() =>
   ?progressTime / Math.max(audioContextDuration , 0)
   : 0
 
+  // dark/white: the speed chip only shows while the note plays (or once the speed was changed); the
+  // bars give it their room so the time stays inside the bubble
+  const showSpeedChip = !darkMode || (isSameMessage && isPlaying) || playbackSpeed !== 1;
+
   return (
-    <div className={classNames('audio-message', `audio-message--${direction}`)} dir="ltr">
+    <div
+      className={classNames(
+        'audio-message',
+        `audio-message--${direction}`,
+        darkMode && showSpeedChip && 'audio-message--with-speed'
+      )}
+      dir="ltr"
+    >
       <Flex container justifyContent="center" alignItems="center" height="30px" margin="10px 0">
         <span className="audio-play-btn">
           {darkMode ? (
@@ -281,7 +292,7 @@ const debouncedPlayNextMessage = useMemo(() =>
         </span>
         {!darkMode && <SpacerSM />}
         {/* dark: the speed chip only shows while the note plays (or once the speed was changed) */}
-        {(!darkMode || (isSameMessage && isPlaying) || playbackSpeed !== 1) && (
+        {showSpeedChip && (
           <div
             role="button"
             onClick={changeSpeed}
@@ -292,7 +303,7 @@ const debouncedPlayNextMessage = useMemo(() =>
         )}
         {!darkMode && <SpacerSM />}
         <WaveformBars
-          width={darkMode ? 185 : 300}
+          width={darkMode ? (showSpeedChip ? 140 : 185) : 300}
           barWidth={darkMode ? 2 : undefined}
           gap={darkMode ? 1 : undefined}
           peaks={peaks}

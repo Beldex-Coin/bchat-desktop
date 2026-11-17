@@ -3806,6 +3806,15 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   .waveform-cursor {
     display: none;
   }
+  // with the speed chip (1x / 1.5x / 2x) the row keeps its width: tighter gaps and 140px of bars
+  // (WaveFormAudioPlayer) so the time doesn't run past the bubble's edge
+  &--with-speed > div {
+    gap: 10px;
+  }
+  &--with-speed .play-speed-btn {
+    min-width: 38px;
+    text-align: center;
+  }
   .audio-message__time {
     flex: 0 0 auto;
     min-width: 36px;
@@ -3849,7 +3858,8 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   font-family: $dark-font-data !important;
   font-size: 12px;
   line-height: 16px;
-  color: c(#8d8d8d, t);
+  // white: #737373 on the dot grid read too faint under the bubbles - one step darker
+  color: if($theme-light, #555, c(#8d8d8d, t));
 
   &--outgoing {
     justify-content: flex-end;
