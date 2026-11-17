@@ -17,9 +17,6 @@ import { ZoomingBchatSlider } from '../ZoomingBchatSlider';
 import { applyTheme } from '../../../state/ducks/theme';
 // import { ChangeChatFontSetting } from '../ChangeChatFontSetting';
 
-// Ghost (light) theme card is hidden for now; flip to true to bring it back.
-const SHOW_GHOST_THEME = false;
-
 async function toggleStartInTray() {
   try {
     const newValue = !(await window.getStartInTray());
@@ -105,53 +102,45 @@ export const SettingsCategoryAppearance = (props: { hasPassword: boolean | null 
           />
         )} */}
 
-        {isdark ? (
-          // Dark theme (Figma 26:7734): theme picker cards - Noir (dark) / Ghost (light)
-          <div className="theme-picker">
-            <div className="theme-picker__label">{window.i18n('themeLabel')}</div>
-            <div className="theme-picker__cards" role="radiogroup">
-              <button
-                type="button"
-                role="radio"
-                aria-checked={true}
-                className="theme-card theme-card--noir theme-card--selected"
-              >
-                <span className="theme-card__preview" aria-hidden="true" />
-                <span className="theme-card__name">{window.i18n('themeNoir')}</span>
-                <span className="theme-card__dot" aria-hidden="true" />
-              </button>
-              {SHOW_GHOST_THEME && (
-              <button
-                type="button"
-                role="radio"
-                aria-checked={false}
-                className="theme-card theme-card--ghost"
-                onClick={() => {
+        {/* Theme picker (Figma 26:7734): Noir (dark) / Ghost (white) cards; picking the other card
+            switches the theme */}
+        <div className="theme-picker">
+          <div className="theme-picker__label">{window.i18n('themeLabel')}</div>
+          <div className="theme-picker__cards" role="radiogroup">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={isdark}
+              className={`theme-card theme-card--noir${isdark ? ' theme-card--selected' : ''}`}
+              onClick={() => {
+                if (!isdark) {
                   handleClick();
                   forceUpdate();
-                }}
-              >
-                <span className="theme-card__preview" aria-hidden="true" />
-                <span className="theme-card__name">{window.i18n('themeGhost')}</span>
-                <span className="theme-card__dot" aria-hidden="true" />
-              </button>
-              )}
-            </div>
+                }
+              }}
+            >
+              <span className="theme-card__preview" aria-hidden="true" />
+              <span className="theme-card__name">{window.i18n('themeNoir')}</span>
+              <span className="theme-card__dot" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={!isdark}
+              className={`theme-card theme-card--ghost${!isdark ? ' theme-card--selected' : ''}`}
+              onClick={() => {
+                if (isdark) {
+                  handleClick();
+                  forceUpdate();
+                }
+              }}
+            >
+              <span className="theme-card__preview" aria-hidden="true" />
+              <span className="theme-card__name">{window.i18n('themeGhost')}</span>
+              <span className="theme-card__dot" aria-hidden="true" />
+            </button>
           </div>
-        ) : (
-          <BchatToggleWithDescription
-            onClickToggle={() => {
-              handleClick()
-              forceUpdate();
-            }}
-            // title={window.i18n('spellCheckTitle')}
-            title={window.i18n('themeTitle')}
-
-            // description={window.i18n('spellCheckDescription')}
-            active={isdark}
-            iconType='sun'
-          />
-        )}
+        </div>
         {/* <BchatToggleWithDescription
           onClickToggle={() => {
             dispatch(toggleAudioAutoplay());
