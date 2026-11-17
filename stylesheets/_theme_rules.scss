@@ -1784,10 +1784,11 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
         background-color: c(#290f0f, f);
       }
     }
+    // white (Figma 5808:29412 "Unblock Contact"): #fff plate on a #078720 line, #078720 label
     &.primary {
       position: relative;
       isolation: isolate;
-      background-color: c(#006c1d, f);
+      background-color: if($theme-light, #078720, c(#006c1d, f));
       border: 0;
       color: c(#00bc33, t);
 
@@ -1796,10 +1797,14 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
         position: absolute;
         inset: 1px;
         z-index: -1;
-        background-color: c(#031203, f);
+        background-color: if($theme-light, #fff, c(#031203, f));
       }
       &:hover:not(.disabled) {
-        background-color: c(#00862a, f);
+        background-color: if($theme-light, #078720, c(#00862a, f));
+
+        &::before {
+          background-color: if($theme-light, #f3faf4, c(#031203, f));
+        }
       }
     }
   }
