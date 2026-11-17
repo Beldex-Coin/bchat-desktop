@@ -81,16 +81,6 @@ const VerticalLine = styled.div`
 // const ReplyingTo = styled.div`
 //   color: var(--color-text);
 // `;
-const StyledIconWrapper = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: var(--color-hop-bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-inline-end: 15px;
-  border-radius: 10px;
-`;
 export const BchatQuotedMessageComposition = () => {
   const quotedMessageProps = useSelector(getQuotedMessage);
   const joinableRooms = useSelector((state: StateType) => state.defaultRooms);
@@ -266,16 +256,12 @@ export const BchatQuotedMessageComposition = () => {
             alignItems="center"
             className='QuotedMessageCompositionReply'
           >
-            {!isLink ? (
-              <VerticalLine className="reply-preview__bar" />
-            ) : (
-              <StyledIconWrapper>
-                <BchatIcon
-                  iconType="openLink"
-                  iconSize={20}
-                  iconColor="var(--color-modal-disable-txt)"
-                />
-              </StyledIconWrapper>
+            {/* the bar on every reply; a link adds the square tile with the chain icon (Figma 5296:6088) */}
+            <VerticalLine className="reply-preview__bar" />
+            {isLink && (
+              <span className="reply-preview__link-tile">
+                <BchatIcon iconType="chainLink" iconSize={20} iconColor="var(--pal-t-acacac)" />
+              </span>
             )}
             {quotedAuthor ? (
               <div className="reply-preview__body">

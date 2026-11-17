@@ -5374,6 +5374,20 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   .module-quote__icon-container__circle-background {
     background: c(#222, f);
   }
+  // white: the base sheet paints the sent quote's "Voice message" / "Audio" label, its mic and the
+  // media square's icon #f0f0f0 - white on the white quote - so they take the quote's text grey
+  @if $theme-light {
+    .module-quote__primary__type-label,
+    .module-quote__generic-file__text {
+      color: #555 !important;
+    }
+    .module-quote__primary__type-label svg path {
+      fill: #555;
+    }
+    .module-quote__icon-container__icon {
+      background-color: #555 !important;
+    }
+  }
 }
 // Reply Contact (Figma 6262:1720): a shared contact sent as a reply to a shared contact. The quote is
 // a 258x40 -> 344x53 #0b0b0b strip on a #444 line, as wide as the contact card under it (16px from
@@ -5465,6 +5479,19 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     height: auto;
     margin-inline-end: 16px;
     background: c(#333, f);
+  }
+  // replying with a link (Figma 5296:6088 / white 5808:6249): a 37.5 -> 50px #222 square 12.7 -> 17px
+  // after the bar, the 15 -> 20px chain #acacac centred in it, the text 12 -> 16px after it
+  .reply-preview__link-tile {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin-block: 13px;
+    margin-inline: 1px 16px;
+    background: c(#222, f);
   }
   .reply-preview__text {
     padding: 14px 0;
