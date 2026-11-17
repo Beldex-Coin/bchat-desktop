@@ -82,7 +82,7 @@ export const MemberListItem = (props: {
         {isAdmin && isDark && (
           // admin crown after the name (Figma crown)
           <span className="bchat-member-item__crown">
-            <img src="images/dark-theme/crown.svg" width={20} height={19} alt="" />
+            <BchatIcon iconType="crown" iconSize={19} iconColor="#ffa200" />
           </span>
         )}
       </div>

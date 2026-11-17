@@ -3178,9 +3178,14 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   width: 431px;
   max-width: 431px;
   padding: 15px 16px;
-  background: c(#0b0b0b, f);
+  // white (Figma 5808:28555 / 5808:1573): #f0f0f0 @ 20% over the page's dot grid, #e6e6e6 line
+  background: if(
+    $theme-light,
+    (linear-gradient(rgba(240, 240, 240, 0.2), rgba(240, 240, 240, 0.2)), $dark-gate-bg),
+    c(#0b0b0b, f)
+  );
   border: 0;
-  border-inline-start: 1px solid c(#222, s);
+  border-inline-start: 1px solid if($theme-light, #e6e6e6, c(#222, s));
 }
 #{$dark} .group-settings {
   overflow-y: auto;
@@ -3201,7 +3206,8 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
     height: 81px !important;
     padding: 0 24px !important;
     // rgba(26, 26, 26, 0.75) on the #0b0b0b panel, solid so the scrolled content doesn't show through
-    background-color: c(#161616, f);
+    // (white: #fff @ 75% over the panel -> #f9f9f9)
+    background-color: if($theme-light, #f9f9f9, c(#161616, f));
     border: 0;
   }
   .group-settings-header-titleTxt {
@@ -3485,6 +3491,19 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
 
       svg path {
         fill: $dark-danger;
+      }
+      // white (Figma 5808:1573 "Leave Group"): #fff plate on a thin #ff3e3e line
+      @if $theme-light {
+        &.danger {
+          background-color: rgba(255, 62, 62, 0.55);
+
+          &::before {
+            background-color: #fff;
+          }
+          &:hover:not(.disabled)::before {
+            background-color: #fff3f3;
+          }
+        }
       }
     }
   }
@@ -4947,11 +4966,16 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     font-weight: 600;
     color: c(#ebebeb, t);
   }
+  // Figma "Fairytale" 14 -> 19px outline crown: #ffa200, white #b87500
   .bchat-member-item__crown {
     display: flex;
     align-items: center;
     margin-inline-start: -8px;
     line-height: 0;
+
+    svg path {
+      fill: if($theme-light, #b87500, #ffa200);
+    }
   }
   .bchat-member-item__checkmark .select-box {
     width: 24px;
