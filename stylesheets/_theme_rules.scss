@@ -1396,103 +1396,70 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   direction: inherit;
 }
 
-// Call notices (Figma 5296:52006 / 5296:50422 "Calls screen"): a 246px plate on the bubble
-// gradient (184.5 -> 246, 14px / 15px around the card), the #0b0b0b card inside it 163.5x60 ->
-// 218x80 with a full-height leading bar (3 -> 4px #8d8d8d received, 3.8 -> 5px green sent, sent
-// cards outlined #006c1d), "Incoming call" / "Outgoing call" / "Missed call" Inter 13.5 -> 18px
-// #acacac 19px after the bar, the 37.5 -> 50px #222 icon well 17px from the end with a 19.5 -> 26px
-// icon (green call, red missed). The time sits under the plate like other messages (4px), and
-// one call notice is 12px from the next.
+// Call notices (Figma 5296:40987 dark, 5808:39383 white): a chip centred in the conversation,
+// 31.5 -> 42px high, the top-end corner cut 10.5x9.4 -> 14x12.5 and the bottom-start one 9.5x9.8 ->
+// 13x13, #1a1a1a@50% on a #444 line (white: #e8e8e8@50% on #d0d0d0). The 10.5 -> 14px icon 16.5 ->
+// 20px in (green incoming, plain outgoing, red missed), then Roboto Mono 10.5 -> 14px with 4%
+// tracking: "Incoming call" #ebebeb (#222), " from <name>" #acacac (#555). 10.5 -> 14px between chips.
+$dark-cut-call-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12.5px, 100% 100%, 13px 100%, 0 calc(100% - 13px));
+$dark-cut-call-chip-ring: polygon(
+  evenodd,
+  0 0, calc(100% - 14px) 0, 100% 12.5px, 100% 100%, 13px 100%, 0 calc(100% - 13px), 0 0,
+  1px 1px, 1px calc(100% - 13.4px), 13.4px calc(100% - 1px), calc(100% - 1px) calc(100% - 1px),
+  calc(100% - 1px) 12.9px, calc(100% - 14.4px) 1px, 1px 1px
+);
 #{$dark} .call-notification {
-  margin: 0 0 12px;
+  display: flex;
+  justify-content: center;
+  margin: 7px 0;
+  padding: 0 16px;
+}
+#{$dark} .call-notification__chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 0 18px 0 20px;
+  background: if($theme-light, rgba(232, 232, 232, 0.5), c(rgba(26, 26, 26, 0.5), f));
+  clip-path: $dark-cut-call-chip;
+  backdrop-filter: blur(2px);
 
-  .module-message__container--incoming--opaque,
-  .module-message__container--outgoing--opaque {
-    padding: 15px 14px !important;
-  }
-  // the time inside the card: replaced by the one under it
-  .module-message__container > .timeStamp,
-  .module-message__container > div:not(.call-notify-content-wrapper) {
-    display: none;
-  }
-  .msg-meta {
-    margin-top: 4px;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: if($theme-light, #d0d0d0, c(#444, s));
+    clip-path: $dark-cut-call-chip-ring;
+    pointer-events: none;
   }
 }
-#{$dark} .module-message .call-notify-content-wrapper {
-  gap: 0;
-  // 218px as in the design; a longer label (other languages) widens the card instead of
-  // running into the icon
-  min-width: 218px;
-  height: 80px;
-  // bar flush on the start edge, the icon square 17px from the end edge - logical sides, so in
-  // right-to-left languages the bar is on the right and the square keeps its 17px on the left
-  padding: 0;
-  padding-inline-end: 17px;
-  background: $dark-ink;
-
-  > div:first-child {
-    align-self: stretch;
-    flex-shrink: 0;
-    width: 4px;
-    height: auto;
-    margin: 0;
-    border-radius: 0;
-    background: c(#8d8d8d, f);
-  }
-  // "Outgoing call" etc. on one line, 19px after the bar and at least 12px before the icon
-  > div:nth-child(2) {
-    flex: 1 1 auto;
-    width: auto !important;
-    min-width: 0;
-    margin-inline: 19px 12px;
-  }
-  .group-name {
-    white-space: nowrap;
-    font-family: $dark-font-ui !important;
-    font-size: 18px !important;
-    font-weight: 400 !important;
-    color: c(#acacac, t) !important;
-  }
-  .group-type:not(:empty) {
-    margin-top: 4px;
-    font-family: $dark-font-data !important;
-    font-size: 16px !important;
-    font-weight: 300;
-    color: c(#ebebeb, t);
-  }
-  .icon-wrapper {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    margin-inline-start: auto;
-    padding: 0;
-    background-color: c(#222, f);
-
-    svg {
-      width: 26px;
-      height: 26px;
-    }
-  }
-  // calls in either direction get the green call icon (#078720), missed calls stay red
-  .icon-wrapper--started-call svg path,
-  .icon-wrapper--answered-a-call svg path {
-    fill: c(#078720, t);
-  }
+#{$dark} .call-notification__icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
 }
-#{$dark} .module-message__container--outgoing .call-notify-content-wrapper {
-  border: 1px solid c(#006c1d, s);
-  box-shadow: 0 0 6px c(rgba(0, 188, 51, 0.15), s);
-
-  > div:first-child {
-    width: 5px;
-    margin-block: -1px;
-    margin-inline-start: -1px;
-    background: $dark-green;
-  }
+#{$dark} .call-notification__chip--answered-a-call .call-notification__icon svg path {
+  fill: if($theme-light, #078720, c(#00bc33, t));
+}
+#{$dark} .call-notification__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: $dark-font-data !important;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0.04em;
+}
+#{$dark} .call-notification__label {
+  color: if($theme-light, #222, c(#ebebeb, t));
+}
+#{$dark} .call-notification__person {
+  color: if($theme-light, #555, c(#acacac, t));
 }
 #{$dark} .incomingTail,
 #{$dark} .outgoingTail {

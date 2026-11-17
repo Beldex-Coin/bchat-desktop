@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "Die aktuelle Implementierung von Sprachanrufen legt deine IP-Adresse gegenüber den Beldex-Servern sowie dem anrufenden/angerufenen Nutzer offen.",
   "startedACall": "Ausgehender Anruf",
   "answeredACall": "Eingehender Anruf",
+  "callFromName": "von $name$",
+  "callToName": "an $name$",
   "messageRequestPending": "Deine Nachrichtenanfrage ist derzeit ausstehend",
   "messageRequestAccepted": "Deine Nachrichtenanfrage wurde akzeptiert",
   "messageRequestAcceptedOurs": "Die Nachrichtenanfrage von „$name$“ wurde akzeptiert",

@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "当前版本的语音通话会将您的 IP 地址暴露给 Beldex 服务器以及通话双方用户。",
   "startedACall": "呼出通话",
   "answeredACall": "呼入通话",
+  "callFromName": "来自 $name$",
+  "callToName": "给 $name$",
   "messageRequestPending": "您的消息请求当前处于待处理状态",
   "messageRequestAccepted": "您的消息请求已被接受",
   "messageRequestAcceptedOurs": "已接受来自“$name$”的消息请求。",

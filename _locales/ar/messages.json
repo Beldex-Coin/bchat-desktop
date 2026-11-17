@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "التنفيذ الحالي للمكالمات الصوتية سيكشف عنوان IP الخاص بك لخوادم Beldex وللمستخدم المتصل/المتصل به",
   "startedACall": "مكالمة صادرة",
   "answeredACall": "مكالمة واردة",
+  "callFromName": "من $name$",
+  "callToName": "إلى $name$",
   "messageRequestPending": "طلب الرسالة الخاص بك قيد الانتظار حاليًا",
   "messageRequestAccepted": "تم قبول طلب رسالتك",
   "messageRequestAcceptedOurs": "تم قبول طلب الرسالة من $name$",

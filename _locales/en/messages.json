@@ -509,6 +509,8 @@
   "callMediaPermissionsDialogContent": "The current implementation of voice/video calls will expose your IP address to the Beldex servers and the calling/called user.",
   "startedACall": "Outgoing call",
   "answeredACall": "Incoming call",
+  "callFromName": "from $name$",
+  "callToName": "to $name$",
   "messageRequestPending": "Your message request is currently pending",
   "messageRequestAccepted": "Your message request has been accepted",
   "messageRequestAcceptedOurs": "Message request from $name$'s was accepted.",

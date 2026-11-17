@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "Текущая реализация голосовых звонков может раскрыть ваш IP-адрес серверам Beldex и другому участнику.",
   "startedACall": "Исходящий звонок",
   "answeredACall": "Входящий звонок",
+  "callFromName": "от $name$",
+  "callToName": "для $name$",
   "messageRequestPending": "Ваш запрос на переписку сейчас ожидает подтверждения.",
   "messageRequestAccepted": "Ваш запрос на сообщение принят",
   "messageRequestAcceptedOurs": "Запрос на переписку от $name$ был принят.",

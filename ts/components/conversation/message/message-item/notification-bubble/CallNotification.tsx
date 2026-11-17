@@ -1,6 +1,6 @@
-// import React from 'react';
 import { useSelector } from 'react-redux';
-// import { PubKey } from '../../../../../bchat/types';
+import moment from 'moment';
+import classNames from 'classnames';
 
 import {
   CallNotificationType,
@@ -8,90 +8,63 @@ import {
 } from '../../../../../state/ducks/conversations';
 import {
   getMessageContentSelectorProps,
-  getMessageStatusProps,
-  // getSelectedConversation,
+  getSelectedConversationKey,
 } from '../../../../../state/selectors/conversations';
-import { OutgoingMessageStatus } from '../../message-content/OutgoingMessageStatus';
+import { useConversationUsernameOrShorten } from '../../../../../hooks/useParamSelector';
 import { LocalizerKeys } from '../../../../../types/LocalizerKeys';
 import { BchatIcon, BchatIconType } from '../../../../icon';
 import { ReadableMessage } from '../ReadableMessage';
-// import { NotificationBubble } from './NotificationBubble';
-import classNames from 'classnames';
-import { StyledMessageContentContainer } from '../../message-content/MessageContentWithStatus';
-import { SpacerSM } from '../../../../basic/Text';
-import moment from 'moment';
-import { Flex } from '../../../../basic/Flex';
-import { VerticalLine } from '../GroupInvitation';
-import { FontSizeChanger } from '../../../../settings/ChangeChatFontSetting';
-import IncomingMsgTailIcon from '../../../../icon/IncomingMsgTailIcon';
-import { StyledSvgWrapper } from '../../message-content/MessageContent';
-import OutgoingMsgTailIcon from '../../../../icon/OutgoingMsgTailIcon';
-import styled from 'styled-components';
-import { isNewDesign } from '../../../../../theme/newDesign';
 
 type StyleType = Record<
   CallNotificationType,
   {
     notificationTextKey: LocalizerKeys;
+    personTextKey: LocalizerKeys;
     iconType: BchatIconType;
     iconColor: string;
-    bgColor: string;
+    iconSize: number;
   }
 >;
 
+// Figma 5296:40987 (dark) / 5808:39383 (white): "Incoming call from <name>", "Outgoing call to
+// <name>", "Missed call from <name>" as a small chamfered chip centred in the conversation
 const style: StyleType = {
   'missed-call': {
     notificationTextKey: 'callMissed',
+    personTextKey: 'callFromName',
     iconType: 'callMissed',
     iconColor: 'var(--pal-t-ff3e3e)',
-    bgColor: 'transparent',
+    iconSize: 17,
   },
   'started-call': {
     notificationTextKey: 'startedACall',
+    personTextKey: 'callToName',
     iconType: 'callOutgoing',
-    iconColor: 'var(--pal-t-ffffff)',
-    bgColor: 'transparent',
+    iconColor: 'var(--pal-t-ebebeb)',
+    iconSize: 17,
   },
   'answered-a-call': {
     notificationTextKey: 'answeredACall',
+    personTextKey: 'callFromName',
     iconType: 'callIncoming',
-    iconColor: 'var(--pal-t-108d32)',
-    bgColor: 'transparent',
+    iconColor: 'var(--pal-t-00bc33)',
+    iconSize: 18,
   },
 };
 
-const StyledDiv=styled.div`
- margin-top:5px;
-`
 export const CallNotification = (props: PropsForCallNotification) => {
   const { messageId, receivedAt, isUnread, notificationType } = props;
   const contentProps = useSelector(state =>
     getMessageContentSelectorProps(state as any, messageId)
   );
-  const statusProps = useSelector(state => getMessageStatusProps(state as any, messageId));
-  const isDark = isNewDesign();
-  const direction = contentProps?.direction;
-  const timestamp = contentProps?.timestamp;
-  // const selectedConvoProps = useSelector(getSelectedConversation);
-
-  // const displayName =
-  //   selectedConvoProps?.profileName ||
-  //   selectedConvoProps?.name ||
-  //   (selectedConvoProps?.id && PubKey.shorten(selectedConvoProps?.id));
+  const convoId = useSelector(getSelectedConversationKey);
+  const name = useConversationUsernameOrShorten(convoId) || window.i18n('unknown');
 
   const styleItem = style[notificationType];
-  const notificationText = window.i18n(styleItem.notificationTextKey);
-  const isIncoming = direction === 'incoming';
-  // const displayText =
-  // notificationType == 'started-call'
-  //   ? `to ${[displayName || 'Unknown']}`
-  //   : `from ${[displayName || 'Unknown']}`;
-  if (!window.i18n(styleItem.notificationTextKey)) {
-    throw new Error(`invalid i18n key ${styleItem.notificationTextKey}`);
+  if (!styleItem) {
+    throw new Error(`invalid call notification type ${notificationType}`);
   }
-  const iconType = styleItem.iconType;
-  const iconColor = styleItem.iconColor;
-  // const bgColor = styleItem.bgColor;
+  const timestamp = contentProps?.timestamp;
 
   return (
     <ReadableMessage
@@ -100,89 +73,28 @@ export const CallNotification = (props: PropsForCallNotification) => {
       isUnread={isUnread}
       key={`readable-message-${messageId}`}
     >
-      {/* <NotificationBubble
-        notificationText={notificationText}
-        displayText={displayText}
-        iconType={iconType}
-        bgColor={bgColor}
-        iconColor={iconColor}
-        callNotification={true}
-      /> */}
-      <StyledDiv className="call-notification">
-        <StyledMessageContentContainer direction={direction === 'incoming' ? 'left' : 'right'}>
-          <div
-            className={classNames('module-message', `module-message--${direction}`)}
-            role="button"
-            style={direction === 'incoming' ? { paddingInlineStart: '15px' } : { paddingInlineEnd: '15px' }}
-          >
-            <div style={{ position: 'relative' }}>
-              {contentProps?.lastMessageOfSeries &&  isIncoming && (
-                <StyledSvgWrapper className='incomingTail'>
-                  <IncomingMsgTailIcon />
-                </StyledSvgWrapper>
-              )}
-              <div
-                className={classNames(
-                  'module-message__container',
-                  `module-message__container--${direction}`,
-                  `module-message__container--${direction}--opaque`
-                )}
-                style={{ padding: '10px' }}
-              >
-                <Flex
-                  container={true}
-                  className="call-notify-content-wrapper"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
-                  <Flex container={true} flexDirection="column" width="120px">
-                    <span
-                      className="group-name"
-                      style={{ fontSize: `${FontSizeChanger(16)}px`, fontWeight: 600 ,color:direction=='outgoing'?'var(--pal-t-f0f0f0)':'var(--color-text)'}}
-                    >
-                      {notificationText}
-                    </span>
-                    <span
-                      className="group-type"
-                      style={{ fontSize: `${FontSizeChanger(14)}px` }}
-                    ></span>
-                  </Flex>
-                  <div className={classNames('icon-wrapper', `icon-wrapper--${notificationType}`)}>
-                    <BchatIcon iconType={iconType} iconSize={24} iconColor={iconColor} />
-                  </div>
-                </Flex>
-                <SpacerSM />
-                <div className="timeStamp" style={{ marginTop: 0 }}>
-                  {moment(timestamp).format('hh:mm A')}
-                </div>
-              </div>
-              { contentProps?.lastMessageOfSeries && !isIncoming && (
-                <StyledSvgWrapper style={{ insetInlineEnd: 0 }} className='outgoingTail'>
-                  <OutgoingMsgTailIcon />
-                </StyledSvgWrapper>
-              )}
-            </div>
-          </div>
-          {/* Dark theme (Figma 5296:52006): status + time under the card, like other messages */}
-          {isDark && (
-            <div
-              className={classNames('msg-meta', `msg-meta--${direction}`)}
-              style={isIncoming ? { paddingInlineStart: '15px' } : { paddingInlineEnd: '15px' }}
-            >
-              {!isIncoming && (
-                <OutgoingMessageStatus
-                  underBubble={true}
-                  status={statusProps?.status}
-                  dataTestId="msg-status-outgoing"
-                />
-              )}
-              <bdi>{moment(timestamp).format('hh:mm A')}</bdi>
-            </div>
-          )}
-        </StyledMessageContentContainer>
-    
-      </StyledDiv>
+      <div className="call-notification">
+        <div
+          className={classNames('call-notification__chip', `call-notification__chip--${notificationType}`)}
+          title={timestamp ? moment(timestamp).format('hh:mm A') : undefined}
+        >
+          <span className="call-notification__icon">
+            <BchatIcon
+              iconType={styleItem.iconType}
+              iconSize={styleItem.iconSize}
+              iconColor={styleItem.iconColor}
+            />
+          </span>
+          <span className="call-notification__text">
+            <span className="call-notification__label">
+              {window.i18n(styleItem.notificationTextKey)}
+            </span>{' '}
+            <bdi className="call-notification__person">
+              {window.i18n(styleItem.personTextKey, [name])}
+            </bdi>
+          </span>
+        </div>
+      </div>
     </ReadableMessage>
   );
 };

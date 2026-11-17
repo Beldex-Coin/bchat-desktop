@@ -160,6 +160,8 @@ export type LocalizerKeys =
   | 'recoveryPhraseRevealButtonText'
   | 'banUser'
   | 'answeredACall'
+  | 'callFromName'
+  | 'callToName'
   | 'sendMessage'
   | 'recoveryPhraseRevealMessage'
   | 'showRecoveryPhrase'

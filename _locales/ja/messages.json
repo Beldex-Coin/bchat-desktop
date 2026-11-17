@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "現在の音声通話の実装では、あなたの IP アドレスが Beldex サーバーおよび通話相手に公開されます。",
   "startedACall": "発信通話",
   "answeredACall": "着信通話",
+  "callFromName": "$name$ から",
+  "callToName": "$name$ へ",
   "messageRequestPending": "このメッセージリクエストは現在保留中です",
   "messageRequestAccepted": "あなたのメッセージリクエストが承認されました",
   "messageRequestAcceptedOurs": "$name$'からのメッセージリクエストが承認されました。",

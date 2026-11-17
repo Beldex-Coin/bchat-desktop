@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "현재 음성 통화 기능은 귀하의 IP 주소를 Beldex 서버와 통화 발신자/수신자에게 노출할 수 있습니다.",
   "startedACall": "발신 통화",
   "answeredACall": "수신 통화",
+  "callFromName": "$name$님으로부터",
+  "callToName": "$name$님에게",
   "messageRequestPending": "메시지 요청이 현재 대기 중입니다.",
   "messageRequestAccepted": "메시지 요청이 수락되었습니다",
   "messageRequestAcceptedOurs": "$name$ 님의 메시지 요청이 수락되었습니다.",

@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "A implementação atual das chamadas de voz exporá seu endereço IP aos servidores da Beldex e ao usuário que faz ou recebe a chamada.",
   "startedACall": "Chamada efetuada",
   "answeredACall": "Chamada recebida",
+  "callFromName": "de $name$",
+  "callToName": "para $name$",
   "messageRequestPending": "Sua solicitação de mensagem está pendente",
   "messageRequestAccepted": "Sua solicitação de mensagem foi aceita",
   "messageRequestAcceptedOurs": "A solicitação de mensagem de $name$ foi aceita.",

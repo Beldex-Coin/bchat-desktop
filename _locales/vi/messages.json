@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "Việc triển khai hiện tại của cuộc gọi thoại có thể làm lộ địa chỉ IP của bạn cho các máy chủ Beldex và người gọi/người nhận cuộc gọi.",
   "startedACall": "Cuộc gọi đi",
   "answeredACall": "Cuộc gọi đến",
+  "callFromName": "từ $name$",
+  "callToName": "đến $name$",
   "messageRequestPending": "Yêu cầu tin nhắn của bạn hiện đang chờ xử lý",
   "messageRequestAccepted": "Yêu cầu tin nhắn của bạn đã được chấp nhận",
   "messageRequestAcceptedOurs": "Yêu cầu tin nhắn từ $name$ đã được chấp nhận.",

@@ -508,6 +508,8 @@
   "callMediaPermissionsDialogContent": "Sesli aramaların mevcut uygulaması, IP adresinizin Beldex sunucularına ve aramayı yapan / aranan kullanıcıya görünmesine neden olabilir.",
   "startedACall": "Giden arama",
   "answeredACall": "Gelen arama",
+  "callFromName": "$name$ kişisinden",
+  "callToName": "$name$ kişisine",
   "messageRequestPending": "Mesaj isteğiniz şu anda beklemede",
   "messageRequestAccepted": "Kaybolan mesaj zamanlayıcısını saniye, dakika, saat olarak ayarladınız",
   "messageRequestAcceptedOurs": "$name$ kişisinden gelen mesaj isteği kabul edildi.",
