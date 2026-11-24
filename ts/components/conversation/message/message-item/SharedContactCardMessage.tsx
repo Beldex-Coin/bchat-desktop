@@ -189,7 +189,7 @@ export const SharedContactCardMessage = (props: PropsForSharedContact) => {
                   <Flex container={true}>
                     <VerticalLine direcrion={contentProps?.direction}></VerticalLine>
                     <Flex container={true} flexDirection="column" justifyContent="center">
-                      <UserNameWrapper className="group-name" style={{ fontSize: `${FontSizeChanger(18)}px` }}>
+                      <UserNameWrapper className={classNames('group-name', sharedContactNameList.length > 1 && 'group-name--several')} style={{ fontSize: `${FontSizeChanger(18)}px` }}>
                           <BchatIcon
                             iconType={'avatarOutline'}
                             iconSize={13}
