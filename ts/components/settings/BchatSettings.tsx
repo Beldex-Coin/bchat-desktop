@@ -140,6 +140,7 @@ export const PasswordLock = ({
               onClick={() => dispatch(showSettingsSection(BchatSettingCategory.Chat))}
             />
             <BchatButton
+              className="bchat-button--glow"
               text={window.i18n('continue')}
               buttonType={BchatButtonType.Brand}
               buttonColor={BchatButtonColor.Primary}

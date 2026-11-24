@@ -184,6 +184,7 @@ const MessageRequestListSetting = (props: Props) => {
             style={{minWidth:'115px',height:'45px',fontWeight: '400',fontSize:'16px'}}
               buttonColor={BchatButtonColor.Primary}
               buttonType={BchatButtonType.Brand}
+              className="bchat-button--glow"
               text={window.i18n('accept')}
               onClick={handleAcceptConversationRequest}
               dataTestId="accept-button-settings-screen"

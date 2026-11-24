@@ -42,6 +42,7 @@ type Props = {
   iconGap?: string;
   fillRule?: 'iherit' | 'evenodd';
   clipRule?: 'iherit' | 'evenodd';
+  className?: string;
 };
 
 export const BchatButton = (props: Props) => {
@@ -87,7 +88,8 @@ export const BchatButton = (props: Props) => {
             'bchat-button',
             ...buttonTypes,
             buttonColor,
-            disabled && 'disabled'
+            disabled && 'disabled',
+            props.className
           )}
           role="button"
           onClick={onClickFn}

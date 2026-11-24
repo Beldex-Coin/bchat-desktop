@@ -139,6 +139,8 @@ export const BchatSettingButtonItem = (props: ButtonSettingsProps) => {
         buttonColor={buttonColor}
         onClick={onClick}
         buttonType={BchatButtonType.Brand}
+        // primary buttons glow on hover (Figma "Hover" 6617:3269 Change Password)
+        className={buttonColor === BchatButtonColor.Primary ? 'bchat-button--glow' : undefined}
       />
     </BchatSettingsItemWrapper>
   );

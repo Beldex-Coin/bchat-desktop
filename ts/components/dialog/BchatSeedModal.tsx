@@ -50,6 +50,7 @@ const Seed = (props: SeedProps) => {
           <p className="seed-warning-card__body">{i18n('neverInputSeedWarning')}</p>
           <p className="seed-warning-card__body">{i18n('confirmAccessSeedQuestion')}</p>
           <BchatButton
+            className="bchat-button--glow"
             text={i18n('yesImSure')}
             buttonType={BchatButtonType.Brand}
             buttonColor={BchatButtonColor.Primary}

@@ -145,6 +145,7 @@ export const BchatNotificationGroupSettings = (props: { hasPassword: boolean | n
             <StyledButtonContainer>
               <SpacerLG />
               <BchatButton
+                className="bchat-button--glow"
                 text={window.i18n('notificationPreview')}
                 onClick={() => onClickPreview()}
                 buttonColor={BchatButtonColor.Primary}

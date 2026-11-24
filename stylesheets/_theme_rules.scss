@@ -162,6 +162,39 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
   }
 }
 
+// Primary button hover (Figma "Hover" section 6617:1412, white 6617:4268 - Accept, Change Password,
+// Preview, Unblock Selected, Continue, "Yes, I'm Sure!"): the same plate and label with a soft glow
+// around it, 0 0 16 -> 21px #ebebeb @ 40% (white #0b0b0b @ 30%). A clipped element can't draw a glow
+// outside its own shape, so while hovered the plate moves to a clipped ::before (same corner cuts)
+// and the unclipped button glows as a whole.
+#{$dark} .bchat-button.bchat-button--glow {
+  --glow-cut: #{$dark-cut-btn};
+  position: relative;
+  isolation: isolate;
+  transition: filter 0.15s ease;
+
+  &:hover:not(.disabled) {
+    clip-path: none !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: if($theme-light, #fff, #0b0b0b) !important;
+    filter: drop-shadow(0 0 21px if($theme-light, rgba(11, 11, 11, 0.3), rgba(235, 235, 235, 0.4)));
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: if($theme-light, #0b0b0b, #ebebeb);
+      clip-path: var(--glow-cut);
+    }
+  }
+}
+// Unblock Selected keeps its popup-size corners
+#{$dark} .blocked-list__unblock-selected .bchat-button--glow {
+  --glow-cut: #{$dark-cut-popup-btn};
+}
+
 // ---- 4. Toggle: 46 x 24 square track, 16px square knob ----
 #{$dark} .bchat-toggle {
   width: 46px;
@@ -5639,7 +5672,9 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   border-color: c(#1a1a1a, s) c(#1f1f1f, s) c(#282828, s) c(#303030, s);
   backdrop-filter: blur(6px);
 
-  &:hover {
+  // the row lights up on hover - but not while the pointer is on its Decline / Accept button, which
+  // has a hover of its own
+  &:hover:not(:has(.bchat-button:hover)) {
     background: c(rgba(26, 26, 26, 0.35), f);
   }
   .module-conversation-list-item__avatar-container {
@@ -5703,7 +5738,8 @@ $dark-cut-card: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
   border-radius: 0;
   backdrop-filter: blur(6px);
 
-  &:hover {
+  // (not while the pointer is on its Unblock button)
+  &:hover:not(:has(.bchat-button:hover)) {
     background: c(rgba(26, 26, 26, 0.35), f);
   }
   .bchat-member-item__info {

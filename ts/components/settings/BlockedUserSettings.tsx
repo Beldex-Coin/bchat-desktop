@@ -108,6 +108,7 @@ export const BlockedUserSettings = () => {
                 height: '55px', fontSize: '16px',
                 fontWeight: '500'
               }}
+              className="bchat-button--glow"
               text={window.i18n('unblockUserSelect')}
               onClick={unBlockThoseUsers}
               dataTestId="unblock-button-settings-screen"
