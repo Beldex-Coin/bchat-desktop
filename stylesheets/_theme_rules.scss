@@ -3301,10 +3301,15 @@ $dark-cut-panel-btn: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14p
   width: 431px;
   max-width: 431px;
   padding: 15px 16px;
-  // white (Figma 5808:28555 / 5808:1573): #f0f0f0 @ 20% over the page's dot grid, #e6e6e6 line
+  // white (Figma 5808:28556): #f0f0f0 @ 20% frosted glass (4px glass blur) over the page's dot grid,
+  // #e6e6e6 line. The frost hides the dots in the design - here a near-white #f8f8f8 -> #f0f0f0
+  // shade over the grid does the same, leaving the dots only just visible
   background: if(
     $theme-light,
-    (linear-gradient(rgba(240, 240, 240, 0.2), rgba(240, 240, 240, 0.2)), $dark-gate-bg),
+    (
+      linear-gradient(160deg, rgba(250, 250, 250, 0.93), rgba(240, 240, 240, 0.9)),
+      $dark-gate-bg
+    ),
     c(#0b0b0b, f)
   );
   border: 0;
