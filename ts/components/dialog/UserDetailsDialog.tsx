@@ -83,7 +83,11 @@ export const UserDetailsDialog = (props: Props) => {
               // the admin crown on the picture's top-end corner, as on their avatar in the chat
               <img
                 className="user-details__crown"
-                src="images/dark-theme/crown.svg"
+                src={`images/${
+                  document.documentElement.getAttribute('data-theme') === 'light'
+                    ? 'white-theme'
+                    : 'dark-theme'
+                }/crown.svg`}
                 width={40}
                 height={38}
                 alt=""
