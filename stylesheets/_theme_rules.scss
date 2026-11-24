@@ -1206,6 +1206,7 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
   // kept inside the chats list: the list is max(340px, 24.5vw) wide (see "Left pane width"), the
   // card 31 -> 41px from its start and 37 -> 49px from its end (383px on the design's 473px list)
   width: calc(max(340px, 24.5vw) - 90px);
+  z-index: 1000; // over everything in the list and its overlays
 
   .offline-msg:not(.connection-Wrapper) {
     gap: 20px;
@@ -1214,10 +1215,13 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     margin: 0;
     padding-block: 12px;
     padding-inline: 24px 4px;
-    background-color: c(rgba(11, 11, 11, 0.2), f);
-    backdrop-filter: blur(4px);
+    // a near-solid card (the design's 20% glass let the buttons under it - "Create", "Next" -
+    // show through, so the notice read as sitting behind them)
+    background-color: c(rgba(11, 11, 11, 0.96), f);
+    backdrop-filter: blur(12px);
     border: 1px solid c(#222, s);
     border-radius: 0;
+    box-shadow: 0 4px 16px if($theme-light, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.5));
 
     > svg,
     > div:first-child {
