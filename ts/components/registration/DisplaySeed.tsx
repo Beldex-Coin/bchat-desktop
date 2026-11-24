@@ -1,4 +1,5 @@
 // import React from 'react';
+import { useEffect, useRef } from 'react';
 // import { pushUserCopySuccess } from '../../bchat/utils/Toast';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { BchatToolTip } from '../leftpane/ActionsPanel';
@@ -55,6 +56,12 @@ export const ClearIcon = (props: any) => (
 );
 
 export const DisplaySeed = (props: any) => {
+  // the caret goes straight into the seed box when the page opens
+  const seedInput = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const timer = setTimeout(() => seedInput.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, []);
   const handlePaste = (event: any) => {
 
     event.clipboardData.getData('text');
@@ -73,6 +80,8 @@ export const DisplaySeed = (props: any) => {
           <div className="bchat-restore-seed-text-box">
             {/* <ClearIcon removeRecoveryPhrase={() => props.assignRecoveryPhase('')}></ClearIcon> */}
             <textarea
+              ref={seedInput}
+              autoFocus={true}
               className="bchat-restore-seed-text-area"
               dir="ltr"
               name="text"
@@ -83,7 +92,10 @@ export const DisplaySeed = (props: any) => {
             ></textarea>
             <div className="bchat-restore-seed-icon-box">
               <div
-                onClick={() => props.paste()}
+                onClick={() => {
+                  props.paste();
+                  seedInput.current?.focus();
+                }}
                 className="paste-icon"
                 data-tip={window.i18n('editMenuPaste')}
                 data-offset="{'top':30,'left':15}"

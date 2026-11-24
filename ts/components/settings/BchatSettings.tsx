@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { SettingsHeader } from './BchatSettingsHeader';
 import { getEffectiveOnionRoutingHops } from '../../data/settings-key';
@@ -106,6 +106,12 @@ export const PasswordLock = ({
 }) => {
   const darkMode = isNewDesign();
   const dispatch = useDispatch();
+  // the caret goes straight into the password field whenever the lock shows (Recovery Phrase opened
+  // from the settings list, not only when the settings screen first opens)
+  useEffect(() => {
+    const timer = setTimeout(() => document.getElementById('password-lock-input')?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, []);
   // dark theme (Figma 1:32666): 435x277 -> 580px card - green lock, Inter title, one 526x80 field,
   // Cancel (back to Chat settings) / Continue. The input keeps its id: validatePasswordLock and the
   // Enter-key handler read it by id.
@@ -130,6 +136,7 @@ export const PasswordLock = ({
             className="password-lock-card__input"
             defaultValue=""
             placeholder={window.i18n('enterPassword')}
+            autoFocus={true}
             data-testid="password-lock-input"
           />
           <div className="password-lock-card__buttons">

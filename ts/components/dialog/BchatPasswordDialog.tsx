@@ -47,9 +47,14 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
+    // the caret into the first field when the popup opens (the old input ref is no longer used -
+    // the fields are BchatInputs)
     setTimeout(() => {
-      this.passportInput && this.passportInput.focus();
-    }, 1);
+      const first =
+        this.passportInput ||
+        document.querySelector<HTMLInputElement>('[data-testid="password-input"]');
+      first?.focus();
+    }, 50);
   }
 
   public render() {
@@ -127,7 +132,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               type="password"
               inputDataTestId="password-input"
               value={this.state.currentPasswordEntered}
-              autoFocus={false}
+              autoFocus={true}
               placeholder={placeholders[0]}
               enableShowHide={true}
               onValueChanged={this.onPasswordInput}

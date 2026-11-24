@@ -229,7 +229,6 @@ const StyledEmojiPanelContainer = styled.div`
 `;
 
 class CompositionBoxInner extends React.Component<Props, State> {
-  private readonly textarea: React.RefObject<any>;
   private readonly fileInput: React.RefObject<HTMLInputElement>;
   private readonly emojiPanel: React.RefObject<HTMLDivElement>;
   private readonly emojiPanelButton: any;
@@ -243,7 +242,6 @@ class CompositionBoxInner extends React.Component<Props, State> {
     super(props);
     this.state = getDefaultState();
 
-    this.textarea = React.createRef();
     this.fileInput = React.createRef();
 
     this.container = null;
@@ -281,10 +279,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
           draft: newDraft || '',
         },
         () => {
-          this.focusCompositionBox();
-
           //  IMPORTANT: sync draft to Lexical
           this.updateLexicalFromDraft(this.state.draft);
+          // then the caret into it, at the end of the draft
+          setTimeout(() => this.focusCompositionBox(), 0);
         }
       );
 
@@ -1413,9 +1411,22 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({ showRecordingView: false });
   }
 
-  private focusCompositionBox() {
-    // Focus the textarea when user clicks anywhere in the composition box
-    this.textarea.current?.focus();
+  // the caret into the message box (opening a chat, adding an attachment / reply, a click anywhere in
+  // the box). The box is the Lexical editor: the old textarea ref is no longer attached to anything.
+  // A click on the text itself keeps the caret where it was clicked.
+  private focusCompositionBox(event?: any) {
+    const editor = this.editorRef;
+    if (!editor || this.props.typingEnabled === false) {
+      return;
+    }
+    const root: HTMLElement | null = editor.getRootElement();
+    if (event?.target && root?.contains(event.target)) {
+      return;
+    }
+    if (root && document.activeElement === root) {
+      return;
+    }
+    editor.focus(undefined, { defaultSelection: 'rootEnd' });
   }
 }
 
