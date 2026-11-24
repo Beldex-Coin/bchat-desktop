@@ -8487,7 +8487,8 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
     font-weight: 600;
     line-height: 24px;
     text-align: center;
-    color: c(#f0af13, t);
+    // white (Figma 5808:15266): #ad7e0e
+    color: if($theme-light, #ad7e0e, c(#f0af13, t));
   }
   &__buttons {
     display: flex;
