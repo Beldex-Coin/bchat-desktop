@@ -1,4 +1,5 @@
 // import React from 'react';
+import { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   getAddModeratorsModal,
@@ -55,6 +56,33 @@ import { ReactClearAllModal } from './ReactClearAllModal';
 
 
 
+// Popups frost only the content side, from under its header (Figma 5808:15739): measure where the
+// open screen's header ends and where the content side starts, for the dialog backdrop's CSS
+// (--modal-top / --modal-start, used by `.bchat-dialog.modal::before`)
+const measureModalArea = () => {
+  const root = document.documentElement;
+  const isRtl = getComputedStyle(root).direction === 'rtl' || document.body?.dir === 'rtl';
+  const headers = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      '.bchat-settings-header, .module-conversation-header, .conversation-header'
+    )
+  )
+    .map(el => el.getBoundingClientRect())
+    .filter(r => r.width > 0 && r.height > 0);
+  if (!headers.length) {
+    root.style.removeProperty('--modal-top');
+    root.style.removeProperty('--modal-start');
+    return;
+  }
+  // the widest one is the screen's own header (not a header inside a side panel)
+  const header = headers.reduce((a, b) => (b.width > a.width ? b : a));
+  root.style.setProperty('--modal-top', `${Math.round(header.bottom)}px`);
+  root.style.setProperty(
+    '--modal-start',
+    `${Math.round(isRtl ? window.innerWidth - header.right : header.left)}px`
+  );
+};
+
 export const ModalContainer: any = () => {
   const confirmModalState = useSelector(getConfirmModal);
   const inviteModalState = useSelector(getInviteContactModal);
@@ -79,6 +107,15 @@ export const ModalContainer: any = () => {
   const communityGuidelinesModalState=useSelector(getCommunityGuidelinesModal);
   // const reactListModalState = useSelector(getReactListDialog);
   const reactClearAllModalState = useSelector(getReactClearAllDialog);
+
+  // re-measured whenever a popup opens or closes (this re-renders) and when the window resizes
+  useLayoutEffect(() => {
+    measureModalArea();
+  });
+  useLayoutEffect(() => {
+    window.addEventListener('resize', measureModalArea);
+    return () => window.removeEventListener('resize', measureModalArea);
+  }, []);
 
   return (
     <>

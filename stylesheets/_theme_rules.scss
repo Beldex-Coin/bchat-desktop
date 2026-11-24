@@ -249,10 +249,44 @@ $dark-cut-popup-btn: polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19p
   background-color: c(#0e0e0e, f);
   border: 1px solid $dark-line;
 }
-// Blurred, darkened backdrop behind every dialog.
+// Backdrop behind every dialog (Figma 5808:15739 "Font Size", 6510:1410 / 6512:1410 "Group invitation
+// failed"): only the content side is frosted - 6px glass blur with #0b0b0b @ 50% (white #ebebeb @
+// 25%) from under the 75 -> 100px header and from the end of the chats / settings list (the 83px
+// rail + the max(340px, 24.5vw) list) - while the rail, the list and the header stay sharp. The
+// popup is centred in that frosted area. The dialog layer itself still spans the window, so the
+// sharp side can't be clicked while a popup is open.
+// (--modal-top / --modal-start are measured from the open screen's header - ModalContainer.tsx -
+// with the usual 100px header and rail + list width as the fallback)
+$dark-modal-pane-start: var(--modal-start, calc(83px + max(340px, 24.5vw)));
+$dark-modal-top: var(--modal-top, 100px);
 #{$dark} .bchat-dialog.modal {
-  background-color: c(rgba(0, 0, 0, 0.55), f);
-  backdrop-filter: blur(4px);
+  box-sizing: border-box;
+  padding-block: $dark-modal-top 0;
+  padding-inline: calc(#{$dark-modal-pane-start} + 16px) 16px;
+  background-color: transparent;
+  backdrop-filter: none;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset-block: $dark-modal-top 0;
+    inset-inline: $dark-modal-pane-start 0;
+    z-index: -1;
+    background-color: if($theme-light, rgba(235, 235, 235, 0.25), c(rgba(11, 11, 11, 0.5), f));
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+  }
+}
+// a window too narrow for the popups beside the list: the whole window is frosted, as before
+@media (max-width: 1100px) {
+  #{$dark} .bchat-dialog.modal {
+    padding-block: 0;
+    padding-inline: 16px;
+
+    &::before {
+      inset: 0;
+    }
+  }
 }
 // Leading icon well (delete / warning / permission dialogs).
 #{$dark} .bchat-confirm-wrapper .mediaPermission {
@@ -9710,8 +9744,13 @@ $dark-cut-call-btn: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 10
 // the card is see-through glass: the chat stays sharp and only lightly dimmed behind it (the
 // shared dialog backdrop blurs and darkens so much the 75% card read as solid)
 #{$dark} .bchat-dialog.modal:has(> .incoming-call--card) {
+  padding: 0 16px;
   background-color: c(rgba(0, 0, 0, 0.3), f);
   backdrop-filter: none;
+
+  &::before {
+    display: none;
+  }
 }
 #{$dark} .bchat-modal.incoming-call--card {
   display: flex;
