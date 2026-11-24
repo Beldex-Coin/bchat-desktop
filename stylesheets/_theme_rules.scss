@@ -1336,8 +1336,15 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     font-size: 16px;
     color: c(#ebebeb, t);
 
+    // links read as the message text (Figma 5296:41359 / white 5808:39755 "links"): #ebebeb, white
+    // #222, no underline - underlined only while hovered
     a {
-      color: $dark-green;
+      color: c(#ebebeb, t);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
   .timeStamp {
@@ -1764,6 +1771,34 @@ $dark-cut-call-chip-ring: polygon(
   letter-spacing: 0;
   text-transform: none;
   color: c(#acacac, t);
+}
+// white (Figma 5808:39779 / 5808:39810): #f0f0f0 card, 5px bar #e1e1e1 (sent: #c1e1c7 with a
+// #078720 line), title Inter SemiBold #555, site Inter Light #222, the link square #fff with a #555
+// chain
+@if $theme-light {
+  #{$dark} .module-message__link-preview {
+    background: #f0f0f0;
+    border-inline-start-color: #e1e1e1;
+
+    .noImage {
+      background-color: #fff !important;
+
+      svg path {
+        fill: #555;
+      }
+    }
+  }
+  #{$dark} .module-message__container--outgoing .module-message__link-preview {
+    border-color: #078720;
+    border-inline-start-color: #c1e1c7;
+  }
+  #{$dark} .module-message__link-preview__title {
+    color: #555;
+  }
+  #{$dark} .module-message__link-preview__location {
+    font-weight: 300;
+    color: #222;
+  }
 }
 
 // ---- Pinned message bar (Figma 1:43219): 970x61.5 -> 82px, #1a1a1a@20%, 5px #8d8d8d bar ----
