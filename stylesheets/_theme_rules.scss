@@ -2304,9 +2304,9 @@ $dark-composer-h: 60px;
     box-shadow: inset 0 1px 0 c(#323232, s), inset 0 -1px 0 c(#262626, s);
     backdrop-filter: blur(3px);
   }
-  // Clear Data keeps its danger colour (set inline as #FF3E3E).
-  .left-pane-setting-category-list-item-span[style*='255, 62, 62'] {
-    color: $dark-danger !important;
+  // Clear Data keeps its danger colour, #ff3e3e in both themes (Figma 5296 / white 5808:16349)
+  .left-pane-setting-category-list-item-span--danger {
+    color: #ff3e3e !important;
   }
 }
 

@@ -124,7 +124,10 @@ const LeftPaneSettingsCategoryRow = () =>
               />
             </i>
             <span
-              className={'left-pane-setting-category-list-item-span'}
+              className={classNames(
+                'left-pane-setting-category-list-item-span',
+                item.id === BchatSettingCategory.ClearData && 'left-pane-setting-category-list-item-span--danger'
+              )}
               style={{ color: item.id === BchatSettingCategory.ClearData ?'var(--pal-t-ff3e3e)':iconColor}}
             >
               {item.title}
