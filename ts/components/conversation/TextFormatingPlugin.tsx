@@ -23,10 +23,17 @@ import {
 
 import { $createQuoteNode } from '@lexical/rich-text';
 import { $createListNode, $createListItemNode, $isListItemNode } from '@lexical/list';
+import { $isLinkTextNode } from './composition/formatting/formatMarks';
 
 // function $createCodeBlockNode() {
 //   return $applyNodeReplacement(new CodeBlockNode());
 // }
+
+// the markdown markers around formatted text (*bold* _italic_ ~strike~ `code`) stay in the text - they
+// are what is sent - but take no room in the box (Figma 5773:6500: "6:30 PM sharp" shows bold,
+// without its asterisks)
+const $createMarkerToken = (marker: string) =>
+  $createTextNode(marker).setMode('token').setStyle('font-size: 0;');
 
 /** The code block (``` box) this node sits in, if any. */
 const $getCodeBlock = (node: LexicalNode | null): ElementNode | null => {
@@ -181,7 +188,7 @@ export default function TextFormatingPlugin({
         nodes.push(...processText(text.slice(0, firstIndex), currentFormats));
       }
 
-      nodes.push($createTextNode(earliestMarker.char).setMode('token'));
+      nodes.push($createMarkerToken(earliestMarker.char));
       const inside = text.slice(firstIndex + earliestMarker.char.length, lastIndex);
 
       if (earliestMarker.noNest) {
@@ -200,7 +207,7 @@ export default function TextFormatingPlugin({
         nodes.push(...processText(inside, newFormats));
       }
 
-      nodes.push($createTextNode(earliestMarker.char).setMode('token'));
+      nodes.push($createMarkerToken(earliestMarker.char));
 
       const endOfMarker = lastIndex + earliestMarker.char.length;
 
@@ -220,13 +227,16 @@ export default function TextFormatingPlugin({
       const parent = node.getParent();
       if (parent?.getType() === 'codeblock') return;
 
+      // the run of text around the node - a link (formatting toolbar) ends it: its text is not
+      // markdown and it keeps its own address
+      const isRunText = (n: LexicalNode | null) => n instanceof TextNode && !$isLinkTextNode(n);
       let firstNode = node;
-      while (firstNode.getPreviousSibling() instanceof TextNode) {
+      while (isRunText(firstNode.getPreviousSibling())) {
         firstNode = firstNode.getPreviousSibling() as TextNode;
       }
 
       let lastNode = node;
-      while (lastNode.getNextSibling() instanceof TextNode) {
+      while (isRunText(lastNode.getNextSibling())) {
         lastNode = lastNode.getNextSibling() as TextNode;
       }
 
@@ -500,6 +510,15 @@ export default function TextFormatingPlugin({
         } else {
           event.preventDefault();
           event.stopPropagation();
+          // in the code block box (Figma 5773:7834): Enter is a new line in the code, Cmd/Ctrl+Enter
+          // sends
+          if ($getCodeBlock(anchorNode) && !event.metaKey && !event.ctrlKey) {
+            const sel = $getSelection();
+            if ($isRangeSelection(sel)) {
+              sel.insertLineBreak();
+            }
+            return true;
+          }
           onSendMessage();
           return true;
         }

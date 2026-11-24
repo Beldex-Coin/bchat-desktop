@@ -2105,14 +2105,19 @@ $dark-composer-h: 60px;
       }
     }
   }
-  // ``` code block box: dark plate on the #444 line, Roboto Mono, square corners
+  // ``` code block box (Figma 5773:7834 / white 5808:56378 "Code block"): #0b0b0b on a #333 line
+  // with #d4f5dd code (white #f0f0f0, #ddd, #078720 code), Roboto Mono 12 -> 16, 10.75 -> 14px in
   .editor-input code.composer-code-block {
-    background: c(#161616, f);
-    border-color: c(#444, s);
-    color: c(#ebebeb, t);
+    margin: 8px 0;
+    padding: 14px;
+    background: if($theme-light, #f0f0f0, c(#0b0b0b, f));
+    border: 1px solid if($theme-light, #ddd, c(#333, s));
+    border-radius: 0;
+    color: if($theme-light, #078720, #d4f5dd);
+    caret-color: if($theme-light, #078720, #00bc33);
     font-family: $dark-font-data !important;
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 21px;
   }
 
   // mic (start recording): 60px square matching the field
@@ -2152,6 +2157,364 @@ $dark-composer-h: 60px;
     color: c(#737373, t);
   }
 }
+// =================================================================================================
+// Text formatting in the message box (Figma Text_Formatting: dark 5773:5729, white 5808:54273)
+// =================================================================================================
+// links typed with the toolbar (their colour comes from this variable, set in the node's style)
+#{$dark} {
+  --composer-link: #{if($theme-light, #078720, #00bc33)};
+}
+// toolbar row over the input (Figma 5773:6239): 37.5 -> 50px, 9 -> 12px side padding, 27 -> 36px
+// buttons 3 -> 4px apart, 0.75x15 -> 1x20 dividers in 7.5 -> 10px slots, a 1px rule under it
+// (#333, white #e1e1e1). Buttons: #acacac glyph (white #555); hover #262626 on a #333 line, #ebebeb
+// glyph (white #ebebeb on #ddd, #222); on #00bc33 @ 12% on #006c1d, #00bc33 glyph (white #078720 @
+// 12% on #078720, #078720); disabled #4a4a4a (white #acacac).
+#{$dark} .composer-format-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 50px;
+  margin-inline: -16px -20px;
+  padding: 0 12px;
+  border-bottom: 1px solid if($theme-light, #e1e1e1, c(#333, s));
+}
+#{$dark} .composer-format-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 20px;
+  margin-inline: 4.5px;
+  background: if($theme-light, #ddd, c(#333, s));
+}
+#{$dark} .composer-format-btn {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0;
+  color: if($theme-light, #555, #acacac);
+  font-family: $dark-font-data !important;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+
+  &--bold {
+    font-weight: 700;
+  }
+  &--italic {
+    font-style: italic;
+  }
+  &--strike {
+    text-decoration: line-through;
+  }
+  svg {
+    display: block;
+  }
+  &:hover:not(:disabled) {
+    background: if($theme-light, #ebebeb, #262626);
+    border-color: if($theme-light, #ddd, #333);
+    color: if($theme-light, #222, #ebebeb);
+  }
+  &.is-active,
+  &.is-active:hover:not(:disabled) {
+    background: if($theme-light, rgba(7, 135, 32, 0.12), rgba(0, 188, 51, 0.12));
+    border-color: if($theme-light, #078720, #006c1d);
+    color: if($theme-light, #078720, #00bc33);
+  }
+  &:disabled {
+    color: if($theme-light, #acacac, #4a4a4a);
+    cursor: default;
+  }
+}
+// "Aa" after the emoji button (Figma 5773:6288): Inter SemiBold 12 -> 16, #acacac (white #555), on =
+// #00bc33 (white #078720) underlined; the 0.75x18 -> 1x24 divider before the text
+#{$dark} .composer-format-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: if($theme-light, #555, #acacac);
+  font-family: $dark-font-ui !important;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: if($theme-light, #222, #ebebeb);
+  }
+  &.is-on,
+  &.is-on:hover {
+    color: if($theme-light, #078720, #00bc33);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+#{$dark} .composer-format-toggle-divider {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 24px;
+  background: if($theme-light, #ddd, c(#333, s));
+}
+// code block hint under the input (Figma "Hint"): Roboto Mono 9 -> 12 #8d8d8d (white #737373) at the end
+#{$dark} .composer-code-hint {
+  padding: 0 0 10px;
+  text-align: end;
+  font-family: $dark-font-data !important;
+  font-size: 12px;
+  color: if($theme-light, #737373, #8d8d8d);
+}
+// in the box: the selection (Figma 5773:6948) #006c1d @ 85% (white #c1e1c7 @ 85%); bullets small green
+// squares and green numbers (Figma 5773:7834 "Bullet item"), the text 18.75 -> 25px in
+#{$dark} .composition-container .editor-input {
+  ::selection {
+    background: if($theme-light, rgba(193, 225, 199, 0.85), rgba(0, 108, 29, 0.85));
+    color: if($theme-light, #222, #ebebeb);
+  }
+  ul {
+    padding-inline-start: 0;
+    list-style: none;
+
+    > li {
+      position: relative;
+      padding-inline-start: 25px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: 6px;
+        top: 0.55em;
+        width: 6px;
+        height: 6px;
+        background: if($theme-light, #078720, #00bc33);
+      }
+    }
+  }
+  // (the base numbers list items with a ::before counter)
+  ol > li::before {
+    color: if($theme-light, #078720, #00bc33);
+    font-weight: 500;
+  }
+}
+// quick format bar over a selection (Figma 5773:6948): 135x33 -> 180x44, #161616 on a #333 line with
+// a 0 6 18 #000 @ 60% shadow (white #fff, #ddd, #000 @ 12%), 24 -> 32px buttons 2 -> 3px apart and
+// the 10x5 -> 13x7 arrow under the middle
+#{$dark} .quick-format-bar {
+  position: fixed;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 44px;
+  padding: 0 6px;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: if($theme-light, #fff, #161616);
+  border: 1px solid if($theme-light, #ddd, #333);
+  box-shadow: 0 8px 24px if($theme-light, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.6));
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-inline: 7px solid transparent;
+    border-top: 7px solid if($theme-light, #fff, #161616);
+  }
+  .composer-format-btn {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+// Add link popover (Figma 5773:7369): 330x141 -> 440x188, #161616 on #333 with a 0 9 24 #000 @ 70%
+// shadow (white #fff on #ddd, #000 @ 12%); "Add link" Inter SemiBold 12 -> 16 #ebebeb (#222); TEXT /
+// LINK Roboto Mono 9 -> 12 #8d8d8d (#737373); 30 -> 40px fields #0b0b0b on #333, focused #ebebeb @
+// 50% (white #f0f0f0 on #ddd, #222 @ 50%), Roboto Mono 10.5 -> 14; Cancel on a #444 line #acacac
+// (#d0d0d0, #555), Save #ebebeb with #0b0b0b text (white #0b0b0b, #fff)
+#{$dark} .link-popover {
+  position: fixed;
+  z-index: 1100;
+  width: 440px;
+  max-width: calc(100vw - 24px);
+  padding: 18px 20px 18px;
+  background: if($theme-light, #fff, #161616);
+  border: 1px solid if($theme-light, #ddd, #333);
+  box-shadow: 0 12px 32px if($theme-light, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.7));
+
+  &__title {
+    margin-bottom: 10px;
+    font-family: $dark-font-ui !important;
+    font-size: 16px;
+    font-weight: 600;
+    color: if($theme-light, #222, #ebebeb);
+  }
+  &__fields {
+    display: grid;
+    grid-template-columns: 144px 1fr;
+    gap: 12px;
+  }
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  &__label {
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: if($theme-light, #737373, #8d8d8d);
+  }
+  &__input {
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    padding: 0 12px;
+    background: if($theme-light, #f0f0f0, #0b0b0b) !important;
+    border: 1px solid if($theme-light, #ddd, #333) !important;
+    border-radius: 0 !important;
+    outline: none;
+    color: if($theme-light, #222, #ebebeb) !important;
+    caret-color: if($theme-light, #078720, #00bc33);
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+
+    &:focus {
+      border-color: if($theme-light, rgba(34, 34, 34, 0.5), rgba(235, 235, 235, 0.5)) !important;
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 21px;
+  }
+  &__cancel,
+  &__save {
+    height: 38px;
+    padding: 0 22px;
+    border-radius: 0;
+    font-family: $dark-font-data !important;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  &__cancel {
+    background: transparent;
+    border: 1px solid if($theme-light, #d0d0d0, #444);
+    color: if($theme-light, #555, #acacac);
+
+    &:hover {
+      color: if($theme-light, #222, #ebebeb);
+    }
+  }
+  &__save {
+    background: if($theme-light, #0b0b0b, #ebebeb);
+    border: 0;
+    color: if($theme-light, #fff, #0b0b0b);
+    font-weight: 500;
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+  }
+}
+
+// Code block in a message (Figma 5773:8291 / white 5808:56835 "Code block"): a 24 -> 32px head with
+// "CODE" (Roboto Mono Medium 9 -> 12) 10.5 -> 14px in and Copy (two 7.5 -> 10px squares, Roboto Mono
+// 9 -> 12) at the end, a rule under it, the code Roboto Mono 12 -> 16 12px under the rule.
+// received: #0b0b0b on #2a2a2a, rule #222, label #8d8d8d, code #d8d8d8 (white #f0f0f0, #ddd, #ebebeb,
+// #737373, #222); sent: #07120a on #1d4a27, rule #1a3a21, label #7fa98a, code #d4f5dd (white #fff,
+// #078720, #cbe6d1, #078720, #078720)
+#{$dark} .code-card {
+  --code-bg: #{if($theme-light, #f0f0f0, #0b0b0b)};
+  --code-line: #{if($theme-light, #ddd, #2a2a2a)};
+  --code-rule: #{if($theme-light, #ebebeb, #222)};
+  --code-label: #{if($theme-light, #737373, #8d8d8d)};
+  --code-text: #{if($theme-light, #222, #d8d8d8)};
+  display: block;
+  min-width: min(300px, 100%);
+  max-width: 100%;
+  margin: 8px 0;
+  background: var(--code-bg);
+  border: 1px solid var(--code-line);
+  text-align: start;
+  direction: ltr;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 32px;
+    padding: 0 6px 0 14px;
+    border-bottom: 1px solid var(--code-rule);
+  }
+  &__label {
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--code-label);
+  }
+  &__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 6px;
+    background: transparent;
+    border: 0;
+    color: var(--code-label);
+    font-family: $dark-font-data !important;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--code-text);
+    }
+  }
+  &__copy-front {
+    fill: var(--code-bg);
+  }
+  .code-block {
+    display: block;
+    margin: 0;
+    padding: 12px 14px 14px;
+    background: transparent;
+    font-family: $dark-font-data !important;
+    font-size: 16px;
+    line-height: 21px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--code-text);
+    user-select: text;
+  }
+}
+#{$dark} .module-message__container--outgoing .code-card {
+  --code-bg: #{if($theme-light, #fff, #07120a)};
+  --code-line: #{if($theme-light, #078720, #1d4a27)};
+  --code-rule: #{if($theme-light, #cbe6d1, #1a3a21)};
+  --code-label: #{if($theme-light, #078720, #7fa98a)};
+  --code-text: #{if($theme-light, #078720, #d4f5dd)};
+}
+
 // Send: 60px primary white square with the dark plane, same bottom line as the field.
 #{$dark} .send-message-button {
   display: flex;

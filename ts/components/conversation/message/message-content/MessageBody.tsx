@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { shell } from 'electron';
 import LinkifyIt from 'linkify-it';
@@ -17,6 +17,37 @@ import React from 'react';
 import { isNewDesign } from '../../../../theme/newDesign';
 
 const linkify = LinkifyIt();
+
+// A code block in a message (Figma 5773:8291 / white 5808:56835 "Code block"): a card with a CODE label
+// and a Copy button over a rule, the code under it as typed. "Copy" reads "Copied" for 2s.
+export const MessageCodeBlock = ({ code }: { code: string }) => {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const copy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.clipboard?.writeText(code);
+    setCopied(true);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <span className="code-card">
+      <span className="code-card__head">
+        <span className="code-card__label">{window.i18n('codeBlockLabel')}</span>
+        <button type="button" className="code-card__copy" onClick={copy}>
+          <svg width="16" height="16" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <rect x="4" y="1" width="7" height="7" stroke="currentColor" strokeWidth="0.9" />
+            <rect x="1" y="4" width="7" height="7" className="code-card__copy-front" stroke="currentColor" strokeWidth="0.9" />
+          </svg>
+          {copied ? window.i18n('codeBlockCopied') : window.i18n('editMenuCopy')}
+        </button>
+      </span>
+      <code className="code-block">{code}</code>
+    </span>
+  );
+};
 
 type Props = {
   text: string;
@@ -135,17 +166,35 @@ export const MessageBody = (props: Props) => {
     );
   }
 
+  // ``` code blocks (opened at the start of a line) are cut out first, so the link finder and the line
+  // formatting never split or change the code inside them
   const segments: { content: string; isCode: boolean }[] = [];
-  const codeRegex = /((?:^|\n)```\n[\s\S]*?\n```(?:\n|$))/g;
+  const codeRegex = /((?:^|\n)```[\s\S]*?```)/g;
 
   const parts = text.split(codeRegex);
 
   parts.forEach(part => {
     if (!part) return;
-    if (part.startsWith('```') && part.endsWith('```') && part.includes('\n')) {
-      segments.push({ content: part, isCode: true });
-    } else {
-      segments.push({ content: part, isCode: false });
+    const block = part.replace(/^\n/, '');
+    if (block.startsWith('```') && block.length > 6 && block.endsWith('```')) {
+      const code = block.slice(3, -3).replace(/^\n/, '').replace(/\n$/, '');
+      if (code.trim()) {
+        segments.push({ content: code, isCode: true });
+        return;
+      }
+    }
+    segments.push({ content: part, isCode: false });
+  });
+  // the line breaks either side of a block belong to the block (it is a block of its own)
+  segments.forEach((seg, i) => {
+    if (seg.isCode) {
+      return;
+    }
+    if (segments[i + 1]?.isCode) {
+      seg.content = seg.content.replace(/\n$/, '');
+    }
+    if (segments[i - 1]?.isCode) {
+      seg.content = seg.content.replace(/^\n/, '');
     }
   });
 
@@ -153,18 +202,14 @@ export const MessageBody = (props: Props) => {
     <span>
       {segments.map((seg, i) => {
         if (seg.isCode) {
-          return (
-            <React.Fragment key={i}>
-              {renderEmoji({
-                text: seg.content,
-                sizeClass,
-                key: i,
-                renderNonEmoji: params => renderNewLines({ ...params, isGroup, isConvoListItem }),
-                isGroup,
-                isConvoListItem,
-              })}
-            </React.Fragment>
+          return isConvoListItem ? (
+            <span key={i}>{seg.content}</span>
+          ) : (
+            <MessageCodeBlock key={i} code={seg.content} />
           );
+        }
+        if (!seg.content) {
+          return null;
         }
 
         return (
@@ -647,6 +692,52 @@ export const renderMarkdownBlocks = (
     const line = lines[i];
     const trimmedLine = line.trim();
 
+    // ``` code block (when one reaches here - MessageBody cuts most out first): lines kept as typed
+    if (inCodeBlock) {
+      const closeIdx = line.indexOf('```');
+      if (closeIdx === -1) {
+        codeBlockContent.push(line);
+        continue;
+      }
+      if (line.slice(0, closeIdx)) {
+        codeBlockContent.push(line.slice(0, closeIdx));
+      }
+      blocks.push(<MessageCodeBlock key={`pre-${i}`} code={codeBlockContent.join('\n')} />);
+      inCodeBlock = false;
+      codeBlockContent = [];
+      const after = line.slice(closeIdx + 3);
+      if (after.trim()) {
+        blocks.push(
+          <React.Fragment key={`post-code-${i}`}>
+            {formatText(after, false, `post-code-${i}`, isGroup)}
+          </React.Fragment>
+        );
+      }
+      continue;
+    }
+    if (trimmedLine.startsWith('```') && !isConvoListItem) {
+      pushPendingList();
+      const rest = line.slice(line.indexOf('```') + 3);
+      const closeIdx = rest.indexOf('```');
+      if (closeIdx !== -1 && rest.slice(0, closeIdx).trim()) {
+        blocks.push(<MessageCodeBlock key={`pre-${i}`} code={rest.slice(0, closeIdx)} />);
+        const after = rest.slice(closeIdx + 3);
+        if (after.trim()) {
+          blocks.push(
+            <React.Fragment key={`post-code-${i}`}>
+              {formatText(after, false, `post-code-${i}`, isGroup)}
+            </React.Fragment>
+          );
+        }
+      } else {
+        inCodeBlock = true;
+        if (rest.trim()) {
+          codeBlockContent.push(rest);
+        }
+      }
+      continue;
+    }
+
     const earlyBulletMatch =
       !/^[-*]\s{2,}/.test(line) && (/^[-*]\s$/.test(line) || /^[-*]\s[^\s]/.test(line))
         ? line.match(/^[-*]\s+(.*)/)
@@ -678,133 +769,6 @@ export const renderMarkdownBlocks = (
       );
       continue;
     }
-    const inlineCodeBlockRegex = /^```[^`\s][^`]*```$/;
-
-    const isValidInlineCodeBlock = inlineCodeBlockRegex.test(trimmedLine);
-
-    if (isValidInlineCodeBlock && !isConvoListItem) {
-      if (inCodeBlock) {
-        const endIdx = line.indexOf('```');
-        if (endIdx > 0) {
-          codeBlockContent.push(line.slice(0, endIdx));
-        }
-
-        const codeElement = (
-          <code key={`pre-${i}`} className="code-block">
-            {codeBlockContent.join('\n')}
-          </code>
-        );
-
-        if (currentListType !== null) {
-          currentListItems.push(
-            <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
-              {codeElement}
-            </li>
-          );
-        } else {
-          blocks.push(codeElement);
-        }
-
-        inCodeBlock = false;
-        codeBlockContent = [];
-
-        const remainingText = line.slice(endIdx + 3);
-        if (remainingText.length > 0) {
-          const textElement = (
-            <React.Fragment key={`post-code-${i}`}>
-              {formatText(remainingText, false, `post-code-${i}`, isGroup)}
-            </React.Fragment>
-          );
-          if (currentListType !== null) {
-            currentListItems.push(
-              <li key={`li-post-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
-                {textElement}
-              </li>
-            );
-          } else {
-            blocks.push(textElement);
-          }
-        }
-      } else {
-        const closingTicksIndex = line.indexOf('```', line.indexOf('```') + 3);
-
-        if (closingTicksIndex !== -1) {
-          const content = line.slice(line.indexOf('```') + 3, closingTicksIndex);
-          const codeElement = (
-            <code key={`pre-${i}`} className="code-block">
-              {content}
-            </code>
-          );
-
-          if (currentListType !== null) {
-            currentListItems.push(
-              <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
-                {codeElement}
-              </li>
-            );
-          } else {
-            blocks.push(codeElement);
-          }
-
-          const remainingText = line.slice(closingTicksIndex + 3);
-          if (remainingText.length > 0) {
-            const textElement = (
-              <React.Fragment key={`post-code-${i}`}>
-                {formatText(remainingText, false, `post-code-${i}`, isGroup)}
-              </React.Fragment>
-            );
-            if (currentListType !== null) {
-              currentListItems.push(
-                <li key={`li-post-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
-                  {textElement}
-                </li>
-              );
-            } else {
-              blocks.push(textElement);
-            }
-          }
-        } else {
-          inCodeBlock = true;
-          const startContent = line.slice(line.indexOf('```') + 3);
-          if (startContent.trim()) {
-            codeBlockContent.push(startContent);
-          }
-        }
-      }
-      continue;
-    }
-
-    if (inCodeBlock) {
-      if (trimmedLine.endsWith('```')) {
-        const endIdx = line.lastIndexOf('```');
-        if (endIdx > 0) {
-          codeBlockContent.push(line.slice(0, endIdx));
-        }
-
-        const codeElement = (
-          <code key={`pre-${i}`} className="code-block">
-            {codeBlockContent.join('\n')}
-          </code>
-        );
-
-        if (currentListType !== null) {
-          currentListItems.push(
-            <li key={`li-cb-${i}`} style={{ listStyleType: 'none', margin: 0 }}>
-              {codeElement}
-            </li>
-          );
-        } else {
-          blocks.push(codeElement);
-        }
-
-        inCodeBlock = false;
-        codeBlockContent = [];
-      } else {
-        codeBlockContent.push(line);
-      }
-      continue;
-    }
-
     pushPendingList();
 
     let quoteMatch: RegExpMatchArray | null = null;
@@ -846,7 +810,7 @@ export const renderMarkdownBlocks = (
 
   pushPendingList();
   if (inCodeBlock && codeBlockContent.length > 0) {
-    blocks.push(<code>{codeBlockContent.join('\n')}</code>);
+    blocks.push(<MessageCodeBlock key="pre-end" code={codeBlockContent.join('\n')} />);
   }
 
   return blocks;

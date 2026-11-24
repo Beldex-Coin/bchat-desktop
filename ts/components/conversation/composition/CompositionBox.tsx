@@ -111,6 +111,19 @@ import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
 import TextFormatingPlugin, { CodeBlockNode } from '../TextFormatingPlugin';
+import {
+  CodeBlockHint,
+  FormattingShortcutsPlugin,
+  FormattingToggle,
+  FormattingToolbar,
+  LinkDialogPlugin,
+  QuickFormatBarPlugin,
+} from './formatting/FormattingToolbar';
+import {
+  $isLinkTextNode,
+  serializeLinkTextNode,
+  stripZeroWidth,
+} from './formatting/formatMarks';
 import MicrophoneAccessIcon from '../../icon/MicrophoneAccessIcon';
 import AttachmentPermissionIcon from '../../icon/AttachmentPermissionIcon';
 import { Storage } from '../../../util/storage';
@@ -188,6 +201,10 @@ interface State {
   showCaptionEditor?: AttachmentType;
   selectionMenuIsVisble: boolean;
   items: any;
+  // text formatting (Figma Text_Formatting): the toolbar shown by "Aa", and the message box's editor
+  // for the toolbar outside the LexicalComposer - kept when switching conversations
+  showFormatting?: boolean;
+  formatEditor?: any;
 }
 
 const getDefaultState = (newConvoId?: string) => {
@@ -572,6 +589,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   {this.renderStagedLinkPreview()}
                   {this.renderAttachmentsStaged()}
 
+                  {typingEnabled && this.state.showFormatting && (
+                    <FormattingToolbar editor={this.state.formatEditor ?? null} />
+                  )}
+
                   <Flex
                     container={true}
                     flexDirection="row"
@@ -595,9 +616,19 @@ class CompositionBoxInner extends React.Component<Props, State> {
                         </StyledEmojiPanelContainer>
                       )}
                     </div>
+                    {typingEnabled && (
+                      <FormattingToggle
+                        on={!!this.state.showFormatting}
+                        onClick={() => {
+                          this.setState({ showFormatting: !this.state.showFormatting });
+                          this.editorRef?.focus();
+                        }}
+                      />
+                    )}
 
                     {this.renderTextArea()}
                   </Flex>
+                  {typingEnabled && <CodeBlockHint editor={this.state.formatEditor ?? null} />}
                 </div>
                 {typingEnabled && (draft.trim() || stagedAttachments.length !== 0) ? (
                   <div className={classNames('send-message-button')}>{this.sendButton()}</div>
@@ -684,6 +715,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
             <EditorRefPlugin
               onReady={(editor: any) => {
                 this.editorRef = editor;
+                if (this.state.formatEditor !== editor) {
+                  this.setState({ formatEditor: editor });
+                }
               }}
             />
             <RichTextPlugin
@@ -702,6 +736,9 @@ class CompositionBoxInner extends React.Component<Props, State> {
             <HistoryPlugin />
             <ListPlugin />
             <TextFormatingPlugin onSendMessage={this.onSendMessage} />
+            <FormattingShortcutsPlugin />
+            <QuickFormatBarPlugin disabled={!!this.state.showFormatting} />
+            <LinkDialogPlugin />
             <MentionPlugin
               fetchUsers={this.fetchUsersForGroup}
               renderSuggestion={(user: any) =>
@@ -1418,6 +1455,10 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
 }
 
 export const serializeNode = (node: LexicalNode): string => {
+  // a link from the formatting toolbar: [text](https://address)
+  if ($isLinkTextNode(node)) {
+    return serializeLinkTextNode(node as any);
+  }
   if ($isTextNode(node) && node.isToken()) {
     return '';
   }
@@ -1480,7 +1521,7 @@ export const serializeNode = (node: LexicalNode): string => {
 
   // ✅ Text fallback (if called directly on TextNode instead of ElementNode)
   if ($isTextNode(node)) {
-    let text = node.getTextContent();
+    let text = stripZeroWidth(node.getTextContent());
     if (!text) return '';
     if (node.hasFormat('code')) {
       const style = node.getStyle() || '';
@@ -1505,10 +1546,21 @@ export const serializeNode = (node: LexicalNode): string => {
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
 
+      if ($isLinkTextNode(child)) {
+        // close the open formats, then the link as markdown
+        if (currentCode) content += '`';
+        if (currentStrike) content += '~';
+        if (currentItalic) content += '_';
+        if (currentBold) content += '*';
+        currentBold = currentItalic = currentStrike = currentCode = false;
+        content += serializeLinkTextNode(child as any);
+        continue;
+      }
       if ($isTextNode(child)) {
         if (child.isToken()) continue;
 
-        let text = child.getTextContent();
+        // the zero-width space that holds the caret in an empty bold / italic run is never sent
+        let text = stripZeroWidth(child.getTextContent());
         if (!text) continue;
 
         const isBold = child.hasFormat('bold');
@@ -1535,8 +1587,12 @@ export const serializeNode = (node: LexicalNode): string => {
         let nextValidNode = null;
         for (let j = i + 1; j < children.length; j++) {
           const next = children[j];
-          if ($isTextNode(next) && next.isToken()) {
-            continue; // Skip the hidden token nodes
+          if (
+            $isTextNode(next) &&
+            !$isLinkTextNode(next) &&
+            (next.isToken() || stripZeroWidth(next.getTextContent()) === '')
+          ) {
+            continue; // Skip the hidden token nodes (and caret placeholders)
           }
           nextValidNode = next;
           break;
@@ -1583,5 +1639,5 @@ export const serializeNode = (node: LexicalNode): string => {
 };
 
 export const serializeEditor = () => {
-  return serializeNode($getRoot());
+  return stripZeroWidth(serializeNode($getRoot()));
 };
