@@ -2029,15 +2029,16 @@ $dark-composer-h: 60px;
       }
     }
   }
-  // menu open (Figma 5296:47772): solid #ebebeb square, dark #0b0b0b glyph
+  // menu open (Figma 5296:47772): solid #ebebeb square, dark #0b0b0b glyph - white (Figma 6332:1617):
+  // #fff @ 50% square on a #c4c4c4 line, #555 glyph
   .attachment-wrapper.seleted .attachment-box,
   .attachment-wrapper.seleted .attachment-box:hover {
-    background: c(#ebebeb, f);
-    border-color: c(#444, s);
-    color: c(#0b0b0b, t);
+    background: if($theme-light, rgba(255, 255, 255, 0.5), c(#ebebeb, f));
+    border-color: if($theme-light, #c4c4c4, c(#444, s));
+    color: if($theme-light, #555, c(#0b0b0b, t));
 
     svg path {
-      fill: c(#0b0b0b, t);
+      fill: if($theme-light, #555, c(#0b0b0b, t));
     }
   }
   // attach menu (Figma 71:9206): 155x108 -> 207x144 glass card, left edge on the "+" button,
@@ -9388,6 +9389,14 @@ $dark-cut-picker-row: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 16
   }
   &__nav[aria-disabled='true'] {
     cursor: default;
+  }
+  // the down / up arrows: a match that way white (white theme green #078720, Figma 5808:22296), none
+  // that way #8d8d8d (white #555)
+  &__nav svg path {
+    fill: if($theme-light, #078720, #ffffff);
+  }
+  &__nav[aria-disabled='true'] svg path {
+    fill: if($theme-light, #555, #8d8d8d);
   }
   &__close:hover svg path {
     fill: c(#ebebeb, t);
