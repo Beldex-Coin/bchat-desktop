@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { focusSoon } from '../util/focusSoon';
 
 import { BchatIcon, BchatIconButton } from './icon';
 import { withTheme } from 'styled-components';
@@ -54,9 +55,7 @@ class BchatPasswordPromptInner extends React.PureComponent<{}, State> {
   }
 
   public componentDidMount() {
-    setTimeout(() => {
-      this.inputRef?.focus();
-    }, 100);
+    focusSoon(() => this.inputRef);
   }
 
   public render() {

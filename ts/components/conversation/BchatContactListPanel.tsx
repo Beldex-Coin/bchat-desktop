@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { focusSoon } from '../../util/focusSoon';
 import { Flex } from '../basic/Flex';
 import { SpacerSM, SpacerXS } from '../basic/Text';
 import { BchatIcon, BchatIconButton } from '../icon';
@@ -34,6 +35,9 @@ export const BchatContactListPanel = (props: {
   mode?: 'share' | 'forward';
   forwardMessageIds?: Array<string>;
 }) => {
+  // the caret in Search People when the panel opens
+  const searchInput = useRef<HTMLInputElement>(null);
+  useEffect(() => focusSoon(() => searchInput.current), []);
   const isForward = props.mode === 'forward';
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [isForwarding, setIsForwarding] = useState(false);
@@ -135,6 +139,43 @@ export const BchatContactListPanel = (props: {
     window.inboxStore?.dispatch(closeShareContact());
   };
 
+
+  // Enter sends the picked contacts (or forwards), like the button - only with at least one picked.
+  // In Search People it waits while there is a search typed (Enter there means "search"), so a name
+  // and Enter can't send by accident; Cmd/Ctrl+Enter sends anyway. Other text fields (the message box)
+  // keep their own Enter.
+  const sendRef = useRef(sendContact);
+  sendRef.current = sendContact;
+  const canSendRef = useRef(false);
+  canSendRef.current = selectedMemberIds.length > 0 && !isForwarding;
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' || e.repeat || e.isComposing || e.shiftKey || e.altKey) {
+        return;
+      }
+      if (!canSendRef.current) {
+        return;
+      }
+      const mod = e.metaKey || e.ctrlKey;
+      const target = e.target as HTMLElement | null;
+      const inSearch = !!target && target === searchInput.current;
+      const inOtherField =
+        !!target &&
+        !inSearch &&
+        (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+      if (inOtherField) {
+        return;
+      }
+      if (inSearch && !mod && searchInput.current?.value.trim()) {
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      sendRef.current();
+    };
+    document.addEventListener('keydown', onKeyDown, true);
+    return () => document.removeEventListener('keydown', onKeyDown, true);
+  }, []);
   return (
     <div className={classNames('contact-list', isForward && 'contact-list--forward')}>
       <div className="contact-list-header">
@@ -169,6 +210,7 @@ export const BchatContactListPanel = (props: {
           <BchatIcon iconSize={20} iconType="search" />
         </div>
         <input
+          ref={searchInput}
           value={currentSearchTerm}
           onChange={e => {
             handleSearch(e);

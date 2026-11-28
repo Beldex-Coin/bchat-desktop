@@ -6,6 +6,7 @@ import { SpacerSM } from '../basic/Text';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { updateConfirmModal } from '../../state/ducks/modalDialog';
 import { appLanguages } from '../../node/app_languages';
+import { useEnterKey } from '../../hooks/useEnterKey';
 
 export const BchatLanguageScreen = () => {
   const currentLocale = window.i18n.getLocale() || 'en';
@@ -27,6 +28,9 @@ export const BchatLanguageScreen = () => {
       })
     );
   };
+
+  // Enter = Save (not while the restart popup it opens is up - Enter is that popup's then)
+  useEnterKey(handleSave, { skipWhenPopupOpen: true });
 
   return (
     <div className="bchat-language-screen-wrapper">

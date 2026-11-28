@@ -9,6 +9,7 @@ import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatBu
 import RecoveryPhraseIcon from '../icon/RecoveryPhraseIcon';
 import { BchatIcon } from '../icon';
 import { isNewDesign } from '../../theme/newDesign';
+import { useEnterKey } from '../../hooks/useEnterKey';
 // import { BchatToolTip } from '../leftpane/ActionsPanel';
 
 
@@ -25,6 +26,11 @@ const Seed = (props: SeedProps) => {
   // dark theme: the "Never Give your Seed to Anyone!" warning (Figma 1:32394) comes first; the seed
   // only shows after "Yes, I'm Sure!". Resets every time the Recovery Phrase page is opened.
   const [seedWarningAccepted, setSeedWarningAccepted] = useState(false);
+  // Enter = "Yes, I'm Sure!" on the warning (not while a popup is open over the page)
+  useEnterKey(() => setSeedWarningAccepted(true), {
+    enabled: darkMode && !seedWarningAccepted,
+    skipWhenPopupOpen: true,
+  });
 
   const copyRecoveryPhrase = (recoveryPhraseToCopy: string) => {
     window.clipboard.writeText(recoveryPhraseToCopy);

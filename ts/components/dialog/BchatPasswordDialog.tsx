@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from 'react';
+import { focusSoon } from '../../util/focusSoon';
 
 import { missingCaseError } from '../../util';
 import { ToastUtils } from '../../bchat/utils';
@@ -32,6 +33,7 @@ interface State {
 
 export class BchatPasswordDialog extends React.Component<Props, State> {
   private passportInput: HTMLInputElement | null = null;
+  private cancelFocus?: () => void;
 
   constructor(props: any) {
     super(props);
@@ -49,12 +51,15 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
   public componentDidMount() {
     // the caret into the first field when the popup opens (the old input ref is no longer used -
     // the fields are BchatInputs)
-    setTimeout(() => {
-      const first =
+    this.cancelFocus = focusSoon(
+      () =>
         this.passportInput ||
-        document.querySelector<HTMLInputElement>('[data-testid="password-input"]');
-      first?.focus();
-    }, 50);
+        document.querySelector<HTMLInputElement>('.bchat-modal-setPassword input')
+    );
+  }
+
+  public componentWillUnmount() {
+    this.cancelFocus?.();
   }
 
   public render() {
@@ -135,6 +140,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
               autoFocus={true}
               placeholder={placeholders[0]}
               enableShowHide={true}
+              onEnterPressed={this.onEnterSubmit}
               onValueChanged={this.onPasswordInput}
               maxLength={13}
             />
@@ -157,6 +163,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 autoFocus={false}
                 placeholder={placeholders[1]}
                 enableShowHide={true}
+                onEnterPressed={this.onEnterSubmit}
                 onValueChanged={this.onPasswordConfirmInput}
                 maxLength={13}
               />
@@ -181,6 +188,7 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
                 autoFocus={false}
                 placeholder={placeholders[2]}
                 enableShowHide={true}
+                onEnterPressed={this.onEnterSubmit}
                 onValueChanged={this.onPasswordRetypeInput}
                 maxLength={13}
               />
@@ -330,6 +338,11 @@ export class BchatPasswordDialog extends React.Component<Props, State> {
 
     this.props.onOk();
     this.closeDialog();
+  }
+
+  // Enter in any of the fields = Save / Remove (the button's action)
+  private onEnterSubmit() {
+    void this.setPassword();
   }
 
   private async setPassword() {

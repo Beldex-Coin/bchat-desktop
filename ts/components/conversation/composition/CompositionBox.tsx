@@ -254,13 +254,16 @@ class CompositionBoxInner extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    setTimeout(this.focusCompositionBox, 500);
+    this.focusWhenReady();
 
     const div = this.container;
     div?.addEventListener('paste', this.handlePaste);
   }
 
   public componentWillUnmount() {
+    if (this.focusTimer) {
+      clearTimeout(this.focusTimer);
+    }
     this.linkPreviewAbortController?.abort();
     this.linkPreviewAbortController = undefined;
 
@@ -282,7 +285,7 @@ class CompositionBoxInner extends React.Component<Props, State> {
           //  IMPORTANT: sync draft to Lexical
           this.updateLexicalFromDraft(this.state.draft);
           // then the caret into it, at the end of the draft
-          setTimeout(() => this.focusCompositionBox(), 0);
+          this.focusWhenReady();
         }
       );
 
@@ -1411,6 +1414,23 @@ class CompositionBoxInner extends React.Component<Props, State> {
     this.setState({ showRecordingView: false });
   }
 
+  // opening a chat: the message box's editor is created a moment after the chat screen (and again when
+  // the first chat is picked), so keep trying for ~1s until the caret is in it
+  private focusTimer?: ReturnType<typeof setTimeout>;
+  private focusWhenReady(tries = 16) {
+    if (this.focusTimer) {
+      clearTimeout(this.focusTimer);
+    }
+    const attempt = (left: number) => {
+      this.focusCompositionBox();
+      const root: HTMLElement | null = this.editorRef?.getRootElement?.() ?? null;
+      if (left > 1 && (!root || document.activeElement !== root)) {
+        this.focusTimer = setTimeout(() => attempt(left - 1), 60);
+      }
+    };
+    this.focusTimer = setTimeout(() => attempt(tries), 0);
+  }
+
   // the caret into the message box (opening a chat, adding an attachment / reply, a click anywhere in
   // the box). The box is the Lexical editor: the old textarea ref is no longer attached to anything.
   // A click on the text itself keeps the caret where it was clicked.
@@ -1421,6 +1441,11 @@ class CompositionBoxInner extends React.Component<Props, State> {
     }
     const root: HTMLElement | null = editor.getRootElement();
     if (event?.target && root?.contains(event.target)) {
+      return;
+    }
+    // clicks in popups opened from the box (the Add link fields...) reach here through React too, but
+    // they are not in the box: leave the caret in the field that was clicked
+    if (event?.target && !this.container?.contains(event.target)) {
       return;
     }
     if (root && document.activeElement === root) {

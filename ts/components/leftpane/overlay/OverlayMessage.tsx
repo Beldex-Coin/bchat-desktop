@@ -127,7 +127,12 @@ export const OverlayMessage = () => {
             onChange={setPubkeyOrBns}
             maxLength={66}
             dataTestId="new-bchat-conversation"
-          // onPressEnter={handleMessageButtonClick}
+            // Enter in the field does what "Let's BChat!" does (once something is typed)
+            onPressEnter={() => {
+              if (pubkeyOrBns.trim() && !loading) {
+                void handleMessageButtonClick();
+              }
+            }}
           />
           {loading && (
             <Loader>

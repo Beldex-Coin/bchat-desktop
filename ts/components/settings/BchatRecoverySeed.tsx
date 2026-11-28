@@ -14,6 +14,7 @@ import { SpacerLG } from '../basic/Text';
 import { BchatButtonColor } from '../basic/BchatButton';
 import { BchatIcon } from '../icon/BchatIcon';
 import { isNewDesign } from '../../theme/newDesign';
+import { useEnterKey } from '../../hooks/useEnterKey';
 
 
 export const BchatRecoverySeed = (props: any) => {
@@ -21,6 +22,14 @@ export const BchatRecoverySeed = (props: any) => {
   //  const [verify, setVerify] = useState(false)
   const recoveryPhraseModalState = useSelector(getRecoveryPhraseDialog);
   const isDark = isNewDesign();
+  // Enter = OK on the Set Password card
+  useEnterKey(
+    () => {
+      window.inboxStore?.dispatch(showSettingsSection(BchatSettingCategory.Privacy));
+      displayPasswordModal('set', props.onPasswordUpdated);
+    },
+    { enabled: !props.passwordLock }
+  );
 
   if (props.passwordLock) {
     return <BchatSeedModal {...recoveryPhraseModalState} />;

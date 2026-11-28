@@ -1,4 +1,5 @@
-import  { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { focusSoon } from '../../util/focusSoon';
 // tslint:disable no-submodule-imports
 
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -11,8 +12,12 @@ import { SpacerLG, SpacerMD, SpacerSM } from '../basic/Text';
 import { createPortal } from 'react-dom';
 import { LottieAnimation } from '../basic/LottieAnimation';
 import { isNewDesign } from '../../theme/newDesign';
+import { useEnterKey } from '../../hooks/useEnterKey';
 
 export const BnsLinkDialog = () => {
+  // the caret in the BNS name field when the popup opens
+  const bnsInput = useRef<HTMLInputElement>(null);
+  useEffect(() => focusSoon(() => bnsInput.current), []);
   
   const [success, setSuccess] = useState(false);
   const [bnsName, setBnsName] = useState('');
@@ -41,6 +46,28 @@ export const BnsLinkDialog = () => {
     await linkBns(bnsName);
     setSuccess(true);
   };
+  // Enter: in the BNS Name field = Verify (once the name is valid); after it is verified = Link BNS;
+  // on the success card = OK
+  const canVerify = regexForBnsName.test(bnsName.toLowerCase()) && !isLoading && !isVerify;
+  const linking = useRef(false);
+  const linkOnce = async () => {
+    if (linking.current) {
+      return;
+    }
+    linking.current = true;
+    try {
+      await callLinkBns();
+    } finally {
+      linking.current = false;
+    }
+  };
+  useEnterKey(() => {
+    if (success) {
+      closeDialog();
+    } else if (isVerify && !isLoading) {
+      void linkOnce();
+    }
+  });
   const onchange=(e:string)=>{
     setBnsName(e);
     verifyError&&setVerifyError(false)
@@ -126,6 +153,7 @@ export const BnsLinkDialog = () => {
             <SpacerSM />
             <div className="inputBox-wrapper" style={{border:verifyError?' 1px solid #FF3E3E':''}}>
               <input
+                ref={bnsInput}
                 style={{ color:isVerify?'#0BB70F':verifyError?'var(--pal-t-ff3e3e)':'' }}
                 type="text"
                 dir="ltr"
@@ -138,6 +166,14 @@ export const BnsLinkDialog = () => {
                   
                 }}
                 maxLength={33}
+                onKeyDown={event => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                    if (canVerify) {
+                      void verifyBns();
+                    }
+                  }
+                }}
                 data-testid="profile-name-input"
               />
             </div>
@@ -176,7 +212,7 @@ export const BnsLinkDialog = () => {
                 disabled={!isVerify}
                 buttonType={BchatButtonType.Brand}
                 buttonColor={BchatButtonColor.Primary}
-                onClick={() => callLinkBns()}
+                onClick={() => void linkOnce()}
                 // setSuccess(true)
               />
             </div>

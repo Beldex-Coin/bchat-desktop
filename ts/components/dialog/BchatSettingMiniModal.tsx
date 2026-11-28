@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Fragment, useState } from 'react';
 import useKey from 'react-use/lib/useKey';
+import { useEnterKey } from '../../hooks/useEnterKey';
 import { BchatButton, BchatButtonColor, BchatButtonType } from '../basic/BchatButton';
 import { SpacerSM } from '../basic/Text';
 import { BchatWrapperModal } from '../BchatWrapperModal';
@@ -22,6 +23,8 @@ export const BchatSettingMiniModal = (props: SettingMiniModalState) => {
   const selectedIndex = data.findIndex(option => option.value === select);
   const isDark = isNewDesign();
   useKey('Escape', () => isDark && props?.onClose?.(), undefined, [isDark, props?.onClose]);
+  // Enter saves the picked option, like Save
+  useEnterKey(() => props?.onClick(select));
 
   // Dark theme: Figma 1:34208 "Font Size" picker - radio rows in a boxed list, the
   // picked row framed in green, the saved value tagged "Active", Cancel / Save underneath.
