@@ -1,4 +1,4 @@
-import { $createTextNode, $isTextNode, LexicalNode, TextNode } from 'lexical';
+import { $createTextNode, $isTextNode, LexicalNode, TextFormatType, TextNode } from 'lexical';
 
 // Links typed with the formatting toolbar (Figma 5773:7369 "Add link"): a token text node (it moves,
 // deletes and keeps its formats as one piece) that carries its address in a CSS custom property of its
@@ -23,6 +23,31 @@ export const getLinkUrl = (node: TextNode): string => {
   } catch (e) {
     return match[1].trim();
   }
+};
+
+/** A hidden markdown marker (`*`, `_`, `~`, a backtick...) around formatted text - not a link token. */
+export const isHiddenMarker = (node: LexicalNode | null | undefined): node is TextNode =>
+  $isTextNode(node) &&
+  node.isToken() &&
+  !$isLinkTextNode(node) &&
+  /^[*_~`]+$/.test(node.getTextContent());
+
+/** A hidden markdown marker around formatted text (shown at zero size). */
+export const $createHiddenMarker = (marker: string): TextNode =>
+  $createTextNode(marker)
+    .setMode('token')
+    .setStyle('font-size: 0;');
+
+const LINK_MARKERS: Array<[TextFormatType, string]> = [
+  ['bold', '*'],
+  ['italic', '_'],
+  ['strikethrough', '~'],
+];
+
+/** The markdown a link node is sent as, with its bold / italic / strike: *[text](https://address)* */
+export const serializeFormattedLink = (node: TextNode) => {
+  const marks = LINK_MARKERS.filter(([format]) => node.hasFormat(format)).map(([, mark]) => mark);
+  return `${marks.join('')}${serializeLinkTextNode(node)}${[...marks].reverse().join('')}`;
 };
 
 /** "bchat.link/x" -> "https://bchat.link/x"; an address with its own scheme is kept as it is. */

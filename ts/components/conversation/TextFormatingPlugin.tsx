@@ -19,11 +19,22 @@ import {
   KEY_ARROW_DOWN_COMMAND,
   PASTE_COMMAND,
   SerializedElementNode,
+  ParagraphNode,
+  $isTextNode,
+  $isElementNode,
+  DELETE_CHARACTER_COMMAND,
+  DELETE_WORD_COMMAND,
+  RangeSelection,
 } from 'lexical';
 
-import { $createQuoteNode } from '@lexical/rich-text';
-import { $createListNode, $createListItemNode, $isListItemNode } from '@lexical/list';
-import { $isLinkTextNode } from './composition/formatting/formatMarks';
+import { $createQuoteNode, QuoteNode } from '@lexical/rich-text';
+import { $createListNode, $createListItemNode, $isListItemNode, ListItemNode } from '@lexical/list';
+import {
+  $isLinkTextNode,
+  isHiddenMarker,
+  stripZeroWidth,
+  ZERO_WIDTH_SPACE,
+} from './composition/formatting/formatMarks';
 
 // function $createCodeBlockNode() {
 //   return $applyNodeReplacement(new CodeBlockNode());
@@ -35,7 +46,286 @@ import { $isLinkTextNode } from './composition/formatting/formatMarks';
 const $createMarkerToken = (marker: string) =>
   $createTextNode(marker).setMode('token').setStyle('font-size: 0;');
 
+
+/**
+ * A line left with only hidden markers (its formatted text deleted) gets them removed - otherwise the
+ * caret sits on zero-size markers (invisible) and what is typed next lands among them.
+ */
+const $dropOrphanMarkers = (element: ElementNode) => {
+  // a formatted word deleted whole (word delete, cut) leaves its two markers side by side - they go
+  // too, or they would show up as "**"
+  element.getChildren().forEach(child => {
+    if (!child.isAttached() || !isHiddenMarker(child)) {
+      return;
+    }
+    const next = child.getNextSibling();
+    if (isHiddenMarker(next) && next.getTextContent() === child.getTextContent()) {
+      const selection = $getSelection();
+      const holder =
+        $isRangeSelection(selection) &&
+        (child.is(selection.anchor.getNode()) || next.is(selection.anchor.getNode()));
+      const prev = child.getPreviousSibling();
+      next.remove();
+      child.remove();
+      if (holder) {
+        if ($isTextNode(prev)) {
+          prev.selectEnd();
+        } else {
+          element.select(0, 0);
+        }
+      }
+    }
+  });
+  const children = element.getChildren();
+  if (!children.length || !children.every(child => isHiddenMarker(child))) {
+    return;
+  }
+  const selection = $getSelection();
+  const caretHere =
+    $isRangeSelection(selection) &&
+    children.some(child => child.is(selection.anchor.getNode()) || child.is(selection.focus.getNode()));
+  children.forEach(child => child.remove());
+  if (caretHere || ($isRangeSelection(selection) && selection.anchor.getNode().is(element))) {
+    element.select(0, 0);
+    // and what is typed next starts plain (not the deleted text's bold / italic)
+    const fresh = $getSelection();
+    if ($isRangeSelection(fresh)) {
+      fresh.setFormat(0);
+      fresh.setStyle('');
+    }
+  }
+};
+
+/**
+ * Deleting next to a hidden marker deletes the letter beside it instead: the caret is moved past the
+ * markers (and an empty caret placeholder) in the direction of the delete. A bold word's markers are
+ * never deleted one at a time, so it can't turn back into "*word" with a stray asterisk.
+ */
+const $skipMarkersForDelete = (selection: RangeSelection, isBackward: boolean): TextNode | null => {
+  if (!selection.isCollapsed()) {
+    return null;
+  }
+  const { anchor } = selection;
+  const node = anchor.getNode();
+  let side: LexicalNode | null = null;
+  if (isHiddenMarker(node)) {
+    side = isBackward
+      ? anchor.offset === node.getTextContentSize()
+        ? node
+        : null
+      : anchor.offset === 0
+      ? node
+      : null;
+  } else if ($isTextNode(node)) {
+    const text = node.getTextContent();
+    const passed = isBackward ? text.slice(0, anchor.offset) : text.slice(anchor.offset);
+    if (stripZeroWidth(passed) === '') {
+      side = isBackward ? node.getPreviousSibling() : node.getNextSibling();
+    }
+  } else if ($isElementNode(node)) {
+    side = node.getChildAtIndex(isBackward ? anchor.offset - 1 : anchor.offset);
+  }
+  if (!isHiddenMarker(side)) {
+    return null;
+  }
+  let letter: LexicalNode | null = side;
+  while (letter && isHiddenMarker(letter)) {
+    letter = isBackward ? letter.getPreviousSibling() : letter.getNextSibling();
+  }
+  const target = letter as LexicalNode | null;
+  if ($isTextNode(target) && !target.isToken()) {
+    if (isBackward) {
+      target.selectEnd();
+    } else {
+      target.select(0, 0);
+    }
+    return target;
+  }
+  return null;
+};
+
+/** Deletes one character (a whole emoji) at the end / start of `node`, keeping the caret there. */
+const $deleteCharAtEdge = (node: TextNode, isBackward: boolean) => {
+  const chars = Array.from(node.getTextContent());
+  if (isBackward) {
+    chars.pop();
+  } else {
+    chars.shift();
+  }
+  const text = chars.join('');
+  if (!text) {
+    const prev = node.getPreviousSibling();
+    const next = node.getNextSibling();
+    node.remove();
+    if (isBackward && $isTextNode(prev)) {
+      prev.selectEnd();
+    } else if ($isTextNode(next)) {
+      next.select(0, 0);
+    }
+    return;
+  }
+  node.setTextContent(text);
+  if (isBackward) {
+    node.selectEnd();
+  } else {
+    node.select(0, 0);
+  }
+};
+
+/**
+ * Puts the caret at `offset` in `node` - but never on a hidden (zero-size) marker, where it can't be
+ * seen: just after closing markers it goes to the text after them (or a placeholder made for it, so
+ * typing carries on plain after the bold word); just before opening markers, to the text before.
+ */
+const $placeCaret = (node: TextNode, offset: number) => {
+  if (!isHiddenMarker(node)) {
+    (node as TextNode).select(offset, offset);
+    return;
+  }
+  if (offset >= node.getTextContentSize()) {
+    let last: TextNode = node;
+    let next: LexicalNode | null = node.getNextSibling();
+    while (isHiddenMarker(next)) {
+      last = next;
+      next = next.getNextSibling();
+    }
+    const after = next as LexicalNode | null;
+    if ($isTextNode(after) && !after.isToken()) {
+      after.select(0, 0);
+      return;
+    }
+    const holder = $createTextNode(ZERO_WIDTH_SPACE);
+    last.insertAfter(holder);
+    holder.select(1, 1);
+    return;
+  }
+  let prev: LexicalNode | null = node.getPreviousSibling();
+  while (isHiddenMarker(prev)) {
+    prev = prev.getPreviousSibling();
+  }
+  const before = prev as LexicalNode | null;
+  if ($isTextNode(before) && !before.isToken()) {
+    before.selectEnd();
+    return;
+  }
+  node.select(offset, offset);
+};
+
 /** The code block (``` box) this node sits in, if any. */
+const MARKER_FORMATS: Record<string, TextFormatType> = {
+  '*': 'bold',
+  _: 'italic',
+  '~': 'strikethrough',
+  '`': 'code',
+};
+
+/**
+ * A new line typed inside bold / italic / strike text keeps the format: this line's markers are
+ * closed at the caret and the new line opens the same ones again, so the text typed on it is
+ * formatted too ("*hi aravind*" / "*next line*"). Returns false when the caret is not in such text.
+ */
+const $newLineInFormattedRun = (selection: RangeSelection): boolean => {
+  if (!selection.isCollapsed()) {
+    return false;
+  }
+  const anchorNode = selection.anchor.getNode();
+  const { offset } = selection.anchor;
+  if (!$isTextNode(anchorNode)) {
+    return false;
+  }
+  const block = anchorNode.getParent();
+  if (!$isElementNode(block)) {
+    return false;
+  }
+
+  // the nodes before / after the caret (a text node with the caret inside is split there)
+  const textNode: TextNode = anchorNode;
+  let left: LexicalNode | null = null;
+  if (isHiddenMarker(anchorNode)) {
+    left = offset > 0 ? anchorNode : anchorNode.getPreviousSibling();
+  } else if (offset >= textNode.getTextContentSize()) {
+    left = textNode;
+  } else if (offset <= 0) {
+    left = textNode.getPreviousSibling();
+  } else {
+    [left] = textNode.splitText(offset);
+  }
+
+  // markers still open at the caret
+  const open: Array<string> = [];
+  for (const child of block.getChildren()) {
+    if (left === null) {
+      break;
+    }
+    if (isHiddenMarker(child)) {
+      const marker = child.getTextContent();
+      if (open[open.length - 1] === marker) {
+        open.pop();
+      } else {
+        open.push(marker);
+      }
+    }
+    if (child.is(left)) {
+      break;
+    }
+  }
+  if (!open.length) {
+    return false;
+  }
+
+  // close them on this line...
+  let cursor: LexicalNode | null = left;
+  const closers = [...open].reverse().map(marker => $createMarkerToken(marker));
+  closers.forEach(closer => {
+    if (cursor) {
+      cursor.insertAfter(closer);
+    } else {
+      const first = block.getFirstChild();
+      if (first) {
+        first.insertBefore(closer);
+      } else {
+        block.append(closer);
+      }
+    }
+    cursor = closer;
+  });
+  const lastCloser = closers[closers.length - 1];
+
+  // ...and open them again on the new one, before the rest of the text
+  const openers = open.map(marker => $createMarkerToken(marker));
+  let at: LexicalNode = lastCloser;
+  openers.forEach(opener => {
+    at.insertAfter(opener);
+    at = opener;
+  });
+  let caretNode: TextNode | null = null;
+  const rest = at.getNextSibling();
+  if ($isTextNode(rest) && !rest.isToken() && stripZeroWidth(rest.getTextContent()) !== '') {
+    caretNode = rest;
+  } else {
+    // nothing typed yet on the new line: an empty formatted run holds the caret
+    const holder = $createTextNode(ZERO_WIDTH_SPACE);
+    open.forEach(marker => holder.toggleFormat(MARKER_FORMATS[marker]));
+    at.insertAfter(holder);
+    caretNode = holder;
+  }
+
+  // split the line between the closing and the opening markers
+  const splitAt = lastCloser.getIndexWithinParent() + 1;
+  block.select(splitAt, splitAt);
+  const split = $getSelection();
+  if (!$isRangeSelection(split)) {
+    return false;
+  }
+  split.insertParagraph();
+  if (caretNode.getTextContent() === ZERO_WIDTH_SPACE) {
+    caretNode.select(1, 1);
+  } else {
+    caretNode.select(0, 0);
+  }
+  return true;
+};
+
 const $getCodeBlock = (node: LexicalNode | null): ElementNode | null => {
   let current: LexicalNode | null = node;
   while (current) {
@@ -47,6 +337,25 @@ const $getCodeBlock = (node: LexicalNode | null): ElementNode | null => {
   return null;
 };
 
+// a code block with nothing typed in it grows to 3 empty rows at most: the next new line (Enter or
+// Shift+Enter) takes the caret out - the empty box goes back to a plain empty line (like Slack), so a
+// box opened by mistake can be left without reaching for the toolbar
+const EMPTY_CODE_BLOCK_MAX_ROWS = 3;
+const $closeEmptyCodeBlock = (codeBlock: ElementNode): boolean => {
+  if (codeBlock.getTextContent().replace(/[\n\u200B]/g, '').trim() !== '') {
+    return false;
+  }
+  const rows = codeBlock.getChildren().filter(child => child.getType() === 'linebreak').length + 1;
+  if (rows < EMPTY_CODE_BLOCK_MAX_ROWS) {
+    return false;
+  }
+  const paragraph = $createParagraphNode();
+  codeBlock.replace(paragraph);
+  paragraph.select();
+  return true;
+};
+
+
 export default function TextFormatingPlugin({
   onSendMessage,
 }: {
@@ -56,7 +365,15 @@ export default function TextFormatingPlugin({
   let isBulletListYmbols = '-';
   useEffect(() => {
     /* ================= AST ENGINE ================= */
-    const processText = (text: string, currentFormats: TextFormatType[] = []): TextNode[] => {
+    // where the run already has hidden marker tokens (text made bold / italic... before): such a pair
+    // stays a pair, even when the text inside now starts or ends with a space ("*word *" while the
+    // next word is typed) - it must not fall back to showing its markers
+    let lockedMarkers = new Set<number>();
+    const processText = (
+      text: string,
+      currentFormats: TextFormatType[] = [],
+      base = 0
+    ): TextNode[] => {
       if (!text) return [];
 
       // 🚫 Do NOT process inside code
@@ -85,12 +402,17 @@ export default function TextFormatingPlugin({
         const after = text[end];
 
         const isStartValid = start === 0 || /[\s]|[^\w\s]/.test(before);
-        const isEndValid = end === text.length || /[\s]|[^\w\s]/.test(after);
+        // the closing marker may be followed straight by more text ("*bold*text"): what is typed
+        // after a bold word stays plain and the word stays bold (the message gets a word joiner
+        // there, see serializeNode)
+        const isEndValid =
+          end === text.length || /[\s]|[^\w\s]/.test(after) || /\w/.test(after);
 
-        if (markerChar === '`' || markerChar === '```') {
+        if (markerChar === '```') {
           return isStartValid && isEndValid;
         }
 
+        // no space just inside the markers ("` code`" stays as typed, like Slack) - inline code too
         const charAfterOpen = text[start + markerLength];
         const charBeforeClose = text[end - markerLength - 1];
 
@@ -152,15 +474,18 @@ export default function TextFormatingPlugin({
                 }
               }
 
+              const isLockedPair =
+                lockedMarkers.has(base + i) && lockedMarkers.has(base + closeIdx);
               if (
                 closeIdx > startInner &&
-                isValidBoundary(
-                  text,
-                  i,
-                  closeIdx + marker.char.length,
-                  marker.char.length,
-                  marker.char
-                )
+                (isLockedPair ||
+                  isValidBoundary(
+                    text,
+                    i,
+                    closeIdx + marker.char.length,
+                    marker.char.length,
+                    marker.char
+                  ))
               ) {
                 if (!bestMatch || i < bestMatch.start) {
                   bestMatch = { marker, start: i, end: closeIdx };
@@ -185,7 +510,7 @@ export default function TextFormatingPlugin({
       const nodes: TextNode[] = [];
 
       if (firstIndex > 0) {
-        nodes.push(...processText(text.slice(0, firstIndex), currentFormats));
+        nodes.push(...processText(text.slice(0, firstIndex), currentFormats, base));
       }
 
       nodes.push($createMarkerToken(earliestMarker.char));
@@ -204,7 +529,9 @@ export default function TextFormatingPlugin({
         nodes.push(node);
       } else {
         const newFormats = [...currentFormats, earliestMarker.format];
-        nodes.push(...processText(inside, newFormats));
+        nodes.push(
+          ...processText(inside, newFormats, base + firstIndex + earliestMarker.char.length)
+        );
       }
 
       nodes.push($createMarkerToken(earliestMarker.char));
@@ -212,13 +539,51 @@ export default function TextFormatingPlugin({
       const endOfMarker = lastIndex + earliestMarker.char.length;
 
       if (endOfMarker < text.length) {
-        nodes.push(...processText(text.slice(endOfMarker), currentFormats));
+        nodes.push(...processText(text.slice(endOfMarker), currentFormats, base + endOfMarker));
       }
 
       return nodes;
     };
 
     /* ================= TRANSFORM ================= */
+    // text typed right next to a hidden marker takes the marker's zero-size style - it must stay visible
+    const removeMarkerStyleLeak = editor.registerNodeTransform(TextNode, node => {
+      if (node.isAttached() && !node.isToken() && /font-size:\s*0/.test(node.getStyle() || '')) {
+        node.setStyle('');
+      }
+    });
+    // every delete (Backspace / Delete keys, the system's delete input, word delete) skips hidden markers
+    const removeDeleteSkip = editor.registerCommand(
+      DELETE_CHARACTER_COMMAND,
+      (isBackward: boolean) => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) {
+          return false;
+        }
+        const target = $skipMarkersForDelete(selection, isBackward);
+        if (!target) {
+          return false;
+        }
+        $deleteCharAtEdge(target, isBackward);
+        return true;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
+    const removeDeleteWordSkip = editor.registerCommand(
+      DELETE_WORD_COMMAND,
+      (isBackward: boolean) => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) {
+          $skipMarkersForDelete(selection, isBackward);
+        }
+        return false;
+      },
+      COMMAND_PRIORITY_HIGH
+    );
+    const removeOrphanParagraph = editor.registerNodeTransform(ParagraphNode, $dropOrphanMarkers);
+    const removeOrphanListItem = editor.registerNodeTransform(ListItemNode, $dropOrphanMarkers);
+    const removeOrphanQuote = editor.registerNodeTransform(QuoteNode, $dropOrphanMarkers);
+
     const removeTransform = editor.registerNodeTransform(TextNode, node => {
       if (!node.isAttached()) return;
       if (!node.isSimpleText() || node.isToken()) return;
@@ -398,7 +763,16 @@ export default function TextFormatingPlugin({
       }
 
       /* ================= INLINE AST ================= */
+      lockedMarkers = new Set<number>();
+      let markerOffset = 0;
+      nodes.forEach(n => {
+        if (isHiddenMarker(n)) {
+          lockedMarkers.add(markerOffset);
+        }
+        markerOffset += n.getTextContentSize();
+      });
       const astNodes = processText(fullText);
+      lockedMarkers = new Set<number>();
       let isDifferent = nodes.length !== astNodes.length;
 
       if (!isDifferent) {
@@ -444,7 +818,7 @@ export default function TextFormatingPlugin({
         for (const n of astNodes) {
           const size = n.getTextContentSize();
           if (absoluteOffset <= length + size) {
-            n.select(absoluteOffset - length, absoluteOffset - length);
+            $placeCaret(n, absoluteOffset - length);
             break;
           }
           length += size;
@@ -478,7 +852,11 @@ export default function TextFormatingPlugin({
           event.preventDefault();
 
           // in the code block box: a new line inside the box
-          if ($getCodeBlock(anchorNode)) {
+          const shiftCodeBlock = $getCodeBlock(anchorNode);
+          if (shiftCodeBlock) {
+            if ($closeEmptyCodeBlock(shiftCodeBlock)) {
+              return true;
+            }
             editor.update(() => {
               const sel = $getSelection();
               if ($isRangeSelection(sel)) {
@@ -505,6 +883,9 @@ export default function TextFormatingPlugin({
             return true;
           }
 
+          if ($newLineInFormattedRun(selection)) {
+            return true;
+          }
           editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
           return true;
         } else {
@@ -512,7 +893,11 @@ export default function TextFormatingPlugin({
           event.stopPropagation();
           // in the code block box (Figma 5773:7834): Enter is a new line in the code, Cmd/Ctrl+Enter
           // sends
-          if ($getCodeBlock(anchorNode) && !event.metaKey && !event.ctrlKey) {
+          const enterCodeBlock = $getCodeBlock(anchorNode);
+          if (enterCodeBlock && !event.metaKey && !event.ctrlKey) {
+            if ($closeEmptyCodeBlock(enterCodeBlock)) {
+              return true;
+            }
             const sel = $getSelection();
             if ($isRangeSelection(sel)) {
               sel.insertLineBreak();
@@ -535,6 +920,39 @@ export default function TextFormatingPlugin({
         const anchor = selection.anchor;
         const anchorNode = anchor.getNode();
         const parent = anchorNode.getParent();
+
+        /* ================= EMPTY FORMATTED LINE ================= */
+        // a new line still holding only its bold / italic markers (nothing typed on it): Backspace
+        // takes the line away, back to the end of the line above
+        const line = $isElementNode(anchorNode) ? anchorNode : parent;
+        const lineAbove = line?.getPreviousSibling();
+        if (
+          line &&
+          line.getType() === 'paragraph' &&
+          lineAbove?.getType() === 'paragraph' &&
+          $isElementNode(lineAbove) &&
+          line.getChildren().some(child => isHiddenMarker(child)) &&
+          line
+            .getChildren()
+            .every(
+              child =>
+                isHiddenMarker(child) ||
+                ($isTextNode(child) && stripZeroWidth(child.getTextContent()) === '')
+            )
+        ) {
+          event.preventDefault();
+          line.remove();
+          const lastText = lineAbove
+            .getAllTextNodes()
+            .reverse()
+            .find((node): boolean => !isHiddenMarker(node));
+          if (lastText) {
+            lastText.selectEnd();
+          } else {
+            lineAbove.selectEnd();
+          }
+          return true;
+        }
 
         /* ================= CODE BLOCK BACKSPACE ================= */
         const codeBlock =
@@ -768,6 +1186,12 @@ export default function TextFormatingPlugin({
       removeTransform();
       removeEnter();
       removeBackspace();
+      removeMarkerStyleLeak();
+      removeDeleteSkip();
+      removeDeleteWordSkip();
+      removeOrphanParagraph();
+      removeOrphanListItem();
+      removeOrphanQuote();
       removeSpace();
       removeArrowDown();
       removePaste();

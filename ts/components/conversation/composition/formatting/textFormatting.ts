@@ -4,6 +4,7 @@ import {
   $createTextNode,
   $getSelection,
   $isElementNode,
+  $isLineBreakNode,
   $isParagraphNode,
   $isRangeSelection,
   $isTextNode,
@@ -15,11 +16,14 @@ import {
   LexicalNode,
   PointType,
   RangeSelection,
+  TextFormatType,
   TextNode,
 } from 'lexical';
 import { $setBlocksType } from '@lexical/selection';
 import { $createQuoteNode, $isQuoteNode } from '@lexical/rich-text';
 import {
+  $createListItemNode,
+  $createListNode,
   $isListNode,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
@@ -27,6 +31,7 @@ import {
 } from '@lexical/list';
 import { CodeBlockNode } from '../../TextFormatingPlugin';
 import {
+  $createHiddenMarker,
   $createLinkTextNode,
   $isLinkTextNode,
   normalizeLinkUrl,
@@ -364,9 +369,55 @@ export const $toggleInlineFormat = (format: InlineFormat) => {
 /* lists, quote, code block                                                                        */
 /* ---------------------------------------------------------------------------------------------- */
 
+/** The code block box's lines (its nodes between the line breaks), each one moved out as it is. */
+const $takeCodeBlockLines = (codeBlock: ElementNode): Array<Array<LexicalNode>> => {
+  const lines: Array<Array<LexicalNode>> = [[]];
+  codeBlock.getChildren().forEach(child => {
+    if ($isLineBreakNode(child)) {
+      child.remove();
+      lines.push([]);
+    } else {
+      lines[lines.length - 1].push(child);
+    }
+  });
+  return lines;
+};
+
+const hasText = (line: Array<LexicalNode>) =>
+  line.some(node => stripZeroWidth(node.getTextContent()).trim() !== '');
+
+/**
+ * A list picked in the code block box (like Slack): the box becomes the list, a line of the code per
+ * item (empty lines dropped); its text is kept.
+ */
+const $codeBlockToList = (codeBlock: ElementNode, type: 'number' | 'bullet') => {
+  const lines = $takeCodeBlockLines(codeBlock).filter(hasText);
+  const list = $createListNode(type);
+  (lines.length ? lines : [[]]).forEach(line => {
+    const item = $createListItemNode();
+    line.forEach(node => item.append(node));
+    list.append(item);
+  });
+  codeBlock.replace(list);
+  list.selectEnd();
+};
+
+/** The quote picked in the code block box: the box becomes a quote, its lines and text kept. */
+const $codeBlockToQuote = (codeBlock: ElementNode) => {
+  const quote = $createQuoteNode();
+  codeBlock.getChildren().forEach(child => quote.append(child));
+  codeBlock.replace(quote);
+  quote.selectEnd();
+};
+
 export const $toggleList = (editor: LexicalEditor, type: 'number' | 'bullet') => {
   const state = $getFormatState();
   if (state.codeBlock) {
+    const selection = $getSelection();
+    const codeBlock = $isRangeSelection(selection) ? $getCodeBlock(selection.anchor.getNode()) : null;
+    if (codeBlock) {
+      $codeBlockToList(codeBlock, type);
+    }
     return;
   }
   if (state[type]) {
@@ -381,7 +432,12 @@ export const $toggleList = (editor: LexicalEditor, type: 'number' | 'bullet') =>
 
 export const $toggleQuote = () => {
   const selection = $getSelection();
-  if (!$isRangeSelection(selection) || $getCodeBlock(selection.anchor.getNode())) {
+  if (!$isRangeSelection(selection)) {
+    return;
+  }
+  const codeBlock = $getCodeBlock(selection.anchor.getNode());
+  if (codeBlock) {
+    $codeBlockToQuote(codeBlock);
     return;
   }
   const isQuote = $getFormatState().quote;
@@ -462,6 +518,122 @@ export const $getSelectedPlainText = (): string => {
   return stripZeroWidth(text).trim();
 };
 
+const LINK_RUN_FORMATS: Record<string, TextFormatType | null> = {
+  '*': 'bold',
+  _: 'italic',
+  '~': 'strikethrough',
+  '`': null, // a link is not code: the inline code is closed around it
+};
+
+const isZeroWidthText = (node: LexicalNode | null) =>
+  $isTextNode(node) && !node.isToken() && stripZeroWidth(node.getTextContent()) === '';
+
+/**
+ * A link added inside bold / italic / strike text (or inline code): the run's markers are closed
+ * before the link and opened again after it, so neither side shows a stray marker. The link takes the
+ * run's bold / italic / strike (sent as *[text](https://address)*) and, after a space, the caret
+ * carries on in the same format. Returns false when the link is not inside such a run.
+ */
+const $fitLinkInFormattedRun = (link: TextNode): boolean => {
+  const parent = link.getParent();
+  if (!parent) {
+    return false;
+  }
+  const open: Array<string> = [];
+  for (const child of parent.getChildren()) {
+    if (child.is(link)) {
+      break;
+    }
+    if (isMarkerToken(child)) {
+      const marker = child.getTextContent();
+      if (open[open.length - 1] === marker) {
+        open.pop();
+      } else {
+        open.push(marker);
+      }
+    }
+  }
+  if (!open.length) {
+    return false;
+  }
+
+  // the link in the run's formats
+  open.forEach(marker => {
+    const format = LINK_RUN_FORMATS[marker];
+    if (format && !link.hasFormat(format)) {
+      link.toggleFormat(format);
+    }
+  });
+
+  // close the run before the link - or drop it, when nothing was typed in it yet
+  const closers = [...open].reverse().map(marker => $createHiddenMarker(marker));
+  let before: LexicalNode | null = link.getPreviousSibling();
+  while (before && isZeroWidthText(before)) {
+    before = before.getPreviousSibling();
+  }
+  const openersBefore: Array<LexicalNode> = [];
+  let scan: LexicalNode | null = before;
+  for (let i = open.length - 1; i >= 0; i--) {
+    if (!isMarkerToken(scan, open[i])) {
+      break;
+    }
+    openersBefore.unshift(scan as LexicalNode);
+    scan = (scan as LexicalNode).getPreviousSibling();
+  }
+  if (openersBefore.length === open.length) {
+    let n: LexicalNode | null = openersBefore[0];
+    while (n && !n.is(link)) {
+      const next: LexicalNode | null = n.getNextSibling();
+      n.remove();
+      n = next;
+    }
+  } else {
+    closers.forEach(closer => link.insertBefore(closer));
+  }
+
+  // a space after the link, then the run opened again: what is typed next is in the same format
+  const space = $createTextNode(' ');
+  link.insertAfter(space);
+  let at: LexicalNode = space;
+  open.forEach(marker => {
+    const opener = $createHiddenMarker(marker);
+    at.insertAfter(opener);
+    at = opener;
+  });
+  const holder = $createTextNode(ZERO_WIDTH_SPACE);
+  open.forEach(marker => holder.toggleFormat(LINK_RUN_FORMATS[marker] || 'code'));
+  at.insertAfter(holder);
+  // an empty holder left after the link by the format button goes
+  const rest = holder.getNextSibling();
+  if (isZeroWidthText(rest)) {
+    rest?.remove();
+  }
+  holder.select(1, 1);
+  return true;
+};
+
+const LINK_FORMATS: Array<TextFormatType> = ['bold', 'italic', 'strikethrough'];
+
+/** Markers left without their partner on a line (their text replaced by a link) are taken away. */
+const $dropUnpairedMarkers = (parent: ElementNode | null) => {
+  if (!parent) {
+    return;
+  }
+  const open: Array<TextNode> = [];
+  parent.getChildren().forEach(child => {
+    if (!isMarkerToken(child)) {
+      return;
+    }
+    const top = open[open.length - 1];
+    if (top && top.getTextContent() === child.getTextContent()) {
+      open.pop();
+    } else {
+      open.push(child);
+    }
+  });
+  open.forEach(marker => marker.remove());
+};
+
 export const $insertLink = (saved: RangeSelection | null, text: string, url: string) => {
   const href = normalizeLinkUrl(url);
   const label = text.trim() || href;
@@ -475,8 +647,33 @@ export const $insertLink = (saved: RangeSelection | null, text: string, url: str
   if (!$isRangeSelection(selection) || $getCodeBlock(selection.anchor.getNode())) {
     return;
   }
+  // a link put over bold / italic / strike text keeps that format
+  const picked = selection.isCollapsed()
+    ? []
+    : selection
+        .getNodes()
+        .filter(
+          (n): n is TextNode =>
+            $isTextNode(n) &&
+            !isMarkerToken(n as LexicalNode) &&
+            !$isLinkTextNode(n) &&
+            stripZeroWidth((n as TextNode).getTextContent()) !== ''
+        );
+  const keptFormats = LINK_FORMATS.filter(
+    format => picked.length > 0 && picked.every(n => n.hasFormat(format))
+  );
   const link = $createLinkTextNode(label, href);
   selection.insertNodes([link]);
+  const fitted = $fitLinkInFormattedRun(link);
+  $dropUnpairedMarkers(link.getParent());
+  if (fitted) {
+    return;
+  }
+  keptFormats.forEach(format => {
+    if (!link.hasFormat(format)) {
+      link.toggleFormat(format);
+    }
+  });
   // a plain space after it to carry on typing
   const next = link.getNextSibling();
   if ($isTextNode(next) && !next.isToken() && next.getTextContent().startsWith(' ')) {

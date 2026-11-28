@@ -217,7 +217,6 @@ export const FormattingToolbar = ({ editor }: { editor: LexicalEditor | null }) 
       <FormatButton
         title={withShortcut(i18n('formatNumberedList'), `${MOD}+Shift+7`)}
         active={state.number}
-        disabled={inCode}
         onClick={() => editor.update(() => $toggleList(editor, 'number'))}
       >
         <FormatNumberedListIcon />
@@ -225,7 +224,6 @@ export const FormattingToolbar = ({ editor }: { editor: LexicalEditor | null }) 
       <FormatButton
         title={withShortcut(i18n('formatBulletedList'), `${MOD}+Shift+8`)}
         active={state.bullet}
-        disabled={inCode}
         onClick={() => editor.update(() => $toggleList(editor, 'bullet'))}
       >
         <FormatBulletedListIcon />
@@ -234,7 +232,6 @@ export const FormattingToolbar = ({ editor }: { editor: LexicalEditor | null }) 
       <FormatButton
         title={withShortcut(i18n('formatQuote'), `${MOD}+Shift+9`)}
         active={state.quote}
-        disabled={inCode}
         onClick={() => editor.update(() => $toggleQuote())}
       >
         <FormatQuoteIcon />

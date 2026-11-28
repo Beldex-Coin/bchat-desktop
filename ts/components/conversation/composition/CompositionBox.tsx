@@ -98,6 +98,7 @@ import {
   LexicalNode,
   $isTextNode,
   $isElementNode,
+  ElementNode,
   $createParagraphNode,
   $isParagraphNode,
   $isLineBreakNode,
@@ -107,6 +108,7 @@ import {
 } from 'lexical';
 import { ListNode, ListItemNode, $isListNode, $isListItemNode } from '@lexical/list';
 import { $isQuoteNode, QuoteNode } from '@lexical/rich-text';
+import { ComposerPlaceholder } from './formatting/ComposerPlaceholder';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import MentionPlugin from '../MentionPlugin';
 import { MentionNode } from '../MentionNode';
@@ -121,7 +123,7 @@ import {
 } from './formatting/FormattingToolbar';
 import {
   $isLinkTextNode,
-  serializeLinkTextNode,
+  serializeFormattedLink,
   stripZeroWidth,
 } from './formatting/formatMarks';
 import MicrophoneAccessIcon from '../../icon/MicrophoneAccessIcon';
@@ -730,9 +732,10 @@ class CompositionBoxInner extends React.Component<Props, State> {
                   // aria-placeholder={placeholder}
                 />
               }
-              placeholder={<div className="editor-placeholder">{placeholder}</div>}
+              placeholder={null}
               ErrorBoundary={LexicalErrorBoundary}
             />
+            <ComposerPlaceholder text={placeholder} />
 
             <HistoryPlugin />
             <ListPlugin />
@@ -1490,10 +1493,152 @@ function $isMentionNode(node: LexicalNode): node is MentionNode {
   return node.getType() === 'mention';
 }
 
+/**
+ * A line's text as markdown (a paragraph, list item or quote): the bold / italic / strike / code runs
+ * across its nodes wrapped once each, as typed (nested formats stay nested: "*bold _both_*").
+ */
+function serializeInline(node: ElementNode): string {
+  const children = node.getChildren();
+  let content = '';
+
+  let currentBold = false;
+  let currentItalic = false;
+  let currentStrike = false;
+  let currentCode = false;
+  let closedLast = false; // the last text added ended with closing markers
+
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+
+    if ($isLinkTextNode(child)) {
+      // close the open formats, then the link as markdown
+      if (currentCode) content += '`';
+      if (currentStrike) content += '~';
+      if (currentItalic) content += '_';
+      if (currentBold) content += '*';
+      currentBold = currentItalic = currentStrike = currentCode = false;
+      content += serializeFormattedLink(child as any);
+      continue;
+    }
+    if ($isTextNode(child)) {
+      if (child.isToken()) continue;
+
+      // the zero-width space that holds the caret in an empty bold / italic run is never sent
+      let text = stripZeroWidth(child.getTextContent());
+      if (!text) continue;
+
+      const isBold = child.hasFormat('bold');
+      const isItalic = child.hasFormat('italic');
+      const isStrike = child.hasFormat('strikethrough');
+      const isCode = child.hasFormat('code');
+
+      // Open markers based on what changed
+      let prefix = '';
+      if (isBold && !currentBold) prefix += '*';
+      if (isItalic && !currentItalic) prefix += '_';
+      if (isStrike && !currentStrike) prefix += '~';
+      if (isCode && !currentCode) {
+        const style = child.getStyle() || '';
+        prefix += style.includes('data-triple-backtick: true') ? '```' : '`';
+      }
+
+      currentBold = isBold;
+      currentItalic = isItalic;
+      currentStrike = isStrike;
+      currentCode = isCode;
+
+      // ✅ FIX: Look ahead to find the next TRUE text node (skipping tokens)
+      let nextValidNode = null;
+      for (let j = i + 1; j < children.length; j++) {
+        const next = children[j];
+        if (
+          $isTextNode(next) &&
+          !$isLinkTextNode(next) &&
+          (next.isToken() || stripZeroWidth(next.getTextContent()) === '')
+        ) {
+          continue; // Skip the hidden token nodes (and caret placeholders)
+        }
+        nextValidNode = next;
+        break;
+      }
+
+      // Use the type guard directly inline so TypeScript knows it's a TextNode
+      const nextBold = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('bold') : false;
+      const nextItalic = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('italic') : false;
+      const nextStrike = $isTextNode(nextValidNode)
+        ? nextValidNode.hasFormat('strikethrough')
+        : false;
+      const nextCode = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('code') : false;
+
+      // Close markers by checking the TRUE next node
+      let suffix = '';
+      if (currentCode && !nextCode) {
+        const style = child.getStyle() || '';
+        suffix += style.includes('data-triple-backtick: true') ? '```' : '`';
+      }
+      if (currentStrike && !nextStrike) suffix += '~';
+      if (currentItalic && !nextItalic) suffix += '_';
+      if (currentBold && !nextBold) suffix += '*';
+
+      // a closing marker followed straight by a letter ("*bold*text") or an opening one right
+      // after a letter ("text*bold*") would not read as formatting on the other side - an invisible
+      // word joiner (U+2060) between them keeps the markers at a word edge
+      const ALNUM = /[A-Za-z0-9]/;
+      // spaces at the edge of a bold / italic / strike / inline code run go outside its markers
+      // ("*word *" is sent as "*word* ") - a marker next to a space would not read as formatting on
+      // the other side
+      // a run of only spaces (the space left after a link in bold text) is sent without markers
+      if (prefix && suffix && text.trim() === '') {
+        prefix = '';
+        suffix = '';
+      }
+      let lead = '';
+      let trail = '';
+      if (!isCode || !(child.getStyle() || '').includes('data-triple-backtick: true')) {
+        const leading = prefix ? text.match(/^\s+/) : null;
+        if (leading && leading[0].length < text.length) {
+          lead = leading[0];
+          text = text.slice(lead.length);
+        }
+        const trailing = suffix ? text.match(/\s+$/) : null;
+        if (trailing && trailing[0].length < text.length) {
+          trail = trailing[0];
+          text = text.slice(0, -trail.length);
+        }
+      }
+      const piece = lead + prefix + text + suffix + trail;
+      if (
+        content &&
+        ALNUM.test(piece[0]) === false &&
+        prefix &&
+        ALNUM.test(content[content.length - 1])
+      ) {
+        content += '\u2060';
+      } else if (closedLast && ALNUM.test(piece[0])) {
+        content += '\u2060';
+      }
+      content += piece;
+      closedLast = suffix.length > 0 && !trail;
+    } else {
+      // Close all active formats before rendering a non-text node
+      if (currentCode) content += '`';
+      if (currentStrike) content += '~';
+      if (currentItalic) content += '_';
+      if (currentBold) content += '*';
+      currentBold = currentItalic = currentStrike = currentCode = false;
+      closedLast = false;
+
+      content += serializeNode(child);
+    }
+  }
+
+  return content;
+}
+
 export const serializeNode = (node: LexicalNode): string => {
   // a link from the formatting toolbar: [text](https://address)
   if ($isLinkTextNode(node)) {
-    return serializeLinkTextNode(node as any);
+    return serializeFormattedLink(node as any);
   }
   if ($isTextNode(node) && node.isToken()) {
     return '';
@@ -1515,11 +1660,7 @@ export const serializeNode = (node: LexicalNode): string => {
         if ($isListItemNode(child)) {
           const prefix = listType === 'number' ? `${start + index}. ` : '- ';
 
-          const content = child
-            .getChildren()
-            .map(serializeNode)
-            .join('')
-            .replace(/\n+$/, '');
+          const content = serializeInline(child).replace(/\n+$/, '');
 
           return `${prefix}${content}`;
         }
@@ -1541,10 +1682,7 @@ export const serializeNode = (node: LexicalNode): string => {
 
   // ✅ Quotes
   if ($isQuoteNode(node)) {
-    const content = node
-      .getChildren()
-      .map(serializeNode)
-      .join('');
+    const content = serializeInline(node);
     const cleanContent = content.replace(/\n+$/, '');
     const lines = cleanContent.split('\n');
     return lines.map(line => `> ${line}`).join('\n') + '\n';
@@ -1571,100 +1709,7 @@ export const serializeNode = (node: LexicalNode): string => {
 
   // ✅ Paragraphs & Generic Elements (Flawless contiguous format wrapping)
   if ($isElementNode(node)) {
-    const children = node.getChildren();
-    let content = '';
-
-    let currentBold = false;
-    let currentItalic = false;
-    let currentStrike = false;
-    let currentCode = false;
-
-    for (let i = 0; i < children.length; i++) {
-      const child = children[i];
-
-      if ($isLinkTextNode(child)) {
-        // close the open formats, then the link as markdown
-        if (currentCode) content += '`';
-        if (currentStrike) content += '~';
-        if (currentItalic) content += '_';
-        if (currentBold) content += '*';
-        currentBold = currentItalic = currentStrike = currentCode = false;
-        content += serializeLinkTextNode(child as any);
-        continue;
-      }
-      if ($isTextNode(child)) {
-        if (child.isToken()) continue;
-
-        // the zero-width space that holds the caret in an empty bold / italic run is never sent
-        let text = stripZeroWidth(child.getTextContent());
-        if (!text) continue;
-
-        const isBold = child.hasFormat('bold');
-        const isItalic = child.hasFormat('italic');
-        const isStrike = child.hasFormat('strikethrough');
-        const isCode = child.hasFormat('code');
-
-        // Open markers based on what changed
-        let prefix = '';
-        if (isBold && !currentBold) prefix += '*';
-        if (isItalic && !currentItalic) prefix += '_';
-        if (isStrike && !currentStrike) prefix += '~';
-        if (isCode && !currentCode) {
-          const style = child.getStyle() || '';
-          prefix += style.includes('data-triple-backtick: true') ? '```' : '`';
-        }
-
-        currentBold = isBold;
-        currentItalic = isItalic;
-        currentStrike = isStrike;
-        currentCode = isCode;
-
-        // ✅ FIX: Look ahead to find the next TRUE text node (skipping tokens)
-        let nextValidNode = null;
-        for (let j = i + 1; j < children.length; j++) {
-          const next = children[j];
-          if (
-            $isTextNode(next) &&
-            !$isLinkTextNode(next) &&
-            (next.isToken() || stripZeroWidth(next.getTextContent()) === '')
-          ) {
-            continue; // Skip the hidden token nodes (and caret placeholders)
-          }
-          nextValidNode = next;
-          break;
-        }
-
-        // Use the type guard directly inline so TypeScript knows it's a TextNode
-        const nextBold = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('bold') : false;
-        const nextItalic = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('italic') : false;
-        const nextStrike = $isTextNode(nextValidNode)
-          ? nextValidNode.hasFormat('strikethrough')
-          : false;
-        const nextCode = $isTextNode(nextValidNode) ? nextValidNode.hasFormat('code') : false;
-
-        // Close markers by checking the TRUE next node
-        let suffix = '';
-        if (currentCode && !nextCode) {
-          const style = child.getStyle() || '';
-          suffix += style.includes('data-triple-backtick: true') ? '```' : '`';
-        }
-        if (currentStrike && !nextStrike) suffix += '~';
-        if (currentItalic && !nextItalic) suffix += '_';
-        if (currentBold && !nextBold) suffix += '*';
-
-        content += prefix + text + suffix;
-      } else {
-        // Close all active formats before rendering a non-text node
-        if (currentCode) content += '`';
-        if (currentStrike) content += '~';
-        if (currentItalic) content += '_';
-        if (currentBold) content += '*';
-        currentBold = currentItalic = currentStrike = currentCode = false;
-
-        content += serializeNode(child);
-      }
-    }
-
+    const content = serializeInline(node);
     if ($isParagraphNode(node)) {
       return content ? `${content}\n` : '\n';
     }
