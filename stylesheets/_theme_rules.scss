@@ -2547,6 +2547,85 @@ $dark-composer-h: 60px;
   --code-rule: #{if($theme-light, #cbe6d1, #1a3a21)};
   --code-label: #{if($theme-light, #078720, #7fa98a)};
   --code-text: #{if($theme-light, #078720, #d4f5dd)};
+// Tooltips (Figma 5773:6093 dark / 5808:54637 white "Tooltip"): 24 -> 32px plate, 1.5 -> 2px corners,
+// Inter SemiBold 10.5 -> 14, 8.5 -> 11px side padding, the 10x5.5 -> 13x7 arrow under the middle.
+// dark: #ebebeb plate and arrow, #0b0b0b text; white: #0b0b0b plate, #222 arrow, #fff text
+$dark-tip-bg: if($theme-light, #0b0b0b, #ebebeb);
+$dark-tip-arrow: if($theme-light, #222, #ebebeb);
+$dark-tip-text: if($theme-light, #fff, #0b0b0b);
+#{$dark} .__react_component_tooltip.tooltipDesign {
+  height: 32px;
+  padding: 0 11px !important;
+  background-color: $dark-tip-bg !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: none;
+  color: $dark-tip-text !important;
+  font-family: $dark-font-ui !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+  white-space: nowrap;
+
+  &.show {
+    opacity: 1 !important;
+  }
+  &.place-top,
+  &.place-bottom,
+  &.place-left,
+  &.place-right {
+    &::before {
+      display: none !important;
+    }
+    &::after {
+      border: 0 !important;
+      border-radius: 0 !important;
+      transform: none !important;
+      background-color: $dark-tip-arrow !important;
+    }
+  }
+  &.place-top::after,
+  &.place-bottom::after {
+    width: 13px !important;
+    height: 7px !important;
+    margin-left: -6.5px !important;
+  }
+  &.place-top::after {
+    top: auto !important;
+    bottom: -7px !important;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  &.place-bottom::after {
+    top: -7px !important;
+    bottom: auto !important;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+  &.place-left::after,
+  &.place-right::after {
+    top: 50% !important;
+    bottom: auto !important;
+    width: 7px !important;
+    height: 13px !important;
+    margin-top: -6.5px !important;
+  }
+  &.place-left::after {
+    right: -7px !important;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  &.place-right::after {
+    left: -7px !important;
+    clip-path: polygon(100% 0, 100% 100%, 0 50%);
+  }
+}
+// "Aa" hovers like the toolbar buttons (Figma "Bold / Hover"): #262626 on a #333 line, #ebebeb
+// (white #ebebeb on #ddd, #222); while on it stays green
+#{$dark} .composer-format-toggle {
+  border: 1px solid transparent;
+
+  &:hover:not(.is-on) {
+    background: if($theme-light, #ebebeb, #262626);
+    border-color: if($theme-light, #ddd, #333);
+  }
 }
 
 // Send: 60px primary white square with the dark plane, same bottom line as the field.

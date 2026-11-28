@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
+import ReactTooltip from 'react-tooltip';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   $getSelection,
@@ -48,6 +49,23 @@ import {
 // the message format has no underline the other BChat apps would show.
 
 const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform);
+
+// Tooltips: the app's own (react-tooltip, shown after 0.5s, the BchatToolTip in the actions panel)
+// instead of the native title, which Electron shows late or not at all. Buttons that appear after the
+// tooltip layer was set up (the toolbar is shown by "Aa", the quick bar on a selection) have to be
+// registered with it again whenever they mount.
+const useTooltipRebuild = (active = true) => {
+  useEffect(() => {
+    if (active) {
+      ReactTooltip.rebuild();
+    }
+  });
+};
+const tooltipProps = (text: string) => ({
+  'data-tip': text,
+  'data-place': 'top',
+  'data-effect': 'solid',
+});
 const MOD = isMac ? 'Cmd' : 'Ctrl';
 const withShortcut = (label: string, keys: string) => `${label} (${keys})`;
 
@@ -92,13 +110,16 @@ type FormatButtonProps = {
 const FormatButton = ({ title, active, disabled, className, onClick, children }: FormatButtonProps) => (
   <button
     type="button"
-    title={title}
+    {...tooltipProps(title)}
     aria-label={title}
     aria-pressed={!!active}
     disabled={disabled}
     className={classNames('composer-format-btn', className, active && 'is-active')}
-    // keep the selection in the message box
-    onMouseDown={e => e.preventDefault()}
+    // keep the selection in the message box; the tooltip goes once the button is used
+    onMouseDown={e => {
+      e.preventDefault();
+      ReactTooltip.hide();
+    }}
     onClick={onClick}
   >
     {children}
@@ -175,6 +196,7 @@ const InlineButtons = ({
 /** The toolbar row over the input (Figma 5773:6239): B I S | link, 1. list, bullets | quote, `code`, code block. */
 export const FormattingToolbar = ({ editor }: { editor: LexicalEditor | null }) => {
   const state = useFormatState(editor);
+  useTooltipRebuild(!!editor);
   if (!editor) {
     return null;
   }
@@ -237,22 +259,28 @@ export const FormattingToolbar = ({ editor }: { editor: LexicalEditor | null }) 
 };
 
 /** "Aa" after the emoji button (Figma 5773:6288): shows / hides the toolbar. */
-export const FormattingToggle = ({ on, onClick }: { on: boolean; onClick: () => void }) => (
-  <>
-    <button
-      type="button"
-      className={classNames('composer-format-toggle', on && 'is-on')}
-      title={window.i18n('formatText')}
-      aria-label={window.i18n('formatText')}
-      aria-pressed={on}
-      onMouseDown={e => e.preventDefault()}
-      onClick={onClick}
-    >
-      Aa
-    </button>
-    <span className="composer-format-toggle-divider" aria-hidden="true" />
-  </>
-);
+export const FormattingToggle = ({ on, onClick }: { on: boolean; onClick: () => void }) => {
+  useTooltipRebuild();
+  return (
+    <>
+      <button
+        type="button"
+        className={classNames('composer-format-toggle', on && 'is-on')}
+        {...tooltipProps(window.i18n('formatText'))}
+        aria-label={window.i18n('formatText')}
+        aria-pressed={on}
+        onMouseDown={e => {
+          e.preventDefault();
+          ReactTooltip.hide();
+        }}
+        onClick={onClick}
+      >
+        Aa
+      </button>
+      <span className="composer-format-toggle-divider" aria-hidden="true" />
+    </>
+  );
+};
 
 /** Under the input while the caret is in a code block (Figma 5773:7834 "Hint"). */
 export const CodeBlockHint = ({ editor }: { editor: LexicalEditor | null }) => {
@@ -372,7 +400,9 @@ export const QuickFormatBarPlugin = ({ disabled }: { disabled: boolean }) => {
     [editor, measure]
   );
 
-  if (disabled || !focused || !position || !state.hasSelection || state.codeBlock) {
+  const visible = !(disabled || !focused || !position || !state.hasSelection || state.codeBlock);
+  useTooltipRebuild(visible);
+  if (!visible) {
     return null;
   }
   return createPortal(
