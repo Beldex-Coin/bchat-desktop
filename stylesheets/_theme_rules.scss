@@ -1403,15 +1403,12 @@ $dark-cut-chip: polygon(0 0, calc(100% - 14px) 0, 100% 12px, 100% 100%, 13px 100
     font-size: 16px;
     color: c(#ebebeb, t);
 
-    // links read as the message text (Figma 5296:41359 / white 5808:39755 "links"): #ebebeb, white
-    // #222, no underline - underlined only while hovered
+    // links (Figma Text_Formatting reference: dark 5773:8801, white 5808:57345): green and
+    // underlined in sent and received messages - #00bc33, white #078720
     a {
-      color: c(#ebebeb, t);
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      color: if($theme-light, #078720, #00bc33);
+      text-decoration: underline;
+      text-decoration-color: currentColor;
     }
   }
   .timeStamp {
@@ -2527,6 +2524,12 @@ $dark-composer-h: 60px;
   &__copy-front {
     fill: var(--code-bg);
   }
+  // copied (Figma 5773:8847 / 5808:57391): tick + "Copied" in green #00bc33 (white #078720)
+  &__copy.is-copied,
+  &__copy.is-copied:hover {
+    gap: 7px;
+    color: if($theme-light, #078720, #00bc33);
+  }
   .code-block {
     display: block;
     margin: 0;
@@ -2547,6 +2550,54 @@ $dark-composer-h: 60px;
   --code-rule: #{if($theme-light, #cbe6d1, #1a3a21)};
   --code-label: #{if($theme-light, #078720, #7fa98a)};
   --code-text: #{if($theme-light, #078720, #d4f5dd)};
+}
+
+// Inline code (Figma Text_Formatting reference: dark 5773:8806 / 5773:8809, white 5808:57350 /
+// 5808:57353): a square chip 19 -> 25px high, 3 -> 4px side padding, a 0.375 -> 0.5px line, the code
+// in green (#00bc33, white #078720). In the message box and received messages #0b0b0b on #333
+// (white #f0f0f0 on #ddd); in sent messages #07120a on #1d4a27 (white #fff on #078720).
+#{$dark} .composition-container .editor-input code:not(.composer-code-block),
+#{$dark} .module-message__text .inline-code {
+  --inline-code-bg: #{if($theme-light, #f0f0f0, #0b0b0b)};
+  --inline-code-line: #{if($theme-light, #ddd, #333)};
+  display: inline;
+  padding: 2px 4px;
+  border: 0.5px solid var(--inline-code-line);
+  border-radius: 0;
+  background: var(--inline-code-bg);
+  backdrop-filter: none;
+  opacity: 1;
+  font-family: $dark-font-data !important;
+  font-size: 16px;
+  line-height: 21px;
+  color: if($theme-light, #078720, #00bc33);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+
+  .editor-text-code {
+    color: inherit;
+    background: none;
+  }
+}
+#{$dark} .module-message__text--outgoing .inline-code {
+  --inline-code-bg: #{if($theme-light, #fff, #07120a)};
+  --inline-code-line: #{if($theme-light, #078720, #1d4a27)};
+}
+
+// Numbered lists in messages (Figma 5773:8291 / white 5808:56835 "list + styles"): the numbers in
+// Roboto Mono Medium 12 -> 16, green #00bc33 (white #078720), a space before the text
+#{$dark} .module-message__text ol.markdown-list > li {
+  gap: 8px;
+
+  &::before {
+    min-width: 0;
+    color: if($theme-light, #078720, #00bc33);
+    font-family: $dark-font-data !important;
+    font-weight: 500;
+    text-align: start;
+  }
+}
+
 // Tooltips (Figma 5773:6093 dark / 5808:54637 white "Tooltip"): 24 -> 32px plate, 1.5 -> 2px corners,
 // Inter SemiBold 10.5 -> 14, 8.5 -> 11px side padding, the 10x5.5 -> 13x7 arrow under the middle.
 // dark: #ebebeb plate and arrow, #0b0b0b text; white: #0b0b0b plate, #222 arrow, #fff text

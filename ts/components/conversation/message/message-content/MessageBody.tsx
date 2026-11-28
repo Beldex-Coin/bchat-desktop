@@ -36,11 +36,25 @@ export const MessageCodeBlock = ({ code }: { code: string }) => {
     <span className="code-card">
       <span className="code-card__head">
         <span className="code-card__label">{window.i18n('codeBlockLabel')}</span>
-        <button type="button" className="code-card__copy" onClick={copy}>
-          <svg width="16" height="16" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <rect x="4" y="1" width="7" height="7" stroke="currentColor" strokeWidth="0.9" />
-            <rect x="1" y="4" width="7" height="7" className="code-card__copy-front" stroke="currentColor" strokeWidth="0.9" />
-          </svg>
+        <button
+          type="button"
+          className={copied ? 'code-card__copy is-copied' : 'code-card__copy'}
+          onClick={copy}
+        >
+          {copied ? (
+            // Figma 5773:8847 / 5808:57391 "Copied": a green tick before the label
+            <svg width="11" height="9" viewBox="0 0 8 6.4" aria-hidden="true">
+              <path
+                d="M0 3.2L1.12 2.08L2.88 3.84L6.88 0L8 1.12L2.88 6.08L0 3.2Z"
+                fill="currentColor"
+              />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <rect x="4" y="1" width="7" height="7" stroke="currentColor" strokeWidth="0.9" />
+              <rect x="1" y="4" width="7" height="7" className="code-card__copy-front" stroke="currentColor" strokeWidth="0.9" />
+            </svg>
+          )}
           {copied ? window.i18n('codeBlockCopied') : window.i18n('editMenuCopy')}
         </button>
       </span>
@@ -397,9 +411,27 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
       const charAfter = mLastIndex < text.length ? text[mLastIndex] : '';
 
       if (mdLinkMatch && charAfter === ')') {
-        if (mdLinkMatch[1]) {
+        // markers right before "[" that are closed again right after ")" format the link
+        const LINK_WRAPPERS: Record<string, 'strong' | 'em' | 'del'> = {
+          '*': 'strong',
+          _: 'em',
+          '~': 'del',
+        };
+        const wraps: Array<'strong' | 'em' | 'del'> = [];
+        let textBefore = mdLinkMatch[1];
+        const isValidTarget = SUPPORTED_PROTOCOLS.test(mUrl) && !LinkPreviews.isLinkSneaky(mUrl);
+        while (isValidTarget && textBefore.length) {
+          const mark = textBefore[textBefore.length - 1];
+          const closeAt = mLastIndex + 1 + wraps.length;
+          if (!LINK_WRAPPERS[mark] || text[closeAt] !== mark) {
+            break;
+          }
+          wraps.push(LINK_WRAPPERS[mark]);
+          textBefore = textBefore.slice(0, -1);
+        }
+        if (textBefore) {
           results.push(
-            renderNonLink({ text: mdLinkMatch[1], isGroup, isConvoListItem, key: count++ })
+            renderNonLink({ text: textBefore, isGroup, isConvoListItem, key: count++ })
           );
         }
 
@@ -407,11 +439,22 @@ const Linkify = (props: LinkifyProps): JSX.Element => {
         const isValidLink = SUPPORTED_PROTOCOLS.test(mUrl) && !LinkPreviews.isLinkSneaky(mUrl);
 
         if (isValidLink) {
-          results.push(
+          // a bold / italic / strike link (from the message box): *[text](https://address)*
+          let link: JSX.Element = (
             <a key={count++} href={mUrl} onClick={(e: any) => handleClick(e, mUrl)}>
               {linkText}
             </a>
           );
+          let end = mLastIndex + 1;
+          if (wraps.length) {
+            wraps.forEach(Wrapper => {
+              link = <Wrapper key={count++}>{link}</Wrapper>;
+            });
+            end += wraps.length;
+          }
+          results.push(link);
+          last = end;
+          return;
         } else {
           results.push(
             renderNonLink({
@@ -544,7 +587,7 @@ export const formatText = (
   isGroup: boolean = false
 ): (string | JSX.Element)[] => {
   const parts: (string | JSX.Element)[] = [];
-  const regex = /(```(.*?)```|`([^`]+)`|\*(?!\s)(.+?)(?<!\s)\*(?=[^a-zA-Z0-9]|$)|_(?!\s)(.+?)(?<!\s)_(?=[^a-zA-Z0-9]|$)|~(?!\s)(.+?)(?<!\s)~(?=[^a-zA-Z0-9]|$))/g;
+  const regex = /(```(.*?)```|`(?!\s)([^`]*[^`\s])`|\*(?!\s)(.+?)(?<!\s)\*(?=[^a-zA-Z0-9]|$)|_(?!\s)(.+?)(?<!\s)_(?=[^a-zA-Z0-9]|$)|~(?!\s)(.+?)(?<!\s)~(?=[^a-zA-Z0-9]|$))/g;
   let lastIndex = 0;
   let match;
 
@@ -663,7 +706,15 @@ export const renderMarkdownBlocks = (
   isGroup: boolean = false
 ): JSX.Element[] => {
   if (!text) return [];
-  const lines = isConvoListItem ? text.split('\n').slice(0, 3) : text.split('\n');
+  // a short preview (chat list, the reply over the message box): a code block shows as its code,
+  // without the ``` marks around it
+  const source = isConvoListItem
+    ? text
+        .replace(/```\n?([\s\S]*?)\n?```/g, (_m, code: string) => code)
+        .replace(/```/g, '')
+        .replace(/^\n+/, '')
+    : text;
+  const lines = isConvoListItem ? source.split('\n').slice(0, 3) : source.split('\n');
   const blocks: JSX.Element[] = [];
 
   let currentListItems: JSX.Element[] = [];
